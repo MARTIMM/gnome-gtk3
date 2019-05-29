@@ -1,0 +1,13 @@
+.precomp
+*/.precomp
+.directory
+*.xml
+*.xsl
+*.log
+*.html
+spellTmp*
+Old/*
+~*
+t/Travis-ci/*.tgz
+tests/Pencil*
+markdown-refs.md
