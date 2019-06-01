@@ -3,7 +3,7 @@ use v6;
 use Test;
 
 use Gnome::N::N-GObject;
-use Gnome::Gdk::Display;
+use Gnome::Gdk3::Display;
 
 #TODO auto init
 #use Gnome::Gtk3::Main;
@@ -13,7 +13,7 @@ use Gnome::Gdk::Display;
 subtest 'Manage display', {
 #  X::Gnome.debug(:on);
 
-  my Gnome::Gdk::Display $display;
+  my Gnome::Gdk3::Display $display;
   throws-like
     { $display .= new; },
     X::Gnome, "No options used",
@@ -24,12 +24,12 @@ subtest 'Manage display', {
     X::Gnome, "Wrong options used",
     :message(
       /:s Unsupported options for
-          'Gnome::Gdk::Display:'
+          'Gnome::Gdk3::Display:'
           [(find||search) ',']+ /
     );
 
   $display .= new(:default);
-  isa-ok $display, Gnome::Gdk::Display;
+  isa-ok $display, Gnome::Gdk3::Display;
   isa-ok $display(), N-GObject;
 
   my Str $display-name = $display.get-name();

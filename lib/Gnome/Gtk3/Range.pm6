@@ -19,7 +19,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-use Gnome::Gdk::Types;
+use Gnome::Gdk3::Types;
 use Gnome::Gtk3::Widget;
 
 #-------------------------------------------------------------------------------
@@ -449,7 +449,7 @@ This function returns the area that contains the range’s trough and its steppe
 
 This function is useful mainly for GtkRange subclasses.
 
-  method gtk_range_get_range_rect ( Gnome::Gdk::Rectangle $rectangle )
+  method gtk_range_get_range_rect ( Gnome::Gdk3::Rectangle $rectangle )
 
 =item $rectangle. Location for the range rectangleType to return. GdkRectangle is defined in GdkTypes.
 

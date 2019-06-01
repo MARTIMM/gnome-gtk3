@@ -52,7 +52,7 @@
 
   "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk.git",
 
-  "depends": [ "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk" ],
+  "depends": [ "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3" ],
   "test-depends": [ ],
   "build-depends": [ ],
   "resources": [ ]

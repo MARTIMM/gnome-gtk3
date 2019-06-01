@@ -25,7 +25,7 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::GObject::Object;
-use Gnome::Gdk::Screen;
+use Gnome::Gdk3::Screen;
 use Gnome::Gtk3::Main;
 #use Gnome::Glib::GError;
 

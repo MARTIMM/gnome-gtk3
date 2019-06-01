@@ -35,7 +35,7 @@ use Gnome::Gtk3::Window;
 # See /usr/include/gtk-3.0/gtk/gtkdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkDialog.html
 =begin pod
-=head1 unit class Gnome::Gdk::EventTypes;git
+=head1 unit class Gnome::Gdk3::EventTypes;git
   also is Gnome::Gtk3::Window;
 =end pod
 unit class Gnome::Gtk3::Dialog:auth<github:MARTIMM>;
