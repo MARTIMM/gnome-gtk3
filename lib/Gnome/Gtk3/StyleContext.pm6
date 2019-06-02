@@ -35,7 +35,7 @@ sub gtk_style_context_add_provider_for_screen( |c ) is inlinable {
   hidden__gtk_style_context_add_provider_for_screen(|c);
 }
 sub hidden__gtk_style_context_add_provider_for_screen (
-  N-GObject $screen, int32 $provider, int32 $priority
+  N-GObject $screen, N-GObject $provider, int32 $priority
 ) is native(&gtk-lib)
   is symbol('gtk_style_context_add_provider_for_screen')
   { * }
