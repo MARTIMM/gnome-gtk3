@@ -1,27 +1,16 @@
 ![gtk logo][logo]
 
-# Gnome Gtk - Widget toolkit for graphical interfaces
+# Gnome Gtk3 - Widget toolkit for graphical interfaces
 
 [![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
-![gtk logo][logo]
-
-# GTK::V3 - Accessing Gtk version 3.*
-[![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
-
-# NOTE
-## This project is refactored into the following projects. This project will stay for a while but will not be extended. Please look at the README.md of  Gnome::Gtk3 if you like to follow the progress of those packages.
-* Gnome::Gtk3
-* Gnome::Gdk3
-* Gnome::GObject
-* Gnome::Glib
-* Gnome::N
-
-## To install, type 'zef install Gnome::Gtk3' and all modules will be installed with it.
 
 # Description
 First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
 
-The purpose of this project is to create an interface to the **GTK** version 3 library. Previously I had this library in the GTK::Glade project but because of its growth I decided to create a separate project.
+The purpose of this project is to create an interface to the **GTK+** version 3 library.
+
+# History
+There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` was repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N`, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`. As a side effect the package `GTK::Glade` is also renamed into `Gnome::Glade3` to show that it is from Gnome and that it is based on Gtk version 3.
 
 # Example
 
@@ -45,13 +34,13 @@ A screenshot of the example ![this screenshot][screenshot 1]. The code can be fo
 ```
 use v6;
 
-use GTK::V3::Gtk::GtkMain;
-use GTK::V3::Gtk::GtkWindow;
-use GTK::V3::Gtk::GtkGrid;
-use GTK::V3::Gtk::GtkButton;
+use Gnome::Gtk::Main;
+use Gnome::Gtk::Window;
+use Gnome::Gtk::Grid;
+use Gnome::Gtk::Button;
 
 # Instantiate main module for UI control
-my GTK::V3::Gtk::GtkMain $m .= new;
+my Gnome::Gtk::Main $m .= new;
 
 # Class to handle signals
 class AppSignalHandlers {
@@ -73,17 +62,17 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my GTK::V3::Gtk::GtkWindow $top-window .= new(:empty);
+my Gnome::Gtk::Window $top-window .= new(:empty);
 $top-window.set-title('Hello GTK!');
 $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
-my GTK::V3::Gtk::GtkGrid $grid .= new(:empty);
+my Gnome::Gtk::Grid $grid .= new(:empty);
 $top-window.gtk-container-add($grid);
 
 # Create buttons and disable the second one
-my GTK::V3::Gtk::GtkButton $button .= new(:label('Hello World'));
-my GTK::V3::Gtk::GtkButton $second .= new(:label('Goodbye'));
+my Gnome::Gtk::Button $button .= new(:label('Hello World'));
+my Gnome::Gtk::Button $second .= new(:label('Goodbye'));
 $second.set-sensitive(False);
 
 # Add buttons to the grid
@@ -114,7 +103,7 @@ sub gtk_button_set_label ( N-GObject $widget, Str $label )
 ```
   can be used as
 ```
-my GTK::V3::Gtk::GtkButton $button .= new(:empty);
+my Gnome::Gtk::Button $button .= new(:empty);
 $button.gtk_button_set_label('Start Program');
 ```
 
@@ -173,8 +162,8 @@ sub gtk_grid_attach (
 ```
   And its use;
 ```
-my GTK::V3::Gtk::GtkGrid $grid .= new(:empty);
-my GTK::V3::Gtk::GtkLabel $label .= new(:label('server name'));
+my Gnome::Gtk::Grid $grid .= new(:empty);
+my Gnome::Gtk::Label $label .= new(:label('server name'));
 $grid.gtk-grid-attach( $label, 0, 0, 1, 1);
 ```
 
@@ -238,8 +227,8 @@ A few measures are implemented to help a bit preventing problems;
 # Notes
   1) The `CALL-ME` method is coded in such a way that a native widget can be set or retrieved easily. E.g.
 ```
-my GTK::V3::Gtk::GtkLabel $label .= new(:label('my label'));
-my GTK::V3::Gtk::GtkGrid $grid .= new;
+my Gnome::Gtk::Label $label .= new(:label('my label'));
+my Gnome::Gtk::Grid $grid .= new;
 $grid.gtk_grid_attach( $label(), 0, 0, 1, 1);
 ```
   Notice how the native widget is retrieved with `$label()`. However this method is mostly internally only. See also [9].
@@ -252,33 +241,33 @@ $grid.gtk_grid_attach( $label(), 0, 0, 1, 1);
 
   5) In some cases the calls can be shortened too. E.g. `gtk_button_get_label` can also be called like `get_label` or `get-label`. Sometimes, when shortened, calls can end up with a call using the wrong native widget. When in doubt use the complete method name.
 
-  6) Also a sub like `gtk_button_new` cannot be shortened because it will call the perl6 init method `new()`. These methods are used when initializing classes, in this case to initialize a `GTK::V3::Gtk::GtkButton` class. In the documentation, the use of brackets **[ ]** show which part can be chopped. E.g. `[gtk_button_] get_label`.
+  6) Also a sub like `gtk_button_new` cannot be shortened because it will call the perl6 init method `new()`. These methods are used when initializing classes, in this case to initialize a `Gnome::Gtk::Button` class. In the documentation, the use of brackets **[ ]** show which part can be chopped. E.g. `[gtk_button_] get_label`.
 
   7) All classes deriving from `GTK::V3::Glib::GObject` know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a N-GObject. E.g. cleaning a list box;
 ```
-my GTK::V3::Gtk::GtkListBox $list-box .= new(:build-id<someListBox>);
+my Gnome::Gtk::ListBox $list-box .= new(:build-id<someListBox>);
 loop {
   # Keep the index 0, entries will shift up after removal
   my $nw = $list-box.get-row-at-index(0);
   last unless $nw.defined;
 
   # Instantiate a container object using the :widget argument
-  my GTK::V3::Gtk::GtkBin $lb-row .= new(:widget($nw));
+  my Gnome::Gtk::Bin $lb-row .= new(:widget($nw));
   $lb-row.gtk-widget-destroy;
 }
 ```
 
-  8) The named argument `:build-id(…)` is used to get a N-GObject from a `GTK::V3::Gtk::GtkBuilder` object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also `GTK::Glade`. This option works for all child classes too if those classes are managed by `GtkBuilder`. E.g.
+  8) The named argument `:build-id(…)` is used to get a N-GObject from a `Gnome::Gtk::Builder` object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also `GTK::Glade`. This option works for all child classes too if those classes are managed by `GtkBuilder`. E.g.
 ```
-my GTK::V3::Gtk::GtkLabel $label .= new(:build-id<inputLabel>);
+my Gnome::Gtk::Label $label .= new(:build-id<inputLabel>);
 ```
 
   9) Sometimes a `N-GObject` must be given as a parameter. As mentioned above in [1] the CALL-ME method helps to return that object. To prevent mistakes (forgetting the '()' after the object), the parameters to the call are checked for the use of a `GTK::V3::Glib::GObject` instead of the native object. When encountered, the parameters are automatically converted. E.g.
 ```
-my GTK::V3::Gtk::GtkButton $button .= new(:label('press here'));
-my GTK::V3::Gtk::GtkLabel $label .= new(:label('note'));
+my Gnome::Gtk::Button $button .= new(:label('press here'));
+my Gnome::Gtk::Label $label .= new(:label('note'));
 
-my GTK::V3::Gtk::GtkGrid $grid .= new(:empty);
+my Gnome::Gtk::Grid $grid .= new(:empty);
 $grid.attach( $button, 0, 0, 1, 1);
 $grid.attach( $label, 0, 1, 1, 1);
 ```
@@ -305,12 +294,13 @@ my GTK::V3::Gdk::GdkRectangle $rectangle = $range.get-range-rect();
 # Versions of involved software
 
 * Program is tested against the latest version of **perl6** on **rakudo** en **moarvm**.
-* Gtk library used **Gtk >= 3.24**
+* Gtk library used **Gtk >= 3.24**.
 
 
-# Installation of GTK::V3
+# Installation
+There are several crossing dependencies from one package to the other because in was one package in the past. To get all packages, just install the `Gnome::Gtk3` package and the rest will be installed too.
 
-`zef install GTK::V3`
+`zef install Gnome::Gtk3`
 
 
 # Author
@@ -361,6 +351,7 @@ There are always some problems! If you find one, please help by filing an issue 
 [//]: # (---- [refs] ----------------------------------------------------------)
 [changes]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/CHANGES.md
 [logo]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/gtk-logo-100.png
+[devel refs]: https://developer.gnome.org/references
 
 [GtkAboutDialog]: https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
 [GtkBin]: https://developer.gnome.org/gtk3/stable/GtkBin.html
