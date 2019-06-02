@@ -34,13 +34,13 @@ A screenshot of the example ![this screenshot][screenshot 1]. The code can be fo
 ```
 use v6;
 
-use Gnome::Gtk::Main;
-use Gnome::Gtk::Window;
-use Gnome::Gtk::Grid;
-use Gnome::Gtk::Button;
+use Gnome::Gtk3::Main;
+use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Grid;
+use Gnome::Gtk3::Button;
 
 # Instantiate main module for UI control
-my Gnome::Gtk::Main $m .= new;
+my Gnome::Gtk3::Main $m .= new;
 
 # Class to handle signals
 class AppSignalHandlers {
@@ -56,23 +56,24 @@ class AppSignalHandlers {
     $m.gtk-main-quit;
   }
 
+  # Handle window managers 'close app' button
   method exit-program ( ) {
     $m.gtk-main-quit;
   }
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk::Window $top-window .= new(:empty);
+my Gnome::Gtk3::Window $top-window .= new(:empty);
 $top-window.set-title('Hello GTK!');
 $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
-my Gnome::Gtk::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new(:empty);
 $top-window.gtk-container-add($grid);
 
 # Create buttons and disable the second one
-my Gnome::Gtk::Button $button .= new(:label('Hello World'));
-my Gnome::Gtk::Button $second .= new(:label('Goodbye'));
+my Gnome::Gtk3::Button $button .= new(:label('Hello World'));
+my Gnome::Gtk3::Button $second .= new(:label('Goodbye'));
 $second.set-sensitive(False);
 
 # Add buttons to the grid
@@ -85,17 +86,19 @@ $button.register-signal(
   $ash, 'first-button-click', 'clicked',  :other-button($second)
 );
 $second.register-signal( $ash, 'second-button-click', 'clicked');
+
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate all
 $top-window.show-all;
+
 $m.gtk-main;
 ```
 
 # Design
 
 I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** as closely as possible by keeping the names of the native functions the same as provided with the following exceptions;
-* The native subroutines are defined in their classes. They are setup in such a way that they have become methods in those classes. Many subs also have as their first argument the native object. This object is held in the class and is automatically inserted when needed. E.g. a definition like the following in the GtkButton class
+* The native subroutines are defined in their corresponding classes. They are set up in such a way that they have become methods in those classes. Many subs also have as their first argument the native object. This object is held in the class and is automatically inserted when the sub is called. E.g. a definition like the following in the `Gnome::Gtk3::Button` class
 ```
 sub gtk_button_set_label ( N-GObject $widget, Str $label )
   is native(&gtk-lib)
@@ -103,20 +106,20 @@ sub gtk_button_set_label ( N-GObject $widget, Str $label )
 ```
   can be used as
 ```
-my Gnome::Gtk::Button $button .= new(:empty);
+my Gnome::Gtk3::Button $button .= new(:empty);
 $button.gtk_button_set_label('Start Program');
 ```
 
-* Classes can use the methods of inherited classes. E.g. The GtkButton class inherits GtkBin and GtkBin inherits GtkContainer etcetera. Therefore a method like `gtk_widget_set_tooltip_text` from `GtkWidget` can be used.
+* Classes can use the methods of inherited classes. E.g. The `Gnome::Gtk3::Button` class inherits `Gnome::Gtk3::Bin` and `Gnome::Gtk3::Bin` inherits `Gnome::Gtk3::Container` etcetera. Therefore a method like `gtk_widget_set_tooltip_text` from `Gnome::Gtk3::Widget` can be used.
 ```
 $button.gtk_widget_set_tooltip_text('When pressed, program will start');
 ```
 
-* The names are sometimes long and prefixed with words which are also used in the class name. Therefore, those names can be shortened by removing those prefixes. An example method in the `GtkButton` class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
+* The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method in the `Gnome::Gtk3::Button` class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
 ```
 my Str $button-label = $button.get_label;
 ```
-  In the documentation this will be shown with brackets around the part that can be left out. In this case is is shown as `[gtk_button_] get_label`.
+  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.
 
 * Names can not be shortened too much. E.g. `gtk_button_new` and `gtk_label_new` yield `new` which is a perl method from class `Mu`. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes.
 
