@@ -5,6 +5,8 @@ use lib 'lib';
 use GTK::Simple;
 use GTK::Simple::App;
 
+my Instant $t0 = now;
+
 =comment
     Using C<GTK::Simple> allows you to get a U<single window> for your app
     by creating a B<GTK::Simple::App>.
@@ -67,5 +69,7 @@ $second.clicked.tap({ $app.exit; });
 
 =comment
     Finally, we enter the main loop of the application.
+
+note "Set up time: ", now - $t0;
 
 $app.run;
