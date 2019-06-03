@@ -30,7 +30,7 @@ This example does the same as the example from `GTK::Simple` to show you the dif
   * Not all documentation is written.
   * Not all classes and/or methods are supplied.
 
-A screenshot of the example ![this screenshot][screenshot 1]. The code can be found at `examples/01-hello-world.pl6`.
+A screenshot of the example ![-this screenshot-][screenshot 1]. The code can be found at `examples/01-hello-world.pl6`.
 ```
 use v6;
 
@@ -355,6 +355,12 @@ There are always some problems! If you find one, please help by filing an issue 
 [changes]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/CHANGES.md
 [logo]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/gtk-logo-100.png
 [devel refs]: https://developer.gnome.org/references
+
+[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/01-hello-world.png
+[screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/16a-level-bar.png
+[screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/16b-level-bar.png
+[screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/ex-GtkScale.png
+
 
 [GtkAboutDialog]: https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
 [GtkBin]: https://developer.gnome.org/gtk3/stable/GtkBin.html
