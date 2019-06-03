@@ -344,7 +344,7 @@ Github account name: **MARTIMM**
 
 # Issues
 
-There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/perl6-gnome-gtk/issues).
+There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/perl6-gnome-gtk3/issues).
 
 # Attribution
 * The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again.
@@ -352,14 +352,14 @@ There are always some problems! If you find one, please help by filing an issue 
 * Other helpful modules for their insight and use.
 
 [//]: # (---- [refs] ----------------------------------------------------------)
-[changes]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/CHANGES.md
-[logo]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/gtk-logo-100.png
+[changes]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/CHANGES.md
+[logo]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/gtk-logo-100.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/01-hello-world.png
-[screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/16a-level-bar.png
-[screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/16b-level-bar.png
-[screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk/blob/master/doc/images/ex-GtkScale.png
+[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/01-hello-world.png
+[screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/16a-level-bar.png
+[screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/16b-level-bar.png
+[screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/ex-GtkScale.png
 
 
 [GtkAboutDialog]: https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
@@ -399,43 +399,43 @@ There are always some problems! If you find one, please help by filing an issue 
 
 [//]: # (Pod documentation rendered with)
 [//]: # (pod-render.pl6 --pdf --g=MARTIMM/perl6-gnome-gtk3 lib)
-[Gnome::Gtk3::AboutDialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/AboutDialog.html
-[Gnome::Gtk3::AboutDialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/AboutDialog.pdf
-[Gnome::Gtk3::Bin html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Bin.html
-[Gnome::Gtk3::Bin pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Bin.pdf
-[Gnome::Gtk3::Builder html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Builder.html
-[Gnome::Gtk3::Builder pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Builder.pdf
-[Gnome::Gtk3::Button html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Button.html
-[Gnome::Gtk3::Button pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Button.pdf
-[Gnome::Gtk3::CheckButton html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/CheckButton.html
-[Gnome::Gtk3::CheckButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/CheckButton.pdf
-[Gnome::Gtk3::ComboBox html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ComboBox.html
-[Gnome::Gtk3::ComboBox pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ComboBox.pdf
-[Gnome::Gtk3::ComboBoxText html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ComboBoxText.html
-[Gnome::Gtk3::ComboBoxText pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ComboBoxText.pdf
-[Gnome::Gtk3::Dialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Dialog.html
-[Gnome::Gtk3::Dialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Dialog.pdf
-[Gnome::Gtk3::Enums html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Enums.html
-[Gnome::Gtk3::Enums pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Enums.pdf
-[Gnome::Gtk3::FileChooser html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/FileChooser.html
-[Gnome::Gtk3::FileChooser pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/FileChooser.pdf
-[Gnome::Gtk3::FileChooserDialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/FileChooserDialog.html
-[Gnome::Gtk3::FileChooserDialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/FileChooserDialog.pdf
-[Gnome::Gtk3::LevelBar html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/LevelBar.html
-[Gnome::Gtk3::LevelBar pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/LevelBar.pdf
-[Gnome::Gtk3::Main html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Main.html
-[Gnome::Gtk3::Main pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Main.pdf
-[Gnome::Gtk3::Orientable html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Orientable.html
-[Gnome::Gtk3::Orientable pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Orientable.pdf
-[Gnome::Gtk3::Paned html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Paned.html
-[Gnome::Gtk3::Paned pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Paned.pdf
-[Gnome::Gtk3::Range html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Range.html
-[Gnome::Gtk3::Range pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Range.pdf
-[Gnome::Gtk3::Scale html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Scale.html
-[Gnome::Gtk3::Scale pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Scale.pdf
-[Gnome::Gtk3::ToggleButton html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ToggleButton.html
-[Gnome::Gtk3::ToggleButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/ToggleButton.pdf
-[Gnome::Gtk3::Widget html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Widget.html
-[Gnome::Gtk3::Widget pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Widget.pdf
-[Gnome::Gtk3::Window html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Window.html
-[Gnome::Gtk3::Window pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk/blob/master/doc/Window.pdf
+[Gnome::Gtk3::AboutDialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/AboutDialog.html
+[Gnome::Gtk3::AboutDialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/AboutDialog.pdf
+[Gnome::Gtk3::Bin html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Bin.html
+[Gnome::Gtk3::Bin pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Bin.pdf
+[Gnome::Gtk3::Builder html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Builder.html
+[Gnome::Gtk3::Builder pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Builder.pdf
+[Gnome::Gtk3::Button html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Button.html
+[Gnome::Gtk3::Button pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Button.pdf
+[Gnome::Gtk3::CheckButton html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/CheckButton.html
+[Gnome::Gtk3::CheckButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/CheckButton.pdf
+[Gnome::Gtk3::ComboBox html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBox.html
+[Gnome::Gtk3::ComboBox pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBox.pdf
+[Gnome::Gtk3::ComboBoxText html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBoxText.html
+[Gnome::Gtk3::ComboBoxText pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBoxText.pdf
+[Gnome::Gtk3::Dialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Dialog.html
+[Gnome::Gtk3::Dialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Dialog.pdf
+[Gnome::Gtk3::Enums html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Enums.html
+[Gnome::Gtk3::Enums pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Enums.pdf
+[Gnome::Gtk3::FileChooser html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/FileChooser.html
+[Gnome::Gtk3::FileChooser pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/FileChooser.pdf
+[Gnome::Gtk3::FileChooserDialog html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/FileChooserDialog.html
+[Gnome::Gtk3::FileChooserDialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/FileChooserDialog.pdf
+[Gnome::Gtk3::LevelBar html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/LevelBar.html
+[Gnome::Gtk3::LevelBar pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/LevelBar.pdf
+[Gnome::Gtk3::Main html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Main.html
+[Gnome::Gtk3::Main pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Main.pdf
+[Gnome::Gtk3::Orientable html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Orientable.html
+[Gnome::Gtk3::Orientable pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Orientable.pdf
+[Gnome::Gtk3::Paned html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Paned.html
+[Gnome::Gtk3::Paned pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Paned.pdf
+[Gnome::Gtk3::Range html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Range.html
+[Gnome::Gtk3::Range pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Range.pdf
+[Gnome::Gtk3::Scale html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Scale.html
+[Gnome::Gtk3::Scale pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Scale.pdf
+[Gnome::Gtk3::ToggleButton html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ToggleButton.html
+[Gnome::Gtk3::ToggleButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ToggleButton.pdf
+[Gnome::Gtk3::Widget html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Widget.html
+[Gnome::Gtk3::Widget pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Widget.pdf
+[Gnome::Gtk3::Window html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Window.html
+[Gnome::Gtk3::Window pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Window.pdf
