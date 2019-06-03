@@ -21,14 +21,11 @@ This example does the same as the example from `GTK::Simple` to show you the dif
   * The package is designed with the usage of glade interface designer in mind. So to build the interface by hand like below, is not necessary. Use of `GTK::Glade` is preferable when building larger user interfaces.
   * No fancy stuff like tapping into channels.
   * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks.. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
-  * There is also a registration of events to handle e.g. keyboard input and mouse clicks.
+  * The same method, `register-signal()`, is also used to register other types of signals. There are, for example, events to handle keyboard input and mouse clicks. Not all signal handler types are supported yet but can be installed in time.
 
 ### Cons
   * The code is larger.
-  * Code is somewhat slower.
-  * Not all types of signals are supported yet.
-  * Not all documentation is written.
-  * Not all classes and/or methods are supplied.
+  * Code is somewhat slower. The setup of the example shown next is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
 
 A screenshot of the example ![-this screenshot-][screenshot 1]. The code can be found at `examples/01-hello-world.pl6`.
 ```
