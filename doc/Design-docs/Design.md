@@ -200,3 +200,80 @@ GInitiallyUnowned <|-- GtkFileFilter
 
 ```
 -->
+# Notes
+
+* Sometimes I had to stray away from the native function names because of the way one has to define it in perl6. This is caused by the possibility of returning or specifying different types of values depending on how the function is used. E.g. `g_slist_nth_data()` can return several types of data. This is solved using several subs linking to the same native sub. In this library, the methods `g_slist_nth_data_str()` and `g_slist_nth_data_gobject()` are created. This can be extended for integers, reals and other types.
+
+```
+sub g_slist_nth_data_str ( N-GSList $list, uint32 $n --> Str )
+  is native(&gtk-lib)
+  is symbol('g_slist_nth_data')
+  { * }
+
+sub g_slist_nth_data_gobject ( N-GSList $list, uint32 $n --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('g_slist_nth_data')
+  { * }
+```
+  Other causes are variable argument lists where I had to choose for the extra arguments. E.g. in the `GtkFileChooserDialog` the native sub `gtk_file_chooser_dialog_new` has a way to extend it with a number of buttons on the dialog. I had to fix that list to a known number of arguments and renamed the sub `gtk_file_chooser_dialog_new_two_buttons`.
+
+  1) The `CALL-ME` method is coded in such a way that a native widget can be set or retrieved easily. E.g.
+```
+my Gnome::Gtk3::Label $label .= new(:label('my label'));
+my Gnome::Gtk3::Grid $grid .= new;
+$grid.gtk_grid_attach( $label(), 0, 0, 1, 1);
+```
+  Notice how the native widget is retrieved with `$label()`. However this method is mostly internally only. See also [9].
+
+  2) The `FALLBACK` method is used to test for the defined native functions as if the functions where methods. It calls the `fallback` methods in the class which in turn call the parent fallback using `callsame`. The resulting function addres is returned and processed with the `test-call` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception` from the same module.
+
+  3) `N-GObject` is a native widget which is held internally in most of the classes. Sometimes they need to be handed over in a call or stored when it is returned.
+
+  4) Each method can at least be called with perl6 like dashes in the method name. E.g. `gtk_container_add` can be written as `gtk-container-add`.
+
+  5) In some cases the calls can be shortened too. E.g. `gtk_button_get_label` can also be called like `get_label` or `get-label`. Sometimes, when shortened, calls can end up with a call using the wrong native widget. When in doubt use the complete method name.
+
+  6) Also a sub like `gtk_button_new` cannot be shortened because it will call the perl6 init method `new()`. These methods are used when initializing classes, in this case to initialize a `Gnome::Gtk3::Button` class. In the documentation, the use of brackets **[ ]** show which part can be chopped. E.g. `[gtk_button_] get_label`.
+
+  7) All classes deriving from `GTK::V3::Glib::GObject` know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a N-GObject. E.g. cleaning a list box;
+```
+my Gnome::Gtk3::ListBox $list-box .= new(:build-id<someListBox>);
+loop {
+  # Keep the index 0, entries will shift up after removal
+  my $nw = $list-box.get-row-at-index(0);
+  last unless $nw.defined;
+
+  # Instantiate a container object using the :widget argument
+  my Gnome::Gtk3::Bin $lb-row .= new(:widget($nw));
+  $lb-row.gtk-widget-destroy;
+}
+```
+
+  8) The named argument `:build-id(…)` is used to get a N-GObject from a `Gnome::Gtk3::Builder` object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also `GTK::Glade`. This option works for all child classes too if those classes are managed by `GtkBuilder`. E.g.
+```
+my Gnome::Gtk3::Label $label .= new(:build-id<inputLabel>);
+```
+
+  9) Sometimes a `N-GObject` must be given as a parameter. As mentioned above in [1] the CALL-ME method helps to return that object. To prevent mistakes (forgetting the '()' after the object), the parameters to the call are checked for the use of a `GTK::V3::Glib::GObject` instead of the native object. When encountered, the parameters are automatically converted. E.g.
+```
+my Gnome::Gtk3::Button $button .= new(:label('press here'));
+my Gnome::Gtk3::Label $label .= new(:label('note'));
+
+my Gnome::Gtk3::Grid $grid .= new(:empty);
+$grid.attach( $button, 0, 0, 1, 1);
+$grid.attach( $label, 0, 1, 1, 1);
+```
+Here in the call to `gtk_grid_attach` \$button and \$label is used instead of \$button() and \$label().
+
+  10) The C functions can only return simple values like int32, num64 etc. When a structure must be returned, it is returned in a value given in the argument list. Mostly this is implemented by using a pointer to the structure. Perl users are used to be able to return all sorts of types. To provide this behavior, the native sub is wrapped in another sub which can return the result and directly assigned to some variable. **_This is not yet implemented!_**
+    The following line where a GTK::V3::Gdk::GdkRectangle is returned;
+```
+my GTK::V3::Gdk3::Rectangle $rectangle;
+$range.get-range-rect($rectangle);
+```
+could then be rewritten as;
+```
+my GTK::V3::Gdk::GdkRectangle $rectangle = $range.get-range-rect();
+```
+
+  11) There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_This is not yet implemented!_**
