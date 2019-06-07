@@ -80,6 +80,7 @@ title GTK Class hierary at GtkContainer
    * GtkToggleButton
     * GtkCheckButton
      * GtkRadioButton
+   * ColorButton
 
   * GtkWindow
    * GtkDialog

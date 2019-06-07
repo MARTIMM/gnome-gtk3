@@ -172,6 +172,7 @@ A few measures are implemented to help a bit preventing problems;
 | [Gnome::Gtk3::CheckButton][Gnome::Gtk3::CheckButton pdf] |  [GtkCheckButton.html][GtkCheckButton]
 | [Gnome::Gtk3::ComboBox][Gnome::Gtk3::ComboBox pdf] |  [GtkComboBox.html][GtkComboBox]
 | [Gnome::Gtk3::ComboBoxText][Gnome::Gtk3::ComboBoxText pdf] |  [GtkComboBoxText.html][GtkComboBoxText]
+| Gnome::Gtk3::ColorButton |  [GtkColorButton.html][GtkColorButton]
 | Gnome::Gtk3::Container |  [GtkContainer.html][GtkContainer]
 | Gnome::Gtk3::CssProvider |  [GtkCssProvider.html][GtkCssProvider]
 | Gnome::Gtk3::StyleContext |  [GtkStyleContext.html][GtkStyleContext]
@@ -253,6 +254,7 @@ Github account name: **MARTIMM**
 [GtkCheckButton]: https://developer.gnome.org/gtk3/stable/GtkCheckButton.html
 [GtkComboBox]: https://developer.gnome.org/gtk3/stable/GtkComboBox.html
 [GtkComboBoxText]: https://developer.gnome.org/gtk3/stable/GtkComboBoxText.html
+[GtkColorButton]: https://developer.gnome.org/gtk3/stable/GtkColorButton.html
 [GtkContainer]: https://developer.gnome.org/gtk3/stable/GtkContainer.html
 [GtkCssProvider]: https://developer.gnome.org/gtk3/stable/GtkCssProvider.html
 [GtkDialog]: https://developer.gnome.org/gtk3/stable/GtkDialog.html

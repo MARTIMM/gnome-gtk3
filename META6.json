@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.13.2",
+  "version": "0.14.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -18,6 +18,7 @@
     "Gnome::Gtk3::ComboBox": "lib/Gnome/Gtk3/ComboBox.pm6",
     "Gnome::Gtk3::ComboBoxText": "lib/Gnome/Gtk3/ComboBoxText.pm6",
     "Gnome::Gtk3::Container": "lib/Gnome/Gtk3/Container.pm6",
+    "Gnome::Gtk3::ColorButton": "lib/Gnome/Gtk3/ColorButton.pm6",
     "Gnome::Gtk3::CssProvider": "lib/Gnome/Gtk3/CssProvider.pm6",
     "Gnome::Gtk3::Dialog": "lib/Gnome/Gtk3/Dialog.pm6",
     "Gnome::Gtk3::Entry": "lib/Gnome/Gtk3/Entry.pm6",
