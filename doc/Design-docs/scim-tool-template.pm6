@@ -30,14 +30,14 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 #use Gnome::GObject::Object;
-use Gnome::LIBRARYPARENT;
+USE-LIBRARY-PARENT
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
-also is Gnome::LIBRARYPARENT;
+ALSO-IS-LIBRARY-PARENT
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -101,6 +101,10 @@ method fallback ( $native-sub is copy --> Callable ) {
 SUB_DECLARATIONS
 
 #-------------------------------------------------------------------------------
+PROPERTY-DOC
+
+#`{{
+#-------------------------------------------------------------------------------
 =begin pod
 =head1 Types
 =head2
@@ -108,7 +112,7 @@ SUB_DECLARATIONS
 =item
 
 =end pod
-
+}}
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
@@ -120,15 +124,16 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
     :$user-option1, ..., $user-optionN
   )
 
+=begin comment
 
 =head2 Supported signals
-=head3
 
 =head2 Unsupported signals
-=head3
+
+=end comment
+
 
 =head2 Not yet supported signals
-=head3
 
 SIGNAL-DOC
 
@@ -158,10 +163,14 @@ SIGNAL-DOC
 =end comment
 
 
+=begin comment
+
 =head4 Handler Method Arguments
 =item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
 =item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
 =item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
 =item $user-option*; Any extra options given by the user when registering the signal.
+
+=end comment
 
 =end pod

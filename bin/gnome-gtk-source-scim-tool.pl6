@@ -15,7 +15,7 @@ my Str $p6-parentlib-name;
 my Str $p6-parentclass-name;
 
 my Str ( $section-doc, $short-description, $see-also);
-my Str $signal-doc;
+my Str ( $signal-doc, $property-doc);
 
 my @gtkdirlist = ();
 my @gdkdirlist = ();
@@ -41,6 +41,7 @@ sub MAIN ( Str:D $base-name ) {
       get-section($source-content);
 
     $signal-doc = get-signals($source-content);
+    $property-doc = get-properties($source-content);
 
     my Str $module-text = substitute-in-template();
     say $module-text;
@@ -123,7 +124,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
     if ?$return-type {
       $pod-returns = " --> $p6-return-type ";
       $returns = "\n  returns $return-type";
-      $pod-doc-return = "Returns $return-type; $return-src-doc";
+      $pod-doc-return = "\nReturns $return-type; $return-src-doc";
     }
 
     my $pod-sub-name = pod-sub-name($sub-name);
@@ -134,7 +135,6 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
       =head2 $pod-sub-name
 
       $sub-doc
-
         method $sub-name ($pod-args$pod-returns)
 
       $pod-doc-items$pod-doc-return
@@ -162,7 +162,7 @@ sub parent-class ( Str:D $include-content --> List ) {
     \s+ 'parent_class'
   /;
 
-  my Str $p6-lib-parentclass = ~$<lib-parent> // '';
+  my Str $p6-lib-parentclass = ~($<lib-parent> // '');
   my Str $p6-parentlib-name = '';
   given $p6-lib-parentclass {
     when /^ Gtk / {
@@ -383,8 +383,14 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'Gnome::LIBRARYMODULE'
                        /Gnome::{$p6-lib-name}::{$p6-class-name}/;
 
-  $template-text ~~ s:g/ 'Gnome::LIBRARYPARENT'
-                       /Gnome::{$p6-parentlib-name}::{$p6-parentclass-name}/;
+  my Str ( $t1, $t2) = ( '', '');
+  if $p6-parentlib-name and $p6-parentclass-name {
+    $t1 = "use Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
+    $t2 = "also is Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
+  }
+
+  $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
+  $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
   $template-text ~~ s:g/ 'BASE_SUBNAME' /$base-sub-name/;
   $template-text ~~ s:g/ 'SUB_DECLARATIONS' /$sub-declarations/;
@@ -394,6 +400,7 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
 
   $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
+  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
 
   $template-text
 }
@@ -407,36 +414,8 @@ sub get-src-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
   my Str $doc = ~$<sub-doc>;
 
-  loop {
-    $doc ~~ m/ ^^ \s+ '*' \s+ '@' <alnum>+ ':' $<item-doc> = [ .*? ] $$ /;
-    my Str $item = ~($<item-doc> // '');
-#    note "doc '$doc'";
-#    note "item doc '$sub-name': ", $item;
-    last unless ?$item;
-    $doc ~~ s/ '*' \s+ '@' <alnum>+ ':' $item //;
-
-#    note "item doc 0 '$sub-name': ", $item;
-    $item ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $item ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
-#    note "item doc 1 '$sub-name': ", $item;
-
-    $items-src-doc.push($item);
-  }
-
-  $doc ~~ m/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] $$ /;
-  $return-src-doc = ~($<return-doc> // '');
-  $return-src-doc ~~ s/ '%TRUE' /1/;            # booleans are integers
-  $return-src-doc ~~ s/ '%FALSE' /0/;
-
-  # remove 'Returns: doc'
-  $doc ~~ s/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] \n //;
-  #$doc ~~ s:g/ ^^ \s+ '*' \s* \n //;            # Empty lines
-  $doc ~~ s/ ^^ \s+ '*' \s+ Since: .* \n //;    # Since: version
-  $doc ~~ s/ ^^ \s+ '*/' .* $ //;               # Doc end
-  $doc ~~ s:g/ ^^ \s+ '*' \s* //;               # Leading star
-
+  $doc = primary-doc-changes($doc);
+#`{{
   loop {
 #note "doc 0: ", $doc;
     $doc ~~ m/ '#' (<alnum>+) /;
@@ -447,6 +426,35 @@ sub get-src-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
     $doc ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
 #note "doc 1: ", $doc;
   }
+}}
+
+  loop {
+    $doc ~~ m/ ^^ \s+ '*' \s+ '@' <alnum>+ ':' $<item-doc> = [ .*? ] $$ /;
+    my Str $item = ~($<item-doc> // '');
+#    note "doc '$doc'";
+#    note "item doc '$sub-name': ", $item;
+    last unless ?$item;
+    $doc ~~ s/ '*' \s+ '@' <alnum>+ ':' $item //;
+#`{{
+#    note "item doc 0 '$sub-name': ", $item;
+    $item ~~ m/ '#' (<alnum>+) /;
+    my Str $oct = ~($/[0] // '');
+    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
+    $item ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
+#    note "item doc 1 '$sub-name': ", $item;
+}}
+    $items-src-doc.push($item);
+  }
+
+  $doc ~~ m/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] $$ /;
+  $return-src-doc = ~($<return-doc> // '');
+  #$return-src-doc = modify-true-false($return-src-doc);
+  #$return-src-doc ~~ s/ '%TRUE' /1/;            # booleans are integers
+  #$return-src-doc ~~ s/ '%FALSE' /0/;
+
+  # remove 'Returns: doc'
+  $doc ~~ s/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] \n //;
+  $doc = cleanup-source-doc($doc);
 
 #note "Doc: $doc";
   ( ~$doc, $return-src-doc, $items-src-doc)
@@ -457,17 +465,8 @@ sub get-section ( Str:D $source-content --> List ) {
 
   $source-content ~~ m/ '/**' .*? SECTION ':' .*? '*/' /;
   my Str $section-doc = ~$/;
-  loop {
-    $section-doc ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    last unless ?$oct;
 
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $section-doc ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
-  }
-
-  # convert a few without leading octagon (#)
-  $section-doc ~~ s:g/ ('Gtk' || 'Gdk') (\D <alnum>+) /C<Gnome::$/[0]3::$/[1]>/;
+  $section-doc = primary-doc-changes($section-doc);
 
   $section-doc ~~ m/
       ^^ \s+ '*' \s+ '@Short_description:' \s* $<text> = [.*?] $$
@@ -482,13 +481,7 @@ sub get-section ( Str:D $source-content --> List ) {
   # cleanup rest
   $section-doc ~~ s/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
   $section-doc ~~ s/ ^^ \s+ '*' \s+ '@Title:' [.*?] \n //;
-
-#note "doc 0: ", $section-doc;
-
-  $section-doc ~~ s:g/ ^^ \s+ '*' \s* \n //;            # Empty lines
-  $section-doc ~~ s/ ^^ '/**' .*? \n //;                # Doc start
-  $section-doc ~~ s/ ^^ \s+ '*/' .* $ //;               # Doc end
-  $section-doc ~~ s:g/ ^^ \s+ '*' \s* //;               # Leading star
+  $section-doc = cleanup-source-doc($section-doc);
   $section-doc ~~ s:g/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
 #note "doc 2: ", $section-doc;
 
@@ -497,8 +490,6 @@ sub get-section ( Str:D $source-content --> List ) {
 
 #-------------------------------------------------------------------------------
 sub get-signals ( Str:D $source-content is copy --> Str ) {
-
-note "LCN: $lib-class-name";
 
   my Array $items-src-doc;
   my Str $signal-name;
@@ -520,28 +511,7 @@ note "LCN: $lib-class-name";
 
 #note "Signal doc:\n", $sdoc;
 
-    # change any #GtkClass to C<Gnome::Gtk::Class>
-    loop {
-      $sdoc ~~ m/ '#' (<alnum>+) /;
-      my Str $oct = ~($/[0] // '');
-      last unless ?$oct;
-
-      $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-      $sdoc ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
-    }
-
-    # change any ::signal to C<signal>
-    loop {
-      last unless $sdoc ~~ m/ \s '::' [<alnum> || '-']+ /;
-      $sdoc ~~ s/ \s '::' ([<alnum> || '-']+) / C<$/[0]>/;
-    }
-
-    # change any function() to C<function()>
-#    loop {
-#      last unless $signal-doc ~~ m/ <!after 'C<'> [<alnum>+ '()'] /;
-#      $signal-doc ~~ s/ <!after 'C<'> (<alnum>+ '()') /C<$/[0]>/;
-#note $signal-doc;
-#    }
+    $sdoc = primary-doc-changes($sdoc);
 
     $sdoc ~~ m/
       ^^ \s+ '*' \s+ $lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
@@ -582,13 +552,7 @@ note "LCN: $lib-class-name";
 #note "item doc 2: ", $sdoc;
 
     # cleanup info
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? $$ //;
-
-    $sdoc ~~ s/ ^^ '/**' .*? \n //;                 # Doc start
-    $sdoc ~~ s/ ^^ \s+ '*/' .* $ //;                # Doc end
-    #$sdoc ~~ s:g/ ^^ \s+ '*' \s* \n //;            # Empty lines
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;    # Since: version
-    $sdoc ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/; # Leading star
+    $sdoc = cleanup-source-doc($sdoc);
 
 #note "item doc 3: ", $sdoc;
 
@@ -598,7 +562,16 @@ note "LCN: $lib-class-name";
     my Str $type;
     for @$items-src-doc -> $idoc {
       $type = '';
-      $signal-doc ~= ":\$$idoc<item-name>, ";
+      if $count == 0 and $idoc<item-name> ~~ any(<widget object>) {
+        $type = 'Gnome::GObject::Object ';
+      }
+
+      elsif $count == 1 and $idoc<item-name> eq 'event' {
+        $type = 'GdkEvent';
+      }
+
+      $signal-doc ~= "$type:\$$idoc<item-name>, ";
+      $count++;
     }
 
     $signal-doc ~= "\n    :\$user-option1, ..., \$user-optionN\n  );\n\n";
@@ -609,4 +582,157 @@ note "LCN: $lib-class-name";
   }
 
   $signal-doc
+}
+
+#-------------------------------------------------------------------------------
+sub get-properties ( Str:D $source-content is copy --> Str ) {
+
+  my Str $property-name;
+  my Str $property-doc = '';
+
+  loop {
+    $property-name = '';
+
+    $source-content ~~ m/
+      $<property-doc> = [ '/**' \s+ '*' \s+
+      $lib-class-name ':' <-[:]> .*? '*/' ]
+    /;
+    my Str $sdoc = ~($<property-doc> // '');
+#note "Sdoc: $sdoc";
+    last unless ?$sdoc;
+    # remove from source
+    $source-content ~~ s/$sdoc//;
+
+    # skip deprecated properties
+    next if $sdoc ~~ m/ '*' \s+ 'Deprecated:' /;
+
+    unless ?$property-doc {
+      $property-doc ~= Q:to/EODOC/;
+        #TODO Must add type info
+        =begin pod
+        =head1 Properties
+
+        An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
+
+          my Gnome::Gtk3::Label $label .= new(:empty);
+          my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+          $label.g-object-get-property( 'label', $gv);
+          $gv.g-value-set-string('my text label');
+
+        EODOC
+    }
+#note "Property doc:\n", $sdoc;
+
+    $sdoc ~~ m/
+      ^^ \s+ '*' \s+ $lib-class-name ':'
+      $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
+    /;
+    $property-name = ~($<prop-name> // '');
+    $property-doc ~= "\n=head2 $property-name";
+#note "RD: $property-name";
+
+    # change any #GtkClass to C<Gnome::Gtk::Class> and cleanup
+    $sdoc = cleanup-source-doc($sdoc);
+    $sdoc = primary-doc-changes($sdoc);
+
+    # cleanup info
+
+#note "item doc 3: ", $sdoc;
+
+    $property-doc ~= "\n$sdoc\n";
+  }
+
+  $property-doc ~ "=end pod\n"
+}
+
+#-------------------------------------------------------------------------------
+sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
+
+  # remove property and signal line
+  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? $$ //;
+  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? $$ //;
+
+  $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
+  $text ~~ s/ ^^ \s+ '*/' .* $ //;                  # Doc end
+  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
+  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
+  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
+  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;               # Empty lines
+
+  $text ~ "\n"
+}
+
+#-------------------------------------------------------------------------------
+sub primary-doc-changes ( Str:D $text is copy --> Str ) {
+
+  $text = podding-class($text);
+  $text = podding-property($text);
+  $text = podding-function($text);
+  $text = modify-true-false($text);
+}
+
+#-------------------------------------------------------------------------------
+# change any #GtkClass to C<Gnome::Gtk::Class> and Gdk likewise
+sub podding-class ( Str:D $text is copy --> Str ) {
+
+  loop {
+    $text ~~ m/ '#' (<alnum>+) /;
+    my Str $oct = ~($/[0] // '');
+    last unless ?$oct;
+
+    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
+    $text ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
+  }
+
+  # convert a few without leading octagon (#)
+  $text ~~ s:g/ ('Gtk' || 'Gdk') (\D <alnum>+) /C<Gnome::$/[0]3::$/[1]>/;
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any ::signal to C<signal>
+sub podding-signal ( Str:D $text is copy --> Str ) {
+
+  loop {
+    last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / C<$/[0]>/;
+  }
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any :property to C<property>
+sub podding-property ( Str:D $text is copy --> Str ) {
+
+  loop {
+    last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / C<$/[0]>/;
+  }
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any function() C<function()>
+sub podding-function ( Str:D $text is copy --> Str ) {
+
+    # change any function() to C<function()>
+#    loop {
+#      last unless $text ~~ m/ <!after 'C<'> [<alnum>+ '()'] /;
+#      $text ~~ s/ <!after 'C<'> (<alnum>+ '()') /C<$/[0]>/;
+#note $text;
+#    }
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any function() C<function()>
+sub modify-true-false ( Str:D $text is copy --> Str ) {
+  $text ~~ s/ '%TRUE' /1/;
+  $text ~~ s/ '%FALSE' /0/;
+
+  $text
 }
