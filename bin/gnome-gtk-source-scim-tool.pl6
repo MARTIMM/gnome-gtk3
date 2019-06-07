@@ -594,7 +594,10 @@ note "LCN: $lib-class-name";
 
     $signal-doc ~= "\n{$sdoc}  method handler (\n    ";
 
+    my Int $count = 0;
+    my Str $type;
     for @$items-src-doc -> $idoc {
+      $type = '';
       $signal-doc ~= ":\$$idoc<item-name>, ";
     }
 
