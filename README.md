@@ -172,7 +172,9 @@ A few measures are implemented to help a bit preventing problems;
 | [Gnome::Gtk3::CheckButton][Gnome::Gtk3::CheckButton pdf] |  [GtkCheckButton.html][GtkCheckButton]
 | [Gnome::Gtk3::ComboBox][Gnome::Gtk3::ComboBox pdf] |  [GtkComboBox.html][GtkComboBox]
 | [Gnome::Gtk3::ComboBoxText][Gnome::Gtk3::ComboBoxText pdf] |  [GtkComboBoxText.html][GtkComboBoxText]
-| Gnome::Gtk3::ColorButton |  [GtkColorButton.html][GtkColorButton]
+| [Gnome::Gtk3::ColorButton][Gnome::Gtk3::ColorButton pdf] |  [GtkColorButton.html][GtkColorButton]
+| [Gnome::Gtk3::ColorChooser][Gnome::Gtk3::ColorChooser pdf] |  [GtkColorChooser.html][GtkColorChooser]
+| [Gnome::Gtk3::ColorChooserDialog][Gnome::Gtk3::ColorChooserDialog pdf] |  [GtkColorChooserDialog.html][GtkColorChooserDialog]
 | Gnome::Gtk3::Container |  [GtkContainer.html][GtkContainer]
 | Gnome::Gtk3::CssProvider |  [GtkCssProvider.html][GtkCssProvider]
 | Gnome::Gtk3::StyleContext |  [GtkStyleContext.html][GtkStyleContext]
@@ -255,6 +257,8 @@ Github account name: **MARTIMM**
 [GtkComboBox]: https://developer.gnome.org/gtk3/stable/GtkComboBox.html
 [GtkComboBoxText]: https://developer.gnome.org/gtk3/stable/GtkComboBoxText.html
 [GtkColorButton]: https://developer.gnome.org/gtk3/stable/GtkColorButton.html
+[GtkColorChooser]: https://developer.gnome.org/gtk3/stable/GtkColorChooser.html
+[GtkColorChooserDialog]: https://developer.gnome.org/gtk3/stable/GtkColorChooserDialog.html
 [GtkContainer]: https://developer.gnome.org/gtk3/stable/GtkContainer.html
 [GtkCssProvider]: https://developer.gnome.org/gtk3/stable/GtkCssProvider.html
 [GtkDialog]: https://developer.gnome.org/gtk3/stable/GtkDialog.html
@@ -295,6 +299,8 @@ Github account name: **MARTIMM**
 [Gnome::Gtk3::Button pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/Button.pdf
 [Gnome::Gtk3::CheckButton html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/CheckButton.html
 [Gnome::Gtk3::CheckButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/CheckButton.pdf
+[Gnome::Gtk3::ColorButton pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ColorButton.pdf
+[Gnome::Gtk3::ColorChooserDialog pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ColorChooserDialog.pdf
 [Gnome::Gtk3::ComboBox html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBox.html
 [Gnome::Gtk3::ComboBox pdf]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBox.pdf
 [Gnome::Gtk3::ComboBoxText html]: https://nbviewer.jupyter.org/github/MARTIMM/perl6-gnome-gtk3/blob/master/doc/ComboBoxText.html
