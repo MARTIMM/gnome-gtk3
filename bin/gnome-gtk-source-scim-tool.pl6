@@ -73,14 +73,14 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
     $declaration ~~ s/^ 'GDK_AVAILABLE_IN_' .*?  \n //;
     $declaration ~~ s:g/ \s* \n \s* //;
     $declaration ~~ s:g/ \s+ / /;
-note "\n0 >> $declaration";
+#note "\n0 >> $declaration";
 
     my Str ( $return-type, $p6-return-type) = ( '', '');
     my Bool $type-is-class;
     ( $declaration, $return-type, $p6-return-type, $type-is-class) =
       get-type($declaration);
 
-note "1 >> $declaration";
+#note "1 >> $declaration";
     $declaration ~~ m/ $<sub-name> = [ [<alpha> || '_' || \d]+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
     $declaration ~~ s/ $sub-name \s* //;
@@ -97,8 +97,8 @@ note "1 >> $declaration";
       ( $arg, $arg-type, $p6-arg-type, $type-is-class) = get-type($raw-arg);
 
       if ?$arg {
-        my Str $pod-doc-item-doc = $items-src-doc.shift // '';
-#          if $items-src-doc.elems;
+        my Str $pod-doc-item-doc = $items-src-doc.shift // ''
+          if $items-src-doc.elems;
 
         # skip first argument when type is also the class name
         if $first-arg and $type-is-class {
@@ -418,8 +418,8 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   my Str $doc = ~$<sub-doc>;
 
   $doc = primary-doc-changes($doc);
-note $doc;
 
+#  ( $doc, $items-src-doc) = get-podding-items($doc);
   loop {
     $doc ~~ m/ ^^ \s+ '*' \s+ '@' <alnum>+ ':' $<item-doc> = [ .*? ] $$ /;
     my Str $item = ~($<item-doc> // '');
@@ -514,6 +514,7 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
 #note "SD: $signal-name, $signal-doc";
 
     # get arguments for this signal handler
+#    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
     loop {
       $sdoc ~~ m/
         ^^ \s+ '*' \s+ '@'
@@ -636,7 +637,6 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 
   $property-doc ~ "=end pod\n"
 }
-
 #-------------------------------------------------------------------------------
 sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 
@@ -680,6 +680,48 @@ sub podding-class ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ ('Gtk' || 'Gdk') (\D <alnum>+) /C<Gnome::$/[0]3::$/[1]>/;
 
   $text
+}
+
+
+#-------------------------------------------------------------------------------
+sub get-podding-items ( Str:D $text is copy --> List ) {
+
+  my Array $items-src-doc = [];
+
+  # get arguments for this signal handler
+  loop {
+    $text ~~ m/
+      ^^ \s+ '*' \s+ '@'
+      $<item-name> = [<alnum>+] ':'
+      \s* $<item-doc> = [ .*? ]
+      $$
+    /;
+
+    my Str $item-name = ~($<item-name> // '');
+    my Str $item-doc = ~($<item-doc> // '');
+
+#note "doc '$doc'";
+#note "item doc: ", $item;
+    last unless ?$item-name;
+
+    # remove from string
+    $text ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc \n //;
+#    $text ~~ s/ '*' \s+ '@' $item-name ':' $item-doc \n //;
+
+#note "item doc 0: ", $item;
+    $item-doc = podding-class($item-doc);
+#`{{
+    $item-doc ~~ m/ '#' (<alnum>+) /;
+    my Str $oct = ~($/[0] // '');
+    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
+    $item-doc ~~ s/ '#' (<alnum>+) /C\<$oct>/;
+}}
+#note "item doc 1: ", $item-doc;
+
+    $items-src-doc.push: %(:$item-name, :$item-doc);
+  }
+
+  ( $text, $items-src-doc)
 }
 
 #-------------------------------------------------------------------------------
