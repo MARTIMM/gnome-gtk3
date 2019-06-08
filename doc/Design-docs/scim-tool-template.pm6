@@ -18,7 +18,7 @@ MODULE-SEEALSO
 =head2 Declaration
 
   unit class Gnome::LIBRARYMODULE;
-  also is Gnome::LIBRARYPARENT;
+  ALSO-IS-LIBRARY-PARENT
 
 =head2 Example
 
@@ -47,8 +47,11 @@ my Bool $signals-added = False;
 =head2 new
 
 ...
+  multi method new ( Bool :$empty! )
 
-  multi method new ( :$widget! )
+Create a new object.
+
+  multi method new ( Gnome::GObject::Object :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
@@ -60,6 +63,8 @@ Create an object using a native object from a builder. See also C<Gnome::GObject
 
 submethod BUILD ( *%options ) {
 
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
     ... :type<signame>
   ) unless $signals-added;
@@ -67,12 +72,13 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::LIBRARYMODULE';
 
+  # process all named arguments
   if ? %options<empty> {
-    # ... self.native-gobject(gtk__dialog_new());
+    self.native-gobject(gtk__new());
   }
 
   elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
+    # provided in Gnome::GObject::Object
   }
 
   elsif %options.keys.elems {
