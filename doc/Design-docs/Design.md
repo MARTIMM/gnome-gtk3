@@ -46,25 +46,25 @@ scale 0.7
 title GTK Class hierary
 * GObject
  * GInitiallyUnowned
-  * GtkWidget
-   * GtkMisc
-    * GtkEntry
-    * GtkImage
-    * GtkLabel
-   * GtkLevelBar
-   * GtkContainer
+  * Gtk3::Widget
+   * Gtk3::Misc
+    * Gtk3::Entry
+    * Gtk3::Image
+    * Gtk3::Label
+   * Gtk3::LevelBar
+   * Gtk3::Container
     * ...
 
-  * GtkFileFilter
+  * Gtk3::FileFilter
 
- * GdkScreen
- * GdkWindow
- * GdkDisplay
- * GdkDevice
+ * Gdk3::Screen
+ * Gdk3::Window
+ * Gdk3::Display
+ * Gdk3::Device
 
- * GtkBuilder
- * GtkTextBuffer
- * GtkCssProvider
+ * Gtk3::Builder
+ * Gtk3::TextBuffer
+ * Gtk3::CssProvider
 @endmindmap
 ```
 
@@ -72,26 +72,26 @@ title GTK Class hierary
 @startmindmap
 scale 0.7
 
-title GTK Class hierary at GtkContainer
+title GTK Class hierary at Gtk3::Container
 
-* GtkContainer
- * GtkBin
-  * GtkButton
-   * GtkToggleButton
-    * GtkCheckButton
-     * GtkRadioButton
-   * ColorButton
+* Gtk3::Container
+ * Gtk3::Bin
+  * Gtk3::Button
+   * Gtk3::ToggleButton
+    * Gtk3::CheckButton
+     * Gtk3::RadioButton
+   * Gtk3::ColorButton
 
-  * GtkWindow
-   * GtkDialog
-    * GtkAboutDialog
-    * GtkFileChooserDialog
+  * Gtk3::Window
+   * Gtk3::Dialog
+    * Gtk3::AboutDialog
+    * Gtk3::FileChooserDialog
 
-  * GtkMenuItem
-   * GtkImageMenuItem
+  * Gtk3::MenuItem
+   * Gtk3::ImageMenuItem
 
- * GtkTextView
- * GtkPaned
+ * Gtk3::TextView
+ * Gtk3::Paned
 @endmindmap
 ```
 
@@ -100,9 +100,10 @@ title GTK Class hierary at GtkContainer
 @startmindmap
 scale 0.7
 title Interface classes
-* GInterface
- * GtkFileChooser
- * GtkOrientable
+* GObject::Interface
+ * Gtk3::FileChooser
+ * Gtk3::Orientable
+ * Gtk3::ColorChooser
 
 @endmindmap
 ```
@@ -111,9 +112,9 @@ title Interface classes
 @startmindmap
 scale 0.7
 title Wrapped structure classes
-* GBoxed
- * GValue
- * GtkTextIter
+* GObject::Boxed
+ * GObject::Value
+ * Gtk3::TextIter
 
 @endmindmap
 ```
@@ -127,13 +128,13 @@ title Standalone classes
 
 class X
 
-class GMain
-class GList
-class GSList
-class GType
-class GSignal
+class GLib::Main
+class GLib::List
+class GLib::SList
+class GObject::Type
+class GObject::Signal
 
-class GtkMain
+class Gtk3::Main
 ```
 -->
 
@@ -153,11 +154,11 @@ class GObject {
 class GSignal {
 }
 
-class GtkBuilder {
+class Gtk3::Builder {
 }
 
 GObject *--> GSignal
-GObject *--> GtkBuilder
+GObject *--> Gtk3::Builder
 
 ```
 
@@ -170,37 +171,38 @@ hide circle
 
 'class Gui
 'class GSignal
-'GSignal <|-- GtkWidget
+'GSignal <|-- Gtk3::Widget
 'X <-* Gui
 
 
-GtkBin <|-- GtkButton
-GtkButton <|-- GtkToggleButton
-GtkToggleButton <|-- GtkCheckButton
-GtkCheckButton <|-- GtkRadioButton
+Gtk3::Bin <|-- Gtk3::Button
+Gtk3::Button <|-- Gtk3::ToggleButton
+Gtk3::ToggleButton <|-- Gtk3::CheckButton
+Gtk3::CheckButton <|-- Gtk3::RadioButton
 
-GtkBin <|-- GtkWindow
-GtkWindow <|-- GtkDialog
-GtkDialog <|-- GtkAboutDialog
-GtkDialog <|-- GtkFileChooserDialog
+Gtk3::Bin <|-- Gtk3::Window
+Gtk3::Window <|-- Gtk3::Dialog
+Gtk3::Dialog <|-- Gtk3::AboutDialog
+Gtk3::Dialog <|-- Gtk3::FileChooserDialog
 
-GtkWidget <|-- GtkLabel
-GtkWidget <|-- GtkEntry
+Gtk3::Widget <|-- Gtk3::Label
+Gtk3::Widget <|-- Gtk3::Entry
 
-GtkContainer <|-- GtkBin
-GtkContainer <|-- GtkTextView
-GtkWidget <|-- GtkContainer
+Gtk3::Container <|-- Gtk3::Bin
+Gtk3::Container <|-- Gtk3::TextView
+Gtk3::Widget <|-- Gtk3::Container
 
-GInitiallyUnowned <|-- GtkWidget
+GInitiallyUnowned <|-- Gtk3::Widget
 GObject <|-- GInitiallyUnowned
 
-GtkBin <|-- GtkMenuItem
-GtkMenuItem <|-- GtkImageMenuItem
+Gtk3::Bin <|-- Gtk3::MenuItem
+Gtk3::MenuItem <|-- Gtk3::ImageMenuItem
 
-GInitiallyUnowned <|-- GtkFileFilter
+GInitiallyUnowned <|-- Gtk3::FileFilter
 
 ```
 -->
+
 # Notes
 
 * Sometimes I had to stray away from the native function names because of the way one has to define it in perl6. This is caused by the possibility of returning or specifying different types of values depending on how the function is used. E.g. `g_slist_nth_data()` can return several types of data. This is solved using several subs linking to the same native sub. In this library, the methods `g_slist_nth_data_str()` and `g_slist_nth_data_gobject()` are created. This can be extended for integers, reals and other types.
