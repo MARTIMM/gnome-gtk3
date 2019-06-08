@@ -60,31 +60,34 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
 
-  $include-content ~~ m:g:s/^^ GDK_AVAILABLE_IN_ALL <-[;]>+ ';'/;
+#note "IC: $include-content";
+  $include-content ~~ m:g/^^ 'GDK_AVAILABLE_IN_' <-[;]>+ ';'/;
   my List $results = $/[*];
 
   for @$results -> $r {
-    my Str $declaration = ~$r;
-    next if $declaration ~~ m:s/ G_GNUC_CONST ';' /;
+#note "\n\$$r >> $r";
 
-    $declaration ~~ s:s/^ GDK_AVAILABLE_IN_ALL \n? //;
+    my Str $declaration = ~$r;
+    next if $declaration ~~ m/ 'G_GNUC_CONST' ';' /;
+
+    $declaration ~~ s/^ 'GDK_AVAILABLE_IN_' .*?  \n //;
     $declaration ~~ s:g/ \s* \n \s* //;
     $declaration ~~ s:g/ \s+ / /;
-#    note "\n0 >> $declaration";
+note "\n0 >> $declaration";
 
     my Str ( $return-type, $p6-return-type) = ( '', '');
     my Bool $type-is-class;
     ( $declaration, $return-type, $p6-return-type, $type-is-class) =
       get-type($declaration);
 
-#    note "1 >> $declaration";
+note "1 >> $declaration";
     $declaration ~~ m/ $<sub-name> = [ [<alpha> || '_' || \d]+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
     $declaration ~~ s/ $sub-name \s* //;
     $declaration ~~ s:g/ <[();]> || 'void' //;
 
     ( $sub-doc, $return-src-doc, $items-src-doc) =
-      get-src-doc( $sub-name, $source-content);
+      get-sub-doc( $sub-name, $source-content);
 
     my Str $args-declaration = $declaration;
     my Str ( $pod-args, $args, $pod-doc-items) = ( '', '', '');
@@ -406,7 +409,7 @@ sub substitute-in-template ( --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-src-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
+sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
   my Str $return-src-doc = '';
   my Array $items-src-doc = [];
@@ -415,18 +418,7 @@ sub get-src-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   my Str $doc = ~$<sub-doc>;
 
   $doc = primary-doc-changes($doc);
-#`{{
-  loop {
-#note "doc 0: ", $doc;
-    $doc ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    last unless ?$oct;
-
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $doc ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
-#note "doc 1: ", $doc;
-  }
-}}
+note $doc;
 
   loop {
     $doc ~~ m/ ^^ \s+ '*' \s+ '@' <alnum>+ ':' $<item-doc> = [ .*? ] $$ /;
@@ -448,7 +440,7 @@ sub get-src-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
   $doc ~~ m/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] $$ /;
   $return-src-doc = ~($<return-doc> // '');
-  #$return-src-doc = modify-true-false($return-src-doc);
+  #$return-src-doc = modify-percent-vars($return-src-doc);
   #$return-src-doc ~~ s/ '%TRUE' /1/;            # booleans are integers
   #$return-src-doc ~~ s/ '%FALSE' /0/;
 
@@ -668,7 +660,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
   $text = podding-class($text);
   $text = podding-property($text);
   $text = podding-function($text);
-  $text = modify-true-false($text);
+  $text = modify-percent-vars($text);
 }
 
 #-------------------------------------------------------------------------------
@@ -730,9 +722,10 @@ sub podding-function ( Str:D $text is copy --> Str ) {
 
 #-------------------------------------------------------------------------------
 # change any function() C<function()>
-sub modify-true-false ( Str:D $text is copy --> Str ) {
+sub modify-percent-vars ( Str:D $text is copy --> Str ) {
   $text ~~ s/ '%TRUE' /1/;
   $text ~~ s/ '%FALSE' /0/;
+  $text ~~ s/ '%NILL' /Any/;
 
   $text
 }
