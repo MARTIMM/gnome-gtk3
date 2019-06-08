@@ -11,7 +11,7 @@ use v6;
 
 The C<Gnome::Gtk3::ColorButton> is a button which displays the currently selected
 color and allows to open a color selection dialog to change the color.
-It is suitable widget for selecting a color in a preference dialog.
+It is a suitable widget for selecting a color in a preference dialog.
 
 
 =head2 Css Nodes
@@ -30,9 +30,15 @@ C<Gnome::Gtk3::ColorSelectionDialog>, C<Gnome::Gtk3::FontButton>
 =head2 Declaration
 
   unit class Gnome::Gtk3::ColorButton;
-  also is Gnome::LIBRARYPARENT;
+  also is Gnome::Gtk3::Button;
 
 =head2 Example
+
+  my GdkRGBA $color .= new(
+    :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)
+  );
+  my Gnome::Gtk3::ColorButton $color-button .= new(:$color));
+
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -58,9 +64,15 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-...
+  multi method_new ( Bool :$empty! )
 
-  multi method new ( :$widget! )
+Create a color button with current selected color
+
+  multi method_new ( GdkRGBA :$color! )
+
+Create a color button with a new color
+
+  multi method new ( Gnome::GObject::Object :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
@@ -72,19 +84,26 @@ Create an object using a native object from a builder. See also C<Gnome::GObject
 
 submethod BUILD ( *%options ) {
 
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc.
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    ... :type<signame>
+    :signal<color-set>
   ) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::ColorButton';
 
+  # process all named arguments
   if ? %options<empty> {
-    # ... self.native-gobject(gtk__dialog_new());
+    self.native-gobject(gtk_color_button_new());
+  }
+
+  elsif ? %options<color> {
+    self.native-gobject(gtk_color_button_new_with_rgba(%options<color>));
   }
 
   elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
+    # provided in Gnome::GObject::Object
   }
 
   elsif %options.keys.elems {
@@ -115,7 +134,6 @@ method fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 gtk_color_button_new
 
-
 Creates a new color button.
 
 This returns a widget in the form of a small button containing
@@ -124,11 +142,7 @@ is clicked, a color-selection dialog will open, allowing the user
 to select a color. The swatch will be updated to reflect the new
 color when the user finishes.
 
-
-
-
   method gtk_color_button_new ( --> N-GObject )
-
 
 Returns N-GObject; a new color button
 =end pod
@@ -142,20 +156,16 @@ sub gtk_color_button_new (  )
 =begin pod
 =head2 [gtk_color_button_] new_with_rgba
 
-
 Creates a new color button.
-
-
-
 
   method gtk_color_button_new_with_rgba ( N-GObject $rgba --> N-GObject )
 
-=item N-GObject $rgba;  A C<Gnome::Gdk3::RGBA> to set the current color with
+=item GdkRGBA $rgba; A C<GdkRGBA> from C<Gnome::Gdk3::RGBA> to set the current color with.
 
 Returns N-GObject; a new color button
 =end pod
 
-sub gtk_color_button_new_with_rgba (  N-GObject $rgba )
+sub gtk_color_button_new_with_rgba ( GdkRGBA $rgba )
   returns N-GObject
   is native(&gtk-lib)
   { * }
@@ -166,8 +176,6 @@ sub gtk_color_button_new_with_rgba (  N-GObject $rgba )
 
 
 Sets the title for the color selection dialog.
-
-
 
   method gtk_color_button_set_title ( Str $title)
 
@@ -183,14 +191,9 @@ sub gtk_color_button_set_title (  N-GObject $button,  str $title )
 =begin pod
 =head2 [gtk_color_button_] get_title
 
-
 Gets the title of the color selection dialog.
 
-
-
-
   method gtk_color_button_get_title ( --> Str )
-
 
 Returns str; An internal string, do not free the return value
 =end pod
@@ -213,36 +216,23 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-
 =head2 use-alpha
 
 If this property is set to 1, the color swatch on the button is
 rendered against a checkerboard background to show its opacity and
 the opacity slider is displayed in the color selection dialog.
 
-
-
-
 =head2 title
 
 The title of the color selection dialog
-
-
-
 
 =head2 alpha
 
 The selected opacity value (0 fully transparent, 65535 fully opaque).
 
-
-
-
 =head2 rgba
 
 The RGBA color.
-
-
-
 
 =head2 show-editor
 
@@ -253,10 +243,7 @@ This property should be used in cases where the palette
 in the editor would be redundant, such as when the color
 button is already part of a palette.
 
-
-
 =end pod
-
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -281,20 +268,15 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
 
 =begin comment
 
-=head2 Supported signals
-
 =head2 Unsupported signals
 
+=head2 Not yet supported signals
 =end comment
 
+=head2 Supported signals
+=head3 color-set
 
-=head2 Not yet supported signals
-
-
-=head3
-C<Gnome::Gtk3::ColorButton>::color-set:
-
-The ::color-set signal is emitted when the user selects a color.
+The C<color-set> signal is emitted when the user selects a color.
 When handling this signal, use gtk_color_button_get_rgba() to
 find out which color was just selected.
 
@@ -309,8 +291,6 @@ as well, use the notify::color signal.
   );
 
 =item $widget; the object which received the signal.
-
-
 
 =begin comment
 
@@ -335,7 +315,6 @@ as well, use the notify::color signal.
   )
 
 =end comment
-
 
 =begin comment
 
