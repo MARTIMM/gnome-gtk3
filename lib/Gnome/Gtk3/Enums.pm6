@@ -37,6 +37,44 @@ enum GtkLevelBarMode is export <
 
 #-------------------------------------------------------------------------------
 =begin pod
+=head2 GtkBaselinePosition
+
+Whenever a container has some form of natural row it may align
+*hildren in that row along a common typographical baseline. If
+the amount of verical space in the row is taller than the total
+requested height of the baseline-aligned children then it can use a
+C<GtkBaselinePosition> to select where to put the baseline inside the
+extra availible space.
+
+=item GTK_BASELINE_POSITION_TOP; Align the baseline at the top
+=item GTK_BASELINE_POSITION_CENTER; Center the baseline
+=item GTK_BASELINE_POSITION_BOTTOM; Align the baseline at the bottom
+
+=end pod
+
+enum GtkBaselinePosition is export <
+  GTK_BASELINE_POSITION_TOP GTK_BASELINE_POSITION_CENTER
+  GTK_BASELINE_POSITION_BOTTOM
+>;
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 GtkPackType
+
+ Represents the packing location C<Gnome::Gtk3::Box> children. (See: C<Gnome::Gtk3::VBox>, C<Gnome::Gtk3::HBox> and C<Gnome::Gtk3::ButtonBox>.
+
+=item GTK_PACK_START; The child is packed into the start of the box
+=item GTK_PACK_END; The child is packed into the end of the box
+
+=end pod
+
+enum GtkPackType is export <
+  GTK_PACK_START GTK_PACK_END
+>;
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head2 GtkOrientation
 
 The orientation of the orientable.
