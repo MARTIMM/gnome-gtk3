@@ -31,7 +31,7 @@ C<Gnome::Gtk3::ColorChooserDialog>, C<Gnome::Gtk3::ColorChooserWidget>, C<Gnome:
     :title('my color dialog')
   );
 
-  # get color chooser widget
+  # get color chooser widget from widgets that implement the interface
   my Gnome::Gtk3::ColorChooser $cc .= new(:widget($ccdialog));
 
 =end pod
@@ -112,11 +112,11 @@ Gets the currently-selected color.
 
   method gtk_color_chooser_get_rgba ( N-GObject $color)
 
-=item N-GObject $color;  (out): a C<Gnome::Gdk3::RGBA> to fill in with the current color
+=item GdkRGBA $color;  (out): a C<Gnome::Gdk3::RGBA::GdkRGBA> structure to fill in with the current color
 
 =end pod
 
-sub gtk_color_chooser_get_rgba (  N-GObject $chooser,  GdkRGBA $color )
+sub gtk_color_chooser_get_rgba ( N-GObject $chooser, GdkRGBA:D $color )
   is native(&gtk-lib)
   { * }
 
@@ -128,11 +128,11 @@ Sets the color.
 
   method gtk_color_chooser_set_rgba ( N-GObject $color)
 
-=item N-GObject $color;  the new color
+=item GdkRGBA $color;  the new color
 
 =end pod
 
-sub gtk_color_chooser_set_rgba (  N-GObject $chooser,  GdkRGBA $color )
+sub gtk_color_chooser_set_rgba ( N-GObject $chooser, GdkRGBA:D $color )
   is native(&gtk-lib)
   { * }
 
@@ -147,7 +147,7 @@ Returns whether the color chooser shows the alpha channel.
 Returns Int; 1 if the color chooser uses the alpha channel, 0 if not.
 =end pod
 
-sub gtk_color_chooser_get_use_alpha (  N-GObject $chooser )
+sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -164,7 +164,7 @@ Sets whether or not the color chooser should use the alpha channel.
 
 =end pod
 
-sub gtk_color_chooser_set_use_alpha (  N-GObject $chooser,  int32 $use_alpha )
+sub gtk_color_chooser_set_use_alpha ( N-GObject $chooser, int32 $use_alpha )
   is native(&gtk-lib)
   { * }
 
@@ -195,13 +195,13 @@ If @colors is %NULL, removes all previously added palettes.
 =item GtkOrientation $orientation;  C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns
 =item Int $colors_per_line;  the number of colors to show in each row/column
 =item Int $n_colors;  the total number of elements in @colors
-=item GdkRGBA $colors; (allow-none) (array length=n_colors): the colors of the palette, or C<Any>.
+=item CArray[GdkRGBA] $colors; (allow-none) (array length=n_colors): the colors of the palette, or C<Any>.
 
 =end pod
 
 sub gtk_color_chooser_add_palette (
-  N-GObject $chooser,  int32 $orientation,  int32 $colors_per_line,
-  int32 $n_colors,  GdkRGBA $colors
+  N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
+  int32 $n_colors, CArray[GdkRGBA] $colors
 ) is native(&gtk-lib)
   { * }
 
