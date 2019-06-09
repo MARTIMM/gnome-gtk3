@@ -1,7 +1,8 @@
 ## Release notes
 
 * 2019-06-07 0.15.0
-  * Added Gnome::Gtk3::ColorChooserDialog, Gnome::Gtk3::ColorChooser
+  * Added Gnome::Gtk3::ColorChooserDialog, Gnome::Gtk3::ColorChooser, Gnome::Gtk3::ColorChooserWidget, Gnome::Gtk3::Box.
+  * Added new enums GtkBaselinePosition, GtkPackType
 
 * 2019-06-07 0.14.0
   * Added Gnome::Gtk3::ColorButton
