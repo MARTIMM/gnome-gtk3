@@ -169,12 +169,14 @@ A few measures are implemented to help a bit preventing problems;
 | [Gnome::Gtk3::Bin][Gnome::Gtk3::Bin pdf] | [GtkBin.html][GtkBin]
 | [Gnome::Gtk3::Builder][Gnome::Gtk3::Builder pdf] |  [GtkBuilder.html][GtkBuilder]
 | [Gnome::Gtk3::Button][Gnome::Gtk3::Button pdf] |  [GtkButton.html][GtkButton]
+| [Gnome::Gtk3::Box][Gnome::Gtk3::Box pdf] |  [GtkBox.html][GtkBox]
 | [Gnome::Gtk3::CheckButton][Gnome::Gtk3::CheckButton pdf] |  [GtkCheckButton.html][GtkCheckButton]
 | [Gnome::Gtk3::ComboBox][Gnome::Gtk3::ComboBox pdf] |  [GtkComboBox.html][GtkComboBox]
 | [Gnome::Gtk3::ComboBoxText][Gnome::Gtk3::ComboBoxText pdf] |  [GtkComboBoxText.html][GtkComboBoxText]
 | [Gnome::Gtk3::ColorButton][Gnome::Gtk3::ColorButton pdf] |  [GtkColorButton.html][GtkColorButton]
 | [Gnome::Gtk3::ColorChooser][Gnome::Gtk3::ColorChooser pdf] |  [GtkColorChooser.html][GtkColorChooser]
 | [Gnome::Gtk3::ColorChooserDialog][Gnome::Gtk3::ColorChooserDialog pdf] |  [GtkColorChooserDialog.html][GtkColorChooserDialog]
+| [Gnome::Gtk3::ColorChooserWidget][Gnome::Gtk3::ColorChooserWidget pdf] |  [GtkColorChooserWidget.html][GtkColorChooserWidget]
 | Gnome::Gtk3::Container |  [GtkContainer.html][GtkContainer]
 | Gnome::Gtk3::CssProvider |  [GtkCssProvider.html][GtkCssProvider]
 | Gnome::Gtk3::StyleContext |  [GtkStyleContext.html][GtkStyleContext]
@@ -252,6 +254,7 @@ Github account name: **MARTIMM**
 [GtkAboutDialog]: https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
 [GtkBin]: https://developer.gnome.org/gtk3/stable/GtkBin.html
 [GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
+[GtkBox]: https://developer.gnome.org/gtk3/stable/GtkBox.html
 [GtkButton]: https://developer.gnome.org/gtk3/stable/GtkButton.html
 [GtkCheckButton]: https://developer.gnome.org/gtk3/stable/GtkCheckButton.html
 [GtkComboBox]: https://developer.gnome.org/gtk3/stable/GtkComboBox.html
@@ -259,6 +262,7 @@ Github account name: **MARTIMM**
 [GtkColorButton]: https://developer.gnome.org/gtk3/stable/GtkColorButton.html
 [GtkColorChooser]: https://developer.gnome.org/gtk3/stable/GtkColorChooser.html
 [GtkColorChooserDialog]: https://developer.gnome.org/gtk3/stable/GtkColorChooserDialog.html
+[GtkColorChooserWidget]: https://developer.gnome.org/gtk3/stable/GtkColorChooserWidget.html
 [GtkContainer]: https://developer.gnome.org/gtk3/stable/GtkContainer.html
 [GtkCssProvider]: https://developer.gnome.org/gtk3/stable/GtkCssProvider.html
 [GtkDialog]: https://developer.gnome.org/gtk3/stable/GtkDialog.html
