@@ -112,7 +112,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
         }
 
         $args ~= ', ' if ?$args;
-        $args ~= " $arg-type \$$arg";
+        $args ~= "$arg-type \$$arg";
 
       }
     }
@@ -127,7 +127,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
     if ?$return-type {
       $pod-returns = " --> $p6-return-type ";
       $returns = "\n  returns $return-type";
-      $pod-doc-return = "\nReturns $return-type; $return-src-doc";
+      $pod-doc-return = "\nReturns $p6-return-type; $return-src-doc";
     }
 
     my $pod-sub-name = pod-sub-name($sub-name);
@@ -138,7 +138,8 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
       =head2 $pod-sub-name
 
       $sub-doc
-        method $sub-name ($pod-args$pod-returns)
+
+        method $sub-name ($pod-args$pod-returns )
 
       $pod-doc-items$pod-doc-return
       =end pod
@@ -187,8 +188,10 @@ sub parent-class ( Str:D $include-content --> List ) {
 # declaration. The type is cleaned up by removing 'const', 'void' and pointer(*)
 sub get-type( Str:D $declaration is copy --> List ) {
 
+#note "\nDeclaration: ", $declaration;
+
   $declaration ~~ m/ $<type> = [
-                     'const'? \s* <alnum>+ [ \s+ \* ]? \s*
+                     'const'? \s* <alnum>+ [ \s* \* ]? \s*
                      ]
                    /;
   my Str $type = ~($<type> // '');
@@ -197,6 +200,7 @@ sub get-type( Str:D $declaration is copy --> List ) {
   # convert a pointer char type before cleanup
   $type ~~ s/ 'gchar' \s+ '*' /str/;
 
+#note "Type: $type";
   # cleanup
   $type ~~ s:g/ ['const' || 'void' || '*'] //;
   $type ~~ s/ \s+ / /;
@@ -232,6 +236,11 @@ sub get-type( Str:D $declaration is copy --> List ) {
   $type ~~ s:s/ gfloat /num32/;
   $type ~~ s:s/ gdouble /num64/;
 
+  $type ~~ s:s/ GtkLevelBarMode || GtkBaselinePosition || GtkPackType ||
+                GtkOrientation || GtkPositionType || GtkTextDirection ||
+                GtkSensitivityType
+              /int32/;
+
   # convert to perl types
   #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
   $p6-type ~~ s/ str /Str/;
@@ -249,7 +258,7 @@ sub get-type( Str:D $declaration is copy --> List ) {
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
 
-#note "type: $type, p6 type: $p6-type";
+#note "type: $declaration, $type, p6 type: $p6-type, $type-is-class";
 
   ( $declaration, $type, $p6-type, $type-is-class)
 }
@@ -411,54 +420,94 @@ sub substitute-in-template ( --> Str ) {
 #-------------------------------------------------------------------------------
 sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
-  my Str $return-src-doc = '';
-  my Array $items-src-doc = [];
 
   $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
   my Str $doc = ~$<sub-doc>;
 
-  $doc = primary-doc-changes($doc);
+#  $doc = primary-doc-changes($doc);
 
-#  ( $doc, $items-src-doc) = get-podding-items($doc);
-  loop {
-    $doc ~~ m/ ^^ \s+ '*' \s+ '@' <alnum>+ ':' $<item-doc> = [ .*? ] $$ /;
-    my Str $item = ~($<item-doc> // '');
-#    note "doc '$doc'";
-#    note "item doc '$sub-name': ", $item;
-    last unless ?$item;
-    $doc ~~ s/ '*' \s+ '@' <alnum>+ ':' $item //;
-#`{{
-#    note "item doc 0 '$sub-name': ", $item;
-    $item ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $item ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
-#    note "item doc 1 '$sub-name': ", $item;
-}}
-    $items-src-doc.push($item);
+  my Array $items-src-doc = [];
+  my Bool ( $gather-sub-doc, $gather-items-doc, $gather-returns-doc) =
+          ( False, False, False);
+  my Str ( $item, $sub-doc, $return-src-doc) = ( '', '', '');
+  for $doc.lines -> $line {
+    #next if $line ~~ m/ '/**' /;
+    #next if $line ~~ m/ $sub-name ':' /;
+
+    if $line ~~ m/ ^ \s+ '* @' <alnum>+ ':' $<item-doc> = [ .* ] / {
+      # check if there was some item. if so save before set to new item
+      if $gather-items-doc {
+        $items-src-doc.push(primary-doc-changes($item));
+      }
+
+      else {
+        $gather-items-doc = True;
+      }
+
+      # new item. remove first space char
+      $item = ~($<item-doc> // '');
+      $item ~~ s/ ^ \s+ //;
+    }
+
+    elsif $line ~~ m/^ \s+ '* Returns:' $<doc> = [\w+ .* ] / {
+      $return-src-doc = ~($<doc> // '');
+
+      $gather-items-doc = False;
+      $gather-sub-doc = False;
+      $gather-returns-doc = True;
+    }
+
+    elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [\w+ .* ] / {
+      # additional doc for items. separate with a space.
+      if $gather-items-doc {
+        $item ~= ' ' ~ ~($<doc> // '');
+      }
+
+      # additional doc for sub. separate with a space. fisr char is a space
+      # and must be removed later
+      elsif $gather-sub-doc {
+        $sub-doc ~= ' ' ~ ~($<doc> // '');
+      }
+
+      # additional doc for return info. separate with a space. first char
+      # is a space and is used later.
+      elsif $gather-returns-doc {
+        $return-src-doc ~= ' ' ~ ~($<doc> // '');
+      }
+    }
+
+    # an empty line is end of items doc, returns foc or sub doc
+    elsif $line ~~ m/ ^ \s+ '*' \s* $ / {
+      if $gather-items-doc {
+        $items-src-doc.push(primary-doc-changes($item));
+        $gather-items-doc = False;
+        $gather-sub-doc = True;
+      }
+
+      elsif $gather-sub-doc {
+        $gather-sub-doc = False;
+      }
+
+      elsif $gather-returns-doc {
+        $gather-returns-doc = False;
+      }
+    }
   }
 
-  $doc ~~ m/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] $$ /;
-  $return-src-doc = ~($<return-doc> // '');
-  #$return-src-doc = modify-percent-vars($return-src-doc);
-  #$return-src-doc ~~ s/ '%TRUE' /1/;            # booleans are integers
-  #$return-src-doc ~~ s/ '%FALSE' /0/;
+  $sub-doc ~~ s/ ^ \s+ //;
 
-  # remove 'Returns: doc'
-  $doc ~~ s/ ^^ \s+ '*' \s+ 'Returns:' \s+ $<return-doc> = [ .*? ] \n //;
-  $doc = cleanup-source-doc($doc);
-
-#note "Doc: $doc";
-  ( ~$doc, $return-src-doc, $items-src-doc)
+  ( primary-doc-changes($sub-doc),
+    primary-doc-changes($return-src-doc),
+    $items-src-doc
+  )
 }
 
 #-------------------------------------------------------------------------------
+# get the class title and class info from the source file
 sub get-section ( Str:D $source-content --> List ) {
 
   $source-content ~~ m/ '/**' .*? SECTION ':' .*? '*/' /;
   my Str $section-doc = ~$/;
-
-  $section-doc = primary-doc-changes($section-doc);
 
   $section-doc ~~ m/
       ^^ \s+ '*' \s+ '@Short_description:' \s* $<text> = [.*?] $$
@@ -477,7 +526,10 @@ sub get-section ( Str:D $source-content --> List ) {
   $section-doc ~~ s:g/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
 #note "doc 2: ", $section-doc;
 
-  ( $section-doc, $short-description, $see-also)
+  ( primary-doc-changes($section-doc),
+    primary-doc-changes($short-description),
+    primary-doc-changes($see-also)
+  )
 }
 
 #-------------------------------------------------------------------------------
@@ -661,6 +713,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
   $text = podding-property($text);
   $text = podding-function($text);
   $text = modify-percent-vars($text);
+  $text = modify-at-vars($text);
 }
 
 #-------------------------------------------------------------------------------
@@ -767,7 +820,15 @@ sub podding-function ( Str:D $text is copy --> Str ) {
 sub modify-percent-vars ( Str:D $text is copy --> Str ) {
   $text ~~ s/ '%TRUE' /1/;
   $text ~~ s/ '%FALSE' /0/;
-  $text ~~ s/ '%NILL' /Any/;
+  $text ~~ s/ '%NULL' /Any/;
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any function() C<function()>
+sub modify-at-vars ( Str:D $text is copy --> Str ) {
+  $text ~~ s:g/ '@' (<alnum>+) /I<$/[0]>/;
 
   $text
 }
