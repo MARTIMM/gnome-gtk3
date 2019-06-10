@@ -195,15 +195,97 @@ If @colors is %NULL, removes all previously added palettes.
 =item GtkOrientation $orientation;  C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns
 =item Int $colors_per_line;  the number of colors to show in each row/column
 =item Int $n_colors;  the total number of elements in @colors
-=item CArray[GdkRGBA] $colors; (allow-none) (array length=n_colors): the colors of the palette, or C<Any>.
+=item CArray[num64] $colors; (allow-none) (array length=n_colors): the colors of the palette, or C<Any>.
+
+=head3 An Example
+According to the documentation, an array of GdkRGBA Structures should be given. Perl6 however, turns a CArray[GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either CArray[GdkRGBA] or CArray[num64] can be given. The latter one must always have elems % 4 == 0.
+
+  my $palette = CArray[num64].new(
+    .0e0, .0e0, .0e0, 1e0, # color1: red, green, blue, opacity
+    .1e0, .0e0, .0e0, 1e0, # color2: ...
+    .2e0, .0e0, .0e0, 1e0,
+    .3e0, .0e0, .0e0, 1e0,
+    .4e0, .0e0, .0e0, 1e0,
+    .5e0, .0e0, .0e0, 1e0,
+    .6e0, .0e0, .0e0, 1e0,
+    .7e0, .0e0, .0e0, 1e0,
+    .8e0, .0e0, .0e0, 1e0,
+    .9e0, .0e0, .0e0, 1e0,
+    .0e0, .0e0, .0e0, 1e0,
+    .0e0, .1e0, .0e0, 1e0,
+    .0e0, .2e0, .0e0, 1e0,
+    .0e0, .3e0, .0e0, 1e0,
+    .0e0, .4e0, .0e0, 1e0,
+    .0e0, .5e0, .0e0, 1e0,
+    .0e0, .6e0, .0e0, 1e0,
+    .0e0, .7e0, .0e0, 1e0,
+    .0e0, .8e0, .0e0, 1e0,
+    .0e0, .9e0, .0e0, 1e0, color20: ...
+  );
+
+  my GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
+  my Gnome::Gtk3::ColorButton $cb .= new(:$color);
+  my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
+  $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette);
+
+Or it can be done like this
+
+  my $palette = CArray[GdkRGBA].new;
+  my Int $index = 0;
+  for .0, .1 ... .9 -> Num $rgb-gray {
+    $palette[$index++] = GdkRGBA.new(
+      :red($rgb-gray), :green($rgb-gray), :blue($rgb-gray), :alpha(1e0)
+    );
+  }
+
+  my GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
+  my Gnome::Gtk3::ColorButton $cb .= new(:$color);
+  my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
+  $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 10, $palette);
 
 =end pod
 
+sub hidden_gtk_color_chooser_add_palette (
+  N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
+  int32 $n_colors, CArray[num64] $colors
+) is native(&gtk-lib)
+  is symbol('gtk_color_chooser_add_palette')
+  { * }
+
 sub gtk_color_chooser_add_palette (
   N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
-  int32 $n_colors, CArray[GdkRGBA] $colors
-) is native(&gtk-lib)
-  { * }
+  int32 $n_colors, CArray $colors
+) {
+
+  my CArray[num64] $palette;
+  given $colors {
+    when CArray[GdkRGBA] {
+      $palette .= new;
+      my Int $index = 0;
+      for 0..$colors.elems - 1 -> $pos {
+        my GdkRGBA $c = $colors.AT-POS($pos);
+        $palette[$index++] = $c.red;
+        $palette[$index++] = $c.green;
+        $palette[$index++] = $c.blue;
+        $palette[$index++] = $c.alpha;
+      }
+    }
+
+    when CArray[num64] {
+      if $colors.elems % 4 == 0 {
+        $palette = $colors;
+      }
+
+      else {
+        die X::Gnome.new(:message(''));
+      }
+    }
+  }
+
+  hidden_gtk_color_chooser_add_palette(
+    $chooser, $orientation, $colors_per_line, $n_colors, $palette
+  );
+}
 
 #-------------------------------------------------------------------------------
 #TODO Must add type info
