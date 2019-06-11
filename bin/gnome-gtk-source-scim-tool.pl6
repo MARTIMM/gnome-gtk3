@@ -108,6 +108,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
         else {
           $pod-args ~= ',' if ?$pod-args;
           $pod-args ~= " $p6-arg-type \$$arg";
+note "$p6-arg-type, $arg, $pod-doc-item-doc";
           $pod-doc-items ~= "=item $p6-arg-type \$$arg; $pod-doc-item-doc\n";
         }
 
@@ -188,7 +189,7 @@ sub parent-class ( Str:D $include-content --> List ) {
 # declaration. The type is cleaned up by removing 'const', 'void' and pointer(*)
 sub get-type( Str:D $declaration is copy --> List ) {
 
-#note "\nDeclaration: ", $declaration;
+note "\nDeclaration: ", $declaration;
 
   $declaration ~~ m/ $<type> = [
                      'const'? \s* <alnum>+ [ \s* \* ]? \s*
@@ -200,14 +201,14 @@ sub get-type( Str:D $declaration is copy --> List ) {
   # convert a pointer char type before cleanup
   $type ~~ s/ 'gchar' \s+ '*' /str/;
 
-#note "Type: $type";
+note "Type: $type";
   # cleanup
   $type ~~ s:g/ ['const' || 'void' || '*'] //;
   $type ~~ s/ \s+ / /;
   $type ~~ s/ \s+ $//;
   $type ~~ s/^ \s+ //;
   $type ~~ s/^ \s* $//;
-#note "Cleaned type: $type";
+note "Cleaned type: $type";
 
   # check type for its class name
   my Bool $type-is-class = $type eq $lib-class-name;
@@ -236,9 +237,25 @@ sub get-type( Str:D $declaration is copy --> List ) {
   $type ~~ s:s/ gfloat /num32/;
   $type ~~ s:s/ gdouble /num64/;
 
-  $type ~~ s:s/ GtkLevelBarMode || GtkBaselinePosition || GtkPackType ||
-                GtkOrientation || GtkPositionType || GtkTextDirection ||
-                GtkSensitivityType
+  # process all types from GtkEnum and some
+  $type ~~ s:s/ GtkAlign || GtkArrowType || GtkBaselinePosition ||
+                GtkSensitivityType || GtkTextDirection || GtkJustification ||
+                GtkMenuDirectionType || GtkMessageType || GtkMovementStep ||
+                GtkScrollStep || GtkOrientation || GtkPackType ||
+                GtkPositionType || GtkReliefStyle || GtkScrollType ||
+                GtkSelectionMode || GtkShadowType || GtkStateType ||
+                GtkToolbarStyle || GtkWrapMode || GtkSortType ||
+                GtkIMPreeditStyle || GtkIMStatusStyle || GtkPackDirection ||
+                GtkPrintPages || GtkPageSet || GtkNumberUpLayout ||
+                GtkPageOrientation || GtkPrintQuality || GtkPrintDuplex ||
+                GtkUnit || GtkTreeViewGridLines || GtkDragResult ||
+                GtkSizeGroupMode || GtkSizeRequestMode || GtkScrollablePolicy ||
+                GtkStateFlags || GtkRegionFlags || GtkJunctionSides ||
+                GtkBorderStyle || GtkLevelBarMode || GtkInputPurpose ||
+                GtkInputHints || GtkPropagationPhase || GtkEventSequenceState ||
+                GtkPanDirection || GtkPopoverConstraint ||
+
+                GtkDeleteType || GtkDirectionType || GtkIconSize || GtkLicense
               /int32/;
 
   # convert to perl types
@@ -258,7 +275,7 @@ sub get-type( Str:D $declaration is copy --> List ) {
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
 
-#note "type: $declaration, $type, p6 type: $p6-type, $type-is-class";
+note "type: $declaration, $type, p6 type: $p6-type, $type-is-class";
 
   ( $declaration, $type, $p6-type, $type-is-class)
 }
@@ -422,7 +439,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
 
   $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
-  my Str $doc = ~$<sub-doc>;
+  my Str $doc = ~($<sub-doc> // '');
 
 #  $doc = primary-doc-changes($doc);
 
@@ -687,8 +704,8 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 #note "RD: $property-name";
 
     # change any #GtkClass to C<Gnome::Gtk::Class> and cleanup
-    $sdoc = cleanup-source-doc($sdoc);
     $sdoc = primary-doc-changes($sdoc);
+    $sdoc = cleanup-source-doc($sdoc);
 
     # cleanup info
 
@@ -703,15 +720,16 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 
   # remove property and signal line
-  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? $$ //;
-  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? $$ //;
+  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? \n //;
+  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? \n //;
 
   $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
   $text ~~ s/ ^^ \s+ '*/' .* $ //;                  # Doc end
   $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
   $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
   $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
-  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;               # Empty lines
+  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;               # Leading star on Empty line
+  #$text ~~ s:g/ ^^ \s* \n //;
 
   $text ~ "\n"
 }
