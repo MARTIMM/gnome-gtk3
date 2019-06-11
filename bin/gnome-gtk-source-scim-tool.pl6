@@ -427,8 +427,8 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 #  $doc = primary-doc-changes($doc);
 
   my Array $items-src-doc = [];
-  my Bool ( $gather-sub-doc, $gather-items-doc, $gather-returns-doc) =
-          ( False, False, False);
+  my Bool ( $gather-items-doc, $gather-sub-doc, $gather-returns-doc) =
+          ( True, False, False);
   my Str ( $item, $sub-doc, $return-src-doc) = ( '', '', '');
   for $doc.lines -> $line {
     #next if $line ~~ m/ '/**' /;
@@ -664,6 +664,16 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
           $label.g-object-get-property( 'label', $gv);
           $gv.g-value-set-string('my text label');
 
+        =begin comment
+
+        =head2 Supported properties
+
+        =head2 Unsupported properties
+
+        =end comment
+
+        =head2 Not yet supported properties
+
         EODOC
     }
 #note "Property doc:\n", $sdoc;
@@ -673,7 +683,7 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
       $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
     /;
     $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=head2 $property-name";
+    $property-doc ~= "\n=head3 $property-name";
 #note "RD: $property-name";
 
     # change any #GtkClass to C<Gnome::Gtk::Class> and cleanup

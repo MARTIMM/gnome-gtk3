@@ -46,10 +46,9 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-...
   multi method new ( Bool :$empty! )
 
-Create a new object.
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
   multi method new ( Gnome::GObject::Object :$widget! )
 
