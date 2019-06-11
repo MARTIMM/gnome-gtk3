@@ -22,6 +22,85 @@ unit class Gnome::Gtk3::Enums:auth<github:MARTIMM>;
 =end pod
 #-------------------------------------------------------------------------------
 =begin pod
+=head2 GtkAlign
+
+Controls how a widget deals with extra space in a single (x or y) dimension.
+
+Alignment only matters if the widget receives a “too large” allocation, for example if you packed the widget with the #GtkWidget:expand flag inside a #GtkBox, then the widget might get extra space. If you have for example a 16x16 icon inside a 32x32 space, the icon could be scaled and stretched, it could be centered, or it could be positioned to one side of the space.
+
+Note that in horizontal context @GTK_ALIGN_START and @GTK_ALIGN_END are interpreted relative to text direction.
+
+GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and it is only supported for vertical alignment.  When its not supported by a child or a container it is treated as @GTK_ALIGN_FILL.
+
+=item GTK_ALIGN_FILL: stretch to fill all space if possible, center if no meaningful way to stretch
+=item GTK_ALIGN_START: snap to left or top side, leaving space on right or bottom
+=item GTK_ALIGN_END: snap to right or bottom side, leaving space on left or top
+=item GTK_ALIGN_BASELINE: align the widget according to the baseline. Since 3.10.
+=end pod
+
+enum GtkAlign is export <
+  GTK_ALIGN_FILL GTK_ALIGN_START GTK_ALIGN_END GTK_ALIGN_CENTER
+  GTK_ALIGN_BASELINE
+>;
+
+#`{{
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2
+=item
+=item
+=item
+=item
+=end pod
+}}
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head2 GtkLevelBarMode
 
 Describes how GtkLevelBar contents should be rendered. Note that this enumeration could be extended with additional modes in the future.
