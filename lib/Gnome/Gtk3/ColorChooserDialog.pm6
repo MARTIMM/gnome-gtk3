@@ -115,7 +115,7 @@ method fallback ( $native-sub is copy --> Callable ) {
 =head2 gtk_color_chooser_dialog_new
 
 
-Creates a new C<Gnome::Gtk3::ColorChooserDialog>.
+Creates a new native C<Gtk3ColorChooserDialog>.
 
   method gtk_color_chooser_dialog_new (
     Str $title, N-GObject $parent
@@ -125,7 +125,7 @@ Creates a new C<Gnome::Gtk3::ColorChooserDialog>.
 =item Str $title;  (allow-none): Title of the dialog, or %NULL
 =item N-GObject $parent;  (allow-none): Transient parent of the dialog, or %NULL
 
-Returns N-GObject; a new C<Gnome::Gtk3::ColorChooserDialog>
+Returns N-GObject; a new native C<GtkColorChooserDialog>.
 =end pod
 
 sub gtk_color_chooser_dialog_new (  str $title,  N-GObject $parent )

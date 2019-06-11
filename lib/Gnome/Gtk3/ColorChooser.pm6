@@ -299,13 +299,24 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-=head2 rgba
+
+=begin comment
+
+=head2 Supported properties
+
+=head2 Unsupported properties
+
+=end comment
+
+=head2 Not yet supported properties
+
+=head3 rgba
 
 The C<rgba> property contains the currently selected color,
 as a C<Gnome::Gdk3::RGBA> struct. The property can be set to change
 the current selection programmatically.
 
-=head2 use-alpha
+=head3 use-alpha
 
 When ::use-alpha is 1, colors may have alpha (translucency)
 information. When it is 0, the C<Gnome::Gdk3::RGBA> struct obtained

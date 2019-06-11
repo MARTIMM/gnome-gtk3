@@ -216,25 +216,36 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-=head2 use-alpha
+
+=begin comment
+
+=head2 Supported properties
+
+=head2 Unsupported properties
+
+=end comment
+
+=head2 Not yet supported properties
+
+=head3 use-alpha
 
 If this property is set to 1, the color swatch on the button is
 rendered against a checkerboard background to show its opacity and
 the opacity slider is displayed in the color selection dialog.
 
-=head2 title
+=head3 title
 
 The title of the color selection dialog
 
-=head2 alpha
+=head3 alpha
 
 The selected opacity value (0 fully transparent, 65535 fully opaque).
 
-=head2 rgba
+=head3 rgba
 
 The RGBA color.
 
-=head2 show-editor
+=head3 show-editor
 
 Set this property to 1 to skip the palette
 in the dialog and go directly to the color editor.

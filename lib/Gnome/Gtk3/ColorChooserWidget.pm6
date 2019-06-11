@@ -69,10 +69,9 @@ also is Gnome::Gtk3::Box;
 =head1 Methods
 =head2 new
 
-...
   multi method new ( Bool :$empty! )
 
-Create a new object.
+Create a new object. The value doesn't have to be True nor False. The name only will suffice.
 
   multi method new ( Gnome::GObject::Object :$widget! )
 
@@ -132,11 +131,11 @@ method fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 gtk_color_chooser_widget_new
 
-Creates a new C<Gnome::Gtk3::ColorChooserWidget>.
+Creates a new native C<GtkColorChooserWidget>.
 
   method gtk_color_chooser_widget_new ( --> N-GObject )
 
-Returns N-GObject; a new C<Gnome::Gtk3::ColorChooserWidget>
+Returns N-GObject; a new C<GtkColorChooserWidget>.
 =end pod
 
 sub gtk_color_chooser_widget_new (  )
@@ -158,7 +157,17 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $gv.g-value-set-string('my text label');
 
 
-=head2 show-editor
+=begin comment
+
+=head2 Supported properties
+
+=head2 Unsupported properties
+
+=end comment
+
+=head2 Not yet supported properties
+
+=head3 show-editor
 
 The ::show-editor property is 1 when the color chooser
 is showing the single-color editor. It can be set to switch
