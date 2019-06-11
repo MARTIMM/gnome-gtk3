@@ -4,12 +4,44 @@ use v6;
 
 =TITLE Gnome::Gtk3::AboutDialog
 
-=SUBTITLE AboutDialog — Display information about an application
+=SUBTITLE Display information about an application
+
+=head1 Description
+
+
+The C<Gnome::Gtk3::AboutDialog> offers a simple way to display information about
+a program like its logo, name, copyright, website and license. It is
+also possible to give credits to the authors, documenters, translators
+and artists who have worked on the program. An about dialog is typically
+opened when the user selects the `About` option from the `Help` menu.
+All parts of the dialog are optional.
+
+About dialogs often contain links and email addresses. C<Gnome::Gtk3::AboutDialog>
+displays these as clickable links. By default, it calls gtk_show_uri()
+when a user clicks one. The behaviour can be overridden with the
+C<Gnome::Gtk3::AboutDialog>::activate-link signal.
+
+To specify a person with an email address, use a string like
+"Edgar Allan Poe <edgarI<poe>.com>". To specify a website with a title,
+use a string like "GTK+ team http://www.gtk.org".
+
+To make constructing a C<Gnome::Gtk3::AboutDialog> as convenient as possible, you can
+use the function gtk_show_about_dialog() which constructs and shows a dialog
+and keeps it around so that it can be shown again.
+
+Note that GTK+ sets a default title of `_("About %s")` on the dialog
+window (where \%s is replaced by the name of the application, but in
+order to ensure proper translation of the title, applications should
+set the title property explicitly when constructing a C<Gnome::Gtk3::AboutDialog>.
+It is also possible to show a C<Gnome::Gtk3::AboutDialog> like any other C<Gnome::Gtk3::Dialog>, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
+
+=head1 Synopsis
+=head2 Declaration
 
   unit class Gnome::Gtk3::AboutDialog;
   also is Gnome::Gtk3::Dialog;
 
-=head1 Synopsis
+=head1 Example
 
   my Gnome::Gtk3::AboutDialog $about .= new(:empty);
   $about.set-program-name('My-First-GTK-Program');
@@ -85,6 +117,7 @@ submethod BUILD ( *%options ) {
 }
 
 #-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
 method fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
@@ -102,10 +135,11 @@ method fallback ( $native-sub is copy --> Callable ) {
 
 =head2 gtk_about_dialog_new
 
+Creates a new native widget.
+
   method gtk_about_dialog_new ( --> N-GObject )
 
-Creates a new empty about dialog widget. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-new>.
-Better, shorter and easier is to use C<.new(:empty)>. See info for C<new()>.
+Returns N-GObject;
 =end pod
 
 sub gtk_about_dialog_new ( )
@@ -115,15 +149,36 @@ sub gtk_about_dialog_new ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_about_dialog_] get_program_name
+=head2 [gtk_about_dialog_] gtk_show_about_dialog
 
-  method gtk_about_dialog_get_program_name ( --> Str )
+This is a convenience function for showing an application’s about box. The constructed dialog is associated with the parent window and reused for future invocations of this function.
 
-Get the program name from the dialog. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-program-name>.
+  method gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name, G_GNUC_NULL_TERMINATED $... )
+
+=item N-GObject $parent;
+=item Str $first_property_name; (allow-none): transient parent, or Any for none
+=item G_GNUC_NULL_TERMINATED $...; the name of the first property
+
 =end pod
 
-sub gtk_about_dialog_get_program_name ( N-GObject $dialog )
-  returns Str
+sub gtk_show_about_dialog ( N-GObject $parent, str $first_property_name, G_GNUC_NULL_TERMINATED $... )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 [gtk_about_dialog_] get_program_name
+
+Returns the program name displayed in the about dialog.
+
+  method gtk_about_dialog_get_program_name ( --> Str  )
+
+
+Returns Str;
+=end pod
+
+sub gtk_about_dialog_get_program_name ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -131,12 +186,15 @@ sub gtk_about_dialog_get_program_name ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_program_name
 
-  method gtk_about_dialog_set_program_name ( Str $pname )
+Sets the name to display in the about dialog. If this is not set, it defaults to g_get_application_name().
 
-Set the program name in the about dialog. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-program-name>.
+  method gtk_about_dialog_set_program_name ( Str $name )
+
+=item Str $name; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_program_name ( N-GObject $dialog, Str $pname )
+sub gtk_about_dialog_set_program_name ( N-GObject $about, str $name )
   is native(&gtk-lib)
   { * }
 
@@ -144,13 +202,16 @@ sub gtk_about_dialog_set_program_name ( N-GObject $dialog, Str $pname )
 =begin pod
 =head2 [gtk_about_dialog_] get_version
 
-  method gtk_about_dialog_get_version ( --> Str )
+Returns the version string.
 
-Get the version. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-version>.
+  method gtk_about_dialog_get_version ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_version ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_version ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -158,12 +219,15 @@ sub gtk_about_dialog_get_version ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_version
 
+Sets the version string to display in the about dialog.
+
   method gtk_about_dialog_set_version ( Str $version )
 
-Set version. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-version>.
+=item Str $version; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_version ( N-GObject $dialog, Str $version )
+sub gtk_about_dialog_set_version ( N-GObject $about, str $version )
   is native(&gtk-lib)
   { * }
 
@@ -171,42 +235,49 @@ sub gtk_about_dialog_set_version ( N-GObject $dialog, Str $version )
 =begin pod
 =head2 [gtk_about_dialog_] get_copyright
 
-  method gtk_about_dialog_get_copyright
+Returns the copyright string.
 
-Get copyright. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-copyright>.
+  method gtk_about_dialog_get_copyright ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_copyright ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_copyright ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
-
 =head2 [gtk_about_dialog_] set_copyright
 
-  method gtk_about_dialog_set_copyright
+Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
 
-Set copyright. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-copyright>.
+  method gtk_about_dialog_set_copyright ( Str $copyright )
+
+=item Str $copyright; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_copyright ( N-GObject $dialog, Str $copyright )
+sub gtk_about_dialog_set_copyright ( N-GObject $about, str $copyright )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
-
 =head2 [gtk_about_dialog_] get_comments
 
-  method gtk_about_dialog_get_comments
+Returns the comments string.
 
-Get comments. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-comments>.
+  method gtk_about_dialog_get_comments ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_comments ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_comments ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -214,12 +285,15 @@ sub gtk_about_dialog_get_comments ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_comments
 
-  method gtk_about_dialog_set_comments
+Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
 
-Set comments. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-comments>.
+  method gtk_about_dialog_set_comments ( Str $comments )
+
+=item Str $comments; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_comments ( N-GObject $dialog, Str $comments )
+sub gtk_about_dialog_set_comments ( N-GObject $about, str $comments )
   is native(&gtk-lib)
   { * }
 
@@ -227,13 +301,16 @@ sub gtk_about_dialog_set_comments ( N-GObject $dialog, Str $comments )
 =begin pod
 =head2 [gtk_about_dialog_] get_license
 
-  method gtk_about_dialog_get_license
+Returns the license information.
 
-Get license. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-license>.
+  method gtk_about_dialog_get_license ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_license ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_license ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -241,12 +318,57 @@ sub gtk_about_dialog_get_license ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_license
 
-  method gtk_about_dialog_set_license
+Sets the license information to be displayed in the secondary license dialog. If I<license> is Any, the license button is hidden.
 
-Set license. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-license>.
+  method gtk_about_dialog_set_license ( Str $license )
+
+=item Str $license; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_license ( N-GObject $dialog, Str $license )
+sub gtk_about_dialog_set_license ( N-GObject $about, str $license )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 [gtk_about_dialog_] set_license_type
+
+Sets the license of the application showing the I<about> dialog from a list of known licenses.
+
+  method gtk_about_dialog_set_license_type ( GtkLicense $license_type )
+
+=item GtkLicense $license_type; a C<Gnome::Gtk3::AboutDialog>
+
+=head3 Example
+
+  $dialog.set_license_type(GTK_LICENSE_ARTISTIC);
+
+=end pod
+
+sub gtk_about_dialog_set_license_type ( N-GObject $about, int32 $license_type )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 [gtk_about_dialog_] get_license_type
+
+Retrieves the license set using gtk_about_dialog_set_license_type()
+
+  method gtk_about_dialog_get_license_type ( --> GtkLicense  )
+
+Returns GtkLicense;
+
+=head3 Example
+
+  my Int $lt = $dialog.get-license-type;
+  say "License type: ", GtkLicense($lt);
+
+=end pod
+
+sub gtk_about_dialog_get_license_type ( N-GObject $about )
+  returns int32
   is native(&gtk-lib)
   { * }
 
@@ -254,12 +376,15 @@ sub gtk_about_dialog_set_license ( N-GObject $dialog, Str $license )
 =begin pod
 =head2 [gtk_about_dialog_] get_wrap_license
 
-  method gtk_about_dialog_get_wrap_license
+Returns whether the license text in I<about> is automatically wrapped.
 
-Return 1 if license is wrapped. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-wrap-license>.
+  method gtk_about_dialog_get_wrap_license ( --> Int  )
+
+
+Returns Int;
 =end pod
 
-sub gtk_about_dialog_get_wrap_license ( N-GObject $dialog )
+sub gtk_about_dialog_get_wrap_license ( N-GObject $about )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -268,49 +393,15 @@ sub gtk_about_dialog_get_wrap_license ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_wrap_license
 
-  method gtk_about_dialog_set_wrap_license
+Sets whether the license text in I<about> is automatically wrapped.
 
-Sets whether the license text in about is automatically wrapped. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-wrap-license>.
+  method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
+
+=item Int $wrap_license; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_wrap_license ( N-GObject $dialog, int32 $wrap_license )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_about_dialog_] get_license_type
-
-  method gtk_about_dialog_get_license_type
-
-Get license type. This is an integer representing GtkLicense described above.
-Example;
-
-  my Int $lt = $dialog.get_license_type;
-  say "License type: ", GtkLicense($lt);
-
-See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-license-type>.
-=end pod
-
-sub gtk_about_dialog_get_license_type ( N-GObject $dialog )
-  returns int32 # GtkLicense
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_about_dialog_] set_license_type
-
-  method gtk_about_dialog_set_license_type
-
-Set license type. E.g.
-
-  $dialog.set_license_type(GTK_LICENSE_ARTISTIC);
-
-See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-license-type>.
-=end pod
-
-sub gtk_about_dialog_set_license_type ( N-GObject $dialog, int32 $license_type )
+sub gtk_about_dialog_set_wrap_license ( N-GObject $about, int32 $wrap_license )
   is native(&gtk-lib)
   { * }
 
@@ -318,13 +409,16 @@ sub gtk_about_dialog_set_license_type ( N-GObject $dialog, int32 $license_type )
 =begin pod
 =head2 [gtk_about_dialog_] get_website
 
-  method gtk_about_dialog_get_website
+Returns the website URL.
 
-Get website. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-website>.
+  method gtk_about_dialog_get_website ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_website ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_website ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -332,12 +426,15 @@ sub gtk_about_dialog_get_website ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_website
 
-  method gtk_about_dialog_set_website
+Sets the URL to use for the website link.
 
-Set website. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-website>.
+  method gtk_about_dialog_set_website ( Str $website )
+
+=item Str $website; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_website ( N-GObject $dialog, Str $website )
+sub gtk_about_dialog_set_website ( N-GObject $about, str $website )
   is native(&gtk-lib)
   { * }
 
@@ -345,13 +442,16 @@ sub gtk_about_dialog_set_website ( N-GObject $dialog, Str $website )
 =begin pod
 =head2 [gtk_about_dialog_] get_website_label
 
-  method gtk_about_dialog_get_website_label
+Returns the label used for the website link.
 
-Returns the label used for the website link. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-website-label>.
+  method gtk_about_dialog_get_website_label ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_website_label ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_website_label ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -359,26 +459,33 @@ sub gtk_about_dialog_get_website_label ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_website_label
 
-  method gtk_about_dialog_set_website_label
+Sets the label to be used for the website link.
 
-Set website label. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-website-label>.
+  method gtk_about_dialog_set_website_label ( Str $website_label )
+
+=item Str $website_label; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_website_label ( N-GObject $dialog, Str $website_label )
+sub gtk_about_dialog_set_website_label ( N-GObject $about, str $website_label )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_about_dialog_] get_authors
+=head2 const
 
-  method gtk_about_dialog_get_authors
 
-Get list of authors. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-authors>.
+
+  method const ( gtk_about_dialog_get_authors $*GtkAboutDialog *about --> Int  )
+
+=item gtk_about_dialog_get_authors $*GtkAboutDialog *about;
+
+Returns Int;
 =end pod
 
-sub gtk_about_dialog_get_authors ( N-GObject $dialog )
-  returns CArray[Str]
+sub const ( gtk_about_dialog_get_authors $*GtkAboutDialog *about )
+  returns int8
   is native(&gtk-lib)
   { * }
 
@@ -386,53 +493,33 @@ sub gtk_about_dialog_get_authors ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_authors
 
-  method gtk_about_dialog_set_authors
+Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
-Set auhors. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-authors>.
+  method gtk_about_dialog_set_authors ( Str $*authors )
+
+=item Str $*authors; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_authors ( N-GObject $dialog, CArray[Str] $authors )
+sub gtk_about_dialog_set_authors ( N-GObject $about, str $*authors )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_about_dialog_] get_artists
+=head2 const
 
-  method gtk_about_dialog_get_artists
 
-Get artists. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-artists>.
+
+  method const ( gtk_about_dialog_get_documenters $*GtkAboutDialog *about --> Int  )
+
+=item gtk_about_dialog_get_documenters $*GtkAboutDialog *about;
+
+Returns Int;
 =end pod
 
-sub gtk_about_dialog_get_artists ( N-GObject $dialog )
-  returns CArray[Str]
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_about_dialog_] set_artists
-
-  method gtk_about_dialog_set_artists
-
-Set artists. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-artists>.
-=end pod
-
-sub gtk_about_dialog_set_artists ( N-GObject $dialog, CArray[Str] $artists )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_about_dialog_] get_documenters
-
-  method gtk_about_dialog_get_documenters
-
-Get documenters. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-documenters>.
-=end pod
-
-sub gtk_about_dialog_get_documenters ( N-GObject $dialog )
-  returns CArray[Str]
+sub const ( gtk_about_dialog_get_documenters $*GtkAboutDialog *about )
+  returns int8
   is native(&gtk-lib)
   { * }
 
@@ -440,27 +527,66 @@ sub gtk_about_dialog_get_documenters ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_documenters
 
-  method gtk_about_dialog_set_documenters
+Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
-Set documenters. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-documenters>.
+  method gtk_about_dialog_set_documenters ( Str $*documenters )
+
+=item Str $*documenters; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_documenters (
-  N-GObject $dialog, CArray[Str] $documenters
-) is native(&gtk-lib)
+sub gtk_about_dialog_set_documenters ( N-GObject $about, str $*documenters )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 const
+
+
+
+  method const ( gtk_about_dialog_get_artists $*GtkAboutDialog *about --> Int  )
+
+=item gtk_about_dialog_get_artists $*GtkAboutDialog *about;
+
+Returns Int;
+=end pod
+
+sub const ( gtk_about_dialog_get_artists $*GtkAboutDialog *about )
+  returns int8
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 [gtk_about_dialog_] set_artists
+
+Sets the strings which are displayed in the artists tab of the secondary credits dialog.
+
+  method gtk_about_dialog_set_artists ( Str $*artists )
+
+=item Str $*artists; a C<Gnome::Gtk3::AboutDialog>
+
+=end pod
+
+sub gtk_about_dialog_set_artists ( N-GObject $about, str $*artists )
+  is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_about_dialog_] get_translator_credits
 
-  method gtk_about_dialog_get_translator_credits
+Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
-Get translator credits See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-translator-credits>.
+  method gtk_about_dialog_get_translator_credits ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_translator_credits ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_translator_credits ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -468,27 +594,32 @@ sub gtk_about_dialog_get_translator_credits ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_translator_credits
 
-  method gtk_about_dialog_set_translator_credits
+Sets the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
-Set translator credits See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-translator-credits>.
+  method gtk_about_dialog_set_translator_credits ( Str $translator_credits )
+
+=item Str $translator_credits; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_translator_credits (
-  N-GObject $dialog , Str $translator_credits
-) is native(&gtk-lib)
+sub gtk_about_dialog_set_translator_credits ( N-GObject $about, str $translator_credits )
+  is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_about_dialog_] get_logo
 
-  method gtk_about_dialog_get_logo
+Returns the pixbuf displayed as logo in the about dialog.
 
-Get pixel buffer of logo. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-logo>.
+  method gtk_about_dialog_get_logo ( --> N-GObject  )
+
+
+Returns N-GObject;
 =end pod
 
-sub gtk_about_dialog_get_logo ( N-GObject $dialog )
-  returns OpaquePointer # GdkPixbuf
+sub gtk_about_dialog_get_logo ( N-GObject $about )
+  returns N-GObject
   is native(&gtk-lib)
   { * }
 
@@ -496,19 +627,24 @@ sub gtk_about_dialog_get_logo ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_logo
 
-  method gtk_about_dialog_set_logo ( OpaquePointer $logo-pixbuf )
+Sets the pixbuf to be displayed as logo in the about dialog. If it is Any, the default window icon set with gtk_window_set_default_icon() will be used.
+
+  method gtk_about_dialog_set_logo ( N-GObject $logo )
+
+=head3 Example
 
 Set the logo from a pixel buffer. E.g.
 
   my Gnome::Gtk3::Image $logo .= new(
-    :filename(%?RESOURCES<library-logo.png>.Str)
+    :filename(%?RESOURCES<my-logo.png>.Str)
   );
   $about-dialog.set-logo($logo.get-pixbuf);
 
-See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-logo>.
+=item N-GObject $logo; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_logo ( N-GObject $dialog, OpaquePointer $logo-pixbuf )
+sub gtk_about_dialog_set_logo ( N-GObject $about, N-GObject $logo )
   is native(&gtk-lib)
   { * }
 
@@ -516,13 +652,16 @@ sub gtk_about_dialog_set_logo ( N-GObject $dialog, OpaquePointer $logo-pixbuf )
 =begin pod
 =head2 [gtk_about_dialog_] get_logo_icon_name
 
-  method gtk_about_dialog_get_logo_icon_name
+Returns the icon name displayed as logo in the about dialog.
 
-Get name of logo icon. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-get-logo-icon-name>.
+  method gtk_about_dialog_get_logo_icon_name ( --> Str  )
+
+
+Returns Str;
 =end pod
 
-sub gtk_about_dialog_get_logo_icon_name ( N-GObject $dialog )
-  returns Str
+sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about )
+  returns str
   is native(&gtk-lib)
   { * }
 
@@ -530,12 +669,15 @@ sub gtk_about_dialog_get_logo_icon_name ( N-GObject $dialog )
 =begin pod
 =head2 [gtk_about_dialog_] set_logo_icon_name
 
-  method gtk_about_dialog_set_logo_icon_name
+Sets the pixbuf to be displayed as logo in the about dialog. If it is Any, the default window icon set with gtk_window_set_default_icon() will be used.
 
-Set name of logo icon. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-set-logo-icon-name>.
+  method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
+
+=item Str $icon_name; a C<Gnome::Gtk3::AboutDialog>
+
 =end pod
 
-sub gtk_about_dialog_set_logo_icon_name ( N-GObject $dialo, Str $icon_name )
+sub gtk_about_dialog_set_logo_icon_name ( N-GObject $about, str $icon_name )
   is native(&gtk-lib)
   { * }
 
@@ -543,14 +685,17 @@ sub gtk_about_dialog_set_logo_icon_name ( N-GObject $dialo, Str $icon_name )
 =begin pod
 =head2 [gtk_about_dialog_] add_credit_section
 
-  method gtk_about_dialog_add_credit_section
+Creates a new section in the Credits page.
 
-Add credit section. See also L<gnome developer docs|https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html#gtk-about-dialog-add-credit-section>.
+  method gtk_about_dialog_add_credit_section ( Str $section_name, Str $*people )
+
+=item Str $section_name; A C<Gnome::Gtk3::AboutDialog>
+=item Str $*people; The name of the section
+
 =end pod
 
-sub gtk_about_dialog_add_credit_section (
-  N-GObject $dialo, Str $section_name, CArray[Str] $people
-) is native(&gtk-lib)
+sub gtk_about_dialog_add_credit_section ( N-GObject $about, str $section_name, str $*people )
+  is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
