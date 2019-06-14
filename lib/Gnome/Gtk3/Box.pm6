@@ -23,31 +23,31 @@ For a vertical C<Gnome::Gtk3::Box>, the start is defined as the top of the box a
 the end is defined as the bottom. For a horizontal C<Gnome::Gtk3::Box> the start
 is defined as the left side and the end is defined as the right side.
 
-Use repeated calls to gtk_box_pack_start() to pack widgets into a
-C<Gnome::Gtk3::Box> from start to end. Use gtk_box_pack_end() to add widgets from
+Use repeated calls to C<gtk_box_pack_start()> to pack widgets into a
+C<Gnome::Gtk3::Box> from start to end. Use C<gtk_box_pack_end()> to add widgets from
 end to start. You may intersperse these calls and add widgets from
 both ends of the same C<Gnome::Gtk3::Box>.
 
-Because C<Gnome::Gtk3::Box> is a C<Gnome::Gtk3::Container>, you may also use gtk_container_add()
+Because C<Gnome::Gtk3::Box> is a C<Gnome::Gtk3::Container>, you may also use C<gtk_container_add()>
 to insert widgets into the box, and they will be packed with the default
-values for expand and fill child properties. Use gtk_container_remove()
+values for expand and fill child properties. Use C<gtk_container_remove()>
 to remove widgets from the C<Gnome::Gtk3::Box>.
 
-Use gtk_box_set_homogeneous() to specify whether or not all children
+Use C<gtk_box_set_homogeneous()> to specify whether or not all children
 of the C<Gnome::Gtk3::Box> are forced to get the same amount of space.
 
-Use gtk_box_set_spacing() to determine how much space will be
+Use C<gtk_box_set_spacing()> to determine how much space will be
 minimally placed between all children in the C<Gnome::Gtk3::Box>. Note that
 spacing is added between the children, while
-padding added by gtk_box_pack_start() or gtk_box_pack_end() is added
+padding added by C<gtk_box_pack_start()> or C<gtk_box_pack_end()> is added
 on either side of the widget it belongs to.
 
-Use gtk_box_reorder_child() to move a C<Gnome::Gtk3::Box> child to a different
+Use C<gtk_box_reorder_child()> to move a C<Gnome::Gtk3::Box> child to a different
 place in the box.
 
-Use gtk_box_set_child_packing() to reset the expand,
+Use C<gtk_box_set_child_packing()> to reset the expand,
 fill and padding child properties.
-Use gtk_box_query_child_packing() to query these fields.
+Use C<gtk_box_query_child_packing()> to query these fields.
 
 Note that a single-row or single-column C<Gnome::Gtk3::Grid> provides exactly
 the same functionality as C<Gnome::Gtk3::Box>.
@@ -175,7 +175,7 @@ Creates a new C<Gnome::Gtk3::Box>.
 =item GtkOrientation $orientation; the box’s orientation.
 =item Int $spacing; the number of pixels to place by default between children.
 
-Returns N-GObject;
+Returns N-GObject; a new C<Gnome::Gtk3::Box>.
 =end pod
 
 sub gtk_box_new ( int32 $orientation, int32 $spacing )
@@ -282,7 +282,7 @@ Gets the value set by gtk_box_set_spacing().
 
   method gtk_box_get_spacing ( --> Int  )
 
-Returns Int;
+Returns Int; spacing between children
 =end pod
 
 sub gtk_box_get_spacing ( N-GObject $box )
@@ -314,7 +314,7 @@ Gets the value set by gtk_box_set_baseline_position().
 
   method gtk_box_get_baseline_position ( --> GtkBaselinePosition  )
 
-Returns GtkBaselinePosition;
+Returns GtkBaselinePosition; the baseline position
 =end pod
 
 sub gtk_box_get_baseline_position ( N-GObject $box )
@@ -409,7 +409,7 @@ Retrieves the center widget of the box.
 
   method gtk_box_get_center_widget ( --> N-GObject  )
 
-Returns N-GObject;
+Returns N-GObject; (transfer none) (nullable): the center widget or C<Any> in case no center widget is set.
 =end pod
 
 sub gtk_box_get_center_widget ( N-GObject $box )
@@ -418,7 +418,6 @@ sub gtk_box_get_center_widget ( N-GObject $box )
   { * }
 
 #-------------------------------------------------------------------------------
-#TODO Must add type info
 =begin pod
 =head1 Properties
 
@@ -452,70 +451,5 @@ Whether the child should receive extra space when the parent grows.
 Note that the C<Gnome::Gtk3::Widget>:halign, C<Gnome::Gtk3::Widget>:valign, C<Gnome::Gtk3::Widget>:hexpand
 and C<Gnome::Gtk3::Widget>:vexpand properties are the preferred way to influence
 child size allocation in containers.
-
-=end pod
-
-#`{{
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-=head2
-
-=item
-
-=end pod
-}}
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-=head1 Signals
-
-Register any signal as follows. See also C<Gnome::GObject::Object>.
-
-  my Bool $is-registered = $my-widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., $user-optionN
-  )
-
-=head2 Supported signals
-
-=head2 Unsupported signals
-
-=head2 Not yet supported signals
-=end comment
-
-=begin comment
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
-  )
-
-=head4 Event Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, GdkEvent :$event,
-    :$user-option1, ..., $user-optionN
-  )
-
-=head4 Native Object Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, N-GObject :$nativewidget,
-    :$user-option1, ..., :$user-optionN
-  )
-
-=end comment
-
-=begin comment
-
-=head4 Handler Method Arguments
-=item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
-=item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
-=item $user-option*; Any extra options given by the user when registering the signal.
-
-=end comment
 
 =end pod
