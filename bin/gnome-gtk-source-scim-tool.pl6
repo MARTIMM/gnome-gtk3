@@ -45,7 +45,32 @@ sub MAIN ( Str:D $base-name ) {
     $type-doc = get-vartypes($include-content);
 
     my Str $module-text = substitute-in-template();
-    say $module-text;
+    "xt/$p6-class-name.pm6".IO.spurt($module-text);
+
+    my Str $m = '$v';
+    my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
+    my Str $test-content = Q:s:to/EOTEST/;
+      use v6;
+      use NativeCall;
+      use Test;
+
+      use $class;
+
+      #use Gnome::N::X;
+      #X::Gnome.debug(:on);
+
+      #-------------------------------------------------------------------------------
+      subtest 'ISA test', {
+        my $class $m .= new(...);
+        isa-ok $m, $class;
+      }
+
+      #-------------------------------------------------------------------------------
+      done-testing;
+
+      EOTEST
+
+    "xt/$p6-class-name.t".IO.spurt($test-content);
   }
 
   else {
@@ -107,7 +132,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
     ( $sub-doc, $return-src-doc, $items-src-doc) =
       get-sub-doc( $sub-name, $source-content);
 
-note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
+#note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
     my Str $args-declaration = $declaration;
     my Str ( $pod-args, $args, $pod-doc-items) = ( '', '', '');
@@ -121,7 +146,7 @@ note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
       if ?$arg {
         my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
-note "pod info: $p6-arg-type, $arg, $pod-doc-item-doc";
+#note "pod info: $p6-arg-type, $arg, $pod-doc-item-doc";
 
         # skip first argument when type is also the class name
         if $first-arg and $type-is-class {
@@ -221,7 +246,7 @@ sub parent-class ( Str:D $include-content --> List ) {
 sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
 
-note "\nDeclaration: attr=$attr, ", $declaration;
+#note "\nDeclaration: attr=$attr, ", $declaration;
   if $attr {
     $declaration ~~ m/ ^
       $<type> = [
@@ -273,14 +298,14 @@ note "\nDeclaration: attr=$attr, ", $declaration;
     $declaration = 'any = Any';
   }
 
-note "Type: $type";
+#note "Type: $type";
   # cleanup
   $type ~~ s:g/ ['void' || '*'] //;
   $type ~~ s/ \s+ / /;
   $type ~~ s/ \s+ $//;
   $type ~~ s/^ \s+ //;
   $type ~~ s/^ \s* $//;
-note "Cleaned type: $type";
+#note "Cleaned type: $type";
 
   # check type for its class name
   my Bool $type-is-class = $type eq $lib-class-name;
@@ -349,7 +374,7 @@ note "Cleaned type: $type";
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
 
-note "Result type: $type, p6 type: $p6-type, is class = $type-is-class";
+#note "Result type: $type, p6 type: $p6-type, is class = $type-is-class";
 
   ( $declaration, $type, $p6-type, $type-is-class)
 }
