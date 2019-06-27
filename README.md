@@ -244,7 +244,8 @@ Github account name: **MARTIMM**
 
 [//]: # (---- [refs] ----------------------------------------------------------)
 [changes]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/CHANGES.md
-[logo]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/gtk-logo-100.png
+[logoX]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/gtk-logo-100.png
+[logo]: docs/images/gtk-logo-100.png
 [devel refs]: https://developer.gnome.org/references
 
 [screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/01-hello-world.png
