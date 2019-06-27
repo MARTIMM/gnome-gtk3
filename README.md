@@ -7,12 +7,11 @@
 [![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
 
 # Description
-First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
 
 The purpose of this project is to create an interface to the **GTK+** version 3 library.
 
 # History
-There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` was repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N`, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`. As a side effect the package `GTK::Glade` is also renamed into `Gnome::Glade3` to show that it is from Gnome and that it is based on Gtk version 3.
+There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N` for the native linkup on behalf of any other Gnome module, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`. As a side effect the package `GTK::Glade` is also renamed into `Gnome::Glade3` to show that it is from Gnome and that it is based on Gtk version 3.
 
 # Example
 
@@ -230,6 +229,7 @@ There are several crossing dependencies from one package to the other because it
 There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/perl6-gnome-gtk3/issues).
 
 # Attribution
+* First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
 * The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again.
 * The builders of the GTK+ library and the documentation.
 * Other helpful modules for their insight and use.
@@ -245,10 +245,10 @@ Github account name: **MARTIMM**
 [logo]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/gtk-logo-100.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/01-hello-world.png
-[screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/16a-level-bar.png
-[screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/16b-level-bar.png
-[screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/ex-GtkScale.png
+[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/01-hello-world.png
+[screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/16a-level-bar.png
+[screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/16b-level-bar.png
+[screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/ex-GtkScale.png
 
 
 [GtkAboutDialog]: https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html

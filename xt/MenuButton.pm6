@@ -3,13 +3,11 @@ use v6;
 =begin pod
 
 =TITLE Gnome::Gtk3::MenuButton
+=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/menu-button.png
 
-=SUBTITLE
+=SUBTITLE A widget that shows a popup when clicked on
 
 =head1 Description
-
-I<short_description>: A widget that shows a popup when clicked on
-I<title>: C<Gnome::Gtk3::MenuButton>
 
 The C<Gnome::Gtk3::MenuButton> widget is used to display a popup when clicked on.
 This popup can be provided either as a C<Gnome::Gtk3::Menu>, a C<Gnome::Gtk3::Popover> or an
@@ -35,7 +33,7 @@ menu is popped up above the button instead. If the alignment would move
 part of the menu offscreen, it is “pushed in”.
 
 ## Direction = Down
-=Image file:///home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/doc/images/down-start.png
+=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/down-start.png
 
 - halign = start
 
