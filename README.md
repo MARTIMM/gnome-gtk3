@@ -248,7 +248,8 @@ Github account name: **MARTIMM**
 [logo]: docs/images/gtk-logo-100.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/01-hello-world.png
+[screenshot 1X]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/01-hello-world.png
+[screenshot 1]: docs/images/examples/01-hello-world.png
 [screenshot 2]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/16a-level-bar.png
 [screenshot 3]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/16b-level-bar.png
 [screenshot 4]: https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/examples/ex-GtkScale.png
