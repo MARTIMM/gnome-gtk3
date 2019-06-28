@@ -1,10 +1,7 @@
 ---
 layout: default
-title: Gnome Gtk3 Home
+title: Perl6 Gtk3 Interface Home
 ---
-
-# Gnome Gtk3 - Widget toolkit for graphical interfaces
-
 
 ## An Example
 
@@ -22,7 +19,9 @@ This example does the same as the example from `GTK::Simple` to show you the dif
   * Code is somewhat slower. The setup of the example shown next is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
 
 A screenshot of the example
-![-this screenshot-][screenshot 1].
+
+![-this screenshot-][screenshot 1]
+
 The code can be found at `examples/01-hello-world.pl6`.
 ```
 use v6;

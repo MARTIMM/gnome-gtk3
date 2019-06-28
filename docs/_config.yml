@@ -1,5 +1,4 @@
 theme: jekyll-theme-slate
-name: Gnome::Gtk3
-title: Gnome GTK3 website
-description: Gnome Gtk3 - Widget toolkit for graphical interfaces
+title: Perl6 Interface to Gnome GTK+
+description: Interfacing Perl6 to Gnome GTK+ Version 3
 markdown: kramdown
