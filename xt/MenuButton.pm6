@@ -3,9 +3,10 @@ use v6;
 =begin pod
 
 =TITLE Gnome::Gtk3::MenuButton
-=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/menu-button.png
 
 =SUBTITLE A widget that shows a popup when clicked on
+
+=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/pod/menu-button.png
 
 =head1 Description
 
@@ -33,7 +34,7 @@ menu is popped up above the button instead. If the alignment would move
 part of the menu offscreen, it is “pushed in”.
 
 ## Direction = Down
-=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/down-start.png
+=Image https://github.com/MARTIMM/perl6-gnome-gtk3/blob/master/doc/images/pod/down-start.png
 
 - halign = start
 
