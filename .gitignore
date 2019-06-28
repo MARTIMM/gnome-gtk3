@@ -5,6 +5,7 @@
 *.xsl
 *.log
 doc/*.html
+docs/_site/
 spellTmp*
 Old/*
 ~*
