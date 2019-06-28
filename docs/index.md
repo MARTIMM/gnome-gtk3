@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Marcel Timmerman
+title: Gnome Gtk3
 ---
 
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
