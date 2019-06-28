@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Gnome Gtk3
+title: Gnome Gtk3 Home
 ---
 
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
 
 
-# Example
+## An Example
 
 This example does the same as the example from `GTK::Simple` to show you the differences between the implementations. What immediately is clear is that this example is somewhat longer. To sum up;
 ### Pros

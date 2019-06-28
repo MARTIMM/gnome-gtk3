@@ -1,5 +1,6 @@
 ---
 layout: default
+title: About Project
 ---
 
 # About The Project
