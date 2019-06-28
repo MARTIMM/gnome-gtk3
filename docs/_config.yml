@@ -1,3 +1,5 @@
 theme: jekyll-theme-slate
+name: Gnome::Gtk3
 title: Gnome GTK3 website
-description: etcetera
+description: Gnome Gtk3 - Widget toolkit for graphical interfaces
+markdown: kramdown
