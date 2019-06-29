@@ -1,0 +1,26 @@
+<header>
+  <h1>{{ site.description }}</h1>
+  <ul>
+    {% for item in site.data[page.nav_menu].navigations.n0 %}
+
+      {% assign classstr = "" %}
+      {% if item.url == page.url %}
+        {% assign classstr = "active" %}
+      {% else %}
+        {% assign classstr = "inactive" %}
+      {% endif %}
+
+      {% if item.right == true %}
+        {% assign classstr = classstr | append: " float-right" %}
+      {% endif %}
+
+      <li class="{{ classstr }}">
+        {% if item.url != page.url %}
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        {% else %}
+          {{ item.title }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</header>
