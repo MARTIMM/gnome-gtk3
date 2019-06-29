@@ -1,0 +1,108 @@
+---
+---
+@import "jekyll-theme-tactile";
+
+/*
+$menu-color: #ff8888;
+*/
+
+$menu-bgcolor: #9696bf;
+$menu-bgcolor-active: #e6e6ef;
+$menu-border-color-active: #777;
+$menu-border-color: #ddd;
+$menu-border-width: 2px;
+
+$code-color: #46465f;
+
+$border-color: #888;
+$border-width: 5px;
+
+header h1 {
+  font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif;
+  font-size: 23pt;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+header ul {
+  margin: 0;
+  padding: 0;
+
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+
+/*
+  background-color: #f3f3f3;
+*/
+  height: 30px;
+
+  li {
+    list-style-type: none;
+    /* display: inline; */
+    float: left;
+    padding: 0 4px 0 4px;
+    margin-right: 2px;
+
+    a {
+      display: block;
+      padding: 0;
+      margin: 0;
+      /*color: $menu-color;*/
+    }
+
+    a:hover:not(.active) {
+      background-color: #eee;
+    }
+  }
+
+  li.active {
+    background-color: $menu-bgcolor-active;
+    border: $menu-border-width solid $menu-border-color-active;
+  }
+
+  li.inactive {
+/*    background-color: $menu-bgcolor;*/
+    border: $menu-border-width solid $menu-border-color;
+  }
+
+  li.float-right {
+    float: right;
+  }
+}
+
+header hr {
+  padding: 0;
+  margin: 1em 0 0.5em 0;
+/*  height: 3px; */
+  border: 2px solid $menu-bgcolor;
+  border-radius: 5px;
+  width: 100%;
+}
+
+h1 {
+  font-size: 23pt;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+div.inner {
+  width: 85%;
+}
+
+div.highlight, div.highlighter-rouge, pre {
+  border-radius: $border-width;
+}
+
+pre {
+  background-color: $code-color;
+  border: $border-width solid $border-color;
+}
+
+pre code {
+  background-color: $code-color;
+}
