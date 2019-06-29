@@ -1,0 +1,34 @@
+# https://jekyllrb.com/tutorials/navigation/
+nav_title: "please set variable 'nav_title' in your frontmatter"
+
+navigations:
+  n0:
+    - title: "Home"
+      url: "/"
+    - title: "Examples"
+      url: "/content-docs/examples.html"
+
+  n1:
+    - title: "Window"
+      url: "/content-docs/examples/window.html"
+    - title: "Grid"
+      url: "#e"
+    - title: "HW"
+      url: "#e"
+    - title: "Text"
+      url: "#e"
+    - title: "LB"
+      url: "#e"
+
+    - title: "Test"
+      url: "#e"
+      right: true
+    - title: "Theme"
+      url: "#e"
+      right: true
+    - title: "Style"
+      url: "#e"
+      right: true
+    - title: "Glade"
+      url: "#e"
+      right: true
