@@ -1,6 +1,8 @@
 ---
 layout: default
-title: About Project
+title: About the Program
+nav_title: About
+nav_menu: navigation
 ---
 
 # About The Project
