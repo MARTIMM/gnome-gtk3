@@ -1,7 +1,35 @@
 ---
 layout: default
-title: Perl6 Gtk3 Interface Home
+title: Home Page
+nav_title: Home
+nav_menu: navigation
 ---
+
+# What is this all about
+## History
+
+## Packages
+### Gnome::N
+### ...
+### Gnome::Gtk3
+### Gnome::Gtk3::Glade
+
+# Install Perl6 Packages
+## Gnome::GTK3
+## Gnome::Gtk3::Glade
+
+# Dependencies on external software
+
+# Site Contents
+## Tutorial
+## Examples
+## Reference
+## Design
+
+# Warning
+
+
+
 
 ## An Example
 
