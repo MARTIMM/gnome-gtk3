@@ -27,8 +27,8 @@
 # Build settings
 #markdown: kramdown
 #theme: minima
-#plugins:
-#  - jekyll-feed
+plugins:
+  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -42,11 +42,12 @@
 #   - vendor/gems/
 #   - vendor/ruby/
 
-theme: jekyll-theme-tactile
+#theme: jekyll-theme-tactile
 title: Perl6 Interface to Gnome GTK+
-description: Interfacing Perl6 to Gnome GTK+ Version 3
+description: Interfacing Perl6 to Gnome GTK+
 markdown: kramdown
 email: mt1957@gmail.com
 github_username:  MARTIMM
 #url: "https://martimm.github.io"
 #baseurl: "https://martimm.github.io/perl6-gnome-gtk3/"
+github: [metadata]
