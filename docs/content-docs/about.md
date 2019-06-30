@@ -1,8 +1,8 @@
 ---
-layout: default
 title: About the Program
-nav_title: About
-nav_menu: navigation
+#nav_title: About
+nav_menu: default-nav
+layout: default
 ---
 
 # About The Project

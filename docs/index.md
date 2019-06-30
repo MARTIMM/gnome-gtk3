@@ -1,8 +1,8 @@
 ---
+title: Interfacing Perl6 to Gnome GTK+
+#nav_title: Home
+nav_menu: default-nav
 layout: default
-title: Home Page
-nav_title: Home
-nav_menu: navigation
 ---
 
 # What is this all about
@@ -48,78 +48,19 @@ This example does the same as the example from `GTK::Simple` to show you the dif
 
 A screenshot of the example
 
-![-this screenshot-][screenshot 1]
+![-this screenshot-](content-docs/examples/images/01-hello-world.png)
 
 The code can be found at `examples/01-hello-world.pl6`.
 ```
-use v6;
-
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Button;
-
-# Instantiate main module for UI control
-my Gnome::Gtk3::Main $m .= new;
-
-# Class to handle signals
-class AppSignalHandlers {
-
-  # Handle 'Hello World' button click
-  method first-button-click ( :widget($b1), :other-button($b2) ) {
-    $b1.set-sensitive(False);
-    $b2.set-sensitive(True);
-  }
-
-  # Handle 'Goodbye' button click
-  method second-button-click ( ) {
-    $m.gtk-main-quit;
-  }
-
-  # Handle window managers 'close app' button
-  method exit-program ( ) {
-    $m.gtk-main-quit;
-  }
-}
-
-# Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:empty);
-$top-window.set-title('Hello GTK!');
-$top-window.set-border-width(20);
-
-# Create a grid and add it to the window
-my Gnome::Gtk3::Grid $grid .= new(:empty);
-$top-window.gtk-container-add($grid);
-
-# Create buttons and disable the second one
-my Gnome::Gtk3::Button $button .= new(:label('Hello World'));
-my Gnome::Gtk3::Button $second .= new(:label('Goodbye'));
-$second.set-sensitive(False);
-
-# Add buttons to the grid
-$grid.gtk-grid-attach( $button, 0, 0, 1, 1);
-$grid.gtk-grid-attach( $second, 0, 1, 1, 1);
-
-# Instantiate the event handler class and register signals
-my AppSignalHandlers $ash .= new;
-$button.register-signal(
-  $ash, 'first-button-click', 'clicked',  :other-button($second)
-);
-$second.register-signal( $ash, 'second-button-click', 'clicked');
-
-$top-window.register-signal( $ash, 'exit-program', 'destroy');
-
-# Show everything and activate all
-$top-window.show-all;
-
-$m.gtk-main;
+{% include example-code/01-hello-world.pl6 %}
 ```
 
 
 
 
 
-[screenshot 1]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/01-hello-world.png
+[screenshot 1]: images/01-hello-world.png
+
 [screenshot 2]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16a-level-bar.png
 [screenshot 3]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16b-level-bar.png
 [screenshot 4]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/ex-GtkScale.png

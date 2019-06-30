@@ -1,8 +1,8 @@
 ---
-layout: example
 title: Perl6 GTK+ Examples
-nav_title: Examples
+#nav_title: Examples
 nav_menu: example-nav
+layout: default
 ---
 
 # Examples
