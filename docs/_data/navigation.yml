@@ -1,8 +1,8 @@
 # https://jekyllrb.com/tutorials/navigation/
 nav_title: "please set variable 'nav_title' in your frontmatter"
 
-navigations:
-  n0:
+nav_menus:
+  - nav_pages:
     - title: "Home"
       url: '/'
     - title: "Tutorial"
