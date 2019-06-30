@@ -1,0 +1,6 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "Reference"
+
+bar_menu:
+  - title: "AboutDialog"
+    url: '/content-docs/reference/AboutDialog.html'

@@ -1,0 +1,24 @@
+<h2>{{ site.data[page.sidebar_menu].bar_title }}</h2>
+
+<nav>
+
+  {% for item in site.data[page.sidebar_menu].bar_menu %}
+    {% assign classstr = "" %}
+    {% if item.url == page.url %}
+      {% assign classstr = "active" %}
+    {% else %}
+      {% assign classstr = "inactive" %}
+    {% endif %}
+
+    {% if item.url != page.url %}
+      <a class="{{ classstr }}"
+         href="{{ item.url | prepend: site.baseurl }}">
+       {{ item.title }}
+<!-- {% assign reference_doc = {{ item.url }} %} -->
+      </a>
+    {% else %}
+      <a class="{{ classstr }}">{{ item.title }}</a>
+    {% endif %}
+  {% endfor %}
+
+</nav>
