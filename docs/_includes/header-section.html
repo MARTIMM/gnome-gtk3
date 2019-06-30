@@ -1,0 +1,32 @@
+<header>
+  <h1>{{ site.description }}</h1>
+
+  {% for entry in site.data[page.nav_menu].nav_menus %}
+    <nav>
+      {% for item in entry.nav_pages %}
+
+        {% assign classstr = "" %}
+        {% if item.url == page.url %}
+          {% assign classstr = "active" %}
+        {% else %}
+          {% assign classstr = "inactive" %}
+        {% endif %}
+
+        {% if item.right == true %}
+          {% assign classstr = classstr | append: " float-right" %}
+        {% endif %}
+
+        <!--li class="{{ classstr }}"-->
+          {% if item.url != page.url %}
+            <a class="{{ classstr }}" href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
+          {% else %}
+            <a class="{{ classstr }}">{{ item.title }}</a>
+          {% endif %}
+        <!--/li-->
+      {% endfor %}
+
+    </nav>
+  {% endfor %}
+
+  <hr />
+</header>
