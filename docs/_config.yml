@@ -49,5 +49,5 @@ markdown: kramdown
 email: mt1957@gmail.com
 github_username:  MARTIMM
 #url: "https://martimm.github.io"
-#baseurl: "https://martimm.github.io/perl6-gnome-gtk3/"
+baseurl: "/perl6-gnome-gtk3"
 github: [metadata]

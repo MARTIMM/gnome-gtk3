@@ -4,13 +4,13 @@ nav_title: "please set variable 'nav_title' in your frontmatter"
 navigations:
   n0:
     - title: "Home"
-      url: "/"
+      url: '/'
     - title: "Tutorial"
       url: "#t"
     - title: "Examples"
       url: "/content-docs/examples.html"
     - title: "About"
-      url: "/content-docs/about.html"
+      url: '/content-docs/about.html'
       right: true
     - title: "Design"
       url: "#c"

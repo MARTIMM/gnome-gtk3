@@ -16,7 +16,7 @@
 
       <li class="{{ classstr }}">
         {% if item.url != page.url %}
-          <a href="{{ item.url }}">{{ item.title }}</a>
+          <a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
         {% else %}
           {{ item.title }}
         {% endif %}
