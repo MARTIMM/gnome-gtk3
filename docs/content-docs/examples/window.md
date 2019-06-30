@@ -1,8 +1,8 @@
 ---
-layout: example
 title: An empty window with a title
-nav_title: Window
+#nav_title: Window
 nav_menu: example-nav
+layout: default
 ---
 
 ## An empty window with a title
