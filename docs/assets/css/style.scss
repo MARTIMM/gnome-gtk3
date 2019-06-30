@@ -25,7 +25,7 @@ header h1 {
 }
 
 header ul {
-  margin: 0;
+  margin: 4px 0 4px 0;
   padding: 0;
 
   position: -webkit-sticky; /* Safari */
@@ -73,8 +73,10 @@ header ul {
 
 header hr {
   padding: 0;
-  margin: 1em 0 0.5em 0;
-/*  height: 3px; */
+  margin: 0 0 0.5em 0;
+/*
+  height: 3px;
+*/
   border: 2px solid $menu-bgcolor;
   border-radius: 5px;
   width: 100%;
