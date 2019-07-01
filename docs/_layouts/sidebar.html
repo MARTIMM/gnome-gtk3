@@ -18,14 +18,17 @@
     <div id="container">
       <div class="inner">
 
-        <!-- https://jekyllrb.com/tutorials/navigation/ -->
         {% include header-section.html %}
-        <section id="sidebar">
-          {% include sidebar-section.html %}
-        </section>
 
-        <section id="reference_content">
-        </section>
+        <div id="ref-container">
+          <div id="sidebar">
+            {% include sidebar-section.html %}
+          </div>
+
+          <div id="reference-content">
+            {{ content }}
+          </div>
+        </div>
       </div>
     </div>
   </body>

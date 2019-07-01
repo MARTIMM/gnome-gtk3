@@ -51,3 +51,13 @@ github_username:  MARTIMM
 #url: "https://martimm.github.io"
 baseurl: "/perl6-gnome-gtk3"
 github: [metadata]
+
+defaults:
+  -
+    scope:
+      path: "content-docs/reference"
+    values:
+      layout: reference-page
+      title: References to the package modules
+      nav_menu: default-nav
+      sidebar_menu: references-sidebar

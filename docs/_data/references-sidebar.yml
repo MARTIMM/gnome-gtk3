@@ -4,3 +4,5 @@ bar_title: "Reference"
 bar_menu:
   - title: "AboutDialog"
     url: '/content-docs/reference/AboutDialog.html'
+  - title: "Button"
+    url: '/content-docs/reference/Button.html'
