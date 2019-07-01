@@ -1,8 +1,13 @@
 <h2>{{ site.data[page.sidebar_menu].bar_title }}</h2>
 
-<nav>
+<hr>
+
+<ul>
 
   {% for item in site.data[page.sidebar_menu].bar_menu %}
+
+    {% assign url = site.baseurl | append: item.url %}
+
     {% assign classstr = "" %}
     {% if item.url == page.url %}
       {% assign classstr = "active" %}
@@ -10,15 +15,13 @@
       {% assign classstr = "inactive" %}
     {% endif %}
 
+    <li class="{{ classstr }}">
     {% if item.url != page.url %}
-      <a class="{{ classstr }}"
-         href="{{ item.url | prepend: site.baseurl }}">
-       {{ item.title }}
-<!-- {% assign reference_doc = {{ item.url }} %} -->
-      </a>
+      <a href="{{ url }}"> {{ item.title }} </a>
     {% else %}
-      <a class="{{ classstr }}">{{ item.title }}</a>
+      <a>{{ item.title }}</a>
     {% endif %}
+    </li>
   {% endfor %}
 
-</nav>
+</ul>
