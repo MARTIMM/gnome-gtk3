@@ -14,8 +14,8 @@ $menu-border-width: 2px;
 
 $code-color: #46465f;
 
-$border-color: #888;
-$border-width: 5px;
+$border-color: #bbb;
+$border-width: 4px;
 
 header h1 {
   font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif;
@@ -90,10 +90,84 @@ div.highlight, div.highlighter-rouge, pre {
 }
 
 pre {
+  padding: 10px;
   background-color: $code-color;
   border: $border-width solid $border-color;
 }
 
 pre code {
   background-color: $code-color;
+}
+
+div.release-notes {
+  overflow: scroll;
+  height: 300px;
+}
+
+#ref-container {
+  width: 100%;
+  margin: auto;
+}
+
+#sidebar {
+  float: left;
+  border: 1px solid #aaa;
+  width: 22%;
+  height: 100%;
+
+  h2 {
+    margin-left: 2px;
+    margin-bottom: 0;
+  }
+
+  hr {
+    padding: 0;
+    border: 2px solid $menu-bgcolor;
+    border-radius: 5px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 4px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0 5px 0 5px;
+
+    li {
+      list-style-type: none;
+      list-style: none;
+      margin-bottom: 3px;
+      padding: 2px 0 0 4px;
+
+      a {
+        display: block;
+        width: 100%;
+        /*
+        padding: 8px 16px;
+        color: white;
+        color: #000;
+        text-decoration: none;
+        */
+      }
+
+      a:hover {
+        background-color: #eee;
+      }
+    }
+
+    li.active {
+      background-color: $menu-bgcolor-active;
+    }
+  }
+}
+
+#reference-content {
+  float: right;
+  width: 74%
+
+/*
+  code {
+    font-size: 8pt;
+  }
+*/
 }
