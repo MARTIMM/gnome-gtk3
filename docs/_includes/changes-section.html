@@ -1,0 +1,15 @@
+<h1>{{ site.data[page.change_notes].notes_title }}</h1>
+<div class="release-notes">
+
+  {% for date in site.data[page.change_notes].notes  %}
+    {% for entry in date %}
+
+  <h3>{{ entry[0] }}</h3>
+
+      {% for note in entry[1] %}
+  <strong>*</strong> <i> {{ note }} </i>
+      {% endfor %}
+
+    {% endfor %}
+  {% endfor %}
+</div>

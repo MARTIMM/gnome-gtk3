@@ -2,12 +2,15 @@
 title: About the Program
 #nav_title: About
 nav_menu: default-nav
+change_notes: change-log-data
 layout: default
 ---
 
 # About The Project
 
 This project is about interfacing Perl6 to the Gnome GTK+ library version 3.*.
+
+{% include changes-section.html %}
 
 # Author
 
