@@ -146,8 +146,8 @@ sub gtk_grid_attach (
 ```
   And its use;
 ```
-my Gnome::Gtk::Grid $grid .= new(:empty);
-my Gnome::Gtk::Label $label .= new(:label('server name'));
+my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Label $label .= new(:label('server name'));
 $grid.gtk-grid-attach( $label, 0, 0, 1, 1);
 ```
 
