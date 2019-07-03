@@ -631,21 +631,23 @@ sub get-section ( Str:D $source-content --> List ) {
   $source-content ~~ m/ '/**' .*? SECTION ':' .*? '*/' /;
   my Str $section-doc = ~$/;
 
-  $section-doc ~~ m/
+  $section-doc ~~ m:i/
       ^^ \s+ '*' \s+ '@Short_description:' \s* $<text> = [.*?] $$
   /;
   my Str $short-description = ~($<text>//'');
-  $section-doc ~~ s/ ^^ \s+ '*' \s+ '@Short_description:' [.*?] \n //;
+  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Short_description:' [.*?] \n //;
+note $section-doc;
+note $short-description;
 
-  $section-doc ~~ m/ ^^ \s+ '*' \s+ '@See_also:' \s* $<text> = [.*?] $$ /;
+  $section-doc ~~ m:i/ ^^ \s+ '*' \s+ '@See_also:' \s* $<text> = [.*?] $$ /;
   my Str $see-also = ~($<text>//'');
-  $section-doc ~~ s/ ^^ \s+ '*' \s+ '@See_also:' [.*?] \n //;
+  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@See_also:' [.*?] \n //;
 
   # cleanup rest
-  $section-doc ~~ s/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
-  $section-doc ~~ s/ ^^ \s+ '*' \s+ '@Title:' [.*?] \n //;
+  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
+  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Title:' [.*?] \n //;
   $section-doc = cleanup-source-doc($section-doc);
-  $section-doc ~~ s:g/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
+  $section-doc ~~ s:g:i/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
 #note "doc 2: ", $section-doc;
 
   ( primary-doc-changes($section-doc),
