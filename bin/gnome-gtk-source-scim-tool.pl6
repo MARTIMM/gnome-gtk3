@@ -21,6 +21,8 @@ my @gtkdirlist = ();
 my @gdkdirlist = ();
 my @gobjectdirlist = ();
 my @glibdirlist = ();
+my @giodirlist = ();
+
 #-------------------------------------------------------------------------------
 sub MAIN ( Str:D $base-name ) {
   load-dir-lists();
@@ -406,6 +408,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
   my Str $gdk-path = '/usr/include/gtk-3.0/gdk';
   my Str $glib-path = '/usr/include/glib-2.0/glib';
   my Str $gobject-path = '/usr/include/glib-2.0/gobject';
+  my Str $gio-path = '/usr/include/glib-2.0/gio';
 
   # c-source file text paths, downloaded latest version. the version does not
   # matter much, just searching for documentation.
@@ -413,10 +416,11 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
   my Str $gdk-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/gtk+-3.22.0/gdk';
   my Str $glib-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/glib';
   my Str $gobject-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/gobject';
+  my Str $gio-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/gio';
 
   my Str ( $include-content, $source-content);
   my Bool $file-found = False;
-  for $gtk-path, $gdk-path, $glib-path, $gobject-path -> $path {
+  for $gtk-path, $gdk-path, $glib-path, $gobject-path, $gio-path -> $path {
     if "$path/$include-file.h".IO.r {
       $file-found = True;
       $include-content = "$path/$include-file.h".IO.slurp;
@@ -443,6 +447,12 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
           $source-content = "$gobject-srcpath/$include-file.c".IO.slurp;
           $library = "&gobject-lib";
           $p6-lib-name = 'GObject';
+        }
+
+        when $gio-path {
+          $source-content = "$gio-srcpath/$include-file.c".IO.slurp;
+          $library = "&glib-lib";
+          $p6-lib-name = 'Glib';
         }
       }
 
@@ -491,8 +501,11 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
       $is-n-gobject = $type-name ~~ any(|@glibdirlist);
       $is-n-gobject = $type-name ~~ any(|@gobjectdirlist) unless $is-n-gobject;
+      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
     }
   }
+
+note "$is-n-gobject, $type-name";
 
   $is-n-gobject
 }
@@ -504,6 +517,7 @@ sub load-dir-lists ( ) {
   @gdkdirlist = "doc/Design-docs/gdk3-list.txt".IO.slurp.lines;
   @gobjectdirlist = "doc/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "doc/Design-docs/glib-list.txt".IO.slurp.lines;
+  @giodirlist = "doc/Design-docs/gio-list.txt".IO.slurp.lines;
 }
 
 #-------------------------------------------------------------------------------
