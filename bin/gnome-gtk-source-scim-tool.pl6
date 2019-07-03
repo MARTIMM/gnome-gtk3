@@ -636,8 +636,6 @@ sub get-section ( Str:D $source-content --> List ) {
   /;
   my Str $short-description = ~($<text>//'');
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Short_description:' [.*?] \n //;
-note $section-doc;
-note $short-description;
 
   $section-doc ~~ m:i/ ^^ \s+ '*' \s+ '@See_also:' \s* $<text> = [.*?] $$ /;
   my Str $see-also = ~($<text>//'');
@@ -834,10 +832,9 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
     $source-content ~~ m/
       $<property-doc> = [ '/**' \s+ '*' \s+
       $lib-class-name ':' <-[:]> .*? '*/' \s+
-      'props[' .*? ');' ]
+      \w* 'props[' .*? ');' ]
     /;
     my Str $sdoc = ~($<property-doc> // '');
-#note "Sdoc: $sdoc";
 
     last unless ?$sdoc;
 
