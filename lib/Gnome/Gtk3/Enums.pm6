@@ -43,16 +43,25 @@ enum GtkAlign is export <
   GTK_ALIGN_BASELINE
 >;
 
-#`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2
-=item
-=item
-=item
-=item
+=head2 GtkArrowType
+
+Used to indicate the direction in which an arrow should point.
+
+=item GTK_ARROW_UP: Represents an upward pointing arrow.
+=item GTK_ARROW_DOWN: Represents a downward pointing arrow.
+=item GTK_ARROW_LEFT: Represents a left pointing arrow.
+=item GTK_ARROW_RIGHT: Represents a right pointing arrow.
+=item GTK_ARROW_NONE: No arrow. Since 2.10.
 =end pod
 
+enum GtkArrowType is export <
+  GTK_ARROW_UP GTK_ARROW_DOWN GTK_ARROW_LEFT GTK_ARROW_RIGHT
+  GTK_ARROW_NONE
+>;
+
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2
