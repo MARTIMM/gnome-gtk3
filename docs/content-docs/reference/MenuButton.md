@@ -3,12 +3,12 @@ TITLE
 
 Gnome::Gtk3::MenuButton
 
+![](images/menu-button.png)
+
 SUBTITLE
 ========
 
 A widget that shows a popup when clicked on
-
-![Image](images/menu-button.png)
 
 Description
 ===========
@@ -23,69 +23,64 @@ For menus, the `halign` and `valign` properties of the menu are also taken into 
 
 ## Direction = Down
 
-![Image](images/down-start.png)
-
 - halign = start
 
-    ![Image](down-start.png)
+    ![](images/down-start.png)
 
 - halign = center
 
-    ![Image](down-center.png)
+    ![](images/down-center.png)
 
 - halign = end
 
-    ![Image](down-end.png)
+    ![](images/down-end.png)
 
 ## Direction = Up
 
 - halign = start
 
-    ![Image](up-start.png)
+    ![](images/up-start.png)
 
 - halign = center
 
-    ![Image](up-center.png)
+    ![](images/up-center.png)
 
 - halign = end
 
-    ![Image](up-end.png)
+    ![](images/up-end.png)
 
 ## Direction = Left
 
 - valign = start
 
-    ![](left-start.png)
+    ![](images/left-start.png)
 
 - valign = center
 
-    ![](left-center.png)
+    ![](images/left-center.png)
 
 - valign = end
 
-    ![](left-end.png)
+    ![](images/left-end.png)
 
 ## Direction = Right
 
 - valign = start
 
-    ![](right-start.png)
+    ![](images/right-start.png)
 
 - valign = center
 
-    ![](right-center.png)
+    ![](images/right-center.png)
 
 - valign = end
 
-    ![](right-end.png)
+    ![](images/right-end.png)
 
 Css Nodes
 ---------
 
 `Gnome::Gtk3::MenuButton` has a single CSS node with name button. To differentiate it from a plain `Gnome::Gtk3::Button`, it gets the .popup style class.
-
-See Also
---------
 
 Synopsis
 ========
@@ -180,24 +175,6 @@ Returns the direction the popup will be pointing at when popped up.
 
 Returns GtkArrowType; a `Gnome::Gtk3::ArrowType` value
 
-[gtk_menu_button_] set_menu_model
----------------------------------
-
-Sets the `GMenuModel` from which the popup will be constructed, or `Any` to disable the button.
-
-    method gtk_menu_button_set_menu_model ( GMenuModel $menu_model )
-
-  * GMenuModel $menu_model; (allow-none): a `GMenuModel`
-
-[gtk_menu_button_] get_menu_model
----------------------------------
-
-Returns the `GMenuModel` used to generate the popup.
-
-    method gtk_menu_button_get_menu_model ( --> GMenuModel  )
-
-Returns GMenuModel; (nullable) (transfer none): a `GMenuModel` or `Any`
-
 [gtk_menu_button_] set_align_widget
 -----------------------------------
 
@@ -233,3 +210,58 @@ Returns whether a `Gnome::Gtk3::Popover` or a `Gnome::Gtk3::Menu` will be constr
     method gtk_menu_button_get_use_popover ( --> Int  )
 
 Returns Int; `1` if using a `Gnome::Gtk3::Popover`
+
+Properties
+==========
+
+An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.g-object-get-property( 'label', $gv);
+    $gv.g-value-set-string('my text label');
+
+Supported properties
+--------------------
+
+### direction
+
+The `Gnome::GObject::Value` type of property *direction* is `G_TYPE_ENUM`.
+
+The `Gnome::Gtk3::ArrowType` representing the direction in which the menu or popover will be popped out.
+
+### use-popover
+
+The `Gnome::GObject::Value` type of property *use-popover* is `G_TYPE_BOOLEAN`.
+
+Whether to construct a `Gnome::Gtk3::Popover` from the menu model, or a `Gnome::Gtk3::Menu`.
+
+Not yet supported properties
+----------------------------
+
+### popup
+
+The `Gnome::GObject::Value` type of property *popup* is `G_TYPE_OBJECT`.
+
+The `Gnome::Gtk3::Menu` that will be popped up when the button is clicked.
+
+### menu-model
+
+The `Gnome::GObject::Value` type of property *menu-model* is `G_TYPE_OBJECT`.
+
+The `GMenuModel` from which the popup will be created. Depending on the `use`-popover property, that may be a menu or a popover.
+
+See `gtk_menu_button_set_menu_model()` for the interaction with the `popup` property.
+
+### align-widget
+
+The `Gnome::GObject::Value` type of property *align-widget* is `G_TYPE_OBJECT`.
+
+The `Gnome::Gtk3::Widget` to use to align the menu with.
+
+### popover
+
+The `Gnome::GObject::Value` type of property *popover* is `G_TYPE_OBJECT`.
+
+The `Gnome::Gtk3::Popover` that will be popped up when the button is clicked.
+
