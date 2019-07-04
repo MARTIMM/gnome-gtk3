@@ -1035,7 +1035,7 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
   $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? \n //;
 
   $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
-  $text ~~ s/ ^^ \s+ '*/' .* $ //;                  # Doc end
+  $text ~~ s/ \s* '*/' .* $ //;                     # Doc end
   $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
   $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
   $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
@@ -1065,12 +1065,21 @@ sub primary-doc-changes (
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
-    # check for property spec in doc
+    # check for property spec with classname in doc
     $text ~~ m/ '#' (<alnum>+) ':' ([<alnum> || '-']+) /;
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /prop C\<$oct\>/;
+  }
+
+  loop {
+    # check for signal spec with classname in doc
+    $text ~~ m/ '#' (<alnum>+) '::' ([<alnum> || '-']+) /;
+    my Str $oct = ~($/[1] // '');
+    last unless ?$oct;
+
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /sig C\<$oct\>/;
   }
 
   loop {
@@ -1138,7 +1147,7 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / C<$/[0]>/;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / sig C<$/[0]>/;
   }
 
   $text
@@ -1150,7 +1159,7 @@ sub podding-property ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / C<$/[0]>/;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / prop C<$/[0]>/;
   }
 
   $text
