@@ -162,7 +162,7 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
           # make arguments pod doc
           $pod-args ~= ',' if ?$pod-args;
           $pod-args ~= " $p6-arg-type \$$arg";
-          $pod-doc-items ~= "=item $p6-arg-type \$$arg; $pod-doc-item-doc\n";
+          $pod-doc-items ~= "=item $p6-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
         }
 
         # add argument to list for sub declaration
@@ -505,7 +505,7 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
     }
   }
 
-note "$is-n-gobject, $type-name";
+#note "$is-n-gobject, $type-name";
 
   $is-n-gobject
 }
@@ -846,7 +846,7 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
     $source-content ~~ m/
       $<property-doc> = [ '/**' \s+ '*' \s+
       $lib-class-name ':' <-[:]> .*? '*/' \s+
-      \w* 'props[' .*? ');' ]
+      .*? 'g_param_spec_' .*? ');' ]
     /;
     my Str $sdoc = ~($<property-doc> // '');
 
@@ -1057,6 +1057,7 @@ sub primary-doc-changes (
   $text = modify-at-vars($text);
   $text = modify-percent-vars($text);
   $text = podding-function($text);
+  $text = adjust-image-path($text);
 }
 
 #-------------------------------------------------------------------------------
@@ -1065,11 +1066,11 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
     # check for property spec in doc
-    $text ~~ m/ '#' (<alnum>+) ':' (<alnum>+) /;
+    $text ~~ m/ '#' (<alnum>+) ':' ([<alnum> || '-']+) /;
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' (<alnum>+) /C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /C\<$oct\>/;
   }
 
   loop {
@@ -1156,19 +1157,19 @@ sub podding-property ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any function() C<function()>
+# change any function() to C<function()>
 sub podding-function ( Str:D $text is copy --> Str ) {
 
   # change any function() to C<function()>. first change to [[function]] to
   # prevent nested substitutions.
-  $text ~~ s:g/ ([<alnum> || '_']+) '()' /\[\[$/[0]\]\]/;
+  $text ~~ s:g/ ([<alnum> || '_']+) \s* '()' /\[\[$/[0]\]\]/;
   $text ~~ s:g/ '[[' ([<alnum> || '_']+ )']]' /C<$/[0]\()>/;
 
   $text
 }
 
 #-------------------------------------------------------------------------------
-# change any function() C<function()>
+# change any %val to C<val>
 sub modify-percent-vars ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ '%TRUE' /C<1>/;
   $text ~~ s:g/ '%FALSE' /C<0>/;
@@ -1179,9 +1180,18 @@ sub modify-percent-vars ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any function() C<function()>
+# change any @var to I<var>
 sub modify-at-vars ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ '@' (<alnum>+) /I<$/[0]>/;
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any ![alt](path) to ![alt](images/path)
+sub adjust-image-path ( Str:D $text is copy --> Str ) {
+  $text ~~ s:g/ '![' (<-[\]]>*) '](' (<-[\)]>+) ')'
+              /\!\[$/[0]\]\(images\/$/[1]\)/;
 
   $text
 }
