@@ -5,6 +5,8 @@ use v6;
 #-------------------------------------------------------------------------------
 my Str $library = '';
 my Str $sub-declarations = '';
+my Str $deprecated-subs = '';
+
 my Str $include-filename;
 my Str $lib-class-name;
 
@@ -35,7 +37,11 @@ sub MAIN ( Str:D $base-name ) {
   ) = setup-names($base-name);
 
   if $file-found {
-    $sub-declarations = process-content( $include-content, $source-content);
+    $sub-declarations = get-subroutines( $include-content, $source-content);
+
+    $deprecated-subs = get-deprecated-subs($include-content);
+
+
     ( $p6-parentclass-name, $p6-parentlib-name) =
        parent-class($include-content);
 
@@ -81,7 +87,7 @@ sub MAIN ( Str:D $base-name ) {
 }
 
 #-------------------------------------------------------------------------------
-sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
+sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
 
   my Str $sub-declarations = '';
   my Str $return-src-doc = '';
@@ -214,6 +220,119 @@ sub process-content( Str:D $include-content, Str:D $source-content --> Str ) {
   }
 
   $sub-declarations
+}
+
+#-------------------------------------------------------------------------------
+sub get-deprecated-subs( Str:D $include-content --> Str ) {
+
+  my Hash $dep-versions = {};
+#  my Str $sub-declarations = '';
+  my Str $return-src-doc = '';
+  my Str $sub-doc = '';
+  my Array $items-src-doc = [];
+  my Bool $variable-args-list;
+
+  $include-content ~~ m:g/^^ 'GDK_DEPRECATED_IN_' <-[;]>+ ';'/;
+  my List $results = $/[*];
+
+  # process subroutines
+  for @$results -> $r {
+    my Str $declaration = ~$r;
+
+    $declaration ~~ m/ 'GDK_DEPRECATED_IN_'
+                       $<version> = [ <[\d_]>+ ]
+                     /;
+    my Str $version = ~($<version> // '');
+    $version ~~ s:g/ '_' /./;
+#note "0 >> $declaration";
+
+    $declaration ~~ s/ 'GDK_DEPRECATED_IN_' .*? \n //;
+
+    my Str ( $return-type, $p6-return-type) = ( '', '');
+    my Bool $type-is-class;
+
+    # convert and remove return type from declaration
+    #( $declaration, #`{{ rest is ignored }} ) = get-type( $declaration, :!attr);
+    ( $declaration, $return-type, $p6-return-type, $type-is-class) =
+      get-type( $declaration, :!attr);
+
+#note "1 >> $declaration";
+    # get the subroutine name and remove from declaration
+    $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
+    my Str $sub-name = ~$<sub-name>;
+    $declaration ~~ s/ $sub-name \s* //;
+
+    # remove any brackets, and other stuff left before arguments are processed
+    $declaration ~~ s:g/ <[();]> || 'void' || 'G_GNUC_NULL_TERMINATED' //;
+
+#note "2 >> $version, $sub-name";
+    my Str $args-declaration = $declaration;
+    my Str ( $pod-args, $args, $pod-doc-items) = ( '', '', '');
+    my Bool $first-arg = True;
+
+    # process arguments
+    for $args-declaration.split(/ \s* ',' \s* /) -> $raw-arg {
+      my Str ( $arg, $arg-type, $p6-arg-type);
+      ( $arg, $arg-type, $p6-arg-type, $type-is-class) =
+        get-type( $raw-arg, :attr);
+
+      if ?$arg {
+        my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
+#note "pod info: $p6-arg-type, $arg, $pod-doc-item-doc";
+
+        # skip first argument when type is also the class name
+        if $first-arg and $type-is-class {
+        }
+
+        # skip also when variable is $any set to default Any type
+        elsif $arg eq 'any = Any' {
+        }
+
+        else {
+          # make arguments pod doc
+          $pod-args ~= ',' if ?$pod-args;
+          $pod-args ~= " $p6-arg-type \$$arg";
+          $pod-doc-items ~= "=item $p6-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
+        }
+
+        # add argument to list for sub declaration
+        $args ~= ', ' if ?$args;
+        $args ~= "$arg-type \$$arg";
+      }
+
+      $first-arg = False;
+    }
+
+    my Str $pod-doc-return = '';
+    my Str $pod-returns = '';
+    my Str $returns = '';
+    if ?$return-type {
+      $pod-returns = " --> $p6-return-type ";
+#      $returns = "\n  returns $return-type";
+#      $pod-doc-return = "\nReturns $p6-return-type; $return-src-doc";
+    }
+
+    $dep-versions{$version} = [] unless $dep-versions{$version}:exists;
+    $dep-versions{$version}.push: "method $sub-name ($pod-args$pod-returns )";
+  }
+
+
+  my Str $deprecated-subs = Q:to/EODEPSUB/;
+    #-------------------------------------------------------------------------------
+    =begin pod
+    =head1 List of deprecated (not implemented!) methods
+    EODEPSUB
+
+  for $dep-versions.keys.sort -> $version {
+    $deprecated-subs ~= "\n=head2 Since $version\n";
+    for @($dep-versions{$version}) -> $sub {
+      $deprecated-subs ~= "=head3 $sub\n";
+    }
+  }
+
+  $deprecated-subs ~= "=end pod";
+
+  $deprecated-subs
 }
 
 #-------------------------------------------------------------------------------
@@ -539,6 +658,7 @@ sub substitute-in-template ( --> Str ) {
 
   $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
   $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
+  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
@@ -698,38 +818,76 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=head3 $signal-name";
+    $signal-doc ~= "\n=head3 $signal-name\n";
 #note "SD: $signal-name, $signal-doc";
 
-    # get arguments for this signal handler
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
+#`{{
+    # get arguments for this signal handler
+    my Str $item-doc;
+    my Str $item-name;
+    my Bool $item-scan = True;
+
+    for $sdoc.lines -> $line {
+      if $item-scan and $line ~~ m/ '*' \s+ '@' / {
+        $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
+                    \s* $<item-doc> = [ .*? ]
+                  /;
+
+        $item-name = ~($<item-name> // '');
+        $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
+        $items-src-doc.push: %(:$item-name, :$item-doc);
+      }
+
+      elsif $item-scan and $line ~~ m/ '*' \s**4 \s* $<item-doc> = [ .*? ] / {
+        $item-doc ~= primary-doc-changes(~($<item-doc> // '')) ~ "\n";
+      }
+
+      elsif $line ~~ m/ '*' \s \S / {
+        $signal-doc ~= $line ~ "\n";
+        $item-scan = False;
+      }
+    }
+}}
+
+
+
     loop {
       $sdoc ~~ m/
         ^^ \s+ '*' \s+ '@'
         $<item-name> = [<alnum>+] ':'
-        \s* $<item-doc> = [ .*? ]
-        $$
+        \s* $<item-doc> = [ .*? $$ [ \s+ '*' \s**4..* <-[\n]>+ \n ]* ]
       /;
 
       my Str $item-name = ~($<item-name> // '');
       my Str $item-doc = ~($<item-doc> // '');
-      $sdoc ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc $$ //;
+      $sdoc ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc //;
+note "item doc: ", $item-doc;
+#note "sdoc: ", $sdoc;
 
-#note "doc '$doc'";
-#note "item doc: ", $item;
       last unless ?$item-name;
       $sdoc ~~ s/ '*' \s+ '@' $item-name ':' $item-doc \n //;
 
-#note "item doc 0: ", $item;
+#`{{
       $item-doc ~~ m/ '#' (<alnum>+) /;
       my Str $oct = ~($/[0] // '');
       $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
       $item-doc ~~ s/ '#' (<alnum>+) /C\<$oct>/;
+}}
 #note "item doc 1: ", $item-doc;
       $item-doc = primary-doc-changes($item-doc);
+      $item-doc ~~ s:g/ ^^ \s+ '*' \s* //;
+      $item-doc ~~ s:g/ \n / /;
 
       $items-src-doc.push: %(:$item-name, :$item-doc);
     }
+
+
+
+
+
+
+
 
 #note "item doc 2: ", $sdoc;
 
@@ -737,27 +895,24 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
     $sdoc = primary-doc-changes($sdoc);
     $sdoc = cleanup-source-doc($sdoc);
 
-#note "item doc 3: ", $sdoc;
 
-    $signal-doc ~= "\n{$sdoc}  method handler (\n    ";
+    $signal-doc ~= "$sdoc\n  method handler (\n";
 
     my Int $count = 0;
-    my Str $type;
     for @$items-src-doc -> $idoc {
-      $type = '';
-      if $count == 0 and $idoc<item-name> ~~ any(<widget object>) {
-        $type = 'Gnome::GObject::Object ';
+      if $count == 0 {
+        $signal-doc ~= "    Gnome::GObject::Object " ~
+                       "\:widget\(\$$idoc<item-name>\),\n";
       }
 
-      elsif $count == 1 and $idoc<item-name> eq 'event' {
-        $type = 'GdkEvent';
+      else {
+        $signal-doc ~= "    \:handle-arg$count\(\$$idoc<item-name>\),\n";
       }
 
-      $signal-doc ~= "$type:\$$idoc<item-name>, ";
       $count++;
     }
 
-    $signal-doc ~= "\n    :\$user-option1, ..., \$user-optionN\n  );\n\n";
+    $signal-doc ~= "    \:\$user-option1, ..., :\$user-optionN\n  );\n\n";
 
     for @$items-src-doc -> $idoc {
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
@@ -775,7 +930,7 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
 
         my Bool $is-registered = $my-widget.register-signal (
           $handler-object, $handler-name, $signal-name,
-          :$user-option1, ..., $user-optionN
+          :$user-option1, ..., :$user-optionN
         )
 
       =begin comment
@@ -791,19 +946,20 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
       EOSIGDOC
 
     $signal-doc ~= $sd ~ Q:q:to/EOSIGDOC/;
+
       =begin comment
 
       =head4 Signal Handler Signature
 
         method handler (
-          Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
+          Gnome::GObject::Object :$widget, :$user-option1, ..., :$user-optionN
         )
 
       =head4 Event Handler Signature
 
         method handler (
           Gnome::GObject::Object :$widget, GdkEvent :$event,
-          :$user-option1, ..., $user-optionN
+          :$user-option1, ..., :$user-optionN
         )
 
       =head4 Native Object Handler Signature
@@ -830,6 +986,8 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
 
       EOSIGDOC
   }
+
+#note $signal-doc;
 
   $signal-doc
 }
@@ -1031,18 +1189,19 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
 sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 
   # remove property and signal line
-  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? \n //;
-  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' .*? \n //;
+  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':'+ .*? \n //;
+#  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? \n //;
 
   $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
   $text ~~ s/ \s* '*/' .* $ //;                     # Doc end
-  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
-  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
+#  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
+#  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
+#  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;  # Stability: status
   $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
   $text ~~ s:g/ ^^ \s+ '*' \s* \n //;               # Leading star on Empty line
-  #$text ~~ s:g/ ^^ \s* \n //;
+#  $text ~~ s:g/ ^^ \s* \n //;
 
-  $text ~ "\n"
+  $text ~ "\n\n"
 }
 
 #-------------------------------------------------------------------------------
@@ -1055,7 +1214,7 @@ sub primary-doc-changes (
   $text = podding-class($text) unless $skip-class-subst;
   $text = podding-property($text);
   $text = modify-at-vars($text);
-  $text = modify-percent-vars($text);
+  $text = modify-percent-types($text);
   $text = podding-function($text);
   $text = adjust-image-path($text);
 }
@@ -1178,8 +1337,8 @@ sub podding-function ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any %val to C<val>
-sub modify-percent-vars ( Str:D $text is copy --> Str ) {
+# change any %type to C<type>
+sub modify-percent-types ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ '%TRUE' /C<1>/;
   $text ~~ s:g/ '%FALSE' /C<0>/;
   $text ~~ s:g/ '%NULL' /C<Any>/;

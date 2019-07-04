@@ -105,8 +105,10 @@ method fallback ( $native-sub is copy --> Callable ) {
 
 SUB-DECLARATIONS
 
-PROPERTY-DOC
+DEPRECATED-SUBS
 
 SIGNAL-DOC
 
 TYPE-DOC
+
+PROPERTY-DOC
