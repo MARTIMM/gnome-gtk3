@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.16.1",
+  "version": "0.17.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -37,6 +37,8 @@
     "Gnome::Gtk3::LevelBar": "lib/Gnome/Gtk3/LevelBar.pm6",
     "Gnome::Gtk3::ListBox": "lib/Gnome/Gtk3/ListBox.pm6",
     "Gnome::Gtk3::Main": "lib/Gnome/Gtk3/Main.pm6",
+    "Gnome::Gtk3::Menu": "lib/Gnome/Gtk3/Menu.pm6",
+    "Gnome::Gtk3::MenuButton": "lib/Gnome/Gtk3/MenuButton.pm6",
     "Gnome::Gtk3::MenuItem": "lib/Gnome/Gtk3/MenuItem.pm6",
     "Gnome::Gtk3::Misc": "lib/Gnome/Gtk3/Misc.pm6",
     "Gnome::Gtk3::Orientable": "lib/Gnome/Gtk3/Orientable.pm6",
