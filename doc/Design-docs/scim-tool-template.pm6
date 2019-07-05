@@ -34,7 +34,6 @@ USE-LIBRARY-PARENT
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
-# /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
 ALSO-IS-LIBRARY-PARENT
