@@ -40,6 +40,7 @@
     "Gnome::Gtk3::Menu": "lib/Gnome/Gtk3/Menu.pm6",
     "Gnome::Gtk3::MenuButton": "lib/Gnome/Gtk3/MenuButton.pm6",
     "Gnome::Gtk3::MenuItem": "lib/Gnome/Gtk3/MenuItem.pm6",
+    "Gnome::Gtk3::MenuShell": "lib/Gnome/Gtk3/MenuShell.pm6",
     "Gnome::Gtk3::Misc": "lib/Gnome/Gtk3/Misc.pm6",
     "Gnome::Gtk3::Orientable": "lib/Gnome/Gtk3/Orientable.pm6",
     "Gnome::Gtk3::Paned": "lib/Gnome/Gtk3/Paned.pm6",
