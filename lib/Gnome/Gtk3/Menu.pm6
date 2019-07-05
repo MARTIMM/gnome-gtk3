@@ -68,22 +68,14 @@ my_popup_handler (C<Gnome::Gtk3::Widget> *widget, C<Gnome::Gdk3::Event> *event)
 
 =head2 Css Nodes
 
+  menu
+  ├── arrow.top
+  ├── <child>
+  ┊
+  ├── <child>
+  ╰── arrow.bottom
 
-|[<!-- language="plain" -->
-menu
-├── arrow.top
-├── <child>
-┊
-├── <child>
-╰── arrow.bottom
-]|
-
-The main CSS node of C<Gnome::Gtk3::Menu> has name menu, and there are two subnodes
-with name arrow, for scrolling menu arrows. These subnodes get the
-.top and .bottom style classes.
-
-
-=head2 See Also
+The main CSS node of C<Gnome::Gtk3::Menu> has name B<menu>, and there are two subnodes with name arrow, for scrolling menu arrows. These subnodes get the .top and .bottom style classes.
 
 
 
@@ -102,12 +94,12 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
+use Gnome::Gdk3::Window;
 use Gnome::Gtk3::MenuShell;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkmenu.h
-https://developer.gnome.org/gtk3/stable/GtkMenu.html
+# https://developer.gnome.org/gtk3/stable/GtkMenu.html
 unit class Gnome::Gtk3::Menu:auth<github:MARTIMM>;
 also is Gnome::Gtk3::MenuShell;
 
@@ -137,7 +129,7 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    # ... :type<signame>
+    :scrolltype<move-scroll>, :point2bool2<popped-up>
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -615,6 +607,115 @@ sub gtk_menu_get_reserve_toggle_size ( N-GObject $menu )
 
 #-------------------------------------------------------------------------------
 =begin pod
+=head1 Signals
+
+Register any signal as follows. See also C<Gnome::GObject::Object>.
+
+  my Bool $is-registered = $my-widget.register-signal (
+    $handler-object, $handler-name, $signal-name,
+    :$user-option1, ..., $user-optionN
+  )
+
+=begin comment
+
+=head2 Supported signals
+
+=head2 Unsupported signals
+
+=end comment
+
+=head2 Not yet supported signals
+
+
+=head3 move-scroll
+
+  method handler (
+    :$menu, :$scroll_type,
+    :$user-option1, ..., $user-optionN
+  );
+
+=item $menu; a C<Gnome::Gtk3::Menu>
+
+=item $scroll_type; a C<Gnome::Gtk3::ScrollType>
+
+=head3 popped-up
+
+Emitted when the position of I<menu> is finalized after being popped up
+using C<gtk_menu_popup_at_rect()>, C<gtk_menu_popup_at_widget()>, or
+C<gtk_menu_popup_at_pointer()>.
+
+I<menu> might be flipped over the anchor rectangle in order to keep it
+on-screen, in which case I<flipped_x> and I<flipped_y> will be set to C<1>
+accordingly.
+
+I<flipped_rect> is the ideal position of I<menu> after any possible flipping,
+but before any possible sliding. I<final_rect> is I<flipped_rect>, but possibly
+translated in the case that flipping is still ineffective in keeping I<menu>
+on-screen.
+
+![](images/popup-slide.png)
+
+The blue menu is I<menu>'s ideal position, the green menu is I<flipped_rect>,
+and the red menu is I<final_rect>.
+
+See C<gtk_menu_popup_at_rect()>, C<gtk_menu_popup_at_widget()>,
+C<gtk_menu_popup_at_pointer()>, prop C<anchor-hints>,
+prop C<rect-anchor-dx>, prop C<rect-anchor-dy>, and
+prop C<menu-type-hint>.
+
+Since: 3.22
+Stability: Unstable
+
+  method handler (
+    Gnome::GObject::Object :widget($menu),
+    :handle-arg0($flipped_rect),
+    :handle-arg1($final_rect),
+    :handle-arg2($flipped_x),
+    :handle-arg3($flipped_y),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $menu; the C<Gnome::Gtk3::Menu> that popped up
+
+=item $flipped_rect; (nullable): the position of I<menu> after any possible
+flipping or C<Any> if the backend can't obtain it
+
+=item $final_rect; (nullable): the final position of I<menu> or C<Any> if the
+backend can't obtain it
+
+=item $flipped_x; C<1> if the anchors were flipped horizontally
+
+=item $flipped_y; C<1> if the anchors were flipped vertically
+
+=end pod
+
+
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Types
+
+=head2 enum GtkArrowPlacement
+
+Used to specify the placement of scroll arrows in scrolling menus.
+
+
+=item GTK_ARROWS_BOTH: Place one arrow on each end of the menu.
+=item GTK_ARROWS_START: Place both arrows at the top of the menu.
+=item GTK_ARROWS_END: Place both arrows at the bottom of the menu.
+
+
+=end pod
+
+enum GtkArrowPlacement is export (
+  'GTK_ARROWS_BOTH',
+  'GTK_ARROWS_START',
+  'GTK_ARROWS_END'
+);
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head1 Properties
 
 An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
@@ -628,13 +729,6 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=head2 Unsupported properties
-
-=end comment
-
-=head2 Not yet supported properties
-
-
 =head3 active
 
 The C<Gnome::GObject::Value> type of property I<active> is C<G_TYPE_INT>.
@@ -643,45 +737,17 @@ The index of the currently selected menu item, or -1 if no
 menu item is selected.
 
 
-
-
-=head3 accel-group
-
-The C<Gnome::GObject::Value> type of property I<accel-group> is C<G_TYPE_OBJECT>.
-
-The accel group holding accelerators for the menu.
-
-
-
-
 =head3 accel-path
 
 The C<Gnome::GObject::Value> type of property I<accel-path> is C<G_TYPE_STRING>.
 
 An accel path used to conveniently construct accel paths of child items.
 
-
-
-
-=head3 attach-widget
-
-The C<Gnome::GObject::Value> type of property I<attach-widget> is C<G_TYPE_OBJECT>.
-
-The widget the menu is attached to. Setting this property attaches
-the menu without a C<Gnome::Gtk3::MenuDetachFunc>. If you need to use a detacher,
-use C<gtk_menu_attach_to_widget()> directly.
-
-
-
-
 =head3 monitor
 
 The C<Gnome::GObject::Value> type of property I<monitor> is C<G_TYPE_INT>.
 
 The monitor the menu will be popped up on.
-
-
-
 
 =head3 reserve-toggle-size
 
@@ -696,28 +762,6 @@ are connected to a menu bar or context menus should reserve
 toggle space for consistency.
 
 Since: 2.18
-
-
-=head3 anchor-hints
-
-The C<Gnome::GObject::Value> type of property I<anchor-hints> is C<G_TYPE_FLAGS>.
-
-Positioning hints for aligning the menu relative to a rectangle.
-
-These hints determine how the menu should be positioned in the case that
-the menu would fall off-screen if placed in its ideal position.
-
-![](images/popup-flip.png)
-
-For example, C<GDK_ANCHOR_FLIP_Y> will replace C<GDK_GRAVITY_NORTH_WEST> with
-C<GDK_GRAVITY_SOUTH_WEST> and vice versa if the menu extends beyond the
-bottom edge of the monitor.
-
-See C<gtk_menu_popup_at_rect()>, C<gtk_menu_popup_at_widget()>,
-C<gtk_menu_popup_at_pointer()>, prop C<rect-anchor-dx>,
-prop C<rect-anchor-dy>, prop C<menu-type-hint>, and sig C<popped-up>.
-
-Stability: Unstable
 
 
 =head3 rect-anchor-dx
@@ -759,138 +803,45 @@ prop C<rect-anchor-dx>, prop C<rect-anchor-dy>, and sig C<popped-up>.
 
 Stability: Unstable
 
-=end pod
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-Register any signal as follows. See also C<Gnome::GObject::Object>.
-
-  my Bool $is-registered = $my-widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., $user-optionN
-  )
-
-=begin comment
-
-=head2 Supported signals
-
-=head2 Unsupported signals
+=head2 Unsupported properties
 
 =end comment
 
-=head2 Not yet supported signals
+=head2 Not yet supported properties
 
+=head3 accel-group
 
-=head3 move-scroll
+The C<Gnome::GObject::Value> type of property I<accel-group> is C<G_TYPE_OBJECT>.
 
-  method handler (
-    :$menu, :$scroll_type,
-    :$user-option1, ..., $user-optionN
-  );
+The accel group holding accelerators for the menu.
 
-=item $menu; a C<Gnome::Gtk3::Menu>
-=item $scroll_type; a C<Gnome::Gtk3::ScrollType>
+=head3 attach-widget
 
-=head3 popped-up
-               flipping or C<Any> if the backend can't obtain it
-             backend can't obtain it
+The C<Gnome::GObject::Value> type of property I<attach-widget> is C<G_TYPE_OBJECT>.
 
-Emitted when the position of I<menu> is finalized after being popped up
-using C<gtk_menu_popup_at_rect()>, C<gtk_menu_popup_at_widget()>, or
-C<gtk_menu_popup_at_pointer()>.
+The widget the menu is attached to. Setting this property attaches
+the menu without a C<Gnome::Gtk3::MenuDetachFunc>. If you need to use a detacher,
+use C<gtk_menu_attach_to_widget()> directly.
 
-I<menu> might be flipped over the anchor rectangle in order to keep it
-on-screen, in which case I<flipped_x> and I<flipped_y> will be set to C<1>
-accordingly.
+=head3 anchor-hints
 
-I<flipped_rect> is the ideal position of I<menu> after any possible flipping,
-but before any possible sliding. I<final_rect> is I<flipped_rect>, but possibly
-translated in the case that flipping is still ineffective in keeping I<menu>
-on-screen.
+The C<Gnome::GObject::Value> type of property I<anchor-hints> is C<G_TYPE_FLAGS>.
 
-![](images/popup-slide.png)
+Positioning hints for aligning the menu relative to a rectangle.
 
-The blue menu is I<menu>'s ideal position, the green menu is I<flipped_rect>,
-and the red menu is I<final_rect>.
+These hints determine how the menu should be positioned in the case that
+the menu would fall off-screen if placed in its ideal position.
+
+![](images/popup-flip.png)
+
+For example, C<GDK_ANCHOR_FLIP_Y> will replace C<GDK_GRAVITY_NORTH_WEST> with
+C<GDK_GRAVITY_SOUTH_WEST> and vice versa if the menu extends beyond the
+bottom edge of the monitor.
 
 See C<gtk_menu_popup_at_rect()>, C<gtk_menu_popup_at_widget()>,
-C<gtk_menu_popup_at_pointer()>, prop C<anchor-hints>,
-prop C<rect-anchor-dx>, prop C<rect-anchor-dy>, and
-prop C<menu-type-hint>.
+C<gtk_menu_popup_at_pointer()>, prop C<rect-anchor-dx>,
+prop C<rect-anchor-dy>, prop C<menu-type-hint>, and sig C<popped-up>.
 
 Stability: Unstable
 
-  method handler (
-    :$menu, :$flipped_rect, :$final_rect, :$flipped_x, :$flipped_y,
-    :$user-option1, ..., $user-optionN
-  );
-
-=item $menu; the C<Gnome::Gtk3::Menu> that popped up
-=item $flipped_rect; (nullable): the position of I<menu> after any possible
-=item $final_rect; (nullable): the final position of I<menu> or C<Any> if the
-=item $flipped_x; C<1> if the anchors were flipped horizontally
-=item $flipped_y; C<1> if the anchors were flipped vertically
-=begin comment
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
-  )
-
-=head4 Event Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, GdkEvent :$event,
-    :$user-option1, ..., $user-optionN
-  )
-
-=head4 Native Object Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, N-GObject :$nativewidget,
-    :$user-option1, ..., :$user-optionN
-  )
-
-=end comment
-
-
-=begin comment
-
-=head4 Handler Method Arguments
-=item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
-=item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
-=item $user-option*; Any extra options given by the user when registering the signal.
-
-=end comment
-
 =end pod
-
-
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-
-=head2 enum GtkArrowPlacement
-
-Used to specify the placement of scroll arrows in scrolling menus.
-
-
-=item GTK_ARROWS_BOTH: Place one arrow on each end of the menu.
-=item GTK_ARROWS_START: Place both arrows at the top of the menu.
-=item GTK_ARROWS_END: Place both arrows at the bottom of the menu.
-
-
-=end pod
-
-enum GtkArrowPlacement is export (
-  'GTK_ARROWS_BOTH',
-  'GTK_ARROWS_START',
-  'GTK_ARROWS_END'
-);
