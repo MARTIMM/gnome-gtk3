@@ -543,36 +543,44 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     if "$path/$include-file.h".IO.r {
       $file-found = True;
       $include-content = "$path/$include-file.h".IO.slurp;
-      given $path {
-        when $gtk-path {
-          $source-content = "$gtk-srcpath/$include-file.c".IO.slurp;
-          $library = "&gtk-lib";
-          $p6-lib-name = 'Gtk3';
-        }
+      if "$gtk-srcpath/$include-file.c".IO.r {
+        given $path {
+          when $gtk-path {
+            $source-content = "$gtk-srcpath/$include-file.c".IO.slurp;
+            $library = "&gtk-lib";
+            $p6-lib-name = 'Gtk3';
+          }
 
-        when $gdk-path {
-          $source-content = "$gdk-srcpath/$include-file.c".IO.slurp;
-          $library = "&gdk-lib";
-          $p6-lib-name = 'Gdk3';
-        }
+          when $gdk-path {
+            $source-content = "$gdk-srcpath/$include-file.c".IO.slurp;
+            $library = "&gdk-lib";
+            $p6-lib-name = 'Gdk3';
+          }
 
-        when $glib-path {
-          $source-content = "$glib-srcpath/$include-file.c".IO.slurp;
-          $library = "&glib-lib";
-          $p6-lib-name = 'Glib';
-        }
+          when $glib-path {
+            $source-content = "$glib-srcpath/$include-file.c".IO.slurp;
+            $library = "&glib-lib";
+            $p6-lib-name = 'Glib';
+          }
 
-        when $gobject-path {
-          $source-content = "$gobject-srcpath/$include-file.c".IO.slurp;
-          $library = "&gobject-lib";
-          $p6-lib-name = 'GObject';
-        }
+          when $gobject-path {
+            $source-content = "$gobject-srcpath/$include-file.c".IO.slurp;
+            $library = "&gobject-lib";
+            $p6-lib-name = 'GObject';
+          }
 
-        when $gio-path {
-          $source-content = "$gio-srcpath/$include-file.c".IO.slurp;
-          $library = "&glib-lib";
-          $p6-lib-name = 'Glib';
+          when $gio-path {
+            $source-content = "$gio-srcpath/$include-file.c".IO.slurp;
+            $library = "&glib-lib";
+            $p6-lib-name = 'Glib';
+          }
         }
+      }
+
+      else {
+        $source-content = '';
+        $library = '';
+        $p6-lib-name = '';
       }
 
       last;
@@ -793,7 +801,30 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
 
   my Array $items-src-doc;
   my Str $signal-name;
-  my Str $signal-doc = '';
+  my Str $signal-doc = Q:q:to/EOSIGDOC/;
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Signals
+
+      Register any signal as follows. See also C<Gnome::GObject::Object>.
+
+        my Bool $is-registered = $my-widget.register-signal (
+          $handler-object, $handler-name, $signal-name,
+          :$user-option1, ..., :$user-optionN
+        )
+
+      =begin comment
+
+      =head2 Supported signals
+
+      =head2 Unsupported signals
+
+      =end comment
+
+      =head2 Not yet supported signals
+
+      EOSIGDOC
+
 
   loop {
     $items-src-doc = [];
@@ -822,41 +853,79 @@ sub get-signals ( Str:D $source-content is copy --> Str ) {
 #note "SD: $signal-name, $signal-doc";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
-#`{{
+#`{{}}
     # get arguments for this signal handler
     my Str $item-doc;
     my Str $item-name;
     my Bool $item-scan = True;
+    #my Bool $first-arg = True;
 
+#    my Str $doc-info = $sdoc;
+#    for $doc-info.lines -> $line {
     for $sdoc.lines -> $line {
-      if $item-scan and $line ~~ m/ '*' \s+ '@' / {
+#note "L: $line";
+
+      # argument doc start
+      if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
+
+        # push when 2nd arg is found
+        $items-src-doc.push: %( :$item-name, :$item-doc) if ?$item-name;
+
         $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
-                    \s* $<item-doc> = [ .*? ]
+                    \s* $<item-doc> = [ .* ]
                   /;
 
         $item-name = ~($<item-name> // '');
-        $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
-        $items-src-doc.push: %(:$item-name, :$item-doc);
+        $item-doc = ~($<item-doc> // '') ~ "\n";
+#note "n, d: $item-name, $item-doc";
+
+#        $sdoc ~~ s/^^ \s* '*' \s* '@' $item-name ':' \s* $item-doc $$//;
       }
 
-      elsif $item-scan and $line ~~ m/ '*' \s**4 \s* $<item-doc> = [ .*? ] / {
-        $item-doc ~= primary-doc-changes(~($<item-doc> // '')) ~ "\n";
+      # continue previous argument doc
+      elsif $item-scan and
+            $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
+        my Str $s = ~($<item-doc> // '');
+        $item-doc ~= $s ~ "\n";
+#note "d: $item-doc";
+#        $sdoc ~~ s/^^ '*' \s* $s $$//;
       }
 
-      elsif $line ~~ m/ '*' \s \S / {
-        $signal-doc ~= $line ~ "\n";
+      # on empty line after '*' start sub doc
+      elsif $line ~~ m/^ \s* '*' \s* $/ {
+        # push last arg
+        $items-src-doc.push: %( :$item-name, :$item-doc)
+          if $item-scan and ?$item-name;
+
+        $signal-doc ~= "\n";
+#        $sdoc ~~ s/$line \n//;
         $item-scan = False;
       }
+
+      # rest is sub doc
+      elsif !$item-scan {
+        # skip end of document
+        next if $line ~~ m/ '*/' /;
+
+        my Str $l = $line;
+        $l ~~ s/^ \s* '*' \s* //;
+        $signal-doc ~= $l ~ "\n";
+#        $sdoc ~~ s/$line \n//;
+      }
     }
-}}
+
+    # when there is no sub doc, it might end a bit abdrupt
+    $items-src-doc.push: %( :$item-name, :$item-doc)
+      if $item-scan and ?$item-name;
 
 
 
+#`[[
     loop {
       $sdoc ~~ m/
         ^^ \s+ '*' \s+ '@'
         $<item-name> = [<alnum>+] ':'
-        \s* $<item-doc> = [ .*? $$ [ \s+ '*' \s**4..* <-[\n]>+ \n ]* ]
+        \s* $<item-doc> = [ <-[\n]>+ \n [ \s+ '*' \s ** 4..* <-[\n]>+ \n ]* ]
       /;
 
       my Str $item-name = ~($<item-name> // '');
@@ -881,7 +950,7 @@ note "item doc: ", $item-doc;
 
       $items-src-doc.push: %(:$item-name, :$item-doc);
     }
-
+]]
 
 
 
@@ -892,11 +961,11 @@ note "item doc: ", $item-doc;
 #note "item doc 2: ", $sdoc;
 
     # cleanup info
-    $sdoc = primary-doc-changes($sdoc);
-    $sdoc = cleanup-source-doc($sdoc);
+#    $sdoc = primary-doc-changes($sdoc);
+#    $sdoc = cleanup-source-doc($sdoc);
 
 
-    $signal-doc ~= "$sdoc\n  method handler (\n";
+    $signal-doc ~= "\n  method handler (\n";
 
     my Int $count = 0;
     for @$items-src-doc -> $idoc {
@@ -906,7 +975,7 @@ note "item doc: ", $item-doc;
       }
 
       else {
-        $signal-doc ~= "    \:handle-arg$count\(\$$idoc<item-name>\),\n";
+        $signal-doc ~= "    \:handle-arg{$count - 1}\(\$$idoc<item-name>\),\n";
       }
 
       $count++;
@@ -920,74 +989,13 @@ note "item doc: ", $item-doc;
   }
 
   if ?$signal-doc {
-    my $sd = $signal-doc;
-    $signal-doc = Q:q:to/EOSIGDOC/;
-      #-------------------------------------------------------------------------------
-      =begin pod
-      =head1 Signals
-
-      Register any signal as follows. See also C<Gnome::GObject::Object>.
-
-        my Bool $is-registered = $my-widget.register-signal (
-          $handler-object, $handler-name, $signal-name,
-          :$user-option1, ..., :$user-optionN
-        )
-
-      =begin comment
-
-      =head2 Supported signals
-
-      =head2 Unsupported signals
-
-      =end comment
-
-      =head2 Not yet supported signals
-
-      EOSIGDOC
-
-    $signal-doc ~= $sd ~ Q:q:to/EOSIGDOC/;
-
-      =begin comment
-
-      =head4 Signal Handler Signature
-
-        method handler (
-          Gnome::GObject::Object :$widget, :$user-option1, ..., :$user-optionN
-        )
-
-      =head4 Event Handler Signature
-
-        method handler (
-          Gnome::GObject::Object :$widget, GdkEvent :$event,
-          :$user-option1, ..., :$user-optionN
-        )
-
-      =head4 Native Object Handler Signature
-
-        method handler (
-          Gnome::GObject::Object :$widget, N-GObject :$nativewidget,
-          :$user-option1, ..., :$user-optionN
-        )
-
-      =end comment
-
-
-      =begin comment
-
-      =head4 Handler Method Arguments
-      =item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-      =item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
-      =item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
-      =item $user-option*; Any extra options given by the user when registering the signal.
-
-      =end comment
-
-      =end pod
-
-      EOSIGDOC
-  }
+#    my $sd = $signal-doc;
+    $signal-doc ~= "\n=end pod\n\n";
 
 #note $signal-doc;
+  }
+
+  $signal-doc = primary-doc-changes($signal-doc);
 
   $signal-doc
 }
@@ -1205,18 +1213,16 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-sub primary-doc-changes (
-  Str:D $text is copy,
-  Bool :$skip-class-subst = False
-  --> Str
-) {
+sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
-  $text = podding-class($text) unless $skip-class-subst;
+  $text = podding-class($text);
   $text = podding-property($text);
   $text = modify-at-vars($text);
   $text = modify-percent-types($text);
   $text = podding-function($text);
   $text = adjust-image-path($text);
+
+  $text
 }
 
 #-------------------------------------------------------------------------------
@@ -1258,47 +1264,6 @@ sub podding-class ( Str:D $text is copy --> Str ) {
   $text
 }
 
-
-#-------------------------------------------------------------------------------
-sub get-podding-items ( Str:D $text is copy --> List ) {
-
-  my Array $items-src-doc = [];
-
-  # get arguments for this signal handler
-  loop {
-    $text ~~ m/
-      ^^ \s+ '*' \s+ '@'
-      $<item-name> = [<alnum>+] ':'
-      \s* $<item-doc> = [ .*? ]
-      $$
-    /;
-
-    my Str $item-name = ~($<item-name> // '');
-    my Str $item-doc = ~($<item-doc> // '');
-
-#note "doc '$doc'";
-#note "item doc: ", $item;
-    last unless ?$item-name;
-
-    # remove from string
-    $text ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc \n //;
-#    $text ~~ s/ '*' \s+ '@' $item-name ':' $item-doc \n //;
-
-#note "item doc 0: ", $item;
-    $item-doc = podding-class($item-doc);
-#`{{
-    $item-doc ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $item-doc ~~ s/ '#' (<alnum>+) /C\<$oct>/;
-}}
-#note "item doc 1: ", $item-doc;
-
-    $items-src-doc.push: %(:$item-name, :$item-doc);
-  }
-
-  ( $text, $items-src-doc)
-}
 
 #-------------------------------------------------------------------------------
 # change any ::signal to C<signal>
@@ -1363,3 +1328,46 @@ sub adjust-image-path ( Str:D $text is copy --> Str ) {
 
   $text
 }
+
+#`[[
+#-------------------------------------------------------------------------------
+sub get-podding-items ( Str:D $text is copy --> List ) {
+
+  my Array $items-src-doc = [];
+
+  # get arguments for this signal handler
+  loop {
+    $text ~~ m/
+      ^^ \s+ '*' \s+ '@'
+      $<item-name> = [<alnum>+] ':'
+      \s* $<item-doc> = [ .*? ]
+      $$
+    /;
+
+    my Str $item-name = ~($<item-name> // '');
+    my Str $item-doc = ~($<item-doc> // '');
+
+#note "doc '$doc'";
+#note "item doc: ", $item;
+    last unless ?$item-name;
+
+    # remove from string
+    $text ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc \n //;
+#    $text ~~ s/ '*' \s+ '@' $item-name ':' $item-doc \n //;
+
+#note "item doc 0: ", $item;
+    $item-doc = podding-class($item-doc);
+#`{{
+    $item-doc ~~ m/ '#' (<alnum>+) /;
+    my Str $oct = ~($/[0] // '');
+    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
+    $item-doc ~~ s/ '#' (<alnum>+) /C\<$oct>/;
+}}
+#note "item doc 1: ", $item-doc;
+
+    $items-src-doc.push: %(:$item-name, :$item-doc);
+  }
+
+  ( $text, $items-src-doc)
+}
+]]
