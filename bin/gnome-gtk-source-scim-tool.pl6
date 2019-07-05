@@ -1084,6 +1084,7 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
     #-------------------------------------------------------------------------------
     =begin pod
     =head1 Types
+    =end pod
     EODOC
 
 
@@ -1137,10 +1138,12 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
       elsif $line ~~ m/ ^ \s+ '*' \s* $ / {
         $get-item-doc = False;
         $get-enum-doc = True;
+
+        $enum-doc ~= "\n";
       }
 
       # end of type documentation
-      elsif $line ~~ m/ ^ \s+ '*/' \s* $ / {
+      elsif $line ~~ m/ ^ \s+ '*'*? '*/' \s* $ / {
         $get-item-doc = False;
         $get-enum-doc = False;
         $process-enum = True;
@@ -1148,17 +1151,17 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
         $enum-spec = "\n=end pod\n\nenum $enum-name is export (\n";
       }
 
-      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
-        # ignore
-      }
+#      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
+#        # ignore
+#      }
 
       elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [ \S .* ] $ / {
         if $get-item-doc {
-          $items-doc ~= ' ' ~ ~($<doc>//'');
+          $items-doc ~= " " ~ ~($<doc>//'');
         }
 
         elsif $get-enum-doc {
-          $enum-doc ~= ' ' ~ ~($<doc>//'');
+          $enum-doc ~= "\n" ~ ~($<doc>//'');
         }
       }
 
@@ -1178,8 +1181,12 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
     # remove first space
     $enum-doc ~~ s/ ^ \s+ //;
 
+    $enum-doc = primary-doc-changes($enum-doc);
+    $items-doc = primary-doc-changes($items-doc);
+
     $types-doc ~= Q:qq:to/EODOC/;
 
+      =begin pod
       =head2 enum $enum-name
 
       $enum-doc
