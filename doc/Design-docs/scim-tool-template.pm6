@@ -101,13 +101,3 @@ method fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
-
-SUB-DECLARATIONS
-
-DEPRECATED-SUBS
-
-SIGNAL-DOC
-
-TYPE-DOC
-
-PROPERTY-DOC

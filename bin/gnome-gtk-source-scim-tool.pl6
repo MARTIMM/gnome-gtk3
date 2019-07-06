@@ -17,7 +17,7 @@ my Str $p6-parentlib-name;
 my Str $p6-parentclass-name;
 
 my Str ( $section-doc, $short-description, $see-also);
-my Str ( $signal-doc, $property-doc, $type-doc);
+my Str ( $signal-doc, $property-doc, $types-doc);
 
 my @gtkdirlist = ();
 my @gdkdirlist = ();
@@ -36,6 +36,14 @@ sub MAIN ( Str:D $base-name ) {
     $p6-lib-name, $include-content, $source-content
   ) = setup-names($base-name);
 
+#$types-doc = get-vartypes($include-content);
+#'xt/__xyz__.pm6'.IO.spurt($types-doc);
+
+#$sub-declarations = get-subroutines( $include-content, $source-content);
+#'xt/__xyz__.pm6'.IO.spurt($sub-declarations);
+
+#exit 0;
+
   if $file-found {
     $sub-declarations = get-subroutines( $include-content, $source-content);
 
@@ -50,7 +58,7 @@ sub MAIN ( Str:D $base-name ) {
 
     $signal-doc = get-signals($source-content);
     $property-doc = get-properties($source-content);
-    $type-doc = get-vartypes($include-content);
+    $types-doc = get-vartypes($include-content);
 
     my Str $module-text = substitute-in-template();
     "xt/$p6-class-name.pm6".IO.spurt($module-text);
@@ -90,7 +98,6 @@ sub MAIN ( Str:D $base-name ) {
 sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
 
   my Str $sub-declarations = '';
-  my Str $return-src-doc = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -138,8 +145,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
     $declaration ~~ s:g/ <[();]> || 'void' || 'G_GNUC_NULL_TERMINATED' //;
 
     # get subroutine documentation from c source
-    ( $sub-doc, $return-src-doc, $items-src-doc) =
-      get-sub-doc( $sub-name, $source-content);
+    ( $sub-doc, $items-src-doc) = get-sub-doc( $sub-name, $source-content);
 
 #note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
@@ -190,7 +196,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
     if ?$return-type {
       $pod-returns = " --> $p6-return-type ";
       $returns = "\n  returns $return-type";
-      $pod-doc-return = "\nReturns $p6-return-type; $return-src-doc";
     }
 
     my Str $start-comment = $variable-args-list ?? "#`[[\n" !! '';
@@ -228,7 +233,6 @@ sub get-deprecated-subs( Str:D $include-content --> Str ) {
 
   my Hash $dep-versions = {};
 #  my Str $sub-declarations = '';
-  my Str $return-src-doc = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -309,8 +313,7 @@ sub get-deprecated-subs( Str:D $include-content --> Str ) {
     my Str $returns = '';
     if ?$return-type {
       $pod-returns = " --> $p6-return-type ";
-#      $returns = "\n  returns $return-type";
-#      $pod-doc-return = "\nReturns $p6-return-type; $return-src-doc";
+      $returns = "\n  returns $return-type";
     }
 
     $dep-versions{$version} = [] unless $dep-versions{$version}:exists;
@@ -670,16 +673,24 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
   $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
-  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
-  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
+#`{{
+  $template-text ~~ s:g/ 'TYPES-DOC' /$types-doc/;
+  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
+  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
   $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
   $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
-  $template-text ~~ s:g/ 'TYPE-DOC' /$type-doc/;
+}}
+
+  $template-text ~= "\n" ~ $types-doc;
+  $template-text ~= "\n" ~ $sub-declarations;
+  $template-text ~= "\n" ~ $deprecated-subs;
+  $template-text ~= "\n" ~ $signal-doc;
+  $template-text ~= "\n" ~ $property-doc;
 
   $template-text
 }
@@ -687,29 +698,19 @@ sub substitute-in-template ( --> Str ) {
 #-------------------------------------------------------------------------------
 sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
-  note "get sub documentation of $sub-name";
-
   $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
   my Str $doc = ~($<sub-doc> // '');
 
-#  $doc = primary-doc-changes($doc);
-
   my Array $items-src-doc = [];
-  my Bool ( $gather-items-doc, $gather-sub-doc, $gather-returns-doc) =
-          ( True, False, False);
-  my Str ( $item, $sub-doc, $return-src-doc) = ( '', '', '');
+  my Bool $gather-items-doc = True;
+  my Str ( $item, $sub-doc) = ( '', '');
   for $doc.lines -> $line {
-    #next if $line ~~ m/ '/**' /;
-    #next if $line ~~ m/ $sub-name ':' /;
 
     if $line ~~ m/ ^ \s+ '* @' <alnum>+ ':' $<item-doc> = [ .* ] / {
       # check if there was some item. if so save before set to new item
+      # @ can be in documentation too!
       if $gather-items-doc {
         $items-src-doc.push(primary-doc-changes($item)) if ?$item;
-      }
-
-      else {
-        $gather-items-doc = True;
       }
 
       # new item. remove first space char
@@ -717,59 +718,40 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
       $item ~~ s/ ^ \s+ //;
     }
 
-    elsif $line ~~ m/^ \s+ '* Returns:' \s* $<doc> = [.*] $ / {
-      $return-src-doc = ~($<doc> // '');
-
-      $gather-items-doc = False;
-      $gather-sub-doc = False;
-      $gather-returns-doc = True;
-    }
-
-    elsif $line ~~ m/ ^ \s+ '*' \s ** 2 \s* $<doc> = [ .* ] / {
+    elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [ .+ ] / {
       # additional doc for items. separate with a space.
       if $gather-items-doc {
-        $item ~= ' ' ~ ~($<doc> // '');
+        $item ~= " " ~ ~($<doc> // '');
       }
 
-      # additional doc for return info. separate with a space. first char
-      # is a space and is used later.
-      elsif $gather-returns-doc {
-        $return-src-doc ~= ' ' ~ ~($<doc> // '');
-      }
-    }
-
-    elsif $line ~~ m/ ^ \s+ '*' \s ** 1 $<doc> = [ .* ] / {
-      # additional doc for items. separate with a space.
-      if $gather-sub-doc {
-        $sub-doc ~= ' ' ~ ~($<doc> // '');
+      else {
+        $sub-doc ~= "\n" ~ ~($<doc> // '');
       }
     }
 
 
-    # an empty line is end of items doc, returns foc or sub doc
+    # an empty line is end of items doc and starts/continues sub doc
     elsif $line ~~ m/ ^ \s+ '*' \s* $ / {
       if $gather-items-doc {
+        # save previous item
         $items-src-doc.push(primary-doc-changes($item));
+
         $gather-items-doc = False;
-        $gather-sub-doc = True;
+        $sub-doc ~= "\n";
       }
 
-      elsif $gather-sub-doc {
-        $gather-sub-doc = False;
-      }
-
-      elsif $gather-returns-doc {
-        $gather-returns-doc = False;
+      else {
+        $sub-doc ~= "\n";
       }
     }
   }
 
+  # in case there is no doc, we need to save the last item still
+  $items-src-doc.push(primary-doc-changes($item)) if $gather-items-doc;
+
   $sub-doc ~~ s/ ^ \s+ //;
 
-  ( primary-doc-changes($sub-doc),
-    primary-doc-changes($return-src-doc),
-    $items-src-doc
-  )
+  ( primary-doc-changes($sub-doc), $items-src-doc )
 }
 
 #-------------------------------------------------------------------------------
@@ -1085,9 +1067,20 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-vartypes ( Str:D $include-content is copy --> Str ) {
+sub get-vartypes ( Str:D $include-content --> Str ) {
 
-  my Str $types-doc = Q:qq:to/EODOC/;
+#  my Str $enums-doc = get-enumerations($include-content);
+#  my Str $structs-doc = get-structures($include-content);
+
+  ( get-enumerations($include-content) ~
+    get-structures($include-content)
+  )
+}
+
+#-------------------------------------------------------------------------------
+sub get-enumerations ( Str:D $include-content is copy --> Str ) {
+
+  my Str $enums-doc = Q:qq:to/EODOC/;
 
     #-------------------------------------------------------------------------------
     =begin pod
@@ -1105,22 +1098,24 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
     my Str $enum-spec = '';
 
     $include-content ~~ m:s/
-      $<enum-type> = [ '/**' .*? '*/' 'typedef' 'enum' '{' .*? '}' <-[;]>+ ';' ]
+      $<enum-type-section> = [
+         '/**' .*? '*/' 'typedef' 'enum' '{' .*? '}' <-[;]>+ ';'
+      ]
     /;
-    my Str $enum-type-section = ~($<enum-type> // '');
+    my Str $enum-type-section = ~($<enum-type-section> // '');
 #note $enum-type-section;
 
     # if no enums are found, clear the string
     if !?$enum-type-section {
-      $types-doc = '' unless $found-doc;
+      $enums-doc = '' unless $found-doc;
       last;
     }
 
-    # enums found
-    $found-doc = True;
-
     # remove type info for next search
     $include-content ~~ s/ $enum-type-section //;
+
+    # enums found
+    $found-doc = True;
 
     my Bool ( $get-item-doc, $get-enum-doc, $process-enum) =
             ( False, False, False);
@@ -1132,8 +1127,7 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
 
       if $line ~~ m/ ^ \s+ '*' \s+ $<enum-name> = [<alnum>+] ':' \s* $ / {
         $enum-name = ~($<enum-name>//'');
-#note "Ename: $enum-name";
-
+        note "get enumeration $enum-name";
         $get-item-doc = True;
       }
 
@@ -1186,15 +1180,13 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
       }
     }
 
-    note "get enumeration $enum-name";
-
     # remove first space
     $enum-doc ~~ s/ ^ \s+ //;
 
     $enum-doc = primary-doc-changes($enum-doc);
     $items-doc = primary-doc-changes($items-doc);
 
-    $types-doc ~= Q:qq:to/EODOC/;
+    $enums-doc ~= Q:qq:to/EODOC/;
 
       =begin pod
       =head2 enum $enum-name
@@ -1207,7 +1199,140 @@ sub get-vartypes ( Str:D $include-content is copy --> Str ) {
       EODOC
   }
 
-  $types-doc
+  $enums-doc
+}
+
+#-------------------------------------------------------------------------------
+sub get-structures ( Str:D $include-content is copy --> Str ) {
+
+  my Str $structs-doc = '';
+  my Bool $found-doc = False;
+
+  # there are problems getting structs from the doc. somehow enums are included
+  # too. therefore remove enums first.
+  loop {
+    $include-content ~~ s:s/
+      '/**' .*? '*/' typedef enum '{' .*? '}' <-[;]>+ ';'
+    //;
+
+    last unless ?$/;
+  }
+
+  # now we try again to get structs
+  loop {
+    my Str $struct-name = '';
+    my Str $items-doc = '';
+    my Str $struct-doc = '';
+    my Str $struct-spec = '';
+    my Str ( $entry-type, $p6-entry-type);
+    my Bool $type-is-class;
+
+    $include-content ~~ m:s/
+      $<struct-type-section> = [
+          '/**' .*? '*/' struct <-[{]>+ '{' <-[}]>+ '};'
+      ]
+    /;
+
+    my Str $struct-type-section = ~($<struct-type-section> // '');
+#note $struct-type-section;
+
+    # if no structs are found, clear the string
+    if !?$struct-type-section {
+      $structs-doc = '' unless $found-doc;
+      last;
+    }
+
+    # remove struct info for next search
+    $include-content ~~ s/$struct-type-section//;
+
+    # structs found
+    $found-doc = True;
+
+    my Bool ( $get-item-doc, $get-struct-doc, $process-struct) =
+            ( False, False, False);
+
+    for $struct-type-section.lines -> $line {
+      next if $line ~~ m/ '/**' /;
+
+      if $line ~~ m/^ \s+ '*' \s+ $<struct-name> = [<alnum>+] ':' \s* $/ {
+        $struct-name = ~($<struct-name> // '');
+        note "get structure $struct-name";
+        $get-item-doc = True;
+      }
+
+      elsif $line ~~ m/^ \s+ '*' \s+ '@' $<item> = [ <alnum>+ ':' .* ] $ / {
+        # Add extra characters to insert type information later on
+        $items-doc ~= "\n=item ___" ~ ~($<item>//'');
+#note "Item: $items-doc";
+      }
+
+      # on empty line swith from item to enum doc
+      elsif $line ~~ m/ ^ \s+ '*' \s* $ / {
+        $get-item-doc = False;
+        $get-struct-doc = True;
+
+        $struct-doc ~= "\n";
+      }
+
+      # end of type documentation
+      elsif $line ~~ m/ ^ \s+ '*'*? '*/' \s* $ / {
+        $get-item-doc = False;
+        $get-struct-doc = False;
+        $process-struct = True;
+
+        $struct-spec = "\n=end pod\n\n" ~
+          "class $struct-name is export is repr\('CStruct') \{\n";
+      }
+
+#      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
+#        # ignore
+#      }
+
+      elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [ \S .* ] $ / {
+        if $get-item-doc {
+          $items-doc ~= " " ~ ~($<doc>//'');
+        }
+
+        elsif $get-struct-doc {
+          $struct-doc ~= "\n" ~ ~($<doc>//'');
+        }
+      }
+
+      elsif $line ~~ m:s/ '};' / {
+        $struct-spec ~= "}\n";
+      }
+
+      elsif $line ~~ m/^ \s+ $<struct-entry> = [ .*? ] ';' $/ {
+        my Str $s = ~($<struct-entry> // '');
+        ( $s, $entry-type, $p6-entry-type, $type-is-class) =
+          get-type( $s, :!attr);
+
+        $struct-spec ~= "  has $entry-type \$.$s;\n";
+#note "check for 'item ___$s'";
+        $items-doc ~~ s/ 'item ___' $s /item $p6-entry-type \$.$s/;
+      }
+    }
+
+    # remove first space
+    $struct-doc ~~ s/ ^ \s+ //;
+
+    $struct-doc = primary-doc-changes($struct-doc);
+    $items-doc = primary-doc-changes($items-doc);
+
+    $structs-doc ~= Q:qq:to/EODOC/;
+
+      =begin pod
+      =head2 class $struct-name
+
+      $struct-doc
+
+      $items-doc
+
+      $struct-spec
+      EODOC
+  }
+
+  $structs-doc
 }
 
 #-------------------------------------------------------------------------------
