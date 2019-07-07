@@ -25,6 +25,8 @@ my @gobjectdirlist = ();
 my @glibdirlist = ();
 my @giodirlist = ();
 
+my @enum-list = ();
+
 #-------------------------------------------------------------------------------
 sub MAIN ( Str:D $base-name ) {
   load-dir-lists();
@@ -443,6 +445,13 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   # convert to native perl types
   #$type ~~ s/ 'gchar' \s+ '*' /str/;
 
+  # process all types from GtkEnum and some
+  # use bin/gather-enums.pl6 to create a list in
+  # doc/Design-docs/scim-tool-enum-list.txt
+  if $type ~~ any(@enum-list) {
+    $type = 'int32';
+  }
+
   $type ~~ s:s/ gboolean || gint || gint32 /int32/;
   $type ~~ s:s/ gchar || gint8 /int8/;
   $type ~~ s:s/ gshort || gint16 /int16/;
@@ -458,28 +467,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type ~~ s:s/ gfloat /num32/;
   $type ~~ s:s/ gdouble /num64/;
 
-  # process all types from GtkEnum and some
-  $type ~~ s:s/ GtkAlign || GtkArrowType || GtkBaselinePosition ||
-                GtkSensitivityType || GtkTextDirection || GtkJustification ||
-                GtkMenuDirectionType || GtkMessageType || GtkMovementStep ||
-                GtkScrollStep || GtkOrientation || GtkPackType ||
-                GtkPositionType || GtkReliefStyle || GtkScrollType ||
-                GtkSelectionMode || GtkShadowType || GtkStateType ||
-                GtkToolbarStyle || GtkWrapMode || GtkSortType ||
-                GtkIMPreeditStyle || GtkIMStatusStyle || GtkPackDirection ||
-                GtkPrintPages || GtkPageSet || GtkNumberUpLayout ||
-                GtkPageOrientation || GtkPrintQuality || GtkPrintDuplex ||
-                GtkUnit || GtkTreeViewGridLines || GtkDragResult ||
-                GtkSizeGroupMode || GtkSizeRequestMode || GtkScrollablePolicy ||
-                GtkStateFlags || GtkRegionFlags || GtkJunctionSides ||
-                GtkBorderStyle || GtkLevelBarMode || GtkInputPurpose ||
-                GtkInputHints || GtkPropagationPhase || GtkEventSequenceState ||
-                GtkPanDirection || GtkPopoverConstraint ||
-
-                GdkRectangle || GdkModifierType || GdkWindowTypeHint ||
-
-                GtkDeleteType || GtkDirectionType || GtkIconSize || GtkLicense
-              /int32/;
+  $type ~~ s:s/ int /int32/;
+  $type ~~ s:s/ gpointer /Pointer/;
 
   # convert to perl types
   #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
@@ -495,6 +484,9 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
                    gushort || guint16 || gulong || guint64 ||
                    gsize
                  /UInt/;
+
+  $p6-type ~~ s:s/ int /int32/;
+  $p6-type ~~ s:s/ gpointer /Pointer/;
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
 
@@ -653,6 +645,8 @@ sub load-dir-lists ( ) {
   @gobjectdirlist = "doc/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "doc/Design-docs/glib-list.txt".IO.slurp.lines;
   @giodirlist = "doc/Design-docs/gio-list.txt".IO.slurp.lines;
+
+  @enum-list = 'doc/Design-docs/scim-tool-enum-list'.IO.slurp.lines;
 }
 
 #-------------------------------------------------------------------------------
@@ -1307,9 +1301,21 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
         ( $s, $entry-type, $p6-entry-type, $type-is-class) =
           get-type( $s, :!attr);
 
-        $struct-spec ~= "  has $entry-type \$.$s;\n";
-#note "check for 'item ___$s'";
-        $items-doc ~~ s/ 'item ___' $s /item $p6-entry-type \$.$s/;
+        # if there is a comma separated list then split vars up
+        if $s ~~ m/ ',' / {
+          my @varlist = $s.split( / \s* ',' \s* /);
+          for @varlist -> $var {
+            $struct-spec ~= "  has $entry-type \$.$var;\n";
+            $items-doc ~~ s/ 'item ___' $var /item $p6-entry-type \$.$var/;
+          }
+        }
+
+        # $s is holding a single var
+        else {
+          $struct-spec ~= "  has $entry-type \$.$s;\n";
+  #note "check for 'item ___$s'";
+          $items-doc ~~ s/ 'item ___' $s /item $p6-entry-type \$.$s/;
+        }
       }
     }
 
