@@ -2,7 +2,8 @@
 title: An empty window with a title
 #nav_title: Window
 nav_menu: example-nav
-layout: default
+sidebar_menu: example-toplevel-sidebar
+layout: sidebar
 ---
 
 ## An empty window with a title
