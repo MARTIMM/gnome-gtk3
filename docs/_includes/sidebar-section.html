@@ -1,9 +1,8 @@
-<h2>{{ site.data[page.sidebar_menu].bar_title }}</h2>
+<strong>{{ site.data[page.sidebar_menu].bar_title }}</strong>
 
 <hr>
 
 <ul>
-
   {% for item in site.data[page.sidebar_menu].bar_menu %}
 
     {% assign url = site.baseurl | append: item.url %}
