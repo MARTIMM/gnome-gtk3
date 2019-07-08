@@ -12,7 +12,8 @@ This package, together with a few others is an interface to the great Gnome libr
 * I wanted to have classes with methods instead of the subroutines.
 * I wanted the event handling code in separate classes where the information about specific procedures can be stored.
 * I wanted all possible event handlers available for the user, not just the most used ones.
-* I didn't want to fix events in method calls.
+* I didn't want to fix events in method calls like `click()`.
+* Later, I decided that I also wanted a more complete set of methods interfaced to GTK+ et al. This happened after I had created a program to scim through the source code of the gtk libraries (.h and .c), because these files are very well documented, and generate a perl6 module from it.
 * I wanted to follow the obsolete markings of Gnome. E.g. the GtkHBox and GtkVBox are not supported anymore in favor of GtkGrid.
 
 ## History
