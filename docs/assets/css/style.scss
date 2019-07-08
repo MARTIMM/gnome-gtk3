@@ -39,7 +39,7 @@ header nav {
     float: left;
     padding: 0 4px 0 4px;
     margin-right: 2px;
-
+    border-radius: 5px;
   }
 
   a:hover:not(.active) {
@@ -114,10 +114,12 @@ div.release-notes {
   border: 1px solid #aaa;
   width: 22%;
   height: 100%;
+  border-radius: 5px;
+  padding-top: 5px;
 
-  h2 {
-    margin-left: 2px;
-    margin-bottom: 0;
+  strong {
+    padding-left: 7px;
+    margin: 10px 0 0 0;
   }
 
   hr {
@@ -164,10 +166,39 @@ div.release-notes {
 #reference-content {
   float: right;
   width: 74%
+}
 
-/*
-  code {
-    font-size: 8pt;
-  }
-*/
+code {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+// Adding 'Contents' headline to the TOC
+#category {
+  height: 200px;
+  overflow-y: scroll;
+
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 1.5em;
+  //  list-style: decimal;
+  //  display: inline-block;
+
+  //ul {
+  //  margin: auto;
+  //}
+}
+
+#content {
+  margin-top: 1em;
+  height: 300px;
+  overflow-y: scroll;
+
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 1.5em;
+//  display: inline-block;
 }
