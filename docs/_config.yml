@@ -55,9 +55,49 @@ github: [metadata]
 defaults:
   -
     scope:
-      path: "content-docs/reference"
+      path: "content-docs/reference/Gtk3"
     values:
       layout: reference-page
-      title: References to the package modules
-      nav_menu: default-nav
-      sidebar_menu: references-sidebar
+      title: References to the Gtk3 package modules
+      nav_menu: references-nav
+      sidebar_menu: references-gtk3-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Gdk3"
+    values:
+      layout: reference-page
+      title: References to the Gdk3 package modules
+      nav_menu: references-nav
+      sidebar_menu: references-gdk3-sidebar
+  -
+    scope:
+      path: "content-docs/reference/GObject"
+    values:
+      layout: reference-page
+      title: References to the GObject package modules
+      nav_menu: references-nav
+      sidebar_menu: references-gobject-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Glib"
+    values:
+      layout: reference-page
+      title: References to the Glib package modules
+      nav_menu: references-nav
+      sidebar_menu: references-glib-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Native"
+    values:
+      layout: reference-page
+      title: References to the Native package modules
+      nav_menu: references-nav
+      sidebar_menu: references-native-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Glade"
+    values:
+      layout: reference-page
+      title: References to the Glade package modules
+      nav_menu: references-nav
+      sidebar_menu: references-glade-sidebar
