@@ -6,14 +6,14 @@ nav_menus:
     - title: "Home"
       url: '/'
     - title: "Tutorial"
-      url: "/#t"
+      url: "/content-docs/nyi-default.html"
     - title: "Examples"
       url: "/content-docs/examples.html"
     - title: "About"
       url: '/content-docs/about.html'
       right: true
     - title: "Design"
-      url: "/#c"
+      url: "/content-docs/nyi-default.html"
       right: true
     - title: "Reference"
       url: "/content-docs/reference.html"

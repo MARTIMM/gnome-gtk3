@@ -1,0 +1,10 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "Display"
+
+bar_menu:
+  - title: "Label"
+    url: '/content-docs/nyi-example.html'
+  - title: "Image"
+    url: '/content-docs/nyi-example.html'
+  - title: "Menu"
+    url: '/content-docs/nyi-example.html'

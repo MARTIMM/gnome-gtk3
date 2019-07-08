@@ -1,0 +1,10 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "Toplevel"
+
+bar_menu:
+  - title: "Window"
+    url: "/content-docs/examples/toplevel/Window.html"
+  - title: "Dialog"
+    url: '/content-docs/nyi-example.html'
+  - title: "AboutDialog"
+    url: '/content-docs/nyi-example.html'

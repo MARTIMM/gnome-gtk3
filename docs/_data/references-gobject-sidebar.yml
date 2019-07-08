@@ -1,0 +1,18 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "GObject"
+
+bar_menu:
+  - title: "Boxed"
+    url: '/content-docs/nyi-reference.html'
+  - title: "InitiallyUnowned"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Interface"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Object"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Signal"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Type"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Value"
+    url: '/content-docs/nyi-reference.html'

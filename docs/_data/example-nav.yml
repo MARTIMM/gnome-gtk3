@@ -5,30 +5,42 @@ nav_menus:
   - nav_pages:
     - title: "Home"
       url: "/"
+    - title: "Tutorial"
+      url: '/content-docs/nyi-default.html'
     - title: "Examples"
       url: "/content-docs/examples.html"
+    - title: "About"
+      url: '/content-docs/about.html'
+      right: true
+    - title: "Design"
+      url: '/content-docs/nyi-default.html'
+      right: true
+    - title: "Reference"
+      url: "/content-docs/reference.html"
+      right: true
 
   - nav_pages:
-    - title: "Window"
-      url: "/content-docs/examples/window.html"
-    - title: "Grid"
-      url: "#e"
-    - title: "HW"
-      url: "#e"
-    - title: "Text"
-      url: "#e"
-    - title: "LB"
-      url: "#e"
+    - title: "Toplevels"
+      url: "/content-docs/examples-toplevel.html"
+    - title: "Containers"
+      url: '/content-docs/nyi-example.html'
+    - title: "Control"
+      url: '/content-docs/nyi-example.html'
+    - title: "Display"
+      url: '/content-docs/nyi-example.html'
+    - title: "Extra"
+      url: '/content-docs/nyi-example.html'
 
+#  - nav_pages:
     - title: "Test"
-      url: "#e"
+      url: '/content-docs/nyi-example.html'
       right: true
     - title: "Theme"
-      url: "#e"
+      url: '/content-docs/nyi-example.html'
       right: true
     - title: "Style"
-      url: "#e"
+      url: '/content-docs/nyi-example.html'
       right: true
     - title: "Glade"
-      url: "#e"
+      url: '/content-docs/nyi-example.html'
       right: true

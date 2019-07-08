@@ -1,0 +1,20 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "Gdk3"
+
+bar_menu:
+  - title: "Device"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Display"
+    url: '/content-docs/nyi-reference.html'
+  - title: "EventTypes"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Keysyms"
+    url: '/content-docs/nyi-reference.html'
+  - title: "RGBA"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Screen"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Types"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Window"
+    url: '/content-docs/reference/Gdk3/Window.html'

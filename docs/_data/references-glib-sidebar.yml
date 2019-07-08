@@ -1,0 +1,10 @@
+# https://jekyllrb.com/tutorials/navigation/
+bar_title: "Glib"
+
+bar_menu:
+  - title: "List"
+    url: '/content-docs/nyi-reference.html'
+  - title: "Main"
+    url: '/content-docs/nyi-reference.html'
+  - title: "SList"
+    url: '/content-docs/nyi-reference.html'

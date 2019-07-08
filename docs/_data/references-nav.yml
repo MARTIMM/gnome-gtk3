@@ -1,0 +1,36 @@
+# https://jekyllrb.com/tutorials/navigation/
+#nav_title: "please set variable 'nav_title' in your frontmatter"
+
+nav_menus:
+  - nav_pages:
+    - title: "Home"
+      url: "/"
+    - title: "Tutorial"
+      url: '/content-docs/nyi-default.html'
+    - title: "Examples"
+      url: "/content-docs/examples.html"
+    - title: "About"
+      url: '/content-docs/about.html'
+      right: true
+    - title: "Design"
+      url: '/content-docs/nyi-default.html'
+      right: true
+    - title: "Reference"
+      url: "/content-docs/reference-gtk3.html"
+      right: true
+
+  - nav_pages:
+    - title: "Gnome::Gtk3"
+      url: "/content-docs/reference-gtk3.html"
+    - title: "Gnome::Gdk3"
+      url: "/content-docs/reference-gdk3.html"
+    - title: "Gnome::GObject"
+      url: "/content-docs/reference-gobject.html"
+    - title: "Gnome::Glib"
+      url: "/content-docs/reference-glib.html"
+    - title: "Gnome::N"
+      url: "/content-docs/reference-native.html"
+
+  - nav_pages:
+    - title: "Gnome::Gtk3::Glade"
+      url: "/content-docs/reference-glade.html"
