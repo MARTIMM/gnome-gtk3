@@ -6,6 +6,8 @@
 
 [![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
 
+Documentation at [this site](http://martimm.github.io/perl6-gnome-gtk3) has the `GNU Free Documentation License`.
+
 # Description
 
 The purpose of this project is to create an interface to the **GTK+** version 3 library.
