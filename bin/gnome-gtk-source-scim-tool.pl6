@@ -108,23 +108,25 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
   # get all subroutines starting with 'GDK_AVAILABLE_IN_ALL' or
   # 'GDK_AVAILABLE_IN_\d_\d' version spec. subroutines starting with
   # 'GDK_DEPRECATED_IN_' are ignored.
-  $include-content ~~ m:g/^^ 'GDK_AVAILABLE_IN_' <-[;]>+ ';'/;
+  $include-content ~~ m:g/^^ ['GDK' || 'GTK' || 'GLIB']
+                             '_AVAILABLE_IN_' <-[;]>+ ';'
+                         /;
   my List $results = $/[*];
 
   # process subroutines
   for @$results -> $r {
     $variable-args-list = False;
-#note "\n\$$r >> $r";
+#note "\n $r";
 
     my Str $declaration = ~$r;
 
 #next unless $declaration ~~ m:s/ const gchar \* /;
     # skip constants and subs with variable argument lists
-    next if $declaration ~~ m/ 'G_GNUC_CONST' ';' /;
+    next if $declaration ~~ m/ 'G_GNUC_CONST' /;
     $variable-args-list = True if $declaration ~~ m/ 'G_GNUC_NULL_TERMINATED' /;
 
     # remove prefix and tidy up a bit
-    $declaration ~~ s/^ 'GDK_AVAILABLE_IN_' .*?  \n //;
+    $declaration ~~ s/^ ['GDK' || 'GTK' || 'GLIB'] '_AVAILABLE_IN_' .*?  \n //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
     $declaration ~~ s:g/ \s+ / /;
 #note "\n0 >> $declaration";
@@ -1060,7 +1062,9 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
       "\nThe C<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
   }
 
-  $property-doc ~ "=end pod\n"
+  $property-doc ~= "=end pod\n" if ?$property-doc;
+
+  $property-doc
 }
 
 #-------------------------------------------------------------------------------
@@ -1184,7 +1188,7 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
     $items-doc = primary-doc-changes($items-doc);
 
     $enums-doc ~= Q:qq:to/EODOC/;
-
+      #-------------------------------------------------------------------------------
       =begin pod
       =head2 enum $enum-name
 
@@ -1193,6 +1197,7 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
       $items-doc
 
       $enum-spec
+      =end pod
       EODOC
   }
 
@@ -1205,16 +1210,6 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
   my Str $structs-doc = '';
   my Bool $found-doc = False;
 
-  # there are problems getting structs from the doc. somehow enums are included
-  # too. therefore remove enums first.
-  loop {
-    $include-content ~~ s:s/
-      '/**' .*? '*/' typedef enum '{' .*? '}' <-[;]>+ ';'
-    //;
-
-    last unless ?$/;
-  }
-
   # now we try again to get structs
   loop {
     my Str $struct-name = '';
@@ -1223,6 +1218,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     my Str $struct-spec = '';
     my Str ( $entry-type, $p6-entry-type);
     my Bool $type-is-class;
+
 
     $include-content ~~ m:s/
       $<struct-type-section> = [
@@ -1238,6 +1234,22 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
       $structs-doc = '' unless $found-doc;
       last;
     }
+
+    # this match "m:g/'/**' .*? '*/' ...etc... /" can fail. It can gather
+    # too many comment blocks to stop at a final struct. So try to find the
+    # last doc section.
+    my Int $start-doc = 1;  # There is a '/**' string at 0!
+    my Int $x;
+    while ?($x = $struct-type-section.index( '/**', $start-doc)) {
+      $start-doc = $x + 1;
+    }
+
+    $start-doc -= 1;
+    $struct-type-section = $struct-type-section.substr(
+      $start-doc, $struct-type-section.chars - $start-doc
+    );
+#note $struct-type-section;
+
 
     # remove struct info for next search
     $include-content ~~ s/$struct-type-section//;
@@ -1329,7 +1341,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     $items-doc = primary-doc-changes($items-doc);
 
     $structs-doc ~= Q:qq:to/EODOC/;
-
+      #-------------------------------------------------------------------------------
       =begin pod
       =head2 class $struct-name
 
@@ -1338,6 +1350,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
       $items-doc
 
       $struct-spec
+      =end pod
       EODOC
   }
 
