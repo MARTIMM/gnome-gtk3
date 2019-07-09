@@ -104,7 +104,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif %options.keys.elems {
-    die X::GTK::V3.new(
+    die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
                ': ' ~ %options.keys.join(', ')
               )
