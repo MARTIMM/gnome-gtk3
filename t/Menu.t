@@ -28,7 +28,7 @@ subtest 'ISA tests', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'labels and such', {
+subtest 'menu item labels and such', {
   my Gnome::Gtk3::MenuItem $mi .= new(:label<Open>);
   isa-ok $mi, Gnome::Gtk3::MenuItem, 'MenuItem with label';
   is $mi.get-label, 'Open', 'label retrieved from menu item';
