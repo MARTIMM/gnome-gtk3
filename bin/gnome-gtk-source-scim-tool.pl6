@@ -323,20 +323,23 @@ sub get-deprecated-subs( Str:D $include-content --> Str ) {
   }
 
 
-  my Str $deprecated-subs = Q:to/EODEPSUB/;
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =head1 List of deprecated (not implemented!) methods
-    EODEPSUB
+  my Str $deprecated-subs = '';
+  if ?$dep-versions {
+    $deprecated-subs = Q:to/EODEPSUB/;
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 List of deprecated (not implemented!) methods
+      EODEPSUB
 
-  for $dep-versions.keys.sort -> $version {
-    $deprecated-subs ~= "\n=head2 Since $version\n";
-    for @($dep-versions{$version}) -> $sub {
-      $deprecated-subs ~= "=head3 $sub\n";
+    for $dep-versions.keys.sort -> $version {
+      $deprecated-subs ~= "\n=head2 Since $version\n";
+      for @($dep-versions{$version}) -> $sub {
+        $deprecated-subs ~= "=head3 $sub\n";
+      }
     }
-  }
 
-  $deprecated-subs ~= "=end pod";
+    $deprecated-subs ~= "=end pod";
+  }
 
   $deprecated-subs
 }
