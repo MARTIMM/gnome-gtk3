@@ -25,7 +25,7 @@ nav_menus:
     - title: "Containers"
       url: '/content-docs/nyi-example.html'
     - title: "Control"
-      url: '/content-docs/nyi-example.html'
+      url: '/content-docs/examples-control.html'
     - title: "Display"
       url: '/content-docs/nyi-example.html'
     - title: "Extra"

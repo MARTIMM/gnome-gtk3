@@ -3,8 +3,4 @@ bar_title: "Control"
 
 bar_menu:
   - title: "Button"
-    url: '/content-docs/nyi-example.html'
-  - title: "Entry"
-    url: '/content-docs/nyi-example.html'
-  - title: "ToggleButton"
-    url: '/content-docs/nyi-example.html'
+    url: '/content-docs/examples/control/01-hello-world.html'

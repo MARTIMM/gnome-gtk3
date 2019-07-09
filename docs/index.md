@@ -41,12 +41,6 @@ Widget toolkit for graphical interfaces
 ### Gnome::Gtk3::Glade
 Package to make use of the graphical user interface designer program **Glade**.
 
-# Install Perl6 Packages
-To install all of the above packages, run;
-```
-zef install Gnome::Gtk3::Glade
-```
-
 # Dependencies on external software
 The software in these packages do not (yet) install the GTK+ software, so there is a dependency on several libraries which must be installed before the perl6 software can be used.
 
@@ -89,14 +83,3 @@ A screenshot of the example
 The code can be found at `examples/01-hello-world.pl6`.
 ```
 {% include example-code/01-hello-world.pl6 %}
-```
-
-
-
-
-
-[screenshot 1]: images/01-hello-world.png
-
-[screenshot 2]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16a-level-bar.png
-[screenshot 3]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16b-level-bar.png
-[screenshot 4]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/ex-GtkScale.png
