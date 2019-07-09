@@ -6,5 +6,9 @@ bar_menu:
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
+  - title: "Menu"
+    url: '/content-docs/reference/Gtk3/Menu.html'
   - title: "MenuButton"
     url: '/content-docs/reference/Gtk3/MenuButton.html'
+  - title: "MenuShell"
+    url: '/content-docs/reference/Gtk3/MenuShell.html'
