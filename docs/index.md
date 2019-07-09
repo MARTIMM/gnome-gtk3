@@ -5,6 +5,8 @@ nav_menu: default-nav
 layout: default
 ---
 
+##### A warning: the documentation here is far from complete
+
 # What's this all about
 This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Cairo, Pango, GObject and Glib. There are already a few interfaces made by other fellow programmers such as **GTK::Simple**, **GTK::Simpler** and **GTK::Scintilla**. Why then, would you ask, build another one? There were several reasons to do this, to sum up a few;
 * Learning to handle Perl6 native interface to C libraries and having example code with the packages mentioned above.
