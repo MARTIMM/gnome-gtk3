@@ -46,7 +46,7 @@ zef install Gnome::Gtk3::Glade
 ```
 
 # Dependencies on external software
-The software in these packages do not (yet) install the GTK+ software, so there is a dependency on several libraries which must be installed too.
+The software in these packages do not (yet) install the GTK+ software, so there is a dependency on several libraries which must be installed before the perl6 software can be used.
 
 # Site Contents
 ## Tutorial
@@ -56,7 +56,7 @@ A tutorial about using the modules in all its forms.
 A series of examples.
 
 ## Reference
-References of all the modules in all packages
+References of all the modules in all packages. All information is gathered here so there is no need to go to the other packages for information.
 
 ## Design
 Notes on how things are set up.
