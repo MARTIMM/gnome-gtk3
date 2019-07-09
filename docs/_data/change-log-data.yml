@@ -1,8 +1,8 @@
-notes_title: "Release Notes"
+notes_title: "Release Notes for all Gnome packages"
 
 notes:
   - 2019-07-04 0.17.0:
-    - Add Gnome::Gtk3::MenuButton, Gnome::Gtk3::Menu, Gnome::Gtk3::MenuShell.
+    - Add MenuButton, Menu, MenuShell, MenuBar in Gnome::Gtk3.
     - Regenerated and adapted Gnome::Gdk3::Window.
 
   - 2019-06-07 0.16.1:
