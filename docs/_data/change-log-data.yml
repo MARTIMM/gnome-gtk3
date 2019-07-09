@@ -2,8 +2,8 @@ notes_title: "Release Notes"
 
 notes:
   - 2019-07-04 0.17.0:
-    - Add Gnome::Gtk3::MenuButton, Gnome::Gtk3::Menu, Gnome::Gtk3::MenuShell
-    - Regenerated and adapted Gnome::Gdk3::Window
+    - Add Gnome::Gtk3::MenuButton, Gnome::Gtk3::Menu, Gnome::Gtk3::MenuShell.
+    - Regenerated and adapted Gnome::Gdk3::Window.
 
   - 2019-06-07 0.16.1:
     - Created a website at https://martimm.github.io/perl6-gnome-gtk3/. Long from finished.
