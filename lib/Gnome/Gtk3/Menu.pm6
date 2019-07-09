@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif %options.keys.elems {
-    die X::GTK::V3.new(
+    die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
                ': ' ~ %options.keys.join(', ')
               )
@@ -211,6 +211,7 @@ sub gtk_menu_new (  )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_menu_] new_from_model
@@ -240,6 +241,7 @@ sub gtk_menu_new_from_model ( N-GObject $model )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
