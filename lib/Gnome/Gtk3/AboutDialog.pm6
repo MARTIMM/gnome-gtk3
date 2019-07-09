@@ -4,6 +4,8 @@ use v6;
 
 =TITLE Gnome::Gtk3::AboutDialog
 
+![](images/aboutdialog.png)
+
 =SUBTITLE Display information about an application
 
 =head1 Description

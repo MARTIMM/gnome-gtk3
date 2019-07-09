@@ -94,6 +94,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::Gdk3::EventTypes;
 use Gnome::Gdk3::Window;
 use Gnome::Gtk3::MenuShell;
 
@@ -129,7 +130,7 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :scrolltype<move-scroll>, :point2bool2<popped-up>
+    :scrolltype<move-scroll>, :ptr2bool2<popped-up>
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -167,6 +168,30 @@ method fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Types
+=end pod
+
+=begin pod
+=head2 enum GtkArrowPlacement
+
+Used to specify the placement of scroll arrows in scrolling menus.
+
+
+=item GTK_ARROWS_BOTH: Place one arrow on each end of the menu.
+=item GTK_ARROWS_START: Place both arrows at the top of the menu.
+=item GTK_ARROWS_END: Place both arrows at the bottom of the menu.
+
+
+=end pod
+
+enum GtkArrowPlacement is export (
+  'GTK_ARROWS_BOTH',
+  'GTK_ARROWS_START',
+  'GTK_ARROWS_END'
+);
+
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -174,10 +199,11 @@ method fallback ( $native-sub is copy --> Callable ) {
 
 Creates a new C<Gnome::Gtk3::Menu>
 
+Returns: a new C<Gnome::Gtk3::Menu>
+
   method gtk_menu_new ( --> N-GObject  )
 
 
-Returns N-GObject; a new C<Gnome::Gtk3::Menu>
 =end pod
 
 sub gtk_menu_new (  )
@@ -189,13 +215,25 @@ sub gtk_menu_new (  )
 =begin pod
 =head2 [gtk_menu_] new_from_model
 
-Creates a C<Gnome::Gtk3::Menu> and populates it with menu items and submenus according to I<model>.
+Creates a C<Gnome::Gtk3::Menu> and populates it with menu items and
+submenus according to I<model>.
+
+The created menu items are connected to actions found in the
+C<Gnome::Gtk3::ApplicationWindow> to which the menu belongs - typically
+by means of being attached to a widget (see C<gtk_menu_attach_to_widget()>)
+that is contained within the C<Gnome::Gtk3::ApplicationWindows> widget hierarchy.
+
+Actions can also be added using C<gtk_widget_insert_action_group()> on the menu's
+attach widget or on any of its parent widgets.
+
+Returns: a new C<Gnome::Gtk3::Menu>
+
+Since: 3.4
 
   method gtk_menu_new_from_model ( N-GObject $model --> N-GObject  )
 
 =item N-GObject $model; a C<GMenuModel>
 
-Returns N-GObject; a new C<Gnome::Gtk3::Menu>
 =end pod
 
 sub gtk_menu_new_from_model ( N-GObject $model )
@@ -209,6 +247,26 @@ sub gtk_menu_new_from_model ( N-GObject $model )
 
 Displays I<menu> and makes it available for selection.
 
+See C<gtk_menu_popup_at_widget()> and C<gtk_menu_popup_at_pointer()>, which
+handle more common cases for popping up menus.
+
+I<menu> will be positioned at I<rect>, aligning their anchor points. I<rect> is
+relative to the top-left corner of I<rect_window>. I<rect_anchor> and
+I<menu_anchor> determine anchor points on I<rect> and I<menu> to pin together.
+I<menu> can optionally be offset by prop C<rect-anchor-dx> and
+prop C<rect-anchor-dy>.
+
+Anchors should be specified under the assumption that the text direction is
+left-to-right; they will be flipped horizontally automatically if the text
+direction is right-to-left.
+
+Other properties that influence the behaviour of this function are
+prop C<anchor-hints> and prop C<menu-type-hint>. Connect to the
+sig C<popped-up> signal to find out how it was actually positioned.
+
+Since: 3.22
+Stability: Unstable
+
   method gtk_menu_popup_at_rect ( N-GObject $rect_window, N-GObject $rect, GdkGravity $rect_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
 
 =item N-GObject $rect_window; (not nullable): the C<Gnome::Gdk3::Window> I<rect> is relative to
@@ -219,7 +277,7 @@ Displays I<menu> and makes it available for selection.
 
 =end pod
 
-sub gtk_menu_popup_at_rect ( N-GObject $menu, N-GObject $rect_window, N-GObject $rect, GdkGravity $rect_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
+sub gtk_menu_popup_at_rect ( N-GObject $menu, N-GObject $rect_window, N-GObject $rect, int32 $rect_anchor, int32 $menu_anchor, GdkEvent $trigger_event )
   is native(&gtk-lib)
   { * }
 
@@ -228,6 +286,28 @@ sub gtk_menu_popup_at_rect ( N-GObject $menu, N-GObject $rect_window, N-GObject 
 =head2 [gtk_menu_] popup_at_widget
 
 Displays I<menu> and makes it available for selection.
+
+See C<gtk_menu_popup_at_pointer()> to pop up a menu at the master pointer.
+C<gtk_menu_popup_at_rect()> also allows you to position a menu at an arbitrary
+rectangle.
+
+![](images/popup-anchors.png)
+
+I<menu> will be positioned at I<widget>, aligning their anchor points.
+I<widget_anchor> and I<menu_anchor> determine anchor points on I<widget> and I<menu>
+to pin together. I<menu> can optionally be offset by prop C<rect-anchor-dx>
+and prop C<rect-anchor-dy>.
+
+Anchors should be specified under the assumption that the text direction is
+left-to-right; they will be flipped horizontally automatically if the text
+direction is right-to-left.
+
+Other properties that influence the behaviour of this function are
+prop C<anchor-hints> and prop C<menu-type-hint>. Connect to the
+sig C<popped-up> signal to find out how it was actually positioned.
+
+Since: 3.22
+Stability: Unstable
 
   method gtk_menu_popup_at_widget ( N-GObject $widget, GdkGravity $widget_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
 
@@ -238,7 +318,7 @@ Displays I<menu> and makes it available for selection.
 
 =end pod
 
-sub gtk_menu_popup_at_widget ( N-GObject $menu, N-GObject $widget, GdkGravity $widget_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
+sub gtk_menu_popup_at_widget ( N-GObject $menu, N-GObject $widget, int32 $widget_anchor, int32 $menu_anchor, GdkEvent $trigger_event )
   is native(&gtk-lib)
   { * }
 
@@ -247,6 +327,20 @@ sub gtk_menu_popup_at_widget ( N-GObject $menu, N-GObject $widget, GdkGravity $w
 =head2 [gtk_menu_] popup_at_pointer
 
 Displays I<menu> and makes it available for selection.
+
+See C<gtk_menu_popup_at_widget()> to pop up a menu at a widget.
+C<gtk_menu_popup_at_rect()> also allows you to position a menu at an arbitrary
+rectangle.
+
+I<menu> will be positioned at the pointer associated with I<trigger_event>.
+
+Properties that influence the behaviour of this function are
+prop C<anchor-hints>, prop C<rect-anchor-dx>, prop C<rect-anchor-dy>, and
+prop C<menu-type-hint>. Connect to the sig C<popped-up> signal to find
+out how it was actually positioned.
+
+Since: 3.22
+Stability: Unstable
 
   method gtk_menu_popup_at_pointer ( GdkEvent $trigger_event )
 
@@ -292,12 +386,16 @@ sub gtk_menu_popdown ( N-GObject $menu )
 =begin pod
 =head2 [gtk_menu_] get_active
 
-Returns the selected menu item from the menu.  This is used by the C<Gnome::Gtk3::ComboBox>.
+Returns the selected menu item from the menu.  This is used by the
+C<Gnome::Gtk3::ComboBox>.
+
+Returns: (transfer none): the C<Gnome::Gtk3::MenuItem> that was last selected
+in the menu.  If a selection has not yet been made, the
+first menu item is selected.
 
   method gtk_menu_get_active ( --> N-GObject  )
 
 
-Returns N-GObject; (transfer none): the C<Gnome::Gtk3::MenuItem> that was last selected in the menu.  If a selection has not yet been made, the first menu item is selected.
 =end pod
 
 sub gtk_menu_get_active ( N-GObject $menu )
@@ -309,7 +407,8 @@ sub gtk_menu_get_active ( N-GObject $menu )
 =begin pod
 =head2 [gtk_menu_] set_active
 
-Selects the specified menu item within the menu.  This is used by the C<Gnome::Gtk3::ComboBox> and should not be used by anyone else.
+Selects the specified menu item within the menu.  This is used by
+the C<Gnome::Gtk3::ComboBox> and should not be used by anyone else.
 
   method gtk_menu_set_active ( UInt $index )
 
@@ -325,7 +424,11 @@ sub gtk_menu_set_active ( N-GObject $menu, uint32 $index )
 =begin pod
 =head2 [gtk_menu_] set_accel_group
 
-Set the C<Gnome::Gtk3::AccelGroup> which holds global accelerators for the menu.  This accelerator group needs to also be added to all windows that this menu is being used in with C<gtk_window_add_accel_group()>, in order for those windows to support all the accelerators contained in this group.
+Set the C<Gnome::Gtk3::AccelGroup> which holds global accelerators for the
+menu.  This accelerator group needs to also be added to all windows
+that this menu is being used in with C<gtk_window_add_accel_group()>,
+in order for those windows to support all the accelerators
+contained in this group.
 
   method gtk_menu_set_accel_group ( N-GObject $accel_group )
 
@@ -341,12 +444,14 @@ sub gtk_menu_set_accel_group ( N-GObject $menu, N-GObject $accel_group )
 =begin pod
 =head2 [gtk_menu_] get_accel_group
 
-Gets the C<Gnome::Gtk3::AccelGroup> which holds global accelerators for the menu. See C<gtk_menu_set_accel_group()>.
+Gets the C<Gnome::Gtk3::AccelGroup> which holds global accelerators for the
+menu. See C<gtk_menu_set_accel_group()>.
+
+Returns: (transfer none): the C<Gnome::Gtk3::AccelGroup> associated with the menu
 
   method gtk_menu_get_accel_group ( --> N-GObject  )
 
 
-Returns N-GObject; (transfer none): the C<Gnome::Gtk3::AccelGroup> associated with the menu
 =end pod
 
 sub gtk_menu_get_accel_group ( N-GObject $menu )
@@ -358,7 +463,27 @@ sub gtk_menu_get_accel_group ( N-GObject $menu )
 =begin pod
 =head2 [gtk_menu_] set_accel_path
 
-Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed. The main purpose of this function is to spare the programmer the inconvenience of having to call C<gtk_menu_item_set_accel_path()> on each menu item that should support runtime user changable accelerators. Instead, by just calling C<gtk_menu_set_accel_path()> on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned.
+Sets an accelerator path for this menu from which accelerator paths
+for its immediate children, its menu items, can be constructed.
+The main purpose of this function is to spare the programmer the
+inconvenience of having to call C<gtk_menu_item_set_accel_path()> on
+each menu item that should support runtime user changable accelerators.
+Instead, by just calling C<gtk_menu_set_accel_path()> on their parent,
+each menu item of this menu, that contains a label describing its
+purpose, automatically gets an accel path assigned.
+
+For example, a menu containing menu items “New” and “Exit”, will, after
+`gtk_menu_set_accel_path (menu, "<Gnumeric-Sheet>/File");` has been
+called, assign its items the accel paths: `"<Gnumeric-Sheet>/File/New"`
+and `"<Gnumeric-Sheet>/File/Exit"`.
+
+Assigning accel paths to menu items then enables the user to change
+their accelerators at runtime. More details about accelerator paths
+and their default setups can be found at C<gtk_accel_map_add_entry()>.
+
+Note that I<accel_path> string will be stored in a C<GQuark>. Therefore,
+if you pass a static string, you can save some memory by interning
+it first with C<g_intern_static_string()>.
 
   method gtk_menu_set_accel_path ( Str $accel_path )
 
@@ -376,10 +501,13 @@ sub gtk_menu_set_accel_path ( N-GObject $menu, Str $accel_path )
 
 Retrieves the accelerator path set on the menu.
 
+Returns: the accelerator path set on the menu.
+
+Since: 2.14
+
   method gtk_menu_get_accel_path ( --> Str  )
 
 
-Returns Str; the accelerator path set on the menu.
 =end pod
 
 sub gtk_menu_get_accel_path ( N-GObject $menu )
@@ -387,11 +515,19 @@ sub gtk_menu_get_accel_path ( N-GObject $menu )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_menu_] attach_to_widget
 
-Attaches the menu to the widget and provides a callback function that will be invoked when the menu calls C<gtk_menu_detach()> during its destruction.
+Attaches the menu to the widget and provides a callback function
+that will be invoked when the menu calls C<gtk_menu_detach()> during
+its destruction.
+
+If the menu is attached to the widget then it will be destroyed
+when the widget is destroyed, as if it was a child widget.
+An attached menu will also move between screens correctly if the
+widgets moves between screens.
 
   method gtk_menu_attach_to_widget ( N-GObject $attach_widget, GtkMenuDetachFunc $detacher )
 
@@ -403,12 +539,15 @@ Attaches the menu to the widget and provides a callback function that will be in
 sub gtk_menu_attach_to_widget ( N-GObject $menu, N-GObject $attach_widget, GtkMenuDetachFunc $detacher )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_menu_detach
 
-Detaches the menu from the widget to which it had been attached. This function will call the callback function, I<detacher>, provided when the C<gtk_menu_attach_to_widget()> function was called.
+Detaches the menu from the widget to which it had been attached.
+This function will call the callback function, I<detacher>, provided
+when the C<gtk_menu_attach_to_widget()> function was called.
 
   method gtk_menu_detach ( )
 
@@ -425,10 +564,11 @@ sub gtk_menu_detach ( N-GObject $menu )
 
 Returns the C<Gnome::Gtk3::Widget> that the menu is attached to.
 
+Returns: (transfer none): the C<Gnome::Gtk3::Widget> that the menu is attached to
+
   method gtk_menu_get_attach_widget ( --> N-GObject  )
 
 
-Returns N-GObject; (transfer none): the C<Gnome::Gtk3::Widget> that the menu is attached to
 =end pod
 
 sub gtk_menu_get_attach_widget ( N-GObject $menu )
@@ -440,7 +580,8 @@ sub gtk_menu_get_attach_widget ( N-GObject $menu )
 =begin pod
 =head2 [gtk_menu_] reorder_child
 
-Moves I<child> to a new I<position> in the list of I<menu> children.
+Moves I<child> to a new I<position> in the list of I<menu>
+children.
 
   method gtk_menu_reorder_child ( N-GObject $child, Int $position )
 
@@ -459,6 +600,8 @@ sub gtk_menu_reorder_child ( N-GObject $menu, N-GObject $child, int32 $position 
 
 Sets the C<Gnome::Gdk3::Screen> on which the menu will be displayed.
 
+Since: 2.2
+
   method gtk_menu_set_screen ( N-GObject $screen )
 
 =item N-GObject $screen; (allow-none): a C<Gnome::Gdk3::Screen>, or C<Any> if the screen should be determined by the widget the menu is attached to
@@ -473,7 +616,15 @@ sub gtk_menu_set_screen ( N-GObject $menu, N-GObject $screen )
 =begin pod
 =head2 gtk_menu_attach
 
-Adds a new C<Gnome::Gtk3::MenuItem> to a (table) menu. The number of “cells” that an item will occupy is specified by I<left_attach>, I<right_attach>, I<top_attach> and I<bottom_attach>. These each represent the leftmost, rightmost, uppermost and lower column and row numbers of the table. (Columns and rows are indexed from zero).
+Adds a new C<Gnome::Gtk3::MenuItem> to a (table) menu. The number of “cells” that
+an item will occupy is specified by I<left_attach>, I<right_attach>,
+I<top_attach> and I<bottom_attach>. These each represent the leftmost,
+rightmost, uppermost and lower column and row numbers of the table.
+(Columns and rows are indexed from zero).
+
+Note that this function is not related to C<gtk_menu_detach()>.
+
+Since: 2.4
 
   method gtk_menu_attach ( N-GObject $child, UInt $left_attach, UInt $right_attach, UInt $top_attach, UInt $bottom_attach )
 
@@ -493,7 +644,17 @@ sub gtk_menu_attach ( N-GObject $menu, N-GObject $child, uint32 $left_attach, ui
 =begin pod
 =head2 [gtk_menu_] set_monitor
 
-Informs GTK+ on which monitor a menu should be popped up. See C<gdk_monitor_get_geometry()>.
+Informs GTK+ on which monitor a menu should be popped up.
+See C<gdk_monitor_get_geometry()>.
+
+This function should be called from a C<Gnome::Gtk3::MenuPositionFunc>
+if the menu should not appear on the same monitor as the pointer.
+This information can’t be reliably inferred from the coordinates
+returned by a C<Gnome::Gtk3::MenuPositionFunc>, since, for very long menus,
+these coordinates may extend beyond the monitor boundaries or even
+the screen boundaries.
+
+Since: 2.4
 
   method gtk_menu_set_monitor ( Int $monitor_num )
 
@@ -511,10 +672,14 @@ sub gtk_menu_set_monitor ( N-GObject $menu, int32 $monitor_num )
 
 Retrieves the number of the monitor on which to show the menu.
 
+Returns: the number of the monitor on which the menu should
+be popped up or -1, if no monitor has been set
+
+Since: 2.14
+
   method gtk_menu_get_monitor ( --> Int  )
 
 
-Returns Int; the number of the monitor on which the menu should be popped up or -1, if no monitor has been set
 =end pod
 
 sub gtk_menu_get_monitor ( N-GObject $menu )
@@ -542,13 +707,18 @@ sub gtk_menu_place_on_monitor ( N-GObject $menu, N-GObject $monitor )
 =begin pod
 =head2 [gtk_menu_] get_for_attach_widget
 
-Returns a list of the menus which are attached to this widget. This list is owned by GTK+ and must not be modified.
+Returns a list of the menus which are attached to this widget.
+This list is owned by GTK+ and must not be modified.
+
+Returns: (element-type C<Gnome::Gtk3::Widget>) (transfer none): the list
+of menus attached to his widget.
+
+Since: 2.6
 
   method gtk_menu_get_for_attach_widget ( N-GObject $widget --> N-GObject  )
 
 =item N-GObject $widget; a C<Gnome::Gtk3::Widget>
 
-Returns N-GObject; (element-type C<Gnome::Gtk3::Widget>) (transfer none): the list of menus attached to his widget.
 =end pod
 
 sub gtk_menu_get_for_attach_widget ( N-GObject $widget )
@@ -560,7 +730,10 @@ sub gtk_menu_get_for_attach_widget ( N-GObject $widget )
 =begin pod
 =head2 [gtk_menu_] set_reserve_toggle_size
 
-Sets whether the menu should reserve space for drawing toggles or icons, regardless of their actual presence.
+Sets whether the menu should reserve space for drawing toggles
+or icons, regardless of their actual presence.
+
+Since: 2.18
 
   method gtk_menu_set_reserve_toggle_size ( Int $reserve_toggle_size )
 
@@ -576,12 +749,16 @@ sub gtk_menu_set_reserve_toggle_size ( N-GObject $menu, int32 $reserve_toggle_si
 =begin pod
 =head2 [gtk_menu_] get_reserve_toggle_size
 
-Returns whether the menu reserves space for toggles and icons, regardless of their actual presence.
+Returns whether the menu reserves space for toggles and
+icons, regardless of their actual presence.
+
+Returns: Whether the menu reserves toggle space
+
+Since: 2.18
 
   method gtk_menu_get_reserve_toggle_size ( --> Int  )
 
 
-Returns Int; Whether the menu reserves toggle space
 =end pod
 
 sub gtk_menu_get_reserve_toggle_size ( N-GObject $menu )
@@ -589,6 +766,18 @@ sub gtk_menu_get_reserve_toggle_size ( N-GObject $menu )
   is native(&gtk-lib)
   { * }
 
+#-------------------------------------------------------------------------------
+#TODO
+# https://developer.gnome.org/gtk3/stable/GtkMenu.html
+
+=begin pod
+=head1 List of not yet implemented methods and classes
+
+=head3 method gtk_menu_attach_to_widget (...)
+
+=head3 handler GtkMenuDetachFunc (...)
+
+=end pod
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -688,31 +877,6 @@ backend can't obtain it
 =item $flipped_y; C<1> if the anchors were flipped vertically
 
 =end pod
-
-
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-
-=head2 enum GtkArrowPlacement
-
-Used to specify the placement of scroll arrows in scrolling menus.
-
-
-=item GTK_ARROWS_BOTH: Place one arrow on each end of the menu.
-=item GTK_ARROWS_START: Place both arrows at the top of the menu.
-=item GTK_ARROWS_END: Place both arrows at the bottom of the menu.
-
-
-=end pod
-
-enum GtkArrowPlacement is export (
-  'GTK_ARROWS_BOTH',
-  'GTK_ARROWS_START',
-  'GTK_ARROWS_END'
-);
 
 #-------------------------------------------------------------------------------
 =begin pod
