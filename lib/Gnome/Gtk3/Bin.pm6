@@ -4,25 +4,33 @@ use v6;
 
 =TITLE Gnome::Gtk3::Bin
 
-=SUBTITLE
+=SUBTITLE A container with just one child
 
-  unit class Gnome::Gtk3::Bin;
-  also is Gnome::Gtk3::Container;
+=head1 Description
 
-=head2 Bin — A container with just one child
+The C<Gnome::Gtk3::Bin> widget is a container with just one child.
+It is not very useful itself, but it is useful for deriving subclasses,
+since it provides common code needed for handling a single child widget.
+
+Many GTK+ widgets are subclasses of C<Gnome::Gtk3::Bin>, including C<Gnome::Gtk3::Window>,
+C<Gnome::Gtk3::Button>, C<Gnome::Gtk3::Frame>, C<Gnome::Gtk3::HandleBox> or C<Gnome::Gtk3::ScrolledWindow>.
+
 
 =head1 Synopsis
+=head2 Declaration
 
-The module GtkBin is not used directly but its methods can be used by its child modules. Below is an example using a C<GtkButton> which is a direct descendant of C<GtkBin>. Here it is also clear that a button is also a container which in principle can hold anything but by default it holds a label. The method C<gtk-container-add()> comes from C<GtkContainer> and C<get-child()> comes from C<GtkBin>.
+unit class Gnome::Gtk3::Bin;
+also is Gnome::Gtk3::Container;
+
+=head2 Example
+
+An example using a C<Gnome::Gtk3::Button> which is a direct descendant of C<Gnome::Gtk3::Bin>. Here it is shown that a button is also a kind of a container which in principle can hold anything but by default it holds a label. The method C<gtk-container-add()> comes from C<Gnome::Gtk3::Container> and C<get-child()> comes from C<Gnome::Gtk3::Bin>.
 
   my Gnome::Gtk3::Label $label .= new(:label<pqr>);
   my Gnome::Gtk3::Button $button .= new(:empty);
   $button.gtk-container-add($label);
 
-  $l($button2.get-child);
-  is $l.get-text, 'pqr', 'text label from button 2';
-
-Of course, it is easier to do the next
+Of course, it is much easier to do the next
 
   my Gnome::Gtk3::Button $button .= new(:label<pqr>);
 
@@ -43,30 +51,38 @@ use Gnome::Gtk3::Container;
 unit class Gnome::Gtk3::Bin:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
 
-# ==============================================================================
+#-------------------------------------------------------------------------------
+#my Bool $signals-added = False;
+#-------------------------------------------------------------------------------
 =begin pod
-
 =head1 Methods
+=head2 new
 
-=head2 [gtk_bin_] get_child
+  multi method new ( Gnome::GObject::Object :$widget! )
 
-  method gtk_bin_get_child ( --> N-GObject )
+Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
-Gets the child of the GtkBin, or C<Any> if the bin contains no child widget.
+=begin comment
+  multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+=end comment
 =end pod
-sub gtk_bin_get_child ( N-GObject $bin )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 submethod BUILD ( *%options ) {
+
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
+  #$signals-added = self.add-signal-types( $?CLASS.^name,
+  #  # ... :type<signame>
+  #) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Bin';
 
-  if ? %options<widget> || %options<build-id> {
-    # provided in GObject
+  # process all named arguments
+  if ? %options<widget> { # || %options<build-id> {
+    # provided in Gnome::GObject::Object
   }
 
   elsif %options.keys.elems {
@@ -79,13 +95,34 @@ submethod BUILD ( *%options ) {
 }
 
 #-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
 method fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_bin_$native-sub"); } unless ?$s;
 
+#note "ad $native-sub: ", $s;
   $s = callsame unless ?$s;
 
   $s;
 }
+
+#-------------------------------------------------------------------------------
+=begin pod
+
+=head2 [gtk_bin_] get_child
+
+Gets the child of the C<Gnome::Gtk3::Bin>, or C<Any> if the bin contains
+no child widget. The returned widget does not have a reference
+added, so you do not need to unref it.
+
+Returns: (transfer none): pointer to child of the C<Gnome::Gtk3::Bin>
+
+  method gtk_bin_get_child ( --> N-GObject )
+=end pod
+
+sub gtk_bin_get_child ( N-GObject $bin )
+  returns N-GObject
+  is native(&gtk-lib)
+  { * }

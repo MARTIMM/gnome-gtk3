@@ -4,6 +4,8 @@ bar_title: "Gtk3"
 bar_menu:
   - title: "AboutDialog"
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
+  - title: "Bin"
+    url: '/content-docs/reference/Gtk3/Bin.html'
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
   - title: "Menu"
