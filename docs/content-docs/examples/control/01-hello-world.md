@@ -10,7 +10,7 @@ layout: sidebar
 
 Write a file **01-hello-world.pl6**
 ```
-{% 01-hello-world.pl6 %}
+{% include example-code/01-hello-world.pl6 %}
 ```
 
 ## Command to run
