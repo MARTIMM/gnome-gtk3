@@ -2,7 +2,5 @@
 bar_title: "Chapters"
 
 bar_menu:
-  - title: "Installation"
-    url: "/content-docs/tutorial/installing.html"
   - title: "Getting Started"
     url: "/content-docs/tutorial/getting-started.html"
