@@ -863,7 +863,8 @@ Returns: C<1> if the link has been activated
 
 
   method handler (
-    :$label, :$uri,
+    Gnome::GObject::Object :widget($label),
+    :handle-arg0($uri),
     :$user-option1, ..., $user-optionN
   );
 
