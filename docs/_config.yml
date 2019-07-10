@@ -45,12 +45,35 @@ plugins:
 #theme: jekyll-theme-tactile
 title: Perl6 Interface to Gnome GTK+
 description: Interfacing Perl6 to Gnome GTK+
-markdown: kramdown
+
 email: mt1957@gmail.com
 github_username:  MARTIMM
-#url: "https://martimm.github.io"
-baseurl: "/perl6-gnome-gtk3"
 github: [metadata]
+
+baseurl: "/perl6-gnome-gtk3"
+#url: "https://martimm.github.io"
+
+markdown: kramdown
+highlighter: rouge
+
+# More › http://kramdown.gettalong.org/quickref.html
+# Options › http://kramdown.gettalong.org/options.html
+#kramdown:
+#  input:          GFM
+#  # https://github.com/jekyll/jekyll/pull/4090
+#  syntax_highlighter: rouge
+#
+#  # Rouge Highlighter in Kramdown › http://kramdown.gettalong.org/syntax_highlighter/rouge.html
+#  # span, block element options fall back to global
+#  syntax_highlighter_opts:
+#    # Rouge Options › https://github.com/jneen/rouge#full-options
+#    css_class: 'highlight'
+#    #line_numbers: true # bad idea, spans don't need linenos and would inherit this option
+#    span:
+#      line_numbers: false
+#    block:
+#      line_numbers: true
+#      start_line: 1
 
 defaults:
   -
