@@ -1256,6 +1256,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
 
     # structs found
     $found-doc = True;
+    my Bool $struct-skip = False;
 
     my Bool ( $get-item-doc, $get-struct-doc, $process-struct) =
             ( False, False, False);
@@ -1265,6 +1266,12 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
 
       if $line ~~ m/^ \s+ '*' \s+ $<struct-name> = [<alnum>+] ':' \s* $/ {
         $struct-name = ~($<struct-name> // '');
+
+        # skip this structure if it is about this classes structure
+        if $struct-name ~~ m/ \w+ Class $/ {
+          $struct-skip = True;
+          last;
+        }
         note "get structure $struct-name";
         $get-item-doc = True;
       }
@@ -1340,18 +1347,20 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     $struct-doc = primary-doc-changes($struct-doc);
     $items-doc = primary-doc-changes($items-doc);
 
-    $structs-doc ~= Q:qq:to/EODOC/;
-      #-------------------------------------------------------------------------------
-      =begin pod
-      =head2 class $struct-name
+    unless $struct-skip {
+      $structs-doc ~= Q:qq:to/EODOC/;
+        #-------------------------------------------------------------------------------
+        =begin pod
+        =head2 class $struct-name
 
-      $struct-doc
+        $struct-doc
 
-      $items-doc
+        $items-doc
 
-      $struct-spec
-      =end pod
-      EODOC
+        $struct-spec
+        =end pod
+        EODOC
+    }
   }
 
   $structs-doc
