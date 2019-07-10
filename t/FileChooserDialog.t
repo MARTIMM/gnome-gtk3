@@ -2,7 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::AboutDialog;
+use Gnome::Gtk3::FileChooserDialog;
 
 
 #use Gnome::N::X;
@@ -10,8 +10,8 @@ use Gnome::Gtk3::AboutDialog;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
-  my Gnome::Gtk3::AboutDialog $a .= new(:empty);
-  isa-ok $a, Gnome::Gtk3::AboutDialog;
+  my Gnome::Gtk3::FileChooserDialog $fcd .= new(:title('Search for files'));
+  isa-ok $fcd, Gnome::Gtk3::FileChooserDialog;
 }
 
 #-------------------------------------------------------------------------------

@@ -4,8 +4,12 @@ use Test;
 
 use Gnome::Gtk3::ColorChooserDialog;
 
+
+#use Gnome::N::X;
+#X::Gnome.debug(:on);
+
 #-------------------------------------------------------------------------------
-subtest 'color chooser dialog', {
+subtest 'ISA tests', {
   my Gnome::Gtk3::ColorChooserDialog $ccd .= new(
     :title('my color chooser dialog')
   );
