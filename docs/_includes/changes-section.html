@@ -6,10 +6,12 @@
 
   <h3>{{ entry[0] }}</h3>
 
+    <ul>
       {% for note in entry[1] %}
-  <strong>*</strong> <i> {{ note }} </i>
+    <li><strong>*</strong> <i> {{ note }} </i></li>
       {% endfor %}
 
     {% endfor %}
+    </ul>
   {% endfor %}
 </div>
