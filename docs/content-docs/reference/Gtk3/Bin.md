@@ -26,15 +26,11 @@ unit class Gnome::Gtk3::Bin; also is Gnome::Gtk3::Container;
 Example
 -------
 
-An example using a `Gnome::Gtk3::Button` which is a direct descendant of `Gnome::Gtk3::Bin`. Here it is shown that a button is also a kind of a container which in principle can hold anything but by default it holds a label. The method `gtk-container-add()` comes from `Gnome::Gtk3::Container` and `get-child()` comes from `Gnome::Gtk3::Bin`.
+An example using a `Gnome::Gtk3::Button` which is a direct descendant of `Gnome::Gtk3::Bin`. Here it is shown that a button is also a kind of a container which in principle can hold anything but by default it holds a label. The widget's name is by default set to its class name. So, a Button has 'GtkButton' and a Label has 'GtkLabel'.
 
-    my Gnome::Gtk3::Label $label .= new(:label<pqr>);
-    my Gnome::Gtk3::Button $button .= new(:empty);
-    $button.gtk-container-add($label);
-
-Of course, it is much easier to do the next
-
-    my Gnome::Gtk3::Button $button .= new(:label<pqr>);
+    my Gnome::Gtk3::Button $button .= new(:label('xyz'));
+    my Gnome::Gtk3::Widget $w .= new(:widget($button.get-child));
+    say $w.get-name; # 'GtkLabel'
 
 Methods
 =======
