@@ -88,6 +88,8 @@ sub MAIN ( Str:D $base-name ) {
 
       EOTEST
 
+    # test for dir 'xt'
+    mkdir( 'xt', 0o766) unless 'xt'.IO.e;
     "xt/$p6-class-name.t".IO.spurt($test-content);
   }
 
