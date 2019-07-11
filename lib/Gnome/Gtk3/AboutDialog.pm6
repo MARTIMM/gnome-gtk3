@@ -67,67 +67,6 @@ use Gnome::Gtk3::Dialog;
 unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Methods
-=head2 new
-
-  multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-  multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
-=end pod
-
-submethod BUILD ( *%options ) {
-
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :strretbool<activate-link>,    # returns bool
-  ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::AboutDialog';
-
-  if ? %options<empty> {
-    self.native-gobject(gtk_about_dialog_new());
-  }
-
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}
-
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
-
-#note "ad $native-sub: ", $s;
-  $s = callsame unless ?$s;
-
-  $s;
-}
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_about_dialog_new
@@ -677,6 +616,67 @@ Creates a new section in the Credits page.
 sub gtk_about_dialog_add_credit_section ( N-GObject $about, Str $section_name, CArray[Str] $people )
   is native(&gtk-lib)
   { * }
+
+#-------------------------------------------------------------------------------
+my Bool $signals-added = False;
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Methods
+=head2 new
+
+  multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+  multi method new ( Gnome::GObject::Object :$widget! )
+
+Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+
+=end pod
+
+submethod BUILD ( *%options ) {
+
+  $signals-added = self.add-signal-types( $?CLASS.^name,
+    :strretbool<activate-link>,    # returns bool
+  ) unless $signals-added;
+
+  # prevent creating wrong widgets
+  return unless self.^name eq 'Gnome::Gtk3::AboutDialog';
+
+  if ? %options<empty> {
+    self.native-gobject(gtk_about_dialog_new());
+  }
+
+  elsif ? %options<widget> || %options<build-id> {
+    # provided in GObject
+  }
+
+  elsif %options.keys.elems {
+    die X::Gnome.new(
+      :message('Unsupported options for ' ~ self.^name ~
+               ': ' ~ %options.keys.join(', ')
+              )
+    );
+  }
+}
+
+#-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
+method fallback ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
+
+#note "ad $native-sub: ", $s;
+  $s = callsame unless ?$s;
+
+  $s;
+}
 
 #-------------------------------------------------------------------------------
 =begin pod
