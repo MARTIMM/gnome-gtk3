@@ -678,18 +678,19 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
-#`{{
   $template-text ~~ s:g/ 'TYPES-DOC' /$types-doc/;
   $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
   $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
-  $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
-  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
-}}
+#  $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
+#  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
 
+#`{{
   $template-text ~= "\n" ~ $types-doc;
   $template-text ~= "\n" ~ $sub-declarations;
   $template-text ~= "\n" ~ $deprecated-subs;
+}}
+
   $template-text ~= "\n" ~ $signal-doc;
   $template-text ~= "\n" ~ $property-doc;
 
@@ -1324,6 +1325,9 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
         my Str $s = ~($<struct-entry> // '');
         ( $s, $entry-type, $p6-entry-type, $type-is-class) =
           get-type( $s, :!attr);
+
+        # entry type Str must be converted to str
+        $entry-type ~~ s/Str/str/;
 
         # if there is a comma separated list then split vars up
         if $s ~~ m/ ',' / {
