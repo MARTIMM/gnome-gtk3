@@ -4,4 +4,4 @@ nav_menu: references-nav
 sidebar_menu: references-glade-sidebar
 layout: sidebar
 ---
-References to modules in the package library Gnome::Gtk3::Glade
+# Gnome::Gtk3::Glade Reference

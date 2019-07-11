@@ -4,4 +4,4 @@ nav_menu: references-nav
 sidebar_menu: references-gobject-sidebar
 layout: sidebar
 ---
-References to modules in the package library Gnome::GObject
+# Gnome::GObject Reference
