@@ -16,3 +16,5 @@ bar_menu:
     url: '/content-docs/reference/Gtk3/MenuButton.html'
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+  - title: "Window"
+    url: '/content-docs/reference/Gtk3/Window.html'
