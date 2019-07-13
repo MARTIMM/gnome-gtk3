@@ -280,3 +280,19 @@ my GTK::V3::Gdk::GdkRectangle $rectangle = $range.get-range-rect();
 ```
 
   11) There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_This is not yet implemented!_**
+
+  12) Sometimes a native sub wants to return more than one value. In GTK+ C code one must give a pointer to a location wherein the value can be returned. In perl6 one must add a trait `is rw` to the argument of the native sub to create a pointer. In these packages this going wrong because of some manipulations of the arguments. This is solved by creating a wrapper around the native sub, the arguments can be provided locally and after the call, the wrapper returns a list of values. **This is not yet fully implemented!**
+
+  An example from `Gnome::Gdk3::Window`;
+```
+sub gdk_window_get_position ( N-GObject $window --> List ) is inlinable {
+  _gdk_window_get_position( $window, my int32 $x, my int32 $y);
+  ( $x, $y)
+}
+
+sub _gdk_window_get_position (
+  N-GObject $window, int32 $x is rw, int32 $y is rw
+) is native(&gdk-lib)
+  is symbol('gdk_window_get_position')
+  { * }
+```
