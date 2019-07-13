@@ -1200,7 +1200,6 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
       $items-doc
 
       $enum-spec
-      =end pod
       EODOC
   }
 
