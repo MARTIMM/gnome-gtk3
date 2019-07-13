@@ -38,12 +38,7 @@ USE-LIBRARY-PARENT
 unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
 ALSO-IS-LIBRARY-PARENT
 
-
 TYPES-DOC
-
-SUB-DECLARATIONS
-
-DEPRECATED-SUBS
 
 
 #-------------------------------------------------------------------------------

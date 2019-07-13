@@ -679,18 +679,18 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
   $template-text ~~ s:g/ 'TYPES-DOC' /$types-doc/;
-  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
-  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
+#  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
+#  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 #  $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
 #  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
 
 #`{{
   $template-text ~= "\n" ~ $types-doc;
-  $template-text ~= "\n" ~ $sub-declarations;
-  $template-text ~= "\n" ~ $deprecated-subs;
 }}
 
+  $template-text ~= "\n" ~ $sub-declarations;
+  $template-text ~= "\n" ~ $deprecated-subs;
   $template-text ~= "\n" ~ $signal-doc;
   $template-text ~= "\n" ~ $property-doc;
 

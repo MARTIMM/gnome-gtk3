@@ -1,5 +1,7 @@
 GtkLicense
 GtkResponseType
+GtkWindowType
+GtkWindowPosition
 GtkWindowPosition
 GtkWindowType
 GtkAlign
