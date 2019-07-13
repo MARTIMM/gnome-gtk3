@@ -39,24 +39,6 @@ Declaration
 Example
 -------
 
-Methods
-=======
-
-new
----
-
-    multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-    multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
-
-    multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
-
 Types
 =====
 
@@ -258,6 +240,39 @@ Since: 3.8
 
   * GDK_FULLSCREEN_ON_ALL_MONITORS: Span across all monitors when fullscreen.
 
+class GdkWindowAttr
+-------------------
+
+Attributes to use for a newly-created window.
+
+  * Str $.title: title of the window (for toplevel windows)
+
+  * Int $.event_mask: event mask (see `gdk_window_set_events()`)
+
+  * Int $.x: X coordinate relative to parent window (see `gdk_window_move()`)
+
+  * Int $.y: Y coordinate relative to parent window (see `gdk_window_move()`)
+
+  * Int $.width: width of window
+
+  * Int $.height: height of window
+
+  * enum `WindowWindowClass` $.wclass: `GDK_INPUT_OUTPUT` (normal window) or `GDK_INPUT_ONLY` (invisible window that receives events)
+
+  * N-GObject $.visual: `Gnome::Gdk3::Visual` for window
+
+  * enum `GdkWindowType` $.window_type: type of window
+
+  * N-GObject $.cursor: cursor for the window (see `gdk_window_set_cursor()`)
+
+  * Str $.wmclass_name: don’t use (see `gtk_window_set_wmclass()`)
+
+  * Str $.wmclass_class: don’t use (see `gtk_window_set_wmclass()`)
+
+  * Int $.override_redirect: `1` to bypass the window manager
+
+  * `Gnome::Gdk3::WindowTypeHint` $.type_hint: a hint of the function of the window
+
 class GdkGeometry
 -----------------
 
@@ -299,6 +314,24 @@ The other useful fields are the *min_aspect* and *max_aspect* fields; these cont
 
   * enum `GdkGravity` $.win_gravity: window gravity, see `gtk_window_set_gravity()`
 
+Methods
+=======
+
+new
+---
+
+    multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+    multi method new ( Gnome::GObject::Object :$widget! )
+
+Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+
+    multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+
 gdk_window_new
 --------------
 
@@ -326,7 +359,7 @@ Gets the type of the window. See `Gnome::Gdk3::WindowType`.
 
 Returns: type of window
 
-    method gdk_window_get_window_type ( --> N-GObject )
+    method gdk_window_get_window_type ( --> GdkWindowType )
 
 [gdk_window_] is_destroyed
 --------------------------
@@ -967,15 +1000,17 @@ On the X11 platform, the geometry is obtained from the X server, so reflects the
 
 Note: If *window* is not a toplevel, it is much better to call `gdk_window_get_position()`, `gdk_window_get_width()` and `gdk_window_get_height()` instead, because it avoids the roundtrip to the X server and because these functions support the full 32-bit coordinate space, whereas `gdk_window_get_geometry()` is restricted to the 16-bit coordinates of X11.
 
-    method gdk_window_get_geometry ( Int $x, Int $y, Int $width, Int $height )
+    method gdk_window_get_geometry ( --> List )
 
-  * Int $x; (out) (allow-none): return location for X coordinate of window (relative to its parent)
+Returns a List with
 
-  * Int $y; (out) (allow-none): return location for Y coordinate of window (relative to its parent)
+  * Int $x; return X coordinate of window (relative to its parent)
 
-  * Int $width; (out) (allow-none): return location for width of window
+  * Int $y; return Y coordinate of window (relative to its parent)
 
-  * Int $height; (out) (allow-none): return location for height of window
+  * Int $width; return width of window
+
+  * Int $height; return height of window
 
 [gdk_window_] get_width
 -----------------------
@@ -1010,20 +1045,22 @@ Obtains the position of the window as reported in the most-recently-processed `G
 
 The position coordinates are relative to the window’s parent window.
 
-    method gdk_window_get_position ( Int $x, Int $y )
+    method gdk_window_get_position ( --> List )
 
-  * Int $x; (out) (allow-none): X coordinate of window
+Returned list contains 2 items
 
-  * Int $y; (out) (allow-none): Y coordinate of window
+  * Int $x; X coordinate of window
+
+  * Int $y; Y coordinate of window
 
 [gdk_window_] get_origin
 ------------------------
 
 Obtains the position of a window in root window coordinates. (Compare with `gdk_window_get_position()` and `gdk_window_get_geometry()` which return the position of a window relative to its parent window.)
 
-Returns: not meaningful, ignore
+    method gdk_window_get_origin ( --> List  )
 
-    method gdk_window_get_origin ( Int $x, Int $y --> Int  )
+Returns a list with
 
   * Int $x; (out) (allow-none): return location for X coordinate
 
@@ -1059,11 +1096,13 @@ See also: `gdk_window_coords_from_parent()`
 
 Since: 2.22
 
-    method gdk_window_coords_to_parent ( Num $x, Num $y, Num $parent_x, Num $parent_y )
+    method gdk_window_coords_to_parent ( Num $x, Num $y --> List )
 
   * Num $x; X coordinate in child’s coordinate system
 
   * Num $y; Y coordinate in child’s coordinate system
+
+Returns a list with items
 
   * Num $parent_x; (out) (allow-none): return location for X coordinate in parent’s coordinate system, or `Any`
 
@@ -1082,26 +1121,30 @@ See also: `gdk_window_coords_to_parent()`
 
 Since: 2.22
 
-    method gdk_window_coords_from_parent ( Num $parent_x, Num $parent_y, Num $x, Num $y )
+    method gdk_window_coords_from_parent ( Num $parent_x, Num $parent_y --> List )
 
   * Num $parent_x; X coordinate in parent’s coordinate system
 
   * Num $parent_y; Y coordinate in parent’s coordinate system
 
-  * Num $x; (out) (allow-none): return location for X coordinate in child’s coordinate system
+Returns a List with
 
-  * Num $y; (out) (allow-none): return location for Y coordinate in child’s coordinate system
+  * Num $x; return X coordinate in child’s coordinate system
+
+  * Num $y; return Y coordinate in child’s coordinate system
 
 [gdk_window_] get_root_origin
 -----------------------------
 
 Obtains the top-left corner of the window manager frame in root window coordinates.
 
-    method gdk_window_get_root_origin ( Int $x, Int $y )
+    method gdk_window_get_root_origin ( --> List )
 
-  * Int $x; (out): return location for X position of window frame
+Returns a list with
 
-  * Int $y; (out): return location for Y position of window frame
+  * Int $x; return X position of window frame
+
+  * Int $y; return Y position of window frame
 
 [gdk_window_] get_frame_extents
 -------------------------------
@@ -1132,38 +1175,44 @@ Obtains the current device position and modifier state. The position is given in
 
 Use `gdk_window_get_device_position_double()` if you need subpixel precision.
 
-Returns: (nullable) (transfer none): The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
+Returns: (nullable) (transfer none): Since: 3.0
 
-Since: 3.0
-
-    method gdk_window_get_device_position ( N-GObject $device, Int $x, Int $y, GdkModifierType $mask --> N-GObject  )
+    method gdk_window_get_device_position ( N-GObject $device --> List  )
 
   * N-GObject $device; pointer `Gnome::Gdk3::Device` to query to.
 
-  * Int $x; (out) (allow-none): return location for the X coordinate of *device*, or `Any`.
+Returns a List with items
 
-  * Int $y; (out) (allow-none): return location for the Y coordinate of *device*, or `Any`.
+  * N-GObject $dev-window; The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
 
-  * GdkModifierType $mask; (out) (allow-none): return location for the modifier mask, or `Any`.
+  * Int $x; return the X coordinate of *device*, or `Any`.
+
+  * Int $y; return the Y coordinate of *device*, or `Any`.
+
+  * GdkModifierType $mask; return the modifier mask, or `Any`.
 
 [gdk_window_] get_device_position_double
 ----------------------------------------
 
 Obtains the current device position in doubles and modifier state. The position is given in coordinates relative to the upper left corner of *window*.
 
-Returns: (nullable) (transfer none): The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
-
 Since: 3.10
 
-    method gdk_window_get_device_position_double ( N-GObject $device, Num $x, Num $y, GdkModifierType $mask --> N-GObject  )
+    method gdk_window_get_device_position_double (
+      N-GObject $device --> List
+    )
 
   * N-GObject $device; pointer `Gnome::Gdk3::Device` to query to.
 
-  * Num $x; (out) (allow-none): return location for the X coordinate of *device*, or `Any`.
+Returns a List with items
 
-  * Num $y; (out) (allow-none): return location for the Y coordinate of *device*, or `Any`.
+  * N-GObject $dev-window; The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
 
-  * GdkModifierType $mask; (out) (allow-none): return location for the modifier mask, or `Any`.
+  * Num $x; return the X coordinate of *device*, or `Any`.
+
+  * Num $y; return the Y coordinate of *device*, or `Any`.
+
+  * GdkModifierType $mask; return the modifier mask, or `Any`.
 
 [gdk_window_] get_parent
 ------------------------
@@ -1625,7 +1674,10 @@ Thaws a window frozen with `gdk_window_freeze_updates()`.
 
 Constrains a desired width and height according to a set of geometry hints (such as minimum and maximum size).
 
-    method gdk_window_constrain_size ( GdkGeometry $geometry, GdkWindowHints $flags, Int $width, Int $height, Int $new_width, Int $new_height )
+    method gdk_window_constrain_size (
+      GdkGeometry $geometry, GdkWindowHints $flags, Int $width, Int $height
+      --> List
+    )
 
   * GdkGeometry $geometry; a `Gnome::Gdk3::Geometry` structure
 
@@ -1635,9 +1687,11 @@ Constrains a desired width and height according to a set of geometry hints (such
 
   * Int $height; desired height of the window
 
-  * Int $new_width; (out): location to store resulting width
+Returns a List with
 
-  * Int $new_height; (out): location to store resulting height
+  * Int $new_width; resulting width
+
+  * Int $new_height; resulting height
 
 gdk_get_default_root_window
 ---------------------------
@@ -1830,12 +1884,24 @@ List of not yet implemented methods and classes
 List of deprecated (not implemented!) methods
 =============================================
 
-Since 3.0.
-----------
+Since 3.0
+---------
 
 ### method gdk_window_at_pointer ( Int $win_x, Int $win_y --> N-GObject )
 
 ### method gdk_window_get_pointer ( Int $x, Int $y, GdkModifierType $mask --> N-GObject )
+
+Since 3.4
+---------
+
+### method gdk_window_set_background ( GdkColor $color )
+
+Since 3.8
+---------
+
+### method gdk_window_enable_synchronized_configure ( )
+
+### method gdk_window_configure_finished ( )
 
 Since 3.14
 ----------
@@ -1870,26 +1936,11 @@ Since 3.22
 
 ### method gdk_window_set_debug_updates ( Int $setting )
 
-Since 3.22.
------------
-
 ### method gdk_window_begin_paint_rect ( N-GObject $rectangle )
 
 ### method gdk_window_begin_paint_region ( cairo_region_t $region )
 
 ### method gdk_window_end_paint ( )
-
-Since 3.4
----------
-
-### method gdk_window_set_background ( GdkColor $color )
-
-Since 3.8
----------
-
-### method gdk_window_enable_synchronized_configure ( )
-
-### method gdk_window_configure_finished ( )
 
 Signals
 =======
