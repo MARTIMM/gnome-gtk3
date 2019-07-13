@@ -69,6 +69,113 @@ also is Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
 =begin pod
+=head1 Types
+
+=head2 enum GtkLicense
+
+The type of license for an application. This enumeration can be expanded at later date.
+
+
+=item GTK_LICENSE_UNKNOWN: No license specified
+=item GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
+=item GTK_LICENSE_GPL_2_0: The GNU General Public License, version 2.0 or later
+=item GTK_LICENSE_GPL_3_0: The GNU General Public License, version 3.0 or later
+=item GTK_LICENSE_LGPL_2_1: The GNU Lesser General Public License, version 2.1 or later
+=item GTK_LICENSE_LGPL_3_0: The GNU Lesser General Public License, version 3.0 or later
+=item GTK_LICENSE_BSD: The BSD standard license
+=item GTK_LICENSE_MIT_X11: The MIT/X11 standard license
+=item GTK_LICENSE_ARTISTIC: The Artistic License, version 2.0
+=item GTK_LICENSE_GPL_2_0_ONLY: The GNU General Public License, version 2.0 only. Since 3.12.
+=item GTK_LICENSE_GPL_3_0_ONLY: The GNU General Public License, version 3.0 only. Since 3.12.
+=item GTK_LICENSE_LGPL_2_1_ONLY: The GNU Lesser General Public License, version 2.1 only. Since 3.12.
+=item GTK_LICENSE_LGPL_3_0_ONLY: The GNU Lesser General Public License, version 3.0 only. Since 3.12.
+=item GTK_LICENSE_AGPL_3_0: The GNU Affero General Public License, version 3.0 or later. Since: 3.22.
+=item GTK_LICENSE_AGPL_3_0_ONLY: The GNU Affero General Public License, version 3.0 only. Since: 3.22.27.
+
+
+=end pod
+
+enum GtkLicense is export (
+  'GTK_LICENSE_UNKNOWN',
+  'GTK_LICENSE_CUSTOM',
+  'GTK_LICENSE_GPL_2_0',
+  'GTK_LICENSE_GPL_3_0',
+  'GTK_LICENSE_LGPL_2_1',
+  'GTK_LICENSE_LGPL_3_0',
+  'GTK_LICENSE_BSD',
+  'GTK_LICENSE_MIT_X11',
+  'GTK_LICENSE_ARTISTIC',
+  'GTK_LICENSE_GPL_2_0_ONLY',
+  'GTK_LICENSE_GPL_3_0_ONLY',
+  'GTK_LICENSE_LGPL_2_1_ONLY',
+  'GTK_LICENSE_LGPL_3_0_ONLY',
+  'GTK_LICENSE_AGPL_3_0',
+  'GTK_LICENSE_AGPL_3_0_ONLY'
+);
+
+#-------------------------------------------------------------------------------
+my Bool $signals-added = False;
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Methods
+=head2 new
+
+  multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+  multi method new ( Gnome::GObject::Object :$widget! )
+
+Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+
+=end pod
+
+submethod BUILD ( *%options ) {
+
+  $signals-added = self.add-signal-types( $?CLASS.^name,
+    :strretbool<activate-link>,    # returns bool
+  ) unless $signals-added;
+
+  # prevent creating wrong widgets
+  return unless self.^name eq 'Gnome::Gtk3::AboutDialog';
+
+  if ? %options<empty> {
+    self.native-gobject(gtk_about_dialog_new());
+  }
+
+  elsif ? %options<widget> || %options<build-id> {
+    # provided in GObject
+  }
+
+  elsif %options.keys.elems {
+    die X::Gnome.new(
+      :message('Unsupported options for ' ~ self.^name ~
+               ': ' ~ %options.keys.join(', ')
+              )
+    );
+  }
+}
+
+#-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
+method fallback ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
+
+#note "ad $native-sub: ", $s;
+  $s = callsame unless ?$s;
+
+  $s;
+}
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head2 gtk_about_dialog_new
 
 Creates a new C<Gnome::Gtk3::AboutDialog>.
@@ -618,67 +725,6 @@ sub gtk_about_dialog_add_credit_section ( N-GObject $about, Str $section_name, C
   { * }
 
 #-------------------------------------------------------------------------------
-my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Methods
-=head2 new
-
-  multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-  multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
-=end pod
-
-submethod BUILD ( *%options ) {
-
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :strretbool<activate-link>,    # returns bool
-  ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::AboutDialog';
-
-  if ? %options<empty> {
-    self.native-gobject(gtk_about_dialog_new());
-  }
-
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}
-
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
-
-#note "ad $native-sub: ", $s;
-  $s = callsame unless ?$s;
-
-  $s;
-}
-
-#-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
@@ -907,51 +953,3 @@ Returns: C<1> if the link has been activated
 =end comment
 
 =end pod
-
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-
-=head2 enum GtkLicense
-
-The type of license for an application. This enumeration can be expanded at later date.
-
-
-=item GTK_LICENSE_UNKNOWN: No license specified
-=item GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
-=item GTK_LICENSE_GPL_2_0: The GNU General Public License, version 2.0 or later
-=item GTK_LICENSE_GPL_3_0: The GNU General Public License, version 3.0 or later
-=item GTK_LICENSE_LGPL_2_1: The GNU Lesser General Public License, version 2.1 or later
-=item GTK_LICENSE_LGPL_3_0: The GNU Lesser General Public License, version 3.0 or later
-=item GTK_LICENSE_BSD: The BSD standard license
-=item GTK_LICENSE_MIT_X11: The MIT/X11 standard license
-=item GTK_LICENSE_ARTISTIC: The Artistic License, version 2.0
-=item GTK_LICENSE_GPL_2_0_ONLY: The GNU General Public License, version 2.0 only. Since 3.12.
-=item GTK_LICENSE_GPL_3_0_ONLY: The GNU General Public License, version 3.0 only. Since 3.12.
-=item GTK_LICENSE_LGPL_2_1_ONLY: The GNU Lesser General Public License, version 2.1 only. Since 3.12.
-=item GTK_LICENSE_LGPL_3_0_ONLY: The GNU Lesser General Public License, version 3.0 only. Since 3.12.
-=item GTK_LICENSE_AGPL_3_0: The GNU Affero General Public License, version 3.0 or later. Since: 3.22.
-=item GTK_LICENSE_AGPL_3_0_ONLY: The GNU Affero General Public License, version 3.0 only. Since: 3.22.27.
-
-
-=end pod
-
-enum GtkLicense is export (
-  'GTK_LICENSE_UNKNOWN',
-  'GTK_LICENSE_CUSTOM',
-  'GTK_LICENSE_GPL_2_0',
-  'GTK_LICENSE_GPL_3_0',
-  'GTK_LICENSE_LGPL_2_1',
-  'GTK_LICENSE_LGPL_3_0',
-  'GTK_LICENSE_BSD',
-  'GTK_LICENSE_MIT_X11',
-  'GTK_LICENSE_ARTISTIC',
-  'GTK_LICENSE_GPL_2_0_ONLY',
-  'GTK_LICENSE_GPL_3_0_ONLY',
-  'GTK_LICENSE_LGPL_2_1_ONLY',
-  'GTK_LICENSE_LGPL_3_0_ONLY',
-  'GTK_LICENSE_AGPL_3_0',
-  'GTK_LICENSE_AGPL_3_0_ONLY'
-);
