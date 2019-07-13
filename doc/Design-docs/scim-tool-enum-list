@@ -1,13 +1,3 @@
-GdkWindowWindowClass
-GdkWindowType
-GdkWindowAttributesType
-GdkWindowHints
-GdkWMDecoration
-GdkWMFunction
-GdkGravity
-GdkAnchorHints
-GdkWindowEdge
-GdkFullscreenMode
 GtkLicense
 GtkResponseType
 GtkWindowPosition
