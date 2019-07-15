@@ -80,7 +80,7 @@ subtest 'Button as container', {
 
 #-------------------------------------------------------------------------------
 #TODO is it necessary to inherit
-class X is Gnome::Gtk3::Button {
+class BH {
 
   method click-handler ( :widget($button), Array :$user-data ) {
     isa-ok $button, Gnome::Gtk3::Button;
@@ -99,7 +99,7 @@ subtest 'Button connect and emit signal', {
   $data[0] = 'Hello';
   $data[1] = 'World';
 
-  my X $x .= new(:empty);
+  my BH $x .= new(:empty);
   $button.register-signal( $x, 'click-handler', 'clicked', :user-data($data));
 
   my Promise $p = start {
