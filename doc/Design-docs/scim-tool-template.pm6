@@ -38,8 +38,6 @@ USE-LIBRARY-PARENT
 unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
 ALSO-IS-LIBRARY-PARENT
 
-TYPES-DOC
-
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;

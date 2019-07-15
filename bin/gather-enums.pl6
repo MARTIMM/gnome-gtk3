@@ -18,7 +18,11 @@ for @dir-roots -> $dir-root {
 
     for $p.out.lines -> $line {
       $line ~~ m:s/^ enum $<enum-type> = [<alnum>+] is export /;
-      @enum-list.push: ~$<enum-type> if ?$<enum-type>;
+
+      if ?$<enum-type> {
+        @enum-list.push: ~$<enum-type>;
+        note ~$<enum-type>;
+      }
     }
 
     $p.out.close;

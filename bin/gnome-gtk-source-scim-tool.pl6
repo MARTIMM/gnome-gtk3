@@ -4,8 +4,6 @@ use v6;
 
 #-------------------------------------------------------------------------------
 my Str $library = '';
-my Str $sub-declarations = '';
-my Str $deprecated-subs = '';
 
 my Str $include-filename;
 my Str $lib-class-name;
@@ -16,8 +14,9 @@ my Str $p6-class-name;
 my Str $p6-parentlib-name;
 my Str $p6-parentclass-name;
 
+my Str $output-file;
+
 my Str ( $section-doc, $short-description, $see-also);
-my Str ( $signal-doc, $property-doc, $types-doc);
 
 my @gtkdirlist = ();
 my @gdkdirlist = ();
@@ -38,19 +37,7 @@ sub MAIN ( Str:D $base-name ) {
     $p6-lib-name, $include-content, $source-content
   ) = setup-names($base-name);
 
-#$types-doc = get-vartypes($include-content);
-#'xt/__xyz__.pm6'.IO.spurt($types-doc);
-
-#$sub-declarations = get-subroutines( $include-content, $source-content);
-#'xt/__xyz__.pm6'.IO.spurt($sub-declarations);
-
-#exit 0;
-
   if $file-found {
-    $sub-declarations = get-subroutines( $include-content, $source-content);
-
-    $deprecated-subs = get-deprecated-subs($include-content);
-
 
     ( $p6-parentclass-name, $p6-parentlib-name) =
        parent-class($include-content);
@@ -58,12 +45,19 @@ sub MAIN ( Str:D $base-name ) {
     ( $section-doc, $short-description, $see-also) =
       get-section($source-content);
 
-    $signal-doc = get-signals($source-content);
-    $property-doc = get-properties($source-content);
-    $types-doc = get-vartypes($include-content);
-
     my Str $module-text = substitute-in-template();
-    "xt/$p6-class-name.pm6".IO.spurt($module-text);
+
+    # test for dir 'xt'
+    mkdir( 'xt', 0o766) unless 'xt'.IO.e;
+    $output-file = "xt/$p6-class-name.pm6";
+    $output-file.IO.spurt($module-text);
+    $module-text = '';  # cleanup
+
+    get-subroutines( $include-content, $source-content);
+    get-deprecated-subs($include-content);
+    get-signals($source-content);
+    get-properties($source-content);
+    get-vartypes($include-content);
 
     my Str $m = '$v';
     my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
@@ -88,8 +82,6 @@ sub MAIN ( Str:D $base-name ) {
 
       EOTEST
 
-    # test for dir 'xt'
-    mkdir( 'xt', 0o766) unless 'xt'.IO.e;
     "xt/$p6-class-name.t".IO.spurt($test-content);
   }
 
@@ -99,9 +91,8 @@ sub MAIN ( Str:D $base-name ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
+sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
-  my Str $sub-declarations = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -228,17 +219,15 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
 
 
 #    note $sub;
-    $sub-declarations ~= $sub;
-  }
 
-  $sub-declarations
+    $output-file.IO.spurt( $sub, :append);
+  }
 }
 
 #-------------------------------------------------------------------------------
-sub get-deprecated-subs( Str:D $include-content --> Str ) {
+sub get-deprecated-subs( Str:D $include-content ) {
 
   my Hash $dep-versions = {};
-#  my Str $sub-declarations = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -345,7 +334,7 @@ sub get-deprecated-subs( Str:D $include-content --> Str ) {
     $deprecated-subs ~= "=end pod";
   }
 
-  $deprecated-subs
+  $output-file.IO.spurt( $deprecated-subs, :append);
 }
 
 #-------------------------------------------------------------------------------
@@ -678,21 +667,32 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
-  $template-text ~~ s:g/ 'TYPES-DOC' /$types-doc/;
 
-#  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
-#  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
-#  $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
-#  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
+  $template-text
+}
 
-#`{{
-  $template-text ~= "\n" ~ $types-doc;
-}}
+#-------------------------------------------------------------------------------
+sub substitute-in-templateX ( --> Str ) {
 
-  $template-text ~= "\n" ~ $sub-declarations;
-  $template-text ~= "\n" ~ $deprecated-subs;
-  $template-text ~= "\n" ~ $signal-doc;
-  $template-text ~= "\n" ~ $property-doc;
+  my Str $template-text = "doc/Design-docs/scim-tool-template.pm6".IO.slurp;
+
+  $template-text ~~ s:g/ 'Gnome::LIBRARYMODULE'
+                       /Gnome::{$p6-lib-name}::{$p6-class-name}/;
+
+  my Str ( $t1, $t2) = ( '', '');
+  if $p6-parentlib-name and $p6-parentclass-name {
+    $t1 = "use Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
+    $t2 = "also is Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
+  }
+
+  $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
+  $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
+
+  $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
+
+  $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
+  $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
+  $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
 
   $template-text
 }
@@ -789,7 +789,7 @@ sub get-section ( Str:D $source-content --> List ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-signals ( Str:D $source-content is copy --> Str ) {
+sub get-signals ( Str:D $source-content is copy ) {
 
   my Array $items-src-doc;
   my Str $signal-name;
@@ -987,12 +987,11 @@ note "item doc: ", $item-doc;
 
   }
 
-
-  $signal-doc
+  $output-file.IO.spurt( $signal-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-properties ( Str:D $source-content is copy --> Str ) {
+sub get-properties ( Str:D $source-content is copy ) {
 
   my Str $property-name;
   my Str $property-doc = '';
@@ -1067,22 +1066,21 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
 
-  $property-doc
+  $output-file.IO.spurt( $property-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-vartypes ( Str:D $include-content --> Str ) {
+sub get-vartypes ( Str:D $include-content ) {
 
 #  my Str $enums-doc = get-enumerations($include-content);
 #  my Str $structs-doc = get-structures($include-content);
 
-  ( get-enumerations($include-content) ~
-    get-structures($include-content)
-  )
+  get-enumerations($include-content);
+  get-structures($include-content);
 }
 
 #-------------------------------------------------------------------------------
-sub get-enumerations ( Str:D $include-content is copy --> Str ) {
+sub get-enumerations ( Str:D $include-content is copy ) {
 
   my Str $enums-doc = Q:qq:to/EODOC/;
 
@@ -1203,11 +1201,11 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
       EODOC
   }
 
-  $enums-doc
+  $output-file.IO.spurt( $enums-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-structures ( Str:D $include-content is copy --> Str ) {
+sub get-structures ( Str:D $include-content is copy ) {
 
   my Str $structs-doc = '';
   my Bool $found-doc = False;
@@ -1368,7 +1366,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     }
   }
 
-  $structs-doc
+  $output-file.IO.spurt( $structs-doc, :append);
 }
 
 #-------------------------------------------------------------------------------

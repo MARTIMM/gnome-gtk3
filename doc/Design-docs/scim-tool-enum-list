@@ -69,6 +69,7 @@ GtkFileChooserConfirmation
 GtkFileFilterFlags
 GtkTextSearchFlags
 GtkStyleProviderPriority
+GtkWidgetHelpType
 GdkWindowWindowClass
 GdkWindowType
 GdkWindowAttributesType
