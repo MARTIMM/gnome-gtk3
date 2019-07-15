@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 

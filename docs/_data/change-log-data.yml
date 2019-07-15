@@ -1,6 +1,10 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2019-07-04 0.17.1:
+    - Extended Gnome::Gtk3::Window, Gnome::Gtk3::Widget.
+    - Added pod doc and tests.
+
   - 2019-07-04 0.17.0:
     - Add MenuButton, Menu, MenuShell, MenuBar in Gnome::Gtk3.
     - Regenerated and adapted Gnome::Gdk3::Window.
