@@ -20,8 +20,8 @@ C<Gnome::Gtk3::Button>, C<Gnome::Gtk3::Frame>, C<Gnome::Gtk3::HandleBox> or C<Gn
 =head1 Synopsis
 =head2 Declaration
 
-unit class Gnome::Gtk3::Bin;
-also is Gnome::Gtk3::Container;
+  unit class Gnome::Gtk3::Bin;
+  also is Gnome::Gtk3::Container;
 
 =head2 Example
 
@@ -50,6 +50,7 @@ also is Gnome::Gtk3::Container;
 
 #-------------------------------------------------------------------------------
 #my Bool $signals-added = False;
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -89,6 +90,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkBin');
 }
 
 #-------------------------------------------------------------------------------
@@ -100,6 +104,7 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_bin_$native-sub"); } unless ?$s;
 
 #note "ad $native-sub: ", $s;
+  self.set-class-name-of-sub('GtkBin');
   $s = callsame unless ?$s;
 
   $s;

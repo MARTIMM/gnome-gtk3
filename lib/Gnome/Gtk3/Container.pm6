@@ -57,6 +57,8 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  self.set-class-info('GtkContainer');
 }
 
 #-------------------------------------------------------------------------------
@@ -66,6 +68,7 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_container_$native-sub"); } unless ?$s;
 
+  self.set-class-name-of-sub('GtkContainer');
   $s = callsame unless ?$s;
 
   $s

@@ -144,6 +144,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkBox');
 }
 
 #-------------------------------------------------------------------------------
@@ -155,11 +158,11 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_box_$native-sub"); } unless ?$s;
 
 #note "ad $native-sub: ", $s;
+  self.set-class-name-of-sub('GtkBox');
   $s = callsame unless ?$s;
 
   $s;
 }
-
 
 #-------------------------------------------------------------------------------
 =begin pod
