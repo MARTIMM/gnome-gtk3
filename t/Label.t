@@ -2,16 +2,13 @@ use v6;
 use NativeCall;
 use Test;
 
-#use lib '../perl6-gnome-gobject/lib';
-
-use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::Label;
 
-#X::Gnome.debug(:on);
-
+#use Gnome::N::X;
+#Gnome::N.debug(:on);
 #-------------------------------------------------------------------------------
 subtest 'Label create', {
 

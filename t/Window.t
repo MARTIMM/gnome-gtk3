@@ -5,7 +5,7 @@ use Test;
 use Gnome::Gtk3::Window;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
