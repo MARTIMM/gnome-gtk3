@@ -162,7 +162,7 @@ A few measures are implemented to help a bit preventing problems;
 * The failure to initialize GTK on time (in most cases) is solved by using an initialization flag which is checked in the `Gnome::Gtk3::Main` module. The module is referred to by `Gnome::GObject::Object` which almost all modules inherit from. GObject calls a method in `Gnome::Gtk3::Main` to check for this flag and initialize if needed. Therefore the user never has to initialize GTK.
 * Throwing an exception while in Perl6 code called from C (in a callback), Perl6 will crash with the '*internal error*' message mentioned above without being able to process the exception.
 
-  To at least show why it happens, all messages which are set in the exception are printed first before calling `die()` which will perl6 force to wander off aimlessly. A debug flag in the class `X::Gnome::N` can be set to show these messages which might help solving your problems.
+  To at least show why it happens, all messages which are set in the exception are printed first before calling `die()` which will perl6 force to wander off aimlessly. A debug flag in the class `Gnome::N` can be set to show these messages which might help solving your problems.
 
 # Documentation
 
