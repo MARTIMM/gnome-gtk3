@@ -15,6 +15,8 @@ Description
 
 In GTK+, the main widgets that implement this interface are `Gnome::Gtk3::ColorChooserWidget`, `Gnome::Gtk3::ColorChooserDialog` and `Gnome::Gtk3::ColorButton`.
 
+Since: 3.4
+
 See Also
 --------
 
@@ -45,23 +47,27 @@ Methods
 new
 ---
 
-    multi method new ( Gnome::GObject::Object :$widget! )
+### multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
+Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
 
 [gtk_color_chooser_] get_rgba
 -----------------------------
 
 Gets the currently-selected color.
 
+Since: 3.4
+
     method gtk_color_chooser_get_rgba ( N-GObject $color)
 
-  * GdkRGBA $color; (out): a `Gnome::Gdk3::RGBA::GdkRGBA` structure to fill in with the current color
+  * GdkRGBA $color; (out): a `GdkRGBA` structure to fill in with the current color
 
 [gtk_color_chooser_] set_rgba
 -----------------------------
 
 Sets the color.
+
+Since: 3.4
 
     method gtk_color_chooser_set_rgba ( N-GObject $color)
 
@@ -72,14 +78,18 @@ Sets the color.
 
 Returns whether the color chooser shows the alpha channel.
 
-    method gtk_color_chooser_get_use_alpha ( --> Int )
+Returns: `1` if the color chooser uses the alpha channel, `0` if not
 
-Returns Int; 1 if the color chooser uses the alpha channel, 0 if not.
+Since: 3.4
+
+    method gtk_color_chooser_get_use_alpha ( --> Int )
 
 [gtk_color_chooser_] set_use_alpha
 ----------------------------------
 
 Sets whether or not the color chooser should use the alpha channel.
+
+Since: 3.4
 
     method gtk_color_chooser_set_use_alpha ( Int $use_alpha)
 
@@ -88,7 +98,7 @@ Sets whether or not the color chooser should use the alpha channel.
 [gtk_color_chooser_] add_palette
 --------------------------------
 
-Adds a palette to the color chooser. If @orientation is horizontal, the colors are grouped in rows, with @colors_per_line colors in each row. If @horizontal is 0, the colors are grouped in columns instead.
+Adds a palette to the color chooser. If *orientation* is horizontal, the colors are grouped in rows, with *colors_per_line* colors in each row. If *horizontal* is `0`, the colors are grouped in columns instead.
 
 The default color palette of `Gnome::Gtk3::ColorChooserWidget` has 27 colors, organized in columns of 3 colors. The default gray palette has 9 grays in a single row.
 
@@ -96,9 +106,11 @@ The layout of the color chooser widget works best when the palettes have 9-10 co
 
 Calling this function for the first time has the side effect of removing the default color and gray palettes from the color chooser.
 
-If @colors is %NULL, removes all previously added palettes.
+If *colors* is `Any`, removes all previously added palettes.
 
-    method gtk_color_chooser_add_palette ( GtkOrientation $orientation, Int $colors_per_line, Int $n_colors, N-GObject $colors)
+Since: 3.4
+
+    method gtk_color_chooser_add_palette ( GtkOrientation $orientation, Int $colors_per_line, Int $n_colors, N-GObject $colors )
 
   * GtkOrientation $orientation; `GTK_ORIENTATION_HORIZONTAL` if the palette should be displayed in rows, `GTK_ORIENTATION_VERTICAL` for columns
 
@@ -153,6 +165,35 @@ Or it can be done like this
     my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
     $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 10, $palette);
 
+Signals
+=======
+
+Register any signal as follows. See also `Gnome::GObject::Object`.
+
+    my Bool $is-registered = $my-widget.register-signal (
+      $handler-object, $handler-name, $signal-name,
+      :$user-option1, ..., $user-optionN
+    )
+
+Not yet supported signals
+-------------------------
+
+### color-activated:
+
+Emitted when a color is activated from the color chooser. This usually happens when the user clicks a color swatch, or a color is selected and the user presses one of the keys Space, Shift+Space, Return or Enter.
+
+Since: 3.4
+
+    method handler (
+      Gnome::GObject::Object :widget($chooser),
+      :handle-arg0($color),
+      :$user-option1, ..., :$user-optionN
+    );
+
+  * $chooser; the object which received the signal
+
+  * $color; the color
+
 Properties
 ==========
 
@@ -163,42 +204,27 @@ An example of using a string type property of a `Gnome::Gtk3::Label` object. Thi
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');
 
+Supported properties
+--------------------
+
+### use-alpha
+
+The `Gnome::GObject::Value` type of property *use-alpha* is `G_TYPE_BOOLEAN`.
+
+When ::use-alpha is `1`, colors may have alpha (translucency) information. When it is `0`, the `Gnome::Gdk3::RGBA` struct obtained via the prop `rgba` property will be forced to have alpha == 1.
+
+Implementations are expected to show alpha by rendering the color over a non-uniform background (like a checkerboard pattern).
+
+Since: 3.4
+
 Not yet supported properties
 ----------------------------
 
 ### rgba
 
-The `rgba` property contains the currently selected color, as a `Gnome::Gdk3::RGBA` struct. The property can be set to change the current selection programmatically.
+The `Gnome::GObject::Value` type of property *rgba* is `G_TYPE_BOXED`.
 
-### use-alpha
+The ::rgba property contains the currently selected color, as a `Gnome::Gdk3::RGBA` struct. The property can be set to change the current selection programmatically.
 
-When ::use-alpha is 1, colors may have alpha (translucency) information. When it is 0, the `Gnome::Gdk3::RGBA` struct obtained via the `Gnome::Gtk3::ColorChooser`:rgba property will be forced to have alpha == 1.
-
-Implementations are expected to show alpha by rendering the color over a non-uniform background (like a checkerboard pattern).
-
-Signals
-=======
-
-Register any signal as follows. See also `Gnome::Gtk3::Widget`.
-
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., $user-optionN
-    )
-
-Not yet supported signals
--------------------------
-
-### `Gnome::Gtk3::ColorChooser`::color-activated:
-
-Emitted when a color is activated from the color chooser. This usually happens when the user clicks a color swatch, or a color is selected and the user presses one of the keys Space, Shift+Space, Return or Enter.
-
-    method handler (
-      :$chooser, :$color,
-      :$user-option1, ..., $user-optionN
-    );
-
-  * $chooser; the object which received the signal
-
-  * $color; the color
+Since: 3.4
 
