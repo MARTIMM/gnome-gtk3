@@ -4,6 +4,7 @@ notes:
 
   - 2019-07-20 0.17.3:
     - Documented Gnome::Gtk3::CheckButton and add test.
+    - Extended, tested and documented Button, ColorButton.
 
   - 2019-07-20 0.17.2:
     - Extended Gnome::Gtk3::Builder.
