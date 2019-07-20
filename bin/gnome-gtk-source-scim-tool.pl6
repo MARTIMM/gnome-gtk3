@@ -675,7 +675,6 @@ sub substitute-in-template ( Str $include-content ) {
     use Gnome::N::X;
     use Gnome::N::NativeLib;
     use Gnome::N::N-GObject;
-    use Gnome::GObject::Type;
     USE-LIBRARY-PARENT
 
     #-------------------------------------------------------------------------------
@@ -773,32 +772,6 @@ sub substitute-in-template ( Str $include-content ) {
       $s = callsame unless ?$s;
 
       $s;
-    }
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =head2 get-class-gtype
-
-    Return class's type code created after registration. this is like calling Gnome::GObject::Type.new().g_type_from_name(GTK+ class type name).
-
-      method get-class-gtype ( --> Int )
-    =end pod
-
-    method get-class-gtype ( --> Int ) {
-      $!gtk-class-gtype
-    }
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =head2 get-class-name
-
-    Return class name.
-
-      method get-class-name ( --> Str )
-    =end pod
-
-    method get-class-name ( --> Str ) {
-      $!gtk-class-name
     }
 
     EOTEMPLATE
