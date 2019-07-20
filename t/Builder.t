@@ -7,8 +7,8 @@ use Gnome::GObject::Object;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::Button;
 
-use Gnome::N::X;
-Gnome::N::debug(:on);
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my $dir = 't/ui';
