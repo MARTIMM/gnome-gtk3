@@ -69,7 +69,7 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gdk3::Window;
-use Gnome::Gdk3::EventTypes;
+use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Bin;
 
 #-------------------------------------------------------------------------------
@@ -173,7 +173,6 @@ Create a button using a native object from a builder. See also Gnome::GObject::O
 
 =end pod
 submethod BUILD ( *%options ) {
-
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :signal<activate-default activate-focus keys-changed>,
     :nativewidget<set-focus>,
@@ -184,12 +183,12 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Window';
 
   if ?%options<empty> {
-    my $wtype = %options<window-type> // 0;       # 0 = GTK_WINDOW_TOPLEVEL
+    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
     self.native-gobject(gtk_window_new($wtype));
   }
 
   elsif ? %options<title> {
-    my $wtype = %options<window-type> // 0;       # 0 = GTK_WINDOW_TOPLEVEL;
+    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
     self.native-gobject(gtk_window_new($wtype));
     self.gtk_window_set_title(%options<title>);
   }
@@ -3336,7 +3335,7 @@ Return: 1 if the key binding was handled
 
 =head2 Handler Method Arguments
 =item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
+=item $event; A structure defined in C<Gnome::Gdk3::Events>.
 =item $nativewidget; A native widget which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
 =item $user-option*; Any extra options given by the user when registering the signal.
 
