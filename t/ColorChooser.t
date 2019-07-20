@@ -13,9 +13,13 @@ my Gnome::Gtk3::ColorChooserDialog $ccd;
 my Gnome::Gtk3::ColorChooser $cc;
 
 #-------------------------------------------------------------------------------
-subtest 'default color from chooser dialog', {
-
+subtest 'ISA test', {
   $ccd .= new(:title('my color chooser dialog'));
+  isa-ok $v, Gnome::Gtk3::ColorChooser;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'default color from chooser dialog', {
 
   # get color chooser widget
   $cc .= new(:widget($ccd));
