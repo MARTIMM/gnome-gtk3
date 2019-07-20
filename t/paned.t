@@ -7,8 +7,6 @@ use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Paned;
 use Gnome::Gtk3::ListBox;
 
-diag "\n";
-
 #-------------------------------------------------------------------------------
 subtest 'Create paned windows', {
   my Gnome::Gtk3::ListBox $lb-left .= new(:empty);

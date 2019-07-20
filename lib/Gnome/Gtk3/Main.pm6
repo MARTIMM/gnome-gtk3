@@ -54,6 +54,7 @@ arguments do not parse properly.
 
 =end pod
 
+#TODO rewrite because init is done now in Object using pinched sub from here
 submethod BUILD ( Bool :$check = False ) {
 
   if not $gui-initialized {

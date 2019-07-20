@@ -120,15 +120,15 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-  multi method new ( Bool :$empty! )
+=head3 multi method new ( Bool :$empty! )
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 
@@ -158,6 +158,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkAboutDialog');
 }
 
 #-------------------------------------------------------------------------------
@@ -169,6 +172,7 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
 
 #note "ad $native-sub: ", $s;
+  self.set-class-name-of-sub('GtkAboutDialog');
   $s = callsame unless ?$s;
 
   $s;
@@ -946,7 +950,7 @@ Returns: C<1> if the link has been activated
 
 =head4 Handler Method Arguments
 =item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
+=item $event; A structure defined in C<Gnome::Gdk3::Events>.
 =item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
 =item $user-option*; Any extra options given by the user when registering the signal.
 

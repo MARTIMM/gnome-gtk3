@@ -8,8 +8,6 @@ use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
 
-diag "\n";
-
 #-------------------------------------------------------------------------------
 subtest 'Grid create', {
 

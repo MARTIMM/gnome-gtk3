@@ -86,11 +86,11 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 
     multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
 
     multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
 
 Types
 =====
@@ -114,23 +114,6 @@ Creates a new `Gnome::Gtk3::Menu`
 Returns: a new `Gnome::Gtk3::Menu`
 
     method gtk_menu_new ( --> N-GObject  )
-
-[gtk_menu_] new_from_model
---------------------------
-
-Creates a `Gnome::Gtk3::Menu` and populates it with menu items and submenus according to *model*.
-
-The created menu items are connected to actions found in the `Gnome::Gtk3::ApplicationWindow` to which the menu belongs - typically by means of being attached to a widget (see `gtk_menu_attach_to_widget()`) that is contained within the `Gnome::Gtk3::ApplicationWindows` widget hierarchy.
-
-Actions can also be added using `gtk_widget_insert_action_group()` on the menu's attach widget or on any of its parent widgets.
-
-Returns: a new `Gnome::Gtk3::Menu`
-
-Since: 3.4
-
-    method gtk_menu_new_from_model ( N-GObject $model --> N-GObject  )
-
-  * N-GObject $model; a `GMenuModel`
 
 [gtk_menu_] popup_at_rect
 -------------------------
@@ -435,7 +418,7 @@ Since 3.22.
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+Register any signal as follows. See also `Gnome::Gtk3::Widget`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,

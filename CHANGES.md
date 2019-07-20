@@ -1,5 +1,7 @@
 # Release notes
 
+<!--TODO CHANGES.md to change-log-data.yml converter or vise versa-->
+
 * 2019-06-07 0.16.0
   * Added new enums GtkAlign
 

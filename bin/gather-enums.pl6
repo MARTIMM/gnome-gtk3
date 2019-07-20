@@ -1,11 +1,11 @@
 use v6;
 
 my @dir-roots = <
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gdk3
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gobject
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-glib
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-native
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/lib
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gdk3/lib
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gobject/lib
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-glib/lib
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-native/lib
   >;
 
 my @enum-list = ();
@@ -18,11 +18,15 @@ for @dir-roots -> $dir-root {
 
     for $p.out.lines -> $line {
       $line ~~ m:s/^ enum $<enum-type> = [<alnum>+] is export /;
-      @enum-list.push: ~$<enum-type> if ?$<enum-type>;
+
+      if ?$<enum-type> {
+        @enum-list.push: ~$<enum-type>;
+        note ~$<enum-type>;
+      }
     }
 
     $p.out.close;
   }
 }
 
-'doc/Design-docs/scim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");
+'Design-docs/scim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");

@@ -5,9 +5,6 @@ use Test;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::CheckButton;
 
-diag "\n";
-
-
 #-------------------------------------------------------------------------------
 subtest 'CheckButton create', {
 

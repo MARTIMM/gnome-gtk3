@@ -75,12 +75,16 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 multi method new ( Bool :empty! )
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+Create an empty object.
+
+
+=head3 multi method new ( Gnome::GObject::Object :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 

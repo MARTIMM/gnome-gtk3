@@ -179,7 +179,6 @@ method fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_menu_button_new

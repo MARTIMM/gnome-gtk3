@@ -94,7 +94,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-use Gnome::Gdk3::EventTypes;
+use Gnome::Gdk3::Events;
 use Gnome::Gdk3::Window;
 use Gnome::Gtk3::MenuShell;
 
@@ -138,7 +138,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    # self.native-gobject(gtk_menu_new());
+    self.native-gobject(gtk_menu_new());
   }
 
   elsif ? %options<widget> || %options<build-id> {

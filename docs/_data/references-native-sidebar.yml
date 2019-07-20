@@ -2,9 +2,9 @@
 bar_title: "Native"
 
 bar_menu:
-  - title: "N-GObject"
-    url: '/content-docs/nyi-reference.html'
-  - title: "NativeLib"
-    url: '/content-docs/nyi-reference.html'
+#  - title: "N-GObject"
+#    url: '/content-docs/nyi-reference.html'
+#  - title: "NativeLib"
+#    url: '/content-docs/nyi-reference.html'
   - title: "X"
     url: '/content-docs/reference/Native/X.html'

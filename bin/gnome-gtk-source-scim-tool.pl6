@@ -4,8 +4,6 @@ use v6;
 
 #-------------------------------------------------------------------------------
 my Str $library = '';
-my Str $sub-declarations = '';
-my Str $deprecated-subs = '';
 
 my Str $include-filename;
 my Str $lib-class-name;
@@ -16,8 +14,9 @@ my Str $p6-class-name;
 my Str $p6-parentlib-name;
 my Str $p6-parentclass-name;
 
+my Str $output-file;
+
 my Str ( $section-doc, $short-description, $see-also);
-my Str ( $signal-doc, $property-doc, $types-doc);
 
 my @gtkdirlist = ();
 my @gdkdirlist = ();
@@ -38,19 +37,9 @@ sub MAIN ( Str:D $base-name ) {
     $p6-lib-name, $include-content, $source-content
   ) = setup-names($base-name);
 
-#$types-doc = get-vartypes($include-content);
-#'xt/__xyz__.pm6'.IO.spurt($types-doc);
-
-#$sub-declarations = get-subroutines( $include-content, $source-content);
-#'xt/__xyz__.pm6'.IO.spurt($sub-declarations);
-
-#exit 0;
-
   if $file-found {
-    $sub-declarations = get-subroutines( $include-content, $source-content);
-
-    $deprecated-subs = get-deprecated-subs($include-content);
-
+    # test for dir 'xt'
+    mkdir( 'xt', 0o766) unless 'xt'.IO.e;
 
     ( $p6-parentclass-name, $p6-parentlib-name) =
        parent-class($include-content);
@@ -58,12 +47,12 @@ sub MAIN ( Str:D $base-name ) {
     ( $section-doc, $short-description, $see-also) =
       get-section($source-content);
 
-    $signal-doc = get-signals($source-content);
-    $property-doc = get-properties($source-content);
-    $types-doc = get-vartypes($include-content);
+    substitute-in-template($include-content);
 
-    my Str $module-text = substitute-in-template();
-    "xt/$p6-class-name.pm6".IO.spurt($module-text);
+    get-subroutines( $include-content, $source-content);
+    get-deprecated-subs($include-content);
+    get-signals($source-content);
+    get-properties($source-content);
 
     my Str $m = '$v';
     my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
@@ -88,8 +77,6 @@ sub MAIN ( Str:D $base-name ) {
 
       EOTEST
 
-    # test for dir 'xt'
-    mkdir( 'xt', 0o766) unless 'xt'.IO.e;
     "xt/$p6-class-name.t".IO.spurt($test-content);
   }
 
@@ -99,9 +86,8 @@ sub MAIN ( Str:D $base-name ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
+sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
-  my Str $sub-declarations = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -228,17 +214,15 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content --> Str ) {
 
 
 #    note $sub;
-    $sub-declarations ~= $sub;
-  }
 
-  $sub-declarations
+    $output-file.IO.spurt( $sub, :append);
+  }
 }
 
 #-------------------------------------------------------------------------------
-sub get-deprecated-subs( Str:D $include-content --> Str ) {
+sub get-deprecated-subs( Str:D $include-content ) {
 
   my Hash $dep-versions = {};
-#  my Str $sub-declarations = '';
   my Str $sub-doc = '';
   my Array $items-src-doc = [];
   my Bool $variable-args-list;
@@ -342,10 +326,10 @@ sub get-deprecated-subs( Str:D $include-content --> Str ) {
       }
     }
 
-    $deprecated-subs ~= "=end pod";
+    $deprecated-subs ~= "=end pod\n\n";
   }
 
-  $deprecated-subs
+  $output-file.IO.spurt( $deprecated-subs, :append);
 }
 
 #-------------------------------------------------------------------------------
@@ -647,19 +631,59 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #-------------------------------------------------------------------------------
 sub load-dir-lists ( ) {
 
-  @gtkdirlist = "doc/Design-docs/gtk3-list.txt".IO.slurp.lines;
-  @gdkdirlist = "doc/Design-docs/gdk3-list.txt".IO.slurp.lines;
-  @gobjectdirlist = "doc/Design-docs/gobject-list.txt".IO.slurp.lines;
-  @glibdirlist = "doc/Design-docs/glib-list.txt".IO.slurp.lines;
-  @giodirlist = "doc/Design-docs/gio-list.txt".IO.slurp.lines;
+  @gtkdirlist = "Design-docs/gtk3-list.txt".IO.slurp.lines;
+  @gdkdirlist = "Design-docs/gdk3-list.txt".IO.slurp.lines;
+  @gobjectdirlist = "Design-docs/gobject-list.txt".IO.slurp.lines;
+  @glibdirlist = "Design-docs/glib-list.txt".IO.slurp.lines;
+  @giodirlist = "Design-docs/gio-list.txt".IO.slurp.lines;
 
-  @enum-list = 'doc/Design-docs/scim-tool-enum-list'.IO.slurp.lines;
+  @enum-list = 'Design-docs/scim-tool-enum-list'.IO.slurp.lines;
 }
 
 #-------------------------------------------------------------------------------
-sub substitute-in-template ( --> Str ) {
+sub substitute-in-template ( Str $include-content ) {
 
-  my Str $template-text = "doc/Design-docs/scim-tool-template.pm6".IO.slurp;
+  my Str $template-text = Q:q:to/EOTEMPLATE/;
+    use v6;
+    #-------------------------------------------------------------------------------
+    =begin pod
+
+    =TITLE Gnome::LIBRARYMODULE
+
+    =SUBTITLE MODULE-SHORTDESCRIPTION
+
+    =head1 Description
+
+    MODULE-DESCRIPTION
+
+    =head2 See Also
+
+    MODULE-SEEALSO
+
+    =head1 Synopsis
+    =head2 Declaration
+
+      unit class Gnome::LIBRARYMODULE;
+      ALSO-IS-LIBRARY-PARENT
+
+    =head2 Example
+
+    =end pod
+    #-------------------------------------------------------------------------------
+    use NativeCall;
+
+    use Gnome::N::X;
+    use Gnome::N::NativeLib;
+    use Gnome::N::N-GObject;
+    USE-LIBRARY-PARENT
+
+    #-------------------------------------------------------------------------------
+    # /usr/include/gtk-3.0/gtk/INCLUDE
+    # https://developer.gnome.org/WWW
+    unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
+    ALSO-IS-LIBRARY-PARENT
+
+    EOTEMPLATE
 
   $template-text ~~ s:g/ 'Gnome::LIBRARYMODULE'
                        /Gnome::{$p6-lib-name}::{$p6-class-name}/;
@@ -673,28 +697,88 @@ sub substitute-in-template ( --> Str ) {
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
-  $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
-
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
-  $template-text ~~ s:g/ 'TYPES-DOC' /$types-doc/;
-  $template-text ~~ s:g/ 'SUB-DECLARATIONS' /$sub-declarations/;
-  $template-text ~~ s:g/ 'DEPRECATED-SUBS' /$deprecated-subs/;
 
-#  $template-text ~~ s:g/ 'SIGNAL-DOC' /$signal-doc/;
-#  $template-text ~~ s:g/ 'PROPERTY-DOC' /$property-doc/;
+  $output-file = "xt/$p6-class-name.pm6";
+  $output-file.IO.spurt($template-text);
 
-#`{{
-  $template-text ~= "\n" ~ $types-doc;
-  $template-text ~= "\n" ~ $sub-declarations;
-  $template-text ~= "\n" ~ $deprecated-subs;
-}}
+  get-vartypes($include-content);
 
-  $template-text ~= "\n" ~ $signal-doc;
-  $template-text ~= "\n" ~ $property-doc;
 
-  $template-text
+  $template-text = Q:q:to/EOTEMPLATE/;
+    #-------------------------------------------------------------------------------
+    my Bool $signals-added = False;
+    #-------------------------------------------------------------------------------
+    =begin pod
+    =head1 Methods
+    =head2 new
+    =head3 multi method new ( Bool :$empty! )
+
+    Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+    =head3 multi method new ( N-GObject :$widget! )
+
+    Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+
+    =head3 multi method new ( Str :$build-id! )
+
+    Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+
+    =end pod
+
+    submethod BUILD ( *%options ) {
+
+      # add signal info in the form of group<signal-name>.
+      # groups are e.g. signal, event, nativeobject etc
+      $signals-added = self.add-signal-types( $?CLASS.^name,
+        # ... :type<signame>
+      ) unless $signals-added;
+
+      # prevent creating wrong widgets
+      return unless self.^name eq 'Gnome::LIBRARYMODULE';
+
+      # process all named arguments
+      if ? %options<empty> {
+        # self.native-gobject(BASE-SUBNAME_new());
+      }
+
+      elsif ? %options<widget> || %options<build-id> {
+        # provided in Gnome::GObject::Object
+      }
+
+      elsif %options.keys.elems {
+        die X::Gnome.new(
+          :message('Unsupported options for ' ~ self.^name ~
+                   ': ' ~ %options.keys.join(', ')
+                  )
+        );
+      }
+
+      # only after creating the widget, the gtype is known
+      self.set-class-info('LIBCLASSNAME');
+    }
+
+    #-------------------------------------------------------------------------------
+    # no pod. user does not have to know about it.
+    method fallback ( $native-sub is copy --> Callable ) {
+
+      my Callable $s;
+      try { $s = &::($native-sub); }
+      try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
+
+      self.set-class-name-of-sub('LIBCLASSNAME');
+      $s = callsame unless ?$s;
+
+      $s;
+    }
+
+    EOTEMPLATE
+
+  $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
+  $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
+  $output-file.IO.spurt( $template-text, :append);
 }
 
 #-------------------------------------------------------------------------------
@@ -789,7 +873,7 @@ sub get-section ( Str:D $source-content --> List ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-signals ( Str:D $source-content is copy --> Str ) {
+sub get-signals ( Str:D $source-content is copy ) {
 
   my Array $items-src-doc;
   my Str $signal-name;
@@ -987,12 +1071,11 @@ note "item doc: ", $item-doc;
 
   }
 
-
-  $signal-doc
+  $output-file.IO.spurt( $signal-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-properties ( Str:D $source-content is copy --> Str ) {
+sub get-properties ( Str:D $source-content is copy ) {
 
   my Str $property-name;
   my Str $property-doc = '';
@@ -1067,22 +1150,21 @@ sub get-properties ( Str:D $source-content is copy --> Str ) {
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
 
-  $property-doc
+  $output-file.IO.spurt( $property-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-vartypes ( Str:D $include-content --> Str ) {
+sub get-vartypes ( Str:D $include-content ) {
 
 #  my Str $enums-doc = get-enumerations($include-content);
 #  my Str $structs-doc = get-structures($include-content);
 
-  ( get-enumerations($include-content) ~
-    get-structures($include-content)
-  )
+  get-enumerations($include-content);
+  get-structures($include-content);
 }
 
 #-------------------------------------------------------------------------------
-sub get-enumerations ( Str:D $include-content is copy --> Str ) {
+sub get-enumerations ( Str:D $include-content is copy ) {
 
   my Str $enums-doc = Q:qq:to/EODOC/;
 
@@ -1114,6 +1196,20 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
       $enums-doc = '' unless $found-doc;
       last;
     }
+
+    # this match "m:g/'/**' .*? '*/' ...etc... /" can fail. It can gather
+    # too many comment blocks to stop at a final enum. So try to find the
+    # last doc section.
+    my Int $start-doc = 1;  # There is a '/**' string at 0!
+    my Int $x;
+    while ?($x = $enum-type-section.index( '/**', $start-doc)) {
+      $start-doc = $x + 1;
+    }
+
+    $start-doc -= 1;
+    $enum-type-section = $enum-type-section.substr(
+      $start-doc, $enum-type-section.chars - $start-doc
+    );
 
     # remove type info for next search
     $include-content ~~ s/ $enum-type-section //;
@@ -1200,15 +1296,14 @@ sub get-enumerations ( Str:D $include-content is copy --> Str ) {
       $items-doc
 
       $enum-spec
-      =end pod
       EODOC
   }
 
-  $enums-doc
+  $output-file.IO.spurt( $enums-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
-sub get-structures ( Str:D $include-content is copy --> Str ) {
+sub get-structures ( Str:D $include-content is copy ) {
 
   my Str $structs-doc = '';
   my Bool $found-doc = False;
@@ -1221,7 +1316,6 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     my Str $struct-spec = '';
     my Str ( $entry-type, $p6-entry-type);
     my Bool $type-is-class;
-
 
     $include-content ~~ m:s/
       $<struct-type-section> = [
@@ -1369,7 +1463,7 @@ sub get-structures ( Str:D $include-content is copy --> Str ) {
     }
   }
 
-  $structs-doc
+  $output-file.IO.spurt( $structs-doc, :append);
 }
 
 #-------------------------------------------------------------------------------

@@ -11,7 +11,6 @@ use Gnome::Gtk3::Label;
 #-------------------------------------------------------------------------------
 subtest 'Listbox create', {
 
-  diag "Prepare an entry in the listbox";
   my Gnome::Gtk3::ListBox $list-box .= new(:empty);
   isa-ok $list-box, Gnome::Gtk3::ListBox;
 
@@ -28,7 +27,6 @@ subtest 'Listbox create', {
 
   $list-box.gtk-container-add($grid);
 
-  diag "Check what is in the listbox";
   my Gnome::Glib::List $gl .= new(:glist($list-box.get-children));
   is $gl.g-list-length, 1, 'One listbox row in listbox';
   my Gnome::Gtk3::Bin $lb-row .= new(

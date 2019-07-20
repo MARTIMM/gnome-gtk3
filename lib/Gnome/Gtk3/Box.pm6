@@ -97,15 +97,15 @@ also is Gnome::Gtk3::Container;
 =head1 Methods
 =head2 new
 
-  multi method new ( Bool :$empty! )
+=head3 multi method new ( Bool :$empty! )
 
 Create a new empty box.
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 
@@ -144,6 +144,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkBox');
 }
 
 #-------------------------------------------------------------------------------
@@ -155,11 +158,11 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_box_$native-sub"); } unless ?$s;
 
 #note "ad $native-sub: ", $s;
+  self.set-class-name-of-sub('GtkBox');
   $s = callsame unless ?$s;
 
   $s;
 }
-
 
 #-------------------------------------------------------------------------------
 =begin pod

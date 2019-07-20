@@ -190,7 +190,7 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
 
 =head4 Handler Method Arguments
 =item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::EventTypes>.
+=item $event; A structure defined in C<Gnome::Gdk3::Events>.
 =item $nativewidget; A native widget (a C<N-GObject>) which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
 =item $user-option*; Any extra options given by the user when registering the signal.
 

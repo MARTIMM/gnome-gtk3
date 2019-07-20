@@ -4,14 +4,15 @@ use v6;
 
 =TITLE Gnome::Gtk3::Dialog
 
-=SUBTITLE
+=SUBTITLE Create popup windows
+
+=head1 Synopsis
+=head2 Declaration
 
   unit class Gnome::Gtk3::Dialog;
   also is Gnome::Gtk3::Window;
 
-#=head2 Dialog — Create popup windows
-
-=head1 Synopsis
+=head2 Example
 
   my Gnome::Gtk3::Dialog $dialog .= new(:build-id<simple-dialog>);
 
@@ -35,7 +36,7 @@ use Gnome::Gtk3::Window;
 # See /usr/include/gtk-3.0/gtk/gtkdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkDialog.html
 =begin pod
-=head1 unit class Gnome::Gdk3::EventTypes;git
+=head1 unit class Gnome::Gdk3::Events;git
   also is Gnome::Gtk3::Window;
 =end pod
 unit class Gnome::Gtk3::Dialog:auth<github:MARTIMM>;

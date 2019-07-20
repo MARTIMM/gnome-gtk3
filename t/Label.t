@@ -2,16 +2,13 @@ use v6;
 use NativeCall;
 use Test;
 
-#use lib '../perl6-gnome-gobject/lib';
-
-use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::Label;
 
-#X::Gnome.debug(:on);
-
+#use Gnome::N::X;
+#Gnome::N.debug(:on);
 #-------------------------------------------------------------------------------
 subtest 'Label create', {
 
@@ -24,10 +21,6 @@ subtest 'Label create', {
     { $label1.get_nonvisible(); },
     X::Gnome, "non existent sub called",
     :message("Could not find native sub 'get_nonvisible\(...\)'");
-
-  is $label1.get-visible, 0, "widget is invisible";
-  $label1.set-visible(1);
-  is $label1.get-visible, 1, "widget set visible";
 
   is $label1.gtk_label_get_text, 'abc def',
     'label 1 text ok, read with $label1.gtk_label_get_text';

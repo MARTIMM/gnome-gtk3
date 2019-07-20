@@ -1,9 +1,14 @@
 use v6;
+use lib '../perl6-gnome-gobject/lib';
 use Test;
 
 use Gnome::N::N-GObject;
 use Gnome::GObject::Object;
 use Gnome::Gtk3::Builder;
+use Gnome::Gtk3::Button;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my $dir = 't/ui';
@@ -84,6 +89,21 @@ subtest 'Add ui from file to builder', {
     { $builder.add-gui(:string($text)); },
     X::Gnome, "erronenous xml file added",
     :message("Error adding xml text to the Gui");
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Test items from ui', {
+  my Gnome::Gtk3::Builder $builder .= new(:empty);
+
+  my Int $e-code = $builder.add-from-file( $ui-file, Any);
+  is $e-code, 1, "ui file added ok";
+
+  my Gnome::Gtk3::Button $b .= new(:build-id<button>);
+  is $b.get-label, 'button', 'button label ok';
+  is $b.get-name, 'GtkButton', 'button name ok';
+  is $b.get-border-width, 0, 'border width is 0';
+
+  #$b.gtk-widget-show;
 }
 
 #-------------------------------------------------------------------------------
