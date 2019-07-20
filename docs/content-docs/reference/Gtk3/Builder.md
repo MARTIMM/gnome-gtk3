@@ -133,15 +133,15 @@ Methods
 new
 ---
 
-    multi method new ( Str :$filename )
+### multi method new ( Str :$filename! )
 
 Create builder object and load gui design.
 
-    multi method new ( Str :$string )
+### multi method new ( Str :$string! )
 
 Same as above but read the design from the string.
 
-    multi method new ( Bool :$empty )
+### multi method new ( Bool :$empty! )
 
 Create an empty builder.
 

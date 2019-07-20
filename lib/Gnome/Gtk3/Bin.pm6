@@ -56,12 +56,12 @@ also is Gnome::Gtk3::Container;
 =head1 Methods
 =head2 new
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
 =begin comment
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 =end comment

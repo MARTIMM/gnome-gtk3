@@ -72,19 +72,19 @@ also is Gnome::Gtk3::ToggleButton;
 =head1 Methods
 =head2 new
 
-  multi method new ( Str :$label )
+=head3 multi method new ( Str :$label! )
 
 Create GtkCheckButton object with a label.
 
-  multi method new ( Bool :$empty )
+=head3 multi method new ( Bool :$empty! )
 
 Create an empty GtkCheckButton.
 
-  multi method new ( :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create a check button using a native object from elsewhere. See also Gnome::GObject::Object.
 
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create a check button using a native object from a builder. See also Gnome::GObject::Object.
 =end pod

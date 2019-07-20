@@ -120,15 +120,15 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-  multi method new ( Bool :$empty! )
+=head3 multi method new ( Bool :$empty! )
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
-  multi method new ( Str :$build-id! )
+=head3 multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 

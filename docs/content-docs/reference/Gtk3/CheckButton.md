@@ -62,19 +62,19 @@ Methods
 new
 ---
 
-    multi method new ( Str :$label )
+### multi method new ( Str :$label! )
 
 Create GtkCheckButton object with a label.
 
-    multi method new ( Bool :$empty )
+### multi method new ( Bool :$empty! )
 
 Create an empty GtkCheckButton.
 
-    multi method new ( :$widget! )
+### multi method new ( N-GObject :$widget! )
 
 Create a check button using a native object from elsewhere. See also Gnome::GObject::Object.
 
-    multi method new ( Str :$build-id! )
+### multi method new ( Str :$build-id! )
 
 Create a check button using a native object from a builder. See also Gnome::GObject::Object.
 

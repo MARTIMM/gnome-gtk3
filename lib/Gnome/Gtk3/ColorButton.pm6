@@ -72,7 +72,7 @@ Create a color button with current selected color
 
 Create a color button with a new color
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+  multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 

@@ -87,17 +87,17 @@ Methods
 new
 ---
 
-    multi method new ( Bool :$empty! )
+### multi method new ( Bool :$empty! )
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-    multi method new ( Gnome::GObject::Object :$widget! )
+### multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
+Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
 
-    multi method new ( Str :$build-id! )
+### multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
+Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
 
 gtk_about_dialog_new
 --------------------
@@ -508,7 +508,7 @@ A logo for the about box. If it is `Any`, the default window icon set with `gtk_
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::Gtk3::Widget`.
+Register any signal as follows. See also `Gnome::GObject::Object`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,

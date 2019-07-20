@@ -276,7 +276,7 @@ my Bool $signals-added = False;
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
@@ -323,15 +323,15 @@ submethod BUILD ( *%options ) {
 =begin pod
 =head2 new
 
-  multi method new ( Str :$filename )
+=head3 multi method new ( Str :$filename! )
 
 Create builder object and load gui design.
 
-  multi method new ( Str :$string )
+=head3 multi method new ( Str :$string! )
 
 Same as above but read the design from the string.
 
-  multi method new ( Bool :$empty )
+=head3 multi method new ( Bool :$empty! )
 
 Create an empty builder.
 =end pod
