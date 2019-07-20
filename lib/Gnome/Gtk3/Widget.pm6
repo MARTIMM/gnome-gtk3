@@ -335,10 +335,9 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::GObject::InitiallyUnowned;
 use Gnome::Gdk3::Types;
-use Gnome::Gdk3::EventTypes;
+use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Enums;
 
 subset GtkAllocation of GdkRectangle;
@@ -423,17 +422,8 @@ my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-
-  multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
 =end pod
+#=head2 new
 
 submethod BUILD ( *%options ) {
 
@@ -475,20 +465,10 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Widget';
+#  return unless self.^name eq 'Gnome::Gtk3::Widget';
 
-  # process all named arguments
-  if ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
+  # only after creating the widget, the gtype is known
+#  self.set-class-info('GtkWidget');
 }
 
 #-------------------------------------------------------------------------------
@@ -500,13 +480,14 @@ method fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_widget_$native-sub"); } unless ?$s;
 
 #note "ad $native-sub: ", $s;
+  self.set-class-name-of-sub('GtkWidget');
   $s = callsame unless ?$s;
 
   $s;
 }
 
 #`{{
-# No widget new creation because of unknown id. Can be retrieved but
+#TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
 #-------------------------------------------------------------------------------
 =begin pod
