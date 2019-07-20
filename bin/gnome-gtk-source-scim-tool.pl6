@@ -326,7 +326,7 @@ sub get-deprecated-subs( Str:D $include-content ) {
       }
     }
 
-    $deprecated-subs ~= "=end pod";
+    $deprecated-subs ~= "=end pod\n\n";
   }
 
   $output-file.IO.spurt( $deprecated-subs, :append);
@@ -718,7 +718,7 @@ sub substitute-in-template ( Str $include-content ) {
 
     Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-    =head3 multi method new ( Gnome::GObject::Object :$widget! )
+    =head3 multi method new ( N-GObject :$widget! )
 
     Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
