@@ -1,7 +1,10 @@
 use v6;
+#use lib '../perl6-gnome-gobject/lib';
+
 use NativeCall;
 use Test;
 
+#use Gnome::GObject::Type;
 use Gnome::Gtk3::MenuBar;
 use Gnome::Gtk3::Menu;
 use Gnome::Gtk3::MenuShell;
@@ -9,7 +12,8 @@ use Gnome::Gtk3::MenuItem;
 use Gnome::Gtk3::MenuButton;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
+
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
