@@ -29,4 +29,4 @@ for @dir-roots -> $dir-root {
   }
 }
 
-'doc/Design-docs/scim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");
+'Design-docs/scim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");
