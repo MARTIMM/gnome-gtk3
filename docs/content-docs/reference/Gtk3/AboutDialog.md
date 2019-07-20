@@ -43,6 +43,44 @@ Example
     # Hide the dialog again.
     $about.gtk-widget-hide;
 
+Types
+=====
+
+enum GtkLicense
+---------------
+
+The type of license for an application. This enumeration can be expanded at later date.
+
+  * GTK_LICENSE_UNKNOWN: No license specified
+
+  * GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
+
+  * GTK_LICENSE_GPL_2_0: The GNU General Public License, version 2.0 or later
+
+  * GTK_LICENSE_GPL_3_0: The GNU General Public License, version 3.0 or later
+
+  * GTK_LICENSE_LGPL_2_1: The GNU Lesser General Public License, version 2.1 or later
+
+  * GTK_LICENSE_LGPL_3_0: The GNU Lesser General Public License, version 3.0 or later
+
+  * GTK_LICENSE_BSD: The BSD standard license
+
+  * GTK_LICENSE_MIT_X11: The MIT/X11 standard license
+
+  * GTK_LICENSE_ARTISTIC: The Artistic License, version 2.0
+
+  * GTK_LICENSE_GPL_2_0_ONLY: The GNU General Public License, version 2.0 only. Since 3.12.
+
+  * GTK_LICENSE_GPL_3_0_ONLY: The GNU General Public License, version 3.0 only. Since 3.12.
+
+  * GTK_LICENSE_LGPL_2_1_ONLY: The GNU Lesser General Public License, version 2.1 only. Since 3.12.
+
+  * GTK_LICENSE_LGPL_3_0_ONLY: The GNU Lesser General Public License, version 3.0 only. Since 3.12.
+
+  * GTK_LICENSE_AGPL_3_0: The GNU Affero General Public License, version 3.0 or later. Since: 3.22.
+
+  * GTK_LICENSE_AGPL_3_0_ONLY: The GNU Affero General Public License, version 3.0 only. Since: 3.22.27.
+
 Methods
 =======
 
@@ -55,11 +93,11 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 
     multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
 
     multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
 
 gtk_about_dialog_new
 --------------------
@@ -470,7 +508,7 @@ A logo for the about box. If it is `Any`, the default window icon set with `gtk_
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+Register any signal as follows. See also `Gnome::Gtk3::Widget`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,
@@ -487,49 +525,12 @@ The signal which gets emitted to activate a URI. Applications may connect to it 
 Returns: `1` if the link has been activated
 
     method handler (
-      :$label, :$uri,
+      Gnome::GObject::Object :widget($label),
+      :handle-arg0($uri),
       :$user-option1, ..., $user-optionN
     );
 
   * $label; The object on which the signal was emitted
 
   * $uri; the URI that is activated
-
-Types
-=====
-
-enum GtkLicense
----------------
-
-The type of license for an application. This enumeration can be expanded at later date.
-
-  * GTK_LICENSE_UNKNOWN: No license specified
-
-  * GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
-
-  * GTK_LICENSE_GPL_2_0: The GNU General Public License, version 2.0 or later
-
-  * GTK_LICENSE_GPL_3_0: The GNU General Public License, version 3.0 or later
-
-  * GTK_LICENSE_LGPL_2_1: The GNU Lesser General Public License, version 2.1 or later
-
-  * GTK_LICENSE_LGPL_3_0: The GNU Lesser General Public License, version 3.0 or later
-
-  * GTK_LICENSE_BSD: The BSD standard license
-
-  * GTK_LICENSE_MIT_X11: The MIT/X11 standard license
-
-  * GTK_LICENSE_ARTISTIC: The Artistic License, version 2.0
-
-  * GTK_LICENSE_GPL_2_0_ONLY: The GNU General Public License, version 2.0 only. Since 3.12.
-
-  * GTK_LICENSE_GPL_3_0_ONLY: The GNU General Public License, version 3.0 only. Since 3.12.
-
-  * GTK_LICENSE_LGPL_2_1_ONLY: The GNU Lesser General Public License, version 2.1 only. Since 3.12.
-
-  * GTK_LICENSE_LGPL_3_0_ONLY: The GNU Lesser General Public License, version 3.0 only. Since 3.12.
-
-  * GTK_LICENSE_AGPL_3_0: The GNU Affero General Public License, version 3.0 or later. Since: 3.22.
-
-  * GTK_LICENSE_AGPL_3_0_ONLY: The GNU Affero General Public License, version 3.0 only. Since: 3.22.27.
 

@@ -49,11 +49,11 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 
     multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
 
     multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
 
 gtk_menu_bar_new
 ----------------

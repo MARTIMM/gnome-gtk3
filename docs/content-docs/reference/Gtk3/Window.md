@@ -1461,7 +1461,7 @@ Since 3.22
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+Register any signal as follows. See also `Gnome::Gtk3::Widget`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,

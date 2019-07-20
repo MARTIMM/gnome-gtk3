@@ -21,7 +21,8 @@ Synopsis
 Declaration
 -----------
 
-unit class Gnome::Gtk3::Bin; also is Gnome::Gtk3::Container;
+    unit class Gnome::Gtk3::Bin;
+    also is Gnome::Gtk3::Container;
 
 Example
 -------
@@ -40,7 +41,7 @@ new
 
     multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
 
 [gtk_bin_] get_child
 --------------------

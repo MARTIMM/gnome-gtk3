@@ -198,14 +198,6 @@ Methods
 new
 ---
 
-    multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
-
-    multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
-
 gtk_widget_destroy
 ------------------
 
@@ -2331,7 +2323,7 @@ List of not yet implemented methods and classes
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+Register any signal as follows. See also `Gnome::Gtk3::Widget`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,

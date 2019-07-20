@@ -44,13 +44,17 @@ Methods
 new
 ---
 
-    multi method new ( Gnome::GObject::Object :$widget! )
+### multi method new ( Bool :empty! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an empty object.
 
-    multi method new ( Str :$build-id! )
+### multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
+
+### multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
 
 gtk_menu_shell_append
 ---------------------
@@ -223,7 +227,7 @@ Since: 3.6
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+Register any signal as follows. See also `Gnome::Gtk3::Widget`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,
