@@ -1,9 +1,8 @@
 use v6;
-use lib '../perl6-gnome-gobject/lib';
+#use lib '../perl6-gnome-gobject/lib';
 
 use NativeCall;
 
-use Gnome::GObject::Type;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
@@ -13,8 +12,8 @@ use Gnome::Gtk3::Menu;
 use Gnome::Gtk3::MenuItem;
 use Gnome::Gtk3::MenuButton;
 
-#use Gnome::N::X;
-#X::Gnome.debug(:on);
+use Gnome::N::X;
+Gnome::N::debug(:on);
 
 # This example is translated from C shown on the site at
 # https://developer.gnome.org/gtk-tutorial/stable/x1577.html
@@ -100,13 +99,13 @@ sub make-menubar-menu (
 ) {
   my Gnome::Gtk3::Menu $menu .= new(:empty);
 
-  note "native menu: $menu()";
-  note "menu shell gtype code: $menu-shell-gtype";
-  note "cast to: ", $type.check-instance-cast( $menu(), $menu-shell-gtype);
+  #note "native menu: $menu()";
+  #note "menu shell gtype code: $menu-shell-gtype";
+  #note "cast to: ", $type.check-instance-cast( $menu(), $menu-shell-gtype);
 
-  my Gnome::Gtk3::MenuShell $menu-shell .= new(
-    :widget($type.check-instance-cast( $menu(), $menu-shell-gtype))
-  );
+  #my Gnome::Gtk3::MenuShell $menu-shell .= new(
+  #  :widget($type.check-instance-cast( $menu(), $menu-shell-gtype))
+  #);
 
   # Next we make a little loop that makes three menu-entries for "test-menu".
   # Notice the call to gtk_menu_shell_append.  Here we are adding a list of
@@ -119,7 +118,7 @@ sub make-menubar-menu (
     my Gnome::Gtk3::MenuItem $menu-item .= new(:label("Menu entry - $i"));
 
     # ... and add it to the menu.
-    $menu-shell.gtk-menu-shell-append($menu-item);
+    $menu.gtk-menu-shell-append($menu-item);
 
     # Do something interesting when the menuitem is selected
     $menu-item.register-signal( $ash, $handler-name, 'activate');
@@ -135,13 +134,13 @@ sub make-menubutton-menu (
 ) {
   my Gnome::Gtk3::Menu $menu .= new(:empty);
 
-  note "native menu: $menu()";
-  note "menu shell gtype code: $menu-shell-gtype";
-  note "cast to: ", $type.check-instance-cast( $menu(), $menu-shell-gtype);
+  #note "native menu: $menu()";
+  #note "menu shell gtype code: $menu-shell-gtype";
+  #note "cast to: ", $type.check-instance-cast( $menu(), $menu-shell-gtype);
 
-  my Gnome::Gtk3::MenuShell $menu-shell .= new(
-    :widget($type.check-instance-cast( $menu(), $menu-shell-gtype))
-  );
+  #my Gnome::Gtk3::MenuShell $menu-shell .= new(
+  #  :widget($type.check-instance-cast( $menu(), $menu-shell-gtype))
+  #);
 
   # Next we make a little loop that makes three menu-entries for "test-menu".
   # Notice the call to gtk_menu_shell_append.  Here we are adding a list of
@@ -154,14 +153,14 @@ sub make-menubutton-menu (
     my Gnome::Gtk3::MenuItem $menu-item .= new(:label("Popup entry - $i"));
 
     # ... and add it to the menu.
-    $menu-shell.gtk-menu-shell-append($menu-item);
+    $menu.gtk-menu-shell-append($menu-item);
 
     # Do something interesting when the menuitem is selected
     $menu-item.register-signal( $ash, $handler-name, 'activate');
 
     # Need to do this explicitly because `$top-window.show-all()` does not
-    # influence this menu, perhaps because the menu button creates the menu
-    # later.
+    # see this menu, perhaps because the menu button creates the menu
+    # later when pressed.
     $menu-item.gtk-widget-show;
   }
 
