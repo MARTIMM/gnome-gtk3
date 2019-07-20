@@ -13,11 +13,16 @@ $code-color: #46465f;
 $border-color: #bbb;
 $border-width: 4px;
 
+body {
+  line-height: 1.1;
+}
+
 header h1 {
   font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 23pt;
   font-weight: bold;
   letter-spacing: -1px;
+  line-height: 1.2;
 }
 
 header nav {
@@ -75,7 +80,7 @@ h2 {
 }
 
 div.inner {
-  width: 85%;
+  width: 95%;
 }
 
 div.highlight, div.highlighter-rouge, pre {
