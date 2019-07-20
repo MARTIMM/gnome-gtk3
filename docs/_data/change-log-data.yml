@@ -2,6 +2,9 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
 
+  - 2019-07-20 0.17.3:
+    - Documented Gnome::Gtk3::CheckButton and add test.
+
   - 2019-07-20 0.17.2:
     - Extended Gnome::Gtk3::Builder.
     - Added pod doc and tests.
