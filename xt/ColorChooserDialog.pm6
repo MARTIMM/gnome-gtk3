@@ -4,16 +4,17 @@ use v6;
 
 =TITLE Gnome::Gtk3::ColorChooserDialog
 
-![](images/colorchooser.png)
-
 =SUBTITLE A dialog for choosing colors
 
 =head1 Description
+
 
 The C<Gnome::Gtk3::ColorChooserDialog> widget is a dialog for choosing
 a color. It implements the C<Gnome::Gtk3::ColorChooser> interface.
 
 Since: 3.4
+
+
 
 =head2 See Also
 
@@ -27,10 +28,6 @@ C<Gnome::Gtk3::ColorChooser>, C<Gnome::Gtk3::Dialog>
 
 =head2 Example
 
-  my Gnome::Gtk3::ColorChooserDialog $dialog .= new(
-    :title('my color dialog')
-  );
-
 =end pod
 #-------------------------------------------------------------------------------
 use NativeCall;
@@ -38,7 +35,6 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
@@ -48,17 +44,16 @@ unit class Gnome::Gtk3::ColorChooserDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
+my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
+=head3 multi method new ( Bool :$empty! )
 
-=head3 multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-Create a new object with a title. The transient $parent-window which may be C<Any>.
-
-=head3 multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
@@ -72,18 +67,16 @@ submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
-#  $signals-added = self.add-signal-types( $?CLASS.^name,
-#    ... :type<signame>
-#  ) unless $signals-added;
+  $signals-added = self.add-signal-types( $?CLASS.^name,
+    # ... :type<signame>
+  ) unless $signals-added;
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::ColorChooserDialog';
+  return unless self.^name eq 'Gnome::LIBRARYMODULE';
 
   # process all named arguments
-  if ? %options<title> {
-    self.native-gobject(gtk_color_chooser_dialog_new(
-      %options<title>, %options<parent-window>)
-    );
+  if ? %options<empty> {
+    # self.native-gobject(gtk_color_chooser_dialog_new());
   }
 
   elsif ? %options<widget> || %options<build-id> {
@@ -116,28 +109,25 @@ method fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_color_chooser_dialog_new
 
-
-Creates a new native C<Gtk3ColorChooserDialog>.
+Creates a new C<Gnome::Gtk3::ColorChooserDialog>.
 
 Returns: a new C<Gnome::Gtk3::ColorChooserDialog>
 
 Since: 3.4
 
-  method gtk_color_chooser_dialog_new (
-    Str $title, N-GObject $parent
-    --> N-GObject
-  )
+  method gtk_color_chooser_dialog_new ( Str $title, N-GObject $parent --> N-GObject  )
 
-=item Str $title;  (allow-none): Title of the dialog, or %NULL
-=item N-GObject $parent;  (allow-none): Transient parent of the dialog, or %NULL
+=item Str $title; (allow-none): Title of the dialog, or C<Any>
+=item N-GObject $parent; (allow-none): Transient parent of the dialog, or C<Any>
 
 =end pod
 
-sub gtk_color_chooser_dialog_new (  str $title,  N-GObject $parent )
+sub gtk_color_chooser_dialog_new ( Str $title, N-GObject $parent )
   returns N-GObject
   is native(&gtk-lib)
   { * }

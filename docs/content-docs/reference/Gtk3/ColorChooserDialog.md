@@ -3,6 +3,8 @@ TITLE
 
 Gnome::Gtk3::ColorChooserDialog
 
+![](images/colorchooser.png)
+
 SUBTITLE
 ========
 
@@ -12,6 +14,8 @@ Description
 ===========
 
 The `Gnome::Gtk3::ColorChooserDialog` widget is a dialog for choosing a color. It implements the `Gnome::Gtk3::ColorChooser` interface.
+
+Since: 3.4
 
 See Also
 --------
@@ -40,22 +44,26 @@ Methods
 new
 ---
 
-    multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
+### multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
 
 Create a new object with a title. The transient $parent-window which may be `Any`.
 
-    multi method new ( Gnome::GObject::Object :$widget! )
+### multi method new ( Gnome::GObject::Object :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
+Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
 
-    multi method new ( Str :$build-id! )
+### multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
+Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
 
 gtk_color_chooser_dialog_new
 ----------------------------
 
 Creates a new native `Gtk3ColorChooserDialog`.
+
+Returns: a new `Gnome::Gtk3::ColorChooserDialog`
+
+Since: 3.4
 
     method gtk_color_chooser_dialog_new (
       Str $title, N-GObject $parent
@@ -65,6 +73,4 @@ Creates a new native `Gtk3ColorChooserDialog`.
   * Str $title; (allow-none): Title of the dialog, or %NULL
 
   * N-GObject $parent; (allow-none): Transient parent of the dialog, or %NULL
-
-Returns N-GObject; a new native `GtkColorChooserDialog`.
 
