@@ -16,13 +16,12 @@
           {% assign classstr = classstr | append: " float-right" %}
         {% endif %}
 
-        <!--li class="{{ classstr }}"-->
-          {% if item.url != page.url %}
-            <a class="{{ classstr }}" href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
-          {% else %}
-            <a class="{{ classstr }}">{{ item.title }}</a>
-          {% endif %}
-        <!--/li-->
+        {% if item.url != page.url %}
+          <a class="{{ classstr }} header-menu"
+             href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
+        {% else %}
+          <a class="{{ classstr }} header-menu">{{ item.title }}</a>
+        {% endif %}
       {% endfor %}
 
     </nav>
