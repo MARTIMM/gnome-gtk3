@@ -30,6 +30,7 @@ to provide a dialog for selecting colors.
 
 C<Gnome::Gtk3::ColorChooserWidget> has a single CSS node with name colorchooser.
 
+Since: 3.4
 
 
 
@@ -52,7 +53,6 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Box;
 
 #-------------------------------------------------------------------------------
@@ -62,17 +62,16 @@ unit class Gnome::Gtk3::ColorChooserWidget:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
+my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
-
 =head3 multi method new ( Bool :$empty! )
 
-Create a new object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
@@ -86,16 +85,16 @@ submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
-  #$signals-added = self.add-signal-types( $?CLASS.^name,
-  #  ... :type<signame>
-  #) unless $signals-added;
+  $signals-added = self.add-signal-types( $?CLASS.^name,
+    # ... :type<signame>
+  ) unless $signals-added;
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::ColorChooserWidget';
+  return unless self.^name eq 'Gnome::LIBRARYMODULE';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_color_chooser_widget_new());
+    # self.native-gobject(gtk_color_chooser_widget_new());
   }
 
   elsif ? %options<widget> || %options<build-id> {
@@ -133,13 +132,14 @@ method fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 gtk_color_chooser_widget_new
 
-Creates a new native C<GtkColorChooserWidget>.
+Creates a new C<Gnome::Gtk3::ColorChooserWidget>.
 
 Returns: a new C<Gnome::Gtk3::ColorChooserWidget>
 
 Since: 3.4
 
-  method gtk_color_chooser_widget_new ( --> N-GObject )
+  method gtk_color_chooser_widget_new ( --> N-GObject  )
+
 
 =end pod
 
@@ -147,10 +147,7 @@ sub gtk_color_chooser_widget_new (  )
   returns N-GObject
   is native(&gtk-lib)
   { * }
-
-
 #-------------------------------------------------------------------------------
-#TODO Must add type info
 =begin pod
 =head1 Properties
 
@@ -161,7 +158,16 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
+=begin comment
+
 =head2 Supported properties
+
+=head2 Unsupported properties
+
+=end comment
+
+=head2 Not yet supported properties
+
 
 =head3 show-editor
 
@@ -172,5 +178,6 @@ is showing the single-color editor. It can be set to switch
 the color chooser into single-color editing mode.
 
 Since: 3.4
+
 
 =end pod
