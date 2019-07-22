@@ -77,8 +77,11 @@ my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 new
+=head3 multi method new ( Bool :$empty! )
 
-=head3 multi method new ( :$widget! )
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+=head3 multi method new ( N-GObject :$widget! )
 
 Create a combobox using a native object from elsewhere. See also Gnome::GObject::Object.
 
