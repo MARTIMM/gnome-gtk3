@@ -73,7 +73,7 @@ Describes the kind of window.
 enum GdkWindowAttributesType
 ----------------------------
 
-Used to indicate which fields in the `Gnome::Gdk3::WindowAttr` struct should be honored. For example, if you filled in the “cursor” and “x” fields of `Gnome::Gdk3::WindowAttr`, pass “*GDK_WA_X* | *GDK_WA_CURSOR*” to `gdk_window_new()`. Fields in `Gnome::Gdk3::WindowAttr` not covered by a bit in this enum are required; for example, the *width*/*height*, *wclass*, and *window_type* fields are required, they have no corresponding flag in `Gnome::Gdk3::WindowAttributesType`.
+Used to indicate which fields in the `Gnome::Gdk3::WindowAttr` struct should be honored. For example, if you filled in the “cursor” and “x” fields of `Gnome::Gdk3::WindowAttr`, pass “*GDK_WA_X* \| *GDK_WA_CURSOR*” to `gdk_window_new()`. Fields in `Gnome::Gdk3::WindowAttr` not covered by a bit in this enum are required; for example, the *width*/*height*, *wclass*, and *window_type* fields are required, they have no corresponding flag in `Gnome::Gdk3::WindowAttributesType`.
 
   * GDK_WA_TITLE: Honor the title field
 
