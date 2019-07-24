@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2019-07-24 0.17.5:
+    - Declaration of event signal sub moved from Gnome::GObject::Signal to Gnome::Gtk3::Widget to remove dependency of Gnome::GObject on Gnome::Gdk3.
+
   - 2019-07-22 0.17.4:
     - Extended, tested and documented ColorChooserWidget, ComboBox, ComboBoxText
 

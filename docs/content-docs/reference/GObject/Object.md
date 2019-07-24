@@ -53,11 +53,11 @@ Register a handler to process a signal or an event. There are several types of c
 
           handler ( object: :$widget, :$user-option1, ..., :$user-optionN )
           handler (
-            object: :$widget, :handle-arg0($event),
+            object: :$widget, :handler-arg0($event),
             :$user-option1, ..., :$user-optionN
           )
           handler (
-            object: :$widget, :handle-arg0($nativewidget),
+            object: :$widget, :handler-arg0($nativewidget),
             :$user-option1, ..., :$user-optionN
           )
 

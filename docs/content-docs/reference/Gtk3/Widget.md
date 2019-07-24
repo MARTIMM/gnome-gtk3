@@ -2469,7 +2469,7 @@ Not yet supported signals
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($allocation),
+      :handler-arg0($allocation),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2485,7 +2485,7 @@ Since: 3.0
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($flags),
+      :handler-arg0($flags),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2499,7 +2499,7 @@ The ::parent-set signal is emitted when a new parent has been set on a widget.
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($old_parent),
+      :handler-arg0($old_parent),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2513,7 +2513,7 @@ The ::hierarchy-changed signal is emitted when the anchored state of a widget ch
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($previous_toplevel),
+      :handler-arg0($previous_toplevel),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2527,7 +2527,7 @@ The ::direction-changed signal is emitted when the text direction of a widget ch
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($previous_direction),
+      :handler-arg0($previous_direction),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2543,7 +2543,7 @@ A widget is shadowed by a `gtk_grab_add()` when the topmost grab widget in the g
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($was_grabbed),
+      :handler-arg0($was_grabbed),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2557,7 +2557,7 @@ The ::child-notify signal is emitted for each [child property][child-properties]
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($child_property),
+      :handler-arg0($child_property),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2579,7 +2579,7 @@ Since: 3.0
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($cr),
+      :handler-arg0($cr),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2593,7 +2593,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($arg1),
+      :handler-arg0($arg1),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2607,7 +2607,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($direction),
+      :handler-arg0($direction),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2619,7 +2619,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($direction),
+      :handler-arg0($direction),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2637,7 +2637,7 @@ Since: 2.12
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($direction),
+      :handler-arg0($direction),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2653,7 +2653,7 @@ Returns: `1` to stop other handlers from being invoked for the event and to canc
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2667,7 +2667,7 @@ After the emission of the sig `event` signal and (optionally) the second more sp
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2687,7 +2687,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2707,7 +2707,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2727,7 +2727,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2747,7 +2747,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2763,7 +2763,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2781,7 +2781,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2801,7 +2801,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2821,7 +2821,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2841,7 +2841,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2861,7 +2861,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2879,7 +2879,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2897,7 +2897,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2915,7 +2915,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2933,7 +2933,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2951,7 +2951,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2969,7 +2969,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2985,7 +2985,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3001,7 +3001,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3015,7 +3015,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3027,8 +3027,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($data),
-      :handle-arg1($time),
+      :handler-arg0($data),
+      :handler-arg1($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3042,9 +3042,9 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($data),
-      :handle-arg1($info),
-      :handle-arg2($time),
+      :handler-arg0($data),
+      :handler-arg1($info),
+      :handler-arg2($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3066,7 +3066,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3084,7 +3084,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3100,8 +3100,8 @@ Likewise, the sig `drag-leave` signal is also emitted before the ::drag-drop sig
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($time),
+      :handler-arg0($context),
+      :handler-arg1($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3119,7 +3119,7 @@ Note that some widgets set up a drag icon in the default handler of this signal,
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
+      :handler-arg0($context),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3133,7 +3133,7 @@ The ::drag-end signal is emitted on the drag source when a drag is finished. A t
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
+      :handler-arg0($context),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3147,7 +3147,7 @@ The ::drag-data-delete signal is emitted on the drag source when a drag with the
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
+      :handler-arg0($context),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3165,8 +3165,8 @@ Since: 2.12
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($result),
+      :handler-arg0($context),
+      :handler-arg1($result),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3204,10 +3204,10 @@ Returns: whether the cursor position is in a drop zone
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($x),
-      :handle-arg2($y),
-      :handle-arg3($time),
+      :handler-arg0($context),
+      :handler-arg1($x),
+      :handler-arg2($y),
+      :handler-arg3($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3229,10 +3229,10 @@ Returns: whether the cursor position is in a drop zone
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($x),
-      :handle-arg2($y),
-      :handle-arg3($time),
+      :handler-arg0($context),
+      :handler-arg1($x),
+      :handler-arg2($y),
+      :handler-arg3($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3252,10 +3252,10 @@ The ::drag-data-get signal is emitted on the drag source when the drop site requ
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($data),
-      :handle-arg2($info),
-      :handle-arg3($time),
+      :handler-arg0($context),
+      :handler-arg1($data),
+      :handler-arg2($info),
+      :handler-arg3($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3289,12 +3289,12 @@ gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time); } else gtk_dra
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($context),
-      :handle-arg1($x),
-      :handle-arg2($y),
-      :handle-arg3($data),
-      :handle-arg4($info),
-      :handle-arg5($time),
+      :handler-arg0($context),
+      :handler-arg1($x),
+      :handler-arg2($y),
+      :handler-arg3($data),
+      :handler-arg4($info),
+      :handler-arg5($time),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3322,7 +3322,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3340,7 +3340,7 @@ Since: 2.14
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3360,7 +3360,7 @@ Since: 2.8
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($event),
+      :handler-arg0($event),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3382,10 +3382,10 @@ Since: 2.12
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($x),
-      :handle-arg1($y),
-      :handle-arg2($keyboard_mode),
-      :handle-arg3($tooltip),
+      :handler-arg0($x),
+      :handler-arg1($y),
+      :handler-arg2($keyboard_mode),
+      :handler-arg3($tooltip),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3405,7 +3405,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($help_type),
+      :handler-arg0($help_type),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3419,7 +3419,7 @@ The ::screen-changed signal gets emitted when the screen of a widget has changed
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($previous_screen),
+      :handler-arg0($previous_screen),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -3435,7 +3435,7 @@ Returns: `1` if the signal can be activated.
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      :handle-arg0($signal_id),
+      :handler-arg0($signal_id),
       :$user-option1, ..., :$user-optionN
     );
 
