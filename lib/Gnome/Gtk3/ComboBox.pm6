@@ -998,7 +998,7 @@ Since: 2.12
 
   method handler (
     Gnome::GObject::Object :widget($widget),
-    :handle-arg0($scroll_type),
+    :handler-arg0($scroll_type),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1019,7 +1019,7 @@ Here's an example signal handler which fetches data from the model and displays 
 
   method format_entry_text_callback (
     Gnome::Gtk3::ComboBox :widget($combo),
-    Str :handle-arg0($path)
+    Str :handler-arg0($path)
     --> Str
   ) {
     Gnome::Gtk3::TreeIter $iter;
@@ -1043,7 +1043,7 @@ Since: 3.4
 
   method handler (
     Gnome::GObject::Object :widget($combo),
-    :handle-arg0($path),
+    :handler-arg0($path),
     :$user-option1, ..., :$user-optionN
   );
 

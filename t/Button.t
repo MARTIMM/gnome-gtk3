@@ -11,8 +11,8 @@ use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
 
-#use Gnome::N::X;
-#Gnome::N::debug(:on);
+use Gnome::N::X;
+Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 # used later on in tests
