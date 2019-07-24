@@ -141,25 +141,73 @@ class Gtk3::Main
 
 ```plantuml
 scale 0.7
+title Dependency details of some of the packages and classes therein
 
-title Some details
-class GObject {
-  Bool $debug
-  N-GObject $!gobject
-  GSignal $!g-signal
-  Array $builders
+
+package Gtk3 {
+  class Gtk3::Builder
+
+  'Gtk3::Builder .. dep1
 }
 
-'hide members
-class GSignal {
+package Gdk3 {
+  class Gdk3::Events
+
+  class GdkEvent << (S, #dfdfff) Struct >>
 }
 
-class Gtk3::Builder {
+package GObject {
+  class GObject::Object {
+    N-GObject $!gobject
+    GSignal $!g-signal
+    Array $builders
+  }
+
+  'hide members
+  class GObject::Signal
 }
 
-GObject *--> GSignal
-GObject *--> Gtk3::Builder
+'class usage
+Gtk3::Builder "0..*" --o GObject::Object
+'Gtk3::Builder --|> GObject::Object
+'GObject::Object *-> GObject::Signal
+GObject::Signal <--* GObject::Object
+GObject::Signal o--> "GdkEvent"
+Gdk3::Events o-> GdkEvent
 
+'package dependencies
+Gtk3 ...> Gdk3
+note right on link
+  Nomal use as some Gtk3
+  classes use Gdk3 classes
+end note
+
+Gtk3 ...> GObject
+note right on link
+  Normal use as many Gtk3
+  classes inherit from
+  Gobject::Object
+end note
+
+Gtk3 <... GObject
+note right on link
+  dependency is solved by
+  handing over the Builder
+  address to GObject
+
+  also dependency on Gtk3::Main
+  is solved by redefining a sub
+  to initialize GTK+
+end note
+
+Gdk3 ..> GObject
+note right on link
+  Normal use as some Gdk3
+  classes inherit from
+  Gobject::Object
+end note
+
+Gdk3 <.. GObject
 ```
 
 <!-- Restjes ...
