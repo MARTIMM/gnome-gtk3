@@ -208,6 +208,12 @@ note right on link
 end note
 
 Gdk3 <.. GObject
+note right on link
+  dependency solved by
+  moving some sub
+  declarations to GObject
+  and Gtk3::Wiget
+end note
 ```
 
 <!-- Restjes ...
