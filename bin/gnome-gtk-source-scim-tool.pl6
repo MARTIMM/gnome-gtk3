@@ -916,7 +916,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=begin pod\n=head3 $signal-name\n";
+    $signal-doc ~= "\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
@@ -1037,7 +1037,7 @@ note "item doc: ", $item-doc;
     my Int $count = 0;
     for @$items-src-doc -> $idoc {
       if $count == 0 {
-        $signal-doc ~= "    Gnome::{$p6-lib-name}::{$p6-class-name} " ~
+        $signal-doc ~= "    Gnome::GObject::Object " ~
                        "\:widget\(\$$idoc<item-name>\),\n";
       }
 
@@ -1053,13 +1053,11 @@ note "item doc: ", $item-doc;
     for @$items-src-doc -> $idoc {
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
     }
-
-    $signal-doc ~= "=end pod\n";
   }
 
   if ?$signal-doc {
 
-    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc;# ~ "\n=end pod\n\n";
+    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
       #-------------------------------------------------------------------------------
       =begin pod
       =head1 Signals
@@ -1077,8 +1075,6 @@ note "item doc: ", $item-doc;
       =end comment
 
       =head2 Not yet supported signals
-
-      =end pod
 
       EOSIGDOC
 

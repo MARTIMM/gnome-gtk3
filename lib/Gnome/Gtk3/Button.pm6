@@ -531,15 +531,11 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
 Emitted when the button has been activated (pressed and released).
 
   method handler (
-    Gnome::GObject::Button :widget($button),
+    Gnome::GObject::Object :widget($button),
     :$user-option1, ..., :$user-optionN
   );
 
 =item $button; the object that received the signal
-
-=end pod
-
-=begin pod
 
 =head2 Unsupported / Deprecated signals
 

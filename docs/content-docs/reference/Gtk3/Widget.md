@@ -195,9 +195,6 @@ A `Gnome::Gtk3::Requisition`-struct represents the desired size of a widget. See
 Methods
 =======
 
-new
----
-
 gtk_widget_destroy
 ------------------
 
@@ -2323,7 +2320,7 @@ List of not yet implemented methods and classes
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::Gtk3::Widget`.
+Register any signal as follows. See also `Gnome::GObject::Object`.
 
     my Bool $is-registered = $my-widget.register-signal (
       $handler-object, $handler-name, $signal-name,
