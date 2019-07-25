@@ -2923,7 +2923,7 @@ Since: 2.24
 
   method handler (
     Gnome::GObject::Object :widget($window),
-    :handle-arg0($widget),
+    :handler-arg0($widget),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -2950,7 +2950,7 @@ Return: C<1> if the key binding was handled
 
   method handler (
     Gnome::GObject::Object :widget($window),
-    :handle-arg0($toggle),
+    :handler-arg0($toggle),
     :$user-option1, ..., :$user-optionN
   );
 

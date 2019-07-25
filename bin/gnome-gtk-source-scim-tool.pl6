@@ -27,7 +27,13 @@ my @giodirlist = ();
 my @enum-list = ();
 
 #-------------------------------------------------------------------------------
-sub MAIN ( Str:D $base-name ) {
+sub MAIN (
+  Str:D $base-name, Bool :$sig = False, Bool :$prop = False,
+  Bool :$sub = False, Bool :$dep = False
+) {
+
+  my Bool $do-all = !( [or] $sig, $prop, $sub, $dep);
+
   load-dir-lists();
 
   my Bool $file-found;
@@ -49,10 +55,10 @@ sub MAIN ( Str:D $base-name ) {
 
     substitute-in-template($include-content);
 
-    get-subroutines( $include-content, $source-content);
-    get-deprecated-subs($include-content);
-    get-signals($source-content);
-    get-properties($source-content);
+    get-subroutines( $include-content, $source-content) if $do-all or $sub;
+    get-deprecated-subs($include-content) if $do-all or $dep;
+    get-signals($source-content) if $do-all or $sig;
+    get-properties($source-content) if $do-all or $prop;
 
     my Str $m = '$v';
     my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
@@ -67,9 +73,15 @@ sub MAIN ( Str:D $base-name ) {
       #X::Gnome.debug(:on);
 
       #-------------------------------------------------------------------------------
+      my $class $m .= new(...);
+      #-------------------------------------------------------------------------------
       subtest 'ISA test', {
-        my $class $m .= new(...);
         isa-ok $m, $class;
+      }
+
+      #-------------------------------------------------------------------------------
+      subtest 'Manipulations', {
+
       }
 
       #-------------------------------------------------------------------------------
@@ -1030,7 +1042,7 @@ note "item doc: ", $item-doc;
       }
 
       else {
-        $signal-doc ~= "    \:handle-arg{$count - 1}\(\$$idoc<item-name>\),\n";
+        $signal-doc ~= "    \:handler-arg{$count - 1}\(\$$idoc<item-name>\),\n";
       }
 
       $count++;
@@ -1058,11 +1070,8 @@ note "item doc: ", $item-doc;
         )
 
       =begin comment
-
       =head2 Supported signals
-
       =head2 Unsupported signals
-
       =end comment
 
       =head2 Not yet supported signals

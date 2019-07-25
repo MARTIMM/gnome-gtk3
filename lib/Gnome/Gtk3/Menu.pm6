@@ -859,10 +859,10 @@ Stability: Unstable
 
   method handler (
     Gnome::GObject::Object :widget($menu),
-    :handle-arg0($flipped_rect),
-    :handle-arg1($final_rect),
-    :handle-arg2($flipped_x),
-    :handle-arg3($flipped_y),
+    :handler-arg0($flipped_rect),
+    :handler-arg1($final_rect),
+    :handler-arg2($flipped_x),
+    :handler-arg3($flipped_y),
     :$user-option1, ..., :$user-optionN
   );
 

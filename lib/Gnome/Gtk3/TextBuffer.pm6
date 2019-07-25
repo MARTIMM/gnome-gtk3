@@ -16,37 +16,6 @@ unit class Gnome::Gtk3::TextBuffer:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
-sub gtk_text_buffer_new ( N-GObject $text-tag-table )
-  returns N-GObject       # GtkTextBuffer
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $i )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_end_iter( N-GObject $buffer, N-GTextIter $i )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_set_text( N-GObject $buffer, Str $text, int32 $len )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_text (
-  N-GObject $buffer, N-GTextIter $start, N-GTextIter $end,
-  int32 $include_hidden_chars
-) returns Str
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_insert(
-  N-GObject $buffer, CArray[int32] $start,
-  Str $text, int32 $len
-) is native(&gtk-lib)
-  { * }
-
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 submethod BUILD ( *%options ) {
@@ -94,3 +63,34 @@ method fallback ( $native-sub is copy --> Callable ) {
 
   $s
 }
+
+#-------------------------------------------------------------------------------
+sub gtk_text_buffer_new ( N-GObject $text-tag-table )
+  returns N-GObject       # GtkTextBuffer
+  is native(&gtk-lib)
+  { * }
+
+sub gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $i )
+  is native(&gtk-lib)
+  { * }
+
+sub gtk_text_buffer_get_end_iter( N-GObject $buffer, N-GTextIter $i )
+  is native(&gtk-lib)
+  { * }
+
+sub gtk_text_buffer_set_text( N-GObject $buffer, Str $text, int32 $len )
+  is native(&gtk-lib)
+  { * }
+
+sub gtk_text_buffer_get_text (
+  N-GObject $buffer, N-GTextIter $start, N-GTextIter $end,
+  int32 $include_hidden_chars
+) returns Str
+  is native(&gtk-lib)
+  { * }
+
+sub gtk_text_buffer_insert(
+  N-GObject $buffer, CArray[int32] $start,
+  Str $text, int32 $len
+) is native(&gtk-lib)
+  { * }

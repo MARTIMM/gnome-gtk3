@@ -338,7 +338,7 @@ Since: 3.4
 
   method handler (
     Gnome::GObject::Object :widget($chooser),
-    :handle-arg0($color),
+    :handler-arg0($color),
     :$user-option1, ..., :$user-optionN
   );
 

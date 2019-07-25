@@ -1965,8 +1965,8 @@ Since: 2.18
 
     method handler (
       Gnome::GObject::Object :widget($window),
-      :handle-arg0($x),
-      :handle-arg1($y),
+      :handler-arg0($x),
+      :handler-arg1($y),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -1986,10 +1986,10 @@ Since: 2.18
 
     method handler (
       Gnome::GObject::Object :widget($window),
-      :handle-arg0($offscreen_x),
-      :handle-arg1($offscreen_y),
-      :handle-arg2($embedder_x),
-      :handle-arg3($embedder_y),
+      :handler-arg0($offscreen_x),
+      :handler-arg1($offscreen_y),
+      :handler-arg2($embedder_x),
+      :handler-arg3($embedder_y),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2013,10 +2013,10 @@ Since: 2.18
 
     method handler (
       Gnome::GObject::Object :widget($window),
-      :handle-arg0($embedder_x),
-      :handle-arg1($embedder_y),
-      :handle-arg2($offscreen_x),
-      :handle-arg3($offscreen_y),
+      :handler-arg0($embedder_x),
+      :handler-arg1($embedder_y),
+      :handler-arg2($offscreen_x),
+      :handler-arg3($offscreen_y),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2042,8 +2042,8 @@ Since: 3.0
 
     method handler (
       Gnome::GObject::Object :widget($window),
-      :handle-arg0($width),
-      :handle-arg1($height),
+      :handler-arg0($width),
+      :handler-arg1($height),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -2065,10 +2065,10 @@ Since: 3.22 Stability: Private
 
     method handler (
       Gnome::GObject::Object :widget($window),
-      :handle-arg0($flipped_rect),
-      :handle-arg1($final_rect),
-      :handle-arg2($flipped_x),
-      :handle-arg3($flipped_y),
+      :handler-arg0($flipped_rect),
+      :handler-arg1($final_rect),
+      :handler-arg2($flipped_x),
+      :handler-arg3($flipped_y),
       :$user-option1, ..., :$user-optionN
     );
 

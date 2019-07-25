@@ -537,7 +537,6 @@ Emitted when the button has been activated (pressed and released).
 
 =item $button; the object that received the signal
 
-
 =head2 Unsupported / Deprecated signals
 
 =head3 pressed
