@@ -1,69 +1,98 @@
 # https://jekyllrb.com/tutorials/navigation/
-bar_title: "Gtk3"
+- bar_title: "Toplevels"
+  bar_menu:
+  - title: "Window"
+    url: '/content-docs/reference/Gtk3/Window.html'
 
-bar_menu:
+  - title: '-'
+
+  - title: "Dialog"
+    url: "/content-docs/reference/Gtk3/Dialog.html"
   - title: "AboutDialog"
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
-  - title: "Bin"
-    url: '/content-docs/reference/Gtk3/Bin.html'
+  - title: "ColorChooserDialog"
+    url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
+  - title: "FileChooserDialog"
+    url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
+
+- bar_title: "Containers"
+  bar_menu:
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
-  - title: "Builder"
-    url: "/content-docs/reference/Gtk3/Builder.html"
+  - title: "MenuBar"
+    url: '/content-docs/reference/Gtk3/MenuBar.html'
+  - title: "Paned"
+    url: "/content-docs/reference/Gtk3/Paned.html"
+
+- bar_title: "Control"
+  bar_menu:
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
-  - title: "ColorChooser"
-    url: "/content-docs/reference/Gtk3/ColorChooser.html"
-  - title: "ColorChooserDialog"
-    url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
+  - title: "MenuButton"
+    url: '/content-docs/reference/Gtk3/MenuButton.html'
+  - title: "ToggleButton"
+    url: "/content-docs/reference/Gtk3/ToggleButton.html"
+
+  - title: '-'
+
   - title: "ComboBox"
     url: "/content-docs/reference/Gtk3/ComboBox.html"
   - title: "ComboBoxText"
     url: "/content-docs/reference/Gtk3/ComboBoxText.html"
-  - title: "Dialog"
-    url: "/content-docs/reference/Gtk3/Dialog.html"
-  - title: "Enums"
-    url: "/content-docs/reference/Gtk3/Enums.html"
-  - title: "FileChooser"
-    url: "/content-docs/reference/Gtk3/FileChooser.html"
-  - title: "FileChooserDialog"
-    url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
-  - title: "LevelBar"
-    url: "/content-docs/reference/Gtk3/LevelBar.html"
-  - title: "Main"
-    url: "/content-docs/reference/Gtk3/Main.html"
+
+  - title: '-'
+
+  - title: "Scale"
+    url: "/content-docs/reference/Gtk3/Scale.html"
+
+- bar_title: "Display"
+  bar_menu:
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
-  - title: "MenuBar"
-    url: '/content-docs/reference/Gtk3/MenuBar.html'
-  - title: "MenuButton"
-    url: '/content-docs/reference/Gtk3/MenuButton.html'
+
+- bar_title: "Composite Widget"
+  bar_menu:
+
+- bar_title: "Non-Builder Classes"
+  bar_menu:
+  - title: "ColorChooser"
+    url: "/content-docs/reference/Gtk3/ColorChooser.html"
+  - title: "FileChooser"
+    url: "/content-docs/reference/Gtk3/FileChooser.html"
+
+  - title: "-"
+
   - title: "MenuItem"
     url: "/content-docs/reference/Gtk3/MenuItem.html"
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+
+  - title: "-"
+
+  - title: "TextBuffer"
+    url: "/content-docs/reference/Gtk3/TextBuffer.html"
+  - title: "TextIter"
+    url: "/content-docs/reference/Gtk3/TextIter.html"
+
+  - title: "-"
+
+  - title: "Bin"
+    url: '/content-docs/reference/Gtk3/Bin.html'
+  - title: "Builder"
+    url: "/content-docs/reference/Gtk3/Builder.html"
+  - title: "Enums"
+    url: "/content-docs/reference/Gtk3/Enums.html"
+  - title: "LevelBar"
+    url: "/content-docs/reference/Gtk3/LevelBar.html"
+  - title: "Main"
+    url: "/content-docs/reference/Gtk3/Main.html"
   - title: "Orientable"
     url: "/content-docs/reference/Gtk3/Orientable.html"
-  - title: "Paned"
-    url: "/content-docs/reference/Gtk3/Paned.html"
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
-  - title: "Scale"
-    url: "/content-docs/reference/Gtk3/Scale.html"
-  - title: "ToggleButton"
-    url: "/content-docs/reference/Gtk3/ToggleButton.html"
   - title: "Widget"
     url: '/content-docs/reference/Gtk3/Widget.html'
-  - title: "Window"
-    url: '/content-docs/reference/Gtk3/Window.html'
-
-
-
-
-X:
-  - title: ""
-    url: "/content-docs/reference/Gtk3/.html"
