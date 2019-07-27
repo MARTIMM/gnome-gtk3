@@ -60,7 +60,8 @@ sub MAIN (
     get-signals($source-content) if $do-all or $sig;
     get-properties($source-content) if $do-all or $prop;
 
-    my Str $m = '$v';
+    # create var name named after classname. E.g. TextBuffer -> $tb.
+    my Str $m = '$' ~ $p6-class-name.comb(/<[A..Z]>/).join.lc;
     my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
     my Str $test-content = Q:s:to/EOTEST/;
       use v6;
@@ -70,10 +71,10 @@ sub MAIN (
       use $class;
 
       #use Gnome::N::X;
-      #X::Gnome.debug(:on);
+      #Gnome::N::debug(:on);
 
       #-------------------------------------------------------------------------------
-      my $class $m .= new(...);
+      my $class $m .= new(:empty);
       #-------------------------------------------------------------------------------
       subtest 'ISA test', {
         isa-ok $m, $class;
@@ -81,7 +82,7 @@ sub MAIN (
 
       #-------------------------------------------------------------------------------
       subtest 'Manipulations', {
-
+        is 1, 1, 'ok';
       }
 
       #-------------------------------------------------------------------------------
@@ -697,15 +698,13 @@ sub substitute-in-template ( Str $include-content ) {
 
     EOTEMPLATE
 
-  $template-text ~~ s:g/ 'Gnome::LIBRARYMODULE'
-                       /Gnome::{$p6-lib-name}::{$p6-class-name}/;
-
   my Str ( $t1, $t2) = ( '', '');
   if $p6-parentlib-name and $p6-parentclass-name {
     $t1 = "use Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
     $t2 = "also is Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
   }
 
+  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$p6-lib-name}::{$p6-class-name}/;
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
@@ -788,6 +787,7 @@ sub substitute-in-template ( Str $include-content ) {
 
     EOTEMPLATE
 
+  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$p6-lib-name}::{$p6-class-name}/;
   $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
   $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
   $output-file.IO.spurt( $template-text, :append);
@@ -1498,6 +1498,7 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
   $text = podding-class($text);
+  $text = podding-signal($text);
   $text = podding-property($text);
   $text = modify-at-vars($text);
   $text = modify-percent-types($text);
@@ -1553,7 +1554,7 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / sig C<$/[0]>/;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / sig I<$/[0]>/;
   }
 
   $text
