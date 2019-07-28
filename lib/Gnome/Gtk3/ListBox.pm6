@@ -74,6 +74,24 @@ also is Gnome::Gtk3::Container;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+=begin pod
+=head1 Methods
+=head2 new
+=head3 multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+=head3 multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+
+=begin comment
+=head3 multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+=end comment
+=end pod
+
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,

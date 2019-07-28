@@ -61,6 +61,20 @@ Example
     # Add the Grid to the ListBox
     $lb.gtk-container-add($grid);
 
+Methods
+=======
+
+new
+---
+
+### multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+### multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+
 gtk_list_box_prepend
 --------------------
 
