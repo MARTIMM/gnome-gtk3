@@ -1,6 +1,11 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2019-07-28 0.17.7:
+    - Bug fixed in TextIter. Many N-GObject types converted to N-GTextIter.
+    - Extended, tested and documented ListBox.
+    - Added ListBoxRow.
+
   - 2019-07-25 0.17.6:
     - Extended, tested and documented TextBuffer, TextIter.
 
