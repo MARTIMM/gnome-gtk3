@@ -1,7 +1,6 @@
 # https://jekyllrb.com/tutorials/navigation/
-bar_title: "Toplevel"
-
-bar_menu:
+- bar_title: "Toplevel"
+  bar_menu:
   - title: "Window"
     url: "/content-docs/examples/toplevel/Window.html"
   - title: "Dialog"

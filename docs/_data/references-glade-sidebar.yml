@@ -1,4 +1,3 @@
 # https://jekyllrb.com/tutorials/navigation/
-bar_title: "Glade"
-
-bar_menu:
+- bar_title: "Glade"
+  bar_menu:
