@@ -1,7 +1,6 @@
 # https://jekyllrb.com/tutorials/navigation/
-bar_title: "Extra"
-
-bar_menu:
+- bar_title: "Extra"
+  bar_menu:
   - title: "Window"
     url: "/content-docs/examples/window.html"
   - title: "Dialog"

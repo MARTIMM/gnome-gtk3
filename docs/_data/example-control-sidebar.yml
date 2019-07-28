@@ -1,6 +1,5 @@
 # https://jekyllrb.com/tutorials/navigation/
-bar_title: "Control"
-
-bar_menu:
+- bar_title: "Control"
+  bar_menu:
   - title: "Button"
     url: '/content-docs/examples/control/01-hello-world.html'
