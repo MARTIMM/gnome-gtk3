@@ -19,6 +19,8 @@
   bar_menu:
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
+  - title: "ListBox"
+    url: '/content-docs/reference/Gtk3/ListBox.html'
   - title: "MenuBar"
     url: '/content-docs/reference/Gtk3/MenuBar.html'
   - title: "Paned"
@@ -88,6 +90,8 @@
     url: "/content-docs/reference/Gtk3/Enums.html"
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
+  - title: "ListBoxRow"
+    url: '/content-docs/reference/Gtk3/ListBoxRow.html'
   - title: "Main"
     url: "/content-docs/reference/Gtk3/Main.html"
   - title: "Orientable"
