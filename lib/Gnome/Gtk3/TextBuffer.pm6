@@ -8,13 +8,7 @@ use v6;
 
 =head1 Description
 
-
-You may wish to begin by reading the
-[text widget conceptual overview][TextWidget]
-which gives an overview of all the objects and data
-types related to the text widget and how they work together.
-
-
+You may wish to begin by reading the [text widget conceptual overview](https://developer.gnome.org/gtk3/3.24/TextWidget.html) which gives an overview of all the objects and data types related to the text widget and how they work together.
 
 =head2 See Also
 
@@ -24,7 +18,6 @@ C<Gnome::Gtk3::TextView>, C<Gnome::Gtk3::TextIter>, C<Gnome::Gtk3::TextMark>
 =head2 Declaration
 
   unit class Gnome::Gtk3::TextBuffer;
-
 
 =head2 Example
 
