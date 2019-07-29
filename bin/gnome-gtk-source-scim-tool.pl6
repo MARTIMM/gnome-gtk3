@@ -230,6 +230,20 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     $output-file.IO.spurt( $sub, :append);
   }
+
+  $output-file.IO.spurt( Q:qq:to/EONYI/, :append);
+    #-------------------------------------------------------------------------------
+    =begin pod
+    =begin comment
+
+    =head1 Not yet implemented methods
+
+    =head3 method  ( ... )
+
+    =end comment
+    =end pod
+
+    EONYI
 }
 
 #-------------------------------------------------------------------------------
