@@ -55,9 +55,20 @@
   bar_menu:
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
+  - title: "TextView"
+    url: "/content-docs/reference/Gtk3/TextView.html"
 
 - bar_title: "Composite Widget"
   bar_menu:
+
+- bar_title: "Miscellaneous"
+  bar_menu:
+  - title: "TextBuffer"
+    url: "/content-docs/reference/Gtk3/TextBuffer.html"
+  - title: "TextTag"
+    url: '/content-docs/reference/Gtk3/TextTag.html'
+  - title: "TextTagTable"
+    url: '/content-docs/reference/Gtk3/TextTagTable.html'
 
 - bar_title: "Non-Builder Classes"
   bar_menu:
@@ -72,13 +83,6 @@
     url: "/content-docs/reference/Gtk3/MenuItem.html"
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
-
-  - title: "-"
-
-  - title: "TextBuffer"
-    url: "/content-docs/reference/Gtk3/TextBuffer.html"
-  - title: "TextIter"
-    url: "/content-docs/reference/Gtk3/TextIter.html"
 
   - title: "-"
 
@@ -98,5 +102,7 @@
     url: "/content-docs/reference/Gtk3/Orientable.html"
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
+  - title: "TextIter"
+    url: "/content-docs/reference/Gtk3/TextIter.html"
   - title: "Widget"
     url: '/content-docs/reference/Gtk3/Widget.html'
