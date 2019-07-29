@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.17.7",
+  "version": "0.17.9",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -36,6 +36,7 @@
     "Gnome::Gtk3::Label": "lib/Gnome/Gtk3/Label.pm6",
     "Gnome::Gtk3::LevelBar": "lib/Gnome/Gtk3/LevelBar.pm6",
     "Gnome::Gtk3::ListBox": "lib/Gnome/Gtk3/ListBox.pm6",
+    "Gnome::Gtk3::ListBoxRow": "lib/Gnome/Gtk3/ListBoxRow.pm6",
     "Gnome::Gtk3::Main": "lib/Gnome/Gtk3/Main.pm6",
     "Gnome::Gtk3::Menu": "lib/Gnome/Gtk3/Menu.pm6",
     "Gnome::Gtk3::MenuBar": "lib/Gnome/Gtk3/MenuBar.pm6",
@@ -52,6 +53,7 @@
     "Gnome::Gtk3::StyleContext": "lib/Gnome/Gtk3/StyleContext.pm6",
     "Gnome::Gtk3::TextBuffer": "lib/Gnome/Gtk3/TextBuffer.pm6",
     "Gnome::Gtk3::TextIter": "lib/Gnome/Gtk3/TextIter.pm6",
+    "Gnome::Gtk3::TextTag": "lib/Gnome/Gtk3/TextTag.pm6",
     "Gnome::Gtk3::TextTagTable": "lib/Gnome/Gtk3/TextTagTable.pm6",
     "Gnome::Gtk3::TextView": "lib/Gnome/Gtk3/TextView.pm6",
     "Gnome::Gtk3::ToggleButton": "lib/Gnome/Gtk3/ToggleButton.pm6",

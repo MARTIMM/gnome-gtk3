@@ -1,6 +1,13 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2019-07-29 0.17.9:
+    - Extended, tested and documented TextTagTable.
+    - Added class TextTag.
+
+  - 2019-07-28 0.17.8:
+    - Meta file bugfix
+
   - 2019-07-28 0.17.7:
     - Bug fixed in TextIter. Many N-GObject types converted to N-GTextIter.
     - Extended, tested and documented ListBox.
