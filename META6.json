@@ -61,7 +61,7 @@
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
   },
 
-  "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk.git",
+  "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk3.git",
 
   "depends": [ "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3" ],
   "test-depends": [ ],
