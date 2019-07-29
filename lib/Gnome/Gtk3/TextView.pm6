@@ -1748,7 +1748,6 @@ sub gtk_text_view_get_monospace ( N-GObject $text_view )
 =head3 method gtk_text_view_set_tabs ( ... )
 =head3 method gtk_text_view_get_tabs ( ... )
 =head3 method gtk_text_view_add_child_at_anchor ( ... )
-=head3 method  ( ... )
 
 
 =end pod

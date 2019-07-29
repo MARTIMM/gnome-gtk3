@@ -911,8 +911,6 @@ Not yet implemented methods
 
 ### method gtk_text_view_add_child_at_anchor ( ... )
 
-### method ( ... )
-
 List of deprecated (not implemented!) methods
 =============================================
 
