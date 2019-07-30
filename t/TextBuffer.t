@@ -5,7 +5,7 @@ use Test;
 use Gnome::Gtk3::TextBuffer;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::TextBuffer $tb .= new(:empty);

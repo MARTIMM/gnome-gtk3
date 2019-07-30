@@ -6,7 +6,7 @@ use Gnome::Gtk3::CheckButton;
 use Gnome::Gtk3::ToggleButton;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::CheckButton $cb .= new(:empty);

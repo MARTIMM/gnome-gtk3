@@ -5,7 +5,7 @@ use Test;
 use Gnome::Gtk3::ComboBoxText;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 my Gnome::Gtk3::ComboBoxText $cbt .= new(:empty);
 #-------------------------------------------------------------------------------

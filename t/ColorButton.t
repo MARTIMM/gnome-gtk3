@@ -6,7 +6,7 @@ use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::ColorButton;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
