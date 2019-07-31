@@ -4,30 +4,42 @@ use v6;
 
 =TITLE Gnome::Gtk3::TextView
 
-![](images/multiline-text.png)
-
 =SUBTITLE Widget that displays a C<Gnome::Gtk3::TextBuffer>
 
 =head1 Description
 
-You may wish to begin by reading the [text widget conceptual overview](https://developer.gnome.org/gtk3/3.24/TextWidget.html) which gives an overview of all the objects and data types related to the text widget and how they work together.
+
+You may wish to begin by reading the
+[text widget conceptual overview][TextWidget]
+which gives an overview of all the objects and data
+types related to the text widget and how they work together.
+
 
 =head2 Css Nodes
 
-  textview.view
-  ├── border.top
-  ├── border.left
-  ├── text
-  │   ╰── [selection]
-  ├── border.right
-  ├── border.bottom
-  ╰── [window.popup]
 
-C<Gnome::Gtk3::TextView> has a main css node with name textview and style class .view, and subnodes for each of the border windows, and the main text area, with names border and text, respectively. The border nodes each get one of the style classes .left, .right, .top or .bottom.
+|[<!-- language="plain" -->
+textview.view
+├── border.top
+├── border.left
+├── text
+│   ╰── [selection]
+├── border.right
+├── border.bottom
+╰── [window.popup]
+]|
+
+C<Gnome::Gtk3::TextView> has a main css node with name textview and style class .view,
+and subnodes for each of the border windows, and the main text area,
+with names border and text, respectively. The border nodes each get
+one of the style classes .left, .right, .top or .bottom.
 
 A node representing the selection will appear below the text node.
 
-If a context menu is opened, the window node will appear as a subnode of the main node.
+If a context menu is opened, the window node will appear as a subnode
+of the main node.
+
+
 
 =head2 See Also
 
@@ -42,22 +54,20 @@ C<Gnome::Gtk3::TextBuffer>, C<Gnome::Gtk3::TextIter>
 =head2 Example
 
 =end pod
-
 #-------------------------------------------------------------------------------
 use NativeCall;
 
 use Gnome::N::X;
-use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
-use Gnome::Gdk3::Events;
+use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
 
 #-------------------------------------------------------------------------------
-# See /usr/include/gtk-3.0/gtk/gtktextview.h
-# https://developer.gnome.org/gtk3/stable/GtkTextView.html
+# /usr/include/gtk-3.0/gtk/INCLUDE
+# https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::TextView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -69,6 +79,7 @@ also is Gnome::Gtk3::Container;
 
 Used to reference the parts of C<Gnome::Gtk3::TextView>.
 
+
 =item GTK_TEXT_WINDOW_PRIVATE: Invalid value, used as a marker
 =item GTK_TEXT_WINDOW_WIDGET: Window that floats over scrolling areas.
 =item GTK_TEXT_WINDOW_TEXT: Scrollable text window.
@@ -76,6 +87,7 @@ Used to reference the parts of C<Gnome::Gtk3::TextView>.
 =item GTK_TEXT_WINDOW_RIGHT: Right side border window.
 =item GTK_TEXT_WINDOW_TOP: Top border window.
 =item GTK_TEXT_WINDOW_BOTTOM: Bottom border window.
+
 
 =end pod
 
@@ -93,12 +105,15 @@ enum GtkTextWindowType is export (
 =begin pod
 =head2 enum GtkTextViewLayer
 
-Used to reference the layers of C<Gnome::Gtk3::TextView> for the purpose of customized drawing with the sig I<draw_layer> vfunc.
+Used to reference the layers of C<Gnome::Gtk3::TextView> for the purpose of customized
+drawing with the sig I<draw_layer> vfunc.
+
 
 =item GTK_TEXT_VIEW_LAYER_BELOW: Old deprecated layer, use C<GTK_TEXT_VIEW_LAYER_BELOW_TEXT> instead
 =item GTK_TEXT_VIEW_LAYER_ABOVE: Old deprecated layer, use C<GTK_TEXT_VIEW_LAYER_ABOVE_TEXT> instead
 =item GTK_TEXT_VIEW_LAYER_BELOW_TEXT: The layer rendered below the text (but above the background).  Since: 3.20
 =item GTK_TEXT_VIEW_LAYER_ABOVE_TEXT: The layer rendered above the text.  Since: 3.20
+
 
 =end pod
 
@@ -113,7 +128,8 @@ enum GtkTextViewLayer is export (
 =begin pod
 =head2 enum GtkTextExtendSelection
 
-Granularity types that extend the text selection. Use the sig C<extend-selection> signal to customize the selection.
+Granularity types that extend the text selection. Use the
+sig C<extend-selection> signal to customize the selection.
 
 Since: 3.16
 
@@ -151,29 +167,22 @@ Create an object using a native object from a builder. See also C<Gnome::GObject
 
 submethod BUILD ( *%options ) {
 
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<backspace copy-clipboard cut-clipboard insert-emoji
-            paste-clipboard set-anchor toggle-cursor-visible
-            toggle-overwrite
-           >,
-    :nativewidget<populate-popup>,
-    :GtkDeleteType<delete-from-cursor>,
-    :GtkTextExtendSelection<extend-selection>,
-    :str<insert-at-cursor preedit-changed>,
-    :mvintbool<move-cursor>,
-    :scroll<move-viewport>,
-    :bool<select-all>,
+    # ... :type<signame>
   ) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::TextView';
 
+  # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_text_view_new());
+    # self.native-gobject(gtk_text_view_new());
   }
 
-  elsif ? %options<widget> || ? %options<build-id> {
-    # provided in GObject
+  elsif ? %options<widget> || %options<build-id> {
+    # provided in Gnome::GObject::Object
   }
 
   elsif %options.keys.elems {
@@ -189,6 +198,7 @@ submethod BUILD ( *%options ) {
 }
 
 #-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
 method fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
@@ -200,6 +210,7 @@ method fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
+
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -328,10 +339,10 @@ sub gtk_text_view_scroll_to_iter ( N-GObject $text_view, N-GObject $iter, num64 
 
 Scrolls I<text_view> so that I<mark> is on the screen in the position
 indicated by I<xalign> and I<yalign>. An alignment of 0.0 indicates
-left or top, 1.0 indicates right or bottom, 0.5 means center.
-If I<use_align> is C<0>, the text scrolls the minimal distance to
-get the mark onscreen, possibly not scrolling at all. The effective
-screen for purposes of this function is reduced by a margin of size
+left or top, 1.0 indicates right or bottom, 0.5 means center. 
+If I<use_align> is C<0>, the text scrolls the minimal distance to 
+get the mark onscreen, possibly not scrolling at all. The effective 
+screen for purposes of this function is reduced by a margin of size 
 I<within_margin>.
 
   method gtk_text_view_scroll_to_mark ( N-GObject $mark, Num $within_margin, Int $use_align, Num $xalign, Num $yalign )
@@ -647,9 +658,9 @@ sub gtk_text_view_get_line_at_y ( N-GObject $text_view, N-GObject $target_iter, 
 =head2 [gtk_text_view_] buffer_to_window_coords
 
 Converts coordinate (I<buffer_x>, I<buffer_y>) to coordinates for the window
-I<win>, and stores the result in (I<window_x>, I<window_y>).
+I<win>, and stores the result in (I<window_x>, I<window_y>). 
 
-Note that you can’t convert coordinates for a nonexisting window (see
+Note that you can’t convert coordinates for a nonexisting window (see 
 C<gtk_text_view_set_border_window_size()>).
 
   method gtk_text_view_buffer_to_window_coords ( GtkTextWindowType $win, Int $buffer_x, Int $buffer_y, Int $window_x, Int $window_y )
@@ -662,7 +673,7 @@ C<gtk_text_view_set_border_window_size()>).
 
 =end pod
 
-sub gtk_text_view_buffer_to_window_coords ( N-GObject $text_view, int32 $win, int32 $buffer_x, int32 $buffer_y, int32 $window_x, int32 $window_y )
+sub gtk_text_view_buffer_to_window_coords ( N-GObject $text_view, GtkTextWindowType $win, int32 $buffer_x, int32 $buffer_y, int32 $window_x, int32 $window_y )
   is native(&gtk-lib)
   { * }
 
@@ -673,7 +684,7 @@ sub gtk_text_view_buffer_to_window_coords ( N-GObject $text_view, int32 $win, in
 Converts coordinates on the window identified by I<win> to buffer
 coordinates, storing the result in (I<buffer_x>,I<buffer_y>).
 
-Note that you can’t convert coordinates for a nonexisting window (see
+Note that you can’t convert coordinates for a nonexisting window (see 
 C<gtk_text_view_set_border_window_size()>).
 
   method gtk_text_view_window_to_buffer_coords ( GtkTextWindowType $win, Int $window_x, Int $window_y, Int $buffer_x, Int $buffer_y )
@@ -686,7 +697,7 @@ C<gtk_text_view_set_border_window_size()>).
 
 =end pod
 
-sub gtk_text_view_window_to_buffer_coords ( N-GObject $text_view, int32 $win, int32 $window_x, int32 $window_y, int32 $buffer_x, int32 $buffer_y )
+sub gtk_text_view_window_to_buffer_coords ( N-GObject $text_view, GtkTextWindowType $win, int32 $window_x, int32 $window_y, int32 $buffer_x, int32 $buffer_y )
   is native(&gtk-lib)
   { * }
 
@@ -709,7 +720,7 @@ Returns: (nullable) (transfer none): a C<Gnome::Gdk3::Window>, or C<Any>
 
 =end pod
 
-sub gtk_text_view_get_window ( N-GObject $text_view, int32 $win )
+sub gtk_text_view_get_window ( N-GObject $text_view, GtkTextWindowType $win )
   returns N-GObject
   is native(&gtk-lib)
   { * }
@@ -732,7 +743,7 @@ Returns: the window type.
 =end pod
 
 sub gtk_text_view_get_window_type ( N-GObject $text_view, N-GObject $window )
-  returns int32
+  returns GtkTextWindowType
   is native(&gtk-lib)
   { * }
 
@@ -755,7 +766,7 @@ C<GTK_TEXT_WINDOW_PRIVATE>.
 
 =end pod
 
-sub gtk_text_view_set_border_window_size ( N-GObject $text_view, int32 $type, int32 $size )
+sub gtk_text_view_set_border_window_size ( N-GObject $text_view, GtkTextWindowType $type, int32 $size )
   is native(&gtk-lib)
   { * }
 
@@ -774,7 +785,7 @@ Returns: width of window
 
 =end pod
 
-sub gtk_text_view_get_border_window_size ( N-GObject $text_view, int32 $type )
+sub gtk_text_view_get_border_window_size ( N-GObject $text_view, GtkTextWindowType $type )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1000,7 +1011,6 @@ sub gtk_text_view_reset_im_context ( N-GObject $text_view )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_text_view_] add_child_at_anchor
@@ -1017,28 +1027,32 @@ Adds a child widget in the text buffer, at the given I<anchor>.
 sub gtk_text_view_add_child_at_anchor ( N-GObject $text_view, N-GObject $child, GtkTextChildAnchor $anchor )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_text_view_] add_child_in_window
 
-Adds a child at fixed coordinates in one of the text widget's windows.
+Adds a child at fixed coordinates in one of the text widget's
+windows.
 
-The window must have nonzero size (see C<gtk_text_view_set_border_window_size()>). Note that the child coordinates are given relative to scrolling. When placing a child in C<GTK_TEXT_WINDOW_WIDGET>, scrolling is irrelevant, the child floats above all scrollable areas. But when placing a child in one of the scrollable windows (border windows or text window) it will move with the scrolling as needed.
+The window must have nonzero size (see
+C<gtk_text_view_set_border_window_size()>). Note that the child
+coordinates are given relative to scrolling. When
+placing a child in C<GTK_TEXT_WINDOW_WIDGET>, scrolling is
+irrelevant, the child floats above all scrollable areas. But when
+placing a child in one of the scrollable windows (border windows or
+text window) it will move with the scrolling as needed.
 
-  method gtk_text_view_add_child_in_window (
-    N-GObject $child, GtkTextWindowType $which_window, Int $xpos, Int $ypos
-  )
+  method gtk_text_view_add_child_in_window ( N-GObject $child, GtkTextWindowType $which_window,  $/* window coordinates */ gint xpos, Int $ypos )
 
 =item N-GObject $child; a C<Gnome::Gtk3::Widget>
 =item GtkTextWindowType $which_window; which window the child should appear in
-=item Int $xpos; X position of child in window coordinates
+=item  $/* window coordinates */ gint xpos; X position of child in window coordinates
 =item Int $ypos; Y position of child in window coordinates
 
 =end pod
 
-sub gtk_text_view_add_child_in_window ( N-GObject $text_view, N-GObject $child, int32 $which_window, int32 $xpos, int32 $ypos )
+sub gtk_text_view_add_child_in_window ( N-GObject $text_view, N-GObject $child, GtkTextWindowType $which_window,  $/* window coordinates */ gint xpos, int32 $ypos )
   is native(&gtk-lib)
   { * }
 
@@ -1048,15 +1062,15 @@ sub gtk_text_view_add_child_in_window ( N-GObject $text_view, N-GObject $child, 
 
 Updates the position of a child, as for C<gtk_text_view_add_child_in_window()>.
 
-  method gtk_text_view_move_child ( N-GObject $child, Int $xpos, Int $ypos )
+  method gtk_text_view_move_child ( N-GObject $child,  $/* window coordinates */ gint xpos, Int $ypos )
 
 =item N-GObject $child; child widget already added to the text view
-=item Int $xpos; new X position in window coordinates
+=item  $/* window coordinates */ gint xpos; new X position in window coordinates
 =item Int $ypos; new Y position in window coordinates
 
 =end pod
 
-sub gtk_text_view_move_child ( N-GObject $text_view, N-GObject $child, int32 $xpos, int32 $ypos )
+sub gtk_text_view_move_child ( N-GObject $text_view, N-GObject $child,  $/* window coordinates */ gint xpos, int32 $ypos )
   is native(&gtk-lib)
   { * }
 
@@ -1173,9 +1187,9 @@ sub gtk_text_view_get_overwrite ( N-GObject $text_view )
 =begin pod
 =head2 [gtk_text_view_] set_accepts_tab
 
-Sets the behavior of the text widget when the Tab key is pressed.
-If I<accepts_tab> is C<1>, a tab character is inserted. If I<accepts_tab>
-is C<0> the keyboard focus is moved to the next widget in the focus
+Sets the behavior of the text widget when the Tab key is pressed. 
+If I<accepts_tab> is C<1>, a tab character is inserted. If I<accepts_tab> 
+is C<0> the keyboard focus is moved to the next widget in the focus 
 chain.
 
 Since: 2.4
@@ -1197,7 +1211,7 @@ sub gtk_text_view_set_accepts_tab ( N-GObject $text_view, int32 $accepts_tab )
 Returns whether pressing the Tab key inserts a tab characters.
 C<gtk_text_view_set_accepts_tab()>.
 
-Returns: C<1> if pressing the Tab key inserts a tab character,
+Returns: C<1> if pressing the Tab key inserts a tab character, 
 C<0> if pressing the Tab key moves the keyboard focus.
 
 Since: 2.4
@@ -1255,11 +1269,11 @@ sub gtk_text_view_get_pixels_above_lines ( N-GObject $text_view )
 
 Sets the default number of pixels of blank space
 to put below paragraphs in I<text_view>. May be overridden
-by tags applied to I<text_view>’s buffer.
+by tags applied to I<text_view>’s buffer. 
 
   method gtk_text_view_set_pixels_below_lines ( Int $pixels_below_lines )
 
-=item Int $pixels_below_lines; pixels below paragraphs
+=item Int $pixels_below_lines; pixels below paragraphs 
 
 =end pod
 
@@ -1558,7 +1572,6 @@ sub gtk_text_view_get_indent ( N-GObject $text_view )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_text_view_] set_tabs
@@ -1575,9 +1588,7 @@ Tags in the buffer may override the default.
 sub gtk_text_view_set_tabs ( N-GObject $text_view, PangoTabArray $tabs )
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_text_view_] get_tabs
@@ -1599,7 +1610,6 @@ sub gtk_text_view_get_tabs ( N-GObject $text_view )
   returns PangoTabArray
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -1740,18 +1750,11 @@ sub gtk_text_view_get_monospace ( N-GObject $text_view )
   returns int32
   is native(&gtk-lib)
   { * }
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Not yet implemented methods
 
-=head3 method gtk_text_view_set_tabs ( ... )
-=head3 method gtk_text_view_get_tabs ( ... )
-=head3 method gtk_text_view_add_child_at_anchor ( ... )
-
-
 =end pod
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 List of deprecated (not implemented!) methods
@@ -1772,134 +1775,17 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
     :$user-option1, ..., :$user-optionN
   )
 
-=head2 Supported signals
-
-=head3 set-anchor
-
-The sig I<set-anchor> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user initiates setting the "anchor"
-mark. The "anchor" mark gets placed at the same position as the
-"insert" mark.
-
-This signal has no default bindings.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-
-=head3 backspace
-
-The sig I<backspace> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user asks for it.
-
-The default bindings for this signal are
-Backspace and Shift-Backspace.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-=head3 cut-clipboard
-
-The sig I<cut-clipboard> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted to cut the selection to the clipboard.
-
-The default bindings for this signal are
-Ctrl-x and Shift-Delete.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-=head3 copy-clipboard
-
-The sig I<copy-clipboard> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted to copy the selection to the clipboard.
-
-The default bindings for this signal are
-Ctrl-c and Ctrl-Insert.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-=head3 paste-clipboard
-
-The sig I<paste-clipboard> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted to paste the contents of the clipboard
-into the text view.
-
-The default bindings for this signal are
-Ctrl-v and Shift-Insert.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-
-=head3 toggle-overwrite
-
-The sig I<toggle-overwrite> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted to toggle the overwrite mode of the text view.
-
-The default bindings for this signal is Insert.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-
-=head3 toggle-cursor-visible
-
-The sig I<toggle-cursor-visible> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted to toggle the prop C<cursor-visible>
-property.
-
-The default binding for this signal is F7.
-
-  method handler (
-    Gnome::GObject::Object :widget($text_view),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $text_view; the object which received the signal
-
-
 =begin comment
+=head2 Supported signals
 =head2 Unsupported signals
 =end comment
 
 =head2 Not yet supported signals
 
+
 =head3 move-cursor
 
-Applications should not connect to it, but may emit it with
+Applications should not connect to it, but may emit it with 
 C<g_signal_emit_by_name()> if they need to control the cursor
 programmatically.
 
@@ -1922,8 +1808,11 @@ There are too many key combinations to list them all here.
   );
 
 =item $text_view; the object which received the signal
+
 =item $step; the granularity of the move, as a C<Gnome::Gtk3::MovementStep>
+
 =item $count; the number of I<step> units to move
+
 =item $extend_selection; C<1> if the move should extend the selection
 
 
@@ -1946,15 +1835,35 @@ There are no default bindings for this signal.
   );
 
 =item $text_view; the object which received the signal
+
 =item $step; the granularity of the movement, as a C<Gnome::Gtk3::ScrollStep>
+
 =item $count; the number of I<step> units to move
+
+
+=head3 set-anchor
+
+The sig I<set-anchor> signal is a
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
+which gets emitted when the user initiates setting the "anchor" 
+mark. The "anchor" mark gets placed at the same position as the
+"insert" mark.
+
+This signal has no default bindings.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
 
 
 =head3 insert-at-cursor
 
 The sig I<insert-at-cursor> signal is a
 [keybinding signal][C<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user initiates the insertion of a
+which gets emitted when the user initiates the insertion of a 
 fixed string at the cursor.
 
 This signal has no default bindings.
@@ -1966,13 +1875,14 @@ This signal has no default bindings.
   );
 
 =item $text_view; the object which received the signal
+
 =item $string; the string to insert
 
 
 =head3 delete-from-cursor
 
-The sig I<delete-from-cursor> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
+The sig I<delete-from-cursor> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
 which gets emitted when the user initiates a text deletion.
 
 If the I<type> is C<GTK_DELETE_CHARS>, GTK+ deletes the selection
@@ -1980,8 +1890,8 @@ if there is one, otherwise it deletes the requested number
 of characters.
 
 The default bindings for this signal are
-Delete for deleting a character, Ctrl-Delete for
-deleting a word and Ctrl-Backspace for deleting a word
+Delete for deleting a character, Ctrl-Delete for 
+deleting a word and Ctrl-Backspace for deleting a word 
 backwords.
 
   method handler (
@@ -1992,8 +1902,96 @@ backwords.
   );
 
 =item $text_view; the object which received the signal
+
 =item $type; the granularity of the deletion, as a C<Gnome::Gtk3::DeleteType>
+
 =item $count; the number of I<type> units to delete
+
+
+=head3 backspace
+
+The sig I<backspace> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
+which gets emitted when the user asks for it.
+
+The default bindings for this signal are
+Backspace and Shift-Backspace.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
+
+
+=head3 cut-clipboard
+
+The sig I<cut-clipboard> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
+which gets emitted to cut the selection to the clipboard.
+
+The default bindings for this signal are
+Ctrl-x and Shift-Delete.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
+
+
+=head3 copy-clipboard
+
+The sig I<copy-clipboard> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
+which gets emitted to copy the selection to the clipboard.
+
+The default bindings for this signal are
+Ctrl-c and Ctrl-Insert.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
+
+
+=head3 paste-clipboard
+
+The sig I<paste-clipboard> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
+which gets emitted to paste the contents of the clipboard 
+into the text view.
+
+The default bindings for this signal are
+Ctrl-v and Shift-Insert.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
+
+
+=head3 toggle-overwrite
+
+The sig I<toggle-overwrite> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
+which gets emitted to toggle the overwrite mode of the text view.
+
+The default bindings for this signal is Insert.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
+
 
 =head3 populate-popup
 
@@ -2019,17 +2017,18 @@ or C<Gnome::Gtk3::Toolbar> or another kind of container.
   );
 
 =item $text_view; The text view on which the signal is emitted
+
 =item $popup; the container that is being populated
 
 
 =head3 select-all
 
-The sig I<select-all> signal is a
-[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
+The sig I<select-all> signal is a 
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>] 
 which gets emitted to select or unselect the complete
 contents of the text view.
 
-The default bindings for this signal are Ctrl-a and Ctrl-/
+The default bindings for this signal are Ctrl-a and Ctrl-/ 
 for selecting and Shift-Ctrl-a and Ctrl-\ for unselecting.
 
   method handler (
@@ -2039,8 +2038,25 @@ for selecting and Shift-Ctrl-a and Ctrl-\ for unselecting.
   );
 
 =item $text_view; the object which received the signal
+
 =item $select; C<1> to select, C<0> to unselect
 
+
+=head3 toggle-cursor-visible
+
+The sig I<toggle-cursor-visible> signal is a
+[keybinding signal][C<Gnome::Gtk3::BindingSignal>]
+which gets emitted to toggle the prop C<cursor-visible>
+property.
+
+The default binding for this signal is F7.
+
+  method handler (
+    Gnome::GObject::Object :widget($text_view),
+    :$user-option1, ..., :$user-optionN
+  );
+
+=item $text_view; the object which received the signal
 
 
 =head3 preedit-changed
@@ -2061,6 +2077,7 @@ Since: 2.20
   );
 
 =item $text_view; the object which received the signal
+
 =item $preedit; the current preedit string
 
 
@@ -2083,10 +2100,15 @@ Since: 3.16
   );
 
 =item $text_view; the object which received the signal
+
 =item $granularity; the granularity type
+
 =item $location; the location where to extend the selection
+
 =item $start; where the selection should start
+
 =item $end; where the selection should end
+
 
 =end pod
 
@@ -2101,7 +2123,16 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
+=begin comment
+
 =head2 Supported properties
+
+=head2 Unsupported properties
+
+=end comment
+
+=head2 Not yet supported properties
+
 
 =head3 left-margin
 
@@ -2169,11 +2200,11 @@ Since: 3.18
 
 The C<Gnome::GObject::Value> type of property I<im-module> is C<G_TYPE_STRING>.
 
-Which IM (input method) module should be used for this text_view.
+Which IM (input method) module should be used for this text_view. 
 See C<Gnome::Gtk3::IMContext>.
 
 Setting this to a non-C<Any> value overrides the
-system-wide IM module setting. See the C<Gnome::Gtk3::Settings>
+system-wide IM module setting. See the C<Gnome::Gtk3::Settings> 
 prop C<gtk-im-module> property.
 
 Since: 2.16
@@ -2192,23 +2223,6 @@ methods to adjust their behaviour.
 Since: 3.6
 
 
-=head3 populate-all
-
-The C<Gnome::GObject::Value> type of property I<populate-all> is C<G_TYPE_BOOLEAN>.
-
-If prop C<populate-all> is C<1>, the sig C<populate-popup>
-signal is also emitted for touch popups.
-
-Since: 3.8
-
-
-
-=begin comment
-=head2 Unsupported properties
-
-=end comment
-
-=head2 Not yet supported properties
 
 =head3 input-hints
 
@@ -2221,56 +2235,14 @@ Since: 3.6
 
 
 
+=head3 populate-all
+
+The C<Gnome::GObject::Value> type of property I<populate-all> is C<G_TYPE_BOOLEAN>.
+
+If prop C<populate-all> is C<1>, the sig C<populate-popup>
+signal is also emitted for touch popups.
+
+Since: 3.8
+
 
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-sub gtk_text_view_new ( )
-  returns N-GObject # buffer
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_get_buffer ( N-GObject $view )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_set_editable ( N-GObject $widget, int32 $setting )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_get_editable ( N-GObject $widget )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_set_cursor_visible ( N-GObject $widget, int32 $setting )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_get_cursor_visible ( N-GObject $widget )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_get_monospace ( N-GObject $widget )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_view_set_monospace ( N-GObject $widget, int32 $setting )
-  is native(&gtk-lib)
-  { * }

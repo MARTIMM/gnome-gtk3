@@ -1,5 +1,8 @@
 GtkLicense
 GtkResponseType
+GtkTextWindowType
+GtkTextViewLayer
+GtkTextExtendSelection
 GtkWindowType
 GtkWindowPosition
 GtkWindowPosition
@@ -63,6 +66,8 @@ GtkOrientation
 GtkPositionType
 GtkTextDirection
 GtkSensitivityType
+GtkTextBufferTargetInfo
+GtkBuilderError
 GtkArrowPlacement
 GtkFileChooserAction
 GtkFileChooserConfirmation

@@ -2,24 +2,26 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::ComboBox;
+use Gnome::Gtk3::TextTag;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-
-my Gnome::Gtk3::ComboBox $cb .= new(:empty);
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::TextTag $tt;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  isa-ok $cb, Gnome::Gtk3::ComboBox;
+   $tt .= new(:empty);
+  isa-ok $tt, Gnome::Gtk3::TextTag;
+
+  $tt .= new(:tag-name<my-very-own-tag-name>);
+  isa-ok $tt, Gnome::Gtk3::TextTag;
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Manips', {
-  is $cb.get-active, -1, 'Nothing selected';
-  is $cb.get-has-entry, 0, 'No entries';
-
-}
+#subtest 'Manipulations', {
+#  is 1, 1, 'ok';
+#}
 
 #-------------------------------------------------------------------------------
 done-testing;

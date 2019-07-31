@@ -6,7 +6,7 @@ use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Widget;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 subtest 'Widget ISA test', {

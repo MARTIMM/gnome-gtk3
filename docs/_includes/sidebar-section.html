@@ -1,26 +1,34 @@
-<strong>{{ site.data[page.sidebar_menu].bar_title }}</strong>
 
-<hr>
+{% for sb_menu in site.data[page.sidebar_menu] %}
+  <div class="sidebar">
+    <strong>{{ sb_menu.bar_title }}</strong>
+    <hr />
+    <ul>
 
-<ul>
-  {% for item in site.data[page.sidebar_menu].bar_menu %}
+    {% for item in sb_menu.bar_menu %}
+      {% if item.title == '-' %}
+        <hr class="small" />
+      {% else %}
 
-    {% assign url = site.baseurl | append: item.url %}
+        {% assign url = site.baseurl | append: item.url %}
 
-    {% assign classstr = "" %}
-    {% if item.url == page.url %}
-      {% assign classstr = "active" %}
-    {% else %}
-      {% assign classstr = "inactive" %}
-    {% endif %}
+        {% assign classstr = "" %}
+        {% if item.url == page.url %}
+          {% assign classstr = "active" %}
+        {% else %}
+          {% assign classstr = "inactive" %}
+        {% endif %}
 
-    <li class="{{ classstr }}">
-    {% if item.url != page.url %}
-      <a href="{{ url }}"> {{ item.title }} </a>
-    {% else %}
-      <a>{{ item.title }}</a>
-    {% endif %}
-    </li>
-  {% endfor %}
+        <li class="{{ classstr }}">
+        {% if item.url != page.url %}
+          <a href="{{ url }}"> {{ item.title }} </a>
+        {% else %}
+          <a>{{ item.title }}</a>
+        {% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
 
-</ul>
+    </ul>
+  </div>
+{% endfor %}

@@ -2,16 +2,16 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::AboutDialog;
-
+use Gnome::Gtk3::TextBuffer;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-subtest 'ISA tests', {
-  my Gnome::Gtk3::AboutDialog $a .= new(:empty);
-  isa-ok $a, Gnome::Gtk3::AboutDialog;
+my Gnome::Gtk3::TextBuffer $tb .= new(:empty);
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  isa-ok $tb, Gnome::Gtk3::TextBuffer;
 }
 
 #-------------------------------------------------------------------------------

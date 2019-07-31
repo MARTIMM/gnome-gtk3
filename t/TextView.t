@@ -2,24 +2,23 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::ComboBox;
+use Gnome::Gtk3::TextView;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-
-my Gnome::Gtk3::ComboBox $cb .= new(:empty);
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::TextView $tv .= new(:empty);
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  isa-ok $cb, Gnome::Gtk3::ComboBox;
+  isa-ok $tv, Gnome::Gtk3::TextView;
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Manips', {
-  is $cb.get-active, -1, 'Nothing selected';
-  is $cb.get-has-entry, 0, 'No entries';
-
+subtest 'Manipulations', {
+  is 1, 1, 'ok';
 }
 
 #-------------------------------------------------------------------------------
 done-testing;
+

@@ -8,7 +8,7 @@ use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 
 #use Gnome::N::X;
-#X::Gnome.debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {

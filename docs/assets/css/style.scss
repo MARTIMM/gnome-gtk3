@@ -129,18 +129,33 @@ div.release-notes {
   height: 300px;
 }
 
-#ref-container {
+#reference-container {
   width: 100%;
   margin: auto;
 }
 
-#sidebar {
+#reference-content {
+  width: 74%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0 0 20px;
+  height: auto;
+}
+
+#sidebar-container {
+  padding: 0;
+  width: 23%;
+  height: 100%;
+}
+
+.sidebar {
   float: left;
   border: 1px solid #aaa;
-  width: 22%;
-  height: 100%;
+  width: 100%;
+//  height: 100%;
   border-radius: 5px;
   padding-top: 5px;
+  margin-bottom: 5px;
 
   strong {
     padding-left: 7px;
@@ -152,6 +167,15 @@ div.release-notes {
     border: 2px solid $menu-bgcolor;
     border-radius: 5px;
     width: 90%;
+    margin: auto;
+    margin-bottom: 4px;
+  }
+
+  hr.small {
+    padding: 0;
+    border: 0px solid $menu-bgcolor;
+    border-radius: 0px;
+    width: 100%;
     margin: auto;
     margin-bottom: 4px;
   }
@@ -182,11 +206,6 @@ div.release-notes {
   }
 }
 
-#reference-content {
-  float: right;
-  width: 74%
-}
-
 code {
   margin: 0;
 }
@@ -212,12 +231,15 @@ p {
 
 #content {
   margin: 1em 0 0.5em 0;
-  height: 300px;
+  height: 500px;
   overflow-y: scroll;
 
   border: 1px solid #aaa;
   border-radius: 5px;
   padding: 1.5em;
+
+  //position: fixed;
+  //bottom: 5px;
 }
 
 // so that the line numbers are not selectable
