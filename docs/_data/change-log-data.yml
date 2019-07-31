@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2019-07-29 0.17.10:
+    - Extended, tested and documented Container.
+
   - 2019-07-29 0.17.9:
     - Extended, tested and documented TextTagTable.
     - Added class TextTag.
