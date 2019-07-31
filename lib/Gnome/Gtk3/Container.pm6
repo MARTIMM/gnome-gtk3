@@ -154,6 +154,7 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 #use Gnome::GObject::Object;
 use Gnome::Glib::List;
+use Gnome::GObject::Type;
 use Gnome::Gtk3::Widget;
 
 #-------------------------------------------------------------------------------
@@ -388,7 +389,7 @@ Returns: (element-type C<Gnome::Gtk3::Widget>) (transfer container): a newly-all
 =end pod
 
 sub gtk_container_get_children ( N-GObject $container )
-  returns N-GObject
+  returns N-GList
   is native(&gtk-lib)
   { * }
 
@@ -547,8 +548,7 @@ sub gtk_container_set_focus_hadjustment ( N-GObject $container, N-GObject $adjus
 Retrieves the horizontal focus adjustment for the container. See
 C<gtk_container_set_focus_hadjustment()>.
 
-Returns: (nullable) (transfer none): the horizontal focus adjustment, or C<Any> if
-none has been set.
+Returns: (nullable) (transfer none): the horizontal focus adjustment, or C<Any> if none has been set.
 
   method gtk_container_get_focus_hadjustment ( --> N-GObject  )
 
@@ -572,13 +572,13 @@ children.
 
 Returns: a C<GType>.
 
-  method gtk_container_child_type ( --> N-GObject  )
+  method gtk_container_child_type ( --> Int )
 
 
 =end pod
 
 sub gtk_container_child_type ( N-GObject $container )
-  returns N-GObject
+  returns int32
   is native(&gtk-lib)
   { * }
 
