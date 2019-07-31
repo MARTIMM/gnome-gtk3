@@ -3,6 +3,8 @@
   bar_menu:
   - title: "Window"
     url: '/content-docs/reference/Gtk3/Window.html'
+    doc-ok: 1
+    doc-sign: '⏺🗸✅'
 
   - title: '-'
 
@@ -92,6 +94,8 @@
     url: "/content-docs/reference/Gtk3/Builder.html"
   - title: "Enums"
     url: "/content-docs/reference/Gtk3/Enums.html"
+  - title: "Container"
+    url: "/content-docs/reference/Gtk3/Container.html"
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
   - title: "ListBoxRow"
