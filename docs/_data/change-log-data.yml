@@ -1,9 +1,22 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-08-04 0.17.12:
+    - Builder pod doc
+    - Builder tests using Gnome::Glib::Error
+
+  - 2019-08-04 0.17.11:
+    - Modified Builder in Gnome::Gtk3 to handle returned errors properly.
+
+  - 2019-07-29 0.17.10:
+    - Extended, tested and documented Container in Gnome::Gtk3.
+    - Extended Error in Gnome::Glib
+    - Added Quark in Gnome::Glib
+
   - 2019-07-29 0.17.9:
-    - Extended, tested and documented TextTagTable.
-    - Added class TextTag.
+    - Extended, tested and documented TextTagTable in Gnome::Gtk3.
+    - Added class TextTag to Gnome::Gtk3.
 
   - 2019-07-28 0.17.8:
     - Meta file bugfix
@@ -14,7 +27,7 @@ notes:
     - Added ListBoxRow.
 
   - 2019-07-25 0.17.6:
-    - Extended, tested and documented TextBuffer, TextIter.
+    - Extended, tested and documented TextBuffer, TextIter in Gnome::Gtk3.
 
   - 2019-07-24 0.17.5:
     - Declaration of event signal sub moved from Gnome::GObject::Signal to Gnome::Gtk3::Widget to remove dependency of Gnome::GObject on Gnome::Gdk3.
@@ -24,7 +37,7 @@ notes:
 
   - 2019-07-20 0.17.3:
     - Documented Gnome::Gtk3::CheckButton and add test.
-    - Extended, tested and documented Button, ColorButton, ColorChooser, ColorChooserDialog.
+    - Extended, tested and documented Button, ColorButton, ColorChooser, ColorChooserDialog in Gnome::Gtk3.
 
   - 2019-07-20 0.17.2:
     - Extended Gnome::Gtk3::Builder.
@@ -35,7 +48,7 @@ notes:
     - Added pod doc and tests.
 
   - 2019-07-04 0.17.0:
-    - Add MenuButton, Menu, MenuShell, MenuBar in Gnome::Gtk3.
+    - Add MenuButton, Menu, MenuShell, MenuBar to Gnome::Gtk3.
     - Regenerated and adapted Gnome::Gdk3::Window.
 
   - 2019-06-09 0.16.1:

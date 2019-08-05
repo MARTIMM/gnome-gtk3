@@ -1,9 +1,17 @@
 # https://jekyllrb.com/tutorials/navigation/
 - bar_title: "Glib"
   bar_menu:
+  - title: "Error"
+    url: '/content-docs/reference/Glib/Error.html'
+    doc: 3
+    test: 2
 #  - title: "List"
 #    url: '/content-docs/nyi-reference.html'
 #  - title: "Main"
 #    url: '/content-docs/nyi-reference.html'
+  - title: "Quark"
+    url: '/content-docs/reference/Glib/Quark.html'
+    doc: 3
+    test: 2
 #  - title: "SList"
 #    url: '/content-docs/nyi-reference.html'

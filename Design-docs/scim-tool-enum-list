@@ -3,6 +3,7 @@ GtkResponseType
 GtkTextWindowType
 GtkTextViewLayer
 GtkTextExtendSelection
+GtkResizeMode
 GtkWindowType
 GtkWindowPosition
 GtkWindowPosition
@@ -69,6 +70,7 @@ GtkSensitivityType
 GtkTextBufferTargetInfo
 GtkBuilderError
 GtkArrowPlacement
+GtkCssProviderError
 GtkFileChooserAction
 GtkFileChooserConfirmation
 GtkFileFilterFlags

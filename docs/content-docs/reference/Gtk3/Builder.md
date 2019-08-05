@@ -91,6 +91,12 @@ Declaration
 Example
 -------
 
+    my Gnome::Gtk3::Builder $builder .= new(:empty);
+    my Gnome::Glib::Error $e = $builder.add-from-file($ui-file);
+    die $e.message if $e.error-is-valid;
+
+    my Gnome::Gtk3::Button .= new(:build-id<my-glade-button-id>);
+
 Types
 =====
 
@@ -148,7 +154,18 @@ Create an empty builder.
 [gtk_builder_] error_quark
 --------------------------
 
-    method gtk_builder_error_quark ( --> N-GObject  )
+Return the domain code of the builder error domain.
+
+    method gtk_builder_error_quark ( --> Int )
+
+The following example shows the fields of a returned error when a faulty string is provided in the call.
+
+    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Error $e = $builder.add-from-string($text);
+    is $e.domain, $builder.gtk_builder_error_quark(),
+       "domain code: $e.domain()";
+    is $quark.to-string($e.domain), 'gtk-builder-error-quark',
+       "error domain: $quark.to-string($e.domain())";
 
 gtk_builder_new
 ---------------
@@ -168,57 +185,37 @@ Since: 2.12
 [gtk_builder_] add_from_file
 ----------------------------
 
-Parses a file containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
+Parses a file containing a [`Gnome::Gtk3::Builder` UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of *builder*.
 
 Most users will probably want to use `gtk_builder_new_from_file()`.
 
-If an error occurs, 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR` domain.
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`.
 
-It’s not really reasonable to attempt to handle failures of this call. You should not use this function with untrusted files (ie: files that are not part of your application). Broken `Gnome::Gtk3::Builder` files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to call `g_error()`.
+You should not use this function with untrusted files (ie: files that are not part of your application). Broken `Gnome::Gtk3::Builder` files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: A positive value on success, 0 if an error occurred
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 2.12
 
-    method gtk_builder_add_from_file ( Str $filename, N-GObject $error --> UInt  )
+    method gtk_builder_add_from_file (
+      Str $filename, N-GObject $error
+      --> Gnome::Glib::Error
+    )
 
   * Str $filename; the name of the file to parse
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
-
-[gtk_builder_] add_from_resource
---------------------------------
-
-Parses a resource file containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
-
-Most users will probably want to use `gtk_builder_new_from_resource()`.
-
-If an error occurs, 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_RESOURCE_ERROR` domain.
-
-It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call `g_error()`.
-
-Returns: A positive value on success, 0 if an error occurred
-
-Since: 3.4
-
-    method gtk_builder_add_from_resource ( Str $resource_path, N-GObject $error --> UInt  )
-
-  * Str $resource_path; the path of the resource file to parse
 
   * N-GObject $error; (allow-none): return location for an error, or `Any`
 
 [gtk_builder_] add_from_string
 ------------------------------
 
-Parses a string containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
+Parses a string containing a [`Gnome::Gtk3::Builder` UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of *builder*.
 
 Most users will probably want to use `gtk_builder_new_from_string()`.
 
-Upon errors 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_VARIANT_PARSE_ERROR` domain.
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call `g_error()`.
-
-Returns: A positive value on success, 0 if an error occurred
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 2.12
 
@@ -226,72 +223,7 @@ Since: 2.12
 
   * Str $buffer; the string to parse
 
-  * UInt $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
-
-[gtk_builder_] add_objects_from_file
-------------------------------------
-
-Parses a file containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of *builder*.
-
-Upon errors 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR` domain.
-
-If you are adding an object that depends on an object that is not its child (for instance a `Gnome::Gtk3::TreeView` that depends on its `Gnome::Gtk3::TreeModel`), you have to explicitly list all of them in *object_ids*.
-
-Returns: A positive value on success, 0 if an error occurred
-
-Since: 2.14
-
-    method gtk_builder_add_objects_from_file ( Str $filename, CArray[Str] $object_ids, N-GObject $error --> UInt  )
-
-  * Str $filename; the name of the file to parse
-
-  * CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
-
-[gtk_builder_] add_objects_from_resource
-----------------------------------------
-
-Parses a resource file containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of *builder*.
-
-Upon errors 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_RESOURCE_ERROR` domain.
-
-If you are adding an object that depends on an object that is not its child (for instance a `Gnome::Gtk3::TreeView` that depends on its `Gnome::Gtk3::TreeModel`), you have to explicitly list all of them in *object_ids*.
-
-Returns: A positive value on success, 0 if an error occurred
-
-Since: 3.4
-
-    method gtk_builder_add_objects_from_resource ( Str $resource_path, CArray[Str] $object_ids, N-GObject $error --> UInt  )
-
-  * Str $resource_path; the path of the resource file to parse
-
-  * CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
-
-[gtk_builder_] add_objects_from_string
---------------------------------------
-
-Parses a string containing a [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of *builder*.
-
-Upon errors 0 will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR` or `G_MARKUP_ERROR` domain.
-
-If you are adding an object that depends on an object that is not its child (for instance a `Gnome::Gtk3::TreeView` that depends on its `Gnome::Gtk3::TreeModel`), you have to explicitly list all of them in *object_ids*.
-
-Returns: A positive value on success, 0 if an error occurred
-
-Since: 2.14
-
-    method gtk_builder_add_objects_from_string ( Str $buffer, UInt $length, CArray[Str] $object_ids, N-GObject $error --> UInt  )
-
-  * Str $buffer; the string to parse
-
-  * UInt $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
-
-  * CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
+  * Int $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
 
   * N-GObject $error; (allow-none): return location for an error, or `Any`
 
@@ -308,69 +240,6 @@ Since: 2.12
 
   * Str $name; name of object to get
 
-[gtk_builder_] get_objects
---------------------------
-
-Gets all objects that have been constructed by *builder*. Note that this function does not increment the reference counts of the returned objects.
-
-Returns: (element-type GObject) (transfer container): a newly-allocated `GSList` containing all the objects constructed by the `Gnome::Gtk3::Builder` instance. It should be freed by `g_slist_free()`
-
-Since: 2.12
-
-    method gtk_builder_get_objects ( --> N-GObject  )
-
-[gtk_builder_] expose_object
-----------------------------
-
-Add *object* to the *builder* object pool so it can be referenced just like any other object built by builder.
-
-Since: 3.8
-
-    method gtk_builder_expose_object ( Str $name, N-GObject $object )
-
-  * Str $name; the name of the object exposed to the builder
-
-  * N-GObject $object; the object to expose
-
-[gtk_builder_] connect_signals
-------------------------------
-
-This method is a simpler variation of `gtk_builder_connect_signals_full()`. It uses symbols explicitly added to *builder* with prior calls to `gtk_builder_add_callback_symbol()`. In the case that symbols are not explicitly added; it uses `GModule`’s introspective features (by opening the module `Any`) to look at the application’s symbol table. From here it tries to match the signal handler names given in the interface description with symbols in the application and connects the signals. Note that this function can only be called once, subsequent calls will do nothing.
-
-Note that unless `gtk_builder_add_callback_symbol()` is called for all signal callbacks which are referenced by the loaded XML, this function will require that `GModule` be supported on the platform.
-
-If you rely on `GModule` support to lookup callbacks in the symbol table, the following details should be noted:
-
-When compiling applications for Windows, you must declare signal callbacks with `G_MODULE_EXPORT`, or they will not be put in the symbol table. On Linux and Unices, this is not necessary; applications should instead be compiled with the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
-
-Since: 2.12
-
-    method gtk_builder_connect_signals ( Pointer $user_data )
-
-  * Pointer $user_data; user data to pass back with all signals
-
-[gtk_builder_] set_translation_domain
--------------------------------------
-
-Sets the translation domain of *builder*. See prop `translation-domain`.
-
-Since: 2.12
-
-    method gtk_builder_set_translation_domain ( Str $domain )
-
-  * Str $domain; (allow-none): the translation domain or `Any`
-
-[gtk_builder_] get_translation_domain
--------------------------------------
-
-Gets the translation domain of *builder*.
-
-Returns: the translation domain. This string is owned by the builder object and must not be modified or freed.
-
-Since: 2.12
-
-    method gtk_builder_get_translation_domain ( --> Str  )
-
 [gtk_builder_] get_type_from_name
 ---------------------------------
 
@@ -380,35 +249,14 @@ Returns: the `GType` found for *type_name* or `G_TYPE_INVALID` if no type was fo
 
 Since: 2.12
 
-    method gtk_builder_get_type_from_name ( Str $type_name --> N-GObject  )
+    method gtk_builder_get_type_from_name ( Str $type_name --> int32  )
 
   * Str $type_name; type name to lookup
-
-[gtk_builder_] value_from_string_type
--------------------------------------
-
-Like `gtk_builder_value_from_string()`, this function demarshals a value from a string, but takes a `GType` instead of `GParamSpec`. This function calls `g_value_init()` on the *value* argument, so it need not be initialised beforehand.
-
-Upon errors `0` will be returned and *error* will be assigned a `GError` from the `GTK_BUILDER_ERROR` domain.
-
-Returns: `1` on success
-
-Since: 2.12
-
-    method gtk_builder_value_from_string_type ( N-GObject $type, Str $string, N-GObject $value, N-GObject $error --> Int  )
-
-  * N-GObject $type; the `GType` of the value
-
-  * Str $string; the string representation of the value
-
-  * N-GObject $value; (out): the `GValue` to store the result in
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
 
 [gtk_builder_] new_from_file
 ----------------------------
 
-Builds the [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] in the file *filename*.
+Builds the [`Gnome::Gtk3::Builder` UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) in the file *filename*.
 
 If there is an error opening the file or parsing the description then the program will be aborted. You should only ever attempt to parse user interface descriptions that are shipped as part of your program.
 
@@ -420,25 +268,10 @@ Since: 3.10
 
   * Str $filename; filename of user interface description file
 
-[gtk_builder_] new_from_resource
---------------------------------
-
-Builds the [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] at *resource_path*.
-
-If there is an error locating the resource or parsing the description, then the program will be aborted.
-
-Returns: a `Gnome::Gtk3::Builder` containing the described interface
-
-Since: 3.10
-
-    method gtk_builder_new_from_resource ( Str $resource_path --> N-GObject  )
-
-  * Str $resource_path; a `GResource` resource path
-
 [gtk_builder_] new_from_string
 ------------------------------
 
-Builds the user interface described by *string* (in the [`Gnome::Gtk3::Builder` UI definition][BUILDER-UI] format).
+Builds the user interface described by *string* (in the [`Gnome::Gtk3::Builder` UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) format).
 
 If *string* is `Any`-terminated, then *length* should be -1. If *length* is not -1, then it is the length of *string*.
 
@@ -481,42 +314,6 @@ Returns: (nullable) (transfer none): the application being used by the builder, 
 Since: 3.10
 
     method gtk_builder_get_application ( --> N-GObject  )
-
-[gtk_builder_] extend_with_template
------------------------------------
-
-Main private entry point for building composite container components from template XML.
-
-This is exported purely to let gtk-builder-tool validate templates, applications have no need to call this function.
-
-Returns: A positive value on success, 0 if an error occurred
-
-    method gtk_builder_extend_with_template ( N-GObject $widget, N-GObject $template_type, Str $buffer, UInt $length, N-GObject $error --> UInt  )
-
-  * N-GObject $widget; the widget that is being extended
-
-  * N-GObject $template_type; the type that the template is for
-
-  * Str $buffer; the string to parse
-
-  * UInt $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
-
-Not yet supported methods
-=========================
-
-method connect_signals_full (...)
----------------------------------
-
-method gtk_builder_value_from_string (...)
-------------------------------------------
-
-method gtk_builder_add_callback_symbols (...)
----------------------------------------------
-
-method gtk_builder_lookup_callback_symbol (...)
------------------------------------------------
 
 Properties
 ==========
