@@ -240,7 +240,7 @@ Note that this may return `G_TYPE_NONE` to indicate that no more children can be
 
 Returns: a `GType`.
 
-    method gtk_container_child_type ( --> N-GObject  )
+    method gtk_container_child_type ( --> Int )
 
 [gtk_container_] child_set_property
 -----------------------------------
@@ -295,6 +295,35 @@ Returns: A newly created `Gnome::Gtk3::WidgetPath`
     method gtk_container_get_path_for_child ( N-GObject $child --> N-GObject  )
 
   * N-GObject $child; a child of *container*
+
+Not yet implemented methods
+===========================
+
+### method gtk_container_foreach ( ... )
+
+### method gtk_container_propagate_draw ( ... )
+
+### method gtk_container_class_install_child_property ( ... )
+
+### method gtk_container_class_install_child_properties ( ... )
+
+### method gtk_container_class_find_child_property ( ... )
+
+### method gtk_container_class_list_child_properties ( ... )
+
+### method gtk_container_add_with_properties ( ... )
+
+### method gtk_container_child_set ( ... )
+
+### method gtk_container_child_notify_by_pspec ( ... )
+
+### method gtk_container_forall ( ... )
+
+### method gtk_container_class_handle_border_width ( ... )
+
+### method gtk_container_child_set_valist ( ... )
+
+### method gtk_container_child_get_valist ( ... )
 
 List of deprecated (not implemented!) methods
 =============================================
