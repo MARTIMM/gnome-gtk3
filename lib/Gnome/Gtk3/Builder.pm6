@@ -8,26 +8,17 @@ use v6;
 
 =head1 Description
 
+=comment add C<gtk_builder_new_from_resource()> when ready
 
-A C<Gnome::Gtk3::Builder> is an auxiliary object that reads textual descriptions
-of a user interface and instantiates the described objects. To create
-a C<Gnome::Gtk3::Builder> from a user interface description, call
-C<gtk_builder_new_from_file()>, C<gtk_builder_new_from_resource()> or
-C<gtk_builder_new_from_string()>.
+A C<Gnome::Gtk3::Builder> is an auxiliary object that reads textual descriptions of a user interface and instantiates the described objects. To create a C<Gnome::Gtk3::Builder> from a user interface description, call C<gtk_builder_new_from_file()> or C<gtk_builder_new_from_string()>.
 
-In the (unusual) case that you want to add user interface
-descriptions from multiple sources to the same C<Gnome::Gtk3::Builder> you can
-call C<gtk_builder_new()> to get an empty builder and populate it by
-(multiple) calls to C<gtk_builder_add_from_file()>,
-C<gtk_builder_add_from_resource()> or C<gtk_builder_add_from_string()>.
+=comment add C<gtk_builder_add_from_resource()> when ready
 
-A C<Gnome::Gtk3::Builder> holds a reference to all objects that it has constructed
-and drops these references when it is finalized. This finalization can
-cause the destruction of non-widget objects or widgets which are not
-contained in a toplevel window. For toplevel windows constructed by a
-builder, it is the responsibility of the user to call C<gtk_widget_destroy()>
-to get rid of them and all the widgets they contain.
+In the (unusual) case that you want to add user interface descriptions from multiple sources to the same C<Gnome::Gtk3::Builder> you can call C<gtk_builder_new()> to get an empty builder and populate it by (multiple) calls to C<gtk_builder_add_from_file()> or C<gtk_builder_add_from_string()>.
 
+A C<Gnome::Gtk3::Builder> holds a reference to all objects that it has constructed and drops these references when it is finalized. This finalization can cause the destruction of non-widget objects or widgets which are not contained in a toplevel window. For toplevel windows constructed by a builder, it is the responsibility of the user to call C<gtk_widget_destroy()> to get rid of them and all the widgets they contain.
+
+=begin comment
 The functions C<gtk_builder_get_object()> and C<gtk_builder_get_objects()>
 can be used to access the widgets in the interface by the names assigned
 to them inside the UI description. Toplevel windows returned by these
@@ -41,130 +32,60 @@ beyond the lifespan of the builder.
 
 The function C<gtk_builder_connect_signals()> and variants thereof can be
 used to connect handlers to the named signals in the description.
+=end comment
 
-# C<Gnome::Gtk3::Builder> UI Definitions # {C<BUILDER>-UI}
+=head2 Gnome::Gtk3::Builder UI Definitions
 
-C<Gnome::Gtk3::Builder> parses textual descriptions of user interfaces which are
-specified in an XML format which can be roughly described by the
-RELAX NG schema below. We refer to these descriptions as “C<Gnome::Gtk3::Builder>
-UI definitions” or just “UI definitions” if the context is clear.
-Do not confuse C<Gnome::Gtk3::Builder> UI Definitions with
-[C<Gnome::Gtk3::UIManager> UI Definitions][XML-UI], which are more limited in scope.
-It is common to use `.ui` as the filename extension for files containing
-C<Gnome::Gtk3::Builder> UI definitions.
+C<Gnome::Gtk3::Builder> parses textual descriptions of user interfaces which are specified in an XML format which can be roughly described by the RELAX NG schema below. We refer to these descriptions as “C<Gnome::Gtk3::Builder> UI definitions” or just “UI definitions” if the context is clear.
+
+It is common to use `.ui` as the filename extension for files containing C<Gnome::Gtk3::Builder> UI definitions.
 
 [RELAX NG Compact Syntax](https://git.gnome.org/browse/gtk+/tree/gtk/gtkbuilder.rnc)
 
-The toplevel element is <interface>. It optionally takes a “domain”
-attribute, which will make the builder look for translated strings
-using C<dgettext()> in the domain specified. This can also be done by
-calling C<gtk_builder_set_translation_domain()> on the builder.
-Objects are described by <object> elements, which can contain
-<property> elements to set properties, <signal> elements which
-connect signals to handlers, and <child> elements, which describe
-child objects (most often widgets inside a container, but also e.g.
-actions in an action group, or columns in a tree model). A <child>
-element contains an <object> element which describes the child object.
-The target toolkit version(s) are described by <requires> elements,
-the “lib” attribute specifies the widget library in question (currently
-the only supported value is “gtk+”) and the “version” attribute specifies
-the target version in the form “<major>.<minor>”. The builder will error
-out if the version requirements are not met.
+The toplevel element is <interface>. It optionally takes a “domain” attribute, which will make the builder look for translated strings using C<dgettext()> in the domain specified. This can also be done by calling C<gtk_builder_set_translation_domain()> on the builder. Objects are described by <object> elements, which can contain <property> elements to set properties, <signal> elements which connect signals to handlers, and <child> elements, which describe child objects (most often widgets inside a container, but also e.g. actions in an action group, or columns in a tree model). A <child> element contains an <object> element which describes the child object. The target toolkit version(s) are described by <requires> elements, the “lib” attribute specifies the widget library in question (currently the only supported value is “gtk+”) and the “version” attribute specifies the target version in the form “<major>.<minor>”. The builder will error out if the version requirements are not met.
 
-Typically, the specific kind of object represented by an <object>
-element is specified by the “class” attribute. If the type has not
-been loaded yet, GTK+ tries to find the C<get_type()> function from the
-class name by applying heuristics. This works in most cases, but if
-necessary, it is possible to specify the name of the C<get_type()> function
-explictly with the "type-func" attribute. As a special case, C<Gnome::Gtk3::Builder>
-allows to use an object that has been constructed by a C<Gnome::Gtk3::UIManager> in
-another part of the UI definition by specifying the id of the C<Gnome::Gtk3::UIManager>
-in the “constructor” attribute and the name of the object in the “id”
-attribute.
+Typically, the specific kind of object represented by an <object> element is specified by the “class” attribute. If the type has not been loaded yet, GTK+ tries to find the C<get_type()> function from the class name by applying heuristics. This works in most cases, but if necessary, it is possible to specify the name of the C<get_type()> function explictly with the "type-func" attribute. As a special case, C<Gnome::Gtk3::Builder> allows to use an object that has been constructed by a C<Gnome::Gtk3::UIManager> in another part of the UI definition by specifying the id of the C<Gnome::Gtk3::UIManager> in the “constructor” attribute and the name of the object in the “id” attribute.
 
-Objects may be given a name with the “id” attribute, which allows the
-application to retrieve them from the builder with C<gtk_builder_get_object()>.
-An id is also necessary to use the object as property value in other
-parts of the UI definition. GTK+ reserves ids starting and ending
-with ___ (3 underscores) for its own purposes.
+Objects may be given a name with the “id” attribute, which allows the application to retrieve them from the builder with C<gtk_builder_get_object()> which is also used indirectly when a widget is created usin `.new(:$build-id)`. An id is also necessary to use the object as property value in other parts of the UI definition. GTK+ reserves ids starting and ending with ___ (3 underscores) for its own purposes.
 
-Setting properties of objects is pretty straightforward with the
-<property> element: the “name” attribute specifies the name of the
-property, and the content of the element specifies the value.
-If the “translatable” attribute is set to a true value, GTK+ uses
-C<gettext()> (or C<dgettext()> if the builder has a translation domain set)
-to find a translation for the value. This happens before the value
-is parsed, so it can be used for properties of any type, but it is
-probably most useful for string properties. It is also possible to
-specify a context to disambiguate short strings, and comments which
-may help the translators.
+Setting properties of objects is pretty straightforward with the <property> element: the “name” attribute specifies the name of the property, and the content of the element specifies the value. If the “translatable” attribute is set to a true value, GTK+ uses C<gettext()> (or C<dgettext()> if the builder has a translation domain set) to find a translation for the value. This happens before the value is parsed, so it can be used for properties of any type, but it is probably most useful for string properties. It is also possible to specify a context to disambiguate short strings, and comments which may help the translators.
 
-C<Gnome::Gtk3::Builder> can parse textual representations for the most common
-property types: characters, strings, integers, floating-point numbers,
-booleans (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted
-as C<1>, strings like “FALSE”, “f”, “no”, “n”, “0” are interpreted
-as C<0>), enumerations (can be specified by their name, nick or
-integer value), flags (can be specified by their name, nick, integer
-value, optionally combined with “|”, e.g. “GTK_VISIBLE|GTK_REALIZED”)
-and colors (in a format understood by C<gdk_rgba_parse()>).
+C<Gnome::Gtk3::Builder> can parse textual representations for the most common property types: characters, strings, integers, floating-point numbers, booleans (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted as C<1>, strings like “FALSE”, “f”, “no”, “n”, “0” are interpreted as C<0>), enumerations (can be specified by their name, nick or integer value), flags (can be specified by their name, nick, integer value, optionally combined with “|”, e.g. “GTK_VISIBLE|GTK_REALIZED”) and colors (in a format understood by C<gdk_rgba_parse()>).
 
-GVariants can be specified in the format understood by C<g_variant_parse()>,
-and pixbufs can be specified as a filename of an image file to load.
+=begin comment
+GVariants can be specified in the format understood by C<g_variant_parse()>, and pixbufs can be specified as a filename of an image file to load.
+=end comment
 
-Objects can be referred to by their name and by default refer to
-objects declared in the local xml fragment and objects exposed via
-C<gtk_builder_expose_object()>. In general, C<Gnome::Gtk3::Builder> allows forward
-references to objects — declared in the local xml; an object doesn’t
-have to be constructed before it can be referred to. The exception
-to this rule is that an object has to be constructed before it can
-be used as the value of a construct-only property.
+Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via C<gtk_builder_expose_object()>. In general, C<Gnome::Gtk3::Builder> allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
 
-It is also possible to bind a property value to another object's
-property value using the attributes
-"bind-source" to specify the source object of the binding,
-"bind-property" to specify the source property and optionally
-"bind-flags" to specify the binding flags
-Internally builder implement this using GBinding objects.
-For more information see C<g_object_bind_property()>
+=begin comment
+It is also possible to bind a property value to another object's property value using the attributes "bind-source" to specify the source object of the binding, "bind-property" to specify the source property and optionally "bind-flags" to specify the binding flags Internally builder implement this using GBinding objects. For more information see C<g_object_bind_property()>
+=end comment
 
-Signal handlers are set up with the <signal> element. The “name”
-attribute specifies the name of the signal, and the “handler” attribute
-specifies the function to connect to the signal. By default, GTK+ tries
-to find the handler using C<g_module_symbol()>, but this can be changed by
-passing a custom C<Gnome::Gtk3::BuilderConnectFunc> to
-C<gtk_builder_connect_signals_full()>. The remaining attributes, “after”,
-“swapped” and “object”, have the same meaning as the corresponding
-parameters of the C<g_signal_connect_object()> or
-C<g_signal_connect_data()> functions. A “last_modification_time”
-attribute is also allowed, but it does not have a meaning to the
-builder.
+Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the perl6 modules. The "object" field has a meaning in C<Gnome::Gtk3::Glade>.
 
-Sometimes it is necessary to refer to widgets which have implicitly
-been constructed by GTK+ as part of a composite widget, to set
-properties on them or to add further children (e.g. the I<vbox> of
-a C<Gnome::Gtk3::Dialog>). This can be achieved by setting the “internal-child”
-propery of the <child> element to a true value. Note that C<Gnome::Gtk3::Builder>
-still requires an <object> element for the internal child, even if it
-has already been constructed.
+=begin comment
+By default, GTK+ tries to find the handler using C<g_module_symbol()>, but this can be changed by passing a custom C<builder-connect-func()> to C<gtk_builder_connect_signals_full()>. The remaining attributes, “after”, “swapped” and “object”, have the same meaning as the corresponding parameters of the C<g_signal_connect_object()> or C<g_signal_connect_data()> functions. A “last_modification_time” attribute is also allowed, but it does not have a meaning to the builder.
+=end comment
 
-A number of widgets have different places where a child can be added
-(e.g. tabs vs. page content in notebooks). This can be reflected in
-a UI definition by specifying the “type” attribute on a <child>
-The possible values for the “type” attribute are described in the
-sections describing the widget-specific portions of UI definitions.
+Sometimes it is necessary to refer to widgets which have implicitly been constructed by GTK+ as part of a composite widget, to set properties on them or to add further children (e.g. the I<vbox> of a C<Gnome::Gtk3::Dialog>). This can be achieved by setting the “internal-child” propery of the <child> element to a true value. Note that C<Gnome::Gtk3::Builder> still requires an <object> element for the internal child, even if it has already been constructed.
 
-# A C<Gnome::Gtk3::Builder> UI Definition
+A number of widgets have different places where a child can be added (e.g. tabs vs. page content in notebooks). This can be reflected in a UI definition by specifying the “type” attribute on a <child>. The possible values for the “type” attribute are described in the sections describing the widget-specific portions of UI definitions.
+
+=head2 A Gnome::Gtk3::Builder UI Definition
+
+Note the class names are e.g. GtkDialog, not Gnome::Gtk3::Dialog. This is because those are the c-source class names of the GTK+ objects.
 
   <interface>
-    <object class="C<Gnome::Gtk3::Dialog>" id="dialog1">
+    <object class="GtkDialog>" id="dialog1">
       <child internal-child="vbox">
-        <object class="C<Gnome::Gtk3::Box>" id="vbox1">
+        <object class="GtkBox>" id="vbox1">
           <property name="border-width">10</property>
           <child internal-child="action_area">
-            <object class="C<Gnome::Gtk3::ButtonBox>" id="hbuttonbox1">
+            <object class="GtkButtonBox>" id="hbuttonbox1">
               <property name="border-width">20</property>
               <child>
-                <object class="C<Gnome::Gtk3::Button>" id="ok_button">
+                <object class="GtkButton>" id="ok_button">
                   <property name="label">gtk-ok</property>
                   <property name="use-stock">TRUE</property>
                   <signal name="clicked" handler="ok_button_clicked"/>
@@ -177,18 +98,22 @@ sections describing the widget-specific portions of UI definitions.
     </object>
   </interface>
 
-Beyond this general structure, several object classes define their
-own XML DTD fragments for filling in the ANY placeholders in the DTD
-above. Note that a custom element in a <child> element gets parsed by
-the custom tag handler of the parent object, while a custom element in
-an <object> element gets parsed by the custom tag handler of the object.
+To load it and use it do the following (assume above text is in $gui).
 
-These XML fragments are explained in the documentation of the
-respective objects.
+  my Gnome::Gtk3::Builder $builder .= new(:string($gui));
+  my Gnome::Gtk3::Button $button .= new(:build-id<ok_button>));
 
-Additionally, since 3.10 a special <template> tag has been added
-to the format allowing one to define a widget class’s components.
-See the [C<Gnome::Gtk3::Widget> documentation][composite-templates] for details.
+
+
+=begin comment
+Beyond this general structure, several object classes define their own XML DTD fragments for filling in the ANY placeholders in the DTD above. Note that a custom element in a <child> element gets parsed by the custom tag handler of the parent object, while a custom element in an <object> element gets parsed by the custom tag handler of the object.
+
+These XML fragments are explained in the documentation of the respective objects.
+=end comment
+
+=begin comment
+Additionally, since 3.10 a special <template> tag has been added to the format allowing one to define a widget class’s components. See the [C<Gnome::Gtk3::Widget> documentation](https://developer.gnome.org/gtk3/3.24/GtkWidget.html#composite-templates) for details.
+=end comment
 
 
 =head1 Synopsis
@@ -197,8 +122,13 @@ See the [C<Gnome::Gtk3::Widget> documentation][composite-templates] for details.
   unit class Gnome::Gtk3::Builder;
   also is Gnome::GObject::Object;
 
-
 =head2 Example
+
+  my Gnome::Gtk3::Builder $builder .= new(:empty);
+  my Gnome::Glib::Error $e = $builder.add-from-file($ui-file);
+  die $e.message if $e.error-is-valid;
+
+  my Gnome::Gtk3::Button .= new(:build-id<my-glade-button-id>);
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -207,15 +137,14 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::Glib::Error;
 use Gnome::GObject::Object;
-
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
-
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -270,53 +199,18 @@ my Bool $signals-added = False;
 =begin pod
 =head1 Methods
 =end pod
+
+#-------------------------------------------------------------------------------
 #`{{
-=head2 new
-=head3 multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-=head3 multi method new ( N-GObject :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
-=head3 multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
-=end pod
-
-submethod BUILD ( *%options ) {
-
-  $!gtk-class-gtype = Gnome::GObject::Type.new().g_type_from_name('GtkBuilder')
-    unless $!gtk-class-gtype.defined;
-
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    # ... :type<signame>
-  ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::LIBRARYMODULE';
-
-  # process all named arguments
-  if ? %options<empty> {
-    self.native-gobject(gtk_builder_new());
-  }
-
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}
+void
+(*GtkBuilderConnectFunc) (
+  GtkBuilder *builder,
+                          GObject *object,
+                          const gchar *signal_name,
+                          const gchar *handler_name,
+                          GObject *connect_object,
+                          GConnectFlags flags,
+                          gpointer user_data);
 }}
 
 #-------------------------------------------------------------------------------
@@ -390,39 +284,44 @@ method fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TODO check if these are needed
-multi method add-gui ( Str:D :$filename! ) {
+multi method add-gui ( Str:D :$filename! )
+  is DEPRECATED('gtk_builder_add_from_file') {
 
   my $g := self;
-  my Int $e-code = gtk_builder_add_from_file( $g(), $filename, Any);
-  die X::Gnome.new(:message("Error adding file '$filename' to the Gui"))
-      if $e-code == 0;
+  my Gnome::Glib::Error $e = gtk_builder_add_from_file( $g(), $filename);
+  die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-multi method add-gui ( Str:D :$string! ) {
+multi method add-gui ( Str:D :$string! )
+  is DEPRECATED('gtk_builder_add_from_string') {
 
   my $g := self;
-  my Int $e-code = gtk_builder_add_from_string(
-    $g(), $string, $string.chars, Any
-  );
-
-  die X::Gnome.new(:message("Error adding xml text to the Gui"))
-      if $e-code == 0;
+  my Gnome::Glib::Error $e = gtk_builder_add_from_string( $g(), $string);
+  die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] error_quark
 
+Return the domain code of the builder error domain.
 
+  method gtk_builder_error_quark ( --> Int )
 
-  method gtk_builder_error_quark ( --> N-GObject  )
+The following example shows the fields of a returned error when a faulty string is provided in the call.
 
+  my Gnome::Glib::Quark $quark .= new;
+  my Gnome::Glib::Error $e = $builder.add-from-string($text);
+  is $e.domain, $builder.gtk_builder_error_quark(),
+     "domain code: $e.domain()";
+  is $quark.to-string($e.domain), 'gtk-builder-error-quark',
+     "error domain: $quark.to-string($e.domain())";
 
 =end pod
 
 sub gtk_builder_error_quark (  )
-  returns N-GObject
+  returns int32
   is native(&gtk-lib)
   { * }
 
@@ -458,56 +357,71 @@ sub gtk_builder_new (  )
 =begin pod
 =head2 [gtk_builder_] add_from_file
 
-Parses a file containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-and merges it with the current contents of I<builder>.
+Parses a file containing a [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
 Most users will probably want to use C<gtk_builder_new_from_file()>.
 
-If an error occurs, 0 will be returned and I<error> will be assigned a
-C<GError> from the C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>
-domain.
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>.
 
-It’s not really reasonable to attempt to handle failures of this
-call. You should not use this function with untrusted files (ie:
-files that are not part of your application). Broken C<Gnome::Gtk3::Builder>
-files can easily crash your program, and it’s possible that memory
-was leaked leading up to the reported failure. The only reasonable
-thing to do when an error is detected is to call C<g_error()>.
+You should not use this function with untrusted files (ie: files that are not part of your application). Broken C<Gnome::Gtk3::Builder> files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: A positive value on success, 0 if an error occurred
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 2.12
 
-  method gtk_builder_add_from_file ( Str $filename, N-GObject $error --> UInt  )
+  method gtk_builder_add_from_file (
+    Str $filename, N-GObject $error
+    --> Gnome::Glib::Error
+  )
 
 =item Str $filename; the name of the file to parse
 =item N-GObject $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
-sub gtk_builder_add_from_file ( N-GObject $builder, Str $filename, N-GObject $error )
-  returns uint32
+# need a proto because otherwise the signature.parms will
+# become Mu in Gnome::N::test-call()
+proto gtk_builder_add_from_file ( N-GObject $builder, Str $filename, |) { * }
+multi sub gtk_builder_add_from_file (
+  N-GObject $builder, Str $filename, Any $error
+  --> uint32
+) is DEPRECATED('other multi version of gtk_builder_add_from_file') {
+#  DEPRECATED(
+#    'other multi version of gtk_builder_add_from_file', '0.17.10', '0.22.0'
+#  );
+
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_builder_add_from_file( $builder, $filename, $ga)
+}
+
+multi sub gtk_builder_add_from_file (
+  N-GObject $builder, Str $filename
+  --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_builder_add_from_file( $builder, $filename, $ga);
+  Gnome::Glib::Error.new(:gerror($ga[0]))
+}
+
+sub _gtk_builder_add_from_file (
+  N-GObject $builder, Str $filename, CArray[N-GError] $error
+) returns uint32
   is native(&gtk-lib)
+  is symbol('gtk_builder_add_from_file')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] add_from_resource
 
-Parses a resource file containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-and merges it with the current contents of I<builder>.
+Parses a resource file containing a [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
 Most users will probably want to use C<gtk_builder_new_from_resource()>.
 
-If an error occurs, 0 will be returned and I<error> will be assigned a
-C<GError> from the C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_RESOURCE_ERROR>
-domain.
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-It’s not really reasonable to attempt to handle failures of this
-call.  The only reasonable thing to do when an error is detected is
-to call C<g_error()>.
-
-Returns: A positive value on success, 0 if an error occurred
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 3.4
 
@@ -522,58 +436,75 @@ sub gtk_builder_add_from_resource ( N-GObject $builder, Str $resource_path, N-GO
   returns uint32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] add_from_string
 
-Parses a string containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-and merges it with the current contents of I<builder>.
+Parses a string containing a [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
 Most users will probably want to use C<gtk_builder_new_from_string()>.
 
-Upon errors 0 will be returned and I<error> will be assigned a
-C<GError> from the C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or
-C<G_VARIANT_PARSE_ERROR> domain.
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-It’s not really reasonable to attempt to handle failures of this
-call.  The only reasonable thing to do when an error is detected is
-to call C<g_error()>.
-
-Returns: A positive value on success, 0 if an error occurred
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 2.12
 
   method gtk_builder_add_from_string ( Str $buffer, UInt $length, N-GObject $error --> UInt  )
 
 =item Str $buffer; the string to parse
-=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item Int $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
 =item N-GObject $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
-sub gtk_builder_add_from_string ( N-GObject $builder, Str $buffer, uint64 $length, N-GObject $error )
-  returns uint32
+proto gtk_builder_add_from_string ( N-GObject $builder, Str $buffer, |) { * }
+multi sub gtk_builder_add_from_string (
+  N-GObject $builder, Str $buffer, Int $length, Any $error
+  --> uint32
+) is DEPRECATED('other multi version of gtk_builder_add_from_string') {
+#  DEPRECATED(
+#    'other multi version of gtk_builder_add_from_string', '0.17.10', '0.22.0'
+#  );
+
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_builder_add_from_string( $builder, $buffer, $length, $ga)
+}
+
+multi sub gtk_builder_add_from_string (
+  N-GObject $builder, Str $buffer
+  --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_builder_add_from_string( $builder, $buffer, $buffer.chars, $ga);
+  Gnome::Glib::Error.new(:gerror($ga[0]));
+}
+
+sub _gtk_builder_add_from_string (
+  N-GObject $builder, Str $buffer, int64 $length, CArray[N-GError] $error
+) returns uint32
   is native(&gtk-lib)
+  is symbol('gtk_builder_add_from_string')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] add_objects_from_file
 
-Parses a file containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
+Parses a file containing a [C<Gnome::Gtk3::Builder> UI definition]
 building only the requested objects and merges
 them with the current contents of I<builder>.
-
-Upon errors 0 will be returned and I<error> will be assigned a
-C<GError> from the C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>
-domain.
 
 If you are adding an object that depends on an object that is not
 its child (for instance a C<Gnome::Gtk3::TreeView> that depends on its
 C<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object_ids>.
 
-Returns: A positive value on success, 0 if an error occurred
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
+
+Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
 
 Since: 2.14
 
@@ -589,12 +520,14 @@ sub gtk_builder_add_objects_from_file ( N-GObject $builder, Str $filename, CArra
   returns uint32
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] add_objects_from_resource
 
-Parses a resource file containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
+Parses a resource file containing a [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI)
 building only the requested objects and merges
 them with the current contents of I<builder>.
 
@@ -622,12 +555,14 @@ sub gtk_builder_add_objects_from_resource ( N-GObject $builder, Str $resource_pa
   returns uint32
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] add_objects_from_string
 
-Parses a string containing a [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
+Parses a string containing a [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI)
 building only the requested objects and merges
 them with the current contents of I<builder>.
 
@@ -655,6 +590,7 @@ sub gtk_builder_add_objects_from_string ( N-GObject $builder, Str $buffer, uint6
   returns uint32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -679,6 +615,7 @@ sub gtk_builder_get_object ( N-GObject $builder, Str $name )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] get_objects
@@ -702,7 +639,9 @@ sub gtk_builder_get_objects ( N-GObject $builder )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] expose_object
@@ -722,7 +661,9 @@ Since: 3.8
 sub gtk_builder_expose_object ( N-GObject $builder, Str $name, N-GObject $object )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] connect_signals
@@ -760,6 +701,7 @@ Since: 2.12
 sub gtk_builder_connect_signals ( N-GObject $builder, Pointer $user_data )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -784,6 +726,7 @@ sub gtk_builder_connect_signals_full ( N-GObject $builder, GtkBuilderConnectFunc
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] set_translation_domain
@@ -823,6 +766,7 @@ sub gtk_builder_get_translation_domain ( N-GObject $builder )
   returns Str
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -837,14 +781,14 @@ if no type was found
 
 Since: 2.12
 
-  method gtk_builder_get_type_from_name ( Str $type_name --> N-GObject  )
+  method gtk_builder_get_type_from_name ( Str $type_name --> int32  )
 
 =item Str $type_name; type name to lookup
 
 =end pod
 
 sub gtk_builder_get_type_from_name ( N-GObject $builder, Str $type_name )
-  returns N-GObject
+  returns int32
   is native(&gtk-lib)
   { * }
 
@@ -884,6 +828,7 @@ sub gtk_builder_value_from_string ( N-GObject $builder, GParamSpec $pspec, Str $
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] value_from_string_type
@@ -913,13 +858,13 @@ sub gtk_builder_value_from_string_type ( N-GObject $builder, N-GObject $type, St
   returns int32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] new_from_file
 
-Builds the [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-in the file I<filename>.
+Builds the [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) in the file I<filename>.
 
 If there is an error opening the file or parsing the description then
 the program will be aborted.  You should only ever attempt to parse
@@ -940,12 +885,12 @@ sub gtk_builder_new_from_file ( Str $filename )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] new_from_resource
 
-Builds the [C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-at I<resource_path>.
+Builds the [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) at I<resource_path>.
 
 If there is an error locating the resource or parsing the
 description, then the program will be aborted.
@@ -964,13 +909,13 @@ sub gtk_builder_new_from_resource ( Str $resource_path )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_builder_] new_from_string
 
-Builds the user interface described by I<string> (in the
-[C<Gnome::Gtk3::Builder> UI definition][BUILDER-UI] format).
+Builds the user interface described by I<string> (in the [C<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) format).
 
 If I<string> is C<Any>-terminated, then I<length> should be -1.
 If I<length> is not -1, then it is the length of I<string>.
@@ -1121,6 +1066,7 @@ sub gtk_builder_get_application ( N-GObject $builder )
   { * }
 
 #-------------------------------------------------------------------------------
+#`{{
 =begin pod
 =head2 [gtk_builder_] extend_with_template
 
@@ -1146,17 +1092,48 @@ sub gtk_builder_extend_with_template ( N-GObject $builder, N-GObject $widget, N-
   returns uint32
   is native(&gtk-lib)
   { * }
-
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
+=begin comment
 =head1 Not yet supported methods
 
-=head2 method connect_signals_full (...)
 =head2 method gtk_builder_value_from_string (...)
+=head2 method gtk_builder_add_from_resource (...)
+=head2 method gtk_builder_add_objects_from_file (...)
+=head2 method gtk_builder_add_objects_from_resource (...)
+=head2 method gtk_builder_add_objects_from_string (...)
+=head2 method gtk_builder_get_objects (...)
+=head2 method gtk_builder_expose_object (...)
+=head2 method gtk_builder_set_translation_domain (...)
+=head2 method gtk_builder_get_translation_domain (...)
+=head2 method gtk_builder_value_from_string_type (...)
+=head2 method gtk_builder_new_from_resource (...)
+=head2 method  (...)
+=head2 method  (...)
+=head2 method  (...)
+=head2 method  (...)
+
+=end comment
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=begin comment
+=head1 Not supported methods
+
+=head2 method gtk_builder_extend_with_template (...)
 =head2 method gtk_builder_add_callback_symbols (...)
 =head2 method gtk_builder_lookup_callback_symbol (...)
+=head2 method gtk_builder_connect_signals (...)
+=head2 method connect_signals_full (...)
+=head2 method  (...)
+=head2 method  (...)
+=head2 method  (...)
+=head2 method  (...)
 
+=end comment
 =end pod
 
 #-------------------------------------------------------------------------------
@@ -1190,271 +1167,4 @@ Since: 2.12
 =head2 Not yet supported properties
 =end comment
 
-
-
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-
-
-use v6;
-#-------------------------------------------------------------------------------
-=begin pod
-
-=TITLE Gnome::Gtk3::Builder
-
-=SUBTITLE
-
-  unit class Gnome::Gtk3::Builder;
-  also is Gnome::GObject::Object;
-
-=head2 Builder — Build an interface from an XML UI definition
-
-=head1 Synopsis
-
-  my Gnome::Gtk3::Builder $builder .= new(:filename($ui-file));
-  my Gnome::Gtk3::Button $start-button .= new(:build-id<startButton>);
-
-Note: C<GTK::Glade> is a package build around this builder class. That package is able to automatically register the signals defined in the UI file and connect them to the handlers defined in a users supplied class.
-=end pod
-#-------------------------------------------------------------------------------
-use NativeCall;
-
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::GObject::Object;
-use Gnome::Gdk3::Screen;
-use Gnome::Gtk3::Main;
-#use Gnome::Glib::GError;
-
-#-------------------------------------------------------------------------------
-# See /usr/include/gtk-3.0/gtk/gtkbuilder.h
-# https://developer.gnome.org/gtk3/stable/GtkBuilder.html
-unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>;
-also is Gnome::GObject::Object;
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Methods
-
-=head2 gtk_builder_new
-
-  method gtk_builder_new ( --> N-GObject )
-
-Creates a new builder object
-=end pod
-sub gtk_builder_new ()
-  returns N-GObject       # GtkBuilder
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] new_from_file
-
-  method gtk_builder_new_from_file ( Str $glade-ui-file --> N-GObject )
-
-Creates a new builder object and loads the gui design into the builder
-=end pod
-sub gtk_builder_new_from_file ( Str $glade-ui )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] new_from_string
-
-  method gtk_builder_new_from_string (
-    Str $glade-ui-text, uint32 $length
-    --> N-GObject
-  )
-
-Creates a new builder object and takes the gui design from the text argument
-=end pod
-sub gtk_builder_new_from_string ( Str $glade-ui, uint32 $length)
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] add_from_file
-
-  method gtk_builder_add_from_file ( Str $glade-ui-file --> int32 )
-
-Add another gui design from a file. The result 0 or 1 is returned. 1 means ok.
-=end pod
-sub gtk_builder_add_from_file (
-  N-GObject $builder, Str $glade-ui, OpaquePointer
-#  N-GObject $builder, Str $glade-ui, N-GError $error is rw
-) returns int32         # 0 or 1, 1 = ok, 0 look into GError
-  is native(&gtk-lib)
-    { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] add_from_string
-
-  method gtk_builder_add_from_string (
-    Str $glade-ui-text, uint32 $length
-    --> int32
-  )
-
-Add another gui design from the text argument. The result 0 or 1 is returned. 1 means ok.
-=end pod
-sub gtk_builder_add_from_string (
-  N-GObject $builder, Str $glade-ui, uint32 $length, OpaquePointer
-#  N-GObject $builder, Str $glade-ui, uint32 $size, N-GError $error is rw
-) returns int32         # 0 or 1, 1 = ok, 0 look into GError
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] get_object
-
-  method gtk_builder_get_object ( Str $object-id --> N-GObject )
-
-Returns a native widget searched for by its id. See also L<GOBject :build-id>.
-=end pod
-sub gtk_builder_get_object (
-  N-GObject $builder, Str $object-id
-) returns N-GObject   # is GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_builder_] get-type-from-name
-
-  method gtk_builder_get_type_from_name ( Str $type-name --> int32 )
-
-Looks up a type by name. I below example it is shown that this is also accomplished using C<GType>. Furthermore, the codes are not constants! Every new run produces a different gtype code.
-
-  my Gnome::Gtk3::Builder $builder .= new(:filename<my-ui.glade>);
-  my Int $gtype = $builder.get-type-from-name('GtkButton');
-  my Gnome::Glib::GType $t .= new;
-  say $t.g-type-name($gtype);                     # GtkButton
-  say $t.from-name('GtkButton');                  # $gtype
-  say $t.g-type-name($t.g-type-parent($gtype));   # GtkBin
-
-  #"Depth = 6: Button, Bin, Container, Widget, GInitiallyUnowned, GObject";
-  say $t.g-type-depth($gtype);                    # 6
-
-=end pod
-sub gtk_builder_get_type_from_name ( N-GObject $builder, Str $type_name )
-  returns int32         # is GType
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 new
-
-  multi method new ( Str :$filename )
-
-Create builder object and load gui design.
-
-  multi method new ( Str :$string )
-
-Same as above but read the design from the string.
-
-  multi method new ( Bool :$empty )
-
-Create an empty builder.
-=end pod
-submethod BUILD ( *%options ) {
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Builder';
-
-  if ? %options<filename> {
-    self.native-gobject(gtk_builder_new_from_file(%options<filename>));
-  }
-
-  elsif ? %options<string> {
-    self.native-gobject(
-      gtk_builder_new_from_string( %options<string>, %options<string>.chars)
-    );
-  }
-
-  elsif ? %options<empty> {
-    self.native-gobject(gtk_builder_new());
-  }
-
-#TODO No widget or build-id for a builder!
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  self.set-builder(self);
-}
-
-#-------------------------------------------------------------------------------
-method fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_builder_$native-sub"); } unless ?$s;
-
-  $s = callsame unless ?$s;
-
-  $s;
-}
-
-#-------------------------------------------------------------------------------
-#TODO check if these are needed
-multi method add-gui ( Str:D :$filename! ) {
-
-  my $g := self;
-  my Int $e-code = gtk_builder_add_from_file( $g(), $filename, Any);
-  die X::Gnome.new(:message("Error adding file '$filename' to the Gui"))
-      if $e-code == 0;
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-multi method add-gui ( Str:D :$string! ) {
-
-  my $g := self;
-  my Int $e-code = gtk_builder_add_from_string(
-    $g(), $string, $string.chars, Any
-  );
-
-  die X::Gnome.new(:message("Error adding xml text to the Gui"))
-      if $e-code == 0;
-}

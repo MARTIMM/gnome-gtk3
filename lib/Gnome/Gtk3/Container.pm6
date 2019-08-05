@@ -923,7 +923,6 @@ sub gtk_container_get_path_for_child ( N-GObject $container, N-GObject $child )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=begin comment
 
 =head1 Not yet implemented methods
 
@@ -941,7 +940,6 @@ sub gtk_container_get_path_for_child ( N-GObject $container, N-GObject $child )
 =head3 method gtk_container_child_set_valist ( ... )
 =head3 method gtk_container_child_get_valist ( ... )
 
-=end comment
 =end pod
 
 #-------------------------------------------------------------------------------
