@@ -70,6 +70,7 @@ GtkSensitivityType
 GtkTextBufferTargetInfo
 GtkBuilderError
 GtkArrowPlacement
+GtkCssProviderError
 GtkFileChooserAction
 GtkFileChooserConfirmation
 GtkFileFilterFlags
