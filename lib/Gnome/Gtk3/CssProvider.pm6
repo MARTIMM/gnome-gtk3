@@ -8,8 +8,7 @@ use v6;
 
 =head1 Description
 
-
-C<Gnome::Gtk3::CssProvider> is an object implementing the C<Gnome::Gtk3::StyleProvider> interface. It is able to parse [CSS-like][css-overview] input in order to style widgets.
+C<Gnome::Gtk3::CssProvider> is an object implementing the C<Gnome::Gtk3::StyleProvider> interface. It is able to parse [CSS-like](https://developer.gnome.org/gtk3/3.24/chap-css-overview.html#css-overview) input in order to style widgets.
 
 An application can make GTK+ parse a specific CSS style sheet by calling C<gtk_css_provider_load_from_file()> or C<gtk_css_provider_load_from_resource()> and adding the provider with C<gtk_style_context_add_provider()> or C<gtk_style_context_add_provider_for_screen()>. In addition, certain files will be read when GTK+ is initialized. First, the file `$XDG_CONFIG_HOME/gtk-3.0/gtk.css` is loaded if it exists. Then, GTK+ loads the first existing file among `XDG_DATA_HOME/themes/theme-name/gtk-VERSION/gtk.css`, `$HOME/.themes/theme-name/gtk-VERSION/gtk.css`, `$XDG_DATA_DIRS/themes/theme-name/gtk-VERSION/gtk.css` and `DATADIR/share/themes/THEME/gtk-VERSION/gtk.css`, where `THEME` is the name of the current theme (see the prop C<gtk-theme-name> setting), `DATADIR` is the prefix configured when GTK+ was compiled (unless overridden by the `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version number. If no file is found for the current version, GTK+ tries older versions all the way back to 3.0.
 
@@ -34,8 +33,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::Glib::Error;
 use Gnome::GObject::Object;
-#use Gnome::Gdk3::Screen;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkcssprovider.h
@@ -138,12 +137,14 @@ method fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 [gtk_css_provider_] error_quark
 
-  method gtk_css_provider_error_quark ( --> N-GObject  )
+Return the domain code of the builder error domain.
+
+  method gtk_css_provider_error_quark ( --> Int )
 
 =end pod
 
 sub gtk_css_provider_error_quark (  )
-  returns N-GObject
+  returns int32
   is native(&gtk-lib)
   { * }
 
@@ -153,10 +154,7 @@ sub gtk_css_provider_error_quark (  )
 
 Returns a newly created C<Gnome::Gtk3::CssProvider>.
 
-Returns: A new C<Gnome::Gtk3::CssProvider>
-
-  method gtk_css_provider_new ( --> N-GObject  )
-
+  method gtk_css_provider_new ( --> N-GObject )
 
 =end pod
 
@@ -194,27 +192,55 @@ sub gtk_css_provider_to_string ( N-GObject $provider )
 =begin pod
 =head2 [gtk_css_provider_] load_from_data
 
-Loads I<data> into I<css_provider>, and by doing so clears any previously loaded
-information.
+Loads I<data> into I<css_provider>, and by doing so clears any previously loaded information.
 
-Returns: C<1>. The return value is deprecated and C<0> will only be
-returned for backwards compatibility reasons if an I<error> is not
-C<Any> and a loading error occurred. To track errors while loading
-CSS, connect to the sig C<parsing-error> signal.
+Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
 
-  method gtk_css_provider_load_from_data ( Str $data, Int $length, N-GObject $error --> Int  )
+A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
+
+  method gtk_css_provider_load_from_data (
+    Str $data, Int $length
+    --> Gnome::Glib::Error
+  )
 
 =item Str $data; (array length=length) (element-type guint8): CSS data loaded in memory
 =item Int $length; the length of I<data> in bytes, or -1 for NUL terminated strings. If I<length> is not -1, the code will assume it is not NUL terminated and will potentially do a copy.
-=item N-GObject $error; (out) (allow-none): return location for a C<GError>, or C<Any>
 
 =end pod
 
-sub gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, N-GObject $error )
+proto gtk_css_provider_load_from_data (
+  N-GObject $css_provider, Str $data, |
+) { * }
+
+multi sub gtk_css_provider_load_from_data (
+  N-GObject $css_provider, Str $data, Int $length, Any $error
+  --> uint32
+) is DEPRECATED('other multi version of gtk_css_provider_load_from_data') {
+#  DEPRECATED(
+#    'other multi version of gtk_css_provider_load_from_data',
+#    '0.17.12', '0.22.0'
+#  );
+
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_css_provider_load_from_data( $css_provider, $data, $length, $ga)
+}
+
+multi sub gtk_css_provider_load_from_data (
+  N-GObject $css_provider, Str $data
+  --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_css_provider_load_from_data( $css_provider, $data, $data.chars, $ga);
+  Gnome::Glib::Error.new(:gerror($ga[0]));
+}
+
+sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error )
   returns int32
   is native(&gtk-lib)
+  is symbol('gtk_css_provider_load_from_data')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_css_provider_] load_from_file
@@ -238,31 +264,53 @@ sub gtk_css_provider_load_from_file ( N-GObject $css_provider, N-GObject $file, 
   returns int32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_css_provider_] load_from_path
 
-Loads the data contained in I<path> into I<css_provider>, making it clear
-any previously loaded information.
+Loads the data contained in I<path> into I<css_provider>, making it clear any previously loaded information.
 
-Returns: C<1>. The return value is deprecated and C<0> will only be
-returned for backwards compatibility reasons if an I<error> is not
-C<Any> and a loading error occurred. To track errors while loading
-CSS, connect to the sig C<parsing-error> signal.
+Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
 
-  method gtk_css_provider_load_from_path ( Str $path, N-GObject $error --> Int  )
+A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
+
+  method gtk_css_provider_load_from_path ( Str $path --> Gnome::Glib::Error )
 
 =item Str $path; the path of a filename to load, in the GLib filename encoding
-=item N-GObject $error; (out) (allow-none): return location for a C<GError>, or C<Any>
 
 =end pod
 
-sub gtk_css_provider_load_from_path ( N-GObject $css_provider, Str $path, N-GObject $error )
-  returns int32
+proto gtk_css_provider_load_from_path (
+  N-GObject $css_provider, Str $path, |
+) { * }
+
+multi sub gtk_css_provider_load_from_path (
+  N-GObject $css_provider, Str $path, Any $error
+  --> int32
+) is DEPRECATED('other multi version of gtk_css_provider_load_from_path') {
+
+  _gtk_css_provider_load_from_path( $css_provider, $path, Any);
+}
+
+multi sub gtk_css_provider_load_from_path (
+  N-GObject $css_provider, Str $path
+  --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_css_provider_load_from_path( $css_provider, $path, $ga);
+  Gnome::Glib::Error.new(:gerror($ga[0]));
+}
+
+sub _gtk_css_provider_load_from_path (
+  N-GObject $css_provider, Str $path, CArray[N-GError] $error
+) returns int32
   is native(&gtk-lib)
+  is symbol('gtk_css_provider_load_from_path')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_css_provider_] load_from_resource
@@ -284,6 +332,7 @@ Since: 3.16
 sub gtk_css_provider_load_from_resource ( N-GObject $css_provider, Str $resource_path )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -312,6 +361,27 @@ sub gtk_css_provider_get_named ( Str $name, Str $variant )
 
 =head1 Not yet implemented methods
 
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+
+=end comment
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=begin comment
+
+=head1 Not implemented methods
+
+=head3 method gtk_css_provider_load_from_file ( ... )
+=head3 method gtk_css_provider_load_from_resource ( ... )
+Resources are deprecated
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
 =head3 method  ( ... )
 
 =end comment
