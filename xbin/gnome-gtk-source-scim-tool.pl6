@@ -360,7 +360,8 @@ sub get-deprecated-subs( Str:D $include-content ) {
 
     for $dep-versions.keys.sort -> $version {
       $deprecated-subs ~= "\n=head2 Since $version\n";
-      for @($dep-versions{$version}) -> $sub {
+      for @($dep-versions{$version}) -> $sub is copy {
+        $sub ~~ s/ '(' <-[)]> * ')' /( ... )/;
         $deprecated-subs ~= "=head3 $sub\n";
       }
     }
