@@ -62,7 +62,7 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 multi method new ( Gnome::GObject::Object :$widget! )
+=head3 multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
 
