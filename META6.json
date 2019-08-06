@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.17.12",
+  "version": "0.17.13",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -51,6 +51,7 @@
     "Gnome::Gtk3::Scale": "lib/Gnome/Gtk3/Scale.pm6",
     "Gnome::Gtk3::SearchEntry": "lib/Gnome/Gtk3/SearchEntry.pm6",
     "Gnome::Gtk3::StyleContext": "lib/Gnome/Gtk3/StyleContext.pm6",
+    "Gnome::Gtk3::StyleProvider": "lib/Gnome/Gtk3/StyleProvider.pm6",
     "Gnome::Gtk3::TextBuffer": "lib/Gnome/Gtk3/TextBuffer.pm6",
     "Gnome::Gtk3::TextIter": "lib/Gnome/Gtk3/TextIter.pm6",
     "Gnome::Gtk3::TextTag": "lib/Gnome/Gtk3/TextTag.pm6",

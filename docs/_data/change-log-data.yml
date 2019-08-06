@@ -2,6 +2,10 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-08-04 0.17.13:
+    - Extended, tested and documented CssProvider and StyleContext in Gnome::Gtk3.
+    - Added StyleProvider in Gnome::Gtk3, altough it is a very empty shell :-\.
+
   - 2019-08-04 0.17.12:
     - Builder pod doc
     - Builder tests using Gnome::Glib::Error
