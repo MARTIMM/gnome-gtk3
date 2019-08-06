@@ -1,7 +1,7 @@
 use v6;
 #use lib '../perl6-gnome-gobject/lib';
-use lib '../perl6-gnome-glib/lib';
-use lib '../perl6-gnome-native/lib';
+#use lib '../perl6-gnome-glib/lib';
+#use lib '../perl6-gnome-native/lib';
 use Test;
 
 use Gnome::N::N-GObject;
@@ -116,8 +116,7 @@ subtest 'Test builder errors', {
     my Gnome::Glib::Quark $quark .= new;
 
     my Gnome::Glib::Error $e = $builder.add-from-string($text);
-    is $e.domain, $builder.gtk_builder_error_quark(),
-       "domain code: $e.domain()";
+    is $e.domain, $builder.error-quark(), "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'gtk-builder-error-quark',
        "error domain: $quark.to-string($e.domain())";
     is $e.code, GTK_BUILDER_ERROR_UNHANDLED_TAG.value,

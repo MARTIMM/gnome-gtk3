@@ -331,13 +331,11 @@ sub gtk_builder_error_quark (  )
 
 Creates a new empty builder object.
 
-This function is only useful if you intend to make multiple calls
-to C<gtk_builder_add_from_file()>, C<gtk_builder_add_from_resource()>
-or C<gtk_builder_add_from_string()> in order to merge multiple UI
-descriptions into a single builder.
+=comment add C<gtk_builder_new_from_resource()> when ready
 
-Most users will probably want to use C<gtk_builder_new_from_file()>,
-C<gtk_builder_new_from_resource()> or C<gtk_builder_new_from_string()>.
+This function is only useful if you intend to make multiple calls to C<gtk_builder_add_from_file()> or C<gtk_builder_add_from_string()> in order to merge multiple UI descriptions into a single builder.
+
+Most users will probably want to use C<gtk_builder_new_from_file()> C<gtk_builder_new_from_string()>.
 
 Returns: a new (empty) C<Gnome::Gtk3::Builder> object
 
@@ -365,7 +363,7 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 You should not use this function with untrusted files (ie: files that are not part of your application). Broken C<Gnome::Gtk3::Builder> files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
 
 Since: 2.12
 
@@ -375,7 +373,6 @@ Since: 2.12
   )
 
 =item Str $filename; the name of the file to parse
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -456,7 +453,6 @@ Since: 2.12
 
 =item Str $buffer; the string to parse
 =item Int $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1100,9 +1096,7 @@ sub gtk_builder_extend_with_template ( N-GObject $builder, N-GObject $widget, N-
 =head1 Not yet supported methods
 
 =head2 method gtk_builder_value_from_string (...)
-=head2 method gtk_builder_add_from_resource (...)
 =head2 method gtk_builder_add_objects_from_file (...)
-=head2 method gtk_builder_add_objects_from_resource (...)
 =head2 method gtk_builder_add_objects_from_string (...)
 =head2 method gtk_builder_get_objects (...)
 =head2 method gtk_builder_expose_object (...)
@@ -1132,6 +1126,9 @@ sub gtk_builder_extend_with_template ( N-GObject $builder, N-GObject $widget, N-
 =head2 method  (...)
 =head2 method  (...)
 =head2 method  (...)
+=head2 method gtk_builder_add_from_resource (...)
+=head2 method gtk_builder_add_objects_from_resource (...)
+Resources are deprecated
 
 =end comment
 =end pod
