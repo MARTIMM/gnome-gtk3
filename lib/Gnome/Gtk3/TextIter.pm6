@@ -95,14 +95,6 @@ enum GtkTextSearchFlags is export (
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( N-GObject :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
-=head3 multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
 =end pod
 }}
 
@@ -118,15 +110,17 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TextIter';
 
   # process all named arguments
-  if %options.keys.elems {
+  if ? %options<empty> {
+    self.native-gboxed(N-GTextIter.new);
+  }
+
+  elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
                ': ' ~ %options.keys.join(', ')
               )
     );
   }
-
-  self.native-gboxed(N-GTextIter.new);
 }
 
 #-------------------------------------------------------------------------------
