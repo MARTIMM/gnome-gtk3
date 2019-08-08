@@ -139,7 +139,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     ( $declaration, $return-type, $p6-return-type, $type-is-class) =
       get-type( $declaration, :!attr);
 
-#note "$declaration" if $r ~~ m/ 'GdkDragProtocol' || 'GdkFullscreenMode' /;
     # get the subroutine name and remove from declaration
     $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
@@ -403,7 +402,9 @@ sub parent-class ( Str:D $include-content --> List ) {
 # declaration. The type is cleaned up by removing 'const', 'void' and pointer(*)
 sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
-#note "\nDeclaration: ", $declaration if $declaration ~~ m/ 'GdkDragProtocol' || 'GdkFullscreenMode' /;
+#note "\nDeclaration: ", $declaration if $declaration ~~ m/ gtk_widget_path_iter_get_siblings /;
+
+  # process types from arg lists
   if $attr {
     $declaration ~~ m/ ^
       $<type> = [
@@ -419,6 +420,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     /;
   }
 
+  # process types from sub return
   else {
     $declaration ~~ m/ ^
       $<type> = [
@@ -427,6 +429,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
           'const' \s* 'gchar' \s* '*' \s* ||
           'gchar' \s* '*'* \s* ||
           'const' \s* '*' <alnum>+ \s* '*'* \s* ||
+          'const' \s* <alnum>+ \s* '*'* \s* ||
           <alnum>+ \s* '*'* \s*
         ]
       ] <alnum>+
@@ -469,6 +472,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   # convert to native perl types
   $type = 'N-GObject' if is-n-gobject($type);
+  $type = 'int32' if $type ~~ m/GType/;
+  $type = 'int32' if $type ~~ m/GQuark/;
 
   # copy to perl6 type for independent convertions
   my Str $p6-type = $type;
@@ -500,6 +505,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   $type ~~ s:s/ int /int32/;
   $type ~~ s:s/ gpointer /Pointer/;
+
 
   # convert to perl types
   #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
@@ -1494,7 +1500,6 @@ sub get-structures ( Str:D $include-content is copy ) {
         $items-doc
 
         $struct-spec
-        =end pod
         EODOC
     }
   }
