@@ -2,7 +2,9 @@
 
 # Codes used in source modules to mark what is tested or not
 
-The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action; `L` module load, `M` method, `S` signal and `T` for types (enums mainly). Then a colon ':' with '+' or '-' to show it is tested or not. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:+:Gnome::Gtk3::Widget` or `#TM:-:gtk_widget_get_path`.
+The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action; `L` module load, `M` method, `S` signal, `P` for properties, `E` for enums and `T` for structures. Then a colon ':' with '+' or '-' to show it is tested or not. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:+:Gnome::Gtk3::Widget` or `#TM:-:gtk_widget_get_path`.
+
+Absence of codes means that a particular item is not tested.
 
 
 # Types of gtk and (native) types in perl6
