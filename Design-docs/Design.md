@@ -1,5 +1,10 @@
 [toc]
 
+# Codes used in source modules to mark what is tested or not
+
+The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action; `L` module load, `M` method, `S` signal and `T` for types (enums mainly). Then a colon ':' with '+' or '-' to show it is tested or not. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:+:Gnome::Gtk3::Widget` or `#TM:-:gtk_widget_get_path`.
+
+
 # Types of gtk and (native) types in perl6
 
 | GTK Type | typedef | Native Perl6 | Perl6 Type | Note |
@@ -34,6 +39,9 @@
 |
 | gfloat   | float     | num32        | Num      |
 | gdouble  | double    | num64        | Num      |
+|
+| GType    | int32
+| GQuark   | int32
 
 # Class hierargy
 * Below are diagrams of what is implemented. See also the [object hierarchy in GTK docs](https://developer.gnome.org/gtk3/stable/ch02.html).
@@ -113,8 +121,10 @@ title Interface classes
 scale 0.7
 title Wrapped structure classes
 * GObject::Boxed
- * GObject::Value
+ * Gtk3::Border
  * Gtk3::TextIter
+ * GObject::Value
+ * Gtk3::WidgetPath
 
 @endmindmap
 ```

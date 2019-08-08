@@ -209,6 +209,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $sub = Q:qq:to/EOSUB/;
 
       $start-comment#-------------------------------------------------------------------------------
+      #TM:-:$sub-name
+
       =begin pod
       =head2 $pod-sub-name
 
@@ -690,6 +692,8 @@ sub load-dir-lists ( ) {
 sub substitute-in-template ( Str $include-content ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
+    #TL:-:Gnome::LIBRARYMODULE
+
     use v6;
     #-------------------------------------------------------------------------------
     =begin pod
@@ -771,6 +775,8 @@ sub substitute-in-template ( Str $include-content ) {
     Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 
     =end pod
+
+    #TM:-:new
 
     submethod BUILD ( *%options ) {
 
@@ -949,7 +955,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=head3 $signal-name\n";
+    $signal-doc ~= "\n=comment #TS:-:$signal-name\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
@@ -1172,7 +1178,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
     /;
     $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=head3 $property-name\n";
+    $property-doc ~= "\n=comment #TP:-:$property-name\n=head3 $property-name\n";
 #note "sdoc 2: $sdoc";
     note "get property $property-name";
 
@@ -1292,7 +1298,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
         $get-enum-doc = False;
         $process-enum = True;
 
-        $enum-spec = "\n=end pod\n\nenum $enum-name is export (\n";
+        $enum-spec = "\n=end pod\n\n#TE:-:$enum-name\nenum $enum-name is export (\n";
       }
 
 #      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
@@ -1435,7 +1441,7 @@ sub get-structures ( Str:D $include-content is copy ) {
         $get-struct-doc = False;
         $process-struct = True;
 
-        $struct-spec = "\n=end pod\n\n" ~
+        $struct-spec = "\n=end pod\n\n#TT:-:$struct-name\n" ~
           "class $struct-name is export is repr\('CStruct') \{\n";
       }
 
