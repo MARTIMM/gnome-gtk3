@@ -75,6 +75,7 @@ GtkFileChooserAction
 GtkFileChooserConfirmation
 GtkFileFilterFlags
 GtkTextSearchFlags
+GtkStyleContextPrintFlags
 GtkStyleProviderPriority
 GtkWidgetHelpType
 GdkFilterReturn
