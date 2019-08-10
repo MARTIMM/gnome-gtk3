@@ -7,7 +7,7 @@
     test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
     tut: ''  # '' no tutorial, or 'url' pointing to tutoral
     ex: ''   # '' no example, or 'url' pointing to an example
-    doc-sign: '⏺🗸✅⃝ ◔◑◕●'
+    doc-sign: '🗸✅✔✗ ☐☑☒ ◔◑◕● ⚒ ⚐⚑ ⚓ ☠ ✀ ❓❔❕'
 
   - title: '-'
 
