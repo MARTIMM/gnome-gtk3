@@ -36,68 +36,21 @@ There are some important things to keep in mind when implementing height-for-wid
 
 The geometry management system will query a widget hierarchy in only one orientation at a time. When widgets are initially queried for their minimum sizes it is generally done in two initial passes in the `GtkSizeRequestMode` chosen by the toplevel.
 
-For example, when queried in the normal `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` mode: First, the default minimum and natural width for each widget in the interface will be computed using `gtk_widget_get_preferred_width()`. Because the preferred widths for each container depend on the preferred widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel. Next, the toplevel will use the minimum width to query for the minimum height contextual to that width using `gtk_widget_get_preferred_height_for_width()`, which will also be a highly recursive operation. The minimum height for the minimum width is normally used to set the minimum size constraint on the toplevel (unless `gtk_window_set_geometry_hints()` is explicitly used instead).
+For example, when queried in the normal `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` mode:
 
-After the toplevel window has initially requested its size in both dimensions it can go on to allocate itself a reasonable size (or a size previously specified with `gtk_window_set_default_size()`). During the recursive allocation process it’s important to note that request cycles will be recursively executed while container widgets allocate their children. Each container widget, once allocated a size, will go on to first share the space in one orientation among its children and then request each child's height for its target allocated width or its width for allocated height, depending. In this way a `Gnome::Gtk3::Widget` will typically be requested its size a number of times before actually being allocated a size. The size a widget is finally allocated can of course differ from the size it has requested. For this reason, `Gnome::Gtk3::Widget` caches a small number of results to avoid re-querying for the same sizes in one allocation cycle.
+  * First, the default minimum and natural width for each widget in the interface will be computed using `gtk_widget_get_preferred_width()`. Because the preferred widths for each container depend on the preferred widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
 
-See [`Gnome::Gtk3::Container`’s geometry management section](https://developer.gnome.org/gtk3/stable/GtkContainer.html) to learn more about how height-for-width allocations are performed by container widgets.
+  * Next, the toplevel will use the minimum width to query for the minimum height contextual to that width using `gtk_widget_get_preferred_height_for_width()`, which will also be a highly recursive operation. The minimum height for the minimum width is normally used to set the minimum size constraint on the toplevel (unless `gtk_window_set_geometry_hints()` is explicitly used instead).
+
+After the toplevel window has initially requested its size in both dimensions it can go on to allocate itself a reasonable size (or a size previously specified with `gtk_window_set_default_size()`). During the recursive allocation process it’s important to note that request cycles will be recursively executed while container widgets allocate their children. Each container widget, once allocated a size, will go on to first share the space in one orientation among its children and then request each child's height for its target allocated width or its width for allocated height, depending.
+
+In this way a `Gnome::Gtk3::Widget` will typically be requested its size a number of times before actually being allocated a size. The size a widget is finally allocated can of course differ from the size it has requested. For this reason, `Gnome::Gtk3::Widget` caches a small number of results to avoid re-querying for the same sizes in one allocation cycle.
+
+See [Gnome::Gtk3::Container’s geometry management section](https://developer.gnome.org/gtk3/stable/GtkContainer.html) to learn more about how height-for-width allocations are performed by container widgets.
 
 If a widget does move content around to intelligently use up the allocated size then it must support the request in both `GtkSizeRequestMode`s even if the widget in question only trades sizes in a single orientation.
 
 For instance, a `Gnome::Gtk3::Label` that does height-for-width word wrapping will not expect to have `get_preferred_height()` called because that call is specific to a width-for-height request. In this case the label must return the height required for its own minimum possible width. By following this rule any widget that handles height-for-width or width-for-height requests will always be allocated at least enough space to fit its own content.
-
-Here are some examples of how a `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` widget generally deals with width-for-height requests, for `get_preferred_height()` it will do (A piece of C-code directly from the docs):
-
-    static void foo_widget_get_preferred_height (
-      GtkWidget *widget, gint *min_height, gint *nat_height
-    ) {
-      if (i_am_in_height_for_width_mode) {
-        gint min_width, nat_width;
-
-        GTK_WIDGET_GET_CLASS (widget)->get_preferred_width(
-          widget, &min_width, &nat_width
-        );
-
-        GTK_WIDGET_GET_CLASS (widget)->get_preferred_height_for_width(
-          widget, min_width, min_height, nat_height
-        );
-      }
-
-      else {
-        ... some widgets do both. For instance, if a GtkLabel is
-        rotated to 90 degrees it will return the minimum and
-        natural height for the rotated label here.
-      }
-    }
-
-And in `get_preferred_width_for_height()` it will simply return the minimum and natural width:
-
-    static void foo_widget_get_preferred_width_for_height(
-      GtkWidget *widget, gint for_height, gint *min_width,
-      gint *nat_width
-    ) {
-      if (i_am_in_height_for_width_mode) {
-        GTK_WIDGET_GET_CLASS (widget)->get_preferred_width(
-          widget, min_width, nat_width
-        );
-      }
-
-      else {
-        ... again if a widget is sometimes operating in
-        width-for-height mode (like a rotated GtkLabel) it can go
-        ahead and do its real width for height calculation here.
-      }
-    }
-
-Often a widget needs to get its own request during size request or allocation. For example, when computing height it may need to also compute width. Or when deciding how to use an allocation, the widget may need to know its natural size. In these cases, the widget should be careful to call its virtual methods directly, like this:
-
-    GTK_WIDGET_GET_CLASS(widget)->get_preferred_width(
-      widget, &min, &natural
-    );
-
-It will not work to use the wrapper functions, such as `gtk_widget_get_preferred_width()` inside your own size request implementation. These return a request adjusted by `Gnome::Gtk3::SizeGroup` and by the `adjust_size_request()` virtual method. If a widget used the wrappers inside its virtual method implementations, then the adjustments (such as widget margins) would be applied twice. GTK+ therefore does not allow this and will warn if you try to do it.
-
-Of course if you are getting the size request for another widget, such as a child of a container, you must use the wrapper APIs. Otherwise, you would not properly consider widget margins, `Gnome::Gtk3::SizeGroup`, and so forth.
 
 Since 3.10 GTK+ also supports baseline vertical alignment of widgets. This means that widgets are positioned such that the typographical baseline of widgets in the same row are aligned. This happens if a widget supports baselines, has a vertical alignment of `GTK_ALIGN_BASELINE`, and is inside a container that supports baselines and has a natural “row” that it aligns to the baseline, or a baseline assigned to it by the grandparent.
 
@@ -418,6 +371,10 @@ Since: 3.10
 
 [gtk_widget_] get_request_mode
 ------------------------------
+
+Gets whether the widget prefers a height-for-width layout or a width-for-height layout.
+
+GtkBin widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
 
     method gtk_widget_get_request_mode ( --> GtkSizeRequestMode  )
 
@@ -2104,11 +2061,11 @@ Returns: (transfer none): a `Gnome::Gtk3::StyleContext`. This memory is owned by
 [gtk_widget_] get_path
 ----------------------
 
-Returns the `Gnome::Gtk3::WidgetPath` representing *widget*, if the widget is not connected to a toplevel widget, a partial path will be created.
+Returns the `Gnome::Gtk3::WidgetPath` representing the widget. If the widget is not connected to a toplevel widget, a partial path will be created.
 
-Returns: (transfer none): The `Gnome::Gtk3::WidgetPath` representing *widget*
+Returns: The `N-WidgetPath` representing the widget.
 
-    method gtk_widget_get_path ( --> N-GObject  )
+    method gtk_widget_get_path ( --> N-GtkWidgetPath )
 
 [gtk_widget_] insert_action_group
 ---------------------------------

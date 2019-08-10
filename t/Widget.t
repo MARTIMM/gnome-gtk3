@@ -3,7 +3,8 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Widget;
+#use Gnome::Gtk3::Widget;
+use Gnome::Gtk3::Enums;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -24,6 +25,10 @@ subtest 'Widget manipulations', {
   $b.set-tooltip-text('Nooooo don\'t touch that button!!!!!!!');
   is $b.get-tooltip-text, 'Nooooo don\'t touch that button!!!!!!!',
      'tooltip ok';
+
+#  is $b.get-path, N-GtkWidgetPath, 'No widget path defined to this button';
+  is $b.get-request-mode, GTK_SIZE_REQUEST_CONSTANT_SIZE.value,
+     'request mode is GTK_SIZE_REQUEST_CONSTANT_SIZE';
 }
 
 #-------------------------------------------------------------------------------
