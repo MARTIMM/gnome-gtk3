@@ -7,7 +7,7 @@
     test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
     tut: ''  # '' no tutorial, or 'url' pointing to tutoral
     ex: ''   # '' no example, or 'url' pointing to an example
-    doc-sign: '⏺🗸✅'
+    doc-sign: '🗸✅✔✗ ☐☑☒ ◔◑◕● ⚒ ⚐⚑ ⚓ ☠ ✀ ❓❔❕'
 
   - title: '-'
 
@@ -93,8 +93,18 @@
 
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
+  - title: "Border"
+    url: "/content-docs/reference/Gtk3/Border.html"
+    doc: 2   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 2  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example
   - title: "Builder"
     url: "/content-docs/reference/Gtk3/Builder.html"
+    doc: 3   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 1  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example
   - title: "Enums"
     url: "/content-docs/reference/Gtk3/Enums.html"
   - title: "Container"
@@ -109,7 +119,29 @@
     url: "/content-docs/reference/Gtk3/Orientable.html"
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
+  - title: "StyleContext"
+    url: "/content-docs/reference/Gtk3/StyleContext.html"
+    doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example
+  - title: "StyleProvider"
+    url: "/content-docs/reference/Gtk3/StyleProvider.html"
+    doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example
   - title: "TextIter"
     url: "/content-docs/reference/Gtk3/TextIter.html"
   - title: "Widget"
     url: '/content-docs/reference/Gtk3/Widget.html'
+    doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 1  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example
+  - title: "WidgetPath"
+    url: '/content-docs/reference/Gtk3/WidgetPath.html'
+    doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
+    test: 1  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
+    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
+    ex: ''   # '' no example, or 'url' pointing to an example

@@ -139,7 +139,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     ( $declaration, $return-type, $p6-return-type, $type-is-class) =
       get-type( $declaration, :!attr);
 
-#note "$declaration" if $r ~~ m/ 'GdkDragProtocol' || 'GdkFullscreenMode' /;
     # get the subroutine name and remove from declaration
     $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
@@ -210,6 +209,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $sub = Q:qq:to/EOSUB/;
 
       $start-comment#-------------------------------------------------------------------------------
+      #TM:-:$sub-name
+
       =begin pod
       =head2 $pod-sub-name
 
@@ -360,7 +361,8 @@ sub get-deprecated-subs( Str:D $include-content ) {
 
     for $dep-versions.keys.sort -> $version {
       $deprecated-subs ~= "\n=head2 Since $version\n";
-      for @($dep-versions{$version}) -> $sub {
+      for @($dep-versions{$version}) -> $sub is copy {
+        $sub ~~ s/ '(' <-[)]> * ')' /( ... )/;
         $deprecated-subs ~= "=head3 $sub\n";
       }
     }
@@ -402,7 +404,9 @@ sub parent-class ( Str:D $include-content --> List ) {
 # declaration. The type is cleaned up by removing 'const', 'void' and pointer(*)
 sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
-#note "\nDeclaration: ", $declaration if $declaration ~~ m/ 'GdkDragProtocol' || 'GdkFullscreenMode' /;
+#note "\nDeclaration: ", $declaration if $declaration ~~ m/ gtk_widget_path_iter_get_siblings /;
+
+  # process types from arg lists
   if $attr {
     $declaration ~~ m/ ^
       $<type> = [
@@ -418,6 +422,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     /;
   }
 
+  # process types from sub return
   else {
     $declaration ~~ m/ ^
       $<type> = [
@@ -426,6 +431,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
           'const' \s* 'gchar' \s* '*' \s* ||
           'gchar' \s* '*'* \s* ||
           'const' \s* '*' <alnum>+ \s* '*'* \s* ||
+          'const' \s* <alnum>+ \s* '*'* \s* ||
           <alnum>+ \s* '*'* \s*
         ]
       ] <alnum>+
@@ -468,6 +474,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   # convert to native perl types
   $type = 'N-GObject' if is-n-gobject($type);
+  $type = 'int32' if $type ~~ m/GType/;
+  $type = 'int32' if $type ~~ m/GQuark/;
 
   # copy to perl6 type for independent convertions
   my Str $p6-type = $type;
@@ -499,6 +507,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   $type ~~ s:s/ int /int32/;
   $type ~~ s:s/ gpointer /Pointer/;
+
 
   # convert to perl types
   #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
@@ -683,6 +692,8 @@ sub load-dir-lists ( ) {
 sub substitute-in-template ( Str $include-content ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
+    #TL:-:Gnome::LIBRARYMODULE
+
     use v6;
     #-------------------------------------------------------------------------------
     =begin pod
@@ -764,6 +775,8 @@ sub substitute-in-template ( Str $include-content ) {
     Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
 
     =end pod
+
+    #TM:-:new
 
     submethod BUILD ( *%options ) {
 
@@ -942,7 +955,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=head3 $signal-name\n";
+    $signal-doc ~= "\n=comment #TS:-:$signal-name\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
@@ -1165,7 +1178,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
     /;
     $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=head3 $property-name\n";
+    $property-doc ~= "\n=comment #TP:-:$property-name\n=head3 $property-name\n";
 #note "sdoc 2: $sdoc";
     note "get property $property-name";
 
@@ -1285,7 +1298,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
         $get-enum-doc = False;
         $process-enum = True;
 
-        $enum-spec = "\n=end pod\n\nenum $enum-name is export (\n";
+        $enum-spec = "\n=end pod\n\n#TE:-:$enum-name\nenum $enum-name is export (\n";
       }
 
 #      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
@@ -1428,7 +1441,7 @@ sub get-structures ( Str:D $include-content is copy ) {
         $get-struct-doc = False;
         $process-struct = True;
 
-        $struct-spec = "\n=end pod\n\n" ~
+        $struct-spec = "\n=end pod\n\n#TT:-:$struct-name\n" ~
           "class $struct-name is export is repr\('CStruct') \{\n";
       }
 
@@ -1493,7 +1506,6 @@ sub get-structures ( Str:D $include-content is copy ) {
         $items-doc
 
         $struct-spec
-        =end pod
         EODOC
     }
   }

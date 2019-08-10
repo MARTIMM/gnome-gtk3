@@ -11,19 +11,18 @@ Build an interface from an XML UI definition
 Description
 ===========
 
-A `Gnome::Gtk3::Builder` is an auxiliary object that reads textual descriptions of a user interface and instantiates the described objects. To create a `Gnome::Gtk3::Builder` from a user interface description, call `gtk_builder_new_from_file()`, `gtk_builder_new_from_resource()` or `gtk_builder_new_from_string()`.
+A `Gnome::Gtk3::Builder` is an auxiliary object that reads textual descriptions of a user interface and instantiates the described objects. To create a `Gnome::Gtk3::Builder` from a user interface description, call `gtk_builder_new_from_file()` or `gtk_builder_new_from_string()`.
 
-In the (unusual) case that you want to add user interface descriptions from multiple sources to the same `Gnome::Gtk3::Builder` you can call `gtk_builder_new()` to get an empty builder and populate it by (multiple) calls to `gtk_builder_add_from_file()`, `gtk_builder_add_from_resource()` or `gtk_builder_add_from_string()`.
+In the (unusual) case that you want to add user interface descriptions from multiple sources to the same `Gnome::Gtk3::Builder` you can call `gtk_builder_new()` to get an empty builder and populate it by (multiple) calls to `gtk_builder_add_from_file()` or `gtk_builder_add_from_string()`.
 
 A `Gnome::Gtk3::Builder` holds a reference to all objects that it has constructed and drops these references when it is finalized. This finalization can cause the destruction of non-widget objects or widgets which are not contained in a toplevel window. For toplevel windows constructed by a builder, it is the responsibility of the user to call `gtk_widget_destroy()` to get rid of them and all the widgets they contain.
 
-The functions `gtk_builder_get_object()` and `gtk_builder_get_objects()` can be used to access the widgets in the interface by the names assigned to them inside the UI description. Toplevel windows returned by these functions will stay around until the user explicitly destroys them with `gtk_widget_destroy()`. Other widgets will either be part of a larger hierarchy constructed by the builder (in which case you should not have to worry about their lifecycle), or without a parent, in which case they have to be added to some container to make use of them. Non-widget objects need to be reffed with `g_object_ref()` to keep them beyond the lifespan of the builder.
+Gnome::Gtk3::Builder UI Definitions
+-----------------------------------
 
-The function `gtk_builder_connect_signals()` and variants thereof can be used to connect handlers to the named signals in the description.
+`Gnome::Gtk3::Builder` parses textual descriptions of user interfaces which are specified in an XML format which can be roughly described by the RELAX NG schema below. We refer to these descriptions as “`Gnome::Gtk3::Builder` UI definitions” or just “UI definitions” if the context is clear.
 
-# `Gnome::Gtk3::Builder` UI Definitions # {`BUILDER`-UI}
-
-`Gnome::Gtk3::Builder` parses textual descriptions of user interfaces which are specified in an XML format which can be roughly described by the RELAX NG schema below. We refer to these descriptions as “`Gnome::Gtk3::Builder` UI definitions” or just “UI definitions” if the context is clear. Do not confuse `Gnome::Gtk3::Builder` UI Definitions with [`Gnome::Gtk3::UIManager` UI Definitions][XML-UI], which are more limited in scope. It is common to use `.ui` as the filename extension for files containing `Gnome::Gtk3::Builder` UI definitions.
+It is common to use `.ui` as the filename extension for files containing `Gnome::Gtk3::Builder` UI definitions.
 
 [RELAX NG Compact Syntax](https://git.gnome.org/browse/gtk+/tree/gtk/gtkbuilder.rnc)
 
@@ -31,36 +30,35 @@ The toplevel element is <interface>. It optionally takes a “domain” attribut
 
 Typically, the specific kind of object represented by an <object> element is specified by the “class” attribute. If the type has not been loaded yet, GTK+ tries to find the `get_type()` function from the class name by applying heuristics. This works in most cases, but if necessary, it is possible to specify the name of the `get_type()` function explictly with the "type-func" attribute. As a special case, `Gnome::Gtk3::Builder` allows to use an object that has been constructed by a `Gnome::Gtk3::UIManager` in another part of the UI definition by specifying the id of the `Gnome::Gtk3::UIManager` in the “constructor” attribute and the name of the object in the “id” attribute.
 
-Objects may be given a name with the “id” attribute, which allows the application to retrieve them from the builder with `gtk_builder_get_object()`. An id is also necessary to use the object as property value in other parts of the UI definition. GTK+ reserves ids starting and ending with ___ (3 underscores) for its own purposes.
+Objects may be given a name with the “id” attribute, which allows the application to retrieve them from the builder with `gtk_builder_get_object()` which is also used indirectly when a widget is created usin `.new(:$build-id)`. An id is also necessary to use the object as property value in other parts of the UI definition. GTK+ reserves ids starting and ending with ___ (3 underscores) for its own purposes.
 
 Setting properties of objects is pretty straightforward with the <property> element: the “name” attribute specifies the name of the property, and the content of the element specifies the value. If the “translatable” attribute is set to a true value, GTK+ uses `gettext()` (or `dgettext()` if the builder has a translation domain set) to find a translation for the value. This happens before the value is parsed, so it can be used for properties of any type, but it is probably most useful for string properties. It is also possible to specify a context to disambiguate short strings, and comments which may help the translators.
 
 `Gnome::Gtk3::Builder` can parse textual representations for the most common property types: characters, strings, integers, floating-point numbers, booleans (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted as `1`, strings like “FALSE”, “f”, “no”, “n”, “0” are interpreted as `0`), enumerations (can be specified by their name, nick or integer value), flags (can be specified by their name, nick, integer value, optionally combined with “|”, e.g. “GTK_VISIBLE|GTK_REALIZED”) and colors (in a format understood by `gdk_rgba_parse()`).
 
-GVariants can be specified in the format understood by `g_variant_parse()`, and pixbufs can be specified as a filename of an image file to load.
-
 Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via `gtk_builder_expose_object()`. In general, `Gnome::Gtk3::Builder` allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
 
-It is also possible to bind a property value to another object's property value using the attributes "bind-source" to specify the source object of the binding, "bind-property" to specify the source property and optionally "bind-flags" to specify the binding flags Internally builder implement this using GBinding objects. For more information see `g_object_bind_property()`
-
-Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. By default, GTK+ tries to find the handler using `g_module_symbol()`, but this can be changed by passing a custom `Gnome::Gtk3::BuilderConnectFunc` to `gtk_builder_connect_signals_full()`. The remaining attributes, “after”, “swapped” and “object”, have the same meaning as the corresponding parameters of the `g_signal_connect_object()` or `g_signal_connect_data()` functions. A “last_modification_time” attribute is also allowed, but it does not have a meaning to the builder.
+Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the perl6 modules. The "object" field has a meaning in `Gnome::Gtk3::Glade`.
 
 Sometimes it is necessary to refer to widgets which have implicitly been constructed by GTK+ as part of a composite widget, to set properties on them or to add further children (e.g. the *vbox* of a `Gnome::Gtk3::Dialog`). This can be achieved by setting the “internal-child” propery of the <child> element to a true value. Note that `Gnome::Gtk3::Builder` still requires an <object> element for the internal child, even if it has already been constructed.
 
-A number of widgets have different places where a child can be added (e.g. tabs vs. page content in notebooks). This can be reflected in a UI definition by specifying the “type” attribute on a <child> The possible values for the “type” attribute are described in the sections describing the widget-specific portions of UI definitions.
+A number of widgets have different places where a child can be added (e.g. tabs vs. page content in notebooks). This can be reflected in a UI definition by specifying the “type” attribute on a <child>. The possible values for the “type” attribute are described in the sections describing the widget-specific portions of UI definitions.
 
-# A `Gnome::Gtk3::Builder` UI Definition
+A Gnome::Gtk3::Builder UI Definition
+------------------------------------
+
+Note the class names are e.g. GtkDialog, not Gnome::Gtk3::Dialog. This is because those are the c-source class names of the GTK+ objects.
 
     <interface>
-      <object class="C<Gnome::Gtk3::Dialog>" id="dialog1">
+      <object class="GtkDialog>" id="dialog1">
         <child internal-child="vbox">
-          <object class="C<Gnome::Gtk3::Box>" id="vbox1">
+          <object class="GtkBox>" id="vbox1">
             <property name="border-width">10</property>
             <child internal-child="action_area">
-              <object class="C<Gnome::Gtk3::ButtonBox>" id="hbuttonbox1">
+              <object class="GtkButtonBox>" id="hbuttonbox1">
                 <property name="border-width">20</property>
                 <child>
-                  <object class="C<Gnome::Gtk3::Button>" id="ok_button">
+                  <object class="GtkButton>" id="ok_button">
                     <property name="label">gtk-ok</property>
                     <property name="use-stock">TRUE</property>
                     <signal name="clicked" handler="ok_button_clicked"/>
@@ -73,11 +71,10 @@ A number of widgets have different places where a child can be added (e.g. tabs 
       </object>
     </interface>
 
-Beyond this general structure, several object classes define their own XML DTD fragments for filling in the ANY placeholders in the DTD above. Note that a custom element in a <child> element gets parsed by the custom tag handler of the parent object, while a custom element in an <object> element gets parsed by the custom tag handler of the object.
+To load it and use it do the following (assume above text is in $gui).
 
-These XML fragments are explained in the documentation of the respective objects.
-
-Additionally, since 3.10 a special <template> tag has been added to the format allowing one to define a widget class’s components. See the [`Gnome::Gtk3::Widget` documentation][composite-templates] for details.
+    my Gnome::Gtk3::Builder $builder .= new(:string($gui));
+    my Gnome::Gtk3::Button $button .= new(:build-id<ok_button>));
 
 Synopsis
 ========
@@ -172,9 +169,9 @@ gtk_builder_new
 
 Creates a new empty builder object.
 
-This function is only useful if you intend to make multiple calls to `gtk_builder_add_from_file()`, `gtk_builder_add_from_resource()` or `gtk_builder_add_from_string()` in order to merge multiple UI descriptions into a single builder.
+This function is only useful if you intend to make multiple calls to `gtk_builder_add_from_file()` or `gtk_builder_add_from_string()` in order to merge multiple UI descriptions into a single builder.
 
-Most users will probably want to use `gtk_builder_new_from_file()`, `gtk_builder_new_from_resource()` or `gtk_builder_new_from_string()`.
+Most users will probably want to use `gtk_builder_new_from_file()` `gtk_builder_new_from_string()`.
 
 Returns: a new (empty) `Gnome::Gtk3::Builder` object
 
@@ -193,7 +190,7 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 You should not use this function with untrusted files (ie: files that are not part of your application). Broken `Gnome::Gtk3::Builder` files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
 
 Since: 2.12
 
@@ -203,8 +200,6 @@ Since: 2.12
     )
 
   * Str $filename; the name of the file to parse
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
 
 [gtk_builder_] add_from_string
 ------------------------------
@@ -224,8 +219,6 @@ Since: 2.12
   * Str $buffer; the string to parse
 
   * Int $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
-
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
 
 [gtk_builder_] get_object
 -------------------------

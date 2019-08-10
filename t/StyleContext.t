@@ -1,18 +1,20 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TextIter;
+use Gnome::Gtk3::StyleContext;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TextIter $ti .= new(:empty);
+my Gnome::Gtk3::StyleContext $sc .= new(:empty);
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  isa-ok $ti, Gnome::Gtk3::TextIter;
+  isa-ok $sc, Gnome::Gtk3::StyleContext;
 }
+
+#-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
 done-testing;

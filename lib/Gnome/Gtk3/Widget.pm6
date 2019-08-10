@@ -1,3 +1,5 @@
+#TL:+:Gnome::Gtk3::Widget
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
@@ -8,20 +10,13 @@ use v6;
 
 =head1 Description
 
-
 C<Gnome::Gtk3::Widget> is the base class all widgets in this package derive from. It manages the widget lifecycle, states and style.
 
 =head2 Height-for-width Geometry Management
 
-GTK+ uses a height-for-width (and width-for-height) geometry management
-system. Height-for-width means that a widget can change how much
-vertical space it needs, depending on the amount of horizontal space
-that it is given (and similar for width-for-height). The most common
-example is a label that reflows to fill up the available width, wraps
-to fewer lines, and therefore needs less height.
+GTK+ uses a height-for-width (and width-for-height) geometry management system. Height-for-width means that a widget can change how much vertical space it needs, depending on the amount of horizontal space that it is given (and similar for width-for-height). The most common example is a label that reflows to fill up the available width, wraps to fewer lines, and therefore needs less height.
 
-Height-for-width geometry management is implemented in GTK+ by way
-of five virtual methods:
+Height-for-width geometry management is implemented in GTK+ by way of five virtual methods:
 
 =item C<get_request_mode()>
 =item C<get_preferred_width()>
@@ -30,63 +25,26 @@ of five virtual methods:
 =item C<get_preferred_width_for_height()>
 =item C<get_preferred_height_and_baseline_for_width()>
 
-There are some important things to keep in mind when implementing
-height-for-width and when using it in container implementations.
+There are some important things to keep in mind when implementing height-for-width and when using it in container implementations.
 
-The geometry management system will query a widget hierarchy in
-only one orientation at a time. When widgets are initially queried
-for their minimum sizes it is generally done in two initial passes
-in the C<GtkSizeRequestMode> chosen by the toplevel.
+The geometry management system will query a widget hierarchy in only one orientation at a time. When widgets are initially queried for their minimum sizes it is generally done in two initial passes in the C<GtkSizeRequestMode> chosen by the toplevel.
 
-For example, when queried in the normal
-C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> mode:
-First, the default minimum and natural width for each widget
-in the interface will be computed using C<gtk_widget_get_preferred_width()>.
-Because the preferred widths for each container depend on the preferred
-widths of their children, this information propagates up the hierarchy,
-and finally a minimum and natural width is determined for the entire
-toplevel. Next, the toplevel will use the minimum width to query for the
-minimum height contextual to that width using
-C<gtk_widget_get_preferred_height_for_width()>, which will also be a highly
-recursive operation. The minimum height for the minimum width is normally
-used to set the minimum size constraint on the toplevel
-(unless C<gtk_window_set_geometry_hints()> is explicitly used instead).
+For example, when queried in the normal C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> mode:
+=item First, the default minimum and natural width for each widget in the interface will be computed using C<gtk_widget_get_preferred_width()>. Because the preferred widths for each container depend on the preferred widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
+=item Next, the toplevel will use the minimum width to query for the minimum height contextual to that width using C<gtk_widget_get_preferred_height_for_width()>, which will also be a highly recursive operation. The minimum height for the minimum width is normally used to set the minimum size constraint on the toplevel (unless C<gtk_window_set_geometry_hints()> is explicitly used instead).
 
-After the toplevel window has initially requested its size in both
-dimensions it can go on to allocate itself a reasonable size (or a size
-previously specified with C<gtk_window_set_default_size()>). During the
-recursive allocation process it’s important to note that request cycles
-will be recursively executed while container widgets allocate their children.
-Each container widget, once allocated a size, will go on to first share the
-space in one orientation among its children and then request each child's
-height for its target allocated width or its width for allocated height,
-depending. In this way a C<Gnome::Gtk3::Widget> will typically be requested its size
-a number of times before actually being allocated a size. The size a
-widget is finally allocated can of course differ from the size it has
-requested. For this reason, C<Gnome::Gtk3::Widget> caches a  small number of results
-to avoid re-querying for the same sizes in one allocation cycle.
+After the toplevel window has initially requested its size in both dimensions it can go on to allocate itself a reasonable size (or a size previously specified with C<gtk_window_set_default_size()>). During the recursive allocation process it’s important to note that request cycles will be recursively executed while container widgets allocate their children. Each container widget, once allocated a size, will go on to first share the space in one orientation among its children and then request each child's height for its target allocated width or its width for allocated height, depending.
 
-See
-[C<Gnome::Gtk3::Container>’s geometry management section](https://developer.gnome.org/gtk3/stable/GtkContainer.html)
-to learn more about how height-for-width allocations are performed
-by container widgets.
+In this way a C<Gnome::Gtk3::Widget> will typically be requested its size a number of times before actually being allocated a size. The size a widget is finally allocated can of course differ from the size it has requested. For this reason, C<Gnome::Gtk3::Widget> caches a  small number of results to avoid re-querying for the same sizes in one allocation cycle.
 
-If a widget does move content around to intelligently use up the
-allocated size then it must support the request in both
-C<GtkSizeRequestMode>s even if the widget in question only
-trades sizes in a single orientation.
+See [Gnome::Gtk3::Container’s geometry management section](https://developer.gnome.org/gtk3/stable/GtkContainer.html) to learn more about how height-for-width allocations are performed by container widgets.
 
-For instance, a C<Gnome::Gtk3::Label> that does height-for-width word wrapping
-will not expect to have C<get_preferred_height()> called
-because that call is specific to a width-for-height request. In this
-case the label must return the height required for its own minimum
-possible width. By following this rule any widget that handles
-height-for-width or width-for-height requests will always be allocated
-at least enough space to fit its own content.
+If a widget does move content around to intelligently use up the allocated size then it must support the request in both C<GtkSizeRequestMode>s even if the widget in question only trades sizes in a single orientation.
 
-Here are some examples of how a C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> widget
-generally deals with width-for-height requests, for C<get_preferred_height()>
-it will do (A piece of C-code directly from the docs):
+For instance, a C<Gnome::Gtk3::Label> that does height-for-width word wrapping will not expect to have C<get_preferred_height()> called because that call is specific to a width-for-height request. In this case the label must return the height required for its own minimum possible width. By following this rule any widget that handles height-for-width or width-for-height requests will always be allocated at least enough space to fit its own content.
+
+=begin comment
+Here are some examples of how a C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> widget generally deals with width-for-height requests, for C<get_preferred_height()> it will do (A piece of C-code directly from the docs):
 
   static void foo_widget_get_preferred_height (
     GtkWidget *widget, gint *min_height, gint *nat_height
@@ -129,38 +87,22 @@ the minimum and natural width:
       ahead and do its real width for height calculation here.
     }
   }
+=end comment
 
-Often a widget needs to get its own request during size request or
-allocation. For example, when computing height it may need to also
-compute width. Or when deciding how to use an allocation, the widget
-may need to know its natural size. In these cases, the widget should
-be careful to call its virtual methods directly, like this:
+=begin comment
+Often a widget needs to get its own request during size request or allocation. For example, when computing height it may need to also compute width. Or when deciding how to use an allocation, the widget may need to know its natural size. In these cases, the widget should be careful to call its virtual methods directly, like this:
 
   GTK_WIDGET_GET_CLASS(widget)->get_preferred_width(
     widget, &min, &natural
   );
 
-It will not work to use the wrapper functions, such as
-C<gtk_widget_get_preferred_width()> inside your own size request
-implementation. These return a request adjusted by C<Gnome::Gtk3::SizeGroup>
-and by the C<adjust_size_request()> virtual method. If a
-widget used the wrappers inside its virtual method implementations,
-then the adjustments (such as widget margins) would be applied
-twice. GTK+ therefore does not allow this and will warn if you try
-to do it.
+It will not work to use the wrapper functions, such as C<gtk_widget_get_preferred_width()> inside your own size request implementation. These return a request adjusted by C<Gnome::Gtk3::SizeGroup> and by the C<adjust_size_request()> virtual method. If a widget used the wrappers inside its virtual method implementations, then the adjustments (such as widget margins) would be applied twice. GTK+ therefore does not allow this and will warn if you try to do it.
 
-Of course if you are getting the size request for
-another widget, such as a child of a
-container, you must use the wrapper APIs.
-Otherwise, you would not properly consider widget margins,
-C<Gnome::Gtk3::SizeGroup>, and so forth.
+Of course if you are getting the size request for another widget, such as a child of a container, you must use the wrapper APIs. Otherwise, you would not properly consider widget margins, C<Gnome::Gtk3::SizeGroup>, and so forth.
 
-Since 3.10 GTK+ also supports baseline vertical alignment of widgets. This
-means that widgets are positioned such that the typographical baseline of
-widgets in the same row are aligned. This happens if a widget supports baselines,
-has a vertical alignment of C<GTK_ALIGN_BASELINE>, and is inside a container
-that supports baselines and has a natural “row” that it aligns to the baseline,
-or a baseline assigned to it by the grandparent.
+=end comment
+
+Since 3.10 GTK+ also supports baseline vertical alignment of widgets. This means that widgets are positioned such that the typographical baseline of widgets in the same row are aligned. This happens if a widget supports baselines, has a vertical alignment of C<GTK_ALIGN_BASELINE>, and is inside a container that supports baselines and has a natural “row” that it aligns to the baseline, or a baseline assigned to it by the grandparent.
 
 Baseline alignment support for a widget is done by the C<get_preferred_height_and_baseline_for_width()> virtual function. It allows you to report a baseline in combination with the minimum and natural height. If there is no baseline you can return -1 to indicate this. The default implementation of this virtual function calls into the C<get_preferred_height()> and C<get_preferred_height_for_width()>, so if baselines are not supported it doesn’t need to be implemented.
 
@@ -170,8 +112,7 @@ If a widget ends up baseline aligned it will be allocated all the space in the p
 
 C<Gnome::Gtk3::Widget> introduces “style properties” - these are basically object properties that are stored not on the object, but in the style object associated to the widget. Style properties are set in gtk resource files. This mechanism is used for configuring such things as the location of the scrollbar arrows through the theme, giving theme authors more control over the look of applications without the need to write a theme engine in C.
 
-Use C<gtk_widget_class_install_style_property()> to install style properties for
-a widget class, C<gtk_widget_class_find_style_property()> or C<gtk_widget_class_list_style_properties()> to get information about existing style properties and C<gtk_widget_style_get_property()>, C<gtk_widget_style_get()> or C<gtk_widget_style_get_valist()> to obtain the value of a style property.
+Use C<gtk_widget_class_install_style_property()> to install style properties for a widget class, C<gtk_widget_class_find_style_property()> or C<gtk_widget_class_list_style_properties()> to get information about existing style properties and C<gtk_widget_style_get_property()>, C<gtk_widget_style_get()> or C<gtk_widget_style_get_valist()> to obtain the value of a style property.
 
 =head2 Gnome::Gtk3::Widget as Gnome::Gtk3::Buildable
 
@@ -322,7 +263,6 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
   unit class Gnome::Gtk3::Widget;
   also is Gnome::GObject::InitiallyUnowned;
 
-
 =head2 Example
 
   # create a button and set a tooltip
@@ -339,6 +279,7 @@ use Gnome::GObject::InitiallyUnowned;
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::WidgetPath;
 
 subset GtkAllocation of GdkRectangle;
 #-------------------------------------------------------------------------------
@@ -357,10 +298,8 @@ also is Gnome::GObject::InitiallyUnowned;
 
 Kinds of widget-specific help. Used by the ::show-help signal.
 
-
 =item GTK_WIDGET_HELP_TOOLTIP: Tooltip.
 =item GTK_WIDGET_HELP_WHATS_THIS: What’s this.
-
 
 =end pod
 
@@ -377,7 +316,6 @@ A C<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. Se
 [C<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for
 more information.
 
-
 =item Int $.width: the widget’s desired width
 =item Int $.height: the widget’s desired height
 
@@ -387,7 +325,6 @@ class GtkRequisition is export is repr('CStruct') {
   has int32 $.width;
   has int32 $.height;
 }
-
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -425,6 +362,7 @@ my Bool $signals-added = False;
 =end pod
 #=head2 new
 
+#TS:BUILD
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -468,7 +406,7 @@ submethod BUILD ( *%options ) {
 #  return unless self.^name eq 'Gnome::Gtk3::Widget';
 
   # only after creating the widget, the gtype is known
-#  self.set-class-info('GtkWidget');
+  self.set-class-info('GtkWidget');
 }
 
 #-------------------------------------------------------------------------------
@@ -502,6 +440,7 @@ sub gtk_widget_connect_object_event(
 #TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_new
 =begin pod
 =head2 gtk_widget_new
 
@@ -528,6 +467,7 @@ sub gtk_widget_new ( N-GObject $type, Str $first_property_name, Any $any = Any )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_destroy
 =begin pod
 =head2 gtk_widget_destroy
 
@@ -573,6 +513,7 @@ sub gtk_widget_destroy ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_destroyed
 =begin pod
 =head2 gtk_widget_destroyed
 
@@ -595,6 +536,7 @@ sub gtk_widget_destroyed ( N-GObject $widget, N-GObject $widget_pointer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_unparent
 =begin pod
 =head2 gtk_widget_unparent
 
@@ -612,6 +554,7 @@ sub gtk_widget_unparent ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_show
 =begin pod
 =head2 gtk_widget_show
 
@@ -637,6 +580,7 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_hide
 =begin pod
 =head2 gtk_widget_hide
 
@@ -653,6 +597,7 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_show_now
 =begin pod
 =head2 [gtk_widget_] show_now
 
@@ -672,6 +617,7 @@ sub gtk_widget_show_now ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_show_all
 =begin pod
 =head2 [gtk_widget_] show_all
 
@@ -688,6 +634,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_set_no_show_all
 =begin pod
 =head2 [gtk_widget_] set_no_show_all
 
@@ -710,6 +657,7 @@ sub gtk_widget_set_no_show_all ( N-GObject $widget, int32 $no_show_all )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_no_show_all
 =begin pod
 =head2 [gtk_widget_] get_no_show_all
 
@@ -732,6 +680,7 @@ sub gtk_widget_get_no_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_map
 =begin pod
 =head2 gtk_widget_map
 
@@ -748,6 +697,7 @@ sub gtk_widget_map ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_unmap
 =begin pod
 =head2 gtk_widget_unmap
 
@@ -764,6 +714,7 @@ sub gtk_widget_unmap ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_realize
 =begin pod
 =head2 gtk_widget_realize
 
@@ -796,6 +747,7 @@ sub gtk_widget_realize ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_unrealize
 =begin pod
 =head2 gtk_widget_unrealize
 
@@ -814,6 +766,7 @@ sub gtk_widget_unrealize ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_draw
 =begin pod
 =head2 gtk_widget_draw
 
@@ -849,6 +802,7 @@ sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_draw
 =begin pod
 =head2 [gtk_widget_] queue_draw
 
@@ -865,6 +819,7 @@ sub gtk_widget_queue_draw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_draw_area
 =begin pod
 =head2 [gtk_widget_] queue_draw_area
 
@@ -895,6 +850,7 @@ sub gtk_widget_queue_draw_area ( N-GObject $widget, int32 $x, int32 $y, int32 $w
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_draw_region
 =begin pod
 =head2 [gtk_widget_] queue_draw_region
 
@@ -923,6 +879,7 @@ sub gtk_widget_queue_draw_region ( N-GObject $widget, cairo_region_t $region )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_resize
 =begin pod
 =head2 [gtk_widget_] queue_resize
 
@@ -947,6 +904,7 @@ sub gtk_widget_queue_resize ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_resize_no_redraw
 =begin pod
 =head2 [gtk_widget_] queue_resize_no_redraw
 
@@ -965,6 +923,7 @@ sub gtk_widget_queue_resize_no_redraw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_queue_allocate
 =begin pod
 =head2 [gtk_widget_] queue_allocate
 
@@ -989,6 +948,7 @@ sub gtk_widget_queue_allocate ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_frame_clock
 =begin pod
 =head2 [gtk_widget_] get_frame_clock
 
@@ -1021,7 +981,6 @@ Since: 3.8
 
   method gtk_widget_get_frame_clock ( --> N-GObject  )
 
-
 =end pod
 
 sub gtk_widget_get_frame_clock ( N-GObject $widget )
@@ -1030,10 +989,9 @@ sub gtk_widget_get_frame_clock ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_size_allocate
 =begin pod
 =head2 [gtk_widget_] size_allocate
-
-
 
   method gtk_widget_size_allocate ( GtkAllocation $allocation )
 
@@ -1046,6 +1004,7 @@ sub gtk_widget_size_allocate ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_size_allocate_with_baseline
 =begin pod
 =head2 [gtk_widget_] size_allocate_with_baseline
 
@@ -1077,13 +1036,15 @@ sub gtk_widget_size_allocate_with_baseline ( N-GObject $widget, GtkAllocation $a
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_request_mode
 =begin pod
 =head2 [gtk_widget_] get_request_mode
 
+Gets whether the widget prefers a height-for-width layout or a width-for-height layout.
 
+GtkBin widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
 
   method gtk_widget_get_request_mode ( --> GtkSizeRequestMode  )
-
 
 =end pod
 
@@ -1093,10 +1054,9 @@ sub gtk_widget_get_request_mode ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_width
-
-
 
   method gtk_widget_get_preferred_width ( Int $minimum_width, Int $natural_width )
 
@@ -1110,9 +1070,9 @@ sub gtk_widget_get_preferred_width ( N-GObject $widget, int32 $minimum_width, in
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_height_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_for_width
-
 
 
   method gtk_widget_get_preferred_height_for_width ( Int $width, Int $minimum_height, Int $natural_height )
@@ -1128,10 +1088,9 @@ sub gtk_widget_get_preferred_height_for_width ( N-GObject $widget, int32 $width,
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_height
-
-
 
   method gtk_widget_get_preferred_height ( Int $minimum_height, Int $natural_height )
 
@@ -1145,9 +1104,9 @@ sub gtk_widget_get_preferred_height ( N-GObject $widget, int32 $minimum_height, 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_width_for_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_width_for_height
-
 
 
   method gtk_widget_get_preferred_width_for_height ( Int $height, Int $minimum_width, Int $natural_width )
@@ -1163,6 +1122,7 @@ sub gtk_widget_get_preferred_width_for_height ( N-GObject $widget, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_height_and_baseline_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_and_baseline_for_width
 
@@ -1183,6 +1143,7 @@ sub gtk_widget_get_preferred_height_and_baseline_for_width ( N-GObject $widget, 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_preferred_size
 =begin pod
 =head2 [gtk_widget_] get_preferred_size
 
@@ -1201,6 +1162,7 @@ sub gtk_widget_get_preferred_size ( N-GObject $widget, GtkRequisition $minimum_s
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_add_accelerator
 =begin pod
 =head2 [gtk_widget_] add_accelerator
 
@@ -1229,6 +1191,7 @@ sub gtk_widget_add_accelerator ( N-GObject $widget, Str $accel_signal, N-GObject
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_remove_accelerator
 =begin pod
 =head2 [gtk_widget_] remove_accelerator
 
@@ -1251,6 +1214,7 @@ sub gtk_widget_remove_accelerator ( N-GObject $widget, N-GObject $accel_group, u
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_set_accel_path
 =begin pod
 =head2 [gtk_widget_] set_accel_path
 
@@ -1288,6 +1252,7 @@ sub gtk_widget_set_accel_path ( N-GObject $widget, Str $accel_path, N-GObject $a
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_list_accel_closures
 =begin pod
 =head2 [gtk_widget_] list_accel_closures
 
@@ -1312,6 +1277,7 @@ sub gtk_widget_list_accel_closures ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_can_activate_accel
 =begin pod
 =head2 [gtk_widget_] can_activate_accel
 
@@ -1339,6 +1305,7 @@ sub gtk_widget_can_activate_accel ( N-GObject $widget, uint32 $signal_id )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_mnemonic_activate
 =begin pod
 =head2 [gtk_widget_] mnemonic_activate
 
@@ -1362,6 +1329,7 @@ sub gtk_widget_mnemonic_activate ( N-GObject $widget, int32 $group_cycling )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_event
 =begin pod
 =head2 gtk_widget_event
 
@@ -1389,6 +1357,7 @@ sub gtk_widget_event ( N-GObject $widget, GdkEvent $event )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_send_focus_change
 =begin pod
 =head2 [gtk_widget_] send_focus_change
 
@@ -1433,6 +1402,7 @@ sub gtk_widget_send_focus_change ( N-GObject $widget, GdkEvent $event )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_activate
 =begin pod
 =head2 gtk_widget_activate
 
@@ -1454,6 +1424,7 @@ sub gtk_widget_activate ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_intersect
 =begin pod
 =head2 gtk_widget_intersect
 
@@ -1477,6 +1448,7 @@ sub gtk_widget_intersect ( N-GObject $widget, N-GObject $area, N-GObject $inters
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] freeze_child_notify
 
@@ -1496,6 +1468,7 @@ sub gtk_widget_freeze_child_notify ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] child_notify
 
@@ -1518,6 +1491,7 @@ sub gtk_widget_child_notify ( N-GObject $widget, Str $child_property )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] thaw_child_notify
 
@@ -1535,6 +1509,7 @@ sub gtk_widget_thaw_child_notify ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_can_focus
 
@@ -1555,6 +1530,7 @@ sub gtk_widget_set_can_focus ( N-GObject $widget, int32 $can_focus )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_can_focus
 
@@ -1576,6 +1552,7 @@ sub gtk_widget_get_can_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] has_focus
 
@@ -1598,6 +1575,7 @@ sub gtk_widget_has_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_focus
 
@@ -1619,6 +1597,7 @@ sub gtk_widget_is_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] has_visible_focus
 
@@ -1647,6 +1626,7 @@ sub gtk_widget_has_visible_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] grab_focus
 
@@ -1671,6 +1651,7 @@ sub gtk_widget_grab_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_focus_on_click
 
@@ -1692,6 +1673,7 @@ sub gtk_widget_set_focus_on_click ( N-GObject $widget, int32 $focus_on_click )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_focus_on_click
 
@@ -1714,6 +1696,7 @@ sub gtk_widget_get_focus_on_click ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_can_default
 
@@ -1734,6 +1717,7 @@ sub gtk_widget_set_can_default ( N-GObject $widget, int32 $can_default )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_can_default
 
@@ -1755,6 +1739,7 @@ sub gtk_widget_get_can_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] has_default
 
@@ -1777,6 +1762,7 @@ sub gtk_widget_has_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] grab_default
 
@@ -1800,6 +1786,7 @@ sub gtk_widget_grab_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_receives_default
 
@@ -1823,6 +1810,7 @@ sub gtk_widget_set_receives_default ( N-GObject $widget, int32 $receives_default
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_receives_default
 
@@ -1848,6 +1836,7 @@ sub gtk_widget_get_receives_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] has_grab
 
@@ -1871,6 +1860,7 @@ sub gtk_widget_has_grab ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] device_is_shadowed
 
@@ -1897,6 +1887,7 @@ sub gtk_widget_device_is_shadowed ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_name
 
@@ -1921,6 +1912,7 @@ sub gtk_widget_set_name ( N-GObject $widget, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_name
 
@@ -1941,6 +1933,7 @@ sub gtk_widget_get_name ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_state_flags
 
@@ -1972,6 +1965,7 @@ sub gtk_widget_set_state_flags ( N-GObject $widget, int32 $flags, int32 $clear )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] unset_state_flags
 
@@ -1992,6 +1986,7 @@ sub gtk_widget_unset_state_flags ( N-GObject $widget, int32 $flags )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_state_flags
 
@@ -2019,6 +2014,7 @@ sub gtk_widget_get_state_flags ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_sensitive
 
@@ -2038,6 +2034,7 @@ sub gtk_widget_set_sensitive ( N-GObject $widget, int32 $sensitive )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_sensitive
 
@@ -2062,6 +2059,7 @@ sub gtk_widget_get_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_sensitive
 
@@ -2083,6 +2081,7 @@ sub gtk_widget_is_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_visible
 
@@ -2107,6 +2106,7 @@ sub gtk_widget_set_visible ( N-GObject $widget, int32 $visible )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_visible
 
@@ -2133,6 +2133,7 @@ sub gtk_widget_get_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_visible
 
@@ -2158,6 +2159,7 @@ sub gtk_widget_is_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_has_window
 
@@ -2185,6 +2187,7 @@ sub gtk_widget_set_has_window ( N-GObject $widget, int32 $has_window )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_has_window
 
@@ -2206,6 +2209,7 @@ sub gtk_widget_get_has_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_toplevel
 
@@ -2230,6 +2234,7 @@ sub gtk_widget_is_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_drawable
 
@@ -2251,6 +2256,7 @@ sub gtk_widget_is_drawable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_realized
 
@@ -2274,6 +2280,7 @@ sub gtk_widget_set_realized ( N-GObject $widget, int32 $realized )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_realized
 
@@ -2294,6 +2301,7 @@ sub gtk_widget_get_realized ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_mapped
 
@@ -2315,6 +2323,7 @@ sub gtk_widget_set_mapped ( N-GObject $widget, int32 $mapped )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_mapped
 
@@ -2335,6 +2344,7 @@ sub gtk_widget_get_mapped ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_app_paintable
 
@@ -2361,6 +2371,7 @@ sub gtk_widget_set_app_paintable ( N-GObject $widget, int32 $app_paintable )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_app_paintable
 
@@ -2384,6 +2395,7 @@ sub gtk_widget_get_app_paintable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_redraw_on_allocate
 
@@ -2413,6 +2425,7 @@ sub gtk_widget_set_redraw_on_allocate ( N-GObject $widget, int32 $redraw_on_allo
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_parent
 
@@ -2434,6 +2447,7 @@ sub gtk_widget_set_parent ( N-GObject $widget, N-GObject $parent )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_parent
 
@@ -2452,6 +2466,7 @@ sub gtk_widget_get_parent ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_parent_window
 
@@ -2475,6 +2490,7 @@ sub gtk_widget_set_parent_window ( N-GObject $widget, N-GObject $parent_window )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_parent_window
 
@@ -2493,6 +2509,7 @@ sub gtk_widget_get_parent_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_child_visible
 
@@ -2525,6 +2542,7 @@ sub gtk_widget_set_child_visible ( N-GObject $widget, int32 $is_visible )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_child_visible
 
@@ -2548,6 +2566,7 @@ sub gtk_widget_get_child_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_window
 
@@ -2576,6 +2595,7 @@ sub gtk_widget_set_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_window
 
@@ -2596,6 +2616,7 @@ sub gtk_widget_get_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] register_window
 
@@ -2621,6 +2642,7 @@ sub gtk_widget_register_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] unregister_window
 
@@ -2641,6 +2663,7 @@ sub gtk_widget_unregister_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_width
 
@@ -2661,6 +2684,7 @@ sub gtk_widget_get_allocated_width ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_height
 
@@ -2681,6 +2705,7 @@ sub gtk_widget_get_allocated_height ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_baseline
 
@@ -2704,6 +2729,7 @@ sub gtk_widget_get_allocated_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_size
 
@@ -2731,6 +2757,7 @@ sub gtk_widget_get_allocated_size ( N-GObject $widget, GtkAllocation $allocation
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocation
 
@@ -2764,6 +2791,7 @@ sub gtk_widget_get_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_allocation
 
@@ -2790,6 +2818,7 @@ sub gtk_widget_set_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_clip
 
@@ -2817,6 +2846,7 @@ sub gtk_widget_set_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_clip
 
@@ -2841,6 +2871,7 @@ sub gtk_widget_get_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] child_focus
 
@@ -2878,6 +2909,7 @@ sub gtk_widget_child_focus ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] keynav_failed
 
@@ -2927,6 +2959,7 @@ sub gtk_widget_keynav_failed ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] error_bell
 
@@ -2950,6 +2983,7 @@ sub gtk_widget_error_bell ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_size_request
 
@@ -2996,6 +3030,7 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_size_request
 
@@ -3019,6 +3054,7 @@ sub gtk_widget_get_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_events
 
@@ -3045,6 +3081,7 @@ sub gtk_widget_set_events ( N-GObject $widget, int32 $events )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] add_events
 
@@ -3064,6 +3101,7 @@ sub gtk_widget_add_events ( N-GObject $widget, int32 $events )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_device_events
 
@@ -3093,6 +3131,7 @@ sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEven
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] add_device_events
 
@@ -3114,6 +3153,7 @@ sub gtk_widget_add_device_events ( N-GObject $widget, N-GObject $device, GdkEven
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_opacity
 
@@ -3145,6 +3185,7 @@ sub gtk_widget_set_opacity ( N-GObject $widget, num64 $opacity )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_opacity
 
@@ -3166,6 +3207,7 @@ sub gtk_widget_get_opacity ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_device_enabled
 
@@ -3190,6 +3232,7 @@ sub gtk_widget_set_device_enabled ( N-GObject $widget, N-GObject $device, int32 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_device_enabled
 
@@ -3212,6 +3255,7 @@ sub gtk_widget_get_device_enabled ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_toplevel
 
@@ -3254,6 +3298,7 @@ sub gtk_widget_get_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_ancestor
 
@@ -3281,6 +3326,7 @@ sub gtk_widget_get_ancestor ( N-GObject $widget, N-GObject $widget_type )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_visual
 
@@ -3299,6 +3345,7 @@ sub gtk_widget_get_visual ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_visual
 
@@ -3321,6 +3368,7 @@ sub gtk_widget_set_visual ( N-GObject $widget, N-GObject $visual )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_screen
 
@@ -3348,6 +3396,7 @@ sub gtk_widget_get_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] has_screen
 
@@ -3372,6 +3421,7 @@ sub gtk_widget_has_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_scale_factor
 
@@ -3396,6 +3446,7 @@ sub gtk_widget_get_scale_factor ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_display
 
@@ -3422,6 +3473,7 @@ sub gtk_widget_get_display ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_settings
 
@@ -3445,6 +3497,7 @@ sub gtk_widget_get_settings ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_clipboard
 
@@ -3473,6 +3526,7 @@ sub gtk_widget_get_clipboard ( N-GObject $widget, GdkAtom $selection )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_hexpand
 
@@ -3504,6 +3558,7 @@ sub gtk_widget_get_hexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_hexpand
 
@@ -3544,6 +3599,7 @@ sub gtk_widget_set_hexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_hexpand_set
 
@@ -3571,6 +3627,7 @@ sub gtk_widget_get_hexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_hexpand_set
 
@@ -3601,6 +3658,7 @@ sub gtk_widget_set_hexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_vexpand
 
@@ -3622,6 +3680,7 @@ sub gtk_widget_get_vexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_vexpand
 
@@ -3641,6 +3700,7 @@ sub gtk_widget_set_vexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_vexpand_set
 
@@ -3662,6 +3722,7 @@ sub gtk_widget_get_vexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_vexpand_set
 
@@ -3681,6 +3742,7 @@ sub gtk_widget_set_vexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] queue_compute_expand
 
@@ -3700,6 +3762,7 @@ sub gtk_widget_queue_compute_expand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] compute_expand
 
@@ -3729,6 +3792,7 @@ sub gtk_widget_compute_expand ( N-GObject $widget, int32 $orientation )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_support_multidevice
 
@@ -3748,6 +3812,7 @@ sub gtk_widget_get_support_multidevice ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_support_multidevice
 
@@ -3770,6 +3835,7 @@ sub gtk_widget_set_support_multidevice ( N-GObject $widget, int32 $support_multi
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_type
 
@@ -3793,6 +3859,7 @@ sub gtk_widget_class_set_accessible_type ( GtkWidgetClass $widget_class, N-GObje
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_role
 
@@ -3827,6 +3894,7 @@ sub gtk_widget_class_set_accessible_role ( GtkWidgetClass $widget_class, AtkRole
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_accessible
 
@@ -3857,6 +3925,7 @@ sub gtk_widget_get_accessible ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_halign
 
@@ -3880,6 +3949,7 @@ sub gtk_widget_get_halign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_halign
 
@@ -3897,6 +3967,7 @@ sub gtk_widget_set_halign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_valign
 
@@ -3922,6 +3993,7 @@ sub gtk_widget_get_valign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_valign_with_baseline
 
@@ -3943,6 +4015,7 @@ sub gtk_widget_get_valign_with_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_valign
 
@@ -3960,6 +4033,7 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_margin_start
 
@@ -3980,6 +4054,7 @@ sub gtk_widget_get_margin_start ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_margin_start
 
@@ -3999,6 +4074,7 @@ sub gtk_widget_set_margin_start ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_margin_end
 
@@ -4019,6 +4095,7 @@ sub gtk_widget_get_margin_end ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_margin_end
 
@@ -4038,6 +4115,7 @@ sub gtk_widget_set_margin_end ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_margin_top
 
@@ -4058,6 +4136,7 @@ sub gtk_widget_get_margin_top ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_margin_top
 
@@ -4077,6 +4156,7 @@ sub gtk_widget_set_margin_top ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_margin_bottom
 
@@ -4097,6 +4177,7 @@ sub gtk_widget_get_margin_bottom ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_margin_bottom
 
@@ -4116,6 +4197,7 @@ sub gtk_widget_set_margin_bottom ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_events
 
@@ -4141,6 +4223,7 @@ sub gtk_widget_get_events ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_device_events
 
@@ -4164,6 +4247,7 @@ sub gtk_widget_get_device_events ( N-GObject $widget, N-GObject $device )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] is_ancestor
 
@@ -4185,6 +4269,7 @@ sub gtk_widget_is_ancestor ( N-GObject $widget, N-GObject $ancestor )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] translate_coordinates
 
@@ -4213,6 +4298,7 @@ sub gtk_widget_translate_coordinates ( N-GObject $src_widget, N-GObject $dest_wi
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] hide_on_delete
 
@@ -4237,6 +4323,7 @@ sub gtk_widget_hide_on_delete ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] reset_style
 
@@ -4258,6 +4345,7 @@ sub gtk_widget_reset_style ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] create_pango_context
 
@@ -4277,6 +4365,7 @@ sub gtk_widget_create_pango_context ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_pango_context
 
@@ -4303,6 +4392,7 @@ sub gtk_widget_get_pango_context ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_font_options
 
@@ -4338,6 +4428,7 @@ sub cairo_font_options_t (  $*gtk_widget_get_font_options GtkWidget *widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] create_pango_layout
 
@@ -4364,6 +4455,7 @@ sub gtk_widget_create_pango_layout ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_install_style_property
 
@@ -4382,6 +4474,7 @@ sub gtk_widget_class_install_style_property ( GtkWidgetClass $klass, GParamSpec 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_install_style_property_parser
 
@@ -4400,6 +4493,7 @@ sub gtk_widget_class_install_style_property_parser ( GtkWidgetClass $klass, GPar
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_find_style_property
 
@@ -4423,6 +4517,7 @@ sub gtk_widget_class_find_style_property ( GtkWidgetClass $klass, Str $property_
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_list_style_properties
 
@@ -4447,6 +4542,7 @@ sub gtk_widget_class_list_style_properties ( GtkWidgetClass $klass, uint32 $n_pr
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] style_get_property
 
@@ -4466,6 +4562,7 @@ sub gtk_widget_style_get_property ( N-GObject $widget, Str $property_name, N-GOb
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] style_get_valist
 
@@ -4485,6 +4582,7 @@ sub gtk_widget_style_get_valist ( N-GObject $widget, Str $first_property_name, v
 }}
 #`[[
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] style_get
 
@@ -4502,6 +4600,7 @@ sub gtk_widget_style_get ( N-GObject $widget, Str $first_property_name, Any $any
 ]]
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_direction
 
@@ -4529,6 +4628,7 @@ sub gtk_widget_set_direction ( N-GObject $widget, int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_direction
 
@@ -4548,6 +4648,7 @@ sub gtk_widget_get_direction ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_default_direction
 
@@ -4565,6 +4666,7 @@ sub gtk_widget_set_default_direction ( int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_default_direction
 
@@ -4585,6 +4687,7 @@ sub gtk_widget_get_default_direction (  )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] shape_combine_region
 
@@ -4605,6 +4708,7 @@ sub gtk_widget_shape_combine_region ( N-GObject $widget, cairo_region_t $region 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] input_shape_combine_region
 
@@ -4627,6 +4731,7 @@ sub gtk_widget_input_shape_combine_region ( N-GObject $widget, cairo_region_t $r
 
 #-------------------------------------------------------------------------------
 #TODO check return type CArray?
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] list_mnemonic_labels
 
@@ -4656,6 +4761,7 @@ sub gtk_widget_list_mnemonic_labels ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] add_mnemonic_label
 
@@ -4679,6 +4785,7 @@ sub gtk_widget_add_mnemonic_label ( N-GObject $widget, N-GObject $label )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] remove_mnemonic_label
 
@@ -4700,6 +4807,7 @@ sub gtk_widget_remove_mnemonic_label ( N-GObject $widget, N-GObject $label )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_tooltip_window
 
@@ -4725,6 +4833,7 @@ sub gtk_widget_set_tooltip_window ( N-GObject $widget, N-GObject $custom_window 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_tooltip_window
 
@@ -4747,6 +4856,7 @@ sub gtk_widget_get_tooltip_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] trigger_tooltip_query
 
@@ -4766,6 +4876,7 @@ sub gtk_widget_trigger_tooltip_query ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_tooltip_text
 
@@ -4788,6 +4899,7 @@ sub gtk_widget_set_tooltip_text ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_tooltip_text
 
@@ -4809,6 +4921,7 @@ sub gtk_widget_get_tooltip_text ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_tooltip_markup
 
@@ -4834,6 +4947,7 @@ sub gtk_widget_set_tooltip_markup ( N-GObject $widget, Str $markup )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_tooltip_markup
 
@@ -4855,6 +4969,7 @@ sub gtk_widget_get_tooltip_markup ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_has_tooltip
 
@@ -4874,6 +4989,7 @@ sub gtk_widget_set_has_tooltip ( N-GObject $widget, int32 $has_tooltip )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_has_tooltip
 
@@ -5016,6 +5132,7 @@ sub gtk_requisition_free ( GtkRequisition $requisition )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] in_destruction
 
@@ -5036,6 +5153,7 @@ sub gtk_widget_in_destruction ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_style_context
 
@@ -5056,27 +5174,26 @@ sub gtk_widget_get_style_context ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_get_path
 =begin pod
 =head2 [gtk_widget_] get_path
 
-Returns the C<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget
-is not connected to a toplevel widget, a partial path will be
-created.
+Returns the C<Gnome::Gtk3::WidgetPath> representing the widget. If the widget is not connected to a toplevel widget, a partial path will be created.
 
-Returns: (transfer none): The C<Gnome::Gtk3::WidgetPath> representing I<widget>
+Returns: The C<N-WidgetPath> representing the widget.
 
-  method gtk_widget_get_path ( --> N-GObject  )
-
+  method gtk_widget_get_path ( --> N-GtkWidgetPath )
 
 =end pod
 
 sub gtk_widget_get_path ( N-GObject $widget )
-  returns N-GObject
+  returns N-GtkWidgetPath
   is native(&gtk-lib)
   { * }
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_css_name
 
@@ -5117,6 +5234,7 @@ sub char (  $* gtk_widget_class_get_css_name GtkWidgetClass *widget_class )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_modifier_mask
 
@@ -5142,6 +5260,7 @@ sub gtk_widget_get_modifier_mask ( N-GObject $widget, GdkModifierIntent $intent 
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] insert_action_group
 
@@ -5168,6 +5287,7 @@ sub gtk_widget_insert_action_group ( N-GObject $widget, Str $name, N-GObject $gr
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] add_tick_callback
 
@@ -5212,6 +5332,7 @@ sub gtk_widget_add_tick_callback ( N-GObject $widget, GtkTickCallback $callback,
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] remove_tick_callback
 
@@ -5231,6 +5352,7 @@ sub gtk_widget_remove_tick_callback ( N-GObject $widget, uint32 $id )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] init_template
 
@@ -5263,6 +5385,7 @@ sub gtk_widget_init_template ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_template_child
 
@@ -5292,6 +5415,7 @@ sub gtk_widget_get_template_child ( N-GObject $widget, N-GObject $widget_type, S
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_template
 
@@ -5317,6 +5441,7 @@ sub gtk_widget_class_set_template ( GtkWidgetClass $widget_class, N-GObject $tem
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_template_from_resource
 
@@ -5339,6 +5464,7 @@ sub gtk_widget_class_set_template_from_resource ( GtkWidgetClass $widget_class, 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_bind_template_callback_full
 
@@ -5364,6 +5490,7 @@ sub gtk_widget_class_bind_template_callback_full ( GtkWidgetClass $widget_class,
 
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_set_connect_func
 
@@ -5391,6 +5518,7 @@ sub gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilder
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] class_bind_template_child_full
 
@@ -5434,6 +5562,7 @@ sub gtk_widget_class_bind_template_child_full ( GtkWidgetClass $widget_class, St
 }}
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_action_group
 
@@ -5459,6 +5588,7 @@ sub gtk_widget_get_action_group ( N-GObject $widget, Str $prefix )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] list_action_prefixes
 
@@ -5481,6 +5611,7 @@ sub gtk_widget_list_action_prefixes( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_font_map
 
@@ -5500,6 +5631,7 @@ sub gtk_widget_set_font_map ( N-GObject $widget, PangoFontMap $font_map )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_font_map
 
@@ -7559,6 +7691,7 @@ sub gtk_widget_destroy ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_show
 =begin pod
 =head2 gtk_widget_show
 
@@ -7575,6 +7708,7 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:gtk_widget_hide
 =begin pod
 =head2 gtk_widget_hide
 
@@ -7587,6 +7721,7 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] show_all
 
@@ -7599,6 +7734,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_name
 
@@ -7613,6 +7749,7 @@ sub gtk_widget_set_name ( N-GObject $widget, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_name
 
@@ -7626,6 +7763,7 @@ sub gtk_widget_get_name ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_sensitive
 
@@ -7638,6 +7776,7 @@ sub gtk_widget_set_sensitive ( N-GObject $widget, int32 $sensitive )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_sensitive
 
@@ -7653,6 +7792,7 @@ sub gtk_widget_get_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_size_request
 
@@ -7675,6 +7815,7 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $w, int32 $h )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_no_show_all
 
@@ -7690,6 +7831,7 @@ sub gtk_widget_set_no_show_all ( N-GObject $widget, int32 $no_show_all )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_no_show_all
 
@@ -7703,6 +7845,7 @@ sub gtk_widget_get_no_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_width
 
@@ -7716,6 +7859,7 @@ sub gtk_widget_get_allocated_width ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_allocated_height
 
@@ -7729,6 +7873,7 @@ sub gtk_widget_get_allocated_height ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] queue_draw
 
@@ -7741,6 +7886,7 @@ sub gtk_widget_queue_draw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_display
 
@@ -7756,6 +7902,7 @@ sub gtk_widget_get_display ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_direction
 
@@ -7773,6 +7920,7 @@ sub gtk_widget_set_direction ( N-GObject $widget, int32  $direction )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_direction
 
@@ -7790,6 +7938,7 @@ sub gtk_widget_get_direction ( )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_default_direction
 
@@ -7805,6 +7954,7 @@ sub gtk_widget_set_default_direction ( int32  $direction )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_default_direction
 
@@ -7822,6 +7972,7 @@ sub gtk_widget_get_default_direction ( )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_tooltip_text
 
@@ -7834,6 +7985,7 @@ sub gtk_widget_set_tooltip_text ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_tooltip_text
 
@@ -7847,6 +7999,7 @@ sub gtk_widget_get_tooltip_text ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_window
 
@@ -7863,6 +8016,7 @@ sub gtk_widget_get_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] set_visible
 
@@ -7877,6 +8031,7 @@ sub gtk_widget_set_visible ( N-GObject $widget, int32 $visible)
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_visible
 
@@ -7892,6 +8047,7 @@ sub gtk_widget_get_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:-:
 =begin pod
 =head2 [gtk_widget_] get_has_window
 

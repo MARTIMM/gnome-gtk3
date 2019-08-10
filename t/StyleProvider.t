@@ -1,18 +1,27 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TextIter;
+use Gnome::Gtk3::StyleProvider;
+
+ok True, 'No tests, only to see if module loads well';
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
+#`{{
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TextIter $ti .= new(:empty);
+my Gnome::Gtk3::StyleProvider $sp .= new(:empty);
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  isa-ok $ti, Gnome::Gtk3::TextIter;
+  isa-ok $sp, Gnome::Gtk3::StyleProvider;
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  is 1, 1, 'ok';
+}
+}}
 
 #-------------------------------------------------------------------------------
 done-testing;
