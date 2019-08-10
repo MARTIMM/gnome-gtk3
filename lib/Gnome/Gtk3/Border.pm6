@@ -20,6 +20,7 @@ that can be of different width on each side.
 =head2 Example
 
 =end pod
+
 #-------------------------------------------------------------------------------
 use NativeCall;
 
@@ -36,6 +37,8 @@ also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------
 =begin pod
+=head1 Types
+
 =head2 class N-GtkBorder
 
 A struct that specifies a border around a rectangular area
@@ -57,6 +60,7 @@ class N-GtkBorder is export is repr('CStruct') {
 
 #-------------------------------------------------------------------------------
 #my Bool $signals-added = False;
+has Bool $.border-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -89,10 +93,12 @@ submethod BUILD ( *%options ) {
   # process all named arguments
   if ? %options<empty> {
     self.native-gboxed(gtk_border_new());
+    $!border-is-valid = True;
   }
 
-  elsif ? %options<border> and %options<border> ~~ N-GtkBorder {
+  elsif ? %options<border> {
     self.native-gboxed(%options<border>);
+    $!border-is-valid = True if %options<border> ~~ N-GtkBorder;
   }
 
   elsif %options<left> or %options<right> or %options<top> or %options<bottom> {
@@ -102,6 +108,7 @@ submethod BUILD ( *%options ) {
     $b.top = %options<top>;
     $b.bottom = %options<bottom>;
     self.native-gboxed($b);
+    $!border-is-valid = True;
   }
 
   elsif %options.keys.elems {
@@ -141,6 +148,8 @@ Modify left width of border if value is given. Returns left value after modifica
 =end pod
 
 method left ( Int $value? --> Int ) {
+  die X::Gnome.new(:message('Cannot set left width, Border is not valid'))
+      unless $!border-is-valid;
   self.native-gboxed.left = $value if $value.defined;
   self.native-gboxed.left
 }
@@ -156,6 +165,8 @@ Modify right width of border if value is given. Returns right value after modifi
 =end pod
 
 method right ( Int $value? --> Int ) {
+  die X::Gnome.new(:message('Cannot set right width, Border is not valid'))
+      unless $!border-is-valid;
   self.native-gboxed.right = $value if $value.defined;
   self.native-gboxed.right
 }
@@ -171,6 +182,8 @@ Modify top width of border if value is given. Returns top value after modificati
 =end pod
 
 method top ( Int $value? --> Int ) {
+  die X::Gnome.new(:message('Cannot set top width, Border is not valid'))
+      unless $!border-is-valid;
   self.native-gboxed.top = $value if $value.defined;
   self.native-gboxed.top
 }
@@ -186,24 +199,49 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 =end pod
 
 method bottom ( Int $value? --> Int ) {
+  die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
+      unless $!border-is-valid;
   self.native-gboxed.bottom = $value if $value.defined;
   self.native-gboxed.bottom
 }
 
 #-------------------------------------------------------------------------------
-#TODO DESTROY -> gtk_border_free, maybe same as Error with border-is-valid flag
+=begin pod
+=head2 clear-border
+
+Frees a C<N-GtkBorder> struct and after that, border-is-valid() returns False.
+
+  method clear-border ( )
+
+=end pod
+
+method clear-border ( ) {
+  _gtk_border_free(self.native-gboxed);
+  $!border-is-valid = False;
+}
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head2 border-is-valid
+
+Return the validity of th native structure. After a call to clear-border() this flag is set to False and the object should not be used anymore.
+
+  method border-is-valid ( --> Bool )
+
+=end pod
+# method is implicitly define above
+
+#-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_border_new
 
 Allocates a new C<Gnome::Gtk3::Border>-struct and initializes its elements to zero.
 
-Returns: a newly allocated C<Gnome::Gtk3::Border>-struct. Free with C<gtk_border_free()>
+Returns: a newly allocated C<N-GtkBorder>-struct. Free with C<clear-border()>
 
 Since: 2.14
 
   method gtk_border_new ( --> N-GtkBorder )
-
-=item G_GNUC_MALLO $C;
 
 =end pod
 
@@ -216,12 +254,11 @@ sub gtk_border_new ( )
 =begin pod
 =head2 gtk_border_copy
 
-Copies a C<Gnome::Gtk3::Border>-struct.
+Copies a C<N-GtkBorder> struct.
 
-Returns: (transfer full): a copy of I<border>.
+Returns: a copy of the native object I<N-GtkBorder>.
 
   method gtk_border_copy ( --> N-GtkBorder  )
-
 
 =end pod
 
@@ -231,6 +268,8 @@ sub gtk_border_copy ( N-GtkBorder $border )
   { * }
 
 #-------------------------------------------------------------------------------
+#`{{ No document, user must use clear-border()
+
 =begin pod
 =head2 gtk_border_free
 
@@ -239,9 +278,11 @@ Frees a C<N-GtkBorder> struct.
   method gtk_border_free ( )
 
 =end pod
+}}
 
-sub gtk_border_free ( N-GtkBorder $border )
+sub _gtk_border_free ( N-GtkBorder $border )
   is native(&gtk-lib)
+  is symbol('gtk_border_free')
   { * }
 
 #-------------------------------------------------------------------------------
