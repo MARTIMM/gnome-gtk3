@@ -53,6 +53,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::GObject::Object;
 use Gnome::Gdk3::Screen;
+use Gnome::Gtk3::Border;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkstylecontext.h
@@ -61,12 +62,10 @@ unit class Gnome::Gtk3::StyleContext:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
-enum GtkStyleProviderPriority is export (
-  GTK_STYLE_PROVIDER_PRIORITY_FALLBACK => 1,
-  GTK_STYLE_PROVIDER_PRIORITY_THEME => 200,
-  GTK_STYLE_PROVIDER_PRIORITY_SETTINGS => 400,
-  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION => 600,
-  GTK_STYLE_PROVIDER_PRIORITY_USER => 800,
+enum GtkStyleContextPrintFlags is export (
+  GTK_STYLE_CONTEXT_PRINT_NONE         => 0,
+  GTK_STYLE_CONTEXT_PRINT_RECURSE      => 1 +< 0,
+  GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE   => 1 +< 1
 );
 
 #-------------------------------------------------------------------------------
@@ -653,10 +652,11 @@ sub gtk_style_context_has_class ( N-GObject $context, Str $class_name )
 
 Gets the value for a widget style property.
 
-When I<value> is no longer needed, C<g_value_unset()> must be called
-to free any allocated memory.
+When I<value> is no longer needed, C<g_value_unset()> must be called to free any allocated memory.
 
-  method gtk_style_context_get_style_property ( Str $property_name, N-GObject $value )
+  method gtk_style_context_get_style_property (
+    Str $property_name, N-GObject $value
+  )
 
 =item Str $property_name; the name of the widget style property
 =item N-GObject $value; Return location for the property value
@@ -688,6 +688,7 @@ sub gtk_style_context_get_style_valist ( N-GObject $context, va_list $args )
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_style_context_] get_style
@@ -705,6 +706,7 @@ Since: 3.0
 sub gtk_style_context_get_style ( N-GObject $context, Any $any = Any )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -969,6 +971,7 @@ sub gtk_style_context_reset_widgets ( N-GObject $screen )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_render_insertion_cursor
@@ -991,6 +994,7 @@ Since: 3.4
 sub gtk_render_insertion_cursor ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, PangoLayout $layout, int32 $index, PangoDirection $direction )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -998,27 +1002,24 @@ sub gtk_render_insertion_cursor ( N-GObject $context, cairo_t $cr, num64 $x, num
 
 Converts the style context into a string representation.
 
-The string representation always includes information about
-the name, state, id, visibility and style classes of the CSS
-node that is backing I<context>. Depending on the flags, more
-information may be included.
+The string representation always includes information about the name, state, id, visibility and style classes of the CSS node that is backing I<context>. Depending on the flags, more information may be included.
 
-This function is intended for testing and debugging of the
-CSS implementation in GTK+. There are no guarantees about
-the format of the returned string, it may change.
+This function is intended for testing and debugging of the CSS implementation in GTK+. There are no guarantees about the format of the returned string, it may change.
 
 Returns: a newly allocated string representing I<context>
 
 Since: 3.20
 
-  method gtk_style_context_to_string ( GtkStyleContextPrintFlags $flags --> char  )
+  method gtk_style_context_to_string (
+    GtkStyleContextPrintFlags $flags --> Str
+  )
 
 =item GtkStyleContextPrintFlags $flags; Flags that determine what to print
 
 =end pod
 
-sub gtk_style_context_to_string ( N-GObject $context, GtkStyleContextPrintFlags $flags )
-  returns char
+sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
+  returns Str
   is native(&gtk-lib)
   { * }
 
@@ -1028,6 +1029,9 @@ sub gtk_style_context_to_string ( N-GObject $context, GtkStyleContextPrintFlags 
 
 =head1 Not yet implemented methods
 
+=head3 method gtk_style_context_get_style ( ... )
+=head3 method gtk_render_insertion_cursor ( ... )
+=head3 method  ( ... )
 =head3 method  ( ... )
 
 =end comment
@@ -1042,6 +1046,9 @@ sub gtk_style_context_to_string ( N-GObject $context, GtkStyleContextPrintFlags 
 =head3 method gtk_style_context_get_valist ( ... )
 =head3 method gtk_style_context_get ( ... )
 =head3 method gtk_style_context_get_style_valist ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
 =head3 method  ( ... )
 
 =end comment
