@@ -2,9 +2,11 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
-  - 2019-08-04 0.17.13:
+  - 2019-08-04 0.18.0:
     - Extended, tested and documented CssProvider and StyleContext in Gnome::Gtk3.
-    - Added StyleProvider in Gnome::Gtk3, altough it is a very empty shell :-\.
+    - Added StyleProvider to Gnome::Gtk3, altough it is a very empty shell :-\.
+    - Added GtkBorder and GtkWidgetPath to Gnome::Gtk3.
+    - Small change in TextIter in Gnome::Gtk3. It needs :empty named argument now when creating.
 
   - 2019-08-04 0.17.12:
     - Builder pod doc

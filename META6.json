@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.17.13",
+  "version": "0.18.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -12,6 +12,7 @@
 
     "Gnome::Gtk3::AboutDialog": "lib/Gnome/Gtk3/AboutDialog.pm6",
     "Gnome::Gtk3::Bin": "lib/Gnome/Gtk3/Bin.pm6",
+    "Gnome::Gtk3::Border": "lib/Gnome/Gtk3/Border.pm6",
     "Gnome::Gtk3::Box": "lib/Gnome/Gtk3/Box.pm6",
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
@@ -59,6 +60,7 @@
     "Gnome::Gtk3::TextView": "lib/Gnome/Gtk3/TextView.pm6",
     "Gnome::Gtk3::ToggleButton": "lib/Gnome/Gtk3/ToggleButton.pm6",
     "Gnome::Gtk3::Widget": "lib/Gnome/Gtk3/Widget.pm6",
+    "Gnome::Gtk3::WidgetPath": "lib/Gnome/Gtk3/WidgetPath.pm6",
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
   },
 
