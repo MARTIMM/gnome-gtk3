@@ -54,7 +54,7 @@ subtest 'Manipulations', {
   $wp .= new(:widgetpath($b2.get-path));
   is $wp.iter-get-name(2), Str, 'string button 2 not set';
   ok !$wp.iter_has_name( 2, 'stop-button'), 'iter 2 has different name';
-  $wp.iter-set-name( 2, 'stop-button'), 'stop-button';
+  $wp.iter-set-name( 2, 'stop-button');
   ok $wp.iter_has_name( 2, 'stop-button'), "iter 2 now has 'stop-button' name";
   is $wp.iter-get-name(2), 'stop-button', 'string button 2 correct';
 
@@ -76,7 +76,7 @@ subtest 'Manipulations', {
      'flag GTK_STATE_FLAG_DIR_LTR still there';
 
   my Int $drop-flag = GTK_STATE_FLAG_INSENSITIVE.value +^ 0xFFFFFFFF;
-  my Int $new-state = $wp.iter-get-state(2) +& $drop-flag;
+  $new-state = $wp.iter-get-state(2) +& $drop-flag;
   $wp.iter-set-state( 2, $new-state);
   ok !($wp.iter-get-state(2) +& GTK_STATE_FLAG_INSENSITIVE.value),
      'flag GTK_STATE_FLAG_INSENSITIVE is removed';
