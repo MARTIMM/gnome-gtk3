@@ -7,7 +7,7 @@
 
     {% for item in sb_menu.bar_menu %}
       {% if item.title == '-' %}
-        <hr class="small" />
+        <li><hr class="small" /></li>
       {% else %}
 
         {% assign url = site.baseurl | append: item.url %}
@@ -19,13 +19,91 @@
           {% assign classstr = "inactive" %}
         {% endif %}
 
-        <li class="{{ classstr }}">
-        {% if item.url != page.url %}
-          <a href="{{ url }}"> {{ item.title }} </a>
+        {% if item.doc %}
+        {% assign docStatus = item.doc %}
         {% else %}
-          <a>{{ item.title }}</a>
+        {% assign docStatus = 0 %}
         {% endif %}
+
+        {% if !item.test %}
+        {% assign testStatus = item.test %}
+        {% else %}
+        {% assign testStatus = 0 %}
+        {% endif %}
+
+{% if page.sidebar_menu contains "references-" %}
+        <li class="{{ classstr }}">
+          {% if docStatus == 0 %}
+            <a>{{ item.title }}
+          {% elsif item.url != page.url %}
+            <a href="{{ url }}"> {{ item.title }}
+          {% else %}
+            <a>{{ item.title }}
+          {% endif %}
+          <div class="module-state">
+            <div class="tooltip">
+
+              {% if docStatus == 0 %}
+                📔
+                <span class="tooltiptext">
+                  There is no documentation
+                </span>
+              {% elsif docStatus == 1 %}
+                🕮
+                <span class="tooltiptext">
+                  Documentation generated
+                </span>
+              {% elsif docStatus == 2 %}
+                📖
+                <span class="tooltiptext">
+                  Documentation rewritten
+                </span>
+              {% elsif docStatus == 3 %}
+                📖
+                <span class="tooltiptext">
+                  Documentation has examples
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="tooltip">
+
+              {% if testStatus == 0 %}
+                🗒
+                <span class="tooltiptext">
+                  No tests for this module
+                </span>
+              {% elsif testStatus == 1 %}
+                🗇
+                <span class="tooltiptext">
+                  Module parses ok (module load)
+                </span>
+              {% elsif testStatus == 2 %}
+                🗊
+                <span class="tooltiptext">
+                  Module partly tested
+                </span>
+              {% elsif testStatus == 3 %}
+                🗸
+                <span class="tooltiptext">
+                  Defined methods and types tested
+                </span>
+              {% endif %}
+            </div>
+          </div>
+          </a>
         </li>
+{% else %}
+        <li class="{{ classstr }}">
+          {% if item.url != page.url %}
+            <a href="{{ url }}"> {{ item.title }}
+          {% else %}
+            <a>{{ item.title }}
+          {% endif %}
+          </a>
+        </li>
+
+{% endif %}
       {% endif %}
     {% endfor %}
 

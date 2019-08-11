@@ -1,67 +1,105 @@
 # https://jekyllrb.com/tutorials/navigation/
+
+# doc: Doc codes
+# 0 no doc
+# 1 doc generated
+# 2 doc rewritten
+# 3 examples added
+
+# test: Test codes
+# 0 no tests
+# 1 tests ok (mod loaded)
+# 2 partly tested,
+# 3 all defined methods tested
+
+# tut: '' no example, or 'url' pointing to an example
+# ex: '' no tutorial, or 'url' pointing to tutoral
+
+# 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊
+
 - bar_title: "Toplevels"
   bar_menu:
   - title: "Window"
     url: '/content-docs/reference/Gtk3/Window.html'
-    doc: 0   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
-    test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
-    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
-    ex: ''   # '' no example, or 'url' pointing to an example
-    doc-sign: '🗸✅✔✗ ☐☑☒ ◔◑◕● ⚒ ⚐⚑ ⚓ ☠ ✀ ❓❔❕'
+    doc: 1
+    test: 2
+    tut: ''
+    ex: 'content-docs/examples/toplevel/Window.html'
 
   - title: '-'
 
   - title: "Dialog"
     url: "/content-docs/reference/Gtk3/Dialog.html"
+    doc: 0
   - title: "AboutDialog"
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
+    doc: 1
   - title: "ColorChooserDialog"
     url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
+    doc: 1
   - title: "FileChooserDialog"
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
+    doc: 1
 
 - bar_title: "Containers"
   bar_menu:
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
+    doc: 1
+  - title: 'Container'
+    url: '/content-docs/reference/Gtk3/Container.html'
+    doc: 0
   - title: "ListBox"
     url: '/content-docs/reference/Gtk3/ListBox.html'
+    doc: 1
   - title: "MenuBar"
     url: '/content-docs/reference/Gtk3/MenuBar.html'
+    doc: 1
   - title: "Paned"
     url: "/content-docs/reference/Gtk3/Paned.html"
+    doc: 1
 
 - bar_title: "Control"
   bar_menu:
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
+    doc: 1
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
+    doc: 1
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
+    doc: 1
   - title: "MenuButton"
     url: '/content-docs/reference/Gtk3/MenuButton.html'
+    doc: 1
   - title: "ToggleButton"
     url: "/content-docs/reference/Gtk3/ToggleButton.html"
+    doc: 1
 
   - title: '-'
 
   - title: "ComboBox"
     url: "/content-docs/reference/Gtk3/ComboBox.html"
+    doc: 1
   - title: "ComboBoxText"
     url: "/content-docs/reference/Gtk3/ComboBoxText.html"
+    doc: 1
 
   - title: '-'
 
   - title: "Scale"
     url: "/content-docs/reference/Gtk3/Scale.html"
+    doc: 1
 
 - bar_title: "Display"
   bar_menu:
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
+    doc: 1
   - title: "TextView"
     url: "/content-docs/reference/Gtk3/TextView.html"
+    doc: 1
 
 - bar_title: "Composite Widget"
   bar_menu:
@@ -70,55 +108,73 @@
   bar_menu:
   - title: "TextBuffer"
     url: "/content-docs/reference/Gtk3/TextBuffer.html"
+    doc: 1
   - title: "TextTag"
     url: '/content-docs/reference/Gtk3/TextTag.html'
+    doc: 1
   - title: "TextTagTable"
     url: '/content-docs/reference/Gtk3/TextTagTable.html'
+    doc: 1
 
 - bar_title: "Non-Builder Classes"
   bar_menu:
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
+    doc: 1
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
+    doc: 1
 
   - title: "-"
 
   - title: "MenuItem"
     url: "/content-docs/reference/Gtk3/MenuItem.html"
+    doc: 1
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
 
   - title: "-"
 
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
+    doc: 1
   - title: "Border"
     url: "/content-docs/reference/Gtk3/Border.html"
-    doc: 2   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
-    test: 2  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
-    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
-    ex: ''   # '' no example, or 'url' pointing to an example
+    doc: 2
+    test: 2
+    tut: ''
+    ex: ''
   - title: "Builder"
     url: "/content-docs/reference/Gtk3/Builder.html"
-    doc: 3   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
-    test: 1  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
-    tut: ''  # '' no tutorial, or 'url' pointing to tutoral
-    ex: ''   # '' no example, or 'url' pointing to an example
+    doc: 3
+    test: 1
+    tut: ''
+    ex: ''
   - title: "Enums"
     url: "/content-docs/reference/Gtk3/Enums.html"
+    doc: 1
   - title: "Container"
     url: "/content-docs/reference/Gtk3/Container.html"
+    doc: 1
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
+    doc: 1
   - title: "ListBoxRow"
     url: '/content-docs/reference/Gtk3/ListBoxRow.html'
+    doc: 1
   - title: "Main"
     url: "/content-docs/reference/Gtk3/Main.html"
+    doc: 1
   - title: "Orientable"
     url: "/content-docs/reference/Gtk3/Orientable.html"
+    doc: 1
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
+    doc: 1
+
+  - title: "-"
+
   - title: "StyleContext"
     url: "/content-docs/reference/Gtk3/StyleContext.html"
     doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
@@ -131,8 +187,15 @@
     test: 0  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
     tut: ''  # '' no tutorial, or 'url' pointing to tutoral
     ex: ''   # '' no example, or 'url' pointing to an example
+
+  - title: "-"
+
   - title: "TextIter"
     url: "/content-docs/reference/Gtk3/TextIter.html"
+    doc: 1
+
+  - title: "-"
+
   - title: "Widget"
     url: '/content-docs/reference/Gtk3/Widget.html'
     doc: 1   # 0 no doc, 1 doc added, 2 doc rewritten, 3 examples added
@@ -145,3 +208,6 @@
     test: 1  # 0 no tests, 1 tests ok (mod loaded), 2 all methods tested
     tut: ''  # '' no tutorial, or 'url' pointing to tutoral
     ex: ''   # '' no example, or 'url' pointing to an example
+  - title: "ColorChooserWidget"
+    url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
+    doc: 0
