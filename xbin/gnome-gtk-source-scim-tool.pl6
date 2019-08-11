@@ -126,6 +126,9 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     next if $declaration ~~ m/ 'G_GNUC_CONST' /;
     $variable-args-list = True if $declaration ~~ m/ 'G_GNUC_NULL_TERMINATED' /;
 
+    # remove some macros
+    $declaration ~~ s/ \s* 'G_GNUC_WARN_UNUSED_RESULT' \s* //;
+
     # remove prefix and tidy up a bit
     $declaration ~~ s/^ ['GDK' || 'GTK' || 'GLIB'] '_AVAILABLE_IN_' .*?  \n //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
@@ -473,6 +476,10 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   my Bool $type-is-class = $type eq $lib-class-name;
 
   # convert to native perl types
+note "Type: $type";
+  $type = 'N-GError' if $type ~~ m/GError/;
+  $type = 'N-GList' if $type ~~ m/GList/;
+  $type = 'N-GSList' if $type ~~ m/GSList/;
   $type = 'N-GObject' if is-n-gobject($type);
   $type = 'int32' if $type ~~ m/GType/;
   $type = 'int32' if $type ~~ m/GQuark/;
@@ -670,8 +677,6 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
       $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
     }
   }
-
-#note "$is-n-gobject, $type-name";
 
   $is-n-gobject
 }
