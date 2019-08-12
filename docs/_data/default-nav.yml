@@ -16,5 +16,5 @@ nav_menus:
       url: "/content-docs/nyi-default.html"
       right: true
     - title: "Reference"
-      url: "/content-docs/reference.html"
+      url: "/content-docs/reference-gtk3.html"
       right: true

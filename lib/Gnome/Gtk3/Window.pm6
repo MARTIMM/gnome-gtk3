@@ -1,3 +1,5 @@
+#TL:+:Gnome::Gtk3::Window
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
@@ -12,7 +14,7 @@ use v6;
 
 A C<Gnome::Gtk3::Window> is a toplevel window which can contain other widgets. Windows normally have decorations that are under the control of the windowing system and allow the user to manipulate the window (resize it, move it, close it,...).
 
-# C<Gnome::Gtk3::Window> as C<Gnome::Gtk3::Buildable>
+=head2 Gnome::Gtk3::Window as Gnome::Gtk3::Buildable
 
 The C<Gnome::Gtk3::Window> implementation of the C<Gnome::Gtk3::Buildable> interface supports a custom <accel-groups> element, which supports any number of <group> elements representing the C<Gnome::Gtk3::AccelGroup> objects you want to add to your window (synonymous with C<gtk_window_add_accel_group()>.
 
@@ -20,15 +22,13 @@ It also supports the <initial-focus> element, whose name property names the widg
 
 An example of a UI definition fragment with accel groups:
 
-  <object class="C<Gnome::Gtk3::Window>">
+  <object class="GtkWindow>">
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
     <initial-focus name="thunderclap"/>
   </object>
-
   ...
-
   <object class="C<Gnome::Gtk3::AccelGroup>" id="accelgroup1"/>
 
 The C<Gnome::Gtk3::Window> implementation of the C<Gnome::Gtk3::Buildable> interface supports setting a child as the titlebar by specifying “titlebar” as the “type” attribute of a <child> element.
@@ -39,19 +39,11 @@ The C<Gnome::Gtk3::Window> implementation of the C<Gnome::Gtk3::Buildable> inter
   ├── decoration
   ╰── <child>
 
-C<Gnome::Gtk3::Window> has a main CSS node with name window and style class .background,
-and a subnode with name decoration.
+C<Gnome::Gtk3::Window> has a main CSS node with name window and style class .background, and a subnode with name decoration.
 
-Style classes that are typically used with the main CSS node are .csd (when
-client-side decorations are in use), .solid-csd (for client-side decorations
-without invisible borders), .ssd (used by mutter when rendering server-side
-decorations). C<Gnome::Gtk3::Window> also represents window states with the following
-style classes on the main node: .tiled, .maximized, .fullscreen. Specialized
-types of window often add their own discriminating style classes, such as
-.popup or .tooltip.
+Style classes that are typically used with the main CSS node are .csd (when client-side decorations are in use), .solid-csd (for client-side decorations without invisible borders), .ssd (used by mutter when rendering server-side decorations). C<Gnome::Gtk3::Window> also represents window states with the following style classes on the main node: .tiled, .maximized, .fullscreen. Specialized types of window often add their own discriminating style classes, such as .popup or .tooltip.
 
-C<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes to the
-widget that is added as a titlebar child.
+C<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes to the widget that is added as a titlebar child.
 
 =head1 Synopsis
 =head2 Declaration
@@ -60,6 +52,14 @@ widget that is added as a titlebar child.
   also is Gnome::Gtk3::Bin;
 
 =head2 Example
+
+  my Gnome::Gtk3::Window $w .= new(:title('My Button In My Window'));
+  my Gnome::Gtk3::Button $b .= new(:label('The Button'));
+  $w.gtk-container-add($b);
+  $w.show-all;
+
+  my Gnome::Gtk3::Main $m .= new;
+  $m.gtk-main;
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -82,71 +82,50 @@ also is Gnome::Gtk3::Bin;
 =begin pod
 =head1 Types
 =end pod
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 enum GtkWindowType
-
-A C<Gnome::Gtk3::Window> can be one of these types. Most things you’d consider a
-“window” should have type C<GTK_WINDOW_TOPLEVEL>; windows with this type
-are managed by the window manager and have a frame by default (call
-C<gtk_window_set_decorated()> to toggle the frame).  Windows with type
-C<GTK_WINDOW_POPUP> are ignored by the window manager; window manager
-keybindings won’t work on them, the window manager won’t decorate the
-window with a frame, many GTK+ features that rely on the window
-manager will not work (e.g. resize grips and
-maximization/minimization). C<GTK_WINDOW_POPUP> is used to implement
-widgets such as C<Gnome::Gtk3::Menu> or tooltips that you normally don’t think of
-as windows per se. Nearly all windows should be C<GTK_WINDOW_TOPLEVEL>.
-In particular, do not use C<GTK_WINDOW_POPUP> just to turn off
-the window borders; use C<gtk_window_set_decorated()> for that.
-
-
-=item parent_class: The parent class.
-=item set_focus: Sets child as the focus widget for the window.
-=item activate_focus: Activates the current focused widget within the window.
-=item activate_default: Activates the default widget for the window.
-=item keys_changed: Signal gets emitted when the set of accelerators or mnemonics that are associated with window changes.
-=item enable_debugging: Class handler for the sig C<enable-debugging> keybinding signal. Since: 3.14
-=item GTK_WINDOW_TOPLEVEL: A regular window, such as a dialog.
-=item GTK_WINDOW_POPUP: A special window such as a tooltip.
-
-
-=end pod
-
-enum GtkWindowType is export (
-  'GTK_WINDOW_TOPLEVEL',
-  'GTK_WINDOW_POPUP'
-);
 
 #-------------------------------------------------------------------------------
+#TE:-:GtkWindowPosition
 =begin pod
-=head2 enum GtkWindowPosition
+=head2 GtkWindowPosition
 
-Window placement can be influenced using this enumeration. Note that
-using C<GTK_WIN_POS_CENTER_ALWAYS> is almost always a bad idea.
-It won’t necessarily work well with all window managers or on all windowing systems.
+Window placement can be influenced using this enumeration. Note that using GTK_WIN_POS_CENTER_ALWAYS is almost always a bad idea. It won’t necessarily work well with all window managers or on all windowing systems.
 
-
-=item GTK_WIN_POS_NONE: No influence is made on placement.
-=item GTK_WIN_POS_CENTER: Windows should be placed in the center of the screen.
-=item GTK_WIN_POS_MOUSE: Windows should be placed at the current mouse position.
-=item GTK_WIN_POS_CENTER_ALWAYS: Keep window centered as it changes size, etc.
-=item GTK_WIN_POS_CENTER_ON_PARENT: Center the window on its transient parent (see C<gtk_window_set_transient_for()>).
-
+=item GTK_WIN_POS_NONE. No influence is made on placement.
+=item GTK_WIN_POS_CENTER. Windows should be placed in the center of the screen.
+=item GTK_WIN_POS_MOUSE. Windows should be placed at the current mouse position.
+=item GTK_WIN_POS_CENTER_ALWAYS. Keep window centered as it changes size, etc.
+=item GTK_WIN_POS_CENTER_PARENT. Center the window on its transient parent.
 
 =end pod
+enum GtkWindowPosition is export <
+  GTK_WIN_POS_NONE
+  GTK_WIN_POS_CENTER
+  GTK_WIN_POS_MOUSE
+  GTK_WIN_POS_CENTER_ALWAYS
+  GTK_WIN_POS_CENTER_ON_PARENT
+>;
 
-enum GtkWindowPosition is export (
-  'GTK_WIN_POS_NONE',
-  'GTK_WIN_POS_CENTER',
-  'GTK_WIN_POS_MOUSE',
-  'GTK_WIN_POS_CENTER_ALWAYS',
-  'GTK_WIN_POS_CENTER_ON_PARENT'
-);
+#-------------------------------------------------------------------------------
+#TE:-:GtkWindowType
+=begin pod
+=head2 GtkWindowType
+
+A GtkWindow can be one of these types. Most things you’d consider a “window” should have type GTK_WINDOW_TOPLEVEL; windows with this type are managed by the window manager and have a frame by default (call gtk_window_set_decorated() to toggle the frame). Windows with type GTK_WINDOW_POPUP are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). GTK_WINDOW_POPUP is used to implement widgets such as GtkMenu or tooltips that you normally don’t think of as windows per se. Nearly all windows should be GTK_WINDOW_TOPLEVEL. In particular, do not use GTK_WINDOW_POPUP just to turn off the window borders; use gtk_window_set_decorated() for that.
+
+=item GTK_WINDOW_TOPLEVEL. A regular window, such as a dialog.
+=item GTK_WINDOW_POPUP. A special window such as a tooltip.
+
+=end pod
+enum GtkWindowType is export < GTK_WINDOW_TOPLEVEL GTK_WINDOW_POPUP >;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+#TM:+:new(:empty)
+#TM:+:new(:title)
+#TM:-:new(:widget)
+#TM:-:new(:build-id)
+
 =begin pod
 =head1 Methods
 =head2 new
@@ -221,27 +200,15 @@ method fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_new
 =begin pod
 =head2 gtk_window_new
 
-Creates a new C<Gnome::Gtk3::Window>, which is a toplevel window that can
-contain other widgets. Nearly always, the type of the window should
-be C<GTK_WINDOW_TOPLEVEL>. If you’re implementing something like a
-popup menu from scratch (which is a bad idea, just use C<Gnome::Gtk3::Menu>),
-you might use C<GTK_WINDOW_POPUP>. C<GTK_WINDOW_POPUP> is not for
-dialogs, though in some other toolkits dialogs are called “popups”.
-In GTK+, C<GTK_WINDOW_POPUP> means a pop-up menu or pop-up tooltip.
-On X11, popup windows are not controlled by the
-[window manager][gtk-X11-arch].
+Creates a new C<Gnome::Gtk3::Window>, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be C<GTK_WINDOW_TOPLEVEL>. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use C<Gnome::Gtk3::Menu>), you might use C<GTK_WINDOW_POPUP>. C<GTK_WINDOW_POPUP> is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, C<GTK_WINDOW_POPUP> means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the window manager.
 
-If you simply want an undecorated window (no window borders), use
-C<gtk_window_set_decorated()>, don’t use C<GTK_WINDOW_POPUP>.
+If you simply want an undecorated window (no window borders), use C<gtk_window_set_decorated()>, don’t use C<GTK_WINDOW_POPUP>.
 
-All top-level windows created by C<gtk_window_new()> are stored in
-an internal top-level window list.  This list can be obtained from
-C<gtk_window_list_toplevels()>.  Due to Gtk+ keeping a reference to
-the window internally, C<gtk_window_new()> does not return a reference
-to the caller.
+All top-level windows created by C<gtk_window_new()> are stored in an internal top-level window list.  This list can be obtained from C<gtk_window_list_toplevels()>. Due to Gtk+ keeping a reference to the window internally, C<gtk_window_new()> does not return a reference to the caller.
 
 To delete a C<Gnome::Gtk3::Window>, call C<gtk_widget_destroy()>.
 
@@ -259,18 +226,11 @@ sub gtk_window_new ( int32 $type )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_set_title
 =begin pod
 =head2 [gtk_window_] set_title
 
-Sets the title of the C<Gnome::Gtk3::Window>. The title of a window will be
-displayed in its title bar; on the X Window System, the title bar
-is rendered by the [window manager][gtk-X11-arch],
-so exactly how the title appears to users may vary
-according to a user’s exact configuration. The title should help a
-user distinguish this window from other windows they may have
-open. A good title might include the application name and current
-document filename, for example.
-
+Sets the title of the C<Gnome::Gtk3::Window>. The title of a window will be displayed in its title bar; on the X Window System, the title bar is rendered by the window manager, so exactly how the title appears to users may vary according to a user’s exact configuration. The title should help a user distinguish this window from other windows they may have open. A good title might include the application name and current document filename, for example.
 
   method gtk_window_set_title ( Str $title )
 
@@ -283,17 +243,15 @@ sub gtk_window_set_title ( N-GObject $window, Str $title )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_get_title
 =begin pod
 =head2 [gtk_window_] get_title
 
 Retrieves the title of the window. See C<gtk_window_set_title()>.
 
-Returns: (nullable): the title of the window, or C<Any> if none has
-been set explicitly. The returned string is owned by the widget
-and must not be modified or freed.
+Returns: (nullable): the title of the window, or C<Any> if none has been set explicitly. The returned string is owned by the widget and must not be modified or freed.
 
   method gtk_window_get_title ( --> Str  )
-
 
 =end pod
 
@@ -302,6 +260,7 @@ sub gtk_window_get_title ( N-GObject $window )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] set_role
@@ -329,7 +288,9 @@ restoring the session.
 sub gtk_window_set_role ( N-GObject $window, Str $role )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] set_startup_id
@@ -356,7 +317,8 @@ Since: 2.12
 sub gtk_window_set_startup_id ( N-GObject $window, Str $startup_id )
   is native(&gtk-lib)
   { * }
-
+}}
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] get_role
@@ -376,7 +338,9 @@ sub gtk_window_get_role ( N-GObject $window )
   returns Str
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] add_accel_group
@@ -394,7 +358,8 @@ in I<accel_group>.
 sub gtk_window_add_accel_group ( N-GObject $window, N-GObject $accel_group )
   is native(&gtk-lib)
   { * }
-
+}}
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] remove_accel_group
@@ -410,14 +375,14 @@ Reverses the effects of C<gtk_window_add_accel_group()>.
 sub gtk_window_remove_accel_group ( N-GObject $window, N-GObject $accel_group )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_set_position
 =begin pod
 =head2 [gtk_window_] set_position
 
-Sets a position constraint for this window. If the old or new
-constraint is C<GTK_WIN_POS_CENTER_ALWAYS>, this will also cause
-the window to be repositioned to satisfy the new constraint.
+Sets a position constraint for this window. If the old or new constraint is C<GTK_WIN_POS_CENTER_ALWAYS>, this will also cause the window to be repositioned to satisfy the new constraint.
 
   method gtk_window_set_position ( GtkWindowPosition $position )
 
@@ -2255,26 +2220,13 @@ sub gtk_window_set_keep_above ( N-GObject $window, int32 $setting )
 =begin pod
 =head2 [gtk_window_] set_keep_below
 
-Asks to keep I<window> below, so that it stays in bottom. Note that
-you shouldn’t assume the window is definitely below afterward,
-because other entities (e.g. the user or
-[window manager][gtk-X11-arch]) could not keep it below,
-and not all window managers support putting windows below. But
-normally the window will be kept below. Just don’t write code
-that crashes if not.
+Asks to keep I<window> below, so that it stays in bottom. Note that you shouldn’t assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just don’t write code that crashes if not.
 
-It’s permitted to call this function before showing a window,
-in which case the window will be kept below when it appears onscreen
-initially.
+It’s permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.
 
-You can track the below state via the “window-state-event” signal
-on C<Gnome::Gtk3::Widget>.
+You can track the below state via the “window-state-event” signal on C<Gnome::Gtk3::Widget>.
 
-Note that, according to the
-[Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec),
-the above state is mainly meant for user preferences and should not
-be used by applications e.g. for drawing attention to their
-dialogs.
+Note that, according to the [Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec), the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
 
 Since: 2.4
 
@@ -2288,6 +2240,7 @@ sub gtk_window_set_keep_below ( N-GObject $window, int32 $setting )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] begin_resize_drag
@@ -2313,6 +2266,7 @@ sub gtk_window_begin_resize_drag ( N-GObject $window, int32 $edge, int32 $button
   is native(&gtk-lib)
   { * }
 
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] begin_move_drag
@@ -2336,8 +2290,9 @@ potentially not all that well, depending on the windowing system.
 sub gtk_window_begin_move_drag ( N-GObject $window, int32 $button, int32 $root_x, int32 $root_y, uint32 $timestamp )
   is native(&gtk-lib)
   { * }
-
+}}
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_set_default_size
 =begin pod
 =head2 [gtk_window_] set_default_size
 
@@ -2387,6 +2342,7 @@ sub gtk_window_set_default_size ( N-GObject $window, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_get_default_size
 =begin pod
 =head2 [gtk_window_] get_default_size
 
@@ -2396,49 +2352,39 @@ for that dimension, so the “natural” size of the window will be
 used.
 
 
-  method gtk_window_get_default_size ( Int $width, Int $height )
+  method gtk_window_get_default_size ( --> List )
 
-=item Int $width; (out) (allow-none): location to store the default width, or C<Any>
-=item Int $height; (out) (allow-none): location to store the default height, or C<Any>
+Returns a List
+=item Int $width: location to store the default width, or C<Any>
+=item Int $height: location to store the default height, or C<Any>
 
 =end pod
 
-sub gtk_window_get_default_size ( N-GObject $window, int32 $width, int32 $height )
-  is native(&gtk-lib)
+sub gtk_window_get_default_size ( N-GObject $window --> List ) {
+  _gtk_window_get_default_size( $window, my int32 $w, my int32 $h);
+  ( $w, $h)
+}
+
+sub _gtk_window_get_default_size (
+  N-GObject $window, int32 $width is rw, int32 $height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_window_get_default_size')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_resize
 =begin pod
 =head2 gtk_window_resize
 
-Resizes the window as if the user had done so, obeying geometry
-constraints. The default geometry constraint is that windows may
-not be smaller than their size request; to override this
-constraint, call C<gtk_widget_set_size_request()> to set the window's
-request to a smaller value.
+Resizes the window as if the user had done so, obeying geometry constraints. The default geometry constraint is that windows may not be smaller than their size request; to override this constraint, call C<gtk_widget_set_size_request()> to set the window's request to a smaller value.
 
-If C<gtk_window_resize()> is called before showing a window for the
-first time, it overrides any default size set with
-C<gtk_window_set_default_size()>.
+If C<gtk_window_resize()> is called before showing a window for the first time, it overrides any default size set with C<gtk_window_set_default_size()>.
 
 Windows may not be resized smaller than 1 by 1 pixels.
 
-When using client side decorations, GTK+ will do its best to adjust
-the given size so that the resulting window size matches the
-requested size without the title bar, borders and shadows added for
-the client side decorations, but there is no garantee that the
-result will be totally accurate because these widgets added for
-client side decorations depend on the theme and may not be realized
-or visible at the time C<gtk_window_resize()> is issued.
+When using client side decorations, GTK+ will do its best to adjust the given size so that the resulting window size matches the requested size without the title bar, borders and shadows added for the client side decorations, but there is no garantee that the result will be totally accurate because these widgets added for client side decorations depend on the theme and may not be realized or visible at the time C<gtk_window_resize()> is issued.
 
-Typically, C<gtk_window_resize()> will compensate for the C<Gnome::Gtk3::HeaderBar>
-height only if it's known at the time the resulting C<Gnome::Gtk3::Window>
-configuration is issued.
-For example, if new widgets are added after the C<Gnome::Gtk3::Window> configuration
-and cause the C<Gnome::Gtk3::HeaderBar> to grow in height, this will result in a
-window content smaller that specified by C<gtk_window_resize()> and not
-a larger window.
-
+Typically, C<gtk_window_resize()> will compensate for the C<Gnome::Gtk3::HeaderBar> height only if it's known at the time the resulting C<Gnome::Gtk3::Window> configuration is issued. For example, if new widgets are added after the C<Gnome::Gtk3::Window> configuration and cause the C<Gnome::Gtk3::HeaderBar> to grow in height, this will result in a window content smaller that specified by C<gtk_window_resize()> and not a larger window.
 
   method gtk_window_resize ( Int $width, Int $height )
 
@@ -2452,49 +2398,30 @@ sub gtk_window_resize ( N-GObject $window, int32 $width, int32 $height )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_get_size
 =begin pod
 =head2 [gtk_window_] get_size
 
 Obtains the current size of I<window>.
 
-If I<window> is not visible on screen, this function return the size GTK+
-will suggest to the [window manager][gtk-X11-arch] for the initial window
-size (but this is not reliably the same as the size the window manager
-will actually select). See: C<gtk_window_set_default_size()>.
+If I<window> is not visible on screen, this function return the size GTK+ will suggest to the window manager for the initial window size (but this is not reliably the same as the size the window manager will actually select). See: C<gtk_window_set_default_size()>.
 
-Depending on the windowing system and the window manager constraints,
-the size returned by this function may not match the size set using
-C<gtk_window_resize()>; additionally, since C<gtk_window_resize()> may be
-implemented as an asynchronous operation, GTK+ cannot guarantee in any
-way that this code:
+Depending on the windowing system and the window manager constraints, the size returned by this function may not match the size set using C<gtk_window_resize()>; additionally, since C<gtk_window_resize()> may be implemented as an asynchronous operation, GTK+ cannot guarantee in any way that this code:
 
-|[<!-- language="C" -->
-// width and height are set elsewhere
-gtk_window_resize (window, width, height);
+  # width and height are set elsewhere
+  $w.gtk_window_resize( $width, $height);
+  ...
+  my Int ( $new_width, $new_height) = $w.get_size();
 
-int new_width, new_height;
-gtk_window_get_size (window, &new_width, &new_height);
-]|
+will result in `new_width` and `new_height` matching `width` and `height`, respectively.
 
-will result in `new_width` and `new_height` matching `width` and
-`height`, respectively.
+This function will return the logical size of the C<Gnome::Gtk3::Window>, excluding the widgets used in client side decorations; there is, however, no guarantee that the result will be completely accurate because client side decoration may include widgets that depend on the user preferences and that may not be visibile at the time you call this function.
 
-This function will return the logical size of the C<Gnome::Gtk3::Window>,
-excluding the widgets used in client side decorations; there is,
-however, no guarantee that the result will be completely accurate
-because client side decoration may include widgets that depend on
-the user preferences and that may not be visibile at the time you
-call this function.
+The dimensions returned by this function are suitable for being stored across sessions; use C<gtk_window_set_default_size()> to restore them when before showing the window.
 
-The dimensions returned by this function are suitable for being
-stored across sessions; use C<gtk_window_set_default_size()> to
-restore them when before showing the window.
+To avoid potential race conditions, you should only call this function in response to a size change notification, for instance inside a handler for the sig C<size-allocate> signal, or inside a handler for the sig C<configure-event> signal:
 
-To avoid potential race conditions, you should only call this
-function in response to a size change notification, for instance
-inside a handler for the sig C<size-allocate> signal, or
-inside a handler for the sig C<configure-event> signal:
-
+=begin comment
 |[<!-- language="C" -->
 static void
 on_size_allocate (C<Gnome::Gtk3::Widget> *widget, C<Gnome::Gtk3::Allocation> *allocation)
@@ -2507,73 +2434,44 @@ gtk_window_get_size (GTK_WINDOW (widget), &new_width, &new_height);
 }
 ]|
 
-Note that, if you connect to the sig C<size-allocate> signal,
-you should not use the dimensions of the C<Gnome::Gtk3::Allocation> passed to
-the signal handler, as the allocation may contain client side
-decorations added by GTK+, depending on the windowing system in
-use.
+Note that, if you connect to the sig C<size-allocate> signal, you should not use the dimensions of the C<Gnome::Gtk3::Allocation> passed to the signal handler, as the allocation may contain client side decorations added by GTK+, depending on the windowing system in use.
+=end comment
 
-If you are getting a window size in order to position the window
-on the screen, you should, instead, simply set the window’s semantic
-type with C<gtk_window_set_type_hint()>, which allows the window manager
-to e.g. center dialogs. Also, if you set the transient parent of
-dialogs with C<gtk_window_set_transient_for()> window managers will
-often center the dialog over its parent window. It's much preferred
-to let the window manager handle these cases rather than doing it
-yourself, because all apps will behave consistently and according to
-user or system preferences, if the window manager handles it. Also,
-the window manager can take into account the size of the window
-decorations and border that it may add, and of which GTK+ has no
-knowledge. Additionally, positioning windows in global screen coordinates
-may not be allowed by the windowing system. For more information,
-see: C<gtk_window_set_position()>.
+If you are getting a window size in order to position the window on the screen, you should, instead, simply set the window’s semantic type with C<gtk_window_set_type_hint()>, which allows the window manager to e.g. center dialogs. Also, if you set the transient parent of dialogs with C<gtk_window_set_transient_for()> window managers will often center the dialog over its parent window. It's much preferred to let the window manager handle these cases rather than doing it yourself, because all apps will behave consistently and according to user or system preferences, if the window manager handles it. Also, the window manager can take into account the size of the window decorations and border that it may add, and of which GTK+ has no knowledge. Additionally, positioning windows in global screen coordinates may not be allowed by the windowing system. For more information, see: C<gtk_window_set_position()>.
 
-  method gtk_window_get_size ( Int $width, Int $height )
+  method gtk_window_get_size ( --> List )
 
-=item Int $width; (out) (nullable): return location for width, or C<Any>
-=item Int $height; (out) (nullable): return location for height, or C<Any>
+Returns a list ( Int $width, Int $height )
+=item Int $width: return location for width, or C<Any>
+=item Int $height: return location for height, or C<Any>
 
 =end pod
 
-sub gtk_window_get_size ( N-GObject $window, int32 $width, int32 $height )
-  is native(&gtk-lib)
+sub gtk_window_get_size ( N-GObject $window --> List ) is inlinable {
+  _gtk_window_get_size( $window, my int32 $w, my int32 $h);
+  ( $w, $h)
+}
+
+sub _gtk_window_get_size (
+  N-GObject $window, int32 $width is rw, int32 $height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_window_get_size')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_move
 =begin pod
 =head2 gtk_window_move
 
-Asks the [window manager][gtk-X11-arch] to move
-I<window> to the given position.  Window managers are free to ignore
-this; most window managers ignore requests for initial window
-positions (instead using a user-defined placement algorithm) and
-honor requests after the window has already been shown.
+Asks the window manager to move I<window> to the given position.  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the window has already been shown.
 
-Note: the position is the position of the gravity-determined
-reference point for the window. The gravity determines two things:
-first, the location of the reference point in root window
-coordinates; and second, which point on the window is positioned at
-the reference point.
+Note: the position is the position of the gravity-determined reference point for the window. The gravity determines two things: first, the location of the reference point in root window coordinates; and second, which point on the window is positioned at the reference point.
 
-By default the gravity is C<GDK_GRAVITY_NORTH_WEST>, so the reference
-point is simply the I<x>, I<y> supplied to C<gtk_window_move()>. The
-top-left corner of the window decorations (aka window frame or
-border) will be placed at I<x>, I<y>.  Therefore, to position a window
-at the top left of the screen, you want to use the default gravity
-(which is C<GDK_GRAVITY_NORTH_WEST>) and move the window to 0,0.
+By default the gravity is C<GDK_GRAVITY_NORTH_WEST>, so the reference point is simply the I<x>, I<y> supplied to C<gtk_window_move()>. The top-left corner of the window decorations (aka window frame or border) will be placed at I<x>, I<y>.  Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is C<GDK_GRAVITY_NORTH_WEST>) and move the window to 0,0.
 
-To position a window at the bottom right corner of the screen, you
-would set C<GDK_GRAVITY_SOUTH_EAST>, which means that the reference
-point is at I<x> + the window width and I<y> + the window height, and
-the bottom-right corner of the window border will be placed at that
-reference point. So, to place a window in the bottom right corner
-you would first set gravity to south east, then write:
-`gtk_window_move (window, C<gdk_screen_width()> - window_width,
-C<gdk_screen_height()> - window_height)` (note that this
-example does not take multi-head scenarios into account).
+To position a window at the bottom right corner of the screen, you would set C<GDK_GRAVITY_SOUTH_EAST>, which means that the reference point is at I<x> + the window width and I<y> + the window height, and the bottom-right corner of the window border will be placed at that reference point. So, to place a window in the bottom right corner you would first set gravity to south east, then write: `gtk_window_move (window, C<gdk_screen_width()> - window_width, C<gdk_screen_height()> - window_height)` (note that this example does not take multi-head scenarios into account).
 
-The [Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec)
-has a nice table of gravities in the “implementation notes” section.
+The [Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec) has a nice table of gravities in the “implementation notes” section.
 
 The C<gtk_window_get_position()> documentation may also be relevant.
 
@@ -2589,64 +2487,48 @@ sub gtk_window_move ( N-GObject $window, int32 $x, int32 $y )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_get_position
 =begin pod
 =head2 [gtk_window_] get_position
 
-This function returns the position you need to pass to
-C<gtk_window_move()> to keep I<window> in its current position.
-This means that the meaning of the returned value varies with
-window gravity. See C<gtk_window_move()> for more details.
+This function returns the position you need to pass to C<gtk_window_move()> to keep I<window> in its current position. This means that the meaning of the returned value varies with window gravity. See C<gtk_window_move()> for more details.
 
-The reliability of this function depends on the windowing system
-currently in use. Some windowing systems, such as Wayland, do not
-support a global coordinate system, and thus the position of the
-window will always be (0, 0). Others, like X11, do not have a reliable
-way to obtain the geometry of the decorations of a window if they are
-provided by the window manager. Additionally, on X11, window manager
-have been known to mismanage window gravity, which result in windows
-moving even if you use the coordinates of the current position as
-returned by this function.
+The reliability of this function depends on the windowing system currently in use. Some windowing systems, such as Wayland, do not support a global coordinate system, and thus the position of the window will always be (0, 0). Others, like X11, do not have a reliable way to obtain the geometry of the decorations of a window if they are provided by the window manager. Additionally, on X11, window manager have been known to mismanage window gravity, which result in windows moving even if you use the coordinates of the current position as returned by this function.
 
-If you haven’t changed the window gravity, its gravity will be
-C<GDK_GRAVITY_NORTH_WEST>. This means that C<gtk_window_get_position()>
-gets the position of the top-left corner of the window manager
-frame for the window. C<gtk_window_move()> sets the position of this
-same top-left corner.
+If you haven’t changed the window gravity, its gravity will be C<GDK_GRAVITY_NORTH_WEST>. This means that C<gtk_window_get_position()> gets the position of the top-left corner of the window manager frame for the window. C<gtk_window_move()> sets the position of this same top-left corner.
 
-If a window has gravity C<GDK_GRAVITY_STATIC> the window manager
-frame is not relevant, and thus C<gtk_window_get_position()> will
-always produce accurate results. However you can’t use static
-gravity to do things like place a window in a corner of the screen,
-because static gravity ignores the window manager decorations.
+If a window has gravity C<GDK_GRAVITY_STATIC> the window manager frame is not relevant, and thus C<gtk_window_get_position()> will always produce accurate results. However you can’t use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
 
-Ideally, this function should return appropriate values if the
-window has client side decorations, assuming that the windowing
-system supports global coordinates.
+Ideally, this function should return appropriate values if the window has client side decorations, assuming that the windowing system supports global coordinates.
 
-In practice, saving the window position should not be left to
-applications, as they lack enough knowledge of the windowing
-system and the window manager state to effectively do so. The
-appropriate way to implement saving the window position is to
-use a platform-specific protocol, wherever that is available.
+In practice, saving the window position should not be left to applications, as they lack enough knowledge of the windowing system and the window manager state to effectively do so. The appropriate way to implement saving the window position is to use a platform-specific protocol, wherever that is available.
 
-  method gtk_window_get_position ( Int $root_x, Int $root_y )
+  method gtk_window_get_position ( --> List )
 
-=item Int $root_x; (out) (allow-none): return location for X coordinate of gravity-determined reference point, or C<Any>
-=item Int $root_y; (out) (allow-none): return location for Y coordinate of gravity-determined reference point, or C<Any>
+The list returned is ( Int $root_x, Int $root_y )
+
+=item Int $root_x: return location for X coordinate of gravity-determined reference point, or C<Any>
+=item Int $root_y: return location for Y coordinate of gravity-determined reference point, or C<Any>
 
 =end pod
 
-sub gtk_window_get_position ( N-GObject $window, int32 $root_x, int32 $root_y )
-  is native(&gtk-lib)
+sub gtk_window_get_position( N-GObject $window --> List ) is inlinable {
+  _gtk_window_get_position( $window, my int32 $rx, my int32 $ry);
+  ( $rx, $ry)
+}
+
+sub _gtk_window_get_position (
+  N-GObject $window, int32 $root_x is rw, int32 $root_y is rw
+) is native(&gtk-lib)
+  is symbol('gtk_window_get_position')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] get_group
 
-Returns the group for I<window> or the default group, if
-I<window> is C<Any> or if I<window> does not have an explicit
-window group.
+Returns the group for I<window> or the default group, if I<window> is C<Any> or if I<window> does not have an explicit window group.
 
 Returns: (transfer none): the C<Gnome::Gtk3::WindowGroup> for a window or the default group
 
@@ -2654,14 +2536,14 @@ Since: 2.10
 
   method gtk_window_get_group ( --> N-GObject  )
 
-
 =end pod
 
 sub gtk_window_get_group ( N-GObject $window )
   returns N-GObject
   is native(&gtk-lib)
   { * }
-
+}}
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] has_group
@@ -2674,15 +2556,16 @@ Since 2.22
 
   method gtk_window_has_group ( --> Int  )
 
-
 =end pod
 
 sub gtk_window_has_group ( N-GObject $window )
   returns int32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_get_window_type
 =begin pod
 =head2 [gtk_window_] get_window_type
 
@@ -2694,7 +2577,6 @@ Since: 2.20
 
   method gtk_window_get_window_type ( --> GtkWindowType  )
 
-
 =end pod
 
 sub gtk_window_get_window_type ( N-GObject $window )
@@ -2702,6 +2584,7 @@ sub gtk_window_get_window_type ( N-GObject $window )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] get_application
@@ -2713,7 +2596,6 @@ Returns: (nullable) (transfer none): a C<Gnome::Gtk3::Application>, or C<Any>
 Since: 3.0
 
   method gtk_window_get_application ( --> N-GObject  )
-
 
 =end pod
 
@@ -2742,18 +2624,16 @@ Since: 3.0
 sub gtk_window_set_application ( N-GObject $window, N-GObject $application )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] set_titlebar
 
 Sets a custom titlebar for I<window>.
 
-If you set a custom titlebar, GTK+ will do its best to convince
-the window manager not to put its own titlebar on the window.
-Depending on the system, this function may not work for a window
-that is already visible, so you set the titlebar before calling
-C<gtk_widget_show()>.
+If you set a custom titlebar, GTK+ will do its best to convince the window manager not to put its own titlebar on the window. Depending on the system, this function may not work for a window that is already visible, so you set the titlebar before calling C<gtk_widget_show()>.
 
 Since: 3.10
 
@@ -2787,18 +2667,16 @@ sub gtk_window_get_titlebar ( N-GObject $window )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_window_] is_maximized
 
 Retrieves the current maximized state of I<window>.
 
-Note that since maximization is ultimately handled by the window
-manager and happens asynchronously to an application request, you
-shouldn’t assume the return value of this function changing
-immediately (or at all), as an effect of calling
-C<gtk_window_maximize()> or C<gtk_window_unmaximize()>.
+Note that since maximization is ultimately handled by the window manager and happens asynchronously to an application request, you shouldn’t assume the return value of this function changing immediately (or at all), as an effect of calling C<gtk_window_maximize()> or C<gtk_window_unmaximize()>.
 
 Returns: whether the window has a maximized state.
 
@@ -2813,14 +2691,14 @@ sub gtk_window_is_maximized ( N-GObject $window )
   returns int32
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:+:gtk_window_set_interactive_debugging
 =begin pod
 =head2 [gtk_window_] set_interactive_debugging
 
-Opens or closes the [interactive debugger][interactive-debugging],
-which offers access to the widget hierarchy of the application
-and to useful debugging tools.
+Opens or closes the [interactive debugger][interactive-debugging], which offers access to the widget hierarchy of the application and to useful debugging tools.
 
 Since: 3.14
 
@@ -2859,6 +2737,47 @@ sub gtk_window_set_interactive_debugging ( int32 $enable )
 
 =head2 Since 3.22
 =head3 method gtk_window_set_wmclass ( Str $wmclass_name, Str $wmclass_class )
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=begin comment
+
+=head1 Not yet implemented methods
+
+=head3 method gtk_window_add_accel_group ( ... )
+=head3 method gtk_window_remove_accel_group ( ... )
+=head3 method gtk_window_get_group ( ... )
+=head3 method gtk_window_has_group ( ... )
+=head3 method gtk_window_get_application ( ... )
+=head3 method gtk_window_set_application ( ... )
+=head3 method gtk_window_set_titlebar ( ... )
+=head3 method gtk_window_get_titlebar ( ... )
+=head3 method gtk_window_begin_move_drag ( ... )
+=head3 method gtk_window_begin_resize_drag ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+
+=end comment
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=begin comment
+
+=head1 Not implemented methods
+
+=head3 method gtk_window_set_role ( ... )
+=head3 method gtk_window_set_startup_id ( ... )
+=head3 method gtk_window_get_role ( ... )
+=head3 method gtk_window_is_maximized ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+
+=end comment
 =end pod
 
 #-------------------------------------------------------------------------------
@@ -3136,207 +3055,5 @@ will remain until the window is destroyed, but you can explicitly
 remove it by setting the prop C<application> property to C<Any>.
 
 Since: 3.0
-
-
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 gtk_window_new
-
-  method gtk_window_new ( int32 $type )
-
-Creates a new GtkWindow, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be GTK_WINDOW_TOPLEVEL. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use GtkMenu), you might use GTK_WINDOW_POPUP. GTK_WINDOW_POPUP is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, GTK_WINDOW_POPUP means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the window manager.
-
-If you simply want an undecorated window (no window borders), use gtk_window_set_decorated(), don’t use GTK_WINDOW_POPUP.
-
-All top-level windows created by gtk_window_new() are stored in an internal top-level window list. This list can be obtained from gtk_window_list_toplevels(). Due to Gtk+ keeping a reference to the window internally, gtk_window_new() does not return a reference to the caller.
-
-To delete a GtkWindow, call gtk_widget_destroy().
-=end pod
-sub gtk_window_new ( int32 $window_type )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_window_] set_title
-
-  method gtk_window_set_title ( Str $title )
-
-Sets the title of the GtkWindow. The title of a window will be displayed in its title bar; on the X Window System, the title bar is rendered by the window manager, so exactly how the title appears to users may vary according to a user’s exact configuration. The title should help a user distinguish this window from other windows they may have open. A good title might include the application name and current document filename, for example.
-=end pod
-sub gtk_window_set_title ( N-GObject $w, Str $title )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_window_] set_default_size
-
-  method gtk_window_set_default_size ( Int $width, Int $height )
-
-Sets the default size of a window. See also L<the developer docs|https://developer.gnome.org/gtk3/stable/GtkWindow.html#gtk-window-set-default-size>.
-=end pod
-sub gtk_window_set_default_size (
-  N-GObject $window, int32 $width, int32 $height
-) is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_window_] set_modal
-
-  method gtk_window_set_modal ( Int $modal )
-
-Sets a window modal or non-modal. Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use gtk_window_set_transient_for() to make the dialog transient for the parent; most window managers will then disallow lowering the dialog below the parent.
-=end pod
-sub gtk_window_set_modal ( N-GObject $window, int32 $modal )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_window_] set_position
-
-  method gtk_window_set_position ( Int $position )
-
-Sets a position constraint for this window. If the old or new constraint is GTK_WIN_POS_CENTER_ALWAYS, this will also cause the window to be repositioned to satisfy the new constraint.
-=end pod
-sub gtk_window_set_position ( N-GObject $window, int32 $position )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_window_] set_transient_for
-
-  method gtk_window_set_transient_for ( Gnome::GObject::Object $main-window )
-
-Dialog windows should be set transient for the main application window they were spawned from. This allows window managers to e.g. keep the dialog on top of the main window, or center the dialog over the main window.
-=end pod
-sub gtk_window_set_transient_for ( N-GObject $window, N-GObject $parent )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-
-=head2 GtkWindowPosition
-
-Window placement can be influenced using this enumeration. Note that using GTK_WIN_POS_CENTER_ALWAYS is almost always a bad idea. It won’t necessarily work well with all window managers or on all windowing systems.
-
-=item GTK_WIN_POS_NONE. No influence is made on placement.
-=item GTK_WIN_POS_CENTER. Windows should be placed in the center of the screen.
-=item GTK_WIN_POS_MOUSE. Windows should be placed at the current mouse position.
-=item GTK_WIN_POS_CENTER_ALWAYS. Keep window centered as it changes size, etc.
-=item GTK_WIN_POS_CENTER_PARENT. Center the window on its transient parent.
-
-=end pod
-enum GtkWindowPosition is export <
-  GTK_WIN_POS_NONE
-  GTK_WIN_POS_CENTER
-  GTK_WIN_POS_MOUSE
-  GTK_WIN_POS_CENTER_ALWAYS
-  GTK_WIN_POS_CENTER_ON_PARENT
->;
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 GtkWindowType
-
-A GtkWindow can be one of these types. Most things you’d consider a “window” should have type GTK_WINDOW_TOPLEVEL; windows with this type are managed by the window manager and have a frame by default (call gtk_window_set_decorated() to toggle the frame). Windows with type GTK_WINDOW_POPUP are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). GTK_WINDOW_POPUP is used to implement widgets such as GtkMenu or tooltips that you normally don’t think of as windows per se. Nearly all windows should be GTK_WINDOW_TOPLEVEL. In particular, do not use GTK_WINDOW_POPUP just to turn off the window borders; use gtk_window_set_decorated() for that.
-
-=item GTK_WINDOW_TOPLEVEL. A regular window, such as a dialog.
-=item GTK_WINDOW_POPUP. A special window such as a tooltip.
-
-=end pod
-enum GtkWindowType is export < GTK_WINDOW_TOPLEVEL GTK_WINDOW_POPUP >;
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-=head2 Supported signals
-=head3 activate-default
-
-The C<activate-default> signal is a keybinding signal which gets emitted when the user activates the default widget of window.
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
-  )
-
-=head3 activate-focus
-
-The C<activate-focus> signal is a keybinding signal which gets emitted when the user activates the currently focused widget of window.
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
-  )
-
-=head3 keys-changed
-
-The C<keys-changed> signal gets emitted when the set of accelerators or mnemonics that are associated with window changes.
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, :$user-option1, ..., $user-optionN
-  )
-
-=head3 set-focus
-
-=head4 Signal Handler Signature
-
-  method handler (
-    Gnome::GObject::Object :$widget, N-GObject :$nativewidget,
-    :$user-option1, ..., :$user-optionN
-  )
-
-=comment Flags: Run Last
-
-
-=head2 Not yet supported signals
-=head3 enable-debugging
-
-The C<enable-debugging> signal is a keybinding signal which gets emitted when the user enables or disables interactive debugging. When toggle is 1, interactive debugging is toggled on or off, when it is 0, the debugger will be pointed at the widget under the pointer.
-
-The default bindings for this signal are K<Ctrl-Shift-I> and K<Ctrl-Shift-D>.
-
-Return: 1 if the key binding was handled
-
-
-=head2 Handler Method Arguments
-=item $widget; This can be any perl6 widget with C<Gnome::GObject::Object> as the top parent class e.g. C<Gnome::Gtk3::Button>.
-=item $event; A structure defined in C<Gnome::Gdk3::Events>.
-=item $nativewidget; A native widget which can be turned into a perl6 widget using C<.new(:widget())> on the appropriate class.
-=item $user-option*; Any extra options given by the user when registering the signal.
 
 =end pod
