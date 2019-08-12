@@ -11,7 +11,7 @@ A tag that can be applied to text in a `Gnome::Gtk3::TextBuffer`
 Description
 ===========
 
-You may wish to begin by reading the [text widget conceptual overview][TextWidget] which gives an overview of all the objects and data types related to the text widget and how they work together.
+You may wish to begin by reading the [text widget conceptual overview](https://developer.gnome.org/gtk3/3.24/TextWidget.html) which gives an overview of all the objects and data types related to the text widget and how they work together.
 
 Tags should be in the `Gnome::Gtk3::TextTagTable` for a given `Gnome::Gtk3::TextBuffer` before using them with that buffer.
 
