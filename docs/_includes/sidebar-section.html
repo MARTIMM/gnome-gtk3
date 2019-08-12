@@ -31,79 +31,95 @@
         {% assign testStatus = 0 %}
         {% endif %}
 
-{% if page.sidebar_menu contains "references-" %}
-        <li class="{{ classstr }}">
-          {% if docStatus == 0 %}
-            <a>{{ item.title }}
-          {% elsif item.url != page.url %}
-            <a href="{{ url }}"> {{ item.title }}
-          {% else %}
-            <a>{{ item.title }}
-          {% endif %}
-          <div class="module-state">
-            <div class="tooltip">
+        {% if page.sidebar_menu contains "references-" %}
+          <li class="{{ classstr }}">
+            {% if docStatus == 0 %}
+              <a>{{ item.title }}
+            {% elsif item.url != page.url %}
+              <a href="{{ url }}"> {{ item.title }}
+            {% else %}
+              <a>{{ item.title }}
+            {% endif %}
 
-              {% if docStatus == 0 %}
-                📔
-                <span class="tooltiptext">
-                  There is no documentation
-                </span>
-              {% elsif docStatus == 1 %}
-                🕮
-                <span class="tooltiptext">
-                  Documentation generated
-                </span>
-              {% elsif docStatus == 2 %}
-                📖
-                <span class="tooltiptext">
-                  Documentation rewritten
-                </span>
-              {% elsif docStatus == 3 %}
-                📖
-                <span class="tooltiptext">
-                  Documentation has examples
-                </span>
-              {% endif %}
+            <div class="module-state">
+              <div class="tooltip">
+                {% if docStatus == 0 %}
+                  📔
+                  <span class="tooltiptext">
+                    There is no documentation
+                  </span>
+                {% elsif docStatus == 1 %}
+                  🕮
+                  <span class="tooltiptext">
+                    Documentation generated
+                  </span>
+                {% elsif docStatus == 2 %}
+                  📖
+                  <span class="tooltiptext">
+                    Documentation rewritten
+                  </span>
+                {% elsif docStatus == 3 %}
+                  🗸
+                  <span class="tooltiptext">
+                    Documentation has examples
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="tooltip">
+                {% if testStatus == 0 %}
+                  🗒
+                  <span class="tooltiptext">
+                    No tests for this module
+                  </span>
+                {% elsif testStatus == 1 %}
+                  🗇
+                  <span class="tooltiptext">
+                    Module parses ok (module load)
+                  </span>
+                {% elsif testStatus == 2 %}
+                  🗊
+                  <span class="tooltiptext">
+                    Module partly tested
+                  </span>
+                {% elsif testStatus == 3 %}
+                  🗲
+                  <span class="tooltiptext">
+                    Signals tested
+                  </span>
+                {% elsif testStatus == 4 %}
+                  ⌺
+                  <span class="tooltiptext">
+                    Styling tested
+                  </span>
+                {% elsif testStatus == 5 %}
+                  🗸
+                  <span class="tooltiptext">
+                    Defined methods and types tested
+                  </span>
+                {% endif %}
+              </div>
+
+              <!--div class="tooltip">
+                {% if item.ex %}
+                  {% assign exurl = site.baseurl | append: item.ex %}
+                  <a href="{{ exurl }}" rel="help" target="_blank">⚒</a>
+                {% endif %}
+              </div-->
             </div>
+            </a>
+          </li>
 
-            <div class="tooltip">
-
-              {% if testStatus == 0 %}
-                🗒
-                <span class="tooltiptext">
-                  No tests for this module
-                </span>
-              {% elsif testStatus == 1 %}
-                🗇
-                <span class="tooltiptext">
-                  Module parses ok (module load)
-                </span>
-              {% elsif testStatus == 2 %}
-                🗊
-                <span class="tooltiptext">
-                  Module partly tested
-                </span>
-              {% elsif testStatus == 3 %}
-                🗸
-                <span class="tooltiptext">
-                  Defined methods and types tested
-                </span>
-              {% endif %}
-            </div>
-          </div>
-          </a>
-        </li>
-{% else %}
-        <li class="{{ classstr }}">
-          {% if item.url != page.url %}
-            <a href="{{ url }}"> {{ item.title }}
-          {% else %}
-            <a>{{ item.title }}
-          {% endif %}
-          </a>
-        </li>
-
-{% endif %}
+        {% else %}
+          <li class="{{ classstr }}">
+            {% if item.url != page.url %}
+              <a href="{{ url }}"> {{ item.title }}
+            {% else %}
+              <a>{{ item.title }}
+            {% endif %}
+            </a>
+          </li>
+        {% endif %}
       {% endif %}
     {% endfor %}
 
