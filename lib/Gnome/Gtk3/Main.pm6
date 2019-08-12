@@ -5,7 +5,7 @@ use v6;
 
 =TITLE Gnome::Gtk3::Main
 
-=SUBTITLE Main loop and Events — Library initialization, main event loop, and events
+=SUBTITLE Library initialization, main event loop, and events
 
   unit class Gnome::Gtk3::Main;
 
@@ -16,11 +16,11 @@ use v6;
   # Setup user interface
   ...
   # Start main loop
-  $main.gtk_main;
+  $main.gtk-main;
 
   # Elsewhere in some exit handler
   method exit ( ) {
-    Gnome::Gtk3::Main.new.gtk_main_quit;
+    Gnome::Gtk3::Main.new.gtk-main-quit;
   }
 
 =end pod
