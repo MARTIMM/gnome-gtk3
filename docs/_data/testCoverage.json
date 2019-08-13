@@ -1,0 +1,366 @@
+{
+  "content-docs/reference/Gtk3/TextTagTable.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/TextView.md": {
+    "routines": {
+      "subs-total": 71,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/CheckButton.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 3,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Bin.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 1,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Container.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 31,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Window.md": {
+    "routines": {
+      "subs-total": 108,
+      "coverage": "12.96",
+      "subs-tested": 14
+    }
+  },
+  "content-docs/reference/Gtk3/ListBoxRow.md": {
+    "routines": {
+      "subs-total": 10,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ToggleButton.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/MenuShell.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 14,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Misc.md": {
+    "routines": {
+      "subs-total": 0,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Button.md": {
+    "routines": {
+      "subs-total": 19,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Paned.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 12
+    }
+  },
+  "content-docs/reference/Gtk3/Range.md": {
+    "routines": {
+      "subs-total": 25,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/TextIter.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 91,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Widget.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 213
+    }
+  },
+  "content-docs/reference/Gtk3/FileChooserDialog.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 1,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ListBox.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 28,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Label.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 4,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooserWidget.md": {
+    "routines": {
+      "subs-total": 1,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/MenuButton.md": {
+    "routines": {
+      "subs-total": 13,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/CssProvider.md": {
+    "routines": {
+      "subs-total": 8,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Dialog.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 3,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/TextTag.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 5
+    }
+  },
+  "content-docs/reference/Gtk3/Entry.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 5,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/MenuItem.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 18,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/MenuBar.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Image.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 6,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/WidgetPath.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 33
+    }
+  },
+  "content-docs/reference/Gtk3/Enums.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Gtk3/RadioButton.md": {
+    "routines": {
+      "subs-total": 7,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooser.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 5,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/AboutDialog.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 33,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Border.md": {
+    "routines": {
+      "subs-total": 9,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ColorButton.md": {
+    "routines": {
+      "subs-total": 4,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/SearchEntry.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/FileChooser.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 59
+    }
+  },
+  "content-docs/reference/Gtk3/Main.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 9
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooserDialog.md": {
+    "routines": {
+      "subs-total": 1,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Orientable.md": {
+    "routines": {
+      "subs-tested": 0,
+      "subs-total": 2,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Menu.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 25
+    }
+  },
+  "content-docs/reference/Gtk3/TextBuffer.md": {
+    "routines": {
+      "subs-total": 62,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Grid.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 8
+    }
+  },
+  "content-docs/reference/Gtk3/ImageMenuItem.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/Box.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 14,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/FileFilter.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 9,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ComboBoxText.md": {
+    "routines": {
+      "subs-total": 11,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ComboBox.md": {
+    "routines": {
+      "subs-total": 36,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/StyleContext.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 40,
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/LevelBar.md": {
+    "routines": {
+      "subs-total": 15,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/StyleProvider.md": {
+    "routines": {
+      "subs-total": 1,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Builder.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 27
+    }
+  },
+  "content-docs/reference/Gtk3/Scale.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-total": 13,
+      "subs-tested": 0
+    }
+  }
+}
