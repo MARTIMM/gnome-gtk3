@@ -13,39 +13,49 @@ layout: sidebar
     <!--link rel="stylesheet" href="http://yandex.st/highlightjs/6.2/styles/googlecode.min.css"-->
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!--script src="http://yandex.st/highlightjs/6.2/highlight.min.js"></script-->
+    <!--script src="http://yandex.st/highlightjs/6.2/highlight.min.js">
+    </script-->
 
     <!--script type="text/javascript">hljs.initHighlightingOnLoad();</script-->
     <script type="text/javascript">
-     $(document).ready(function(){
-          $("h1,h2,h3,h4,h5,h6").each(function(i,item){
-            var tag = $(item).get(0).localName;
-            $(item).attr("id","wow"+i);
+      $(document).ready(function(){
+        $("#category").append(
+          "<strong>Number of defined methods: {{ site.data.testCoverage[page.path]["routines"]["subs-total"] }}</strong><br />"
+        );
+        $("#category").append(
+          "<strong>Number of tested methods: {{ site.data.testCoverage[page.path]["routines"]["subs-tested"] }}</strong><br />"
+        );
+        $("#category").append(
+          "<strong>Test coverage: {{ site.data.testCoverage[page.path]["routines"]["coverage"] }} %</strong><br /><br /><strong>Table of Contents</strong><br /><br />"
+        );
 
-            var text = $(this).text();
-            if( text != "Interfacing Perl6 to Gnome GTK+" &
-                text != "TITLE" & text != "SUBTITLE"
-              ) {
-              $("#category").append(
-                '<a class="new'+tag+'" href="#wow'+i+'">'+text+'</a></br>'
-              );
-            }
+        $("h1,h2,h3,h4,h5,h6").each(function(i,item){
+          var tag = $(item).get(0).localName;
+          $(item).attr("id","wow"+i);
 
-            $(".newh1").css("margin-left",0);
-            $(".newh2").css("margin-left",15);
-            $(".newh3").css("margin-left",30);
-            $(".newh4").css("margin-left",45);
-            $(".newh5").css("margin-left",60);
-            $(".newh6").css("margin-left",75);
-          });
-     });
+          var text = $(this).text();
+          if( text != "Interfacing Perl6 to Gnome GTK+" &
+              text != "TITLE" & text != "SUBTITLE"
+            ) {
+            $("#category").append(
+              '<a class="new'+tag+'" href="#wow'+i+'">'+text+'</a></br>'
+            );
+          }
+
+          $(".newh1").css("margin-left",0);
+          $(".newh2").css("margin-left",15);
+          $(".newh3").css("margin-left",30);
+          $(".newh4").css("margin-left",45);
+          $(".newh5").css("margin-left",60);
+          $(".newh6").css("margin-left",75);
+        });
+      });
     </script>
   </head>
   <body>
     <div id="category"></div>
 
-    <div id="content">
-    {{ content }}
-    </div>
+    {{ site.data.testCoverage[page.path]["routines"]["coverage"] }}
+    <div id="content"> {{ content }} </div>
   </body>
 </html>
