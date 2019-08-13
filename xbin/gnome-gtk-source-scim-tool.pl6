@@ -212,7 +212,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $sub = Q:qq:to/EOSUB/;
 
       $start-comment#-------------------------------------------------------------------------------
-      #TM:-:$sub-name
+      #TM:0:$sub-name:
 
       =begin pod
       =head2 $pod-sub-name
@@ -697,7 +697,7 @@ sub load-dir-lists ( ) {
 sub substitute-in-template ( Str $include-content ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
-    #TL:-:Gnome::LIBRARYMODULE
+    #TL:0:Gnome::LIBRARYMODULE:
 
     use v6;
     #-------------------------------------------------------------------------------
@@ -781,7 +781,9 @@ sub substitute-in-template ( Str $include-content ) {
 
     =end pod
 
-    #TM:-:new
+    #TM:0:new(:empty):
+    #TM:0:new(:widget):
+    #TM:0:new(:build-id):
 
     submethod BUILD ( *%options ) {
 
@@ -960,7 +962,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=comment #TS:-:$signal-name\n=head3 $signal-name\n";
+    $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
@@ -1183,7 +1185,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
     /;
     $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=comment #TP:-:$property-name\n=head3 $property-name\n";
+    $property-doc ~= "\n=comment #TP:0:$property-name:\n=head3 $property-name\n";
 #note "sdoc 2: $sdoc";
     note "get property $property-name";
 
@@ -1303,7 +1305,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
         $get-enum-doc = False;
         $process-enum = True;
 
-        $enum-spec = "\n=end pod\n\n#TE:-:$enum-name\nenum $enum-name is export (\n";
+        $enum-spec = "\n=end pod\n\n#TE:0:$enum-name:\nenum $enum-name is export (\n";
       }
 
 #      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
@@ -1446,7 +1448,7 @@ sub get-structures ( Str:D $include-content is copy ) {
         $get-struct-doc = False;
         $process-struct = True;
 
-        $struct-spec = "\n=end pod\n\n#TT:-:$struct-name\n" ~
+        $struct-spec = "\n=end pod\n\n#TT:0:$struct-name:\n" ~
           "class $struct-name is export is repr\('CStruct') \{\n";
       }
 
