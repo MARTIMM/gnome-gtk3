@@ -19,7 +19,7 @@ The documentation icons are
 The test icons are
 * 🗒 No tests for this module.
 * 🗇 Module parses ok (module load). This means that the `use module-name;` statement is running as well as the `.new()` call.
-* 🗊 Module partly tested. This means that the tests are running without problems but not all method calls defined in the module are tested.
+* 🗊 Module subs and methods are tested.
 * 🗲 Signals are tested when available, otherwise it is skipped.
 * ⌺ Styling is tested when available, otherwise it is skipped.
 * 🗸 Defined methods, types, signals and styling is tested.

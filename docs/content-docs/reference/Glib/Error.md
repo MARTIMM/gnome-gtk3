@@ -66,44 +66,44 @@ new
 
 ### multi method new ( UInt :$domain!, Int :$code!, Str :$error-message! )
 
-Create a new error object. A domain, which is a string must be converted to an unsigned integer with one of the Quark conversion methods. See `Gnome::Glib::Quark`.
+Create a new error object. A domain, which is a string must be converted to an unsigned integer with one of the Quark conversion methods. See *Gnome::Glib::Quark*.
 
-### multi method new ( N-GError :gerror! )
+### multi method new ( N-GError :$gerror! )
 
 Create a new error object using an other native error object.
 
 error-is-valid
 --------------
 
-Returns True if native error object is valid, otherwise False.
+Returns True if native error object is valid, otherwise `False`.
 
     method error-is-valid ( --> Bool )
 
 clear-error
 -----------
 
-Clear the error and return data to memory to pool. The error object is not valid after this call and error-is-valid() will return False.
+Clear the error and return data to memory to pool. The error object is not valid after this call and error-is-valid() will return `False`.
 
     method clear-error ()
 
 domain
 ------
 
-Get the domain code from the error object. Use `to-string()` from `Gnome::Glib::Quark` to get the domain text representation of it. Returns 0 if object is invalid.
+Get the domain code from the error object. Use `to-string()` from *Gnome::Glib::Quark* to get the domain text representation of it. Returns `UInt` if object is invalid.
 
     method domain ( --> UInt )
 
 code
 ----
 
-Return the error code of the error. Returns 0 if object is invalid.
+Return the error code of the error. Returns `Int` if object is invalid.
 
     method code ( --> Int )
 
 message
 -------
 
-Return the error message in the error object. Returns '' if object is invalid.
+Return the error message in the error object. Returns `Str` if object is invalid.
 
     method message ( --> Str )
 
@@ -112,13 +112,11 @@ Return the error message in the error object. Returns '' if object is invalid.
 
 Creates a new `N-GError`.
 
-Returns: a new `N-GError`
-
     method g_error_new_literal (
       UInt $domain, Int $code, Str $message --> N-GError
     )
 
-  * N-GObject $domain; error domain
+  * UInt $domain; error domain
 
   * Int $code; error code
 
@@ -127,7 +125,13 @@ Returns: a new `N-GError`
 g_error_copy
 ------------
 
-Makes a copy of *error*.
+Makes a copy of the native error object.
+
+    # create or get the error object from somewhere
+    my Gnome::Glib::Error $e = ...;
+
+    # later one can copy the error if needed and create a second object
+    my Gnome::Glib::Error $e2 .= new(:gerror($e.g-error-copy));
 
 Returns: a new `N-GError`
 
@@ -136,9 +140,7 @@ Returns: a new `N-GError`
 g_error_matches
 ---------------
 
-Returns `1` if *error* matches *domain* and *code*, `0` otherwise. In particular, when *error* is `Any`, `0` will be returned.
-
-If *domain* contains a `FAILED` (or otherwise generic) error code, you should generally not check for it explicitly, but should instead treat any not-explicitly-recognized error code as being equivalent to the `FAILED` code. This way, if the domain is extended in the future to provide a more specific error code for a certain case, your code will still work.
+Returns `1` if Gnome::Glib::Error> matches *$domain* and *$code*, `0` otherwise. In particular, when *error* is `Any`, `0` will be returned.
 
     method g_error_matches ( UInt $domain, Int $code --> Int  )
 
