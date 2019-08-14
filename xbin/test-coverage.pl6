@@ -4,7 +4,7 @@ use v6;
 use JSON::Fast;
 
 #-------------------------------------------------------------------------------
-sub MAIN ( *@module ) {
+sub MAIN ( *@modules ) {
 
   # load the coverage admin data.
   my Str $test-coverage-config = "$*HOME/Languages/Perl6/Projects/perl6-gnome-gtk3/docs/_data/testCoverage.json";
@@ -12,20 +12,15 @@ sub MAIN ( *@module ) {
   %test-coverage = from-json($test-coverage-config.IO.slurp // '')
     if $test-coverage-config.IO.r;
 
-  for @module -> Str $module {
+  my @m = lazy gather find-modules(|@modules);
+  for @m -> Str $module {
 
-    # check if module exists
-    unless $module.IO.r {
-      note "File $module not found";
-      next;
-    }
-
-    # get content and process it
+    # get content and process it. run sub-coverage() last!
     my Str $content = $module.IO.slurp;
     my ( $subs-total, $subs-tested, $sub-hash) = sub-coverage($content);
 
     my Rat $coverage = $subs-total ?? 100.0 * $subs-tested/$subs-total !! 0.0;
-    note "$module $subs-total, $subs-tested, coverage: $coverage";
+    note "$module $subs-total, $subs-tested, coverage: $coverage.fmt("%.2f")";
 
     # setup structure for this module
     my Str $module-name = $module.IO.basename();
@@ -44,8 +39,8 @@ sub MAIN ( *@module ) {
     }
 
     %test-coverage{$path}<routines> = {
-      :$subs-total, :$subs-tested, :coverage($coverage.fmt("%.2f"));
-#      :data($sub-hash)
+      :$subs-total, :$subs-tested, :coverage($coverage.fmt("%.2f")),
+      :subs-data($sub-hash)
     };
   }
 
@@ -53,9 +48,62 @@ sub MAIN ( *@module ) {
 }
 
 #-------------------------------------------------------------------------------
-sub sub-coverage( Str:D $content ) {
+# find all perl6 modules from command line or recursivly from dirs
+sub find-modules ( *@modules ) {
+  for @modules -> Str $m {
+    if $m.IO.d {
+      for dir($m) -> $f {
+        find-modules($f.Str);
+      }
+    }
+
+    # check if module exists
+    elsif $m.IO.r and $m ~~ m/ \. [ pm || pl ] 6? $/ {
+      take $m.Str;
+    }
+
+    else {
+      note "$m is not a perl6 module";
+    }
+  }
+}
+
+#-------------------------------------------------------------------------------
+sub sub-coverage( Str:D $new-content ) {
   my Hash $sub-cover = {};
-  my Int ( $subs-total, $subs-tested) = ( 0, 0);
+  my Int $subs-tested = 0;
+
+  # remove all pod sections first
+  my Str $content = '';
+  my Bool $in-pod = False;
+  my Bool $in-comment = False;
+  for $new-content.lines -> $line {
+    if $line ~~ m/ ^ '=' begin \s* pod / {
+      $in-pod = True;
+      next;
+    }
+
+    elsif $line ~~ m/ ^ '=' finish / {
+      last;
+    }
+
+    elsif $line ~~ m/ ^ [ '#`{{' || '#`[[' ] / {
+      $in-comment = True;
+      next;
+    }
+
+    $content ~= $line ~ "\n" unless $in-pod || $in-comment;
+
+    if $line ~~ m/^ '=' end \s* pod / {
+      $in-pod = False;
+      next;
+    }
+
+    elsif $line ~~ m/^ [ '}}' || ']]' ] \s* $ / {
+      $in-comment = False;
+      next;
+    }
+  }
 
   # search for the (multi) sub/method names real or in pod
   $content ~~ m:g/^^ \s* [ sub || method ] \s* [<alnum> || '-']+ \s* '(' /;
@@ -70,43 +118,38 @@ sub sub-coverage( Str:D $content ) {
     # skip some subs/methods
     next if $name ~~ m/^
       [ '_'             # hidden native subs
-        || handler      # only in pod docs as an example
         || fallback     # used to find subs
         || FALLBACK     # starter to call fallback
         || 'CALL-ME'    # used to get native objects
       ]
     /;
 
-#note $name unless $sub-cover{$name}:exists;
     # assume that no tests are done on this sub/method (0)
     $sub-cover{$name} = 0 unless $sub-cover{$name};
   }
 
-  # get total nbr of subs/methods
-  $subs-total = $sub-cover.elems;
-
   # search for special notes like '#TM:+:gtk_window_set_has_user_ref_count'
-  $content ~~ m:g/^^ '#TM:' ['+' || <[1..9]>] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '#TM:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
   $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#TM:'
-      $<state> = (['+' || <[1..9]>])
+      $<state> = ([<[+-]> || \d])
       ':'
       $<name> = ([<alnum> || '-']+)
     /;
 
     my Str $name = ~$/<name>;
 
-    my Str $state = ~$/<state>;
-    $state = '1' if $state eq '+';
-    $subs-tested++ if $state ne '0';
-    $sub-cover{$name} = $state.Int;
-
-#note "$name, $state";
+    my $state = ~$/<state>;
+    $state = 0 if $state eq '-';
+    $state = 1 if $state eq '+';
+    $state .= Int;  # convert to int for all other digit characters
+    $subs-tested++ if $state > 0;
+    $sub-cover{$name} = $state;
   }
 
-
-  return ( $subs-total, $subs-tested, $sub-cover);
+  # return total nbr of subs/methods, nbr tested and data
+  return ( $sub-cover.elems, $subs-tested, $sub-cover);
 }
