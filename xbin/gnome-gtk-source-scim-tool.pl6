@@ -773,11 +773,11 @@ sub substitute-in-template ( Str $include-content ) {
 
     =head3 multi method new ( N-GObject :$widget! )
 
-    Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+    Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
 
     =head3 multi method new ( Str :$build-id! )
 
-    Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+    Create an object using a native object from a builder. See also I<Gnome::GObject::Object>.
 
     =end pod
 
@@ -1108,7 +1108,7 @@ note "item doc: ", $item-doc;
       =begin pod
       =head1 Signals
 
-      Register any signal as follows. See also C<Gnome::GObject::Object>.
+      Register any signal as follows. See also I<Gnome::GObject::Object>.
 
         my Bool $is-registered = $my-widget.register-signal (
           $handler-object, $handler-name, $signal-name,
@@ -1159,7 +1159,7 @@ sub get-properties ( Str:D $source-content is copy ) {
         =begin pod
         =head1 Properties
 
-        An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+        An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
           my Gnome::Gtk3::Label $label .= new(:empty);
           my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1200,7 +1200,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 #note "sdoc 3: ", $sdoc;
 
     $property-doc ~=
-      "\nThe C<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
+      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is I<$prop-type>.\n$sdoc\n";
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
@@ -1554,7 +1554,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any #GtkClass to C<Gnome::Gtk::Class> and Gdk likewise
+# change any #GtkClass to I<Gnome::Gtk::Class> and Gdk likewise
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -1563,7 +1563,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /prop C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /prop I\<$oct\>/;
   }
 
   loop {
@@ -1572,7 +1572,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /sig C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /sig I\<$oct\>/;
   }
 
   loop {
@@ -1582,19 +1582,19 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     last unless ?$oct;
 
     $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $text ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) /I\<$oct\>/;
   }
 
   # convert a few without leading octagon (#)
   $text ~~ s:g/ <!after '%' > ('Gtk' || 'Gdk') (\D <alnum>+)
-              /C<Gnome::$/[0]3::$/[1]>/;
+              /I<Gnome::$/[0]3::$/[1]>/;
 
   $text
 }
 
 
 #-------------------------------------------------------------------------------
-# change any ::signal to C<signal>
+# change any ::signal to I<signal>
 sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -1606,12 +1606,12 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any :property to C<property>
+# change any :property to I<property>
 sub podding-property ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / prop C<$/[0]>/;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / prop I<$/[0]>/;
   }
 
   $text
