@@ -137,7 +137,8 @@
   bar_menu:
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
-    doc: 1
+    doc: 3
+    test: 2
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     doc: 0

@@ -2,6 +2,9 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-08-04 0.18.1:
+    - Completed doc and tests of ColorChooser in Gnome::Gtk3.
+
   - 2019-08-04 0.18.0:
     - Extended, tested and documented CssProvider and StyleContext in Gnome::Gtk3.
     - Added StyleProvider to Gnome::Gtk3, altough it is a very empty shell :-\.

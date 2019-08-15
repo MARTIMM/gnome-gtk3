@@ -22,7 +22,7 @@ The test icons are
 * 🗊 Module subs and methods are tested.
 * 🗲 Signals are tested when available, otherwise it is skipped.
 * ⌺ Styling is tested when available, otherwise it is skipped.
-* 🗸 Defined methods, types, signals and styling is tested.
+* 🗸 All that is available is tested.
 
 ## Deprecated classes in GTK+ Version 3
 

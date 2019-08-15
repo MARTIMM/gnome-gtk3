@@ -1,4 +1,4 @@
-
+{{ page.dir }}
 {% for sb_menu in site.data[page.sidebar_menu] %}
   <div class="sidebar">
     <strong>{{ sb_menu.bar_title }}</strong>
@@ -67,37 +67,53 @@
               </div>
 
               <div class="tooltip">
+                <!-- 0 no tests -->
                 {% if testStatus == 0 %}
+                {% assign status_chars = '🗒' %}
                   🗒
-                  <span class="tooltiptext">
-                    No tests for this module
-                  </span>
+
+                <!-- 1 module parses -->
                 {% elsif testStatus == 1 %}
+                {% assign status_chars = '🗇' %}
                   🗇
-                  <span class="tooltiptext">
-                    Module parses ok (module load)
-                  </span>
+
+                <!-- 2 subs and methods tested -->
                 {% elsif testStatus == 2 %}
+                {% assign status_chars = '🗊' %}
                   🗊
-                  <span class="tooltiptext">
-                    Module partly tested
-                  </span>
-                {% elsif testStatus == 3 %}
-                  🗲
-                  <span class="tooltiptext">
-                    Signals tested
-                  </span>
+
+                <!-- 4 signals tested -->
                 {% elsif testStatus == 4 %}
+                {% assign status_chars = '🗲' %}
+                  🗲
+
+                <!-- 8 properties tested -->
+                {% elsif testStatus == 8 %}
+
+                <!-- 16 theme tested -->
+                {% elsif testStatus == 16 %}
+
+                {% assign status_chars = '🗊🗲⌺' %}
                   ⌺
-                  <span class="tooltiptext">
-                    Styling tested
-                  </span>
                 {% elsif testStatus == 5 %}
+                {% assign status_chars = '🗊🗲⌺' %}
+                  ⌺
+                {% elsif testStatus == 5 %}
+                {% assign status_chars = '🗊🗲⌺' %}
+                  ⌺
+                {% elsif testStatus == 5 %}
+                {% assign status_chars = '🗊🗲⌺🗸' %}
                   🗸
-                  <span class="tooltiptext">
-                    Defined methods and types tested
-                  </span>
                 {% endif %}
+
+                  <span class="tooltiptext">
+                    {% assign pp = page.dir | append:item.title | append:'.md' %}
+                    {% assign pp = pp | remove_first:'/' %}
+                    <strong>Test coverage: {{ site.data.testCoverage[pp]["routines"]["coverage"] }} %
+                      {{ status_chars }}
+                    </strong><br />
+                  </span>
+
               </div>
 
               <!--div class="tooltip">
