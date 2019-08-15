@@ -46,6 +46,7 @@ sub MAIN (
   if $file-found {
     # test for dir 'xt'
     mkdir( 'xt', 0o766) unless 'xt'.IO.e;
+    mkdir( 'xt/NewModules', 0o766) unless 'xt/NewModules'.IO.e;
 
     ( $p6-parentclass-name, $p6-parentlib-name) =
        parent-class($include-content);
@@ -90,7 +91,7 @@ sub MAIN (
 
       EOTEST
 
-    "xt/$p6-class-name.t".IO.spurt($test-content);
+    "xt/NewModules/$p6-class-name.t".IO.spurt($test-content);
   }
 
   else {
@@ -754,7 +755,7 @@ sub substitute-in-template ( Str $include-content ) {
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
 
-  $output-file = "xt/$p6-class-name.pm6";
+  $output-file = "xt/NewModules/$p6-class-name.pm6";
   $output-file.IO.spurt($template-text);
 
   get-vartypes($include-content);
@@ -1200,7 +1201,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 #note "sdoc 3: ", $sdoc;
 
     $property-doc ~=
-      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is I<$prop-type>.\n$sdoc\n";
+      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
@@ -1563,7 +1564,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /prop I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /sig I\<$oct\>/;
   }
 
   loop {
@@ -1572,7 +1573,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /sig I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /prop I\<$oct\>/;
   }
 
   loop {
@@ -1599,7 +1600,7 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / sig I<$/[0]>/;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / prop I<$/[0]>/;
   }
 
   $text
@@ -1611,7 +1612,7 @@ sub podding-property ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / prop I<$/[0]>/;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / sig I<$/[0]>/;
   }
 
   $text
