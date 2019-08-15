@@ -2,7 +2,7 @@
 
 # Codes used in source modules to mark what is tested or not
 
-The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action; `L` module load, `M` method, `S` signal, `P` for properties, `E` for enums and `T` for structures. Then a colon ':' with '+' or '-' to show it is tested or not. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:+:Gnome::Gtk3::Widget` or `#TM:-:gtk_widget_get_path`.
+The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action; `L` module load, `M` method, `S` signal, `P` for properties, `E` for enums and `T` for structures. Then a colon ':' with a digit to show it is tested or not; 0 not tested, 1 tested in test script, 2 tested elsewhere, 4 used elsewhere (binary, so combinations are possible. 2 and 4 is not easy to find out). Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
 
 Absence of codes means that a particular item is not tested.
 
