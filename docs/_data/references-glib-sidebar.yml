@@ -4,7 +4,7 @@
   - title: "Error"
     url: '/content-docs/reference/Glib/Error.html'
     doc: 3
-    test: 2
+    test: 5
 #  - title: "List"
 #    url: '/content-docs/nyi-reference.html'
 #  - title: "Main"
@@ -12,6 +12,6 @@
   - title: "Quark"
     url: '/content-docs/reference/Glib/Quark.html'
     doc: 3
-    test: 2
+    test: 5
   - title: "SList"
     url: '/content-docs/reference/Glib/SList.html'

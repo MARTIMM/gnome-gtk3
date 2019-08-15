@@ -1,0 +1,606 @@
+{
+  "content-docs/reference/Gtk3/ComboBox.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 36
+    }
+  },
+  "content-docs/reference/Gtk3/TextTagTable.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/GObject/Value.md": {
+    "routines": {
+      "subs-total": 29,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Dialog.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 3
+    }
+  },
+  "content-docs/reference/Gtk3/Paned.md": {
+    "routines": {
+      "subs-total": 12,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Scale.md": {
+    "routines": {
+      "subs-total": 13,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/ComboBoxText.md": {
+    "routines": {
+      "subs-total": 11,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/TextTag.md": {
+    "routines": {
+      "subs-total": 5,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Glib/SList.md": {
+    "routines": {
+      "subs-data": {
+        "clear-gslist": 0,
+        "g_slist_last": 0,
+        "g_slist_length": 1,
+        "g_slist_reverse": 0,
+        "g_slist_nth": 0,
+        "g_slist_free": 0,
+        "g_slist_nth_data_str": 0,
+        "g_slist_alloc": 0,
+        "g_slist_nth_data": 0,
+        "g_slist_nth_data_gobject": 0,
+        "g_slist_copy": 0
+      },
+      "subs-tested": 1,
+      "coverage": "9.09",
+      "subs-total": 11
+    }
+  },
+  "content-docs/reference/Gtk3/MenuBar.md": {
+    "routines": {
+      "subs-total": 6,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/MenuButton.md": {
+    "routines": {
+      "subs-total": 13,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/StyleProvider.md": {
+    "routines": {
+      "subs-total": 1,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/GObject/Interface.md": {
+    "routines": {
+      "subs-total": 0,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gdk3/RGBA.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gdk3/Types.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Gtk3/FileFilter.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 9
+    }
+  },
+  "content-docs/reference/Glib/List.md": {
+    "routines": {
+      "subs-total": 7,
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-data": {
+        "g_list_nth_data_str": 0,
+        "g_list_nth": 0,
+        "g_list_last": 0,
+        "g_list_length": 0,
+        "g_list_nth_data_gobject": 0,
+        "g_list_first": 0,
+        "g_list_free": 0
+      }
+    }
+  },
+  "content-docs/reference/Gtk3/Orientable.md": {
+    "routines": {
+      "subs-total": 2,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Image.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 6
+    }
+  },
+  "content-docs/reference/Gtk3/Widget.md": {
+    "routines": {
+      "subs-total": 213,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gdk3/Window.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 145
+    }
+  },
+  "content-docs/reference/GObject/Type.md": {
+    "routines": {
+      "subs-total": 7,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Glib/Main.md": {
+    "routines": {
+      "subs-total": 15,
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-data": {
+        "g_source_destroy": 0,
+        "g_source_remove": 0,
+        "g_main_context_push_thread_default": 0,
+        "g_source_attach": 0,
+        "g_main_loop_quit": 0,
+        "g_idle_source_new": 0,
+        "g_main_context_pop_thread_default": 0,
+        "g_main_context_invoke": 0,
+        "g_main_context_invoke_full": 0,
+        "g_main_loop_new": 0,
+        "g_main_context_new": 0,
+        "g_main_loop_run": 0,
+        "g_main_context_get_thread_default": 0,
+        "g_timeout_add": 0,
+        "g_main_context_default": 0
+      }
+    }
+  },
+  "content-docs/reference/Gtk3/MenuShell.md": {
+    "routines": {
+      "subs-total": 14,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Button.md": {
+    "routines": {
+      "subs-total": 19,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/LevelBar.md": {
+    "routines": {
+      "subs-total": 15,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Label.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 4
+    }
+  },
+  "content-docs/reference/Gtk3/FileChooser.md": {
+    "routines": {
+      "subs-total": 59,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/CssProvider.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 8
+    }
+  },
+  "content-docs/reference/Gtk3/ImageMenuItem.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooserWidget.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/TextIter.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 91
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooserDialog.md": {
+    "routines": {
+      "subs-total": 1,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Main.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 9
+    }
+  },
+  "content-docs/reference/Gtk3/FileChooserDialog.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/RadioButton.md": {
+    "routines": {
+      "subs-total": 7,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/TextBuffer.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 62
+    }
+  },
+  "content-docs/reference/Gtk3/StyleContext.md": {
+    "routines": {
+      "subs-total": 40,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/ColorButton.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 4
+    }
+  },
+  "content-docs/reference/Gdk3/Device.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gdk3/Display.md": {
+    "routines": {
+      "subs-total": 4,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Enums.md": {
+    "routines": {
+      "subs-total": 0,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Entry.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 5
+    }
+  },
+  "content-docs/reference/GObject/Boxed.md": {
+    "routines": {
+      "subs-total": 1,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/GObject/Object.md": {
+    "routines": {
+      "subs-total": 25,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/ColorChooser.md": {
+    "routines": {
+      "subs-data": {
+        "gtk_color_chooser_get_rgba": 1,
+        "new": 1,
+        "gtk_color_chooser_get_use_alpha": 1,
+        "gtk_color_chooser_set_use_alpha": 1,
+        "gtk_color_chooser_set_rgba": 1,
+        "gtk_color_chooser_add_palette": 1
+      },
+      "subs-total": 6,
+      "subs-tested": 6,
+      "coverage": "100.00"
+    },
+    "properties": {
+      "coverage": "0.00",
+      "props-tested": 0,
+      "props-total": 2,
+      "subs-data": {
+        "rgba": 0,
+        "use-alpha": 0
+      }
+    },
+    "signals": {
+      "coverage": "0.00",
+      "subs-data": {
+        "color-activated": 0
+      },
+      "sigs-tested": 0,
+      "sigs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/Range.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 25
+    }
+  },
+  "content-docs/reference/Gtk3/Container.md": {
+    "routines": {
+      "subs-total": 31,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Grid.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 8
+    }
+  },
+  "content-docs/reference/Gtk3/ListBoxRow.md": {
+    "routines": {
+      "subs-total": 10,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gtk3/ToggleButton.md": {
+    "routines": {
+      "subs-total": 6,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Gdk3/Keysyms.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Gdk3/Events.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 44
+    }
+  },
+  "content-docs/reference/Gtk3/Box.md": {
+    "routines": {
+      "subs-total": 14,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Menu.md": {
+    "routines": {
+      "subs-total": 25,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/SearchEntry.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 1
+    }
+  },
+  "content-docs/reference/Gtk3/CheckButton.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 3
+    }
+  },
+  "content-docs/reference/Gtk3/Border.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 9
+    }
+  },
+  "content-docs/reference/Gtk3/TextView.md": {
+    "routines": {
+      "subs-total": 71,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/GObject/Signal.md": {
+    "routines": {
+      "subs-total": 9,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Native/NativeLib.md": {
+    "routines": {
+      "subs-total": 1,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/Misc.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Gtk3/MenuItem.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 18
+    }
+  },
+  "content-docs/reference/Gtk3/Window.md": {
+    "routines": {
+      "subs-tested": 14,
+      "coverage": "12.96",
+      "subs-total": 108
+    }
+  },
+  "content-docs/reference/Gtk3/ListBox.md": {
+    "routines": {
+      "subs-total": 28,
+      "coverage": "0.00",
+      "subs-tested": 0
+    }
+  },
+  "content-docs/reference/Glib/Quark.md": {
+    "routines": {
+      "subs-data": {
+        "g_quark_try_string": 1,
+        "g_quark_from_string": 1,
+        "g_quark_to_string": 1
+      },
+      "coverage": "100.00",
+      "subs-tested": 3,
+      "subs-total": 3
+    }
+  },
+  "content-docs/reference/Gtk3/Builder.md": {
+    "routines": {
+      "subs-total": 27,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/GObject/N-GObject.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Glib/Error.md": {
+    "routines": {
+      "subs-data": {
+        "g_error_copy": 1,
+        "g_error_matches": 1,
+        "message": 1,
+        "code": 1,
+        "error-is-valid": 1,
+        "domain": 1,
+        "clear-error": 1,
+        "g_error_new_literal": 2
+      },
+      "subs-tested": 8,
+      "coverage": "100.00",
+      "subs-total": 8
+    }
+  },
+  "content-docs/reference/Gdk3/Screen.md": {
+    "routines": {
+      "subs-total": 2,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/AboutDialog.md": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 33
+    }
+  },
+  "content-docs/reference/GObject/InitiallyUnowned.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 0
+    }
+  },
+  "content-docs/reference/Gtk3/Bin.md": {
+    "routines": {
+      "subs-total": 1,
+      "subs-tested": 0,
+      "coverage": "0.00"
+    }
+  },
+  "content-docs/reference/Gtk3/WidgetPath.md": {
+    "routines": {
+      "coverage": "0.00",
+      "subs-tested": 0,
+      "subs-total": 33
+    }
+  },
+  "": {
+    "routines": {
+      "subs-tested": 0,
+      "coverage": "0.00",
+      "subs-total": 2
+    }
+  }
+}

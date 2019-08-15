@@ -1,4 +1,7 @@
+#TL:1:Gnome::Gtk3::ColorChooser
+
 use v6;
+
 #-------------------------------------------------------------------------------
 =begin pod
 
@@ -8,19 +11,15 @@ use v6;
 
 =head1 Description
 
-C<Gnome::Gtk3::ColorChooser> is an interface that is implemented by widgets
-for choosing colors. Depending on the situation, colors may be
-allowed to have alpha (translucency).
+I<Gnome::Gtk3::ColorChooser> is an interface that is implemented by widgets for choosing colors. Depending on the situation, colors may be allowed to have alpha (translucency).
 
-In GTK+, the main widgets that implement this interface are
-C<Gnome::Gtk3::ColorChooserWidget>, C<Gnome::Gtk3::ColorChooserDialog> and C<Gnome::Gtk3::ColorButton>.
+In GTK+, the main widgets that implement this interface are I<Gnome::Gtk3::ColorChooserWidget>, I<Gnome::Gtk3::ColorChooserDialog> and I<Gnome::Gtk3::ColorButton>.
 
 Since: 3.4
 
-
 =head2 See Also
 
-C<Gnome::Gtk3::ColorChooserDialog>, C<Gnome::Gtk3::ColorChooserWidget>, C<Gnome::Gtk3::ColorButton>
+I<Gnome::Gtk3::ColorChooserDialog>, I<Gnome::Gtk3::ColorChooserWidget>, I<Gnome::Gtk3::ColorButton>
 
 =head1 Synopsis
 =head2 Declaration
@@ -34,7 +33,7 @@ C<Gnome::Gtk3::ColorChooserDialog>, C<Gnome::Gtk3::ColorChooserWidget>, C<Gnome:
     :title('my color dialog')
   );
 
-  # get color chooser widget from widgets that implement the interface
+  # Get color chooser widget from widgets that implement the interface
   my Gnome::Gtk3::ColorChooser $cc .= new(:widget($ccdialog));
 
 =end pod
@@ -58,13 +57,15 @@ also is Gnome::GObject::Interface;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+#TM:1:new(:widget)
+
 =begin pod
 =head1 Methods
 =head2 new
 
 =head3 multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
 
 =end pod
 
@@ -111,6 +112,7 @@ method fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_chooser_get_rgba
 =begin pod
 =head2 [gtk_color_chooser_] get_rgba
 
@@ -118,9 +120,9 @@ Gets the currently-selected color.
 
 Since: 3.4
 
-  method gtk_color_chooser_get_rgba ( N-GObject $color)
+  method gtk_color_chooser_get_rgba ( GdkRGBA $color )
 
-=item GdkRGBA $color;  (out): a C<GdkRGBA> structure to fill in with the current color
+=item GdkRGBA $color: a I<GdkRGBA> structure to fill in with the current color
 
 =end pod
 
@@ -129,6 +131,7 @@ sub gtk_color_chooser_get_rgba ( N-GObject $chooser, GdkRGBA:D $color )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_chooser_set_rgba
 =begin pod
 =head2 [gtk_color_chooser_] set_rgba
 
@@ -136,9 +139,9 @@ Sets the color.
 
 Since: 3.4
 
-  method gtk_color_chooser_set_rgba ( N-GObject $color)
+  method gtk_color_chooser_set_rgba ( N-GObject $color )
 
-=item GdkRGBA $color;  the new color
+=item GdkRGBA $color: the new color
 
 =end pod
 
@@ -147,13 +150,13 @@ sub gtk_color_chooser_set_rgba ( N-GObject $chooser, GdkRGBA:D $color )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_chooser_get_use_alpha
 =begin pod
 =head2 [gtk_color_chooser_] get_use_alpha
 
-Returns whether the color chooser shows the alpha channel.
+Check whether the color chooser shows the alpha channel.
 
-Returns: C<1> if the color chooser uses the alpha channel,
-C<0> if not
+Returns: C<1> if the color chooser uses the alpha channel, C<0> if not.
 
 Since: 3.4
 
@@ -167,6 +170,7 @@ sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_chooser_set_use_alpha
 =begin pod
 =head2 [gtk_color_chooser_] set_use_alpha
 
@@ -176,7 +180,7 @@ Since: 3.4
 
   method gtk_color_chooser_set_use_alpha ( Int $use_alpha)
 
-=item Int $use_alpha;  1 if color chooser should use alpha channel, 0 if not
+=item Int $use_alpha: C<1> if color chooser should use alpha channel, C<0> if not
 
 =end pod
 
@@ -185,38 +189,40 @@ sub gtk_color_chooser_set_use_alpha ( N-GObject $chooser, int32 $use_alpha )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_chooser_add_palette
 =begin pod
 =head2 [gtk_color_chooser_] add_palette
 
-Adds a palette to the color chooser. If I<orientation> is horizontal,
-the colors are grouped in rows, with I<colors_per_line> colors
-in each row. If I<horizontal> is C<0>, the colors are grouped
-in columns instead.
+Adds a palette to the color chooser. If I<$orientation> is horizontal, the colors are grouped in rows, with I<$colors_per_line> colors in each row. If I<$horizontal> is C<0>, the colors are grouped in columns instead.
 
-The default color palette of C<Gnome::Gtk3::ColorChooserWidget> has
-27 colors, organized in columns of 3 colors. The default gray
-palette has 9 grays in a single row.
+The default color palette of I<Gnome::Gtk3::ColorChooserWidget> has 27 colors, organized in columns of 3 colors. The default gray palette has 9 grays in a single row.
 
-The layout of the color chooser widget works best when the
-palettes have 9-10 columns.
+The layout of the color chooser widget works best when the palettes have 9-10 columns.
 
-Calling this function for the first time has the
-side effect of removing the default color and gray palettes
-from the color chooser.
+Calling this function for the first time has the side effect of removing the default color and gray palettes from the color chooser.
 
-If I<colors> is C<Any>, removes all previously added palettes.
+If I<$colors> is undefined, the method removes all previously added palettes.
 
 Since: 3.4
 
-  method gtk_color_chooser_add_palette ( GtkOrientation $orientation, Int $colors_per_line, Int $n_colors, N-GObject $colors )
+  method gtk_color_chooser_add_palette (
+    GtkOrientation $orientation,
+    Int $colors_per_line, Int $n_colors,
+    CArray $colors
+  )
 
-=item GtkOrientation $orientation;  C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns
-=item Int $colors_per_line;  the number of colors to show in each row/column
-=item Int $n_colors;  the total number of elements in @colors
+=item GtkOrientation $orientation; C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns.
+=item Int $colors_per_line;  the number of colors to show in each row/column.
+=item Int $n_colors;  the total number of elements in @colors.
 =item CArray[num64] $colors; (allow-none) (array length=n_colors): the colors of the palette, or C<Any>.
 
 =head3 An Example
+
 According to the documentation, an array of GdkRGBA Structures should be given. Perl6 however, turns a CArray[GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either CArray[GdkRGBA] or CArray[num64] can be given. The latter one must always have elems % 4 == 0.
+
+  use NativeCall;
+  use Gnome::Gdk3::RGBA;
+  use Gnome::Gtk3::ColorChooser;
 
   my $palette = CArray[num64].new(
     .0e0, .0e0, .0e0, 1e0, # color1: red, green, blue, opacity
@@ -256,14 +262,15 @@ Or it can be done like this
     );
   }
 
-  my GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
+  my GdkRGBA $color .= new(
+    :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0)
+  );
   my Gnome::Gtk3::ColorButton $cb .= new(:$color);
   my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
   $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 10, $palette);
 
 =end pod
 
-#-------------------------------------------------------------------------------
 sub gtk_color_chooser_add_palette (
   N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
   int32 $n_colors, CArray $colors
@@ -310,7 +317,7 @@ sub _gtk_color_chooser_add_palette (
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+Register any signal as follows. See also I<Gnome::GObject::Object>.
 
   my Bool $is-registered = $my-widget.register-signal (
     $handler-object, $handler-name, $signal-name,
@@ -327,12 +334,10 @@ Register any signal as follows. See also C<Gnome::GObject::Object>.
 
 =head2 Not yet supported signals
 
+=comment #TS:0:color-activated:
 =head3 color-activated:
 
-Emitted when a color is activated from the color chooser.
-This usually happens when the user clicks a color swatch,
-or a color is selected and the user presses one of the keys
-Space, Shift+Space, Return or Enter.
+Emitted when a color is activated from the color chooser. This usually happens when the user clicks a color swatch, or a color is selected and the user presses one of the keys Space, Shift+Space, Return or Enter.
 
 Since: 3.4
 
@@ -351,7 +356,7 @@ Since: 3.4
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
+An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -360,43 +365,27 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
 
 
 =head2 Supported properties
+=comment #TP:0:use-alpha:
 =head3 use-alpha
 
-The C<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
+The I<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
 
-When ::use-alpha is C<1>, colors may have alpha (translucency)
-information. When it is C<0>, the C<Gnome::Gdk3::RGBA> struct obtained
-via the prop C<rgba> property will be forced to have
-alpha == 1.
+When prop I<use-alpha> is C<1>, colors may have alpha (translucency) information. When it is C<0>, the I<Gnome::Gdk3::RGBA> struct obtained via the prop I<rgba> property will be forced to have alpha == 1.
 
-Implementations are expected to show alpha by rendering the color
-over a non-uniform background (like a checkerboard pattern).
+Implementations are expected to show alpha by rendering the color over a non-uniform background (like a checkerboard pattern).
 
 Since: 3.4
 
 
 =head2 Not yet supported properties
 
+=comment #TP:0:rgba:
 =head3 rgba
 
-The C<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
+The I<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
 
-The ::rgba property contains the currently selected color,
-as a C<Gnome::Gdk3::RGBA> struct. The property can be set to change
-the current selection programmatically.
+The prop I<rgba> property contains the currently selected color, as a I<Gnome::Gdk3::RGBA> struct. The property can be set to change the current selection programmatically.
 
 Since: 3.4
 
 =end pod
-
-
-#`{{
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Types
-=head2
-
-=item
-
-=end pod
-}}

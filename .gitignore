@@ -21,3 +21,4 @@ _site
 .jekyll-metadata
 docs-old/
 .bundle/
+xt/NewModules/*

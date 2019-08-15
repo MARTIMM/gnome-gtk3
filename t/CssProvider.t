@@ -53,7 +53,7 @@ subtest 'load-from-data', {
   is $e.error-is-valid, False, 'no errors';
 
   subtest 'invalid css from string', {
-    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Quark $quark .= new(:empty);
 
     $e = $cp.load-from-data($invalid-css-text);
     is $e.error-is-valid, True, 'there are errors';
@@ -76,7 +76,7 @@ subtest 'load-from-path', {
   is $e.error-is-valid, False, 'no errors';
 
   subtest 'invalid css from file', {
-    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Quark $quark .= new(:empty);
 
     $e = $cp.load-from-path($invalid-css-file);
     is $e.error-is-valid, True, 'there are errors';

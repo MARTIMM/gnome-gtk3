@@ -101,7 +101,7 @@ subtest 'Test builder errors', {
     :message("<input>:4:40 Unhandled tag: <requires>");
 
   subtest "errorcode return from gtk_builder_add_from_file", {
-    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Quark $quark .= new(:empty);
 
     my Gnome::Glib::Error $e = $builder.add-from-file('x.glade');
     ok $e.domain > 0, "domain code: $e.domain()";
@@ -113,7 +113,7 @@ subtest 'Test builder errors', {
   }
 
   subtest "errorcode return from gtk_builder_add_from_string", {
-    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Quark $quark .= new(:empty);
 
     my Gnome::Glib::Error $e = $builder.add-from-string($text);
     is $e.domain, $builder.error-quark(), "domain code: $e.domain()";

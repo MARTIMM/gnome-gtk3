@@ -1,20 +1,5 @@
 # https://jekyllrb.com/tutorials/navigation/
 
-# doc: Doc codes
-# 0 no doc
-# 1 doc generated
-# 2 doc rewritten
-# 3 examples added
-
-# test: Test codes
-# 0 no tests
-# 1 tests ok (mod loaded)
-# 2 partly tested,
-# 3 all defined methods tested
-
-# tut: '' no example, or 'url' pointing to an example
-# ex: '' no tutorial, or 'url' pointing to tutoral
-
 # 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊 ⌺🗲
 
 - bar_title: "Toplevels"
@@ -152,7 +137,8 @@
   bar_menu:
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
-    doc: 1
+    doc: 3
+    test: 2
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     doc: 0

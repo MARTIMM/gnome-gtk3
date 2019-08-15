@@ -46,6 +46,7 @@ sub MAIN (
   if $file-found {
     # test for dir 'xt'
     mkdir( 'xt', 0o766) unless 'xt'.IO.e;
+    mkdir( 'xt/NewModules', 0o766) unless 'xt/NewModules'.IO.e;
 
     ( $p6-parentclass-name, $p6-parentlib-name) =
        parent-class($include-content);
@@ -90,7 +91,7 @@ sub MAIN (
 
       EOTEST
 
-    "xt/$p6-class-name.t".IO.spurt($test-content);
+    "xt/NewModules/$p6-class-name.t".IO.spurt($test-content);
   }
 
   else {
@@ -212,7 +213,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $sub = Q:qq:to/EOSUB/;
 
       $start-comment#-------------------------------------------------------------------------------
-      #TM:-:$sub-name
+      #TM:0:$sub-name:
 
       =begin pod
       =head2 $pod-sub-name
@@ -697,7 +698,7 @@ sub load-dir-lists ( ) {
 sub substitute-in-template ( Str $include-content ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
-    #TL:-:Gnome::LIBRARYMODULE
+    #TL:0:Gnome::LIBRARYMODULE:
 
     use v6;
     #-------------------------------------------------------------------------------
@@ -754,7 +755,7 @@ sub substitute-in-template ( Str $include-content ) {
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
 
-  $output-file = "xt/$p6-class-name.pm6";
+  $output-file = "xt/NewModules/$p6-class-name.pm6";
   $output-file.IO.spurt($template-text);
 
   get-vartypes($include-content);
@@ -773,15 +774,17 @@ sub substitute-in-template ( Str $include-content ) {
 
     =head3 multi method new ( N-GObject :$widget! )
 
-    Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+    Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
 
     =head3 multi method new ( Str :$build-id! )
 
-    Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+    Create an object using a native object from a builder. See also I<Gnome::GObject::Object>.
 
     =end pod
 
-    #TM:-:new
+    #TM:0:new(:empty):
+    #TM:0:new(:widget):
+    #TM:0:new(:build-id):
 
     submethod BUILD ( *%options ) {
 
@@ -960,7 +963,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=comment #TS:-:$signal-name\n=head3 $signal-name\n";
+    $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
 #    ( $sdoc, $items-src-doc) = get-podding-items($sdoc);
@@ -1106,7 +1109,7 @@ note "item doc: ", $item-doc;
       =begin pod
       =head1 Signals
 
-      Register any signal as follows. See also C<Gnome::GObject::Object>.
+      Register any signal as follows. See also I<Gnome::GObject::Object>.
 
         my Bool $is-registered = $my-widget.register-signal (
           $handler-object, $handler-name, $signal-name,
@@ -1157,7 +1160,7 @@ sub get-properties ( Str:D $source-content is copy ) {
         =begin pod
         =head1 Properties
 
-        An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+        An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
           my Gnome::Gtk3::Label $label .= new(:empty);
           my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1183,7 +1186,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
     /;
     $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=comment #TP:-:$property-name\n=head3 $property-name\n";
+    $property-doc ~= "\n=comment #TP:0:$property-name:\n=head3 $property-name\n";
 #note "sdoc 2: $sdoc";
     note "get property $property-name";
 
@@ -1198,7 +1201,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 #note "sdoc 3: ", $sdoc;
 
     $property-doc ~=
-      "\nThe C<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
+      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
@@ -1303,7 +1306,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
         $get-enum-doc = False;
         $process-enum = True;
 
-        $enum-spec = "\n=end pod\n\n#TE:-:$enum-name\nenum $enum-name is export (\n";
+        $enum-spec = "\n=end pod\n\n#TE:0:$enum-name:\nenum $enum-name is export (\n";
       }
 
 #      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
@@ -1446,7 +1449,7 @@ sub get-structures ( Str:D $include-content is copy ) {
         $get-struct-doc = False;
         $process-struct = True;
 
-        $struct-spec = "\n=end pod\n\n#TT:-:$struct-name\n" ~
+        $struct-spec = "\n=end pod\n\n#TT:0:$struct-name:\n" ~
           "class $struct-name is export is repr\('CStruct') \{\n";
       }
 
@@ -1552,7 +1555,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any #GtkClass to C<Gnome::Gtk::Class> and Gdk likewise
+# change any #GtkClass to I<Gnome::Gtk::Class> and Gdk likewise
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -1561,7 +1564,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /prop C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /sig I\<$oct\>/;
   }
 
   loop {
@@ -1570,7 +1573,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /sig C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /prop I\<$oct\>/;
   }
 
   loop {
@@ -1580,36 +1583,36 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     last unless ?$oct;
 
     $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $text ~~ s/ '#' (<alnum>+) /C\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) /I\<$oct\>/;
   }
 
   # convert a few without leading octagon (#)
   $text ~~ s:g/ <!after '%' > ('Gtk' || 'Gdk') (\D <alnum>+)
-              /C<Gnome::$/[0]3::$/[1]>/;
+              /I<Gnome::$/[0]3::$/[1]>/;
 
   $text
 }
 
 
 #-------------------------------------------------------------------------------
-# change any ::signal to C<signal>
+# change any ::signal to I<signal>
 sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / sig I<$/[0]>/;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / prop I<$/[0]>/;
   }
 
   $text
 }
 
 #-------------------------------------------------------------------------------
-# change any :property to C<property>
+# change any :property to I<property>
 sub podding-property ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / prop C<$/[0]>/;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / sig I<$/[0]>/;
   }
 
   $text
