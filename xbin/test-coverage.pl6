@@ -15,12 +15,32 @@ sub MAIN ( *@modules ) {
   my @m = lazy gather find-modules(|@modules);
   for @m -> Str $module {
 
-    # get content and process it. run sub-coverage() last!
+    # get content and process it.
     my Str $content = $module.IO.slurp;
     my ( $subs-total, $subs-tested, $sub-hash) = sub-coverage($content);
+    my ( $sigs-total, $sigs-tested, $sig-hash) = signal-coverage($content);
+    my ( $props-total, $props-tested, $prop-hash) = prop-coverage($content);
 
-    my Rat $coverage = $subs-total ?? 100.0 * $subs-tested/$subs-total !! 0.0;
-    note "$module $subs-total, $subs-tested, coverage: $coverage.fmt("%.2f")";
+    my Rat $sub-coverage = $subs-total
+           ?? 100.0 * $subs-tested/$subs-total
+           !! 0.0;
+
+    my Rat $sig-coverage = $sigs-total
+           ?? 100.0 * $sigs-tested/$sigs-total
+           !! 0.0;
+
+    my Rat $prop-coverage = $props-total
+           ?? 100.0 * $props-tested/$props-total
+           !! 0.0;
+
+    note Q:qq:to/EOREPORT/;
+
+      Module $module
+        Nbr subs $subs-total, subs tested $subs-tested, coverage: $sub-coverage.fmt("%.2f")
+        Nbr signals $sigs-total, signals tested $sigs-tested, coverage: $sig-coverage.fmt("%.2f")
+        Nbr properties $props-total, properties tested $props-tested, coverage: $prop-coverage.fmt("%.2f")
+      EOREPORT
+
 
     # setup structure for this module
     my Str $module-name = $module.IO.basename();
@@ -39,9 +59,19 @@ sub MAIN ( *@modules ) {
     }
 
     %test-coverage{$path}<routines> = {
-      :$subs-total, :$subs-tested, :coverage($coverage.fmt("%.2f")),
+      :$subs-total, :$subs-tested, :coverage($sub-coverage.fmt("%.2f")),
       :subs-data($sub-hash)
     };
+
+    %test-coverage{$path}<signals> = {
+      :$sigs-total, :$sigs-tested, :coverage($sig-coverage.fmt("%.2f")),
+      :subs-data($sig-hash)
+    } if $sigs-total;
+
+    %test-coverage{$path}<properties> = {
+      :$props-total, :$props-tested, :coverage($prop-coverage.fmt("%.2f")),
+      :subs-data($prop-hash)
+    } if $props-total;
   }
 
   $test-coverage-config.IO.spurt(to-json(%test-coverage));
@@ -66,6 +96,68 @@ sub find-modules ( *@modules ) {
       note "$m is not a perl6 module";
     }
   }
+}
+
+#-------------------------------------------------------------------------------
+sub signal-coverage( Str:D $content ) {
+  my Hash $sig-cover = {};
+  my Int $sigs-tested = 0;
+
+  # search for special notes like '#TS:sts:sig-name'
+  $content ~~ m:g/^^ '=comment #TS:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  my List $results = $/[*];
+  for @$results -> $r {
+    my Str $header = ~$r;
+    $header ~~ m/
+      '#TS:'
+      $<state> = ([<[+-]> || \d])
+      ':'
+      $<name> = ([<alnum> || '-']+)
+    /;
+
+    my Str $name = ~$/<name>;
+
+    my $state = ~$/<state>;
+    $state = 0 if $state eq '-';
+    $state = 1 if $state eq '+';
+    $state .= Int;  # convert to int for all other digit characters
+    $sigs-tested++ if $state > 0;
+    $sig-cover{$name} = $state;
+  }
+
+  # return total nbr of subs/methods, nbr tested and data
+  return ( $sig-cover.elems, $sigs-tested, $sig-cover);
+}
+
+#-------------------------------------------------------------------------------
+sub prop-coverage( Str:D $content ) {
+  my Hash $prop-cover = {};
+  my Int $props-tested = 0;
+
+  # search for special notes like '#TS:sts:sig-name'
+  $content ~~ m:g/^^ '=comment #TP:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  my List $results = $/[*];
+  for @$results -> $r {
+    my Str $header = ~$r;
+    $header ~~ m/
+      '#TP:'
+      $<state> = ([<[+-]> || \d])
+      ':'
+      $<name> = ([<alnum> || '-']+)
+    /;
+
+    my Str $name = ~$/<name>;
+
+    my $state = ~$/<state>;
+    $state = 0 if $state eq '-';
+    $state = 1 if $state eq '+';
+    $state .= Int;  # convert to int for all other digit characters
+    $props-tested++ if $state > 0;
+    $prop-cover{$name} = $state;
+  }
+
+  # return total nbr of subs/methods, nbr tested and data
+  return ( $prop-cover.elems, $props-tested, $prop-cover);
 }
 
 #-------------------------------------------------------------------------------
@@ -128,7 +220,7 @@ sub sub-coverage( Str:D $new-content ) {
     $sub-cover{$name} = 0 unless $sub-cover{$name};
   }
 
-  # search for special notes like '#TM:+:gtk_window_set_has_user_ref_count'
+  # search for special notes like '#TM:sts:sub-name'
   $content ~~ m:g/^^ '#TM:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
   $results = $/[*];
   for @$results -> $r {
