@@ -1,3 +1,5 @@
+#TL:1:Gnome::Gtk3::StyleContext:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
@@ -71,6 +73,9 @@ enum GtkStyleContextPrintFlags is export (
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+#TM:1:new(:empty):
+#TM:0:new(:widget):
+
 =begin pod
 =head1 Methods
 =head2 new
@@ -127,6 +132,7 @@ method fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_style_context_new:new(:empty)
 =begin pod
 =head2 gtk_style_context_new
 
@@ -145,14 +151,17 @@ sub gtk_style_context_new ( --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_style_context_add_provider_for_screen:
 =begin pod
 =head2 [gtk_style_context_] add_provider_for_screen
 
-Adds a global style provider to I<screen>, which will be used in style construction for all I<Gnome::Gtk3::StyleContext>s under I<screen>.
+Adds a global style provider to I<Gnome::Gdk3::Screen>, which will be used in style construction for all I<Gnome::Gtk3::StyleContext>s under I<Gnome::Gdk3::Screen>.
 
 GTK+ uses this to make styling information from I<Gnome::Gtk3::Settings> available.
 
 Note: If both priorities are the same, A I<Gnome::Gtk3::StyleProvider> added through C<gtk_style_context_add_provider()> takes precedence over another added through this function.
+
+Note: Priorities are unsigned integers renaging from 1 to lets say 1000. An enumeration C<GtkStyleProviderPriority> in StyleProvider is defined for specific priorities such as C<GTK_STYLE_PROVIDER_PRIORITY_SETTINGS> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>.
 
 Since: 3.0
 
@@ -160,9 +169,18 @@ Since: 3.0
     N-GObject $screen, N-GObject $provider, UInt $priority
   )
 
-=item N-GObject $screen; a I<Gnome::Gdk3::Screen>
-=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>
-=item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>
+=item N-GObject $screen; a I<Gnome::Gdk3::Screen>.
+=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>.
+=item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> (= 1) and C<GTK_STYLE_PROVIDER_PRIORITY_USER> (= 800).
+
+  my Gnome::Gdk3::Screen $screen .= new(:default);
+  my Gnome::Gtk3::StyleContext $sc .= new(:empty);
+  my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+
+  $sc.add-provider-for-screen(
+    $screen, $cp, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
+  );
+
 
 =end pod
 
@@ -181,10 +199,11 @@ sub _gtk_style_context_add_provider_for_screen (
 
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_style_context_remove_provider_for_screen:
 =begin pod
 =head2 [gtk_style_context_] remove_provider_for_screen
 
-Removes I<provider> from the global style providers list in I<screen>.
+Removes a I<Gnome::Gtk3::StyleProvider> from the global style providers list in I<Gnome::Gdk3::Screen>.
 
 Since: 3.0
 
@@ -209,10 +228,11 @@ sub _gtk_style_context_remove_provider_for_screen (
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_style_context_add_provider:
 =begin pod
 =head2 [gtk_style_context_] add_provider
 
-Adds a style provider to I<context>, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which I<context> belongs. If you want to affect the style of all widgets, use C<gtk_style_context_add_provider_for_screen()>.
+Adds a style provider to the I<context>, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which I<context> belongs. If you want to affect the style of all widgets, use C<gtk_style_context_add_provider_for_screen()>.
 
 Note: If both priorities are the same, a I<Gnome::Gtk3::StyleProvider> added through this function takes precedence over another added through C<gtk_style_context_add_provider_for_screen()>.
 
@@ -223,6 +243,12 @@ Since: 3.0
 =item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>
 
+  my Gnome::Gdk3::Screen $screen .= new(:default);
+  my Gnome::Gtk3::StyleContext $sc .= new(:empty);
+  my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+
+  $sc.add-provider( $cp, 234);
+
 =end pod
 
 sub gtk_style_context_add_provider ( N-GObject $context, N-GObject $provider, uint32 $priority )
@@ -230,10 +256,11 @@ sub gtk_style_context_add_provider ( N-GObject $context, N-GObject $provider, ui
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_style_context_remove_provider:
 =begin pod
 =head2 [gtk_style_context_] remove_provider
 
-Removes I<provider> from the style providers list in I<context>.
+Removes a I<Gnome::Gtk3::StyleProvider> from the style providers list in I<context>.
 
 Since: 3.0
 
@@ -248,6 +275,7 @@ sub gtk_style_context_remove_provider ( N-GObject $context, N-GObject $provider 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_save:
 =begin pod
 =head2 gtk_style_context_save
 
@@ -266,6 +294,7 @@ sub gtk_style_context_save ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_restore:
 =begin pod
 =head2 gtk_style_context_restore
 
@@ -282,6 +311,7 @@ sub gtk_style_context_restore ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_section:
 =begin pod
 =head2 [gtk_style_context_] get_section
 
@@ -313,6 +343,7 @@ sub gtk_style_context_get_section ( N-GObject $context, Str $property )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_property:
 =begin pod
 =head2 [gtk_style_context_] get_property
 
@@ -346,6 +377,7 @@ sub gtk_style_context_get_property ( N-GObject $context, Str $property, int32 $s
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_valist:
 =begin pod
 =head2 [gtk_style_context_] get_valist
 
@@ -369,6 +401,7 @@ sub gtk_style_context_get_valist ( N-GObject $context, int32 $state, va_list $ar
 
 #`[[
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get:
 =begin pod
 =head2 gtk_style_context_get
 
@@ -391,6 +424,7 @@ sub gtk_style_context_get ( N-GObject $context, int32 $state, Any $any = Any )
 ]]
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_state:
 =begin pod
 =head2 [gtk_style_context_] set_state
 
@@ -409,6 +443,7 @@ sub gtk_style_context_set_state ( N-GObject $context, int32 $flags )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_state:
 =begin pod
 =head2 [gtk_style_context_] get_state
 
@@ -434,6 +469,7 @@ sub gtk_style_context_get_state ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_scale:
 =begin pod
 =head2 [gtk_style_context_] set_scale
 
@@ -452,6 +488,7 @@ sub gtk_style_context_set_scale ( N-GObject $context, int32 $scale )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_scale:
 =begin pod
 =head2 [gtk_style_context_] get_scale
 
@@ -472,6 +509,7 @@ sub gtk_style_context_get_scale ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_path:
 =begin pod
 =head2 [gtk_style_context_] set_path
 
@@ -496,6 +534,7 @@ sub gtk_style_context_set_path ( N-GObject $context, N-GObject $path )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_path:
 =begin pod
 =head2 [gtk_style_context_] get_path
 
@@ -510,6 +549,7 @@ sub gtk_style_context_get_path ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_parent:
 =begin pod
 =head2 [gtk_style_context_] set_parent
 
@@ -530,6 +570,7 @@ sub gtk_style_context_set_parent ( N-GObject $context, N-GObject $parent )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_parent:
 =begin pod
 =head2 [gtk_style_context_] get_parent
 
@@ -551,6 +592,7 @@ sub gtk_style_context_get_parent ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_list_classes:
 =begin pod
 =head2 [gtk_style_context_] list_classes
 
@@ -574,6 +616,7 @@ sub gtk_style_context_list_classes ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_add_class:
 =begin pod
 =head2 [gtk_style_context_] add_class
 
@@ -584,15 +627,12 @@ functions will make use of this new class for styling.
 In the CSS file format, a I<Gnome::Gtk3::Entry> defining a “search”
 class, would be matched by:
 
-|[
-entry.search { ... }
-]|
+  entry.search { ... }
 
 While any widget defining a “search” class would be
 matched by:
-|[
+
 .search { ... }
-]|
 
 Since: 3.0
 
@@ -607,6 +647,7 @@ sub gtk_style_context_add_class ( N-GObject $context, Str $class_name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_remove_class:
 =begin pod
 =head2 [gtk_style_context_] remove_class
 
@@ -625,6 +666,7 @@ sub gtk_style_context_remove_class ( N-GObject $context, Str $class_name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_has_class:
 =begin pod
 =head2 [gtk_style_context_] has_class
 
@@ -647,6 +689,7 @@ sub gtk_style_context_has_class ( N-GObject $context, Str $class_name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_style_property:
 =begin pod
 =head2 [gtk_style_context_] get_style_property
 
@@ -669,6 +712,7 @@ sub gtk_style_context_get_style_property ( N-GObject $context, Str $property_nam
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_style_valist:
 =begin pod
 =head2 [gtk_style_context_] get_style_valist
 
@@ -690,6 +734,7 @@ sub gtk_style_context_get_style_valist ( N-GObject $context, va_list $args )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_style:
 =begin pod
 =head2 [gtk_style_context_] get_style
 
@@ -709,6 +754,7 @@ sub gtk_style_context_get_style ( N-GObject $context, Any $any = Any )
 }}
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_screen:
 =begin pod
 =head2 [gtk_style_context_] set_screen
 
@@ -734,6 +780,7 @@ sub gtk_style_context_set_screen ( N-GObject $context, N-GObject $screen )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_screen:
 =begin pod
 =head2 [gtk_style_context_] get_screen
 
@@ -752,6 +799,7 @@ sub gtk_style_context_get_screen ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_frame_clock:
 =begin pod
 =head2 [gtk_style_context_] set_frame_clock
 
@@ -776,6 +824,7 @@ sub gtk_style_context_set_frame_clock ( N-GObject $context, N-GObject $frame_clo
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_frame_clock:
 =begin pod
 =head2 [gtk_style_context_] get_frame_clock
 
@@ -797,6 +846,7 @@ sub gtk_style_context_get_frame_clock ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_set_junction_sides:
 =begin pod
 =head2 [gtk_style_context_] set_junction_sides
 
@@ -823,6 +873,7 @@ sub gtk_style_context_set_junction_sides ( N-GObject $context, int32 $sides )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_junction_sides:
 =begin pod
 =head2 [gtk_style_context_] get_junction_sides
 
@@ -843,6 +894,7 @@ sub gtk_style_context_get_junction_sides ( N-GObject $context )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_lookup_color:
 =begin pod
 =head2 [gtk_style_context_] lookup_color
 
@@ -863,6 +915,7 @@ sub gtk_style_context_lookup_color ( N-GObject $context, Str $color_name, N-GObj
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_color:
 =begin pod
 =head2 [gtk_style_context_] get_color
 
@@ -885,6 +938,7 @@ sub gtk_style_context_get_color ( N-GObject $context, int32 $state, N-GObject $c
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_border:
 =begin pod
 =head2 [gtk_style_context_] get_border
 
@@ -907,6 +961,7 @@ sub gtk_style_context_get_border ( N-GObject $context, int32 $state, N-GObject $
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_padding:
 =begin pod
 =head2 [gtk_style_context_] get_padding
 
@@ -928,6 +983,7 @@ sub gtk_style_context_get_padding ( N-GObject $context, int32 $state, N-GObject 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_get_margin:
 =begin pod
 =head2 [gtk_style_context_] get_margin
 
@@ -949,6 +1005,7 @@ sub gtk_style_context_get_margin ( N-GObject $context, int32 $state, N-GObject $
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_reset_widgets:
 =begin pod
 =head2 [gtk_style_context_] reset_widgets
 
@@ -971,32 +1028,8 @@ sub gtk_style_context_reset_widgets ( N-GObject $screen )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-=begin pod
-=head2 gtk_render_insertion_cursor
-
-Draws a text caret on I<cr> at the specified index of I<layout>.
-
-Since: 3.4
-
-  method gtk_render_insertion_cursor ( cairo_t $cr, Num $x, Num $y, PangoLayout $layout, int32 $index, PangoDirection $direction )
-
-=item cairo_t $cr; a C<cairo_t>
-=item Num $x; X origin
-=item Num $y; Y origin
-=item PangoLayout $layout; the C<PangoLayout> of the text
-=item int32 $index; the index in the C<PangoLayout>
-=item PangoDirection $direction; the C<PangoDirection> of the text
-
-=end pod
-
-sub gtk_render_insertion_cursor ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, PangoLayout $layout, int32 $index, PangoDirection $direction )
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
+#TM:0:gtk_style_context_to_string:
 =begin pod
 =head2 [gtk_style_context_] to_string
 
@@ -1023,6 +1056,487 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
   is native(&gtk-lib)
   { * }
 
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_check:
+=begin pod
+=head2 gtk_render_check
+
+Renders a checkmark (as in a I<Gnome::Gtk3::CheckButton>).
+
+The C<GTK_STATE_FLAG_CHECKED> state determines whether the check is
+on or off, and C<GTK_STATE_FLAG_INCONSISTENT> determines whether it
+should be marked as undefined.
+
+Typical checkmark rendering:
+
+![](images/checks.png)
+
+Since: 3.0
+
+  method gtk_render_check ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_check ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+}}
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_option:
+=begin pod
+=head2 gtk_render_option
+
+Renders an option mark (as in a I<Gnome::Gtk3::RadioButton>), the C<GTK_STATE_FLAG_CHECKED>
+state will determine whether the option is on or off, and
+C<GTK_STATE_FLAG_INCONSISTENT> whether it should be marked as undefined.
+
+Typical option mark rendering:
+
+![](images/options.png)
+
+Since: 3.0
+
+  method gtk_render_option ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_option ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_arrow:
+=begin pod
+=head2 gtk_render_arrow
+
+Renders an arrow pointing to I<angle>.
+
+Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
+
+![](images/arrows.png)
+
+Since: 3.0
+
+  method gtk_render_arrow ( N-GObject $context, cairo_t $cr, Num $angle, Num $x, Num $y, Num $size )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $angle; arrow angle from 0 to 2 * C<G_PI>, being 0 the arrow pointing to the north
+=item Num $x; X origin of the render area
+=item Num $y; Y origin of the render area
+=item Num $size; square side for render area
+
+=end pod
+
+sub gtk_render_arrow ( N-GObject $context, cairo_t $cr, num64 $angle, num64 $x, num64 $y, num64 $size )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_background:
+=begin pod
+=head2 gtk_render_background
+
+Renders the background of an element.
+
+Typical background rendering, showing the effect of
+`background-image`, `border-width` and `border-radius`:
+
+![](images/background.png)
+
+Since: 3.0.
+
+  method gtk_render_background ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_background ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_background_get_clip:
+=begin pod
+=head2 [gtk_render_] background_get_clip
+
+Returns the area that will be affected (i.e. drawn to) when
+calling C<gtk_render_background()> for the given I<context> and
+rectangle.
+
+Since: 3.20
+
+  method gtk_render_background_get_clip ( N-GObject $context, Num $x, Num $y, Num $width, Num $height, N-GObject $out_clip )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+=item N-GObject $out_clip; (out): return location for the clip
+
+=end pod
+
+sub gtk_render_background_get_clip ( N-GObject $context, num64 $x, num64 $y, num64 $width, num64 $height, N-GObject $out_clip )
+  is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_frame:
+=begin pod
+=head2 gtk_render_frame
+
+Renders a frame around the rectangle defined by I<x>, I<y>, I<width>, I<height>.
+
+Examples of frame rendering, showing the effect of `border-image`,
+`border-color`, `border-width`, `border-radius` and junctions:
+
+![](images/frames.png)
+
+Since: 3.0
+
+  method gtk_render_frame ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_frame ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_expander:
+=begin pod
+=head2 gtk_render_expander
+
+Renders an expander (as used in I<Gnome::Gtk3::TreeView> and I<Gnome::Gtk3::Expander>) in the area
+defined by I<x>, I<y>, I<width>, I<height>. The state C<GTK_STATE_FLAG_CHECKED>
+determines whether the expander is collapsed or expanded.
+
+Typical expander rendering:
+
+![](images/expanders.png)
+
+Since: 3.0
+
+  method gtk_render_expander ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_expander ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_focus:
+=begin pod
+=head2 gtk_render_focus
+
+Renders a focus indicator on the rectangle determined by I<x>, I<y>, I<width>, I<height>.
+
+Typical focus rendering:
+
+![](images/focus.png)
+
+Since: 3.0
+
+  method gtk_render_focus ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_focus ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_layout:
+=begin pod
+=head2 gtk_render_layout
+
+Renders I<layout> on the coordinates I<x>, I<y>
+
+Since: 3.0
+
+  method gtk_render_layout ( N-GObject $context, cairo_t $cr, Num $x, Num $y, PangoLayout $layout )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin
+=item Num $y; Y origin
+=item PangoLayout $layout; the I<PangoLayout> to render
+
+=end pod
+
+sub gtk_render_layout ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, PangoLayout $layout )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_line:
+=begin pod
+=head2 gtk_render_line
+
+Renders a line from (x0, y0) to (x1, y1).
+
+Since: 3.0
+
+  method gtk_render_line ( N-GObject $context, cairo_t $cr, Num $x0, Num $y0, Num $x1, Num $y1 )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x0; X coordinate for the origin of the line
+=item Num $y0; Y coordinate for the origin of the line
+=item Num $x1; X coordinate for the end of the line
+=item Num $y1; Y coordinate for the end of the line
+
+=end pod
+
+sub gtk_render_line ( N-GObject $context, cairo_t $cr, num64 $x0, num64 $y0, num64 $x1, num64 $y1 )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_slider:
+=begin pod
+=head2 gtk_render_slider
+
+Renders a slider (as in I<Gnome::Gtk3::Scale>) in the rectangle defined by I<x>, I<y>,
+I<width>, I<height>. I<orientation> defines whether the slider is vertical
+or horizontal.
+
+Typical slider rendering:
+
+![](images/sliders.png)
+
+Since: 3.0
+
+  method gtk_render_slider ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height, GtkOrientation $orientation )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+=item GtkOrientation $orientation; orientation of the slider
+
+=end pod
+
+sub gtk_render_slider ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height, int32 $orientation )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_extension:
+=begin pod
+=head2 gtk_render_extension
+
+Renders a extension (as in a I<Gnome::Gtk3::Notebook> tab) in the rectangle
+defined by I<x>, I<y>, I<width>, I<height>. The side where the extension
+connects to is defined by I<gap_side>.
+
+Typical extension rendering:
+
+![](images/extensions.png)
+
+Since: 3.0
+
+  method gtk_render_extension ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height, GtkPositionType $gap_side )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+=item GtkPositionType $gap_side; side where the gap is
+
+=end pod
+
+sub gtk_render_extension ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height, int32 $gap_side )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_handle:
+=begin pod
+=head2 gtk_render_handle
+
+Renders a handle (as in I<Gnome::Gtk3::HandleBox>, I<Gnome::Gtk3::Paned> and
+I<Gnome::Gtk3::Window>’s resize grip), in the rectangle
+determined by I<x>, I<y>, I<width>, I<height>.
+
+Handles rendered for the paned and grip classes:
+
+![](images/handles.png)
+
+Since: 3.0
+
+  method gtk_render_handle ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_handle ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_activity:
+=begin pod
+=head2 gtk_render_activity
+
+Renders an activity indicator (such as in I<Gnome::Gtk3::Spinner>).
+The state C<GTK_STATE_FLAG_CHECKED> determines whether there is
+activity going on.
+
+Since: 3.0
+
+  method gtk_render_activity ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item Num $x; X origin of the rectangle
+=item Num $y; Y origin of the rectangle
+=item Num $width; rectangle width
+=item Num $height; rectangle height
+
+=end pod
+
+sub gtk_render_activity ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_icon:
+=begin pod
+=head2 gtk_render_icon
+
+Renders the icon in I<pixbuf> at the specified I<x> and I<y> coordinates.
+
+This function will render the icon in I<pixbuf> at exactly its size,
+regardless of scaling factors, which may not be appropriate when
+drawing on displays with high pixel densities.
+
+You probably want to use C<gtk_render_icon_surface()> instead, if you
+already have a Cairo surface.
+
+Since: 3.2
+
+  method gtk_render_icon ( N-GObject $context, cairo_t $cr, N-GObject $pixbuf, Num $x, Num $y )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item N-GObject $pixbuf; a I<Gnome::Gdk3::Pixbuf> containing the icon to draw
+=item Num $x; X position for the I<pixbuf>
+=item Num $y; Y position for the I<pixbuf>
+
+=end pod
+
+sub gtk_render_icon ( N-GObject $context, cairo_t $cr, N-GObject $pixbuf, num64 $x, num64 $y )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_icon_surface:
+=begin pod
+=head2 [gtk_render_] icon_surface
+
+Renders the icon in I<surface> at the specified I<x> and I<y> coordinates.
+
+Since: 3.10
+
+  method gtk_render_icon_surface ( N-GObject $context, cairo_t $cr, cairo_surface_t $surface, Num $x, Num $y )
+
+=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item cairo_t $cr; a I<cairo_t>
+=item cairo_surface_t $surface; a I<cairo_surface_t> containing the icon to draw
+=item Num $x; X position for the I<icon>
+=item Num $y; Y position for the I<incon>
+
+=end pod
+
+sub gtk_render_icon_surface ( N-GObject $context, cairo_t $cr, cairo_surface_t $surface, num64 $x, num64 $y )
+  is native(&gtk-lib)
+  { * }
+}}
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:gtk_render_insertion_cursor:
+=begin pod
+=head2 gtk_render_insertion_cursor
+
+Draws a text caret on I<cr> at the specified index of I<layout>.
+
+Since: 3.4
+
+  method gtk_render_insertion_cursor ( cairo_t $cr, Num $x, Num $y, PangoLayout $layout, int32 $index, PangoDirection $direction )
+
+=item cairo_t $cr; a C<cairo_t>
+=item Num $x; X origin
+=item Num $y; Y origin
+=item PangoLayout $layout; the C<PangoLayout> of the text
+=item int32 $index; the index in the C<PangoLayout>
+=item PangoDirection $direction; the C<PangoDirection> of the text
+
+=end pod
+
+sub gtk_render_insertion_cursor ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, PangoLayout $layout, int32 $index, PangoDirection $direction )
+  is native(&gtk-lib)
+  { * }
+}}
+
 #-------------------------------------------------------------------------------
 =begin pod
 =begin comment
@@ -1030,7 +1544,26 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
 =head1 Not yet implemented methods
 
 =head3 method gtk_style_context_get_style ( ... )
+=head3 method gtk_render_check ( ... )
+=head3 method gtk_render_option ( ... )
+=head3 method gtk_render_arrow ( ... )
+=head3 method gtk_render_background ( ... )
+=head3 method gtk_render_frame ( ... )
+=head3 method gtk_render_expander ( ... )
+=head3 method gtk_render_focus ( ... )
+=head3 method gtk_render_layout ( ... )
+=head3 method gtk_render_line ( ... )
+=head3 method gtk_render_slider ( ... )
+=head3 method gtk_render_extension ( ... )
+=head3 method gtk_render_handle ( ... )
+=head3 method gtk_render_activity ( ... )
+=head3 method gtk_render_icon ( ... )
+=head3 method gtk_render_icon_surface ( ... )
 =head3 method gtk_render_insertion_cursor ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
+=head3 method  ( ... )
 =head3 method  ( ... )
 =head3 method  ( ... )
 
@@ -1078,6 +1611,7 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
 =head3 method gtk_icon_set_render_icon_pixbuf ( ... )
 =head3 method gtk_icon_set_render_icon_surface ( ... )
 =head3 method gtk_style_context_lookup_icon_set ( ... )
+=head3 method gtk_render_icon_pixbuf ( ... )
 
 =head2 Since 3.12
 =head3 method gtk_style_context_invalidate ( ... )
@@ -1094,6 +1628,9 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
 
 =head2 Since 3.18.
 =head3 method gtk_style_context_set_background ( ... )
+
+=head2 Since 3.24.
+=head3 method gtk_render_frame_gap ( ... )
 =end pod
 
 #-------------------------------------------------------------------------------
