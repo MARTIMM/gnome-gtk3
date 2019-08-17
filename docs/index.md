@@ -77,6 +77,7 @@ Before any code can be run we must install the packages we want to use. It is as
 ```
 > zef install Gnome::Gtk3::Glade
 ```
+<!--Licenses and Attribution-->
 
 # Warning
 The software as well as this website is far from finished as well as the documentation is not yet available for all modules in the packages.
