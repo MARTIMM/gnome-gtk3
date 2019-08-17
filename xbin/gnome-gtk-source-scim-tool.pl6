@@ -214,7 +214,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
       $start-comment#-------------------------------------------------------------------------------
       #TM:0:$sub-name:
-
       =begin pod
       =head2 $pod-sub-name
 
