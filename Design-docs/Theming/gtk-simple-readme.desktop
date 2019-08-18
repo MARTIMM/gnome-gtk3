@@ -1,0 +1,31 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+
+Name=gtk-simple-readme
+Name[en_US]=gtk-simple-readme
+
+Exec=env GTK_THEME=TT1 /home/marcel/Languages/Perl6/Projects/gtk-v3/xt/GTK-Simple-examples/gtk-simple-readme.pl6
+
+Icon=/home/marcel/Desktop/FH04.png
+
+# to view on desktop make it false
+NoDisplay=false
+
+#MimeType=application/gpx+xml;
+
+Comment[en_US]=Readme example from GTK::V3
+Comment=Readme example from GTK::V3
+#GenericName[en_US]=
+#GenericName=
+
+#MimeType=video/mp4;
+
+#Path=
+#StartupNotify=true
+Terminal=false
+TerminalOptions=
+#X-DBUS-ServiceName=
+#X-DBUS-StartupType=
+#X-KDE-SubstituteUID=false
+#X-KDE-Username=

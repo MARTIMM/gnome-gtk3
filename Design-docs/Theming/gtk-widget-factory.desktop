@@ -1,0 +1,30 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+
+Name=gtk3-widget-factory
+Name[en_US]=gtk3-widget-factory
+
+Exec=env GTK_THEME=TT1 /usr/bin/gtk3-widget-factory
+Icon=/home/marcel/Desktop/FH05.png
+
+# to view on desktop make it false
+NoDisplay=false
+
+#MimeType=application/gpx+xml;
+
+Comment[en_US]=Gtk widget factory
+Comment=Gtk widget factory
+#GenericName[en_US]=
+#GenericName=
+
+#MimeType=video/mp4;
+
+#Path=
+#StartupNotify=true
+Terminal=false
+TerminalOptions=
+#X-DBUS-ServiceName=
+#X-DBUS-StartupType=
+#X-KDE-SubstituteUID=false
+#X-KDE-Username=
