@@ -32,8 +32,9 @@ There is already a bit of history for these packages. It started off building th
   * It is possible to create threads where longer runs can be done without crippling the user interface responses and also show the results from there in the gui.
 
 ### Cons
-  * The code is larger but I think it gives you greater flexibility.
+  * The code base is much larger but I think it gives you greater flexibility. It is even possible that there is too much. This will show later on when applications are made and show that the modules can be slimmed down. E.g. the Gnome::Gtk3::Widget module is about 7600 lines (with pod doc).
   * Code is somewhat slower. The setup of the 'hello world' example shown in the tutorials and examples, is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
+  * When programs run the first time, it might take some time to compile.
 
 ## Packages
 ### Gnome::N
@@ -55,7 +56,7 @@ Widget toolkit for graphical interfaces
 Package to make use of the graphical user interface designer program **Glade**.
 
 # Dependencies on external software
-The software in these packages do not (yet) install the GTK+ software, so there is a dependency on several libraries which must be installed before the perl6 software can be used.
+The software in these packages do not (yet) install the GTK+ libraries and tools (gtk, glib, cairo, pango, glade, etc), so there is a dependency on several libraries which must be installed before the perl6 software can be used.
 
 # Site Contents
 ## Tutorial
@@ -77,7 +78,22 @@ Before any code can be run we must install the packages we want to use. It is as
 ```
 > zef install Gnome::Gtk3::Glade
 ```
-<!--Licenses and Attribution-->
+# Licenses and Attribution
+
+## Licenses
+* GTK is entirely open-source under the [LGPL license](content-docs/license-lgpl.txt).
+* The Perl6 module libraries are available under the [Artistic license version 2.0](content-docs/license-art.txt).
+* Documentation on this site is under the [GNU free documentation license version 1.3](content-docs/license-doc.txt).
+
+## Attribution
+* First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
+* The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again.
+* The builders of the GTK+ library and the documentation have helped me a lot to see how things work, (although not all is yet clear). Their source code is also very helpful in the way that I could write a program to generate Perl6 source code from it. After that, only some fiddling a bit to get the modules to load, and a bit more to adjust some of the subroutines. Also, many images used in their documentation is reused here in the reference guides.
+
+## Author
+Name: **Marcel Timmerman**
+
+Github account name: **MARTIMM**
 
 # Warning
 The software as well as this website is far from finished as well as the documentation is not yet available for all modules in the packages.
