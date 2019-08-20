@@ -3,6 +3,7 @@ notes_title: "Release Notes for all Gnome packages"
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
   - 2019-08-04 0.18.2:
+    - Removed an accidentaly created module `ImageMenuItem` which was deprecated by Gtk since version 3.10.
 
   - 2019-08-04 0.18.1:
     - Completed doc and tests of ColorChooser in Gnome::Gtk3.
