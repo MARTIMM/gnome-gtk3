@@ -476,13 +476,13 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   my Bool $type-is-class = $type eq $lib-class-name;
 
   # convert to native perl types
-note "Type: $type";
+#note "Type: $type";
   $type = 'N-GError' if $type ~~ m/GError/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
-  $type = 'N-GObject' if is-n-gobject($type);
   $type = 'int32' if $type ~~ m/GType/;
   $type = 'int32' if $type ~~ m/GQuark/;
+  $type = 'N-GObject' if is-n-gobject($type);
 
   # copy to perl6 type for independent convertions
   my Str $p6-type = $type;
