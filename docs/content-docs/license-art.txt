@@ -3,7 +3,7 @@ title: About the Program
 #nav_title: About
 nav_menu: default-nav
 change_notes: change-log-data
-layout: default
+layout: plain-text
 ---
 
 

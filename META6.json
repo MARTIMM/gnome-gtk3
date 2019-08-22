@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -33,7 +33,6 @@
     "Gnome::Gtk3::FileFilter": "lib/Gnome/Gtk3/FileFilter.pm6",
     "Gnome::Gtk3::Grid": "lib/Gnome/Gtk3/Grid.pm6",
     "Gnome::Gtk3::Image": "lib/Gnome/Gtk3/Image.pm6",
-    "Gnome::Gtk3::ImageMenuItem": "lib/Gnome/Gtk3/ImageMenuItem.pm6",
     "Gnome::Gtk3::Label": "lib/Gnome/Gtk3/Label.pm6",
     "Gnome::Gtk3::LevelBar": "lib/Gnome/Gtk3/LevelBar.pm6",
     "Gnome::Gtk3::ListBox": "lib/Gnome/Gtk3/ListBox.pm6",

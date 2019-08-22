@@ -411,7 +411,7 @@ submethod BUILD ( *%options ) {
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
-method fallback ( $native-sub is copy --> Callable ) {
+method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
@@ -8121,7 +8121,7 @@ submethod BUILD ( *%options ) {
 }
 
 #-------------------------------------------------------------------------------
-method fallback ( $native-sub is copy --> Callable ) {
+method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
 #note "w s0: $native-sub, ", $s;

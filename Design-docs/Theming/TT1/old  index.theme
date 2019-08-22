@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=TT1
+Comment=Test theme 1 theme (TT1) Original Ambiance theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=TT1
+MetacityTheme=TT1
+IconTheme=breeze-dark
+CursorTheme=DMZ-White
+ButtonLayout=close,minimize,maximize:
+X-Ubuntu-UseOverlayScrollbars=true

@@ -1,0 +1,42 @@
+/*
+@import url("gtk-main.css");
+*/
+
+* {
+  color: black;
+
+  border-width: 1;
+  border-style: solid;
+  border-color: blue;
+
+  box-shadow: 2px 5px #afafaf;
+}
+
+window {
+  background-color: white;
+  background-image: url("/home/marcel/.themes/TT1/gtk-3.0/Images/FH02.png");
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: contain;
+}
+
+button {
+  background-color: rgba( 255, 255, 255, 0.99);
+}
+
+*:disabled {
+  background-color: rgba( 128, 128, 128, 0.5);
+  border-color: #a0a0a0;
+}
+
+
+@keyframes spinX {
+  to { -gtk-icon-transform: rotate(1turn); }
+}
+
+spinner {
+  animation-name: spinX;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}

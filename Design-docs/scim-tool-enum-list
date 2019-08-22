@@ -4,8 +4,6 @@ GtkTextWindowType
 GtkTextViewLayer
 GtkTextExtendSelection
 GtkResizeMode
-GtkWindowType
-GtkWindowPosition
 GtkWindowPosition
 GtkWindowType
 GtkAlign
@@ -68,6 +66,7 @@ GtkPositionType
 GtkTextDirection
 GtkSensitivityType
 GtkTextBufferTargetInfo
+GtkStyleProviderPriority
 GtkBuilderError
 GtkArrowPlacement
 GtkCssProviderError
@@ -76,7 +75,6 @@ GtkFileChooserConfirmation
 GtkFileFilterFlags
 GtkTextSearchFlags
 GtkStyleContextPrintFlags
-GtkStyleProviderPriority
 GtkWidgetHelpType
 GdkFilterReturn
 GdkEventType
@@ -107,3 +105,4 @@ GdkWindowWindowClass
 GdkModifierType
 GdkWindowTypeHint
 GConnectFlags
+GParamFlags

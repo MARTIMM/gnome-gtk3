@@ -97,72 +97,6 @@ $top-window.show-all;
 $m.gtk-main;
 ```
 
-# Design
-
-I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** as closely as possible by keeping the names of the native functions the same as provided with the following exceptions;
-* The native subroutines are defined in their corresponding classes. They are set up in such a way that they have become methods in those classes. Many subs also have as their first argument the native object. This object is held in the class and is automatically inserted when the sub is called. E.g. a definition like the following in the `Gnome::Gtk3::Button` class
-```
-sub gtk_button_set_label ( N-GObject $widget, Str $label )
-  is native(&gtk-lib)
-  { * }
-```
-  can be used as
-```
-my Gnome::Gtk3::Button $button .= new(:empty);
-$button.gtk_button_set_label('Start Program');
-```
-
-* Classes can use the methods of inherited classes. E.g. The `Gnome::Gtk3::Button` class inherits `Gnome::Gtk3::Bin` and `Gnome::Gtk3::Bin` inherits `Gnome::Gtk3::Container` etcetera. Therefore a method like `gtk_widget_set_tooltip_text` from `Gnome::Gtk3::Widget` can be used.
-```
-$button.gtk_widget_set_tooltip_text('When pressed, program will start');
-```
-
-* The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method in the `Gnome::Gtk3::Button` class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
-```
-my Str $button-label = $button.get_label;
-```
-  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.
-
-* Names can not be shortened too much. E.g. `gtk_button_new` and `gtk_label_new` yield `new` which is a perl method from class `Mu`. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes.
-
-* All the method names are written with an underscore. Following a perl6 tradition, dashed versions is also possible.
-```
-my Str $button-label1 = $button.gtk-button-get-label;
-my Str $button-label2 = $button.get-label;
-```
-
-* Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
-  * Many subs and some classes in **GTK+** are obsolete.
-  * The original idea was to have the interface build by the glade interface designer. This lib was in the `GTK::Glade`(now `Gnome::Gtk3::Glade`) project before refactoring. Therefore a `Gnome::Gtk3::Button` does not have to have all subs to create a button. On the other hand a `Gnome::Gtk3::ListBox` is a widget which is changed dynamically most of the time and therefore need more subs to manipulate the widget and its contents.
-  * The need to implement classes like `Gnome::Gtk3::Assistant`, `Gnome::Gtk3::Alignment` or `Gnome::Gtk3::ScrolledWindow` is on a low priority because these can all be instantiated by `GtkBuilder` using your Glade design.
-
-* There are native subroutines which need a native object as an argument. The `gtk_grid_attach` in `Gnome::Gtk3::Grid` is an example of such a routine. It is possible to provide the perl6 object in that place. The signature of the native sub is checked and will automatically retrieve the native object from that class if needed.
-
-  The declaration of the `gtk_grid_attach` native sub;
-```
-sub gtk_grid_attach (
-  N-GObject $grid, N-GObject $child,
-  int32 $x, int32 $y, int32 $width, int32 $height
-) is native(&gtk-lib)
-  { * }
-```
-  And its use;
-```
-my Gnome::Gtk3::Grid $grid .= new(:empty);
-my Gnome::Gtk3::Label $label .= new(:label('server name'));
-$grid.gtk-grid-attach( $label, 0, 0, 1, 1);
-```
-
-# Errors and crashes
-
-I came to the conclusion that Perl6 is not (yet) capable to return a proper message when some type of mistakes are made. E.g. spelling errors or using wrong types when using the native call interface. Most of them end up in **MoarVM panic: Internal error: Unwound entire stack and missed handler**. Other times it ends in just a plain crash. Some of the crashes are happening within GTK and cannot be captured by Perl6. One of those moments are the use of GTK calls without initializing GTK with `gtk_init`. The panic mentioned above mostly happens when perl6 code is called from C as a callback and an exception is (re)thrown. The stack might not be interpreted completely at that moment hence the message.
-
-A few measures are implemented to help a bit preventing problems;
-
-* The failure to initialize GTK on time (in most cases) is solved by using an initialization flag which is checked in the `Gnome::Gtk3::Main` module. The module is referred to by `Gnome::GObject::Object` which almost all modules inherit from. GObject calls a method in `Gnome::Gtk3::Main` to check for this flag and initialize if needed. Therefore the user never has to initialize GTK.
-* Throwing an exception while in Perl6 code called from C (in a callback), Perl6 will crash with the '*internal error*' message mentioned above without being able to process the exception.
-
-  To at least show why it happens, all messages which are set in the exception are printed first before calling `die()` which will perl6 force to wander off aimlessly. A debug flag in the class `Gnome::N` can be set to show these messages which might help solving your problems.
 
 # Documentation
 
@@ -190,7 +124,6 @@ A few measures are implemented to help a bit preventing problems;
 | Gnome::Gtk3::FileFilter |  [GtkFileFilter.html][GtkFileFilter]
 | Gnome::Gtk3::Grid |  [GtkGrid.html][GtkGrid]
 | Gnome::Gtk3::Image |  [GtkImage.html][GtkImage]
-| Gnome::Gtk3::ImageMenuItem |  [GtkImageMenuItem.html][GtkImageMenuItem]
 | Gnome::Gtk3::Label |  [GtkLabel.html][GtkLabel]
 | [ Gnome::Gtk3::LevelBar ][ Gnome::Gtk3::LevelBar pdf] |  [GtkLevelBar.html][GtkLevelBar]
 | Gnome::Gtk3::ListBox |  [GtkListBox.html][gtklistbox]
@@ -276,7 +209,6 @@ Github account name: **MARTIMM**
 [GtkFileFilter]: https://developer.gnome.org/gtk3/stable/GtkFileFilter.html
 [GtkGrid]: https://developer.gnome.org/gtk3/stable/GtkGrid.html
 [GtkImage]: https://developer.gnome.org/gtk3/stable/GtkImage.html
-[GtkImageMenuItem]: https://developer.gnome.org/gtk3/stable/GtkImageMenuItem.html
 [GtkLabel]: https://developer.gnome.org/gtk3/stable/GtkLabel.html
 [GtkLevelBar]: https://developer.gnome.org/gtk3/stable/GtkLevelBar.html
 [GtkListBox]: https://developer.gnome.org/gtk3/stable/GtkListBox.html

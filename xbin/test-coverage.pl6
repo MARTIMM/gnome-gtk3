@@ -210,8 +210,8 @@ sub sub-coverage( Str:D $new-content ) {
     # skip some subs/methods
     next if $name ~~ m/^
       [ '_'             # hidden native subs
-        || fallback     # used to find subs
-        || FALLBACK     # starter to call fallback
+        || _fallback     # used to find subs
+        || FALLBACK     # starter to call _fallback
         || 'CALL-ME'    # used to get native objects
       ]
     /;

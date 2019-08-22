@@ -241,13 +241,6 @@
       "subs-total": 8
     }
   },
-  "content-docs/reference/Gtk3/ImageMenuItem.md": {
-    "routines": {
-      "coverage": "0.00",
-      "subs-tested": 0,
-      "subs-total": 1
-    }
-  },
   "content-docs/reference/Gtk3/ColorChooserWidget.md": {
     "routines": {
       "coverage": "0.00",
