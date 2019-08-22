@@ -18,7 +18,7 @@ The documentation icons are
 
 The test icons are
 * 🗒 No tests for this module.
-* 🗇 Module parses ok (module load). This means that the `use module-name;` statement is running as well as the `.new()` call.
+* 🗇 Module parses ok (module load). This means that the `use module-name;` statement as well as the `.new()` call, succeeds.
 * 🗊 Module subs and methods are tested.
 * 🗲 Signals are tested when available, otherwise it is skipped.
 * ⌺ Styling is tested when available, otherwise it is skipped.
