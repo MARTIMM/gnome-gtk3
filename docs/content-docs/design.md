@@ -1,5 +1,5 @@
 ---
-title: About the Program
+title: Design
 #nav_title: About
 nav_menu: default-nav
 change_notes: change-log-data
@@ -38,20 +38,20 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   $button.gtk_button_set_label('Start Program');
   ```
 
-* Classes can use the methods of inherited classes. E.g. The `Gnome::Gtk3::Button` class inherits `Gnome::Gtk3::Bin` and `Gnome::Gtk3::Bin` inherits `Gnome::Gtk3::Container` etc. Therefore, a method like `gtk_widget_set_tooltip_text` defined in `Gnome::Gtk3::Widget` can be used.
+* Classes can use the methods of inherited classes. E.g. The **Gnome::Gtk3::Button** class inherits **Gnome::Gtk3::Bin** and **Gnome::Gtk3::Bin** inherits **Gnome::Gtk3::Container** etc. Therefore, a method like `gtk_widget_set_tooltip_text()` defined in **Gnome::Gtk3::Widget** can be used.
   ```
   $button.gtk_widget_set_tooltip_text('When pressed, program will start');
   ```
 
-* The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method defined in `Gnome::Gtk3::Button` class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
+* The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method defined in **Gnome::Gtk3::Button** class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
   ```
   my Str $button-label = $button.get_label;
   ```
   In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.
 
-* Names can not be shortened too much. E.g. `gtk_button_new` and `gtk_label_new` yield `new` which is a perl method from class `Mu`. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes, but for now, at least one underscore ('\_') must be left in the name.
+* Names can not be shortened too much. E.g. `gtk_button_new()` and `gtk_label_new()` yield the name *new* which is a perl method from class **Mu**. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes, but for now, at least one underscore ('\_') must be left in the name.
 
-* All the method names are written with an underscore. Following a perl6 tradition, dashed versions is also possible.
+* All the method names are written with an underscore. Following a perl6 tradition, dashed versions are also possible.
   ```
   my Str $button-label1 = $button.gtk-button-get-label;
   my Str $button-label2 = $button.get-label;
@@ -59,11 +59,11 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
 
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Perl6 packages to support.
-  * The original idea was to have the interface build by the glade interface designer. This lib was in the `GTK::Glade`(now `Gnome::Gtk3::Glade`) project before refactoring. Therefore a `Gnome::Gtk3::Button` does not have to have all subs to create a button because the `Gnome::Gtk3::Builder` module will do that. On the other hand a `Gnome::Gtk3::ListBox` is a widget which is changed dynamically most of the time and therefore need more subs to manipulate the widget and its contents.
-  * The need to implement classes like `Gnome::Gtk3::Assistant`, `Gnome::Gtk3::Plug` or `Gnome::Gtk3::ScrolledWindow` is on a low priority because these can all be instantiated by `Gnome::Gtk3::Builder` using your Glade design.
+  * The original idea was to have the interface build by the glade interface designer. This lib was in the *GTK::Glade*(now **Gnome::Gtk3::Glade**) project before refactoring. Therefore a **Gnome::Gtk3::Button** does not have to have all subs to create a button because the **Gnome::Gtk3::Builder** module will do that. On the other hand a **Gnome::Gtk3::ListBox** is a widget which is changed dynamically most of the time and therefore need more subs to manipulate the widget and its contents.
+  * The need to implement classes like **Gnome::Gtk3::Assistant**, **Gnome::Gtk3::Plug** or **Gnome::Gtk3::ScrolledWindow** is on a low priority because these can all be instantiated by **Gnome::Gtk3::Builder** using your Glade design.
 
-* There are native subroutines which need a native object as an argument. The `gtk_grid_attach` in `Gnome::Gtk3::Grid` is an example of such a routine.
-  The declaration of the `gtk_grid_attach` native sub;
+* There are native subroutines which need a native object as an argument. The `gtk_grid_attach()` in **Gnome::Gtk3::Grid** is an example of such a routine.
+  The declaration of the `gtk_grid_attach()` native sub;
   ```
   sub gtk_grid_attach (
     N-GObject $grid, N-GObject $child,
@@ -72,23 +72,18 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
     { * }
   ```
 
-  The `CALL-ME` method is defined to return the native object so we can use the
-  gtk_grid_attach as follows.
+  The `native-gobject()` method is defined in **Gnome::GObject::Object** to return the native object so we can use the gtk_grid_attach as follows.
   ```
   my Gnome::Gtk3::Label $label .= new(:label('my label'));
   my Gnome::Gtk3::Grid $grid .= new;
-  $grid.gtk_grid_attach( $label(), 0, 0, 1, 1);
+  $grid.gtk_grid_attach( $label.native-gobject(), 0, 0, 1, 1);
   ```
-  Notice how the native widget is retrieved with `$label()`.
-
-  However, the signatures of all subroutines are checked against the arguments provided, so it is possible to insert the native object hidden in the object when a perl6 object is noticed. Because of this, the `CALL-ME` method is mostly used internally only. So the example becomes more easy;
+  However, the signatures of all subroutines are checked against the arguments provided, so it is possible to insert the native object hidden in the object when a perl6 object is noticed. So the example becomes more easy;
   ```
   my Gnome::Gtk3::Grid $grid .= new(:empty);
   my Gnome::Gtk3::Label $label .= new(:label('server name'));
   $grid.gtk-grid-attach( $label, 0, 0, 1, 1);
   ```
-Here in the call to `gtk_grid_attach` `$label` is used instead of `$label()`.
-
 
 * Sometimes I had to stray away from the native function names because of the way the sub must be defined in perl6. Causes can be;
   * Returning different types of values. E.g. `g_slist_nth_data()` can return several types of data. This is solved using several subs linking to the same native sub (using `is symbol()`). In this library, the methods `g_slist_nth_data_str()` and `g_slist_nth_data_gobject()` are added. This can be extended for other native types like integer or float.
@@ -104,83 +99,96 @@ Here in the call to `gtk_grid_attach` `$label` is used instead of `$label()`.
       is symbol('g_slist_nth_data')
       { * }
     ```
-  * Variable argument lists where I had to choose for the extra arguments. E.g. in the `GtkFileChooserDialog` the native sub `gtk_file_chooser_dialog_new` has a way to extend it with a number of buttons on the dialog. I had to fix that list to a known number of arguments and renamed the sub `gtk_file_chooser_dialog_new_two_buttons`.
-  * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used.
+  * Variable argument lists where I had to choose for the extra arguments. E.g. in the **Gnome::Gtk3::FileChooserDialog** the native sub `gtk_file_chooser_dialog_new()` has a way to extend it with a number of buttons on the dialog. I had to fix that list to a known number of arguments and renamed the sub `gtk_file_chooser_dialog_new_two_buttons()`.
 
+  * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used. This happens mainly when connecting a signal where a callback handler is provided. To make things easier, the method `register-signal()` defined in **Gnome::GObject::Object**, is created for this purpose. At the moment only the most common types of signals can be processed.
 
+## Implementation details
 
+* A method `CALL-ME()` was implemented to get the native object with a minimum effort. For example a button `$b` defined by **Gnome;:Gtk3::Button** can return its native object just by adding parenthesis like so `$b()`. Later, a method was created, called `native-gobject()` to replace it, just to make code more readable. These methods are mostly used internally.
 
+* The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. That process is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
 
+* All classes deriving from **Gnome::GObject::Object** know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**.
 
+* The same classes also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also **Gnome::Gtk3::Glade**. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
 
--- rewrite next --
-2) The `FALLBACK` method is used to test for the defined native functions as if the functions where methods. It calls the `fallback` methods in the class which in turn call the parent fallback using `callsame`. The resulting function addres is returned and processed with the `test-call` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception` from the same module.
+  An example to see both named arguments in use is when cleaning a list box;
+  ```
+  # instantiate a list box using the :build-id argument
+  my Gnome::Gtk3::ListBox $list-box .= new(:build-id<someListBox>);
+  loop {
+    # Keep the index 0, entries will shift up after removal
+    my $nw = $list-box.get-row-at-index(0);
+    last unless $nw.defined;
 
-3) `N-GObject` is a native widget which is held internally in most of the classes. Sometimes they need to be handed over in a call or stored when it is returned.
+    # Instantiate a container object using the :widget argument
+    my Gnome::Gtk3::Bin $lb-row .= new(:widget($nw));
+    $lb-row.gtk-widget-destroy;
+  }
+  ```
 
-4) Each method can at least be called with perl6 like dashes in the method name. E.g. `gtk_container_add` can be written as `gtk-container-add`.
+* The C functions can only return simple values like **int32**, **num64** etc. When a structure must be returned, it is returned in a structure using a pointer to that structure. Perl users are used to be able to return all sorts of types. To provide this behavior, the native sub is wrapped in another sub which can return the result and directly assign to some variable. **_Many subs stil need to be converted to show this behavior!_**
 
-5) In some cases the calls can be shortened too. E.g. `gtk_button_get_label` can also be called like `get_label` or `get-label`. Sometimes, when shortened, calls can end up with a call using the wrong native widget. When in doubt use the complete method name.
+  So the definition of the sub is changed like so;
+  ```
+  sub gtk_range_get_range_rect ( N-GObject $range --> GdkRectangle ) {
+    _gtk_range_get_range_rect( $range, my GdkRectangle $rectangle .= new);
+    $rectangle
+  }
 
-6) Also a sub like `gtk_button_new` cannot be shortened because it will call the perl6 init method `new()`. These methods are used when initializing classes, in this case to initialize a `Gnome::Gtk3::Button` class. In the documentation, the use of brackets **[ ]** show which part can be chopped. E.g. `[gtk_button_] get_label`.
+  sub _gtk_range_get_range_rect (
+    N-GObject $range, GdkRectangle $rectangle
+  ) is native(&gtk-lib)
+    is symbol('gtk_range_get_range_rect')
+    { * }
+  ```
+  Now we can do
+  ```
+  my GdkRectangle $rectangle = $range.get-range-rect();
+  ```
+* The same situation arises when a native sub wants to return more than one value. In C code one must give a pointer to a location wherein the value can be returned. These arguments must be writable locations. Again this is solved by creating a wrapper around the native sub, the arguments can be provided locally and after the call, the wrapper returns a list of values. **also here, many subs stil need to be converted to show this behavior!**
 
-7) All classes deriving from `GTK::V3::Glib::GObject` know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a N-GObject. E.g. cleaning a list box;
-```
-my Gnome::Gtk3::ListBox $list-box .= new(:build-id<someListBox>);
-loop {
-  # Keep the index 0, entries will shift up after removal
-  my $nw = $list-box.get-row-at-index(0);
-  last unless $nw.defined;
+  An example from `Gnome::Gdk3::Window`;
+  ```
+  sub gdk_window_get_position ( N-GObject $window --> List ) is inlinable {
+    _gdk_window_get_position( $window, my int32 $x, my int32 $y);
+    ( $x, $y)
+  }
 
-  # Instantiate a container object using the :widget argument
-  my Gnome::Gtk3::Bin $lb-row .= new(:widget($nw));
-  $lb-row.gtk-widget-destroy;
-}
-```
+  sub _gdk_window_get_position (
+    N-GObject $window, int32 $x is rw, int32 $y is rw
+  ) is native(&gdk-lib)
+    is symbol('gdk_window_get_position')
+    { * }
+  ```
+  To use it one can write the following
+  ```
+  my Int ( $x, $y) = $w.get-position;
+  ```
 
-8) The named argument `:build-id(…)` is used to get a N-GObject from a `Gnome::Gtk3::Builder` object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also `GTK::Glade`. This option works for all child classes too if those classes are managed by `GtkBuilder`. E.g.
-```
-my Gnome::Gtk3::Label $label .= new(:build-id<inputLabel>);
-```
-
-
-
-10) The C functions can only return simple values like int32, num64 etc. When a structure must be returned, it is returned in a value given in the argument list. Mostly this is implemented by using a pointer to the structure. Perl users are used to be able to return all sorts of types. To provide this behavior, the native sub is wrapped in another sub which can return the result and directly assigned to some variable. **_This is not yet implemented!_**
-  The following line where a GTK::V3::Gdk::GdkRectangle is returned;
-```
-my GTK::V3::Gdk3::Rectangle $rectangle;
-$range.get-range-rect($rectangle);
-```
-could then be rewritten as;
-```
-my GTK::V3::Gdk::GdkRectangle $rectangle = $range.get-range-rect();
-```
-
-11) There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_This is not yet implemented!_**
-
-12) Sometimes a native sub wants to return more than one value. In GTK+ C code one must give a pointer to a location wherein the value can be returned. In perl6 one must add a trait `is rw` to the argument of the native sub to create a pointer. In these packages this going wrong because of some manipulations of the arguments. This is solved by creating a wrapper around the native sub, the arguments can be provided locally and after the call, the wrapper returns a list of values. **This is not yet fully implemented!**
-
-An example from `Gnome::Gdk3::Window`;
-```
-sub gdk_window_get_position ( N-GObject $window --> List ) is inlinable {
-  _gdk_window_get_position( $window, my int32 $x, my int32 $y);
-  ( $x, $y)
-}
-
-sub _gdk_window_get_position (
-  N-GObject $window, int32 $x is rw, int32 $y is rw
-) is native(&gdk-lib)
-  is symbol('gdk_window_get_position')
-  { * }
-```
+* There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here, to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_Not sure to implement this!_**
 
 # Errors and crashes
 
-I came to the conclusion that Perl6 is not (yet) capable to return a proper message when some type of mistakes are made. E.g. spelling errors or using wrong types when using the native call interface. Most of them end up in **MoarVM panic: Internal error: Unwound entire stack and missed handler**. Other times it ends in just a plain crash. Some of the crashes are happening within GTK and cannot be captured by Perl6. One of those moments are the use of GTK calls without initializing GTK with `gtk_init`. The panic mentioned above mostly happens when perl6 code is called from C as a callback and an exception is (re)thrown. The stack might not be interpreted completely at that moment hence the message.
+I came to the conclusion that Perl6 is not (yet) capable to return a proper message when some type of mistakes are made. E.g. spelling errors in code or using wrong types when using the native call interface. Most of them end up in **MoarVM panic: Internal error: Unwound entire stack and missed handler**. In the mean time, I found that these crashes take place when re-throwing an exception after processing the **Exception** object. This needs a rewrite to handle things more elegantly.
 
-A few measures are implemented to help a bit preventing problems;
+Other times it ends in just a plain crash. Some of the crashes are happening within GTK and cannot be captured by Perl6. One of those moments are the use of GTK calls without initializing GTK with `gtk_init()`.
 
-* The failure to initialize GTK on time (in most cases) is solved by using an initialization flag which is checked in the `Gnome::Gtk3::Main` module. The module is referred to by `Gnome::GObject::Object` which almost all modules inherit from. GObject calls a method in `Gnome::Gtk3::Main` to check for this flag and initialize if needed. Therefore the user never has to initialize GTK.
-* Throwing an exception while in Perl6 code called from C (in a callback), Perl6 will crash with the '*internal error*' message mentioned above without being able to process the exception.
+A few measures are implemented to help a bit to prevent problems;
 
-  To at least show why it happens, all messages which are set in the exception are printed first before calling `die()` which will perl6 force to wander off aimlessly. A debug flag in the class `Gnome::N` can be set to show these messages which might help solving your problems.
+* The failure to initialize GTK on time (in most cases) is solved by using an initialization flag which is checked in module **Gnome::GObject::Object** which almost all modules inherit from. This way, the user never has to initialize GTK.
+* To see the original exception and messages leading up to the crash a debug flag in the class **Gnome::N** can be set to show these messages which might help solving your problems. To use it write;
+  ```
+  use Gnome::N::X;
+  Gnome::N::debug(:on);
+  ...
+  Gnome::N::debug(:!on);
+  ```
+  or
+  ```
+  use Gnome::N::X;
+  Gnome::N::debug(:on);
+  ...
+  Gnome::N::debug(:off);
+  ```
