@@ -25,9 +25,10 @@ subtest 'Manipulations', {
     :orientation(GTK_ORIENTATION_HORIZONTAL),
     :min(10e0), :max(100e0), :step(5e-1)
   );
+
   my Gnome::Gtk3::Range $r .= new(:widget($s));
 
-  diag '.get-range-rect()';
+  diag '.get-range-rect() gives odd values, only after UI setup and show-all() it shows proper values';
   my GdkRectangle $ra = $r.get-range-rect;
   is $ra.x, 1, 'x = 1';
   is $ra.y, 1, 'y = 1';
