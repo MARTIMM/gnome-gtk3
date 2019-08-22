@@ -68,7 +68,7 @@ submethod BUILD ( *%options ) {
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
-method fallback ( $native-sub is copy --> Callable ) {
+method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
@@ -449,15 +449,21 @@ This function returns the area that contains the range’s trough and its steppe
 
 This function is useful mainly for GtkRange subclasses.
 
-  method gtk_range_get_range_rect ( Gnome::Gdk3::Rectangle $rectangle )
+  method gtk_range_get_range_rect ( --> Gnome::Gdk3::Rectangle )
 
 =item $rectangle. Location for the range rectangleType to return. GdkRectangle is defined in GdkTypes.
 
 =end pod
 
-sub gtk_range_get_range_rect (
-  N-GObject $range, Pointer $rectangle
+sub gtk_range_get_range_rect ( N-GObject $range --> GdkRectangle ) {
+  _gtk_range_get_range_rect( $range, my GdkRectangle $rectangle .= new);
+  $rectangle
+}
+
+sub _gtk_range_get_range_rect (
+  N-GObject $range, GdkRectangle $rectangle
 ) is native(&gtk-lib)
+  is symbol('gtk_range_get_range_rect')
   { * }
 
 #-------------------------------------------------------------------------------
