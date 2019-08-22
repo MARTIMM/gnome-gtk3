@@ -392,11 +392,11 @@ Since: 3.2
 
 
 
-=head3 _fallback
+=head3 fallback
 
-The C<Gnome::GObject::Value> type of property I<_fallback> is C<G_TYPE_BOOLEAN>.
+The C<Gnome::GObject::Value> type of property I<fallback> is C<G_TYPE_BOOLEAN>.
 
-Whether font _fallback is enabled.
+Whether font fallback is enabled.
 
 When set to C<1>, other fonts will be substituted
 where the current font is missing glyphs.

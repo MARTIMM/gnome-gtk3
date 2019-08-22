@@ -1500,7 +1500,7 @@ sub gtk_window_get_icon_name ( N-GObject $window )
 =begin pod
 =head2 [gtk_window_] set_default_icon_list
 
-Sets an icon list to be used as _fallback for windows that haven't
+Sets an icon list to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them to set up a
 window-specific icon list. This function allows you to set up the
 icon for all windows in your app at once.
@@ -1543,7 +1543,7 @@ sub gtk_window_get_default_icon_list (  )
 =begin pod
 =head2 [gtk_window_] set_default_icon
 
-Sets an icon to be used as _fallback for windows that haven't
+Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon()> called on them from a pixbuf.
 
 Since: 2.4
@@ -1562,7 +1562,7 @@ sub gtk_window_set_default_icon ( N-GObject $icon )
 =begin pod
 =head2 [gtk_window_] set_default_icon_name
 
-Sets an icon to be used as _fallback for windows that haven't
+Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them from a named
 themed icon, see C<gtk_window_set_icon_name()>.
 
@@ -1582,13 +1582,13 @@ sub gtk_window_set_default_icon_name ( Str $name )
 =begin pod
 =head2 [gtk_window_] get_default_icon_name
 
-Returns the _fallback icon name for windows that has been set
+Returns the fallback icon name for windows that has been set
 with C<gtk_window_set_default_icon_name()>. The returned
 string is owned by GTK+ and should not be modified. It
 is only valid until the next call to
 C<gtk_window_set_default_icon_name()>.
 
-Returns: the _fallback icon name for windows
+Returns: the fallback icon name for windows
 
 Since: 2.16
 
@@ -1606,7 +1606,7 @@ sub gtk_window_get_default_icon_name (  )
 =begin pod
 =head2 [gtk_window_] set_default_icon_from_file
 
-Sets an icon to be used as _fallback for windows that haven't
+Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them from a file
 on disk. Warns on failure if I<err> is C<Any>.
 
