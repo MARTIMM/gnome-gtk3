@@ -102,7 +102,7 @@ submethod BUILD ( *%options ) {
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
-method fallback ( $native-sub is copy --> Callable ) {
+method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
@@ -392,11 +392,11 @@ Since: 3.2
 
 
 
-=head3 fallback
+=head3 _fallback
 
-The C<Gnome::GObject::Value> type of property I<fallback> is C<G_TYPE_BOOLEAN>.
+The C<Gnome::GObject::Value> type of property I<_fallback> is C<G_TYPE_BOOLEAN>.
 
-Whether font fallback is enabled.
+Whether font _fallback is enabled.
 
 When set to C<1>, other fonts will be substituted
 where the current font is missing glyphs.

@@ -70,7 +70,7 @@ submethod BUILD ( *%options ) {
 }
 
 #-------------------------------------------------------------------------------
-method fallback ( $native-sub is copy --> Callable ) {
+method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
 
