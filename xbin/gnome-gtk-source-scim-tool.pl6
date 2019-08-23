@@ -773,11 +773,11 @@ sub substitute-in-template ( Str $include-content ) {
 
     =head3 multi method new ( N-GObject :$widget! )
 
-    Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
+    Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
     =head3 multi method new ( Str :$build-id! )
 
-    Create an object using a native object from a builder. See also I<Gnome::GObject::Object>.
+    Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
     =end pod
 
@@ -1108,7 +1108,7 @@ note "item doc: ", $item-doc;
       =begin pod
       =head1 Signals
 
-      Register any signal as follows. See also I<Gnome::GObject::Object>.
+      Register any signal as follows. See also B<Gnome::GObject::Object>.
 
         my Bool $is-registered = $my-widget.register-signal (
           $handler-object, $handler-name, $signal-name,
@@ -1159,7 +1159,7 @@ sub get-properties ( Str:D $source-content is copy ) {
         =begin pod
         =head1 Properties
 
-        An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+        An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
           my Gnome::Gtk3::Label $label .= new(:empty);
           my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1200,7 +1200,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 #note "sdoc 3: ", $sdoc;
 
     $property-doc ~=
-      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
+      "\nThe B<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
@@ -1417,7 +1417,7 @@ sub get-structures ( Str:D $include-content is copy ) {
       next if $line ~~ m/ '/**' /;
 
       if $line ~~ m/^ \s+ '*' \s+ $<struct-name> = [<alnum>+] ':' \s* $/ {
-        $struct-name = ~($<struct-name> // '');
+        $struct-name = 'N-' ~ ~($<struct-name> // '');
 
         # skip this structure if it is about this classes structure
         if $struct-name ~~ m/ \w+ Class $/ {
@@ -1554,7 +1554,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any #GtkClass to I<Gnome::Gtk::Class> and Gdk likewise
+# change any #GtkClass to B<Gnome::Gtk::Class> and Gdk likewise
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -1587,7 +1587,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   # convert a few without leading octagon (#)
   $text ~~ s:g/ <!after '%' > ('Gtk' || 'Gdk') (\D <alnum>+)
-              /I<Gnome::$/[0]3::$/[1]>/;
+              /B<Gnome::$/[0]3::$/[1]>/;
 
   $text
 }
