@@ -22,7 +22,7 @@ A package is added to make the native libraries available to the other packages.
 
 I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** as closely as possible by keeping the names of the native functions the same as provided with the following exceptions;
 
-* Native objects are wrapped into Perl6 classes. These objects are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc.
+* Native objects are wrapped into Perl6 classes.
 
 * The native subroutines are defined in their corresponding Perl6 classes. They are defined in such a way that they have become methods in those classes.
 
@@ -104,6 +104,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used. This happens mainly when connecting a signal where a callback handler is provided. To make things easier, the method `register-signal()` defined in **Gnome::GObject::Object**, is created for this purpose. At the moment only the most common types of signals can be processed.
 
 ## Implementation details
+* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere, e.g. GdkRectangle should be N-GdkRectangle_**.
 
 * A method `CALL-ME()` was implemented to get the native object with a minimum effort. For example a button `$b` defined by **Gnome;:Gtk3::Button** can return its native object just by adding parenthesis like so `$b()`. Later, a method was created, called `native-gobject()` to replace it, just to make code more readable. These methods are mostly used internally.
 
@@ -171,7 +172,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
 
 # Errors and crashes
 
-I came to the conclusion that Perl6 is not (yet) capable to return a proper message when some type of mistakes are made. E.g. spelling errors in code or using wrong types when using the native call interface. Most of them end up in **MoarVM panic: Internal error: Unwound entire stack and missed handler**. In the mean time, I found that these crashes take place when re-throwing an exception after processing the **Exception** object. This needs a rewrite to handle things more elegantly.
+When an exception is thrown, the library captures it to process and create another exception to be (re)thrown. Sometimes it behaves odd and most of the errors end up in **MoarVM panic: Internal error: Unwound entire stack and missed handler**. I found that these occasions are always happening within callback handlers where perl6 code is run from C. This needs a rewrite to handle things more elegantly.
 
 Other times it ends in just a plain crash. Some of the crashes are happening within GTK and cannot be captured by Perl6. One of those moments are the use of GTK calls without initializing GTK with `gtk_init()`.
 
@@ -192,3 +193,266 @@ A few measures are implemented to help a bit to prevent problems;
   ...
   Gnome::N::debug(:off);
   ```
+
+# Class hierargy
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated. Every perl6 class is in the Gnome:: name space. Also prefixes and module path names are removed from the perl6 modules. so Object is really Gnome::GObject::Object and Window is for Gnome::Gtk3::Window. Other modules from Glib and Gdk3 are not displayed here. `├─✗` in front of a Gtk module means that it is deprecated.
+
+```
+Tree of Gtk C structures                              Perl 6 module
+----------------------------------------------------- ------------------------
+GObject                                               Object
+├── GInitiallyUnowned                                 InitiallyUnowned
+│   ├── GtkWidget                                     Widget
+│   │   ├── GtkContainer                              Container
+│   │   │   ├── GtkBin                                Bin
+│   │   │   │   ├── GtkWindow                         Window
+│   │   │   │   │   ├── GtkDialog                     Dialog
+│   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog
+│   │   │   │   │   │   ├── GtkAppChooserDialog
+│   │   │   │   │   │   ├── GtkColorChooserDialog     ColorChooserDialog
+│   │   │   │   │   │   ├─✗ GtkColorSelectionDialog
+│   │   │   │   │   │   ├── GtkFileChooserDialog      FileChooserDialog
+│   │   │   │   │   │   ├── GtkFontChooserDialog
+│   │   │   │   │   │   ├─✗ GtkFontSelectionDialog
+│   │   │   │   │   │   ├── GtkMessageDialog
+│   │   │   │   │   │   ├── GtkPageSetupUnixDialog
+│   │   │   │   │   │   ├── GtkPrintUnixDialog
+│   │   │   │   │   │   ╰── GtkRecentChooserDialog
+│   │   │   │   │   ├── GtkApplicationWindow
+│   │   │   │   │   ├── GtkAssistant
+│   │   │   │   │   ├── GtkOffscreenWindow
+│   │   │   │   │   ├── GtkPlug
+│   │   │   │   │   ╰── GtkShortcutsWindow
+│   │   │   │   ├── GtkActionBar
+│   │   │   │   ├─✗ GtkAlignment
+│   │   │   │   ├── GtkComboBox                       ComboBox
+│   │   │   │   │   ├── GtkAppChooserButton
+│   │   │   │   │   ╰── GtkComboBoxText               ComboBoxText
+│   │   │   │   ├── GtkFrame
+│   │   │   │   │   ╰── GtkAspectFrame
+│   │   │   │   ├── GtkButton                         Button
+│   │   │   │   │   ├── GtkToggleButton               ToggleButton
+│   │   │   │   │   │   ├── GtkCheckButton            CheckButton
+│   │   │   │   │   │   │   ╰── GtkRadioButton        RadioButton
+│   │   │   │   │   │   ╰── GtkMenuButton             MenuButton
+│   │   │   │   │   ├── GtkColorButton                ColorButton
+│   │   │   │   │   ├── GtkFontButton
+│   │   │   │   │   ├── GtkLinkButton
+│   │   │   │   │   ├── GtkLockButton
+│   │   │   │   │   ├── GtkModelButton
+│   │   │   │   │   ╰── GtkScaleButton
+│   │   │   │   │       ╰── GtkVolumeButton
+│   │   │   │   ├── GtkMenuItem                       MenuItem
+│   │   │   │   │   ├── GtkCheckMenuItem
+│   │   │   │   │   │   ╰── GtkRadioMenuItem
+│   │   │   │   │   ├─✗ GtkImageMenuItem
+│   │   │   │   │   ├── GtkSeparatorMenuItem
+│   │   │   │   │   ╰─✗ GtkTearoffMenuItem
+│   │   │   │   ├── GtkEventBox
+│   │   │   │   ├── GtkExpander
+│   │   │   │   ├── GtkFlowBoxChild
+│   │   │   │   ├── GtkHandleBox
+│   │   │   │   ├── GtkListBoxRow                     ListBoxRow
+│   │   │   │   ├── GtkToolItem
+│   │   │   │   │   ├── GtkToolButton
+│   │   │   │   │   │   ├── GtkMenuToolButton
+│   │   │   │   │   │   ╰── GtkToggleToolButton
+│   │   │   │   │   │       ╰── GtkRadioToolButton
+│   │   │   │   │   ╰── GtkSeparatorToolItem
+│   │   │   │   ├── GtkOverlay
+│   │   │   │   ├── GtkScrolledWindow
+│   │   │   │   │   ╰── GtkPlacesSidebar
+│   │   │   │   ├── GtkPopover
+│   │   │   │   │   ╰── GtkPopoverMenu
+│   │   │   │   ├── GtkRevealer
+│   │   │   │   ├── GtkSearchBar
+│   │   │   │   ├── GtkStackSidebar
+│   │   │   │   ╰── GtkViewport
+│   │   │   ├── GtkBox                                Box
+│   │   │   │   ├── GtkAppChooserWidget
+│   │   │   │   ├── GtkButtonBox
+│   │   │   │   │   ├─✗ GtkHButtonBox
+│   │   │   │   │   ╰─✗ GtkVButtonBox
+│   │   │   │   ├── GtkColorChooserWidget             ColorChooserWidget
+│   │   │   │   ├─✗ GtkColorSelection
+│   │   │   │   ├── GtkFileChooserButton
+│   │   │   │   ├── GtkFileChooserWidget
+│   │   │   │   ├── GtkFontChooserWidget
+│   │   │   │   ├─✗ GtkFontSelection
+│   │   │   │   ├─✗ GtkHBox
+│   │   │   │   ├── GtkInfoBar
+│   │   │   │   ├── GtkRecentChooserWidget
+│   │   │   │   ├── GtkShortcutsSection
+│   │   │   │   ├── GtkShortcutsGroup
+│   │   │   │   ├── GtkShortcutsShortcut
+│   │   │   │   ├── GtkStackSwitcher
+│   │   │   │   ├── GtkStatusbar
+│   │   │   │   ╰─✗ GtkVBox
+│   │   │   ├── GtkFixed
+│   │   │   ├── GtkFlowBox
+│   │   │   ├── GtkGrid                               Grid
+│   │   │   ├── GtkHeaderBar
+│   │   │   ├── GtkPaned                              Paned
+│   │   │   │   ├─✗ GtkHPaned                         
+│   │   │   │   ╰─✗ GtkVPaned
+│   │   │   ├── GtkIconView
+│   │   │   ├── GtkLayout
+│   │   │   ├── GtkListBox                            ListBox
+│   │   │   ├── GtkMenuShell                          MenuShell
+│   │   │   │   ├── GtkMenuBar                        MenuBar
+│   │   │   │   ╰── GtkMenu                           Menu
+│   │   │   │       ╰── GtkRecentChooserMenu
+│   │   │   ├── GtkNotebook
+│   │   │   ├── GtkSocket
+│   │   │   ├── GtkStack
+│   │   │   ├─✗ GtkTable
+│   │   │   ├── GtkTextView                           TextView
+│   │   │   ├── GtkToolbar
+│   │   │   ├── GtkToolItemGroup
+│   │   │   ├── GtkToolPalette
+│   │   │   ╰── GtkTreeView
+│   │   ├─✗ GtkMisc                                   Misc (Keep hierarchy)
+│   │   │   ├── GtkLabel                              Label
+│   │   │   │   ╰── GtkAccelLabel
+│   │   │   ├─✗ GtkArrow
+│   │   │   ╰── GtkImage                              Image
+│   │   ├── GtkCalendar
+│   │   ├── GtkCellView
+│   │   ├── GtkDrawingArea
+│   │   ├── GtkEntry                                  Entry
+│   │   │   ├── GtkSearchEntry
+│   │   │   ╰── GtkSpinButton
+│   │   ├── GtkGLArea
+│   │   ├── GtkRange                                  Range
+│   │   │   ├── GtkScale                              Scale
+│   │   │   │   ├─✗ GtkHScale
+│   │   │   │   ╰─✗ GtkVScale
+│   │   │   ╰── GtkScrollbar
+│   │   │       ├─✗ GtkHScrollbar
+│   │   │       ╰─✗ GtkVScrollbar
+│   │   ├── GtkSeparator
+│   │   │   ├─✗ GtkHSeparator
+│   │   │   ╰─✗ GtkVSeparator
+│   │   ├─✗ GtkHSV
+│   │   ├── GtkInvisible
+│   │   ├── GtkProgressBar
+│   │   ├── GtkSpinner
+│   │   ├── GtkSwitch
+│   │   ╰── GtkLevelBar                               LevelBar
+│   ├── GtkAdjustment
+│   ├── GtkCellArea
+│   │   ╰── GtkCellAreaBox
+│   ├── GtkCellRenderer
+│   │   ├── GtkCellRendererText
+│   │   │   ├── GtkCellRendererAccel
+│   │   │   ├── GtkCellRendererCombo
+│   │   │   ╰── GtkCellRendererSpin
+│   │   ├── GtkCellRendererPixbuf
+│   │   ├── GtkCellRendererProgress
+│   │   ├── GtkCellRendererSpinner
+│   │   ╰── GtkCellRendererToggle
+│   ├── GtkFileFilter                                 FileFilter
+│   ├── GtkTreeViewColumn
+│   ╰── GtkRecentFilter
+├── GtkAccelGroup
+├── GtkAccelMap
+├── AtkObject
+│   ╰── GtkAccessible
+├─✗ GtkAction
+│   ├─✗ GtkToggleAction
+│   │   ╰─✗ GtkRadioAction
+│   ╰─✗ GtkRecentAction
+├─✗ GtkActionGroup
+├── GApplication
+│   ╰── GtkApplication
+├── GtkBuilder                                        Builder
+├── GtkCellAreaContext
+├── GtkClipboard
+├── GtkCssProvider                                    CssProvider
+├── GtkEntryBuffer
+├── GtkEntryCompletion
+├── GtkEventController
+│   ├── GtkEventControllerKey
+│   ├── GtkEventControllerMotion
+│   ├── GtkEventControllerScroll
+│   ├── GtkGesture
+│   │   ├── GtkGestureSingle
+│   │   │   ├── GtkGestureDrag
+│   │   │   │   ╰── GtkGesturePan
+│   │   │   ├── GtkGestureLongPress
+│   │   │   ├── GtkGestureMultiPress
+│   │   │   ├── GtkGestureStylus
+│   │   │   ╰── GtkGestureSwipe
+│   │   ├── GtkGestureRotate
+│   │   ╰── GtkGestureZoom
+│   ╰── GtkPadController
+├── GtkIconFactory
+├── GtkIconTheme
+├── GtkIMContext
+│   ├── GtkIMContextSimple
+│   ╰── GtkIMMulticontext
+├── GtkListStore
+├── GMountOperation
+│   ╰── GtkMountOperation
+├── GEmblemedIcon
+│   ╰─✗ GtkNumerableIcon
+├── GtkPageSetup
+├── GtkPrinter
+├── GtkPrintContext
+├── GtkPrintJob
+├── GtkPrintOperation
+├── GtkPrintSettings
+├── GtkRcStyle
+├── GtkRecentManager
+├── GtkSettings
+├── GtkSizeGroup
+├─✗ GtkStatusIcon
+├─✗ GtkStyle
+├── GtkStyleContext                                   StyleContext
+├── GtkTextBuffer                                     TextBuffer
+├── GtkTextChildAnchor
+├── GtkTextMark
+├── GtkTextTag                                        TextTag
+├── GtkTextTagTable                                   TextTagTable
+├─✗ GtkThemingEngine
+├── GtkTreeModelFilter
+├── GtkTreeModelSort
+├── GtkTreeSelection
+├── GtkTreeStore
+├─✗ GtkUIManager
+├── GtkWindowGroup
+├── GtkTooltip
+╰── GtkPrintBackend
+GInterface
+├── GtkBuildable
+├── GtkActionable
+├─✗ GtkActivatable
+├── GtkAppChooser
+├── GtkCellLayout
+├── GtkCellEditable
+├── GtkOrientable                                     Orientable
+├── GtkColorChooser                                   ColorChooser
+├── GtkStyleProvider                                  StyleProvider
+├── GtkEditable
+├── GtkFileChooser                                    FileChooser
+├── GtkFontChooser
+├── GtkScrollable
+├── GtkTreeModel
+├── GtkTreeDragSource
+├── GtkTreeDragDest
+├── GtkTreeSortable
+├── GtkPrintOperationPreview
+├── GtkRecentChooser
+╰── GtkToolShell
+GBoxed
+├── GtkPaperSize
+├── GtkTextIter                                       TextIter
+├── GtkSelectionData
+├── GtkRequisition
+├── GtkBorder                                         Border
+├── GtkTreeIter
+├── GtkCssSection                                     CssSection
+├── GtkTreePath
+├── GtkIconSet
+╰── GtkTargetList
+```
