@@ -384,15 +384,15 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
 #note "\nDeclaration: ", $declaration if $declaration ~~ m/ gtk_widget_path_iter_get_siblings /;
 
-  # process types from arg lists
+  # process types from arg lists, inconsequent use of gchar/char
   if $attr {
     $declaration ~~ m/ ^
       $<type> = [
         [
-          \s* 'const' \s* 'gchar' \s* '*' \s* 'const' \s* '*'* \s* ||
-          \s* 'const' \s* 'gchar' \s* '*'* \s* ||
-          \s* 'gchar' \s* '*'* \s* ||
-          \s* 'const' \s* <alnum>+ \s* '*'* \s* ||
+          \s* const \s* g?char \s* '*' \s* const \s* '*'* \s* ||
+          \s* const \s* g?char \s* '*'* \s* ||
+          \s* g?char \s* '*'* \s* ||
+          \s* const \s* <alnum>+ \s* '*'* \s* ||
           \s* <alnum>+  \s* '*'* \s* ||
           \s* '...'
         ]
@@ -405,28 +405,28 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     $declaration ~~ m/ ^
       $<type> = [
         [
-          'const' \s* 'gchar' \s* '*' \s* 'const' \s* '*'* \s* ||
-          'const' \s* 'gchar' \s* '*' \s* ||
-          'gchar' \s* '*'* \s* ||
-          'const' \s* '*' <alnum>+ \s* '*'* \s* ||
-          'const' \s* <alnum>+ \s* '*'* \s* ||
+          const \s* g?char \s* '*' \s* const \s* '*'* \s* ||
+          const \s* g?char \s* '*' \s* ||
+          g?char \s* '*'* \s* ||
+          const \s* '*' <alnum>+ \s* '*'* \s* ||
+          const \s* <alnum>+ \s* '*'* \s* ||
           <alnum>+ \s* '*'* \s*
         ]
       ] <alnum>+
     /;
   }
 
-  #[ ['const']? \s* <alnum>+ \s* \*? ]*
+  #[ [const]? \s* <alnum>+ \s* \*? ]*
 
   my Str $type = ~($<type> // '');
   $declaration ~~ s/ $type //;
 
   #drop the const
-  $type ~~ s:g/ 'const' //;
+  $type ~~ s:g/ const //;
 
   # convert a pointer char type
-  if $type ~~ m/ 'gchar' \s* '*' / {
-    $type ~~ s/ 'gchar' \s* '*' / Str /;
+  if $type ~~ m/ g?char \s* '*' / {
+    $type ~~ s/ g?char \s* '*' / Str /;
 
     # if there is still another pointer, make a CArray
     $type = "CArray[$type]" if $type ~~ m/ '*' /;
@@ -463,7 +463,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   my Str $p6-type = $type;
 
   # convert to native perl types
-  #$type ~~ s/ 'gchar' \s+ '*' /str/;
+  #$type ~~ s/ g?char \s+ '*' /str/;
 
   # process all types from GtkEnum and some
   # use bin/gather-enums.pl6 to create a list in
@@ -473,7 +473,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   }
 
   $type ~~ s:s/ gboolean || gint || gint32 /int32/;
-  $type ~~ s:s/ gchar || gint8 /int8/;
+  $type ~~ s:s/ g?char || gint8 /int8/;
   $type ~~ s:s/ gshort || gint16 /int16/;
   $type ~~ s:s/ glong || gint64 /int64/;
 
@@ -1114,12 +1114,15 @@ sub get-properties ( Str:D $source-content is copy ) {
     $property-name = '';
 
     $source-content ~~ m/
-      $<property-doc> = [ '/**' \s+ '*' \s+
-      $lib-class-name ':' <-[:]> .*? '*/' \s+
-      .*? 'g_param_spec_' .*? ');' ]
+      $<property-doc> = [
+          [ '/**' \s+ '*' \s+ $lib-class-name ':' <-[:]> .*? '*/'
+        ]? \s+ 'g_object_interface_install_property'
+        .*? 'g_param_spec_' .*? ');'
+      ]
     /;
-    my Str $sdoc = ~($<property-doc> // '');
 
+    my Str $sdoc = ~($<property-doc> // '');
+#note "sdoc: ", ?$sdoc;
     last unless ?$sdoc;
 
     # remove from source
@@ -1127,6 +1130,8 @@ sub get-properties ( Str:D $source-content is copy ) {
 
     # skip deprecated properties
     next if $sdoc ~~ m/ '*' \s+ 'Deprecated:' /;
+
+    my Bool $has-doc = $sdoc ~~ m/ '/**' / ?? True !! False;
 
     unless ?$property-doc {
       $property-doc ~= Q:to/EODOC/;
@@ -1155,27 +1160,87 @@ sub get-properties ( Str:D $source-content is copy ) {
     }
 #note "Property sdoc 1:\n", $sdoc;
 
-    $sdoc ~~ m/
-      ^^ \s+ '*' \s+ $lib-class-name ':'
-      $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
-    /;
-    $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=comment #TP:0:$property-name:\n=head3 $property-name\n";
+    if $has-doc {
+      $sdoc ~~ m/
+        ^^ \s+ '*' \s+ $lib-class-name ':'
+        $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
+      /;
+      $property-name = ~($<prop-name> // '');
+    }
+# $property-name must come from call to param_spec
+
 #note "sdoc 2: $sdoc";
-    note "get property $property-name";
+#note "get property $property-name";
 
     # modify and cleanup
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //;
+    $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //
+      if $has-doc;
+
     $sdoc ~~ m/ ^^ \s+ 'g_param_spec_' $<prop-type> = [ <alnum>+ ] \s* '(' /;
-    my Str $prop-type = 'G_TYPE_' ~ ~($<prop-type> // '' ).uc;
+    my Str $spec-type = ~($<prop-type> // '' );
+    my Str $prop-type = 'G_TYPE_' ~ $spec-type.uc;
 
-    $sdoc = primary-doc-changes($sdoc);
-    $sdoc = cleanup-source-doc($sdoc);
+    my Str ( $prop-name, $prop-nick);
+    if $has-doc {
+      $prop-name = $property-name;
+      $sdoc = primary-doc-changes($sdoc);
+      $sdoc = cleanup-source-doc($sdoc);
+    }
 
-#note "sdoc 3: ", $sdoc;
+    else {
 
-    $property-doc ~=
-      "\nThe B<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
+      my Str $prop-args = $sdoc;
+      $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
+      $prop-args ~~ s/ '));' //;
+
+      # process arguments
+      my @args = ();
+      for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
+        $arg ~~ s/ 'P_(' //;
+        $arg ~~ s/ ')' //;
+        $arg ~~ s:g/ \" //;
+        @args.push($arg);
+      }
+  note "args: ", @args.join(', ');
+
+      $prop-name = @args[0];
+      $prop-nick = @args[1];
+      my Str $prop-blurp = @args[2];
+
+      my Bool $prop-default;
+      my Str $flags;
+      my Str $gtype-string;
+      given $spec-type {
+        when 'boolean' {
+          $prop-default = @args[3] ~~ 'TRUE' ?? True !! False;
+          $flags = @args[4];
+
+          $sdoc = "\n$prop-blurp\nDefault value: $prop-default\n";
+        }
+
+        when 'object' {
+          $gtype-string = @args[3];
+          $flags = @args[4];
+
+          $sdoc = "\n$prop-blurp\nWidget type: $gtype-string"
+        }
+
+        when '' {
+        }
+
+      }
+    }
+
+
+
+#note "sdoc 3: ", $sdoc if $has-doc;
+
+    $property-doc ~= Q:qq:to/EOHEADER/;
+
+      =comment #TP:0:$prop-name:
+      =head3 $prop-nick
+      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.$sdoc
+      EOHEADER
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
