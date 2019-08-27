@@ -17,9 +17,11 @@ sub MAIN ( *@modules ) {
 
     # get content and process it.
     my Str $content = $module.IO.slurp;
+    my Bool $load-tested = load-coverage($content);
     my ( $subs-total, $subs-tested, $sub-hash) = sub-coverage($content);
     my ( $sigs-total, $sigs-tested, $sig-hash) = signal-coverage($content);
     my ( $props-total, $props-tested, $prop-hash) = prop-coverage($content);
+    my ( $types-total, $types-tested, $type-hash) = type-coverage($content);
 
     my Rat $sub-coverage = $subs-total
            ?? 100.0 * $subs-tested/$subs-total
@@ -33,14 +35,19 @@ sub MAIN ( *@modules ) {
            ?? 100.0 * $props-tested/$props-total
            !! 0.0;
 
+    my Rat $type-coverage = $types-total
+           ?? 100.0 * $types-tested/$types-total
+           !! 0.0;
+
     note Q:qq:to/EOREPORT/;
 
       Module $module
+        Loading tested: $load-tested
         Nbr subs $subs-total, subs tested $subs-tested, coverage: $sub-coverage.fmt("%.2f")
         Nbr signals $sigs-total, signals tested $sigs-tested, coverage: $sig-coverage.fmt("%.2f")
         Nbr properties $props-total, properties tested $props-tested, coverage: $prop-coverage.fmt("%.2f")
+        Nbr types $types-total, types tested $types-tested, coverage: $type-coverage.fmt("%.2f")
       EOREPORT
-
 
     # setup structure for this module
     my Str $module-name = $module.IO.basename();
@@ -55,8 +62,10 @@ sub MAIN ( *@modules ) {
       when /Gdk3/ { $path = "content-docs/reference/Gdk3/$module-name"; }
       when /GObject/ { $path = "content-docs/reference/GObject/$module-name"; }
       when /Glib/ { $path = "content-docs/reference/Glib/$module-name"; }
-      when /Native/ { $path = "content-docs/reference/Native/$module-name"; }
+      when /N/ { $path = "content-docs/reference/Native/$module-name"; }
     }
+
+    %test-coverage{$path}<unit-load> = { :$load-tested };
 
     %test-coverage{$path}<routines> = {
       :$subs-total, :$subs-tested, :coverage($sub-coverage.fmt("%.2f")),
@@ -72,6 +81,11 @@ sub MAIN ( *@modules ) {
       :$props-total, :$props-tested, :coverage($prop-coverage.fmt("%.2f")),
       :subs-data($prop-hash)
     } if $props-total;
+
+    %test-coverage{$path}<types> = {
+      :$types-total, :$types-tested, :coverage($type-coverage.fmt("%.2f")),
+      :subs-data($type-hash)
+    } if $types-total;
   }
 
   $test-coverage-config.IO.spurt(to-json(%test-coverage));
@@ -82,6 +96,7 @@ sub MAIN ( *@modules ) {
 sub find-modules ( *@modules ) {
   for @modules -> Str $m {
     if $m.IO.d {
+      next if $m ~~ m/ '.git' || '.precomp' /;
       for dir($m) -> $f {
         find-modules($f.Str);
       }
@@ -99,7 +114,7 @@ sub find-modules ( *@modules ) {
 }
 
 #-------------------------------------------------------------------------------
-sub signal-coverage( Str:D $content ) {
+sub signal-coverage( Str:D $content --> List ) {
   my Hash $sig-cover = {};
   my Int $sigs-tested = 0;
 
@@ -130,11 +145,11 @@ sub signal-coverage( Str:D $content ) {
 }
 
 #-------------------------------------------------------------------------------
-sub prop-coverage( Str:D $content ) {
+sub prop-coverage( Str:D $content --> List ) {
   my Hash $prop-cover = {};
   my Int $props-tested = 0;
 
-  # search for special notes like '#TS:sts:sig-name'
+  # search for special notes like '#TP:sts:sig-name'
   $content ~~ m:g/^^ '=comment #TP:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
@@ -161,7 +176,65 @@ sub prop-coverage( Str:D $content ) {
 }
 
 #-------------------------------------------------------------------------------
-sub sub-coverage( Str:D $new-content ) {
+sub type-coverage( Str:D $content --> List ) {
+  my Hash $type-cover = {};
+  my Int $types-tested = 0;
+
+  # search for special notes like '#TT:sts:sig-name' (#TE for enums)
+  $content ~~ m:g/^^ '#T' <[TE]> ':' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  my List $results = $/[*];
+  for @$results -> $r {
+    my Str $header = ~$r;
+    $header ~~ m/
+      '#T' <[TE]> ':'
+      $<state> = ([<[+-]> || \d])
+      ':'
+      $<name> = ([<alnum> || '-']+)
+    /;
+
+    my Str $name = ~$/<name>;
+
+    my $state = ~$/<state>;
+    $state = 0 if $state eq '-';
+    $state = 1 if $state eq '+';
+    $state .= Int;  # convert to int for all other digit characters
+    $types-tested++ if $state > 0;
+    $type-cover{$name} = $state;
+  }
+
+  # return total nbr of subs/methods, nbr tested and data
+  return ( $type-cover.elems, $types-tested, $type-cover);
+}
+
+#-------------------------------------------------------------------------------
+sub load-coverage( Str:D $content --> Bool ) {
+  my Bool $load-tested = False;
+
+  # search for special notes like '#TL:sts:sig-name'
+  $content ~~ m/^^ '#TL:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  my Str $header = ~($/ || '');
+  return $load-tested unless ?$header;
+  $header ~~ m/
+    '#TL:'
+    $<state> = ([<[+-]> || \d])
+    ':'
+    $<name> = ([<alnum> || '-']+)
+  /;
+
+  my Str $name = ~$/<name>;
+
+  my $state = ~$/<state>;
+  $state = 0 if $state eq '-';
+  $state = 1 if $state eq '+';
+  $state .= Int;  # convert to int for all other digit characters
+  $load-tested = True if $state > 0;
+
+  # return load status
+  return $load-tested;
+}
+
+#-------------------------------------------------------------------------------
+sub sub-coverage( Str:D $new-content --> List ) {
   my Hash $sub-cover = {};
   my Int $subs-tested = 0;
 
@@ -210,7 +283,7 @@ sub sub-coverage( Str:D $new-content ) {
     # skip some subs/methods
     next if $name ~~ m/^
       [ '_'             # hidden native subs
-        || _fallback     # used to find subs
+        || _fallback    # used to find subs
         || FALLBACK     # starter to call _fallback
         || 'CALL-ME'    # used to get native objects
       ]
