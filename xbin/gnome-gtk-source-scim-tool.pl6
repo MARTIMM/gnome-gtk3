@@ -134,6 +134,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/^ ['GDK' || 'GTK' || 'GLIB'] '_AVAILABLE_IN_' .*?  \n //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
     $declaration ~~ s:g/ \s+ / /;
+    $declaration ~~ s/\s* 'G_GNUC_PURE' \s*//;
 #note "\n0 >> $declaration";
 
     my Str ( $return-type, $p6-return-type) = ( '', '');
@@ -234,32 +235,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     $output-file.IO.spurt( $sub, :append);
   }
-
-  $output-file.IO.spurt( Q:qq:to/EONYI/, :append);
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =begin comment
-
-    =head1 Not yet implemented methods
-
-    =head3 method  ( ... )
-
-    =end comment
-    =end pod
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =begin comment
-
-    =head1 Not implemented methods
-
-    =head3 method  ( ... )
-
-    =end comment
-    =end pod
-
-    EONYI
 }
 
 #-------------------------------------------------------------------------------
