@@ -1,5 +1,11 @@
 [toc]
 
+# Web site start
+
+```
+bundle exec jekyll serve
+```
+
 # Codes used in source modules to mark what is tested or not
 
 The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action;
