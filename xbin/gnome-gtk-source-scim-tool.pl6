@@ -1170,7 +1170,6 @@ sub get-properties ( Str:D $source-content is copy ) {
 # $property-name must come from call to param_spec
 
 #note "sdoc 2: $sdoc";
-#note "get property $property-name";
 
     # modify and cleanup
     $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //
@@ -1180,66 +1179,93 @@ sub get-properties ( Str:D $source-content is copy ) {
     my Str $spec-type = ~($<prop-type> // '' );
     my Str $prop-type = 'G_TYPE_' ~ $spec-type.uc;
 
-    my Str ( $prop-name, $prop-nick);
+    my Str $prop-args = $sdoc;
+    my Str ( $prop-name, $prop-nick, $prop-blurp);
     if $has-doc {
-      $prop-name = $property-name;
+#      $prop-name = $property-name;
       $sdoc = primary-doc-changes($sdoc);
       $sdoc = cleanup-source-doc($sdoc);
     }
 
-    else {
 
-      my Str $prop-args = $sdoc;
-      $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
-      $prop-args ~~ s/ '));' //;
+    $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
+    $prop-args ~~ s/ '));' //;
 
-      # process arguments
-      my @args = ();
-      for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
-        $arg ~~ s/ 'P_(' //;
-        $arg ~~ s/ ')' //;
-        $arg ~~ s:g/ \" //;
-        @args.push($arg);
+    # process arguments
+    my @args = ();
+    for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
+      $arg ~~ s/ 'P_(' //;
+      $arg ~~ s/ ')' //;
+      $arg ~~ s:g/ \" \s+ \" //;
+      $arg ~~ s:g/ \" //;
+      @args.push($arg);
+    }
+#note "args: ", @args.join(', ');
+
+    $prop-name = @args[0];
+    $prop-nick = @args[1];
+    $prop-blurp = $has-doc ?? $sdoc !! @args[2];
+
+    my Str $flags;
+    my Str $gtype-string;
+    my Bool $prop-default;
+    given $spec-type {
+      when 'boolean' {
+        $prop-default = @args[3] ~~ 'TRUE' ?? True !! False;
+        $flags = @args[4];
+
+        $sdoc = Q:qq:to/EOP/;
+
+          $prop-blurp
+
+          Default value: $prop-default
+          EOP
       }
-  note "args: ", @args.join(', ');
 
-      $prop-name = @args[0];
-      $prop-nick = @args[1];
-      my Str $prop-blurp = @args[2];
+      when 'enum' {
+        $gtype-string = @args[3];
+        $prop-default = @args[4] ~~ 'TRUE' ?? True !! False;
+        $flags = @args[5];
 
-      my Bool $prop-default;
-      my Str $flags;
-      my Str $gtype-string;
-      given $spec-type {
-        when 'boolean' {
-          $prop-default = @args[3] ~~ 'TRUE' ?? True !! False;
-          $flags = @args[4];
+        $sdoc = Q:qq:to/EOP/;
 
-          $sdoc = "\n$prop-blurp\nDefault value: $prop-default\n";
-        }
+          $prop-blurp
 
-        when 'object' {
-          $gtype-string = @args[3];
-          $flags = @args[4];
-
-          $sdoc = "\n$prop-blurp\nWidget type: $gtype-string"
-        }
-
-        when '' {
-        }
-
+          Default value: $prop-default
+          Flags: $flags
+          EOP
       }
+
+      when 'object' {
+        $gtype-string = @args[3];
+        $flags = @args[4];
+
+        $sdoc = Q:qq:to/EOP/;
+          $prop-blurp
+
+          Widget type: $gtype-string
+          Flags: $flags
+          EOP
+      }
+
+      when '' {
+      }
+
     }
 
 
 
 #note "sdoc 3: ", $sdoc if $has-doc;
 
+    note "get property $prop-name";
     $property-doc ~= Q:qq:to/EOHEADER/;
 
       =comment #TP:0:$prop-name:
       =head3 $prop-nick
-      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.$sdoc
+
+      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
+
+      $sdoc
       EOHEADER
   }
 
