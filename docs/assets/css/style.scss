@@ -20,12 +20,25 @@ body {
   line-height: 1.1;
 }
 
+header {
+  padding-top: 5px;
+  //padding-bottom: 25px;
+}
+
 header h1 {
   font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 23pt;
   font-weight: bold;
   letter-spacing: -1px;
 //  line-height: 1.2;
+}
+
+.XL-h1-size {
+  font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif;
+  font-size: 23pt;
+  font-weight: bold;
+  letter-spacing: -1px;
+//  font-size: 30px;
 }
 
 header nav {
@@ -60,9 +73,15 @@ header nav {
     border: $menu-border-width solid $menu-border-color;
   }
 
+/*
   .float-right {
     float: right;
   }
+*/
+}
+
+.float-right {
+  float: right;
 }
 
 header hr {
