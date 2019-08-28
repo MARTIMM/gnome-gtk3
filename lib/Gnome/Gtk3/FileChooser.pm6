@@ -1887,14 +1887,9 @@ Register any signal as follows. See also B<Gnome::GObject::Object>.
 =comment #TS:0:current-folder-changed:
 =head3 current-folder-changed
 
-This signal is emitted when the current folder in a I<Gnome::Gtk3::FileChooser>
-changes.  This can happen due to the user performing some action that
-changes folders, such as selecting a bookmark or visiting a folder on the
-file list.  It can also happen as a result of calling a function to
-explicitly change the current folder in a file chooser.
+This signal is emitted when the current folder in a I<Gnome::Gtk3::FileChooser> changes. This can happen due to the user performing some action that changes folders, such as selecting a bookmark or visiting a folder on the file list.  It can also happen as a result of calling a function to explicitly change the current folder in a file chooser.
 
-Normally you do not need to connect to this signal, unless you need to keep
-track of which folder a file chooser is showing.
+Normally you do not need to connect to this signal, unless you need to keep track of which folder a file chooser is showing.
 
 See also:  C<gtk_file_chooser_set_current_folder()>,
 C<gtk_file_chooser_get_current_folder()>,
@@ -1912,14 +1907,9 @@ C<gtk_file_chooser_get_current_folder_uri()>.
 =comment #TS:0:selection-changed:
 =head3 selection-changed
 
-This signal is emitted when there is a change in the set of selected files
-in a I<Gnome::Gtk3::FileChooser>.  This can happen when the user modifies the selection
-with the mouse or the keyboard, or when explicitly calling functions to
-change the selection.
+This signal is emitted when there is a change in the set of selected files in a I<Gnome::Gtk3::FileChooser>. This can happen when the user modifies the selection with the mouse or the keyboard, or when explicitly calling functions to change the selection.
 
-Normally you do not need to connect to this signal, as it is easier to wait
-for the file chooser to finish running, and then to get the list of
-selected files using the functions mentioned below.
+Normally you do not need to connect to this signal, as it is easier to wait for the file chooser to finish running, and then to get the list of selected files using the functions mentioned below.
 
 See also: C<gtk_file_chooser_select_filename()>,
 C<gtk_file_chooser_unselect_filename()>, C<gtk_file_chooser_get_filename()>,
@@ -1938,22 +1928,11 @@ C<gtk_file_chooser_get_uris()>.
 =comment #TS:0:update-preview:
 =head3 update-preview
 
-This signal is emitted when the preview in a file chooser should be
-regenerated.  For example, this can happen when the currently selected file
-changes.  You should use this signal if you want your file chooser to have
-a preview widget.
+This signal is emitted when the preview in a file chooser should be regenerated. For example, this can happen when the currently selected file changes. You should use this signal if you want your file chooser to have a preview widget.
 
-Once you have installed a preview widget with
-C<gtk_file_chooser_set_preview_widget()>, you should update it when this
-signal is emitted.  You can use the functions
-C<gtk_file_chooser_get_preview_filename()> or
-C<gtk_file_chooser_get_preview_uri()> to get the name of the file to preview.
-Your widget may not be able to preview all kinds of files; your callback
-must call C<gtk_file_chooser_set_preview_widget_active()> to inform the file
-chooser about whether the preview was generated successfully or not.
+Once you have installed a preview widget with C<gtk_file_chooser_set_preview_widget()>, you should update it when this signal is emitted.  You can use the functions C<gtk_file_chooser_get_preview_filename()> or C<gtk_file_chooser_get_preview_uri()> to get the name of the file to preview. Your widget may not be able to preview all kinds of files; your callback must call C<gtk_file_chooser_set_preview_widget_active()> to inform the file chooser about whether the preview was generated successfully or not.
 
-Please see the example code in
-[Using a Preview Widget][gtkfilechooser-preview].
+=comment Please see the example code in [Using a Preview Widget][gtkfilechooser-preview].
 
 See also: C<gtk_file_chooser_set_preview_widget()>,
 C<gtk_file_chooser_set_preview_widget_active()>,
@@ -1972,13 +1951,9 @@ C<gtk_file_chooser_get_preview_uri()>.
 =comment #TS:0:file-activated:
 =head3 file-activated
 
-This signal is emitted when the user "activates" a file in the file
-chooser.  This can happen by double-clicking on a file in the file list, or
-by pressing `Enter`.
+This signal is emitted when the user "activates" a file in the file chooser.  This can happen by double-clicking on a file in the file list, or by pressing I<Enter>.
 
-Normally you do not need to connect to this signal.  It is used internally
-by I<Gnome::Gtk3::FileChooserDialog> to know when to activate the default button in the
-dialog.
+Normally you do not need to connect to this signal. It is used internally by I<Gnome::Gtk3::FileChooserDialog> to know when to activate the default button in the dialog.
 
 See also: C<gtk_file_chooser_get_filename()>,
 C<gtk_file_chooser_get_filenames()>, C<gtk_file_chooser_get_uri()>,
@@ -1995,73 +1970,55 @@ C<gtk_file_chooser_get_uris()>.
 =comment #TS:0:confirm-overwrite:
 =head3 confirm-overwrite
 
-This signal gets emitted whenever it is appropriate to present a
-confirmation dialog when the user has selected a file name that
-already exists.  The signal only gets emitted when the file
-chooser is in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode.
+This signal gets emitted whenever it is appropriate to present a confirmation dialog when the user has selected a file name that already exists. The signal only gets emitted when the file chooser is in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode.
 
-Most applications just need to turn on the
-sig I<do-overwrite-confirmation> property (or call the
-C<gtk_file_chooser_set_do_overwrite_confirmation()> function), and
-they will automatically get a stock confirmation dialog.
-Applications which need to customize this behavior should do
-that, and also connect to the prop I<confirm-overwrite>
-signal.
+Most applications just need to turn on the I<do-overwrite-confirmation> property (or call the C<gtk_file_chooser_set_do_overwrite_confirmation()> function), and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to the prop I<confirm-overwrite> signal.
 
-A signal handler for this signal must return a
-I<Gnome::Gtk3::FileChooserConfirmation> value, which indicates the action to
-take.  If the handler determines that the user wants to select a
-different filename, it should return
-C<GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN>.  If it determines
-that the user is satisfied with his choice of file name, it
-should return C<GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME>.
-On the other hand, if it determines that the stock confirmation
-dialog should be used, it should return
-C<GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM>. The following example
-illustrates this.
+A signal handler for this signal must return a B<GtkFileChooserConfirmation> value, which indicates the action to take. If the handler determines that the user wants to select a different filename, it should return C<GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN>. If it determines that the user is satisfied with his choice of file name, it should return C<GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME>. On the other hand, if it determines that the stock confirmation dialog should be used, it should return C<GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM>.
 
-## Custom confirmation ## {I<gtkfilechooser>-confirmation}
+=begin comment
+=head4 Custom confirmation
+The following example illustrates this.
 
-|[<!-- language="C" -->
-static B<Gnome::Gtk3::FileChooserConfirmation>
-confirm_overwrite_callback (B<Gnome::Gtk3::FileChooser> *chooser, gpointer data)
-{
-char *uri;
+  static B<Gnome::Gtk3::FileChooserConfirmation>
+  confirm_overwrite_callback (B<Gnome::Gtk3::FileChooser> *chooser, gpointer data)
+  {
+  char *uri;
 
-uri = gtk_file_chooser_get_uri (chooser);
+  uri = gtk_file_chooser_get_uri (chooser);
 
-if (is_uri_read_only (uri))
-{
-if (user_wants_to_replace_read_only_file (uri))
-return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME;
-else
-return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN;
-} else
-return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog
-}
+  if (is_uri_read_only (uri))
+  {
+  if (user_wants_to_replace_read_only_file (uri))
+  return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME;
+  else
+  return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN;
+  } else
+  return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog
+  }
 
-...
+  ...
 
-chooser = gtk_file_chooser_dialog_new (...);
+  chooser = gtk_file_chooser_dialog_new (...);
 
-gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-g_signal_connect (chooser, "confirm-overwrite",
-G_CALLBACK (confirm_overwrite_callback), NULL);
+  gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+  g_signal_connect (chooser, "confirm-overwrite",
+  G_CALLBACK (confirm_overwrite_callback), NULL);
 
-if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT)
-save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
+  if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT)
+  save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
 
-gtk_widget_destroy (chooser);
-]|
+  gtk_widget_destroy (chooser);
+=end comment
 
-Returns: a I<Gnome::Gtk3::FileChooserConfirmation> value that indicates which
-action to take after emitting the signal.
+Returns: a B<GtkFileChooserConfirmation> value that indicates which action to take after emitting the signal.
 
 Since: 2.8
 
   method handler (
     Gnome::GObject::Object :widget($chooser),
     :$user-option1, ..., :$user-optionN
+    --> GtkFileChooserConfirmation
   );
 
 =item $chooser; the object which received the signal.
@@ -2074,7 +2031,6 @@ Since: 2.8
 =head2 Not yet supported signals
 =end comment
 
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
@@ -2086,42 +2042,127 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-=begin comment
-
 =head2 Supported properties
 
-=head2 Unsupported properties
+=comment #TP:0:action:
+=head3 Action
 
-=end comment
+The B<Gnome::GObject::Value> type of property I<action> is C<G_TYPE_ENUM>.
 
-=head2 Not yet supported properties
+The type of operation that the file selector is performing
+
+Default value: False
+Flags: GTK_PARAM_READWRITE
+
+=comment #TP:0:filter:
+=head3 Filter
+
+The B<Gnome::GObject::Value> type of property I<filter> is C<G_TYPE_OBJECT>.
+
+The current filter for selecting which files are displayed
+
+Widget type: GTK_TYPE_FILE_FILTER
+Flags: GTK_PARAM_READWRITE
+
+=comment #TP:0:local-only:
+=head3 Local Only
+
+The B<Gnome::GObject::Value> type of property I<local-only> is C<G_TYPE_BOOLEAN>.
+
+Whether the selected file(s should be limited to local file: URLs)
+
+Default value: True
+
+=comment #TP:0:preview-widget-active:
+=head3 Preview Widget Active
+
+The B<Gnome::GObject::Value> type of property I<preview-widget-active> is C<G_TYPE_BOOLEAN>.
+
+Whether the application supplied widget for custom previews should be shown.
+
+Default value: True
+
+=comment #TP:0:use-preview-label:
+=head3 Use Preview Label
+
+The B<Gnome::GObject::Value> type of property I<use-preview-label> is C<G_TYPE_BOOLEAN>.
+
+Whether to display a stock label with the name of the previewed file.
+
+Default value: True
+
+=comment #TP:0:select-multiple:
+=head3 Select Multiple
+
+The B<Gnome::GObject::Value> type of property I<select-multiple> is C<G_TYPE_BOOLEAN>.
+
+Whether to allow multiple files to be selected
+
+Default value: False
+
+=comment #TP:0:show-hidden:
+=head3 Show Hidden
+
+The B<Gnome::GObject::Value> type of property I<show-hidden> is C<G_TYPE_BOOLEAN>.
+
+Whether the hidden files and folders should be displayed
+
+Default value: False
 
 =comment #TP:0:do-overwrite-confirmation:
-=head3 do-overwrite-confirmation
+=head3 Do overwrite confirmation
 
 The B<Gnome::GObject::Value> type of property I<do-overwrite-confirmation> is C<G_TYPE_BOOLEAN>.
 
-Whether a file chooser in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode
-will present an overwrite confirmation dialog if the user
-selects a file name that already exists.
+Whether a file chooser in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode will present an overwrite confirmation dialog if the user selects a file name that already exists.
 
 Since: 2.8
 
+Default value: False
+
 =comment #TP:0:create-folders:
-=head3 create-folders
+=head3 Allow folder creation
 
 The B<Gnome::GObject::Value> type of property I<create-folders> is C<G_TYPE_BOOLEAN>.
 
-Whether a file chooser not in C<GTK_FILE_CHOOSER_ACTION_OPEN> mode
-will offer the user to create new folders.
+Whether a file chooser not in C<GTK_FILE_CHOOSER_ACTION_OPEN> mode will offer the user to create new folders.
 
 Since: 2.18
 
+Default value: True
+
+
+
+=begin comment
+=head2 Unsupported properties
+=end comment
+
+
+
+
+=head2 Not yet supported properties
+
+=comment #TP:0:preview-widget:
+=head3 Preview widget
+
+The B<Gnome::GObject::Value> type of property I<preview-widget> is C<G_TYPE_OBJECT>.
+
+Application supplied widget for custom previews.
+
+Widget type: GTK_TYPE_WIDGET
+Flags: GTK_PARAM_READWRITE
+
+=comment #TP:0:extra-widget:
+=head3 Extra widget
+
+The B<Gnome::GObject::Value> type of property I<extra-widget> is C<G_TYPE_OBJECT>.
+
+Application supplied widget for extra options.
+
+Widget type: GTK_TYPE_WIDGET
+Flags: GTK_PARAM_READWRITE
+
 =end pod
-
-
-
-
 
 
 

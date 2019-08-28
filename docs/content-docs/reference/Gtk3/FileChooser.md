@@ -972,8 +972,6 @@ This signal is emitted when the preview in a file chooser should be regenerated.
 
 Once you have installed a preview widget with `gtk_file_chooser_set_preview_widget()`, you should update it when this signal is emitted. You can use the functions `gtk_file_chooser_get_preview_filename()` or `gtk_file_chooser_get_preview_uri()` to get the name of the file to preview. Your widget may not be able to preview all kinds of files; your callback must call `gtk_file_chooser_set_preview_widget_active()` to inform the file chooser about whether the preview was generated successfully or not.
 
-Please see the example code in [Using a Preview Widget][gtkfilechooser-preview].
-
 See also: `gtk_file_chooser_set_preview_widget()`, `gtk_file_chooser_set_preview_widget_active()`, `gtk_file_chooser_set_use_preview_label()`, `gtk_file_chooser_get_preview_filename()`, `gtk_file_chooser_get_preview_uri()`.
 
     method handler (
@@ -985,7 +983,7 @@ See also: `gtk_file_chooser_set_preview_widget()`, `gtk_file_chooser_set_preview
 
 ### file-activated
 
-This signal is emitted when the user "activates" a file in the file chooser. This can happen by double-clicking on a file in the file list, or by pressing `Enter`.
+This signal is emitted when the user "activates" a file in the file chooser. This can happen by double-clicking on a file in the file list, or by pressing *Enter*.
 
 Normally you do not need to connect to this signal. It is used internally by *Gnome::Gtk3::FileChooserDialog* to know when to activate the default button in the dialog.
 
@@ -1002,35 +1000,18 @@ See also: `gtk_file_chooser_get_filename()`, `gtk_file_chooser_get_filenames()`,
 
 This signal gets emitted whenever it is appropriate to present a confirmation dialog when the user has selected a file name that already exists. The signal only gets emitted when the file chooser is in `GTK_FILE_CHOOSER_ACTION_SAVE` mode.
 
-Most applications just need to turn on the sig *do-overwrite-confirmation* property (or call the `gtk_file_chooser_set_do_overwrite_confirmation()` function), and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to the prop *confirm-overwrite* signal.
+Most applications just need to turn on the *do-overwrite-confirmation* property (or call the `gtk_file_chooser_set_do_overwrite_confirmation()` function), and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to the prop *confirm-overwrite* signal.
 
-A signal handler for this signal must return a *Gnome::Gtk3::FileChooserConfirmation* value, which indicates the action to take. If the handler determines that the user wants to select a different filename, it should return `GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN`. If it determines that the user is satisfied with his choice of file name, it should return `GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME`. On the other hand, if it determines that the stock confirmation dialog should be used, it should return `GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM`. The following example illustrates this.
+A signal handler for this signal must return a **GtkFileChooserConfirmation** value, which indicates the action to take. If the handler determines that the user wants to select a different filename, it should return `GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN`. If it determines that the user is satisfied with his choice of file name, it should return `GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME`. On the other hand, if it determines that the stock confirmation dialog should be used, it should return `GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM`.
 
-## Custom confirmation ## {*gtkfilechooser*-confirmation}
-
-|[<!-- language="C" --> static **Gnome::Gtk3::FileChooserConfirmation** confirm_overwrite_callback (**Gnome::Gtk3::FileChooser** *chooser, gpointer data) { char *uri;
-
-uri = gtk_file_chooser_get_uri (chooser);
-
-if (is_uri_read_only (uri)) { if (user_wants_to_replace_read_only_file (uri)) return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME; else return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN; } else return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog }
-
-...
-
-chooser = gtk_file_chooser_dialog_new (...);
-
-gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE); g_signal_connect (chooser, "confirm-overwrite", G_CALLBACK (confirm_overwrite_callback), NULL);
-
-if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT) save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
-
-gtk_widget_destroy (chooser); ]|
-
-Returns: a *Gnome::Gtk3::FileChooserConfirmation* value that indicates which action to take after emitting the signal.
+Returns: a **GtkFileChooserConfirmation** value that indicates which action to take after emitting the signal.
 
 Since: 2.8
 
     method handler (
       Gnome::GObject::Object :widget($chooser),
       :$user-option1, ..., :$user-optionN
+      --> GtkFileChooserConfirmation
     );
 
   * $chooser; the object which received the signal.
@@ -1045,10 +1026,66 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');
 
-Not yet supported properties
-----------------------------
+Supported properties
+--------------------
 
-### do-overwrite-confirmation
+### Action
+
+The **Gnome::GObject::Value** type of property *action* is `G_TYPE_ENUM`.
+
+The type of operation that the file selector is performing
+
+Default value: False Flags: GTK_PARAM_READWRITE
+
+### Filter
+
+The **Gnome::GObject::Value** type of property *filter* is `G_TYPE_OBJECT`.
+
+The current filter for selecting which files are displayed
+
+Widget type: GTK_TYPE_FILE_FILTER Flags: GTK_PARAM_READWRITE
+
+### Local Only
+
+The **Gnome::GObject::Value** type of property *local-only* is `G_TYPE_BOOLEAN`.
+
+Whether the selected file(s should be limited to local file: URLs)
+
+Default value: True
+
+### Preview Widget Active
+
+The **Gnome::GObject::Value** type of property *preview-widget-active* is `G_TYPE_BOOLEAN`.
+
+Whether the application supplied widget for custom previews should be shown.
+
+Default value: True
+
+### Use Preview Label
+
+The **Gnome::GObject::Value** type of property *use-preview-label* is `G_TYPE_BOOLEAN`.
+
+Whether to display a stock label with the name of the previewed file.
+
+Default value: True
+
+### Select Multiple
+
+The **Gnome::GObject::Value** type of property *select-multiple* is `G_TYPE_BOOLEAN`.
+
+Whether to allow multiple files to be selected
+
+Default value: False
+
+### Show Hidden
+
+The **Gnome::GObject::Value** type of property *show-hidden* is `G_TYPE_BOOLEAN`.
+
+Whether the hidden files and folders should be displayed
+
+Default value: False
+
+### Do overwrite confirmation
 
 The **Gnome::GObject::Value** type of property *do-overwrite-confirmation* is `G_TYPE_BOOLEAN`.
 
@@ -1056,11 +1093,34 @@ Whether a file chooser in `GTK_FILE_CHOOSER_ACTION_SAVE` mode will present an ov
 
 Since: 2.8
 
-### create-folders
+Default value: False
+
+### Allow folder creation
 
 The **Gnome::GObject::Value** type of property *create-folders* is `G_TYPE_BOOLEAN`.
 
 Whether a file chooser not in `GTK_FILE_CHOOSER_ACTION_OPEN` mode will offer the user to create new folders.
 
 Since: 2.18
+
+Default value: True
+
+Not yet supported properties
+----------------------------
+
+### Preview widget
+
+The **Gnome::GObject::Value** type of property *preview-widget* is `G_TYPE_OBJECT`.
+
+Application supplied widget for custom previews.
+
+Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
+
+### Extra widget
+
+The **Gnome::GObject::Value** type of property *extra-widget* is `G_TYPE_OBJECT`.
+
+Application supplied widget for extra options.
+
+Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
 
