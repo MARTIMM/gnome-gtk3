@@ -16,7 +16,7 @@ nav_menus:
       url: '/content-docs/design.html'
       right: true
     - title: "Reference"
-      url: "/content-docs/reference.html"
+      url: "/content-docs/reference-gtk3.html"
       right: true
 
   - nav_pages:
