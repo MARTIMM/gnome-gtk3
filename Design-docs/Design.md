@@ -61,6 +61,71 @@ Absence of codes means that a particular item is not tested.
 | GList    |           |              | N-GList
 | GSList   |           |              | N-GSList
 
+# Interface using modules
+
+The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
+
+```
+method _fallback ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+
+  # search this module first
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
+
+  # search in the interface module
+  if !$s {
+    my Gnome::Gtk3::FileChooser $fc .= new(:widget(self.native-gobject));
+    $s = $fc._interface($native-sub);
+  }
+
+  # any other parent class
+  $s = callsame unless ?$s;
+
+  # return result
+  $s;
+}
+```
+And the `_interface()` in **Gnome::Gtk3::FileChooser**;
+```
+method _interface ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+
+  self.set-class-name-of-sub('GtkFileChooser');
+
+  $s;
+}
+```
+
+# variable argument lists
+This is work of Elizabeth (lizmat)
+
+```
+# mail example variable lists
+# Vittore Scolari
+sub pera-int-f(Str $format, *@args) {
+    state $ptr = cglobal(Str, "printf", Pointer);
+    my $signature = Signature.new(
+        params => (
+            Parameter.new(type => Str),
+            |(@args.map: { Parameter.new(type => .WHAT) })
+        ),
+
+        returns => int32
+    );
+
+    my &f = nativecast($signature, $ptr);
+    f($format, |@args)
+}
+
+pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
+```
+
+
 <!--
 ```plantuml
 @startmindmap
