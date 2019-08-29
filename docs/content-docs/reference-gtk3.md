@@ -11,7 +11,7 @@ The modules are all generated from the GTK+ C source code and the documentation 
 Each entry in the sidebar shows the name of a module with two icons, one icon to show the state of documentation and one for the state of testing. When hoovering over the icons a tool tip appears with a message about its state.
 
 The documentation icons are
-* 📔 There is no documentation. Older modules were made by hand and did not have documentation. Now, with the help of a perl6 program C-source files are skimmed to get the subroutines and types along with there documentation. The entry will not be selectable.
+* 📔 There is no documentation. Older modules were made by hand and did not have documentation. Now, with the help of a perl6 program C-source files are skimmed to get the subroutines and types along with their documentation. The entry will not be active.
 * 🕮 Documentation generated. Documentation is only generated. Needs a rewrite to change c-code examples etc. Also subroutines are commented out when there are unsupported (for now) dependencies or that subroutines do not have any use in the perl6 environment.
 * 📖 Documentation rewritten. This means that the documentation is reread and changed to show a more perl6 attitude.
 * 🗸 Documentation has examples. There are examples in the documentation added.

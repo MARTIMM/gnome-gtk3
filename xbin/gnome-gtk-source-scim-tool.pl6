@@ -134,6 +134,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/^ ['GDK' || 'GTK' || 'GLIB'] '_AVAILABLE_IN_' .*?  \n //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
     $declaration ~~ s:g/ \s+ / /;
+    $declaration ~~ s/\s* 'G_GNUC_PURE' \s*//;
 #note "\n0 >> $declaration";
 
     my Str ( $return-type, $p6-return-type) = ( '', '');
@@ -234,32 +235,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     $output-file.IO.spurt( $sub, :append);
   }
-
-  $output-file.IO.spurt( Q:qq:to/EONYI/, :append);
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =begin comment
-
-    =head1 Not yet implemented methods
-
-    =head3 method  ( ... )
-
-    =end comment
-    =end pod
-
-    #-------------------------------------------------------------------------------
-    =begin pod
-    =begin comment
-
-    =head1 Not implemented methods
-
-    =head3 method  ( ... )
-
-    =end comment
-    =end pod
-
-    EONYI
 }
 
 #-------------------------------------------------------------------------------
@@ -409,15 +384,15 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
 #note "\nDeclaration: ", $declaration if $declaration ~~ m/ gtk_widget_path_iter_get_siblings /;
 
-  # process types from arg lists
+  # process types from arg lists, inconsequent use of gchar/char
   if $attr {
     $declaration ~~ m/ ^
       $<type> = [
         [
-          \s* 'const' \s* 'gchar' \s* '*' \s* 'const' \s* '*'* \s* ||
-          \s* 'const' \s* 'gchar' \s* '*'* \s* ||
-          \s* 'gchar' \s* '*'* \s* ||
-          \s* 'const' \s* <alnum>+ \s* '*'* \s* ||
+          \s* const \s* g?char \s* '*' \s* const \s* '*'* \s* ||
+          \s* const \s* g?char \s* '*'* \s* ||
+          \s* g?char \s* '*'* \s* ||
+          \s* const \s* <alnum>+ \s* '*'* \s* ||
           \s* <alnum>+  \s* '*'* \s* ||
           \s* '...'
         ]
@@ -430,28 +405,28 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     $declaration ~~ m/ ^
       $<type> = [
         [
-          'const' \s* 'gchar' \s* '*' \s* 'const' \s* '*'* \s* ||
-          'const' \s* 'gchar' \s* '*' \s* ||
-          'gchar' \s* '*'* \s* ||
-          'const' \s* '*' <alnum>+ \s* '*'* \s* ||
-          'const' \s* <alnum>+ \s* '*'* \s* ||
+          const \s* g?char \s* '*' \s* const \s* '*'* \s* ||
+          const \s* g?char \s* '*' \s* ||
+          g?char \s* '*'* \s* ||
+          const \s* '*' <alnum>+ \s* '*'* \s* ||
+          const \s* <alnum>+ \s* '*'* \s* ||
           <alnum>+ \s* '*'* \s*
         ]
       ] <alnum>+
     /;
   }
 
-  #[ ['const']? \s* <alnum>+ \s* \*? ]*
+  #[ [const]? \s* <alnum>+ \s* \*? ]*
 
   my Str $type = ~($<type> // '');
   $declaration ~~ s/ $type //;
 
   #drop the const
-  $type ~~ s:g/ 'const' //;
+  $type ~~ s:g/ const //;
 
   # convert a pointer char type
-  if $type ~~ m/ 'gchar' \s* '*' / {
-    $type ~~ s/ 'gchar' \s* '*' / Str /;
+  if $type ~~ m/ g?char \s* '*' / {
+    $type ~~ s/ g?char \s* '*' / Str /;
 
     # if there is still another pointer, make a CArray
     $type = "CArray[$type]" if $type ~~ m/ '*' /;
@@ -488,7 +463,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   my Str $p6-type = $type;
 
   # convert to native perl types
-  #$type ~~ s/ 'gchar' \s+ '*' /str/;
+  #$type ~~ s/ g?char \s+ '*' /str/;
 
   # process all types from GtkEnum and some
   # use bin/gather-enums.pl6 to create a list in
@@ -498,7 +473,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   }
 
   $type ~~ s:s/ gboolean || gint || gint32 /int32/;
-  $type ~~ s:s/ gchar || gint8 /int8/;
+  $type ~~ s:s/ g?char || gint8 /int8/;
   $type ~~ s:s/ gshort || gint16 /int16/;
   $type ~~ s:s/ glong || gint64 /int64/;
 
@@ -773,11 +748,11 @@ sub substitute-in-template ( Str $include-content ) {
 
     =head3 multi method new ( N-GObject :$widget! )
 
-    Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
+    Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
     =head3 multi method new ( Str :$build-id! )
 
-    Create an object using a native object from a builder. See also I<Gnome::GObject::Object>.
+    Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
     =end pod
 
@@ -1108,7 +1083,7 @@ note "item doc: ", $item-doc;
       =begin pod
       =head1 Signals
 
-      Register any signal as follows. See also I<Gnome::GObject::Object>.
+      Register any signal as follows. See also B<Gnome::GObject::Object>.
 
         my Bool $is-registered = $my-widget.register-signal (
           $handler-object, $handler-name, $signal-name,
@@ -1139,12 +1114,15 @@ sub get-properties ( Str:D $source-content is copy ) {
     $property-name = '';
 
     $source-content ~~ m/
-      $<property-doc> = [ '/**' \s+ '*' \s+
-      $lib-class-name ':' <-[:]> .*? '*/' \s+
-      .*? 'g_param_spec_' .*? ');' ]
+      $<property-doc> = [
+          [ '/**' \s+ '*' \s+ $lib-class-name ':' <-[:]> .*? '*/'
+        ]? \s+ 'g_object_interface_install_property'
+        .*? 'g_param_spec_' .*? ');'
+      ]
     /;
-    my Str $sdoc = ~($<property-doc> // '');
 
+    my Str $sdoc = ~($<property-doc> // '');
+#note "sdoc: ", ?$sdoc;
     last unless ?$sdoc;
 
     # remove from source
@@ -1153,13 +1131,15 @@ sub get-properties ( Str:D $source-content is copy ) {
     # skip deprecated properties
     next if $sdoc ~~ m/ '*' \s+ 'Deprecated:' /;
 
+    my Bool $has-doc = $sdoc ~~ m/ '/**' / ?? True !! False;
+
     unless ?$property-doc {
       $property-doc ~= Q:to/EODOC/;
         #-------------------------------------------------------------------------------
         =begin pod
         =head1 Properties
 
-        An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+        An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
           my Gnome::Gtk3::Label $label .= new(:empty);
           my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1180,27 +1160,113 @@ sub get-properties ( Str:D $source-content is copy ) {
     }
 #note "Property sdoc 1:\n", $sdoc;
 
-    $sdoc ~~ m/
-      ^^ \s+ '*' \s+ $lib-class-name ':'
-      $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
-    /;
-    $property-name = ~($<prop-name> // '');
-    $property-doc ~= "\n=comment #TP:0:$property-name:\n=head3 $property-name\n";
+    if $has-doc {
+      $sdoc ~~ m/
+        ^^ \s+ '*' \s+ $lib-class-name ':'
+        $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
+      /;
+      $property-name = ~($<prop-name> // '');
+    }
+# $property-name must come from call to param_spec
+
 #note "sdoc 2: $sdoc";
-    note "get property $property-name";
 
     # modify and cleanup
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //;
+    $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //
+      if $has-doc;
+
     $sdoc ~~ m/ ^^ \s+ 'g_param_spec_' $<prop-type> = [ <alnum>+ ] \s* '(' /;
-    my Str $prop-type = 'G_TYPE_' ~ ~($<prop-type> // '' ).uc;
+    my Str $spec-type = ~($<prop-type> // '' );
+    my Str $prop-type = 'G_TYPE_' ~ $spec-type.uc;
 
-    $sdoc = primary-doc-changes($sdoc);
-    $sdoc = cleanup-source-doc($sdoc);
+    my Str $prop-args = $sdoc;
+    my Str ( $prop-name, $prop-nick, $prop-blurp);
+    if $has-doc {
+#      $prop-name = $property-name;
+      $sdoc = primary-doc-changes($sdoc);
+      $sdoc = cleanup-source-doc($sdoc);
+    }
 
-#note "sdoc 3: ", $sdoc;
 
-    $property-doc ~=
-      "\nThe I<Gnome::GObject::Value> type of property I<$property-name> is C<$prop-type>.\n$sdoc\n";
+    $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
+    $prop-args ~~ s/ '));' //;
+
+    # process arguments
+    my @args = ();
+    for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
+      $arg ~~ s/ 'P_(' //;
+      $arg ~~ s/ ')' //;
+      $arg ~~ s:g/ \" \s+ \" //;
+      $arg ~~ s:g/ \" //;
+      @args.push($arg);
+    }
+#note "args: ", @args.join(', ');
+
+    $prop-name = @args[0];
+    $prop-nick = @args[1];
+    $prop-blurp = $has-doc ?? $sdoc !! @args[2];
+
+    my Str $flags;
+    my Str $gtype-string;
+    my Bool $prop-default;
+    given $spec-type {
+      when 'boolean' {
+        $prop-default = @args[3] ~~ 'TRUE' ?? True !! False;
+        $flags = @args[4];
+
+        $sdoc = Q:qq:to/EOP/;
+
+          $prop-blurp
+
+          Default value: $prop-default
+          EOP
+      }
+
+      when 'enum' {
+        $gtype-string = @args[3];
+        $prop-default = @args[4] ~~ 'TRUE' ?? True !! False;
+        $flags = @args[5];
+
+        $sdoc = Q:qq:to/EOP/;
+
+          $prop-blurp
+
+          Default value: $prop-default
+          Flags: $flags
+          EOP
+      }
+
+      when 'object' {
+        $gtype-string = @args[3];
+        $flags = @args[4];
+
+        $sdoc = Q:qq:to/EOP/;
+          $prop-blurp
+
+          Widget type: $gtype-string
+          Flags: $flags
+          EOP
+      }
+
+      when '' {
+      }
+
+    }
+
+
+
+#note "sdoc 3: ", $sdoc if $has-doc;
+
+    note "get property $prop-name";
+    $property-doc ~= Q:qq:to/EOHEADER/;
+
+      =comment #TP:0:$prop-name:
+      =head3 $prop-nick
+
+      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
+
+      $sdoc
+      EOHEADER
   }
 
   $property-doc ~= "=end pod\n" if ?$property-doc;
@@ -1417,7 +1483,7 @@ sub get-structures ( Str:D $include-content is copy ) {
       next if $line ~~ m/ '/**' /;
 
       if $line ~~ m/^ \s+ '*' \s+ $<struct-name> = [<alnum>+] ':' \s* $/ {
-        $struct-name = ~($<struct-name> // '');
+        $struct-name = 'N-' ~ ~($<struct-name> // '');
 
         # skip this structure if it is about this classes structure
         if $struct-name ~~ m/ \w+ Class $/ {
@@ -1554,7 +1620,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-# change any #GtkClass to I<Gnome::Gtk::Class> and Gdk likewise
+# change any #GtkClass to B<Gnome::Gtk::Class> and Gdk likewise
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -1587,7 +1653,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   # convert a few without leading octagon (#)
   $text ~~ s:g/ <!after '%' > ('Gtk' || 'Gdk') (\D <alnum>+)
-              /I<Gnome::$/[0]3::$/[1]>/;
+              /B<Gnome::$/[0]3::$/[1]>/;
 
   $text
 }

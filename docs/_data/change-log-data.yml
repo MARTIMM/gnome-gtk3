@@ -2,6 +2,10 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-08-27 0.18.3:
+    - Extend FileChooser in Gnome::Gtk3. Added also some tests and pod doc.
+    - Extend Type in Gnome::GObject and added doc and tests.
+
   - 2019-08-04 0.18.2:
     - Removed an accidentaly created module `ImageMenuItem` which was deprecated by Gtk since version 3.10.
     - Gnome::GObject::Object modified to better check for undefined values before casting.

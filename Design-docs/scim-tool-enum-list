@@ -105,4 +105,5 @@ GdkWindowWindowClass
 GdkModifierType
 GdkWindowTypeHint
 GConnectFlags
+typeToSub
 GParamFlags
