@@ -266,6 +266,22 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
+# Hook for modules using this interface. Same principle as _fallback but
+# does not need calsame.
+method _interface ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+
+  self.set-class-name-of-sub('GtkFileChooser');
+#  $s = callsame unless ?$s;
+
+  $s;
+}
+
+#-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_error_quark:
 =begin pod
 =head2 [gtk_file_chooser_] error_quark
