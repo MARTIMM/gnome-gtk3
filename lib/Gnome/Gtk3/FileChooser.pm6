@@ -24,15 +24,15 @@ I<Gnome::Gtk3::FileChooser> allows for shortcuts to various places in the filesy
 
 When the user is finished selecting files in a I<Gnome::Gtk3::FileChooser>, your program can get the selected names either as filenames or as URIs. For URIs, the normal escaping rules are applied if the URI contains non-ASCII characters. However, filenames are always returned in the character set specified by the `G_FILENAME_ENCODING` environment variable. Please see the GLib documentation for more details about this variable.
 
-This means that while you can pass the result of C<gtk_file_chooser_get_filename()> to C<open()> or C<fopen()>, you may not be able to directly set it as the text of a I<Gnome::Gtk3::Label> widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use C<g_filename_to_utf8()> to convert filenames into strings that can be passed to GTK+ widgets. B<Note: open() and fopen() are C functions which are not needed by the perl6 user>,
+This means that while you can pass the result of C<gtk_file_chooser_get_filename()> to C<open()> or C<fopen()>, you may not be able to directly set it as the text of a I<Gnome::Gtk3::Label> widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use C<g_filename_to_utf8()> to convert filenames into strings that can be passed to GTK+ widgets. B<Note: open() and fopen() are C functions which are not needed by the perl6 user. Furthermore, the Str perl6 type is already UTF-8>.
 
+=begin comment
 =head2 Adding a Preview Widget
 
 You can add a custom preview widget to a file chooser and then get notification about when the preview needs to be updated. To install a preview widget, use C<gtk_file_chooser_set_preview_widget()>. Then, connect to the prop I<update-preview> signal to get notified when you need to update the contents of the preview.
 
 Your callback should use C<gtk_file_chooser_get_preview_filename()> to see what needs previewing. Once you have generated the preview for the corresponding file, you must call C<gtk_file_chooser_set_preview_widget_active()> with a boolean flag (B<Int for perl6>) that indicates whether your callback could successfully generate a preview.
 
-=begin comment
 ## Example: Using a Preview Widget ## {I<gtkfilechooser>-preview}
 |[<!-- language="C" -->
 {
@@ -91,6 +91,12 @@ An example for adding extra widgets:
 =end comment
 
 If you want to set more than one extra widget in the file chooser, you can a container such as a I<Gnome::Gtk3::Box> or a I<Gnome::Gtk3::Grid> and include your widgets in it. Then, set the container as the whole extra widget.
+
+=head2 Known implementations
+
+=item GtkFileChooserButton
+=item GtkFileChooserDialog
+=item GtkFileChooserWidget
 
 =head2 See Also
 

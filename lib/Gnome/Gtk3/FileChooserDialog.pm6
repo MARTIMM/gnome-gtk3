@@ -19,78 +19,59 @@ Note that I<Gnome::Gtk3::FileChooserDialog> does not have any methods of its own
 
 If you want to integrate well with the platform you should use the I<Gnome::Gtk3::FileChooserNative> API, which will use a platform-specific dialog if available and fall back to B<Gnome::Gtk3::FileChooserDialog> otherwise.
 
-=begin comment
 =head2 Typical usage
 
-In the simplest of cases, you can the following code to use I<Gnome::Gtk3::FileChooserDialog> to select a file for opening:
+In the simplest of cases, you can use a I<Gnome::Gtk3::FileChooserDialog> to select a file for opening:
 
-|[
-B<Gnome::Gtk3::Widget> *dialog;
-B<Gnome::Gtk3::FileChooserAction> action = GTK_FILE_CHOOSER_ACTION_OPEN;
-gint res;
+  my Gnome::Gtk3::FileChooserDialog $dialog .= new(
+    :title("Open File"), :parent($top-window),
+    :action(GTK_FILE_CHOOSER_ACTION_OPEN),
+    :button-spec( [
+        "_Cancel", GTK_RESPONSE_CANCEL,
+        "_Open", GTK_RESPONSE_ACCEPT
+      ]
+    )
+  );
 
-dialog = gtk_file_chooser_dialog_new ("Open File",
-                                      parent_window,
-                                      action,
-                                      _("_Cancel"),
-                                      GTK_RESPONSE_CANCEL,
-                                      _("_Open"),
-                                      GTK_RESPONSE_ACCEPT,
-                                      NULL);
-
-res = gtk_dialog_run (GTK_DIALOG (dialog));
-if (res == GTK_RESPONSE_ACCEPT)
-  {
-    char *filename;
-    B<Gnome::Gtk3::FileChooser> *chooser = GTK_FILE_CHOOSER (dialog);
-    filename = gtk_file_chooser_get_filename (chooser);
-    open_file (filename);
-    g_free (filename);
+  my $response = $dialog.gtk-dialog-run;
+  $dialog.gtk-widget-hide;
+  if $response ~~ GTK_RESPONSE_ACCEPT {
+    my Str $file = $dialog.get-filename;
+    note "Opening file $file";
   }
 
-gtk_widget_destroy (dialog);
-]|
 
 To use a dialog for saving, you can use this:
 
-|[
-B<Gnome::Gtk3::Widget> *dialog;
-B<Gnome::Gtk3::FileChooser> *chooser;
-B<Gnome::Gtk3::FileChooserAction> action = GTK_FILE_CHOOSER_ACTION_SAVE;
-gint res;
+  my Gnome::Gtk3::FileChooserDialog $dialog .= new(
+    :title("Open File"), :parent($top-window),
+    :action(GTK_FILE_CHOOSER_ACTION_SAVE),
+    :button-spec( [
+        "_Cancel", GTK_RESPONSE_CANCEL,
+        "_Open", GTK_RESPONSE_ACCEPT
+      ]
+    )
+  );
 
-dialog = gtk_file_chooser_dialog_new ("Save File",
-                                      parent_window,
-                                      action,
-                                      _("_Cancel"),
-                                      GTK_RESPONSE_CANCEL,
-                                      _("_Save"),
-                                      GTK_RESPONSE_ACCEPT,
-                                      NULL);
-chooser = GTK_FILE_CHOOSER (dialog);
+  $dialog.set-do-overwrite-confirmation(1);
 
-gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-
-if (user_edited_a_new_document)
-  gtk_file_chooser_set_current_name (chooser,
-                                     _("Untitled document"));
-else
-  gtk_file_chooser_set_filename (chooser,
-                                 existing_filename);
-
-res = gtk_dialog_run (GTK_DIALOG (dialog));
-if (res == GTK_RESPONSE_ACCEPT)
-  {
-    char *filename;
-
-    filename = gtk_file_chooser_get_filename (chooser);
-    save_to_file (filename);
-    g_free (filename);
+  if $user-edited-a-new-document {
+    $dialog.set_current_name("Untitled document");
   }
 
-gtk_widget_destroy (dialog);
-]|
-=end comment
+  else {
+    $dialog.set_filename($existing-filename);
+  }
+
+  my $response = $dialog.gtk-dialog-run;
+  $dialog.gtk-widget-hide;
+  if $response ~~ GTK_RESPONSE_ACCEPT {
+    my Str $file = $dialog.get-filename;
+    note "Saving to file $file";
+  }
+
+  $dialog.gtk-widget-destroy;
+
 
 =head2 Setting up a file chooser dialog
 
@@ -106,52 +87,34 @@ There are various cases in which you may need to use a I<Gnome::Gtk3::FileChoose
 
 Note that old versions of the file chooser’s documentation suggested using C<gtk_file_chooser_set_current_folder()> in various situations, with the intention of letting the application suggest a reasonable default folder.  This is no longer considered to be a good policy, as now the file chooser is able to make good suggestions on its own. In general, you should only cause the file chooser to show a specific folder when it is appropriate to use C<gtk_file_chooser_set_filename()>, i.e. when you are doing a Save As command and you already have a file saved somewhere.
 
-=begin comment
 =head2 Response Codes
 
-I<Gnome::Gtk3::FileChooserDialog> inherits from I<Gnome::Gtk3::Dialog>, so buttons that go in its action area have response codes such as I<GTK_RESPONSE_ACCEPT> and I<GTK_RESPONSE_CANCEL>. For example, you could call C<gtk_file_chooser_dialog_new()> as follows:
+I<Gnome::Gtk3::FileChooserDialog> inherits from I<Gnome::Gtk3::Dialog>, so buttons that go in its action area have response codes such as I<GTK_RESPONSE_ACCEPT> and I<GTK_RESPONSE_CANCEL>. For example, you could create a dialog window as follows;
 
-|[
-B<Gnome::Gtk3::Widget> *dialog;
-B<Gnome::Gtk3::FileChooserAction> action = GTK_FILE_CHOOSER_ACTION_OPEN;
+  my Gnome::Gtk3::FileChooserDialog $dialog .= new(
+    :title("Open File"), :parent($top-window),
+    :action(GTK_FILE_CHOOSER_ACTION_OPEN),
+    :button-spec( [
+        "_Cancel", GTK_RESPONSE_CANCEL,
+        "_Open", GTK_RESPONSE_ACCEPT
+      ]
+    )
+  );
 
-dialog = gtk_file_chooser_dialog_new ("Open File",
-                                      parent_window,
-                                      action,
-                                      _("_Cancel"),
-                                      GTK_RESPONSE_CANCEL,
-                                      _("_Open"),
-                                      GTK_RESPONSE_ACCEPT,
-                                      NULL);
-]|
-
-This will create buttons for “Cancel” and “Open” that use stock
-response identifiers from I<Gnome::Gtk3::ResponseType>.  For most dialog
-boxes you can use your own custom response codes rather than the
-ones in I<Gnome::Gtk3::ResponseType>, but I<Gnome::Gtk3::FileChooserDialog> assumes that
-its “accept”-type action, e.g. an “Open” or “Save” button,
-will have one of the following response codes:
+This will create buttons for “Cancel” and “Open” that use stock response identifiers from I<ResponseType> from B<Gnome::Gtk3::Dialog>. For most dialog boxes you can use your own custom response codes rather than the ones in I<ResponseType>, but I<Gnome::Gtk3::FileChooserDialog> assumes that its “accept”-type action, e.g. an “Open” or “Save” button, will have one of the following response codes:
 
 - I<GTK_RESPONSE_ACCEPT>
 - I<GTK_RESPONSE_OK>
 - I<GTK_RESPONSE_YES>
 - I<GTK_RESPONSE_APPLY>
 
-This is because I<Gnome::Gtk3::FileChooserDialog> must intercept responses
-and switch to folders if appropriate, rather than letting the
-dialog terminate — the implementation uses these known
-response codes to know which responses can be blocked if
-appropriate.
+This is because I<Gnome::Gtk3::FileChooserDialog> must intercept responses and switch to folders if appropriate, rather than letting the dialog terminate — the implementation uses these known response codes to know which responses can be blocked if appropriate.
 
-To summarize, make sure you use a
-[stock response code][gtkfilechooserdialog-responses]
-when you use I<Gnome::Gtk3::FileChooserDialog> to ensure proper operation.
-=end comment
-
+To summarize, make sure you use a I<ResponseType> when you use I<Gnome::Gtk3::FileChooserDialog> to ensure proper operation.
 
 =head2 See Also
 
-I<Gnome::Gtk3::FileChooser>, I<Gnome::Gtk3::Dialog>, B<Gnome::Gtk3::FileChooserNative>
+B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
 
 =head1 Synopsis
 =head2 Declaration
@@ -159,7 +122,15 @@ I<Gnome::Gtk3::FileChooser>, I<Gnome::Gtk3::Dialog>, B<Gnome::Gtk3::FileChooserN
   unit class Gnome::Gtk3::FileChooserDialog;
   also is Gnome::Gtk3::Dialog;
 
+=head2 Implemented Interfaces
+
+=comment item AtkImplementorIface
+=item GtkBuildable
+=item GtkFileChooser
+
 =head2 Example
+
+An example using builder
 
   use Gnome::Gtk3::Dialog;
   use Gnome::Gtk3::FileChooserDialog;
@@ -168,7 +139,7 @@ I<Gnome::Gtk3::FileChooser>, I<Gnome::Gtk3::Dialog>, B<Gnome::Gtk3::FileChooserN
 
   # show the dialog
   my Int $response = $fchoose.gtk-dialog-run;
-  if $response == GTK_RESPONSE_ACCEPT {
+  if $response ~~ GTK_RESPONSE_ACCEPT {
     ...
   }
 
@@ -193,12 +164,18 @@ use Gnome::Gtk3::FileChooser;
 unit class Gnome::Gtk3::FileChooserDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
 
+=head3 multi method new ( GtkFileChooserAction :$action! )
+
+  multi method new (
+    GtkFileChooserAction :$action!, Str :$title, N-GObject $parent,
+    Array :$buttons-spec
+  )
+
+Create an object using a native object from elsewhere. See also I<gtk_file_chooser_dialog_new()> below.
 
 =head3 multi method new ( N-GObject :$widget! )
 
@@ -210,17 +187,11 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:new(:):
+#TM:4:new(:action):
 #TM:0:new(:widget):
-#TM:0:new(:build-id):
+#TM:4:new(:build-id):
 
 submethod BUILD ( *%options ) {
-
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  #$signals-added = self.add-signal-types( $?CLASS.^name,
-  #  # ... :type<signame>
-  #) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::FileChooserDialog';
@@ -228,14 +199,16 @@ submethod BUILD ( *%options ) {
   # process all named arguments
   if %options<action>.defined {
     my @buttons = %options<button-spec>;
-    my N-GObject $parent = %options<parent> ~~ N-GObject
-                        ?? %options<parent>
-                        !! %options<parent>();
+    my N-GObject $parent = N-GObject;
+    my Str $title = %options<title> // Str;
+    if ? %options<parent> {
+      $parent = %options<parent> ~~ N-GObject
+                ?? %options<parent>
+                !! %options<parent>();
+    }
 
     self.native-gobject(
-      gtk_file_chooser_dialog_new(
-        %options<title>, $parent, %options<action>, @buttons
-      )
+      gtk_file_chooser_dialog_new( $title, $parent, %options<action>, @buttons)
     );
   }
 
@@ -277,34 +250,12 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-# mail example variable lists
-# Vittore Scolari
-sub pera-int-f(Str $format, *@args) {
-    state $ptr = cglobal(Str, "printf", Pointer);
-    my $signature = Signature.new(
-        params => (
-            Parameter.new(type => Str),
-            |(@args.map: { Parameter.new(type => .WHAT) })
-        ),
-
-        returns => int32
-    );
-
-    my &f = nativecast($signature, $ptr);
-    f($format, |@args)
-}
-
-pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
-}}
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_chooser_dialog_new:
+#TM:4:gtk_file_chooser_dialog_new:
 =begin pod
 =head2 gtk_file_chooser_dialog_new
 
-Creates a new file chooser dialog. This function is analogous to C<gtk_dialog_new_with_buttons()>.
+Creates a new file chooser dialog. This function is analogous to C<gtk_dialog_new_with_buttons()>. This method is called when creating the object using I<.new(:action(...), ...)>.
 
 Returns: a new native file chooser dialog.
 
@@ -322,7 +273,7 @@ Since: 2.4
 
 =item *@buttons-spec is a list button specifications. The list has an even number of members of which;
 =item2 Str $button-label to go on the button.
-=item2 GtkResponseType $response-code to return for the button.
+=item2 $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
 
 =end pod
 
@@ -341,7 +292,7 @@ sub gtk_file_chooser_dialog_new (
   # check the button list parameters
   my CArray $native-bspec .= new;
   if @buttons.elems %% 2 {
-    for @buttons -> Str $button-text, GtkResponseType $response-code {
+    for @buttons -> Str $button-text, Int $response-code {
       # values not used here, just a check on type
       @parameterList.push(Parameter.new(type => Str));
       @parameterList.push(Parameter.new(type => int32));
@@ -358,13 +309,12 @@ sub gtk_file_chooser_dialog_new (
     :returns(N-GObject)
   );
 
-note "S: ", $signature;
 
   # get a pointer to the sub, then cast it to a sub with the proper
   # signature. after that te sub can be called, returning a value.
   state $ptr = cglobal( &gtk-lib, 'gtk_file_chooser_dialog_new', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
-note "F: ", $f.perl;
+
   $f( $title, $parent, $action, |@buttons, Pointer)
 }
 
