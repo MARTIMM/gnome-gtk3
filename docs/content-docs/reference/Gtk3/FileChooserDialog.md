@@ -127,9 +127,9 @@ Declaration
 Implemented Interfaces
 ----------------------
 
-  * GtkBuildable
+  * Gnome::Gtk3::Buildable
 
-  * GtkFileChooser
+  * [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 Example
 -------

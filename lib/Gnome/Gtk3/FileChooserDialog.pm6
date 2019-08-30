@@ -124,9 +124,9 @@ B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
 
 =head2 Implemented Interfaces
 
-=comment item AtkImplementorIface
-=item GtkBuildable
-=item GtkFileChooser
+=comment item Gnome::Atk::ImplementorIface
+=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 =head2 Example
 

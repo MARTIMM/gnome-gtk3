@@ -94,9 +94,9 @@ If you want to set more than one extra widget in the file chooser, you can a con
 
 =head2 Known implementations
 
-=item GtkFileChooserButton
-=item GtkFileChooserDialog
-=item GtkFileChooserWidget
+=item Gnome::Gtk3::FileChooserButton
+=item [Gnome::Gtk3::FileChooserDialog](FileChooserDialog.html)
+=item Gnome::Gtk3::FileChooserWidget
 
 =head2 See Also
 

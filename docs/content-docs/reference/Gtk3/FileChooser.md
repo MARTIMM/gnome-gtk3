@@ -38,11 +38,11 @@ If you want to set more than one extra widget in the file chooser, you can a con
 Known implementations
 ---------------------
 
-  * GtkFileChooserButton
+  * Gnome::Gtk3::FileChooserButton
 
-  * GtkFileChooserDialog
+  * [Gnome::Gtk3::FileChooserDialog](FileChooserDialog.html)
 
-  * GtkFileChooserWidget
+  * Gnome::Gtk3::FileChooserWidget
 
 See Also
 --------
