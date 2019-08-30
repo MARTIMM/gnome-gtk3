@@ -103,10 +103,10 @@ I<Gnome::Gtk3::FileChooserDialog> inherits from I<Gnome::Gtk3::Dialog>, so butto
 
 This will create buttons for “Cancel” and “Open” that use stock response identifiers from I<ResponseType> from B<Gnome::Gtk3::Dialog>. For most dialog boxes you can use your own custom response codes rather than the ones in I<ResponseType>, but I<Gnome::Gtk3::FileChooserDialog> assumes that its “accept”-type action, e.g. an “Open” or “Save” button, will have one of the following response codes:
 
-- I<GTK_RESPONSE_ACCEPT>
-- I<GTK_RESPONSE_OK>
-- I<GTK_RESPONSE_YES>
-- I<GTK_RESPONSE_APPLY>
+=item I<GTK_RESPONSE_ACCEPT>
+=item I<GTK_RESPONSE_OK>
+=item I<GTK_RESPONSE_YES>
+=item I<GTK_RESPONSE_APPLY>
 
 This is because I<Gnome::Gtk3::FileChooserDialog> must intercept responses and switch to folders if appropriate, rather than letting the dialog terminate — the implementation uses these known response codes to know which responses can be blocked if appropriate.
 
