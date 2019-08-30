@@ -116,6 +116,13 @@ This is because *Gnome::Gtk3::FileChooserDialog* must intercept responses and sw
 
 To summarize, make sure you use a *ResponseType* when you use *Gnome::Gtk3::FileChooserDialog* to ensure proper operation.
 
+Implemented Interfaces
+----------------------
+
+  * Gnome::Gtk3::Buildable
+
+  * [Gnome::Gtk3::FileChooser](FileChooser.html)
+
 See Also
 --------
 
@@ -129,13 +136,6 @@ Declaration
 
     unit class Gnome::Gtk3::FileChooserDialog;
     also is Gnome::Gtk3::Dialog;
-
-Implemented Interfaces
-----------------------
-
-  * Gnome::Gtk3::Buildable
-
-  * [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 Example
 -------

@@ -26,6 +26,15 @@ Other style classes that are commonly used with `Gnome::Gtk3::Button` include .s
 
 Button-like widgets like `Gnome::Gtk3::ToggleButton`, `Gnome::Gtk3::MenuButton`, `Gnome::Gtk3::VolumeButton`, `Gnome::Gtk3::LockButton`, `Gnome::Gtk3::ColorButton`, `Gnome::Gtk3::FontButton` or `Gnome::Gtk3::FileChooserButton` use style classes such as .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate themselves from a plain `Gnome::Gtk3::Button`.
 
+Implemented Interfaces
+----------------------
+
+  * Gnome::Gtk3::Buildable
+
+  * Gnome::Gtk3::Actionable
+
+  * Gnome::Gtk3::Activatable
+
 Synopsis
 ========
 

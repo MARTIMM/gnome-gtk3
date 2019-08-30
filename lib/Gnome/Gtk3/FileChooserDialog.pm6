@@ -112,6 +112,12 @@ This is because I<Gnome::Gtk3::FileChooserDialog> must intercept responses and s
 
 To summarize, make sure you use a I<ResponseType> when you use I<Gnome::Gtk3::FileChooserDialog> to ensure proper operation.
 
+=head2 Implemented Interfaces
+
+=comment item Gnome::Atk::ImplementorIface
+=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::FileChooser](FileChooser.html)
+
 =head2 See Also
 
 B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
@@ -121,12 +127,6 @@ B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
 
   unit class Gnome::Gtk3::FileChooserDialog;
   also is Gnome::Gtk3::Dialog;
-
-=head2 Implemented Interfaces
-
-=comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
-=item [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 =head2 Example
 

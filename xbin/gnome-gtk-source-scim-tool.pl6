@@ -686,6 +686,11 @@ sub substitute-in-template ( Str $include-content ) {
 
     MODULE-DESCRIPTION
 
+    =comment head2 Implemented Interfaces
+    =comment head2 Known implementations
+    =comment item
+    =comment item []()
+
     =head2 See Also
 
     MODULE-SEEALSO
@@ -696,7 +701,7 @@ sub substitute-in-template ( Str $include-content ) {
       unit class Gnome::LIBRARYMODULE;
       ALSO-IS-LIBRARY-PARENT
 
-    =head2 Example
+    =comment head2 Example
 
     =end pod
     #-------------------------------------------------------------------------------
