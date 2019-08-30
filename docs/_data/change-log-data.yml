@@ -4,7 +4,8 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
   - 2019-08-29 0.18.4:
     - Experimenting with variable argument list in module FileChooserDialog to get buttons on the dialog.
-    
+    - Extended, documented and tested FileChooserDialog.
+
   - 2019-08-27 0.18.3:
     - Extend FileChooser in Gnome::Gtk3. Added also some tests and pod doc.
     - Extend Type in Gnome::GObject and added doc and tests.
