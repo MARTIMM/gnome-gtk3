@@ -110,6 +110,8 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. That process is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
 
+* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have a method `_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned example this is **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
+
 * All classes deriving from **Gnome::GObject::Object** know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**.
 
 * The same classes also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also **Gnome::Gtk3::Glade**. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
