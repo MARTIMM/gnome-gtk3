@@ -24,7 +24,8 @@
     doc: 1
   - title: "FileChooserDialog"
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
-    doc: 0
+    doc: 2
+    test: 2
 
 - bar_title: "Containers"
   bar_menu:
