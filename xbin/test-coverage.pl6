@@ -315,6 +315,7 @@ sub sub-coverage( Str:D $new-content --> List ) {
     $sub-cover{$name} = $state;
   }
 
-  # return total nbr of subs/methods, nbr tested and data
-  return ( $sub-cover.elems, $subs-tested, $sub-cover);
+  # return total nbr of subs/methods, nbr tested and data, nbr of tested subs
+  # can be larger when multi's are seperately tested.
+  return ( max( $sub-cover.elems, $subs-tested), $subs-tested, $sub-cover);
 }
