@@ -311,7 +311,7 @@ sub gtk_file_chooser_dialog_new (
 
 
   # get a pointer to the sub, then cast it to a sub with the proper
-  # signature. after that te sub can be called, returning a value.
+  # signature. after that, the sub can be called, returning a value.
   state $ptr = cglobal( &gtk-lib, 'gtk_file_chooser_dialog_new', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
