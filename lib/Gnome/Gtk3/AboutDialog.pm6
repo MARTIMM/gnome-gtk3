@@ -1,4 +1,4 @@
-#TL:0:Gnome::Gtk3::AboutDialog:
+#TL:1:Gnome::Gtk3::AboutDialog:
 
 use v6;
 #-------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:new(:empty):
+#TM:1:new(:empty):
 #TM:0:new(:widget):
 #TM:0:new(:build-id):
 
