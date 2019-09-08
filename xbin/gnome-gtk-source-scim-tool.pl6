@@ -1103,7 +1103,7 @@ note "IDoc: $item-count, ", $idoc;
   if ?$signal-doc {
 
     $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
-    
+
       #-------------------------------------------------------------------------------
       =begin pod
       =head1 Signals
@@ -1111,6 +1111,7 @@ note "IDoc: $item-count, ", $idoc;
       There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
 
       =head2 First method
+
       The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
         # handler method
@@ -1146,6 +1147,8 @@ note "IDoc: $item-count, ", $idoc;
 
       Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
+      =head2 Supported methods
+      
       EOSIGDOC
 
     # create the class string to substitute in the source
