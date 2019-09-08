@@ -74,17 +74,17 @@ sub MAIN ( *@modules ) {
 
     %test-coverage{$path}<signals> = {
       :$sigs-total, :$sigs-tested, :coverage($sig-coverage.fmt("%.2f")),
-      :subs-data($sig-hash)
+      :sigs-data($sig-hash)
     } if $sigs-total;
 
     %test-coverage{$path}<properties> = {
       :$props-total, :$props-tested, :coverage($prop-coverage.fmt("%.2f")),
-      :subs-data($prop-hash)
+      :props-data($prop-hash)
     } if $props-total;
 
     %test-coverage{$path}<types> = {
       :$types-total, :$types-tested, :coverage($type-coverage.fmt("%.2f")),
-      :subs-data($type-hash)
+      :types-data($type-hash)
     } if $types-total;
   }
 
