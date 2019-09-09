@@ -21,16 +21,25 @@ my Gnome::Gtk3::Main $main .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
 
+  diag "new(:label)";
   my Gnome::Gtk3::Button $button1 .= new(:label('abc def'));
   isa-ok $button1, Gnome::Gtk3::Button;
   isa-ok $button1, Gnome::Gtk3::Bin;
+
+  diag "new(:widget)";
+  diag "gtk_button_new_with_label()";
+  $button1 .= new(
+    :widget($button1.gtk_button_new_with_label('pqr'))
+  );
+  isa-ok $button1, Gnome::Gtk3::Button;
 
   throws-like
     { $button1.get-label('xyz'); },
     X::Gnome, 'wrong arguments to get-label()',
     :message(/:s Calling gtk_button_get_label .*? will never work /);
 
-  is $button1.get-label, 'abc def', 'text on button ok';
+  diag "gtk_button_set_label() / gtk_button_get_label()";
+  is $button1.get-label, 'pqr', 'text on button ok';
   $button1.set-label('xyz');
   is $button1.get-label, 'xyz', 'text on button changed ok';
 }
@@ -45,6 +54,7 @@ subtest 'Button as container', {
   is $l.get-text, 'xyz', 'text label from button 1';
 
   my Gnome::Gtk3::Label $label .= new(:label('pqr'));
+  diag "new(:empty)";
   my Gnome::Gtk3::Button $button2 .= new(:empty);
   $button2.gtk-container-add($label);
 
@@ -67,6 +77,7 @@ class BH {
     isa-ok $button, Gnome::Gtk3::Button;
     is $user-data[0], 'Hello', 'data 0 ok';
     is $user-data[1], 'World', 'data 1 ok';
+    is $user-data[2], '!', 'data 2 ok';
   }
 }
 
@@ -80,8 +91,11 @@ subtest 'Button connect and emit signal', {
   $data[0] = 'Hello';
   $data[1] = 'World';
 
-  my BH $x .= new(:empty);
+  my BH $x .= new;
   $button.register-signal( $x, 'click-handler', 'clicked', :user-data($data));
+
+  # add after registration
+  $data[2] = '!';
 
   my Promise $p = start {
     # wait for loop to start
