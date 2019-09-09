@@ -618,7 +618,7 @@ Second method
 
 Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
-Supported methods
+Supported signals
 -----------------
 
 activate-link

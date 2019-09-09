@@ -1271,7 +1271,7 @@ Where
 
 Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
-=head2 Supported methods
+=head2 Supported signals
 
 =comment #TS:0:activate-link:
 =head2 activate-link
