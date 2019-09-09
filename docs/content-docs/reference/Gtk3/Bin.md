@@ -1,7 +1,7 @@
-TITLE
-=====
-
 Gnome::Gtk3::Bin
+================
+
+A container with just one child
 
 Description
 ===========

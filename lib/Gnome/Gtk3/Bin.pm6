@@ -4,7 +4,9 @@ use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::Bin
+=head1 Gnome::Gtk3::Bin
+
+A container with just one child
 
 =head1 Description
 
