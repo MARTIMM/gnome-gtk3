@@ -748,6 +748,7 @@ sub substitute-in-template (
 
   if $do-all or $main {
     $template-text = Q:q:to/EOTEMPLATE/;
+      #-------------------------------------------------------------------------------
       BOOL-SIGNALS-ADDED
       =begin pod
       =head1 Methods
@@ -1114,6 +1115,8 @@ sub get-signals ( Str:D $source-content is copy ) {
     }
   }
 
+  my Str $bool-signals-added = '';
+  my Str $build-add-signals = '';
   if ?$signal-doc {
 
     $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
@@ -1160,13 +1163,12 @@ sub get-signals ( Str:D $source-content is copy ) {
       $sig-class-str ~= '>, ';
     }
 
-    my Str $bool-signals-added = Q:q:to/EOBOOL/;
-      #-------------------------------------------------------------------------------
+    $bool-signals-added = Q:q:to/EOBOOL/;
       my Bool $signals-added = False;
       #-------------------------------------------------------------------------------
       EOBOOL
 
-    my Str $build-add-signals = Q:qq:to/EOBUILD/;
+    $build-add-signals = Q:qq:to/EOBUILD/;
         # add signal info in the form of group\<signal-name>.
         # groups are e.g. signal, event, nativeobject etc
         \$signals-added = self.add-signal-types( \$?CLASS.^name,
@@ -1174,20 +1176,19 @@ sub get-signals ( Str:D $source-content is copy ) {
         ) unless \$signals-added;
       EOBUILD
 
-
-    # load the module for substitutions
-    my Str $module = $output-file.IO.slurp;
-
-    # substitute
-    $module ~~ s/ 'BOOL-SIGNALS-ADDED' /$bool-signals-added/;
-    $module ~~ s/ 'BUILD-ADD-SIGNALS' /$build-add-signals/;
-
-    # rewrite
-    $output-file.IO.spurt($module);
-
     # and append signal data to result module
     $output-file.IO.spurt( $signal-doc, :append);
   }
+
+  # load the module for substitutions
+  my Str $module = $output-file.IO.slurp;
+
+  # substitute
+  $module ~~ s/ 'BOOL-SIGNALS-ADDED' /$bool-signals-added/;
+  $module ~~ s/ 'BUILD-ADD-SIGNALS' /$build-add-signals/;
+
+  # rewrite
+  $output-file.IO.spurt($module);
 }
 
 #-------------------------------------------------------------------------------
