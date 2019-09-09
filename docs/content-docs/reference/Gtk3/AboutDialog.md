@@ -1,14 +1,9 @@
-TITLE
-=====
-
 Gnome::Gtk3::AboutDialog
-
-![](images/aboutdialog.png)
-
-SUBTITLE
-========
+========================
 
 Display information about an application
+
+![](images/aboutdialog.png)
 
 Description
 ===========

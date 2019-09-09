@@ -4,11 +4,11 @@ use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::AboutDialog
+=head1 Gnome::Gtk3::AboutDialog
+
+Display information about an application
 
 ![](images/aboutdialog.png)
-
-=SUBTITLE Display information about an application
 
 =head1 Description
 
@@ -27,7 +27,6 @@ Note that GTK+ sets a default title of `_("About %s")` on the dialog window (whe
 It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome::Gtk3::Dialog>, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
 
 =head2 Implemented Interfaces
-
 =item Gnome::Gtk3::Buildable
 =comment item AtkImplementorIface
 
