@@ -681,9 +681,11 @@ sub substitute-in-template (
     #-------------------------------------------------------------------------------
     =begin pod
 
-    =TITLE Gnome::LIBRARYMODULE
+    =head1 Gnome::LIBRARYMODULE
 
-    =SUBTITLE MODULE-SHORTDESCRIPTION
+    MODULE-SHORTDESCRIPTION
+
+    =comment ![](images/)
 
     =head1 Description
 
@@ -742,7 +744,6 @@ sub substitute-in-template (
 
   get-vartypes($include-content) if $do-all or $types;
 
-note "DA,M: $do-all, $main";
   if $do-all or $main {
     $template-text = Q:q:to/EOTEMPLATE/;
       BOOL-SIGNALS-ADDED
@@ -763,6 +764,7 @@ note "DA,M: $do-all, $main";
 
       =end pod
 
+      #TM:0:new():inheriting
       #TM:0:new(:empty):
       #TM:0:new(:widget):
       #TM:0:new(:build-id):
@@ -900,7 +902,8 @@ sub get-section ( Str:D $source-content --> List ) {
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Title:' [.*?] \n //;
   $section-doc = cleanup-source-doc($section-doc);
-  $section-doc ~~ s:g:i/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
+  $section-doc ~~ s:i/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
+  $section-doc ~~ s:g:i/ ^^ '#' \s+ /\n=head2 /;
 #note "doc 2: ", $section-doc;
 
   ( primary-doc-changes($section-doc),
@@ -1148,7 +1151,7 @@ note "IDoc: $item-count, ", $idoc;
       Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
       =head2 Supported methods
-      
+
       EOSIGDOC
 
     # create the class string to substitute in the source
@@ -1759,7 +1762,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /sig I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /sig B\<$oct\>/;
   }
 
   loop {
@@ -1778,7 +1781,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     last unless ?$oct;
 
     $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $text ~~ s/ '#' (<alnum>+) /I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) /B\<$oct\>/;
   }
 
   # convert a few without leading octagon (#)
@@ -1852,46 +1855,3 @@ sub adjust-image-path ( Str:D $text is copy --> Str ) {
 
   $text
 }
-
-#`[[
-#-------------------------------------------------------------------------------
-sub get-podding-items ( Str:D $text is copy --> List ) {
-
-  my Array $items-src-doc = [];
-
-  # get arguments for this signal handler
-  loop {
-    $text ~~ m/
-      ^^ \s+ '*' \s+ '@'
-      $<item-name> = [<alnum>+] ':'
-      \s* $<item-doc> = [ .*? ]
-      $$
-    /;
-
-    my Str $item-name = ~($<item-name> // '');
-    my Str $item-doc = ~($<item-doc> // '');
-
-#note "doc '$doc'";
-#note "item doc: ", $item;
-    last unless ?$item-name;
-
-    # remove from string
-    $text ~~ s/ ^^ \s+ '*' \s+ '@' $item-name ':' \s* $item-doc \n //;
-#    $text ~~ s/ '*' \s+ '@' $item-name ':' $item-doc \n //;
-
-#note "item doc 0: ", $item;
-    $item-doc = podding-class($item-doc);
-#`{{
-    $item-doc ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    $oct ~~ s/^ ('Gtk' || 'Gdk') (<alnum>+) /Gnome::$/[0]3::$/[1]/;
-    $item-doc ~~ s/ '#' (<alnum>+) /C\<$oct>/;
-}}
-#note "item doc 1: ", $item-doc;
-
-    $items-src-doc.push: %(:$item-name, :$item-doc);
-  }
-
-  ( $text, $items-src-doc)
-}
-]]
