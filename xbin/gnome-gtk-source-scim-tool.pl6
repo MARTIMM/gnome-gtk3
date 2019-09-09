@@ -1252,6 +1252,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
     unless ?$property-doc {
       $property-doc ~= Q:to/EODOC/;
+
         #-------------------------------------------------------------------------------
         =begin pod
         =head1 Properties
@@ -1264,7 +1265,8 @@ sub get-properties ( Str:D $source-content is copy ) {
           $gv.g-value-set-string('my text label');
 
         =head2 Supported properties
-      EODOC
+        EODOC
+        
     }
 #note "Property sdoc 1:\n", $sdoc;
 
