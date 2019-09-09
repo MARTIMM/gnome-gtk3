@@ -294,7 +294,11 @@ sub sub-coverage( Str:D $new-content --> List ) {
   }
 
   # search for special notes like '#TM:sts:sub-name'
-  $content ~~ m:g/^^ '#TM:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/
+    ^^ '#TM:'
+    [<[+-]> || \d]
+    ':' [<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?
+  /;
   $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
@@ -302,7 +306,7 @@ sub sub-coverage( Str:D $new-content --> List ) {
       '#TM:'
       $<state> = ([<[+-]> || \d])
       ':'
-      $<name> = ([<alnum> || '-']+)
+      $<name> = ([<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?)
     /;
 
     my Str $name = ~$/<name>;
