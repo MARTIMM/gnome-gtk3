@@ -237,13 +237,14 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
 #  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
 
-  # search in the interface module
+  # search in the interface modules
   if !$s {
     my Gnome::Gtk3::FileChooser $fc .= new(:widget(self.native-gobject));
     $s = $fc._interface($native-sub);
   }
 
   # any other parent class
+  self.set-class-name-of-sub('GtkFileChooserDialog');
   $s = callsame unless ?$s;
 
   # return result
