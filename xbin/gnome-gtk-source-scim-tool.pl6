@@ -58,7 +58,7 @@ sub MAIN (
     substitute-in-template( $do-all, $main, $types, $include-content);
 
     get-subroutines( $include-content, $source-content) if $do-all or $sub;
-    get-deprecated-subs($include-content) if $do-all or $dep;
+#    get-deprecated-subs($include-content) if $do-all or $dep;
     get-signals($source-content) if $do-all or $sig;
     get-properties($source-content) if $do-all or $prop;
 
@@ -238,6 +238,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   }
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 sub get-deprecated-subs( Str:D $include-content ) {
 
@@ -351,6 +352,7 @@ sub get-deprecated-subs( Str:D $include-content ) {
 
   $output-file.IO.spurt( $deprecated-subs, :append);
 }
+}}
 
 #-------------------------------------------------------------------------------
 sub parent-class ( Str:D $include-content --> List ) {
@@ -926,16 +928,13 @@ sub get-signals ( Str:D $source-content is copy ) {
     $source-content ~~ m/
       $<signal-doc> = [ '/**' \s+ '*' \s+ $lib-class-name '::'  .*? '*/' ]
     /;
+
+    # save doc and remove from source but stop if none left
     my Str $sdoc = ~($<signal-doc> // '');
-#note "SDoc: $sdoc";
+#note "SDoc: ", ?$sdoc;
 
     last unless ?$sdoc;
-
-    # remove from source
     $source-content ~~ s/$sdoc//;
-
-
-#note "Signal doc:\n", $sdoc;
 
     # get lib class name and remove line from source
     $sdoc ~~ m/
@@ -944,25 +943,37 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = ~($<signal-name> // '');
     $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
 
-    $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
-    note "get signal $signal-name";
-
     # get some more info from the function call
     $source-content ~~ m/
       'g_signal_new' \s* '('
-      $<signal-args> = [ .*? '"' $signal-name '"' .*? ]
+      $<signal-args> = [ <[A..Z]> '_(' '"' $signal-name '"' .*? ]
       ');'
     /;
+
+    # save and remove from source but stop if there isn't any left
     my Str $sig-args = ~($<signal-args>//'');
+    if !$sig-args {
+      $sdoc = '';
+      last;
+    }
+    $source-content ~~ s/ 'g_signal_new' \s* '(' $sig-args ');' //;
+#note "sig args: ", $sig-args;
+
+
+#note "Signal doc:\n", $sdoc;
+
+    $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
+    note "get signal $signal-name";
 
     # process g_signal_new arguments, remove commas from specific macro
-    $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ ')' /G_STRUCT_OFFSET.../;
+    $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
     my @args = ();
     for $sig-args.split(/ \s* ',' \s* /) -> $arg is copy {
+#note "arg: '$arg'";
       @args.push($arg);
     }
 
-note "Args: ", @args[7..*-1];
+#note "Args: ", @args[7..*-1];
     my Str $return-type = '';
     given @args[7] {
       when 'G_TYPE_BOOLEAN' {
@@ -997,7 +1008,7 @@ note "Args: ", @args[7..*-1];
         }
       }
 
-note "AT: $i, $arg-type";
+#note "AT: $i, $arg-type";
       $signal-args.push: $arg-type;
     }
 
@@ -1081,7 +1092,7 @@ note "AT: $i, $arg-type";
     $item-count = 0;
     my Str $first-arg = '';
     for @$items-src-doc -> $idoc {
-note "IDoc: $item-count, ", $idoc;
+#note "IDoc: $item-count, ", $idoc;
       if $item-count == 0 {
         $first-arg =
           "$idoc<item-type> \:widget\(\$$idoc<item-name>\)";
@@ -1124,19 +1135,6 @@ note "IDoc: $item-count, ", $idoc;
         my Gnome::Gtk3::Window $w .= new( ... );
         $w.register-signal( self, 'mouse-event', 'button-press-event');
 
-      The register method is defined as;
-
-        my Bool $is-registered = $widget.register-signal (
-          $handler-object, $handler-name, $signal-name,
-          :$user-option1, ..., :$user-optionN
-        )
-
-      Where
-      =item $handler-object; An perl6 object holding the handler method =I<self>
-      =item $handler-name; The handler method =I<mouse-event>
-      =item $signal-name; The signal to connect to =I<button-press-event>
-      =item $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.
-
       =head2 Second method
 
         my Gnome::Gtk3::Window $w .= new( ... );
@@ -1150,7 +1148,7 @@ note "IDoc: $item-count, ", $idoc;
 
       Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
-      =head2 Supported methods
+      =head2 Supported signals
 
       EOSIGDOC
 
@@ -1264,7 +1262,8 @@ sub get-properties ( Str:D $source-content is copy ) {
           $label.g-object-get-property( 'label', $gv);
           $gv.g-value-set-string('my text label');
 
-        EODOC
+        =head2 Supported properties
+      EODOC
     }
 #note "Property sdoc 1:\n", $sdoc;
 
@@ -1305,8 +1304,30 @@ sub get-properties ( Str:D $source-content is copy ) {
     $prop-args ~~ s/ '));' //;
 
     # process arguments
+    my Bool $in-string = False;
+    my Str $temp-prop-args = $prop-args;
+    $prop-args = '';
+    for $temp-prop-args.split('')[1..*-2] -> $c {
+#note "C: '$c'";
+      if $c eq '"' {
+        $in-string = !$in-string;
+        $prop-args ~= '"';
+        next;
+      }
+
+      if $in-string and $c eq ',' {
+        $prop-args ~= '_COMMA_';
+      }
+
+      else {
+        $prop-args ~= $c;
+      }
+    }
+#note $prop-args;
+
     my @args = ();
     for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
+      $arg ~~ s/ '_COMMA_' /,/;
       $arg ~~ s/ 'P_(' //;
       $arg ~~ s/ ')' //;
       $arg ~~ s:g/ \" \s+ \" //;
@@ -1386,6 +1407,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $sdoc = cleanup-source-doc($sdoc);
     }
 
+    $sdoc ~~ s:g/\n\n/\n/;;
 
 
 #note "sdoc 3: ", $sdoc if $has-doc;
@@ -1395,6 +1417,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
       =comment #TP:0:$prop-name:
       =head3 $prop-nick
+
       $sdoc
       The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
       EOHEADER
@@ -1762,7 +1785,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ /sig B\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ / I\<$oct\>/;
   }
 
   loop {
@@ -1771,7 +1794,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ /prop I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ / I\<$oct\>/;
   }
 
   loop {
@@ -1798,7 +1821,7 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / prop I<$/[0]>/;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / I<$/[0]>/;
   }
 
   $text
@@ -1810,7 +1833,7 @@ sub podding-property ( Str:D $text is copy --> Str ) {
 
   loop {
     last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / sig I<$/[0]>/;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / I<$/[0]>/;
   }
 
   $text
