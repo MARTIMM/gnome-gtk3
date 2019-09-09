@@ -15,6 +15,7 @@ subtest 'ISA test', {
   my Gnome::Gtk3::Button $button .= new(:label('xyz'));
   isa-ok $button, Gnome::Gtk3::Bin;
 
+  diag "gtk_bin_get_child";
   isa-ok $button.get-child, N-GObject, 'Native object from get-child()';
 
   my Gnome::Gtk3::Widget $w .= new(:widget($button.get-child));
