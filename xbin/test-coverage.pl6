@@ -210,8 +210,8 @@ sub type-coverage( Str:D $content --> List ) {
 sub load-coverage( Str:D $content --> Bool ) {
   my Bool $load-tested = False;
 
-  # search for special notes like '#TL:sts:sig-name'
-  $content ~~ m/^^ '#TL:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  # search for special notes like '#TL:sts:module-name'
+  $content ~~ m/^^ '#TL:' [<[+-]> || \d] ':' [<alnum> || '-' || '::']+ /;
   my Str $header = ~($/ || '');
   return $load-tested unless ?$header;
   $header ~~ m/
@@ -220,7 +220,6 @@ sub load-coverage( Str:D $content --> Bool ) {
     ':'
     $<name> = ([<alnum> || '-']+)
   /;
-
   my Str $name = ~$/<name>;
 
   my $state = ~$/<state>;
@@ -228,6 +227,7 @@ sub load-coverage( Str:D $content --> Bool ) {
   $state = 1 if $state eq '+';
   $state .= Int;  # convert to int for all other digit characters
   $load-tested = True if $state > 0;
+note "$header, $name, $state, $load-tested";
 
   # return load status
   return $load-tested;
