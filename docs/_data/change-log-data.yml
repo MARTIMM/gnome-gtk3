@@ -3,10 +3,9 @@ notes_title: "Release Notes for all Gnome packages"
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
   - 2019-08-08 0.18.5:
-    - The handler arguments list is changed when register-signal() from Gnome::GObject::Object is used. The positional arguments, when needed for the signal, are oblegatory as well as their types.
-      All widgets are influenced by this except those which did not need extra arguments like the clicked signal on a button.
+    - The handler arguments list is changed when register-signal() from Gnome::GObject::Object is used. Some positional arguments, which were named arguments before, are oblegatory as well as their types. Most of them are unchanged because they did not receive extra data. For example the 'clicked' signal for a Button. Others like event processing are changed. E.g. 'button-press-event' on a window was returned on the :$event named argument. Now this has become the first positional argument with a type 'GdkEvent'.
 
-    - One can connect also directly using q_signal_connect_object() from Gnome::GObject::Signal. Also here, the handler must provide all arguments and types and some more.
+    - One can connect also directly using g_signal_connect_object() from Gnome::GObject::Signal. Also here, the handler must provide all arguments and types and some more.
 
   - 2019-08-29 0.18.4:
     - Experimenting with variable argument list in module FileChooserDialog to get buttons on the dialog.
