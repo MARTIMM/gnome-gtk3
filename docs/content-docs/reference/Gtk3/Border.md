@@ -1,12 +1,5 @@
-TITLE
-=====
-
 Gnome::Gtk3::Border
-
-SUBTITLE
-========
-
-A border around a rectangular area
+===================
 
 Description
 ===========
@@ -22,8 +15,8 @@ Declaration
     unit class Gnome::Gtk3::Border;
     also is Gnome::GObject::Boxed;
 
-Example
--------
+Types
+=====
 
 class N-GtkBorder
 -----------------
@@ -84,32 +77,37 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 
     method bottom ( Int $value? --> Int )
 
+clear-border
+------------
+
+Frees a `N-GtkBorder` struct and after that, border-is-valid() returns False.
+
+    method clear-border ( )
+
+border-is-valid
+---------------
+
+Return the validity of th native structure. After a call to clear-border() this flag is set to False and the object should not be used anymore.
+
+    method border-is-valid ( --> Bool )
+
 gtk_border_new
 --------------
 
 Allocates a new `Gnome::Gtk3::Border`-struct and initializes its elements to zero.
 
-Returns: a newly allocated `Gnome::Gtk3::Border`-struct. Free with `gtk_border_free()`
+Returns: a newly allocated `N-GtkBorder`-struct. Free with `clear-border()`
 
 Since: 2.14
 
     method gtk_border_new ( --> N-GtkBorder )
 
-  * G_GNUC_MALLO $C;
-
 gtk_border_copy
 ---------------
 
-Copies a `Gnome::Gtk3::Border`-struct.
+Copies a `N-GtkBorder` struct.
 
-Returns: (transfer full): a copy of *border*.
+Returns: a copy of the native object *N-GtkBorder*.
 
     method gtk_border_copy ( --> N-GtkBorder  )
-
-gtk_border_free
----------------
-
-Frees a `N-GtkBorder` struct.
-
-    method gtk_border_free ( )
 

@@ -1,10 +1,12 @@
+#TL:1:Gnome::Gtk3::Border:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::Border
+=head1 Gnome::Gtk3::Border
 
-=SUBTITLE A border around a rectangular area
+=comment ![](images/)
 
 =head1 Description
 
@@ -17,7 +19,7 @@ that can be of different width on each side.
   unit class Gnome::Gtk3::Border;
   also is Gnome::GObject::Boxed;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
 
@@ -51,6 +53,7 @@ that can be of different width on each side.
 
 =end pod
 
+#TT:1:N-GtkBorder:
 class N-GtkBorder is export is repr('CStruct') {
   has int16 $.left is rw;
   has int16 $.right is rw;
@@ -59,7 +62,6 @@ class N-GtkBorder is export is repr('CStruct') {
 }
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
 has Bool $.border-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
@@ -79,13 +81,11 @@ Create an object and initialize to given values.
 
 =end pod
 
-submethod BUILD ( *%options ) {
+#TM:1:new(:empty):
+#TM:1:new(:border):
+#TM:1:new(:left, :right, :top, :bottom):
 
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  #$signals-added = self.add-signal-types( $?CLASS.^name,
-  #  # ... :type<signame>
-  #) unless $signals-added;
+submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Border';
@@ -138,6 +138,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:left:
 =begin pod
 =head2 left
 
@@ -155,6 +156,7 @@ method left ( Int $value? --> Int ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:right:
 =begin pod
 =head2 right
 
@@ -172,6 +174,7 @@ method right ( Int $value? --> Int ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:top:
 =begin pod
 =head2 top
 
@@ -189,6 +192,7 @@ method top ( Int $value? --> Int ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:bottom:
 =begin pod
 =head2 bottom
 
@@ -206,6 +210,7 @@ method bottom ( Int $value? --> Int ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:clear-border:
 =begin pod
 =head2 clear-border
 
@@ -221,6 +226,7 @@ method clear-border ( ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:border-is-valid:
 =begin pod
 =head2 border-is-valid
 
@@ -232,6 +238,7 @@ Return the validity of th native structure. After a call to clear-border() this 
 # method is implicitly define above
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_border_new:
 =begin pod
 =head2 gtk_border_new
 
@@ -251,6 +258,7 @@ sub gtk_border_new ( )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_border_copy:
 =begin pod
 =head2 gtk_border_copy
 
@@ -284,25 +292,3 @@ sub _gtk_border_free ( N-GtkBorder $border )
   is native(&gtk-lib)
   is symbol('gtk_border_free')
   { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not yet implemented methods
-
-=head3 method  ( ... )
-
-=end comment
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not implemented methods
-
-=head3 method  ( ... )
-
-=end comment
-=end pod
