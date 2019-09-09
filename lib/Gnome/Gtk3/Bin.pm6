@@ -1,13 +1,10 @@
-#TL:2:Gnome::Gtk3::Bin:
+#TL:1:Gnome::Gtk3::Bin:
 
 use v6;
-
 #-------------------------------------------------------------------------------
 =begin pod
 
 =TITLE Gnome::Gtk3::Bin
-
-=SUBTITLE A container with just one child
 
 =head1 Description
 
@@ -69,6 +66,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end comment
 =end pod
 
+#TM:1:new():inheriting
 #TM:0:new(:widget):
 #TM:0:new(:build-id):
 

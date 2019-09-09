@@ -3,11 +3,6 @@ TITLE
 
 Gnome::Gtk3::Bin
 
-SUBTITLE
-========
-
-A container with just one child
-
 Description
 ===========
 
