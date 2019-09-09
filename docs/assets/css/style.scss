@@ -13,6 +13,9 @@ $code-color: #46465f;
 $border-color: #bbb;
 $border-width: 4px;
 
+$menu-text-font-size: 15px;
+$sbar-text-font-size: 13px;
+$sbarhdr-text-font-size: 15px;
 $text-font-size: 15px;
 $code-font-size: 12px;
 
@@ -168,7 +171,7 @@ div.release-notes {
 
 #sidebar-container {
   padding: 0;
-  width: 23%;
+  width: 22%;
   height: 100%;
 }
 
@@ -180,10 +183,12 @@ div.release-notes {
   border-radius: 5px;
   padding-top: 5px;
   margin-bottom: 5px;
+  font-size: $sbar-text-font-size;
 
   strong {
     padding-left: 7px;
     margin: 10px 0 0 0;
+    font-size: $sbarhdr-text-font-size;
   }
 
   hr {
@@ -218,7 +223,7 @@ div.release-notes {
       a {
         display: block;
         width: 100%;
-        font-size: $text-font-size;
+//        font-size: $sbar-text-font-size;
       }
 
       a:hover {

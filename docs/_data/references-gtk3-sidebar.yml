@@ -163,8 +163,9 @@
     doc: 1
   - title: "Border"
     url: "/content-docs/reference/Gtk3/Border.html"
-    doc: 1
-    test: 2
+    doc: 3
+    test: 11
+    testok: 1
     tut: ''
     ex: ''
   - title: "Builder"

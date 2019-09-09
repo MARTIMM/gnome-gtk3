@@ -30,6 +30,12 @@
         {% assign testStatus = 0 %}
         {% endif %}
 
+        {% if item.testok %}
+        {% assign testDone = 1 %}
+        {% else %}
+        {% assign testDone = 0 %}
+        {% endif %}
+
         {% if page.sidebar_menu contains "references-" %}
           <li class="{{ classstr }}">
             {% if docStatus == 0 %}
@@ -71,45 +77,79 @@
                 {% assign status_chars = '🗒' %}
                   🗒
 
-                <!-- 1 module parses -->
+                <!-- 1 module parses and new() works -->
                 {% elsif testStatus == 1 %}
                 {% assign status_chars = '🗇' %}
                   🗇
 
-                <!-- 2 subs and methods tested -->
-                {% elsif testStatus == 2 %}
-                {% assign status_chars = '🗊' %}
+                <!-- 2 subs and methods tested, assume 3 (1 + 2) -->
+                {% elsif testStatus == 2 or testStatus == 3 %}
+                {% assign status_chars = '🗇🗊' %}
                   🗊
 
-                <!-- 4 signals tested -->
-                {% elsif testStatus == 4 %}
-                {% assign status_chars = '🗲' %}
+                <!-- 4 signals tested, assume 5 (1 + 4) -->
+                {% elsif testStatus == 4 or testStatus == 5 %}
+                {% assign status_chars = '🗇🗲' %}
                   🗲
 
-                <!-- 8 properties tested -->
-                {% elsif testStatus == 8 %}
+                <!-- 6 (2 + 4), assume 7 (1 + 2 + 4) -->
+                {% elsif testStatus == 6 or testStatus == 7 %}
+                {% assign status_chars = '🗇🗊🗲' %}
+                  🗲
 
-                <!-- 16 theme tested -->
-                {% elsif testStatus == 16 %}
+                <!-- 8 properties tested, assume 9 (1 + 8) -->
+                {% elsif testStatus == 8 or testStatus == 9 %}
+                {% assign status_chars = '🗇🖉' %}
+                  🖉
 
-                {% assign status_chars = '🗊🗲⌺' %}
+                <!-- 10 (2 + 8), assume 11 (1 + 2 + 8) -->
+                {% elsif testStatus == 10 or testStatus == 11 %}
+                {% assign status_chars = '🗇🗊🖉' %}
+                  🖉
+
+                <!-- 12 (4 + 8), assume 13 (1 + 4 + 8) -->
+                {% elsif testStatus == 12 or testStatus == 13 %}
+                {% assign status_chars = '🗇🗲🖉' %}
+                  🖉
+
+                <!-- 14 (2 + 4 + 8), assume 15 (1 + 2 + 4 + 8) -->
+                {% elsif testStatus == 12 or testStatus == 13 %}
+                {% assign status_chars = '🗇🗊🗲🖉' %}
+                  🖉
+
+                <!-- 16 theme tested, assume 17 (1 + 16) -->
+                {% elsif testStatus == 16 or testStatus == 17 %}
+                {% assign status_chars = '🗇⌺' %}
                   ⌺
+
+
+                {% elsif testStatus == 31 %}
+                {% assign status_chars = '🗇🗊🗲🖉⌺' %}
+                  🗸
+
+
+
                 {% elsif testStatus == 5 %}
                 {% assign status_chars = '🗊🗲⌺' %}
                   ⌺
-                {% elsif testStatus == 5 %}
+                {% elsif testStatus == 6 %}
                 {% assign status_chars = '🗊🗲⌺' %}
                   ⌺
-                {% elsif testStatus == 5 %}
+                {% elsif testStatus == 7 %}
                 {% assign status_chars = '🗊🗲⌺🗸' %}
                   🗸
                 {% endif %}
 
+
+                {% if testDone == 1 %}
+                {% assign status_chars = status_chars | append:' -> 🗸' %}
+                {% endif %}
+
+
                   <span class="tooltiptext">
                     {% assign pp = page.dir | append:item.title | append:'.md' %}
                     {% assign pp = pp | remove_first:'/' %}
-                    <strong>Test coverage: {{ site.data.testCoverage[pp]["routines"]["coverage"] }} %
-                      {{ status_chars }}
+                    <strong>Test coverage: {{ status_chars }}
                     </strong><br />
                   </span>
 
