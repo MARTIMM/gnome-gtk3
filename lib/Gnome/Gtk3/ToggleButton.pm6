@@ -1,22 +1,104 @@
+#TL:0:Gnome::Gtk3::ToggleButton:
+
 use v6;
-# ==============================================================================
+#-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::ToggleButton
+=head1 Gnome::Gtk3::ToggleButton
 
-=SUBTITLE
+Create buttons which retain their state
+
+=comment ![](images/toggle-button.png)
+
+=head1 Description
+
+
+A B<Gnome::Gtk3::ToggleButton> is a B<Gnome::Gtk3::Button> which will remain “pressed-in” when
+clicked. Clicking again will cause the toggle button to return to its
+normal state.
+
+A toggle button is created by calling either C<gtk_toggle_button_new()> or
+C<gtk_toggle_button_new_with_label()>. If using the former, it is advisable to
+pack a widget, (such as a B<Gnome::Gtk3::Label> and/or a B<Gnome::Gtk3::Image>), into the toggle
+button’s container. (See B<Gnome::Gtk3::Button> for more information).
+
+The state of a B<Gnome::Gtk3::ToggleButton> can be set specifically using
+C<gtk_toggle_button_set_active()>, and retrieved using
+C<gtk_toggle_button_get_active()>.
+
+To simply switch the state of a toggle button, use C<gtk_toggle_button_toggled()>.
+
+
+=head2 Css Nodes
+
+
+B<Gnome::Gtk3::ToggleButton> has a single CSS node with name button. To differentiate
+it from a plain B<Gnome::Gtk3::Button>, it gets the .toggle style class.
+
+=begin comment
+## Creating two B<Gnome::Gtk3::ToggleButton> widgets.
+
+|[<!-- language="C" -->
+void make_toggles (void) {
+   B<Gnome::Gtk3::Widget> *dialog, *toggle1, *toggle2;
+   B<Gnome::Gtk3::Widget> *content_area;
+   const char *text;
+
+   dialog = gtk_dialog_new (text);
+   content_area = C<gtk_dialog_get_content_area()>;
+
+   text = "Hi, i’m a toggle button.";
+   toggle1 = gtk_toggle_button_new_with_label (text);
+
+   // Makes this toggle button invisible
+   gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (toggle1),
+                               TRUE);
+
+   g_signal_connect (toggle1, "toggled",
+                     G_CALLBACK (output_state),
+                     NULL);
+   gtk_box_pack_start (GTK_BOX (content_area),
+                       toggle1, FALSE, FALSE, 2);
+
+   text = "Hi, i’m a toggle button.";
+   toggle2 = gtk_toggle_button_new_with_label (text);
+   gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (toggle2),
+                               FALSE);
+   g_signal_connect (toggle2, "toggled",
+                     G_CALLBACK (output_state),
+                     NULL);
+   gtk_box_pack_start (GTK_BOX (content_area),
+                       toggle2, FALSE, FALSE, 2);
+
+   gtk_widget_show_all (dialog);
+}
+]|
+=end comment
+
+
+=head2 Implemented Interfaces
+=comment item AtkImplementorIface
+=item Gnome::Gtk3::Buildable
+=item Gnome::Gtk3::Actionable
+=item Gnome::Gtk3::Activatable
+
+=head2 See Also
+
+B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::CheckButton>, B<Gnome::Gtk3::CheckMenuItem>
+
+=head1 Synopsis
+=head2 Declaration
 
   unit class Gnome::Gtk3::ToggleButton;
   also is Gnome::Gtk3::Button;
 
-=head2 ToggleButton — Create buttons which retain their state
-
-=head1 Synopsis
+=begin comment
+=head2 Example
 
   my Gnome::Gtk3::ToggleButton $start-tggl .= new(:label('Start Process'));
 
   # later in another class ...
-  method start-stop-process-handle( :widget($start-tggl) ) {
+  method start-stop-process-handle( :widget($start-tggl) --> Int ) {
     if $start-tggl.get-active {
       $start-tggl.set-label('Stop Process');
       # start process ...
@@ -26,10 +108,13 @@ use v6;
       $start-tggl.set-label('Start Process');
       # stop process ...
     }
+
+    1
   }
+=end comment
 
 =end pod
-# ==============================================================================
+#-------------------------------------------------------------------------------
 use NativeCall;
 
 use Gnome::N::X;
