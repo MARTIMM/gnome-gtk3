@@ -42,7 +42,7 @@ B<Gnome::Gtk3::Builder> parses textual descriptions of user interfaces which are
 
 It is common to use `.ui` as the filename extension for files containing B<Gnome::Gtk3::Builder> UI definitions.
 
-[RELAX NG Compact Syntax](https://git.gnome.org/browse/gtk+/tree/gtk/gtkbuilder.rnc)
+<!--[RELAX NG Compact Syntax](https://git.gnome.org/browse/gtk+/tree/gtk/gtkbuilder.rnc)-->
 
 The toplevel element is <interface>. It optionally takes a “domain” attribute, which will make the builder look for translated strings using C<dgettext()> in the domain specified. This can also be done by calling C<gtk_builder_set_translation_domain()> on the builder. Objects are described by <object> elements, which can contain <property> elements to set properties, <signal> elements which connect signals to handlers, and <child> elements, which describe child objects (most often widgets inside a container, but also e.g. actions in an action group, or columns in a tree model). A <child> element contains an <object> element which describes the child object. The target toolkit version(s) are described by <requires> elements, the “lib” attribute specifies the widget library in question (currently the only supported value is “gtk+”) and the “version” attribute specifies the target version in the form “<major>.<minor>”. The builder will error out if the version requirements are not met.
 
