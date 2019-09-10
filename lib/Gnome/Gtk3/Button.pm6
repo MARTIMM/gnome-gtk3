@@ -80,7 +80,7 @@ Create a button using a native object from elsewhere. See also Gnome::GObject::O
 Create a button using a native object from a builder. See also Gnome::GObject::Object.
 =end pod
 
-#TM:0:new():inheriting
+#TM:2:new():inheriting:CheckButton
 #TM:1:new(:label):
 #TM:1:new(:empty):
 #TM:1:new(:widget):
