@@ -154,7 +154,6 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::FileChooser;
 
@@ -237,10 +236,15 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
 #  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
 
-  # search in the interface modules
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
   if !$s {
-    my Gnome::Gtk3::FileChooser $fc .= new(:widget(self.native-gobject));
-    $s = $fc._interface($native-sub);
+    $s = self._query_interfaces(
+      $native-sub, <
+        Gnome::Gtk3::Buildable Gnome::Atk::ImplementorIface
+        Gnome::Gtk3::FileChooser
+      >
+    );
   }
 
   # any other parent class

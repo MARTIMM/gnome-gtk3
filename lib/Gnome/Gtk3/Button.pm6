@@ -134,6 +134,17 @@ method _fallback ( $native-sub is copy --> Callable ) {
   self.set-class-name-of-sub('GtkButton');
   $s = callsame unless ?$s;
 
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
+  if !$s {
+    $s = self._query_interfaces(
+      $native-sub, <
+        AtkImplementorIface Gnome::Gtk3::Buildable Gnome::Gtk3::Actionable
+        Gnome::Gtk3::Activatable
+      >
+    );
+  }
+
   $s
 }
 
