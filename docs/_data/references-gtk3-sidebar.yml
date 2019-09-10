@@ -53,9 +53,11 @@
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
     doc: 1
+    test: 1
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
     doc: 1
+    test: 1
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
     doc: 1
