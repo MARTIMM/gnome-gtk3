@@ -368,9 +368,12 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<accel-closures-changed destroy grab-focus hide map popup-menu
-            realize show style-updated unmap unrealize
-           >,
+    :w0<accel-closures-changed destroy grab-focus hide map popup-menu
+        realize show style-updated unmap unrealize
+       >,
+#    :signal<accel-closures-changed destroy grab-focus hide map popup-menu
+#            realize show style-updated unmap unrealize
+#           >,
     :event<button-press-event button-release-event configure-event
            damage-event delete-event destroy-event enter-notify-event
            event-after focus-in-event grab-broken-event key-press-event
