@@ -76,17 +76,31 @@ sub MAIN (
       #Gnome::N::debug(:on);
 
       #-------------------------------------------------------------------------------
-      my $class $m .= new(:empty);
+      my $class $m;
       #-------------------------------------------------------------------------------
       subtest 'ISA test', {
+        diag ".new(:empty)";
+        $m .= new(:empty);
         isa-ok $m, $class;
       }
 
+      #`{{
       #-------------------------------------------------------------------------------
       subtest 'Manipulations', {
         is 1, 1, 'ok';
       }
 
+      #-------------------------------------------------------------------------------
+      subtest 'Inherit ...', {
+        is 1, 1, 'ok';
+      }
+
+      #-------------------------------------------------------------------------------
+      subtest 'Interface ...', {
+        is 1, 1, 'ok';
+      }
+      }}
+      
       #-------------------------------------------------------------------------------
       done-testing;
 
@@ -687,18 +701,19 @@ sub substitute-in-template (
 
     MODULE-SHORTDESCRIPTION
 
-    =comment ![](images/)
+    =comment ![](images/X.png)
 
     =head1 Description
 
     MODULE-DESCRIPTION
 
-    =comment head2 Implemented Interfaces
-    =comment head2 Known implementations
-    =comment item
-    =comment item []()
+    =begin comment
+    =head2 Implemented Interfaces
+    =head2 Known implementations
 
-    =head2 See Also
+    =item Gnome::Gtk3::X
+    =item [Gnome::Gtk3::X](X.html)
+    =end comment
 
     MODULE-SEEALSO
 
@@ -939,7 +954,7 @@ sub get-section ( Str:D $source-content --> List ) {
 
   ( primary-doc-changes($section-doc),
     primary-doc-changes($short-description),
-    primary-doc-changes($see-also)
+    (?$see-also ?? "=head2 See Also\n\n" ~ primary-doc-changes($see-also) !! '')
   )
 }
 
