@@ -24,7 +24,7 @@ class AppSignalHandlers {
   ) { }
 
   # Show dialog
-  method show-dialog ( ) {
+  method show-dialog ( --> Int ) {
     my Gnome::Gtk3::FileChooserDialog $dialog .= new(
       :title("Open File"), :parent($!top-window),
       :action(GTK_FILE_CHOOSER_ACTION_SAVE),
@@ -43,12 +43,17 @@ class AppSignalHandlers {
       note "Opening file $file";
 #Todo g_free (filename);
     }
+
     $dialog.gtk-widget-hide;
+
+    1
   }
 
   # Handle window managers 'close app' button
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 
