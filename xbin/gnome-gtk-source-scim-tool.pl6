@@ -808,11 +808,39 @@ sub substitute-in-template (
         try { $s = &::($native-sub); }
         try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
 
+        #`{{ Uncomment in interface users
+        # search in the interface modules, name all interfaces which are implemented
+        # for this module. not implemented ones are skipped.
+        if !$s {
+          $s = self._query_interfaces(
+            $native-sub, <Gnome::Gtk3::XXX>
+          );
+        }
+        }}
+
         self.set-class-name-of-sub('LIBCLASSNAME');
         $s = callsame unless ?$s;
 
         $s;
       }
+
+      #`{{ Uncomment in interfaces
+      #-------------------------------------------------------------------------------
+      # no pod. user does not have to know about it.
+      # Hook for modules using this interface. Same principle as _fallback but
+      # does not need calsame.
+      method _interface ( $native-sub is copy --> Callable ) {
+
+        my Callable $s;
+        try { $s = &::($native-sub); }
+        try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
+
+        self.set-class-name-of-sub('LIBCLASSNAME');
+      #  $s = callsame unless ?$s;
+
+        $s;
+      }
+      }}
 
       EOTEMPLATE
 
@@ -1266,7 +1294,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
         =head2 Supported properties
         EODOC
-        
+
     }
 #note "Property sdoc 1:\n", $sdoc;
 
