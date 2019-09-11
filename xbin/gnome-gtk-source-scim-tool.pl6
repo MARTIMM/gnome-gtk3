@@ -1273,9 +1273,9 @@ sub get-properties ( Str:D $source-content is copy ) {
                                           # optional comment block
         \s+ [ 'g_object_interface_install_property' .*? ||
                                           # sometimes a call for interfaces
-          'props[' <-[\]]>+ ']' \s* '=' \s*
+          <alnum>*? 'props[' <-[\]]>+ ']' \s* '=' \s*
                                           # sometimes there's an array def
-        ]                             # anything else
+        ]                                 # anything else
         'g_param_spec_'                   # till prop spec starts
         .*? ');'                          # till the spec ends
       ]
