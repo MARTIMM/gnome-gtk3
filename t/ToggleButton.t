@@ -14,23 +14,56 @@ subtest 'ISA test', {
   diag ".new(:empty)";
   $tb .= new(:empty);
   isa-ok $tb, Gnome::Gtk3::ToggleButton;
+
+  diag ".new(:label)";
+  $tb .= new(:label<Bold>);
+  isa-ok $tb, Gnome::Gtk3::ToggleButton;
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  is 1, 1, 'ok';
+  diag ".set-active() / .get-active()";
+  is $tb.get-active, 0, 'Not active';
+  $tb.set-active(1);
+  is $tb.get-active, 1, 'Active';
+
+  diag ".set-mode() / .get-mode()";
+  is $tb.get-mode, 0, 'Not a separate indicator';
+  $tb.set-mode(1);
+  is $tb.get-mode, 1, 'Separate indicator';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
-  is 1, 1, 'ok';
+  diag ".get-label / .set-label";
+  is $tb.get-label, 'Bold', 'label ok';
+  $tb.set-label('Underline');
 }
 
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  diag "signal 'toggled'";
+  my Bool $triggered = False;
+  class X {
+    method t-event ( :$widget ) {
+      isa-ok $widget, Gnome::Gtk3::ToggleButton,
+             'signal received on proper widget';
+      is $tb.get-label, 'Underline', 'new label ok';
+      $triggered = True;
+    }
+  }
+
+  $tb.register-signal( X.new, 't-event', 'toggled');
+  $tb.gtk-toggle-button-toggled;
+  ok $triggered, 'signal is triggered';
+}
+
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
   is 1, 1, 'ok';
 }
 }}
+
 #-------------------------------------------------------------------------------
 done-testing;

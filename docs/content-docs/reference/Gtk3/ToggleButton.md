@@ -1,91 +1,207 @@
-TITLE
-=====
-
 Gnome::Gtk3::ToggleButton
+=========================
 
-SUBTITLE
-========
+Create buttons which retain their state
 
+Description
+===========
 
+A **Gnome::Gtk3::ToggleButton** is a **Gnome::Gtk3::Button** which will remain “pressed-in” when clicked. Clicking again will cause the toggle button to return to its normal state.
 
-    unit class Gnome::Gtk3::ToggleButton;
-    also is Gnome::Gtk3::Button;
+A toggle button is created by calling either `gtk_toggle_button_new()` or `gtk_toggle_button_new_with_label()`. If using the former, it is advisable to pack a widget, (such as a **Gnome::Gtk3::Label** and/or a **Gnome::Gtk3::Image**), into the toggle button’s container. (See **Gnome::Gtk3::Button** for more information).
 
-ToggleButton — Create buttons which retain their state
-------------------------------------------------------
+The state of a **Gnome::Gtk3::ToggleButton** can be set specifically using `gtk_toggle_button_set_active()`, and retrieved using `gtk_toggle_button_get_active()`.
+
+To simply switch the state of a toggle button, use `gtk_toggle_button_toggled()`.
+
+Css Nodes
+---------
+
+**Gnome::Gtk3::ToggleButton** has a single CSS node with name button. To differentiate it from a plain **Gnome::Gtk3::Button**, it gets the .toggle style class.
+
+Implemented Interfaces
+----------------------
+
+  * Gnome::Gtk3::Buildable
+
+  * Gnome::Gtk3::Actionable
+
+  * Gnome::Gtk3::Activatable
+
+See Also
+--------
+
+**Gnome::Gtk3::Button**, **Gnome::Gtk3::CheckButton**, **Gnome::Gtk3::CheckMenuItem**
 
 Synopsis
 ========
 
-    my Gnome::Gtk3::ToggleButton $start-tggl .= new(:label('Start Process'));
+Declaration
+-----------
 
-    # later in another class ...
-    method start-stop-process-handle( :widget($start-tggl) ) {
-      if $start-tggl.get-active {
-        $start-tggl.set-label('Stop Process');
-        # start process ...
-      }
-
-      else {
-        $start-tggl.set-label('Start Process');
-        # stop process ...
-      }
-    }
+    unit class Gnome::Gtk3::ToggleButton;
+    also is Gnome::Gtk3::Button;
 
 Methods
 =======
 
+new
+---
+
+### multi method new ( Str :$label )
+
+Create a GtkToggleButton with a label.
+
+### multi method new ( Bool :$empty! )
+
+Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+
+### multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+
+### multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
 gtk_toggle_button_new
 ---------------------
 
-    method gtk_toggle_button_new ( --> N-GObject )
+Creates a new toggle button. A widget should be packed into the button, as in `gtk_button_new()`.
 
-Creates a new native toggle button object
+Returns: a new toggle button.
+
+    method gtk_toggle_button_new ( --> N-GObject  )
 
 [gtk_toggle_button_] new_with_label
 -----------------------------------
 
-    method gtk_toggle_button_new_with_label ( Str $label --> N-GObject )
+Creates a new toggle button with a text label.
 
-Creates a new native toggle button object with a label
+Returns: a new toggle button.
+
+    method gtk_toggle_button_new_with_label ( Str $label --> N-GObject  )
+
+  * Str $label; a string containing the message to be placed in the toggle button.
 
 [gtk_toggle_button_] new_with_mnemonic
 --------------------------------------
 
-    method gtk_toggle_button_new_with_mnemonic ( Str $label --> N-GObject )
+Creates a new **Gnome::Gtk3::ToggleButton** containing a label. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the button.
 
-Creates a new GtkToggleButton containing a label. The label will be created using gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic for the button.
+Returns: a new **Gnome::Gtk3::ToggleButton**
 
-[gtk_toggle_button_] get_active
--------------------------------
+    method gtk_toggle_button_new_with_mnemonic ( Str $label --> N-GObject  )
 
-    method gtk_toggle_button_get_active ( --> Int )
+  * Str $label; the text of the button, with an underscore in front of the mnemonic character
 
-Get the button state.
+[gtk_toggle_button_] set_mode
+-----------------------------
+
+Sets whether the button is displayed as a separate indicator and label. You can call this function on a checkbutton or a radiobutton with `$draw_indicator` = `0` to make the button look like a normal button.
+
+This can be used to create linked strip of buttons that work like a **Gnome::Gtk3::StackSwitcher**.
+
+This function only affects instances of classes like **Gnome::Gtk3::CheckButton** and **Gnome::Gtk3::RadioButton** that derive from **Gnome::Gtk3::ToggleButton**, not instances of **Gnome::Gtk3::ToggleButton** itself.
+
+    method gtk_toggle_button_set_mode ( Int $draw_indicator )
+
+  * Int $draw_indicator; if `1`, draw the button as a separate indicator and label; if `0`, draw the button like a normal button
+
+[gtk_toggle_button_] get_mode
+-----------------------------
+
+Retrieves whether the button is displayed as a separate indicator and label. See `gtk_toggle_button_set_mode()`.
+
+Returns: `1` if the togglebutton is drawn as a separate indicator and label.
+
+    method gtk_toggle_button_get_mode ( --> Int  )
 
 [gtk_toggle_button_] set_active
 -------------------------------
 
-    method gtk_toggle_button_set_active ( Int $active --> N-GObject )
+Sets the status of the toggle button. Set to `1` if you want the **Gnome::Gtk3::ToggleButton** to be “pressed in”, and `0` to raise it. This action causes the *toggled* signal and the *clicked* signal to be emitted.
 
-Set the button state.
+    method gtk_toggle_button_set_active ( Int $is_active )
 
-new
----
+  * Int $is_active; `1` or `0`.
 
-    multi method new ( Str :$label )
+[gtk_toggle_button_] get_active
+-------------------------------
 
-Create a GtkToggleButton with a label.
+Queries a **Gnome::Gtk3::ToggleButton** and returns its current state. Returns `1` if the toggle button is pressed in and `0` if it is raised.
 
-    multi method new ( Bool :$empty )
+Returns: a **Int** value.
 
-Create an empty GtkToggleButton.
+    method gtk_toggle_button_get_active ( --> Int  )
 
-    multi method new ( :$widget! )
+gtk_toggle_button_toggled
+-------------------------
 
-Create a button using a native object from elsewhere. See also Gnome::GObject::Object.
+Emits the *toggled* signal on the **Gnome::Gtk3::ToggleButton**. There is no good reason for an application ever to call this function.
 
-    multi method new ( Str :$build-id! )
+    method gtk_toggle_button_toggled ( )
 
-Create a button using a native object from a builder. See also Gnome::GObject::Object.
+[gtk_toggle_button_] set_inconsistent
+-------------------------------------
+
+If the user has selected a range of elements (such as some text or spreadsheet cells) that are affected by a toggle button, and the current values in that range are inconsistent, you may want to display the toggle in an “in between” state. This function turns on “in between” display. Normally you would turn off the inconsistent state again if the user toggles the toggle button. This has to be done manually, `gtk_toggle_button_set_inconsistent()` only affects visual appearance, it doesn’t affect the semantics of the button.
+
+    method gtk_toggle_button_set_inconsistent ( Int $setting )
+
+  * Int $setting; `1` if state is inconsistent
+
+[gtk_toggle_button_] get_inconsistent
+-------------------------------------
+
+Gets the value set by `gtk_toggle_button_set_inconsistent()`.
+
+Returns: `1` if the button is displayed as inconsistent, `0` otherwise
+
+    method gtk_toggle_button_get_inconsistent ( --> Int  )
+
+Signals
+=======
+
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+
+Supported signals
+-----------------
+
+### toggled
+
+Should be connected if you wish to perform an action whenever the **Gnome::Gtk3::ToggleButton**'s state is changed.
+
+    method handler (
+      Gnome::GObject::Object :widget($togglebutton),
+      *%user-options
+    );
+
+  * $togglebutton; the object which received the signal.
 
