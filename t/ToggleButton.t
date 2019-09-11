@@ -48,7 +48,7 @@ subtest 'Signals ...', {
     method t-event ( :$widget ) {
       isa-ok $widget, Gnome::Gtk3::ToggleButton,
              'signal received on proper widget';
-      is $tb.get-label, 'Underline', 'new label ok';
+      is $widget.get-label, 'Underline', 'new label ok';
       $triggered = True;
     }
   }
