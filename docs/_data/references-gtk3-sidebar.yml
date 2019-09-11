@@ -66,11 +66,12 @@
     doc: 1
   - title: "RadioButton"
     url: "/content-docs/reference/Gtk3/RadioButton.html"
-    doc: 0
-    test: 0
+    doc: 1
+    test: 1
   - title: "ToggleButton"
     url: "/content-docs/reference/Gtk3/ToggleButton.html"
     doc: 1
+    test: 1
 
   - title: '-'
 
