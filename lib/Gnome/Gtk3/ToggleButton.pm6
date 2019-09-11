@@ -8,7 +8,7 @@ use v6;
 
 Create buttons which retain their state
 
-=comment ![](images/toggle-button.png)
+![](images/toggle-button.png)
 
 =head1 Description
 

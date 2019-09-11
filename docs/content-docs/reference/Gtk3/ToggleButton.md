@@ -3,6 +3,8 @@ Gnome::Gtk3::ToggleButton
 
 Create buttons which retain their state
 
+![](images/toggle-button.png)
+
 Description
 ===========
 
