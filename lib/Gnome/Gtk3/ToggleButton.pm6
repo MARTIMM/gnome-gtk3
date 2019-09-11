@@ -32,49 +32,7 @@ To simply switch the state of a toggle button, use C<gtk_toggle_button_toggled()
 =head2 Css Nodes
 
 
-B<Gnome::Gtk3::ToggleButton> has a single CSS node with name button. To differentiate
-it from a plain B<Gnome::Gtk3::Button>, it gets the .toggle style class.
-
-=begin comment
-## Creating two B<Gnome::Gtk3::ToggleButton> widgets.
-
-|[<!-- language="C" -->
-void make_toggles (void) {
-   B<Gnome::Gtk3::Widget> *dialog, *toggle1, *toggle2;
-   B<Gnome::Gtk3::Widget> *content_area;
-   const char *text;
-
-   dialog = gtk_dialog_new (text);
-   content_area = C<gtk_dialog_get_content_area()>;
-
-   text = "Hi, i’m a toggle button.";
-   toggle1 = gtk_toggle_button_new_with_label (text);
-
-   // Makes this toggle button invisible
-   gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (toggle1),
-                               TRUE);
-
-   g_signal_connect (toggle1, "toggled",
-                     G_CALLBACK (output_state),
-                     NULL);
-   gtk_box_pack_start (GTK_BOX (content_area),
-                       toggle1, FALSE, FALSE, 2);
-
-   text = "Hi, i’m a toggle button.";
-   toggle2 = gtk_toggle_button_new_with_label (text);
-   gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (toggle2),
-                               FALSE);
-   g_signal_connect (toggle2, "toggled",
-                     G_CALLBACK (output_state),
-                     NULL);
-   gtk_box_pack_start (GTK_BOX (content_area),
-                       toggle2, FALSE, FALSE, 2);
-
-   gtk_widget_show_all (dialog);
-}
-]|
-=end comment
-
+B<Gnome::Gtk3::ToggleButton> has a single CSS node with name button. To differentiate it from a plain B<Gnome::Gtk3::Button>, it gets the .toggle style class.
 
 =head2 Implemented Interfaces
 =comment item AtkImplementorIface
