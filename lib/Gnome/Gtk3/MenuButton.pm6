@@ -127,17 +127,18 @@ also is Gnome::Gtk3::ToggleButton;
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-=head3 multi method new ( N-GObject :$widget! )
+  multi method new ( Bool :empty! )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 
@@ -314,7 +315,7 @@ sub gtk_menu_button_get_popover ( N-GObject $menu_button )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_menu_button_set_direction:
+#TM:1:gtk_menu_button_set_direction:
 =begin pod
 =head2 [gtk_menu_button_] set_direction
 
@@ -341,7 +342,7 @@ sub gtk_menu_button_set_direction ( N-GObject $menu_button, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_menu_button_get_direction:
+#TM:1:gtk_menu_button_get_direction:
 =begin pod
 =head2 [gtk_menu_button_] get_direction
 
