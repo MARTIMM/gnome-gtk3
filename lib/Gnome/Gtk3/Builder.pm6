@@ -218,17 +218,18 @@ void
 =begin pod
 =head2 new
 
-=head3 multi method new ( Str :$filename! )
-
 Create builder object and load gui design.
 
-=head3 multi method new ( Str :$string! )
+  multi method new ( Str :$filename! )
 
 Same as above but read the design from the string.
 
-=head3 multi method new ( Bool :$empty! )
+  multi method new ( Str :$string! )
 
 Create an empty builder.
+
+  multi method new ( Bool :$empty! )
+
 =end pod
 
 #TM:1:new(:empty):

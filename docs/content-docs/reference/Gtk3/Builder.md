@@ -131,17 +131,17 @@ Methods
 new
 ---
 
-### multi method new ( Str :$filename! )
-
 Create builder object and load gui design.
 
-### multi method new ( Str :$string! )
+    multi method new ( Str :$filename! )
 
 Same as above but read the design from the string.
 
-### multi method new ( Bool :$empty! )
+    multi method new ( Str :$string! )
 
 Create an empty builder.
+
+    multi method new ( Bool :$empty! )
 
 [gtk_builder_] error_quark
 --------------------------

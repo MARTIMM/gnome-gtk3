@@ -50,21 +50,21 @@ Methods
 new
 ---
 
-### multi method new ( Str :$label )
+Create a new plain object.
+
+    multi method new ( Bool :empty! )
 
 Create a GtkToggleButton with a label.
 
-### multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-### multi method new ( N-GObject :$widget! )
+    multi method new ( Str :$label )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-### multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_toggle_button_new
 ---------------------

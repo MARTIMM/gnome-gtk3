@@ -63,17 +63,17 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new empty box.
-
-### multi method new ( N-GObject :$widget! )
+    multi method new ( Bool :empty! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-### multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_box_new
 -----------

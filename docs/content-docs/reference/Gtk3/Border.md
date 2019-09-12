@@ -37,17 +37,17 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-### multi method new ( N-GtkBorder :border! )
+    multi method new ( Bool :empty! )
 
 Create an object taking the native object from elsewhere.
 
-### multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+    multi method new ( N-GtkBorder :border! )
 
 Create an object and initialize to given values.
+
+    multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
 
 left
 ----

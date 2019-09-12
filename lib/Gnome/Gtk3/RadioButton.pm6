@@ -131,18 +131,30 @@ my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-=head3 multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-=head3 multi method new ( N-GObject :$widget! )
+  multi method new ( Bool :empty! )
+
+Create a new object and add to the group defined by the list.
+
+  multi method new ( Gnome::Glib::SList :$group!, Str :$label! )
+
+Create a new object and add to the group defined by another radio button object.
+
+  multi method new ( Gnome::Gtk3::RadioButton :$group-from!, Str :$label! )
+
+Create a new object with a label.
+
+  multi method new ( Str :$label! )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 
@@ -178,7 +190,7 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<group-from> and ? %options<label> {
     my $w = %options<group-from>;
-    $w = $w() if $w ~~ Gnome::GObject::Object;
+    $w = $w() if $w ~~ Gnome::Gtk3::RadioButton;
     self.native-gobject(
       gtk_radio_button_new_with_label_from_widget( $w, %options<label>)
     );
@@ -308,7 +320,7 @@ sub gtk_radio_button_new_with_label ( N-GSList $group, Str $label )
 =head2 [gtk_radio_button_] new_with_label_from_widget
 
 Creates a new B<Gnome::Gtk3::RadioButton> with a text label, adding it to
-the same group as I<radio_group_member>.
+the same group.
 
 Returns: (transfer none): a new radio button.
 

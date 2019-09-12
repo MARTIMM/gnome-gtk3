@@ -63,21 +63,22 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create an empty button
-
-=head3 multi method new ( Str :$label! )
+  multi method new ( Bool :empty! )
 
 Creates a new button object with a label
 
-=head3 multi method new ( N-GObject :$widget! )
+  multi method new ( Str :$label! )
 
-Create a button using a native object from elsewhere. See also Gnome::GObject::Object.
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
-Create a button using a native object from a builder. See also Gnome::GObject::Object.
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
 =end pod
 
 #TM:2:new():inheriting:CheckButton

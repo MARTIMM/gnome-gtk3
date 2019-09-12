@@ -50,21 +50,21 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create an empty button
-
-### multi method new ( Str :$label! )
+    multi method new ( Bool :empty! )
 
 Creates a new button object with a label
 
-### multi method new ( N-GObject :$widget! )
+    multi method new ( Str :$label! )
 
-Create a button using a native object from elsewhere. See also Gnome::GObject::Object.
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-### multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$widget! )
 
-Create a button using a native object from a builder. See also Gnome::GObject::Object.
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_button_new
 --------------

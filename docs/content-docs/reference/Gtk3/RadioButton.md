@@ -96,20 +96,29 @@ Create a group with two radio buttons
 Methods
 =======
 
-new
----
+Create a new plain object.
 
-### multi method new ( Bool :$empty! )
+    multi method new ( Bool :empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new object and add to the group defined by the list.
 
-### multi method new ( N-GObject :$widget! )
+    multi method new ( Gnome::Glib::SList :$group!, Str :$label! )
+
+Create a new object and add to the group defined by another radio button object.
+
+    multi method new ( Gnome::Gtk3::RadioButton :$group-from!, Str :$label! )
+
+Create a new object with a label.
+
+    multi method new ( Str :$label! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-### multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_radio_button_new
 --------------------
@@ -147,7 +156,7 @@ Returns: a new radio button.
 [gtk_radio_button_] new_with_label_from_widget
 ----------------------------------------------
 
-Creates a new **Gnome::Gtk3::RadioButton** with a text label, adding it to the same group as *radio_group_member*.
+Creates a new **Gnome::Gtk3::RadioButton** with a text label, adding it to the same group.
 
 Returns: (transfer none): a new radio button.
 

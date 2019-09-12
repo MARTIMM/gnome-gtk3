@@ -67,17 +67,18 @@ has Bool $.border-is-valid = False;
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-=head3 multi method new ( N-GtkBorder :border! )
+  multi method new ( Bool :empty! )
 
 Create an object taking the native object from elsewhere.
 
-=head3 multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+  multi method new ( N-GtkBorder :border! )
 
 Create an object and initialize to given values.
+
+  multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
 
 =end pod
 

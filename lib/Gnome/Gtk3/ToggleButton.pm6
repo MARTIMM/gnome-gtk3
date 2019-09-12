@@ -93,21 +93,21 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 multi method new ( Str :$label )
+Create a new plain object.
+
+  multi method new ( Bool :empty! )
 
 Create a GtkToggleButton with a label.
 
-=head3 multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-=head3 multi method new ( N-GObject :$widget! )
+  multi method new ( Str :$label )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 
