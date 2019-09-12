@@ -233,9 +233,9 @@ Create an object using a native object from elsewhere. See also B<Gnome::GObject
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<current-folder-changed file-activated selection-changed
-            update-preview confirm-overwrite
-           >,
+    :w0< current-folder-changed file-activated selection-changed
+         update-preview confirm-overwrite
+       >,
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -267,22 +267,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   self.set-class-name-of-sub('GtkFileChooser');
   $s = callsame unless ?$s;
-
-  $s;
-}
-
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-# Hook for modules using this interface. Same principle as _fallback but
-# does not need calsame.
-method _interface ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
-
-  self.set-class-name-of-sub('GtkFileChooser');
-#  $s = callsame unless ?$s;
 
   $s;
 }

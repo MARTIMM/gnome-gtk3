@@ -717,10 +717,15 @@ sub substitute-in-template (
 
     =begin comment
     =head2 Implemented Interfaces
+
+    Gnome::LIBRARYMODULE implements
+
     =head2 Known implementations
 
-    =item Gnome::Gtk3::X
-    =item [Gnome::Gtk3::X](X.html)
+    Gnome::LIBRARYMODULE is implemented by
+
+    =item
+
     =end comment
 
     MODULE-SEEALSO
@@ -847,24 +852,6 @@ sub substitute-in-template (
 
         $s;
       }
-
-      #`{{ Uncomment in interfaces
-      #-------------------------------------------------------------------------------
-      # no pod. user does not have to know about it.
-      # Hook for modules using this interface. Same principle as _fallback but
-      # does not need calsame.
-      method _interface ( $native-sub is copy --> Callable ) {
-
-        my Callable $s;
-        try { $s = &::($native-sub); }
-        try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
-
-        self.set-class-name-of-sub('LIBCLASSNAME');
-      #  $s = callsame unless ?$s;
-
-        $s;
-      }
-      }}
 
       EOTEMPLATE
 

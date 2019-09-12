@@ -87,7 +87,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 ```
-And the `_interface()` in **Gnome::Gtk3::FileChooser**;
+And the `_interface()` in **Gnome::GObject::Interface**;
 ```
 method _interface ( $native-sub is copy --> Callable ) {
 
