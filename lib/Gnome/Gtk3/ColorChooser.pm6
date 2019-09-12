@@ -1,25 +1,32 @@
 #TL:1:Gnome::Gtk3::ColorChooser
 
 use v6;
-
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::ColorChooser
+=head1 Gnome::Gtk3::ColorChooser
 
-=SUBTITLE Interface implemented by widgets for choosing colors
+Interface implemented by widgets for choosing colors
 
 =head1 Description
 
-I<Gnome::Gtk3::ColorChooser> is an interface that is implemented by widgets for choosing colors. Depending on the situation, colors may be allowed to have alpha (translucency).
+B<Gnome::Gtk3::ColorChooser> is an interface that is implemented by widgets for choosing colors. Depending on the situation, colors may be allowed to have alpha (translucency).
 
-In GTK+, the main widgets that implement this interface are I<Gnome::Gtk3::ColorChooserWidget>, I<Gnome::Gtk3::ColorChooserDialog> and I<Gnome::Gtk3::ColorButton>.
+In GTK+, the main widgets that implement this interface are B<Gnome::Gtk3::ColorChooserWidget>, B<Gnome::Gtk3::ColorChooserDialog> and B<Gnome::Gtk3::ColorButton>.
 
 Since: 3.4
 
+=head2 Known implementations
+
+Gnome::Gtk3::ColorChooser is implemented by
+
+=item [Gnome::Gtk3::ColorButton](ColorButton.html)
+=item [Gnome::Gtk3::ColorChooserDialog](ColorChooserDialog.html)
+=item [Gnome::Gtk3::ColorChooserWidget](ColorChooserWidget.html)
+
 =head2 See Also
 
-I<Gnome::Gtk3::ColorChooserDialog>, I<Gnome::Gtk3::ColorChooserWidget>, I<Gnome::Gtk3::ColorButton>
+B<Gnome::Gtk3::ColorChooserDialog>, B<Gnome::Gtk3::ColorChooserWidget>, B<Gnome::Gtk3::ColorButton>
 
 =head1 Synopsis
 =head2 Declaration
@@ -33,8 +40,8 @@ I<Gnome::Gtk3::ColorChooserDialog>, I<Gnome::Gtk3::ColorChooserWidget>, I<Gnome:
     :title('my color dialog')
   );
 
-  # Get color chooser widget from widgets that implement the interface
-  my Gnome::Gtk3::ColorChooser $cc .= new(:widget($ccdialog));
+  # Use methods defined in the interface
+  note "Green channel: ", $ccdialog.get-rgba($color).green;
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -57,17 +64,17 @@ also is Gnome::GObject::Interface;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-#TM:1:new(:widget)
-
 =begin pod
 =head1 Methods
 =head2 new
 
-=head3 multi method new ( N-GObject :$widget! )
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
+  multi method new ( N-GObject :$widget! )
 
 =end pod
+
+#TM:2:new(:widget)
 
 submethod BUILD ( *%options ) {
 
@@ -195,7 +202,7 @@ sub gtk_color_chooser_set_use_alpha ( N-GObject $chooser, int32 $use_alpha )
 
 Adds a palette to the color chooser. If I<$orientation> is horizontal, the colors are grouped in rows, with I<$colors_per_line> colors in each row. If I<$horizontal> is C<0>, the colors are grouped in columns instead.
 
-The default color palette of I<Gnome::Gtk3::ColorChooserWidget> has 27 colors, organized in columns of 3 colors. The default gray palette has 9 grays in a single row.
+The default color palette of B<Gnome::Gtk3::ColorChooserWidget> has 27 colors, organized in columns of 3 colors. The default gray palette has 9 grays in a single row.
 
 The layout of the color chooser widget works best when the palettes have 9-10 columns.
 
@@ -317,7 +324,7 @@ sub _gtk_color_chooser_add_palette (
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also I<Gnome::GObject::Object>.
+Register any signal as follows. See also B<Gnome::GObject::Object>.
 
   my Bool $is-registered = $my-widget.register-signal (
     $handler-object, $handler-name, $signal-name,
@@ -356,7 +363,8 @@ Since: 3.4
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -365,27 +373,27 @@ An example of using a string type property of a I<Gnome::Gtk3::Label> object. Th
 
 
 =head2 Supported properties
+
+=begin comment
+=comment #TP:0:rgba:
+=head3 rgba
+
+The prop I<rgba> property contains the currently selected color, as a B<Gnome::Gdk3::RGBA> struct. The property can be set to change the current selection programmatically.
+
+Since: 3.4
+
+The B<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
+=end comment
+
 =comment #TP:0:use-alpha:
 =head3 use-alpha
 
-The I<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
-
-When prop I<use-alpha> is C<1>, colors may have alpha (translucency) information. When it is C<0>, the I<Gnome::Gdk3::RGBA> struct obtained via the prop I<rgba> property will be forced to have alpha == 1.
+When prop I<use-alpha> is C<1>, colors may have alpha (translucency) information. When it is C<0>, the B<Gnome::Gdk3::RGBA> struct obtained via the prop I<rgba> property will be forced to have alpha == 1.
 
 Implementations are expected to show alpha by rendering the color over a non-uniform background (like a checkerboard pattern).
 
 Since: 3.4
 
-
-=head2 Not yet supported properties
-
-=comment #TP:0:rgba:
-=head3 rgba
-
-The I<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
-
-The prop I<rgba> property contains the currently selected color, as a I<Gnome::Gdk3::RGBA> struct. The property can be set to change the current selection programmatically.
-
-Since: 3.4
+The B<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
 
 =end pod
