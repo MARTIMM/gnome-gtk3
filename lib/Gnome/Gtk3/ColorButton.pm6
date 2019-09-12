@@ -1,17 +1,19 @@
+#TL:1:Gnome::Gtk3::ColorButton:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::ColorButton
+=head1 Gnome::Gtk3::ColorButton
+
+A button to launch a color selection dialog
 
 ![](images/color-button.png)
-
-=SUBTITLE A button to launch a color selection dialog
 
 =head1 Description
 
 
-The C<Gnome::Gtk3::ColorButton> is a button which displays the currently selected
+The B<Gnome::Gtk3::ColorButton> is a button which displays the currently selected
 color and allows to open a color selection dialog to change the color.
 It is a suitable widget for selecting a color in a preference dialog.
 
@@ -19,14 +21,20 @@ It is a suitable widget for selecting a color in a preference dialog.
 =head2 Css Nodes
 
 
-C<Gnome::Gtk3::ColorButton> has a single CSS node with name button. To differentiate
-it from a plain C<Gnome::Gtk3::Button>, it gets the .color style class.
+B<Gnome::Gtk3::ColorButton> has a single CSS node with name button. To differentiate
+it from a plain B<Gnome::Gtk3::Button>, it gets the .color style class.
 
+=head2 Implemented Interfaces
 
+=item Atk::ImplementorIface
+=item Gnome::Gtk3::Buildable
+=item Gnome::Gtk3::Actionable
+=item Gnome::Gtk3::Activatable
+=item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
 =head2 See Also
 
-C<Gnome::Gtk3::ColorSelectionDialog>, C<Gnome::Gtk3::FontButton>
+B<Gnome::Gtk3::ColorSelectionDialog>, B<Gnome::Gtk3::FontButton>
 
 =head1 Synopsis
 =head2 Declaration
@@ -66,30 +74,35 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 multi method_new ( Bool :$empty! )
-
 Create a color button with current selected color
 
-=head3 multi method_new ( GdkRGBA :$color! )
+  multi method_new ( Bool :$empty! )
 
 Create a color button with a new color
 
-=head3 multi method new ( N-GObject :$widget! )
+  multi method_new ( GdkRGBA :$color! )
 
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
+
+#TM:1:new(:empty):
+#TM:1:new(:color):
+#TM:0:new(:widget):
+#TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc.
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<color-set>
+    :w0<color-set>
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -128,7 +141,17 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_color_button_$native-sub"); } unless ?$s;
 
-#note "ad $native-sub: ", $s;
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
+  if !$s {
+    $s = self._query_interfaces(
+      $native-sub, <
+        Gnome::Gtk3::Buildable Gnome::Gtk3::Actionable
+        Gnome::Gtk3::Activatable Gnome::Gtk3::ColorChooser
+      >
+    );
+  }
+
   self.set-class-name-of-sub('GtkColorButton');
   $s = callsame unless ?$s;
 
@@ -137,6 +160,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_color_button_new:
 =begin pod
 =head2 gtk_color_button_new
 
@@ -163,6 +187,7 @@ sub gtk_color_button_new (  )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_color_button_new_with_rgba:
 =begin pod
 =head2 [gtk_color_button_] new_with_rgba
 
@@ -174,7 +199,7 @@ Since: 3.0
 
   method gtk_color_button_new_with_rgba ( GdkRGBA $rgba --> N-GObject  )
 
-=item GdkRGBA $rgba; A C<Gnome::Gdk3::RGBA> to set the current color with
+=item N-GObject $rgba; A B<Gnome::Gdk3::RGBA> to set the current color with
 
 =end pod
 
@@ -184,6 +209,7 @@ sub gtk_color_button_new_with_rgba ( GdkRGBA $rgba )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_button_set_title:
 =begin pod
 =head2 [gtk_color_button_] set_title
 
@@ -202,6 +228,7 @@ sub gtk_color_button_set_title ( N-GObject $button, Str $title )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_color_button_get_title:
 =begin pod
 =head2 [gtk_color_button_] get_title
 
@@ -220,45 +247,45 @@ sub gtk_color_button_get_title ( N-GObject $button )
   returns Str
   is native(&gtk-lib)
   { * }
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 List of deprecated (not implemented!) methods
-
-=head2 Since 3.4.
-=head3 method gtk_color_button_new_with_color ( GdkColor $color --> N-GObject  )
-=head3 method gtk_color_button_set_color ( GdkColor $color )
-=head3 method gtk_color_button_get_color ( GdkColor $color )
-=head3 method gtk_color_button_set_alpha ( UInt $alpha )
-=head3 method gtk_color_button_get_alpha ( --> UInt  )
-=head3 method gtk_color_button_set_use_alpha ( Int $use_alpha )
-=head3 method gtk_color_button_get_use_alpha ( --> Int  )
-=head3 method gtk_color_button_set_rgba ( N-GObject $rgba )
-=head3 method gtk_color_button_get_rgba ( N-GObject $rgba )
-=end pod
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
 
-  my Bool $is-registered = $my-widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., $user-optionN
-  )
+=head2 First method
 
-=begin comment
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
-=head2 Unsupported signals
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
-=head2 Not yet supported signals
-=end comment
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
 =head2 Supported signals
+
+
+=comment #TS:0:color-set:
 =head3 color-set
 
-The C<color-set> signal is emitted when the user selects a color.
-When handling this signal, use gtk_color_button_get_rgba() to
+The I<color-set> signal is emitted when the user selects a color.
+When handling this signal, use C<gtk_color_button_get_rgba()> to
 find out which color was just selected.
 
 Note that this signal is only emitted when the user
@@ -268,22 +295,18 @@ as well, use the notify::color signal.
 Since: 2.4
 
   method handler (
-    Gnome::GObject::Object :$widget,
-    :$user-option1, ..., $user-optionN
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
   );
 
 =item $widget; the object which received the signal.
-
 =end pod
 
-
-
 #-------------------------------------------------------------------------------
-#TODO Must add type info
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -292,58 +315,46 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=head3 use-alpha
+=comment #TP:0:use-alpha:
+=head3 Use alpha
 
-The C<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
 
 If this property is set to C<1>, the color swatch on the button is
 rendered against a checkerboard background to show its opacity and
 the opacity slider is displayed in the color selection dialog.
-
 Since: 2.4
 
+The B<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
 
+=comment #TP:0:title:
+=head3 Title
 
-=head3 title
-
-The C<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
 
 The title of the color selection dialog
-
 Since: 2.4
 
+The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
+
+#`{{
+=comment #TP:0:rgba:
+=head3 Current RGBA Color
 
 
-=head3 alpha
+The RGBA color.
+Since: 3.0
 
-The C<Gnome::GObject::Value> type of property I<alpha> is C<G_TYPE_UINT>.
+The B<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
+}}
+=comment #TP:0:show-editor:
+=head3 Show Editor
 
-The selected opacity value (0 fully transparent, 65535 fully opaque).
-
-Since: 2.4
-
-
-=head3 show-editor
-
-The C<Gnome::GObject::Value> type of property I<show-editor> is C<G_TYPE_BOOLEAN>.
 
 Set this property to C<1> to skip the palette
 in the dialog and go directly to the color editor.
-
 This property should be used in cases where the palette
 in the editor would be redundant, such as when the color
 button is already part of a palette.
-
 Since: 3.20
 
-=head2 Not yet supported properties
-
-=head3 rgba
-
-The C<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
-
-The RGBA color.
-
-Since: 3.0
-
+The B<Gnome::GObject::Value> type of property I<show-editor> is C<G_TYPE_BOOLEAN>.
 =end pod
