@@ -2,6 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::MenuButton;
 
 #use Gnome::N::X;
@@ -16,11 +17,12 @@ subtest 'ISA test', {
   isa-ok $mb, Gnome::Gtk3::MenuButton;
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  diag ".set-direction() / .get-direction()";
+  $mb.set-direction(GTK_ARROW_RIGHT);
+  is GtkArrowType($mb.get-direction), GTK_ARROW_RIGHT, 'arrow set right';
 }
-}}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
@@ -41,6 +43,14 @@ subtest 'Interface ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
 }
 }}
 
