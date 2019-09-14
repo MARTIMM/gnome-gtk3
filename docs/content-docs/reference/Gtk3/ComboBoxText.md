@@ -1,14 +1,9 @@
-TITLE
-=====
-
 Gnome::Gtk3::ComboBoxText
-
-![](images/combo-box-text.png)
-
-SUBTITLE
-========
+=========================
 
 A simple, text-only combo box
+
+![](images/combo-box-text.png)
 
 Description
 ===========
@@ -49,6 +44,17 @@ Css Nodes
 
 `Gnome::Gtk3::ComboBoxText` has a single CSS node with name combobox. It adds the style class .combo to the main CSS nodes of its entry and button children, and the .linked class to the node of its internal box.
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::ComboBoxText implements
+
+  * Gnome::Gtk3::Buildable
+
+  * Gnome::Gtk3::CellLayout
+
+  * Gnome::Gtk3::CellEditable
+
 See Also
 --------
 
@@ -72,24 +78,24 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+    multi method new ( Bool :empty! )
 
-### multi method new ( N-GObject :$widget! )
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-Create a simple text combobox using a native object from elsewhere. See also `Gnome::GObject::Object`.
+    multi method new ( N-GObject :$widget! )
 
-### multi method new ( Str :$build-id! )
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
-Create a simple text combobox using a native object from a builder. See also `Gnome::GObject::Object`.
+    multi method new ( Str :$build-id! )
 
 gtk_combo_box_text_new
 ----------------------
 
-Creates a new `Gnome::Gtk3::ComboBoxText`, which is a `Gnome::Gtk3::ComboBox` just displaying strings.
+Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings.
 
-Returns: A new `Gnome::Gtk3::ComboBoxText`
+Returns: A new **Gnome::Gtk3::ComboBoxText**
 
 Since: 2.24
 
@@ -98,9 +104,9 @@ Since: 2.24
 [gtk_combo_box_text_] new_with_entry
 ------------------------------------
 
-Creates a new `Gnome::Gtk3::ComboBoxText`, which is a `Gnome::Gtk3::ComboBox` just displaying strings. The combo box created by this function has an entry.
+Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings. The combo box created by this function has an entry.
 
-Returns: a new `Gnome::Gtk3::ComboBoxText`
+Returns: a new **Gnome::Gtk3::ComboBoxText**
 
 Since: 2.24
 
@@ -183,7 +189,7 @@ Since: 2.24
 gtk_combo_box_text_insert
 -------------------------
 
-Inserts *text* at *position* in the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row. See prop `id-column`.
+Inserts *text* at *position* in the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row. See *id-column*.
 
 If *position* is negative then *text* is appended.
 

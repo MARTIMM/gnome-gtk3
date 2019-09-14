@@ -14,19 +14,47 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Manips', {
-  is $cbt.get-active, -1, 'nothing selected';
-  is $cbt.get-has-entry, 0, 'no entries';
-#`{{
+subtest 'Manipulations', {
   $cbt.append-text('Amerika');
   $cbt.append-text('Australia');
   $cbt.append-text('China');
   $cbt.append-text('Great-Brittain');
   $cbt.append-text('Netherlands');
-
-  is $cbt.get-has-entry, 1, 'there are entries';
-}}
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit ...', {
+  is $cbt.get-has-entry, 0, 'no Gnome::Gtk3::Entry';
+
+  is $cbt.get-active, -1, 'nothing selected';
+  $cbt.set-active(1);
+  is $cbt.get-active, 1, 'entry 1 selected';
+
+  is $cbt.get-active-text, 'Australia', 'entry text ok';
+}
+
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+}
+}}
 
 #-------------------------------------------------------------------------------
 done-testing;
