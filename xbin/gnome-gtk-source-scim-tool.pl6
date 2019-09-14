@@ -971,7 +971,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
     # save doc and remove from source but stop if none left
     my Str $sdoc = ~($<signal-doc> // '');
-#note "SDoc: ", ?$sdoc;
+#note "SDoc $lib-class-name: ", ?$sdoc;
 
     last unless ?$sdoc;
     $source-content ~~ s/$sdoc//;
@@ -985,10 +985,11 @@ sub get-signals ( Str:D $source-content is copy ) {
 
     # get some more info from the function call
     $source-content ~~ m/
-      'g_signal_new' \s* '('
+      'g_signal_new' '_class_handler'? \s* '('
       $<signal-args> = [ <[A..Z]> '_(' '"' $signal-name '"' .*? ]
       ');'
     /;
+#note "SA $signal-name: ", ~$<signal-args>;
 
     # save and remove from source but stop if there isn't any left
     my Str $sig-args = ~($<signal-args>//'');
@@ -1152,7 +1153,9 @@ sub get-signals ( Str:D $source-content is copy ) {
     for @$items-src-doc -> $idoc {
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
     }
+#note "next signal";
   }
+#note "last signal";
 
   my Str $bool-signals-added = '';
   my Str $build-add-signals = '';
