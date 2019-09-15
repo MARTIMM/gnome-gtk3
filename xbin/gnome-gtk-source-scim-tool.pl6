@@ -972,24 +972,25 @@ sub get-signals ( Str:D $source-content is copy ) {
     # save doc and remove from source but stop if none left
     my Str $sdoc = ~($<signal-doc> // '');
 #note "SDoc $lib-class-name: ", ?$sdoc;
+    my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
 
-    last unless ?$sdoc;
-    $source-content ~~ s/$sdoc//;
+    # possibly no documentation
+    if $has-doc {
+      $source-content ~~ s/$sdoc//;
 
-    # get lib class name and remove line from source
-    $sdoc ~~ m/
-      ^^ \s+ '*' \s+ $lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
-    /;
-    $signal-name = ~($<signal-name> // '');
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
+      # get lib class name and remove line from source
+      $sdoc ~~ m/
+        ^^ \s+ '*' \s+ $lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
+      /;
+      $signal-name = ~($<signal-name> // '');
+      $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
+    }
 
     # get some more info from the function call
     $source-content ~~ m/
       'g_signal_new' '_class_handler'? \s* '('
-      $<signal-args> = [ <[A..Z]> '_(' '"' $signal-name '"' .*? ]
-      ');'
+      $<signal-args> = [ <[A..Z]> '_(' '"' <-[\"]>+ '"' .*? ] ');'
     /;
-#note "SA $signal-name: ", ~$<signal-args>;
 
     # save and remove from source but stop if there isn't any left
     my Str $sig-args = ~($<signal-args>//'');
@@ -998,15 +999,22 @@ sub get-signals ( Str:D $source-content is copy ) {
       last;
     }
     $source-content ~~ s/ 'g_signal_new' \s* '(' $sig-args ');' //;
+
 #note "sig args: ", $sig-args;
+    # when there's no doc, signal name must be retrieved from function argument
+    unless $signal-name {
+      $sig-args ~~ m/ '"' $<signal-name> = [ <-[\"]>+ ] '"' /;
+      $signal-name = ($<signal-name>//'').Str;
+    }
 
+#note "SA $signal-name: ", $sig-args;
 
-#note "Signal doc:\n", $sdoc;
-
+    # start pod doc
     $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
     note "get signal $signal-name";
 
     # process g_signal_new arguments, remove commas from specific macro
+    # by removing the complete argument list. it's not needed.
     $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
     my @args = ();
     for $sig-args.split(/ \s* ',' \s* /) -> $arg is copy {
@@ -1015,8 +1023,10 @@ sub get-signals ( Str:D $source-content is copy ) {
     }
 
 #note "Args: ", @args[7..*-1];
+    # get a return type
     my Str $return-type = '';
     given @args[7] {
+      # most of the time it is a boolean ( == c int32)
       when 'G_TYPE_BOOLEAN' {
         $return-type = 'Int';
       }
@@ -1025,10 +1035,22 @@ sub get-signals ( Str:D $source-content is copy ) {
         $return-type = ''
       }
 
+      # show that there is something
       default {
         $return-type = "Unknown type @args[7]";
       }
     }
+
+    my Int $item-count = 0;
+
+    # create proper variable name when not available from the doc
+    my Str $iname = $lib-class-name;
+    $iname ~~ s:i/^ [ gtk || gdk || g ] //;
+    $iname .= lc;
+    $items-src-doc.push: %(
+      :item-type<Gnome::GObject::Object>, :item-name($iname),
+      :item-doc('')
+    );
 
     my Array $signal-args = ['Gnome::GObject::Object'];
     my Int $arg-count = @args[8].Int;
@@ -1044,10 +1066,21 @@ sub get-signals ( Str:D $source-content is copy ) {
           $arg-type = 'Str';
         }
 
+        when 'GTK_TYPE_WIDGET' {
+          $arg-type = 'Gnome::Gtk3::Widget';
+        }
+
         default {
           $arg-type = "Unknown type @args[{9 + $i}]";
         }
       }
+
+      my Str $item-name = $arg-type.lc;
+      $item-name ~~ s/ 'gnome::gtk3::' //;
+      $items-src-doc.push: %(
+        :item-type($arg-type), :$item-name,
+        :item-doc('')
+      );
 
 #note "AT: $i, $arg-type";
       $signal-args.push: $arg-type;
@@ -1063,73 +1096,76 @@ sub get-signals ( Str:D $source-content is copy ) {
     my Bool $item-scan = True;
     #my Bool $first-arg = True;
 
-    my Int $item-count = 0;
-    for $sdoc.lines -> $line {
-#note "L: $line";
+    $item-count = 0;
+    if $has-doc {
+      $items-src-doc = 0;
+      for $sdoc.lines -> $line {
+  #note "L: $line";
 
-      # argument doc start
-      if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
+        # argument doc start
+        if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
 
-        # push when 2nd arg is found
-#note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
-        $items-src-doc.push: %(
-          :item-type($signal-args[$item-count++]), :$item-name, :$item-doc
-        ) if ?$item-name;
+          # push when 2nd arg is found
+  #note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
+          $items-src-doc.push: %(
+            :item-type($signal-args[$item-count++]), :$item-name, :$item-doc
+          ) if ?$item-name;
 
-        # get the info from the current line
-        $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
-                    \s* $<item-doc> = [ .* ]
-                  /;
+          # get the info from the current line
+          $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
+                      \s* $<item-doc> = [ .* ]
+                    /;
 
-        $item-name = ~($<item-name> // '');
-        $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
-#note "n, d: $item-name, $item-doc";
+          $item-name = ~($<item-name> // '');
+          $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
+  #note "n, d: $item-name, $item-doc";
+        }
+
+        # continue previous argument doc
+        elsif $item-scan and
+              $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
+          my Str $s = ~($<item-doc> // '');
+          $item-doc ~= primary-doc-changes($s) ~ "\n";
+  #note "d: $item-doc";
+        }
+
+        # on empty line after '*' start sub doc
+        elsif $line ~~ m/^ \s* '*' \s* $/ {
+          # push last arg
+  #note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
+  #if $item-scan and ?$item-name;
+          $items-src-doc.push: %(
+            :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+          ) if $item-scan and ?$item-name;
+
+          $spart-doc ~= "\n";
+          $item-scan = False;
+        }
+
+        # rest is sub doc
+        elsif !$item-scan {
+          # skip end of document
+          next if $line ~~ m/ '*/' /;
+
+          my Str $l = $line;
+          $l ~~ s/^ \s* '*' \s* //;
+          $spart-doc ~= $l ~ "\n";
+        }
       }
 
-      # continue previous argument doc
-      elsif $item-scan and
-            $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
-        my Str $s = ~($<item-doc> // '');
-        $item-doc ~= primary-doc-changes($s) ~ "\n";
-#note "d: $item-doc";
-      }
+      # when there is no sub doc, it might end a bit abdrupt
+      #note "ISD 2: $item-count, $item-name, $signal-args[$item-count]"
+      #if $item-scan and ?$item-name;
 
-      # on empty line after '*' start sub doc
-      elsif $line ~~ m/^ \s* '*' \s* $/ {
-        # push last arg
-#note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
-#if $item-scan and ?$item-name;
-        $items-src-doc.push: %(
-          :item-type($signal-args[$item-count]), :$item-name, :$item-doc
-        ) if $item-scan and ?$item-name;
+      $items-src-doc.push: %(
+      :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+      ) if $item-scan and ?$item-name;
 
-        $spart-doc ~= "\n";
-        $item-scan = False;
-      }
-
-      # rest is sub doc
-      elsif !$item-scan {
-        # skip end of document
-        next if $line ~~ m/ '*/' /;
-
-        my Str $l = $line;
-        $l ~~ s/^ \s* '*' \s* //;
-        $spart-doc ~= $l ~ "\n";
-      }
+      $signal-doc ~= primary-doc-changes($spart-doc);
     }
 
-    # when there is no sub doc, it might end a bit abdrupt
-#note "ISD 2: $item-count, $item-name, $signal-args[$item-count]"
-#if $item-scan and ?$item-name;
 
-    $items-src-doc.push: %(
-      :item-type($signal-args[$item-count]), :$item-name, :$item-doc
-    ) if $item-scan and ?$item-name;
-
-    $signal-doc ~= primary-doc-changes($spart-doc);
     $signal-doc ~= "\n  method handler (\n";
-
-
     $item-count = 0;
     my Str $first-arg = '';
     for @$items-src-doc -> $idoc {
@@ -1350,7 +1386,7 @@ sub get-properties ( Str:D $source-content is copy ) {
     $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
     $prop-args ~~ s/ '));' //;
 
-    # process arguments
+    # process arguments. first rename commas in string into _COMMA_
     my Bool $in-string = False;
     my Str $temp-prop-args = $prop-args;
     $prop-args = '';
