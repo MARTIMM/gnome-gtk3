@@ -1067,7 +1067,11 @@ sub get-signals ( Str:D $source-content is copy ) {
         }
 
         when 'GTK_TYPE_WIDGET' {
-          $arg-type = 'Gnome::Gtk3::Widget';
+          $arg-type = 'N-GObject';
+        }
+
+        when 'G_TYPE_ERROR' {
+          $arg-type = 'N-GError';
         }
 
         default {
@@ -1098,7 +1102,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
     $item-count = 0;
     if $has-doc {
-      $items-src-doc = 0;
+      $items-src-doc = [];
       for $sdoc.lines -> $line {
   #note "L: $line";
 
