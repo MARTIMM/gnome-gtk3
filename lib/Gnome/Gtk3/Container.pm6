@@ -10,25 +10,25 @@ Base class for widgets which contain other widgets
 
 =head1 Description
 
-A GTK+ user interface is constructed by nesting widgets inside widgets. Container widgets are the inner nodes in the resulting tree of widgets: they contain other widgets. So, for example, you might have a C<Gnome::Gtk3::Window> containing a C<Gnome::Gtk3::Frame> containing a C<Gnome::Gtk3::Label>. If you wanted an image instead of a textual label inside the frame, you might replace the C<Gnome::Gtk3::Label> widget with a C<Gnome::Gtk3::Image> widget.
+A GTK+ user interface is constructed by nesting widgets inside widgets. Container widgets are the inner nodes in the resulting tree of widgets: they contain other widgets. So, for example, you might have a B<Gnome::Gtk3::Window> containing a B<Gnome::Gtk3::Frame> containing a B<Gnome::Gtk3::Label>. If you wanted an image instead of a textual label inside the frame, you might replace the B<Gnome::Gtk3::Label> widget with a B<Gnome::Gtk3::Image> widget.
 
-There are two major kinds of container widgets in GTK+. Both are subclasses of the abstract C<Gnome::Gtk3::Container> base class.
+There are two major kinds of container widgets in GTK+. Both are subclasses of the abstract B<Gnome::Gtk3::Container> base class.
 
-The first type of container widget has a single child widget and derives from C<Gnome::Gtk3::Bin>. These containers are decorators, which add some kind of functionality to the child. For example, a C<Gnome::Gtk3::Button> makes its child into a clickable button; a C<Gnome::Gtk3::Frame> draws a frame around its child and a C<Gnome::Gtk3::Window> places its child widget inside a top-level window.
+The first type of container widget has a single child widget and derives from B<Gnome::Gtk3::Bin>. These containers are decorators, which add some kind of functionality to the child. For example, a B<Gnome::Gtk3::Button> makes its child into a clickable button; a B<Gnome::Gtk3::Frame> draws a frame around its child and a B<Gnome::Gtk3::Window> places its child widget inside a top-level window.
 
-The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a C<Gnome::Gtk3::HBox> arranges its children in a horizontal row, and a C<Gnome::Gtk3::Grid> arranges the widgets it contains in a two-dimensional grid.
+The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a B<Gnome::Gtk3::HBox> arranges its children in a horizontal row, and a B<Gnome::Gtk3::Grid> arranges the widgets it contains in a two-dimensional grid.
 
-For implementations of C<Gnome::Gtk3::Container> the virtual method C<Gnome::Gtk3::ContainerClass>.C<forall()> is always required, since it's used for drawing and other internal operations on the children. If the C<Gnome::Gtk3::Container> implementation expect to have non internal children it's needed to implement both C<Gnome::Gtk3::ContainerClass>.C<add()> and C<Gnome::Gtk3::ContainerClass>.C<remove()>. If the C<Gnome::Gtk3::Container> implementation has internal children, they should be added with C<gtk_widget_set_parent()> on C<init()> and removed with C<gtk_widget_unparent()> in the C<Gnome::Gtk3::WidgetClass>.C<destroy()> implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
+For implementations of B<Gnome::Gtk3::Container> the virtual method B<Gnome::Gtk3::ContainerClass>.C<forall()> is always required, since it's used for drawing and other internal operations on the children. If the B<Gnome::Gtk3::Container> implementation expect to have non internal children it's needed to implement both B<Gnome::Gtk3::ContainerClass>.C<add()> and B<Gnome::Gtk3::ContainerClass>.C<remove()>. If the B<Gnome::Gtk3::Container> implementation has internal children, they should be added with C<gtk_widget_set_parent()> on C<init()> and removed with C<gtk_widget_unparent()> in the B<Gnome::Gtk3::WidgetClass>.C<destroy()> implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
 
 =head2 Height for width geometry management
 
 GTK+ uses a height-for-width (and width-for-height) geometry management system. Height-for-width means that a widget can change how much vertical space it needs, depending on the amount of horizontal space that it is given (and similar for width-for-height).
 
-There are some things to keep in mind when implementing container widgets that make use of GTK+’s height for width geometry management system. First, it’s important to note that a container must prioritize one of its dimensions, that is to say that a widget or container can only have a C<Gnome::Gtk3::SizeRequestMode> that is C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> or C<GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT>. However, every widget and container must be able to respond to the APIs for both dimensions, i.e. even if a widget has a request mode that is height-for-width, it is possible that its parent will request its sizes using the width-for-height APIs.
+There are some things to keep in mind when implementing container widgets that make use of GTK+’s height for width geometry management system. First, it’s important to note that a container must prioritize one of its dimensions, that is to say that a widget or container can only have a B<Gnome::Gtk3::SizeRequestMode> that is C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> or C<GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT>. However, every widget and container must be able to respond to the APIs for both dimensions, i.e. even if a widget has a request mode that is height-for-width, it is possible that its parent will request its sizes using the width-for-height APIs.
 
 To ensure that everything works properly, here are some guidelines to follow when implementing height-for-width (or width-for-height) containers.
 
-Each request mode involves 2 virtual methods. Height-for-width apis run through C<gtk_widget_get_preferred_width()> and then through C<gtk_widget_get_preferred_height_for_width()>. When handling requests in the opposite C<Gnome::Gtk3::SizeRequestMode> it is important that every widget request at least enough space to display all of its content at all times.
+Each request mode involves 2 virtual methods. Height-for-width apis run through C<gtk_widget_get_preferred_width()> and then through C<gtk_widget_get_preferred_height_for_width()>. When handling requests in the opposite B<Gnome::Gtk3::SizeRequestMode> it is important that every widget request at least enough space to display all of its content at all times.
 
 When C<gtk_widget_get_preferred_height()> is called on a container that is height-for-width, the container must return the height for its minimum width. This is easily achieved by simply calling the reverse apis implemented for itself.
 
@@ -36,7 +36,7 @@ When C<gtk_widget_get_preferred_height()> is called on a container that is heigh
 as follows:
 
 static void
-foo_container_get_preferred_height (C<Gnome::Gtk3::Widget> *widget,
+foo_container_get_preferred_height (B<Gnome::Gtk3::Widget> *widget,
                                     gint *min_height,
                                     gint *nat_height)
 {
@@ -70,7 +70,7 @@ Similarly, when C<gtk_widget_get_preferred_width_for_height()> is called for a c
 like so:
 
 static void
-foo_container_get_preferred_width_for_height (C<Gnome::Gtk3::Widget> *widget,
+foo_container_get_preferred_width_for_height (B<Gnome::Gtk3::Widget> *widget,
                                               gint for_height,
                                               gint *min_width,
                                               gint *nat_width)
@@ -93,20 +93,20 @@ foo_container_get_preferred_width_for_height (C<Gnome::Gtk3::Widget> *widget,
 
 Height for width requests are generally implemented in terms of a virtual allocation of widgets in the input orientation. Assuming an height-for-width request mode, a container would implement the C<get_preferred_height_for_width()> virtual function by first calling C<gtk_widget_get_preferred_width()> for each of its children.
 
-For each potential group of children that are lined up horizontally, the values returned by C<gtk_widget_get_preferred_width()> should be collected in an array of C<Gnome::Gtk3::RequestedSize> structures. Any child spacing should be removed from the input I<for_width> and then the collective size should be allocated using the C<gtk_distribute_natural_allocation()> convenience function.
+For each potential group of children that are lined up horizontally, the values returned by C<gtk_widget_get_preferred_width()> should be collected in an array of B<Gnome::Gtk3::RequestedSize> structures. Any child spacing should be removed from the input I<for_width> and then the collective size should be allocated using the C<gtk_distribute_natural_allocation()> convenience function.
 
-The container will then move on to request the preferred height for each child by using C<gtk_widget_get_preferred_height_for_width()> and using the sizes stored in the C<Gnome::Gtk3::RequestedSize> array.
+The container will then move on to request the preferred height for each child by using C<gtk_widget_get_preferred_height_for_width()> and using the sizes stored in the B<Gnome::Gtk3::RequestedSize> array.
 
-To allocate a height-for-width container, it’s again important to consider that a container must prioritize one dimension over the other. So if a container is a height-for-width container it must first allocate all widgets horizontally using a C<Gnome::Gtk3::RequestedSize> array and C<gtk_distribute_natural_allocation()> and then add any extra space (if and where appropriate) for the widget to expand.
+To allocate a height-for-width container, it’s again important to consider that a container must prioritize one dimension over the other. So if a container is a height-for-width container it must first allocate all widgets horizontally using a B<Gnome::Gtk3::RequestedSize> array and C<gtk_distribute_natural_allocation()> and then add any extra space (if and where appropriate) for the widget to expand.
 
-After adding all the expand space, the container assumes it was allocated sufficient height to fit all of its content. At this time, the container must use the total horizontal sizes of each widget to request the height-for-width of each of its children and store the requests in a C<Gnome::Gtk3::RequestedSize> array for any widgets that stack vertically (for tabular containers this can be generalized into the heights and widths of rows and columns). The vertical space must then again be distributed using C<gtk_distribute_natural_allocation()> while this time considering the allocated height of the widget minus any vertical spacing that the container adds. Then vertical expand space should be added where appropriate and available and the container should go on to actually allocating the child widgets.
+After adding all the expand space, the container assumes it was allocated sufficient height to fit all of its content. At this time, the container must use the total horizontal sizes of each widget to request the height-for-width of each of its children and store the requests in a B<Gnome::Gtk3::RequestedSize> array for any widgets that stack vertically (for tabular containers this can be generalized into the heights and widths of rows and columns). The vertical space must then again be distributed using C<gtk_distribute_natural_allocation()> while this time considering the allocated height of the widget minus any vertical spacing that the container adds. Then vertical expand space should be added where appropriate and available and the container should go on to actually allocating the child widgets.
 
-See [C<Gnome::Gtk3::Widget>’s geometry management section](https://developer.gnome.org/gtk3/3.24/GtkWidget.html#geometry-managementgeometry-management) to learn more about implementing height-for-width geometry management for widgets.
+See [B<Gnome::Gtk3::Widget>’s geometry management section](https://developer.gnome.org/gtk3/3.24/GtkWidget.html#geometry-managementgeometry-management) to learn more about implementing height-for-width geometry management for widgets.
 
 =begin comment
 =head2 Child properties
 
-C<Gnome::Gtk3::Container> introduces child properties. These are object properties that are not specific to either the container or the contained widget, but rather to their relation. Typical examples of child properties are the position or pack-type of a widget which is contained in a C<Gnome::Gtk3::Box>.
+B<Gnome::Gtk3::Container> introduces child properties. These are object properties that are not specific to either the container or the contained widget, but rather to their relation. Typical examples of child properties are the position or pack-type of a widget which is contained in a B<Gnome::Gtk3::Box>.
 
 Use C<gtk_container_class_install_child_property()> to install child properties for a container class and C<gtk_container_class_find_child_property()> or C<gtk_container_class_list_child_properties()> to get information about existing child properties.
 
@@ -115,7 +115,7 @@ To set the value of a child property, use C<gtk_container_child_set_property()>,
 
 =head2 Gnome::Gtk3::Container as Gnome::Gtk3::Buildable
 
-The C<Gnome::Gtk3::Container> implementation of the C<Gnome::Gtk3::Buildable> interface supports a <packing> element for children, which can contain multiple <property> elements that specify child properties for the child.
+The B<Gnome::Gtk3::Container> implementation of the B<Gnome::Gtk3::Buildable> interface supports a <packing> element for children, which can contain multiple <property> elements that specify child properties for the child.
 
 Since 2.16, child properties can also be marked as translatable using the same “translatable”, “comments” and “context” attributes that are usedfor regular properties.
 
@@ -200,11 +200,11 @@ my Bool $signals-added = False;
 
 =head3 multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
 =head3 multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
 =end pod
 
@@ -400,6 +400,7 @@ sub gtk_container_foreach ( N-GObject $container, GtkCallback $callback, Pointer
   is native(&gtk-lib)
   { * }
 }}
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_children:
 =begin pod
@@ -408,7 +409,7 @@ sub gtk_container_foreach ( N-GObject $container, GtkCallback $callback, Pointer
 Returns the container’s non-internal children. See
 C<gtk_container_forall()> for details on what constitutes an "internal" child.
 
-Returns: (element-type B<Gnome::Gtk3::Widget>) (transfer container): a newly-allocated list of the container’s non-internal children.
+Returns: a newly-allocated list of the container’s non-internal children. The type of the elements are native widgets.
 
   method gtk_container_get_children ( --> N-GList  )
 
@@ -1005,7 +1006,7 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 add
 
   method handler (
-    Gnome::Gtk3::Widget $widget,
+    N-GObject $widget,
     Gnome::GObject::Object :widget($container),
     *%user-options
   );
@@ -1017,7 +1018,7 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 remove
 
   method handler (
-    Gnome::Gtk3::Widget $widget,
+    N-GObject $widget,
     Gnome::GObject::Object :widget($container),
     *%user-options
   );
@@ -1039,7 +1040,7 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 set-focus-child
 
   method handler (
-    Gnome::Gtk3::Widget $widget,
+    N-GObject $widget,
     Gnome::GObject::Object :widget($container),
     *%user-options
   );
@@ -1113,7 +1114,7 @@ Sets the border width of the container.
 
 The border width of a container is the amount of space to leave
 around the outside of the container. The only exception to this is
-C<Gnome::Gtk3::Window>; because toplevel windows can’t leave space outside,
+B<Gnome::Gtk3::Window>; because toplevel windows can’t leave space outside,
 they leave the space inside. The border is added on all sides of
 the container. To add space to only one side, use a specific
 prop C<margin> property on the child widget, for example
@@ -1153,15 +1154,15 @@ sub gtk_container_get_border_width ( N-GObject $container )
 =head2 gtk_container_add
 
 Adds I<widget> to I<container>. Typically used for simple containers
-such as C<Gnome::Gtk3::Window>, C<Gnome::Gtk3::Frame>, or C<Gnome::Gtk3::Button>; for more complicated
-layout containers such as C<Gnome::Gtk3::Box> or C<Gnome::Gtk3::Grid>, this function will
+such as B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Frame>, or B<Gnome::Gtk3::Button>; for more complicated
+layout containers such as B<Gnome::Gtk3::Box> or B<Gnome::Gtk3::Grid>, this function will
 pick default packing parameters that may not be correct.  So
 consider functions such as C<gtk_box_pack_start()> and
 C<gtk_grid_attach()> as an alternative to C<gtk_container_add()> in
 those cases. A widget may be added to only one container at a time;
 you can’t place the same widget inside two different containers.
 
-Note that some containers, such as C<Gnome::Gtk3::ScrolledWindow> or C<Gnome::Gtk3::ListBox>,
+Note that some containers, such as B<Gnome::Gtk3::ScrolledWindow> or B<Gnome::Gtk3::ListBox>,
 may add intermediate children between the added widget and the
 container.
 
@@ -1248,7 +1249,7 @@ sub gtk_container_foreach ( N-GObject $container, GtkCallback $callback, Pointer
 Returns the container’s non-internal children. See
 C<gtk_container_forall()> for details on what constitutes an "internal" child.
 
-Returns: (element-type C<Gnome::Gtk3::Widget>) (transfer container): a newly-allocated list of the container’s non-internal children.
+Returns: a newly-allocated list of the container’s non-internal children. The type of the elements are native widgets.
 
   method gtk_container_get_children ( --> N-GObject  )
 
@@ -1267,7 +1268,7 @@ sub gtk_container_get_children ( N-GObject $container )
 
 When a container receives a call to the draw function, it must send
 synthetic sig C<draw> calls to all children that don’t have their
-own C<Gnome::Gdk3::Windows>. This function provides a convenient way of doing this.
+own B<Gnome::Gdk3::Windows>. This function provides a convenient way of doing this.
 A container, when it receives a call to its sig C<draw> function,
 calls C<gtk_container_propagate_draw()> once for each child, passing in
 the I<cr> the container received.
@@ -1278,8 +1279,8 @@ convenient and optimized way of getting the same effect as calling
 C<gtk_widget_draw()> on the child directly.
 
 In most cases, a container can simply either inherit the
-sig C<draw> implementation from C<Gnome::Gtk3::Container>, or do some drawing
-and then chain to the sig I<draw> implementation from C<Gnome::Gtk3::Container>.
+sig C<draw> implementation from B<Gnome::Gtk3::Container>, or do some drawing
+and then chain to the sig I<draw> implementation from B<Gnome::Gtk3::Container>.
 
   method gtk_container_propagate_draw ( N-GObject $child, cairo_t $cr )
 
@@ -1299,8 +1300,8 @@ sub gtk_container_propagate_draw ( N-GObject $container, N-GObject $child, cairo
 
 Sets, or unsets if I<child> is C<Any>, the focused child of I<container>.
 
-This function emits the C<Gnome::Gtk3::Container>::set_focus_child signal of
-I<container>. Implementations of C<Gnome::Gtk3::Container> can override the
+This function emits the B<Gnome::Gtk3::Container>::set_focus_child signal of
+I<container>. Implementations of B<Gnome::Gtk3::Container> can override the
 default behaviour by overriding the class closure of this signal.
 
 This is function is mostly meant to be used by widgets. Applications can use
@@ -1308,7 +1309,7 @@ C<gtk_widget_grab_focus()> to manually set the focus to a specific widget.
 
   method gtk_container_set_focus_child ( N-GObject $child )
 
-=item N-GObject $child; (allow-none): a C<Gnome::Gtk3::Widget>, or C<Any>
+=item N-GObject $child; (allow-none): a B<Gnome::Gtk3::Widget>, or C<Any>
 
 =end pod
 
@@ -1434,7 +1435,7 @@ sub gtk_container_get_focus_hadjustment ( N-GObject $container )
 Returns the type of the children supported by the container.
 
 Note that this may return C<G_TYPE_NONE> to indicate that no more
-children can be added, e.g. for a C<Gnome::Gtk3::Paned> which already has two
+children can be added, e.g. for a B<Gnome::Gtk3::Paned> which already has two
 children.
 
 Returns: a C<GType>.
@@ -1458,7 +1459,7 @@ Installs a child property on a container class.
 
   method gtk_container_class_install_child_property ( GtkContainerClass $cclass, UInt $property_id, GParamSpec $pspec )
 
-=item GtkContainerClass $cclass; a C<Gnome::Gtk3::ContainerClass>
+=item GtkContainerClass $cclass; a B<Gnome::Gtk3::ContainerClass>
 =item UInt $property_id; the id for the property
 =item GParamSpec $pspec; the C<GParamSpec> for the property
 
@@ -1478,7 +1479,7 @@ Since: 3.18
 
   method gtk_container_class_install_child_properties ( GtkContainerClass $cclass, UInt $n_pspecs, GParamSpec $pspecs )
 
-=item GtkContainerClass $cclass; a C<Gnome::Gtk3::ContainerClass>
+=item GtkContainerClass $cclass; a B<Gnome::Gtk3::ContainerClass>
 =item UInt $n_pspecs; the length of the C<GParamSpec> array
 =item GParamSpec $pspecs; (array length=n_pspecs): the C<GParamSpec> array defining the new child properties
 
@@ -1500,7 +1501,7 @@ name.
 
   method gtk_container_class_find_child_property ( GObjectClass $cclass, Str $property_name --> GParamSpec  )
 
-=item GObjectClass $cclass; (type C<Gnome::Gtk3::ContainerClass>): a C<Gnome::Gtk3::ContainerClass>
+=item GObjectClass $cclass; (type B<Gnome::Gtk3::ContainerClass>): a B<Gnome::Gtk3::ContainerClass>
 =item Str $property_name; the name of the child property to find
 
 =end pod
@@ -1522,7 +1523,7 @@ The array must be freed with C<g_free()>.
 
   method gtk_container_class_list_child_properties ( GObjectClass $cclass, UInt $n_properties --> GParamSpec  )
 
-=item GObjectClass $cclass; (type C<Gnome::Gtk3::ContainerClass>): a C<Gnome::Gtk3::ContainerClass>
+=item GObjectClass $cclass; (type B<Gnome::Gtk3::ContainerClass>): a B<Gnome::Gtk3::ContainerClass>
 =item UInt $n_properties; location to return the number of child properties found
 
 =end pod
@@ -1746,8 +1747,8 @@ sub gtk_container_forall ( N-GObject $container, GtkCallback $callback, Pointer 
 =begin pod
 =head2 [gtk_container_] class_handle_border_width
 
-Modifies a subclass of C<Gnome::Gtk3::ContainerClass> to automatically add and
-remove the border-width setting on C<Gnome::Gtk3::Container>.  This allows the
+Modifies a subclass of B<Gnome::Gtk3::ContainerClass> to automatically add and
+remove the border-width setting on B<Gnome::Gtk3::Container>.  This allows the
 subclass to ignore the border width in its size request and
 allocate methods. The intent is for a subclass to invoke this
 in its class_init function.
@@ -1759,7 +1760,7 @@ for them.
 
   method gtk_container_class_handle_border_width ( GtkContainerClass $klass )
 
-=item GtkContainerClass $klass; the class struct of a C<Gnome::Gtk3::Container> subclass
+=item GtkContainerClass $klass; the class struct of a B<Gnome::Gtk3::Container> subclass
 
 =end pod
 
@@ -1775,7 +1776,7 @@ sub gtk_container_class_handle_border_width ( GtkContainerClass $klass )
 Returns a newly created widget path representing all the widget hierarchy
 from the toplevel down to and including I<child>.
 
-Returns: A newly created C<Gnome::Gtk3::WidgetPath>
+Returns: A newly created B<Gnome::Gtk3::WidgetPath>
 
   method gtk_container_get_path_for_child ( N-GObject $child --> N-GObject  )
 
@@ -1833,7 +1834,7 @@ sub gtk_container_get_path_for_child ( N-GObject $container, N-GObject $child )
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+Register any signal as follows. See also B<Gnome::GObject::Object>.
 
   my Bool $is-registered = $my-widget.register-signal (
     $handler-object, $handler-name, $signal-name,
