@@ -1,10 +1,5 @@
-TITLE
-=====
-
 Gnome::Gtk3::Container
-
-SUBTITLE
-========
+======================
 
 Base class for widgets which contain other widgets
 
@@ -75,6 +70,13 @@ An example of these properties in UI definitions:
       </focus-chain>
     </object>
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::Container implements
+
+  * Gnome::Gtk3::Buildable
+
 Synopsis
 ========
 
@@ -83,9 +85,6 @@ Declaration
 
     unit class Gnome::Gtk3::Container;
     also is Gnome::Gtk3::Widget;
-
-Example
--------
 
 Types
 =====
@@ -118,7 +117,7 @@ Create an object using a native object from a builder. See also `Gnome::GObject:
 
 Sets the border width of the container.
 
-The border width of a container is the amount of space to leave around the outside of the container. The only exception to this is `Gnome::Gtk3::Window`; because toplevel windows can’t leave space outside, they leave the space inside. The border is added on all sides of the container. To add space to only one side, use a specific prop `margin` property on the child widget, for example prop `margin-top`.
+The border width of a container is the amount of space to leave around the outside of the container. The only exception to this is **Gnome::Gtk3::Window**; because toplevel windows can’t leave space outside, they leave the space inside. The border is added on all sides of the container. To add space to only one side, use a specific *margin* property on the child widget, for example *margin-top*.
 
     method gtk_container_set_border_width ( UInt $border_width )
 
@@ -136,9 +135,9 @@ Returns: the current border width
 gtk_container_add
 -----------------
 
-Adds *widget* to *container*. Typically used for simple containers such as `Gnome::Gtk3::Window`, `Gnome::Gtk3::Frame`, or `Gnome::Gtk3::Button`; for more complicated layout containers such as `Gnome::Gtk3::Box` or `Gnome::Gtk3::Grid`, this function will pick default packing parameters that may not be correct. So consider functions such as `gtk_box_pack_start()` and `gtk_grid_attach()` as an alternative to `gtk_container_add()` in those cases. A widget may be added to only one container at a time; you can’t place the same widget inside two different containers.
+Adds *widget* to *container*. Typically used for simple containers such as **Gnome::Gtk3::Window**, **Gnome::Gtk3::Frame**, or **Gnome::Gtk3::Button**; for more complicated layout containers such as **Gnome::Gtk3::Box** or **Gnome::Gtk3::Grid**, this function will pick default packing parameters that may not be correct. So consider functions such as `gtk_box_pack_start()` and `gtk_grid_attach()` as an alternative to `gtk_container_add()` in those cases. A widget may be added to only one container at a time; you can’t place the same widget inside two different containers.
 
-Note that some containers, such as `Gnome::Gtk3::ScrolledWindow` or `Gnome::Gtk3::ListBox`, may add intermediate children between the added widget and the container.
+Note that some containers, such as **Gnome::Gtk3::ScrolledWindow** or **Gnome::Gtk3::ListBox**, may add intermediate children between the added widget and the container.
 
     method gtk_container_add ( N-GObject $widget )
 
@@ -163,22 +162,22 @@ Removes *widget* from *container*. *widget* must be inside *container*. Note tha
 
 Returns the container’s non-internal children. See `gtk_container_forall()` for details on what constitutes an "internal" child.
 
-Returns: (element-type `Gnome::Gtk3::Widget`) (transfer container): a newly-allocated list of the container’s non-internal children.
+Returns: (element-type **Gnome::Gtk3::Widget**) (transfer container): a newly-allocated list of the container’s non-internal children.
 
-    method gtk_container_get_children ( --> N-GObject  )
+    method gtk_container_get_children ( --> N-GList  )
 
 [gtk_container_] set_focus_child
 --------------------------------
 
 Sets, or unsets if *child* is `Any`, the focused child of *container*.
 
-This function emits the `Gnome::Gtk3::Container`::set_focus_child signal of *container*. Implementations of `Gnome::Gtk3::Container` can override the default behaviour by overriding the class closure of this signal.
+This function emits the **Gnome::Gtk3::Container**::set_focus_child signal of *container*. Implementations of **Gnome::Gtk3::Container** can override the default behaviour by overriding the class closure of this signal.
 
 This is function is mostly meant to be used by widgets. Applications can use `gtk_widget_grab_focus()` to manually set the focus to a specific widget.
 
     method gtk_container_set_focus_child ( N-GObject $child )
 
-  * N-GObject $child; (allow-none): a `Gnome::Gtk3::Widget`, or `Any`
+  * N-GObject $child; (allow-none): a **Gnome::Gtk3::Widget**, or `Any`
 
 [gtk_container_] get_focus_child
 --------------------------------
@@ -236,11 +235,11 @@ Returns: (nullable) (transfer none): the horizontal focus adjustment, or `Any` i
 
 Returns the type of the children supported by the container.
 
-Note that this may return `G_TYPE_NONE` to indicate that no more children can be added, e.g. for a `Gnome::Gtk3::Paned` which already has two children.
+Note that this may return `G_TYPE_NONE` to indicate that no more children can be added, e.g. for a **Gnome::Gtk3::Paned** which already has two children.
 
-Returns: a `GType`.
+Returns: a **GType**.
 
-    method gtk_container_child_type ( --> Int )
+    method gtk_container_child_type ( --> int32  )
 
 [gtk_container_] child_set_property
 -----------------------------------
@@ -271,7 +270,7 @@ Gets the value of a child property for *child* and *container*.
 [gtk_container_] child_notify
 -----------------------------
 
-Emits a sig `child-notify` signal for the [child property][child-properties] *child_property* on the child.
+Emits a *child-notify* signal for the [child property][child-properties] *child_property* on the child.
 
 This is an analogue of `g_object_notify()` for child properties.
 
@@ -290,101 +289,52 @@ Since: 3.2
 
 Returns a newly created widget path representing all the widget hierarchy from the toplevel down to and including *child*.
 
-Returns: A newly created `Gnome::Gtk3::WidgetPath`
+Returns: A newly created **Gnome::Gtk3::WidgetPath**
 
     method gtk_container_get_path_for_child ( N-GObject $child --> N-GObject  )
 
   * N-GObject $child; a child of *container*
 
-Not yet implemented methods
-===========================
-
-### method gtk_container_foreach ( ... )
-
-### method gtk_container_propagate_draw ( ... )
-
-### method gtk_container_class_install_child_property ( ... )
-
-### method gtk_container_class_install_child_properties ( ... )
-
-### method gtk_container_class_find_child_property ( ... )
-
-### method gtk_container_class_list_child_properties ( ... )
-
-### method gtk_container_add_with_properties ( ... )
-
-### method gtk_container_child_set ( ... )
-
-### method gtk_container_child_notify_by_pspec ( ... )
-
-### method gtk_container_forall ( ... )
-
-### method gtk_container_class_handle_border_width ( ... )
-
-### method gtk_container_child_set_valist ( ... )
-
-### method gtk_container_child_get_valist ( ... )
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.10
-----------
-
-### method gtk_container_resize_children ( )
-
-Since 3.12
-----------
-
-### method gtk_container_set_resize_mode ( GtkResizeMode $resize_mode )
-
-### method gtk_container_get_resize_mode ( --> GtkResizeMode )
-
-Since 3.14
-----------
-
-### method gtk_container_set_reallocate_redraws ( Int $needs_redraws )
-
-Since 3.24
-----------
-
-### method gtk_container_set_focus_chain ( N-GObject $focusable_widgets )
-
-### method gtk_container_get_focus_chain ( N-GObject $focusable_widgets --> Int )
-
-### method gtk_container_unset_focus_chain ( )
-
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
 
-### check-resize
-
-    method handler (
-      Gnome::GObject::Object :widget($container),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $container; the object that received the signal
-
-Note yet supported signals
---------------------------
-
 ### add
 
     method handler (
+      Gnome::Gtk3::Widget $widget,
       Gnome::GObject::Object :widget($container),
-      :handler-arg0($widget),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $container; the object that received the signal
@@ -394,24 +344,56 @@ Note yet supported signals
 ### remove
 
     method handler (
+      Gnome::Gtk3::Widget $widget,
       Gnome::GObject::Object :widget($container),
-      :handler-arg0($widget),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $container; the object that received the signal
 
   * $widget; the removed widget
 
-### set-focus-child
+### check-resize
 
     method handler (
       Gnome::GObject::Object :widget($container),
-      :handler-arg0($widget),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
+    );
+
+  * $container; the object that received the signal
+
+### set-focus-child
+
+    method handler (
+      Gnome::Gtk3::Widget $widget,
+      Gnome::GObject::Object :widget($container),
+      *%user-options
     );
 
   * $container; the object that received the signal
 
   * $widget; the focused widget
+
+Properties
+==========
+
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.g-object-get-property( 'label', $gv);
+    $gv.g-value-set-string('my text label');
+
+Supported properties
+--------------------
+
+### Resize mode
+
+Specify how resize events are handled Default value: False
+
+The **Gnome::GObject::Value** type of property *resize-mode* is `G_TYPE_ENUM`.
+
+### Border width
+
+The **Gnome::GObject::Value** type of property *border-width* is `G_TYPE_UINT`.
 
