@@ -29,6 +29,9 @@
 
 - bar_title: "Containers"
   bar_menu:
+  - title: "Bin"
+    url: '/content-docs/reference/Gtk3/Bin.html'
+    doc: 1
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
     doc: 1
@@ -109,20 +112,38 @@
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
     doc: 1
-  - title: "Menu"
-    url: '/content-docs/reference/Gtk3/Menu.html'
-    doc: 1
   - title: "TextView"
     url: "/content-docs/reference/Gtk3/TextView.html"
     doc: 1
 
-- bar_title: "Composite Widget"
-  bar_menu:
+  - title: "-"
+
   - title: "ColorChooserWidget"
     url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
     doc: 0
+
+- bar_title: "Menu Classes"
+  bar_menu:
+  - title: "ImageMenuItem"
+    url: "/content-docs/reference/Gtk3/ImageMenuItem.html"
+    doc: 0
+  - title: "Menu"
+    url: '/content-docs/reference/Gtk3/Menu.html'
+    doc: 1
+  - title: "MenuItem"
+    url: "/content-docs/reference/Gtk3/MenuItem.html"
+    doc: 1
+  - title: "MenuShell"
+    url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
+
+- bar_title: "Text"
+  bar_menu:
   - title: "TextBuffer"
     url: "/content-docs/reference/Gtk3/TextBuffer.html"
+    doc: 1
+  - title: "TextIter"
+    url: '/content-docs/reference/Gtk3/TextTag.html'
     doc: 1
   - title: "TextTag"
     url: '/content-docs/reference/Gtk3/TextTag.html'
@@ -131,13 +152,20 @@
     url: '/content-docs/reference/Gtk3/TextTagTable.html'
     doc: 1
 
-- bar_title: "Miscellaneous"
+- bar_title: "Style Classes"
   bar_menu:
-  - title: "TextIter"
-    url: '/content-docs/reference/Gtk3/TextTag.html'
+  - title: "CssProvider"
+    url: "/content-docs/reference/Gtk3/CssProvider.html"
     doc: 1
+    test: 1
+  - title: "StyleContext"
+    url: "/content-docs/reference/Gtk3/StyleContext.html"
+    doc: 1
+    test: 0
+    tut: ''
+    ex: ''
 
-- bar_title: "Non-Builder Classes"
+- bar_title: "Interface Classes"
   bar_menu:
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
@@ -146,24 +174,18 @@
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     doc: 0
-
-  - title: "-"
-
-  - title: "ImageMenuItem"
-    url: "/content-docs/reference/Gtk3/ImageMenuItem.html"
-    doc: 0
-  - title: "MenuItem"
-    url: "/content-docs/reference/Gtk3/MenuItem.html"
+  - title: "Orientable"
+    url: "/content-docs/reference/Gtk3/Orientable.html"
     doc: 1
-  - title: "MenuShell"
-    url: '/content-docs/reference/Gtk3/MenuShell.html'
+  - title: "StyleProvider"
+    url: "/content-docs/reference/Gtk3/StyleProvider.html"
     doc: 1
+    test: 0
+    tut: ''
+    ex: ''
 
-  - title: "-"
-
-  - title: "Bin"
-    url: '/content-docs/reference/Gtk3/Bin.html'
-    doc: 1
+- bar_title: "Miscelleneous"
+  bar_menu:
   - title: "Border"
     url: "/content-docs/reference/Gtk3/Border.html"
     doc: 3
@@ -180,9 +202,6 @@
   - title: "Enums"
     url: "/content-docs/reference/Gtk3/Enums.html"
     doc: 1
-  - title: "Container"
-    url: "/content-docs/reference/Gtk3/Container.html"
-    doc: 1
   - title: "ListBoxRow"
     url: '/content-docs/reference/Gtk3/ListBoxRow.html'
     doc: 1
@@ -193,27 +212,9 @@
     url: "/content-docs/reference/Gtk3/Misc.html"
     doc: 0
     test: 0
-  - title: "Orientable"
-    url: "/content-docs/reference/Gtk3/Orientable.html"
-    doc: 1
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
     doc: 1
-
-  - title: "-"
-
-  - title: "StyleContext"
-    url: "/content-docs/reference/Gtk3/StyleContext.html"
-    doc: 1
-    test: 0
-    tut: ''
-    ex: ''
-  - title: "StyleProvider"
-    url: "/content-docs/reference/Gtk3/StyleProvider.html"
-    doc: 1
-    test: 0
-    tut: ''
-    ex: ''
 
   - title: "-"
 

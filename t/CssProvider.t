@@ -2,6 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
 use Gnome::Glib::Error;
 use Gnome::Glib::Quark;
 use Gnome::Gtk3::CssProvider;
@@ -46,49 +47,96 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'load-from-data', {
-  is $cp.load-from-data( $css-text, $css-text.chars, Any), 1, 'css load ok';
+subtest 'Manipulations', {
 
-  my Gnome::Glib::Error $e = $cp.load-from-data($css-text);
-  is $e.error-is-valid, False, 'no errors';
+  #-----------------------------------------------------------------------------
+  subtest 'load-from-data', {
+    is $cp.load-from-data( $css-text, $css-text.chars, Any), 1, 'css load ok';
 
-  subtest 'invalid css from string', {
-    my Gnome::Glib::Quark $quark .= new(:empty);
+    my Gnome::Glib::Error $e = $cp.load-from-data($css-text);
+    is $e.error-is-valid, False, 'no errors';
 
-    $e = $cp.load-from-data($invalid-css-text);
-    is $e.error-is-valid, True, 'there are errors';
+    subtest 'invalid css from string', {
+      my Gnome::Glib::Quark $quark .= new(:empty);
 
-    is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
-    is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
-       "error domain: $quark.to-string($e.domain())";
-    is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
-       'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
-    is $e.message, '<data>:3:8Invalid name of pseudo-class', $e.message;
+      $e = $cp.load-from-data($invalid-css-text);
+      is $e.error-is-valid, True, 'there are errors';
+
+      is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
+      is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
+         "error domain: $quark.to-string($e.domain())";
+      is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
+         'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
+      is $e.message, '<data>:3:8Invalid name of pseudo-class', $e.message;
+    }
   }
+
+  #-----------------------------------------------------------------------------
+  subtest 'load-from-path', {
+  #Gnome::N::debug(:on);
+    is $cp.load-from-path( $css-file, Any), 1, 'css load ok';
+
+    my Str $css = $cp.to-string;
+    like $css, / \. green /, 'green class found';
+    like $css, / 'rgb(48,143,143);' /, 'background color found';
+    like $css, / 'font-stretch: initial;' /, 'some extra attributes';
+
+
+    my Gnome::Glib::Error $e = $cp.load-from-path($css-file);
+    is $e.error-is-valid, False, 'no errors';
+
+    subtest 'invalid css from file', {
+      my Bool $signal-processed = False;
+      class X {
+        method handle-error (
+          N-GObject $section, N-GError $e,
+          Gnome::GObject::Object :widget($provider)
+        ) {
+          my Gnome::Glib::Quark $quark .= new(:empty);
+          my Gnome::Glib::Error $error .= new(:gerror($e));
+          is $error.error-is-valid, True, 'there are errors';
+
+          is $error.domain, $cp.error-quark(), "domain code: $error.domain()";
+          is $quark.to-string($error.domain), 'gtk-css-provider-error-quark',
+             "error domain: $quark.to-string($e.domain())";
+          is $error.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
+             'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
+          like $error.message, /:s Invalid name of pseudo\-class/,
+               $error.message;
+
+          $signal-processed = True;
+        }
+      }
+
+      $cp.register-signal( X.new, 'handle-error', 'parsing-error');
+      $cp.load-from-path($invalid-css-file);
+
+      ok $signal-processed, 'signal processed';
+    }
+  }
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit ...', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'load-from-path', {
-#Gnome::N::debug(:on);
-  is $cp.load-from-path( $css-file, Any), 1, 'css load ok';
-
-  my Gnome::Glib::Error $e = $cp.load-from-path($css-file);
-  is $e.error-is-valid, False, 'no errors';
-
-  subtest 'invalid css from file', {
-    my Gnome::Glib::Quark $quark .= new(:empty);
-
-    $e = $cp.load-from-path($invalid-css-file);
-    is $e.error-is-valid, True, 'there are errors';
-
-    is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
-    is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
-       "error domain: $quark.to-string($e.domain())";
-    is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
-       'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
-    is $e.message, 'invalid-test.css:3:8Invalid name of pseudo-class', $e.message;
-  }
+subtest 'Interface ...', {
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+}
+}}
 
 #-------------------------------------------------------------------------------
 unlink $css-file;
