@@ -12,7 +12,7 @@ use Gnome::Gtk3::Label;
 #-------------------------------------------------------------------------------
 subtest 'Label create', {
 
-  my Gnome::Gtk3::Label $label1 .= new(:label('abc def'));
+  my Gnome::Gtk3::Label $label1 .= new(:text('abc def'));
   isa-ok $label1, Gnome::Gtk3::Label;
   isa-ok $label1, Gnome::Gtk3::Widget;
   isa-ok $label1(), N-GObject;
@@ -25,7 +25,7 @@ subtest 'Label create', {
   is $label1.gtk_label_get_text, 'abc def',
     'label 1 text ok, read with $label1.gtk_label_get_text';
 
-  my Gnome::Gtk3::Label $label2 .= new(:label('pqr'));
+  my Gnome::Gtk3::Label $label2 .= new(:text('pqr'));
   is $label2.gtk-label-get-text, 'pqr',
      'label 2 text ok, read with $label1.gtk-label-get-text';
   $label1($label2());
