@@ -38,7 +38,8 @@
     doc: 1
   - title: 'Container'
     url: '/content-docs/reference/Gtk3/Container.html'
-    doc: 0
+    doc: 1
+    test: 1
   - title: "Grid"
     url: '/content-docs/reference/Gtk3/Grid.html'
     doc: 0
@@ -90,7 +91,8 @@
 
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
-    doc: 0
+    doc: 1
+    test: 1
   - title: "SearchEntry"
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
     doc: 0
