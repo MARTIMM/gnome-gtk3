@@ -998,7 +998,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       $sdoc = '';
       last;
     }
-    $source-content ~~ s/ 'g_signal_new' \s* '(' $sig-args ');' //;
+    $source-content ~~ s/ 'g_signal_new' '_class_handler'? \s* '(' $sig-args ');' //;
 
 #note "sig args: ", $sig-args;
     # when there's no doc, signal name must be retrieved from function argument
