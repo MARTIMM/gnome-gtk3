@@ -19,9 +19,7 @@ class AppSignalHandlers {
 
   has Gnome::Gtk3::Window $!top-window;
 
-  submethod BUILD (
-    Gnome::Gtk3::Window :$!top-window,
-  ) { }
+  submethod BUILD ( Gnome::Gtk3::Window :$!top-window ) { }
 
   # Show dialog
   method show-dialog ( --> Int ) {
