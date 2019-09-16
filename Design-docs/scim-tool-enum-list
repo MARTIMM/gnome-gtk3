@@ -1,4 +1,5 @@
 GtkLicense
+GtkDialogFlags
 GtkResponseType
 GtkTextWindowType
 GtkTextViewLayer
@@ -72,6 +73,7 @@ GtkArrowPlacement
 GtkCssProviderError
 GtkFileChooserAction
 GtkFileChooserConfirmation
+GtkFileChooserError
 GtkFileFilterFlags
 GtkTextSearchFlags
 GtkStyleContextPrintFlags
@@ -104,6 +106,5 @@ GdkWindowType
 GdkWindowWindowClass
 GdkModifierType
 GdkWindowTypeHint
-GConnectFlags
 typeToSub
 GParamFlags
