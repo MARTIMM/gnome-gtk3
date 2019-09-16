@@ -104,7 +104,7 @@ also is Gnome::Gtk3::Container;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( Bool :empty!, :$orientation)
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -163,8 +163,12 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   # search in the interface modules
   if !$s {
-    my Gnome::Gtk3::Orientable $o .= new(:widget(self.native-gobject));
-    $s = $o._interface($native-sub);
+    $s = self._query_interfaces(
+      $native-sub, <
+        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
+        Gnome::Gtk3::Orientable
+      >
+    );
   }
 
   self.set-class-name-of-sub('GtkBox');

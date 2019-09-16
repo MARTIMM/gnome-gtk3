@@ -165,8 +165,8 @@ new
 ### multi method new ( GtkFileChooserAction :$action! )
 
     multi method new (
-      GtkFileChooserAction :$action!, Str :$title, N-GObject $parent,
-      Array :$buttons-spec
+      GtkFileChooserAction :$action!, Str :$title, Gnome::GObject::Object $parent,
+      List :$buttons-spec
     )
 
 Create an object using a native object from elsewhere. See also *gtk_file_chooser_dialog_new()* below.

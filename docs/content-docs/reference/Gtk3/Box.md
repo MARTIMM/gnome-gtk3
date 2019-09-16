@@ -65,7 +65,7 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( Bool :empty!, :$orientation)
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
