@@ -48,7 +48,12 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Label';
 
-  if %options<label>.defined {
+  if %options<text>.defined {
+    self.native-gobject(gtk_label_new(%options<text>));
+  }
+
+  elsif %options<label>.defined {
+    note "{self.^name()}.new\(): Deprecated use of :\$label, please use :\$text";
     self.native-gobject(gtk_label_new(%options<label>));
   }
 
