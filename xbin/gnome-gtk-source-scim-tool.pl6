@@ -1062,6 +1062,14 @@ sub get-signals ( Str:D $source-content is copy ) {
           $arg-type = 'Int';
         }
 
+        when 'G_TYPE_INT' {
+          $arg-type = 'Int';
+        }
+
+        when 'G_TYPE_FLOAT' {
+          $arg-type = 'Num';
+        }
+
         when 'G_TYPE_STRING' {
           $arg-type = 'Str';
         }
