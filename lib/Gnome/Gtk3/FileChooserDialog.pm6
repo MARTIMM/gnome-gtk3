@@ -170,8 +170,8 @@ also is Gnome::Gtk3::Dialog;
 =head3 multi method new ( GtkFileChooserAction :$action! )
 
   multi method new (
-    GtkFileChooserAction :$action!, Str :$title, N-GObject $parent,
-    Array :$buttons-spec
+    GtkFileChooserAction :$action!, Str :$title, Gnome::GObject::Object $parent,
+    List :$buttons-spec
   )
 
 Create an object using a native object from elsewhere. See also I<gtk_file_chooser_dialog_new()> below.
@@ -197,7 +197,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if %options<action>.defined {
-    my @buttons = %options<button-spec>;
+    my @buttons = %options<button-spec> // ();
     my N-GObject $parent = N-GObject;
     my Str $title = %options<title> // Str;
     if ? %options<parent> {
@@ -207,7 +207,7 @@ submethod BUILD ( *%options ) {
     }
 
     self.native-gobject(
-      gtk_file_chooser_dialog_new( $title, $parent, %options<action>, @buttons)
+      gtk_file_chooser_dialog_new( $title, $parent, %options<action>, |@buttons)
     );
   }
 
@@ -284,7 +284,7 @@ Since: 2.4
 
 sub gtk_file_chooser_dialog_new (
   Str $title, N-GObject $parent, GtkFileChooserAction $action, *@buttons
-#  --> N-GObject
+  --> N-GObject
 ) {
 
   # create parameter list and start with inserting fixed arguments
