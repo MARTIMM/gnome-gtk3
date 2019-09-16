@@ -7,7 +7,9 @@ notes:
 
     - One can connect also directly using g_signal_connect_object() from Gnome::GObject::Signal. Also here, the handler must provide all arguments and types and some more.
 
-    - Added a method in Gnome::GObject::Object for interface using modules to query the interface modules for native subs. For example, the module Gnome::Gtk3::Button implements Gnome::Gtk3::Buildable. This means that subs defined there can be used by the Button module.
+    - Added a method in Gnome::GObject::Object for interface using modules to query the interface modules for native subs. For example, the module Gnome::Gtk3::Button implements Gnome::Gtk3::Buildable. This means that subs defined there can be used by the Button module. Not all interfaces are implemented however, but the unimplemeted modules are silently ignored until a method is not found which will throw an exception.
+
+    - The new() method in module Label of Gnome::Gtk3 is modified. The named attribute :$label is renamed into :$text. :$label is deprecated.
 
   - 2019-08-29 0.18.4:
     - Experimenting with variable argument list in module FileChooserDialog to get buttons on the dialog.
