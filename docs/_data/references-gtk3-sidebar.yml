@@ -205,6 +205,11 @@
   - title: "Enums"
     url: "/content-docs/reference/Gtk3/Enums.html"
     doc: 1
+    test: 1
+  - title: "FileFilter"
+    url: "/content-docs/reference/Gtk3/FileFilter.html"
+    doc: 1
+    test: 1
   - title: "ListBoxRow"
     url: '/content-docs/reference/Gtk3/ListBoxRow.html'
     doc: 1
