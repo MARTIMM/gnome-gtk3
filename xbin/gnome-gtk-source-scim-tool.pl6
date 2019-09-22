@@ -840,11 +840,11 @@ sub substitute-in-template (
         #`{{ Uncomment in interface users
         # search in the interface modules, name all interfaces which are implemented
         # for this module. not implemented ones are skipped.
-        if !$s {
-          $s = self._query_interfaces(
-            $native-sub, <Gnome::Gtk3::XXX>
-          );
-        }
+        $s = self._query_interfaces(
+          $native-sub, <
+            Gnome::Gtk3::XXX
+          >
+        ) unless $s;
         }}
 
         self.set-class-name-of-sub('LIBCLASSNAME');
