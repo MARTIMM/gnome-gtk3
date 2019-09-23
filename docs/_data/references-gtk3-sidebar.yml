@@ -108,7 +108,8 @@
   bar_menu:
   - title: "Image"
     url: "/content-docs/reference/Gtk3/Image.html"
-    doc: 0
+    doc: 1
+    test: 1
   - title: "Label"
     url: "/content-docs/reference/Gtk3/Label.html"
     doc: 0
