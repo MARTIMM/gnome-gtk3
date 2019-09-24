@@ -71,6 +71,10 @@ Creates a new button object with a label
 
   multi method new ( Str :$label! )
 
+Creates a new button object with a mnemonic
+
+  multi method new ( Str :$mnemonic! )
+
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$widget! )
@@ -83,6 +87,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:2:new():inheriting:CheckButton
 #TM:1:new(:label):
+#TM:0:new(:mnemonic):
 #TM:1:new(:empty):
 #TM:1:new(:widget):
 #TM:0:new(:build-id):
@@ -102,6 +107,10 @@ submethod BUILD ( *%options ) {
 
   if %options<label>.defined {
     self.native-gobject(gtk_button_new_with_label(%options<label>));
+  }
+
+  if %options<mnemonic>.defined {
+    self.native-gobject(gtk_button_new_with_mnemonic(%options<mnemonic>));
   }
 
   elsif ? %options<empty> {
