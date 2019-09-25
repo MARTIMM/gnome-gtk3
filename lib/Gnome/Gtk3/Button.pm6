@@ -109,7 +109,7 @@ submethod BUILD ( *%options ) {
     self.native-gobject(gtk_button_new_with_label(%options<label>));
   }
 
-  if %options<mnemonic>.defined {
+  elsif %options<mnemonic>.defined {
     self.native-gobject(gtk_button_new_with_mnemonic(%options<mnemonic>));
   }
 
