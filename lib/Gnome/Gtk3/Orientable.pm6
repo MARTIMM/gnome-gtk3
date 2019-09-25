@@ -104,5 +104,6 @@ Set the orientation of the orientable. This is a GtkOrientation enum type define
 =end pod
 
 sub gtk_orientable_get_orientation ( N-GObject $orientable )
+  returns int32
   is native(&gtk-lib)
   { * }
