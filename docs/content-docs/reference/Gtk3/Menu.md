@@ -1,54 +1,55 @@
-TITLE
-=====
-
 Gnome::Gtk3::Menu
-
-SUBTITLE
-========
+=================
 
 A menu widget
 
 Description
 ===========
 
-A `Gnome::Gtk3::Menu` is a `Gnome::Gtk3::MenuShell` that implements a drop down menu consisting of a list of `Gnome::Gtk3::MenuItem` objects which can be navigated and activated by the user to perform application functions.
+A **Gnome::Gtk3::Menu** is a **Gnome::Gtk3::MenuShell** that implements a drop down menu consisting of a list of **Gnome::Gtk3::MenuItem** objects which can be navigated and activated by the user to perform application functions.
 
-A `Gnome::Gtk3::Menu` is most commonly dropped down by activating a `Gnome::Gtk3::MenuItem` in a `Gnome::Gtk3::MenuBar` or popped up by activating a `Gnome::Gtk3::MenuItem` in another `Gnome::Gtk3::Menu`.
+A **Gnome::Gtk3::Menu** is most commonly dropped down by activating a **Gnome::Gtk3::MenuItem** in a **Gnome::Gtk3::MenuBar** or popped up by activating a **Gnome::Gtk3::MenuItem** in another **Gnome::Gtk3::Menu**.
 
-A `Gnome::Gtk3::Menu` can also be popped up by activating a `Gnome::Gtk3::ComboBox`. Other composite widgets such as the `Gnome::Gtk3::Notebook` can pop up a `Gnome::Gtk3::Menu` as well.
+A **Gnome::Gtk3::Menu** can also be popped up by activating a **Gnome::Gtk3::ComboBox**. Other composite widgets such as the **Gnome::Gtk3::Notebook** can pop up a **Gnome::Gtk3::Menu** as well.
 
-Applications can display a `Gnome::Gtk3::Menu` as a popup menu by calling the `gtk_menu_popup()` function. The example below shows how an application can pop up a menu when the 3rd mouse button is pressed.
+Applications can display a **Gnome::Gtk3::Menu** as a popup menu by calling the `gtk_menu_popup()` function. The example below shows how an application can pop up a menu when the 3rd mouse button is pressed.
 
-## Connecting the popup signal handler.
+Connecting the popup signal handler.
+------------------------------------
 
-|[<!-- language="C" --> // connect our handler which will popup the menu g_signal_connect_swapped (window, "button_press_event", G_CALLBACK (my_popup_handler), menu); ]|
+    class HandlerClass {
 
-## Signal handler which displays a popup menu.
+      method popup-handler (
+        GdkEvent $event, Gnome::Gtk3::Window :widget($window), :$menu
+        --> Int
+      ) {
 
-|[<!-- language="C" --> static gint my_popup_handler (`Gnome::Gtk3::Widget` *widget, `Gnome::Gdk3::Event` *event) { `Gnome::Gtk3::Menu` *menu; `Gnome::Gdk3::EventButton` *event_button;
+        my Int $ret-value = 0;
 
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
+        if $event.event-any.type ~~ GDK_BUTTON_PRESS {
+          my GdkEventButton $event-button = $event;
+          if $event-button.button ~~ GDK_BUTTON_SECONDARY {
+            $menu.gtk_menu_popup(
+              Any, Any, Any, Any, $event-button.button, $event-button.time
+            );
 
-    // The "widget" is the menu that was supplied when
-    // C<g_signal_connect_swapped()> was called.
-    menu = GTK_MENU (widget);
-
-    if (event->type == GDK_BUTTON_PRESS)
-      {
-        event_button = (C<Gnome::Gdk3::EventButton> *) event;
-        if (event_button->button == GDK_BUTTON_SECONDARY)
-          {
-            gtk_menu_popup (menu, NULL, NULL, NULL, NULL,
-                            event_button->button, event_button->time);
-            return TRUE;
+            $ret-value = 1;
           }
+        }
+
+        $ret-value
       }
+    }
 
-    return FALSE;
+    # Setup the menu
+    my Gnome::Gtk3::Menu $menu .= new(:empty);
+    ...
 
-} ]|
+    # Create a window and register a handler for the button press signal
+    my Gnome::Gtk3::Window $w .= new(:title('My Window'));
+    $w.register-signal(
+      HandlerClass.new, 'popup-handler', 'button_press_event', :$menu
+    );
 
 Css Nodes
 ---------
@@ -60,7 +61,16 @@ Css Nodes
     ├── <child>
     ╰── arrow.bottom
 
-The main CSS node of `Gnome::Gtk3::Menu` has name **menu**, and there are two subnodes with name arrow, for scrolling menu arrows. These subnodes get the .top and .bottom style classes.
+The main CSS node of **Gnome::Gtk3::Menu** has name **menu**, and there are two subnodes with name arrow, for scrolling menu arrows. These subnodes get the .top and .bottom style classes.
+
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::Menu implements
+
+  * Gnome::Atk::ImplementorIface
+
+  * Gnome::Gtk3::Buildable
 
 Synopsis
 ========
@@ -70,27 +80,6 @@ Declaration
 
     unit class Gnome::Gtk3::Menu;
     also is Gnome::Gtk3::MenuShell;
-
-Example
--------
-
-Methods
-=======
-
-new
----
-
-    multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-    multi method new ( Gnome::GObject::Object :$widget! )
-
-Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
-
-    multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
 
 Types
 =====
@@ -106,85 +95,32 @@ Used to specify the placement of scroll arrows in scrolling menus.
 
   * GTK_ARROWS_END: Place both arrows at the bottom of the menu.
 
+Methods
+=======
+
+new
+---
+
+Create a new plain object.
+
+    multi method new ( Bool :empty! )
+
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+
+    multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
+
 gtk_menu_new
 ------------
 
-Creates a new `Gnome::Gtk3::Menu`
+Creates a new **Gnome::Gtk3::Menu**
 
-Returns: a new `Gnome::Gtk3::Menu`
+Returns: a new **Gnome::Gtk3::Menu**
 
     method gtk_menu_new ( --> N-GObject  )
-
-[gtk_menu_] popup_at_rect
--------------------------
-
-Displays *menu* and makes it available for selection.
-
-See `gtk_menu_popup_at_widget()` and `gtk_menu_popup_at_pointer()`, which handle more common cases for popping up menus.
-
-*menu* will be positioned at *rect*, aligning their anchor points. *rect* is relative to the top-left corner of *rect_window*. *rect_anchor* and *menu_anchor* determine anchor points on *rect* and *menu* to pin together. *menu* can optionally be offset by prop `rect-anchor-dx` and prop `rect-anchor-dy`.
-
-Anchors should be specified under the assumption that the text direction is left-to-right; they will be flipped horizontally automatically if the text direction is right-to-left.
-
-Other properties that influence the behaviour of this function are prop `anchor-hints` and prop `menu-type-hint`. Connect to the sig `popped-up` signal to find out how it was actually positioned.
-
-Since: 3.22 Stability: Unstable
-
-    method gtk_menu_popup_at_rect ( N-GObject $rect_window, N-GObject $rect, GdkGravity $rect_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
-
-  * N-GObject $rect_window; (not nullable): the `Gnome::Gdk3::Window` *rect* is relative to
-
-  * N-GObject $rect; (not nullable): the `Gnome::Gdk3::Rectangle` to align *menu* with
-
-  * GdkGravity $rect_anchor; the point on *rect* to align with *menu*'s anchor point
-
-  * GdkGravity $menu_anchor; the point on *menu* to align with *rect*'s anchor point
-
-  * GdkEvent $trigger_event; (nullable): the `Gnome::Gdk3::Event` that initiated this request or `Any` if it's the current event
-
-[gtk_menu_] popup_at_widget
----------------------------
-
-Displays *menu* and makes it available for selection.
-
-See `gtk_menu_popup_at_pointer()` to pop up a menu at the master pointer. `gtk_menu_popup_at_rect()` also allows you to position a menu at an arbitrary rectangle.
-
-![](images/popup-anchors.png)
-
-*menu* will be positioned at *widget*, aligning their anchor points. *widget_anchor* and *menu_anchor* determine anchor points on *widget* and *menu* to pin together. *menu* can optionally be offset by prop `rect-anchor-dx` and prop `rect-anchor-dy`.
-
-Anchors should be specified under the assumption that the text direction is left-to-right; they will be flipped horizontally automatically if the text direction is right-to-left.
-
-Other properties that influence the behaviour of this function are prop `anchor-hints` and prop `menu-type-hint`. Connect to the sig `popped-up` signal to find out how it was actually positioned.
-
-Since: 3.22 Stability: Unstable
-
-    method gtk_menu_popup_at_widget ( N-GObject $widget, GdkGravity $widget_anchor, GdkGravity $menu_anchor, GdkEvent $trigger_event )
-
-  * N-GObject $widget; (not nullable): the `Gnome::Gtk3::Widget` to align *menu* with
-
-  * GdkGravity $widget_anchor; the point on *widget* to align with *menu*'s anchor point
-
-  * GdkGravity $menu_anchor; the point on *menu* to align with *widget*'s anchor point
-
-  * GdkEvent $trigger_event; (nullable): the `Gnome::Gdk3::Event` that initiated this request or `Any` if it's the current event
-
-[gtk_menu_] popup_at_pointer
-----------------------------
-
-Displays *menu* and makes it available for selection.
-
-See `gtk_menu_popup_at_widget()` to pop up a menu at a widget. `gtk_menu_popup_at_rect()` also allows you to position a menu at an arbitrary rectangle.
-
-*menu* will be positioned at the pointer associated with *trigger_event*.
-
-Properties that influence the behaviour of this function are prop `anchor-hints`, prop `rect-anchor-dx`, prop `rect-anchor-dy`, and prop `menu-type-hint`. Connect to the sig `popped-up` signal to find out how it was actually positioned.
-
-Since: 3.22 Stability: Unstable
-
-    method gtk_menu_popup_at_pointer ( GdkEvent $trigger_event )
-
-  * GdkEvent $trigger_event; (nullable): the `Gnome::Gdk3::Event` that initiated this request or `Any` if it's the current event
 
 gtk_menu_reposition
 -------------------
@@ -203,16 +139,16 @@ Removes the menu from the screen.
 [gtk_menu_] get_active
 ----------------------
 
-Returns the selected menu item from the menu. This is used by the `Gnome::Gtk3::ComboBox`.
+Returns the selected menu item from the menu. This is used by the **Gnome::Gtk3::ComboBox**.
 
-Returns: (transfer none): the `Gnome::Gtk3::MenuItem` that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.
+Returns: (transfer none): the **Gnome::Gtk3::MenuItem** that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.
 
     method gtk_menu_get_active ( --> N-GObject  )
 
 [gtk_menu_] set_active
 ----------------------
 
-Selects the specified menu item within the menu. This is used by the `Gnome::Gtk3::ComboBox` and should not be used by anyone else.
+Selects the specified menu item within the menu. This is used by the **Gnome::Gtk3::ComboBox** and should not be used by anyone else.
 
     method gtk_menu_set_active ( UInt $index )
 
@@ -221,18 +157,18 @@ Selects the specified menu item within the menu. This is used by the `Gnome::Gtk
 [gtk_menu_] set_accel_group
 ---------------------------
 
-Set the `Gnome::Gtk3::AccelGroup` which holds global accelerators for the menu. This accelerator group needs to also be added to all windows that this menu is being used in with `gtk_window_add_accel_group()`, in order for those windows to support all the accelerators contained in this group.
+Set the **Gnome::Gtk3::AccelGroup** which holds global accelerators for the menu. This accelerator group needs to also be added to all windows that this menu is being used in with `gtk_window_add_accel_group()`, in order for those windows to support all the accelerators contained in this group.
 
     method gtk_menu_set_accel_group ( N-GObject $accel_group )
 
-  * N-GObject $accel_group; (allow-none): the `Gnome::Gtk3::AccelGroup` to be associated with the menu.
+  * N-GObject $accel_group; (allow-none): the **Gnome::Gtk3::AccelGroup** to be associated with the menu.
 
 [gtk_menu_] get_accel_group
 ---------------------------
 
-Gets the `Gnome::Gtk3::AccelGroup` which holds global accelerators for the menu. See `gtk_menu_set_accel_group()`.
+Gets the **Gnome::Gtk3::AccelGroup** which holds global accelerators for the menu. See `gtk_menu_set_accel_group()`.
 
-Returns: (transfer none): the `Gnome::Gtk3::AccelGroup` associated with the menu
+Returns: (transfer none): the **Gnome::Gtk3::AccelGroup** associated with the menu
 
     method gtk_menu_get_accel_group ( --> N-GObject  )
 
@@ -245,7 +181,7 @@ For example, a menu containing menu items “New” and “Exit”, will, after 
 
 Assigning accel paths to menu items then enables the user to change their accelerators at runtime. More details about accelerator paths and their default setups can be found at `gtk_accel_map_add_entry()`.
 
-Note that *accel_path* string will be stored in a `GQuark`. Therefore, if you pass a static string, you can save some memory by interning it first with `g_intern_static_string()`.
+Note that *accel_path* string will be stored in a **GQuark**. Therefore, if you pass a static string, you can save some memory by interning it first with `g_intern_static_string()`.
 
     method gtk_menu_set_accel_path ( Str $accel_path )
 
@@ -272,9 +208,9 @@ Detaches the menu from the widget to which it had been attached. This function w
 [gtk_menu_] get_attach_widget
 -----------------------------
 
-Returns the `Gnome::Gtk3::Widget` that the menu is attached to.
+Returns the **Gnome::Gtk3::Widget** that the menu is attached to.
 
-Returns: (transfer none): the `Gnome::Gtk3::Widget` that the menu is attached to
+Returns: (transfer none): the **Gnome::Gtk3::Widget** that the menu is attached to
 
     method gtk_menu_get_attach_widget ( --> N-GObject  )
 
@@ -285,25 +221,25 @@ Moves *child* to a new *position* in the list of *menu* children.
 
     method gtk_menu_reorder_child ( N-GObject $child, Int $position )
 
-  * N-GObject $child; the `Gnome::Gtk3::MenuItem` to move
+  * N-GObject $child; the **Gnome::Gtk3::MenuItem** to move
 
   * Int $position; the new position to place *child*. Positions are numbered from 0 to n - 1
 
 [gtk_menu_] set_screen
 ----------------------
 
-Sets the `Gnome::Gdk3::Screen` on which the menu will be displayed.
+Sets the **Gnome::Gdk3::Screen** on which the menu will be displayed.
 
 Since: 2.2
 
     method gtk_menu_set_screen ( N-GObject $screen )
 
-  * N-GObject $screen; (allow-none): a `Gnome::Gdk3::Screen`, or `Any` if the screen should be determined by the widget the menu is attached to
+  * N-GObject $screen; (allow-none): a **Gnome::Gdk3::Screen**, or `Any` if the screen should be determined by the widget the menu is attached to
 
 gtk_menu_attach
 ---------------
 
-Adds a new `Gnome::Gtk3::MenuItem` to a (table) menu. The number of “cells” that an item will occupy is specified by *left_attach*, *right_attach*, *top_attach* and *bottom_attach*. These each represent the leftmost, rightmost, uppermost and lower column and row numbers of the table. (Columns and rows are indexed from zero).
+Adds a new **Gnome::Gtk3::MenuItem** to a (table) menu. The number of “cells” that an item will occupy is specified by *left_attach*, *right_attach*, *top_attach* and *bottom_attach*. These each represent the leftmost, rightmost, uppermost and lower column and row numbers of the table. (Columns and rows are indexed from zero).
 
 Note that this function is not related to `gtk_menu_detach()`.
 
@@ -311,7 +247,7 @@ Since: 2.4
 
     method gtk_menu_attach ( N-GObject $child, UInt $left_attach, UInt $right_attach, UInt $top_attach, UInt $bottom_attach )
 
-  * N-GObject $child; a `Gnome::Gtk3::MenuItem`
+  * N-GObject $child; a **Gnome::Gtk3::MenuItem**
 
   * UInt $left_attach; The column number to attach the left side of the item to
 
@@ -326,7 +262,7 @@ Since: 2.4
 
 Informs GTK+ on which monitor a menu should be popped up. See `gdk_monitor_get_geometry()`.
 
-This function should be called from a `Gnome::Gtk3::MenuPositionFunc` if the menu should not appear on the same monitor as the pointer. This information can’t be reliably inferred from the coordinates returned by a `Gnome::Gtk3::MenuPositionFunc`, since, for very long menus, these coordinates may extend beyond the monitor boundaries or even the screen boundaries.
+This function should be called from a **Gnome::Gtk3::MenuPositionFunc** if the menu should not appear on the same monitor as the pointer. This information can’t be reliably inferred from the coordinates returned by a **Gnome::Gtk3::MenuPositionFunc**, since, for very long menus, these coordinates may extend beyond the monitor boundaries or even the screen boundaries.
 
 Since: 2.4
 
@@ -357,13 +293,13 @@ Since: 2.14
 
 Returns a list of the menus which are attached to this widget. This list is owned by GTK+ and must not be modified.
 
-Returns: (element-type `Gnome::Gtk3::Widget`) (transfer none): the list of menus attached to his widget.
+Returns: (element-type **Gnome::Gtk3::Widget**) (transfer none): the list of menus attached to his widget.
 
 Since: 2.6
 
-    method gtk_menu_get_for_attach_widget ( N-GObject $widget --> N-GObject  )
+    method gtk_menu_get_for_attach_widget ( N-GObject $widget --> N-GList  )
 
-  * N-GObject $widget; a `Gnome::Gtk3::Widget`
+  * N-GObject $widget; a **Gnome::Gtk3::Widget**
 
 [gtk_menu_] set_reserve_toggle_size
 -----------------------------------
@@ -387,57 +323,51 @@ Since: 2.18
 
     method gtk_menu_get_reserve_toggle_size ( --> Int  )
 
-List of not yet implemented methods and classes
-===============================================
-
-### method gtk_menu_attach_to_widget (...)
-
-### handler GtkMenuDetachFunc (...)
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.10
-----------
-
-### method gtk_menu_set_tearoff_state ( Int $torn_off )
-
-### method gtk_menu_get_tearoff_state ( --> Int )
-
-### method gtk_menu_set_title ( Str $title )
-
-### method gtk_menu_get_title ( --> Str )
-
-Since 3.22.
------------
-
-### method gtk_menu_popup ( N-GObject $parent_menu_shell, N-GObject $parent_menu_item, GtkMenuPositionFunc $func, gpointer $data, UInt $button, UInt $activate_time )
-
-### method gtk_menu_popup_for_device ( N-GObject $device, N-GObject $parent_menu_shell, N-GObject $parent_menu_item, GtkMenuPositionFunc $func, gpointer $data, GDestroyNotify $destroy, UInt $button, UInt $activate_time )
-
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::Gtk3::Widget`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., $user-optionN
-    )
+First method
+------------
 
-Not yet supported signals
--------------------------
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+
+Supported signals
+-----------------
 
 ### move-scroll
 
     method handler (
-      :$menu, :$scroll_type,
-      :$user-option1, ..., $user-optionN
+      Unknown type GTK_TYPE_SCROLL_TYPE $scroll_type,
+      Gnome::GObject::Object :widget($menu),
+      *%user-options
     );
 
-  * $menu; a `Gnome::Gtk3::Menu`
+  * $menu; a **Gnome::Gtk3::Menu**
 
-  * $scroll_type; a `Gnome::Gtk3::ScrollType`
+  * $scroll_type; a **Gnome::Gtk3::ScrollType**
 
 ### popped-up
 
@@ -451,20 +381,20 @@ Emitted when the position of *menu* is finalized after being popped up using `gt
 
 The blue menu is *menu*'s ideal position, the green menu is *flipped_rect*, and the red menu is *final_rect*.
 
-See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, prop `anchor-hints`, prop `rect-anchor-dx`, prop `rect-anchor-dy`, and prop `menu-type-hint`.
+See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *rect-anchor-dy*, and *menu-type-hint*.
 
 Since: 3.22 Stability: Unstable
 
     method handler (
+      Unknown type G_TYPE_POINTER $flipped_rect,
+      Unknown type G_TYPE_POINTER $final_rect,
+      Int $flipped_x,
+      Int $flipped_y,
       Gnome::GObject::Object :widget($menu),
-      :handler-arg0($flipped_rect),
-      :handler-arg1($final_rect),
-      :handler-arg2($flipped_x),
-      :handler-arg3($flipped_y),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $menu; the `Gnome::Gtk3::Menu` that popped up
+  * $menu; the **Gnome::Gtk3::Menu** that popped up
 
   * $flipped_rect; (nullable): the position of *menu* after any possible flipping or `Any` if the backend can't obtain it
 
@@ -477,41 +407,77 @@ Since: 3.22 Stability: Unstable
 Properties
 ==========
 
-An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new(:empty);
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');
 
-Not yet supported properties
-----------------------------
+Supported properties
+--------------------
 
-### accel-group
+### Active
 
-The `Gnome::GObject::Value` type of property *accel-group* is `G_TYPE_OBJECT`.
+The index of the currently selected menu item, or -1 if no menu item is selected. Since: 2.14
 
-The accel group holding accelerators for the menu.
+The **Gnome::GObject::Value** type of property *active* is `G_TYPE_INT`.
 
-### attach-widget
+### Accel Group
 
-The `Gnome::GObject::Value` type of property *attach-widget* is `G_TYPE_OBJECT`.
+The accel group holding accelerators for the menu. Since: 2.14
 
-The widget the menu is attached to. Setting this property attaches the menu without a `Gnome::Gtk3::MenuDetachFunc`. If you need to use a detacher, use `gtk_menu_attach_to_widget()` directly.
+Widget type: GTK_TYPE_ACCEL_GROUP
 
-### anchor-hints
+The **Gnome::GObject::Value** type of property *accel-group* is `G_TYPE_OBJECT`.
 
-The `Gnome::GObject::Value` type of property *anchor-hints* is `G_TYPE_FLAGS`.
+### Accel Path
 
-Positioning hints for aligning the menu relative to a rectangle.
+An accel path used to conveniently construct accel paths of child items. Since: 2.14
 
-These hints determine how the menu should be positioned in the case that the menu would fall off-screen if placed in its ideal position.
+The **Gnome::GObject::Value** type of property *accel-path* is `G_TYPE_STRING`.
 
-![](images/popup-flip.png)
+### Attach Widget
 
-For example, `GDK_ANCHOR_FLIP_Y` will replace `GDK_GRAVITY_NORTH_WEST` with `GDK_GRAVITY_SOUTH_WEST` and vice versa if the menu extends beyond the bottom edge of the monitor.
+The widget the menu is attached to. Setting this property attaches the menu without a **Gnome::Gtk3::MenuDetachFunc**. If you need to use a detacher, use `gtk_menu_attach_to_widget()` directly. Since: 2.14
 
-See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, prop `rect-anchor-dx`, prop `rect-anchor-dy`, prop `menu-type-hint`, and sig `popped-up`.
+Widget type: GTK_TYPE_WIDGET
 
-Stability: Unstable
+The **Gnome::GObject::Value** type of property *attach-widget* is `G_TYPE_OBJECT`.
+
+### Monitor
+
+The monitor the menu will be popped up on. Since: 2.14
+
+The **Gnome::GObject::Value** type of property *monitor* is `G_TYPE_INT`.
+
+### Reserve Toggle Size
+
+A boolean that indicates whether the menu reserves space for toggles and icons, regardless of their actual presence. This property should only be changed from its default value for special-purposes such as tabular menus. Regular menus that are connected to a menu bar or context menus should reserve toggle space for consistency. Since: 2.18
+
+The **Gnome::GObject::Value** type of property *reserve-toggle-size* is `G_TYPE_BOOLEAN`.
+
+### Anchor hints
+
+Positioning hints for aligning the menu relative to a rectangle. These hints determine how the menu should be positioned in the case that the menu would fall off-screen if placed in its ideal position. ![](images/popup-flip.png) For example, `GDK_ANCHOR_FLIP_Y` will replace `GDK_GRAVITY_NORTH_WEST` with `GDK_GRAVITY_SOUTH_WEST` and vice versa if the menu extends beyond the bottom edge of the monitor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *rect-anchor-dx*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+
+The **Gnome::GObject::Value** type of property *anchor-hints* is `G_TYPE_FLAGS`.
+
+### Rect anchor dx
+
+Horizontal offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+
+The **Gnome::GObject::Value** type of property *rect-anchor-dx* is `G_TYPE_INT`.
+
+### Rect anchor dy
+
+Vertical offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+
+The **Gnome::GObject::Value** type of property *rect-anchor-dy* is `G_TYPE_INT`.
+
+### Menu type hint
+
+The **Gnome::Gdk3::WindowTypeHint** to use for the menu's **Gnome::Gdk3::Window**. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *rect-anchor-dy*, and *popped-up*. Since: 3.22 Stability: Unstable Widget type: GDK_TYPE_WINDOW_TYPE_HINT
+
+The **Gnome::GObject::Value** type of property *menu-type-hint* is `G_TYPE_ENUM`.
 

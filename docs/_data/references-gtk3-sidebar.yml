@@ -135,6 +135,7 @@
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
     doc: 1
+    test: 1
   - title: "MenuItem"
     url: "/content-docs/reference/Gtk3/MenuItem.html"
     doc: 1
