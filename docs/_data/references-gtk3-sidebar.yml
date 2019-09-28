@@ -228,6 +228,7 @@
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
     doc: 1
+    test: 1
 
   - title: "-"
 
