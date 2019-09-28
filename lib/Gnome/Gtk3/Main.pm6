@@ -107,6 +107,7 @@ arguments do not parse properly.
 
 #TM:1:new(:check):
 
+# commandline args: https://www.systutorials.com/docs/linux/man/7-gtk-options/
 #TODO rewrite? because init is done now in Object using pinched sub from here
 submethod BUILD ( Bool :$check = False ) {
 
