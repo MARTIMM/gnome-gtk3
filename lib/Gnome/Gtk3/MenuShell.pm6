@@ -137,6 +137,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
     $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
   ) unless $s;
 
+  self.set-class-name-of-sub('GtkMenuShell');
   $s = callsame unless ?$s;
 
   $s;
