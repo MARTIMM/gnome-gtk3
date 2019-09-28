@@ -53,6 +53,7 @@
   - title: "Paned"
     url: "/content-docs/reference/Gtk3/Paned.html"
     doc: 1
+    test: 1
 
 - bar_title: "Control"
   bar_menu:

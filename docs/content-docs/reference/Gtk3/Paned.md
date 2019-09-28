@@ -1,18 +1,57 @@
-TITLE
-=====
-
 Gnome::Gtk3::Paned
+==================
 
-SUBTITLE
+A widget with two adjustable panes
+
+![](images/panes.png)
+
+Description
+===========
+
+**Gnome::Gtk3::Paned** has two panes, arranged either horizontally or vertically. The division between the two panes is adjustable by the user by dragging a handle.
+
+Child widgets are added to the panes of the widget with `gtk_paned_pack1()` and `gtk_paned_pack2()`. The division between the two children is set by default from the size requests of the children, but it can be adjusted by the user.
+
+A paned widget draws a separator between the two child widgets and a small handle that the user can drag to adjust the division. It does not draw any relief around the children or around the separator. (The space in which the separator is called the gutter.) Often, it is useful to put each child inside a **Gnome::Gtk3::Frame** with the shadow type set to `GTK_SHADOW_IN` so that the gutter appears as a ridge. No separator is drawn if one of the children is missing.
+
+Each child has two options that can be set, *resize* and *shrink*. If *resize* is true, then when the **Gnome::Gtk3::Paned** is resized, that child will expand or shrink along with the paned widget. If *shrink* is true, then that child can be made smaller than its requisition by the user. Setting *shrink* to `0` allows the application to set a minimum size. If *resize* is false for both children, then this is treated as if *resize* is true for both children.
+
+The application can set the position of the slider as if it were set by the user, by calling `gtk_paned_set_position()`.
+
+Css Nodes
+---------
+
+    paned
+    ├── <child>
+    ├── separator[.wide]
+    ╰── <child>
+
+**Gnome::Gtk3::Paned** has a main CSS node with name paned, and a subnode for the separator with name separator. The subnodes gets a .wide style class when the paned is supposed to be wide.
+
+In horizontal orientation, the nodes of the children are always arranged from left to right. So *first-child* will always select the leftmost child, regardless of text direction.
+
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::Paned implements
+
+  * Gnome::Atk::ImplementorIface
+
+  * Gnome::Gtk3::Buildable
+
+  * [Gnome::Gtk3::Orientable](Orientable.html)
+
+Synopsis
 ========
 
-Paned — A widget with two adjustable panes
+Declaration
+-----------
 
     unit class Gnome::Gtk3::Paned;
     also is Gnome::Gtk3::Container;
 
-Synopsis
-========
+Example
+-------
 
     my Gnome::Gtk3::Paned $p .= new(:orientation(GTK_ORIENTATION_HORIZONTAL));
     my Gnome::Gtk3::ListBox $lb1 .= new(:empty);
@@ -26,47 +65,48 @@ Methods
 new
 ---
 
-    multi method new ( :$orientation! )
-
 Create a new object with an orientation set to `GTK_ORIENTATION_HORIZONTAL` or `GTK_ORIENTATION_VERTICAL`.
 
-    multi method new ( :$widget! )
+    multi method new ( :$orientation! )
 
-Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+
+    multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
 gtk_paned_new
 -------------
 
-Creates a new native pane
+Creates a new **Gnome::Gtk3::Paned** widget.
 
-    method gtk_paned_new ( Int $orientation --> N-GObject )
+Returns: a new **Gnome::Gtk3::Paned**.
 
-Returns a native widget. Can be used to initialize another object using :widget. This is very cumbersome when you know that a oneliner does the job for you: `my Gnome::Gtk3::Paned $m .= new(:$orientation);
+Since: 3.0
 
-    my Gnome::Gtk3::Paned $m;
-    $m .= :new(:widget($m.gtk_paned_new(GTK_ORIENTATION_HORIZONTAL));
+    method gtk_paned_new ( GtkOrientation $orientation --> N-GObject  )
+
+  * GtkOrientation $orientation; the paned’s orientation.
 
 gtk_paned_add1
 --------------
 
-Adds a child to the top or left pane with default parameters. This is equivalent to `$p.gtk_paned_pack1( $child-widget, 0, 1)`.
+Adds a child to the top or left pane with default parameters. This is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
 
-    method gtk_paned_add1 ( N-GObject $child-widget )
+    method gtk_paned_add1 ( N-GObject $child )
 
-  * $child-widget; Native child widget to add. When a Perl6 widget object is provided, the native widget is retrieved from that object. See example in the synopsis.
+  * N-GObject $child; the child to add
 
 gtk_paned_add2
 --------------
 
-Adds a child to the bottom or right pane with default parameters. This is equivalent to `$p.gtk_paned_pack2( $child-widget, 1, 1)`.
+Adds a child to the bottom or right pane with default parameters. This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
 
-    method gtk_paned_add2 ( N-GObject $child-widget )
+    method gtk_paned_add2 ( N-GObject $child )
 
-  * $child-widget; Native child widget to add. When a Perl6 widget object is provided, the native widget is retrieved from that object. See example in the synopsis.
+  * N-GObject $child; the child to add
 
 gtk_paned_pack1
 ---------------
@@ -75,11 +115,11 @@ Adds a child to the top or left pane.
 
     method gtk_paned_pack1 ( N-GObject $child, Int $resize, Int $shrink )
 
-  * $child; the child to add. When a Perl6 widget object is provided, the native widget is retrieved from that object. See example in the synopsis.
+  * N-GObject $child; the child to add
 
-  * $resize; should this child expand when the paned widget is resized.
+  * Int $resize; should this child expand when the paned widget is resized.
 
-  * $shrink; can this child be made smaller than its requisition.
+  * Int $shrink; can this child be made smaller than its requisition.
 
 gtk_paned_pack2
 ---------------
@@ -88,31 +128,20 @@ Adds a child to the bottom or right pane.
 
     method gtk_paned_pack2 ( N-GObject $child, Int $resize, Int $shrink )
 
-  * $child; the child to add. When a Perl6 widget object is provided, the native widget is retrieved from that object. See example in the synopsis.
+  * N-GObject $child; the child to add
 
-  * $resize; should this child expand when the paned widget is resized.
+  * Int $resize; should this child expand when the paned widget is resized.
 
-  * $shrink; can this child be made smaller than its requisition.
+  * Int $shrink; can this child be made smaller than its requisition.
 
-[gtk_paned_] get_child1
------------------------
+[gtk_paned_] get_position
+-------------------------
 
-Obtains the first child of the paned widget.
+Obtains the position of the divider between the two panes.
 
-    method gtk_paned_get_child1 ( --> N-GObject )
+Returns: position of the divider
 
-Returns the first child
-
-    my Gnome::Gtk3::ListBox $lb .= new(:widget($p.get-child1()));
-
-[gtk_paned_] get_child2
------------------------
-
-Obtains the second child of the paned widget.
-
-    method gtk_paned_get_child2 ( --> N-GObject )
-
-Returns the second child
+    method gtk_paned_get_position ( --> Int  )
 
 [gtk_paned_] set_position
 -------------------------
@@ -121,84 +150,222 @@ Sets the position of the divider between the two panes.
 
     method gtk_paned_set_position ( Int $position )
 
-  * $position; pixel position of divider, a negative value means that the position is unset.
+  * Int $position; pixel position of divider, a negative value means that the position is unset.
 
-[gtk_paned_] get_position
--------------------------
+[gtk_paned_] get_child1
+-----------------------
 
-Obtains the position of the divider between the two panes.
+Obtains the first child of the paned widget.
 
-    method gtk_paned_get_position ( --> Int )
+Returns: (nullable) (transfer none): first child, or `Any` if it is not set.
 
-Returns position of the devider.
+Since: 2.4
+
+    method gtk_paned_get_child1 ( --> N-GObject  )
+
+[gtk_paned_] get_child2
+-----------------------
+
+Obtains the second child of the paned widget.
+
+Returns: (nullable) (transfer none): second child, or `Any` if it is not set.
+
+Since: 2.4
+
+    method gtk_paned_get_child2 ( --> N-GObject  )
 
 [gtk_paned_] get_handle_window
 ------------------------------
 
-Returns the `GdkWindow` of the handle. This function is useful when handling button or motion events because it enables the callback to distinguish between the window of the paned, a child and the handle.
+Returns the **Gnome::Gdk3::Window** of the handle. This function is useful when handling button or motion events because it enables the callback to distinguish between the window of the paned, a child and the handle.
 
-    method gtk_paned_get_handle_window ( --> N-GObject )
+Returns: (transfer none): the paned’s handle window.
 
-Returns a native `GdkWindow`
+Since: 2.20
+
+    method gtk_paned_get_handle_window ( --> N-GObject  )
 
 [gtk_paned_] set_wide_handle
 ----------------------------
 
-Sets the “wide-handle” property.
+Sets the *wide-handle* property.
+
+Since: 3.16
 
     method gtk_paned_set_wide_handle ( Int $wide )
 
-  * $wide; the new value for the “wide-handle” property, this is 0 or 1.
+  * Int $wide; the new value for the *wide-handle* property
 
 [gtk_paned_] get_wide_handle
 ----------------------------
 
-Gets the “wide-handle” property.
+Gets the *wide-handle* property.
 
-    method gtk_paned_get_wide_handle ( --> Int )
+Returns: `1` if the paned should have a wide handle
 
-Returns 0 or 1 for the wide-handle property.
+Since: 3.16
+
+    method gtk_paned_get_wide_handle ( --> Int  )
 
 Signals
 =======
 
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+
 Supported signals
 -----------------
 
-### accept-position
+### cycle-child-focus
 
-The `accept-position` signal is a keybinding signal which gets emitted to accept the current position of the handle when moving it using key bindings.
+The *cycle-child-focus* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to cycle the focus between the children of the paned.
 
-The default binding for this signal is **Return** or **Space**.
+The default binding is f6.
 
-### cancel-position
+Since: 2.0
 
-The `cancel-position` signal is a keybinding signal which gets emitted to cancel moving the position of the handle using key bindings. The position of the handle will be reset to the value prior to moving it.
+    method handler (
+      Int $reversed,
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
+      --> Int
+    );
 
-The default binding for this signal is **Escape**.
+  * $widget; the object that received the signal
+
+  * $reversed; whether cycling backward or forward
 
 ### toggle-handle-focus
 
-The `toggle-handle-focus` is a keybinding signal which gets emitted to accept the current position of the handle and then move focus to the next widget in the focus chain.
+The *toggle-handle-focus* is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to accept the current position of the handle and then move focus to the next widget in the focus chain.
 
-The default binding is **Tab**.
+The default binding is Tab.
 
-Not yet supported signals
--------------------------
+Since: 2.0
 
-### cycle-child-focus
+    method handler (
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
+      --> Int
+    );
 
-The `cycle-child-focus` signal is a keybinding signal which gets emitted to cycle the focus between the children of the paned.
-
-The default binding is **f6**.
-
-### cycle-handle-focus
-
-The `cycle-handle-focus` signal is a keybinding signal which gets emitted to cycle whether the paned should grab focus to allow the user to change position of the handle by using key bindings.
-
-The default binding for this signal is **f8**.
+  * $widget; the object that received the signal
 
 ### move-handle
 
-The `move-handle` signal is a keybinding signal which gets emitted to move the handle when the user is using key bindings to move it.
+The *move-handle* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to move the handle when the user is using key bindings to move it.
+
+Since: 2.0
+
+    method handler (
+      Int $scroll_type,
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object that received the signal
+
+  * $scroll_type; a **Gnome::Gtk3::ScrollType**
+
+### cycle-handle-focus
+
+The *cycle-handle-focus* signal is a keybinding signal which gets emitted to cycle whether the paned should grab focus to allow the user to change position of the handle by using key bindings.
+
+The default binding for this signal is f8.
+
+Since: 2.0
+
+    method handler (
+      Int $reversed,
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object that received the signal
+
+  * $reversed; whether cycling backward or forward
+
+### accept-position
+
+The *accept-position* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to accept the current position of the handle when moving it using key bindings.
+
+The default binding for this signal is Return or Space.
+
+Since: 2.0
+
+    method handler (
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object that received the signal
+
+Properties
+==========
+
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.g-object-get-property( 'label', $gv);
+    $gv.g-value-set-string('my text label');
+
+Supported properties
+--------------------
+
+### Position
+
+The **Gnome::GObject::Value** type of property *position* is `G_TYPE_INT`.
+
+### Position Set
+
+TRUE if the Position property should be used Default value: False
+
+The **Gnome::GObject::Value** type of property *position-set* is `G_TYPE_BOOLEAN`.
+
+### Minimal Position
+
+The smallest possible value for the position property. This property is derived from the size and shrinkability of the widget's children. Since: 2.4
+
+The **Gnome::GObject::Value** type of property *min-position* is `G_TYPE_INT`.
+
+### Maximal Position
+
+The largest possible value for the position property. This property is derived from the size and shrinkability of the widget's children. Since: 2.4
+
+The **Gnome::GObject::Value** type of property *max-position* is `G_TYPE_INT`.
+
+### Wide Handle
+
+Setting this property to `1` indicates that the paned needs to provide stronger visual separation (e.g. because it separates between two notebooks, whose tab rows would otherwise merge visually). Since: 3.16
+
+The **Gnome::GObject::Value** type of property *wide-handle* is `G_TYPE_BOOLEAN`.
 
