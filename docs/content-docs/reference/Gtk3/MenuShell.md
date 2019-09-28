@@ -1,21 +1,17 @@
-TITLE
-=====
-
 Gnome::Gtk3::MenuShell
-
-SUBTITLE
-========
+======================
 
 A base class for menu objects
 
 Description
 ===========
 
-A `Gnome::Gtk3::MenuShell` is the abstract base class used to derive the `Gnome::Gtk3::Menu` and `Gnome::Gtk3::MenuBar` subclasses.
+A **Gnome::Gtk3::MenuShell** is the abstract base class used to derive the **Gnome::Gtk3::Menu** and **Gnome::Gtk3::MenuBar** subclasses.
 
-A `Gnome::Gtk3::MenuShell` is a container of `Gnome::Gtk3::MenuItem` objects arranged in a list which can be navigated, selected, and activated by the user to perform application functions. A `Gnome::Gtk3::MenuItem` can have a submenu associated with it, allowing for nested hierarchical menus.
+A **Gnome::Gtk3::MenuShell** is a container of **Gnome::Gtk3::MenuItem** objects arranged in a list which can be navigated, selected, and activated by the user to perform application functions. A **Gnome::Gtk3::MenuItem** can have a submenu associated with it, allowing for nested hierarchical menus.
 
-# Terminology
+Terminology
+-----------
 
 A menu item can be “selected”, this means that it is displayed in the prelight state, and if it has a submenu, that submenu will be popped up.
 
@@ -23,8 +19,14 @@ A menu is “active” when it is visible onscreen and the user is selecting fro
 
 There is also is a concept of the current menu and a current menu item. The current menu item is the selected menu item that is furthest down in the hierarchy. (Every active menu shell does not necessarily contain a selected menu item, but if it does, then the parent menu shell must also contain a selected menu item.) The current menu is the menu that contains the current menu item. It will always have a GTK grab and receive all key presses.
 
-See Also
---------
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::MenuShell implements
+
+  * Gnome::Atk::ImplementorIface
+
+  * Gnome::Gtk3::Buildable
 
 Synopsis
 ========
@@ -35,53 +37,46 @@ Declaration
     unit class Gnome::Gtk3::MenuShell;
     also is Gnome::Gtk3::Container;
 
-Example
--------
-
 Methods
 =======
 
 new
 ---
 
-### multi method new ( Bool :empty! )
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-Create an empty object.
+    multi method new ( N-GObject :$widget! )
 
-### multi method new ( Gnome::GObject::Object :$widget! )
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
-Create an object using a native object from elsewhere. See also `Gnome::Gtk3::Widget`.
-
-### multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also `Gnome::Gtk3::Widget`.
+    multi method new ( Str :$build-id! )
 
 gtk_menu_shell_append
 ---------------------
 
-Adds a new `Gnome::Gtk3::MenuItem` to the end of the menu shell's item list.
+Adds a new **Gnome::Gtk3::MenuItem** to the end of the menu shell's item list.
 
     method gtk_menu_shell_append ( N-GObject $child )
 
-  * N-GObject $child; (type `Gnome::Gtk3::.MenuItem`): The `Gnome::Gtk3::MenuItem` to add
+  * N-GObject $child; (type **Gnome::Gtk3::.MenuItem**): The **Gnome::Gtk3::MenuItem** to add
 
 gtk_menu_shell_prepend
 ----------------------
 
-Adds a new `Gnome::Gtk3::MenuItem` to the beginning of the menu shell's item list.
+Adds a new **Gnome::Gtk3::MenuItem** to the beginning of the menu shell's item list.
 
     method gtk_menu_shell_prepend ( N-GObject $child )
 
-  * N-GObject $child; The `Gnome::Gtk3::MenuItem` to add
+  * N-GObject $child; The **Gnome::Gtk3::MenuItem** to add
 
 gtk_menu_shell_insert
 ---------------------
 
-Adds a new `Gnome::Gtk3::MenuItem` to the menu shell’s item list at the position indicated by *position*.
+Adds a new **Gnome::Gtk3::MenuItem** to the menu shell’s item list at the position indicated by *position*.
 
     method gtk_menu_shell_insert ( N-GObject $child, Int $position )
 
-  * N-GObject $child; The `Gnome::Gtk3::MenuItem` to add
+  * N-GObject $child; The **Gnome::Gtk3::MenuItem** to add
 
   * Int $position; The position in the item list where *child* is added. Positions are numbered from 0 to n-1
 
@@ -101,7 +96,7 @@ Selects the menu item from the menu shell.
 
     method gtk_menu_shell_select_item ( N-GObject $menu_item )
 
-  * N-GObject $menu_item; The `Gnome::Gtk3::MenuItem` to select
+  * N-GObject $menu_item; The **Gnome::Gtk3::MenuItem** to select
 
 gtk_menu_shell_deselect
 -----------------------
@@ -117,7 +112,7 @@ Activates the menu item within the menu shell.
 
     method gtk_menu_shell_activate_item ( N-GObject $menu_item, Int $force_deactivate )
 
-  * N-GObject $menu_item; the `Gnome::Gtk3::MenuItem` to activate
+  * N-GObject $menu_item; the **Gnome::Gtk3::MenuItem** to activate
 
   * Int $force_deactivate; if `1`, force the deactivation of the menu shell after the menu item is activated
 
@@ -191,9 +186,9 @@ Since: 3.0
 
 Gets the parent menu shell.
 
-The parent menu shell of a submenu is the `Gnome::Gtk3::Menu` or `Gnome::Gtk3::MenuBar` from which it was opened up.
+The parent menu shell of a submenu is the **Gnome::Gtk3::Menu** or **Gnome::Gtk3::MenuBar** from which it was opened up.
 
-Returns: (transfer none): the parent `Gnome::Gtk3::MenuShell`
+Returns: (transfer none): the parent **Gnome::Gtk3::MenuShell**
 
 Since: 3.0
 
@@ -202,7 +197,7 @@ Since: 3.0
 [gtk_menu_shell_] bind_model
 ----------------------------
 
-Establishes a binding between a `Gnome::Gtk3::MenuShell` and a `GMenuModel`.
+Establishes a binding between a **Gnome::Gtk3::MenuShell** and a **GMenuModel**.
 
 The contents of *shell* are removed and then refilled with menu items according to *model*. When *model* changes, *shell* is updated. Calling this function twice on *shell* with different *model* will cause the first binding to be replaced with a binding to the new model. If *model* is `Any` then any previous binding is undone and all children are removed.
 
@@ -210,15 +205,15 @@ The contents of *shell* are removed and then refilled with menu items according 
 
 If *action_namespace* is non-`Any` then the effect is as if all actions mentioned in the *model* have their names prefixed with the namespace, plus a dot. For example, if the action “quit” is mentioned and *action_namespace* is “app” then the effective action name is “app.quit”.
 
-This function uses `Gnome::Gtk3::Actionable` to define the action name and target values on the created menu items. If you want to use an action group other than “app” and “win”, or if you want to use a `Gnome::Gtk3::MenuShell` outside of a `Gnome::Gtk3::ApplicationWindow`, then you will need to attach your own action group to the widget hierarchy using `gtk_widget_insert_action_group()`. As an example, if you created a group with a “quit” action and inserted it with the name “mygroup” then you would use the action name “mygroup.quit” in your `GMenuModel`.
+This function uses **Gnome::Gtk3::Actionable** to define the action name and target values on the created menu items. If you want to use an action group other than “app” and “win”, or if you want to use a **Gnome::Gtk3::MenuShell** outside of a **Gnome::Gtk3::ApplicationWindow**, then you will need to attach your own action group to the widget hierarchy using `gtk_widget_insert_action_group()`. As an example, if you created a group with a “quit” action and inserted it with the name “mygroup” then you would use the action name “mygroup.quit” in your **GMenuModel**.
 
-For most cases you are probably better off using `gtk_menu_new_from_model()` or `gtk_menu_bar_new_from_model()` or just directly passing the `GMenuModel` to `gtk_application_set_app_menu()` or `gtk_application_set_menubar()`.
+For most cases you are probably better off using `gtk_menu_new_from_model()` or `gtk_menu_bar_new_from_model()` or just directly passing the **GMenuModel** to `gtk_application_set_app_menu()` or `gtk_application_set_menubar()`.
 
 Since: 3.6
 
     method gtk_menu_shell_bind_model ( N-GObject $model, Str $action_namespace, Int $with_separators )
 
-  * N-GObject $model; (allow-none): the `GMenuModel` to bind to or `Any` to remove binding
+  * N-GObject $model; (allow-none): the **GMenuModel** to bind to or `Any` to remove binding
 
   * Str $action_namespace; (allow-none): the namespace for actions in *model*
 
@@ -227,12 +222,33 @@ Since: 3.6
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::Gtk3::Widget`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
@@ -242,8 +258,8 @@ Supported signals
 This signal is emitted when a menu shell is deactivated.
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :$user-option1, ..., :$user-optionN
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
     );
 
   * $menushell; the object which received the signal
@@ -253,34 +269,20 @@ This signal is emitted when a menu shell is deactivated.
 This signal is emitted when a selection has been completed within a menu shell.
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :$user-option1, ..., :$user-optionN
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
     );
 
   * $menushell; the object which received the signal
-
-### cancel
-
-An action signal which cancels the selection within the menu shell. Causes the sig `selection-done` signal to be emitted.
-
-    method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $menushell; the object which received the signal
-
-Not yet supported signals
--------------------------
 
 ### move-current
 
 An keybinding signal which moves the current menu item in the direction specified by *direction*.
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :C<handle-arg0>($direction),
-      :$user-option1, ..., :$user-optionN
+      Unknown type GTK_TYPE_MENU_DIRECTION_TYPE $direction,
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
     );
 
   * $menushell; the object which received the signal
@@ -292,23 +294,34 @@ An keybinding signal which moves the current menu item in the direction specifie
 An action signal that activates the current menu item within the menu shell.
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :C<handle-arg0>($force_hide),
-      :$user-option1, ..., :$user-optionN
+      Int $force_hide,
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
     );
 
   * $menushell; the object which received the signal
 
   * $force_hide; if `1`, hide the menu after activating the menu item
 
+### cancel
+
+An action signal which cancels the selection within the menu shell. Causes the *selection-done* signal to be emitted.
+
+    method handler (
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
+    );
+
+  * $menushell; the object which received the signal
+
 ### cycle-focus
 
 A keybinding signal which moves the focus in the given *direction*.
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menushell),
-      :C<handle-arg0>($direction),
-      :$user-option1, ..., :$user-optionN
+      Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
+      Gnome::GObject::Object :widget($menushell),
+      *%user-options
     );
 
   * $menushell; the object which received the signal
@@ -317,16 +330,17 @@ A keybinding signal which moves the focus in the given *direction*.
 
 ### move-selected
 
-The ::move-selected signal is emitted to move the selection to another item.
+The *move-selected* signal is emitted to move the selection to another item.
 
 Returns: `1` to stop the signal emission, `0` to continue
 
 Since: 2.12
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menu_shell),
-      :C<handle-arg0>($distance),
-      :$user-option1, ..., :$user-optionN
+      Int $distance,
+      Gnome::GObject::Object :widget($menu_shell),
+      *%user-options
+      --> Int
     );
 
   * $menu_shell; the object on which the signal is emitted
@@ -335,29 +349,29 @@ Since: 2.12
 
 ### insert
 
-The ::insert signal is emitted when a new `Gnome::Gtk3::MenuItem` is added to a `Gnome::Gtk3::MenuShell`. A separate signal is used instead of `Gnome::Gtk3::Container`::add because of the need for an additional position parameter.
+The *insert* signal is emitted when a new **Gnome::Gtk3::MenuItem** is added to a **Gnome::Gtk3::MenuShell**. A separate signal is used instead of **Gnome::Gtk3::Container**::add because of the need for an additional position parameter.
 
-The inverse of this signal is the `Gnome::Gtk3::Container`::removed signal.
+The inverse of this signal is the **Gnome::Gtk3::Container**::removed signal.
 
 Since: 3.2
 
     method handler (
-      Gnome::GObject::Object :C<widget>($menu_shell),
-      :C<handle-arg0>($child),
-      :C<handle-arg1>($position),
-      :$user-option1, ..., :$user-optionN
+      N-GObject $child,
+      Int $position,
+      Gnome::GObject::Object :widget($menu_shell),
+      *%user-options
     );
 
   * $menu_shell; the object on which the signal is emitted
 
-  * $child; the `Gnome::Gtk3::MenuItem` that is being inserted
+  * $child; the **Gnome::Gtk3::MenuItem** that is being inserted
 
   * $position; the position at which the insert occurs
 
 Properties
 ==========
 
-An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new(:empty);
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -367,11 +381,9 @@ An example of using a string type property of a `Gnome::Gtk3::Label` object. Thi
 Supported properties
 --------------------
 
-### take-focus
+### Take Focus
 
-The `Gnome::GObject::Value` type of property *take-focus* is `G_TYPE_BOOLEAN`.
+A boolean that determines whether the menu and its submenus grab the keyboard focus. See `gtk_menu_shell_set_take_focus()` and `gtk_menu_shell_get_take_focus()`. Since: 2.8
 
-A boolean that determines whether the menu and its submenus grab the keyboard focus. See `gtk_menu_shell_set_take_focus()` and `gtk_menu_shell_get_take_focus()`.
-
-Since: 2.8
+The **Gnome::GObject::Value** type of property *take-focus* is `G_TYPE_BOOLEAN`.
 
