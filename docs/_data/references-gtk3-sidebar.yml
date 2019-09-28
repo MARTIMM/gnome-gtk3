@@ -182,7 +182,8 @@
     doc: 0
   - title: "Orientable"
     url: "/content-docs/reference/Gtk3/Orientable.html"
-    doc: 1
+    doc: 2
+    test: 2
   - title: "StyleProvider"
     url: "/content-docs/reference/Gtk3/StyleProvider.html"
     doc: 1

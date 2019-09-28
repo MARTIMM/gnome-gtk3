@@ -1,19 +1,36 @@
+#TL:1:Gnome::Gtk3::Orientable:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::Orientable
+=head1 Gnome::Gtk3::Orientable
 
-=SUBTITLE Orientable — An interface for flippable widgets
+An interface for flippable widgets
 
-  unit class Gnome::Gtk3::Orientable;
-  also is Gnome::Glib::GInterface;
+=head1 Description
+
+
+The B<Gnome::Gtk3::Orientable> interface is implemented by all widgets that can be oriented horizontally or vertically. Historically, such widgets have been realized as subclasses of a common base class (e.g B<Gnome::Gtk3::Box>/B<Gnome::Gtk3::HBox>/B<Gnome::Gtk3::VBox> or B<Gnome::Gtk3::Scale>/B<Gnome::Gtk3::HScale>/B<Gnome::Gtk3::VScale>). B<Gnome::Gtk3::Orientable> is more flexible in that it allows the orientation to be changed at runtime, allowing the widgets to “flip”.
+
+B<Gnome::Gtk3::Orientable> was introduced in GTK+ 2.16.
+
+=head2 Known implementations
+
+Gnome::Gtk3::Orientable is implemented by Gnome::Gtk3::AppChooserWidget, Gnome::Gtk3::Box, Gnome::Gtk3::ButtonBox, Gnome::Gtk3::CellAreaBox, Gnome::Gtk3::CellRendererProgress, Gnome::Gtk3::CellView, Gnome::Gtk3::ColorChooserWidget, Gnome::Gtk3::ColorSelection, Gnome::Gtk3::FileChooserButton, Gnome::Gtk3::FileChooserWidget, Gnome::Gtk3::FlowBox, Gnome::Gtk3::FontChooserWidget, Gnome::Gtk3::FontSelection, Gnome::Gtk3::Grid, Gnome::Gtk3::InfoBar, Gnome::Gtk3::LevelBar, Gnome::Gtk3::Paned, Gnome::Gtk3::ProgressBar, Gnome::Gtk3::Range, Gnome::Gtk3::RecentChooserWidget, Gnome::Gtk3::Scale, Gnome::Gtk3::ScaleButton, Gnome::Gtk3::Scrollbar, Gnome::Gtk3::Separator, Gnome::Gtk3::ShortcutsGroup, Gnome::Gtk3::ShortcutsSection, Gnome::Gtk3::ShortcutsShortcut, Gnome::Gtk3::SpinButton, Gnome::Gtk3::StackSwitcher, Gnome::Gtk3::Statusbar, Gnome::Gtk3::ToolPalette, Gnome::Gtk3::Toolbar and Gnome::Gtk3::VolumeButton.
+
 
 =head1 Synopsis
+=head2 Declaration
+
+  unit class Gnome::Gtk3::Orientable;
+  also is Gnome::GObject::Interface;
+
+
+=head2 Example
 
   my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
-  my Gnome::Gtk3::Orientable $o .= new(:widget($level-bar));
-  $o.set-orientation(GTK_ORIENTATION_VERTICAL);
+  $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -22,7 +39,6 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
 use Gnome::GObject::Interface;
 
 #-------------------------------------------------------------------------------
@@ -34,16 +50,10 @@ also is Gnome::GObject::Interface;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-
-Create an orientable object.
-
-  multi method new ( :$widget )
-
-Create an orientable object using a native object from elsewhere. See also Gnome::GObject::Object.
-
 =end pod
 
+#`{{
+#Interfaces are not instantiated
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
@@ -64,6 +74,7 @@ submethod BUILD ( *%options ) {
   # only after creating the widget, the gtype is known
   self.set-class-info('GtkOrientable');
 }
+}}
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
@@ -80,6 +91,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_orientable_set_orientation:
 =begin pod
 =head2 [gtk_orientable_] set_orientation
 
@@ -94,12 +106,13 @@ sub gtk_orientable_set_orientation ( N-GObject $orientable, int32 $orientation )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_orientable_get_orientation:
 =begin pod
 =head2 [gtk_orientable_] get_orientation
 
   method gtk_orientable_get_orientation ( --> GtkOrientation $orientation )
 
-Set the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
+Retrieves the orientation of the I<orientable>.
 
 =end pod
 
