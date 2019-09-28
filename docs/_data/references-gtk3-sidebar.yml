@@ -49,6 +49,7 @@
   - title: "MenuBar"
     url: '/content-docs/reference/Gtk3/MenuBar.html'
     doc: 1
+    test: 1
   - title: "Paned"
     url: "/content-docs/reference/Gtk3/Paned.html"
     doc: 1
@@ -129,9 +130,6 @@
 
 - bar_title: "Menu Classes"
   bar_menu:
-  - title: "ImageMenuItem"
-    url: "/content-docs/reference/Gtk3/ImageMenuItem.html"
-    doc: 0
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
     doc: 1
