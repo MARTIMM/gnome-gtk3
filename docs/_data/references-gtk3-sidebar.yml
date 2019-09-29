@@ -105,6 +105,7 @@
   - title: "Scale"
     url: "/content-docs/reference/Gtk3/Scale.html"
     doc: 1
+    test: 1
 
 - bar_title: "Display"
   bar_menu:

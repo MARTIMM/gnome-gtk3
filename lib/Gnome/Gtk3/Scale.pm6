@@ -249,7 +249,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_new:
+#TM:2:gtk_scale_new:new(:empty)
 =begin pod
 =head2 gtk_scale_new
 
@@ -272,7 +272,7 @@ sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_new_with_range:
+#TM:2:gtk_scale_new_with_range:new(:orientation,:min,:max,:step)
 =begin pod
 =head2 [gtk_scale_] new_with_range
 
@@ -305,7 +305,7 @@ sub gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_set_digits:
+#TM:1:gtk_scale_set_digits:
 =begin pod
 =head2 [gtk_scale_] set_digits
 
@@ -329,7 +329,7 @@ sub gtk_scale_set_digits ( N-GObject $scale, int32 $digits )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_digits:
+#TM:1:gtk_scale_get_digits:
 =begin pod
 =head2 [gtk_scale_] get_digits
 
@@ -348,7 +348,7 @@ sub gtk_scale_get_digits ( N-GObject $scale )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_set_draw_value:
+#TM:1:gtk_scale_set_draw_value:
 =begin pod
 =head2 [gtk_scale_] set_draw_value
 
@@ -366,7 +366,7 @@ sub gtk_scale_set_draw_value ( N-GObject $scale, int32 $draw_value )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_draw_value:
+#TM:1:gtk_scale_get_draw_value:
 =begin pod
 =head2 [gtk_scale_] get_draw_value
 
@@ -429,7 +429,7 @@ sub gtk_scale_get_has_origin ( N-GObject $scale )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_set_value_pos:
+#TM:1:gtk_scale_set_value_pos:
 =begin pod
 =head2 [gtk_scale_] set_value_pos
 
@@ -446,7 +446,7 @@ sub gtk_scale_set_value_pos ( N-GObject $scale, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_value_pos:
+#TM:1:gtk_scale_get_value_pos:
 =begin pod
 =head2 [gtk_scale_] get_value_pos
 
@@ -464,6 +464,7 @@ sub gtk_scale_get_value_pos ( N-GObject $scale )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_get_layout:
 =begin pod
@@ -487,7 +488,9 @@ sub gtk_scale_get_layout ( N-GObject $scale )
   returns PangoLayout
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_get_layout_offsets:
 =begin pod
@@ -513,6 +516,7 @@ Since: 2.4
 sub gtk_scale_get_layout_offsets ( N-GObject $scale, int32 $x, int32 $y )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_add_mark:
@@ -599,27 +603,26 @@ Also here, the types of positional arguments in the signal handler are important
 
 Signal which allows you to change how the scale value is displayed.
 Connect a signal handler which returns an allocated string representing
-I<value>. That string will then be used to display the scale's value.
+I<$value>. That string will then be used to display the scale's value.
 
 Here's an example signal handler which displays a value 1.0 as
 with "-->1.0<--".
-|[<!-- language="C" -->
-static gchar*
-format_value_callback (B<Gnome::Gtk3::Scale> *scale,
-gdouble   value)
-{
-return g_strdup_printf ("-->\C<0>.*g<--",
-gtk_scale_get_digits (scale), value);
-}
-]|
 
-Returns: allocated string representing I<value>
+  method format-value-callback (
+    num64 $value, Gnome::Gtk3::Scale :widget($scale)
+    --> Str
+  ) {
+    $value.fmt('-->%.1f<--')
+  }
+
+
+Returns: allocated string representing I<$value>
 
   method handler (
-    Unknown type G_TYPE_DOUBLE $value,
+    num64 #`{{use NativeCall}} $value,
     Gnome::GObject::Object :widget($scale),
     *%user-options
-    --> Unknown type G_TYPE_STRING
+    --> Str
   );
 
 =item $scale; the object which received the signal
