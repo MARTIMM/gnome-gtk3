@@ -80,7 +80,7 @@ sub MAIN (
       #-------------------------------------------------------------------------------
       subtest 'ISA test', {
         $m .= new(:empty);
-        isa-ok $m, $class, ".new(:empty)";
+        isa-ok $m, $class, '.new(:empty)';
       }
 
       #`{{
@@ -1031,6 +1031,14 @@ sub get-signals ( Str:D $source-content is copy ) {
         $return-type = 'Int';
       }
 
+      when 'G_TYPE_INT' {
+        $return-type = 'Int';
+      }
+
+      when 'G_TYPE_STRING' {
+        $return-type = 'Str';
+      }
+
       when 'G_TYPE_NONE' {
         $return-type = ''
       }
@@ -1066,8 +1074,16 @@ sub get-signals ( Str:D $source-content is copy ) {
           $arg-type = 'Int';
         }
 
+        when 'G_TYPE_LONG' {
+          $arg-type = 'int64 #`{{use NativeCall}}';
+        }
+
         when 'G_TYPE_FLOAT' {
           $arg-type = 'Num';
+        }
+
+        when 'G_TYPE_DOUBLE' {
+          $arg-type = 'num64 #`{{use NativeCall}}';
         }
 
         when 'G_TYPE_STRING' {
