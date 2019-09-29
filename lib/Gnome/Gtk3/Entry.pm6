@@ -169,7 +169,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:new():inheriting
+#TM:1:new():inheriting
 #TM:1:new(:empty):
 #TM:0:new(:widget):
 #TM:0:new(:build-id):
