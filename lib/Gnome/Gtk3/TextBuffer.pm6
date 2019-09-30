@@ -164,7 +164,7 @@ sub gtk_text_buffer_new ( N-GObject $table )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_text_buffer_get_line_count:
+#TM:1:gtk_text_buffer_get_line_count:
 =begin pod
 =head2 [gtk_text_buffer_] get_line_count
 
@@ -184,7 +184,7 @@ sub gtk_text_buffer_get_line_count ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_text_buffer_get_char_count:
+#TM:1:gtk_text_buffer_get_char_count:
 =begin pod
 =head2 [gtk_text_buffer_] get_char_count
 
@@ -244,11 +244,11 @@ sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_text_buffer_insert:
+#TM:1:gtk_text_buffer_insert:
 =begin pod
 =head2 gtk_text_buffer_insert
 
-Inserts I<len> bytes of I<text> at position I<iter>.  If I<len> is -1,
+Inserts I<$len> bytes of I<$text> at position I<$iter>.  If I<$len> is -1,
 I<text> must be nul-terminated and will be inserted in its
 entirety. Emits the “insert-text” signal; insertion actually occurs
 in the default handler for the signal. I<iter> is invalidated when
@@ -256,7 +256,9 @@ insertion occurs (because the buffer contents change), but the
 default signal handler revalidates it to point to the end of the
 inserted text.
 
-  method gtk_text_buffer_insert ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len )
+  method gtk_text_buffer_insert (
+    Gnome::Gtk3::TextIter $iter, Str $text, Int $len
+  )
 
 =item Gnome::Gtk3::TextIter $iter; a position in the buffer
 =item Str $text; text in UTF-8 format
@@ -303,7 +305,11 @@ result of C<gtk_text_view_get_editable()> is appropriate here.
 
 Returns: whether text was actually inserted
 
-  method gtk_text_buffer_insert_interactive ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len, Int $default_editable --> Int  )
+  method gtk_text_buffer_insert_interactive (
+    Gnome::Gtk3::TextIter $iter, Str $text, Int $len,
+    Int $default_editable
+    --> Int
+  )
 
 =item Gnome::Gtk3::TextIter $iter; a position in I<buffer>
 =item Str $text; some UTF-8 text
