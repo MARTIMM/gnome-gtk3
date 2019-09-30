@@ -107,9 +107,11 @@ Deletes current contents of *buffer*, and inserts *text* instead. If *len* is -1
 gtk_text_buffer_insert
 ----------------------
 
-Inserts *len* bytes of *text* at position *iter*. If *len* is -1, *text* must be nul-terminated and will be inserted in its entirety. Emits the “insert-text” signal; insertion actually occurs in the default handler for the signal. *iter* is invalidated when insertion occurs (because the buffer contents change), but the default signal handler revalidates it to point to the end of the inserted text.
+Inserts *$len* bytes of *$text* at position *$iter*. If *$len* is -1, *text* must be nul-terminated and will be inserted in its entirety. Emits the “insert-text” signal; insertion actually occurs in the default handler for the signal. *iter* is invalidated when insertion occurs (because the buffer contents change), but the default signal handler revalidates it to point to the end of the inserted text.
 
-    method gtk_text_buffer_insert ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len )
+    method gtk_text_buffer_insert (
+      Gnome::Gtk3::TextIter $iter, Str $text, Int $len
+    )
 
   * Gnome::Gtk3::TextIter $iter; a position in the buffer
 
@@ -137,7 +139,11 @@ Like `gtk_text_buffer_insert()`, but the insertion will not occur if *iter* is a
 
 Returns: whether text was actually inserted
 
-    method gtk_text_buffer_insert_interactive ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len, Int $default_editable --> Int  )
+    method gtk_text_buffer_insert_interactive (
+      Gnome::Gtk3::TextIter $iter, Str $text, Int $len,
+      Int $default_editable
+      --> Int
+    )
 
   * Gnome::Gtk3::TextIter $iter; a position in *buffer*
 
