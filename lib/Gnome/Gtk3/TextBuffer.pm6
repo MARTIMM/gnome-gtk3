@@ -1,10 +1,12 @@
+#TL:1:Gnome::Gtk3::TextBuffer:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::TextBuffer
+=head1 Gnome::Gtk3::TextBuffer
 
-=SUBTITLE Stores attributed text for display in a C<Gnome::Gtk3::TextView>
+Stores attributed text for display in a B<Gnome::Gtk3::TextView>
 
 =head1 Description
 
@@ -12,14 +14,14 @@ You may wish to begin by reading the [text widget conceptual overview](https://d
 
 =head2 See Also
 
-C<Gnome::Gtk3::TextView>, C<Gnome::Gtk3::TextIter>, C<Gnome::Gtk3::TextMark>
+B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::TextIter>, B<Gnome::Gtk3::TextMark>
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::TextBuffer;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -29,6 +31,7 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::GObject::Object;
+use Gnome::Gtk3::TextTag;
 use Gnome::Gtk3::TextTagTable;
 use Gnome::Gtk3::TextIter;
 
@@ -62,6 +65,7 @@ with application added drag destinations which usually start at 0.
 
 =end pod
 
+#TE:0:GtkTextBufferTargetInfo:
 enum GtkTextBufferTargetInfo is export (
   'GTK_TEXT_BUFFER_TARGET_INFO_BUFFER_CONTENTS' => - 1,
   'GTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT'       => - 2,
@@ -74,32 +78,33 @@ my Bool $signals-added = False;
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-=head3 multi method new ( N-GObject :$widget! )
+  multi method new ( Bool :empty! )
 
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
+
+#TM:1:new(:empty):
+#TM:0:new(:widget):
+#TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<begin-user-action changed end-user-action modified-changed>,
-    :nativewidget<mark-deleted paste-done>,
-    :tagiter2<apply-tag remove-tag>,
-    :iter2<delete-range>,
-    :iteranchor<insert-child-anchor>,
-    :iterpix<insert-pixbuf>,
-    :iterstrint<insert-text>,
-    :itermark<mark-set>,
+    :w0<changed modified-changed begin-user-action end-user-action>,
+    :w1<mark-deleted paste-done>,
+    :w2<insert-pixbuf insert-child-anchor delete-range mark-set>,
+    :w3<insert-text apply-tag remove-tag>,
   ) unless $signals-added;
 
   return unless self.^name eq 'Gnome::Gtk3::TextBuffer';
@@ -138,8 +143,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s
 }
 
-
 #-------------------------------------------------------------------------------
+#TM:2:gtk_text_buffer_new:new(:empty)
 =begin pod
 =head2 gtk_text_buffer_new
 
@@ -159,6 +164,7 @@ sub gtk_text_buffer_new ( N-GObject $table )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_line_count:
 =begin pod
 =head2 [gtk_text_buffer_] get_line_count
 
@@ -178,6 +184,7 @@ sub gtk_text_buffer_get_line_count ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_char_count:
 =begin pod
 =head2 [gtk_text_buffer_] get_char_count
 
@@ -199,10 +206,11 @@ sub gtk_text_buffer_get_char_count ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_tag_table:
 =begin pod
 =head2 [gtk_text_buffer_] get_tag_table
 
-Get the C<Gnome::Gtk3::TextTagTable> associated with this buffer.
+Get the B<Gnome::Gtk3::TextTagTable> associated with this buffer.
 
 Returns: (transfer none): the buffer’s tag table
 
@@ -217,6 +225,7 @@ sub gtk_text_buffer_get_tag_table ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_set_text:
 =begin pod
 =head2 [gtk_text_buffer_] set_text
 
@@ -235,6 +244,7 @@ sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert:
 =begin pod
 =head2 gtk_text_buffer_insert
 
@@ -246,9 +256,9 @@ insertion occurs (because the buffer contents change), but the
 default signal handler revalidates it to point to the end of the
 inserted text.
 
-  method gtk_text_buffer_insert ( N-GTextIter $iter, Str $text, Int $len )
+  method gtk_text_buffer_insert ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len )
 
-=item N-GTextIter $iter; a position in the buffer
+=item Gnome::Gtk3::TextIter $iter; a position in the buffer
 =item Str $text; text in UTF-8 format
 =item Int $len; length of text in bytes, or -1
 
@@ -259,6 +269,7 @@ sub gtk_text_buffer_insert ( N-GObject $buffer, N-GTextIter $iter, Str $text, in
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_at_cursor:
 =begin pod
 =head2 [gtk_text_buffer_] insert_at_cursor
 
@@ -277,6 +288,7 @@ sub gtk_text_buffer_insert_at_cursor ( N-GObject $buffer, Str $text, int32 $len 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_interactive:
 =begin pod
 =head2 [gtk_text_buffer_] insert_interactive
 
@@ -291,9 +303,9 @@ result of C<gtk_text_view_get_editable()> is appropriate here.
 
 Returns: whether text was actually inserted
 
-  method gtk_text_buffer_insert_interactive ( N-GTextIter $iter, Str $text, Int $len, Int $default_editable --> Int  )
+  method gtk_text_buffer_insert_interactive ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len, Int $default_editable --> Int  )
 
-=item N-GTextIter $iter; a position in I<buffer>
+=item Gnome::Gtk3::TextIter $iter; a position in I<buffer>
 =item Str $text; some UTF-8 text
 =item Int $len; length of text in bytes, or -1
 =item Int $default_editable; default editability of buffer
@@ -306,6 +318,7 @@ sub gtk_text_buffer_insert_interactive ( N-GObject $buffer, N-GTextIter $iter, S
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_interactive_at_cursor:
 =begin pod
 =head2 [gtk_text_buffer_] insert_interactive_at_cursor
 
@@ -332,6 +345,7 @@ sub gtk_text_buffer_insert_interactive_at_cursor ( N-GObject $buffer, Str $text,
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_range:
 =begin pod
 =head2 [gtk_text_buffer_] insert_range
 
@@ -344,19 +358,23 @@ I<buffer>, the two buffers must share the same tag table.
 Implemented via emissions of the insert_text and apply_tag signals,
 so expect those.
 
-  method gtk_text_buffer_insert_range ( N-GTextIter $iter, N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_insert_range (
+    Gnome::Gtk3::TextIter $iter,
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item N-GTextIter $iter; a position in I<buffer>
-=item N-GTextIter $start; a position in a C<Gnome::Gtk3::TextBuffer>
-=item N-GTextIter $end; another position in the same buffer as I<start>
+=item Gnome::Gtk3::TextIter $iter; a position in I<buffer>
+=item Gnome::Gtk3::TextIter $start; a position in a B<Gnome::Gtk3::TextBuffer>
+=item Gnome::Gtk3::TextIter $end; another position in the same buffer as I<start>
 
 =end pod
 
-sub gtk_text_buffer_insert_range ( N-GObject $buffer, N-GTextIter $iter, N-GTextIter $start, N-GTextIter $end )
+sub gtk_text_buffer_insert_range ( N-GObject $buffer, N-GTextIter $iter, N-GObject $start, N-GObject $end )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_range_interactive:
 =begin pod
 =head2 [gtk_text_buffer_] insert_range_interactive
 
@@ -368,11 +386,16 @@ C<gtk_text_view_get_editable()> is appropriate here.
 
 Returns: whether an insertion was possible at I<iter>
 
-  method gtk_text_buffer_insert_range_interactive ( N-GTextIter $iter, N-GTextIter $start, N-GTextIter $end, Int $default_editable --> Int  )
+  method gtk_text_buffer_insert_range_interactive (
+    Gnome::Gtk3::TextIter $iter,
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end,
+    Int $default_editable
+    --> Int
+  )
 
-=item N-GTextIter $iter; a position in I<buffer>
-=item N-GTextIter $start; a position in a C<Gnome::Gtk3::TextBuffer>
-=item N-GTextIter $end; another position in the same buffer as I<start>
+=item Gnome::Gtk3::TextIter $iter; a position in I<buffer>
+=item Gnome::Gtk3::TextIter $start; a position in a B<Gnome::Gtk3::TextBuffer>
+=item Gnome::Gtk3::TextIter $end; another position in the same buffer as I<start>
 =item Int $default_editable; default editability of the buffer
 
 =end pod
@@ -384,6 +407,7 @@ sub gtk_text_buffer_insert_range_interactive ( N-GObject $buffer, N-GTextIter $i
 
 #`[[
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_with_tags:
 =begin pod
 =head2 [gtk_text_buffer_] insert_with_tags
 
@@ -393,9 +417,9 @@ terminate the list. Equivalent to calling C<gtk_text_buffer_insert()>,
 then C<gtk_text_buffer_apply_tag()> on the inserted text;
 C<gtk_text_buffer_insert_with_tags()> is just a convenience function.
 
-  method gtk_text_buffer_insert_with_tags ( N-GTextIter $iter, Str $text, Int $len, N-GObject $first_tag )
+  method gtk_text_buffer_insert_with_tags ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len, N-GObject $first_tag )
 
-=item N-GTextIter $iter; an iterator in I<buffer>
+=item Gnome::Gtk3::TextIter $iter; an iterator in I<buffer>
 =item Str $text; UTF-8 text
 =item Int $len; length of I<text>, or -1
 =item N-GObject $first_tag; first tag to apply to I<text> @...: C<Any>-terminated list of tags to apply
@@ -409,15 +433,16 @@ sub gtk_text_buffer_insert_with_tags ( N-GObject $buffer, N-GTextIter $iter, Str
 
 #`[[
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_with_tags_by_name:
 =begin pod
 =head2 [gtk_text_buffer_] insert_with_tags_by_name
 
 Same as C<gtk_text_buffer_insert_with_tags()>, but allows you
 to pass in tag names instead of tag objects.
 
-  method gtk_text_buffer_insert_with_tags_by_name ( N-GTextIter $iter, Str $text, Int $len, Str $first_tag_name )
+  method gtk_text_buffer_insert_with_tags_by_name ( Gnome::Gtk3::TextIter $iter, Str $text, Int $len, Str $first_tag_name )
 
-=item N-GTextIter $iter; position in I<buffer>
+=item Gnome::Gtk3::TextIter $iter; position in I<buffer>
 =item Str $text; UTF-8 text
 =item Int $len; length of I<text>, or -1
 =item Str $first_tag_name; name of a tag to apply to I<text> @...: more tag names
@@ -430,21 +455,24 @@ sub gtk_text_buffer_insert_with_tags_by_name ( N-GObject $buffer, N-GTextIter $i
 ]]
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_markup:
 =begin pod
 =head2 [gtk_text_buffer_] insert_markup
 
 Inserts the text in I<markup> at position I<iter>. I<markup> will be inserted
 in its entirety and must be nul-terminated and valid UTF-8. Emits the
-sig C<insert-text> signal, possibly multiple times; insertion
+ I<insert-text> signal, possibly multiple times; insertion
 actually occurs in the default handler for the signal. I<iter> will point
 to the end of the inserted text on return.
 
 Since: 3.16
 
-  method gtk_text_buffer_insert_markup ( N-GTextIter $iter, Str $markup, Int $len )
+  method gtk_text_buffer_insert_markup (
+    Gnome::Gtk3::TextIter $iter, Str $markup, Int $len
+  )
 
-=item N-GTextIter $iter; location to insert the markup
-=item Str $markup; a nul-terminated UTF-8 string containing [Pango markup][PangoMarkupFormat]
+=item Gnome::Gtk3::TextIter $iter; location to insert the markup
+=item Str $markup; a nul-terminated UTF-8 string containing Pango markup
 =item Int $len; length of I<markup> in bytes, or -1
 
 =end pod
@@ -454,6 +482,7 @@ sub gtk_text_buffer_insert_markup ( N-GObject $buffer, N-GTextIter $iter, Str $m
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_delete:
 =begin pod
 =head2 gtk_text_buffer_delete
 
@@ -465,10 +494,12 @@ buffer is modified, all outstanding iterators become invalid after
 calling this function; however, the I<start> and I<end> will be
 re-initialized to point to the location where text was deleted.
 
-  method gtk_text_buffer_delete ( N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_delete (
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item N-GTextIter $start; a position in I<buffer>
-=item N-GTextIter $end; another position in I<buffer>
+=item Gnome::Gtk3::TextIter $start; a position in I<buffer>
+=item Gnome::Gtk3::TextIter $end; another position in I<buffer>
 
 =end pod
 
@@ -477,6 +508,7 @@ sub gtk_text_buffer_delete ( N-GObject $buffer, N-GTextIter $start, N-GTextIter 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_delete_interactive:
 =begin pod
 =head2 [gtk_text_buffer_] delete_interactive
 
@@ -488,10 +520,14 @@ no text was deleted.
 
 Returns: whether some text was actually deleted
 
-  method gtk_text_buffer_delete_interactive ( N-GTextIter $start_iter, N-GTextIter $end_iter, Int $default_editable --> Int  )
+  method gtk_text_buffer_delete_interactive (
+    Gnome::Gtk3::TextIter $start_iter, Gnome::Gtk3::TextIter $end_iter,
+    Int $default_editable
+    --> Int
+  )
 
-=item N-GTextIter $start_iter; start of range to delete
-=item N-GTextIter $end_iter; end of range
+=item Gnome::Gtk3::TextIter $start_iter; start of range to delete
+=item Gnome::Gtk3::TextIter $end_iter; end of range
 =item Int $default_editable; whether the buffer is editable by default
 
 =end pod
@@ -502,6 +538,7 @@ sub gtk_text_buffer_delete_interactive ( N-GObject $buffer, N-GTextIter $start_i
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_backspace:
 =begin pod
 =head2 gtk_text_buffer_backspace
 
@@ -520,9 +557,12 @@ Returns: C<1> if the buffer was modified
 
 Since: 2.6
 
-  method gtk_text_buffer_backspace ( N-GTextIter $iter, Int $interactive, Int $default_editable --> Int  )
+  method gtk_text_buffer_backspace (
+    Gnome::Gtk3::TextIter $iter, Int $interactive, Int $default_editable
+    --> Int
+  )
 
-=item N-GTextIter $iter; a position in I<buffer>
+=item N-GObject $iter; a position in I<buffer>
 =item Int $interactive; whether the deletion is caused by user interaction
 =item Int $default_editable; whether the buffer is editable by default
 
@@ -534,6 +574,7 @@ sub gtk_text_buffer_backspace ( N-GObject $buffer, N-GTextIter $iter, int32 $int
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_text:
 =begin pod
 =head2 [gtk_text_buffer_] get_text
 
@@ -547,10 +588,13 @@ C<gtk_text_buffer_get_slice()>.
 
 Returns: an allocated UTF-8 string
 
-  method gtk_text_buffer_get_text ( N-GTextIter $start, N-GTextIter $end, Int $include_hidden_chars --> Str  )
+  method gtk_text_buffer_get_text (
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end,
+    Int $include_hidden_chars --> Str
+  )
 
-=item N-GTextIter $start; start of a range
-=item N-GTextIter $end; end of a range
+=item Gnome::Gtk3::TextIter $start; start of a range
+=item Gnome::Gtk3::TextIter $end; end of a range
 =item Int $include_hidden_chars; whether to include invisible text
 
 =end pod
@@ -561,6 +605,7 @@ sub gtk_text_buffer_get_text ( N-GObject $buffer, N-GTextIter $start, N-GTextIte
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_slice:
 =begin pod
 =head2 [gtk_text_buffer_] get_slice
 
@@ -577,10 +622,14 @@ widget is in the buffer.
 
 Returns: an allocated UTF-8 string
 
-  method gtk_text_buffer_get_slice ( N-GTextIter $start, N-GTextIter $end, Int $include_hidden_chars --> Str  )
+  method gtk_text_buffer_get_slice (
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end,
+    Int $include_hidden_chars
+    --> Str
+  )
 
-=item N-GTextIter $start; start of a range
-=item N-GTextIter $end; end of a range
+=item Gnome::Gtk3::TextIter $start; start of a range
+=item Gnome::Gtk3::TextIter $end; end of a range
 =item Int $include_hidden_chars; whether to include invisible text
 
 =end pod
@@ -590,7 +639,9 @@ sub gtk_text_buffer_get_slice ( N-GObject $buffer, N-GTextIter $start, N-GTextIt
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_pixbuf:
 =begin pod
 =head2 [gtk_text_buffer_] insert_pixbuf
 
@@ -603,19 +654,21 @@ this character for pixbufs, but the “text” variants do
 not. e.g. see C<gtk_text_buffer_get_slice()> and
 C<gtk_text_buffer_get_text()>.
 
-  method gtk_text_buffer_insert_pixbuf ( N-GTextIter $iter, N-GObject $pixbuf )
+  method gtk_text_buffer_insert_pixbuf ( Gnome::Gtk3::TextIter $iter, N-GObject $pixbuf )
 
-=item N-GTextIter $iter; location to insert the pixbuf
-=item N-GObject $pixbuf; a C<Gnome::Gdk3::Pixbuf>
+=item Gnome::Gtk3::TextIter $iter; location to insert the pixbuf
+=item N-GObject $pixbuf; a B<Gnome::Gdk3::Pixbuf>
 
 =end pod
 
 sub gtk_text_buffer_insert_pixbuf ( N-GObject $buffer, N-GTextIter $iter, N-GObject $pixbuf )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_insert_child_anchor:
 =begin pod
 =head2 [gtk_text_buffer_] insert_child_anchor
 
@@ -631,10 +684,10 @@ C<gtk_text_buffer_create_child_anchor()> as a more convenient
 alternative to this function. The buffer will add a reference to
 the anchor, so you can unref it after insertion.
 
-  method gtk_text_buffer_insert_child_anchor ( N-GTextIter $iter, GtkTextChildAnchor $anchor )
+  method gtk_text_buffer_insert_child_anchor ( Gnome::Gtk3::TextIter $iter, GtkTextChildAnchor $anchor )
 
-=item N-GTextIter $iter; location to insert the anchor
-=item GtkTextChildAnchor $anchor; a C<Gnome::Gtk3::TextChildAnchor>
+=item Gnome::Gtk3::TextIter $iter; location to insert the anchor
+=item GtkTextChildAnchor $anchor; a B<Gnome::Gtk3::TextChildAnchor>
 
 =end pod
 
@@ -643,6 +696,7 @@ sub gtk_text_buffer_insert_child_anchor ( N-GObject $buffer, N-GTextIter $iter, 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_create_child_anchor:
 =begin pod
 =head2 [gtk_text_buffer_] create_child_anchor
 
@@ -654,9 +708,9 @@ the caller of C<gtk_text_buffer_create_child_anchor()>.
 
 Returns: (transfer none): the created child anchor
 
-  method gtk_text_buffer_create_child_anchor ( N-GTextIter $iter --> GtkTextChildAnchor  )
+  method gtk_text_buffer_create_child_anchor ( Gnome::Gtk3::TextIter $iter --> GtkTextChildAnchor  )
 
-=item N-GTextIter $iter; location in the buffer
+=item Gnome::Gtk3::TextIter $iter; location in the buffer
 
 =end pod
 
@@ -666,7 +720,9 @@ sub gtk_text_buffer_create_child_anchor ( N-GObject $buffer, N-GTextIter $iter )
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_add_mark:
 =begin pod
 =head2 [gtk_text_buffer_] add_mark
 
@@ -674,7 +730,7 @@ Adds the mark at position I<where>. The mark must not be added to
 another buffer, and if its name is not C<Any> then there must not
 be another mark in the buffer with the same name.
 
-Emits the sig C<mark-set> signal as notification of the mark's
+Emits the  I<mark-set> signal as notification of the mark's
 initial placement.
 
 Since: 2.12
@@ -691,6 +747,7 @@ sub gtk_text_buffer_add_mark ( N-GObject $buffer, N-GObject $mark, N-GObject $wh
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_create_mark:
 =begin pod
 =head2 [gtk_text_buffer_] create_mark
 
@@ -705,14 +762,14 @@ with right gravity (when you type, the cursor stays on the right
 side of the text you’re typing).
 
 The caller of this function does not own a
-reference to the returned C<Gnome::Gtk3::TextMark>, so you can ignore the
+reference to the returned B<Gnome::Gtk3::TextMark>, so you can ignore the
 return value if you like. Marks are owned by the buffer and go
 away when the buffer does.
 
-Emits the sig C<mark-set> signal as notification of the mark's
+Emits the  I<mark-set> signal as notification of the mark's
 initial placement.
 
-Returns: (transfer none): the new C<Gnome::Gtk3::TextMark> object
+Returns: (transfer none): the new B<Gnome::Gtk3::TextMark> object
 
   method gtk_text_buffer_create_mark ( Str $mark_name, N-GObject $where, Int $left_gravity --> N-GObject  )
 
@@ -728,15 +785,16 @@ sub gtk_text_buffer_create_mark ( N-GObject $buffer, Str $mark_name, N-GObject $
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_move_mark:
 =begin pod
 =head2 [gtk_text_buffer_] move_mark
 
-Moves I<mark> to the new location I<where>. Emits the sig C<mark-set>
+Moves I<mark> to the new location I<where>. Emits the  I<mark-set>
 signal as notification of the move.
 
   method gtk_text_buffer_move_mark ( N-GObject $mark, N-GObject $where )
 
-=item N-GObject $mark; a C<Gnome::Gtk3::TextMark>
+=item N-GObject $mark; a B<Gnome::Gtk3::TextMark>
 =item N-GObject $where; new location for I<mark> in I<buffer>
 
 =end pod
@@ -746,6 +804,7 @@ sub gtk_text_buffer_move_mark ( N-GObject $buffer, N-GObject $mark, N-GObject $w
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_delete_mark:
 =begin pod
 =head2 [gtk_text_buffer_] delete_mark
 
@@ -756,12 +815,12 @@ if the mark isn’t freed, most operations on I<mark> become
 invalid, until it gets added to a buffer again with
 C<gtk_text_buffer_add_mark()>. Use C<gtk_text_mark_get_deleted()> to
 find out if a mark has been removed from its buffer.
-The sig C<mark-deleted> signal will be emitted as notification after
+The  I<mark-deleted> signal will be emitted as notification after
 the mark is deleted.
 
   method gtk_text_buffer_delete_mark ( N-GObject $mark )
 
-=item N-GObject $mark; a C<Gnome::Gtk3::TextMark> in I<buffer>
+=item N-GObject $mark; a B<Gnome::Gtk3::TextMark> in I<buffer>
 
 =end pod
 
@@ -770,13 +829,14 @@ sub gtk_text_buffer_delete_mark ( N-GObject $buffer, N-GObject $mark )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_mark:
 =begin pod
 =head2 [gtk_text_buffer_] get_mark
 
 Returns the mark named I<name> in buffer I<buffer>, or C<Any> if no such
 mark exists in the buffer.
 
-Returns: (nullable) (transfer none): a C<Gnome::Gtk3::TextMark>, or C<Any>
+Returns: (nullable) (transfer none): a B<Gnome::Gtk3::TextMark>, or C<Any>
 
   method gtk_text_buffer_get_mark ( Str $name --> N-GObject  )
 
@@ -790,6 +850,7 @@ sub gtk_text_buffer_get_mark ( N-GObject $buffer, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_move_mark_by_name:
 =begin pod
 =head2 [gtk_text_buffer_] move_mark_by_name
 
@@ -808,6 +869,7 @@ sub gtk_text_buffer_move_mark_by_name ( N-GObject $buffer, Str $name, N-GObject 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_delete_mark_by_name:
 =begin pod
 =head2 [gtk_text_buffer_] delete_mark_by_name
 
@@ -825,6 +887,7 @@ sub gtk_text_buffer_delete_mark_by_name ( N-GObject $buffer, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_insert:
 =begin pod
 =head2 [gtk_text_buffer_] get_insert
 
@@ -846,6 +909,7 @@ sub gtk_text_buffer_get_insert ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_selection_bound:
 =begin pod
 =head2 [gtk_text_buffer_] get_selection_bound
 
@@ -874,6 +938,7 @@ sub gtk_text_buffer_get_selection_bound ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_place_cursor:
 =begin pod
 =head2 [gtk_text_buffer_] place_cursor
 
@@ -896,6 +961,7 @@ sub gtk_text_buffer_place_cursor ( N-GObject $buffer, N-GObject $where )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_select_range:
 =begin pod
 =head2 [gtk_text_buffer_] select_range
 
@@ -919,8 +985,10 @@ Since: 2.4
 sub gtk_text_buffer_select_range ( N-GObject $buffer, N-GObject $ins, N-GObject $bound )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_apply_tag:
 =begin pod
 =head2 [gtk_text_buffer_] apply_tag
 
@@ -928,11 +996,14 @@ Emits the “apply-tag” signal on I<buffer>. The default
 handler for the signal applies I<tag> to the given range.
 I<start> and I<end> do not have to be in order.
 
-  method gtk_text_buffer_apply_tag ( N-GObject $tag, N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_apply_tag (
+    Gnome::Gtk3::TextTag $tag,
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item N-GObject $tag; a C<Gnome::Gtk3::TextTag>
-=item N-GTextIter $start; one bound of range to be tagged
-=item N-GTextIter $end; other bound of range to be tagged
+=item Gnome::Gtk3::TextTag $tag
+=item Gnome::Gtk3::TextIter $start; one bound of range to be tagged
+=item Gnome::Gtk3::TextIter $end; other bound of range to be tagged
 
 =end pod
 
@@ -941,6 +1012,7 @@ sub gtk_text_buffer_apply_tag ( N-GObject $buffer, N-GObject $tag, N-GTextIter $
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_remove_tag:
 =begin pod
 =head2 [gtk_text_buffer_] remove_tag
 
@@ -948,11 +1020,11 @@ Emits the “remove-tag” signal. The default handler for the signal
 removes all occurrences of I<tag> from the given range. I<start> and
 I<end> don’t have to be in order.
 
-  method gtk_text_buffer_remove_tag ( N-GObject $tag, N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_remove_tag ( N-GObject $tag, N-GObject $start, N-GObject $end )
 
-=item N-GObject $tag; a C<Gnome::Gtk3::TextTag>
-=item N-GTextIter $start; one bound of range to be untagged
-=item N-GTextIter $end; other bound of range to be untagged
+=item Gnome::Gtk3::TextTag $tag
+=item Gnome::Gtk3::TextIter $start; one bound of range to be untagged
+=item Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
 =end pod
 
@@ -961,17 +1033,20 @@ sub gtk_text_buffer_remove_tag ( N-GObject $buffer, N-GObject $tag, N-GTextIter 
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_apply_tag_by_name:
 =begin pod
 =head2 [gtk_text_buffer_] apply_tag_by_name
 
 Calls C<gtk_text_tag_table_lookup()> on the buffer’s tag table to
-get a C<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_apply_tag()>.
+get a B<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_apply_tag()>.
 
-  method gtk_text_buffer_apply_tag_by_name ( Str $name, N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_apply_tag_by_name (
+    Str $name, Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item Str $name; name of a named C<Gnome::Gtk3::TextTag>
-=item N-GTextIter $start; one bound of range to be tagged
-=item N-GTextIter $end; other bound of range to be tagged
+=item Str $name; name of a named B<Gnome::Gtk3::TextTag>
+=item Gnome::Gtk3::TextIter $start; one bound of range to be tagged
+=item Gnome::Gtk3::TextIter $end; other bound of range to be tagged
 
 =end pod
 
@@ -980,17 +1055,20 @@ sub gtk_text_buffer_apply_tag_by_name ( N-GObject $buffer, Str $name, N-GTextIte
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_remove_tag_by_name:
 =begin pod
 =head2 [gtk_text_buffer_] remove_tag_by_name
 
 Calls C<gtk_text_tag_table_lookup()> on the buffer’s tag table to
-get a C<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_remove_tag()>.
+get a B<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_remove_tag()>.
 
-  method gtk_text_buffer_remove_tag_by_name ( Str $name, N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_remove_tag_by_name (
+    Str $name, Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item Str $name; name of a C<Gnome::Gtk3::TextTag>
-=item N-GTextIter $start; one bound of range to be untagged
-=item N-GTextIter $end; other bound of range to be untagged
+=item Str $name; name of a B<Gnome::Gtk3::TextTag>
+=item Gnome::Gtk3::TextIter $start; one bound of range to be untagged
+=item Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
 =end pod
 
@@ -999,6 +1077,7 @@ sub gtk_text_buffer_remove_tag_by_name ( N-GObject $buffer, Str $name, N-GTextIt
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_remove_all_tags:
 =begin pod
 =head2 [gtk_text_buffer_] remove_all_tags
 
@@ -1008,10 +1087,12 @@ the code you’re currently writing. That is, using this function is
 probably a bad idea if you have two or more unrelated code sections
 that add tags.
 
-  method gtk_text_buffer_remove_all_tags ( N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_remove_all_tags (
+    Gnome::Gtk3::TextIter $start, Gnome::Gtk3::TextIter $end
+  )
 
-=item N-GTextIter $start; one bound of range to be untagged
-=item N-GTextIter $end; other bound of range to be untagged
+=item Gnome::Gtk3::TextIter $start; one bound of range to be untagged
+=item Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
 =end pod
 
@@ -1019,8 +1100,9 @@ sub gtk_text_buffer_remove_all_tags ( N-GObject $buffer, N-GTextIter $start, N-G
   is native(&gtk-lib)
   { * }
 
-#`[[ will not be implemented
+#`[[
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_create_tag:
 =begin pod
 =head2 [gtk_text_buffer_] create_tag
 
@@ -1046,38 +1128,56 @@ Returns: (transfer none): a new tag
 
 =end pod
 
-sub gtk_text_buffer_create_tag ( N-GObject $buffer, Str $tag_name, Str $first_property_name, OpaquePointer $any = 0 )
+sub gtk_text_buffer_create_tag ( N-GObject $buffer, Str $tag_name, Str $first_property_name, Any $any = Any )
   returns N-GObject
   is native(&gtk-lib)
   { * }
 ]]
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_iter_at_line_offset:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_line_offset
 
-Obtains an iterator pointing to I<char_offset> within the given line. Note
+Obtains an iterator pointing to I<$char_offset> within the given line. Note
 characters, not bytes; UTF-8 may encode one character as multiple bytes.
 
 Before the 3.20 version, it was not allowed to pass an invalid location.
 
-Since the 3.20 version, if I<line_number> is greater than the number of lines
-in the I<buffer>, the end iterator is returned. And if I<char_offset> is off the
-end of the line, the iterator at the end of the line is returned.
+Since the 3.20 version, if I<$line_number> is greater than the number of lines
+in the I<buffer>, the end iterator is returned. And if I<$char_offset> is off the end of the line, the iterator at the end of the line is returned.
 
-  method gtk_text_buffer_get_iter_at_line_offset ( N-GTextIter $iter, Int $line_number, Int $char_offset )
+  method gtk_text_buffer_get_iter_at_line_offset (
+    Int $line_number, Int $char_offset
+    --> Gnome::Gtk3::TextIter
+  )
 
-=item N-GTextIter $iter; (out): iterator to initialize
 =item Int $line_number; line number counting from 0
 =item Int $char_offset; char offset from start of line
 
 =end pod
 
-sub gtk_text_buffer_get_iter_at_line_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $char_offset )
+sub gtk_text_buffer_get_iter_at_line_offset (
+  N-GObject $buffer, Int $line_number, Int $char_offset
+  --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my N-GTextIter $no = $iter();
+  _gtk_text_buffer_get_iter_at_line_offset(
+    $buffer, $no, $line_number, $char_offset
+  );
+  $iter($no);
+
+  $iter
+}
+
+sub _gtk_text_buffer_get_iter_at_line_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $char_offset )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_iter_at_line_offset')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_iter_at_line_index:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_line_index
 
@@ -1091,19 +1191,37 @@ Since the 3.20 version, if I<line_number> is greater than the number of lines
 in the I<buffer>, the end iterator is returned. And if I<byte_index> is off the
 end of the line, the iterator at the end of the line is returned.
 
-  method gtk_text_buffer_get_iter_at_line_index ( N-GTextIter $iter, Int $line_number, Int $byte_index )
+  method gtk_text_buffer_get_iter_at_line_index (
+    Int $line_number, Int $byte_index
+    --> Gnome::Gtk3::TextIter
+  )
 
-=item N-GTextIter $iter; (out): iterator to initialize
 =item Int $line_number; line number counting from 0
 =item Int $byte_index; byte index from start of line
 
 =end pod
 
-sub gtk_text_buffer_get_iter_at_line_index ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $byte_index )
+sub gtk_text_buffer_get_iter_at_line_index (
+  N-GObject $buffer, Int $line_number, Int $byte_index
+  --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my N-GTextIter $no = $iter();
+  _gtk_text_buffer_get_iter_at_line_index(
+    $buffer, $no, $line_number, $byte_index
+  );
+  $iter($no);
+
+  $iter
+}
+
+sub _gtk_text_buffer_get_iter_at_line_index ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $byte_index )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_iter_at_line_index')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_iter_at_offset:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_offset
 
@@ -1112,54 +1230,100 @@ of the entire buffer. If I<char_offset> is -1 or greater than the number
 of characters in the buffer, I<iter> is initialized to the end iterator,
 the iterator one past the last valid character in the buffer.
 
-  method gtk_text_buffer_get_iter_at_offset ( N-GTextIter $iter, Int $char_offset )
+  method gtk_text_buffer_get_iter_at_offset (
+    Int $char_offset
+    --> Gnome::Gtk3::TextIter
+  )
 
-=item N-GTextIter $iter; (out): iterator to initialize
 =item Int $char_offset; char offset from start of buffer, counting from 0, or -1
 
 =end pod
 
-sub gtk_text_buffer_get_iter_at_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $char_offset )
+
+sub gtk_text_buffer_get_iter_at_offset (
+  N-GObject $buffer, Int $char_offset
+  --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my N-GTextIter $no = $iter();
+  _gtk_text_buffer_get_iter_at_offset( $buffer, $no, $char_offset);
+  $iter($no);
+
+  $iter
+}
+
+sub _gtk_text_buffer_get_iter_at_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $char_offset )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_iter_at_offset')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_iter_at_line:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_line
 
-Initializes I<iter> to the start of the given line. If I<line_number> is greater
+Returns an I<iter> to the start of the given line. If I<$line_number> is greater
 than the number of lines in the I<buffer>, the end iterator is returned.
 
-  method gtk_text_buffer_get_iter_at_line ( N-GTextIter $iter, Int $line_number )
+  method gtk_text_buffer_get_iter_at_line (
+    Int $line_number
+    --> Gnome::Gtk3::TextIter
+  )
 
-=item N-GTextIter $iter; (out): iterator to initialize
 =item Int $line_number; line number counting from 0
 
 =end pod
 
-sub gtk_text_buffer_get_iter_at_line ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number )
+sub gtk_text_buffer_get_iter_at_line (
+  N-GObject $buffer, Int $line_number
+  --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my N-GTextIter $no = $iter();
+  _gtk_text_buffer_get_iter_at_line( $buffer, $no, $line_number);
+  $iter($no);
+
+  $iter
+}
+
+sub _gtk_text_buffer_get_iter_at_line ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_iter_at_line')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_start_iter:
 =begin pod
 =head2 [gtk_text_buffer_] get_start_iter
 
-Initialized I<iter> with the first position in the text buffer. This
+Initialized I<$iter> with the first position in the text buffer. This
 is the same as using C<gtk_text_buffer_get_iter_at_offset()> to get
 the iter at character offset 0.
 
-  method gtk_text_buffer_get_start_iter ( N-GTextIter $iter )
+  method gtk_text_buffer_get_start_iter ( --> Gnome::Gtk3::TextIter )
 
-=item N-GTextIter $iter; (out): iterator to initialize
+=item N-GObject $iter; (out): iterator to initialize
 
 =end pod
 
-sub gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $iter )
+sub gtk_text_buffer_get_start_iter (
+  N-GObject $buffer --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $start .= new(:empty);
+  my N-GTextIter $no = $start();
+  _gtk_text_buffer_get_start_iter( $buffer, $no);
+  $start($no);
+
+  $start
+}
+
+sub _gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $iter is rw )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_start_iter')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_end_iter:
 =begin pod
 =head2 [gtk_text_buffer_] get_end_iter
 
@@ -1170,61 +1334,94 @@ The entire buffer lies in the range from the first position in
 the buffer (call C<gtk_text_buffer_get_start_iter()> to get
 character position 0) to the end iterator.
 
-  method gtk_text_buffer_get_end_iter ( N-GTextIter $iter )
+  method gtk_text_buffer_get_end_iter ( --> Gnome::Gtk3::TextIter )
 
-=item N-GTextIter $iter; (out): iterator to initialize
+=item N-GObject $iter; (out): iterator to initialize
 
 =end pod
 
-sub gtk_text_buffer_get_end_iter ( N-GObject $buffer, N-GTextIter $iter )
+sub gtk_text_buffer_get_end_iter (
+  N-GObject $buffer --> Gnome::Gtk3::TextIter
+) {
+  my Gnome::Gtk3::TextIter $end .= new(:empty);
+  my N-GTextIter $no = $end();
+  _gtk_text_buffer_get_end_iter( $buffer, $no);
+  $end($no);
+
+  $end
+}
+
+sub _gtk_text_buffer_get_end_iter ( N-GObject $buffer, N-GTextIter $iter is rw )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_end_iter')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_bounds:
 =begin pod
 =head2 [gtk_text_buffer_] get_bounds
 
 Retrieves the first and last iterators in the buffer, i.e. the
 entire buffer lies within the range [I<start>,I<end>).
 
-  method gtk_text_buffer_get_bounds ( N-GTextIter $start, N-GTextIter $end )
+  method gtk_text_buffer_get_bounds ( --> List )
 
-=item N-GTextIter $start; (out): iterator to initialize with first position in the buffer
-=item N-GTextIter $end; (out): iterator to initialize with the end iterator
+Returns a list of
+=item Gnome::Gtk3::TextIter $start; iterator to initialize with first position in the buffer
+=item Gnome::Gtk3::TextIter $end; iterator to initialize with the end iterator
 
 =end pod
 
-sub gtk_text_buffer_get_bounds ( N-GObject $buffer, N-GTextIter $start, N-GTextIter $end )
+sub gtk_text_buffer_get_bounds ( N-GObject $buffer --> List ) {
+  my Gnome::Gtk3::TextIter $i1 .= new(:empty);
+  my N-GTextIter $no1 = $i1();
+  my Gnome::Gtk3::TextIter $i2 .= new(:empty);
+  my N-GTextIter $no2 = $i2();
+
+  _gtk_text_buffer_get_bounds( $buffer, $no1, $no2);
+
+  $i1($no1);
+  $i2($no2);
+
+  ( $i1, $i2)
+}
+
+sub _gtk_text_buffer_get_bounds ( N-GObject $buffer, N-GTextIter $start is rw, N-GTextIter $end is rw )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_bounds')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_iter_at_mark:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_mark
 
 Initializes I<iter> with the current position of I<mark>.
 
-  method gtk_text_buffer_get_iter_at_mark ( N-GTextIter $iter, N-GObject $mark )
+  method gtk_text_buffer_get_iter_at_mark ( Gnome::Gtk3::TextIter $iter, N-GObject $mark )
 
-=item N-GTextIter $iter; (out): iterator to initialize
-=item N-GObject $mark; a C<Gnome::Gtk3::TextMark> in I<buffer>
+=item Gnome::Gtk3::TextIter $iter; (out): iterator to initialize
+=item N-GObject $mark; a B<Gnome::Gtk3::TextMark> in I<buffer>
 
 =end pod
 
 sub gtk_text_buffer_get_iter_at_mark ( N-GObject $buffer, N-GTextIter $iter, N-GObject $mark )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_iter_at_child_anchor:
 =begin pod
 =head2 [gtk_text_buffer_] get_iter_at_child_anchor
 
 Obtains the location of I<anchor> within I<buffer>.
 
-  method gtk_text_buffer_get_iter_at_child_anchor ( N-GTextIter $iter, GtkTextChildAnchor $anchor )
+  method gtk_text_buffer_get_iter_at_child_anchor ( Gnome::Gtk3::TextIter $iter, GtkTextChildAnchor $anchor )
 
-=item N-GTextIter $iter; (out): an iterator to be initialized
+=item Gnome::Gtk3::TextIter $iter; (out): an iterator to be initialized
 =item GtkTextChildAnchor $anchor; a child anchor that appears in I<buffer>
 
 =end pod
@@ -1235,6 +1432,7 @@ sub gtk_text_buffer_get_iter_at_child_anchor ( N-GObject $buffer, N-GTextIter $i
 }}
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_modified:
 =begin pod
 =head2 [gtk_text_buffer_] get_modified
 
@@ -1256,6 +1454,7 @@ sub gtk_text_buffer_get_modified ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_set_modified:
 =begin pod
 =head2 [gtk_text_buffer_] set_modified
 
@@ -1263,7 +1462,7 @@ Used to keep track of whether the buffer has been modified since the
 last time it was saved. Whenever the buffer is saved to disk, call
 gtk_text_buffer_set_modified (I<buffer>, FALSE). When the buffer is modified,
 it will automatically toggled on the modified bit again. When the modified
-bit flips, the buffer emits the sig C<modified-changed> signal.
+bit flips, the buffer emits the  I<modified-changed> signal.
 
   method gtk_text_buffer_set_modified ( Int $setting )
 
@@ -1276,6 +1475,7 @@ sub gtk_text_buffer_set_modified ( N-GObject $buffer, int32 $setting )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_has_selection:
 =begin pod
 =head2 [gtk_text_buffer_] get_has_selection
 
@@ -1295,17 +1495,19 @@ sub gtk_text_buffer_get_has_selection ( N-GObject $buffer )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_add_selection_clipboard:
 =begin pod
 =head2 [gtk_text_buffer_] add_selection_clipboard
 
 Adds I<clipboard> to the list of clipboards in which the selection
 contents of I<buffer> are available. In most cases, I<clipboard> will be
-the C<Gnome::Gtk3::Clipboard> of type C<GDK_SELECTION_PRIMARY> for a view of I<buffer>.
+the B<Gnome::Gtk3::Clipboard> of type C<GDK_SELECTION_PRIMARY> for a view of I<buffer>.
 
   method gtk_text_buffer_add_selection_clipboard ( N-GObject $clipboard )
 
-=item N-GObject $clipboard; a C<Gnome::Gtk3::Clipboard>
+=item N-GObject $clipboard; a B<Gnome::Gtk3::Clipboard>
 
 =end pod
 
@@ -1314,15 +1516,16 @@ sub gtk_text_buffer_add_selection_clipboard ( N-GObject $buffer, N-GObject $clip
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_remove_selection_clipboard:
 =begin pod
 =head2 [gtk_text_buffer_] remove_selection_clipboard
 
-Removes a C<Gnome::Gtk3::Clipboard> added with
+Removes a B<Gnome::Gtk3::Clipboard> added with
 C<gtk_text_buffer_add_selection_clipboard()>.
 
   method gtk_text_buffer_remove_selection_clipboard ( N-GObject $clipboard )
 
-=item N-GObject $clipboard; a C<Gnome::Gtk3::Clipboard> added to I<buffer> by  C<gtk_text_buffer_add_selection_clipboard()>
+=item N-GObject $clipboard; a B<Gnome::Gtk3::Clipboard> added to I<buffer> by  C<gtk_text_buffer_add_selection_clipboard()>
 
 =end pod
 
@@ -1331,6 +1534,7 @@ sub gtk_text_buffer_remove_selection_clipboard ( N-GObject $buffer, N-GObject $c
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_cut_clipboard:
 =begin pod
 =head2 [gtk_text_buffer_] cut_clipboard
 
@@ -1339,7 +1543,7 @@ said text if it’s editable.
 
   method gtk_text_buffer_cut_clipboard ( N-GObject $clipboard, Int $default_editable )
 
-=item N-GObject $clipboard; the C<Gnome::Gtk3::Clipboard> object to cut to
+=item N-GObject $clipboard; the B<Gnome::Gtk3::Clipboard> object to cut to
 =item Int $default_editable; default editability of the buffer
 
 =end pod
@@ -1349,6 +1553,7 @@ sub gtk_text_buffer_cut_clipboard ( N-GObject $buffer, N-GObject $clipboard, int
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_copy_clipboard:
 =begin pod
 =head2 [gtk_text_buffer_] copy_clipboard
 
@@ -1356,7 +1561,7 @@ Copies the currently-selected text to a clipboard.
 
   method gtk_text_buffer_copy_clipboard ( N-GObject $clipboard )
 
-=item N-GObject $clipboard; the C<Gnome::Gtk3::Clipboard> object to copy to
+=item N-GObject $clipboard; the B<Gnome::Gtk3::Clipboard> object to copy to
 
 =end pod
 
@@ -1365,6 +1570,7 @@ sub gtk_text_buffer_copy_clipboard ( N-GObject $buffer, N-GObject $clipboard )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_paste_clipboard:
 =begin pod
 =head2 [gtk_text_buffer_] paste_clipboard
 
@@ -1378,7 +1584,7 @@ be inserted.
 
   method gtk_text_buffer_paste_clipboard ( N-GObject $clipboard, N-GObject $override_location, Int $default_editable )
 
-=item N-GObject $clipboard; the C<Gnome::Gtk3::Clipboard> to paste from
+=item N-GObject $clipboard; the B<Gnome::Gtk3::Clipboard> to paste from
 =item N-GObject $override_location; (allow-none): location to insert pasted text, or C<Any>
 =item Int $default_editable; whether the buffer is editable by default
 
@@ -1387,8 +1593,10 @@ be inserted.
 sub gtk_text_buffer_paste_clipboard ( N-GObject $buffer, N-GObject $clipboard, N-GObject $override_location, int32 $default_editable )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_buffer_get_selection_bounds:
 =begin pod
 =head2 [gtk_text_buffer_] get_selection_bounds
 
@@ -1399,21 +1607,35 @@ I<start> and I<end> will be in ascending order. If I<start> and I<end> are
 NULL, then they are not filled in, but the return value still indicates
 whether text is selected.
 
-Returns: whether the selection has nonzero length
+  method gtk_text_buffer_get_selection_bounds ( --> List )
 
-  method gtk_text_buffer_get_selection_bounds ( N-GTextIter $start, N-GTextIter $end --> Int  )
-
-=item N-GTextIter $start; (out): iterator to initialize with selection start
-=item N-GTextIter $end; (out): iterator to initialize with selection end
+Returned List contains
+=item Int $status; C<1> when the selection has nonzero length
+=item Gnome::Gtk3::TextIter $start; iterator to initialize with selection start
+=item Gnome::Gtk3::TextIter $end; iterator to initialize with selection end
 
 =end pod
 
-sub gtk_text_buffer_get_selection_bounds ( N-GObject $buffer, N-GTextIter $start, N-GTextIter $end )
+sub gtk_text_buffer_get_selection_bounds ( N-GObject $buffer --> List ) {
+  my Gnome::Gtk3::TextIter $i1 .= new(:empty);
+  my N-GTextIter $no1 = $i1();
+  my Gnome::Gtk3::TextIter $i2 .= new(:empty);
+  my N-GTextIter $no2 = $i2();
+  my Int $sts = _gtk_text_buffer_get_selection_bounds( $buffer, $no1, $no2);
+  $i1($no1);
+  $i2($no2);
+
+  ( $sts, $i1, $i2)
+}
+
+sub _gtk_text_buffer_get_selection_bounds ( N-GObject $buffer, N-GTextIter $start, N-GTextIter $end )
   returns int32
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_get_selection_bounds')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_delete_selection:
 =begin pod
 =head2 [gtk_text_buffer_] delete_selection
 
@@ -1437,6 +1659,7 @@ sub gtk_text_buffer_delete_selection ( N-GObject $buffer, int32 $interactive, in
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_begin_user_action:
 =begin pod
 =head2 [gtk_text_buffer_] begin_user_action
 
@@ -1445,7 +1668,7 @@ call to C<gtk_text_buffer_end_user_action()> are part of a single
 user-visible operation. The operations between
 C<gtk_text_buffer_begin_user_action()> and
 C<gtk_text_buffer_end_user_action()> can then be grouped when creating
-an undo stack. C<Gnome::Gtk3::TextBuffer> maintains a count of calls to
+an undo stack. B<Gnome::Gtk3::TextBuffer> maintains a count of calls to
 C<gtk_text_buffer_begin_user_action()> that have not been closed with
 a call to C<gtk_text_buffer_end_user_action()>, and emits the
 “begin-user-action” and “end-user-action” signals only for the
@@ -1468,6 +1691,7 @@ sub gtk_text_buffer_begin_user_action ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_end_user_action:
 =begin pod
 =head2 [gtk_text_buffer_] end_user_action
 
@@ -1485,16 +1709,17 @@ sub gtk_text_buffer_end_user_action ( N-GObject $buffer )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_copy_target_list:
 =begin pod
 =head2 [gtk_text_buffer_] get_copy_target_list
 
 This function returns the list of targets this text buffer can
 provide for copying and as DND source. The targets in the list are
-added with I<info> values from the C<Gnome::Gtk3::TextBufferTargetInfo> enum,
+added with I<info> values from the B<Gnome::Gtk3::TextBufferTargetInfo> enum,
 using C<gtk_target_list_add_rich_text_targets()> and
 C<gtk_target_list_add_text_targets()>.
 
-Returns: (transfer none): the C<Gnome::Gtk3::TargetList>
+Returns: (transfer none): the B<Gnome::Gtk3::TargetList>
 
 Since: 2.10
 
@@ -1509,16 +1734,17 @@ sub gtk_text_buffer_get_copy_target_list ( N-GObject $buffer )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_buffer_get_paste_target_list:
 =begin pod
 =head2 [gtk_text_buffer_] get_paste_target_list
 
 This function returns the list of targets this text buffer supports
 for pasting and as DND destination. The targets in the list are
-added with I<info> values from the C<Gnome::Gtk3::TextBufferTargetInfo> enum,
+added with I<info> values from the B<Gnome::Gtk3::TextBufferTargetInfo> enum,
 using C<gtk_target_list_add_rich_text_targets()> and
 C<gtk_target_list_add_text_targets()>.
 
-Returns: (transfer none): the C<Gnome::Gtk3::TargetList>
+Returns: (transfer none): the B<Gnome::Gtk3::TargetList>
 
 Since: 2.10
 
@@ -1535,156 +1761,41 @@ sub gtk_text_buffer_get_paste_target_list ( N-GObject $buffer )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head1 Not yet supported methods
-
-=head2 method gtk_text_buffer_insert_child_anchor ( ... )
-=head2 method gtk_text_buffer_create_child_anchor ( ... )
-=head2 method gtk_text_buffer_get_iter_at_child_anchor ( ... )
-=head2 method gtk_text_buffer_get_copy_target_list ( ... )
-=head2 method gtk_text_buffer_get_paste_target_list ( ... )
-
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Methods which will not be implemented
-
-=head2 method gtk_text_buffer_create_tag ( ... )
-
-This method is not implemented because it can be accomplished using other methods. It is equivalent to calling C<gtk_text_tag_new()> from C<Gnome::Gtk3::TextTag> and then adding the tag to the buffer’s tag table. The returned tag is owned by the buffer’s tag table, so the ref count will be equal to one.
-
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
 
-  my Bool $is-registered = $my-widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., :$user-optionN
-  )
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
 =head2 Supported signals
 
-=head3 begin-user-action
 
-The I<begin-user-action> signal is emitted at the beginning of a single
-user-visible operation on a C<Gnome::Gtk3::TextBuffer>.
-
-See also:
-C<gtk_text_buffer_begin_user_action()>,
-C<gtk_text_buffer_insert_interactive()>,
-C<gtk_text_buffer_insert_range_interactive()>,
-C<gtk_text_buffer_delete_interactive()>,
-C<gtk_text_buffer_backspace()>,
-C<gtk_text_buffer_delete_selection()>.
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-Nil
-=head3 end-user-action
-
-The I<end-user-action> signal is emitted at the end of a single
-user-visible operation on the C<Gnome::Gtk3::TextBuffer>.
-
-See also:
-C<gtk_text_buffer_end_user_action()>,
-C<gtk_text_buffer_insert_interactive()>,
-C<gtk_text_buffer_insert_range_interactive()>,
-C<gtk_text_buffer_delete_interactive()>,
-C<gtk_text_buffer_backspace()>,
-C<gtk_text_buffer_delete_selection()>,
-C<gtk_text_buffer_backspace()>.
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-=head3 changed
-
-The I<changed> signal is emitted when the content of a C<Gnome::Gtk3::TextBuffer>
-has changed.
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-
-=head3 modified-changed
-
-The I<modified-changed> signal is emitted when the modified bit of a
-C<Gnome::Gtk3::TextBuffer> flips.
-
-See also:
-C<gtk_text_buffer_set_modified()>.
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-=head3 mark-deleted
-
-The I<mark-deleted> signal is emitted as notification
-after a C<Gnome::Gtk3::TextMark> is deleted.
-
-See also:
-C<gtk_text_buffer_delete_mark()>.
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($mark),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-=item $mark; The mark that was deleted
-
-
-=head3 paste-done
-
-The I<paste-done> signal is emitted after paste operation has been completed.
-This is useful to properly scroll the view to the end of the pasted text.
-See C<gtk_text_buffer_paste_clipboard()> for more details.
-
-Since: 2.16
-
-  method handler (
-    Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($clipboard),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $textbuffer; the object which received the signal
-
-=item $clipboard; the C<Gnome::Gtk3::Clipboard> pasted from
-
-=begin comment
-=head2 Unsupported signals
-=end comment
-
-=head2 Not yet supported signals
-
-
+=comment #TS:0:insert-text:
 =head3 insert-text
 
-The I<insert-text> signal is emitted to insert text in a C<Gnome::Gtk3::TextBuffer>.
+The I<insert-text> signal is emitted to insert text in a B<Gnome::Gtk3::TextBuffer>.
 Insertion actually occurs in the default handler.
 
 Note that if your handler runs before the default handler it must not
@@ -1697,26 +1808,27 @@ C<gtk_text_buffer_insert()>,
 C<gtk_text_buffer_insert_range()>.
 
   method handler (
+    N-GObject $location,
+    Str $text,
+    Int $len,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($location),
-    :handler-arg1($text),
-    :handler-arg2($len),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $location; position to insert I<text> in I<textbuffer>
+=item $location; position to insert I<text> in I<textbuffer>. A native GtkTextIter object.
 
 =item $text; the UTF-8 text to be inserted
 
 =item $len; length of the inserted text in bytes
 
 
+=comment #TS:0:insert-pixbuf:
 =head3 insert-pixbuf
 
-The I<insert-pixbuf> signal is emitted to insert a C<Gnome::Gdk3::Pixbuf>
-in a C<Gnome::Gtk3::TextBuffer>. Insertion actually occurs in the default handler.
+The I<insert-pixbuf> signal is emitted to insert a B<Gnome::Gdk3::Pixbuf>
+in a B<Gnome::Gtk3::TextBuffer>. Insertion actually occurs in the default handler.
 
 Note that if your handler runs before the default handler it must not
 invalidate the I<location> iter (or has to revalidate it).
@@ -1726,23 +1838,24 @@ inserted I<pixbuf>.
 See also: C<gtk_text_buffer_insert_pixbuf()>.
 
   method handler (
+    N-GObject $location,
+    N-GObject $pixbuf,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($location),
-    :handler-arg1($pixbuf),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $location; position to insert I<pixbuf> in I<textbuffer>
+=item $location; position to insert I<pixbuf> in I<textbuffer>. A native GtkTextIter object.
 
-=item $pixbuf; the C<Gnome::Gdk3::Pixbuf> to be inserted
+=item $pixbuf; a native GdkPixbuf to be inserted
 
 
+=comment #TS:0:insert-child-anchor:
 =head3 insert-child-anchor
 
 The I<insert-child-anchor> signal is emitted to insert a
-C<Gnome::Gtk3::TextChildAnchor> in a C<Gnome::Gtk3::TextBuffer>.
+B<Gnome::Gtk3::TextChildAnchor> in a B<Gnome::Gtk3::TextBuffer>.
 Insertion actually occurs in the default handler.
 
 Note that if your handler runs before the default handler it must
@@ -1753,23 +1866,24 @@ inserted I<anchor>.
 See also: C<gtk_text_buffer_insert_child_anchor()>.
 
   method handler (
+    N-GObject $location,
+    N-GObject $anchor,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($location),
-    :handler-arg1($anchor),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $location; position to insert I<anchor> in I<textbuffer>
+=item $location; position to insert I<anchor> in I<textbuffer>. A native GtkTextIter object.
 
-=item $anchor; the C<Gnome::Gtk3::TextChildAnchor> to be inserted
+=item $anchor; the native GtkTextChildAnchor object to be inserted
 
 
+=comment #TS:0:delete-range:
 =head3 delete-range
 
 The I<delete-range> signal is emitted to delete a range
-from a C<Gnome::Gtk3::TextBuffer>.
+from a B<Gnome::Gtk3::TextBuffer>.
 
 Note that if your handler runs before the default handler it must not
 invalidate the I<start> and I<end> iters (or has to revalidate them).
@@ -1781,47 +1895,99 @@ do not have access to the deleted text.
 See also: C<gtk_text_buffer_delete()>.
 
   method handler (
+    N-GObject $start,
+    N-GObject $end,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($start),
-    :handler-arg1($end),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $start; the start of the range to be deleted
+=item $start; the start of the range to be deleted. A native GtkTextIter object.
 
-=item $end; the end of the range to be deleted
+=item $end; the end of the range to be deleted. A native GtkTextIter object.
 
 
+=comment #TS:0:changed:
+=head3 changed
 
+The I<changed> signal is emitted when the content of a B<Gnome::Gtk3::TextBuffer>
+has changed.
+
+  method handler (
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+
+=comment #TS:0:modified-changed:
+=head3 modified-changed
+
+The I<modified-changed> signal is emitted when the modified bit of a
+B<Gnome::Gtk3::TextBuffer> flips.
+
+See also:
+C<gtk_text_buffer_set_modified()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+
+=comment #TS:0:mark-set:
 =head3 mark-set
 
 The I<mark-set> signal is emitted as notification
-after a C<Gnome::Gtk3::TextMark> is set.
+after a B<Gnome::Gtk3::TextMark> is set.
 
 See also:
 C<gtk_text_buffer_create_mark()>,
 C<gtk_text_buffer_move_mark()>.
 
   method handler (
+    N-GObject $location,
+    N-GObject $mark,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($location),
-    :handler-arg1($mark),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $location; The location of I<mark> in I<textbuffer>
+=item $location; The location of I<mark> in I<textbuffer>. A native GtkTextIter object.
 
-=item $mark; The mark that is set
+=item $mark; The mark that is set. A native GtkTextMark object.
 
 
+=comment #TS:0:mark-deleted:
+=head3 mark-deleted
+
+The I<mark-deleted> signal is emitted as notification
+after a B<Gnome::Gtk3::TextMark> is deleted.
+
+See also:
+C<gtk_text_buffer_delete_mark()>.
+
+  method handler (
+    N-GObject $mark,
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+=item $mark; The mark that was deleted. A native GtkTextMark object.
+
+
+=comment #TS:0:apply-tag:
 =head3 apply-tag
 
 The I<apply-tag> signal is emitted to apply a tag to a
-range of text in a C<Gnome::Gtk3::TextBuffer>.
+range of text in a B<Gnome::Gtk3::TextBuffer>.
 Applying actually occurs in the default handler.
 
 Note that if your handler runs before the default handler it must not
@@ -1833,26 +1999,27 @@ C<gtk_text_buffer_insert_with_tags()>,
 C<gtk_text_buffer_insert_range()>.
 
   method handler (
+    N-GObject $tag,
+    N-GObject $start,
+    N-GObject $end,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($tag),
-    :handler-arg1($start),
-    :handler-arg2($end),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $tag; the applied tag
+=item $tag; the applied tag. A native GtkTextTag object.
 
-=item $start; the start of the range the tag is applied to
+=item $start; the start of the range the tag is applied to. A native GtkTextIter object.
 
-=item $end; the end of the range the tag is applied to
+=item $end; the end of the range the tag is applied to. A native GtkTextIter object.
 
 
+=comment #TS:0:remove-tag:
 =head3 remove-tag
 
 The I<remove-tag> signal is emitted to remove all occurrences of I<tag> from
-a range of text in a C<Gnome::Gtk3::TextBuffer>.
+a range of text in a B<Gnome::Gtk3::TextBuffer>.
 Removal actually occurs in the default handler.
 
 Note that if your handler runs before the default handler it must not
@@ -1862,153 +2029,163 @@ See also:
 C<gtk_text_buffer_remove_tag()>.
 
   method handler (
+    N-GObject $tag,
+    N-GObject $start,
+    N-GObject $end,
     Gnome::GObject::Object :widget($textbuffer),
-    :handler-arg0($tag),
-    :handler-arg1($start),
-    :handler-arg2($end),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $textbuffer; the object which received the signal
 
-=item $tag; the tag to be removed
+=item $tag; the tag to be removed. A native GtkTextTag object.
 
-=item $start; the start of the range the tag is removed from
+=item $start; the start of the range the tag is removed from. A native GtkTextIter object.
 
-=item $end; the end of the range the tag is removed from
+=item $end; the end of the range the tag is removed from. A native GtkTextIter object.
 
 
+=comment #TS:0:begin-user-action:
+=head3 begin-user-action
+
+The I<begin-user-action> signal is emitted at the beginning of a single
+user-visible operation on a B<Gnome::Gtk3::TextBuffer>.
+
+See also:
+C<gtk_text_buffer_begin_user_action()>,
+C<gtk_text_buffer_insert_interactive()>,
+C<gtk_text_buffer_insert_range_interactive()>,
+C<gtk_text_buffer_delete_interactive()>,
+C<gtk_text_buffer_backspace()>,
+C<gtk_text_buffer_delete_selection()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+
+=comment #TS:0:end-user-action:
+=head3 end-user-action
+
+The I<end-user-action> signal is emitted at the end of a single
+user-visible operation on the B<Gnome::Gtk3::TextBuffer>.
+
+See also:
+C<gtk_text_buffer_end_user_action()>,
+C<gtk_text_buffer_insert_interactive()>,
+C<gtk_text_buffer_insert_range_interactive()>,
+C<gtk_text_buffer_delete_interactive()>,
+C<gtk_text_buffer_backspace()>,
+C<gtk_text_buffer_delete_selection()>,
+C<gtk_text_buffer_backspace()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+
+=comment #TS:0:paste-done:
+=head3 paste-done
+
+The paste-done signal is emitted after paste operation has been completed.
+This is useful to properly scroll the view to the end of the pasted text.
+See C<gtk_text_buffer_paste_clipboard()> for more details.
+
+Since: 2.16
+
+  method handler (
+    N-GObject $clipboard,
+    Gnome::GObject::Object :widget($textbuffer),
+    *%user-options
+  );
+
+=item $textbuffer; the object which received the signal
+
+=item $clipboard; the native GtkClipboard pasted from
 
 
 =end pod
+
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-=begin comment
-
 =head2 Supported properties
 
-=head2 Unsupported properties
+=begin comment
+=comment #TP:0:tag-table:
+=head3 Tag Table
 
+Text Tag Table
+Widget type: GTK_TYPE_TEXT_TAG_TABLE
+
+
+The B<Gnome::GObject::Value> type of property I<tag-table> is C<G_TYPE_OBJECT>.
 =end comment
 
-=head2 Not yet supported properties
+=comment #TP:0:text:
+=head3 Text
 
-
-=head3 text
-
-The C<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
 The text content of the buffer. Without child widgets and images,
 see C<gtk_text_buffer_get_text()> for more information.
-
 Since: 2.8
 
+The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
+=comment #TP:0:has-selection:
+=head3 Has selection
 
-=head3 has-selection
-
-The C<Gnome::GObject::Value> type of property I<has-selection> is C<G_TYPE_BOOLEAN>.
 
 Whether the buffer has some text currently selected.
-
 Since: 2.10
 
+The B<Gnome::GObject::Value> type of property I<has-selection> is C<G_TYPE_BOOLEAN>.
 
+=comment #TP:0:cursor-position:
+=head3 Cursor position
 
-=head3 cursor-position
-
-The C<Gnome::GObject::Value> type of property I<cursor-position> is C<G_TYPE_INT>.
 
 The position of the insert mark (as offset from the beginning
 of the buffer). It is useful for getting notified when the
 cursor moves.
-
 Since: 2.10
 
+The B<Gnome::GObject::Value> type of property I<cursor-position> is C<G_TYPE_INT>.
 
+=begin comment
+=comment #TP:0:copy-target-list:
+=head3 Copy target list
 
-=head3 copy-target-list
-
-The C<Gnome::GObject::Value> type of property I<copy-target-list> is C<G_TYPE_BOXED>.
 
 The list of targets this buffer supports for clipboard copying
 and as DND source.
-
 Since: 2.10
 
+The B<Gnome::GObject::Value> type of property I<copy-target-list> is C<G_TYPE_BOXED>.
 
+=comment #TP:0:paste-target-list:
+=head3 Paste target list
 
-=head3 paste-target-list
-
-The C<Gnome::GObject::Value> type of property I<paste-target-list> is C<G_TYPE_BOXED>.
 
 The list of targets this buffer supports for clipboard pasting
 and as DND destination.
-
 Since: 2.10
 
-
+The B<Gnome::GObject::Value> type of property I<paste-target-list> is C<G_TYPE_BOXED>.
+=end comment
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-sub gtk_text_buffer_new ( N-GObject $text-tag-table )
-  returns N-GObject       # GtkTextBuffer
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $i )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_end_iter( N-GObject $buffer, N-GTextIter $i )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_set_text( N-GObject $buffer, Str $text, int32 $len )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_get_text (
-  N-GObject $buffer, N-GTextIter $start, N-GTextIter $end,
-  int32 $include_hidden_chars
-) returns Str
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_text_buffer_insert(
-  N-GObject $buffer, CArray[int32] $start,
-  Str $text, int32 $len
-) is native(&gtk-lib)
-  { * }

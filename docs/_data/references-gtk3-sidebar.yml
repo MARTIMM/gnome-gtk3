@@ -150,6 +150,7 @@
   - title: "TextBuffer"
     url: "/content-docs/reference/Gtk3/TextBuffer.html"
     doc: 1
+    test: 1
   - title: "TextIter"
     url: '/content-docs/reference/Gtk3/TextTag.html'
     doc: 1
