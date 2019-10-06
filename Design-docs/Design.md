@@ -43,6 +43,7 @@ Absence of codes means that a particular item is not tested.
 | gint     | int     | int32        | Int        | +/- n % 2**31 - 1
 |
 | guchar   | un. char  | uint8, byte  | Int      | n % 2**8 - 1
+| gunichar |           | uint32       | Int
 | gushort  | un. short | uint16       | Int      | n % 2**16 - 1
 | gulong   | un. long  | uint64       | Int      | n % 2**64 - 1
 | guint8   | un. char  | uint8        | Int      | n % 2**8 - 1
