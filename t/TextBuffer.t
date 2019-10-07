@@ -2,6 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
 use Gnome::Gtk3::TextTag;
 use Gnome::Gtk3::TextTagTable;
 use Gnome::Gtk3::TextIter;
@@ -82,6 +83,44 @@ subtest 'Manipulations', {
   nok $tb.get-has-selection, '.get-has-selection()';
 }
 
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+
+  class X {
+    has Bool $.insert-signal-processed = False;
+
+    method handle-insert (
+      N-GObject $iter, Str $text, Int $len,
+      Gnome::GObject::Object :widget($text-buffer)
+      --> Int
+    ) {
+      $!insert-signal-processed = True;
+
+      1
+    }
+  }
+
+  my Gnome::Gtk3::TextBuffer $tb .= new(:empty);
+  my Str $text = "hoeperdepoep\nzat op de stoep\n";
+  $tb.set-text( $text, $text.chars);
+  my Gnome::Gtk3::TextIter $start = $tb.get-iter-at-line(1);
+  my Gnome::Gtk3::TextIter $end = $tb.get-iter-at-line(2);
+
+  my Gnome::Gtk3::TextTagTable $tag-table .= new(:widget($tb.get-tag-table));
+  my Gnome::Gtk3::TextTag $tag .= new(:tag-name<part1>);
+  $tag-table.gtk-text-tag-table-add($tag);
+  $tb.apply-tag( $tag, $start, $end);
+
+  my X $x .= new;
+  $tb.register-signal( $x, 'handle-insert', 'insert-text');
+
+  my Str $text2 = ' (...) ';
+  $start = $tb.get-iter-at-line-offset( 1, 3);
+  $tb.gtk-text-buffer-insert( $start, $text2, $text2.chars);
+
+  ok $x.insert-signal-processed, 'insert signal processed';
+}
+
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
@@ -97,10 +136,6 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Signals ...', {
 }
 }}
 

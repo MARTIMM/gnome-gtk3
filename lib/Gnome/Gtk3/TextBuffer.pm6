@@ -1801,7 +1801,7 @@ Also here, the types of positional arguments in the signal handler are important
 =head2 Supported signals
 
 
-=comment #TS:0:insert-text:
+=comment #TS:1:insert-text:
 =head3 insert-text
 
 The I<insert-text> signal is emitted to insert text in a B<Gnome::Gtk3::TextBuffer>.
