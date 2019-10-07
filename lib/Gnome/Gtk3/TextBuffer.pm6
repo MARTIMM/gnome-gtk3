@@ -605,8 +605,11 @@ Returns: an allocated UTF-8 string
 
 =end pod
 
-sub gtk_text_buffer_get_text ( N-GObject $buffer, N-GTextIter $start, N-GTextIter $end, int32 $include_hidden_chars )
-  returns Str
+sub gtk_text_buffer_get_text (
+  N-GObject $buffer,
+  N-GTextIter $start, N-GTextIter $end,
+  int32 $include_hidden_chars
+) returns Str
   is native(&gtk-lib)
   { * }
 
@@ -1168,16 +1171,16 @@ sub gtk_text_buffer_get_iter_at_line_offset (
   --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $iter .= new(:empty);
-  my N-GTextIter $no = $iter();
+  my N-GTextIter $no = $iter.get-native-gboxed;
   _gtk_text_buffer_get_iter_at_line_offset(
     $buffer, $no, $line_number, $char_offset
   );
-  $iter($no);
+  $iter.native-gboxed($no);
 
   $iter
 }
 
-sub _gtk_text_buffer_get_iter_at_line_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $char_offset )
+sub _gtk_text_buffer_get_iter_at_line_offset ( N-GObject $buffer, N-GTextIter $iter is rw, int32 $line_number, int32 $char_offset )
   is native(&gtk-lib)
   is symbol('gtk_text_buffer_get_iter_at_line_offset')
   { * }
@@ -1212,16 +1215,16 @@ sub gtk_text_buffer_get_iter_at_line_index (
   --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $iter .= new(:empty);
-  my N-GTextIter $no = $iter();
+  my N-GTextIter $no = $iter.get-native-gboxed;
   _gtk_text_buffer_get_iter_at_line_index(
     $buffer, $no, $line_number, $byte_index
   );
-  $iter($no);
+  $iter.native-gboxed($no);
 
   $iter
 }
 
-sub _gtk_text_buffer_get_iter_at_line_index ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number, int32 $byte_index )
+sub _gtk_text_buffer_get_iter_at_line_index ( N-GObject $buffer, N-GTextIter $iter is rw, int32 $line_number, int32 $byte_index )
   is native(&gtk-lib)
   is symbol('gtk_text_buffer_get_iter_at_line_index')
   { * }
@@ -1251,14 +1254,14 @@ sub gtk_text_buffer_get_iter_at_offset (
   --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $iter .= new(:empty);
-  my N-GTextIter $no = $iter();
+  my N-GTextIter $no = $iter.get-native-gboxed;
   _gtk_text_buffer_get_iter_at_offset( $buffer, $no, $char_offset);
-  $iter($no);
+  $iter.native-gboxed($no);
 
   $iter
 }
 
-sub _gtk_text_buffer_get_iter_at_offset ( N-GObject $buffer, N-GTextIter $iter, int32 $char_offset )
+sub _gtk_text_buffer_get_iter_at_offset ( N-GObject $buffer, N-GTextIter $iter is rw, int32 $char_offset )
   is native(&gtk-lib)
   is symbol('gtk_text_buffer_get_iter_at_offset')
   { * }
@@ -1285,14 +1288,14 @@ sub gtk_text_buffer_get_iter_at_line (
   --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $iter .= new(:empty);
-  my N-GTextIter $no = $iter();
+  my N-GTextIter $no = $iter.get-native-gboxed;
   _gtk_text_buffer_get_iter_at_line( $buffer, $no, $line_number);
-  $iter($no);
+  $iter.native-gboxed($no);
 
   $iter
 }
 
-sub _gtk_text_buffer_get_iter_at_line ( N-GObject $buffer, N-GTextIter $iter, int32 $line_number )
+sub _gtk_text_buffer_get_iter_at_line ( N-GObject $buffer, N-GTextIter $iter is rw, int32 $line_number )
   is native(&gtk-lib)
   is symbol('gtk_text_buffer_get_iter_at_line')
   { * }
@@ -1316,9 +1319,9 @@ sub gtk_text_buffer_get_start_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $start .= new(:empty);
-  my N-GTextIter $no = $start();
+  my N-GTextIter $no = $start.get-native-gboxed;
   _gtk_text_buffer_get_start_iter( $buffer, $no);
-  $start($no);
+  $start.native-gboxed($no);
 
   $start
 }
@@ -1350,9 +1353,9 @@ sub gtk_text_buffer_get_end_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
   my Gnome::Gtk3::TextIter $end .= new(:empty);
-  my N-GTextIter $no = $end();
+  my N-GTextIter $no = $end.get-native-gboxed;
   _gtk_text_buffer_get_end_iter( $buffer, $no);
-  $end($no);
+  $end.native-gboxed($no);
 
   $end
 }
@@ -1380,14 +1383,14 @@ Returns a list of
 
 sub gtk_text_buffer_get_bounds ( N-GObject $buffer --> List ) {
   my Gnome::Gtk3::TextIter $i1 .= new(:empty);
-  my N-GTextIter $no1 = $i1();
+  my N-GTextIter $no1 = $i1.get-native-gboxed;
   my Gnome::Gtk3::TextIter $i2 .= new(:empty);
-  my N-GTextIter $no2 = $i2();
+  my N-GTextIter $no2 = $i2.get-native-gboxed;
 
   _gtk_text_buffer_get_bounds( $buffer, $no1, $no2);
 
-  $i1($no1);
-  $i2($no2);
+  $i1.native-gboxed($no1);
+  $i2.native-gboxed($no2);
 
   ( $i1, $i2)
 }
@@ -1624,12 +1627,12 @@ Returned List contains
 
 sub gtk_text_buffer_get_selection_bounds ( N-GObject $buffer --> List ) {
   my Gnome::Gtk3::TextIter $i1 .= new(:empty);
-  my N-GTextIter $no1 = $i1();
+  my N-GTextIter $no1 = $i1.get-native-gboxed;
   my Gnome::Gtk3::TextIter $i2 .= new(:empty);
-  my N-GTextIter $no2 = $i2();
+  my N-GTextIter $no2 = $i2.get-native-gboxed;
   my Int $sts = _gtk_text_buffer_get_selection_bounds( $buffer, $no1, $no2);
-  $i1($no1);
-  $i2($no2);
+  $i1.native-gboxed($no1);
+  $i2.native-gboxed($no2);
 
   ( $sts, $i1, $i2)
 }

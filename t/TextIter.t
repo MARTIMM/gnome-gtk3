@@ -1,12 +1,8 @@
 use v6;
 use NativeCall;
 use Test;
-use lib '../perl6-gnome-gobject';
 
 use Gnome::Gtk3::TextIter;
-
-#my $x = N-GTextIter.new;
-#=finish
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);

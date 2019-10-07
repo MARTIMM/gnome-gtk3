@@ -402,7 +402,7 @@ sub gtk_text_iter_get_slice ( N-GObject $start, N-GObject $end )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_text_iter_get_text:
+#TM:2:gtk_text_iter_get_text:TextBuffer.t
 =begin pod
 =head2 [gtk_text_iter_] get_text
 
