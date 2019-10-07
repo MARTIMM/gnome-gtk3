@@ -1090,6 +1090,10 @@ sub get-signals ( Str:D $source-content is copy ) {
           $arg-type = 'Str';
         }
 
+        when 'GTK_TYPE_OBJECT' {
+          $arg-type = 'N-GObject';
+        }
+
         when 'GTK_TYPE_WIDGET' {
           $arg-type = 'N-GObject';
         }
