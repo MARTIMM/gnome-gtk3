@@ -118,20 +118,20 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    _gtk_widget_path_free(self.native-gboxed) if $!widgetpath-is-valid;
+    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
     self.native-gboxed(gtk_widget_path_new());
     $!widgetpath-is-valid = True;
   }
 
   elsif ? %options<widgetpath> {
-    _gtk_widget_path_free(self.native-gboxed) if $!widgetpath-is-valid;
+    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
     self.native-gboxed(%options<widgetpath>);
     $!widgetpath-is-valid = %options<widgetpath>.defined;
   }
 
   elsif %options.keys.elems {
     # must clear because exception can be captured!
-    _gtk_widget_path_free(self.native-gboxed) if $!widgetpath-is-valid;
+    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
     $!widgetpath-is-valid = False;
 
     die X::Gnome.new(
@@ -167,7 +167,7 @@ Clear the widget path and return native object to memory.
 =end pod
 
 method clear-widget-path ( ) {
-  _gtk_widget_path_free(self.native-gboxed);
+  _gtk_widget_path_free(self.get-native-gboxed);
   $!widgetpath-is-valid = False;
 }
 
