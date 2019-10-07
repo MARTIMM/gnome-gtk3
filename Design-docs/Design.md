@@ -9,6 +9,19 @@ See https://www.systutorials.com/docs/linux/man/7-gtk-options/
 ```
 bundle exec jekyll serve
 ```
+# native sub search
+```
+  SomeModule.some-sub()
+  Gnome::GObject::Object.FALLBACK()
+    translate some-sub -> some_sub
+    SomeModule._fallback
+      try some-sub or Gxyz_somemodule_some_sub => sub address
+      callsame() if no address until one is found
+    Substitute native objects for perl6 objects in argument list
+    Cast first argument when sub is found in another class
+
+    Gnome::N::X.test-call()
+```
 
 # Codes used in source modules to mark what is tested or not
 

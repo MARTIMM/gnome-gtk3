@@ -146,7 +146,7 @@ method FALLBACK ( $native-sub is copy, |c ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_main_$native-sub"); }
 
-  #test-call( &$s, Any, |c)
+  #test-call-without-natobj( &$s, |c)
   $s(|c)
 }
 
