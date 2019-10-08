@@ -1,14 +1,9 @@
-TITLE
-=====
-
 Gnome::Gtk3::TextView
+=====================
+
+Widget that displays a **Gnome::Gtk3::TextBuffer**
 
 ![](images/multiline-text.png)
-
-SUBTITLE
-========
-
-Widget that displays a `Gnome::Gtk3::TextBuffer`
 
 Description
 ===========
@@ -27,16 +22,27 @@ Css Nodes
     ├── border.bottom
     ╰── [window.popup]
 
-`Gnome::Gtk3::TextView` has a main css node with name textview and style class .view, and subnodes for each of the border windows, and the main text area, with names border and text, respectively. The border nodes each get one of the style classes .left, .right, .top or .bottom.
+**Gnome::Gtk3::TextView** has a main css node with name textview and style class .view, and subnodes for each of the border windows, and the main text area, with names border and text, respectively. The border nodes each get one of the style classes .left, .right, .top or .bottom.
 
 A node representing the selection will appear below the text node.
 
 If a context menu is opened, the window node will appear as a subnode of the main node.
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::TextView implements
+
+  * Gnome::Atk::ImplementorIface
+
+  * Gnome::Gtk3::Buildable
+
+  * Gnome::Gtk3::Scrollable
+
 See Also
 --------
 
-`Gnome::Gtk3::TextBuffer`, `Gnome::Gtk3::TextIter`
+**Gnome::Gtk3::TextBuffer**, **Gnome::Gtk3::TextIter**
 
 Synopsis
 ========
@@ -47,16 +53,13 @@ Declaration
     unit class Gnome::Gtk3::TextView;
     also is Gnome::Gtk3::Container;
 
-Example
--------
-
 Types
 =====
 
 enum GtkTextWindowType
 ----------------------
 
-Used to reference the parts of `Gnome::Gtk3::TextView`.
+Used to reference the parts of **Gnome::Gtk3::TextView**.
 
   * GTK_TEXT_WINDOW_PRIVATE: Invalid value, used as a marker
 
@@ -75,7 +78,7 @@ Used to reference the parts of `Gnome::Gtk3::TextView`.
 enum GtkTextViewLayer
 ---------------------
 
-Used to reference the layers of `Gnome::Gtk3::TextView` for the purpose of customized drawing with the sig *draw_layer* vfunc.
+Used to reference the layers of **Gnome::Gtk3::TextView** for the purpose of customized drawing with the sig *draw_layer* vfunc.
 
   * GTK_TEXT_VIEW_LAYER_BELOW: Old deprecated layer, use `GTK_TEXT_VIEW_LAYER_BELOW_TEXT` instead
 
@@ -102,53 +105,53 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+    multi method new ( Bool :empty! )
 
-### multi method new ( N-GObject :$widget! )
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+    multi method new ( N-GObject :$widget! )
 
-### multi method new ( Str :$build-id! )
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+    multi method new ( Str :$build-id! )
 
 gtk_text_view_new
 -----------------
 
-Creates a new `Gnome::Gtk3::TextView`. If you don’t call `gtk_text_view_set_buffer()` before using the text view, an empty default buffer will be created for you. Get the buffer with `gtk_text_view_get_buffer()`. If you want to specify your own buffer, consider `gtk_text_view_new_with_buffer()`.
+Creates a new **Gnome::Gtk3::TextView**. If you don’t call `gtk_text_view_set_buffer()` before using the text view, an empty default buffer will be created for you. Get the buffer with `gtk_text_view_get_buffer()`. If you want to specify your own buffer, consider `gtk_text_view_new_with_buffer()`.
 
-Returns: a new `Gnome::Gtk3::TextView`
+Returns: a new **Gnome::Gtk3::TextView**
 
     method gtk_text_view_new ( --> N-GObject  )
 
 [gtk_text_view_] new_with_buffer
 --------------------------------
 
-Creates a new `Gnome::Gtk3::TextView` widget displaying the buffer *buffer*. One buffer can be shared among many widgets. *buffer* may be `Any` to create a default buffer, in which case this function is equivalent to `gtk_text_view_new()`. The text view adds its own reference count to the buffer; it does not take over an existing reference.
+Creates a new **Gnome::Gtk3::TextView** widget displaying the buffer *buffer*. One buffer can be shared among many widgets. *buffer* may be `Any` to create a default buffer, in which case this function is equivalent to `gtk_text_view_new()`. The text view adds its own reference count to the buffer; it does not take over an existing reference.
 
-Returns: a new `Gnome::Gtk3::TextView`.
+Returns: a new **Gnome::Gtk3::TextView**.
 
     method gtk_text_view_new_with_buffer ( N-GObject $buffer --> N-GObject  )
 
-  * N-GObject $buffer; a `Gnome::Gtk3::TextBuffer`
+  * N-GObject $buffer; a **Gnome::Gtk3::TextBuffer**
 
 [gtk_text_view_] set_buffer
 ---------------------------
 
-Sets *buffer* as the buffer being displayed by *text_view*. The previous buffer displayed by the text view is unreferenced, and a reference is added to *buffer*. If you owned a reference to *buffer* before passing it to this function, you must remove that reference yourself; `Gnome::Gtk3::TextView` will not “adopt” it.
+Sets *buffer* as the buffer being displayed by *text_view*. The previous buffer displayed by the text view is unreferenced, and a reference is added to *buffer*. If you owned a reference to *buffer* before passing it to this function, you must remove that reference yourself; **Gnome::Gtk3::TextView** will not “adopt” it.
 
     method gtk_text_view_set_buffer ( N-GObject $buffer )
 
-  * N-GObject $buffer; (allow-none): a `Gnome::Gtk3::TextBuffer`
+  * N-GObject $buffer; (allow-none): a **Gnome::Gtk3::TextBuffer**
 
 [gtk_text_view_] get_buffer
 ---------------------------
 
-Returns the `Gnome::Gtk3::TextBuffer` being displayed by this text view. The reference count on the buffer is not incremented; the caller of this function won’t own a new reference.
+Returns the **Gnome::Gtk3::TextBuffer** being displayed by this text view. The reference count on the buffer is not incremented; the caller of this function won’t own a new reference.
 
-Returns: (transfer none): a `Gnome::Gtk3::TextBuffer`
+Returns: (transfer none): a **Gnome::Gtk3::TextBuffer**
 
     method gtk_text_view_get_buffer ( --> N-GObject  )
 
@@ -163,7 +166,7 @@ Returns: `1` if scrolling occurred
 
     method gtk_text_view_scroll_to_iter ( N-GObject $iter, Num $within_margin, Int $use_align, Num $xalign, Num $yalign --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
   * Num $within_margin; margin as a [0.0,0.5) fraction of screen size
 
@@ -180,7 +183,7 @@ Scrolls *text_view* so that *mark* is on the screen in the position indicated by
 
     method gtk_text_view_scroll_to_mark ( N-GObject $mark, Num $within_margin, Int $use_align, Num $xalign, Num $yalign )
 
-  * N-GObject $mark; a `Gnome::Gtk3::TextMark`
+  * N-GObject $mark; a **Gnome::Gtk3::TextMark**
 
   * Num $within_margin; margin as a [0.0,0.5) fraction of screen size
 
@@ -208,7 +211,7 @@ Returns: `1` if the mark moved (wasn’t already onscreen)
 
     method gtk_text_view_move_mark_onscreen ( N-GObject $mark --> Int  )
 
-  * N-GObject $mark; a `Gnome::Gtk3::TextMark`
+  * N-GObject $mark; a **Gnome::Gtk3::TextMark**
 
 [gtk_text_view_] place_cursor_onscreen
 --------------------------------------
@@ -233,7 +236,7 @@ Fills *visible_rect* with the currently-visible region of the buffer, in buffer 
 
 Toggles whether the insertion point should be displayed. A buffer with no editable text probably shouldn’t have a visible cursor, so you may want to turn the cursor off.
 
-Note that this property may be overridden by the prop `gtk-keynave-use-caret` settings.
+Note that this property may be overridden by the *gtk-keynave-use-caret* settings.
 
     method gtk_text_view_set_cursor_visible ( Int $setting )
 
@@ -253,7 +256,7 @@ Returns: whether the insertion mark is visible
 
 Ensures that the cursor is shown (i.e. not in an 'off' blink interval) and resets the time that it will stay blinking (or visible, in case blinking is disabled).
 
-This function should be called in response to user input (e.g. from derived classes that override the textview's sig `key-press-event` handler).
+This function should be called in response to user input (e.g. from derived classes that override the textview's *key-press-event* handler).
 
 Since: 3.20
 
@@ -274,7 +277,7 @@ Since: 3.0
 
     method gtk_text_view_get_cursor_locations ( N-GObject $iter, N-GObject $strong, N-GObject $weak )
 
-  * N-GObject $iter; (allow-none): a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; (allow-none): a **Gnome::Gtk3::TextIter**
 
   * N-GObject $strong; (out) (allow-none): location to store the strong cursor position (may be `Any`)
 
@@ -287,7 +290,7 @@ Gets a rectangle which roughly contains the character at *iter*. The rectangle p
 
     method gtk_text_view_get_iter_location ( N-GObject $iter, N-GObject $location )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
   * N-GObject $location; (out): bounds of the character at *iter*
 
@@ -300,7 +303,7 @@ Returns: `1` if the position is over text
 
     method gtk_text_view_get_iter_at_location ( N-GObject $iter, Int $x, Int $y --> Int  )
 
-  * N-GObject $iter; (out): a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; (out): a **Gnome::Gtk3::TextIter**
 
   * Int $x; x position, in buffer coordinates
 
@@ -319,7 +322,7 @@ Since: 2.6
 
     method gtk_text_view_get_iter_at_position ( N-GObject $iter, Int $trailing, Int $x, Int $y --> Int  )
 
-  * N-GObject $iter; (out): a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; (out): a **Gnome::Gtk3::TextIter**
 
   * Int $trailing; (out) (allow-none): if non-`Any`, location to store an integer indicating where in the grapheme the user clicked. It will either be zero, or the number of characters in the grapheme. 0 represents the trailing edge of the grapheme.
 
@@ -334,7 +337,7 @@ Gets the y coordinate of the top of the line containing *iter*, and the height o
 
     method gtk_text_view_get_line_yrange ( N-GObject $iter, Int $y, Int $height )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
   * Int $y; (out): return location for a y coordinate
 
@@ -343,11 +346,11 @@ Gets the y coordinate of the top of the line containing *iter*, and the height o
 [gtk_text_view_] get_line_at_y
 ------------------------------
 
-Gets the `Gnome::Gtk3::TextIter` at the start of the line containing the coordinate *y*. *y* is in buffer coordinates, convert from window coordinates with `gtk_text_view_window_to_buffer_coords()`. If non-`Any`, *line_top* will be filled with the coordinate of the top edge of the line.
+Gets the **Gnome::Gtk3::TextIter** at the start of the line containing the coordinate *y*. *y* is in buffer coordinates, convert from window coordinates with `gtk_text_view_window_to_buffer_coords()`. If non-`Any`, *line_top* will be filled with the coordinate of the top edge of the line.
 
     method gtk_text_view_get_line_at_y ( N-GObject $target_iter, Int $y, Int $line_top )
 
-  * N-GObject $target_iter; (out): a `Gnome::Gtk3::TextIter`
+  * N-GObject $target_iter; (out): a **Gnome::Gtk3::TextIter**
 
   * Int $y; a y coordinate
 
@@ -362,7 +365,7 @@ Note that you can’t convert coordinates for a nonexisting window (see `gtk_tex
 
     method gtk_text_view_buffer_to_window_coords ( GtkTextWindowType $win, Int $buffer_x, Int $buffer_y, Int $window_x, Int $window_y )
 
-  * GtkTextWindowType $win; a `Gnome::Gtk3::TextWindowType` except `GTK_TEXT_WINDOW_PRIVATE`
+  * GtkTextWindowType $win; a **Gnome::Gtk3::TextWindowType** except **GTK_TEXT_WINDOW_PRIVATE**
 
   * Int $buffer_x; buffer x coordinate
 
@@ -381,7 +384,7 @@ Note that you can’t convert coordinates for a nonexisting window (see `gtk_tex
 
     method gtk_text_view_window_to_buffer_coords ( GtkTextWindowType $win, Int $window_x, Int $window_y, Int $buffer_x, Int $buffer_y )
 
-  * GtkTextWindowType $win; a `Gnome::Gtk3::TextWindowType` except `GTK_TEXT_WINDOW_PRIVATE`
+  * GtkTextWindowType $win; a **Gnome::Gtk3::TextWindowType** except **GTK_TEXT_WINDOW_PRIVATE**
 
   * Int $window_x; window x coordinate
 
@@ -394,9 +397,9 @@ Note that you can’t convert coordinates for a nonexisting window (see `gtk_tex
 [gtk_text_view_] get_window
 ---------------------------
 
-Retrieves the `Gnome::Gdk3::Window` corresponding to an area of the text view; possible windows include the overall widget window, child windows on the left, right, top, bottom, and the window that displays the text buffer. Windows are `Any` and nonexistent if their width or height is 0, and are nonexistent before the widget has been realized.
+Retrieves the **Gnome::Gdk3::Window** corresponding to an area of the text view; possible windows include the overall widget window, child windows on the left, right, top, bottom, and the window that displays the text buffer. Windows are `Any` and nonexistent if their width or height is 0, and are nonexistent before the widget has been realized.
 
-Returns: (nullable) (transfer none): a `Gnome::Gdk3::Window`, or `Any`
+Returns: (nullable) (transfer none): a **Gnome::Gdk3::Window**, or `Any`
 
     method gtk_text_view_get_window ( GtkTextWindowType $win --> N-GObject  )
 
@@ -416,7 +419,7 @@ Returns: the window type.
 [gtk_text_view_] set_border_window_size
 ---------------------------------------
 
-Sets the width of `GTK_TEXT_WINDOW_LEFT` or `GTK_TEXT_WINDOW_RIGHT`, or the height of `GTK_TEXT_WINDOW_TOP` or `GTK_TEXT_WINDOW_BOTTOM`. Automatically destroys the corresponding window if the size is set to 0, and creates the window if the size is set to non-zero. This function can only be used for the “border windows,” it doesn’t work with `GTK_TEXT_WINDOW_WIDGET`, `GTK_TEXT_WINDOW_TEXT`, or `GTK_TEXT_WINDOW_PRIVATE`.
+Sets the width of `GTK_TEXT_WINDOW_LEFT` or `GTK_TEXT_WINDOW_RIGHT`, or the height of `GTK_TEXT_WINDOW_TOP` or `GTK_TEXT_WINDOW_BOTTOM`. Automatically destroys the corresponding window if the size is set to 0, and creates the window if the size is set to non-zero. This function can only be used for the “border windows,” it doesn’t work with **GTK_TEXT_WINDOW_WIDGET**, **GTK_TEXT_WINDOW_TEXT**, or **GTK_TEXT_WINDOW_PRIVATE**.
 
     method gtk_text_view_set_border_window_size ( GtkTextWindowType $type, Int $size )
 
@@ -438,46 +441,46 @@ Returns: width of window
 [gtk_text_view_] forward_display_line
 -------------------------------------
 
-Moves the given *iter* forward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the `Gnome::Gtk3::TextBuffer`.
+Moves the given *iter* forward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
 Returns: `1` if *iter* was moved and is not on the end iterator
 
     method gtk_text_view_forward_display_line ( N-GObject $iter --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
 [gtk_text_view_] backward_display_line
 --------------------------------------
 
-Moves the given *iter* backward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the `Gnome::Gtk3::TextBuffer`.
+Moves the given *iter* backward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
 Returns: `1` if *iter* was moved and is not on the end iterator
 
     method gtk_text_view_backward_display_line ( N-GObject $iter --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
 [gtk_text_view_] forward_display_line_end
 -----------------------------------------
 
-Moves the given *iter* forward to the next display line end. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the `Gnome::Gtk3::TextBuffer`.
+Moves the given *iter* forward to the next display line end. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
 Returns: `1` if *iter* was moved and is not on the end iterator
 
     method gtk_text_view_forward_display_line_end ( N-GObject $iter --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
 [gtk_text_view_] backward_display_line_start
 --------------------------------------------
 
-Moves the given *iter* backward to the next display line start. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the `Gnome::Gtk3::TextBuffer`.
+Moves the given *iter* backward to the next display line start. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
 Returns: `1` if *iter* was moved and is not on the end iterator
 
     method gtk_text_view_backward_display_line_start ( N-GObject $iter --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
 [gtk_text_view_] starts_display_line
 ------------------------------------
@@ -488,7 +491,7 @@ Returns: `1` if *iter* begins a wrapped line
 
     method gtk_text_view_starts_display_line ( N-GObject $iter --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
 [gtk_text_view_] move_visually
 ------------------------------
@@ -501,18 +504,18 @@ Returns: `1` if *iter* moved and is not on the end iterator
 
     method gtk_text_view_move_visually ( N-GObject $iter, Int $count --> Int  )
 
-  * N-GObject $iter; a `Gnome::Gtk3::TextIter`
+  * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
   * Int $count; number of characters to move (negative moves left, positive moves right)
 
 [gtk_text_view_] im_context_filter_keypress
 -------------------------------------------
 
-Allow the `Gnome::Gtk3::TextView` input method to internally handle key press and release events. If this function returns `1`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
+Allow the **Gnome::Gtk3::TextView** input method to internally handle key press and release events. If this function returns `1`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
 
-Note that you are expected to call this function from your handler when overriding key event handling. This is needed in the case when you need to insert your own key handling between the input method and the default key event handling of the `Gnome::Gtk3::TextView`.
+Note that you are expected to call this function from your handler when overriding key event handling. This is needed in the case when you need to insert your own key handling between the input method and the default key event handling of the **Gnome::Gtk3::TextView**.
 
-|[<!-- language="C" --> static gboolean gtk_foo_bar_key_press_event (`Gnome::Gtk3::Widget` *widget, `Gnome::Gdk3::EventKey` *event) { if ((key->keyval == GDK_KEY_Return || key->keyval == GDK_KEY_KP_Enter)) { if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (view), event)) return TRUE; }
+|[<!-- language="C" --> static gboolean gtk_foo_bar_key_press_event (**Gnome::Gtk3::Widget** *widget, **Gnome::Gdk3::EventKey** *event) { if ((key->keyval == GDK_KEY_Return || key->keyval == GDK_KEY_KP_Enter)) { if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (view), event)) return TRUE; }
 
 // Do some stuff
 
@@ -548,7 +551,7 @@ The window must have nonzero size (see `gtk_text_view_set_border_window_size()`)
       N-GObject $child, GtkTextWindowType $which_window, Int $xpos, Int $ypos
     )
 
-  * N-GObject $child; a `Gnome::Gtk3::Widget`
+  * N-GObject $child; a **Gnome::Gtk3::Widget**
 
   * GtkTextWindowType $which_window; which window the child should appear in
 
@@ -561,7 +564,7 @@ The window must have nonzero size (see `gtk_text_view_set_border_window_size()`)
 
 Updates the position of a child, as for `gtk_text_view_add_child_in_window()`.
 
-    method gtk_text_view_move_child ( N-GObject $child, Int $xpos, Int $ypos )
+    method gtk_text_view_move_child ( N-GObject $child,  Int $xpos, Int $ypos )
 
   * N-GObject $child; child widget already added to the text view
 
@@ -576,7 +579,7 @@ Sets the line wrapping for the view.
 
     method gtk_text_view_set_wrap_mode ( GtkWrapMode $wrap_mode )
 
-  * GtkWrapMode $wrap_mode; a `Gnome::Gtk3::WrapMode`
+  * GtkWrapMode $wrap_mode; a **Gnome::Gtk3::WrapMode**
 
 [gtk_text_view_] get_wrap_mode
 ------------------------------
@@ -590,7 +593,7 @@ Returns: the line wrap setting
 [gtk_text_view_] set_editable
 -----------------------------
 
-Sets the default editability of the `Gnome::Gtk3::TextView`. You can override this default setting with tags in the buffer, using the “editable” attribute of tags.
+Sets the default editability of the **Gnome::Gtk3::TextView**. You can override this default setting with tags in the buffer, using the “editable” attribute of tags.
 
     method gtk_text_view_set_editable ( Int $setting )
 
@@ -599,7 +602,7 @@ Sets the default editability of the `Gnome::Gtk3::TextView`. You can override th
 [gtk_text_view_] get_editable
 -----------------------------
 
-Returns the default editability of the `Gnome::Gtk3::TextView`. Tags in the buffer may override this setting for some ranges of text.
+Returns the default editability of the **Gnome::Gtk3::TextView**. Tags in the buffer may override this setting for some ranges of text.
 
 Returns: whether text is editable by default
 
@@ -608,7 +611,7 @@ Returns: whether text is editable by default
 [gtk_text_view_] set_overwrite
 ------------------------------
 
-Changes the `Gnome::Gtk3::TextView` overwrite mode.
+Changes the **Gnome::Gtk3::TextView** overwrite mode.
 
 Since: 2.4
 
@@ -619,7 +622,7 @@ Since: 2.4
 [gtk_text_view_] get_overwrite
 ------------------------------
 
-Returns whether the `Gnome::Gtk3::TextView` is in overwrite mode or not.
+Returns whether the **Gnome::Gtk3::TextView** is in overwrite mode or not.
 
 Returns: whether *text_view* is in overwrite mode or not.
 
@@ -836,14 +839,14 @@ Obtains a copy of the default text attributes. These are the attributes used for
 
 The return value is a copy owned by the caller of this function, and should be freed with `gtk_text_attributes_unref()`.
 
-Returns: a new `Gnome::Gtk3::TextAttributes`
+Returns: a new **Gnome::Gtk3::TextAttributes**
 
     method gtk_text_view_get_default_attributes ( --> N-GObject  )
 
 [gtk_text_view_] set_input_purpose
 ----------------------------------
 
-Sets the prop `input-purpose` property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
+Sets the *input-purpose* property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
 
 Since: 3.6
 
@@ -854,7 +857,7 @@ Since: 3.6
 [gtk_text_view_] get_input_purpose
 ----------------------------------
 
-Gets the value of the prop `input-purpose` property.
+Gets the value of the *input-purpose* property.
 
 Since: 3.6
 
@@ -863,7 +866,7 @@ Since: 3.6
 [gtk_text_view_] set_input_hints
 --------------------------------
 
-Sets the prop `input-hints` property, which allows input methods to fine-tune their behaviour.
+Sets the *input-hints* property, which allows input methods to fine-tune their behaviour.
 
 Since: 3.6
 
@@ -874,7 +877,7 @@ Since: 3.6
 [gtk_text_view_] get_input_hints
 --------------------------------
 
-Gets the value of the prop `input-hints` property.
+Gets the value of the *input-hints* property.
 
 Since: 3.6
 
@@ -883,7 +886,7 @@ Since: 3.6
 [gtk_text_view_] set_monospace
 ------------------------------
 
-Sets the prop `monospace` property, which indicates that the text view should use monospace fonts.
+Sets the *monospace* property, which indicates that the text view should use monospace fonts.
 
 Since: 3.16
 
@@ -894,7 +897,7 @@ Since: 3.16
 [gtk_text_view_] get_monospace
 ------------------------------
 
-Gets the value of the prop `monospace` property.
+Gets the value of the *monospace* property.
 
 Return: `1` if monospace fonts are desired
 
@@ -902,131 +905,39 @@ Since: 3.16
 
     method gtk_text_view_get_monospace ( --> Int  )
 
-Not yet implemented methods
-===========================
-
-### method gtk_text_view_set_tabs ( ... )
-
-### method gtk_text_view_get_tabs ( ... )
-
-### method gtk_text_view_add_child_at_anchor ( ... )
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.0.
-----------
-
-### method gtk_text_view_get_hadjustment ( --> N-GObject )
-
-### method gtk_text_view_get_vadjustment ( --> N-GObject )
-
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
-
-### set-anchor
-
-The sig *set-anchor* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted when the user initiates setting the "anchor" mark. The "anchor" mark gets placed at the same position as the "insert" mark.
-
-This signal has no default bindings.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### backspace
-
-The sig *backspace* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted when the user asks for it.
-
-The default bindings for this signal are Backspace and Shift-Backspace.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### cut-clipboard
-
-The sig *cut-clipboard* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to cut the selection to the clipboard.
-
-The default bindings for this signal are Ctrl-x and Shift-Delete.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### copy-clipboard
-
-The sig *copy-clipboard* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to copy the selection to the clipboard.
-
-The default bindings for this signal are Ctrl-c and Ctrl-Insert.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### paste-clipboard
-
-The sig *paste-clipboard* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to paste the contents of the clipboard into the text view.
-
-The default bindings for this signal are Ctrl-v and Shift-Insert.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### toggle-overwrite
-
-The sig *toggle-overwrite* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to toggle the overwrite mode of the text view.
-
-The default bindings for this signal is Insert.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-### toggle-cursor-visible
-
-The sig *toggle-cursor-visible* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to toggle the prop `cursor-visible` property.
-
-The default binding for this signal is F7.
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-Not yet supported signals
--------------------------
 
 ### move-cursor
 
@@ -1035,16 +946,16 @@ Applications should not connect to it, but may emit it with `g_signal_emit_by_na
 The default bindings for this signal come in two variants, the variant with the Shift modifier extends the selection, the variant without the Shift modifer does not. There are too many key combinations to list them all here. - Arrow keys move by individual characters/lines - Ctrl-arrow key combinations move by words/paragraphs - Home/End keys move to the ends of the buffer - PageUp/PageDown keys move vertically by pages - Ctrl-PageUp/PageDown keys move horizontally by pages
 
     method handler (
+      Unknown type GTK_TYPE_MOVEMENT_STEP $step,
+      Int $count,
+      Int $extend_selection,
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($step),
-      :handler-arg1($count),
-      :handler-arg2($extend_selection),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $text_view; the object which received the signal
 
-  * $step; the granularity of the move, as a `Gnome::Gtk3::MovementStep`
+  * $step; the granularity of the move, as a **Gnome::Gtk3::MovementStep**
 
   * $count; the number of *step* units to move
 
@@ -1052,33 +963,46 @@ The default bindings for this signal come in two variants, the variant with the 
 
 ### move-viewport
 
-The sig *move-viewport* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which can be bound to key combinations to allow the user to move the viewport, i.e. change what part of the text view is visible in a containing scrolled window.
+The *move-viewport* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which can be bound to key combinations to allow the user to move the viewport, i.e. change what part of the text view is visible in a containing scrolled window.
 
 There are no default bindings for this signal.
 
     method handler (
+      Unknown type GTK_TYPE_SCROLL_STEP $step,
+      Int $count,
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($step),
-      :handler-arg1($count),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $text_view; the object which received the signal
 
-  * $step; the granularity of the movement, as a `Gnome::Gtk3::ScrollStep`
+  * $step; the granularity of the movement, as a **Gnome::Gtk3::ScrollStep**
 
   * $count; the number of *step* units to move
 
-### insert-at-cursor
+### set-anchor
 
-The sig *insert-at-cursor* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted when the user initiates the insertion of a fixed string at the cursor.
+The *set-anchor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates setting the "anchor" mark. The "anchor" mark gets placed at the same position as the "insert" mark.
 
 This signal has no default bindings.
 
     method handler (
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($string),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### insert-at-cursor
+
+The *insert-at-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates the insertion of a fixed string at the cursor.
+
+This signal has no default bindings.
+
+    method handler (
+      Str $string,
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
     );
 
   * $text_view; the object which received the signal
@@ -1087,39 +1011,104 @@ This signal has no default bindings.
 
 ### delete-from-cursor
 
-The sig *delete-from-cursor* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted when the user initiates a text deletion.
+The *delete-from-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates a text deletion.
 
 If the *type* is `GTK_DELETE_CHARS`, GTK+ deletes the selection if there is one, otherwise it deletes the requested number of characters.
 
 The default bindings for this signal are Delete for deleting a character, Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word backwords.
 
     method handler (
+      Unknown type GTK_TYPE_DELETE_TYPE $type,
+      Int $count,
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($type),
-      :handler-arg1($count),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $text_view; the object which received the signal
 
-  * $type; the granularity of the deletion, as a `Gnome::Gtk3::DeleteType`
+  * $type; the granularity of the deletion, as a **Gnome::Gtk3::DeleteType**
 
   * $count; the number of *type* units to delete
 
-### populate-popup
+### backspace
 
-The sig *populate-popup* signal gets emitted before showing the context menu of the text view.
+The *backspace* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user asks for it.
 
-If you need to add items to the context menu, connect to this signal and append your items to the *popup*, which will be a `Gnome::Gtk3::Menu` in this case.
-
-If prop `populate-all` is `1`, this signal will also be emitted to populate touch popups. In this case, *popup* will be a different container, e.g. a `Gnome::Gtk3::Toolbar`.
-
-The signal handler should not make assumptions about the type of *widget*, but check whether *popup* is a `Gnome::Gtk3::Menu` or `Gnome::Gtk3::Toolbar` or another kind of container.
+The default bindings for this signal are Backspace and Shift-Backspace.
 
     method handler (
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($popup),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### cut-clipboard
+
+The *cut-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to cut the selection to the clipboard.
+
+The default bindings for this signal are Ctrl-x and Shift-Delete.
+
+    method handler (
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### copy-clipboard
+
+The *copy-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to copy the selection to the clipboard.
+
+The default bindings for this signal are Ctrl-c and Ctrl-Insert.
+
+    method handler (
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### paste-clipboard
+
+The *paste-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to paste the contents of the clipboard into the text view.
+
+The default bindings for this signal are Ctrl-v and Shift-Insert.
+
+    method handler (
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### toggle-overwrite
+
+The *toggle-overwrite* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to toggle the overwrite mode of the text view.
+
+The default bindings for this signal is Insert.
+
+    method handler (
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
+
+### populate-popup
+
+The *populate-popup* signal gets emitted before showing the context menu of the text view.
+
+If you need to add items to the context menu, connect to this signal and append your items to the *popup*, which will be a **Gnome::Gtk3::Menu** in this case.
+
+If *populate-all* is `1`, this signal will also be emitted to populate touch popups. In this case, *popup* will be a different container, e.g. a **Gnome::Gtk3::Toolbar**.
+
+The signal handler should not make assumptions about the type of *widget*, but check whether *popup* is a **Gnome::Gtk3::Menu** or **Gnome::Gtk3::Toolbar** or another kind of container.
+
+    method handler (
+      N-GObject $popup,
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
     );
 
   * $text_view; The text view on which the signal is emitted
@@ -1128,19 +1117,32 @@ The signal handler should not make assumptions about the type of *widget*, but c
 
 ### select-all
 
-The sig *select-all* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to select or unselect the complete contents of the text view.
+The *select-all* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to select or unselect the complete contents of the text view.
 
 The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and Shift-Ctrl-a and Ctrl-\ for unselecting.
 
     method handler (
+      Int $select,
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($select),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $text_view; the object which received the signal
 
   * $select; `1` to select, `0` to unselect
+
+### toggle-cursor-visible
+
+The *toggle-cursor-visible* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to toggle the *cursor-visible* property.
+
+The default binding for this signal is F7.
+
+    method handler (
+      Gnome::GObject::Object :widget($text_view),
+      *%user-options
+    );
+
+  * $text_view; the object which received the signal
 
 ### preedit-changed
 
@@ -1151,44 +1153,19 @@ This signal is only emitted if the text at the given position is actually editab
 Since: 2.20
 
     method handler (
+      Str $preedit,
       Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($preedit),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
   * $text_view; the object which received the signal
 
   * $preedit; the current preedit string
 
-### extend-selection
-
-The sig *extend-selection* signal is emitted when the selection needs to be extended at *location*.
-
-Returns: `GDK_EVENT_STOP` to stop other handlers from being invoked for the event. `GDK_EVENT_PROPAGATE` to propagate the event further. Since: 3.16
-
-    method handler (
-      Gnome::GObject::Object :widget($text_view),
-      :handler-arg0($granularity),
-      :handler-arg1($location),
-      :handler-arg2($start),
-      :handler-arg3($end),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $text_view; the object which received the signal
-
-  * $granularity; the granularity type
-
-  * $location; the location where to extend the selection
-
-  * $start; where the selection should start
-
-  * $end; where the selection should end
-
 Properties
 ==========
 
-An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new(:empty);
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1198,86 +1175,119 @@ An example of using a string type property of a `Gnome::Gtk3::Label` object. Thi
 Supported properties
 --------------------
 
-### left-margin
+### Pixels Above Lines
 
-The `Gnome::GObject::Value` type of property *left-margin* is `G_TYPE_INT`.
+The **Gnome::GObject::Value** type of property *pixels-above-lines* is `G_TYPE_INT`.
 
-The default left margin for text in the text view. Tags in the buffer may override the default.
+### Pixels Below Lines
 
-Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme.
+The **Gnome::GObject::Value** type of property *pixels-below-lines* is `G_TYPE_INT`.
 
-Don't confuse this property with prop `margin-left`.
+### Pixels Inside Wrap
 
-### right-margin
+The **Gnome::GObject::Value** type of property *pixels-inside-wrap* is `G_TYPE_INT`.
 
-The `Gnome::GObject::Value` type of property *right-margin* is `G_TYPE_INT`.
+### Editable
 
-The default right margin for text in the text view. Tags in the buffer may override the default.
+Whether the text can be modified by the user Default value: True
 
-Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme.
+The **Gnome::GObject::Value** type of property *editable* is `G_TYPE_BOOLEAN`.
 
-Don't confuse this property with prop `margin-right`.
+### Wrap Mode
 
-### top-margin
+Whether to wrap lines never, at word boundaries_COMMA_ or at character boundaries Default value: False
 
-The `Gnome::GObject::Value` type of property *top-margin* is `G_TYPE_INT`.
+The **Gnome::GObject::Value** type of property *wrap-mode* is `G_TYPE_ENUM`.
 
-The top margin for text in the text view.
+### Justification
 
-Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme.
+Left, right_COMMA_ or center justification Default value: False
 
-Don't confuse this property with prop `margin-top`.
+The **Gnome::GObject::Value** type of property *justification* is `G_TYPE_ENUM`.
 
-Since: 3.18
+### Left Margin
 
-### bottom-margin
+The default left margin for text in the text view. Tags in the buffer may override the default. Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme. Don't confuse this property with *margin-left*.
 
-The `Gnome::GObject::Value` type of property *bottom-margin* is `G_TYPE_INT`.
+The **Gnome::GObject::Value** type of property *left-margin* is `G_TYPE_INT`.
 
-The bottom margin for text in the text view.
+### Right Margin
 
-Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme.
+The default right margin for text in the text view. Tags in the buffer may override the default. Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme. Don't confuse this property with *margin-right*.
 
-Don't confuse this property with prop `margin-bottom`.
+The **Gnome::GObject::Value** type of property *right-margin* is `G_TYPE_INT`.
 
-Since: 3.18
+### Top Margin
 
-### im-module
+The top margin for text in the text view. Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme. Don't confuse this property with *margin-top*. Since: 3.18
 
-The `Gnome::GObject::Value` type of property *im-module* is `G_TYPE_STRING`.
+The **Gnome::GObject::Value** type of property *top-margin* is `G_TYPE_INT`.
 
-Which IM (input method) module should be used for this text_view. See `Gnome::Gtk3::IMContext`.
+### Bottom Margin
 
-Setting this to a non-`Any` value overrides the system-wide IM module setting. See the `Gnome::Gtk3::Settings` prop `gtk-im-module` property.
+The bottom margin for text in the text view. Note that this property is confusingly named. In CSS terms, the value set here is padding, and it is applied in addition to the padding from the theme. Don't confuse this property with *margin-bottom*. Since: 3.18
 
-Since: 2.16
+The **Gnome::GObject::Value** type of property *bottom-margin* is `G_TYPE_INT`.
 
-### input-purpose
+### Indent
 
-The `Gnome::GObject::Value` type of property *input-purpose* is `G_TYPE_ENUM`.
+The **Gnome::GObject::Value** type of property *indent* is `G_TYPE_INT`.
 
-The purpose of this text field.
+### Tabs
 
-This property can be used by on-screen keyboards and other input methods to adjust their behaviour.
+The **Gnome::GObject::Value** type of property *tabs* is `G_TYPE_BOXED`.
 
-Since: 3.6
+### Cursor Visible
 
-### populate-all
+If the insertion cursor is shown Default value: True
 
-The `Gnome::GObject::Value` type of property *populate-all* is `G_TYPE_BOOLEAN`.
+The **Gnome::GObject::Value** type of property *cursor-visible* is `G_TYPE_BOOLEAN`.
 
-If prop `populate-all` is `1`, the sig `populate-popup` signal is also emitted for touch popups.
+### Buffer
 
-Since: 3.8
+The buffer which is displayed Widget type: GTK_TYPE_TEXT_BUFFER
 
-Not yet supported properties
-----------------------------
+The **Gnome::GObject::Value** type of property *buffer* is `G_TYPE_OBJECT`.
 
-### input-hints
+### Overwrite mode
 
-The `Gnome::GObject::Value` type of property *input-hints* is `G_TYPE_FLAGS`.
+Whether entered text overwrites existing contents Default value: False
 
-Additional hints (beyond prop `input-purpose`) that allow input methods to fine-tune their behaviour.
+The **Gnome::GObject::Value** type of property *overwrite* is `G_TYPE_BOOLEAN`.
 
-Since: 3.6
+### Accepts tab
+
+Whether Tab will result in a tab character being entered Default value: True
+
+The **Gnome::GObject::Value** type of property *accepts-tab* is `G_TYPE_BOOLEAN`.
+
+### IM module
+
+Which IM (input method) module should be used for this text_view. See **Gnome::Gtk3::IMContext**. Setting this to a non-`Any` value overrides the system-wide IM module setting. See the **Gnome::Gtk3::Settings** *gtk-im-module* property. Since: 2.16
+
+The **Gnome::GObject::Value** type of property *im-module* is `G_TYPE_STRING`.
+
+### Purpose
+
+The purpose of this text field. This property can be used by on-screen keyboards and other input methods to adjust their behaviour. Since: 3.6 Widget type: GTK_TYPE_INPUT_PURPOSE
+
+The **Gnome::GObject::Value** type of property *input-purpose* is `G_TYPE_ENUM`.
+
+### hints
+
+Additional hints (beyond *input-purpose*) that allow input methods to fine-tune their behaviour. Since: 3.6
+
+The **Gnome::GObject::Value** type of property *input-hints* is `G_TYPE_FLAGS`.
+
+### Populate all
+
+If *populate-all* is `1`, the *populate-popup* signal is also emitted for touch popups. Since: 3.8
+
+The **Gnome::GObject::Value** type of property *populate-all* is `G_TYPE_BOOLEAN`.
+
+### Monospace
+
+If `1`, set the `GTK_STYLE_CLASS_MONOSPACE` style class on the text view to indicate that a monospace font is desired. Since: 3.16
+
+The **Gnome::GObject::Value** type of property *monospace* is `G_TYPE_BOOLEAN`.
 
