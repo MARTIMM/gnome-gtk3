@@ -1,10 +1,12 @@
+#TL:1:Gnome::Gtk3::TextTagTable:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::TextTagTable
+=head1 Gnome::Gtk3::TextTagTable
 
-=SUBTITLE Collection of tags that can be used together
+=Collection of tags that can be used together
 
 =head1 Description
 
@@ -12,14 +14,20 @@ You may wish to begin by reading the [text widget conceptual overview](https://d
 
 =head2 Gnome::Gtk3::TextTagTables as Gnome::Gtk3::Buildable
 
-The C<Gnome::Gtk3::TextTagTable> implementation of the C<Gnome::Gtk3::Buildable> interface supports adding tags by specifying “tag” as the “type” attribute of a <child> element.
+The B<Gnome::Gtk3::TextTagTable> implementation of the B<Gnome::Gtk3::Buildable> interface supports adding tags by specifying “tag” as the “type” attribute of a <child> element.
 
 An example of a UI definition fragment specifying tags:
+
   <object class="GtkTextTagTable">
     <child type="tag">
       <object class="GtkTextTag"/>
     </child>
   </object>
+
+=head2 Implemented Interfaces
+
+Gnome::Gtk3::TextTagTable implements
+=item Gnome::Gtk3::Buildable
 
 =head1 Synopsis
 =head2 Declaration
@@ -27,7 +35,7 @@ An example of a UI definition fragment specifying tags:
   unit class Gnome::Gtk3::TextTagTable;
   also is Gnome::GObject::Object;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
 
@@ -48,11 +56,32 @@ also is Gnome::GObject::Object;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+=begin pod
+=head1 Methods
+=head2 new
+
+Create a new plain object.
+
+  multi method new ( Bool :empty! )
+
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+  multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
+=end pod
+
+#TM:1:new(:empty):
+#TM:0:new(:widget):
+#TM:0:new(:build-id):
+
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :nativewidget<tag-added tag-removed>,
-    :tagbool<tag-changed>,
+    :w1<tag-added tag-removed>, :w2<tag-changed>,
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -85,6 +114,12 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_text_tag_table_$native-sub"); } unless ?$s;
 
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
+  $s = self._query_interfaces(
+    $native-sub, < Gnome::Gtk3::Buildable >
+  ) unless $s;
+
   self.set-class-name-of-sub('GtkTextTagTable');
   $s = callsame unless ?$s;
 
@@ -92,13 +127,14 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_text_tag_table_new:new(:empty)
 =begin pod
 =head2 gtk_text_tag_table_new
 
-Creates a new C<Gnome::Gtk3::TextTagTable>. The table contains no tags by
+Creates a new B<Gnome::Gtk3::TextTagTable>. The table contains no tags by
 default.
 
-Returns: a new C<Gnome::Gtk3::TextTagTable>
+Returns: a new B<Gnome::Gtk3::TextTagTable>
 
   method gtk_text_tag_table_new ( --> N-GObject  )
 
@@ -110,6 +146,7 @@ sub gtk_text_tag_table_new ( )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_tag_table_add:
 =begin pod
 =head2 gtk_text_tag_table_add
 
@@ -123,7 +160,7 @@ Returns: C<1> on success.
 
   method gtk_text_tag_table_add ( N-GObject $tag --> Int  )
 
-=item N-GObject $tag; a C<Gnome::Gtk3::TextTag>
+=item N-GObject $tag; a B<Gnome::Gtk3::TextTag>
 
 =end pod
 
@@ -133,17 +170,18 @@ sub gtk_text_tag_table_add ( N-GObject $table, N-GObject $tag )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_tag_table_remove:
 =begin pod
 =head2 gtk_text_tag_table_remove
 
-Remove a tag from the table. If a C<Gnome::Gtk3::TextBuffer> has I<table> as its tag table,
+Remove a tag from the table. If a B<Gnome::Gtk3::TextBuffer> has I<table> as its tag table,
 the tag is removed from the buffer. The table’s reference to the tag is
 removed, so the tag will end up destroyed if you don’t have a reference to
 it.
 
   method gtk_text_tag_table_remove ( N-GObject $tag )
 
-=item N-GObject $tag; a C<Gnome::Gtk3::TextTag>
+=item N-GObject $tag; a B<Gnome::Gtk3::TextTag>
 
 =end pod
 
@@ -152,6 +190,7 @@ sub gtk_text_tag_table_remove ( N-GObject $table, N-GObject $tag )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_tag_table_lookup:
 =begin pod
 =head2 gtk_text_tag_table_lookup
 
@@ -173,6 +212,7 @@ sub gtk_text_tag_table_lookup ( N-GObject $table, Str $name )
 
 #`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_text_tag_table_foreach:
 =begin pod
 =head2 gtk_text_tag_table_foreach
 
@@ -193,6 +233,7 @@ sub gtk_text_tag_table_foreach ( N-GObject $table, GtkTextTagTableForeach $func,
 }}
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_text_tag_table_get_size:
 =begin pod
 =head2 [gtk_text_tag_table_] get_size
 
@@ -211,67 +252,76 @@ sub gtk_text_tag_table_get_size ( N-GObject $table )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head1 Not yet implemented methods
-
-=head2 method gtk_text_tag_table_foreach ( ... )
-
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
 
-  my Bool $is-registered = $my-widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., :$user-optionN
-  )
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
 
 =head2 Supported signals
 
-=head3 tag-added
 
-  method handler (
-    Gnome::GObject::Object :widget($texttagtable),
-    :handler-arg0($tag),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $texttagtable; the object which received the signal.
-=item $tag; the added tag.
-
-
-=head3 tag-removed
-
-  method handler (
-    Gnome::GObject::Object :widget($texttagtable),
-    :handler-arg0($tag),
-    :$user-option1, ..., :$user-optionN
-  );
-
-=item $texttagtable; the object which received the signal.
-=item $tag; the removed tag.
-
-
-=begin comment
-=head2 Unsupported signals
-=end comment
-
-=head2 Not yet supported signals
-
+=comment #TS:0:tag-changed:
 =head3 tag-changed
 
   method handler (
+    N-GObject $tag,
+    Int $size_changed,
     Gnome::GObject::Object :widget($texttagtable),
-    :handler-arg0($tag),
-    :handler-arg1($size_changed),
-    :$user-option1, ..., :$user-optionN
+    *%user-options
   );
 
 =item $texttagtable; the object which received the signal.
-=item $tag; the changed tag.
-=item $size_changed; whether the change affects the C<Gnome::Gtk3::TextView> layout.
+=item $tag; the changed tag, a native B<Gnome::Gtk3::TextTag>.
+=item $size_changed; whether the change affects the B<Gnome::Gtk3::TextView> layout.
+
+
+=comment #TS:0:tag-added:
+=head3 tag-added
+
+  method handler (
+    N-GObject $tag,
+    Gnome::GObject::Object :widget($texttagtable),
+    *%user-options
+  );
+
+=item $texttagtable; the object which received the signal.
+=item $tag; the added tag, a native B<Gnome::Gtk3::TextTag>.
+
+
+=comment #TS:0:tag-removed:
+=head3 tag-removed
+
+  method handler (
+    N-GObject $tag,
+    Gnome::GObject::Object :widget($texttagtable),
+    *%user-options
+  );
+
+=item $texttagtable; the object which received the signal.
+=item $tag; the removed tag, a native B<Gnome::Gtk3::TextTag>.
 
 
 =end pod
