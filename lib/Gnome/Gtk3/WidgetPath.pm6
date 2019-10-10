@@ -1,16 +1,16 @@
-#TL:-:Gnome::Gtk3::WidgetPath
+#TL:1:Gnome::Gtk3::WidgetPath
 
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::WidgetPath
+=head1 Gnome::Gtk3::WidgetPath
 
-=SUBTITLE Widget path abstraction
+Widget path abstraction
 
 =head1 Description
 
-C<Gnome::Gtk3::WidgetPath> is a boxed type that represents a widget hierarchy from the topmost widget, typically a toplevel, to any child. This widget path abstraction is used in C<Gnome::Gtk3::StyleContext> on behalf of the real widget in order to query style information.
+B<Gnome::Gtk3::WidgetPath> is a boxed type that represents a widget hierarchy from the topmost widget, typically a toplevel, to any child. This widget path abstraction is used in B<Gnome::Gtk3::StyleContext> on behalf of the real widget in order to query style information.
 
 If you are using GTK+ widgets, you probably will not need to use this API directly, as there is C<gtk_widget_get_path()>, and the style context returned by C<gtk_widget_get_style_context()> will be automatically updated on widget hierarchy changes.
 
@@ -21,7 +21,7 @@ The widget path generation is generally simple
 
 |[<!-- language="C" -->
 {
-  C<Gnome::Gtk3::WidgetPath> *path;
+  B<Gnome::Gtk3::WidgetPath> *path;
 
   path = C<gtk_widget_path_new()>;
   gtk_widget_path_append_type (path, GTK_TYPE_WINDOW);
@@ -35,7 +35,7 @@ Although more complex information, such as widget names, or different classes (p
 
 |[<!-- language="C" -->
 {
-  C<Gnome::Gtk3::WidgetPath> *path;
+  B<Gnome::Gtk3::WidgetPath> *path;
   guint pos;
 
   path = C<gtk_widget_path_new()>;
@@ -54,7 +54,7 @@ All this information will be used to match the style information that applies to
 
 =head2 See Also
 
-C<Gnome::Gtk3::StyleContext>
+B<Gnome::Gtk3::StyleContext>
 
 =head1 Synopsis
 =head2 Declaration
@@ -62,7 +62,7 @@ C<Gnome::Gtk3::StyleContext>
   unit class Gnome::Gtk3::WidgetPath;
   also is Gnome::GObject::Boxed;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -88,22 +88,25 @@ class N-GtkWidgetPath
   { }
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
-
 has Bool $.widgetpath-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( N-GtkWidgetPath :$widgetpath! )
+  multi method new ( Bool :$empty! )
+
 
 Create an object using a native object from elsewhere.
 
+  multi method new ( N-GtkWidgetPath :$widgetpath! )
+
 =end pod
+
+#TM:0:new(:empty):
+#TM:0:new(:widgetpath):
 
 submethod BUILD ( *%options ) {
 
@@ -140,6 +143,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkWidgetPath');
 }
 
 #-------------------------------------------------------------------------------
@@ -150,13 +156,14 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_widget_path_$native-sub"); } unless ?$s;
 
+  self.set-class-name-of-sub('GtkWidgetPath');
   $s = callsame unless ?$s;
 
   $s;
 }
 
 #-------------------------------------------------------------------------------
-#TS:+:clear-widgetpath
+#TM:1:clear-widgetpath
 =begin pod
 =head2 clear-widget-path
 
@@ -172,7 +179,7 @@ method clear-widget-path ( ) {
 }
 
 #-------------------------------------------------------------------------------
-#TS:+:widgetpath-is-valid
+#TM:1:widgetpath-is-valid
 =begin pod
 =head2 widgetpath-is-valid
 
@@ -184,7 +191,7 @@ Returns True if native object is valid, otherwise False.
 # getter defined implicitly above
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_new
+#TM:1:gtk_widget_path_new
 =begin pod
 =head2 gtk_widget_path_new
 
@@ -202,7 +209,7 @@ sub gtk_widget_path_new (  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_copy
+#TM:1:gtk_widget_path_copy
 =begin pod
 =head2 gtk_widget_path_copy
 
@@ -221,7 +228,7 @@ sub gtk_widget_path_copy ( N-GtkWidgetPath $path )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_ref
+#TM:0:gtk_widget_path_ref
 =begin pod
 =head2 gtk_widget_path_ref
 
@@ -241,7 +248,7 @@ sub gtk_widget_path_ref ( N-GtkWidgetPath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_unref
+#TM:0:gtk_widget_path_unref
 =begin pod
 =head2 gtk_widget_path_unref
 
@@ -259,7 +266,7 @@ sub gtk_widget_path_unref ( N-GtkWidgetPath $path )
 }}
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_free
+#TM:0:gtk_widget_path_free
 #`{{
 No pod info. user must use clear-widgetpath()
 }}
@@ -269,7 +276,7 @@ sub _gtk_widget_path_free ( N-GtkWidgetPath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_to_string
+#TM:1:gtk_widget_path_to_string
 =begin pod
 =head2 [gtk_widget_path_] to_string
 
@@ -291,7 +298,7 @@ sub gtk_widget_path_to_string ( N-GtkWidgetPath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_length
+#TM:1:gtk_widget_path_length
 =begin pod
 =head2 gtk_widget_path_length
 
@@ -311,7 +318,7 @@ sub gtk_widget_path_length ( N-GtkWidgetPath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_append_type
+#TM:0:gtk_widget_path_append_type
 =begin pod
 =head2 [gtk_widget_path_] append_type
 
@@ -333,7 +340,7 @@ sub gtk_widget_path_append_type ( N-GtkWidgetPath $path, int32 $type )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_prepend_type
+#TM:0:gtk_widget_path_prepend_type
 =begin pod
 =head2 [gtk_widget_path_] prepend_type
 
@@ -352,7 +359,7 @@ sub gtk_widget_path_prepend_type ( N-GtkWidgetPath $path, int32 $type )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_append_with_siblings
+#TM:0:gtk_widget_path_append_with_siblings
 =begin pod
 =head2 [gtk_widget_path_] append_with_siblings
 
@@ -381,7 +388,7 @@ sub gtk_widget_path_append_with_siblings ( N-GtkWidgetPath $path, N-GtkWidgetPat
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_append_for_widget
+#TM:0:gtk_widget_path_append_for_widget
 =begin pod
 =head2 [gtk_widget_path_] append_for_widget
 
@@ -397,7 +404,7 @@ sub gtk_widget_path_append_for_widget ( N-GtkWidgetPath $path, N-GObject $widget
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_get_object_type
+#TM:0:gtk_widget_path_iter_get_object_type
 =begin pod
 =head2 [gtk_widget_path_] iter_get_object_type
 
@@ -419,7 +426,7 @@ sub gtk_widget_path_iter_get_object_type ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_path_] iter_set_object_type
 
@@ -439,7 +446,7 @@ sub gtk_widget_path_iter_set_object_type ( N-GtkWidgetPath $path, int32 $pos, in
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_get_object_name
+#TM:0:gtk_widget_path_iter_get_object_name
 =begin pod
 =head2 [gtk_widget_path_] iter_get_object_name
 
@@ -458,7 +465,7 @@ sub gtk_widget_path_iter_get_object_name ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_set_object_name
+#TM:0:gtk_widget_path_iter_set_object_name
 =begin pod
 =head2 [gtk_widget_path_] iter_set_object_name
 
@@ -481,7 +488,7 @@ sub gtk_widget_path_iter_set_object_name ( N-GtkWidgetPath $path, int32 $pos, St
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_get_siblings
+#TM:0:gtk_widget_path_iter_get_siblings
 =begin pod
 =head2 [gtk_widget_path_] iter_get_siblings
 
@@ -501,7 +508,7 @@ sub gtk_widget_path_iter_get_siblings ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_get_sibling_index
+#TM:0:gtk_widget_path_iter_get_sibling_index
 =begin pod
 =head2 [gtk_widget_path_] iter_get_sibling_index
 
@@ -521,7 +528,7 @@ sub gtk_widget_path_iter_get_sibling_index ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_get_name
+#TM:1:gtk_widget_path_iter_get_name
 =begin pod
 =head2 [gtk_widget_path_] iter_get_name
 
@@ -541,7 +548,7 @@ sub gtk_widget_path_iter_get_name ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_set_name
+#TM:1:gtk_widget_path_iter_set_name
 =begin pod
 =head2 [gtk_widget_path_] iter_set_name
 
@@ -561,7 +568,7 @@ sub gtk_widget_path_iter_set_name ( N-GtkWidgetPath $path, int32 $pos, Str $name
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_has_name
+#TM:1:gtk_widget_path_iter_has_name
 =begin pod
 =head2 [gtk_widget_path_] iter_has_name
 
@@ -582,7 +589,7 @@ sub gtk_widget_path_iter_has_name ( N-GtkWidgetPath $path, int32 $pos, Str $name
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_has_qname
+#TM:0:gtk_widget_path_iter_has_qname
 =begin pod
 =head2 [gtk_widget_path_] iter_has_qname
 
@@ -606,7 +613,7 @@ sub gtk_widget_path_iter_has_qname (
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_get_state
+#TM:1:gtk_widget_path_iter_get_state
 =begin pod
 =head2 [gtk_widget_path_] iter_get_state
 
@@ -628,7 +635,7 @@ sub gtk_widget_path_iter_get_state ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_set_state
+#TM:1:gtk_widget_path_iter_set_state
 =begin pod
 =head2 [gtk_widget_path_] iter_set_state
 
@@ -661,7 +668,7 @@ sub gtk_widget_path_iter_set_state ( N-GtkWidgetPath $path, int32 $pos, int32 $s
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_add_class
+#TM:0:gtk_widget_path_iter_add_class
 =begin pod
 =head2 [gtk_widget_path_] iter_add_class
 
@@ -681,7 +688,7 @@ sub gtk_widget_path_iter_add_class ( N-GtkWidgetPath $path, int32 $pos, Str $nam
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_remove_class
+#TM:0:gtk_widget_path_iter_remove_class
 =begin pod
 =head2 [gtk_widget_path_] iter_remove_class
 
@@ -701,7 +708,7 @@ sub gtk_widget_path_iter_remove_class ( N-GtkWidgetPath $path, int32 $pos, Str $
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_clear_classes
+#TM:0:gtk_widget_path_iter_clear_classes
 =begin pod
 =head2 [gtk_widget_path_] iter_clear_classes
 
@@ -720,7 +727,7 @@ sub gtk_widget_path_iter_clear_classes ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_list_classes
+#TM:1:gtk_widget_path_iter_list_classes
 =begin pod
 =head2 [gtk_widget_path_] iter_list_classes
 
@@ -742,7 +749,7 @@ sub gtk_widget_path_iter_list_classes ( N-GtkWidgetPath $path, int32 $pos )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:+:gtk_widget_path_iter_has_class
+#TM:1:gtk_widget_path_iter_has_class
 =begin pod
 =head2 [gtk_widget_path_] iter_has_class
 
@@ -766,7 +773,7 @@ sub gtk_widget_path_iter_has_class ( N-GtkWidgetPath $path, int32 $pos, Str $nam
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:gtk_widget_path_iter_has_qclass
+#TM:0:gtk_widget_path_iter_has_qclass
 =begin pod
 =head2 [gtk_widget_path_] iter_has_qclass
 
@@ -790,7 +797,7 @@ sub gtk_widget_path_iter_has_qclass ( N-GtkWidgetPath $path, int32 $pos, int32 $
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_path_] get_object_type
 
@@ -812,7 +819,7 @@ sub gtk_widget_path_get_object_type ( N-GtkWidgetPath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_path_] is_type
 
@@ -835,7 +842,7 @@ sub gtk_widget_path_is_type ( N-GtkWidgetPath $path, int32 $type )
   { * }
 
 #-------------------------------------------------------------------------------
-#TS:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_path_] has_parent
 
@@ -856,45 +863,3 @@ sub gtk_widget_path_has_parent ( N-GtkWidgetPath $path, int32 $type )
   returns int32
   is native(&gtk-lib)
   { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not yet implemented methods
-
-=comment TODO dunno what it means yet
-=head3 method gtk_widget_path_ref ( ... )
-=head3 method gtk_widget_path_unref ( ... )
-=head3 method  ( ... )
-=head3 method  ( ... )
-=head3 method  ( ... )
-
-=end comment
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not implemented methods
-
-=head3 method  ( ... )
-=head3 method  ( ... )
-=head3 method  ( ... )
-
-=end comment
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 List of deprecated (not implemented!) methods
-
-=head2 Since 3.14
-=head3 method gtk_widget_path_iter_add_region ( Int $pos, Str $name, GtkRegionFlags $flags )
-=head3 method gtk_widget_path_iter_remove_region ( Int $pos, Str $name )
-=head3 method gtk_widget_path_iter_clear_regions ( Int $pos )
-=head3 method gtk_widget_path_iter_list_regions ( Int $pos --> N-GObject  )
-=head3 method gtk_widget_path_iter_has_region ( Int $pos, Str $name, GtkRegionFlags $flags --> Int  )
-=head3 method gtk_widget_path_iter_has_qregion ( Int $pos, N-GObject $qname, GtkRegionFlags $flags --> Int  )
-=end pod
