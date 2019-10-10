@@ -991,7 +991,7 @@ width-for-height geometry management.
 
 =end pod
 
-#TE:0:GtkSizeRequestMode:
+#TE:1:GtkSizeRequestMode:Widget.t
 enum GtkSizeRequestMode is export (
   'GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH' => 0,
   'GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT',
@@ -1943,7 +1943,7 @@ enum GtkShadowType is export (
   'GTK_SHADOW_ETCHED_OUT'
 );
 
-
+#`{{
 =begin pod
 =head2 enum GtkStateType
 
@@ -1976,7 +1976,7 @@ enum GtkStateType is export (
   'GTK_STATE_INCONSISTENT',
   'GTK_STATE_FOCUSED'
 );
-
+}}
 
 =begin pod
 =head2 enum GtkToolbarStyle
