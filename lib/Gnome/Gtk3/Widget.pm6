@@ -319,9 +319,7 @@ enum GtkWidgetHelpType is export (
 =begin pod
 =head2 class GtkRequisition
 
-A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. See
-[B<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for
-more information.
+A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. See [B<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for more information.
 
 =item Int $.width: the widget’s desired width
 =item Int $.height: the widget’s desired height
@@ -376,12 +374,11 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w1<size-allocate state-changed state-flags-changed parent-set hierarchy-changed style-set direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event composited-changed destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event query-tooltip accel-closures-changed can-activate-accel can-activate-accel>,
     :w0<destroy show hide map unmap realize unrealize style-updated grab-focus delete-event show-help screen-changed>,
-    :w6<visibility-notify-event>,
-    :w4<drag-drop drag-data-get drag-data-received popup-menu>,
+    :w1<size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event query-tooltip accel-closures-changed can-activate-accel can-activate-accel>,
     :w2<selection-get drag-begin drag-motion>,
     :w3<proximity-in-event>,
+    :w4<drag-drop drag-data-get drag-data-received popup-menu>,
 #`{{
 Above is not completely correct!
     :w0<accel-closures-changed destroy grab-focus hide map popup-menu
@@ -1079,83 +1076,218 @@ sub gtk_widget_get_request_mode ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_width
 
-  method gtk_widget_get_preferred_width ( Int $minimum_width, Int $natural_width )
+Retrieves a widget’s initial minimum and natural width.
 
+This call is specific to height-for-width requests.
+
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+  method gtk_widget_get_preferred_width ( --> List )
+
+Returns a List with
 =item Int $minimum_width;
 =item Int $natural_width;
 
 =end pod
 
-sub gtk_widget_get_preferred_width ( N-GObject $widget, int32 $minimum_width, int32 $natural_width )
-  is native(&gtk-lib)
+#TM:1:get-preferred-width
+method get-preferred-width ( --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+  _gtk_widget_get_preferred_width(
+    self.get-native-gobject, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width)
+}
+
+#TM:1:gtk_widget_get_preferred_width
+sub gtk_widget_get_preferred_width ( N-GObject $widget --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+  _gtk_widget_get_preferred_width(
+    $widget, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width)
+}
+
+sub _gtk_widget_get_preferred_width (
+  N-GObject $widget, int32 $minimum_width is rw, int32 $natural_width is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_height_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_for_width
 
+Retrieves a widget’s minimum and natural height if it would be given the specified width .
 
-  method gtk_widget_get_preferred_height_for_width ( Int $width, Int $minimum_height, Int $natural_height )
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_height_for_width (
+    Int $width --> List
+  )
 
 =item Int $width;
+
+Returns a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 
 =end pod
 
-sub gtk_widget_get_preferred_height_for_width ( N-GObject $widget, int32 $width, int32 $minimum_height, int32 $natural_height )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height-for-width
+method get-preferred-height-for-width ( int32 $width --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height_for_width(
+    self.get-native-gobject, $width, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+#TM:1:gtk_widget_get_preferred_height_for_width
+sub gtk_widget_get_preferred_height_for_width (
+  N-GObject $widget, int32 $width --> List
+) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height_for_width(
+    $widget, $width, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+sub _gtk_widget_get_preferred_height_for_width (
+  N-GObject $widget, int32 $width, int32 $minimum_height is rw,
+  int32 $natural_height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height_for_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_height
 
-  method gtk_widget_get_preferred_height ( Int $minimum_height, Int $natural_height )
+Retrieves a widget’s initial minimum and natural height.
 
+This call is specific to width-for-height requests.
+
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_height ( --> List )
+
+Returns a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 
 =end pod
 
-sub gtk_widget_get_preferred_height ( N-GObject $widget, int32 $minimum_height, int32 $natural_height )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height
+method get-preferred-height ( --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height(
+    self.get-native-gobject, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+#TM:1:gtk_widget_get_preferred_height
+sub gtk_widget_get_preferred_height ( N-GObject $widget --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height(
+    $widget, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+sub _gtk_widget_get_preferred_height (
+  N-GObject $widget, int32 $minimum_height is rw, int32 $natural_height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_width_for_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_width_for_height
 
+Retrieves a widget’s minimum and natural width if it would be given the specified height .
 
-  method gtk_widget_get_preferred_width_for_height ( Int $height, Int $minimum_width, Int $natural_width )
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_width_for_height ( Int $height --> List )
 
 =item Int $height;
+
+Returning a List with
 =item Int $minimum_width;
 =item Int $natural_width;
 
 =end pod
 
-sub gtk_widget_get_preferred_width_for_height ( N-GObject $widget, int32 $height, int32 $minimum_width, int32 $natural_width )
-  is native(&gtk-lib)
+#TM:1:get-preferred-width-for-height
+method get-preferred-width-for-height ( int32 $height --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+
+  _gtk_widget_get_preferred_width_for_height(
+    self.get-native-gobject, $height, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width);
+}
+
+#TM:1:gtk_widget_get_preferred_width_for_height
+sub gtk_widget_get_preferred_width_for_height (
+  N-GObject $widget, int32 $height --> List
+) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+
+  _gtk_widget_get_preferred_width_for_height(
+    $widget, $height, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width);
+}
+
+sub _gtk_widget_get_preferred_width_for_height (
+  N-GObject $widget, int32 $height,
+  int32 $minimum_width is rw, int32 $natural_width is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_width_for_height')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_height_and_baseline_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_and_baseline_for_width
 
+Retrieves a widget’s minimum and natural height and the corresponding baselines if it would be given the specified width , or the default height if width is -1. The baselines may be -1 which means that no baseline is requested for this widget.
 
+The returned request will be modified by the GtkWidgetClass::adjust_size_request and GtkWidgetClass::adjust_baseline_request virtual methods and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
 
-  method gtk_widget_get_preferred_height_and_baseline_for_width ( Int $width, Int $minimum_height, Int $natural_height, Int $minimum_baseline, Int $natural_baseline )
+  method gtk_widget_get_preferred_height_and_baseline_for_width (
+    Int $width
+    --> List
+  )
 
 =item Int $width;
+
+Returning a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 =item Int $minimum_baseline;
@@ -1163,26 +1295,87 @@ sub gtk_widget_get_preferred_width_for_height ( N-GObject $widget, int32 $height
 
 =end pod
 
-sub gtk_widget_get_preferred_height_and_baseline_for_width ( N-GObject $widget, int32 $width, int32 $minimum_height, int32 $natural_height, int32 $minimum_baseline, int32 $natural_baseline )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height-and-baseline-for-width
+method get-preferred-height-and-baseline-for-width ( int32 $width --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+  my int32 $minimum_baseline;
+  my int32 $natural_baseline;
+
+  _gtk_widget_get_preferred_height_and_baseline_for_width(
+    self.get-native-gobject, $width, $minimum_height, $natural_height,
+    $minimum_baseline, $natural_baseline
+  );
+
+  ( $minimum_height, $natural_height, $minimum_baseline, $natural_baseline)
+}
+
+#TM:1:gtk_widget_get_preferred_height_and_baseline_for_width
+sub gtk_widget_get_preferred_height_and_baseline_for_width (
+  N-GObject $widget, int32 $width --> List
+) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+  my int32 $minimum_baseline;
+  my int32 $natural_baseline;
+
+  _gtk_widget_get_preferred_height_and_baseline_for_width(
+    $widget, $width, $minimum_height, $natural_height,
+    $minimum_baseline, $natural_baseline
+  );
+
+  ( $minimum_height, $natural_height, $minimum_baseline, $natural_baseline)
+}
+
+sub _gtk_widget_get_preferred_height_and_baseline_for_width (
+  N-GObject $widget, int32 $width, int32 $minimum_height is rw,
+  int32 $natural_height is rw, int32 $minimum_baseline is rw,
+  int32 $natural_baseline is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height_and_baseline_for_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_preferred_size
 =begin pod
 =head2 [gtk_widget_] get_preferred_size
 
+Retrieves the minimum and natural size of a widget, taking into account the widget’s preference for height-for-width management.
 
+This is used to retrieve a suitable size by container widgets which do not impose any restrictions on the child placement. It can be used to deduce toplevel window and menu sizes as well as child widgets in free-form containers such as GtkLayout.
 
-  method gtk_widget_get_preferred_size ( GtkRequisition $minimum_size, GtkRequisition $natural_size )
+Handle with care. Note that the natural height of a height-for-width widget will generally be a smaller size than the minimum height, since the required height for the natural width is generally smaller than the required height for the minimum width.
 
+Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to support baseline alignment.
+
+  method gtk_widget_get_preferred_size ( --> List )
+
+The returned list holds
 =item GtkRequisition $minimum_size;
 =item GtkRequisition $natural_size;
 
 =end pod
 
-sub gtk_widget_get_preferred_size ( N-GObject $widget, GtkRequisition $minimum_size, GtkRequisition $natural_size )
-  is native(&gtk-lib)
+#TM:1:get-preferred-size
+method get-preferred-size ( --> List ) {
+  my GtkRequisition $minimum .= new;
+  my GtkRequisition $natural .= new;
+  _gtk_widget_get_preferred_size( self.get-native-gobject, $minimum, $natural);
+  ( $minimum, $natural)
+}
+
+#TM:1:gtk_widget_get_preferred_size
+sub gtk_widget_get_preferred_size ( N-GObject $widget --> List ) {
+  my GtkRequisition $minimum .= new;
+  my GtkRequisition $natural .= new;
+  _gtk_widget_get_preferred_size( $widget, $minimum, $natural);
+  ( $minimum, $natural)
+}
+
+sub _gtk_widget_get_preferred_size (
+  N-GObject $widget, GtkRequisition $minimum_size is rw,
+  GtkRequisition $natural_size is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_size')
   { * }
 
 #`{{
@@ -2158,7 +2351,7 @@ sub gtk_widget_get_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_is_visible
 =begin pod
 =head2 [gtk_widget_] is_visible
 
@@ -2184,7 +2377,7 @@ sub gtk_widget_is_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_has_window
 =begin pod
 =head2 [gtk_widget_] set_has_window
 
@@ -2212,7 +2405,7 @@ sub gtk_widget_set_has_window ( N-GObject $widget, int32 $has_window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_has_window
 =begin pod
 =head2 [gtk_widget_] get_has_window
 
@@ -2234,7 +2427,7 @@ sub gtk_widget_get_has_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_is_toplevel
 =begin pod
 =head2 [gtk_widget_] is_toplevel
 
@@ -2259,7 +2452,7 @@ sub gtk_widget_is_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_is_drawable
 =begin pod
 =head2 [gtk_widget_] is_drawable
 
@@ -2281,7 +2474,7 @@ sub gtk_widget_is_drawable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_realized
 =begin pod
 =head2 [gtk_widget_] set_realized
 
@@ -2305,7 +2498,7 @@ sub gtk_widget_set_realized ( N-GObject $widget, int32 $realized )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_realized
 =begin pod
 =head2 [gtk_widget_] get_realized
 
@@ -2326,7 +2519,7 @@ sub gtk_widget_get_realized ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_mapped
 =begin pod
 =head2 [gtk_widget_] set_mapped
 
@@ -2348,7 +2541,7 @@ sub gtk_widget_set_mapped ( N-GObject $widget, int32 $mapped )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_mapped
 =begin pod
 =head2 [gtk_widget_] get_mapped
 
@@ -2369,7 +2562,7 @@ sub gtk_widget_get_mapped ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_app_paintable
 =begin pod
 =head2 [gtk_widget_] set_app_paintable
 
@@ -2396,7 +2589,7 @@ sub gtk_widget_set_app_paintable ( N-GObject $widget, int32 $app_paintable )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_app_paintable
 =begin pod
 =head2 [gtk_widget_] get_app_paintable
 
@@ -2420,7 +2613,7 @@ sub gtk_widget_get_app_paintable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_redraw_on_allocate
 =begin pod
 =head2 [gtk_widget_] set_redraw_on_allocate
 
@@ -2450,7 +2643,7 @@ sub gtk_widget_set_redraw_on_allocate ( N-GObject $widget, int32 $redraw_on_allo
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_parent
 =begin pod
 =head2 [gtk_widget_] set_parent
 
@@ -2472,7 +2665,7 @@ sub gtk_widget_set_parent ( N-GObject $widget, N-GObject $parent )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_parent
 =begin pod
 =head2 [gtk_widget_] get_parent
 
@@ -2491,7 +2684,7 @@ sub gtk_widget_get_parent ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_parent_window
 =begin pod
 =head2 [gtk_widget_] set_parent_window
 
@@ -2515,7 +2708,7 @@ sub gtk_widget_set_parent_window ( N-GObject $widget, N-GObject $parent_window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_parent_window
 =begin pod
 =head2 [gtk_widget_] get_parent_window
 
@@ -2534,7 +2727,7 @@ sub gtk_widget_get_parent_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_child_visible
 =begin pod
 =head2 [gtk_widget_] set_child_visible
 
@@ -2567,7 +2760,7 @@ sub gtk_widget_set_child_visible ( N-GObject $widget, int32 $is_visible )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_child_visible
 =begin pod
 =head2 [gtk_widget_] get_child_visible
 
@@ -2591,7 +2784,7 @@ sub gtk_widget_get_child_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_window
 =begin pod
 =head2 [gtk_widget_] set_window
 
@@ -2620,7 +2813,7 @@ sub gtk_widget_set_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_window
 =begin pod
 =head2 [gtk_widget_] get_window
 
@@ -2641,7 +2834,7 @@ sub gtk_widget_get_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_register_window
 =begin pod
 =head2 [gtk_widget_] register_window
 
@@ -2667,7 +2860,7 @@ sub gtk_widget_register_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_unregister_window
 =begin pod
 =head2 [gtk_widget_] unregister_window
 
@@ -2688,7 +2881,7 @@ sub gtk_widget_unregister_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_allocated_width
 =begin pod
 =head2 [gtk_widget_] get_allocated_width
 
@@ -2709,7 +2902,7 @@ sub gtk_widget_get_allocated_width ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_allocated_height
 =begin pod
 =head2 [gtk_widget_] get_allocated_height
 
@@ -2730,7 +2923,7 @@ sub gtk_widget_get_allocated_height ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_allocated_baseline
 =begin pod
 =head2 [gtk_widget_] get_allocated_baseline
 
@@ -2754,7 +2947,7 @@ sub gtk_widget_get_allocated_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_allocated_size
 =begin pod
 =head2 [gtk_widget_] get_allocated_size
 
@@ -2782,7 +2975,7 @@ sub gtk_widget_get_allocated_size ( N-GObject $widget, GtkAllocation $allocation
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_allocation
 =begin pod
 =head2 [gtk_widget_] get_allocation
 
@@ -2816,7 +3009,7 @@ sub gtk_widget_get_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_allocation
 =begin pod
 =head2 [gtk_widget_] set_allocation
 
@@ -2843,7 +3036,7 @@ sub gtk_widget_set_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_clip
 =begin pod
 =head2 [gtk_widget_] set_clip
 
@@ -2871,7 +3064,7 @@ sub gtk_widget_set_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_clip
 =begin pod
 =head2 [gtk_widget_] get_clip
 
@@ -2896,7 +3089,7 @@ sub gtk_widget_get_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_child_focus
 =begin pod
 =head2 [gtk_widget_] child_focus
 
@@ -2934,7 +3127,7 @@ sub gtk_widget_child_focus ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_keynav_failed
 =begin pod
 =head2 [gtk_widget_] keynav_failed
 
@@ -2984,7 +3177,7 @@ sub gtk_widget_keynav_failed ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_error_bell
 =begin pod
 =head2 [gtk_widget_] error_bell
 
@@ -3008,7 +3201,7 @@ sub gtk_widget_error_bell ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_size_request
 =begin pod
 =head2 [gtk_widget_] set_size_request
 
@@ -3055,7 +3248,7 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_size_request
 =begin pod
 =head2 [gtk_widget_] get_size_request
 
@@ -3079,7 +3272,7 @@ sub gtk_widget_get_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_events
 =begin pod
 =head2 [gtk_widget_] set_events
 
@@ -3106,7 +3299,7 @@ sub gtk_widget_set_events ( N-GObject $widget, int32 $events )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_add_events
 =begin pod
 =head2 [gtk_widget_] add_events
 
@@ -3126,7 +3319,7 @@ sub gtk_widget_add_events ( N-GObject $widget, int32 $events )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_device_events
 =begin pod
 =head2 [gtk_widget_] set_device_events
 
@@ -3156,7 +3349,7 @@ sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEven
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_add_device_events
 =begin pod
 =head2 [gtk_widget_] add_device_events
 
@@ -3178,7 +3371,7 @@ sub gtk_widget_add_device_events ( N-GObject $widget, N-GObject $device, GdkEven
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_opacity
 =begin pod
 =head2 [gtk_widget_] set_opacity
 
@@ -3210,7 +3403,7 @@ sub gtk_widget_set_opacity ( N-GObject $widget, num64 $opacity )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_opacity
 =begin pod
 =head2 [gtk_widget_] get_opacity
 
@@ -3232,7 +3425,7 @@ sub gtk_widget_get_opacity ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_device_enabled
 =begin pod
 =head2 [gtk_widget_] set_device_enabled
 
@@ -3257,7 +3450,7 @@ sub gtk_widget_set_device_enabled ( N-GObject $widget, N-GObject $device, int32 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_device_enabled
 =begin pod
 =head2 [gtk_widget_] get_device_enabled
 
@@ -3280,7 +3473,7 @@ sub gtk_widget_get_device_enabled ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_toplevel
 =begin pod
 =head2 [gtk_widget_] get_toplevel
 
@@ -3323,7 +3516,7 @@ sub gtk_widget_get_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_ancestor
 =begin pod
 =head2 [gtk_widget_] get_ancestor
 
@@ -3351,7 +3544,7 @@ sub gtk_widget_get_ancestor ( N-GObject $widget, N-GObject $widget_type )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_visual
 =begin pod
 =head2 [gtk_widget_] get_visual
 
@@ -3370,7 +3563,7 @@ sub gtk_widget_get_visual ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_visual
 =begin pod
 =head2 [gtk_widget_] set_visual
 
@@ -3393,7 +3586,7 @@ sub gtk_widget_set_visual ( N-GObject $widget, N-GObject $visual )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_screen
 =begin pod
 =head2 [gtk_widget_] get_screen
 
@@ -3421,7 +3614,7 @@ sub gtk_widget_get_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_has_screen
 =begin pod
 =head2 [gtk_widget_] has_screen
 
@@ -3446,7 +3639,7 @@ sub gtk_widget_has_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_scale_factor
 =begin pod
 =head2 [gtk_widget_] get_scale_factor
 
@@ -3471,7 +3664,7 @@ sub gtk_widget_get_scale_factor ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_display
 =begin pod
 =head2 [gtk_widget_] get_display
 
@@ -3498,7 +3691,7 @@ sub gtk_widget_get_display ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_settings
 =begin pod
 =head2 [gtk_widget_] get_settings
 
@@ -3522,7 +3715,7 @@ sub gtk_widget_get_settings ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_clipboard
 =begin pod
 =head2 [gtk_widget_] get_clipboard
 
@@ -3551,7 +3744,7 @@ sub gtk_widget_get_clipboard ( N-GObject $widget, GdkAtom $selection )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_hexpand
 =begin pod
 =head2 [gtk_widget_] get_hexpand
 
@@ -3583,7 +3776,7 @@ sub gtk_widget_get_hexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_hexpand
 =begin pod
 =head2 [gtk_widget_] set_hexpand
 
@@ -3624,7 +3817,7 @@ sub gtk_widget_set_hexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_hexpand_set
 =begin pod
 =head2 [gtk_widget_] get_hexpand_set
 
@@ -3652,7 +3845,7 @@ sub gtk_widget_get_hexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_hexpand_set
 =begin pod
 =head2 [gtk_widget_] set_hexpand_set
 
@@ -3683,7 +3876,7 @@ sub gtk_widget_set_hexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_vexpand
 =begin pod
 =head2 [gtk_widget_] get_vexpand
 
@@ -3705,7 +3898,7 @@ sub gtk_widget_get_vexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_vexpand
 =begin pod
 =head2 [gtk_widget_] set_vexpand
 
@@ -3725,7 +3918,7 @@ sub gtk_widget_set_vexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_vexpand_set
 =begin pod
 =head2 [gtk_widget_] get_vexpand_set
 
@@ -3747,7 +3940,7 @@ sub gtk_widget_get_vexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_vexpand_set
 =begin pod
 =head2 [gtk_widget_] set_vexpand_set
 
@@ -3767,7 +3960,7 @@ sub gtk_widget_set_vexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_queue_compute_expand
 =begin pod
 =head2 [gtk_widget_] queue_compute_expand
 
@@ -3787,7 +3980,7 @@ sub gtk_widget_queue_compute_expand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_compute_expand
 =begin pod
 =head2 [gtk_widget_] compute_expand
 
@@ -3817,7 +4010,7 @@ sub gtk_widget_compute_expand ( N-GObject $widget, int32 $orientation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_support_multidevice
 =begin pod
 =head2 [gtk_widget_] get_support_multidevice
 
@@ -3837,7 +4030,7 @@ sub gtk_widget_get_support_multidevice ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_support_multidevice
 =begin pod
 =head2 [gtk_widget_] set_support_multidevice
 
@@ -3860,7 +4053,7 @@ sub gtk_widget_set_support_multidevice ( N-GObject $widget, int32 $support_multi
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_set_accessible_type
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_type
 
@@ -3884,7 +4077,7 @@ sub gtk_widget_class_set_accessible_type ( GtkWidgetClass $widget_class, N-GObje
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_set_accessible_role
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_role
 
@@ -3919,7 +4112,7 @@ sub gtk_widget_class_set_accessible_role ( GtkWidgetClass $widget_class, AtkRole
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_accessible
 =begin pod
 =head2 [gtk_widget_] get_accessible
 
@@ -3950,7 +4143,7 @@ sub gtk_widget_get_accessible ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_halign
 =begin pod
 =head2 [gtk_widget_] get_halign
 
@@ -3974,7 +4167,7 @@ sub gtk_widget_get_halign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_halign
 =begin pod
 =head2 [gtk_widget_] set_halign
 
@@ -3992,7 +4185,7 @@ sub gtk_widget_set_halign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_valign
 =begin pod
 =head2 [gtk_widget_] get_valign
 
@@ -4018,7 +4211,7 @@ sub gtk_widget_get_valign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_valign_with_baseline
 =begin pod
 =head2 [gtk_widget_] get_valign_with_baseline
 
@@ -4040,7 +4233,7 @@ sub gtk_widget_get_valign_with_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_valign
 =begin pod
 =head2 [gtk_widget_] set_valign
 
@@ -4058,7 +4251,7 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_margin_start
 =begin pod
 =head2 [gtk_widget_] get_margin_start
 
@@ -4079,7 +4272,7 @@ sub gtk_widget_get_margin_start ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_margin_start
 =begin pod
 =head2 [gtk_widget_] set_margin_start
 
@@ -4099,7 +4292,7 @@ sub gtk_widget_set_margin_start ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_margin_end
 =begin pod
 =head2 [gtk_widget_] get_margin_end
 
@@ -4120,7 +4313,7 @@ sub gtk_widget_get_margin_end ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_margin_end
 =begin pod
 =head2 [gtk_widget_] set_margin_end
 
@@ -4140,7 +4333,7 @@ sub gtk_widget_set_margin_end ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_margin_top
 =begin pod
 =head2 [gtk_widget_] get_margin_top
 
@@ -4161,7 +4354,7 @@ sub gtk_widget_get_margin_top ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_margin_top
 =begin pod
 =head2 [gtk_widget_] set_margin_top
 
@@ -4181,7 +4374,7 @@ sub gtk_widget_set_margin_top ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_margin_bottom
 =begin pod
 =head2 [gtk_widget_] get_margin_bottom
 
@@ -4202,7 +4395,7 @@ sub gtk_widget_get_margin_bottom ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_margin_bottom
 =begin pod
 =head2 [gtk_widget_] set_margin_bottom
 
@@ -4222,7 +4415,7 @@ sub gtk_widget_set_margin_bottom ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_events
 =begin pod
 =head2 [gtk_widget_] get_events
 
@@ -4248,7 +4441,7 @@ sub gtk_widget_get_events ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_device_events
 =begin pod
 =head2 [gtk_widget_] get_device_events
 
@@ -4272,7 +4465,7 @@ sub gtk_widget_get_device_events ( N-GObject $widget, N-GObject $device )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_is_ancestor
 =begin pod
 =head2 [gtk_widget_] is_ancestor
 
@@ -4294,7 +4487,7 @@ sub gtk_widget_is_ancestor ( N-GObject $widget, N-GObject $ancestor )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_translate_coordinates
 =begin pod
 =head2 [gtk_widget_] translate_coordinates
 
@@ -4323,7 +4516,7 @@ sub gtk_widget_translate_coordinates ( N-GObject $src_widget, N-GObject $dest_wi
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_hide_on_delete
 =begin pod
 =head2 [gtk_widget_] hide_on_delete
 
@@ -4348,7 +4541,7 @@ sub gtk_widget_hide_on_delete ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_reset_style
 =begin pod
 =head2 [gtk_widget_] reset_style
 
@@ -4370,7 +4563,7 @@ sub gtk_widget_reset_style ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_create_pango_context
 =begin pod
 =head2 [gtk_widget_] create_pango_context
 
@@ -4390,7 +4583,7 @@ sub gtk_widget_create_pango_context ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_get_pango_context
 =begin pod
 =head2 [gtk_widget_] get_pango_context
 
@@ -4417,7 +4610,7 @@ sub gtk_widget_get_pango_context ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_set_font_options
 =begin pod
 =head2 [gtk_widget_] set_font_options
 
@@ -4453,7 +4646,7 @@ sub cairo_font_options_t (  $*gtk_widget_get_font_options GtkWidget *widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_create_pango_layout
 =begin pod
 =head2 [gtk_widget_] create_pango_layout
 
@@ -4480,7 +4673,7 @@ sub gtk_widget_create_pango_layout ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_install_style_property
 =begin pod
 =head2 [gtk_widget_] class_install_style_property
 
@@ -4499,7 +4692,7 @@ sub gtk_widget_class_install_style_property ( GtkWidgetClass $klass, GParamSpec 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_install_style_property_parser
 =begin pod
 =head2 [gtk_widget_] class_install_style_property_parser
 
@@ -4518,7 +4711,7 @@ sub gtk_widget_class_install_style_property_parser ( GtkWidgetClass $klass, GPar
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_find_style_property
 =begin pod
 =head2 [gtk_widget_] class_find_style_property
 
@@ -4542,7 +4735,7 @@ sub gtk_widget_class_find_style_property ( GtkWidgetClass $klass, Str $property_
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_class_list_style_properties
 =begin pod
 =head2 [gtk_widget_] class_list_style_properties
 
@@ -4567,7 +4760,7 @@ sub gtk_widget_class_list_style_properties ( GtkWidgetClass $klass, uint32 $n_pr
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_style_get_property
 =begin pod
 =head2 [gtk_widget_] style_get_property
 
@@ -4587,7 +4780,7 @@ sub gtk_widget_style_get_property ( N-GObject $widget, Str $property_name, N-GOb
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_style_get_valist
 =begin pod
 =head2 [gtk_widget_] style_get_valist
 
@@ -4607,7 +4800,7 @@ sub gtk_widget_style_get_valist ( N-GObject $widget, Str $first_property_name, v
 }}
 #`[[
 #-------------------------------------------------------------------------------
-#TM:0:
+#TM:0:gtk_widget_style_get
 =begin pod
 =head2 [gtk_widget_] style_get
 
@@ -5678,6 +5871,2026 @@ sub gtk_widget_get_font_map ( N-GObject $widget )
 
 }}
 
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment #TS:0:destroy:
+=head3 destroy
+
+Signals that all holders of a reference to the widget should release
+the reference that they hold. May result in finalization of the widget
+if all references are released.
+
+This signal is not suitable for saving widget state.
+
+  method handler (
+    Gnome::GObject::Object :widget($object),
+    *%user-options
+  );
+
+=item $object; the object which received the signal
+
+
+=comment #TS:0:show:
+=head3 show
+
+The I<show> signal is emitted when I<widget> is shown, for example with
+C<gtk_widget_show()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:hide:
+=head3 hide
+
+The I<hide> signal is emitted when I<widget> is hidden, for example with
+C<gtk_widget_hide()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:map:
+=head3 map
+
+The I<map> signal is emitted when I<widget> is going to be mapped, that is
+when the widget is visible (which is controlled with
+C<gtk_widget_set_visible()>) and all its parents up to the toplevel widget
+are also visible. Once the map has occurred,  I<map-event> will
+be emitted.
+
+The I<map> signal can be used to determine whether a widget will be drawn,
+for instance it can resume an animation that was stopped during the
+emission of  I<unmap>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:unmap:
+=head3 unmap
+
+The I<unmap> signal is emitted when I<widget> is going to be unmapped, which
+means that either it or any of its parents up to the toplevel widget have
+been set as hidden.
+
+As I<unmap> indicates that a widget will not be shown any longer, it can be
+used to, for example, stop an animation on the widget.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:realize:
+=head3 realize
+
+The I<realize> signal is emitted when I<widget> is associated with a
+B<Gnome::Gdk3::Window>, which means that C<gtk_widget_realize()> has been called or the
+widget has been mapped (that is, it is going to be drawn).
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:unrealize:
+=head3 unrealize
+
+The I<unrealize> signal is emitted when the B<Gnome::Gdk3::Window> associated with
+I<widget> is destroyed, which means that C<gtk_widget_unrealize()> has been
+called or the widget has been unmapped (that is, it is going to be
+hidden).
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:size-allocate:
+=head3 size-allocate
+
+  method handler (
+    N-GObject $allocation,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $allocation; (a native B<Gnome::Gtk3::Allocation>): the region which has been allocated to the widget.
+
+=comment #TS:0:state-flags-changed:
+=head3 state-flags-changed
+
+The I<state-flags-changed> signal is emitted when the widget state
+changes, see C<gtk_widget_get_state_flags()>.
+
+Since: 3.0
+
+  method handler (
+    Int $flags,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $flags; The previous state flags of GtkStateFlags type.
+
+
+=comment #TS:0:parent-set:
+=head3 parent-set
+
+The I<parent-set> signal is emitted when a new parent
+has been set on a widget.
+
+  method handler (
+    N-GObject $old_parent,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $old_parent; (allow-none): the previous parent, or C<Any> if the widget
+just got its initial parent.
+
+
+=comment #TS:0:hierarchy-changed:
+=head3 hierarchy-changed
+
+The I<hierarchy-changed> signal is emitted when the
+anchored state of a widget changes. A widget is
+“anchored” when its toplevel
+ancestor is a B<Gnome::Gtk3::Window>. This signal is emitted when
+a widget changes from un-anchored to anchored or vice-versa.
+
+  method handler (
+    N-GObject $previous_toplevel,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $previous_toplevel; (allow-none): the previous toplevel ancestor, or C<Any> if the widget was previously unanchored
+
+
+=comment #TS:0:style-updated:
+=head3 style-updated
+
+The I<style-updated> signal is a convenience signal that is emitted when the
+ I<changed> signal is emitted on the I<widget>'s associated
+B<Gnome::Gtk3::StyleContext> as returned by C<gtk_widget_get_style_context()>.
+
+Note that style-modifying functions like C<gtk_widget_override_color()> also
+cause this signal to be emitted.
+
+Since: 3.0
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+
+=comment #TS:0:direction-changed:
+=head3 direction-changed
+
+The I<direction-changed> signal is emitted when the text direction
+of a widget changes.
+
+  method handler (
+    Int $previous_direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $previous_direction; the previous text direction of I<widget>, a GtkTextDirection.
+
+
+=comment #TS:0:grab-notify:
+=head3 grab-notify
+
+The I<grab-notify> signal is emitted when a widget becomes
+shadowed by a GTK+ grab (not a pointer or keyboard grab) on
+another widget, or when it becomes unshadowed due to a grab
+being removed.
+
+A widget is shadowed by a C<gtk_grab_add()> when the topmost
+grab widget in the grab stack of its window group is not
+its ancestor.
+
+  method handler (
+    Int $was_grabbed,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $was_grabbed; C<0> if the widget becomes shadowed, C<1>
+if it becomes unshadowed
+
+=begin comment
+=comment #TS:0:child-notify:
+=head3 child-notify
+
+The I<child-notify> signal is emitted for each
+[child property][child-properties]  that has
+changed on an object. The signal's detail holds the property name.
+
+  method handler (
+    GParamSpec $child_property,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $child_property; the B<GParamSpec> of the changed child property
+=end comment
+
+=begin comment
+=comment #TS:0:draw:
+=head3 draw
+
+This signal is emitted when a widget is supposed to render itself.
+The I<widget>'s top left corner must be painted at the origin of
+the passed in context and be sized to the values returned by
+C<gtk_widget_get_allocated_width()> and
+C<gtk_widget_get_allocated_height()>.
+
+Signal handlers connected to this signal can modify the cairo
+context passed as I<cr> in any way they like and don't need to
+restore it. The signal emission takes care of calling C<cairo_save()>
+before and C<cairo_restore()> after invoking the handler.
+
+The signal handler will get a I<cr> with a clip region already set to the
+widget's dirty region, i.e. to the area that needs repainting.  Complicated
+widgets that want to avoid redrawing themselves completely can get the full
+extents of the clip region with C<gdk_cairo_get_clip_rectangle()>, or they can
+get a finer-grained representation of the dirty region with
+C<cairo_copy_clip_rectangle_list()>.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Since: 3.0
+
+  method handler (
+    Unknown type CAIRO_GOBJECT_TYPE_CONTEXT $cr,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $cr; the cairo context to draw to
+
+
+=comment #TS:0:mnemonic-activate:
+=head3 mnemonic-activate
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    Int $arg1,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $arg1;
+=end comment
+
+
+=comment #TS:0:grab-focus:
+=head3 grab-focus
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:focus:
+=head3 focus
+
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal, a GtkDirectionType.
+
+=item $direction;
+
+
+=comment #TS:0:move-focus:
+=head3 move-focus
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal, a GtkDirectionType.
+
+=item $direction;
+
+
+=comment #TS:0:keynav-failed:
+=head3 keynav-failed
+
+Gets emitted if keyboard navigation fails.
+See C<gtk_widget_keynav_failed()> for details.
+
+Returns: C<1> if stopping keyboard navigation is fine, C<0>
+if the emitting widget should try to handle the keyboard
+navigation attempt in its parent container(s).
+
+Since: 2.12
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $direction; the direction of movement, a GtkDirectionType.
+
+
+=comment #TS:0:event:
+=head3 event
+
+The GTK+ main loop will emit three signals for each GDK event delivered
+to a widget: one generic I<event> signal, another, more specific,
+signal that matches the type of event delivered (e.g.
+ I<key-press-event>) and finally a generic
+ I<event-after> signal.
+
+Returns: C<1> to stop other handlers from being invoked for the event
+and to cancel the emission of the second specific I<event> signal.
+C<0> to propagate the event further and to allow the emission of
+the second signal. The I<event-after> signal is emitted regardless of
+the return value.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:event-after:
+=head3 event-after
+
+After the emission of the  I<event> signal and (optionally)
+the second more specific signal, I<event-after> will be emitted
+regardless of the previous two signals handlers return values.
+
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:button-press-event:
+=head3 button-press-event
+
+The I<button-press-event> signal will be emitted when a button
+(typically from a mouse) is pressed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
+widget needs to enable the B<GDK_BUTTON_PRESS_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventButton $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:button-release-event:
+=head3 button-release-event
+
+The I<button-release-event> signal will be emitted when a button
+(typically from a mouse) is released.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
+widget needs to enable the B<GDK_BUTTON_RELEASE_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventButton $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:scroll-event:
+=head3 scroll-event
+
+The I<scroll-event> signal is emitted when a button in the 4 to 7
+range is pressed. Wheel mice are usually configured to generate
+button press events for buttons 4 and 5 when the wheel is turned.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_SCROLL_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventScroll $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:motion-notify-event:
+=head3 motion-notify-event
+
+The I<motion-notify-event> signal is emitted when the pointer moves
+over the widget's B<Gnome::Gdk3::Window>.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget
+needs to enable the B<GDK_POINTER_MOTION_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventMotion $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:composited-changed:
+=head3 composited-changed
+
+The I<composited-changed> signal is emitted when the composited
+status of I<widgets> screen changes.
+See C<gdk_screen_is_composited()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object on which the signal is emitted
+
+
+=comment #TS:0:delete-event:
+=head3 delete-event
+
+The I<delete-event> signal is emitted if a user requests that
+a toplevel window is closed. The default handler for this signal
+destroys the window. Connecting C<gtk_widget_hide_on_delete()> to
+this signal will cause the window to be hidden instead, so that
+it can later be shown again without reconstructing it.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:destroy-event:
+=head3 destroy-event
+
+The I<destroy-event> signal is emitted when a B<Gnome::Gdk3::Window> is destroyed.
+You rarely get this signal, because most widgets disconnect themselves
+from their window before they destroy it, so no widget owns the
+window at destroy time.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:key-press-event:
+=head3 key-press-event
+
+The I<key-press-event> signal is emitted when a key is pressed. The signal
+emission will reoccur at the key-repeat rate when the key is kept pressed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_KEY_PRESS_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventKey $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:key-release-event:
+=head3 key-release-event
+
+The I<key-release-event> signal is emitted when a key is released.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_KEY_RELEASE_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventKey $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:enter-notify-event:
+=head3 enter-notify-event
+
+The I<enter-notify-event> will be emitted when the pointer enters
+the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_ENTER_NOTIFY_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventCrossing $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:leave-notify-event:
+=head3 leave-notify-event
+
+The I<leave-notify-event> will be emitted when the pointer leaves
+the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_LEAVE_NOTIFY_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventCrossing $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:configure-event:
+=head3 configure-event
+
+The I<configure-event> signal will be emitted when the size, position or
+stacking of the I<widget>'s window has changed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventConfigure $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:focus-in-event:
+=head3 focus-in-event
+
+The I<focus-in-event> signal will be emitted when the keyboard focus
+enters the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventFocus $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:focus-out-event:
+=head3 focus-out-event
+
+The I<focus-out-event> signal will be emitted when the keyboard focus
+leaves the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventFocus $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:map-event:
+=head3 map-event
+
+The I<map-event> signal will be emitted when the I<widget>'s window is
+mapped. A window is mapped when it becomes visible on the screen.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventAny $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:unmap-event:
+=head3 unmap-event
+
+The I<unmap-event> signal will be emitted when the I<widget>'s window is
+unmapped. A window is unmapped when it becomes invisible on the screen.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventAny $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=begin comment
+=comment #TS:0:property-notify-event:
+=head3 property-notify-event
+
+The I<property-notify-event> signal will be emitted when a property on
+the I<widget>'s window has been changed or deleted.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROPERTY_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProperty $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-clear-event:
+=head3 selection-clear-event
+
+The I<selection-clear-event> signal will be emitted when the
+the I<widget>'s window has lost ownership of a selection.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-request-event:
+=head3 selection-request-event
+
+The I<selection-request-event> signal will be emitted when
+another client requests ownership of the selection owned by
+the I<widget>'s window.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-notify-event:
+=head3 selection-notify-event
+
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-received:
+=head3 selection-received
+
+  method handler (
+    N-GObject $data,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $data; a native Gnome::Gtk3::SelectionData.
+=item $time;
+
+
+=comment #TS:0:selection-get:
+=head3 selection-get
+
+  method handler (
+    N-GObject $data,
+    UInt $info,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+=item $data; a native Gnome::Gtk3::SelectionData.
+=item $info;
+=item $time;
+=end comment
+
+
+=comment #TS:0:proximity-in-event:
+=head3 proximity-in-event
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROXIMITY_IN_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProximity $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:proximity-out-event:
+=head3 proximity-out-event
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROXIMITY_OUT_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProximity $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=begin comment
+=comment #TS:0:drag-leave:
+=head3 drag-leave
+
+The I<drag-leave> signal is emitted on the drop site when the cursor
+leaves the widget. A typical reason to connect to this signal is to
+undo things done in  I<drag-motion>, e.g. undo highlighting
+with C<gtk_drag_unhighlight()>.
+
+
+Likewise, the  I<drag-leave> signal is also emitted before the I<drag-drop> signal, for instance to allow cleaning up of a preview item
+created in the  I<drag-motion> signal handler.
+
+  method handler (
+    N-GObject $context,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $context; the drag context, a native Gnome::Gdk3::DragContext
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-begin:
+=head3 drag-begin
+
+The I<drag-begin> signal is emitted on the drag source when a drag is
+started. A typical reason to connect to this signal is to set up a
+custom drag icon with e.g. C<gtk_drag_source_set_icon_pixbuf()>.
+
+Note that some widgets set up a drag icon in the default handler of
+this signal, so you may have to use C<g_signal_connect_after()> to
+override what the default handler did.
+
+  method handler (
+    N-GObject $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $context; the drag context, a native Gnome::Gdk3::DragContext
+
+
+=comment #TS:0:drag-end:
+=head3 drag-end
+
+The I<drag-end> signal is emitted on the drag source when a drag is
+finished.  A typical reason to connect to this signal is to undo
+things done in  I<drag-begin>.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+
+=comment #TS:0:drag-data-delete:
+=head3 drag-data-delete
+
+The I<drag-data-delete> signal is emitted on the drag source when a drag
+with the action C<GDK_ACTION_MOVE> is successfully completed. The signal
+handler is responsible for deleting the data that has been dropped. What
+"delete" means depends on the context of the drag operation.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+
+=comment #TS:0:drag-failed:
+=head3 drag-failed
+
+The I<drag-failed> signal is emitted on the drag source when a drag has
+failed. The signal handler may hook custom code to handle a failed DnD
+operation based on the type of error, it returns C<1> is the failure has
+been already handled (not showing the default "drag operation failed"
+animation), otherwise it returns C<0>.
+
+Returns: C<1> if the failed drag operation has been already handled.
+
+Since: 2.12
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    - $result,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $result; the result of the drag operation
+
+
+=comment #TS:0:drag-motion:
+=head3 drag-motion
+
+The I<drag-motion> signal is emitted on the drop site when the user
+moves the cursor over the widget during a drag. The signal handler
+must determine whether the cursor position is in a drop zone or not.
+If it is not in a drop zone, it returns C<0> and no further processing
+is necessary. Otherwise, the handler returns C<1>. In this case, the
+handler is responsible for providing the necessary information for
+displaying feedback to the user, by calling C<gdk_drag_status()>.
+
+If the decision whether the drop will be accepted or rejected can't be
+made based solely on the cursor position and the type of the data, the
+handler may inspect the dragged data by calling C<gtk_drag_get_data()> and
+defer the C<gdk_drag_status()> call to the  I<drag-data-received>
+handler. Note that you must pass B<GTK_DEST_DEFAULT_DROP>,
+B<GTK_DEST_DEFAULT_MOTION> or B<GTK_DEST_DEFAULT_ALL> to C<gtk_drag_dest_set()>
+when using the drag-motion signal that way.
+
+Also note that there is no drag-enter signal. The drag receiver has to
+keep track of whether he has received any drag-motion signals since the
+last  I<drag-leave> and if not, treat the drag-motion signal as
+an "enter" signal. Upon an "enter", the handler will typically highlight
+the drop site with C<gtk_drag_highlight()>.
+|[<!-- language="C" -->
+static void
+drag_motion (B<Gnome::Gtk3::Widget>      *widget,
+B<Gnome::Gdk3::DragContext> *context,
+gint            x,
+gint            y,
+guint           time)
+{
+B<Gnome::Gdk3::Atom> target;
+
+PrivateData *private_data = GET_PRIVATE_DATA (widget);
+
+if (!private_data->drag_highlight)
+{
+private_data->drag_highlight = 1;
+gtk_drag_highlight (widget);
+}
+
+target = gtk_drag_dest_find_target (widget, context, NULL);
+if (target == GDK_NONE)
+gdk_drag_status (context, 0, time);
+else
+{
+private_data->pending_status
+= gdk_drag_context_get_suggested_action (context);
+gtk_drag_get_data (widget, context, target, time);
+}
+
+return TRUE;
+}
+
+static void
+drag_data_received (B<Gnome::Gtk3::Widget>        *widget,
+B<Gnome::Gdk3::DragContext>   *context,
+gint              x,
+gint              y,
+B<Gnome::Gtk3::SelectionData> *selection_data,
+guint             info,
+guint             time)
+{
+PrivateData *private_data = GET_PRIVATE_DATA (widget);
+
+if (private_data->suggested_action)
+{
+private_data->suggested_action = 0;
+
+// We are getting this data due to a request in drag_motion,
+// rather than due to a request in drag_drop, so we are just
+// supposed to call C<gdk_drag_status()>, not actually paste in
+// the data.
+
+str = gtk_selection_data_get_text (selection_data);
+if (!data_is_acceptable (str))
+gdk_drag_status (context, 0, time);
+else
+gdk_drag_status (context,
+private_data->suggested_action,
+time);
+}
+else
+{
+// accept the drop
+}
+}
+]|
+
+Returns: whether the cursor position is in a drop zone
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Unknown type GTK_TYPE_DRAG_RESULT $x,
+    - $y,
+    - $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; the x coordinate of the current cursor position
+
+=item $y; the y coordinate of the current cursor position
+
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-drop:
+=head3 drag-drop
+
+The I<drag-drop> signal is emitted on the drop site when the user drops
+the data onto the widget. The signal handler must determine whether
+the cursor position is in a drop zone or not. If it is not in a drop
+zone, it returns C<0> and no further processing is necessary.
+Otherwise, the handler returns C<1>. In this case, the handler must
+ensure that C<gtk_drag_finish()> is called to let the source know that
+the drop is done. The call to C<gtk_drag_finish()> can be done either
+directly or in a  I<drag-data-received> handler which gets
+triggered by calling C<gtk_drag_get_data()> to receive the data for one
+or more of the supported targets.
+
+Returns: whether the cursor position is in a drop zone
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Int $x,
+    Int $y,
+    Unknown type G_TYPE_UINT $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; the x coordinate of the current cursor position
+
+=item $y; the y coordinate of the current cursor position
+
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-data-get:
+=head3 drag-data-get
+
+The I<drag-data-get> signal is emitted on the drag source when the drop
+site requests the data which is dragged. It is the responsibility of
+the signal handler to fill I<data> with the data in the format which
+is indicated by I<info>. See C<gtk_selection_data_set()> and
+C<gtk_selection_data_set_text()>.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Int $data,
+    Int $info,
+    Unknown type G_TYPE_UINT $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $data; the B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
+
+=item $info; the info that has been registered with the target in the
+B<Gnome::Gtk3::TargetList>
+
+=item $time; the timestamp at which the data was requested
+
+
+=comment #TS:0:drag-data-received:
+=head3 drag-data-received
+
+The I<drag-data-received> signal is emitted on the drop site when the
+dragged data has been received. If the data was received in order to
+determine whether the drop will be accepted, the handler is expected
+to call C<gdk_drag_status()> and not finish the drag.
+If the data was received in response to a  I<drag-drop> signal
+(and this is the last target to be received), the handler for this
+signal is expected to process the received data and then call
+C<gtk_drag_finish()>, setting the I<success> parameter depending on
+whether the data was processed successfully.
+
+Applications must create some means to determine why the signal was emitted
+and therefore whether to call C<gdk_drag_status()> or C<gtk_drag_finish()>.
+
+The handler may inspect the selected action with
+C<gdk_drag_context_get_selected_action()> before calling
+C<gtk_drag_finish()>, e.g. to implement C<GDK_ACTION_ASK> as
+shown in the following example:
+|[<!-- language="C" -->
+void
+drag_data_received (B<Gnome::Gtk3::Widget>          *widget,
+B<Gnome::Gdk3::DragContext>     *context,
+gint                x,
+gint                y,
+B<Gnome::Gtk3::SelectionData>   *data,
+guint               info,
+guint               time)
+{
+if ((data->length >= 0) && (data->format == 8))
+{
+B<Gnome::Gdk3::DragAction> action;
+
+// handle data here
+
+action = gdk_drag_context_get_selected_action (context);
+if (action == GDK_ACTION_ASK)
+{
+B<Gnome::Gtk3::Widget> *dialog;
+gint response;
+
+dialog = gtk_message_dialog_new (NULL,
+GTK_DIALOG_MODAL |
+GTK_DIALOG_DESTROY_WITH_PARENT,
+GTK_MESSAGE_INFO,
+GTK_BUTTONS_YES_NO,
+"Move the data ?\n");
+response = gtk_dialog_run (GTK_DIALOG (dialog));
+gtk_widget_destroy (dialog);
+
+if (response == GTK_RESPONSE_YES)
+action = GDK_ACTION_MOVE;
+else
+action = GDK_ACTION_COPY;
+}
+
+gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
+}
+else
+gtk_drag_finish (context, FALSE, FALSE, time);
+}
+]|
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $x,
+    Unknown type G_TYPE_UINT $y,
+    Unknown type G_TYPE_UINT $data,
+    - $info,
+    - $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; where the drop happened
+
+=item $y; where the drop happened
+
+=item $data; the received data
+
+=item $info; the info that has been registered with the target in the
+B<Gnome::Gtk3::TargetList>
+
+=item $time; the timestamp at which the data was received
+
+
+=comment #TS:0:visibility-notify-event:
+=head3 visibility-notify-event
+
+The I<visibility-notify-event> will be emitted when the I<widget>'s
+window is obscured or unobscured.
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_VISIBILITY_NOTIFY_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Deprecated: 3.12: Modern composited windowing systems with pervasive
+transparency make it impossible to track the visibility of a window
+reliably, so this signal can not be guaranteed to provide useful
+information.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $event; (type B<Gnome::Gdk3::.EventVisibility>): the B<Gnome::Gdk3::EventVisibility> which
+triggered this signal.
+
+
+=comment #TS:0:window-state-event:
+=head3 window-state-event
+
+The I<window-state-event> will be emitted when the state of the
+toplevel window associated to the I<widget> changes.
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget
+needs to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable
+this mask automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the
+event. C<0> to propagate the event further.
+
+  method handler (
+    Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $event; (type B<Gnome::Gdk3::.EventWindowState>): the B<Gnome::Gdk3::EventWindowState> which
+triggered this signal.
+=end comment
+
+
+=begin comment
+=comment #TS:0:damage-event:
+=head3 damage-event
+
+Emitted when a redirected window belonging to I<widget> gets drawn into.
+The region/area members of the event shows what area of the redirected
+drawable was drawn into.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Since: 2.14
+
+  method handler (
+    GdkEventExpose $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+=end comment
+
+
+=comment #TS:0:grab-broken-event:
+=head3 grab-broken-event
+
+Emitted when a pointer or keyboard grab on a window belonging
+to I<widget> gets broken.
+
+On X11, this happens when the grab window becomes unviewable
+(i.e. it or one of its ancestors is unmapped), or if the same
+application grabs the pointer or keyboard again.
+
+Returns: C<1> to stop other handlers from being invoked for
+the event. C<0> to propagate the event further.
+
+Since: 2.8
+
+  method handler (
+    GdkEventGrabBroken $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:query-tooltip:
+=head3 query-tooltip
+
+Emitted when  I<has-tooltip> is C<1> and the hover timeout
+has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got
+focus in keyboard mode.
+
+Using the given coordinates, the signal handler should determine
+whether a tooltip should be shown for I<widget>. If this is the case
+C<1> should be returned, C<0> otherwise.  Note that if
+I<keyboard_mode> is C<1>, the values of I<x> and I<y> are undefined and
+should not be used.
+
+The signal handler is free to manipulate I<tooltip> with the therefore
+destined function calls.
+
+Returns: C<1> if I<tooltip> should be shown right now, C<0> otherwise.
+
+Since: 2.12
+
+  method handler (
+    Int $x,
+    Int $y,
+    Int $keyboard_mode,
+    N-GObject $tooltip,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $x; the x coordinate of the cursor position where the request has
+been emitted, relative to I<widget>'s left side
+
+=item $y; the y coordinate of the cursor position where the request has
+been emitted, relative to I<widget>'s top
+
+=item $keyboard_mode; C<1> if the tooltip was triggered using the keyboard
+
+=item $tooltip; a native Gnome::Gtk3::Tooltip
+
+
+=comment #TS:0:popup-menu:
+=head3 popup-menu
+
+This signal gets emitted whenever a widget should pop up a context
+menu. This usually happens through the standard key binding mechanism;
+by pressing a certain key while a widget is focused, the user can cause
+the widget to pop up a menu.  For example, the B<Gnome::Gtk3::Entry> widget creates a menu with clipboard commands. See the [Popup Menu Migration Checklist](https://developer.gnome.org/gtk3/3.24/gtk-migrating-checklist.html#checklist-popup-menu) for an example of how to use this signal.
+
+Returns: C<1> if a menu was activated
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+
+=comment #TS:0:show-help:
+=head3 show-help
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    Int $help_type,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $help_type; a GtkWidgetHelpType
+
+
+=comment #TS:0:accel-closures-changed:
+=head3 accel-closures-changed
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:screen-changed:
+=head3 screen-changed
+
+The I<screen-changed> signal gets emitted when the
+screen of a widget has changed.
+
+  method handler (
+    N-GObject $previous_screen,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+=item $previous_screen; the previous screen, or C<Any> if the widget was not associated with a screen before. It is a native Gnome::Gdk3::Screen object.
+
+
+=comment #TS:0:can-activate-accel:
+=head3 can-activate-accel
+
+Determines whether an accelerator that activates the signal
+identified by I<signal_id> can currently be activated.
+This signal is present to allow applications and derived
+widgets to override the default B<Gnome::Gtk3::Widget> handling
+for determining whether an accelerator can be activated.
+
+Returns: C<1> if the signal can be activated.
+
+  method handler (
+    UInt $signal_id,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $signal_id; the ID of a signal installed on I<widget>
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.g-object-get-property( 'label', $gv);
+  $gv.g-value-set-string('my text label');
+
+=head2 Supported properties
+
+=comment #TP:0:name:
+=head3 Widget name
+
+The name of the widget
+Default value: Any
+
+
+The B<Gnome::GObject::Value> type of property I<name> is C<G_TYPE_STRING>.
+
+=begin comment
+=comment #TP:0:parent:
+=head3 Parent widget
+
+The parent widget of this widget. Must be a Container widget
+Widget type: GTK_TYPE_CONTAINER
+
+
+The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
+=end comment
+
+=comment #TP:0:width-request:
+=head3 Width request
+
+
+
+The B<Gnome::GObject::Value> type of property I<width-request> is C<G_TYPE_INT>.
+
+=comment #TP:0:height-request:
+=head3 Height request
+
+
+
+The B<Gnome::GObject::Value> type of property I<height-request> is C<G_TYPE_INT>.
+
+=comment #TP:0:visible:
+=head3 Visible
+
+Whether the widget is visible
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:sensitive:
+=head3 Sensitive
+
+Whether the widget responds to input
+Default value: True
+
+
+The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:app-paintable:
+=head3 Application paintable
+
+Whether the application will paint directly on the widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<app-paintable> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:can-focus:
+=head3 Can focus
+
+Whether the widget can accept the input focus
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<can-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-focus:
+=head3 Has focus
+
+Whether the widget has the input focus
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<has-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:is-focus:
+=head3 Is focus
+
+Whether the widget is the focus widget within the toplevel
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<is-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:focus-on-click:
+=head3 Focus on click
+
+
+Whether the widget should grab focus when it is clicked with the mouse.
+This property is only relevant for widgets that can take focus.
+Before 3.20, several widgets (B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::FileChooserButton>,
+B<Gnome::Gtk3::ComboBox>) implemented this property individually.
+Since: 3.20
+
+The B<Gnome::GObject::Value> type of property I<focus-on-click> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:can-default:
+=head3 Can default
+
+Whether the widget can be the default widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<can-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-default:
+=head3 Has default
+
+Whether the widget is the default widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<has-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:receives-default:
+=head3 Receives default
+
+If TRUE, the widget will receive the default action when it is focused
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<receives-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:composite-child:
+=head3 Composite child
+
+Whether the widget is part of a composite widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<composite-child> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:events:
+=head3 Events
+
+
+
+The B<Gnome::GObject::Value> type of property I<events> is C<G_TYPE_FLAGS>.
+
+=comment #TP:0:no-show-all:
+=head3 No show all
+
+Whether gtk_widget_show_all( should not affect this widget)
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<no-show-all> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-tooltip:
+=head3 Has tooltip
+
+
+Enables or disables the emission of  I<query-tooltip> on I<widget>.
+A value of C<1> indicates that I<widget> can have a tooltip, in this case
+the widget will be queried using  I<query-tooltip> to determine
+whether it will provide a tooltip or not.
+Note that setting this property to C<1> for the first time will change
+the event masks of the B<Gnome::Gdk3::Windows> of this widget to include leave-notify
+and motion-notify events.  This cannot and will not be undone when the
+property is set to C<0> again.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:tooltip-text:
+=head3 Tooltip Text
+
+
+Sets the text of tooltip to be the given string.
+Also see C<gtk_tooltip_set_text()>.
+This is a convenience property which will take care of getting the
+tooltip shown if the given string is not C<Any>:  I<has-tooltip>
+will automatically be set to C<1> and there will be taken care of
+ I<query-tooltip> in the default signal handler.
+Note that if both  I<tooltip-text> and  I<tooltip-markup>
+are set, the last one wins.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
+
+=comment #TP:0:tooltip-markup:
+=head3 Tooltip markup
+
+
+Sets the text of tooltip to be the given string, which is marked up
+with the [Pango text markup language][PangoMarkupFormat].
+Also see C<gtk_tooltip_set_markup()>.
+This is a convenience property which will take care of getting the
+tooltip shown if the given string is not C<Any>:  I<has-tooltip>
+will automatically be set to C<1> and there will be taken care of
+ I<query-tooltip> in the default signal handler.
+Note that if both  I<tooltip-text> and  I<tooltip-markup>
+are set, the last one wins.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
+
+=comment #TP:0:window:
+=head3 Window
+
+
+The widget's window if it is realized, C<Any> otherwise.
+Since: 2.14
+Widget type: GDK_TYPE_WINDOW
+
+The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
+
+=comment #TP:0:halign:
+=head3 Horizontal Alignment
+
+
+How to distribute horizontal space if widget gets extra space, see B<Gnome::Gtk3::Align>
+Since: 3.0
+Widget type: GTK_TYPE_ALIGN
+
+The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
+
+=comment #TP:0:valign:
+=head3 Vertical Alignment
+
+
+How to distribute vertical space if widget gets extra space, see B<Gnome::Gtk3::Align>
+Since: 3.0
+Widget type: GTK_TYPE_ALIGN
+
+The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
+
+=comment #TP:0:margin-start:
+=head3 Margin on Start
+
+
+Margin on start of widget, horizontally. This property supports
+left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.12
+
+The B<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-end:
+=head3 Margin on End
+
+
+Margin on end of widget, horizontally. This property supports
+left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.12
+
+The B<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-top:
+=head3 Margin on Top
+
+
+Margin on top side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-bottom:
+=head3 Margin on Bottom
+
+
+Margin on bottom side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin:
+=head3 All Margins
+
+
+Sets all four sides' margin at once. If read, returns max
+margin on any side.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
+
+=comment #TP:0:hexpand:
+=head3 Horizontal Expand
+
+
+Whether to expand horizontally. See C<gtk_widget_set_hexpand()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:hexpand-set:
+=head3 Horizontal Expand Set
+
+
+Whether to use the  I<hexpand> property. See C<gtk_widget_get_hexpand_set()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:vexpand:
+=head3 Vertical Expand
+
+
+Whether to expand vertically. See C<gtk_widget_set_vexpand()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:vexpand-set:
+=head3 Vertical Expand Set
+
+
+Whether to use the  I<vexpand> property. See C<gtk_widget_get_vexpand_set()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:expand:
+=head3 Expand Both
+
+
+Whether to expand in both directions. Setting this sets both  I<hexpand> and  I<vexpand>
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:opacity:
+=head3 Opacity for Widget
+
+
+The requested opacity of the widget. See C<gtk_widget_set_opacity()> for
+more details about window opacity.
+Before 3.8 this was only available in B<Gnome::Gtk3::Window>
+Since: 3.8
+
+The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
+
+=comment #TP:0:scale-factor:
+=head3 Scale factor
+
+
+The scale factor of the widget. See C<gtk_widget_get_scale_factor()> for
+more details about widget scaling.
+Since: 3.10
+
+The B<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
