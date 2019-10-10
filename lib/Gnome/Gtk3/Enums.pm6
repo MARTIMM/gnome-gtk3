@@ -991,7 +991,7 @@ width-for-height geometry management.
 
 =end pod
 
-#TE:1:GtkSizeRequestMode:Widget.t
+#TE:2:GtkSizeRequestMode:Widget.t
 enum GtkSizeRequestMode is export (
   'GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH' => 0,
   'GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT',
@@ -1045,7 +1045,7 @@ classes and sometimes uses different names.
 
 =end pod
 
-#TE:0:GtkStateFlags:
+#TE:2:GtkStateFlags:WidgetPath.t
 enum GtkStateFlags is export (
   'GTK_STATE_FLAG_NORMAL'       => 0,
   'GTK_STATE_FLAG_ACTIVE'       => 1 +< 0,
