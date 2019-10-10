@@ -1157,7 +1157,7 @@ sub get-signals ( Str:D $source-content is copy ) {
         elsif $item-scan and
               $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
           my Str $s = ~($<item-doc> // '');
-          $item-doc ~= primary-doc-changes($s) ~ "\n";
+          $item-doc ~= primary-doc-changes($s);
   #note "d: $item-doc";
         }
 
