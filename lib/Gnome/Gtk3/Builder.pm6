@@ -271,6 +271,7 @@ submethod BUILD ( *%options ) {
   # only after creating the widget, the gtype is known
   self.set-class-info('GtkBuilder');
 
+
   self.set-builder(self);
 }
 
@@ -294,8 +295,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
 multi method add-gui ( Str:D :$filename! )
   is DEPRECATED('gtk_builder_add_from_file') {
 
-  my $g := self;
-  my Gnome::Glib::Error $e = gtk_builder_add_from_file( $g(), $filename);
+  my Gnome::Glib::Error $e = gtk_builder_add_from_file(
+    self.get-native-gobject, $filename
+  );
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
@@ -303,8 +305,8 @@ multi method add-gui ( Str:D :$filename! )
 multi method add-gui ( Str:D :$string! )
   is DEPRECATED('gtk_builder_add_from_string') {
 
-  my $g := self;
-  my Gnome::Glib::Error $e = gtk_builder_add_from_string( $g(), $string);
+  my Gnome::Glib::Error $e = gtk_builder_add_from_string(
+    self.get-native-gobject, $string);
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
@@ -869,7 +871,7 @@ sub gtk_builder_value_from_string_type ( N-GObject $builder, N-GObject $type, St
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_builder_new_from_file:
+#TM:1:gtk_builder_new_from_file:
 =begin pod
 =head2 [gtk_builder_] new_from_file
 

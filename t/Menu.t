@@ -19,7 +19,7 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $m.gtk-menu-reposition;
-  is $m.get-active, my $o = N-GObject, 'returned native object';
+  is $m.get-active, my $o = Any, 'returned native object';
   nok $o.defined, 'entry not defined';
 }
 
