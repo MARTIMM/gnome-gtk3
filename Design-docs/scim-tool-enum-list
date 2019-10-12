@@ -6,8 +6,8 @@ GtkTextWindowType
 GtkTextViewLayer
 GtkTextExtendSelection
 GtkResizeMode
-GtkWindowPosition
 GtkWindowType
+GtkWindowPosition
 GtkAlign
 GtkArrowType
 GtkBaselinePosition
@@ -113,6 +113,7 @@ GtkStyleProviderPriority
 GtkImageType
 GtkBuilderError
 GtkArrowPlacement
+GtkArrowPlacement
 GtkCssProviderError
 GtkFileChooserAction
 GtkFileChooserConfirmation
@@ -149,5 +150,8 @@ GdkWindowType
 GdkWindowWindowClass
 GdkModifierType
 GdkWindowTypeHint
+GdkInputSource
+GdkInputMode
+GdkDeviceType
 typeToSub
 GParamFlags
