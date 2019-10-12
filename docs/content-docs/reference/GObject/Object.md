@@ -193,6 +193,39 @@ Since: 2.54
 
   * CArray[N-GValue] $values; (array length=n_properties): the values of each property to be set
 
+[g_object_] get_property
+------------------------
+
+Gets a property of an object. value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed) using g_value_init().
+
+In general, a copy is made of the property contents and the caller is responsible for freeing the memory by calling g_value_unset().
+
+    method g_object_get_property (
+      Str $property_name, Gnome::GObject::Type $type
+      --> Gnome::GObject::Value
+    )
+
+    method g_object_get_property (
+      Str $property_name, Gnome::GObject::Value $value
+    )
+
+  * $property_name; the name of the property to get.
+
+  * $value; the property value. The value is stored in the Value object. Use any of the getter methods of Value to get the data. Also setters are available to modify data.
+
+g_object_ref
+------------
+
+Increases the reference count of *object*.
+
+Since GLib 2.56, if `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type of *object* will be propagated to the return type (using the GCC `typeof()` extension), so any casting the caller needs to do on the return type must be explicit.
+
+Returns: the same *object*
+
+    method g_object_ref ( N-GObject $object --> N-GObject  )
+
+  * N-GObject $object; a *GObject*
+
 g_object_unref
 --------------
 
@@ -200,7 +233,7 @@ Decreases the reference count of *object*. When its reference count drops to 0, 
 
 If the pointer to the *GObject* may be reused in future (for example, if it is an instance variable of another object), it is recommended to clear the pointer to `Any` rather than retain a dangling pointer to a potentially invalid *GObject* instance. Use `g_clear_object()` for this.
 
-    method g_object_unref ( Pointer $object )
+    method g_object_unref ( N-GObject $object )
 
-  * Pointer $object; (type GObject.Object): a *GObject*
+  * N-GObject $object; a *GObject*
 
