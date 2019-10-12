@@ -971,7 +971,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
     # save doc and remove from source but stop if none left
     my Str $sdoc = ~($<signal-doc> // '');
-#note "SDoc $lib-class-name: ", ?$sdoc;
+#note "SDoc 0 $lib-class-name: ", ?$sdoc;
     my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
 
     # possibly no documentation
@@ -984,13 +984,20 @@ sub get-signals ( Str:D $source-content is copy ) {
       /;
       $signal-name = ~($<signal-name> // '');
       $sdoc ~~ s/ ^^ \s+ '*' \s+ $lib-class-name '::' $signal-name ':'? //;
+#note "SDoc 1 ", $sdoc;
     }
 
     # get some more info from the function call
     $source-content ~~ m/
       'g_signal_new' '_class_handler'? \s* '('
-      $<signal-args> = [ <[A..Z]> '_(' '"' <-[\"]>+ '"' .*? ] ');'
+      $<signal-args> = [
+        [ <[A..Z]> '_('                     || # gtk sources
+          'g_intern_static_string' \s* '('     # gdk sources
+        ]
+        '"' <-[\"]>+ '"' .*?
+      ] ');'
     /;
+note "SDoc 2 ",  ~($<signal-args>//'-');
 
     # save and remove from source but stop if there isn't any left
     my Str $sig-args = ~($<signal-args>//'');
@@ -998,7 +1005,8 @@ sub get-signals ( Str:D $source-content is copy ) {
       $sdoc = '';
       last;
     }
-    $source-content ~~ s/ 'g_signal_new' '_class_handler'? \s* '(' $sig-args ');' //;
+    $source-content ~~
+       s/ 'g_signal_new' '_class_handler'? \s* '(' $sig-args ');' //;
 
 #note "sig args: ", $sig-args;
     # when there's no doc, signal name must be retrieved from function argument
@@ -1022,31 +1030,19 @@ sub get-signals ( Str:D $source-content is copy ) {
       @args.push($arg);
     }
 
-#note "Args: ", @args[7..*-1];
+note "Args: ", @args[7..*-1];
     # get a return type
     my Str $return-type = '';
     given @args[7] {
       # most of the time it is a boolean ( == c int32)
-      when 'G_TYPE_BOOLEAN' {
-        $return-type = 'Int';
-      }
-
-      when 'G_TYPE_INT' {
-        $return-type = 'Int';
-      }
-
-      when 'G_TYPE_STRING' {
-        $return-type = 'Str';
-      }
-
-      when 'G_TYPE_NONE' {
-        $return-type = ''
-      }
+      when 'G_TYPE_BOOLEAN' { $return-type = 'Int'; }
+      when 'G_TYPE_INT' { $return-type = 'Int'; }
+      when 'G_TYPE_UINT' { $return-type = 'Int'; }
+      when 'G_TYPE_STRING' { $return-type = 'Str'; }
+      when 'G_TYPE_NONE' { $return-type = '' }
 
       # show that there is something
-      default {
-        $return-type = "Unknown type @args[7]";
-      }
+      default { $return-type = "Unknown type @args[7]"; }
     }
 
     my Int $item-count = 0;
@@ -1066,45 +1062,35 @@ sub get-signals ( Str:D $source-content is copy ) {
 
       my Str $arg-type = '';
       given @args[9 + $i] {
-        when 'G_TYPE_BOOLEAN' {
-          $arg-type = 'Int';
+        when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
+        when 'G_TYPE_INT' { $arg-type = 'Int'; }
+        when 'G_TYPE_UINT' { $return-type = 'Int'; }
+        when 'G_TYPE_LONG' { $arg-type = 'int64 #`{{use NativeCall}}'; }
+        when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
+        when 'G_TYPE_DOUBLE' { $arg-type = 'num64 #`{{use NativeCall}}'; }
+        when 'G_TYPE_STRING' { $arg-type = 'Str'; }
+        when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
+
+        when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{{ is object }}'; }
+        when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{{ is widget }}'; }
+        when 'GTK_TYPE_TEXT_ITER' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gtk3::TextIter }}';
         }
 
-        when 'G_TYPE_INT' {
-          $arg-type = 'Int';
+        when 'GDK_TYPE_DEVICE' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Device }}';
+        }
+        when 'GDK_TYPE_SCREEN' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Screen }}';
+        }
+        when 'GDK_TYPE_DISPLAY' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
+        }
+        when 'GDK_TYPE_DEVICE_TOOL' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::DeviceTool }}';
         }
 
-        when 'G_TYPE_LONG' {
-          $arg-type = 'int64 #`{{use NativeCall}}';
-        }
-
-        when 'G_TYPE_FLOAT' {
-          $arg-type = 'Num';
-        }
-
-        when 'G_TYPE_DOUBLE' {
-          $arg-type = 'num64 #`{{use NativeCall}}';
-        }
-
-        when 'G_TYPE_STRING' {
-          $arg-type = 'Str';
-        }
-
-        when 'GTK_TYPE_OBJECT' {
-          $arg-type = 'N-GObject';
-        }
-
-        when 'GTK_TYPE_WIDGET' {
-          $arg-type = 'N-GObject';
-        }
-
-        when 'G_TYPE_ERROR' {
-          $arg-type = 'N-GError';
-        }
-
-        default {
-          $arg-type = "Unknown type @args[{9 + $i}]";
-        }
+        default { $arg-type = "Unknown type @args[{9 + $i}]"; }
       }
 
       my Str $item-name = $arg-type.lc;
@@ -1114,7 +1100,7 @@ sub get-signals ( Str:D $source-content is copy ) {
         :item-doc('')
       );
 
-#note "AT: $i, $arg-type";
+note "AT: $i, $arg-type";
       $signal-args.push: $arg-type;
     }
 
@@ -1132,13 +1118,13 @@ sub get-signals ( Str:D $source-content is copy ) {
     if $has-doc {
       $items-src-doc = [];
       for $sdoc.lines -> $line {
-  #note "L: $line";
+#note "L: $line";
 
         # argument doc start
         if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
 
           # push when 2nd arg is found
-  #note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
+#note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
           $items-src-doc.push: %(
             :item-type($signal-args[$item-count++]), :$item-name, :$item-doc
           ) if ?$item-name;
@@ -1150,7 +1136,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
           $item-name = ~($<item-name> // '');
           $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
-  #note "n, d: $item-name, $item-doc";
+#note "n, d: $item-name, $item-doc";
         }
 
         # continue previous argument doc
@@ -1158,14 +1144,14 @@ sub get-signals ( Str:D $source-content is copy ) {
               $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
           my Str $s = ~($<item-doc> // '');
           $item-doc ~= primary-doc-changes($s);
-  #note "d: $item-doc";
+#note "d: $item-doc";
         }
 
         # on empty line after '*' start sub doc
         elsif $line ~~ m/^ \s* '*' \s* $/ {
           # push last arg
-  #note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
-  #if $item-scan and ?$item-name;
+#note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
+#if $item-scan and ?$item-name;
           $items-src-doc.push: %(
             :item-type($signal-args[$item-count]), :$item-name, :$item-doc
           ) if $item-scan and ?$item-name;
