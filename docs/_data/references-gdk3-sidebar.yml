@@ -9,8 +9,10 @@
     url: '/content-docs/reference/Gdk3/Display.html'
     doc: 1
     test: 1
-#  - title: "EventTypes"
-#    url: '/content-docs/reference/Gdk3/.html'
+  - title: "Events"
+    url: '/content-docs/reference/Gdk3/Events.html'
+    doc: 1
+    test: 1
 #  - title: "Keysyms"
 #    url: '/content-docs/reference/Gdk3/.html'
 #  - title: "RGBA"
