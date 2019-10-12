@@ -5,8 +5,10 @@
     url: '/content-docs/reference/Gdk3/Device.html'
     doc: 1
     test: 1
-#  - title: "Display"
-#    url: '/content-docs/reference/Gdk3/.html'
+  - title: "Display"
+    url: '/content-docs/reference/Gdk3/Display.html'
+    doc: 1
+    test: 1
 #  - title: "EventTypes"
 #    url: '/content-docs/reference/Gdk3/.html'
 #  - title: "Keysyms"

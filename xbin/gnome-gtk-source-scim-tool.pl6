@@ -997,7 +997,7 @@ sub get-signals ( Str:D $source-content is copy ) {
         '"' <-[\"]>+ '"' .*?
       ] ');'
     /;
-note "SDoc 2 ",  ~($<signal-args>//'-');
+#note "SDoc 2 ",  ~($<signal-args>//'-');
 
     # save and remove from source but stop if there isn't any left
     my Str $sig-args = ~($<signal-args>//'');
@@ -1030,7 +1030,7 @@ note "SDoc 2 ",  ~($<signal-args>//'-');
       @args.push($arg);
     }
 
-note "Args: ", @args[7..*-1];
+#note "Args: ", @args[7..*-1];
     # get a return type
     my Str $return-type = '';
     given @args[7] {
@@ -1077,17 +1077,23 @@ note "Args: ", @args[7..*-1];
           $arg-type = 'N-GObject #`{{ native Gnome::Gtk3::TextIter }}';
         }
 
+        when 'GDK_TYPE_DISPLAY' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
+        }
         when 'GDK_TYPE_DEVICE' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Device }}';
+        }
+        when 'GDK_TYPE_DEVICE_TOOL' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::DeviceTool }}';
+        }
+        when 'GDK_TYPE_MONITOR' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Monitor }}';
         }
         when 'GDK_TYPE_SCREEN' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Screen }}';
         }
-        when 'GDK_TYPE_DISPLAY' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
-        }
-        when 'GDK_TYPE_DEVICE_TOOL' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::DeviceTool }}';
+        when 'GDK_TYPE_SEAT' {
+          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Seat }}';
         }
 
         default { $arg-type = "Unknown type @args[{9 + $i}]"; }
@@ -1100,7 +1106,7 @@ note "Args: ", @args[7..*-1];
         :item-doc('')
       );
 
-note "AT: $i, $arg-type";
+#note "AT: $i, $arg-type";
       $signal-args.push: $arg-type;
     }
 
