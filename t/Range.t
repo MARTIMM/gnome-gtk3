@@ -34,7 +34,7 @@ subtest 'Manipulations', {
   $w.gtk-container-add($s);
   $w.show-all;
 
-  my GdkRectangle $ra = $s.get-range-rect;
+  my N-GdkRectangle $ra = $s.get-range-rect;
   ok $ra.x > 1, 'x > 1: ' ~ $ra.x;
   ok $ra.y > 1, 'y > 1: ' ~ $ra.y;
   ok $ra.width > 1, 'width > 1: ' ~ $ra.width;

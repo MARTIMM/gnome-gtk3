@@ -299,17 +299,17 @@ This function is useful mainly for GtkRange subclasses.
 
   method gtk_range_get_range_rect ( --> Gnome::Gdk3::Rectangle )
 
-=item $rectangle. Location for the range rectangleType to return. GdkRectangle is defined in GdkTypes.
+=item $rectangle. Location for the range rectangleType to return. N-GdkRectangle is defined in GdkTypes.
 
 =end pod
 
-sub gtk_range_get_range_rect ( N-GObject $range --> GdkRectangle ) {
-  _gtk_range_get_range_rect( $range, my GdkRectangle $rectangle .= new);
+sub gtk_range_get_range_rect ( N-GObject $range --> N-GdkRectangle ) {
+  _gtk_range_get_range_rect( $range, my N-GdkRectangle $rectangle .= new);
   $rectangle
 }
 
 sub _gtk_range_get_range_rect (
-  N-GObject $range, GdkRectangle $rectangle
+  N-GObject $range, N-GdkRectangle $rectangle
 ) is native(&gtk-lib)
   is symbol('gtk_range_get_range_rect')
   { * }
@@ -1207,17 +1207,17 @@ This function is useful mainly for GtkRange subclasses.
 
   method gtk_range_get_range_rect ( --> Gnome::Gdk3::Rectangle )
 
-=item $rectangle. Location for the range rectangleType to return. GdkRectangle is defined in GdkTypes.
+=item $rectangle. Location for the range rectangleType to return. N-GdkRectangle is defined in GdkTypes.
 
 =end pod
 
-sub gtk_range_get_range_rect ( N-GObject $range --> GdkRectangle ) {
-  _gtk_range_get_range_rect( $range, my GdkRectangle $rectangle .= new);
+sub gtk_range_get_range_rect ( N-GObject $range --> N-GdkRectangle ) {
+  _gtk_range_get_range_rect( $range, my N-GdkRectangle $rectangle .= new);
   $rectangle
 }
 
 sub _gtk_range_get_range_rect (
-  N-GObject $range, GdkRectangle $rectangle
+  N-GObject $range, N-GdkRectangle $rectangle
 ) is native(&gtk-lib)
   is symbol('gtk_range_get_range_rect')
   { * }

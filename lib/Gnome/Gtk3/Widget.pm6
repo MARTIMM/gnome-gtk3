@@ -287,7 +287,7 @@ use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
 
-subset GtkAllocation of GdkRectangle;
+subset GtkAllocation of N-GdkRectangle;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
 # https://developer.gnome.org/gtk3/stable/GtkWidget.html
