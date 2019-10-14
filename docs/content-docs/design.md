@@ -104,7 +104,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used. This happens mainly when connecting a signal where a callback handler is provided. To make things easier, the method `register-signal()` defined in **Gnome::GObject::Object**, is created for this purpose. At the moment only the most common types of signals can be processed.
 
 ## Implementation details
-* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere, e.g. GdkRectangle should be N-GdkRectangle_**.
+* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere.
 
 * A method `CALL-ME()` was implemented to get the native object with a minimum effort. For example a button `$b` defined by **Gnome;:Gtk3::Button** can return its native object just by adding parenthesis like so `$b()`. Later, a method was created, called `native-gobject()` to replace it, just to make code more readable. These methods are mostly used internally.
 
