@@ -29,5 +29,5 @@
     test: 1
   - title: "Window"
     url: '/content-docs/reference/Gdk3/Window.html'
-    doc: 0
-    test: 0
+    doc: 1
+    test: 1
