@@ -19,10 +19,14 @@
     url: '/content-docs/reference/Gdk3/RGBA.html'
     doc: 1
     test: 1
-#  - title: "Screen"
-#    url: '/content-docs/reference/Gdk3/.html'
-#  - title: "Types"
-#    url: '/content-docs/reference/Gdk3/.html'
+  - title: "Screen"
+    url: '/content-docs/reference/Gdk3/Screen.html'
+    doc: 1
+    test: 1
+  - title: "Types"
+    url: '/content-docs/reference/Gdk3/Types.html'
+    doc: 1
+    test: 1
   - title: "Window"
     url: '/content-docs/reference/Gdk3/Window.html'
     doc: 0

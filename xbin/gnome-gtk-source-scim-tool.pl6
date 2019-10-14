@@ -865,6 +865,8 @@ sub substitute-in-template (
 #-------------------------------------------------------------------------------
 sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
+  return ( '', '') unless $source-content;
+
   $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
   my Str $doc = ~($<sub-doc> // '');
 
@@ -925,6 +927,8 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 # get the class title and class info from the source file
 sub get-section ( Str:D $source-content --> List ) {
 
+  return ( '', '', '') unless $source-content;
+
   $source-content ~~ m/ '/**' .*? SECTION ':' .*? '*/' /;
   return ( '', '', '') unless ?$/;
 
@@ -956,6 +960,9 @@ sub get-section ( Str:D $source-content --> List ) {
 
 #-------------------------------------------------------------------------------
 sub get-signals ( Str:D $source-content is copy ) {
+
+  return unless $source-content;
+
   my Array $items-src-doc;
   my Str $signal-name;
   my Str $signal-doc = '';
@@ -1295,6 +1302,8 @@ sub get-signals ( Str:D $source-content is copy ) {
 
 #-------------------------------------------------------------------------------
 sub get-properties ( Str:D $source-content is copy ) {
+
+  return unless $source-content;
 
   my Str $property-name;
   my Str $property-doc = '';
