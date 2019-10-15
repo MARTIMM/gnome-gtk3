@@ -60,17 +60,17 @@ also is Gnome::Gtk3::Dialog;
 =head1 Methods
 =head2 new
 
-=head3 multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
-
 Create a new object with a title. The transient $parent-window which may be C<Any>.
 
-=head3 multi method new ( Gnome::GObject::Object :$widget! )
+  multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-=head3 multi method new ( Str :$build-id! )
+  multi method new ( Gnome::GObject::Object :$widget! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 

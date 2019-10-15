@@ -17,15 +17,16 @@ subtest 'ISA tests', {
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog, '.new(:title)';
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
 
   # must have an initialized object to get it filled
-  my GdkRGBA $color .= new;
+  my Gnome::Gdk3::RGBA $color .= new(:blue(0.5));
   $ccd.get-rgba($color);
   is $color.red, 1.0, 'red is 1.0';
   is $color.green, 1.0, 'green is 1.0';
-  is $color.blue, 1.0, 'blue is 1.0';
+  is $color.blue, 0.5, 'blue is 1.0';
   is $color.alpha, 1.0, 'alpha is 1.0';
 
   $color .= new( :blue(.5e0), :alpha(.5e0));
@@ -39,7 +40,6 @@ subtest 'Interface ...', {
   is $color2.alpha, .5, 'alpha is .5';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 }
