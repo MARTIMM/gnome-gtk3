@@ -4,8 +4,8 @@ use v6;
 
 my $t0 = now;
 
-use Gnome::N::X;
-Gnome::N::debug(:on);
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
 
 use Gnome::Gdk3::Types;
 use Gnome::Gtk3::Enums;
