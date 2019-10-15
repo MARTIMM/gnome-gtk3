@@ -4,30 +4,69 @@ use NativeCall;
 use Test;
 
 use Gnome::Gdk3::RGBA;
-use Gnome::Gtk3::ColorChooserDialog;
 use Gnome::Gtk3::ColorChooser;
+use Gnome::Gtk3::ColorChooserDialog;
 use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 
-my Gnome::Gtk3::ColorChooserDialog $ccd;
-my Gnome::Gtk3::ColorChooser $cc;
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-subtest 'ISA test', {
+my Gnome::Gtk3::ColorChooserDialog $ccd;
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
   $ccd .= new(:title('my color chooser dialog'));
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog;
+  my Gnome::Gdk3::RGBA $r .= new(:rgba($ccd.get-rgba));
+  is $r.to-string, 'rgb(255,255,255)', '.get-rgba()';
 
-  # get color chooser widget
-  $cc .= new(:widget($ccd));
-  isa-ok $cc, Gnome::Gtk3::ColorChooser;
+  $r.gdk-rgba-parse('rgba(0,255,0,0.5)');
+  $ccd.set-rgba($r);
+
+
+  is $ccd.get-use-alpha, 1, '.get-use-alpha()';
+  $ccd.set-use-alpha(0);
+  is $ccd.get-use-alpha, 0, '.set-use-alpha()';
+
+  my Array $palette1 = [
+    N-GdkRGBA.new( :red(.0e0), :green(.0e0), :blue(.0e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.1e0), :green(.1e0), :blue(.1e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.2e0), :green(.2e0), :blue(.2e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.3e0), :green(.3e0), :blue(.3e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.4e0), :green(.4e0), :blue(.4e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.6e0), :green(.6e0), :blue(.6e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.7e0), :green(.7e0), :blue(.7e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.8e0), :green(.8e0), :blue(.8e0), :alpha(.5e0)),
+    N-GdkRGBA.new( :red(.9e0), :green(.9e0), :blue(.9e0), :alpha(.5e0)),
+  ];
+
+  $ccd.add-palette( GTK_ORIENTATION_HORIZONTAL, 5, 9, $palette1);
+  ok 1, '.add-palette(Array[N-GdkRGBA]) didn\'t choke';
+
+  my Array $palette2 = [
+    .0e0, .0e0, .0e0, 1e0, # color1: red, green, blue, opacity
+    .1e0, .0e0, .0e0, 1e0, # color2: ...
+    .2e0, .0e0, .0e0, 1e0,
+    .3e0, .0e0, .0e0, 1e0,
+  ];
+
+  $ccd.add-palette( GTK_ORIENTATION_HORIZONTAL, 2, 4, $palette2);
+  ok 1, '.add-palette(Array[Num]) didn\'t choke';
 }
 
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 #-------------------------------------------------------------------------------
 subtest 'default color from chooser dialog', {
 
   # must have an initialized object to get it filled
-  my GdkRGBA $color .= new;
-  $cc.get-rgba($color);
+  my N-GdkRGBA $color .= new;
+  $ccd.get-rgba($color);
   is $color.red, 1.0, 'red is 1.0';
   is $color.green, 1.0, 'green is 1.0';
   is $color.blue, 1.0, 'blue is 1.0';
@@ -35,11 +74,11 @@ subtest 'default color from chooser dialog', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'color set from GdkRGBA', {
-  my GdkRGBA $color .= new( :blue(.5e0), :alpha(.5e0));
+subtest 'color set from N-GdkRGBA', {
+  my N-GdkRGBA $color .= new( :blue(.5e0), :alpha(.5e0));
   $cc.set-rgba($color);
 
-  my GdkRGBA $color2 .= new;
+  my N-GdkRGBA $color2 .= new;
   $cc.get-rgba($color2);
   is $color.red, 0.0, 'red is 0.0';
   is $color.green, 0.0, 'green is 0.0';
@@ -49,7 +88,7 @@ subtest 'color set from GdkRGBA', {
 
 #-------------------------------------------------------------------------------
 subtest 'color chooser alpha use', {
-  my GdkRGBA $color .= new( :blue(.5e0), :alpha(.5e0));
+  my N-GdkRGBA $color .= new( :blue(.5e0), :alpha(.5e0));
   $cc.set-rgba($color);
 
   is $cc.get-use-alpha, 1, 'chooser did use alpha';
@@ -58,26 +97,8 @@ subtest 'color chooser alpha use', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'color chooser palette', {
-  my CArray[GdkRGBA] $palette .= new(
-    GdkRGBA.new( :red(.0e0), :green(.0e0), :blue(.0e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.1e0), :green(.1e0), :blue(.1e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.2e0), :green(.2e0), :blue(.2e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.3e0), :green(.3e0), :blue(.3e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.4e0), :green(.4e0), :blue(.4e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.6e0), :green(.6e0), :blue(.6e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.7e0), :green(.7e0), :blue(.7e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.8e0), :green(.8e0), :blue(.8e0), :alpha(.5e0)),
-    GdkRGBA.new( :red(.9e0), :green(.9e0), :blue(.9e0), :alpha(.5e0)),
-  );
-
-  $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 5, 9, $palette);
-}
-
-#-------------------------------------------------------------------------------
 subtest 'color chooser from color button', {
-  my GdkRGBA $color .= new(
+  my N-GdkRGBA $color .= new(
     :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)
   );
   my Gnome::Gtk3::ColorButton $cb .= new(:$color);
@@ -93,10 +114,6 @@ subtest 'color chooser from color button', {
 }
 
 #`{{
-#-------------------------------------------------------------------------------
-subtest 'Manipulations', {
-}
-
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
 }

@@ -47,16 +47,6 @@ Example
     # Use methods defined in the interface
     note "Green channel: ", $ccdialog.get-rgba($color).green;
 
-Methods
-=======
-
-new
----
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$widget! )
-
 [gtk_color_chooser_] get_rgba
 -----------------------------
 
@@ -64,9 +54,7 @@ Gets the currently-selected color.
 
 Since: 3.4
 
-    method gtk_color_chooser_get_rgba ( GdkRGBA $color )
-
-  * GdkRGBA $color: a *GdkRGBA* structure to fill in with the current color
+    method gtk_color_chooser_get_rgba ( --> N-GdkRGBA )
 
 [gtk_color_chooser_] set_rgba
 -----------------------------
@@ -77,7 +65,7 @@ Since: 3.4
 
     method gtk_color_chooser_set_rgba ( N-GObject $color )
 
-  * GdkRGBA $color: the new color
+  * N-GdkRGBA $color: the new color
 
 [gtk_color_chooser_] get_use_alpha
 ----------------------------------
@@ -119,7 +107,7 @@ Since: 3.4
     method gtk_color_chooser_add_palette (
       GtkOrientation $orientation,
       Int $colors_per_line, Int $n_colors,
-      CArray $colors
+      Array $colors
     )
 
   * GtkOrientation $orientation; `GTK_ORIENTATION_HORIZONTAL` if the palette should be displayed in rows, `GTK_ORIENTATION_VERTICAL` for columns.
@@ -128,17 +116,17 @@ Since: 3.4
 
   * Int $n_colors; the total number of elements in @colors.
 
-  * CArray[num64] $colors; (allow-none) (array length=n_colors): the colors of the palette, or `Any`.
+  * Array[Num] or Array[N-GdkRGBA] $colors; the colors of the palette, or `Any`.
 
 ### An Example
 
-According to the documentation, an array of GdkRGBA Structures should be given. Perl6 however, turns a CArray[GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either CArray[GdkRGBA] or CArray[num64] can be given. The latter one must always have elems % 4 == 0.
+According to the documentation, an array of N-GdkRGBA Structures should be given. Perl6 however, turns a CArray[N-GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either Array[N-GdkRGBA] or Array[Num] can be given. The latter one must always have elems % 4 == 0.
 
     use NativeCall;
     use Gnome::Gdk3::RGBA;
     use Gnome::Gtk3::ColorChooser;
 
-    my $palette = CArray[num64].new(
+    my Array $palette = [
       .0e0, .0e0, .0e0, 1e0, # color1: red, green, blue, opacity
       .1e0, .0e0, .0e0, 1e0, # color2: ...
       .2e0, .0e0, .0e0, 1e0,
@@ -158,43 +146,81 @@ According to the documentation, an array of GdkRGBA Structures should be given. 
       .0e0, .6e0, .0e0, 1e0,
       .0e0, .7e0, .0e0, 1e0,
       .0e0, .8e0, .0e0, 1e0,
-      .0e0, .9e0, .0e0, 1e0, color20: ...
+      .0e0, .9e0, .0e0, 1e0, # color20: ...
+    ];
+
+    my Gnome::Gdk3::RGBA $color .= new(
+      :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0)
     );
 
-    my GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
     my Gnome::Gtk3::ColorButton $cb .= new(:$color);
-    my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
-    $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette);
+    $cb.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette);
 
 Or it can be done like this
 
-    my $palette = CArray[GdkRGBA].new;
-    my Int $index = 0;
+    my Array $palette = [];
     for .0, .1 ... .9 -> Num $rgb-gray {
-      $palette[$index++] = GdkRGBA.new(
+      $palette.push: N-GdkRGBA.new(
         :red($rgb-gray), :green($rgb-gray), :blue($rgb-gray), :alpha(1e0)
       );
     }
 
-    my GdkRGBA $color .= new(
-      :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0)
+    my N-GdkRGBA $color .= new(
+      :red(0e0), :green(.0e0), :blue(.0e0), :alpha(1e0)
     );
     my Gnome::Gtk3::ColorButton $cb .= new(:$color);
-    my Gnome::Gtk3::ColorChooser $cc .= new(:widget($cb));
-    $cc.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 10, $palette);
+    $cb.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 10, $palette);
 
 Signals
 =======
 
-Register any signal as follows. See also **Gnome::GObject::Object**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+The register method is defined as;
+
+    my Bool $is-registered = $widget.register-signal (
       $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., $user-optionN
+      :$user-option1, ..., :$user-optionN
     )
 
-Not yet supported signals
--------------------------
+Where
+
+  * $handler-object; An perl6 object holding the handler method =*self*
+
+  * $handler-name; The handler method =*mouse-event*
+
+  * $signal-name; The signal to connect to =*button-press-event*
+
+  * $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+
+Supported signals
+-----------------
 
 ### color-activated:
 
@@ -203,8 +229,8 @@ Emitted when a color is activated from the color chooser. This usually happens w
 Since: 3.4
 
     method handler (
+      N-GdkRGBA $color,
       Gnome::GObject::Object :widget($chooser),
-      :handler-arg0($color),
       :$user-option1, ..., :$user-optionN
     );
 
