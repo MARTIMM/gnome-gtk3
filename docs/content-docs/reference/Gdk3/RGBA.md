@@ -20,14 +20,17 @@ Declaration
 Example
 -------
 
-    my GdkRGBA $color .= new(
+    my Gnome::Gdk3::RGBA $color .= new(
       :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)
     );
 
-GdkRGBA
--------
+Types
+=====
 
-GdkRGBA is a convenient way to pass rgba colors around. It’s based on cairo’s way to deal with colors and mirrors its behavior. All values are in the range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0) represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will be clamped to this range when drawing.
+N-GdkRGBA
+---------
+
+N-GdkRGBA is a convenient way to pass rgba colors around. It’s based on cairo’s way to deal with colors and mirrors its behavior. All values are in the range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0) represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will be clamped to this range when drawing.
 
   * $.red; The intensity of the red channel from 0.0 to 1.0 inclusive
 
@@ -54,6 +57,34 @@ Create an object using a string which is parsed with `gdk_rgba_parse()`. If pars
 Create an object using a native object from elsewhere.
 
     multi method new ( Gnome::GObject::Object :$rgba! )
+
+red
+---
+
+Set the red color to a new value if provided. Returns original or newly set color value.
+
+    method red ( Num $c? --> Num )
+
+red
+---
+
+Set the green color to a new value if provided. Returns original or newly set color value.
+
+    method green ( Num $c? --> Num )
+
+red
+---
+
+Set the blue color to a new value if provided. Returns original or newly set color value.
+
+    method blue ( Num $c? --> Num )
+
+alpha
+-----
+
+Set the alpha transparency to a new value if provided. Returns original or newly set value.
+
+    method alpha ( Num $c? --> Num )
 
 gdk_rgba_copy
 -------------
