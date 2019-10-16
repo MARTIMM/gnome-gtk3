@@ -1,24 +1,19 @@
-TITLE
-=====
-
 Gnome::Gtk3::WidgetPath
-
-SUBTITLE
-========
+=======================
 
 Widget path abstraction
 
 Description
 ===========
 
-`Gnome::Gtk3::WidgetPath` is a boxed type that represents a widget hierarchy from the topmost widget, typically a toplevel, to any child. This widget path abstraction is used in `Gnome::Gtk3::StyleContext` on behalf of the real widget in order to query style information.
+**Gnome::Gtk3::WidgetPath** is a boxed type that represents a widget hierarchy from the topmost widget, typically a toplevel, to any child. This widget path abstraction is used in **Gnome::Gtk3::StyleContext** on behalf of the real widget in order to query style information.
 
 If you are using GTK+ widgets, you probably will not need to use this API directly, as there is `gtk_widget_get_path()`, and the style context returned by `gtk_widget_get_style_context()` will be automatically updated on widget hierarchy changes.
 
 See Also
 --------
 
-`Gnome::Gtk3::StyleContext`
+**Gnome::Gtk3::StyleContext**
 
 Synopsis
 ========
@@ -29,22 +24,19 @@ Declaration
     unit class Gnome::Gtk3::WidgetPath;
     also is Gnome::GObject::Boxed;
 
-Example
--------
-
 Methods
 =======
 
 new
 ---
 
-### multi method new ( Bool :$empty! )
-
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-### multi method new ( N-GtkWidgetPath :$widgetpath! )
+    multi method new ( Bool :$empty! )
 
 Create an object using a native object from elsewhere.
+
+    multi method new ( N-GtkWidgetPath :$widgetpath! )
 
 clear-widget-path
 -----------------
@@ -429,22 +421,4 @@ Since: 3.0
     method gtk_widget_path_has_parent ( Int $type --> Int  )
 
   * Int $type; widget type to check in parents
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.14
-----------
-
-### method gtk_widget_path_iter_add_region ( Int $pos, Str $name, GtkRegionFlags $flags )
-
-### method gtk_widget_path_iter_remove_region ( Int $pos, Str $name )
-
-### method gtk_widget_path_iter_clear_regions ( Int $pos )
-
-### method gtk_widget_path_iter_list_regions ( Int $pos --> N-GObject )
-
-### method gtk_widget_path_iter_has_region ( Int $pos, Str $name, GtkRegionFlags $flags --> Int )
-
-### method gtk_widget_path_iter_has_qregion ( Int $pos, N-GObject $qname, GtkRegionFlags $flags --> Int )
 

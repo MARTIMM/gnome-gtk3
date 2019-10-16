@@ -1,34 +1,37 @@
-TITLE
-=====
-
 Gnome::Gtk3::Orientable
+=======================
 
-SUBTITLE
-========
+An interface for flippable widgets
 
-Orientable — An interface for flippable widgets
+Description
+===========
 
-    unit class Gnome::Gtk3::Orientable;
-    also is Gnome::Glib::GInterface;
+The **Gnome::Gtk3::Orientable** interface is implemented by all widgets that can be oriented horizontally or vertically. Historically, such widgets have been realized as subclasses of a common base class (e.g **Gnome::Gtk3::Box**/**Gnome::Gtk3::HBox**/**Gnome::Gtk3::VBox** or **Gnome::Gtk3::Scale**/**Gnome::Gtk3::HScale**/**Gnome::Gtk3::VScale**). **Gnome::Gtk3::Orientable** is more flexible in that it allows the orientation to be changed at runtime, allowing the widgets to “flip”.
+
+**Gnome::Gtk3::Orientable** was introduced in GTK+ 2.16.
+
+Known implementations
+---------------------
+
+Gnome::Gtk3::Orientable is implemented by Gnome::Gtk3::AppChooserWidget, Gnome::Gtk3::Box, Gnome::Gtk3::ButtonBox, Gnome::Gtk3::CellAreaBox, Gnome::Gtk3::CellRendererProgress, Gnome::Gtk3::CellView, Gnome::Gtk3::ColorChooserWidget, Gnome::Gtk3::ColorSelection, Gnome::Gtk3::FileChooserButton, Gnome::Gtk3::FileChooserWidget, Gnome::Gtk3::FlowBox, Gnome::Gtk3::FontChooserWidget, Gnome::Gtk3::FontSelection, Gnome::Gtk3::Grid, Gnome::Gtk3::InfoBar, Gnome::Gtk3::LevelBar, Gnome::Gtk3::Paned, Gnome::Gtk3::ProgressBar, Gnome::Gtk3::Range, Gnome::Gtk3::RecentChooserWidget, Gnome::Gtk3::Scale, Gnome::Gtk3::ScaleButton, Gnome::Gtk3::Scrollbar, Gnome::Gtk3::Separator, Gnome::Gtk3::ShortcutsGroup, Gnome::Gtk3::ShortcutsSection, Gnome::Gtk3::ShortcutsShortcut, Gnome::Gtk3::SpinButton, Gnome::Gtk3::StackSwitcher, Gnome::Gtk3::Statusbar, Gnome::Gtk3::ToolPalette, Gnome::Gtk3::Toolbar and Gnome::Gtk3::VolumeButton.
 
 Synopsis
 ========
 
+Declaration
+-----------
+
+    unit class Gnome::Gtk3::Orientable;
+    also is Gnome::GObject::Interface;
+
+Example
+-------
+
     my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
-    my Gnome::Gtk3::Orientable $o .= new(:widget($level-bar));
-    $o.set-orientation(GTK_ORIENTATION_VERTICAL);
+    $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 Methods
 =======
-
-new
----
-
-Create an orientable object.
-
-    multi method new ( :$widget )
-
-Create an orientable object using a native object from elsewhere. See also Gnome::GObject::Object.
 
 [gtk_orientable_] set_orientation
 ---------------------------------
@@ -42,5 +45,5 @@ Sets the orientation of the orientable. This is a GtkOrientation enum type defin
 
     method gtk_orientable_get_orientation ( --> GtkOrientation $orientation )
 
-Set the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
+Retrieves the orientation of the *orientable*.
 

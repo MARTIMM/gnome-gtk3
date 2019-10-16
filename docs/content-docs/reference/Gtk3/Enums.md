@@ -1,10 +1,5 @@
-TITLE
-=====
-
 Gnome::Gtk3::Enums
-
-SUBTITLE
-========
+==================
 
 Standard Enumerations — Public enumerated types used throughout GTK+
 
@@ -18,15 +13,11 @@ enum GtkAlign
 
 Controls how a widget deals with extra space in a single (x or y) dimension.
 
-Alignment only matters if the widget receives a “too large” allocation, for example if you packed the widget with the prop `expand` flag inside a `Gnome::Gtk3::Box`, then the widget might get extra space. If you have for example a 16x16 icon inside a 32x32 space, the icon could be scaled and stretched, it could be centered, or it could be positioned to one side of the space.
+Alignment only matters if the widget receives a “too large” allocation, for example if you packed the widget with the *expand* flag inside a **Gnome::Gtk3::Box**, then the widget might get extra space. If you have for example a 16x16 icon inside a 32x32 space, the icon could be scaled and stretched, it could be centered, or it could be positioned to one side of the space.
 
 Note that in horizontal context *GTK_ALIGN_START* and *GTK_ALIGN_END* are interpreted relative to text direction.
 
 GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and it is only supported for vertical alignment. When its not supported by a child or a container it is treated as *GTK_ALIGN_FILL*.
-
-  * Short_description: Public enumerated types used throughout GTK+
-
-  * Title: Standard Enumerations
 
   * GTK_ALIGN_FILL: stretch to fill all space if possible, center if no meaningful way to stretch
 
@@ -56,7 +47,7 @@ Used to indicate the direction in which an arrow should point.
 enum GtkBaselinePosition
 ------------------------
 
-Whenever a container has some form of natural row it may align children in that row along a common typographical baseline. If the amount of verical space in the row is taller than the total requested height of the baseline-aligned children then it can use a `Gnome::Gtk3::BaselinePosition` to select where to put the baseline inside the extra availible space.
+Whenever a container has some form of natural row it may align children in that row along a common typographical baseline. If the amount of verical space in the row is taller than the total requested height of the baseline-aligned children then it can use a **Gnome::Gtk3::BaselinePosition** to select where to put the baseline inside the extra availible space.
 
 Since: 3.10
 
@@ -69,7 +60,7 @@ Since: 3.10
 enum GtkDeleteType
 ------------------
 
-See also: sig `delete-from-cursor`.
+See also: *delete-from-cursor*.
 
   * GTK_DELETE_CHARS: Delete characters.
 
@@ -148,7 +139,7 @@ Reading directions for text.
 enum GtkJustification
 ---------------------
 
-Used for justifying the text inside a `Gnome::Gtk3::Label` widget. (See also `Gnome::Gtk3::Alignment`).
+Used for justifying the text inside a **Gnome::Gtk3::Label** widget. (See also **Gnome::Gtk3::Alignment**).
 
   * GTK_JUSTIFY_LEFT: The text is placed at the left edge of the label.
 
@@ -227,7 +218,7 @@ enum GtkScrollStep
 enum GtkOrientation
 -------------------
 
-Represents the orientation of widgets and other objects which can be switched between horizontal and vertical orientation on the fly, like `Gnome::Gtk3::Toolbar` or `Gnome::Gtk3::GesturePan`.
+Represents the orientation of widgets and other objects which can be switched between horizontal and vertical orientation on the fly, like **Gnome::Gtk3::Toolbar** or **Gnome::Gtk3::GesturePan**.
 
   * GTK_ORIENTATION_HORIZONTAL: The element is in horizontal orientation.
 
@@ -236,7 +227,7 @@ Represents the orientation of widgets and other objects which can be switched be
 enum GtkPackType
 ----------------
 
-Represents the packing location `Gnome::Gtk3::Box` children. (See: `Gnome::Gtk3::VBox`, `Gnome::Gtk3::HBox`, and `Gnome::Gtk3::ButtonBox`).
+Represents the packing location **Gnome::Gtk3::Box** children. (See: **Gnome::Gtk3::VBox**, **Gnome::Gtk3::HBox**, and **Gnome::Gtk3::ButtonBox**).
 
   * GTK_PACK_START: The child is packed into the start of the box
 
@@ -245,7 +236,7 @@ Represents the packing location `Gnome::Gtk3::Box` children. (See: `Gnome::Gtk3:
 enum GtkPositionType
 --------------------
 
-Describes which edge of a widget a certain feature is positioned at, e.g. the tabs of a `Gnome::Gtk3::Notebook`, the handle of a `Gnome::Gtk3::HandleBox` or the label of a `Gnome::Gtk3::Scale`.
+Describes which edge of a widget a certain feature is positioned at, e.g. the tabs of a **Gnome::Gtk3::Notebook**, the handle of a **Gnome::Gtk3::HandleBox** or the label of a **Gnome::Gtk3::Scale**.
 
   * GTK_POS_LEFT: The feature is at the left edge.
 
@@ -258,7 +249,7 @@ Describes which edge of a widget a certain feature is positioned at, e.g. the ta
 enum GtkReliefStyle
 -------------------
 
-Indicated the relief to be drawn around a `Gnome::Gtk3::Button`.
+Indicated the relief to be drawn around a **Gnome::Gtk3::Button**.
 
   * GTK_RELIEF_NORMAL: Draw a normal relief.
 
@@ -319,7 +310,7 @@ Used to control what selections users are allowed to make.
 enum GtkShadowType
 ------------------
 
-Used to change the appearance of an outline typically provided by a `Gnome::Gtk3::Frame`.
+Used to change the appearance of an outline typically provided by a **Gnome::Gtk3::Frame**.
 
 Note that many themes do not differentiate the appearance of the various shadow types: Either their is no visible shadow (*GTK_SHADOW_NONE*), or there is (any other value).
 
@@ -336,9 +327,9 @@ Note that many themes do not differentiate the appearance of the various shadow 
 enum GtkStateType
 -----------------
 
-This type indicates the current state of a widget; the state determines how the widget is drawn. The `Gnome::Gtk3::StateType` enumeration is also used to identify different colors in a `Gnome::Gtk3::Style` for drawing, so states can be used for subparts of a widget as well as entire widgets.
+This type indicates the current state of a widget; the state determines how the widget is drawn. The **Gnome::Gtk3::StateType** enumeration is also used to identify different colors in a **Gnome::Gtk3::Style** for drawing, so states can be used for subparts of a widget as well as entire widgets.
 
-Deprecated: 3.14: All APIs that are using this enumeration have been deprecated in favor of alternatives using `Gnome::Gtk3::StateFlags`.
+Deprecated: 3.14: All APIs that are using this enumeration have been deprecated in favor of alternatives using **Gnome::Gtk3::StateFlags**.
 
   * GTK_STATE_NORMAL: State during normal operation.
 
@@ -357,7 +348,7 @@ Deprecated: 3.14: All APIs that are using this enumeration have been deprecated 
 enum GtkToolbarStyle
 --------------------
 
-Used to customize the appearance of a `Gnome::Gtk3::Toolbar`. Note that setting the toolbar style overrides the user’s preferences for the default toolbar style. Note that if the button has only a label set and GTK_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
+Used to customize the appearance of a **Gnome::Gtk3::Toolbar**. Note that setting the toolbar style overrides the user’s preferences for the default toolbar style. Note that if the button has only a label set and GTK_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
 
   * GTK_TOOLBAR_ICONS: Buttons display only icons in the toolbar.
 
@@ -392,7 +383,7 @@ Determines the direction of a sort.
 enum GtkIMPreeditStyle
 ----------------------
 
-Style for input method preedit. See also prop `gtk-im-preedit-style`
+Style for input method preedit. See also *gtk-im-preedit-style*
 
 Deprecated: 3.10
 
@@ -405,7 +396,7 @@ Deprecated: 3.10
 enum GtkIMStatusStyle
 ---------------------
 
-Style for input method status. See also prop `gtk-im-status-style`
+Style for input method status. See also *gtk-im-status-style*
 
 Deprecated: 3.10
 
@@ -539,7 +530,7 @@ Used to indicate which grid lines to draw in a tree view.
 enum GtkDragResult
 ------------------
 
-Gives an indication why a drag operation failed. The value can by obtained by connecting to the sig `drag-failed` signal.
+Gives an indication why a drag operation failed. The value can by obtained by connecting to the *drag-failed* signal.
 
   * GTK_DRAG_RESULT_SUCCESS: The drag operation was successful.
 
@@ -687,7 +678,7 @@ Describes how the border of a UI element should be rendered.
 enum GtkLevelBarMode
 --------------------
 
-Describes how `Gnome::Gtk3::LevelBar` contents should be rendered. Note that this enumeration could be extended with additional modes in the future.
+Describes how **Gnome::Gtk3::LevelBar** contents should be rendered. Note that this enumeration could be extended with additional modes in the future.
 
 Since: 3.6
 
@@ -731,7 +722,7 @@ Since: 3.6
 enum GtkInputHints
 ------------------
 
-Describes hints that might be taken into account by input methods or applications. Note that input methods may already tailor their behaviour according to the `Gnome::Gtk3::InputPurpose` of the entry.
+Describes hints that might be taken into account by input methods or applications. Note that input methods may already tailor their behaviour according to the **Gnome::Gtk3::InputPurpose** of the entry.
 
 Some common sense is expected when using these flags - mixing *GTK_INPUT_HINT_LOWERCASE* with any of the uppercase hints makes no sense.
 
@@ -766,7 +757,7 @@ Since: 3.6
 enum GtkPropagationPhase
 ------------------------
 
-Describes the stage at which events are fed into a `Gnome::Gtk3::EventController`.
+Describes the stage at which events are fed into a **Gnome::Gtk3::EventController**.
 
 Since: 3.14
 
@@ -781,7 +772,7 @@ Since: 3.14
 enum GtkEventSequenceState
 --------------------------
 
-Describes the state of a `Gnome::Gdk3::EventSequence` in a `Gnome::Gtk3::Gesture`.
+Describes the state of a **Gnome::Gdk3::EventSequence** in a **Gnome::Gtk3::Gesture**.
 
 Since: 3.14
 
@@ -794,7 +785,7 @@ Since: 3.14
 enum GtkPanDirection
 --------------------
 
-Describes the panning direction of a `Gnome::Gtk3::GesturePan`
+Describes the panning direction of a **Gnome::Gtk3::GesturePan**
 
 Since: 3.14
 

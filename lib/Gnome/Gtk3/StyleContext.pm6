@@ -4,17 +4,17 @@ use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::StyleContext
+=head1 Gnome::Gtk3::StyleContext
 
-=SUBTITLE Rendering UI elements
+Rendering UI elements
 
 =head1 Description
 
-I<Gnome::Gtk3::StyleContext> is an object that stores styling information affecting a widget.
+B<Gnome::Gtk3::StyleContext> is an object that stores styling information affecting a widget.
 
-In order to construct the final style information, I<Gnome::Gtk3::StyleContext> queries information from all attached I<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<gtk_style_context_add_provider()>, or to the screen through C<gtk_style_context_add_provider_for_screen()>. The resulting style is a combination of all providers’ information in priority order.
+In order to construct the final style information, B<Gnome::Gtk3::StyleContext> queries information from all attached B<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<gtk_style_context_add_provider()>, or to the screen through C<gtk_style_context_add_provider_for_screen()>. The resulting style is a combination of all providers’ information in priority order.
 
-For GTK+ widgets, any I<Gnome::Gtk3::StyleContext> returned by C<gtk_widget_get_style_context()> will already have a I<Gnome::Gtk3::WidgetPath>, a I<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
+For GTK+ widgets, any B<Gnome::Gtk3::StyleContext> returned by C<gtk_widget_get_style_context()> will already have a B<Gnome::Gtk3::WidgetPath>, a B<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
 
 If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through C<gtk_style_context_set_path()> and C<gtk_style_context_set_screen()>, as well as updating the context yourself using C<gtk_style_context_invalidate()> whenever any of the conditions change, such as a change in the prop C<gtk-theme-name> setting or a hierarchy change in the rendered widget. See the “Foreign drawing“ example in gtk3-demo.
 
@@ -34,9 +34,9 @@ GTK+ defines macros for a number of style regions.
 
 =head2 Custom styling in UI libraries and applications
 
-If you are developing a library with custom I<Gnome::Gtk3::Widgets> that render differently than standard components, you may need to add a I<Gnome::Gtk3::StyleProvider> yourself with the C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> priority, either a I<Gnome::Gtk3::CssProvider> or a custom object implementing the I<Gnome::Gtk3::StyleProvider> interface. This way themes may still attempt to style your UI elements in a different way if needed so.
+If you are developing a library with custom B<Gnome::Gtk3::Widgets> that render differently than standard components, you may need to add a B<Gnome::Gtk3::StyleProvider> yourself with the C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> priority, either a B<Gnome::Gtk3::CssProvider> or a custom object implementing the B<Gnome::Gtk3::StyleProvider> interface. This way themes may still attempt to style your UI elements in a different way if needed so.
 
-If you are using custom styling on an application, you probably want then to make your style information prevail to the theme’s, so you must use a I<Gnome::Gtk3::StyleProvider> with the C<GTK_STYLE_PROVIDER_PRIORITY_APPLICATION> priority, keep in mind that the user settings in `XDG_CONFIG_HOME/gtk-3.0/gtk.css` will still take precedence over your changes, as it uses the C<GTK_STYLE_PROVIDER_PRIORITY_USER> priority.
+If you are using custom styling on an application, you probably want then to make your style information prevail to the theme’s, so you must use a B<Gnome::Gtk3::StyleProvider> with the C<GTK_STYLE_PROVIDER_PRIORITY_APPLICATION> priority, keep in mind that the user settings in `XDG_CONFIG_HOME/gtk-3.0/gtk.css` will still take precedence over your changes, as it uses the C<GTK_STYLE_PROVIDER_PRIORITY_USER> priority.
 
 =head1 Synopsis
 =head2 Declaration
@@ -85,14 +85,14 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 
 =head3 multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from elsewhere. See also I<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
 =end pod
 
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<changed>,
+    :w0<changed>,
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -136,11 +136,11 @@ method _fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 gtk_style_context_new
 
-Creates a standalone I<Gnome::Gtk3::StyleContext>, this style context won’t be attached to any widget, so you may want to call C<gtk_style_context_set_path()> yourself.
+Creates a standalone B<Gnome::Gtk3::StyleContext>, this style context won’t be attached to any widget, so you may want to call C<gtk_style_context_set_path()> yourself.
 
-This function is only useful when using the theming layer separated from GTK+, if you are using I<Gnome::Gtk3::StyleContext> to theme I<Gnome::Gtk3::Widget>s, use C<gtk_widget_get_style_context()> in order to get a style context ready to theme the widget.
+This function is only useful when using the theming layer separated from GTK+, if you are using B<Gnome::Gtk3::StyleContext> to theme B<Gnome::Gtk3::Widget>s, use C<gtk_widget_get_style_context()> in order to get a style context ready to theme the widget.
 
-Returns: A newly created I<Gnome::Gtk3::StyleContext>.
+Returns: A newly created B<Gnome::Gtk3::StyleContext>.
 
   method gtk_style_context_new ( --> N-GObject  )
 
@@ -155,11 +155,11 @@ sub gtk_style_context_new ( --> N-GObject )
 =begin pod
 =head2 [gtk_style_context_] add_provider_for_screen
 
-Adds a global style provider to I<Gnome::Gdk3::Screen>, which will be used in style construction for all I<Gnome::Gtk3::StyleContext>s under I<Gnome::Gdk3::Screen>.
+Adds a global style provider to B<Gnome::Gdk3::Screen>, which will be used in style construction for all B<Gnome::Gtk3::StyleContext>s under B<Gnome::Gdk3::Screen>.
 
-GTK+ uses this to make styling information from I<Gnome::Gtk3::Settings> available.
+GTK+ uses this to make styling information from B<Gnome::Gtk3::Settings> available.
 
-Note: If both priorities are the same, A I<Gnome::Gtk3::StyleProvider> added through C<gtk_style_context_add_provider()> takes precedence over another added through this function.
+Note: If both priorities are the same, A B<Gnome::Gtk3::StyleProvider> added through C<gtk_style_context_add_provider()> takes precedence over another added through this function.
 
 Note: Priorities are unsigned integers renaging from 1 to lets say 1000. An enumeration C<GtkStyleProviderPriority> in StyleProvider is defined for specific priorities such as C<GTK_STYLE_PROVIDER_PRIORITY_SETTINGS> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>.
 
@@ -169,8 +169,8 @@ Since: 3.0
     N-GObject $screen, N-GObject $provider, UInt $priority
   )
 
-=item N-GObject $screen; a I<Gnome::Gdk3::Screen>.
-=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>.
+=item N-GObject $screen; a B<Gnome::Gdk3::Screen>.
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>.
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> (= 1) and C<GTK_STYLE_PROVIDER_PRIORITY_USER> (= 800).
 
   my Gnome::Gdk3::Screen $screen .= new(:default);
@@ -203,14 +203,14 @@ sub _gtk_style_context_add_provider_for_screen (
 =begin pod
 =head2 [gtk_style_context_] remove_provider_for_screen
 
-Removes a I<Gnome::Gtk3::StyleProvider> from the global style providers list in I<Gnome::Gdk3::Screen>.
+Removes a B<Gnome::Gtk3::StyleProvider> from the global style providers list in B<Gnome::Gdk3::Screen>.
 
 Since: 3.0
 
   method gtk_style_context_remove_provider_for_screen ( N-GObject $screen, N-GObject $provider )
 
-=item N-GObject $screen; a I<Gnome::Gdk3::Screen>
-=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>
+=item N-GObject $screen; a B<Gnome::Gdk3::Screen>
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
 
 =end pod
 
@@ -234,13 +234,13 @@ sub _gtk_style_context_remove_provider_for_screen (
 
 Adds a style provider to the I<context>, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which I<context> belongs. If you want to affect the style of all widgets, use C<gtk_style_context_add_provider_for_screen()>.
 
-Note: If both priorities are the same, a I<Gnome::Gtk3::StyleProvider> added through this function takes precedence over another added through C<gtk_style_context_add_provider_for_screen()>.
+Note: If both priorities are the same, a B<Gnome::Gtk3::StyleProvider> added through this function takes precedence over another added through C<gtk_style_context_add_provider_for_screen()>.
 
 Since: 3.0
 
   method gtk_style_context_add_provider ( N-GObject $provider, UInt $priority )
 
-=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>
 
   my Gnome::Gdk3::Screen $screen .= new(:default);
@@ -260,13 +260,13 @@ sub gtk_style_context_add_provider ( N-GObject $context, N-GObject $provider, ui
 =begin pod
 =head2 [gtk_style_context_] remove_provider
 
-Removes a I<Gnome::Gtk3::StyleProvider> from the style providers list in I<context>.
+Removes a B<Gnome::Gtk3::StyleProvider> from the style providers list in I<context>.
 
 Since: 3.0
 
   method gtk_style_context_remove_provider ( N-GObject $provider )
 
-=item N-GObject $provider; a I<Gnome::Gtk3::StyleProvider>
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
 
 =end pod
 
@@ -449,9 +449,9 @@ sub gtk_style_context_set_state ( N-GObject $context, int32 $flags )
 
 Returns the state used for style matching.
 
-This method should only be used to retrieve the I<Gnome::Gtk3::StateFlags>
-to pass to I<Gnome::Gtk3::StyleContext> methods, like C<gtk_style_context_get_padding()>.
-If you need to retrieve the current state of a I<Gnome::Gtk3::Widget>, use
+This method should only be used to retrieve the B<Gnome::Gtk3::StateFlags>
+to pass to B<Gnome::Gtk3::StyleContext> methods, like C<gtk_style_context_get_padding()>.
+If you need to retrieve the current state of a B<Gnome::Gtk3::Widget>, use
 C<gtk_widget_get_state_flags()>.
 
 Returns: the state flags
@@ -513,11 +513,11 @@ sub gtk_style_context_get_scale ( N-GObject $context )
 =begin pod
 =head2 [gtk_style_context_] set_path
 
-Sets the I<Gnome::Gtk3::WidgetPath> used for style matching. As a
+Sets the B<Gnome::Gtk3::WidgetPath> used for style matching. As a
 consequence, the style will be regenerated to match
 the new given path.
 
-If you are using a I<Gnome::Gtk3::StyleContext> returned from
+If you are using a B<Gnome::Gtk3::StyleContext> returned from
 C<gtk_widget_get_style_context()>, you do not need to call
 this yourself.
 
@@ -525,7 +525,7 @@ Since: 3.0
 
   method gtk_style_context_set_path ( N-GObject $path )
 
-=item N-GObject $path; a I<Gnome::Gtk3::WidgetPath>
+=item N-GObject $path; a B<Gnome::Gtk3::WidgetPath>
 
 =end pod
 
@@ -555,7 +555,7 @@ sub gtk_style_context_get_path ( N-GObject $context )
 
 Sets the parent style context for I<context>. The parent style context is used to implement [inheritance](https://www.w3.org/TR/css3-cascade/#inheritance) of properties.
 
-If you are using a I<Gnome::Gtk3::StyleContext> returned from C<gtk_widget_get_style_context()>, the parent will be set for you.
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk_widget_get_style_context()>, the parent will be set for you.
 
 Since: 3.4
 
@@ -624,7 +624,7 @@ Adds a style class to I<context>, so posterior calls to
 C<gtk_style_context_get()> or any of the gtk_render_*()
 functions will make use of this new class for styling.
 
-In the CSS file format, a I<Gnome::Gtk3::Entry> defining a “search”
+In the CSS file format, a B<Gnome::Gtk3::Entry> defining a “search”
 class, would be matched by:
 
   entry.search { ... }
@@ -761,9 +761,9 @@ sub gtk_style_context_get_style ( N-GObject $context, Any $any = Any )
 Attaches I<context> to the given screen.
 
 The screen is used to add style information from “global” style
-providers, such as the screens I<Gnome::Gtk3::Settings> instance.
+providers, such as the screens B<Gnome::Gtk3::Settings> instance.
 
-If you are using a I<Gnome::Gtk3::StyleContext> returned from
+If you are using a B<Gnome::Gtk3::StyleContext> returned from
 C<gtk_widget_get_style_context()>, you do not need to
 call this yourself.
 
@@ -771,7 +771,7 @@ Since: 3.0
 
   method gtk_style_context_set_screen ( N-GObject $screen )
 
-=item N-GObject $screen; a I<Gnome::Gdk3::Screen>
+=item N-GObject $screen; a B<Gnome::Gdk3::Screen>
 
 =end pod
 
@@ -784,9 +784,9 @@ sub gtk_style_context_set_screen ( N-GObject $context, N-GObject $screen )
 =begin pod
 =head2 [gtk_style_context_] get_screen
 
-Returns the I<Gnome::Gdk3::Screen> to which I<context> is attached.
+Returns the B<Gnome::Gdk3::Screen> to which I<context> is attached.
 
-Returns: (transfer none): a I<Gnome::Gdk3::Screen>.
+Returns: (transfer none): a B<Gnome::Gdk3::Screen>.
 
   method gtk_style_context_get_screen ( --> N-GObject  )
 
@@ -807,7 +807,7 @@ Attaches I<context> to the given frame clock.
 
 The frame clock is used for the timing of animations.
 
-If you are using a I<Gnome::Gtk3::StyleContext> returned from
+If you are using a B<Gnome::Gtk3::StyleContext> returned from
 C<gtk_widget_get_style_context()>, you do not need to
 call this yourself.
 
@@ -815,7 +815,7 @@ Since: 3.8
 
   method gtk_style_context_set_frame_clock ( N-GObject $frame_clock )
 
-=item N-GObject $frame_clock; a I<Gnome::Gdk3::FrameClock>
+=item N-GObject $frame_clock; a B<Gnome::Gdk3::FrameClock>
 
 =end pod
 
@@ -828,9 +828,9 @@ sub gtk_style_context_set_frame_clock ( N-GObject $context, N-GObject $frame_clo
 =begin pod
 =head2 [gtk_style_context_] get_frame_clock
 
-Returns the I<Gnome::Gdk3::FrameClock> to which I<context> is attached.
+Returns the B<Gnome::Gdk3::FrameClock> to which I<context> is attached.
 
-Returns: (nullable) (transfer none): a I<Gnome::Gdk3::FrameClock>, or C<Any>
+Returns: (nullable) (transfer none): a B<Gnome::Gdk3::FrameClock>, or C<Any>
 if I<context> does not have an attached frame clock.
 
 Since: 3.8
@@ -942,7 +942,7 @@ sub gtk_style_context_get_color ( N-GObject $context, int32 $state, N-GObject $c
 =begin pod
 =head2 [gtk_style_context_] get_border
 
-Gets the border for a given state as a I<Gnome::Gtk3::Border>.
+Gets the border for a given state as a B<Gnome::Gtk3::Border>.
 
 See C<gtk_style_context_get_property()> and
 C<GTK_STYLE_PROPERTY_BORDER_WIDTH> for details.
@@ -965,7 +965,7 @@ sub gtk_style_context_get_border ( N-GObject $context, int32 $state, N-GObject $
 =begin pod
 =head2 [gtk_style_context_] get_padding
 
-Gets the padding for a given state as a I<Gnome::Gtk3::Border>.
+Gets the padding for a given state as a B<Gnome::Gtk3::Border>.
 See C<gtk_style_context_get()> and C<GTK_STYLE_PROPERTY_PADDING>
 for details.
 
@@ -987,7 +987,7 @@ sub gtk_style_context_get_padding ( N-GObject $context, int32 $state, N-GObject 
 =begin pod
 =head2 [gtk_style_context_] get_margin
 
-Gets the margin for a given state as a I<Gnome::Gtk3::Border>.
+Gets the margin for a given state as a B<Gnome::Gtk3::Border>.
 See C<gtk_style_property_get()> and C<GTK_STYLE_PROPERTY_MARGIN>
 for details.
 
@@ -1010,17 +1010,17 @@ sub gtk_style_context_get_margin ( N-GObject $context, int32 $state, N-GObject $
 =head2 [gtk_style_context_] reset_widgets
 
 This function recomputes the styles for all widgets under a particular
-I<Gnome::Gdk3::Screen>. This is useful when some global parameter has changed that
+B<Gnome::Gdk3::Screen>. This is useful when some global parameter has changed that
 affects the appearance of all widgets, because when a widget gets a new
 style, it will both redraw and recompute any cached information about
 its appearance. As an example, it is used when the color scheme changes
-in the related I<Gnome::Gtk3::Settings> object.
+in the related B<Gnome::Gtk3::Settings> object.
 
 Since: 3.0
 
   method gtk_style_context_reset_widgets ( N-GObject $screen )
 
-=item N-GObject $screen; a I<Gnome::Gdk3::Screen>
+=item N-GObject $screen; a B<Gnome::Gdk3::Screen>
 
 =end pod
 
@@ -1062,7 +1062,7 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
 =begin pod
 =head2 gtk_render_check
 
-Renders a checkmark (as in a I<Gnome::Gtk3::CheckButton>).
+Renders a checkmark (as in a B<Gnome::Gtk3::CheckButton>).
 
 The C<GTK_STATE_FLAG_CHECKED> state determines whether the check is
 on or off, and C<GTK_STATE_FLAG_INCONSISTENT> determines whether it
@@ -1076,7 +1076,7 @@ Since: 3.0
 
   method gtk_render_check ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1096,7 +1096,7 @@ sub gtk_render_check ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num6
 =begin pod
 =head2 gtk_render_option
 
-Renders an option mark (as in a I<Gnome::Gtk3::RadioButton>), the C<GTK_STATE_FLAG_CHECKED>
+Renders an option mark (as in a B<Gnome::Gtk3::RadioButton>), the C<GTK_STATE_FLAG_CHECKED>
 state will determine whether the option is on or off, and
 C<GTK_STATE_FLAG_INCONSISTENT> whether it should be marked as undefined.
 
@@ -1108,7 +1108,7 @@ Since: 3.0
 
   method gtk_render_option ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1136,7 +1136,7 @@ Since: 3.0
 
   method gtk_render_arrow ( N-GObject $context, cairo_t $cr, Num $angle, Num $x, Num $y, Num $size )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $angle; arrow angle from 0 to 2 * C<G_PI>, being 0 the arrow pointing to the north
 =item Num $x; X origin of the render area
@@ -1165,7 +1165,7 @@ Since: 3.0.
 
   method gtk_render_background ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1192,7 +1192,7 @@ Since: 3.20
 
   method gtk_render_background_get_clip ( N-GObject $context, Num $x, Num $y, Num $width, Num $height, N-GObject $out_clip )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
 =item Num $width; rectangle width
@@ -1222,7 +1222,7 @@ Since: 3.0
 
   method gtk_render_frame ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1240,7 +1240,7 @@ sub gtk_render_frame ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num6
 =begin pod
 =head2 gtk_render_expander
 
-Renders an expander (as used in I<Gnome::Gtk3::TreeView> and I<Gnome::Gtk3::Expander>) in the area
+Renders an expander (as used in B<Gnome::Gtk3::TreeView> and B<Gnome::Gtk3::Expander>) in the area
 defined by I<x>, I<y>, I<width>, I<height>. The state C<GTK_STATE_FLAG_CHECKED>
 determines whether the expander is collapsed or expanded.
 
@@ -1252,7 +1252,7 @@ Since: 3.0
 
   method gtk_render_expander ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1280,7 +1280,7 @@ Since: 3.0
 
   method gtk_render_focus ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1304,7 +1304,7 @@ Since: 3.0
 
   method gtk_render_layout ( N-GObject $context, cairo_t $cr, Num $x, Num $y, PangoLayout $layout )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin
 =item Num $y; Y origin
@@ -1327,7 +1327,7 @@ Since: 3.0
 
   method gtk_render_line ( N-GObject $context, cairo_t $cr, Num $x0, Num $y0, Num $x1, Num $y1 )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x0; X coordinate for the origin of the line
 =item Num $y0; Y coordinate for the origin of the line
@@ -1345,7 +1345,7 @@ sub gtk_render_line ( N-GObject $context, cairo_t $cr, num64 $x0, num64 $y0, num
 =begin pod
 =head2 gtk_render_slider
 
-Renders a slider (as in I<Gnome::Gtk3::Scale>) in the rectangle defined by I<x>, I<y>,
+Renders a slider (as in B<Gnome::Gtk3::Scale>) in the rectangle defined by I<x>, I<y>,
 I<width>, I<height>. I<orientation> defines whether the slider is vertical
 or horizontal.
 
@@ -1357,7 +1357,7 @@ Since: 3.0
 
   method gtk_render_slider ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height, GtkOrientation $orientation )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1376,7 +1376,7 @@ sub gtk_render_slider ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num
 =begin pod
 =head2 gtk_render_extension
 
-Renders a extension (as in a I<Gnome::Gtk3::Notebook> tab) in the rectangle
+Renders a extension (as in a B<Gnome::Gtk3::Notebook> tab) in the rectangle
 defined by I<x>, I<y>, I<width>, I<height>. The side where the extension
 connects to is defined by I<gap_side>.
 
@@ -1388,7 +1388,7 @@ Since: 3.0
 
   method gtk_render_extension ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height, GtkPositionType $gap_side )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1407,8 +1407,8 @@ sub gtk_render_extension ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, 
 =begin pod
 =head2 gtk_render_handle
 
-Renders a handle (as in I<Gnome::Gtk3::HandleBox>, I<Gnome::Gtk3::Paned> and
-I<Gnome::Gtk3::Window>’s resize grip), in the rectangle
+Renders a handle (as in B<Gnome::Gtk3::HandleBox>, B<Gnome::Gtk3::Paned> and
+B<Gnome::Gtk3::Window>’s resize grip), in the rectangle
 determined by I<x>, I<y>, I<width>, I<height>.
 
 Handles rendered for the paned and grip classes:
@@ -1419,7 +1419,7 @@ Since: 3.0
 
   method gtk_render_handle ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1437,7 +1437,7 @@ sub gtk_render_handle ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num
 =begin pod
 =head2 gtk_render_activity
 
-Renders an activity indicator (such as in I<Gnome::Gtk3::Spinner>).
+Renders an activity indicator (such as in B<Gnome::Gtk3::Spinner>).
 The state C<GTK_STATE_FLAG_CHECKED> determines whether there is
 activity going on.
 
@@ -1445,7 +1445,7 @@ Since: 3.0
 
   method gtk_render_activity ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item Num $x; X origin of the rectangle
 =item Num $y; Y origin of the rectangle
@@ -1476,9 +1476,9 @@ Since: 3.2
 
   method gtk_render_icon ( N-GObject $context, cairo_t $cr, N-GObject $pixbuf, Num $x, Num $y )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
-=item N-GObject $pixbuf; a I<Gnome::Gdk3::Pixbuf> containing the icon to draw
+=item N-GObject $pixbuf; a B<Gnome::Gdk3::Pixbuf> containing the icon to draw
 =item Num $x; X position for the I<pixbuf>
 =item Num $y; Y position for the I<pixbuf>
 
@@ -1499,7 +1499,7 @@ Since: 3.10
 
   method gtk_render_icon_surface ( N-GObject $context, cairo_t $cr, cairo_surface_t $surface, Num $x, Num $y )
 
-=item N-GObject $context; a I<Gnome::Gtk3::StyleContext>
+=item N-GObject $context; a B<Gnome::Gtk3::StyleContext>
 =item cairo_t $cr; a I<cairo_t>
 =item cairo_surface_t $surface; a I<cairo_surface_t> containing the icon to draw
 =item Num $x; X position for the I<icon>
@@ -1637,7 +1637,7 @@ sub gtk_render_insertion_cursor ( N-GObject $context, cairo_t $cr, num64 $x, num
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also I<Gnome::GObject::Object>.
+Register any signal as follows. See also B<Gnome::GObject::Object>.
 
   my Bool $is-registered = $my-widget.register-signal (
     $handler-object, $handler-name, $signal-name,
@@ -1655,9 +1655,9 @@ Register any signal as follows. See also I<Gnome::GObject::Object>.
 =head3 changed
 
 The sig I<changed> signal is emitted when there is a change in the
-I<Gnome::Gtk3::StyleContext>.
+B<Gnome::Gtk3::StyleContext>.
 
-For a I<Gnome::Gtk3::StyleContext> returned by C<gtk_widget_get_style_context()>, the
+For a B<Gnome::Gtk3::StyleContext> returned by C<gtk_widget_get_style_context()>, the
 sig C<style-updated> signal/vfunc might be more convenient to use.
 
 This signal is useful when using the theming layer standalone.
@@ -1675,7 +1675,7 @@ Since: 3.0
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a I<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -1694,7 +1694,7 @@ An example of using a string type property of a I<Gnome::Gtk3::Label> object. Th
 
 =head3 parent
 
-The I<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
+The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
 
 Sets or gets the style context’s parent. See C<gtk_style_context_set_parent()>
 for details.

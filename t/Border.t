@@ -45,9 +45,11 @@ subtest 'Border error', {
   my Gnome::Gtk3::Border $b1 .= new(:empty);
   $b1.clear-border;
 
+  ok !$b1.border-is-valid, 'border is not valid';
+
   throws-like(
     { $b1.left(10); },
-    X::Gnome, 'try set a value on deleted object',
+    X::Gnome, 'try set a value on an invalid border object',
     :message('Cannot set left width, Border is not valid')
   );
 }

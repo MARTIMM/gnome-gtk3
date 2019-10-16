@@ -74,17 +74,17 @@ sub MAIN ( *@modules ) {
 
     %test-coverage{$path}<signals> = {
       :$sigs-total, :$sigs-tested, :coverage($sig-coverage.fmt("%.2f")),
-      :subs-data($sig-hash)
+      :sigs-data($sig-hash)
     } if $sigs-total;
 
     %test-coverage{$path}<properties> = {
       :$props-total, :$props-tested, :coverage($prop-coverage.fmt("%.2f")),
-      :subs-data($prop-hash)
+      :props-data($prop-hash)
     } if $props-total;
 
     %test-coverage{$path}<types> = {
       :$types-total, :$types-tested, :coverage($type-coverage.fmt("%.2f")),
-      :subs-data($type-hash)
+      :types-data($type-hash)
     } if $types-total;
   }
 
@@ -119,7 +119,7 @@ sub signal-coverage( Str:D $content --> List ) {
   my Int $sigs-tested = 0;
 
   # search for special notes like '#TS:sts:sig-name'
-  $content ~~ m:g/^^ '=comment #TS:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '=comment #TS:' \d ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
@@ -150,7 +150,7 @@ sub prop-coverage( Str:D $content --> List ) {
   my Int $props-tested = 0;
 
   # search for special notes like '#TP:sts:sig-name'
-  $content ~~ m:g/^^ '=comment #TP:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '=comment #TP:' \d ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
@@ -181,7 +181,7 @@ sub type-coverage( Str:D $content --> List ) {
   my Int $types-tested = 0;
 
   # search for special notes like '#TT:sts:sig-name' (#TE for enums)
-  $content ~~ m:g/^^ '#T' <[TE]> ':' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '#T' <[TE]> ':' \d ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
@@ -210,8 +210,8 @@ sub type-coverage( Str:D $content --> List ) {
 sub load-coverage( Str:D $content --> Bool ) {
   my Bool $load-tested = False;
 
-  # search for special notes like '#TL:sts:sig-name'
-  $content ~~ m/^^ '#TL:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  # search for special notes like '#TL:sts:module-name'
+  $content ~~ m/^^ '#TL:' \d ':' [<alnum> || '-' || '::']+ /;
   my Str $header = ~($/ || '');
   return $load-tested unless ?$header;
   $header ~~ m/
@@ -220,7 +220,6 @@ sub load-coverage( Str:D $content --> Bool ) {
     ':'
     $<name> = ([<alnum> || '-']+)
   /;
-
   my Str $name = ~$/<name>;
 
   my $state = ~$/<state>;
@@ -228,6 +227,7 @@ sub load-coverage( Str:D $content --> Bool ) {
   $state = 1 if $state eq '+';
   $state .= Int;  # convert to int for all other digit characters
   $load-tested = True if $state > 0;
+note "$header, $name, $state, $load-tested";
 
   # return load status
   return $load-tested;
@@ -294,27 +294,28 @@ sub sub-coverage( Str:D $new-content --> List ) {
   }
 
   # search for special notes like '#TM:sts:sub-name'
-  $content ~~ m:g/^^ '#TM:' [<[+-]> || \d] ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/
+    ^^ '#TM:' \d ':' [<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?
+  /;
   $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#TM:'
-      $<state> = ([<[+-]> || \d])
+      $<state> = (\d)
       ':'
-      $<name> = ([<alnum> || '-']+)
+      $<name> = ([<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?)
     /;
 
     my Str $name = ~$/<name>;
 
     my $state = ~$/<state>;
-    $state = 0 if $state eq '-';
-    $state = 1 if $state eq '+';
     $state .= Int;  # convert to int for all other digit characters
     $subs-tested++ if $state > 0;
     $sub-cover{$name} = $state;
   }
 
-  # return total nbr of subs/methods, nbr tested and data
-  return ( $sub-cover.elems, $subs-tested, $sub-cover);
+  # return total nbr of subs/methods, nbr tested and data, nbr of tested subs
+  # can be larger when multi's are seperately tested.
+  return ( max( $sub-cover.elems, $subs-tested), $subs-tested, $sub-cover);
 }

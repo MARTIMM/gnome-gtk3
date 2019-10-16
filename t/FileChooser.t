@@ -3,19 +3,27 @@ use NativeCall;
 use Test;
 
 diag "load";
-use Gnome::Gtk3::FileChooserDialog;
+use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::FileChooser;
+use Gnome::Gtk3::FileChooserDialog;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::FileChooserDialog $fcd .= new(:title('Choose a file'));
+my Gnome::Gtk3::FileChooserDialog $fcd .= new(
+  :action(GTK_FILE_CHOOSER_ACTION_SAVE),
+  :button-spec( [
+      "_Cancel", GTK_RESPONSE_CANCEL,
+      "_Open", GTK_RESPONSE_ACCEPT
+    ]
+  )
+);
+
 my Gnome::Gtk3::FileChooser $fc .= new(:widget($fcd));
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $fcd .= new(:title('Choose a file'));
-  isa-ok $fcd, Gnome::Gtk3::FileChooserDialog;
 
   diag '.new(:widget)';
   $fc .= new(:widget($fcd));

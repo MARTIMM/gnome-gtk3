@@ -2,17 +2,142 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
+use Gnome::Gtk3::TextTag;
+use Gnome::Gtk3::TextTagTable;
+use Gnome::Gtk3::TextIter;
 use Gnome::Gtk3::TextBuffer;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TextBuffer $tb .= new(:empty);
+my Gnome::Gtk3::TextBuffer $tb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
+  $tb .= new(:empty);
   isa-ok $tb, Gnome::Gtk3::TextBuffer;
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  is $tb.get-line-count, 1, '.get-line-count(), 1 line';
+  my Str $text = "hoeperdepoep\nzat op de stoep\n";
+  $tb.set-text( $text, $text.chars);
+  is $tb.get-line-count, 3, '.get-line-count(), 3 lines';
+  is $tb.get-char-count, $text.chars, '.get-char-count()';
+
+  my Gnome::Gtk3::TextIter $start = $tb.get-start-iter;
+  my Gnome::Gtk3::TextIter $end = $tb.get-end-iter;
+  is $tb.get-text( $start, $end, 0), "hoeperdepoep\nzat op de stoep\n",
+     '.set-text() / .get-text()';
+
+  is $tb.get-slice( $start, $end, 0), "hoeperdepoep\nzat op de stoep\n",
+     '.get-slice()';
+
+  $start = $tb.get-iter-at-line(1);
+  $end = $tb.get-iter-at-line(2);
+  is $tb.get-text( $start, $end, 0), "zat op de stoep\n", '.get-iter-at-line()';
+
+  $end = $tb.get-iter-at-offset(16);
+  is $tb.get-text( $start, $end, 0), "zat", '.get-iter-at-offset()';
+
+  $end = $tb.get-iter-at-line-index( 1, 3);
+  is $tb.get-text( $start, $end, 0), "zat", '.get-iter-at-line-index()';
+
+  $end = $tb.get-iter-at-line-offset( 1, 3);
+  is $tb.get-text( $start, $end, 0), "zat", '.get-iter-at-line-offset()';
+
+  # A tag must be inserted in the table before the tag can be applied
+  my Gnome::Gtk3::TextTag $tag .= new(:tag-name<part1>);
+  my Gnome::Gtk3::TextTagTable $tag-table .= new(:widget($tb.get-tag-table));
+  $tag-table.gtk-text-tag-table-add($tag);
+  $tag .= new(:tag-name<part2>);
+  $tag-table.gtk-text-tag-table-add($tag);
+  $tb.apply-tag-by-name( 'part2', $start, $end);
+
+  is $tag-table.get-size, 2,
+     '.get-tag-table() / .apply-tag() / .apply-tag-by-name()';
+
+  ( $start, $end) = $tb.get-bounds;
+  is $tb.get-text( $start, $end, 0), "hoeperdepoep\nzat op de stoep\n",
+     '.get-bounds()';
+
+  $text = "en laten we vrolijk wezen\n";
+  $end = $tb.get-iter-at-line(2);
+  $tb.gtk_text_buffer_insert( $end, $text, $text.chars);
+  ( $start, $end) = $tb.get-bounds;
+  is $tb.get-text( $start, $end, 0),
+     "hoeperdepoep\nzat op de stoep\nen laten we vrolijk wezen\n",
+     '.gtk_text_buffer_insert()';
+
+  my Int $sts;
+  ( $sts, $start, $end) = $tb.get-selection-bounds;
+  nok $sts, '.get-selection-bounds()';
+  is $tb.get-text( $start, $end, 0), '', 'no selection';
+
+  ok $tb.get-modified, '.get-modified()';
+  $tb.set-modified(0);
+  nok $tb.get-modified, '.set-modified()';
+
+  nok $tb.get-has-selection, '.get-has-selection()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+
+  class X {
+    has Bool $.insert-signal-processed = False;
+
+    method handle-insert (
+      N-GObject $iter, Str $text, Int $len,
+      Gnome::GObject::Object :widget($text-buffer)
+      --> Int
+    ) {
+      $!insert-signal-processed = True;
+
+      1
+    }
+  }
+
+  my Gnome::Gtk3::TextBuffer $tb .= new(:empty);
+  my Str $text = "hoeperdepoep\nzat op de stoep\n";
+  $tb.set-text( $text, $text.chars);
+  my Gnome::Gtk3::TextIter $start = $tb.get-iter-at-line(1);
+  my Gnome::Gtk3::TextIter $end = $tb.get-iter-at-line(2);
+
+  my Gnome::Gtk3::TextTagTable $tag-table .= new(:widget($tb.get-tag-table));
+  my Gnome::Gtk3::TextTag $tag .= new(:tag-name<part1>);
+  $tag-table.gtk-text-tag-table-add($tag);
+  $tb.apply-tag( $tag, $start, $end);
+
+  my X $x .= new;
+  $tb.register-signal( $x, 'handle-insert', 'insert-text');
+
+  my Str $text2 = ' (...) ';
+  $start = $tb.get-iter-at-line-offset( 1, 3);
+  $tb.gtk-text-buffer-insert( $start, $text2, $text2.chars);
+
+  ok $x.insert-signal-processed, 'insert signal processed';
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+}}
 
 #-------------------------------------------------------------------------------
 done-testing;

@@ -4,6 +4,9 @@ use v6;
 
 my $t0 = now;
 
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
 use Gnome::Gdk3::Types;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Main;
@@ -32,31 +35,38 @@ class AppSignalHandlers {
   submethod BUILD (
     :$!scale, :$!text-view, :$!inverted-button, :$!min, :$!max, :$!step
   ) {
-#    self!update-status;
+    self!update-status;
   }
 
   # increment level bar
-  method inc-scale ( ) {
+  method inc-scale ( --> Int ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(min( $v + $!step, $!max));
     self!update-status;
+
+    1;
   }
 
   # decrement level bar
-  method dec-scale ( ) {
+  method dec-scale ( --> Int ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(max( $v - $!step, $!min));
     self!update-status;
+
+    1;
   }
 
-  method invert-scale ( ) {
+  method invert-scale ( --> Int ) {
     $!scale.set-inverted($!inverted-button.get-active());
     self!update-status;
+
+    1;
   }
 
-  method exit-program ( ) {
-#    note "exit program";
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1;
   }
 
   method !update-status {
@@ -127,7 +137,7 @@ $top-window.register-signal( $ash, 'exit-program', 'delete-event');
 $top-window.show-all;
 
 my Gnome::Gtk3::Range $range .= new(:widget($scale));
-my GdkRectangle $rectangle = $range.get-range-rect;
+my N-GdkRectangle $rectangle = $range.get-range-rect;
 note "Scale rectangle: $rectangle.x(), $rectangle.y(), $rectangle.width(), $rectangle.height()";
 
 note "Set up time: ", now - $t0;

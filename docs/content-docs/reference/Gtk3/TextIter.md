@@ -1,10 +1,5 @@
-TITLE
-=====
-
 Gnome::Gtk3::TextIter
-
-SUBTITLE
-========
+=====================
 
 Text buffer iterator
 
@@ -21,9 +16,6 @@ Declaration
 
     unit class Gnome::Gtk3::TextIter;
     also is Gnome::GObject::Boxed;
-
-Example
--------
 
 enum GtkTextSearchFlags
 -----------------------
@@ -44,7 +36,7 @@ Methods
 [gtk_text_iter_] get_buffer
 ---------------------------
 
-Returns the `Gnome::Gtk3::TextBuffer` this iterator is associated with.
+Returns the **Gnome::Gtk3::TextBuffer** this iterator is associated with.
 
 Returns: (transfer none): the buffer
 
@@ -53,7 +45,7 @@ Returns: (transfer none): the buffer
 gtk_text_iter_copy
 ------------------
 
-Creates a dynamically-allocated copy of an iterator. This function is not useful in applications, because iterators can be copied with a simple assignment (``Gnome::Gtk3::TextIter` i = j;`). The function is used by language bindings.
+Creates a dynamically-allocated copy of an iterator. This function is not useful in applications, because iterators can be copied with a simple assignment (`**Gnome::Gtk3::TextIter** i = j;`). The function is used by language bindings.
 
 Returns: a copy of the *iter*, free with `gtk_text_iter_free()`
 
@@ -69,18 +61,18 @@ Free an iterator allocated on the heap. This function is intended for use in lan
 gtk_text_iter_assign
 --------------------
 
-Assigns the value of *other* to the iterator.
+Assigns the value of *other* to *iter*. This function is not useful in applications, because iterators can be assigned with `**Gnome::Gtk3::TextIter** i = j;`. The function is used by language bindings.
 
 Since: 3.2
 
     method gtk_text_iter_assign ( N-GObject $other )
 
-  * N-GObject $other; another `Gnome::Gtk3::TextIter`
+  * N-GObject $other; another **Gnome::Gtk3::TextIter**
 
 [gtk_text_iter_] get_offset
 ---------------------------
 
-Returns the character offset of an iterator. Each character in a `Gnome::Gtk3::TextBuffer` has an offset, starting with 0 for the first character in the buffer. Use `gtk_text_buffer_get_iter_at_offset()` to convert an offset back into an iterator.
+Returns the character offset of an iterator. Each character in a **Gnome::Gtk3::TextBuffer** has an offset, starting with 0 for the first character in the buffer. Use `gtk_text_buffer_get_iter_at_offset()` to convert an offset back into an iterator.
 
 Returns: a character offset
 
@@ -89,7 +81,7 @@ Returns: a character offset
 [gtk_text_iter_] get_line
 -------------------------
 
-Returns the line number containing the iterator. Lines in a `Gnome::Gtk3::TextBuffer` are numbered beginning with 0 for the first line in the buffer.
+Returns the line number containing the iterator. Lines in a **Gnome::Gtk3::TextBuffer** are numbered beginning with 0 for the first line in the buffer.
 
 Returns: a line number
 
@@ -107,7 +99,7 @@ Returns: offset from start of line
 [gtk_text_iter_] get_line_index
 -------------------------------
 
-Returns the byte index of the iterator, counting from the start of a newline-terminated line. Remember that `Gnome::Gtk3::TextBuffer` encodes text in UTF-8, and that characters can require a variable number of bytes to represent.
+Returns the byte index of the iterator, counting from the start of a newline-terminated line. Remember that **Gnome::Gtk3::TextBuffer** encodes text in UTF-8, and that characters can require a variable number of bytes to represent.
 
 Returns: distance from start of line, in bytes
 
@@ -130,6 +122,15 @@ Returns the number of bytes from the start of the line to the given *iter*, not 
 Returns: byte index of *iter* with respect to the start of the line
 
     method gtk_text_iter_get_visible_line_index ( --> Int  )
+
+[gtk_text_iter_] get_char
+-------------------------
+
+The Unicode character at this iterator is returned. (Equivalent to operator* on a C++ iterator.) If the element at this iterator is a non-character element, such as an image embedded in the buffer, the Unicode “unknown” character 0xFFFC is returned. If invoked on the end iterator, zero is returned; zero is not a valid Unicode character. So you can write a loop which ends when `gtk_text_iter_get_char()` returns 0.
+
+Returns: a Unicode character, or 0 if *iter* is not dereferenceable
+
+    method gtk_text_iter_get_char ( --> uint32 )
 
 [gtk_text_iter_] get_slice
 --------------------------
@@ -156,7 +157,7 @@ Returns: (transfer full): array of characters from the buffer
 [gtk_text_iter_] get_visible_slice
 ----------------------------------
 
-Like `gtk_text_iter_get_slice()`, but invisible text is not included. Invisible text is usually invisible because a `Gnome::Gtk3::TextTag` with the “invisible” attribute turned on has been applied to it.
+Like `gtk_text_iter_get_slice()`, but invisible text is not included. Invisible text is usually invisible because a **Gnome::Gtk3::TextTag** with the “invisible” attribute turned on has been applied to it.
 
 Returns: (transfer full): slice of text from the buffer
 
@@ -167,7 +168,7 @@ Returns: (transfer full): slice of text from the buffer
 [gtk_text_iter_] get_visible_text
 ---------------------------------
 
-Like `gtk_text_iter_get_text()`, but invisible text is not included. Invisible text is usually invisible because a `Gnome::Gtk3::TextTag` with the “invisible” attribute turned on has been applied to it.
+Like `gtk_text_iter_get_text()`, but invisible text is not included. Invisible text is usually invisible because a **Gnome::Gtk3::TextTag** with the “invisible” attribute turned on has been applied to it.
 
 Returns: (transfer full): string containing visible text in the range
 
@@ -187,20 +188,20 @@ Returns: (transfer none): the pixbuf at *iter*
 [gtk_text_iter_] get_marks
 --------------------------
 
-Returns a list of all `Gnome::Gtk3::TextMark` at this location. Because marks are not iterable (they don’t take up any "space" in the buffer, they are just marks in between iterable locations), multiple marks can exist in the same place. The returned list is not in any meaningful order.
+Returns a list of all **Gnome::Gtk3::TextMark** at this location. Because marks are not iterable (they don’t take up any "space" in the buffer, they are just marks in between iterable locations), multiple marks can exist in the same place. The returned list is not in any meaningful order.
 
-Returns: (element-type `Gnome::Gtk3::TextMark`) (transfer container): list of `Gnome::Gtk3::TextMark`
+Returns: (element-type **Gnome::Gtk3::TextMark**) (transfer container): list of **Gnome::Gtk3::TextMark**
 
-    method gtk_text_iter_get_marks ( --> N-GObject  )
+    method gtk_text_iter_get_marks ( --> N-GSList  )
 
 [gtk_text_iter_] get_toggled_tags
 ---------------------------------
 
-Returns a list of `Gnome::Gtk3::TextTag` that are toggled on or off at this point. (If *toggled_on* is `1`, the list contains tags that are toggled on.) If a tag is toggled on at *iter*, then some non-empty range of characters following *iter* has that tag applied to it. If a tag is toggled off, then some non-empty range following *iter* does not have the tag applied to it.
+Returns a list of **Gnome::Gtk3::TextTag** that are toggled on or off at this point. (If *toggled_on* is `1`, the list contains tags that are toggled on.) If a tag is toggled on at *iter*, then some non-empty range of characters following *iter* has that tag applied to it. If a tag is toggled off, then some non-empty range following *iter* does not have the tag applied to it.
 
-Returns: (element-type `Gnome::Gtk3::TextTag`) (transfer container): tags toggled at this point
+Returns: (element-type **Gnome::Gtk3::TextTag**) (transfer container): tags toggled at this point
 
-    method gtk_text_iter_get_toggled_tags ( Int $toggled_on --> N-GObject  )
+    method gtk_text_iter_get_toggled_tags ( Int $toggled_on --> N-GSList  )
 
   * Int $toggled_on; `1` to get toggled-on tags
 
@@ -215,7 +216,7 @@ Returns: whether *iter* is the start of a range tagged with *tag* Since: 3.20
 
     method gtk_text_iter_starts_tag ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; (nullable): a `Gnome::Gtk3::TextTag`, or `Any`
+  * N-GObject $tag; (nullable): a **Gnome::Gtk3::TextTag**, or `Any`
 
 [gtk_text_iter_] ends_tag
 -------------------------
@@ -228,7 +229,7 @@ Returns: whether *iter* is the end of a range tagged with *tag*
 
     method gtk_text_iter_ends_tag ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; (allow-none): a `Gnome::Gtk3::TextTag`, or `Any`
+  * N-GObject $tag; (allow-none): a **Gnome::Gtk3::TextTag**, or `Any`
 
 [gtk_text_iter_] toggles_tag
 ----------------------------
@@ -239,7 +240,7 @@ Returns: whether *tag* is toggled on or off at *iter*
 
     method gtk_text_iter_toggles_tag ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; (allow-none): a `Gnome::Gtk3::TextTag`, or `Any`
+  * N-GObject $tag; (allow-none): a **Gnome::Gtk3::TextTag**, or `Any`
 
 [gtk_text_iter_] has_tag
 ------------------------
@@ -250,21 +251,21 @@ Returns: whether *iter* is tagged with *tag*
 
     method gtk_text_iter_has_tag ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; a `Gnome::Gtk3::TextTag`
+  * N-GObject $tag; a **Gnome::Gtk3::TextTag**
 
 [gtk_text_iter_] get_tags
 -------------------------
 
-Returns a list of tags that apply to *iter*, in ascending order of priority (highest-priority tags are last). The `Gnome::Gtk3::TextTag` in the list don’t have a reference added, but you have to free the list itself.
+Returns a list of tags that apply to *iter*, in ascending order of priority (highest-priority tags are last). The **Gnome::Gtk3::TextTag** in the list don’t have a reference added, but you have to free the list itself.
 
-Returns: (element-type `Gnome::Gtk3::TextTag`) (transfer container): list of `Gnome::Gtk3::TextTag`
+Returns: (element-type **Gnome::Gtk3::TextTag**) (transfer container): list of **Gnome::Gtk3::TextTag**
 
-    method gtk_text_iter_get_tags ( --> N-GObject  )
+    method gtk_text_iter_get_tags ( --> N-GSList  )
 
 gtk_text_iter_editable
 ----------------------
 
-Returns whether the character at *iter* is within an editable region of text. Non-editable text is “locked” and can’t be changed by the user via `Gnome::Gtk3::TextView`. This function is simply a convenience wrapper around `gtk_text_iter_get_attributes()`. If no tags applied to this text affect editability, *default_setting* will be returned.
+Returns whether the character at *iter* is within an editable region of text. Non-editable text is “locked” and can’t be changed by the user via **Gnome::Gtk3::TextView**. This function is simply a convenience wrapper around `gtk_text_iter_get_attributes()`. If no tags applied to this text affect editability, *default_setting* will be returned.
 
 You don’t want to use this function to decide whether text can be inserted at *iter*, because for insertion you don’t want to know whether the char at *iter* is inside an editable range, you want to know whether a new character inserted at *iter* would be inside an editable range. Use `gtk_text_iter_can_insert()` to handle this case.
 
@@ -362,7 +363,7 @@ Returns: whether *iter* is at the end of a line
 [gtk_text_iter_] is_cursor_position
 -----------------------------------
 
-See `gtk_text_iter_forward_cursor_position()` or `PangoLogAttr` or `pango_break()` for details on what a cursor position is.
+See `gtk_text_iter_forward_cursor_position()` or **PangoLogAttr** or `pango_break()` for details on what a cursor position is.
 
 Returns: `1` if the cursor can be placed at *iter*
 
@@ -397,7 +398,7 @@ Returns: `1` if *values* was modified
 
     method gtk_text_iter_get_attributes ( N-GObject $values --> Int  )
 
-  * N-GObject $values; (out): a `Gnome::Gtk3::TextAttributes` to be filled in
+  * N-GObject $values; (out): a **Gnome::Gtk3::TextAttributes** to be filled in
 
 [gtk_text_iter_] is_end
 -----------------------
@@ -676,7 +677,7 @@ Returns: `1` if *iter* moved and is not the end iterator
 [gtk_text_iter_] forward_cursor_position
 ----------------------------------------
 
-Moves *iter* forward by a single cursor position. Cursor positions are (unsurprisingly) positions where the cursor can appear. Perhaps surprisingly, there may not be a cursor position between all characters. The most common example for European languages would be a carriage return/newline sequence. For some Unicode characters, the equivalent of say the letter “a” with an accent mark will be represented as two characters, first the letter then a "combining mark" that causes the accent to be rendered; so the cursor can’t go between those two characters. See also the `PangoLogAttr`-struct and `pango_break()` function.
+Moves *iter* forward by a single cursor position. Cursor positions are (unsurprisingly) positions where the cursor can appear. Perhaps surprisingly, there may not be a cursor position between all characters. The most common example for European languages would be a carriage return/newline sequence. For some Unicode characters, the equivalent of say the letter “a” with an accent mark will be represented as two characters, first the letter then a "combining mark" that causes the accent to be rendered; so the cursor can’t go between those two characters. See also the **PangoLogAttr**-struct and `pango_break()` function.
 
 Returns: `1` if we moved and the new position is dereferenceable
 
@@ -834,31 +835,31 @@ Like `gtk_text_iter_set_line_index()`, but the index is in visible bytes, i.e. t
 [gtk_text_iter_] forward_to_tag_toggle
 --------------------------------------
 
-Moves forward to the next toggle (on or off) of the `Gnome::Gtk3::TextTag` *tag*, or to the next toggle of any tag if *tag* is `Any`. If no matching tag toggles are found, returns `0`, otherwise `1`. Does not return toggles located at *iter*, only toggles after *iter*. Sets *iter* to the location of the toggle, or to the end of the buffer if no toggle is found.
+Moves forward to the next toggle (on or off) of the **Gnome::Gtk3::TextTag** *tag*, or to the next toggle of any tag if *tag* is `Any`. If no matching tag toggles are found, returns `0`, otherwise `1`. Does not return toggles located at *iter*, only toggles after *iter*. Sets *iter* to the location of the toggle, or to the end of the buffer if no toggle is found.
 
 Returns: whether we found a tag toggle after *iter*
 
     method gtk_text_iter_forward_to_tag_toggle ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; (allow-none): a `Gnome::Gtk3::TextTag`, or `Any`
+  * N-GObject $tag; (allow-none): a **Gnome::Gtk3::TextTag**, or `Any`
 
 [gtk_text_iter_] backward_to_tag_toggle
 ---------------------------------------
 
-Moves backward to the next toggle (on or off) of the `Gnome::Gtk3::TextTag` *tag*, or to the next toggle of any tag if *tag* is `Any`. If no matching tag toggles are found, returns `0`, otherwise `1`. Does not return toggles located at *iter*, only toggles before *iter*. Sets *iter* to the location of the toggle, or the start of the buffer if no toggle is found.
+Moves backward to the next toggle (on or off) of the **Gnome::Gtk3::TextTag** *tag*, or to the next toggle of any tag if *tag* is `Any`. If no matching tag toggles are found, returns `0`, otherwise `1`. Does not return toggles located at *iter*, only toggles before *iter*. Sets *iter* to the location of the toggle, or the start of the buffer if no toggle is found.
 
 Returns: whether we found a tag toggle before *iter*
 
     method gtk_text_iter_backward_to_tag_toggle ( N-GObject $tag --> Int  )
 
-  * N-GObject $tag; (allow-none): a `Gnome::Gtk3::TextTag`, or `Any`
+  * N-GObject $tag; (allow-none): a **Gnome::Gtk3::TextTag**, or `Any`
 
 [gtk_text_iter_] forward_search
 -------------------------------
 
 Searches forward for *str*. Any match is returned by setting *match_start* to the first character of the match and *match_end* to the first character after the match. The search will not continue past *limit*. Note that a search is a linear or O(n) operation, so you may wish to use *limit* to avoid locking up your UI on large buffers.
 
-*match_start* will never be set to a `Gnome::Gtk3::TextIter` located before *iter*, even if there is a possible *match_end* after or at *iter*.
+*match_start* will never be set to a **Gnome::Gtk3::TextIter** located before *iter*, even if there is a possible *match_end* after or at *iter*.
 
 Returns: whether a match was found
 
@@ -879,7 +880,7 @@ Returns: whether a match was found
 
 Same as `gtk_text_iter_forward_search()`, but moves backward.
 
-*match_end* will never be set to a `Gnome::Gtk3::TextIter` located after *iter*, even if there is a possible *match_start* before or at *iter*.
+*match_end* will never be set to a **Gnome::Gtk3::TextIter** located after *iter*, even if there is a possible *match_start* before or at *iter*.
 
 Returns: whether a match was found
 
@@ -904,7 +905,7 @@ Returns: `1` if the iterators point to the same place in the buffer
 
     method gtk_text_iter_equal ( N-GObject $rhs --> Int  )
 
-  * N-GObject $rhs; another `Gnome::Gtk3::TextIter`
+  * N-GObject $rhs; another **Gnome::Gtk3::TextIter**
 
 gtk_text_iter_compare
 ---------------------
@@ -915,7 +916,7 @@ Returns: -1 if *lhs* is less than *rhs*, 1 if *lhs* is greater, 0 if they are eq
 
     method gtk_text_iter_compare ( N-GObject $rhs --> Int  )
 
-  * N-GObject $rhs; another `Gnome::Gtk3::TextIter`
+  * N-GObject $rhs; another **Gnome::Gtk3::TextIter**
 
 [gtk_text_iter_] in_range
 -------------------------
@@ -937,18 +938,5 @@ Swaps the value of *first* and *second* if *second* comes before *first* in the 
 
     method gtk_text_iter_order ( N-GObject $second )
 
-  * N-GObject $second; another `Gnome::Gtk3::TextIter`
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.20.
------------
-
-### method gtk_text_iter_begins_tag ( N-GObject $tag --> Int )
-
-Not yet implemented methods
-===========================
-
-gtk_text_iter_get_char gtk_text_iter_get_child_anchor gtk_text_iter_get_language gtk_text_iter_forward_find_char gtk_text_iter_backward_find_char
+  * N-GObject $second; another **Gnome::Gtk3::TextIter**
 

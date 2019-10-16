@@ -1,9 +1,26 @@
 [toc]
 
+# Command line
+Recognized options by GTK
+See https://www.systutorials.com/docs/linux/man/7-gtk-options/
+
 # Web site start
 
 ```
 bundle exec jekyll serve
+```
+# native sub search
+```
+  SomeModule.some-sub()
+  Gnome::GObject::Object.FALLBACK()
+    translate some-sub -> some_sub
+    SomeModule._fallback
+      try some-sub or Gxyz_somemodule_some_sub => sub address
+      callsame() if no address until one is found
+    Substitute native objects for perl6 objects in argument list
+    Cast first argument when sub is found in another class
+
+    Gnome::N::X.test-call()
 ```
 
 # Codes used in source modules to mark what is tested or not
@@ -39,6 +56,7 @@ Absence of codes means that a particular item is not tested.
 | gint     | int     | int32        | Int        | +/- n % 2**31 - 1
 |
 | guchar   | un. char  | uint8, byte  | Int      | n % 2**8 - 1
+| gunichar |           | uint32       | Int
 | gushort  | un. short | uint16       | Int      | n % 2**16 - 1
 | gulong   | un. long  | uint64       | Int      | n % 2**64 - 1
 | guint8   | un. char  | uint8        | Int      | n % 2**8 - 1
@@ -60,6 +78,71 @@ Absence of codes means that a particular item is not tested.
 | GError   |           |              | N-GError
 | GList    |           |              | N-GList
 | GSList   |           |              | N-GSList
+
+# Interface using modules
+
+The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
+
+```
+method _fallback ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+
+  # search this module first
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
+
+  # search in the interface module
+  if !$s {
+    my Gnome::Gtk3::FileChooser $fc .= new(:widget(self.native-gobject));
+    $s = $fc._interface($native-sub);
+  }
+
+  # any other parent class
+  $s = callsame unless ?$s;
+
+  # return result
+  $s;
+}
+```
+And the `_interface()` in **Gnome::GObject::Interface**;
+```
+method _interface ( $native-sub is copy --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+
+  self.set-class-name-of-sub('GtkFileChooser');
+
+  $s;
+}
+```
+
+# variable argument lists
+This is work of Elizabeth (lizmat)
+
+```
+# mail example variable lists
+# Vittore Scolari
+sub pera-int-f(Str $format, *@args) {
+    state $ptr = cglobal(Str, "printf", Pointer);
+    my $signature = Signature.new(
+        params => (
+            Parameter.new(type => Str),
+            |(@args.map: { Parameter.new(type => .WHAT) })
+        ),
+
+        returns => int32
+    );
+
+    my &f = nativecast($signature, $ptr);
+    f($format, |@args)
+}
+
+pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
+```
+
 
 <!--
 ```plantuml

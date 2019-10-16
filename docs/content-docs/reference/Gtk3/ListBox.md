@@ -1,37 +1,41 @@
-TITLE
-=====
-
 Gnome::Gtk3::ListBox
-
-![](images/list-box.png)
-
-SUBTITLE
-========
+====================
 
 A list container
+
+![](images/list-box.png)
 
 Description
 ===========
 
-A `Gnome::Gtk3::ListBox` is a vertical container that contains `Gnome::Gtk3::ListBoxRow` children. These rows can be dynamically sorted and filtered, and headers can be added dynamically depending on the row content. It also allows keyboard and mouse navigation and selection like a typical list.
+A **Gnome::Gtk3::ListBox** is a vertical container that contains **Gnome::Gtk3::ListBoxRow** children. These rows can be dynamically sorted and filtered, and headers can be added dynamically depending on the row content. It also allows keyboard and mouse navigation and selection like a typical list.
 
-Using `Gnome::Gtk3::ListBox` is often an alternative to `Gnome::Gtk3::TreeView`, especially when the list contents has a more complicated layout than what is allowed by a `Gnome::Gtk3::CellRenderer`, or when the contents is interactive (i.e. has a button in it).
+Using **Gnome::Gtk3::ListBox** is often an alternative to **Gnome::Gtk3::TreeView**, especially when the list contents has a more complicated layout than what is allowed by a **Gnome::Gtk3::CellRenderer**, or when the contents is interactive (i.e. has a button in it).
 
-Although a `Gnome::Gtk3::ListBox` must have only `Gnome::Gtk3::ListBoxRow` children you can add any kind of widget to it via `gtk_container_add()`, and a `Gnome::Gtk3::ListBoxRow` widget will automatically be inserted between the list and the widget.
+Although a **Gnome::Gtk3::ListBox** must have only **Gnome::Gtk3::ListBoxRow** children you can add any kind of widget to it via `gtk_container_add()`, and a **Gnome::Gtk3::ListBoxRow** widget will automatically be inserted between the list and the widget.
 
-`Gnome::Gtk3::ListBoxRows` can be marked as activatable or selectable. If a row is activatable, sig `row-activated` will be emitted for it when the user tries to activate it. If it is selectable, the row will be marked as selected when the user tries to select it.
+**Gnome::Gtk3::ListBoxRows** can be marked as activatable or selectable. If a row is activatable, sig `row-activated` will be emitted for it when the user tries to activate it. If it is selectable, the row will be marked as selected when the user tries to select it.
 
-The `Gnome::Gtk3::ListBox` widget was added in GTK+ 3.10.
+The **Gnome::Gtk3::ListBox** widget was added in GTK+ 3.10.
 
 Css Nodes
 ---------
 
-`Gnome::Gtk3::ListBox` uses a single CSS node with name list. `Gnome::Gtk3::ListBoxRow` uses a single CSS node with name row. The row nodes get the .activatable style class added when appropriate.
+**Gnome::Gtk3::ListBox** uses a single CSS node with name list. **Gnome::Gtk3::ListBoxRow** uses a single CSS node with name row. The row nodes get the .activatable style class added when appropriate.
 
 See Also
 --------
 
-`Gnome::Gtk3::ScrolledWindow`
+**Gnome::Gtk3::ScrolledWindow**
+
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::ListBox implements
+
+  * Gnome::Atk::ImplementorIface
+
+  * Gnome::Gtk3::Buildable
 
 Synopsis
 ========
@@ -45,21 +49,36 @@ Declaration
 Example
 -------
 
-    # Create a ListBox with one row. This row is a grid holding a
-    # CheckBox and Label.
+Create a ListBox with one row. This row is a grid holding a CheckBox and Label.
+
     my Gnome::Gtk3::ListBox $lb .= new(:empty);
 
     # The widgets
     my Gnome::Gtk3::CheckButton $check .= new(:label('bold'));
-    my Gnome::Gtk3::Label $label .= new(:label('Turn on bold font'));
+    my Gnome::Gtk3::Label $label .= new(:text('Turn on bold font'));
 
     # Add the widgets to the Grid
     my Gnome::Gtk3::Grid $grid .= new(:empty);
-    $grid.gtk-grid-attach( $check(), 0, 0, 1, 1);
-    $grid.gtk-grid-attach( $label(), 1, 0, 1, 1);
+    $grid.gtk-grid-attach( $check, 0, 0, 1, 1);
+    $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
     # Add the Grid to the ListBox
     $lb.gtk-container-add($grid);
+
+To check its values one can register signals on each important widget (e.g. $check in this case) or read the listbox entries.
+
+    my Int $index = 0;
+    while my $nw = $lb.get-row-at-index($index) {
+      my Gnome::Gtk3::ListBoxRow $row .= new(:widget($nw));
+      my Gnome::Gtk3::Grid $grid .= new(:widget($row.get-child));
+      my Gnome::Gtk3::CheckButton $check .=
+         new(:widget($grid.get-child-at( 0, 0)));
+      if $check.get-active {
+        ...
+      }
+    }
+
+Every check in this list looks the same, so it is useful to set a name on each of the check widgets. This name can then be retrieved within the handler or the code example above. If it is simple, like above, on can use the label text instead.
 
 Methods
 =======
@@ -67,13 +86,17 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+    multi method new ( Bool :empty! )
 
-### multi method new ( N-GObject :$widget! )
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+    multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_list_box_prepend
 --------------------
@@ -84,7 +107,7 @@ Since: 3.10
 
     method gtk_list_box_prepend ( N-GObject $child )
 
-  * N-GObject $child; the `Gnome::Gtk3::Widget` to add
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to add
 
 gtk_list_box_insert
 -------------------
@@ -97,7 +120,7 @@ Since: 3.10
 
     method gtk_list_box_insert ( N-GObject $child, Int $position )
 
-  * N-GObject $child; the `Gnome::Gtk3::Widget` to add
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to add
 
   * Int $position; the position to insert *child* in
 
@@ -108,7 +131,7 @@ Gets the selected row.
 
 Note that the box may allow multiple selection, in which case you should use `gtk_list_box_selected_foreach()` to find all selected rows.
 
-Returns: (transfer none): the selected row
+Returns: (transfer none): the selected row as a native ListBoxRow
 
 Since: 3.10
 
@@ -119,7 +142,7 @@ Since: 3.10
 
 Gets the n-th child in the list (not counting headers). If *_index* is negative or larger than the number of items in the list, `Any` is returned.
 
-Returns: (transfer none) (nullable): the child `Gnome::Gtk3::Widget` or `Any`
+Returns: a native ListBoxRow
 
 Since: 3.10
 
@@ -132,7 +155,7 @@ Since: 3.10
 
 Gets the row at the *y* position.
 
-Returns: (transfer none) (nullable): the row or `Any` in case no row exists for the given y coordinate.
+Returns: the row or `Any` in case no row exists for the given y coordinate.
 
 Since: 3.10
 
@@ -147,9 +170,9 @@ Make *row* the currently selected row.
 
 Since: 3.10
 
-    method gtk_list_box_select_row ( N-GObject $row )
+    method gtk_list_box_select_row ( GtkListBoxRow $row )
 
-  * N-GObject $row; (allow-none): The row to select or `Any`
+  * GtkListBoxRow $row; (allow-none): The row to select or `Any`
 
 [gtk_list_box_] set_placeholder
 -------------------------------
@@ -160,14 +183,14 @@ Since: 3.10
 
     method gtk_list_box_set_placeholder ( N-GObject $placeholder )
 
-  * N-GObject $placeholder; (allow-none): a `Gnome::Gtk3::Widget` or `Any`
+  * N-GObject $placeholder; (allow-none): a **Gnome::Gtk3::Widget** or `Any`
 
 [gtk_list_box_] set_adjustment
 ------------------------------
 
 Sets the adjustment (if any) that the widget uses to for vertical scrolling. For instance, this is used to get the page size for PageUp/Down key handling.
 
-In the normal case when the *box* is packed inside a `Gnome::Gtk3::ScrolledWindow` the adjustment from that will be picked up automatically, so there is no need to manually do that.
+In the normal case when the *box* is packed inside a **Gnome::Gtk3::ScrolledWindow** the adjustment from that will be picked up automatically, so there is no need to manually do that.
 
 Since: 3.10
 
@@ -191,11 +214,11 @@ Since: 3.10
 
 Creates a list of all selected children.
 
-Returns: (element-type `Gnome::Gtk3::ListBoxRow`) (transfer container): A `GList` containing the `Gnome::Gtk3::Widget` for each selected child. Free with `g_list_free()` when done.
+Returns: (element-type **Gnome::Gtk3::ListBoxRow**) (transfer container): A **GList** containing the **Gnome::Gtk3::Widget** for each selected child. Free with `g_list_free()` when done.
 
 Since: 3.14
 
-    method gtk_list_box_get_selected_rows ( --> N-GObject  )
+    method gtk_list_box_get_selected_rows ( --> N-GList  )
 
 [gtk_list_box_] unselect_row
 ----------------------------
@@ -204,9 +227,9 @@ Unselects a single row of *box*, if the selection mode allows it.
 
 Since: 3.14
 
-    method gtk_list_box_unselect_row ( N-GObject $row )
+    method gtk_list_box_unselect_row ( GtkListBoxRow $row )
 
-  * N-GObject $row; the row to unselected
+  * GtkListBoxRow $row; the row to unselected
 
 [gtk_list_box_] select_all
 --------------------------
@@ -229,20 +252,20 @@ Since: 3.14
 [gtk_list_box_] set_selection_mode
 ----------------------------------
 
-Sets how selection works in the listbox. See `Gnome::Gtk3::SelectionMode` for details.
+Sets how selection works in the listbox. See **Gnome::Gtk3::SelectionMode** for details.
 
 Since: 3.10
 
     method gtk_list_box_set_selection_mode ( GtkSelectionMode $mode )
 
-  * GtkSelectionMode $mode; The `Gnome::Gtk3::SelectionMode`
+  * GtkSelectionMode $mode; The **Gnome::Gtk3::SelectionMode**
 
 [gtk_list_box_] get_selection_mode
 ----------------------------------
 
 Gets the selection mode of the listbox.
 
-Returns: a `Gnome::Gtk3::SelectionMode`
+Returns: a **Gnome::Gtk3::SelectionMode**
 
 Since: 3.10
 
@@ -309,88 +332,95 @@ Since: 3.10
 [gtk_list_box_] drag_highlight_row
 ----------------------------------
 
-This is a helper function for implementing DnD onto a `Gnome::Gtk3::ListBox`. The passed in *row* will be highlighted via `gtk_drag_highlight()`, and any previously highlighted row will be unhighlighted.
+This is a helper function for implementing DnD onto a **Gnome::Gtk3::ListBox**. The passed in *row* will be highlighted via `gtk_drag_highlight()`, and any previously highlighted row will be unhighlighted.
 
 The row will also be unhighlighted when the widget gets a drag leave event.
 
 Since: 3.10
 
-    method gtk_list_box_drag_highlight_row ( N-GObject $row )
+    method gtk_list_box_drag_highlight_row ( GtkListBoxRow $row )
 
-  * N-GObject $row; a `Gnome::Gtk3::ListBoxRow`
+  * GtkListBoxRow $row; a **Gnome::Gtk3::ListBoxRow**
 
 gtk_list_box_new
 ----------------
 
-Creates a new `Gnome::Gtk3::ListBox` container.
+Creates a new **Gnome::Gtk3::ListBox** container.
 
-Returns: a new `Gnome::Gtk3::ListBox`
+Returns: a new **Gnome::Gtk3::ListBox**
 
 Since: 3.10
 
     method gtk_list_box_new ( --> N-GObject  )
 
-Not yet implemented methods
-===========================
-
-method gtk_list_box_selected_foreach ( ... ) gtk_list_box_set_filter_func gtk_list_box_set_header_func gtk_list_box_set_sort_func gtk_list_box_bind_model
----------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
 
-### activate
+### row-selected
 
-This is a keybinding signal, which will cause this row to be activated.
+The *row-selected* signal is emitted when a new row is selected, or (with a `Any` *row*) when the selection is cleared.
 
-If you want to be notified when the user activates a row (by key or not), use the “row-activated” signal on the row’s parent GtkListBox.
-
-Since: 3.10
-
-    method handler (
-      Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $box; the `Gnome::Gtk3::ListBox` on wich the signal is emitted
-
-### activate-cursor-row
+When the *box* is using **GTK_SELECTION_MULTIPLE**, this signal will not give you the full picture of selection changes, and you should use the *selected-rows-changed* signal instead.
 
 Since: 3.10
 
     method handler (
+      N-GObject $row,
       Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox` on wich the signal is emitted
+  * $box; the **Gnome::Gtk3::ListBox** on which the signal is emitted
+
+  * $row; the selected row, a native ListBoxRow
 
 ### selected-rows-changed
 
-The sig *selected-rows-changed* signal is emitted when the set of selected rows changes.
+The *selected-rows-changed* signal is emitted when the set of selected rows changes.
 
 Since: 3.14
 
     method handler (
       Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox` on wich the signal is emitted
+  * $box; the **Gnome::Gtk3::ListBox** on wich the signal is emitted
 
 ### select-all
 
-The sig *select-all* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to select all children of the box, if the selection mode permits it.
+The *select-all* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to select all children of the box, if the selection mode permits it.
 
 The default bindings for this signal is Ctrl-a.
 
@@ -398,14 +428,14 @@ Since: 3.14
 
     method handler (
       Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox` on which the signal is emitted
+  * $box; the **Gnome::Gtk3::ListBox** on which the signal is emitted
 
 ### unselect-all
 
-The sig *unselect-all* signal is a [keybinding signal][`Gnome::Gtk3::BindingSignal`] which gets emitted to unselect all children of the box, if the selection mode permits it.
+The *unselect-all* signal is a keybinding signal which gets emitted to unselect all children of the box, if the selection mode permits it.
 
 The default bindings for this signal is Ctrl-Shift-a.
 
@@ -413,69 +443,66 @@ Since: 3.14
 
     method handler (
       Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox` on which the signal is emitted
-
-### toggle-cursor-row
-
-Since: 3.10
-
-    method handler (
-      Gnome::GObject::Object :widget($box),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $box; the `Gnome::Gtk3::ListBox` on which the signal is emitted
-
-### row-selected
-
-The sig *row-selected* signal is emitted when a new row is selected, or (with a `Any` *row*) when the selection is cleared.
-
-When the *box* is using `GTK_SELECTION_MULTIPLE`, this signal will not give you the full picture of selection changes, and you should use the sig `selected-rows-changed` signal instead.
-
-Since: 3.10
-
-    method handler (
-      Gnome::GObject::Object :widget($box),
-      :handler-arg0($row),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $box; the `Gnome::Gtk3::ListBox`
-
-  * $row; (nullable): the selected row
+  * $box; the **Gnome::Gtk3::ListBox** on which the signal is emitted
 
 ### row-activated
 
-The sig *row-activated* signal is emitted when a row has been activated by the user.
+The *row-activated* signal is emitted when a row has been activated by the user.
 
 Since: 3.10
 
     method handler (
+      N-GObject $row,
       Gnome::GObject::Object :widget($box),
-      :handler-arg0($row),
-      :$user-option1, ..., :$user-optionN
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox`
+  * $box; the **Gnome::Gtk3::ListBox** on which the signal is emitted
 
-  * $row; the activated row
+  * $row; the activated row, a native ListBoxRow
 
-Not yet supported signals
--------------------------
+### activate-cursor-row
+
+    method handler (
+      Gnome::GObject::Object :widget($listbox),
+      *%user-options
+    );
+
+  * $listbox; the **Gnome::Gtk3::ListBox** on which the signal is emitted
+
+### toggle-cursor-row
+
+    method handler (
+      Gnome::GObject::Object :widget($listbox),
+      *%user-options
+    );
+
+  * $listbox; object receiving the signal
 
 ### move-cursor
 
-Since: 3.10
-
     method handler (
-      Gnome::GObject::Object :widget($box),
-      GtkMovementStep :handler-arg0($arg1),
-      Int :handler-arg1($arg2),
-      :$user-option1, ..., :$user-optionN
+      GtkMovementStep $arg1,
+      Int $arg2,
+      Gnome::GObject::Object :widget($listbox),
+      *%user-options
     );
 
-  * $box; the `Gnome::Gtk3::ListBox` on wich the signal is emitted
+  * $listbox; the **Gnome::Gtk3::ListBox** on which the signal is emitted
+
+  * $arg1; a GtkMovementStep
+
+  * $arg2; ?
+
+### activate
+
+    method handler (
+      Gnome::GObject::Object :widget($listbox),
+      *%user-options
+    );
+
+  * $listbox;
 

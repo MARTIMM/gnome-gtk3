@@ -2,17 +2,21 @@ use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::StyleProvider
+=head1 Gnome::Gtk3::StyleProvider
 
-=SUBTITLE Interface to provide style information to C<Gnome::Gtk3::StyleContext>
+Interface to provide style information to B<Gnome::Gtk3::StyleContext>
 
 =head1 Description
 
-C<Gnome::Gtk3::StyleProvider> is an interface used to provide style information to a C<Gnome::Gtk3::StyleContext>. See C<gtk_style_context_add_provider()> and C<gtk_style_context_add_provider_for_screen()>.
+B<Gnome::Gtk3::StyleProvider> is an interface used to provide style information to a B<Gnome::Gtk3::StyleContext>. See C<gtk_style_context_add_provider()> and C<gtk_style_context_add_provider_for_screen()>.
+
+=head2 Known implementations
+
+Gnome::Gtk3::StyleProvider is implemented by Gnome::Gtk3::CssProvider and Gnome::Gtk3::Settings.
 
 =head2 See Also
 
-C<Gnome::Gtk3::StyleContext>, C<Gnome::Gtk3::CssProvider>
+B<Gnome::Gtk3::StyleContext>, B<Gnome::Gtk3::CssProvider>
 
 =head1 Synopsis
 =head2 Declaration
@@ -20,7 +24,7 @@ C<Gnome::Gtk3::StyleContext>, C<Gnome::Gtk3::CssProvider>
   unit class Gnome::Gtk3::StyleProvider;
   also is Gnome::GObject::Interface;
 
-=head2 Example
+=commenthead2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -78,6 +82,7 @@ class GtkStyleProviderIface is export is repr('CStruct') {
 
 =end pod
 
+#TT:0:GtkStyleProviderPriority:
 enum GtkStyleProviderPriority is export (
   GTK_STYLE_PROVIDER_PRIORITY_FALLBACK => 1,
   GTK_STYLE_PROVIDER_PRIORITY_THEME => 200,
@@ -91,31 +96,17 @@ enum GtkStyleProviderPriority is export (
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-
-=head3 multi method new ( N-GObject :$widget! )
-
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
-
 =end pod
 
+# interfaces are not instantiated -> no doc
 submethod BUILD ( *%options ) {
 
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  #$signals-added = self.add-signal-types( $?CLASS.^name,
-  #  # ... :type<signame>
-  #) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::StyleProvider';
 
-  # process all named arguments
-  if ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
+  # process all named arguments which should be none ever
+  if %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
                ': ' ~ %options.keys.join(', ')
@@ -124,7 +115,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the widget, the gtype is known
-  self.set-class-info('GtkStyleProvider');
+  #self.set-class-info('GtkStyleProvider');
 }
 
 #-------------------------------------------------------------------------------
@@ -159,7 +150,7 @@ Since: 3.0
     --> Int
   )
 
-=item N-GObject $path; C<Gnome::Gtk3::WidgetPath> to query
+=item N-GObject $path; B<Gnome::Gtk3::WidgetPath> to query
 =item GtkStateFlags $state; state to query the style property for
 =item GParamSpec $pspec; The C<GParamSpec> to query
 =item N-GObject $value; (out): return location for the property value
@@ -171,23 +162,3 @@ sub gtk_style_provider_get_style_property ( N-GObject $provider, N-GObject $path
   is native(&gtk-lib)
   { * }
 }}
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not yet implemented methods
-
-=head3 method gtk_style_provider_get_style_property ( ... )
-
-=end comment
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 List of deprecated (not implemented!) methods
-
-=head2 Since 3.8
-=head3 method gtk_style_provider_get_style ( ... )
-=head3 method gtk_style_provider_get_icon_factory ( ... )
-=end pod

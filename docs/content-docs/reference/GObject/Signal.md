@@ -1,10 +1,5 @@
-TITLE
-=====
-
 Gnome::GObject::Signal
-
-SUBTITLE
-========
+======================
 
 A means for customization of object behaviour and a general purpose notification mechanism
 
@@ -22,52 +17,42 @@ Declaration
 Example
 -------
 
-    # define method
-    method mouse-event ( :widget($w), :event($e)) { ... }
+    use NativeCall;
+    use Gnome::N::N-GObject;
+    use Gnome::Gdk3::Events;
+    use Gnome::Gtk3::Window;
 
-    # get the window object
+    # Get a window object
     my Gnome::Gtk3::Window $w .= new( ... );
 
-    # define proper handler. you must study the GTK develper guides. you will
-    # then notice that C<connect-object> is a bit different than the real mcCoy.
-    my Callable $handler;
-    $handler = -> N-GObject $ignore-w, Pointer $e,
-                  OpaquePointer $ignore-d {
-      self.mouse-event( :widget($w), :event($e) );
-    }
-
-    # connect signal to the handler
-    $w.connect-object( 'button-press-event', $handler);
-
-It will be easier to use the `register-signal()` method defined in `Gnome::GObject::Object`.
-
-    # define method
-    method mouse-event ( :widget($w), :event($e), :$time) {
+    # Define proper handler. The handler API must describe all arguments
+    # and their types.
+    my Callable $handler = sub (
+      N-GObject $native-widget, GdkEvent $event, OpaquePointer $ignore-d
+    ) {
       ...
     }
 
-    # get the window object
+    # Connect signal to the handler.
+    $w.connect-object( 'button-press-event', $handler);
+
+The other option to connect a signal is to use the `register-signal()` method defined in **Gnome::GObject::Object**. It all depends on how elaborate things are or taste.
+
+    use Gnome::Gdk3::Events;
+    use Gnome::Gtk3::Window;
+
+    # Define handler method. The handler API must describe all positional
+    # arguments and their types.
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # Get a window object
     my Gnome::Gtk3::Window $w .= new( ... );
 
-    # then register
-    $w.register-signal(
-      self, 'mouse-event',
-      'button-press-event', :time(now)
-    );
+    # Then register
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
 
 Methods
 =======
-
-[g_signal_] connect_object
---------------------------
-
-Connects a callback function to a signal for a particular object.
-
-    method g_signal_connect_object( Str $signal, Callable $handler --> uint64 )
-
-  * $signal; a string of the form `signal-name::detail`.
-
-  * $handler; the callback to connect.
 
 [g_signal_] emit_by_name
 ------------------------

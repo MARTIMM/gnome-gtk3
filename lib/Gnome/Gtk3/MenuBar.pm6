@@ -1,31 +1,37 @@
+#TL:1:Gnome::Gtk3::MenuBar:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::MenuBar
+=head1 Gnome::Gtk3::MenuBar
+
+A subclass of B<Gnome::Gtk3::MenuShell> which holds B<Gnome::Gtk3::MenuItem> widgets
 
 ![](images/menubar.png)
-
-=SUBTITLE A subclass of C<Gnome::Gtk3::MenuShell> which holds C<Gnome::Gtk3::MenuItem> widgets
 
 =head1 Description
 
 
-The C<Gnome::Gtk3::MenuBar> is a subclass of C<Gnome::Gtk3::MenuShell> which contains one or
-more C<Gnome::Gtk3::MenuItems>. The result is a standard menu bar which can hold
+The B<Gnome::Gtk3::MenuBar> is a subclass of B<Gnome::Gtk3::MenuShell> which contains one or
+more B<Gnome::Gtk3::MenuItems>. The result is a standard menu bar which can hold
 many menu items.
 
 
 =head2 Css Nodes
 
 
-C<Gnome::Gtk3::MenuBar> has a single CSS node with name menubar.
+B<Gnome::Gtk3::MenuBar> has a single CSS node with name menubar.
 
+=head2 Implemented Interfaces
 
+Gnome::Gtk3::MenuBar implements
+=item Gnome::Atk::ImplementorIface
+=item Gnome::Gtk3::Buildable
 
 =head2 See Also
 
-C<Gnome::Gtk3::MenuShell>, C<Gnome::Gtk3::Menu>, C<Gnome::Gtk3::MenuItem>
+B<Gnome::Gtk3::MenuShell>, B<Gnome::Gtk3::Menu>, B<Gnome::Gtk3::MenuItem>
 
 =head1 Synopsis
 =head2 Declaration
@@ -33,16 +39,16 @@ C<Gnome::Gtk3::MenuShell>, C<Gnome::Gtk3::Menu>, C<Gnome::Gtk3::MenuItem>
   unit class Gnome::Gtk3::MenuBar;
   also is Gnome::Gtk3::MenuShell;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
+
 #-------------------------------------------------------------------------------
 use NativeCall;
 
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::MenuShell;
 
 #-------------------------------------------------------------------------------
@@ -58,27 +64,25 @@ also is Gnome::Gtk3::MenuShell;
 =head1 Methods
 =head2 new
 
-  multi method new ( Bool :$empty! )
+Create a new plain object.
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+  multi method new ( Bool :empty! )
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-Create an object using a native object from elsewhere. See also C<Gnome::GObject::Object>.
+  multi method new ( N-GObject :$widget! )
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also C<Gnome::GObject::Object>.
-
 =end pod
 
+#TM:0:new():inheriting
+#TM:1:new(:empty):
+#TM:0:new(:widget):
+#TM:0:new(:build-id):
 submethod BUILD ( *%options ) {
-
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-#  $signals-added = self.add-signal-types( $?CLASS.^name,
-#    # ... :type<signame>
-#  ) unless $signals-added;
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::MenuBar';
@@ -99,6 +103,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkMenuBar');
 }
 
 #-------------------------------------------------------------------------------
@@ -109,21 +116,219 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_menu_bar_$native-sub"); } unless ?$s;
 
-#note "ad $native-sub: ", $s;
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
+  $s = self._query_interfaces(
+    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
+  ) unless $s;
+
+  self.set-class-name-of-sub('GtkMenuBar');
   $s = callsame unless ?$s;
 
   $s;
 }
 
 
+#-------------------------------------------------------------------------------
+#TM:2:gtk_menu_bar_new:new(:empty)
+=begin pod
+=head2 gtk_menu_bar_new
+
+Creates a new B<Gnome::Gtk3::MenuBar>
+
+Returns: the new menu bar, as a B<Gnome::Gtk3::Widget>
+
+  method gtk_menu_bar_new ( --> N-GObject  )
+
+
+=end pod
+
+sub gtk_menu_bar_new (  )
+  returns N-GObject
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_menu_bar_new_from_model:
+=begin pod
+=head2 [gtk_menu_bar_] new_from_model
+
+Creates a new B<Gnome::Gtk3::MenuBar> and populates it with menu items
+and submenus according to I<model>.
+
+The created menu items are connected to actions found in the
+B<Gnome::Gtk3::ApplicationWindow> to which the menu bar belongs - typically
+by means of being contained within the B<Gnome::Gtk3::ApplicationWindows>
+widget hierarchy.
+
+Returns: a new B<Gnome::Gtk3::MenuBar>
+
+Since: 3.4
+
+  method gtk_menu_bar_new_from_model ( N-GObject $model --> N-GObject  )
+
+=item N-GObject $model; a B<GMenuModel>
+
+=end pod
+
+sub gtk_menu_bar_new_from_model ( N-GObject $model )
+  returns N-GObject
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:gtk_menu_bar_get_pack_direction:
+=begin pod
+=head2 [gtk_menu_bar_] get_pack_direction
+
+Retrieves the current pack direction of the menubar.
+See C<gtk_menu_bar_set_pack_direction()>.
+
+Returns: the pack direction
+
+Since: 2.8
+
+  method gtk_menu_bar_get_pack_direction ( --> GtkPackDirection  )
+
+
+=end pod
+
+sub gtk_menu_bar_get_pack_direction ( N-GObject $menubar )
+  returns int32
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:gtk_menu_bar_set_pack_direction:
+=begin pod
+=head2 [gtk_menu_bar_] set_pack_direction
+
+Sets how items should be packed inside a menubar.
+
+Since: 2.8
+
+  method gtk_menu_bar_set_pack_direction ( GtkPackDirection $pack_dir )
+
+=item GtkPackDirection $pack_dir; a new B<Gnome::Gtk3::PackDirection>
+
+=end pod
+
+sub gtk_menu_bar_set_pack_direction ( N-GObject $menubar, int32 $pack_dir )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_menu_bar_get_child_pack_direction:
+=begin pod
+=head2 [gtk_menu_bar_] get_child_pack_direction
+
+Retrieves the current child pack direction of the menubar.
+See C<gtk_menu_bar_set_child_pack_direction()>.
+
+Returns: the child pack direction
+
+Since: 2.8
+
+  method gtk_menu_bar_get_child_pack_direction ( --> GtkPackDirection  )
+
+
+=end pod
+
+sub gtk_menu_bar_get_child_pack_direction ( N-GObject $menubar )
+  returns int32
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_menu_bar_set_child_pack_direction:
+=begin pod
+=head2 [gtk_menu_bar_] set_child_pack_direction
+
+Sets how widgets should be packed inside the children of a menubar.
+
+Since: 2.8
+
+  method gtk_menu_bar_set_child_pack_direction ( GtkPackDirection $child_pack_dir )
+
+=item GtkPackDirection $child_pack_dir; a new B<Gnome::Gtk3::PackDirection>
+
+=end pod
+
+sub gtk_menu_bar_set_child_pack_direction ( N-GObject $menubar, int32 $child_pack_dir )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.g-object-get-property( 'label', $gv);
+  $gv.g-value-set-string('my text label');
+
+=head2 Supported properties
+
+=comment #TP:0:pack-direction:
+=head3 Pack direction
+
+
+The pack direction of the menubar. It determines how
+menuitems are arranged in the menubar.
+Since: 2.8
+Widget type: GTK_TYPE_PACK_DIRECTION
+
+The B<Gnome::GObject::Value> type of property I<pack-direction> is C<G_TYPE_ENUM>.
+
+=comment #TP:0:child-pack-direction:
+=head3 Child Pack direction
+
+
+The child pack direction of the menubar. It determines how
+the widgets contained in child menuitems are arranged.
+Since: 2.8
+Widget type: GTK_TYPE_PACK_DIRECTION
+
+The B<Gnome::GObject::Value> type of property I<child-pack-direction> is C<G_TYPE_ENUM>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 gtk_menu_bar_new
 
-Creates a new C<Gnome::Gtk3::MenuBar>
+Creates a new B<Gnome::Gtk3::MenuBar>
 
-Returns: the new menu bar, as a C<Gnome::Gtk3::Widget>
+Returns: the new menu bar, as a B<Gnome::Gtk3::Widget>
 
   method gtk_menu_bar_new ( --> N-GObject  )
 
@@ -139,15 +344,15 @@ sub gtk_menu_bar_new (  )
 =begin pod
 =head2 [gtk_menu_bar_] new_from_model
 
-Creates a new C<Gnome::Gtk3::MenuBar> and populates it with menu items
+Creates a new B<Gnome::Gtk3::MenuBar> and populates it with menu items
 and submenus according to I<model>.
 
 The created menu items are connected to actions found in the
-C<Gnome::Gtk3::ApplicationWindow> to which the menu bar belongs - typically
-by means of being contained within the C<Gnome::Gtk3::ApplicationWindows>
+B<Gnome::Gtk3::ApplicationWindow> to which the menu bar belongs - typically
+by means of being contained within the B<Gnome::Gtk3::ApplicationWindows>
 widget hierarchy.
 
-Returns: a new C<Gnome::Gtk3::MenuBar>
+Returns: a new B<Gnome::Gtk3::MenuBar>
 
 Since: 3.4
 
@@ -193,7 +398,7 @@ Since: 2.8
 
   method gtk_menu_bar_set_pack_direction ( GtkPackDirection $pack_dir )
 
-=item GtkPackDirection $pack_dir; a new C<Gnome::Gtk3::PackDirection>
+=item GtkPackDirection $pack_dir; a new B<Gnome::Gtk3::PackDirection>
 
 =end pod
 
@@ -232,7 +437,7 @@ Since: 2.8
 
   method gtk_menu_bar_set_child_pack_direction ( GtkPackDirection $child_pack_dir )
 
-=item GtkPackDirection $child_pack_dir; a new C<Gnome::Gtk3::PackDirection>
+=item GtkPackDirection $child_pack_dir; a new B<Gnome::Gtk3::PackDirection>
 
 =end pod
 
@@ -246,7 +451,7 @@ sub gtk_menu_bar_set_child_pack_direction ( N-GObject $menubar, int32 $child_pac
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -257,7 +462,7 @@ An example of using a string type property of a C<Gnome::Gtk3::Label> object. Th
 
 =head3 pack-direction
 
-The C<Gnome::GObject::Value> type of property I<pack-direction> is C<G_TYPE_ENUM>.
+The B<Gnome::GObject::Value> type of property I<pack-direction> is C<G_TYPE_ENUM>.
 
 The pack direction of the menubar. It determines how
 menuitems are arranged in the menubar.
@@ -266,7 +471,7 @@ Since: 2.8
 
 =head3 child-pack-direction
 
-The C<Gnome::GObject::Value> type of property I<child-pack-direction> is C<G_TYPE_ENUM>.
+The B<Gnome::GObject::Value> type of property I<child-pack-direction> is C<G_TYPE_ENUM>.
 
 The child pack direction of the menubar. It determines how
 the widgets contained in child menuitems are arranged.

@@ -7,10 +7,18 @@
 #    url: '/content-docs/nyi-reference.html'
 #  - title: "Interface"
 #    url: '/content-docs/nyi-reference.html'
+  - title: "Events"
+    url: '/content-docs/reference/GObject/Events.html'
+    doc:  1
+    test: 0
   - title: "Object"
     url: '/content-docs/reference/GObject/Object.html'
+    doc: 1
+    test: 1
   - title: "Signal"
     url: '/content-docs/reference/GObject/Signal.html'
+    doc: 1
+    test: 1
   - title: "Type"
     url: '/content-docs/reference/GObject/Type.html'
     doc:  1

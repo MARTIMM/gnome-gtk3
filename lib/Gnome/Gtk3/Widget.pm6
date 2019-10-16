@@ -1,16 +1,16 @@
-#TL:+:Gnome::Gtk3::Widget
+#TL:1:Gnome::Gtk3::Widget
 
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::Widget
+=head1 Gnome::Gtk3::Widget
 
-=SUBTITLE Base class for all widgets
+Base class for all widgets
 
 =head1 Description
 
-C<Gnome::Gtk3::Widget> is the base class all widgets in this package derive from. It manages the widget lifecycle, states and style.
+B<Gnome::Gtk3::Widget> is the base class all widgets in this package derive from. It manages the widget lifecycle, states and style.
 
 =head2 Height-for-width Geometry Management
 
@@ -35,13 +35,13 @@ For example, when queried in the normal C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> mod
 
 After the toplevel window has initially requested its size in both dimensions it can go on to allocate itself a reasonable size (or a size previously specified with C<gtk_window_set_default_size()>). During the recursive allocation process it’s important to note that request cycles will be recursively executed while container widgets allocate their children. Each container widget, once allocated a size, will go on to first share the space in one orientation among its children and then request each child's height for its target allocated width or its width for allocated height, depending.
 
-In this way a C<Gnome::Gtk3::Widget> will typically be requested its size a number of times before actually being allocated a size. The size a widget is finally allocated can of course differ from the size it has requested. For this reason, C<Gnome::Gtk3::Widget> caches a  small number of results to avoid re-querying for the same sizes in one allocation cycle.
+In this way a B<Gnome::Gtk3::Widget> will typically be requested its size a number of times before actually being allocated a size. The size a widget is finally allocated can of course differ from the size it has requested. For this reason, B<Gnome::Gtk3::Widget> caches a  small number of results to avoid re-querying for the same sizes in one allocation cycle.
 
 See [Gnome::Gtk3::Container’s geometry management section](https://developer.gnome.org/gtk3/stable/GtkContainer.html) to learn more about how height-for-width allocations are performed by container widgets.
 
 If a widget does move content around to intelligently use up the allocated size then it must support the request in both C<GtkSizeRequestMode>s even if the widget in question only trades sizes in a single orientation.
 
-For instance, a C<Gnome::Gtk3::Label> that does height-for-width word wrapping will not expect to have C<get_preferred_height()> called because that call is specific to a width-for-height request. In this case the label must return the height required for its own minimum possible width. By following this rule any widget that handles height-for-width or width-for-height requests will always be allocated at least enough space to fit its own content.
+For instance, a B<Gnome::Gtk3::Label> that does height-for-width word wrapping will not expect to have C<get_preferred_height()> called because that call is specific to a width-for-height request. In this case the label must return the height required for its own minimum possible width. By following this rule any widget that handles height-for-width or width-for-height requests will always be allocated at least enough space to fit its own content.
 
 =begin comment
 Here are some examples of how a C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> widget generally deals with width-for-height requests, for C<get_preferred_height()> it will do (A piece of C-code directly from the docs):
@@ -96,9 +96,9 @@ Often a widget needs to get its own request during size request or allocation. F
     widget, &min, &natural
   );
 
-It will not work to use the wrapper functions, such as C<gtk_widget_get_preferred_width()> inside your own size request implementation. These return a request adjusted by C<Gnome::Gtk3::SizeGroup> and by the C<adjust_size_request()> virtual method. If a widget used the wrappers inside its virtual method implementations, then the adjustments (such as widget margins) would be applied twice. GTK+ therefore does not allow this and will warn if you try to do it.
+It will not work to use the wrapper functions, such as C<gtk_widget_get_preferred_width()> inside your own size request implementation. These return a request adjusted by B<Gnome::Gtk3::SizeGroup> and by the C<adjust_size_request()> virtual method. If a widget used the wrappers inside its virtual method implementations, then the adjustments (such as widget margins) would be applied twice. GTK+ therefore does not allow this and will warn if you try to do it.
 
-Of course if you are getting the size request for another widget, such as a child of a container, you must use the wrapper APIs. Otherwise, you would not properly consider widget margins, C<Gnome::Gtk3::SizeGroup>, and so forth.
+Of course if you are getting the size request for another widget, such as a child of a container, you must use the wrapper APIs. Otherwise, you would not properly consider widget margins, B<Gnome::Gtk3::SizeGroup>, and so forth.
 
 =end comment
 
@@ -110,13 +110,13 @@ If a widget ends up baseline aligned it will be allocated all the space in the p
 
 =head2 Style Properties
 
-C<Gnome::Gtk3::Widget> introduces “style properties” - these are basically object properties that are stored not on the object, but in the style object associated to the widget. Style properties are set in gtk resource files. This mechanism is used for configuring such things as the location of the scrollbar arrows through the theme, giving theme authors more control over the look of applications without the need to write a theme engine in C.
+B<Gnome::Gtk3::Widget> introduces “style properties” - these are basically object properties that are stored not on the object, but in the style object associated to the widget. Style properties are set in gtk resource files. This mechanism is used for configuring such things as the location of the scrollbar arrows through the theme, giving theme authors more control over the look of applications without the need to write a theme engine in C.
 
 Use C<gtk_widget_class_install_style_property()> to install style properties for a widget class, C<gtk_widget_class_find_style_property()> or C<gtk_widget_class_list_style_properties()> to get information about existing style properties and C<gtk_widget_style_get_property()>, C<gtk_widget_style_get()> or C<gtk_widget_style_get_valist()> to obtain the value of a style property.
 
 =head2 Gnome::Gtk3::Widget as Gnome::Gtk3::Buildable
 
-The C<Gnome::Gtk3::Widget> implementation of the C<Gnome::Gtk3::Buildable> interface supports a custom <accelerator> element, which has attributes named ”key”, ”modifiers” and ”signal” and allows to specify accelerators.
+The B<Gnome::Gtk3::Widget> implementation of the B<Gnome::Gtk3::Buildable> interface supports a custom <accelerator> element, which has attributes named ”key”, ”modifiers” and ”signal” and allows to specify accelerators.
 
 An example of a UI definition fragment specifying an accelerator (please note that in this XML the C-Source widget class names must be used; GtkButton instead of Gnome::Gtk3::Button):
 
@@ -124,7 +124,7 @@ An example of a UI definition fragment specifying an accelerator (please note th
     <accelerator key="q" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
   </object>
 
-In addition to accelerators, C<Gnome::Gtk3::Widget> also support a custom <accessible> element, which supports actions and relations. Properties on the accessible implementation of an object can be set by accessing the internal child “accessible” of a C<Gnome::Gtk3::Widget>.
+In addition to accelerators, B<Gnome::Gtk3::Widget> also support a custom <accessible> element, which supports actions and relations. Properties on the accessible implementation of an object can be set by accessing the internal child “accessible” of a B<Gnome::Gtk3::Widget>.
 
 An example of a UI definition fragment specifying an accessible:
 
@@ -147,7 +147,7 @@ An example of a UI definition fragment specifying an accessible:
     </child>
   </object>
 
-Finally, C<Gnome::Gtk3::Widget> allows style information such as style classes to be associated with widgets, using the custom <style> element:
+Finally, B<Gnome::Gtk3::Widget> allows style information such as style classes to be associated with widgets, using the custom <style> element:
 
   <object class="GtkButton>" id="button1">
     <style>
@@ -159,22 +159,22 @@ Finally, C<Gnome::Gtk3::Widget> allows style information such as style classes t
 =begin comment
 =head2 Building composite widgets from template XML
 
-C<Gnome::Gtk3::Widget> exposes some facilities to automate the procedure of creating composite widgets using C<Gnome::Gtk3::Builder> interface description language.
+B<Gnome::Gtk3::Widget> exposes some facilities to automate the procedure of creating composite widgets using B<Gnome::Gtk3::Builder> interface description language.
 
-To create composite widgets with C<Gnome::Gtk3::Builder> XML, one must associate
+To create composite widgets with B<Gnome::Gtk3::Builder> XML, one must associate
 the interface description with the widget class at class initialization
 time using C<gtk_widget_class_set_template()>.
 
 The interface description semantics expected in composite template descriptions
-is slightly different from regular C<Gnome::Gtk3::Builder> XML.
+is slightly different from regular B<Gnome::Gtk3::Builder> XML.
 
-Unlike regular interface descriptions, C<gtk_widget_class_set_template()> will expect a <template> tag as a direct child of the toplevel <interface> tag. The <template> tag must specify the “class” attribute which must be the type name of the widget. Optionally, the “parent” attribute may be specified to specify the direct parent type of the widget type, this is ignored by the C<Gnome::Gtk3::Builder> but required for Glade to introspect what kind of properties and internal children exist for a given type when the actual type does not exist.
+Unlike regular interface descriptions, C<gtk_widget_class_set_template()> will expect a <template> tag as a direct child of the toplevel <interface> tag. The <template> tag must specify the “class” attribute which must be the type name of the widget. Optionally, the “parent” attribute may be specified to specify the direct parent type of the widget type, this is ignored by the B<Gnome::Gtk3::Builder> but required for Glade to introspect what kind of properties and internal children exist for a given type when the actual type does not exist.
 
 The XML which is contained inside the <template> tag behaves as if it were added to the <object> tag defining I<widget> itself. You may set properties on I<widget> by inserting <property> tags into the <template> tag, and also add <child> tags to add children and extend I<widget> in the normal way you would with <object> tags.
 
 Additionally, <object> tags can also be added before and after the initial <template> tag in the normal way, allowing one to define auxiliary objects which might be referenced by other widgets declared as children of the <template> tag.
 
-An example of a C<Gnome::Gtk3::Builder> Template Definition:
+An example of a B<Gnome::Gtk3::Builder> Template Definition:
 
   <interface>
     <template class="FooWidget" parent="GtkBox">
@@ -194,7 +194,7 @@ An example of a C<Gnome::Gtk3::Builder> Template Definition:
     </template>
   </interface>
 
-Typically, you'll place the template fragment into a file that is bundled with your project, using C<GResource>. In order to load the template, you need to call C<gtk_widget_class_set_template_from_resource()> from the class initialization of your C<Gnome::Gtk3::Widget> type:
+Typically, you'll place the template fragment into a file that is bundled with your project, using C<GResource>. In order to load the template, you need to call C<gtk_widget_class_set_template_from_resource()> from the class initialization of your B<Gnome::Gtk3::Widget> type:
 
 =comment TODO replace with perl6 code
 
@@ -219,8 +219,8 @@ initialization function:
 You can access widgets defined in the template using the C<gtk_widget_get_template_child()> function, but you will typically declare a pointer in the instance private data structure of your type using the same name as the widget in the template definition, and call C<gtk_widget_class_bind_template_child_private()> with that name, e.g.
 
   typedef struct {
-    C<Gnome::Gtk3::Widget> *hello_button;
-    C<Gnome::Gtk3::Widget> *goodbye_button;
+    B<Gnome::Gtk3::Widget> *hello_button;
+    B<Gnome::Gtk3::Widget> *goodbye_button;
   } FooWidgetPrivate;
 
   G_DEFINE_TYPE_WITH_PRIVATE (FooWidget, foo_widget, GTK_TYPE_BOX)
@@ -255,6 +255,12 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
     );
   }
 
+=head2 Implemented Interfaces
+
+Gnome::Gtk3::Widget implements
+=item Gnome::Atk::ImplementorIface
+=item Gnome::Gtk3::Buildable
+
 =end comment
 
 =head1 Synopsis
@@ -281,7 +287,7 @@ use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
 
-subset GtkAllocation of GdkRectangle;
+subset GtkAllocation of N-GdkRectangle;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
 # https://developer.gnome.org/gtk3/stable/GtkWidget.html
@@ -303,6 +309,7 @@ Kinds of widget-specific help. Used by the ::show-help signal.
 
 =end pod
 
+#TE:0:GtkWidgetHelpType:
 enum GtkWidgetHelpType is export (
   'GTK_WIDGET_HELP_TOOLTIP',
   'GTK_WIDGET_HELP_WHATS_THIS'
@@ -312,15 +319,14 @@ enum GtkWidgetHelpType is export (
 =begin pod
 =head2 class GtkRequisition
 
-A C<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. See
-[C<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for
-more information.
+A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. See [B<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for more information.
 
 =item Int $.width: the widget’s desired width
 =item Int $.height: the widget’s desired height
 
 =end pod
 
+#TT:0:N-GtkRequisition:
 class GtkRequisition is export is repr('CStruct') {
   has int32 $.width;
   has int32 $.height;
@@ -346,6 +352,7 @@ Since: 3.8
 
 =end pod
 
+#TT:0:N-GtkTickCallback:
 class GtkTickCallback is export is repr('CStruct') {
   has GInitiallyUnowned $.parent_instance;
   has GtkWidgetPrivate $.priv;
@@ -360,17 +367,25 @@ my Bool $signals-added = False;
 =begin pod
 =head1 Methods
 =end pod
-#=head2 new
 
-#TS:BUILD
+#TM:1:new():inheriting
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<accel-closures-changed destroy grab-focus hide map popup-menu
-            realize show style-updated unmap unrealize
-           >,
+    :w0<destroy show hide map unmap realize unrealize style-updated grab-focus delete-event show-help screen-changed>,
+    :w1<size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event query-tooltip accel-closures-changed can-activate-accel can-activate-accel>,
+    :w2<selection-get drag-begin drag-motion>,
+    :w3<proximity-in-event>,
+    :w4<drag-drop drag-data-get drag-data-received popup-menu>,
+#`{{
+Above is not completely correct!
+    :w0<accel-closures-changed destroy grab-focus hide map popup-menu
+        realize show style-updated unmap unrealize>,
+#    :signal<accel-closures-changed destroy grab-focus hide map popup-menu
+#            realize show style-updated unmap unrealize
+#           >,
     :event<button-press-event button-release-event configure-event
            damage-event delete-event destroy-event enter-notify-event
            event-after focus-in-event grab-broken-event key-press-event
@@ -400,6 +415,7 @@ submethod BUILD ( *%options ) {
     :int2boolnw<query-tooltip>,
     :seluint2<selection-get>,
     :seluint<selection-received>,
+}}
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -417,13 +433,19 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_widget_$native-sub"); } unless ?$s;
 
-#note "ad $native-sub: ", $s;
+  # search in the interface modules, name all interfaces which are implemented
+  # for this module. not implemented ones are skipped.
+  $s = self._query_interfaces(
+    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
+  ) unless $s;
+
   self.set-class-name-of-sub('GtkWidget');
   $s = callsame unless ?$s;
 
   $s;
 }
 
+#`{{ obsolete
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 # pinched from Gnome::GObject::Signal because of a dependency on GdkEvent
@@ -435,12 +457,12 @@ sub gtk_widget_connect_object_event(
   is native(&gobject-lib)
   is symbol('g_signal_connect_object')
   { * }
-
+}}
 #`{{
 #TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_new
+#TM:0:gtk_widget_new
 =begin pod
 =head2 gtk_widget_new
 
@@ -467,7 +489,7 @@ sub gtk_widget_new ( N-GObject $type, Str $first_property_name, Any $any = Any )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_destroy
+#TM:0:gtk_widget_destroy
 =begin pod
 =head2 gtk_widget_destroy
 
@@ -487,8 +509,8 @@ It's expected that all references held on the widget will also
 be released; you should connect to the sig C<destroy> signal
 if you hold a reference to I<widget> and you wish to remove it when
 this function is called. It is not necessary to do so if you are
-implementing a C<Gnome::Gtk3::Container>, as you'll be able to use the
-C<Gnome::Gtk3::ContainerClass>.C<remove()> virtual function for that.
+implementing a B<Gnome::Gtk3::Container>, as you'll be able to use the
+B<Gnome::Gtk3::ContainerClass>.C<remove()> virtual function for that.
 
 It's important to notice that C<gtk_widget_destroy()> will only cause
 the I<widget> to be finalized if no additional references, acquired
@@ -513,7 +535,7 @@ sub gtk_widget_destroy ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_destroyed
+#TM:0:gtk_widget_destroyed
 =begin pod
 =head2 gtk_widget_destroyed
 
@@ -536,13 +558,13 @@ sub gtk_widget_destroyed ( N-GObject $widget, N-GObject $widget_pointer )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_unparent
+#TM:0:gtk_widget_unparent
 =begin pod
 =head2 gtk_widget_unparent
 
 This function is only for use in widget implementations.
 Should be called by implementations of the remove method
-on C<Gnome::Gtk3::Container>, to dissociate a child from the container.
+on B<Gnome::Gtk3::Container>, to dissociate a child from the container.
 
   method gtk_widget_unparent ( )
 
@@ -554,7 +576,7 @@ sub gtk_widget_unparent ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_show
+#TM:0:gtk_widget_show
 =begin pod
 =head2 gtk_widget_show
 
@@ -580,7 +602,7 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_hide
+#TM:0:gtk_widget_hide
 =begin pod
 =head2 gtk_widget_hide
 
@@ -597,12 +619,12 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_show_now
+#TM:0:gtk_widget_show_now
 =begin pod
 =head2 [gtk_widget_] show_now
 
 Shows a widget. If the widget is an unmapped toplevel widget
-(i.e. a C<Gnome::Gtk3::Window> that has not yet been shown), enter the main
+(i.e. a B<Gnome::Gtk3::Window> that has not yet been shown), enter the main
 loop and wait for the window to actually be mapped. Be careful;
 because the main loop is running, anything can happen during
 this function.
@@ -617,7 +639,7 @@ sub gtk_widget_show_now ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_show_all
+#TM:0:gtk_widget_show_all
 =begin pod
 =head2 [gtk_widget_] show_all
 
@@ -634,7 +656,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_set_no_show_all
+#TM:0:gtk_widget_set_no_show_all
 =begin pod
 =head2 [gtk_widget_] set_no_show_all
 
@@ -642,7 +664,7 @@ Sets the prop C<no-show-all> property, which determines whether
 calls to C<gtk_widget_show_all()> will affect this widget.
 
 This is mostly for use in constructing widget hierarchies with externally
-controlled visibility, see C<Gnome::Gtk3::UIManager>.
+controlled visibility, see B<Gnome::Gtk3::UIManager>.
 
 Since: 2.4
 
@@ -657,7 +679,7 @@ sub gtk_widget_set_no_show_all ( N-GObject $widget, int32 $no_show_all )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_no_show_all
+#TM:0:gtk_widget_get_no_show_all
 =begin pod
 =head2 [gtk_widget_] get_no_show_all
 
@@ -680,7 +702,7 @@ sub gtk_widget_get_no_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_map
+#TM:0:gtk_widget_map
 =begin pod
 =head2 gtk_widget_map
 
@@ -697,7 +719,7 @@ sub gtk_widget_map ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_unmap
+#TM:0:gtk_widget_unmap
 =begin pod
 =head2 gtk_widget_unmap
 
@@ -714,7 +736,7 @@ sub gtk_widget_unmap ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_realize
+#TM:0:gtk_widget_realize
 =begin pod
 =head2 gtk_widget_realize
 
@@ -747,7 +769,7 @@ sub gtk_widget_realize ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_unrealize
+#TM:0:gtk_widget_unrealize
 =begin pod
 =head2 gtk_widget_unrealize
 
@@ -766,7 +788,7 @@ sub gtk_widget_unrealize ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_draw
+#TM:0:gtk_widget_draw
 =begin pod
 =head2 gtk_widget_draw
 
@@ -802,7 +824,7 @@ sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_draw
+#TM:0:gtk_widget_queue_draw
 =begin pod
 =head2 [gtk_widget_] queue_draw
 
@@ -819,7 +841,7 @@ sub gtk_widget_queue_draw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_draw_area
+#TM:0:gtk_widget_queue_draw_area
 =begin pod
 =head2 [gtk_widget_] queue_draw_area
 
@@ -850,7 +872,7 @@ sub gtk_widget_queue_draw_area ( N-GObject $widget, int32 $x, int32 $y, int32 $w
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_draw_region
+#TM:0:gtk_widget_queue_draw_region
 =begin pod
 =head2 [gtk_widget_] queue_draw_region
 
@@ -863,7 +885,7 @@ invalidated.
 
 Normally you would only use this function in widget
 implementations. You might also use it to schedule a redraw of a
-C<Gnome::Gtk3::DrawingArea> or some portion thereof.
+B<Gnome::Gtk3::DrawingArea> or some portion thereof.
 
 Since: 3.0
 
@@ -879,20 +901,20 @@ sub gtk_widget_queue_draw_region ( N-GObject $widget, cairo_region_t $region )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_resize
+#TM:0:gtk_widget_queue_resize
 =begin pod
 =head2 [gtk_widget_] queue_resize
 
 This function is only for use in widget implementations.
 Flags a widget to have its size renegotiated; should
 be called when a widget for some reason has a new size request.
-For example, when you change the text in a C<Gnome::Gtk3::Label>, C<Gnome::Gtk3::Label>
+For example, when you change the text in a B<Gnome::Gtk3::Label>, B<Gnome::Gtk3::Label>
 queues a resize to ensure there’s enough space for the new text.
 
 Note that you cannot call C<gtk_widget_queue_resize()> on a widget
-from inside its implementation of the C<Gnome::Gtk3::WidgetClass>::size_allocate
+from inside its implementation of the B<Gnome::Gtk3::WidgetClass>::size_allocate
 virtual method. Calls to C<gtk_widget_queue_resize()> from inside
-C<Gnome::Gtk3::WidgetClass>::size_allocate will be silently ignored.
+B<Gnome::Gtk3::WidgetClass>::size_allocate will be silently ignored.
 
   method gtk_widget_queue_resize ( )
 
@@ -904,7 +926,7 @@ sub gtk_widget_queue_resize ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_resize_no_redraw
+#TM:0:gtk_widget_queue_resize_no_redraw
 =begin pod
 =head2 [gtk_widget_] queue_resize_no_redraw
 
@@ -923,13 +945,13 @@ sub gtk_widget_queue_resize_no_redraw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_queue_allocate
+#TM:0:gtk_widget_queue_allocate
 =begin pod
 =head2 [gtk_widget_] queue_allocate
 
 This function is only for use in widget implementations.
 
-Flags the widget for a rerun of the C<Gnome::Gtk3::WidgetClass>::size_allocate
+Flags the widget for a rerun of the B<Gnome::Gtk3::WidgetClass>::size_allocate
 function. Use this function instead of C<gtk_widget_queue_resize()>
 when the I<widget>'s size request didn't change but it wants to
 reposition its contents.
@@ -948,7 +970,7 @@ sub gtk_widget_queue_allocate ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_frame_clock
+#TM:0:gtk_widget_get_frame_clock
 =begin pod
 =head2 [gtk_widget_] get_frame_clock
 
@@ -974,7 +996,7 @@ change the widget’s frame clock.
 
 Unrealized widgets do not have a frame clock.
 
-Returns: (nullable) (transfer none): a C<Gnome::Gdk3::FrameClock>,
+Returns: (nullable) (transfer none): a B<Gnome::Gdk3::FrameClock>,
 or C<NULL> if widget is unrealized
 
 Since: 3.8
@@ -989,7 +1011,7 @@ sub gtk_widget_get_frame_clock ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_size_allocate
+#TM:0:gtk_widget_size_allocate
 =begin pod
 =head2 [gtk_widget_] size_allocate
 
@@ -1004,11 +1026,11 @@ sub gtk_widget_size_allocate ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_size_allocate_with_baseline
+#TM:0:gtk_widget_size_allocate_with_baseline
 =begin pod
 =head2 [gtk_widget_] size_allocate_with_baseline
 
-This function is only used by C<Gnome::Gtk3::Container> subclasses, to assign a size,
+This function is only used by B<Gnome::Gtk3::Container> subclasses, to assign a size,
 position and (optionally) baseline to their child widgets.
 
 In this function, the allocation and baseline may be adjusted. It
@@ -1036,7 +1058,7 @@ sub gtk_widget_size_allocate_with_baseline ( N-GObject $widget, GtkAllocation $a
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_request_mode
+#TM:1:gtk_widget_get_request_mode
 =begin pod
 =head2 [gtk_widget_] get_request_mode
 
@@ -1054,83 +1076,218 @@ sub gtk_widget_get_request_mode ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_width
 
-  method gtk_widget_get_preferred_width ( Int $minimum_width, Int $natural_width )
+Retrieves a widget’s initial minimum and natural width.
 
+This call is specific to height-for-width requests.
+
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+  method gtk_widget_get_preferred_width ( --> List )
+
+Returns a List with
 =item Int $minimum_width;
 =item Int $natural_width;
 
 =end pod
 
-sub gtk_widget_get_preferred_width ( N-GObject $widget, int32 $minimum_width, int32 $natural_width )
-  is native(&gtk-lib)
+#TM:1:get-preferred-width
+method get-preferred-width ( --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+  _gtk_widget_get_preferred_width(
+    self.get-native-gobject, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width)
+}
+
+#TM:1:gtk_widget_get_preferred_width
+sub gtk_widget_get_preferred_width ( N-GObject $widget --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+  _gtk_widget_get_preferred_width(
+    $widget, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width)
+}
+
+sub _gtk_widget_get_preferred_width (
+  N-GObject $widget, int32 $minimum_width is rw, int32 $natural_width is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_height_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_for_width
 
+Retrieves a widget’s minimum and natural height if it would be given the specified width .
 
-  method gtk_widget_get_preferred_height_for_width ( Int $width, Int $minimum_height, Int $natural_height )
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_height_for_width (
+    Int $width --> List
+  )
 
 =item Int $width;
+
+Returns a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 
 =end pod
 
-sub gtk_widget_get_preferred_height_for_width ( N-GObject $widget, int32 $width, int32 $minimum_height, int32 $natural_height )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height-for-width
+method get-preferred-height-for-width ( int32 $width --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height_for_width(
+    self.get-native-gobject, $width, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+#TM:1:gtk_widget_get_preferred_height_for_width
+sub gtk_widget_get_preferred_height_for_width (
+  N-GObject $widget, int32 $width --> List
+) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height_for_width(
+    $widget, $width, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+sub _gtk_widget_get_preferred_height_for_width (
+  N-GObject $widget, int32 $width, int32 $minimum_height is rw,
+  int32 $natural_height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height_for_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_height
 
-  method gtk_widget_get_preferred_height ( Int $minimum_height, Int $natural_height )
+Retrieves a widget’s initial minimum and natural height.
 
+This call is specific to width-for-height requests.
+
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_height ( --> List )
+
+Returns a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 
 =end pod
 
-sub gtk_widget_get_preferred_height ( N-GObject $widget, int32 $minimum_height, int32 $natural_height )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height
+method get-preferred-height ( --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height(
+    self.get-native-gobject, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+#TM:1:gtk_widget_get_preferred_height
+sub gtk_widget_get_preferred_height ( N-GObject $widget --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+
+  _gtk_widget_get_preferred_height(
+    $widget, $minimum_height, $natural_height
+  );
+
+  ( $minimum_height, $natural_height)
+}
+
+sub _gtk_widget_get_preferred_height (
+  N-GObject $widget, int32 $minimum_height is rw, int32 $natural_height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_width_for_height
 =begin pod
 =head2 [gtk_widget_] get_preferred_width_for_height
 
+Retrieves a widget’s minimum and natural width if it would be given the specified height .
 
-  method gtk_widget_get_preferred_width_for_height ( Int $height, Int $minimum_width, Int $natural_width )
+The returned request will be modified by the GtkWidgetClass::adjust_size_request virtual method and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
+
+  method gtk_widget_get_preferred_width_for_height ( Int $height --> List )
 
 =item Int $height;
+
+Returning a List with
 =item Int $minimum_width;
 =item Int $natural_width;
 
 =end pod
 
-sub gtk_widget_get_preferred_width_for_height ( N-GObject $widget, int32 $height, int32 $minimum_width, int32 $natural_width )
-  is native(&gtk-lib)
+#TM:1:get-preferred-width-for-height
+method get-preferred-width-for-height ( int32 $height --> List ) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+
+  _gtk_widget_get_preferred_width_for_height(
+    self.get-native-gobject, $height, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width);
+}
+
+#TM:1:gtk_widget_get_preferred_width_for_height
+sub gtk_widget_get_preferred_width_for_height (
+  N-GObject $widget, int32 $height --> List
+) {
+  my int32 $minimum_width;
+  my int32 $natural_width;
+
+  _gtk_widget_get_preferred_width_for_height(
+    $widget, $height, $minimum_width, $natural_width
+  );
+
+  ( $minimum_width, $natural_width);
+}
+
+sub _gtk_widget_get_preferred_width_for_height (
+  N-GObject $widget, int32 $height,
+  int32 $minimum_width is rw, int32 $natural_width is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_width_for_height')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_height_and_baseline_for_width
 =begin pod
 =head2 [gtk_widget_] get_preferred_height_and_baseline_for_width
 
+Retrieves a widget’s minimum and natural height and the corresponding baselines if it would be given the specified width , or the default height if width is -1. The baselines may be -1 which means that no baseline is requested for this widget.
 
+The returned request will be modified by the GtkWidgetClass::adjust_size_request and GtkWidgetClass::adjust_baseline_request virtual methods and by any GtkSizeGroups that have been applied. That is, the returned request is the one that should be used for layout, not necessarily the one returned by the widget itself.
 
-  method gtk_widget_get_preferred_height_and_baseline_for_width ( Int $width, Int $minimum_height, Int $natural_height, Int $minimum_baseline, Int $natural_baseline )
+  method gtk_widget_get_preferred_height_and_baseline_for_width (
+    Int $width
+    --> List
+  )
 
 =item Int $width;
+
+Returning a List with
 =item Int $minimum_height;
 =item Int $natural_height;
 =item Int $minimum_baseline;
@@ -1138,31 +1295,92 @@ sub gtk_widget_get_preferred_width_for_height ( N-GObject $widget, int32 $height
 
 =end pod
 
-sub gtk_widget_get_preferred_height_and_baseline_for_width ( N-GObject $widget, int32 $width, int32 $minimum_height, int32 $natural_height, int32 $minimum_baseline, int32 $natural_baseline )
-  is native(&gtk-lib)
+#TM:1:get-preferred-height-and-baseline-for-width
+method get-preferred-height-and-baseline-for-width ( int32 $width --> List ) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+  my int32 $minimum_baseline;
+  my int32 $natural_baseline;
+
+  _gtk_widget_get_preferred_height_and_baseline_for_width(
+    self.get-native-gobject, $width, $minimum_height, $natural_height,
+    $minimum_baseline, $natural_baseline
+  );
+
+  ( $minimum_height, $natural_height, $minimum_baseline, $natural_baseline)
+}
+
+#TM:1:gtk_widget_get_preferred_height_and_baseline_for_width
+sub gtk_widget_get_preferred_height_and_baseline_for_width (
+  N-GObject $widget, int32 $width --> List
+) {
+  my int32 $minimum_height;
+  my int32 $natural_height;
+  my int32 $minimum_baseline;
+  my int32 $natural_baseline;
+
+  _gtk_widget_get_preferred_height_and_baseline_for_width(
+    $widget, $width, $minimum_height, $natural_height,
+    $minimum_baseline, $natural_baseline
+  );
+
+  ( $minimum_height, $natural_height, $minimum_baseline, $natural_baseline)
+}
+
+sub _gtk_widget_get_preferred_height_and_baseline_for_width (
+  N-GObject $widget, int32 $width, int32 $minimum_height is rw,
+  int32 $natural_height is rw, int32 $minimum_baseline is rw,
+  int32 $natural_baseline is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_height_and_baseline_for_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_preferred_size
 =begin pod
 =head2 [gtk_widget_] get_preferred_size
 
+Retrieves the minimum and natural size of a widget, taking into account the widget’s preference for height-for-width management.
 
+This is used to retrieve a suitable size by container widgets which do not impose any restrictions on the child placement. It can be used to deduce toplevel window and menu sizes as well as child widgets in free-form containers such as GtkLayout.
 
-  method gtk_widget_get_preferred_size ( GtkRequisition $minimum_size, GtkRequisition $natural_size )
+Handle with care. Note that the natural height of a height-for-width widget will generally be a smaller size than the minimum height, since the required height for the natural width is generally smaller than the required height for the minimum width.
 
+Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to support baseline alignment.
+
+  method gtk_widget_get_preferred_size ( --> List )
+
+The returned list holds
 =item GtkRequisition $minimum_size;
 =item GtkRequisition $natural_size;
 
 =end pod
 
-sub gtk_widget_get_preferred_size ( N-GObject $widget, GtkRequisition $minimum_size, GtkRequisition $natural_size )
-  is native(&gtk-lib)
+#TM:1:get-preferred-size
+method get-preferred-size ( --> List ) {
+  my GtkRequisition $minimum .= new;
+  my GtkRequisition $natural .= new;
+  _gtk_widget_get_preferred_size( self.get-native-gobject, $minimum, $natural);
+  ( $minimum, $natural)
+}
+
+#TM:1:gtk_widget_get_preferred_size
+sub gtk_widget_get_preferred_size ( N-GObject $widget --> List ) {
+  my GtkRequisition $minimum .= new;
+  my GtkRequisition $natural .= new;
+  _gtk_widget_get_preferred_size( $widget, $minimum, $natural);
+  ( $minimum, $natural)
+}
+
+sub _gtk_widget_get_preferred_size (
+  N-GObject $widget, GtkRequisition $minimum_size is rw,
+  GtkRequisition $natural_size is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_preferred_size')
   { * }
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_add_accelerator
+#TM:0:gtk_widget_add_accelerator
 =begin pod
 =head2 [gtk_widget_] add_accelerator
 
@@ -1191,7 +1409,7 @@ sub gtk_widget_add_accelerator ( N-GObject $widget, Str $accel_signal, N-GObject
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_remove_accelerator
+#TM:0:gtk_widget_remove_accelerator
 =begin pod
 =head2 [gtk_widget_] remove_accelerator
 
@@ -1214,7 +1432,7 @@ sub gtk_widget_remove_accelerator ( N-GObject $widget, N-GObject $accel_group, u
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_set_accel_path
+#TM:0:gtk_widget_set_accel_path
 =begin pod
 =head2 [gtk_widget_] set_accel_path
 
@@ -1228,11 +1446,11 @@ paths allows them to be modified by the user and the modifications
 to be saved for future use. (See C<gtk_accel_map_save()>.)
 
 This function is a low level function that would most likely
-be used by a menu creation system like C<Gnome::Gtk3::UIManager>. If you
-use C<Gnome::Gtk3::UIManager>, setting up accelerator paths will be done
+be used by a menu creation system like B<Gnome::Gtk3::UIManager>. If you
+use B<Gnome::Gtk3::UIManager>, setting up accelerator paths will be done
 automatically.
 
-Even when you you aren’t using C<Gnome::Gtk3::UIManager>, if you only want to
+Even when you you aren’t using B<Gnome::Gtk3::UIManager>, if you only want to
 set up accelerators on menu items C<gtk_menu_item_set_accel_path()>
 provides a somewhat more convenient interface.
 
@@ -1243,7 +1461,7 @@ C<g_intern_static_string()>.
   method gtk_widget_set_accel_path ( Str $accel_path, N-GObject $accel_group )
 
 =item Str $accel_path; (allow-none): path used to look up the accelerator
-=item N-GObject $accel_group; (allow-none): a C<Gnome::Gtk3::AccelGroup>.
+=item N-GObject $accel_group; (allow-none): a B<Gnome::Gtk3::AccelGroup>.
 
 =end pod
 
@@ -1252,7 +1470,7 @@ sub gtk_widget_set_accel_path ( N-GObject $widget, Str $accel_path, N-GObject $a
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_list_accel_closures
+#TM:0:gtk_widget_list_accel_closures
 =begin pod
 =head2 [gtk_widget_] list_accel_closures
 
@@ -1260,7 +1478,7 @@ Lists the closures used by I<widget> for accelerator group connections
 with C<gtk_accel_group_connect_by_path()> or C<gtk_accel_group_connect()>.
 The closures can be used to monitor accelerator changes on I<widget>,
 by connecting to the I<C><Gnome::Gtk3::AccelGroup>::accel-changed signal of the
-C<Gnome::Gtk3::AccelGroup> of a closure which can be found out with
+B<Gnome::Gtk3::AccelGroup> of a closure which can be found out with
 C<gtk_accel_group_from_accel_closure()>.
 
 Returns: (transfer container) (element-type GClosure):
@@ -1277,7 +1495,7 @@ sub gtk_widget_list_accel_closures ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_can_activate_accel
+#TM:0:gtk_widget_can_activate_accel
 =begin pod
 =head2 [gtk_widget_] can_activate_accel
 
@@ -1305,7 +1523,7 @@ sub gtk_widget_can_activate_accel ( N-GObject $widget, uint32 $signal_id )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_mnemonic_activate
+#TM:0:gtk_widget_mnemonic_activate
 =begin pod
 =head2 [gtk_widget_] mnemonic_activate
 
@@ -1329,7 +1547,7 @@ sub gtk_widget_mnemonic_activate ( N-GObject $widget, int32 $group_cycling )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_event
+#TM:0:gtk_widget_event
 =begin pod
 =head2 gtk_widget_event
 
@@ -1347,7 +1565,7 @@ the event was handled)
 
   method gtk_widget_event ( GdkEvent $event --> Int  )
 
-=item GdkEvent $event; a C<Gnome::Gdk3::Event>
+=item GdkEvent $event; a B<Gnome::Gdk3::Event>
 
 =end pod
 
@@ -1357,22 +1575,22 @@ sub gtk_widget_event ( N-GObject $widget, GdkEvent $event )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_send_focus_change
+#TM:0:gtk_widget_send_focus_change
 =begin pod
 =head2 [gtk_widget_] send_focus_change
 
 Sends the focus change I<event> to I<widget>
 
 This function is not meant to be used by applications. The only time it
-should be used is when it is necessary for a C<Gnome::Gtk3::Widget> to assign focus
+should be used is when it is necessary for a B<Gnome::Gtk3::Widget> to assign focus
 to a widget that is semantically owned by the first widget even though
 it’s not a direct child - for instance, a search entry in a floating
-window similar to the quick search in C<Gnome::Gtk3::TreeView>.
+window similar to the quick search in B<Gnome::Gtk3::TreeView>.
 
 An example of its usage is:
 
 |[<!-- language="C" -->
-C<Gnome::Gdk3::Event> *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
+B<Gnome::Gdk3::Event> *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
 
 fevent->focus_change.type = GDK_FOCUS_CHANGE;
 fevent->focus_change.in = TRUE;
@@ -1392,7 +1610,7 @@ Since: 2.20
 
   method gtk_widget_send_focus_change ( GdkEvent $event --> Int  )
 
-=item GdkEvent $event; a C<Gnome::Gdk3::Event> of type GDK_FOCUS_CHANGE
+=item GdkEvent $event; a B<Gnome::Gdk3::Event> of type GDK_FOCUS_CHANGE
 
 =end pod
 
@@ -1402,7 +1620,7 @@ sub gtk_widget_send_focus_change ( N-GObject $widget, GdkEvent $event )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_activate
+#TM:0:gtk_widget_activate
 =begin pod
 =head2 gtk_widget_activate
 
@@ -1424,7 +1642,7 @@ sub gtk_widget_activate ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_intersect
+#TM:0:gtk_widget_intersect
 =begin pod
 =head2 gtk_widget_intersect
 
@@ -1448,7 +1666,7 @@ sub gtk_widget_intersect ( N-GObject $widget, N-GObject $area, N-GObject $inters
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] freeze_child_notify
 
@@ -1468,7 +1686,7 @@ sub gtk_widget_freeze_child_notify ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] child_notify
 
@@ -1491,7 +1709,7 @@ sub gtk_widget_child_notify ( N-GObject $widget, Str $child_property )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] thaw_child_notify
 
@@ -1509,7 +1727,7 @@ sub gtk_widget_thaw_child_notify ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_can_focus
 
@@ -1530,7 +1748,7 @@ sub gtk_widget_set_can_focus ( N-GObject $widget, int32 $can_focus )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_can_focus
 
@@ -1552,7 +1770,7 @@ sub gtk_widget_get_can_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] has_focus
 
@@ -1575,7 +1793,7 @@ sub gtk_widget_has_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] is_focus
 
@@ -1597,7 +1815,7 @@ sub gtk_widget_is_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] has_visible_focus
 
@@ -1626,13 +1844,13 @@ sub gtk_widget_has_visible_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] grab_focus
 
-Causes I<widget> to have the keyboard focus for the C<Gnome::Gtk3::Window> it's
-inside. I<widget> must be a focusable widget, such as a C<Gnome::Gtk3::Entry>;
-something like C<Gnome::Gtk3::Frame> won’t work.
+Causes I<widget> to have the keyboard focus for the B<Gnome::Gtk3::Window> it's
+inside. I<widget> must be a focusable widget, such as a B<Gnome::Gtk3::Entry>;
+something like B<Gnome::Gtk3::Frame> won’t work.
 
 More precisely, it must have the C<GTK_CAN_FOCUS> flag set. Use
 C<gtk_widget_set_can_focus()> to modify that flag.
@@ -1651,7 +1869,7 @@ sub gtk_widget_grab_focus ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_focus_on_click
 
@@ -1673,7 +1891,7 @@ sub gtk_widget_set_focus_on_click ( N-GObject $widget, int32 $focus_on_click )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_focus_on_click
 
@@ -1696,7 +1914,7 @@ sub gtk_widget_get_focus_on_click ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_can_default
 
@@ -1717,7 +1935,7 @@ sub gtk_widget_set_can_default ( N-GObject $widget, int32 $can_default )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_can_default
 
@@ -1739,7 +1957,7 @@ sub gtk_widget_get_can_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] has_default
 
@@ -1762,7 +1980,7 @@ sub gtk_widget_has_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] grab_default
 
@@ -1772,9 +1990,9 @@ by calling C<gtk_widget_set_can_default()> with a C<1> value.
 The default widget is activated when
 the user presses Enter in a window. Default widgets must be
 activatable, that is, C<gtk_widget_activate()> should affect them. Note
-that C<Gnome::Gtk3::Entry> widgets require the “activates-default” property
+that B<Gnome::Gtk3::Entry> widgets require the “activates-default” property
 set to C<1> before they activate the default widget when Enter
-is pressed and the C<Gnome::Gtk3::Entry> is focused.
+is pressed and the B<Gnome::Gtk3::Entry> is focused.
 
   method gtk_widget_grab_default ( )
 
@@ -1786,7 +2004,7 @@ sub gtk_widget_grab_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_receives_default
 
@@ -1810,7 +2028,7 @@ sub gtk_widget_set_receives_default ( N-GObject $widget, int32 $receives_default
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_receives_default
 
@@ -1836,7 +2054,7 @@ sub gtk_widget_get_receives_default ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] has_grab
 
@@ -1860,7 +2078,7 @@ sub gtk_widget_has_grab ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] device_is_shadowed
 
@@ -1871,13 +2089,13 @@ sig C<grab-notify> signal to check for specific
 devices. See C<gtk_device_grab_add()>.
 
 Returns: C<1> if there is an ongoing grab on I<device>
-by another C<Gnome::Gtk3::Widget> than I<widget>.
+by another B<Gnome::Gtk3::Widget> than I<widget>.
 
 Since: 3.0
 
   method gtk_widget_device_is_shadowed ( N-GObject $device --> Int  )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
@@ -1887,14 +2105,14 @@ sub gtk_widget_device_is_shadowed ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_name
 
 Widgets can be named, which allows you to refer to them from a
 CSS file. You can apply a style to widgets with a particular name
 in the CSS file. See the documentation for the CSS syntax (on the
-same page as the docs for C<Gnome::Gtk3::StyleContext>).
+same page as the docs for B<Gnome::Gtk3::StyleContext>).
 
 Note that the CSS syntax has certain special characters to delimit
 and represent elements in a selector (period, #, >, *...), so using
@@ -1912,7 +2130,7 @@ sub gtk_widget_set_name ( N-GObject $widget, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_name
 
@@ -1933,7 +2151,7 @@ sub gtk_widget_get_name ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_state_flags
 
@@ -1946,8 +2164,8 @@ direction, use C<gtk_widget_set_direction()>.
 
 It is worth mentioning that any other state than C<GTK_STATE_FLAG_INSENSITIVE>,
 will be propagated down to all non-internal children if I<widget> is a
-C<Gnome::Gtk3::Container>, while C<GTK_STATE_FLAG_INSENSITIVE> itself will be propagated
-down to all C<Gnome::Gtk3::Container> children by different means than turning on the
+B<Gnome::Gtk3::Container>, while C<GTK_STATE_FLAG_INSENSITIVE> itself will be propagated
+down to all B<Gnome::Gtk3::Container> children by different means than turning on the
 state flag down the hierarchy, both C<gtk_widget_get_state_flags()> and
 C<gtk_widget_is_sensitive()> will make use of these.
 
@@ -1965,7 +2183,7 @@ sub gtk_widget_set_state_flags ( N-GObject $widget, int32 $flags, int32 $clear )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] unset_state_flags
 
@@ -1986,7 +2204,7 @@ sub gtk_widget_unset_state_flags ( N-GObject $widget, int32 $flags )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_state_flags
 
@@ -1996,7 +2214,7 @@ returned, that is, also based on parent insensitivity, even if
 I<widget> itself is sensitive.
 
 Also note that if you are looking for a way to obtain the
-C<Gnome::Gtk3::StateFlags> to pass to a C<Gnome::Gtk3::StyleContext> method, you
+B<Gnome::Gtk3::StateFlags> to pass to a B<Gnome::Gtk3::StyleContext> method, you
 should look at C<gtk_style_context_get_state()>.
 
 Returns: The state flags for widget
@@ -2014,7 +2232,7 @@ sub gtk_widget_get_state_flags ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_sensitive
 
@@ -2034,7 +2252,7 @@ sub gtk_widget_set_sensitive ( N-GObject $widget, int32 $sensitive )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_sensitive
 
@@ -2059,7 +2277,7 @@ sub gtk_widget_get_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] is_sensitive
 
@@ -2081,7 +2299,7 @@ sub gtk_widget_is_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:1:gtk_widget_set_visible
 =begin pod
 =head2 [gtk_widget_] set_visible
 
@@ -2106,7 +2324,7 @@ sub gtk_widget_set_visible ( N-GObject $widget, int32 $visible )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:1:gtk_widget_get_visible
 =begin pod
 =head2 [gtk_widget_] get_visible
 
@@ -2133,7 +2351,7 @@ sub gtk_widget_get_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_is_visible
 =begin pod
 =head2 [gtk_widget_] is_visible
 
@@ -2159,14 +2377,14 @@ sub gtk_widget_is_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_has_window
 =begin pod
 =head2 [gtk_widget_] set_has_window
 
-Specifies whether I<widget> has a C<Gnome::Gdk3::Window> of its own. Note that
+Specifies whether I<widget> has a B<Gnome::Gdk3::Window> of its own. Note that
 all realized widgets have a non-C<Any> “window” pointer
 (C<gtk_widget_get_window()> never returns a C<Any> window when a widget
-is realized), but for many of them it’s actually the C<Gnome::Gdk3::Window> of
+is realized), but for many of them it’s actually the B<Gnome::Gdk3::Window> of
 one of its parent widgets. Widgets that do not create a C<window> for
 themselves in sig C<realize> must announce this by
 calling this function with I<has_window> = C<0>.
@@ -2187,11 +2405,11 @@ sub gtk_widget_set_has_window ( N-GObject $widget, int32 $has_window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_has_window
 =begin pod
 =head2 [gtk_widget_] get_has_window
 
-Determines whether I<widget> has a C<Gnome::Gdk3::Window> of its own. See
+Determines whether I<widget> has a B<Gnome::Gdk3::Window> of its own. See
 C<gtk_widget_set_has_window()>.
 
 Returns: C<1> if I<widget> has a window, C<0> otherwise
@@ -2209,14 +2427,14 @@ sub gtk_widget_get_has_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_is_toplevel
 =begin pod
 =head2 [gtk_widget_] is_toplevel
 
 Determines whether I<widget> is a toplevel widget.
 
-Currently only C<Gnome::Gtk3::Window> and C<Gnome::Gtk3::Invisible> (and out-of-process
-C<Gnome::Gtk3::Plugs>) are toplevel widgets. Toplevel widgets have no parent
+Currently only B<Gnome::Gtk3::Window> and B<Gnome::Gtk3::Invisible> (and out-of-process
+B<Gnome::Gtk3::Plugs>) are toplevel widgets. Toplevel widgets have no parent
 widget.
 
 Returns: C<1> if I<widget> is a toplevel, C<0> otherwise
@@ -2234,7 +2452,7 @@ sub gtk_widget_is_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_is_drawable
 =begin pod
 =head2 [gtk_widget_] is_drawable
 
@@ -2256,12 +2474,12 @@ sub gtk_widget_is_drawable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_realized
 =begin pod
 =head2 [gtk_widget_] set_realized
 
 Marks the widget as being realized. This function must only be
-called after all C<Gnome::Gdk3::Windows> for the I<widget> have been created
+called after all B<Gnome::Gdk3::Windows> for the I<widget> have been created
 and registered.
 
 This function should only ever be called in a derived widget's
@@ -2280,7 +2498,7 @@ sub gtk_widget_set_realized ( N-GObject $widget, int32 $realized )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_realized
 =begin pod
 =head2 [gtk_widget_] get_realized
 
@@ -2301,7 +2519,7 @@ sub gtk_widget_get_realized ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_mapped
 =begin pod
 =head2 [gtk_widget_] set_mapped
 
@@ -2323,7 +2541,7 @@ sub gtk_widget_set_mapped ( N-GObject $widget, int32 $mapped )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_mapped
 =begin pod
 =head2 [gtk_widget_] get_mapped
 
@@ -2344,7 +2562,7 @@ sub gtk_widget_get_mapped ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_app_paintable
 =begin pod
 =head2 [gtk_widget_] set_app_paintable
 
@@ -2353,7 +2571,7 @@ an sig C<draw> handler.
 
 This is a hint to the widget and does not affect the behavior of
 the GTK+ core; many widgets ignore this flag entirely. For widgets
-that do pay attention to the flag, such as C<Gnome::Gtk3::EventBox> and C<Gnome::Gtk3::Window>,
+that do pay attention to the flag, such as B<Gnome::Gtk3::EventBox> and B<Gnome::Gtk3::Window>,
 the effect is to suppress default themed drawing of the widget's
 background. (Children of the widget will still be drawn.) The application
 is then entirely responsible for drawing the widget background.
@@ -2371,7 +2589,7 @@ sub gtk_widget_set_app_paintable ( N-GObject $widget, int32 $app_paintable )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_app_paintable
 =begin pod
 =head2 [gtk_widget_] get_app_paintable
 
@@ -2395,7 +2613,7 @@ sub gtk_widget_get_app_paintable ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_redraw_on_allocate
 =begin pod
 =head2 [gtk_widget_] set_redraw_on_allocate
 
@@ -2425,12 +2643,12 @@ sub gtk_widget_set_redraw_on_allocate ( N-GObject $widget, int32 $redraw_on_allo
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_parent
 =begin pod
 =head2 [gtk_widget_] set_parent
 
 This function is useful only when implementing subclasses of
-C<Gnome::Gtk3::Container>.
+B<Gnome::Gtk3::Container>.
 Sets the container as the parent of I<widget>, and takes care of
 some details such as updating the state and style of the child
 to reflect its new location. The opposite function is
@@ -2447,7 +2665,7 @@ sub gtk_widget_set_parent ( N-GObject $widget, N-GObject $parent )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_parent
 =begin pod
 =head2 [gtk_widget_] get_parent
 
@@ -2466,17 +2684,17 @@ sub gtk_widget_get_parent ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_parent_window
 =begin pod
 =head2 [gtk_widget_] set_parent_window
 
 Sets a non default parent window for I<widget>.
 
-For C<Gnome::Gtk3::Window> classes, setting a I<parent_window> effects whether
+For B<Gnome::Gtk3::Window> classes, setting a I<parent_window> effects whether
 the window is a toplevel window or can be embedded into other
 widgets.
 
-For C<Gnome::Gtk3::Window> classes, this needs to be called before the
+For B<Gnome::Gtk3::Window> classes, this needs to be called before the
 window is realized.
 
   method gtk_widget_set_parent_window ( N-GObject $parent_window )
@@ -2490,7 +2708,7 @@ sub gtk_widget_set_parent_window ( N-GObject $widget, N-GObject $parent_window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_parent_window
 =begin pod
 =head2 [gtk_widget_] get_parent_window
 
@@ -2509,7 +2727,7 @@ sub gtk_widget_get_parent_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_child_visible
 =begin pod
 =head2 [gtk_widget_] set_child_visible
 
@@ -2542,7 +2760,7 @@ sub gtk_widget_set_child_visible ( N-GObject $widget, int32 $is_visible )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_child_visible
 =begin pod
 =head2 [gtk_widget_] get_child_visible
 
@@ -2566,7 +2784,7 @@ sub gtk_widget_get_child_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_window
 =begin pod
 =head2 [gtk_widget_] set_window
 
@@ -2576,7 +2794,7 @@ usually either new window created with C<gdk_window_new()>, or the
 window of its parent widget as returned by
 C<gtk_widget_get_parent_window()>.
 
-Widgets must indicate whether they will create their own C<Gnome::Gdk3::Window>
+Widgets must indicate whether they will create their own B<Gnome::Gdk3::Window>
 by calling C<gtk_widget_set_has_window()>. This is usually done in the
 widget’s C<init()> function.
 
@@ -2586,7 +2804,7 @@ Since: 2.18
 
   method gtk_widget_set_window ( N-GObject $window )
 
-=item N-GObject $window; (transfer full): a C<Gnome::Gdk3::Window>
+=item N-GObject $window; (transfer full): a B<Gnome::Gdk3::Window>
 
 =end pod
 
@@ -2595,7 +2813,7 @@ sub gtk_widget_set_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_window
 =begin pod
 =head2 [gtk_widget_] get_window
 
@@ -2616,11 +2834,11 @@ sub gtk_widget_get_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_register_window
 =begin pod
 =head2 [gtk_widget_] register_window
 
-Registers a C<Gnome::Gdk3::Window> with the widget and sets it up so that
+Registers a B<Gnome::Gdk3::Window> with the widget and sets it up so that
 the widget receives events for it. Call C<gtk_widget_unregister_window()>
 when destroying the window.
 
@@ -2633,7 +2851,7 @@ Since: 3.8
 
   method gtk_widget_register_window ( N-GObject $window )
 
-=item N-GObject $window; a C<Gnome::Gdk3::Window>
+=item N-GObject $window; a B<Gnome::Gdk3::Window>
 
 =end pod
 
@@ -2642,11 +2860,11 @@ sub gtk_widget_register_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_unregister_window
 =begin pod
 =head2 [gtk_widget_] unregister_window
 
-Unregisters a C<Gnome::Gdk3::Window> from the widget that was previously set up with
+Unregisters a B<Gnome::Gdk3::Window> from the widget that was previously set up with
 C<gtk_widget_register_window()>. You need to call this when the window is
 no longer used by the widget, such as when you destroy it.
 
@@ -2654,7 +2872,7 @@ Since: 3.8
 
   method gtk_widget_unregister_window ( N-GObject $window )
 
-=item N-GObject $window; a C<Gnome::Gdk3::Window>
+=item N-GObject $window; a B<Gnome::Gdk3::Window>
 
 =end pod
 
@@ -2663,7 +2881,7 @@ sub gtk_widget_unregister_window ( N-GObject $widget, N-GObject $window )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_allocated_width
 =begin pod
 =head2 [gtk_widget_] get_allocated_width
 
@@ -2684,7 +2902,7 @@ sub gtk_widget_get_allocated_width ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_allocated_height
 =begin pod
 =head2 [gtk_widget_] get_allocated_height
 
@@ -2705,7 +2923,7 @@ sub gtk_widget_get_allocated_height ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_allocated_baseline
 =begin pod
 =head2 [gtk_widget_] get_allocated_baseline
 
@@ -2729,7 +2947,7 @@ sub gtk_widget_get_allocated_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_allocated_size
 =begin pod
 =head2 [gtk_widget_] get_allocated_size
 
@@ -2747,7 +2965,7 @@ Since: 3.20
 
   method gtk_widget_get_allocated_size ( GtkAllocation $allocation, int32 $baseline )
 
-=item GtkAllocation $allocation; (out): a pointer to a C<Gnome::Gtk3::Allocation> to copy to
+=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
 =item int32 $baseline; (out) (allow-none): a pointer to an integer to copy to
 
 =end pod
@@ -2757,13 +2975,13 @@ sub gtk_widget_get_allocated_size ( N-GObject $widget, GtkAllocation $allocation
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_allocation
 =begin pod
 =head2 [gtk_widget_] get_allocation
 
 Retrieves the widget’s allocation.
 
-Note, when implementing a C<Gnome::Gtk3::Container>: a widget’s allocation will
+Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will
 be its “adjusted” allocation, that is, the widget’s parent
 container typically calls C<gtk_widget_size_allocate()> with an
 allocation, and that allocation is then adjusted (to handle margin
@@ -2771,7 +2989,7 @@ and alignment for example) before assignment to the widget.
 C<gtk_widget_get_allocation()> returns the adjusted allocation that
 was actually assigned to the widget. The adjusted allocation is
 guaranteed to be completely contained within the
-C<gtk_widget_size_allocate()> allocation, however. So a C<Gnome::Gtk3::Container>
+C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container>
 is guaranteed that its children stay inside the assigned bounds,
 but not that they have exactly the bounds the container assigned.
 There is no way to get the original allocation assigned by
@@ -2782,7 +3000,7 @@ Since: 2.18
 
   method gtk_widget_get_allocation ( GtkAllocation $allocation )
 
-=item GtkAllocation $allocation; (out): a pointer to a C<Gnome::Gtk3::Allocation> to copy to
+=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
 
 =end pod
 
@@ -2791,7 +3009,7 @@ sub gtk_widget_get_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_allocation
 =begin pod
 =head2 [gtk_widget_] set_allocation
 
@@ -2799,9 +3017,9 @@ Sets the widget’s allocation.  This should not be used
 directly, but from within a widget’s size_allocate method.
 
 The allocation set should be the “adjusted” or actual
-allocation. If you’re implementing a C<Gnome::Gtk3::Container>, you want to use
+allocation. If you’re implementing a B<Gnome::Gtk3::Container>, you want to use
 C<gtk_widget_size_allocate()> instead of C<gtk_widget_set_allocation()>.
-The C<Gnome::Gtk3::WidgetClass>::adjust_size_allocation virtual method adjusts the
+The B<Gnome::Gtk3::WidgetClass>::adjust_size_allocation virtual method adjusts the
 allocation inside C<gtk_widget_size_allocate()> to create an adjusted
 allocation.
 
@@ -2809,7 +3027,7 @@ Since: 2.18
 
   method gtk_widget_set_allocation ( GtkAllocation $allocation )
 
-=item GtkAllocation $allocation; a pointer to a C<Gnome::Gtk3::Allocation> to copy from
+=item GtkAllocation $allocation; a pointer to a B<Gnome::Gtk3::Allocation> to copy from
 
 =end pod
 
@@ -2818,7 +3036,7 @@ sub gtk_widget_set_allocation ( N-GObject $widget, GtkAllocation $allocation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_clip
 =begin pod
 =head2 [gtk_widget_] set_clip
 
@@ -2828,7 +3046,7 @@ It must be called after C<gtk_widget_set_allocation()> (or after chaining up
 to the parent class), because that function resets the clip.
 
 The clip set should be the area that I<widget> draws on. If I<widget> is a
-C<Gnome::Gtk3::Container>, the area must contain all children's clips.
+B<Gnome::Gtk3::Container>, the area must contain all children's clips.
 
 If this function is not called by I<widget> during a ::size-allocate handler,
 the clip will be set to I<widget>'s allocation.
@@ -2837,7 +3055,7 @@ Since: 3.14
 
   method gtk_widget_set_clip ( GtkAllocation $clip )
 
-=item GtkAllocation $clip; a pointer to a C<Gnome::Gtk3::Allocation> to copy from
+=item GtkAllocation $clip; a pointer to a B<Gnome::Gtk3::Allocation> to copy from
 
 =end pod
 
@@ -2846,7 +3064,7 @@ sub gtk_widget_set_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_clip
 =begin pod
 =head2 [gtk_widget_] get_clip
 
@@ -2862,7 +3080,7 @@ Since: 3.14
 
   method gtk_widget_get_clip ( GtkAllocation $clip )
 
-=item GtkAllocation $clip; (out): a pointer to a C<Gnome::Gtk3::Allocation> to copy to
+=item GtkAllocation $clip; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
 
 =end pod
 
@@ -2871,7 +3089,7 @@ sub gtk_widget_get_clip ( N-GObject $widget, GtkAllocation $clip )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_child_focus
 =begin pod
 =head2 [gtk_widget_] child_focus
 
@@ -2909,7 +3127,7 @@ sub gtk_widget_child_focus ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_keynav_failed
 =begin pod
 =head2 [gtk_widget_] keynav_failed
 
@@ -2929,7 +3147,7 @@ C<gtk_widget_child_focus()> on the widget’s toplevel.
 
 The default ::keynav-failed handler returns C<1> for
 C<GTK_DIR_TAB_FORWARD> and C<GTK_DIR_TAB_BACKWARD>. For the other
-values of C<Gnome::Gtk3::DirectionType> it returns C<0>.
+values of B<Gnome::Gtk3::DirectionType> it returns C<0>.
 
 Whenever the default handler returns C<1>, it also calls
 C<gtk_widget_error_bell()> to notify the user of the failed keyboard
@@ -2937,7 +3155,7 @@ navigation.
 
 A use case for providing an own implementation of ::keynav-failed
 (either by connecting to it or by overriding it) would be a row of
-C<Gnome::Gtk3::Entry> widgets where the user should be able to navigate the
+B<Gnome::Gtk3::Entry> widgets where the user should be able to navigate the
 entire row with the cursor keys, as e.g. known from user interfaces
 that require entering license keys.
 
@@ -2959,7 +3177,7 @@ sub gtk_widget_keynav_failed ( N-GObject $widget, int32 $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_error_bell
 =begin pod
 =head2 [gtk_widget_] error_bell
 
@@ -2983,7 +3201,7 @@ sub gtk_widget_error_bell ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_size_request
 =begin pod
 =head2 [gtk_widget_] set_size_request
 
@@ -3014,9 +3232,9 @@ If the size request in a given direction is -1 (unset), then
 the “natural” size request of the widget will be used instead.
 
 The size request set here does not include any margin from the
-C<Gnome::Gtk3::Widget> properties margin-left, margin-right, margin-top, and
+B<Gnome::Gtk3::Widget> properties margin-left, margin-right, margin-top, and
 margin-bottom, but it does include pretty much all other padding
-or border properties set by any subclass of C<Gnome::Gtk3::Widget>.
+or border properties set by any subclass of B<Gnome::Gtk3::Widget>.
 
   method gtk_widget_set_size_request ( Int $width, Int $height )
 
@@ -3030,7 +3248,7 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_size_request
 =begin pod
 =head2 [gtk_widget_] get_size_request
 
@@ -3054,11 +3272,11 @@ sub gtk_widget_get_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_events
 =begin pod
 =head2 [gtk_widget_] set_events
 
-Sets the event mask (see C<Gnome::Gdk3::EventMask>) for a widget. The event
+Sets the event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event
 mask determines which events a widget will receive. Keep in mind
 that different widgets have different default event masks, and by
 changing the event mask you may disrupt a widget’s functionality,
@@ -3067,7 +3285,7 @@ unrealized. Consider C<gtk_widget_add_events()> for widgets that are
 already realized, or if you want to preserve the existing event
 mask. This function can’t be used with widgets that have no window.
 (See C<gtk_widget_get_has_window()>).  To get events on those widgets,
-place them inside a C<Gnome::Gtk3::EventBox> and receive events on the event
+place them inside a B<Gnome::Gtk3::EventBox> and receive events on the event
 box.
 
   method gtk_widget_set_events ( Int $events )
@@ -3081,7 +3299,7 @@ sub gtk_widget_set_events ( N-GObject $widget, int32 $events )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_add_events
 =begin pod
 =head2 [gtk_widget_] add_events
 
@@ -3091,7 +3309,7 @@ I<widget>. See C<gtk_widget_set_events()> and the
 
   method gtk_widget_add_events ( Int $events )
 
-=item Int $events; an event mask, see C<Gnome::Gdk3::EventMask>
+=item Int $events; an event mask, see B<Gnome::Gdk3::EventMask>
 
 =end pod
 
@@ -3101,11 +3319,11 @@ sub gtk_widget_add_events ( N-GObject $widget, int32 $events )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_device_events
 =begin pod
 =head2 [gtk_widget_] set_device_events
 
-Sets the device event mask (see C<Gnome::Gdk3::EventMask>) for a widget. The event
+Sets the device event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event
 mask determines which events a widget will receive from I<device>. Keep
 in mind that different widgets have different default event masks, and by
 changing the event mask you may disrupt a widget’s functionality,
@@ -3114,14 +3332,14 @@ unrealized. Consider C<gtk_widget_add_device_events()> for widgets that are
 already realized, or if you want to preserve the existing event
 mask. This function can’t be used with windowless widgets (which return
 C<0> from C<gtk_widget_get_has_window()>);
-to get events on those widgets, place them inside a C<Gnome::Gtk3::EventBox>
+to get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox>
 and receive events on the event box.
 
 Since: 3.0
 
   method gtk_widget_set_device_events ( N-GObject $device, GdkEventMask $events )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item GdkEventMask $events; event mask
 
 =end pod
@@ -3131,7 +3349,7 @@ sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEven
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_add_device_events
 =begin pod
 =head2 [gtk_widget_] add_device_events
 
@@ -3142,8 +3360,8 @@ Since: 3.0
 
   method gtk_widget_add_device_events ( N-GObject $device, GdkEventMask $events )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
-=item GdkEventMask $events; an event mask, see C<Gnome::Gdk3::EventMask>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
+=item GdkEventMask $events; an event mask, see B<Gnome::Gdk3::EventMask>
 
 =end pod
 
@@ -3153,7 +3371,7 @@ sub gtk_widget_add_device_events ( N-GObject $widget, N-GObject $device, GdkEven
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_opacity
 =begin pod
 =head2 [gtk_widget_] set_opacity
 
@@ -3185,7 +3403,7 @@ sub gtk_widget_set_opacity ( N-GObject $widget, num64 $opacity )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_opacity
 =begin pod
 =head2 [gtk_widget_] get_opacity
 
@@ -3207,14 +3425,14 @@ sub gtk_widget_get_opacity ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_device_enabled
 =begin pod
 =head2 [gtk_widget_] set_device_enabled
 
-Enables or disables a C<Gnome::Gdk3::Device> to interact with I<widget>
+Enables or disables a B<Gnome::Gdk3::Device> to interact with I<widget>
 and all its children.
 
-It does so by descending through the C<Gnome::Gdk3::Window> hierarchy
+It does so by descending through the B<Gnome::Gdk3::Window> hierarchy
 and enabling the same mask that is has for core events
 (i.e. the one that C<gdk_window_get_events()> returns).
 
@@ -3222,7 +3440,7 @@ Since: 3.0
 
   method gtk_widget_set_device_enabled ( N-GObject $device, Int $enabled )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item Int $enabled; whether to enable the device
 
 =end pod
@@ -3232,7 +3450,7 @@ sub gtk_widget_set_device_enabled ( N-GObject $widget, N-GObject $device, int32 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_device_enabled
 =begin pod
 =head2 [gtk_widget_] get_device_enabled
 
@@ -3245,7 +3463,7 @@ Since: 3.0
 
   method gtk_widget_get_device_enabled ( N-GObject $device --> Int  )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
@@ -3255,7 +3473,7 @@ sub gtk_widget_get_device_enabled ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_toplevel
 =begin pod
 =head2 [gtk_widget_] get_toplevel
 
@@ -3268,16 +3486,16 @@ Note the difference in behavior vs. C<gtk_widget_get_ancestor()>;
 `gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW)`
 would return
 C<Any> if I<widget> wasn’t inside a toplevel window, and if the
-window was inside a C<Gnome::Gtk3::Window>-derived widget which was in turn
-inside the toplevel C<Gnome::Gtk3::Window>. While the second case may
-seem unlikely, it actually happens when a C<Gnome::Gtk3::Plug> is embedded
-inside a C<Gnome::Gtk3::Socket> within the same application.
+window was inside a B<Gnome::Gtk3::Window>-derived widget which was in turn
+inside the toplevel B<Gnome::Gtk3::Window>. While the second case may
+seem unlikely, it actually happens when a B<Gnome::Gtk3::Plug> is embedded
+inside a B<Gnome::Gtk3::Socket> within the same application.
 
-To reliably find the toplevel C<Gnome::Gtk3::Window>, use
+To reliably find the toplevel B<Gnome::Gtk3::Window>, use
 C<gtk_widget_get_toplevel()> and call C<gtk_widget_is_toplevel()>
 on the result.
 |[<!-- language="C" -->
-C<Gnome::Gtk3::Widget> *toplevel = gtk_widget_get_toplevel (widget);
+B<Gnome::Gtk3::Widget> *toplevel = gtk_widget_get_toplevel (widget);
 if (gtk_widget_is_toplevel (toplevel))
 {
 // Perform action on toplevel.
@@ -3298,15 +3516,15 @@ sub gtk_widget_get_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_ancestor
 =begin pod
 =head2 [gtk_widget_] get_ancestor
 
 Gets the first ancestor of I<widget> with type I<widget_type>. For example,
 `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)` gets
-the first C<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be
+the first B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be
 added to the returned widget; it should not be unreferenced. See note
-about checking for a toplevel C<Gnome::Gtk3::Window> in the docs for
+about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for
 C<gtk_widget_get_toplevel()>.
 
 Note that unlike C<gtk_widget_is_ancestor()>, C<gtk_widget_get_ancestor()>
@@ -3326,7 +3544,7 @@ sub gtk_widget_get_ancestor ( N-GObject $widget, N-GObject $widget_type )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_visual
 =begin pod
 =head2 [gtk_widget_] get_visual
 
@@ -3345,12 +3563,12 @@ sub gtk_widget_get_visual ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_visual
 =begin pod
 =head2 [gtk_widget_] set_visual
 
 Sets the visual that should be used for by widget and its children for
-creating C<Gnome::Gdk3::Windows>. The visual must be on the same C<Gnome::Gdk3::Screen> as
+creating B<Gnome::Gdk3::Windows>. The visual must be on the same B<Gnome::Gdk3::Screen> as
 returned by C<gtk_widget_get_screen()>, so handling the
 sig C<screen-changed> signal is necessary.
 
@@ -3368,20 +3586,20 @@ sub gtk_widget_set_visual ( N-GObject $widget, N-GObject $visual )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_screen
 =begin pod
 =head2 [gtk_widget_] get_screen
 
-Get the C<Gnome::Gdk3::Screen> from the toplevel window associated with
+Get the B<Gnome::Gdk3::Screen> from the toplevel window associated with
 this widget. This function can only be called after the widget
-has been added to a widget hierarchy with a C<Gnome::Gtk3::Window>
+has been added to a widget hierarchy with a B<Gnome::Gtk3::Window>
 at the top.
 
 In general, you should only create screen specific
 resources when a widget has been realized, and you should
 free those resources when the widget is unrealized.
 
-Returns: (transfer none): the C<Gnome::Gdk3::Screen> for the toplevel for this widget.
+Returns: (transfer none): the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
 Since: 2.2
 
@@ -3396,16 +3614,16 @@ sub gtk_widget_get_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_has_screen
 =begin pod
 =head2 [gtk_widget_] has_screen
 
-Checks whether there is a C<Gnome::Gdk3::Screen> is associated with
+Checks whether there is a B<Gnome::Gdk3::Screen> is associated with
 this widget. All toplevel widgets have an associated
 screen, and all widgets added into a hierarchy with a toplevel
 window at the top.
 
-Returns: C<1> if there is a C<Gnome::Gdk3::Screen> associated
+Returns: C<1> if there is a B<Gnome::Gdk3::Screen> associated
 with the widget.
 
 Since: 2.2
@@ -3421,7 +3639,7 @@ sub gtk_widget_has_screen ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_scale_factor
 =begin pod
 =head2 [gtk_widget_] get_scale_factor
 
@@ -3446,19 +3664,19 @@ sub gtk_widget_get_scale_factor ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_display
 =begin pod
 =head2 [gtk_widget_] get_display
 
-Get the C<Gnome::Gdk3::Display> for the toplevel window associated with
+Get the B<Gnome::Gdk3::Display> for the toplevel window associated with
 this widget. This function can only be called after the widget
-has been added to a widget hierarchy with a C<Gnome::Gtk3::Window> at the top.
+has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
 In general, you should only create display specific
 resources when a widget has been realized, and you should
 free those resources when the widget is unrealized.
 
-Returns: (transfer none): the C<Gnome::Gdk3::Display> for the toplevel for this widget.
+Returns: (transfer none): the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
 Since: 2.2
 
@@ -3473,17 +3691,17 @@ sub gtk_widget_get_display ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_settings
 =begin pod
 =head2 [gtk_widget_] get_settings
 
 Gets the settings object holding the settings used for this widget.
 
-Note that this function can only be called when the C<Gnome::Gtk3::Widget>
+Note that this function can only be called when the B<Gnome::Gtk3::Widget>
 is attached to a toplevel, since the settings object is specific
-to a particular C<Gnome::Gdk3::Screen>.
+to a particular B<Gnome::Gdk3::Screen>.
 
-Returns: (transfer none): the relevant C<Gnome::Gtk3::Settings> object
+Returns: (transfer none): the relevant B<Gnome::Gtk3::Settings> object
 
   method gtk_widget_get_settings ( --> N-GObject  )
 
@@ -3497,12 +3715,12 @@ sub gtk_widget_get_settings ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_clipboard
 =begin pod
 =head2 [gtk_widget_] get_clipboard
 
 Returns the clipboard object for the given selection to
-be used with I<widget>. I<widget> must have a C<Gnome::Gdk3::Display>
+be used with I<widget>. I<widget> must have a B<Gnome::Gdk3::Display>
 associated with it, so must be attached to a toplevel
 window.
 
@@ -3515,7 +3733,7 @@ Since: 2.2
 
   method gtk_widget_get_clipboard ( GdkAtom $selection --> N-GObject  )
 
-=item GdkAtom $selection; a C<Gnome::Gdk3::Atom> which identifies the clipboard to use. C<GDK_SELECTION_CLIPBOARD> gives the default clipboard. Another common value is C<GDK_SELECTION_PRIMARY>, which gives the primary X selection.
+=item GdkAtom $selection; a B<Gnome::Gdk3::Atom> which identifies the clipboard to use. C<GDK_SELECTION_CLIPBOARD> gives the default clipboard. Another common value is C<GDK_SELECTION_PRIMARY>, which gives the primary X selection.
 
 =end pod
 
@@ -3526,12 +3744,12 @@ sub gtk_widget_get_clipboard ( N-GObject $widget, GdkAtom $selection )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_hexpand
 =begin pod
 =head2 [gtk_widget_] get_hexpand
 
 Gets whether the widget would like any available extra horizontal
-space. When a user resizes a C<Gnome::Gtk3::Window>, widgets with expand=TRUE
+space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE
 generally receive the extra space. For example, a list or
 scrollable area or document in your window would often be set to
 expand.
@@ -3558,12 +3776,12 @@ sub gtk_widget_get_hexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_hexpand
 =begin pod
 =head2 [gtk_widget_] set_hexpand
 
 Sets whether the widget would like any available extra horizontal
-space. When a user resizes a C<Gnome::Gtk3::Window>, widgets with expand=TRUE
+space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE
 generally receive the extra space. For example, a list or
 scrollable area or document in your window would often be set to
 expand.
@@ -3577,7 +3795,7 @@ want to expand. (To see if a widget will automatically expand given
 its current children and state, call C<gtk_widget_compute_expand()>. A
 container can decide how the expandability of children affects the
 expansion of the container by overriding the compute_expand virtual
-method on C<Gnome::Gtk3::Widget>.).
+method on B<Gnome::Gtk3::Widget>.).
 
 Setting hexpand explicitly with this function will override the
 automatic expand behavior.
@@ -3599,7 +3817,7 @@ sub gtk_widget_set_hexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_hexpand_set
 =begin pod
 =head2 [gtk_widget_] get_hexpand_set
 
@@ -3627,7 +3845,7 @@ sub gtk_widget_get_hexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_hexpand_set
 =begin pod
 =head2 [gtk_widget_] set_hexpand_set
 
@@ -3658,7 +3876,7 @@ sub gtk_widget_set_hexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_vexpand
 =begin pod
 =head2 [gtk_widget_] get_vexpand
 
@@ -3680,7 +3898,7 @@ sub gtk_widget_get_vexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_vexpand
 =begin pod
 =head2 [gtk_widget_] set_vexpand
 
@@ -3700,7 +3918,7 @@ sub gtk_widget_set_vexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_vexpand_set
 =begin pod
 =head2 [gtk_widget_] get_vexpand_set
 
@@ -3722,7 +3940,7 @@ sub gtk_widget_get_vexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_vexpand_set
 =begin pod
 =head2 [gtk_widget_] set_vexpand_set
 
@@ -3742,7 +3960,7 @@ sub gtk_widget_set_vexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_queue_compute_expand
 =begin pod
 =head2 [gtk_widget_] queue_compute_expand
 
@@ -3762,7 +3980,7 @@ sub gtk_widget_queue_compute_expand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_compute_expand
 =begin pod
 =head2 [gtk_widget_] compute_expand
 
@@ -3792,7 +4010,7 @@ sub gtk_widget_compute_expand ( N-GObject $widget, int32 $orientation )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_support_multidevice
 =begin pod
 =head2 [gtk_widget_] get_support_multidevice
 
@@ -3812,13 +4030,13 @@ sub gtk_widget_get_support_multidevice ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_support_multidevice
 =begin pod
 =head2 [gtk_widget_] set_support_multidevice
 
 Enables or disables multiple pointer awareness. If this setting is C<1>,
 I<widget> will start receiving multiple, per device enter/leave events. Note
-that if custom C<Gnome::Gdk3::Windows> are created in sig C<realize>,
+that if custom B<Gnome::Gdk3::Windows> are created in sig C<realize>,
 C<gdk_window_set_support_multidevice()> will have to be called manually on them.
 
 Since: 3.0
@@ -3835,7 +4053,7 @@ sub gtk_widget_set_support_multidevice ( N-GObject $widget, int32 $support_multi
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_accessible_type
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_type
 
@@ -3859,7 +4077,7 @@ sub gtk_widget_class_set_accessible_type ( GtkWidgetClass $widget_class, N-GObje
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_accessible_role
 =begin pod
 =head2 [gtk_widget_] class_set_accessible_role
 
@@ -3894,7 +4112,7 @@ sub gtk_widget_class_set_accessible_role ( GtkWidgetClass $widget_class, AtkRole
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_accessible
 =begin pod
 =head2 [gtk_widget_] get_accessible
 
@@ -3925,7 +4143,7 @@ sub gtk_widget_get_accessible ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_halign
 =begin pod
 =head2 [gtk_widget_] get_halign
 
@@ -3949,7 +4167,7 @@ sub gtk_widget_get_halign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_halign
 =begin pod
 =head2 [gtk_widget_] set_halign
 
@@ -3967,7 +4185,7 @@ sub gtk_widget_set_halign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_valign
 =begin pod
 =head2 [gtk_widget_] get_valign
 
@@ -3993,7 +4211,7 @@ sub gtk_widget_get_valign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_valign_with_baseline
 =begin pod
 =head2 [gtk_widget_] get_valign_with_baseline
 
@@ -4015,7 +4233,7 @@ sub gtk_widget_get_valign_with_baseline ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_valign
 =begin pod
 =head2 [gtk_widget_] set_valign
 
@@ -4033,7 +4251,7 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_margin_start
 =begin pod
 =head2 [gtk_widget_] get_margin_start
 
@@ -4054,7 +4272,7 @@ sub gtk_widget_get_margin_start ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_margin_start
 =begin pod
 =head2 [gtk_widget_] set_margin_start
 
@@ -4074,7 +4292,7 @@ sub gtk_widget_set_margin_start ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_margin_end
 =begin pod
 =head2 [gtk_widget_] get_margin_end
 
@@ -4095,7 +4313,7 @@ sub gtk_widget_get_margin_end ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_margin_end
 =begin pod
 =head2 [gtk_widget_] set_margin_end
 
@@ -4115,7 +4333,7 @@ sub gtk_widget_set_margin_end ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_margin_top
 =begin pod
 =head2 [gtk_widget_] get_margin_top
 
@@ -4136,7 +4354,7 @@ sub gtk_widget_get_margin_top ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_margin_top
 =begin pod
 =head2 [gtk_widget_] set_margin_top
 
@@ -4156,7 +4374,7 @@ sub gtk_widget_set_margin_top ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_margin_bottom
 =begin pod
 =head2 [gtk_widget_] get_margin_bottom
 
@@ -4177,7 +4395,7 @@ sub gtk_widget_get_margin_bottom ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_margin_bottom
 =begin pod
 =head2 [gtk_widget_] set_margin_bottom
 
@@ -4197,16 +4415,16 @@ sub gtk_widget_set_margin_bottom ( N-GObject $widget, int32 $margin )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_events
 =begin pod
 =head2 [gtk_widget_] get_events
 
-Returns the event mask (see C<Gnome::Gdk3::EventMask>) for the widget. These are the
+Returns the event mask (see B<Gnome::Gdk3::EventMask>) for the widget. These are the
 events that the widget will receive.
 
 Note: Internally, the widget event mask will be the logical OR of the event
 mask set through C<gtk_widget_set_events()> or C<gtk_widget_add_events()>, and the
-event mask necessary to cater for every C<Gnome::Gtk3::EventController> created for the
+event mask necessary to cater for every B<Gnome::Gtk3::EventController> created for the
 widget.
 
 Returns: event mask for I<widget>
@@ -4223,7 +4441,7 @@ sub gtk_widget_get_events ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_device_events
 =begin pod
 =head2 [gtk_widget_] get_device_events
 
@@ -4236,7 +4454,7 @@ Since: 3.0
 
   method gtk_widget_get_device_events ( N-GObject $device --> GdkEventMask  )
 
-=item N-GObject $device; a C<Gnome::Gdk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
@@ -4247,7 +4465,7 @@ sub gtk_widget_get_device_events ( N-GObject $widget, N-GObject $device )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_is_ancestor
 =begin pod
 =head2 [gtk_widget_] is_ancestor
 
@@ -4259,7 +4477,7 @@ grandchild, great grandchild, etc.
 
   method gtk_widget_is_ancestor ( N-GObject $ancestor --> Int  )
 
-=item N-GObject $ancestor; another C<Gnome::Gtk3::Widget>
+=item N-GObject $ancestor; another B<Gnome::Gtk3::Widget>
 
 =end pod
 
@@ -4269,7 +4487,7 @@ sub gtk_widget_is_ancestor ( N-GObject $widget, N-GObject $ancestor )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_translate_coordinates
 =begin pod
 =head2 [gtk_widget_] translate_coordinates
 
@@ -4284,7 +4502,7 @@ was no common ancestor. In this case, nothing is stored in
 
   method gtk_widget_translate_coordinates ( N-GObject $dest_widget, Int $src_x, Int $src_y, Int $dest_x, Int $dest_y --> Int  )
 
-=item N-GObject $dest_widget; a C<Gnome::Gtk3::Widget>
+=item N-GObject $dest_widget; a B<Gnome::Gtk3::Widget>
 =item Int $src_x; X position relative to I<src_widget>
 =item Int $src_y; Y position relative to I<src_widget>
 =item Int $dest_x; (out) (optional): location to store X position relative to I<dest_widget>
@@ -4298,12 +4516,12 @@ sub gtk_widget_translate_coordinates ( N-GObject $src_widget, N-GObject $dest_wi
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_hide_on_delete
 =begin pod
 =head2 [gtk_widget_] hide_on_delete
 
 Utility function; intended to be connected to the sig C<delete-event>
-signal on a C<Gnome::Gtk3::Window>. The function calls C<gtk_widget_hide()> on its
+signal on a B<Gnome::Gtk3::Window>. The function calls C<gtk_widget_hide()> on its
 argument, then returns C<1>. If connected to ::delete-event, the
 result is that clicking the close button for a window (on the
 window frame, top right corner usually) will hide but not destroy
@@ -4323,12 +4541,12 @@ sub gtk_widget_hide_on_delete ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_reset_style
 =begin pod
 =head2 [gtk_widget_] reset_style
 
 Updates the style context of I<widget> and all descendants
-by updating its widget path. C<Gnome::Gtk3::Containers> may want
+by updating its widget path. B<Gnome::Gtk3::Containers> may want
 to use this on a child when reordering it in a way that a different
 style might apply to it. See also C<gtk_container_get_path_for_child()>.
 
@@ -4345,7 +4563,7 @@ sub gtk_widget_reset_style ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_create_pango_context
 =begin pod
 =head2 [gtk_widget_] create_pango_context
 
@@ -4365,7 +4583,7 @@ sub gtk_widget_create_pango_context ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_pango_context
 =begin pod
 =head2 [gtk_widget_] get_pango_context
 
@@ -4392,12 +4610,12 @@ sub gtk_widget_get_pango_context ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_font_options
 =begin pod
 =head2 [gtk_widget_] set_font_options
 
 Sets the C<cairo_font_options_t> used for Pango rendering in this widget.
-When not set, the default font options for the C<Gnome::Gdk3::Screen> will be used.
+When not set, the default font options for the B<Gnome::Gdk3::Screen> will be used.
 
 Since: 3.18
 
@@ -4428,7 +4646,7 @@ sub cairo_font_options_t (  $*gtk_widget_get_font_options GtkWidget *widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_create_pango_layout
 =begin pod
 =head2 [gtk_widget_] create_pango_layout
 
@@ -4455,7 +4673,7 @@ sub gtk_widget_create_pango_layout ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_install_style_property
 =begin pod
 =head2 [gtk_widget_] class_install_style_property
 
@@ -4464,7 +4682,7 @@ style property is determined by the value type of I<pspec>.
 
   method gtk_widget_class_install_style_property ( GtkWidgetClass $klass, GParamSpec $pspec )
 
-=item GtkWidgetClass $klass; a C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $klass; a B<Gnome::Gtk3::WidgetClass>
 =item GParamSpec $pspec; the C<GParamSpec> for the property
 
 =end pod
@@ -4474,7 +4692,7 @@ sub gtk_widget_class_install_style_property ( GtkWidgetClass $klass, GParamSpec 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_install_style_property_parser
 =begin pod
 =head2 [gtk_widget_] class_install_style_property_parser
 
@@ -4482,7 +4700,7 @@ Installs a style property on a widget class.
 
   method gtk_widget_class_install_style_property_parser ( GtkWidgetClass $klass, GParamSpec $pspec, GtkRcPropertyParser $parser )
 
-=item GtkWidgetClass $klass; a C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $klass; a B<Gnome::Gtk3::WidgetClass>
 =item GParamSpec $pspec; the C<GParamSpec> for the style property
 =item GtkRcPropertyParser $parser; the parser for the style property
 
@@ -4493,7 +4711,7 @@ sub gtk_widget_class_install_style_property_parser ( GtkWidgetClass $klass, GPar
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_find_style_property
 =begin pod
 =head2 [gtk_widget_] class_find_style_property
 
@@ -4506,7 +4724,7 @@ Since: 2.2
 
   method gtk_widget_class_find_style_property ( GtkWidgetClass $klass, Str $property_name --> GParamSpec  )
 
-=item GtkWidgetClass $klass; a C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $klass; a B<Gnome::Gtk3::WidgetClass>
 =item Str $property_name; the name of the style property to find
 
 =end pod
@@ -4517,7 +4735,7 @@ sub gtk_widget_class_find_style_property ( GtkWidgetClass $klass, Str $property_
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_list_style_properties
 =begin pod
 =head2 [gtk_widget_] class_list_style_properties
 
@@ -4531,7 +4749,7 @@ Since: 2.2
 
   method gtk_widget_class_list_style_properties ( GtkWidgetClass $klass, UInt $n_properties --> GParamSpec  )
 
-=item GtkWidgetClass $klass; a C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $klass; a B<Gnome::Gtk3::WidgetClass>
 =item UInt $n_properties; (out): location to return the number of style properties found
 
 =end pod
@@ -4542,7 +4760,7 @@ sub gtk_widget_class_list_style_properties ( GtkWidgetClass $klass, uint32 $n_pr
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_style_get_property
 =begin pod
 =head2 [gtk_widget_] style_get_property
 
@@ -4562,7 +4780,7 @@ sub gtk_widget_style_get_property ( N-GObject $widget, Str $property_name, N-GOb
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_style_get_valist
 =begin pod
 =head2 [gtk_widget_] style_get_valist
 
@@ -4582,7 +4800,7 @@ sub gtk_widget_style_get_valist ( N-GObject $widget, Str $first_property_name, v
 }}
 #`[[
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_style_get
 =begin pod
 =head2 [gtk_widget_] style_get
 
@@ -4600,7 +4818,7 @@ sub gtk_widget_style_get ( N-GObject $widget, Str $first_property_name, Any $any
 ]]
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_direction
 =begin pod
 =head2 [gtk_widget_] set_direction
 
@@ -4628,7 +4846,7 @@ sub gtk_widget_set_direction ( N-GObject $widget, int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_direction
 =begin pod
 =head2 [gtk_widget_] get_direction
 
@@ -4648,7 +4866,7 @@ sub gtk_widget_get_direction ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_default_direction
 =begin pod
 =head2 [gtk_widget_] set_default_direction
 
@@ -4666,7 +4884,7 @@ sub gtk_widget_set_default_direction ( int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_default_direction
 =begin pod
 =head2 [gtk_widget_] get_default_direction
 
@@ -4687,7 +4905,7 @@ sub gtk_widget_get_default_direction (  )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_shape_combine_region
 =begin pod
 =head2 [gtk_widget_] shape_combine_region
 
@@ -4708,7 +4926,7 @@ sub gtk_widget_shape_combine_region ( N-GObject $widget, cairo_region_t $region 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_input_shape_combine_region
 =begin pod
 =head2 [gtk_widget_] input_shape_combine_region
 
@@ -4731,7 +4949,7 @@ sub gtk_widget_input_shape_combine_region ( N-GObject $widget, cairo_region_t $r
 
 #-------------------------------------------------------------------------------
 #TODO check return type CArray?
-#TM:-:
+#TM:0:gtk_widget_list_mnemonic_labels
 =begin pod
 =head2 [gtk_widget_] list_mnemonic_labels
 
@@ -4744,7 +4962,7 @@ callbacks that might destroy the widgets, you
 must call `g_list_foreach (result,
 (GFunc)g_object_ref, NULL)` first, and then unref all the
 widgets afterwards.
-Returns: (element-type C<Gnome::Gtk3::Widget>) (transfer container): the list of
+Returns: (element-type B<Gnome::Gtk3::Widget>) (transfer container): the list of
 mnemonic labels; free this list
 with C<g_list_free()> when you are done with it.
 
@@ -4761,7 +4979,7 @@ sub gtk_widget_list_mnemonic_labels ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_add_mnemonic_label
 =begin pod
 =head2 [gtk_widget_] add_mnemonic_label
 
@@ -4776,7 +4994,7 @@ Since: 2.4
 
   method gtk_widget_add_mnemonic_label ( N-GObject $label )
 
-=item N-GObject $label; a C<Gnome::Gtk3::Widget> that acts as a mnemonic label for I<widget>
+=item N-GObject $label; a B<Gnome::Gtk3::Widget> that acts as a mnemonic label for I<widget>
 
 =end pod
 
@@ -4785,7 +5003,7 @@ sub gtk_widget_add_mnemonic_label ( N-GObject $widget, N-GObject $label )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_remove_mnemonic_label
 =begin pod
 =head2 [gtk_widget_] remove_mnemonic_label
 
@@ -4798,7 +5016,7 @@ Since: 2.4
 
   method gtk_widget_remove_mnemonic_label ( N-GObject $label )
 
-=item N-GObject $label; a C<Gnome::Gtk3::Widget> that was previously set as a mnemonic label for I<widget> with C<gtk_widget_add_mnemonic_label()>.
+=item N-GObject $label; a B<Gnome::Gtk3::Widget> that was previously set as a mnemonic label for I<widget> with C<gtk_widget_add_mnemonic_label()>.
 
 =end pod
 
@@ -4807,7 +5025,7 @@ sub gtk_widget_remove_mnemonic_label ( N-GObject $widget, N-GObject $label )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_tooltip_window
 =begin pod
 =head2 [gtk_widget_] set_tooltip_window
 
@@ -4824,7 +5042,7 @@ Since: 2.12
 
   method gtk_widget_set_tooltip_window ( N-GObject $custom_window )
 
-=item N-GObject $custom_window; (allow-none): a C<Gnome::Gtk3::Window>, or C<Any>
+=item N-GObject $custom_window; (allow-none): a B<Gnome::Gtk3::Window>, or C<Any>
 
 =end pod
 
@@ -4833,15 +5051,15 @@ sub gtk_widget_set_tooltip_window ( N-GObject $widget, N-GObject $custom_window 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_tooltip_window
 =begin pod
 =head2 [gtk_widget_] get_tooltip_window
 
-Returns the C<Gnome::Gtk3::Window> of the current tooltip. This can be the
-C<Gnome::Gtk3::Window> created by default, or the custom tooltip window set
+Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the
+B<Gnome::Gtk3::Window> created by default, or the custom tooltip window set
 using C<gtk_widget_set_tooltip_window()>.
 
-Returns: (transfer none): The C<Gnome::Gtk3::Window> of the current tooltip.
+Returns: (transfer none): The B<Gnome::Gtk3::Window> of the current tooltip.
 
 Since: 2.12
 
@@ -4856,7 +5074,7 @@ sub gtk_widget_get_tooltip_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_trigger_tooltip_query
 =begin pod
 =head2 [gtk_widget_] trigger_tooltip_query
 
@@ -4876,7 +5094,7 @@ sub gtk_widget_trigger_tooltip_query ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:1:gtk_widget_set_tooltip_text
 =begin pod
 =head2 [gtk_widget_] set_tooltip_text
 
@@ -4899,7 +5117,7 @@ sub gtk_widget_set_tooltip_text ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:1:gtk_widget_get_tooltip_text
 =begin pod
 =head2 [gtk_widget_] get_tooltip_text
 
@@ -4921,7 +5139,7 @@ sub gtk_widget_get_tooltip_text ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_tooltip_markup
 =begin pod
 =head2 [gtk_widget_] set_tooltip_markup
 
@@ -4947,7 +5165,7 @@ sub gtk_widget_set_tooltip_markup ( N-GObject $widget, Str $markup )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_tooltip_markup
 =begin pod
 =head2 [gtk_widget_] get_tooltip_markup
 
@@ -4969,7 +5187,7 @@ sub gtk_widget_get_tooltip_markup ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_has_tooltip
 =begin pod
 =head2 [gtk_widget_] set_has_tooltip
 
@@ -4989,7 +5207,7 @@ sub gtk_widget_set_has_tooltip ( N-GObject $widget, int32 $has_tooltip )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_has_tooltip
 =begin pod
 =head2 [gtk_widget_] get_has_tooltip
 
@@ -5075,9 +5293,9 @@ sub gtk_cairo_transform_to_window ( cairo_t $cr, N-GObject $widget, N-GObject $w
 =begin pod
 =head2 gtk_requisition_new
 
-Allocates a new C<Gnome::Gtk3::Requisition>-struct and initializes its elements to zero.
+Allocates a new B<Gnome::Gtk3::Requisition>-struct and initializes its elements to zero.
 
-Returns: a new empty C<Gnome::Gtk3::Requisition>. The newly allocated C<Gnome::Gtk3::Requisition> should
+Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should
 be freed with C<gtk_requisition_free()>.
 
 Since: 3.0
@@ -5097,13 +5315,13 @@ sub gtk_requisition_new ( )
 =begin pod
 =head2 gtk_requisition_copy
 
-Copies a C<Gnome::Gtk3::Requisition>.
+Copies a B<Gnome::Gtk3::Requisition>.
 
 Returns: a copy of I<requisition>
 
   method gtk_requisition_copy ( GtkRequisition $requisition --> GtkRequisition  )
 
-=item GtkRequisition $requisition; a C<Gnome::Gtk3::Requisition>
+=item GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
 
 =end pod
 
@@ -5118,11 +5336,11 @@ sub gtk_requisition_copy ( GtkRequisition $requisition )
 =begin pod
 =head2 gtk_requisition_free
 
-Frees a C<Gnome::Gtk3::Requisition>.
+Frees a B<Gnome::Gtk3::Requisition>.
 
   method gtk_requisition_free ( GtkRequisition $requisition )
 
-=item GtkRequisition $requisition; a C<Gnome::Gtk3::Requisition>
+=item GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
 
 =end pod
 
@@ -5132,7 +5350,7 @@ sub gtk_requisition_free ( GtkRequisition $requisition )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_in_destruction
 =begin pod
 =head2 [gtk_widget_] in_destruction
 
@@ -5153,14 +5371,14 @@ sub gtk_widget_in_destruction ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_style_context
 =begin pod
 =head2 [gtk_widget_] get_style_context
 
 Returns the style context associated to I<widget>. The returned object is
 guaranteed to be the same for the lifetime of I<widget>.
 
-Returns: (transfer none): a C<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and
+Returns: (transfer none): a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and
 must not be freed.
 
   method gtk_widget_get_style_context ( --> N-GObject  )
@@ -5174,11 +5392,11 @@ sub gtk_widget_get_style_context ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_get_path
+#TM:0:gtk_widget_get_path
 =begin pod
 =head2 [gtk_widget_] get_path
 
-Returns the C<Gnome::Gtk3::WidgetPath> representing the widget. If the widget is not connected to a toplevel widget, a partial path will be created.
+Returns the B<Gnome::Gtk3::WidgetPath> representing the widget. If the widget is not connected to a toplevel widget, a partial path will be created.
 
 Returns: The C<N-WidgetPath> representing the widget.
 
@@ -5193,7 +5411,7 @@ sub gtk_widget_get_path ( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_css_name
 =begin pod
 =head2 [gtk_widget_] class_set_css_name
 
@@ -5234,7 +5452,7 @@ sub char (  $* gtk_widget_class_get_css_name GtkWidgetClass *widget_class )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_modifier_mask
 =begin pod
 =head2 [gtk_widget_] get_modifier_mask
 
@@ -5260,12 +5478,12 @@ sub gtk_widget_get_modifier_mask ( N-GObject $widget, GdkModifierIntent $intent 
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_insert_action_group
 =begin pod
 =head2 [gtk_widget_] insert_action_group
 
 Inserts I<group> into I<widget>. Children of I<widget> that implement
-C<Gnome::Gtk3::Actionable> can then be associated with actions in I<group> by
+B<Gnome::Gtk3::Actionable> can then be associated with actions in I<group> by
 setting their “action-name” to
 I<prefix>.`action-name`.
 
@@ -5287,7 +5505,7 @@ sub gtk_widget_insert_action_group ( N-GObject $widget, Str $name, N-GObject $gr
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_add_tick_callback
 =begin pod
 =head2 [gtk_widget_] add_tick_callback
 
@@ -5299,7 +5517,7 @@ slower). For this reason, is most suitable for handling graphics
 that change every frame or every few frames. The tick callback does
 not automatically imply a relayout or repaint. If you want a
 repaint or relayout, and aren’t changing widget properties that
-would trigger that (for example, changing the text of a C<Gnome::Gtk3::Label>),
+would trigger that (for example, changing the text of a B<Gnome::Gtk3::Label>),
 then you will have to call C<gtk_widget_queue_resize()> or
 C<gtk_widget_queue_draw_area()> yourself.
 
@@ -5309,8 +5527,8 @@ C<gdk_frame_timings_get_predicted_presentation_time()> if you are
 trying to display isolated frames at particular times.
 
 This is a more convenient alternative to connecting directly to the
-sig C<update> signal of C<Gnome::Gdk3::FrameClock>, since you don't
-have to worry about when a C<Gnome::Gdk3::FrameClock> is assigned to a widget.
+sig C<update> signal of B<Gnome::Gdk3::FrameClock>, since you don't
+have to worry about when a B<Gnome::Gdk3::FrameClock> is assigned to a widget.
 
 Returns: an id for the connection of this callback. Remove the callback
 by passing it to C<gtk_widget_remove_tick_callback()>
@@ -5332,7 +5550,7 @@ sub gtk_widget_add_tick_callback ( N-GObject $widget, GtkTickCallback $callback,
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_remove_tick_callback
 =begin pod
 =head2 [gtk_widget_] remove_tick_callback
 
@@ -5352,7 +5570,7 @@ sub gtk_widget_remove_tick_callback ( N-GObject $widget, uint32 $id )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_init_template
 =begin pod
 =head2 [gtk_widget_] init_template
 
@@ -5361,7 +5579,7 @@ function must be called in the instance initializer for any
 class which assigned itself a template using C<gtk_widget_class_set_template()>
 
 It is important to call this function in the instance initializer
-of a C<Gnome::Gtk3::Widget> subclass and not in C<GObject>.C<constructed()> or
+of a B<Gnome::Gtk3::Widget> subclass and not in C<GObject>.C<constructed()> or
 C<GObject>.C<constructor()> for two reasons.
 
 One reason is that generally derived widgets will assume that parent
@@ -5385,7 +5603,7 @@ sub gtk_widget_init_template ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_template_child
 =begin pod
 =head2 [gtk_widget_] get_template_child
 
@@ -5415,12 +5633,12 @@ sub gtk_widget_get_template_child ( N-GObject $widget, N-GObject $widget_type, S
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_template
 =begin pod
 =head2 [gtk_widget_] class_set_template
 
 This should be called at class initialization time to specify
-the C<Gnome::Gtk3::Builder> XML to be used to extend a widget.
+the B<Gnome::Gtk3::Builder> XML to be used to extend a widget.
 
 For convenience, C<gtk_widget_class_set_template_from_resource()> is also provided.
 
@@ -5431,8 +5649,8 @@ Since: 3.10
 
   method gtk_widget_class_set_template ( GtkWidgetClass $widget_class, N-GObject $template_bytes )
 
-=item GtkWidgetClass $widget_class; A C<Gnome::Gtk3::WidgetClass>
-=item N-GObject $template_bytes; A C<GBytes> holding the C<Gnome::Gtk3::Builder> XML
+=item GtkWidgetClass $widget_class; A B<Gnome::Gtk3::WidgetClass>
+=item N-GObject $template_bytes; A C<GBytes> holding the B<Gnome::Gtk3::Builder> XML
 
 =end pod
 
@@ -5441,7 +5659,7 @@ sub gtk_widget_class_set_template ( GtkWidgetClass $widget_class, N-GObject $tem
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_template_from_resource
 =begin pod
 =head2 [gtk_widget_] class_set_template_from_resource
 
@@ -5454,7 +5672,7 @@ Since: 3.10
 
   method gtk_widget_class_set_template_from_resource ( GtkWidgetClass $widget_class, Str $resource_name )
 
-=item GtkWidgetClass $widget_class; A C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $widget_class; A B<Gnome::Gtk3::WidgetClass>
 =item Str $resource_name; The name of the resource to load the template from
 
 =end pod
@@ -5464,7 +5682,7 @@ sub gtk_widget_class_set_template_from_resource ( GtkWidgetClass $widget_class, 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_bind_template_callback_full
 =begin pod
 =head2 [gtk_widget_] class_bind_template_callback_full
 
@@ -5478,7 +5696,7 @@ Since: 3.10
 
   method gtk_widget_class_bind_template_callback_full ( GtkWidgetClass $widget_class, Str $callback_name, GCallback $callback_symbol )
 
-=item GtkWidgetClass $widget_class; A C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $widget_class; A B<Gnome::Gtk3::WidgetClass>
 =item Str $callback_name; The name of the callback as expected in the template XML
 =item GCallback $callback_symbol; (scope async): The callback symbol
 
@@ -5490,12 +5708,12 @@ sub gtk_widget_class_bind_template_callback_full ( GtkWidgetClass $widget_class,
 
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_set_connect_func
 =begin pod
 =head2 [gtk_widget_] class_set_connect_func
 
-For use in language bindings, this will override the default C<Gnome::Gtk3::BuilderConnectFunc> to be
-used when parsing C<Gnome::Gtk3::Builder> XML from this class’s template data.
+For use in language bindings, this will override the default B<Gnome::Gtk3::BuilderConnectFunc> to be
+used when parsing B<Gnome::Gtk3::Builder> XML from this class’s template data.
 
 Note that this must be called from a composite widget classes class
 initializer after calling C<gtk_widget_class_set_template()>.
@@ -5504,8 +5722,8 @@ Since: 3.10
 
   method gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilderConnectFunc $connect_func, Pointer $connect_data, GDestroyNotify $connect_data_destroy )
 
-=item GtkWidgetClass $widget_class; A C<Gnome::Gtk3::WidgetClass>
-=item GtkBuilderConnectFunc $connect_func; The C<Gnome::Gtk3::BuilderConnectFunc> to use when connecting signals in the class template
+=item GtkWidgetClass $widget_class; A B<Gnome::Gtk3::WidgetClass>
+=item GtkBuilderConnectFunc $connect_func; The B<Gnome::Gtk3::BuilderConnectFunc> to use when connecting signals in the class template
 =item Pointer $connect_data; The data to pass to I<connect_func>
 =item GDestroyNotify $connect_data_destroy; The C<GDestroyNotify> to free I<connect_data>, this will only be used at class finalization time, when no classes of type I<widget_type> are in use anymore.
 
@@ -5518,7 +5736,7 @@ sub gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilder
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_class_bind_template_child_full
 =begin pod
 =head2 [gtk_widget_] class_bind_template_child_full
 
@@ -5533,10 +5751,10 @@ instance’s life cycle, it will be released automatically when C<GObjectClass>.
 on your instance and if a I<struct_offset> that is != 0 is specified, then the automatic location
 in your instance public or private data will be set to C<Any>. You can however access an automated child
 pointer the first time your classes C<GObjectClass>.C<dispose()> runs, or alternatively in
-C<Gnome::Gtk3::WidgetClass>.C<destroy()>.
+B<Gnome::Gtk3::WidgetClass>.C<destroy()>.
 
-If I<internal_child> is specified, C<Gnome::Gtk3::BuildableIface>.C<get_internal_child()> will be automatically
-implemented by the C<Gnome::Gtk3::Widget> class so there is no need to implement it manually.
+If I<internal_child> is specified, B<Gnome::Gtk3::BuildableIface>.C<get_internal_child()> will be automatically
+implemented by the B<Gnome::Gtk3::Widget> class so there is no need to implement it manually.
 
 The wrapper macros C<gtk_widget_class_bind_template_child()>, C<gtk_widget_class_bind_template_child_internal()>,
 C<gtk_widget_class_bind_template_child_private()> and C<gtk_widget_class_bind_template_child_internal_private()>
@@ -5549,9 +5767,9 @@ Since: 3.10
 
   method gtk_widget_class_bind_template_child_full ( GtkWidgetClass $widget_class, Str $name, Int $internal_child, Int $struct_offset )
 
-=item GtkWidgetClass $widget_class; A C<Gnome::Gtk3::WidgetClass>
+=item GtkWidgetClass $widget_class; A B<Gnome::Gtk3::WidgetClass>
 =item Str $name; The “id” of the child defined in the template XML
-=item Int $internal_child; Whether the child should be accessible as an “internal-child” when this class is used in C<Gnome::Gtk3::Builder> XML
+=item Int $internal_child; Whether the child should be accessible as an “internal-child” when this class is used in B<Gnome::Gtk3::Builder> XML
 =item Int $struct_offset; The structure offset into the composite widget’s instance public or private structure where the automated child pointer should be set, or 0 to not assign the pointer.
 
 =end pod
@@ -5562,12 +5780,12 @@ sub gtk_widget_class_bind_template_child_full ( GtkWidgetClass $widget_class, St
 }}
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_action_group
 =begin pod
 =head2 [gtk_widget_] get_action_group
 
 Retrieves the C<GActionGroup> that was registered using I<prefix>. The resulting
-C<GActionGroup> may have been registered to I<widget> or any C<Gnome::Gtk3::Widget> in its
+C<GActionGroup> may have been registered to I<widget> or any B<Gnome::Gtk3::Widget> in its
 ancestry.
 
 If no action group was found matching I<prefix>, then C<Any> is returned.
@@ -5588,7 +5806,7 @@ sub gtk_widget_get_action_group ( N-GObject $widget, Str $prefix )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_list_action_prefixes
 =begin pod
 =head2 [gtk_widget_] list_action_prefixes
 
@@ -5611,7 +5829,7 @@ sub gtk_widget_list_action_prefixes( N-GObject $widget )
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_set_font_map
 =begin pod
 =head2 [gtk_widget_] set_font_map
 
@@ -5631,7 +5849,7 @@ sub gtk_widget_set_font_map ( N-GObject $widget, PangoFontMap $font_map )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:gtk_widget_get_font_map
 =begin pod
 =head2 [gtk_widget_] get_font_map
 
@@ -5653,107 +5871,2031 @@ sub gtk_widget_get_font_map ( N-GObject $widget )
 
 }}
 
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 List of deprecated (not implemented!) methods
-
-=head2 Since 3.0
-=head3 method gtk_widget_size_request ( GtkRequisition $requisition )
-=head3 method gtk_widget_get_child_requisition ( GtkRequisition $requisition )
-=head3 method gtk_widget_set_state ( GtkStateType $state )
-=head3 method gtk_widget_get_state ( --> GtkStateType  )
-=head3 method void (  $
-gtk_widget_get_requisition        GtkWidget     *widget, GtkRequisition $requisition )
-
-=head2 Since 3.4
-=head3 method gtk_widget_get_pointer ( Int $x, Int $y )
-
-=head2 Since 3.10
-=head3 method gtk_widget_render_icon_pixbuf ( Str $stock_id, GtkIconSize $size --> N-GObject  )
-=head3 method gtk_widget_set_composite_name ( Str $name )
-=head3 method gtk_widget_get_composite_name ( --> Str  )
-=head3 method gtk_widget_push_composite_child ( )
-=head3 method gtk_widget_pop_composite_child ( )
-
-=head2 Since 3.12
-=head3 method gtk_widget_get_root_window ( --> N-GObject  )
-=head3 method gtk_widget_get_margin_left ( --> Int  )
-=head3 method gtk_widget_set_margin_left ( Int $margin )
-=head3 method gtk_widget_get_margin_right ( --> Int  )
-=head3 method gtk_widget_set_margin_right ( Int $margin )
-
-=head2 Since 3.14
-=head3 method gtk_widget_reparent ( N-GObject $new_parent )
-=head3 method gtk_widget_region_intersect ( cairo_region_t $region --> cairo_region_t  )
-=head3 method gtk_widget_set_double_buffered ( Int $double_buffered )
-=head3 method gtk_widget_get_double_buffered ( --> Int  )
-
-=head2 Since 3.16
-=head3 method gtk_widget_override_color ( GtkStateFlags $state, N-GObject $color )
-=head3 method gtk_widget_override_background_color ( GtkStateFlags $state, N-GObject $color )
-=head3 method gtk_widget_override_font ( PangoFontDescription $font_desc )
-=head3 method gtk_widget_override_symbolic_color ( Str $name, N-GObject $color )
-=head3 method gtk_widget_override_cursor ( N-GObject $cursor, N-GObject $secondary_cursor )
-
-=head2 Since 3.22
-=head3 method gtk_widget_send_expose ( GdkEvent $event --> Int  )
-=head3 method gtk_widget_is_composited ( --> Int  )
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 List of not yet implemented methods and classes
-
-=head3 class GtkTickCallback
-
-=head3 method gtk_widget_new (...)
-=head3 method gtk_widget_draw (...)
-=head3 method gtk_widget_queue_draw_region (...)
-=head3 method gtk_widget_set_font_options (...)
-=head3 method cairo_font_options_t (...)
-=head3 method gtk_widget_create_pango_layout (...)
-=head3 method gtk_widget_class_install_style_property (...)
-=head3 method gtk_widget_class_install_style_property_parser (...)
-=head3 method gtk_widget_class_find_style_property (...)
-=head3 method gtk_widget_class_list_style_properties (...)
-=head3 method gtk_widget_style_get_property (...)
-=head3 method gtk_widget_shape_combine_region (...)
-=head3 method gtk_widget_input_shape_combine_region (...)
-=head3 method gtk_cairo_should_draw_window (...)
-=head3 method gtk_cairo_transform_to_window (...)
-=head3 method gtk_widget_create_pango_context (...)
-=head3 method gtk_widget_get_pango_context (...)
-=head3 method gtk_widget_set_font_map (...)
-=head3 method gtk_widget_get_font_map (...)
-=head3 gtk_widget_add_accelerator (...)
-gtk_widget_set_device_events
-gtk_widget_add_device_events
-gtk_widget_get_device_events
-gtk_widget_get_clipboard
-gtk_widget_class_set_accessible_type
-gtk_widget_class_set_accessible_role
-gtk_widget_class_set_css_name
-gtk_widget_class_get_css_name
-gtk_widget_class_set_template
-gtk_widget_class_set_template_from_resource
-gtk_widget_class_bind_template_callback_full
-gtk_widget_class_set_connect_func
-gtk_widget_class_bind_template_child_full
-gtk_widget_get_accessible
-gtk_widget_style_get_valist
-gtk_requisition_new
-gtk_requisition_copy
-gtk_requisition_free
-gtk_widget_get_modifier_mask
-gtk_widget_add_tick_callback
-
-=end pod
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
 
-Register any signal as follows. See also C<Gnome::GObject::Object>.
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment #TS:0:destroy:
+=head3 destroy
+
+Signals that all holders of a reference to the widget should release
+the reference that they hold. May result in finalization of the widget
+if all references are released.
+
+This signal is not suitable for saving widget state.
+
+  method handler (
+    Gnome::GObject::Object :widget($object),
+    *%user-options
+  );
+
+=item $object; the object which received the signal
+
+
+=comment #TS:0:show:
+=head3 show
+
+The I<show> signal is emitted when I<widget> is shown, for example with
+C<gtk_widget_show()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:hide:
+=head3 hide
+
+The I<hide> signal is emitted when I<widget> is hidden, for example with
+C<gtk_widget_hide()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:map:
+=head3 map
+
+The I<map> signal is emitted when I<widget> is going to be mapped, that is
+when the widget is visible (which is controlled with
+C<gtk_widget_set_visible()>) and all its parents up to the toplevel widget
+are also visible. Once the map has occurred,  I<map-event> will
+be emitted.
+
+The I<map> signal can be used to determine whether a widget will be drawn,
+for instance it can resume an animation that was stopped during the
+emission of  I<unmap>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:unmap:
+=head3 unmap
+
+The I<unmap> signal is emitted when I<widget> is going to be unmapped, which
+means that either it or any of its parents up to the toplevel widget have
+been set as hidden.
+
+As I<unmap> indicates that a widget will not be shown any longer, it can be
+used to, for example, stop an animation on the widget.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:realize:
+=head3 realize
+
+The I<realize> signal is emitted when I<widget> is associated with a
+B<Gnome::Gdk3::Window>, which means that C<gtk_widget_realize()> has been called or the
+widget has been mapped (that is, it is going to be drawn).
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:unrealize:
+=head3 unrealize
+
+The I<unrealize> signal is emitted when the B<Gnome::Gdk3::Window> associated with
+I<widget> is destroyed, which means that C<gtk_widget_unrealize()> has been
+called or the widget has been unmapped (that is, it is going to be
+hidden).
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:size-allocate:
+=head3 size-allocate
+
+  method handler (
+    N-GObject $allocation,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $allocation; (a native B<Gnome::Gtk3::Allocation>): the region which has been allocated to the widget.
+
+=comment #TS:0:state-flags-changed:
+=head3 state-flags-changed
+
+The I<state-flags-changed> signal is emitted when the widget state
+changes, see C<gtk_widget_get_state_flags()>.
+
+Since: 3.0
+
+  method handler (
+    Int $flags,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $flags; The previous state flags of GtkStateFlags type.
+
+
+=comment #TS:0:parent-set:
+=head3 parent-set
+
+The I<parent-set> signal is emitted when a new parent
+has been set on a widget.
+
+  method handler (
+    N-GObject $old_parent,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $old_parent; (allow-none): the previous parent, or C<Any> if the widget
+just got its initial parent.
+
+
+=comment #TS:0:hierarchy-changed:
+=head3 hierarchy-changed
+
+The I<hierarchy-changed> signal is emitted when the
+anchored state of a widget changes. A widget is
+“anchored” when its toplevel
+ancestor is a B<Gnome::Gtk3::Window>. This signal is emitted when
+a widget changes from un-anchored to anchored or vice-versa.
+
+  method handler (
+    N-GObject $previous_toplevel,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $previous_toplevel; (allow-none): the previous toplevel ancestor, or C<Any> if the widget was previously unanchored
+
+
+=comment #TS:0:style-updated:
+=head3 style-updated
+
+The I<style-updated> signal is a convenience signal that is emitted when the
+ I<changed> signal is emitted on the I<widget>'s associated
+B<Gnome::Gtk3::StyleContext> as returned by C<gtk_widget_get_style_context()>.
+
+Note that style-modifying functions like C<gtk_widget_override_color()> also
+cause this signal to be emitted.
+
+Since: 3.0
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+
+=comment #TS:0:direction-changed:
+=head3 direction-changed
+
+The I<direction-changed> signal is emitted when the text direction
+of a widget changes.
+
+  method handler (
+    Int $previous_direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+
+=item $previous_direction; the previous text direction of I<widget>, a GtkTextDirection.
+
+
+=comment #TS:0:grab-notify:
+=head3 grab-notify
+
+The I<grab-notify> signal is emitted when a widget becomes
+shadowed by a GTK+ grab (not a pointer or keyboard grab) on
+another widget, or when it becomes unshadowed due to a grab
+being removed.
+
+A widget is shadowed by a C<gtk_grab_add()> when the topmost
+grab widget in the grab stack of its window group is not
+its ancestor.
+
+  method handler (
+    Int $was_grabbed,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $was_grabbed; C<0> if the widget becomes shadowed, C<1>
+if it becomes unshadowed
+
+=begin comment
+=comment #TS:0:child-notify:
+=head3 child-notify
+
+The I<child-notify> signal is emitted for each
+[child property][child-properties]  that has
+changed on an object. The signal's detail holds the property name.
+
+  method handler (
+    GParamSpec $child_property,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $child_property; the B<GParamSpec> of the changed child property
+=end comment
+
+=begin comment
+=comment #TS:0:draw:
+=head3 draw
+
+This signal is emitted when a widget is supposed to render itself.
+The I<widget>'s top left corner must be painted at the origin of
+the passed in context and be sized to the values returned by
+C<gtk_widget_get_allocated_width()> and
+C<gtk_widget_get_allocated_height()>.
+
+Signal handlers connected to this signal can modify the cairo
+context passed as I<cr> in any way they like and don't need to
+restore it. The signal emission takes care of calling C<cairo_save()>
+before and C<cairo_restore()> after invoking the handler.
+
+The signal handler will get a I<cr> with a clip region already set to the
+widget's dirty region, i.e. to the area that needs repainting.  Complicated
+widgets that want to avoid redrawing themselves completely can get the full
+extents of the clip region with C<gdk_cairo_get_clip_rectangle()>, or they can
+get a finer-grained representation of the dirty region with
+C<cairo_copy_clip_rectangle_list()>.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Since: 3.0
+
+  method handler (
+    Unknown type CAIRO_GOBJECT_TYPE_CONTEXT $cr,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $cr; the cairo context to draw to
+
+
+=comment #TS:0:mnemonic-activate:
+=head3 mnemonic-activate
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    Int $arg1,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $arg1;
+=end comment
+
+
+=comment #TS:0:grab-focus:
+=head3 grab-focus
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:focus:
+=head3 focus
+
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal, a GtkDirectionType.
+
+=item $direction;
+
+
+=comment #TS:0:move-focus:
+=head3 move-focus
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal, a GtkDirectionType.
+
+=item $direction;
+
+
+=comment #TS:0:keynav-failed:
+=head3 keynav-failed
+
+Gets emitted if keyboard navigation fails.
+See C<gtk_widget_keynav_failed()> for details.
+
+Returns: C<1> if stopping keyboard navigation is fine, C<0>
+if the emitting widget should try to handle the keyboard
+navigation attempt in its parent container(s).
+
+Since: 2.12
+
+  method handler (
+    Int $direction,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $direction; the direction of movement, a GtkDirectionType.
+
+
+=comment #TS:0:event:
+=head3 event
+
+The GTK+ main loop will emit three signals for each GDK event delivered
+to a widget: one generic I<event> signal, another, more specific,
+signal that matches the type of event delivered (e.g.
+ I<key-press-event>) and finally a generic
+ I<event-after> signal.
+
+Returns: C<1> to stop other handlers from being invoked for the event
+and to cancel the emission of the second specific I<event> signal.
+C<0> to propagate the event further and to allow the emission of
+the second signal. The I<event-after> signal is emitted regardless of
+the return value.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:event-after:
+=head3 event-after
+
+After the emission of the  I<event> signal and (optionally)
+the second more specific signal, I<event-after> will be emitted
+regardless of the previous two signals handlers return values.
+
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:button-press-event:
+=head3 button-press-event
+
+The I<button-press-event> signal will be emitted when a button
+(typically from a mouse) is pressed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
+widget needs to enable the B<GDK_BUTTON_PRESS_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventButton $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:button-release-event:
+=head3 button-release-event
+
+The I<button-release-event> signal will be emitted when a button
+(typically from a mouse) is released.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
+widget needs to enable the B<GDK_BUTTON_RELEASE_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventButton $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:scroll-event:
+=head3 scroll-event
+
+The I<scroll-event> signal is emitted when a button in the 4 to 7
+range is pressed. Wheel mice are usually configured to generate
+button press events for buttons 4 and 5 when the wheel is turned.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_SCROLL_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventScroll $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:motion-notify-event:
+=head3 motion-notify-event
+
+The I<motion-notify-event> signal is emitted when the pointer moves
+over the widget's B<Gnome::Gdk3::Window>.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget
+needs to enable the B<GDK_POINTER_MOTION_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventMotion $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:composited-changed:
+=head3 composited-changed
+
+The I<composited-changed> signal is emitted when the composited
+status of I<widgets> screen changes.
+See C<gdk_screen_is_composited()>.
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object on which the signal is emitted
+
+
+=comment #TS:0:delete-event:
+=head3 delete-event
+
+The I<delete-event> signal is emitted if a user requests that
+a toplevel window is closed. The default handler for this signal
+destroys the window. Connecting C<gtk_widget_hide_on_delete()> to
+this signal will cause the window to be hidden instead, so that
+it can later be shown again without reconstructing it.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:destroy-event:
+=head3 destroy-event
+
+The I<destroy-event> signal is emitted when a B<Gnome::Gdk3::Window> is destroyed.
+You rarely get this signal, because most widgets disconnect themselves
+from their window before they destroy it, so no widget owns the
+window at destroy time.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEvent $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal
+
+
+=comment #TS:0:key-press-event:
+=head3 key-press-event
+
+The I<key-press-event> signal is emitted when a key is pressed. The signal
+emission will reoccur at the key-repeat rate when the key is kept pressed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_KEY_PRESS_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventKey $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:key-release-event:
+=head3 key-release-event
+
+The I<key-release-event> signal is emitted when a key is released.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_KEY_RELEASE_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventKey $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:enter-notify-event:
+=head3 enter-notify-event
+
+The I<enter-notify-event> will be emitted when the pointer enters
+the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_ENTER_NOTIFY_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventCrossing $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:leave-notify-event:
+=head3 leave-notify-event
+
+The I<leave-notify-event> will be emitted when the pointer leaves
+the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_LEAVE_NOTIFY_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventCrossing $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:configure-event:
+=head3 configure-event
+
+The I<configure-event> signal will be emitted when the size, position or
+stacking of the I<widget>'s window has changed.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventConfigure $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:focus-in-event:
+=head3 focus-in-event
+
+The I<focus-in-event> signal will be emitted when the keyboard focus
+enters the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventFocus $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:focus-out-event:
+=head3 focus-out-event
+
+The I<focus-out-event> signal will be emitted when the keyboard focus
+leaves the I<widget>'s window.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventFocus $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:map-event:
+=head3 map-event
+
+The I<map-event> signal will be emitted when the I<widget>'s window is
+mapped. A window is mapped when it becomes visible on the screen.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventAny $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:unmap-event:
+=head3 unmap-event
+
+The I<unmap-event> signal will be emitted when the I<widget>'s window is
+unmapped. A window is unmapped when it becomes invisible on the screen.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
+automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventAny $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=begin comment
+=comment #TS:0:property-notify-event:
+=head3 property-notify-event
+
+The I<property-notify-event> signal will be emitted when a property on
+the I<widget>'s window has been changed or deleted.
+
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROPERTY_CHANGE_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProperty $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-clear-event:
+=head3 selection-clear-event
+
+The I<selection-clear-event> signal will be emitted when the
+the I<widget>'s window has lost ownership of a selection.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-request-event:
+=head3 selection-request-event
+
+The I<selection-request-event> signal will be emitted when
+another client requests ownership of the selection owned by
+the I<widget>'s window.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-notify-event:
+=head3 selection-notify-event
+
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
+
+  method handler (
+    GdkEventSelection $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:selection-received:
+=head3 selection-received
+
+  method handler (
+    N-GObject $data,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $data; a native Gnome::Gtk3::SelectionData.
+=item $time;
+
+
+=comment #TS:0:selection-get:
+=head3 selection-get
+
+  method handler (
+    N-GObject $data,
+    UInt $info,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal.
+=item $data; a native Gnome::Gtk3::SelectionData.
+=item $info;
+=item $time;
+=end comment
+
+
+=comment #TS:0:proximity-in-event:
+=head3 proximity-in-event
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROXIMITY_IN_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProximity $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:proximity-out-event:
+=head3 proximity-out-event
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_PROXIMITY_OUT_MASK> mask.
+
+This signal will be sent to the grab widget if there is one.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    GdkEventProximity $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=begin comment
+=comment #TS:0:drag-leave:
+=head3 drag-leave
+
+The I<drag-leave> signal is emitted on the drop site when the cursor
+leaves the widget. A typical reason to connect to this signal is to
+undo things done in  I<drag-motion>, e.g. undo highlighting
+with C<gtk_drag_unhighlight()>.
+
+
+Likewise, the  I<drag-leave> signal is also emitted before the I<drag-drop> signal, for instance to allow cleaning up of a preview item
+created in the  I<drag-motion> signal handler.
+
+  method handler (
+    N-GObject $context,
+    UInt $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $context; the drag context, a native Gnome::Gdk3::DragContext
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-begin:
+=head3 drag-begin
+
+The I<drag-begin> signal is emitted on the drag source when a drag is
+started. A typical reason to connect to this signal is to set up a
+custom drag icon with e.g. C<gtk_drag_source_set_icon_pixbuf()>.
+
+Note that some widgets set up a drag icon in the default handler of
+this signal, so you may have to use C<g_signal_connect_after()> to
+override what the default handler did.
+
+  method handler (
+    N-GObject $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $context; the drag context, a native Gnome::Gdk3::DragContext
+
+
+=comment #TS:0:drag-end:
+=head3 drag-end
+
+The I<drag-end> signal is emitted on the drag source when a drag is
+finished.  A typical reason to connect to this signal is to undo
+things done in  I<drag-begin>.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+
+=comment #TS:0:drag-data-delete:
+=head3 drag-data-delete
+
+The I<drag-data-delete> signal is emitted on the drag source when a drag
+with the action C<GDK_ACTION_MOVE> is successfully completed. The signal
+handler is responsible for deleting the data that has been dropped. What
+"delete" means depends on the context of the drag operation.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+
+=comment #TS:0:drag-failed:
+=head3 drag-failed
+
+The I<drag-failed> signal is emitted on the drag source when a drag has
+failed. The signal handler may hook custom code to handle a failed DnD
+operation based on the type of error, it returns C<1> is the failure has
+been already handled (not showing the default "drag operation failed"
+animation), otherwise it returns C<0>.
+
+Returns: C<1> if the failed drag operation has been already handled.
+
+Since: 2.12
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    - $result,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $result; the result of the drag operation
+
+
+=comment #TS:0:drag-motion:
+=head3 drag-motion
+
+The I<drag-motion> signal is emitted on the drop site when the user
+moves the cursor over the widget during a drag. The signal handler
+must determine whether the cursor position is in a drop zone or not.
+If it is not in a drop zone, it returns C<0> and no further processing
+is necessary. Otherwise, the handler returns C<1>. In this case, the
+handler is responsible for providing the necessary information for
+displaying feedback to the user, by calling C<gdk_drag_status()>.
+
+If the decision whether the drop will be accepted or rejected can't be
+made based solely on the cursor position and the type of the data, the
+handler may inspect the dragged data by calling C<gtk_drag_get_data()> and
+defer the C<gdk_drag_status()> call to the  I<drag-data-received>
+handler. Note that you must pass B<GTK_DEST_DEFAULT_DROP>,
+B<GTK_DEST_DEFAULT_MOTION> or B<GTK_DEST_DEFAULT_ALL> to C<gtk_drag_dest_set()>
+when using the drag-motion signal that way.
+
+Also note that there is no drag-enter signal. The drag receiver has to
+keep track of whether he has received any drag-motion signals since the
+last  I<drag-leave> and if not, treat the drag-motion signal as
+an "enter" signal. Upon an "enter", the handler will typically highlight
+the drop site with C<gtk_drag_highlight()>.
+|[<!-- language="C" -->
+static void
+drag_motion (B<Gnome::Gtk3::Widget>      *widget,
+B<Gnome::Gdk3::DragContext> *context,
+gint            x,
+gint            y,
+guint           time)
+{
+B<Gnome::Gdk3::Atom> target;
+
+PrivateData *private_data = GET_PRIVATE_DATA (widget);
+
+if (!private_data->drag_highlight)
+{
+private_data->drag_highlight = 1;
+gtk_drag_highlight (widget);
+}
+
+target = gtk_drag_dest_find_target (widget, context, NULL);
+if (target == GDK_NONE)
+gdk_drag_status (context, 0, time);
+else
+{
+private_data->pending_status
+= gdk_drag_context_get_suggested_action (context);
+gtk_drag_get_data (widget, context, target, time);
+}
+
+return TRUE;
+}
+
+static void
+drag_data_received (B<Gnome::Gtk3::Widget>        *widget,
+B<Gnome::Gdk3::DragContext>   *context,
+gint              x,
+gint              y,
+B<Gnome::Gtk3::SelectionData> *selection_data,
+guint             info,
+guint             time)
+{
+PrivateData *private_data = GET_PRIVATE_DATA (widget);
+
+if (private_data->suggested_action)
+{
+private_data->suggested_action = 0;
+
+// We are getting this data due to a request in drag_motion,
+// rather than due to a request in drag_drop, so we are just
+// supposed to call C<gdk_drag_status()>, not actually paste in
+// the data.
+
+str = gtk_selection_data_get_text (selection_data);
+if (!data_is_acceptable (str))
+gdk_drag_status (context, 0, time);
+else
+gdk_drag_status (context,
+private_data->suggested_action,
+time);
+}
+else
+{
+// accept the drop
+}
+}
+]|
+
+Returns: whether the cursor position is in a drop zone
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Unknown type GTK_TYPE_DRAG_RESULT $x,
+    - $y,
+    - $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; the x coordinate of the current cursor position
+
+=item $y; the y coordinate of the current cursor position
+
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-drop:
+=head3 drag-drop
+
+The I<drag-drop> signal is emitted on the drop site when the user drops
+the data onto the widget. The signal handler must determine whether
+the cursor position is in a drop zone or not. If it is not in a drop
+zone, it returns C<0> and no further processing is necessary.
+Otherwise, the handler returns C<1>. In this case, the handler must
+ensure that C<gtk_drag_finish()> is called to let the source know that
+the drop is done. The call to C<gtk_drag_finish()> can be done either
+directly or in a  I<drag-data-received> handler which gets
+triggered by calling C<gtk_drag_get_data()> to receive the data for one
+or more of the supported targets.
+
+Returns: whether the cursor position is in a drop zone
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Int $x,
+    Int $y,
+    Unknown type G_TYPE_UINT $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; the x coordinate of the current cursor position
+
+=item $y; the y coordinate of the current cursor position
+
+=item $time; the timestamp of the motion event
+
+
+=comment #TS:0:drag-data-get:
+=head3 drag-data-get
+
+The I<drag-data-get> signal is emitted on the drag source when the drop
+site requests the data which is dragged. It is the responsibility of
+the signal handler to fill I<data> with the data in the format which
+is indicated by I<info>. See C<gtk_selection_data_set()> and
+C<gtk_selection_data_set_text()>.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Int $data,
+    Int $info,
+    Unknown type G_TYPE_UINT $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $data; the B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
+
+=item $info; the info that has been registered with the target in the
+B<Gnome::Gtk3::TargetList>
+
+=item $time; the timestamp at which the data was requested
+
+
+=comment #TS:0:drag-data-received:
+=head3 drag-data-received
+
+The I<drag-data-received> signal is emitted on the drop site when the
+dragged data has been received. If the data was received in order to
+determine whether the drop will be accepted, the handler is expected
+to call C<gdk_drag_status()> and not finish the drag.
+If the data was received in response to a  I<drag-drop> signal
+(and this is the last target to be received), the handler for this
+signal is expected to process the received data and then call
+C<gtk_drag_finish()>, setting the I<success> parameter depending on
+whether the data was processed successfully.
+
+Applications must create some means to determine why the signal was emitted
+and therefore whether to call C<gdk_drag_status()> or C<gtk_drag_finish()>.
+
+The handler may inspect the selected action with
+C<gdk_drag_context_get_selected_action()> before calling
+C<gtk_drag_finish()>, e.g. to implement C<GDK_ACTION_ASK> as
+shown in the following example:
+|[<!-- language="C" -->
+void
+drag_data_received (B<Gnome::Gtk3::Widget>          *widget,
+B<Gnome::Gdk3::DragContext>     *context,
+gint                x,
+gint                y,
+B<Gnome::Gtk3::SelectionData>   *data,
+guint               info,
+guint               time)
+{
+if ((data->length >= 0) && (data->format == 8))
+{
+B<Gnome::Gdk3::DragAction> action;
+
+// handle data here
+
+action = gdk_drag_context_get_selected_action (context);
+if (action == GDK_ACTION_ASK)
+{
+B<Gnome::Gtk3::Widget> *dialog;
+gint response;
+
+dialog = gtk_message_dialog_new (NULL,
+GTK_DIALOG_MODAL |
+GTK_DIALOG_DESTROY_WITH_PARENT,
+GTK_MESSAGE_INFO,
+GTK_BUTTONS_YES_NO,
+"Move the data ?\n");
+response = gtk_dialog_run (GTK_DIALOG (dialog));
+gtk_widget_destroy (dialog);
+
+if (response == GTK_RESPONSE_YES)
+action = GDK_ACTION_MOVE;
+else
+action = GDK_ACTION_COPY;
+}
+
+gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
+}
+else
+gtk_drag_finish (context, FALSE, FALSE, time);
+}
+]|
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $x,
+    Unknown type G_TYPE_UINT $y,
+    Unknown type G_TYPE_UINT $data,
+    - $info,
+    - $time,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $context; the drag context
+
+=item $x; where the drop happened
+
+=item $y; where the drop happened
+
+=item $data; the received data
+
+=item $info; the info that has been registered with the target in the
+B<Gnome::Gtk3::TargetList>
+
+=item $time; the timestamp at which the data was received
+
+
+=comment #TS:0:visibility-notify-event:
+=head3 visibility-notify-event
+
+The I<visibility-notify-event> will be emitted when the I<widget>'s
+window is obscured or unobscured.
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
+to enable the B<GDK_VISIBILITY_NOTIFY_MASK> mask.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Deprecated: 3.12: Modern composited windowing systems with pervasive
+transparency make it impossible to track the visibility of a window
+reliably, so this signal can not be guaranteed to provide useful
+information.
+
+  method handler (
+    Unknown type GDK_TYPE_DRAG_CONTEXT $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+
+=item $event; (type B<Gnome::Gdk3::.EventVisibility>): the B<Gnome::Gdk3::EventVisibility> which
+triggered this signal.
+
+
+=comment #TS:0:window-state-event:
+=head3 window-state-event
+
+The I<window-state-event> will be emitted when the state of the
+toplevel window associated to the I<widget> changes.
+
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget
+needs to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable
+this mask automatically for all new windows.
+
+Returns: C<1> to stop other handlers from being invoked for the
+event. C<0> to propagate the event further.
+
+  method handler (
+    Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $event; (type B<Gnome::Gdk3::.EventWindowState>): the B<Gnome::Gdk3::EventWindowState> which
+triggered this signal.
+=end comment
+
+
+=begin comment
+=comment #TS:0:damage-event:
+=head3 damage-event
+
+Emitted when a redirected window belonging to I<widget> gets drawn into.
+The region/area members of the event shows what area of the redirected
+drawable was drawn into.
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+Since: 2.14
+
+  method handler (
+    GdkEventExpose $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+=end comment
+
+
+=comment #TS:0:grab-broken-event:
+=head3 grab-broken-event
+
+Emitted when a pointer or keyboard grab on a window belonging
+to I<widget> gets broken.
+
+On X11, this happens when the grab window becomes unviewable
+(i.e. it or one of its ancestors is unmapped), or if the same
+application grabs the pointer or keyboard again.
+
+Returns: C<1> to stop other handlers from being invoked for
+the event. C<0> to propagate the event further.
+
+Since: 2.8
+
+  method handler (
+    GdkEventGrabBroken $event,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+=item $event; the event which triggered this signal.
+
+
+=comment #TS:0:query-tooltip:
+=head3 query-tooltip
+
+Emitted when  I<has-tooltip> is C<1> and the hover timeout
+has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got
+focus in keyboard mode.
+
+Using the given coordinates, the signal handler should determine
+whether a tooltip should be shown for I<widget>. If this is the case
+C<1> should be returned, C<0> otherwise.  Note that if
+I<keyboard_mode> is C<1>, the values of I<x> and I<y> are undefined and
+should not be used.
+
+The signal handler is free to manipulate I<tooltip> with the therefore
+destined function calls.
+
+Returns: C<1> if I<tooltip> should be shown right now, C<0> otherwise.
+
+Since: 2.12
+
+  method handler (
+    Int $x,
+    Int $y,
+    Int $keyboard_mode,
+    N-GObject $tooltip,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+=item $x; the x coordinate of the cursor position where the request has
+been emitted, relative to I<widget>'s left side
+
+=item $y; the y coordinate of the cursor position where the request has
+been emitted, relative to I<widget>'s top
+
+=item $keyboard_mode; C<1> if the tooltip was triggered using the keyboard
+
+=item $tooltip; a native Gnome::Gtk3::Tooltip
+
+
+=comment #TS:0:popup-menu:
+=head3 popup-menu
+
+This signal gets emitted whenever a widget should pop up a context
+menu. This usually happens through the standard key binding mechanism;
+by pressing a certain key while a widget is focused, the user can cause
+the widget to pop up a menu.  For example, the B<Gnome::Gtk3::Entry> widget creates a menu with clipboard commands. See the [Popup Menu Migration Checklist](https://developer.gnome.org/gtk3/3.24/gtk-migrating-checklist.html#checklist-popup-menu) for an example of how to use this signal.
+
+Returns: C<1> if a menu was activated
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal
+
+
+=comment #TS:0:show-help:
+=head3 show-help
+
+Returns: C<1> to stop other handlers from being invoked for the event.
+C<0> to propagate the event further.
+
+  method handler (
+    Int $help_type,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+=item $help_type; a GtkWidgetHelpType
+
+
+=comment #TS:0:accel-closures-changed:
+=head3 accel-closures-changed
+
+  method handler (
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+    --> Int
+  );
+
+=item $widget; the object which received the signal.
+
+
+=comment #TS:0:screen-changed:
+=head3 screen-changed
+
+The I<screen-changed> signal gets emitted when the
+screen of a widget has changed.
+
+  method handler (
+    N-GObject $previous_screen,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object on which the signal is emitted
+=item $previous_screen; the previous screen, or C<Any> if the widget was not associated with a screen before. It is a native Gnome::Gdk3::Screen object.
+
+
+=comment #TS:0:can-activate-accel:
+=head3 can-activate-accel
+
+Determines whether an accelerator that activates the signal
+identified by I<signal_id> can currently be activated.
+This signal is present to allow applications and derived
+widgets to override the default B<Gnome::Gtk3::Widget> handling
+for determining whether an accelerator can be activated.
+
+Returns: C<1> if the signal can be activated.
+
+  method handler (
+    UInt $signal_id,
+    Gnome::GObject::Object :widget($widget),
+    *%user-options
+  );
+
+=item $widget; the object which received the signal
+=item $signal_id; the ID of a signal installed on I<widget>
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.g-object-get-property( 'label', $gv);
+  $gv.g-value-set-string('my text label');
+
+=head2 Supported properties
+
+=comment #TP:0:name:
+=head3 Widget name
+
+The name of the widget
+Default value: Any
+
+
+The B<Gnome::GObject::Value> type of property I<name> is C<G_TYPE_STRING>.
+
+=begin comment
+=comment #TP:0:parent:
+=head3 Parent widget
+
+The parent widget of this widget. Must be a Container widget
+Widget type: GTK_TYPE_CONTAINER
+
+
+The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
+=end comment
+
+=comment #TP:0:width-request:
+=head3 Width request
+
+
+
+The B<Gnome::GObject::Value> type of property I<width-request> is C<G_TYPE_INT>.
+
+=comment #TP:0:height-request:
+=head3 Height request
+
+
+
+The B<Gnome::GObject::Value> type of property I<height-request> is C<G_TYPE_INT>.
+
+=comment #TP:0:visible:
+=head3 Visible
+
+Whether the widget is visible
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:sensitive:
+=head3 Sensitive
+
+Whether the widget responds to input
+Default value: True
+
+
+The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:app-paintable:
+=head3 Application paintable
+
+Whether the application will paint directly on the widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<app-paintable> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:can-focus:
+=head3 Can focus
+
+Whether the widget can accept the input focus
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<can-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-focus:
+=head3 Has focus
+
+Whether the widget has the input focus
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<has-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:is-focus:
+=head3 Is focus
+
+Whether the widget is the focus widget within the toplevel
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<is-focus> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:focus-on-click:
+=head3 Focus on click
+
+
+Whether the widget should grab focus when it is clicked with the mouse.
+This property is only relevant for widgets that can take focus.
+Before 3.20, several widgets (B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::FileChooserButton>,
+B<Gnome::Gtk3::ComboBox>) implemented this property individually.
+Since: 3.20
+
+The B<Gnome::GObject::Value> type of property I<focus-on-click> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:can-default:
+=head3 Can default
+
+Whether the widget can be the default widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<can-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-default:
+=head3 Has default
+
+Whether the widget is the default widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<has-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:receives-default:
+=head3 Receives default
+
+If TRUE, the widget will receive the default action when it is focused
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<receives-default> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:composite-child:
+=head3 Composite child
+
+Whether the widget is part of a composite widget
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<composite-child> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:events:
+=head3 Events
+
+
+
+The B<Gnome::GObject::Value> type of property I<events> is C<G_TYPE_FLAGS>.
+
+=comment #TP:0:no-show-all:
+=head3 No show all
+
+Whether gtk_widget_show_all( should not affect this widget)
+Default value: False
+
+
+The B<Gnome::GObject::Value> type of property I<no-show-all> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:has-tooltip:
+=head3 Has tooltip
+
+
+Enables or disables the emission of  I<query-tooltip> on I<widget>.
+A value of C<1> indicates that I<widget> can have a tooltip, in this case
+the widget will be queried using  I<query-tooltip> to determine
+whether it will provide a tooltip or not.
+Note that setting this property to C<1> for the first time will change
+the event masks of the B<Gnome::Gdk3::Windows> of this widget to include leave-notify
+and motion-notify events.  This cannot and will not be undone when the
+property is set to C<0> again.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:tooltip-text:
+=head3 Tooltip Text
+
+
+Sets the text of tooltip to be the given string.
+Also see C<gtk_tooltip_set_text()>.
+This is a convenience property which will take care of getting the
+tooltip shown if the given string is not C<Any>:  I<has-tooltip>
+will automatically be set to C<1> and there will be taken care of
+ I<query-tooltip> in the default signal handler.
+Note that if both  I<tooltip-text> and  I<tooltip-markup>
+are set, the last one wins.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
+
+=comment #TP:0:tooltip-markup:
+=head3 Tooltip markup
+
+
+Sets the text of tooltip to be the given string, which is marked up
+with the [Pango text markup language][PangoMarkupFormat].
+Also see C<gtk_tooltip_set_markup()>.
+This is a convenience property which will take care of getting the
+tooltip shown if the given string is not C<Any>:  I<has-tooltip>
+will automatically be set to C<1> and there will be taken care of
+ I<query-tooltip> in the default signal handler.
+Note that if both  I<tooltip-text> and  I<tooltip-markup>
+are set, the last one wins.
+Since: 2.12
+
+The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
+
+=comment #TP:0:window:
+=head3 Window
+
+
+The widget's window if it is realized, C<Any> otherwise.
+Since: 2.14
+Widget type: GDK_TYPE_WINDOW
+
+The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
+
+=comment #TP:0:halign:
+=head3 Horizontal Alignment
+
+
+How to distribute horizontal space if widget gets extra space, see B<Gnome::Gtk3::Align>
+Since: 3.0
+Widget type: GTK_TYPE_ALIGN
+
+The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
+
+=comment #TP:0:valign:
+=head3 Vertical Alignment
+
+
+How to distribute vertical space if widget gets extra space, see B<Gnome::Gtk3::Align>
+Since: 3.0
+Widget type: GTK_TYPE_ALIGN
+
+The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
+
+=comment #TP:0:margin-start:
+=head3 Margin on Start
+
+
+Margin on start of widget, horizontally. This property supports
+left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.12
+
+The B<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-end:
+=head3 Margin on End
+
+
+Margin on end of widget, horizontally. This property supports
+left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.12
+
+The B<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-top:
+=head3 Margin on Top
+
+
+Margin on top side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin-bottom:
+=head3 Margin on Bottom
+
+
+Margin on bottom side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
+
+=comment #TP:0:margin:
+=head3 All Margins
+
+
+Sets all four sides' margin at once. If read, returns max
+margin on any side.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
+
+=comment #TP:0:hexpand:
+=head3 Horizontal Expand
+
+
+Whether to expand horizontally. See C<gtk_widget_set_hexpand()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:hexpand-set:
+=head3 Horizontal Expand Set
+
+
+Whether to use the  I<hexpand> property. See C<gtk_widget_get_hexpand_set()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:vexpand:
+=head3 Vertical Expand
+
+
+Whether to expand vertically. See C<gtk_widget_set_vexpand()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:vexpand-set:
+=head3 Vertical Expand Set
+
+
+Whether to use the  I<vexpand> property. See C<gtk_widget_get_vexpand_set()>.
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:expand:
+=head3 Expand Both
+
+
+Whether to expand in both directions. Setting this sets both  I<hexpand> and  I<vexpand>
+Since: 3.0
+
+The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
+
+=comment #TP:0:opacity:
+=head3 Opacity for Widget
+
+
+The requested opacity of the widget. See C<gtk_widget_set_opacity()> for
+more details about window opacity.
+Before 3.8 this was only available in B<Gnome::Gtk3::Window>
+Since: 3.8
+
+The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
+
+=comment #TP:0:scale-factor:
+=head3 Scale factor
+
+
+The scale factor of the widget. See C<gtk_widget_get_scale_factor()> for
+more details about widget scaling.
+Since: 3.10
+
+The B<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+Register any signal as follows. See also B<Gnome::GObject::Object>.
 
   my Bool $is-registered = $my-widget.register-signal (
     $handler-object, $handler-name, $signal-name,
@@ -5832,7 +7974,7 @@ emission of sig C<unmap>.
 This signal gets emitted whenever a widget should pop up a context
 menu. This usually happens through the standard key binding mechanism;
 by pressing a certain key while a widget is focused, the user can cause
-the widget to pop up a menu.  For example, the C<Gnome::Gtk3::Entry> widget creates
+the widget to pop up a menu.  For example, the B<Gnome::Gtk3::Entry> widget creates
 a menu with clipboard commands. See the
 [Popup Menu Migration Checklist][checklist-popup-menu]
 for an example of how to use this signal.
@@ -5850,7 +7992,7 @@ Returns: C<1> if a menu was activated
 =head3 realize
 
 The ::realize signal is emitted when I<widget> is associated with a
-C<Gnome::Gdk3::Window>, which means that C<gtk_widget_realize()> has been called or the
+B<Gnome::Gdk3::Window>, which means that C<gtk_widget_realize()> has been called or the
 widget has been mapped (that is, it is going to be drawn).
 
   method handler (
@@ -5876,7 +8018,7 @@ C<gtk_widget_show()>.
 
 The ::style-updated signal is a convenience signal that is emitted when the
 sig C<changed> signal is emitted on the I<widget>'s associated
-C<Gnome::Gtk3::StyleContext> as returned by C<gtk_widget_get_style_context()>.
+B<Gnome::Gtk3::StyleContext> as returned by C<gtk_widget_get_style_context()>.
 
 Note that style-modifying functions like C<gtk_widget_override_color()> also
 cause this signal to be emitted.
@@ -5908,7 +8050,7 @@ used to, for example, stop an animation on the widget.
 
 =head3 unrealize
 
-The ::unrealize signal is emitted when the C<Gnome::Gdk3::Window> associated with
+The ::unrealize signal is emitted when the B<Gnome::Gdk3::Window> associated with
 I<widget> is destroyed, which means that C<gtk_widget_unrealize()> has been
 called or the widget has been unmapped (that is, it is going to be
 hidden).
@@ -5934,7 +8076,7 @@ hidden).
 
 =item $widget; the object which received the signal.
 
-=item $allocation; (type C<Gnome::Gtk3::.Allocation>): the region which has been
+=item $allocation; (type B<Gnome::Gtk3::.Allocation>): the region which has been
 allocated to the widget.
 
 
@@ -5979,7 +8121,7 @@ just got its initial parent.
 The ::hierarchy-changed signal is emitted when the
 anchored state of a widget changes. A widget is
 “anchored” when its toplevel
-ancestor is a C<Gnome::Gtk3::Window>. This signal is emitted when
+ancestor is a B<Gnome::Gtk3::Window>. This signal is emitted when
 a widget changes from un-anchored to anchored or vice-versa.
 
   method handler (
@@ -6176,7 +8318,7 @@ the return value.
 
 =item $widget; the object which received the signal.
 
-=item $event; the C<Gnome::Gdk3::Event> which triggered this signal
+=item $event; the B<Gnome::Gdk3::Event> which triggered this signal
 
 
 =head3 event-after
@@ -6194,7 +8336,7 @@ regardless of the previous two signals handlers return values.
 
 =item $widget; the object which received the signal.
 
-=item $event; the C<Gnome::Gdk3::Event> which triggered this signal
+=item $event; the B<Gnome::Gdk3::Event> which triggered this signal
 
 
 =head3 button-press-event
@@ -6202,7 +8344,7 @@ regardless of the previous two signals handlers return values.
 The ::button-press-event signal will be emitted when a button
 (typically from a mouse) is pressed.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
 widget needs to enable the C<GDK_BUTTON_PRESS_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6218,7 +8360,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal.
 
-=item $event; (type C<Gnome::Gdk3::.EventButton>): the C<Gnome::Gdk3::EventButton> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventButton>): the B<Gnome::Gdk3::EventButton> which triggered
 this signal.
 
 
@@ -6227,7 +8369,7 @@ this signal.
 The ::button-release-event signal will be emitted when a button
 (typically from a mouse) is released.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the
 widget needs to enable the C<GDK_BUTTON_RELEASE_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6243,7 +8385,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal.
 
-=item $event; (type C<Gnome::Gdk3::.EventButton>): the C<Gnome::Gdk3::EventButton> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventButton>): the B<Gnome::Gdk3::EventButton> which triggered
 this signal.
 
 
@@ -6253,7 +8395,7 @@ The ::scroll-event signal is emitted when a button in the 4 to 7
 range is pressed. Wheel mice are usually configured to generate
 button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_SCROLL_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6269,16 +8411,16 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal.
 
-=item $event; (type C<Gnome::Gdk3::.EventScroll>): the C<Gnome::Gdk3::EventScroll> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventScroll>): the B<Gnome::Gdk3::EventScroll> which triggered
 this signal.
 
 
 =head3 motion-notify-event
 
 The ::motion-notify-event signal is emitted when the pointer moves
-over the widget's C<Gnome::Gdk3::Window>.
+over the widget's B<Gnome::Gdk3::Window>.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget
 needs to enable the C<GDK_POINTER_MOTION_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6294,7 +8436,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal.
 
-=item $event; (type C<Gnome::Gdk3::.EventMotion>): the C<Gnome::Gdk3::EventMotion> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventMotion>): the B<Gnome::Gdk3::EventMotion> which triggered
 this signal.
 
 
@@ -6323,12 +8465,12 @@ C<0> to propagate the event further.
 
 =head3 destroy-event
 
-The ::destroy-event signal is emitted when a C<Gnome::Gdk3::Window> is destroyed.
+The ::destroy-event signal is emitted when a B<Gnome::Gdk3::Window> is destroyed.
 You rarely get this signal, because most widgets disconnect themselves
 from their window before they destroy it, so no widget owns the
 window at destroy time.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
 automatically for all new windows.
 
@@ -6351,7 +8493,7 @@ C<0> to propagate the event further.
 The ::key-press-event signal is emitted when a key is pressed. The signal
 emission will reoccur at the key-repeat rate when the key is kept pressed.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_KEY_PRESS_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6367,14 +8509,14 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventKey>): the C<Gnome::Gdk3::EventKey> which triggered this signal.
+=item $event; (type B<Gnome::Gdk3::.EventKey>): the B<Gnome::Gdk3::EventKey> which triggered this signal.
 
 
 =head3 key-release-event
 
 The ::key-release-event signal is emitted when a key is released.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_KEY_RELEASE_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6390,7 +8532,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventKey>): the C<Gnome::Gdk3::EventKey> which triggered this signal.
+=item $event; (type B<Gnome::Gdk3::.EventKey>): the B<Gnome::Gdk3::EventKey> which triggered this signal.
 
 
 =head3 enter-notify-event
@@ -6398,7 +8540,7 @@ C<0> to propagate the event further.
 The ::enter-notify-event will be emitted when the pointer enters
 the I<widget>'s window.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_ENTER_NOTIFY_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6414,7 +8556,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventCrossing>): the C<Gnome::Gdk3::EventCrossing> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventCrossing>): the B<Gnome::Gdk3::EventCrossing> which triggered
 this signal.
 
 
@@ -6423,7 +8565,7 @@ this signal.
 The ::leave-notify-event will be emitted when the pointer leaves
 the I<widget>'s window.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_LEAVE_NOTIFY_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6439,7 +8581,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventCrossing>): the C<Gnome::Gdk3::EventCrossing> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventCrossing>): the B<Gnome::Gdk3::EventCrossing> which triggered
 this signal.
 
 
@@ -6448,7 +8590,7 @@ this signal.
 The ::configure-event signal will be emitted when the size, position or
 stacking of the I<widget>'s window has changed.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
 automatically for all new windows.
 
@@ -6463,7 +8605,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventConfigure>): the C<Gnome::Gdk3::EventConfigure> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventConfigure>): the B<Gnome::Gdk3::EventConfigure> which triggered
 this signal.
 
 
@@ -6472,7 +8614,7 @@ this signal.
 The ::focus-in-event signal will be emitted when the keyboard focus
 enters the I<widget>'s window.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_FOCUS_CHANGE_MASK> mask.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
@@ -6486,7 +8628,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventFocus>): the C<Gnome::Gdk3::EventFocus> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventFocus>): the B<Gnome::Gdk3::EventFocus> which triggered
 this signal.
 
 
@@ -6495,7 +8637,7 @@ this signal.
 The ::focus-out-event signal will be emitted when the keyboard focus
 leaves the I<widget>'s window.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_FOCUS_CHANGE_MASK> mask.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
@@ -6509,7 +8651,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventFocus>): the C<Gnome::Gdk3::EventFocus> which triggered this
+=item $event; (type B<Gnome::Gdk3::.EventFocus>): the B<Gnome::Gdk3::EventFocus> which triggered this
 signal.
 
 
@@ -6518,7 +8660,7 @@ signal.
 The ::map-event signal will be emitted when the I<widget>'s window is
 mapped. A window is mapped when it becomes visible on the screen.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
 automatically for all new windows.
 
@@ -6533,7 +8675,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventAny>): the C<Gnome::Gdk3::EventAny> which triggered this signal.
+=item $event; (type B<Gnome::Gdk3::.EventAny>): the B<Gnome::Gdk3::EventAny> which triggered this signal.
 
 
 =head3 unmap-event
@@ -6541,7 +8683,7 @@ C<0> to propagate the event further.
 The ::unmap-event signal will be emitted when the I<widget>'s window is
 unmapped. A window is unmapped when it becomes invisible on the screen.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
 automatically for all new windows.
 
@@ -6556,7 +8698,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventAny>): the C<Gnome::Gdk3::EventAny> which triggered this signal
+=item $event; (type B<Gnome::Gdk3::.EventAny>): the B<Gnome::Gdk3::EventAny> which triggered this signal
 
 
 =head3 property-notify-event
@@ -6564,7 +8706,7 @@ C<0> to propagate the event further.
 The ::property-notify-event signal will be emitted when a property on
 the I<widget>'s window has been changed or deleted.
 
-To receive this signal, the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_PROPERTY_CHANGE_MASK> mask.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
@@ -6578,7 +8720,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventProperty>): the C<Gnome::Gdk3::EventProperty> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventProperty>): the B<Gnome::Gdk3::EventProperty> which triggered
 this signal.
 
 
@@ -6598,7 +8740,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventSelection>): the C<Gnome::Gdk3::EventSelection> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventSelection>): the B<Gnome::Gdk3::EventSelection> which triggered
 this signal.
 
 
@@ -6619,7 +8761,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventSelection>): the C<Gnome::Gdk3::EventSelection> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventSelection>): the B<Gnome::Gdk3::EventSelection> which triggered
 this signal.
 
 
@@ -6635,7 +8777,7 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 
 =item $widget; the object which received the signal.
 
-=item $event; (type C<Gnome::Gdk3::.EventSelection>):
+=item $event; (type B<Gnome::Gdk3::.EventSelection>):
 
 
 =head3 selection-received
@@ -6675,7 +8817,7 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 
 =head3 proximity-in-event
 
-To receive this signal the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_PROXIMITY_IN_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6691,13 +8833,13 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventProximity>): the C<Gnome::Gdk3::EventProximity> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventProximity>): the B<Gnome::Gdk3::EventProximity> which triggered
 this signal.
 
 
 =head3 proximity-out-event
 
-To receive this signal the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_PROXIMITY_OUT_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -6713,7 +8855,7 @@ C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventProximity>): the C<Gnome::Gdk3::EventProximity> which triggered
+=item $event; (type B<Gnome::Gdk3::.EventProximity>): the B<Gnome::Gdk3::EventProximity> which triggered
 this signal.
 
 
@@ -6850,13 +8992,13 @@ an "enter" signal. Upon an "enter", the handler will typically highlight
 the drop site with C<gtk_drag_highlight()>.
 |[<!-- language="C" -->
 static void
-drag_motion (C<Gnome::Gtk3::Widget>      *widget,
-C<Gnome::Gdk3::DragContext> *context,
+drag_motion (B<Gnome::Gtk3::Widget>      *widget,
+B<Gnome::Gdk3::DragContext> *context,
 gint            x,
 gint            y,
 guint           time)
 {
-C<Gnome::Gdk3::Atom> target;
+B<Gnome::Gdk3::Atom> target;
 
 PrivateData *private_data = GET_PRIVATE_DATA (widget);
 
@@ -6880,11 +9022,11 @@ return TRUE;
 }
 
 static void
-drag_data_received (C<Gnome::Gtk3::Widget>        *widget,
-C<Gnome::Gdk3::DragContext>   *context,
+drag_data_received (B<Gnome::Gtk3::Widget>        *widget,
+B<Gnome::Gdk3::DragContext>   *context,
 gint              x,
 gint              y,
-C<Gnome::Gtk3::SelectionData> *selection_data,
+B<Gnome::Gtk3::SelectionData> *selection_data,
 guint             info,
 guint             time)
 {
@@ -6992,10 +9134,10 @@ C<gtk_selection_data_set_text()>.
 
 =item $context; the drag context
 
-=item $data; the C<Gnome::Gtk3::SelectionData> to be filled with the dragged data
+=item $data; the B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
 
 =item $info; the info that has been registered with the target in the
-C<Gnome::Gtk3::TargetList>
+B<Gnome::Gtk3::TargetList>
 
 =item $time; the timestamp at which the data was requested
 
@@ -7021,24 +9163,24 @@ C<gtk_drag_finish()>, e.g. to implement C<GDK_ACTION_ASK> as
 shown in the following example:
 |[<!-- language="C" -->
 void
-drag_data_received (C<Gnome::Gtk3::Widget>          *widget,
-C<Gnome::Gdk3::DragContext>     *context,
+drag_data_received (B<Gnome::Gtk3::Widget>          *widget,
+B<Gnome::Gdk3::DragContext>     *context,
 gint                x,
 gint                y,
-C<Gnome::Gtk3::SelectionData>   *data,
+B<Gnome::Gtk3::SelectionData>   *data,
 guint               info,
 guint               time)
 {
 if ((data->length >= 0) && (data->format == 8))
 {
-C<Gnome::Gdk3::DragAction> action;
+B<Gnome::Gdk3::DragAction> action;
 
 // handle data here
 
 action = gdk_drag_context_get_selected_action (context);
 if (action == GDK_ACTION_ASK)
 {
-C<Gnome::Gtk3::Widget> *dialog;
+B<Gnome::Gtk3::Widget> *dialog;
 gint response;
 
 dialog = gtk_message_dialog_new (NULL,
@@ -7085,7 +9227,7 @@ gtk_drag_finish (context, FALSE, FALSE, time);
 =item $data; the received data
 
 =item $info; the info that has been registered with the target in the
-C<Gnome::Gtk3::TargetList>
+B<Gnome::Gtk3::TargetList>
 
 =item $time; the timestamp at which the data was received
 
@@ -7096,7 +9238,7 @@ C<Gnome::Gtk3::TargetList>
 The ::window-state-event will be emitted when the state of the
 toplevel window associated to the I<widget> changes.
 
-To receive this signal the C<Gnome::Gdk3::Window> associated to the widget
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget
 needs to enable the C<GDK_STRUCTURE_MASK> mask. GDK will enable
 this mask automatically for all new windows.
 
@@ -7111,7 +9253,7 @@ event. C<0> to propagate the event further.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventWindowState>): the C<Gnome::Gdk3::EventWindowState> which
+=item $event; (type B<Gnome::Gdk3::.EventWindowState>): the B<Gnome::Gdk3::EventWindowState> which
 triggered this signal.
 
 
@@ -7134,7 +9276,7 @@ Since: 2.14
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventExpose>): the C<Gnome::Gdk3::EventExpose> event
+=item $event; (type B<Gnome::Gdk3::.EventExpose>): the B<Gnome::Gdk3::EventExpose> event
 
 
 =head3 grab-broken-event
@@ -7159,7 +9301,7 @@ Since: 2.8
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventGrabBroken>): the C<Gnome::Gdk3::EventGrabBroken> event
+=item $event; (type B<Gnome::Gdk3::.EventGrabBroken>): the B<Gnome::Gdk3::EventGrabBroken> event
 
 
 =head3 query-tooltip
@@ -7200,7 +9342,7 @@ been emitted, relative to I<widget>'s top
 
 =item $keyboard_mode; C<1> if the tooltip was triggered using the keyboard
 
-=item $tooltip; a C<Gnome::Gtk3::Tooltip>
+=item $tooltip; a B<Gnome::Gtk3::Tooltip>
 
 
 =head3 show-help
@@ -7242,7 +9384,7 @@ widget was not associated with a screen before
 Determines whether an accelerator that activates the signal
 identified by I<signal_id> can currently be activated.
 This signal is present to allow applications and derived
-widgets to override the default C<Gnome::Gtk3::Widget> handling
+widgets to override the default B<Gnome::Gtk3::Widget> handling
 for determining whether an accelerator can be activated.
 
 Returns: C<1> if the signal can be activated.
@@ -7307,7 +9449,7 @@ on a widget. Note that style-modifying functions like
 C<gtk_widget_modify_base()> also cause this signal to be emitted.
 
 Note that this signal is emitted for changes to the deprecated
-C<Gnome::Gtk3::Style>. To track changes to the C<Gnome::Gtk3::StyleContext> associated
+B<Gnome::Gtk3::Style>. To track changes to the B<Gnome::Gtk3::StyleContext> associated
 with a widget, use the sig C<style-updated> signal.
 
 Deprecated:3.0: Use the sig C<style-updated> signal
@@ -7328,7 +9470,7 @@ just got its initial style
 The ::visibility-notify-event will be emitted when the I<widget>'s
 window is obscured or unobscured.
 
-To receive this signal the C<Gnome::Gdk3::Window> associated to the widget needs
+To receive this signal the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the C<GDK_VISIBILITY_NOTIFY_MASK> mask.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
@@ -7347,7 +9489,7 @@ information.
 
 =item $widget; the object which received the signal
 
-=item $event; (type C<Gnome::Gdk3::.EventVisibility>): the C<Gnome::Gdk3::EventVisibility> which triggered this signal.
+=item $event; (type B<Gnome::Gdk3::.EventVisibility>): the B<Gnome::Gdk3::EventVisibility> which triggered this signal.
 }}
 
 
@@ -7355,34 +9497,25 @@ information.
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a C<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new(:empty);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
-=begin comment
-
 =head2 Supported properties
-
-=head2 Unsupported properties
-
-=end comment
-
-=head2 Not yet supported properties
-
 
 =head3 focus-on-click
 
-The C<Gnome::GObject::Value> type of property I<focus-on-click> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<focus-on-click> is C<G_TYPE_BOOLEAN>.
 
 Whether the widget should grab focus when it is clicked with the mouse.
 
 This property is only relevant for widgets that can take focus.
 
-Before 3.20, several widgets (C<Gnome::Gtk3::Button>, C<Gnome::Gtk3::FileChooserButton>,
-C<Gnome::Gtk3::ComboBox>) implemented this property individually.
+Before 3.20, several widgets (B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::FileChooserButton>,
+B<Gnome::Gtk3::ComboBox>) implemented this property individually.
 
 Since: 3.20
 
@@ -7390,7 +9523,7 @@ Since: 3.20
 
 =head3 has-tooltip
 
-The C<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
 
 Enables or disables the emission of sig C<query-tooltip> on I<widget>.
 A value of C<1> indicates that I<widget> can have a tooltip, in this case
@@ -7398,7 +9531,7 @@ the widget will be queried using sig C<query-tooltip> to determine
 whether it will provide a tooltip or not.
 
 Note that setting this property to C<1> for the first time will change
-the event masks of the C<Gnome::Gdk3::Windows> of this widget to include leave-notify
+the event masks of the B<Gnome::Gdk3::Windows> of this widget to include leave-notify
 and motion-notify events.  This cannot and will not be undone when the
 property is set to C<0> again.
 
@@ -7408,7 +9541,7 @@ Since: 2.12
 
 =head3 tooltip-text
 
-The C<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
+The B<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
 
 Sets the text of tooltip to be the given string.
 
@@ -7428,7 +9561,7 @@ Since: 2.12
 
 =head3 tooltip-markup
 
-The C<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
+The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
 
 Sets the text of tooltip to be the given string, which is marked up
 with the [Pango text markup language][PangoMarkupFormat].
@@ -7446,21 +9579,23 @@ Since: 2.12
 
 
 
+=begin comment
 =head3 window
 
-The C<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
+The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
 
 The widget's window if it is realized, C<Any> otherwise.
 
 Since: 2.14
+=end comment
 
 
 
 =head3 halign
 
-The C<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
+The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
 
-How to distribute horizontal space if widget gets extra space, see C<Gnome::Gtk3::Align>
+How to distribute horizontal space if widget gets extra space, see B<Gnome::Gtk3::Align>
 
 Since: 3.0
 
@@ -7468,9 +9603,9 @@ Since: 3.0
 
 =head3 valign
 
-The C<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
+The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
 
-How to distribute vertical space if widget gets extra space, see C<Gnome::Gtk3::Align>
+How to distribute vertical space if widget gets extra space, see B<Gnome::Gtk3::Align>
 
 Since: 3.0
 
@@ -7478,7 +9613,7 @@ Since: 3.0
 
 =head3 margin-start
 
-The C<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
 
 Margin on start of widget, horizontally. This property supports
 left-to-right and right-to-left text directions.
@@ -7493,7 +9628,7 @@ Since: 3.12
 
 =head3 margin-end
 
-The C<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
 
 Margin on end of widget, horizontally. This property supports
 left-to-right and right-to-left text directions.
@@ -7508,7 +9643,7 @@ Since: 3.12
 
 =head3 margin-top
 
-The C<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
 
 Margin on top side of widget.
 
@@ -7522,7 +9657,7 @@ Since: 3.0
 
 =head3 margin-bottom
 
-The C<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
 
 Margin on bottom side of widget.
 
@@ -7536,7 +9671,7 @@ Since: 3.0
 
 =head3 margin
 
-The C<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
 
 Sets all four sides' margin at once. If read, returns max
 margin on any side.
@@ -7547,7 +9682,7 @@ Since: 3.0
 
 =head3 hexpand
 
-The C<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
 
 Whether to expand horizontally. See C<gtk_widget_set_hexpand()>.
 
@@ -7557,7 +9692,7 @@ Since: 3.0
 
 =head3 hexpand-set
 
-The C<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
 
 Whether to use the prop C<hexpand> property. See C<gtk_widget_get_hexpand_set()>.
 
@@ -7567,7 +9702,7 @@ Since: 3.0
 
 =head3 vexpand
 
-The C<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
 
 Whether to expand vertically. See C<gtk_widget_set_vexpand()>.
 
@@ -7577,7 +9712,7 @@ Since: 3.0
 
 =head3 vexpand-set
 
-The C<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
 
 Whether to use the prop C<vexpand> property. See C<gtk_widget_get_vexpand_set()>.
 
@@ -7587,7 +9722,7 @@ Since: 3.0
 
 =head3 expand
 
-The C<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
 
 Whether to expand in both directions. Setting this sets both prop C<hexpand> and prop C<vexpand>
 
@@ -7597,12 +9732,12 @@ Since: 3.0
 
 =head3 opacity
 
-The C<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
+The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
 
 The requested opacity of the widget. See C<gtk_widget_set_opacity()> for
 more details about window opacity.
 
-Before 3.8 this was only available in C<Gnome::Gtk3::Window>
+Before 3.8 this was only available in B<Gnome::Gtk3::Window>
 
 Since: 3.8
 
@@ -7610,7 +9745,7 @@ Since: 3.8
 
 =head3 scale-factor
 
-The C<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
 
 The scale factor of the widget. See C<gtk_widget_get_scale_factor()> for
 more details about widget scaling.
@@ -7621,7 +9756,7 @@ Since: 3.10
 
 =head3 scroll-arrow-hlength
 
-The C<Gnome::GObject::Value> type of property I<scroll-arrow-hlength> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<scroll-arrow-hlength> is C<G_TYPE_INT>.
 
 The "scroll-arrow-hlength" style property defines the length of
 horizontal scroll arrows.
@@ -7632,7 +9767,7 @@ Since: 2.10
 
 =head3 scroll-arrow-vlength
 
-The C<Gnome::GObject::Value> type of property I<scroll-arrow-vlength> is C<G_TYPE_INT>.
+The B<Gnome::GObject::Value> type of property I<scroll-arrow-vlength> is C<G_TYPE_INT>.
 
 The "scroll-arrow-vlength" style property defines the length of
 vertical scroll arrows.
@@ -7691,7 +9826,7 @@ sub gtk_widget_destroy ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_show
+#TM:0:gtk_widget_show
 =begin pod
 =head2 gtk_widget_show
 
@@ -7708,7 +9843,7 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:gtk_widget_hide
+#TM:0:gtk_widget_hide
 =begin pod
 =head2 gtk_widget_hide
 
@@ -7721,7 +9856,7 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] show_all
 
@@ -7734,7 +9869,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_name
 
@@ -7749,7 +9884,7 @@ sub gtk_widget_set_name ( N-GObject $widget, Str $name )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_name
 
@@ -7763,7 +9898,7 @@ sub gtk_widget_get_name ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_sensitive
 
@@ -7776,7 +9911,7 @@ sub gtk_widget_set_sensitive ( N-GObject $widget, int32 $sensitive )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_sensitive
 
@@ -7792,7 +9927,7 @@ sub gtk_widget_get_sensitive ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_size_request
 
@@ -7815,7 +9950,7 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $w, int32 $h )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_no_show_all
 
@@ -7831,7 +9966,7 @@ sub gtk_widget_set_no_show_all ( N-GObject $widget, int32 $no_show_all )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_no_show_all
 
@@ -7845,7 +9980,7 @@ sub gtk_widget_get_no_show_all ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_allocated_width
 
@@ -7859,7 +9994,7 @@ sub gtk_widget_get_allocated_width ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_allocated_height
 
@@ -7873,7 +10008,7 @@ sub gtk_widget_get_allocated_height ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] queue_draw
 
@@ -7886,7 +10021,7 @@ sub gtk_widget_queue_draw ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_display
 
@@ -7902,7 +10037,7 @@ sub gtk_widget_get_display ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_direction
 
@@ -7920,7 +10055,7 @@ sub gtk_widget_set_direction ( N-GObject $widget, int32  $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_direction
 
@@ -7938,7 +10073,7 @@ sub gtk_widget_get_direction ( )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_default_direction
 
@@ -7954,7 +10089,7 @@ sub gtk_widget_set_default_direction ( int32  $direction )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_default_direction
 
@@ -7972,7 +10107,7 @@ sub gtk_widget_get_default_direction ( )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_tooltip_text
 
@@ -7985,7 +10120,7 @@ sub gtk_widget_set_tooltip_text ( N-GObject $widget, Str $text )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_tooltip_text
 
@@ -7999,7 +10134,7 @@ sub gtk_widget_get_tooltip_text ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_window
 
@@ -8016,7 +10151,7 @@ sub gtk_widget_get_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] set_visible
 
@@ -8031,7 +10166,7 @@ sub gtk_widget_set_visible ( N-GObject $widget, int32 $visible)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_visible
 
@@ -8047,7 +10182,7 @@ sub gtk_widget_get_visible ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:-:
+#TM:0:
 =begin pod
 =head2 [gtk_widget_] get_has_window
 

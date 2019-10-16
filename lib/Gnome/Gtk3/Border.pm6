@@ -1,10 +1,12 @@
+#TL:1:Gnome::Gtk3::Border:
+
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=TITLE Gnome::Gtk3::Border
+=head1 Gnome::Gtk3::Border
 
-=SUBTITLE A border around a rectangular area
+=comment ![](images/)
 
 =head1 Description
 
@@ -17,7 +19,7 @@ that can be of different width on each side.
   unit class Gnome::Gtk3::Border;
   also is Gnome::GObject::Boxed;
 
-=head2 Example
+=comment head2 Example
 
 =end pod
 
@@ -51,6 +53,7 @@ that can be of different width on each side.
 
 =end pod
 
+#TT:1:N-GtkBorder:
 class N-GtkBorder is export is repr('CStruct') {
   has int16 $.left is rw;
   has int16 $.right is rw;
@@ -59,33 +62,31 @@ class N-GtkBorder is export is repr('CStruct') {
 }
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
 has Bool $.border-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-=head3 multi method new ( N-GtkBorder :border! )
+  multi method new ( Bool :empty! )
 
 Create an object taking the native object from elsewhere.
 
-=head3 multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+  multi method new ( N-GtkBorder :border! )
 
 Create an object and initialize to given values.
 
+  multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+
 =end pod
 
-submethod BUILD ( *%options ) {
+#TM:1:new(:empty):
+#TM:1:new(:border):
+#TM:1:new(:left, :right, :top, :bottom):
 
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  #$signals-added = self.add-signal-types( $?CLASS.^name,
-  #  # ... :type<signame>
-  #) unless $signals-added;
+submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Border';
@@ -120,7 +121,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the widget, the gtype is known
-  #self.set-class-info('GtkBorder');
+  self.set-class-info('GtkBorder');
 }
 
 #-------------------------------------------------------------------------------
@@ -131,13 +132,14 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_border_$native-sub"); } unless ?$s;
 
-  #self.set-class-name-of-sub('GtkBorder');
+  self.set-class-name-of-sub('GtkBorder');
   $s = callsame unless ?$s;
 
   $s;
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:left:
 =begin pod
 =head2 left
 
@@ -150,11 +152,12 @@ Modify left width of border if value is given. Returns left value after modifica
 method left ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set left width, Border is not valid'))
       unless $!border-is-valid;
-  self.native-gboxed.left = $value if $value.defined;
-  self.native-gboxed.left
+  self.get-native-gboxed.left = $value if $value.defined;
+  self.get-native-gboxed.left
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:right:
 =begin pod
 =head2 right
 
@@ -167,11 +170,12 @@ Modify right width of border if value is given. Returns right value after modifi
 method right ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set right width, Border is not valid'))
       unless $!border-is-valid;
-  self.native-gboxed.right = $value if $value.defined;
-  self.native-gboxed.right
+  self.get-native-gboxed.right = $value if $value.defined;
+  self.get-native-gboxed.right
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:top:
 =begin pod
 =head2 top
 
@@ -184,11 +188,12 @@ Modify top width of border if value is given. Returns top value after modificati
 method top ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set top width, Border is not valid'))
       unless $!border-is-valid;
-  self.native-gboxed.top = $value if $value.defined;
-  self.native-gboxed.top
+  self.get-native-gboxed.top = $value if $value.defined;
+  self.get-native-gboxed.top
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:bottom:
 =begin pod
 =head2 bottom
 
@@ -201,11 +206,12 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 method bottom ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
       unless $!border-is-valid;
-  self.native-gboxed.bottom = $value if $value.defined;
-  self.native-gboxed.bottom
+  self.get-native-gboxed.bottom = $value if $value.defined;
+  self.get-native-gboxed.bottom
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:clear-border:
 =begin pod
 =head2 clear-border
 
@@ -216,11 +222,12 @@ Frees a C<N-GtkBorder> struct and after that, border-is-valid() returns False.
 =end pod
 
 method clear-border ( ) {
-  _gtk_border_free(self.native-gboxed);
+  _gtk_border_free(self.get-native-gboxed);
   $!border-is-valid = False;
 }
 
 #-------------------------------------------------------------------------------
+#TM:1:border-is-valid:
 =begin pod
 =head2 border-is-valid
 
@@ -232,6 +239,7 @@ Return the validity of th native structure. After a call to clear-border() this 
 # method is implicitly define above
 
 #-------------------------------------------------------------------------------
+#TM:2:gtk_border_new:
 =begin pod
 =head2 gtk_border_new
 
@@ -251,6 +259,7 @@ sub gtk_border_new ( )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_border_copy:
 =begin pod
 =head2 gtk_border_copy
 
@@ -284,25 +293,3 @@ sub _gtk_border_free ( N-GtkBorder $border )
   is native(&gtk-lib)
   is symbol('gtk_border_free')
   { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not yet implemented methods
-
-=head3 method  ( ... )
-
-=end comment
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=begin comment
-
-=head1 Not implemented methods
-
-=head3 method  ( ... )
-
-=end comment
-=end pod

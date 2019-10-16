@@ -1,5 +1,5 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+#use lib '../perl6-gnome-native/lib';
 use NativeCall;
 use Test;
 
@@ -17,34 +17,40 @@ use Gnome::Gtk3::Label;
 #-------------------------------------------------------------------------------
 # used later on in tests
 my Gnome::Gtk3::Main $main .= new;
+my Gnome::Gtk3::Button $b;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
 
-  my Gnome::Gtk3::Button $button1 .= new(:label('abc def'));
-  isa-ok $button1, Gnome::Gtk3::Button;
-  isa-ok $button1, Gnome::Gtk3::Bin;
+  diag "new(:label)";
+  $b .= new(:label('abc def'));
+  isa-ok $b, Gnome::Gtk3::Button, '.new(:label)';
+
+  $b .= new(:widget($b.gtk_button_new_with_label('pqr')));
+  isa-ok $b, Gnome::Gtk3::Button, '.gtk_button_new_with_label()';
 
   throws-like
-    { $button1.get-label('xyz'); },
+    { $b.get-label('xyz'); },
     X::Gnome, 'wrong arguments to get-label()',
     :message(/:s Calling gtk_button_get_label .*? will never work /);
 
-  is $button1.get-label, 'abc def', 'text on button ok';
-  $button1.set-label('xyz');
-  is $button1.get-label, 'xyz', 'text on button changed ok';
+  diag "gtk_button_set_label() / gtk_button_get_label()";
+  is $b.get-label, 'pqr', 'text on button ok';
+  $b.set-label('xyz');
+  is $b.get-label, 'xyz', 'text on button changed ok';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Button as container', {
-  my Gnome::Gtk3::Button $button1 .= new(:label('xyz'));
-  my Gnome::Gtk3::Label $l .= new(:label(''));
+  $b .= new(:label('xyz'));
+  my Gnome::Gtk3::Label $l .= new(:text(''));
 
-  my Gnome::Glib::List $gl .= new(:glist($button1.get-children));
+  my Gnome::Glib::List $gl .= new(:glist($b.get-children));
   $l($gl.nth-data-gobject(0));
   is $l.get-text, 'xyz', 'text label from button 1';
 
-  my Gnome::Gtk3::Label $label .= new(:label('pqr'));
+  my Gnome::Gtk3::Label $label .= new(:text('pqr'));
+  diag "new(:empty)";
   my Gnome::Gtk3::Button $button2 .= new(:empty);
   $button2.gtk-container-add($label);
 
@@ -53,7 +59,7 @@ subtest 'Button as container', {
 
   # Next statement is not able to get the text directly
   # when gtk-container-add is used.
-  is $button2.get-label, Str, 'text cannot be returned like this anymore';
+  is $button2.get-label, Any, 'text cannot be returned like this anymore';
 
   $gl.g-list-free;
   $gl = Gnome::Glib::List;
@@ -67,6 +73,7 @@ class BH {
     isa-ok $button, Gnome::Gtk3::Button;
     is $user-data[0], 'Hello', 'data 0 ok';
     is $user-data[1], 'World', 'data 1 ok';
+    is $user-data[2], '!', 'data 2 ok';
   }
 }
 
@@ -74,14 +81,17 @@ class BH {
 subtest 'Button connect and emit signal', {
 
   # register button signal
-  my Gnome::Gtk3::Button $button .= new(:label('xyz'));
+  $b .= new(:label('xyz'));
 
   my Array $data = [];
   $data[0] = 'Hello';
   $data[1] = 'World';
 
-  my BH $x .= new(:empty);
-  $button.register-signal( $x, 'click-handler', 'clicked', :user-data($data));
+  my BH $x .= new;
+  $b.register-signal( $x, 'click-handler', 'clicked', :user-data($data));
+
+  # add after registration
+  $data[2] = '!';
 
   my Promise $p = start {
     # wait for loop to start
@@ -95,7 +105,7 @@ subtest 'Button connect and emit signal', {
     $gmain.context-invoke(
       $main-context,
       -> $d {
-        $button.emit-by-name( 'clicked', $button);
+        $b.emit-by-name( 'clicked', $b);
 
         sleep(1.0);
         $main.gtk-main-quit;
@@ -112,6 +122,20 @@ subtest 'Button connect and emit signal', {
   $main.gtk-main;
   is $main.gtk-main-level, 0, "loop level is 0 again";
 }
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+}
+}}
 
 #-------------------------------------------------------------------------------
 done-testing;

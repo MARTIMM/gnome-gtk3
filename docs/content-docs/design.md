@@ -104,11 +104,13 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used. This happens mainly when connecting a signal where a callback handler is provided. To make things easier, the method `register-signal()` defined in **Gnome::GObject::Object**, is created for this purpose. At the moment only the most common types of signals can be processed.
 
 ## Implementation details
-* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere, e.g. GdkRectangle should be N-GdkRectangle_**.
+* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere.
 
 * A method `CALL-ME()` was implemented to get the native object with a minimum effort. For example a button `$b` defined by **Gnome;:Gtk3::Button** can return its native object just by adding parenthesis like so `$b()`. Later, a method was created, called `native-gobject()` to replace it, just to make code more readable. These methods are mostly used internally.
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. That process is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
+
+* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have a method `_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned example this is **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
 
 * All classes deriving from **Gnome::GObject::Object** know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**.
 

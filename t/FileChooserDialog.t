@@ -2,16 +2,53 @@ use v6;
 use NativeCall;
 use Test;
 
+diag "load";
+use Gnome::Gtk3::Dialog;
+use Gnome::Gtk3::FileChooser;
 use Gnome::Gtk3::FileChooserDialog;
-
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-subtest 'ISA tests', {
-  my Gnome::Gtk3::FileChooserDialog $fcd .= new(:title('Search for files'));
+my Gnome::Gtk3::FileChooserDialog $fcd .= new(
+  :action(GTK_FILE_CHOOSER_ACTION_SAVE),
+  :button-spec( [
+      "_Cancel", GTK_RESPONSE_CANCEL,
+      "_Open", GTK_RESPONSE_ACCEPT
+    ]
+  )
+);
+
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+
   isa-ok $fcd, Gnome::Gtk3::FileChooserDialog;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface', {
+  diag '.set-action / .get-action';
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
+     'GtkFileChooserAction save';
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_OPEN);
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_OPEN.value,
+     'GtkFileChooserAction open';
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+  is GtkFileChooserAction($fcd.get-action),
+     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+     'GtkFileChooserAction select folder';
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER);
+  is GtkFileChooserAction($fcd.get-action),
+     GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,
+     'GtkFileChooserAction create folder';
+
+  diag '.set-local-only / .get-local-only';
+  $fcd.set-local-only(1);
+  ok ?$fcd.get-local-only, 'local only';
+  $fcd.set-local-only(0);
+  ok !$fcd.get-local-only, 'not local only';
 }
 
 #-------------------------------------------------------------------------------

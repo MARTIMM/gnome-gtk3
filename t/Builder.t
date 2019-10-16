@@ -18,6 +18,9 @@ use Gnome::Gtk3::Button;
 my $dir = 't/ui';
 mkdir $dir unless $dir.IO ~~ :e;
 
+my Gnome::Glib::Quark $quark .= new(:empty);
+my Gnome::Glib::Error $e;
+
 #-------------------------------------------------------------------------------
 my Str $ui-file = "$dir/ui.xml";
 $ui-file.IO.spurt(Q:q:to/EOXML/);
@@ -60,26 +63,25 @@ subtest 'ISA tests', {
     );
 
   $builder .= new(:empty);
-  isa-ok $builder, Gnome::Gtk3::Builder;
-  isa-ok $builder(), N-GObject;
+  isa-ok $builder, Gnome::Gtk3::Builder, '.new(:empty)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Add ui from file to builder', {
   my Gnome::Gtk3::Builder $builder .= new(:empty);
 
-#Gnome::N::debug(:on);
-
-  my Int $e-code = $builder.add-from-file( $ui-file, Any);
-  is $e-code, 1, "ui file added ok";
+  $e = $builder.add-from-file($ui-file);
+  nok $e.error-is-valid, ".add-from-file()";
 
   my Str $text = $ui-file.IO.slurp;
-  my N-GObject $b = $builder.new-from-string( $text, $text.chars);
-  ok ?$b, 'builder is set';
+  $e = $builder.add-from-string($text);
+  nok $e.error-is-valid, ".add-from-string()";
 
-  $builder .= new(:empty);
-  $builder.add-gui(:filename($ui-file));
-  ok ?$builder(), 'builder is added';
+  my N-GObject $b = $builder.new-from-string( $text, $text.chars);
+  ok $b.defined, '.new-from-string()';
+
+  $b = $builder.new-from-file($ui-file);
+  ok $b.defined, '.new-from-file()';
 }
 
 #-------------------------------------------------------------------------------
@@ -101,9 +103,8 @@ subtest 'Test builder errors', {
     :message("<input>:4:40 Unhandled tag: <requires>");
 
   subtest "errorcode return from gtk_builder_add_from_file", {
-    my Gnome::Glib::Quark $quark .= new(:empty);
-
-    my Gnome::Glib::Error $e = $builder.add-from-file('x.glade');
+    $e = $builder.add-from-file('x.glade');
+    ok $e.error-is-valid, "error from .add-from-file()";
     ok $e.domain > 0, "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'g-file-error-quark', 'error domain ok';
     is $e.code, 4, 'error code for this error is 4 and is from file IO';
@@ -115,7 +116,8 @@ subtest 'Test builder errors', {
   subtest "errorcode return from gtk_builder_add_from_string", {
     my Gnome::Glib::Quark $quark .= new(:empty);
 
-    my Gnome::Glib::Error $e = $builder.add-from-string($text);
+    $e = $builder.add-from-string($text);
+    ok $e.error-is-valid, "error from .add-from-string()";
     is $e.domain, $builder.error-quark(), "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'gtk-builder-error-quark',
        "error domain: $quark.to-string($e.domain())";
@@ -128,9 +130,8 @@ subtest 'Test builder errors', {
 #-------------------------------------------------------------------------------
 subtest 'Test items from ui', {
   my Gnome::Gtk3::Builder $builder .= new(:empty);
-
-  my Int $e-code = $builder.add-from-file( $ui-file, Any);
-  is $e-code, 1, "ui file added ok";
+  $e = $builder.add-from-file($ui-file);
+  nok $e.error-is-valid, "ui file added ok";
 
   isa-ok $builder.get-object('button'), N-GObject, 'returned a native object';
 
