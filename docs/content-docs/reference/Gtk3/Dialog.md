@@ -286,15 +286,27 @@ Emits the *response* signal with the given response ID. Used to indicate that th
 gtk_dialog_run
 --------------
 
-Blocks in a recursive main loop until the *dialog* either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `gtk_dialog_run()`, `gtk_dialog_run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
+Blocks in a recursive main loop until the dialog either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `gtk_dialog_run()`, `gtk_dialog_run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
 
 Before entering the recursive main loop, `gtk_dialog_run()` calls `gtk_widget_show()` on the dialog for you. Note that you still need to show any children of the dialog yourself.
 
-During `gtk_dialog_run()`, the default behavior of *delete-event* is disabled; if the dialog receives *delete_event*, it will not be destroyed as windows usually are, and `gtk_dialog_run()` will return **GTK_RESPONSE_DELETE_EVENT**. Also, during `gtk_dialog_run()` the dialog will be modal. You can force `gtk_dialog_run()` to return at any time by calling `gtk_dialog_response()` to emit the *response* signal. Destroying the dialog during `gtk_dialog_run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
+During `gtk_dialog_run()`, the default behavior of *delete-event* is disabled; if the dialog receives a *delete_event*, it will not be destroyed as windows usually are, and `gtk_dialog_run()` will return **GTK_RESPONSE_DELETE_EVENT**. Also, during `gtk_dialog_run()` the dialog will be modal. You can force `gtk_dialog_run()` to return at any time by calling `gtk_dialog_response()` to emit the *response* signal. Destroying the dialog during `gtk_dialog_run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
 
 After `gtk_dialog_run()` returns, you are responsible for hiding or destroying the dialog if you wish to do so.
 
-Typical usage of this function might be: |[<!-- language="C" --> gint result = gtk_dialog_run (GTK_DIALOG (dialog)); switch (result) { case GTK_RESPONSE_ACCEPT: `do_application_specific_something()`; break; default: `do_nothing_since_dialog_was_cancelled()`; break; } gtk_widget_destroy (dialog); ]|
+Typical usage of this function might be:
+
+    given GtkResponseType($dialog.gtk-dialog-run) {
+      when GTK_RESPONSE_ACCEPT {
+        do_application_specific_something();
+      }
+
+      default {
+        do_nothing_since_dialog_was_cancelled();
+      }
+    }
+
+    $dialog.gtk_widget_destroy;
 
 Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a `gtk_dialog_run()` call.
 

@@ -621,41 +621,28 @@ sub gtk_dialog_response ( N-GObject $dialog, int32 $response_id )
 =begin pod
 =head2 gtk_dialog_run
 
-Blocks in a recursive main loop until the I<dialog> either emits the
- I<response> signal, or is destroyed. If the dialog is
-destroyed during the call to C<gtk_dialog_run()>, C<gtk_dialog_run()> returns
-B<GTK_RESPONSE_NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
+Blocks in a recursive main loop until the dialog either emits the I<response> signal, or is destroyed. If the dialog is destroyed during the call to C<gtk_dialog_run()>, C<gtk_dialog_run()> returns B<GTK_RESPONSE_NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
 
-Before entering the recursive main loop, C<gtk_dialog_run()> calls
-C<gtk_widget_show()> on the dialog for you. Note that you still
-need to show any children of the dialog yourself.
+Before entering the recursive main loop, C<gtk_dialog_run()> calls C<gtk_widget_show()> on the dialog for you. Note that you still need to show any children of the dialog yourself.
 
-During C<gtk_dialog_run()>, the default behavior of  I<delete-event>
-is disabled; if the dialog receives I<delete_event>, it will not be
-destroyed as windows usually are, and C<gtk_dialog_run()> will return
-B<GTK_RESPONSE_DELETE_EVENT>. Also, during C<gtk_dialog_run()> the dialog
-will be modal. You can force C<gtk_dialog_run()> to return at any time by
-calling C<gtk_dialog_response()> to emit the I<response> signal. Destroying
-the dialog during C<gtk_dialog_run()> is a very bad idea, because your
-post-run code won’t know whether the dialog was destroyed or not.
+During C<gtk_dialog_run()>, the default behavior of I<delete-event> is disabled; if the dialog receives a I<delete_event>, it will not be destroyed as windows usually are, and C<gtk_dialog_run()> will return B<GTK_RESPONSE_DELETE_EVENT>. Also, during C<gtk_dialog_run()> the dialog will be modal. You can force C<gtk_dialog_run()> to return at any time by calling C<gtk_dialog_response()> to emit the I<response> signal. Destroying the dialog during C<gtk_dialog_run()> is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
 
-After C<gtk_dialog_run()> returns, you are responsible for hiding or
-destroying the dialog if you wish to do so.
+After C<gtk_dialog_run()> returns, you are responsible for hiding or destroying the dialog if you wish to do so.
 
 Typical usage of this function might be:
-|[<!-- language="C" -->
-gint result = gtk_dialog_run (GTK_DIALOG (dialog));
-switch (result)
-{
-case GTK_RESPONSE_ACCEPT:
-C<do_application_specific_something()>;
-break;
-default:
-C<do_nothing_since_dialog_was_cancelled()>;
-break;
-}
-gtk_widget_destroy (dialog);
-]|
+
+  given GtkResponseType($dialog.gtk-dialog-run) {
+    when GTK_RESPONSE_ACCEPT {
+      do_application_specific_something();
+    }
+
+    default {
+      do_nothing_since_dialog_was_cancelled();
+    }
+  }
+
+  $dialog.gtk_widget_destroy;
+
 
 Note that even though the recursive main loop gives the effect of a
 modal dialog (it prevents the user from interacting with other
