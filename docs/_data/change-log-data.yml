@@ -2,6 +2,9 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-10-21 0.19.0:
+    - New classes added in Gnome::Gtk3; Buildable.
+
   - 2019-08-08 0.18.5:
     - The handler arguments list is changed when register-signal() from Gnome::GObject::Object is used. Some positional arguments, which were named arguments before, are oblegatory as well as their types. Most of them are unchanged because they did not receive extra data. For example the 'clicked' signal for a Button. Others like event processing are changed. E.g. 'button-press-event' on a window was returned on the :$event named argument. Now this has become the first positional argument with a type 'GdkEvent'.
 

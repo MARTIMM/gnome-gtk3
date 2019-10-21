@@ -28,7 +28,7 @@ There is already a bit of history for these packages. It started off building th
   * The package was designed with the usage of glade interface designer in mind. So to build the interface by hand like in the examples and tutorial, is not always necessary. Feeding a saved design from the glade program to modules in **Gnome::Gtk3::Glade** is preferable when building larger user interfaces. Also it was therefore not necessary to implement every method to build a gui which made the handwork somewhat lighter. Lately, this is shifting towards almost fully implementing every class because a generator was made to help me out. The generator creates a Perl6 module from the c-sources of some widget. The only thing left for me was to iron the generated module to get it working.
   * No fancy stuff like tapping into channels to run signal handlers.
   * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
-  * Not all signals are supported yet but will be installed in time. There is, for example, a *parent-set* signal which is emitted when a new parent has been set on a widget.
+  * In principle, all kinds of signals or events are possible to handle now but some signals will provide native objects to the handler which are not yet possible to wrap into a perl6 object because it is not implemented yet.
   * It is possible to create threads where longer runs can be done without crippling the user interface responses and also show the results from there in the gui.
 
 ### Cons
@@ -96,4 +96,4 @@ Name: **Marcel Timmerman**
 Github account name: **MARTIMM**
 
 # Warning
-The software as well as this website is far from finished as well as the documentation is not yet available for all modules in the packages.
+The software, as well as this website, is far from finished. The documentation in the references might need some ironing too.

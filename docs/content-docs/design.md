@@ -43,6 +43,11 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   $button.gtk_widget_set_tooltip_text('When pressed, program will start');
   ```
 
+* Classes can use methods from their interfaces. E.g. All widgets like **Gnome::Gtk3::Button** use the **Gnome::Gtk3::Buildable** interface.
+  ```
+  my Str $button-name = $button.gtk_buildable_get_name();
+  ```
+
 * The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method defined in **Gnome::Gtk3::Button** class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
   ```
   my Str $button-label = $button.get_label;
