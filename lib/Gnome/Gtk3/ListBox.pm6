@@ -251,13 +251,13 @@ Returns: a native ListBoxRow
 
 Since: 3.10
 
-  method gtk_list_box_get_row_at_index ( Int $index_ --> N-GObject  )
+  method gtk_list_box_get_row_at_index ( Int $index --> N-GObject  )
 
-=item Int $index_; the index of the row
+=item Int $index; the index of the row
 
 =end pod
 
-sub gtk_list_box_get_row_at_index ( N-GObject $box, int32 $index_ )
+sub gtk_list_box_get_row_at_index ( N-GObject $box, int32 $index )
   returns N-GObject
   is native(&gtk-lib)
   { * }
