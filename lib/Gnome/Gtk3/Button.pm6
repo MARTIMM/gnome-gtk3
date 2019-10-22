@@ -26,7 +26,7 @@ Other style classes that are commonly used with B<Gnome::Gtk3::Button> include .
 Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton>, B<Gnome::Gtk3::VolumeButton>, B<Gnome::Gtk3::LockButton>, B<Gnome::Gtk3::ColorButton>, B<Gnome::Gtk3::FontButton> or B<Gnome::Gtk3::FileChooserButton> use style classes such as .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate themselves from a plain B<Gnome::Gtk3::Button>.
 
 =head2 Implemented Interfaces
-=comment item AtkImplementorIface
+=comment item Gnome::Atk::ImplementorIface
 =item Gnome::Gtk3::Buildable
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
@@ -93,6 +93,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
+note "o: ", %options;
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
@@ -141,19 +142,19 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_button_$native-sub"); } unless ?$s;
 
-  self.set-class-name-of-sub('GtkButton');
-  $s = callsame unless ?$s;
-
   # search in the interface modules, name all interfaces which are implemented
   # for this module. not implemented ones are skipped.
   if !$s {
     $s = self._query_interfaces(
       $native-sub, <
-        AtkImplementorIface Gnome::Gtk3::Buildable Gnome::Gtk3::Actionable
-        Gnome::Gtk3::Activatable
+        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
+        Gnome::Gtk3::Actionable Gnome::Gtk3::Activatable
       >
     );
   }
+
+  self.set-class-name-of-sub('GtkButton');
+  $s = callsame unless ?$s;
 
   $s
 }
