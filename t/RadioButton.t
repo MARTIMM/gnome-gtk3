@@ -4,7 +4,7 @@ use Test;
 
 use Gnome::Gtk3::RadioButton;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

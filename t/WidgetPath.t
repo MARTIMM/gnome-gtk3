@@ -22,27 +22,27 @@ subtest 'ISA test', {
   isa-ok $wp, Gnome::Gtk3::WidgetPath;
   ok $wp.widgetpath-is-valid, 'widgetpath is valid';
   $wp.clear-widget-path;
-  ok !$wp.widgetpath-is-valid, 'widgetpath not valid anymore';
+  nok $wp.widgetpath-is-valid, 'widgetpath not valid anymore';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 #  $wp.append-type(GTK_TYPE_WINDOW);
   my Gnome::Gtk3::Window $w .= new(:title<Top>);
-  $w.set-name('top-level-window');
+  $w.gtk-widget-set-name('top-level-window');
 
   my Gnome::Gtk3::Grid $g .= new(:empty);
-  $g.set-name('top-grid');
+  $g.gtk-widget-set-name('top-grid');
   $w.gtk-container-add($g);
 
   my Gnome::Gtk3::Button $b1 .= new(:label<Start>);
-  $b1.set-name('start-button');
+  $b1.gtk-widget-set-name('start-button');
   $g.gtk-grid-attach( $b1, 0, 0, 1, 1);
 
   my Gnome::Gtk3::Button $b2 .= new(:label<Stop>);
   $g.gtk-grid-attach( $b2, 0, 1, 1, 1);
 
-#  note $b1.get-path.perl;
+  note $b1.get-path.perl;
   $wp .= new(:widgetpath($b1.get-path));
   is $wp.gtk-widget-path-length, 3, 'length of path is 3';
   is $wp.iter-get-name(0), 'top-level-window', $wp.iter-get-name(0);

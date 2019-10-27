@@ -20,39 +20,37 @@ my Gnome::Gtk3::FileChooserDialog $fcd .= new(
   )
 );
 
-my Gnome::Gtk3::FileChooser $fc .= new(:widget($fcd));
-
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
 
   diag '.new(:widget)';
-  $fc .= new(:widget($fcd));
-  isa-ok $fc, Gnome::Gtk3::FileChooser;
+  isa-ok $fcd, Gnome::Gtk3::FileChooserDialog;
+  does-ok $fcd, Gnome::Gtk3::FileChooser;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   diag '.set-action / .get-action';
-  $fc.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
-  is $fc.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
      'GtkFileChooserAction save';
-  $fc.set-action(GTK_FILE_CHOOSER_ACTION_OPEN);
-  is $fc.get-action, GTK_FILE_CHOOSER_ACTION_OPEN.value,
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_OPEN);
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_OPEN.value,
      'GtkFileChooserAction open';
-  $fc.set-action(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-  is GtkFileChooserAction($fc.get-action),
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+  is GtkFileChooserAction($fcd.get-action),
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
      'GtkFileChooserAction select folder';
-  $fc.set-action(GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER);
-  is GtkFileChooserAction($fc.get-action),
+  $fcd.set-action(GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER);
+  is GtkFileChooserAction($fcd.get-action),
      GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,
      'GtkFileChooserAction create folder';
 
   diag '.set-local-only / .get-local-only';
-  $fc.set-local-only(1);
-  ok ?$fc.get-local-only, 'local only';
-  $fc.set-local-only(0);
-  ok !$fc.get-local-only, 'not local only';
+  $fcd.set-local-only(1);
+  ok ?$fcd.get-local-only, 'local only';
+  $fcd.set-local-only(0);
+  ok !$fcd.get-local-only, 'not local only';
 }
 
 #-------------------------------------------------------------------------------
