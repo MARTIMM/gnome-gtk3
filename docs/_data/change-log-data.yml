@@ -2,6 +2,9 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2019-10-27 0.19.1:
+    - Rewrite of classes to handle interface roles differently. This caused some changes in the interface modules, the classes which use the interfaces and the Interface module from Gnome::GObject was removed.
+
   - 2019-10-21 0.19.0:
     - New classes added in Gnome::Gtk3; Buildable.
 
