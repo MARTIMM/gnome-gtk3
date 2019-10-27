@@ -34,6 +34,7 @@ Declaration
 
     unit class Gnome::Gtk3::CssProvider;
     also is Gnome::GObject::Object;
+    also does Gnome::Gtk3::StyleProvider;
 
 Example
 -------

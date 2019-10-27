@@ -60,11 +60,9 @@ Implemented Interfaces
 
 Gnome::Gtk3::Scale implements
 
-  * Gnome::Atk::ImplementorIface
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
-  * Gnome::Gtk3::Buildable
-
-  * Gnome::Gtk3::Orientable
+  * [Gnome::Gtk3::Orientable](Orientable.html)
 
 Synopsis
 ========
@@ -74,6 +72,8 @@ Declaration
 
     unit class Gnome::Gtk3::Scale;
     also is Gnome::Gtk3::Range;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
 
 Example
 -------

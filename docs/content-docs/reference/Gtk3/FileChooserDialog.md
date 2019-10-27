@@ -119,7 +119,7 @@ To summarize, make sure you use a *ResponseType* when you use *Gnome::Gtk3::File
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * [Gnome::Gtk3::FileChooser](FileChooser.html)
 
@@ -136,6 +136,8 @@ Declaration
 
     unit class Gnome::Gtk3::FileChooserDialog;
     also is Gnome::Gtk3::Dialog;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::FileChooser;
 
 Example
 -------

@@ -33,9 +33,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::TextView implements
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Scrollable
 
@@ -52,6 +50,7 @@ Declaration
 
     unit class Gnome::Gtk3::TextView;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

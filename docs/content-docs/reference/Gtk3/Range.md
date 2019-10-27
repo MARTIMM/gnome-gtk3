@@ -15,9 +15,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::Range implements
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * [Gnome::Gtk3::Orientable](Orientable.html)
 
@@ -29,6 +27,8 @@ Declaration
 
     unit class Gnome::Gtk3::Range;
     also is Gnome::Gtk3::Widget;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
 
 Methods
 =======
@@ -135,7 +135,7 @@ This function is useful mainly for GtkRange subclasses.
 
     method gtk_range_get_range_rect ( --> Gnome::Gdk3::Rectangle )
 
-  * $rectangle. Location for the range rectangleType to return. GdkRectangle is defined in GdkTypes.
+  * $rectangle. Location for the range rectangleType to return. N-GdkRectangle is defined in GdkTypes.
 
 [gtk_range_] get_slider_range
 -----------------------------

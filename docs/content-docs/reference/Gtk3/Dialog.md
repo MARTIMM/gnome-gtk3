@@ -82,6 +82,7 @@ Declaration
 
     unit class Gnome::Gtk3::Dialog;
     also is Gnome::Gtk3::Window;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

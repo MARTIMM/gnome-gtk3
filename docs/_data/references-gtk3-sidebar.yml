@@ -181,6 +181,10 @@
 
 - bar_title: "Interface Classes"
   bar_menu:
+  - title: "Buildable"
+    url: "/content-docs/reference/Gtk3/Buildable.html"
+    doc: 1
+    test: 1
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
     doc: 3

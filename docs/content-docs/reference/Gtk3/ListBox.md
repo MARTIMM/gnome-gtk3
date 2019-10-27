@@ -35,7 +35,7 @@ Gnome::Gtk3::ListBox implements
 
   * Gnome::Atk::ImplementorIface
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 Synopsis
 ========
@@ -45,6 +45,7 @@ Declaration
 
     unit class Gnome::Gtk3::ListBox;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------
@@ -146,9 +147,9 @@ Returns: a native ListBoxRow
 
 Since: 3.10
 
-    method gtk_list_box_get_row_at_index ( Int $index_ --> N-GObject  )
+    method gtk_list_box_get_row_at_index ( Int $index --> N-GObject  )
 
-  * Int $index_; the index of the row
+  * Int $index; the index of the row
 
 [gtk_list_box_] get_row_at_y
 ----------------------------

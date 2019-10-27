@@ -1,29 +1,37 @@
-TITLE
-=====
-
 Gnome::Gtk3::ColorButton
-
-![](images/color-button.png)
-
-SUBTITLE
-========
+========================
 
 A button to launch a color selection dialog
+
+![](images/color-button.png)
 
 Description
 ===========
 
-The `Gnome::Gtk3::ColorButton` is a button which displays the currently selected color and allows to open a color selection dialog to change the color. It is a suitable widget for selecting a color in a preference dialog.
+The **Gnome::Gtk3::ColorButton** is a button which displays the currently selected color and allows to open a color selection dialog to change the color. It is a suitable widget for selecting a color in a preference dialog.
 
 Css Nodes
 ---------
 
-`Gnome::Gtk3::ColorButton` has a single CSS node with name button. To differentiate it from a plain `Gnome::Gtk3::Button`, it gets the .color style class.
+**Gnome::Gtk3::ColorButton** has a single CSS node with name button. To differentiate it from a plain **Gnome::Gtk3::Button**, it gets the .color style class.
+
+Implemented Interfaces
+----------------------
+
+  * Atk::ImplementorIface
+
+  * [Gnome::Gtk3::Buildable](Buildable.html)
+
+  * Gnome::Gtk3::Actionable
+
+  * Gnome::Gtk3::Activatable
+
+  * [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
 See Also
 --------
 
-`Gnome::Gtk3::ColorSelectionDialog`, `Gnome::Gtk3::FontButton`
+**Gnome::Gtk3::ColorSelectionDialog**, **Gnome::Gtk3::FontButton**
 
 Synopsis
 ========
@@ -33,6 +41,7 @@ Declaration
 
     unit class Gnome::Gtk3::ColorButton;
     also is Gnome::Gtk3::Button;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------
@@ -48,21 +57,21 @@ Methods
 new
 ---
 
-### multi method_new ( Bool :$empty! )
-
 Create a color button with current selected color
 
-### multi method_new ( GdkRGBA :$color! )
+    multi method_new ( Bool :$empty! )
 
 Create a color button with a new color
 
-### multi method new ( N-GObject :$widget! )
+    multi method_new ( GdkRGBA :$color! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-### multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 gtk_color_button_new
 --------------------
@@ -88,7 +97,7 @@ Since: 3.0
 
     method gtk_color_button_new_with_rgba ( GdkRGBA $rgba --> N-GObject  )
 
-  * GdkRGBA $rgba; A `Gnome::Gdk3::RGBA` to set the current color with
+  * N-GObject $rgba; A **Gnome::Gdk3::RGBA** to set the current color with
 
 [gtk_color_button_] set_title
 -----------------------------
@@ -112,54 +121,51 @@ Since: 2.4
 
     method gtk_color_button_get_title ( --> Str  )
 
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.4.
-----------
-
-### method gtk_color_button_new_with_color ( GdkColor $color --> N-GObject )
-
-### method gtk_color_button_set_color ( GdkColor $color )
-
-### method gtk_color_button_get_color ( GdkColor $color )
-
-### method gtk_color_button_set_alpha ( UInt $alpha )
-
-### method gtk_color_button_get_alpha ( --> UInt )
-
-### method gtk_color_button_set_use_alpha ( Int $use_alpha )
-
-### method gtk_color_button_get_use_alpha ( --> Int )
-
-### method gtk_color_button_set_rgba ( N-GObject $rgba )
-
-### method gtk_color_button_get_rgba ( N-GObject $rgba )
-
 Signals
 =======
 
-Register any signal as follows. See also `Gnome::GObject::Object`.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., $user-optionN
-    )
+First method
+------------
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
 
 ### color-set
 
-The `color-set` signal is emitted when the user selects a color. When handling this signal, use gtk_color_button_get_rgba() to find out which color was just selected.
+The *color-set* signal is emitted when the user selects a color. When handling this signal, use `gtk_color_button_get_rgba()` to find out which color was just selected.
 
 Note that this signal is only emitted when the user changes the color. If you need to react to programmatic color changes as well, use the notify::color signal.
 
 Since: 2.4
 
     method handler (
-      Gnome::GObject::Object :$widget,
-      :$user-option1, ..., $user-optionN
+      Gnome::GObject::Object :widget($widget),
+      *%user-options
     );
 
   * $widget; the object which received the signal.
@@ -167,7 +173,7 @@ Since: 2.4
 Properties
 ==========
 
-An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new(:empty);
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
@@ -177,48 +183,29 @@ An example of using a string type property of a `Gnome::Gtk3::Label` object. Thi
 Supported properties
 --------------------
 
-### use-alpha
+### Use alpha
 
-The `Gnome::GObject::Value` type of property *use-alpha* is `G_TYPE_BOOLEAN`.
+If this property is set to `1`, the color swatch on the button is rendered against a checkerboard background to show its opacity and the opacity slider is displayed in the color selection dialog. Since: 2.4
 
-If this property is set to `1`, the color swatch on the button is rendered against a checkerboard background to show its opacity and the opacity slider is displayed in the color selection dialog.
+The **Gnome::GObject::Value** type of property *use-alpha* is `G_TYPE_BOOLEAN`.
 
-Since: 2.4
+### Title
 
-### title
+The title of the color selection dialog Since: 2.4
 
-The `Gnome::GObject::Value` type of property *title* is `G_TYPE_STRING`.
+The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
 
-The title of the color selection dialog
+#`{{
 
-Since: 2.4
+### Current RGBA Color
 
-### alpha
+The RGBA color. Since: 3.0
 
-The `Gnome::GObject::Value` type of property *alpha* is `G_TYPE_UINT`.
+The **Gnome::GObject::Value** type of property *rgba* is `G_TYPE_BOXED`. }}
 
-The selected opacity value (0 fully transparent, 65535 fully opaque).
+### Show Editor
 
-Since: 2.4
+Set this property to `1` to skip the palette in the dialog and go directly to the color editor. This property should be used in cases where the palette in the editor would be redundant, such as when the color button is already part of a palette. Since: 3.20
 
-### show-editor
-
-The `Gnome::GObject::Value` type of property *show-editor* is `G_TYPE_BOOLEAN`.
-
-Set this property to `1` to skip the palette in the dialog and go directly to the color editor.
-
-This property should be used in cases where the palette in the editor would be redundant, such as when the color button is already part of a palette.
-
-Since: 3.20
-
-Not yet supported properties
-----------------------------
-
-### rgba
-
-The `Gnome::GObject::Value` type of property *rgba* is `G_TYPE_BOXED`.
-
-The RGBA color.
-
-Since: 3.0
+The **Gnome::GObject::Value** type of property *show-editor* is `G_TYPE_BOOLEAN`.
 

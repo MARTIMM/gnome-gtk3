@@ -34,6 +34,9 @@ Declaration
 
     unit class Gnome::Gtk3::ColorChooserWidget;
     also is Gnome::Gtk3::Box;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
+    also does Gnome::Gtk3::ColorChooser;
 
 Methods
 =======

@@ -34,8 +34,7 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::Gtk3::ColorChooser;
-    also is Gnome::GObject::Interface;
+    unit role Gnome::Gtk3::ColorChooser;
 
 Example
 -------
@@ -46,6 +45,16 @@ Example
 
     # Use methods defined in the interface
     note "Green channel: ", $ccdialog.get-rgba($color).green;
+
+Methods
+=======
+
+new
+---
+
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+
+    multi method new ( N-GObject :$widget! )
 
 [gtk_color_chooser_] get_rgba
 -----------------------------

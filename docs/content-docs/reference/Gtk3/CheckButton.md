@@ -30,7 +30,7 @@ A **Gnome::Gtk3::CheckButton** without indicator changes the name of its main no
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Actionable
 
@@ -49,6 +49,7 @@ Declaration
 
     unit class Gnome::Gtk3::CheckButton;
     also is Gnome::Gtk3::ToggleButton;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

@@ -41,7 +41,7 @@ Gnome::Gtk3::MenuItem implements
 
   * Gnome::Atk::ImplementorIface
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Activatable
 
@@ -60,6 +60,7 @@ Declaration
 
     unit class Gnome::Gtk3::MenuItem;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

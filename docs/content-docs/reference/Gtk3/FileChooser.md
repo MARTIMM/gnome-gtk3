@@ -55,18 +55,19 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::Gtk3::FileChooser;
-    also is Gnome::GObject::Interface;
+    unit role Gnome::Gtk3::FileChooser;
 
-Example
--------
+Example to show how to get filenames from the dialog
+----------------------------------------------------
 
     my Gnome::Gtk3::FileChooserDialog $file-select-dialog .= new(
       :build-id($target-widget-name)
     );
 
-    my Gnome::Gtk3::FileChooser $fc .= new(:widget($file-select-dialog));
-    my Gnome::Glib::SList $fnames .= new(:gslist($fc.get-filenames));
+    # get-filenames() is from FileChooser class
+    my Gnome::Glib::SList $fnames .= new(
+      :gslist($file-select-dialog.get-filenames)
+    );
 
     my @files-to-process = ();
     for ^$fnames.g-slist-length -> $i {
@@ -124,13 +125,6 @@ These identify the various errors that can occur while calling *Gnome::Gtk3::Fil
 
 Methods
 =======
-
-new
----
-
-### multi method new ( N-GObject :$widget! )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
 [gtk_file_chooser_] error_quark
 -------------------------------

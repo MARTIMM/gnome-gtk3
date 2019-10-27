@@ -6,26 +6,26 @@ Base class for widgets which contain other widgets
 Description
 ===========
 
-A GTK+ user interface is constructed by nesting widgets inside widgets. Container widgets are the inner nodes in the resulting tree of widgets: they contain other widgets. So, for example, you might have a `Gnome::Gtk3::Window` containing a `Gnome::Gtk3::Frame` containing a `Gnome::Gtk3::Label`. If you wanted an image instead of a textual label inside the frame, you might replace the `Gnome::Gtk3::Label` widget with a `Gnome::Gtk3::Image` widget.
+A GTK+ user interface is constructed by nesting widgets inside widgets. Container widgets are the inner nodes in the resulting tree of widgets: they contain other widgets. So, for example, you might have a **Gnome::Gtk3::Window** containing a **Gnome::Gtk3::Frame** containing a **Gnome::Gtk3::Label**. If you wanted an image instead of a textual label inside the frame, you might replace the **Gnome::Gtk3::Label** widget with a **Gnome::Gtk3::Image** widget.
 
-There are two major kinds of container widgets in GTK+. Both are subclasses of the abstract `Gnome::Gtk3::Container` base class.
+There are two major kinds of container widgets in GTK+. Both are subclasses of the abstract **Gnome::Gtk3::Container** base class.
 
-The first type of container widget has a single child widget and derives from `Gnome::Gtk3::Bin`. These containers are decorators, which add some kind of functionality to the child. For example, a `Gnome::Gtk3::Button` makes its child into a clickable button; a `Gnome::Gtk3::Frame` draws a frame around its child and a `Gnome::Gtk3::Window` places its child widget inside a top-level window.
+The first type of container widget has a single child widget and derives from **Gnome::Gtk3::Bin**. These containers are decorators, which add some kind of functionality to the child. For example, a **Gnome::Gtk3::Button** makes its child into a clickable button; a **Gnome::Gtk3::Frame** draws a frame around its child and a **Gnome::Gtk3::Window** places its child widget inside a top-level window.
 
-The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a `Gnome::Gtk3::HBox` arranges its children in a horizontal row, and a `Gnome::Gtk3::Grid` arranges the widgets it contains in a two-dimensional grid.
+The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a **Gnome::Gtk3::HBox** arranges its children in a horizontal row, and a **Gnome::Gtk3::Grid** arranges the widgets it contains in a two-dimensional grid.
 
-For implementations of `Gnome::Gtk3::Container` the virtual method `Gnome::Gtk3::ContainerClass`.`forall()` is always required, since it's used for drawing and other internal operations on the children. If the `Gnome::Gtk3::Container` implementation expect to have non internal children it's needed to implement both `Gnome::Gtk3::ContainerClass`.`add()` and `Gnome::Gtk3::ContainerClass`.`remove()`. If the `Gnome::Gtk3::Container` implementation has internal children, they should be added with `gtk_widget_set_parent()` on `init()` and removed with `gtk_widget_unparent()` in the `Gnome::Gtk3::WidgetClass`.`destroy()` implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
+For implementations of **Gnome::Gtk3::Container** the virtual method **Gnome::Gtk3::ContainerClass**.`forall()` is always required, since it's used for drawing and other internal operations on the children. If the **Gnome::Gtk3::Container** implementation expect to have non internal children it's needed to implement both **Gnome::Gtk3::ContainerClass**.`add()` and **Gnome::Gtk3::ContainerClass**.`remove()`. If the **Gnome::Gtk3::Container** implementation has internal children, they should be added with `gtk_widget_set_parent()` on `init()` and removed with `gtk_widget_unparent()` in the **Gnome::Gtk3::WidgetClass**.`destroy()` implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
 
 Height for width geometry management
 ------------------------------------
 
 GTK+ uses a height-for-width (and width-for-height) geometry management system. Height-for-width means that a widget can change how much vertical space it needs, depending on the amount of horizontal space that it is given (and similar for width-for-height).
 
-There are some things to keep in mind when implementing container widgets that make use of GTK+’s height for width geometry management system. First, it’s important to note that a container must prioritize one of its dimensions, that is to say that a widget or container can only have a `Gnome::Gtk3::SizeRequestMode` that is `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` or `GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT`. However, every widget and container must be able to respond to the APIs for both dimensions, i.e. even if a widget has a request mode that is height-for-width, it is possible that its parent will request its sizes using the width-for-height APIs.
+There are some things to keep in mind when implementing container widgets that make use of GTK+’s height for width geometry management system. First, it’s important to note that a container must prioritize one of its dimensions, that is to say that a widget or container can only have a **Gnome::Gtk3::SizeRequestMode** that is `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` or `GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT`. However, every widget and container must be able to respond to the APIs for both dimensions, i.e. even if a widget has a request mode that is height-for-width, it is possible that its parent will request its sizes using the width-for-height APIs.
 
 To ensure that everything works properly, here are some guidelines to follow when implementing height-for-width (or width-for-height) containers.
 
-Each request mode involves 2 virtual methods. Height-for-width apis run through `gtk_widget_get_preferred_width()` and then through `gtk_widget_get_preferred_height_for_width()`. When handling requests in the opposite `Gnome::Gtk3::SizeRequestMode` it is important that every widget request at least enough space to display all of its content at all times.
+Each request mode involves 2 virtual methods. Height-for-width apis run through `gtk_widget_get_preferred_width()` and then through `gtk_widget_get_preferred_height_for_width()`. When handling requests in the opposite **Gnome::Gtk3::SizeRequestMode** it is important that every widget request at least enough space to display all of its content at all times.
 
 When `gtk_widget_get_preferred_height()` is called on a container that is height-for-width, the container must return the height for its minimum width. This is easily achieved by simply calling the reverse apis implemented for itself.
 
@@ -33,20 +33,20 @@ Similarly, when `gtk_widget_get_preferred_width_for_height()` is called for a co
 
 Height for width requests are generally implemented in terms of a virtual allocation of widgets in the input orientation. Assuming an height-for-width request mode, a container would implement the `get_preferred_height_for_width()` virtual function by first calling `gtk_widget_get_preferred_width()` for each of its children.
 
-For each potential group of children that are lined up horizontally, the values returned by `gtk_widget_get_preferred_width()` should be collected in an array of `Gnome::Gtk3::RequestedSize` structures. Any child spacing should be removed from the input *for_width* and then the collective size should be allocated using the `gtk_distribute_natural_allocation()` convenience function.
+For each potential group of children that are lined up horizontally, the values returned by `gtk_widget_get_preferred_width()` should be collected in an array of **Gnome::Gtk3::RequestedSize** structures. Any child spacing should be removed from the input *for_width* and then the collective size should be allocated using the `gtk_distribute_natural_allocation()` convenience function.
 
-The container will then move on to request the preferred height for each child by using `gtk_widget_get_preferred_height_for_width()` and using the sizes stored in the `Gnome::Gtk3::RequestedSize` array.
+The container will then move on to request the preferred height for each child by using `gtk_widget_get_preferred_height_for_width()` and using the sizes stored in the **Gnome::Gtk3::RequestedSize** array.
 
-To allocate a height-for-width container, it’s again important to consider that a container must prioritize one dimension over the other. So if a container is a height-for-width container it must first allocate all widgets horizontally using a `Gnome::Gtk3::RequestedSize` array and `gtk_distribute_natural_allocation()` and then add any extra space (if and where appropriate) for the widget to expand.
+To allocate a height-for-width container, it’s again important to consider that a container must prioritize one dimension over the other. So if a container is a height-for-width container it must first allocate all widgets horizontally using a **Gnome::Gtk3::RequestedSize** array and `gtk_distribute_natural_allocation()` and then add any extra space (if and where appropriate) for the widget to expand.
 
-After adding all the expand space, the container assumes it was allocated sufficient height to fit all of its content. At this time, the container must use the total horizontal sizes of each widget to request the height-for-width of each of its children and store the requests in a `Gnome::Gtk3::RequestedSize` array for any widgets that stack vertically (for tabular containers this can be generalized into the heights and widths of rows and columns). The vertical space must then again be distributed using `gtk_distribute_natural_allocation()` while this time considering the allocated height of the widget minus any vertical spacing that the container adds. Then vertical expand space should be added where appropriate and available and the container should go on to actually allocating the child widgets.
+After adding all the expand space, the container assumes it was allocated sufficient height to fit all of its content. At this time, the container must use the total horizontal sizes of each widget to request the height-for-width of each of its children and store the requests in a **Gnome::Gtk3::RequestedSize** array for any widgets that stack vertically (for tabular containers this can be generalized into the heights and widths of rows and columns). The vertical space must then again be distributed using `gtk_distribute_natural_allocation()` while this time considering the allocated height of the widget minus any vertical spacing that the container adds. Then vertical expand space should be added where appropriate and available and the container should go on to actually allocating the child widgets.
 
-See [`Gnome::Gtk3::Widget`’s geometry management section](https://developer.gnome.org/gtk3/3.24/GtkWidget.html#geometry-managementgeometry-management) to learn more about implementing height-for-width geometry management for widgets.
+See [**Gnome::Gtk3::Widget**’s geometry management section](https://developer.gnome.org/gtk3/3.24/GtkWidget.html#geometry-managementgeometry-management) to learn more about implementing height-for-width geometry management for widgets.
 
 Gnome::Gtk3::Container as Gnome::Gtk3::Buildable
 ------------------------------------------------
 
-The `Gnome::Gtk3::Container` implementation of the `Gnome::Gtk3::Buildable` interface supports a <packing> element for children, which can contain multiple <property> elements that specify child properties for the child.
+The **Gnome::Gtk3::Container** implementation of the **Gnome::Gtk3::Buildable** interface supports a <packing> element for children, which can contain multiple <property> elements that specify child properties for the child.
 
 Since 2.16, child properties can also be marked as translatable using the same “translatable”, “comments” and “context” attributes that are usedfor regular properties.
 
@@ -75,7 +75,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::Container implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 Synopsis
 ========
@@ -85,6 +85,7 @@ Declaration
 
     unit class Gnome::Gtk3::Container;
     also is Gnome::Gtk3::Widget;
+    also does Gnome::Gtk3::Buildable;
 
 Types
 =====
@@ -106,11 +107,11 @@ new
 
 ### multi method new ( N-GObject :$widget! )
 
-Create an object using a native object from elsewhere. See also `Gnome::GObject::Object`.
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
 ### multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also `Gnome::GObject::Object`.
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
 [gtk_container_] set_border_width
 ---------------------------------
@@ -162,7 +163,7 @@ Removes *widget* from *container*. *widget* must be inside *container*. Note tha
 
 Returns the container’s non-internal children. See `gtk_container_forall()` for details on what constitutes an "internal" child.
 
-Returns: (element-type **Gnome::Gtk3::Widget**) (transfer container): a newly-allocated list of the container’s non-internal children.
+Returns: a newly-allocated list of the container’s non-internal children. The type of the elements are native widgets.
 
     method gtk_container_get_children ( --> N-GList  )
 
@@ -332,7 +333,7 @@ Supported signals
 ### add
 
     method handler (
-      Gnome::Gtk3::Widget $widget,
+      N-GObject $widget,
       Gnome::GObject::Object :widget($container),
       *%user-options
     );
@@ -344,7 +345,7 @@ Supported signals
 ### remove
 
     method handler (
-      Gnome::Gtk3::Widget $widget,
+      N-GObject $widget,
       Gnome::GObject::Object :widget($container),
       *%user-options
     );
@@ -365,7 +366,7 @@ Supported signals
 ### set-focus-child
 
     method handler (
-      Gnome::Gtk3::Widget $widget,
+      N-GObject $widget,
       Gnome::GObject::Object :widget($container),
       *%user-options
     );

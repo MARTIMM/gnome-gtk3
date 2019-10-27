@@ -23,7 +23,7 @@ It is also possible to show a **Gnome::Gtk3::AboutDialog** like any other **Gnom
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 Synopsis
 ========
@@ -33,6 +33,7 @@ Declaration
 
     unit class Gnome::Gtk3::AboutDialog;
     also is Gnome::Gtk3::Dialog;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 =======

@@ -22,7 +22,7 @@ Gnome::Gtk3::MenuBar implements
 
   * Gnome::Atk::ImplementorIface
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 See Also
 --------
@@ -37,6 +37,7 @@ Declaration
 
     unit class Gnome::Gtk3::MenuBar;
     also is Gnome::Gtk3::MenuShell;
+    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

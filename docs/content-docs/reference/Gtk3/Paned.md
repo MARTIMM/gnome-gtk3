@@ -35,9 +35,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::Paned implements
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * [Gnome::Gtk3::Orientable](Orientable.html)
 
@@ -49,6 +47,8 @@ Declaration
 
     unit class Gnome::Gtk3::Paned;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
 
 Example
 -------
