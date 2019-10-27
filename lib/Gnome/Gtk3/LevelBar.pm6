@@ -94,7 +94,7 @@ regardless of text direction.
 
 Gnome::Gtk3::LevelBar implements
 =item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =end comment
@@ -104,6 +104,8 @@ Gnome::Gtk3::LevelBar implements
 
   unit class Gnome::Gtk3::LevelBar;
   also is Gnome::Gtk3::Widget;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::Orientable;
 
 =head2 Example
 
@@ -119,12 +121,17 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Widget;
 
+use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Orientable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/INCLUDE
 # See /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::LevelBar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
+also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -230,15 +237,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_level_bar_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Orientable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkLevelBar');
   $s = callsame unless ?$s;

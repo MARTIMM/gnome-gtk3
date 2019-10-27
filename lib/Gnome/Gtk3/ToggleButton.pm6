@@ -36,7 +36,7 @@ B<Gnome::Gtk3::ToggleButton> has a single CSS node with name button. To differen
 
 =head2 Implemented Interfaces
 =comment item AtkImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
 
@@ -49,6 +49,7 @@ B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::CheckButton>, B<Gnome::Gtk3::CheckMenuIte
 
   unit class Gnome::Gtk3::ToggleButton;
   also is Gnome::Gtk3::Button;
+  also does Gnome::Gtk3::Buildable;
 
 =begin comment
 =head2 Example
@@ -80,11 +81,14 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Button;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktogglebutton.h
 # https://developer.gnome.org/gtk3/stable/GtkToggleButton.html
 unit class Gnome::Gtk3::ToggleButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Button;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -146,6 +150,9 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  # only after creating the widget, the gtype is known
+  self.set-class-info('GtkToggleButton');
 }
 
 #-------------------------------------------------------------------------------
@@ -154,18 +161,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_toggle_button_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::Actionable Gnome::Gtk3::Activatable
-      >
-    );
-  }
-
+  self.set-class-name-of-sub('GtkToggleButton');
   $s = callsame unless ?$s;
 
   $s;

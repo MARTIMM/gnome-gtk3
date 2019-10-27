@@ -35,8 +35,8 @@ If a context menu is opened, the window node will appear as a subnode of the mai
 
 Gnome::Gtk3::TextView implements
 
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Scrollable
 
 =head2 See Also
@@ -48,6 +48,7 @@ B<Gnome::Gtk3::TextBuffer>, B<Gnome::Gtk3::TextIter>
 
   unit class Gnome::Gtk3::TextView;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -62,11 +63,14 @@ use Gnome::N::NativeLib;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Container;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktextview.h
 # https://developer.gnome.org/gtk3/stable/GtkTextView.html
 unit class Gnome::Gtk3::TextView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -205,15 +209,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_text_view_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Scrollable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkTextView');
   $s = callsame unless ?$s;

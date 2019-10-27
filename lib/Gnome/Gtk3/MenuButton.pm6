@@ -91,8 +91,8 @@ part of the menu offscreen, it is “pushed in”.
 B<Gnome::Gtk3::MenuButton> has a single CSS node with name button. To differentiate it from a plain B<Gnome::Gtk3::Button>, it gets the .popup style class.
 
 =head2 Known implementations
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
 
@@ -101,6 +101,7 @@ B<Gnome::Gtk3::MenuButton> has a single CSS node with name button. To differenti
 
   unit class Gnome::Gtk3::MenuButton;
   also is Gnome::Gtk3::ToggleButton;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -114,12 +115,15 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::ToggleButton;
 use Gnome::Gtk3::Enums;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::ToggleButton;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 #my Bool $signals-added = False;
@@ -185,17 +189,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_menu_button_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::Actionable Gnome::Gtk3::Activatable
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMenuButton');
   $s = callsame unless ?$s;

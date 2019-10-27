@@ -194,7 +194,7 @@ the  I<activate-link> signal and the C<gtk_label_get_current_uri()> function.
 
 Gnome::Gtk3::Label implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 
 =head1 Synopsis
@@ -202,6 +202,7 @@ Gnome::Gtk3::Label implements
 
   unit class Gnome::Gtk3::Label;
   also is Gnome::Gtk3::Misc;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -213,11 +214,14 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Misc;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklabel.h
 # https://developer.gnome.org/gtk3/stable/GtkLabel.html
 unit class Gnome::Gtk3::Label:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Misc;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -297,16 +301,11 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
 
-  try { $s = &::($native-sub); }
+  try { $s = &::($native-sub); };
   try { $s = &::("gtk_label_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
-  ) unless $s;
-
-  self.set-class-name-of-sub('GtkLabel');
+  self.set-class-name-of-sub('GtkLabel') if  ?$s;
   $s = callsame unless ?$s;
 
   $s

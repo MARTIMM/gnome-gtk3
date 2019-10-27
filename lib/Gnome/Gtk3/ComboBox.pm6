@@ -47,8 +47,7 @@ A B<Gnome::Gtk3::ComboBox> with an entry has a single CSS node with name combobo
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ComboBox implements
-=comment item Gnome::AtkImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
 =item Gnome::Gtk3::CellLayout
 =item Gnome::Gtk3::CellEditable
 
@@ -61,6 +60,7 @@ B<Gnome::Gtk3::ComboBoxText>, B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::CellRend
 
   unit class Gnome::Gtk3::ComboBox;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -74,11 +74,14 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ComboBox:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -142,17 +145,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_combo_box_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::CellLayout Gnome::Gtk3::CellEditable
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkComboBox');
   $s = callsame unless ?$s;

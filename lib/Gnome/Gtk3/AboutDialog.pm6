@@ -27,14 +27,15 @@ Note that GTK+ sets a default title of `_("About %s")` on the dialog window (whe
 It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome::Gtk3::Dialog>, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
 
 =head2 Implemented Interfaces
-=item Gnome::Gtk3::Buildable
-=comment item AtkImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
+=comment item Gnome::Atk::ImplementorIface
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::AboutDialog;
   also is Gnome::Gtk3::Dialog;
+  also does Gnome::Gtk3::Buildable;
 
 =head1 Example
 
@@ -59,11 +60,14 @@ use Gnome::N::NativeLib;
 #use Gnome::GObject::Object;
 use Gnome::Gtk3::Dialog;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkaboutdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
 unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -175,6 +179,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
 #note "ad $native-sub: ", $s;
   self.set-class-name-of-sub('GtkAboutDialog');

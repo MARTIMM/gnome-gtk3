@@ -14,7 +14,7 @@ A row in a Gnome::Gtk3::ListBox.
 
 Gnome::Gtk3::ListBoxRow implements
 =item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 
 =head2 See Also
@@ -26,6 +26,7 @@ C<Gnome::Gtk3::ListBox>
 
   unit class Gnome::Gtk3::ListBoxRow;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -56,11 +57,14 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ListBoxRow:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -113,15 +117,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_list_box_row_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Actionable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('ListBoxRow');
   $s = callsame unless ?$s;

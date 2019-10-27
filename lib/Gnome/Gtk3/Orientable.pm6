@@ -23,9 +23,7 @@ Gnome::Gtk3::Orientable is implemented by Gnome::Gtk3::AppChooserWidget, Gnome::
 =head1 Synopsis
 =head2 Declaration
 
-  unit class Gnome::Gtk3::Orientable;
-  also is Gnome::GObject::Interface;
-
+  unit role Gnome::Gtk3::Orientable;
 
 =head2 Example
 
@@ -39,21 +37,21 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-use Gnome::GObject::Interface;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkorientable.h
 # https://developer.gnome.org/gtk3/stable/gtk3-Orientable.html
-unit class Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
-also is Gnome::GObject::Interface;
+unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =end pod
 
+#TM:1:new():interfacing
+# interfaces are not instantiated
+submethod BUILD ( *%options ) { }
 #`{{
-#Interfaces are not instantiated
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
@@ -74,7 +72,6 @@ submethod BUILD ( *%options ) {
   # only after creating the widget, the gtype is known
   self.set-class-info('GtkOrientable');
 }
-}}
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
@@ -88,6 +85,21 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s = callsame unless ?$s;
 
   $s;
+}
+}}
+
+#-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
+# Hook for modules using this interface. Same principle as _fallback but
+# does not need callsame. Also this method must be usable without
+# an instated object
+method _orientable_interface ( Str $native-sub --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_orientable_$native-sub"); }
+
+  $s
 }
 
 #-------------------------------------------------------------------------------

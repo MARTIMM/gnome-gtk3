@@ -62,8 +62,8 @@ regardless of text direction.
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Paned implements
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
+=comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 
@@ -72,6 +72,8 @@ Gnome::Gtk3::Paned implements
 
   unit class Gnome::Gtk3::Paned;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::Orientable;
 
 =head2 Example
 
@@ -91,11 +93,16 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Container;
 
+use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Orientable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkpaned.h
 # https://developer.gnome.org/gtk3/stable/GtkPaned.html
 unit class Gnome::Gtk3::Paned:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -161,15 +168,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_paned_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Orientable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkPaned');
   $s = callsame unless ?$s;

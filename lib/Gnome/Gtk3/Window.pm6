@@ -48,14 +48,15 @@ B<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes 
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Window implements
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Window;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -78,11 +79,14 @@ use Gnome::Gdk3::Window;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Bin;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkwindow.h
 # https://developer.gnome.org/gtk3/stable/GtkWindow.html
 unit class Gnome::Gtk3::Window:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -206,12 +210,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_window_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkWindow');
   $s = callsame unless ?$s;

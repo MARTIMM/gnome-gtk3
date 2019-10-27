@@ -21,8 +21,7 @@ B<Gnome::Gtk3::StyleContext>, B<Gnome::Gtk3::CssProvider>
 =head1 Synopsis
 =head2 Declaration
 
-  unit class Gnome::Gtk3::StyleProvider;
-  also is Gnome::GObject::Interface;
+  unit role Gnome::Gtk3::StyleProvider;
 
 =commenthead2 Example
 
@@ -33,15 +32,9 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-use Gnome::GObject::Interface;
 
 #-------------------------------------------------------------------------------
-# /usr/include/gtk-3.0/gtk/INCLUDE
-# https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::StyleProvider:auth<github:MARTIMM>;
-also is Gnome::GObject::Interface;
-
-#-------------------------------------------------------------------------------
+# Note that enums must be kept outside roles
 =begin pod
 =head1 Types
 =end pod
@@ -92,44 +85,27 @@ enum GtkStyleProviderPriority is export (
 );
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
+# /usr/include/gtk-3.0/gtk/INCLUDE
+# https://developer.gnome.org/WWW
+unit role Gnome::Gtk3::StyleProvider:auth<github:MARTIMM>;
+
 #-------------------------------------------------------------------------------
-=begin pod
-=head1 Methods
-=end pod
-
-# interfaces are not instantiated -> no doc
-submethod BUILD ( *%options ) {
-
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::StyleProvider';
-
-  # process all named arguments which should be none ever
-  if %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the widget, the gtype is known
-  #self.set-class-info('GtkStyleProvider');
-}
+#TM:1:new():interfacing
+# interfaces are not instantiated
+submethod BUILD ( *%options ) { }
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
+# Hook for modules using this interface. Same principle as _fallback but
+# does not need callsame. Also this method must be usable without
+# an instated object
+method _style_provider_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
+  try { $s = &::($native-sub); };
   try { $s = &::("gtk_style_provider_$native-sub"); } unless ?$s;
 
-  self.set-class-name-of-sub('GtkStyleProvider');
-  $s = callsame unless ?$s;
-
-  $s;
+  $s
 }
 
 #`{{

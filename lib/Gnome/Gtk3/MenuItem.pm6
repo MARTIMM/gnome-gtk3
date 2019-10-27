@@ -63,7 +63,7 @@ the .left or .right style class.
 
 Gnome::Gtk3::MenuItem implements
 =item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Activatable
 =item Gnome::Gtk3::Actionable
 
@@ -76,6 +76,7 @@ B<Gnome::Gtk3::Bin>, B<Gnome::Gtk3::MenuShell>
 
   unit class Gnome::Gtk3::MenuItem;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -86,14 +87,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Bin;
+
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuItem:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -180,15 +183,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_menu_item_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Activatable Gnome::Gtk3::Actionable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   $s = callsame unless ?$s;
 
