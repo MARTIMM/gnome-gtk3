@@ -28,7 +28,7 @@ There is already a bit of history for these packages. It started off building th
   * The package was designed with the usage of glade interface designer in mind. So to build the interface by hand like in the examples and tutorial, is not always necessary. Feeding a saved design from the glade program to modules in **Gnome::Gtk3::Glade** is preferable when building larger user interfaces. Also it was therefore not necessary to implement every method to build a gui which made the handwork somewhat lighter. Lately, this is shifting towards almost fully implementing every class because a generator was made to help me out. The generator creates a Perl6 module from the c-sources of some widget. The only thing left for me was to iron the generated module to get it working.
   * No fancy stuff like tapping into channels to run signal handlers.
   * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
-  * Not all signals are supported yet but will be installed in time. There is, for example, a *parent-set* signal which is emitted when a new parent has been set on a widget.
+  * In principle, all kinds of signals or events are possible to handle now but some signals will provide native objects to the handler which are not yet possible to wrap into a perl6 object because it is not implemented yet.
   * It is possible to create threads where longer runs can be done without crippling the user interface responses and also show the results from there in the gui.
 
 ### Cons
@@ -75,6 +75,8 @@ Notes on how things are set up.
 
 Before any code can be run we must install the packages we want to use. It is assumed that **Perl6** (See [Perl6 Site](https://perl6.org/downloads/)) and the **GTK+** libraries (See [Gtk Site](https://www.gtk.org/)) are already installed. The program `zef` is used to install the modules. Enter the following command on the command line to install the modules needed for this tutorial and any other dependencies will be installed too.
 
+**NOTE**: It is really important to install the latest version of Perl6 because some of the encountered bugs went away after upgrading. Also some tricks like variable argument lists to native functions were only possible after summer this year(2019).
+
 ```
 > zef install Gnome::Gtk3::Glade
 ```
@@ -87,8 +89,8 @@ Before any code can be run we must install the packages we want to use. It is as
 
 ## Attribution
 * First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
-* The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again.
-* The builders of the GTK+ library and the documentation have helped me a lot to see how things work, (although not all is yet clear). Their source code is also very helpful in the way that I could write a program to generate Perl6 source code from it. After that, only some fiddling a bit to get the modules to load, and a bit more to adjust some of the subroutines. Also, many images used in their documentation is reused here in the reference guides.
+* The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again. Also the people replying to questions on several mailing-lists were a great help.
+* The builders of the GTK+ library and the documentation have helped me a lot too to see how things work, (although not all is yet clear). Their source code is also very helpful in the way that I could write a program to generate Perl6 source code from it. After that, only some fiddling a bit to get the modules to load, and a bit more to adjust some of the subroutines. Also, many images used in their documentation is reused here in the reference guides.
 
 ## Author
 Name: **Marcel Timmerman**
@@ -96,4 +98,4 @@ Name: **Marcel Timmerman**
 Github account name: **MARTIMM**
 
 # Warning
-The software as well as this website is far from finished as well as the documentation is not yet available for all modules in the packages.
+The software, as well as this website, is far from finished. The documentation in the references might need some ironing too.

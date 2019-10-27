@@ -44,7 +44,7 @@ Since: 3.4
 Gnome::Gtk3::ColorChooserWidget implements
 
 =item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 =item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
@@ -59,6 +59,9 @@ B<Gnome::Gtk3::ColorChooserDialog>
 
   unit class Gnome::Gtk3::ColorChooserWidget;
   also is Gnome::Gtk3::Box;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::Orientable;
+  also does Gnome::Gtk3::ColorChooser;
 
 =comment head2 Example
 
@@ -71,11 +74,18 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Box;
 
+use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Orientable;
+use Gnome::Gtk3::ColorChooser;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ColorChooserWidget:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
+also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::Orientable;
+also does Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
 #my Bool $signals-added = False;
@@ -135,17 +145,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_color_chooser_widget_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::Orientable Gnome::Gtk3::ColorChooser
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._orientable_interface($native-sub) unless ?$s;
+  $s = self._color_chooser_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkColorChooserWidget');
   $s = callsame unless ?$s;

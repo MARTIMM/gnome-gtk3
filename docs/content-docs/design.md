@@ -43,11 +43,22 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   $button.gtk_widget_set_tooltip_text('When pressed, program will start');
   ```
 
+* Classes can use methods from their interfaces. E.g. All widgets like **Gnome::Gtk3::Button** use the **Gnome::Gtk3::Buildable** interface.
+  ```
+  my Str $button-name = $button.gtk_buildable_get_name();
+  ```
+
 * The names are sometimes long and prefixed with words which are also used in the class path name. Therefore, those names can be shortened by removing those prefixes. An example method defined in **Gnome::Gtk3::Button** class is `gtk_button_get_label()`. This can be shortened to `get_label()`.
   ```
   my Str $button-label = $button.get_label;
   ```
-  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.
+  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.  Note that there is still a chance that a different method is found than the one you had in mind. The subs `gtk_widget_get_name()` and `gtk_buildable_get_name()` have the same short version n.l. `get_name()`. So it is important to know what the search path is as follows;
+    * search in the current class
+    * search in their interfaces
+    * search in parent class
+    * search in parent class interfaces
+    * etc.
+  So it follows that the `gtk_buildable_get_name()` have a higher priority than `gtk_widget_get_name()`.
 
 * Names can not be shortened too much. E.g. `gtk_button_new()` and `gtk_label_new()` yield the name *new* which is a perl method from class **Mu**. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes, but for now, at least one underscore ('\_') must be left in the name.
 

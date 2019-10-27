@@ -44,7 +44,7 @@ grab and receive all key presses.
 Gnome::Gtk3::MenuShell implements
 
 =item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 
 =head1 Synopsis
@@ -52,6 +52,7 @@ Gnome::Gtk3::MenuShell implements
 
   unit class Gnome::Gtk3::MenuShell;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -64,12 +65,15 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuShell:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -130,12 +134,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_menu_shell_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMenuShell');
   $s = callsame unless ?$s;

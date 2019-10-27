@@ -65,6 +65,8 @@ Declaration
 
     unit class Gnome::Gtk3::LevelBar;
     also is Gnome::Gtk3::Widget;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
 
 Example
 -------

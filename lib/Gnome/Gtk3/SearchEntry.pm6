@@ -46,8 +46,8 @@ Since: 3.6
 
 Gnome::Gtk3::SearchEntry implements
 
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Editable
 =item Gnome::Gtk3::CellEditable
 
@@ -56,6 +56,7 @@ Gnome::Gtk3::SearchEntry implements
 
   unit class Gnome::Gtk3::SearchEntry;
   also is Gnome::Gtk3::Entry;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -69,11 +70,14 @@ use Gnome::N::NativeLib;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Entry;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtksearchentry.h
 # https://developer.gnome.org/gtk3/stable/GtkSearchEntry.html
 unit class Gnome::Gtk3::SearchEntry:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Entry;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -142,15 +146,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_search_entry_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Editable Gnome::Gtk3::CellEditable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkSearchEntry');
   $s = callsame unless ?$s;

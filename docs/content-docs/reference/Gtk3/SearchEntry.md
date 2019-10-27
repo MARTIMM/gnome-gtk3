@@ -27,9 +27,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::SearchEntry implements
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Editable
 
@@ -43,6 +41,7 @@ Declaration
 
     unit class Gnome::Gtk3::SearchEntry;
     also is Gnome::Gtk3::Entry;
+    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

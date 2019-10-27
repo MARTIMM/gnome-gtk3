@@ -49,7 +49,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::Entry implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Editable
 
@@ -68,6 +68,7 @@ Declaration
 
     unit class Gnome::Gtk3::Entry;
     also is Gnome::Gtk3::Widget;
+    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

@@ -35,7 +35,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::FileFilter implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 See Also
 --------
@@ -49,6 +49,7 @@ Declaration
 -----------
 
     unit class Gnome::Gtk3::FileFilter;
+    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

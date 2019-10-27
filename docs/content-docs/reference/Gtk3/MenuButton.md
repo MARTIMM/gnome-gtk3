@@ -84,9 +84,7 @@ Css Nodes
 Known implementations
 ---------------------
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Actionable
 
@@ -100,6 +98,7 @@ Declaration
 
     unit class Gnome::Gtk3::MenuButton;
     also is Gnome::Gtk3::ToggleButton;
+    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

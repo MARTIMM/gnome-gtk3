@@ -36,7 +36,7 @@ B<Gnome::Gtk3::Grid> uses a single CSS node with name grid.
 
 Gnome::Gtk3::Grid implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head1 Synopsis
@@ -44,6 +44,7 @@ Gnome::Gtk3::Grid implements
 
   unit class Gnome::Gtk3::Grid;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -54,14 +55,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Container;
+
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklabel.h
 # https://developer.gnome.org/gtk3/stable/GtkGrid.html
 unit class Gnome::Gtk3::Grid:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -118,15 +121,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_grid_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Orientable
-    >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkGrid');
   $s = callsame unless ?$s;

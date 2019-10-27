@@ -24,8 +24,7 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::Gtk3::StyleProvider;
-    also is Gnome::GObject::Interface;
+    unit role Gnome::Gtk3::StyleProvider;
 
 commenthead2
 ============
@@ -47,7 +46,4 @@ enum GtkStyleProviderPriority
   * GTK_STYLE_PROVIDER_PRIORITY_APPLICATION(600): A priority that can be used when adding a #GtkStyleProvider for application-specific style information.
 
   * GTK_STYLE_PROVIDER_PRIORITY_USER(800): The priority used for the style information from `~/.gtk-3.0.css`. You should not use priorities higher than this, to give the user the last word.
-
-Methods
-=======
 

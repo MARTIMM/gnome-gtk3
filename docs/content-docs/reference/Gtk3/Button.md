@@ -24,7 +24,7 @@ Button-like widgets like **Gnome::Gtk3::ToggleButton**, **Gnome::Gtk3::MenuButto
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Actionable
 
@@ -38,6 +38,7 @@ Declaration
 
     unit class Gnome::Gtk3::Button;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------
@@ -57,6 +58,10 @@ Create a new plain object.
 Creates a new button object with a label
 
     multi method new ( Str :$label! )
+
+Creates a new button object with a mnemonic
+
+    multi method new ( Str :$mnemonic! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 

@@ -29,7 +29,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::TextTagTable implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 Synopsis
 ========
@@ -39,6 +39,7 @@ Declaration
 
     unit class Gnome::Gtk3::TextTagTable;
     also is Gnome::GObject::Object;
+    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

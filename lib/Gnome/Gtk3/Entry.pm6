@@ -89,7 +89,7 @@ just a single handle for the text cursor, it gets the style class
 
 Gnome::Gtk3::Entry implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Editable
 =item Gnome::Gtk3::CellEditable
 
@@ -102,6 +102,7 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
 
   unit class Gnome::Gtk3::Entry;
   also is Gnome::Gtk3::Widget;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -116,11 +117,14 @@ use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Image;
 use Gnome::Gtk3::Widget;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Entry:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -214,17 +218,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_entry_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::Editable Gnome::Gtk3::CellEditable
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkEntry');
   $s = callsame unless ?$s;

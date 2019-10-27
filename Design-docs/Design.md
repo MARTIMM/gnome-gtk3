@@ -118,6 +118,44 @@ method _interface ( $native-sub is copy --> Callable ) {
   $s;
 }
 ```
+## Definitions of interfaces and class inheritance
+
+### Interfaces
+
+**Interfaces** define a common contract. Such as an interface called IAnimal, where all animals share functions such as Eat(), Move(), Attack() etc. While all of them share the same functions, all or most of them have a different way (implementation) of achieving it. **Interfaces** are for *'can do'* or *'can be treated as'* type of relationships. In Raku this is called a role.
+
+### Classes
+**Abstract** ( as well as **concrete** ) classes are for *'is a'* kind of relationship. **Abstract or concrete classes** define a common implementation and optionally common contracts. For example a simple Calculator could qualify as an abstract class which implements all the basic logical and bitwise operators and then gets extended by ScientificCalculator, GraphicalCalculator and so on.
+
+Look at these examples:
+
+class Bird **is an** Animal **can do** Flight;
+class Plane **is a** Vehicle **can do** Flight, **can be treated as** AccountableAsset;
+class Mosquito **is an** Animal **can do** Flight;
+class Horse **is an** Animal;
+class RaceHorse **is a** Horse **can be treated as** AccountableAsset;
+class Pegasus **is a** Horse **can do** Flight;
+
+Bird, Mosquito and Horse are Animals. They are related. They inherit common methods from Animal like eat(), metabolize() and reproduce(). Maybe they override these methods, adding a little extra to them, but they take advantage of the default behavior implemented in Animal like metabolizeGlucose().
+
+Plane is not related to Bird, Mosquito or Horse.
+
+Flight is implemented by dissimilar, unrelated classes, like Bird and Plane.
+
+AccountableAsset is also implemented by dissimilar, unrelated classes, like Plane and RaceHorse.
+
+Horse doesn't implement Flight.
+
+As you can see classes (abstract or concrete) helps you build a hierarchies, letting you inhering code from the upper levels to the lower levels of the hierarchy. In theory the lower you are in the hierarchy, the more specialized your behavior is, but you don't have to worry about a lot of things that are already taken care of.
+
+Interfaces, in the other hand, create no hierarchy, but they can help homogenize certain behaviors across hierarchies so you can abstract them from the hierarchy in certain contexts.
+
+For example you can have a program sum the value of a group of AccountableAssets regardless of their being RaceHorses or Planes.
+
+
+
+
+
 
 # variable argument lists
 This is work of Elizabeth (lizmat)
@@ -163,10 +201,10 @@ title GTK Class hierary
 
   * Gtk3::FileFilter
 
- * Gdk3::Screen
- * Gdk3::Window
- * Gdk3::Display
- * Gdk3::Device
+ * Screen
+ * Window
+ * Display
+ * Device
 
  * Gtk3::Builder
  * Gtk3::TextBuffer
@@ -249,79 +287,107 @@ class Gtk3::Main
 
 ```plantuml
 scale 0.7
-title Dependency details of some of the packages and classes therein
+title Dependency details for signal processing
 
 
-package Gtk3 {
-  class Gtk3::Builder
-
-  'Gtk3::Builder .. dep1
+package Gnome::Gtk3 {
+  class Builder
 }
 
-package Gdk3 {
-  class Gdk3::Events
+package Gnome::Gdk3 {
+  class Events
 
   class GdkEvent << (S, #dfdfff) Struct >>
 }
 
-package GObject {
-  class GObject::Object {
+package Gnome::GObject {
+  class Object {
     N-GObject $!gobject
     GSignal $!g-signal
     Array $builders
   }
 
   'hide members
-  class GObject::Signal
+  class Signal
 }
 
 'class usage
-Gtk3::Builder "0..*" --o GObject::Object
-'Gtk3::Builder --|> GObject::Object
-'GObject::Object *-> GObject::Signal
-GObject::Signal <--* GObject::Object
-GObject::Signal o--> "GdkEvent"
-Gdk3::Events o-> GdkEvent
+Builder "0..*" --o Object
+'Builder --|> Object
+Object *-> Signal
+'Signal <--* Object
+Signal o--> "GdkEvent"
+Events o-> GdkEvent
 
 'package dependencies
-Gtk3 ...> Gdk3
-note right on link
-  Nomal use as some Gtk3
-  classes use Gdk3 classes
-end note
+'Gtk3 ...> Gdk3
+'note right on link
+'  Nomal use as some Gtk3
+'  classes use Gdk3 classes
+'end note
 
-Gtk3 ...> GObject
-note right on link
-  Normal use as many Gtk3
-  classes inherit from
-  Gobject::Object
-end note
+'Gtk3 ...> GObject
+'note right on link
+'  Normal use as many Gtk3
+'  classes inherit from
+'  Object
+'end note
 
-Gtk3 <... GObject
-note right on link
-  dependency is solved by
-  handing over the Builder
-  address to GObject
+'Gtk3 <... GObject
+'note right on link
+'  dependency is solved by
+'  handing over the Builder
+'  address to GObject
 
-  also dependency on Gtk3::Main
-  is solved by redefining a sub
-  to initialize GTK+
-end note
+'  also dependency on Main
+'  is solved by redefining a sub
+'  to initialize GTK+
+'end note
 
-Gdk3 ..> GObject
-note right on link
-  Normal use as some Gdk3
-  classes inherit from
-  Gobject::Object
-end note
+'Gdk3 ..> GObject
+'note right on link
+'  Normal use as some Gdk3
+'  classes inherit from
+'  Object
+'end note
 
-Gdk3 <.. GObject
-note right on link
-  dependency solved by
-  moving some sub
-  declarations to GObject
-  and Gtk3::Wiget
-end note
+'Gdk3 <.. GObject
+'note right on link
+'  dependency solved by
+'  moving some sub
+'  declarations to GObject
+'  and Wiget
+'end note
+```
+
+```plantuml
+scale 0.7
+title Dependency details for hierargy and interfaces
+
+package Gnome::Gtk3 {
+  class Button
+  class Bin
+  class Container
+  class Widget
+
+  class Buildable << (I, #efed80) Interface >>
+}
+
+package Gnome::GObject {
+  class InitiallyUnowned
+  class Object
+}
+
+Object <|-- InitiallyUnowned
+InitiallyUnowned <|-- Widget
+Widget <|-- Container
+Container <|-- Bin
+Bin <|-- Button
+
+Widget o-> Buildable
+Container o-> Buildable
+Button o-> Buildable
+
 ```
 
 <!-- Restjes ...

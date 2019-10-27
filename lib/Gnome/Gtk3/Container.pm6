@@ -143,13 +143,14 @@ An example of these properties in UI definitions:
 
 Gnome::Gtk3::Container implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Container;
   also is Gnome::Gtk3::Widget;
+  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -164,11 +165,14 @@ use Gnome::Glib::List;
 use Gnome::GObject::Type;
 use Gnome::Gtk3::Widget;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkcontainer.h
 # https://developer.gnome.org/gtk3/stable/GtkContainer.html
 unit class Gnome::Gtk3::Container:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -244,7 +248,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_container_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
+#`{{
   # search in the interface modules, name all interfaces which are implemented
   # for this module. not implemented ones are skipped.
   if !$s {
@@ -252,7 +258,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
       $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
     );
   }
-
+}}
   self.set-class-name-of-sub('GtkContainer');
   $s = callsame unless ?$s;
 

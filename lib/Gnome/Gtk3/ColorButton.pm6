@@ -27,7 +27,7 @@ it from a plain B<Gnome::Gtk3::Button>, it gets the .color style class.
 =head2 Implemented Interfaces
 
 =item Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
 =item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
@@ -41,6 +41,7 @@ B<Gnome::Gtk3::ColorSelectionDialog>, B<Gnome::Gtk3::FontButton>
 
   unit class Gnome::Gtk3::ColorButton;
   also is Gnome::Gtk3::Button;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -60,12 +61,15 @@ use Gnome::N::N-GObject;
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::Button;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ColorButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Button;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -140,17 +144,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_color_button_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Gtk3::Buildable Gnome::Gtk3::Actionable
-        Gnome::Gtk3::Activatable Gnome::Gtk3::ColorChooser
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkColorButton');
   $s = callsame unless ?$s;

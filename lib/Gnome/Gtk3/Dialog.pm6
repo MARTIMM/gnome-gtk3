@@ -123,7 +123,7 @@ An example of a dialog UI definition fragment:
 Gnome::Gtk3::Dialog implements
 
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =end comment
 
@@ -136,6 +136,7 @@ B<Gnome::Gtk3::VBox>, B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
 
   unit class Gnome::Gtk3::Dialog;
   also is Gnome::Gtk3::Window;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -155,8 +156,9 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Window;
+
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkdialog.h
@@ -164,6 +166,7 @@ use Gnome::Gtk3::Window;
 
 unit class Gnome::Gtk3::Dialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Window;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -314,14 +317,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_dialog_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable>
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkDialog');
   $s = callsame unless ?$s;

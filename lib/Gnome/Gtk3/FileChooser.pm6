@@ -105,17 +105,18 @@ I<Gnome::Gtk3::FileChooserDialog>, I<Gnome::Gtk3::FileChooserWidget>, I<Gnome::G
 =head1 Synopsis
 =head2 Declaration
 
-  unit class Gnome::Gtk3::FileChooser;
-  also is Gnome::GObject::Interface;
+  unit role Gnome::Gtk3::FileChooser;
 
-=head2 Example
+=head2 Example to show how to get filenames from the dialog
 
   my Gnome::Gtk3::FileChooserDialog $file-select-dialog .= new(
     :build-id($target-widget-name)
   );
 
-  my Gnome::Gtk3::FileChooser $fc .= new(:widget($file-select-dialog));
-  my Gnome::Glib::SList $fnames .= new(:gslist($fc.get-filenames));
+  # get-filenames() is from FileChooser class
+  my Gnome::Glib::SList $fnames .= new(
+    :gslist($file-select-dialog.get-filenames)
+  );
 
   my @files-to-process = ();
   for ^$fnames.g-slist-length -> $i {
@@ -138,17 +139,11 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Glib::Error;
 use Gnome::Glib::SList;
-#use Gnome::GObject::Object;
-use Gnome::GObject::Interface;
+use Gnome::GObject::Object;
 #use Gnome::Gtk3::FileFilter;
 
 #-------------------------------------------------------------------------------
-# See /usr/include/gtk-3.0/gtk/gtkfilechooser.h
-# https://developer.gnome.org/gtk3/stable/GtkFileChooser.html
-unit class Gnome::Gtk3::FileChooser:auth<github:MARTIMM>;
-also is Gnome::GObject::Interface;
-
-#-------------------------------------------------------------------------------
+# Note that enums must be kept outside roles
 =begin pod
 =head1 Types
 =end pod
@@ -216,59 +211,40 @@ enum GtkFileChooserError is export (
 );
 
 #-------------------------------------------------------------------------------
+# See /usr/include/gtk-3.0/gtk/gtkfilechooser.h
+# https://developer.gnome.org/gtk3/stable/GtkFileChooser.html
+unit role Gnome::Gtk3::FileChooser:auth<github:MARTIMM>;
+also is Gnome::GObject::Object;
+
+#-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-
-=head3 multi method new ( N-GObject :$widget! )
-
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
-
 =end pod
 
-#TM:1:new(:widget):
-
+#TM:1:new():interfacing
+# interfaces are not instantiated
 submethod BUILD ( *%options ) {
-
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w0< current-folder-changed file-activated selection-changed
          update-preview confirm-overwrite
        >,
   ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::FileChooser';
-
-  if ? %options<widget> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the widget, the gtype is known
-  self.set-class-info('GtkFileChooser');
 }
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
+# Hook for modules using this interface. Same principle as _fallback but
+# does not need callsame. Also this method must be usable without
+# an instated object
+method _file_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_file_chooser_$native-sub"); }
 
-  self.set-class-name-of-sub('GtkFileChooser');
-  $s = callsame unless ?$s;
-
-  $s;
+  $s
 }
 
 #-------------------------------------------------------------------------------

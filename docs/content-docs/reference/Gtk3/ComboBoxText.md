@@ -49,7 +49,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::ComboBoxText implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::CellLayout
 
@@ -68,6 +68,7 @@ Declaration
 
     unit class Gnome::Gtk3::ComboBoxText;
     also is Gnome::Gtk3::ComboBox;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

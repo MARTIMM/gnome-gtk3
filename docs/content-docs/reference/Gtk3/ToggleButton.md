@@ -24,7 +24,7 @@ Css Nodes
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Actionable
 
@@ -43,6 +43,7 @@ Declaration
 
     unit class Gnome::Gtk3::ToggleButton;
     also is Gnome::Gtk3::Button;
+    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

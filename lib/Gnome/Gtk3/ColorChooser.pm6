@@ -31,8 +31,7 @@ B<Gnome::Gtk3::ColorChooserDialog>, B<Gnome::Gtk3::ColorChooserWidget>, B<Gnome:
 =head1 Synopsis
 =head2 Declaration
 
-  unit class Gnome::Gtk3::ColorChooser;
-  also is Gnome::GObject::Interface;
+  unit role Gnome::Gtk3::ColorChooser;
 
 =head2 Example
 
@@ -50,7 +49,6 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-use Gnome::GObject::Interface;
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::Enums;
 
@@ -58,13 +56,11 @@ use Gnome::Gtk3::Enums;
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::ColorChooser:auth<github:MARTIMM>;
-also is Gnome::GObject::Interface;
+unit role Gnome::Gtk3::ColorChooser:auth<github:MARTIMM>;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-#`{{ No Build. only interface usage
 =begin pod
 =head1 Methods
 =head2 new
@@ -75,11 +71,13 @@ Create an object using a native object from elsewhere. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:red,:green,:blue,:alpha):
-#TM:1:new(:rgba(Gnome::Gdk3::RGBA)):
-#TM:1:new(:rgba(N-GdkRGBA)):
-#TM:2:new(:widget):ColorChooserDialog.t
+# TM:1:new(:red,:green,:blue,:alpha):
+# TM:1:new(:rgba(Gnome::Gdk3::RGBA)):
+# TM:1:new(:rgba(N-GdkRGBA)):
+# TM:2:new(:widget):ColorChooserDialog.t
 
+#TM:1:new():interfacing
+# interfaces are not instantiated
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -88,6 +86,7 @@ submethod BUILD ( *%options ) {
     :w1<color-activated>
   ) unless $signals-added;
 
+#`{{
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::ColorChooser';
 
@@ -143,9 +142,10 @@ submethod BUILD ( *%options ) {
 
   # only after creating the widget, the gtype is known
   self.set-class-info('GtkColorChooser');
-}
 }}
+}
 
+#`{{
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
@@ -158,6 +158,21 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s = callsame unless ?$s;
 
   $s;
+}
+}}
+
+#-------------------------------------------------------------------------------
+# no pod. user does not have to know about it.
+# Hook for modules using this interface. Same principle as _fallback but
+# does not need callsame. Also this method must be usable without
+# an instated object
+method _color_chooser_interface ( Str $native-sub --> Callable ) {
+
+  my Callable $s;
+  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_color_chooser_$native-sub"); }
+
+  $s
 }
 
 #-------------------------------------------------------------------------------

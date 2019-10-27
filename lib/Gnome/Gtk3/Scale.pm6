@@ -93,9 +93,9 @@ subnode with name value.
 
 Gnome::Gtk3::Scale implements
 
-=item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
-=item Gnome::Gtk3::Orientable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
+=item [Gnome::Gtk3::Orientable](Orientable.html)
 
 
 
@@ -105,6 +105,8 @@ Gnome::Gtk3::Scale implements
 
   unit class Gnome::Gtk3::Scale;
   also is Gnome::Gtk3::Range;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::Orientable;
 
 =head2 Example
 
@@ -142,11 +144,16 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Range;
 
+use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Orientable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkscale.h
 # https://developer.gnome.org/gtk3/stable/GtkScale.html
 unit class Gnome::Gtk3::Scale:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Range;
+also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -233,16 +240,10 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_scale_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._orientable_interface($native-sub) unless ?$s;
 
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, <
-      Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-      Gnome::Gtk3::Orientable
-    >
-  ) unless $s;
-
+  self.set-class-name-of-sub('GtkScale');
   $s = callsame unless ?$s;
 
   $s;

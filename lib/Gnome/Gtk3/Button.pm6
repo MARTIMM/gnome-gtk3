@@ -26,8 +26,8 @@ Other style classes that are commonly used with B<Gnome::Gtk3::Button> include .
 Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton>, B<Gnome::Gtk3::VolumeButton>, B<Gnome::Gtk3::LockButton>, B<Gnome::Gtk3::ColorButton>, B<Gnome::Gtk3::FontButton> or B<Gnome::Gtk3::FileChooserButton> use style classes such as .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate themselves from a plain B<Gnome::Gtk3::Button>.
 
 =head2 Implemented Interfaces
-=comment item AtkImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
 
@@ -36,6 +36,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
 
   unit class Gnome::Gtk3::Button;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -47,14 +48,16 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Bin;
+
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkbutton.h
 # https://developer.gnome.org/gtk3/stable/GtkButton.html
 unit class Gnome::Gtk3::Button:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -98,8 +101,6 @@ submethod BUILD ( *%options ) {
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w0<clicked>,
-    :notsupported<activate>,
-    :deprecated<enter leave pressed released>,
   ) unless $signals-added;
 
   # prevent creating wrong widgets
@@ -140,20 +141,10 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_button_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkButton');
   $s = callsame unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        AtkImplementorIface Gnome::Gtk3::Buildable Gnome::Gtk3::Actionable
-        Gnome::Gtk3::Activatable
-      >
-    );
-  }
 
   $s
 }
@@ -163,8 +154,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 gtk_button_new
 
-Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button,
-use C<gtk_container_add()>.
+Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button, use C<gtk_container_add()>.
 
 Returns: The newly created B<Gnome::Gtk3::Button> widget.
 

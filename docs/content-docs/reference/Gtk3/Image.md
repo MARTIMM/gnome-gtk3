@@ -63,7 +63,7 @@ Implemented Interfaces
 
 Gnome::Gtk3::Image implements
 
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
 Synopsis
 ========
@@ -73,6 +73,7 @@ Declaration
 
     unit class Gnome::Gtk3::Image;
     also is Gnome::Gtk3::Misc;
+    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

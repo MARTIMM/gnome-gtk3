@@ -97,7 +97,7 @@ B<Gnome::Gtk3::Image> has a single CSS node with the name image.
 
 Gnome::Gtk3::Image implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =comment head2 See Also
 =comment B<Gnome::Gdk3::Pixbuf>
@@ -107,6 +107,7 @@ Gnome::Gtk3::Image implements
 
   unit class Gnome::Gtk3::Image;
   also is Gnome::Gtk3::Misc;
+  also does Gnome::Gtk3::Buildable;
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -117,11 +118,14 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Misc;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkimage.h
 # https://developer.gnome.org/gtk3/stable/GtkImage.html
 unit class Gnome::Gtk3::Image:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Misc;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -226,12 +230,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_image_$native-sub"); } unless ?$s;
-
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  $s = self._query_interfaces(
-    $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
-  ) unless $s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkImage');
   $s = callsame unless ?$s;

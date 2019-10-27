@@ -42,9 +42,7 @@ When an unselected button in the group is clicked the clicked button receives th
 Implemented Interfaces
 ----------------------
 
-  * Gnome::Atk::ImplementorIface
-
-  * Gnome::Gtk3::Buildable
+  * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * Gnome::Gtk3::Actionable
 
@@ -63,6 +61,7 @@ Declaration
 
     unit class Gnome::Gtk3::RadioButton;
     also is Gnome::Gtk3::CheckButton;
+    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

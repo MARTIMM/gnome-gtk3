@@ -1,5 +1,4 @@
 use v6;
-#use lib '../perl6-gnome-native/lib';
 use NativeCall;
 use Test;
 

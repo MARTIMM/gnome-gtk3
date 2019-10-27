@@ -19,13 +19,14 @@ B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::HandleBox> or B<Gn
 
 =head2 Implemented Interfaces
 =comment item AtkImplementorIface
-=item Gnome::Gtk3::Buildable
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Bin;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -36,21 +37,23 @@ An example using a B<Gnome::Gtk3::Button> which is a direct descendant of B<Gnom
   say $w.get-name; # 'GtkLabel'
 
 =end pod
-#-------------------------------------------------------------------------------
 
+#-------------------------------------------------------------------------------
 use NativeCall;
 
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
 use Gnome::Gtk3::Container;
+
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkbin.h
 # https://developer.gnome.org/gtk3/stable/GtkBin.html
 unit class Gnome::Gtk3::Bin:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -96,6 +99,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_bin_$native-sub"); } unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
 #note "ad $native-sub: ", $s;
   self.set-class-name-of-sub('GtkBin');

@@ -21,8 +21,7 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::Gtk3::Orientable;
-    also is Gnome::GObject::Interface;
+    unit role Gnome::Gtk3::Orientable;
 
 Example
 -------

@@ -1,5 +1,5 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+use lib '../perl6-gnome-gobject/lib';
 #use lib '../perl6-gnome-glib/lib';
 #use lib '../perl6-gnome-native/lib';
 use Test;
@@ -15,35 +15,10 @@ use Gnome::Gtk3::Button;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my $dir = 't/ui';
-mkdir $dir unless $dir.IO ~~ :e;
-
 my Gnome::Glib::Quark $quark .= new(:empty);
 my Gnome::Glib::Error $e;
 
-#-------------------------------------------------------------------------------
-my Str $ui-file = "$dir/ui.xml";
-$ui-file.IO.spurt(Q:q:to/EOXML/);
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!-- Generated with glade 3.22.1 -->
-  <interface>
-    <requires lib="gtk+" version="3.20"/>
-    <object class="GtkWindow" id="window">
-      <property name="can_focus">False</property>
-      <child>
-        <placeholder/>
-      </child>
-      <child>
-        <object class="GtkButton" id="button">
-          <property name="label" translatable="yes">button</property>
-          <property name="visible">True</property>
-          <property name="can_focus">True</property>
-          <property name="receives_default">True</property>
-        </object>
-      </child>
-    </object>
-  </interface>
-  EOXML
+my Str $ui-file = 't/data/ui.glade';
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
@@ -88,19 +63,20 @@ subtest 'Add ui from file to builder', {
 subtest 'Test builder errors', {
   my Gnome::Gtk3::Builder $builder .= new(:empty);
 
-  throws-like
-    { $builder.add-gui(:filename('x.glade')); },
-    X::Gnome, "non existent file not added",
-    :message('Failed to open file “x.glade”: No such file or directory');
+#  throws-like
+#    { $builder.add-gui(:filename('x.glade')); },
+#    X::Gnome, "non existent file not added",
+#    :message('Failed to open file “x.glade”: No such file or directory');
+
 
   # Get the text glade text again and corrupt it by removing an element
   my Str $text = $ui-file.IO.slurp;
   $text ~~ s/ '<interface>' //;
 
-  throws-like
-    { $builder.add-gui(:string($text)); },
-    X::Gnome, "erronenous xml file added",
-    :message("<input>:4:40 Unhandled tag: <requires>");
+#  throws-like
+#    { $builder.add-gui(:string($text)); },
+#    X::Gnome, "erronenous xml file added",
+#    :message("<input>:4:40 Unhandled tag: <requires>");
 
   subtest "errorcode return from gtk_builder_add_from_file", {
     $e = $builder.add-from-file('x.glade');
@@ -131,20 +107,17 @@ subtest 'Test builder errors', {
 subtest 'Test items from ui', {
   my Gnome::Gtk3::Builder $builder .= new(:empty);
   $e = $builder.add-from-file($ui-file);
-  nok $e.error-is-valid, "ui file added ok";
+  nok $e.error-is-valid, ".add-from-file()";
 
-  isa-ok $builder.get-object('button'), N-GObject, 'returned a native object';
+  isa-ok $builder.get-object('my-button-1'), N-GObject, '.get-object()';
 
-  my Gnome::Gtk3::Button $b .= new(:build-id<button>);
-  is $b.get-label, 'button', 'button label ok';
-  is $b.get-name, 'GtkButton', 'button name ok';
-  is $b.get-border-width, 0, 'border width is 0';
+  my Gnome::Gtk3::Button $b .= new(:build-id<my-button-1>);
+  is $b.get-label, 'button text', '.get-label()';
+  is $b.gtk-widget-get-name, 'button-name-1', '.gtk-widget-get-name()';
+  is $b.get-border-width, 0, '.get-border-width()';
 
   #$b.gtk-widget-show;
 }
 
 #-------------------------------------------------------------------------------
 done-testing;
-
-unlink $ui-file;
-rmdir $dir;

@@ -63,8 +63,8 @@ from left to right. So C<first-child> will always select the leftmost child,
 regardless of text direction.
 
 =head2 Implemented Interfaces
-=comment item AtkImplementorIface
-=item Gnome::Gtk3::Buildable
+=comment item Gnome::Atk::ImplementorIface
+=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head2 See Also
@@ -76,6 +76,8 @@ B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::Grid>, B<Gnome::Gtk3::Layout>
 
   unit class Gnome::Gtk3::Box;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::Orientable;
 
 =head2 Example
 
@@ -86,9 +88,11 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-use Gnome::Gtk3::Orientable;
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Enums;
+
+use Gnome::Gtk3::Orientable;
+use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -96,6 +100,8 @@ use Gnome::Gtk3::Enums;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Box:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -160,16 +166,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
   my Callable $s;
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_box_$native-sub"); } unless ?$s;
-
-  # search in the interface modules
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, <
-        Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable
-        Gnome::Gtk3::Orientable
-      >
-    );
-  }
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkBox');
   $s = callsame unless ?$s;
