@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.19.0",
+  "version": "0.19.1",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gtk3"],
 
@@ -14,6 +14,7 @@
     "Gnome::Gtk3::Bin": "lib/Gnome/Gtk3/Bin.pm6",
     "Gnome::Gtk3::Border": "lib/Gnome/Gtk3/Border.pm6",
     "Gnome::Gtk3::Box": "lib/Gnome/Gtk3/Box.pm6",
+    "Gnome::Gtk3::Buildable": "lib/Gnome/Gtk3/Buildable.pm6",
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
     "Gnome::Gtk3::CheckButton": "lib/Gnome/Gtk3/CheckButton.pm6",
