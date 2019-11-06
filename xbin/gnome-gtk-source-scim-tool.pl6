@@ -719,6 +719,9 @@ sub substitute-in-template (
     =head2 Implemented Interfaces
 
     Gnome::LIBRARYMODULE implements
+    =comment item Gnome::Atk::ImplementorIface
+    =comment item [Gnome::Gtk3::Buildable](Buildable.html)
+    =comment item [Gnome::Gtk3::Orientable](Orientable.html)
 
     =head2 Known implementations
 
@@ -735,6 +738,8 @@ sub substitute-in-template (
 
       unit class Gnome::LIBRARYMODULE;
       ALSO-IS-LIBRARY-PARENT
+    =comment  also does Gnome::Gtk3::Buildable;
+    =comment  also does Gnome::Gtk3::Orientable;
 
     =comment head2 Example
 
@@ -747,11 +752,16 @@ sub substitute-in-template (
     use Gnome::N::N-GObject;
     USE-LIBRARY-PARENT
 
+    #use Gnome::Gtk3::Orientable;
+    #use Gnome::Gtk3::Buildable;
+
     #-------------------------------------------------------------------------------
     # /usr/include/gtk-3.0/gtk/INCLUDE
     # https://developer.gnome.org/WWW
     unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
     ALSO-IS-LIBRARY-PARENT
+    #also does Gnome::Gtk3::Buildable;
+    #also does Gnome::Gtk3::Orientable;
 
     EOTEMPLATE
 
@@ -836,16 +846,8 @@ sub substitute-in-template (
         my Callable $s;
         try { $s = &::($native-sub); }
         try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
-
-        #`{{ Uncomment in interface users
-        # search in the interface modules, name all interfaces which are implemented
-        # for this module. not implemented ones are skipped.
-        $s = self._query_interfaces(
-          $native-sub, <
-            Gnome::Gtk3::XXX
-          >
-        ) unless $s;
-        }}
+      #  $s = self._buildable_interface($native-sub) unless ?$s;
+      #  $s = self._orientable_interface($native-sub) unless ?$s;
 
         self.set-class-name-of-sub('LIBCLASSNAME');
         $s = callsame unless ?$s;
