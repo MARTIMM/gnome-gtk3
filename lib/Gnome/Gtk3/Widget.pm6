@@ -379,10 +379,10 @@ submethod BUILD ( *%options ) {
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w0<destroy show hide map unmap realize unrealize style-updated grab-focus delete-event show-help screen-changed>,
-    :w1<size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event query-tooltip accel-closures-changed can-activate-accel can-activate-accel>,
+    :w1<size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event accel-closures-changed can-activate-accel can-activate-accel>,
     :w2<selection-get drag-begin drag-motion>,
     :w3<proximity-in-event>,
-    :w4<drag-drop drag-data-get drag-data-received popup-menu>,
+    :w4<drag-drop drag-data-get drag-data-received popup-menu query-tooltip>,
   ) unless $signals-added;
 
   # prevent creating wrong widgets
