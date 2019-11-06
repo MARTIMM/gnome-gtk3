@@ -3,7 +3,7 @@
   "name": "Gnome::Gtk3",
   "version": "0.19.1",
   "authors": [ "Marcel Timmerman"],
-  "tags": [ "gnome", "gtk", "gtk3"],
+  "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
 
   "perl": "6.d",
   "license": "Artistic-2.0",
@@ -66,7 +66,10 @@
 
   "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk3.git",
 
-  "depends": [ "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3" ],
+  "depends": [
+    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3"
+  ],
+
   "test-depends": [ ],
   "build-depends": [ ],
   "resources": [ ]
