@@ -6,12 +6,9 @@ use v6;
 
 =head1 Gnome::Gtk3::TreeIter
 
-=comment ![](images/)
-
 =head1 Description
 
-A struct that specifies a TreeIter around a rectangular area
-that can be of different width on each side.
+A struct that specifies a TreeIter.
 
 =head1 Synopsis
 =head2 Declaration
@@ -150,7 +147,7 @@ This function is not intended for use in applications, because you can just copy
 
   Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-gboxed()));
 
-You must free this iter with C<gtk_tree_iter_free()>.
+You must free this iter with C<clear-tree-iter()>.
 
 Returns: a newly-allocated copy of I<iter>
 

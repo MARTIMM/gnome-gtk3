@@ -9,25 +9,25 @@ ok 1, 'loads ok';
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TreeIter $tv;
+my Gnome::Gtk3::TreeIter $ti;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my N-GtkTreeIter $ti .= new(
+  my N-GtkTreeIter $nti .= new(
     :stamp(1001), :userdata1(CArray[Str].new('a')),
     :userdata2(CArray[Str].new('b')), :userdata3(CArray[Str].new('c'))
   );
-  $tv .= new(:tree-iter($ti));
-  isa-ok $tv, Gnome::Gtk3::TreeIter, '.new(:tree-iter)';
+  $ti .= new(:tree-iter($nti));
+  isa-ok $ti, Gnome::Gtk3::TreeIter, '.new(:tree-iter)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  my Gnome::Gtk3::TreeIter $tv-copy .= new(:tree-iter($tv.gtk-tree-iter-copy));
-  is $tv-copy.get-native-gboxed.stamp, 1001, '.gtk-tree-iter-copy()';
-  ok $tv-copy.tree-iter-is-valid, '.tree-iter-is-valid()';
-  $tv-copy.clear-tree-iter;
-  nok $tv-copy.tree-iter-is-valid, '.clear-tree-iter()';
+  my Gnome::Gtk3::TreeIter $ti-copy .= new(:tree-iter($ti.gtk-tree-iter-copy));
+  is $ti-copy.get-native-gboxed.stamp, 1001, '.gtk-tree-iter-copy()';
+  ok $ti-copy.tree-iter-is-valid, '.tree-iter-is-valid()';
+  $ti-copy.clear-tree-iter;
+  nok $ti-copy.tree-iter-is-valid, '.clear-tree-iter()';
 }
 
 #`{{
