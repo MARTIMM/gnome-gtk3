@@ -118,7 +118,8 @@
 
   - title: "ColorChooserWidget"
     url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
-    doc: 0
+    doc: 1
+    test: 1
 
 - bar_title: "Lists"
   bar_menu:
@@ -144,6 +145,10 @@
 
   - title: '-'
 
+  - title: "TreeIter"
+    url: '/content-docs/reference/Gtk3/TreeIter.html'
+    doc: 1
+    test: 31
   - title: "TreeView"
     url: '/content-docs/reference/Gtk3/TreeView.html'
     doc: 1
