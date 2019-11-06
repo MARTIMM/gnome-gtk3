@@ -8,7 +8,18 @@ layout: default
 ##### A warning: the documentation here as well as the different packages are far from complete.
 
 # What's this all about
-This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Cairo, Pango, GObject and Glib. There are already a few interfaces made by other fellow programmers such as **GTK::Simple**, **GTK::Simpler** and **GTK::Scintilla**. Why then, would you ask, build another one? There were several reasons to do this, to sum up a few;
+This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, GObject and Glib. Cairo is separate from Gnome and is used in combination with Pango.
+```
+  GTK+ — Widget toolkit for graphical interfaces
+  GDK — Low-level abstraction for the windowing system
+  GLib — Data structures and utilities for C programs
+  GObject — C-based object and type system with signals and slots
+  Cairo — 2D, vector-based drawing for high-quality graphics
+  Pango — International text rendering with full Unicode support
+```
+
+
+  There are already a few interfaces made by other fellow programmers such as **GTK::Simple**, **GTK::Simpler** and **GTK::Scintilla**. Why then, would you ask, build another one? There were several reasons to do this, to sum up a few;
 * Learning to handle Perl6 native interface to C libraries and having example code with the packages mentioned above.
 * I wanted to follow the Gnome documents as closely as possible. This meant that the subroutine names are kept the same as those in the libs. Later on, I introduced some modifications to shorten these names where possible.
 * I wanted to have classes with methods instead of the subroutines.
