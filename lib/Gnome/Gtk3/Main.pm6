@@ -82,6 +82,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::Glib::Option;
 use Gnome::Gdk3::Events;
 
 #-------------------------------------------------------------------------------
@@ -344,35 +345,31 @@ sub gtk_init_with_args ( int32 $argc, CArray[Str] $argv, Str $parameter_string, 
   { * }
 }}
 
-#`{{
+#`{{}}
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_option_group:
 =begin pod
 =head2 gtk_get_option_group
 
-Returns a B<GOptionGroup> for the commandline arguments recognized
-by GTK+ and GDK.
+Returns a B<N-GOptionGroup> for the commandline arguments recognized by GTK+ and GDK.
 
-You should add this group to your B<GOptionContext>
-with C<g_option_context_add_group()>, if you are using
-C<g_option_context_parse()> to parse your commandline arguments.
+You should add this group to your B<N-GOptionContext> with C<g_option_context_add_group()>, if you are using C<g_option_context_parse()> to parse your commandline arguments.
 
-Returns: (transfer full): a B<GOptionGroup> for the commandline
-arguments recognized by GTK+
+Returns: a B<N-GOptionGroup> for the commandline arguments recognized by GTK+
 
 Since: 2.6
 
-  method gtk_get_option_group ( Int $open_default_display --> GOptionGroup  )
+  method gtk_get_option_group ( Int $open_default_display --> N-GOptionGroup  )
 
 =item Int $open_default_display; whether to open the default display when parsing the commandline arguments
 
 =end pod
 
 sub gtk_get_option_group ( int32 $open_default_display )
-  returns GOptionGroup
+  returns N-GOptionGroup
   is native(&gtk-lib)
   { * }
-}}
+
 
 #`{{
 #-------------------------------------------------------------------------------
