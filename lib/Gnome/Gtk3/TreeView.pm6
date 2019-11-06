@@ -224,7 +224,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_new:new(:empty)
+#TM:2:gtk_tree_view_new:new(:empty)
 =begin pod
 =head2 gtk_tree_view_new
 
