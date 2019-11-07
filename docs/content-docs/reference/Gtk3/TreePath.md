@@ -89,21 +89,6 @@ Since: 2.2
 
   * Int list of indices
 
-[gtk_tree_path_] new_from_indicesv
-----------------------------------
-
-Creates a new path with the given *indices* array of *length*.
-
-Returns: A newly created **Gnome::Gtk3::TreePath**-struct
-
-Since: 3.12
-
-    method gtk_tree_path_new_from_indicesv ( Int $indices, UInt $length --> N-GtkTreePath  )
-
-  * Int $indices; (array length=length): array of indices
-
-  * UInt $length; length of *indices* array
-
 [gtk_tree_path_] to_string
 --------------------------
 
@@ -131,9 +116,9 @@ Appends a new index to a path.
 
 As a result, the depth of the path is increased.
 
-    method gtk_tree_path_append_index ( Int $index_ )
+    method gtk_tree_path_append_index ( Int $index )
 
-  * Int $index_; the index
+  * Int $index; the index
 
 [gtk_tree_path_] prepend_index
 ------------------------------
@@ -142,9 +127,9 @@ Prepends a new index to a path.
 
 As a result, the depth of the path is increased.
 
-    method gtk_tree_path_prepend_index ( Int $index_ )
+    method gtk_tree_path_prepend_index ( Int $index )
 
-  * Int $index_; the index
+  * Int $index; the index
 
 [gtk_tree_path_] get_depth
 --------------------------
@@ -240,9 +225,7 @@ Moves *path* to point to the first child of the current path.
 [gtk_tree_path_] is_ancestor
 ----------------------------
 
-Returns `1` if *descendant* is a descendant of *path*.
-
-Returns: `1` if *descendant* is contained inside *path*
+Returns `1` if *$descendant* is a descendant of this path or contained inside.
 
     method gtk_tree_path_is_ancestor ( N-GtkTreePath $descendant --> Int  )
 
@@ -251,9 +234,7 @@ Returns: `1` if *descendant* is contained inside *path*
 [gtk_tree_path_] is_descendant
 ------------------------------
 
-Returns `1` if *path* is a descendant of *ancestor*.
-
-Returns: `1` if *ancestor* contains *path* somewhere below it
+Returns `1` if this path is a descendant of *$ancestor* or *$ancestor* contains this path somewhere below it
 
     method gtk_tree_path_is_descendant ( N-GtkTreePath $ancestor --> Int  )
 

@@ -4,7 +4,7 @@ Gnome::Gtk3::TreeIter
 Description
 ===========
 
-A struct that specifies a TreeIter around a rectangular area that can be of different width on each side.
+A struct that specifies a TreeIter.
 
 Synopsis
 ========
@@ -57,7 +57,7 @@ This function is not intended for use in applications, because you can just copy
 
     Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-gboxed()));
 
-You must free this iter with `gtk_tree_iter_free()`.
+You must free this iter with `clear-tree-iter()`.
 
 Returns: a newly-allocated copy of *iter*
 
