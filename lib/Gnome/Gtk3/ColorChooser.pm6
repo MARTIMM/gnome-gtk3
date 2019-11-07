@@ -341,14 +341,17 @@ Or it can be done like this
 =end pod
 
 sub gtk_color_chooser_add_palette (
-  N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
-  int32 $n_colors, Array $colors
+  N-GObject $chooser, Int $orientation, Int $colors_per_line,
+  Int $n_colors, Array $colors
 ) {
 
   my CArray[num64] $palette;
+  $palette .= new;
+
+note "Colors type: ", $colors.^name;
+
   given $colors {
-    when Array[N-GdkRGBA] {
-      $palette .= new;
+    when Array[Gnome::Gdk3::RGBA::N-GdkRGBA] {
       my Int $index = 0;
       for 0..$colors.elems - 1 -> $pos {
         my N-GdkRGBA $c = $colors.shift;
@@ -363,13 +366,19 @@ sub gtk_color_chooser_add_palette (
       if $colors.elems % 4 == 0 {
         my Int $index = 0;
         for @$colors -> $n {
-          $palette[$index++] = $n;
+          $palette[$index++] = $n.Num;
         }
       }
 
       else {
         die X::Gnome.new(:message('Not proper number of elements (e % 4 ≠ 0)'));
       }
+    }
+
+    default {
+      die X::Gnome.new(
+        :message('Not a supported type for $colors: ' ~ $colors.^name)
+      );
     }
   }
 
