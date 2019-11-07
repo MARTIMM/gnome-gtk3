@@ -47,6 +47,18 @@ subtest 'Manipulations', {
   is $tp3.gtk-tree-path-compare($tp2), 1, '.gtk-tree-path-compare() before';
   $tp2 .= new(:string('1:3:1'));
   is $tp3.gtk-tree-path-compare($tp2), -1, '.gtk-tree-path-compare() after';
+
+  $tp2.gtk-tree-path-next;
+  is $tp2.to-string, '1:3:2', '.gtk-tree-path-next()';
+  $tp2.gtk-tree-path-prev;
+  is $tp2.to-string, '1:3:1', '.gtk-tree-path-prev()';
+  $tp2.gtk-tree-path-up;
+  is $tp2.to-string, '1:3', '.gtk-tree-path-up()';
+  $tp2.gtk-tree-path-down;
+  is $tp2.to-string, '1:3:0', '.gtk-tree-path-down()';
+
+  ok $tp3.is-ancestor($tp2), '.is-ancestor()';
+  ok $tp2.is-descendant($tp3), '.is-descendant()';
 }
 
 #`{{

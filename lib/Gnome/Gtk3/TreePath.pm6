@@ -247,8 +247,9 @@ sub gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
   $f( |@indices, -1)
 }
 
+#`{{ To me the above function is good enough
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_new_from_indicesv:
+# TM:0:gtk_tree_path_new_from_indicesv:
 =begin pod
 =head2 [gtk_tree_path_] new_from_indicesv
 
@@ -258,7 +259,9 @@ Returns: A newly created B<Gnome::Gtk3::TreePath>-struct
 
 Since: 3.12
 
-  method gtk_tree_path_new_from_indicesv ( Int $indices, UInt $length --> N-GtkTreePath  )
+  method gtk_tree_path_new_from_indicesv (
+    Int $indices, UInt $length --> N-GtkTreePath
+  )
 
 =item Int $indices; (array length=length): array of indices
 =item UInt $length; length of I<indices> array
@@ -269,6 +272,7 @@ sub gtk_tree_path_new_from_indicesv ( int32 $indices, uint64 $length )
   returns N-GtkTreePath
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_to_string:
@@ -321,13 +325,13 @@ Appends a new index to a path.
 
 As a result, the depth of the path is increased.
 
-  method gtk_tree_path_append_index ( Int $index_ )
+  method gtk_tree_path_append_index ( Int $index )
 
-=item Int $index_; the index
+=item Int $index; the index
 
 =end pod
 
-sub gtk_tree_path_append_index ( N-GtkTreePath $path, int32 $index_ )
+sub gtk_tree_path_append_index ( N-GtkTreePath $path, int32 $index )
   is native(&gtk-lib)
   { * }
 
@@ -340,13 +344,13 @@ Prepends a new index to a path.
 
 As a result, the depth of the path is increased.
 
-  method gtk_tree_path_prepend_index ( Int $index_ )
+  method gtk_tree_path_prepend_index ( Int $index )
 
-=item Int $index_; the index
+=item Int $index; the index
 
 =end pod
 
-sub gtk_tree_path_prepend_index ( N-GtkTreePath $path, int32 $index_ )
+sub gtk_tree_path_prepend_index ( N-GtkTreePath $path, int32 $index )
   is native(&gtk-lib)
   { * }
 
@@ -499,7 +503,7 @@ sub gtk_tree_path_compare ( N-GtkTreePath $a, N-GtkTreePath $b )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_next:
+#TM:1:gtk_tree_path_next:
 =begin pod
 =head2 gtk_tree_path_next
 
@@ -514,7 +518,7 @@ sub gtk_tree_path_next ( N-GtkTreePath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_prev:
+#TM:1:gtk_tree_path_prev:
 =begin pod
 =head2 gtk_tree_path_prev
 
@@ -534,7 +538,7 @@ sub gtk_tree_path_prev ( N-GtkTreePath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_up:
+#TM:1:gtk_tree_path_up:
 =begin pod
 =head2 gtk_tree_path_up
 
@@ -552,7 +556,7 @@ sub gtk_tree_path_up ( N-GtkTreePath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_down:
+#TM:1:gtk_tree_path_down:
 =begin pod
 =head2 gtk_tree_path_down
 
@@ -567,13 +571,11 @@ sub gtk_tree_path_down ( N-GtkTreePath $path )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_is_ancestor:
+#TM:1:gtk_tree_path_is_ancestor:
 =begin pod
 =head2 [gtk_tree_path_] is_ancestor
 
-Returns C<1> if I<descendant> is a descendant of I<path>.
-
-Returns: C<1> if I<descendant> is contained inside I<path>
+Returns C<1> if I<$descendant> is a descendant of this path or contained inside.
 
   method gtk_tree_path_is_ancestor ( N-GtkTreePath $descendant --> Int  )
 
@@ -587,13 +589,11 @@ sub gtk_tree_path_is_ancestor ( N-GtkTreePath $path, N-GtkTreePath $descendant )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_path_is_descendant:
+#TM:1:gtk_tree_path_is_descendant:
 =begin pod
 =head2 [gtk_tree_path_] is_descendant
 
-Returns C<1> if I<path> is a descendant of I<ancestor>.
-
-Returns: C<1> if I<ancestor> contains I<path> somewhere below it
+Returns C<1> if this path is a descendant of I<$ancestor> or I<$ancestor> contains this path somewhere below it
 
   method gtk_tree_path_is_descendant ( N-GtkTreePath $ancestor --> Int  )
 
