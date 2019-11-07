@@ -92,27 +92,27 @@ submethod BUILD ( *%options ) {
   # process all named arguments
   if ? %options<tree-path> {
     self.native-gboxed(%options<tree-path>);
-    $!tree-path-is-valid = True if %options<tree-path> ~~ N-GtkTreePath;
+    $!tree-path-is-valid = self.get-native-gboxed.defined;
   }
 
   elsif ? %options<empty> {
     self.native-gboxed(gtk_tree_path_new());
-    $!tree-path-is-valid = True if %options<tree-path> ~~ N-GtkTreePath;
+    $!tree-path-is-valid = self.get-native-gboxed.defined;
   }
 
   elsif ? %options<first> {
     self.native-gboxed(gtk_tree_path_new_first());
-    $!tree-path-is-valid = True if %options<tree-path> ~~ N-GtkTreePath;
+    $!tree-path-is-valid = self.get-native-gboxed.defined;
   }
 
   elsif ? %options<indices> {
     self.native-gboxed(gtk_tree_path_new_from_indices(|%options<indices>));
-    $!tree-path-is-valid = True if %options<tree-path> ~~ N-GtkTreePath;
+    $!tree-path-is-valid = self.get-native-gboxed.defined;
   }
 
   elsif ? %options<string> {
     self.native-gboxed(gtk_tree_path_new_from_string(%options<string>));
-    $!tree-path-is-valid = True if %options<tree-path> ~~ N-GtkTreePath;
+    $!tree-path-is-valid = self.get-native-gboxed.defined;
   }
 
   elsif %options.keys.elems {
