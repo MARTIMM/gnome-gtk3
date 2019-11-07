@@ -58,7 +58,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
     * search in parent class
     * search in parent class interfaces
     * etc.
-  So it follows that the `gtk_buildable_get_name()` have a higher priority than `gtk_widget_get_name()`.
+  So it follows that the `gtk_buildable_get_name()` has a higher priority than `gtk_widget_get_name()`.
 
 * Names can not be shortened too much. E.g. `gtk_button_new()` and `gtk_label_new()` yield the name *new* which is a perl method from class **Mu**. I am thinking about chopping off the `g_`, `gdk_` and `gtk_` prefixes, but for now, at least one underscore ('\_') must be left in the name.
 
@@ -83,13 +83,13 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
     { * }
   ```
 
-  The `native-gobject()` method is defined in **Gnome::GObject::Object** to return the native object so we can use the gtk_grid_attach as follows.
+  The `get-native-gobject()` method is defined in **Gnome::GObject::Object** to return the native object so we can use the gtk_grid_attach as follows. For other types `get-native-gboxed()` is needed.
   ```
   my Gnome::Gtk3::Label $label .= new(:label('my label'));
   my Gnome::Gtk3::Grid $grid .= new;
-  $grid.gtk_grid_attach( $label.native-gobject(), 0, 0, 1, 1);
+  $grid.gtk_grid_attach( $label.get-native-gobject(), 0, 0, 1, 1);
   ```
-  However, the signatures of all subroutines are checked against the arguments provided, so it is possible to insert the native object hidden in the object when a perl6 object is noticed. So the example becomes more easy;
+  However, the signatures of all subroutines are checked against the arguments provided, so it is possible to insert the native object hidden in the object when a perl6 object is noticed. So the example becomes more simple;
   ```
   my Gnome::Gtk3::Grid $grid .= new(:empty);
   my Gnome::Gtk3::Label $label .= new(:label('server name'));
@@ -97,7 +97,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   ```
 
 * Sometimes I had to stray away from the native function names because of the way the sub must be defined in perl6. Causes can be;
-  * Returning different types of values. E.g. `g_slist_nth_data()` can return several types of data. This is solved using several subs linking to the same native sub (using `is symbol()`). In this library, the methods `g_slist_nth_data_str()` and `g_slist_nth_data_gobject()` are added. This can be extended for other native types like integer or float.
+  * Returning different types of values. E.g. `g_slist_nth_data()`, found in **Gnome::Glib**, can return several types of data. This is solved using several subs linking to the same native sub (using `is symbol()`). In this library, the methods `g_slist_nth_data_str()` and `g_slist_nth_data_gobject()` are added. This can be extended for other native types like integer or float.
 
     ```
     sub g_slist_nth_data_str ( N-GSList $list, uint32 $n --> Str )
@@ -111,17 +111,17 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
       { * }
     ```
   * Variable argument lists where I had to choose for the extra arguments. E.g. in the **Gnome::Gtk3::FileChooserDialog** the native sub `gtk_file_chooser_dialog_new()` has a way to extend it with a number of buttons on the dialog. I had to fix that list to a known number of arguments and renamed the sub `gtk_file_chooser_dialog_new_two_buttons()`.
+    **NOTE** This is now changed; It is possible to implement variable argument lists with the newest perl6 version (about July 2019). The above sub is therefore deprecated and `gtk_file_chooser_dialog_new()` can be used.
 
   * Callback handlers in many cases can have different signatures. When used in a subroutine definition the subroutine must be declared differently every time another type of handler is used. This happens mainly when connecting a signal where a callback handler is provided. To make things easier, the method `register-signal()` defined in **Gnome::GObject::Object**, is created for this purpose. At the moment only the most common types of signals can be processed.
+    **NOTE** Also this is changed; Now all types of signals can be processed, although some native objects provided to the signal handler might not yet possible to wrap in a perl6 class because the class is not implemented.
 
 ## Implementation details
-* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere.
-
-* A method `CALL-ME()` was implemented to get the native object with a minimum effort. For example a button `$b` defined by **Gnome;:Gtk3::Button** can return its native object just by adding parenthesis like so `$b()`. Later, a method was created, called `native-gobject()` to replace it, just to make code more readable. These methods are mostly used internally.
+* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere**. A method `get-native-gobject()` was implemented to get the native object with a minimum effort.
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. That process is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
 
-* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have a method `_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned example this is **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
+* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have methods like `_file_chooser_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned example this is **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
 
 * All classes deriving from **Gnome::GObject::Object** know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**.
 
@@ -137,8 +137,8 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
     last unless $nw.defined;
 
     # Instantiate a container object using the :widget argument
-    my Gnome::Gtk3::Bin $lb-row .= new(:widget($nw));
-    $lb-row.gtk-widget-destroy;
+    my Gnome::Gtk3::ListBoxRow $row .= new(:widget($nw));
+    $row.gtk-widget-destroy;
   }
   ```
 
@@ -165,7 +165,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
 
   An example from `Gnome::Gdk3::Window`;
   ```
-  sub gdk_window_get_position ( N-GObject $window --> List ) is inlinable {
+  sub gdk_window_get_position ( N-GObject $window --> List ) {
     _gdk_window_get_position( $window, my int32 $x, my int32 $y);
     ( $x, $y)
   }
@@ -181,7 +181,7 @@ I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** a
   my Int ( $x, $y) = $w.get-position;
   ```
 
-* There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here, to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_Not sure to implement this!_**
+* There is no Boolean type in C. All Booleans are integers and only 0 (False) or 1 (True) is used. Also here, to use Perl6 Booleans, the native sub must be wrapped into another sub to transform the variables. **_Not sure to implement this! because of its overhead of a 2nd call_**
 
 # Errors and crashes
 
@@ -323,7 +323,7 @@ GObject                                               Object
 │   │   │   ├── GtkToolbar
 │   │   │   ├── GtkToolItemGroup
 │   │   │   ├── GtkToolPalette
-│   │   │   ╰── GtkTreeView
+│   │   │   ╰── GtkTreeView                           TreeView
 │   │   ├─✗ GtkMisc                                   Misc (Keep hierarchy)
 │   │   │   ├── GtkLabel                              Label
 │   │   │   │   ╰── GtkAccelLabel
@@ -333,7 +333,7 @@ GObject                                               Object
 │   │   ├── GtkCellView
 │   │   ├── GtkDrawingArea
 │   │   ├── GtkEntry                                  Entry
-│   │   │   ├── GtkSearchEntry
+│   │   │   ├── GtkSearchEntry                        SearchEntry
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea
 │   │   ├── GtkRange                                  Range
@@ -463,9 +463,9 @@ GBoxed
 ├── GtkSelectionData
 ├── GtkRequisition
 ├── GtkBorder                                         Border
-├── GtkTreeIter
+├── GtkTreeIter                                       TreeIter
 ├── GtkCssSection                                     CssSection
-├── GtkTreePath
+├── GtkTreePath                                       TreePath
 ├── GtkIconSet
 ╰── GtkTargetList
 ```
