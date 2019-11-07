@@ -12,19 +12,25 @@ my Gnome::Gtk3::Main $m .= new;
 class AppSignalHandlers {
 
   # Handle 'Hello World' button click
-  method first-button-click ( :widget($b1), :other-button($b2) ) {
+  method first-button-click ( :widget($b1), :other-button($b2) --> Int ) {
     $b1.set-sensitive(False);
     $b2.set-sensitive(True);
+
+    1
   }
 
   # Handle 'Goodbye' button click
-  method second-button-click ( ) {
+  method second-button-click ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 
   # Handle window managers 'close app' button
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 

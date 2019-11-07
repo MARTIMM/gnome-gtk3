@@ -26,17 +26,24 @@ my Gnome::Gtk3::Main $m .= new;
 # A callback handler class to respond to the 'close application event'
 class AppSignalHandlers {
 
-  method menuitem_response ( :widget($menu-item) ) {
+  method menuitem_response ( :widget($menu-item) --> Int ) {
     note "Entry '$menu-item.get-label()' selected";
-    return 0;
+
+    1
   }
 
-  method menubutton-press ( :widget($menu-button), :handler-arg0($event) ) {
+  method menubutton-press (
+    :widget($menu-button), :handler-arg0($event) --> Int
+  ) {
     note "Button pressed";
+
+    1
   }
 
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 

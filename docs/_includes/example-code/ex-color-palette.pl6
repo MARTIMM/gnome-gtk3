@@ -2,22 +2,13 @@ use v6;
 
 my $t0 = now;
 
-#use lib '../perl6-gnome-gobject/lib';
-#use lib '../perl6-gnome-gdk3/lib';
-
-use NativeCall;
-
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::ColorChooserWidget;
-use Gnome::Gtk3::ColorChooser;
 use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
-
-#use Gnome::N::X;
-#X::Gnome.debug(:on);
 
 # Instantiate main module for UI control
 my Gnome::Gtk3::Main $m .= new;
@@ -25,12 +16,10 @@ my Gnome::Gtk3::Main $m .= new;
 # Class to handle signals
 class AppSignalHandlers {
 
-  #submethod BUILD ( ) { }
-
-
-  method exit-program ( ) {
-#    note "exit program";
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 
@@ -44,14 +33,12 @@ $top-window.gtk-container-add($grid);
 
 my Gnome::Gtk3::ColorChooserWidget $ccw .= new(:empty);
 $grid.gtk-grid-attach( $ccw, 0, 0, 4, 1);
-my Gnome::Gtk3::ColorChooser $cc1 .= new(:widget($ccw));
 
-my GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
+my N-GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
 my Gnome::Gtk3::ColorButton $cb .= new(:$color);
 $grid.gtk-grid-attach( $cb, 0, 3, 1, 1);
-my Gnome::Gtk3::ColorChooser $cc2 .= new(:widget($cb));
 
-my $palette1 = CArray[num64].new(
+my Array[Num] $palette1 .= new(
   .0e0, .0e0, .0e0, 1e0,
   .1e0, .0e0, .0e0, 1e0,
   .2e0, .0e0, .0e0, 1e0,
@@ -74,40 +61,40 @@ my $palette1 = CArray[num64].new(
   .0e0, .9e0, .0e0, 1e0,
 );
 
-my $palette2 = CArray[GdkRGBA].new;
-my Int $index = 0;
+my Array[N-GdkRGBA] $palette2 .= new;
 for .5, .6 ... 1.0 -> $rgb-gray {
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red($rgb-gray.Num), :green(0e0),
     :blue(0e0), :alpha(1e0)
   );
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red(0e0), :green($rgb-gray.Num),
     :blue(0e0), :alpha(1e0)
   );
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red(0e0), :green(0e0),
     :blue($rgb-gray.Num), :alpha(1e0)
   );
 
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red($rgb-gray.Num), :green($rgb-gray.Num),
     :blue(0e0), :alpha(1e0)
   );
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red(0e0), :green($rgb-gray.Num),
     :blue($rgb-gray.Num), :alpha(1e0)
   );
-  $palette2[$index++] = GdkRGBA.new(
+  $palette2.push: N-GdkRGBA.new(
     :red($rgb-gray.Num), :green(0e0),
     :blue($rgb-gray.Num), :alpha(1e0)
   );
 }
 
+use Gnome::N::X;
+Gnome::N::debug(:on);
 
-#note "P2: $palette[2].red()";
-$cc1.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette1);
-$cc2.add-palette( GTK_ORIENTATION_VERTICAL, 6, 36, $palette2);
+$ccw.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette1);
+$cb.add-palette( GTK_ORIENTATION_VERTICAL, 6, 36, $palette2);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
