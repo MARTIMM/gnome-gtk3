@@ -242,7 +242,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   # search this module first
   try { $s = &::($native-sub); }
-#  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._file_chooser_interface($native-sub) unless ?$s;
 

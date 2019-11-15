@@ -302,7 +302,7 @@ sub gtk_widget_path_to_string ( N-GtkWidgetPath $path )
 =begin pod
 =head2 gtk_widget_path_length
 
-Returns the number of widget C<GTypes> between the represented widget and its topmost container.
+Returns the number of widget B<GTypes> between the represented widget and its topmost container.
 
 Returns: the number of elements in the path
 
