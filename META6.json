@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
 
@@ -17,6 +17,8 @@
     "Gnome::Gtk3::Buildable": "lib/Gnome/Gtk3/Buildable.pm6",
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
+    "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
+    "Gnome::Gtk3::CellRendererText": "lib/Gnome/Gtk3/CellRendererText.pm6",
     "Gnome::Gtk3::CheckButton": "lib/Gnome/Gtk3/CheckButton.pm6",
     "Gnome::Gtk3::ColorButton": "lib/Gnome/Gtk3/ColorButton.pm6",
     "Gnome::Gtk3::ColorChooser": "lib/Gnome/Gtk3/ColorChooser.pm6",
@@ -38,6 +40,7 @@
     "Gnome::Gtk3::LevelBar": "lib/Gnome/Gtk3/LevelBar.pm6",
     "Gnome::Gtk3::ListBox": "lib/Gnome/Gtk3/ListBox.pm6",
     "Gnome::Gtk3::ListBoxRow": "lib/Gnome/Gtk3/ListBoxRow.pm6",
+    "Gnome::Gtk3::ListStore": "lib/Gnome/Gtk3/ListStore.pm6",
     "Gnome::Gtk3::Main": "lib/Gnome/Gtk3/Main.pm6",
     "Gnome::Gtk3::Menu": "lib/Gnome/Gtk3/Menu.pm6",
     "Gnome::Gtk3::MenuBar": "lib/Gnome/Gtk3/MenuBar.pm6",
@@ -60,8 +63,11 @@
     "Gnome::Gtk3::TextView": "lib/Gnome/Gtk3/TextView.pm6",
     "Gnome::Gtk3::ToggleButton": "lib/Gnome/Gtk3/ToggleButton.pm6",
     "Gnome::Gtk3::TreeIter": "lib/Gnome/Gtk3/TreeIter.pm6",
+    "Gnome::Gtk3::TreeModel": "lib/Gnome/Gtk3/TreeModel.pm6",
     "Gnome::Gtk3::TreePath": "lib/Gnome/Gtk3/TreePath.pm6",
+    "Gnome::Gtk3::TreeRowReference": "lib/Gnome/Gtk3/TreeRowReference.pm6",
     "Gnome::Gtk3::TreeView": "lib/Gnome/Gtk3/TreeView.pm6",
+    "Gnome::Gtk3::TreeViewColumn": "lib/Gnome/Gtk3/TreeViewColumn.pm6",
     "Gnome::Gtk3::Widget": "lib/Gnome/Gtk3/Widget.pm6",
     "Gnome::Gtk3::WidgetPath": "lib/Gnome/Gtk3/WidgetPath.pm6",
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
