@@ -81,9 +81,16 @@ Absence of codes means that a particular item is not tested.
 
 # Interface using modules
 
-The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
+The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_xyz_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
 
 ```
+unit class Gnome::Gtk3::FileChooserDialog;
+also is Gnome::Gtk3::Dialog;                # parent class
+also does Gnome::Gtk3::FileChooser;         # interface
+also does Gnome::Gtk3::Buildable;           # interface
+
+...
+
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
@@ -92,32 +99,82 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); }
   try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
 
-  # search in the interface module
-  if !$s {
-    my Gnome::Gtk3::FileChooser $fc .= new(:widget(self.native-gobject));
-    $s = $fc._interface($native-sub);
-  }
+  # then in interfaces
+  $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._file_chooser_interface($native-sub) unless ?$s;
 
-  # any other parent class
+  # stamp class mark on it
+  self.set-class-name-of-sub('GtkFileChooserDialog') if $s;
+
+  # then parent classes
   $s = callsame unless ?$s;
 
   # return result
   $s;
 }
 ```
-And the `_interface()` in **Gnome::GObject::Interface**;
+And the interface sub in e.g. Buildable;
 ```
-method _interface ( $native-sub is copy --> Callable ) {
+method _buildable_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+  try { $s = &::("$native-sub"); };
+  try { $s = &::("gtk_buildable_$native-sub"); } unless ?$s;
 
-  self.set-class-name-of-sub('GtkFileChooser');
-
-  $s;
+  $s
 }
 ```
+Interfaces can also define signals sometimes. Define this like so in the interfacing module;
+```
+method _file_chooser_add_signal_types ( Str $class-name ) {
+
+  self.add-signal-types( $class-name, :w2<row-changed row-inserted>);
+  callsame;
+}
+```
+and call this from the interface using class like so;
+```
+submethod BUILD ( *%options ) {
+
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
+  unless $signals-added {
+    $signals-added = self.add-signal-types( $?CLASS.^name,
+      :w0<columns-changed cursor-changed select-all unselect-all toggle-cursor-row select-cursor-parent start-interactive-search>,
+      :w1<select-cursor-row>,
+      :w2<row-activated test-expand-row test-collapse-row row-expanded row-collapsed move-cursor>,
+      :w3<expand-collapse-cursor-row>,
+    );
+
+    self._add-signal-types($?CLASS.^name);
+  }
+
+```
+All this is a bit awkward and messy and is all because of using a role for an interface module instead of using classes. It is not possible to define the same method in several roles, like e.g. `_interface()` because they clash when multiple roles are imported. Classes would behave better and then callsame could be used too. The problem then would be (surely for Buildable) that an interface class is inherited by multiple classes which are in the same inheritance tree;
+
+
+```plantuml
+scale 0.7
+title Dependency details for hierargy and interfaces
+
+class Button
+class Bin
+class Container
+class Widget
+
+class Buildable << (I, #efed80) Interface >>
+
+Buildable <|-- Widget
+Buildable <|-- Container
+Buildable <|-- Bin
+Buildable <|-- Button
+
+Widget <|-- Container
+Container <|-- Bin
+Bin <|-- Button
+
+```
+
 ## Definitions of interfaces and class inheritance
 
 ### Interfaces
@@ -153,8 +210,21 @@ Interfaces, in the other hand, create no hierarchy, but they can help homogenize
 For example you can have a program sum the value of a group of AccountableAssets regardless of their being RaceHorses or Planes.
 
 
-
-
+# creation subroutines
+A widget, e.g. Button is created using the BUILD Api of perl like so
+```
+my Gnome::Gtk3::Button $b .= new(:label('start'));
+```
+Under the hood it calls `gtk_button_new_with_label('start')`. These subs cannot be called directly if one wants to do that, because the subs are searched for and to do that the class must be instantiated.
+```
+my Gnome::Gtk3::Button $b .= new(:empty);
+$b .= new(:widget($b.new-with-label('start'));
+```
+This is messy. so to do it directly, these subs should be exported and then can be used like; (note that a full name must be used now!)
+```
+my Gnome::Gtk3::Button $b .= new(:widget(gtk_button_new_with_label('start')));
+```
+This is just an example to show it, better is to use `new(:$label)` of course.
 
 
 # variable argument lists
