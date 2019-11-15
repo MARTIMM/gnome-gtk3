@@ -791,14 +791,14 @@ if no type was found
 
 Since: 2.12
 
-  method gtk_builder_get_type_from_name ( Str $type_name --> int32  )
+  method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
 
 =item Str $type_name; type name to lookup
 
 =end pod
 
 sub gtk_builder_get_type_from_name ( N-GObject $builder, Str $type_name )
-  returns int32
+  returns uint64
   is native(&gtk-lib)
   { * }
 

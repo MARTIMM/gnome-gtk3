@@ -250,15 +250,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_container_$native-sub"); } unless ?$s;
   $s = self._buildable_interface($native-sub) unless ?$s;
 
-#`{{
-  # search in the interface modules, name all interfaces which are implemented
-  # for this module. not implemented ones are skipped.
-  if !$s {
-    $s = self._query_interfaces(
-      $native-sub, < Gnome::Atk::ImplementorIface Gnome::Gtk3::Buildable >
-    );
-  }
-}}
   self.set-class-name-of-sub('GtkContainer');
   $s = callsame unless ?$s;
 
@@ -615,13 +606,13 @@ children.
 
 Returns: a B<GType>.
 
-  method gtk_container_child_type ( --> int32  )
+  method gtk_container_child_type ( --> UInt  )
 
 
 =end pod
 
 sub gtk_container_child_type ( N-GObject $container )
-  returns int32
+  returns uint64
   is native(&gtk-lib)
   { * }
 
@@ -1446,13 +1437,13 @@ children.
 
 Returns: a C<GType>.
 
-  method gtk_container_child_type ( --> Int )
+  method gtk_container_child_type ( --> UInt )
 
 
 =end pod
 
 sub gtk_container_child_type ( N-GObject $container )
-  returns int32
+  returns uint64
   is native(&gtk-lib)
   { * }
 
