@@ -97,7 +97,7 @@ method _orientable_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_orientable_$native-sub"); }
+  try { $s = &::("gtk_orientable_$native-sub"); } unless ?$s;
 
   $s
 }
