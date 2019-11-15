@@ -355,8 +355,8 @@ GObject                                               Object
 │   ├── GtkAdjustment
 │   ├── GtkCellArea
 │   │   ╰── GtkCellAreaBox
-│   ├── GtkCellRenderer
-│   │   ├── GtkCellRendererText
+│   ├── GtkCellRenderer                               CellRenderer
+│   │   ├── GtkCellRendererText                       CellRendererText
 │   │   │   ├── GtkCellRendererAccel
 │   │   │   ├── GtkCellRendererCombo
 │   │   │   ╰── GtkCellRendererSpin
@@ -365,7 +365,7 @@ GObject                                               Object
 │   │   ├── GtkCellRendererSpinner
 │   │   ╰── GtkCellRendererToggle
 │   ├── GtkFileFilter                                 FileFilter
-│   ├── GtkTreeViewColumn
+│   ├── GtkTreeViewColumn                             TreeViewColumn
 │   ╰── GtkRecentFilter
 ├── GtkAccelGroup
 ├── GtkAccelMap
@@ -404,7 +404,7 @@ GObject                                               Object
 ├── GtkIMContext
 │   ├── GtkIMContextSimple
 │   ╰── GtkIMMulticontext
-├── GtkListStore
+├── GtkListStore                                      ListStore
 ├── GMountOperation
 │   ╰── GtkMountOperation
 ├── GEmblemedIcon
@@ -437,7 +437,7 @@ GObject                                               Object
 ├── GtkTooltip
 ╰── GtkPrintBackend
 GInterface
-├── GtkBuildable
+├── GtkBuildable                                      Buildable
 ├── GtkActionable
 ├─✗ GtkActivatable
 ├── GtkAppChooser
@@ -450,7 +450,7 @@ GInterface
 ├── GtkFileChooser                                    FileChooser
 ├── GtkFontChooser
 ├── GtkScrollable
-├── GtkTreeModel
+├── GtkTreeModel                                      TreeModel
 ├── GtkTreeDragSource
 ├── GtkTreeDragDest
 ├── GtkTreeSortable
@@ -466,6 +466,8 @@ GBoxed
 ├── GtkTreeIter                                       TreeIter
 ├── GtkCssSection                                     CssSection
 ├── GtkTreePath                                       TreePath
+├   GtkTreeRowReference                               TreeRowReference
+│                                                     Extracted from TreeModel
 ├── GtkIconSet
 ╰── GtkTargetList
 ```
