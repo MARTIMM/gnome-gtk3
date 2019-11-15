@@ -321,7 +321,7 @@ enum GtkWidgetHelpType is export (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 class GtkRequisition
+=head2 class N-GtkRequisition
 
 A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. See [B<Gnome::Gtk3::Widget>’s geometry management section][geometry-management] for more information.
 
@@ -331,7 +331,7 @@ A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. Se
 =end pod
 
 #TT:0:N-GtkRequisition:
-class GtkRequisition is export is repr('CStruct') {
+class N-GtkRequisition is export is repr('CStruct') {
   has int32 $.width;
   has int32 $.height;
 }
@@ -1312,30 +1312,30 @@ Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to supp
   method gtk_widget_get_preferred_size ( --> List )
 
 The returned list holds
-=item GtkRequisition $minimum_size;
-=item GtkRequisition $natural_size;
+=item N-GtkRequisition $minimum_size;
+=item N-GtkRequisition $natural_size;
 
 =end pod
 
 #TM:1:get-preferred-size
 method get-preferred-size ( --> List ) {
-  my GtkRequisition $minimum .= new;
-  my GtkRequisition $natural .= new;
+  my N-GtkRequisition $minimum .= new;
+  my N-GtkRequisition $natural .= new;
   _gtk_widget_get_preferred_size( self.get-native-gobject, $minimum, $natural);
   ( $minimum, $natural)
 }
 
 #TM:1:gtk_widget_get_preferred_size
 sub gtk_widget_get_preferred_size ( N-GObject $widget --> List ) {
-  my GtkRequisition $minimum .= new;
-  my GtkRequisition $natural .= new;
+  my N-GtkRequisition $minimum .= new;
+  my N-GtkRequisition $natural .= new;
   _gtk_widget_get_preferred_size( $widget, $minimum, $natural);
   ( $minimum, $natural)
 }
 
 sub _gtk_widget_get_preferred_size (
-  N-GObject $widget, GtkRequisition $minimum_size is rw,
-  GtkRequisition $natural_size is rw
+  N-GObject $widget, N-GtkRequisition $minimum_size is rw,
+  N-GtkRequisition $natural_size is rw
 ) is native(&gtk-lib)
   is symbol('gtk_widget_get_preferred_size')
   { * }
@@ -5262,14 +5262,14 @@ be freed with C<gtk_requisition_free()>.
 
 Since: 3.0
 
-  method gtk_requisition_new ( --> GtkRequisition  )
+  method gtk_requisition_new ( --> N-GtkRequisition  )
 
 =item G_GNUC_MALLO $C;
 
 =end pod
 
 sub gtk_requisition_new ( )
-  returns GtkRequisition
+  returns N-GtkRequisition
   is native(&gtk-lib)
   { * }
 
@@ -5281,14 +5281,14 @@ Copies a B<Gnome::Gtk3::Requisition>.
 
 Returns: a copy of I<requisition>
 
-  method gtk_requisition_copy ( GtkRequisition $requisition --> GtkRequisition  )
+  method gtk_requisition_copy ( N-GtkRequisition $requisition --> N-GtkRequisition  )
 
-=item GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
+=item N-GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
 
 =end pod
 
-sub gtk_requisition_copy ( GtkRequisition $requisition )
-  returns GtkRequisition
+sub gtk_requisition_copy ( N-GtkRequisition $requisition )
+  returns N-GtkRequisition
   is native(&gtk-lib)
   { * }
 }}
@@ -5300,13 +5300,13 @@ sub gtk_requisition_copy ( GtkRequisition $requisition )
 
 Frees a B<Gnome::Gtk3::Requisition>.
 
-  method gtk_requisition_free ( GtkRequisition $requisition )
+  method gtk_requisition_free ( N-GtkRequisition $requisition )
 
-=item GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
+=item N-GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
 
 =end pod
 
-sub gtk_requisition_free ( GtkRequisition $requisition )
+sub gtk_requisition_free ( N-GtkRequisition $requisition )
   is native(&gtk-lib)
   { * }
 }}
