@@ -134,6 +134,10 @@ div.inner {
   width: 95%;
 }
 
+em, strong {
+  color: #8e280e;
+}
+
 div.highlight, div.highlighter-rouge, pre {
   border-radius: $border-width;
 }
@@ -149,6 +153,11 @@ pre code {
   //line-height: 0.9;
   margin: 0;
   font-size: $code-font-size;
+}
+
+code {
+  background-color: transparent;
+  color: #8e280e;
 }
 
 div.release-notes {
