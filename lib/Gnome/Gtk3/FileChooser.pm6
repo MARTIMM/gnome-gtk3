@@ -223,14 +223,21 @@ my Bool $signals-added = False;
 =head1 Methods
 =end pod
 
+#-------------------------------------------------------------------------------
 #TM:1:new():interfacing
 # interfaces are not instantiated
-submethod BUILD ( *%options ) {
-  $signals-added = self.add-signal-types( $?CLASS.^name,
+submethod BUILD ( *%options ) { }
+
+#-------------------------------------------------------------------------------
+# setup signals from interface
+method _add-signal-types ( Str $class-name ) {
+
+  self.add-signal-types( $class-name,
     :w0< current-folder-changed file-activated selection-changed
          update-preview confirm-overwrite
        >,
-  ) unless $signals-added;
+  );
+  callsame;
 }
 
 #-------------------------------------------------------------------------------
@@ -242,7 +249,7 @@ method _file_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); }
+  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
 
   $s
 }

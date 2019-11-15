@@ -63,6 +63,23 @@ my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
+=end pod
+
+#-------------------------------------------------------------------------------
+#TM:1:new():interfacing
+# interfaces are not instantiated
+submethod BUILD ( *%options ) { }
+
+#-------------------------------------------------------------------------------
+# setup signals from interface
+method _add-signal-types ( Str $class-name ) {
+
+  self.add-signal-types( $class-name, :w1<color-activated>);
+  callsame;
+}
+
+#`{{
+=begin pod
 =head2 new
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
@@ -85,6 +102,7 @@ submethod BUILD ( *%options ) {
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w1<color-activated>
   ) unless $signals-added;
+}}
 
 #`{{
   # prevent creating wrong widgets
@@ -170,7 +188,7 @@ method _color_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_color_chooser_$native-sub"); }
+  try { $s = &::("gtk_color_chooser_$native-sub"); } unless ?$s;
 
   $s
 }
