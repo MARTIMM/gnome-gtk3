@@ -480,7 +480,9 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GError' if $type ~~ m/GError/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
-  $type = 'int32' if $type ~~ m/GType/;
+#  $type = 'int32' if $type ~~ m/GType/;
+  $type = 'uint64' if $type ~~ m/GType/;
+
   $type = 'int32' if $type ~~ m/GQuark/;
   $type = 'N-GObject' if is-n-gobject($type);
 
@@ -523,15 +525,16 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $p6-type ~~ s:s/ gboolean || gint || gint32 ||
                    gchar || gint8 || gshort || gint16 ||
                    glong || gint64 ||
-                   gssize || goffset
+                   gssize || goffset || int32 || int64 || int
                  /Int/;
 
   $p6-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
                    gushort || guint16 || gulong || guint64 ||
-                   gsize
+                   gsize || uint32 || uint64 || uint
                  /UInt/;
 
-  $p6-type ~~ s:s/ int /int32/;
+#  $p6-type ~~ s:s/ int /Int/;
+#  $p6-type ~~ s:s/ uint /UInt/;
   $p6-type ~~ s:s/ gpointer /Pointer/;
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
