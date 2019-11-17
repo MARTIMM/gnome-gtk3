@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
       :w3<expand-collapse-cursor-row>,
     );
 
-    self._add-signal-types($?CLASS.^name);
+    self._file_chooser_add_signal_types($?CLASS.^name);
   }
 
 ```
