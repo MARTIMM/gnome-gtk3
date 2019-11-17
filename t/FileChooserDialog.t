@@ -27,7 +27,7 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Interface', {
+subtest 'Interface FileChooser', {
   diag '.set-action / .get-action';
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
   is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
