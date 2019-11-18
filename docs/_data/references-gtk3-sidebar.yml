@@ -149,6 +149,10 @@
     url: '/content-docs/reference/Gtk3/TreeIter.html'
     doc: 1
     test: 31
+  - title: "TreeModel"
+    url: '/content-docs/reference/Gtk3/TreeModel.html'
+    doc: 1
+    test: 31
   - title: "TreePath"
     url: '/content-docs/reference/Gtk3/TreePath.html'
     doc: 1
@@ -157,6 +161,19 @@
     url: '/content-docs/reference/Gtk3/TreeView.html'
     doc: 1
     test: 1
+
+  - title: '-'
+
+  - title: "CellRenderer"
+    url: '/content-docs/reference/Gtk3/CellRenderer.html'
+    doc: 1
+    test: 1
+  - title: "CellRendererText"
+    url: '/content-docs/reference/Gtk3/CellRenderer.html'
+    doc: 1
+    test: 1
+
+
 
 - bar_title: "Menu Classes"
   bar_menu:
