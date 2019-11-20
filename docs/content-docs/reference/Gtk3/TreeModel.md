@@ -6,10 +6,7 @@ The tree interface used by **Gnome::Gtk3::TreeView**
 Description
 ===========
 
-    [B<Gnome::Gtk3::TreeView> drag-and-drop][gtk3-B<Gnome::Gtk3::TreeView>-drag-and-drop]
-    B<Gnome::Gtk3::TreeSortable>
-
-The **Gnome::Gtk3::TreeModel** interface defines a generic tree interface for use by the **Gnome::Gtk3::TreeView** widget. It is an abstract interface, and is designed to be usable with any appropriate data structure. The programmer just has to implement this interface on their own data type for it to be viewable by a **Gnome::Gtk3::TreeView** widget.
+The **Gnome::Gtk3::TreeModel** interface defines a generic tree interface for use by the **Gnome::Gtk3::TreeView** widget. It is an abstract interface, and is designed to be usable with any appropriate data structure.
 
 The model is represented as a hierarchical tree of strongly-typed, columned data. In other words, the model can be seen as a tree where every node has different values depending on which column is being queried. The type of data found in a column is determined by using the GType system (ie. **G_TYPE_INT**, **GTK_TYPE_BUTTON**, **G_TYPE_POINTER**, etc). The types are homogeneous per column across all nodes. It is important to note that this interface only provides a way of examining a model and observing changes. The implementation of each individual model decides how and if changes are made.
 
@@ -19,7 +16,7 @@ Models are accessed on a node/column level of granularity. One can query for the
 
 A path is essentially a potential node. It is a location on a model that may or may not actually correspond to a node on a specific model. The **Gnome::Gtk3::TreePath**-struct can be converted into either an array of unsigned integers or a string. The string form is a list of numbers separated by a colon. Each number refers to the offset at that level. Thus, the path `0` refers to the root node and the path `2:4` refers to the fifth child of the third node.
 
-By contrast, a **Gnome::Gtk3::TreeIter**-struct is a reference to a specific node on a specific model. It is a generic struct with an integer and three generic pointers. These are filled in by the model in a model-specific way. One can convert a path to an iterator by calling `gtk_tree_model_get_iter()`. These iterators are the primary way of accessing a model and are similar to the iterators used by **Gnome::Gtk3::TextBuffer**. They are generally statically allocated on the stack and only used for a short time. The model interface defines a set of operations using them for navigating the model.
+By contrast, a **Gnome::Gtk3::TreeIter** is a reference to a specific node on a specific model. It is a generic struct with an integer and three generic pointers. These are filled in by the model in a model-specific way. One can convert a path to an iterator by calling `gtk_tree_model_get_iter()`. These iterators are the primary way of accessing a model and are similar to the iterators used by **Gnome::Gtk3::TextBuffer**. They are generally statically allocated on the stack and only used for a short time. The model interface defines a set of operations using them for navigating the model.
 
 It is expected that models fill in the iterator with private data. For example, the **Gnome::Gtk3::ListStore** model, which is internally a simple linked list, stores a list node in one of the pointers. The **Gnome::Gtk3::TreeModelSort** stores an array and an offset in two of the pointers. Additionally, there is an integer field. This field is generally filled with a unique stamp per model. This stamp is for catching errors resulting from using invalid iterators with a model.
 
@@ -27,62 +24,38 @@ The lifecycle of an iterator can be a little confusing at first. Iterators are e
 
 To help show some common operation of a model, some examples are provided. The first example shows three ways of getting the iter at the location `3:2:5`. While the first method shown is easier, the second is much more common, as you often get paths from callbacks.
 
-## Acquiring a **Gnome::Gtk3::TreeIter**-struct
+Acquiring a Gnome::Gtk3::TreeIter
+---------------------------------
 
-|[<!-- language="C" --> // Three ways of getting the iter pointing to the location **Gnome::Gtk3::TreePath** *path; **Gnome::Gtk3::TreeIter** iter; **Gnome::Gtk3::TreeIter** parent_iter;
+    # A ListStore with two columns, an integer and a string
+    my Gnome::Gtk3::ListStore $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
 
-// get the iterator from a string gtk_tree_model_get_iter_from_string (model, &iter, "3:2:5");
+    # Filling a ListStore needs also an iterator. This on points to the end.
+    my Gnome::Gtk3::TreeIter $iter = $ls.gtk-list-store-append;
+    $ls.gtk-list-store-set( $iter, 0, 1001, 1, 'first entry');
+    $iter = $ls.gtk-list-store-append;
+    $ls.gtk-list-store-set( $iter, 0, 2002, 1, 'second entry');
 
-// get the iterator from a path path = gtk_tree_path_new_from_string ("3:2:5"); gtk_tree_model_get_iter (model, &iter, path); gtk_tree_path_free (path);
+    # Get the iterator from a string. A ListStore has simple paths.
+    $iter = $ls.get_iter_from_string("1");
 
-// walk the tree to find the iterator gtk_tree_model_iter_nth_child (model, &iter, NULL, 3); parent_iter = iter; gtk_tree_model_iter_nth_child (model, &iter, &parent_iter, 2); parent_iter = iter; gtk_tree_model_iter_nth_child (model, &iter, &parent_iter, 5); ]|
+    # Get the iterator from a path
+    my Gnome::Gtk3::TreePath $path .= new(:string('0'));
+    $iter = $ls.get-iter($path);
+    $path.clear-tree-path;
 
-This second example shows a quick way of iterating through a list and getting a string and an integer from each row. The `populate_model()` function used below is not shown, as it is specific to the **Gnome::Gtk3::ListStore**. For information on how to write such a function, see the **Gnome::Gtk3::ListStore** documentation.
+Known implementations
+---------------------
 
-## Reading data from a **Gnome::Gtk3::TreeModel**
+Gnome::Gtk3::TreeModel is implemented by
 
-|[<!-- language="C" --> enum { STRING_COLUMN, INT_COLUMN, N_COLUMNS };
+  * [Gnome::Gtk3::ListStore](ListStore.html)
 
-...
+  * Gnome::Gtk3::TreeModelFilter
 
-**Gnome::Gtk3::TreeModel** *list_store; **Gnome::Gtk3::TreeIter** iter; gboolean valid; gint row_count = 0;
+  * Gnome::Gtk3::TreeModelSort
 
-// make a new list_store list_store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_INT);
-
-// Fill the list store with data populate_model (list_store);
-
-// Get the first iter in the list, check it is valid and walk // through the list, reading each row.
-
-valid = gtk_tree_model_get_iter_first (list_store, &iter); while (valid) { gchar *str_data; gint int_data;
-
-    // Make sure you terminate calls to C<gtk_tree_model_get()> with a “-1” value
-    gtk_tree_model_get (list_store, &iter,
-                        STRING_COLUMN, &str_data,
-                        INT_COLUMN, &int_data,
-                        -1);
-
-    // Do something with the data
-    g_print ("Row C<d>: (C<s>,C<d>)\n",
-             row_count, str_data, int_data);
-    g_free (str_data);
-
-    valid = gtk_tree_model_iter_next (list_store,
-                                      &iter);
-    row_count++;
-
-    }
-
-]|
-
-The **Gnome::Gtk3::TreeModel** interface contains two methods for reference counting: `gtk_tree_model_ref_node()` and `gtk_tree_model_unref_node()`. These two methods are optional to implement. The reference counting is meant as a way for views to let models know when nodes are being displayed. **Gnome::Gtk3::TreeView** will take a reference on a node when it is visible, which means the node is either in the toplevel or expanded. Being displayed does not mean that the node is currently directly visible to the user in the viewport. Based on this reference counting scheme a caching model, for example, can decide whether or not to cache a node based on the reference count. A file-system based model would not want to keep the entire file hierarchy in memory, but just the folders that are currently expanded in every current view.
-
-When working with reference counting, the following rules must be taken into account:
-
-- Never take a reference on a node without owning a reference on its parent. This means that all parent nodes of a referenced node must be referenced as well.
-
-- Outstanding references on a deleted node are not released. This is not possible because the node has already been deleted by the time the row-deleted signal is received.
-
-- Models are not obligated to emit a signal on rows of which none of its siblings are referenced. To phrase this differently, signals are only required for levels in which nodes are referenced. For the root level however, signals must be emitted at all times (however the root level is always referenced when any view is attached).
+  * Gnome::Gtk3::TreeStore.
 
 See Also
 --------
@@ -280,7 +253,7 @@ Returns `1` if *$iter* has children, `0` otherwise.
 [gtk_tree_model_] iter_n_children
 ---------------------------------
 
-Returns the number of children that *iter* has. As a special case, if *iter* is not provided, then the number of toplevel nodes is returned.
+Returns the number of children that *iter* has. As a special case, if *iter* is undefined, then the number of toplevel nodes is returned.
 
     method gtk_tree_model_iter_n_children (
       Gnome::Gtk3::TreeIter $iter?
@@ -292,17 +265,16 @@ Returns the number of children that *iter* has. As a special case, if *iter* is 
 [gtk_tree_model_] iter_nth_child
 --------------------------------
 
-Sets *iter* to be the child of *parent*, using the given index.
+Returns an iterator to be the child of *$parent*, using the given index.
 
-The first index is 0. If *n* is too big, or *parent* has no children, *iter* is set to an invalid iterator and `0` is returned. *parent* will remain a valid node after this function has been called. As a special case, if *parent* is `Any`, then the *n*-th root node is set.
+The first index is 0. If *$n* is too big, or *$parent* has no children, the returned iterator is invalid. *$parent* will remain a valid node after this function has been called. As a special case, if *$parent* is undefined, then the iterator is set to the *$n*-th root node is set.
 
-Returns: `1`, if *parent* has an *n*-th child
+    method gtk_tree_model_iter_nth_child (
+      Gnome::Gtk3::TreeIter $parent, Int $n
+      --> Gnome::Gtk3::TreeIter
+    )
 
-    method gtk_tree_model_iter_nth_child ( N-GtkTreeIter $iter, N-GtkTreeIter $parent, Int $n --> Int  )
-
-  * N-GtkTreeIter $iter; (out): the **Gnome::Gtk3::TreeIter**-struct to set to the nth child
-
-  * N-GtkTreeIter $parent; (allow-none): the **Gnome::Gtk3::TreeIter**-struct to get the child from, or `Any`.
+  * Gnome::Gtk3::TreeIter $parent; the parent iterator to get the child from, or `Any`.
 
   * Int $n; the index of the desired child
 
