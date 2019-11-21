@@ -79,6 +79,32 @@ Absence of codes means that a particular item is not tested.
 | GList    |           |              | N-GList
 | GSList   |           |              | N-GSList
 
+# TODO list of things
+* Boxed values and objects must have the following implemented to prevent memory leaks;
+  * A boolean test to check if object is valid
+  * A clear function which calls some free function -> toggles the valid flag
+  * A `DESTROY()` submethod which calls the clear method or free func if object is still valid.
+* Study ref/unref of gtk objects.
+* Reverse testing procedure in `_fallback()` methods. This will make it possible to find functions in the modules first before some perl6 module is selected. E.g. in **Gnome::Gtk3::TreePath** a sub `gtk-tree-path-next()` is defined. When `.next()` is used it could find a method from perl if it was tested without the 'gtk_tree_path_' prefix first. It still can go wrong when it is to be found in a parent class.
+  ```
+  try { $s = &::("gtk_list_store_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  ```
+* Add a test to `_fallback()` so that the prefix 'gtk_' can be left of the sub name when used. So the above tests can become;
+  ```
+  try { $s = &::("gtk_list_store_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  ```
+  In other packages `gtk_` can be `g_` or `gdk_`.
+* Caching the sub address in Object must be more specific. There could be a sub name (short version) in more than one module. So the class name of the caller should be stored with it too. We can take the $!gtk-class-name-of-sub for it.
+* Make some of the routines in several packages the same
+  * .clear-object()
+  * .set-native-object()
+  * .get-native-object()
+  * .is-valid()
+* Use Method::Also to have several names for methods
+
 # Interface using modules
 
 The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_xyz_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
