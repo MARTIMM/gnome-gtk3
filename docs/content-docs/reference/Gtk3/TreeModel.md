@@ -8,7 +8,9 @@ Description
 
 The **Gnome::Gtk3::TreeModel** interface defines a generic tree interface for use by the **Gnome::Gtk3::TreeView** widget. It is an abstract interface, and is designed to be usable with any appropriate data structure.
 
-The model is represented as a hierarchical tree of strongly-typed, columned data. In other words, the model can be seen as a tree where every node has different values depending on which column is being queried. The type of data found in a column is determined by using the GType system (ie. **G_TYPE_INT**, **GTK_TYPE_BUTTON**, **G_TYPE_POINTER**, etc). The types are homogeneous per column across all nodes. It is important to note that this interface only provides a way of examining a model and observing changes. The implementation of each individual model decides how and if changes are made.
+The model is represented as a hierarchical tree of strongly-typed, columned data. In other words, the model can be seen as a tree where every node has different values depending on which column is being queried. The type of data found in a column is determined by using the GType system
+
+The types are homogeneous per column across all nodes. It is important to note that this interface only provides a way of examining a model and observing changes. The implementation of each individual model decides how and if changes are made.
 
 In order to make life simpler for programmers who do not need to write their own specialized model, two generic models are provided — the **Gnome::Gtk3::TreeStore** and the **Gnome::Gtk3::ListStore**. To use these, the developer simply pushes data into these models as necessary. These models provide the data structure as well as all appropriate tree interfaces. As a result, implementing drag and drop, sorting, and storing data is trivial. For the vast majority of trees and lists, these two models are sufficient.
 
@@ -103,16 +105,12 @@ Returns: the flags supported by this interface
 
 Returns the number of columns supported by *tree_model*.
 
-Returns: the number of columns
-
     method gtk_tree_model_get_n_columns ( --> Int  )
 
 [gtk_tree_model_] get_column_type
 ---------------------------------
 
 Returns the type of the column.
-
-Returns: the type of the column
 
     method gtk_tree_model_get_column_type ( Int $index_ --> int32  )
 

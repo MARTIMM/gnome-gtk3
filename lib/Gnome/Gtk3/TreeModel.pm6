@@ -20,7 +20,11 @@ programmer just has to implement this interface on their own data
 type for it to be viewable by a B<Gnome::Gtk3::TreeView> widget.
 =end comment
 
-The model is represented as a hierarchical tree of strongly-typed, columned data. In other words, the model can be seen as a tree where every node has different values depending on which column is being queried. The type of data found in a column is determined by using the GType system (ie. B<G_TYPE_INT>, B<GTK_TYPE_BUTTON>, B<G_TYPE_POINTER>, etc). The types are homogeneous per column across all nodes. It is important to note that this interface only provides a way of examining a model and observing changes. The implementation of each individual model decides how and if changes are made.
+The model is represented as a hierarchical tree of strongly-typed, columned data. In other words, the model can be seen as a tree where every node has different values depending on which column is being queried. The type of data found in a column is determined by using the GType system
+=begin comment
+ (ie. B<G_TYPE_INT>, B<GTK_TYPE_BUTTON>, B<G_TYPE_POINTER>, etc).
+=end comment
+The types are homogeneous per column across all nodes. It is important to note that this interface only provides a way of examining a model and observing changes. The implementation of each individual model decides how and if changes are made.
 
 In order to make life simpler for programmers who do not need to write their own specialized model, two generic models are provided — the B<Gnome::Gtk3::TreeStore> and the B<Gnome::Gtk3::ListStore>. To use these, the developer simply pushes data into these models as necessary. These models provide the data structure as well as all appropriate tree interfaces. As a result, implementing drag and drop, sorting, and storing data is trivial. For the vast majority of trees and lists, these two models are sufficient.
 
@@ -312,8 +316,8 @@ method _add_tree_model_signal_types ( Str $class-name ) {
 method _tree_model_interface ( $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_tree_model_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_tree_model_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s;
 }
@@ -345,8 +349,6 @@ sub gtk_tree_model_get_flags ( N-GObject $tree_model )
 
 Returns the number of columns supported by I<tree_model>.
 
-Returns: the number of columns
-
   method gtk_tree_model_get_n_columns ( --> Int  )
 
 
@@ -363,8 +365,6 @@ sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
 =head2 [gtk_tree_model_] get_column_type
 
 Returns the type of the column.
-
-Returns: the type of the column
 
   method gtk_tree_model_get_column_type ( Int $index_ --> int32  )
 
