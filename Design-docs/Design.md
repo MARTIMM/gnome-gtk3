@@ -103,7 +103,8 @@ Absence of codes means that a particular item is not tested.
   * .set-native-object()
   * .get-native-object()
   * .is-valid()
-* Use Method::Also to have several names for methods
+* Use Method::Also to have several names for methods. Later on, the other methods can be deprecated.
+* I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used in the examples and documentation instead of 0 or 1.
 
 # Interface using modules
 
