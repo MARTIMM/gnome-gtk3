@@ -161,6 +161,10 @@
     url: '/content-docs/reference/Gtk3/TreeView.html'
     doc: 1
     test: 1
+  - title: "TreeViewColumn"
+    url: '/content-docs/reference/Gtk3/TreeViewColumn.html'
+    doc: 1
+    test: 1
 
   - title: '-'
 
@@ -171,7 +175,7 @@
 
   - title: '-'
 
-- title: "CellRenderer"
+  - title: "CellRenderer"
     url: '/content-docs/reference/Gtk3/CellRenderer.html'
     doc: 1
     test: 1
