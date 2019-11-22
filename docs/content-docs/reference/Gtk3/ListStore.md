@@ -8,7 +8,7 @@ Description
 
 The **Gnome::Gtk3::ListStore** object is a list model for use with a **Gnome::Gtk3::TreeView** widget. It implements the **Gnome::Gtk3::TreeModel** interface, and consequentialy, can use all of the methods available there. It also implements the **Gnome::Gtk3::TreeSortable** interface so it can be sorted by the view. Finally, it also implements the tree [drag and drop](https://developer.gnome.org/gtk3/3.24/gtk3-GtkTreeView-drag-and-drop.html) interfaces.
 
-The **Gnome::Gtk3::ListStore** can accept most GObject types as a column type, though it can’t accept all custom types. Internally, it will keep a copy of data passed in (such as a string or a boxed pointer). Columns that accept **GObjects** are handled a little differently. The **Gnome::Gtk3::ListStore** will keep a reference to the object instead of copying the value. As a result, if the object is modified, it is up to the application writer to call `gtk_tree_model_row_changed()` to emit the *row_changed* signal. This most commonly affects lists with **Gnome::Gdk3::Pixbufs** stored.
+The **Gnome::Gtk3::ListStore** can accept most GObject types as a column type, though it can’t accept all custom types. Internally, it will keep a copy of data passed in (such as a string or a boxed pointer). Columns that accept **GObjects** are handled a little differently. The **Gnome::Gtk3::ListStore** will keep a reference to the object instead of copying the value. As a result, if the object is modified, it is up to the application writer to call `gtk_tree_model_row_changed()` to emit the *row-changed* signal. This most commonly affects lists with **Gnome::Gdk3::Pixbufs** stored.
 
 An example for creating a simple list store:
 
@@ -44,18 +44,42 @@ An example for creating a simple list store:
 Atomic Operations
 -----------------
 
-It is important to note that only the methods `gtk_list_store_insert_with_values()` and `gtk_list_store_insert_with_valuesv()` are atomic, in the sense that the row is being appended to the store and the values filled in in a single operation with regard to **Gnome::Gtk3::TreeModel** signaling. In contrast, using e.g. `gtk_list_store_append()` and then `gtk_list_store_set()` will first create a row, which triggers the *row-inserted* signal on **Gnome::Gtk3::ListStore**. The row, however, is still empty, and any signal handler connecting to *row-inserted* on this particular store should be prepared for the situation that the row might be empty. This is especially important if you are wrapping the **Gnome::Gtk3::ListStore** inside a **Gnome::Gtk3::TreeModelFilter** and are using a **Gnome::Gtk3::TreeModelFilterVisibleFunc**. Using any of the non-atomic operations to append rows to the **Gnome::Gtk3::ListStore** will cause the **Gnome::Gtk3::TreeModelFilterVisibleFunc** to be visited with an empty row first; the function must be prepared for that.
+It is important to note that only the method `gtk_list_store_insert_with_values()`
+
+is atomic, in the sense that the row is being appended to the store and the values filled in, in a single operation with regard to **Gnome::Gtk3::TreeModel** signaling. In contrast, using e.g. `gtk_list_store_append()` and then `gtk_list_store_set()` will first create a row, which triggers the *row-inserted* signal on **Gnome::Gtk3::ListStore**. The row, however, is still empty, and any signal handler connecting to *row-inserted* on this particular store should be prepared for the situation that the row might be empty. This is especially important if you are wrapping the **Gnome::Gtk3::ListStore** inside a **Gnome::Gtk3::TreeModelFilter** and are using a **Gnome::Gtk3::TreeModelFilterVisibleFunc**. Using any of the non-atomic operations to append rows to the **Gnome::Gtk3::ListStore** will cause the **Gnome::Gtk3::TreeModelFilterVisibleFunc** to be visited with an empty row first; the function must be prepared for that.
 
 **Gnome::Gtk3::ListStore** as **Gnome::Gtk3::Buildable**
 --------------------------------------------------------
 
 The **Gnome::Gtk3::ListStore** implementation of the **Gnome::Gtk3::Buildable** interface allows to specify the model columns with a <columns> element that may contain multiple <column> elements, each specifying one model column. The “type” attribute specifies the data type for the column.
 
-Additionally, it is possible to specify content for the list store in the UI definition, with the <data> element. It can contain multiple <row> elements, each specifying to content for one row of the list model. Inside a <row>, the <col> elements specify the content for individual cells.
+Additionally, it is possible to specify content for the list store in the UI definition, with the <data> element. It can contain multiple <row> elements, each specifying the content for one row of the list model. Inside a <row>, the <col> elements specify the content for individual cells.
 
 Note that it is probably more common to define your models in the code, and one might consider it a layering violation to specify the content of a list store in a UI definition, data, not presentation, and common wisdom is to separate the two, as far as possible.
 
-An example of a UI Definition fragment for a list store: |[<!-- language="C" --> <object class="**Gnome::Gtk3::ListStore**"> <columns> <column type="gchararray"/> <column type="gchararray"/> <column type="gint"/> </columns> <data> <row> <col id="0">John</col> <col id="1">Doe</col> <col id="2">25</col> </row> <row> <col id="0">Johan</col> <col id="1">Dahlin</col> <col id="2">50</col> </row> </data> </object> ]|
+An example of a UI Definition fragment for a list store:
+
+    <object class="GtkListStore">
+      <columns>
+        <column type="gchararray"/>
+        <column type="gchararray"/>
+        <column type="gint"/>
+      </columns>
+      <data>
+        <row>
+          <col id="0">John</col>
+          <col id="1">Doe</col>
+          <col id="2">25</col>
+        </row>
+        <row>
+          <col id="0">Johan</col>
+          <col id="1">Dahlin</col>
+          <col id="2">50</col>
+        </row>
+      </data>
+    </object>
+
+As the perl6 user can see above, the types are specific to the C implementation while below in the method descriptions type codes are used from **Gnome::GObject::Type** like G_TYPE_INT. So the above could be better generated by the Glade program.
 
 Implemented Interfaces
 ----------------------
@@ -133,8 +157,8 @@ This function is meant primarily for **GObjects** that inherit from **Gnome::Gtk
 
   * int32 $types; (array length=n_columns): An array length n of **GTypes**
 
-set-value
----------
+[gtk_list_store_] set_value
+---------------------------
 
 Sets the data in the cell specified by *iter* and *column*. The type of *value* must be convertible to the type of the column.
 
@@ -148,14 +172,14 @@ Sets the data in the cell specified by *iter* and *column*. The type of *value* 
 
   * Any $value; new value for the cell
 
-gtk-list-store-set
+gtk_list_store_set
 ------------------
 
 Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type `G_TYPE_STRING` to “Foo”, you would write `gtk_list_store_set( iter, 0, "Foo")`.
 
 The value will be referenced by the store if it is a `G_TYPE_OBJECT`, and it will be copied if it is a `G_TYPE_STRING` or `G_TYPE_BOXED`.
 
-    method gtk-list-store-set ( Gnome::Gtk3::TreeIter $iter, $col, $val, ... )
+    method gtk_list_store_set ( Gnome::Gtk3::TreeIter $iter, $col, $val, ... )
 
   * $iter; row iterator
 
@@ -208,12 +232,12 @@ Inserts a new row after *$sibling*. If *$sibling* is `Any`, then the row will be
 
   * Gnome::Gtk3::TreeIter $sibling; A valid **Gnome::Gtk3::TreeIter**, or `Any`
 
-insert-with-values
-------------------
+[gtk_list_store_] insert_with_values
+------------------------------------
 
 Creates a new row at *position*. *iter* will be changed to point to this new row. If *position* is -1, or larger than the number of rows in the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
-Calling `$list-store.insert-with-values( position, ...)` has the same effect as calling;
+Calling `$list-store.gtk_list_store_insert_with_values( position, ...)` has the same effect as calling;
 
     $iter = $list-store.gtk-list-store-insert($position);
     $list-store.gtk-list-store-set( $iter, ...);
@@ -222,7 +246,7 @@ with the difference that the former will only emit a *row-inserted* signal, whil
 
 Since: 2.6
 
-    method insert-with-values (
+    method gtk_list_store_insert_with_values (
       Int $position, Int $column, $value, ...
       --> Gnome::Gtk3::TreeIter
     )
