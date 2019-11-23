@@ -104,6 +104,7 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Glib::List;
+use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Buildable;
 #use Gnome::Atk::ImplementorIface;
@@ -155,6 +156,10 @@ Create a new plain object.
 
   multi method new ( Bool :empty! )
 
+Create a new tree view object using a model. This can be e.g. a B<Gnome::Gtk3::ListStore> or B<Gnome::Gtk3::TreeStore>.
+
+  multi method new ( Bool :model! )
+
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$widget! )
@@ -166,6 +171,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new(:empty):
+#TM:1:new(:model):
 #TM:0:new(:widget):
 #TM:0:new(:build-id):
 submethod BUILD ( *%options ) {
@@ -184,8 +190,15 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TreeView';
 
   # process all named arguments
-  if ? %options<empty> {
+  if %options<empty>:exists {
     self.native-gobject(gtk_tree_view_new());
+  }
+
+  # process all named arguments
+  elsif ? %options<model> {
+    my $model = %options<model>;
+    $model = $model.get-native-gobject if $model.^name ~~ m/'Gnome::Gtk3'/;
+    self.native-gobject(gtk_tree_view_new_with_model($model));
   }
 
   elsif ? %options<widget> || %options<build-id> {
@@ -209,8 +222,8 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_tree_view_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_tree_view_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
 #  $s = self._orientable_interface($native-sub) unless ?$s;
 #use Gnome::Atk::ImplementorIface;
@@ -230,8 +243,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 Creates a new B<Gnome::Gtk3::TreeView> widget.
 
-Returns: A newly created B<Gnome::Gtk3::TreeView> widget.
-
   method gtk_tree_view_new ( --> N-GObject  )
 
 =end pod
@@ -242,13 +253,11 @@ sub gtk_tree_view_new (  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_new_with_model:
+#TM:1:gtk_tree_view_new_with_model:new(:model)
 =begin pod
 =head2 [gtk_tree_view_] new_with_model
 
 Creates a new B<Gnome::Gtk3::TreeView> widget with the model initialized to I<model>.
-
-Returns: A newly created B<Gnome::Gtk3::TreeView> widget.
 
   method gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject  )
 
@@ -262,7 +271,7 @@ sub gtk_tree_view_new_with_model ( N-GObject $model )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_model:
+#TM:1:gtk_tree_view_get_model:
 =begin pod
 =head2 [gtk_tree_view_] get_model
 
@@ -283,7 +292,7 @@ sub gtk_tree_view_get_model ( N-GObject $tree_view )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_set_model:
+#TM:1:gtk_tree_view_set_model:
 =begin pod
 =head2 [gtk_tree_view_] set_model
 
@@ -301,6 +310,7 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_selection:
 =begin pod
@@ -308,10 +318,7 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
 
 Gets the B<Gnome::Gtk3::TreeSelection> associated with I<tree_view>.
 
-Returns: (transfer none): A B<Gnome::Gtk3::TreeSelection> object.
-
   method gtk_tree_view_get_selection ( --> N-GObject  )
-
 
 =end pod
 
@@ -319,18 +326,16 @@ sub gtk_tree_view_get_selection ( N-GObject $tree_view )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_headers_visible:
+#TM:1:gtk_tree_view_get_headers_visible:
 =begin pod
 =head2 [gtk_tree_view_] get_headers_visible
 
 Returns C<1> if the headers on the I<tree_view> are visible.
 
-Returns: Whether the headers are visible or not.
-
   method gtk_tree_view_get_headers_visible ( --> Int  )
-
 
 =end pod
 
@@ -340,7 +345,7 @@ sub gtk_tree_view_get_headers_visible ( N-GObject $tree_view )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_set_headers_visible:
+#TM:1:gtk_tree_view_set_headers_visible:
 =begin pod
 =head2 [gtk_tree_view_] set_headers_visible
 
@@ -361,8 +366,7 @@ sub gtk_tree_view_set_headers_visible ( N-GObject $tree_view, int32 $headers_vis
 =begin pod
 =head2 [gtk_tree_view_] columns_autosize
 
-Resizes all columns to their optimal width. Only works after the
-treeview has been realized.
+Resizes all columns to their optimal width. Only works after the treeview has been realized.
 
   method gtk_tree_view_columns_autosize ( )
 
@@ -374,18 +378,15 @@ sub gtk_tree_view_columns_autosize ( N-GObject $tree_view )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_headers_clickable:
+#TM:1:gtk_tree_view_get_headers_clickable:
 =begin pod
 =head2 [gtk_tree_view_] get_headers_clickable
 
-Returns whether all header columns are clickable.
-
-Returns: C<1> if all header columns are clickable, otherwise C<0>
+Returns C<1> if all header columns are clickable, otherwise C<0>
 
 Since: 2.10
 
   method gtk_tree_view_get_headers_clickable ( --> Int  )
-
 
 =end pod
 
@@ -412,18 +413,15 @@ sub gtk_tree_view_set_headers_clickable ( N-GObject $tree_view, int32 $setting )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_activate_on_single_click:
+#TM:1:gtk_tree_view_get_activate_on_single_click:
 =begin pod
 =head2 [gtk_tree_view_] get_activate_on_single_click
 
-Gets the setting set by C<gtk_tree_view_set_activate_on_single_click()>.
-
-Returns: C<1> if row-activated will be emitted on a single click
+Gets the setting set by C<gtk_tree_view_set_activate_on_single_click()>. The method returns C<1> if row-activated will be emitted on a single click.
 
 Since: 3.8
 
   method gtk_tree_view_get_activate_on_single_click ( --> Int  )
-
 
 =end pod
 
@@ -433,12 +431,11 @@ sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_set_activate_on_single_click:
+#TM:1:gtk_tree_view_set_activate_on_single_click:
 =begin pod
 =head2 [gtk_tree_view_] set_activate_on_single_click
 
-Cause the  I<row-activated> signal to be emitted
-on a single click instead of a double click.
+Cause the  I<row-activated> signal to be emitted on a single click instead of a double click.
 
 Since: 3.8
 
@@ -457,15 +454,16 @@ sub gtk_tree_view_set_activate_on_single_click ( N-GObject $tree_view, int32 $si
 =begin pod
 =head2 [gtk_tree_view_] append_column
 
-Appends I<column> to the list of columns. If I<tree_view> has “fixed_height”
-mode enabled, then I<column> must have its “sizing” property set to be
-GTK_TREE_VIEW_COLUMN_FIXED.
+Appends I<$column> to the list of columns. If this tree view has “fixed_height” mode enabled, then I<$column> must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
 Returns: The number of columns in I<tree_view> after appending.
 
-  method gtk_tree_view_append_column ( N-GObject $column --> Int  )
+  method gtk_tree_view_append_column (
+    Gnome::Gtk3::TreeViewColumn $column
+    --> Int
+  )
 
-=item N-GObject $column; The B<Gnome::Gtk3::TreeViewColumn> to add.
+=item Gnome::Gtk3::TreeViewColumn $column; The column to add.
 
 =end pod
 
@@ -518,33 +516,67 @@ sub gtk_tree_view_insert_column ( N-GObject $tree_view, N-GObject $column, int32
   is native(&gtk-lib)
   { * }
 
-#`[[
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_insert_column_with_attributes:
 =begin pod
-=head2 [gtk_tree_view_] insert_column_with_attributes
+=comment head2 [gtk_tree_view_] insert_column_with_attributes
+=head2 insert-column-with-attributes
 
-Creates a new B<Gnome::Gtk3::TreeViewColumn> and inserts it into the I<tree_view> at
-I<position>.  If I<position> is -1, then the newly created column is inserted at
-the end.  The column is initialized with the attributes given. If I<tree_view>
-has “fixed_height” mode enabled, then the new column will have its sizing
-property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Creates a new B<Gnome::Gtk3::TreeViewColumn> and inserts it into the I<tree_view> at I<position>.  If I<position> is -1, then the newly created column is inserted at the end.  The column is initialized with the attributes given. If I<tree_view> has “fixed_height” mode enabled, then the new column will have its sizing property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
-Returns: The number of columns in I<tree_view> after insertion.
+Returns: The number of columns in this treeview after insertion.
 
-  method gtk_tree_view_insert_column_with_attributes ( Int $position, Str $title, N-GObject $cell --> Int  )
+  method insert-column-with-attributes (
+    Int $insert-position,
+    Str $title, Gnome::Gtk3::CellRenderer $cellrenderer, ...
+    --> Int
+  )
 
-=item Int $position; The position to insert the new column in
-=item Str $title; The title to set the header to
-=item N-GObject $cell; The B<Gnome::Gtk3::CellRenderer> @...: A C<Any>-terminated list of attributes
+=item A repeating list of
+=item2 Int $position; The position to insert the new column in
+=item2 Str $title; The title to set the header to
+=item2 Gnome::Gtk3::CellRenderer $cell; The cell renderer
 
 =end pod
 
-sub gtk_tree_view_insert_column_with_attributes ( N-GObject $tree_view, int32 $position, Str $title, N-GObject $cell, Any $any = Any )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-]]
+method insert-column-with-attributes ( *@attributes --> Int ) {
+
+  my @parameter-list = ( );
+  @parameter-list.push: Parameter.new(type => N-GObject);    # tree_view
+
+  my @attrs = ( );
+  for @attributes -> $insert, $title, $renderer {
+    @parameter-list.push: Parameter.new(type => int32);      # insert position
+    @parameter-list.push: Parameter.new(type => Str);        # title
+    @parameter-list.push: Parameter.new(type => N-GObject);  # renderer
+
+    @attrs.push: $insert;
+    @attrs.push: $title;
+    @attrs.push: $renderer.get-native-gobject;
+  }
+
+  # end list with 0
+  @parameter-list.push: Parameter.new(type => int32);
+
+  # create signature
+  my Signature $signature .= new(
+    :params(|@parameter-list),
+    :returns(int32)
+  );
+
+note "S: ", $signature.perl;
+note "A: ", (self.get-native-gobject, |@attrs, 0).join(', ');
+
+  # get a pointer to the sub, then cast it to a sub with the proper
+  # signature. after that, the sub can be called, returning a value.
+  state $ptr = cglobal(
+    &gtk-lib, 'gtk_tree_view_insert_column_with_attributes', Pointer
+  );
+  my Callable $f = nativecast( $signature, $ptr);
+
+  $f( self.get-native-gobject, |@attrs, 0)
+}
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -600,16 +632,13 @@ sub gtk_tree_view_get_n_columns ( N-GObject $tree_view )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_column:
+#TM:1:gtk_tree_view_get_column:
 =begin pod
 =head2 [gtk_tree_view_] get_column
 
-Gets the B<Gnome::Gtk3::TreeViewColumn> at the given position in the B<tree_view>.
+Gets the B<Gnome::Gtk3::TreeViewColumn> at the given position in the B<tree_view> or undefined if the position is outside the range of columns.
 
-Returns: (nullable) (transfer none): The B<Gnome::Gtk3::TreeViewColumn>, or C<Any> if the
-position is outside the range of columns.
-
-  method gtk_tree_view_get_column ( Int $n --> N-GObject  )
+  method gtk_tree_view_get_column ( Int $n --> Gnome::Gtk3::TreeViewColumn )
 
 =item Int $n; The position of the column, counting from 0.
 
@@ -621,7 +650,7 @@ sub gtk_tree_view_get_column ( N-GObject $tree_view, int32 $n )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_columns:
+#TM:1:gtk_tree_view_get_columns:
 =begin pod
 =head2 [gtk_tree_view_] get_columns
 

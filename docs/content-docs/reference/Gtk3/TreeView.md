@@ -117,6 +117,10 @@ Create a new plain object.
 
     multi method new ( Bool :empty! )
 
+Create a new tree view object using a model. This can be e.g. a **Gnome::Gtk3::ListStore** or **Gnome::Gtk3::TreeStore**.
+
+    multi method new ( Bool :model! )
+
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
     multi method new ( N-GObject :$widget! )
@@ -130,16 +134,12 @@ gtk_tree_view_new
 
 Creates a new **Gnome::Gtk3::TreeView** widget.
 
-Returns: A newly created **Gnome::Gtk3::TreeView** widget.
-
     method gtk_tree_view_new ( --> N-GObject  )
 
 [gtk_tree_view_] new_with_model
 -------------------------------
 
 Creates a new **Gnome::Gtk3::TreeView** widget with the model initialized to *model*.
-
-Returns: A newly created **Gnome::Gtk3::TreeView** widget.
 
     method gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject  )
 
@@ -163,21 +163,10 @@ Sets the model for a **Gnome::Gtk3::TreeView**. If the *tree_view* already has a
 
   * N-GObject $model; (allow-none): The model.
 
-[gtk_tree_view_] get_selection
-------------------------------
-
-Gets the **Gnome::Gtk3::TreeSelection** associated with *tree_view*.
-
-Returns: (transfer none): A **Gnome::Gtk3::TreeSelection** object.
-
-    method gtk_tree_view_get_selection ( --> N-GObject  )
-
 [gtk_tree_view_] get_headers_visible
 ------------------------------------
 
 Returns `1` if the headers on the *tree_view* are visible.
-
-Returns: Whether the headers are visible or not.
 
     method gtk_tree_view_get_headers_visible ( --> Int  )
 
@@ -200,9 +189,7 @@ Resizes all columns to their optimal width. Only works after the treeview has be
 [gtk_tree_view_] get_headers_clickable
 --------------------------------------
 
-Returns whether all header columns are clickable.
-
-Returns: `1` if all header columns are clickable, otherwise `0`
+Returns `1` if all header columns are clickable, otherwise `0`
 
 Since: 2.10
 
@@ -220,9 +207,7 @@ Allow the column title buttons to be clicked.
 [gtk_tree_view_] get_activate_on_single_click
 ---------------------------------------------
 
-Gets the setting set by `gtk_tree_view_set_activate_on_single_click()`.
-
-Returns: `1` if row-activated will be emitted on a single click
+Gets the setting set by `gtk_tree_view_set_activate_on_single_click()`. The method returns `1` if row-activated will be emitted on a single click.
 
 Since: 3.8
 
@@ -242,13 +227,16 @@ Since: 3.8
 [gtk_tree_view_] append_column
 ------------------------------
 
-Appends *column* to the list of columns. If *tree_view* has “fixed_height” mode enabled, then *column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Appends *$column* to the list of columns. If this tree view has “fixed_height” mode enabled, then *$column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
 Returns: The number of columns in *tree_view* after appending.
 
-    method gtk_tree_view_append_column ( N-GObject $column --> Int  )
+    method gtk_tree_view_append_column (
+      Gnome::Gtk3::TreeViewColumn $column
+      --> Int
+    )
 
-  * N-GObject $column; The **Gnome::Gtk3::TreeViewColumn** to add.
+  * Gnome::Gtk3::TreeViewColumn $column; The column to add.
 
 [gtk_tree_view_] remove_column
 ------------------------------
@@ -274,6 +262,27 @@ Returns: The number of columns in *tree_view* after insertion.
 
   * Int $position; The position to insert *column* in.
 
+insert-column-with-attributes
+-----------------------------
+
+Creates a new **Gnome::Gtk3::TreeViewColumn** and inserts it into the *tree_view* at *position*. If *position* is -1, then the newly created column is inserted at the end. The column is initialized with the attributes given. If *tree_view* has “fixed_height” mode enabled, then the new column will have its sizing property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+
+Returns: The number of columns in this treeview after insertion.
+
+    method insert-column-with-attributes (
+      Int $insert-position,
+      Str $title, Gnome::Gtk3::CellRenderer $cellrenderer, ...
+      --> Int
+    )
+
+  * A repeating list of
+
+    * Int $position; The position to insert the new column in
+
+    * Str $title; The title to set the header to
+
+    * Gnome::Gtk3::CellRenderer $cell; The cell renderer
+
 [gtk_tree_view_] get_n_columns
 ------------------------------
 
@@ -288,11 +297,9 @@ Since: 3.4
 [gtk_tree_view_] get_column
 ---------------------------
 
-Gets the **Gnome::Gtk3::TreeViewColumn** at the given position in the **tree_view**.
+Gets the **Gnome::Gtk3::TreeViewColumn** at the given position in the **tree_view** or undefined if the position is outside the range of columns.
 
-Returns: (nullable) (transfer none): The **Gnome::Gtk3::TreeViewColumn**, or `Any` if the position is outside the range of columns.
-
-    method gtk_tree_view_get_column ( Int $n --> N-GObject  )
+    method gtk_tree_view_get_column ( Int $n --> Gnome::Gtk3::TreeViewColumn )
 
   * Int $n; The position of the column, counting from 0.
 
