@@ -193,7 +193,7 @@ use Gnome::GObject::Type;
 use Gnome::GObject::Value;
 use Gnome::Gtk3::TreeIter;
 use Gnome::Gtk3::TreePath;
-#use Gnome::Gtk3::TreeRowReference;
+use Gnome::Gtk3::TreeRowReference;
 
 
 #-------------------------------------------------------------------------------
@@ -321,6 +321,30 @@ method _tree_model_interface ( $native-sub --> Callable ) {
 
   $s;
 }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_tree_row_reference_new:
+=begin pod
+=head2 gtk_tree_row_reference_new
+
+Creates a row reference based on I<$path>.
+
+This reference will keep pointing to the node pointed to by I<$path>, so long as it exists. Any changes that occur on I<$model> are propagated, and the path is updated appropriately. If I<$path> isn’t a valid path in I<$model>, then C<Any> is returned.
+
+Returns: a newly allocated B<Gnome::Gtk3::TreeRowReference>, or C<Any>
+
+  method gtk_tree_row_reference_new (
+    N-GtkTreePath $path --> N-GtkTreeRowReference
+  )
+
+=item N-GtkTreePath $path; a valid B<Gnome::Gtk3::TreePath>-struct to monitor
+
+=end pod
+
+sub gtk_tree_row_reference_new ( N-GObject $model, N-GtkTreePath $path )
+  returns N-GtkTreeRowReference
+  is native(&gtk-lib)
+  { * }
 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_flags:t/ListStore.t
