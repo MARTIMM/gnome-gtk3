@@ -95,11 +95,11 @@ Create a new plain object.
 
   multi method new ( Bool :empty! )
 
+Create an object using a native object from elsewhere.
+
+  multi method new ( N-GObject :$column! )
+
 =begin comment
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
-
-  multi method new ( N-GObject :$widget! )
-
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
@@ -108,7 +108,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new(:empty):
-# TM:0:new(:widget):
+#TM:1:new(:column):
 # TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -126,6 +126,10 @@ submethod BUILD ( *%options ) {
   # process all named arguments
   if ? %options<empty> {
     self.native-gobject(gtk_tree_view_column_new());
+  }
+
+  elsif ? %options<column> {
+    self.native-gobject(%options<column>);
   }
 
 #`{{
