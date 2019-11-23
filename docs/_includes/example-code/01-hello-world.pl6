@@ -12,19 +12,28 @@ my Gnome::Gtk3::Main $m .= new;
 class AppSignalHandlers {
 
   # Handle 'Hello World' button click
-  method first-button-click ( :widget($b1), :other-button($b2) ) {
+  method first-button-click (
+    :widget($b1), :other-button($b2)
+    --> Int
+  ) {
     $b1.set-sensitive(False);
     $b2.set-sensitive(True);
+
+    1
   }
 
   # Handle 'Goodbye' button click
-  method second-button-click ( ) {
+  method second-button-click ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 
   # Handle window managers 'close app' button
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 
@@ -49,9 +58,12 @@ $grid.gtk-grid-attach( $second, 0, 1, 1, 1);
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
 $button.register-signal(
-  $ash, 'first-button-click', 'clicked',  :other-button($second)
+  $ash, 'first-button-click', 'clicked',
+  :other-button($second)
 );
-$second.register-signal( $ash, 'second-button-click', 'clicked');
+$second.register-signal(
+  $ash, 'second-button-click', 'clicked'
+);
 
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
 

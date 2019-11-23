@@ -2,6 +2,7 @@ use v6;
 
 my @dir-roots = <
   /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/lib
+  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/xt/NewModules
   /home/marcel/Languages/Perl6/Projects/perl6-gnome-gdk3/lib
   /home/marcel/Languages/Perl6/Projects/perl6-gnome-gobject/lib
   /home/marcel/Languages/Perl6/Projects/perl6-gnome-glib/lib

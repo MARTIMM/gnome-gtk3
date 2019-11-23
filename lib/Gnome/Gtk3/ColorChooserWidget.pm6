@@ -88,7 +88,7 @@ also does Gnome::Gtk3::Orientable;
 also does Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
-#my Bool $signals-added = False;
+my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -113,6 +113,16 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
+
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
+  if $signals-added {
+    # no signals of its own
+    $signals-added = True;
+
+    # signals from interfaces
+    self._add_color_chooser_signal_types($?CLASS.^name);
+  }
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::ColorChooserWidget';

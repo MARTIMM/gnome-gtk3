@@ -480,7 +480,9 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GError' if $type ~~ m/GError/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
-  $type = 'int32' if $type ~~ m/GType/;
+#  $type = 'int32' if $type ~~ m/GType/;
+  $type = 'uint64' if $type ~~ m/GType/;
+
   $type = 'int32' if $type ~~ m/GQuark/;
   $type = 'N-GObject' if is-n-gobject($type);
 
@@ -523,15 +525,16 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $p6-type ~~ s:s/ gboolean || gint || gint32 ||
                    gchar || gint8 || gshort || gint16 ||
                    glong || gint64 ||
-                   gssize || goffset
+                   gssize || goffset || int32 || int64 || int
                  /Int/;
 
   $p6-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
                    gushort || guint16 || gulong || guint64 ||
-                   gsize
+                   gsize || uint32 || uint64 || uint
                  /UInt/;
 
-  $p6-type ~~ s:s/ int /int32/;
+#  $p6-type ~~ s:s/ int /Int/;
+#  $p6-type ~~ s:s/ uint /UInt/;
   $p6-type ~~ s:s/ gpointer /Pointer/;
 
   $p6-type ~~ s:s/ gfloat || gdouble /Num/;
@@ -719,6 +722,9 @@ sub substitute-in-template (
     =head2 Implemented Interfaces
 
     Gnome::LIBRARYMODULE implements
+    =comment item Gnome::Atk::ImplementorIface
+    =comment item [Gnome::Gtk3::Buildable](Buildable.html)
+    =comment item [Gnome::Gtk3::Orientable](Orientable.html)
 
     =head2 Known implementations
 
@@ -735,6 +741,8 @@ sub substitute-in-template (
 
       unit class Gnome::LIBRARYMODULE;
       ALSO-IS-LIBRARY-PARENT
+    =comment  also does Gnome::Gtk3::Buildable;
+    =comment  also does Gnome::Gtk3::Orientable;
 
     =comment head2 Example
 
@@ -747,11 +755,16 @@ sub substitute-in-template (
     use Gnome::N::N-GObject;
     USE-LIBRARY-PARENT
 
+    #use Gnome::Gtk3::Orientable;
+    #use Gnome::Gtk3::Buildable;
+
     #-------------------------------------------------------------------------------
     # /usr/include/gtk-3.0/gtk/INCLUDE
     # https://developer.gnome.org/WWW
     unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
     ALSO-IS-LIBRARY-PARENT
+    #also does Gnome::Gtk3::Buildable;
+    #also does Gnome::Gtk3::Orientable;
 
     EOTEMPLATE
 
@@ -834,18 +847,10 @@ sub substitute-in-template (
       method _fallback ( $native-sub is copy --> Callable ) {
 
         my Callable $s;
-        try { $s = &::($native-sub); }
-        try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
-
-        #`{{ Uncomment in interface users
-        # search in the interface modules, name all interfaces which are implemented
-        # for this module. not implemented ones are skipped.
-        $s = self._query_interfaces(
-          $native-sub, <
-            Gnome::Gtk3::XXX
-          >
-        ) unless $s;
-        }}
+        try { $s = &::("BASE-SUBNAME_$native-sub"); };
+        try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      #  $s = self._buildable_interface($native-sub) unless ?$s;
+      #  $s = self._orientable_interface($native-sub) unless ?$s;
 
         self.set-class-name-of-sub('LIBCLASSNAME');
         $s = callsame unless ?$s;
@@ -1280,9 +1285,14 @@ sub get-signals ( Str:D $source-content is copy ) {
     $build-add-signals = Q:qq:to/EOBUILD/;
         # add signal info in the form of group\<signal-name>.
         # groups are e.g. signal, event, nativeobject etc
-        \$signals-added = self.add-signal-types( \$?CLASS.^name,
-          $sig-class-str
-        ) unless \$signals-added;
+        unless \$signals-added {
+          \$signals-added = self.add-signal-types( \$?CLASS.^name,
+            $sig-class-str
+          );
+
+          # signals from interfaces
+          #_add_..._signal_types(\$?CLASS.^name);
+        }
       EOBUILD
 
     # and append signal data to result module

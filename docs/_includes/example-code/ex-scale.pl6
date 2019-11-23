@@ -34,27 +34,34 @@ class AppSignalHandlers {
   }
 
   # increment level bar
-  method inc-scale ( ) {
+  method inc-scale ( --> Int ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(min( $v + $!step, $!max));
     self!update-status;
+
+    1
   }
 
   # decrement level bar
-  method dec-scale ( ) {
+  method dec-scale ( --> Int ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(max( $v - $!step, $!min));
     self!update-status;
+
+    1
   }
 
-  method invert-scale ( ) {
+  method invert-scale ( --> Int ) {
     $!scale.set-inverted($!inverted-button.get-active());
     self!update-status;
+
+    1
   }
 
-  method exit-program ( ) {
-#    note "exit program";
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 
   method !update-status {

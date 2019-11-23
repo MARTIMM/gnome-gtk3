@@ -23,5 +23,7 @@
     url: '/content-docs/reference/GObject/Type.html'
     doc:  1
     test: 0
-#  - title: "Value"
-#    url: '/content-docs/nyi-reference.html'
+  - title: "Value"
+    url: '/content-docs/reference/GObject/Value.html'
+    doc:  1
+    test: 1

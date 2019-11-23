@@ -130,6 +130,16 @@ h6 {
   color: #d5000d;
 }
 
+em, strong {
+  color: #8e280e;
+}
+
+
+.tooltiptext strong {
+//  color: #8e280e;
+  color: #afffff; //#fff;
+}
+
 div.inner {
   width: 95%;
 }
@@ -149,6 +159,11 @@ pre code {
   //line-height: 0.9;
   margin: 0;
   font-size: $code-font-size;
+}
+
+code {
+  background-color: transparent;
+  color: #8e280e;
 }
 
 div.release-notes {

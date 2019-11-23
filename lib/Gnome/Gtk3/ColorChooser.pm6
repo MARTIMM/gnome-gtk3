@@ -63,103 +63,19 @@ my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
-=head2 new
-
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
-
-  multi method new ( N-GObject :$widget! )
-
 =end pod
 
-# TM:1:new(:red,:green,:blue,:alpha):
-# TM:1:new(:rgba(Gnome::Gdk3::RGBA)):
-# TM:1:new(:rgba(N-GdkRGBA)):
-# TM:2:new(:widget):ColorChooserDialog.t
-
-#TM:1:new():interfacing
-# interfaces are not instantiated
-submethod BUILD ( *%options ) {
-
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w1<color-activated>
-  ) unless $signals-added;
-
-#`{{
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::ColorChooser';
-
-  # process all named arguments
-  if ? %options<red> or ? %options<green> or
-     ? %options<blue> or ? %options<alpha> {
-
-    my Num $red = %options<red> // 1.0e1;
-    my Num $green = %options<green> // 1.0e1;
-    my Num $blue = %options<blue> // 1.0e1;
-    my Num $alpha = %options<alpha> // 1.0e1;
-
-    my N-GdkRGBA $c .= new( :$red, :$green, :$blue, :$alpha);
-    gtk_color_chooser_set_rgba( self.get-native-gobject, $c);
-  }
-
-  elsif ? %options<rgba> {
-    my N-GdkRGBA $c;
-    if %options<rgba> ~~ N-GdkRGBA {
-      $c = %options<rgba>;
-      gtk_color_chooser_set_rgba( self.get-native-gobject, $c);
-    }
-
-    elsif %options<rgba> ~~ Gnome::Gdk3::RGBA {
-      $c = %options<rgba>.get-native-gboxed;
-      gtk_color_chooser_set_rgba( self.get-native-gobject, $c);
-    }
-
-    elsif %options<rgba> ~~ Str {
-      $c .= new(
-        :red(1.0e0), :green(1.0e0), :blue(1.0e0), :alpha(1.0e0)
-      );
-      my Int $ok = $c.gdk_rgba_parse(%options<rgba>);
-      gtk_color_chooser_set_rgba( self.get-native-gobject, $c) if $ok;
-    }
-
-    else {
-      die X::Gnome.new(:message('Improper type for :rgba option'));
-    }
-  }
-
-  elsif ? %options<widget> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the widget, the gtype is known
-  self.set-class-info('GtkColorChooser');
-}}
-}
-
-#`{{
 #-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
+#TM:2:new():interfacing:ColorChooserDialog.t
+# interfaces are not instantiated
+#submethod BUILD ( *%options ) { }
 
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_color_chooser_$native-sub"); } unless ?$s;
+#-------------------------------------------------------------------------------
+# setup signals from interface
+method _add_color_chooser_signal_types ( Str $class-name ) {
 
-  self.set-class-name-of-sub('GtkColorChooser');
-  $s = callsame unless ?$s;
-
-  $s;
+  self.add-signal-types( $class-name, :w1<color-activated>);
 }
-}}
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
@@ -170,13 +86,13 @@ method _color_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_color_chooser_$native-sub"); }
+  try { $s = &::("gtk_color_chooser_$native-sub"); } unless ?$s;
 
   $s
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_color_chooser_get_rgba
+#TM:2:gtk_color_chooser_get_rgba:ColorChooserDialog.t
 =begin pod
 =head2 [gtk_color_chooser_] get_rgba
 
@@ -200,7 +116,7 @@ sub _gtk_color_chooser_get_rgba ( N-GObject $chooser, N-GdkRGBA $color is rw )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_color_chooser_set_rgba:
+#TM:2:gtk_color_chooser_set_rgba:ColorChooserDialog.t
 =begin pod
 =head2 [gtk_color_chooser_] set_rgba
 
@@ -219,7 +135,7 @@ sub gtk_color_chooser_set_rgba ( N-GObject $chooser, N-GdkRGBA:D $color )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_color_chooser_get_use_alpha
+#TM:2:gtk_color_chooser_get_use_alpha:ColorChooserDialog.t
 =begin pod
 =head2 [gtk_color_chooser_] get_use_alpha
 
@@ -239,7 +155,7 @@ sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_color_chooser_set_use_alpha
+#TM:2:gtk_color_chooser_set_use_alpha:ColorChooserDialog.t
 =begin pod
 =head2 [gtk_color_chooser_] set_use_alpha
 
@@ -258,7 +174,7 @@ sub gtk_color_chooser_set_use_alpha ( N-GObject $chooser, int32 $use_alpha )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_color_chooser_add_palette
+#TM:2:gtk_color_chooser_add_palette:ColorChooserDialog.t
 =begin pod
 =head2 [gtk_color_chooser_] add_palette
 
@@ -341,14 +257,15 @@ Or it can be done like this
 =end pod
 
 sub gtk_color_chooser_add_palette (
-  N-GObject $chooser, int32 $orientation, int32 $colors_per_line,
-  int32 $n_colors, Array $colors
+  N-GObject $chooser, Int $orientation, Int $colors_per_line,
+  Int $n_colors, Array $colors
 ) {
 
   my CArray[num64] $palette;
+  $palette .= new;
+
   given $colors {
-    when Array[N-GdkRGBA] {
-      $palette .= new;
+    when Array[Gnome::Gdk3::RGBA::N-GdkRGBA] {
       my Int $index = 0;
       for 0..$colors.elems - 1 -> $pos {
         my N-GdkRGBA $c = $colors.shift;
@@ -359,17 +276,23 @@ sub gtk_color_chooser_add_palette (
       }
     }
 
-    when Array[Num] {
+    when any(Array[Num], Array[Int], Array[Str], Array)  {
       if $colors.elems % 4 == 0 {
         my Int $index = 0;
         for @$colors -> $n {
-          $palette[$index++] = $n;
+          $palette[$index++] = $n.Num;
         }
       }
 
       else {
         die X::Gnome.new(:message('Not proper number of elements (e % 4 ≠ 0)'));
       }
+    }
+
+    default {
+      die X::Gnome.new(
+        :message('Not a supported type for $colors: ' ~ $colors.^name)
+      );
     }
   }
 

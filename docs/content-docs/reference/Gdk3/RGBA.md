@@ -32,6 +32,8 @@ N-GdkRGBA
 
 N-GdkRGBA is a convenient way to pass rgba colors around. It’s based on cairo’s way to deal with colors and mirrors its behavior. All values are in the range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0) represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will be clamped to this range when drawing.
 
+The colors originally where **Num** type but they can now also be **Int**, **Rat**, **Str** or **Num** as long as they represent a number between 0 and 1.
+
   * $.red; The intensity of the red channel from 0.0 to 1.0 inclusive
 
   * $.green; The intensity of the green channel from 0.0 to 1.0 inclusive
@@ -39,6 +41,8 @@ N-GdkRGBA is a convenient way to pass rgba colors around. It’s based on cairo�
   * $.blue; The intensity of the blue channel from 0.0 to 1.0 inclusive
 
   * $.alpha; The opacity of the color from 0.0 for completely translucent to 1.0 for opaque
+
+    my N-GdkRGBA $c .= new( :red(1), :green(1), :blue(0.5), :alpha(0.99));
 
 Methods
 =======
@@ -48,9 +52,9 @@ new
 
 Create a new object using colors and transparency values. Their ranges are from 0 to 1
 
-    multi method new ( Num :$red!, Num :$green!, Num :$blue!, Num :$alpha! )
+    multi method new ( :$red!, :$green!, :$blue!, :$alpha! )
 
-Create an object using a string which is parsed with `gdk_rgba_parse()`. If parsing fails, the color is set to opaque white.
+Create an object using a string which is parsed with `gdk_rgba_parse()`. If parsing fails, the color is set to opaque white. The colors originally where **Num** type but they can now also be **Int**, **Rat**, **Str** or **Num** as long as they represent a number between 0 and 1.
 
     multi method new ( Str :$rgba! )
 

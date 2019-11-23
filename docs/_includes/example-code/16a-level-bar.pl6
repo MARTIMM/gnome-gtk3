@@ -23,33 +23,41 @@ class AppSignalHandlers {
   has Gnome::Gtk3::TextView $!text-view;
   has Gnome::Gtk3::ToggleButton $!inverted-button;
 
-  submethod BUILD ( :$!level-bar, :$!text-view, :$!inverted-button) {
+  submethod BUILD ( :$!level-bar, :$!text-view, :$!inverted-button ) {
     self!update-status;
   }
 
   # increment level bar
-  method inc-level-bar ( ) {
+  method inc-level-bar ( --> Int ) {
     my Num $v = $!level-bar.get-value;
     my Num $vmx = $!level-bar.get-max-value;
     $!level-bar.set-value(min( $v + 0.1, $vmx));
     self!update-status;
+
+    1
   }
 
   # decrement level bar
-  method dec-level-bar ( ) {
+  method dec-level-bar ( --> Int ) {
     my Num $v = $!level-bar.get-value;
     my Num $vmn = $!level-bar.get-min-value;
     $!level-bar.set-value(max( $v - 0.1, $vmn));
     self!update-status;
+
+    1
   }
 
-  method invert-level-bar ( ) {
+  method invert-level-bar ( --> Int ) {
     $!level-bar.set-inverted($!inverted-button.get-active());
     self!update-status;
+
+    1
   }
 
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 
   method !update-status {

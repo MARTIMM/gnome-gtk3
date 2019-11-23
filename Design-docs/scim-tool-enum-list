@@ -108,10 +108,14 @@ GtkPropagationPhase
 GtkEventSequenceState
 GtkPanDirection
 GtkPopoverConstraint
+GtkTreeModelFlags
 GtkTextBufferTargetInfo
 GtkStyleProviderPriority
 GtkImageType
 GtkBuilderError
+GtkTreeViewColumnSizing
+GtkCellRendererState
+GtkCellRendererMode
 GtkArrowPlacement
 GtkArrowPlacement
 GtkCssProviderError
@@ -120,6 +124,7 @@ GtkFileChooserConfirmation
 GtkFileChooserError
 GtkFileFilterFlags
 GtkTextSearchFlags
+GtkTreeViewDropPosition
 GtkStyleContextPrintFlags
 GtkWidgetHelpType
 GdkFilterReturn
@@ -160,5 +165,7 @@ GdkWindowTypeHint
 GdkInputSource
 GdkInputMode
 GdkDeviceType
-typeToSub
 GParamFlags
+GOptionFlags
+GOptionArg
+GOptionError

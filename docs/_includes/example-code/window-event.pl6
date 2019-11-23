@@ -8,8 +8,10 @@ my Gnome::Gtk3::Main $m .= new;
 
 # A callback handler class to respond to the 'close application event'
 class AppSignalHandlers {
-  method exit-program ( ) {
+  method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
   }
 }
 

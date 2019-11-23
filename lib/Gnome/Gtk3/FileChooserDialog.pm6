@@ -171,6 +171,8 @@ also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::FileChooser;
 
 #-------------------------------------------------------------------------------
+my Bool $signals-added = False;
+#-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
@@ -199,6 +201,16 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:4:new(:build-id):
 
 submethod BUILD ( *%options ) {
+
+  # add signal info in the form of group<signal-name>.
+  # groups are e.g. signal, event, nativeobject etc
+  if $signals-added {
+    # no signals of its own
+    $signals-added = True;
+
+    # signals from interfaces
+    self._add_file_chooser_signal_types($?CLASS.^name);
+  }
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::FileChooserDialog';
@@ -242,7 +254,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   # search this module first
   try { $s = &::($native-sub); }
-#  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._file_chooser_interface($native-sub) unless ?$s;
 

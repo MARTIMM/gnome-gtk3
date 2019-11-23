@@ -160,7 +160,7 @@ Describes whether a I<Gnome::Gtk3::FileChooser> is being used to open existing f
 
 =end pod
 
-#TE:1:GtkFileChooserAction:
+#TE:2:GtkFileChooserAction:t/FileChooserDialog.t
 enum GtkFileChooserAction is export (
   'GTK_FILE_CHOOSER_ACTION_OPEN',
   'GTK_FILE_CHOOSER_ACTION_SAVE',
@@ -223,14 +223,20 @@ my Bool $signals-added = False;
 =head1 Methods
 =end pod
 
-#TM:1:new():interfacing
+#-------------------------------------------------------------------------------
+#TM:2:new():interfacing:t/FileChooserDialog.t
 # interfaces are not instantiated
-submethod BUILD ( *%options ) {
-  $signals-added = self.add-signal-types( $?CLASS.^name,
+#submethod BUILD ( *%options ) { }
+
+#-------------------------------------------------------------------------------
+# setup signals from interface
+method _add_file_chooser_signal_types ( Str $class-name ) {
+
+  self.add-signal-types( $class-name,
     :w0< current-folder-changed file-activated selection-changed
          update-preview confirm-overwrite
        >,
-  ) unless $signals-added;
+  );
 }
 
 #-------------------------------------------------------------------------------
@@ -242,7 +248,7 @@ method _file_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); }
+  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
 
   $s
 }
@@ -266,7 +272,7 @@ sub gtk_file_chooser_error_quark (  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_file_chooser_set_action:
+#TM:2:gtk_file_chooser_set_action:t/FileChooserDialog.t
 =begin pod
 =head2 [gtk_file_chooser_] set_action
 
@@ -285,7 +291,7 @@ sub gtk_file_chooser_set_action ( N-GObject $chooser, int32 $action )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_file_chooser_get_action:
+#TM:2:gtk_file_chooser_get_action:t/FileChooserDialog.t
 =begin pod
 =head2 [gtk_file_chooser_] get_action
 
@@ -305,7 +311,7 @@ sub gtk_file_chooser_get_action ( N-GObject $chooser )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_file_chooser_set_local_only:
+#TM:2:gtk_file_chooser_set_local_only:t/FileChooserDialog.t
 =begin pod
 =head2 [gtk_file_chooser_] set_local_only
 
@@ -326,7 +332,7 @@ sub gtk_file_chooser_set_local_only ( N-GObject $chooser, int32 $local_only )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_file_chooser_get_local_only:
+#TM:2:gtk_file_chooser_get_local_only:t/FileChooserDialog.t
 =begin pod
 =head2 [gtk_file_chooser_] get_local_only
 
