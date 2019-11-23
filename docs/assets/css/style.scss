@@ -130,12 +130,18 @@ h6 {
   color: #d5000d;
 }
 
-div.inner {
-  width: 95%;
-}
-
 em, strong {
   color: #8e280e;
+}
+
+
+.tooltiptext strong {
+//  color: #8e280e;
+  color: #afffff; //#fff;
+}
+
+div.inner {
+  width: 95%;
 }
 
 div.highlight, div.highlighter-rouge, pre {
