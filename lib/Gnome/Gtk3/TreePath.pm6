@@ -132,8 +132,8 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_tree_path_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_tree_path_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   self.set-class-name-of-sub('GtkTreePath');
   $s = callsame unless ?$s;
@@ -142,6 +142,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+#TODO Destroy calls clear-tree-path
 #TM:1:clear-tree-path:
 =begin pod
 =head2 clear-tree-path
@@ -220,9 +221,6 @@ Since: 2.2
 =end pod
 
 sub gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
-
-  # check the button list parameters
-  my CArray[int32] $native-indices .= new;
 
   my @parameterList = ();
   for @indices -> Int $i {
