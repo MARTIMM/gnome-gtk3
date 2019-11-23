@@ -847,8 +847,8 @@ sub substitute-in-template (
       method _fallback ( $native-sub is copy --> Callable ) {
 
         my Callable $s;
-        try { $s = &::($native-sub); }
-        try { $s = &::("BASE-SUBNAME_$native-sub"); } unless ?$s;
+        try { $s = &::("BASE-SUBNAME_$native-sub"); };
+        try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
       #  $s = self._buildable_interface($native-sub) unless ?$s;
       #  $s = self._orientable_interface($native-sub) unless ?$s;
 
@@ -1285,9 +1285,14 @@ sub get-signals ( Str:D $source-content is copy ) {
     $build-add-signals = Q:qq:to/EOBUILD/;
         # add signal info in the form of group\<signal-name>.
         # groups are e.g. signal, event, nativeobject etc
-        \$signals-added = self.add-signal-types( \$?CLASS.^name,
-          $sig-class-str
-        ) unless \$signals-added;
+        unless \$signals-added {
+          \$signals-added = self.add-signal-types( \$?CLASS.^name,
+            $sig-class-str
+          );
+
+          # signals from interfaces
+          #_add_..._signal_types(\$?CLASS.^name);
+        }
       EOBUILD
 
     # and append signal data to result module
