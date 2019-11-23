@@ -163,8 +163,12 @@
     test: 1
   - title: "TreeViewColumn"
     url: '/content-docs/reference/Gtk3/TreeViewColumn.html'
-    doc: 1
-    test: 1
+    doc: 3
+    test: 31
+  - title: "TreeRowReference"
+    url: '/content-docs/reference/Gtk3/TreeRowReference.html'
+    doc: 3
+    test: 31
 
   - title: '-'
 
