@@ -37,9 +37,16 @@ Methods
 new
 ---
 
-Create an object taking the native object from elsewhere.
+Create an object taking the native object from elsewhere. `.tree-iter-is-valid()` will return True or False depending on the state of the provided object.
 
-    multi method new ( N-GtkTreeIter :tree-iter! )
+    multi method new ( Gnome::Gtk3::TreeIter :$tree-iter! )
+
+tree-iter-is-valid
+------------------
+
+Method to test if the native object is valid.
+
+    method tree-iter-is-valid ( --> Bool )
 
 clear-tree-iter
 ---------------

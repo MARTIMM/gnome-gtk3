@@ -59,9 +59,16 @@ class N-GtkTreeIter is export is repr('CStruct') {
   has Pointer $.userdata2;
   has Pointer $.userdata3;
 
-  submethod BUILD ( Int :$!stamp ) { }
+  submethod BUILD ( int32 :$stamp ) {
+    $!stamp = $stamp // 0;
+  }
 
-  submethod TWEAK ( :$userdata1, :$userdata2, :$userdata3 ) {
+  submethod TWEAK (
+    :$userdata1 is copy, :$userdata2 is copy, :$userdata3 is copy
+  ) {
+    $userdata1 //= CArray[int32].new(0);
+    $userdata2 //= CArray[int32].new(0);
+    $userdata3 //= CArray[int32].new(0);
     $!userdata1 := nativecast( Pointer, $userdata1);
     $!userdata2 := nativecast( Pointer, $userdata2);
     $!userdata3 := nativecast( Pointer, $userdata3);
@@ -75,9 +82,9 @@ has Bool $.tree-iter-is-valid = False;
 =head1 Methods
 =head2 new
 
-Create an object taking the native object from elsewhere.
+Create an object taking the native object from elsewhere. C<.tree-iter-is-valid()> will return True or False depending on the state of the provided object.
 
-  multi method new ( N-GtkTreeIter :tree-iter! )
+  multi method new ( Gnome::Gtk3::TreeIter :$tree-iter! )
 
 =end pod
 
@@ -88,9 +95,25 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TreeIter';
 
   # process all named arguments
-  if ? %options<tree-iter> {
-    self.native-gboxed(%options<tree-iter>);
-    $!tree-iter-is-valid = True if %options<tree-iter> ~~ N-GtkTreeIter;
+  if %options<tree-iter>:exists {
+    my N-GtkTreeIter $nti;
+    if %options<tree-iter>.defined {
+      if %options<tree-iter>.^name !~~ m/'N-GtkTreeIter'/ {
+        $nti = %options<tree-iter>.get-native-gboxed;
+        $!tree-iter-is-valid = %options<tree-iter>.tree-iter-is-valid;
+      }
+
+      else {
+        $nti = %options<tree-iter>;
+        $!tree-iter-is-valid = True;
+      }
+
+      self.native-gboxed($nti);
+    }
+
+    else {
+      $!tree-iter-is-valid = False;
+    }
   }
 
   elsif %options.keys.elems {
@@ -110,15 +133,27 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
+  try { $s = &::("gtk_tree_iter_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 # no shortnames
-#  try { $s = &::("gtk_tree_iter_$native-sub"); } unless ?$s;
 
   self.set-class-name-of-sub('GtkTreeIter');
   $s = callsame unless ?$s;
 
   $s;
 }
+
+#-------------------------------------------------------------------------------
+# doc for attribute defined above
+#TM:1:tree-iter-is-valid:
+=begin pod
+=head2 tree-iter-is-valid
+
+Method to test if the native object is valid.
+
+  method tree-iter-is-valid ( --> Bool )
+
+=end pod
 
 #-------------------------------------------------------------------------------
 #TM:1:clear-tree-iter:

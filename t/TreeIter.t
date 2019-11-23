@@ -23,7 +23,7 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  my Gnome::Gtk3::TreeIter $ti-copy .= new(:tree-iter($ti.gtk-tree-iter-copy));
+  my Gnome::Gtk3::TreeIter $ti-copy .= new(:tree-iter($ti.copy));
   is $ti-copy.get-native-gboxed.stamp, 1001, '.gtk-tree-iter-copy()';
   ok $ti-copy.tree-iter-is-valid, '.tree-iter-is-valid()';
   $ti-copy.clear-tree-iter;
