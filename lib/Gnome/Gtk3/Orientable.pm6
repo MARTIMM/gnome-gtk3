@@ -51,42 +51,6 @@ unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
 #TM:1:new():interfacing
 # interfaces are not instantiated
 submethod BUILD ( *%options ) { }
-#`{{
-submethod BUILD ( *%options ) {
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Orientable';
-
-  if ? %options<widget> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the widget, the gtype is known
-  self.set-class-info('GtkOrientable');
-}
-
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_orientable_$native-sub"); } unless ?$s;
-
-  self.set-class-name-of-sub('GtkOrientable');
-  $s = callsame unless ?$s;
-
-  $s;
-}
-}}
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
@@ -96,8 +60,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
 method _orientable_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_orientable_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_orientable_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s
 }

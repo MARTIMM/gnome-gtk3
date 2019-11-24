@@ -85,8 +85,9 @@ method _add_color_chooser_signal_types ( Str $class-name ) {
 method _color_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_color_chooser_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_color_chooser_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s
 }

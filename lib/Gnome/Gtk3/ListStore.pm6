@@ -214,6 +214,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_list_store_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); };
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s = self._buildable_interface($native-sub) unless ?$s;

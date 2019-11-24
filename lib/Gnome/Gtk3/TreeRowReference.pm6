@@ -98,6 +98,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_tree_row_reference_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   self.set-class-name-of-sub('GtkTreeRowReference');

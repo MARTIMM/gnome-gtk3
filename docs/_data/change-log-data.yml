@@ -3,6 +3,10 @@ notes_title: "Release Notes for all Gnome packages"
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
 
+  - 2019-11-23 0.19.3:
+    - Bugfix: calling .get-text() on a Label could call get the sub from Entry if that one is used before. This is caused by the caching mechanism which did not save the sub address along with the module where it came from.
+    - Modified _fallback routines to change order of tests
+
   - 2019-11-06 0.19.2:
     - Add modules ListStore, TreeView, TreeIter, TreePath, TreeViewColumn, TreeModel in Gnome::Gtk3
 

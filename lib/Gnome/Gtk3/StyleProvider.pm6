@@ -102,8 +102,9 @@ submethod BUILD ( *%options ) { }
 method _style_provider_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); };
-  try { $s = &::("gtk_style_provider_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_style_provider_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s
 }
