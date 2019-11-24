@@ -101,8 +101,9 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_cell_renderer_text_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_cell_renderer_text_$native-sub"); };
+  try { $s = &::("cell_renderer_text_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   self.set-class-name-of-sub('GtkCellRendererText');
   $s = callsame unless ?$s;

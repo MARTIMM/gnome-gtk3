@@ -129,8 +129,8 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_border_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_border_$native-sub"); };
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   self.set-class-name-of-sub('GtkBorder');
   $s = callsame unless ?$s;

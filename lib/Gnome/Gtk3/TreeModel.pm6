@@ -317,6 +317,7 @@ method _tree_model_interface ( $native-sub --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_tree_model_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s;

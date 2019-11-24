@@ -247,8 +247,9 @@ method _add_file_chooser_signal_types ( Str $class-name ) {
 method _file_chooser_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_file_chooser_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
   $s
 }

@@ -134,6 +134,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_tree_iter_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 # no shortnames
 

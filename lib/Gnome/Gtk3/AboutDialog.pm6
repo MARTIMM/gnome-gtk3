@@ -177,8 +177,9 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_about_dialog_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_about_dialog_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
 
 #note "ad $native-sub: ", $s;

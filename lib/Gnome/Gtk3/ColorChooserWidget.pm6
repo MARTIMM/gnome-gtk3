@@ -153,8 +153,9 @@ submethod BUILD ( *%options ) {
 method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_color_chooser_widget_$native-sub"); } unless ?$s;
+  try { $s = &::("gtk_color_chooser_widget_$native-sub"); };
+  try { $s = &::("gtk_$native-sub"); } unless ?$s;
+  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
   $s = self._color_chooser_interface($native-sub) unless ?$s;
