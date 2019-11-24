@@ -34,7 +34,7 @@ The following modules will not be implemented in this Perl6 package because they
 * GtkStyle — Deprecated object that holds style information for widgets
 * GtkHScale — A horizontal slider widget for selecting a value from a range
 * GtkVScale — A vertical slider widget for selecting a value from a range
-* GtkTearoffMenuItem — A menu item used to tear off and reattach its menu
+* GtkTearoffMenuItem — A menu item used to tear off and re-attach its menu
 * GtkColorSelection — Deprecated widget used to select a color
 * GtkColorSelectionDialog — Deprecated dialog box for selecting a color
 * GtkHSV — A “color wheel” widget
