@@ -11,6 +11,7 @@ use Gnome::Gtk3::Enums;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Grid $g;
+my Gnome::Glib::List $gl;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $g .= new(:empty);
@@ -22,12 +23,39 @@ subtest 'Manipulations', {
 
   my Gnome::Gtk3::Button $button .= new(:label('press here'));
   $g.gtk-grid-attach( $button, 0, 0, 1, 1);
+  $gl .= new(:glist($g.get-children));
+  is $gl.g-list-length, 1, '.gtk-grid-attach()';
+  $gl.g-list-free;
+
+  $g.remove-row(0);
+  nok $g.get-children, '.remove-row()';
+#  $gl .= new(:glist($g.get-children));
+#  is $gl.g-list-length, 0, '.remove-row()';
+
+  $button .= new(:label('press here'));
+  $g.grid-attach( $button, 0, 0, 1, 1);
+  $gl .= new(:glist($g.get-children));
+  is $gl.g-list-length, 1, '.grid-attach() testing _fallback()';
+  $gl.g-list-free;
+  $g.remove-row(0);
+  $button .= new(:label('press here'));
+  $g.attach( $button, 0, 0, 1, 1);
+
+  $g.remove-column(0);
+  $button .= new(:label('press here'));
+  $g.attach( $button, 0, 0, 1, 1);
+  $gl .= new(:glist($g.get-children));
+  is $gl.g-list-length, 1, '.attach() testing _fallback()';
+  $gl.g-list-free;
 
   my Gnome::Gtk3::Label $label .= new(:text('note'));
   $g.attach-next-to( $label, $button, GTK_POS_RIGHT, 1, 1);
+  $gl .= new(:glist($g.get-children));
+  is $gl.g-list-length, 2, '.attach-next-to()';
+  $gl.g-list-free;
 
   my Gnome::Gtk3::Label $label-widget .= new(:widget($g.get-child-at( 1, 0)));
-  is $label-widget.get-text, 'note', '.gtk-grid-attach() / .attach-next-to()';
+  is $label-widget.get-text, 'note', '.get-child-at()';
 
   # insert a column. label moves a place to the right
   $g.insert-next-to( $button, GTK_POS_RIGHT);
@@ -44,7 +72,7 @@ subtest 'Manipulations', {
 #-------------------------------------------------------------------------------
 subtest 'Inherit from Container', {
 
-  my Gnome::Glib::List $gl .= new(:glist($g.get-children));
+  $gl .= new(:glist($g.get-children));
   is $gl.g-list-length, 2, '.get-children()';
 
 #note $gl.nth-data(1);

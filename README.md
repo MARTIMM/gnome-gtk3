@@ -1,7 +1,5 @@
 ![gtk logo][logo]
 
-[toc]
-
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
 
 [![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)

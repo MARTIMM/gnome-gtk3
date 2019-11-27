@@ -687,13 +687,14 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #-------------------------------------------------------------------------------
 sub load-dir-lists ( ) {
 
-  @gtkdirlist = "Design-docs/gtk3-list.txt".IO.slurp.lines;
-  @gdkdirlist = "Design-docs/gdk3-list.txt".IO.slurp.lines;
-  @gobjectdirlist = "Design-docs/gobject-list.txt".IO.slurp.lines;
-  @glibdirlist = "Design-docs/glib-list.txt".IO.slurp.lines;
-  @giodirlist = "Design-docs/gio-list.txt".IO.slurp.lines;
+  my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3';
+  @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
+  @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
+  @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
+  @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
+#  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
 
-  @enum-list = 'Design-docs/scim-tool-enum-list'.IO.slurp.lines;
+  @enum-list = "$root-dir/Design-docs/scim-tool-enum-list".IO.slurp.lines;
 }
 
 #-------------------------------------------------------------------------------
@@ -848,6 +849,8 @@ sub substitute-in-template (
 
         my Callable $s;
         try { $s = &::("BASE-SUBNAME_$native-sub"); };
+      # check for gtk_, gdk_ or g_ !!!
+        try { $s = &::("gtk_$native-sub"); } unless ?$s;
         try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
       #  $s = self._buildable_interface($native-sub) unless ?$s;
       #  $s = self._orientable_interface($native-sub) unless ?$s;
@@ -1282,18 +1285,19 @@ sub get-signals ( Str:D $source-content is copy ) {
       #-------------------------------------------------------------------------------
       EOBOOL
 
-    $build-add-signals = Q:qq:to/EOBUILD/;
+    $build-add-signals = Q:q:to/EOBUILD/;
         # add signal info in the form of group\<signal-name>.
         # groups are e.g. signal, event, nativeobject etc
         unless \$signals-added {
           \$signals-added = self.add-signal-types( \$?CLASS.^name,
-            $sig-class-str
+            SIG_CLASS_STR
           );
 
           # signals from interfaces
           #_add_..._signal_types(\$?CLASS.^name);
         }
       EOBUILD
+      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
 
     # and append signal data to result module
     $output-file.IO.spurt( $signal-doc, :append);
