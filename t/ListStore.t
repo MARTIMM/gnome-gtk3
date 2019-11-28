@@ -24,7 +24,7 @@ enum ColumnNames < Col0 Col1 Col2 >; # Col2 is not used or set!
 
 my class ShowTabel {
   submethod BUILD ( ) {
-    note "\n Row | Number | String\n-----+--------+-------------------";
+    note "\n Row  | Number | String\n------+--------+-------------------";
   }
 
   method show-entry (
@@ -33,9 +33,9 @@ my class ShowTabel {
     Gnome::Gtk3::TreeIter $c-iter
   ) {
     my Str $row = $c-path.to-string;
-    my Array[Gnome::GObject::Value] $va = $ls.get-value( $c-iter, Col0, Col1);
+    my Array[Gnome::GObject::Value] $va = $c-ls.get-value( $c-iter, Col0, Col1);
 
-    note $row.fmt('%4d'), ' | ',
+    note $row.fmt('%5.5s'), ' | ',
          $va[Col0].get-int.fmt('%6d'), ' | ',
          $va[Col1].get-string;
 
