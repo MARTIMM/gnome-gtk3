@@ -522,16 +522,16 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
   #$p6-type ~~ s/ str /Str/;
 
+  $p6-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
+                   gushort || guint16 || gulong || guint64 ||
+                   gsize || uint32 || uint64 || uint
+                 /UInt/;
+
   $p6-type ~~ s:s/ gboolean || gint || gint32 ||
                    gchar || gint8 || gshort || gint16 ||
                    glong || gint64 ||
                    gssize || goffset || int32 || int64 || int
                  /Int/;
-
-  $p6-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
-                   gushort || guint16 || gulong || guint64 ||
-                   gsize || uint32 || uint64 || uint
-                 /UInt/;
 
 #  $p6-type ~~ s:s/ int /Int/;
 #  $p6-type ~~ s:s/ uint /UInt/;

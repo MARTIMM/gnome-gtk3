@@ -239,13 +239,13 @@ Creates a new list store with columns each of the types passed in. Note that onl
 
 =comment As an example, C<$l.gtk_list_store_new( 3, G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, string and B<Gnome::Gdk3::Pixbuf> respectively.
 
-As an example, C<$l.gtk_list_store_new( 3, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, and two of type string respectively.
+As an example, C<$l.gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, and two of type string respectively.
 
 Returns: a new B<Gnome::Gtk3::ListStore>
 
-  method gtk_list_store_new ( *@column-types --> N-GObject )
+  method gtk_list_store_new ( Int $column-type, ... --> N-GObject )
 
-=item @column-types: all B<GType> types for the columns, from first to last
+=item Int $column-type; all B<GType> types for the columns, from first to last
 
 =end pod
 
