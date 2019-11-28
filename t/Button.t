@@ -1,4 +1,5 @@
 use v6;
+#use lib '../perl6-gnome-glib/lib';
 
 use NativeCall;
 use Test;
@@ -61,7 +62,7 @@ subtest 'Button as container', {
   # when gtk-container-add is used.
   is $button2.get-label, Any, 'text cannot be returned like this anymore';
 
-  $gl.g-list-free;
+  $gl.clear-list;
   $gl = Gnome::Glib::List;
 }
 

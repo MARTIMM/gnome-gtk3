@@ -1,4 +1,5 @@
 use v6;
+#use lib '../perl6-gnome-glib/lib';
 use NativeCall;
 use Test;
 
@@ -25,7 +26,7 @@ subtest 'Manipulations', {
   $g.gtk-grid-attach( $button, 0, 0, 1, 1);
   $gl .= new(:glist($g.get-children));
   is $gl.g-list-length, 1, '.gtk-grid-attach()';
-  $gl.g-list-free;
+  $gl.clear-list;
 
   $g.remove-row(0);
   nok $g.get-children, '.remove-row()';
@@ -36,7 +37,7 @@ subtest 'Manipulations', {
   $g.grid-attach( $button, 0, 0, 1, 1);
   $gl .= new(:glist($g.get-children));
   is $gl.g-list-length, 1, '.grid-attach() testing _fallback()';
-  $gl.g-list-free;
+  $gl.clear-list;
   $g.remove-row(0);
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
@@ -46,13 +47,13 @@ subtest 'Manipulations', {
   $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:glist($g.get-children));
   is $gl.g-list-length, 1, '.attach() testing _fallback()';
-  $gl.g-list-free;
+  $gl.clear-list;
 
   my Gnome::Gtk3::Label $label .= new(:text('note'));
   $g.attach-next-to( $label, $button, GTK_POS_RIGHT, 1, 1);
   $gl .= new(:glist($g.get-children));
   is $gl.g-list-length, 2, '.attach-next-to()';
-  $gl.g-list-free;
+  $gl.clear-list;
 
   my Gnome::Gtk3::Label $label-widget .= new(:widget($g.get-child-at( 1, 0)));
   is $label-widget.get-text, 'note', '.get-child-at()';
@@ -79,7 +80,7 @@ subtest 'Inherit from Container', {
   my Gnome::Gtk3::Label $label-widget .= new(:widget($gl.nth-data-gobject(0)));
   is $label-widget.get-text, 'note', 'text from label';
 
-  $gl.g-list-free;
+  $gl.clear-list;
   $gl = Gnome::Glib::List;
 }
 
