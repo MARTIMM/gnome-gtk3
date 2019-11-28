@@ -5,8 +5,10 @@
     url: '/content-docs/reference/Glib/Error.html'
     doc: 3
     test: 5
-#  - title: "List"
-#    url: '/content-docs/nyi-reference.html'
+  - title: "List"
+    url: '/content-docs/reference/Glib/List.html'
+    doc: 1
+    test: 1
 #  - title: "Main"
 #    url: '/content-docs/nyi-reference.html'
   - title: "Quark"
