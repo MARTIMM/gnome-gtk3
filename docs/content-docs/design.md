@@ -479,7 +479,7 @@ GObject                                               Object
 ├── GtkTreeModelFilter
 ├── GtkTreeModelSort
 ├── GtkTreeSelection
-├── GtkTreeStore
+├── GtkTreeStore                                      TreeStore
 ├─✗ GtkUIManager
 ├── GtkWindowGroup
 ├── GtkTooltip
