@@ -32,7 +32,13 @@ The codes will show what is tested or not in the source code. The developer can 
   * `P` for properties
   * `E` for enums
   * `T` for structures
-Then a colon ':' with a digit to show it is tested or not; 0 not tested, 1 tested in test script, 2 tested elsewhere, 4 used elsewhere (binary, so combinations are possible. 2 and 4 is not easy to find out). Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
+Then a colon ':' with a hex digit to show if it is tested or not;
+  * 0 not tested
+  * 1 tested in test script
+  * 2 tested elsewhere
+  * 4 used elsewhere
+  * FF Not supported
+It is binary, so combinations are possible exept with 16. 2 and 4 is not easy to find out. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
 
 Absence of codes means that a particular item is not tested.
 
@@ -111,6 +117,7 @@ Absence of codes means that a particular item is not tested.
 * [ ] Reorder the list of methods in all modules in such a way that they are sorted.
 * [ ] Many methods return native objects. this could be molded into p6 objects when possible.
 * [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object.
+* [ ] Add 'is export' to all subs in interface modules.
 
 # Interface using modules
 
