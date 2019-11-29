@@ -376,12 +376,12 @@ Returns the number of columns supported by I<tree_model>.
 
   method gtk_tree_model_get_n_columns ( --> Int  )
 
-
 =end pod
 
 sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
   returns int32
   is native(&gtk-lib)
+  is export
   { * }
 
 #-------------------------------------------------------------------------------
@@ -391,15 +391,16 @@ sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
 
 Returns the type of the column.
 
-  method gtk_tree_model_get_column_type ( Int $index_ --> int32  )
+  method gtk_tree_model_get_column_type ( Int $index --> int32  )
 
-=item Int $index_; the column index
+=item Int $index; the column index
 
 =end pod
 
-sub gtk_tree_model_get_column_type ( N-GObject $tree_model, int32 $index_ )
+sub gtk_tree_model_get_column_type ( N-GObject $tree_model, int32 $index )
   returns int32
   is native(&gtk-lib)
+  is export
   { * }
 
 #-------------------------------------------------------------------------------
