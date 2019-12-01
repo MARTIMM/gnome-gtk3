@@ -190,6 +190,36 @@ div.release-notes {
   height: 100%;
 }
 
+ul {
+  li {
+//    list-style-position: inside;
+//    list-style: disc;
+    list-style-type: square;
+    padding-left: 15px;
+    margin-left: 15px;
+
+    li {
+      list-style-type: circle;
+    }
+  }
+
+  .task-list-item {
+    list-style: none;
+    padding-left: 0px;
+    margin-left: 0px;
+
+    li {
+      margin-left: 20px;
+    }
+  }
+}
+
+ol li {
+  list-style-position: inside;
+  list-style: decimal;
+  padding-left: 3px;
+}
+
 .sidebar {
   float: left;
   border: 1px solid #aaa;
@@ -224,7 +254,7 @@ div.release-notes {
     margin-bottom: 4px;
   }
 
-  ul {
+  ul.sidebar-list {
     margin: 0;
     padding: 0 5px 0 5px;
 
@@ -232,6 +262,7 @@ div.release-notes {
       list-style-type: none;
       list-style: none;
       margin-bottom: 3px;
+      margin-left: 0;
       padding: 0 0 0 4px;
       line-height: 1.6;
 
@@ -388,6 +419,10 @@ p {
       margin-bottom: 0px;
     }
   }
+}
+
+table th {
+  font-weight: bold;
 }
 
 .highlight table, .highlight td {
