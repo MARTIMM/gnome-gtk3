@@ -111,9 +111,6 @@ Declaration
     also is Gnome::GObject::Object;
     also does Gnome::Gtk3::Buildable;
     also does Gnome::Gtk3::TreeModel;
-    also does Gnome::Gtk3::TreeDragSource;
-    also does Gnome::Gtk3::TreeDragDest;
-    also does Gnome::Gtk3::TreeSortable;
 
 Methods
 =======
@@ -138,29 +135,18 @@ gtk_list_store_new
 
 Creates a new list store with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
 
-As an example, `$l.gtk_list_store_new( 3, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);` will create a new **Gnome::Gtk3::ListStore** with three columns, of type int, and two of type string respectively.
+As an example, `$ls.gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);` will create a new **Gnome::Gtk3::ListStore** with three columns, of type int, and two of type string respectively.
 
 Returns: a new **Gnome::Gtk3::ListStore**
 
-    method gtk_list_store_new ( *@column-types --> N-GObject )
+    method gtk_list_store_new ( Int $column-type, ... --> N-GObject )
 
-  * @column-types: all **GType** types for the columns, from first to last
-
-[gtk_list_store_] set_column_types
-----------------------------------
-
-This function is meant primarily for **GObjects** that inherit from **Gnome::Gtk3::ListStore**, and should only be used when constructing a new **Gnome::Gtk3::ListStore**. It will not function after a row has been added, or a method on the **Gnome::Gtk3::TreeModel** interface is called.
-
-    method gtk_list_store_set_column_types ( Int $n_columns, int32 $types )
-
-  * Int $n_columns; Number of columns for the list store
-
-  * int32 $types; (array length=n_columns): An array length n of **GTypes**
+  * Int $column-type; all **GType** types for the columns, from first to last
 
 [gtk_list_store_] set_value
 ---------------------------
 
-Sets the data in the cell specified by *iter* and *column*. The type of *value* must be convertible to the type of the column.
+Sets the data in the cell specified by *$iter* and *$column*. The type of *$value* must be convertible to the type of the column.
 
     method gtk_list_store_set_value (
       Gnome::Gtk3::TreeIter $iter, Int $column, Any $value
@@ -175,13 +161,13 @@ Sets the data in the cell specified by *iter* and *column*. The type of *value* 
 gtk_list_store_set
 ------------------
 
-Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type `G_TYPE_STRING` to “Foo”, you would write `gtk_list_store_set( iter, 0, "Foo")`.
+Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type `G_TYPE_STRING` to “Foo”, you would write `$ls.gtk_list_store_set( $iter, 0, "Foo")`.
 
 The value will be referenced by the store if it is a `G_TYPE_OBJECT`, and it will be copied if it is a `G_TYPE_STRING` or `G_TYPE_BOXED`.
 
     method gtk_list_store_set ( Gnome::Gtk3::TreeIter $iter, $col, $val, ... )
 
-  * $iter; row iterator
+  * Gnome::Gtk3::TreeIter $iter; A valid row iterator for the row being modified
 
   * $col, $val; pairs of column number and value
 
@@ -204,8 +190,6 @@ Creates a new row at *$position*. The returned iterator will be changed to point
 
     method gtk_list_store_insert ( Int $position --> Gnome::Gtk3::TreeIter )
 
-  * N-GtkTreeIter $iter; (out): An unset **Gnome::Gtk3::TreeIter** to set to the new row
-
   * Int $position; position to insert the new row, or -1 for last
 
 [gtk_list_store_] insert_before
@@ -218,7 +202,7 @@ Inserts a new row before *$sibling*. If *$sibling* is `Any`, then the row will b
       --> Gnome::Gtk3::TreeIter
     )
 
-  * Gnome::Gtk3::TreeIter $sibling; A valid **Gnome::Gtk3::TreeIter** or `Any`
+  * Gnome::Gtk3::TreeIter $sibling; A valid iterator or `Any`
 
 [gtk_list_store_] insert_after
 ------------------------------
@@ -230,17 +214,17 @@ Inserts a new row after *$sibling*. If *$sibling* is `Any`, then the row will be
       --> Gnome::Gtk3::TreeIter
     )
 
-  * Gnome::Gtk3::TreeIter $sibling; A valid **Gnome::Gtk3::TreeIter**, or `Any`
+  * Gnome::Gtk3::TreeIter $sibling; A valid iterator, or `Any`
 
 [gtk_list_store_] insert_with_values
 ------------------------------------
 
 Creates a new row at *position*. *iter* will be changed to point to this new row. If *position* is -1, or larger than the number of rows in the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
-Calling `$list-store.gtk_list_store_insert_with_values( position, ...)` has the same effect as calling;
+Calling `$ls.gtk_list_store_insert_with_values(...)` has the same effect as calling;
 
-    $iter = $list-store.gtk-list-store-insert($position);
-    $list-store.gtk-list-store-set( $iter, ...);
+    $iter = $ls.gtk-list-store-insert($position);
+    $ls.gtk-list-store-set( $iter, ...);
 
 with the difference that the former will only emit a *row-inserted* signal, while the latter will emit *row-inserted*, *row-changed* and, if the list store is sorted, *rows-reordered*. Since emitting the *rows-reordered* signal repeatedly can affect the performance of the program, `gtk_list_store_insert_with_values()` should generally be preferred when inserting rows in a sorted list store.
 
@@ -253,7 +237,7 @@ Since: 2.6
 
   * Int $position; row position to insert the new row, or -1 to append after existing rows
 
-  * ...; the rest are pairs of column number and value
+  * Int $column, $value, ...; the rest are pairs of column number and value
 
 gtk_list_store_prepend
 ----------------------
@@ -281,9 +265,9 @@ Removes all rows from the list store.
 [gtk_list_store_] iter_is_valid
 -------------------------------
 
-> This function is slow. Only use it for debugging and/or testing > purposes.
+WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
-Checks if the given iter is a valid iter for this **Gnome::Gtk3::ListStore**.
+Checks if the given iter is a valid iter for this list store.
 
 Returns: `1` if the iter is valid, `0` if the iter is invalid.
 
