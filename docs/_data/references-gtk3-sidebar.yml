@@ -176,6 +176,10 @@
     url: '/content-docs/reference/Gtk3/ListStore.html'
     doc: 1
     test: 1
+  - title: "TreeStore"
+    url: '/content-docs/reference/Gtk3/TreeStore.html'
+    doc: 1
+    test: 1
 
   - title: '-'
 

@@ -97,7 +97,6 @@ subtest 'Manipulations', {
   is $va[E0].get-string, 'en nog een zinnetje', '.gtk_tree_store_remove()';
   $va[E0].unset;
 
-
   $iter = $ts.insert( Any, 0);
   $ts.set( $iter, Col0, 5005, Col1, 'dus');
   $parent-iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('0')));
@@ -142,8 +141,41 @@ subtest 'Manipulations', {
      '.gtk_tree_store_insert_after()';
   $va[E0].unset;
 
+  $parent-iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2')));
+  $iter = $ts.insert-with-values(
+    $parent-iter, 2, Col0, 101, Col1, 'one o one'
+  );
+
+  $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2:2')));
+  $va = $ts.get-value( $iter, Col1);
+  is $va[E0].get-string, 'one o one', '.insert-with-values()';
+  $va[E0].unset;
+
+  $tp .= new(:string('1:0'));
+  $parent-iter = $ts.get-iter($tp);
+  $iter = $ts.tree-store-prepend($parent-iter);
+  $ts.set( $iter, Col0, 123, Col1, 'uno dos tres');
+  $va = $ts.get-value( $iter, Col1);
+  is $va[E0].get-string, 'uno dos tres', '.gtk-tree-store-prepend()';
+  $va[E0].unset;
+
+  ok $ts.is-ancestor( $parent-iter, $iter), '.is-ancestor()';
+  is $ts.iter-depth($parent-iter), 1, '.iter-depth()';
+
+  $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2:2')));
+  ok $ts.iter-is-valid($iter), '.iter-is-valid()';
+  $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('12:20:1')));
+  nok $ts.iter-is-valid($iter), '.iter-is-valid() not valid get-iter() returns Null';
 
   $ts.foreach( ShowTabel.new, 'show-entry');
+  note ' ';
+
+
+  $ts.tree-store-clear;
+  is $ts.iter-n-children(Any), 0, '.tree-store-clear()';
+
+  $ts.foreach( ShowTabel.new, 'show-entry');
+  note ' ';
 }
 
 #`{{

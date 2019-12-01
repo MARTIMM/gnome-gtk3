@@ -166,15 +166,15 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_new:
+#TM:2:gtk_tree_store_new:new(:field-types)
 =begin pod
 =head2 gtk_tree_store_new
 
 Creates a new tree store as with columns each of the types passed in.  Note that only types derived from standard GObject fundamental types are supported.
 
-=comment As an example, C<$t.gtk_tree_store_new( 3, G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);> will create a new B<Gnome::Gtk3::TreeStore> with three columns, of type int, string and B<Gnome::Gdk3::Pixbuf> respectively.
+=comment As an example, C<$ts.gtk_tree_store_new( 3, G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);> will create a new B<Gnome::Gtk3::TreeStore> with three columns, of type int, string and B<Gnome::Gdk3::Pixbuf> respectively.
 
-As an example, C<$l.gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, and two of type string respectively.
+As an example, C<$ts.gtk_tree_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::TreeStore> with three columns, of type int, and two of type string respectively.
 
 Returns: a new B<Gnome::Gtk3::TreeStore>
 
@@ -572,45 +572,105 @@ sub _gtk_tree_store_insert_after (
   is symbol('gtk_tree_store_insert_after')
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_insert_with_values:
+#TM:1:gtk_tree_store_insert_with_values:
 =begin pod
 =head2 [gtk_tree_store_] insert_with_values
 
-Creates a new row at I<position>. I<iter> will be changed to point to this
-new row. If I<position> is -1, or larger than the number of rows on the list, then
-the new row will be appended to the list. The row will be filled with
-the values given to this function.
+Creates a new row at I<position>. I<iter> will be changed to point to this new row. If I<position> is -1, or larger than the number of rows on the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
-Calling
-`gtk_tree_store_insert_with_values (tree_store, iter, position, ...)`
-has the same effect as calling
-|[<!-- language="C" -->
-gtk_tree_store_insert (tree_store, iter, position);
-gtk_tree_store_set (tree_store, iter, ...);
-]|
-with the different that the former will only emit a row_inserted signal,
-while the latter will emit row_inserted, row_changed and if the tree store
-is sorted, rows_reordered.  Since emitting the rows_reordered signal
-repeatedly can affect the performance of the program,
-C<gtk_tree_store_insert_with_values()> should generally be preferred when
-inserting rows in a sorted tree store.
+Calling C<$ts.gtk_tree_store_insert_with_values(...)> has the same effect as calling;
+
+  $iter = $ts.gtk_tree_store_insert( $parent-iter, $position);
+  $ts.gtk_tree_store_set( $iter, ...);
+
+with the difference that the former will only emit a I<row-inserted> signal, while the latter will emit I<row-inserted>, I<row-changed> and if the tree store is sorted, I<rows-reordered>.  Since emitting the C<rows-reordered> signal repeatedly can affect the performance of the program, C<gtk_tree_store_insert_with_values()> should generally be preferred when inserting rows in a sorted tree store.
 
 Since: 2.10
 
-  method gtk_tree_store_insert_with_values ( Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $parent, Int $position )
+  method gtk_tree_store_insert_with_values (
+    Gnome::Gtk3::TreeIter $parent, Int $position, Int $column, $value, ...
+    --> Gnome::Gtk3::TreeIter
+  )
 
-=item Gnome::Gtk3::TreeIter $iter; (out) (allow-none): An unset B<Gnome::Gtk3::TreeIter> to set the new row, or C<Any>.
-=item Gnome::Gtk3::TreeIter $parent; (allow-none): A valid B<Gnome::Gtk3::TreeIter>, or C<Any>
-=item Int $position; position to insert the new row, or -1 to append after existing rows @...: pairs of column number and value, terminated with -1
+=item Gnome::Gtk3::TreeIter $parent; A valid iterator, or C<Any>.
+=item Int $position; position to insert the new row, or -1 to append after existing rows
+=item Int $column, $value, ...; the rest are pairs of column number and value
 
 =end pod
 
-sub gtk_tree_store_insert_with_values ( N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTreeIter $parent, int32 $position, Any $any = Any )
-  is native(&gtk-lib)
-  { * }
-}}
+sub gtk_tree_store_insert_with_values (
+  N-GObject $tree_store, $parent,
+  int32 $position, *@column-value-list
+  --> Gnome::Gtk3::TreeIter
+) {
+
+  die X::Gnome.new(:message('Odd number of items in list: colno, val, ...'))
+    unless @column-value-list %% 2;
+
+  my @parameter-list = (
+    Parameter.new(type => N-GObject),         # $tree_store
+    Parameter.new(type => N-GtkTreeIter),     # returned iterator
+    Parameter.new(type => N-GtkTreeIter),     # parent iterator
+    Parameter.new(type => int32),             # $position
+  );
+
+  my Gnome::GObject::Value $v;
+  my Gnome::GObject::Type $t .= new;
+  my @column-values = ();
+  my Int $n-columns = gtk_tree_model_get_n_columns($tree_store);
+
+  for @column-value-list -> $c, $value {
+    die X::Gnome.new(:message(
+      "Column nbr out of range: [0 .. {$n-columns - 1}]")
+    ) unless $c < $n-columns;
+
+    # column number
+    @column-values.push: $c;
+
+    # column value
+    my $type = gtk_tree_model_get_column_type( $tree_store, $c);
+    given $type {
+      when G_TYPE_OBJECT { @column-values.push: $value.get-native-gobject; }
+      when G_TYPE_BOXED { @column-values.push: $value.get-native-gboxed; }
+
+  #    when G_TYPE_POINTER { $p .= new(type => ); }
+  #    when G_TYPE_PARAM { $p .= new(type => ); }
+  #    when G_TYPE_VARIANT {$p .= new(type => ); }
+
+      default {
+        @column-values.push: $value;
+      }
+    }
+
+    @parameter-list.push: Parameter.new(type => int32);
+    @parameter-list.push: $t.get-parameter( $type, :otype($value));
+  }
+
+  # to finish the list with -1
+  @parameter-list.push: Parameter.new(type => int32);
+
+  # create signature
+  my Signature $signature .= new(
+    :params( |@parameter-list),
+    :returns(int32)
+  );
+
+  # get a pointer to the sub, then cast it to a sub with the proper
+  # signature. after that, the sub can be called, returning a value.
+  state $ptr = cglobal( &gtk-lib, 'gtk_tree_store_insert_with_values', Pointer);
+  my Callable $f = nativecast( $signature, $ptr);
+
+  my N-GtkTreeIter $ni .= new;
+  $f( $tree_store, $ni, $parent, $position, |@column-values, -1);
+
+  Gnome::Gtk3::TreeIter.new(:tree-iter($ni))
+}
+
+#sub gtk_tree_store_insert_with_values ( N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTreeIter $parent, int32 $position, Any $any = Any )
+#  is native(&gtk-lib)
+#  { * }
+
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -641,25 +701,34 @@ sub gtk_tree_store_insert_with_valuesv ( N-GObject $tree_store, N-GtkTreeIter $i
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_prepend:
+#TM:1:gtk_tree_store_prepend:
 =begin pod
 =head2 gtk_tree_store_prepend
 
-Prepends a new row to I<tree_store>.  If I<parent> is non-C<Any>, then it will prepend
-the new row before the first child of I<parent>, otherwise it will prepend a row
-to the top level.  I<iter> will be changed to point to this new row.  The row
-will be empty after this function is called.  To fill in values, you need to
-call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
+Prepends a new row to the tree_store.  If I<$parent> is non-C<Any>, then it will prepend the new row before the first child of I<$parent>, otherwise it will prepend a row to the top level.  The returned iterator will point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
 
-  method gtk_tree_store_prepend ( Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $parent )
+  method gtk_tree_store_prepend (
+    Gnome::Gtk3::TreeIter $parent
+    --> Gnome::Gtk3::TreeIter
+  )
 
-=item Gnome::Gtk3::TreeIter $iter; (out): An unset B<Gnome::Gtk3::TreeIter> to set to the prepended row
-=item Gnome::Gtk3::TreeIter $parent; (allow-none): A valid B<Gnome::Gtk3::TreeIter>, or C<Any>
+=item Gnome::Gtk3::TreeIter $parent; A valid iterator, or C<Any>
 
 =end pod
 
-sub gtk_tree_store_prepend ( N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTreeIter $parent )
-  is native(&gtk-lib)
+sub gtk_tree_store_prepend (
+  N-GObject $list_store, N-GtkTreeIter $parent
+  --> Gnome::Gtk3::TreeIter
+) {
+  my N-GtkTreeIter $iter .= new;
+  _gtk_tree_store_prepend( $list_store, $iter, $parent);
+  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+}
+
+sub _gtk_tree_store_prepend (
+  N-GObject $tree_store, N-GtkTreeIter $iter is rw, N-GtkTreeIter $parent
+) is native(&gtk-lib)
+  is symbol('gtk_tree_store_prepend')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -667,7 +736,7 @@ sub gtk_tree_store_prepend ( N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTr
 =begin pod
 =head2 gtk_tree_store_append
 
-Appends a new row to I<tree_store>.  If I<parent> is non-C<Any>, then it will append the new row after the last child of I<parent>, otherwise it will append a row to the top level.  I<iter> will be changed to point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
+Appends a new row to $list_store.  If I<parent> is non-C<Any>, then it will append the new row after the last child of I<parent>, otherwise it will append a row to the top level.  I<iter> will be changed to point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
 
   method gtk_tree_store_append (
     Gnome::Gtk3::TreeIter $parent
@@ -696,40 +765,38 @@ sub _gtk_tree_store_append (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_is_ancestor:
+#TM:1:gtk_tree_store_is_ancestor:
 =begin pod
 =head2 [gtk_tree_store_] is_ancestor
 
-Returns C<1> if I<iter> is an ancestor of I<descendant>.  That is, I<iter> is the
-parent (or grandparent or great-grandparent) of I<descendant>.
+Returns C<1> if I<$iter> is an ancestor of I<$descendant>.  That is, I<$iter> is the parent (or grandparent or great-grandparent) of I<$descendant>.
 
-Returns: C<1>, if I<iter> is an ancestor of I<descendant>
+  method gtk_tree_store_is_ancestor (
+    Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $descendant
+    --> Int
+  )
 
-  method gtk_tree_store_is_ancestor ( Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $descendant --> Int  )
-
-=item Gnome::Gtk3::TreeIter $iter; A valid B<Gnome::Gtk3::TreeIter>
-=item Gnome::Gtk3::TreeIter $descendant; A valid B<Gnome::Gtk3::TreeIter>
+=item Gnome::Gtk3::TreeIter $iter; A valid iterator
+=item Gnome::Gtk3::TreeIter $descendant; A valid iterator
 
 =end pod
 
-sub gtk_tree_store_is_ancestor ( N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTreeIter $descendant )
-  returns int32
+sub gtk_tree_store_is_ancestor (
+  N-GObject $tree_store, N-GtkTreeIter $iter, N-GtkTreeIter $descendant
+) returns int32
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_iter_depth:
+#TM:1:gtk_tree_store_iter_depth:
 =begin pod
 =head2 [gtk_tree_store_] iter_depth
 
-Returns the depth of I<iter>.  This will be 0 for anything on the root level, 1
-for anything down a level, etc.
-
-Returns: The depth of I<iter>
+Returns the depth of I<$iter>.  This will be 0 for anything on the root level, 1 for anything down a level, etc.
 
   method gtk_tree_store_iter_depth ( Gnome::Gtk3::TreeIter $iter --> Int  )
 
-=item Gnome::Gtk3::TreeIter $iter; A valid B<Gnome::Gtk3::TreeIter>
+=item Gnome::Gtk3::TreeIter $iter; A valid iterator
 
 =end pod
 
@@ -739,14 +806,13 @@ sub gtk_tree_store_iter_depth ( N-GObject $tree_store, N-GtkTreeIter $iter )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_clear:
+#TM:1:gtk_tree_store_clear:
 =begin pod
 =head2 gtk_tree_store_clear
 
-Removes all rows from I<tree_store>
+Removes all rows from $list_store
 
   method gtk_tree_store_clear ( )
-
 
 =end pod
 
@@ -755,16 +821,15 @@ sub gtk_tree_store_clear ( N-GObject $tree_store )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_store_iter_is_valid:
+#TM:1:gtk_tree_store_iter_is_valid:
 =begin pod
 =head2 [gtk_tree_store_] iter_is_valid
 
-WARNING: This function is slow. Only use it for debugging and/or testing
-purposes.
+WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
-Checks if the given iter is a valid iter for this B<Gnome::Gtk3::TreeStore>.
+Checks if the given I<$iter> is a valid iter for this tree store.
 
-Returns: C<1> if the iter is valid, C<0> if the iter is invalid.
+Returns: C<1> if the I<$iter> is valid, C<0> if the iter is invalid.
 
 Since: 2.2
 
@@ -784,21 +849,22 @@ sub gtk_tree_store_iter_is_valid ( N-GObject $tree_store, N-GtkTreeIter $iter )
 =begin pod
 =head2 gtk_tree_store_reorder
 
-Reorders the children of I<parent> in I<tree_store> to follow the order
-indicated by I<new_order>. Note that this function only works with
-unsorted stores.
+Reorders the children of I<parent> in $list_store to follow the order indicated by I<new_order>. Note that this function only works with unsorted stores.
 
 Since: 2.2
 
-  method gtk_tree_store_reorder ( Gnome::Gtk3::TreeIter $parent, Int $new_order )
+  method gtk_tree_store_reorder (
+    Gnome::Gtk3::TreeIter $parent, Int $new_order
+  )
 
-=item Gnome::Gtk3::TreeIter $parent; (nullable): A B<Gnome::Gtk3::TreeIter>, or C<Any>
+=item Gnome::Gtk3::TreeIter $parent; (nullable): An iterator, or C<Any>
 =item Int $new_order; (array): an array of integers mapping the new position of each child to its old position before the re-ordering, i.e. I<new_order>`[newpos] = oldpos`.
 
 =end pod
 
-sub gtk_tree_store_reorder ( N-GObject $tree_store, N-GtkTreeIter $parent, int32 $new_order )
-  is native(&gtk-lib)
+sub gtk_tree_store_reorder (
+  N-GObject $tree_store, N-GtkTreeIter $parent, int32 $new_order
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
@@ -806,15 +872,16 @@ sub gtk_tree_store_reorder ( N-GObject $tree_store, N-GtkTreeIter $parent, int32
 =begin pod
 =head2 gtk_tree_store_swap
 
-Swaps I<a> and I<b> in the same level of I<tree_store>. Note that this function
-only works with unsorted stores.
+Swaps I<$a> and I<$b> in the same level of $list_store. Note that this function only works with unsorted stores.
 
 Since: 2.2
 
-  method gtk_tree_store_swap ( Gnome::Gtk3::TreeIter $a, Gnome::Gtk3::TreeIter $b )
+  method gtk_tree_store_swap (
+    Gnome::Gtk3::TreeIter $a, Gnome::Gtk3::TreeIter $b
+  )
 
-=item Gnome::Gtk3::TreeIter $a; A B<Gnome::Gtk3::TreeIter>.
-=item Gnome::Gtk3::TreeIter $b; Another B<Gnome::Gtk3::TreeIter>.
+=item Gnome::Gtk3::TreeIter $a; An iterator.
+=item Gnome::Gtk3::TreeIter $b; Another iterator.
 
 =end pod
 
@@ -827,17 +894,16 @@ sub gtk_tree_store_swap ( N-GObject $tree_store, N-GtkTreeIter $a, N-GtkTreeIter
 =begin pod
 =head2 [gtk_tree_store_] move_before
 
-Moves I<iter> in I<tree_store> to the position before I<position>. I<iter> and
-I<position> should be in the same level. Note that this function only
-works with unsorted stores. If I<position> is C<Any>, I<iter> will be
-moved to the end of the level.
+Moves I<$iter> in $list_store to the position before I<$position>. I<$iter> and I<$position> should be in the same level. Note that this function only works with unsorted stores. If I<$position> is C<Any>, I<$iter> will be moved to the end of the level.
 
 Since: 2.2
 
-  method gtk_tree_store_move_before ( Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $position )
+  method gtk_tree_store_move_before (
+    Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $position
+  )
 
-=item Gnome::Gtk3::TreeIter $iter; A B<Gnome::Gtk3::TreeIter>.
-=item Gnome::Gtk3::TreeIter $position; (allow-none): A B<Gnome::Gtk3::TreeIter> or C<Any>.
+=item Gnome::Gtk3::TreeIter $iter; An iterator.
+=item Gnome::Gtk3::TreeIter $position; (allow-none): An iterator or C<Any>.
 
 =end pod
 
@@ -850,14 +916,13 @@ sub gtk_tree_store_move_before ( N-GObject $tree_store, N-GtkTreeIter $iter, N-G
 =begin pod
 =head2 [gtk_tree_store_] move_after
 
-Moves I<iter> in I<tree_store> to the position after I<position>. I<iter> and
-I<position> should be in the same level. Note that this function only
-works with unsorted stores. If I<position> is C<Any>, I<iter> will be moved
-to the start of the level.
+Moves I<$iter> in $list_store to the position after I<$position>. I<$iter> and I<position> should be in the same level. Note that this function only works with unsorted stores. If I<$position> is C<Any>, I<$iter> will be moved to the start of the level.
 
 Since: 2.2
 
-  method gtk_tree_store_move_after ( Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $position )
+  method gtk_tree_store_move_after (
+    Gnome::Gtk3::TreeIter $iter, Gnome::Gtk3::TreeIter $position
+  )
 
 =item Gnome::Gtk3::TreeIter $iter; A B<Gnome::Gtk3::TreeIter>.
 =item Gnome::Gtk3::TreeIter $position; (allow-none): A B<Gnome::Gtk3::TreeIter>.
