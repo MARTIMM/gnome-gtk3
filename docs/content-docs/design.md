@@ -85,7 +85,7 @@ The following is a (not very exhaustive) list of points which make up the design
     * `.gtk-grid-attach()`
     * `.grid-attach()`
 
-  All have their pros and cons. Longer names show where they are defined and short ones are faster to write. I propose to use short names when the subs are defined in the class you're calling them from and use the longer names when they are in parent classes and interface classes, also to prevent mismatches like explained above.
+  All have their pros and cons. Longer names show where they are defined and short ones are faster to write. I propose to use short names when the subs are defined in the class you're calling them from and use the longer names when they are in parent classes and interface classes, also to prevent mismatches like explained above. You can still leave the 'gtk_' part off without having doubt where the heck the sub came from. Take care using short names like `.append()`, `.new()` and others. As explained above, these are methods from **Any** or **Mu**. Some of them can be trapped by adding a method `append` to the module which will call the proper GTK+ sub, but for now that will be a TODO.
 
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Perl6 packages to support. Exceptions are e.g. **Gnome::Gtk3::Misc** which is kept to keep the hierarchy of classes in tact.
