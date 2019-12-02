@@ -191,6 +191,10 @@
     url: '/content-docs/reference/Gtk3/CellRendererText.html'
     doc: 1
     test: 1
+  - title: "CellRendererProgress"
+    url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
+    doc: 1
+    test: 1
   - title: "CellRendererToggle"
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
     doc: 1

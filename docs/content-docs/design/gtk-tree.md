@@ -161,7 +161,7 @@ GObject                                               Object
 │   │   │   ├── GtkCellRendererCombo
 │   │   │   ╰── GtkCellRendererSpin
 │   │   ├── GtkCellRendererPixbuf
-│   │   ├── GtkCellRendererProgress
+│   │   ├── GtkCellRendererProgress                   CellRendererProgress
 │   │   ├── GtkCellRendererSpinner
 │   │   ╰── GtkCellRendererToggle                     CellRendererToggle
 │   ├── GtkFileFilter                                 FileFilter
