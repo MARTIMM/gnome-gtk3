@@ -8,6 +8,7 @@ use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::ListStore;
 use Gnome::Gtk3::CellRendererText;
+use Gnome::Gtk3::CellRendererProgress;
 use Gnome::Gtk3::CellRendererToggle;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
@@ -27,7 +28,7 @@ class X {
   }
 }
 
-enum list-field-columns < TITLE-CODE TITLE SOLD >;
+enum list-field-columns < TITLE-CODE TITLE SOLD LIKE >;
 my Gnome::Gtk3::TreeIter $iter;
 
 
@@ -40,7 +41,7 @@ my Gnome::Gtk3::Grid $g .= new(:empty);
 $w.gtk-container-add($g);
 
 my Gnome::Gtk3::ListStore $ls .= new(
-  :field-types( G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN)
+  :field-types( G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT)
 );
 
 my Gnome::Gtk3::TreeView $tv .= new(:model($ls()));
@@ -73,8 +74,6 @@ $tv.append-column($tvc);
 
 
 my Gnome::Gtk3::CellRendererToggle $crt3 .= new(:empty);
-#$v .= new( :type(G_TYPE_STRING), :value<orange>);
-#$crt3.set-property( 'foreground', $v);
 $tvc .= new(:empty);
 $tvc.set-title('book sold out');
 $tvc.pack-end( $crt3, 1);
@@ -82,10 +81,18 @@ $tvc.add-attribute( $crt3, 'active', 2);
 $tv.append-column($tvc);
 
 
+my Gnome::Gtk3::CellRendererProgress $crt4 .= new(:empty);
+$tvc .= new(:empty);
+$tvc.set-title('rating');
+$tvc.pack-end( $crt4, 1);
+$tvc.add-attribute( $crt4, 'value', 3);
+$tv.append-column($tvc);
+
+
 my Array $data = [
-  [ 1001, 'duizend en een nacht', True],
-  [ 2002, 'een beetje later', False],
-  [ 3003, 'en nog een beetje tekst', False]
+  [ 1001, 'duizend en een nacht', True, 96],
+  [ 2002, 'een beetje later', False, 30],
+  [ 3003, 'en nog een beetje tekst', False, 71]
 ];
 
 for @$data -> $row {
