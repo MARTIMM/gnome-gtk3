@@ -14,7 +14,7 @@ layout: sidebar
 
 * [ ] Study ref/unref of gtk objects.
 
-* [x] Reverse testing procedures in `_fallback()` methods.
+* [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
@@ -25,7 +25,7 @@ layout: sidebar
   * [x] gdk
   * [x] gtk
 
-* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left of the sub name when used. So the above tests can become;
+* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left of the sub name when used. So the above tests becomes;
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
