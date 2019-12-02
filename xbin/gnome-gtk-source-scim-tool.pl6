@@ -1286,15 +1286,14 @@ sub get-signals ( Str:D $source-content is copy ) {
       EOBOOL
 
     $build-add-signals = Q:q:to/EOBUILD/;
-        # add signal info in the form of group\<signal-name>.
-        # groups are e.g. signal, event, nativeobject etc
-        unless \$signals-added {
-          \$signals-added = self.add-signal-types( \$?CLASS.^name,
+        # add signal info in the form of w*<signal-name>.
+        unless $signals-added {
+          $signals-added = self.add-signal-types( $?CLASS.^name,
             SIG_CLASS_STR
           );
 
           # signals from interfaces
-          #_add_..._signal_types(\$?CLASS.^name);
+          #_add_..._signal_types($?CLASS.^name);
         }
       EOBUILD
       $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
