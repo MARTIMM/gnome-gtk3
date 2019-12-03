@@ -4,6 +4,7 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
   - 2019-12-02 0.20.0:
     - New modules CellRendererToggle, CellRendererProgress
+    - Method names can now be used in several ways. Please take a look at the design notes.
 
   - 2019-11-23 0.19.4:
     - Changes in tests caused by Gnome::Glib

@@ -42,38 +42,45 @@ The following is a (not very exhaustive) list of points which make up the design
   ```
   my Str $button-label = $button.get_label;
   ```
-  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[gtk_button_] get_label`.  Note that there is still a chance that a different method is found than the one you had in mind. The subs `gtk_widget_get_name()` and `gtk_buildable_get_name()` have the same short version n.l. `get_name()`. So it is important to know what the search path is, which is;
-    * search in the current class
-    * search in their interfaces
-    * search in parent class
-    * search in parent class interfaces
-    * etc.
-  So it follows that the `gtk_buildable_get_name()` has a higher priority than `gtk_widget_get_name()` when search starts at e.g. Button class.
-  Also the `g_`, `gdk_` and `gtk_` prefixes can be chopped from the name.
-
-* Names can not be shortened too much. E.g. `gtk_button_new()` and `gtk_label_new()` yield the name *new* which is a perl method from class **Mu**. There are other exceptions where the possibilities are narrowed. This happens when real methods are implemented instead of subs. This difference is not yet visible in the documentation.
+  In the documentation this will be shown with brackets around the part that can be left out. In this case it is shown as `[[gtk]_button_] get_label`.  
+* Names can not be shortened too much. E.g. `gtk_button_new()` and `gtk_label_new()` yield the name *new* which is a Perl6 method from class **Mu**. There are other exceptions where the possibilities are narrowed. This happens when real methods are implemented instead of subs. This difference is not yet visible in the documentation.
 
 * All the subroutine names are written with an underscore. However, following a perl6 tradition, dashed versions are also possible.
   ```
   my Str $button-label1 = $button.gtk-button-get-label;
   my Str $button-label2 = $button.get-label;
   ```
-  To give a few examples of calls with the same outcome;
-  * The prefix used in GTK for the class GtkListStore is gtk_list_store_. So the subroutine gtk_list_store_insert_before from **Gnome::Gtk3::ListStore** can be used as;
+  A few examples of all possible names which have the same outcome;
+  * The prefix used in GTK for the class GtkListStore is *gtk_list_store_*. So the subroutine gtk_list_store_insert_before from **Gnome::Gtk3::ListStore** can be used as;
     * `.gtk_list_store_insert_before()`
     * `.list_store_insert_before()`
     * `.insert_before()`
     * `.gtk-list-store-insert-before()`
     * `.list-store-insert-before()`
     * `.insert-before()`
-  * The prefix used in GTK for the class GtkGrid is gtk_grid. So the subroutine gtk_grid_attach from **Gnome::Gtk3::Grid** can be used as;
+  * The prefix used in GTK for the class GtkGrid is *gtk_grid_*. So the subroutine gtk_grid_attach from **Gnome::Gtk3::Grid** can be used as;
     * `.gtk_grid_attach()`
     * `.grid_attach()`
     * `.attach()`
     * `.gtk-grid-attach()`
     * `.grid-attach()`
+  * The prefix used in GTK for the class GValue is *g_value_*. So the subroutine g_value_reset from **Gnome::GObject::Value** can be used as;
+    * `.g_value_reset()`
+    * `.value_reset()`
+    * `.reset()`
+    * `.g-value-reset()`
+    * `.value-reset()`
 
-  All have their pros and cons. Longer names show where they are defined and short ones are faster to write. I propose to use short names when the subs are defined in the class you're calling them from and use the longer names when they are in parent classes and interface classes, also to prevent mismatches like explained above. You can still leave the 'gtk_' part off without having doubt where the heck the sub came from. Take care using short names like `.append()`, `.new()` and others. As explained above, these are methods from **Any** or **Mu**. Some of them can be trapped by adding a method `append` to the module which will call the proper GTK+ sub, but for now that will be a TODO.
+  All have their pros and cons. Longer names show where they are defined and short ones are easier to write. I propose to use short names when the subs are defined in the class you're calling them from and use the longer names when they are in parent classes and interface classes, also to prevent problems like explained above. You can still leave the 'gtk_' part off without having doubt where the heck the sub came from. Take care using short names like `.append()`, `.new()` and others. As explained above, these are methods from **Any** or **Mu**. Some of them can be trapped by adding a method `append` to the module which can call the proper GTK+ sub, but for now that will be a TODO.
+
+* There is still a chance that a different method is found than the one you had in mind. The subs `gtk_widget_get_name()` and `gtk_buildable_get_name()` have the same short version n.l. `get_name()`. So it is important to know what the search path is, which is;
+  * search in the current class
+  * search in their interfaces
+  * search in parent class
+  * search in parent class interfaces
+  * etc.
+
+  So it follows that the sub `get_name()` from **Gnome::Gtk3::Buildable** interface has a higher priority than `get_name()` found in **Gnome::Gtk3::Widget** when search starts at e.g. **Gnome::Gtk3::Button** class. To prevent these situations you better only leave of the prefixes `gtk_`, `gdk_` or `g_` to get `buildable-get-name()` or `widget-get-name()`.
 
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Perl6 packages to support. Exceptions are e.g. **Gnome::Gtk3::Misc** which is kept to keep the hierarchy of classes in tact.
