@@ -326,7 +326,7 @@ method _tree_model_interface ( $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_row_reference_new:
 =begin pod
-=head2 gtk_tree_row_reference_new
+=head2 [gtk_] tree_row_reference_new
 
 Creates a row reference based on I<$path>.
 
@@ -350,7 +350,7 @@ sub gtk_tree_row_reference_new ( N-GObject $model, N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_flags:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_flags
+=head2 [[gtk_] tree_model_] get_flags
 
 Returns a set of flags supported by this interface.
 
@@ -370,7 +370,7 @@ sub gtk_tree_model_get_flags ( N-GObject $tree_model )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_n_columns:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_n_columns
+=head2 [[gtk_] tree_model_] get_n_columns
 
 Returns the number of columns supported by I<tree_model>.
 
@@ -387,7 +387,7 @@ sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_column_type:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_column_type
+=head2 [[gtk_] tree_model_] get_column_type
 
 Returns the type of the column.
 
@@ -406,7 +406,7 @@ sub gtk_tree_model_get_column_type ( N-GObject $tree_model, int32 $index )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_iter:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_iter
+=head2 [[gtk_] tree_model_] get_iter
 
 Returns a valid iterator pointing to I<$path>.  If I<$path> does not exist, an invalid iterator is returned. Test with C<.tree-iter-is-valid()> to see if the iterator is ok.
 
@@ -449,7 +449,7 @@ sub _gtk_tree_model_get_iter (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_iter_from_string:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_iter_from_string
+=head2 [[gtk_] tree_model_] get_iter_from_string
 
 Returns a valid iterator pointing to I<$path_string>, if it exists. Otherwise, an invalid iterator is returned. Test with C<.tree-iter-is-valid()> to see if the iterator is ok.
 
@@ -492,7 +492,7 @@ sub _gtk_tree_model_get_iter_from_string (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_string_from_iter:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_string_from_iter
+=head2 [[gtk_] tree_model_] get_string_from_iter
 
 Generates a string representation of the iter.
 
@@ -518,7 +518,7 @@ sub gtk_tree_model_get_string_from_iter (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_iter_first:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_iter_first
+=head2 [[gtk_] tree_model_] get_iter_first
 
 Initializes I<iter> with the first iterator in the tree (the one at the path "0"). Returns an invalid iterator if the tree is empty.
 
@@ -555,7 +555,7 @@ sub _gtk_tree_model_get_iter_first (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_path:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_path
+=head2 [[gtk_] tree_model_] get_path
 
 Returns a newly-created B<Gnome::Gtk3::TreePath> referenced by I<$iter>.
 
@@ -587,7 +587,7 @@ sub _gtk_tree_model_get_path ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_get_value:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] get_value
+=head2 [[gtk_] tree_model_] get_value
 
 Returns an array of values found at the I<$iter> and I<$column>s.
 
@@ -628,7 +628,7 @@ sub _gtk_tree_model_get_value (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_previous:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_previous
+=head2 [[gtk_] tree_model_] iter_previous
 
 Sets I<$iter> to point to the previous node at the current level.
 
@@ -653,7 +653,7 @@ sub gtk_tree_model_iter_previous ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_next:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_next
+=head2 [[gtk_] tree_model_] iter_next
 
 Sets I<iter> to point to the node following it at the current level.
 
@@ -676,7 +676,7 @@ sub gtk_tree_model_iter_next ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_children:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_children
+=head2 [[gtk_] tree_model_] iter_children
 
 Returns an iterator to point to the first child of I<$parent>. B<Gnome::Gtk3::ListStore> does not have children but a B<Gnome::Gtk3::TreeStore> does.
 
@@ -720,7 +720,7 @@ sub _gtk_tree_model_iter_children ( N-GObject $tree_model, N-GtkTreeIter $iter, 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_has_child:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_has_child
+=head2 [[gtk_] tree_model_] iter_has_child
 
 Returns C<1> if I<$iter> has children, C<0> otherwise.
 
@@ -741,7 +741,7 @@ sub gtk_tree_model_iter_has_child ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_n_children:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_n_children
+=head2 [[gtk_] tree_model_] iter_n_children
 
 Returns the number of children that I<iter> has. As a special case, if I<iter> is undefined, then the number of toplevel nodes is returned.
 
@@ -770,7 +770,7 @@ sub _gtk_tree_model_iter_n_children (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_iter_nth_child:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] iter_nth_child
+=head2 [[gtk_] tree_model_] iter_nth_child
 
 Returns an iterator to be the child of I<$parent>, using the given index.
 
@@ -817,7 +817,7 @@ sub _gtk_tree_model_iter_nth_child ( N-GObject $tree_model, N-GtkTreeIter $iter,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_model_iter_parent:
 =begin pod
-=head2 [gtk_tree_model_] iter_parent
+=head2 [[gtk_] tree_model_] iter_parent
 
 Sets I<iter> to be the parent of I<child>.
 
@@ -847,7 +847,7 @@ sub gtk_tree_model_iter_parent ( N-GObject $tree_model, N-GtkTreeIter $iter, N-G
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_model_ref_node:
 =begin pod
-=head2 [gtk_tree_model_] ref_node
+=head2 [[gtk_] tree_model_] ref_node
 
 Lets the tree ref the node.
 
@@ -880,7 +880,7 @@ sub gtk_tree_model_ref_node ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_model_unref_node:
 =begin pod
-=head2 [gtk_tree_model_] unref_node
+=head2 [[gtk_] tree_model_] unref_node
 
 Lets the tree unref the node.
 
@@ -906,7 +906,7 @@ sub gtk_tree_model_unref_node ( N-GObject $tree_model, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_model_get:
 =begin pod
-=head2 gtk_tree_model_get
+=head2 [gtk_] tree_model_get
 
 Gets the value of a cell in the row referenced by I<$iter>. (Note that the API is not the same as it is shown on the GTK developers site!)
 
@@ -982,7 +982,7 @@ sub _gtk_tree_model_get (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_model_get_valist:
 =begin pod
-=head2 [gtk_tree_model_] get_valist
+=head2 [[gtk_] tree_model_] get_valist
 
 See C<gtk_tree_model_get()>, this version takes a va_list
 for language bindings to use.
@@ -1096,7 +1096,7 @@ sub _gtk_tree_model_foreach (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_row_changed:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] row_changed
+=head2 [[gtk_] tree_model_] row_changed
 
 Emits the  I<row-changed> signal on the tree model.
 
@@ -1118,7 +1118,7 @@ sub gtk_tree_model_row_changed (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_row_inserted:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] row_inserted
+=head2 [[gtk_] tree_model_] row_inserted
 
 Emits the  I<row-inserted> signal on the tree model.
 
@@ -1139,7 +1139,7 @@ sub gtk_tree_model_row_inserted ( N-GObject $tree_model, N-GtkTreePath $path, N-
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_row_has_child_toggled:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] row_has_child_toggled
+=head2 [[gtk_] tree_model_] row_has_child_toggled
 
 Emits the  I<row-has-child-toggled> signal on
 I<tree_model>. This should be called by models after the child
@@ -1159,7 +1159,7 @@ sub gtk_tree_model_row_has_child_toggled ( N-GObject $tree_model, N-GtkTreePath 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_row_deleted:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] row_deleted
+=head2 [[gtk_] tree_model_] row_deleted
 
 Emits the  I<row-deleted> signal on I<tree_model>.
 
@@ -1183,7 +1183,7 @@ sub gtk_tree_model_row_deleted ( N-GObject $tree_model, N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_rows_reordered:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] rows_reordered
+=head2 [[gtk_] tree_model_] rows_reordered
 
 Emits the  I<rows-reordered> signal on I<tree_model>.
 
@@ -1207,7 +1207,7 @@ sub gtk_tree_model_rows_reordered (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_rows_reordered_with_length:t/ListStore.t
 =begin pod
-=head2 [gtk_tree_model_] rows_reordered_with_length
+=head2 [[gtk_] tree_model_] rows_reordered_with_length
 
 Emits the  I<rows-reordered> signal on I<tree_model>.
 

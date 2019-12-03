@@ -160,7 +160,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_button_new:
 =begin pod
-=head2 gtk_color_button_new
+=head2 [gtk_] color_button_new
 
 Creates a new color button.
 
@@ -187,7 +187,7 @@ sub gtk_color_button_new (  )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_button_new_with_rgba:
 =begin pod
-=head2 [gtk_color_button_] new_with_rgba
+=head2 [[gtk_] color_button_] new_with_rgba
 
 Creates a new color button.
 
@@ -209,7 +209,7 @@ sub gtk_color_button_new_with_rgba ( GdkRGBA $rgba )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_color_button_set_title:
 =begin pod
-=head2 [gtk_color_button_] set_title
+=head2 [[gtk_] color_button_] set_title
 
 Sets the title for the color selection dialog.
 
@@ -228,7 +228,7 @@ sub gtk_color_button_set_title ( N-GObject $button, Str $title )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_color_button_get_title:
 =begin pod
-=head2 [gtk_color_button_] get_title
+=head2 [[gtk_] color_button_] get_title
 
 Gets the title of the color selection dialog.
 

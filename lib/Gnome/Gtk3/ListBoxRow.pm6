@@ -129,7 +129,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_box_row_new:new(:empty)
 =begin pod
-=head2 gtk_list_box_row_new
+=head2 [gtk_] list_box_row_new
 
 Creates a new B<Gnome::Gtk3::ListBoxRow>, to be used as a child of a B<Gnome::Gtk3::ListBox>.
 
@@ -150,7 +150,7 @@ sub gtk_list_box_row_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_get_header:
 =begin pod
-=head2 [gtk_list_box_row_] get_header
+=head2 [[gtk_] list_box_row_] get_header
 
 Returns the current header of the I<row>. This can be used
 in a B<Gnome::Gtk3::ListBoxUpdateHeaderFunc> to see if there is a header
@@ -173,7 +173,7 @@ sub gtk_list_box_row_get_header ( N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_set_header:
 =begin pod
-=head2 [gtk_list_box_row_] set_header
+=head2 [[gtk_] list_box_row_] set_header
 
 Sets the current header of the I<row>. This is only allowed to be called
 from a B<Gnome::Gtk3::ListBoxUpdateHeaderFunc>. It will replace any existing
@@ -194,7 +194,7 @@ sub gtk_list_box_row_set_header ( N-GObject $row, N-GObject $header )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_get_index:
 =begin pod
-=head2 [gtk_list_box_row_] get_index
+=head2 [[gtk_] list_box_row_] get_index
 
 Gets the current index of the I<row> in its B<Gnome::Gtk3::ListBox> container.
 
@@ -214,7 +214,7 @@ sub gtk_list_box_row_get_index ( N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_changed:
 =begin pod
-=head2 [gtk_list_box_row_] changed
+=head2 [[gtk_] list_box_row_] changed
 
 Marks I<row> as changed, causing any state that depends on this
 to be updated. This affects sorting, filtering and headers.
@@ -246,7 +246,7 @@ sub gtk_list_box_row_changed ( N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_is_selected:
 =begin pod
-=head2 [gtk_list_box_row_] is_selected
+=head2 [[gtk_] list_box_row_] is_selected
 
 Returns whether the child is currently selected in its
 B<Gnome::Gtk3::ListBox> container.
@@ -267,7 +267,7 @@ sub gtk_list_box_row_is_selected ( N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_set_selectable:
 =begin pod
-=head2 [gtk_list_box_row_] set_selectable
+=head2 [[gtk_] list_box_row_] set_selectable
 
 Set the  I<selectable> property for this row.
 
@@ -286,7 +286,7 @@ sub gtk_list_box_row_set_selectable ( N-GObject $row, int32 $selectable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_get_selectable:
 =begin pod
-=head2 [gtk_list_box_row_] get_selectable
+=head2 [[gtk_] list_box_row_] get_selectable
 
 Gets the value of the  I<selectable> property
 for this row.
@@ -307,7 +307,7 @@ sub gtk_list_box_row_get_selectable ( N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_set_activatable:
 =begin pod
-=head2 [gtk_list_box_row_] set_activatable
+=head2 [[gtk_] list_box_row_] set_activatable
 
 Set the  I<activatable> property for this row.
 
@@ -326,7 +326,7 @@ sub gtk_list_box_row_set_activatable ( N-GObject $row, int32 $activatable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_row_get_activatable:
 =begin pod
-=head2 [gtk_list_box_row_] get_activatable
+=head2 [[gtk_] list_box_row_] get_activatable
 
 Gets the value of the  I<activatable> property
 for this row.
@@ -358,7 +358,7 @@ sub gtk_list_box_row_get_activatable ( N-GObject $row )
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_list_box_row_new
+=head2 [gtk_] list_box_row_new
 
 Creates a new C<Gnome::Gtk3::ListBoxRow>, to be used as a child of a C<Gnome::Gtk3::ListBox>.
 
@@ -378,7 +378,7 @@ sub gtk_list_box_row_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] get_header
+=head2 [[gtk_] list_box_row_] get_header
 
 Returns the current header of the I<row>. This can be used
 in a C<Gnome::Gtk3::ListBoxUpdateHeaderFunc> to see if there is a header
@@ -399,7 +399,7 @@ sub gtk_list_box_row_get_header ( N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] set_header
+=head2 [[gtk_] list_box_row_] set_header
 
 Sets the current header of the I<row>. This is only allowed to be called
 from a C<Gnome::Gtk3::ListBoxUpdateHeaderFunc>. It will replace any existing
@@ -419,7 +419,7 @@ sub gtk_list_box_row_set_header ( N-GObject $row, N-GObject $header )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] get_index
+=head2 [[gtk_] list_box_row_] get_index
 
 Gets the current index of the I<row> in its C<Gnome::Gtk3::ListBox> container.
 
@@ -438,7 +438,7 @@ sub gtk_list_box_row_get_index ( N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] changed
+=head2 [[gtk_] list_box_row_] changed
 
 Marks I<row> as changed, causing any state that depends on this
 to be updated. This affects sorting, filtering and headers.
@@ -469,7 +469,7 @@ sub gtk_list_box_row_changed ( N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] is_selected
+=head2 [[gtk_] list_box_row_] is_selected
 
 Returns whether the child is currently selected in its
 C<Gnome::Gtk3::ListBox> container.
@@ -489,7 +489,7 @@ sub gtk_list_box_row_is_selected ( N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] set_selectable
+=head2 [[gtk_] list_box_row_] set_selectable
 
 Set the prop C<selectable> property for this row.
 
@@ -507,7 +507,7 @@ sub gtk_list_box_row_set_selectable ( N-GObject $row, int32 $selectable )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] get_selectable
+=head2 [[gtk_] list_box_row_] get_selectable
 
 Gets the value of the prop C<selectable> property
 for this row.
@@ -527,7 +527,7 @@ sub gtk_list_box_row_get_selectable ( N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] set_activatable
+=head2 [[gtk_] list_box_row_] set_activatable
 
 Set the prop C<activatable> property for this row.
 
@@ -545,7 +545,7 @@ sub gtk_list_box_row_set_activatable ( N-GObject $row, int32 $activatable )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_row_] get_activatable
+=head2 [[gtk_] list_box_row_] get_activatable
 
 Gets the value of the prop C<activatable> property
 for this row.

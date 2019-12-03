@@ -129,7 +129,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_text_tag_table_new:new(:empty)
 =begin pod
-=head2 gtk_text_tag_table_new
+=head2 [gtk_] text_tag_table_new
 
 Creates a new B<Gnome::Gtk3::TextTagTable>. The table contains no tags by
 default.
@@ -148,7 +148,7 @@ sub gtk_text_tag_table_new ( )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_table_add:
 =begin pod
-=head2 gtk_text_tag_table_add
+=head2 [gtk_] text_tag_table_add
 
 Add a tag to the table. The tag is assigned the highest priority
 in the table.
@@ -172,7 +172,7 @@ sub gtk_text_tag_table_add ( N-GObject $table, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_table_remove:
 =begin pod
-=head2 gtk_text_tag_table_remove
+=head2 [gtk_] text_tag_table_remove
 
 Remove a tag from the table. If a B<Gnome::Gtk3::TextBuffer> has I<table> as its tag table,
 the tag is removed from the buffer. The table’s reference to the tag is
@@ -192,7 +192,7 @@ sub gtk_text_tag_table_remove ( N-GObject $table, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_table_lookup:
 =begin pod
-=head2 gtk_text_tag_table_lookup
+=head2 [gtk_] text_tag_table_lookup
 
 Look up a named tag.
 
@@ -214,7 +214,7 @@ sub gtk_text_tag_table_lookup ( N-GObject $table, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_tag_table_foreach:
 =begin pod
-=head2 gtk_text_tag_table_foreach
+=head2 [gtk_] text_tag_table_foreach
 
 Calls I<func> on each tag in I<table>, with user data I<data>.
 Note that the table may not be modified while iterating
@@ -235,7 +235,7 @@ sub gtk_text_tag_table_foreach ( N-GObject $table, GtkTextTagTableForeach $func,
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_table_get_size:
 =begin pod
-=head2 [gtk_text_tag_table_] get_size
+=head2 [[gtk_] text_tag_table_] get_size
 
 Returns the size of the table (number of tags)
 

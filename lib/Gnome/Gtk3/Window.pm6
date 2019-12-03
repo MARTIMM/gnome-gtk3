@@ -223,7 +223,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_window_new:new(:empty)
 =begin pod
-=head2 gtk_window_new
+=head2 [gtk_] window_new
 
 Creates a new B<Gnome::Gtk3::Window>, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be C<GTK_WINDOW_TOPLEVEL>. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use B<Gnome::Gtk3::Menu>), you might use C<GTK_WINDOW_POPUP>. C<GTK_WINDOW_POPUP> is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, C<GTK_WINDOW_POPUP> means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the window manager.
 
@@ -249,7 +249,7 @@ sub gtk_window_new ( int32 $type )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_set_title:new(:title)
 =begin pod
-=head2 [gtk_window_] set_title
+=head2 [[gtk_] window_] set_title
 
 Sets the title of the B<Gnome::Gtk3::Window>. The title of a window will be displayed in its title bar; on the X Window System, the title bar is rendered by the window manager, so exactly how the title appears to users may vary according to a user’s exact configuration. The title should help a user distinguish this window from other windows they may have open. A good title might include the application name and current document filename, for example.
 
@@ -266,7 +266,7 @@ sub gtk_window_set_title ( N-GObject $window, Str $title )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_get_title
 =begin pod
-=head2 [gtk_window_] get_title
+=head2 [[gtk_] window_] get_title
 
 Retrieves the title of the window. See C<gtk_window_set_title()>.
 
@@ -284,7 +284,7 @@ sub gtk_window_get_title ( N-GObject $window )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] set_role
+=head2 [[gtk_] window_] set_role
 
 This function is only useful on X11, not with other GTK+ targets.
 
@@ -314,7 +314,7 @@ sub gtk_window_set_role ( N-GObject $window, Str $role )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] set_startup_id
+=head2 [[gtk_] window_] set_startup_id
 
 Startup notification identifiers are used by desktop environment to
 track application startup, to provide user feedback and other
@@ -342,7 +342,7 @@ sub gtk_window_set_startup_id ( N-GObject $window, Str $startup_id )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] get_role
+=head2 [[gtk_] window_] get_role
 
 Returns the role of the window. See C<gtk_window_set_role()> for
 further explanation.
@@ -364,7 +364,7 @@ sub gtk_window_get_role ( N-GObject $window )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] add_accel_group
+=head2 [[gtk_] window_] add_accel_group
 
 Associate I<accel_group> with I<window>, such that calling
 C<gtk_accel_groups_activate()> on I<window> will activate accelerators
@@ -383,7 +383,7 @@ sub gtk_window_add_accel_group ( N-GObject $window, N-GObject $accel_group )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] remove_accel_group
+=head2 [[gtk_] window_] remove_accel_group
 
 Reverses the effects of C<gtk_window_add_accel_group()>.
 
@@ -401,7 +401,7 @@ sub gtk_window_remove_accel_group ( N-GObject $window, N-GObject $accel_group )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_set_position
 =begin pod
-=head2 [gtk_window_] set_position
+=head2 [[gtk_] window_] set_position
 
 Sets a position constraint for this window. If the old or new constraint is C<GTK_WIN_POS_CENTER_ALWAYS>, this will also cause the window to be repositioned to satisfy the new constraint.
 
@@ -418,7 +418,7 @@ sub gtk_window_set_position ( N-GObject $window, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] activate_focus
+=head2 [[gtk_] window_] activate_focus
 
 Activates the current focused widget within the window.
 
@@ -437,7 +437,7 @@ sub gtk_window_activate_focus ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_focus
+=head2 [[gtk_] window_] set_focus
 
 If I<focus> is not the current focus widget, and is focusable, sets
 it as the focus widget for the window. If I<focus> is C<Any>, unsets
@@ -458,7 +458,7 @@ sub gtk_window_set_focus ( N-GObject $window, N-GObject $focus )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_focus
+=head2 [[gtk_] window_] get_focus
 
 Retrieves the current focused widget within the window.
 Note that this is the widget that would have the focus
@@ -482,7 +482,7 @@ sub gtk_window_get_focus ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_default
+=head2 [[gtk_] window_] set_default
 
 The default widget is the widget that’s activated when the user
 presses Enter in a dialog (for example). This function sets or
@@ -505,7 +505,7 @@ sub gtk_window_set_default ( N-GObject $window, N-GObject $default_widget )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_default_widget
+=head2 [[gtk_] window_] get_default_widget
 
 Returns the default widget for I<window>. See
 C<gtk_window_set_default()> for more details.
@@ -528,7 +528,7 @@ sub gtk_window_get_default_widget ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] activate_default
+=head2 [[gtk_] window_] activate_default
 
 Activates the default widget for the window, unless the current
 focused widget has been configured to receive the default action
@@ -550,7 +550,7 @@ sub gtk_window_activate_default ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_transient_for
+=head2 [[gtk_] window_] set_transient_for
 
 Dialog windows should be set transient for the main application
 window they were spawned from. This allows
@@ -584,7 +584,7 @@ sub gtk_window_set_transient_for ( N-GObject $window, N-GObject $parent )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_transient_for
+=head2 [[gtk_] window_] get_transient_for
 
 Fetches the transient parent for this window. See
 C<gtk_window_set_transient_for()>.
@@ -605,7 +605,7 @@ sub gtk_window_get_transient_for ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_attached_to
+=head2 [[gtk_] window_] set_attached_to
 
 Marks I<window> as attached to I<attach_widget>. This creates a logical binding
 between the window and the widget it belongs to, which is used by GTK+ to
@@ -637,7 +637,7 @@ sub gtk_window_set_attached_to ( N-GObject $window, N-GObject $attach_widget )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_attached_to
+=head2 [[gtk_] window_] get_attached_to
 
 Fetches the attach widget for this window. See
 C<gtk_window_set_attached_to()>.
@@ -660,7 +660,7 @@ sub gtk_window_get_attached_to ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_type_hint
+=head2 [[gtk_] window_] set_type_hint
 
 By setting the type hint for the window, you allow the window
 manager to decorate and handle the window in a way which is
@@ -685,7 +685,7 @@ sub gtk_window_set_type_hint ( N-GObject $window, int32 $hint )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_type_hint
+=head2 [[gtk_] window_] get_type_hint
 
 Gets the type hint for this window. See C<gtk_window_set_type_hint()>.
 
@@ -704,7 +704,7 @@ sub gtk_window_get_type_hint ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_skip_taskbar_hint
+=head2 [[gtk_] window_] set_skip_taskbar_hint
 
 Windows may set a hint asking the desktop environment not to display
 the window in the task bar. This function sets this hint.
@@ -724,7 +724,7 @@ sub gtk_window_set_skip_taskbar_hint ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_skip_taskbar_hint
+=head2 [[gtk_] window_] get_skip_taskbar_hint
 
 Gets the value set by C<gtk_window_set_skip_taskbar_hint()>
 
@@ -745,7 +745,7 @@ sub gtk_window_get_skip_taskbar_hint ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_skip_pager_hint
+=head2 [[gtk_] window_] set_skip_pager_hint
 
 Windows may set a hint asking the desktop environment not to display
 the window in the pager. This function sets this hint.
@@ -768,7 +768,7 @@ sub gtk_window_set_skip_pager_hint ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_skip_pager_hint
+=head2 [[gtk_] window_] get_skip_pager_hint
 
 Gets the value set by C<gtk_window_set_skip_pager_hint()>.
 
@@ -789,7 +789,7 @@ sub gtk_window_get_skip_pager_hint ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_urgency_hint
+=head2 [[gtk_] window_] set_urgency_hint
 
 Windows may set a hint asking the desktop environment to draw
 the users attention to the window. This function sets this hint.
@@ -809,7 +809,7 @@ sub gtk_window_set_urgency_hint ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_urgency_hint
+=head2 [[gtk_] window_] get_urgency_hint
 
 Gets the value set by C<gtk_window_set_urgency_hint()>
 
@@ -830,7 +830,7 @@ sub gtk_window_get_urgency_hint ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_accept_focus
+=head2 [[gtk_] window_] set_accept_focus
 
 Windows may set a hint asking the desktop environment not to receive
 the input focus. This function sets this hint.
@@ -850,7 +850,7 @@ sub gtk_window_set_accept_focus ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_accept_focus
+=head2 [[gtk_] window_] get_accept_focus
 
 Gets the value set by C<gtk_window_set_accept_focus()>.
 
@@ -871,7 +871,7 @@ sub gtk_window_get_accept_focus ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_focus_on_map
+=head2 [[gtk_] window_] set_focus_on_map
 
 Windows may set a hint asking the desktop environment not to receive
 the input focus when the window is mapped.  This function sets this
@@ -892,7 +892,7 @@ sub gtk_window_set_focus_on_map ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_focus_on_map
+=head2 [[gtk_] window_] get_focus_on_map
 
 Gets the value set by C<gtk_window_set_focus_on_map()>.
 
@@ -914,7 +914,7 @@ sub gtk_window_get_focus_on_map ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_destroy_with_parent
+=head2 [[gtk_] window_] set_destroy_with_parent
 
 If I<setting> is C<1>, then destroying the transient parent of I<window>
 will also destroy I<window> itself. This is useful for dialogs that
@@ -934,7 +934,7 @@ sub gtk_window_set_destroy_with_parent ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_destroy_with_parent
+=head2 [[gtk_] window_] get_destroy_with_parent
 
 Returns whether the window will be destroyed with its transient parent. See
 C<gtk_window_set_destroy_with_parent()>.
@@ -954,7 +954,7 @@ sub gtk_window_get_destroy_with_parent ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_hide_titlebar_when_maximized
+=head2 [[gtk_] window_] set_hide_titlebar_when_maximized
 
 If I<setting> is C<1>, then I<window> will request that it’s titlebar
 should be hidden when maximized.
@@ -982,7 +982,7 @@ sub gtk_window_set_hide_titlebar_when_maximized ( N-GObject $window, int32 $sett
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_hide_titlebar_when_maximized
+=head2 [[gtk_] window_] get_hide_titlebar_when_maximized
 
 Returns whether the window has requested to have its titlebar hidden
 when maximized. See C<gtk_window_set_hide_titlebar_when_maximized()>.
@@ -1005,7 +1005,7 @@ sub gtk_window_get_hide_titlebar_when_maximized ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_mnemonics_visible
+=head2 [[gtk_] window_] set_mnemonics_visible
 
 Sets the prop C<mnemonics-visible> property.
 
@@ -1024,7 +1024,7 @@ sub gtk_window_set_mnemonics_visible ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_mnemonics_visible
+=head2 [[gtk_] window_] get_mnemonics_visible
 
 Gets the value of the prop C<mnemonics-visible> property.
 
@@ -1046,7 +1046,7 @@ sub gtk_window_get_mnemonics_visible ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_focus_visible
+=head2 [[gtk_] window_] set_focus_visible
 
 Sets the prop C<focus-visible> property.
 
@@ -1065,7 +1065,7 @@ sub gtk_window_set_focus_visible ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_focus_visible
+=head2 [[gtk_] window_] get_focus_visible
 
 Gets the value of the prop C<focus-visible> property.
 
@@ -1087,7 +1087,7 @@ sub gtk_window_get_focus_visible ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_resizable
+=head2 [[gtk_] window_] set_resizable
 
 Sets whether the user can resize a window. Windows are user resizable
 by default.
@@ -1105,7 +1105,7 @@ sub gtk_window_set_resizable ( N-GObject $window, int32 $resizable )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_resizable
+=head2 [[gtk_] window_] get_resizable
 
 Gets the value set by C<gtk_window_set_resizable()>.
 
@@ -1124,7 +1124,7 @@ sub gtk_window_get_resizable ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_gravity
+=head2 [[gtk_] window_] set_gravity
 
 Window gravity defines the meaning of coordinates passed to
 C<gtk_window_move()>. See C<gtk_window_move()> and B<Gnome::Gdk3::Gravity> for
@@ -1147,7 +1147,7 @@ sub gtk_window_set_gravity ( N-GObject $window, int32 $gravity )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_gravity
+=head2 [[gtk_] window_] get_gravity
 
 Gets the value set by C<gtk_window_set_gravity()>.
 
@@ -1166,7 +1166,7 @@ sub gtk_window_get_gravity ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_geometry_hints
+=head2 [[gtk_] window_] set_geometry_hints
 
 This function sets up hints about how a window can be resized by
 the user.  You can set a minimum and maximum size; allowed resize
@@ -1188,7 +1188,7 @@ sub gtk_window_set_geometry_hints ( N-GObject $window, N-GObject $geometry_widge
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_screen
+=head2 [[gtk_] window_] set_screen
 
 Sets the B<Gnome::Gdk3::Screen> where the I<window> is displayed; if
 the window is already mapped, it will be unmapped, and
@@ -1209,7 +1209,7 @@ sub gtk_window_set_screen ( N-GObject $window, N-GObject $screen )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_screen
+=head2 [[gtk_] window_] get_screen
 
 Returns the B<Gnome::Gdk3::Screen> associated with I<window>.
 
@@ -1230,7 +1230,7 @@ sub gtk_window_get_screen ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] is_active
+=head2 [[gtk_] window_] is_active
 
 Returns whether the window is part of the current active toplevel.
 (That is, the toplevel window receiving keystrokes.)
@@ -1257,7 +1257,7 @@ sub gtk_window_is_active ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] has_toplevel_focus
+=head2 [[gtk_] window_] has_toplevel_focus
 
 Returns whether the input focus is within this B<Gnome::Gtk3::Window>.
 For real toplevel windows, this is identical to C<gtk_window_is_active()>,
@@ -1280,7 +1280,7 @@ sub gtk_window_has_toplevel_focus ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_decorated
+=head2 [[gtk_] window_] set_decorated
 
 By default, windows are decorated with a title bar, resize
 controls, etc.  Some [window managers][gtk-X11-arch]
@@ -1308,7 +1308,7 @@ sub gtk_window_set_decorated ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_decorated
+=head2 [[gtk_] window_] get_decorated
 
 Returns whether the window has been set to have decorations
 such as a title bar via C<gtk_window_set_decorated()>.
@@ -1328,7 +1328,7 @@ sub gtk_window_get_decorated ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_deletable
+=head2 [[gtk_] window_] set_deletable
 
 By default, windows have a close button in the window frame. Some
 [window managers][gtk-X11-arch] allow GTK+ to
@@ -1356,7 +1356,7 @@ sub gtk_window_set_deletable ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_deletable
+=head2 [[gtk_] window_] get_deletable
 
 Returns whether the window has been set to have a close button
 via C<gtk_window_set_deletable()>.
@@ -1378,7 +1378,7 @@ sub gtk_window_get_deletable ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_icon_list
+=head2 [[gtk_] window_] set_icon_list
 
 Sets up the icon representing a B<Gnome::Gtk3::Window>. The icon is used when
 the window is minimized (also known as iconified).  Some window
@@ -1419,7 +1419,7 @@ sub gtk_window_set_icon_list ( N-GObject $window, N-GObject $list )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_icon_list
+=head2 [[gtk_] window_] get_icon_list
 
 Retrieves the list of icons set by C<gtk_window_set_icon_list()>.
 The list is copied, but the reference count on each
@@ -1440,7 +1440,7 @@ sub gtk_window_get_icon_list ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_icon
+=head2 [[gtk_] window_] set_icon
 
 Sets up the icon representing a B<Gnome::Gtk3::Window>. This icon is used when
 the window is minimized (also known as iconified).  Some window
@@ -1475,7 +1475,7 @@ sub gtk_window_set_icon ( N-GObject $window, N-GObject $icon )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_icon_name
+=head2 [[gtk_] window_] set_icon_name
 
 Sets the icon for the window from a named themed icon.
 See the docs for B<Gnome::Gtk3::IconTheme> for more details.
@@ -1499,7 +1499,7 @@ sub gtk_window_set_icon_name ( N-GObject $window, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_icon_from_file
+=head2 [[gtk_] window_] set_icon_from_file
 
 Sets the icon for I<window>.
 Warns on failure if I<err> is C<Any>.
@@ -1526,7 +1526,7 @@ sub gtk_window_set_icon_from_file ( N-GObject $window, Str $filename, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_icon
+=head2 [[gtk_] window_] get_icon
 
 Gets the value set by C<gtk_window_set_icon()> (or if you've
 called C<gtk_window_set_icon_list()>, gets the first icon in
@@ -1547,7 +1547,7 @@ sub gtk_window_get_icon ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_icon_name
+=head2 [[gtk_] window_] get_icon_name
 
 Returns the name of the themed icon for the window,
 see C<gtk_window_set_icon_name()>.
@@ -1570,7 +1570,7 @@ sub gtk_window_get_icon_name ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_default_icon_list
+=head2 [[gtk_] window_] set_default_icon_list
 
 Sets an icon list to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them to set up a
@@ -1593,7 +1593,7 @@ sub gtk_window_set_default_icon_list ( N-GObject $list )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_default_icon_list
+=head2 [[gtk_] window_] get_default_icon_list
 
 Gets the value set by C<gtk_window_set_default_icon_list()>.
 The list is a copy and should be freed with C<g_list_free()>,
@@ -1615,7 +1615,7 @@ sub gtk_window_get_default_icon_list (  )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_default_icon
+=head2 [[gtk_] window_] set_default_icon
 
 Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon()> called on them from a pixbuf.
@@ -1635,7 +1635,7 @@ sub gtk_window_set_default_icon ( N-GObject $icon )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_default_icon_name
+=head2 [[gtk_] window_] set_default_icon_name
 
 Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them from a named
@@ -1656,7 +1656,7 @@ sub gtk_window_set_default_icon_name ( Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_default_icon_name
+=head2 [[gtk_] window_] get_default_icon_name
 
 Returns the fallback icon name for windows that has been set
 with C<gtk_window_set_default_icon_name()>. The returned
@@ -1681,7 +1681,7 @@ sub gtk_window_get_default_icon_name (  )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_default_icon_from_file
+=head2 [[gtk_] window_] set_default_icon_from_file
 
 Sets an icon to be used as fallback for windows that haven't
 had C<gtk_window_set_icon_list()> called on them from a file
@@ -1706,7 +1706,7 @@ sub gtk_window_set_default_icon_from_file ( Str $filename, N-GObject $err )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_auto_startup_notification
+=head2 [[gtk_] window_] set_auto_startup_notification
 
 By default, after showing the first B<Gnome::Gtk3::Window>, GTK+ calls
 C<gdk_notify_startup_complete()>.  Call this function to disable
@@ -1733,7 +1733,7 @@ sub gtk_window_set_auto_startup_notification ( int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_modal
+=head2 [[gtk_] window_] set_modal
 
 Sets a window modal or non-modal. Modal windows prevent interaction
 with other windows in the same application. To keep modal dialogs
@@ -1757,7 +1757,7 @@ sub gtk_window_set_modal ( N-GObject $window, int32 $modal )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_modal
+=head2 [[gtk_] window_] get_modal
 
 Returns whether the window is modal. See C<gtk_window_set_modal()>.
 
@@ -1777,7 +1777,7 @@ sub gtk_window_get_modal ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] list_toplevels
+=head2 [[gtk_] window_] list_toplevels
 
 Returns a list of all existing toplevel windows. The widgets
 in the list are not individually referenced. If you want
@@ -1801,7 +1801,7 @@ sub gtk_window_list_toplevels (  )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_has_user_ref_count
+=head2 [[gtk_] window_] set_has_user_ref_count
 
 Tells GTK+ whether to drop its extra reference to the window
 when C<gtk_widget_destroy()> is called.
@@ -1826,7 +1826,7 @@ sub gtk_window_set_has_user_ref_count ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] add_mnemonic
+=head2 [[gtk_] window_] add_mnemonic
 
 Adds a mnemonic to this window.
 
@@ -1844,7 +1844,7 @@ sub gtk_window_add_mnemonic ( N-GObject $window, uint32 $keyval, N-GObject $targ
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] remove_mnemonic
+=head2 [[gtk_] window_] remove_mnemonic
 
 Removes a mnemonic from this window.
 
@@ -1862,7 +1862,7 @@ sub gtk_window_remove_mnemonic ( N-GObject $window, uint32 $keyval, N-GObject $t
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] mnemonic_activate
+=head2 [[gtk_] window_] mnemonic_activate
 
 Activates the targets associated with the mnemonic.
 
@@ -1883,7 +1883,7 @@ sub gtk_window_mnemonic_activate ( N-GObject $window, uint32 $keyval, int32 $mod
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_mnemonic_modifier
+=head2 [[gtk_] window_] set_mnemonic_modifier
 
 Sets the mnemonic modifier for this window.
 
@@ -1900,7 +1900,7 @@ sub gtk_window_set_mnemonic_modifier ( N-GObject $window, int32 $modifier )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_mnemonic_modifier
+=head2 [[gtk_] window_] get_mnemonic_modifier
 
 Returns the mnemonic modifier for this window. See
 C<gtk_window_set_mnemonic_modifier()>.
@@ -1921,7 +1921,7 @@ sub gtk_window_get_mnemonic_modifier ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] activate_key
+=head2 [[gtk_] window_] activate_key
 
 Activates mnemonics and accelerators for this B<Gnome::Gtk3::Window>. This is normally
 called by the default ::key_press_event handler for toplevel windows,
@@ -1946,7 +1946,7 @@ sub gtk_window_activate_key ( N-GObject $window, GdkEventKey $event )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] propagate_key_event
+=head2 [[gtk_] window_] propagate_key_event
 
 Propagate a key press or release event to the focus widget and
 up the focus container chain until a widget handles I<event>.
@@ -1973,7 +1973,7 @@ sub gtk_window_propagate_key_event ( N-GObject $window, GdkEventKey $event )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_present
+=head2 [gtk_] window_present
 
 Presents a window to the user. This may mean raising the window
 in the stacking order, deiconifying it, moving it to the current
@@ -2005,7 +2005,7 @@ sub gtk_window_present ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] present_with_time
+=head2 [[gtk_] window_] present_with_time
 
 Presents a window to the user in response to a user interaction.
 If you need to present a window without a timestamp, use
@@ -2026,7 +2026,7 @@ sub gtk_window_present_with_time ( N-GObject $window, uint32 $timestamp )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_iconify
+=head2 [gtk_] window_iconify
 
 Asks to iconify (i.e. minimize) the specified I<window>. Note that
 you shouldn’t assume the window is definitely iconified afterward,
@@ -2055,7 +2055,7 @@ sub gtk_window_iconify ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_deiconify
+=head2 [gtk_] window_deiconify
 
 Asks to deiconify (i.e. unminimize) the specified I<window>. Note
 that you shouldn’t assume the window is definitely deiconified
@@ -2078,7 +2078,7 @@ sub gtk_window_deiconify ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_stick
+=head2 [gtk_] window_stick
 
 Asks to stick I<window>, which means that it will appear on all user
 desktops. Note that you shouldn’t assume the window is definitely
@@ -2105,7 +2105,7 @@ sub gtk_window_stick ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_unstick
+=head2 [gtk_] window_unstick
 
 Asks to unstick I<window>, which means that it will appear on only
 one of the user’s desktops. Note that you shouldn’t assume the
@@ -2129,7 +2129,7 @@ sub gtk_window_unstick ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_maximize
+=head2 [gtk_] window_maximize
 
 Asks to maximize I<window>, so that it becomes full-screen. Note that
 you shouldn’t assume the window is definitely maximized afterward,
@@ -2159,7 +2159,7 @@ sub gtk_window_maximize ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_unmaximize
+=head2 [gtk_] window_unmaximize
 
 Asks to unmaximize I<window>. Note that you shouldn’t assume the
 window is definitely unmaximized afterward, because other entities
@@ -2183,7 +2183,7 @@ sub gtk_window_unmaximize ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_fullscreen
+=head2 [gtk_] window_fullscreen
 
 Asks to place I<window> in the fullscreen state. Note that you
 shouldn’t assume the window is definitely full screen afterward,
@@ -2210,7 +2210,7 @@ sub gtk_window_fullscreen ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_unfullscreen
+=head2 [gtk_] window_unfullscreen
 
 Asks to toggle off the fullscreen state for I<window>. Note that you
 shouldn’t assume the window is definitely not full screen
@@ -2237,7 +2237,7 @@ sub gtk_window_unfullscreen ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] fullscreen_on_monitor
+=head2 [[gtk_] window_] fullscreen_on_monitor
 
 Asks to place I<window> in the fullscreen state. Note that you shouldn't assume
 the window is definitely full screen afterward.
@@ -2261,7 +2261,7 @@ sub gtk_window_fullscreen_on_monitor ( N-GObject $window, N-GObject $screen, int
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 gtk_window_close
+=head2 [gtk_] window_close
 
 Requests that the window is closed, similar to what happens
 when a window manager close button is clicked.
@@ -2283,7 +2283,7 @@ sub gtk_window_close ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_keep_above
+=head2 [[gtk_] window_] set_keep_above
 
 Asks to keep I<window> above, so that it stays on top. Note that
 you shouldn’t assume the window is definitely above afterward,
@@ -2321,7 +2321,7 @@ sub gtk_window_set_keep_above ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_keep_below
+=head2 [[gtk_] window_] set_keep_below
 
 Asks to keep I<window> below, so that it stays in bottom. Note that you shouldn’t assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just don’t write code that crashes if not.
 
@@ -2347,7 +2347,7 @@ sub gtk_window_set_keep_below ( N-GObject $window, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] begin_resize_drag
+=head2 [[gtk_] window_] begin_resize_drag
 
 Starts resizing a window. This function is used if an application
 has window resizing controls. When GDK can support it, the resize
@@ -2374,7 +2374,7 @@ sub gtk_window_begin_resize_drag ( N-GObject $window, int32 $edge, int32 $button
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] begin_move_drag
+=head2 [[gtk_] window_] begin_move_drag
 
 Starts moving a window. This function is used if an application has
 window movement grips. When GDK can support it, the window movement
@@ -2399,7 +2399,7 @@ sub gtk_window_begin_move_drag ( N-GObject $window, int32 $button, int32 $root_x
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_set_default_size
 =begin pod
-=head2 [gtk_window_] set_default_size
+=head2 [[gtk_] window_] set_default_size
 
 Sets the default size of a window. If the window’s “natural” size
 (its size request) is larger than the default, the default will be
@@ -2449,7 +2449,7 @@ sub gtk_window_set_default_size ( N-GObject $window, int32 $width, int32 $height
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_get_default_size
 =begin pod
-=head2 [gtk_window_] get_default_size
+=head2 [[gtk_] window_] get_default_size
 
 Gets the default size of the window. A value of -1 for the width or
 height indicates that a default size has not been explicitly set
@@ -2479,7 +2479,7 @@ sub _gtk_window_get_default_size (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_resize
 =begin pod
-=head2 gtk_window_resize
+=head2 [gtk_] window_resize
 
 Resizes the window as if the user had done so, obeying geometry constraints. The default geometry constraint is that windows may not be smaller than their size request; to override this constraint, call C<gtk_widget_set_size_request()> to set the window's request to a smaller value.
 
@@ -2505,7 +2505,7 @@ sub gtk_window_resize ( N-GObject $window, int32 $width, int32 $height )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_get_size
 =begin pod
-=head2 [gtk_window_] get_size
+=head2 [[gtk_] window_] get_size
 
 Obtains the current size of I<window>.
 
@@ -2566,7 +2566,7 @@ sub _gtk_window_get_size (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_move
 =begin pod
-=head2 gtk_window_move
+=head2 [gtk_] window_move
 
 Asks the window manager to move I<window> to the given position.  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the window has already been shown.
 
@@ -2594,7 +2594,7 @@ sub gtk_window_move ( N-GObject $window, int32 $x, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_get_position
 =begin pod
-=head2 [gtk_window_] get_position
+=head2 [[gtk_] window_] get_position
 
 This function returns the position you need to pass to C<gtk_window_move()> to keep I<window> in its current position. This means that the meaning of the returned value varies with window gravity. See C<gtk_window_move()> for more details.
 
@@ -2632,7 +2632,7 @@ sub _gtk_window_get_position (
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_group
+=head2 [[gtk_] window_] get_group
 
 Returns the group for I<window> or the default group, if I<window> is C<Any> or if I<window> does not have an explicit window group.
 
@@ -2653,7 +2653,7 @@ sub gtk_window_get_group ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] has_group
+=head2 [[gtk_] window_] has_group
 
 Returns whether I<window> has an explicit window group.
 
@@ -2674,7 +2674,7 @@ sub gtk_window_has_group ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_get_window_type
 =begin pod
-=head2 [gtk_window_] get_window_type
+=head2 [[gtk_] window_] get_window_type
 
 Gets the type of the window. See B<Gnome::Gtk3::WindowType>.
 
@@ -2695,7 +2695,7 @@ sub gtk_window_get_window_type ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] get_application
+=head2 [[gtk_] window_] get_application
 
 Gets the B<Gnome::Gtk3::Application> associated with the window (if any).
 
@@ -2715,7 +2715,7 @@ sub gtk_window_get_application ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_application
+=head2 [[gtk_] window_] set_application
 
 Sets or unsets the B<Gnome::Gtk3::Application> associated with the window.
 
@@ -2739,7 +2739,7 @@ sub gtk_window_set_application ( N-GObject $window, N-GObject $application )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_window_] set_titlebar
+=head2 [[gtk_] window_] set_titlebar
 
 Sets a custom titlebar for I<window>.
 
@@ -2759,7 +2759,7 @@ sub gtk_window_set_titlebar ( N-GObject $window, N-GObject $titlebar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] get_titlebar
+=head2 [[gtk_] window_] get_titlebar
 
 Returns the custom titlebar that has been set with
 C<gtk_window_set_titlebar()>.
@@ -2782,7 +2782,7 @@ sub gtk_window_get_titlebar ( N-GObject $window )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_window_] is_maximized
+=head2 [[gtk_] window_] is_maximized
 
 Retrieves the current maximized state of I<window>.
 
@@ -2806,7 +2806,7 @@ sub gtk_window_is_maximized ( N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_window_set_interactive_debugging
 =begin pod
-=head2 [gtk_window_] set_interactive_debugging
+=head2 [[gtk_] window_] set_interactive_debugging
 
 Opens or closes the [interactive debugger][interactive-debugging], which offers access to the widget hierarchy of the application and to useful debugging tools.
 

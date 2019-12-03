@@ -194,7 +194,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_menu_item_new:new(:empty)
 =begin pod
-=head2 gtk_menu_item_new
+=head2 [gtk_] menu_item_new
 
 Creates a new B<Gnome::Gtk3::MenuItem>.
 
@@ -213,7 +213,7 @@ sub gtk_menu_item_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_item_new_with_label:new(:label)
 =begin pod
-=head2 [gtk_menu_item_] new_with_label
+=head2 [[gtk_] menu_item_] new_with_label
 
 Creates a new B<Gnome::Gtk3::MenuItem> whose child is a B<Gnome::Gtk3::Label>.
 
@@ -233,7 +233,7 @@ sub gtk_menu_item_new_with_label ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_item_new_with_mnemonic:new(:mnemonic)
 =begin pod
-=head2 [gtk_menu_item_] new_with_mnemonic
+=head2 [[gtk_] menu_item_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::MenuItem> containing a label.
 
@@ -256,7 +256,7 @@ sub gtk_menu_item_new_with_mnemonic ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_set_submenu:
 =begin pod
-=head2 [gtk_menu_item_] set_submenu
+=head2 [[gtk_] menu_item_] set_submenu
 
 Sets or replaces the menu item’s submenu, or removes it when a C<Any>
 submenu is passed.
@@ -274,7 +274,7 @@ sub gtk_menu_item_set_submenu ( N-GObject $menu_item, N-GObject $submenu )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_get_submenu:
 =begin pod
-=head2 [gtk_menu_item_] get_submenu
+=head2 [[gtk_] menu_item_] get_submenu
 
 Gets the submenu underneath this menu item, if any.
 See C<gtk_menu_item_set_submenu()>.
@@ -294,7 +294,7 @@ sub gtk_menu_item_get_submenu ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_select:
 =begin pod
-=head2 gtk_menu_item_select
+=head2 [gtk_] menu_item_select
 
 Emits the  I<select> signal on the given item.
 
@@ -310,7 +310,7 @@ sub gtk_menu_item_select ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_deselect:
 =begin pod
-=head2 gtk_menu_item_deselect
+=head2 [gtk_] menu_item_deselect
 
 Emits the  I<deselect> signal on the given item.
 
@@ -326,7 +326,7 @@ sub gtk_menu_item_deselect ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_activate:
 =begin pod
-=head2 gtk_menu_item_activate
+=head2 [gtk_] menu_item_activate
 
 Emits the  I<activate> signal on the given item
 
@@ -342,7 +342,7 @@ sub gtk_menu_item_activate ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_toggle_size_request:
 =begin pod
-=head2 [gtk_menu_item_] toggle_size_request
+=head2 [[gtk_] menu_item_] toggle_size_request
 
 Emits the  I<toggle-size-request> signal on the given item.
 
@@ -359,7 +359,7 @@ sub gtk_menu_item_toggle_size_request ( N-GObject $menu_item, int32 $requisition
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_toggle_size_allocate:
 =begin pod
-=head2 [gtk_menu_item_] toggle_size_allocate
+=head2 [[gtk_] menu_item_] toggle_size_allocate
 
 Emits the  I<toggle-size-allocate> signal on the given item.
 
@@ -376,7 +376,7 @@ sub gtk_menu_item_toggle_size_allocate ( N-GObject $menu_item, int32 $allocation
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_set_accel_path:
 =begin pod
-=head2 [gtk_menu_item_] set_accel_path
+=head2 [[gtk_] menu_item_] set_accel_path
 
 Set the accelerator path on I<menu_item>, through which runtime
 changes of the menu item’s accelerator caused by the user can be
@@ -411,7 +411,7 @@ sub gtk_menu_item_set_accel_path ( N-GObject $menu_item, Str $accel_path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_get_accel_path:
 =begin pod
-=head2 [gtk_menu_item_] get_accel_path
+=head2 [[gtk_] menu_item_] get_accel_path
 
 Retrieve the accelerator path that was previously set on I<menu_item>.
 
@@ -435,7 +435,7 @@ sub gtk_menu_item_get_accel_path ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_set_label:
 =begin pod
-=head2 [gtk_menu_item_] set_label
+=head2 [[gtk_] menu_item_] set_label
 
 Sets I<text> on the I<menu_item> label
 
@@ -454,7 +454,7 @@ sub gtk_menu_item_set_label ( N-GObject $menu_item, Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_get_label:
 =begin pod
-=head2 [gtk_menu_item_] get_label
+=head2 [[gtk_] menu_item_] get_label
 
 Sets I<text> on the I<menu_item> label
 
@@ -476,7 +476,7 @@ sub gtk_menu_item_get_label ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_set_use_underline:
 =begin pod
-=head2 [gtk_menu_item_] set_use_underline
+=head2 [[gtk_] menu_item_] set_use_underline
 
 If true, an underline in the text indicates the next character
 should be used for the mnemonic accelerator key.
@@ -496,7 +496,7 @@ sub gtk_menu_item_set_use_underline ( N-GObject $menu_item, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_get_use_underline:
 =begin pod
-=head2 [gtk_menu_item_] get_use_underline
+=head2 [[gtk_] menu_item_] get_use_underline
 
 Checks if an underline in the text indicates the next character
 should be used for the mnemonic accelerator key.
@@ -519,7 +519,7 @@ sub gtk_menu_item_get_use_underline ( N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_set_reserve_indicator:
 =begin pod
-=head2 [gtk_menu_item_] set_reserve_indicator
+=head2 [[gtk_] menu_item_] set_reserve_indicator
 
 Sets whether the I<menu_item> should reserve space for
 the submenu indicator, regardless if it actually has
@@ -543,7 +543,7 @@ sub gtk_menu_item_set_reserve_indicator ( N-GObject $menu_item, int32 $reserve )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_item_get_reserve_indicator:
 =begin pod
-=head2 [gtk_menu_item_] get_reserve_indicator
+=head2 [[gtk_] menu_item_] get_reserve_indicator
 
 Returns whether the I<menu_item> reserves space for
 the submenu indicator, regardless if it has a submenu
@@ -760,7 +760,7 @@ The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLE
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_item_new
+=head2 [gtk_] menu_item_new
 
 Creates a new B<Gnome::Gtk3::MenuItem>.
 
@@ -778,7 +778,7 @@ sub gtk_menu_item_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] new_with_label
+=head2 [[gtk_] menu_item_] new_with_label
 
 Creates a new B<Gnome::Gtk3::MenuItem> whose child is a B<Gnome::Gtk3::Label>.
 
@@ -797,7 +797,7 @@ sub gtk_menu_item_new_with_label ( Str $label )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] new_with_mnemonic
+=head2 [[gtk_] menu_item_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::MenuItem> containing a label.
 
@@ -819,7 +819,7 @@ sub gtk_menu_item_new_with_mnemonic ( Str $label )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] set_submenu
+=head2 [[gtk_] menu_item_] set_submenu
 
 Sets or replaces the menu item’s submenu, or removes it when a C<Any>
 submenu is passed.
@@ -836,7 +836,7 @@ sub gtk_menu_item_set_submenu ( N-GObject $menu_item, N-GObject $submenu )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] get_submenu
+=head2 [[gtk_] menu_item_] get_submenu
 
 Gets the submenu underneath this menu item, if any.
 See C<gtk_menu_item_set_submenu()>.
@@ -855,7 +855,7 @@ sub gtk_menu_item_get_submenu ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_item_select
+=head2 [gtk_] menu_item_select
 
 Emits the sig C<select> signal on the given item.
 
@@ -870,7 +870,7 @@ sub gtk_menu_item_select ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_item_deselect
+=head2 [gtk_] menu_item_deselect
 
 Emits the sig C<deselect> signal on the given item.
 
@@ -885,7 +885,7 @@ sub gtk_menu_item_deselect ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_item_activate
+=head2 [gtk_] menu_item_activate
 
 Emits the sig C<activate> signal on the given item
 
@@ -900,7 +900,7 @@ sub gtk_menu_item_activate ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] toggle_size_request
+=head2 [[gtk_] menu_item_] toggle_size_request
 
 Emits the sig C<toggle-size-request> signal on the given item.
 
@@ -916,7 +916,7 @@ sub gtk_menu_item_toggle_size_request ( N-GObject $menu_item, int32 $requisition
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] toggle_size_allocate
+=head2 [[gtk_] menu_item_] toggle_size_allocate
 
 Emits the sig C<toggle-size-allocate> signal on the given item.
 
@@ -932,7 +932,7 @@ sub gtk_menu_item_toggle_size_allocate ( N-GObject $menu_item, int32 $allocation
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] set_accel_path
+=head2 [[gtk_] menu_item_] set_accel_path
 
 Set the accelerator path on I<menu_item>, through which runtime
 changes of the menu item’s accelerator caused by the user can be
@@ -966,7 +966,7 @@ sub gtk_menu_item_set_accel_path ( N-GObject $menu_item, Str $accel_path )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] get_accel_path
+=head2 [[gtk_] menu_item_] get_accel_path
 
 Retrieve the accelerator path that was previously set on I<menu_item>.
 
@@ -989,7 +989,7 @@ sub gtk_menu_item_get_accel_path ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] set_label
+=head2 [[gtk_] menu_item_] set_label
 
 Sets I<text> on the I<menu_item> label
 
@@ -1007,7 +1007,7 @@ sub gtk_menu_item_set_label ( N-GObject $menu_item, Str $label )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] get_label
+=head2 [[gtk_] menu_item_] get_label
 
 Sets I<text> on the I<menu_item> label
 
@@ -1028,7 +1028,7 @@ sub gtk_menu_item_get_label ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] set_use_underline
+=head2 [[gtk_] menu_item_] set_use_underline
 
 If true, an underline in the text indicates the next character
 should be used for the mnemonic accelerator key.
@@ -1047,7 +1047,7 @@ sub gtk_menu_item_set_use_underline ( N-GObject $menu_item, int32 $setting )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] get_use_underline
+=head2 [[gtk_] menu_item_] get_use_underline
 
 Checks if an underline in the text indicates the next character
 should be used for the mnemonic accelerator key.
@@ -1069,7 +1069,7 @@ sub gtk_menu_item_get_use_underline ( N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] set_reserve_indicator
+=head2 [[gtk_] menu_item_] set_reserve_indicator
 
 Sets whether the I<menu_item> should reserve space for
 the submenu indicator, regardless if it actually has
@@ -1092,7 +1092,7 @@ sub gtk_menu_item_set_reserve_indicator ( N-GObject $menu_item, int32 $reserve )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_item_] get_reserve_indicator
+=head2 [[gtk_] menu_item_] get_reserve_indicator
 
 Returns whether the I<menu_item> reserves space for
 the submenu indicator, regardless if it has a submenu

@@ -133,7 +133,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_grid_new:
 =begin pod
-=head2 gtk_grid_new
+=head2 [gtk_] grid_new
 
 Creates a new grid widget.
 
@@ -152,7 +152,7 @@ sub gtk_grid_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_attach:
 =begin pod
-=head2 gtk_grid_attach
+=head2 [gtk_] grid_attach
 
 Adds a widget to the grid.
 
@@ -177,7 +177,7 @@ sub gtk_grid_attach ( N-GObject $grid, N-GObject $child, int32 $left, int32 $top
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_attach_next_to:
 =begin pod
-=head2 [gtk_grid_] attach_next_to
+=head2 [[gtk_] grid_] attach_next_to
 
 Adds a widget to the grid.
 
@@ -206,7 +206,7 @@ sub gtk_grid_attach_next_to ( N-GObject $grid, N-GObject $child, N-GObject $sibl
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_get_child_at:
 =begin pod
-=head2 [gtk_grid_] get_child_at
+=head2 [[gtk_] grid_] get_child_at
 
 Gets the child of the grid whose area covers the grid
 cell whose upper left corner is at I<$left>, I<$top>.
@@ -230,7 +230,7 @@ sub gtk_grid_get_child_at ( N-GObject $grid, int32 $left, int32 $top )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_insert_row:
 =begin pod
-=head2 [gtk_grid_] insert_row
+=head2 [[gtk_] grid_] insert_row
 
 Inserts a row at the specified position.
 
@@ -253,7 +253,7 @@ sub gtk_grid_insert_row ( N-GObject $grid, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_insert_column:
 =begin pod
-=head2 [gtk_grid_] insert_column
+=head2 [[gtk_] grid_] insert_column
 
 Inserts a column at the specified position.
 
@@ -276,7 +276,7 @@ sub gtk_grid_insert_column ( N-GObject $grid, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_remove_row:
 =begin pod
-=head2 [gtk_grid_] remove_row
+=head2 [[gtk_] grid_] remove_row
 
 Removes a row from the grid.
 
@@ -297,7 +297,7 @@ sub gtk_grid_remove_row ( N-GObject $grid, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_remove_column:
 =begin pod
-=head2 [gtk_grid_] remove_column
+=head2 [[gtk_] grid_] remove_column
 
 Removes a column from the grid.
 
@@ -318,7 +318,7 @@ sub gtk_grid_remove_column ( N-GObject $grid, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_insert_next_to:
 =begin pod
-=head2 [gtk_grid_] insert_next_to
+=head2 [[gtk_] grid_] insert_next_to
 
 Inserts a row or column at the specified position.
 
@@ -343,7 +343,7 @@ sub gtk_grid_insert_next_to ( N-GObject $grid, N-GObject $sibling, int32 $side )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_set_row_homogeneous:
 =begin pod
-=head2 [gtk_grid_] set_row_homogeneous
+=head2 [[gtk_] grid_] set_row_homogeneous
 
 Sets whether all rows of the grid will have the same height.
 
@@ -360,7 +360,7 @@ sub gtk_grid_set_row_homogeneous ( N-GObject $grid, int32 $homogeneous )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_get_row_homogeneous:
 =begin pod
-=head2 [gtk_grid_] get_row_homogeneous
+=head2 [[gtk_] grid_] get_row_homogeneous
 
 Returns whether all rows of the grid have the same height.
 
@@ -377,7 +377,7 @@ sub gtk_grid_get_row_homogeneous ( N-GObject $grid )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_set_row_spacing:
 =begin pod
-=head2 [gtk_grid_] set_row_spacing
+=head2 [[gtk_] grid_] set_row_spacing
 
 Sets the amount of space between rows of the grid.
 
@@ -394,7 +394,7 @@ sub gtk_grid_set_row_spacing ( N-GObject $grid, uint32 $spacing )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_get_row_spacing:
 =begin pod
-=head2 [gtk_grid_] get_row_spacing
+=head2 [[gtk_] grid_] get_row_spacing
 
 Returns the amount of space between the rows of I<grid>.
 
@@ -413,7 +413,7 @@ sub gtk_grid_get_row_spacing ( N-GObject $grid )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_set_column_homogeneous:
 =begin pod
-=head2 [gtk_grid_] set_column_homogeneous
+=head2 [[gtk_] grid_] set_column_homogeneous
 
 Sets whether all columns of I<grid> will have the same width.
 
@@ -430,7 +430,7 @@ sub gtk_grid_set_column_homogeneous ( N-GObject $grid, int32 $homogeneous )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_get_column_homogeneous:
 =begin pod
-=head2 [gtk_grid_] get_column_homogeneous
+=head2 [[gtk_] grid_] get_column_homogeneous
 
 Returns whether all columns of I<grid> have the same width.
 
@@ -449,7 +449,7 @@ sub gtk_grid_get_column_homogeneous ( N-GObject $grid )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_set_column_spacing:
 =begin pod
-=head2 [gtk_grid_] set_column_spacing
+=head2 [[gtk_] grid_] set_column_spacing
 
 Sets the amount of space between columns of I<grid>.
 
@@ -466,7 +466,7 @@ sub gtk_grid_set_column_spacing ( N-GObject $grid, uint32 $spacing )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_grid_get_column_spacing:
 =begin pod
-=head2 [gtk_grid_] get_column_spacing
+=head2 [[gtk_] grid_] get_column_spacing
 
 Returns the amount of space between the columns of I<grid>.
 
@@ -485,7 +485,7 @@ sub gtk_grid_get_column_spacing ( N-GObject $grid )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_set_row_baseline_position:
 =begin pod
-=head2 [gtk_grid_] set_row_baseline_position
+=head2 [[gtk_] grid_] set_row_baseline_position
 
 Sets how the baseline should be positioned on I<row> of the
 grid, in case that row is assigned more space than is requested.
@@ -506,7 +506,7 @@ sub gtk_grid_set_row_baseline_position ( N-GObject $grid, int32 $row, int32 $pos
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_get_row_baseline_position:
 =begin pod
-=head2 [gtk_grid_] get_row_baseline_position
+=head2 [[gtk_] grid_] get_row_baseline_position
 
 Returns the baseline position of I<row> as set
 by C<gtk_grid_set_row_baseline_position()> or the default value
@@ -530,7 +530,7 @@ sub gtk_grid_get_row_baseline_position ( N-GObject $grid, int32 $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_set_baseline_row:
 =begin pod
-=head2 [gtk_grid_] set_baseline_row
+=head2 [[gtk_] grid_] set_baseline_row
 
 Sets which row defines the global baseline for the entire grid.
 Each row in the grid can have its own local baseline, but only
@@ -552,7 +552,7 @@ sub gtk_grid_set_baseline_row ( N-GObject $grid, int32 $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grid_get_baseline_row:
 =begin pod
-=head2 [gtk_grid_] get_baseline_row
+=head2 [[gtk_] grid_] get_baseline_row
 
 Returns which row defines the global baseline of I<grid>.
 

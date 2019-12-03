@@ -240,7 +240,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_view_new:new(:empty)
 =begin pod
-=head2 gtk_tree_view_new
+=head2 [gtk_] tree_view_new
 
 Creates a new B<Gnome::Gtk3::TreeView> widget.
 
@@ -256,7 +256,7 @@ sub gtk_tree_view_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_new_with_model:new(:model)
 =begin pod
-=head2 [gtk_tree_view_] new_with_model
+=head2 [[gtk_] tree_view_] new_with_model
 
 Creates a new B<Gnome::Gtk3::TreeView> widget with the model initialized to I<model>.
 
@@ -274,7 +274,7 @@ sub gtk_tree_view_new_with_model ( N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_model:
 =begin pod
-=head2 [gtk_tree_view_] get_model
+=head2 [[gtk_] tree_view_] get_model
 
 Returns the model the B<Gnome::Gtk3::TreeView> is based on.  Returns C<Any> if the
 model is unset.
@@ -295,7 +295,7 @@ sub gtk_tree_view_get_model ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_set_model:
 =begin pod
-=head2 [gtk_tree_view_] set_model
+=head2 [[gtk_] tree_view_] set_model
 
 Sets the model for a B<Gnome::Gtk3::TreeView>.  If the I<tree_view> already has a model
 set, it will remove it before setting the new model.  If I<model> is C<Any>,
@@ -315,7 +315,7 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_selection:
 =begin pod
-=head2 [gtk_tree_view_] get_selection
+=head2 [[gtk_] tree_view_] get_selection
 
 Gets the B<Gnome::Gtk3::TreeSelection> associated with I<tree_view>.
 
@@ -332,7 +332,7 @@ sub gtk_tree_view_get_selection ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_headers_visible:
 =begin pod
-=head2 [gtk_tree_view_] get_headers_visible
+=head2 [[gtk_] tree_view_] get_headers_visible
 
 Returns C<1> if the headers on the I<tree_view> are visible.
 
@@ -348,7 +348,7 @@ sub gtk_tree_view_get_headers_visible ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_set_headers_visible:
 =begin pod
-=head2 [gtk_tree_view_] set_headers_visible
+=head2 [[gtk_] tree_view_] set_headers_visible
 
 Sets the visibility state of the headers.
 
@@ -365,7 +365,7 @@ sub gtk_tree_view_set_headers_visible ( N-GObject $tree_view, int32 $headers_vis
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_columns_autosize:
 =begin pod
-=head2 [gtk_tree_view_] columns_autosize
+=head2 [[gtk_] tree_view_] columns_autosize
 
 Resizes all columns to their optimal width. Only works after the treeview has been realized.
 
@@ -381,7 +381,7 @@ sub gtk_tree_view_columns_autosize ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_headers_clickable:
 =begin pod
-=head2 [gtk_tree_view_] get_headers_clickable
+=head2 [[gtk_] tree_view_] get_headers_clickable
 
 Returns C<1> if all header columns are clickable, otherwise C<0>
 
@@ -399,7 +399,7 @@ sub gtk_tree_view_get_headers_clickable ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_headers_clickable:
 =begin pod
-=head2 [gtk_tree_view_] set_headers_clickable
+=head2 [[gtk_] tree_view_] set_headers_clickable
 
 Allow the column title buttons to be clicked.
 
@@ -416,7 +416,7 @@ sub gtk_tree_view_set_headers_clickable ( N-GObject $tree_view, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_activate_on_single_click:
 =begin pod
-=head2 [gtk_tree_view_] get_activate_on_single_click
+=head2 [[gtk_] tree_view_] get_activate_on_single_click
 
 Gets the setting set by C<gtk_tree_view_set_activate_on_single_click()>. The method returns C<1> if row-activated will be emitted on a single click.
 
@@ -434,7 +434,7 @@ sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_set_activate_on_single_click:
 =begin pod
-=head2 [gtk_tree_view_] set_activate_on_single_click
+=head2 [[gtk_] tree_view_] set_activate_on_single_click
 
 Cause the  I<row-activated> signal to be emitted on a single click instead of a double click.
 
@@ -453,7 +453,7 @@ sub gtk_tree_view_set_activate_on_single_click ( N-GObject $tree_view, int32 $si
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_append_column:
 =begin pod
-=head2 [gtk_tree_view_] append_column
+=head2 [[gtk_] tree_view_] append_column
 
 Appends I<$column> to the list of columns. If this tree view has “fixed_height” mode enabled, then I<$column> must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
@@ -476,7 +476,7 @@ sub gtk_tree_view_append_column ( N-GObject $tree_view, N-GObject $column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_remove_column:
 =begin pod
-=head2 [gtk_tree_view_] remove_column
+=head2 [[gtk_] tree_view_] remove_column
 
 Removes I<column> from I<tree_view>.
 
@@ -496,7 +496,7 @@ sub gtk_tree_view_remove_column ( N-GObject $tree_view, N-GObject $column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_insert_column:
 =begin pod
-=head2 [gtk_tree_view_] insert_column
+=head2 [[gtk_] tree_view_] insert_column
 
 This inserts the I<column> into the I<tree_view> at I<position>.  If I<position> is
 -1, then the column is inserted at the end. If I<tree_view> has
@@ -583,7 +583,7 @@ note "A: ", (self.get-native-gobject, |@attrs, 0).join(', ');
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_insert_column_with_data_func:
 =begin pod
-=head2 [gtk_tree_view_] insert_column_with_data_func
+=head2 [[gtk_] tree_view_] insert_column_with_data_func
 
 Convenience function that inserts a new column into the B<Gnome::Gtk3::TreeView>
 with the given cell renderer and a B<Gnome::Gtk3::TreeCellDataFunc> to set cell renderer
@@ -614,7 +614,7 @@ sub gtk_tree_view_insert_column_with_data_func ( N-GObject $tree_view, int32 $po
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_n_columns:
 =begin pod
-=head2 [gtk_tree_view_] get_n_columns
+=head2 [[gtk_] tree_view_] get_n_columns
 
 Queries the number of columns in the given I<tree_view>.
 
@@ -635,7 +635,7 @@ sub gtk_tree_view_get_n_columns ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_column:
 =begin pod
-=head2 [gtk_tree_view_] get_column
+=head2 [[gtk_] tree_view_] get_column
 
 Gets the B<Gnome::Gtk3::TreeViewColumn> at the given position in the B<tree_view> or undefined if the position is outside the range of columns.
 
@@ -653,7 +653,7 @@ sub gtk_tree_view_get_column ( N-GObject $tree_view, int32 $n )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_columns:
 =begin pod
-=head2 [gtk_tree_view_] get_columns
+=head2 [[gtk_] tree_view_] get_columns
 
 Returns a B<GList> of all the B<Gnome::Gtk3::TreeViewColumn> s currently in I<tree_view>.
 The returned list must be freed with C<g_list_free()>.
@@ -673,7 +673,7 @@ sub gtk_tree_view_get_columns ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_move_column_after:
 =begin pod
-=head2 [gtk_tree_view_] move_column_after
+=head2 [[gtk_] tree_view_] move_column_after
 
 Moves I<column> to be after to I<base_column>.  If I<base_column> is C<Any>, then
 I<column> is placed in the first position.
@@ -692,7 +692,7 @@ sub gtk_tree_view_move_column_after ( N-GObject $tree_view, N-GObject $column, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_expander_column:
 =begin pod
-=head2 [gtk_tree_view_] set_expander_column
+=head2 [[gtk_] tree_view_] set_expander_column
 
 Sets the column to draw the expander arrow at. It must be in I<tree_view>.
 If I<column> is C<Any>, then the expander arrow is always at the first
@@ -714,7 +714,7 @@ sub gtk_tree_view_set_expander_column ( N-GObject $tree_view, N-GObject $column 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_expander_column:
 =begin pod
-=head2 [gtk_tree_view_] get_expander_column
+=head2 [[gtk_] tree_view_] get_expander_column
 
 Returns the column that is the current expander column.
 This column has the expander arrow drawn next to it.
@@ -735,7 +735,7 @@ sub gtk_tree_view_get_expander_column ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_column_drag_function:
 =begin pod
-=head2 [gtk_tree_view_] set_column_drag_function
+=head2 [[gtk_] tree_view_] set_column_drag_function
 
 Sets a user function for determining where a column may be dropped when
 dragged.  This function is called on every column pair in turn at the
@@ -763,7 +763,7 @@ sub gtk_tree_view_set_column_drag_function ( N-GObject $tree_view, GtkTreeViewCo
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_scroll_to_point:
 =begin pod
-=head2 [gtk_tree_view_] scroll_to_point
+=head2 [[gtk_] tree_view_] scroll_to_point
 
 Scrolls the tree view such that the top-left corner of the visible
 area is I<tree_x>, I<tree_y>, where I<tree_x> and I<tree_y> are specified
@@ -788,7 +788,7 @@ sub gtk_tree_view_scroll_to_point ( N-GObject $tree_view, int32 $tree_x, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_scroll_to_cell:
 =begin pod
-=head2 [gtk_tree_view_] scroll_to_cell
+=head2 [[gtk_] tree_view_] scroll_to_cell
 
 Moves the alignments of I<tree_view> to the position specified by I<column> and
 I<path>.  If I<column> is C<Any>, then no horizontal scrolling occurs.  Likewise,
@@ -826,7 +826,7 @@ sub gtk_tree_view_scroll_to_cell ( N-GObject $tree_view, GtkTreePath $path, N-GO
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_row_activated:
 =begin pod
-=head2 [gtk_tree_view_] row_activated
+=head2 [[gtk_] tree_view_] row_activated
 
 Activates the cell determined by I<path> and I<column>.
 
@@ -845,7 +845,7 @@ sub gtk_tree_view_row_activated ( N-GObject $tree_view, GtkTreePath $path, N-GOb
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_expand_all:
 =begin pod
-=head2 [gtk_tree_view_] expand_all
+=head2 [[gtk_] tree_view_] expand_all
 
 Recursively expands all nodes in the I<tree_view>.
 
@@ -861,7 +861,7 @@ sub gtk_tree_view_expand_all ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_collapse_all:
 =begin pod
-=head2 [gtk_tree_view_] collapse_all
+=head2 [[gtk_] tree_view_] collapse_all
 
 Recursively collapses all visible, expanded nodes in I<tree_view>.
 
@@ -878,7 +878,7 @@ sub gtk_tree_view_collapse_all ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_expand_to_path:
 =begin pod
-=head2 [gtk_tree_view_] expand_to_path
+=head2 [[gtk_] tree_view_] expand_to_path
 
 Expands the row at I<path>. This will also expand all parent rows of
 I<path> as necessary.
@@ -900,7 +900,7 @@ sub gtk_tree_view_expand_to_path ( N-GObject $tree_view, GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_expand_row:
 =begin pod
-=head2 [gtk_tree_view_] expand_row
+=head2 [[gtk_] tree_view_] expand_row
 
 Opens the row so its children are visible.
 
@@ -923,7 +923,7 @@ sub gtk_tree_view_expand_row ( N-GObject $tree_view, GtkTreePath $path, int32 $o
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_collapse_row:
 =begin pod
-=head2 [gtk_tree_view_] collapse_row
+=head2 [[gtk_] tree_view_] collapse_row
 
 Collapses a row (hides its child rows, if they exist).
 
@@ -944,7 +944,7 @@ sub gtk_tree_view_collapse_row ( N-GObject $tree_view, GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_map_expanded_rows:
 =begin pod
-=head2 [gtk_tree_view_] map_expanded_rows
+=head2 [[gtk_] tree_view_] map_expanded_rows
 
 Calls I<func> on all expanded rows.
 
@@ -964,7 +964,7 @@ sub gtk_tree_view_map_expanded_rows ( N-GObject $tree_view, GtkTreeViewMappingFu
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_row_expanded:
 =begin pod
-=head2 [gtk_tree_view_] row_expanded
+=head2 [[gtk_] tree_view_] row_expanded
 
 Returns C<1> if the node pointed to by I<path> is expanded in I<tree_view>.
 
@@ -985,7 +985,7 @@ sub gtk_tree_view_row_expanded ( N-GObject $tree_view, GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_reorderable:
 =begin pod
-=head2 [gtk_tree_view_] set_reorderable
+=head2 [[gtk_] tree_view_] set_reorderable
 
 This function is a convenience function to allow you to reorder
 models that support the B<Gnome::Gtk3::TreeDragSourceIface> and the
@@ -1015,7 +1015,7 @@ sub gtk_tree_view_set_reorderable ( N-GObject $tree_view, int32 $reorderable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_reorderable:
 =begin pod
-=head2 [gtk_tree_view_] get_reorderable
+=head2 [[gtk_] tree_view_] get_reorderable
 
 Retrieves whether the user can reorder the tree via drag-and-drop. See
 C<gtk_tree_view_set_reorderable()>.
@@ -1036,7 +1036,7 @@ sub gtk_tree_view_get_reorderable ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_cursor:
 =begin pod
-=head2 [gtk_tree_view_] set_cursor
+=head2 [[gtk_] tree_view_] set_cursor
 
 Sets the current keyboard focus to be at I<path>, and selects it.  This is
 useful when you want to focus the user’s attention on a particular row.  If
@@ -1067,7 +1067,7 @@ sub gtk_tree_view_set_cursor ( N-GObject $tree_view, GtkTreePath $path, N-GObjec
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_cursor_on_cell:
 =begin pod
-=head2 [gtk_tree_view_] set_cursor_on_cell
+=head2 [[gtk_] tree_view_] set_cursor_on_cell
 
 Sets the current keyboard focus to be at I<path>, and selects it.  This is
 useful when you want to focus the user’s attention on a particular row.  If
@@ -1103,7 +1103,7 @@ sub gtk_tree_view_set_cursor_on_cell ( N-GObject $tree_view, GtkTreePath $path, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_cursor:
 =begin pod
-=head2 [gtk_tree_view_] get_cursor
+=head2 [[gtk_] tree_view_] get_cursor
 
 Fills in I<path> and I<focus_column> with the current path and focus column.  If
 the cursor isn’t currently set, then *I<path> will be C<Any>.  If no column
@@ -1127,7 +1127,7 @@ sub gtk_tree_view_get_cursor ( N-GObject $tree_view, GtkTreePath $path, N-GObjec
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_bin_window:
 =begin pod
-=head2 [gtk_tree_view_] get_bin_window
+=head2 [[gtk_] tree_view_] get_bin_window
 
 Returns the window that I<tree_view> renders to.
 This is used primarily to compare to `event->window`
@@ -1150,7 +1150,7 @@ sub gtk_tree_view_get_bin_window ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_path_at_pos:
 =begin pod
-=head2 [gtk_tree_view_] get_path_at_pos
+=head2 [[gtk_] tree_view_] get_path_at_pos
 
 Finds the path at the point (I<x>, I<y>), relative to bin_window coordinates
 (please see C<gtk_tree_view_get_bin_window()>).
@@ -1192,7 +1192,7 @@ sub gtk_tree_view_get_path_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, Gt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_cell_area:
 =begin pod
-=head2 [gtk_tree_view_] get_cell_area
+=head2 [[gtk_] tree_view_] get_cell_area
 
 Fills the bounding rectangle in bin_window coordinates for the cell at the
 row specified by I<path> and the column specified by I<column>.  If I<path> is
@@ -1220,7 +1220,7 @@ sub gtk_tree_view_get_cell_area ( N-GObject $tree_view, GtkTreePath $path, N-GOb
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_background_area:
 =begin pod
-=head2 [gtk_tree_view_] get_background_area
+=head2 [[gtk_] tree_view_] get_background_area
 
 Fills the bounding rectangle in bin_window coordinates for the cell at the
 row specified by I<path> and the column specified by I<column>.  If I<path> is
@@ -1248,7 +1248,7 @@ sub gtk_tree_view_get_background_area ( N-GObject $tree_view, GtkTreePath $path,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_visible_rect:
 =begin pod
-=head2 [gtk_tree_view_] get_visible_rect
+=head2 [[gtk_] tree_view_] get_visible_rect
 
 Fills I<visible_rect> with the currently-visible region of the
 buffer, in tree coordinates. Convert to bin_window coordinates with
@@ -1269,7 +1269,7 @@ sub gtk_tree_view_get_visible_rect ( N-GObject $tree_view, N-GObject $visible_re
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_visible_range:
 =begin pod
-=head2 [gtk_tree_view_] get_visible_range
+=head2 [[gtk_] tree_view_] get_visible_range
 
 Sets I<start_path> and I<end_path> to be the first and last visible path.
 Note that there may be invisible paths in between.
@@ -1296,7 +1296,7 @@ sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, GtkTreePath $start_p
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_is_blank_at_pos:
 =begin pod
-=head2 [gtk_tree_view_] is_blank_at_pos
+=head2 [[gtk_] tree_view_] is_blank_at_pos
 
 Determine whether the point (I<x>, I<y>) in I<tree_view> is blank, that is no
 cell content nor an expander arrow is drawn at the location. If so, the
@@ -1341,7 +1341,7 @@ sub gtk_tree_view_is_blank_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, Gt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_enable_model_drag_source:
 =begin pod
-=head2 [gtk_tree_view_] enable_model_drag_source
+=head2 [[gtk_] tree_view_] enable_model_drag_source
 
 Turns I<tree_view> into a drag source for automatic DND. Calling this
 method sets  I<reorderable> to C<0>.
@@ -1362,7 +1362,7 @@ sub gtk_tree_view_enable_model_drag_source ( N-GObject $tree_view, int32 $start_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_enable_model_drag_dest:
 =begin pod
-=head2 [gtk_tree_view_] enable_model_drag_dest
+=head2 [[gtk_] tree_view_] enable_model_drag_dest
 
 Turns I<tree_view> into a drop destination for automatic DND. Calling
 this method sets  I<reorderable> to C<0>.
@@ -1383,7 +1383,7 @@ sub gtk_tree_view_enable_model_drag_dest ( N-GObject $tree_view, GtkTargetEntry 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_unset_rows_drag_source:
 =begin pod
-=head2 [gtk_tree_view_] unset_rows_drag_source
+=head2 [[gtk_] tree_view_] unset_rows_drag_source
 
 Undoes the effect of
 C<gtk_tree_view_enable_model_drag_source()>. Calling this method sets
@@ -1401,7 +1401,7 @@ sub gtk_tree_view_unset_rows_drag_source ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_unset_rows_drag_dest:
 =begin pod
-=head2 [gtk_tree_view_] unset_rows_drag_dest
+=head2 [[gtk_] tree_view_] unset_rows_drag_dest
 
 Undoes the effect of
 C<gtk_tree_view_enable_model_drag_dest()>. Calling this method sets
@@ -1420,7 +1420,7 @@ sub gtk_tree_view_unset_rows_drag_dest ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_drag_dest_row:
 =begin pod
-=head2 [gtk_tree_view_] set_drag_dest_row
+=head2 [[gtk_] tree_view_] set_drag_dest_row
 
 Sets the row that is highlighted for feedback.
 If I<path> is C<Any>, an existing highlight is removed.
@@ -1439,7 +1439,7 @@ sub gtk_tree_view_set_drag_dest_row ( N-GObject $tree_view, GtkTreePath $path, i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_drag_dest_row:
 =begin pod
-=head2 [gtk_tree_view_] get_drag_dest_row
+=head2 [[gtk_] tree_view_] get_drag_dest_row
 
 Gets information about the row that is highlighted for feedback.
 
@@ -1457,7 +1457,7 @@ sub gtk_tree_view_get_drag_dest_row ( N-GObject $tree_view, GtkTreePath $path, i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_dest_row_at_pos:
 =begin pod
-=head2 [gtk_tree_view_] get_dest_row_at_pos
+=head2 [[gtk_] tree_view_] get_dest_row_at_pos
 
 Determines the destination row for a given position.  I<drag_x> and
 I<drag_y> are expected to be in widget coordinates.  This function is only
@@ -1484,7 +1484,7 @@ sub gtk_tree_view_get_dest_row_at_pos ( N-GObject $tree_view, int32 $drag_x, int
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_create_row_drag_icon:
 =begin pod
-=head2 [gtk_tree_view_] create_row_drag_icon
+=head2 [[gtk_] tree_view_] create_row_drag_icon
 
 Creates a B<cairo_surface_t> representation of the row at I<path>.
 This image is used for a drag icon.
@@ -1506,7 +1506,7 @@ sub gtk_tree_view_create_row_drag_icon ( N-GObject $tree_view, GtkTreePath $path
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_enable_search:
 =begin pod
-=head2 [gtk_tree_view_] set_enable_search
+=head2 [[gtk_] tree_view_] set_enable_search
 
 If I<enable_search> is set, then the user can type in text to search through
 the tree interactively (this is sometimes called "typeahead find").
@@ -1527,7 +1527,7 @@ sub gtk_tree_view_set_enable_search ( N-GObject $tree_view, int32 $enable_search
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_enable_search:
 =begin pod
-=head2 [gtk_tree_view_] get_enable_search
+=head2 [[gtk_] tree_view_] get_enable_search
 
 Returns whether or not the tree allows to start interactive searching
 by typing in text.
@@ -1547,7 +1547,7 @@ sub gtk_tree_view_get_enable_search ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_search_column:
 =begin pod
-=head2 [gtk_tree_view_] get_search_column
+=head2 [[gtk_] tree_view_] get_search_column
 
 Gets the column searched on by the interactive search code.
 
@@ -1566,7 +1566,7 @@ sub gtk_tree_view_get_search_column ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_search_column:
 =begin pod
-=head2 [gtk_tree_view_] set_search_column
+=head2 [[gtk_] tree_view_] set_search_column
 
 Sets I<column> as the column where the interactive search code should
 search in for the current model.
@@ -1592,7 +1592,7 @@ sub gtk_tree_view_set_search_column ( N-GObject $tree_view, int32 $column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_search_equal_func:
 =begin pod
-=head2 [gtk_tree_view_] get_search_equal_func
+=head2 [[gtk_] tree_view_] get_search_equal_func
 
 Returns the compare function currently in use.
 
@@ -1612,7 +1612,7 @@ sub gtk_tree_view_get_search_equal_func ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_search_equal_func:
 =begin pod
-=head2 [gtk_tree_view_] set_search_equal_func
+=head2 [[gtk_] tree_view_] set_search_equal_func
 
 Sets the compare function for the interactive search capabilities; note
 that somewhat like C<strcmp()> returning 0 for equality
@@ -1633,7 +1633,7 @@ sub gtk_tree_view_set_search_equal_func ( N-GObject $tree_view, GtkTreeViewSearc
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_search_entry:
 =begin pod
-=head2 [gtk_tree_view_] get_search_entry
+=head2 [[gtk_] tree_view_] get_search_entry
 
 Returns the B<Gnome::Gtk3::Entry> which is currently in use as interactive search
 entry for I<tree_view>.  In case the built-in entry is being used, C<Any>
@@ -1656,7 +1656,7 @@ sub gtk_tree_view_get_search_entry ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_search_entry:
 =begin pod
-=head2 [gtk_tree_view_] set_search_entry
+=head2 [[gtk_] tree_view_] set_search_entry
 
 Sets the entry which the interactive search code will use for this
 I<tree_view>.  This is useful when you want to provide a search entry
@@ -1679,7 +1679,7 @@ sub gtk_tree_view_set_search_entry ( N-GObject $tree_view, N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_search_position_func:
 =begin pod
-=head2 [gtk_tree_view_] get_search_position_func
+=head2 [[gtk_] tree_view_] get_search_position_func
 
 Returns the positioning function currently in use.
 
@@ -1701,7 +1701,7 @@ sub gtk_tree_view_get_search_position_func ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_search_position_func:
 =begin pod
-=head2 [gtk_tree_view_] set_search_position_func
+=head2 [[gtk_] tree_view_] set_search_position_func
 
 Sets the function to use when positioning the search dialog.
 
@@ -1723,7 +1723,7 @@ sub gtk_tree_view_set_search_position_func ( N-GObject $tree_view, GtkTreeViewSe
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_widget_to_tree_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_widget_to_tree_coords
+=head2 [[gtk_] tree_view_] convert_widget_to_tree_coords
 
 Converts widget coordinates to coordinates for the
 tree (the full scrollable area of the tree).
@@ -1746,7 +1746,7 @@ sub gtk_tree_view_convert_widget_to_tree_coords ( N-GObject $tree_view, int32 $w
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_tree_to_widget_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_tree_to_widget_coords
+=head2 [[gtk_] tree_view_] convert_tree_to_widget_coords
 
 Converts tree coordinates (coordinates in full scrollable area of the tree)
 to widget coordinates.
@@ -1769,7 +1769,7 @@ sub gtk_tree_view_convert_tree_to_widget_coords ( N-GObject $tree_view, int32 $t
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_widget_to_bin_window_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_widget_to_bin_window_coords
+=head2 [[gtk_] tree_view_] convert_widget_to_bin_window_coords
 
 Converts widget coordinates to coordinates for the bin_window
 (see C<gtk_tree_view_get_bin_window()>).
@@ -1792,7 +1792,7 @@ sub gtk_tree_view_convert_widget_to_bin_window_coords ( N-GObject $tree_view, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_bin_window_to_widget_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_bin_window_to_widget_coords
+=head2 [[gtk_] tree_view_] convert_bin_window_to_widget_coords
 
 Converts bin_window coordinates (see C<gtk_tree_view_get_bin_window()>)
 to widget relative coordinates.
@@ -1815,7 +1815,7 @@ sub gtk_tree_view_convert_bin_window_to_widget_coords ( N-GObject $tree_view, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_tree_to_bin_window_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_tree_to_bin_window_coords
+=head2 [[gtk_] tree_view_] convert_tree_to_bin_window_coords
 
 Converts tree coordinates (coordinates in full scrollable area of the tree)
 to bin_window coordinates.
@@ -1838,7 +1838,7 @@ sub gtk_tree_view_convert_tree_to_bin_window_coords ( N-GObject $tree_view, int3
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_convert_bin_window_to_tree_coords:
 =begin pod
-=head2 [gtk_tree_view_] convert_bin_window_to_tree_coords
+=head2 [[gtk_] tree_view_] convert_bin_window_to_tree_coords
 
 Converts bin_window coordinates to coordinates for the
 tree (the full scrollable area of the tree).
@@ -1861,7 +1861,7 @@ sub gtk_tree_view_convert_bin_window_to_tree_coords ( N-GObject $tree_view, int3
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_fixed_height_mode:
 =begin pod
-=head2 [gtk_tree_view_] set_fixed_height_mode
+=head2 [[gtk_] tree_view_] set_fixed_height_mode
 
 Enables or disables the fixed height mode of I<tree_view>.
 Fixed height mode speeds up B<Gnome::Gtk3::TreeView> by assuming that all
@@ -1884,7 +1884,7 @@ sub gtk_tree_view_set_fixed_height_mode ( N-GObject $tree_view, int32 $enable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_fixed_height_mode:
 =begin pod
-=head2 [gtk_tree_view_] get_fixed_height_mode
+=head2 [[gtk_] tree_view_] get_fixed_height_mode
 
 Returns whether fixed height mode is turned on for I<tree_view>.
 
@@ -1905,7 +1905,7 @@ sub gtk_tree_view_get_fixed_height_mode ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_hover_selection:
 =begin pod
-=head2 [gtk_tree_view_] set_hover_selection
+=head2 [[gtk_] tree_view_] set_hover_selection
 
 Enables or disables the hover selection mode of I<tree_view>.
 Hover selection makes the selected row follow the pointer.
@@ -1927,7 +1927,7 @@ sub gtk_tree_view_set_hover_selection ( N-GObject $tree_view, int32 $hover )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_hover_selection:
 =begin pod
-=head2 [gtk_tree_view_] get_hover_selection
+=head2 [[gtk_] tree_view_] get_hover_selection
 
 Returns whether hover selection mode is turned on for I<tree_view>.
 
@@ -1948,7 +1948,7 @@ sub gtk_tree_view_get_hover_selection ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_hover_expand:
 =begin pod
-=head2 [gtk_tree_view_] set_hover_expand
+=head2 [[gtk_] tree_view_] set_hover_expand
 
 Enables or disables the hover expansion mode of I<tree_view>.
 Hover expansion makes rows expand or collapse if the pointer
@@ -1969,7 +1969,7 @@ sub gtk_tree_view_set_hover_expand ( N-GObject $tree_view, int32 $expand )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_hover_expand:
 =begin pod
-=head2 [gtk_tree_view_] get_hover_expand
+=head2 [[gtk_] tree_view_] get_hover_expand
 
 Returns whether hover expansion mode is turned on for I<tree_view>.
 
@@ -1990,7 +1990,7 @@ sub gtk_tree_view_get_hover_expand ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_rubber_banding:
 =begin pod
-=head2 [gtk_tree_view_] set_rubber_banding
+=head2 [[gtk_] tree_view_] set_rubber_banding
 
 Enables or disables rubber banding in I<tree_view>.  If the selection mode
 is B<GTK_SELECTION_MULTIPLE>, rubber banding will allow the user to select
@@ -2011,7 +2011,7 @@ sub gtk_tree_view_set_rubber_banding ( N-GObject $tree_view, int32 $enable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_rubber_banding:
 =begin pod
-=head2 [gtk_tree_view_] get_rubber_banding
+=head2 [[gtk_] tree_view_] get_rubber_banding
 
 Returns whether rubber banding is turned on for I<tree_view>.  If the
 selection mode is B<GTK_SELECTION_MULTIPLE>, rubber banding will allow the
@@ -2034,7 +2034,7 @@ sub gtk_tree_view_get_rubber_banding ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_is_rubber_banding_active:
 =begin pod
-=head2 [gtk_tree_view_] is_rubber_banding_active
+=head2 [[gtk_] tree_view_] is_rubber_banding_active
 
 Returns whether a rubber banding operation is currently being done
 in I<tree_view>.
@@ -2057,7 +2057,7 @@ sub gtk_tree_view_is_rubber_banding_active ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_row_separator_func:
 =begin pod
-=head2 [gtk_tree_view_] get_row_separator_func
+=head2 [[gtk_] tree_view_] get_row_separator_func
 
 Returns the current row separator function.
 
@@ -2079,7 +2079,7 @@ sub gtk_tree_view_get_row_separator_func ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_row_separator_func:
 =begin pod
-=head2 [gtk_tree_view_] set_row_separator_func
+=head2 [[gtk_] tree_view_] set_row_separator_func
 
 Sets the row separator function, which is used to determine
 whether a row should be drawn as a separator. If the row separator
@@ -2103,7 +2103,7 @@ sub gtk_tree_view_set_row_separator_func ( N-GObject $tree_view, GtkTreeViewRowS
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_grid_lines:
 =begin pod
-=head2 [gtk_tree_view_] get_grid_lines
+=head2 [[gtk_] tree_view_] get_grid_lines
 
 Returns which grid lines are enabled in I<tree_view>.
 
@@ -2125,7 +2125,7 @@ sub gtk_tree_view_get_grid_lines ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_grid_lines:
 =begin pod
-=head2 [gtk_tree_view_] set_grid_lines
+=head2 [[gtk_] tree_view_] set_grid_lines
 
 Sets which grid lines to draw in I<tree_view>.
 
@@ -2145,7 +2145,7 @@ sub gtk_tree_view_set_grid_lines ( N-GObject $tree_view, int32 $grid_lines )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_enable_tree_lines:
 =begin pod
-=head2 [gtk_tree_view_] get_enable_tree_lines
+=head2 [[gtk_] tree_view_] get_enable_tree_lines
 
 Returns whether or not tree lines are drawn in I<tree_view>.
 
@@ -2167,7 +2167,7 @@ sub gtk_tree_view_get_enable_tree_lines ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_enable_tree_lines:
 =begin pod
-=head2 [gtk_tree_view_] set_enable_tree_lines
+=head2 [[gtk_] tree_view_] set_enable_tree_lines
 
 Sets whether to draw lines interconnecting the expanders in I<tree_view>.
 This does not have any visible effects for lists.
@@ -2187,7 +2187,7 @@ sub gtk_tree_view_set_enable_tree_lines ( N-GObject $tree_view, int32 $enabled )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_show_expanders:
 =begin pod
-=head2 [gtk_tree_view_] set_show_expanders
+=head2 [[gtk_] tree_view_] set_show_expanders
 
 Sets whether to draw and enable expanders and indent child rows in
 I<tree_view>.  When disabled there will be no expanders visible in trees
@@ -2212,7 +2212,7 @@ sub gtk_tree_view_set_show_expanders ( N-GObject $tree_view, int32 $enabled )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_show_expanders:
 =begin pod
-=head2 [gtk_tree_view_] get_show_expanders
+=head2 [[gtk_] tree_view_] get_show_expanders
 
 Returns whether or not expanders are drawn in I<tree_view>.
 
@@ -2234,7 +2234,7 @@ sub gtk_tree_view_get_show_expanders ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_level_indentation:
 =begin pod
-=head2 [gtk_tree_view_] set_level_indentation
+=head2 [[gtk_] tree_view_] set_level_indentation
 
 Sets the amount of extra indentation for child levels to use in I<tree_view>
 in addition to the default indentation.  The value should be specified in
@@ -2257,7 +2257,7 @@ sub gtk_tree_view_set_level_indentation ( N-GObject $tree_view, int32 $indentati
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_level_indentation:
 =begin pod
-=head2 [gtk_tree_view_] get_level_indentation
+=head2 [[gtk_] tree_view_] get_level_indentation
 
 Returns the amount, in pixels, of extra indentation for child levels
 in I<tree_view>.
@@ -2281,7 +2281,7 @@ sub gtk_tree_view_get_level_indentation ( N-GObject $tree_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_tooltip_row:
 =begin pod
-=head2 [gtk_tree_view_] set_tooltip_row
+=head2 [[gtk_] tree_view_] set_tooltip_row
 
 Sets the tip area of I<tooltip> to be the area covered by the row at I<path>.
 See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
@@ -2303,7 +2303,7 @@ sub gtk_tree_view_set_tooltip_row ( N-GObject $tree_view, N-GObject $tooltip, Gt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_tooltip_cell:
 =begin pod
-=head2 [gtk_tree_view_] set_tooltip_cell
+=head2 [[gtk_] tree_view_] set_tooltip_cell
 
 Sets the tip area of I<tooltip> to the area I<path>, I<column> and I<cell> have
 in common.  For example if I<path> is C<Any> and I<column> is set, the tip
@@ -2335,7 +2335,7 @@ sub gtk_tree_view_set_tooltip_cell ( N-GObject $tree_view, N-GObject $tooltip, G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_tooltip_context:
 =begin pod
-=head2 [gtk_tree_view_] get_tooltip_context
+=head2 [[gtk_] tree_view_] get_tooltip_context
 
 This function is supposed to be used in a  I<query-tooltip>
 signal handler for B<Gnome::Gtk3::TreeView>.  The I<x>, I<y> and I<keyboard_tip> values
@@ -2373,7 +2373,7 @@ sub gtk_tree_view_get_tooltip_context ( N-GObject $tree_view, int32 $x, int32 $y
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_tooltip_column:
 =begin pod
-=head2 [gtk_tree_view_] set_tooltip_column
+=head2 [[gtk_] tree_view_] set_tooltip_column
 
 If you only plan to have simple (text-only) tooltips on full rows, you
 can use this function to have B<Gnome::Gtk3::TreeView> handle these automatically
@@ -2401,7 +2401,7 @@ sub gtk_tree_view_set_tooltip_column ( N-GObject $tree_view, int32 $column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_tooltip_column:
 =begin pod
-=head2 [gtk_tree_view_] get_tooltip_column
+=head2 [[gtk_] tree_view_] get_tooltip_column
 
 Returns the column of I<tree_view>’s model which is being used for
 displaying tooltips on I<tree_view>’s rows.

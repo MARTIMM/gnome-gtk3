@@ -171,7 +171,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_new:new(:empty)
 =begin pod
-=head2 gtk_tree_view_column_new
+=head2 [gtk_] tree_view_column_new
 
 Creates a new B<Gnome::Gtk3::TreeViewColumn>.
 
@@ -191,7 +191,7 @@ sub gtk_tree_view_column_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_new_with_area:
 =begin pod
-=head2 [gtk_tree_view_column_] new_with_area
+=head2 [[gtk_] tree_view_column_] new_with_area
 
 Creates a new B<Gnome::Gtk3::TreeViewColumn> using I<area> to render its cells.
 
@@ -215,7 +215,7 @@ sub gtk_tree_view_column_new_with_area ( N-GObject $area )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_new_with_attributes:
 =begin pod
-=head2 [gtk_tree_view_column_] new_with_attributes
+=head2 [[gtk_] tree_view_column_] new_with_attributes
 
 Creates a new B<Gnome::Gtk3::TreeViewColumn> with a number of default values. This is equivalent to calling C<gtk_tree_view_column_set_title()>, C<gtk_tree_view_column_pack_start()>, and C<gtk_tree_view_column_set_attributes()> on the newly created B<Gnome::Gtk3::TreeViewColumn>.
 
@@ -258,7 +258,7 @@ sub gtk_tree_view_column_new_with_attributes (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_pack_start:
 =begin pod
-=head2 [gtk_tree_view_column_] pack_start
+=head2 [[gtk_] tree_view_column_] pack_start
 
 Packs the I<$cell> into the beginning of the column. If I<$expand> is C<0>, then the I<$cell> is allocated no more space than it needs. Any unused space is divided evenly between cells for which I<$expand> is C<1>.
 
@@ -278,7 +278,7 @@ sub gtk_tree_view_column_pack_start ( N-GObject $tree_column, N-GObject $cell, i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_pack_end:
 =begin pod
-=head2 [gtk_tree_view_column_] pack_end
+=head2 [[gtk_] tree_view_column_] pack_end
 
 Adds the I<$cell> to end of the column. If I<$expand> is C<0>, then the I<$cell> is allocated no more space than it needs. Any unused space is divided evenly between cells for which I<$expand> is C<1>.
 
@@ -296,7 +296,7 @@ sub gtk_tree_view_column_pack_end ( N-GObject $tree_column, N-GObject $cell, int
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_clear:
 =begin pod
-=head2 gtk_tree_view_column_clear
+=head2 [gtk_] tree_view_column_clear
 
 Unsets all the mappings on all renderers on this tree column.
 
@@ -311,7 +311,7 @@ sub gtk_tree_view_column_clear ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_add_attribute:
 =begin pod
-=head2 [gtk_tree_view_column_] add_attribute
+=head2 [[gtk_] tree_view_column_] add_attribute
 
 Adds an attribute mapping to the list in this tree column.  The I<$column> is the column of the model to get a value from, and the I<$attribute> is the parameter on I<$cell_renderer> to be set from the value. So for example if column 2 of the model contains strings, you could have the “text” attribute of a B<Gnome::Gtk3::CellRendererText> get its values from column 2.
 
@@ -333,7 +333,7 @@ sub gtk_tree_view_column_add_attribute ( N-GObject $tree_column, N-GObject $cell
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_attributes:
 =begin pod
-=head2 [gtk_tree_view_column_] set_attributes
+=head2 [[gtk_] tree_view_column_] set_attributes
 
 Sets the attributes in the list as the attributes of I<tree_column>.
 The attributes should be in attribute/column order, as in
@@ -355,7 +355,7 @@ sub gtk_tree_view_column_set_attributes ( N-GObject $tree_column, N-GObject $cel
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_cell_data_func:
 =begin pod
-=head2 [gtk_tree_view_column_] set_cell_data_func
+=head2 [[gtk_] tree_view_column_] set_cell_data_func
 
 Sets the B<Gnome::Gtk3::TreeCellDataFunc> to use for the column.  This
 function is used instead of the standard attributes mapping for
@@ -379,7 +379,7 @@ sub gtk_tree_view_column_set_cell_data_func ( N-GObject $tree_column, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_clear_attributes:
 =begin pod
-=head2 [gtk_tree_view_column_] clear_attributes
+=head2 [[gtk_] tree_view_column_] clear_attributes
 
 Clears all existing attributes previously set with C<gtk_tree_view_column_set_attributes()>.
 
@@ -398,7 +398,7 @@ sub gtk_tree_view_column_clear_attributes ( N-GObject $tree_column, N-GObject $c
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_spacing:
 =begin pod
-=head2 [gtk_tree_view_column_] set_spacing
+=head2 [[gtk_] tree_view_column_] set_spacing
 
 Sets the spacing field of this tree column, which is the number of pixels to place between cell renderers packed into it.
 
@@ -415,7 +415,7 @@ sub gtk_tree_view_column_set_spacing ( N-GObject $tree_column, int32 $spacing )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_spacing:
 =begin pod
-=head2 [gtk_tree_view_column_] get_spacing
+=head2 [[gtk_] tree_view_column_] get_spacing
 
 Returns the spacing of this tree column.
 
@@ -432,7 +432,7 @@ sub gtk_tree_view_column_get_spacing ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_visible:
 =begin pod
-=head2 [gtk_tree_view_column_] set_visible
+=head2 [[gtk_] tree_view_column_] set_visible
 
 Sets the visibility of this tree column.
 
@@ -449,7 +449,7 @@ sub gtk_tree_view_column_set_visible ( N-GObject $tree_column, int32 $visible )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_visible:
 =begin pod
-=head2 [gtk_tree_view_column_] get_visible
+=head2 [[gtk_] tree_view_column_] get_visible
 
 Returns C<1> if this tree column is visible. If it is visible, then the tree will show the column.
 
@@ -466,7 +466,7 @@ sub gtk_tree_view_column_get_visible ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_resizable:
 =begin pod
-=head2 [gtk_tree_view_column_] set_resizable
+=head2 [[gtk_] tree_view_column_] set_resizable
 
 If I<$resizable> is C<1>, then the user can explicitly resize the column by grabbing the outer edge of the column button.  If resizable is C<1> and sizing mode of the column is B<GTK_TREE_VIEW_COLUMN_AUTOSIZE>, then the sizing mode is changed to B<GTK_TREE_VIEW_COLUMN_GROW_ONLY>.
 
@@ -483,7 +483,7 @@ sub gtk_tree_view_column_set_resizable ( N-GObject $tree_column, int32 $resizabl
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_resizable:
 =begin pod
-=head2 [gtk_tree_view_column_] get_resizable
+=head2 [[gtk_] tree_view_column_] get_resizable
 
 Returns C<1> if this tree column can be resized by the end user.
 
@@ -499,7 +499,7 @@ sub gtk_tree_view_column_get_resizable ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_set_sizing:
 =begin pod
-=head2 [gtk_tree_view_column_] set_sizing
+=head2 [[gtk_] tree_view_column_] set_sizing
 
 Sets the growth behavior of this tree column to I<$type>.
 
@@ -516,7 +516,7 @@ sub gtk_tree_view_column_set_sizing ( N-GObject $tree_column, int32 $type )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_get_sizing:
 =begin pod
-=head2 [gtk_tree_view_column_] get_sizing
+=head2 [[gtk_] tree_view_column_] get_sizing
 
 Returns the current type of this tree column.
 
@@ -533,7 +533,7 @@ sub gtk_tree_view_column_get_sizing ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_x_offset:
 =begin pod
-=head2 [gtk_tree_view_column_] get_x_offset
+=head2 [[gtk_] tree_view_column_] get_x_offset
 
 Returns the current X offset of this tree column in pixels.
 
@@ -551,7 +551,7 @@ sub gtk_tree_view_column_get_x_offset ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_width:
 =begin pod
-=head2 [gtk_tree_view_column_] get_width
+=head2 [[gtk_] tree_view_column_] get_width
 
 Returns the current size of this tree column in pixels.
 
@@ -567,7 +567,7 @@ sub gtk_tree_view_column_get_width ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_fixed_width:
 =begin pod
-=head2 [gtk_tree_view_column_] get_fixed_width
+=head2 [[gtk_] tree_view_column_] get_fixed_width
 
 Gets the fixed width of the column.  This may not be the actual displayed width of the column; for that, use C<gtk_tree_view_column_get_width()>.
 
@@ -586,7 +586,7 @@ sub gtk_tree_view_column_get_fixed_width ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_fixed_width:
 =begin pod
-=head2 [gtk_tree_view_column_] set_fixed_width
+=head2 [[gtk_] tree_view_column_] set_fixed_width
 
 If I<$fixed_width> is not -1, sets the fixed width of this tree column; otherwise unsets it.  The effective value of I<fixed_width> is clamped between the minimum and maximum width of the column; however, the value stored in the “fixed-width” property is not clamped.  If the column sizing is B<GTK_TREE_VIEW_COLUMN_GROW_ONLY> or B<GTK_TREE_VIEW_COLUMN_AUTOSIZE>, setting a fixed width overrides the automatically calculated width.  Note that I<$fixed_width> is only a hint to GTK+; the width actually allocated to the column may be greater or less than requested.
 
@@ -605,7 +605,7 @@ sub gtk_tree_view_column_set_fixed_width ( N-GObject $tree_column, int32 $fixed_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_min_width:
 =begin pod
-=head2 [gtk_tree_view_column_] set_min_width
+=head2 [[gtk_] tree_view_column_] set_min_width
 
 Sets the minimum width of the this tree column.  If I<$min_width> is -1, then the minimum width is unset.
 
@@ -622,7 +622,7 @@ sub gtk_tree_view_column_set_min_width ( N-GObject $tree_column, int32 $min_widt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_min_width:
 =begin pod
-=head2 [gtk_tree_view_column_] get_min_width
+=head2 [[gtk_] tree_view_column_] get_min_width
 
 Returns the minimum width in pixels of the this tree column, or -1 if no minimum width is set.
 
@@ -639,7 +639,7 @@ sub gtk_tree_view_column_get_min_width ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_max_width:
 =begin pod
-=head2 [gtk_tree_view_column_] set_max_width
+=head2 [[gtk_] tree_view_column_] set_max_width
 
 Sets the maximum width of the this tree column.  If I<#max_width> is -1, then the maximum width is unset.  Note, the column can actually be wider than max width if it’s the last column in a view.  In this case, the column expands to fill any extra space.
 
@@ -656,7 +656,7 @@ sub gtk_tree_view_column_set_max_width ( N-GObject $tree_column, int32 $max_widt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_max_width:
 =begin pod
-=head2 [gtk_tree_view_column_] get_max_width
+=head2 [[gtk_] tree_view_column_] get_max_width
 
 Returns the maximum width in pixels of the this tree column, or -1 if no maximum width is set.
 
@@ -672,7 +672,7 @@ sub gtk_tree_view_column_get_max_width ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_clicked:
 =begin pod
-=head2 gtk_tree_view_column_clicked
+=head2 [gtk_] tree_view_column_clicked
 
 Emits the “clicked” signal on the column.  This function will only work if this tree column is clickable.
 
@@ -688,7 +688,7 @@ sub gtk_tree_view_column_clicked ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_set_title:
 =begin pod
-=head2 [gtk_tree_view_column_] set_title
+=head2 [[gtk_] tree_view_column_] set_title
 
 Sets the title of the this tree column.  If a custom widget has been set, then this value is ignored.
 
@@ -705,7 +705,7 @@ sub gtk_tree_view_column_set_title ( N-GObject $tree_column, Str $title )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_get_title:
 =begin pod
-=head2 [gtk_tree_view_column_] get_title
+=head2 [[gtk_] tree_view_column_] get_title
 
 Returns the title of the column.
 
@@ -721,7 +721,7 @@ sub gtk_tree_view_column_get_title ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_set_expand:
 =begin pod
-=head2 [gtk_tree_view_column_] set_expand
+=head2 [[gtk_] tree_view_column_] set_expand
 
 Sets the column to take available extra space.  This space is shared equally amongst all columns that have the expand set to C<1>.  If no column has this option set, then the last column gets all extra space.  By default, every column is created with this C<0>.
 
@@ -742,7 +742,7 @@ sub gtk_tree_view_column_set_expand ( N-GObject $tree_column, int32 $expand )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_get_expand:
 =begin pod
-=head2 [gtk_tree_view_column_] get_expand
+=head2 [[gtk_] tree_view_column_] get_expand
 
 Returns C<1> if the column expands to fill available space.
 
@@ -761,7 +761,7 @@ sub gtk_tree_view_column_get_expand ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_clickable:
 =begin pod
-=head2 [gtk_tree_view_column_] set_clickable
+=head2 [[gtk_] tree_view_column_] set_clickable
 
 Sets the header to be active if I<$clickable> is C<1>.  When the header is
 active, then it can take keyboard focus, and can be clicked.
@@ -779,7 +779,7 @@ sub gtk_tree_view_column_set_clickable ( N-GObject $tree_column, int32 $clickabl
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_clickable:
 =begin pod
-=head2 [gtk_tree_view_column_] get_clickable
+=head2 [[gtk_] tree_view_column_] get_clickable
 
 Returns C<1> if the user can click on the header for the column.
 
@@ -796,7 +796,7 @@ sub gtk_tree_view_column_get_clickable ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_widget:
 =begin pod
-=head2 [gtk_tree_view_column_] set_widget
+=head2 [[gtk_] tree_view_column_] set_widget
 
 Sets the widget in the header to be I<$widget>. Normally the header button is set with a B<Gnome::Gtk3::Label> set to the title of this tree column.
 
@@ -813,7 +813,7 @@ sub gtk_tree_view_column_set_widget ( N-GObject $tree_column, N-GObject $widget 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_widget:
 =begin pod
-=head2 [gtk_tree_view_column_] get_widget
+=head2 [[gtk_] tree_view_column_] get_widget
 
 Returns the B<Gnome::Gtk3::Widget> in the button on the column header. If a custom widget has not been set then C<Any> is returned.
 
@@ -829,7 +829,7 @@ sub gtk_tree_view_column_get_widget ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_alignment:
 =begin pod
-=head2 [gtk_tree_view_column_] set_alignment
+=head2 [[gtk_] tree_view_column_] set_alignment
 
 Sets the alignment of the title or custom widget inside the column header. The alignment determines its location inside the button -- 0.0 for left, 0.5 for center, 1.0 for right.
 
@@ -846,7 +846,7 @@ sub gtk_tree_view_column_set_alignment ( N-GObject $tree_column, num32 $xalign )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_alignment:
 =begin pod
-=head2 [gtk_tree_view_column_] get_alignment
+=head2 [[gtk_] tree_view_column_] get_alignment
 
 Returns the current x alignment of this tree column.  This value can range between 0.0 and 1.0.
 
@@ -862,7 +862,7 @@ sub gtk_tree_view_column_get_alignment ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_reorderable:
 =begin pod
-=head2 [gtk_tree_view_column_] set_reorderable
+=head2 [[gtk_] tree_view_column_] set_reorderable
 
 If I<reorderable> is C<1>, then the column can be reordered by the end user dragging the header.
 
@@ -879,7 +879,7 @@ sub gtk_tree_view_column_set_reorderable ( N-GObject $tree_column, int32 $reorde
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_reorderable:
 =begin pod
-=head2 [gtk_tree_view_column_] get_reorderable
+=head2 [[gtk_] tree_view_column_] get_reorderable
 
 Returns C<1> if this tree column can be reordered by the user.
 
@@ -896,7 +896,7 @@ sub gtk_tree_view_column_get_reorderable ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_sort_column_id:
 =begin pod
-=head2 [gtk_tree_view_column_] set_sort_column_id
+=head2 [[gtk_] tree_view_column_] set_sort_column_id
 
 Sets the logical I<$sort_column_id> that this column sorts on when this column is selected for sorting.  Doing so makes the column header clickable.
 
@@ -913,7 +913,7 @@ sub gtk_tree_view_column_set_sort_column_id ( N-GObject $tree_column, int32 $sor
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_sort_column_id:
 =begin pod
-=head2 [gtk_tree_view_column_] get_sort_column_id
+=head2 [[gtk_] tree_view_column_] get_sort_column_id
 
 Gets the logical sort column id that the model sorts on when this column is selected for sorting. See C<gtk_tree_view_column_set_sort_column_id()>.
 
@@ -929,7 +929,7 @@ sub gtk_tree_view_column_get_sort_column_id ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_sort_indicator:
 =begin pod
-=head2 [gtk_tree_view_column_] set_sort_indicator
+=head2 [[gtk_] tree_view_column_] set_sort_indicator
 
 Call this function with a I<$setting> of C<1> to display an arrow in the header button indicating the column is sorted. Call C<gtk_tree_view_column_set_sort_order()> to change the direction of the arrow.
 
@@ -946,7 +946,7 @@ sub gtk_tree_view_column_set_sort_indicator ( N-GObject $tree_column, int32 $set
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_sort_indicator:
 =begin pod
-=head2 [gtk_tree_view_column_] get_sort_indicator
+=head2 [[gtk_] tree_view_column_] get_sort_indicator
 
 Gets the value set by C<gtk_tree_view_column_set_sort_indicator()>.
 
@@ -963,7 +963,7 @@ sub gtk_tree_view_column_get_sort_indicator ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_sort_order:
 =begin pod
-=head2 [gtk_tree_view_column_] set_sort_order
+=head2 [[gtk_] tree_view_column_] set_sort_order
 
 Changes the appearance of the sort indicator.
 
@@ -984,7 +984,7 @@ sub gtk_tree_view_column_set_sort_order ( N-GObject $tree_column, int32 $order )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_sort_order:
 =begin pod
-=head2 [gtk_tree_view_column_] get_sort_order
+=head2 [[gtk_] tree_view_column_] get_sort_order
 
 Gets the value set by C<gtk_tree_view_column_set_sort_order()>.
 
@@ -1001,7 +1001,7 @@ sub gtk_tree_view_column_get_sort_order ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_cell_set_cell_data:
 =begin pod
-=head2 [gtk_tree_view_column_] cell_set_cell_data
+=head2 [[gtk_] tree_view_column_] cell_set_cell_data
 
 Sets the cell renderer based on this tree column and I<$iter>.  That is, for every attribute mapping in this tree column, it will get a value from the set column on the I<$iter>, and use that value to set the attribute on the cell renderer. This is used primarily by the B<Gnome::Gtk3::TreeView>.
 
@@ -1024,7 +1024,7 @@ sub gtk_tree_view_column_cell_set_cell_data ( N-GObject $tree_column, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_cell_get_size:
 =begin pod
-=head2 [gtk_tree_view_column_] cell_get_size
+=head2 [[gtk_] tree_view_column_] cell_get_size
 
 Obtains the width and height needed to render the column.  This is used primarily by the B<Gnome::Gtk3::TreeView>.
 
@@ -1045,7 +1045,7 @@ sub gtk_tree_view_column_cell_get_size ( N-GObject $tree_column, N-GObject $cell
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_cell_is_visible:
 =begin pod
-=head2 [gtk_tree_view_column_] cell_is_visible
+=head2 [[gtk_] tree_view_column_] cell_is_visible
 
 Returns C<1> if any of the cells packed into this tree column are visible. For this to be meaningful, you must first initialize the cells with C<gtk_tree_view_column_cell_set_cell_data()>
 
@@ -1061,7 +1061,7 @@ sub gtk_tree_view_column_cell_is_visible ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_focus_cell:
 =begin pod
-=head2 [gtk_tree_view_column_] focus_cell
+=head2 [[gtk_] tree_view_column_] focus_cell
 
 Sets the current keyboard focus to be at I<cell>, if the column contains 2 or more editable and activatable cells.
 
@@ -1080,7 +1080,7 @@ sub gtk_tree_view_column_focus_cell ( N-GObject $tree_column, N-GObject $cell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_cell_get_position:
 =begin pod
-=head2 [gtk_tree_view_column_] cell_get_position
+=head2 [[gtk_] tree_view_column_] cell_get_position
 
 Obtains the horizontal position and size of a cell in a column. If the cell is not found in the column, I<start_pos> and I<width> are not changed and C<0> is returned.
 
@@ -1105,7 +1105,7 @@ sub gtk_tree_view_column_cell_get_position ( N-GObject $tree_column, N-GObject $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_queue_resize:
 =begin pod
-=head2 [gtk_tree_view_column_] queue_resize
+=head2 [[gtk_] tree_view_column_] queue_resize
 
 Flags the column, and the cell renderers added to this column, to have their sizes renegotiated.
 
@@ -1123,7 +1123,7 @@ sub gtk_tree_view_column_queue_resize ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_tree_view:
 =begin pod
-=head2 [gtk_tree_view_column_] get_tree_view
+=head2 [[gtk_] tree_view_column_] get_tree_view
 
 Returns the B<Gnome::Gtk3::TreeView> wherein I<tree_column> has been inserted. If I<column> is currently not inserted in any tree view, C<Any> is returned.
 
@@ -1141,7 +1141,7 @@ sub gtk_tree_view_column_get_tree_view ( N-GObject $tree_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_get_button:
 =begin pod
-=head2 [gtk_tree_view_column_] get_button
+=head2 [[gtk_] tree_view_column_] get_button
 
 Returns the button used in the treeview column header
 

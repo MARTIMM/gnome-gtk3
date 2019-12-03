@@ -162,7 +162,7 @@ method clear-tree-path ( ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_new:new(:empty)
 =begin pod
-=head2 gtk_tree_path_new
+=head2 [gtk_] tree_path_new
 
 Creates a new B<Gnome::Gtk3::TreePath>-struct. This refers to a row.
 
@@ -181,7 +181,7 @@ sub gtk_tree_path_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_new_from_string:
 =begin pod
-=head2 [gtk_tree_path_] new_from_string
+=head2 [[gtk_] tree_path_] new_from_string
 
 Creates a new B<Gnome::Gtk3::TreePath>-struct initialized to I<path>.
 
@@ -207,7 +207,7 @@ sub gtk_tree_path_new_from_string ( Str $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_new_from_indices:
 =begin pod
-=head2 [gtk_tree_path_] new_from_indices
+=head2 [[gtk_] tree_path_] new_from_indices
 
 Creates a new path with I<first_index> and I<varargs> as indices.
 
@@ -250,7 +250,7 @@ sub gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_path_new_from_indicesv:
 =begin pod
-=head2 [gtk_tree_path_] new_from_indicesv
+=head2 [[gtk_] tree_path_] new_from_indicesv
 
 Creates a new path with the given I<indices> array of I<length>.
 
@@ -276,7 +276,7 @@ sub gtk_tree_path_new_from_indicesv ( int32 $indices, uint64 $length )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_to_string:
 =begin pod
-=head2 [gtk_tree_path_] to_string
+=head2 [[gtk_] tree_path_] to_string
 
 Generates a string representation of the path.
 
@@ -299,7 +299,7 @@ sub gtk_tree_path_to_string ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_path_new_first:new(:first)
 =begin pod
-=head2 [gtk_tree_path_] new_first
+=head2 [[gtk_] tree_path_] new_first
 
 Creates a new B<Gnome::Gtk3::TreePath>-struct. The string representation of this path is “0”.
 
@@ -318,7 +318,7 @@ sub gtk_tree_path_new_first (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_append_index:
 =begin pod
-=head2 [gtk_tree_path_] append_index
+=head2 [[gtk_] tree_path_] append_index
 
 Appends a new index to a path.
 
@@ -337,7 +337,7 @@ sub gtk_tree_path_append_index ( N-GtkTreePath $path, int32 $index )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_prepend_index:
 =begin pod
-=head2 [gtk_tree_path_] prepend_index
+=head2 [[gtk_] tree_path_] prepend_index
 
 Prepends a new index to a path.
 
@@ -356,7 +356,7 @@ sub gtk_tree_path_prepend_index ( N-GtkTreePath $path, int32 $index )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_get_depth:
 =begin pod
-=head2 [gtk_tree_path_] get_depth
+=head2 [[gtk_] tree_path_] get_depth
 
 Returns the current depth of I<path>.
 
@@ -374,7 +374,7 @@ sub gtk_tree_path_get_depth ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_get_indices:
 =begin pod
-=head2 [gtk_tree_path_] get_indices
+=head2 [[gtk_] tree_path_] get_indices
 
 Returns the current indices of I<path>.
 
@@ -406,7 +406,7 @@ sub _gtk_tree_path_get_indices ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_get_indices_with_depth:
 =begin pod
-=head2 [gtk_tree_path_] get_indices_with_depth
+=head2 [[gtk_] tree_path_] get_indices_with_depth
 
 Returns the current indices of I<path>.
 
@@ -445,7 +445,7 @@ sub _gtk_tree_path_get_indices_with_depth (
 #`{{ No document, user must use clear-tree-path()
 # TM:0:gtk_tree_path_free:
 =begin pod
-=head2 gtk_tree_path_free
+=head2 [gtk_] tree_path_free
 
 Frees I<path>. If I<path> is C<Any>, it simply returns.
 
@@ -462,7 +462,7 @@ sub _gtk_tree_path_free ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_copy:
 =begin pod
-=head2 gtk_tree_path_copy
+=head2 [gtk_] tree_path_copy
 
 Creates a new B<Gnome::Gtk3::TreePath>-struct as a copy of I<path>.
 
@@ -480,7 +480,7 @@ sub gtk_tree_path_copy ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_compare:
 =begin pod
-=head2 gtk_tree_path_compare
+=head2 [gtk_] tree_path_compare
 
 Compares two paths.
 
@@ -504,7 +504,7 @@ sub gtk_tree_path_compare ( N-GtkTreePath $a, N-GtkTreePath $b )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_next:
 =begin pod
-=head2 gtk_tree_path_next
+=head2 [gtk_] tree_path_next
 
 Moves the I<path> to point to the next node at the current depth.
 
@@ -519,7 +519,7 @@ sub gtk_tree_path_next ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_prev:
 =begin pod
-=head2 gtk_tree_path_prev
+=head2 [gtk_] tree_path_prev
 
 Moves the I<path> to point to the previous node at the
 current depth, if it exists.
@@ -539,7 +539,7 @@ sub gtk_tree_path_prev ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_up:
 =begin pod
-=head2 gtk_tree_path_up
+=head2 [gtk_] tree_path_up
 
 Moves the I<path> to point to its parent node, if it has a parent.
 
@@ -557,7 +557,7 @@ sub gtk_tree_path_up ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_down:
 =begin pod
-=head2 gtk_tree_path_down
+=head2 [gtk_] tree_path_down
 
 Moves I<path> to point to the first child of the current path.
 
@@ -572,7 +572,7 @@ sub gtk_tree_path_down ( N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_is_ancestor:
 =begin pod
-=head2 [gtk_tree_path_] is_ancestor
+=head2 [[gtk_] tree_path_] is_ancestor
 
 Returns C<1> if I<$descendant> is a descendant of this path or contained inside.
 
@@ -590,7 +590,7 @@ sub gtk_tree_path_is_ancestor ( N-GtkTreePath $path, N-GtkTreePath $descendant )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_path_is_descendant:
 =begin pod
-=head2 [gtk_tree_path_] is_descendant
+=head2 [[gtk_] tree_path_] is_descendant
 
 Returns C<1> if this path is a descendant of I<$ancestor> or I<$ancestor> contains this path somewhere below it
 

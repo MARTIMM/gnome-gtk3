@@ -132,7 +132,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_menu_bar_new:new(:empty)
 =begin pod
-=head2 gtk_menu_bar_new
+=head2 [gtk_] menu_bar_new
 
 Creates a new B<Gnome::Gtk3::MenuBar>
 
@@ -151,7 +151,7 @@ sub gtk_menu_bar_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_bar_new_from_model:
 =begin pod
-=head2 [gtk_menu_bar_] new_from_model
+=head2 [[gtk_] menu_bar_] new_from_model
 
 Creates a new B<Gnome::Gtk3::MenuBar> and populates it with menu items
 and submenus according to I<model>.
@@ -179,7 +179,7 @@ sub gtk_menu_bar_new_from_model ( N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_bar_get_pack_direction:
 =begin pod
-=head2 [gtk_menu_bar_] get_pack_direction
+=head2 [[gtk_] menu_bar_] get_pack_direction
 
 Retrieves the current pack direction of the menubar.
 See C<gtk_menu_bar_set_pack_direction()>.
@@ -201,7 +201,7 @@ sub gtk_menu_bar_get_pack_direction ( N-GObject $menubar )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_bar_set_pack_direction:
 =begin pod
-=head2 [gtk_menu_bar_] set_pack_direction
+=head2 [[gtk_] menu_bar_] set_pack_direction
 
 Sets how items should be packed inside a menubar.
 
@@ -220,7 +220,7 @@ sub gtk_menu_bar_set_pack_direction ( N-GObject $menubar, int32 $pack_dir )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_bar_get_child_pack_direction:
 =begin pod
-=head2 [gtk_menu_bar_] get_child_pack_direction
+=head2 [[gtk_] menu_bar_] get_child_pack_direction
 
 Retrieves the current child pack direction of the menubar.
 See C<gtk_menu_bar_set_child_pack_direction()>.
@@ -242,7 +242,7 @@ sub gtk_menu_bar_get_child_pack_direction ( N-GObject $menubar )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_bar_set_child_pack_direction:
 =begin pod
-=head2 [gtk_menu_bar_] set_child_pack_direction
+=head2 [[gtk_] menu_bar_] set_child_pack_direction
 
 Sets how widgets should be packed inside the children of a menubar.
 
@@ -324,7 +324,7 @@ The B<Gnome::GObject::Value> type of property I<child-pack-direction> is C<G_TYP
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_bar_new
+=head2 [gtk_] menu_bar_new
 
 Creates a new B<Gnome::Gtk3::MenuBar>
 
@@ -342,7 +342,7 @@ sub gtk_menu_bar_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_bar_] new_from_model
+=head2 [[gtk_] menu_bar_] new_from_model
 
 Creates a new B<Gnome::Gtk3::MenuBar> and populates it with menu items
 and submenus according to I<model>.
@@ -369,7 +369,7 @@ sub gtk_menu_bar_new_from_model ( N-GObject $model )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_bar_] get_pack_direction
+=head2 [[gtk_] menu_bar_] get_pack_direction
 
 Retrieves the current pack direction of the menubar.
 See C<gtk_menu_bar_set_pack_direction()>.
@@ -390,7 +390,7 @@ sub gtk_menu_bar_get_pack_direction ( N-GObject $menubar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_bar_] set_pack_direction
+=head2 [[gtk_] menu_bar_] set_pack_direction
 
 Sets how items should be packed inside a menubar.
 
@@ -408,7 +408,7 @@ sub gtk_menu_bar_set_pack_direction ( N-GObject $menubar, int32 $pack_dir )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_bar_] get_child_pack_direction
+=head2 [[gtk_] menu_bar_] get_child_pack_direction
 
 Retrieves the current child pack direction of the menubar.
 See C<gtk_menu_bar_set_child_pack_direction()>.
@@ -429,7 +429,7 @@ sub gtk_menu_bar_get_child_pack_direction ( N-GObject $menubar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_bar_] set_child_pack_direction
+=head2 [[gtk_] menu_bar_] set_child_pack_direction
 
 Sets how widgets should be packed inside the children of a menubar.
 

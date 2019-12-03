@@ -113,7 +113,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_toggle_new:new(:empty)
 =begin pod
-=head2 gtk_cell_renderer_toggle_new
+=head2 [gtk_] cell_renderer_toggle_new
 
 Creates a new B<Gnome::Gtk3::CellRendererToggle>. Adjust rendering parameters using object properties. Object properties can be set globally (with C<g_object_set()>). Also, with B<Gnome::Gtk3::TreeViewColumn>, you can bind a property to a value in a B<Gnome::Gtk3::TreeModel>. For example, you can bind the “active” property on the cell renderer to a boolean value in the model, thus causing the check button to reflect the state of the model.
 
@@ -132,7 +132,7 @@ sub gtk_cell_renderer_toggle_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_get_radio:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] get_radio
+=head2 [[gtk_] cell_renderer_toggle_] get_radio
 
 Returns C<1> whether we’re rendering radio toggles rather than checkboxes.
 
@@ -149,7 +149,7 @@ sub gtk_cell_renderer_toggle_get_radio ( N-GObject $toggle )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_set_radio:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] set_radio
+=head2 [[gtk_] cell_renderer_toggle_] set_radio
 
 If I<$radio> is C<True>, the cell renderer renders a radio toggle (i.e. a toggle in a group of mutually-exclusive toggles). If C<False>, it renders a check toggle (a standalone boolean option). This can be set globally for the cell renderer, or changed just before rendering each cell in the model (for B<Gnome::Gtk3::TreeView>, you set up a per-row setting using B<Gnome::Gtk3::TreeViewColumn> to associate model columns with cell renderer properties).
 
@@ -166,7 +166,7 @@ sub gtk_cell_renderer_toggle_set_radio ( N-GObject $toggle, int32 $radio )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_get_active:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] get_active
+=head2 [[gtk_] cell_renderer_toggle_] get_active
 
 Returns C<1> if the cell renderer is active. See C<gtk_cell_renderer_toggle_set_active()>.
 
@@ -183,7 +183,7 @@ sub gtk_cell_renderer_toggle_get_active ( N-GObject $toggle )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_set_active:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] set_active
+=head2 [[gtk_] cell_renderer_toggle_] set_active
 
 Activates or deactivates a cell renderer.
 
@@ -200,7 +200,7 @@ sub gtk_cell_renderer_toggle_set_active ( N-GObject $toggle, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_get_activatable:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] get_activatable
+=head2 [[gtk_] cell_renderer_toggle_] get_activatable
 
 Returns C<1> if the cell renderer is activatable. See C<gtk_cell_renderer_toggle_set_activatable()>.
 
@@ -219,7 +219,7 @@ sub gtk_cell_renderer_toggle_get_activatable ( N-GObject $toggle )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_cell_renderer_toggle_set_activatable:
 =begin pod
-=head2 [gtk_cell_renderer_toggle_] set_activatable
+=head2 [[gtk_] cell_renderer_toggle_] set_activatable
 
 Makes the cell renderer activatable.
 

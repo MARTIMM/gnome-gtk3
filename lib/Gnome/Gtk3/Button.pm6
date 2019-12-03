@@ -153,7 +153,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_button_new:new(:empty)
 =begin pod
-=head2 gtk_button_new
+=head2 [gtk_] button_new
 
 Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button, use C<gtk_container_add()>.
 
@@ -172,7 +172,7 @@ sub gtk_button_new (  )
 #-------------------------------------------------------------------------------
 #TM:3:gtk_button_new_with_label:new(:label)
 =begin pod
-=head2 [gtk_button_] new_with_label
+=head2 [[gtk_] button_] new_with_label
 
 Creates a B<Gnome::Gtk3::Button> widget with a B<Gnome::Gtk3::Label> child containing the given
 text.
@@ -193,7 +193,7 @@ sub gtk_button_new_with_label ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_new_from_icon_name:
 =begin pod
-=head2 [gtk_button_] new_from_icon_name
+=head2 [[gtk_] button_] new_from_icon_name
 
 Creates a new button containing an icon from the current icon theme.
 
@@ -227,7 +227,7 @@ sub gtk_button_new_from_icon_name ( Str $icon_name, int32 $size )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_new_with_mnemonic:
 =begin pod
-=head2 [gtk_button_] new_with_mnemonic
+=head2 [[gtk_] button_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::Button> containing a label.
 If characters in I<label> are preceded by an underscore, they are underlined.
@@ -252,7 +252,7 @@ sub gtk_button_new_with_mnemonic ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_clicked:
 =begin pod
-=head2 gtk_button_clicked
+=head2 [gtk_] button_clicked
 
 Emits a prop I<clicked> signal to the given B<Gnome::Gtk3::Button>.
 
@@ -267,7 +267,7 @@ sub gtk_button_clicked ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_set_relief:
 =begin pod
-=head2 [gtk_button_] set_relief
+=head2 [[gtk_] button_] set_relief
 
 Sets the relief style of the edges of the given B<Gnome::Gtk3::Button> widget.
 Two styles exist, C<GTK_RELIEF_NORMAL> and C<GTK_RELIEF_NONE>.
@@ -288,7 +288,7 @@ sub gtk_button_set_relief ( N-GObject $button, int32 $relief )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_relief:
 =begin pod
-=head2 [gtk_button_] get_relief
+=head2 [[gtk_] button_] get_relief
 
 Returns the current relief style of the given B<Gnome::Gtk3::Button>.
 
@@ -307,7 +307,7 @@ sub gtk_button_get_relief ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_button_set_label:
 =begin pod
-=head2 [gtk_button_] set_label
+=head2 [[gtk_] button_] set_label
 
 Sets the text of the label of the button to I<str>. This text is
 also used to select the stock item if C<gtk_button_set_use_stock()>
@@ -328,7 +328,7 @@ sub gtk_button_set_label ( N-GObject $button, Str $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_button_get_label:
 =begin pod
-=head2 [gtk_button_] get_label
+=head2 [[gtk_] button_] get_label
 
 Fetches the text from the label of the button, as set by
 C<gtk_button_set_label()>. If the label text has not
@@ -352,7 +352,7 @@ sub gtk_button_get_label ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_set_use_underline:
 =begin pod
-=head2 [gtk_button_] set_use_underline
+=head2 [[gtk_] button_] set_use_underline
 
 If true, an underline in the text of the button label indicates
 the next character should be used for the mnemonic accelerator key.
@@ -370,7 +370,7 @@ sub gtk_button_set_use_underline ( N-GObject $button, int32 $use_underline )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_use_underline:
 =begin pod
-=head2 [gtk_button_] get_use_underline
+=head2 [[gtk_] button_] get_use_underline
 
 Returns whether an embedded underline in the button label indicates a
 mnemonic. See C<gtk_button_set_use_underline()>.
@@ -391,7 +391,7 @@ sub gtk_button_get_use_underline ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_set_image:
 =begin pod
-=head2 [gtk_button_] set_image
+=head2 [[gtk_] button_] set_image
 
 Set the image of I<button> to the given widget. The image will be
 displayed if the label text is C<Any> or if
@@ -413,7 +413,7 @@ sub gtk_button_set_image ( N-GObject $button, N-GObject $image )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_image:
 =begin pod
-=head2 [gtk_button_] get_image
+=head2 [[gtk_] button_] get_image
 
 Gets the widget that is currenty set as the image of I<button>.
 This may have been explicitly set by C<gtk_button_set_image()>
@@ -437,7 +437,7 @@ sub gtk_button_get_image ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_set_image_position:
 =begin pod
-=head2 [gtk_button_] set_image_position
+=head2 [[gtk_] button_] set_image_position
 
 Sets the position of the image relative to the text
 inside the button.
@@ -457,7 +457,7 @@ sub gtk_button_set_image_position ( N-GObject $button, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_image_position:
 =begin pod
-=head2 [gtk_button_] get_image_position
+=head2 [[gtk_] button_] get_image_position
 
 Gets the position of the image relative to the text
 inside the button.
@@ -479,7 +479,7 @@ sub gtk_button_get_image_position ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_set_always_show_image:
 =begin pod
-=head2 [gtk_button_] set_always_show_image
+=head2 [[gtk_] button_] set_always_show_image
 
 If C<1>, the button will ignore the sig B<gtk-button-images>
 setting and always show the image, if available.
@@ -502,7 +502,7 @@ sub gtk_button_set_always_show_image ( N-GObject $button, int32 $always_show )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_always_show_image:
 =begin pod
-=head2 [gtk_button_] get_always_show_image
+=head2 [[gtk_] button_] get_always_show_image
 
 Returns whether the button will ignore the sig B<gtk-button-images>
 setting and always show the image, if available.
@@ -524,7 +524,7 @@ sub gtk_button_get_always_show_image ( N-GObject $button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_button_get_event_window:
 =begin pod
-=head2 [gtk_button_] get_event_window
+=head2 [[gtk_] button_] get_event_window
 
 Returns the button’s event window if it is realized, C<Any> otherwise.
 This function should be rarely needed.

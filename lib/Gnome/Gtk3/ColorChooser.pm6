@@ -95,7 +95,7 @@ method _color_chooser_interface ( Str $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_get_rgba:ColorChooserDialog.t
 =begin pod
-=head2 [gtk_color_chooser_] get_rgba
+=head2 [[gtk_] color_chooser_] get_rgba
 
 Gets the currently-selected color.
 
@@ -119,7 +119,7 @@ sub _gtk_color_chooser_get_rgba ( N-GObject $chooser, N-GdkRGBA $color is rw )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_set_rgba:ColorChooserDialog.t
 =begin pod
-=head2 [gtk_color_chooser_] set_rgba
+=head2 [[gtk_] color_chooser_] set_rgba
 
 Sets the color.
 
@@ -138,7 +138,7 @@ sub gtk_color_chooser_set_rgba ( N-GObject $chooser, N-GdkRGBA:D $color )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_get_use_alpha:ColorChooserDialog.t
 =begin pod
-=head2 [gtk_color_chooser_] get_use_alpha
+=head2 [[gtk_] color_chooser_] get_use_alpha
 
 Check whether the color chooser shows the alpha channel.
 
@@ -158,7 +158,7 @@ sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_set_use_alpha:ColorChooserDialog.t
 =begin pod
-=head2 [gtk_color_chooser_] set_use_alpha
+=head2 [[gtk_] color_chooser_] set_use_alpha
 
 Sets whether or not the color chooser should use the alpha channel.
 
@@ -177,7 +177,7 @@ sub gtk_color_chooser_set_use_alpha ( N-GObject $chooser, int32 $use_alpha )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_add_palette:ColorChooserDialog.t
 =begin pod
-=head2 [gtk_color_chooser_] add_palette
+=head2 [[gtk_] color_chooser_] add_palette
 
 Adds a palette to the color chooser. If I<$orientation> is horizontal, the colors are grouped in rows, with I<$colors_per_line> colors in each row. If I<$horizontal> is C<0>, the colors are grouped in columns instead.
 

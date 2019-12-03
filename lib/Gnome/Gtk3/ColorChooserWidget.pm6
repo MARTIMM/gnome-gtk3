@@ -169,7 +169,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_widget_new:new(:empty)
 =begin pod
-=head2 gtk_color_chooser_widget_new
+=head2 [gtk_] color_chooser_widget_new
 
 Creates a new B<Gnome::Gtk3::ColorChooserWidget>.
 

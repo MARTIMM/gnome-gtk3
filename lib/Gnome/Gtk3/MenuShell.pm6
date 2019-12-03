@@ -146,7 +146,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_append:
 =begin pod
-=head2 gtk_menu_shell_append
+=head2 [gtk_] menu_shell_append
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the end of the menu shell's
 item list.
@@ -164,7 +164,7 @@ sub gtk_menu_shell_append ( N-GObject $menu_shell, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_prepend:
 =begin pod
-=head2 gtk_menu_shell_prepend
+=head2 [gtk_] menu_shell_prepend
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the beginning of the menu shell's
 item list.
@@ -182,7 +182,7 @@ sub gtk_menu_shell_prepend ( N-GObject $menu_shell, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_insert:
 =begin pod
-=head2 gtk_menu_shell_insert
+=head2 [gtk_] menu_shell_insert
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the menu shell’s item list
 at the position indicated by I<position>.
@@ -201,7 +201,7 @@ sub gtk_menu_shell_insert ( N-GObject $menu_shell, N-GObject $child, int32 $posi
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_deactivate:
 =begin pod
-=head2 gtk_menu_shell_deactivate
+=head2 [gtk_] menu_shell_deactivate
 
 Deactivates the menu shell.
 
@@ -220,7 +220,7 @@ sub gtk_menu_shell_deactivate ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_select_item:
 =begin pod
-=head2 [gtk_menu_shell_] select_item
+=head2 [[gtk_] menu_shell_] select_item
 
 Selects the menu item from the menu shell.
 
@@ -237,7 +237,7 @@ sub gtk_menu_shell_select_item ( N-GObject $menu_shell, N-GObject $menu_item )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_deselect:
 =begin pod
-=head2 gtk_menu_shell_deselect
+=head2 [gtk_] menu_shell_deselect
 
 Deselects the currently selected item from the menu shell,
 if any.
@@ -254,7 +254,7 @@ sub gtk_menu_shell_deselect ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_activate_item:
 =begin pod
-=head2 [gtk_menu_shell_] activate_item
+=head2 [[gtk_] menu_shell_] activate_item
 
 Activates the menu item within the menu shell.
 
@@ -272,7 +272,7 @@ sub gtk_menu_shell_activate_item ( N-GObject $menu_shell, N-GObject $menu_item, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_select_first:
 =begin pod
-=head2 [gtk_menu_shell_] select_first
+=head2 [[gtk_] menu_shell_] select_first
 
 Select the first visible or selectable child of the menu shell;
 don’t select tearoff items unless the only item is a tearoff
@@ -293,7 +293,7 @@ sub gtk_menu_shell_select_first ( N-GObject $menu_shell, int32 $search_sensitive
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_cancel:
 =begin pod
-=head2 gtk_menu_shell_cancel
+=head2 [gtk_] menu_shell_cancel
 
 Cancels the selection within the menu shell.
 
@@ -311,7 +311,7 @@ sub gtk_menu_shell_cancel ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_get_take_focus:
 =begin pod
-=head2 [gtk_menu_shell_] get_take_focus
+=head2 [[gtk_] menu_shell_] get_take_focus
 
 Returns C<1> if the menu shell will take the keyboard focus on popup.
 
@@ -332,7 +332,7 @@ sub gtk_menu_shell_get_take_focus ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_set_take_focus:
 =begin pod
-=head2 [gtk_menu_shell_] set_take_focus
+=head2 [[gtk_] menu_shell_] set_take_focus
 
 If I<take_focus> is C<1> (the default) the menu shell will take
 the keyboard focus so that it will receive all keyboard events
@@ -376,7 +376,7 @@ sub gtk_menu_shell_set_take_focus ( N-GObject $menu_shell, int32 $take_focus )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_get_selected_item:
 =begin pod
-=head2 [gtk_menu_shell_] get_selected_item
+=head2 [[gtk_] menu_shell_] get_selected_item
 
 Gets the currently selected item.
 
@@ -397,7 +397,7 @@ sub gtk_menu_shell_get_selected_item ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_get_parent_shell:
 =begin pod
-=head2 [gtk_menu_shell_] get_parent_shell
+=head2 [[gtk_] menu_shell_] get_parent_shell
 
 Gets the parent menu shell.
 
@@ -421,7 +421,7 @@ sub gtk_menu_shell_get_parent_shell ( N-GObject $menu_shell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_shell_bind_model:
 =begin pod
-=head2 [gtk_menu_shell_] bind_model
+=head2 [[gtk_] menu_shell_] bind_model
 
 Establishes a binding between a B<Gnome::Gtk3::MenuShell> and a B<GMenuModel>.
 
@@ -694,7 +694,7 @@ The B<Gnome::GObject::Value> type of property I<take-focus> is C<G_TYPE_BOOLEAN>
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_append
+=head2 [gtk_] menu_shell_append
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the end of the menu shell's
 item list.
@@ -711,7 +711,7 @@ sub gtk_menu_shell_append ( N-GObject $menu_shell, N-GObject $child )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_prepend
+=head2 [gtk_] menu_shell_prepend
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the beginning of the menu shell's
 item list.
@@ -728,7 +728,7 @@ sub gtk_menu_shell_prepend ( N-GObject $menu_shell, N-GObject $child )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_insert
+=head2 [gtk_] menu_shell_insert
 
 Adds a new B<Gnome::Gtk3::MenuItem> to the menu shell’s item list
 at the position indicated by I<position>.
@@ -746,7 +746,7 @@ sub gtk_menu_shell_insert ( N-GObject $menu_shell, N-GObject $child, int32 $posi
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_deactivate
+=head2 [gtk_] menu_shell_deactivate
 
 Deactivates the menu shell.
 
@@ -764,7 +764,7 @@ sub gtk_menu_shell_deactivate ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] select_item
+=head2 [[gtk_] menu_shell_] select_item
 
 Selects the menu item from the menu shell.
 
@@ -780,7 +780,7 @@ sub gtk_menu_shell_select_item ( N-GObject $menu_shell, N-GObject $menu_item )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_deselect
+=head2 [gtk_] menu_shell_deselect
 
 Deselects the currently selected item from the menu shell,
 if any.
@@ -796,7 +796,7 @@ sub gtk_menu_shell_deselect ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] activate_item
+=head2 [[gtk_] menu_shell_] activate_item
 
 Activates the menu item within the menu shell.
 
@@ -813,7 +813,7 @@ sub gtk_menu_shell_activate_item ( N-GObject $menu_shell, N-GObject $menu_item, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] select_first
+=head2 [[gtk_] menu_shell_] select_first
 
 Select the first visible or selectable child of the menu shell;
 don’t select tearoff items unless the only item is a tearoff
@@ -833,7 +833,7 @@ sub gtk_menu_shell_select_first ( N-GObject $menu_shell, int32 $search_sensitive
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_shell_cancel
+=head2 [gtk_] menu_shell_cancel
 
 Cancels the selection within the menu shell.
 
@@ -850,7 +850,7 @@ sub gtk_menu_shell_cancel ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] get_take_focus
+=head2 [[gtk_] menu_shell_] get_take_focus
 
 Returns C<1> if the menu shell will take the keyboard focus on popup.
 
@@ -870,7 +870,7 @@ sub gtk_menu_shell_get_take_focus ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] set_take_focus
+=head2 [[gtk_] menu_shell_] set_take_focus
 
 If I<take_focus> is C<1> (the default) the menu shell will take
 the keyboard focus so that it will receive all keyboard events
@@ -913,7 +913,7 @@ sub gtk_menu_shell_set_take_focus ( N-GObject $menu_shell, int32 $take_focus )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] get_selected_item
+=head2 [[gtk_] menu_shell_] get_selected_item
 
 Gets the currently selected item.
 
@@ -933,7 +933,7 @@ sub gtk_menu_shell_get_selected_item ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] get_parent_shell
+=head2 [[gtk_] menu_shell_] get_parent_shell
 
 Gets the parent menu shell.
 
@@ -956,7 +956,7 @@ sub gtk_menu_shell_get_parent_shell ( N-GObject $menu_shell )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_shell_] bind_model
+=head2 [[gtk_] menu_shell_] bind_model
 
 Establishes a binding between a B<Gnome::Gtk3::MenuShell> and a C<GMenuModel>.
 

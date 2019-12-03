@@ -115,7 +115,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_text_new:new(:empty)
 =begin pod
-=head2 gtk_cell_renderer_text_new
+=head2 [gtk_] cell_renderer_text_new
 
 Creates a new B<Gnome::Gtk3::CellRendererText>. Adjust how text is drawn using object properties. Object properties can be set globally (with C<g_object_set()>). Also, with B<Gnome::Gtk3::TreeViewColumn>, you can bind a property to a value in a B<Gnome::Gtk3::TreeModel>. For example, you can bind the “text” property on the cell renderer to a string value in the model, thus rendering a different string in each row of the B<Gnome::Gtk3::TreeView>
 
@@ -133,7 +133,7 @@ sub gtk_cell_renderer_text_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_text_set_fixed_height_from_font:
 =begin pod
-=head2 [gtk_cell_renderer_text_] set_fixed_height_from_font
+=head2 [[gtk_] cell_renderer_text_] set_fixed_height_from_font
 
 Sets the height of a renderer to explicitly be determined by the “font” and
 “y_pad” property set on it.  Further changes in these properties do not

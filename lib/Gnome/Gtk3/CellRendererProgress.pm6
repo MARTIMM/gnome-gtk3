@@ -114,7 +114,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_progress_new:new(:empty)
 =begin pod
-=head2 gtk_cell_renderer_progress_new
+=head2 [gtk_] cell_renderer_progress_new
 
 Creates a new B<Gnome::Gtk3::CellRendererProgress>.
 

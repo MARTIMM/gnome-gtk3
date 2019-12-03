@@ -249,7 +249,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_radio_button_new:
 =begin pod
-=head2 gtk_radio_button_new
+=head2 [gtk_] radio_button_new
 
 Creates a new B<Gnome::Gtk3::RadioButton>. To be of any practical value, a widget should
 then be packed into the radio button.
@@ -270,7 +270,7 @@ sub gtk_radio_button_new ( N-GSList $group )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_radio_button_new_from_widget:
 =begin pod
-=head2 [gtk_radio_button_] new_from_widget
+=head2 [[gtk_] radio_button_] new_from_widget
 
 Creates a new B<Gnome::Gtk3::RadioButton>, adding it to the same group as
 I<radio_group_member>. As with C<gtk_radio_button_new()>, a widget
@@ -291,7 +291,7 @@ sub gtk_radio_button_new_from_widget ( N-GObject $radio_group_member )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_radio_button_new_with_label:
 =begin pod
-=head2 [gtk_radio_button_] new_with_label
+=head2 [[gtk_] radio_button_] new_with_label
 
 Creates a new B<Gnome::Gtk3::RadioButton> with a text label.
 
@@ -312,7 +312,7 @@ sub gtk_radio_button_new_with_label ( N-GSList $group, Str $label )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_radio_button_new_with_label_from_widget:
 =begin pod
-=head2 [gtk_radio_button_] new_with_label_from_widget
+=head2 [[gtk_] radio_button_] new_with_label_from_widget
 
 Creates a new B<Gnome::Gtk3::RadioButton> with a text label, adding it to
 the same group.
@@ -333,7 +333,7 @@ sub gtk_radio_button_new_with_label_from_widget ( N-GObject $radio_group_member,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_radio_button_new_with_mnemonic:
 =begin pod
-=head2 [gtk_radio_button_] new_with_mnemonic
+=head2 [[gtk_] radio_button_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::RadioButton> containing a label, adding it to the same
 group as I<group>. The label will be created using
@@ -357,7 +357,7 @@ sub gtk_radio_button_new_with_mnemonic ( N-GSList $group, Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_radio_button_new_with_mnemonic_from_widget:
 =begin pod
-=head2 [gtk_radio_button_] new_with_mnemonic_from_widget
+=head2 [[gtk_] radio_button_] new_with_mnemonic_from_widget
 
 Creates a new B<Gnome::Gtk3::RadioButton> containing a label. The label
 will be created using C<gtk_label_new_with_mnemonic()>, so underscores
@@ -379,7 +379,7 @@ sub gtk_radio_button_new_with_mnemonic_from_widget ( N-GObject $radio_group_memb
 #-------------------------------------------------------------------------------
 #TM:1:gtk_radio_button_get_group:
 =begin pod
-=head2 [gtk_radio_button_] get_group
+=head2 [[gtk_] radio_button_] get_group
 
 Retrieves the group assigned to a radio button.
 
@@ -401,7 +401,7 @@ sub gtk_radio_button_get_group ( N-GObject $radio_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_radio_button_set_group:
 =begin pod
-=head2 [gtk_radio_button_] set_group
+=head2 [[gtk_] radio_button_] set_group
 
 Sets a B<Gnome::Gtk3::RadioButton>’s group. It should be noted that this does not change
 the layout of your interface in any way, so if you are changing the group,
@@ -421,7 +421,7 @@ sub gtk_radio_button_set_group ( N-GObject $radio_button, N-GSList $group )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_radio_button_join_group:
 =begin pod
-=head2 [gtk_radio_button_] join_group
+=head2 [[gtk_] radio_button_] join_group
 
 Joins a B<Gnome::Gtk3::RadioButton> object to the group of another B<Gnome::Gtk3::RadioButton> object
 

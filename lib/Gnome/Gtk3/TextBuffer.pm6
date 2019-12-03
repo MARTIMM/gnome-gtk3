@@ -147,7 +147,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_text_buffer_new:new(:empty)
 =begin pod
-=head2 gtk_text_buffer_new
+=head2 [gtk_] text_buffer_new
 
 Creates a new text buffer.
 
@@ -167,7 +167,7 @@ sub gtk_text_buffer_new ( N-GObject $table )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_line_count:
 =begin pod
-=head2 [gtk_text_buffer_] get_line_count
+=head2 [[gtk_] text_buffer_] get_line_count
 
 Obtains the number of lines in the buffer. This value is cached, so
 the function is very fast.
@@ -187,7 +187,7 @@ sub gtk_text_buffer_get_line_count ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_char_count:
 =begin pod
-=head2 [gtk_text_buffer_] get_char_count
+=head2 [[gtk_] text_buffer_] get_char_count
 
 Gets the number of characters in the buffer; note that characters
 and bytes are not the same, you can’t e.g. expect the contents of
@@ -209,7 +209,7 @@ sub gtk_text_buffer_get_char_count ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_tag_table:
 =begin pod
-=head2 [gtk_text_buffer_] get_tag_table
+=head2 [[gtk_] text_buffer_] get_tag_table
 
 Get the B<Gnome::Gtk3::TextTagTable> associated with this buffer.
 
@@ -228,7 +228,7 @@ sub gtk_text_buffer_get_tag_table ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_set_text:
 =begin pod
-=head2 [gtk_text_buffer_] set_text
+=head2 [[gtk_] text_buffer_] set_text
 
 Deletes current contents of I<buffer>, and inserts I<text> instead. If
 I<len> is -1, I<text> must be nul-terminated. I<text> must be valid UTF-8.
@@ -247,7 +247,7 @@ sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_insert:
 =begin pod
-=head2 gtk_text_buffer_insert
+=head2 [gtk_] text_buffer_insert
 
 Inserts I<$len> bytes of I<$text> at position I<$iter>.  If I<$len> is -1,
 I<text> must be nul-terminated and will be inserted in its
@@ -274,7 +274,7 @@ sub gtk_text_buffer_insert ( N-GObject $buffer, N-GTextIter $iter, Str $text, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_at_cursor:
 =begin pod
-=head2 [gtk_text_buffer_] insert_at_cursor
+=head2 [[gtk_] text_buffer_] insert_at_cursor
 
 Simply calls C<gtk_text_buffer_insert()>, using the current
 cursor position as the insertion point.
@@ -293,7 +293,7 @@ sub gtk_text_buffer_insert_at_cursor ( N-GObject $buffer, Str $text, int32 $len 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_interactive:
 =begin pod
-=head2 [gtk_text_buffer_] insert_interactive
+=head2 [[gtk_] text_buffer_] insert_interactive
 
 Like C<gtk_text_buffer_insert()>, but the insertion will not occur if
 I<iter> is at a non-editable location in the buffer. Usually you
@@ -327,7 +327,7 @@ sub gtk_text_buffer_insert_interactive ( N-GObject $buffer, N-GTextIter $iter, S
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_interactive_at_cursor:
 =begin pod
-=head2 [gtk_text_buffer_] insert_interactive_at_cursor
+=head2 [[gtk_] text_buffer_] insert_interactive_at_cursor
 
 Calls C<gtk_text_buffer_insert_interactive()> at the cursor
 position.
@@ -354,7 +354,7 @@ sub gtk_text_buffer_insert_interactive_at_cursor ( N-GObject $buffer, Str $text,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_range:
 =begin pod
-=head2 [gtk_text_buffer_] insert_range
+=head2 [[gtk_] text_buffer_] insert_range
 
 Copies text, tags, and pixbufs between I<start> and I<end> (the order
 of I<start> and I<end> doesn’t matter) and inserts the copy at I<iter>.
@@ -383,7 +383,7 @@ sub gtk_text_buffer_insert_range ( N-GObject $buffer, N-GTextIter $iter, N-GObje
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_range_interactive:
 =begin pod
-=head2 [gtk_text_buffer_] insert_range_interactive
+=head2 [[gtk_] text_buffer_] insert_range_interactive
 
 Same as C<gtk_text_buffer_insert_range()>, but does nothing if the
 insertion point isn’t editable. The I<default_editable> parameter
@@ -416,7 +416,7 @@ sub gtk_text_buffer_insert_range_interactive ( N-GObject $buffer, N-GTextIter $i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_with_tags:
 =begin pod
-=head2 [gtk_text_buffer_] insert_with_tags
+=head2 [[gtk_] text_buffer_] insert_with_tags
 
 Inserts I<text> into I<buffer> at I<iter>, applying the list of tags to
 the newly-inserted text. The last tag specified must be C<Any> to
@@ -442,7 +442,7 @@ sub gtk_text_buffer_insert_with_tags ( N-GObject $buffer, N-GTextIter $iter, Str
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_with_tags_by_name:
 =begin pod
-=head2 [gtk_text_buffer_] insert_with_tags_by_name
+=head2 [[gtk_] text_buffer_] insert_with_tags_by_name
 
 Same as C<gtk_text_buffer_insert_with_tags()>, but allows you
 to pass in tag names instead of tag objects.
@@ -464,7 +464,7 @@ sub gtk_text_buffer_insert_with_tags_by_name ( N-GObject $buffer, N-GTextIter $i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_markup:
 =begin pod
-=head2 [gtk_text_buffer_] insert_markup
+=head2 [[gtk_] text_buffer_] insert_markup
 
 Inserts the text in I<markup> at position I<iter>. I<markup> will be inserted
 in its entirety and must be nul-terminated and valid UTF-8. Emits the
@@ -491,7 +491,7 @@ sub gtk_text_buffer_insert_markup ( N-GObject $buffer, N-GTextIter $iter, Str $m
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_delete:
 =begin pod
-=head2 gtk_text_buffer_delete
+=head2 [gtk_] text_buffer_delete
 
 Deletes text between I<start> and I<end>. The order of I<start> and I<end>
 is not actually relevant; C<gtk_text_buffer_delete()> will reorder
@@ -517,7 +517,7 @@ sub gtk_text_buffer_delete ( N-GObject $buffer, N-GTextIter $start, N-GTextIter 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_delete_interactive:
 =begin pod
-=head2 [gtk_text_buffer_] delete_interactive
+=head2 [[gtk_] text_buffer_] delete_interactive
 
 Deletes all editable text in the given range.
 Calls C<gtk_text_buffer_delete()> for each editable sub-range of
@@ -547,7 +547,7 @@ sub gtk_text_buffer_delete_interactive ( N-GObject $buffer, N-GTextIter $start_i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_backspace:
 =begin pod
-=head2 gtk_text_buffer_backspace
+=head2 [gtk_] text_buffer_backspace
 
 Performs the appropriate action as if the user hit the delete
 key with the cursor at the position specified by I<iter>. In the
@@ -583,7 +583,7 @@ sub gtk_text_buffer_backspace ( N-GObject $buffer, N-GTextIter $iter, int32 $int
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_text:
 =begin pod
-=head2 [gtk_text_buffer_] get_text
+=head2 [[gtk_] text_buffer_] get_text
 
 Returns the text in the range [I<start>,I<end>). Excludes undisplayed
 text (text marked with tags that set the invisibility attribute) if
@@ -617,7 +617,7 @@ sub gtk_text_buffer_get_text (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_slice:
 =begin pod
-=head2 [gtk_text_buffer_] get_slice
+=head2 [[gtk_] text_buffer_] get_slice
 
 Returns the text in the range [I<start>,I<end>). Excludes undisplayed
 text (text marked with tags that set the invisibility attribute) if
@@ -653,7 +653,7 @@ sub gtk_text_buffer_get_slice ( N-GObject $buffer, N-GTextIter $start, N-GTextIt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_pixbuf:
 =begin pod
-=head2 [gtk_text_buffer_] insert_pixbuf
+=head2 [[gtk_] text_buffer_] insert_pixbuf
 
 Inserts an image into the text buffer at I<iter>. The image will be
 counted as one character in character counts, and when obtaining
@@ -680,7 +680,7 @@ sub gtk_text_buffer_insert_pixbuf ( N-GObject $buffer, N-GTextIter $iter, N-GObj
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_child_anchor:
 =begin pod
-=head2 [gtk_text_buffer_] insert_child_anchor
+=head2 [[gtk_] text_buffer_] insert_child_anchor
 
 Inserts a child widget anchor into the text buffer at I<iter>. The
 anchor will be counted as one character in character counts, and
@@ -708,7 +708,7 @@ sub gtk_text_buffer_insert_child_anchor ( N-GObject $buffer, N-GTextIter $iter, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_create_child_anchor:
 =begin pod
-=head2 [gtk_text_buffer_] create_child_anchor
+=head2 [[gtk_] text_buffer_] create_child_anchor
 
 This is a convenience function which simply creates a child anchor
 with C<gtk_text_child_anchor_new()> and inserts it into the buffer
@@ -734,7 +734,7 @@ sub gtk_text_buffer_create_child_anchor ( N-GObject $buffer, N-GTextIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_add_mark:
 =begin pod
-=head2 [gtk_text_buffer_] add_mark
+=head2 [[gtk_] text_buffer_] add_mark
 
 Adds the mark at position I<where>. The mark must not be added to
 another buffer, and if its name is not C<Any> then there must not
@@ -759,7 +759,7 @@ sub gtk_text_buffer_add_mark ( N-GObject $buffer, N-GObject $mark, N-GObject $wh
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_create_mark:
 =begin pod
-=head2 [gtk_text_buffer_] create_mark
+=head2 [[gtk_] text_buffer_] create_mark
 
 Creates a mark at position I<where>. If I<mark_name> is C<Any>, the mark
 is anonymous; otherwise, the mark can be retrieved by name using
@@ -797,7 +797,7 @@ sub gtk_text_buffer_create_mark ( N-GObject $buffer, Str $mark_name, N-GObject $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_move_mark:
 =begin pod
-=head2 [gtk_text_buffer_] move_mark
+=head2 [[gtk_] text_buffer_] move_mark
 
 Moves I<mark> to the new location I<where>. Emits the  I<mark-set>
 signal as notification of the move.
@@ -816,7 +816,7 @@ sub gtk_text_buffer_move_mark ( N-GObject $buffer, N-GObject $mark, N-GObject $w
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_delete_mark:
 =begin pod
-=head2 [gtk_text_buffer_] delete_mark
+=head2 [[gtk_] text_buffer_] delete_mark
 
 Deletes I<mark>, so that it’s no longer located anywhere in the
 buffer. Removes the reference the buffer holds to the mark, so if
@@ -841,7 +841,7 @@ sub gtk_text_buffer_delete_mark ( N-GObject $buffer, N-GObject $mark )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_mark:
 =begin pod
-=head2 [gtk_text_buffer_] get_mark
+=head2 [[gtk_] text_buffer_] get_mark
 
 Returns the mark named I<name> in buffer I<buffer>, or C<Any> if no such
 mark exists in the buffer.
@@ -862,7 +862,7 @@ sub gtk_text_buffer_get_mark ( N-GObject $buffer, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_move_mark_by_name:
 =begin pod
-=head2 [gtk_text_buffer_] move_mark_by_name
+=head2 [[gtk_] text_buffer_] move_mark_by_name
 
 Moves the mark named I<name> (which must exist) to location I<where>.
 See C<gtk_text_buffer_move_mark()> for details.
@@ -881,7 +881,7 @@ sub gtk_text_buffer_move_mark_by_name ( N-GObject $buffer, Str $name, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_delete_mark_by_name:
 =begin pod
-=head2 [gtk_text_buffer_] delete_mark_by_name
+=head2 [[gtk_] text_buffer_] delete_mark_by_name
 
 Deletes the mark named I<name>; the mark must exist. See
 C<gtk_text_buffer_delete_mark()> for details.
@@ -899,7 +899,7 @@ sub gtk_text_buffer_delete_mark_by_name ( N-GObject $buffer, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_insert:
 =begin pod
-=head2 [gtk_text_buffer_] get_insert
+=head2 [[gtk_] text_buffer_] get_insert
 
 Returns the mark that represents the cursor (insertion point).
 Equivalent to calling C<gtk_text_buffer_get_mark()> to get the mark
@@ -921,7 +921,7 @@ sub gtk_text_buffer_get_insert ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_selection_bound:
 =begin pod
-=head2 [gtk_text_buffer_] get_selection_bound
+=head2 [[gtk_] text_buffer_] get_selection_bound
 
 Returns the mark that represents the selection bound.  Equivalent
 to calling C<gtk_text_buffer_get_mark()> to get the mark named
@@ -950,7 +950,7 @@ sub gtk_text_buffer_get_selection_bound ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_place_cursor:
 =begin pod
-=head2 [gtk_text_buffer_] place_cursor
+=head2 [[gtk_] text_buffer_] place_cursor
 
 This function moves the “insert” and “selection_bound” marks
 simultaneously.  If you move them to the same place in two steps
@@ -973,7 +973,7 @@ sub gtk_text_buffer_place_cursor ( N-GObject $buffer, N-GObject $where )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_select_range:
 =begin pod
-=head2 [gtk_text_buffer_] select_range
+=head2 [[gtk_] text_buffer_] select_range
 
 This function moves the “insert” and “selection_bound” marks
 simultaneously.  If you move them in two steps
@@ -1000,7 +1000,7 @@ sub gtk_text_buffer_select_range ( N-GObject $buffer, N-GObject $ins, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_apply_tag:
 =begin pod
-=head2 [gtk_text_buffer_] apply_tag
+=head2 [[gtk_] text_buffer_] apply_tag
 
 Emits the “apply-tag” signal on I<buffer>. The default
 handler for the signal applies I<tag> to the given range.
@@ -1024,7 +1024,7 @@ sub gtk_text_buffer_apply_tag ( N-GObject $buffer, N-GObject $tag, N-GTextIter $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_remove_tag:
 =begin pod
-=head2 [gtk_text_buffer_] remove_tag
+=head2 [[gtk_] text_buffer_] remove_tag
 
 Emits the “remove-tag” signal. The default handler for the signal
 removes all occurrences of I<tag> from the given range. I<start> and
@@ -1045,7 +1045,7 @@ sub gtk_text_buffer_remove_tag ( N-GObject $buffer, N-GObject $tag, N-GTextIter 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_apply_tag_by_name:
 =begin pod
-=head2 [gtk_text_buffer_] apply_tag_by_name
+=head2 [[gtk_] text_buffer_] apply_tag_by_name
 
 Calls C<gtk_text_tag_table_lookup()> on the buffer’s tag table to
 get a B<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_apply_tag()>.
@@ -1067,7 +1067,7 @@ sub gtk_text_buffer_apply_tag_by_name ( N-GObject $buffer, Str $name, N-GTextIte
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_remove_tag_by_name:
 =begin pod
-=head2 [gtk_text_buffer_] remove_tag_by_name
+=head2 [[gtk_] text_buffer_] remove_tag_by_name
 
 Calls C<gtk_text_tag_table_lookup()> on the buffer’s tag table to
 get a B<Gnome::Gtk3::TextTag>, then calls C<gtk_text_buffer_remove_tag()>.
@@ -1089,7 +1089,7 @@ sub gtk_text_buffer_remove_tag_by_name ( N-GObject $buffer, Str $name, N-GTextIt
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_remove_all_tags:
 =begin pod
-=head2 [gtk_text_buffer_] remove_all_tags
+=head2 [[gtk_] text_buffer_] remove_all_tags
 
 Removes all tags in the range between I<start> and I<end>.  Be careful
 with this function; it could remove tags added in code unrelated to
@@ -1114,7 +1114,7 @@ sub gtk_text_buffer_remove_all_tags ( N-GObject $buffer, N-GTextIter $start, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_create_tag:
 =begin pod
-=head2 [gtk_text_buffer_] create_tag
+=head2 [[gtk_] text_buffer_] create_tag
 
 Creates a tag and adds it to the tag table for I<buffer>.
 Equivalent to calling C<gtk_text_tag_new()> and then adding the
@@ -1147,7 +1147,7 @@ sub gtk_text_buffer_create_tag ( N-GObject $buffer, Str $tag_name, Str $first_pr
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_iter_at_line_offset:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_line_offset
+=head2 [[gtk_] text_buffer_] get_iter_at_line_offset
 
 Obtains an iterator pointing to I<$char_offset> within the given line. Note
 characters, not bytes; UTF-8 may encode one character as multiple bytes.
@@ -1189,7 +1189,7 @@ sub _gtk_text_buffer_get_iter_at_line_offset ( N-GObject $buffer, N-GTextIter $i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_iter_at_line_index:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_line_index
+=head2 [[gtk_] text_buffer_] get_iter_at_line_index
 
 Obtains an iterator pointing to I<byte_index> within the given line.
 I<byte_index> must be the start of a UTF-8 character. Note bytes, not
@@ -1233,7 +1233,7 @@ sub _gtk_text_buffer_get_iter_at_line_index ( N-GObject $buffer, N-GTextIter $it
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_iter_at_offset:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_offset
+=head2 [[gtk_] text_buffer_] get_iter_at_offset
 
 Initializes I<iter> to a position I<char_offset> chars from the start
 of the entire buffer. If I<char_offset> is -1 or greater than the number
@@ -1270,7 +1270,7 @@ sub _gtk_text_buffer_get_iter_at_offset ( N-GObject $buffer, N-GTextIter $iter i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_iter_at_line:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_line
+=head2 [[gtk_] text_buffer_] get_iter_at_line
 
 Returns an I<iter> to the start of the given line. If I<$line_number> is greater
 than the number of lines in the I<buffer>, the end iterator is returned.
@@ -1304,7 +1304,7 @@ sub _gtk_text_buffer_get_iter_at_line ( N-GObject $buffer, N-GTextIter $iter is 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_start_iter:
 =begin pod
-=head2 [gtk_text_buffer_] get_start_iter
+=head2 [[gtk_] text_buffer_] get_start_iter
 
 Initialized I<$iter> with the first position in the text buffer. This
 is the same as using C<gtk_text_buffer_get_iter_at_offset()> to get
@@ -1335,7 +1335,7 @@ sub _gtk_text_buffer_get_start_iter ( N-GObject $buffer, N-GTextIter $iter is rw
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_end_iter:
 =begin pod
-=head2 [gtk_text_buffer_] get_end_iter
+=head2 [[gtk_] text_buffer_] get_end_iter
 
 Initializes I<iter> with the “end iterator,” one past the last valid
 character in the text buffer. If dereferenced with
@@ -1369,7 +1369,7 @@ sub _gtk_text_buffer_get_end_iter ( N-GObject $buffer, N-GTextIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_bounds:
 =begin pod
-=head2 [gtk_text_buffer_] get_bounds
+=head2 [[gtk_] text_buffer_] get_bounds
 
 Retrieves the first and last iterators in the buffer, i.e. the
 entire buffer lies within the range [I<start>,I<end>).
@@ -1405,7 +1405,7 @@ sub _gtk_text_buffer_get_bounds ( N-GObject $buffer, N-GTextIter $start is rw, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_iter_at_mark:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_mark
+=head2 [[gtk_] text_buffer_] get_iter_at_mark
 
 Initializes I<iter> with the current position of I<mark>.
 
@@ -1425,7 +1425,7 @@ sub gtk_text_buffer_get_iter_at_mark ( N-GObject $buffer, N-GTextIter $iter, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_iter_at_child_anchor:
 =begin pod
-=head2 [gtk_text_buffer_] get_iter_at_child_anchor
+=head2 [[gtk_] text_buffer_] get_iter_at_child_anchor
 
 Obtains the location of I<anchor> within I<buffer>.
 
@@ -1444,7 +1444,7 @@ sub gtk_text_buffer_get_iter_at_child_anchor ( N-GObject $buffer, N-GTextIter $i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_modified:
 =begin pod
-=head2 [gtk_text_buffer_] get_modified
+=head2 [[gtk_] text_buffer_] get_modified
 
 Indicates whether the buffer has been modified since the last call
 to C<gtk_text_buffer_set_modified()> set the modification flag to
@@ -1466,7 +1466,7 @@ sub gtk_text_buffer_get_modified ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_set_modified:
 =begin pod
-=head2 [gtk_text_buffer_] set_modified
+=head2 [[gtk_] text_buffer_] set_modified
 
 Used to keep track of whether the buffer has been modified since the
 last time it was saved. Whenever the buffer is saved to disk, call
@@ -1487,7 +1487,7 @@ sub gtk_text_buffer_set_modified ( N-GObject $buffer, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_has_selection:
 =begin pod
-=head2 [gtk_text_buffer_] get_has_selection
+=head2 [[gtk_] text_buffer_] get_has_selection
 
 Indicates whether the buffer has some text currently selected.
 
@@ -1509,7 +1509,7 @@ sub gtk_text_buffer_get_has_selection ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_add_selection_clipboard:
 =begin pod
-=head2 [gtk_text_buffer_] add_selection_clipboard
+=head2 [[gtk_] text_buffer_] add_selection_clipboard
 
 Adds I<clipboard> to the list of clipboards in which the selection
 contents of I<buffer> are available. In most cases, I<clipboard> will be
@@ -1528,7 +1528,7 @@ sub gtk_text_buffer_add_selection_clipboard ( N-GObject $buffer, N-GObject $clip
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_remove_selection_clipboard:
 =begin pod
-=head2 [gtk_text_buffer_] remove_selection_clipboard
+=head2 [[gtk_] text_buffer_] remove_selection_clipboard
 
 Removes a B<Gnome::Gtk3::Clipboard> added with
 C<gtk_text_buffer_add_selection_clipboard()>.
@@ -1546,7 +1546,7 @@ sub gtk_text_buffer_remove_selection_clipboard ( N-GObject $buffer, N-GObject $c
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_cut_clipboard:
 =begin pod
-=head2 [gtk_text_buffer_] cut_clipboard
+=head2 [[gtk_] text_buffer_] cut_clipboard
 
 Copies the currently-selected text to a clipboard, then deletes
 said text if it’s editable.
@@ -1565,7 +1565,7 @@ sub gtk_text_buffer_cut_clipboard ( N-GObject $buffer, N-GObject $clipboard, int
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_copy_clipboard:
 =begin pod
-=head2 [gtk_text_buffer_] copy_clipboard
+=head2 [[gtk_] text_buffer_] copy_clipboard
 
 Copies the currently-selected text to a clipboard.
 
@@ -1582,7 +1582,7 @@ sub gtk_text_buffer_copy_clipboard ( N-GObject $buffer, N-GObject $clipboard )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_paste_clipboard:
 =begin pod
-=head2 [gtk_text_buffer_] paste_clipboard
+=head2 [[gtk_] text_buffer_] paste_clipboard
 
 Pastes the contents of a clipboard. If I<override_location> is C<Any>, the
 pasted text will be inserted at the cursor position, or the buffer selection
@@ -1608,7 +1608,7 @@ sub gtk_text_buffer_paste_clipboard ( N-GObject $buffer, N-GObject $clipboard, N
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_selection_bounds:
 =begin pod
-=head2 [gtk_text_buffer_] get_selection_bounds
+=head2 [[gtk_] text_buffer_] get_selection_bounds
 
 Returns C<1> if some text is selected; places the bounds
 of the selection in I<start> and I<end> (if the selection has length 0,
@@ -1647,7 +1647,7 @@ sub _gtk_text_buffer_get_selection_bounds ( N-GObject $buffer, N-GTextIter $star
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_delete_selection:
 =begin pod
-=head2 [gtk_text_buffer_] delete_selection
+=head2 [[gtk_] text_buffer_] delete_selection
 
 Deletes the range between the “insert” and “selection_bound” marks,
 that is, the currently-selected text. If I<interactive> is C<1>,
@@ -1671,7 +1671,7 @@ sub gtk_text_buffer_delete_selection ( N-GObject $buffer, int32 $interactive, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_begin_user_action:
 =begin pod
-=head2 [gtk_text_buffer_] begin_user_action
+=head2 [[gtk_] text_buffer_] begin_user_action
 
 Called to indicate that the buffer operations between here and a
 call to C<gtk_text_buffer_end_user_action()> are part of a single
@@ -1703,7 +1703,7 @@ sub gtk_text_buffer_begin_user_action ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_end_user_action:
 =begin pod
-=head2 [gtk_text_buffer_] end_user_action
+=head2 [[gtk_] text_buffer_] end_user_action
 
 Should be paired with a call to C<gtk_text_buffer_begin_user_action()>.
 See that function for a full explanation.
@@ -1721,7 +1721,7 @@ sub gtk_text_buffer_end_user_action ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_copy_target_list:
 =begin pod
-=head2 [gtk_text_buffer_] get_copy_target_list
+=head2 [[gtk_] text_buffer_] get_copy_target_list
 
 This function returns the list of targets this text buffer can
 provide for copying and as DND source. The targets in the list are
@@ -1746,7 +1746,7 @@ sub gtk_text_buffer_get_copy_target_list ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_get_paste_target_list:
 =begin pod
-=head2 [gtk_text_buffer_] get_paste_target_list
+=head2 [[gtk_] text_buffer_] get_paste_target_list
 
 This function returns the list of targets this text buffer supports
 for pasting and as DND destination. The targets in the list are
