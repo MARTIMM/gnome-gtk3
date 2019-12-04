@@ -1,0 +1,5 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "Todo Viewer"
+  bar_menu:
+  - title: "Prototype"
+    url: "/content-docs/examples/todo-viewer/prototype.html"

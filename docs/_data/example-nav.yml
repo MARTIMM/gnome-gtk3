@@ -20,27 +20,5 @@ nav_menus:
       right: true
 
   - nav_pages:
-    - title: "Toplevels"
-      url: "/content-docs/examples-toplevel.html"
-    - title: "Containers"
-      url: '/content-docs/nyi-example.html'
-    - title: "Control"
-      url: '/content-docs/examples-control.html'
-    - title: "Display"
-      url: '/content-docs/nyi-example.html'
-    - title: "Extra"
-      url: '/content-docs/nyi-example.html'
-
-#  - nav_pages:
-    - title: "Test"
-      url: '/content-docs/nyi-example.html'
-      right: true
-    - title: "Theme"
-      url: '/content-docs/nyi-example.html'
-      right: true
-    - title: "Style"
-      url: '/content-docs/nyi-example.html'
-      right: true
-    - title: "Glade"
-      url: '/content-docs/nyi-example.html'
-      right: true
+    - title: "Todo Viewer"
+      url: "/content-docs/examples/todo-viewer.html"
