@@ -211,7 +211,7 @@ sub gtk_about_dialog_new (  )
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_show_about_dialog:
 =begin pod
@@ -229,7 +229,7 @@ This is a convenience function for showing an application’s about box. The con
 sub gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_program_name:
@@ -1089,7 +1089,7 @@ The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEA
 
 =end pod
 
-#`[[
+#`{{
 =begin comment
 
 =head2 Unsupported properties
@@ -1232,7 +1232,7 @@ A logo for the about box. If it is C<Any>, the default window icon
 set with C<gtk_window_set_default_icon()> will be used.
 
 =end pod
-]]
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod

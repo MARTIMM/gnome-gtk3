@@ -211,7 +211,7 @@ sub gtk_tree_view_column_new_with_area ( N-GObject $area )
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_new_with_attributes:
 =begin pod
@@ -253,7 +253,7 @@ sub gtk_tree_view_column_new_with_attributes (
   returns N-GObject
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_column_pack_start:
@@ -329,7 +329,7 @@ sub gtk_tree_view_column_add_attribute ( N-GObject $tree_column, N-GObject $cell
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_attributes:
 =begin pod
@@ -349,7 +349,7 @@ are removed, and replaced with the new attributes.
 sub gtk_tree_view_column_set_attributes ( N-GObject $tree_column, N-GObject $cell_renderer, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #`{{
 #-------------------------------------------------------------------------------

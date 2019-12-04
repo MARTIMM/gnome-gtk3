@@ -978,7 +978,7 @@ sub gtk_builder_add_callback_symbol ( N-GObject $builder, Str $callback_name, GC
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [[gtk_] builder_] add_callback_symbols
@@ -998,7 +998,7 @@ Since: 3.10
 sub gtk_builder_add_callback_symbols ( N-GObject $builder, Str $first_callback_name, GCallback $first_callback_symbol, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #`{{
 #-------------------------------------------------------------------------------

@@ -705,7 +705,7 @@ sub gtk_container_class_list_child_properties ( GObjectClass $cclass, uint32 $n_
   is native(&gtk-lib)
   { * }
 }}
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_add_with_properties:
 =begin pod
@@ -724,9 +724,7 @@ See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
 sub gtk_container_add_with_properties ( N-GObject $container, N-GObject $widget, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_set:
 =begin pod
@@ -744,9 +742,7 @@ Sets one or more child properties for I<child> and I<container>.
 sub gtk_container_child_set ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_get:
 =begin pod
@@ -764,8 +760,7 @@ Gets the values of one or more child properties for I<child> and I<container>.
 sub gtk_container_child_get ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
-#`{{
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_set_valist:
 =begin pod
@@ -1532,7 +1527,7 @@ sub gtk_container_class_list_child_properties ( GObjectClass $cclass, uint32 $n_
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [[gtk_] container_] add_with_properties
@@ -1550,9 +1545,7 @@ See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
 sub gtk_container_add_with_properties ( N-GObject $container, N-GObject $widget, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [[gtk_] container_] child_set
@@ -1569,9 +1562,7 @@ Sets one or more child properties for I<child> and I<container>.
 sub gtk_container_child_set ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [[gtk_] container_] child_get
@@ -1588,10 +1579,9 @@ Gets the values of one or more child properties for I<child> and I<container>.
 sub gtk_container_child_get ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#-------------------------------------------------------------------------------
 #`{{
+#-------------------------------------------------------------------------------
 =begin pod
 =head2 [[gtk_] container_] child_set_valist
 

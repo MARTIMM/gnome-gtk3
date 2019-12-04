@@ -400,7 +400,7 @@ sub gtk_style_context_get_valist ( N-GObject $context, int32 $state, va_list $ar
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get:
 =begin pod
@@ -422,7 +422,7 @@ Since: 3.0
 sub gtk_style_context_get ( N-GObject $context, int32 $state, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_state:

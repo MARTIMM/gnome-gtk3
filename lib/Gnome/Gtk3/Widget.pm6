@@ -4761,7 +4761,8 @@ sub gtk_widget_style_get_valist ( N-GObject $widget, Str $first_property_name, v
   is native(&gtk-lib)
   { * }
 }}
-#`[[
+
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_style_get
 =begin pod
@@ -4778,7 +4779,7 @@ Gets the values of a multiple style properties of I<widget>.
 sub gtk_widget_style_get ( N-GObject $widget, Str $first_property_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_set_direction

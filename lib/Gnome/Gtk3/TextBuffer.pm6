@@ -412,7 +412,7 @@ sub gtk_text_buffer_insert_range_interactive ( N-GObject $buffer, N-GTextIter $i
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_with_tags:
 =begin pod
@@ -436,9 +436,7 @@ C<gtk_text_buffer_insert_with_tags()> is just a convenience function.
 sub gtk_text_buffer_insert_with_tags ( N-GObject $buffer, N-GTextIter $iter, Str $text, int32 $len, N-GObject $first_tag, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_with_tags_by_name:
 =begin pod
@@ -459,7 +457,7 @@ to pass in tag names instead of tag objects.
 sub gtk_text_buffer_insert_with_tags_by_name ( N-GObject $buffer, N-GTextIter $iter, Str $text, int32 $len, Str $first_tag_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_insert_markup:
@@ -1110,7 +1108,7 @@ sub gtk_text_buffer_remove_all_tags ( N-GObject $buffer, N-GTextIter $start, N-G
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_buffer_create_tag:
 =begin pod
@@ -1142,7 +1140,7 @@ sub gtk_text_buffer_create_tag ( N-GObject $buffer, Str $tag_name, Str $first_pr
   returns N-GObject
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_buffer_get_iter_at_line_offset:

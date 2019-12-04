@@ -485,7 +485,7 @@ sub gtk_dialog_add_button ( N-GObject $dialog, Str $button_text, int32 $response
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_add_buttons:
 =begin pod
@@ -505,7 +505,7 @@ text and response ID.
 sub gtk_dialog_add_buttons ( N-GObject $dialog, Str $first_button_text, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_set_response_sensitive:
