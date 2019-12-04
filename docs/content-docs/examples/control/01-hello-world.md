@@ -2,7 +2,7 @@
 title: A window with two buttons
 #nav_title: Window
 nav_menu: example-nav
-sidebar_menu: example-toplevel-sidebar
+sidebar_menu: example-control-sidebar
 layout: sidebar
 ---
 
