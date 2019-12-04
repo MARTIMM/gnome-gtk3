@@ -1,9 +1,0 @@
-# https://jekyllrb.com/tutorials/navigation/
-- bar_title: "Containers"
-  bar_menu:
-  - title: "Grid"
-    url: '/content-docs/nyi-example.html'
-  - title: "Frame"
-    url: '/content-docs/nyi-example.html'
-  - title: "ListBox"
-    url: '/content-docs/nyi-example.html'
