@@ -182,7 +182,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_paned_new:new(:orientation)
 =begin pod
-=head2 gtk_paned_new
+=head2 [gtk_] paned_new
 
 Creates a new B<Gnome::Gtk3::Paned> widget.
 
@@ -204,7 +204,7 @@ sub gtk_paned_new ( int32 $orientation )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_paned_add1:
 =begin pod
-=head2 gtk_paned_add1
+=head2 [gtk_] paned_add1
 
 Adds a child to the top or left pane with default parameters. This is
 equivalent to
@@ -223,7 +223,7 @@ sub gtk_paned_add1 ( N-GObject $paned, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_paned_add2:
 =begin pod
-=head2 gtk_paned_add2
+=head2 [gtk_] paned_add2
 
 Adds a child to the bottom or right pane with default parameters. This
 is equivalent to
@@ -242,7 +242,7 @@ sub gtk_paned_add2 ( N-GObject $paned, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_pack1:
 =begin pod
-=head2 gtk_paned_pack1
+=head2 [gtk_] paned_pack1
 
 Adds a child to the top or left pane.
 
@@ -261,7 +261,7 @@ sub gtk_paned_pack1 ( N-GObject $paned, N-GObject $child, int32 $resize, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_pack2:
 =begin pod
-=head2 gtk_paned_pack2
+=head2 [gtk_] paned_pack2
 
 Adds a child to the bottom or right pane.
 
@@ -280,7 +280,7 @@ sub gtk_paned_pack2 ( N-GObject $paned, N-GObject $child, int32 $resize, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_get_position:
 =begin pod
-=head2 [gtk_paned_] get_position
+=head2 [[gtk_] paned_] get_position
 
 Obtains the position of the divider between the two panes.
 
@@ -299,7 +299,7 @@ sub gtk_paned_get_position ( N-GObject $paned )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_set_position:
 =begin pod
-=head2 [gtk_paned_] set_position
+=head2 [[gtk_] paned_] set_position
 
 Sets the position of the divider between the two panes.
 
@@ -316,7 +316,7 @@ sub gtk_paned_set_position ( N-GObject $paned, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_paned_get_child1:
 =begin pod
-=head2 [gtk_paned_] get_child1
+=head2 [[gtk_] paned_] get_child1
 
 Obtains the first child of the paned widget.
 
@@ -337,7 +337,7 @@ sub gtk_paned_get_child1 ( N-GObject $paned )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_paned_get_child2:
 =begin pod
-=head2 [gtk_paned_] get_child2
+=head2 [[gtk_] paned_] get_child2
 
 Obtains the second child of the paned widget.
 
@@ -358,7 +358,7 @@ sub gtk_paned_get_child2 ( N-GObject $paned )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_get_handle_window:
 =begin pod
-=head2 [gtk_paned_] get_handle_window
+=head2 [[gtk_] paned_] get_handle_window
 
 Returns the B<Gnome::Gdk3::Window> of the handle. This function is
 useful when handling button or motion events because it
@@ -382,7 +382,7 @@ sub gtk_paned_get_handle_window ( N-GObject $paned )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_set_wide_handle:
 =begin pod
-=head2 [gtk_paned_] set_wide_handle
+=head2 [[gtk_] paned_] set_wide_handle
 
 Sets the  I<wide-handle> property.
 
@@ -401,7 +401,7 @@ sub gtk_paned_set_wide_handle ( N-GObject $paned, int32 $wide )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_paned_get_wide_handle:
 =begin pod
-=head2 [gtk_paned_] get_wide_handle
+=head2 [[gtk_] paned_] get_wide_handle
 
 Gets the  I<wide-handle> property.
 
@@ -653,7 +653,7 @@ The B<Gnome::GObject::Value> type of property I<wide-handle> is C<G_TYPE_BOOLEAN
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_paned_new
+=head2 [gtk_] paned_new
 
 Creates a new native pane
 
@@ -673,7 +673,7 @@ sub gtk_paned_new ( int32 $orientation )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_paned_add1
+=head2 [gtk_] paned_add1
 
 Adds a child to the top or left pane with default parameters. This is equivalent to C<$p.gtk_paned_pack1( $child-widget, 0, 1)>.
 
@@ -689,7 +689,7 @@ sub gtk_paned_add1 ( N-GObject $paned, N-GObject $child)
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_paned_add2
+=head2 [gtk_] paned_add2
 
 Adds a child to the bottom or right pane with default parameters. This is equivalent to C<$p.gtk_paned_pack2( $child-widget, 1, 1)>.
 
@@ -705,7 +705,7 @@ sub gtk_paned_add2 ( N-GObject $paned, N-GObject $child)
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_paned_pack1
+=head2 [gtk_] paned_pack1
 
 Adds a child to the top or left pane.
 
@@ -723,7 +723,7 @@ sub gtk_paned_pack1 (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_paned_pack2
+=head2 [gtk_] paned_pack2
 
 Adds a child to the bottom or right pane.
 
@@ -741,7 +741,7 @@ sub gtk_paned_pack2 (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] get_child1
+=head2 [[gtk_] paned_] get_child1
 
 Obtains the first child of the paned widget.
 
@@ -760,7 +760,7 @@ sub gtk_paned_get_child1 ( N-GObject $paned )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] get_child2
+=head2 [[gtk_] paned_] get_child2
 
 Obtains the second child of the paned widget.
 
@@ -777,7 +777,7 @@ sub gtk_paned_get_child2 ( N-GObject $paned )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] set_position
+=head2 [[gtk_] paned_] set_position
 
 Sets the position of the divider between the two panes.
 
@@ -793,7 +793,7 @@ sub gtk_paned_set_position ( N-GObject $paned, int32 $position)
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] get_position
+=head2 [[gtk_] paned_] get_position
 
 Obtains the position of the divider between the two panes.
 
@@ -810,7 +810,7 @@ sub gtk_paned_get_position ( N-GObject $paned )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] get_handle_window
+=head2 [[gtk_] paned_] get_handle_window
 
 Returns the C<GdkWindow> of the handle. This function is useful when handling button or motion events because it enables the callback to distinguish between the window of the paned, a child and the handle.
 
@@ -827,7 +827,7 @@ sub gtk_paned_get_handle_window ( N-GObject $paned )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] set_wide_handle
+=head2 [[gtk_] paned_] set_wide_handle
 
 Sets the “wide-handle” property.
 
@@ -843,7 +843,7 @@ sub gtk_paned_set_wide_handle ( N-GObject $paned, int32 $wide )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_paned_] get_wide_handle
+=head2 [[gtk_] paned_] get_wide_handle
 
 Gets the “wide-handle” property.
 

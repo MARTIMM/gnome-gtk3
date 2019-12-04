@@ -139,7 +139,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_buffer:
 =begin pod
-=head2 [gtk_text_iter_] get_buffer
+=head2 [[gtk_] text_iter_] get_buffer
 
 Returns the B<Gnome::Gtk3::TextBuffer> this iterator is associated with.
 
@@ -158,7 +158,7 @@ sub gtk_text_iter_get_buffer ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_copy:
 =begin pod
-=head2 gtk_text_iter_copy
+=head2 [gtk_] text_iter_copy
 
 Creates a dynamically-allocated copy of an iterator. This function
 is not useful in applications, because iterators can be copied with a
@@ -180,7 +180,7 @@ sub gtk_text_iter_copy ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_free:
 =begin pod
-=head2 gtk_text_iter_free
+=head2 [gtk_] text_iter_free
 
 Free an iterator allocated on the heap. This function
 is intended for use in language bindings, and is not
@@ -199,7 +199,7 @@ sub gtk_text_iter_free ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_assign:
 =begin pod
-=head2 gtk_text_iter_assign
+=head2 [gtk_] text_iter_assign
 
 Assigns the value of I<other> to I<iter>.  This function
 is not useful in applications, because iterators can be assigned
@@ -221,7 +221,7 @@ sub gtk_text_iter_assign ( N-GObject $iter, N-GObject $other )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_offset:
 =begin pod
-=head2 [gtk_text_iter_] get_offset
+=head2 [[gtk_] text_iter_] get_offset
 
 Returns the character offset of an iterator.
 Each character in a B<Gnome::Gtk3::TextBuffer> has an offset,
@@ -244,7 +244,7 @@ sub gtk_text_iter_get_offset ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_line:
 =begin pod
-=head2 [gtk_text_iter_] get_line
+=head2 [[gtk_] text_iter_] get_line
 
 Returns the line number containing the iterator. Lines in
 a B<Gnome::Gtk3::TextBuffer> are numbered beginning with 0 for the first
@@ -265,7 +265,7 @@ sub gtk_text_iter_get_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_line_offset:
 =begin pod
-=head2 [gtk_text_iter_] get_line_offset
+=head2 [[gtk_] text_iter_] get_line_offset
 
 Returns the character offset of the iterator,
 counting from the start of a newline-terminated line.
@@ -286,7 +286,7 @@ sub gtk_text_iter_get_line_offset ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_line_index:
 =begin pod
-=head2 [gtk_text_iter_] get_line_index
+=head2 [[gtk_] text_iter_] get_line_index
 
 Returns the byte index of the iterator, counting
 from the start of a newline-terminated line.
@@ -309,7 +309,7 @@ sub gtk_text_iter_get_line_index ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_visible_line_offset:
 =begin pod
-=head2 [gtk_text_iter_] get_visible_line_offset
+=head2 [[gtk_] text_iter_] get_visible_line_offset
 
 Returns the offset in characters from the start of the
 line to the given I<iter>, not counting characters that
@@ -331,7 +331,7 @@ sub gtk_text_iter_get_visible_line_offset ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_visible_line_index:
 =begin pod
-=head2 [gtk_text_iter_] get_visible_line_index
+=head2 [[gtk_] text_iter_] get_visible_line_index
 
 Returns the number of bytes from the start of the
 line to the given I<iter>, not counting bytes that
@@ -353,7 +353,7 @@ sub gtk_text_iter_get_visible_line_index ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_char:
 =begin pod
-=head2 [gtk_text_iter_] get_char
+=head2 [[gtk_] text_iter_] get_char
 
 The Unicode character at this iterator is returned.  (Equivalent to
 operator* on a C++ iterator.)  If the element at this iterator is a
@@ -378,7 +378,7 @@ sub gtk_text_iter_get_char ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_slice:
 =begin pod
-=head2 [gtk_text_iter_] get_slice
+=head2 [[gtk_] text_iter_] get_slice
 
 Returns the text in the given range. A “slice” is an array of
 characters encoded in UTF-8 format, including the Unicode “unknown”
@@ -405,7 +405,7 @@ sub gtk_text_iter_get_slice ( N-GObject $start, N-GObject $end )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_text_iter_get_text:TextBuffer.t
 =begin pod
-=head2 [gtk_text_iter_] get_text
+=head2 [[gtk_] text_iter_] get_text
 
 Returns text in the given range.  If the range
 contains non-text elements such as images, the character and byte
@@ -429,7 +429,7 @@ sub gtk_text_iter_get_text ( N-GObject $start, N-GObject $end )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_visible_slice:
 =begin pod
-=head2 [gtk_text_iter_] get_visible_slice
+=head2 [[gtk_] text_iter_] get_visible_slice
 
 Like C<gtk_text_iter_get_slice()>, but invisible text is not included.
 Invisible text is usually invisible because a B<Gnome::Gtk3::TextTag> with the
@@ -451,7 +451,7 @@ sub gtk_text_iter_get_visible_slice ( N-GObject $start, N-GObject $end )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_visible_text:
 =begin pod
-=head2 [gtk_text_iter_] get_visible_text
+=head2 [[gtk_] text_iter_] get_visible_text
 
 Like C<gtk_text_iter_get_text()>, but invisible text is not included.
 Invisible text is usually invisible because a B<Gnome::Gtk3::TextTag> with the
@@ -474,7 +474,7 @@ sub gtk_text_iter_get_visible_text ( N-GObject $start, N-GObject $end )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_pixbuf:
 =begin pod
-=head2 [gtk_text_iter_] get_pixbuf
+=head2 [[gtk_] text_iter_] get_pixbuf
 
 If the element at I<iter> is a pixbuf, the pixbuf is returned
 (with no new reference count added). Otherwise,
@@ -495,7 +495,7 @@ sub gtk_text_iter_get_pixbuf ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_marks:
 =begin pod
-=head2 [gtk_text_iter_] get_marks
+=head2 [[gtk_] text_iter_] get_marks
 
 Returns a list of all B<Gnome::Gtk3::TextMark> at this location. Because marks
 are not iterable (they don’t take up any "space" in the buffer,
@@ -519,7 +519,7 @@ sub gtk_text_iter_get_marks ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_child_anchor:
 =begin pod
-=head2 [gtk_text_iter_] get_child_anchor
+=head2 [[gtk_] text_iter_] get_child_anchor
 
 If the location at I<iter> contains a child anchor, the
 anchor is returned (with no new reference count added). Otherwise,
@@ -541,7 +541,7 @@ sub gtk_text_iter_get_child_anchor ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_toggled_tags:
 =begin pod
-=head2 [gtk_text_iter_] get_toggled_tags
+=head2 [[gtk_] text_iter_] get_toggled_tags
 
 Returns a list of B<Gnome::Gtk3::TextTag> that are toggled on or off at this
 point.  (If I<toggled_on> is C<1>, the list contains tags that are
@@ -566,7 +566,7 @@ sub gtk_text_iter_get_toggled_tags ( N-GObject $iter, int32 $toggled_on )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_starts_tag:
 =begin pod
-=head2 [gtk_text_iter_] starts_tag
+=head2 [[gtk_] text_iter_] starts_tag
 
 Returns C<1> if I<tag> is toggled on at exactly this point. If I<tag>
 is C<Any>, returns C<1> if any tag is toggled on at this point.
@@ -595,7 +595,7 @@ sub gtk_text_iter_starts_tag ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_ends_tag:
 =begin pod
-=head2 [gtk_text_iter_] ends_tag
+=head2 [[gtk_] text_iter_] ends_tag
 
 Returns C<1> if I<tag> is toggled off at exactly this point. If I<tag>
 is C<Any>, returns C<1> if any tag is toggled off at this point.
@@ -622,7 +622,7 @@ sub gtk_text_iter_ends_tag ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_toggles_tag:
 =begin pod
-=head2 [gtk_text_iter_] toggles_tag
+=head2 [[gtk_] text_iter_] toggles_tag
 
 This is equivalent to (C<gtk_text_iter_starts_tag()> ||
 C<gtk_text_iter_ends_tag()>), i.e. it tells you whether a range with
@@ -644,7 +644,7 @@ sub gtk_text_iter_toggles_tag ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_has_tag:
 =begin pod
-=head2 [gtk_text_iter_] has_tag
+=head2 [[gtk_] text_iter_] has_tag
 
 Returns C<1> if I<iter> points to a character that is part of a range tagged
 with I<tag>. See also C<gtk_text_iter_starts_tag()> and C<gtk_text_iter_ends_tag()>.
@@ -665,7 +665,7 @@ sub gtk_text_iter_has_tag ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_tags:
 =begin pod
-=head2 [gtk_text_iter_] get_tags
+=head2 [[gtk_] text_iter_] get_tags
 
 Returns a list of tags that apply to I<iter>, in ascending order of
 priority (highest-priority tags are last). The B<Gnome::Gtk3::TextTag> in the
@@ -687,7 +687,7 @@ sub gtk_text_iter_get_tags ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_editable:
 =begin pod
-=head2 gtk_text_iter_editable
+=head2 [gtk_] text_iter_editable
 
 Returns whether the character at I<iter> is within an editable region
 of text.  Non-editable text is “locked” and can’t be changed by the
@@ -718,7 +718,7 @@ sub gtk_text_iter_editable ( N-GObject $iter, int32 $default_setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_can_insert:
 =begin pod
-=head2 [gtk_text_iter_] can_insert
+=head2 [[gtk_] text_iter_] can_insert
 
 Considering the default editability of the buffer, and tags that
 affect editability, determines whether text inserted at I<iter> would
@@ -743,7 +743,7 @@ sub gtk_text_iter_can_insert ( N-GObject $iter, int32 $default_editability )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_starts_word:
 =begin pod
-=head2 [gtk_text_iter_] starts_word
+=head2 [[gtk_] text_iter_] starts_word
 
 Determines whether I<iter> begins a natural-language word.  Word
 breaks are determined by Pango and should be correct for nearly any
@@ -765,7 +765,7 @@ sub gtk_text_iter_starts_word ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_ends_word:
 =begin pod
-=head2 [gtk_text_iter_] ends_word
+=head2 [[gtk_] text_iter_] ends_word
 
 Determines whether I<iter> ends a natural-language word.  Word breaks
 are determined by Pango and should be correct for nearly any
@@ -787,7 +787,7 @@ sub gtk_text_iter_ends_word ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_inside_word:
 =begin pod
-=head2 [gtk_text_iter_] inside_word
+=head2 [[gtk_] text_iter_] inside_word
 
 Determines whether the character pointed by I<iter> is part of a
 natural-language word (as opposed to say inside some whitespace).  Word
@@ -812,7 +812,7 @@ sub gtk_text_iter_inside_word ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_starts_sentence:
 =begin pod
-=head2 [gtk_text_iter_] starts_sentence
+=head2 [[gtk_] text_iter_] starts_sentence
 
 Determines whether I<iter> begins a sentence.  Sentence boundaries are
 determined by Pango and should be correct for nearly any language
@@ -834,7 +834,7 @@ sub gtk_text_iter_starts_sentence ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_ends_sentence:
 =begin pod
-=head2 [gtk_text_iter_] ends_sentence
+=head2 [[gtk_] text_iter_] ends_sentence
 
 Determines whether I<iter> ends a sentence.  Sentence boundaries are
 determined by Pango and should be correct for nearly any language
@@ -856,7 +856,7 @@ sub gtk_text_iter_ends_sentence ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_inside_sentence:
 =begin pod
-=head2 [gtk_text_iter_] inside_sentence
+=head2 [[gtk_] text_iter_] inside_sentence
 
 Determines whether I<iter> is inside a sentence (as opposed to in
 between two sentences, e.g. after a period and before the first
@@ -879,7 +879,7 @@ sub gtk_text_iter_inside_sentence ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_starts_line:
 =begin pod
-=head2 [gtk_text_iter_] starts_line
+=head2 [[gtk_] text_iter_] starts_line
 
 Returns C<1> if I<iter> begins a paragraph,
 i.e. if C<gtk_text_iter_get_line_offset()> would return 0.
@@ -902,7 +902,7 @@ sub gtk_text_iter_starts_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_ends_line:
 =begin pod
-=head2 [gtk_text_iter_] ends_line
+=head2 [[gtk_] text_iter_] ends_line
 
 Returns C<1> if I<iter> points to the start of the paragraph
 delimiter characters for a line (delimiters will be either a
@@ -928,7 +928,7 @@ sub gtk_text_iter_ends_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_is_cursor_position:
 =begin pod
-=head2 [gtk_text_iter_] is_cursor_position
+=head2 [[gtk_] text_iter_] is_cursor_position
 
 See C<gtk_text_iter_forward_cursor_position()> or B<PangoLogAttr> or
 C<pango_break()> for details on what a cursor position is.
@@ -948,7 +948,7 @@ sub gtk_text_iter_is_cursor_position ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_chars_in_line:
 =begin pod
-=head2 [gtk_text_iter_] get_chars_in_line
+=head2 [[gtk_] text_iter_] get_chars_in_line
 
 Returns the number of characters in the line containing I<iter>,
 including the paragraph delimiters.
@@ -968,7 +968,7 @@ sub gtk_text_iter_get_chars_in_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_bytes_in_line:
 =begin pod
-=head2 [gtk_text_iter_] get_bytes_in_line
+=head2 [[gtk_] text_iter_] get_bytes_in_line
 
 Returns the number of bytes in the line containing I<iter>,
 including the paragraph delimiters.
@@ -988,7 +988,7 @@ sub gtk_text_iter_get_bytes_in_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_attributes:
 =begin pod
-=head2 [gtk_text_iter_] get_attributes
+=head2 [[gtk_] text_iter_] get_attributes
 
 Computes the effect of any tags applied to this spot in the
 text. The I<values> parameter should be initialized to the default
@@ -1016,7 +1016,7 @@ sub gtk_text_iter_get_attributes ( N-GObject $iter, N-GObject $values )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_get_language:
 =begin pod
-=head2 [gtk_text_iter_] get_language
+=head2 [[gtk_] text_iter_] get_language
 
 A convenience wrapper around C<gtk_text_iter_get_attributes()>,
 which returns the language in effect at I<iter>. If no tags affecting
@@ -1039,7 +1039,7 @@ sub gtk_text_iter_get_language ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_is_end:
 =begin pod
-=head2 [gtk_text_iter_] is_end
+=head2 [[gtk_] text_iter_] is_end
 
 Returns C<1> if I<iter> is the end iterator, i.e. one past the last
 dereferenceable iterator in the buffer. C<gtk_text_iter_is_end()> is
@@ -1061,7 +1061,7 @@ sub gtk_text_iter_is_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_is_start:
 =begin pod
-=head2 [gtk_text_iter_] is_start
+=head2 [[gtk_] text_iter_] is_start
 
 Returns C<1> if I<iter> is the first iterator in the buffer, that is
 if I<iter> has a character offset of 0.
@@ -1081,7 +1081,7 @@ sub gtk_text_iter_is_start ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_char:
 =begin pod
-=head2 [gtk_text_iter_] forward_char
+=head2 [[gtk_] text_iter_] forward_char
 
 Moves I<iter> forward by one character offset. Note that images
 embedded in the buffer occupy 1 character slot, so
@@ -1106,7 +1106,7 @@ sub gtk_text_iter_forward_char ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_char:
 =begin pod
-=head2 [gtk_text_iter_] backward_char
+=head2 [[gtk_] text_iter_] backward_char
 
 Moves backward by one character offset. Returns C<1> if movement
 was possible; if I<iter> was the first in the buffer (character
@@ -1128,7 +1128,7 @@ sub gtk_text_iter_backward_char ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_chars:
 =begin pod
-=head2 [gtk_text_iter_] forward_chars
+=head2 [[gtk_] text_iter_] forward_chars
 
 Moves I<count> characters if possible (if I<count> would move past the
 start or end of the buffer, moves to the start or end of the
@@ -1153,7 +1153,7 @@ sub gtk_text_iter_forward_chars ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_chars:
 =begin pod
-=head2 [gtk_text_iter_] backward_chars
+=head2 [[gtk_] text_iter_] backward_chars
 
 Moves I<count> characters backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -1179,7 +1179,7 @@ sub gtk_text_iter_backward_chars ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_line:
 =begin pod
-=head2 [gtk_text_iter_] forward_line
+=head2 [[gtk_] text_iter_] forward_line
 
 Moves I<iter> to the start of the next line. If the iter is already on the
 last line of the buffer, moves the iter to the end of the current line.
@@ -1201,7 +1201,7 @@ sub gtk_text_iter_forward_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_line:
 =begin pod
-=head2 [gtk_text_iter_] backward_line
+=head2 [[gtk_] text_iter_] backward_line
 
 Moves I<iter> to the start of the previous line. Returns C<1> if
 I<iter> could be moved; i.e. if I<iter> was at character offset 0, this
@@ -1226,7 +1226,7 @@ sub gtk_text_iter_backward_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_lines:
 =begin pod
-=head2 [gtk_text_iter_] forward_lines
+=head2 [[gtk_] text_iter_] forward_lines
 
 Moves I<count> lines forward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -1252,7 +1252,7 @@ sub gtk_text_iter_forward_lines ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_lines:
 =begin pod
-=head2 [gtk_text_iter_] backward_lines
+=head2 [[gtk_] text_iter_] backward_lines
 
 Moves I<count> lines backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -1278,7 +1278,7 @@ sub gtk_text_iter_backward_lines ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_word_end:
 =begin pod
-=head2 [gtk_text_iter_] forward_word_end
+=head2 [[gtk_] text_iter_] forward_word_end
 
 Moves forward to the next word end. (If I<iter> is currently on a
 word end, moves forward to the next one after that.) Word breaks
@@ -1301,7 +1301,7 @@ sub gtk_text_iter_forward_word_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_word_start:
 =begin pod
-=head2 [gtk_text_iter_] backward_word_start
+=head2 [[gtk_] text_iter_] backward_word_start
 
 Moves backward to the previous word start. (If I<iter> is currently on a
 word start, moves backward to the next one after that.) Word breaks
@@ -1324,7 +1324,7 @@ sub gtk_text_iter_backward_word_start ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_word_ends:
 =begin pod
-=head2 [gtk_text_iter_] forward_word_ends
+=head2 [[gtk_] text_iter_] forward_word_ends
 
 Calls C<gtk_text_iter_forward_word_end()> up to I<count> times.
 
@@ -1344,7 +1344,7 @@ sub gtk_text_iter_forward_word_ends ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_word_starts:
 =begin pod
-=head2 [gtk_text_iter_] backward_word_starts
+=head2 [[gtk_] text_iter_] backward_word_starts
 
 Calls C<gtk_text_iter_backward_word_start()> up to I<count> times.
 
@@ -1364,7 +1364,7 @@ sub gtk_text_iter_backward_word_starts ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_line:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_line
+=head2 [[gtk_] text_iter_] forward_visible_line
 
 Moves I<iter> to the start of the next visible line. Returns C<1> if there
 was a next line to move to, and C<0> if I<iter> was simply moved to
@@ -1388,7 +1388,7 @@ sub gtk_text_iter_forward_visible_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_line:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_line
+=head2 [[gtk_] text_iter_] backward_visible_line
 
 Moves I<iter> to the start of the previous visible line. Returns C<1> if
 I<iter> could be moved; i.e. if I<iter> was at character offset 0, this
@@ -1415,7 +1415,7 @@ sub gtk_text_iter_backward_visible_line ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_lines:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_lines
+=head2 [[gtk_] text_iter_] forward_visible_lines
 
 Moves I<count> visible lines forward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -1443,7 +1443,7 @@ sub gtk_text_iter_forward_visible_lines ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_lines:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_lines
+=head2 [[gtk_] text_iter_] backward_visible_lines
 
 Moves I<count> visible lines backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -1471,7 +1471,7 @@ sub gtk_text_iter_backward_visible_lines ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_word_end:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_word_end
+=head2 [[gtk_] text_iter_] forward_visible_word_end
 
 Moves forward to the next visible word end. (If I<iter> is currently on a
 word end, moves forward to the next one after that.) Word breaks
@@ -1496,7 +1496,7 @@ sub gtk_text_iter_forward_visible_word_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_word_start:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_word_start
+=head2 [[gtk_] text_iter_] backward_visible_word_start
 
 Moves backward to the previous visible word start. (If I<iter> is currently
 on a word start, moves backward to the next one after that.) Word breaks
@@ -1521,7 +1521,7 @@ sub gtk_text_iter_backward_visible_word_start ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_word_ends:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_word_ends
+=head2 [[gtk_] text_iter_] forward_visible_word_ends
 
 Calls C<gtk_text_iter_forward_visible_word_end()> up to I<count> times.
 
@@ -1543,7 +1543,7 @@ sub gtk_text_iter_forward_visible_word_ends ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_word_starts:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_word_starts
+=head2 [[gtk_] text_iter_] backward_visible_word_starts
 
 Calls C<gtk_text_iter_backward_visible_word_start()> up to I<count> times.
 
@@ -1565,7 +1565,7 @@ sub gtk_text_iter_backward_visible_word_starts ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_sentence_end:
 =begin pod
-=head2 [gtk_text_iter_] forward_sentence_end
+=head2 [[gtk_] text_iter_] forward_sentence_end
 
 Moves forward to the next sentence end. (If I<iter> is at the end of
 a sentence, moves to the next end of sentence.)  Sentence
@@ -1588,7 +1588,7 @@ sub gtk_text_iter_forward_sentence_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_sentence_start:
 =begin pod
-=head2 [gtk_text_iter_] backward_sentence_start
+=head2 [[gtk_] text_iter_] backward_sentence_start
 
 Moves backward to the previous sentence start; if I<iter> is already at
 the start of a sentence, moves backward to the next one.  Sentence
@@ -1611,7 +1611,7 @@ sub gtk_text_iter_backward_sentence_start ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_sentence_ends:
 =begin pod
-=head2 [gtk_text_iter_] forward_sentence_ends
+=head2 [[gtk_] text_iter_] forward_sentence_ends
 
 Calls C<gtk_text_iter_forward_sentence_end()> I<count> times (or until
 C<gtk_text_iter_forward_sentence_end()> returns C<0>). If I<count> is
@@ -1633,7 +1633,7 @@ sub gtk_text_iter_forward_sentence_ends ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_sentence_starts:
 =begin pod
-=head2 [gtk_text_iter_] backward_sentence_starts
+=head2 [[gtk_] text_iter_] backward_sentence_starts
 
 Calls C<gtk_text_iter_backward_sentence_start()> up to I<count> times,
 or until it returns C<0>. If I<count> is negative, moves forward
@@ -1655,7 +1655,7 @@ sub gtk_text_iter_backward_sentence_starts ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_cursor_position:
 =begin pod
-=head2 [gtk_text_iter_] forward_cursor_position
+=head2 [[gtk_] text_iter_] forward_cursor_position
 
 Moves I<iter> forward by a single cursor position. Cursor positions
 are (unsurprisingly) positions where the cursor can appear. Perhaps
@@ -1683,7 +1683,7 @@ sub gtk_text_iter_forward_cursor_position ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_cursor_position:
 =begin pod
-=head2 [gtk_text_iter_] backward_cursor_position
+=head2 [[gtk_] text_iter_] backward_cursor_position
 
 Like C<gtk_text_iter_forward_cursor_position()>, but moves backward.
 
@@ -1702,7 +1702,7 @@ sub gtk_text_iter_backward_cursor_position ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_cursor_positions:
 =begin pod
-=head2 [gtk_text_iter_] forward_cursor_positions
+=head2 [[gtk_] text_iter_] forward_cursor_positions
 
 Moves up to I<count> cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -1723,7 +1723,7 @@ sub gtk_text_iter_forward_cursor_positions ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_cursor_positions:
 =begin pod
-=head2 [gtk_text_iter_] backward_cursor_positions
+=head2 [[gtk_] text_iter_] backward_cursor_positions
 
 Moves up to I<count> cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -1744,7 +1744,7 @@ sub gtk_text_iter_backward_cursor_positions ( N-GObject $iter, int32 $count )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_cursor_position:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_cursor_position
+=head2 [[gtk_] text_iter_] forward_visible_cursor_position
 
 Moves I<iter> forward to the next visible cursor position. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -1766,7 +1766,7 @@ sub gtk_text_iter_forward_visible_cursor_position ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_cursor_position:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_cursor_position
+=head2 [[gtk_] text_iter_] backward_visible_cursor_position
 
 Moves I<iter> forward to the previous visible cursor position. See
 C<gtk_text_iter_backward_cursor_position()> for details.
@@ -1788,7 +1788,7 @@ sub gtk_text_iter_backward_visible_cursor_position ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_visible_cursor_positions:
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_cursor_positions
+=head2 [[gtk_] text_iter_] forward_visible_cursor_positions
 
 Moves up to I<count> visible cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -1811,7 +1811,7 @@ sub gtk_text_iter_forward_visible_cursor_positions ( N-GObject $iter, int32 $cou
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_visible_cursor_positions:
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_cursor_positions
+=head2 [[gtk_] text_iter_] backward_visible_cursor_positions
 
 Moves up to I<count> visible cursor positions. See
 C<gtk_text_iter_backward_cursor_position()> for details.
@@ -1834,7 +1834,7 @@ sub gtk_text_iter_backward_visible_cursor_positions ( N-GObject $iter, int32 $co
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_offset:
 =begin pod
-=head2 [gtk_text_iter_] set_offset
+=head2 [[gtk_] text_iter_] set_offset
 
 Sets I<iter> to point to I<char_offset>. I<char_offset> counts from the start
 of the entire text buffer, starting with 0.
@@ -1852,7 +1852,7 @@ sub gtk_text_iter_set_offset ( N-GObject $iter, int32 $char_offset )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_line:
 =begin pod
-=head2 [gtk_text_iter_] set_line
+=head2 [[gtk_] text_iter_] set_line
 
 Moves iterator I<iter> to the start of the line I<line_number>.  If
 I<line_number> is negative or larger than the number of lines in the
@@ -1872,7 +1872,7 @@ sub gtk_text_iter_set_line ( N-GObject $iter, int32 $line_number )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_line_offset:
 =begin pod
-=head2 [gtk_text_iter_] set_line_offset
+=head2 [[gtk_] text_iter_] set_line_offset
 
 Moves I<iter> within a line, to a new character
 (not byte) offset. The given character offset must be less than or
@@ -1895,7 +1895,7 @@ sub gtk_text_iter_set_line_offset ( N-GObject $iter, int32 $char_on_line )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_line_index:
 =begin pod
-=head2 [gtk_text_iter_] set_line_index
+=head2 [[gtk_] text_iter_] set_line_index
 
 Same as C<gtk_text_iter_set_line_offset()>, but works with a
 byte index. The given byte index must be at
@@ -1916,7 +1916,7 @@ sub gtk_text_iter_set_line_index ( N-GObject $iter, int32 $byte_on_line )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_to_end:
 =begin pod
-=head2 [gtk_text_iter_] forward_to_end
+=head2 [[gtk_] text_iter_] forward_to_end
 
 Moves I<iter> forward to the “end iterator,” which points one past the last
 valid character in the buffer. C<gtk_text_iter_get_char()> called on the
@@ -1934,7 +1934,7 @@ sub gtk_text_iter_forward_to_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_to_line_end:
 =begin pod
-=head2 [gtk_text_iter_] forward_to_line_end
+=head2 [[gtk_] text_iter_] forward_to_line_end
 
 Moves the iterator to point to the paragraph delimiter characters,
 which will be either a newline, a carriage return, a carriage
@@ -1960,7 +1960,7 @@ sub gtk_text_iter_forward_to_line_end ( N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_visible_line_offset:
 =begin pod
-=head2 [gtk_text_iter_] set_visible_line_offset
+=head2 [[gtk_] text_iter_] set_visible_line_offset
 
 Like C<gtk_text_iter_set_line_offset()>, but the offset is in visible
 characters, i.e. text with a tag making it invisible is not
@@ -1979,7 +1979,7 @@ sub gtk_text_iter_set_visible_line_offset ( N-GObject $iter, int32 $char_on_line
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_set_visible_line_index:
 =begin pod
-=head2 [gtk_text_iter_] set_visible_line_index
+=head2 [[gtk_] text_iter_] set_visible_line_index
 
 Like C<gtk_text_iter_set_line_index()>, but the index is in visible
 bytes, i.e. text with a tag making it invisible is not counted
@@ -1998,7 +1998,7 @@ sub gtk_text_iter_set_visible_line_index ( N-GObject $iter, int32 $byte_on_line 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_to_tag_toggle:
 =begin pod
-=head2 [gtk_text_iter_] forward_to_tag_toggle
+=head2 [[gtk_] text_iter_] forward_to_tag_toggle
 
 Moves forward to the next toggle (on or off) of the
 B<Gnome::Gtk3::TextTag> I<tag>, or to the next toggle of any tag if
@@ -2024,7 +2024,7 @@ sub gtk_text_iter_forward_to_tag_toggle ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_to_tag_toggle:
 =begin pod
-=head2 [gtk_text_iter_] backward_to_tag_toggle
+=head2 [[gtk_] text_iter_] backward_to_tag_toggle
 
 Moves backward to the next toggle (on or off) of the
 B<Gnome::Gtk3::TextTag> I<tag>, or to the next toggle of any tag if
@@ -2051,7 +2051,7 @@ sub gtk_text_iter_backward_to_tag_toggle ( N-GObject $iter, N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_find_char:
 =begin pod
-=head2 [gtk_text_iter_] forward_find_char
+=head2 [[gtk_] text_iter_] forward_find_char
 
 Advances I<iter>, calling I<pred> on each character. If
 I<pred> returns C<1>, returns C<1> and stops scanning.
@@ -2076,7 +2076,7 @@ sub gtk_text_iter_forward_find_char ( N-GObject $iter, GtkTextCharPredicate $pre
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_find_char:
 =begin pod
-=head2 [gtk_text_iter_] backward_find_char
+=head2 [[gtk_] text_iter_] backward_find_char
 
 Same as C<gtk_text_iter_forward_find_char()>, but goes backward from I<iter>.
 
@@ -2099,7 +2099,7 @@ sub gtk_text_iter_backward_find_char ( N-GObject $iter, GtkTextCharPredicate $pr
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_forward_search:
 =begin pod
-=head2 [gtk_text_iter_] forward_search
+=head2 [[gtk_] text_iter_] forward_search
 
 Searches forward for I<str>. Any match is returned by setting
 I<match_start> to the first character of the match and I<match_end> to the
@@ -2131,7 +2131,7 @@ sub gtk_text_iter_forward_search ( N-GObject $iter, Str $str, int32 $flags, N-GO
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_backward_search:
 =begin pod
-=head2 [gtk_text_iter_] backward_search
+=head2 [[gtk_] text_iter_] backward_search
 
 Same as C<gtk_text_iter_forward_search()>, but moves backward.
 
@@ -2158,7 +2158,7 @@ sub gtk_text_iter_backward_search ( N-GObject $iter, Str $str, int32 $flags, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_equal:
 =begin pod
-=head2 gtk_text_iter_equal
+=head2 [gtk_] text_iter_equal
 
 Tests whether two iterators are equal, using the fastest possible
 mechanism. This function is very fast; you can expect it to perform
@@ -2182,7 +2182,7 @@ sub gtk_text_iter_equal ( N-GObject $lhs, N-GObject $rhs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_compare:
 =begin pod
-=head2 gtk_text_iter_compare
+=head2 [gtk_] text_iter_compare
 
 A C<qsort()>-style function that returns negative if I<lhs> is less than
 I<rhs>, positive if I<lhs> is greater than I<rhs>, and 0 if they’re equal.
@@ -2205,7 +2205,7 @@ sub gtk_text_iter_compare ( N-GObject $lhs, N-GObject $rhs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_in_range:
 =begin pod
-=head2 [gtk_text_iter_] in_range
+=head2 [[gtk_] text_iter_] in_range
 
 Checks whether I<iter> falls in the range [I<start>, I<end>).
 I<start> and I<end> must be in ascending order.
@@ -2227,7 +2227,7 @@ sub gtk_text_iter_in_range ( N-GObject $iter, N-GObject $start, N-GObject $end )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_iter_order:
 =begin pod
-=head2 gtk_text_iter_order
+=head2 [gtk_] text_iter_order
 
 Swaps the value of I<first> and I<second> if I<second> comes before
 I<first> in the buffer. That is, ensures that I<first> and I<second> are
@@ -2280,7 +2280,7 @@ sub gtk_text_iter_order ( N-GObject $first, N-GObject $second )
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_buffer
+=head2 [[gtk_] text_iter_] get_buffer
 
 Returns the C<Gnome::Gtk3::TextBuffer> this iterator is associated with.
 
@@ -2298,7 +2298,7 @@ sub gtk_text_iter_get_buffer ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_copy
+=head2 [gtk_] text_iter_copy
 
 Creates a dynamically-allocated copy of an iterator. This function
 is not useful in applications, because iterators can be copied with a
@@ -2319,7 +2319,7 @@ sub gtk_text_iter_copy ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_free
+=head2 [gtk_] text_iter_free
 
 Free an iterator allocated on the heap. This function
 is intended for use in language bindings, and is not
@@ -2337,7 +2337,7 @@ sub gtk_text_iter_free ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_assign
+=head2 [gtk_] text_iter_assign
 
 Assigns the value of I<other> to the iterator.
 
@@ -2356,7 +2356,7 @@ sub gtk_text_iter_assign ( N-GObject $iter, N-GObject $other )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_offset
+=head2 [[gtk_] text_iter_] get_offset
 
 Returns the character offset of an iterator.
 Each character in a C<Gnome::Gtk3::TextBuffer> has an offset,
@@ -2378,7 +2378,7 @@ sub gtk_text_iter_get_offset ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_line
+=head2 [[gtk_] text_iter_] get_line
 
 Returns the line number containing the iterator. Lines in
 a C<Gnome::Gtk3::TextBuffer> are numbered beginning with 0 for the first
@@ -2398,7 +2398,7 @@ sub gtk_text_iter_get_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_line_offset
+=head2 [[gtk_] text_iter_] get_line_offset
 
 Returns the character offset of the iterator,
 counting from the start of a newline-terminated line.
@@ -2418,7 +2418,7 @@ sub gtk_text_iter_get_line_offset ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_line_index
+=head2 [[gtk_] text_iter_] get_line_index
 
 Returns the byte index of the iterator, counting
 from the start of a newline-terminated line.
@@ -2440,7 +2440,7 @@ sub gtk_text_iter_get_line_index ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_visible_line_offset
+=head2 [[gtk_] text_iter_] get_visible_line_offset
 
 Returns the offset in characters from the start of the
 line to the given I<iter>, not counting characters that
@@ -2461,7 +2461,7 @@ sub gtk_text_iter_get_visible_line_offset ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_visible_line_index
+=head2 [[gtk_] text_iter_] get_visible_line_index
 
 Returns the number of bytes from the start of the
 line to the given I<iter>, not counting bytes that
@@ -2483,7 +2483,7 @@ sub gtk_text_iter_get_visible_line_index ( N-GObject $iter )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_char
+=head2 [[gtk_] text_iter_] get_char
 
 The Unicode character at this iterator is returned.  (Equivalent to
 operator* on a C++ iterator.)  If the element at this iterator is a
@@ -2509,7 +2509,7 @@ sub gtk_text_iter_get_char ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_slice
+=head2 [[gtk_] text_iter_] get_slice
 
 Returns the text in the given range. A “slice” is an array of
 characters encoded in UTF-8 format, including the Unicode “unknown”
@@ -2535,7 +2535,7 @@ sub gtk_text_iter_get_slice ( N-GObject $start, N-GObject $end )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_text
+=head2 [[gtk_] text_iter_] get_text
 
 Returns text in the given range.  If the range
 contains non-text elements such as images, the character and byte
@@ -2558,7 +2558,7 @@ sub gtk_text_iter_get_text ( N-GObject $start, N-GObject $end )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_visible_slice
+=head2 [[gtk_] text_iter_] get_visible_slice
 
 Like C<gtk_text_iter_get_slice()>, but invisible text is not included.
 Invisible text is usually invisible because a C<Gnome::Gtk3::TextTag> with the
@@ -2579,7 +2579,7 @@ sub gtk_text_iter_get_visible_slice ( N-GObject $start, N-GObject $end )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_visible_text
+=head2 [[gtk_] text_iter_] get_visible_text
 
 Like C<gtk_text_iter_get_text()>, but invisible text is not included.
 Invisible text is usually invisible because a C<Gnome::Gtk3::TextTag> with the
@@ -2601,7 +2601,7 @@ sub gtk_text_iter_get_visible_text ( N-GObject $start, N-GObject $end )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_pixbuf
+=head2 [[gtk_] text_iter_] get_pixbuf
 
 If the element at I<iter> is a pixbuf, the pixbuf is returned
 (with no new reference count added). Otherwise,
@@ -2621,7 +2621,7 @@ sub gtk_text_iter_get_pixbuf ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_marks
+=head2 [[gtk_] text_iter_] get_marks
 
 Returns a list of all C<Gnome::Gtk3::TextMark> at this location. Because marks
 are not iterable (they don’t take up any "space" in the buffer,
@@ -2644,7 +2644,7 @@ sub gtk_text_iter_get_marks ( N-GObject $iter )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_child_anchor
+=head2 [[gtk_] text_iter_] get_child_anchor
 
 If the location at I<iter> contains a child anchor, the
 anchor is returned (with no new reference count added). Otherwise,
@@ -2665,7 +2665,7 @@ sub gtk_text_iter_get_child_anchor ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_toggled_tags
+=head2 [[gtk_] text_iter_] get_toggled_tags
 
 Returns a list of C<Gnome::Gtk3::TextTag> that are toggled on or off at this
 point.  (If I<toggled_on> is C<1>, the list contains tags that are
@@ -2689,7 +2689,7 @@ sub gtk_text_iter_get_toggled_tags ( N-GObject $iter, int32 $toggled_on )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] starts_tag
+=head2 [[gtk_] text_iter_] starts_tag
 
 Returns C<1> if I<tag> is toggled on at exactly this point. If I<tag>
 is C<Any>, returns C<1> if any tag is toggled on at this point.
@@ -2717,7 +2717,7 @@ sub gtk_text_iter_starts_tag ( N-GObject $iter, N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] ends_tag
+=head2 [[gtk_] text_iter_] ends_tag
 
 Returns C<1> if I<tag> is toggled off at exactly this point. If I<tag>
 is C<Any>, returns C<1> if any tag is toggled off at this point.
@@ -2743,7 +2743,7 @@ sub gtk_text_iter_ends_tag ( N-GObject $iter, N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] toggles_tag
+=head2 [[gtk_] text_iter_] toggles_tag
 
 This is equivalent to (C<gtk_text_iter_starts_tag()> ||
 C<gtk_text_iter_ends_tag()>), i.e. it tells you whether a range with
@@ -2764,7 +2764,7 @@ sub gtk_text_iter_toggles_tag ( N-GObject $iter, N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] has_tag
+=head2 [[gtk_] text_iter_] has_tag
 
 Returns C<1> if I<iter> points to a character that is part of a range tagged
 with I<tag>. See also C<gtk_text_iter_starts_tag()> and C<gtk_text_iter_ends_tag()>.
@@ -2784,7 +2784,7 @@ sub gtk_text_iter_has_tag ( N-GObject $iter, N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_tags
+=head2 [[gtk_] text_iter_] get_tags
 
 Returns a list of tags that apply to I<iter>, in ascending order of
 priority (highest-priority tags are last). The C<Gnome::Gtk3::TextTag> in the
@@ -2805,7 +2805,7 @@ sub gtk_text_iter_get_tags ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_editable
+=head2 [gtk_] text_iter_editable
 
 Returns whether the character at I<iter> is within an editable region
 of text.  Non-editable text is “locked” and can’t be changed by the
@@ -2835,7 +2835,7 @@ sub gtk_text_iter_editable ( N-GObject $iter, int32 $default_setting )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] can_insert
+=head2 [[gtk_] text_iter_] can_insert
 
 Considering the default editability of the buffer, and tags that
 affect editability, determines whether text inserted at I<iter> would
@@ -2859,7 +2859,7 @@ sub gtk_text_iter_can_insert ( N-GObject $iter, int32 $default_editability )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] starts_word
+=head2 [[gtk_] text_iter_] starts_word
 
 Determines whether I<iter> begins a natural-language word.  Word
 breaks are determined by Pango and should be correct for nearly any
@@ -2880,7 +2880,7 @@ sub gtk_text_iter_starts_word ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] ends_word
+=head2 [[gtk_] text_iter_] ends_word
 
 Determines whether I<iter> ends a natural-language word.  Word breaks
 are determined by Pango and should be correct for nearly any
@@ -2901,7 +2901,7 @@ sub gtk_text_iter_ends_word ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] inside_word
+=head2 [[gtk_] text_iter_] inside_word
 
 Determines whether the character pointed by I<iter> is part of a
 natural-language word (as opposed to say inside some whitespace).  Word
@@ -2925,7 +2925,7 @@ sub gtk_text_iter_inside_word ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] starts_sentence
+=head2 [[gtk_] text_iter_] starts_sentence
 
 Determines whether I<iter> begins a sentence.  Sentence boundaries are
 determined by Pango and should be correct for nearly any language
@@ -2946,7 +2946,7 @@ sub gtk_text_iter_starts_sentence ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] ends_sentence
+=head2 [[gtk_] text_iter_] ends_sentence
 
 Determines whether I<iter> ends a sentence.  Sentence boundaries are
 determined by Pango and should be correct for nearly any language
@@ -2967,7 +2967,7 @@ sub gtk_text_iter_ends_sentence ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] inside_sentence
+=head2 [[gtk_] text_iter_] inside_sentence
 
 Determines whether I<iter> is inside a sentence (as opposed to in
 between two sentences, e.g. after a period and before the first
@@ -2989,7 +2989,7 @@ sub gtk_text_iter_inside_sentence ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] starts_line
+=head2 [[gtk_] text_iter_] starts_line
 
 Returns C<1> if I<iter> begins a paragraph,
 i.e. if C<gtk_text_iter_get_line_offset()> would return 0.
@@ -3011,7 +3011,7 @@ sub gtk_text_iter_starts_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] ends_line
+=head2 [[gtk_] text_iter_] ends_line
 
 Returns C<1> if I<iter> points to the start of the paragraph
 delimiter characters for a line (delimiters will be either a
@@ -3036,7 +3036,7 @@ sub gtk_text_iter_ends_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] is_cursor_position
+=head2 [[gtk_] text_iter_] is_cursor_position
 
 See C<gtk_text_iter_forward_cursor_position()> or C<PangoLogAttr> or
 C<pango_break()> for details on what a cursor position is.
@@ -3055,7 +3055,7 @@ sub gtk_text_iter_is_cursor_position ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_chars_in_line
+=head2 [[gtk_] text_iter_] get_chars_in_line
 
 Returns the number of characters in the line containing I<iter>,
 including the paragraph delimiters.
@@ -3074,7 +3074,7 @@ sub gtk_text_iter_get_chars_in_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_bytes_in_line
+=head2 [[gtk_] text_iter_] get_bytes_in_line
 
 Returns the number of bytes in the line containing I<iter>,
 including the paragraph delimiters.
@@ -3093,7 +3093,7 @@ sub gtk_text_iter_get_bytes_in_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_attributes
+=head2 [[gtk_] text_iter_] get_attributes
 
 Computes the effect of any tags applied to this spot in the
 text. The I<values> parameter should be initialized to the default
@@ -3120,7 +3120,7 @@ sub gtk_text_iter_get_attributes ( N-GObject $iter, N-GObject $values )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] get_language
+=head2 [[gtk_] text_iter_] get_language
 
 A convenience wrapper around C<gtk_text_iter_get_attributes()>,
 which returns the language in effect at I<iter>. If no tags affecting
@@ -3142,7 +3142,7 @@ sub gtk_text_iter_get_language ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] is_end
+=head2 [[gtk_] text_iter_] is_end
 
 Returns C<1> if I<iter> is the end iterator, i.e. one past the last
 dereferenceable iterator in the buffer. C<gtk_text_iter_is_end()> is
@@ -3163,7 +3163,7 @@ sub gtk_text_iter_is_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] is_start
+=head2 [[gtk_] text_iter_] is_start
 
 Returns C<1> if I<iter> is the first iterator in the buffer, that is
 if I<iter> has a character offset of 0.
@@ -3182,7 +3182,7 @@ sub gtk_text_iter_is_start ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_char
+=head2 [[gtk_] text_iter_] forward_char
 
 Moves I<iter> forward by one character offset. Note that images
 embedded in the buffer occupy 1 character slot, so
@@ -3206,7 +3206,7 @@ sub gtk_text_iter_forward_char ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_char
+=head2 [[gtk_] text_iter_] backward_char
 
 Moves backward by one character offset. Returns C<1> if movement
 was possible; if I<iter> was the first in the buffer (character
@@ -3227,7 +3227,7 @@ sub gtk_text_iter_backward_char ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_chars
+=head2 [[gtk_] text_iter_] forward_chars
 
 Moves I<count> characters if possible (if I<count> would move past the
 start or end of the buffer, moves to the start or end of the
@@ -3251,7 +3251,7 @@ sub gtk_text_iter_forward_chars ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_chars
+=head2 [[gtk_] text_iter_] backward_chars
 
 Moves I<count> characters backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -3276,7 +3276,7 @@ sub gtk_text_iter_backward_chars ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_line
+=head2 [[gtk_] text_iter_] forward_line
 
 Moves I<iter> to the start of the next line. If the iter is already on the
 last line of the buffer, moves the iter to the end of the current line.
@@ -3297,7 +3297,7 @@ sub gtk_text_iter_forward_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_line
+=head2 [[gtk_] text_iter_] backward_line
 
 Moves I<iter> to the start of the previous line. Returns C<1> if
 I<iter> could be moved; i.e. if I<iter> was at character offset 0, this
@@ -3321,7 +3321,7 @@ sub gtk_text_iter_backward_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_lines
+=head2 [[gtk_] text_iter_] forward_lines
 
 Moves I<count> lines forward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -3346,7 +3346,7 @@ sub gtk_text_iter_forward_lines ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_lines
+=head2 [[gtk_] text_iter_] backward_lines
 
 Moves I<count> lines backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -3371,7 +3371,7 @@ sub gtk_text_iter_backward_lines ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_word_end
+=head2 [[gtk_] text_iter_] forward_word_end
 
 Moves forward to the next word end. (If I<iter> is currently on a
 word end, moves forward to the next one after that.) Word breaks
@@ -3393,7 +3393,7 @@ sub gtk_text_iter_forward_word_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_word_start
+=head2 [[gtk_] text_iter_] backward_word_start
 
 Moves backward to the previous word start. (If I<iter> is currently on a
 word start, moves backward to the next one after that.) Word breaks
@@ -3415,7 +3415,7 @@ sub gtk_text_iter_backward_word_start ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_word_ends
+=head2 [[gtk_] text_iter_] forward_word_ends
 
 Calls C<gtk_text_iter_forward_word_end()> up to I<count> times.
 
@@ -3434,7 +3434,7 @@ sub gtk_text_iter_forward_word_ends ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_word_starts
+=head2 [[gtk_] text_iter_] backward_word_starts
 
 Calls C<gtk_text_iter_backward_word_start()> up to I<count> times.
 
@@ -3453,7 +3453,7 @@ sub gtk_text_iter_backward_word_starts ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_line
+=head2 [[gtk_] text_iter_] forward_visible_line
 
 Moves I<iter> to the start of the next visible line. Returns C<1> if there
 was a next line to move to, and C<0> if I<iter> was simply moved to
@@ -3476,7 +3476,7 @@ sub gtk_text_iter_forward_visible_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_line
+=head2 [[gtk_] text_iter_] backward_visible_line
 
 Moves I<iter> to the start of the previous visible line. Returns C<1> if
 I<iter> could be moved; i.e. if I<iter> was at character offset 0, this
@@ -3502,7 +3502,7 @@ sub gtk_text_iter_backward_visible_line ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_lines
+=head2 [[gtk_] text_iter_] forward_visible_lines
 
 Moves I<count> visible lines forward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -3529,7 +3529,7 @@ sub gtk_text_iter_forward_visible_lines ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_lines
+=head2 [[gtk_] text_iter_] backward_visible_lines
 
 Moves I<count> visible lines backward, if possible (if I<count> would move
 past the start or end of the buffer, moves to the start or end of
@@ -3556,7 +3556,7 @@ sub gtk_text_iter_backward_visible_lines ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_word_end
+=head2 [[gtk_] text_iter_] forward_visible_word_end
 
 Moves forward to the next visible word end. (If I<iter> is currently on a
 word end, moves forward to the next one after that.) Word breaks
@@ -3580,7 +3580,7 @@ sub gtk_text_iter_forward_visible_word_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_word_start
+=head2 [[gtk_] text_iter_] backward_visible_word_start
 
 Moves backward to the previous visible word start. (If I<iter> is currently
 on a word start, moves backward to the next one after that.) Word breaks
@@ -3604,7 +3604,7 @@ sub gtk_text_iter_backward_visible_word_start ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_word_ends
+=head2 [[gtk_] text_iter_] forward_visible_word_ends
 
 Calls C<gtk_text_iter_forward_visible_word_end()> up to I<count> times.
 
@@ -3625,7 +3625,7 @@ sub gtk_text_iter_forward_visible_word_ends ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_word_starts
+=head2 [[gtk_] text_iter_] backward_visible_word_starts
 
 Calls C<gtk_text_iter_backward_visible_word_start()> up to I<count> times.
 
@@ -3646,7 +3646,7 @@ sub gtk_text_iter_backward_visible_word_starts ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_sentence_end
+=head2 [[gtk_] text_iter_] forward_sentence_end
 
 Moves forward to the next sentence end. (If I<iter> is at the end of
 a sentence, moves to the next end of sentence.)  Sentence
@@ -3668,7 +3668,7 @@ sub gtk_text_iter_forward_sentence_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_sentence_start
+=head2 [[gtk_] text_iter_] backward_sentence_start
 
 Moves backward to the previous sentence start; if I<iter> is already at
 the start of a sentence, moves backward to the next one.  Sentence
@@ -3690,7 +3690,7 @@ sub gtk_text_iter_backward_sentence_start ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_sentence_ends
+=head2 [[gtk_] text_iter_] forward_sentence_ends
 
 Calls C<gtk_text_iter_forward_sentence_end()> I<count> times (or until
 C<gtk_text_iter_forward_sentence_end()> returns C<0>). If I<count> is
@@ -3711,7 +3711,7 @@ sub gtk_text_iter_forward_sentence_ends ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_sentence_starts
+=head2 [[gtk_] text_iter_] backward_sentence_starts
 
 Calls C<gtk_text_iter_backward_sentence_start()> up to I<count> times,
 or until it returns C<0>. If I<count> is negative, moves forward
@@ -3732,7 +3732,7 @@ sub gtk_text_iter_backward_sentence_starts ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_cursor_position
+=head2 [[gtk_] text_iter_] forward_cursor_position
 
 Moves I<iter> forward by a single cursor position. Cursor positions
 are (unsurprisingly) positions where the cursor can appear. Perhaps
@@ -3759,7 +3759,7 @@ sub gtk_text_iter_forward_cursor_position ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_cursor_position
+=head2 [[gtk_] text_iter_] backward_cursor_position
 
 Like C<gtk_text_iter_forward_cursor_position()>, but moves backward.
 
@@ -3777,7 +3777,7 @@ sub gtk_text_iter_backward_cursor_position ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_cursor_positions
+=head2 [[gtk_] text_iter_] forward_cursor_positions
 
 Moves up to I<count> cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -3797,7 +3797,7 @@ sub gtk_text_iter_forward_cursor_positions ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_cursor_positions
+=head2 [[gtk_] text_iter_] backward_cursor_positions
 
 Moves up to I<count> cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -3817,7 +3817,7 @@ sub gtk_text_iter_backward_cursor_positions ( N-GObject $iter, int32 $count )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_cursor_position
+=head2 [[gtk_] text_iter_] forward_visible_cursor_position
 
 Moves I<iter> forward to the next visible cursor position. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -3838,7 +3838,7 @@ sub gtk_text_iter_forward_visible_cursor_position ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_cursor_position
+=head2 [[gtk_] text_iter_] backward_visible_cursor_position
 
 Moves I<iter> forward to the previous visible cursor position. See
 C<gtk_text_iter_backward_cursor_position()> for details.
@@ -3859,7 +3859,7 @@ sub gtk_text_iter_backward_visible_cursor_position ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_visible_cursor_positions
+=head2 [[gtk_] text_iter_] forward_visible_cursor_positions
 
 Moves up to I<count> visible cursor positions. See
 C<gtk_text_iter_forward_cursor_position()> for details.
@@ -3881,7 +3881,7 @@ sub gtk_text_iter_forward_visible_cursor_positions ( N-GObject $iter, int32 $cou
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_visible_cursor_positions
+=head2 [[gtk_] text_iter_] backward_visible_cursor_positions
 
 Moves up to I<count> visible cursor positions. See
 C<gtk_text_iter_backward_cursor_position()> for details.
@@ -3903,7 +3903,7 @@ sub gtk_text_iter_backward_visible_cursor_positions ( N-GObject $iter, int32 $co
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_offset
+=head2 [[gtk_] text_iter_] set_offset
 
 Sets I<iter> to point to I<char_offset>. I<char_offset> counts from the start
 of the entire text buffer, starting with 0.
@@ -3920,7 +3920,7 @@ sub gtk_text_iter_set_offset ( N-GObject $iter, int32 $char_offset )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_line
+=head2 [[gtk_] text_iter_] set_line
 
 Moves iterator I<iter> to the start of the line I<line_number>.  If
 I<line_number> is negative or larger than the number of lines in the
@@ -3939,7 +3939,7 @@ sub gtk_text_iter_set_line ( N-GObject $iter, int32 $line_number )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_line_offset
+=head2 [[gtk_] text_iter_] set_line_offset
 
 Moves I<iter> within a line, to a new character
 (not byte) offset. The given character offset must be less than or
@@ -3961,7 +3961,7 @@ sub gtk_text_iter_set_line_offset ( N-GObject $iter, int32 $char_on_line )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_line_index
+=head2 [[gtk_] text_iter_] set_line_index
 
 Same as C<gtk_text_iter_set_line_offset()>, but works with a
 byte index. The given byte index must be at
@@ -3981,7 +3981,7 @@ sub gtk_text_iter_set_line_index ( N-GObject $iter, int32 $byte_on_line )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_to_end
+=head2 [[gtk_] text_iter_] forward_to_end
 
 Moves I<iter> forward to the “end iterator,” which points one past the last
 valid character in the buffer. C<gtk_text_iter_get_char()> called on the
@@ -3998,7 +3998,7 @@ sub gtk_text_iter_forward_to_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_to_line_end
+=head2 [[gtk_] text_iter_] forward_to_line_end
 
 Moves the iterator to point to the paragraph delimiter characters,
 which will be either a newline, a carriage return, a carriage
@@ -4023,7 +4023,7 @@ sub gtk_text_iter_forward_to_line_end ( N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_visible_line_offset
+=head2 [[gtk_] text_iter_] set_visible_line_offset
 
 Like C<gtk_text_iter_set_line_offset()>, but the offset is in visible
 characters, i.e. text with a tag making it invisible is not
@@ -4041,7 +4041,7 @@ sub gtk_text_iter_set_visible_line_offset ( N-GObject $iter, int32 $char_on_line
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] set_visible_line_index
+=head2 [[gtk_] text_iter_] set_visible_line_index
 
 Like C<gtk_text_iter_set_line_index()>, but the index is in visible
 bytes, i.e. text with a tag making it invisible is not counted
@@ -4059,7 +4059,7 @@ sub gtk_text_iter_set_visible_line_index ( N-GObject $iter, int32 $byte_on_line 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_to_tag_toggle
+=head2 [[gtk_] text_iter_] forward_to_tag_toggle
 
 Moves forward to the next toggle (on or off) of the
 C<Gnome::Gtk3::TextTag> I<tag>, or to the next toggle of any tag if
@@ -4084,7 +4084,7 @@ sub gtk_text_iter_forward_to_tag_toggle ( N-GObject $iter, N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_to_tag_toggle
+=head2 [[gtk_] text_iter_] backward_to_tag_toggle
 
 Moves backward to the next toggle (on or off) of the
 C<Gnome::Gtk3::TextTag> I<tag>, or to the next toggle of any tag if
@@ -4110,7 +4110,7 @@ sub gtk_text_iter_backward_to_tag_toggle ( N-GObject $iter, N-GObject $tag )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_find_char
+=head2 [[gtk_] text_iter_] forward_find_char
 
 Advances I<iter>, calling I<pred> on each character. If
 I<pred> returns C<1>, returns C<1> and stops scanning.
@@ -4136,7 +4136,7 @@ sub gtk_text_iter_forward_find_char ( N-GObject $iter, GtkTextCharPredicate $pre
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_find_char
+=head2 [[gtk_] text_iter_] backward_find_char
 
 Same as C<gtk_text_iter_forward_find_char()>, but goes backward from I<iter>.
 
@@ -4158,7 +4158,7 @@ sub gtk_text_iter_backward_find_char ( N-GObject $iter, GtkTextCharPredicate $pr
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] forward_search
+=head2 [[gtk_] text_iter_] forward_search
 
 Searches forward for I<str>. Any match is returned by setting
 I<match_start> to the first character of the match and I<match_end> to the
@@ -4189,7 +4189,7 @@ sub gtk_text_iter_forward_search ( N-GObject $iter, Str $str, int32 $flags, N-GO
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] backward_search
+=head2 [[gtk_] text_iter_] backward_search
 
 Same as C<gtk_text_iter_forward_search()>, but moves backward.
 
@@ -4215,7 +4215,7 @@ sub gtk_text_iter_backward_search ( N-GObject $iter, Str $str, int32 $flags, N-G
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_equal
+=head2 [gtk_] text_iter_equal
 
 Tests whether two iterators are equal, using the fastest possible
 mechanism. This function is very fast; you can expect it to perform
@@ -4238,7 +4238,7 @@ sub gtk_text_iter_equal ( N-GObject $lhs, N-GObject $rhs )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_compare
+=head2 [gtk_] text_iter_compare
 
 A C<qsort()>-style function that returns negative if I<lhs> is less than
 I<rhs>, positive if I<lhs> is greater than I<rhs>, and 0 if they’re equal.
@@ -4260,7 +4260,7 @@ sub gtk_text_iter_compare ( N-GObject $lhs, N-GObject $rhs )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_iter_] in_range
+=head2 [[gtk_] text_iter_] in_range
 
 Checks whether I<iter> falls in the range [I<start>, I<end>).
 I<start> and I<end> must be in ascending order.
@@ -4281,7 +4281,7 @@ sub gtk_text_iter_in_range ( N-GObject $iter, N-GObject $start, N-GObject $end )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_iter_order
+=head2 [gtk_] text_iter_order
 
 Swaps the value of I<first> and I<second> if I<second> comes before
 I<first> in the buffer. That is, ensures that I<first> and I<second> are

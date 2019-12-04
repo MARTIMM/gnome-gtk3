@@ -119,24 +119,21 @@ sub signal-coverage( Str:D $content --> List ) {
   my Int $sigs-tested = 0;
 
   # search for special notes like '#TS:sts:sig-name'
-  $content ~~ m:g/^^ '=comment #TS:' \d ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '=comment #TS:' <xdigit>+ ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#TS:'
-      $<state> = ([<[+-]> || \d])
+      $<state> = (<xdigit>+)
       ':'
       $<name> = ([<alnum> || '-']+)
     /;
 
     my Str $name = ~$/<name>;
 
-    my $state = ~$/<state>;
-    $state = 0 if $state eq '-';
-    $state = 1 if $state eq '+';
-    $state .= Int;  # convert to int for all other digit characters
-    $sigs-tested++ if $state > 0;
+    my Int $state = :16(~$/<state>);
+    $sigs-tested++ if 0 < $state < 0xFF; # 0xFF means that it is unsupported
     $sig-cover{$name} = $state;
   }
 
@@ -150,24 +147,21 @@ sub prop-coverage( Str:D $content --> List ) {
   my Int $props-tested = 0;
 
   # search for special notes like '#TP:sts:sig-name'
-  $content ~~ m:g/^^ '=comment #TP:' \d ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '=comment #TP:' <xdigit>+ ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#TP:'
-      $<state> = ([<[+-]> || \d])
+      $<state> = (<xdigit>+)
       ':'
       $<name> = ([<alnum> || '-']+)
     /;
 
     my Str $name = ~$/<name>;
 
-    my $state = ~$/<state>;
-    $state = 0 if $state eq '-';
-    $state = 1 if $state eq '+';
-    $state .= Int;  # convert to int for all other digit characters
-    $props-tested++ if $state > 0;
+    my Int $state = :16(~$/<state>);
+    $props-tested++ if 0 < $state < 0xFF; # 0xFF means that it is unsupported
     $prop-cover{$name} = $state;
   }
 
@@ -181,24 +175,21 @@ sub type-coverage( Str:D $content --> List ) {
   my Int $types-tested = 0;
 
   # search for special notes like '#TT:sts:sig-name' (#TE for enums)
-  $content ~~ m:g/^^ '#T' <[TE]> ':' \d ':' [<alnum> || '-']+ /;
+  $content ~~ m:g/^^ '#T' <[TE]> ':' <xdigit>+ ':' [<alnum> || '-']+ /;
   my List $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#T' <[TE]> ':'
-      $<state> = ([<[+-]> || \d])
+      $<state> = (<xdigit>+)
       ':'
       $<name> = ([<alnum> || '-']+)
     /;
 
     my Str $name = ~$/<name>;
 
-    my $state = ~$/<state>;
-    $state = 0 if $state eq '-';
-    $state = 1 if $state eq '+';
-    $state .= Int;  # convert to int for all other digit characters
-    $types-tested++ if $state > 0;
+    my Int $state = :16(~$/<state>);
+    $types-tested++ if 0 < $state < 0xFF; # 0xFF means that it is unsupported
     $type-cover{$name} = $state;
   }
 
@@ -211,23 +202,20 @@ sub load-coverage( Str:D $content --> Bool ) {
   my Bool $load-tested = False;
 
   # search for special notes like '#TL:sts:module-name'
-  $content ~~ m/^^ '#TL:' \d ':' [<alnum> || '-' || '::']+ /;
+  $content ~~ m/^^ '#TL:' <xdigit>+ ':' [<alnum> || '-' || '::']+ /;
   my Str $header = ~($/ || '');
   return $load-tested unless ?$header;
   $header ~~ m/
     '#TL:'
-    $<state> = ([<[+-]> || \d])
+    $<state> = (<xdigit>+)
     ':'
     $<name> = ([<alnum> || '-']+)
   /;
   my Str $name = ~$/<name>;
 
-  my $state = ~$/<state>;
-  $state = 0 if $state eq '-';
-  $state = 1 if $state eq '+';
-  $state .= Int;  # convert to int for all other digit characters
-  $load-tested = True if $state > 0;
-note "$header, $name, $state, $load-tested";
+  my Int $state = :16(~$/<state>);
+  $load-tested = True if 0 < $state < 0xFF; # 0xFF means that it is unsupported
+#note "$header, $name, $state, $load-tested";
 
   # return load status
   return $load-tested;
@@ -238,6 +226,7 @@ sub sub-coverage( Str:D $new-content --> List ) {
   my Hash $sub-cover = {};
   my Int $subs-tested = 0;
 
+#`{{
   # remove all pod sections first
   my Str $content = '';
   my Bool $in-pod = False;
@@ -252,10 +241,10 @@ sub sub-coverage( Str:D $new-content --> List ) {
       last;
     }
 
-    elsif $line ~~ m/ ^ [ '#`{{' || '#`[[' ] / {
-      $in-comment = True;
-      next;
-    }
+#    elsif $line ~~ m/ ^ [ '#`{{' ] / {
+#      $in-comment = True;
+#      next;
+#    }
 
     $content ~= $line ~ "\n" unless $in-pod || $in-comment;
 
@@ -264,12 +253,16 @@ sub sub-coverage( Str:D $new-content --> List ) {
       next;
     }
 
-    elsif $line ~~ m/^ [ '}}' || ']]' ] \s* $ / {
-      $in-comment = False;
-      next;
-    }
+#    elsif $line ~~ m/^ [ '}}' ] \s* $ / {
+#      $in-comment = False;
+#      next;
+#    }
   }
+}}
 
+  my List $results = $/[*];
+
+#`{{
   # search for the (multi) sub/method names real or in pod
   $content ~~ m:g/^^ \s* [ sub || method ] \s* [<alnum> || '-']+ \s* '(' /;
   my List $results = $/[*];
@@ -292,26 +285,27 @@ sub sub-coverage( Str:D $new-content --> List ) {
     # assume that no tests are done on this sub/method (0)
     $sub-cover{$name} = 0 unless $sub-cover{$name};
   }
+}}
 
   # search for special notes like '#TM:sts:sub-name'
-  $content ~~ m:g/
-    ^^ '#TM:' \d ':' [<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?
+  #$content ~~ m:g/
+  $new-content ~~ m:g/
+    ^^ '#TM:' <xdigit>+ ':' [<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?
   /;
   $results = $/[*];
   for @$results -> $r {
     my Str $header = ~$r;
     $header ~~ m/
       '#TM:'
-      $<state> = (\d)
+      $<state> = (<xdigit>+)
       ':'
       $<name> = ([<alnum> || '-']+ [ '(' <-[\)]>* ')' ]?)
     /;
 
     my Str $name = ~$/<name>;
 
-    my $state = ~$/<state>;
-    $state .= Int;  # convert to int for all other digit characters
-    $subs-tested++ if $state > 0;
+    my Int $state = :16(~$/<state>);
+    $subs-tested++ if 0 < $state < 0xFF; # 0xFF means that it is unsupported
     $sub-cover{$name} = $state;
   }
 

@@ -242,7 +242,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_image_new:new(:empty)
 =begin pod
-=head2 gtk_image_new
+=head2 [gtk_] image_new
 
 Creates a new empty B<Gnome::Gtk3::Image> widget.
 
@@ -261,7 +261,7 @@ sub gtk_image_new (  )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_image_new_from_file:new(:filename)
 =begin pod
-=head2 [gtk_image_] new_from_file
+=head2 [[gtk_] image_] new_from_file
 
 Creates a new B<Gnome::Gtk3::Image> displaying the file I<filename>. If the file
 isn’t found or can’t be loaded, the resulting B<Gnome::Gtk3::Image> will
@@ -297,7 +297,7 @@ sub gtk_image_new_from_file ( Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_resource:
 =begin pod
-=head2 [gtk_image_] new_from_resource
+=head2 [[gtk_] image_] new_from_resource
 
 Creates a new B<Gnome::Gtk3::Image> displaying the resource file I<resource_path>. If the file
 isn’t found or can’t be loaded, the resulting B<Gnome::Gtk3::Image> will
@@ -335,7 +335,7 @@ sub gtk_image_new_from_resource ( Str $resource_path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_pixbuf:
 =begin pod
-=head2 [gtk_image_] new_from_pixbuf
+=head2 [[gtk_] image_] new_from_pixbuf
 
 Creates a new B<Gnome::Gtk3::Image> displaying I<pixbuf>.
 The B<Gnome::Gtk3::Image> does not assume a reference to the
@@ -363,7 +363,7 @@ sub gtk_image_new_from_pixbuf ( N-GObject $pixbuf )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_animation:
 =begin pod
-=head2 [gtk_image_] new_from_animation
+=head2 [[gtk_] image_] new_from_animation
 
 Creates a B<Gnome::Gtk3::Image> displaying the given animation.
 The B<Gnome::Gtk3::Image> does not assume a reference to the
@@ -392,7 +392,7 @@ sub gtk_image_new_from_animation ( GdkPixbufAnimation $animation )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_icon_name:
 =begin pod
-=head2 [gtk_image_] new_from_icon_name
+=head2 [[gtk_] image_] new_from_icon_name
 
 Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme.
 If the icon name isn’t known, a “broken image” icon will be
@@ -418,7 +418,7 @@ sub gtk_image_new_from_icon_name ( Str $icon_name, int32 $size )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_gicon:
 =begin pod
-=head2 [gtk_image_] new_from_gicon
+=head2 [[gtk_] image_] new_from_gicon
 
 Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme.
 If the icon name isn’t known, a “broken image” icon will be
@@ -445,7 +445,7 @@ sub gtk_image_new_from_gicon ( N-GObject $icon, int32 $size )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_surface:
 =begin pod
-=head2 [gtk_image_] new_from_surface
+=head2 [[gtk_] image_] new_from_surface
 
 Creates a new B<Gnome::Gtk3::Image> displaying I<surface>.
 The B<Gnome::Gtk3::Image> does not assume a reference to the
@@ -471,7 +471,7 @@ sub gtk_image_new_from_surface ( cairo_surface_t $surface )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_clear:
 =begin pod
-=head2 gtk_image_clear
+=head2 [gtk_] image_clear
 
 Resets the image to be empty.
 
@@ -489,7 +489,7 @@ sub gtk_image_clear ( N-GObject $image )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_file:
 =begin pod
-=head2 [gtk_image_] set_from_file
+=head2 [[gtk_] image_] set_from_file
 
 See C<gtk_image_new_from_file()> for details.
 
@@ -506,7 +506,7 @@ sub gtk_image_set_from_file ( N-GObject $image, Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_resource:
 =begin pod
-=head2 [gtk_image_] set_from_resource
+=head2 [[gtk_] image_] set_from_resource
 
 See C<gtk_image_new_from_resource()> for details.
 
@@ -523,7 +523,7 @@ sub gtk_image_set_from_resource ( N-GObject $image, Str $resource_path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_pixbuf:
 =begin pod
-=head2 [gtk_image_] set_from_pixbuf
+=head2 [[gtk_] image_] set_from_pixbuf
 
 See C<gtk_image_new_from_pixbuf()> for details.
 
@@ -541,7 +541,7 @@ sub gtk_image_set_from_pixbuf ( N-GObject $image, N-GObject $pixbuf )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_animation:
 =begin pod
-=head2 [gtk_image_] set_from_animation
+=head2 [[gtk_] image_] set_from_animation
 
 Causes the B<Gnome::Gtk3::Image> to display the given animation (or display
 nothing, if you set the animation to C<Any>).
@@ -560,7 +560,7 @@ sub gtk_image_set_from_animation ( N-GObject $image, GdkPixbufAnimation $animati
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_icon_name:
 =begin pod
-=head2 [gtk_image_] set_from_icon_name
+=head2 [[gtk_] image_] set_from_icon_name
 
 See C<gtk_image_new_from_icon_name()> for details.
 
@@ -580,7 +580,7 @@ sub gtk_image_set_from_icon_name ( N-GObject $image, Str $icon_name, int32 $size
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_gicon:
 =begin pod
-=head2 [gtk_image_] set_from_gicon
+=head2 [[gtk_] image_] set_from_gicon
 
 See C<gtk_image_new_from_gicon()> for details.
 
@@ -601,7 +601,7 @@ sub gtk_image_set_from_gicon ( N-GObject $image, N-GObject $icon, int32 $size )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_from_surface:
 =begin pod
-=head2 [gtk_image_] set_from_surface
+=head2 [[gtk_] image_] set_from_surface
 
 See C<gtk_image_new_from_surface()> for details.
 
@@ -621,7 +621,7 @@ sub gtk_image_set_from_surface ( N-GObject $image, cairo_surface_t $surface )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_set_pixel_size:
 =begin pod
-=head2 [gtk_image_] set_pixel_size
+=head2 [[gtk_] image_] set_pixel_size
 
 Sets the pixel size to use for named icons. If the pixel size is set
 to a value != -1, it is used instead of the icon size set by
@@ -642,7 +642,7 @@ sub gtk_image_set_pixel_size ( N-GObject $image, int32 $pixel_size )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_image_get_storage_type:
 =begin pod
-=head2 [gtk_image_] get_storage_type
+=head2 [[gtk_] image_] get_storage_type
 
 Gets the type of representation being used by the B<Gnome::Gtk3::Image>
 to store image data. If the B<Gnome::Gtk3::Image> has no image data,
@@ -663,7 +663,7 @@ sub gtk_image_get_storage_type ( N-GObject $image )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_pixbuf:
 =begin pod
-=head2 [gtk_image_] get_pixbuf
+=head2 [[gtk_] image_] get_pixbuf
 
 Gets the B<Gnome::Gdk3::Pixbuf> being displayed by the B<Gnome::Gtk3::Image>.
 The storage type of the image must be C<GTK_IMAGE_EMPTY> or
@@ -688,7 +688,7 @@ sub gtk_image_get_pixbuf ( N-GObject $image )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_animation:
 =begin pod
-=head2 [gtk_image_] get_animation
+=head2 [[gtk_] image_] get_animation
 
 Gets the B<Gnome::Gdk3::PixbufAnimation> being displayed by the B<Gnome::Gtk3::Image>.
 The storage type of the image must be C<GTK_IMAGE_EMPTY> or
@@ -714,7 +714,7 @@ sub gtk_image_get_animation ( N-GObject $image )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_icon_name:
 =begin pod
-=head2 [gtk_image_] get_icon_name
+=head2 [[gtk_] image_] get_icon_name
 
 Gets the icon name and size being displayed by the B<Gnome::Gtk3::Image>.
 The storage type of the image must be C<GTK_IMAGE_EMPTY> or
@@ -748,7 +748,7 @@ sub _gtk_image_get_icon_name (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_gicon:
 =begin pod
-=head2 [gtk_image_] get_gicon
+=head2 [[gtk_] image_] get_gicon
 
 Gets the B<GIcon> and size being displayed by the B<Gnome::Gtk3::Image>.
 The storage type of the image must be C<GTK_IMAGE_EMPTY> or
@@ -772,7 +772,7 @@ sub gtk_image_get_gicon ( N-GObject $image, N-GObject $gicon, int32 $size )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_pixel_size:
 =begin pod
-=head2 [gtk_image_] get_pixel_size
+=head2 [[gtk_] image_] get_pixel_size
 
 Gets the pixel size used for named icons.
 

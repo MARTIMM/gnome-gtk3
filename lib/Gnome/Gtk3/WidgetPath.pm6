@@ -194,7 +194,7 @@ Returns True if native object is valid, otherwise False.
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_new
 =begin pod
-=head2 gtk_widget_path_new
+=head2 [gtk_] widget_path_new
 
 Returns an empty native widget path object.
 
@@ -212,7 +212,7 @@ sub gtk_widget_path_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_copy
 =begin pod
-=head2 gtk_widget_path_copy
+=head2 [gtk_] widget_path_copy
 
 Returns a copy of the native object
 
@@ -231,7 +231,7 @@ sub gtk_widget_path_copy ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_ref
 =begin pod
-=head2 gtk_widget_path_ref
+=head2 [gtk_] widget_path_ref
 
 Increments the reference count on I<path>.
 
@@ -251,7 +251,7 @@ sub gtk_widget_path_ref ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_unref
 =begin pod
-=head2 gtk_widget_path_unref
+=head2 [gtk_] widget_path_unref
 
 Decrements the reference count on I<path>, freeing the structure if the reference count reaches 0.
 
@@ -279,7 +279,7 @@ sub _gtk_widget_path_free ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_to_string
 =begin pod
-=head2 [gtk_widget_path_] to_string
+=head2 [[gtk_] widget_path_] to_string
 
 Dumps the widget path into a string representation. It tries to match the CSS style as closely as possible (Note that there might be paths that cannot be represented in CSS).
 
@@ -301,7 +301,7 @@ sub gtk_widget_path_to_string ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_length
 =begin pod
-=head2 gtk_widget_path_length
+=head2 [gtk_] widget_path_length
 
 Returns the number of widget B<GTypes> between the represented widget and its topmost container.
 
@@ -321,7 +321,7 @@ sub gtk_widget_path_length ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_append_type
 =begin pod
-=head2 [gtk_widget_path_] append_type
+=head2 [[gtk_] widget_path_] append_type
 
 Appends a widget type to the widget hierarchy represented by the path.
 
@@ -343,7 +343,7 @@ sub gtk_widget_path_append_type ( N-GtkWidgetPath $path, int32 $type )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_prepend_type
 =begin pod
-=head2 [gtk_widget_path_] prepend_type
+=head2 [[gtk_] widget_path_] prepend_type
 
 Prepends a widget type to the widget hierachy represented by the path.
 
@@ -362,7 +362,7 @@ sub gtk_widget_path_prepend_type ( N-GtkWidgetPath $path, int32 $type )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_append_with_siblings
 =begin pod
-=head2 [gtk_widget_path_] append_with_siblings
+=head2 [[gtk_] widget_path_] append_with_siblings
 
 Appends a widget type with all its siblings to the widget hierarchy
 represented by I<path>. Using this function instead of
@@ -391,7 +391,7 @@ sub gtk_widget_path_append_with_siblings ( N-GtkWidgetPath $path, N-GtkWidgetPat
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_append_for_widget
 =begin pod
-=head2 [gtk_widget_path_] append_for_widget
+=head2 [[gtk_] widget_path_] append_for_widget
 
   method gtk_widget_path_append_for_widget ( N-GObject $widget --> Int  )
 
@@ -407,7 +407,7 @@ sub gtk_widget_path_append_for_widget ( N-GtkWidgetPath $path, N-GObject $widget
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_get_object_type
 =begin pod
-=head2 [gtk_widget_path_] iter_get_object_type
+=head2 [[gtk_] widget_path_] iter_get_object_type
 
 Returns the object C<GType> that is at position I<pos> in the widget hierarchy defined in I<path>.
 
@@ -429,7 +429,7 @@ sub gtk_widget_path_iter_get_object_type ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_widget_path_] iter_set_object_type
+=head2 [[gtk_] widget_path_] iter_set_object_type
 
 Sets the object type for a given position in the widget hierarchy defined by I<path>.
 
@@ -449,7 +449,7 @@ sub gtk_widget_path_iter_set_object_type ( N-GtkWidgetPath $path, int32 $pos, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_get_object_name
 =begin pod
-=head2 [gtk_widget_path_] iter_get_object_name
+=head2 [[gtk_] widget_path_] iter_get_object_name
 
 Returns the object name that is at position pos in the widget hierarchy defined in path
 
@@ -468,7 +468,7 @@ sub gtk_widget_path_iter_get_object_name ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_set_object_name
 =begin pod
-=head2 [gtk_widget_path_] iter_set_object_name
+=head2 [[gtk_] widget_path_] iter_set_object_name
 
 Sets the object name for a given position in the widget hierarchy defined by I<path>.
 
@@ -491,7 +491,7 @@ sub gtk_widget_path_iter_set_object_name ( N-GtkWidgetPath $path, int32 $pos, St
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_get_siblings
 =begin pod
-=head2 [gtk_widget_path_] iter_get_siblings
+=head2 [[gtk_] widget_path_] iter_get_siblings
 
 Returns the list of siblings for the element at I<pos>. If the element was not added with siblings, C<Any> is returned.
 
@@ -511,7 +511,7 @@ sub gtk_widget_path_iter_get_siblings ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_get_sibling_index
 =begin pod
-=head2 [gtk_widget_path_] iter_get_sibling_index
+=head2 [[gtk_] widget_path_] iter_get_sibling_index
 
 Returns the index into the list of siblings for the element at I<pos> as returned by C<gtk_widget_path_iter_get_siblings()>. If that function would return C<Any> because the element at I<pos> has no siblings, this function will return 0.
 
@@ -531,7 +531,7 @@ sub gtk_widget_path_iter_get_sibling_index ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_get_name
 =begin pod
-=head2 [gtk_widget_path_] iter_get_name
+=head2 [[gtk_] widget_path_] iter_get_name
 
 Returns the name corresponding to the widget found at the position I<$pos> in the widget hierarchy. This name can be set using C<$widget.gtk_widget_set_name('...')>.
 
@@ -551,7 +551,7 @@ sub gtk_widget_path_iter_get_name ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_set_name
 =begin pod
-=head2 [gtk_widget_path_] iter_set_name
+=head2 [[gtk_] widget_path_] iter_set_name
 
 Sets the widget name for the widget found at position I<$pos> in the widget hierarchy.
 
@@ -571,7 +571,7 @@ sub gtk_widget_path_iter_set_name ( N-GtkWidgetPath $path, int32 $pos, Str $name
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_has_name
 =begin pod
-=head2 [gtk_widget_path_] iter_has_name
+=head2 [[gtk_] widget_path_] iter_has_name
 
 Returns C<1> if the widget at position I<$pos> has the name I<name>, C<0> otherwise.
 
@@ -592,7 +592,7 @@ sub gtk_widget_path_iter_has_name ( N-GtkWidgetPath $path, int32 $pos, Str $name
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_has_qname
 =begin pod
-=head2 [gtk_widget_path_] iter_has_qname
+=head2 [[gtk_] widget_path_] iter_has_qname
 
 See C<gtk_widget_path_iter_has_name()>. This is a version that operates on C<GQuarks>.
 
@@ -616,7 +616,7 @@ sub gtk_widget_path_iter_has_qname (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_get_state
 =begin pod
-=head2 [gtk_widget_path_] iter_get_state
+=head2 [[gtk_] widget_path_] iter_get_state
 
 Returns the state flags corresponding to the widget found at the position I<$pos> in the widget hierarchy.
 
@@ -638,7 +638,7 @@ sub gtk_widget_path_iter_get_state ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_set_state
 =begin pod
-=head2 [gtk_widget_path_] iter_set_state
+=head2 [[gtk_] widget_path_] iter_set_state
 
 Sets the widget name for the widget found at position I<$pos> in the widget hierarchy.
 
@@ -671,7 +671,7 @@ sub gtk_widget_path_iter_set_state ( N-GtkWidgetPath $path, int32 $pos, int32 $s
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_add_class
 =begin pod
-=head2 [gtk_widget_path_] iter_add_class
+=head2 [[gtk_] widget_path_] iter_add_class
 
 Adds the class I<name> to the widget at position I<pos> in the hierarchy defined in I<path>. See C<gtk_style_context_add_class()>.
 
@@ -691,7 +691,7 @@ sub gtk_widget_path_iter_add_class ( N-GtkWidgetPath $path, int32 $pos, Str $nam
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_remove_class
 =begin pod
-=head2 [gtk_widget_path_] iter_remove_class
+=head2 [[gtk_] widget_path_] iter_remove_class
 
 Removes the class I<name> from the widget at position I<pos> in the hierarchy defined in I<path>.
 
@@ -711,7 +711,7 @@ sub gtk_widget_path_iter_remove_class ( N-GtkWidgetPath $path, int32 $pos, Str $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_clear_classes
 =begin pod
-=head2 [gtk_widget_path_] iter_clear_classes
+=head2 [[gtk_] widget_path_] iter_clear_classes
 
 Removes all classes from the widget at position I<pos> in the hierarchy defined in I<path>.
 
@@ -730,7 +730,7 @@ sub gtk_widget_path_iter_clear_classes ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_list_classes
 =begin pod
-=head2 [gtk_widget_path_] iter_list_classes
+=head2 [[gtk_] widget_path_] iter_list_classes
 
 Returns a list with all the class names defined for the widget at position I<pos> in the hierarchy defined in I<path>.
 
@@ -752,7 +752,7 @@ sub gtk_widget_path_iter_list_classes ( N-GtkWidgetPath $path, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_iter_has_class
 =begin pod
-=head2 [gtk_widget_path_] iter_has_class
+=head2 [[gtk_] widget_path_] iter_has_class
 
 Returns C<1> if the widget at position I<pos> has the class I<name>
 defined, C<0> otherwise.
@@ -776,7 +776,7 @@ sub gtk_widget_path_iter_has_class ( N-GtkWidgetPath $path, int32 $pos, Str $nam
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_path_iter_has_qclass
 =begin pod
-=head2 [gtk_widget_path_] iter_has_qclass
+=head2 [[gtk_] widget_path_] iter_has_qclass
 
 See C<gtk_widget_path_iter_has_class()>. This is a version that operates
 with GQuarks.
@@ -800,7 +800,7 @@ sub gtk_widget_path_iter_has_qclass ( N-GtkWidgetPath $path, int32 $pos, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_widget_path_] get_object_type
+=head2 [[gtk_] widget_path_] get_object_type
 
 Returns the topmost object type, that is, the object type this path
 is representing.
@@ -822,7 +822,7 @@ sub gtk_widget_path_get_object_type ( N-GtkWidgetPath $path )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_widget_path_] is_type
+=head2 [[gtk_] widget_path_] is_type
 
 Returns C<1> if the widget type represented by this path
 is I<type>, or a subtype of it.
@@ -845,7 +845,7 @@ sub gtk_widget_path_is_type ( N-GtkWidgetPath $path, int32 $type )
 #-------------------------------------------------------------------------------
 #TM:0:
 =begin pod
-=head2 [gtk_widget_path_] has_parent
+=head2 [[gtk_] widget_path_] has_parent
 
 Returns C<1> if any of the parents of the widget represented
 in I<path> is of type I<type>, or any subtype of it.

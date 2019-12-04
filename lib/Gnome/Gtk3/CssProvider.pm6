@@ -157,7 +157,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_error_quark:
 =begin pod
-=head2 [gtk_css_provider_] error_quark
+=head2 [[gtk_] css_provider_] error_quark
 
 Return the domain code of the builder error domain.
 
@@ -173,7 +173,7 @@ sub gtk_css_provider_error_quark (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_new:
 =begin pod
-=head2 gtk_css_provider_new
+=head2 [gtk_] css_provider_new
 
 Returns a newly created B<Gnome::Gtk3::CssProvider>.
 
@@ -189,7 +189,7 @@ sub gtk_css_provider_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_to_string:
 =begin pod
-=head2 [gtk_css_provider_] to_string
+=head2 [[gtk_] css_provider_] to_string
 
 Converts the provider into a string representation in CSS
 format.
@@ -215,7 +215,7 @@ sub gtk_css_provider_to_string ( N-GObject $provider )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_load_from_data:
 =begin pod
-=head2 [gtk_css_provider_] load_from_data
+=head2 [[gtk_] css_provider_] load_from_data
 
 Loads I<$data> into the provider, and by doing so clears any previously loaded information.
 
@@ -269,7 +269,7 @@ sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64
 #-------------------------------------------------------------------------------
 #TM:0:gtk_css_provider_load_from_file:
 =begin pod
-=head2 [gtk_css_provider_] load_from_file
+=head2 [[gtk_] css_provider_] load_from_file
 
 Loads the data contained in I<$file> into I<css_provider>, making it
 clear any previously loaded information.
@@ -295,7 +295,7 @@ sub gtk_css_provider_load_from_file ( N-GObject $css_provider, N-GObject $file, 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_load_from_path:
 =begin pod
-=head2 [gtk_css_provider_] load_from_path
+=head2 [[gtk_] css_provider_] load_from_path
 
 Loads the data contained in I<$path> into the provider, clearing any previously loaded information.
 
@@ -341,7 +341,7 @@ sub _gtk_css_provider_load_from_path (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_css_provider_load_from_resource:
 =begin pod
-=head2 [gtk_css_provider_] load_from_resource
+=head2 [[gtk_] css_provider_] load_from_resource
 
 Loads the data contained in the resource at I<resource_path> into
 the B<Gnome::Gtk3::CssProvider>, clearing any previously loaded information.
@@ -365,7 +365,7 @@ sub gtk_css_provider_load_from_resource ( N-GObject $css_provider, Str $resource
 #-------------------------------------------------------------------------------
 #TM:0:gtk_css_provider_get_named:
 =begin pod
-=head2 [gtk_css_provider_] get_named
+=head2 [[gtk_] css_provider_] get_named
 
 Loads a theme from the usual theme paths
 

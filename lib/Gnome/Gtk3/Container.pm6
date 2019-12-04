@@ -260,7 +260,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_container_set_border_width:
 =begin pod
-=head2 [gtk_container_] set_border_width
+=head2 [[gtk_] container_] set_border_width
 
 Sets the border width of the container.
 
@@ -285,7 +285,7 @@ sub gtk_container_set_border_width ( N-GObject $container, uint32 $border_width 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_container_get_border_width:
 =begin pod
-=head2 [gtk_container_] get_border_width
+=head2 [[gtk_] container_] get_border_width
 
 Retrieves the border width of the container. See
 C<gtk_container_set_border_width()>.
@@ -305,7 +305,7 @@ sub gtk_container_get_border_width ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_add:
 =begin pod
-=head2 gtk_container_add
+=head2 [gtk_] container_add
 
 Adds I<widget> to I<container>. Typically used for simple containers
 such as B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Frame>, or B<Gnome::Gtk3::Button>; for more complicated
@@ -333,7 +333,7 @@ sub gtk_container_add ( N-GObject $container, N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_remove:
 =begin pod
-=head2 gtk_container_remove
+=head2 [gtk_] container_remove
 
 Removes I<widget> from I<container>. I<widget> must be inside I<container>.
 Note that I<container> will own a reference to I<widget>, and that this
@@ -358,7 +358,7 @@ sub gtk_container_remove ( N-GObject $container, N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_check_resize:
 =begin pod
-=head2 [gtk_container_] check_resize
+=head2 [[gtk_] container_] check_resize
 
 
 
@@ -375,7 +375,7 @@ sub gtk_container_check_resize ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_foreach:
 =begin pod
-=head2 gtk_container_foreach
+=head2 [gtk_] container_foreach
 
 Invokes I<callback> on each non-internal child of I<container>.
 See C<gtk_container_forall()> for details on what constitutes
@@ -402,7 +402,7 @@ sub gtk_container_foreach ( N-GObject $container, GtkCallback $callback, Pointer
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_children:
 =begin pod
-=head2 [gtk_container_] get_children
+=head2 [[gtk_] container_] get_children
 
 Returns the container’s non-internal children. See
 C<gtk_container_forall()> for details on what constitutes an "internal" child.
@@ -423,7 +423,7 @@ sub gtk_container_get_children ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_propagate_draw:
 =begin pod
-=head2 [gtk_container_] propagate_draw
+=head2 [[gtk_] container_] propagate_draw
 
 When a container receives a call to the draw function, it must send
 synthetic  I<draw> calls to all children that don’t have their
@@ -456,7 +456,7 @@ sub gtk_container_propagate_draw ( N-GObject $container, N-GObject $child, cairo
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_set_focus_child:
 =begin pod
-=head2 [gtk_container_] set_focus_child
+=head2 [[gtk_] container_] set_focus_child
 
 Sets, or unsets if I<child> is C<Any>, the focused child of I<container>.
 
@@ -480,7 +480,7 @@ sub gtk_container_set_focus_child ( N-GObject $container, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_focus_child:
 =begin pod
-=head2 [gtk_container_] get_focus_child
+=head2 [[gtk_] container_] get_focus_child
 
 Returns the current focus child widget inside I<container>. This is not the
 currently focused widget. That can be obtained by calling
@@ -505,7 +505,7 @@ sub gtk_container_get_focus_child ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_set_focus_vadjustment:
 =begin pod
-=head2 [gtk_container_] set_focus_vadjustment
+=head2 [[gtk_] container_] set_focus_vadjustment
 
 Hooks up an adjustment to focus handling in a container, so when a
 child of the container is focused, the adjustment is scrolled to
@@ -530,7 +530,7 @@ sub gtk_container_set_focus_vadjustment ( N-GObject $container, N-GObject $adjus
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_focus_vadjustment:
 =begin pod
-=head2 [gtk_container_] get_focus_vadjustment
+=head2 [[gtk_] container_] get_focus_vadjustment
 
 Retrieves the vertical focus adjustment for the container. See
 C<gtk_container_set_focus_vadjustment()>.
@@ -551,7 +551,7 @@ sub gtk_container_get_focus_vadjustment ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_set_focus_hadjustment:
 =begin pod
-=head2 [gtk_container_] set_focus_hadjustment
+=head2 [[gtk_] container_] set_focus_hadjustment
 
 Hooks up an adjustment to focus handling in a container, so when a child
 of the container is focused, the adjustment is scrolled to show that
@@ -576,7 +576,7 @@ sub gtk_container_set_focus_hadjustment ( N-GObject $container, N-GObject $adjus
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_focus_hadjustment:
 =begin pod
-=head2 [gtk_container_] get_focus_hadjustment
+=head2 [[gtk_] container_] get_focus_hadjustment
 
 Retrieves the horizontal focus adjustment for the container. See
 C<gtk_container_set_focus_hadjustment()>.
@@ -597,7 +597,7 @@ sub gtk_container_get_focus_hadjustment ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_type:
 =begin pod
-=head2 [gtk_container_] child_type
+=head2 [[gtk_] container_] child_type
 
 Returns the type of the children supported by the container.
 
@@ -621,7 +621,7 @@ sub gtk_container_child_type ( N-GObject $container )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_class_install_child_property:
 =begin pod
-=head2 [gtk_container_] class_install_child_property
+=head2 [[gtk_] container_] class_install_child_property
 
 Installs a child property on a container class.
 
@@ -641,7 +641,7 @@ sub gtk_container_class_install_child_property ( GtkContainerClass $cclass, uint
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_class_install_child_properties:
 =begin pod
-=head2 [gtk_container_] class_install_child_properties
+=head2 [[gtk_] container_] class_install_child_properties
 
 Installs child properties on a container class.
 
@@ -662,7 +662,7 @@ sub gtk_container_class_install_child_properties ( GtkContainerClass $cclass, ui
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_class_find_child_property:
 =begin pod
-=head2 [gtk_container_] class_find_child_property
+=head2 [[gtk_] container_] class_find_child_property
 
 Finds a child property of a container class by name.
 
@@ -685,7 +685,7 @@ sub gtk_container_class_find_child_property ( GObjectClass $cclass, Str $propert
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_class_list_child_properties:
 =begin pod
-=head2 [gtk_container_] class_list_child_properties
+=head2 [[gtk_] container_] class_list_child_properties
 
 Returns all child properties of a container class.
 
@@ -705,11 +705,11 @@ sub gtk_container_class_list_child_properties ( GObjectClass $cclass, uint32 $n_
   is native(&gtk-lib)
   { * }
 }}
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_add_with_properties:
 =begin pod
-=head2 [gtk_container_] add_with_properties
+=head2 [[gtk_] container_] add_with_properties
 
 Adds I<widget> to I<container>, setting child properties at the same time.
 See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
@@ -724,13 +724,11 @@ See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
 sub gtk_container_add_with_properties ( N-GObject $container, N-GObject $widget, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_set:
 =begin pod
-=head2 [gtk_container_] child_set
+=head2 [[gtk_] container_] child_set
 
 Sets one or more child properties for I<child> and I<container>.
 
@@ -744,13 +742,11 @@ Sets one or more child properties for I<child> and I<container>.
 sub gtk_container_child_set ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_get:
 =begin pod
-=head2 [gtk_container_] child_get
+=head2 [[gtk_] container_] child_get
 
 Gets the values of one or more child properties for I<child> and I<container>.
 
@@ -764,12 +760,11 @@ Gets the values of one or more child properties for I<child> and I<container>.
 sub gtk_container_child_get ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
-#`{{
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_set_valist:
 =begin pod
-=head2 [gtk_container_] child_set_valist
+=head2 [[gtk_] container_] child_set_valist
 
 Sets one or more child properties for I<child> and I<container>.
 
@@ -788,7 +783,7 @@ sub gtk_container_child_set_valist ( N-GObject $container, N-GObject $child, Str
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_get_valist:
 =begin pod
-=head2 [gtk_container_] child_get_valist
+=head2 [[gtk_] container_] child_get_valist
 
 Gets the values of one or more child properties for I<child> and I<container>.
 
@@ -808,7 +803,7 @@ sub gtk_container_child_get_valist ( N-GObject $container, N-GObject $child, Str
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_set_property:
 =begin pod
-=head2 [gtk_container_] child_set_property
+=head2 [[gtk_] container_] child_set_property
 
 Sets a child property for I<child> and I<container>.
 
@@ -827,7 +822,7 @@ sub gtk_container_child_set_property ( N-GObject $container, N-GObject $child, S
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_get_property:
 =begin pod
-=head2 [gtk_container_] child_get_property
+=head2 [[gtk_] container_] child_get_property
 
 Gets the value of a child property for I<child> and I<container>.
 
@@ -846,7 +841,7 @@ sub gtk_container_child_get_property ( N-GObject $container, N-GObject $child, S
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_notify:
 =begin pod
-=head2 [gtk_container_] child_notify
+=head2 [[gtk_] container_] child_notify
 
 Emits a  I<child-notify> signal for the
 [child property][child-properties]
@@ -873,7 +868,7 @@ sub gtk_container_child_notify ( N-GObject $container, N-GObject $child, Str $ch
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_child_notify_by_pspec:
 =begin pod
-=head2 [gtk_container_] child_notify_by_pspec
+=head2 [[gtk_] container_] child_notify_by_pspec
 
 Emits a  I<child-notify> signal for the
 [child property][child-properties] specified by
@@ -898,7 +893,7 @@ sub gtk_container_child_notify_by_pspec ( N-GObject $container, N-GObject $child
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_forall:
 =begin pod
-=head2 gtk_container_forall
+=head2 [gtk_] container_forall
 
 Invokes I<callback> on each direct child of I<container>, including
 children that are considered “internal” (implementation details
@@ -924,7 +919,7 @@ sub gtk_container_forall ( N-GObject $container, GtkCallback $callback, Pointer 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_class_handle_border_width:
 =begin pod
-=head2 [gtk_container_] class_handle_border_width
+=head2 [[gtk_] container_] class_handle_border_width
 
 Modifies a subclass of B<Gnome::Gtk3::ContainerClass> to automatically add and
 remove the border-width setting on B<Gnome::Gtk3::Container>.  This allows the
@@ -950,7 +945,7 @@ sub gtk_container_class_handle_border_width ( GtkContainerClass $klass )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_container_get_path_for_child:
 =begin pod
-=head2 [gtk_container_] get_path_for_child
+=head2 [[gtk_] container_] get_path_for_child
 
 Returns a newly created widget path representing all the widget hierarchy
 from the toplevel down to and including I<child>.
@@ -1106,7 +1101,7 @@ The B<Gnome::GObject::Value> type of property I<child> is C<G_TYPE_OBJECT>.
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] set_border_width
+=head2 [[gtk_] container_] set_border_width
 
 Sets the border width of the container.
 
@@ -1130,7 +1125,7 @@ sub gtk_container_set_border_width ( N-GObject $container, uint32 $border_width 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_border_width
+=head2 [[gtk_] container_] get_border_width
 
 Retrieves the border width of the container. See
 C<gtk_container_set_border_width()>.
@@ -1149,7 +1144,7 @@ sub gtk_container_get_border_width ( N-GObject $container )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_container_add
+=head2 [gtk_] container_add
 
 Adds I<widget> to I<container>. Typically used for simple containers
 such as B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Frame>, or B<Gnome::Gtk3::Button>; for more complicated
@@ -1176,7 +1171,7 @@ sub gtk_container_add ( N-GObject $container, N-GObject $widget )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_container_remove
+=head2 [gtk_] container_remove
 
 Removes I<widget> from I<container>. I<widget> must be inside I<container>.
 Note that I<container> will own a reference to I<widget>, and that this
@@ -1200,7 +1195,7 @@ sub gtk_container_remove ( N-GObject $container, N-GObject $widget )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] check_resize
+=head2 [[gtk_] container_] check_resize
 
 
 
@@ -1216,7 +1211,7 @@ sub gtk_container_check_resize ( N-GObject $container )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_container_foreach
+=head2 [gtk_] container_foreach
 
 Invokes I<callback> on each non-internal child of I<container>.
 See C<gtk_container_forall()> for details on what constitutes
@@ -1242,7 +1237,7 @@ sub gtk_container_foreach ( N-GObject $container, GtkCallback $callback, Pointer
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_children
+=head2 [[gtk_] container_] get_children
 
 Returns the container’s non-internal children. See
 C<gtk_container_forall()> for details on what constitutes an "internal" child.
@@ -1262,7 +1257,7 @@ sub gtk_container_get_children ( N-GObject $container )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] propagate_draw
+=head2 [[gtk_] container_] propagate_draw
 
 When a container receives a call to the draw function, it must send
 synthetic sig C<draw> calls to all children that don’t have their
@@ -1294,7 +1289,7 @@ sub gtk_container_propagate_draw ( N-GObject $container, N-GObject $child, cairo
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] set_focus_child
+=head2 [[gtk_] container_] set_focus_child
 
 Sets, or unsets if I<child> is C<Any>, the focused child of I<container>.
 
@@ -1317,7 +1312,7 @@ sub gtk_container_set_focus_child ( N-GObject $container, N-GObject $child )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_focus_child
+=head2 [[gtk_] container_] get_focus_child
 
 Returns the current focus child widget inside I<container>. This is not the
 currently focused widget. That can be obtained by calling
@@ -1341,7 +1336,7 @@ sub gtk_container_get_focus_child ( N-GObject $container )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] set_focus_vadjustment
+=head2 [[gtk_] container_] set_focus_vadjustment
 
 Hooks up an adjustment to focus handling in a container, so when a
 child of the container is focused, the adjustment is scrolled to
@@ -1365,7 +1360,7 @@ sub gtk_container_set_focus_vadjustment ( N-GObject $container, N-GObject $adjus
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_focus_vadjustment
+=head2 [[gtk_] container_] get_focus_vadjustment
 
 Retrieves the vertical focus adjustment for the container. See
 C<gtk_container_set_focus_vadjustment()>.
@@ -1385,7 +1380,7 @@ sub gtk_container_get_focus_vadjustment ( N-GObject $container )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] set_focus_hadjustment
+=head2 [[gtk_] container_] set_focus_hadjustment
 
 Hooks up an adjustment to focus handling in a container, so when a child
 of the container is focused, the adjustment is scrolled to show that
@@ -1409,7 +1404,7 @@ sub gtk_container_set_focus_hadjustment ( N-GObject $container, N-GObject $adjus
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_focus_hadjustment
+=head2 [[gtk_] container_] get_focus_hadjustment
 
 Retrieves the horizontal focus adjustment for the container. See
 C<gtk_container_set_focus_hadjustment()>.
@@ -1428,7 +1423,7 @@ sub gtk_container_get_focus_hadjustment ( N-GObject $container )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_type
+=head2 [[gtk_] container_] child_type
 
 Returns the type of the children supported by the container.
 
@@ -1451,7 +1446,7 @@ sub gtk_container_child_type ( N-GObject $container )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] class_install_child_property
+=head2 [[gtk_] container_] class_install_child_property
 
 Installs a child property on a container class.
 
@@ -1469,7 +1464,7 @@ sub gtk_container_class_install_child_property ( GtkContainerClass $cclass, uint
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] class_install_child_properties
+=head2 [[gtk_] container_] class_install_child_properties
 
 Installs child properties on a container class.
 
@@ -1489,7 +1484,7 @@ sub gtk_container_class_install_child_properties ( GtkContainerClass $cclass, ui
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] class_find_child_property
+=head2 [[gtk_] container_] class_find_child_property
 
 Finds a child property of a container class by name.
 
@@ -1511,7 +1506,7 @@ sub gtk_container_class_find_child_property ( GObjectClass $cclass, Str $propert
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] class_list_child_properties
+=head2 [[gtk_] container_] class_list_child_properties
 
 Returns all child properties of a container class.
 
@@ -1532,10 +1527,10 @@ sub gtk_container_class_list_child_properties ( GObjectClass $cclass, uint32 $n_
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] add_with_properties
+=head2 [[gtk_] container_] add_with_properties
 
 Adds I<widget> to I<container>, setting child properties at the same time.
 See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
@@ -1550,12 +1545,10 @@ See C<gtk_container_add()> and C<gtk_container_child_set()> for more details.
 sub gtk_container_add_with_properties ( N-GObject $container, N-GObject $widget, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_set
+=head2 [[gtk_] container_] child_set
 
 Sets one or more child properties for I<child> and I<container>.
 
@@ -1569,12 +1562,10 @@ Sets one or more child properties for I<child> and I<container>.
 sub gtk_container_child_set ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#`[[
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_get
+=head2 [[gtk_] container_] child_get
 
 Gets the values of one or more child properties for I<child> and I<container>.
 
@@ -1588,12 +1579,11 @@ Gets the values of one or more child properties for I<child> and I<container>.
 sub gtk_container_child_get ( N-GObject $container, N-GObject $child, Str $first_prop_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
 
-#-------------------------------------------------------------------------------
 #`{{
+#-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_set_valist
+=head2 [[gtk_] container_] child_set_valist
 
 Sets one or more child properties for I<child> and I<container>.
 
@@ -1611,7 +1601,7 @@ sub gtk_container_child_set_valist ( N-GObject $container, N-GObject $child, Str
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_get_valist
+=head2 [[gtk_] container_] child_get_valist
 
 Gets the values of one or more child properties for I<child> and I<container>.
 
@@ -1630,7 +1620,7 @@ sub gtk_container_child_get_valist ( N-GObject $container, N-GObject $child, Str
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_set_property
+=head2 [[gtk_] container_] child_set_property
 
 Sets a child property for I<child> and I<container>.
 
@@ -1648,7 +1638,7 @@ sub gtk_container_child_set_property ( N-GObject $container, N-GObject $child, S
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_get_property
+=head2 [[gtk_] container_] child_get_property
 
 Gets the value of a child property for I<child> and I<container>.
 
@@ -1666,7 +1656,7 @@ sub gtk_container_child_get_property ( N-GObject $container, N-GObject $child, S
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_notify
+=head2 [[gtk_] container_] child_notify
 
 Emits a sig C<child-notify> signal for the
 [child property][child-properties]
@@ -1692,7 +1682,7 @@ sub gtk_container_child_notify ( N-GObject $container, N-GObject $child, Str $ch
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] child_notify_by_pspec
+=head2 [[gtk_] container_] child_notify_by_pspec
 
 Emits a sig C<child-notify> signal for the
 [child property][child-properties] specified by
@@ -1717,7 +1707,7 @@ sub gtk_container_child_notify_by_pspec ( N-GObject $container, N-GObject $child
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_container_forall
+=head2 [gtk_] container_forall
 
 Invokes I<callback> on each direct child of I<container>, including
 children that are considered “internal” (implementation details
@@ -1743,7 +1733,7 @@ sub gtk_container_forall ( N-GObject $container, GtkCallback $callback, Pointer 
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] class_handle_border_width
+=head2 [[gtk_] container_] class_handle_border_width
 
 Modifies a subclass of B<Gnome::Gtk3::ContainerClass> to automatically add and
 remove the border-width setting on B<Gnome::Gtk3::Container>.  This allows the
@@ -1769,7 +1759,7 @@ sub gtk_container_class_handle_border_width ( GtkContainerClass $klass )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_container_] get_path_for_child
+=head2 [[gtk_] container_] get_path_for_child
 
 Returns a newly created widget path representing all the widget hierarchy
 from the toplevel down to and including I<child>.

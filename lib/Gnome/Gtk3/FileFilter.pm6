@@ -203,7 +203,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_file_filter_new:
 =begin pod
-=head2 gtk_file_filter_new
+=head2 [gtk_] file_filter_new
 
 Creates a new B<Gnome::Gtk3::FileFilter> with no rules added to it.
 Such a filter doesn’t accept any files, so is not
@@ -231,7 +231,7 @@ sub gtk_file_filter_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_file_filter_set_name:
 =begin pod
-=head2 [gtk_file_filter_] set_name
+=head2 [[gtk_] file_filter_] set_name
 
 Sets the human-readable name of the filter; this is the string
 that will be displayed in the file selector user interface if
@@ -252,7 +252,7 @@ sub gtk_file_filter_set_name ( N-GObject $filter, Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_file_filter_get_name:
 =begin pod
-=head2 [gtk_file_filter_] get_name
+=head2 [[gtk_] file_filter_] get_name
 
 Gets the human-readable name for the filter. See C<gtk_file_filter_set_name()>.
 
@@ -275,7 +275,7 @@ sub gtk_file_filter_get_name ( N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_add_mime_type:
 =begin pod
-=head2 [gtk_file_filter_] add_mime_type
+=head2 [[gtk_] file_filter_] add_mime_type
 
 Adds a rule allowing a given mime type to I<filter>.
 
@@ -294,7 +294,7 @@ sub gtk_file_filter_add_mime_type ( N-GObject $filter, Str $mime_type )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_add_pattern:
 =begin pod
-=head2 [gtk_file_filter_] add_pattern
+=head2 [[gtk_] file_filter_] add_pattern
 
 Adds a rule allowing a shell style glob to a filter.
 
@@ -313,7 +313,7 @@ sub gtk_file_filter_add_pattern ( N-GObject $filter, Str $pattern )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_add_pixbuf_formats:
 =begin pod
-=head2 [gtk_file_filter_] add_pixbuf_formats
+=head2 [[gtk_] file_filter_] add_pixbuf_formats
 
 Adds a rule allowing image files in the formats supported
 by B<Gnome::Gdk3::Pixbuf>.
@@ -333,7 +333,7 @@ sub gtk_file_filter_add_pixbuf_formats ( N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_add_custom:
 =begin pod
-=head2 [gtk_file_filter_] add_custom
+=head2 [[gtk_] file_filter_] add_custom
 
 Adds rule to a filter that allows files based on a custom callback
 function. The bitfield I<needed> which is passed in provides information
@@ -360,7 +360,7 @@ sub gtk_file_filter_add_custom ( N-GObject $filter, int32 $needed, GtkFileFilter
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_get_needed:
 =begin pod
-=head2 [gtk_file_filter_] get_needed
+=head2 [[gtk_] file_filter_] get_needed
 
 Gets the fields that need to be filled in for the B<Gnome::Gtk3::FileFilterInfo>
 passed to C<gtk_file_filter_filter()>
@@ -387,7 +387,7 @@ sub gtk_file_filter_get_needed ( N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_filter:
 =begin pod
-=head2 gtk_file_filter_filter
+=head2 [gtk_] file_filter_filter
 
 Tests whether a file should be displayed according to I<filter>.
 The B<Gnome::Gtk3::FileFilterInfo> I<filter_info> should include
@@ -416,7 +416,7 @@ sub gtk_file_filter_filter ( N-GObject $filter, GtkFileFilterInfo $filter_info )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_to_gvariant:
 =begin pod
-=head2 [gtk_file_filter_] to_gvariant
+=head2 [[gtk_] file_filter_] to_gvariant
 
 Serialize a file filter to an a{sv} variant.
 
@@ -437,7 +437,7 @@ sub gtk_file_filter_to_gvariant ( N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_filter_new_from_gvariant:
 =begin pod
-=head2 [gtk_file_filter_] new_from_gvariant
+=head2 [[gtk_] file_filter_] new_from_gvariant
 
 Deserialize a file filter from an a{sv} variant in
 the format produced by C<gtk_file_filter_to_gvariant()>.

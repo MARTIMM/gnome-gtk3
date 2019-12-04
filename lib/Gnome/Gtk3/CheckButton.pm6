@@ -150,7 +150,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_check_button_new:new(:empty)
 =begin pod
-=head2 gtk_check_button_new
+=head2 [gtk_] check_button_new
 
 Creates a new B<Gnome::Gtk3::CheckButton>.
 
@@ -168,7 +168,7 @@ sub gtk_check_button_new (  )
 #-------------------------------------------------------------------------------
 #TM:3:gtk_check_button_new_with_label:net(:label)
 =begin pod
-=head2 [gtk_check_button_] new_with_label
+=head2 [[gtk_] check_button_] new_with_label
 
 Creates a new B<Gnome::Gtk3::CheckButton> with a B<Gnome::Gtk3::Label> to the right of it.
 
@@ -188,7 +188,7 @@ sub gtk_check_button_new_with_label ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_check_button_new_with_mnemonic:
 =begin pod
-=head2 [gtk_check_button_] new_with_mnemonic
+=head2 [[gtk_] check_button_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::CheckButton> containing a label. The label
 will be created using C<gtk_label_new_with_mnemonic()>, so underscores

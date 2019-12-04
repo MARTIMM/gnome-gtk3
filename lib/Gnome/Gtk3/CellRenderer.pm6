@@ -199,7 +199,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_request_mode:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_request_mode
+=head2 [[gtk_] cell_renderer_] get_request_mode
 
 Gets whether the cell renderer prefers a height-for-width layout
 or a width-for-height layout.
@@ -220,7 +220,7 @@ sub gtk_cell_renderer_get_request_mode ( N-GObject $cell )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_preferred_width:t/CellRendererText.t - visual
 =begin pod
-=head2 [gtk_cell_renderer_] get_preferred_width
+=head2 [[gtk_] cell_renderer_] get_preferred_width
 
 Retreives a renderer’s natural size when rendered to I<$widget>.
 
@@ -259,7 +259,7 @@ sub _gtk_cell_renderer_get_preferred_width (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_preferred_height_for_width:t/CellRendererText.t - visual
 =begin pod
-=head2 [gtk_cell_renderer_] get_preferred_height_for_width
+=head2 [[gtk_] cell_renderer_] get_preferred_height_for_width
 
 Retreives a cell renderers’s minimum and natural height if it were rendered to
 I<$widget> with the specified I<$width>.
@@ -302,7 +302,7 @@ sub _gtk_cell_renderer_get_preferred_height_for_width (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_preferred_height:t/CellRendererText.t - visual
 =begin pod
-=head2 [gtk_cell_renderer_] get_preferred_height
+=head2 [[gtk_] cell_renderer_] get_preferred_height
 
 Retreives a renderer’s natural size when rendered to I<$widget>.
 
@@ -341,7 +341,7 @@ sub _gtk_cell_renderer_get_preferred_height (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_preferred_width_for_height:t/CellRendererText.t - visual
 =begin pod
-=head2 [gtk_cell_renderer_] get_preferred_width_for_height
+=head2 [[gtk_] cell_renderer_] get_preferred_width_for_height
 
 Retreives a cell renderers’s minimum and natural width if it were rendered to
 I<$widget> with the specified I<$height>.
@@ -386,7 +386,7 @@ sub _gtk_cell_renderer_get_preferred_width_for_height (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_preferred_size:t/CellRendererText.t - visual
 =begin pod
-=head2 [gtk_cell_renderer_] get_preferred_size
+=head2 [[gtk_] cell_renderer_] get_preferred_size
 
 Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
 
@@ -425,7 +425,7 @@ sub _gtk_cell_renderer_get_preferred_size (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_get_aligned_area:
 =begin pod
-=head2 [gtk_cell_renderer_] get_aligned_area
+=head2 [[gtk_] cell_renderer_] get_aligned_area
 
 Gets the aligned area used by I<$cell> inside I<$cell_area>. Used for finding the appropriate edit and focus rectangle.
 
@@ -452,7 +452,7 @@ sub gtk_cell_renderer_get_aligned_area ( N-GObject $cell, N-GObject $widget, int
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_render:
 =begin pod
-=head2 gtk_cell_renderer_render
+=head2 [gtk_] cell_renderer_render
 
 Invokes the virtual render function of the B<Gnome::Gtk3::CellRenderer>. The three
 passed-in rectangles are areas in I<cr>. Most renderers will draw within
@@ -481,7 +481,7 @@ sub gtk_cell_renderer_render ( N-GObject $cell, cairo_t $cr, N-GObject $widget, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_activate:
 =begin pod
-=head2 gtk_cell_renderer_activate
+=head2 [gtk_] cell_renderer_activate
 
 Passes an activate event to the cell renderer for possible processing.
 Some cell renderers may use events; for example, B<Gnome::Gtk3::CellRendererToggle>
@@ -510,7 +510,7 @@ sub gtk_cell_renderer_activate ( N-GObject $cell, GdkEvent $event, N-GObject $wi
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_start_editing:
 =begin pod
-=head2 [gtk_cell_renderer_] start_editing
+=head2 [[gtk_] cell_renderer_] start_editing
 
 Passes an activate event to the cell renderer for possible processing.
 
@@ -536,7 +536,7 @@ sub gtk_cell_renderer_start_editing ( N-GObject $cell, GdkEvent $event, N-GObjec
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_set_fixed_size:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] set_fixed_size
+=head2 [[gtk_] cell_renderer_] set_fixed_size
 
 Sets the renderer size to be explicit, independent of the properties set.
 
@@ -554,7 +554,7 @@ sub gtk_cell_renderer_set_fixed_size ( N-GObject $cell, int32 $width, int32 $hei
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_fixed_size:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_fixed_size
+=head2 [[gtk_] cell_renderer_] get_fixed_size
 
 Fills in I<width> and I<height> with the appropriate size of I<cell>.
 
@@ -581,7 +581,7 @@ sub _gtk_cell_renderer_get_fixed_size (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_set_alignment:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] set_alignment
+=head2 [[gtk_] cell_renderer_] set_alignment
 
 Sets the renderer’s alignment within its available space.
 
@@ -601,7 +601,7 @@ sub gtk_cell_renderer_set_alignment ( N-GObject $cell, num32 $xalign, num32 $yal
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_alignment:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_alignment
+=head2 [[gtk_] cell_renderer_] get_alignment
 
 Returns xalign and yalign with the appropriate values of this cell.
 
@@ -630,7 +630,7 @@ sub _gtk_cell_renderer_get_alignment (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_set_padding:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] set_padding
+=head2 [[gtk_] cell_renderer_] set_padding
 
 Sets the renderer’s padding.
 
@@ -650,7 +650,7 @@ sub gtk_cell_renderer_set_padding ( N-GObject $cell, int32 $xpad, int32 $ypad )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_padding:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_padding
+=head2 [[gtk_] cell_renderer_] get_padding
 
 Returns xpad and ypad with the appropriate values of this cell.
 
@@ -678,7 +678,7 @@ sub _gtk_cell_renderer_get_padding (
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_set_visible:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] set_visible
+=head2 [[gtk_] cell_renderer_] set_visible
 
 Sets the cell renderer’s visibility.
 
@@ -697,7 +697,7 @@ sub gtk_cell_renderer_set_visible ( N-GObject $cell, int32 $visible )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_visible:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_visible
+=head2 [[gtk_] cell_renderer_] get_visible
 
 Returns the cell renderer’s visibility.
 
@@ -718,7 +718,7 @@ sub gtk_cell_renderer_get_visible ( N-GObject $cell )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_set_sensitive:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] set_sensitive
+=head2 [[gtk_] cell_renderer_] set_sensitive
 
 Sets the cell renderer’s sensitivity.
 
@@ -737,7 +737,7 @@ sub gtk_cell_renderer_set_sensitive ( N-GObject $cell, int32 $sensitive )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_get_sensitive:t/CellRendererText.t
 =begin pod
-=head2 [gtk_cell_renderer_] get_sensitive
+=head2 [[gtk_] cell_renderer_] get_sensitive
 
 Returns the cell renderer’s sensitivity.
 
@@ -758,7 +758,7 @@ sub gtk_cell_renderer_get_sensitive ( N-GObject $cell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_is_activatable:
 =begin pod
-=head2 [gtk_cell_renderer_] is_activatable
+=head2 [[gtk_] cell_renderer_] is_activatable
 
 Checks whether the cell renderer can do something when activated.
 
@@ -780,7 +780,7 @@ sub gtk_cell_renderer_is_activatable ( N-GObject $cell )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_stop_editing:
 =begin pod
-=head2 [gtk_cell_renderer_] stop_editing
+=head2 [[gtk_] cell_renderer_] stop_editing
 
 Informs the cell renderer that the editing is stopped.
 If I<canceled> is C<1>, the cell renderer will emit the
@@ -806,7 +806,7 @@ sub gtk_cell_renderer_stop_editing ( N-GObject $cell, int32 $canceled )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_get_state:
 =begin pod
-=head2 [gtk_cell_renderer_] get_state
+=head2 [[gtk_] cell_renderer_] get_state
 
 Translates the cell renderer state to B<GtkStateFlags>,
 based on the cell renderer and widget sensitivity, and
@@ -832,7 +832,7 @@ sub gtk_cell_renderer_get_state ( N-GObject $cell, N-GObject $widget, int32 $cel
 #-------------------------------------------------------------------------------
 #TM:0:gtk_cell_renderer_class_set_accessible_type:
 =begin pod
-=head2 [gtk_cell_renderer_] class_set_accessible_type
+=head2 [[gtk_] cell_renderer_] class_set_accessible_type
 
 Sets the type to be used for creating accessibles for cells rendered by
 cell renderers of I<renderer_class>. Note that multiple accessibles will

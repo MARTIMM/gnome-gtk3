@@ -1,0 +1,13 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "Sections"
+  bar_menu:
+  - title: "Design notes"
+    url: "/content-docs/design/notes.html"
+  - title: "Implementation"
+    url: "/content-docs/design/implement.html"
+  - title: "Gtk Widget Tree"
+    url: "/content-docs/design/gtk-tree.html"
+  - title: "Todo"
+    url: "/content-docs/design/todo.html"
+  - title: "Gtk types and Perl6"
+    url: "/content-docs/design/gtk-types.html"

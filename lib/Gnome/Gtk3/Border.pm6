@@ -241,7 +241,7 @@ Return the validity of th native structure. After a call to clear-border() this 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_border_new:
 =begin pod
-=head2 gtk_border_new
+=head2 [gtk_] border_new
 
 Allocates a new C<Gnome::Gtk3::Border>-struct and initializes its elements to zero.
 
@@ -261,7 +261,7 @@ sub gtk_border_new ( )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_border_copy:
 =begin pod
-=head2 gtk_border_copy
+=head2 [gtk_] border_copy
 
 Copies a C<N-GtkBorder> struct.
 
@@ -280,7 +280,7 @@ sub gtk_border_copy ( N-GtkBorder $border )
 #`{{ No document, user must use clear-border()
 
 =begin pod
-=head2 gtk_border_free
+=head2 [gtk_] border_free
 
 Frees a C<N-GtkBorder> struct.
 

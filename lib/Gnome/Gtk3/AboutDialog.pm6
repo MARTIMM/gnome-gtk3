@@ -192,7 +192,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_new:
 =begin pod
-=head2 gtk_about_dialog_new
+=head2 [gtk_] about_dialog_new
 
 Creates a new B<Gnome::Gtk3::AboutDialog>.
 
@@ -211,11 +211,11 @@ sub gtk_about_dialog_new (  )
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_show_about_dialog:
 =begin pod
-=head2 gtk_show_about_dialog
+=head2 [gtk_] show_about_dialog
 
 This is a convenience function for showing an application’s about box. The constructed dialog is associated with the parent window and reused for future invocations of this function.
 
@@ -229,12 +229,12 @@ This is a convenience function for showing an application’s about box. The con
 sub gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_program_name:
 =begin pod
-=head2 [gtk_about_dialog_] get_program_name
+=head2 [[gtk_] about_dialog_] get_program_name
 
 Returns the program name displayed in the about dialog.
 
@@ -256,7 +256,7 @@ sub gtk_about_dialog_get_program_name ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_program_name:
 =begin pod
-=head2 [gtk_about_dialog_] set_program_name
+=head2 [[gtk_] about_dialog_] set_program_name
 
 Sets the name to display in the about dialog.
 If this is not set, it defaults to C<g_get_application_name()>.
@@ -276,7 +276,7 @@ sub gtk_about_dialog_set_program_name ( N-GObject $about, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_version:
 =begin pod
-=head2 [gtk_about_dialog_] get_version
+=head2 [[gtk_] about_dialog_] get_version
 
 Returns the version string.
 
@@ -298,7 +298,7 @@ sub gtk_about_dialog_get_version ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_version:
 =begin pod
-=head2 [gtk_about_dialog_] set_version
+=head2 [[gtk_] about_dialog_] set_version
 
 Sets the version string to display in the about dialog.
 
@@ -317,7 +317,7 @@ sub gtk_about_dialog_set_version ( N-GObject $about, Str $version )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_copyright:
 =begin pod
-=head2 [gtk_about_dialog_] get_copyright
+=head2 [[gtk_] about_dialog_] get_copyright
 
 Returns the copyright string.
 
@@ -339,7 +339,7 @@ sub gtk_about_dialog_get_copyright ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_copyright:
 =begin pod
-=head2 [gtk_about_dialog_] set_copyright
+=head2 [[gtk_] about_dialog_] set_copyright
 
 Sets the copyright string to display in the about dialog.
 This should be a short string of one or two lines.
@@ -359,7 +359,7 @@ sub gtk_about_dialog_set_copyright ( N-GObject $about, Str $copyright )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_comments:
 =begin pod
-=head2 [gtk_about_dialog_] get_comments
+=head2 [[gtk_] about_dialog_] get_comments
 
 Returns the comments string.
 
@@ -381,7 +381,7 @@ sub gtk_about_dialog_get_comments ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_comments:
 =begin pod
-=head2 [gtk_about_dialog_] set_comments
+=head2 [[gtk_] about_dialog_] set_comments
 
 Sets the comments string to display in the about dialog.
 This should be a short string of one or two lines.
@@ -401,7 +401,7 @@ sub gtk_about_dialog_set_comments ( N-GObject $about, Str $comments )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_license:
 =begin pod
-=head2 [gtk_about_dialog_] get_license
+=head2 [[gtk_] about_dialog_] get_license
 
 Returns the license information.
 
@@ -423,7 +423,7 @@ sub gtk_about_dialog_get_license ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_license:
 =begin pod
-=head2 [gtk_about_dialog_] set_license
+=head2 [[gtk_] about_dialog_] set_license
 
 Sets the license information to be displayed in the secondary
 license dialog. If I<license> is C<Any>, the license button is
@@ -444,7 +444,7 @@ sub gtk_about_dialog_set_license ( N-GObject $about, Str $license )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_license_type:
 =begin pod
-=head2 [gtk_about_dialog_] set_license_type
+=head2 [[gtk_] about_dialog_] set_license_type
 
 Sets the license of the application showing the I<about> dialog from a
 list of known licenses.
@@ -467,7 +467,7 @@ sub gtk_about_dialog_set_license_type ( N-GObject $about, int32 $license_type )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_license_type:
 =begin pod
-=head2 [gtk_about_dialog_] get_license_type
+=head2 [[gtk_] about_dialog_] get_license_type
 
 Retrieves the license set using C<gtk_about_dialog_set_license_type()>
 
@@ -488,7 +488,7 @@ sub gtk_about_dialog_get_license_type ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_wrap_license:
 =begin pod
-=head2 [gtk_about_dialog_] get_wrap_license
+=head2 [[gtk_] about_dialog_] get_wrap_license
 
 Returns whether the license text in I<about> is
 automatically wrapped.
@@ -510,7 +510,7 @@ sub gtk_about_dialog_get_wrap_license ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_wrap_license:
 =begin pod
-=head2 [gtk_about_dialog_] set_wrap_license
+=head2 [[gtk_] about_dialog_] set_wrap_license
 
 Sets whether the license text in I<about> is
 automatically wrapped.
@@ -530,7 +530,7 @@ sub gtk_about_dialog_set_wrap_license ( N-GObject $about, int32 $wrap_license )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_website:
 =begin pod
-=head2 [gtk_about_dialog_] get_website
+=head2 [[gtk_] about_dialog_] get_website
 
 Returns the website URL.
 
@@ -552,7 +552,7 @@ sub gtk_about_dialog_get_website ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_website:
 =begin pod
-=head2 [gtk_about_dialog_] set_website
+=head2 [[gtk_] about_dialog_] set_website
 
 Sets the URL to use for the website link.
 
@@ -571,7 +571,7 @@ sub gtk_about_dialog_set_website ( N-GObject $about, Str $website )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_website_label:
 =begin pod
-=head2 [gtk_about_dialog_] get_website_label
+=head2 [[gtk_] about_dialog_] get_website_label
 
 Returns the label used for the website link.
 
@@ -593,7 +593,7 @@ sub gtk_about_dialog_get_website_label ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_website_label:
 =begin pod
-=head2 [gtk_about_dialog_] set_website_label
+=head2 [[gtk_] about_dialog_] set_website_label
 
 Sets the label to be used for the website link.
 
@@ -612,7 +612,7 @@ sub gtk_about_dialog_set_website_label ( N-GObject $about, Str $website_label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_authors:
 =begin pod
-=head2 [gtk_about_dialog_] get_authors
+=head2 [[gtk_] about_dialog_] get_authors
 
 Returns the string which are displayed in the authors tab
 of the secondary credits dialog.
@@ -636,7 +636,7 @@ sub gtk_about_dialog_get_authors ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_authors:
 =begin pod
-=head2 [gtk_about_dialog_] set_authors
+=head2 [[gtk_] about_dialog_] set_authors
 
 Sets the strings which are displayed in the authors tab
 of the secondary credits dialog.
@@ -656,7 +656,7 @@ sub gtk_about_dialog_set_authors ( N-GObject $about, CArray[Str] $authors )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_documenters:
 =begin pod
-=head2 [gtk_about_dialog_] get_documenters
+=head2 [[gtk_] about_dialog_] get_documenters
 
 Returns the string which are displayed in the documenters
 tab of the secondary credits dialog.
@@ -680,7 +680,7 @@ sub gtk_about_dialog_get_documenters ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_documenters:
 =begin pod
-=head2 [gtk_about_dialog_] set_documenters
+=head2 [[gtk_] about_dialog_] set_documenters
 
 Sets the strings which are displayed in the documenters tab
 of the secondary credits dialog.
@@ -700,7 +700,7 @@ sub gtk_about_dialog_set_documenters ( N-GObject $about, CArray[Str] $documenter
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_artists:
 =begin pod
-=head2 [gtk_about_dialog_] get_artists
+=head2 [[gtk_] about_dialog_] get_artists
 
 Returns the string which are displayed in the artists tab
 of the secondary credits dialog.
@@ -724,7 +724,7 @@ sub gtk_about_dialog_get_artists ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_artists:
 =begin pod
-=head2 [gtk_about_dialog_] set_artists
+=head2 [[gtk_] about_dialog_] set_artists
 
 Sets the strings which are displayed in the artists tab
 of the secondary credits dialog.
@@ -744,7 +744,7 @@ sub gtk_about_dialog_set_artists ( N-GObject $about, CArray[Str] $artists )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_translator_credits:
 =begin pod
-=head2 [gtk_about_dialog_] get_translator_credits
+=head2 [[gtk_] about_dialog_] get_translator_credits
 
 Returns the translator credits string which is displayed
 in the translators tab of the secondary credits dialog.
@@ -767,7 +767,7 @@ sub gtk_about_dialog_get_translator_credits ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_translator_credits:
 =begin pod
-=head2 [gtk_about_dialog_] set_translator_credits
+=head2 [[gtk_] about_dialog_] set_translator_credits
 
 Sets the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
@@ -792,7 +792,7 @@ sub gtk_about_dialog_set_translator_credits ( N-GObject $about, Str $translator_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_logo:
 =begin pod
-=head2 [gtk_about_dialog_] get_logo
+=head2 [[gtk_] about_dialog_] get_logo
 
 Returns the pixbuf displayed as logo in the about dialog.
 
@@ -815,7 +815,7 @@ sub gtk_about_dialog_get_logo ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_logo:
 =begin pod
-=head2 [gtk_about_dialog_] set_logo
+=head2 [[gtk_] about_dialog_] set_logo
 
 Sets the pixbuf to be displayed as logo in the about dialog.
 If it is C<Any>, the default window icon set with
@@ -836,7 +836,7 @@ sub gtk_about_dialog_set_logo ( N-GObject $about, N-GObject $logo )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_get_logo_icon_name:
 =begin pod
-=head2 [gtk_about_dialog_] get_logo_icon_name
+=head2 [[gtk_] about_dialog_] get_logo_icon_name
 
 Returns the icon name displayed as logo in the about dialog.
 
@@ -859,7 +859,7 @@ sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_set_logo_icon_name:
 =begin pod
-=head2 [gtk_about_dialog_] set_logo_icon_name
+=head2 [[gtk_] about_dialog_] set_logo_icon_name
 
 Sets the pixbuf to be displayed as logo in the about dialog.
 If it is C<Any>, the default window icon set with
@@ -880,7 +880,7 @@ sub gtk_about_dialog_set_logo_icon_name ( N-GObject $about, Str $icon_name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_about_dialog_add_credit_section:
 =begin pod
-=head2 [gtk_about_dialog_] add_credit_section
+=head2 [[gtk_] about_dialog_] add_credit_section
 
 Creates a new section in the Credits page.
 
@@ -1089,7 +1089,7 @@ The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEA
 
 =end pod
 
-#`[[
+#`{{
 =begin comment
 
 =head2 Unsupported properties
@@ -1232,7 +1232,7 @@ A logo for the about box. If it is C<Any>, the default window icon
 set with C<gtk_window_set_default_icon()> will be used.
 
 =end pod
-]]
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod

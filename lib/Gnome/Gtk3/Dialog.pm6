@@ -330,7 +330,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_dialog_new:new(:empty)
 =begin pod
-=head2 gtk_dialog_new
+=head2 [gtk_] dialog_new
 
 Creates a new dialog box.
 
@@ -352,7 +352,7 @@ sub gtk_dialog_new (  )
 #-------------------------------------------------------------------------------
 #TM:3:gtk_dialog_new_with_buttons:
 =begin pod
-=head2 [gtk_dialog_] new_with_buttons
+=head2 [[gtk_] dialog_] new_with_buttons
 
 Creates a new B<Gnome::Gtk3::Dialog> with title I<$title> (or C<Any> for the default title; see C<gtk_window_set_title()>) and transient parent I<$parent> (or C<Any> for none; see C<gtk_window_set_transient_for()>). The I<$flags>
 argument can be used to make the dialog modal (B<GTK_DIALOG_MODAL>)
@@ -440,7 +440,7 @@ sub gtk_dialog_new_with_buttons (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_add_action_widget:
 =begin pod
-=head2 [gtk_dialog_] add_action_widget
+=head2 [[gtk_] dialog_] add_action_widget
 
 Adds an activatable widget to the action area of a B<Gnome::Gtk3::Dialog>,
 connecting a signal handler that will emit the  I<response>
@@ -463,7 +463,7 @@ sub gtk_dialog_add_action_widget ( N-GObject $dialog, N-GObject $child, int32 $r
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_add_button:
 =begin pod
-=head2 [gtk_dialog_] add_button
+=head2 [[gtk_] dialog_] add_button
 
 Adds a button with the given text and sets things up so that
 clicking the button will emit the  I<response> signal with
@@ -485,11 +485,11 @@ sub gtk_dialog_add_button ( N-GObject $dialog, Str $button_text, int32 $response
   is native(&gtk-lib)
   { * }
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_add_buttons:
 =begin pod
-=head2 [gtk_dialog_] add_buttons
+=head2 [[gtk_] dialog_] add_buttons
 
 Adds more buttons, same as calling C<gtk_dialog_add_button()>
 repeatedly.  The variable argument list should be C<Any>-terminated
@@ -505,12 +505,12 @@ text and response ID.
 sub gtk_dialog_add_buttons ( N-GObject $dialog, Str $first_button_text, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_set_response_sensitive:
 =begin pod
-=head2 [gtk_dialog_] set_response_sensitive
+=head2 [[gtk_] dialog_] set_response_sensitive
 
 Calls `gtk_widget_set_sensitive (widget, I<setting>)`
 for each widget in the dialog’s action area with the given I<response_id>.
@@ -530,7 +530,7 @@ sub gtk_dialog_set_response_sensitive ( N-GObject $dialog, int32 $response_id, i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_set_default_response:
 =begin pod
-=head2 [gtk_dialog_] set_default_response
+=head2 [[gtk_] dialog_] set_default_response
 
 Sets the last widget in the dialog’s action area with the given I<response_id>
 as the default widget for the dialog. Pressing “Enter” normally activates
@@ -549,7 +549,7 @@ sub gtk_dialog_set_default_response ( N-GObject $dialog, int32 $response_id )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_get_widget_for_response:
 =begin pod
-=head2 [gtk_dialog_] get_widget_for_response
+=head2 [[gtk_] dialog_] get_widget_for_response
 
 Gets the widget button that uses the given response ID in the action area
 of a dialog.
@@ -573,7 +573,7 @@ sub gtk_dialog_get_widget_for_response ( N-GObject $dialog, int32 $response_id )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_get_response_for_widget:
 =begin pod
-=head2 [gtk_dialog_] get_response_for_widget
+=head2 [[gtk_] dialog_] get_response_for_widget
 
 Gets the response id of a widget in the action area
 of a dialog.
@@ -597,7 +597,7 @@ sub gtk_dialog_get_response_for_widget ( N-GObject $dialog, N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_response:
 =begin pod
-=head2 gtk_dialog_response
+=head2 [gtk_] dialog_response
 
 Emits the  I<response> signal with the given response ID.
 Used to indicate that the user has responded to the dialog in some way;
@@ -616,7 +616,7 @@ sub gtk_dialog_response ( N-GObject $dialog, int32 $response_id )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_run:
 =begin pod
-=head2 gtk_dialog_run
+=head2 [gtk_] dialog_run
 
 Blocks in a recursive main loop until the dialog either emits the I<response> signal, or is destroyed. If the dialog is destroyed during the call to C<gtk_dialog_run()>, C<gtk_dialog_run()> returns B<GTK_RESPONSE_NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
 
@@ -662,7 +662,7 @@ sub gtk_dialog_run ( N-GObject $dialog )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_get_content_area:
 =begin pod
-=head2 [gtk_dialog_] get_content_area
+=head2 [[gtk_] dialog_] get_content_area
 
 Returns the content area of I<dialog>.
 
@@ -683,7 +683,7 @@ sub gtk_dialog_get_content_area ( N-GObject $dialog )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_dialog_get_header_bar:
 =begin pod
-=head2 [gtk_dialog_] get_header_bar
+=head2 [[gtk_] dialog_] get_header_bar
 
 Returns the header bar of I<dialog>. Note that the
 headerbar is only used by the dialog if the
@@ -812,7 +812,7 @@ The B<Gnome::GObject::Value> type of property I<content-area-border> is C<G_TYPE
 
 =head1 Methods
 
-=head2 gtk_dialog_new
+=head2 [gtk_] dialog_new
 
 Creates a new dialog box.
 =end pod
@@ -824,7 +824,7 @@ sub gtk_dialog_new ( )
 # ==============================================================================
 =begin pod
 
-=head2 gtk_dialog_run
+=head2 [gtk_] dialog_run
 
 Blocks in a recursive main loop until the dialog either emits the “response” signal, or is destroyed. If the dialog is destroyed during the call to gtk_dialog_run(), gtk_dialog_run() returns GTK_RESPONSE_NONE
 =end pod
@@ -836,7 +836,7 @@ sub gtk_dialog_run ( N-GObject $dialog )
 # ==============================================================================
 =begin pod
 
-=head2 gtk_dialog_response
+=head2 [gtk_] dialog_response
 
 Emits the “response” signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or gtk_dialog_run() will be monitoring the ::response signal and take appropriate action.
 =end pod

@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.19.4",
+  "version": "0.20.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
 
@@ -19,6 +19,8 @@
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
     "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
     "Gnome::Gtk3::CellRendererText": "lib/Gnome/Gtk3/CellRendererText.pm6",
+    "Gnome::Gtk3::CellRendererProgress": "lib/Gnome/Gtk3/CellRendererProgress.pm6",
+    "Gnome::Gtk3::CellRendererToggle": "lib/Gnome/Gtk3/CellRendererToggle.pm6",
     "Gnome::Gtk3::CheckButton": "lib/Gnome/Gtk3/CheckButton.pm6",
     "Gnome::Gtk3::ColorButton": "lib/Gnome/Gtk3/ColorButton.pm6",
     "Gnome::Gtk3::ColorChooser": "lib/Gnome/Gtk3/ColorChooser.pm6",

@@ -315,7 +315,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_label_new:new(:text)
 =begin pod
-=head2 gtk_label_new
+=head2 [gtk_] label_new
 
 Creates a new label with the given text inside it. You can
 pass C<Any> to get an empty label widget.
@@ -336,7 +336,7 @@ sub gtk_label_new ( Str $str )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_label_new_with_mnemonic:new(:mnemonic)
 =begin pod
-=head2 [gtk_label_] new_with_mnemonic
+=head2 [[gtk_] label_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::Label>, containing the text in I<str>.
 
@@ -369,7 +369,7 @@ sub gtk_label_new_with_mnemonic ( Str $str )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_text:
 =begin pod
-=head2 [gtk_label_] set_text
+=head2 [[gtk_] label_] set_text
 
 Sets the text within the B<Gnome::Gtk3::Label> widget. It overwrites any text that
 was there before.
@@ -395,7 +395,7 @@ sub gtk_label_set_text ( N-GObject $label, Str $str )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_get_text:
 =begin pod
-=head2 [gtk_label_] get_text
+=head2 [[gtk_] label_] get_text
 
 Fetches the text from a label widget, as displayed on the
 screen. This does not include any embedded underlines
@@ -418,7 +418,7 @@ sub gtk_label_get_text ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_attributes:
 =begin pod
-=head2 [gtk_label_] set_attributes
+=head2 [[gtk_] label_] set_attributes
 
 Sets a B<PangoAttrList>; the attributes in the list are applied to the
 label text.
@@ -443,7 +443,7 @@ sub gtk_label_set_attributes ( N-GObject $label, PangoAttrList $attrs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_attributes:
 =begin pod
-=head2 [gtk_label_] get_attributes
+=head2 [[gtk_] label_] get_attributes
 
 Gets the attribute list that was set on the label using
 C<gtk_label_set_attributes()>, if any. This function does
@@ -469,7 +469,7 @@ sub gtk_label_get_attributes ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_label:
 =begin pod
-=head2 [gtk_label_] set_label
+=head2 [[gtk_] label_] set_label
 
 Sets the text of the label. The label is interpreted as
 including embedded underlines and/or Pango markup depending
@@ -489,7 +489,7 @@ sub gtk_label_set_label ( N-GObject $label, Str $str )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_get_label:
 =begin pod
-=head2 [gtk_label_] get_label
+=head2 [[gtk_] label_] get_label
 
 Fetches the text from a label widget including any embedded
 underlines indicating mnemonics and Pango markup. (See
@@ -512,7 +512,7 @@ sub gtk_label_get_label ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_markup:
 =begin pod
-=head2 [gtk_label_] set_markup
+=head2 [[gtk_] label_] set_markup
 
 Parses I<$str> which is marked up with the
 [Pango text markup language][PangoMarkupFormat], setting the
@@ -557,7 +557,7 @@ sub gtk_label_set_markup ( N-GObject $label, Str $str )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_use_markup:
 =begin pod
-=head2 [gtk_label_] set_use_markup
+=head2 [[gtk_] label_] set_use_markup
 
 Sets whether the text of the label contains markup in
 [Pango’s text markup language](https://developer.gnome.org/pygtk/stable/pango-markup-language.html).
@@ -576,7 +576,7 @@ sub gtk_label_set_use_markup ( N-GObject $label, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_get_use_markup:
 =begin pod
-=head2 [gtk_label_] get_use_markup
+=head2 [[gtk_] label_] get_use_markup
 
 Returns whether the label’s text is interpreted as marked up with
 the [Pango text markup language][PangoMarkupFormat].
@@ -598,7 +598,7 @@ sub gtk_label_get_use_markup ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_use_underline:
 =begin pod
-=head2 [gtk_label_] set_use_underline
+=head2 [[gtk_] label_] set_use_underline
 
 If true, an underline in the text indicates the next character should be
 used for the mnemonic accelerator key.
@@ -616,7 +616,7 @@ sub gtk_label_set_use_underline ( N-GObject $label, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_use_underline:
 =begin pod
-=head2 [gtk_label_] get_use_underline
+=head2 [[gtk_] label_] get_use_underline
 
 Returns whether an embedded underline in the label indicates a
 mnemonic. See C<gtk_label_set_use_underline()>.
@@ -637,7 +637,7 @@ sub gtk_label_get_use_underline ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_markup_with_mnemonic:
 =begin pod
-=head2 [gtk_label_] set_markup_with_mnemonic
+=head2 [[gtk_] label_] set_markup_with_mnemonic
 
 Parses I<str> which is marked up with the
 [Pango text markup language](https://developer.gnome.org/pygtk/stable/pango-markup-language.html),
@@ -661,7 +661,7 @@ sub gtk_label_set_markup_with_mnemonic ( N-GObject $label, Str $str )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_mnemonic_keyval:
 =begin pod
-=head2 [gtk_label_] get_mnemonic_keyval
+=head2 [[gtk_] label_] get_mnemonic_keyval
 
 If the label has been set so that it has an mnemonic key this function
 returns the keyval used for the mnemonic accelerator. If there is no
@@ -682,7 +682,7 @@ sub gtk_label_get_mnemonic_keyval ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_mnemonic_widget:
 =begin pod
-=head2 [gtk_label_] set_mnemonic_widget
+=head2 [[gtk_] label_] set_mnemonic_widget
 
 If the label has been set so that it has an mnemonic key (using
 i.e. C<gtk_label_set_markup_with_mnemonic()>,
@@ -712,7 +712,7 @@ sub gtk_label_set_mnemonic_widget ( N-GObject $label, N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_mnemonic_widget:
 =begin pod
-=head2 [gtk_label_] get_mnemonic_widget
+=head2 [[gtk_] label_] get_mnemonic_widget
 
 Retrieves the target of the mnemonic (keyboard shortcut) of this
 label. See C<gtk_label_set_mnemonic_widget()>.
@@ -733,7 +733,7 @@ sub gtk_label_get_mnemonic_widget ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_text_with_mnemonic:
 =begin pod
-=head2 [gtk_label_] set_text_with_mnemonic
+=head2 [[gtk_] label_] set_text_with_mnemonic
 
 Sets the label’s text from the string I<str>.
 If characters in I<str> are preceded by an underscore, they are underlined
@@ -754,7 +754,7 @@ sub gtk_label_set_text_with_mnemonic ( N-GObject $label, Str $str )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_justify:
 =begin pod
-=head2 [gtk_label_] set_justify
+=head2 [[gtk_] label_] set_justify
 
 Sets the alignment of the lines in the text of the label relative to
 each other. C<GTK_JUSTIFY_LEFT> is the default value when the widget is
@@ -776,7 +776,7 @@ sub gtk_label_set_justify ( N-GObject $label, int32 $jtype )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_justify:
 =begin pod
-=head2 [gtk_label_] get_justify
+=head2 [[gtk_] label_] get_justify
 
 Returns the justification of the label. See C<gtk_label_set_justify()>.
 
@@ -796,7 +796,7 @@ sub gtk_label_get_justify ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_ellipsize:
 =begin pod
-=head2 [gtk_label_] set_ellipsize
+=head2 [[gtk_] label_] set_ellipsize
 
 Sets the mode used to ellipsize (add an ellipsis: "...") to the text
 if there is not enough space to render the entire string.
@@ -816,7 +816,7 @@ sub gtk_label_set_ellipsize ( N-GObject $label, PangoEllipsizeMode $mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_ellipsize:
 =begin pod
-=head2 [gtk_label_] get_ellipsize
+=head2 [[gtk_] label_] get_ellipsize
 
 Returns the ellipsizing position of the label. See C<gtk_label_set_ellipsize()>.
 
@@ -838,7 +838,7 @@ sub gtk_label_get_ellipsize ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_width_chars:
 =begin pod
-=head2 [gtk_label_] set_width_chars
+=head2 [[gtk_] label_] set_width_chars
 
 Sets the desired width in characters of I<label> to I<n_chars>.
 
@@ -857,7 +857,7 @@ sub gtk_label_set_width_chars ( N-GObject $label, int32 $n_chars )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_width_chars:
 =begin pod
-=head2 [gtk_label_] get_width_chars
+=head2 [[gtk_] label_] get_width_chars
 
 Retrieves the desired width of I<label>, in characters. See
 C<gtk_label_set_width_chars()>.
@@ -879,7 +879,7 @@ sub gtk_label_get_width_chars ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_max_width_chars:
 =begin pod
-=head2 [gtk_label_] set_max_width_chars
+=head2 [[gtk_] label_] set_max_width_chars
 
 Sets the desired maximum width in characters of I<label> to I<n_chars>.
 
@@ -898,7 +898,7 @@ sub gtk_label_set_max_width_chars ( N-GObject $label, int32 $n_chars )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_max_width_chars:
 =begin pod
-=head2 [gtk_label_] get_max_width_chars
+=head2 [[gtk_] label_] get_max_width_chars
 
 Retrieves the desired maximum width of I<label>, in characters. See
 C<gtk_label_set_width_chars()>.
@@ -920,7 +920,7 @@ sub gtk_label_get_max_width_chars ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_lines:
 =begin pod
-=head2 [gtk_label_] set_lines
+=head2 [[gtk_] label_] set_lines
 
 Sets the number of lines to which an ellipsized, wrapping label
 should be limited. This has no effect if the label is not wrapping
@@ -942,7 +942,7 @@ sub gtk_label_set_lines ( N-GObject $label, int32 $lines )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_lines:
 =begin pod
-=head2 [gtk_label_] get_lines
+=head2 [[gtk_] label_] get_lines
 
 Gets the number of lines to which an ellipsized, wrapping
 label should be limited. See C<gtk_label_set_lines()>.
@@ -964,7 +964,7 @@ sub gtk_label_get_lines ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_pattern:
 =begin pod
-=head2 [gtk_label_] set_pattern
+=head2 [[gtk_] label_] set_pattern
 
 The pattern of underlines you want under the existing text within the
 B<Gnome::Gtk3::Label> widget.  For example if the current text of the label says
@@ -984,7 +984,7 @@ sub gtk_label_set_pattern ( N-GObject $label, Str $pattern )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_line_wrap:
 =begin pod
-=head2 [gtk_label_] set_line_wrap
+=head2 [[gtk_] label_] set_line_wrap
 
 Toggles line wrapping within the B<Gnome::Gtk3::Label> widget. C<1> makes it break
 lines if text exceeds the widget’s size. C<0> lets the text get cut off
@@ -1009,7 +1009,7 @@ sub gtk_label_set_line_wrap ( N-GObject $label, int32 $wrap )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_line_wrap:
 =begin pod
-=head2 [gtk_label_] get_line_wrap
+=head2 [[gtk_] label_] get_line_wrap
 
 Returns whether lines in the label are automatically wrapped.
 See C<gtk_label_set_line_wrap()>.
@@ -1030,7 +1030,7 @@ sub gtk_label_get_line_wrap ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_line_wrap_mode:
 =begin pod
-=head2 [gtk_label_] set_line_wrap_mode
+=head2 [[gtk_] label_] set_line_wrap_mode
 
 If line wrapping is on (see C<gtk_label_set_line_wrap()>) this controls how
 the line wrapping is done. The default is C<PANGO_WRAP_WORD> which means
@@ -1051,7 +1051,7 @@ sub gtk_label_set_line_wrap_mode ( N-GObject $label, PangoWrapMode $wrap_mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_line_wrap_mode:
 =begin pod
-=head2 [gtk_label_] get_line_wrap_mode
+=head2 [[gtk_] label_] get_line_wrap_mode
 
 Returns line wrap mode used by the label. See C<gtk_label_set_line_wrap_mode()>.
 
@@ -1073,7 +1073,7 @@ sub gtk_label_get_line_wrap_mode ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_selectable:
 =begin pod
-=head2 [gtk_label_] set_selectable
+=head2 [[gtk_] label_] set_selectable
 
 Selectable labels allow the user to select text from the label, for
 copy-and-paste.
@@ -1091,7 +1091,7 @@ sub gtk_label_set_selectable ( N-GObject $label, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_selectable:
 =begin pod
-=head2 [gtk_label_] get_selectable
+=head2 [[gtk_] label_] get_selectable
 
 Gets the value set by C<gtk_label_set_selectable()>.
 
@@ -1110,7 +1110,7 @@ sub gtk_label_get_selectable ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_angle:
 =begin pod
-=head2 [gtk_label_] set_angle
+=head2 [[gtk_] label_] set_angle
 
 Sets the angle of rotation for the label. An angle of 90 reads from
 from bottom to top, an angle of 270, from top to bottom. The angle
@@ -1132,7 +1132,7 @@ sub gtk_label_set_angle ( N-GObject $label, num64 $angle )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_angle:
 =begin pod
-=head2 [gtk_label_] get_angle
+=head2 [[gtk_] label_] get_angle
 
 Gets the angle of rotation for the label. See
 C<gtk_label_set_angle()>.
@@ -1154,7 +1154,7 @@ sub gtk_label_get_angle ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_select_region:
 =begin pod
-=head2 [gtk_label_] select_region
+=head2 [[gtk_] label_] select_region
 
 Selects a range of characters in the label, if the label is selectable.
 See C<gtk_label_set_selectable()>. If the label is not selectable,
@@ -1175,7 +1175,7 @@ sub gtk_label_select_region ( N-GObject $label, int32 $start_offset, int32 $end_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_selection_bounds:
 =begin pod
-=head2 [gtk_label_] get_selection_bounds
+=head2 [[gtk_] label_] get_selection_bounds
 
 Gets the selected range of characters in the label, returning C<1>
 if there’s a selection.
@@ -1198,7 +1198,7 @@ sub gtk_label_get_selection_bounds ( N-GObject $label, int32 $start, int32 $end 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_layout:
 =begin pod
-=head2 [gtk_label_] get_layout
+=head2 [[gtk_] label_] get_layout
 
 Gets the B<PangoLayout> used to display the label.
 The layout is useful to e.g. convert text positions to
@@ -1222,7 +1222,7 @@ sub gtk_label_get_layout ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_layout_offsets:
 =begin pod
-=head2 [gtk_label_] get_layout_offsets
+=head2 [[gtk_] label_] get_layout_offsets
 
 Obtains the coordinates where the label will draw the B<PangoLayout>
 representing the text in the label; useful to convert mouse events
@@ -1249,7 +1249,7 @@ sub gtk_label_get_layout_offsets ( N-GObject $label, int32 $x, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_single_line_mode:
 =begin pod
-=head2 [gtk_label_] set_single_line_mode
+=head2 [[gtk_] label_] set_single_line_mode
 
 Sets whether the label is in single line mode.
 
@@ -1268,7 +1268,7 @@ sub gtk_label_set_single_line_mode ( N-GObject $label, int32 $single_line_mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_single_line_mode:
 =begin pod
-=head2 [gtk_label_] get_single_line_mode
+=head2 [[gtk_] label_] get_single_line_mode
 
 Returns whether the label is in single line mode.
 
@@ -1289,7 +1289,7 @@ sub gtk_label_get_single_line_mode ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_current_uri:
 =begin pod
-=head2 [gtk_label_] get_current_uri
+=head2 [[gtk_] label_] get_current_uri
 
 Returns the URI for the currently active link in the label.
 The active link is the one under the mouse pointer or, in a
@@ -1317,7 +1317,7 @@ sub gtk_label_get_current_uri ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_track_visited_links:
 =begin pod
-=head2 [gtk_label_] set_track_visited_links
+=head2 [[gtk_] label_] set_track_visited_links
 
 Sets whether the label should keep track of clicked
 links (and use a different color for them).
@@ -1337,7 +1337,7 @@ sub gtk_label_set_track_visited_links ( N-GObject $label, int32 $track_links )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_track_visited_links:
 =begin pod
-=head2 [gtk_label_] get_track_visited_links
+=head2 [[gtk_] label_] get_track_visited_links
 
 Returns whether the label is currently keeping track
 of clicked links.
@@ -1359,7 +1359,7 @@ sub gtk_label_get_track_visited_links ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_xalign:
 =begin pod
-=head2 [gtk_label_] set_xalign
+=head2 [[gtk_] label_] set_xalign
 
 Sets the  I<xalign> property for I<label>.
 
@@ -1378,7 +1378,7 @@ sub gtk_label_set_xalign ( N-GObject $label, num32 $xalign )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_xalign:
 =begin pod
-=head2 [gtk_label_] get_xalign
+=head2 [[gtk_] label_] get_xalign
 
 Gets the  I<xalign> property for I<label>.
 
@@ -1399,7 +1399,7 @@ sub gtk_label_get_xalign ( N-GObject $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_yalign:
 =begin pod
-=head2 [gtk_label_] set_yalign
+=head2 [[gtk_] label_] set_yalign
 
 Sets the  I<yalign> property for I<label>.
 
@@ -1418,7 +1418,7 @@ sub gtk_label_set_yalign ( N-GObject $label, num32 $yalign )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_get_yalign:
 =begin pod
-=head2 [gtk_label_] get_yalign
+=head2 [[gtk_] label_] get_yalign
 
 Gets the  I<yalign> property for I<label>.
 

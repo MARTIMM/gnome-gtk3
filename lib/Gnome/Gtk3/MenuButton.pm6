@@ -201,7 +201,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_new:
 =begin pod
-=head2 gtk_menu_button_new
+=head2 [gtk_] menu_button_new
 
 Creates a new B<Gnome::Gtk3::MenuButton> widget with downwards-pointing
 arrow as the only child. You can replace the child widget
@@ -224,7 +224,7 @@ sub gtk_menu_button_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_set_popup:
 =begin pod
-=head2 [gtk_menu_button_] set_popup
+=head2 [[gtk_] menu_button_] set_popup
 
 Sets the B<Gnome::Gtk3::Menu> that will be popped up when the button is clicked,
 or C<Any> to disable the button. If  I<menu-model> or
@@ -245,7 +245,7 @@ sub gtk_menu_button_set_popup ( N-GObject $menu_button, N-GObject $menu )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_get_popup:
 =begin pod
-=head2 [gtk_menu_button_] get_popup
+=head2 [[gtk_] menu_button_] get_popup
 
 Returns the B<Gnome::Gtk3::Menu> that pops out of the button.
 If the button does not use a B<Gnome::Gtk3::Menu>, this function
@@ -268,7 +268,7 @@ sub gtk_menu_button_get_popup ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_set_popover:
 =begin pod
-=head2 [gtk_menu_button_] set_popover
+=head2 [[gtk_] menu_button_] set_popover
 
 Sets the B<Gnome::Gtk3::Popover> that will be popped up when the button is
 clicked, or C<Any> to disable the button. If  I<menu-model>
@@ -289,7 +289,7 @@ sub gtk_menu_button_set_popover ( N-GObject $menu_button, N-GObject $popover )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_get_popover:
 =begin pod
-=head2 [gtk_menu_button_] get_popover
+=head2 [[gtk_] menu_button_] get_popover
 
 Returns the B<Gnome::Gtk3::Popover> that pops out of the button.
 If the button is not using a B<Gnome::Gtk3::Popover>, this function
@@ -312,7 +312,7 @@ sub gtk_menu_button_get_popover ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_button_set_direction:
 =begin pod
-=head2 [gtk_menu_button_] set_direction
+=head2 [[gtk_] menu_button_] set_direction
 
 Sets the direction in which the popup will be popped up, as
 well as changing the arrow’s direction. The child will not
@@ -339,7 +339,7 @@ sub gtk_menu_button_set_direction ( N-GObject $menu_button, int32 $direction )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_menu_button_get_direction:
 =begin pod
-=head2 [gtk_menu_button_] get_direction
+=head2 [[gtk_] menu_button_] get_direction
 
 Returns the direction the popup will be pointing at when popped up.
 
@@ -360,7 +360,7 @@ sub gtk_menu_button_get_direction ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_set_menu_model:
 =begin pod
-=head2 [gtk_menu_button_] set_menu_model
+=head2 [[gtk_] menu_button_] set_menu_model
 
 Sets the B<GMenuModel> from which the popup will be constructed,
 or C<Any> to disable the button.
@@ -388,7 +388,7 @@ sub gtk_menu_button_set_menu_model ( N-GObject $menu_button, N-GObject $menu_mod
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_get_menu_model:
 =begin pod
-=head2 [gtk_menu_button_] get_menu_model
+=head2 [[gtk_] menu_button_] get_menu_model
 
 Returns the B<GMenuModel> used to generate the popup.
 
@@ -409,7 +409,7 @@ sub gtk_menu_button_get_menu_model ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_set_align_widget:
 =begin pod
-=head2 [gtk_menu_button_] set_align_widget
+=head2 [[gtk_] menu_button_] set_align_widget
 
 Sets the B<Gnome::Gtk3::Widget> to use to line the menu with when popped up.
 Note that the I<align_widget> must contain the B<Gnome::Gtk3::MenuButton> itself.
@@ -435,7 +435,7 @@ sub gtk_menu_button_set_align_widget ( N-GObject $menu_button, N-GObject $align_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_get_align_widget:
 =begin pod
-=head2 [gtk_menu_button_] get_align_widget
+=head2 [[gtk_] menu_button_] get_align_widget
 
 Returns the parent B<Gnome::Gtk3::Widget> to use to line up with menu.
 
@@ -456,7 +456,7 @@ sub gtk_menu_button_get_align_widget ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_set_use_popover:
 =begin pod
-=head2 [gtk_menu_button_] set_use_popover
+=head2 [[gtk_] menu_button_] set_use_popover
 
 Sets whether to construct a B<Gnome::Gtk3::Popover> instead of B<Gnome::Gtk3::Menu>
 when C<gtk_menu_button_set_menu_model()> is called. Note that
@@ -477,7 +477,7 @@ sub gtk_menu_button_set_use_popover ( N-GObject $menu_button, int32 $use_popover
 #-------------------------------------------------------------------------------
 #TM:0:gtk_menu_button_get_use_popover:
 =begin pod
-=head2 [gtk_menu_button_] get_use_popover
+=head2 [[gtk_] menu_button_] get_use_popover
 
 Returns whether a B<Gnome::Gtk3::Popover> or a B<Gnome::Gtk3::Menu> will be constructed
 from the menu model.
@@ -592,7 +592,7 @@ The B<Gnome::GObject::Value> type of property I<popover> is C<G_TYPE_OBJECT>.
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_menu_button_new
+=head2 [gtk_] menu_button_new
 
 Creates a new B<Gnome::Gtk3::MenuButton> widget with downwards-pointing arrow as the only child. You can replace the child widget with another B<Gnome::Gtk3::Widget> should you wish to.
 
@@ -609,7 +609,7 @@ sub gtk_menu_button_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] set_popup
+=head2 [[gtk_] menu_button_] set_popup
 
 Sets the B<Gnome::Gtk3::Menu> that will be popped up when the button is clicked, or C<Any> to disable the button. If C<menu>-model or C<popover> are set, they will be set to C<Any>.
 
@@ -625,7 +625,7 @@ sub gtk_menu_button_set_popup ( N-GObject $menu_button, N-GObject $menu )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_popup
+=head2 [[gtk_] menu_button_] get_popup
 
 Returns the B<Gnome::Gtk3::Menu> that pops out of the button. If the button does not use a B<Gnome::Gtk3::Menu>, this function returns C<Any>.
 
@@ -642,7 +642,7 @@ sub gtk_menu_button_get_popup ( N-GObject $menu_button )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] set_popover
+=head2 [[gtk_] menu_button_] set_popover
 
 Sets the B<Gnome::Gtk3::Popover> that will be popped up when the button is clicked, or C<Any> to disable the button. If C<menu>-model or C<popup> are set, they will be set to C<Any>.
 
@@ -658,7 +658,7 @@ sub gtk_menu_button_set_popover ( N-GObject $menu_button, N-GObject $popover )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_popover
+=head2 [[gtk_] menu_button_] get_popover
 
 Returns the B<Gnome::Gtk3::Popover> that pops out of the button. If the button is not using a B<Gnome::Gtk3::Popover>, this function returns C<Any>.
 
@@ -675,7 +675,7 @@ sub gtk_menu_button_get_popover ( N-GObject $menu_button )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] set_direction
+=head2 [[gtk_] menu_button_] set_direction
 
 Sets the direction in which the popup will be popped up, as well as changing the arrow’s direction. The child will not be changed to an arrow if it was customized.
 
@@ -691,7 +691,7 @@ sub gtk_menu_button_set_direction ( N-GObject $menu_button, int32 $direction )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_direction
+=head2 [[gtk_] menu_button_] get_direction
 
 Returns the direction the popup will be pointing at when popped up.
 
@@ -709,7 +709,7 @@ sub gtk_menu_button_get_direction ( N-GObject $menu_button )
 #-------------------------------------------------------------------------------
 #`{{
 =begin pod
-=head2 [gtk_menu_button_] set_menu_model
+=head2 [[gtk_] menu_button_] set_menu_model
 
 Sets the C<GMenuModel> from which the popup will be constructed, or C<Any> to disable the button.
 
@@ -725,7 +725,7 @@ sub gtk_menu_button_set_menu_model ( N-GObject $menu_button, GMenuModel $menu_mo
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_menu_model
+=head2 [[gtk_] menu_button_] get_menu_model
 
 Returns the C<GMenuModel> used to generate the popup.
 
@@ -743,7 +743,7 @@ sub gtk_menu_button_get_menu_model ( N-GObject $menu_button )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] set_align_widget
+=head2 [[gtk_] menu_button_] set_align_widget
 
 Sets the B<Gnome::Gtk3::Widget> to use to line the menu with when popped up. Note that the I<align_widget> must contain the B<Gnome::Gtk3::MenuButton> itself.
 
@@ -759,7 +759,7 @@ sub gtk_menu_button_set_align_widget ( N-GObject $menu_button, N-GObject $align_
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_align_widget
+=head2 [[gtk_] menu_button_] get_align_widget
 
 Returns the parent B<Gnome::Gtk3::Widget> to use to line up with menu.
 
@@ -776,7 +776,7 @@ sub gtk_menu_button_get_align_widget ( N-GObject $menu_button )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] set_use_popover
+=head2 [[gtk_] menu_button_] set_use_popover
 
 Sets whether to construct a B<Gnome::Gtk3::Popover> instead of B<Gnome::Gtk3::Menu> when C<gtk_menu_button_set_menu_model()> is called. Note that this property is only consulted when a new menu model is set.
 
@@ -792,7 +792,7 @@ sub gtk_menu_button_set_use_popover ( N-GObject $menu_button, int32 $use_popover
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_menu_button_] get_use_popover
+=head2 [[gtk_] menu_button_] get_use_popover
 
 Returns whether a B<Gnome::Gtk3::Popover> or a B<Gnome::Gtk3::Menu> will be constructed from the menu model.
 

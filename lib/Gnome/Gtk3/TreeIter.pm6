@@ -175,7 +175,7 @@ method clear-tree-iter ( ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_iter_copy:
 =begin pod
-=head2 gtk_tree_iter_copy
+=head2 [gtk_] tree_iter_copy
 
 Creates a dynamically allocated tree iterator as a copy of I<iter>.
 
@@ -202,7 +202,7 @@ sub gtk_tree_iter_copy ( N-GtkTreeIter $iter )
 #`{{ No document, user must use clear-tree-iter()
 # TM:0:gtk_tree_iter_free:
 =begin pod
-=head2 gtk_tree_iter_free
+=head2 [gtk_] tree_iter_free
 
 Frees an iterator that has been allocated by C<gtk_tree_iter_copy()>.
 

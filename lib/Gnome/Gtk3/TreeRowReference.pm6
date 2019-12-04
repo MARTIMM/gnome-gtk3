@@ -140,7 +140,7 @@ method clear-tree-row-reference ( ) {
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_row_reference_new_proxy:
 =begin pod
-=head2 gtk_tree_row_reference_new_proxy
+=head2 [gtk_] tree_row_reference_new_proxy
 
 You do not need to use this function.
 
@@ -189,7 +189,7 @@ sub gtk_tree_row_reference_new_proxy ( N-GObject $proxy, N-GObject $model, N-Gtk
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_row_reference_get_path:
 =begin pod
-=head2 gtk_tree_row_reference_get_path
+=head2 [gtk_] tree_row_reference_get_path
 
 Returns a path that the row reference currently points to, or C<Any> if the path pointed to is no longer valid.
 
@@ -215,7 +215,7 @@ sub _gtk_tree_row_reference_get_path ( N-GtkTreeRowReference $reference )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_row_reference_get_model:
 =begin pod
-=head2 gtk_tree_row_reference_get_model
+=head2 [gtk_] tree_row_reference_get_model
 
 Returns the model that the row reference is monitoring.
 
@@ -234,7 +234,7 @@ sub gtk_tree_row_reference_get_model ( N-GtkTreeRowReference $reference )
 #-------------------------------------------------------------------------------
 # TM:1:gtk_tree_row_reference_valid:
 =begin pod
-=head2 gtk_tree_row_reference_valid
+=head2 [gtk_] tree_row_reference_valid
 
 Returns C<1> if the reference is defined and refers to a current valid path.
 
@@ -251,7 +251,7 @@ sub gtk_tree_row_reference_valid ( N-GtkTreeRowReference $reference )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_row_reference_copy:
 =begin pod
-=head2 gtk_tree_row_reference_copy
+=head2 [gtk_] tree_row_reference_copy
 
 Copies a B<Gnome::Gtk3::TreeRowReference>.
 
@@ -270,7 +270,7 @@ sub gtk_tree_row_reference_copy ( N-GtkTreeRowReference $reference )
 #`{{ use clear method above
 #TM:0:gtk_tree_row_reference_free:
 =begin pod
-=head2 gtk_tree_row_reference_free
+=head2 [gtk_] tree_row_reference_free
 
 Free’s I<reference>. I<reference> may be C<Any>
 
@@ -288,7 +288,7 @@ sub _gtk_tree_row_reference_free ( N-GtkTreeRowReference $reference )
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_row_reference_inserted:
 =begin pod
-=head2 gtk_tree_row_reference_inserted
+=head2 [gtk_] tree_row_reference_inserted
 
 Lets a set of row reference created by C<gtk_tree_row_reference_new_proxy()> know that the model emitted the  I<row-inserted> signal.
 
@@ -308,7 +308,7 @@ sub gtk_tree_row_reference_inserted ( N-GObject $proxy, N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_row_reference_deleted:
 =begin pod
-=head2 gtk_tree_row_reference_deleted
+=head2 [gtk_] tree_row_reference_deleted
 
 Lets a set of row reference created by
 C<gtk_tree_row_reference_new_proxy()> know that the
@@ -330,7 +330,7 @@ sub gtk_tree_row_reference_deleted ( N-GObject $proxy, N-GtkTreePath $path )
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_row_reference_reordered:
 =begin pod
-=head2 gtk_tree_row_reference_reordered
+=head2 [gtk_] tree_row_reference_reordered
 
 Lets a set of row reference created by
 C<gtk_tree_row_reference_new_proxy()> know that the

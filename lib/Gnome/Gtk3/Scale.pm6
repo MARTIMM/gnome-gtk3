@@ -253,7 +253,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_scale_new:new(:empty)
 =begin pod
-=head2 gtk_scale_new
+=head2 [gtk_] scale_new
 
 Creates a new B<Gnome::Gtk3::Scale>.
 
@@ -276,7 +276,7 @@ sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_scale_new_with_range:new(:orientation,:min,:max,:step)
 =begin pod
-=head2 [gtk_scale_] new_with_range
+=head2 [[gtk_] scale_] new_with_range
 
 Creates a new scale widget with the given orientation that lets the
 user input a number between I<min> and I<max> (including I<min> and I<max>)
@@ -309,7 +309,7 @@ sub gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_set_digits:
 =begin pod
-=head2 [gtk_scale_] set_digits
+=head2 [[gtk_] scale_] set_digits
 
 Sets the number of decimal places that are displayed in the value.
 Also causes the value of the adjustment to be rounded off to this
@@ -333,7 +333,7 @@ sub gtk_scale_set_digits ( N-GObject $scale, int32 $digits )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_get_digits:
 =begin pod
-=head2 [gtk_scale_] get_digits
+=head2 [[gtk_] scale_] get_digits
 
 Gets the number of decimal places that are displayed in the value.
 
@@ -352,7 +352,7 @@ sub gtk_scale_get_digits ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_set_draw_value:
 =begin pod
-=head2 [gtk_scale_] set_draw_value
+=head2 [[gtk_] scale_] set_draw_value
 
 Specifies whether the current value is displayed as a string next
 to the slider.
@@ -370,7 +370,7 @@ sub gtk_scale_set_draw_value ( N-GObject $scale, int32 $draw_value )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_get_draw_value:
 =begin pod
-=head2 [gtk_scale_] get_draw_value
+=head2 [[gtk_] scale_] get_draw_value
 
 Returns whether the current value is displayed as a string
 next to the slider.
@@ -390,7 +390,7 @@ sub gtk_scale_get_draw_value ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_set_has_origin:
 =begin pod
-=head2 [gtk_scale_] set_has_origin
+=head2 [[gtk_] scale_] set_has_origin
 
 If I<has_origin> is set to C<1> (the default),
 the scale will highlight the part of the scale
@@ -412,7 +412,7 @@ sub gtk_scale_set_has_origin ( N-GObject $scale, int32 $has_origin )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_get_has_origin:
 =begin pod
-=head2 [gtk_scale_] get_has_origin
+=head2 [[gtk_] scale_] get_has_origin
 
 Returns whether the scale has an origin.
 
@@ -433,7 +433,7 @@ sub gtk_scale_get_has_origin ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_set_value_pos:
 =begin pod
-=head2 [gtk_scale_] set_value_pos
+=head2 [[gtk_] scale_] set_value_pos
 
 Sets the position in which the current value is displayed.
 
@@ -450,7 +450,7 @@ sub gtk_scale_set_value_pos ( N-GObject $scale, int32 $pos )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_scale_get_value_pos:
 =begin pod
-=head2 [gtk_scale_] get_value_pos
+=head2 [[gtk_] scale_] get_value_pos
 
 Gets the position in which the current value is displayed.
 
@@ -470,7 +470,7 @@ sub gtk_scale_get_value_pos ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_get_layout:
 =begin pod
-=head2 [gtk_scale_] get_layout
+=head2 [[gtk_] scale_] get_layout
 
 Gets the B<PangoLayout> used to display the scale. The returned
 object is owned by the scale so does not need to be freed by
@@ -496,7 +496,7 @@ sub gtk_scale_get_layout ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_get_layout_offsets:
 =begin pod
-=head2 [gtk_scale_] get_layout_offsets
+=head2 [[gtk_] scale_] get_layout_offsets
 
 Obtains the coordinates where the scale will draw the
 B<PangoLayout> representing the text in the scale. Remember
@@ -523,7 +523,7 @@ sub gtk_scale_get_layout_offsets ( N-GObject $scale, int32 $x, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_add_mark:
 =begin pod
-=head2 [gtk_scale_] add_mark
+=head2 [[gtk_] scale_] add_mark
 
 Adds a mark at I<value>.
 
@@ -552,7 +552,7 @@ sub gtk_scale_add_mark ( N-GObject $scale, num64 $value, int32 $position, Str $m
 #-------------------------------------------------------------------------------
 #TM:0:gtk_scale_clear_marks:
 =begin pod
-=head2 [gtk_scale_] clear_marks
+=head2 [[gtk_] scale_] clear_marks
 
 Removes any marks that have been added with C<gtk_scale_add_mark()>.
 
@@ -662,7 +662,7 @@ Returns: allocated string representing I<$value>
 #-------------------------------------------------------------------------------
 #`{{
 =begin pod
-=head2 gtk_scale_new
+=head2 [gtk_] scale_new
 
 Creates a new native scale object
 
@@ -690,7 +690,7 @@ sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] new_with_range
+=head2 [[gtk_] scale_] new_with_range
 
 Creates a new native scale object
 
@@ -713,7 +713,7 @@ sub gtk_scale_new_with_range (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] set_digits
+=head2 [[gtk_] scale_] set_digits
 
 Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded to this number of digits, so the retrieved value matches the displayed one, if “draw-value” is 1 when the value changes. If you want to enforce rounding the value when “draw-value” is 0, you can set “round-digits” instead.
 
@@ -731,7 +731,7 @@ sub gtk_scale_set_digits ( N-GObject $scale, int32  $digits )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] set_draw_value
+=head2 [[gtk_] scale_] set_draw_value
 
 Specifies whether the current value is displayed as a string next to the slider.
 
@@ -747,7 +747,7 @@ sub gtk_scale_set_draw_value ( N-GObject $scale, int32 $draw-value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] set_has_origin
+=head2 [[gtk_] scale_] set_has_origin
 
 If “has-origin” is set to 1 (the default), the scale will highlight the part of the trough between the origin (bottom or left side) and the current value.
 
@@ -763,7 +763,7 @@ sub gtk_scale_set_has_origin ( N-GObject $scale, int32 $has-origin )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] set_value_pos
+=head2 [[gtk_] scale_] set_value_pos
 
 Sets the position in which the current value is displayed.
 
@@ -779,7 +779,7 @@ sub gtk_scale_set_value_pos ( N-GObject $scale, int32 $pos )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] get_digits
+=head2 [[gtk_] scale_] get_digits
 
 Gets the number of decimal places that are displayed in the value.
 
@@ -796,7 +796,7 @@ sub gtk_scale_get_digits ( N-GObject $scale )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] get_draw_value
+=head2 [[gtk_] scale_] get_draw_value
 
 Returns whether the current value is displayed as a string next to the slider.
 
@@ -813,7 +813,7 @@ sub gtk_scale_get_draw_value ( N-GObject $scale )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] get_has_origin
+=head2 [[gtk_] scale_] get_has_origin
 
 Returns whether the scale has an origin.
 
@@ -830,7 +830,7 @@ sub gtk_scale_get_has_origin ( N-GObject $scale )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] get_value_pos
+=head2 [[gtk_] scale_] get_value_pos
 
 Gets the position in which the current value is displayed.
 
@@ -851,7 +851,7 @@ sub gtk_scale_get_value_pos ( N-GObject $scale )
 #-------------------------------------------------------------------------------
 #`{{
 =begin pod
-=head2 [gtk_scale_] get_layout_offsets
+=head2 [[gtk_] scale_] get_layout_offsets
 
 Obtains the coordinates where the scale will draw the PangoLayout representing the text in the scale. Remember when using the PangoLayout function you need to convert to and from pixels using PANGO_PIXELS() or PANGO_SCALE.
 
@@ -873,7 +873,7 @@ sub gtk_scale_get_layout_offsets (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] add_mark
+=head2 [[gtk_] scale_] add_mark
 
   method gtk_scale_add_mark ( Num $value, Int $pos, Str $markup )
 
@@ -889,7 +889,7 @@ sub gtk_scale_add_mark (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_scale_] clear_marks
+=head2 [[gtk_] scale_] clear_marks
 
 Removes any marks that have been added with C<gtk_scale_add_mark()>.
 

@@ -158,7 +158,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new:
 =begin pod
-=head2 gtk_combo_box_new
+=head2 [gtk_] combo_box_new
 
 Creates a new empty B<Gnome::Gtk3::ComboBox>.
 
@@ -179,7 +179,7 @@ sub gtk_combo_box_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new_with_area:
 =begin pod
-=head2 [gtk_combo_box_] new_with_area
+=head2 [[gtk_] combo_box_] new_with_area
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> using I<area> to layout cells.
 
@@ -199,7 +199,7 @@ sub gtk_combo_box_new_with_area ( N-GObject $area )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new_with_area_and_entry:
 =begin pod
-=head2 [gtk_combo_box_] new_with_area_and_entry
+=head2 [[gtk_] combo_box_] new_with_area_and_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry.
 
@@ -221,7 +221,7 @@ sub gtk_combo_box_new_with_area_and_entry ( N-GObject $area )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new_with_entry:
 =begin pod
-=head2 [gtk_combo_box_] new_with_entry
+=head2 [[gtk_] combo_box_] new_with_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry.
 
@@ -242,7 +242,7 @@ sub gtk_combo_box_new_with_entry (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new_with_model:
 =begin pod
-=head2 [gtk_combo_box_] new_with_model
+=head2 [[gtk_] combo_box_] new_with_model
 
 Creates a new B<Gnome::Gtk3::ComboBox> with the model initialized to I<model>.
 
@@ -264,7 +264,7 @@ sub gtk_combo_box_new_with_model ( N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_new_with_model_and_entry:
 =begin pod
-=head2 [gtk_combo_box_] new_with_model_and_entry
+=head2 [[gtk_] combo_box_] new_with_model_and_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry
 and with the model initialized to I<model>.
@@ -287,7 +287,7 @@ sub gtk_combo_box_new_with_model_and_entry ( N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_wrap_width:
 =begin pod
-=head2 [gtk_combo_box_] get_wrap_width
+=head2 [[gtk_] combo_box_] get_wrap_width
 
 Returns the wrap width which is used to determine the number of columns
 for the popup menu. If the wrap width is larger than 1, the combo box
@@ -310,7 +310,7 @@ sub gtk_combo_box_get_wrap_width ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_wrap_width:
 =begin pod
-=head2 [gtk_combo_box_] set_wrap_width
+=head2 [[gtk_] combo_box_] set_wrap_width
 
 Sets the wrap width of I<combo_box> to be I<width>. The wrap width is basically
 the preferred number of columns when you want the popup to be layed out
@@ -331,7 +331,7 @@ sub gtk_combo_box_set_wrap_width ( N-GObject $combo_box, int32 $width )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_row_span_column:
 =begin pod
-=head2 [gtk_combo_box_] get_row_span_column
+=head2 [[gtk_] combo_box_] get_row_span_column
 
 Returns the column with row span information for I<combo_box>.
 
@@ -352,7 +352,7 @@ sub gtk_combo_box_get_row_span_column ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_row_span_column:
 =begin pod
-=head2 [gtk_combo_box_] set_row_span_column
+=head2 [[gtk_] combo_box_] set_row_span_column
 
 Sets the column with row span information for I<combo_box> to be I<row_span>.
 The row span column contains integers which indicate how many rows
@@ -373,7 +373,7 @@ sub gtk_combo_box_set_row_span_column ( N-GObject $combo_box, int32 $row_span )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_column_span_column:
 =begin pod
-=head2 [gtk_combo_box_] get_column_span_column
+=head2 [[gtk_] combo_box_] get_column_span_column
 
 Returns the column with column span information for I<combo_box>.
 
@@ -394,7 +394,7 @@ sub gtk_combo_box_get_column_span_column ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_column_span_column:
 =begin pod
-=head2 [gtk_combo_box_] set_column_span_column
+=head2 [[gtk_] combo_box_] set_column_span_column
 
 Sets the column with column span information for I<combo_box> to be
 I<column_span>. The column span column contains integers which indicate
@@ -415,7 +415,7 @@ sub gtk_combo_box_set_column_span_column ( N-GObject $combo_box, int32 $column_s
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_active:
 =begin pod
-=head2 [gtk_combo_box_] get_active
+=head2 [[gtk_] combo_box_] get_active
 
 Returns the index of the currently active item, or -1 if there’s no
 active item. If the model is a non-flat treemodel, and the active item
@@ -441,7 +441,7 @@ sub gtk_combo_box_get_active ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_active:
 =begin pod
-=head2 [gtk_combo_box_] set_active
+=head2 [[gtk_] combo_box_] set_active
 
 Sets the active item of I<combo_box> to be the item at I<index>.
 
@@ -461,7 +461,7 @@ sub gtk_combo_box_set_active ( N-GObject $combo_box, int32 $index_ )
 #`{{
 #TM:0:gtk_combo_box_get_active_iter:
 =begin pod
-=head2 [gtk_combo_box_] get_active_iter
+=head2 [[gtk_] combo_box_] get_active_iter
 
 Sets I<iter> to point to the current active item, if it exists.
 
@@ -483,7 +483,7 @@ sub gtk_combo_box_get_active_iter ( N-GObject $combo_box, GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_active_iter:
 =begin pod
-=head2 [gtk_combo_box_] set_active_iter
+=head2 [[gtk_] combo_box_] set_active_iter
 
 Sets the current active item to be the one referenced by I<iter>, or
 unsets the active item if I<iter> is C<Any>.
@@ -503,7 +503,7 @@ sub gtk_combo_box_set_active_iter ( N-GObject $combo_box, GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_model:
 =begin pod
-=head2 [gtk_combo_box_] set_model
+=head2 [[gtk_] combo_box_] set_model
 
 Sets the model used by I<combo_box> to be I<model>. Will unset a previously set
 model (if applicable). If model is C<Any>, then it will unset the model.
@@ -527,7 +527,7 @@ sub gtk_combo_box_set_model ( N-GObject $combo_box, N-GObject $model )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_model:
 =begin pod
-=head2 [gtk_combo_box_] get_model
+=head2 [[gtk_] combo_box_] get_model
 
 Returns the B<Gnome::Gtk3::TreeModel> which is acting as data source for I<combo_box>.
 
@@ -550,7 +550,7 @@ sub gtk_combo_box_get_model ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_row_separator_func:
 =begin pod
-=head2 [gtk_combo_box_] get_row_separator_func
+=head2 [[gtk_] combo_box_] get_row_separator_func
 
 Returns the current row separator function.
 
@@ -571,7 +571,7 @@ sub gtk_combo_box_get_row_separator_func ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_row_separator_func:
 =begin pod
-=head2 [gtk_combo_box_] set_row_separator_func
+=head2 [[gtk_] combo_box_] set_row_separator_func
 
 Sets the row separator function, which is used to determine
 whether a row should be drawn as a separator. If the row separator
@@ -595,7 +595,7 @@ sub gtk_combo_box_set_row_separator_func ( N-GObject $combo_box, GtkTreeViewRowS
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_button_sensitivity:
 =begin pod
-=head2 [gtk_combo_box_] set_button_sensitivity
+=head2 [[gtk_] combo_box_] set_button_sensitivity
 
 Sets whether the dropdown button of the combo box should be
 always sensitive (C<GTK_SENSITIVITY_ON>), never sensitive (C<GTK_SENSITIVITY_OFF>)
@@ -616,7 +616,7 @@ sub gtk_combo_box_set_button_sensitivity ( N-GObject $combo_box, int32 $sensitiv
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_button_sensitivity:
 =begin pod
-=head2 [gtk_combo_box_] get_button_sensitivity
+=head2 [[gtk_] combo_box_] get_button_sensitivity
 
 Returns whether the combo box sets the dropdown button
 sensitive or not when there are no items in the model.
@@ -642,7 +642,7 @@ sub gtk_combo_box_get_button_sensitivity ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_combo_box_get_has_entry:
 =begin pod
-=head2 [gtk_combo_box_] get_has_entry
+=head2 [[gtk_] combo_box_] get_has_entry
 
 Returns whether the combo box has an entry.
 
@@ -663,7 +663,7 @@ sub gtk_combo_box_get_has_entry ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_entry_text_column:
 =begin pod
-=head2 [gtk_combo_box_] set_entry_text_column
+=head2 [[gtk_] combo_box_] set_entry_text_column
 
 Sets the model column which I<combo_box> should use to get strings from
 to be I<text_column>. The column I<text_column> in the model of I<combo_box>
@@ -687,7 +687,7 @@ sub gtk_combo_box_set_entry_text_column ( N-GObject $combo_box, int32 $text_colu
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_entry_text_column:
 =begin pod
-=head2 [gtk_combo_box_] get_entry_text_column
+=head2 [[gtk_] combo_box_] get_entry_text_column
 
 Returns the column which I<combo_box> is using to get the strings
 from to display in the internal entry.
@@ -709,7 +709,7 @@ sub gtk_combo_box_get_entry_text_column ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_popup_fixed_width:
 =begin pod
-=head2 [gtk_combo_box_] set_popup_fixed_width
+=head2 [[gtk_] combo_box_] set_popup_fixed_width
 
 Specifies whether the popup’s width should be a fixed width
 matching the allocated width of the combo box.
@@ -729,7 +729,7 @@ sub gtk_combo_box_set_popup_fixed_width ( N-GObject $combo_box, int32 $fixed )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_popup_fixed_width:
 =begin pod
-=head2 [gtk_combo_box_] get_popup_fixed_width
+=head2 [[gtk_] combo_box_] get_popup_fixed_width
 
 Gets whether the popup uses a fixed width matching
 the allocated width of the combo box.
@@ -751,7 +751,7 @@ sub gtk_combo_box_get_popup_fixed_width ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_popup:
 =begin pod
-=head2 gtk_combo_box_popup
+=head2 [gtk_] combo_box_popup
 
 Pops up the menu or dropdown list of I<combo_box>.
 
@@ -772,7 +772,7 @@ sub gtk_combo_box_popup ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_popup_for_device:
 =begin pod
-=head2 [gtk_combo_box_] popup_for_device
+=head2 [[gtk_] combo_box_] popup_for_device
 
 Pops up the menu or dropdown list of I<combo_box>, the popup window
 will be grabbed so only I<device> and its associated pointer/keyboard
@@ -793,7 +793,7 @@ sub gtk_combo_box_popup_for_device ( N-GObject $combo_box, N-GObject $device )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_popdown:
 =begin pod
-=head2 gtk_combo_box_popdown
+=head2 [gtk_] combo_box_popdown
 
 Hides the menu or dropdown list of I<combo_box>.
 
@@ -815,7 +815,7 @@ sub gtk_combo_box_popdown ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_popup_accessible:
 =begin pod
-=head2 [gtk_combo_box_] get_popup_accessible
+=head2 [[gtk_] combo_box_] get_popup_accessible
 
 Gets the accessible object corresponding to the combo box’s popup.
 
@@ -840,7 +840,7 @@ sub gtk_combo_box_get_popup_accessible ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_id_column:
 =begin pod
-=head2 [gtk_combo_box_] get_id_column
+=head2 [[gtk_] combo_box_] get_id_column
 
 Returns the column which I<combo_box> is using to get string IDs
 for values from.
@@ -862,7 +862,7 @@ sub gtk_combo_box_get_id_column ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_id_column:
 =begin pod
-=head2 [gtk_combo_box_] set_id_column
+=head2 [[gtk_] combo_box_] set_id_column
 
 Sets the model column which I<combo_box> should use to get string IDs
 for values from. The column I<id_column> in the model of I<combo_box>
@@ -883,7 +883,7 @@ sub gtk_combo_box_set_id_column ( N-GObject $combo_box, int32 $id_column )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_get_active_id:
 =begin pod
-=head2 [gtk_combo_box_] get_active_id
+=head2 [[gtk_] combo_box_] get_active_id
 
 Returns the ID of the active row of I<combo_box>.  This value is taken
 from the active row and the column specified by the  I<id-column>
@@ -914,7 +914,7 @@ sub gtk_combo_box_get_active_id ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_set_active_id:
 =begin pod
-=head2 [gtk_combo_box_] set_active_id
+=head2 [[gtk_] combo_box_] set_active_id
 
 Changes the active row of I<combo_box> to the one that has an ID equal to
 I<active_id>, or unsets the active row if I<active_id> is C<Any>.  Rows having
@@ -1302,7 +1302,7 @@ The B<Gnome::GObject::Value> type of property I<cell-area> is C<G_TYPE_OBJECT>.
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_new
+=head2 [gtk_] combo_box_new
 
 Creates a new empty B<Gnome::Gtk3::ComboBox>.
 
@@ -1322,7 +1322,7 @@ sub gtk_combo_box_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] new_with_area
+=head2 [[gtk_] combo_box_] new_with_area
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> using I<area> to layout cells.
 
@@ -1341,7 +1341,7 @@ sub gtk_combo_box_new_with_area ( N-GObject $area )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] new_with_area_and_entry
+=head2 [[gtk_] combo_box_] new_with_area_and_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry.
 
@@ -1362,7 +1362,7 @@ sub gtk_combo_box_new_with_area_and_entry ( N-GObject $area )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] new_with_entry
+=head2 [[gtk_] combo_box_] new_with_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry.
 
@@ -1382,7 +1382,7 @@ sub gtk_combo_box_new_with_entry (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] new_with_model
+=head2 [[gtk_] combo_box_] new_with_model
 
 Creates a new B<Gnome::Gtk3::ComboBox> with the model initialized to I<model>.
 
@@ -1403,7 +1403,7 @@ sub gtk_combo_box_new_with_model ( N-GObject $model )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] new_with_model_and_entry
+=head2 [[gtk_] combo_box_] new_with_model_and_entry
 
 Creates a new empty B<Gnome::Gtk3::ComboBox> with an entry
 and with the model initialized to I<model>.
@@ -1425,7 +1425,7 @@ sub gtk_combo_box_new_with_model_and_entry ( N-GObject $model )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_wrap_width
+=head2 [[gtk_] combo_box_] get_wrap_width
 
 Returns the wrap width which is used to determine the number of columns
 for the popup menu. If the wrap width is larger than 1, the combo box
@@ -1447,7 +1447,7 @@ sub gtk_combo_box_get_wrap_width ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_wrap_width
+=head2 [[gtk_] combo_box_] set_wrap_width
 
 Sets the wrap width of I<combo_box> to be I<width>. The wrap width is basically
 the preferred number of columns when you want the popup to be layed out
@@ -1467,7 +1467,7 @@ sub gtk_combo_box_set_wrap_width ( N-GObject $combo_box, int32 $width )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_row_span_column
+=head2 [[gtk_] combo_box_] get_row_span_column
 
 Returns the column with row span information for I<combo_box>.
 
@@ -1487,7 +1487,7 @@ sub gtk_combo_box_get_row_span_column ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_row_span_column
+=head2 [[gtk_] combo_box_] set_row_span_column
 
 Sets the column with row span information for I<combo_box> to be I<row_span>.
 The row span column contains integers which indicate how many rows
@@ -1507,7 +1507,7 @@ sub gtk_combo_box_set_row_span_column ( N-GObject $combo_box, int32 $row_span )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_column_span_column
+=head2 [[gtk_] combo_box_] get_column_span_column
 
 Returns the column with column span information for I<combo_box>.
 
@@ -1527,7 +1527,7 @@ sub gtk_combo_box_get_column_span_column ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_column_span_column
+=head2 [[gtk_] combo_box_] set_column_span_column
 
 Sets the column with column span information for I<combo_box> to be
 I<column_span>. The column span column contains integers which indicate
@@ -1547,7 +1547,7 @@ sub gtk_combo_box_set_column_span_column ( N-GObject $combo_box, int32 $column_s
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_active
+=head2 [[gtk_] combo_box_] get_active
 
 Returns the index of the currently active item, or -1 if there’s no
 active item. If the model is a non-flat treemodel, and the active item
@@ -1572,7 +1572,7 @@ sub gtk_combo_box_get_active ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_active
+=head2 [[gtk_] combo_box_] set_active
 
 Sets the active item of I<combo_box> to be the item at I<index>.
 
@@ -1591,7 +1591,7 @@ sub gtk_combo_box_set_active ( N-GObject $combo_box, int32 $index_ )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_active_iter
+=head2 [[gtk_] combo_box_] get_active_iter
 
 Sets I<iter> to point to the current active item, if it exists.
 
@@ -1612,7 +1612,7 @@ sub gtk_combo_box_get_active_iter ( N-GObject $combo_box, GtkTreeIter $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_active_iter
+=head2 [[gtk_] combo_box_] set_active_iter
 
 Sets the current active item to be the one referenced by I<iter>, or
 unsets the active item if I<iter> is C<Any>.
@@ -1632,7 +1632,7 @@ sub gtk_combo_box_set_active_iter ( N-GObject $combo_box, GtkTreeIter $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_model
+=head2 [[gtk_] combo_box_] set_model
 
 Sets the model used by I<combo_box> to be I<model>. Will unset a previously set
 model (if applicable). If model is C<Any>, then it will unset the model.
@@ -1655,7 +1655,7 @@ sub gtk_combo_box_set_model ( N-GObject $combo_box, N-GObject $model )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_model
+=head2 [[gtk_] combo_box_] get_model
 
 Returns the B<Gnome::Gtk3::TreeModel> which is acting as data source for I<combo_box>.
 
@@ -1677,7 +1677,7 @@ sub gtk_combo_box_get_model ( N-GObject $combo_box )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_row_separator_func
+=head2 [[gtk_] combo_box_] get_row_separator_func
 
 Returns the current row separator function.
 
@@ -1697,7 +1697,7 @@ sub gtk_combo_box_get_row_separator_func ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_row_separator_func
+=head2 [[gtk_] combo_box_] set_row_separator_func
 
 Sets the row separator function, which is used to determine
 whether a row should be drawn as a separator. If the row separator
@@ -1720,7 +1720,7 @@ sub gtk_combo_box_set_row_separator_func ( N-GObject $combo_box, GtkTreeViewRowS
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_button_sensitivity
+=head2 [[gtk_] combo_box_] set_button_sensitivity
 
 Sets whether the dropdown button of the combo box should be
 always sensitive (C<GTK_SENSITIVITY_ON>), never sensitive (C<GTK_SENSITIVITY_OFF>)
@@ -1740,7 +1740,7 @@ sub gtk_combo_box_set_button_sensitivity ( N-GObject $combo_box, int32 $sensitiv
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_button_sensitivity
+=head2 [[gtk_] combo_box_] get_button_sensitivity
 
 Returns whether the combo box sets the dropdown button
 sensitive or not when there are no items in the model.
@@ -1765,7 +1765,7 @@ sub gtk_combo_box_get_button_sensitivity ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_has_entry
+=head2 [[gtk_] combo_box_] get_has_entry
 
 Returns whether the combo box has an entry.
 
@@ -1785,7 +1785,7 @@ sub gtk_combo_box_get_has_entry ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_entry_text_column
+=head2 [[gtk_] combo_box_] set_entry_text_column
 
 Sets the model column which I<combo_box> should use to get strings from
 to be I<text_column>. The column I<text_column> in the model of I<combo_box>
@@ -1808,7 +1808,7 @@ sub gtk_combo_box_set_entry_text_column ( N-GObject $combo_box, int32 $text_colu
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_entry_text_column
+=head2 [[gtk_] combo_box_] get_entry_text_column
 
 Returns the column which I<combo_box> is using to get the strings
 from to display in the internal entry.
@@ -1829,7 +1829,7 @@ sub gtk_combo_box_get_entry_text_column ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_popup_fixed_width
+=head2 [[gtk_] combo_box_] set_popup_fixed_width
 
 Specifies whether the popup’s width should be a fixed width
 matching the allocated width of the combo box.
@@ -1848,7 +1848,7 @@ sub gtk_combo_box_set_popup_fixed_width ( N-GObject $combo_box, int32 $fixed )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_popup_fixed_width
+=head2 [[gtk_] combo_box_] get_popup_fixed_width
 
 Gets whether the popup uses a fixed width matching
 the allocated width of the combo box.
@@ -1869,7 +1869,7 @@ sub gtk_combo_box_get_popup_fixed_width ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_popup
+=head2 [gtk_] combo_box_popup
 
 Pops up the menu or dropdown list of I<combo_box>.
 
@@ -1889,7 +1889,7 @@ sub gtk_combo_box_popup ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] popup_for_device
+=head2 [[gtk_] combo_box_] popup_for_device
 
 Pops up the menu or dropdown list of I<combo_box>, the popup window
 will be grabbed so only I<device> and its associated pointer/keyboard
@@ -1909,7 +1909,7 @@ sub gtk_combo_box_popup_for_device ( N-GObject $combo_box, N-GObject $device )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_popdown
+=head2 [gtk_] combo_box_popdown
 
 Hides the menu or dropdown list of I<combo_box>.
 
@@ -1930,7 +1930,7 @@ sub gtk_combo_box_popdown ( N-GObject $combo_box )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_popup_accessible
+=head2 [[gtk_] combo_box_] get_popup_accessible
 
 Gets the accessible object corresponding to the combo box’s popup.
 
@@ -1955,7 +1955,7 @@ sub gtk_combo_box_get_popup_accessible ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_id_column
+=head2 [[gtk_] combo_box_] get_id_column
 
 Returns the column which I<combo_box> is using to get string IDs
 for values from.
@@ -1976,7 +1976,7 @@ sub gtk_combo_box_get_id_column ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_id_column
+=head2 [[gtk_] combo_box_] set_id_column
 
 Sets the model column which I<combo_box> should use to get string IDs
 for values from. The column I<id_column> in the model of I<combo_box>
@@ -1996,7 +1996,7 @@ sub gtk_combo_box_set_id_column ( N-GObject $combo_box, int32 $id_column )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] get_active_id
+=head2 [[gtk_] combo_box_] get_active_id
 
 Returns the ID of the active row of I<combo_box>.  This value is taken
 from the active row and the column specified by the prop C<id-column>
@@ -2026,7 +2026,7 @@ sub gtk_combo_box_get_active_id ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_] set_active_id
+=head2 [[gtk_] combo_box_] set_active_id
 
 Changes the active row of I<combo_box> to the one that has an ID equal to
 I<active_id>, or unsets the active row if I<active_id> is C<Any>.  Rows having

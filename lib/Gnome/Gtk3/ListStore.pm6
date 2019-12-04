@@ -106,15 +106,13 @@ B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::TreeStore>
   also is Gnome::GObject::Object;
   also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::TreeModel;
-  also does Gnome::Gtk3::TreeDragSource;
-  also does Gnome::Gtk3::TreeDragDest;
-  also does Gnome::Gtk3::TreeSortable;
+=comment  also does Gnome::Gtk3::TreeDragSource;
+=comment  also does Gnome::Gtk3::TreeDragDest;
+=comment  also does Gnome::Gtk3::TreeSortable;
 
 =end pod
 #-------------------------------------------------------------------------------
 use NativeCall;
-
-use Method::Also;
 
 use Gnome::N::X;
 use Gnome::N::NativeLib;
@@ -143,7 +141,6 @@ also does Gnome::Gtk3::TreeModel;
 #also does Gnome::Gtk3::TreeSortable;
 
 #-------------------------------------------------------------------------------
-has Array $!column-types;
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 =begin pod
@@ -183,12 +180,9 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::ListStore';
 
-  $!column-types = [];
-
   # process all named arguments
   if ? %options<field-types> {
     self.native-gobject(gtk_list_store_new(|%options<field-types>));
-    $!column-types = [|%options<field-types>];
   }
 
   elsif ? %options<widget> || %options<build-id> {
@@ -233,13 +227,13 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_list_store_new:new(:field-types)
 =begin pod
-=head2 gtk_list_store_new
+=head2 [gtk_] list_store_new
 
 Creates a new list store with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
 
-=comment As an example, C<$l.gtk_list_store_new( 3, G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, string and B<Gnome::Gdk3::Pixbuf> respectively.
+=comment As an example, C<$ls.gtk_list_store_new( 3, G_TYPE_INT, G_TYPE_STRING, GDK_TYPE_PIXBUF);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, string and B<Gnome::Gdk3::Pixbuf> respectively.
 
-As an example, C<$l.gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, and two of type string respectively.
+As an example, C<$ls.gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);> will create a new B<Gnome::Gtk3::ListStore> with three columns, of type int, and two of type string respectively.
 
 Returns: a new B<Gnome::Gtk3::ListStore>
 
@@ -278,9 +272,9 @@ sub gtk_list_store_new ( *@column-types --> N-GObject ) {
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_store_newv:
+#TM:FF:gtk_list_store_newv:
 =begin pod
-=head2 gtk_list_store_newv
+=head2 [gtk_] list_store_newv
 
 Non-vararg creation function.  Used primarily by language bindings.
 
@@ -313,10 +307,11 @@ sub _gtk_list_store_newv ( int32 $n_columns, CArray[int32] $types )
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_store_set_column_types:
+#TM:FF:gtk_list_store_set_column_types:
 =begin pod
-=head2 [gtk_list_store_] set_column_types
+=head2 [[gtk_] list_store_] set_column_types
 
 This function is meant primarily for B<GObjects> that inherit from B<Gnome::Gtk3::ListStore>,
 and should only be used when constructing a new B<Gnome::Gtk3::ListStore>.  It will not
@@ -333,15 +328,14 @@ interface is called.
 sub gtk_list_store_set_column_types ( N-GObject $list_store, int32 $n_columns, int32 $types )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_set_value:
 =begin pod
-=head2 [gtk_list_store_] set_value
+=head2 [[gtk_] list_store_] set_value
 
-Sets the data in the cell specified by I<iter> and I<column>.
-The type of I<value> must be convertible to the type of the
-column.
+Sets the data in the cell specified by I<$iter> and I<$column>. The type of I<$value> must be convertible to the type of the column.
 
   method gtk_list_store_set_value (
     Gnome::Gtk3::TreeIter $iter, Int $column, Any $value
@@ -353,8 +347,9 @@ column.
 
 =end pod
 
-method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
-    is also<gtk_list_store_set_value gtk-list-store-set-value> {
+sub gtk_list_store_set_value (
+  N-GObject $list_store, N-GtkTreeIter $iter, Int $column, Any $value
+) {
 
   my Gnome::GObject::Type $t .= new;
   my @parameter-list = (
@@ -365,7 +360,7 @@ method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
   );
 
   my Gnome::GObject::Value $v;
-  my $type = self.get-column-type($column);
+  my $type = gtk_tree_model_get_column_type( $list_store, $column);
   given $type {
     when G_TYPE_OBJECT {
       $v .= new( :$type, :value($value.get-native-gobject));
@@ -395,30 +390,28 @@ method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
   state $ptr = cglobal( &gtk-lib, 'gtk_list_store_set_value', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f(
-    self.get-native-gobject, $iter.get-native-gboxed,
-    $column, $v.get-native-gboxed
-  );
+  $f( $list_store, $iter, $column, $v.get-native-gboxed);
 }
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_set:
 =begin pod
-=head2 gtk_list_store_set
+=head2 [gtk_] list_store_set
 
-Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type C<G_TYPE_STRING> to “Foo”, you would write `gtk_list_store_set( iter, 0, "Foo")`.
+Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type C<G_TYPE_STRING> to “Foo”, you would write C<$ls.gtk_list_store_set( $iter, 0, "Foo")>.
 
 The value will be referenced by the store if it is a C<G_TYPE_OBJECT>, and it will be copied if it is a C<G_TYPE_STRING> or C<G_TYPE_BOXED>.
 
   method gtk_list_store_set ( Gnome::Gtk3::TreeIter $iter, $col, $val, ... )
 
-=item $iter; row iterator
+=item Gnome::Gtk3::TreeIter $iter; A valid row iterator for the row being modified
 =item $col, $val; pairs of column number and value
 
 =end pod
 
-method gtk-list-store-set ( Gnome::Gtk3::TreeIter $iter, *@column-value-list )
-    is also<gtk_list_store_set set>{
+sub gtk_list_store_set (
+  N-GObject $list_store, N-GtkTreeIter $iter, *@column-value-list
+) {
 
   die X::Gnome.new(:message('Odd number of items in list: colno, val, ...'))
     unless @column-value-list %% 2;
@@ -431,12 +424,8 @@ method gtk-list-store-set ( Gnome::Gtk3::TreeIter $iter, *@column-value-list )
   my Gnome::GObject::Type $t .= new;
   my @column-values = ();
   my Gnome::GObject::Value $v;
-  my Int $n-columns = self.get-n-columns;
   for @column-value-list -> $c, $value {
-    my $type = self.get-column-type($c);
-    die X::Gnome.new(:message(
-      "Column nbr out of range: [0 .. {$n-columns - 1}]")
-    ) unless $c < $n-columns;
+    my $type = gtk_tree_model_get_column_type( $list_store, $c);
 
     @column-values.push: $c;
     given $type {
@@ -470,14 +459,14 @@ method gtk-list-store-set ( Gnome::Gtk3::TreeIter $iter, *@column-value-list )
   state $ptr = cglobal( &gtk-lib, 'gtk_list_store_set', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( self.get-native-gobject, $iter.get-native-gboxed, |@column-values, -1)
+  $f( $list_store, $iter, |@column-values, -1)
 }
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_store_set_valuesv:
+#TM:FF:gtk_list_store_set_valuesv:
 =begin pod
-=head2 [gtk_list_store_] set_valuesv
+=head2 [[gtk_] list_store_] set_valuesv
 
 A variant of C<gtk_list_store_set_valist()> which
 takes the columns and values as two arrays, instead of
@@ -503,9 +492,9 @@ sub gtk_list_store_set_valuesv ( N-GObject $list_store, N-GtkTreeIter $iter, int
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_store_set_valist:
+#TM:FF:gtk_list_store_set_valist:
 =begin pod
-=head2 [gtk_list_store_] set_valist
+=head2 [[gtk_] list_store_] set_valist
 
 See C<gtk_list_store_set()>; this version takes a va_list for use by language
 bindings.
@@ -526,7 +515,7 @@ sub gtk_list_store_set_valist ( N-GObject $list_store, N-GtkTreeIter $iter, va_l
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_remove:
 =begin pod
-=head2 gtk_list_store_remove
+=head2 [gtk_] list_store_remove
 
 Removes the given row from the list store.  After being removed, the returned iterator is set to be the next valid row, or invalidated if it pointed to the last row in the list_store.
 
@@ -543,9 +532,7 @@ sub gtk_list_store_remove (
   N-GObject $list_store, N-GtkTreeIter $iter
   --> Gnome::Gtk3::TreeIter
 ) {
-
   _gtk_list_store_remove( $list_store, $iter);
-
   Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
 }
 
@@ -558,13 +545,12 @@ sub _gtk_list_store_remove ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert:
 =begin pod
-=head2 gtk_list_store_insert
+=head2 [gtk_] list_store_insert
 
 Creates a new row at I<$position>. The returned iterator will be changed to point to this new row.  If I<$position> is -1 or is larger than the number of rows on the list, then the new row will be appended to the list. The row will be empty after this function is called.  To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
   method gtk_list_store_insert ( Int $position --> Gnome::Gtk3::TreeIter )
 
-=item N-GtkTreeIter $iter; (out): An unset B<Gnome::Gtk3::TreeIter> to set to the new row
 =item Int $position; position to insert the new row, or -1 for last
 
 =end pod
@@ -575,7 +561,6 @@ sub gtk_list_store_insert (
 ) {
   my N-GtkTreeIter $iter .= new;
   _gtk_list_store_insert( $list_store, $iter, $position);
-
   Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
 }
 
@@ -588,7 +573,7 @@ sub _gtk_list_store_insert (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert_before:
 =begin pod
-=head2 [gtk_list_store_] insert_before
+=head2 [[gtk_] list_store_] insert_before
 
 Inserts a new row before I<$sibling>. If I<$sibling> is C<Any>, then the row will be appended to the end of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -597,7 +582,7 @@ Inserts a new row before I<$sibling>. If I<$sibling> is C<Any>, then the row wil
     --> Gnome::Gtk3::TreeIter
   )
 
-=item Gnome::Gtk3::TreeIter $sibling; A valid B<Gnome::Gtk3::TreeIter> or C<Any>
+=item Gnome::Gtk3::TreeIter $sibling; A valid iterator or C<Any>
 
 =end pod
 
@@ -622,7 +607,7 @@ sub _gtk_list_store_insert_before (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert_after:
 =begin pod
-=head2 [gtk_list_store_] insert_after
+=head2 [[gtk_] list_store_] insert_after
 
 Inserts a new row after I<$sibling>. If I<$sibling> is C<Any>, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -631,7 +616,7 @@ Inserts a new row after I<$sibling>. If I<$sibling> is C<Any>, then the row will
     --> Gnome::Gtk3::TreeIter
   )
 
-=item Gnome::Gtk3::TreeIter $sibling; A valid B<Gnome::Gtk3::TreeIter>, or C<Any>
+=item Gnome::Gtk3::TreeIter $sibling; A valid iterator, or C<Any>
 
 =end pod
 
@@ -656,14 +641,14 @@ sub _gtk_list_store_insert_after (
 #-------------------------------------------------------------------------------
 #TM:1::gtk_list_store_insert_with_values
 =begin pod
-=head2 [gtk_list_store_] insert_with_values
+=head2 [[gtk_] list_store_] insert_with_values
 
 Creates a new row at I<position>. I<iter> will be changed to point to this new row. If I<position> is -1, or larger than the number of rows in the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
-Calling `$list-store.gtk_list_store_insert_with_values( position, ...)` has the same effect as calling;
+Calling C<$ls.gtk_list_store_insert_with_values(...)> has the same effect as calling;
 
-  $iter = $list-store.gtk-list-store-insert($position);
-  $list-store.gtk-list-store-set( $iter, ...);
+  $iter = $ls.gtk-list-store-insert($position);
+  $ls.gtk-list-store-set( $iter, ...);
 
 with the difference that the former will only emit a I<row-inserted> signal, while the latter will emit I<row-inserted>, I<row-changed> and, if the list store is sorted, I<rows-reordered>. Since emitting the I<rows-reordered> signal repeatedly can affect the performance of the program, C<gtk_list_store_insert_with_values()> should generally be preferred when inserting rows in a sorted list store.
 
@@ -675,14 +660,14 @@ Since: 2.6
   )
 
 =item Int $position; row position to insert the new row, or -1 to append after existing rows
-=item ...; the rest are pairs of column number and value
+=item Int $column, $value, ...; the rest are pairs of column number and value
 
 =end pod
 
-method insert-with-values (
-  int32 $position, *@column-value-list
+sub gtk_list_store_insert_with_values (
+  N-GObject $list_store, int32 $position, *@column-value-list
   --> Gnome::Gtk3::TreeIter
-) is also<gtk_list_store_insert_with_values gtk-list-store-insert-with-values> {
+) {
 
   die X::Gnome.new(:message('Odd number of items in list: colno, val, ...'))
     unless @column-value-list %% 2;
@@ -696,7 +681,7 @@ method insert-with-values (
   my Gnome::GObject::Value $v;
   my Gnome::GObject::Type $t .= new;
   my @column-values = ();
-  my Int $n-columns = self.get-n-columns;
+  my Int $n-columns = gtk_tree_model_get_n_columns($list_store);
 
   for @column-value-list -> $c, $value {
     die X::Gnome.new(:message(
@@ -707,7 +692,7 @@ method insert-with-values (
     @column-values.push: $c;
 
     # column value
-    my $type = self.get-column-type($c);
+    my $type = gtk_tree_model_get_column_type( $list_store, $c);
     given $type {
       when G_TYPE_OBJECT { @column-values.push: $value.get-native-gobject; }
       when G_TYPE_BOXED { @column-values.push: $value.get-native-gboxed; }
@@ -740,16 +725,16 @@ method insert-with-values (
   my Callable $f = nativecast( $signature, $ptr);
 
   my N-GtkTreeIter $ni .= new;
-  $f( self.get-native-gobject, $ni, $position, |@column-values, -1);
+  $f( $list_store, $ni, $position, |@column-values, -1);
 
   Gnome::Gtk3::TreeIter.new(:tree-iter($ni))
 }
 
 #`{{
 #-------------------------------------------------------------------------------
-# TM:0:gtk_list_store_insert_with_valuesv:
+# TM:FF:gtk_list_store_insert_with_valuesv:
 =begin pod
-=head2 [gtk_list_store_] insert_with_valuesv
+=head2 [[gtk_] list_store_] insert_with_valuesv
 
 A variant of C<gtk_list_store_insert_with_values()> which
 takes the columns and values as two arrays, instead of
@@ -776,7 +761,7 @@ sub gtk_list_store_insert_with_valuesv ( N-GObject $list_store, N-GtkTreeIter $i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_prepend:
 =begin pod
-=head2 gtk_list_store_prepend
+=head2 [gtk_] list_store_prepend
 
 Prepends a new row to the list store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -800,7 +785,7 @@ sub _gtk_list_store_prepend ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_append:
 =begin pod
-=head2 gtk_list_store_append
+=head2 [gtk_] list_store_append
 
 Appends a new row to the list_store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called.  To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -826,7 +811,7 @@ sub _gtk_list_store_append ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_clear:
 =begin pod
-=head2 gtk_list_store_clear
+=head2 [gtk_] list_store_clear
 
 Removes all rows from the list store.
 
@@ -842,12 +827,11 @@ sub gtk_list_store_clear ( N-GObject $list_store )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_iter_is_valid:
 =begin pod
-=head2 [gtk_list_store_] iter_is_valid
+=head2 [[gtk_] list_store_] iter_is_valid
 
-> This function is slow. Only use it for debugging and/or testing
-> purposes.
+WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
-Checks if the given iter is a valid iter for this B<Gnome::Gtk3::ListStore>.
+Checks if the given iter is a valid iter for this list store.
 
 Returns: C<1> if the iter is valid, C<0> if the iter is invalid.
 
@@ -867,7 +851,7 @@ sub gtk_list_store_iter_is_valid ( N-GObject $list_store, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_reorder:
 =begin pod
-=head2 gtk_list_store_reorder
+=head2 [gtk_] list_store_reorder
 
 Reorders I<store> to follow the order indicated by I<new_order>. Note that
 this function only works with unsorted stores.
@@ -887,7 +871,7 @@ sub gtk_list_store_reorder ( N-GObject $store, int32 $new_order )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_swap:
 =begin pod
-=head2 gtk_list_store_swap
+=head2 [gtk_] list_store_swap
 
 Swaps I<a> and I<b> in I<store>. Note that this function only works with
 unsorted stores.
@@ -908,7 +892,7 @@ sub gtk_list_store_swap ( N-GObject $store, N-GtkTreeIter $a, N-GtkTreeIter $b )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_move_after:
 =begin pod
-=head2 [gtk_list_store_] move_after
+=head2 [[gtk_] list_store_] move_after
 
 Moves I<iter> in I<store> to the position after I<position>. Note that this
 function only works with unsorted stores. If I<position> is C<Any>, I<iter>
@@ -930,7 +914,7 @@ sub gtk_list_store_move_after ( N-GObject $store, N-GtkTreeIter $iter, N-GtkTree
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_move_before:
 =begin pod
-=head2 [gtk_list_store_] move_before
+=head2 [[gtk_] list_store_] move_before
 
 Moves I<iter> in I<store> to the position before I<position>. Note that this
 function only works with unsorted stores. If I<position> is C<Any>, I<iter>

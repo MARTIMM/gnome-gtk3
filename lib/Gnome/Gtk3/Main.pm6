@@ -154,7 +154,7 @@ method FALLBACK ( $native-sub is copy, |c ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_check_version:
 =begin pod
-=head2 gtk_check_version
+=head2 [gtk_] check_version
 
 Checks that the GTK+ library in use is compatible with the
 given version. Generally you would pass in the constants
@@ -204,7 +204,7 @@ sub gtk_check_version ( uint32 $required_major, uint32 $required_minor, uint32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_parse_args:
 =begin pod
-=head2 gtk_parse_args
+=head2 [gtk_] parse_args
 
 Parses command line arguments, and initializes global
 attributes of GTK+, but does not actually open a connection
@@ -237,7 +237,7 @@ sub gtk_parse_args ( int32 $argc, CArray[Str] $argv )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_init:
 =begin pod
-=head2 gtk_init
+=head2 [gtk_] init
 
 Call this function before using any other GTK+ functions in your GUI
 applications.  It will initialize everything needed to operate the
@@ -286,7 +286,7 @@ sub gtk_init ( CArray[int32] $argc, CArray[CArray[Str]] $argv )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_init_check:new(:check)
 =begin pod
-=head2 gtk_init_check
+=head2 [gtk_] init_check
 
 This function does the same work as C<gtk_init()> with only a single
 change: It does not terminate the program if the windowing system
@@ -315,7 +315,7 @@ sub gtk_init_check ( CArray[int32] $argc, CArray[CArray[Str]] $argv )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_init_with_args:
 =begin pod
-=head2 gtk_init_with_args
+=head2 [gtk_] init_with_args
 
 This function does the same work as C<gtk_init_check()>.
 Additionally, it allows you to add your own commandline options,
@@ -349,7 +349,7 @@ sub gtk_init_with_args ( int32 $argc, CArray[Str] $argv, Str $parameter_string, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_option_group:
 =begin pod
-=head2 gtk_get_option_group
+=head2 [gtk_] get_option_group
 
 Returns a B<N-GOptionGroup> for the commandline arguments recognized by GTK+ and GDK.
 
@@ -375,7 +375,7 @@ sub gtk_get_option_group ( int32 $open_default_display )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_init_abi_check:
 =begin pod
-=head2 gtk_init_abi_check
+=head2 [gtk_] init_abi_check
 
 
 
@@ -396,7 +396,7 @@ sub gtk_init_abi_check ( int32 $argc, CArray[Str] $argv, int32 $num_checks, size
 #-------------------------------------------------------------------------------
 #TM:0:gtk_init_check_abi_check:
 =begin pod
-=head2 gtk_init_check_abi_check
+=head2 [gtk_] init_check_abi_check
 
 
 
@@ -419,7 +419,7 @@ sub gtk_init_check_abi_check ( int32 $argc, CArray[Str] $argv, int32 $num_checks
 #-------------------------------------------------------------------------------
 #TM:0:gtk_disable_setlocale:
 =begin pod
-=head2 gtk_disable_setlocale
+=head2 [gtk_] disable_setlocale
 
 Prevents C<gtk_init()>, C<gtk_init_check()>, C<gtk_init_with_args()> and
 C<gtk_parse_args()> from automatically
@@ -443,7 +443,7 @@ sub gtk_disable_setlocale (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_default_language:
 =begin pod
-=head2 gtk_get_default_language
+=head2 [gtk_] get_default_language
 
 Returns the B<PangoLanguage> for the default language currently in
 effect. (Note that this can change over the life of an
@@ -471,7 +471,7 @@ sub gtk_get_default_language (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_locale_direction:
 =begin pod
-=head2 gtk_get_locale_direction
+=head2 [gtk_] get_locale_direction
 
 Get the direction of the current locale. This is the expected
 reading direction for text and UI.
@@ -512,7 +512,7 @@ sub gtk_get_locale_direction (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_events_pending:
 =begin pod
-=head2 gtk_events_pending
+=head2 [gtk_] events_pending
 
 Checks if any events are pending.
 
@@ -545,7 +545,7 @@ sub gtk_events_pending (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main_do_event:
 =begin pod
-=head2 [gtk_main_] do_event
+=head2 [[gtk_] main_] do_event
 
 Processes a single GDK event.
 
@@ -597,7 +597,7 @@ sub gtk_main_do_event ( GdkEvent $event )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main:
 =begin pod
-=head2 [gtk_main_] gtk_main
+=head2 [[gtk_] main_] gtk_main
 
 Runs the main loop until C<gtk_main_quit()> is called.
 
@@ -616,7 +616,7 @@ sub gtk_main (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main_level:
 =begin pod
-=head2 gtk_main_level
+=head2 [gtk_] main_level
 
 Asks for the current nesting level of the main loop.
 
@@ -636,7 +636,7 @@ sub gtk_main_level (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main_quit:
 =begin pod
-=head2 gtk_main_quit
+=head2 [gtk_] main_quit
 
 Makes the innermost invocation of the main loop return
 when it regains control.
@@ -653,7 +653,7 @@ sub gtk_main_quit (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main_iteration:
 =begin pod
-=head2 gtk_main_iteration
+=head2 [gtk_] main_iteration
 
 Runs a single iteration of the mainloop.
 
@@ -678,7 +678,7 @@ sub gtk_main_iteration (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_main_iteration_do:
 =begin pod
-=head2 [gtk_main_] iteration_do
+=head2 [[gtk_] main_] iteration_do
 
 Runs a single iteration of the mainloop.
 If no events are available either return or block depending on
@@ -701,7 +701,7 @@ sub gtk_main_iteration_do ( int32 $blocking )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grab_add:
 =begin pod
-=head2 gtk_grab_add
+=head2 [gtk_] grab_add
 
 Makes I<widget> the current grabbed widget.
 
@@ -725,7 +725,7 @@ sub gtk_grab_add ( N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grab_get_current:
 =begin pod
-=head2 gtk_grab_get_current
+=head2 [gtk_] grab_get_current
 
 Queries the current grab of the default window group.
 
@@ -745,7 +745,7 @@ sub gtk_grab_get_current (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_grab_remove:
 =begin pod
-=head2 gtk_grab_remove
+=head2 [gtk_] grab_remove
 
 Removes the grab from the given widget.
 
@@ -766,7 +766,7 @@ sub gtk_grab_remove ( N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_device_grab_add:
 =begin pod
-=head2 gtk_device_grab_add
+=head2 [gtk_] device_grab_add
 
 Adds a GTK+ grab on I<device>, so all the events on I<device> and its
 associated pointer or keyboard (if any) are delivered to I<widget>.
@@ -790,7 +790,7 @@ sub gtk_device_grab_add ( N-GObject $widget, N-GObject $device, int32 $block_oth
 #-------------------------------------------------------------------------------
 #TM:0:gtk_device_grab_remove:
 =begin pod
-=head2 gtk_device_grab_remove
+=head2 [gtk_] device_grab_remove
 
 Removes a device grab from the given widget.
 
@@ -813,7 +813,7 @@ sub gtk_device_grab_remove ( N-GObject $widget, N-GObject $device )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_current_event:
 =begin pod
-=head2 gtk_get_current_event
+=head2 [gtk_] get_current_event
 
 Obtains a copy of the event currently being processed by GTK+.
 
@@ -838,7 +838,7 @@ sub gtk_get_current_event (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_current_event_time:
 =begin pod
-=head2 gtk_get_current_event_time
+=head2 [gtk_] get_current_event_time
 
 If there is a current event and it has a timestamp,
 return that timestamp, otherwise return C<GDK_CURRENT_TIME>.
@@ -859,7 +859,7 @@ sub gtk_get_current_event_time (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_current_event_state:
 =begin pod
-=head2 gtk_get_current_event_state
+=head2 [gtk_] get_current_event_state
 
 If there is a current event and it has a state field, place
 that state field in I<state> and return C<1>, otherwise return
@@ -882,7 +882,7 @@ sub gtk_get_current_event_state ( int32 $state )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_current_event_device:
 =begin pod
-=head2 gtk_get_current_event_device
+=head2 [gtk_] get_current_event_device
 
 If there is a current event and it has a device, return that
 device, otherwise return C<Any>.
@@ -902,7 +902,7 @@ sub gtk_get_current_event_device (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_get_event_widget:
 =begin pod
-=head2 gtk_get_event_widget
+=head2 [gtk_] get_event_widget
 
 If I<event> is C<Any> or the event was not associated with any widget,
 returns C<Any>, otherwise returns the widget that received the event
@@ -925,7 +925,7 @@ sub gtk_get_event_widget ( GdkEvent $event )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_propagate_event:
 =begin pod
-=head2 gtk_propagate_event
+=head2 [gtk_] propagate_event
 
 Sends an event to a widget, propagating the event to parent widgets
 if the event remains unhandled.
@@ -1001,7 +1001,7 @@ sub gtk_init_check ( CArray[int32] $argc, CArray[CArray[Str]] $argv )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_events_pending
+=head2 [gtk_] events_pending
 Checks if any events are pending.
 
 This can be used to update the UI and invoke timeouts etc. while doing some time intensive computation.
@@ -1025,7 +1025,7 @@ sub gtk_events_pending ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_main
+=head2 [gtk_] main
 
 Runs the main loop until C<gtk_main_quit()> is called. You can nest calls to C<gtk_main()>. In that case C<gtk_main_quit()> will make the innermost invocation of the main loop return.
 
@@ -1039,7 +1039,7 @@ sub gtk_main ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_main_level
+=head2 [gtk_] main_level
 
 Returns the current nesting level of the main loop.
 
@@ -1054,7 +1054,7 @@ sub gtk_main_level ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_main_quit
+=head2 [gtk_] main_quit
 
 Makes the innermost invocation of the main loop return when it regains control.
 
@@ -1068,7 +1068,7 @@ sub gtk_main_quit ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_main_iteration
+=head2 [gtk_] main_iteration
 
 Runs a single iteration of the mainloop.
 
@@ -1087,7 +1087,7 @@ sub gtk_main_iteration ( )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_main_iteration_do
+=head2 [gtk_] main_iteration_do
 
 Runs a single iteration of the mainloop. If no events are available either return or block depending on the value of blocking.
 

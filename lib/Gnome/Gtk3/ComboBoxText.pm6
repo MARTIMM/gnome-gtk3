@@ -157,7 +157,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_combo_box_text_new:new(:empty)
 =begin pod
-=head2 gtk_combo_box_text_new
+=head2 [gtk_] combo_box_text_new
 
 Creates a new B<Gnome::Gtk3::ComboBoxText>, which is a B<Gnome::Gtk3::ComboBox> just displaying
 strings.
@@ -179,7 +179,7 @@ sub gtk_combo_box_text_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_new_with_entry:
 =begin pod
-=head2 [gtk_combo_box_text_] new_with_entry
+=head2 [[gtk_] combo_box_text_] new_with_entry
 
 Creates a new B<Gnome::Gtk3::ComboBoxText>, which is a B<Gnome::Gtk3::ComboBox> just displaying
 strings. The combo box created by this function has an entry.
@@ -201,7 +201,7 @@ sub gtk_combo_box_text_new_with_entry (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_combo_box_text_append_text:
 =begin pod
-=head2 [gtk_combo_box_text_] append_text
+=head2 [[gtk_] combo_box_text_] append_text
 
 Appends I<text> to the list of strings stored in I<combo_box>.
 
@@ -223,7 +223,7 @@ sub gtk_combo_box_text_append_text ( N-GObject $combo_box, Str $text )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_insert_text:
 =begin pod
-=head2 [gtk_combo_box_text_] insert_text
+=head2 [[gtk_] combo_box_text_] insert_text
 
 Inserts I<text> at I<position> in the list of strings stored in I<combo_box>.
 
@@ -248,7 +248,7 @@ sub gtk_combo_box_text_insert_text ( N-GObject $combo_box, int32 $position, Str 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_prepend_text:
 =begin pod
-=head2 [gtk_combo_box_text_] prepend_text
+=head2 [[gtk_] combo_box_text_] prepend_text
 
 Prepends I<text> to the list of strings stored in I<combo_box>.
 
@@ -270,7 +270,7 @@ sub gtk_combo_box_text_prepend_text ( N-GObject $combo_box, Str $text )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_remove:
 =begin pod
-=head2 gtk_combo_box_text_remove
+=head2 [gtk_] combo_box_text_remove
 
 Removes the string at I<position> from I<combo_box>.
 
@@ -289,7 +289,7 @@ sub gtk_combo_box_text_remove ( N-GObject $combo_box, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_remove_all:
 =begin pod
-=head2 [gtk_combo_box_text_] remove_all
+=head2 [[gtk_] combo_box_text_] remove_all
 
 Removes all the text entries from the combo box.
 
@@ -307,7 +307,7 @@ sub gtk_combo_box_text_remove_all ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_combo_box_text_get_active_text:
 =begin pod
-=head2 [gtk_combo_box_text_] get_active_text
+=head2 [[gtk_] combo_box_text_] get_active_text
 
 Returns the currently active string in I<combo_box>, or C<Any>
 if none is selected. If I<combo_box> contains an entry, this
@@ -332,7 +332,7 @@ sub gtk_combo_box_text_get_active_text ( N-GObject $combo_box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_insert:
 =begin pod
-=head2 gtk_combo_box_text_insert
+=head2 [gtk_] combo_box_text_insert
 
 Inserts I<text> at I<position> in the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.  See
@@ -357,7 +357,7 @@ sub gtk_combo_box_text_insert ( N-GObject $combo_box, int32 $position, Str $id, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_append:
 =begin pod
-=head2 gtk_combo_box_text_append
+=head2 [gtk_] combo_box_text_append
 
 Appends I<text> to the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.
@@ -381,7 +381,7 @@ sub gtk_combo_box_text_append ( N-GObject $combo_box, Str $id, Str $text )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_combo_box_text_prepend:
 =begin pod
-=head2 gtk_combo_box_text_prepend
+=head2 [gtk_] combo_box_text_prepend
 
 Prepends I<text> to the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.
@@ -414,7 +414,7 @@ sub gtk_combo_box_text_prepend ( N-GObject $combo_box, Str $id, Str $text )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_text_new
+=head2 [gtk_] combo_box_text_new
 
 Creates a new C<Gnome::Gtk3::ComboBoxText>, which is a C<Gnome::Gtk3::ComboBox> just displaying
 strings.
@@ -435,7 +435,7 @@ sub gtk_combo_box_text_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] new_with_entry
+=head2 [[gtk_] combo_box_text_] new_with_entry
 
 Creates a new C<Gnome::Gtk3::ComboBoxText>, which is a C<Gnome::Gtk3::ComboBox> just displaying
 strings. The combo box created by this function has an entry.
@@ -456,7 +456,7 @@ sub gtk_combo_box_text_new_with_entry (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] append_text
+=head2 [[gtk_] combo_box_text_] append_text
 
 Appends I<text> to the list of strings stored in I<combo_box>.
 
@@ -477,7 +477,7 @@ sub gtk_combo_box_text_append_text ( N-GObject $combo_box, Str $text )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] insert_text
+=head2 [[gtk_] combo_box_text_] insert_text
 
 Inserts I<text> at I<position> in the list of strings stored in I<combo_box>.
 
@@ -501,7 +501,7 @@ sub gtk_combo_box_text_insert_text ( N-GObject $combo_box, int32 $position, Str 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] prepend_text
+=head2 [[gtk_] combo_box_text_] prepend_text
 
 Prepends I<text> to the list of strings stored in I<combo_box>.
 
@@ -522,7 +522,7 @@ sub gtk_combo_box_text_prepend_text ( N-GObject $combo_box, Str $text )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_text_remove
+=head2 [gtk_] combo_box_text_remove
 
 Removes the string at I<position> from I<combo_box>.
 
@@ -540,7 +540,7 @@ sub gtk_combo_box_text_remove ( N-GObject $combo_box, int32 $position )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] remove_all
+=head2 [[gtk_] combo_box_text_] remove_all
 
 Removes all the text entries from the combo box.
 
@@ -557,7 +557,7 @@ sub gtk_combo_box_text_remove_all ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_combo_box_text_] get_active_text
+=head2 [[gtk_] combo_box_text_] get_active_text
 
 Returns the currently active string in I<combo_box>, or C<Any>
 if none is selected. If I<combo_box> contains an entry, this
@@ -581,7 +581,7 @@ sub gtk_combo_box_text_get_active_text ( N-GObject $combo_box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_text_insert
+=head2 [gtk_] combo_box_text_insert
 
 Inserts I<text> at I<position> in the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.  See
@@ -605,7 +605,7 @@ sub gtk_combo_box_text_insert ( N-GObject $combo_box, int32 $position, Str $id, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_text_append
+=head2 [gtk_] combo_box_text_append
 
 Appends I<text> to the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.
@@ -628,7 +628,7 @@ sub gtk_combo_box_text_append ( N-GObject $combo_box, Str $id, Str $text )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_combo_box_text_prepend
+=head2 [gtk_] combo_box_text_prepend
 
 Prepends I<text> to the list of strings stored in I<combo_box>.
 If I<id> is non-C<Any> then it is used as the ID of the row.

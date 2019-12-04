@@ -257,7 +257,7 @@ method _file_chooser_interface ( Str $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_error_quark:
 =begin pod
-=head2 [gtk_file_chooser_] error_quark
+=head2 [[gtk_] file_chooser_] error_quark
 
 Returns: The error quark used for I<Gnome::Gtk3::FileChooser> errors.
 
@@ -275,7 +275,7 @@ sub gtk_file_chooser_error_quark (  )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_file_chooser_set_action:t/FileChooserDialog.t
 =begin pod
-=head2 [gtk_file_chooser_] set_action
+=head2 [[gtk_] file_chooser_] set_action
 
 Sets the type of operation that the chooser is performing; the user interface is adapted to suit the selected action. For example, an option to create a new folder might be shown if the action is C<GTK_FILE_CHOOSER_ACTION_SAVE> but not if the action is C<GTK_FILE_CHOOSER_ACTION_OPEN>.
 
@@ -294,7 +294,7 @@ sub gtk_file_chooser_set_action ( N-GObject $chooser, int32 $action )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_file_chooser_get_action:t/FileChooserDialog.t
 =begin pod
-=head2 [gtk_file_chooser_] get_action
+=head2 [[gtk_] file_chooser_] get_action
 
 Gets the type of operation that the file chooser is performing; see C<gtk_file_chooser_set_action()>.
 
@@ -314,7 +314,7 @@ sub gtk_file_chooser_get_action ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_file_chooser_set_local_only:t/FileChooserDialog.t
 =begin pod
-=head2 [gtk_file_chooser_] set_local_only
+=head2 [[gtk_] file_chooser_] set_local_only
 
 Sets whether only local files can be selected in the file selector. If I<$local_only> is C<1> (the default), then the selected file or files are guaranteed to be accessible through the operating systems native file system and therefore the application only needs to worry about the filename functions in I<Gnome::Gtk3::FileChooser>, like C<gtk_file_chooser_get_filename()>, rather than the URI functions like C<gtk_file_chooser_get_uri()>,
 
@@ -335,7 +335,7 @@ sub gtk_file_chooser_set_local_only ( N-GObject $chooser, int32 $local_only )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_file_chooser_get_local_only:t/FileChooserDialog.t
 =begin pod
-=head2 [gtk_file_chooser_] get_local_only
+=head2 [[gtk_] file_chooser_] get_local_only
 
 Gets whether only local files can be selected in the file selector. See C<gtk_file_chooser_set_local_only()>
 
@@ -355,7 +355,7 @@ sub gtk_file_chooser_get_local_only ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_select_multiple:
 =begin pod
-=head2 [gtk_file_chooser_] set_select_multiple
+=head2 [[gtk_] file_chooser_] set_select_multiple
 
 Sets whether multiple files can be selected in the file selector.  This is
 only relevant if the action is set to be C<GTK_FILE_CHOOSER_ACTION_OPEN> or
@@ -376,7 +376,7 @@ sub gtk_file_chooser_set_select_multiple ( N-GObject $chooser, int32 $select_mul
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_select_multiple:
 =begin pod
-=head2 [gtk_file_chooser_] get_select_multiple
+=head2 [[gtk_] file_chooser_] get_select_multiple
 
 Gets whether multiple files can be selected in the file
 selector. See C<gtk_file_chooser_set_select_multiple()>.
@@ -398,7 +398,7 @@ sub gtk_file_chooser_get_select_multiple ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_show_hidden:
 =begin pod
-=head2 [gtk_file_chooser_] set_show_hidden
+=head2 [[gtk_] file_chooser_] set_show_hidden
 
 Sets whether hidden files and folders are displayed in the file selector.
 
@@ -417,7 +417,7 @@ sub gtk_file_chooser_set_show_hidden ( N-GObject $chooser, int32 $show_hidden )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_show_hidden:
 =begin pod
-=head2 [gtk_file_chooser_] get_show_hidden
+=head2 [[gtk_] file_chooser_] get_show_hidden
 
 Gets whether hidden files and folders are displayed in the file selector.
 See C<gtk_file_chooser_set_show_hidden()>.
@@ -439,7 +439,7 @@ sub gtk_file_chooser_get_show_hidden ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_do_overwrite_confirmation:
 =begin pod
-=head2 [gtk_file_chooser_] set_do_overwrite_confirmation
+=head2 [[gtk_] file_chooser_] set_do_overwrite_confirmation
 
 Sets whether a file chooser in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode will present
 a confirmation dialog if the user types a file name that already exists.  This
@@ -468,7 +468,7 @@ sub gtk_file_chooser_set_do_overwrite_confirmation ( N-GObject $chooser, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_do_overwrite_confirmation:
 =begin pod
-=head2 [gtk_file_chooser_] get_do_overwrite_confirmation
+=head2 [[gtk_] file_chooser_] get_do_overwrite_confirmation
 
 Queries whether a file chooser is set to confirm for overwriting when the user
 types a file name that already exists.
@@ -491,7 +491,7 @@ sub gtk_file_chooser_get_do_overwrite_confirmation ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_create_folders:
 =begin pod
-=head2 [gtk_file_chooser_] set_create_folders
+=head2 [[gtk_] file_chooser_] set_create_folders
 
 Sets whether file choser will offer to create new folders.
 This is only relevant if the action is not set to be
@@ -512,7 +512,7 @@ sub gtk_file_chooser_set_create_folders ( N-GObject $chooser, int32 $create_fold
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_create_folders:
 =begin pod
-=head2 [gtk_file_chooser_] get_create_folders
+=head2 [[gtk_] file_chooser_] get_create_folders
 
 Gets whether file choser will offer to create new folders.
 See C<gtk_file_chooser_set_create_folders()>.
@@ -534,7 +534,7 @@ sub gtk_file_chooser_get_create_folders ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_current_name:
 =begin pod
-=head2 [gtk_file_chooser_] set_current_name
+=head2 [[gtk_] file_chooser_] set_current_name
 
 Sets the current name in the file selector, as if entered
 by the user. Note that the name passed in here is a UTF-8
@@ -562,7 +562,7 @@ sub gtk_file_chooser_set_current_name ( N-GObject $chooser, Str $name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_current_name:
 =begin pod
-=head2 [gtk_file_chooser_] get_current_name
+=head2 [[gtk_] file_chooser_] get_current_name
 
 Gets the current name in the file selector, as entered by the user in the
 text entry for “Name”.
@@ -593,7 +593,7 @@ sub gtk_file_chooser_get_current_name ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_filename:
 =begin pod
-=head2 [gtk_file_chooser_] get_filename
+=head2 [[gtk_] file_chooser_] get_filename
 
 Gets the filename for the currently selected file in
 the file selector. The filename is returned as an absolute path. If
@@ -622,7 +622,7 @@ sub gtk_file_chooser_get_filename ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_filename:
 =begin pod
-=head2 [gtk_file_chooser_] set_filename
+=head2 [[gtk_] file_chooser_] set_filename
 
 Sets I<filename> as the current filename for the file chooser, by changing to the file’s parent folder and actually selecting the file in list; all other files will be unselected. If the I<chooser> is in C<GTK_FILE_CHOOSER_ACTION_SAVE> mode, the file’s base name will also appear in the dialog’s file name entry.
 
@@ -667,7 +667,7 @@ sub gtk_file_chooser_set_filename ( N-GObject $chooser, Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_select_filename:
 =begin pod
-=head2 [gtk_file_chooser_] select_filename
+=head2 [[gtk_] file_chooser_] select_filename
 
 Selects a filename. If the file name isn’t in the current
 folder of I<chooser>, then the current folder of I<chooser> will
@@ -693,7 +693,7 @@ sub gtk_file_chooser_select_filename ( N-GObject $chooser, Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_unselect_filename:
 =begin pod
-=head2 [gtk_file_chooser_] unselect_filename
+=head2 [[gtk_] file_chooser_] unselect_filename
 
 Unselects a currently selected filename. If the filename
 is not in the current directory, does not exist, or
@@ -714,7 +714,7 @@ sub gtk_file_chooser_unselect_filename ( N-GObject $chooser, Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_select_all:
 =begin pod
-=head2 [gtk_file_chooser_] select_all
+=head2 [[gtk_] file_chooser_] select_all
 
 Selects all the files in the current folder of a file chooser.
 
@@ -732,7 +732,7 @@ sub gtk_file_chooser_select_all ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_unselect_all:
 =begin pod
-=head2 [gtk_file_chooser_] unselect_all
+=head2 [[gtk_] file_chooser_] unselect_all
 
 Unselects all the files in the current folder of a file chooser.
 
@@ -750,7 +750,7 @@ sub gtk_file_chooser_unselect_all ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_filenames:
 =begin pod
-=head2 [gtk_file_chooser_] get_filenames
+=head2 [[gtk_] file_chooser_] get_filenames
 
 Lists all the selected files and subfolders in the current folder of
 I<chooser>. The returned names are full absolute paths. If files in the current
@@ -777,7 +777,7 @@ sub gtk_file_chooser_get_filenames ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_current_folder:
 =begin pod
-=head2 [gtk_file_chooser_] set_current_folder
+=head2 [[gtk_] file_chooser_] set_current_folder
 
 Sets the current folder for I<chooser> from a local filename.
 The user will be shown the full contents of the current folder,
@@ -805,7 +805,7 @@ sub gtk_file_chooser_set_current_folder ( N-GObject $chooser, Str $filename )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_current_folder:
 =begin pod
-=head2 [gtk_file_chooser_] get_current_folder
+=head2 [[gtk_] file_chooser_] get_current_folder
 
 Gets the current folder of I<chooser> as a local filename.
 See C<gtk_file_chooser_set_current_folder()>.
@@ -840,7 +840,7 @@ sub gtk_file_chooser_get_current_folder ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_uri:
 =begin pod
-=head2 [gtk_file_chooser_] get_uri
+=head2 [[gtk_] file_chooser_] get_uri
 
 Gets the URI for the currently selected file in
 the file selector. If multiple files are selected,
@@ -869,7 +869,7 @@ sub gtk_file_chooser_get_uri ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_uri:
 =begin pod
-=head2 [gtk_file_chooser_] set_uri
+=head2 [[gtk_] file_chooser_] set_uri
 
 Sets the file referred to by I<uri> as the current file for the file chooser,
 by changing to the URI’s parent folder and actually selecting the URI in the
@@ -922,7 +922,7 @@ sub gtk_file_chooser_set_uri ( N-GObject $chooser, Str $uri )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_select_uri:
 =begin pod
-=head2 [gtk_file_chooser_] select_uri
+=head2 [[gtk_] file_chooser_] select_uri
 
 Selects the file to by I<uri>. If the URI doesn’t refer to a
 file in the current folder of I<chooser>, then the current folder of
@@ -946,7 +946,7 @@ sub gtk_file_chooser_select_uri ( N-GObject $chooser, Str $uri )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_unselect_uri:
 =begin pod
-=head2 [gtk_file_chooser_] unselect_uri
+=head2 [[gtk_] file_chooser_] unselect_uri
 
 Unselects the file referred to by I<uri>. If the file
 is not in the current directory, does not exist, or
@@ -967,7 +967,7 @@ sub gtk_file_chooser_unselect_uri ( N-GObject $chooser, Str $uri )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_uris:
 =begin pod
-=head2 [gtk_file_chooser_] get_uris
+=head2 [[gtk_] file_chooser_] get_uris
 
 Lists all the selected files and subfolders in the current folder of
 I<chooser>. The returned names are full absolute URIs.
@@ -991,7 +991,7 @@ sub gtk_file_chooser_get_uris ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_current_folder_uri:
 =begin pod
-=head2 [gtk_file_chooser_] set_current_folder_uri
+=head2 [[gtk_] file_chooser_] set_current_folder_uri
 
 Sets the current folder for I<chooser> from an URI.
 The user will be shown the full contents of the current folder,
@@ -1020,7 +1020,7 @@ sub gtk_file_chooser_set_current_folder_uri ( N-GObject $chooser, Str $uri )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_current_folder_uri:
 =begin pod
-=head2 [gtk_file_chooser_] get_current_folder_uri
+=head2 [[gtk_] file_chooser_] get_current_folder_uri
 
 Gets the current folder of I<chooser> as an URI.
 See C<gtk_file_chooser_set_current_folder_uri()>.
@@ -1054,7 +1054,7 @@ sub gtk_file_chooser_get_current_folder_uri ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_file:
 =begin pod
-=head2 [gtk_file_chooser_] get_file
+=head2 [[gtk_] file_chooser_] get_file
 
 Gets the I<GFile> for the currently selected file in
 the file selector. If multiple files are selected,
@@ -1082,7 +1082,7 @@ sub gtk_file_chooser_get_file ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_file:
 =begin pod
-=head2 [gtk_file_chooser_] set_file
+=head2 [[gtk_] file_chooser_] set_file
 
 Sets I<file> as the current filename for the file chooser, by changing
 to the file’s parent folder and actually selecting the file in list.  If
@@ -1138,7 +1138,7 @@ sub gtk_file_chooser_set_file ( N-GObject $chooser, N-GObject $file, N-GError $e
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_select_file:
 =begin pod
-=head2 [gtk_file_chooser_] select_file
+=head2 [[gtk_] file_chooser_] select_file
 
 Selects the file referred to by I<file>. An internal function. See
 C<_gtk_file_chooser_select_uri()>.
@@ -1162,7 +1162,7 @@ sub gtk_file_chooser_select_file ( N-GObject $chooser, N-GObject $file, N-GError
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_unselect_file:
 =begin pod
-=head2 [gtk_file_chooser_] unselect_file
+=head2 [[gtk_] file_chooser_] unselect_file
 
 Unselects the file referred to by I<file>. If the file is not in the current
 directory, does not exist, or is otherwise not currently selected, does nothing.
@@ -1182,7 +1182,7 @@ sub gtk_file_chooser_unselect_file ( N-GObject $chooser, N-GObject $file )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_files:
 =begin pod
-=head2 [gtk_file_chooser_] get_files
+=head2 [[gtk_] file_chooser_] get_files
 
 Lists all the selected files and subfolders in the current folder of I<chooser>
 as I<GFile>. An internal function, see C<gtk_file_chooser_get_uris()>.
@@ -1207,7 +1207,7 @@ sub gtk_file_chooser_get_files ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_current_folder_file:
 =begin pod
-=head2 [gtk_file_chooser_] set_current_folder_file
+=head2 [[gtk_] file_chooser_] set_current_folder_file
 
 Sets the current folder for I<chooser> from a I<GFile>.
 Internal function, see C<gtk_file_chooser_set_current_folder_uri()>.
@@ -1232,7 +1232,7 @@ sub gtk_file_chooser_set_current_folder_file ( N-GObject $chooser, N-GObject $fi
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_current_folder_file:
 =begin pod
-=head2 [gtk_file_chooser_] get_current_folder_file
+=head2 [[gtk_] file_chooser_] get_current_folder_file
 
 Gets the current folder of I<chooser> as I<GFile>.
 See C<gtk_file_chooser_get_current_folder_uri()>.
@@ -1254,7 +1254,7 @@ sub gtk_file_chooser_get_current_folder_file ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_preview_widget:
 =begin pod
-=head2 [gtk_file_chooser_] set_preview_widget
+=head2 [[gtk_] file_chooser_] set_preview_widget
 
 Sets an application-supplied widget to use to display a custom preview
 of the currently selected file. To implement a preview, after setting the
@@ -1284,7 +1284,7 @@ sub gtk_file_chooser_set_preview_widget ( N-GObject $chooser, N-GObject $preview
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_preview_widget:
 =begin pod
-=head2 [gtk_file_chooser_] get_preview_widget
+=head2 [[gtk_] file_chooser_] get_preview_widget
 
 Gets the current preview widget; see
 C<gtk_file_chooser_set_preview_widget()>.
@@ -1306,7 +1306,7 @@ sub gtk_file_chooser_get_preview_widget ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_preview_widget_active:
 =begin pod
-=head2 [gtk_file_chooser_] set_preview_widget_active
+=head2 [[gtk_] file_chooser_] set_preview_widget_active
 
 Sets whether the preview widget set by
 C<gtk_file_chooser_set_preview_widget()> should be shown for the
@@ -1330,7 +1330,7 @@ sub gtk_file_chooser_set_preview_widget_active ( N-GObject $chooser, int32 $acti
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_preview_widget_active:
 =begin pod
-=head2 [gtk_file_chooser_] get_preview_widget_active
+=head2 [[gtk_] file_chooser_] get_preview_widget_active
 
 Gets whether the preview widget set by C<gtk_file_chooser_set_preview_widget()>
 should be shown for the current filename. See
@@ -1353,7 +1353,7 @@ sub gtk_file_chooser_get_preview_widget_active ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_use_preview_label:
 =begin pod
-=head2 [gtk_file_chooser_] set_use_preview_label
+=head2 [[gtk_] file_chooser_] set_use_preview_label
 
 Sets whether the file chooser should display a stock label with the name of
 the file that is being previewed; the default is C<1>.  Applications that
@@ -1377,7 +1377,7 @@ sub gtk_file_chooser_set_use_preview_label ( N-GObject $chooser, int32 $use_labe
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_use_preview_label:
 =begin pod
-=head2 [gtk_file_chooser_] get_use_preview_label
+=head2 [[gtk_] file_chooser_] get_use_preview_label
 
 Gets whether a stock label should be drawn with the name of the previewed
 file.  See C<gtk_file_chooser_set_use_preview_label()>.
@@ -1398,7 +1398,7 @@ sub gtk_file_chooser_get_use_preview_label ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_preview_filename:
 =begin pod
-=head2 [gtk_file_chooser_] get_preview_filename
+=head2 [[gtk_] file_chooser_] get_preview_filename
 
 Gets the filename that should be previewed in a custom preview
 widget. See C<gtk_file_chooser_set_preview_widget()>.
@@ -1422,7 +1422,7 @@ sub gtk_file_chooser_get_preview_filename ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_preview_uri:
 =begin pod
-=head2 [gtk_file_chooser_] get_preview_uri
+=head2 [[gtk_] file_chooser_] get_preview_uri
 
 Gets the URI that should be previewed in a custom preview
 widget. See C<gtk_file_chooser_set_preview_widget()>.
@@ -1445,7 +1445,7 @@ sub gtk_file_chooser_get_preview_uri ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_preview_file:
 =begin pod
-=head2 [gtk_file_chooser_] get_preview_file
+=head2 [[gtk_] file_chooser_] get_preview_file
 
 Gets the I<GFile> that should be previewed in a custom preview
 Internal function, see C<gtk_file_chooser_get_preview_uri()>.
@@ -1468,7 +1468,7 @@ sub gtk_file_chooser_get_preview_file ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_extra_widget:
 =begin pod
-=head2 [gtk_file_chooser_] set_extra_widget
+=head2 [[gtk_] file_chooser_] set_extra_widget
 
 Sets an application-supplied widget to provide extra options to the user.
 
@@ -1487,7 +1487,7 @@ sub gtk_file_chooser_set_extra_widget ( N-GObject $chooser, N-GObject $extra_wid
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_extra_widget:
 =begin pod
-=head2 [gtk_file_chooser_] get_extra_widget
+=head2 [[gtk_] file_chooser_] get_extra_widget
 
 Gets the current preview widget; see
 C<gtk_file_chooser_set_extra_widget()>.
@@ -1509,7 +1509,7 @@ sub gtk_file_chooser_get_extra_widget ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_add_filter:
 =begin pod
-=head2 [gtk_file_chooser_] add_filter
+=head2 [[gtk_] file_chooser_] add_filter
 
 Adds I<filter> to the list of filters that the user can select between.
 When a filter is selected, only files that are passed by that
@@ -1533,7 +1533,7 @@ sub gtk_file_chooser_add_filter ( N-GObject $chooser, N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_remove_filter:
 =begin pod
-=head2 [gtk_file_chooser_] remove_filter
+=head2 [[gtk_] file_chooser_] remove_filter
 
 Removes I<filter> from the list of filters that the user can select between.
 
@@ -1552,7 +1552,7 @@ sub gtk_file_chooser_remove_filter ( N-GObject $chooser, N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_list_filters:
 =begin pod
-=head2 [gtk_file_chooser_] list_filters
+=head2 [[gtk_] file_chooser_] list_filters
 
 Lists the current set of user-selectable filters; see
 C<gtk_file_chooser_add_filter()>, C<gtk_file_chooser_remove_filter()>.
@@ -1577,7 +1577,7 @@ sub gtk_file_chooser_list_filters ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_filter:
 =begin pod
-=head2 [gtk_file_chooser_] set_filter
+=head2 [[gtk_] file_chooser_] set_filter
 
 Sets the current filter; only the files that pass the
 filter will be displayed. If the user-selectable list of filters
@@ -1601,7 +1601,7 @@ sub gtk_file_chooser_set_filter ( N-GObject $chooser, N-GObject $filter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_filter:
 =begin pod
-=head2 [gtk_file_chooser_] get_filter
+=head2 [[gtk_] file_chooser_] get_filter
 
 Gets the current filter; see C<gtk_file_chooser_set_filter()>.
 
@@ -1622,7 +1622,7 @@ sub gtk_file_chooser_get_filter ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_add_shortcut_folder:
 =begin pod
-=head2 [gtk_file_chooser_] add_shortcut_folder
+=head2 [[gtk_] file_chooser_] add_shortcut_folder
 
 Adds a folder to be displayed with the shortcut folders in a file chooser.
 Internal function, see C<gtk_file_chooser_add_shortcut_folder()>.
@@ -1647,7 +1647,7 @@ sub gtk_file_chooser_add_shortcut_folder ( N-GObject $chooser, Str $folder, N-GE
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_remove_shortcut_folder:
 =begin pod
-=head2 [gtk_file_chooser_] remove_shortcut_folder
+=head2 [[gtk_] file_chooser_] remove_shortcut_folder
 
 Removes a folder from the shortcut folders in a file chooser.  Internal
 function, see C<gtk_file_chooser_remove_shortcut_folder()>.
@@ -1672,7 +1672,7 @@ sub gtk_file_chooser_remove_shortcut_folder ( N-GObject $chooser, Str $folder, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_list_shortcut_folders:
 =begin pod
-=head2 [gtk_file_chooser_] list_shortcut_folders
+=head2 [[gtk_] file_chooser_] list_shortcut_folders
 
 Queries the list of shortcut folders in the file chooser, as set by
 C<gtk_file_chooser_add_shortcut_folder()>.
@@ -1697,7 +1697,7 @@ sub gtk_file_chooser_list_shortcut_folders ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_add_shortcut_folder_uri:
 =begin pod
-=head2 [gtk_file_chooser_] add_shortcut_folder_uri
+=head2 [[gtk_] file_chooser_] add_shortcut_folder_uri
 
 Adds a folder URI to be displayed with the shortcut folders in a file
 chooser.  Note that shortcut folders do not get saved, as they are provided
@@ -1724,7 +1724,7 @@ sub gtk_file_chooser_add_shortcut_folder_uri ( N-GObject $chooser, Str $uri, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_remove_shortcut_folder_uri:
 =begin pod
-=head2 [gtk_file_chooser_] remove_shortcut_folder_uri
+=head2 [[gtk_] file_chooser_] remove_shortcut_folder_uri
 
 Removes a folder URI from a file chooser’s list of shortcut folders.
 
@@ -1750,7 +1750,7 @@ sub gtk_file_chooser_remove_shortcut_folder_uri ( N-GObject $chooser, Str $uri, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_list_shortcut_folder_uris:
 =begin pod
-=head2 [gtk_file_chooser_] list_shortcut_folder_uris
+=head2 [[gtk_] file_chooser_] list_shortcut_folder_uris
 
 Queries the list of shortcut folders in the file chooser, as set by
 C<gtk_file_chooser_add_shortcut_folder_uri()>.
@@ -1774,7 +1774,7 @@ sub gtk_file_chooser_list_shortcut_folder_uris ( N-GObject $chooser )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_add_choice:
 =begin pod
-=head2 [gtk_file_chooser_] add_choice
+=head2 [[gtk_] file_chooser_] add_choice
 
 Adds a 'choice' to the file chooser. This is typically implemented
 as a combobox or, for boolean choices, as a checkbutton. You can select
@@ -1802,7 +1802,7 @@ sub gtk_file_chooser_add_choice ( N-GObject $chooser, Str $id, Str $label, CArra
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_remove_choice:
 =begin pod
-=head2 [gtk_file_chooser_] remove_choice
+=head2 [[gtk_] file_chooser_] remove_choice
 
 Removes a 'choice' that has been added with C<gtk_file_chooser_add_choice()>.
 
@@ -1821,7 +1821,7 @@ sub gtk_file_chooser_remove_choice ( N-GObject $chooser, Str $id )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_set_choice:
 =begin pod
-=head2 [gtk_file_chooser_] set_choice
+=head2 [[gtk_] file_chooser_] set_choice
 
 Selects an option in a 'choice' that has been added with
 C<gtk_file_chooser_add_choice()>. For a boolean choice, the
@@ -1843,7 +1843,7 @@ sub gtk_file_chooser_set_choice ( N-GObject $chooser, Str $id, Str $option )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_get_choice:
 =begin pod
-=head2 [gtk_file_chooser_] get_choice
+=head2 [[gtk_] file_chooser_] get_choice
 
 Gets the currently selected option in the 'choice' with the given ID.
 

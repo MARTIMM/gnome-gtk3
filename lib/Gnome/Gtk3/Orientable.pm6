@@ -70,7 +70,7 @@ method _orientable_interface ( Str $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_orientable_set_orientation:
 =begin pod
-=head2 [gtk_orientable_] set_orientation
+=head2 [[gtk_] orientable_] set_orientation
 
   method gtk_orientable_get_orientation ( GtkOrientation )
 
@@ -85,7 +85,7 @@ sub gtk_orientable_set_orientation ( N-GObject $orientable, int32 $orientation )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_orientable_get_orientation:
 =begin pod
-=head2 [gtk_orientable_] get_orientation
+=head2 [[gtk_] orientable_] get_orientation
 
   method gtk_orientable_get_orientation ( --> GtkOrientation $orientation )
 
