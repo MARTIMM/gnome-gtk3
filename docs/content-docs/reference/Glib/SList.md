@@ -70,8 +70,8 @@ Clear the native list and let gslist-is-valid() return False.
 
     clear-gslist ( )
 
-g_slist_alloc
--------------
+[g_] slist_alloc
+----------------
 
 Allocates space for one `N-GSList` element. It is called by the `g_slist_append()`, `g_slist_prepend()`, `g_slist_insert()` and `g_slist_insert_sorted()` functions and so is rarely used on its own.
 
@@ -81,8 +81,8 @@ Returns: a pointer to the newly-allocated `N-GSList` element.
 
   * G_GNUC_WARN_UNUSED_RESUL $T;
 
-g_slist_reverse
----------------
+[g_] slist_reverse
+------------------
 
 Reverses a `N-GSList`.
 
@@ -92,8 +92,8 @@ Returns: the start of the reversed `N-GSList`
 
   * N-GSList $list; a `N-GSList`
 
-g_slist_copy
-------------
+[g_] slist_copy
+---------------
 
 Copies a `N-GSList`.
 
@@ -105,8 +105,8 @@ Returns: a copy of *list*
 
   * N-GSList $list; a `N-GSList`
 
-g_slist_nth
------------
+[g_] slist_nth
+--------------
 
 Gets the element at the given position in a `N-GSList`.
 
@@ -118,8 +118,8 @@ Returns: the element, or `Any` if the position is off the end of the `N-GSList`
 
   * UInt $n; the position of the element, counting from 0
 
-g_slist_last
-------------
+[g_] slist_last
+---------------
 
 Gets the last element in a `N-GSList`.
 
@@ -131,8 +131,8 @@ Returns: the last element in the `N-GSList`, or `Any` if the `N-GSList` has no e
 
   * N-GSList $list; a `N-GSList`
 
-g_slist_length
---------------
+[g_] slist_length
+-----------------
 
 Gets the number of elements in a `N-GSList`.
 
@@ -144,8 +144,8 @@ Returns: the number of elements in the `N-GSList`
 
   * N-GSList $list; a `N-GSList`
 
-[g_slist_] nth_data
--------------------
+[[g_] slist_] nth_data
+----------------------
 
 Gets the data of the element at the given position.
 

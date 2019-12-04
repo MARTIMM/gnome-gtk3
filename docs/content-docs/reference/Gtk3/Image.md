@@ -121,8 +121,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_image_new
--------------
+[gtk_] image_new
+----------------
 
 Creates a new empty **Gnome::Gtk3::Image** widget.
 
@@ -130,8 +130,8 @@ Returns: a newly created **Gnome::Gtk3::Image** widget.
 
     method gtk_image_new ( --> N-GObject  )
 
-[gtk_image_] new_from_file
---------------------------
+[[gtk_] image_] new_from_file
+-----------------------------
 
 Creates a new **Gnome::Gtk3::Image** displaying the file *filename*. If the file isn’t found or can’t be loaded, the resulting **Gnome::Gtk3::Image** will display a “broken image” icon. This function never returns `Any`, it always returns a valid **Gnome::Gtk3::Image** widget.
 
@@ -147,8 +147,8 @@ Returns: a new **Gnome::Gtk3::Image**
 
   * Str $filename; (type filename): a filename
 
-[gtk_image_] new_from_pixbuf
-----------------------------
+[[gtk_] image_] new_from_pixbuf
+-------------------------------
 
 Creates a new **Gnome::Gtk3::Image** displaying *pixbuf*. The **Gnome::Gtk3::Image** does not assume a reference to the pixbuf; you still need to unref it if you own references. **Gnome::Gtk3::Image** will add its own reference rather than adopting yours.
 
@@ -160,8 +160,8 @@ Returns: a new **Gnome::Gtk3::Image**
 
   * N-GObject $pixbuf; (allow-none): a **Gnome::Gdk3::Pixbuf**, or `Any`
 
-[gtk_image_] new_from_icon_name
--------------------------------
+[[gtk_] image_] new_from_icon_name
+----------------------------------
 
 Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead. If the current icon theme is changed, the icon will be updated appropriately.
 
@@ -175,8 +175,8 @@ Since: 2.6
 
   * GtkIconSize $size; (type int): a stock icon size (**Gnome::Gtk3::IconSize**)
 
-[gtk_image_] new_from_gicon
----------------------------
+[[gtk_] image_] new_from_gicon
+------------------------------
 
 Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead. If the current icon theme is changed, the icon will be updated appropriately.
 
@@ -190,8 +190,8 @@ Since: 2.14
 
   * GtkIconSize $size; (type int): a stock icon size (**Gnome::Gtk3::IconSize**)
 
-gtk_image_clear
----------------
+[gtk_] image_clear
+------------------
 
 Resets the image to be empty.
 
@@ -199,8 +199,8 @@ Since: 2.8
 
     method gtk_image_clear ( )
 
-[gtk_image_] set_from_file
---------------------------
+[[gtk_] image_] set_from_file
+-----------------------------
 
 See `gtk_image_new_from_file()` for details.
 
@@ -208,8 +208,8 @@ See `gtk_image_new_from_file()` for details.
 
   * Str $filename; (type filename) (allow-none): a filename or `Any`
 
-[gtk_image_] set_from_resource
-------------------------------
+[[gtk_] image_] set_from_resource
+---------------------------------
 
 See `gtk_image_new_from_resource()` for details.
 
@@ -217,8 +217,8 @@ See `gtk_image_new_from_resource()` for details.
 
   * Str $resource_path; (allow-none): a resource path or `Any`
 
-[gtk_image_] set_from_pixbuf
-----------------------------
+[[gtk_] image_] set_from_pixbuf
+-------------------------------
 
 See `gtk_image_new_from_pixbuf()` for details.
 
@@ -226,8 +226,8 @@ See `gtk_image_new_from_pixbuf()` for details.
 
   * N-GObject $pixbuf; (allow-none): a **Gnome::Gdk3::Pixbuf** or `Any`
 
-[gtk_image_] set_from_icon_name
--------------------------------
+[[gtk_] image_] set_from_icon_name
+----------------------------------
 
 See `gtk_image_new_from_icon_name()` for details.
 
@@ -239,8 +239,8 @@ Since: 2.6
 
   * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
 
-[gtk_image_] set_from_gicon
----------------------------
+[[gtk_] image_] set_from_gicon
+------------------------------
 
 See `gtk_image_new_from_gicon()` for details.
 
@@ -252,8 +252,8 @@ Since: 2.14
 
   * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
 
-[gtk_image_] set_pixel_size
----------------------------
+[[gtk_] image_] set_pixel_size
+------------------------------
 
 Sets the pixel size to use for named icons. If the pixel size is set to a value != -1, it is used instead of the icon size set by `gtk_image_set_from_icon_name()`.
 
@@ -263,8 +263,8 @@ Since: 2.6
 
   * Int $pixel_size; the new pixel size
 
-[gtk_image_] get_storage_type
------------------------------
+[[gtk_] image_] get_storage_type
+--------------------------------
 
 Gets the type of representation being used by the **Gnome::Gtk3::Image** to store image data. If the **Gnome::Gtk3::Image** has no image data, the return value will be `GTK_IMAGE_EMPTY`.
 
@@ -272,8 +272,8 @@ Returns: image representation being used
 
     method gtk_image_get_storage_type ( --> GtkImageType  )
 
-[gtk_image_] get_pixbuf
------------------------
+[[gtk_] image_] get_pixbuf
+--------------------------
 
 Gets the **Gnome::Gdk3::Pixbuf** being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK_IMAGE_EMPTY` or `GTK_IMAGE_PIXBUF` (see `gtk_image_get_storage_type()`). The caller of this function does not own a reference to the returned pixbuf.
 
@@ -281,8 +281,8 @@ Returns: (nullable) (transfer none): the displayed pixbuf, or `Any` if the image
 
     method gtk_image_get_pixbuf ( --> N-GObject  )
 
-[gtk_image_] get_gicon
-----------------------
+[[gtk_] image_] get_gicon
+-------------------------
 
 Gets the **GIcon** and size being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK_IMAGE_EMPTY` or `GTK_IMAGE_GICON` (see `gtk_image_get_storage_type()`). The caller of this function does not own a reference to the returned **GIcon**.
 
@@ -294,8 +294,8 @@ Since: 2.14
 
   * GtkIconSize $size; (out) (allow-none) (type int): place to store an icon size (**Gnome::Gtk3::IconSize**), or `Any`
 
-[gtk_image_] get_pixel_size
----------------------------
+[[gtk_] image_] get_pixel_size
+------------------------------
 
 Gets the pixel size used for named icons.
 

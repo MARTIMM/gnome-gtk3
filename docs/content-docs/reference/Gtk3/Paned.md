@@ -77,8 +77,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_paned_new
--------------
+[gtk_] paned_new
+----------------
 
 Creates a new **Gnome::Gtk3::Paned** widget.
 
@@ -90,8 +90,8 @@ Since: 3.0
 
   * GtkOrientation $orientation; the paned’s orientation.
 
-gtk_paned_add1
---------------
+[gtk_] paned_add1
+-----------------
 
 Adds a child to the top or left pane with default parameters. This is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
 
@@ -99,8 +99,8 @@ Adds a child to the top or left pane with default parameters. This is equivalent
 
   * N-GObject $child; the child to add
 
-gtk_paned_add2
---------------
+[gtk_] paned_add2
+-----------------
 
 Adds a child to the bottom or right pane with default parameters. This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
 
@@ -108,8 +108,8 @@ Adds a child to the bottom or right pane with default parameters. This is equiva
 
   * N-GObject $child; the child to add
 
-gtk_paned_pack1
----------------
+[gtk_] paned_pack1
+------------------
 
 Adds a child to the top or left pane.
 
@@ -121,8 +121,8 @@ Adds a child to the top or left pane.
 
   * Int $shrink; can this child be made smaller than its requisition.
 
-gtk_paned_pack2
----------------
+[gtk_] paned_pack2
+------------------
 
 Adds a child to the bottom or right pane.
 
@@ -134,8 +134,8 @@ Adds a child to the bottom or right pane.
 
   * Int $shrink; can this child be made smaller than its requisition.
 
-[gtk_paned_] get_position
--------------------------
+[[gtk_] paned_] get_position
+----------------------------
 
 Obtains the position of the divider between the two panes.
 
@@ -143,8 +143,8 @@ Returns: position of the divider
 
     method gtk_paned_get_position ( --> Int  )
 
-[gtk_paned_] set_position
--------------------------
+[[gtk_] paned_] set_position
+----------------------------
 
 Sets the position of the divider between the two panes.
 
@@ -152,8 +152,8 @@ Sets the position of the divider between the two panes.
 
   * Int $position; pixel position of divider, a negative value means that the position is unset.
 
-[gtk_paned_] get_child1
------------------------
+[[gtk_] paned_] get_child1
+--------------------------
 
 Obtains the first child of the paned widget.
 
@@ -163,8 +163,8 @@ Since: 2.4
 
     method gtk_paned_get_child1 ( --> N-GObject  )
 
-[gtk_paned_] get_child2
------------------------
+[[gtk_] paned_] get_child2
+--------------------------
 
 Obtains the second child of the paned widget.
 
@@ -174,8 +174,8 @@ Since: 2.4
 
     method gtk_paned_get_child2 ( --> N-GObject  )
 
-[gtk_paned_] get_handle_window
-------------------------------
+[[gtk_] paned_] get_handle_window
+---------------------------------
 
 Returns the **Gnome::Gdk3::Window** of the handle. This function is useful when handling button or motion events because it enables the callback to distinguish between the window of the paned, a child and the handle.
 
@@ -185,8 +185,8 @@ Since: 2.20
 
     method gtk_paned_get_handle_window ( --> N-GObject  )
 
-[gtk_paned_] set_wide_handle
-----------------------------
+[[gtk_] paned_] set_wide_handle
+-------------------------------
 
 Sets the *wide-handle* property.
 
@@ -196,8 +196,8 @@ Since: 3.16
 
   * Int $wide; the new value for the *wide-handle* property
 
-[gtk_paned_] get_wide_handle
-----------------------------
+[[gtk_] paned_] get_wide_handle
+-------------------------------
 
 Gets the *wide-handle* property.
 

@@ -91,8 +91,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_menu_item_new
------------------
+[gtk_] menu_item_new
+--------------------
 
 Creates a new **Gnome::Gtk3::MenuItem**.
 
@@ -100,8 +100,8 @@ Returns: the newly created **Gnome::Gtk3::MenuItem**
 
     method gtk_menu_item_new ( --> N-GObject  )
 
-[gtk_menu_item_] new_with_label
--------------------------------
+[[gtk_] menu_item_] new_with_label
+----------------------------------
 
 Creates a new **Gnome::Gtk3::MenuItem** whose child is a **Gnome::Gtk3::Label**.
 
@@ -111,8 +111,8 @@ Returns: the newly created **Gnome::Gtk3::MenuItem**
 
   * Str $label; the text for the label
 
-[gtk_menu_item_] new_with_mnemonic
-----------------------------------
+[[gtk_] menu_item_] new_with_mnemonic
+-------------------------------------
 
 Creates a new **Gnome::Gtk3::MenuItem** containing a label.
 
@@ -124,8 +124,8 @@ Returns: a new **Gnome::Gtk3::MenuItem**
 
   * Str $label; The text of the button, with an underscore in front of the mnemonic character
 
-[gtk_menu_item_] set_submenu
-----------------------------
+[[gtk_] menu_item_] set_submenu
+-------------------------------
 
 Sets or replaces the menu item’s submenu, or removes it when a `Any` submenu is passed.
 
@@ -133,8 +133,8 @@ Sets or replaces the menu item’s submenu, or removes it when a `Any` submenu i
 
   * N-GObject $submenu; (allow-none) (type **Gnome::Gtk3::.Menu**): the submenu, or `Any`
 
-[gtk_menu_item_] get_submenu
-----------------------------
+[[gtk_] menu_item_] get_submenu
+-------------------------------
 
 Gets the submenu underneath this menu item, if any. See `gtk_menu_item_set_submenu()`.
 
@@ -142,29 +142,29 @@ Returns: (nullable) (transfer none): submenu for this menu item, or `Any` if non
 
     method gtk_menu_item_get_submenu ( --> N-GObject  )
 
-gtk_menu_item_select
---------------------
+[gtk_] menu_item_select
+-----------------------
 
 Emits the *select* signal on the given item.
 
     method gtk_menu_item_select ( )
 
-gtk_menu_item_deselect
-----------------------
+[gtk_] menu_item_deselect
+-------------------------
 
 Emits the *deselect* signal on the given item.
 
     method gtk_menu_item_deselect ( )
 
-gtk_menu_item_activate
-----------------------
+[gtk_] menu_item_activate
+-------------------------
 
 Emits the *activate* signal on the given item
 
     method gtk_menu_item_activate ( )
 
-[gtk_menu_item_] toggle_size_request
-------------------------------------
+[[gtk_] menu_item_] toggle_size_request
+---------------------------------------
 
 Emits the *toggle-size-request* signal on the given item.
 
@@ -172,8 +172,8 @@ Emits the *toggle-size-request* signal on the given item.
 
   * Int $requisition; (inout): the requisition to use as signal data.
 
-[gtk_menu_item_] toggle_size_allocate
--------------------------------------
+[[gtk_] menu_item_] toggle_size_allocate
+----------------------------------------
 
 Emits the *toggle-size-allocate* signal on the given item.
 
@@ -181,8 +181,8 @@ Emits the *toggle-size-allocate* signal on the given item.
 
   * Int $allocation; the allocation to use as signal data.
 
-[gtk_menu_item_] set_accel_path
--------------------------------
+[[gtk_] menu_item_] set_accel_path
+----------------------------------
 
 Set the accelerator path on *menu_item*, through which runtime changes of the menu item’s accelerator caused by the user can be identified and saved to persistent storage (see `gtk_accel_map_save()` on this). To set up a default accelerator for this menu item, call `gtk_accel_map_add_entry()` with the same *accel_path*. See also `gtk_accel_map_add_entry()` on the specifics of accelerator paths, and `gtk_menu_set_accel_path()` for a more convenient variant of this function.
 
@@ -196,8 +196,8 @@ Note that *accel_path* string will be stored in a **GQuark**. Therefore, if you 
 
   * Str $accel_path; (allow-none): accelerator path, corresponding to this menu item’s functionality, or `Any` to unset the current path.
 
-[gtk_menu_item_] get_accel_path
--------------------------------
+[[gtk_] menu_item_] get_accel_path
+----------------------------------
 
 Retrieve the accelerator path that was previously set on *menu_item*.
 
@@ -209,8 +209,8 @@ Since: 2.14
 
     method gtk_menu_item_get_accel_path ( --> Str  )
 
-[gtk_menu_item_] set_label
---------------------------
+[[gtk_] menu_item_] set_label
+-----------------------------
 
 Sets *text* on the *menu_item* label
 
@@ -220,8 +220,8 @@ Since: 2.16
 
   * Str $label; the text you want to set
 
-[gtk_menu_item_] get_label
---------------------------
+[[gtk_] menu_item_] get_label
+-----------------------------
 
 Sets *text* on the *menu_item* label
 
@@ -231,8 +231,8 @@ Since: 2.16
 
     method gtk_menu_item_get_label ( --> Str  )
 
-[gtk_menu_item_] set_use_underline
-----------------------------------
+[[gtk_] menu_item_] set_use_underline
+-------------------------------------
 
 If true, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
 
@@ -242,8 +242,8 @@ Since: 2.16
 
   * Int $setting; `1` if underlines in the text indicate mnemonics
 
-[gtk_menu_item_] get_use_underline
-----------------------------------
+[[gtk_] menu_item_] get_use_underline
+-------------------------------------
 
 Checks if an underline in the text indicates the next character should be used for the mnemonic accelerator key.
 
@@ -253,8 +253,8 @@ Since: 2.16
 
     method gtk_menu_item_get_use_underline ( --> Int  )
 
-[gtk_menu_item_] set_reserve_indicator
---------------------------------------
+[[gtk_] menu_item_] set_reserve_indicator
+-----------------------------------------
 
 Sets whether the *menu_item* should reserve space for the submenu indicator, regardless if it actually has a submenu or not.
 
@@ -266,8 +266,8 @@ Since: 3.0
 
   * Int $reserve; the new value
 
-[gtk_menu_item_] get_reserve_indicator
---------------------------------------
+[[gtk_] menu_item_] get_reserve_indicator
+-----------------------------------------
 
 Returns whether the *menu_item* reserves space for the submenu indicator, regardless if it has a submenu or not.
 

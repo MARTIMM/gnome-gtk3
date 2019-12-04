@@ -107,8 +107,8 @@ Return the error message in the error object. Returns `Str` if object is invalid
 
     method message ( --> Str )
 
-[g_error_] new_literal
-----------------------
+[[g_] error_] new_literal
+-------------------------
 
 Creates a new `N-GError`.
 
@@ -122,8 +122,8 @@ Creates a new `N-GError`.
 
   * Str $message; error message
 
-g_error_copy
-------------
+[g_] error_copy
+---------------
 
 Makes a copy of the native error object.
 
@@ -137,8 +137,8 @@ Returns: a new `N-GError`
 
     method g_error_copy ( --> N-GError )
 
-g_error_matches
----------------
+[g_] error_matches
+------------------
 
 Returns `1` if Gnome::Glib::Error> matches *$domain* and *$code*, `0` otherwise. In particular, when *error* is `Any`, `0` will be returned.
 

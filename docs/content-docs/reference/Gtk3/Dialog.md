@@ -161,8 +161,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_dialog_new
---------------
+[gtk_] dialog_new
+-----------------
 
 Creates a new dialog box.
 
@@ -172,8 +172,8 @@ Returns: the new dialog as a **Gnome::Gtk3::Widget**
 
     method gtk_dialog_new ( --> N-GObject  )
 
-[gtk_dialog_] new_with_buttons
-------------------------------
+[[gtk_] dialog_] new_with_buttons
+---------------------------------
 
 Creates a new **Gnome::Gtk3::Dialog** with title *$title* (or `Any` for the default title; see `gtk_window_set_title()`) and transient parent *$parent* (or `Any` for none; see `gtk_window_set_transient_for()`). The *$flags* argument can be used to make the dialog modal (**GTK_DIALOG_MODAL**) and/or to have it destroyed along with its transient parent (**GTK_DIALOG_DESTROY_WITH_PARENT**). After *$flags*, button text/response ID pairs should be listed, with a `Any` pointer ending the list. Button text can be arbitrary text. A response ID can be any positive number, or one of the values in the **GtkResponseType** enumeration. If the user clicks one of these dialog buttons, **Gnome::Gtk3::Dialog** will emit the *response* signal with the corresponding response ID. If a **Gnome::Gtk3::Dialog** receives the *delete-event* signal, it will emit *response* with a response ID of **GTK_RESPONSE_DELETE_EVENT**. However, destroying a dialog does not emit the *response* signal; so be careful relying on *response* when using the **GTK_DIALOG_DESTROY_WITH_PARENT** flag. Buttons are from left to right, so the first button in the list will be the leftmost button in the dialog.
 
@@ -205,8 +205,8 @@ Returns: a new native Dialog.
 
     * $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
 
-[gtk_dialog_] add_action_widget
--------------------------------
+[[gtk_] dialog_] add_action_widget
+----------------------------------
 
 Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, connecting a signal handler that will emit the *response* signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the *action_area* field of the **Gnome::Gtk3::Dialog** struct.
 
@@ -216,8 +216,8 @@ Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, conn
 
   * Int $response_id; response ID for *child*
 
-[gtk_dialog_] add_button
-------------------------
+[[gtk_] dialog_] add_button
+---------------------------
 
 Adds a button with the given text and sets things up so that clicking the button will emit the *response* signal with the given *response_id*. The button is appended to the end of the dialog’s action area. The button widget is returned, but usually you don’t need it.
 
@@ -229,8 +229,8 @@ Returns: (transfer none): the **Gnome::Gtk3::Button** widget that was added
 
   * Int $response_id; response ID for the button
 
-[gtk_dialog_] set_response_sensitive
-------------------------------------
+[[gtk_] dialog_] set_response_sensitive
+---------------------------------------
 
 Calls `gtk_widget_set_sensitive (widget, *setting*)` for each widget in the dialog’s action area with the given *response_id*. A convenient way to sensitize/desensitize dialog buttons.
 
@@ -240,8 +240,8 @@ Calls `gtk_widget_set_sensitive (widget, *setting*)` for each widget in the dial
 
   * Int $setting; `1` for sensitive
 
-[gtk_dialog_] set_default_response
-----------------------------------
+[[gtk_] dialog_] set_default_response
+-------------------------------------
 
 Sets the last widget in the dialog’s action area with the given *response_id* as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
 
@@ -249,8 +249,8 @@ Sets the last widget in the dialog’s action area with the given *response_id* 
 
   * Int $response_id; a response ID
 
-[gtk_dialog_] get_widget_for_response
--------------------------------------
+[[gtk_] dialog_] get_widget_for_response
+----------------------------------------
 
 Gets the widget button that uses the given response ID in the action area of a dialog.
 
@@ -262,8 +262,8 @@ Since: 2.20
 
   * Int $response_id; the response ID used by the *dialog* widget
 
-[gtk_dialog_] get_response_for_widget
--------------------------------------
+[[gtk_] dialog_] get_response_for_widget
+----------------------------------------
 
 Gets the response id of a widget in the action area of a dialog.
 
@@ -275,8 +275,8 @@ Since: 2.8
 
   * N-GObject $widget; a widget in the action area of *dialog*
 
-gtk_dialog_response
--------------------
+[gtk_] dialog_response
+----------------------
 
 Emits the *response* signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or `gtk_dialog_run()` will be monitoring the *response* signal and take appropriate action.
 
@@ -284,8 +284,8 @@ Emits the *response* signal with the given response ID. Used to indicate that th
 
   * Int $response_id; response ID
 
-gtk_dialog_run
---------------
+[gtk_] dialog_run
+-----------------
 
 Blocks in a recursive main loop until the dialog either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `gtk_dialog_run()`, `gtk_dialog_run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
 
@@ -315,8 +315,8 @@ Returns: response ID
 
     method gtk_dialog_run ( --> Int  )
 
-[gtk_dialog_] get_content_area
-------------------------------
+[[gtk_] dialog_] get_content_area
+---------------------------------
 
 Returns the content area of *dialog*.
 
@@ -326,8 +326,8 @@ Since: 2.14
 
     method gtk_dialog_get_content_area ( --> N-GObject  )
 
-[gtk_dialog_] get_header_bar
-----------------------------
+[[gtk_] dialog_] get_header_bar
+-------------------------------
 
 Returns the header bar of *dialog*. Note that the headerbar is only used by the dialog if the *use-header-bar* property is `1`.
 

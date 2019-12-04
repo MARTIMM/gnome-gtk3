@@ -125,8 +125,8 @@ Create an object using a native object from elsewhere. See also Gnome::GObject::
 
 Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
-gtk_scale_new
--------------
+[gtk_] scale_new
+----------------
 
 Creates a new **Gnome::Gtk3::Scale**.
 
@@ -140,8 +140,8 @@ Since: 3.0
 
   * N-GObject $adjustment; (nullable): the **Gnome::Gtk3::Adjustment** which sets the range of the scale, or `Any` to create a new adjustment.
 
-[gtk_scale_] new_with_range
----------------------------
+[[gtk_] scale_] new_with_range
+------------------------------
 
 Creates a new scale widget with the given orientation that lets the user input a number between *min* and *max* (including *min* and *max*) with the increment *step*. *step* must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
 
@@ -161,8 +161,8 @@ Since: 3.0
 
   * Num $step; step increment (tick size) used with keyboard shortcuts
 
-[gtk_scale_] set_digits
------------------------
+[[gtk_] scale_] set_digits
+--------------------------
 
 Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded off to this number of digits, so the retrieved value matches the value the user saw.
 
@@ -172,8 +172,8 @@ Note that rounding to a small number of digits can interfere with the smooth aut
 
   * Int $digits; the number of decimal places to display, e.g. use 1 to display 1.0, 2 to display 1.00, etc
 
-[gtk_scale_] get_digits
------------------------
+[[gtk_] scale_] get_digits
+--------------------------
 
 Gets the number of decimal places that are displayed in the value.
 
@@ -181,8 +181,8 @@ Returns: the number of decimal places that are displayed
 
     method gtk_scale_get_digits ( --> Int  )
 
-[gtk_scale_] set_draw_value
----------------------------
+[[gtk_] scale_] set_draw_value
+------------------------------
 
 Specifies whether the current value is displayed as a string next to the slider.
 
@@ -190,8 +190,8 @@ Specifies whether the current value is displayed as a string next to the slider.
 
   * Int $draw_value; `1` to draw the value
 
-[gtk_scale_] get_draw_value
----------------------------
+[[gtk_] scale_] get_draw_value
+------------------------------
 
 Returns whether the current value is displayed as a string next to the slider.
 
@@ -199,8 +199,8 @@ Returns: whether the current value is displayed as a string
 
     method gtk_scale_get_draw_value ( --> Int  )
 
-[gtk_scale_] set_has_origin
----------------------------
+[[gtk_] scale_] set_has_origin
+------------------------------
 
 If *has_origin* is set to `1` (the default), the scale will highlight the part of the scale between the origin (bottom or left side) of the scale and the current value.
 
@@ -210,8 +210,8 @@ Since: 3.4
 
   * Int $has_origin; `1` if the scale has an origin
 
-[gtk_scale_] get_has_origin
----------------------------
+[[gtk_] scale_] get_has_origin
+------------------------------
 
 Returns whether the scale has an origin.
 
@@ -221,8 +221,8 @@ Since: 3.4
 
     method gtk_scale_get_has_origin ( --> Int  )
 
-[gtk_scale_] set_value_pos
---------------------------
+[[gtk_] scale_] set_value_pos
+-----------------------------
 
 Sets the position in which the current value is displayed.
 
@@ -230,8 +230,8 @@ Sets the position in which the current value is displayed.
 
   * GtkPositionType $pos; the position in which the current value is displayed
 
-[gtk_scale_] get_value_pos
---------------------------
+[[gtk_] scale_] get_value_pos
+-----------------------------
 
 Gets the position in which the current value is displayed.
 
@@ -239,8 +239,8 @@ Returns: the position in which the current value is displayed
 
     method gtk_scale_get_value_pos ( --> GtkPositionType  )
 
-[gtk_scale_] add_mark
----------------------
+[[gtk_] scale_] add_mark
+------------------------
 
 Adds a mark at *value*.
 
@@ -260,8 +260,8 @@ Since: 2.16
 
   * Str $markup; (allow-none): Text to be shown at the mark, using [Pango markup][PangoMarkupFormat], or `Any`
 
-[gtk_scale_] clear_marks
-------------------------
+[[gtk_] scale_] clear_marks
+---------------------------
 
 Removes any marks that have been added with `gtk_scale_add_mark()`.
 

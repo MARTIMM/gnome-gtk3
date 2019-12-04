@@ -119,8 +119,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_radio_button_new
---------------------
+[gtk_] radio_button_new
+-----------------------
 
 Creates a new **Gnome::Gtk3::RadioButton**. To be of any practical value, a widget should then be packed into the radio button.
 
@@ -130,8 +130,8 @@ Returns: a new radio button
 
   * N-GSList $group; (element-type **Gnome::Gtk3::RadioButton**) (allow-none): an existing radio button group, or `Any` if you are creating a new group.
 
-[gtk_radio_button_] new_from_widget
------------------------------------
+[[gtk_] radio_button_] new_from_widget
+--------------------------------------
 
 Creates a new **Gnome::Gtk3::RadioButton**, adding it to the same group as *radio_group_member*. As with `gtk_radio_button_new()`, a widget should be packed into the radio button.
 
@@ -139,8 +139,8 @@ Returns: (transfer none): a new radio button.
 
     method gtk_radio_button_new_from_widget ( --> N-GObject  )
 
-[gtk_radio_button_] new_with_label
-----------------------------------
+[[gtk_] radio_button_] new_with_label
+-------------------------------------
 
 Creates a new **Gnome::Gtk3::RadioButton** with a text label.
 
@@ -152,8 +152,8 @@ Returns: a new radio button.
 
   * Str $label; the text label to display next to the radio button.
 
-[gtk_radio_button_] new_with_label_from_widget
-----------------------------------------------
+[[gtk_] radio_button_] new_with_label_from_widget
+-------------------------------------------------
 
 Creates a new **Gnome::Gtk3::RadioButton** with a text label, adding it to the same group.
 
@@ -163,8 +163,8 @@ Returns: (transfer none): a new radio button.
 
   * Str $label; a text string to display next to the radio button.
 
-[gtk_radio_button_] new_with_mnemonic
--------------------------------------
+[[gtk_] radio_button_] new_with_mnemonic
+----------------------------------------
 
 Creates a new **Gnome::Gtk3::RadioButton** containing a label, adding it to the same group as *group*. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the button.
 
@@ -176,8 +176,8 @@ Returns: a new **Gnome::Gtk3::RadioButton**
 
   * Str $label; the text of the button, with an underscore in front of the mnemonic character
 
-[gtk_radio_button_] new_with_mnemonic_from_widget
--------------------------------------------------
+[[gtk_] radio_button_] new_with_mnemonic_from_widget
+----------------------------------------------------
 
 Creates a new **Gnome::Gtk3::RadioButton** containing a label. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the button.
 
@@ -187,8 +187,8 @@ Returns: (transfer none): a new **Gnome::Gtk3::RadioButton**
 
   * Str $label; the text of the button, with an underscore in front of the mnemonic character
 
-[gtk_radio_button_] get_group
------------------------------
+[[gtk_] radio_button_] get_group
+--------------------------------
 
 Retrieves the group assigned to a radio button.
 
@@ -196,8 +196,8 @@ Returns: (element-type **Gnome::Gtk3::RadioButton**) (transfer none): a linked l
 
     method gtk_radio_button_get_group ( --> N-GSList  )
 
-[gtk_radio_button_] set_group
------------------------------
+[[gtk_] radio_button_] set_group
+--------------------------------
 
 Sets a **Gnome::Gtk3::RadioButton**’s group. It should be noted that this does not change the layout of your interface in any way, so if you are changing the group, it is likely you will need to re-arrange the user interface to reflect these changes.
 
@@ -205,8 +205,8 @@ Sets a **Gnome::Gtk3::RadioButton**’s group. It should be noted that this does
 
   * N-GSList $group; (element-type **Gnome::Gtk3::RadioButton**) (allow-none): an existing radio button group, such as one returned from `gtk_radio_button_get_group()`, or `Any`.
 
-[gtk_radio_button_] join_group
-------------------------------
+[[gtk_] radio_button_] join_group
+---------------------------------
 
 Joins a **Gnome::Gtk3::RadioButton** object to the group of another **Gnome::Gtk3::RadioButton** object
 

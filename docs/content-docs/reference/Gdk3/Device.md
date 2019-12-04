@@ -82,8 +82,8 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 
     multi method new ( N-GObject :$widget! )
 
-[gdk_device_] get_name
-----------------------
+[[gdk_] device_] get_name
+-------------------------
 
 Determines the name of the device.
 
@@ -93,8 +93,8 @@ Since: 2.20
 
     method gdk_device_get_name ( --> Str  )
 
-[gdk_device_] get_has_cursor
-----------------------------
+[[gdk_] device_] get_has_cursor
+-------------------------------
 
 Determines whether the pointer follows device motion. This is not meaningful for keyboard devices, which don't have a pointer.
 
@@ -104,8 +104,8 @@ Since: 2.20
 
     method gdk_device_get_has_cursor ( --> Int  )
 
-[gdk_device_] get_source
-------------------------
+[[gdk_] device_] get_source
+---------------------------
 
 Determines the type of the device.
 
@@ -115,8 +115,8 @@ Since: 2.20
 
     method gdk_device_get_source ( --> GdkInputSource  )
 
-[gdk_device_] get_mode
-----------------------
+[[gdk_] device_] get_mode
+-------------------------
 
 Determines the mode of the device.
 
@@ -126,8 +126,8 @@ Since: 2.20
 
     method gdk_device_get_mode ( --> GdkInputMode  )
 
-[gdk_device_] set_mode
-----------------------
+[[gdk_] device_] set_mode
+-------------------------
 
 Sets a the mode of an input device. The mode controls if the device is active and whether the device’s range is mapped to the entire screen or to a single window.
 
@@ -139,8 +139,8 @@ Returns: `1` if the mode was successfully changed.
 
   * GdkInputMode $mode; the input mode.
 
-[gdk_device_] get_n_keys
-------------------------
+[[gdk_] device_] get_n_keys
+---------------------------
 
 Returns the number of keys the device currently has.
 
@@ -150,8 +150,8 @@ Since: 2.24
 
     method gdk_device_get_n_keys ( --> Int  )
 
-[gdk_device_] get_key
----------------------
+[[gdk_] device_] get_key
+------------------------
 
 If *index_* has a valid keyval, this function will return `1` and fill in *keyval* and *modifiers* with the keyval settings.
 
@@ -167,8 +167,8 @@ Since: 2.20
 
   * GdkModifierType $modifiers; (out): return value for modifiers.
 
-[gdk_device_] set_key
----------------------
+[[gdk_] device_] set_key
+------------------------
 
 Specifies the X key event to generate when a macro button of a device is pressed.
 
@@ -180,8 +180,8 @@ Specifies the X key event to generate when a macro button of a device is pressed
 
   * GdkModifierType $modifiers; the modifiers to set
 
-[gdk_device_] get_state
------------------------
+[[gdk_] device_] get_state
+--------------------------
 
 Gets the current state of a pointer device relative to *window*. As a slave device’s coordinates are those of its master pointer, this function may not be called on devices of type `GDK_DEVICE_TYPE_SLAVE`, unless there is an ongoing grab on them. See `gdk_device_grab()`.
 
@@ -193,8 +193,8 @@ Gets the current state of a pointer device relative to *window*. As a slave devi
 
   * GdkModifierType $mask; (optional) (out): location to store the modifiers, or `Any`.
 
-[gdk_device_] get_position
---------------------------
+[[gdk_] device_] get_position
+-----------------------------
 
 Gets the current location of *device*. As a slave device coordinates are those of its master pointer, This function may not be called on devices of type `GDK_DEVICE_TYPE_SLAVE`, unless there is an ongoing grab on them, see `gdk_device_grab()`.
 
@@ -208,8 +208,8 @@ Since: 3.0
 
   * Int $y; (out) (allow-none): location to store root window Y coordinate of *device*, or `Any`.
 
-[gdk_device_] get_window_at_position
-------------------------------------
+[[gdk_] device_] get_window_at_position
+---------------------------------------
 
 Obtains the window underneath *device*, returning the location of the device in *win_x* and *win_y*. Returns `Any` if the window tree under *device* is not known to GDK (for example, belongs to another application).
 
@@ -225,8 +225,8 @@ Since: 3.0
 
   * Int $win_y; (out) (allow-none): return location for the Y coordinate of the device location, relative to the window origin, or `Any`.
 
-[gdk_device_] get_position_double
----------------------------------
+[[gdk_] device_] get_position_double
+------------------------------------
 
 Gets the current location of *device* in double precision. As a slave device's coordinates are those of its master pointer, this function may not be called on devices of type `GDK_DEVICE_TYPE_SLAVE`, unless there is an ongoing grab on them. See `gdk_device_grab()`.
 
@@ -240,8 +240,8 @@ Since: 3.10
 
   * Num $y; (out) (allow-none): location to store root window Y coordinate of *device*, or `Any`.
 
-[gdk_device_] get_window_at_position_double
--------------------------------------------
+[[gdk_] device_] get_window_at_position_double
+----------------------------------------------
 
 Obtains the window underneath *device*, returning the location of the device in *win_x* and *win_y* in double precision. Returns `Any` if the window tree under *device* is not known to GDK (for example, belongs to another application).
 
@@ -257,8 +257,8 @@ Since: 3.0
 
   * Num $win_y; (out) (allow-none): return location for the Y coordinate of the device location, relative to the window origin, or `Any`.
 
-[gdk_device_] get_n_axes
-------------------------
+[[gdk_] device_] get_n_axes
+---------------------------
 
 Returns the number of axes the device currently has.
 
@@ -268,8 +268,8 @@ Since: 3.0
 
     method gdk_device_get_n_axes ( --> Int  )
 
-[gdk_device_] list_axes
------------------------
+[[gdk_] device_] list_axes
+--------------------------
 
 Returns a **GList** of **Gnome::Gdk3::Atoms**, containing the labels for the axes that *device* currently has.
 
@@ -279,8 +279,8 @@ Since: 3.0
 
     method gdk_device_list_axes ( --> N-GList  )
 
-[gdk_device_] get_display
--------------------------
+[[gdk_] device_] get_display
+----------------------------
 
 Returns the **Gnome::Gdk3::Display** to which *device* pertains.
 
@@ -290,8 +290,8 @@ Since: 3.0
 
     method gdk_device_get_display ( --> N-GObject  )
 
-[gdk_device_] get_associated_device
------------------------------------
+[[gdk_] device_] get_associated_device
+--------------------------------------
 
 Returns the associated device to *device*, if *device* is of type `GDK_DEVICE_TYPE_MASTER`, it will return the paired pointer or keyboard.
 
@@ -305,8 +305,8 @@ Since: 3.0
 
     method gdk_device_get_associated_device ( --> N-GObject  )
 
-[gdk_device_] list_slave_devices
---------------------------------
+[[gdk_] device_] list_slave_devices
+-----------------------------------
 
 If the device if of type `GDK_DEVICE_TYPE_MASTER`, it will return the list of slave devices attached to it, otherwise it will return `Any`
 
@@ -314,8 +314,8 @@ Returns: (nullable) (transfer container) (element-type **Gnome::Gdk3::Device**):
 
     method gdk_device_list_slave_devices ( --> N-GList  )
 
-[gdk_device_] get_device_type
------------------------------
+[[gdk_] device_] get_device_type
+--------------------------------
 
 Returns the device type for *device*.
 
@@ -342,8 +342,8 @@ Since: 3.0
 
   * Int $y; the Y coordinate of the destination.
 
-[gdk_device_] get_last_event_window
------------------------------------
+[[gdk_] device_] get_last_event_window
+--------------------------------------
 
 Gets information about which window the given pointer device is in, based on events that have been received so far from the display server. If another application has a pointer grab, or this application has a grab with owner_events = `0`, `Any` may be returned even if the pointer is physically over one of this application's windows.
 
@@ -353,8 +353,8 @@ Since: 3.12
 
     method gdk_device_get_last_event_window ( --> N-GObject  )
 
-[gdk_device_] get_vendor_id
----------------------------
+[[gdk_] device_] get_vendor_id
+------------------------------
 
 Returns the vendor ID of this device, or `Any` if this information couldn't be obtained. This ID is retrieved from the device, and is thus constant for it.
 
@@ -374,8 +374,8 @@ Since: 3.16
 
     method gdk_device_get_vendor_id ( --> Str  )
 
-[gdk_device_] get_product_id
-----------------------------
+[[gdk_] device_] get_product_id
+-------------------------------
 
 Returns the product ID of this device, or `Any` if this information couldn't be obtained. This ID is retrieved from the device, and is thus constant for it. See `gdk_device_get_vendor_id()` for more information.
 
@@ -385,8 +385,8 @@ Since: 3.16
 
     method gdk_device_get_product_id ( --> Str  )
 
-[gdk_device_] get_seat
-----------------------
+[[gdk_] device_] get_seat
+-------------------------
 
 Returns the **Gnome::Gdk3::Seat** the device belongs to.
 

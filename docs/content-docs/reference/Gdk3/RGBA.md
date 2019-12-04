@@ -156,8 +156,8 @@ Since: 3.0
 
   * Str $spec; the string specifying the color
 
-[gdk_rgba_] to_string
----------------------
+[[gdk_] rgba_] to_string
+------------------------
 
 Returns a textual specification of this rgba object in the form **rgb(r,g,b)** or **rgba(r,g,b,a)**, where `r`, `g`, `b` and `a` represent the red, green, blue and alpha values respectively. r, g, and b are represented as integers in the range 0 to 255, and a is represented as floating point value in the range 0 to 1.
 

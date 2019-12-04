@@ -61,8 +61,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_search_entry_new
---------------------
+[gtk_] search_entry_new
+-----------------------
 
 Creates a **Gnome::Gtk3::SearchEntry**, with a find icon when the search field is empty, and a clear icon when it isn't.
 
@@ -72,8 +72,8 @@ Since: 3.6
 
     method gtk_search_entry_new ( --> N-GObject  )
 
-[gtk_search_entry_] handle_event
---------------------------------
+[[gtk_] search_entry_] handle_event
+-----------------------------------
 
 This function should be called when the top-level window which contains the search entry received a key event. If the entry is part of a **Gnome::Gtk3::SearchBar**, it is preferable to call `gtk_search_bar_handle_event()` instead, which will reveal the entry in addition to passing the event to this function.
 

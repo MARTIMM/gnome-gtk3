@@ -55,8 +55,8 @@ Frees a `N-GtkTreeIter` struct and after that, tree-iter-is-valid() returns Fals
 
     method clear-tree-iter ( )
 
-gtk_tree_iter_copy
-------------------
+[gtk_] tree_iter_copy
+---------------------
 
 Creates a dynamically allocated tree iterator as a copy of *iter*.
 

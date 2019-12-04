@@ -59,8 +59,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_text_tag_table_new
-----------------------
+[gtk_] text_tag_table_new
+-------------------------
 
 Creates a new **Gnome::Gtk3::TextTagTable**. The table contains no tags by default.
 
@@ -68,8 +68,8 @@ Returns: a new **Gnome::Gtk3::TextTagTable**
 
     method gtk_text_tag_table_new ( --> N-GObject  )
 
-gtk_text_tag_table_add
-----------------------
+[gtk_] text_tag_table_add
+-------------------------
 
 Add a tag to the table. The tag is assigned the highest priority in the table.
 
@@ -81,8 +81,8 @@ Returns: `1` on success.
 
   * N-GObject $tag; a **Gnome::Gtk3::TextTag**
 
-gtk_text_tag_table_remove
--------------------------
+[gtk_] text_tag_table_remove
+----------------------------
 
 Remove a tag from the table. If a **Gnome::Gtk3::TextBuffer** has *table* as its tag table, the tag is removed from the buffer. The table’s reference to the tag is removed, so the tag will end up destroyed if you don’t have a reference to it.
 
@@ -90,8 +90,8 @@ Remove a tag from the table. If a **Gnome::Gtk3::TextBuffer** has *table* as its
 
   * N-GObject $tag; a **Gnome::Gtk3::TextTag**
 
-gtk_text_tag_table_lookup
--------------------------
+[gtk_] text_tag_table_lookup
+----------------------------
 
 Look up a named tag.
 
@@ -101,8 +101,8 @@ Returns: (nullable) (transfer none): The tag, or `Any` if none by that name is i
 
   * Str $name; name of a tag
 
-[gtk_text_tag_table_] get_size
-------------------------------
+[[gtk_] text_tag_table_] get_size
+---------------------------------
 
 Returns the size of the table (number of tags)
 

@@ -57,8 +57,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_menu_bar_new
-----------------
+[gtk_] menu_bar_new
+-------------------
 
 Creates a new **Gnome::Gtk3::MenuBar**
 
@@ -66,8 +66,8 @@ Returns: the new menu bar, as a **Gnome::Gtk3::Widget**
 
     method gtk_menu_bar_new ( --> N-GObject  )
 
-[gtk_menu_bar_] new_from_model
-------------------------------
+[[gtk_] menu_bar_] new_from_model
+---------------------------------
 
 Creates a new **Gnome::Gtk3::MenuBar** and populates it with menu items and submenus according to *model*.
 
@@ -81,8 +81,8 @@ Since: 3.4
 
   * N-GObject $model; a **GMenuModel**
 
-[gtk_menu_bar_] get_pack_direction
-----------------------------------
+[[gtk_] menu_bar_] get_pack_direction
+-------------------------------------
 
 Retrieves the current pack direction of the menubar. See `gtk_menu_bar_set_pack_direction()`.
 
@@ -92,8 +92,8 @@ Since: 2.8
 
     method gtk_menu_bar_get_pack_direction ( --> GtkPackDirection  )
 
-[gtk_menu_bar_] set_pack_direction
-----------------------------------
+[[gtk_] menu_bar_] set_pack_direction
+-------------------------------------
 
 Sets how items should be packed inside a menubar.
 
@@ -103,8 +103,8 @@ Since: 2.8
 
   * GtkPackDirection $pack_dir; a new **Gnome::Gtk3::PackDirection**
 
-[gtk_menu_bar_] get_child_pack_direction
-----------------------------------------
+[[gtk_] menu_bar_] get_child_pack_direction
+-------------------------------------------
 
 Retrieves the current child pack direction of the menubar. See `gtk_menu_bar_set_child_pack_direction()`.
 
@@ -114,8 +114,8 @@ Since: 2.8
 
     method gtk_menu_bar_get_child_pack_direction ( --> GtkPackDirection  )
 
-[gtk_menu_bar_] set_child_pack_direction
-----------------------------------------
+[[gtk_] menu_bar_] set_child_pack_direction
+-------------------------------------------
 
 Sets how widgets should be packed inside the children of a menubar.
 

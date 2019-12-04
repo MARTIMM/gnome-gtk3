@@ -67,8 +67,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_toggle_button_new
----------------------
+[gtk_] toggle_button_new
+------------------------
 
 Creates a new toggle button. A widget should be packed into the button, as in `gtk_button_new()`.
 
@@ -76,8 +76,8 @@ Returns: a new toggle button.
 
     method gtk_toggle_button_new ( --> N-GObject  )
 
-[gtk_toggle_button_] new_with_label
------------------------------------
+[[gtk_] toggle_button_] new_with_label
+--------------------------------------
 
 Creates a new toggle button with a text label.
 
@@ -87,8 +87,8 @@ Returns: a new toggle button.
 
   * Str $label; a string containing the message to be placed in the toggle button.
 
-[gtk_toggle_button_] new_with_mnemonic
---------------------------------------
+[[gtk_] toggle_button_] new_with_mnemonic
+-----------------------------------------
 
 Creates a new **Gnome::Gtk3::ToggleButton** containing a label. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the button.
 
@@ -98,8 +98,8 @@ Returns: a new **Gnome::Gtk3::ToggleButton**
 
   * Str $label; the text of the button, with an underscore in front of the mnemonic character
 
-[gtk_toggle_button_] set_mode
------------------------------
+[[gtk_] toggle_button_] set_mode
+--------------------------------
 
 Sets whether the button is displayed as a separate indicator and label. You can call this function on a checkbutton or a radiobutton with `$draw_indicator` = `0` to make the button look like a normal button.
 
@@ -111,8 +111,8 @@ This function only affects instances of classes like **Gnome::Gtk3::CheckButton*
 
   * Int $draw_indicator; if `1`, draw the button as a separate indicator and label; if `0`, draw the button like a normal button
 
-[gtk_toggle_button_] get_mode
------------------------------
+[[gtk_] toggle_button_] get_mode
+--------------------------------
 
 Retrieves whether the button is displayed as a separate indicator and label. See `gtk_toggle_button_set_mode()`.
 
@@ -120,8 +120,8 @@ Returns: `1` if the togglebutton is drawn as a separate indicator and label.
 
     method gtk_toggle_button_get_mode ( --> Int  )
 
-[gtk_toggle_button_] set_active
--------------------------------
+[[gtk_] toggle_button_] set_active
+----------------------------------
 
 Sets the status of the toggle button. Set to `1` if you want the **Gnome::Gtk3::ToggleButton** to be “pressed in”, and `0` to raise it. This action causes the *toggled* signal and the *clicked* signal to be emitted.
 
@@ -129,8 +129,8 @@ Sets the status of the toggle button. Set to `1` if you want the **Gnome::Gtk3::
 
   * Int $is_active; `1` or `0`.
 
-[gtk_toggle_button_] get_active
--------------------------------
+[[gtk_] toggle_button_] get_active
+----------------------------------
 
 Queries a **Gnome::Gtk3::ToggleButton** and returns its current state. Returns `1` if the toggle button is pressed in and `0` if it is raised.
 
@@ -138,15 +138,15 @@ Returns: a **Int** value.
 
     method gtk_toggle_button_get_active ( --> Int  )
 
-gtk_toggle_button_toggled
--------------------------
+[gtk_] toggle_button_toggled
+----------------------------
 
 Emits the *toggled* signal on the **Gnome::Gtk3::ToggleButton**. There is no good reason for an application ever to call this function.
 
     method gtk_toggle_button_toggled ( )
 
-[gtk_toggle_button_] set_inconsistent
--------------------------------------
+[[gtk_] toggle_button_] set_inconsistent
+----------------------------------------
 
 If the user has selected a range of elements (such as some text or spreadsheet cells) that are affected by a toggle button, and the current values in that range are inconsistent, you may want to display the toggle in an “in between” state. This function turns on “in between” display. Normally you would turn off the inconsistent state again if the user toggles the toggle button. This has to be done manually, `gtk_toggle_button_set_inconsistent()` only affects visual appearance, it doesn’t affect the semantics of the button.
 
@@ -154,8 +154,8 @@ If the user has selected a range of elements (such as some text or spreadsheet c
 
   * Int $setting; `1` if state is inconsistent
 
-[gtk_toggle_button_] get_inconsistent
--------------------------------------
+[[gtk_] toggle_button_] get_inconsistent
+----------------------------------------
 
 Gets the value set by `gtk_toggle_button_set_inconsistent()`.
 

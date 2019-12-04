@@ -83,8 +83,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_check_button_new
---------------------
+[gtk_] check_button_new
+-----------------------
 
 Creates a new **Gnome::Gtk3::CheckButton**.
 
@@ -92,8 +92,8 @@ Returns: a **Gnome::Gtk3::Widget**.
 
     method gtk_check_button_new ( --> N-GObject  )
 
-[gtk_check_button_] new_with_label
-----------------------------------
+[[gtk_] check_button_] new_with_label
+-------------------------------------
 
 Creates a new **Gnome::Gtk3::CheckButton** with a **Gnome::Gtk3::Label** to the right of it.
 
@@ -103,8 +103,8 @@ Returns: a **Gnome::Gtk3::Widget**.
 
   * Str $label; the text for the check button.
 
-[gtk_check_button_] new_with_mnemonic
--------------------------------------
+[[gtk_] check_button_] new_with_mnemonic
+----------------------------------------
 
 Creates a new **Gnome::Gtk3::CheckButton** containing a label. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the check button.
 

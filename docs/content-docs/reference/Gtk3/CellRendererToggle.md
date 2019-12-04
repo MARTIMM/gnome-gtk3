@@ -35,8 +35,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_cell_renderer_toggle_new
-----------------------------
+[gtk_] cell_renderer_toggle_new
+-------------------------------
 
 Creates a new **Gnome::Gtk3::CellRendererToggle**. Adjust rendering parameters using object properties. Object properties can be set globally (with `g_object_set()`). Also, with **Gnome::Gtk3::TreeViewColumn**, you can bind a property to a value in a **Gnome::Gtk3::TreeModel**. For example, you can bind the “active” property on the cell renderer to a boolean value in the model, thus causing the check button to reflect the state of the model.
 
@@ -44,15 +44,15 @@ Returns: the new cell renderer
 
     method gtk_cell_renderer_toggle_new ( --> N-GObject  )
 
-[gtk_cell_renderer_toggle_] get_radio
--------------------------------------
+[[gtk_] cell_renderer_toggle_] get_radio
+----------------------------------------
 
 Returns `1` whether we’re rendering radio toggles rather than checkboxes.
 
     method gtk_cell_renderer_toggle_get_radio ( --> Int  )
 
-[gtk_cell_renderer_toggle_] set_radio
--------------------------------------
+[[gtk_] cell_renderer_toggle_] set_radio
+----------------------------------------
 
 If *$radio* is `True`, the cell renderer renders a radio toggle (i.e. a toggle in a group of mutually-exclusive toggles). If `False`, it renders a check toggle (a standalone boolean option). This can be set globally for the cell renderer, or changed just before rendering each cell in the model (for **Gnome::Gtk3::TreeView**, you set up a per-row setting using **Gnome::Gtk3::TreeViewColumn** to associate model columns with cell renderer properties).
 
@@ -60,15 +60,15 @@ If *$radio* is `True`, the cell renderer renders a radio toggle (i.e. a toggle i
 
   * Bool $radio; `True` to make the toggle look like a radio button
 
-[gtk_cell_renderer_toggle_] get_active
---------------------------------------
+[[gtk_] cell_renderer_toggle_] get_active
+-----------------------------------------
 
 Returns `1` if the cell renderer is active. See `gtk_cell_renderer_toggle_set_active()`.
 
     method gtk_cell_renderer_toggle_get_active ( --> Int  )
 
-[gtk_cell_renderer_toggle_] set_active
---------------------------------------
+[[gtk_] cell_renderer_toggle_] set_active
+-----------------------------------------
 
 Activates or deactivates a cell renderer.
 
@@ -76,8 +76,8 @@ Activates or deactivates a cell renderer.
 
   * Bool $setting; the value to set.
 
-[gtk_cell_renderer_toggle_] get_activatable
--------------------------------------------
+[[gtk_] cell_renderer_toggle_] get_activatable
+----------------------------------------------
 
 Returns `1` if the cell renderer is activatable. See `gtk_cell_renderer_toggle_set_activatable()`.
 
@@ -85,8 +85,8 @@ Since: 2.18
 
     method gtk_cell_renderer_toggle_get_activatable ( --> Int  )
 
-[gtk_cell_renderer_toggle_] set_activatable
--------------------------------------------
+[[gtk_] cell_renderer_toggle_] set_activatable
+----------------------------------------------
 
 Makes the cell renderer activatable.
 

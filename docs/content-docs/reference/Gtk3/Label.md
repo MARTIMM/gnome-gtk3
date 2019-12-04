@@ -110,8 +110,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_label_new
--------------
+[gtk_] label_new
+----------------
 
 Creates a new label with the given text inside it. You can pass `Any` to get an empty label widget.
 
@@ -121,8 +121,8 @@ Returns: the new **Gnome::Gtk3::Label**
 
   * Str $str; (allow-none): The text of the label
 
-[gtk_label_] new_with_mnemonic
-------------------------------
+[[gtk_] label_] new_with_mnemonic
+---------------------------------
 
 Creates a new **Gnome::Gtk3::Label**, containing the text in *str*.
 
@@ -136,8 +136,8 @@ Returns: the new **Gnome::Gtk3::Label**
 
   * Str $str; (allow-none): The text of the label, with an underscore in front of the mnemonic character
 
-[gtk_label_] set_text
----------------------
+[[gtk_] label_] set_text
+------------------------
 
 Sets the text within the **Gnome::Gtk3::Label** widget. It overwrites any text that was there before.
 
@@ -151,8 +151,8 @@ See also: `gtk_label_set_markup()`
 
   * Str $str; The text you want to set
 
-[gtk_label_] get_text
----------------------
+[[gtk_] label_] get_text
+------------------------
 
 Fetches the text from a label widget, as displayed on the screen. This does not include any embedded underlines indicating mnemonics or Pango markup. (See `gtk_label_get_label()`)
 
@@ -160,8 +160,8 @@ Returns: the text in the label widget. This is the internal string used by the l
 
     method gtk_label_get_text ( --> Str  )
 
-[gtk_label_] set_label
-----------------------
+[[gtk_] label_] set_label
+-------------------------
 
 Sets the text of the label. The label is interpreted as including embedded underlines and/or Pango markup depending on the values of the *use-underline* and *use-markup* properties.
 
@@ -169,8 +169,8 @@ Sets the text of the label. The label is interpreted as including embedded under
 
   * Str $str; the new text to set for the label
 
-[gtk_label_] get_label
-----------------------
+[[gtk_] label_] get_label
+-------------------------
 
 Fetches the text from a label widget including any embedded underlines indicating mnemonics and Pango markup. (See `gtk_label_get_text()`).
 
@@ -178,8 +178,8 @@ Returns: the text of the label widget. This string is owned by the widget and mu
 
     method gtk_label_get_label ( --> Str  )
 
-[gtk_label_] set_use_markup
----------------------------
+[[gtk_] label_] set_use_markup
+------------------------------
 
 Sets whether the text of the label contains markup in [Pango’s text markup language](https://developer.gnome.org/pygtk/stable/pango-markup-language.html). See `gtk_label_set_markup()`.
 
@@ -187,8 +187,8 @@ Sets whether the text of the label contains markup in [Pango’s text markup lan
 
   * Int $setting; `1` if the label’s text should be parsed for markup.
 
-[gtk_label_] get_use_markup
----------------------------
+[[gtk_] label_] get_use_markup
+------------------------------
 
 Returns whether the label’s text is interpreted as marked up with the [Pango text markup language][PangoMarkupFormat]. See `gtk_label_set_use_markup()`.
 
@@ -196,8 +196,8 @@ Returns: `1` if the label’s text will be parsed for markup.
 
     method gtk_label_get_use_markup ( --> Int  )
 
-[gtk_label_] set_use_underline
-------------------------------
+[[gtk_] label_] set_use_underline
+---------------------------------
 
 If true, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
 
@@ -205,8 +205,8 @@ If true, an underline in the text indicates the next character should be used fo
 
   * Int $setting; `1` if underlines in the text indicate mnemonics
 
-[gtk_label_] get_use_underline
-------------------------------
+[[gtk_] label_] get_use_underline
+---------------------------------
 
 Returns whether an embedded underline in the label indicates a mnemonic. See `gtk_label_set_use_underline()`.
 
@@ -214,8 +214,8 @@ Returns: `1` whether an embedded underline in the label indicates the mnemonic a
 
     method gtk_label_get_use_underline ( --> Int  )
 
-[gtk_label_] set_markup_with_mnemonic
--------------------------------------
+[[gtk_] label_] set_markup_with_mnemonic
+----------------------------------------
 
 Parses *str* which is marked up with the [Pango text markup language](https://developer.gnome.org/pygtk/stable/pango-markup-language.html), setting the label’s text and attribute list based on the parse results. If characters in *str* are preceded by an underscore, they are underlined indicating that they represent a keyboard accelerator called a mnemonic.
 
@@ -225,8 +225,8 @@ The mnemonic key can be used to activate another widget, chosen automatically, o
 
   * Str $str; a markup string (see [Pango markup format][PangoMarkupFormat])
 
-[gtk_label_] get_mnemonic_keyval
---------------------------------
+[[gtk_] label_] get_mnemonic_keyval
+-----------------------------------
 
 If the label has been set so that it has an mnemonic key this function returns the keyval used for the mnemonic accelerator. If there is no mnemonic set up it returns **GDK_KEY_VoidSymbol**.
 
@@ -234,8 +234,8 @@ Returns: GDK keyval usable for accelerators, or **GDK_KEY_VoidSymbol**
 
     method gtk_label_get_mnemonic_keyval ( --> UInt  )
 
-[gtk_label_] set_mnemonic_widget
---------------------------------
+[[gtk_] label_] set_mnemonic_widget
+-----------------------------------
 
 If the label has been set so that it has an mnemonic key (using i.e. `gtk_label_set_markup_with_mnemonic()`, `gtk_label_set_text_with_mnemonic()`, `gtk_label_new_with_mnemonic()` or the “use_underline” property) the label can be associated with a widget that is the target of the mnemonic. When the label is inside a widget (like a **Gnome::Gtk3::Button** or a **Gnome::Gtk3::Notebook** tab) it is automatically associated with the correct widget, but sometimes (i.e. when the target is a **Gnome::Gtk3::Entry** next to the label) you need to set it explicitly using this function.
 
@@ -245,8 +245,8 @@ The target widget will be accelerated by emitting the **Gnome::Gtk3::Widget**::m
 
   * N-GObject $widget; (allow-none): the target **Gnome::Gtk3::Widget**
 
-[gtk_label_] get_mnemonic_widget
---------------------------------
+[[gtk_] label_] get_mnemonic_widget
+-----------------------------------
 
 Retrieves the target of the mnemonic (keyboard shortcut) of this label. See `gtk_label_set_mnemonic_widget()`.
 
@@ -254,8 +254,8 @@ Returns: (nullable) (transfer none): the target of the label’s mnemonic, or `A
 
     method gtk_label_get_mnemonic_widget ( --> N-GObject  )
 
-[gtk_label_] set_text_with_mnemonic
------------------------------------
+[[gtk_] label_] set_text_with_mnemonic
+--------------------------------------
 
 Sets the label’s text from the string *str*. If characters in *str* are preceded by an underscore, they are underlined indicating that they represent a keyboard accelerator called a mnemonic. The mnemonic key can be used to activate another widget, chosen automatically, or explicitly using `gtk_label_set_mnemonic_widget()`.
 
@@ -263,8 +263,8 @@ Sets the label’s text from the string *str*. If characters in *str* are preced
 
   * Str $str; a string
 
-[gtk_label_] set_justify
-------------------------
+[[gtk_] label_] set_justify
+---------------------------
 
 Sets the alignment of the lines in the text of the label relative to each other. `GTK_JUSTIFY_LEFT` is the default value when the widget is first created with `gtk_label_new()`. If you instead want to set the alignment of the label as a whole, use `gtk_widget_set_halign()` instead. `gtk_label_set_justify()` has no effect on labels containing only a single line.
 
@@ -272,8 +272,8 @@ Sets the alignment of the lines in the text of the label relative to each other.
 
   * GtkJustification $jtype; a **Gnome::Gtk3::Justification**
 
-[gtk_label_] get_justify
-------------------------
+[[gtk_] label_] get_justify
+---------------------------
 
 Returns the justification of the label. See `gtk_label_set_justify()`.
 
@@ -281,8 +281,8 @@ Returns: **Gnome::Gtk3::Justification**
 
     method gtk_label_get_justify ( --> GtkJustification  )
 
-[gtk_label_] set_width_chars
-----------------------------
+[[gtk_] label_] set_width_chars
+-------------------------------
 
 Sets the desired width in characters of *label* to *n_chars*.
 
@@ -292,8 +292,8 @@ Since: 2.6
 
   * Int $n_chars; the new desired width, in characters.
 
-[gtk_label_] get_width_chars
-----------------------------
+[[gtk_] label_] get_width_chars
+-------------------------------
 
 Retrieves the desired width of *label*, in characters. See `gtk_label_set_width_chars()`.
 
@@ -303,8 +303,8 @@ Since: 2.6
 
     method gtk_label_get_width_chars ( --> Int  )
 
-[gtk_label_] set_max_width_chars
---------------------------------
+[[gtk_] label_] set_max_width_chars
+-----------------------------------
 
 Sets the desired maximum width in characters of *label* to *n_chars*.
 
@@ -314,8 +314,8 @@ Since: 2.6
 
   * Int $n_chars; the new desired maximum width, in characters.
 
-[gtk_label_] get_max_width_chars
---------------------------------
+[[gtk_] label_] get_max_width_chars
+-----------------------------------
 
 Retrieves the desired maximum width of *label*, in characters. See `gtk_label_set_width_chars()`.
 
@@ -325,8 +325,8 @@ Since: 2.6
 
     method gtk_label_get_max_width_chars ( --> Int  )
 
-[gtk_label_] set_lines
-----------------------
+[[gtk_] label_] set_lines
+-------------------------
 
 Sets the number of lines to which an ellipsized, wrapping label should be limited. This has no effect if the label is not wrapping or ellipsized. Set this to -1 if you don’t want to limit the number of lines.
 
@@ -336,8 +336,8 @@ Since: 3.10
 
   * Int $lines; the desired number of lines, or -1
 
-[gtk_label_] get_lines
-----------------------
+[[gtk_] label_] get_lines
+-------------------------
 
 Gets the number of lines to which an ellipsized, wrapping label should be limited. See `gtk_label_set_lines()`.
 
@@ -347,8 +347,8 @@ Since: 3.10
 
     method gtk_label_get_lines ( --> Int  )
 
-[gtk_label_] set_pattern
-------------------------
+[[gtk_] label_] set_pattern
+---------------------------
 
 The pattern of underlines you want under the existing text within the **Gnome::Gtk3::Label** widget. For example if the current text of the label says “FooBarBaz” passing a pattern of “___ ___” will underline “Foo” and “Baz” but not “Bar”.
 
@@ -356,8 +356,8 @@ The pattern of underlines you want under the existing text within the **Gnome::G
 
   * Str $pattern; The pattern as described above.
 
-[gtk_label_] set_line_wrap
---------------------------
+[[gtk_] label_] set_line_wrap
+-----------------------------
 
 Toggles line wrapping within the **Gnome::Gtk3::Label** widget. `1` makes it break lines if text exceeds the widget’s size. `0` lets the text get cut off by the edge of the widget if it exceeds the widget size.
 
@@ -367,8 +367,8 @@ Note that setting line wrapping to `1` does not make the label wrap at its paren
 
   * Int $wrap; the setting
 
-[gtk_label_] get_line_wrap
---------------------------
+[[gtk_] label_] get_line_wrap
+-----------------------------
 
 Returns whether lines in the label are automatically wrapped. See `gtk_label_set_line_wrap()`.
 
@@ -376,8 +376,8 @@ Returns: `1` if the lines of the label are automatically wrapped.
 
     method gtk_label_get_line_wrap ( --> Int  )
 
-[gtk_label_] set_selectable
----------------------------
+[[gtk_] label_] set_selectable
+------------------------------
 
 Selectable labels allow the user to select text from the label, for copy-and-paste.
 
@@ -385,8 +385,8 @@ Selectable labels allow the user to select text from the label, for copy-and-pas
 
   * Int $setting; `1` to allow selecting text in the label
 
-[gtk_label_] get_selectable
----------------------------
+[[gtk_] label_] get_selectable
+------------------------------
 
 Gets the value set by `gtk_label_set_selectable()`.
 
@@ -394,8 +394,8 @@ Returns: `1` if the user can copy text from the label
 
     method gtk_label_get_selectable ( --> Int  )
 
-[gtk_label_] set_angle
-----------------------
+[[gtk_] label_] set_angle
+-------------------------
 
 Sets the angle of rotation for the label. An angle of 90 reads from from bottom to top, an angle of 270, from top to bottom. The angle setting for the label is ignored if the label is selectable, wrapped, or ellipsized.
 
@@ -405,8 +405,8 @@ Since: 2.6
 
   * Num $angle; the angle that the baseline of the label makes with the horizontal, in degrees, measured counterclockwise
 
-[gtk_label_] get_angle
-----------------------
+[[gtk_] label_] get_angle
+-------------------------
 
 Gets the angle of rotation for the label. See `gtk_label_set_angle()`.
 
@@ -416,8 +416,8 @@ Since: 2.6
 
     method gtk_label_get_angle ( --> Num  )
 
-[gtk_label_] select_region
---------------------------
+[[gtk_] label_] select_region
+-----------------------------
 
 Selects a range of characters in the label, if the label is selectable. See `gtk_label_set_selectable()`. If the label is not selectable, this function has no effect. If *start_offset* or *end_offset* are -1, then the end of the label will be substituted.
 
@@ -427,8 +427,8 @@ Selects a range of characters in the label, if the label is selectable. See `gtk
 
   * Int $end_offset; end offset (in characters not bytes)
 
-[gtk_label_] get_selection_bounds
----------------------------------
+[[gtk_] label_] get_selection_bounds
+------------------------------------
 
 Gets the selected range of characters in the label, returning `1` if there’s a selection.
 
@@ -440,8 +440,8 @@ Returns: `1` if selection is non-empty
 
   * Int $end; (out): return location for end of selection, as a character offset
 
-[gtk_label_] set_single_line_mode
----------------------------------
+[[gtk_] label_] set_single_line_mode
+------------------------------------
 
 Sets whether the label is in single line mode.
 
@@ -451,8 +451,8 @@ Since: 2.6
 
   * Int $single_line_mode; `1` if the label should be in single line mode
 
-[gtk_label_] get_single_line_mode
----------------------------------
+[[gtk_] label_] get_single_line_mode
+------------------------------------
 
 Returns whether the label is in single line mode.
 
@@ -462,8 +462,8 @@ Since: 2.6
 
     method gtk_label_get_single_line_mode ( --> Int  )
 
-[gtk_label_] get_current_uri
-----------------------------
+[[gtk_] label_] get_current_uri
+-------------------------------
 
 Returns the URI for the currently active link in the label. The active link is the one under the mouse pointer or, in a selectable label, the link in which the text cursor is currently positioned.
 
@@ -475,8 +475,8 @@ Since: 2.18
 
     method gtk_label_get_current_uri ( --> Str  )
 
-[gtk_label_] set_track_visited_links
-------------------------------------
+[[gtk_] label_] set_track_visited_links
+---------------------------------------
 
 Sets whether the label should keep track of clicked links (and use a different color for them).
 
@@ -486,8 +486,8 @@ Since: 2.18
 
   * Int $track_links; `1` to track visited links
 
-[gtk_label_] get_track_visited_links
-------------------------------------
+[[gtk_] label_] get_track_visited_links
+---------------------------------------
 
 Returns whether the label is currently keeping track of clicked links.
 
@@ -497,8 +497,8 @@ Since: 2.18
 
     method gtk_label_get_track_visited_links ( --> Int  )
 
-[gtk_label_] set_xalign
------------------------
+[[gtk_] label_] set_xalign
+--------------------------
 
 Sets the *xalign* property for *label*.
 
@@ -508,8 +508,8 @@ Since: 3.16
 
   * Num $xalign; the new xalign value, between 0 and 1
 
-[gtk_label_] get_xalign
------------------------
+[[gtk_] label_] get_xalign
+--------------------------
 
 Gets the *xalign* property for *label*.
 
@@ -519,8 +519,8 @@ Since: 3.16
 
     method gtk_label_get_xalign ( --> Num  )
 
-[gtk_label_] set_yalign
------------------------
+[[gtk_] label_] set_yalign
+--------------------------
 
 Sets the *yalign* property for *label*.
 
@@ -530,8 +530,8 @@ Since: 3.16
 
   * Num $yalign; the new yalign value, between 0 and 1
 
-[gtk_label_] get_yalign
------------------------
+[[gtk_] label_] get_yalign
+--------------------------
 
 Gets the *yalign* property for *label*.
 

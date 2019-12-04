@@ -73,8 +73,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_color_button_new
---------------------
+[gtk_] color_button_new
+-----------------------
 
 Creates a new color button.
 
@@ -86,8 +86,8 @@ Since: 2.4
 
     method gtk_color_button_new ( --> N-GObject  )
 
-[gtk_color_button_] new_with_rgba
----------------------------------
+[[gtk_] color_button_] new_with_rgba
+------------------------------------
 
 Creates a new color button.
 
@@ -99,8 +99,8 @@ Since: 3.0
 
   * N-GObject $rgba; A **Gnome::Gdk3::RGBA** to set the current color with
 
-[gtk_color_button_] set_title
------------------------------
+[[gtk_] color_button_] set_title
+--------------------------------
 
 Sets the title for the color selection dialog.
 
@@ -110,8 +110,8 @@ Since: 2.4
 
   * Str $title; String containing new window title
 
-[gtk_color_button_] get_title
------------------------------
+[[gtk_] color_button_] get_title
+--------------------------------
 
 Gets the title of the color selection dialog.
 

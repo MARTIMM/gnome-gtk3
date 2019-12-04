@@ -56,8 +56,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_color_chooser_widget_new
-----------------------------
+[gtk_] color_chooser_widget_new
+-------------------------------
 
 Creates a new **Gnome::Gtk3::ColorChooserWidget**.
 

@@ -45,12 +45,12 @@ Example
 new
 ---
 
-### multi method new ( Bool :$empty! )
+Create a new quark object.
 
-Create a new error object.
+    multi method new ( Bool :$empty! )
 
-[g_quark_] try_string
----------------------
+[[g_] quark_] try_string
+------------------------
 
 Gets the *GQuark* associated with the given string, or 0 if string is undefined or it has no associated *GQuark*.
 
@@ -62,8 +62,8 @@ Returns: the *GQuark* associated with the string, or 0 if *$string* is undefined
 
   * Str $string: a string
 
-[g_quark_] from_string
-----------------------
+[[g_] quark_] from_string
+-------------------------
 
 Gets the *GQuark* identifying the given string. If the string does not currently have an associated *GQuark*, a new *GQuark* is created, using a copy of the string.
 
@@ -73,8 +73,8 @@ Returns: the *GQuark* identifying the string, or 0 if *$string* is undefined
 
   * Str $string: a string
 
-[g_quark_] to_string
---------------------
+[[g_] quark_] to_string
+-----------------------
 
 Gets the string associated with the given GQuark.
 

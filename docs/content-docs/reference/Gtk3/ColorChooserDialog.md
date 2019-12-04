@@ -17,8 +17,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::ColorChooserDialog implements
 
-  * Gnome::Atk::ImplementorIface
-
   * [Gnome::Gtk3::Buildable](Buildable.html)
 
   * [Gnome::Gtk3::ColorChooser](ColorChooser.html)
@@ -64,8 +62,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_color_chooser_dialog_new
-----------------------------
+[gtk_] color_chooser_dialog_new
+-------------------------------
 
 Creates a new native `Gtk3ColorChooserDialog`.
 

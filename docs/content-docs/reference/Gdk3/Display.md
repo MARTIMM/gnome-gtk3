@@ -56,8 +56,8 @@ Since: 2.2
 
   * Str $display_name; the name of the display to open
 
-[gdk_display_] get_name
------------------------
+[[gdk_] display_] get_name
+--------------------------
 
 Gets the name of the display.
 
@@ -67,8 +67,8 @@ Since: 2.2
 
     method gdk_display_get_name ( --> Str  )
 
-[gdk_display_] get_default_screen
----------------------------------
+[[gdk_] display_] get_default_screen
+------------------------------------
 
 Get the default **Gnome::Gdk3::Screen** for this display.
 
@@ -76,8 +76,8 @@ Since: 2.2
 
     method gdk_display_get_default_screen ( --> N-GObject  )
 
-[gdk_display_] device_is_grabbed
---------------------------------
+[[gdk_] display_] device_is_grabbed
+-----------------------------------
 
 Returns `1` if there is an ongoing grab on *device* for *display*.
 
@@ -127,8 +127,8 @@ Since: 2.2
 
     method gdk_display_close ( )
 
-[gdk_display_] is_closed
-------------------------
+[[gdk_] display_] is_closed
+---------------------------
 
 Finds out if the display has been closed.
 
@@ -138,8 +138,8 @@ Since: 2.22
 
     method gdk_display_is_closed ( --> Int  )
 
-[gdk_display_] get_event
-------------------------
+[[gdk_] display_] get_event
+---------------------------
 
 Gets the next **Gnome::Gdk3::Event** to be processed for the display, fetching events from the windowing system if necessary.
 
@@ -149,8 +149,8 @@ Since: 2.2
 
     method gdk_display_get_event ( --> GdkEvent  )
 
-[gdk_display_] peek_event
--------------------------
+[[gdk_] display_] peek_event
+----------------------------
 
 Gets a copy of the first **Gnome::Gdk3::Event** in the *display*’s event queue, without removing the event from the queue. (Note that this function will not get more events from the windowing system. It only checks the events that have already been moved to the GDK event queue.)
 
@@ -160,8 +160,8 @@ Since: 2.2
 
     method gdk_display_peek_event ( --> GdkEvent  )
 
-[gdk_display_] put_event
-------------------------
+[[gdk_] display_] put_event
+---------------------------
 
 Appends a copy of the given event onto the front of the event queue for *display*.
 
@@ -171,8 +171,8 @@ Since: 2.2
 
   * GdkEvent $event; a **Gnome::Gdk3::Event**.
 
-[gdk_display_] has_pending
---------------------------
+[[gdk_] display_] has_pending
+-----------------------------
 
 Returns whether the display has events that are waiting to be processed.
 
@@ -182,22 +182,22 @@ Since: 3.0
 
     method gdk_display_has_pending ( --> Int  )
 
-[gdk_display_] set_double_click_time
-------------------------------------
+[[gdk_] display_] set_double_click_time
+---------------------------------------
 
     method gdk_display_set_double_click_time ( UInt $msec )
 
   * UInt $msec;
 
-[gdk_display_] set_double_click_distance
-----------------------------------------
+[[gdk_] display_] set_double_click_distance
+-------------------------------------------
 
     method gdk_display_set_double_click_distance ( UInt $distance )
 
   * UInt $distance;
 
-[gdk_display_] get_default
---------------------------
+[[gdk_] display_] get_default
+-----------------------------
 
 Gets the default GdkDisplay. This is a convenience function for `gdk_display_manager_get_default_display(gdk_display_manager_get())`.
 
@@ -205,8 +205,8 @@ Returns a GdkDisplay, or NULL if there is no default display.
 
     method gdk_display_get_default ( --> N-GObject  )
 
-[gdk_display_] supports_cursor_alpha
-------------------------------------
+[[gdk_] display_] supports_cursor_alpha
+---------------------------------------
 
 Returns `1` if cursors can use an 8bit alpha channel on *display*. Otherwise, cursors are restricted to bilevel alpha (i.e. a mask).
 
@@ -216,8 +216,8 @@ Since: 2.4
 
     method gdk_display_supports_cursor_alpha ( --> Int  )
 
-[gdk_display_] supports_cursor_color
-------------------------------------
+[[gdk_] display_] supports_cursor_color
+---------------------------------------
 
 Returns `1` if multicolored cursors are supported on *display*. Otherwise, cursors have only a forground and a background color.
 
@@ -227,8 +227,8 @@ Since: 2.4
 
     method gdk_display_supports_cursor_color ( --> Int  )
 
-[gdk_display_] get_default_cursor_size
---------------------------------------
+[[gdk_] display_] get_default_cursor_size
+-----------------------------------------
 
 Returns the default size to use for cursors on *display*.
 
@@ -238,8 +238,8 @@ Since: 2.4
 
     method gdk_display_get_default_cursor_size ( --> UInt  )
 
-[gdk_display_] get_maximal_cursor_size
---------------------------------------
+[[gdk_] display_] get_maximal_cursor_size
+-----------------------------------------
 
 Gets the maximal size to use for cursors on *display*.
 
@@ -251,8 +251,8 @@ Since: 2.4
 
   * UInt $height; (out): the return location for the maximal cursor height
 
-[gdk_display_] get_default_group
---------------------------------
+[[gdk_] display_] get_default_group
+-----------------------------------
 
 Returns the default group leader window for all toplevel windows on *display*. This window is implicitly created by GDK. See `gdk_window_set_group()`.
 
@@ -262,8 +262,8 @@ Since: 2.4
 
     method gdk_display_get_default_group ( --> N-GObject  )
 
-[gdk_display_] supports_selection_notification
-----------------------------------------------
+[[gdk_] display_] supports_selection_notification
+-------------------------------------------------
 
 Returns whether **Gnome::Gdk3::EventOwnerChange** events will be sent when the owner of a selection changes.
 
@@ -273,8 +273,8 @@ Since: 2.6
 
     method gdk_display_supports_selection_notification ( --> Int  )
 
-[gdk_display_] supports_clipboard_persistence
----------------------------------------------
+[[gdk_] display_] supports_clipboard_persistence
+------------------------------------------------
 
 Returns whether the speicifed display supports clipboard persistance; i.e. if it’s possible to store the clipboard data after an application has quit. On X11 this checks if a clipboard daemon is running.
 
@@ -284,8 +284,8 @@ Since: 2.6
 
     method gdk_display_supports_clipboard_persistence ( --> Int  )
 
-[gdk_display_] supports_shapes
-------------------------------
+[[gdk_] display_] supports_shapes
+---------------------------------
 
 Returns `1` if `gdk_window_shape_combine_mask()` can be used to create shaped windows on *display*.
 
@@ -295,8 +295,8 @@ Since: 2.10
 
     method gdk_display_supports_shapes ( --> Int  )
 
-[gdk_display_] supports_input_shapes
-------------------------------------
+[[gdk_] display_] supports_input_shapes
+---------------------------------------
 
 Returns `1` if `gdk_window_input_shape_combine_mask()` can be used to modify the input shape of windows on *display*.
 
@@ -306,8 +306,8 @@ Since: 2.10
 
     method gdk_display_supports_input_shapes ( --> Int  )
 
-[gdk_display_] notify_startup_complete
---------------------------------------
+[[gdk_] display_] notify_startup_complete
+-----------------------------------------
 
 Indicates to the GUI environment that the application has finished loading, using a given identifier.
 
@@ -319,8 +319,8 @@ Since: 3.0
 
   * Str $startup_id; a startup-notification identifier, for which notification process should be completed
 
-[gdk_display_] get_app_launch_context
--------------------------------------
+[[gdk_] display_] get_app_launch_context
+----------------------------------------
 
 Returns a **Gnome::Gdk3::AppLaunchContext** suitable for launching applications on the given display.
 
@@ -330,8 +330,8 @@ Since: 3.0
 
     method gdk_display_get_app_launch_context ( --> N-GObject  )
 
-[gdk_display_] get_default_seat
--------------------------------
+[[gdk_] display_] get_default_seat
+----------------------------------
 
 Returns the default **Gnome::Gdk3::Seat** for this display.
 
@@ -341,8 +341,8 @@ Since: 3.20
 
     method gdk_display_get_default_seat ( --> N-GObject  )
 
-[gdk_display_] list_seats
--------------------------
+[[gdk_] display_] list_seats
+----------------------------
 
 Returns the list of seats known to *display*.
 
@@ -352,8 +352,8 @@ Since: 3.20
 
     method gdk_display_list_seats ( --> N-GList  )
 
-[gdk_display_] get_n_monitors
------------------------------
+[[gdk_] display_] get_n_monitors
+--------------------------------
 
 Gets the number of monitors that belong to *display*.
 
@@ -363,8 +363,8 @@ Returns: the number of monitors Since: 3.22
 
     method gdk_display_get_n_monitors ( --> int32  )
 
-[gdk_display_] get_monitor
---------------------------
+[[gdk_] display_] get_monitor
+-----------------------------
 
 Gets a monitor associated with this display.
 
@@ -374,8 +374,8 @@ Returns: (transfer none): the **Gnome::Gdk3::Monitor**, or `Any` if *monitor_num
 
   * int32 $monitor_num; number of the monitor
 
-[gdk_display_] get_primary_monitor
-----------------------------------
+[[gdk_] display_] get_primary_monitor
+-------------------------------------
 
 Gets the primary monitor for the display.
 
@@ -385,8 +385,8 @@ Returns: (transfer none): the primary monitor, or `Any` if no primary monitor is
 
     method gdk_display_get_primary_monitor ( --> N-GObject  )
 
-[gdk_display_] get_monitor_at_point
------------------------------------
+[[gdk_] display_] get_monitor_at_point
+--------------------------------------
 
 Gets the monitor in which the point (*x*, *y*) is located, or a nearby monitor if the point is not in any monitor.
 
@@ -398,8 +398,8 @@ Returns: (transfer none): the monitor containing the point Since: 3.22
 
   * int32 $y; the y coordinate of the point
 
-[gdk_display_] get_monitor_at_window
-------------------------------------
+[[gdk_] display_] get_monitor_at_window
+---------------------------------------
 
 Gets the monitor in which the largest area of *window* resides, or a monitor close to *window* if it is outside of all monitors.
 

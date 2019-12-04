@@ -100,8 +100,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_file_filter_new
--------------------
+[gtk_] file_filter_new
+----------------------
 
 Creates a new **Gnome::Gtk3::FileFilter** with no rules added to it. Such a filter doesn’t accept any files, so is not particularly useful until you add rules with `gtk_file_filter_add_mime_type()`, `gtk_file_filter_add_pattern()`, or `gtk_file_filter_add_custom()`. To create a filter that accepts any file, use:
 
@@ -114,8 +114,8 @@ Since: 2.4
 
     method gtk_file_filter_new ( --> N-GObject  )
 
-[gtk_file_filter_] set_name
----------------------------
+[[gtk_] file_filter_] set_name
+------------------------------
 
 Sets the human-readable name of the filter; this is the string that will be displayed in the file selector user interface if there is a selectable list of filters.
 
@@ -125,8 +125,8 @@ Since: 2.4
 
   * Str $name; (allow-none): the human-readable-name for the filter, or `Any` to remove any existing name.
 
-[gtk_file_filter_] get_name
----------------------------
+[[gtk_] file_filter_] get_name
+------------------------------
 
 Gets the human-readable name for the filter. See `gtk_file_filter_set_name()`.
 
@@ -136,8 +136,8 @@ Since: 2.4
 
     method gtk_file_filter_get_name ( --> Str  )
 
-[gtk_file_filter_] add_mime_type
---------------------------------
+[[gtk_] file_filter_] add_mime_type
+-----------------------------------
 
 Adds a rule allowing a given mime type to *filter*.
 
@@ -147,8 +147,8 @@ Since: 2.4
 
   * Str $mime_type; name of a MIME type
 
-[gtk_file_filter_] add_pattern
-------------------------------
+[[gtk_] file_filter_] add_pattern
+---------------------------------
 
 Adds a rule allowing a shell style glob to a filter.
 
@@ -158,8 +158,8 @@ Since: 2.4
 
   * Str $pattern; a shell style glob
 
-[gtk_file_filter_] add_pixbuf_formats
--------------------------------------
+[[gtk_] file_filter_] add_pixbuf_formats
+----------------------------------------
 
 Adds a rule allowing image files in the formats supported by **Gnome::Gdk3::Pixbuf**.
 
@@ -167,8 +167,8 @@ Since: 2.6
 
     method gtk_file_filter_add_pixbuf_formats ( )
 
-[gtk_file_filter_] get_needed
------------------------------
+[[gtk_] file_filter_] get_needed
+--------------------------------
 
 Gets the fields that need to be filled in for the **Gnome::Gtk3::FileFilterInfo** passed to `gtk_file_filter_filter()`
 
@@ -180,8 +180,8 @@ Since: 2.4
 
     method gtk_file_filter_get_needed ( --> GtkFileFilterFlags  )
 
-gtk_file_filter_filter
-----------------------
+[gtk_] file_filter_filter
+-------------------------
 
 Tests whether a file should be displayed according to *filter*. The **Gnome::Gtk3::FileFilterInfo** *filter_info* should include the fields returned from `gtk_file_filter_get_needed()`.
 

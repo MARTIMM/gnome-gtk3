@@ -44,8 +44,8 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 
     multi method new ( N-GObject :$widget! )
 
-[gtk_bin_] get_child
---------------------
+[[gtk_] bin_] get_child
+-----------------------
 
 Gets the child of the **Gnome::Gtk3::Bin**, or `Any` if the bin contains no child widget. The returned widget does not have a reference added, so you do not need to unref it.
 

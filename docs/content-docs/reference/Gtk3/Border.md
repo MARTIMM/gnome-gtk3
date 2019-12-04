@@ -91,8 +91,8 @@ Return the validity of th native structure. After a call to clear-border() this 
 
     method border-is-valid ( --> Bool )
 
-gtk_border_new
---------------
+[gtk_] border_new
+-----------------
 
 Allocates a new `Gnome::Gtk3::Border`-struct and initializes its elements to zero.
 
@@ -102,8 +102,8 @@ Since: 2.14
 
     method gtk_border_new ( --> N-GtkBorder )
 
-gtk_border_copy
----------------
+[gtk_] border_copy
+------------------
 
 Copies a `N-GtkBorder` struct.
 

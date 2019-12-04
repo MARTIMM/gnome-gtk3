@@ -52,8 +52,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_menu_shell_append
----------------------
+[gtk_] menu_shell_append
+------------------------
 
 Adds a new **Gnome::Gtk3::MenuItem** to the end of the menu shell's item list.
 
@@ -61,8 +61,8 @@ Adds a new **Gnome::Gtk3::MenuItem** to the end of the menu shell's item list.
 
   * N-GObject $child; (type **Gnome::Gtk3::.MenuItem**): The **Gnome::Gtk3::MenuItem** to add
 
-gtk_menu_shell_prepend
-----------------------
+[gtk_] menu_shell_prepend
+-------------------------
 
 Adds a new **Gnome::Gtk3::MenuItem** to the beginning of the menu shell's item list.
 
@@ -70,8 +70,8 @@ Adds a new **Gnome::Gtk3::MenuItem** to the beginning of the menu shell's item l
 
   * N-GObject $child; The **Gnome::Gtk3::MenuItem** to add
 
-gtk_menu_shell_insert
----------------------
+[gtk_] menu_shell_insert
+------------------------
 
 Adds a new **Gnome::Gtk3::MenuItem** to the menu shell’s item list at the position indicated by *position*.
 
@@ -81,8 +81,8 @@ Adds a new **Gnome::Gtk3::MenuItem** to the menu shell’s item list at the posi
 
   * Int $position; The position in the item list where *child* is added. Positions are numbered from 0 to n-1
 
-gtk_menu_shell_deactivate
--------------------------
+[gtk_] menu_shell_deactivate
+----------------------------
 
 Deactivates the menu shell.
 
@@ -90,8 +90,8 @@ Typically this results in the menu shell being erased from the screen.
 
     method gtk_menu_shell_deactivate ( )
 
-[gtk_menu_shell_] select_item
------------------------------
+[[gtk_] menu_shell_] select_item
+--------------------------------
 
 Selects the menu item from the menu shell.
 
@@ -99,15 +99,15 @@ Selects the menu item from the menu shell.
 
   * N-GObject $menu_item; The **Gnome::Gtk3::MenuItem** to select
 
-gtk_menu_shell_deselect
------------------------
+[gtk_] menu_shell_deselect
+--------------------------
 
 Deselects the currently selected item from the menu shell, if any.
 
     method gtk_menu_shell_deselect ( )
 
-[gtk_menu_shell_] activate_item
--------------------------------
+[[gtk_] menu_shell_] activate_item
+----------------------------------
 
 Activates the menu item within the menu shell.
 
@@ -117,8 +117,8 @@ Activates the menu item within the menu shell.
 
   * Int $force_deactivate; if `1`, force the deactivation of the menu shell after the menu item is activated
 
-[gtk_menu_shell_] select_first
-------------------------------
+[[gtk_] menu_shell_] select_first
+---------------------------------
 
 Select the first visible or selectable child of the menu shell; don’t select tearoff items unless the only item is a tearoff item.
 
@@ -128,8 +128,8 @@ Since: 2.2
 
   * Int $search_sensitive; if `1`, search for the first selectable menu item, otherwise select nothing if the first item isn’t sensitive. This should be `0` if the menu is being popped up initially.
 
-gtk_menu_shell_cancel
----------------------
+[gtk_] menu_shell_cancel
+------------------------
 
 Cancels the selection within the menu shell.
 
@@ -137,8 +137,8 @@ Since: 2.4
 
     method gtk_menu_shell_cancel ( )
 
-[gtk_menu_shell_] get_take_focus
---------------------------------
+[[gtk_] menu_shell_] get_take_focus
+-----------------------------------
 
 Returns `1` if the menu shell will take the keyboard focus on popup.
 
@@ -148,8 +148,8 @@ Since: 2.8
 
     method gtk_menu_shell_get_take_focus ( --> Int  )
 
-[gtk_menu_shell_] set_take_focus
---------------------------------
+[[gtk_] menu_shell_] set_take_focus
+-----------------------------------
 
 If *take_focus* is `1` (the default) the menu shell will take the keyboard focus so that it will receive all keyboard events which is needed to enable keyboard navigation in menus.
 
@@ -171,8 +171,8 @@ Since: 2.8
 
   * Int $take_focus; `1` if the menu shell should take the keyboard focus on popup
 
-[gtk_menu_shell_] get_selected_item
------------------------------------
+[[gtk_] menu_shell_] get_selected_item
+--------------------------------------
 
 Gets the currently selected item.
 
@@ -182,8 +182,8 @@ Since: 3.0
 
     method gtk_menu_shell_get_selected_item ( --> N-GObject  )
 
-[gtk_menu_shell_] get_parent_shell
-----------------------------------
+[[gtk_] menu_shell_] get_parent_shell
+-------------------------------------
 
 Gets the parent menu shell.
 
@@ -195,8 +195,8 @@ Since: 3.0
 
     method gtk_menu_shell_get_parent_shell ( --> N-GObject  )
 
-[gtk_menu_shell_] bind_model
-----------------------------
+[[gtk_] menu_shell_] bind_model
+-------------------------------
 
 Establishes a binding between a **Gnome::Gtk3::MenuShell** and a **GMenuModel**.
 

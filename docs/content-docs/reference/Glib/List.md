@@ -16,9 +16,7 @@ The data contained in each element can be either integer values,
 
 Note that most of the list functions expect to be passed a pointer to the first element in the list. The functions which insert elements return the new start of the list, which may have changed.
 
-There is no function to create a list. `Any` is considered to be a valid, empty list so you simply provide an `Any` to initialize it.
-
-To add elements, use `g_list_append()`, `g_list_prepend()`, `g_list_insert()` and `g_list_insert_sorted()`.
+To create an empty jast list call `.new(:empty)`.
 
 To remove elements, use `g_list_remove()`.
 
@@ -68,8 +66,8 @@ Clear the list and data. The list object is not valid after this call and list-i
 
     method clear-list ()
 
-g_list_copy
------------
+[g_] list_copy
+--------------
 
 Copies a **N-GList**.
 
@@ -79,8 +77,8 @@ Returns: the start of the new list that holds the same data as this list.
 
     method g_list_copy ( --> Gnome::Glib::List )
 
-g_list_nth
-----------
+[g_] list_nth
+-------------
 
 Gets the element at the given position in a **Gnome::Glib::List**.
 
@@ -92,22 +90,22 @@ Returns: the element, or `Any` if the position is off the end of the **Gnome::Gl
 
   * guInt $n; the position of the element, counting from 0
 
-g_list_last
------------
+[g_] list_last
+--------------
 
 Gets the last element in a **Gnome::Glib::List**, or `Any` if the **Gnome::Glib::List** has no elements.
 
     method g_list_last ( --> N-GList  )
 
-g_list_first
-------------
+[g_] list_first
+---------------
 
 Gets the first element in a **Gnome::Glib::List**, or `Any` if the **Gnome::Glib::List** has no elements
 
     method g_list_first ( --> N-GList  )
 
-g_list_length
--------------
+[g_] list_length
+----------------
 
 Gets the number of elements in a **Gnome::Glib::List**.
 
@@ -117,8 +115,8 @@ Returns: the number of elements in the **Gnome::Glib::List**
 
     method g_list_length ( --> UInt  )
 
-g_list_foreach
---------------
+[g_] list_foreach
+-----------------
 
 Calls a function for each element of a **Gnome::Glib::List**.
 
@@ -130,8 +128,8 @@ It is safe for *$func* to remove the element from the list, but it must not modi
 
   * Pointer $user_data; user data to pass to the function
 
-[g_list_] nth_data
-------------------
+[[g_] list_] nth_data
+---------------------
 
 Gets the data of the element at the given position.
 

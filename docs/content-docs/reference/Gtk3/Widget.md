@@ -132,8 +132,8 @@ Kinds of widget-specific help. Used by the ::show-help signal.
 
   * GTK_WIDGET_HELP_WHATS_THIS: What’s this.
 
-class GtkRequisition
---------------------
+class N-GtkRequisition
+----------------------
 
 A **Gnome::Gtk3::Requisition**-struct represents the desired size of a widget. See [**Gnome::Gtk3::Widget**’s geometry management section][geometry-management] for more information.
 
@@ -144,8 +144,8 @@ A **Gnome::Gtk3::Requisition**-struct represents the desired size of a widget. S
 Methods
 =======
 
-gtk_widget_destroy
-------------------
+[gtk_] widget_destroy
+---------------------
 
 Destroys a widget.
 
@@ -163,8 +163,8 @@ See also: `gtk_container_remove()`
 
     method gtk_widget_destroy ( )
 
-gtk_widget_destroyed
---------------------
+[gtk_] widget_destroyed
+-----------------------
 
 This function sets **widget_pointer* to `Any` if *widget_pointer* != `Any`. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect `gtk_widget_destroyed()` as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to `Any`. Useful for example to avoid multiple copies of the same dialog.
 
@@ -172,15 +172,15 @@ This function sets **widget_pointer* to `Any` if *widget_pointer* != `Any`. It�
 
   * N-GObject $widget_pointer; (inout) (transfer none): address of a variable that contains *widget*
 
-gtk_widget_unparent
--------------------
+[gtk_] widget_unparent
+----------------------
 
 This function is only for use in widget implementations. Should be called by implementations of the remove method on **Gnome::Gtk3::Container**, to dissociate a child from the container.
 
     method gtk_widget_unparent ( )
 
-gtk_widget_show
----------------
+[gtk_] widget_show
+------------------
 
 Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call `gtk_widget_show_all()` on the container, instead of individually showing the widgets.
 
@@ -190,29 +190,29 @@ When a toplevel container is shown, it is immediately realized and mapped; other
 
     method gtk_widget_show ( )
 
-gtk_widget_hide
----------------
+[gtk_] widget_hide
+------------------
 
 Reverses the effects of `gtk_widget_show()`, causing the widget to be hidden (invisible to the user).
 
     method gtk_widget_hide ( )
 
-[gtk_widget_] show_now
-----------------------
+[[gtk_] widget_] show_now
+-------------------------
 
 Shows a widget. If the widget is an unmapped toplevel widget (i.e. a **Gnome::Gtk3::Window** that has not yet been shown), enter the main loop and wait for the window to actually be mapped. Be careful; because the main loop is running, anything can happen during this function.
 
     method gtk_widget_show_now ( )
 
-[gtk_widget_] show_all
-----------------------
+[[gtk_] widget_] show_all
+-------------------------
 
 Recursively shows a widget, and any child widgets (if the widget is a container).
 
     method gtk_widget_show_all ( )
 
-[gtk_widget_] set_no_show_all
------------------------------
+[[gtk_] widget_] set_no_show_all
+--------------------------------
 
 Sets the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget.
 
@@ -224,8 +224,8 @@ Since: 2.4
 
   * Int $no_show_all; the new value for the “no-show-all” property
 
-[gtk_widget_] get_no_show_all
------------------------------
+[[gtk_] widget_] get_no_show_all
+--------------------------------
 
 Returns the current value of the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget.
 
@@ -235,22 +235,22 @@ Since: 2.4
 
     method gtk_widget_get_no_show_all ( --> Int  )
 
-gtk_widget_map
---------------
+[gtk_] widget_map
+-----------------
 
 This function is only for use in widget implementations. Causes a widget to be mapped if it isn’t already.
 
     method gtk_widget_map ( )
 
-gtk_widget_unmap
-----------------
+[gtk_] widget_unmap
+-------------------
 
 This function is only for use in widget implementations. Causes a widget to be unmapped if it’s currently mapped.
 
     method gtk_widget_unmap ( )
 
-gtk_widget_realize
-------------------
+[gtk_] widget_realize
+---------------------
 
 Creates the GDK (windowing system) resources associated with a widget. For example, *widget*->window will be created when a widget is realized. Normally realization happens implicitly; if you show a widget and all its parent containers, then the widget will be realized and mapped automatically.
 
@@ -260,22 +260,22 @@ This function is primarily used in widget implementations, and isn’t very usef
 
     method gtk_widget_realize ( )
 
-gtk_widget_unrealize
---------------------
+[gtk_] widget_unrealize
+-----------------------
 
 This function is only useful in widget implementations. Causes a widget to be unrealized (frees all GDK resources associated with the widget, such as *widget*->window).
 
     method gtk_widget_unrealize ( )
 
-[gtk_widget_] queue_draw
-------------------------
+[[gtk_] widget_] queue_draw
+---------------------------
 
 Equivalent to calling `gtk_widget_queue_draw_area()` for the entire area of a widget.
 
     method gtk_widget_queue_draw ( )
 
-[gtk_widget_] queue_draw_area
------------------------------
+[[gtk_] widget_] queue_draw_area
+--------------------------------
 
 Convenience function that calls `gtk_widget_queue_draw_region()` on the region created from the given coordinates.
 
@@ -293,8 +293,8 @@ The region here is specified in widget coordinates. Widget coordinates are a bit
 
   * Int $height; height of region to draw
 
-[gtk_widget_] queue_resize
---------------------------
+[[gtk_] widget_] queue_resize
+-----------------------------
 
 This function is only for use in widget implementations. Flags a widget to have its size renegotiated; should be called when a widget for some reason has a new size request. For example, when you change the text in a **Gnome::Gtk3::Label**, **Gnome::Gtk3::Label** queues a resize to ensure there’s enough space for the new text.
 
@@ -302,8 +302,8 @@ Note that you cannot call `gtk_widget_queue_resize()` on a widget from inside it
 
     method gtk_widget_queue_resize ( )
 
-[gtk_widget_] queue_resize_no_redraw
-------------------------------------
+[[gtk_] widget_] queue_resize_no_redraw
+---------------------------------------
 
 This function works like `gtk_widget_queue_resize()`, except that the widget is not invalidated.
 
@@ -311,8 +311,8 @@ Since: 2.4
 
     method gtk_widget_queue_resize_no_redraw ( )
 
-[gtk_widget_] queue_allocate
-----------------------------
+[[gtk_] widget_] queue_allocate
+-------------------------------
 
 This function is only for use in widget implementations.
 
@@ -324,8 +324,8 @@ Since: 3.20
 
     method gtk_widget_queue_allocate ( )
 
-[gtk_widget_] get_frame_clock
------------------------------
+[[gtk_] widget_] get_frame_clock
+--------------------------------
 
 Obtains the frame clock for a widget. The frame clock is a global “ticker” that can be used to drive animations and repaints. The most common reason to get the frame clock is to call `gdk_frame_clock_get_frame_time()`, in order to get a time to use for animating. For example you might record the start of the animation with an initial value from `gdk_frame_clock_get_frame_time()`, and then update the animation by calling `gdk_frame_clock_get_frame_time()` again during each repaint.
 
@@ -341,15 +341,15 @@ Since: 3.8
 
     method gtk_widget_get_frame_clock ( --> N-GObject  )
 
-[gtk_widget_] size_allocate
----------------------------
+[[gtk_] widget_] size_allocate
+------------------------------
 
     method gtk_widget_size_allocate ( GtkAllocation $allocation )
 
   * GtkAllocation $allocation;
 
-[gtk_widget_] size_allocate_with_baseline
------------------------------------------
+[[gtk_] widget_] size_allocate_with_baseline
+--------------------------------------------
 
 This function is only used by **Gnome::Gtk3::Container** subclasses, to assign a size, position and (optionally) baseline to their child widgets.
 
@@ -365,8 +365,8 @@ Since: 3.10
 
   * Int $baseline; The baseline of the child, or -1
 
-[gtk_widget_] get_request_mode
-------------------------------
+[[gtk_] widget_] get_request_mode
+---------------------------------
 
 Gets whether the widget prefers a height-for-width layout or a width-for-height layout.
 
@@ -374,8 +374,8 @@ GtkBin widgets generally propagate the preference of their child, container widg
 
     method gtk_widget_get_request_mode ( --> GtkSizeRequestMode  )
 
-[gtk_widget_] get_preferred_width
----------------------------------
+[[gtk_] widget_] get_preferred_width
+------------------------------------
 
 Retrieves a widget’s initial minimum and natural width.
 
@@ -389,8 +389,8 @@ Returns a List with
 
   * Int $natural_width;
 
-[gtk_widget_] get_preferred_height_for_width
---------------------------------------------
+[[gtk_] widget_] get_preferred_height_for_width
+-----------------------------------------------
 
 Retrieves a widget’s minimum and natural height if it would be given the specified width .
 
@@ -408,8 +408,8 @@ Returns a List with
 
   * Int $natural_height;
 
-[gtk_widget_] get_preferred_height
-----------------------------------
+[[gtk_] widget_] get_preferred_height
+-------------------------------------
 
 Retrieves a widget’s initial minimum and natural height.
 
@@ -425,8 +425,8 @@ Returns a List with
 
   * Int $natural_height;
 
-[gtk_widget_] get_preferred_width_for_height
---------------------------------------------
+[[gtk_] widget_] get_preferred_width_for_height
+-----------------------------------------------
 
 Retrieves a widget’s minimum and natural width if it would be given the specified height .
 
@@ -442,8 +442,8 @@ Returning a List with
 
   * Int $natural_width;
 
-[gtk_widget_] get_preferred_height_and_baseline_for_width
----------------------------------------------------------
+[[gtk_] widget_] get_preferred_height_and_baseline_for_width
+------------------------------------------------------------
 
 Retrieves a widget’s minimum and natural height and the corresponding baselines if it would be given the specified width , or the default height if width is -1. The baselines may be -1 which means that no baseline is requested for this widget.
 
@@ -466,8 +466,8 @@ Returning a List with
 
   * Int $natural_baseline;
 
-[gtk_widget_] get_preferred_size
---------------------------------
+[[gtk_] widget_] get_preferred_size
+-----------------------------------
 
 Retrieves the minimum and natural size of a widget, taking into account the widget’s preference for height-for-width management.
 
@@ -481,12 +481,12 @@ Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to supp
 
 The returned list holds
 
-  * GtkRequisition $minimum_size;
+  * N-GtkRequisition $minimum_size;
 
-  * GtkRequisition $natural_size;
+  * N-GtkRequisition $natural_size;
 
-[gtk_widget_] remove_accelerator
---------------------------------
+[[gtk_] widget_] remove_accelerator
+-----------------------------------
 
 Removes an accelerator from *widget*, previously installed with `gtk_widget_add_accelerator()`.
 
@@ -500,8 +500,8 @@ Returns: whether an accelerator was installed and could be removed
 
   * GdkModifierType $accel_mods; modifier key combination of the accelerator
 
-[gtk_widget_] set_accel_path
-----------------------------
+[[gtk_] widget_] set_accel_path
+-------------------------------
 
 Given an accelerator group, *accel_group*, and an accelerator path, *accel_path*, sets up an accelerator in *accel_group* so whenever the key binding that is defined for *accel_path* is pressed, *widget* will be activated. This removes any accelerators (for any accelerator group) installed by previous calls to `gtk_widget_set_accel_path()`. Associating accelerators with paths allows them to be modified by the user and the modifications to be saved for future use. (See `gtk_accel_map_save()`.)
 
@@ -517,8 +517,8 @@ Note that *accel_path* string will be stored in a `GQuark`. Therefore, if you pa
 
   * N-GObject $accel_group; (allow-none): a **Gnome::Gtk3::AccelGroup**.
 
-[gtk_widget_] list_accel_closures
----------------------------------
+[[gtk_] widget_] list_accel_closures
+------------------------------------
 
 Lists the closures used by *widget* for accelerator group connections with `gtk_accel_group_connect_by_path()` or `gtk_accel_group_connect()`. The closures can be used to monitor accelerator changes on *widget*, by connecting to the *C*<Gnome::Gtk3::AccelGroup>::accel-changed signal of the **Gnome::Gtk3::AccelGroup** of a closure which can be found out with `gtk_accel_group_from_accel_closure()`.
 
@@ -526,8 +526,8 @@ Returns: (transfer container) (element-type GClosure): a newly allocated `GList`
 
     method gtk_widget_list_accel_closures ( --> N-GObject  )
 
-[gtk_widget_] can_activate_accel
---------------------------------
+[[gtk_] widget_] can_activate_accel
+-----------------------------------
 
 Determines whether an accelerator that activates the signal identified by *signal_id* can currently be activated. This is done by emitting the sig `can-activate-accel` signal on *widget*; if the signal isn’t overridden by a handler or in a derived widget, then the default check is that the widget must be sensitive, and the widget and all its ancestors mapped.
 
@@ -539,8 +539,8 @@ Since: 2.4
 
   * UInt $signal_id; the ID of a signal installed on *widget*
 
-[gtk_widget_] mnemonic_activate
--------------------------------
+[[gtk_] widget_] mnemonic_activate
+----------------------------------
 
 Emits the sig `mnemonic-activate` signal.
 
@@ -552,8 +552,8 @@ Returns: `1` if the signal has been handled
 
   * Int $group_cycling; `1` if there are other widgets with the same mnemonic
 
-gtk_widget_event
-----------------
+[gtk_] widget_event
+-------------------
 
 Rarely-used function. This function is used to emit the event signals on a widget (those signals should never be emitted without using this function to do so). If you want to synthesize an event though, don’t use this function; instead, use `gtk_main_do_event()` so the event will behave as if it were in the event queue. Don’t synthesize expose events; instead, use `gdk_window_invalidate_rect()` to invalidate a region of the window.
 
@@ -563,8 +563,8 @@ Returns: return from the event signal emission (`1` if the event was handled)
 
   * GdkEvent $event; a **Gnome::Gdk3::Event**
 
-[gtk_widget_] send_focus_change
--------------------------------
+[[gtk_] widget_] send_focus_change
+----------------------------------
 
 Sends the focus change *event* to *widget*
 
@@ -588,8 +588,8 @@ Since: 2.20
 
   * GdkEvent $event; a **Gnome::Gdk3::Event** of type GDK_FOCUS_CHANGE
 
-gtk_widget_activate
--------------------
+[gtk_] widget_activate
+----------------------
 
 For widgets that can be “activated” (buttons, menu items, etc.) this function activates them. Activation is what happens when you press Enter on a widget during key navigation. If *widget* isn't activatable, the function returns `0`.
 
@@ -597,8 +597,8 @@ Returns: `1` if the widget was activatable
 
     method gtk_widget_activate ( --> Int  )
 
-gtk_widget_intersect
---------------------
+[gtk_] widget_intersect
+-----------------------
 
 Computes the intersection of a *widget*’s area and *area*, storing the intersection in *intersection*, and returns `1` if there was an intersection. *intersection* may be `Any` if you’re only interested in whether there was an intersection.
 
@@ -610,8 +610,8 @@ Returns: `1` if there was an intersection
 
   * N-GObject $intersection; (nullable): rectangle to store intersection of *widget* and *area*
 
-[gtk_widget_] freeze_child_notify
----------------------------------
+[[gtk_] widget_] freeze_child_notify
+------------------------------------
 
 Stops emission of sig `child-notify` signals on *widget*. The signals are queued until `gtk_widget_thaw_child_notify()` is called on *widget*.
 
@@ -619,8 +619,8 @@ This is the analogue of `g_object_freeze_notify()` for child properties.
 
     method gtk_widget_freeze_child_notify ( )
 
-[gtk_widget_] child_notify
---------------------------
+[[gtk_] widget_] child_notify
+-----------------------------
 
 Emits a sig `child-notify` signal for the [child property][child-properties] *child_property* on *widget*.
 
@@ -632,15 +632,15 @@ Also see `gtk_container_child_notify()`.
 
   * Str $child_property; the name of a child property installed on the class of *widget*’s parent
 
-[gtk_widget_] thaw_child_notify
--------------------------------
+[[gtk_] widget_] thaw_child_notify
+----------------------------------
 
 Reverts the effect of a previous call to `gtk_widget_freeze_child_notify()`. This causes all queued sig `child-notify` signals on *widget* to be emitted.
 
     method gtk_widget_thaw_child_notify ( )
 
-[gtk_widget_] set_can_focus
----------------------------
+[[gtk_] widget_] set_can_focus
+------------------------------
 
 Specifies whether *widget* can own the input focus. See `gtk_widget_grab_focus()` for actually setting the input focus on a widget.
 
@@ -650,8 +650,8 @@ Since: 2.18
 
   * Int $can_focus; whether or not *widget* can own the input focus.
 
-[gtk_widget_] get_can_focus
----------------------------
+[[gtk_] widget_] get_can_focus
+------------------------------
 
 Determines whether *widget* can own the input focus. See `gtk_widget_set_can_focus()`.
 
@@ -661,8 +661,8 @@ Since: 2.18
 
     method gtk_widget_get_can_focus ( --> Int  )
 
-[gtk_widget_] has_focus
------------------------
+[[gtk_] widget_] has_focus
+--------------------------
 
 Determines if the widget has the global input focus. See `gtk_widget_is_focus()` for the difference between having the global input focus, and only having the focus within a toplevel.
 
@@ -672,8 +672,8 @@ Since: 2.18
 
     method gtk_widget_has_focus ( --> Int  )
 
-[gtk_widget_] is_focus
-----------------------
+[[gtk_] widget_] is_focus
+-------------------------
 
 Determines if the widget is the focus widget within its toplevel. (This does not mean that the prop `has-focus` property is necessarily set; prop `has-focus` will only be set if the toplevel widget additionally has the global input focus.)
 
@@ -681,8 +681,8 @@ Returns: `1` if the widget is the focus widget.
 
     method gtk_widget_is_focus ( --> Int  )
 
-[gtk_widget_] has_visible_focus
--------------------------------
+[[gtk_] widget_] has_visible_focus
+----------------------------------
 
 Determines if the widget should show a visible indication that it has the global input focus. This is a convenience function for use in ::draw handlers that takes into account whether focus indication should currently be shown in the toplevel window of *widget*. See `gtk_window_get_focus_visible()` for more information about focus indication.
 
@@ -694,8 +694,8 @@ Since: 3.2
 
     method gtk_widget_has_visible_focus ( --> Int  )
 
-[gtk_widget_] grab_focus
-------------------------
+[[gtk_] widget_] grab_focus
+---------------------------
 
 Causes *widget* to have the keyboard focus for the **Gnome::Gtk3::Window** it's inside. *widget* must be a focusable widget, such as a **Gnome::Gtk3::Entry**; something like **Gnome::Gtk3::Frame** won’t work.
 
@@ -705,8 +705,8 @@ The widget also needs to be realized and mapped. This is indicated by the relate
 
     method gtk_widget_grab_focus ( )
 
-[gtk_widget_] set_focus_on_click
---------------------------------
+[[gtk_] widget_] set_focus_on_click
+-----------------------------------
 
 Sets whether the widget should grab focus when it is clicked with the mouse. Making mouse clicks not grab focus is useful in places like toolbars where you don’t want the keyboard focus removed from the main area of the application.
 
@@ -716,8 +716,8 @@ Since: 3.20
 
   * Int $focus_on_click; whether the widget should grab focus when clicked with the mouse
 
-[gtk_widget_] get_focus_on_click
---------------------------------
+[[gtk_] widget_] get_focus_on_click
+-----------------------------------
 
 Returns whether the widget should grab focus when it is clicked with the mouse. See `gtk_widget_set_focus_on_click()`.
 
@@ -727,8 +727,8 @@ Since: 3.20
 
     method gtk_widget_get_focus_on_click ( --> Int  )
 
-[gtk_widget_] set_can_default
------------------------------
+[[gtk_] widget_] set_can_default
+--------------------------------
 
 Specifies whether *widget* can be a default widget. See `gtk_widget_grab_default()` for details about the meaning of “default”.
 
@@ -738,8 +738,8 @@ Since: 2.18
 
   * Int $can_default; whether or not *widget* can be a default widget.
 
-[gtk_widget_] get_can_default
------------------------------
+[[gtk_] widget_] get_can_default
+--------------------------------
 
 Determines whether *widget* can be a default widget. See `gtk_widget_set_can_default()`.
 
@@ -749,8 +749,8 @@ Since: 2.18
 
     method gtk_widget_get_can_default ( --> Int  )
 
-[gtk_widget_] has_default
--------------------------
+[[gtk_] widget_] has_default
+----------------------------
 
 Determines whether *widget* is the current default widget within its toplevel. See `gtk_widget_set_can_default()`.
 
@@ -760,15 +760,15 @@ Since: 2.18
 
     method gtk_widget_has_default ( --> Int  )
 
-[gtk_widget_] grab_default
---------------------------
+[[gtk_] widget_] grab_default
+-----------------------------
 
 Causes *widget* to become the default widget. *widget* must be able to be a default widget; typically you would ensure this yourself by calling `gtk_widget_set_can_default()` with a `1` value. The default widget is activated when the user presses Enter in a window. Default widgets must be activatable, that is, `gtk_widget_activate()` should affect them. Note that **Gnome::Gtk3::Entry** widgets require the “activates-default” property set to `1` before they activate the default widget when Enter is pressed and the **Gnome::Gtk3::Entry** is focused.
 
     method gtk_widget_grab_default ( )
 
-[gtk_widget_] set_receives_default
-----------------------------------
+[[gtk_] widget_] set_receives_default
+-------------------------------------
 
 Specifies whether *widget* will be treated as the default widget within its toplevel when it has the focus, even if another widget is the default.
 
@@ -780,8 +780,8 @@ Since: 2.18
 
   * Int $receives_default; whether or not *widget* can be a default widget.
 
-[gtk_widget_] get_receives_default
-----------------------------------
+[[gtk_] widget_] get_receives_default
+-------------------------------------
 
 Determines whether *widget* is always treated as the default widget within its toplevel when it has the focus, even if another widget is the default.
 
@@ -793,8 +793,8 @@ Since: 2.18
 
     method gtk_widget_get_receives_default ( --> Int  )
 
-[gtk_widget_] has_grab
-----------------------
+[[gtk_] widget_] has_grab
+-------------------------
 
 Determines whether the widget is currently grabbing events, so it is the only widget receiving input events (keyboard and mouse).
 
@@ -806,8 +806,8 @@ Since: 2.18
 
     method gtk_widget_has_grab ( --> Int  )
 
-[gtk_widget_] device_is_shadowed
---------------------------------
+[[gtk_] widget_] device_is_shadowed
+-----------------------------------
 
 Returns `1` if *device* has been shadowed by a GTK+ device grab on another widget, so it would stop sending events to *widget*. This may be used in the sig `grab-notify` signal to check for specific devices. See `gtk_device_grab_add()`.
 
@@ -819,8 +819,8 @@ Since: 3.0
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
-[gtk_widget_] set_name
-----------------------
+[[gtk_] widget_] set_name
+-------------------------
 
 Widgets can be named, which allows you to refer to them from a CSS file. You can apply a style to widgets with a particular name in the CSS file. See the documentation for the CSS syntax (on the same page as the docs for **Gnome::Gtk3::StyleContext**).
 
@@ -830,8 +830,8 @@ Note that the CSS syntax has certain special characters to delimit and represent
 
   * Str $name; name for the widget
 
-[gtk_widget_] get_name
-----------------------
+[[gtk_] widget_] get_name
+-------------------------
 
 Retrieves the name of a widget. See `gtk_widget_set_name()` for the significance of widget names.
 
@@ -839,8 +839,8 @@ Returns: name of the widget. This string is owned by GTK+ and should not be modi
 
     method gtk_widget_get_name ( --> Str  )
 
-[gtk_widget_] set_state_flags
------------------------------
+[[gtk_] widget_] set_state_flags
+--------------------------------
 
 This function is for use in widget implementations. Turns on flag values in the current widget state (insensitive, prelighted, etc.).
 
@@ -856,8 +856,8 @@ Since: 3.0
 
   * Int $clear; Whether to clear state before turning on *flags*
 
-[gtk_widget_] unset_state_flags
--------------------------------
+[[gtk_] widget_] unset_state_flags
+----------------------------------
 
 This function is for use in widget implementations. Turns off flag values for the current widget state (insensitive, prelighted, etc.). See `gtk_widget_set_state_flags()`.
 
@@ -867,8 +867,8 @@ Since: 3.0
 
   * GtkStateFlags $flags; State flags to turn off
 
-[gtk_widget_] get_state_flags
------------------------------
+[[gtk_] widget_] get_state_flags
+--------------------------------
 
 Returns the widget state as a flag set. It is worth mentioning that the effective `GTK_STATE_FLAG_INSENSITIVE` state will be returned, that is, also based on parent insensitivity, even if *widget* itself is sensitive.
 
@@ -880,8 +880,8 @@ Since: 3.0
 
     method gtk_widget_get_state_flags ( --> GtkStateFlags  )
 
-[gtk_widget_] set_sensitive
----------------------------
+[[gtk_] widget_] set_sensitive
+------------------------------
 
 Sets the sensitivity of a widget. A widget is sensitive if the user can interact with it. Insensitive widgets are “grayed out” and the user can’t interact with them. Insensitive widgets are known as “inactive”, “disabled”, or “ghosted” in some other toolkits.
 
@@ -889,8 +889,8 @@ Sets the sensitivity of a widget. A widget is sensitive if the user can interact
 
   * Int $sensitive; `1` to make the widget sensitive
 
-[gtk_widget_] get_sensitive
----------------------------
+[[gtk_] widget_] get_sensitive
+------------------------------
 
 Returns the widget’s sensitivity (in the sense of returning the value that has been set using `gtk_widget_set_sensitive()`).
 
@@ -902,8 +902,8 @@ Since: 2.18
 
     method gtk_widget_get_sensitive ( --> Int  )
 
-[gtk_widget_] is_sensitive
---------------------------
+[[gtk_] widget_] is_sensitive
+-----------------------------
 
 Returns the widget’s effective sensitivity, which means it is sensitive itself and also its parent widget is sensitive
 
@@ -913,8 +913,8 @@ Since: 2.18
 
     method gtk_widget_is_sensitive ( --> Int  )
 
-[gtk_widget_] set_visible
--------------------------
+[[gtk_] widget_] set_visible
+----------------------------
 
 Sets the visibility state of *widget*. Note that setting this to `1` doesn’t mean the widget is actually viewable, see `gtk_widget_get_visible()`.
 
@@ -926,8 +926,8 @@ Since: 2.18
 
   * Int $visible; whether the widget should be shown or not
 
-[gtk_widget_] get_visible
--------------------------
+[[gtk_] widget_] get_visible
+----------------------------
 
 Determines whether the widget is visible. If you want to take into account whether the widget’s parent is also marked as visible, use `gtk_widget_is_visible()` instead.
 
@@ -941,8 +941,8 @@ Since: 2.18
 
     method gtk_widget_get_visible ( --> Int  )
 
-[gtk_widget_] is_visible
-------------------------
+[[gtk_] widget_] is_visible
+---------------------------
 
 Determines whether the widget and all its parents are marked as visible.
 
@@ -956,8 +956,8 @@ Since: 3.8
 
     method gtk_widget_is_visible ( --> Int  )
 
-[gtk_widget_] set_has_window
-----------------------------
+[[gtk_] widget_] set_has_window
+-------------------------------
 
 Specifies whether *widget* has a **Gnome::Gdk3::Window** of its own. Note that all realized widgets have a non-`Any` “window” pointer (`gtk_widget_get_window()` never returns a `Any` window when a widget is realized), but for many of them it’s actually the **Gnome::Gdk3::Window** of one of its parent widgets. Widgets that do not create a `window` for themselves in sig `realize` must announce this by calling this function with *has_window* = `0`.
 
@@ -969,8 +969,8 @@ Since: 2.18
 
   * Int $has_window; whether or not *widget* has a window.
 
-[gtk_widget_] get_has_window
-----------------------------
+[[gtk_] widget_] get_has_window
+-------------------------------
 
 Determines whether *widget* has a **Gnome::Gdk3::Window** of its own. See `gtk_widget_set_has_window()`.
 
@@ -980,8 +980,8 @@ Since: 2.18
 
     method gtk_widget_get_has_window ( --> Int  )
 
-[gtk_widget_] is_toplevel
--------------------------
+[[gtk_] widget_] is_toplevel
+----------------------------
 
 Determines whether *widget* is a toplevel widget.
 
@@ -993,8 +993,8 @@ Since: 2.18
 
     method gtk_widget_is_toplevel ( --> Int  )
 
-[gtk_widget_] is_drawable
--------------------------
+[[gtk_] widget_] is_drawable
+----------------------------
 
 Determines whether *widget* can be drawn to. A widget can be drawn to if it is mapped and visible.
 
@@ -1004,8 +1004,8 @@ Since: 2.18
 
     method gtk_widget_is_drawable ( --> Int  )
 
-[gtk_widget_] set_realized
---------------------------
+[[gtk_] widget_] set_realized
+-----------------------------
 
 Marks the widget as being realized. This function must only be called after all **Gnome::Gdk3::Windows** for the *widget* have been created and registered.
 
@@ -1017,8 +1017,8 @@ Since: 2.20
 
   * Int $realized; `1` to mark the widget as realized
 
-[gtk_widget_] get_realized
---------------------------
+[[gtk_] widget_] get_realized
+-----------------------------
 
 Determines whether *widget* is realized.
 
@@ -1028,8 +1028,8 @@ Since: 2.20
 
     method gtk_widget_get_realized ( --> Int  )
 
-[gtk_widget_] set_mapped
-------------------------
+[[gtk_] widget_] set_mapped
+---------------------------
 
 Marks the widget as being realized.
 
@@ -1041,8 +1041,8 @@ Since: 2.20
 
   * Int $mapped; `1` to mark the widget as mapped
 
-[gtk_widget_] get_mapped
-------------------------
+[[gtk_] widget_] get_mapped
+---------------------------
 
 Whether the widget is mapped.
 
@@ -1052,8 +1052,8 @@ Since: 2.20
 
     method gtk_widget_get_mapped ( --> Int  )
 
-[gtk_widget_] set_app_paintable
--------------------------------
+[[gtk_] widget_] set_app_paintable
+----------------------------------
 
 Sets whether the application intends to draw on the widget in an sig `draw` handler.
 
@@ -1065,8 +1065,8 @@ Note that the background is still drawn when the widget is mapped.
 
   * Int $app_paintable; `1` if the application will paint on the widget
 
-[gtk_widget_] get_app_paintable
--------------------------------
+[[gtk_] widget_] get_app_paintable
+----------------------------------
 
 Determines whether the application intends to draw on the widget in an sig `draw` handler.
 
@@ -1078,8 +1078,8 @@ Since: 2.18
 
     method gtk_widget_get_app_paintable ( --> Int  )
 
-[gtk_widget_] set_redraw_on_allocate
-------------------------------------
+[[gtk_] widget_] set_redraw_on_allocate
+---------------------------------------
 
 Sets whether the entire widget is queued for drawing when its size allocation changes. By default, this setting is `1` and the entire widget is redrawn on every size change. If your widget leaves the upper left unchanged when made bigger, turning this setting off will improve performance. Note that for widgets where `gtk_widget_get_has_window()` is `0` setting this flag to `0` turns off all allocation on resizing: the widget will not even redraw if its position changes; this is to allow containers that don’t draw anything to avoid excess invalidations. If you set this flag on a widget with no window that does draw on *widget*->window, you are responsible for invalidating both the old and new allocation of the widget when the widget is moved and responsible for invalidating regions newly when the widget increases size.
 
@@ -1087,8 +1087,8 @@ Sets whether the entire widget is queued for drawing when its size allocation ch
 
   * Int $redraw_on_allocate; if `1`, the entire widget will be redrawn when it is allocated to a new size. Otherwise, only the new portion of the widget will be redrawn.
 
-[gtk_widget_] set_parent
-------------------------
+[[gtk_] widget_] set_parent
+---------------------------
 
 This function is useful only when implementing subclasses of **Gnome::Gtk3::Container**. Sets the container as the parent of *widget*, and takes care of some details such as updating the state and style of the child to reflect its new location. The opposite function is `gtk_widget_unparent()`.
 
@@ -1096,8 +1096,8 @@ This function is useful only when implementing subclasses of **Gnome::Gtk3::Cont
 
   * N-GObject $parent; parent container
 
-[gtk_widget_] get_parent
-------------------------
+[[gtk_] widget_] get_parent
+---------------------------
 
 Returns the parent container of *widget*.
 
@@ -1105,8 +1105,8 @@ Returns: (transfer none) (nullable): the parent container of *widget*, or `Any`
 
     method gtk_widget_get_parent ( --> N-GObject  )
 
-[gtk_widget_] set_parent_window
--------------------------------
+[[gtk_] widget_] set_parent_window
+----------------------------------
 
 Sets a non default parent window for *widget*.
 
@@ -1118,8 +1118,8 @@ For **Gnome::Gtk3::Window** classes, this needs to be called before the window i
 
   * N-GObject $parent_window; the new parent window.
 
-[gtk_widget_] get_parent_window
--------------------------------
+[[gtk_] widget_] get_parent_window
+----------------------------------
 
 Gets *widget*’s parent window.
 
@@ -1127,8 +1127,8 @@ Returns: (transfer none): the parent window of *widget*.
 
     method gtk_widget_get_parent_window ( --> N-GObject  )
 
-[gtk_widget_] set_child_visible
--------------------------------
+[[gtk_] widget_] set_child_visible
+----------------------------------
 
 Sets whether *widget* should be mapped along with its when its parent is mapped and *widget* has been shown with `gtk_widget_show()`.
 
@@ -1142,8 +1142,8 @@ This function is only useful for container implementations and never should be c
 
   * Int $is_visible; if `1`, *widget* should be mapped along with its parent.
 
-[gtk_widget_] get_child_visible
--------------------------------
+[[gtk_] widget_] get_child_visible
+----------------------------------
 
 Gets the value set with `gtk_widget_set_child_visible()`. If you feel a need to use this function, your code probably needs reorganization.
 
@@ -1153,8 +1153,8 @@ Returns: `1` if the widget is mapped with the parent.
 
     method gtk_widget_get_child_visible ( --> Int  )
 
-[gtk_widget_] set_window
-------------------------
+[[gtk_] widget_] set_window
+---------------------------
 
 Sets a widget’s window. This function should only be used in a widget’s sig `realize` implementation. The `window` passed is usually either new window created with `gdk_window_new()`, or the window of its parent widget as returned by `gtk_widget_get_parent_window()`.
 
@@ -1168,8 +1168,8 @@ Since: 2.18
 
   * N-GObject $window; (transfer full): a **Gnome::Gdk3::Window**
 
-[gtk_widget_] get_window
-------------------------
+[[gtk_] widget_] get_window
+---------------------------
 
 Returns the widget’s window if it is realized, `Any` otherwise
 
@@ -1179,8 +1179,8 @@ Since: 2.14
 
     method gtk_widget_get_window ( --> N-GObject  )
 
-[gtk_widget_] register_window
------------------------------
+[[gtk_] widget_] register_window
+--------------------------------
 
 Registers a **Gnome::Gdk3::Window** with the widget and sets it up so that the widget receives events for it. Call `gtk_widget_unregister_window()` when destroying the window.
 
@@ -1192,8 +1192,8 @@ Since: 3.8
 
   * N-GObject $window; a **Gnome::Gdk3::Window**
 
-[gtk_widget_] unregister_window
--------------------------------
+[[gtk_] widget_] unregister_window
+----------------------------------
 
 Unregisters a **Gnome::Gdk3::Window** from the widget that was previously set up with `gtk_widget_register_window()`. You need to call this when the window is no longer used by the widget, such as when you destroy it.
 
@@ -1203,8 +1203,8 @@ Since: 3.8
 
   * N-GObject $window; a **Gnome::Gdk3::Window**
 
-[gtk_widget_] get_allocated_width
----------------------------------
+[[gtk_] widget_] get_allocated_width
+------------------------------------
 
 Returns the width that has currently been allocated to *widget*. This function is intended to be used when implementing handlers for the sig `draw` function.
 
@@ -1212,8 +1212,8 @@ Returns: the width of the *widget*
 
     method gtk_widget_get_allocated_width ( --> int32  )
 
-[gtk_widget_] get_allocated_height
-----------------------------------
+[[gtk_] widget_] get_allocated_height
+-------------------------------------
 
 Returns the height that has currently been allocated to *widget*. This function is intended to be used when implementing handlers for the sig `draw` function.
 
@@ -1221,8 +1221,8 @@ Returns: the height of the *widget*
 
     method gtk_widget_get_allocated_height ( --> int32  )
 
-[gtk_widget_] get_allocated_baseline
-------------------------------------
+[[gtk_] widget_] get_allocated_baseline
+---------------------------------------
 
 Returns the baseline that has currently been allocated to *widget*. This function is intended to be used when implementing handlers for the sig `draw` function, and when allocating child widgets in sig `size_allocate`.
 
@@ -1232,8 +1232,8 @@ Since: 3.10
 
     method gtk_widget_get_allocated_baseline ( --> int32  )
 
-[gtk_widget_] get_allocated_size
---------------------------------
+[[gtk_] widget_] get_allocated_size
+-----------------------------------
 
 Retrieves the widget’s allocated size.
 
@@ -1249,8 +1249,8 @@ Since: 3.20
 
   * int32 $baseline; (out) (allow-none): a pointer to an integer to copy to
 
-[gtk_widget_] get_allocation
-----------------------------
+[[gtk_] widget_] get_allocation
+-------------------------------
 
 Retrieves the widget’s allocation.
 
@@ -1262,8 +1262,8 @@ Since: 2.18
 
   * GtkAllocation $allocation; (out): a pointer to a **Gnome::Gtk3::Allocation** to copy to
 
-[gtk_widget_] set_allocation
-----------------------------
+[[gtk_] widget_] set_allocation
+-------------------------------
 
 Sets the widget’s allocation. This should not be used directly, but from within a widget’s size_allocate method.
 
@@ -1275,8 +1275,8 @@ Since: 2.18
 
   * GtkAllocation $allocation; a pointer to a **Gnome::Gtk3::Allocation** to copy from
 
-[gtk_widget_] set_clip
-----------------------
+[[gtk_] widget_] set_clip
+-------------------------
 
 Sets the widget’s clip. This must not be used directly, but from within a widget’s size_allocate method. It must be called after `gtk_widget_set_allocation()` (or after chaining up to the parent class), because that function resets the clip.
 
@@ -1290,8 +1290,8 @@ Since: 3.14
 
   * GtkAllocation $clip; a pointer to a **Gnome::Gtk3::Allocation** to copy from
 
-[gtk_widget_] get_clip
-----------------------
+[[gtk_] widget_] get_clip
+-------------------------
 
 Retrieves the widget’s clip area.
 
@@ -1305,8 +1305,8 @@ Since: 3.14
 
   * GtkAllocation $clip; (out): a pointer to a **Gnome::Gtk3::Allocation** to copy to
 
-[gtk_widget_] child_focus
--------------------------
+[[gtk_] widget_] child_focus
+----------------------------
 
 This function is used by custom widget implementations; if you're writing an app, you’d use `gtk_widget_grab_focus()` to move the focus to a particular widget, and `gtk_container_set_focus_chain()` to change the focus tab order. So you may want to investigate those functions instead.
 
@@ -1320,8 +1320,8 @@ Returns: `1` if focus ended up inside *widget*
 
   * GtkDirectionType $direction; direction of focus movement
 
-[gtk_widget_] keynav_failed
----------------------------
+[[gtk_] widget_] keynav_failed
+------------------------------
 
 This function should be called whenever keyboard navigation within a single widget hits a boundary. The function emits the sig `keynav-failed` signal on the widget and its return value should be interpreted in a way similar to the return value of `gtk_widget_child_focus()`:
 
@@ -1343,8 +1343,8 @@ Since: 2.12
 
   * GtkDirectionType $direction; direction of focus movement
 
-[gtk_widget_] error_bell
-------------------------
+[[gtk_] widget_] error_bell
+---------------------------
 
 Notifies the user about an input-related error on this widget. If the prop `gtk-error-bell` setting is `1`, it calls `gdk_window_beep()`, otherwise it does nothing.
 
@@ -1354,8 +1354,8 @@ Since: 2.12
 
     method gtk_widget_error_bell ( )
 
-[gtk_widget_] set_size_request
-------------------------------
+[[gtk_] widget_] set_size_request
+---------------------------------
 
 Sets the minimum size of a widget; that is, the widget’s size request will be at least *width* by *height*. You can use this function to force a widget to be larger than it normally would be.
 
@@ -1375,8 +1375,8 @@ The size request set here does not include any margin from the **Gnome::Gtk3::Wi
 
   * Int $height; height *widget* should request, or -1 to unset
 
-[gtk_widget_] get_size_request
-------------------------------
+[[gtk_] widget_] get_size_request
+---------------------------------
 
 Gets the size request that was explicitly set for the widget using `gtk_widget_set_size_request()`. A value of -1 stored in *width* or *height* indicates that that dimension has not been set explicitly and the natural requisition of the widget will be used instead. See `gtk_widget_set_size_request()`. To get the size a widget will actually request, call `gtk_widget_get_preferred_size()` instead of this function.
 
@@ -1386,8 +1386,8 @@ Gets the size request that was explicitly set for the widget using `gtk_widget_s
 
   * Int $height; (out) (allow-none): return location for height, or `Any`
 
-[gtk_widget_] set_events
-------------------------
+[[gtk_] widget_] set_events
+---------------------------
 
 Sets the event mask (see **Gnome::Gdk3::EventMask**) for a widget. The event mask determines which events a widget will receive. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a widget’s functionality, so be careful. This function must be called while a widget is unrealized. Consider `gtk_widget_add_events()` for widgets that are already realized, or if you want to preserve the existing event mask. This function can’t be used with widgets that have no window. (See `gtk_widget_get_has_window()`). To get events on those widgets, place them inside a **Gnome::Gtk3::EventBox** and receive events on the event box.
 
@@ -1395,8 +1395,8 @@ Sets the event mask (see **Gnome::Gdk3::EventMask**) for a widget. The event mas
 
   * Int $events; event mask
 
-[gtk_widget_] add_events
-------------------------
+[[gtk_] widget_] add_events
+---------------------------
 
 Adds the events in the bitfield *events* to the event mask for *widget*. See `gtk_widget_set_events()` and the [input handling overview][event-masks] for details.
 
@@ -1404,8 +1404,8 @@ Adds the events in the bitfield *events* to the event mask for *widget*. See `gt
 
   * Int $events; an event mask, see **Gnome::Gdk3::EventMask**
 
-[gtk_widget_] set_opacity
--------------------------
+[[gtk_] widget_] set_opacity
+----------------------------
 
 Request the *widget* to be rendered partially transparent, with opacity 0 being fully transparent and 1 fully opaque. (Opacity values are clamped to the [0,1] range.). This works on both toplevel widget, and child widgets, although there are some limitations:
 
@@ -1419,8 +1419,8 @@ Since: 3.8
 
   * Num $opacity; desired opacity, between 0 and 1
 
-[gtk_widget_] get_opacity
--------------------------
+[[gtk_] widget_] get_opacity
+----------------------------
 
 Fetches the requested opacity for this widget. See `gtk_widget_set_opacity()`.
 
@@ -1430,8 +1430,8 @@ Since: 3.8
 
     method gtk_widget_get_opacity ( --> Num  )
 
-[gtk_widget_] set_device_enabled
---------------------------------
+[[gtk_] widget_] set_device_enabled
+-----------------------------------
 
 Enables or disables a **Gnome::Gdk3::Device** to interact with *widget* and all its children.
 
@@ -1445,8 +1445,8 @@ Since: 3.0
 
   * Int $enabled; whether to enable the device
 
-[gtk_widget_] get_device_enabled
---------------------------------
+[[gtk_] widget_] get_device_enabled
+-----------------------------------
 
 Returns whether *device* can interact with *widget* and its children. See `gtk_widget_set_device_enabled()`.
 
@@ -1458,8 +1458,8 @@ Since: 3.0
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
-[gtk_widget_] get_toplevel
---------------------------
+[[gtk_] widget_] get_toplevel
+-----------------------------
 
 This function returns the topmost widget in the container hierarchy *widget* is a part of. If *widget* has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
 
@@ -1471,8 +1471,8 @@ Returns: (transfer none): the topmost ancestor of *widget*, or *widget* itself i
 
     method gtk_widget_get_toplevel ( --> N-GObject  )
 
-[gtk_widget_] get_ancestor
---------------------------
+[[gtk_] widget_] get_ancestor
+-----------------------------
 
 Gets the first ancestor of *widget* with type *widget_type*. For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)` gets the first **Gnome::Gtk3::Box** that’s an ancestor of *widget*. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel **Gnome::Gtk3::Window** in the docs for `gtk_widget_get_toplevel()`.
 
@@ -1484,8 +1484,8 @@ Returns: (transfer none) (nullable): the ancestor widget, or `Any` if not found
 
   * N-GObject $widget_type; ancestor type
 
-[gtk_widget_] get_visual
-------------------------
+[[gtk_] widget_] get_visual
+---------------------------
 
 Gets the visual that will be used to render *widget*.
 
@@ -1493,8 +1493,8 @@ Returns: (transfer none): the visual for *widget*
 
     method gtk_widget_get_visual ( --> N-GObject  )
 
-[gtk_widget_] set_visual
-------------------------
+[[gtk_] widget_] set_visual
+---------------------------
 
 Sets the visual that should be used for by widget and its children for creating **Gnome::Gdk3::Windows**. The visual must be on the same **Gnome::Gdk3::Screen** as returned by `gtk_widget_get_screen()`, so handling the sig `screen-changed` signal is necessary.
 
@@ -1504,8 +1504,8 @@ Setting a new *visual* will not cause *widget* to recreate its windows, so you s
 
   * N-GObject $visual; (allow-none): visual to be used or `Any` to unset a previous one
 
-[gtk_widget_] get_screen
-------------------------
+[[gtk_] widget_] get_screen
+---------------------------
 
 Get the **Gnome::Gdk3::Screen** from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
 
@@ -1517,8 +1517,8 @@ Since: 2.2
 
     method gtk_widget_get_screen ( --> N-GObject  )
 
-[gtk_widget_] has_screen
-------------------------
+[[gtk_] widget_] has_screen
+---------------------------
 
 Checks whether there is a **Gnome::Gdk3::Screen** is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
 
@@ -1528,8 +1528,8 @@ Since: 2.2
 
     method gtk_widget_has_screen ( --> Int  )
 
-[gtk_widget_] get_scale_factor
-------------------------------
+[[gtk_] widget_] get_scale_factor
+---------------------------------
 
 Retrieves the internal scale factor that maps from window coordinates to the actual device pixels. On traditional systems this is 1, on high density outputs, it can be a higher value (typically 2).
 
@@ -1541,8 +1541,8 @@ Since: 3.10
 
     method gtk_widget_get_scale_factor ( --> Int  )
 
-[gtk_widget_] get_display
--------------------------
+[[gtk_] widget_] get_display
+----------------------------
 
 Get the **Gnome::Gdk3::Display** for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
 
@@ -1554,8 +1554,8 @@ Since: 2.2
 
     method gtk_widget_get_display ( --> N-GObject  )
 
-[gtk_widget_] get_settings
---------------------------
+[[gtk_] widget_] get_settings
+-----------------------------
 
 Gets the settings object holding the settings used for this widget.
 
@@ -1565,8 +1565,8 @@ Returns: (transfer none): the relevant **Gnome::Gtk3::Settings** object
 
     method gtk_widget_get_settings ( --> N-GObject  )
 
-[gtk_widget_] get_hexpand
--------------------------
+[[gtk_] widget_] get_hexpand
+----------------------------
 
 Gets whether the widget would like any available extra horizontal space. When a user resizes a **Gnome::Gtk3::Window**, widgets with expand=TRUE generally receive the extra space. For example, a list or scrollable area or document in your window would often be set to expand.
 
@@ -1578,8 +1578,8 @@ Returns: whether hexpand flag is set
 
     method gtk_widget_get_hexpand ( --> Int  )
 
-[gtk_widget_] set_hexpand
--------------------------
+[[gtk_] widget_] set_hexpand
+----------------------------
 
 Sets whether the widget would like any available extra horizontal space. When a user resizes a **Gnome::Gtk3::Window**, widgets with expand=TRUE generally receive the extra space. For example, a list or scrollable area or document in your window would often be set to expand.
 
@@ -1595,8 +1595,8 @@ This function forces the widget to expand or not to expand, regardless of childr
 
   * Int $expand; whether to expand
 
-[gtk_widget_] get_hexpand_set
------------------------------
+[[gtk_] widget_] get_hexpand_set
+--------------------------------
 
 Gets whether `gtk_widget_set_hexpand()` has been used to explicitly set the expand flag on this widget.
 
@@ -1608,8 +1608,8 @@ Returns: whether hexpand has been explicitly set
 
     method gtk_widget_get_hexpand_set ( --> Int  )
 
-[gtk_widget_] set_hexpand_set
------------------------------
+[[gtk_] widget_] set_hexpand_set
+--------------------------------
 
 Sets whether the hexpand flag (see `gtk_widget_get_hexpand()`) will be used.
 
@@ -1623,8 +1623,8 @@ There are few reasons to use this function, but it’s here for completeness and
 
   * Int $set; value for hexpand-set property
 
-[gtk_widget_] get_vexpand
--------------------------
+[[gtk_] widget_] get_vexpand
+----------------------------
 
 Gets whether the widget would like any available extra vertical space.
 
@@ -1634,8 +1634,8 @@ Returns: whether vexpand flag is set
 
     method gtk_widget_get_vexpand ( --> Int  )
 
-[gtk_widget_] set_vexpand
--------------------------
+[[gtk_] widget_] set_vexpand
+----------------------------
 
 Sets whether the widget would like any available extra vertical space.
 
@@ -1645,8 +1645,8 @@ See `gtk_widget_set_hexpand()` for more detail.
 
   * Int $expand; whether to expand
 
-[gtk_widget_] get_vexpand_set
------------------------------
+[[gtk_] widget_] get_vexpand_set
+--------------------------------
 
 Gets whether `gtk_widget_set_vexpand()` has been used to explicitly set the expand flag on this widget.
 
@@ -1656,8 +1656,8 @@ Returns: whether vexpand has been explicitly set
 
     method gtk_widget_get_vexpand_set ( --> Int  )
 
-[gtk_widget_] set_vexpand_set
------------------------------
+[[gtk_] widget_] set_vexpand_set
+--------------------------------
 
 Sets whether the vexpand flag (see `gtk_widget_get_vexpand()`) will be used.
 
@@ -1667,8 +1667,8 @@ See `gtk_widget_set_hexpand_set()` for more detail.
 
   * Int $set; value for vexpand-set property
 
-[gtk_widget_] queue_compute_expand
-----------------------------------
+[[gtk_] widget_] queue_compute_expand
+-------------------------------------
 
 Mark *widget* as needing to recompute its expand flags. Call this function when setting legacy expand child properties on the child of a container.
 
@@ -1676,8 +1676,8 @@ See `gtk_widget_compute_expand()`.
 
     method gtk_widget_queue_compute_expand ( )
 
-[gtk_widget_] compute_expand
-----------------------------
+[[gtk_] widget_] compute_expand
+-------------------------------
 
 Computes whether a container should give this widget extra space when possible. Containers should check this, rather than looking at `gtk_widget_get_hexpand()` or `gtk_widget_get_vexpand()`.
 
@@ -1691,8 +1691,8 @@ Returns: whether widget tree rooted here should be expanded
 
   * GtkOrientation $orientation; expand direction
 
-[gtk_widget_] get_support_multidevice
--------------------------------------
+[[gtk_] widget_] get_support_multidevice
+----------------------------------------
 
 Returns `1` if *widget* is multiple pointer aware. See `gtk_widget_set_support_multidevice()` for more information.
 
@@ -1700,8 +1700,8 @@ Returns: `1` if *widget* is multidevice aware.
 
     method gtk_widget_get_support_multidevice ( --> Int  )
 
-[gtk_widget_] set_support_multidevice
--------------------------------------
+[[gtk_] widget_] set_support_multidevice
+----------------------------------------
 
 Enables or disables multiple pointer awareness. If this setting is `1`, *widget* will start receiving multiple, per device enter/leave events. Note that if custom **Gnome::Gdk3::Windows** are created in sig `realize`, `gdk_window_set_support_multidevice()` will have to be called manually on them.
 
@@ -1711,8 +1711,8 @@ Since: 3.0
 
   * Int $support_multidevice; `1` to support input from multiple devices.
 
-[gtk_widget_] get_halign
-------------------------
+[[gtk_] widget_] get_halign
+---------------------------
 
 Gets the value of the prop `halign` property.
 
@@ -1722,8 +1722,8 @@ Returns: the horizontal alignment of *widget*
 
     method gtk_widget_get_halign ( --> GtkAlign  )
 
-[gtk_widget_] set_halign
-------------------------
+[[gtk_] widget_] set_halign
+---------------------------
 
 Sets the horizontal alignment of *widget*. See the prop `halign` property.
 
@@ -1731,8 +1731,8 @@ Sets the horizontal alignment of *widget*. See the prop `halign` property.
 
   * GtkAlign $align; the horizontal alignment
 
-[gtk_widget_] get_valign
-------------------------
+[[gtk_] widget_] get_valign
+---------------------------
 
 Gets the value of the prop `valign` property.
 
@@ -1742,8 +1742,8 @@ Returns: the vertical alignment of *widget*, ignoring baseline alignment
 
     method gtk_widget_get_valign ( --> GtkAlign  )
 
-[gtk_widget_] get_valign_with_baseline
---------------------------------------
+[[gtk_] widget_] get_valign_with_baseline
+-----------------------------------------
 
 Gets the value of the prop `valign` property, including `GTK_ALIGN_BASELINE`.
 
@@ -1753,8 +1753,8 @@ Since: 3.10
 
     method gtk_widget_get_valign_with_baseline ( --> GtkAlign  )
 
-[gtk_widget_] set_valign
-------------------------
+[[gtk_] widget_] set_valign
+---------------------------
 
 Sets the vertical alignment of *widget*. See the prop `valign` property.
 
@@ -1762,8 +1762,8 @@ Sets the vertical alignment of *widget*. See the prop `valign` property.
 
   * GtkAlign $align; the vertical alignment
 
-[gtk_widget_] get_margin_start
-------------------------------
+[[gtk_] widget_] get_margin_start
+---------------------------------
 
 Gets the value of the prop `margin-start` property.
 
@@ -1773,8 +1773,8 @@ Since: 3.12
 
     method gtk_widget_get_margin_start ( --> Int  )
 
-[gtk_widget_] set_margin_start
-------------------------------
+[[gtk_] widget_] set_margin_start
+---------------------------------
 
 Sets the start margin of *widget*. See the prop `margin-start` property.
 
@@ -1784,8 +1784,8 @@ Since: 3.12
 
   * Int $margin; the start margin
 
-[gtk_widget_] get_margin_end
-----------------------------
+[[gtk_] widget_] get_margin_end
+-------------------------------
 
 Gets the value of the prop `margin-end` property.
 
@@ -1795,8 +1795,8 @@ Since: 3.12
 
     method gtk_widget_get_margin_end ( --> Int  )
 
-[gtk_widget_] set_margin_end
-----------------------------
+[[gtk_] widget_] set_margin_end
+-------------------------------
 
 Sets the end margin of *widget*. See the prop `margin-end` property.
 
@@ -1806,8 +1806,8 @@ Since: 3.12
 
   * Int $margin; the end margin
 
-[gtk_widget_] get_margin_top
-----------------------------
+[[gtk_] widget_] get_margin_top
+-------------------------------
 
 Gets the value of the prop `margin-top` property.
 
@@ -1817,8 +1817,8 @@ Since: 3.0
 
     method gtk_widget_get_margin_top ( --> Int  )
 
-[gtk_widget_] set_margin_top
-----------------------------
+[[gtk_] widget_] set_margin_top
+-------------------------------
 
 Sets the top margin of *widget*. See the prop `margin-top` property.
 
@@ -1828,8 +1828,8 @@ Since: 3.0
 
   * Int $margin; the top margin
 
-[gtk_widget_] get_margin_bottom
--------------------------------
+[[gtk_] widget_] get_margin_bottom
+----------------------------------
 
 Gets the value of the prop `margin-bottom` property.
 
@@ -1839,8 +1839,8 @@ Since: 3.0
 
     method gtk_widget_get_margin_bottom ( --> Int  )
 
-[gtk_widget_] set_margin_bottom
--------------------------------
+[[gtk_] widget_] set_margin_bottom
+----------------------------------
 
 Sets the bottom margin of *widget*. See the prop `margin-bottom` property.
 
@@ -1850,8 +1850,8 @@ Since: 3.0
 
   * Int $margin; the bottom margin
 
-[gtk_widget_] get_events
-------------------------
+[[gtk_] widget_] get_events
+---------------------------
 
 Returns the event mask (see **Gnome::Gdk3::EventMask**) for the widget. These are the events that the widget will receive.
 
@@ -1861,8 +1861,8 @@ Returns: event mask for *widget*
 
     method gtk_widget_get_events ( --> Int  )
 
-[gtk_widget_] is_ancestor
--------------------------
+[[gtk_] widget_] is_ancestor
+----------------------------
 
 Determines whether *widget* is somewhere inside *ancestor*, possibly with intermediate containers.
 
@@ -1872,8 +1872,8 @@ Returns: `1` if *ancestor* contains *widget* as a child, grandchild, great grand
 
   * N-GObject $ancestor; another **Gnome::Gtk3::Widget**
 
-[gtk_widget_] translate_coordinates
------------------------------------
+[[gtk_] widget_] translate_coordinates
+--------------------------------------
 
 Translate coordinates relative to *src_widget*’s allocation to coordinates relative to *dest_widget*’s allocations. In order to perform this operation, both widgets must be realized, and must share a common toplevel.
 
@@ -1891,8 +1891,8 @@ Returns: `0` if either widget was not realized, or there was no common ancestor.
 
   * Int $dest_y; (out) (optional): location to store Y position relative to *dest_widget*
 
-[gtk_widget_] hide_on_delete
-----------------------------
+[[gtk_] widget_] hide_on_delete
+-------------------------------
 
 Utility function; intended to be connected to the sig `delete-event` signal on a **Gnome::Gtk3::Window**. The function calls `gtk_widget_hide()` on its argument, then returns `1`. If connected to ::delete-event, the result is that clicking the close button for a window (on the window frame, top right corner usually) will hide but not destroy the window. By default, GTK+ destroys windows when ::delete-event is received.
 
@@ -1900,8 +1900,8 @@ Returns: `1`
 
     method gtk_widget_hide_on_delete ( --> Int  )
 
-[gtk_widget_] reset_style
--------------------------
+[[gtk_] widget_] reset_style
+----------------------------
 
 Updates the style context of *widget* and all descendants by updating its widget path. **Gnome::Gtk3::Containers** may want to use this on a child when reordering it in a way that a different style might apply to it. See also `gtk_container_get_path_for_child()`.
 
@@ -1909,8 +1909,8 @@ Since: 3.0
 
     method gtk_widget_reset_style ( )
 
-[gtk_widget_] set_direction
----------------------------
+[[gtk_] widget_] set_direction
+------------------------------
 
 Sets the reading direction on a particular widget. This direction controls the primary direction for widgets containing text, and also the direction in which the children of a container are packed. The ability to set the direction is present in order so that correct localization into languages with right-to-left reading directions can be done. Generally, applications will let the default reading direction present, except for containers where the containers are arranged in an order that is explicitly visual rather than logical (such as buttons for text justification).
 
@@ -1920,8 +1920,8 @@ If the direction is set to `GTK_TEXT_DIR_NONE`, then the value set by `gtk_widge
 
   * GtkTextDirection $dir; the new direction
 
-[gtk_widget_] get_direction
----------------------------
+[[gtk_] widget_] get_direction
+------------------------------
 
 Gets the reading direction for a particular widget. See `gtk_widget_set_direction()`.
 
@@ -1929,8 +1929,8 @@ Returns: the reading direction for the widget.
 
     method gtk_widget_get_direction ( --> GtkTextDirection  )
 
-[gtk_widget_] set_default_direction
------------------------------------
+[[gtk_] widget_] set_default_direction
+--------------------------------------
 
 Sets the default reading direction for widgets where the direction has not been explicitly set by `gtk_widget_set_direction()`.
 
@@ -1938,8 +1938,8 @@ Sets the default reading direction for widgets where the direction has not been 
 
   * GtkTextDirection $dir; the new default direction. This cannot be `GTK_TEXT_DIR_NONE`.
 
-[gtk_widget_] get_default_direction
------------------------------------
+[[gtk_] widget_] get_default_direction
+--------------------------------------
 
 Obtains the current default reading direction. See `gtk_widget_set_default_direction()`.
 
@@ -1947,8 +1947,8 @@ Returns: the current default direction.
 
     method gtk_widget_get_default_direction ( --> GtkTextDirection  )
 
-[gtk_widget_] list_mnemonic_labels
-----------------------------------
+[[gtk_] widget_] list_mnemonic_labels
+-------------------------------------
 
 Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, `gtk_label_set_mnemonic_widget()`). The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g_list_foreach (result, (GFunc)g_object_ref, NULL)` first, and then unref all the widgets afterwards. Returns: (element-type **Gnome::Gtk3::Widget**) (transfer container): the list of mnemonic labels; free this list with `g_list_free()` when you are done with it.
 
@@ -1956,8 +1956,8 @@ Since: 2.4
 
     method gtk_widget_list_mnemonic_labels ( --> N-GObject  )
 
-[gtk_widget_] add_mnemonic_label
---------------------------------
+[[gtk_] widget_] add_mnemonic_label
+-----------------------------------
 
 Adds a widget to the list of mnemonic labels for this widget. (See `gtk_widget_list_mnemonic_labels()`). Note the list of mnemonic labels for the widget is cleared when the widget is destroyed, so the caller must make sure to update its internal state at this point as well, by using a connection to the sig `destroy` signal or a weak notifier.
 
@@ -1967,8 +1967,8 @@ Since: 2.4
 
   * N-GObject $label; a **Gnome::Gtk3::Widget** that acts as a mnemonic label for *widget*
 
-[gtk_widget_] remove_mnemonic_label
------------------------------------
+[[gtk_] widget_] remove_mnemonic_label
+--------------------------------------
 
 Removes a widget from the list of mnemonic labels for this widget. (See `gtk_widget_list_mnemonic_labels()`). The widget must have previously been added to the list with `gtk_widget_add_mnemonic_label()`.
 
@@ -1978,8 +1978,8 @@ Since: 2.4
 
   * N-GObject $label; a **Gnome::Gtk3::Widget** that was previously set as a mnemonic label for *widget* with `gtk_widget_add_mnemonic_label()`.
 
-[gtk_widget_] set_tooltip_window
---------------------------------
+[[gtk_] widget_] set_tooltip_window
+-----------------------------------
 
 Replaces the default, usually yellow, window used for displaying tooltips with *custom_window*. GTK+ will take care of showing and hiding *custom_window* at the right moment, to behave likewise as the default tooltip window. If *custom_window* is `Any`, the default tooltip window will be used.
 
@@ -1991,8 +1991,8 @@ Since: 2.12
 
   * N-GObject $custom_window; (allow-none): a **Gnome::Gtk3::Window**, or `Any`
 
-[gtk_widget_] get_tooltip_window
---------------------------------
+[[gtk_] widget_] get_tooltip_window
+-----------------------------------
 
 Returns the **Gnome::Gtk3::Window** of the current tooltip. This can be the **Gnome::Gtk3::Window** created by default, or the custom tooltip window set using `gtk_widget_set_tooltip_window()`.
 
@@ -2002,8 +2002,8 @@ Since: 2.12
 
     method gtk_widget_get_tooltip_window ( --> N-GObject  )
 
-[gtk_widget_] trigger_tooltip_query
------------------------------------
+[[gtk_] widget_] trigger_tooltip_query
+--------------------------------------
 
 Triggers a tooltip query on the display where the toplevel of *widget* is located. See `gtk_tooltip_trigger_tooltip_query()` for more information.
 
@@ -2011,8 +2011,8 @@ Since: 2.12
 
     method gtk_widget_trigger_tooltip_query ( )
 
-[gtk_widget_] set_tooltip_text
-------------------------------
+[[gtk_] widget_] set_tooltip_text
+---------------------------------
 
 Sets *text* as the contents of the tooltip. This function will take care of setting prop `has-tooltip` to `1` and of the default handler for the sig `query-tooltip` signal.
 
@@ -2024,8 +2024,8 @@ Since: 2.12
 
   * Str $text; (allow-none): the contents of the tooltip for *widget*
 
-[gtk_widget_] get_tooltip_text
-------------------------------
+[[gtk_] widget_] get_tooltip_text
+---------------------------------
 
 Gets the contents of the tooltip for *widget*.
 
@@ -2035,8 +2035,8 @@ Since: 2.12
 
     method gtk_widget_get_tooltip_text ( --> Str  )
 
-[gtk_widget_] set_tooltip_markup
---------------------------------
+[[gtk_] widget_] set_tooltip_markup
+-----------------------------------
 
 Sets *markup* as the contents of the tooltip, which is marked up with the [Pango text markup language](https://developer.gnome.org/pango/stable/PangoMarkupFormat.html).
 
@@ -2050,8 +2050,8 @@ Since: 2.12
 
   * Str $markup; (allow-none): the contents of the tooltip for *widget*, or `Any`
 
-[gtk_widget_] get_tooltip_markup
---------------------------------
+[[gtk_] widget_] get_tooltip_markup
+-----------------------------------
 
 Gets the contents of the tooltip for *widget*.
 
@@ -2061,8 +2061,8 @@ Since: 2.12
 
     method gtk_widget_get_tooltip_markup ( --> Str  )
 
-[gtk_widget_] set_has_tooltip
------------------------------
+[[gtk_] widget_] set_has_tooltip
+--------------------------------
 
 Sets the has-tooltip property on *widget* to *has_tooltip*. See prop `has-tooltip` for more information.
 
@@ -2072,8 +2072,8 @@ Since: 2.12
 
   * Int $has_tooltip; whether or not *widget* has a tooltip.
 
-[gtk_widget_] get_has_tooltip
------------------------------
+[[gtk_] widget_] get_has_tooltip
+--------------------------------
 
 Returns the current value of the has-tooltip property. See prop `has-tooltip` for more information.
 
@@ -2083,8 +2083,8 @@ Since: 2.12
 
     method gtk_widget_get_has_tooltip ( --> Int  )
 
-[gtk_widget_] in_destruction
-----------------------------
+[[gtk_] widget_] in_destruction
+-------------------------------
 
 Returns whether the widget is currently being destroyed. This information can sometimes be used to avoid doing unnecessary work.
 
@@ -2092,8 +2092,8 @@ Returns: `1` if *widget* is being destroyed
 
     method gtk_widget_in_destruction ( --> Int  )
 
-[gtk_widget_] get_style_context
--------------------------------
+[[gtk_] widget_] get_style_context
+----------------------------------
 
 Returns the style context associated to *widget*. The returned object is guaranteed to be the same for the lifetime of *widget*.
 
@@ -2101,8 +2101,8 @@ Returns: (transfer none): a **Gnome::Gtk3::StyleContext**. This memory is owned 
 
     method gtk_widget_get_style_context ( --> N-GObject  )
 
-[gtk_widget_] get_path
-----------------------
+[[gtk_] widget_] get_path
+-------------------------
 
 Returns the **Gnome::Gtk3::WidgetPath** representing the widget. If the widget is not connected to a toplevel widget, a partial path will be created.
 
@@ -2110,8 +2110,8 @@ Returns: The `N-WidgetPath` representing the widget.
 
     method gtk_widget_get_path ( --> N-GtkWidgetPath )
 
-[gtk_widget_] insert_action_group
----------------------------------
+[[gtk_] widget_] insert_action_group
+------------------------------------
 
 Inserts *group* into *widget*. Children of *widget* that implement **Gnome::Gtk3::Actionable** can then be associated with actions in *group* by setting their “action-name” to *prefix*.`action-name`.
 
@@ -2125,8 +2125,8 @@ Since: 3.6
 
   * N-GObject $group; (allow-none): a `GActionGroup`, or `Any`
 
-[gtk_widget_] remove_tick_callback
-----------------------------------
+[[gtk_] widget_] remove_tick_callback
+-------------------------------------
 
 Removes a tick callback previously registered with `gtk_widget_add_tick_callback()`.
 
@@ -2136,8 +2136,8 @@ Since: 3.8
 
   * UInt $id; an id returned by `gtk_widget_add_tick_callback()`
 
-[gtk_widget_] init_template
----------------------------
+[[gtk_] widget_] init_template
+------------------------------
 
 Creates and initializes child widgets defined in templates. This function must be called in the instance initializer for any class which assigned itself a template using `gtk_widget_class_set_template()`
 
@@ -2151,8 +2151,8 @@ Since: 3.10
 
     method gtk_widget_init_template ( )
 
-[gtk_widget_] get_template_child
---------------------------------
+[[gtk_] widget_] get_template_child
+-----------------------------------
 
 Fetch an object build from the template XML for *widget_type* in this *widget* instance.
 
@@ -2168,8 +2168,8 @@ Returns: (transfer none): The object built in the template XML with the id *name
 
   * Str $name; The “id” of the child defined in the template XML
 
-[gtk_widget_] get_action_group
-------------------------------
+[[gtk_] widget_] get_action_group
+---------------------------------
 
 Retrieves the `GActionGroup` that was registered using *prefix*. The resulting `GActionGroup` may have been registered to *widget* or any **Gnome::Gtk3::Widget** in its ancestry.
 
@@ -2183,8 +2183,8 @@ Since: 3.16
 
   * Str $prefix; The “prefix” of the action group.
 
-[gtk_widget_] list_action_prefixes
-----------------------------------
+[[gtk_] widget_] list_action_prefixes
+-------------------------------------
 
 Retrieves a %NULL-terminated array of strings containing the prefixes of * #GActionGroup's available to @widget.
 

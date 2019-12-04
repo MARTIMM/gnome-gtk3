@@ -181,8 +181,8 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
-gtk_file_chooser_dialog_new
----------------------------
+[gtk_] file_chooser_dialog_new
+------------------------------
 
 Creates a new file chooser dialog. This function is analogous to `gtk_dialog_new_with_buttons()`. This method is called when creating the object using *.new(:action(...), ...)*.
 

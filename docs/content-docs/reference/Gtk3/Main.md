@@ -78,8 +78,8 @@ Create a GtkMain object. Initialization of GTK is automatically executed if not 
 
   * $check; Use checked initialization. Program will not fail when commandline arguments do not parse properly.
 
-gtk_check_version
------------------
+[gtk_] check_version
+--------------------
 
 Checks that the GTK+ library in use is compatible with the given version. Generally you would pass in the constants **GTK_MAJOR_VERSION**, **GTK_MINOR_VERSION**, **GTK_MICRO_VERSION** as the three arguments to this function; that produces a check that the library in use is compatible with the version of GTK+ the application or module was compiled against.
 
@@ -101,8 +101,8 @@ Returns: (nullable): `Any` if the GTK+ library is compatible with the given vers
 
   * UInt $required_micro; the required micro version
 
-gtk_parse_args
---------------
+[gtk_] parse_args
+-----------------
 
 Parses command line arguments, and initializes global attributes of GTK+, but does not actually open a connection to a display. (See `gdk_display_open()`, `gdk_get_display_arg_name()`)
 
@@ -120,8 +120,8 @@ Returns: `1` if initialization succeeded, otherwise `0`
 
   * CArray[Str] $argv; (array length=argc) (inout): a pointer to the array of command line arguments
 
-gtk_init
---------
+[gtk_] init
+-----------
 
 Call this function before using any other GTK+ functions in your GUI applications. It will initialize everything needed to operate the toolkit and parses some standard command line options.
 
@@ -143,8 +143,8 @@ Since 2.18, GTK+ calls `signal (SIGPIPE, SIG_IGN)` during initialization, to ign
 
   * CArray[CArray[Str]] $argv; (array length=argc) (inout) (allow-none): Address of the `argv` parameter of `main()`, or `Any`. Any options understood by GTK+ are stripped before return.
 
-gtk_init_check
---------------
+[gtk_] init_check
+-----------------
 
 This function does the same work as `gtk_init()` with only a single change: It does not terminate the program if the windowing system can’t be initialized. Instead it returns `0` on failure.
 
@@ -158,8 +158,23 @@ Returns: `1` if the windowing system has been successfully initialized, `0` othe
 
   * CArray[CArray[Str]] $argv; (array length=argc) (inout) (allow-none): Address of the `argv` parameter of `main()`, or `Any`. Any options understood by GTK+ are stripped before return.
 
-gtk_disable_setlocale
----------------------
+[gtk_] get_option_group
+-----------------------
+
+Returns a **N-GOptionGroup** for the commandline arguments recognized by GTK+ and GDK.
+
+You should add this group to your **N-GOptionContext** with `g_option_context_add_group()`, if you are using `g_option_context_parse()` to parse your commandline arguments.
+
+Returns: a **N-GOptionGroup** for the commandline arguments recognized by GTK+
+
+Since: 2.6
+
+    method gtk_get_option_group ( Int $open_default_display --> N-GOptionGroup  )
+
+  * Int $open_default_display; whether to open the default display when parsing the commandline arguments
+
+[gtk_] disable_setlocale
+------------------------
 
 Prevents `gtk_init()`, `gtk_init_check()`, `gtk_init_with_args()` and `gtk_parse_args()` from automatically calling `setlocale (LC_ALL, "")`. You would want to use this function if you wanted to set the locale for your program to something other than the user’s locale, or if you wanted to set different values for different locale categories.
 
@@ -167,8 +182,8 @@ Most programs should not need to call this function.
 
     method gtk_disable_setlocale ( )
 
-gtk_get_locale_direction
-------------------------
+[gtk_] get_locale_direction
+---------------------------
 
 Get the direction of the current locale. This is the expected reading direction for text and UI.
 
@@ -186,8 +201,8 @@ Since: 3.12
 
     method gtk_get_locale_direction ( --> GtkTextDirection  )
 
-gtk_events_pending
-------------------
+[gtk_] events_pending
+---------------------
 
 Checks if any events are pending.
 
@@ -205,8 +220,8 @@ Returns: `1` if any events are pending, `0` otherwise
 
     method gtk_events_pending ( --> Int  )
 
-[gtk_main_] do_event
---------------------
+[[gtk_] main_] do_event
+-----------------------
 
 Processes a single GDK event.
 
@@ -228,8 +243,8 @@ While you should not call this function directly, you might want to know how exa
 
   * GdkEvent $event; An event to process (normally passed by GDK)
 
-[gtk_main_] gtk_main
---------------------
+[[gtk_] main_] gtk_main
+-----------------------
 
 Runs the main loop until `gtk_main_quit()` is called.
 
@@ -237,8 +252,8 @@ You can nest calls to `gtk_main()`. In that case `gtk_main_quit()` will make the
 
     method gtk_main ( )
 
-gtk_main_level
---------------
+[gtk_] main_level
+-----------------
 
 Asks for the current nesting level of the main loop.
 
@@ -246,15 +261,15 @@ Returns: the nesting level of the current invocation of the main loop
 
     method gtk_main_level ( --> UInt  )
 
-gtk_main_quit
--------------
+[gtk_] main_quit
+----------------
 
 Makes the innermost invocation of the main loop return when it regains control.
 
     method gtk_main_quit ( )
 
-gtk_main_iteration
-------------------
+[gtk_] main_iteration
+---------------------
 
 Runs a single iteration of the mainloop.
 
@@ -264,8 +279,8 @@ Returns: `1` if `gtk_main_quit()` has been called for the innermost mainloop
 
     method gtk_main_iteration ( --> Int  )
 
-[gtk_main_] iteration_do
-------------------------
+[[gtk_] main_] iteration_do
+---------------------------
 
 Runs a single iteration of the mainloop. If no events are available either return or block depending on the value of *blocking*.
 
@@ -275,8 +290,8 @@ Returns: `1` if `gtk_main_quit()` has been called for the innermost mainloop
 
   * Int $blocking; `1` if you want GTK+ to block if no events are pending
 
-gtk_grab_add
-------------
+[gtk_] grab_add
+---------------
 
 Makes *widget* the current grabbed widget.
 
@@ -288,8 +303,8 @@ If *widget* is not sensitive, it is not set as the current grabbed widget and th
 
   * N-GObject $widget; The widget that grabs keyboard and pointer events
 
-gtk_grab_get_current
---------------------
+[gtk_] grab_get_current
+-----------------------
 
 Queries the current grab of the default window group.
 
@@ -297,8 +312,8 @@ Returns: (transfer none) (nullable): The widget which currently has the grab or 
 
     method gtk_grab_get_current ( --> N-GObject  )
 
-gtk_grab_remove
----------------
+[gtk_] grab_remove
+------------------
 
 Removes the grab from the given widget.
 
@@ -310,8 +325,8 @@ If *widget* does not have the grab, this function does nothing.
 
   * N-GObject $widget; The widget which gives up the grab
 
-gtk_device_grab_add
--------------------
+[gtk_] device_grab_add
+----------------------
 
 Adds a GTK+ grab on *device*, so all the events on *device* and its associated pointer or keyboard (if any) are delivered to *widget*. If the *block_others* parameter is `1`, any other devices will be unable to interact with *widget* during the grab.
 
@@ -325,8 +340,8 @@ Since: 3.0
 
   * Int $block_others; `1` to prevent other devices to interact with *widget*.
 
-gtk_device_grab_remove
-----------------------
+[gtk_] device_grab_remove
+-------------------------
 
 Removes a device grab from the given widget.
 
@@ -340,8 +355,8 @@ Since: 3.0
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
-gtk_get_current_event
----------------------
+[gtk_] get_current_event
+------------------------
 
 Obtains a copy of the event currently being processed by GTK+.
 
@@ -351,8 +366,8 @@ Returns: (transfer full) (nullable): a copy of the current event, or `Any` if th
 
     method gtk_get_current_event ( --> GdkEvent  )
 
-gtk_get_current_event_time
---------------------------
+[gtk_] get_current_event_time
+-----------------------------
 
 If there is a current event and it has a timestamp, return that timestamp, otherwise return `GDK_CURRENT_TIME`.
 
@@ -360,8 +375,8 @@ Returns: the timestamp from the current event, or `GDK_CURRENT_TIME`.
 
     method gtk_get_current_event_time ( --> UInt  )
 
-gtk_get_current_event_state
----------------------------
+[gtk_] get_current_event_state
+------------------------------
 
 If there is a current event and it has a state field, place that state field in *state* and return `1`, otherwise return `0`.
 
@@ -371,8 +386,8 @@ Returns: `1` if there was a current event and it had a state field
 
   * GdkModifierType $state; (out): a location to store the state of the current event
 
-gtk_get_current_event_device
-----------------------------
+[gtk_] get_current_event_device
+-------------------------------
 
 If there is a current event and it has a device, return that device, otherwise return `Any`.
 
@@ -380,8 +395,8 @@ Returns: (transfer none) (nullable): a **Gnome::Gdk3::Device**, or `Any`
 
     method gtk_get_current_event_device ( --> N-GObject  )
 
-gtk_get_event_widget
---------------------
+[gtk_] get_event_widget
+-----------------------
 
 If *event* is `Any` or the event was not associated with any widget, returns `Any`, otherwise returns the widget that received the event originally.
 
@@ -391,8 +406,8 @@ Returns: (transfer none) (nullable): the widget that originally received *event*
 
   * GdkEvent $event; a **Gnome::Gdk3::Event**
 
-gtk_propagate_event
--------------------
+[gtk_] propagate_event
+----------------------
 
 Sends an event to a widget, propagating the event to parent widgets if the event remains unhandled.
 

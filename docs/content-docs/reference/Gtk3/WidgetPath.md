@@ -52,8 +52,8 @@ Returns True if native object is valid, otherwise False.
 
     method widgetpath-is-valid ( --> Bool )
 
-gtk_widget_path_new
--------------------
+[gtk_] widget_path_new
+----------------------
 
 Returns an empty native widget path object.
 
@@ -61,8 +61,8 @@ Since: 3.0
 
     method gtk_widget_path_new ( --> N-GtkWidgetPath  )
 
-gtk_widget_path_copy
---------------------
+[gtk_] widget_path_copy
+-----------------------
 
 Returns a copy of the native object
 
@@ -70,8 +70,8 @@ Since: 3.0
 
     method gtk_widget_path_copy ( --> N-GtkWidgetPath  )
 
-[gtk_widget_path_] to_string
-----------------------------
+[[gtk_] widget_path_] to_string
+-------------------------------
 
 Dumps the widget path into a string representation. It tries to match the CSS style as closely as possible (Note that there might be paths that cannot be represented in CSS).
 
@@ -83,10 +83,10 @@ Since: 3.2
 
     method gtk_widget_path_to_string ( --> Str )
 
-gtk_widget_path_length
-----------------------
+[gtk_] widget_path_length
+-------------------------
 
-Returns the number of widget `GTypes` between the represented widget and its topmost container.
+Returns the number of widget **GTypes** between the represented widget and its topmost container.
 
 Returns: the number of elements in the path
 
@@ -94,8 +94,8 @@ Since: 3.0
 
     method gtk_widget_path_length ( --> Int )
 
-[gtk_widget_path_] append_type
-------------------------------
+[[gtk_] widget_path_] append_type
+---------------------------------
 
 Appends a widget type to the widget hierarchy represented by the path.
 
@@ -107,8 +107,8 @@ Since: 3.0
 
   * Int $type; widget type to append
 
-[gtk_widget_path_] prepend_type
--------------------------------
+[[gtk_] widget_path_] prepend_type
+----------------------------------
 
 Prepends a widget type to the widget hierachy represented by the path.
 
@@ -118,8 +118,8 @@ Since: 3.0
 
   * N-GObject $type; widget type to prepend
 
-[gtk_widget_path_] append_with_siblings
----------------------------------------
+[[gtk_] widget_path_] append_with_siblings
+------------------------------------------
 
 Appends a widget type with all its siblings to the widget hierarchy represented by *path*. Using this function instead of `gtk_widget_path_append_type()` will allow the CSS theming to use sibling matches in selectors and apply prop `nth-child`() pseudo classes. In turn, it requires a lot more care in widget implementations as widgets need to make sure to call `gtk_widget_reset_style()` on all involved widgets when the *siblings* path changes.
 
@@ -133,15 +133,15 @@ Since: 3.2
 
   * UInt $sibling_index; index into *siblings* for where the added element is positioned.
 
-[gtk_widget_path_] append_for_widget
-------------------------------------
+[[gtk_] widget_path_] append_for_widget
+---------------------------------------
 
     method gtk_widget_path_append_for_widget ( N-GObject $widget --> Int  )
 
   * N-GObject $widget;
 
-[gtk_widget_path_] iter_get_object_type
----------------------------------------
+[[gtk_] widget_path_] iter_get_object_type
+------------------------------------------
 
 Returns the object `GType` that is at position *pos* in the widget hierarchy defined in *path*.
 
@@ -153,8 +153,8 @@ Since: 3.0
 
   * Int $pos; position to get the object type for, -1 for the path head
 
-[gtk_widget_path_] iter_set_object_type
----------------------------------------
+[[gtk_] widget_path_] iter_set_object_type
+------------------------------------------
 
 Sets the object type for a given position in the widget hierarchy defined by *path*.
 
@@ -166,8 +166,8 @@ Since: 3.0
 
   * N-GObject $type; object type to set
 
-[gtk_widget_path_] iter_get_object_name
----------------------------------------
+[[gtk_] widget_path_] iter_get_object_name
+------------------------------------------
 
 Returns the object name that is at position pos in the widget hierarchy defined in path
 
@@ -177,8 +177,8 @@ Returns the object name that is at position pos in the widget hierarchy defined 
 
   * Int $pos;
 
-[gtk_widget_path_] iter_set_object_name
----------------------------------------
+[[gtk_] widget_path_] iter_set_object_name
+------------------------------------------
 
 Sets the object name for a given position in the widget hierarchy defined by *path*.
 
@@ -192,8 +192,8 @@ Since: 3.20
 
   * char $name; (allow-none): object name to set or `Any` to unset
 
-[gtk_widget_path_] iter_get_siblings
-------------------------------------
+[[gtk_] widget_path_] iter_get_siblings
+---------------------------------------
 
 Returns the list of siblings for the element at *pos*. If the element was not added with siblings, `Any` is returned.
 
@@ -203,8 +203,8 @@ Returns: `Any` or the list of siblings for the element at *pos*.
 
   * Int $pos; position to get the siblings for, -1 for the path head
 
-[gtk_widget_path_] iter_get_sibling_index
------------------------------------------
+[[gtk_] widget_path_] iter_get_sibling_index
+--------------------------------------------
 
 Returns the index into the list of siblings for the element at *pos* as returned by `gtk_widget_path_iter_get_siblings()`. If that function would return `Any` because the element at *pos* has no siblings, this function will return 0.
 
@@ -214,8 +214,8 @@ Returns: 0 or the index into the list of siblings for the element at *pos*.
 
   * Int $pos; position to get the sibling index for, -1 for the path head
 
-[gtk_widget_path_] iter_get_name
---------------------------------
+[[gtk_] widget_path_] iter_get_name
+-----------------------------------
 
 Returns the name corresponding to the widget found at the position *$pos* in the widget hierarchy. This name can be set using `$widget.gtk_widget_set_name('...')`.
 
@@ -225,8 +225,8 @@ Returns: The widget name, or `Str` if none was set.
 
   * Int $pos; position to get the widget name for, -1 for the path head
 
-[gtk_widget_path_] iter_set_name
---------------------------------
+[[gtk_] widget_path_] iter_set_name
+-----------------------------------
 
 Sets the widget name for the widget found at position *$pos* in the widget hierarchy.
 
@@ -238,8 +238,8 @@ Since: 3.0
 
   * Str $name; widget name
 
-[gtk_widget_path_] iter_has_name
---------------------------------
+[[gtk_] widget_path_] iter_has_name
+-----------------------------------
 
 Returns `1` if the widget at position *$pos* has the name *name*, `0` otherwise.
 
@@ -251,8 +251,8 @@ Since: 3.0
 
   * Str $name; a widget name
 
-[gtk_widget_path_] iter_has_qname
----------------------------------
+[[gtk_] widget_path_] iter_has_qname
+------------------------------------
 
 See `gtk_widget_path_iter_has_name()`. This is a version that operates on `GQuarks`.
 
@@ -266,8 +266,8 @@ Since: 3.0
 
   * Int $qname; widget name as a `GQuark`
 
-[gtk_widget_path_] iter_get_state
----------------------------------
+[[gtk_] widget_path_] iter_get_state
+------------------------------------
 
 Returns the state flags corresponding to the widget found at the position *$pos* in the widget hierarchy.
 
@@ -279,8 +279,8 @@ Since: 3.14
 
   * Int $pos; position to get the state for, -1 for the path head
 
-[gtk_widget_path_] iter_set_state
----------------------------------
+[[gtk_] widget_path_] iter_set_state
+------------------------------------
 
 Sets the widget name for the widget found at position *$pos* in the widget hierarchy.
 
@@ -305,8 +305,8 @@ Since: 3.14
 
   * GtkStateFlags $state; state flags
 
-[gtk_widget_path_] iter_add_class
----------------------------------
+[[gtk_] widget_path_] iter_add_class
+------------------------------------
 
 Adds the class *name* to the widget at position *pos* in the hierarchy defined in *path*. See `gtk_style_context_add_class()`.
 
@@ -318,8 +318,8 @@ Since: 3.0
 
   * Str $name; a class name
 
-[gtk_widget_path_] iter_remove_class
-------------------------------------
+[[gtk_] widget_path_] iter_remove_class
+---------------------------------------
 
 Removes the class *name* from the widget at position *pos* in the hierarchy defined in *path*.
 
@@ -331,8 +331,8 @@ Since: 3.0
 
   * Str $name; class name
 
-[gtk_widget_path_] iter_clear_classes
--------------------------------------
+[[gtk_] widget_path_] iter_clear_classes
+----------------------------------------
 
 Removes all classes from the widget at position *pos* in the hierarchy defined in *path*.
 
@@ -342,8 +342,8 @@ Since: 3.0
 
   * Int $pos; position to modify, -1 for the path head
 
-[gtk_widget_path_] iter_list_classes
-------------------------------------
+[[gtk_] widget_path_] iter_list_classes
+---------------------------------------
 
 Returns a list with all the class names defined for the widget at position *pos* in the hierarchy defined in *path*.
 
@@ -355,8 +355,8 @@ Since: 3.0
 
   * Int $pos; position to query, -1 for the path head
 
-[gtk_widget_path_] iter_has_class
----------------------------------
+[[gtk_] widget_path_] iter_has_class
+------------------------------------
 
 Returns `1` if the widget at position *pos* has the class *name* defined, `0` otherwise.
 
@@ -370,8 +370,8 @@ Since: 3.0
 
   * Str $name; class name
 
-[gtk_widget_path_] iter_has_qclass
-----------------------------------
+[[gtk_] widget_path_] iter_has_qclass
+-------------------------------------
 
 See `gtk_widget_path_iter_has_class()`. This is a version that operates with GQuarks.
 
@@ -385,8 +385,8 @@ Since: 3.0
 
   * int32 $qname; class name as a `GQuark`
 
-[gtk_widget_path_] get_object_type
-----------------------------------
+[[gtk_] widget_path_] get_object_type
+-------------------------------------
 
 Returns the topmost object type, that is, the object type this path is representing.
 
@@ -396,8 +396,8 @@ Since: 3.0
 
     method gtk_widget_path_get_object_type ( --> int32 )
 
-[gtk_widget_path_] is_type
---------------------------
+[[gtk_] widget_path_] is_type
+-----------------------------
 
 Returns `1` if the widget type represented by this path is *type*, or a subtype of it.
 
@@ -409,8 +409,8 @@ Since: 3.0
 
   * Int $type; widget type to match
 
-[gtk_widget_path_] has_parent
------------------------------
+[[gtk_] widget_path_] has_parent
+--------------------------------
 
 Returns `1` if any of the parents of the widget represented in *path* is of type *type*, or any subtype of it.
 

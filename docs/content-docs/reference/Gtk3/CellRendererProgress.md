@@ -43,8 +43,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_cell_renderer_progress_new
-------------------------------
+[gtk_] cell_renderer_progress_new
+---------------------------------
 
 Creates a new **Gnome::Gtk3::CellRendererProgress**.
 

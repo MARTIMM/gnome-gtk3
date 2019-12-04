@@ -32,15 +32,15 @@ Example
 Methods
 =======
 
-[gtk_orientable_] set_orientation
----------------------------------
+[[gtk_] orientable_] set_orientation
+------------------------------------
 
     method gtk_orientable_get_orientation ( GtkOrientation )
 
 Sets the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
 
-[gtk_orientable_] get_orientation
----------------------------------
+[[gtk_] orientable_] get_orientation
+------------------------------------
 
     method gtk_orientable_get_orientation ( --> GtkOrientation $orientation )
 
