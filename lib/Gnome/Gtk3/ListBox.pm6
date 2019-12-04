@@ -170,7 +170,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_prepend:
 =begin pod
-=head2 gtk_list_box_prepend
+=head2 [gtk_] list_box_prepend
 
 Prepend a widget to the list. If a sort function is set, the widget will
 actually be inserted at the calculated position and this function has the
@@ -191,7 +191,7 @@ sub gtk_list_box_prepend ( N-GObject $box, N-GObject $child )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_insert:
 =begin pod
-=head2 gtk_list_box_insert
+=head2 [gtk_] list_box_insert
 
 Insert the I<child> into the I<box> at I<position>. If a sort function is
 set, the widget will actually be inserted at the calculated position and
@@ -216,7 +216,7 @@ sub gtk_list_box_insert ( N-GObject $box, N-GObject $child, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_selected_row:
 =begin pod
-=head2 [gtk_list_box_] get_selected_row
+=head2 [[gtk_] list_box_] get_selected_row
 
 Gets the selected row.
 
@@ -241,7 +241,7 @@ sub gtk_list_box_get_selected_row ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_box_get_row_at_index:
 =begin pod
-=head2 [gtk_list_box_] get_row_at_index
+=head2 [[gtk_] list_box_] get_row_at_index
 
 Gets the n-th child in the list (not counting headers).
 If I<_index> is negative or larger than the number of items in the
@@ -265,7 +265,7 @@ sub gtk_list_box_get_row_at_index ( N-GObject $box, int32 $index )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_row_at_y:
 =begin pod
-=head2 [gtk_list_box_] get_row_at_y
+=head2 [[gtk_] list_box_] get_row_at_y
 
 Gets the row at the I<y> position.
 
@@ -287,7 +287,7 @@ sub gtk_list_box_get_row_at_y ( N-GObject $box, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_select_row:
 =begin pod
-=head2 [gtk_list_box_] select_row
+=head2 [[gtk_] list_box_] select_row
 
 Make I<row> the currently selected row.
 
@@ -306,7 +306,7 @@ sub gtk_list_box_select_row ( N-GObject $box, N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_placeholder:
 =begin pod
-=head2 [gtk_list_box_] set_placeholder
+=head2 [[gtk_] list_box_] set_placeholder
 
 Sets the placeholder widget that is shown in the list when
 it doesn't display any visible children.
@@ -326,7 +326,7 @@ sub gtk_list_box_set_placeholder ( N-GObject $box, N-GObject $placeholder )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_adjustment:
 =begin pod
-=head2 [gtk_list_box_] set_adjustment
+=head2 [[gtk_] list_box_] set_adjustment
 
 Sets the adjustment (if any) that the widget uses to
 for vertical scrolling. For instance, this is used
@@ -352,7 +352,7 @@ sub gtk_list_box_set_adjustment ( N-GObject $box, N-GObject $adjustment )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_adjustment:
 =begin pod
-=head2 [gtk_list_box_] get_adjustment
+=head2 [[gtk_] list_box_] get_adjustment
 
 Gets the adjustment (if any) that the widget uses to
 for vertical scrolling.
@@ -375,7 +375,7 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_selected_foreach:
 =begin pod
-=head2 [gtk_list_box_] selected_foreach
+=head2 [[gtk_] list_box_] selected_foreach
 
 Calls a function for each selected child.
 
@@ -398,7 +398,7 @@ sub gtk_list_box_selected_foreach ( N-GObject $box, GtkListBoxForeachFunc $func,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_selected_rows:
 =begin pod
-=head2 [gtk_list_box_] get_selected_rows
+=head2 [[gtk_] list_box_] get_selected_rows
 
 Creates a list of all selected children.
 
@@ -421,7 +421,7 @@ sub gtk_list_box_get_selected_rows ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_unselect_row:
 =begin pod
-=head2 [gtk_list_box_] unselect_row
+=head2 [[gtk_] list_box_] unselect_row
 
 Unselects a single row of I<box>, if the selection mode allows it.
 
@@ -440,7 +440,7 @@ sub gtk_list_box_unselect_row ( N-GObject $box, N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_select_all:
 =begin pod
-=head2 [gtk_list_box_] select_all
+=head2 [[gtk_] list_box_] select_all
 
 Select all children of I<box>, if the selection mode allows it.
 
@@ -458,7 +458,7 @@ sub gtk_list_box_select_all ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_unselect_all:
 =begin pod
-=head2 [gtk_list_box_] unselect_all
+=head2 [[gtk_] list_box_] unselect_all
 
 Unselect all children of I<box>, if the selection mode allows it.
 
@@ -476,7 +476,7 @@ sub gtk_list_box_unselect_all ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_selection_mode:
 =begin pod
-=head2 [gtk_list_box_] set_selection_mode
+=head2 [[gtk_] list_box_] set_selection_mode
 
 Sets how selection works in the listbox.
 See B<Gnome::Gtk3::SelectionMode> for details.
@@ -496,7 +496,7 @@ sub gtk_list_box_set_selection_mode ( N-GObject $box, int32 $mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_selection_mode:
 =begin pod
-=head2 [gtk_list_box_] get_selection_mode
+=head2 [[gtk_] list_box_] get_selection_mode
 
 Gets the selection mode of the listbox.
 
@@ -518,7 +518,7 @@ sub gtk_list_box_get_selection_mode ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_filter_func:
 =begin pod
-=head2 [gtk_list_box_] set_filter_func
+=head2 [[gtk_] list_box_] set_filter_func
 
 By setting a filter function on the I<box> one can decide dynamically which
 of the rows to show. For instance, to implement a search function on a list that
@@ -548,7 +548,7 @@ sub gtk_list_box_set_filter_func ( N-GObject $box, GtkListBoxFilterFunc $filter_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_header_func:
 =begin pod
-=head2 [gtk_list_box_] set_header_func
+=head2 [[gtk_] list_box_] set_header_func
 
 By setting a header function on the I<box> one can dynamically add headers
 in front of rows, depending on the contents of the row and its position in the list.
@@ -587,7 +587,7 @@ sub gtk_list_box_set_header_func ( N-GObject $box, GtkListBoxUpdateHeaderFunc $u
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_invalidate_filter:
 =begin pod
-=head2 [gtk_list_box_] invalidate_filter
+=head2 [[gtk_] list_box_] invalidate_filter
 
 Update the filtering for all rows. Call this when result
 of the filter function on the I<box> is changed due
@@ -609,7 +609,7 @@ sub gtk_list_box_invalidate_filter ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_invalidate_sort:
 =begin pod
-=head2 [gtk_list_box_] invalidate_sort
+=head2 [[gtk_] list_box_] invalidate_sort
 
 Update the sorting for all rows. Call this when result
 of the sort function on the I<box> is changed due
@@ -629,7 +629,7 @@ sub gtk_list_box_invalidate_sort ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_invalidate_headers:
 =begin pod
-=head2 [gtk_list_box_] invalidate_headers
+=head2 [[gtk_] list_box_] invalidate_headers
 
 Update the separators for all rows. Call this when result
 of the header function on the I<box> is changed due
@@ -650,7 +650,7 @@ sub gtk_list_box_invalidate_headers ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_sort_func:
 =begin pod
-=head2 [gtk_list_box_] set_sort_func
+=head2 [[gtk_] list_box_] set_sort_func
 
 By setting a sort function on the I<box> one can dynamically reorder the rows
 of the list, based on the contents of the rows.
@@ -680,7 +680,7 @@ sub gtk_list_box_set_sort_func ( N-GObject $box, GtkListBoxSortFunc $sort_func, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_set_activate_on_single_click:
 =begin pod
-=head2 [gtk_list_box_] set_activate_on_single_click
+=head2 [[gtk_] list_box_] set_activate_on_single_click
 
 If I<single> is C<1>, rows will be activated when you click on them,
 otherwise you need to double-click.
@@ -700,7 +700,7 @@ sub gtk_list_box_set_activate_on_single_click ( N-GObject $box, int32 $single )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_activate_on_single_click:
 =begin pod
-=head2 [gtk_list_box_] get_activate_on_single_click
+=head2 [[gtk_] list_box_] get_activate_on_single_click
 
 Returns whether rows activate on single clicks.
 
@@ -721,7 +721,7 @@ sub gtk_list_box_get_activate_on_single_click ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_drag_unhighlight_row:
 =begin pod
-=head2 [gtk_list_box_] drag_unhighlight_row
+=head2 [[gtk_] list_box_] drag_unhighlight_row
 
 If a row has previously been highlighted via C<gtk_list_box_drag_highlight_row()>
 it will have the highlight removed.
@@ -740,7 +740,7 @@ sub gtk_list_box_drag_unhighlight_row ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_drag_highlight_row:
 =begin pod
-=head2 [gtk_list_box_] drag_highlight_row
+=head2 [[gtk_] list_box_] drag_highlight_row
 
 This is a helper function for implementing DnD onto a B<Gnome::Gtk3::ListBox>.
 The passed in I<row> will be highlighted via C<gtk_drag_highlight()>,
@@ -764,7 +764,7 @@ sub gtk_list_box_drag_highlight_row ( N-GObject $box, N-GObject $row )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_list_box_new:new(:empty)
 =begin pod
-=head2 gtk_list_box_new
+=head2 [gtk_] list_box_new
 
 Creates a new B<Gnome::Gtk3::ListBox> container.
 
@@ -786,7 +786,7 @@ sub gtk_list_box_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_bind_model:
 =begin pod
-=head2 [gtk_list_box_] bind_model
+=head2 [[gtk_] list_box_] bind_model
 
 Binds I<model> to I<box>.
 
@@ -1019,7 +1019,7 @@ Since: 3.10
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_list_box_prepend
+=head2 [gtk_] list_box_prepend
 
 Prepend a widget to the list. If a sort function is set, the widget will
 actually be inserted at the calculated position and this function has the
@@ -1039,7 +1039,7 @@ sub gtk_list_box_prepend ( N-GObject $box, N-GObject $child )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_list_box_insert
+=head2 [gtk_] list_box_insert
 
 Insert the I<child> into the I<box> at I<position>. If a sort function is
 set, the widget will actually be inserted at the calculated position and
@@ -1063,7 +1063,7 @@ sub gtk_list_box_insert ( N-GObject $box, N-GObject $child, int32 $position )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_selected_row
+=head2 [[gtk_] list_box_] get_selected_row
 
 Gets the selected row.
 
@@ -1087,7 +1087,7 @@ sub gtk_list_box_get_selected_row ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_row_at_index
+=head2 [[gtk_] list_box_] get_row_at_index
 
 Gets the n-th child in the list (not counting headers).
 If I<_index> is negative or larger than the number of items in the
@@ -1110,7 +1110,7 @@ sub gtk_list_box_get_row_at_index ( N-GObject $box, int32 $index_ )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_row_at_y
+=head2 [[gtk_] list_box_] get_row_at_y
 
 Gets the row at the I<y> position.
 
@@ -1132,7 +1132,7 @@ sub gtk_list_box_get_row_at_y ( N-GObject $box, int32 $y )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] select_row
+=head2 [[gtk_] list_box_] select_row
 
 Make I<row> the currently selected row.
 
@@ -1150,7 +1150,7 @@ sub gtk_list_box_select_row ( N-GObject $box, N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_placeholder
+=head2 [[gtk_] list_box_] set_placeholder
 
 Sets the placeholder widget that is shown in the list when
 it doesn't display any visible children.
@@ -1169,7 +1169,7 @@ sub gtk_list_box_set_placeholder ( N-GObject $box, N-GObject $placeholder )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_adjustment
+=head2 [[gtk_] list_box_] set_adjustment
 
 Sets the adjustment (if any) that the widget uses to
 for vertical scrolling. For instance, this is used
@@ -1194,7 +1194,7 @@ sub gtk_list_box_set_adjustment ( N-GObject $box, N-GObject $adjustment )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_adjustment
+=head2 [[gtk_] list_box_] get_adjustment
 
 Gets the adjustment (if any) that the widget uses to
 for vertical scrolling.
@@ -1216,7 +1216,7 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] selected_foreach
+=head2 [[gtk_] list_box_] selected_foreach
 
 Calls a function for each selected child.
 
@@ -1238,7 +1238,7 @@ sub gtk_list_box_selected_foreach ( N-GObject $box, GtkListBoxForeachFunc $func,
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_selected_rows
+=head2 [[gtk_] list_box_] get_selected_rows
 
 Creates a list of all selected children.
 
@@ -1260,7 +1260,7 @@ sub gtk_list_box_get_selected_rows ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] unselect_row
+=head2 [[gtk_] list_box_] unselect_row
 
 Unselects a single row of I<box>, if the selection mode allows it.
 
@@ -1278,7 +1278,7 @@ sub gtk_list_box_unselect_row ( N-GObject $box, N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] select_all
+=head2 [[gtk_] list_box_] select_all
 
 Select all children of I<box>, if the selection mode allows it.
 
@@ -1295,7 +1295,7 @@ sub gtk_list_box_select_all ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] unselect_all
+=head2 [[gtk_] list_box_] unselect_all
 
 Unselect all children of I<box>, if the selection mode allows it.
 
@@ -1312,7 +1312,7 @@ sub gtk_list_box_unselect_all ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_selection_mode
+=head2 [[gtk_] list_box_] set_selection_mode
 
 Sets how selection works in the listbox.
 See B<Gnome::Gtk3::SelectionMode> for details.
@@ -1331,7 +1331,7 @@ sub gtk_list_box_set_selection_mode ( N-GObject $box, int32 $mode )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_selection_mode
+=head2 [[gtk_] list_box_] get_selection_mode
 
 Gets the selection mode of the listbox.
 
@@ -1352,7 +1352,7 @@ sub gtk_list_box_get_selection_mode ( N-GObject $box )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_filter_func
+=head2 [[gtk_] list_box_] set_filter_func
 
 By setting a filter function on the I<box> one can decide dynamically which
 of the rows to show. For instance, to implement a search function on a list that
@@ -1383,7 +1383,7 @@ sub gtk_list_box_set_filter_func ( N-GObject $box, GtkListBoxFilterFunc $filter_
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_header_func
+=head2 [[gtk_] list_box_] set_header_func
 
 By setting a header function on the I<box> one can dynamically add headers
 in front of rows, depending on the contents of the row and its position in the list.
@@ -1421,7 +1421,7 @@ sub gtk_list_box_set_header_func ( N-GObject $box, GtkListBoxUpdateHeaderFunc $u
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] invalidate_filter
+=head2 [[gtk_] list_box_] invalidate_filter
 
 Update the filtering for all rows. Call this when result
 of the filter function on the I<box> is changed due
@@ -1442,7 +1442,7 @@ sub gtk_list_box_invalidate_filter ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] invalidate_sort
+=head2 [[gtk_] list_box_] invalidate_sort
 
 Update the sorting for all rows. Call this when result
 of the sort function on the I<box> is changed due
@@ -1461,7 +1461,7 @@ sub gtk_list_box_invalidate_sort ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] invalidate_headers
+=head2 [[gtk_] list_box_] invalidate_headers
 
 Update the separators for all rows. Call this when result
 of the header function on the I<box> is changed due
@@ -1481,7 +1481,7 @@ sub gtk_list_box_invalidate_headers ( N-GObject $box )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_sort_func
+=head2 [[gtk_] list_box_] set_sort_func
 
 By setting a sort function on the I<box> one can dynamically reorder the rows
 of the list, based on the contents of the rows.
@@ -1510,7 +1510,7 @@ sub gtk_list_box_set_sort_func ( N-GObject $box, GtkListBoxSortFunc $sort_func, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] set_activate_on_single_click
+=head2 [[gtk_] list_box_] set_activate_on_single_click
 
 If I<single> is C<1>, rows will be activated when you click on them,
 otherwise you need to double-click.
@@ -1529,7 +1529,7 @@ sub gtk_list_box_set_activate_on_single_click ( N-GObject $box, int32 $single )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] get_activate_on_single_click
+=head2 [[gtk_] list_box_] get_activate_on_single_click
 
 Returns whether rows activate on single clicks.
 
@@ -1549,7 +1549,7 @@ sub gtk_list_box_get_activate_on_single_click ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] drag_unhighlight_row
+=head2 [[gtk_] list_box_] drag_unhighlight_row
 
 If a row has previously been highlighted via C<gtk_list_box_drag_highlight_row()>
 it will have the highlight removed.
@@ -1567,7 +1567,7 @@ sub gtk_list_box_drag_unhighlight_row ( N-GObject $box )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] drag_highlight_row
+=head2 [[gtk_] list_box_] drag_highlight_row
 
 This is a helper function for implementing DnD onto a B<Gnome::Gtk3::ListBox>.
 The passed in I<row> will be highlighted via C<gtk_drag_highlight()>,
@@ -1590,7 +1590,7 @@ sub gtk_list_box_drag_highlight_row ( N-GObject $box, N-GObject $row )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_list_box_new
+=head2 [gtk_] list_box_new
 
 Creates a new B<Gnome::Gtk3::ListBox> container.
 
@@ -1611,7 +1611,7 @@ sub gtk_list_box_new (  )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_list_box_] bind_model
+=head2 [[gtk_] list_box_] bind_model
 
 Binds I<model> to I<box>.
 

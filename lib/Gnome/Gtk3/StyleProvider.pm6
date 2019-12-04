@@ -112,7 +112,7 @@ method _style_provider_interface ( Str $native-sub --> Callable ) {
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_style_provider_] get_style_property
+=head2 [[gtk_] style_provider_] get_style_property
 
 Looks up a widget style property as defined by I<provider> for
 the widget represented by I<path>.

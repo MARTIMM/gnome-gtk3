@@ -77,22 +77,22 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-[gtk_css_provider_] error_quark
--------------------------------
+[[gtk_] css_provider_] error_quark
+----------------------------------
 
 Return the domain code of the builder error domain.
 
     method gtk_css_provider_error_quark ( --> Int )
 
-gtk_css_provider_new
---------------------
+[gtk_] css_provider_new
+-----------------------
 
 Returns a newly created **Gnome::Gtk3::CssProvider**.
 
     method gtk_css_provider_new ( --> N-GObject )
 
-[gtk_css_provider_] to_string
------------------------------
+[[gtk_] css_provider_] to_string
+--------------------------------
 
 Converts the provider into a string representation in CSS format.
 
@@ -104,8 +104,8 @@ Since: 3.2
 
     method gtk_css_provider_to_string ( --> char  )
 
-[gtk_css_provider_] load_from_data
-----------------------------------
+[[gtk_] css_provider_] load_from_data
+-------------------------------------
 
 Loads *$data* into the provider, and by doing so clears any previously loaded information.
 
@@ -122,8 +122,8 @@ A way to track errors while loading CSS is to connect to the sig `parsing-error`
 
   * Int $length; the length of *data* in bytes, or -1 for NUL terminated strings. If *length* is not -1, the code will assume it is not NUL terminated and will potentially do a copy.
 
-[gtk_css_provider_] load_from_path
-----------------------------------
+[[gtk_] css_provider_] load_from_path
+-------------------------------------
 
 Loads the data contained in *$path* into the provider, clearing any previously loaded information.
 
@@ -135,8 +135,8 @@ A way to track errors while loading CSS is to connect to the sig `parsing-error`
 
   * Str $path; the path of a filename to load, in the GLib filename encoding
 
-[gtk_css_provider_] get_named
------------------------------
+[[gtk_] css_provider_] get_named
+--------------------------------
 
 Loads a theme from the usual theme paths
 

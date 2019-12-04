@@ -33,8 +33,8 @@ Create an object using a native screen object from elsewhere.
 
     multi method new ( N-GObject :$screen! )
 
-[gdk_screen_] get_system_visual
--------------------------------
+[[gdk_] screen_] get_system_visual
+----------------------------------
 
 Get the system’s default visual for this screen. This is the visual for the root window of the display. The return value should not be freed.
 
@@ -44,8 +44,8 @@ Since: 2.2
 
     method gdk_screen_get_system_visual ( --> N-GObject  )
 
-[gdk_screen_] get_rgba_visual
------------------------------
+[[gdk_] screen_] get_rgba_visual
+--------------------------------
 
 Gets a visual to use for creating windows with an alpha channel. The windowing system on which GTK+ is running may not support this capability, in which case `Any` will be returned. Even if a non-`Any` value is returned, its possible that the window’s alpha channel won’t be honored when displaying the window on the screen: in particular, for X an appropriate windowing manager and compositing manager must be running to provide appropriate display.
 
@@ -59,8 +59,8 @@ Since: 2.8
 
     method gdk_screen_get_rgba_visual ( --> N-GObject  )
 
-[gdk_screen_] is_composited
----------------------------
+[[gdk_] screen_] is_composited
+------------------------------
 
 Returns whether windows with an RGBA visual can reasonably be expected to have their alpha channel drawn correctly on the screen.
 
@@ -72,8 +72,8 @@ Since: 2.10
 
     method gdk_screen_is_composited ( --> Int  )
 
-[gdk_screen_] get_root_window
------------------------------
+[[gdk_] screen_] get_root_window
+--------------------------------
 
 Gets the root window of this screen.
 
@@ -83,8 +83,8 @@ Since: 2.2
 
     method gdk_screen_get_root_window ( --> N-GObject  )
 
-[gdk_screen_] get_display
--------------------------
+[[gdk_] screen_] get_display
+----------------------------
 
 Gets the display to which the *screen* belongs.
 
@@ -94,8 +94,8 @@ Since: 2.2
 
     method gdk_screen_get_display ( --> N-GObject  )
 
-[gdk_screen_] list_visuals
---------------------------
+[[gdk_] screen_] list_visuals
+-----------------------------
 
 Lists the available visuals for this screen. A visual describes a hardware image data format. For example, a visual might support 24-bit color, or 8-bit color, and might expect pixels to be in a certain format.
 
@@ -107,8 +107,8 @@ Since: 2.2
 
     method gdk_screen_list_visuals ( --> N-GList )
 
-[gdk_screen_] get_toplevel_windows
-----------------------------------
+[[gdk_] screen_] get_toplevel_windows
+-------------------------------------
 
 Obtains a list of all toplevel windows known to GDK on the screen screen . A toplevel window is a child of the root window (see gdk_get_default_root_window()).
 
@@ -116,8 +116,8 @@ The returned list should be freed with g_list_free(), but its elements need not 
 
     method gdk_screen_get_toplevel_windows ( --> N-GList  )
 
-[gdk_screen_] get_default
--------------------------
+[[gdk_] screen_] get_default
+----------------------------
 
 Gets the default screen for the default display. (See gdk_display_get_default()).
 
@@ -125,8 +125,8 @@ Gets the default screen for the default display. (See gdk_display_get_default())
 
 Returns a native **Gnome::Gdk3::Screen**.
 
-[gdk_screen_] get_setting
--------------------------
+[[gdk_] screen_] get_setting
+----------------------------
 
 Retrieves a desktop-wide setting such as double-click time for this screen.
 
@@ -142,8 +142,8 @@ Since: 2.2
 
   * N-GObject $value; location to store the value of the setting
 
-[gdk_screen_] get_resolution
-----------------------------
+[[gdk_] screen_] get_resolution
+-------------------------------
 
 Gets the resolution for font handling on the screen; see `gdk_screen_set_resolution()` for full details.
 
@@ -153,8 +153,8 @@ Since: 2.10
 
     method gdk_screen_get_resolution ( --> Num  )
 
-[gdk_screen_] get_window_stack
-------------------------------
+[[gdk_] screen_] get_window_stack
+---------------------------------
 
 Returns a **GList** of **Gnome::Gdk3::Windows** representing the current window stack.
 

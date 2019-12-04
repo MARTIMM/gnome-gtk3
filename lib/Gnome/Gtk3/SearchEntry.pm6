@@ -159,7 +159,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_search_entry_new:new(:empty)
 =begin pod
-=head2 gtk_search_entry_new
+=head2 [gtk_] search_entry_new
 
 Creates a B<Gnome::Gtk3::SearchEntry>, with a find icon when the search field is
 empty, and a clear icon when it isn't.
@@ -181,7 +181,7 @@ sub gtk_search_entry_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_search_entry_handle_event:
 =begin pod
-=head2 [gtk_search_entry_] handle_event
+=head2 [[gtk_] search_entry_] handle_event
 
 This function should be called when the top-level window
 which contains the search entry received a key event. If

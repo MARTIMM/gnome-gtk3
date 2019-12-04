@@ -1099,8 +1099,8 @@ Since: 3.4
 
   * GdkEvent $event; a **Gnome::Gdk3::Event**, currently only button events are meaningful values
 
-[gdk_events_] get_distance
---------------------------
+[[gdk_] events_] get_distance
+-----------------------------
 
 If both events have X/Y information, the distance between both coordinates (as in a straight line going from *event1* to *event2*) will be returned.
 
@@ -1116,8 +1116,8 @@ Since: 3.0
 
   * Num $distance; (out): return location for the distance
 
-[gdk_events_] get_angle
------------------------
+[[gdk_] events_] get_angle
+--------------------------
 
 If both events contain X/Y information, this function will return `1` and return in *angle* the relative angle from *event1* to *event2*. The rotation direction for positive angles is from the positive X axis towards the positive Y axis.
 
@@ -1133,8 +1133,8 @@ Since: 3.0
 
   * Num $angle; (out): return location for the relative angle between both events
 
-[gdk_events_] get_center
-------------------------
+[[gdk_] events_] get_center
+---------------------------
 
 If both events contain X/Y information, the center of both coordinates will be returned in *x* and *y*.
 

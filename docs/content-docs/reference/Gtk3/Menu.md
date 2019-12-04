@@ -112,8 +112,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_menu_new
-------------
+[gtk_] menu_new
+---------------
 
 Creates a new **Gnome::Gtk3::Menu**
 
@@ -121,22 +121,22 @@ Returns: a new **Gnome::Gtk3::Menu**
 
     method gtk_menu_new ( --> N-GObject  )
 
-gtk_menu_reposition
--------------------
+[gtk_] menu_reposition
+----------------------
 
 Repositions the menu according to its position function.
 
     method gtk_menu_reposition ( )
 
-gtk_menu_popdown
-----------------
+[gtk_] menu_popdown
+-------------------
 
 Removes the menu from the screen.
 
     method gtk_menu_popdown ( )
 
-[gtk_menu_] get_active
-----------------------
+[[gtk_] menu_] get_active
+-------------------------
 
 Returns the selected menu item from the menu. This is used by the **Gnome::Gtk3::ComboBox**.
 
@@ -144,8 +144,8 @@ Returns: (transfer none): the **Gnome::Gtk3::MenuItem** that was last selected i
 
     method gtk_menu_get_active ( --> N-GObject  )
 
-[gtk_menu_] set_active
-----------------------
+[[gtk_] menu_] set_active
+-------------------------
 
 Selects the specified menu item within the menu. This is used by the **Gnome::Gtk3::ComboBox** and should not be used by anyone else.
 
@@ -153,8 +153,8 @@ Selects the specified menu item within the menu. This is used by the **Gnome::Gt
 
   * UInt $index; the index of the menu item to select. Index values are from 0 to n-1
 
-[gtk_menu_] set_accel_group
----------------------------
+[[gtk_] menu_] set_accel_group
+------------------------------
 
 Set the **Gnome::Gtk3::AccelGroup** which holds global accelerators for the menu. This accelerator group needs to also be added to all windows that this menu is being used in with `gtk_window_add_accel_group()`, in order for those windows to support all the accelerators contained in this group.
 
@@ -162,8 +162,8 @@ Set the **Gnome::Gtk3::AccelGroup** which holds global accelerators for the menu
 
   * N-GObject $accel_group; (allow-none): the **Gnome::Gtk3::AccelGroup** to be associated with the menu.
 
-[gtk_menu_] get_accel_group
----------------------------
+[[gtk_] menu_] get_accel_group
+------------------------------
 
 Gets the **Gnome::Gtk3::AccelGroup** which holds global accelerators for the menu. See `gtk_menu_set_accel_group()`.
 
@@ -171,8 +171,8 @@ Returns: (transfer none): the **Gnome::Gtk3::AccelGroup** associated with the me
 
     method gtk_menu_get_accel_group ( --> N-GObject  )
 
-[gtk_menu_] set_accel_path
---------------------------
+[[gtk_] menu_] set_accel_path
+-----------------------------
 
 Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed. The main purpose of this function is to spare the programmer the inconvenience of having to call `gtk_menu_item_set_accel_path()` on each menu item that should support runtime user changable accelerators. Instead, by just calling `gtk_menu_set_accel_path()` on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned.
 
@@ -186,8 +186,8 @@ Note that *accel_path* string will be stored in a **GQuark**. Therefore, if you 
 
   * Str $accel_path; (allow-none): a valid accelerator path
 
-[gtk_menu_] get_accel_path
---------------------------
+[[gtk_] menu_] get_accel_path
+-----------------------------
 
 Retrieves the accelerator path set on the menu.
 
@@ -197,15 +197,15 @@ Since: 2.14
 
     method gtk_menu_get_accel_path ( --> Str  )
 
-gtk_menu_detach
----------------
+[gtk_] menu_detach
+------------------
 
 Detaches the menu from the widget to which it had been attached. This function will call the callback function, *detacher*, provided when the `gtk_menu_attach_to_widget()` function was called.
 
     method gtk_menu_detach ( )
 
-[gtk_menu_] get_attach_widget
------------------------------
+[[gtk_] menu_] get_attach_widget
+--------------------------------
 
 Returns the **Gnome::Gtk3::Widget** that the menu is attached to.
 
@@ -213,8 +213,8 @@ Returns: (transfer none): the **Gnome::Gtk3::Widget** that the menu is attached 
 
     method gtk_menu_get_attach_widget ( --> N-GObject  )
 
-[gtk_menu_] reorder_child
--------------------------
+[[gtk_] menu_] reorder_child
+----------------------------
 
 Moves *child* to a new *position* in the list of *menu* children.
 
@@ -224,8 +224,8 @@ Moves *child* to a new *position* in the list of *menu* children.
 
   * Int $position; the new position to place *child*. Positions are numbered from 0 to n - 1
 
-[gtk_menu_] set_screen
-----------------------
+[[gtk_] menu_] set_screen
+-------------------------
 
 Sets the **Gnome::Gdk3::Screen** on which the menu will be displayed.
 
@@ -235,8 +235,8 @@ Since: 2.2
 
   * N-GObject $screen; (allow-none): a **Gnome::Gdk3::Screen**, or `Any` if the screen should be determined by the widget the menu is attached to
 
-gtk_menu_attach
----------------
+[gtk_] menu_attach
+------------------
 
 Adds a new **Gnome::Gtk3::MenuItem** to a (table) menu. The number of “cells” that an item will occupy is specified by *left_attach*, *right_attach*, *top_attach* and *bottom_attach*. These each represent the leftmost, rightmost, uppermost and lower column and row numbers of the table. (Columns and rows are indexed from zero).
 
@@ -256,8 +256,8 @@ Since: 2.4
 
   * UInt $bottom_attach; The row number to attach the bottom of the item to
 
-[gtk_menu_] set_monitor
------------------------
+[[gtk_] menu_] set_monitor
+--------------------------
 
 Informs GTK+ on which monitor a menu should be popped up. See `gdk_monitor_get_geometry()`.
 
@@ -269,8 +269,8 @@ Since: 2.4
 
   * Int $monitor_num; the number of the monitor on which the menu should be popped up
 
-[gtk_menu_] get_monitor
------------------------
+[[gtk_] menu_] get_monitor
+--------------------------
 
 Retrieves the number of the monitor on which to show the menu.
 
@@ -280,15 +280,15 @@ Since: 2.14
 
     method gtk_menu_get_monitor ( --> Int  )
 
-[gtk_menu_] place_on_monitor
-----------------------------
+[[gtk_] menu_] place_on_monitor
+-------------------------------
 
     method gtk_menu_place_on_monitor ( N-GObject $monitor )
 
   * N-GObject $monitor;
 
-[gtk_menu_] get_for_attach_widget
----------------------------------
+[[gtk_] menu_] get_for_attach_widget
+------------------------------------
 
 Returns a list of the menus which are attached to this widget. This list is owned by GTK+ and must not be modified.
 
@@ -300,8 +300,8 @@ Since: 2.6
 
   * N-GObject $widget; a **Gnome::Gtk3::Widget**
 
-[gtk_menu_] set_reserve_toggle_size
------------------------------------
+[[gtk_] menu_] set_reserve_toggle_size
+--------------------------------------
 
 Sets whether the menu should reserve space for drawing toggles or icons, regardless of their actual presence.
 
@@ -311,8 +311,8 @@ Since: 2.18
 
   * Int $reserve_toggle_size; whether to reserve size for toggles
 
-[gtk_menu_] get_reserve_toggle_size
------------------------------------
+[[gtk_] menu_] get_reserve_toggle_size
+--------------------------------------
 
 Returns whether the menu reserves space for toggles and icons, regardless of their actual presence.
 

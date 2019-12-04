@@ -173,7 +173,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_toggle_button_new:new(:empty)
 =begin pod
-=head2 gtk_toggle_button_new
+=head2 [gtk_] toggle_button_new
 
 Creates a new toggle button. A widget should be packed into the button, as in C<gtk_button_new()>.
 
@@ -192,7 +192,7 @@ sub gtk_toggle_button_new (  )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_toggle_button_new_with_label:new(:label)
 =begin pod
-=head2 [gtk_toggle_button_] new_with_label
+=head2 [[gtk_] toggle_button_] new_with_label
 
 Creates a new toggle button with a text label.
 
@@ -212,7 +212,7 @@ sub gtk_toggle_button_new_with_label ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_toggle_button_new_with_mnemonic:
 =begin pod
-=head2 [gtk_toggle_button_] new_with_mnemonic
+=head2 [[gtk_] toggle_button_] new_with_mnemonic
 
 Creates a new B<Gnome::Gtk3::ToggleButton> containing a label. The label
 will be created using C<gtk_label_new_with_mnemonic()>, so underscores
@@ -234,7 +234,7 @@ sub gtk_toggle_button_new_with_mnemonic ( Str $label )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_toggle_button_set_mode:
 =begin pod
-=head2 [gtk_toggle_button_] set_mode
+=head2 [[gtk_] toggle_button_] set_mode
 
 Sets whether the button is displayed as a separate indicator and label.
 You can call this function on a checkbutton or a radiobutton with
@@ -260,7 +260,7 @@ sub gtk_toggle_button_set_mode ( N-GObject $toggle_button, int32 $draw_indicator
 #-------------------------------------------------------------------------------
 #TM:1:gtk_toggle_button_get_mode:
 =begin pod
-=head2 [gtk_toggle_button_] get_mode
+=head2 [[gtk_] toggle_button_] get_mode
 
 Retrieves whether the button is displayed as a separate indicator
 and label. See C<gtk_toggle_button_set_mode()>.
@@ -281,7 +281,7 @@ sub gtk_toggle_button_get_mode ( N-GObject $toggle_button )
 #-------------------------------------------------------------------------------
 #TM:3:gtk_toggle_button_set_active:CheckButton.t
 =begin pod
-=head2 [gtk_toggle_button_] set_active
+=head2 [[gtk_] toggle_button_] set_active
 
 Sets the status of the toggle button. Set to C<1> if you want the
 B<Gnome::Gtk3::ToggleButton> to be “pressed in”, and C<0> to raise it.
@@ -301,7 +301,7 @@ sub gtk_toggle_button_set_active ( N-GObject $toggle_button, int32 $is_active )
 #-------------------------------------------------------------------------------
 #TM:3:gtk_toggle_button_get_active:CheckButton.t
 =begin pod
-=head2 [gtk_toggle_button_] get_active
+=head2 [[gtk_] toggle_button_] get_active
 
 Queries a B<Gnome::Gtk3::ToggleButton> and returns its current state. Returns C<1> if the toggle button is pressed in and C<0> if it is raised.
 
@@ -320,7 +320,7 @@ sub gtk_toggle_button_get_active ( N-GObject $toggle_button )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_toggle_button_toggled:
 =begin pod
-=head2 gtk_toggle_button_toggled
+=head2 [gtk_] toggle_button_toggled
 
 Emits the I<toggled> signal on the B<Gnome::Gtk3::ToggleButton>. There is no good reason for an application ever to call this function.
 
@@ -335,7 +335,7 @@ sub gtk_toggle_button_toggled ( N-GObject $toggle_button )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_toggle_button_set_inconsistent:
 =begin pod
-=head2 [gtk_toggle_button_] set_inconsistent
+=head2 [[gtk_] toggle_button_] set_inconsistent
 
 If the user has selected a range of elements (such as some text or
 spreadsheet cells) that are affected by a toggle button, and the
@@ -360,7 +360,7 @@ sub gtk_toggle_button_set_inconsistent ( N-GObject $toggle_button, int32 $settin
 #-------------------------------------------------------------------------------
 #TM:0:gtk_toggle_button_get_inconsistent:
 =begin pod
-=head2 [gtk_toggle_button_] get_inconsistent
+=head2 [[gtk_] toggle_button_] get_inconsistent
 
 Gets the value set by C<gtk_toggle_button_set_inconsistent()>.
 

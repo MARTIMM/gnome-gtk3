@@ -221,7 +221,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_text_view_new:new(:e,pty)
 =begin pod
-=head2 gtk_text_view_new
+=head2 [gtk_] text_view_new
 
 Creates a new B<Gnome::Gtk3::TextView>. If you don’t call C<gtk_text_view_set_buffer()>
 before using the text view, an empty default buffer will be created
@@ -243,7 +243,7 @@ sub gtk_text_view_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_new_with_buffer:
 =begin pod
-=head2 [gtk_text_view_] new_with_buffer
+=head2 [[gtk_] text_view_] new_with_buffer
 
 Creates a new B<Gnome::Gtk3::TextView> widget displaying the buffer
 I<buffer>. One buffer can be shared among many widgets.
@@ -268,7 +268,7 @@ sub gtk_text_view_new_with_buffer ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_buffer:
 =begin pod
-=head2 [gtk_text_view_] set_buffer
+=head2 [[gtk_] text_view_] set_buffer
 
 Sets I<buffer> as the buffer being displayed by I<text_view>. The previous
 buffer displayed by the text view is unreferenced, and a reference is
@@ -289,7 +289,7 @@ sub gtk_text_view_set_buffer ( N-GObject $text_view, N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_buffer:
 =begin pod
-=head2 [gtk_text_view_] get_buffer
+=head2 [[gtk_] text_view_] get_buffer
 
 Returns the B<Gnome::Gtk3::TextBuffer> being displayed by this text view.
 The reference count on the buffer is not incremented; the caller
@@ -310,7 +310,7 @@ sub gtk_text_view_get_buffer ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_scroll_to_iter:
 =begin pod
-=head2 [gtk_text_view_] scroll_to_iter
+=head2 [[gtk_] text_view_] scroll_to_iter
 
 Scrolls I<text_view> so that I<iter> is on the screen in the position
 indicated by I<xalign> and I<yalign>. An alignment of 0.0 indicates
@@ -347,7 +347,7 @@ sub gtk_text_view_scroll_to_iter ( N-GObject $text_view, N-GObject $iter, num64 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_scroll_to_mark:
 =begin pod
-=head2 [gtk_text_view_] scroll_to_mark
+=head2 [[gtk_] text_view_] scroll_to_mark
 
 Scrolls I<text_view> so that I<mark> is on the screen in the position
 indicated by I<xalign> and I<yalign>. An alignment of 0.0 indicates
@@ -374,7 +374,7 @@ sub gtk_text_view_scroll_to_mark ( N-GObject $text_view, N-GObject $mark, num64 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_scroll_mark_onscreen:
 =begin pod
-=head2 [gtk_text_view_] scroll_mark_onscreen
+=head2 [[gtk_] text_view_] scroll_mark_onscreen
 
 Scrolls I<text_view> the minimum distance such that I<mark> is contained
 within the visible area of the widget.
@@ -392,7 +392,7 @@ sub gtk_text_view_scroll_mark_onscreen ( N-GObject $text_view, N-GObject $mark )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_move_mark_onscreen:
 =begin pod
-=head2 [gtk_text_view_] move_mark_onscreen
+=head2 [[gtk_] text_view_] move_mark_onscreen
 
 Moves a mark within the buffer so that it's
 located within the currently-visible text area.
@@ -413,7 +413,7 @@ sub gtk_text_view_move_mark_onscreen ( N-GObject $text_view, N-GObject $mark )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_place_cursor_onscreen:
 =begin pod
-=head2 [gtk_text_view_] place_cursor_onscreen
+=head2 [[gtk_] text_view_] place_cursor_onscreen
 
 Moves the cursor to the currently visible region of the
 buffer, it it isn’t there already.
@@ -433,7 +433,7 @@ sub gtk_text_view_place_cursor_onscreen ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_visible_rect:
 =begin pod
-=head2 [gtk_text_view_] get_visible_rect
+=head2 [[gtk_] text_view_] get_visible_rect
 
 Fills I<visible_rect> with the currently-visible
 region of the buffer, in buffer coordinates. Convert to window coordinates
@@ -452,7 +452,7 @@ sub gtk_text_view_get_visible_rect ( N-GObject $text_view, N-GObject $visible_re
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_cursor_visible:
 =begin pod
-=head2 [gtk_text_view_] set_cursor_visible
+=head2 [[gtk_] text_view_] set_cursor_visible
 
 Toggles whether the insertion point should be displayed. A buffer with
 no editable text probably shouldn’t have a visible cursor, so you may
@@ -474,7 +474,7 @@ sub gtk_text_view_set_cursor_visible ( N-GObject $text_view, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_cursor_visible:
 =begin pod
-=head2 [gtk_text_view_] get_cursor_visible
+=head2 [[gtk_] text_view_] get_cursor_visible
 
 Find out whether the cursor should be displayed.
 
@@ -493,7 +493,7 @@ sub gtk_text_view_get_cursor_visible ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_reset_cursor_blink:
 =begin pod
-=head2 [gtk_text_view_] reset_cursor_blink
+=head2 [[gtk_] text_view_] reset_cursor_blink
 
 Ensures that the cursor is shown (i.e. not in an 'off' blink
 interval) and resets the time that it will stay blinking (or
@@ -517,7 +517,7 @@ sub gtk_text_view_reset_cursor_blink ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_cursor_locations:
 =begin pod
-=head2 [gtk_text_view_] get_cursor_locations
+=head2 [[gtk_] text_view_] get_cursor_locations
 
 Given an I<iter> within a text layout, determine the positions of the
 strong and weak cursors if the insertion point is at that
@@ -556,7 +556,7 @@ sub gtk_text_view_get_cursor_locations ( N-GObject $text_view, N-GObject $iter, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_iter_location:
 =begin pod
-=head2 [gtk_text_view_] get_iter_location
+=head2 [[gtk_] text_view_] get_iter_location
 
 Gets a rectangle which roughly contains the character at I<iter>.
 The rectangle position is in buffer coordinates; use
@@ -577,7 +577,7 @@ sub gtk_text_view_get_iter_location ( N-GObject $text_view, N-GObject $iter, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_iter_at_location:
 =begin pod
-=head2 [gtk_text_view_] get_iter_at_location
+=head2 [[gtk_] text_view_] get_iter_at_location
 
 Retrieves the iterator at buffer coordinates I<x> and I<y>. Buffer
 coordinates are coordinates for the entire buffer, not just the
@@ -603,7 +603,7 @@ sub gtk_text_view_get_iter_at_location ( N-GObject $text_view, N-GObject $iter, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_iter_at_position:
 =begin pod
-=head2 [gtk_text_view_] get_iter_at_position
+=head2 [[gtk_] text_view_] get_iter_at_position
 
 Retrieves the iterator pointing to the character at buffer
 coordinates I<x> and I<y>. Buffer coordinates are coordinates for
@@ -637,7 +637,7 @@ sub gtk_text_view_get_iter_at_position ( N-GObject $text_view, N-GObject $iter, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_line_yrange:
 =begin pod
-=head2 [gtk_text_view_] get_line_yrange
+=head2 [[gtk_] text_view_] get_line_yrange
 
 Gets the y coordinate of the top of the line containing I<iter>,
 and the height of the line. The coordinate is a buffer coordinate;
@@ -658,7 +658,7 @@ sub gtk_text_view_get_line_yrange ( N-GObject $text_view, N-GObject $iter, int32
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_line_at_y:
 =begin pod
-=head2 [gtk_text_view_] get_line_at_y
+=head2 [[gtk_] text_view_] get_line_at_y
 
 Gets the B<Gnome::Gtk3::TextIter> at the start of the line containing
 the coordinate I<y>. I<y> is in buffer coordinates, convert from
@@ -681,7 +681,7 @@ sub gtk_text_view_get_line_at_y ( N-GObject $text_view, N-GObject $target_iter, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_buffer_to_window_coords:
 =begin pod
-=head2 [gtk_text_view_] buffer_to_window_coords
+=head2 [[gtk_] text_view_] buffer_to_window_coords
 
 Converts coordinate (I<buffer_x>, I<buffer_y>) to coordinates for the window
 I<win>, and stores the result in (I<window_x>, I<window_y>).
@@ -706,7 +706,7 @@ sub gtk_text_view_buffer_to_window_coords ( N-GObject $text_view, int32 $win, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_window_to_buffer_coords:
 =begin pod
-=head2 [gtk_text_view_] window_to_buffer_coords
+=head2 [[gtk_] text_view_] window_to_buffer_coords
 
 Converts coordinates on the window identified by I<win> to buffer
 coordinates, storing the result in (I<buffer_x>,I<buffer_y>).
@@ -731,7 +731,7 @@ sub gtk_text_view_window_to_buffer_coords ( N-GObject $text_view, int32 $win, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_window:
 =begin pod
-=head2 [gtk_text_view_] get_window
+=head2 [[gtk_] text_view_] get_window
 
 Retrieves the B<Gnome::Gdk3::Window> corresponding to an area of the text view;
 possible windows include the overall widget window, child windows
@@ -756,7 +756,7 @@ sub gtk_text_view_get_window ( N-GObject $text_view, int32 $win )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_window_type:
 =begin pod
-=head2 [gtk_text_view_] get_window_type
+=head2 [[gtk_] text_view_] get_window_type
 
 Usually used to find out which window an event corresponds to.
 If you connect to an event signal on I<text_view>, this function
@@ -779,7 +779,7 @@ sub gtk_text_view_get_window_type ( N-GObject $text_view, N-GObject $window )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_border_window_size:
 =begin pod
-=head2 [gtk_text_view_] set_border_window_size
+=head2 [[gtk_] text_view_] set_border_window_size
 
 Sets the width of C<GTK_TEXT_WINDOW_LEFT> or C<GTK_TEXT_WINDOW_RIGHT>,
 or the height of C<GTK_TEXT_WINDOW_TOP> or C<GTK_TEXT_WINDOW_BOTTOM>.
@@ -803,7 +803,7 @@ sub gtk_text_view_set_border_window_size ( N-GObject $text_view, int32 $type, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_border_window_size:
 =begin pod
-=head2 [gtk_text_view_] get_border_window_size
+=head2 [[gtk_] text_view_] get_border_window_size
 
 Gets the width of the specified border window. See
 C<gtk_text_view_set_border_window_size()>.
@@ -824,7 +824,7 @@ sub gtk_text_view_get_border_window_size ( N-GObject $text_view, int32 $type )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_forward_display_line:
 =begin pod
-=head2 [gtk_text_view_] forward_display_line
+=head2 [[gtk_] text_view_] forward_display_line
 
 Moves the given I<iter> forward by one display (wrapped) line.
 A display line is different from a paragraph. Paragraphs are
@@ -851,7 +851,7 @@ sub gtk_text_view_forward_display_line ( N-GObject $text_view, N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_backward_display_line:
 =begin pod
-=head2 [gtk_text_view_] backward_display_line
+=head2 [[gtk_] text_view_] backward_display_line
 
 Moves the given I<iter> backward by one display (wrapped) line.
 A display line is different from a paragraph. Paragraphs are
@@ -878,7 +878,7 @@ sub gtk_text_view_backward_display_line ( N-GObject $text_view, N-GObject $iter 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_forward_display_line_end:
 =begin pod
-=head2 [gtk_text_view_] forward_display_line_end
+=head2 [[gtk_] text_view_] forward_display_line_end
 
 Moves the given I<iter> forward to the next display line end.
 A display line is different from a paragraph. Paragraphs are
@@ -905,7 +905,7 @@ sub gtk_text_view_forward_display_line_end ( N-GObject $text_view, N-GObject $it
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_backward_display_line_start:
 =begin pod
-=head2 [gtk_text_view_] backward_display_line_start
+=head2 [[gtk_] text_view_] backward_display_line_start
 
 Moves the given I<iter> backward to the next display line start.
 A display line is different from a paragraph. Paragraphs are
@@ -932,7 +932,7 @@ sub gtk_text_view_backward_display_line_start ( N-GObject $text_view, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_starts_display_line:
 =begin pod
-=head2 [gtk_text_view_] starts_display_line
+=head2 [[gtk_] text_view_] starts_display_line
 
 Determines whether I<iter> is at the start of a display line.
 See C<gtk_text_view_forward_display_line()> for an explanation of
@@ -954,7 +954,7 @@ sub gtk_text_view_starts_display_line ( N-GObject $text_view, N-GObject $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_move_visually:
 =begin pod
-=head2 [gtk_text_view_] move_visually
+=head2 [[gtk_] text_view_] move_visually
 
 Move the iterator a given number of characters visually, treating
 it as the strong cursor position. If I<count> is positive, then the
@@ -985,7 +985,7 @@ sub gtk_text_view_move_visually ( N-GObject $text_view, N-GObject $iter, int32 $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_im_context_filter_keypress:
 =begin pod
-=head2 [gtk_text_view_] im_context_filter_keypress
+=head2 [[gtk_] text_view_] im_context_filter_keypress
 
 Allow the B<Gnome::Gtk3::TextView> input method to internally handle key press
 and release events. If this function returns C<1>, then no further
@@ -1032,7 +1032,7 @@ sub gtk_text_view_im_context_filter_keypress ( N-GObject $text_view, GdkEventKey
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_reset_im_context:
 =begin pod
-=head2 [gtk_text_view_] reset_im_context
+=head2 [[gtk_] text_view_] reset_im_context
 
 Reset the input method context of the text view if needed.
 
@@ -1054,7 +1054,7 @@ sub gtk_text_view_reset_im_context ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_add_child_at_anchor:
 =begin pod
-=head2 [gtk_text_view_] add_child_at_anchor
+=head2 [[gtk_] text_view_] add_child_at_anchor
 
 Adds a child widget in the text buffer, at the given I<anchor>.
 
@@ -1073,7 +1073,7 @@ sub gtk_text_view_add_child_at_anchor ( N-GObject $text_view, N-GObject $child, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_add_child_in_window:
 =begin pod
-=head2 [gtk_text_view_] add_child_in_window
+=head2 [[gtk_] text_view_] add_child_in_window
 
 Adds a child at fixed coordinates in one of the text widget's windows.
 
@@ -1097,7 +1097,7 @@ sub gtk_text_view_add_child_in_window ( N-GObject $text_view, N-GObject $child, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_move_child:
 =begin pod
-=head2 [gtk_text_view_] move_child
+=head2 [[gtk_] text_view_] move_child
 
 Updates the position of a child, as for C<gtk_text_view_add_child_in_window()>.
 
@@ -1116,7 +1116,7 @@ sub gtk_text_view_move_child ( N-GObject $text_view, N-GObject $child,  int32 $x
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_wrap_mode:
 =begin pod
-=head2 [gtk_text_view_] set_wrap_mode
+=head2 [[gtk_] text_view_] set_wrap_mode
 
 Sets the line wrapping for the view.
 
@@ -1133,7 +1133,7 @@ sub gtk_text_view_set_wrap_mode ( N-GObject $text_view, int32 $wrap_mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_wrap_mode:
 =begin pod
-=head2 [gtk_text_view_] get_wrap_mode
+=head2 [[gtk_] text_view_] get_wrap_mode
 
 Gets the line wrapping for the view.
 
@@ -1152,7 +1152,7 @@ sub gtk_text_view_get_wrap_mode ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_editable:
 =begin pod
-=head2 [gtk_text_view_] set_editable
+=head2 [[gtk_] text_view_] set_editable
 
 Sets the default editability of the B<Gnome::Gtk3::TextView>. You can override
 this default setting with tags in the buffer, using the “editable”
@@ -1171,7 +1171,7 @@ sub gtk_text_view_set_editable ( N-GObject $text_view, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_editable:
 =begin pod
-=head2 [gtk_text_view_] get_editable
+=head2 [[gtk_] text_view_] get_editable
 
 Returns the default editability of the B<Gnome::Gtk3::TextView>. Tags in the
 buffer may override this setting for some ranges of text.
@@ -1191,7 +1191,7 @@ sub gtk_text_view_get_editable ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_overwrite:
 =begin pod
-=head2 [gtk_text_view_] set_overwrite
+=head2 [[gtk_] text_view_] set_overwrite
 
 Changes the B<Gnome::Gtk3::TextView> overwrite mode.
 
@@ -1210,7 +1210,7 @@ sub gtk_text_view_set_overwrite ( N-GObject $text_view, int32 $overwrite )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_overwrite:
 =begin pod
-=head2 [gtk_text_view_] get_overwrite
+=head2 [[gtk_] text_view_] get_overwrite
 
 Returns whether the B<Gnome::Gtk3::TextView> is in overwrite mode or not.
 
@@ -1231,7 +1231,7 @@ sub gtk_text_view_get_overwrite ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_accepts_tab:
 =begin pod
-=head2 [gtk_text_view_] set_accepts_tab
+=head2 [[gtk_] text_view_] set_accepts_tab
 
 Sets the behavior of the text widget when the Tab key is pressed.
 If I<accepts_tab> is C<1>, a tab character is inserted. If I<accepts_tab>
@@ -1253,7 +1253,7 @@ sub gtk_text_view_set_accepts_tab ( N-GObject $text_view, int32 $accepts_tab )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_accepts_tab:
 =begin pod
-=head2 [gtk_text_view_] get_accepts_tab
+=head2 [[gtk_] text_view_] get_accepts_tab
 
 Returns whether pressing the Tab key inserts a tab characters.
 C<gtk_text_view_set_accepts_tab()>.
@@ -1276,7 +1276,7 @@ sub gtk_text_view_get_accepts_tab ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_pixels_above_lines:
 =begin pod
-=head2 [gtk_text_view_] set_pixels_above_lines
+=head2 [[gtk_] text_view_] set_pixels_above_lines
 
 Sets the default number of blank pixels above paragraphs in I<text_view>.
 Tags in the buffer for I<text_view> may override the defaults.
@@ -1294,7 +1294,7 @@ sub gtk_text_view_set_pixels_above_lines ( N-GObject $text_view, int32 $pixels_a
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_pixels_above_lines:
 =begin pod
-=head2 [gtk_text_view_] get_pixels_above_lines
+=head2 [[gtk_] text_view_] get_pixels_above_lines
 
 Gets the default number of pixels to put above paragraphs.
 Adding this function with C<gtk_text_view_get_pixels_below_lines()>
@@ -1315,7 +1315,7 @@ sub gtk_text_view_get_pixels_above_lines ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_pixels_below_lines:
 =begin pod
-=head2 [gtk_text_view_] set_pixels_below_lines
+=head2 [[gtk_] text_view_] set_pixels_below_lines
 
 Sets the default number of pixels of blank space
 to put below paragraphs in I<text_view>. May be overridden
@@ -1334,7 +1334,7 @@ sub gtk_text_view_set_pixels_below_lines ( N-GObject $text_view, int32 $pixels_b
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_pixels_below_lines:
 =begin pod
-=head2 [gtk_text_view_] get_pixels_below_lines
+=head2 [[gtk_] text_view_] get_pixels_below_lines
 
 Gets the value set by C<gtk_text_view_set_pixels_below_lines()>.
 
@@ -1356,7 +1356,7 @@ sub gtk_text_view_get_pixels_below_lines ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_pixels_inside_wrap:
 =begin pod
-=head2 [gtk_text_view_] set_pixels_inside_wrap
+=head2 [[gtk_] text_view_] set_pixels_inside_wrap
 
 Sets the default number of pixels of blank space to leave between
 display/wrapped lines within a paragraph. May be overridden by
@@ -1375,7 +1375,7 @@ sub gtk_text_view_set_pixels_inside_wrap ( N-GObject $text_view, int32 $pixels_i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_pixels_inside_wrap:
 =begin pod
-=head2 [gtk_text_view_] get_pixels_inside_wrap
+=head2 [[gtk_] text_view_] get_pixels_inside_wrap
 
 Gets the value set by C<gtk_text_view_set_pixels_inside_wrap()>.
 
@@ -1394,7 +1394,7 @@ sub gtk_text_view_get_pixels_inside_wrap ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_justification:
 =begin pod
-=head2 [gtk_text_view_] set_justification
+=head2 [[gtk_] text_view_] set_justification
 
 Sets the default justification of text in I<text_view>.
 Tags in the view’s buffer may override the default.
@@ -1413,7 +1413,7 @@ sub gtk_text_view_set_justification ( N-GObject $text_view, int32 $justification
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_justification:
 =begin pod
-=head2 [gtk_text_view_] get_justification
+=head2 [[gtk_] text_view_] get_justification
 
 Gets the default justification of paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -1433,7 +1433,7 @@ sub gtk_text_view_get_justification ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_left_margin:
 =begin pod
-=head2 [gtk_text_view_] set_left_margin
+=head2 [[gtk_] text_view_] set_left_margin
 
 Sets the default left margin for text in I<text_view>.
 Tags in the buffer may override the default.
@@ -1454,7 +1454,7 @@ sub gtk_text_view_set_left_margin ( N-GObject $text_view, int32 $left_margin )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_left_margin:
 =begin pod
-=head2 [gtk_text_view_] get_left_margin
+=head2 [[gtk_] text_view_] get_left_margin
 
 Gets the default left margin size of paragraphs in the I<text_view>.
 Tags in the buffer may override the default.
@@ -1474,7 +1474,7 @@ sub gtk_text_view_get_left_margin ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_right_margin:
 =begin pod
-=head2 [gtk_text_view_] set_right_margin
+=head2 [[gtk_] text_view_] set_right_margin
 
 Sets the default right margin for text in the text view.
 Tags in the buffer may override the default.
@@ -1495,7 +1495,7 @@ sub gtk_text_view_set_right_margin ( N-GObject $text_view, int32 $right_margin )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_right_margin:
 =begin pod
-=head2 [gtk_text_view_] get_right_margin
+=head2 [[gtk_] text_view_] get_right_margin
 
 Gets the default right margin for text in I<text_view>. Tags
 in the buffer may override the default.
@@ -1515,7 +1515,7 @@ sub gtk_text_view_get_right_margin ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_top_margin:
 =begin pod
-=head2 [gtk_text_view_] set_top_margin
+=head2 [[gtk_] text_view_] set_top_margin
 
 Sets the top margin for text in I<text_view>.
 
@@ -1537,7 +1537,7 @@ sub gtk_text_view_set_top_margin ( N-GObject $text_view, int32 $top_margin )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_top_margin:
 =begin pod
-=head2 [gtk_text_view_] get_top_margin
+=head2 [[gtk_] text_view_] get_top_margin
 
 Gets the top margin for text in the I<text_view>.
 
@@ -1558,7 +1558,7 @@ sub gtk_text_view_get_top_margin ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_bottom_margin:
 =begin pod
-=head2 [gtk_text_view_] set_bottom_margin
+=head2 [[gtk_] text_view_] set_bottom_margin
 
 Sets the bottom margin for text in I<text_view>.
 
@@ -1580,7 +1580,7 @@ sub gtk_text_view_set_bottom_margin ( N-GObject $text_view, int32 $bottom_margin
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_bottom_margin:
 =begin pod
-=head2 [gtk_text_view_] get_bottom_margin
+=head2 [[gtk_] text_view_] get_bottom_margin
 
 Gets the bottom margin for text in the I<text_view>.
 
@@ -1601,7 +1601,7 @@ sub gtk_text_view_get_bottom_margin ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_indent:
 =begin pod
-=head2 [gtk_text_view_] set_indent
+=head2 [[gtk_] text_view_] set_indent
 
 Sets the default indentation for paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -1619,7 +1619,7 @@ sub gtk_text_view_set_indent ( N-GObject $text_view, int32 $indent )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_indent:
 =begin pod
-=head2 [gtk_text_view_] get_indent
+=head2 [[gtk_] text_view_] get_indent
 
 Gets the default indentation of paragraphs in I<text_view>.
 Tags in the view’s buffer may override the default.
@@ -1641,7 +1641,7 @@ sub gtk_text_view_get_indent ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_tabs:
 =begin pod
-=head2 [gtk_text_view_] set_tabs
+=head2 [[gtk_] text_view_] set_tabs
 
 Sets the default tab stops for paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -1659,7 +1659,7 @@ sub gtk_text_view_set_tabs ( N-GObject $text_view, PangoTabArray $tabs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_tabs:
 =begin pod
-=head2 [gtk_text_view_] get_tabs
+=head2 [[gtk_] text_view_] get_tabs
 
 Gets the default tabs for I<text_view>. Tags in the buffer may
 override the defaults. The returned array will be C<Any> if
@@ -1683,7 +1683,7 @@ sub gtk_text_view_get_tabs ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_default_attributes:
 =begin pod
-=head2 [gtk_text_view_] get_default_attributes
+=head2 [[gtk_] text_view_] get_default_attributes
 
 Obtains a copy of the default text attributes. These are the
 attributes used for text unless a tag overrides them.
@@ -1709,7 +1709,7 @@ sub gtk_text_view_get_default_attributes ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_input_purpose:
 =begin pod
-=head2 [gtk_text_view_] set_input_purpose
+=head2 [[gtk_] text_view_] set_input_purpose
 
 Sets the  I<input-purpose> property which
 can be used by on-screen keyboards and other input
@@ -1730,7 +1730,7 @@ sub gtk_text_view_set_input_purpose ( N-GObject $text_view, int32 $purpose )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_input_purpose:
 =begin pod
-=head2 [gtk_text_view_] get_input_purpose
+=head2 [[gtk_] text_view_] get_input_purpose
 
 Gets the value of the  I<input-purpose> property.
 
@@ -1749,7 +1749,7 @@ sub gtk_text_view_get_input_purpose ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_input_hints:
 =begin pod
-=head2 [gtk_text_view_] set_input_hints
+=head2 [[gtk_] text_view_] set_input_hints
 
 Sets the  I<input-hints> property, which
 allows input methods to fine-tune their behaviour.
@@ -1769,7 +1769,7 @@ sub gtk_text_view_set_input_hints ( N-GObject $text_view, int32 $hints )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_input_hints:
 =begin pod
-=head2 [gtk_text_view_] get_input_hints
+=head2 [[gtk_] text_view_] get_input_hints
 
 Gets the value of the  I<input-hints> property.
 
@@ -1788,7 +1788,7 @@ sub gtk_text_view_get_input_hints ( N-GObject $text_view )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_set_monospace:
 =begin pod
-=head2 [gtk_text_view_] set_monospace
+=head2 [[gtk_] text_view_] set_monospace
 
 Sets the  I<monospace> property, which
 indicates that the text view should use monospace
@@ -1809,7 +1809,7 @@ sub gtk_text_view_set_monospace ( N-GObject $text_view, int32 $monospace )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_view_get_monospace:
 =begin pod
-=head2 [gtk_text_view_] get_monospace
+=head2 [[gtk_] text_view_] get_monospace
 
 Gets the value of the  I<monospace> property.
 
@@ -2455,7 +2455,7 @@ The B<Gnome::GObject::Value> type of property I<monospace> is C<G_TYPE_BOOLEAN>.
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_view_new
+=head2 [gtk_] text_view_new
 
 Creates a new B<Gnome::Gtk3::TextView>. If you don’t call C<gtk_text_view_set_buffer()>
 before using the text view, an empty default buffer will be created
@@ -2476,7 +2476,7 @@ sub gtk_text_view_new (  )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] new_with_buffer
+=head2 [[gtk_] text_view_] new_with_buffer
 
 Creates a new B<Gnome::Gtk3::TextView> widget displaying the buffer
 I<buffer>. One buffer can be shared among many widgets.
@@ -2500,7 +2500,7 @@ sub gtk_text_view_new_with_buffer ( N-GObject $buffer )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_buffer
+=head2 [[gtk_] text_view_] set_buffer
 
 Sets I<buffer> as the buffer being displayed by I<text_view>. The previous
 buffer displayed by the text view is unreferenced, and a reference is
@@ -2520,7 +2520,7 @@ sub gtk_text_view_set_buffer ( N-GObject $text_view, N-GObject $buffer )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_buffer
+=head2 [[gtk_] text_view_] get_buffer
 
 Returns the B<Gnome::Gtk3::TextBuffer> being displayed by this text view.
 The reference count on the buffer is not incremented; the caller
@@ -2540,7 +2540,7 @@ sub gtk_text_view_get_buffer ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] scroll_to_iter
+=head2 [[gtk_] text_view_] scroll_to_iter
 
 Scrolls I<text_view> so that I<iter> is on the screen in the position
 indicated by I<xalign> and I<yalign>. An alignment of 0.0 indicates
@@ -2576,7 +2576,7 @@ sub gtk_text_view_scroll_to_iter ( N-GObject $text_view, N-GObject $iter, num64 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] scroll_to_mark
+=head2 [[gtk_] text_view_] scroll_to_mark
 
 Scrolls I<text_view> so that I<mark> is on the screen in the position
 indicated by I<xalign> and I<yalign>. An alignment of 0.0 indicates
@@ -2602,7 +2602,7 @@ sub gtk_text_view_scroll_to_mark ( N-GObject $text_view, N-GObject $mark, num64 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] scroll_mark_onscreen
+=head2 [[gtk_] text_view_] scroll_mark_onscreen
 
 Scrolls I<text_view> the minimum distance such that I<mark> is contained
 within the visible area of the widget.
@@ -2619,7 +2619,7 @@ sub gtk_text_view_scroll_mark_onscreen ( N-GObject $text_view, N-GObject $mark )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] move_mark_onscreen
+=head2 [[gtk_] text_view_] move_mark_onscreen
 
 Moves a mark within the buffer so that it's
 located within the currently-visible text area.
@@ -2639,7 +2639,7 @@ sub gtk_text_view_move_mark_onscreen ( N-GObject $text_view, N-GObject $mark )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] place_cursor_onscreen
+=head2 [[gtk_] text_view_] place_cursor_onscreen
 
 Moves the cursor to the currently visible region of the
 buffer, it it isn’t there already.
@@ -2658,7 +2658,7 @@ sub gtk_text_view_place_cursor_onscreen ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_visible_rect
+=head2 [[gtk_] text_view_] get_visible_rect
 
 Fills I<visible_rect> with the currently-visible
 region of the buffer, in buffer coordinates. Convert to window coordinates
@@ -2676,7 +2676,7 @@ sub gtk_text_view_get_visible_rect ( N-GObject $text_view, N-GObject $visible_re
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_cursor_visible
+=head2 [[gtk_] text_view_] set_cursor_visible
 
 Toggles whether the insertion point should be displayed. A buffer with
 no editable text probably shouldn’t have a visible cursor, so you may
@@ -2697,7 +2697,7 @@ sub gtk_text_view_set_cursor_visible ( N-GObject $text_view, int32 $setting )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_cursor_visible
+=head2 [[gtk_] text_view_] get_cursor_visible
 
 Find out whether the cursor should be displayed.
 
@@ -2715,7 +2715,7 @@ sub gtk_text_view_get_cursor_visible ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] reset_cursor_blink
+=head2 [[gtk_] text_view_] reset_cursor_blink
 
 Ensures that the cursor is shown (i.e. not in an 'off' blink
 interval) and resets the time that it will stay blinking (or
@@ -2738,7 +2738,7 @@ sub gtk_text_view_reset_cursor_blink ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_cursor_locations
+=head2 [[gtk_] text_view_] get_cursor_locations
 
 Given an I<iter> within a text layout, determine the positions of the
 strong and weak cursors if the insertion point is at that
@@ -2776,7 +2776,7 @@ sub gtk_text_view_get_cursor_locations ( N-GObject $text_view, N-GObject $iter, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_iter_location
+=head2 [[gtk_] text_view_] get_iter_location
 
 Gets a rectangle which roughly contains the character at I<iter>.
 The rectangle position is in buffer coordinates; use
@@ -2796,7 +2796,7 @@ sub gtk_text_view_get_iter_location ( N-GObject $text_view, N-GObject $iter, N-G
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_iter_at_location
+=head2 [[gtk_] text_view_] get_iter_at_location
 
 Retrieves the iterator at buffer coordinates I<x> and I<y>. Buffer
 coordinates are coordinates for the entire buffer, not just the
@@ -2821,7 +2821,7 @@ sub gtk_text_view_get_iter_at_location ( N-GObject $text_view, N-GObject $iter, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_iter_at_position
+=head2 [[gtk_] text_view_] get_iter_at_position
 
 Retrieves the iterator pointing to the character at buffer
 coordinates I<x> and I<y>. Buffer coordinates are coordinates for
@@ -2854,7 +2854,7 @@ sub gtk_text_view_get_iter_at_position ( N-GObject $text_view, N-GObject $iter, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_line_yrange
+=head2 [[gtk_] text_view_] get_line_yrange
 
 Gets the y coordinate of the top of the line containing I<iter>,
 and the height of the line. The coordinate is a buffer coordinate;
@@ -2874,7 +2874,7 @@ sub gtk_text_view_get_line_yrange ( N-GObject $text_view, N-GObject $iter, int32
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_line_at_y
+=head2 [[gtk_] text_view_] get_line_at_y
 
 Gets the B<Gnome::Gtk3::TextIter> at the start of the line containing
 the coordinate I<y>. I<y> is in buffer coordinates, convert from
@@ -2896,7 +2896,7 @@ sub gtk_text_view_get_line_at_y ( N-GObject $text_view, N-GObject $target_iter, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] buffer_to_window_coords
+=head2 [[gtk_] text_view_] buffer_to_window_coords
 
 Converts coordinate (I<buffer_x>, I<buffer_y>) to coordinates for the window
 I<win>, and stores the result in (I<window_x>, I<window_y>).
@@ -2920,7 +2920,7 @@ sub gtk_text_view_buffer_to_window_coords ( N-GObject $text_view, int32 $win, in
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] window_to_buffer_coords
+=head2 [[gtk_] text_view_] window_to_buffer_coords
 
 Converts coordinates on the window identified by I<win> to buffer
 coordinates, storing the result in (I<buffer_x>,I<buffer_y>).
@@ -2944,7 +2944,7 @@ sub gtk_text_view_window_to_buffer_coords ( N-GObject $text_view, int32 $win, in
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_window
+=head2 [[gtk_] text_view_] get_window
 
 Retrieves the B<Gnome::Gdk3::Window> corresponding to an area of the text view;
 possible windows include the overall widget window, child windows
@@ -2968,7 +2968,7 @@ sub gtk_text_view_get_window ( N-GObject $text_view, int32 $win )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_window_type
+=head2 [[gtk_] text_view_] get_window_type
 
 Usually used to find out which window an event corresponds to.
 If you connect to an event signal on I<text_view>, this function
@@ -2990,7 +2990,7 @@ sub gtk_text_view_get_window_type ( N-GObject $text_view, N-GObject $window )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_border_window_size
+=head2 [[gtk_] text_view_] set_border_window_size
 
 Sets the width of C<GTK_TEXT_WINDOW_LEFT> or C<GTK_TEXT_WINDOW_RIGHT>,
 or the height of C<GTK_TEXT_WINDOW_TOP> or C<GTK_TEXT_WINDOW_BOTTOM>.
@@ -3013,7 +3013,7 @@ sub gtk_text_view_set_border_window_size ( N-GObject $text_view, int32 $type, in
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_border_window_size
+=head2 [[gtk_] text_view_] get_border_window_size
 
 Gets the width of the specified border window. See
 C<gtk_text_view_set_border_window_size()>.
@@ -3033,7 +3033,7 @@ sub gtk_text_view_get_border_window_size ( N-GObject $text_view, int32 $type )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] forward_display_line
+=head2 [[gtk_] text_view_] forward_display_line
 
 Moves the given I<iter> forward by one display (wrapped) line.
 A display line is different from a paragraph. Paragraphs are
@@ -3059,7 +3059,7 @@ sub gtk_text_view_forward_display_line ( N-GObject $text_view, N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] backward_display_line
+=head2 [[gtk_] text_view_] backward_display_line
 
 Moves the given I<iter> backward by one display (wrapped) line.
 A display line is different from a paragraph. Paragraphs are
@@ -3085,7 +3085,7 @@ sub gtk_text_view_backward_display_line ( N-GObject $text_view, N-GObject $iter 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] forward_display_line_end
+=head2 [[gtk_] text_view_] forward_display_line_end
 
 Moves the given I<iter> forward to the next display line end.
 A display line is different from a paragraph. Paragraphs are
@@ -3111,7 +3111,7 @@ sub gtk_text_view_forward_display_line_end ( N-GObject $text_view, N-GObject $it
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] backward_display_line_start
+=head2 [[gtk_] text_view_] backward_display_line_start
 
 Moves the given I<iter> backward to the next display line start.
 A display line is different from a paragraph. Paragraphs are
@@ -3137,7 +3137,7 @@ sub gtk_text_view_backward_display_line_start ( N-GObject $text_view, N-GObject 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] starts_display_line
+=head2 [[gtk_] text_view_] starts_display_line
 
 Determines whether I<iter> is at the start of a display line.
 See C<gtk_text_view_forward_display_line()> for an explanation of
@@ -3158,7 +3158,7 @@ sub gtk_text_view_starts_display_line ( N-GObject $text_view, N-GObject $iter )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] move_visually
+=head2 [[gtk_] text_view_] move_visually
 
 Move the iterator a given number of characters visually, treating
 it as the strong cursor position. If I<count> is positive, then the
@@ -3188,7 +3188,7 @@ sub gtk_text_view_move_visually ( N-GObject $text_view, N-GObject $iter, int32 $
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] im_context_filter_keypress
+=head2 [[gtk_] text_view_] im_context_filter_keypress
 
 Allow the B<Gnome::Gtk3::TextView> input method to internally handle key press
 and release events. If this function returns C<1>, then no further
@@ -3234,7 +3234,7 @@ sub gtk_text_view_im_context_filter_keypress ( N-GObject $text_view, GdkEventKey
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] reset_im_context
+=head2 [[gtk_] text_view_] reset_im_context
 
 Reset the input method context of the text view if needed.
 
@@ -3255,7 +3255,7 @@ sub gtk_text_view_reset_im_context ( N-GObject $text_view )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] add_child_at_anchor
+=head2 [[gtk_] text_view_] add_child_at_anchor
 
 Adds a child widget in the text buffer, at the given I<anchor>.
 
@@ -3273,7 +3273,7 @@ sub gtk_text_view_add_child_at_anchor ( N-GObject $text_view, N-GObject $child, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] add_child_in_window
+=head2 [[gtk_] text_view_] add_child_in_window
 
 Adds a child at fixed coordinates in one of the text widget's windows.
 
@@ -3296,7 +3296,7 @@ sub gtk_text_view_add_child_in_window ( N-GObject $text_view, N-GObject $child, 
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] move_child
+=head2 [[gtk_] text_view_] move_child
 
 Updates the position of a child, as for C<gtk_text_view_add_child_in_window()>.
 
@@ -3314,7 +3314,7 @@ sub gtk_text_view_move_child ( N-GObject $text_view, N-GObject $child, int32 $xp
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_wrap_mode
+=head2 [[gtk_] text_view_] set_wrap_mode
 
 Sets the line wrapping for the view.
 
@@ -3330,7 +3330,7 @@ sub gtk_text_view_set_wrap_mode ( N-GObject $text_view, int32 $wrap_mode )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_wrap_mode
+=head2 [[gtk_] text_view_] get_wrap_mode
 
 Gets the line wrapping for the view.
 
@@ -3348,7 +3348,7 @@ sub gtk_text_view_get_wrap_mode ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_editable
+=head2 [[gtk_] text_view_] set_editable
 
 Sets the default editability of the B<Gnome::Gtk3::TextView>. You can override
 this default setting with tags in the buffer, using the “editable”
@@ -3366,7 +3366,7 @@ sub gtk_text_view_set_editable ( N-GObject $text_view, int32 $setting )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_editable
+=head2 [[gtk_] text_view_] get_editable
 
 Returns the default editability of the B<Gnome::Gtk3::TextView>. Tags in the
 buffer may override this setting for some ranges of text.
@@ -3385,7 +3385,7 @@ sub gtk_text_view_get_editable ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_overwrite
+=head2 [[gtk_] text_view_] set_overwrite
 
 Changes the B<Gnome::Gtk3::TextView> overwrite mode.
 
@@ -3403,7 +3403,7 @@ sub gtk_text_view_set_overwrite ( N-GObject $text_view, int32 $overwrite )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_overwrite
+=head2 [[gtk_] text_view_] get_overwrite
 
 Returns whether the B<Gnome::Gtk3::TextView> is in overwrite mode or not.
 
@@ -3423,7 +3423,7 @@ sub gtk_text_view_get_overwrite ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_accepts_tab
+=head2 [[gtk_] text_view_] set_accepts_tab
 
 Sets the behavior of the text widget when the Tab key is pressed.
 If I<accepts_tab> is C<1>, a tab character is inserted. If I<accepts_tab>
@@ -3444,7 +3444,7 @@ sub gtk_text_view_set_accepts_tab ( N-GObject $text_view, int32 $accepts_tab )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_accepts_tab
+=head2 [[gtk_] text_view_] get_accepts_tab
 
 Returns whether pressing the Tab key inserts a tab characters.
 C<gtk_text_view_set_accepts_tab()>.
@@ -3466,7 +3466,7 @@ sub gtk_text_view_get_accepts_tab ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_pixels_above_lines
+=head2 [[gtk_] text_view_] set_pixels_above_lines
 
 Sets the default number of blank pixels above paragraphs in I<text_view>.
 Tags in the buffer for I<text_view> may override the defaults.
@@ -3483,7 +3483,7 @@ sub gtk_text_view_set_pixels_above_lines ( N-GObject $text_view, int32 $pixels_a
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_pixels_above_lines
+=head2 [[gtk_] text_view_] get_pixels_above_lines
 
 Gets the default number of pixels to put above paragraphs.
 Adding this function with C<gtk_text_view_get_pixels_below_lines()>
@@ -3503,7 +3503,7 @@ sub gtk_text_view_get_pixels_above_lines ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_pixels_below_lines
+=head2 [[gtk_] text_view_] set_pixels_below_lines
 
 Sets the default number of pixels of blank space
 to put below paragraphs in I<text_view>. May be overridden
@@ -3521,7 +3521,7 @@ sub gtk_text_view_set_pixels_below_lines ( N-GObject $text_view, int32 $pixels_b
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_pixels_below_lines
+=head2 [[gtk_] text_view_] get_pixels_below_lines
 
 Gets the value set by C<gtk_text_view_set_pixels_below_lines()>.
 
@@ -3542,7 +3542,7 @@ sub gtk_text_view_get_pixels_below_lines ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_pixels_inside_wrap
+=head2 [[gtk_] text_view_] set_pixels_inside_wrap
 
 Sets the default number of pixels of blank space to leave between
 display/wrapped lines within a paragraph. May be overridden by
@@ -3560,7 +3560,7 @@ sub gtk_text_view_set_pixels_inside_wrap ( N-GObject $text_view, int32 $pixels_i
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_pixels_inside_wrap
+=head2 [[gtk_] text_view_] get_pixels_inside_wrap
 
 Gets the value set by C<gtk_text_view_set_pixels_inside_wrap()>.
 
@@ -3578,7 +3578,7 @@ sub gtk_text_view_get_pixels_inside_wrap ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_justification
+=head2 [[gtk_] text_view_] set_justification
 
 Sets the default justification of text in I<text_view>.
 Tags in the view’s buffer may override the default.
@@ -3596,7 +3596,7 @@ sub gtk_text_view_set_justification ( N-GObject $text_view, int32 $justification
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_justification
+=head2 [[gtk_] text_view_] get_justification
 
 Gets the default justification of paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -3615,7 +3615,7 @@ sub gtk_text_view_get_justification ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_left_margin
+=head2 [[gtk_] text_view_] set_left_margin
 
 Sets the default left margin for text in I<text_view>.
 Tags in the buffer may override the default.
@@ -3635,7 +3635,7 @@ sub gtk_text_view_set_left_margin ( N-GObject $text_view, int32 $left_margin )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_left_margin
+=head2 [[gtk_] text_view_] get_left_margin
 
 Gets the default left margin size of paragraphs in the I<text_view>.
 Tags in the buffer may override the default.
@@ -3654,7 +3654,7 @@ sub gtk_text_view_get_left_margin ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_right_margin
+=head2 [[gtk_] text_view_] set_right_margin
 
 Sets the default right margin for text in the text view.
 Tags in the buffer may override the default.
@@ -3674,7 +3674,7 @@ sub gtk_text_view_set_right_margin ( N-GObject $text_view, int32 $right_margin )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_right_margin
+=head2 [[gtk_] text_view_] get_right_margin
 
 Gets the default right margin for text in I<text_view>. Tags
 in the buffer may override the default.
@@ -3693,7 +3693,7 @@ sub gtk_text_view_get_right_margin ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_top_margin
+=head2 [[gtk_] text_view_] set_top_margin
 
 Sets the top margin for text in I<text_view>.
 
@@ -3714,7 +3714,7 @@ sub gtk_text_view_set_top_margin ( N-GObject $text_view, int32 $top_margin )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_top_margin
+=head2 [[gtk_] text_view_] get_top_margin
 
 Gets the top margin for text in the I<text_view>.
 
@@ -3734,7 +3734,7 @@ sub gtk_text_view_get_top_margin ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_bottom_margin
+=head2 [[gtk_] text_view_] set_bottom_margin
 
 Sets the bottom margin for text in I<text_view>.
 
@@ -3755,7 +3755,7 @@ sub gtk_text_view_set_bottom_margin ( N-GObject $text_view, int32 $bottom_margin
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_bottom_margin
+=head2 [[gtk_] text_view_] get_bottom_margin
 
 Gets the bottom margin for text in the I<text_view>.
 
@@ -3775,7 +3775,7 @@ sub gtk_text_view_get_bottom_margin ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_indent
+=head2 [[gtk_] text_view_] set_indent
 
 Sets the default indentation for paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -3792,7 +3792,7 @@ sub gtk_text_view_set_indent ( N-GObject $text_view, int32 $indent )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_indent
+=head2 [[gtk_] text_view_] get_indent
 
 Gets the default indentation of paragraphs in I<text_view>.
 Tags in the view’s buffer may override the default.
@@ -3813,7 +3813,7 @@ sub gtk_text_view_get_indent ( N-GObject $text_view )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_tabs
+=head2 [[gtk_] text_view_] set_tabs
 
 Sets the default tab stops for paragraphs in I<text_view>.
 Tags in the buffer may override the default.
@@ -3832,7 +3832,7 @@ sub gtk_text_view_set_tabs ( N-GObject $text_view, PangoTabArray $tabs )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_tabs
+=head2 [[gtk_] text_view_] get_tabs
 
 Gets the default tabs for I<text_view>. Tags in the buffer may
 override the defaults. The returned array will be C<Any> if
@@ -3855,7 +3855,7 @@ sub gtk_text_view_get_tabs ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_default_attributes
+=head2 [[gtk_] text_view_] get_default_attributes
 
 Obtains a copy of the default text attributes. These are the
 attributes used for text unless a tag overrides them.
@@ -3880,7 +3880,7 @@ sub gtk_text_view_get_default_attributes ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_input_purpose
+=head2 [[gtk_] text_view_] set_input_purpose
 
 Sets the prop C<input-purpose> property which
 can be used by on-screen keyboards and other input
@@ -3900,7 +3900,7 @@ sub gtk_text_view_set_input_purpose ( N-GObject $text_view, int32 $purpose )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_input_purpose
+=head2 [[gtk_] text_view_] get_input_purpose
 
 Gets the value of the prop C<input-purpose> property.
 
@@ -3918,7 +3918,7 @@ sub gtk_text_view_get_input_purpose ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_input_hints
+=head2 [[gtk_] text_view_] set_input_hints
 
 Sets the prop C<input-hints> property, which
 allows input methods to fine-tune their behaviour.
@@ -3937,7 +3937,7 @@ sub gtk_text_view_set_input_hints ( N-GObject $text_view, int32 $hints )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_input_hints
+=head2 [[gtk_] text_view_] get_input_hints
 
 Gets the value of the prop C<input-hints> property.
 
@@ -3955,7 +3955,7 @@ sub gtk_text_view_get_input_hints ( N-GObject $text_view )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] set_monospace
+=head2 [[gtk_] text_view_] set_monospace
 
 Sets the prop C<monospace> property, which
 indicates that the text view should use monospace
@@ -3975,7 +3975,7 @@ sub gtk_text_view_set_monospace ( N-GObject $text_view, int32 $monospace )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_view_] get_monospace
+=head2 [[gtk_] text_view_] get_monospace
 
 Gets the value of the prop C<monospace> property.
 

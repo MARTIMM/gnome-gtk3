@@ -55,8 +55,12 @@ Create a new plain object.
 
     multi method new ( Bool :empty! )
 
-gtk_tree_view_column_new
-------------------------
+Create an object using a native object from elsewhere.
+
+    multi method new ( N-GObject :$column! )
+
+[gtk_] tree_view_column_new
+---------------------------
 
 Creates a new **Gnome::Gtk3::TreeViewColumn**.
 
@@ -64,8 +68,8 @@ Returns: A newly created **Gnome::Gtk3::TreeViewColumn**.
 
     method gtk_tree_view_column_new ( --> N-GObject  )
 
-[gtk_tree_view_column_] pack_start
-----------------------------------
+[[gtk_] tree_view_column_] pack_start
+-------------------------------------
 
 Packs the *$cell* into the beginning of the column. If *$expand* is `0`, then the *$cell* is allocated no more space than it needs. Any unused space is divided evenly between cells for which *$expand* is `1`.
 
@@ -77,8 +81,8 @@ Packs the *$cell* into the beginning of the column. If *$expand* is `0`, then th
 
   * Int $expand; `1` if *$cell* is to be given extra space allocated to this tree column.
 
-[gtk_tree_view_column_] pack_end
---------------------------------
+[[gtk_] tree_view_column_] pack_end
+-----------------------------------
 
 Adds the *$cell* to end of the column. If *$expand* is `0`, then the *$cell* is allocated no more space than it needs. Any unused space is divided evenly between cells for which *$expand* is `1`.
 
@@ -88,15 +92,15 @@ Adds the *$cell* to end of the column. If *$expand* is `0`, then the *$cell* is 
 
   * Int $expand; `1` if *$cell* is to be given extra space allocated to this tree column.
 
-gtk_tree_view_column_clear
---------------------------
+[gtk_] tree_view_column_clear
+-----------------------------
 
 Unsets all the mappings on all renderers on this tree column.
 
     method gtk_tree_view_column_clear ( )
 
-[gtk_tree_view_column_] add_attribute
--------------------------------------
+[[gtk_] tree_view_column_] add_attribute
+----------------------------------------
 
 Adds an attribute mapping to the list in this tree column. The *$column* is the column of the model to get a value from, and the *$attribute* is the parameter on *$cell_renderer* to be set from the value. So for example if column 2 of the model contains strings, you could have the “text” attribute of a **Gnome::Gtk3::CellRendererText** get its values from column 2.
 
@@ -110,8 +114,8 @@ Adds an attribute mapping to the list in this tree column. The *$column* is the 
 
   * Int $column; The column position on the model to get the attribute from.
 
-[gtk_tree_view_column_] clear_attributes
-----------------------------------------
+[[gtk_] tree_view_column_] clear_attributes
+-------------------------------------------
 
 Clears all existing attributes previously set with `gtk_tree_view_column_set_attributes()`.
 
@@ -121,8 +125,8 @@ Clears all existing attributes previously set with `gtk_tree_view_column_set_att
 
   * Gnome::Gtk3::CellRenderer $cell_renderer; a renderer to clear the attribute mapping on.
 
-[gtk_tree_view_column_] set_spacing
------------------------------------
+[[gtk_] tree_view_column_] set_spacing
+--------------------------------------
 
 Sets the spacing field of this tree column, which is the number of pixels to place between cell renderers packed into it.
 
@@ -130,15 +134,15 @@ Sets the spacing field of this tree column, which is the number of pixels to pla
 
   * Int $spacing; distance between cell renderers in pixels.
 
-[gtk_tree_view_column_] get_spacing
------------------------------------
+[[gtk_] tree_view_column_] get_spacing
+--------------------------------------
 
 Returns the spacing of this tree column.
 
     method gtk_tree_view_column_get_spacing ( --> Int  )
 
-[gtk_tree_view_column_] set_visible
------------------------------------
+[[gtk_] tree_view_column_] set_visible
+--------------------------------------
 
 Sets the visibility of this tree column.
 
@@ -146,15 +150,15 @@ Sets the visibility of this tree column.
 
   * Int $visible; `1` if the tree column is visible.
 
-[gtk_tree_view_column_] get_visible
------------------------------------
+[[gtk_] tree_view_column_] get_visible
+--------------------------------------
 
 Returns `1` if this tree column is visible. If it is visible, then the tree will show the column.
 
     method gtk_tree_view_column_get_visible ( --> Int  )
 
-[gtk_tree_view_column_] set_resizable
--------------------------------------
+[[gtk_] tree_view_column_] set_resizable
+----------------------------------------
 
 If *$resizable* is `1`, then the user can explicitly resize the column by grabbing the outer edge of the column button. If resizable is `1` and sizing mode of the column is **GTK_TREE_VIEW_COLUMN_AUTOSIZE**, then the sizing mode is changed to **GTK_TREE_VIEW_COLUMN_GROW_ONLY**.
 
@@ -162,15 +166,15 @@ If *$resizable* is `1`, then the user can explicitly resize the column by grabbi
 
   * Int $resizable; `1`, if the column can be resized
 
-[gtk_tree_view_column_] get_resizable
--------------------------------------
+[[gtk_] tree_view_column_] get_resizable
+----------------------------------------
 
 Returns `1` if this tree column can be resized by the end user.
 
     method gtk_tree_view_column_get_resizable ( --> Int  )
 
-[gtk_tree_view_column_] set_sizing
-----------------------------------
+[[gtk_] tree_view_column_] set_sizing
+-------------------------------------
 
 Sets the growth behavior of this tree column to *$type*.
 
@@ -178,15 +182,15 @@ Sets the growth behavior of this tree column to *$type*.
 
   * GtkTreeViewColumnSizing $type; An enumeration of types of sizing.
 
-[gtk_tree_view_column_] get_sizing
-----------------------------------
+[[gtk_] tree_view_column_] get_sizing
+-------------------------------------
 
 Returns the current type of this tree column.
 
     method gtk_tree_view_column_get_sizing ( --> GtkTreeViewColumnSizing  )
 
-[gtk_tree_view_column_] get_x_offset
-------------------------------------
+[[gtk_] tree_view_column_] get_x_offset
+---------------------------------------
 
 Returns the current X offset of this tree column in pixels.
 
@@ -194,15 +198,15 @@ Since: 3.2
 
     method gtk_tree_view_column_get_x_offset ( --> Int  )
 
-[gtk_tree_view_column_] get_width
----------------------------------
+[[gtk_] tree_view_column_] get_width
+------------------------------------
 
 Returns the current size of this tree column in pixels.
 
     method gtk_tree_view_column_get_width ( --> Int  )
 
-[gtk_tree_view_column_] get_fixed_width
----------------------------------------
+[[gtk_] tree_view_column_] get_fixed_width
+------------------------------------------
 
 Gets the fixed width of the column. This may not be the actual displayed width of the column; for that, use `gtk_tree_view_column_get_width()`.
 
@@ -210,8 +214,8 @@ Returns: The fixed width of the column.
 
     method gtk_tree_view_column_get_fixed_width ( --> Int  )
 
-[gtk_tree_view_column_] set_fixed_width
----------------------------------------
+[[gtk_] tree_view_column_] set_fixed_width
+------------------------------------------
 
 If *$fixed_width* is not -1, sets the fixed width of this tree column; otherwise unsets it. The effective value of *fixed_width* is clamped between the minimum and maximum width of the column; however, the value stored in the “fixed-width” property is not clamped. If the column sizing is **GTK_TREE_VIEW_COLUMN_GROW_ONLY** or **GTK_TREE_VIEW_COLUMN_AUTOSIZE**, setting a fixed width overrides the automatically calculated width. Note that *$fixed_width* is only a hint to GTK+; the width actually allocated to the column may be greater or less than requested.
 
@@ -221,8 +225,8 @@ Along with “expand”, the “fixed-width” property changes when the column 
 
   * Int $fixed_width; The new fixed width, in pixels, or -1.
 
-[gtk_tree_view_column_] set_min_width
--------------------------------------
+[[gtk_] tree_view_column_] set_min_width
+----------------------------------------
 
 Sets the minimum width of the this tree column. If *$min_width* is -1, then the minimum width is unset.
 
@@ -230,15 +234,15 @@ Sets the minimum width of the this tree column. If *$min_width* is -1, then the 
 
   * Int $min_width; The minimum width of the column in pixels, or -1.
 
-[gtk_tree_view_column_] get_min_width
--------------------------------------
+[[gtk_] tree_view_column_] get_min_width
+----------------------------------------
 
 Returns the minimum width in pixels of the this tree column, or -1 if no minimum width is set.
 
     method gtk_tree_view_column_get_min_width ( --> Int  )
 
-[gtk_tree_view_column_] set_max_width
--------------------------------------
+[[gtk_] tree_view_column_] set_max_width
+----------------------------------------
 
 Sets the maximum width of the this tree column. If *#max_width* is -1, then the maximum width is unset. Note, the column can actually be wider than max width if it’s the last column in a view. In this case, the column expands to fill any extra space.
 
@@ -246,22 +250,22 @@ Sets the maximum width of the this tree column. If *#max_width* is -1, then the 
 
   * Int $max_width; The maximum width of the column in pixels, or -1.
 
-[gtk_tree_view_column_] get_max_width
--------------------------------------
+[[gtk_] tree_view_column_] get_max_width
+----------------------------------------
 
 Returns the maximum width in pixels of the this tree column, or -1 if no maximum width is set.
 
     method gtk_tree_view_column_get_max_width ( --> Int  )
 
-gtk_tree_view_column_clicked
-----------------------------
+[gtk_] tree_view_column_clicked
+-------------------------------
 
 Emits the “clicked” signal on the column. This function will only work if this tree column is clickable.
 
     method gtk_tree_view_column_clicked ( )
 
-[gtk_tree_view_column_] set_title
----------------------------------
+[[gtk_] tree_view_column_] set_title
+------------------------------------
 
 Sets the title of the this tree column. If a custom widget has been set, then this value is ignored.
 
@@ -269,15 +273,15 @@ Sets the title of the this tree column. If a custom widget has been set, then th
 
   * Str $title; The title of the *tree_column*.
 
-[gtk_tree_view_column_] get_title
----------------------------------
+[[gtk_] tree_view_column_] get_title
+------------------------------------
 
 Returns the title of the column.
 
     method gtk_tree_view_column_get_title ( --> Str  )
 
-[gtk_tree_view_column_] set_expand
-----------------------------------
+[[gtk_] tree_view_column_] set_expand
+-------------------------------------
 
 Sets the column to take available extra space. This space is shared equally amongst all columns that have the expand set to `1`. If no column has this option set, then the last column gets all extra space. By default, every column is created with this `0`.
 
@@ -289,8 +293,8 @@ Since: 2.4
 
   * Int $expand; `1` if the column should expand to fill available space.
 
-[gtk_tree_view_column_] get_expand
-----------------------------------
+[[gtk_] tree_view_column_] get_expand
+-------------------------------------
 
 Returns `1` if the column expands to fill available space.
 
@@ -298,8 +302,8 @@ Since: 2.4
 
     method gtk_tree_view_column_get_expand ( --> Int  )
 
-[gtk_tree_view_column_] set_clickable
--------------------------------------
+[[gtk_] tree_view_column_] set_clickable
+----------------------------------------
 
 Sets the header to be active if *$clickable* is `1`. When the header is active, then it can take keyboard focus, and can be clicked.
 
@@ -307,15 +311,15 @@ Sets the header to be active if *$clickable* is `1`. When the header is active, 
 
   * Int $clickable; `1` if the header is active.
 
-[gtk_tree_view_column_] get_clickable
--------------------------------------
+[[gtk_] tree_view_column_] get_clickable
+----------------------------------------
 
 Returns `1` if the user can click on the header for the column.
 
     method gtk_tree_view_column_get_clickable ( --> Int  )
 
-[gtk_tree_view_column_] set_widget
-----------------------------------
+[[gtk_] tree_view_column_] set_widget
+-------------------------------------
 
 Sets the widget in the header to be *$widget*. Normally the header button is set with a **Gnome::Gtk3::Label** set to the title of this tree column.
 
@@ -323,15 +327,15 @@ Sets the widget in the header to be *$widget*. Normally the header button is set
 
   * N-GObject $widget; A child **Gnome::Gtk3::Widget**.
 
-[gtk_tree_view_column_] get_widget
-----------------------------------
+[[gtk_] tree_view_column_] get_widget
+-------------------------------------
 
 Returns the **Gnome::Gtk3::Widget** in the button on the column header. If a custom widget has not been set then `Any` is returned.
 
     method gtk_tree_view_column_get_widget ( --> N-GObject  )
 
-[gtk_tree_view_column_] set_alignment
--------------------------------------
+[[gtk_] tree_view_column_] set_alignment
+----------------------------------------
 
 Sets the alignment of the title or custom widget inside the column header. The alignment determines its location inside the button -- 0.0 for left, 0.5 for center, 1.0 for right.
 
@@ -339,15 +343,15 @@ Sets the alignment of the title or custom widget inside the column header. The a
 
   * Num $xalign; The alignment, which is between [0.0 and 1.0] inclusive.
 
-[gtk_tree_view_column_] get_alignment
--------------------------------------
+[[gtk_] tree_view_column_] get_alignment
+----------------------------------------
 
 Returns the current x alignment of this tree column. This value can range between 0.0 and 1.0.
 
     method gtk_tree_view_column_get_alignment ( --> Num  )
 
-[gtk_tree_view_column_] set_reorderable
----------------------------------------
+[[gtk_] tree_view_column_] set_reorderable
+------------------------------------------
 
 If *reorderable* is `1`, then the column can be reordered by the end user dragging the header.
 
@@ -355,15 +359,15 @@ If *reorderable* is `1`, then the column can be reordered by the end user draggi
 
   * Int $reorderable; `1`, if the column can be reordered.
 
-[gtk_tree_view_column_] get_reorderable
----------------------------------------
+[[gtk_] tree_view_column_] get_reorderable
+------------------------------------------
 
 Returns `1` if this tree column can be reordered by the user.
 
     method gtk_tree_view_column_get_reorderable ( --> Int  )
 
-[gtk_tree_view_column_] set_sort_column_id
-------------------------------------------
+[[gtk_] tree_view_column_] set_sort_column_id
+---------------------------------------------
 
 Sets the logical *$sort_column_id* that this column sorts on when this column is selected for sorting. Doing so makes the column header clickable.
 
@@ -371,15 +375,15 @@ Sets the logical *$sort_column_id* that this column sorts on when this column is
 
   * Int $sort_column_id; The *sort_column_id* of the model to sort on.
 
-[gtk_tree_view_column_] get_sort_column_id
-------------------------------------------
+[[gtk_] tree_view_column_] get_sort_column_id
+---------------------------------------------
 
 Gets the logical sort column id that the model sorts on when this column is selected for sorting. See `gtk_tree_view_column_set_sort_column_id()`.
 
     method gtk_tree_view_column_get_sort_column_id ( --> Int  )
 
-[gtk_tree_view_column_] set_sort_indicator
-------------------------------------------
+[[gtk_] tree_view_column_] set_sort_indicator
+---------------------------------------------
 
 Call this function with a *$setting* of `1` to display an arrow in the header button indicating the column is sorted. Call `gtk_tree_view_column_set_sort_order()` to change the direction of the arrow.
 
@@ -387,15 +391,15 @@ Call this function with a *$setting* of `1` to display an arrow in the header bu
 
   * Int $setting; `1` to display an indicator that the column is sorted
 
-[gtk_tree_view_column_] get_sort_indicator
-------------------------------------------
+[[gtk_] tree_view_column_] get_sort_indicator
+---------------------------------------------
 
 Gets the value set by `gtk_tree_view_column_set_sort_indicator()`.
 
     method gtk_tree_view_column_get_sort_indicator ( --> Int  )
 
-[gtk_tree_view_column_] set_sort_order
---------------------------------------
+[[gtk_] tree_view_column_] set_sort_order
+-----------------------------------------
 
 Changes the appearance of the sort indicator.
 
@@ -407,15 +411,15 @@ The sort indicator changes direction to indicate normal sort or reverse sort. No
 
   * GtkSortType $order; sort order that the sort indicator should indicate
 
-[gtk_tree_view_column_] get_sort_order
---------------------------------------
+[[gtk_] tree_view_column_] get_sort_order
+-----------------------------------------
 
 Gets the value set by `gtk_tree_view_column_set_sort_order()`.
 
     method gtk_tree_view_column_get_sort_order ( --> GtkSortType  )
 
-[gtk_tree_view_column_] cell_set_cell_data
-------------------------------------------
+[[gtk_] tree_view_column_] cell_set_cell_data
+---------------------------------------------
 
 Sets the cell renderer based on this tree column and *$iter*. That is, for every attribute mapping in this tree column, it will get a value from the set column on the *$iter*, and use that value to set the attribute on the cell renderer. This is used primarily by the **Gnome::Gtk3::TreeView**.
 
@@ -432,8 +436,8 @@ Sets the cell renderer based on this tree column and *$iter*. That is, for every
 
   * Int $is_expanded; `1`, if the row has visible children
 
-[gtk_tree_view_column_] cell_get_size
--------------------------------------
+[[gtk_] tree_view_column_] cell_get_size
+----------------------------------------
 
 Obtains the width and height needed to render the column. This is used primarily by the **Gnome::Gtk3::TreeView**.
 
@@ -449,15 +453,15 @@ Obtains the width and height needed to render the column. This is used primarily
 
   * Int $height; (out) (optional): location to return height needed to render a cell, or `Any`
 
-[gtk_tree_view_column_] cell_is_visible
----------------------------------------
+[[gtk_] tree_view_column_] cell_is_visible
+------------------------------------------
 
 Returns `1` if any of the cells packed into this tree column are visible. For this to be meaningful, you must first initialize the cells with `gtk_tree_view_column_cell_set_cell_data()`
 
     method gtk_tree_view_column_cell_is_visible ( --> Int  )
 
-[gtk_tree_view_column_] focus_cell
-----------------------------------
+[[gtk_] tree_view_column_] focus_cell
+-------------------------------------
 
 Sets the current keyboard focus to be at *cell*, if the column contains 2 or more editable and activatable cells.
 
@@ -467,8 +471,8 @@ Since: 2.2
 
   * Gnome::Gtk3::CellRenderer $cell; A cell renderer
 
-[gtk_tree_view_column_] cell_get_position
------------------------------------------
+[[gtk_] tree_view_column_] cell_get_position
+--------------------------------------------
 
 Obtains the horizontal position and size of a cell in a column. If the cell is not found in the column, *start_pos* and *width* are not changed and `0` is returned.
 
@@ -485,8 +489,8 @@ Returns: `1` if *$cell* belongs to this tree column.
 
   * Int $width; (out) (allow-none): return location for the width of *cell*, may be `Any`
 
-[gtk_tree_view_column_] queue_resize
-------------------------------------
+[[gtk_] tree_view_column_] queue_resize
+---------------------------------------
 
 Flags the column, and the cell renderers added to this column, to have their sizes renegotiated.
 
@@ -494,8 +498,8 @@ Since: 2.8
 
     method gtk_tree_view_column_queue_resize ( )
 
-[gtk_tree_view_column_] get_tree_view
--------------------------------------
+[[gtk_] tree_view_column_] get_tree_view
+----------------------------------------
 
 Returns the **Gnome::Gtk3::TreeView** wherein *tree_column* has been inserted. If *column* is currently not inserted in any tree view, `Any` is returned.
 
@@ -503,8 +507,8 @@ Since: 2.12
 
     method gtk_tree_view_column_get_tree_view ( --> N-GObject  )
 
-[gtk_tree_view_column_] get_button
-----------------------------------
+[[gtk_] tree_view_column_] get_button
+-------------------------------------
 
 Returns the button used in the treeview column header
 

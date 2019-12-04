@@ -129,15 +129,15 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_tree_view_new
------------------
+[gtk_] tree_view_new
+--------------------
 
 Creates a new **Gnome::Gtk3::TreeView** widget.
 
     method gtk_tree_view_new ( --> N-GObject  )
 
-[gtk_tree_view_] new_with_model
--------------------------------
+[[gtk_] tree_view_] new_with_model
+----------------------------------
 
 Creates a new **Gnome::Gtk3::TreeView** widget with the model initialized to *model*.
 
@@ -145,8 +145,8 @@ Creates a new **Gnome::Gtk3::TreeView** widget with the model initialized to *mo
 
   * N-GObject $model; the model.
 
-[gtk_tree_view_] get_model
---------------------------
+[[gtk_] tree_view_] get_model
+-----------------------------
 
 Returns the model the **Gnome::Gtk3::TreeView** is based on. Returns `Any` if the model is unset.
 
@@ -154,8 +154,8 @@ Returns: (transfer none) (nullable): A **Gnome::Gtk3::TreeModel**, or `Any` if n
 
     method gtk_tree_view_get_model ( --> N-GObject  )
 
-[gtk_tree_view_] set_model
---------------------------
+[[gtk_] tree_view_] set_model
+-----------------------------
 
 Sets the model for a **Gnome::Gtk3::TreeView**. If the *tree_view* already has a model set, it will remove it before setting the new model. If *model* is `Any`, then it will unset the old model.
 
@@ -163,15 +163,15 @@ Sets the model for a **Gnome::Gtk3::TreeView**. If the *tree_view* already has a
 
   * N-GObject $model; (allow-none): The model.
 
-[gtk_tree_view_] get_headers_visible
-------------------------------------
+[[gtk_] tree_view_] get_headers_visible
+---------------------------------------
 
 Returns `1` if the headers on the *tree_view* are visible.
 
     method gtk_tree_view_get_headers_visible ( --> Int  )
 
-[gtk_tree_view_] set_headers_visible
-------------------------------------
+[[gtk_] tree_view_] set_headers_visible
+---------------------------------------
 
 Sets the visibility state of the headers.
 
@@ -179,15 +179,15 @@ Sets the visibility state of the headers.
 
   * Int $headers_visible; `1` if the headers are visible
 
-[gtk_tree_view_] columns_autosize
----------------------------------
+[[gtk_] tree_view_] columns_autosize
+------------------------------------
 
 Resizes all columns to their optimal width. Only works after the treeview has been realized.
 
     method gtk_tree_view_columns_autosize ( )
 
-[gtk_tree_view_] get_headers_clickable
---------------------------------------
+[[gtk_] tree_view_] get_headers_clickable
+-----------------------------------------
 
 Returns `1` if all header columns are clickable, otherwise `0`
 
@@ -195,8 +195,8 @@ Since: 2.10
 
     method gtk_tree_view_get_headers_clickable ( --> Int  )
 
-[gtk_tree_view_] set_headers_clickable
---------------------------------------
+[[gtk_] tree_view_] set_headers_clickable
+-----------------------------------------
 
 Allow the column title buttons to be clicked.
 
@@ -204,8 +204,8 @@ Allow the column title buttons to be clicked.
 
   * Int $setting; `1` if the columns are clickable.
 
-[gtk_tree_view_] get_activate_on_single_click
----------------------------------------------
+[[gtk_] tree_view_] get_activate_on_single_click
+------------------------------------------------
 
 Gets the setting set by `gtk_tree_view_set_activate_on_single_click()`. The method returns `1` if row-activated will be emitted on a single click.
 
@@ -213,8 +213,8 @@ Since: 3.8
 
     method gtk_tree_view_get_activate_on_single_click ( --> Int  )
 
-[gtk_tree_view_] set_activate_on_single_click
----------------------------------------------
+[[gtk_] tree_view_] set_activate_on_single_click
+------------------------------------------------
 
 Cause the *row-activated* signal to be emitted on a single click instead of a double click.
 
@@ -224,8 +224,8 @@ Since: 3.8
 
   * Int $single; `1` to emit row-activated on a single click
 
-[gtk_tree_view_] append_column
-------------------------------
+[[gtk_] tree_view_] append_column
+---------------------------------
 
 Appends *$column* to the list of columns. If this tree view has “fixed_height” mode enabled, then *$column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
@@ -238,8 +238,8 @@ Returns: The number of columns in *tree_view* after appending.
 
   * Gnome::Gtk3::TreeViewColumn $column; The column to add.
 
-[gtk_tree_view_] remove_column
-------------------------------
+[[gtk_] tree_view_] remove_column
+---------------------------------
 
 Removes *column* from *tree_view*.
 
@@ -249,8 +249,8 @@ Returns: The number of columns in *tree_view* after removing.
 
   * N-GObject $column; The **Gnome::Gtk3::TreeViewColumn** to remove.
 
-[gtk_tree_view_] insert_column
-------------------------------
+[[gtk_] tree_view_] insert_column
+---------------------------------
 
 This inserts the *column* into the *tree_view* at *position*. If *position* is -1, then the column is inserted at the end. If *tree_view* has “fixed_height” mode enabled, then *column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
 
@@ -283,8 +283,8 @@ Returns: The number of columns in this treeview after insertion.
 
     * Gnome::Gtk3::CellRenderer $cell; The cell renderer
 
-[gtk_tree_view_] get_n_columns
-------------------------------
+[[gtk_] tree_view_] get_n_columns
+---------------------------------
 
 Queries the number of columns in the given *tree_view*.
 
@@ -294,8 +294,8 @@ Since: 3.4
 
     method gtk_tree_view_get_n_columns ( --> UInt  )
 
-[gtk_tree_view_] get_column
----------------------------
+[[gtk_] tree_view_] get_column
+------------------------------
 
 Gets the **Gnome::Gtk3::TreeViewColumn** at the given position in the **tree_view** or undefined if the position is outside the range of columns.
 
@@ -303,8 +303,8 @@ Gets the **Gnome::Gtk3::TreeViewColumn** at the given position in the **tree_vie
 
   * Int $n; The position of the column, counting from 0.
 
-[gtk_tree_view_] get_columns
-----------------------------
+[[gtk_] tree_view_] get_columns
+-------------------------------
 
 Returns a **GList** of all the **Gnome::Gtk3::TreeViewColumn** s currently in *tree_view*. The returned list must be freed with `g_list_free()`.
 
@@ -312,8 +312,8 @@ Returns: (element-type **Gnome::Gtk3::TreeViewColumn**) (transfer container): A 
 
     method gtk_tree_view_get_columns ( --> N-GList  )
 
-[gtk_tree_view_] move_column_after
-----------------------------------
+[[gtk_] tree_view_] move_column_after
+-------------------------------------
 
 Moves *column* to be after to *base_column*. If *base_column* is `Any`, then *column* is placed in the first position.
 
@@ -323,8 +323,8 @@ Moves *column* to be after to *base_column*. If *base_column* is `Any`, then *co
 
   * N-GObject $base_column; (allow-none): The **Gnome::Gtk3::TreeViewColumn** to be moved relative to, or `Any`.
 
-[gtk_tree_view_] set_expander_column
-------------------------------------
+[[gtk_] tree_view_] set_expander_column
+---------------------------------------
 
 Sets the column to draw the expander arrow at. It must be in *tree_view*. If *column* is `Any`, then the expander arrow is always at the first visible column.
 
@@ -334,8 +334,8 @@ If you do not want expander arrow to appear in your tree, set the expander colum
 
   * N-GObject $column; `Any`, or the column to draw the expander arrow at.
 
-[gtk_tree_view_] get_expander_column
-------------------------------------
+[[gtk_] tree_view_] get_expander_column
+---------------------------------------
 
 Returns the column that is the current expander column. This column has the expander arrow drawn next to it.
 
@@ -343,8 +343,8 @@ Returns: (transfer none): The expander column.
 
     method gtk_tree_view_get_expander_column ( --> N-GObject  )
 
-[gtk_tree_view_] scroll_to_point
---------------------------------
+[[gtk_] tree_view_] scroll_to_point
+-----------------------------------
 
 Scrolls the tree view such that the top-left corner of the visible area is *tree_x*, *tree_y*, where *tree_x* and *tree_y* are specified in tree coordinates. The *tree_view* must be realized before this function is called. If it isn't, you probably want to be using `gtk_tree_view_scroll_to_cell()`.
 
@@ -356,22 +356,22 @@ If either *tree_x* or *tree_y* are -1, then that direction isn’t scrolled.
 
   * Int $tree_y; Y coordinate of new top-left pixel of visible area, or -1
 
-[gtk_tree_view_] expand_all
----------------------------
+[[gtk_] tree_view_] expand_all
+------------------------------
 
 Recursively expands all nodes in the *tree_view*.
 
     method gtk_tree_view_expand_all ( )
 
-[gtk_tree_view_] collapse_all
------------------------------
+[[gtk_] tree_view_] collapse_all
+--------------------------------
 
 Recursively collapses all visible, expanded nodes in *tree_view*.
 
     method gtk_tree_view_collapse_all ( )
 
-[gtk_tree_view_] set_reorderable
---------------------------------
+[[gtk_] tree_view_] set_reorderable
+-----------------------------------
 
 This function is a convenience function to allow you to reorder models that support the **Gnome::Gtk3::TreeDragSourceIface** and the **Gnome::Gtk3::TreeDragDestIface**. Both **Gnome::Gtk3::TreeStore** and **Gnome::Gtk3::ListStore** support these. If *reorderable* is `1`, then the user can reorder the model by dragging and dropping rows. The developer can listen to these changes by connecting to the model’s *row-inserted* and *row-deleted* signals. The reordering is implemented by setting up the tree view as a drag source and destination. Therefore, drag and drop can not be used in a reorderable view for any other purpose.
 
@@ -381,8 +381,8 @@ This function does not give you any degree of control over the order -- any reor
 
   * Int $reorderable; `1`, if the tree can be reordered.
 
-[gtk_tree_view_] get_reorderable
---------------------------------
+[[gtk_] tree_view_] get_reorderable
+-----------------------------------
 
 Retrieves whether the user can reorder the tree via drag-and-drop. See `gtk_tree_view_set_reorderable()`.
 
@@ -390,8 +390,8 @@ Returns: `1` if the tree can be reordered.
 
     method gtk_tree_view_get_reorderable ( --> Int  )
 
-[gtk_tree_view_] get_bin_window
--------------------------------
+[[gtk_] tree_view_] get_bin_window
+----------------------------------
 
 Returns the window that *tree_view* renders to. This is used primarily to compare to `event->window` to confirm that the event on *tree_view* is on the right window.
 
@@ -399,8 +399,8 @@ Returns: (nullable) (transfer none): A **Gnome::Gdk3::Window**, or `Any` when *t
 
     method gtk_tree_view_get_bin_window ( --> N-GObject  )
 
-[gtk_tree_view_] get_visible_rect
----------------------------------
+[[gtk_] tree_view_] get_visible_rect
+------------------------------------
 
 Fills *visible_rect* with the currently-visible region of the buffer, in tree coordinates. Convert to bin_window coordinates with `gtk_tree_view_convert_tree_to_bin_window_coords()`. Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire scrollable area of the tree.
 
@@ -408,22 +408,22 @@ Fills *visible_rect* with the currently-visible region of the buffer, in tree co
 
   * N-GObject $visible_rect; (out): rectangle to fill
 
-[gtk_tree_view_] unset_rows_drag_source
----------------------------------------
+[[gtk_] tree_view_] unset_rows_drag_source
+------------------------------------------
 
 Undoes the effect of `gtk_tree_view_enable_model_drag_source()`. Calling this method sets *reorderable* to `0`.
 
     method gtk_tree_view_unset_rows_drag_source ( )
 
-[gtk_tree_view_] unset_rows_drag_dest
--------------------------------------
+[[gtk_] tree_view_] unset_rows_drag_dest
+----------------------------------------
 
 Undoes the effect of `gtk_tree_view_enable_model_drag_dest()`. Calling this method sets *reorderable* to `0`.
 
     method gtk_tree_view_unset_rows_drag_dest ( )
 
-[gtk_tree_view_] set_enable_search
-----------------------------------
+[[gtk_] tree_view_] set_enable_search
+-------------------------------------
 
 If *enable_search* is set, then the user can type in text to search through the tree interactively (this is sometimes called "typeahead find").
 
@@ -433,8 +433,8 @@ Note that even if this is `0`, the user can still initiate a search using the �
 
   * Int $enable_search; `1`, if the user can search interactively
 
-[gtk_tree_view_] get_enable_search
-----------------------------------
+[[gtk_] tree_view_] get_enable_search
+-------------------------------------
 
 Returns whether or not the tree allows to start interactive searching by typing in text.
 
@@ -442,8 +442,8 @@ Returns: whether or not to let the user search interactively
 
     method gtk_tree_view_get_enable_search ( --> Int  )
 
-[gtk_tree_view_] get_search_column
-----------------------------------
+[[gtk_] tree_view_] get_search_column
+-------------------------------------
 
 Gets the column searched on by the interactive search code.
 
@@ -451,8 +451,8 @@ Returns: the column the interactive search code searches in.
 
     method gtk_tree_view_get_search_column ( --> Int  )
 
-[gtk_tree_view_] set_search_column
-----------------------------------
+[[gtk_] tree_view_] set_search_column
+-------------------------------------
 
 Sets *column* as the column where the interactive search code should search in for the current model.
 
@@ -464,8 +464,8 @@ Note that *column* refers to a column of the current model. The search column is
 
   * Int $column; the column of the model to search in, or -1 to disable searching
 
-[gtk_tree_view_] get_search_entry
----------------------------------
+[[gtk_] tree_view_] get_search_entry
+------------------------------------
 
 Returns the **Gnome::Gtk3::Entry** which is currently in use as interactive search entry for *tree_view*. In case the built-in entry is being used, `Any` will be returned.
 
@@ -475,8 +475,8 @@ Since: 2.10
 
     method gtk_tree_view_get_search_entry ( --> N-GObject  )
 
-[gtk_tree_view_] set_search_entry
----------------------------------
+[[gtk_] tree_view_] set_search_entry
+------------------------------------
 
 Sets the entry which the interactive search code will use for this *tree_view*. This is useful when you want to provide a search entry in our interface at all time at a fixed position. Passing `Any` for *entry* will make the interactive search code use the built-in popup entry again.
 
@@ -486,8 +486,8 @@ Since: 2.10
 
   * N-GObject $entry; (allow-none): the entry the interactive search code of *tree_view* should use or `Any`
 
-[gtk_tree_view_] convert_widget_to_tree_coords
-----------------------------------------------
+[[gtk_] tree_view_] convert_widget_to_tree_coords
+-------------------------------------------------
 
 Converts widget coordinates to coordinates for the tree (the full scrollable area of the tree).
 
@@ -503,8 +503,8 @@ Since: 2.12
 
   * Int $ty; (out): return location for tree Y coordinate
 
-[gtk_tree_view_] convert_tree_to_widget_coords
-----------------------------------------------
+[[gtk_] tree_view_] convert_tree_to_widget_coords
+-------------------------------------------------
 
 Converts tree coordinates (coordinates in full scrollable area of the tree) to widget coordinates.
 
@@ -520,8 +520,8 @@ Since: 2.12
 
   * Int $wy; (out): return location for widget Y coordinate
 
-[gtk_tree_view_] convert_widget_to_bin_window_coords
-----------------------------------------------------
+[[gtk_] tree_view_] convert_widget_to_bin_window_coords
+-------------------------------------------------------
 
 Converts widget coordinates to coordinates for the bin_window (see `gtk_tree_view_get_bin_window()`).
 
@@ -537,8 +537,8 @@ Since: 2.12
 
   * Int $by; (out): return location for bin_window Y coordinate
 
-[gtk_tree_view_] convert_bin_window_to_widget_coords
-----------------------------------------------------
+[[gtk_] tree_view_] convert_bin_window_to_widget_coords
+-------------------------------------------------------
 
 Converts bin_window coordinates (see `gtk_tree_view_get_bin_window()`) to widget relative coordinates.
 
@@ -554,8 +554,8 @@ Since: 2.12
 
   * Int $wy; (out): return location for widget Y coordinate
 
-[gtk_tree_view_] convert_tree_to_bin_window_coords
---------------------------------------------------
+[[gtk_] tree_view_] convert_tree_to_bin_window_coords
+-----------------------------------------------------
 
 Converts tree coordinates (coordinates in full scrollable area of the tree) to bin_window coordinates.
 
@@ -571,8 +571,8 @@ Since: 2.12
 
   * Int $by; (out): return location for Y coordinate relative to bin_window
 
-[gtk_tree_view_] convert_bin_window_to_tree_coords
---------------------------------------------------
+[[gtk_] tree_view_] convert_bin_window_to_tree_coords
+-----------------------------------------------------
 
 Converts bin_window coordinates to coordinates for the tree (the full scrollable area of the tree).
 
@@ -588,8 +588,8 @@ Since: 2.12
 
   * Int $ty; (out): return location for tree Y coordinate
 
-[gtk_tree_view_] set_fixed_height_mode
---------------------------------------
+[[gtk_] tree_view_] set_fixed_height_mode
+-----------------------------------------
 
 Enables or disables the fixed height mode of *tree_view*. Fixed height mode speeds up **Gnome::Gtk3::TreeView** by assuming that all rows have the same height. Only enable this option if all rows are the same height and all columns are of type `GTK_TREE_VIEW_COLUMN_FIXED`.
 
@@ -599,8 +599,8 @@ Since: 2.6
 
   * Int $enable; `1` to enable fixed height mode
 
-[gtk_tree_view_] get_fixed_height_mode
---------------------------------------
+[[gtk_] tree_view_] get_fixed_height_mode
+-----------------------------------------
 
 Returns whether fixed height mode is turned on for *tree_view*.
 
@@ -610,8 +610,8 @@ Since: 2.6
 
     method gtk_tree_view_get_fixed_height_mode ( --> Int  )
 
-[gtk_tree_view_] set_hover_selection
-------------------------------------
+[[gtk_] tree_view_] set_hover_selection
+---------------------------------------
 
 Enables or disables the hover selection mode of *tree_view*. Hover selection makes the selected row follow the pointer. Currently, this works only for the selection modes `GTK_SELECTION_SINGLE` and `GTK_SELECTION_BROWSE`.
 
@@ -621,8 +621,8 @@ Since: 2.6
 
   * Int $hover; `1` to enable hover selection mode
 
-[gtk_tree_view_] get_hover_selection
-------------------------------------
+[[gtk_] tree_view_] get_hover_selection
+---------------------------------------
 
 Returns whether hover selection mode is turned on for *tree_view*.
 
@@ -632,8 +632,8 @@ Since: 2.6
 
     method gtk_tree_view_get_hover_selection ( --> Int  )
 
-[gtk_tree_view_] set_hover_expand
----------------------------------
+[[gtk_] tree_view_] set_hover_expand
+------------------------------------
 
 Enables or disables the hover expansion mode of *tree_view*. Hover expansion makes rows expand or collapse if the pointer moves over them.
 
@@ -643,8 +643,8 @@ Since: 2.6
 
   * Int $expand; `1` to enable hover selection mode
 
-[gtk_tree_view_] get_hover_expand
----------------------------------
+[[gtk_] tree_view_] get_hover_expand
+------------------------------------
 
 Returns whether hover expansion mode is turned on for *tree_view*.
 
@@ -654,8 +654,8 @@ Since: 2.6
 
     method gtk_tree_view_get_hover_expand ( --> Int  )
 
-[gtk_tree_view_] set_rubber_banding
------------------------------------
+[[gtk_] tree_view_] set_rubber_banding
+--------------------------------------
 
 Enables or disables rubber banding in *tree_view*. If the selection mode is **GTK_SELECTION_MULTIPLE**, rubber banding will allow the user to select multiple rows by dragging the mouse.
 
@@ -665,8 +665,8 @@ Since: 2.10
 
   * Int $enable; `1` to enable rubber banding
 
-[gtk_tree_view_] get_rubber_banding
------------------------------------
+[[gtk_] tree_view_] get_rubber_banding
+--------------------------------------
 
 Returns whether rubber banding is turned on for *tree_view*. If the selection mode is **GTK_SELECTION_MULTIPLE**, rubber banding will allow the user to select multiple rows by dragging the mouse.
 
@@ -676,8 +676,8 @@ Since: 2.10
 
     method gtk_tree_view_get_rubber_banding ( --> Int  )
 
-[gtk_tree_view_] is_rubber_banding_active
------------------------------------------
+[[gtk_] tree_view_] is_rubber_banding_active
+--------------------------------------------
 
 Returns whether a rubber banding operation is currently being done in *tree_view*.
 
@@ -687,8 +687,8 @@ Since: 2.12
 
     method gtk_tree_view_is_rubber_banding_active ( --> Int  )
 
-[gtk_tree_view_] get_enable_tree_lines
---------------------------------------
+[[gtk_] tree_view_] get_enable_tree_lines
+-----------------------------------------
 
 Returns whether or not tree lines are drawn in *tree_view*.
 
@@ -698,8 +698,8 @@ Since: 2.10
 
     method gtk_tree_view_get_enable_tree_lines ( --> Int  )
 
-[gtk_tree_view_] set_enable_tree_lines
---------------------------------------
+[[gtk_] tree_view_] set_enable_tree_lines
+-----------------------------------------
 
 Sets whether to draw lines interconnecting the expanders in *tree_view*. This does not have any visible effects for lists.
 
@@ -709,8 +709,8 @@ Since: 2.10
 
   * Int $enabled; `1` to enable tree line drawing, `0` otherwise.
 
-[gtk_tree_view_] set_show_expanders
------------------------------------
+[[gtk_] tree_view_] set_show_expanders
+--------------------------------------
 
 Sets whether to draw and enable expanders and indent child rows in *tree_view*. When disabled there will be no expanders visible in trees and there will be no way to expand and collapse rows by default. Also note that hiding the expanders will disable the default indentation. You can set a custom indentation in this case using `gtk_tree_view_set_level_indentation()`. This does not have any visible effects for lists.
 
@@ -720,8 +720,8 @@ Since: 2.12
 
   * Int $enabled; `1` to enable expander drawing, `0` otherwise.
 
-[gtk_tree_view_] get_show_expanders
------------------------------------
+[[gtk_] tree_view_] get_show_expanders
+--------------------------------------
 
 Returns whether or not expanders are drawn in *tree_view*.
 
@@ -731,8 +731,8 @@ Since: 2.12
 
     method gtk_tree_view_get_show_expanders ( --> Int  )
 
-[gtk_tree_view_] set_level_indentation
---------------------------------------
+[[gtk_] tree_view_] set_level_indentation
+-----------------------------------------
 
 Sets the amount of extra indentation for child levels to use in *tree_view* in addition to the default indentation. The value should be specified in pixels, a value of 0 disables this feature and in this case only the default indentation will be used. This does not have any visible effects for lists.
 
@@ -742,8 +742,8 @@ Since: 2.12
 
   * Int $indentation; the amount, in pixels, of extra indentation in *tree_view*.
 
-[gtk_tree_view_] get_level_indentation
---------------------------------------
+[[gtk_] tree_view_] get_level_indentation
+-----------------------------------------
 
 Returns the amount, in pixels, of extra indentation for child levels in *tree_view*.
 
@@ -753,8 +753,8 @@ Since: 2.12
 
     method gtk_tree_view_get_level_indentation ( --> Int  )
 
-[gtk_tree_view_] set_tooltip_column
------------------------------------
+[[gtk_] tree_view_] set_tooltip_column
+--------------------------------------
 
 If you only plan to have simple (text-only) tooltips on full rows, you can use this function to have **Gnome::Gtk3::TreeView** handle these automatically for you. *column* should be set to the column in *tree_view*’s model containing the tooltip texts, or -1 to disable this feature.
 
@@ -768,8 +768,8 @@ Since: 2.12
 
   * Int $column; an integer, which is a valid column number for *tree_view*’s model
 
-[gtk_tree_view_] get_tooltip_column
------------------------------------
+[[gtk_] tree_view_] get_tooltip_column
+--------------------------------------
 
 Returns the column of *tree_view*’s model which is being used for displaying tooltips on *tree_view*’s rows.
 

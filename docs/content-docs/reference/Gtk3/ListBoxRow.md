@@ -67,8 +67,8 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 
     multi method new ( N-GObject :$widget! )
 
-gtk_list_box_row_new
---------------------
+[gtk_] list_box_row_new
+-----------------------
 
 Creates a new **Gnome::Gtk3::ListBoxRow**, to be used as a child of a **Gnome::Gtk3::ListBox**.
 
@@ -78,8 +78,8 @@ Since: 3.10
 
     method gtk_list_box_row_new ( --> N-GObject  )
 
-[gtk_list_box_row_] get_header
-------------------------------
+[[gtk_] list_box_row_] get_header
+---------------------------------
 
 Returns the current header of the *row*. This can be used in a **Gnome::Gtk3::ListBoxUpdateHeaderFunc** to see if there is a header set already, and if so to update the state of it.
 
@@ -89,8 +89,8 @@ Since: 3.10
 
     method gtk_list_box_row_get_header ( --> N-GObject  )
 
-[gtk_list_box_row_] set_header
-------------------------------
+[[gtk_] list_box_row_] set_header
+---------------------------------
 
 Sets the current header of the *row*. This is only allowed to be called from a **Gnome::Gtk3::ListBoxUpdateHeaderFunc**. It will replace any existing header in the row, and be shown in front of the row in the listbox.
 
@@ -100,8 +100,8 @@ Since: 3.10
 
   * N-GObject $header; (allow-none): the header, or `Any`
 
-[gtk_list_box_row_] get_index
------------------------------
+[[gtk_] list_box_row_] get_index
+--------------------------------
 
 Gets the current index of the *row* in its **Gnome::Gtk3::ListBox** container.
 
@@ -111,8 +111,8 @@ Since: 3.10
 
     method gtk_list_box_row_get_index ( --> Int )
 
-[gtk_list_box_row_] changed
----------------------------
+[[gtk_] list_box_row_] changed
+------------------------------
 
 Marks *row* as changed, causing any state that depends on this to be updated. This affects sorting, filtering and headers.
 
@@ -124,8 +124,8 @@ Since: 3.10
 
     method gtk_list_box_row_changed ( )
 
-[gtk_list_box_row_] is_selected
--------------------------------
+[[gtk_] list_box_row_] is_selected
+----------------------------------
 
 Returns whether the child is currently selected in its **Gnome::Gtk3::ListBox** container.
 
@@ -135,8 +135,8 @@ Since: 3.14
 
     method gtk_list_box_row_is_selected ( --> Int  )
 
-[gtk_list_box_row_] set_selectable
-----------------------------------
+[[gtk_] list_box_row_] set_selectable
+-------------------------------------
 
 Set the *selectable* property for this row.
 
@@ -146,8 +146,8 @@ Since: 3.14
 
   * Int $selectable; `1` to mark the row as selectable
 
-[gtk_list_box_row_] get_selectable
-----------------------------------
+[[gtk_] list_box_row_] get_selectable
+-------------------------------------
 
 Gets the value of the *selectable* property for this row.
 
@@ -157,8 +157,8 @@ Since: 3.14
 
     method gtk_list_box_row_get_selectable ( --> Int  )
 
-[gtk_list_box_row_] set_activatable
------------------------------------
+[[gtk_] list_box_row_] set_activatable
+--------------------------------------
 
 Set the *activatable* property for this row.
 
@@ -168,8 +168,8 @@ Since: 3.14
 
   * Int $activatable; `1` to mark the row as activatable
 
-[gtk_list_box_row_] get_activatable
------------------------------------
+[[gtk_] list_box_row_] get_activatable
+--------------------------------------
 
 Gets the value of the *activatable* property for this row.
 

@@ -26,8 +26,8 @@ Declaration
 Methods
 =======
 
-[gtk_buildable_] set_name
--------------------------
+[[gtk_] buildable_] set_name
+----------------------------
 
 Sets the name of the *buildable* object.
 
@@ -37,8 +37,8 @@ Since: 2.12
 
   * Str $name; name to set
 
-[gtk_buildable_] get_name
--------------------------
+[[gtk_] buildable_] get_name
+----------------------------
 
 Gets the name of the *buildable* object.
 
@@ -50,8 +50,8 @@ Since: 2.12
 
     method gtk_buildable_get_name ( --> Str  )
 
-[gtk_buildable_] add_child
---------------------------
+[[gtk_] buildable_] add_child
+-----------------------------
 
 Adds a child to *buildable*. *type* is an optional string describing how the child should be added.
 
@@ -65,8 +65,8 @@ Since: 2.12
 
   * Str $type; (allow-none): kind of child or `Any`
 
-[gtk_buildable_] set_buildable_property
----------------------------------------
+[[gtk_] buildable_] set_buildable_property
+------------------------------------------
 
 Sets the property name *name* to *value* on the *buildable* object.
 
@@ -80,8 +80,8 @@ Since: 2.12
 
   * N-GObject $value; value of property
 
-[gtk_buildable_] construct_child
---------------------------------
+[[gtk_] buildable_] construct_child
+-----------------------------------
 
 Constructs a child of *buildable* with the name *name*.
 
@@ -97,8 +97,8 @@ Since: 2.12
 
   * Str $name; name of child to construct
 
-[gtk_buildable_] custom_tag_end
--------------------------------
+[[gtk_] buildable_] custom_tag_end
+----------------------------------
 
 This is called at the end of each custom element handled by the buildable.
 
@@ -114,8 +114,8 @@ Since: 2.12
 
   * Pointer $data; (type gpointer): user data that will be passed in to parser functions
 
-[gtk_buildable_] custom_finished
---------------------------------
+[[gtk_] buildable_] custom_finished
+-----------------------------------
 
 This is similar to `gtk_buildable_parser_finished()` but is called once for each custom tag handled by the *buildable*.
 
@@ -131,8 +131,8 @@ Since: 2.12
 
   * Pointer $data; user data created in custom_tag_start
 
-[gtk_buildable_] parser_finished
---------------------------------
+[[gtk_] buildable_] parser_finished
+-----------------------------------
 
 Called when the builder finishes the parsing of a [**Gnome::Gtk3::Builder** UI definition][BUILDER-UI]. Note that this will be called once for each time `gtk_builder_add_from_file()` or `gtk_builder_add_from_string()` is called on a builder.
 
@@ -142,8 +142,8 @@ Since: 2.12
 
   * N-GObject $builder; a **Gnome::Gtk3::Builder**
 
-[gtk_buildable_] get_internal_child
------------------------------------
+[[gtk_] buildable_] get_internal_child
+--------------------------------------
 
 Get the internal child called *childname* of the *buildable* object.
 

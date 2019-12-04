@@ -227,7 +227,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_list_store_new:new(:field-types)
 =begin pod
-=head2 gtk_list_store_new
+=head2 [gtk_] list_store_new
 
 Creates a new list store with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
 
@@ -274,7 +274,7 @@ sub gtk_list_store_new ( *@column-types --> N-GObject ) {
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_list_store_newv:
 =begin pod
-=head2 gtk_list_store_newv
+=head2 [gtk_] list_store_newv
 
 Non-vararg creation function.  Used primarily by language bindings.
 
@@ -311,7 +311,7 @@ sub _gtk_list_store_newv ( int32 $n_columns, CArray[int32] $types )
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_list_store_set_column_types:
 =begin pod
-=head2 [gtk_list_store_] set_column_types
+=head2 [[gtk_] list_store_] set_column_types
 
 This function is meant primarily for B<GObjects> that inherit from B<Gnome::Gtk3::ListStore>,
 and should only be used when constructing a new B<Gnome::Gtk3::ListStore>.  It will not
@@ -333,7 +333,7 @@ sub gtk_list_store_set_column_types ( N-GObject $list_store, int32 $n_columns, i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_set_value:
 =begin pod
-=head2 [gtk_list_store_] set_value
+=head2 [[gtk_] list_store_] set_value
 
 Sets the data in the cell specified by I<$iter> and I<$column>. The type of I<$value> must be convertible to the type of the column.
 
@@ -396,7 +396,7 @@ sub gtk_list_store_set_value (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_set:
 =begin pod
-=head2 gtk_list_store_set
+=head2 [gtk_] list_store_set
 
 Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type C<G_TYPE_STRING> to “Foo”, you would write C<$ls.gtk_list_store_set( $iter, 0, "Foo")>.
 
@@ -466,7 +466,7 @@ sub gtk_list_store_set (
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_list_store_set_valuesv:
 =begin pod
-=head2 [gtk_list_store_] set_valuesv
+=head2 [[gtk_] list_store_] set_valuesv
 
 A variant of C<gtk_list_store_set_valist()> which
 takes the columns and values as two arrays, instead of
@@ -494,7 +494,7 @@ sub gtk_list_store_set_valuesv ( N-GObject $list_store, N-GtkTreeIter $iter, int
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_list_store_set_valist:
 =begin pod
-=head2 [gtk_list_store_] set_valist
+=head2 [[gtk_] list_store_] set_valist
 
 See C<gtk_list_store_set()>; this version takes a va_list for use by language
 bindings.
@@ -515,7 +515,7 @@ sub gtk_list_store_set_valist ( N-GObject $list_store, N-GtkTreeIter $iter, va_l
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_remove:
 =begin pod
-=head2 gtk_list_store_remove
+=head2 [gtk_] list_store_remove
 
 Removes the given row from the list store.  After being removed, the returned iterator is set to be the next valid row, or invalidated if it pointed to the last row in the list_store.
 
@@ -545,7 +545,7 @@ sub _gtk_list_store_remove ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert:
 =begin pod
-=head2 gtk_list_store_insert
+=head2 [gtk_] list_store_insert
 
 Creates a new row at I<$position>. The returned iterator will be changed to point to this new row.  If I<$position> is -1 or is larger than the number of rows on the list, then the new row will be appended to the list. The row will be empty after this function is called.  To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -573,7 +573,7 @@ sub _gtk_list_store_insert (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert_before:
 =begin pod
-=head2 [gtk_list_store_] insert_before
+=head2 [[gtk_] list_store_] insert_before
 
 Inserts a new row before I<$sibling>. If I<$sibling> is C<Any>, then the row will be appended to the end of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -607,7 +607,7 @@ sub _gtk_list_store_insert_before (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_insert_after:
 =begin pod
-=head2 [gtk_list_store_] insert_after
+=head2 [[gtk_] list_store_] insert_after
 
 Inserts a new row after I<$sibling>. If I<$sibling> is C<Any>, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -641,7 +641,7 @@ sub _gtk_list_store_insert_after (
 #-------------------------------------------------------------------------------
 #TM:1::gtk_list_store_insert_with_values
 =begin pod
-=head2 [gtk_list_store_] insert_with_values
+=head2 [[gtk_] list_store_] insert_with_values
 
 Creates a new row at I<position>. I<iter> will be changed to point to this new row. If I<position> is -1, or larger than the number of rows in the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
@@ -734,7 +734,7 @@ sub gtk_list_store_insert_with_values (
 #-------------------------------------------------------------------------------
 # TM:FF:gtk_list_store_insert_with_valuesv:
 =begin pod
-=head2 [gtk_list_store_] insert_with_valuesv
+=head2 [[gtk_] list_store_] insert_with_valuesv
 
 A variant of C<gtk_list_store_insert_with_values()> which
 takes the columns and values as two arrays, instead of
@@ -761,7 +761,7 @@ sub gtk_list_store_insert_with_valuesv ( N-GObject $list_store, N-GtkTreeIter $i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_prepend:
 =begin pod
-=head2 gtk_list_store_prepend
+=head2 [gtk_] list_store_prepend
 
 Prepends a new row to the list store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -785,7 +785,7 @@ sub _gtk_list_store_prepend ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_append:
 =begin pod
-=head2 gtk_list_store_append
+=head2 [gtk_] list_store_append
 
 Appends a new row to the list_store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called.  To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
@@ -811,7 +811,7 @@ sub _gtk_list_store_append ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_list_store_clear:
 =begin pod
-=head2 gtk_list_store_clear
+=head2 [gtk_] list_store_clear
 
 Removes all rows from the list store.
 
@@ -827,7 +827,7 @@ sub gtk_list_store_clear ( N-GObject $list_store )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_iter_is_valid:
 =begin pod
-=head2 [gtk_list_store_] iter_is_valid
+=head2 [[gtk_] list_store_] iter_is_valid
 
 WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
@@ -851,7 +851,7 @@ sub gtk_list_store_iter_is_valid ( N-GObject $list_store, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_reorder:
 =begin pod
-=head2 gtk_list_store_reorder
+=head2 [gtk_] list_store_reorder
 
 Reorders I<store> to follow the order indicated by I<new_order>. Note that
 this function only works with unsorted stores.
@@ -871,7 +871,7 @@ sub gtk_list_store_reorder ( N-GObject $store, int32 $new_order )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_swap:
 =begin pod
-=head2 gtk_list_store_swap
+=head2 [gtk_] list_store_swap
 
 Swaps I<a> and I<b> in I<store>. Note that this function only works with
 unsorted stores.
@@ -892,7 +892,7 @@ sub gtk_list_store_swap ( N-GObject $store, N-GtkTreeIter $a, N-GtkTreeIter $b )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_move_after:
 =begin pod
-=head2 [gtk_list_store_] move_after
+=head2 [[gtk_] list_store_] move_after
 
 Moves I<iter> in I<store> to the position after I<position>. Note that this
 function only works with unsorted stores. If I<position> is C<Any>, I<iter>
@@ -914,7 +914,7 @@ sub gtk_list_store_move_after ( N-GObject $store, N-GtkTreeIter $iter, N-GtkTree
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_move_before:
 =begin pod
-=head2 [gtk_list_store_] move_before
+=head2 [[gtk_] list_store_] move_before
 
 Moves I<iter> in I<store> to the position before I<position>. Note that this
 function only works with unsorted stores. If I<position> is C<Any>, I<iter>

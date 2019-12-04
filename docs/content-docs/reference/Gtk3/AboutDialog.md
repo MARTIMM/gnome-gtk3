@@ -107,8 +107,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_about_dialog_new
---------------------
+[gtk_] about_dialog_new
+-----------------------
 
 Creates a new **Gnome::Gtk3::AboutDialog**.
 
@@ -120,8 +120,8 @@ Since: 2.6
 
 Returns N-GObject; a newly created native `GtkAboutDialog`
 
-[gtk_about_dialog_] get_program_name
-------------------------------------
+[[gtk_] about_dialog_] get_program_name
+---------------------------------------
 
 Returns the program name displayed in the about dialog.
 
@@ -131,8 +131,8 @@ Since: 2.12
 
     method gtk_about_dialog_get_program_name ( --> Str  )
 
-[gtk_about_dialog_] set_program_name
-------------------------------------
+[[gtk_] about_dialog_] set_program_name
+---------------------------------------
 
 Sets the name to display in the about dialog. If this is not set, it defaults to `g_get_application_name()`.
 
@@ -142,8 +142,8 @@ Since: 2.12
 
   * Str $name; the program name
 
-[gtk_about_dialog_] get_version
--------------------------------
+[[gtk_] about_dialog_] get_version
+----------------------------------
 
 Returns the version string.
 
@@ -153,8 +153,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_version ( --> Str  )
 
-[gtk_about_dialog_] set_version
--------------------------------
+[[gtk_] about_dialog_] set_version
+----------------------------------
 
 Sets the version string to display in the about dialog.
 
@@ -164,8 +164,8 @@ Since: 2.6
 
   * Str $version; (allow-none): the version string
 
-[gtk_about_dialog_] get_copyright
----------------------------------
+[[gtk_] about_dialog_] get_copyright
+------------------------------------
 
 Returns the copyright string.
 
@@ -175,8 +175,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_copyright ( --> Str  )
 
-[gtk_about_dialog_] set_copyright
----------------------------------
+[[gtk_] about_dialog_] set_copyright
+------------------------------------
 
 Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
 
@@ -186,8 +186,8 @@ Since: 2.6
 
   * Str $copyright; (allow-none): the copyright string
 
-[gtk_about_dialog_] get_comments
---------------------------------
+[[gtk_] about_dialog_] get_comments
+-----------------------------------
 
 Returns the comments string.
 
@@ -197,8 +197,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_comments ( --> Str  )
 
-[gtk_about_dialog_] set_comments
---------------------------------
+[[gtk_] about_dialog_] set_comments
+-----------------------------------
 
 Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
 
@@ -208,8 +208,8 @@ Since: 2.6
 
   * Str $comments; (allow-none): a comments string
 
-[gtk_about_dialog_] get_license
--------------------------------
+[[gtk_] about_dialog_] get_license
+----------------------------------
 
 Returns the license information.
 
@@ -219,8 +219,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_license ( --> Str  )
 
-[gtk_about_dialog_] set_license
--------------------------------
+[[gtk_] about_dialog_] set_license
+----------------------------------
 
 Sets the license information to be displayed in the secondary license dialog. If *license* is `Any`, the license button is hidden.
 
@@ -230,8 +230,8 @@ Since: 2.6
 
   * Str $license; (allow-none): the license information or `Any`
 
-[gtk_about_dialog_] set_license_type
-------------------------------------
+[[gtk_] about_dialog_] set_license_type
+---------------------------------------
 
 Sets the license of the application showing the *about* dialog from a list of known licenses.
 
@@ -243,8 +243,8 @@ Since: 3.0
 
   * GtkLicense $license_type; the type of license
 
-[gtk_about_dialog_] get_license_type
-------------------------------------
+[[gtk_] about_dialog_] get_license_type
+---------------------------------------
 
 Retrieves the license set using `gtk_about_dialog_set_license_type()`
 
@@ -254,8 +254,8 @@ Since: 3.0
 
     method gtk_about_dialog_get_license_type ( --> GtkLicense  )
 
-[gtk_about_dialog_] get_wrap_license
-------------------------------------
+[[gtk_] about_dialog_] get_wrap_license
+---------------------------------------
 
 Returns whether the license text in *about* is automatically wrapped.
 
@@ -265,8 +265,8 @@ Since: 2.8
 
     method gtk_about_dialog_get_wrap_license ( --> Int  )
 
-[gtk_about_dialog_] set_wrap_license
-------------------------------------
+[[gtk_] about_dialog_] set_wrap_license
+---------------------------------------
 
 Sets whether the license text in *about* is automatically wrapped.
 
@@ -276,8 +276,8 @@ Since: 2.8
 
   * Int $wrap_license; whether to wrap the license
 
-[gtk_about_dialog_] get_website
--------------------------------
+[[gtk_] about_dialog_] get_website
+----------------------------------
 
 Returns the website URL.
 
@@ -287,8 +287,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_website ( --> Str  )
 
-[gtk_about_dialog_] set_website
--------------------------------
+[[gtk_] about_dialog_] set_website
+----------------------------------
 
 Sets the URL to use for the website link.
 
@@ -298,8 +298,8 @@ Since: 2.6
 
   * Str $website; (allow-none): a URL string starting with "http://"
 
-[gtk_about_dialog_] get_website_label
--------------------------------------
+[[gtk_] about_dialog_] get_website_label
+----------------------------------------
 
 Returns the label used for the website link.
 
@@ -309,8 +309,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_website_label ( --> Str  )
 
-[gtk_about_dialog_] set_website_label
--------------------------------------
+[[gtk_] about_dialog_] set_website_label
+----------------------------------------
 
 Sets the label to be used for the website link.
 
@@ -320,8 +320,8 @@ Since: 2.6
 
   * Str $website_label; the label used for the website link
 
-[gtk_about_dialog_] get_authors
--------------------------------
+[[gtk_] about_dialog_] get_authors
+----------------------------------
 
 Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
@@ -331,8 +331,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_authors ( --> CArray[Str]  )
 
-[gtk_about_dialog_] set_authors
--------------------------------
+[[gtk_] about_dialog_] set_authors
+----------------------------------
 
 Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
@@ -342,8 +342,8 @@ Since: 2.6
 
   * CArray[Str] $authors; (array zero-terminated=1): a `Any`-terminated array of strings
 
-[gtk_about_dialog_] get_documenters
------------------------------------
+[[gtk_] about_dialog_] get_documenters
+--------------------------------------
 
 Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
@@ -353,8 +353,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_documenters ( --> CArray[Str]  )
 
-[gtk_about_dialog_] set_documenters
------------------------------------
+[[gtk_] about_dialog_] set_documenters
+--------------------------------------
 
 Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
@@ -364,8 +364,8 @@ Since: 2.6
 
   * CArray[Str] $documenters; (array zero-terminated=1): a `Any`-terminated array of strings
 
-[gtk_about_dialog_] get_artists
--------------------------------
+[[gtk_] about_dialog_] get_artists
+----------------------------------
 
 Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
@@ -375,8 +375,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_artists ( --> CArray[Str]  )
 
-[gtk_about_dialog_] set_artists
--------------------------------
+[[gtk_] about_dialog_] set_artists
+----------------------------------
 
 Sets the strings which are displayed in the artists tab of the secondary credits dialog.
 
@@ -386,8 +386,8 @@ Since: 2.6
 
   * CArray[Str] $artists; (array zero-terminated=1): a `Any`-terminated array of strings
 
-[gtk_about_dialog_] get_translator_credits
-------------------------------------------
+[[gtk_] about_dialog_] get_translator_credits
+---------------------------------------------
 
 Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
@@ -397,8 +397,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_translator_credits ( --> Str  )
 
-[gtk_about_dialog_] set_translator_credits
-------------------------------------------
+[[gtk_] about_dialog_] set_translator_credits
+---------------------------------------------
 
 Sets the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
@@ -414,8 +414,8 @@ Since: 2.6
 
   * Str $translator_credits; (allow-none): the translator credits
 
-[gtk_about_dialog_] get_logo
-----------------------------
+[[gtk_] about_dialog_] get_logo
+-------------------------------
 
 Returns the pixbuf displayed as logo in the about dialog.
 
@@ -425,8 +425,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_logo ( --> N-GObject  )
 
-[gtk_about_dialog_] set_logo
-----------------------------
+[[gtk_] about_dialog_] set_logo
+-------------------------------
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
@@ -436,8 +436,8 @@ Since: 2.6
 
   * N-GObject $logo; (allow-none): a *Gnome::Gdk3::Pixbuf*, or `Any`
 
-[gtk_about_dialog_] get_logo_icon_name
---------------------------------------
+[[gtk_] about_dialog_] get_logo_icon_name
+-----------------------------------------
 
 Returns the icon name displayed as logo in the about dialog.
 
@@ -447,8 +447,8 @@ Since: 2.6
 
     method gtk_about_dialog_get_logo_icon_name ( --> Str )
 
-[gtk_about_dialog_] set_logo_icon_name
---------------------------------------
+[[gtk_] about_dialog_] set_logo_icon_name
+-----------------------------------------
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
@@ -458,8 +458,8 @@ Since: 2.6
 
   * Str $icon_name; (allow-none): an icon name, or `Any`
 
-[gtk_about_dialog_] add_credit_section
---------------------------------------
+[[gtk_] about_dialog_] add_credit_section
+-----------------------------------------
 
 Creates a new section in the Credits page.
 

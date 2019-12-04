@@ -71,8 +71,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_button_new
---------------
+[gtk_] button_new
+-----------------
 
 Creates a new **Gnome::Gtk3::Button** widget. To add a child widget to the button, use `gtk_container_add()`.
 
@@ -80,8 +80,8 @@ Returns: The newly created **Gnome::Gtk3::Button** widget.
 
     method gtk_button_new ( --> N-GObject  )
 
-[gtk_button_] new_with_label
-----------------------------
+[[gtk_] button_] new_with_label
+-------------------------------
 
 Creates a **Gnome::Gtk3::Button** widget with a **Gnome::Gtk3::Label** child containing the given text.
 
@@ -91,8 +91,8 @@ Returns: The newly created **Gnome::Gtk3::Button** widget.
 
   * Str $label; The text you want the **Gnome::Gtk3::Label** to hold.
 
-[gtk_button_] new_from_icon_name
---------------------------------
+[[gtk_] button_] new_from_icon_name
+-----------------------------------
 
 Creates a new button containing an icon from the current icon theme.
 
@@ -114,8 +114,8 @@ Since: 3.10
 
   * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
 
-[gtk_button_] new_with_mnemonic
--------------------------------
+[[gtk_] button_] new_with_mnemonic
+----------------------------------
 
 Creates a new **Gnome::Gtk3::Button** containing a label. If characters in *label* are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. Pressing Alt and that key activates the button.
 
@@ -125,15 +125,15 @@ Returns: a new **Gnome::Gtk3::Button**
 
   * Str $label; The text of the button, with an underscore in front of the mnemonic character
 
-gtk_button_clicked
-------------------
+[gtk_] button_clicked
+---------------------
 
 Emits a prop *clicked* signal to the given **Gnome::Gtk3::Button**.
 
     method gtk_button_clicked ( )
 
-[gtk_button_] set_relief
-------------------------
+[[gtk_] button_] set_relief
+---------------------------
 
 Sets the relief style of the edges of the given **Gnome::Gtk3::Button** widget. Two styles exist, `GTK_RELIEF_NORMAL` and `GTK_RELIEF_NONE`. The default style is, as one can guess, `GTK_RELIEF_NORMAL`. The deprecated value `GTK_RELIEF_HALF` behaves the same as `GTK_RELIEF_NORMAL`.
 
@@ -141,8 +141,8 @@ Sets the relief style of the edges of the given **Gnome::Gtk3::Button** widget. 
 
   * GtkReliefStyle $relief; The **Gnome::Gtk3::ReliefStyle** as described above
 
-[gtk_button_] get_relief
-------------------------
+[[gtk_] button_] get_relief
+---------------------------
 
 Returns the current relief style of the given **Gnome::Gtk3::Button**.
 
@@ -150,8 +150,8 @@ Returns: The current **Gnome::Gtk3::ReliefStyle**
 
     method gtk_button_get_relief ( --> GtkReliefStyle  )
 
-[gtk_button_] set_label
------------------------
+[[gtk_] button_] set_label
+--------------------------
 
 Sets the text of the label of the button to *str*. This text is also used to select the stock item if `gtk_button_set_use_stock()` is used.
 
@@ -161,8 +161,8 @@ This will also clear any previously set labels.
 
   * Str $label; a string
 
-[gtk_button_] get_label
------------------------
+[[gtk_] button_] get_label
+--------------------------
 
 Fetches the text from the label of the button, as set by `gtk_button_set_label()`. If the label text has not been set the return value will be `Any`. This will be the case if you create an empty button with `gtk_button_new()` to use as a container.
 
@@ -170,8 +170,8 @@ Returns: The text of the label widget. This string is owned by the widget and mu
 
     method gtk_button_get_label ( --> Str  )
 
-[gtk_button_] set_use_underline
--------------------------------
+[[gtk_] button_] set_use_underline
+----------------------------------
 
 If true, an underline in the text of the button label indicates the next character should be used for the mnemonic accelerator key.
 
@@ -179,8 +179,8 @@ If true, an underline in the text of the button label indicates the next charact
 
   * Int $use_underline; `1` if underlines in the text indicate mnemonics
 
-[gtk_button_] get_use_underline
--------------------------------
+[[gtk_] button_] get_use_underline
+----------------------------------
 
 Returns whether an embedded underline in the button label indicates a mnemonic. See `gtk_button_set_use_underline()`.
 
@@ -188,8 +188,8 @@ Returns: `1` if an embedded underline in the button label indicates the mnemonic
 
     method gtk_button_get_use_underline ( --> Int  )
 
-[gtk_button_] set_image
------------------------
+[[gtk_] button_] set_image
+--------------------------
 
 Set the image of *button* to the given widget. The image will be displayed if the label text is `Any` or if sig **always-show-image** is `1`. You don’t have to call `gtk_widget_show()` on *image* yourself.
 
@@ -199,8 +199,8 @@ Since: 2.6
 
   * N-GObject $image; a widget to set as the image for the button
 
-[gtk_button_] get_image
------------------------
+[[gtk_] button_] get_image
+--------------------------
 
 Gets the widget that is currenty set as the image of *button*. This may have been explicitly set by `gtk_button_set_image()` or constructed by `gtk_button_new_from_stock()`.
 
@@ -210,8 +210,8 @@ Since: 2.6
 
     method gtk_button_get_image ( --> N-GObject  )
 
-[gtk_button_] set_image_position
---------------------------------
+[[gtk_] button_] set_image_position
+-----------------------------------
 
 Sets the position of the image relative to the text inside the button.
 
@@ -221,8 +221,8 @@ Since: 2.10
 
   * GtkPositionType $position; the position
 
-[gtk_button_] get_image_position
---------------------------------
+[[gtk_] button_] get_image_position
+-----------------------------------
 
 Gets the position of the image relative to the text inside the button.
 
@@ -232,8 +232,8 @@ Since: 2.10
 
     method gtk_button_get_image_position ( --> GtkPositionType  )
 
-[gtk_button_] set_always_show_image
------------------------------------
+[[gtk_] button_] set_always_show_image
+--------------------------------------
 
 If `1`, the button will ignore the sig **gtk-button-images** setting and always show the image, if available.
 
@@ -245,8 +245,8 @@ Since: 3.6
 
   * Int $always_show; `1` if the menuitem should always show the image
 
-[gtk_button_] get_always_show_image
------------------------------------
+[[gtk_] button_] get_always_show_image
+--------------------------------------
 
 Returns whether the button will ignore the sig **gtk-button-images** setting and always show the image, if available.
 
@@ -256,8 +256,8 @@ Since: 3.6
 
     method gtk_button_get_always_show_image ( --> Int  )
 
-[gtk_button_] get_event_window
-------------------------------
+[[gtk_] button_] get_event_window
+---------------------------------
 
 Returns the button’s event window if it is realized, `Any` otherwise. This function should be rarely needed.
 

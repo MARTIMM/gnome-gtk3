@@ -163,45 +163,26 @@ Returns a `Promise` object. If the call fails, the object is undefined.
 
 The handlers signature is at least `:$widget` of the object on which the call was made. Furthermore all users named arguments to the call defined in `*%user-options`. The handler may return any value which becomes the result of the `Promise` returned from `start-thread`.
 
-g_initially_unowned_get_type
-----------------------------
+[[g_] object_] set_property
+---------------------------
 
-    method g_initially_unowned_get_type ( --> int32  )
+Sets a property on an object.
 
-[g_object_] new_with_properties
--------------------------------
+method g_object_set_property ( Str $property_name, Gnome::GObject::Value $value )
 
-Creates a new instance of a *GObject* subtype and sets its properties using the provided arrays. Both arrays must have exactly *n_properties* elements, and the names and values correspond by index.
+  * Str $property_name; the name of the property to set
 
-Construction parameters (see `G_PARAM_CONSTRUCT`, `G_PARAM_CONSTRUCT_ONLY`) which are not explicitly specified are set to their default values.
+  * N-GObject $value; the value
 
-Returns: (type GObject.Object) (transfer full): a new instance of *object_type*
-
-Since: 2.54
-
-    method g_object_new_with_properties (
-      int32 $object_type, UInt $n_properties,
-      CArray[Str] $names, CArray[N-GValue] $values
-      --> N-GObject
-    )
-
-  * int32 $object_type; the object type to instantiate
-
-  * UInt $n_properties; the number of properties
-
-  * CArray[Str] $names; (array length=n_properties): the names of each property to be set
-
-  * CArray[N-GValue] $values; (array length=n_properties): the values of each property to be set
-
-[g_object_] get_property
-------------------------
+[[g_] object_] get_property
+---------------------------
 
 Gets a property of an object. value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed) using g_value_init().
 
 In general, a copy is made of the property contents and the caller is responsible for freeing the memory by calling g_value_unset().
 
     method g_object_get_property (
-      Str $property_name, Gnome::GObject::Type $type
+      Str $property_name, Int $gtype
       --> Gnome::GObject::Value
     )
 
@@ -213,8 +194,8 @@ In general, a copy is made of the property contents and the caller is responsibl
 
   * $value; the property value. The value is stored in the Value object. Use any of the getter methods of Value to get the data. Also setters are available to modify data.
 
-g_object_ref
-------------
+[g_] object_ref
+---------------
 
 Increases the reference count of *object*.
 
@@ -226,8 +207,8 @@ Returns: the same *object*
 
   * N-GObject $object; a *GObject*
 
-g_object_unref
---------------
+[g_] object_unref
+-----------------
 
 Decreases the reference count of *object*. When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
 

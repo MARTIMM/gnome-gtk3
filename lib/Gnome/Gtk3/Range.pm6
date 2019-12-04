@@ -120,7 +120,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_adjustment:
 =begin pod
-=head2 [gtk_range_] set_adjustment
+=head2 [[gtk_] range_] set_adjustment
 
 Sets the adjustment to be used as the “model” object for this range
 widget. The adjustment indicates the current range value, the
@@ -143,7 +143,7 @@ sub gtk_range_set_adjustment ( N-GObject $range, N-GObject $adjustment )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_adjustment:
 =begin pod
-=head2 [gtk_range_] get_adjustment
+=head2 [[gtk_] range_] get_adjustment
 
 Get the B<Gnome::Gtk3::Adjustment> which is the “model” object for B<Gnome::Gtk3::Range>.
 See C<gtk_range_set_adjustment()> for details.
@@ -165,7 +165,7 @@ sub gtk_range_get_adjustment ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_inverted:
 =begin pod
-=head2 [gtk_range_] set_inverted
+=head2 [[gtk_] range_] set_inverted
 
 Ranges normally move from lower to higher values as the
 slider moves from top to bottom or left to right. Inverted
@@ -185,7 +185,7 @@ sub gtk_range_set_inverted ( N-GObject $range, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_inverted:
 =begin pod
-=head2 [gtk_range_] get_inverted
+=head2 [[gtk_] range_] get_inverted
 
 Gets the value set by C<gtk_range_set_inverted()>.
 
@@ -204,7 +204,7 @@ sub gtk_range_get_inverted ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_flippable:
 =begin pod
-=head2 [gtk_range_] set_flippable
+=head2 [[gtk_] range_] set_flippable
 
 If a range is flippable, it will switch its direction if it is
 horizontal and its direction is C<GTK_TEXT_DIR_RTL>.
@@ -226,7 +226,7 @@ sub gtk_range_set_flippable ( N-GObject $range, int32 $flippable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_flippable:
 =begin pod
-=head2 [gtk_range_] get_flippable
+=head2 [[gtk_] range_] get_flippable
 
 Gets the value set by C<gtk_range_set_flippable()>.
 
@@ -247,7 +247,7 @@ sub gtk_range_get_flippable ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_slider_size_fixed:
 =begin pod
-=head2 [gtk_range_] set_slider_size_fixed
+=head2 [[gtk_] range_] set_slider_size_fixed
 
 Sets whether the range’s slider has a fixed size, or a size that
 depends on its adjustment’s page size.
@@ -269,7 +269,7 @@ sub gtk_range_set_slider_size_fixed ( N-GObject $range, int32 $size_fixed )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_slider_size_fixed:
 =begin pod
-=head2 [gtk_range_] get_slider_size_fixed
+=head2 [[gtk_] range_] get_slider_size_fixed
 
 This function is useful mainly for B<Gnome::Gtk3::Range> subclasses.
 
@@ -292,7 +292,7 @@ sub gtk_range_get_slider_size_fixed ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_range_get_range_rect:
 =begin pod
-=head2 [gtk_range_] get_range_rect
+=head2 [[gtk_] range_] get_range_rect
 
 This function returns the area that contains the range’s trough and its steppers, in widgets window coordinates.
 
@@ -318,7 +318,7 @@ sub _gtk_range_get_range_rect (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_range_get_slider_range:
 =begin pod
-=head2 [gtk_range_] get_slider_range
+=head2 [[gtk_] range_] get_slider_range
 
 This function returns sliders range along the long dimension,
 in widget->window coordinates.
@@ -352,7 +352,7 @@ sub _gtk_range_get_slider_range (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_lower_stepper_sensitivity:
 =begin pod
-=head2 [gtk_range_] set_lower_stepper_sensitivity
+=head2 [[gtk_] range_] set_lower_stepper_sensitivity
 
 Sets the sensitivity policy for the stepper that points to the
 'lower' end of the B<Gnome::Gtk3::Range>’s adjustment.
@@ -372,7 +372,7 @@ sub gtk_range_set_lower_stepper_sensitivity ( N-GObject $range, int32 $sensitivi
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_lower_stepper_sensitivity:
 =begin pod
-=head2 [gtk_range_] get_lower_stepper_sensitivity
+=head2 [[gtk_] range_] get_lower_stepper_sensitivity
 
 Gets the sensitivity policy for the stepper that points to the
 'lower' end of the B<Gnome::Gtk3::Range>’s adjustment.
@@ -394,7 +394,7 @@ sub gtk_range_get_lower_stepper_sensitivity ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_upper_stepper_sensitivity:
 =begin pod
-=head2 [gtk_range_] set_upper_stepper_sensitivity
+=head2 [[gtk_] range_] set_upper_stepper_sensitivity
 
 Sets the sensitivity policy for the stepper that points to the
 'upper' end of the B<Gnome::Gtk3::Range>’s adjustment.
@@ -414,7 +414,7 @@ sub gtk_range_set_upper_stepper_sensitivity ( N-GObject $range, int32 $sensitivi
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_upper_stepper_sensitivity:
 =begin pod
-=head2 [gtk_range_] get_upper_stepper_sensitivity
+=head2 [[gtk_] range_] get_upper_stepper_sensitivity
 
 Gets the sensitivity policy for the stepper that points to the
 'upper' end of the B<Gnome::Gtk3::Range>’s adjustment.
@@ -436,7 +436,7 @@ sub gtk_range_get_upper_stepper_sensitivity ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_increments:
 =begin pod
-=head2 [gtk_range_] set_increments
+=head2 [[gtk_] range_] set_increments
 
 Sets the step and page sizes for the range.
 The step size is used when the user clicks the B<Gnome::Gtk3::Scrollbar>
@@ -457,7 +457,7 @@ sub gtk_range_set_increments ( N-GObject $range, num64 $step, num64 $page )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_range:
 =begin pod
-=head2 [gtk_range_] set_range
+=head2 [[gtk_] range_] set_range
 
 Sets the allowable values in the B<Gnome::Gtk3::Range>, and clamps the range
 value to be between I<min> and I<max>. (If the range has a non-zero
@@ -477,7 +477,7 @@ sub gtk_range_set_range ( N-GObject $range, num64 $min, num64 $max )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_value:
 =begin pod
-=head2 [gtk_range_] set_value
+=head2 [[gtk_] range_] set_value
 
 Sets the current value of the range; if the value is outside the
 minimum or maximum range values, it will be clamped to fit inside
@@ -497,7 +497,7 @@ sub gtk_range_set_value ( N-GObject $range, num64 $value )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_value:
 =begin pod
-=head2 [gtk_range_] get_value
+=head2 [[gtk_] range_] get_value
 
 Gets the current value of the range.
 
@@ -516,7 +516,7 @@ sub gtk_range_get_value ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_show_fill_level:
 =begin pod
-=head2 [gtk_range_] set_show_fill_level
+=head2 [[gtk_] range_] set_show_fill_level
 
 Sets whether a graphical fill level is show on the trough. See
 C<gtk_range_set_fill_level()> for a general description of the fill
@@ -537,7 +537,7 @@ sub gtk_range_set_show_fill_level ( N-GObject $range, int32 $show_fill_level )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_show_fill_level:
 =begin pod
-=head2 [gtk_range_] get_show_fill_level
+=head2 [[gtk_] range_] get_show_fill_level
 
 Gets whether the range displays the fill level graphically.
 
@@ -558,7 +558,7 @@ sub gtk_range_get_show_fill_level ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_restrict_to_fill_level:
 =begin pod
-=head2 [gtk_range_] set_restrict_to_fill_level
+=head2 [[gtk_] range_] set_restrict_to_fill_level
 
 Sets whether the slider is restricted to the fill level. See
 C<gtk_range_set_fill_level()> for a general description of the fill
@@ -579,7 +579,7 @@ sub gtk_range_set_restrict_to_fill_level ( N-GObject $range, int32 $restrict_to_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_restrict_to_fill_level:
 =begin pod
-=head2 [gtk_range_] get_restrict_to_fill_level
+=head2 [[gtk_] range_] get_restrict_to_fill_level
 
 Gets whether the range is restricted to the fill level.
 
@@ -600,7 +600,7 @@ sub gtk_range_get_restrict_to_fill_level ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_fill_level:
 =begin pod
-=head2 [gtk_range_] set_fill_level
+=head2 [[gtk_] range_] set_fill_level
 
 Set the new position of the fill level indicator.
 
@@ -635,7 +635,7 @@ sub gtk_range_set_fill_level ( N-GObject $range, num64 $fill_level )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_fill_level:
 =begin pod
-=head2 [gtk_range_] get_fill_level
+=head2 [[gtk_] range_] get_fill_level
 
 Gets the current position of the fill level indicator.
 
@@ -656,7 +656,7 @@ sub gtk_range_get_fill_level ( N-GObject $range )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_set_round_digits:
 =begin pod
-=head2 [gtk_range_] set_round_digits
+=head2 [[gtk_] range_] set_round_digits
 
 Sets the number of digits to round the value to when
 it changes. See  I<change-value>.
@@ -676,7 +676,7 @@ sub gtk_range_set_round_digits ( N-GObject $range, int32 $round_digits )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_range_get_round_digits:
 =begin pod
-=head2 [gtk_range_] get_round_digits
+=head2 [[gtk_] range_] get_round_digits
 
 Gets the number of digits to round the value to when
 it changes. See  I<change-value>.
@@ -839,7 +839,7 @@ Since: 2.6
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_fill_level
+=head2 [[gtk_] range_] get_fill_level
 
 Gets the current position of the fill level indicator.
 
@@ -856,7 +856,7 @@ sub gtk_range_get_fill_level ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_restrict_to_fill_level
+=head2 [[gtk_] range_] get_restrict_to_fill_level
 
 Gets whether the range is restricted to the fill level.
 
@@ -873,7 +873,7 @@ sub gtk_range_get_restrict_to_fill_level ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_show_fill_level
+=head2 [[gtk_] range_] get_show_fill_level
 
   method gtk_range_get_show_fill_level ( --> Int )
 
@@ -888,7 +888,7 @@ sub gtk_range_get_show_fill_level ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_fill_level
+=head2 [[gtk_] range_] set_fill_level
 
 Set the new position of the fill level indicator.
 
@@ -910,7 +910,7 @@ sub gtk_range_set_fill_level ( N-GObject $range, num64 $fill-level )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_restrict_to_fill_level
+=head2 [[gtk_] range_] set_restrict_to_fill_level
 
 Sets whether the slider is restricted to the fill level. See gtk_range_set_fill_level() for a general description of the fill level concept.
 
@@ -927,7 +927,7 @@ sub gtk_range_set_restrict_to_fill_level ( N-GObject $range, int32 $show )
 #-------------------------------------------------------------------------------
 #`{{
 =begin pod
-=head2 gtk_range_get_adjustment
+=head2 [gtk_] range_get_adjustment
 
 Get the GtkAdjustment which is the “model” object for GtkRange. See C<gtk_range_set_adjustment()> for details. The return value does not have a reference added, so should not be unreferenced.
 
@@ -944,7 +944,7 @@ sub gtk_range_get_adjustment ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_range_set_adjustment
+=head2 [gtk_] range_set_adjustment
 
 Sets the adjustment to be used as the “model” object for this range widget. The adjustment indicates the current range value, the minimum and maximum range values, the step/page increments used for keybindings and scrolling, and the page size. The page size is normally 0 for GtkScale and nonzero for GtkScrollbar, and indicates the size of the visible area of the widget being scrolled. The page size affects the size of the scrollbar slider.
   method gtk_range_set_adjustment ( N-GObject $adjustment )
@@ -960,7 +960,7 @@ sub gtk_range_set_adjustment ( N-GObject $range, N-GObject $adjustment )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_inverted
+=head2 [[gtk_] range_] get_inverted
 
 Gets the value set by C<gtk_range_set_inverted()>.
 
@@ -977,7 +977,7 @@ sub gtk_range_get_inverted ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_inverted
+=head2 [[gtk_] range_] set_inverted
 
 Ranges normally move from lower to higher values as the slider moves from top to bottom or left to right. Inverted ranges have higher values at the top or on the right rather than on the bottom or left.
 
@@ -993,7 +993,7 @@ sub gtk_range_set_inverted ( N-GObject $range, int32 $setting )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_value
+=head2 [[gtk_] range_] get_value
 
 Gets the current value of the range.
 
@@ -1008,7 +1008,7 @@ sub gtk_range_get_value ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_value
+=head2 [[gtk_] range_] set_value
 
 Sets the current value of the range; if the value is outside the minimum or maximum range values, it will be clamped to fit inside them. The range emits the “value-changed” signal if the value changes.
 
@@ -1024,7 +1024,7 @@ sub gtk_range_set_value ( N-GObject $range, num64 $value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_increments
+=head2 [[gtk_] range_] set_increments
 
 Sets the step and page sizes for the range. The step size is used when the user clicks the GtkScrollbar arrows or moves GtkScale via arrow keys. The page size is used for example when moving via B<Page Up> or B<Page Down> keys.
 
@@ -1041,7 +1041,7 @@ sub gtk_range_set_increments ( N-GObject $range, num64 $step, num64 $page )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_range
+=head2 [[gtk_] range_] set_range
 
 Sets the allowable values in the GtkRange, and clamps the range value to be between min and max. (If the range has a non-zero page size, it is clamped between min and max- page-size.)
 
@@ -1058,7 +1058,7 @@ sub gtk_range_set_range ( N-GObject $range, num64 $min, num64 $max )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_round_digits
+=head2 [[gtk_] range_] get_round_digits
 
   method gtk_range_get_round_digits ( --> Int )
 
@@ -1073,7 +1073,7 @@ sub gtk_range_get_round_digits ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_round_digits
+=head2 [[gtk_] range_] set_round_digits
 
 Sets the number of digits to round the value to when it changes. See “change-value”.
 
@@ -1089,7 +1089,7 @@ sub gtk_range_set_round_digits ( N-GObject $range, int32 $round-digits )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_lower_stepper_sensitivity
+=head2 [[gtk_] range_] set_lower_stepper_sensitivity
 
 Sets the sensitivity policy for the stepper that points to the 'lower' end of the GtkRange’s adjustment.
 
@@ -1108,7 +1108,7 @@ sub gtk_range_set_lower_stepper_sensitivity (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_lower_stepper_sensitivity
+=head2 [[gtk_] range_] get_lower_stepper_sensitivity
 
 Gets the sensitivity policy for the stepper that points to the 'lower' end of the GtkRange’s adjustment.
 
@@ -1127,7 +1127,7 @@ sub gtk_range_get_lower_stepper_sensitivity ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_upper_stepper_sensitivity
+=head2 [[gtk_] range_] set_upper_stepper_sensitivity
 
 Sets the sensitivity policy for the stepper that points to the 'upper' end of the GtkRange’s adjustment.
 
@@ -1146,7 +1146,7 @@ sub gtk_range_set_upper_stepper_sensitivity (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_upper_stepper_sensitivity
+=head2 [[gtk_] range_] get_upper_stepper_sensitivity
 
 Gets the sensitivity policy for the stepper that points to the 'lower' end of the GtkRange’s adjustment.
 
@@ -1165,7 +1165,7 @@ sub gtk_range_get_upper_stepper_sensitivity ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_flippable
+=head2 [[gtk_] range_] get_flippable
 
 Gets the value set by C<gtk_range_set_flippable()>.
 
@@ -1182,7 +1182,7 @@ sub gtk_range_get_flippable ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_flippable
+=head2 [[gtk_] range_] set_flippable
 
 If a range is flippable, it will switch its direction if it is horizontal and its direction is C<GTK_TEXT_DIR_RTL>.
 
@@ -1200,7 +1200,7 @@ sub gtk_range_set_flippable ( N-GObject $range, int32 $flippable )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_range_rect
+=head2 [[gtk_] range_] get_range_rect
 
 This function returns the area that contains the range’s trough and its steppers, in widgets window coordinates.
 
@@ -1225,7 +1225,7 @@ sub _gtk_range_get_range_rect (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_slider_range
+=head2 [[gtk_] range_] get_slider_range
 
 This function returns sliders range along the long dimension, in widgets window coordinates.
 
@@ -1245,7 +1245,7 @@ sub gtk_range_get_slider_range (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] get_slider_size_fixed
+=head2 [[gtk_] range_] get_slider_size_fixed
 
 This function is useful mainly for GtkRange subclasses.
 
@@ -1262,7 +1262,7 @@ sub gtk_range_get_slider_size_fixed ( N-GObject $range )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_range_] set_slider_size_fixed
+=head2 [[gtk_] range_] set_slider_size_fixed
 
 Sets whether the range’s slider has a fixed size, or a size that depends on its adjustment’s page size.
 

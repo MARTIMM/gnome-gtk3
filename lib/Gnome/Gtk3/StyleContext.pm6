@@ -135,7 +135,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_style_context_new:new(:empty)
 =begin pod
-=head2 gtk_style_context_new
+=head2 [gtk_] style_context_new
 
 Creates a standalone B<Gnome::Gtk3::StyleContext>, this style context won’t be attached to any widget, so you may want to call C<gtk_style_context_set_path()> yourself.
 
@@ -154,7 +154,7 @@ sub gtk_style_context_new ( --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_style_context_add_provider_for_screen:
 =begin pod
-=head2 [gtk_style_context_] add_provider_for_screen
+=head2 [[gtk_] style_context_] add_provider_for_screen
 
 Adds a global style provider to B<Gnome::Gdk3::Screen>, which will be used in style construction for all B<Gnome::Gtk3::StyleContext>s under B<Gnome::Gdk3::Screen>.
 
@@ -202,7 +202,7 @@ sub _gtk_style_context_add_provider_for_screen (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_style_context_remove_provider_for_screen:
 =begin pod
-=head2 [gtk_style_context_] remove_provider_for_screen
+=head2 [[gtk_] style_context_] remove_provider_for_screen
 
 Removes a B<Gnome::Gtk3::StyleProvider> from the global style providers list in B<Gnome::Gdk3::Screen>.
 
@@ -231,7 +231,7 @@ sub _gtk_style_context_remove_provider_for_screen (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_style_context_add_provider:
 =begin pod
-=head2 [gtk_style_context_] add_provider
+=head2 [[gtk_] style_context_] add_provider
 
 Adds a style provider to the I<context>, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which I<context> belongs. If you want to affect the style of all widgets, use C<gtk_style_context_add_provider_for_screen()>.
 
@@ -259,7 +259,7 @@ sub gtk_style_context_add_provider ( N-GObject $context, N-GObject $provider, ui
 #-------------------------------------------------------------------------------
 #TM:1:gtk_style_context_remove_provider:
 =begin pod
-=head2 [gtk_style_context_] remove_provider
+=head2 [[gtk_] style_context_] remove_provider
 
 Removes a B<Gnome::Gtk3::StyleProvider> from the style providers list in I<context>.
 
@@ -278,7 +278,7 @@ sub gtk_style_context_remove_provider ( N-GObject $context, N-GObject $provider 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_save:
 =begin pod
-=head2 gtk_style_context_save
+=head2 [gtk_] style_context_save
 
 Saves the I<context> state, so temporary modifications done through C<gtk_style_context_add_class()>, C<gtk_style_context_remove_class()>, C<gtk_style_context_set_state()>, etc. can quickly be reverted in one go through C<gtk_style_context_restore()>.
 
@@ -297,7 +297,7 @@ sub gtk_style_context_save ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_restore:
 =begin pod
-=head2 gtk_style_context_restore
+=head2 [gtk_] style_context_restore
 
 Restores I<context> state to a previous stage. See C<gtk_style_context_save()>.
 
@@ -314,7 +314,7 @@ sub gtk_style_context_restore ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_section:
 =begin pod
-=head2 [gtk_style_context_] get_section
+=head2 [[gtk_] style_context_] get_section
 
 Queries the location in the CSS where I<property> was defined for the
 current I<context>. Note that the state to be queried is taken from
@@ -346,7 +346,7 @@ sub gtk_style_context_get_section ( N-GObject $context, Str $property )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_property:
 =begin pod
-=head2 [gtk_style_context_] get_property
+=head2 [[gtk_] style_context_] get_property
 
 Gets a style property from I<context> for the given state.
 
@@ -380,7 +380,7 @@ sub gtk_style_context_get_property ( N-GObject $context, Str $property, int32 $s
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_valist:
 =begin pod
-=head2 [gtk_style_context_] get_valist
+=head2 [[gtk_] style_context_] get_valist
 
 Retrieves several style property values from I<context> for a given state.
 
@@ -400,11 +400,11 @@ sub gtk_style_context_get_valist ( N-GObject $context, int32 $state, va_list $ar
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get:
 =begin pod
-=head2 gtk_style_context_get
+=head2 [gtk_] style_context_get
 
 Retrieves several style property values from I<context> for a
 given state.
@@ -422,12 +422,12 @@ Since: 3.0
 sub gtk_style_context_get ( N-GObject $context, int32 $state, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_state:
 =begin pod
-=head2 [gtk_style_context_] set_state
+=head2 [[gtk_] style_context_] set_state
 
 Sets the state to be used for style matching.
 
@@ -446,7 +446,7 @@ sub gtk_style_context_set_state ( N-GObject $context, int32 $flags )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_state:
 =begin pod
-=head2 [gtk_style_context_] get_state
+=head2 [[gtk_] style_context_] get_state
 
 Returns the state used for style matching.
 
@@ -472,7 +472,7 @@ sub gtk_style_context_get_state ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_scale:
 =begin pod
-=head2 [gtk_style_context_] set_scale
+=head2 [[gtk_] style_context_] set_scale
 
 Sets the scale to use when getting image assets for the style.
 
@@ -491,7 +491,7 @@ sub gtk_style_context_set_scale ( N-GObject $context, int32 $scale )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_scale:
 =begin pod
-=head2 [gtk_style_context_] get_scale
+=head2 [[gtk_] style_context_] get_scale
 
 Returns the scale used for assets.
 
@@ -512,7 +512,7 @@ sub gtk_style_context_get_scale ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_path:
 =begin pod
-=head2 [gtk_style_context_] set_path
+=head2 [[gtk_] style_context_] set_path
 
 Sets the B<Gnome::Gtk3::WidgetPath> used for style matching. As a
 consequence, the style will be regenerated to match
@@ -537,7 +537,7 @@ sub gtk_style_context_set_path ( N-GObject $context, N-GObject $path )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_path:
 =begin pod
-=head2 [gtk_style_context_] get_path
+=head2 [[gtk_] style_context_] get_path
 
   method gtk_style_context_get_path ( --> N-GObject )
 
@@ -552,7 +552,7 @@ sub gtk_style_context_get_path ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_parent:
 =begin pod
-=head2 [gtk_style_context_] set_parent
+=head2 [[gtk_] style_context_] set_parent
 
 Sets the parent style context for I<context>. The parent style context is used to implement [inheritance](https://www.w3.org/TR/css3-cascade/#inheritance) of properties.
 
@@ -573,7 +573,7 @@ sub gtk_style_context_set_parent ( N-GObject $context, N-GObject $parent )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_parent:
 =begin pod
-=head2 [gtk_style_context_] get_parent
+=head2 [[gtk_] style_context_] get_parent
 
 Gets the parent context set via C<gtk_style_context_set_parent()>.
 See that function for details.
@@ -595,7 +595,7 @@ sub gtk_style_context_get_parent ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_list_classes:
 =begin pod
-=head2 [gtk_style_context_] list_classes
+=head2 [[gtk_] style_context_] list_classes
 
 Returns the list of classes currently defined in I<context>.
 
@@ -619,7 +619,7 @@ sub gtk_style_context_list_classes ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_add_class:
 =begin pod
-=head2 [gtk_style_context_] add_class
+=head2 [[gtk_] style_context_] add_class
 
 Adds a style class to I<context>, so posterior calls to
 C<gtk_style_context_get()> or any of the gtk_render_*()
@@ -650,7 +650,7 @@ sub gtk_style_context_add_class ( N-GObject $context, Str $class_name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_remove_class:
 =begin pod
-=head2 [gtk_style_context_] remove_class
+=head2 [[gtk_] style_context_] remove_class
 
 Removes I<class_name> from I<context>.
 
@@ -669,7 +669,7 @@ sub gtk_style_context_remove_class ( N-GObject $context, Str $class_name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_has_class:
 =begin pod
-=head2 [gtk_style_context_] has_class
+=head2 [[gtk_] style_context_] has_class
 
 Returns C<1> if I<context> currently has defined the
 given class name.
@@ -692,7 +692,7 @@ sub gtk_style_context_has_class ( N-GObject $context, Str $class_name )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_style_property:
 =begin pod
-=head2 [gtk_style_context_] get_style_property
+=head2 [[gtk_] style_context_] get_style_property
 
 Gets the value for a widget style property.
 
@@ -715,7 +715,7 @@ sub gtk_style_context_get_style_property ( N-GObject $context, Str $property_nam
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_style_valist:
 =begin pod
-=head2 [gtk_style_context_] get_style_valist
+=head2 [[gtk_] style_context_] get_style_valist
 
 Retrieves several widget style properties from I<context> according to the
 current style.
@@ -737,7 +737,7 @@ sub gtk_style_context_get_style_valist ( N-GObject $context, va_list $args )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_style:
 =begin pod
-=head2 [gtk_style_context_] get_style
+=head2 [[gtk_] style_context_] get_style
 
 Retrieves several widget style properties from I<context> according to the
 current style.
@@ -757,7 +757,7 @@ sub gtk_style_context_get_style ( N-GObject $context, Any $any = Any )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_screen:
 =begin pod
-=head2 [gtk_style_context_] set_screen
+=head2 [[gtk_] style_context_] set_screen
 
 Attaches I<context> to the given screen.
 
@@ -783,7 +783,7 @@ sub gtk_style_context_set_screen ( N-GObject $context, N-GObject $screen )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_screen:
 =begin pod
-=head2 [gtk_style_context_] get_screen
+=head2 [[gtk_] style_context_] get_screen
 
 Returns the B<Gnome::Gdk3::Screen> to which I<context> is attached.
 
@@ -802,7 +802,7 @@ sub gtk_style_context_get_screen ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_frame_clock:
 =begin pod
-=head2 [gtk_style_context_] set_frame_clock
+=head2 [[gtk_] style_context_] set_frame_clock
 
 Attaches I<context> to the given frame clock.
 
@@ -827,7 +827,7 @@ sub gtk_style_context_set_frame_clock ( N-GObject $context, N-GObject $frame_clo
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_frame_clock:
 =begin pod
-=head2 [gtk_style_context_] get_frame_clock
+=head2 [[gtk_] style_context_] get_frame_clock
 
 Returns the B<Gnome::Gdk3::FrameClock> to which I<context> is attached.
 
@@ -849,7 +849,7 @@ sub gtk_style_context_get_frame_clock ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_set_junction_sides:
 =begin pod
-=head2 [gtk_style_context_] set_junction_sides
+=head2 [[gtk_] style_context_] set_junction_sides
 
 Sets the sides where rendered elements (mostly through
 C<gtk_render_frame()>) will visually connect with other visual elements.
@@ -876,7 +876,7 @@ sub gtk_style_context_set_junction_sides ( N-GObject $context, int32 $sides )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_junction_sides:
 =begin pod
-=head2 [gtk_style_context_] get_junction_sides
+=head2 [[gtk_] style_context_] get_junction_sides
 
 Returns the sides where rendered elements connect visually with others.
 
@@ -897,7 +897,7 @@ sub gtk_style_context_get_junction_sides ( N-GObject $context )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_lookup_color:
 =begin pod
-=head2 [gtk_style_context_] lookup_color
+=head2 [[gtk_] style_context_] lookup_color
 
 Looks up and resolves a color name in the I<context> color map.
 
@@ -918,7 +918,7 @@ sub gtk_style_context_lookup_color ( N-GObject $context, Str $color_name, N-GObj
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_color:
 =begin pod
-=head2 [gtk_style_context_] get_color
+=head2 [[gtk_] style_context_] get_color
 
 Gets the foreground color for a given state.
 
@@ -941,7 +941,7 @@ sub gtk_style_context_get_color ( N-GObject $context, int32 $state, N-GObject $c
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_border:
 =begin pod
-=head2 [gtk_style_context_] get_border
+=head2 [[gtk_] style_context_] get_border
 
 Gets the border for a given state as a B<Gnome::Gtk3::Border>.
 
@@ -964,7 +964,7 @@ sub gtk_style_context_get_border ( N-GObject $context, int32 $state, N-GObject $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_padding:
 =begin pod
-=head2 [gtk_style_context_] get_padding
+=head2 [[gtk_] style_context_] get_padding
 
 Gets the padding for a given state as a B<Gnome::Gtk3::Border>.
 See C<gtk_style_context_get()> and C<GTK_STYLE_PROPERTY_PADDING>
@@ -986,7 +986,7 @@ sub gtk_style_context_get_padding ( N-GObject $context, int32 $state, N-GObject 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_get_margin:
 =begin pod
-=head2 [gtk_style_context_] get_margin
+=head2 [[gtk_] style_context_] get_margin
 
 Gets the margin for a given state as a B<Gnome::Gtk3::Border>.
 See C<gtk_style_property_get()> and C<GTK_STYLE_PROPERTY_MARGIN>
@@ -1008,7 +1008,7 @@ sub gtk_style_context_get_margin ( N-GObject $context, int32 $state, N-GObject $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_reset_widgets:
 =begin pod
-=head2 [gtk_style_context_] reset_widgets
+=head2 [[gtk_] style_context_] reset_widgets
 
 This function recomputes the styles for all widgets under a particular
 B<Gnome::Gdk3::Screen>. This is useful when some global parameter has changed that
@@ -1032,7 +1032,7 @@ sub gtk_style_context_reset_widgets ( N-GObject $screen )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_style_context_to_string:
 =begin pod
-=head2 [gtk_style_context_] to_string
+=head2 [[gtk_] style_context_] to_string
 
 Converts the style context into a string representation.
 
@@ -1061,7 +1061,7 @@ sub gtk_style_context_to_string ( N-GObject $context, int32 $flags )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_check:
 =begin pod
-=head2 gtk_render_check
+=head2 [gtk_] render_check
 
 Renders a checkmark (as in a B<Gnome::Gtk3::CheckButton>).
 
@@ -1095,7 +1095,7 @@ sub gtk_render_check ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num6
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_option:
 =begin pod
-=head2 gtk_render_option
+=head2 [gtk_] render_option
 
 Renders an option mark (as in a B<Gnome::Gtk3::RadioButton>), the C<GTK_STATE_FLAG_CHECKED>
 state will determine whether the option is on or off, and
@@ -1125,7 +1125,7 @@ sub gtk_render_option ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_arrow:
 =begin pod
-=head2 gtk_render_arrow
+=head2 [gtk_] render_arrow
 
 Renders an arrow pointing to I<angle>.
 
@@ -1153,7 +1153,7 @@ sub gtk_render_arrow ( N-GObject $context, cairo_t $cr, num64 $angle, num64 $x, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_background:
 =begin pod
-=head2 gtk_render_background
+=head2 [gtk_] render_background
 
 Renders the background of an element.
 
@@ -1183,7 +1183,7 @@ sub gtk_render_background ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_background_get_clip:
 =begin pod
-=head2 [gtk_render_] background_get_clip
+=head2 [[gtk_] render_] background_get_clip
 
 Returns the area that will be affected (i.e. drawn to) when
 calling C<gtk_render_background()> for the given I<context> and
@@ -1210,7 +1210,7 @@ sub gtk_render_background_get_clip ( N-GObject $context, num64 $x, num64 $y, num
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_frame:
 =begin pod
-=head2 gtk_render_frame
+=head2 [gtk_] render_frame
 
 Renders a frame around the rectangle defined by I<x>, I<y>, I<width>, I<height>.
 
@@ -1239,7 +1239,7 @@ sub gtk_render_frame ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num6
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_expander:
 =begin pod
-=head2 gtk_render_expander
+=head2 [gtk_] render_expander
 
 Renders an expander (as used in B<Gnome::Gtk3::TreeView> and B<Gnome::Gtk3::Expander>) in the area
 defined by I<x>, I<y>, I<width>, I<height>. The state C<GTK_STATE_FLAG_CHECKED>
@@ -1269,7 +1269,7 @@ sub gtk_render_expander ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, n
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_focus:
 =begin pod
-=head2 gtk_render_focus
+=head2 [gtk_] render_focus
 
 Renders a focus indicator on the rectangle determined by I<x>, I<y>, I<width>, I<height>.
 
@@ -1297,7 +1297,7 @@ sub gtk_render_focus ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num6
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_layout:
 =begin pod
-=head2 gtk_render_layout
+=head2 [gtk_] render_layout
 
 Renders I<layout> on the coordinates I<x>, I<y>
 
@@ -1320,7 +1320,7 @@ sub gtk_render_layout ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, Pan
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_line:
 =begin pod
-=head2 gtk_render_line
+=head2 [gtk_] render_line
 
 Renders a line from (x0, y0) to (x1, y1).
 
@@ -1344,7 +1344,7 @@ sub gtk_render_line ( N-GObject $context, cairo_t $cr, num64 $x0, num64 $y0, num
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_slider:
 =begin pod
-=head2 gtk_render_slider
+=head2 [gtk_] render_slider
 
 Renders a slider (as in B<Gnome::Gtk3::Scale>) in the rectangle defined by I<x>, I<y>,
 I<width>, I<height>. I<orientation> defines whether the slider is vertical
@@ -1375,7 +1375,7 @@ sub gtk_render_slider ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_extension:
 =begin pod
-=head2 gtk_render_extension
+=head2 [gtk_] render_extension
 
 Renders a extension (as in a B<Gnome::Gtk3::Notebook> tab) in the rectangle
 defined by I<x>, I<y>, I<width>, I<height>. The side where the extension
@@ -1406,7 +1406,7 @@ sub gtk_render_extension ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_handle:
 =begin pod
-=head2 gtk_render_handle
+=head2 [gtk_] render_handle
 
 Renders a handle (as in B<Gnome::Gtk3::HandleBox>, B<Gnome::Gtk3::Paned> and
 B<Gnome::Gtk3::Window>’s resize grip), in the rectangle
@@ -1436,7 +1436,7 @@ sub gtk_render_handle ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_activity:
 =begin pod
-=head2 gtk_render_activity
+=head2 [gtk_] render_activity
 
 Renders an activity indicator (such as in B<Gnome::Gtk3::Spinner>).
 The state C<GTK_STATE_FLAG_CHECKED> determines whether there is
@@ -1462,7 +1462,7 @@ sub gtk_render_activity ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, n
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_icon:
 =begin pod
-=head2 gtk_render_icon
+=head2 [gtk_] render_icon
 
 Renders the icon in I<pixbuf> at the specified I<x> and I<y> coordinates.
 
@@ -1492,7 +1492,7 @@ sub gtk_render_icon ( N-GObject $context, cairo_t $cr, N-GObject $pixbuf, num64 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_icon_surface:
 =begin pod
-=head2 [gtk_render_] icon_surface
+=head2 [[gtk_] render_] icon_surface
 
 Renders the icon in I<surface> at the specified I<x> and I<y> coordinates.
 
@@ -1516,7 +1516,7 @@ sub gtk_render_icon_surface ( N-GObject $context, cairo_t $cr, cairo_surface_t $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_insertion_cursor:
 =begin pod
-=head2 gtk_render_insertion_cursor
+=head2 [gtk_] render_insertion_cursor
 
 Draws a text caret on I<cr> at the specified index of I<layout>.
 

@@ -230,8 +230,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
       $returns = "\n  returns $return-type";
     }
 
-    my Str $start-comment = $variable-args-list ?? "#`[[\n" !! '';
-    my Str $end-comment = $variable-args-list ?? "\n]]" !! '';
+    my Str $start-comment = $variable-args-list ?? '#`{{' ~ "\n" !! '';
+    my Str $end-comment = $variable-args-list ?? "\n" ~ '}}' !! '';
 
     my $pod-sub-name = pod-sub-name($sub-name);
     my Str $sub = Q:qq:to/EOSUB/;

@@ -130,8 +130,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_list_store_new
-------------------
+[gtk_] list_store_new
+---------------------
 
 Creates a new list store with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
 
@@ -143,8 +143,8 @@ Returns: a new **Gnome::Gtk3::ListStore**
 
   * Int $column-type; all **GType** types for the columns, from first to last
 
-[gtk_list_store_] set_value
----------------------------
+[[gtk_] list_store_] set_value
+------------------------------
 
 Sets the data in the cell specified by *$iter* and *$column*. The type of *$value* must be convertible to the type of the column.
 
@@ -158,8 +158,8 @@ Sets the data in the cell specified by *$iter* and *$column*. The type of *$valu
 
   * Any $value; new value for the cell
 
-gtk_list_store_set
-------------------
+[gtk_] list_store_set
+---------------------
 
 Sets the value of one or more cells in the row referenced by the iterator. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type `G_TYPE_STRING` to “Foo”, you would write `$ls.gtk_list_store_set( $iter, 0, "Foo")`.
 
@@ -171,8 +171,8 @@ The value will be referenced by the store if it is a `G_TYPE_OBJECT`, and it wil
 
   * $col, $val; pairs of column number and value
 
-gtk_list_store_remove
----------------------
+[gtk_] list_store_remove
+------------------------
 
 Removes the given row from the list store. After being removed, the returned iterator is set to be the next valid row, or invalidated if it pointed to the last row in the list_store.
 
@@ -183,8 +183,8 @@ Removes the given row from the list store. After being removed, the returned ite
 
   * Gnome::Gtk3::TreeIter $iter; The iterator pointing to the row which must be removed
 
-gtk_list_store_insert
----------------------
+[gtk_] list_store_insert
+------------------------
 
 Creates a new row at *$position*. The returned iterator will be changed to point to this new row. If *$position* is -1 or is larger than the number of rows on the list, then the new row will be appended to the list. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
@@ -192,8 +192,8 @@ Creates a new row at *$position*. The returned iterator will be changed to point
 
   * Int $position; position to insert the new row, or -1 for last
 
-[gtk_list_store_] insert_before
--------------------------------
+[[gtk_] list_store_] insert_before
+----------------------------------
 
 Inserts a new row before *$sibling*. If *$sibling* is `Any`, then the row will be appended to the end of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
@@ -204,8 +204,8 @@ Inserts a new row before *$sibling*. If *$sibling* is `Any`, then the row will b
 
   * Gnome::Gtk3::TreeIter $sibling; A valid iterator or `Any`
 
-[gtk_list_store_] insert_after
-------------------------------
+[[gtk_] list_store_] insert_after
+---------------------------------
 
 Inserts a new row after *$sibling*. If *$sibling* is `Any`, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
@@ -216,8 +216,8 @@ Inserts a new row after *$sibling*. If *$sibling* is `Any`, then the row will be
 
   * Gnome::Gtk3::TreeIter $sibling; A valid iterator, or `Any`
 
-[gtk_list_store_] insert_with_values
-------------------------------------
+[[gtk_] list_store_] insert_with_values
+---------------------------------------
 
 Creates a new row at *position*. *iter* will be changed to point to this new row. If *position* is -1, or larger than the number of rows in the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
@@ -239,15 +239,15 @@ Since: 2.6
 
   * Int $column, $value, ...; the rest are pairs of column number and value
 
-gtk_list_store_prepend
-----------------------
+[gtk_] list_store_prepend
+-------------------------
 
 Prepends a new row to the list store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
     method gtk_list_store_prepend ( --> Gnome::Gtk3::TreeIter )
 
-gtk_list_store_append
----------------------
+[gtk_] list_store_append
+------------------------
 
 Appends a new row to the list_store. The returned iterator will be changed to point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
@@ -255,15 +255,15 @@ Appends a new row to the list_store. The returned iterator will be changed to po
 
 Returns a **Gnome::Gtk3::TreeIter** pointing to the new row.
 
-gtk_list_store_clear
---------------------
+[gtk_] list_store_clear
+-----------------------
 
 Removes all rows from the list store.
 
     method gtk_list_store_clear ( )
 
-[gtk_list_store_] iter_is_valid
--------------------------------
+[[gtk_] list_store_] iter_is_valid
+----------------------------------
 
 WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
@@ -277,8 +277,8 @@ Since: 2.2
 
   * N-GtkTreeIter $iter; A **Gnome::Gtk3::TreeIter**.
 
-gtk_list_store_reorder
-----------------------
+[gtk_] list_store_reorder
+-------------------------
 
 Reorders *store* to follow the order indicated by *new_order*. Note that this function only works with unsorted stores.
 
@@ -288,8 +288,8 @@ Since: 2.2
 
   * Int $new_order; (array zero-terminated=1): an array of integers mapping the new position of each child to its old position before the re-ordering, i.e. *new_order*`[newpos] = oldpos`. It must have exactly as many items as the list store’s length.
 
-gtk_list_store_swap
--------------------
+[gtk_] list_store_swap
+----------------------
 
 Swaps *a* and *b* in *store*. Note that this function only works with unsorted stores.
 
@@ -301,8 +301,8 @@ Since: 2.2
 
   * N-GtkTreeIter $b; Another **Gnome::Gtk3::TreeIter**.
 
-[gtk_list_store_] move_after
-----------------------------
+[[gtk_] list_store_] move_after
+-------------------------------
 
 Moves *iter* in *store* to the position after *position*. Note that this function only works with unsorted stores. If *position* is `Any`, *iter* will be moved to the start of the list.
 
@@ -314,8 +314,8 @@ Since: 2.2
 
   * N-GtkTreeIter $position; (allow-none): A **Gnome::Gtk3::TreeIter** or `Any`.
 
-[gtk_list_store_] move_before
------------------------------
+[[gtk_] list_store_] move_before
+--------------------------------
 
 Moves *iter* in *store* to the position before *position*. Note that this function only works with unsorted stores. If *position* is `Any`, *iter* will be moved to the end of the list.
 

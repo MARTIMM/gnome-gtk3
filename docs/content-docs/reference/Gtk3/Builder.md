@@ -143,8 +143,8 @@ Create an empty builder.
 
     multi method new ( Bool :$empty! )
 
-[gtk_builder_] error_quark
---------------------------
+[[gtk_] builder_] error_quark
+-----------------------------
 
 Return the domain code of the builder error domain.
 
@@ -159,8 +159,8 @@ The following example shows the fields of a returned error when a faulty string 
     is $quark.to-string($e.domain), 'gtk-builder-error-quark',
        "error domain: $quark.to-string($e.domain())";
 
-gtk_builder_new
----------------
+[gtk_] builder_new
+------------------
 
 Creates a new empty builder object.
 
@@ -174,8 +174,8 @@ Since: 2.12
 
     method gtk_builder_new ( --> N-GObject  )
 
-[gtk_builder_] add_from_file
-----------------------------
+[[gtk_] builder_] add_from_file
+-------------------------------
 
 Parses a file containing a [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of *builder*.
 
@@ -196,8 +196,8 @@ Since: 2.12
 
   * Str $filename; the name of the file to parse
 
-[gtk_builder_] add_from_string
-------------------------------
+[[gtk_] builder_] add_from_string
+---------------------------------
 
 Parses a string containing a [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of *builder*.
 
@@ -215,8 +215,8 @@ Since: 2.12
 
   * Int $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
 
-[gtk_builder_] get_object
--------------------------
+[[gtk_] builder_] get_object
+----------------------------
 
 Gets the object named *name*. Note that this function does not increment the reference count of the returned object.
 
@@ -228,8 +228,8 @@ Since: 2.12
 
   * Str $name; name of object to get
 
-[gtk_builder_] get_type_from_name
----------------------------------
+[[gtk_] builder_] get_type_from_name
+------------------------------------
 
 Looks up a type by name, using the virtual function that **Gnome::Gtk3::Builder** has for that purpose. This is mainly used when implementing the **Gnome::Gtk3::Buildable** interface on a type.
 
@@ -237,12 +237,12 @@ Returns: the `GType` found for *type_name* or `G_TYPE_INVALID` if no type was fo
 
 Since: 2.12
 
-    method gtk_builder_get_type_from_name ( Str $type_name --> int32  )
+    method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
 
   * Str $type_name; type name to lookup
 
-[gtk_builder_] new_from_file
-----------------------------
+[[gtk_] builder_] new_from_file
+-------------------------------
 
 Builds the [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) in the file *filename*.
 
@@ -256,8 +256,8 @@ Since: 3.10
 
   * Str $filename; filename of user interface description file
 
-[gtk_builder_] new_from_string
-------------------------------
+[[gtk_] builder_] new_from_string
+---------------------------------
 
 Builds the user interface described by *string* (in the [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) format).
 
@@ -275,8 +275,8 @@ Since: 3.10
 
   * Int $length; the length of *string*, or -1
 
-[gtk_builder_] set_application
-------------------------------
+[[gtk_] builder_] set_application
+---------------------------------
 
 Sets the application associated with *builder*.
 
@@ -288,8 +288,8 @@ Since: 3.10
 
   * N-GObject $application; a **Gnome::Gtk3::Application**
 
-[gtk_builder_] get_application
-------------------------------
+[[gtk_] builder_] get_application
+---------------------------------
 
 Gets the **Gnome::Gtk3::Application** associated with the builder.
 

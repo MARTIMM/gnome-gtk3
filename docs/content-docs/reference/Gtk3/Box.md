@@ -77,8 +77,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_box_new
------------
+[gtk_] box_new
+--------------
 
 Creates a new **Gnome::Gtk3::Box**.
 
@@ -92,8 +92,8 @@ Since: 3.0
 
   * Int $spacing; the number of pixels to place by default between children.
 
-[gtk_box_] pack_start
----------------------
+[[gtk_] box_] pack_start
+------------------------
 
 Adds *child* to *box*, packed with reference to the start of *box*. The *child* is packed after any other child packed with reference to the start of *box*.
 
@@ -107,8 +107,8 @@ Adds *child* to *box*, packed with reference to the start of *box*. The *child* 
 
   * UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
 
-[gtk_box_] pack_end
--------------------
+[[gtk_] box_] pack_end
+----------------------
 
 Adds *child* to *box*, packed with reference to the end of *box*. The *child* is packed after (away from end of) any other child packed with reference to the end of *box*.
 
@@ -122,8 +122,8 @@ Adds *child* to *box*, packed with reference to the end of *box*. The *child* is
 
   * UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
 
-[gtk_box_] set_homogeneous
---------------------------
+[[gtk_] box_] set_homogeneous
+-----------------------------
 
 Sets the *homogeneous* property of *box*, controlling whether or not all children of *box* are given equal space in the box.
 
@@ -131,8 +131,8 @@ Sets the *homogeneous* property of *box*, controlling whether or not all childre
 
   * Int $homogeneous; a boolean value, `1` to create equal allotments, `0` for variable allotments
 
-[gtk_box_] get_homogeneous
---------------------------
+[[gtk_] box_] get_homogeneous
+-----------------------------
 
 Returns whether the box is homogeneous (all children are the same size). See `gtk_box_set_homogeneous()`.
 
@@ -140,8 +140,8 @@ Returns: `1` if the box is homogeneous.
 
     method gtk_box_get_homogeneous ( --> Int  )
 
-[gtk_box_] set_spacing
-----------------------
+[[gtk_] box_] set_spacing
+-------------------------
 
 Sets the *spacing* property of *box*, which is the number of pixels to place between children of *box*.
 
@@ -149,8 +149,8 @@ Sets the *spacing* property of *box*, which is the number of pixels to place bet
 
   * Int $spacing; the number of pixels to put between children
 
-[gtk_box_] get_spacing
-----------------------
+[[gtk_] box_] get_spacing
+-------------------------
 
 Gets the value set by `gtk_box_set_spacing()`.
 
@@ -158,8 +158,8 @@ Returns: spacing between children
 
     method gtk_box_get_spacing ( --> Int  )
 
-[gtk_box_] set_baseline_position
---------------------------------
+[[gtk_] box_] set_baseline_position
+-----------------------------------
 
 Sets the baseline position of a box. This affects only horizontal boxes with at least one baseline aligned child. If there is more vertical space available than requested, and the baseline is not allocated by the parent then *position* is used to allocate the baseline wrt the extra space available.
 
@@ -169,8 +169,8 @@ Since: 3.10
 
   * GtkBaselinePosition $position; a **Gnome::Gtk3::BaselinePosition**
 
-[gtk_box_] get_baseline_position
---------------------------------
+[[gtk_] box_] get_baseline_position
+-----------------------------------
 
 Gets the value set by `gtk_box_set_baseline_position()`.
 
@@ -180,8 +180,8 @@ Since: 3.10
 
     method gtk_box_get_baseline_position ( --> GtkBaselinePosition  )
 
-[gtk_box_] reorder_child
-------------------------
+[[gtk_] box_] reorder_child
+---------------------------
 
 Moves *child* to a new *position* in the list of *box* children. The list contains widgets packed **GTK_PACK_START** as well as widgets packed **GTK_PACK_END**, in the order that these widgets were added to *box*.
 
@@ -193,8 +193,8 @@ A widget’s position in the *box* children list determines where the widget is 
 
   * Int $position; the new position for *child* in the list of children of *box*, starting from 0. If negative, indicates the end of the list
 
-[gtk_box_] query_child_packing
-------------------------------
+[[gtk_] box_] query_child_packing
+---------------------------------
 
 Obtains information about how *child* is packed into *box*.
 
@@ -210,8 +210,8 @@ Obtains information about how *child* is packed into *box*.
 
   * GtkPackType $pack_type; (out): pointer to return location for pack-type child property
 
-[gtk_box_] set_child_packing
-----------------------------
+[[gtk_] box_] set_child_packing
+-------------------------------
 
 Sets the way *child* is packed into *box*.
 
@@ -227,8 +227,8 @@ Sets the way *child* is packed into *box*.
 
   * GtkPackType $pack_type; the new value of the pack-type child property
 
-[gtk_box_] set_center_widget
-----------------------------
+[[gtk_] box_] set_center_widget
+-------------------------------
 
 Sets a center widget; that is a child widget that will be centered with respect to the full width of the box, even if the children at either side take up different amounts of space.
 
@@ -238,8 +238,8 @@ Since: 3.12
 
   * N-GObject $widget; (allow-none): the widget to center
 
-[gtk_box_] get_center_widget
-----------------------------
+[[gtk_] box_] get_center_widget
+-------------------------------
 
 Retrieves the center widget of the box.
 

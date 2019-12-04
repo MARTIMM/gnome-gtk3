@@ -45,8 +45,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_text_tag_new
-----------------
+[gtk_] text_tag_new
+-------------------
 
 Creates a **Gnome::Gtk3::TextTag**. Configure the tag using object arguments, i.e. using `g_object_set()`.
 
@@ -56,8 +56,8 @@ Returns: a new **Gnome::Gtk3::TextTag**
 
   * Str $name; tag name, or `Any`
 
-[gtk_text_tag_] get_priority
-----------------------------
+[[gtk_] text_tag_] get_priority
+-------------------------------
 
 Get the tag priority.
 
@@ -65,8 +65,8 @@ Returns: The tag’s priority.
 
     method gtk_text_tag_get_priority ( --> Int  )
 
-[gtk_text_tag_] set_priority
-----------------------------
+[[gtk_] text_tag_] set_priority
+-------------------------------
 
 Sets the priority of a **Gnome::Gtk3::TextTag**. Valid priorities start at 0 and go to one less than `gtk_text_tag_table_get_size()`. Each tag in a table has a unique priority; setting the priority of one tag shifts the priorities of all the other tags in the table to maintain a unique priority for each tag. Higher priority tags “win” if two tags both set the same text attribute. When adding a tag to a tag table, it will be assigned the highest priority in the table by default; so normally the precedence of a set of tags is the order in which they were added to the table, or created with `gtk_text_buffer_create_tag()`, which adds the tag to the buffer’s table automatically.
 
@@ -74,8 +74,8 @@ Sets the priority of a **Gnome::Gtk3::TextTag**. Valid priorities start at 0 and
 
   * Int $priority; the new priority
 
-gtk_text_tag_event
-------------------
+[gtk_] text_tag_event
+---------------------
 
 Emits the “event” signal on the **Gnome::Gtk3::TextTag**.
 
@@ -92,8 +92,8 @@ Returns: result of signal emission (whether the event was handled)
 
   * N-GObject $iter; location where the event was received
 
-gtk_text_tag_changed
---------------------
+[gtk_] text_tag_changed
+-----------------------
 
 Emits the *tag-changed* signal on the **Gnome::Gtk3::TextTagTable** where the tag is included.
 

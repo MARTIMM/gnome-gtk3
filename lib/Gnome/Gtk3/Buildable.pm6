@@ -62,7 +62,7 @@ method _buildable_interface ( Str $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_buildable_set_name:
 =begin pod
-=head2 [gtk_buildable_] set_name
+=head2 [[gtk_] buildable_] set_name
 
 Sets the name of the I<buildable> object.
 
@@ -81,7 +81,7 @@ sub gtk_buildable_set_name ( N-GObject $buildable, Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_buildable_get_name:
 =begin pod
-=head2 [gtk_buildable_] get_name
+=head2 [[gtk_] buildable_] get_name
 
 Gets the name of the I<buildable> object.
 
@@ -106,7 +106,7 @@ sub gtk_buildable_get_name ( N-GObject $buildable )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_add_child:
 =begin pod
-=head2 [gtk_buildable_] add_child
+=head2 [[gtk_] buildable_] add_child
 
 Adds a child to I<buildable>. I<type> is an optional string
 describing how the child should be added.
@@ -128,7 +128,7 @@ sub gtk_buildable_add_child ( N-GObject $buildable, N-GObject $builder, N-GObjec
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_set_buildable_property:
 =begin pod
-=head2 [gtk_buildable_] set_buildable_property
+=head2 [[gtk_] buildable_] set_buildable_property
 
 Sets the property name I<name> to I<value> on the I<buildable> object.
 
@@ -149,7 +149,7 @@ sub gtk_buildable_set_buildable_property ( N-GObject $buildable, N-GObject $buil
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_construct_child:
 =begin pod
-=head2 [gtk_buildable_] construct_child
+=head2 [[gtk_] buildable_] construct_child
 
 Constructs a child of I<buildable> with the name I<name>.
 
@@ -176,7 +176,7 @@ sub gtk_buildable_construct_child ( N-GObject $buildable, N-GObject $builder, St
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_custom_tag_start:
 =begin pod
-=head2 [gtk_buildable_] custom_tag_start
+=head2 [[gtk_] buildable_] custom_tag_start
 
 This is called for each unknown element under <child>.
 
@@ -204,7 +204,7 @@ sub gtk_buildable_custom_tag_start ( N-GObject $buildable, N-GObject $builder, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_custom_tag_end:
 =begin pod
-=head2 [gtk_buildable_] custom_tag_end
+=head2 [[gtk_] buildable_] custom_tag_end
 
 This is called at the end of each custom element handled by
 the buildable.
@@ -227,7 +227,7 @@ sub gtk_buildable_custom_tag_end ( N-GObject $buildable, N-GObject $builder, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_custom_finished:
 =begin pod
-=head2 [gtk_buildable_] custom_finished
+=head2 [[gtk_] buildable_] custom_finished
 
 This is similar to C<gtk_buildable_parser_finished()> but is
 called once for each custom tag handled by the I<buildable>.
@@ -250,7 +250,7 @@ sub gtk_buildable_custom_finished ( N-GObject $buildable, N-GObject $builder, N-
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_parser_finished:
 =begin pod
-=head2 [gtk_buildable_] parser_finished
+=head2 [[gtk_] buildable_] parser_finished
 
 Called when the builder finishes the parsing of a
 [B<Gnome::Gtk3::Builder> UI definition][BUILDER-UI].
@@ -273,7 +273,7 @@ sub gtk_buildable_parser_finished ( N-GObject $buildable, N-GObject $builder )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_buildable_get_internal_child:
 =begin pod
-=head2 [gtk_buildable_] get_internal_child
+=head2 [[gtk_] buildable_] get_internal_child
 
 Get the internal child called I<childname> of the I<buildable> object.
 

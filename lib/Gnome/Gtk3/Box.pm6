@@ -179,7 +179,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_new:
 =begin pod
-=head2 gtk_box_new
+=head2 [gtk_] box_new
 
 Creates a new B<Gnome::Gtk3::Box>.
 
@@ -202,7 +202,7 @@ sub gtk_box_new ( int32 $orientation, int32 $spacing )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_pack_start:
 =begin pod
-=head2 [gtk_box_] pack_start
+=head2 [[gtk_] box_] pack_start
 
 Adds I<child> to I<box>, packed with reference to the start of I<box>.
 The I<child> is packed after any other child packed with reference
@@ -224,7 +224,7 @@ sub gtk_box_pack_start ( N-GObject $box, N-GObject $child, int32 $expand, int32 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_pack_end:
 =begin pod
-=head2 [gtk_box_] pack_end
+=head2 [[gtk_] box_] pack_end
 
 Adds I<child> to I<box>, packed with reference to the end of I<box>.
 The I<child> is packed after (away from end of) any other child
@@ -246,7 +246,7 @@ sub gtk_box_pack_end ( N-GObject $box, N-GObject $child, int32 $expand, int32 $f
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_set_homogeneous:
 =begin pod
-=head2 [gtk_box_] set_homogeneous
+=head2 [[gtk_] box_] set_homogeneous
 
 Sets the  I<homogeneous> property of I<box>, controlling
 whether or not all children of I<box> are given equal space
@@ -265,7 +265,7 @@ sub gtk_box_set_homogeneous ( N-GObject $box, int32 $homogeneous )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_get_homogeneous:
 =begin pod
-=head2 [gtk_box_] get_homogeneous
+=head2 [[gtk_] box_] get_homogeneous
 
 Returns whether the box is homogeneous (all children are the
 same size). See C<gtk_box_set_homogeneous()>.
@@ -285,7 +285,7 @@ sub gtk_box_get_homogeneous ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_set_spacing:
 =begin pod
-=head2 [gtk_box_] set_spacing
+=head2 [[gtk_] box_] set_spacing
 
 Sets the  I<spacing> property of I<box>, which is the
 number of pixels to place between children of I<box>.
@@ -303,7 +303,7 @@ sub gtk_box_set_spacing ( N-GObject $box, int32 $spacing )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_get_spacing:
 =begin pod
-=head2 [gtk_box_] get_spacing
+=head2 [[gtk_] box_] get_spacing
 
 Gets the value set by C<gtk_box_set_spacing()>.
 
@@ -322,7 +322,7 @@ sub gtk_box_get_spacing ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_set_baseline_position:
 =begin pod
-=head2 [gtk_box_] set_baseline_position
+=head2 [[gtk_] box_] set_baseline_position
 
 Sets the baseline position of a box. This affects
 only horizontal boxes with at least one baseline aligned
@@ -346,7 +346,7 @@ sub gtk_box_set_baseline_position ( N-GObject $box, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_get_baseline_position:
 =begin pod
-=head2 [gtk_box_] get_baseline_position
+=head2 [[gtk_] box_] get_baseline_position
 
 Gets the value set by C<gtk_box_set_baseline_position()>.
 
@@ -367,7 +367,7 @@ sub gtk_box_get_baseline_position ( N-GObject $box )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_reorder_child:
 =begin pod
-=head2 [gtk_box_] reorder_child
+=head2 [[gtk_] box_] reorder_child
 
 Moves I<child> to a new I<position> in the list of I<box> children.
 The list contains widgets packed B<GTK_PACK_START>
@@ -393,7 +393,7 @@ sub gtk_box_reorder_child ( N-GObject $box, N-GObject $child, int32 $position )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_query_child_packing:
 =begin pod
-=head2 [gtk_box_] query_child_packing
+=head2 [[gtk_] box_] query_child_packing
 
 Obtains information about how I<child> is packed into I<box>.
 
@@ -414,7 +414,7 @@ sub gtk_box_query_child_packing ( N-GObject $box, N-GObject $child, int32 $expan
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_set_child_packing:
 =begin pod
-=head2 [gtk_box_] set_child_packing
+=head2 [[gtk_] box_] set_child_packing
 
 Sets the way I<child> is packed into I<box>.
 
@@ -435,7 +435,7 @@ sub gtk_box_set_child_packing ( N-GObject $box, N-GObject $child, int32 $expand,
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_set_center_widget:
 =begin pod
-=head2 [gtk_box_] set_center_widget
+=head2 [[gtk_] box_] set_center_widget
 
 Sets a center widget; that is a child widget that will be
 centered with respect to the full width of the box, even
@@ -457,7 +457,7 @@ sub gtk_box_set_center_widget ( N-GObject $box, N-GObject $widget )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_box_get_center_widget:
 =begin pod
-=head2 [gtk_box_] get_center_widget
+=head2 [[gtk_] box_] get_center_widget
 
 Retrieves the center widget of the box.
 

@@ -313,7 +313,7 @@ multi method add-gui ( Str:D :$string! )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_error_quark:
 =begin pod
-=head2 [gtk_builder_] error_quark
+=head2 [[gtk_] builder_] error_quark
 
 Return the domain code of the builder error domain.
 
@@ -338,7 +338,7 @@ sub gtk_builder_error_quark (  )
 #-------------------------------------------------------------------------------
 #TM:2:gtk_builder_new:
 =begin pod
-=head2 gtk_builder_new
+=head2 [gtk_] builder_new
 
 Creates a new empty builder object.
 
@@ -364,7 +364,7 @@ sub gtk_builder_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_add_from_file:
 =begin pod
-=head2 [gtk_builder_] add_from_file
+=head2 [[gtk_] builder_] add_from_file
 
 Parses a file containing a [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
@@ -421,7 +421,7 @@ sub _gtk_builder_add_from_file (
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_from_resource
+=head2 [[gtk_] builder_] add_from_resource
 
 Parses a resource file containing a [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
@@ -449,7 +449,7 @@ sub gtk_builder_add_from_resource ( N-GObject $builder, Str $resource_path, N-GO
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_add_from_string:
 =begin pod
-=head2 [gtk_builder_] add_from_string
+=head2 [[gtk_] builder_] add_from_string
 
 Parses a string containing a [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of I<builder>.
 
@@ -500,7 +500,7 @@ sub _gtk_builder_add_from_string (
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_objects_from_file
+=head2 [[gtk_] builder_] add_objects_from_file
 
 Parses a file containing a [B<Gnome::Gtk3::Builder> UI definition]
 building only the requested objects and merges
@@ -533,7 +533,7 @@ sub gtk_builder_add_objects_from_file ( N-GObject $builder, Str $filename, CArra
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_objects_from_resource
+=head2 [[gtk_] builder_] add_objects_from_resource
 
 Parses a resource file containing a [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI)
 building only the requested objects and merges
@@ -568,7 +568,7 @@ sub gtk_builder_add_objects_from_resource ( N-GObject $builder, Str $resource_pa
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_objects_from_string
+=head2 [[gtk_] builder_] add_objects_from_string
 
 Parses a string containing a [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI)
 building only the requested objects and merges
@@ -603,7 +603,7 @@ sub gtk_builder_add_objects_from_string ( N-GObject $builder, Str $buffer, uint6
 #-------------------------------------------------------------------------------
 #TM:3:gtk_builder_get_object:
 =begin pod
-=head2 [gtk_builder_] get_object
+=head2 [[gtk_] builder_] get_object
 
 Gets the object named I<name>. Note that this function does not
 increment the reference count of the returned object.
@@ -627,7 +627,7 @@ sub gtk_builder_get_object ( N-GObject $builder, Str $name )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] get_objects
+=head2 [[gtk_] builder_] get_objects
 
 Gets all objects that have been constructed by I<builder>. Note that
 this function does not increment the reference counts of the returned
@@ -653,7 +653,7 @@ sub gtk_builder_get_objects ( N-GObject $builder )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] expose_object
+=head2 [[gtk_] builder_] expose_object
 
 Add I<object> to the I<builder> object pool so it can be referenced just like any
 other object built by builder.
@@ -675,7 +675,7 @@ sub gtk_builder_expose_object ( N-GObject $builder, Str $name, N-GObject $object
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] connect_signals
+=head2 [[gtk_] builder_] connect_signals
 
 This method is a simpler variation of C<gtk_builder_connect_signals_full()>.
 It uses symbols explicitly added to I<builder> with prior calls to
@@ -715,7 +715,7 @@ sub gtk_builder_connect_signals ( N-GObject $builder, Pointer $user_data )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] connect_signals_full
+=head2 [[gtk_] builder_] connect_signals_full
 
 This function can be thought of the interpreted language binding
 version of C<gtk_builder_connect_signals()>, except that it does not
@@ -738,7 +738,7 @@ sub gtk_builder_connect_signals_full ( N-GObject $builder, GtkBuilderConnectFunc
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] set_translation_domain
+=head2 [[gtk_] builder_] set_translation_domain
 
 Sets the translation domain of I<builder>.
 See prop C<translation-domain>.
@@ -757,7 +757,7 @@ sub gtk_builder_set_translation_domain ( N-GObject $builder, Str $domain )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] get_translation_domain
+=head2 [[gtk_] builder_] get_translation_domain
 
 Gets the translation domain of I<builder>.
 
@@ -780,7 +780,7 @@ sub gtk_builder_get_translation_domain ( N-GObject $builder )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_builder_get_type_from_name:
 =begin pod
-=head2 [gtk_builder_] get_type_from_name
+=head2 [[gtk_] builder_] get_type_from_name
 
 Looks up a type by name, using the virtual function that
 B<Gnome::Gtk3::Builder> has for that purpose. This is mainly used when
@@ -805,7 +805,7 @@ sub gtk_builder_get_type_from_name ( N-GObject $builder, Str $type_name )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] value_from_string
+=head2 [[gtk_] builder_] value_from_string
 
 This function demarshals a value from a string. This function
 calls C<g_value_init()> on the I<value> argument, so it need not be
@@ -841,7 +841,7 @@ sub gtk_builder_value_from_string ( N-GObject $builder, GParamSpec $pspec, Str $
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] value_from_string_type
+=head2 [[gtk_] builder_] value_from_string_type
 
 Like C<gtk_builder_value_from_string()>, this function demarshals
 a value from a string, but takes a C<GType> instead of C<GParamSpec>.
@@ -873,7 +873,7 @@ sub gtk_builder_value_from_string_type ( N-GObject $builder, N-GObject $type, St
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_new_from_file:
 =begin pod
-=head2 [gtk_builder_] new_from_file
+=head2 [[gtk_] builder_] new_from_file
 
 Builds the [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) in the file I<filename>.
 
@@ -899,7 +899,7 @@ sub gtk_builder_new_from_file ( Str $filename )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] new_from_resource
+=head2 [[gtk_] builder_] new_from_resource
 
 Builds the [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) at I<resource_path>.
 
@@ -925,7 +925,7 @@ sub gtk_builder_new_from_resource ( Str $resource_path )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_new_from_string:
 =begin pod
-=head2 [gtk_builder_] new_from_string
+=head2 [[gtk_] builder_] new_from_string
 
 Builds the user interface described by I<string> (in the [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) format).
 
@@ -955,7 +955,7 @@ sub gtk_builder_new_from_string ( Str $string, int64 $length )
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_callback_symbol
+=head2 [[gtk_] builder_] add_callback_symbol
 
 Adds the I<callback_symbol> to the scope of I<builder> under the given I<callback_name>.
 
@@ -978,10 +978,10 @@ sub gtk_builder_add_callback_symbol ( N-GObject $builder, Str $callback_name, GC
   { * }
 }}
 
-#`[[
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] add_callback_symbols
+=head2 [[gtk_] builder_] add_callback_symbols
 
 A convenience function to add many callbacks instead of calling
 C<gtk_builder_add_callback_symbol()> for each symbol.
@@ -998,12 +998,12 @@ Since: 3.10
 sub gtk_builder_add_callback_symbols ( N-GObject $builder, Str $first_callback_name, GCallback $first_callback_symbol, Any $any = Any )
   is native(&gtk-lib)
   { * }
-]]
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_builder_] lookup_callback_symbol
+=head2 [[gtk_] builder_] lookup_callback_symbol
 
 Fetches a symbol previously added to I<builder>
 with C<gtk_builder_add_callback_symbols()>
@@ -1031,7 +1031,7 @@ sub gtk_builder_lookup_callback_symbol ( N-GObject $builder, Str $callback_name 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_builder_set_application:
 =begin pod
-=head2 [gtk_builder_] set_application
+=head2 [[gtk_] builder_] set_application
 
 Sets the application associated with I<builder>.
 
@@ -1053,7 +1053,7 @@ sub gtk_builder_set_application ( N-GObject $builder, N-GObject $application )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_builder_get_application:
 =begin pod
-=head2 [gtk_builder_] get_application
+=head2 [[gtk_] builder_] get_application
 
 Gets the B<Gnome::Gtk3::Application> associated with the builder.
 
@@ -1082,7 +1082,7 @@ sub gtk_builder_get_application ( N-GObject $builder )
 #-------------------------------------------------------------------------------
 #`{{
 =begin pod
-=head2 [gtk_builder_] extend_with_template
+=head2 [[gtk_] builder_] extend_with_template
 
 Main private entry point for building composite container
 components from template XML.

@@ -55,8 +55,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_text_buffer_new
--------------------
+[gtk_] text_buffer_new
+----------------------
 
 Creates a new text buffer.
 
@@ -66,8 +66,8 @@ Returns: a new text buffer
 
   * N-GObject $table; (allow-none): a tag table, or `Any` to create a new one
 
-[gtk_text_buffer_] get_line_count
----------------------------------
+[[gtk_] text_buffer_] get_line_count
+------------------------------------
 
 Obtains the number of lines in the buffer. This value is cached, so the function is very fast.
 
@@ -75,8 +75,8 @@ Returns: number of lines in the buffer
 
     method gtk_text_buffer_get_line_count ( --> Int  )
 
-[gtk_text_buffer_] get_char_count
----------------------------------
+[[gtk_] text_buffer_] get_char_count
+------------------------------------
 
 Gets the number of characters in the buffer; note that characters and bytes are not the same, you can’t e.g. expect the contents of the buffer in string form to be this many bytes long. The character count is cached, so this function is very fast.
 
@@ -84,8 +84,8 @@ Returns: number of characters in the buffer
 
     method gtk_text_buffer_get_char_count ( --> Int  )
 
-[gtk_text_buffer_] get_tag_table
---------------------------------
+[[gtk_] text_buffer_] get_tag_table
+-----------------------------------
 
 Get the **Gnome::Gtk3::TextTagTable** associated with this buffer.
 
@@ -93,8 +93,8 @@ Returns: (transfer none): the buffer’s tag table
 
     method gtk_text_buffer_get_tag_table ( --> N-GObject  )
 
-[gtk_text_buffer_] set_text
----------------------------
+[[gtk_] text_buffer_] set_text
+------------------------------
 
 Deletes current contents of *buffer*, and inserts *text* instead. If *len* is -1, *text* must be nul-terminated. *text* must be valid UTF-8.
 
@@ -104,8 +104,8 @@ Deletes current contents of *buffer*, and inserts *text* instead. If *len* is -1
 
   * Int $len; length of *text* in bytes
 
-gtk_text_buffer_insert
-----------------------
+[gtk_] text_buffer_insert
+-------------------------
 
 Inserts *$len* bytes of *$text* at position *$iter*. If *$len* is -1, *text* must be nul-terminated and will be inserted in its entirety. Emits the “insert-text” signal; insertion actually occurs in the default handler for the signal. *iter* is invalidated when insertion occurs (because the buffer contents change), but the default signal handler revalidates it to point to the end of the inserted text.
 
@@ -119,8 +119,8 @@ Inserts *$len* bytes of *$text* at position *$iter*. If *$len* is -1, *text* mus
 
   * Int $len; length of text in bytes, or -1
 
-[gtk_text_buffer_] insert_at_cursor
------------------------------------
+[[gtk_] text_buffer_] insert_at_cursor
+--------------------------------------
 
 Simply calls `gtk_text_buffer_insert()`, using the current cursor position as the insertion point.
 
@@ -130,8 +130,8 @@ Simply calls `gtk_text_buffer_insert()`, using the current cursor position as th
 
   * Int $len; length of text, in bytes
 
-[gtk_text_buffer_] insert_interactive
--------------------------------------
+[[gtk_] text_buffer_] insert_interactive
+----------------------------------------
 
 Like `gtk_text_buffer_insert()`, but the insertion will not occur if *iter* is at a non-editable location in the buffer. Usually you want to prevent insertions at ineditable locations if the insertion results from a user action (is interactive).
 
@@ -153,8 +153,8 @@ Returns: whether text was actually inserted
 
   * Int $default_editable; default editability of buffer
 
-[gtk_text_buffer_] insert_interactive_at_cursor
------------------------------------------------
+[[gtk_] text_buffer_] insert_interactive_at_cursor
+--------------------------------------------------
 
 Calls `gtk_text_buffer_insert_interactive()` at the cursor position.
 
@@ -170,8 +170,8 @@ Returns: whether text was actually inserted
 
   * Int $default_editable; default editability of buffer
 
-[gtk_text_buffer_] insert_range
--------------------------------
+[[gtk_] text_buffer_] insert_range
+----------------------------------
 
 Copies text, tags, and pixbufs between *start* and *end* (the order of *start* and *end* doesn’t matter) and inserts the copy at *iter*. Used instead of simply getting/inserting text because it preserves images and tags. If *start* and *end* are in a different buffer from *buffer*, the two buffers must share the same tag table.
 
@@ -188,8 +188,8 @@ Implemented via emissions of the insert_text and apply_tag signals, so expect th
 
   * Gnome::Gtk3::TextIter $end; another position in the same buffer as *start*
 
-[gtk_text_buffer_] insert_range_interactive
--------------------------------------------
+[[gtk_] text_buffer_] insert_range_interactive
+----------------------------------------------
 
 Same as `gtk_text_buffer_insert_range()`, but does nothing if the insertion point isn’t editable. The *default_editable* parameter indicates whether the text is editable at *iter* if no tags enclosing *iter* affect editability. Typically the result of `gtk_text_view_get_editable()` is appropriate here.
 
@@ -210,8 +210,8 @@ Returns: whether an insertion was possible at *iter*
 
   * Int $default_editable; default editability of the buffer
 
-[gtk_text_buffer_] insert_markup
---------------------------------
+[[gtk_] text_buffer_] insert_markup
+-----------------------------------
 
 Inserts the text in *markup* at position *iter*. *markup* will be inserted in its entirety and must be nul-terminated and valid UTF-8. Emits the *insert-text* signal, possibly multiple times; insertion actually occurs in the default handler for the signal. *iter* will point to the end of the inserted text on return.
 
@@ -227,8 +227,8 @@ Since: 3.16
 
   * Int $len; length of *markup* in bytes, or -1
 
-gtk_text_buffer_delete
-----------------------
+[gtk_] text_buffer_delete
+-------------------------
 
 Deletes text between *start* and *end*. The order of *start* and *end* is not actually relevant; `gtk_text_buffer_delete()` will reorder them. This function actually emits the “delete-range” signal, and the default handler of that signal deletes the text. Because the buffer is modified, all outstanding iterators become invalid after calling this function; however, the *start* and *end* will be re-initialized to point to the location where text was deleted.
 
@@ -240,8 +240,8 @@ Deletes text between *start* and *end*. The order of *start* and *end* is not ac
 
   * Gnome::Gtk3::TextIter $end; another position in *buffer*
 
-[gtk_text_buffer_] delete_interactive
--------------------------------------
+[[gtk_] text_buffer_] delete_interactive
+----------------------------------------
 
 Deletes all editable text in the given range. Calls `gtk_text_buffer_delete()` for each editable sub-range of [*start*,*end*). *start* and *end* are revalidated to point to the location of the last deleted range, or left untouched if no text was deleted.
 
@@ -259,8 +259,8 @@ Returns: whether some text was actually deleted
 
   * Int $default_editable; whether the buffer is editable by default
 
-gtk_text_buffer_backspace
--------------------------
+[gtk_] text_buffer_backspace
+----------------------------
 
 Performs the appropriate action as if the user hit the delete key with the cursor at the position specified by *iter*. In the normal case a single character will be deleted, but when combining accents are involved, more than one character can be deleted, and when precomposed character and accent combinations are involved, less than one character will be deleted.
 
@@ -281,8 +281,8 @@ Since: 2.6
 
   * Int $default_editable; whether the buffer is editable by default
 
-[gtk_text_buffer_] get_text
----------------------------
+[[gtk_] text_buffer_] get_text
+------------------------------
 
 Returns the text in the range [*start*,*end*). Excludes undisplayed text (text marked with tags that set the invisibility attribute) if *include_hidden_chars* is `0`. Does not include characters representing embedded images, so byte and character indexes into the returned string do not correspond to byte and character indexes into the buffer. Contrast with `gtk_text_buffer_get_slice()`.
 
@@ -299,8 +299,8 @@ Returns: an allocated UTF-8 string
 
   * Int $include_hidden_chars; whether to include invisible text
 
-[gtk_text_buffer_] get_slice
-----------------------------
+[[gtk_] text_buffer_] get_slice
+-------------------------------
 
 Returns the text in the range [*start*,*end*). Excludes undisplayed text (text marked with tags that set the invisibility attribute) if *include_hidden_chars* is `0`. The returned string includes a 0xFFFC character whenever the buffer contains embedded images, so byte and character indexes into the returned string do correspond to byte and character indexes into the buffer. Contrast with `gtk_text_buffer_get_text()`. Note that 0xFFFC can occur in normal text as well, so it is not a reliable indicator that a pixbuf or widget is in the buffer.
 
@@ -318,8 +318,8 @@ Returns: an allocated UTF-8 string
 
   * Int $include_hidden_chars; whether to include invisible text
 
-[gtk_text_buffer_] apply_tag
-----------------------------
+[[gtk_] text_buffer_] apply_tag
+-------------------------------
 
 Emits the “apply-tag” signal on *buffer*. The default handler for the signal applies *tag* to the given range. *start* and *end* do not have to be in order.
 
@@ -334,8 +334,8 @@ Emits the “apply-tag” signal on *buffer*. The default handler for the signal
 
   * Gnome::Gtk3::TextIter $end; other bound of range to be tagged
 
-[gtk_text_buffer_] remove_tag
------------------------------
+[[gtk_] text_buffer_] remove_tag
+--------------------------------
 
 Emits the “remove-tag” signal. The default handler for the signal removes all occurrences of *tag* from the given range. *start* and *end* don’t have to be in order.
 
@@ -347,8 +347,8 @@ Emits the “remove-tag” signal. The default handler for the signal removes al
 
   * Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
-[gtk_text_buffer_] apply_tag_by_name
-------------------------------------
+[[gtk_] text_buffer_] apply_tag_by_name
+---------------------------------------
 
 Calls `gtk_text_tag_table_lookup()` on the buffer’s tag table to get a **Gnome::Gtk3::TextTag**, then calls `gtk_text_buffer_apply_tag()`.
 
@@ -362,8 +362,8 @@ Calls `gtk_text_tag_table_lookup()` on the buffer’s tag table to get a **Gnome
 
   * Gnome::Gtk3::TextIter $end; other bound of range to be tagged
 
-[gtk_text_buffer_] remove_tag_by_name
--------------------------------------
+[[gtk_] text_buffer_] remove_tag_by_name
+----------------------------------------
 
 Calls `gtk_text_tag_table_lookup()` on the buffer’s tag table to get a **Gnome::Gtk3::TextTag**, then calls `gtk_text_buffer_remove_tag()`.
 
@@ -377,8 +377,8 @@ Calls `gtk_text_tag_table_lookup()` on the buffer’s tag table to get a **Gnome
 
   * Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
-[gtk_text_buffer_] remove_all_tags
-----------------------------------
+[[gtk_] text_buffer_] remove_all_tags
+-------------------------------------
 
 Removes all tags in the range between *start* and *end*. Be careful with this function; it could remove tags added in code unrelated to the code you’re currently writing. That is, using this function is probably a bad idea if you have two or more unrelated code sections that add tags.
 
@@ -390,8 +390,8 @@ Removes all tags in the range between *start* and *end*. Be careful with this fu
 
   * Gnome::Gtk3::TextIter $end; other bound of range to be untagged
 
-[gtk_text_buffer_] get_iter_at_line_offset
-------------------------------------------
+[[gtk_] text_buffer_] get_iter_at_line_offset
+---------------------------------------------
 
 Obtains an iterator pointing to *$char_offset* within the given line. Note characters, not bytes; UTF-8 may encode one character as multiple bytes.
 
@@ -408,8 +408,8 @@ Since the 3.20 version, if *$line_number* is greater than the number of lines in
 
   * Int $char_offset; char offset from start of line
 
-[gtk_text_buffer_] get_iter_at_line_index
------------------------------------------
+[[gtk_] text_buffer_] get_iter_at_line_index
+--------------------------------------------
 
 Obtains an iterator pointing to *byte_index* within the given line. *byte_index* must be the start of a UTF-8 character. Note bytes, not characters; UTF-8 may encode one character as multiple bytes.
 
@@ -426,8 +426,8 @@ Since the 3.20 version, if *line_number* is greater than the number of lines in 
 
   * Int $byte_index; byte index from start of line
 
-[gtk_text_buffer_] get_iter_at_offset
--------------------------------------
+[[gtk_] text_buffer_] get_iter_at_offset
+----------------------------------------
 
 Initializes *iter* to a position *char_offset* chars from the start of the entire buffer. If *char_offset* is -1 or greater than the number of characters in the buffer, *iter* is initialized to the end iterator, the iterator one past the last valid character in the buffer.
 
@@ -438,8 +438,8 @@ Initializes *iter* to a position *char_offset* chars from the start of the entir
 
   * Int $char_offset; char offset from start of buffer, counting from 0, or -1
 
-[gtk_text_buffer_] get_iter_at_line
------------------------------------
+[[gtk_] text_buffer_] get_iter_at_line
+--------------------------------------
 
 Returns an *iter* to the start of the given line. If *$line_number* is greater than the number of lines in the *buffer*, the end iterator is returned.
 
@@ -450,8 +450,8 @@ Returns an *iter* to the start of the given line. If *$line_number* is greater t
 
   * Int $line_number; line number counting from 0
 
-[gtk_text_buffer_] get_start_iter
----------------------------------
+[[gtk_] text_buffer_] get_start_iter
+------------------------------------
 
 Initialized *$iter* with the first position in the text buffer. This is the same as using `gtk_text_buffer_get_iter_at_offset()` to get the iter at character offset 0.
 
@@ -459,8 +459,8 @@ Initialized *$iter* with the first position in the text buffer. This is the same
 
   * N-GObject $iter; (out): iterator to initialize
 
-[gtk_text_buffer_] get_end_iter
--------------------------------
+[[gtk_] text_buffer_] get_end_iter
+----------------------------------
 
 Initializes *iter* with the “end iterator,” one past the last valid character in the text buffer. If dereferenced with `gtk_text_iter_get_char()`, the end iterator has a character value of 0. The entire buffer lies in the range from the first position in the buffer (call `gtk_text_buffer_get_start_iter()` to get character position 0) to the end iterator.
 
@@ -468,8 +468,8 @@ Initializes *iter* with the “end iterator,” one past the last valid characte
 
   * N-GObject $iter; (out): iterator to initialize
 
-[gtk_text_buffer_] get_bounds
------------------------------
+[[gtk_] text_buffer_] get_bounds
+--------------------------------
 
 Retrieves the first and last iterators in the buffer, i.e. the entire buffer lies within the range [*start*,*end*).
 
@@ -481,8 +481,8 @@ Returns a list of
 
   * Gnome::Gtk3::TextIter $end; iterator to initialize with the end iterator
 
-[gtk_text_buffer_] get_modified
--------------------------------
+[[gtk_] text_buffer_] get_modified
+----------------------------------
 
 Indicates whether the buffer has been modified since the last call to `gtk_text_buffer_set_modified()` set the modification flag to `0`. Used for example to enable a “save” function in a text editor.
 
@@ -490,8 +490,8 @@ Returns: `1` if the buffer has been modified
 
     method gtk_text_buffer_get_modified ( --> Int  )
 
-[gtk_text_buffer_] set_modified
--------------------------------
+[[gtk_] text_buffer_] set_modified
+----------------------------------
 
 Used to keep track of whether the buffer has been modified since the last time it was saved. Whenever the buffer is saved to disk, call gtk_text_buffer_set_modified (*buffer*, FALSE). When the buffer is modified, it will automatically toggled on the modified bit again. When the modified bit flips, the buffer emits the *modified-changed* signal.
 
@@ -499,8 +499,8 @@ Used to keep track of whether the buffer has been modified since the last time i
 
   * Int $setting; modification flag setting
 
-[gtk_text_buffer_] get_has_selection
-------------------------------------
+[[gtk_] text_buffer_] get_has_selection
+---------------------------------------
 
 Indicates whether the buffer has some text currently selected.
 
@@ -510,8 +510,8 @@ Since: 2.10
 
     method gtk_text_buffer_get_has_selection ( --> Int  )
 
-[gtk_text_buffer_] get_selection_bounds
----------------------------------------
+[[gtk_] text_buffer_] get_selection_bounds
+------------------------------------------
 
 Returns `1` if some text is selected; places the bounds of the selection in *start* and *end* (if the selection has length 0, then *start* and *end* are filled in with the same value). *start* and *end* will be in ascending order. If *start* and *end* are NULL, then they are not filled in, but the return value still indicates whether text is selected.
 
@@ -525,8 +525,8 @@ Returned List contains
 
   * Gnome::Gtk3::TextIter $end; iterator to initialize with selection end
 
-[gtk_text_buffer_] delete_selection
------------------------------------
+[[gtk_] text_buffer_] delete_selection
+--------------------------------------
 
 Deletes the range between the “insert” and “selection_bound” marks, that is, the currently-selected text. If *interactive* is `1`, the editability of the selection will be considered (users can’t delete uneditable text).
 
@@ -538,8 +538,8 @@ Returns: whether there was a non-empty selection to delete
 
   * Int $default_editable; whether the buffer is editable by default
 
-[gtk_text_buffer_] begin_user_action
-------------------------------------
+[[gtk_] text_buffer_] begin_user_action
+---------------------------------------
 
 Called to indicate that the buffer operations between here and a call to `gtk_text_buffer_end_user_action()` are part of a single user-visible operation. The operations between `gtk_text_buffer_begin_user_action()` and `gtk_text_buffer_end_user_action()` can then be grouped when creating an undo stack. **Gnome::Gtk3::TextBuffer** maintains a count of calls to `gtk_text_buffer_begin_user_action()` that have not been closed with a call to `gtk_text_buffer_end_user_action()`, and emits the “begin-user-action” and “end-user-action” signals only for the outermost pair of calls. This allows you to build user actions from other user actions.
 
@@ -547,8 +547,8 @@ The “interactive” buffer mutation functions, such as `gtk_text_buffer_insert
 
     method gtk_text_buffer_begin_user_action ( )
 
-[gtk_text_buffer_] end_user_action
-----------------------------------
+[[gtk_] text_buffer_] end_user_action
+-------------------------------------
 
 Should be paired with a call to `gtk_text_buffer_begin_user_action()`. See that function for a full explanation.
 

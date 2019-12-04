@@ -112,7 +112,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_bin_get_child:
 =begin pod
-=head2 [gtk_bin_] get_child
+=head2 [[gtk_] bin_] get_child
 
 Gets the child of the B<Gnome::Gtk3::Bin>, or C<Any> if the bin contains
 no child widget. The returned widget does not have a reference

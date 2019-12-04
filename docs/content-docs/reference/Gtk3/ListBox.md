@@ -99,8 +99,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_list_box_prepend
---------------------
+[gtk_] list_box_prepend
+-----------------------
 
 Prepend a widget to the list. If a sort function is set, the widget will actually be inserted at the calculated position and this function has the same effect of `gtk_container_add()`.
 
@@ -110,8 +110,8 @@ Since: 3.10
 
   * N-GObject $child; the **Gnome::Gtk3::Widget** to add
 
-gtk_list_box_insert
--------------------
+[gtk_] list_box_insert
+----------------------
 
 Insert the *child* into the *box* at *position*. If a sort function is set, the widget will actually be inserted at the calculated position and this function has the same effect of `gtk_container_add()`.
 
@@ -125,8 +125,8 @@ Since: 3.10
 
   * Int $position; the position to insert *child* in
 
-[gtk_list_box_] get_selected_row
---------------------------------
+[[gtk_] list_box_] get_selected_row
+-----------------------------------
 
 Gets the selected row.
 
@@ -138,8 +138,8 @@ Since: 3.10
 
     method gtk_list_box_get_selected_row ( --> N-GObject  )
 
-[gtk_list_box_] get_row_at_index
---------------------------------
+[[gtk_] list_box_] get_row_at_index
+-----------------------------------
 
 Gets the n-th child in the list (not counting headers). If *_index* is negative or larger than the number of items in the list, `Any` is returned.
 
@@ -151,8 +151,8 @@ Since: 3.10
 
   * Int $index; the index of the row
 
-[gtk_list_box_] get_row_at_y
-----------------------------
+[[gtk_] list_box_] get_row_at_y
+-------------------------------
 
 Gets the row at the *y* position.
 
@@ -164,8 +164,8 @@ Since: 3.10
 
   * Int $y; position
 
-[gtk_list_box_] select_row
---------------------------
+[[gtk_] list_box_] select_row
+-----------------------------
 
 Make *row* the currently selected row.
 
@@ -175,8 +175,8 @@ Since: 3.10
 
   * GtkListBoxRow $row; (allow-none): The row to select or `Any`
 
-[gtk_list_box_] set_placeholder
--------------------------------
+[[gtk_] list_box_] set_placeholder
+----------------------------------
 
 Sets the placeholder widget that is shown in the list when it doesn't display any visible children.
 
@@ -186,8 +186,8 @@ Since: 3.10
 
   * N-GObject $placeholder; (allow-none): a **Gnome::Gtk3::Widget** or `Any`
 
-[gtk_list_box_] set_adjustment
-------------------------------
+[[gtk_] list_box_] set_adjustment
+---------------------------------
 
 Sets the adjustment (if any) that the widget uses to for vertical scrolling. For instance, this is used to get the page size for PageUp/Down key handling.
 
@@ -199,8 +199,8 @@ Since: 3.10
 
   * N-GObject $adjustment; (allow-none): the adjustment, or `Any`
 
-[gtk_list_box_] get_adjustment
-------------------------------
+[[gtk_] list_box_] get_adjustment
+---------------------------------
 
 Gets the adjustment (if any) that the widget uses to for vertical scrolling.
 
@@ -210,8 +210,8 @@ Since: 3.10
 
     method gtk_list_box_get_adjustment ( --> N-GObject  )
 
-[gtk_list_box_] get_selected_rows
----------------------------------
+[[gtk_] list_box_] get_selected_rows
+------------------------------------
 
 Creates a list of all selected children.
 
@@ -221,8 +221,8 @@ Since: 3.14
 
     method gtk_list_box_get_selected_rows ( --> N-GList  )
 
-[gtk_list_box_] unselect_row
-----------------------------
+[[gtk_] list_box_] unselect_row
+-------------------------------
 
 Unselects a single row of *box*, if the selection mode allows it.
 
@@ -232,8 +232,8 @@ Since: 3.14
 
   * GtkListBoxRow $row; the row to unselected
 
-[gtk_list_box_] select_all
---------------------------
+[[gtk_] list_box_] select_all
+-----------------------------
 
 Select all children of *box*, if the selection mode allows it.
 
@@ -241,8 +241,8 @@ Since: 3.14
 
     method gtk_list_box_select_all ( )
 
-[gtk_list_box_] unselect_all
-----------------------------
+[[gtk_] list_box_] unselect_all
+-------------------------------
 
 Unselect all children of *box*, if the selection mode allows it.
 
@@ -250,8 +250,8 @@ Since: 3.14
 
     method gtk_list_box_unselect_all ( )
 
-[gtk_list_box_] set_selection_mode
-----------------------------------
+[[gtk_] list_box_] set_selection_mode
+-------------------------------------
 
 Sets how selection works in the listbox. See **Gnome::Gtk3::SelectionMode** for details.
 
@@ -261,8 +261,8 @@ Since: 3.10
 
   * GtkSelectionMode $mode; The **Gnome::Gtk3::SelectionMode**
 
-[gtk_list_box_] get_selection_mode
-----------------------------------
+[[gtk_] list_box_] get_selection_mode
+-------------------------------------
 
 Gets the selection mode of the listbox.
 
@@ -272,8 +272,8 @@ Since: 3.10
 
     method gtk_list_box_get_selection_mode ( --> GtkSelectionMode  )
 
-[gtk_list_box_] invalidate_filter
----------------------------------
+[[gtk_] list_box_] invalidate_filter
+------------------------------------
 
 Update the filtering for all rows. Call this when result of the filter function on the *box* is changed due to an external factor. For instance, this would be used if the filter function just looked for a specific search string and the entry with the search string has changed.
 
@@ -281,8 +281,8 @@ Since: 3.10
 
     method gtk_list_box_invalidate_filter ( )
 
-[gtk_list_box_] invalidate_sort
--------------------------------
+[[gtk_] list_box_] invalidate_sort
+----------------------------------
 
 Update the sorting for all rows. Call this when result of the sort function on the *box* is changed due to an external factor.
 
@@ -290,8 +290,8 @@ Since: 3.10
 
     method gtk_list_box_invalidate_sort ( )
 
-[gtk_list_box_] invalidate_headers
-----------------------------------
+[[gtk_] list_box_] invalidate_headers
+-------------------------------------
 
 Update the separators for all rows. Call this when result of the header function on the *box* is changed due to an external factor.
 
@@ -299,8 +299,8 @@ Since: 3.10
 
     method gtk_list_box_invalidate_headers ( )
 
-[gtk_list_box_] set_activate_on_single_click
---------------------------------------------
+[[gtk_] list_box_] set_activate_on_single_click
+-----------------------------------------------
 
 If *single* is `1`, rows will be activated when you click on them, otherwise you need to double-click.
 
@@ -310,8 +310,8 @@ Since: 3.10
 
   * Int $single; a boolean
 
-[gtk_list_box_] get_activate_on_single_click
---------------------------------------------
+[[gtk_] list_box_] get_activate_on_single_click
+-----------------------------------------------
 
 Returns whether rows activate on single clicks.
 
@@ -321,8 +321,8 @@ Since: 3.10
 
     method gtk_list_box_get_activate_on_single_click ( --> Int  )
 
-[gtk_list_box_] drag_unhighlight_row
-------------------------------------
+[[gtk_] list_box_] drag_unhighlight_row
+---------------------------------------
 
 If a row has previously been highlighted via `gtk_list_box_drag_highlight_row()` it will have the highlight removed.
 
@@ -330,8 +330,8 @@ Since: 3.10
 
     method gtk_list_box_drag_unhighlight_row ( )
 
-[gtk_list_box_] drag_highlight_row
-----------------------------------
+[[gtk_] list_box_] drag_highlight_row
+-------------------------------------
 
 This is a helper function for implementing DnD onto a **Gnome::Gtk3::ListBox**. The passed in *row* will be highlighted via `gtk_drag_highlight()`, and any previously highlighted row will be unhighlighted.
 
@@ -343,8 +343,8 @@ Since: 3.10
 
   * GtkListBoxRow $row; a **Gnome::Gtk3::ListBoxRow**
 
-gtk_list_box_new
-----------------
+[gtk_] list_box_new
+-------------------
 
 Creates a new **Gnome::Gtk3::ListBox** container.
 

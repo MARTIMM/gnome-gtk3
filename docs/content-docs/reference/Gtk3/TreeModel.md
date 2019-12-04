@@ -89,8 +89,23 @@ They are returned by `gtk_tree_model_get_flags()`, and must be static for the li
 Methods
 =======
 
-[gtk_tree_model_] get_flags
----------------------------
+[gtk_] tree_row_reference_new
+-----------------------------
+
+Creates a row reference based on *$path*.
+
+This reference will keep pointing to the node pointed to by *$path*, so long as it exists. Any changes that occur on *$model* are propagated, and the path is updated appropriately. If *$path* isn’t a valid path in *$model*, then `Any` is returned.
+
+Returns: a newly allocated **Gnome::Gtk3::TreeRowReference**, or `Any`
+
+    method gtk_tree_row_reference_new (
+      N-GtkTreePath $path --> N-GtkTreeRowReference
+    )
+
+  * N-GtkTreePath $path; a valid **Gnome::Gtk3::TreePath**-struct to monitor
+
+[[gtk_] tree_model_] get_flags
+------------------------------
 
 Returns a set of flags supported by this interface.
 
@@ -100,24 +115,24 @@ Returns: the flags supported by this interface
 
     method gtk_tree_model_get_flags ( --> GtkTreeModelFlags  )
 
-[gtk_tree_model_] get_n_columns
--------------------------------
+[[gtk_] tree_model_] get_n_columns
+----------------------------------
 
 Returns the number of columns supported by *tree_model*.
 
     method gtk_tree_model_get_n_columns ( --> Int  )
 
-[gtk_tree_model_] get_column_type
----------------------------------
+[[gtk_] tree_model_] get_column_type
+------------------------------------
 
 Returns the type of the column.
 
-    method gtk_tree_model_get_column_type ( Int $index_ --> int32  )
+    method gtk_tree_model_get_column_type ( Int $index --> int32  )
 
-  * Int $index_; the column index
+  * Int $index; the column index
 
-[gtk_tree_model_] get_iter
---------------------------
+[[gtk_] tree_model_] get_iter
+-----------------------------
 
 Returns a valid iterator pointing to *$path*. If *$path* does not exist, an invalid iterator is returned. Test with `.tree-iter-is-valid()` to see if the iterator is ok.
 
@@ -128,8 +143,8 @@ Returns a valid iterator pointing to *$path*. If *$path* does not exist, an inva
 
   * Gnome::Gtk3::TreePath $path; The path to point the iterator to.
 
-[gtk_tree_model_] get_iter_from_string
---------------------------------------
+[[gtk_] tree_model_] get_iter_from_string
+-----------------------------------------
 
 Returns a valid iterator pointing to *$path_string*, if it exists. Otherwise, an invalid iterator is returned. Test with `.tree-iter-is-valid()` to see if the iterator is ok.
 
@@ -140,8 +155,8 @@ Returns a valid iterator pointing to *$path_string*, if it exists. Otherwise, an
 
   * Str $path_string; a string representation of a **Gnome::Gtk3::TreePath**-struct
 
-[gtk_tree_model_] get_string_from_iter
---------------------------------------
+[[gtk_] tree_model_] get_string_from_iter
+-----------------------------------------
 
 Generates a string representation of the iter.
 
@@ -155,15 +170,15 @@ Since: 2.2
 
   * N-GtkTreeIter $iter; a **Gnome::Gtk3::TreeIter**-struct
 
-[gtk_tree_model_] get_iter_first
---------------------------------
+[[gtk_] tree_model_] get_iter_first
+-----------------------------------
 
 Initializes *iter* with the first iterator in the tree (the one at the path "0"). Returns an invalid iterator if the tree is empty.
 
     method gtk_tree_model_get_iter_first ( --> Gnome::Gtk3::TreeIter  )
 
-[gtk_tree_model_] get_path
---------------------------
+[[gtk_] tree_model_] get_path
+-----------------------------
 
 Returns a newly-created **Gnome::Gtk3::TreePath** referenced by *$iter*.
 
@@ -176,8 +191,8 @@ This path should be freed with `.clear-tree-path()`.
 
   * Gnome::Gtk3::TreeIter $iter; the iterator
 
-[gtk_tree_model_] get_value
----------------------------
+[[gtk_] tree_model_] get_value
+------------------------------
 
 Returns an array of values found at the *$iter* and *$column*s.
 
@@ -194,8 +209,8 @@ When done with each *value*, `.g_value_unset()` needs to be called to free any a
 
   * N-GObject $value; (out) (transfer none): an empty **GValue** to set
 
-[gtk_tree_model_] iter_previous
--------------------------------
+[[gtk_] tree_model_] iter_previous
+----------------------------------
 
 Sets *$iter* to point to the previous node at the current level.
 
@@ -209,8 +224,8 @@ Since: 3.0
 
   * N-GtkTreeIter $iter; (in): the **Gnome::Gtk3::TreeIter**-struct
 
-[gtk_tree_model_] iter_next
----------------------------
+[[gtk_] tree_model_] iter_next
+------------------------------
 
 Sets *iter* to point to the node following it at the current level.
 
@@ -222,8 +237,8 @@ Returns: `1` if *iter* has been changed to the next node
 
   * N-GtkTreeIter $iter; (in): the **Gnome::Gtk3::TreeIter**-struct
 
-[gtk_tree_model_] iter_children
--------------------------------
+[[gtk_] tree_model_] iter_children
+----------------------------------
 
 Returns an iterator to point to the first child of *$parent*. **Gnome::Gtk3::ListStore** does not have children but a **Gnome::Gtk3::TreeStore** does.
 
@@ -236,8 +251,8 @@ If *$parent* has no children, an invalid iterator is returned. *$parent* will re
 
   * Gnome::Gtk3::TreeIter $parent; an iterator pointing to a parent.
 
-[gtk_tree_model_] iter_has_child
---------------------------------
+[[gtk_] tree_model_] iter_has_child
+-----------------------------------
 
 Returns `1` if *$iter* has children, `0` otherwise.
 
@@ -248,8 +263,8 @@ Returns `1` if *$iter* has children, `0` otherwise.
 
   * Gnome::Gtk3::TreeIter $iter; iterator to test for children
 
-[gtk_tree_model_] iter_n_children
----------------------------------
+[[gtk_] tree_model_] iter_n_children
+------------------------------------
 
 Returns the number of children that *iter* has. As a special case, if *iter* is undefined, then the number of toplevel nodes is returned.
 
@@ -260,8 +275,8 @@ Returns the number of children that *iter* has. As a special case, if *iter* is 
 
   * Gnome::Gtk3::TreeIter $iter; the iterator
 
-[gtk_tree_model_] iter_nth_child
---------------------------------
+[[gtk_] tree_model_] iter_nth_child
+-----------------------------------
 
 Returns an iterator to be the child of *$parent*, using the given index.
 
@@ -276,8 +291,8 @@ The first index is 0. If *$n* is too big, or *$parent* has no children, the retu
 
   * Int $n; the index of the desired child
 
-[gtk_tree_model_] iter_parent
------------------------------
+[[gtk_] tree_model_] iter_parent
+--------------------------------
 
 Sets *iter* to be the parent of *child*.
 
@@ -358,8 +373,8 @@ An example
 
     $ls.foreach( X.new, 'row-loop');
 
-[gtk_tree_model_] row_changed
------------------------------
+[[gtk_] tree_model_] row_changed
+--------------------------------
 
 Emits the *row-changed* signal on the tree model.
 
@@ -372,8 +387,8 @@ Emits the *row-changed* signal on the tree model.
 
   * Gnome::Gtk3::TreeIter $iter; an iterator pointing to the changed row
 
-[gtk_tree_model_] row_inserted
-------------------------------
+[[gtk_] tree_model_] row_inserted
+---------------------------------
 
 Emits the *row-inserted* signal on the tree model.
 
@@ -386,8 +401,8 @@ Emits the *row-inserted* signal on the tree model.
 
   * Gnome::Gtk3::TreeIter $iter; an iterator pointing to the changed row
 
-[gtk_tree_model_] row_has_child_toggled
----------------------------------------
+[[gtk_] tree_model_] row_has_child_toggled
+------------------------------------------
 
 Emits the *row-has-child-toggled* signal on *tree_model*. This should be called by models after the child state of a node changes.
 
@@ -397,8 +412,8 @@ Emits the *row-has-child-toggled* signal on *tree_model*. This should be called 
 
   * N-GtkTreeIter $iter; a valid **Gnome::Gtk3::TreeIter**-struct pointing to the changed row
 
-[gtk_tree_model_] row_deleted
------------------------------
+[[gtk_] tree_model_] row_deleted
+--------------------------------
 
 Emits the *row-deleted* signal on *tree_model*.
 
@@ -410,8 +425,8 @@ Nodes that are deleted are not unreffed, this means that any outstanding referen
 
   * N-GtkTreePath $path; a **Gnome::Gtk3::TreePath**-struct pointing to the previous location of the deleted row
 
-[gtk_tree_model_] rows_reordered
---------------------------------
+[[gtk_] tree_model_] rows_reordered
+-----------------------------------
 
 Emits the *rows-reordered* signal on *tree_model*.
 
@@ -425,8 +440,8 @@ This should be called by models when their rows have been reordered.
 
   * Int $new_order; an array of integers mapping the current position of each child to its old position before the re-ordering, i.e. *new_order*`[newpos] = oldpos`
 
-[gtk_tree_model_] rows_reordered_with_length
---------------------------------------------
+[[gtk_] tree_model_] rows_reordered_with_length
+-----------------------------------------------
 
 Emits the *rows-reordered* signal on *tree_model*.
 

@@ -241,7 +241,7 @@ sub sub-coverage( Str:D $new-content --> List ) {
       last;
     }
 
-#    elsif $line ~~ m/ ^ [ '#`{{' || '#`[[' ] / {
+#    elsif $line ~~ m/ ^ [ '#`{{' ] / {
 #      $in-comment = True;
 #      next;
 #    }
@@ -253,7 +253,7 @@ sub sub-coverage( Str:D $new-content --> List ) {
       next;
     }
 
-#    elsif $line ~~ m/^ [ '}}' || ']]' ] \s* $ / {
+#    elsif $line ~~ m/^ [ '}}' ] \s* $ / {
 #      $in-comment = False;
 #      next;
 #    }

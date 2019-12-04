@@ -77,8 +77,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-[gtk_cell_renderer_] get_request_mode
--------------------------------------
+[[gtk_] cell_renderer_] get_request_mode
+----------------------------------------
 
 Gets whether the cell renderer prefers a height-for-width layout or a width-for-height layout.
 
@@ -88,8 +88,8 @@ Since: 3.0
 
     method gtk_cell_renderer_get_request_mode ( --> GtkSizeRequestMode  )
 
-[gtk_cell_renderer_] get_preferred_width
-----------------------------------------
+[[gtk_] cell_renderer_] get_preferred_width
+-------------------------------------------
 
 Retreives a renderer’s natural size when rendered to *$widget*.
 
@@ -105,8 +105,8 @@ The method returns a list with
 
   * Int $natural_size; the natural size
 
-[gtk_cell_renderer_] get_preferred_height_for_width
----------------------------------------------------
+[[gtk_] cell_renderer_] get_preferred_height_for_width
+------------------------------------------------------
 
 Retreives a cell renderers’s minimum and natural height if it were rendered to *$widget* with the specified *$width*.
 
@@ -127,8 +127,8 @@ Returns a list with
 
   * Int $natural_height; the preferred size
 
-[gtk_cell_renderer_] get_preferred_height
------------------------------------------
+[[gtk_] cell_renderer_] get_preferred_height
+--------------------------------------------
 
 Retreives a renderer’s natural size when rendered to *$widget*.
 
@@ -144,8 +144,8 @@ Returns a list with
 
   * Int $natural_size; the natural size
 
-[gtk_cell_renderer_] get_preferred_width_for_height
----------------------------------------------------
+[[gtk_] cell_renderer_] get_preferred_width_for_height
+------------------------------------------------------
 
 Retreives a cell renderers’s minimum and natural width if it were rendered to *$widget* with the specified *$height*.
 
@@ -166,8 +166,8 @@ Returns a list with
 
   * Int $natural_width; the preferred size
 
-[gtk_cell_renderer_] get_preferred_size
----------------------------------------
+[[gtk_] cell_renderer_] get_preferred_size
+------------------------------------------
 
 Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
 
@@ -183,8 +183,8 @@ Returns a list with
 
   * N-GtkRequisition $natural_size; the natural size
 
-[gtk_cell_renderer_] set_fixed_size
------------------------------------
+[[gtk_] cell_renderer_] set_fixed_size
+--------------------------------------
 
 Sets the renderer size to be explicit, independent of the properties set.
 
@@ -194,8 +194,8 @@ Sets the renderer size to be explicit, independent of the properties set.
 
   * Int $height; the height of the cell renderer, or -1
 
-[gtk_cell_renderer_] get_fixed_size
------------------------------------
+[[gtk_] cell_renderer_] get_fixed_size
+--------------------------------------
 
 Fills in *width* and *height* with the appropriate size of *cell*.
 
@@ -207,8 +207,8 @@ Returns a list with
 
   * Int $height; the fixed height of the cell
 
-[gtk_cell_renderer_] set_alignment
-----------------------------------
+[[gtk_] cell_renderer_] set_alignment
+-------------------------------------
 
 Sets the renderer’s alignment within its available space.
 
@@ -220,8 +220,8 @@ Since: 2.18
 
   * Num $yalign; the y alignment of the cell renderer
 
-[gtk_cell_renderer_] get_alignment
-----------------------------------
+[[gtk_] cell_renderer_] get_alignment
+-------------------------------------
 
 Returns xalign and yalign with the appropriate values of this cell.
 
@@ -235,8 +235,8 @@ Returns a list with
 
   * Num $yalign; y alignment of the cell
 
-[gtk_cell_renderer_] set_padding
---------------------------------
+[[gtk_] cell_renderer_] set_padding
+-----------------------------------
 
 Sets the renderer’s padding.
 
@@ -248,8 +248,8 @@ Since: 2.18
 
   * Int $ypad; the y padding of the cell renderer
 
-[gtk_cell_renderer_] get_padding
---------------------------------
+[[gtk_] cell_renderer_] get_padding
+-----------------------------------
 
 Returns xpad and ypad with the appropriate values of this cell.
 
@@ -263,8 +263,8 @@ Returns list with
 
   * Int $ypad; y padding of the cell
 
-[gtk_cell_renderer_] set_visible
---------------------------------
+[[gtk_] cell_renderer_] set_visible
+-----------------------------------
 
 Sets the cell renderer’s visibility.
 
@@ -274,8 +274,8 @@ Since: 2.18
 
   * Int $visible; the visibility of the cell
 
-[gtk_cell_renderer_] get_visible
---------------------------------
+[[gtk_] cell_renderer_] get_visible
+-----------------------------------
 
 Returns the cell renderer’s visibility.
 
@@ -285,8 +285,8 @@ Since: 2.18
 
     method gtk_cell_renderer_get_visible ( --> Int  )
 
-[gtk_cell_renderer_] set_sensitive
-----------------------------------
+[[gtk_] cell_renderer_] set_sensitive
+-------------------------------------
 
 Sets the cell renderer’s sensitivity.
 
@@ -296,8 +296,8 @@ Since: 2.18
 
   * Int $sensitive; the sensitivity of the cell
 
-[gtk_cell_renderer_] get_sensitive
-----------------------------------
+[[gtk_] cell_renderer_] get_sensitive
+-------------------------------------
 
 Returns the cell renderer’s sensitivity.
 
@@ -307,8 +307,8 @@ Since: 2.18
 
     method gtk_cell_renderer_get_sensitive ( --> Int  )
 
-[gtk_cell_renderer_] is_activatable
------------------------------------
+[[gtk_] cell_renderer_] is_activatable
+--------------------------------------
 
 Checks whether the cell renderer can do something when activated.
 
@@ -318,8 +318,8 @@ Since: 3.0
 
     method gtk_cell_renderer_is_activatable ( --> Int  )
 
-[gtk_cell_renderer_] get_state
-------------------------------
+[[gtk_] cell_renderer_] get_state
+---------------------------------
 
 Translates the cell renderer state to **GtkStateFlags**, based on the cell renderer and widget sensitivity, and the given **GtkCellRendererState**.
 

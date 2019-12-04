@@ -127,7 +127,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_text_tag_new:new(:empty),new(:tag-name)
 =begin pod
-=head2 gtk_text_tag_new
+=head2 [gtk_] text_tag_new
 
 Creates a B<Gnome::Gtk3::TextTag>. Configure the tag using object arguments,
 i.e. using C<g_object_set()>.
@@ -148,7 +148,7 @@ sub gtk_text_tag_new ( Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_get_priority:
 =begin pod
-=head2 [gtk_text_tag_] get_priority
+=head2 [[gtk_] text_tag_] get_priority
 
 Get the tag priority.
 
@@ -167,7 +167,7 @@ sub gtk_text_tag_get_priority ( N-GObject $tag )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_set_priority:
 =begin pod
-=head2 [gtk_text_tag_] set_priority
+=head2 [[gtk_] text_tag_] set_priority
 
 Sets the priority of a B<Gnome::Gtk3::TextTag>. Valid priorities
 start at 0 and go to one less than C<gtk_text_tag_table_get_size()>.
@@ -194,7 +194,7 @@ sub gtk_text_tag_set_priority ( N-GObject $tag, int32 $priority )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_tag_event:
 =begin pod
-=head2 gtk_text_tag_event
+=head2 [gtk_] text_tag_event
 
 Emits the “event” signal on the B<Gnome::Gtk3::TextTag>.
 
@@ -219,7 +219,7 @@ sub gtk_text_tag_event ( N-GObject $tag, N-GObject $event_object, GdkEvent $even
 #-------------------------------------------------------------------------------
 #TM:0:gtk_text_tag_changed:
 =begin pod
-=head2 gtk_text_tag_changed
+=head2 [gtk_] text_tag_changed
 
 Emits the  I<tag-changed> signal on the B<Gnome::Gtk3::TextTagTable> where
 the tag is included.
@@ -698,7 +698,7 @@ The B<Gnome::GObject::Value> type of property I< g_object_class_install_property
 =finish
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_tag_new
+=head2 [gtk_] text_tag_new
 
 Creates a B<Gnome::Gtk3::TextTag>. Configure the tag using object arguments,
 i.e. using C<g_object_set()>.
@@ -718,7 +718,7 @@ sub gtk_text_tag_new ( Str $name )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_tag_] get_priority
+=head2 [[gtk_] text_tag_] get_priority
 
 Get the tag priority.
 
@@ -736,7 +736,7 @@ sub gtk_text_tag_get_priority ( N-GObject $tag )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_text_tag_] set_priority
+=head2 [[gtk_] text_tag_] set_priority
 
 Sets the priority of a B<Gnome::Gtk3::TextTag>. Valid priorities
 start at 0 and go to one less than C<gtk_text_tag_table_get_size()>.
@@ -762,7 +762,7 @@ sub gtk_text_tag_set_priority ( N-GObject $tag, int32 $priority )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_tag_event
+=head2 [gtk_] text_tag_event
 
 Emits the “event” signal on the B<Gnome::Gtk3::TextTag>.
 
@@ -783,7 +783,7 @@ sub gtk_text_tag_event ( N-GObject $tag, N-GObject $event_object, GdkEvent $even
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_text_tag_changed
+=head2 [gtk_] text_tag_changed
 
 Emits the sig C<tag-changed> signal on the B<Gnome::Gtk3::TextTagTable> where
 the tag is included.

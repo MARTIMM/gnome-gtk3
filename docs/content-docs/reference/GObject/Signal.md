@@ -54,8 +54,8 @@ The other option to connect a signal is to use the `register-signal()` method de
 Methods
 =======
 
-[g_signal_] emit_by_name
-------------------------
+[[g_] signal_] emit_by_name
+---------------------------
 
 Emits a signal.
 
@@ -67,8 +67,8 @@ Note that `g_signal_emit_by_name()` resets the return value to the default if no
 
   * $widget; widget to pass to the handler.
 
-[g_signal_] handler_disconnect
-------------------------------
+[[g_] signal_] handler_disconnect
+---------------------------------
 
 Disconnects a handler from an instance so it will not be called during any future or currently ongoing emissions of the signal it has been connected to. The handler_id becomes invalid and may be reused.
 

@@ -268,7 +268,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:4:gtk_file_chooser_dialog_new:
 =begin pod
-=head2 gtk_file_chooser_dialog_new
+=head2 [gtk_] file_chooser_dialog_new
 
 Creates a new file chooser dialog. This function is analogous to C<gtk_dialog_new_with_buttons()>. This method is called when creating the object using I<.new(:action(...), ...)>.
 
@@ -359,7 +359,7 @@ sub gtk_file_chooser_dialog_new (
 
 =head1 Methods
 
-=head2 [gtk_file_chooser_] dialog_new_two_buttons
+=head2 [[gtk_] file_chooser_] dialog_new_two_buttons
 
   method gtk_file_chooser_dialog_new_two_buttons (
     Str $title, N-GObject $parent-window, int32 $file-chooser-action,

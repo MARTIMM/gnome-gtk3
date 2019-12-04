@@ -144,7 +144,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 gtk_color_chooser_dialog_new
+=head2 [gtk_] color_chooser_dialog_new
 
 Creates a new native C<Gtk3ColorChooserDialog>.
 

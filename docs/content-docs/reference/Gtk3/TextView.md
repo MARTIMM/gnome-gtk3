@@ -116,8 +116,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_text_view_new
------------------
+[gtk_] text_view_new
+--------------------
 
 Creates a new **Gnome::Gtk3::TextView**. If you don’t call `gtk_text_view_set_buffer()` before using the text view, an empty default buffer will be created for you. Get the buffer with `gtk_text_view_get_buffer()`. If you want to specify your own buffer, consider `gtk_text_view_new_with_buffer()`.
 
@@ -125,8 +125,8 @@ Returns: a new **Gnome::Gtk3::TextView**
 
     method gtk_text_view_new ( --> N-GObject  )
 
-[gtk_text_view_] new_with_buffer
---------------------------------
+[[gtk_] text_view_] new_with_buffer
+-----------------------------------
 
 Creates a new **Gnome::Gtk3::TextView** widget displaying the buffer *buffer*. One buffer can be shared among many widgets. *buffer* may be `Any` to create a default buffer, in which case this function is equivalent to `gtk_text_view_new()`. The text view adds its own reference count to the buffer; it does not take over an existing reference.
 
@@ -136,8 +136,8 @@ Returns: a new **Gnome::Gtk3::TextView**.
 
   * N-GObject $buffer; a **Gnome::Gtk3::TextBuffer**
 
-[gtk_text_view_] set_buffer
----------------------------
+[[gtk_] text_view_] set_buffer
+------------------------------
 
 Sets *buffer* as the buffer being displayed by *text_view*. The previous buffer displayed by the text view is unreferenced, and a reference is added to *buffer*. If you owned a reference to *buffer* before passing it to this function, you must remove that reference yourself; **Gnome::Gtk3::TextView** will not “adopt” it.
 
@@ -145,8 +145,8 @@ Sets *buffer* as the buffer being displayed by *text_view*. The previous buffer 
 
   * N-GObject $buffer; (allow-none): a **Gnome::Gtk3::TextBuffer**
 
-[gtk_text_view_] get_buffer
----------------------------
+[[gtk_] text_view_] get_buffer
+------------------------------
 
 Returns the **Gnome::Gtk3::TextBuffer** being displayed by this text view. The reference count on the buffer is not incremented; the caller of this function won’t own a new reference.
 
@@ -154,8 +154,8 @@ Returns: (transfer none): a **Gnome::Gtk3::TextBuffer**
 
     method gtk_text_view_get_buffer ( --> N-GObject  )
 
-[gtk_text_view_] scroll_to_iter
--------------------------------
+[[gtk_] text_view_] scroll_to_iter
+----------------------------------
 
 Scrolls *text_view* so that *iter* is on the screen in the position indicated by *xalign* and *yalign*. An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5 means center. If *use_align* is `0`, the text scrolls the minimal distance to get the mark onscreen, possibly not scrolling at all. The effective screen for purposes of this function is reduced by a margin of size *within_margin*.
 
@@ -175,8 +175,8 @@ Returns: `1` if scrolling occurred
 
   * Num $yalign; vertical alignment of mark within visible area
 
-[gtk_text_view_] scroll_to_mark
--------------------------------
+[[gtk_] text_view_] scroll_to_mark
+----------------------------------
 
 Scrolls *text_view* so that *mark* is on the screen in the position indicated by *xalign* and *yalign*. An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5 means center. If *use_align* is `0`, the text scrolls the minimal distance to get the mark onscreen, possibly not scrolling at all. The effective screen for purposes of this function is reduced by a margin of size *within_margin*.
 
@@ -192,8 +192,8 @@ Scrolls *text_view* so that *mark* is on the screen in the position indicated by
 
   * Num $yalign; vertical alignment of mark within visible area
 
-[gtk_text_view_] scroll_mark_onscreen
--------------------------------------
+[[gtk_] text_view_] scroll_mark_onscreen
+----------------------------------------
 
 Scrolls *text_view* the minimum distance such that *mark* is contained within the visible area of the widget.
 
@@ -201,8 +201,8 @@ Scrolls *text_view* the minimum distance such that *mark* is contained within th
 
   * N-GObject $mark; a mark in the buffer for *text_view*
 
-[gtk_text_view_] move_mark_onscreen
------------------------------------
+[[gtk_] text_view_] move_mark_onscreen
+--------------------------------------
 
 Moves a mark within the buffer so that it's located within the currently-visible text area.
 
@@ -212,8 +212,8 @@ Returns: `1` if the mark moved (wasn’t already onscreen)
 
   * N-GObject $mark; a **Gnome::Gtk3::TextMark**
 
-[gtk_text_view_] place_cursor_onscreen
---------------------------------------
+[[gtk_] text_view_] place_cursor_onscreen
+-----------------------------------------
 
 Moves the cursor to the currently visible region of the buffer, it it isn’t there already.
 
@@ -221,8 +221,8 @@ Returns: `1` if the cursor had to be moved.
 
     method gtk_text_view_place_cursor_onscreen ( --> Int  )
 
-[gtk_text_view_] get_visible_rect
----------------------------------
+[[gtk_] text_view_] get_visible_rect
+------------------------------------
 
 Fills *visible_rect* with the currently-visible region of the buffer, in buffer coordinates. Convert to window coordinates with `gtk_text_view_buffer_to_window_coords()`.
 
@@ -230,8 +230,8 @@ Fills *visible_rect* with the currently-visible region of the buffer, in buffer 
 
   * N-GObject $visible_rect; (out): rectangle to fill
 
-[gtk_text_view_] set_cursor_visible
------------------------------------
+[[gtk_] text_view_] set_cursor_visible
+--------------------------------------
 
 Toggles whether the insertion point should be displayed. A buffer with no editable text probably shouldn’t have a visible cursor, so you may want to turn the cursor off.
 
@@ -241,8 +241,8 @@ Note that this property may be overridden by the *gtk-keynave-use-caret* setting
 
   * Int $setting; whether to show the insertion cursor
 
-[gtk_text_view_] get_cursor_visible
------------------------------------
+[[gtk_] text_view_] get_cursor_visible
+--------------------------------------
 
 Find out whether the cursor should be displayed.
 
@@ -250,8 +250,8 @@ Returns: whether the insertion mark is visible
 
     method gtk_text_view_get_cursor_visible ( --> Int  )
 
-[gtk_text_view_] reset_cursor_blink
------------------------------------
+[[gtk_] text_view_] reset_cursor_blink
+--------------------------------------
 
 Ensures that the cursor is shown (i.e. not in an 'off' blink interval) and resets the time that it will stay blinking (or visible, in case blinking is disabled).
 
@@ -261,8 +261,8 @@ Since: 3.20
 
     method gtk_text_view_reset_cursor_blink ( )
 
-[gtk_text_view_] get_cursor_locations
--------------------------------------
+[[gtk_] text_view_] get_cursor_locations
+----------------------------------------
 
 Given an *iter* within a text layout, determine the positions of the strong and weak cursors if the insertion point is at that iterator. The position of each cursor is stored as a zero-width rectangle. The strong cursor location is the location where characters of the directionality equal to the base direction of the paragraph are inserted. The weak cursor location is the location where characters of the directionality opposite to the base direction of the paragraph are inserted.
 
@@ -282,8 +282,8 @@ Since: 3.0
 
   * N-GObject $weak; (out) (allow-none): location to store the weak cursor position (may be `Any`)
 
-[gtk_text_view_] get_iter_location
-----------------------------------
+[[gtk_] text_view_] get_iter_location
+-------------------------------------
 
 Gets a rectangle which roughly contains the character at *iter*. The rectangle position is in buffer coordinates; use `gtk_text_view_buffer_to_window_coords()` to convert these coordinates to coordinates for one of the windows in the text view.
 
@@ -293,8 +293,8 @@ Gets a rectangle which roughly contains the character at *iter*. The rectangle p
 
   * N-GObject $location; (out): bounds of the character at *iter*
 
-[gtk_text_view_] get_iter_at_location
--------------------------------------
+[[gtk_] text_view_] get_iter_at_location
+----------------------------------------
 
 Retrieves the iterator at buffer coordinates *x* and *y*. Buffer coordinates are coordinates for the entire buffer, not just the currently-displayed portion. If you have coordinates from an event, you have to convert those to buffer coordinates with `gtk_text_view_window_to_buffer_coords()`.
 
@@ -308,8 +308,8 @@ Returns: `1` if the position is over text
 
   * Int $y; y position, in buffer coordinates
 
-[gtk_text_view_] get_iter_at_position
--------------------------------------
+[[gtk_] text_view_] get_iter_at_position
+----------------------------------------
 
 Retrieves the iterator pointing to the character at buffer coordinates *x* and *y*. Buffer coordinates are coordinates for the entire buffer, not just the currently-displayed portion. If you have coordinates from an event, you have to convert those to buffer coordinates with `gtk_text_view_window_to_buffer_coords()`.
 
@@ -329,8 +329,8 @@ Since: 2.6
 
   * Int $y; y position, in buffer coordinates
 
-[gtk_text_view_] get_line_yrange
---------------------------------
+[[gtk_] text_view_] get_line_yrange
+-----------------------------------
 
 Gets the y coordinate of the top of the line containing *iter*, and the height of the line. The coordinate is a buffer coordinate; convert to window coordinates with `gtk_text_view_buffer_to_window_coords()`.
 
@@ -342,8 +342,8 @@ Gets the y coordinate of the top of the line containing *iter*, and the height o
 
   * Int $height; (out): return location for a height
 
-[gtk_text_view_] get_line_at_y
-------------------------------
+[[gtk_] text_view_] get_line_at_y
+---------------------------------
 
 Gets the **Gnome::Gtk3::TextIter** at the start of the line containing the coordinate *y*. *y* is in buffer coordinates, convert from window coordinates with `gtk_text_view_window_to_buffer_coords()`. If non-`Any`, *line_top* will be filled with the coordinate of the top edge of the line.
 
@@ -355,8 +355,8 @@ Gets the **Gnome::Gtk3::TextIter** at the start of the line containing the coord
 
   * Int $line_top; (out): return location for top coordinate of the line
 
-[gtk_text_view_] buffer_to_window_coords
-----------------------------------------
+[[gtk_] text_view_] buffer_to_window_coords
+-------------------------------------------
 
 Converts coordinate (*buffer_x*, *buffer_y*) to coordinates for the window *win*, and stores the result in (*window_x*, *window_y*).
 
@@ -374,8 +374,8 @@ Note that you can’t convert coordinates for a nonexisting window (see `gtk_tex
 
   * Int $window_y; (out) (allow-none): window y coordinate return location or `Any`
 
-[gtk_text_view_] window_to_buffer_coords
-----------------------------------------
+[[gtk_] text_view_] window_to_buffer_coords
+-------------------------------------------
 
 Converts coordinates on the window identified by *win* to buffer coordinates, storing the result in (*buffer_x*,*buffer_y*).
 
@@ -393,8 +393,8 @@ Note that you can’t convert coordinates for a nonexisting window (see `gtk_tex
 
   * Int $buffer_y; (out) (allow-none): buffer y coordinate return location or `Any`
 
-[gtk_text_view_] get_window
----------------------------
+[[gtk_] text_view_] get_window
+------------------------------
 
 Retrieves the **Gnome::Gdk3::Window** corresponding to an area of the text view; possible windows include the overall widget window, child windows on the left, right, top, bottom, and the window that displays the text buffer. Windows are `Any` and nonexistent if their width or height is 0, and are nonexistent before the widget has been realized.
 
@@ -404,8 +404,8 @@ Returns: (nullable) (transfer none): a **Gnome::Gdk3::Window**, or `Any`
 
   * GtkTextWindowType $win; window to get
 
-[gtk_text_view_] get_window_type
---------------------------------
+[[gtk_] text_view_] get_window_type
+-----------------------------------
 
 Usually used to find out which window an event corresponds to. If you connect to an event signal on *text_view*, this function should be called on `event->window` to see which window it was.
 
@@ -415,8 +415,8 @@ Returns: the window type.
 
   * N-GObject $window; a window type
 
-[gtk_text_view_] set_border_window_size
----------------------------------------
+[[gtk_] text_view_] set_border_window_size
+------------------------------------------
 
 Sets the width of `GTK_TEXT_WINDOW_LEFT` or `GTK_TEXT_WINDOW_RIGHT`, or the height of `GTK_TEXT_WINDOW_TOP` or `GTK_TEXT_WINDOW_BOTTOM`. Automatically destroys the corresponding window if the size is set to 0, and creates the window if the size is set to non-zero. This function can only be used for the “border windows,” it doesn’t work with **GTK_TEXT_WINDOW_WIDGET**, **GTK_TEXT_WINDOW_TEXT**, or **GTK_TEXT_WINDOW_PRIVATE**.
 
@@ -426,8 +426,8 @@ Sets the width of `GTK_TEXT_WINDOW_LEFT` or `GTK_TEXT_WINDOW_RIGHT`, or the heig
 
   * Int $size; width or height of the window
 
-[gtk_text_view_] get_border_window_size
----------------------------------------
+[[gtk_] text_view_] get_border_window_size
+------------------------------------------
 
 Gets the width of the specified border window. See `gtk_text_view_set_border_window_size()`.
 
@@ -437,8 +437,8 @@ Returns: width of window
 
   * GtkTextWindowType $type; window to return size from
 
-[gtk_text_view_] forward_display_line
--------------------------------------
+[[gtk_] text_view_] forward_display_line
+----------------------------------------
 
 Moves the given *iter* forward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
@@ -448,8 +448,8 @@ Returns: `1` if *iter* was moved and is not on the end iterator
 
   * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
-[gtk_text_view_] backward_display_line
---------------------------------------
+[[gtk_] text_view_] backward_display_line
+-----------------------------------------
 
 Moves the given *iter* backward by one display (wrapped) line. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
@@ -459,8 +459,8 @@ Returns: `1` if *iter* was moved and is not on the end iterator
 
   * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
-[gtk_text_view_] forward_display_line_end
------------------------------------------
+[[gtk_] text_view_] forward_display_line_end
+--------------------------------------------
 
 Moves the given *iter* forward to the next display line end. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
@@ -470,8 +470,8 @@ Returns: `1` if *iter* was moved and is not on the end iterator
 
   * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
-[gtk_text_view_] backward_display_line_start
---------------------------------------------
+[[gtk_] text_view_] backward_display_line_start
+-----------------------------------------------
 
 Moves the given *iter* backward to the next display line start. A display line is different from a paragraph. Paragraphs are separated by newlines or other paragraph separator characters. Display lines are created by line-wrapping a paragraph. If wrapping is turned off, display lines and paragraphs will be the same. Display lines are divided differently for each view, since they depend on the view’s width; paragraphs are the same in all views, since they depend on the contents of the **Gnome::Gtk3::TextBuffer**.
 
@@ -481,8 +481,8 @@ Returns: `1` if *iter* was moved and is not on the end iterator
 
   * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
-[gtk_text_view_] starts_display_line
-------------------------------------
+[[gtk_] text_view_] starts_display_line
+---------------------------------------
 
 Determines whether *iter* is at the start of a display line. See `gtk_text_view_forward_display_line()` for an explanation of display lines vs. paragraphs.
 
@@ -492,8 +492,8 @@ Returns: `1` if *iter* begins a wrapped line
 
   * N-GObject $iter; a **Gnome::Gtk3::TextIter**
 
-[gtk_text_view_] move_visually
-------------------------------
+[[gtk_] text_view_] move_visually
+---------------------------------
 
 Move the iterator a given number of characters visually, treating it as the strong cursor position. If *count* is positive, then the new strong cursor position will be *count* positions to the right of the old cursor position. If *count* is negative then the new strong cursor position will be *count* positions to the left of the old cursor position.
 
@@ -507,8 +507,8 @@ Returns: `1` if *iter* moved and is not on the end iterator
 
   * Int $count; number of characters to move (negative moves left, positive moves right)
 
-[gtk_text_view_] im_context_filter_keypress
--------------------------------------------
+[[gtk_] text_view_] im_context_filter_keypress
+----------------------------------------------
 
 Allow the **Gnome::Gtk3::TextView** input method to internally handle key press and release events. If this function returns `1`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
 
@@ -528,8 +528,8 @@ Since: 2.22
 
   * GdkEventKey $event; the key event
 
-[gtk_text_view_] reset_im_context
----------------------------------
+[[gtk_] text_view_] reset_im_context
+------------------------------------
 
 Reset the input method context of the text view if needed.
 
@@ -539,8 +539,8 @@ Since: 2.22
 
     method gtk_text_view_reset_im_context ( )
 
-[gtk_text_view_] add_child_in_window
-------------------------------------
+[[gtk_] text_view_] add_child_in_window
+---------------------------------------
 
 Adds a child at fixed coordinates in one of the text widget's windows.
 
@@ -558,8 +558,8 @@ The window must have nonzero size (see `gtk_text_view_set_border_window_size()`)
 
   * Int $ypos; Y position of child in window coordinates
 
-[gtk_text_view_] move_child
----------------------------
+[[gtk_] text_view_] move_child
+------------------------------
 
 Updates the position of a child, as for `gtk_text_view_add_child_in_window()`.
 
@@ -571,8 +571,8 @@ Updates the position of a child, as for `gtk_text_view_add_child_in_window()`.
 
   * Int $ypos; new Y position in window coordinates
 
-[gtk_text_view_] set_wrap_mode
-------------------------------
+[[gtk_] text_view_] set_wrap_mode
+---------------------------------
 
 Sets the line wrapping for the view.
 
@@ -580,8 +580,8 @@ Sets the line wrapping for the view.
 
   * GtkWrapMode $wrap_mode; a **Gnome::Gtk3::WrapMode**
 
-[gtk_text_view_] get_wrap_mode
-------------------------------
+[[gtk_] text_view_] get_wrap_mode
+---------------------------------
 
 Gets the line wrapping for the view.
 
@@ -589,8 +589,8 @@ Returns: the line wrap setting
 
     method gtk_text_view_get_wrap_mode ( --> GtkWrapMode  )
 
-[gtk_text_view_] set_editable
------------------------------
+[[gtk_] text_view_] set_editable
+--------------------------------
 
 Sets the default editability of the **Gnome::Gtk3::TextView**. You can override this default setting with tags in the buffer, using the “editable” attribute of tags.
 
@@ -598,8 +598,8 @@ Sets the default editability of the **Gnome::Gtk3::TextView**. You can override 
 
   * Int $setting; whether it’s editable
 
-[gtk_text_view_] get_editable
------------------------------
+[[gtk_] text_view_] get_editable
+--------------------------------
 
 Returns the default editability of the **Gnome::Gtk3::TextView**. Tags in the buffer may override this setting for some ranges of text.
 
@@ -607,8 +607,8 @@ Returns: whether text is editable by default
 
     method gtk_text_view_get_editable ( --> Int  )
 
-[gtk_text_view_] set_overwrite
-------------------------------
+[[gtk_] text_view_] set_overwrite
+---------------------------------
 
 Changes the **Gnome::Gtk3::TextView** overwrite mode.
 
@@ -618,8 +618,8 @@ Since: 2.4
 
   * Int $overwrite; `1` to turn on overwrite mode, `0` to turn it off
 
-[gtk_text_view_] get_overwrite
-------------------------------
+[[gtk_] text_view_] get_overwrite
+---------------------------------
 
 Returns whether the **Gnome::Gtk3::TextView** is in overwrite mode or not.
 
@@ -629,8 +629,8 @@ Since: 2.4
 
     method gtk_text_view_get_overwrite ( --> Int  )
 
-[gtk_text_view_] set_accepts_tab
---------------------------------
+[[gtk_] text_view_] set_accepts_tab
+-----------------------------------
 
 Sets the behavior of the text widget when the Tab key is pressed. If *accepts_tab* is `1`, a tab character is inserted. If *accepts_tab* is `0` the keyboard focus is moved to the next widget in the focus chain.
 
@@ -640,8 +640,8 @@ Since: 2.4
 
   * Int $accepts_tab; `1` if pressing the Tab key should insert a tab character, `0`, if pressing the Tab key should move the keyboard focus.
 
-[gtk_text_view_] get_accepts_tab
---------------------------------
+[[gtk_] text_view_] get_accepts_tab
+-----------------------------------
 
 Returns whether pressing the Tab key inserts a tab characters. `gtk_text_view_set_accepts_tab()`.
 
@@ -651,8 +651,8 @@ Since: 2.4
 
     method gtk_text_view_get_accepts_tab ( --> Int  )
 
-[gtk_text_view_] set_pixels_above_lines
----------------------------------------
+[[gtk_] text_view_] set_pixels_above_lines
+------------------------------------------
 
 Sets the default number of blank pixels above paragraphs in *text_view*. Tags in the buffer for *text_view* may override the defaults.
 
@@ -660,8 +660,8 @@ Sets the default number of blank pixels above paragraphs in *text_view*. Tags in
 
   * Int $pixels_above_lines; pixels above paragraphs
 
-[gtk_text_view_] get_pixels_above_lines
----------------------------------------
+[[gtk_] text_view_] get_pixels_above_lines
+------------------------------------------
 
 Gets the default number of pixels to put above paragraphs. Adding this function with `gtk_text_view_get_pixels_below_lines()` is equal to the line space between each paragraph.
 
@@ -669,8 +669,8 @@ Returns: default number of pixels above paragraphs
 
     method gtk_text_view_get_pixels_above_lines ( --> Int  )
 
-[gtk_text_view_] set_pixels_below_lines
----------------------------------------
+[[gtk_] text_view_] set_pixels_below_lines
+------------------------------------------
 
 Sets the default number of pixels of blank space to put below paragraphs in *text_view*. May be overridden by tags applied to *text_view*’s buffer.
 
@@ -678,8 +678,8 @@ Sets the default number of pixels of blank space to put below paragraphs in *tex
 
   * Int $pixels_below_lines; pixels below paragraphs
 
-[gtk_text_view_] get_pixels_below_lines
----------------------------------------
+[[gtk_] text_view_] get_pixels_below_lines
+------------------------------------------
 
 Gets the value set by `gtk_text_view_set_pixels_below_lines()`.
 
@@ -689,8 +689,8 @@ Returns: default number of blank pixels below paragraphs
 
     method gtk_text_view_get_pixels_below_lines ( --> Int  )
 
-[gtk_text_view_] set_pixels_inside_wrap
----------------------------------------
+[[gtk_] text_view_] set_pixels_inside_wrap
+------------------------------------------
 
 Sets the default number of pixels of blank space to leave between display/wrapped lines within a paragraph. May be overridden by tags in *text_view*’s buffer.
 
@@ -698,8 +698,8 @@ Sets the default number of pixels of blank space to leave between display/wrappe
 
   * Int $pixels_inside_wrap; default number of pixels between wrapped lines
 
-[gtk_text_view_] get_pixels_inside_wrap
----------------------------------------
+[[gtk_] text_view_] get_pixels_inside_wrap
+------------------------------------------
 
 Gets the value set by `gtk_text_view_set_pixels_inside_wrap()`.
 
@@ -707,8 +707,8 @@ Returns: default number of pixels of blank space between wrapped lines
 
     method gtk_text_view_get_pixels_inside_wrap ( --> Int  )
 
-[gtk_text_view_] set_justification
-----------------------------------
+[[gtk_] text_view_] set_justification
+-------------------------------------
 
 Sets the default justification of text in *text_view*. Tags in the view’s buffer may override the default.
 
@@ -716,8 +716,8 @@ Sets the default justification of text in *text_view*. Tags in the view’s buff
 
   * GtkJustification $justification; justification
 
-[gtk_text_view_] get_justification
-----------------------------------
+[[gtk_] text_view_] get_justification
+-------------------------------------
 
 Gets the default justification of paragraphs in *text_view*. Tags in the buffer may override the default.
 
@@ -725,8 +725,8 @@ Returns: default justification
 
     method gtk_text_view_get_justification ( --> GtkJustification  )
 
-[gtk_text_view_] set_left_margin
---------------------------------
+[[gtk_] text_view_] set_left_margin
+-----------------------------------
 
 Sets the default left margin for text in *text_view*. Tags in the buffer may override the default.
 
@@ -736,8 +736,8 @@ Note that this function is confusingly named. In CSS terms, the value set here i
 
   * Int $left_margin; left margin in pixels
 
-[gtk_text_view_] get_left_margin
---------------------------------
+[[gtk_] text_view_] get_left_margin
+-----------------------------------
 
 Gets the default left margin size of paragraphs in the *text_view*. Tags in the buffer may override the default.
 
@@ -745,8 +745,8 @@ Returns: left margin in pixels
 
     method gtk_text_view_get_left_margin ( --> Int  )
 
-[gtk_text_view_] set_right_margin
----------------------------------
+[[gtk_] text_view_] set_right_margin
+------------------------------------
 
 Sets the default right margin for text in the text view. Tags in the buffer may override the default.
 
@@ -756,8 +756,8 @@ Note that this function is confusingly named. In CSS terms, the value set here i
 
   * Int $right_margin; right margin in pixels
 
-[gtk_text_view_] get_right_margin
----------------------------------
+[[gtk_] text_view_] get_right_margin
+------------------------------------
 
 Gets the default right margin for text in *text_view*. Tags in the buffer may override the default.
 
@@ -765,8 +765,8 @@ Returns: right margin in pixels
 
     method gtk_text_view_get_right_margin ( --> Int  )
 
-[gtk_text_view_] set_top_margin
--------------------------------
+[[gtk_] text_view_] set_top_margin
+----------------------------------
 
 Sets the top margin for text in *text_view*.
 
@@ -778,8 +778,8 @@ Since: 3.18
 
   * Int $top_margin; top margin in pixels
 
-[gtk_text_view_] get_top_margin
--------------------------------
+[[gtk_] text_view_] get_top_margin
+----------------------------------
 
 Gets the top margin for text in the *text_view*.
 
@@ -789,8 +789,8 @@ Since: 3.18
 
     method gtk_text_view_get_top_margin ( --> Int  )
 
-[gtk_text_view_] set_bottom_margin
-----------------------------------
+[[gtk_] text_view_] set_bottom_margin
+-------------------------------------
 
 Sets the bottom margin for text in *text_view*.
 
@@ -802,8 +802,8 @@ Since: 3.18
 
   * Int $bottom_margin; bottom margin in pixels
 
-[gtk_text_view_] get_bottom_margin
-----------------------------------
+[[gtk_] text_view_] get_bottom_margin
+-------------------------------------
 
 Gets the bottom margin for text in the *text_view*.
 
@@ -813,8 +813,8 @@ Since: 3.18
 
     method gtk_text_view_get_bottom_margin ( --> Int  )
 
-[gtk_text_view_] set_indent
----------------------------
+[[gtk_] text_view_] set_indent
+------------------------------
 
 Sets the default indentation for paragraphs in *text_view*. Tags in the buffer may override the default.
 
@@ -822,8 +822,8 @@ Sets the default indentation for paragraphs in *text_view*. Tags in the buffer m
 
   * Int $indent; indentation in pixels
 
-[gtk_text_view_] get_indent
----------------------------
+[[gtk_] text_view_] get_indent
+------------------------------
 
 Gets the default indentation of paragraphs in *text_view*. Tags in the view’s buffer may override the default. The indentation may be negative.
 
@@ -831,8 +831,8 @@ Returns: number of pixels of indentation
 
     method gtk_text_view_get_indent ( --> Int  )
 
-[gtk_text_view_] get_default_attributes
----------------------------------------
+[[gtk_] text_view_] get_default_attributes
+------------------------------------------
 
 Obtains a copy of the default text attributes. These are the attributes used for text unless a tag overrides them. You’d typically pass the default attributes in to `gtk_text_iter_get_attributes()` in order to get the attributes in effect at a given text position.
 
@@ -842,8 +842,8 @@ Returns: a new **Gnome::Gtk3::TextAttributes**
 
     method gtk_text_view_get_default_attributes ( --> N-GObject  )
 
-[gtk_text_view_] set_input_purpose
-----------------------------------
+[[gtk_] text_view_] set_input_purpose
+-------------------------------------
 
 Sets the *input-purpose* property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
 
@@ -853,8 +853,8 @@ Since: 3.6
 
   * GtkInputPurpose $purpose; the purpose
 
-[gtk_text_view_] get_input_purpose
-----------------------------------
+[[gtk_] text_view_] get_input_purpose
+-------------------------------------
 
 Gets the value of the *input-purpose* property.
 
@@ -862,8 +862,8 @@ Since: 3.6
 
     method gtk_text_view_get_input_purpose ( --> GtkInputPurpose  )
 
-[gtk_text_view_] set_input_hints
---------------------------------
+[[gtk_] text_view_] set_input_hints
+-----------------------------------
 
 Sets the *input-hints* property, which allows input methods to fine-tune their behaviour.
 
@@ -873,8 +873,8 @@ Since: 3.6
 
   * GtkInputHints $hints; the hints
 
-[gtk_text_view_] get_input_hints
---------------------------------
+[[gtk_] text_view_] get_input_hints
+-----------------------------------
 
 Gets the value of the *input-hints* property.
 
@@ -882,8 +882,8 @@ Since: 3.6
 
     method gtk_text_view_get_input_hints ( --> GtkInputHints  )
 
-[gtk_text_view_] set_monospace
-------------------------------
+[[gtk_] text_view_] set_monospace
+---------------------------------
 
 Sets the *monospace* property, which indicates that the text view should use monospace fonts.
 
@@ -893,8 +893,8 @@ Since: 3.16
 
   * Int $monospace; `1` to request monospace styling
 
-[gtk_text_view_] get_monospace
-------------------------------
+[[gtk_] text_view_] get_monospace
+---------------------------------
 
 Gets the value of the *monospace* property.
 

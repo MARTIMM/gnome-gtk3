@@ -102,8 +102,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_entry_new
--------------
+[gtk_] entry_new
+----------------
 
 Creates a new entry.
 
@@ -111,8 +111,8 @@ Returns: a new **Gnome::Gtk3::Entry**.
 
     method gtk_entry_new ( --> N-GObject  )
 
-[gtk_entry_] new_with_buffer
-----------------------------
+[[gtk_] entry_] new_with_buffer
+-------------------------------
 
 Creates a new entry with the specified text buffer.
 
@@ -124,8 +124,8 @@ Since: 2.18
 
   * N-GObject $buffer; The buffer to use for the new **Gnome::Gtk3::Entry**.
 
-[gtk_entry_] get_buffer
------------------------
+[[gtk_] entry_] get_buffer
+--------------------------
 
 Get the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
 
@@ -135,8 +135,8 @@ Returns: (transfer none): A **Gnome::Gtk3::EntryBuffer** object.
 
     method gtk_entry_get_buffer ( --> N-GObject  )
 
-[gtk_entry_] set_buffer
------------------------
+[[gtk_] entry_] set_buffer
+--------------------------
 
 Set the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
 
@@ -146,8 +146,8 @@ Since: 2.18
 
   * N-GObject $buffer; a **Gnome::Gtk3::EntryBuffer**
 
-[gtk_entry_] get_text_area
---------------------------
+[[gtk_] entry_] get_text_area
+-----------------------------
 
 Gets the area where the entry’s text is drawn. This function is useful when drawing something to the entry in a draw callback.
 
@@ -161,8 +161,8 @@ Since: 3.0
 
   * N-GObject $text_area; (out): Return location for the text area.
 
-[gtk_entry_] set_visibility
----------------------------
+[[gtk_] entry_] set_visibility
+------------------------------
 
 Sets whether the contents of the entry are visible or not. When visibility is set to `0`, characters are displayed as the invisible char, and will also appear that way when the text in the entry widget is copied elsewhere.
 
@@ -174,8 +174,8 @@ Note that you probably want to set *input-purpose* to `GTK_INPUT_PURPOSE_PASSWOR
 
   * Int $visible; `1` if the contents of the entry are displayed as plaintext
 
-[gtk_entry_] get_visibility
----------------------------
+[[gtk_] entry_] get_visibility
+------------------------------
 
 Retrieves whether the text in *entry* is visible. See `gtk_entry_set_visibility()`.
 
@@ -183,8 +183,8 @@ Returns: `1` if the text is currently visible
 
     method gtk_entry_get_visibility ( --> Int  )
 
-[gtk_entry_] set_invisible_char
--------------------------------
+[[gtk_] entry_] set_invisible_char
+----------------------------------
 
 Sets the character to use in place of the actual text when `gtk_entry_set_visibility()` has been called to set text visibility to `0`. i.e. this is the character used in “password mode” to show the user how many characters have been typed. By default, GTK+ picks the best invisible char available in the current font. If you set the invisible char to 0, then the user will get no feedback at all; there will be no text on the screen as they type.
 
@@ -192,8 +192,8 @@ Sets the character to use in place of the actual text when `gtk_entry_set_visibi
 
   * UInt $ch; a Unicode character. This is a 4 byte UCS representation of
 
-[gtk_entry_] get_invisible_char
--------------------------------
+[[gtk_] entry_] get_invisible_char
+----------------------------------
 
 Retrieves the character displayed in place of the real characters for entries with visibility set to false. See `gtk_entry_set_invisible_char()`.
 
@@ -201,8 +201,8 @@ Returns: the current invisible char, or 0, if the entry does not show invisible 
 
     method gtk_entry_get_invisible_char ( --> UInt  )
 
-[gtk_entry_] unset_invisible_char
----------------------------------
+[[gtk_] entry_] unset_invisible_char
+------------------------------------
 
 Unsets the invisible char previously set with `gtk_entry_set_invisible_char()`. So that the default invisible char is used again.
 
@@ -210,8 +210,8 @@ Since: 2.16
 
     method gtk_entry_unset_invisible_char ( )
 
-[gtk_entry_] set_has_frame
---------------------------
+[[gtk_] entry_] set_has_frame
+-----------------------------
 
 Sets whether the entry has a beveled frame around it.
 
@@ -219,8 +219,8 @@ Sets whether the entry has a beveled frame around it.
 
   * Int $setting; new value
 
-[gtk_entry_] get_has_frame
---------------------------
+[[gtk_] entry_] get_has_frame
+-----------------------------
 
 Gets the value set by `gtk_entry_set_has_frame()`.
 
@@ -228,8 +228,8 @@ Returns: whether the entry has a beveled frame
 
     method gtk_entry_get_has_frame ( --> Int  )
 
-[gtk_entry_] set_overwrite_mode
--------------------------------
+[[gtk_] entry_] set_overwrite_mode
+----------------------------------
 
 Sets whether the text is overwritten when typing in the **Gnome::Gtk3::Entry**.
 
@@ -239,8 +239,8 @@ Since: 2.14
 
   * Int $overwrite; new value
 
-[gtk_entry_] get_overwrite_mode
--------------------------------
+[[gtk_] entry_] get_overwrite_mode
+----------------------------------
 
 Gets the value set by `gtk_entry_set_overwrite_mode()`.
 
@@ -250,8 +250,8 @@ Since: 2.14
 
     method gtk_entry_get_overwrite_mode ( --> Int  )
 
-[gtk_entry_] set_max_length
----------------------------
+[[gtk_] entry_] set_max_length
+------------------------------
 
 Sets the maximum allowed length of the contents of the widget. If the current contents are longer than the given length, then they will be truncated to fit.
 
@@ -263,8 +263,8 @@ This is equivalent to:
 
   * Int $max; the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) The value passed in will be clamped to the range 0-65536.
 
-[gtk_entry_] get_max_length
----------------------------
+[[gtk_] entry_] get_max_length
+------------------------------
 
 Retrieves the maximum allowed length of the text in *entry*. See `gtk_entry_set_max_length()`.
 
@@ -276,8 +276,8 @@ Returns: the maximum allowed number of characters in **Gnome::Gtk3::Entry**, or 
 
     method gtk_entry_get_max_length ( --> Int  )
 
-[gtk_entry_] get_text_length
-----------------------------
+[[gtk_] entry_] get_text_length
+-------------------------------
 
 Retrieves the current length of the text in *entry*.
 
@@ -291,8 +291,8 @@ Since: 2.14
 
     method gtk_entry_get_text_length ( --> UInt  )
 
-[gtk_entry_] set_activates_default
-----------------------------------
+[[gtk_] entry_] set_activates_default
+-------------------------------------
 
 If *setting* is `1`, pressing Enter in the *entry* will activate the default widget for the window containing the entry. This usually means that the dialog box containing the entry will be closed, since the default widget is usually one of the dialog buttons.
 
@@ -302,8 +302,8 @@ If *setting* is `1`, pressing Enter in the *entry* will activate the default wid
 
   * Int $setting; `1` to activate window’s default widget on Enter keypress
 
-[gtk_entry_] get_activates_default
-----------------------------------
+[[gtk_] entry_] get_activates_default
+-------------------------------------
 
 Retrieves the value set by `gtk_entry_set_activates_default()`.
 
@@ -311,8 +311,8 @@ Returns: `1` if the entry will activate the default widget
 
     method gtk_entry_get_activates_default ( --> Int  )
 
-[gtk_entry_] set_width_chars
-----------------------------
+[[gtk_] entry_] set_width_chars
+-------------------------------
 
 Changes the size request of the entry to be about the right size for *n_chars* characters. Note that it changes the size request, the size can still be affected by how you pack the widget into containers. If *n_chars* is -1, the size reverts to the default entry size.
 
@@ -320,8 +320,8 @@ Changes the size request of the entry to be about the right size for *n_chars* c
 
   * Int $n_chars; width in chars
 
-[gtk_entry_] get_width_chars
-----------------------------
+[[gtk_] entry_] get_width_chars
+-------------------------------
 
 Gets the value set by `gtk_entry_set_width_chars()`.
 
@@ -329,8 +329,8 @@ Returns: number of chars to request space for, or negative if unset
 
     method gtk_entry_get_width_chars ( --> Int  )
 
-[gtk_entry_] set_max_width_chars
---------------------------------
+[[gtk_] entry_] set_max_width_chars
+-----------------------------------
 
 Sets the desired maximum width in characters of *entry*.
 
@@ -340,8 +340,8 @@ Since: 3.12
 
   * Int $n_chars; the new desired maximum width, in characters
 
-[gtk_entry_] get_max_width_chars
---------------------------------
+[[gtk_] entry_] get_max_width_chars
+-----------------------------------
 
 Retrieves the desired maximum width of *entry*, in characters. See `gtk_entry_set_max_width_chars()`.
 
@@ -351,8 +351,8 @@ Since: 3.12
 
     method gtk_entry_get_max_width_chars ( --> Int  )
 
-[gtk_entry_] set_text
----------------------
+[[gtk_] entry_] set_text
+------------------------
 
 Sets the text in the widget to the given value, replacing the current contents.
 
@@ -362,8 +362,8 @@ See `gtk_entry_buffer_set_text()`.
 
   * Str $text; the new text
 
-[gtk_entry_] get_text
----------------------
+[[gtk_] entry_] get_text
+------------------------
 
 Retrieves the contents of the entry widget. See also `gtk_editable_get_chars()`.
 
@@ -375,8 +375,8 @@ Returns: a pointer to the contents of the widget as a string. This string points
 
     method gtk_entry_get_text ( --> Str  )
 
-[gtk_entry_] set_alignment
---------------------------
+[[gtk_] entry_] set_alignment
+-----------------------------
 
 Sets the alignment for the contents of the entry. This controls the horizontal positioning of the contents when the displayed text is shorter than the width of the entry.
 
@@ -386,8 +386,8 @@ Since: 2.4
 
   * Num $xalign; The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
 
-[gtk_entry_] get_alignment
---------------------------
+[[gtk_] entry_] get_alignment
+-----------------------------
 
 Gets the value set by `gtk_entry_set_alignment()`.
 
@@ -397,8 +397,8 @@ Since: 2.4
 
     method gtk_entry_get_alignment ( --> Num  )
 
-[gtk_entry_] set_completion
----------------------------
+[[gtk_] entry_] set_completion
+------------------------------
 
 Sets *completion* to be the auxiliary completion object to use with *entry*. All further configuration of the completion mechanism is done on *completion* using the **Gnome::Gtk3::EntryCompletion** API. Completion is disabled if *completion* is set to `Any`.
 
@@ -408,8 +408,8 @@ Since: 2.4
 
   * N-GObject $completion; (allow-none): The **Gnome::Gtk3::EntryCompletion** or `Any`
 
-[gtk_entry_] get_completion
----------------------------
+[[gtk_] entry_] get_completion
+------------------------------
 
 Returns the auxiliary completion object currently in use by *entry*.
 
@@ -419,8 +419,8 @@ Since: 2.4
 
     method gtk_entry_get_completion ( --> N-GObject  )
 
-[gtk_entry_] set_cursor_hadjustment
------------------------------------
+[[gtk_] entry_] set_cursor_hadjustment
+--------------------------------------
 
 Hooks up an adjustment to the cursor position in an entry, so that when the cursor is moved, the adjustment is scrolled to show that position. See `gtk_scrolled_window_get_hadjustment()` for a typical way of obtaining the adjustment.
 
@@ -432,8 +432,8 @@ Since: 2.12
 
   * N-GObject $adjustment; (nullable): an adjustment which should be adjusted when the cursor is moved, or `Any`
 
-[gtk_entry_] get_cursor_hadjustment
------------------------------------
+[[gtk_] entry_] get_cursor_hadjustment
+--------------------------------------
 
 Retrieves the horizontal cursor adjustment for the entry. See `gtk_entry_set_cursor_hadjustment()`.
 
@@ -443,8 +443,8 @@ Since: 2.12
 
     method gtk_entry_get_cursor_hadjustment ( --> N-GObject  )
 
-[gtk_entry_] set_progress_fraction
-----------------------------------
+[[gtk_] entry_] set_progress_fraction
+-------------------------------------
 
 Causes the entry’s progress indicator to “fill in” the given fraction of the bar. The fraction should be between 0.0 and 1.0, inclusive.
 
@@ -454,8 +454,8 @@ Since: 2.16
 
   * Num $fraction; fraction of the task that’s been completed
 
-[gtk_entry_] get_progress_fraction
-----------------------------------
+[[gtk_] entry_] get_progress_fraction
+-------------------------------------
 
 Returns the current fraction of the task that’s been completed. See `gtk_entry_set_progress_fraction()`.
 
@@ -465,8 +465,8 @@ Since: 2.16
 
     method gtk_entry_get_progress_fraction ( --> Num  )
 
-[gtk_entry_] set_progress_pulse_step
-------------------------------------
+[[gtk_] entry_] set_progress_pulse_step
+---------------------------------------
 
 Sets the fraction of total entry width to move the progress bouncing block for each call to `gtk_entry_progress_pulse()`.
 
@@ -476,8 +476,8 @@ Since: 2.16
 
   * Num $fraction; fraction between 0.0 and 1.0
 
-[gtk_entry_] get_progress_pulse_step
-------------------------------------
+[[gtk_] entry_] get_progress_pulse_step
+---------------------------------------
 
 Retrieves the pulse step set with `gtk_entry_set_progress_pulse_step()`.
 
@@ -487,8 +487,8 @@ Since: 2.16
 
     method gtk_entry_get_progress_pulse_step ( --> Num  )
 
-[gtk_entry_] progress_pulse
----------------------------
+[[gtk_] entry_] progress_pulse
+------------------------------
 
 Indicates that some progress is made, but you don’t know how much. Causes the entry’s progress indicator to enter “activity mode,” where a block bounces back and forth. Each call to `gtk_entry_progress_pulse()` causes the block to move by a little bit (the amount of movement per pulse is determined by `gtk_entry_set_progress_pulse_step()`).
 
@@ -496,8 +496,8 @@ Since: 2.16
 
     method gtk_entry_progress_pulse ( )
 
-[gtk_entry_] get_placeholder_text
----------------------------------
+[[gtk_] entry_] get_placeholder_text
+------------------------------------
 
 Retrieves the text that will be displayed when *entry* is empty and unfocused
 
@@ -507,8 +507,8 @@ Since: 3.2
 
     method gtk_entry_get_placeholder_text ( --> Str  )
 
-[gtk_entry_] set_placeholder_text
----------------------------------
+[[gtk_] entry_] set_placeholder_text
+------------------------------------
 
 Sets text to be displayed in *entry* when it is empty and unfocused. This can be used to give a visual hint of the expected contents of the **Gnome::Gtk3::Entry**.
 
@@ -520,8 +520,8 @@ Since: 3.2
 
   * Str $text; (nullable): a string to be displayed when *entry* is empty and unfocused, or `Any`
 
-[gtk_entry_] set_icon_from_pixbuf
----------------------------------
+[[gtk_] entry_] set_icon_from_pixbuf
+------------------------------------
 
 Sets the icon shown in the specified position using a pixbuf.
 
@@ -537,8 +537,8 @@ Since: 2.16
 
   * N-GObject $pixbuf; (allow-none): A **Gnome::Gdk3::Pixbuf**, or `Any`
 
-[gtk_entry_] set_icon_from_icon_name
-------------------------------------
+[[gtk_] entry_] set_icon_from_icon_name
+---------------------------------------
 
 Sets the icon shown in the entry at the specified position from the current icon theme.
 
@@ -556,8 +556,8 @@ Since: 2.16
 
   * Str $icon_name; (allow-none): An icon name, or `Any`
 
-[gtk_entry_] set_icon_from_gicon
---------------------------------
+[[gtk_] entry_] set_icon_from_gicon
+-----------------------------------
 
 Sets the icon shown in the entry at the specified position from the current icon theme. If the icon isn’t known, a “broken image” icon will be displayed instead.
 
@@ -573,8 +573,8 @@ Since: 2.16
 
   * N-GObject $icon; (allow-none): The icon to set, or `Any`
 
-[gtk_entry_] get_icon_storage_type
-----------------------------------
+[[gtk_] entry_] get_icon_storage_type
+-------------------------------------
 
 Gets the type of representation being used by the icon to store image data. If the icon has no image data, the return value will be `GTK_IMAGE_EMPTY`.
 
@@ -589,8 +589,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] get_icon_pixbuf
-----------------------------
+[[gtk_] entry_] get_icon_pixbuf
+-------------------------------
 
 Retrieves the image used for the icon.
 
@@ -606,8 +606,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] get_icon_name
---------------------------
+[[gtk_] entry_] get_icon_name
+-----------------------------
 
 Retrieves the icon name used for the icon, or `Any` if there is no icon or if the icon was set by some other method (e.g., by pixbuf, stock or gicon).
 
@@ -619,8 +619,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] get_icon_gicon
----------------------------
+[[gtk_] entry_] get_icon_gicon
+------------------------------
 
 Retrieves the **GIcon** used for the icon, or `Any` if there is no icon or if the icon was set by some other method (e.g., by stock, pixbuf, or icon name).
 
@@ -634,8 +634,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] set_icon_activatable
----------------------------------
+[[gtk_] entry_] set_icon_activatable
+------------------------------------
 
 Sets whether the icon is activatable.
 
@@ -649,8 +649,8 @@ Since: 2.16
 
   * Int $activatable; `1` if the icon should be activatable
 
-[gtk_entry_] get_icon_activatable
----------------------------------
+[[gtk_] entry_] get_icon_activatable
+------------------------------------
 
 Returns whether the icon is activatable.
 
@@ -664,8 +664,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] set_icon_sensitive
--------------------------------
+[[gtk_] entry_] set_icon_sensitive
+----------------------------------
 
 Sets the sensitivity for the specified icon.
 
@@ -679,8 +679,8 @@ Since: 2.16
 
   * Int $sensitive; Specifies whether the icon should appear sensitive or insensitive
 
-[gtk_entry_] get_icon_sensitive
--------------------------------
+[[gtk_] entry_] get_icon_sensitive
+----------------------------------
 
 Returns whether the icon appears sensitive or insensitive.
 
@@ -694,8 +694,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; Icon position
 
-[gtk_entry_] get_icon_at_pos
-----------------------------
+[[gtk_] entry_] get_icon_at_pos
+-------------------------------
 
 Finds the icon at the given position and return its index. The position’s coordinates are relative to the *entry*’s top left corner. If *x*, *y* doesn’t lie inside an icon, -1 is returned. This function is intended for use in a *query-tooltip* signal handler.
 
@@ -709,8 +709,8 @@ Since: 2.16
 
   * Int $y; the y coordinate of the position to find
 
-[gtk_entry_] set_icon_tooltip_text
-----------------------------------
+[[gtk_] entry_] set_icon_tooltip_text
+-------------------------------------
 
 Sets *tooltip* as the contents of the tooltip for the icon at the specified position.
 
@@ -728,8 +728,8 @@ Since: 2.16
 
   * Str $tooltip; (allow-none): the contents of the tooltip for the icon, or `Any`
 
-[gtk_entry_] get_icon_tooltip_text
-----------------------------------
+[[gtk_] entry_] get_icon_tooltip_text
+-------------------------------------
 
 Gets the contents of the tooltip on the icon at the specified position in *entry*.
 
@@ -743,8 +743,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; the icon position
 
-[gtk_entry_] get_icon_tooltip_markup
-------------------------------------
+[[gtk_] entry_] get_icon_tooltip_markup
+---------------------------------------
 
 Gets the contents of the tooltip on the icon at the specified position in *entry*.
 
@@ -758,8 +758,8 @@ Since: 2.16
 
   * GtkEntryIconPosition $icon_pos; the icon position
 
-[gtk_entry_] get_current_icon_drag_source
------------------------------------------
+[[gtk_] entry_] get_current_icon_drag_source
+--------------------------------------------
 
 Returns the index of the icon which is the source of the current DND operation, or -1.
 
@@ -771,8 +771,8 @@ Since: 2.16
 
     method gtk_entry_get_current_icon_drag_source ( --> Int  )
 
-[gtk_entry_] get_icon_area
---------------------------
+[[gtk_] entry_] get_icon_area
+-----------------------------
 
 Gets the area where entry’s icon at *icon_pos* is drawn. This function is useful when drawing something to the entry in a draw callback.
 
@@ -790,8 +790,8 @@ Since: 3.0
 
   * N-GObject $icon_area; (out): Return location for the icon’s area
 
-[gtk_entry_] im_context_filter_keypress
----------------------------------------
+[[gtk_] entry_] im_context_filter_keypress
+------------------------------------------
 
 Allow the **Gnome::Gtk3::Entry** input method to internally handle key press and release events. If this function returns `1`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
 
@@ -805,8 +805,8 @@ Since: 2.22
 
   * GdkEventKey $event; (type **Gnome::Gdk3::.EventKey**): the key event
 
-[gtk_entry_] reset_im_context
------------------------------
+[[gtk_] entry_] reset_im_context
+--------------------------------
 
 Reset the input method context of the entry if needed.
 
@@ -816,8 +816,8 @@ Since: 2.22
 
     method gtk_entry_reset_im_context ( )
 
-[gtk_entry_] set_input_purpose
-------------------------------
+[[gtk_] entry_] set_input_purpose
+---------------------------------
 
 Sets the *input-purpose* property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
 
@@ -827,8 +827,8 @@ Since: 3.6
 
   * GtkInputPurpose $purpose; the purpose
 
-[gtk_entry_] get_input_purpose
-------------------------------
+[[gtk_] entry_] get_input_purpose
+---------------------------------
 
 Gets the value of the *input-purpose* property.
 
@@ -836,8 +836,8 @@ Since: 3.6
 
     method gtk_entry_get_input_purpose ( --> GtkInputPurpose  )
 
-[gtk_entry_] set_input_hints
-----------------------------
+[[gtk_] entry_] set_input_hints
+-------------------------------
 
 Sets the *input-hints* property, which allows input methods to fine-tune their behaviour.
 
@@ -847,8 +847,8 @@ Since: 3.6
 
   * GtkInputHints $hints; the hints
 
-[gtk_entry_] get_input_hints
-----------------------------
+[[gtk_] entry_] get_input_hints
+-------------------------------
 
 Gets the value of the *input-hints* property.
 
@@ -856,8 +856,8 @@ Since: 3.6
 
     method gtk_entry_get_input_hints ( --> GtkInputHints  )
 
-[gtk_entry_] grab_focus_without_selecting
------------------------------------------
+[[gtk_] entry_] grab_focus_without_selecting
+--------------------------------------------
 
 Causes *entry* to have keyboard focus.
 

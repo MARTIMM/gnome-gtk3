@@ -120,8 +120,8 @@ Create an object using a native object from elsewhere. See also Gnome::GObject::
 
 Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
-gtk_level_bar_new
------------------
+[gtk_] level_bar_new
+--------------------
 
 Creates a new **Gnome::Gtk3::LevelBar**.
 
@@ -131,8 +131,8 @@ Since: 3.6
 
     method gtk_level_bar_new ( --> N-GObject  )
 
-[gtk_level_bar_] new_for_interval
----------------------------------
+[[gtk_] level_bar_] new_for_interval
+------------------------------------
 
 Utility constructor that creates a new **Gnome::Gtk3::LevelBar** for the specified interval.
 
@@ -146,8 +146,8 @@ Since: 3.6
 
   * Num $max_value; a positive value
 
-[gtk_level_bar_] set_mode
--------------------------
+[[gtk_] level_bar_] set_mode
+----------------------------
 
 Sets the value of the *mode* property.
 
@@ -157,8 +157,8 @@ Since: 3.6
 
   * GtkLevelBarMode $mode; a **Gnome::Gtk3::LevelBarMode**
 
-[gtk_level_bar_] get_mode
--------------------------
+[[gtk_] level_bar_] get_mode
+----------------------------
 
 Returns the value of the *mode* property.
 
@@ -168,8 +168,8 @@ Since: 3.6
 
     method gtk_level_bar_get_mode ( --> GtkLevelBarMode  )
 
-[gtk_level_bar_] set_value
---------------------------
+[[gtk_] level_bar_] set_value
+-----------------------------
 
 Sets the value of the *value* property.
 
@@ -179,8 +179,8 @@ Since: 3.6
 
   * Num $value; a value in the interval between *min-value* and *max-value*
 
-[gtk_level_bar_] get_value
---------------------------
+[[gtk_] level_bar_] get_value
+-----------------------------
 
 Returns the value of the *value* property.
 
@@ -190,8 +190,8 @@ Since: 3.6
 
     method gtk_level_bar_get_value ( --> Num  )
 
-[gtk_level_bar_] set_min_value
-------------------------------
+[[gtk_] level_bar_] set_min_value
+---------------------------------
 
 Sets the value of the *min-value* property.
 
@@ -203,8 +203,8 @@ Since: 3.6
 
   * Num $value; a positive value
 
-[gtk_level_bar_] get_min_value
-------------------------------
+[[gtk_] level_bar_] get_min_value
+---------------------------------
 
 Returns the value of the *min-value* property.
 
@@ -214,8 +214,8 @@ Since: 3.6
 
     method gtk_level_bar_get_min_value ( --> Num  )
 
-[gtk_level_bar_] set_max_value
-------------------------------
+[[gtk_] level_bar_] set_max_value
+---------------------------------
 
 Sets the value of the *max-value* property.
 
@@ -227,8 +227,8 @@ Since: 3.6
 
   * Num $value; a positive value
 
-[gtk_level_bar_] get_max_value
-------------------------------
+[[gtk_] level_bar_] get_max_value
+---------------------------------
 
 Returns the value of the *max-value* property.
 
@@ -238,8 +238,8 @@ Since: 3.6
 
     method gtk_level_bar_get_max_value ( --> Num  )
 
-[gtk_level_bar_] set_inverted
------------------------------
+[[gtk_] level_bar_] set_inverted
+--------------------------------
 
 Sets the value of the *inverted* property.
 
@@ -249,8 +249,8 @@ Since: 3.8
 
   * Int $inverted; `1` to invert the level bar
 
-[gtk_level_bar_] get_inverted
------------------------------
+[[gtk_] level_bar_] get_inverted
+--------------------------------
 
 Return the value of the *inverted* property.
 
@@ -260,8 +260,8 @@ Since: 3.8
 
     method gtk_level_bar_get_inverted ( --> Int  )
 
-[gtk_level_bar_] add_offset_value
----------------------------------
+[[gtk_] level_bar_] add_offset_value
+------------------------------------
 
 Adds a new offset marker on the levelbar at the position specified by *$value*. When the bar value is in the interval topped by *$value* (or between *$value* and *max-value* in case the offset is the last one on the bar) a style class named `level-`*$name* will be applied when rendering the level bar fill. If another offset marker named *$name* exists, its value will be replaced by *$value*.
 
@@ -273,8 +273,8 @@ Since: 3.6
 
   * Num $value; the value for the new offset
 
-[gtk_level_bar_] remove_offset_value
-------------------------------------
+[[gtk_] level_bar_] remove_offset_value
+---------------------------------------
 
 Removes an offset marker previously added with `gtk_level_bar_add_offset_value()`.
 
@@ -284,8 +284,8 @@ Since: 3.6
 
   * Str $name; (allow-none): the name of an offset in the bar
 
-[gtk_level_bar_] get_offset_value
----------------------------------
+[[gtk_] level_bar_] get_offset_value
+------------------------------------
 
 Fetches the value specified for the offset marker *$name* in the level bar,
 

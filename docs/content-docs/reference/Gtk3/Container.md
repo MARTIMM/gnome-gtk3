@@ -113,8 +113,8 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
-[gtk_container_] set_border_width
----------------------------------
+[[gtk_] container_] set_border_width
+------------------------------------
 
 Sets the border width of the container.
 
@@ -124,8 +124,8 @@ The border width of a container is the amount of space to leave around the outsi
 
   * UInt $border_width; amount of blank space to leave outside the container. Valid values are in the range 0-65535 pixels.
 
-[gtk_container_] get_border_width
----------------------------------
+[[gtk_] container_] get_border_width
+------------------------------------
 
 Retrieves the border width of the container. See `gtk_container_set_border_width()`.
 
@@ -133,8 +133,8 @@ Returns: the current border width
 
     method gtk_container_get_border_width ( --> UInt  )
 
-gtk_container_add
------------------
+[gtk_] container_add
+--------------------
 
 Adds *widget* to *container*. Typically used for simple containers such as **Gnome::Gtk3::Window**, **Gnome::Gtk3::Frame**, or **Gnome::Gtk3::Button**; for more complicated layout containers such as **Gnome::Gtk3::Box** or **Gnome::Gtk3::Grid**, this function will pick default packing parameters that may not be correct. So consider functions such as `gtk_box_pack_start()` and `gtk_grid_attach()` as an alternative to `gtk_container_add()` in those cases. A widget may be added to only one container at a time; you can’t place the same widget inside two different containers.
 
@@ -144,8 +144,8 @@ Note that some containers, such as **Gnome::Gtk3::ScrolledWindow** or **Gnome::G
 
   * N-GObject $widget; a widget to be placed inside *container*
 
-gtk_container_remove
---------------------
+[gtk_] container_remove
+-----------------------
 
 Removes *widget* from *container*. *widget* must be inside *container*. Note that *container* will own a reference to *widget*, and that this may be the last reference held; so removing a widget from its container can destroy that widget. If you want to use *widget* again, you need to add a reference to it before removing it from a container, using `g_object_ref()`. If you don’t want to use *widget* again it’s usually more efficient to simply destroy it directly using `gtk_widget_destroy()` since this will remove it from the container and help break any circular reference count cycles.
 
@@ -153,13 +153,13 @@ Removes *widget* from *container*. *widget* must be inside *container*. Note tha
 
   * N-GObject $widget; a current child of *container*
 
-[gtk_container_] check_resize
------------------------------
+[[gtk_] container_] check_resize
+--------------------------------
 
     method gtk_container_check_resize ( )
 
-[gtk_container_] get_children
------------------------------
+[[gtk_] container_] get_children
+--------------------------------
 
 Returns the container’s non-internal children. See `gtk_container_forall()` for details on what constitutes an "internal" child.
 
@@ -167,8 +167,8 @@ Returns: a newly-allocated list of the container’s non-internal children. The 
 
     method gtk_container_get_children ( --> N-GList  )
 
-[gtk_container_] set_focus_child
---------------------------------
+[[gtk_] container_] set_focus_child
+-----------------------------------
 
 Sets, or unsets if *child* is `Any`, the focused child of *container*.
 
@@ -180,8 +180,8 @@ This is function is mostly meant to be used by widgets. Applications can use `gt
 
   * N-GObject $child; (allow-none): a **Gnome::Gtk3::Widget**, or `Any`
 
-[gtk_container_] get_focus_child
---------------------------------
+[[gtk_] container_] get_focus_child
+-----------------------------------
 
 Returns the current focus child widget inside *container*. This is not the currently focused widget. That can be obtained by calling `gtk_window_get_focus()`.
 
@@ -191,8 +191,8 @@ Since: 2.14
 
     method gtk_container_get_focus_child ( --> N-GObject  )
 
-[gtk_container_] set_focus_vadjustment
---------------------------------------
+[[gtk_] container_] set_focus_vadjustment
+-----------------------------------------
 
 Hooks up an adjustment to focus handling in a container, so when a child of the container is focused, the adjustment is scrolled to show that widget. This function sets the vertical alignment. See `gtk_scrolled_window_get_vadjustment()` for a typical way of obtaining the adjustment and `gtk_container_set_focus_hadjustment()` for setting the horizontal adjustment.
 
@@ -202,8 +202,8 @@ The adjustments have to be in pixel units and in the same coordinate system as t
 
   * N-GObject $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of *container*
 
-[gtk_container_] get_focus_vadjustment
---------------------------------------
+[[gtk_] container_] get_focus_vadjustment
+-----------------------------------------
 
 Retrieves the vertical focus adjustment for the container. See `gtk_container_set_focus_vadjustment()`.
 
@@ -211,8 +211,8 @@ Returns: (nullable) (transfer none): the vertical focus adjustment, or `Any` if 
 
     method gtk_container_get_focus_vadjustment ( --> N-GObject  )
 
-[gtk_container_] set_focus_hadjustment
---------------------------------------
+[[gtk_] container_] set_focus_hadjustment
+-----------------------------------------
 
 Hooks up an adjustment to focus handling in a container, so when a child of the container is focused, the adjustment is scrolled to show that widget. This function sets the horizontal alignment. See `gtk_scrolled_window_get_hadjustment()` for a typical way of obtaining the adjustment and `gtk_container_set_focus_vadjustment()` for setting the vertical adjustment.
 
@@ -222,8 +222,8 @@ The adjustments have to be in pixel units and in the same coordinate system as t
 
   * N-GObject $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of *container*
 
-[gtk_container_] get_focus_hadjustment
---------------------------------------
+[[gtk_] container_] get_focus_hadjustment
+-----------------------------------------
 
 Retrieves the horizontal focus adjustment for the container. See `gtk_container_set_focus_hadjustment()`.
 
@@ -231,8 +231,8 @@ Returns: (nullable) (transfer none): the horizontal focus adjustment, or `Any` i
 
     method gtk_container_get_focus_hadjustment ( --> N-GObject  )
 
-[gtk_container_] child_type
----------------------------
+[[gtk_] container_] child_type
+------------------------------
 
 Returns the type of the children supported by the container.
 
@@ -240,10 +240,10 @@ Note that this may return `G_TYPE_NONE` to indicate that no more children can be
 
 Returns: a **GType**.
 
-    method gtk_container_child_type ( --> int32  )
+    method gtk_container_child_type ( --> UInt  )
 
-[gtk_container_] child_set_property
------------------------------------
+[[gtk_] container_] child_set_property
+--------------------------------------
 
 Sets a child property for *child* and *container*.
 
@@ -255,8 +255,8 @@ Sets a child property for *child* and *container*.
 
   * N-GObject $value; the value to set the property to
 
-[gtk_container_] child_get_property
------------------------------------
+[[gtk_] container_] child_get_property
+--------------------------------------
 
 Gets the value of a child property for *child* and *container*.
 
@@ -268,8 +268,8 @@ Gets the value of a child property for *child* and *container*.
 
   * N-GObject $value; a location to return the value
 
-[gtk_container_] child_notify
------------------------------
+[[gtk_] container_] child_notify
+--------------------------------
 
 Emits a *child-notify* signal for the [child property][child-properties] *child_property* on the child.
 
@@ -285,8 +285,8 @@ Since: 3.2
 
   * Str $child_property; the name of a child property installed on the class of *container*
 
-[gtk_container_] get_path_for_child
------------------------------------
+[[gtk_] container_] get_path_for_child
+--------------------------------------
 
 Returns a newly created widget path representing all the widget hierarchy from the toplevel down to and including *child*.
 

@@ -84,8 +84,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_combo_box_new
------------------
+[gtk_] combo_box_new
+--------------------
 
 Creates a new empty **Gnome::Gtk3::ComboBox**.
 
@@ -95,8 +95,8 @@ Since: 2.4
 
     method gtk_combo_box_new ( --> N-GObject  )
 
-[gtk_combo_box_] new_with_area
-------------------------------
+[[gtk_] combo_box_] new_with_area
+---------------------------------
 
 Creates a new empty **Gnome::Gtk3::ComboBox** using *area* to layout cells.
 
@@ -106,8 +106,8 @@ Returns: A new **Gnome::Gtk3::ComboBox**.
 
   * N-GObject $area; the **Gnome::Gtk3::CellArea** to use to layout cell renderers
 
-[gtk_combo_box_] new_with_area_and_entry
-----------------------------------------
+[[gtk_] combo_box_] new_with_area_and_entry
+-------------------------------------------
 
 Creates a new empty **Gnome::Gtk3::ComboBox** with an entry.
 
@@ -119,8 +119,8 @@ Returns: A new **Gnome::Gtk3::ComboBox**.
 
   * N-GObject $area; the **Gnome::Gtk3::CellArea** to use to layout cell renderers
 
-[gtk_combo_box_] new_with_entry
--------------------------------
+[[gtk_] combo_box_] new_with_entry
+----------------------------------
 
 Creates a new empty **Gnome::Gtk3::ComboBox** with an entry.
 
@@ -130,8 +130,8 @@ Since: 2.24
 
     method gtk_combo_box_new_with_entry ( --> N-GObject  )
 
-[gtk_combo_box_] new_with_model
--------------------------------
+[[gtk_] combo_box_] new_with_model
+----------------------------------
 
 Creates a new **Gnome::Gtk3::ComboBox** with the model initialized to *model*.
 
@@ -143,8 +143,8 @@ Since: 2.4
 
   * N-GObject $model; A **Gnome::Gtk3::TreeModel**.
 
-[gtk_combo_box_] new_with_model_and_entry
------------------------------------------
+[[gtk_] combo_box_] new_with_model_and_entry
+--------------------------------------------
 
 Creates a new empty **Gnome::Gtk3::ComboBox** with an entry and with the model initialized to *model*.
 
@@ -156,8 +156,8 @@ Since: 2.24
 
   * N-GObject $model; A **Gnome::Gtk3::TreeModel**
 
-[gtk_combo_box_] get_wrap_width
--------------------------------
+[[gtk_] combo_box_] get_wrap_width
+----------------------------------
 
 Returns the wrap width which is used to determine the number of columns for the popup menu. If the wrap width is larger than 1, the combo box is in table mode.
 
@@ -167,8 +167,8 @@ Since: 2.6
 
     method gtk_combo_box_get_wrap_width ( --> Int  )
 
-[gtk_combo_box_] set_wrap_width
--------------------------------
+[[gtk_] combo_box_] set_wrap_width
+----------------------------------
 
 Sets the wrap width of *combo_box* to be *width*. The wrap width is basically the preferred number of columns when you want the popup to be layed out in a table.
 
@@ -178,8 +178,8 @@ Since: 2.4
 
   * Int $width; Preferred number of columns
 
-[gtk_combo_box_] get_row_span_column
-------------------------------------
+[[gtk_] combo_box_] get_row_span_column
+---------------------------------------
 
 Returns the column with row span information for *combo_box*.
 
@@ -189,8 +189,8 @@ Since: 2.6
 
     method gtk_combo_box_get_row_span_column ( --> Int  )
 
-[gtk_combo_box_] set_row_span_column
-------------------------------------
+[[gtk_] combo_box_] set_row_span_column
+---------------------------------------
 
 Sets the column with row span information for *combo_box* to be *row_span*. The row span column contains integers which indicate how many rows an item should span.
 
@@ -200,8 +200,8 @@ Since: 2.4
 
   * Int $row_span; A column in the model passed during construction.
 
-[gtk_combo_box_] get_column_span_column
----------------------------------------
+[[gtk_] combo_box_] get_column_span_column
+------------------------------------------
 
 Returns the column with column span information for *combo_box*.
 
@@ -211,8 +211,8 @@ Since: 2.6
 
     method gtk_combo_box_get_column_span_column ( --> Int  )
 
-[gtk_combo_box_] set_column_span_column
----------------------------------------
+[[gtk_] combo_box_] set_column_span_column
+------------------------------------------
 
 Sets the column with column span information for *combo_box* to be *column_span*. The column span column contains integers which indicate how many columns an item should span.
 
@@ -222,8 +222,8 @@ Since: 2.4
 
   * Int $column_span; A column in the model passed during construction
 
-[gtk_combo_box_] get_active
----------------------------
+[[gtk_] combo_box_] get_active
+------------------------------
 
 Returns the index of the currently active item, or -1 if there’s no active item. If the model is a non-flat treemodel, and the active item is not an immediate child of the root of the tree, this function returns `gtk_tree_path_get_indices (path)[0]`, where `path` is the **Gnome::Gtk3::TreePath** of the active item.
 
@@ -233,8 +233,8 @@ Since: 2.4
 
     method gtk_combo_box_get_active ( --> Int  )
 
-[gtk_combo_box_] set_active
----------------------------
+[[gtk_] combo_box_] set_active
+------------------------------
 
 Sets the active item of *combo_box* to be the item at *index*.
 
@@ -244,8 +244,8 @@ Since: 2.4
 
   * Int $index_; An index in the model passed during construction, or -1 to have no active item
 
-[gtk_combo_box_] set_model
---------------------------
+[[gtk_] combo_box_] set_model
+-----------------------------
 
 Sets the model used by *combo_box* to be *model*. Will unset a previously set model (if applicable). If model is `Any`, then it will unset the model.
 
@@ -257,8 +257,8 @@ Since: 2.4
 
   * N-GObject $model; (allow-none): A **Gnome::Gtk3::TreeModel**
 
-[gtk_combo_box_] get_model
---------------------------
+[[gtk_] combo_box_] get_model
+-----------------------------
 
 Returns the **Gnome::Gtk3::TreeModel** which is acting as data source for *combo_box*.
 
@@ -268,8 +268,8 @@ Since: 2.4
 
     method gtk_combo_box_get_model ( --> N-GObject  )
 
-[gtk_combo_box_] set_button_sensitivity
----------------------------------------
+[[gtk_] combo_box_] set_button_sensitivity
+------------------------------------------
 
 Sets whether the dropdown button of the combo box should be always sensitive (`GTK_SENSITIVITY_ON`), never sensitive (`GTK_SENSITIVITY_OFF`) or only if there is at least one item to display (`GTK_SENSITIVITY_AUTO`).
 
@@ -279,8 +279,8 @@ Since: 2.14
 
   * GtkSensitivityType $sensitivity; specify the sensitivity of the dropdown button
 
-[gtk_combo_box_] get_button_sensitivity
----------------------------------------
+[[gtk_] combo_box_] get_button_sensitivity
+------------------------------------------
 
 Returns whether the combo box sets the dropdown button sensitive or not when there are no items in the model.
 
@@ -290,8 +290,8 @@ Since: 2.14
 
     method gtk_combo_box_get_button_sensitivity ( --> GtkSensitivityType  )
 
-[gtk_combo_box_] get_has_entry
-------------------------------
+[[gtk_] combo_box_] get_has_entry
+---------------------------------
 
 Returns whether the combo box has an entry.
 
@@ -301,8 +301,8 @@ Since: 2.24
 
     method gtk_combo_box_get_has_entry ( --> Int )
 
-[gtk_combo_box_] set_entry_text_column
---------------------------------------
+[[gtk_] combo_box_] set_entry_text_column
+-----------------------------------------
 
 Sets the model column which *combo_box* should use to get strings from to be *text_column*. The column *text_column* in the model of *combo_box* must be of type `G_TYPE_STRING`.
 
@@ -314,8 +314,8 @@ Since: 2.24
 
   * Int $text_column; A column in *model* to get the strings from for the internal entry
 
-[gtk_combo_box_] get_entry_text_column
---------------------------------------
+[[gtk_] combo_box_] get_entry_text_column
+-----------------------------------------
 
 Returns the column which *combo_box* is using to get the strings from to display in the internal entry.
 
@@ -325,8 +325,8 @@ Since: 2.24
 
     method gtk_combo_box_get_entry_text_column ( --> Int  )
 
-[gtk_combo_box_] set_popup_fixed_width
---------------------------------------
+[[gtk_] combo_box_] set_popup_fixed_width
+-----------------------------------------
 
 Specifies whether the popup’s width should be a fixed width matching the allocated width of the combo box.
 
@@ -336,8 +336,8 @@ Since: 3.0
 
   * Int $fixed; whether to use a fixed popup width
 
-[gtk_combo_box_] get_popup_fixed_width
---------------------------------------
+[[gtk_] combo_box_] get_popup_fixed_width
+-----------------------------------------
 
 Gets whether the popup uses a fixed width matching the allocated width of the combo box.
 
@@ -347,8 +347,8 @@ Since: 3.0
 
     method gtk_combo_box_get_popup_fixed_width ( --> Int  )
 
-gtk_combo_box_popup
--------------------
+[gtk_] combo_box_popup
+----------------------
 
 Pops up the menu or dropdown list of *combo_box*.
 
@@ -358,8 +358,8 @@ Since: 2.4
 
     method gtk_combo_box_popup ( )
 
-[gtk_combo_box_] popup_for_device
----------------------------------
+[[gtk_] combo_box_] popup_for_device
+------------------------------------
 
 Pops up the menu or dropdown list of *combo_box*, the popup window will be grabbed so only *device* and its associated pointer/keyboard are the only **Gnome::Gdk3::Devices** able to send events to it.
 
@@ -369,8 +369,8 @@ Since: 3.0
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
-gtk_combo_box_popdown
----------------------
+[gtk_] combo_box_popdown
+------------------------
 
 Hides the menu or dropdown list of *combo_box*.
 
@@ -380,8 +380,8 @@ Since: 2.4
 
     method gtk_combo_box_popdown ( )
 
-[gtk_combo_box_] get_id_column
-------------------------------
+[[gtk_] combo_box_] get_id_column
+---------------------------------
 
 Returns the column which *combo_box* is using to get string IDs for values from.
 
@@ -391,8 +391,8 @@ Since: 3.0
 
     method gtk_combo_box_get_id_column ( --> Int  )
 
-[gtk_combo_box_] set_id_column
-------------------------------
+[[gtk_] combo_box_] set_id_column
+---------------------------------
 
 Sets the model column which *combo_box* should use to get string IDs for values from. The column *id_column* in the model of *combo_box* must be of type `G_TYPE_STRING`.
 
@@ -402,8 +402,8 @@ Since: 3.0
 
   * Int $id_column; A column in *model* to get string IDs for values from
 
-[gtk_combo_box_] get_active_id
-------------------------------
+[[gtk_] combo_box_] get_active_id
+---------------------------------
 
 Returns the ID of the active row of *combo_box*. This value is taken from the active row and the column specified by the *id-column* property of *combo_box* (see `gtk_combo_box_set_id_column()`).
 
@@ -417,8 +417,8 @@ Since: 3.0
 
     method gtk_combo_box_get_active_id ( --> Str  )
 
-[gtk_combo_box_] set_active_id
-------------------------------
+[[gtk_] combo_box_] set_active_id
+---------------------------------
 
 Changes the active row of *combo_box* to the one that has an ID equal to *active_id*, or unsets the active row if *active_id* is `Any`. Rows having a `Any` ID string cannot be made active by this function.
 

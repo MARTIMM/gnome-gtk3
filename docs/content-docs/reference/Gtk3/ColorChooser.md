@@ -49,15 +49,8 @@ Example
 Methods
 =======
 
-new
----
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$widget! )
-
-[gtk_color_chooser_] get_rgba
------------------------------
+[[gtk_] color_chooser_] get_rgba
+--------------------------------
 
 Gets the currently-selected color.
 
@@ -65,8 +58,8 @@ Since: 3.4
 
     method gtk_color_chooser_get_rgba ( --> N-GdkRGBA )
 
-[gtk_color_chooser_] set_rgba
------------------------------
+[[gtk_] color_chooser_] set_rgba
+--------------------------------
 
 Sets the color.
 
@@ -76,8 +69,8 @@ Since: 3.4
 
   * N-GdkRGBA $color: the new color
 
-[gtk_color_chooser_] get_use_alpha
-----------------------------------
+[[gtk_] color_chooser_] get_use_alpha
+-------------------------------------
 
 Check whether the color chooser shows the alpha channel.
 
@@ -87,8 +80,8 @@ Since: 3.4
 
     method gtk_color_chooser_get_use_alpha ( --> Int )
 
-[gtk_color_chooser_] set_use_alpha
-----------------------------------
+[[gtk_] color_chooser_] set_use_alpha
+-------------------------------------
 
 Sets whether or not the color chooser should use the alpha channel.
 
@@ -98,8 +91,8 @@ Since: 3.4
 
   * Int $use_alpha: `1` if color chooser should use alpha channel, `0` if not
 
-[gtk_color_chooser_] add_palette
---------------------------------
+[[gtk_] color_chooser_] add_palette
+-----------------------------------
 
 Adds a palette to the color chooser. If *$orientation* is horizontal, the colors are grouped in rows, with *$colors_per_line* colors in each row. If *$horizontal* is `0`, the colors are grouped in columns instead.
 

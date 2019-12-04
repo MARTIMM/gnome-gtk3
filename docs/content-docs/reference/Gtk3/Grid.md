@@ -54,8 +54,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_grid_new
-------------
+[gtk_] grid_new
+---------------
 
 Creates a new grid widget.
 
@@ -63,8 +63,8 @@ Returns: the new **Gnome::Gtk3::Grid**
 
     method gtk_grid_new ( --> N-GObject  )
 
-gtk_grid_attach
----------------
+[gtk_] grid_attach
+------------------
 
 Adds a widget to the grid.
 
@@ -82,8 +82,8 @@ The position of *child* is determined by *left* and *top*. The number of “cell
 
   * Int $height; the number of rows that *child* will span
 
-[gtk_grid_] attach_next_to
---------------------------
+[[gtk_] grid_] attach_next_to
+-----------------------------
 
 Adds a widget to the grid.
 
@@ -103,8 +103,8 @@ Attaching widgets labeled [1], [2], [3] with *$sibling* == `Any` and *$side* == 
 
   * Int $height; the number of rows that *$child* will span
 
-[gtk_grid_] get_child_at
-------------------------
+[[gtk_] grid_] get_child_at
+---------------------------
 
 Gets the child of the grid whose area covers the grid cell whose upper left corner is at *$left*, *$top*.
 
@@ -118,8 +118,8 @@ Since: 3.2
 
   * Int $top; the top edge of the cell
 
-[gtk_grid_] insert_row
-----------------------
+[[gtk_] grid_] insert_row
+-------------------------
 
 Inserts a row at the specified position.
 
@@ -131,8 +131,8 @@ Since: 3.2
 
   * Int $position; the position to insert the row at
 
-[gtk_grid_] insert_column
--------------------------
+[[gtk_] grid_] insert_column
+----------------------------
 
 Inserts a column at the specified position.
 
@@ -144,8 +144,8 @@ Since: 3.2
 
   * Int $position; the position to insert the column at
 
-[gtk_grid_] remove_row
-----------------------
+[[gtk_] grid_] remove_row
+-------------------------
 
 Removes a row from the grid.
 
@@ -157,8 +157,8 @@ Since: 3.10
 
   * Int $position; the position of the row to remove
 
-[gtk_grid_] remove_column
--------------------------
+[[gtk_] grid_] remove_column
+----------------------------
 
 Removes a column from the grid.
 
@@ -170,8 +170,8 @@ Since: 3.10
 
   * Int $position; the position of the column to remove
 
-[gtk_grid_] insert_next_to
---------------------------
+[[gtk_] grid_] insert_next_to
+-----------------------------
 
 Inserts a row or column at the specified position.
 
@@ -185,8 +185,8 @@ Since: 3.2
 
   * GtkPositionType $side; the side of *sibling* that *child* is positioned next to
 
-[gtk_grid_] set_row_homogeneous
--------------------------------
+[[gtk_] grid_] set_row_homogeneous
+----------------------------------
 
 Sets whether all rows of the grid will have the same height.
 
@@ -194,15 +194,15 @@ Sets whether all rows of the grid will have the same height.
 
   * Int $homogeneous; `1` to make rows homogeneous
 
-[gtk_grid_] get_row_homogeneous
--------------------------------
+[[gtk_] grid_] get_row_homogeneous
+----------------------------------
 
 Returns whether all rows of the grid have the same height.
 
     method gtk_grid_get_row_homogeneous ( --> Int  )
 
-[gtk_grid_] set_row_spacing
----------------------------
+[[gtk_] grid_] set_row_spacing
+------------------------------
 
 Sets the amount of space between rows of the grid.
 
@@ -210,8 +210,8 @@ Sets the amount of space between rows of the grid.
 
   * UInt $spacing; the amount of space to insert between rows
 
-[gtk_grid_] get_row_spacing
----------------------------
+[[gtk_] grid_] get_row_spacing
+------------------------------
 
 Returns the amount of space between the rows of *grid*.
 
@@ -219,8 +219,8 @@ Returns: the row spacing of *grid*
 
     method gtk_grid_get_row_spacing ( --> UInt  )
 
-[gtk_grid_] set_column_homogeneous
-----------------------------------
+[[gtk_] grid_] set_column_homogeneous
+-------------------------------------
 
 Sets whether all columns of *grid* will have the same width.
 
@@ -228,8 +228,8 @@ Sets whether all columns of *grid* will have the same width.
 
   * Int $homogeneous; `1` to make columns homogeneous
 
-[gtk_grid_] get_column_homogeneous
-----------------------------------
+[[gtk_] grid_] get_column_homogeneous
+-------------------------------------
 
 Returns whether all columns of *grid* have the same width.
 
@@ -237,8 +237,8 @@ Returns: whether all columns of *grid* have the same width.
 
     method gtk_grid_get_column_homogeneous ( --> Int  )
 
-[gtk_grid_] set_column_spacing
-------------------------------
+[[gtk_] grid_] set_column_spacing
+---------------------------------
 
 Sets the amount of space between columns of *grid*.
 
@@ -246,8 +246,8 @@ Sets the amount of space between columns of *grid*.
 
   * UInt $spacing; the amount of space to insert between columns
 
-[gtk_grid_] get_column_spacing
-------------------------------
+[[gtk_] grid_] get_column_spacing
+---------------------------------
 
 Returns the amount of space between the columns of *grid*.
 
@@ -255,8 +255,8 @@ Returns: the column spacing of *grid*
 
     method gtk_grid_get_column_spacing ( --> UInt  )
 
-[gtk_grid_] set_row_baseline_position
--------------------------------------
+[[gtk_] grid_] set_row_baseline_position
+----------------------------------------
 
 Sets how the baseline should be positioned on *row* of the grid, in case that row is assigned more space than is requested.
 
@@ -268,8 +268,8 @@ Since: 3.10
 
   * GtkBaselinePosition $pos; a **Gnome::Gtk3::BaselinePosition**
 
-[gtk_grid_] get_row_baseline_position
--------------------------------------
+[[gtk_] grid_] get_row_baseline_position
+----------------------------------------
 
 Returns the baseline position of *row* as set by `gtk_grid_set_row_baseline_position()` or the default value `GTK_BASELINE_POSITION_CENTER`.
 
@@ -281,8 +281,8 @@ Since: 3.10
 
   * Int $row; a row index
 
-[gtk_grid_] set_baseline_row
-----------------------------
+[[gtk_] grid_] set_baseline_row
+-------------------------------
 
 Sets which row defines the global baseline for the entire grid. Each row in the grid can have its own local baseline, but only one of those is global, meaning it will be the baseline in the parent of the *grid*.
 
@@ -292,8 +292,8 @@ Since: 3.10
 
   * Int $row; the row index
 
-[gtk_grid_] get_baseline_row
-----------------------------
+[[gtk_] grid_] get_baseline_row
+-------------------------------
 
 Returns which row defines the global baseline of *grid*.
 

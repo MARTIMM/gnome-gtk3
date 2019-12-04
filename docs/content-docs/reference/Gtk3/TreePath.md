@@ -54,8 +54,8 @@ Frees a `N-GtkTreePath` struct and after that, tree-path-is-valid() returns Fals
 
     method clear-tree-path ( )
 
-gtk_tree_path_new
------------------
+[gtk_] tree_path_new
+--------------------
 
 Creates a new **Gnome::Gtk3::TreePath**-struct. This refers to a row.
 
@@ -63,8 +63,8 @@ Returns: A newly created **Gnome::Gtk3::TreePath**-struct.
 
     method gtk_tree_path_new ( --> N-GtkTreePath  )
 
-[gtk_tree_path_] new_from_string
---------------------------------
+[[gtk_] tree_path_] new_from_string
+-----------------------------------
 
 Creates a new **Gnome::Gtk3::TreePath**-struct initialized to *path*.
 
@@ -76,8 +76,8 @@ Returns: A newly-created **Gnome::Gtk3::TreePath**-struct, or `Any`
 
   * Str $path; The string representation of a path
 
-[gtk_tree_path_] new_from_indices
----------------------------------
+[[gtk_] tree_path_] new_from_indices
+------------------------------------
 
 Creates a new path with *first_index* and *varargs* as indices.
 
@@ -89,8 +89,8 @@ Since: 2.2
 
   * Int list of indices
 
-[gtk_tree_path_] to_string
---------------------------
+[[gtk_] tree_path_] to_string
+-----------------------------
 
 Generates a string representation of the path.
 
@@ -100,8 +100,8 @@ Returns: A newly-allocated string. Must be freed with `g_free()`.
 
     method gtk_tree_path_to_string ( --> Str  )
 
-[gtk_tree_path_] new_first
---------------------------
+[[gtk_] tree_path_] new_first
+-----------------------------
 
 Creates a new **Gnome::Gtk3::TreePath**-struct. The string representation of this path is “0”.
 
@@ -109,8 +109,8 @@ Returns: A new **Gnome::Gtk3::TreePath**-struct
 
     method gtk_tree_path_new_first ( --> N-GtkTreePath  )
 
-[gtk_tree_path_] append_index
------------------------------
+[[gtk_] tree_path_] append_index
+--------------------------------
 
 Appends a new index to a path.
 
@@ -120,8 +120,8 @@ As a result, the depth of the path is increased.
 
   * Int $index; the index
 
-[gtk_tree_path_] prepend_index
-------------------------------
+[[gtk_] tree_path_] prepend_index
+---------------------------------
 
 Prepends a new index to a path.
 
@@ -131,8 +131,8 @@ As a result, the depth of the path is increased.
 
   * Int $index; the index
 
-[gtk_tree_path_] get_depth
---------------------------
+[[gtk_] tree_path_] get_depth
+-----------------------------
 
 Returns the current depth of *path*.
 
@@ -140,8 +140,8 @@ Returns: The depth of *path*
 
     method gtk_tree_path_get_depth ( --> Int  )
 
-[gtk_tree_path_] get_indices
-----------------------------
+[[gtk_] tree_path_] get_indices
+-------------------------------
 
 Returns the current indices of *path*.
 
@@ -151,8 +151,8 @@ Returns: An **Array** of the current indices, or `Any`
 
     method gtk_tree_path_get_indices ( --> Array )
 
-[gtk_tree_path_] get_indices_with_depth
----------------------------------------
+[[gtk_] tree_path_] get_indices_with_depth
+------------------------------------------
 
 Returns the current indices of *path*.
 
@@ -168,8 +168,8 @@ Returns a list of
 
   * Array: An Array with the current indices, or `Any`
 
-gtk_tree_path_copy
-------------------
+[gtk_] tree_path_copy
+---------------------
 
 Creates a new **Gnome::Gtk3::TreePath**-struct as a copy of *path*.
 
@@ -177,8 +177,8 @@ Returns: a new **Gnome::Gtk3::TreePath**-struct
 
     method gtk_tree_path_copy ( --> N-GtkTreePath  )
 
-gtk_tree_path_compare
----------------------
+[gtk_] tree_path_compare
+------------------------
 
 Compares two paths.
 
@@ -190,15 +190,15 @@ Returns: -1, 0 or 1
 
   * N-GtkTreePath $c; a **Gnome::Gtk3::TreePath**-struct to compare with
 
-gtk_tree_path_next
-------------------
+[gtk_] tree_path_next
+---------------------
 
 Moves the *path* to point to the next node at the current depth.
 
     method gtk_tree_path_next ( )
 
-gtk_tree_path_prev
-------------------
+[gtk_] tree_path_prev
+---------------------
 
 Moves the *path* to point to the previous node at the current depth, if it exists.
 
@@ -206,8 +206,8 @@ Returns: `1` if *path* has a previous node, and the move was made
 
     method gtk_tree_path_prev ( --> Int  )
 
-gtk_tree_path_up
-----------------
+[gtk_] tree_path_up
+-------------------
 
 Moves the *path* to point to its parent node, if it has a parent.
 
@@ -215,15 +215,15 @@ Returns: `1` if *path* has a parent, and the move was made
 
     method gtk_tree_path_up ( --> Int  )
 
-gtk_tree_path_down
-------------------
+[gtk_] tree_path_down
+---------------------
 
 Moves *path* to point to the first child of the current path.
 
     method gtk_tree_path_down ( )
 
-[gtk_tree_path_] is_ancestor
-----------------------------
+[[gtk_] tree_path_] is_ancestor
+-------------------------------
 
 Returns `1` if *$descendant* is a descendant of this path or contained inside.
 
@@ -231,8 +231,8 @@ Returns `1` if *$descendant* is a descendant of this path or contained inside.
 
   * N-GtkTreePath $descendant; another **Gnome::Gtk3::TreePath**-struct
 
-[gtk_tree_path_] is_descendant
-------------------------------
+[[gtk_] tree_path_] is_descendant
+---------------------------------
 
 Returns `1` if this path is a descendant of *$ancestor* or *$ancestor* contains this path somewhere below it
 

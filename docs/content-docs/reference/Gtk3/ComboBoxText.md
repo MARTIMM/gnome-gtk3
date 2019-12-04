@@ -91,8 +91,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_combo_box_text_new
-----------------------
+[gtk_] combo_box_text_new
+-------------------------
 
 Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings.
 
@@ -102,8 +102,8 @@ Since: 2.24
 
     method gtk_combo_box_text_new ( --> N-GObject  )
 
-[gtk_combo_box_text_] new_with_entry
-------------------------------------
+[[gtk_] combo_box_text_] new_with_entry
+---------------------------------------
 
 Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings. The combo box created by this function has an entry.
 
@@ -113,8 +113,8 @@ Since: 2.24
 
     method gtk_combo_box_text_new_with_entry ( --> N-GObject  )
 
-[gtk_combo_box_text_] append_text
----------------------------------
+[[gtk_] combo_box_text_] append_text
+------------------------------------
 
 Appends *text* to the list of strings stored in *combo_box*.
 
@@ -126,8 +126,8 @@ Since: 2.24
 
   * Str $text; A string
 
-[gtk_combo_box_text_] insert_text
----------------------------------
+[[gtk_] combo_box_text_] insert_text
+------------------------------------
 
 Inserts *text* at *position* in the list of strings stored in *combo_box*.
 
@@ -143,8 +143,8 @@ Since: 2.24
 
   * Str $text; A string
 
-[gtk_combo_box_text_] prepend_text
-----------------------------------
+[[gtk_] combo_box_text_] prepend_text
+-------------------------------------
 
 Prepends *text* to the list of strings stored in *combo_box*.
 
@@ -156,8 +156,8 @@ Since: 2.24
 
   * Str $text; A string
 
-gtk_combo_box_text_remove
--------------------------
+[gtk_] combo_box_text_remove
+----------------------------
 
 Removes the string at *position* from *combo_box*.
 
@@ -167,8 +167,8 @@ Since: 2.24
 
   * Int $position; Index of the item to remove
 
-[gtk_combo_box_text_] remove_all
---------------------------------
+[[gtk_] combo_box_text_] remove_all
+-----------------------------------
 
 Removes all the text entries from the combo box.
 
@@ -176,8 +176,8 @@ Since: 3.0
 
     method gtk_combo_box_text_remove_all ( )
 
-[gtk_combo_box_text_] get_active_text
--------------------------------------
+[[gtk_] combo_box_text_] get_active_text
+----------------------------------------
 
 Returns the currently active string in *combo_box*, or `Any` if none is selected. If *combo_box* contains an entry, this function will return its contents (which will not necessarily be an item from the list).
 
@@ -187,8 +187,8 @@ Since: 2.24
 
     method gtk_combo_box_text_get_active_text ( --> Str  )
 
-gtk_combo_box_text_insert
--------------------------
+[gtk_] combo_box_text_insert
+----------------------------
 
 Inserts *text* at *position* in the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row. See *id-column*.
 
@@ -204,8 +204,8 @@ Since: 3.0
 
   * Str $text; A string to display
 
-gtk_combo_box_text_append
--------------------------
+[gtk_] combo_box_text_append
+----------------------------
 
 Appends *text* to the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row.
 
@@ -219,8 +219,8 @@ Since: 2.24
 
   * Str $text; A string
 
-gtk_combo_box_text_prepend
---------------------------
+[gtk_] combo_box_text_prepend
+-----------------------------
 
 Prepends *text* to the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row.
 

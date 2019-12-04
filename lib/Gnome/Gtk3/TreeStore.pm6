@@ -168,7 +168,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_store_new:new(:field-types)
 =begin pod
-=head2 gtk_tree_store_new
+=head2 [gtk_] tree_store_new
 
 Creates a new tree store as with columns each of the types passed in.  Note that only types derived from standard GObject fundamental types are supported.
 
@@ -215,7 +215,7 @@ sub gtk_tree_store_new ( *@column-types --> N-GObject ) {
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_tree_store_newv:
 =begin pod
-=head2 gtk_tree_store_newv
+=head2 [gtk_] tree_store_newv
 
 Non vararg creation function.  Used primarily by language bindings.
 
@@ -238,7 +238,7 @@ sub gtk_tree_store_newv ( int32 $n_columns, uint64 $types )
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_tree_store_set_column_types:
 =begin pod
-=head2 [gtk_tree_store_] set_column_types
+=head2 [[gtk_] tree_store_] set_column_types
 
 This function is meant primarily for B<GObjects> that inherit from
 B<Gnome::Gtk3::TreeStore>, and should only be used when constructing a new
@@ -260,7 +260,7 @@ sub gtk_tree_store_set_column_types ( N-GObject $tree_store, int32 $n_columns, u
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_set_value:
 =begin pod
-=head2 [gtk_tree_store_] set_value
+=head2 [[gtk_] tree_store_] set_value
 
 Sets the data in the cell specified by I<$iter> and I<$column>. The type of I<$value> must be convertible to the type of the column.
 
@@ -325,7 +325,7 @@ method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_set:
 =begin pod
-=head2 gtk_tree_store_set
+=head2 [gtk_] tree_store_set
 
 Sets the value of one or more cells in the row referenced by I<$iter>. The variable argument list should contain integer column numbers, each column number followed by the value to be set. For example, to set column 0 with type C<G_TYPE_STRING> to “Foo”, you would write C<$ts.gtk_tree_store_set( $iter, 0, "Foo")>.
 
@@ -395,7 +395,7 @@ sub gtk_tree_store_set (
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_tree_store_set_valuesv:
 =begin pod
-=head2 [gtk_tree_store_] set_valuesv
+=head2 [[gtk_] tree_store_] set_valuesv
 
 A variant of C<gtk_tree_store_set_valist()> which takes
 the columns and values as two arrays, instead of varargs.  This
@@ -421,7 +421,7 @@ sub gtk_tree_store_set_valuesv ( N-GObject $tree_store, N-GtkTreeIter $iter, int
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_tree_store_set_valist:
 =begin pod
-=head2 [gtk_tree_store_] set_valist
+=head2 [[gtk_] tree_store_] set_valist
 
 See C<gtk_tree_store_set()>; this version takes a va_list for
 use by language bindings.
@@ -442,7 +442,7 @@ sub gtk_tree_store_set_valist ( N-GObject $tree_store, N-GtkTreeIter $iter, va_l
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_remove:
 =begin pod
-=head2 gtk_tree_store_remove
+=head2 [gtk_] tree_store_remove
 
 Removes the given row from the tree store. After being removed, the returned iterator is set to the next valid row at that level, or invalidated if it previously pointed to the last one.
 
@@ -472,7 +472,7 @@ sub _gtk_tree_store_remove ( N-GObject $tree_store, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_insert:
 =begin pod
-=head2 gtk_tree_store_insert
+=head2 [gtk_] tree_store_insert
 
 Creates a new row at I<$position>. If parent is non-C<Any>, then the row will be made a child of I<$parent>.  Otherwise, the row will be created at the toplevel. If I<$position> is -1 or is larger than the number of rows at that level, then the new row will be inserted to the end of the list. I<$iter> will be changed to point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
 
@@ -505,7 +505,7 @@ sub _gtk_tree_store_insert (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_insert_before:
 =begin pod
-=head2 [gtk_tree_store_] insert_before
+=head2 [[gtk_] tree_store_] insert_before
 
 Inserts a new row before I<$sibling>.  If I<$sibling> is C<Any>, then the row will be appended to I<$parent> ’s children.  If I<$parent> and I<$sibling> are C<Any>, then the row will be appended to the toplevel.  If both I<$sibling> and I<$parent> are set, then I<$parent> must be the parent of I<$sibling>.  When I<$sibling> is set, I<$parent> is optional.
 
@@ -540,7 +540,7 @@ sub _gtk_tree_store_insert_before (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_insert_after:
 =begin pod
-=head2 [gtk_tree_store_] insert_after
+=head2 [[gtk_] tree_store_] insert_after
 
 Inserts a new row after I<$sibling>.  If I<$sibling> is C<+>, then the row will be prepended to I<$parent> ’s children.  If I<$parent> and I<$sibling> are C<Any>, then the row will be prepended to the toplevel.  If both I<$sibling> and I<$parent> are set, then I<$parent> must be the parent of I<$sibling>.  When I<$sibling> is set, I<$parent> is optional.
 
@@ -575,7 +575,7 @@ sub _gtk_tree_store_insert_after (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_insert_with_values:
 =begin pod
-=head2 [gtk_tree_store_] insert_with_values
+=head2 [[gtk_] tree_store_] insert_with_values
 
 Creates a new row at I<position>. I<iter> will be changed to point to this new row. If I<position> is -1, or larger than the number of rows on the list, then the new row will be appended to the list. The row will be filled with the values given to this function.
 
@@ -676,7 +676,7 @@ sub gtk_tree_store_insert_with_values (
 #-------------------------------------------------------------------------------
 #TM:FF:gtk_tree_store_insert_with_valuesv:
 =begin pod
-=head2 [gtk_tree_store_] insert_with_valuesv
+=head2 [[gtk_] tree_store_] insert_with_valuesv
 
 A variant of C<gtk_tree_store_insert_with_values()> which takes
 the columns and values as two arrays, instead of varargs.  This
@@ -703,7 +703,7 @@ sub gtk_tree_store_insert_with_valuesv ( N-GObject $tree_store, N-GtkTreeIter $i
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_prepend:
 =begin pod
-=head2 gtk_tree_store_prepend
+=head2 [gtk_] tree_store_prepend
 
 Prepends a new row to the tree_store.  If I<$parent> is non-C<Any>, then it will prepend the new row before the first child of I<$parent>, otherwise it will prepend a row to the top level.  The returned iterator will point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
 
@@ -734,7 +734,7 @@ sub _gtk_tree_store_prepend (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_append:
 =begin pod
-=head2 gtk_tree_store_append
+=head2 [gtk_] tree_store_append
 
 Appends a new row to $list_store.  If I<parent> is non-C<Any>, then it will append the new row after the last child of I<parent>, otherwise it will append a row to the top level.  I<iter> will be changed to point to this new row.  The row will be empty after this function is called.  To fill in values, you need to call C<gtk_tree_store_set()> or C<gtk_tree_store_set_value()>.
 
@@ -767,7 +767,7 @@ sub _gtk_tree_store_append (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_is_ancestor:
 =begin pod
-=head2 [gtk_tree_store_] is_ancestor
+=head2 [[gtk_] tree_store_] is_ancestor
 
 Returns C<1> if I<$iter> is an ancestor of I<$descendant>.  That is, I<$iter> is the parent (or grandparent or great-grandparent) of I<$descendant>.
 
@@ -790,7 +790,7 @@ sub gtk_tree_store_is_ancestor (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_iter_depth:
 =begin pod
-=head2 [gtk_tree_store_] iter_depth
+=head2 [[gtk_] tree_store_] iter_depth
 
 Returns the depth of I<$iter>.  This will be 0 for anything on the root level, 1 for anything down a level, etc.
 
@@ -808,7 +808,7 @@ sub gtk_tree_store_iter_depth ( N-GObject $tree_store, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_clear:
 =begin pod
-=head2 gtk_tree_store_clear
+=head2 [gtk_] tree_store_clear
 
 Removes all rows from $list_store
 
@@ -823,7 +823,7 @@ sub gtk_tree_store_clear ( N-GObject $tree_store )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_store_iter_is_valid:
 =begin pod
-=head2 [gtk_tree_store_] iter_is_valid
+=head2 [[gtk_] tree_store_] iter_is_valid
 
 WARNING: This function is slow. Only use it for debugging and/or testing purposes.
 
@@ -847,7 +847,7 @@ sub gtk_tree_store_iter_is_valid ( N-GObject $tree_store, N-GtkTreeIter $iter )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_store_reorder:
 =begin pod
-=head2 gtk_tree_store_reorder
+=head2 [gtk_] tree_store_reorder
 
 Reorders the children of I<parent> in $list_store to follow the order indicated by I<new_order>. Note that this function only works with unsorted stores.
 
@@ -870,7 +870,7 @@ sub gtk_tree_store_reorder (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_store_swap:
 =begin pod
-=head2 gtk_tree_store_swap
+=head2 [gtk_] tree_store_swap
 
 Swaps I<$a> and I<$b> in the same level of $list_store. Note that this function only works with unsorted stores.
 
@@ -892,7 +892,7 @@ sub gtk_tree_store_swap ( N-GObject $tree_store, N-GtkTreeIter $a, N-GtkTreeIter
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_store_move_before:
 =begin pod
-=head2 [gtk_tree_store_] move_before
+=head2 [[gtk_] tree_store_] move_before
 
 Moves I<$iter> in $list_store to the position before I<$position>. I<$iter> and I<$position> should be in the same level. Note that this function only works with unsorted stores. If I<$position> is C<Any>, I<$iter> will be moved to the end of the level.
 
@@ -914,7 +914,7 @@ sub gtk_tree_store_move_before ( N-GObject $tree_store, N-GtkTreeIter $iter, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_store_move_after:
 =begin pod
-=head2 [gtk_tree_store_] move_after
+=head2 [[gtk_] tree_store_] move_after
 
 Moves I<$iter> in $list_store to the position after I<$position>. I<$iter> and I<position> should be in the same level. Note that this function only works with unsorted stores. If I<$position> is C<Any>, I<$iter> will be moved to the start of the level.
 

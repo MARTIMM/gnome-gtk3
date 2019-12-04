@@ -37,8 +37,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_cell_renderer_text_new
---------------------------
+[gtk_] cell_renderer_text_new
+-----------------------------
 
 Creates a new **Gnome::Gtk3::CellRendererText**. Adjust how text is drawn using object properties. Object properties can be set globally (with `g_object_set()`). Also, with **Gnome::Gtk3::TreeViewColumn**, you can bind a property to a value in a **Gnome::Gtk3::TreeModel**. For example, you can bind the “text” property on the cell renderer to a string value in the model, thus rendering a different string in each row of the **Gnome::Gtk3::TreeView**
 
@@ -46,8 +46,8 @@ Returns: the new cell renderer
 
     method gtk_cell_renderer_text_new ( --> N-GObject  )
 
-[gtk_cell_renderer_text_] set_fixed_height_from_font
-----------------------------------------------------
+[[gtk_] cell_renderer_text_] set_fixed_height_from_font
+-------------------------------------------------------
 
 Sets the height of a renderer to explicitly be determined by the “font” and “y_pad” property set on it. Further changes in these properties do not affect the height, so they must be accompanied by a subsequent call to this function. Using this function is unflexible, and should really only be used if calculating the size of a cell is too slow (ie, a massive number of cells displayed). If *number_of_rows* is -1, then the fixed height is unset, and the height is determined by the properties again.
 

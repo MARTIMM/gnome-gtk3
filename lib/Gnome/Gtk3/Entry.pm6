@@ -231,7 +231,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_entry_new:
 =begin pod
-=head2 gtk_entry_new
+=head2 [gtk_] entry_new
 
 Creates a new entry.
 
@@ -250,7 +250,7 @@ sub gtk_entry_new (  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_new_with_buffer:
 =begin pod
-=head2 [gtk_entry_] new_with_buffer
+=head2 [[gtk_] entry_] new_with_buffer
 
 Creates a new entry with the specified text buffer.
 
@@ -272,7 +272,7 @@ sub gtk_entry_new_with_buffer ( N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_buffer:
 =begin pod
-=head2 [gtk_entry_] get_buffer
+=head2 [[gtk_] entry_] get_buffer
 
 Get the B<Gnome::Gtk3::EntryBuffer> object which holds the text for
 this widget.
@@ -294,7 +294,7 @@ sub gtk_entry_get_buffer ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_buffer:
 =begin pod
-=head2 [gtk_entry_] set_buffer
+=head2 [[gtk_] entry_] set_buffer
 
 Set the B<Gnome::Gtk3::EntryBuffer> object which holds the text for
 this widget.
@@ -314,7 +314,7 @@ sub gtk_entry_set_buffer ( N-GObject $entry, N-GObject $buffer )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_text_area:
 =begin pod
-=head2 [gtk_entry_] get_text_area
+=head2 [[gtk_] entry_] get_text_area
 
 Gets the area where the entry’s text is drawn. This function is
 useful when drawing something to the entry in a draw callback.
@@ -338,7 +338,7 @@ sub gtk_entry_get_text_area ( N-GObject $entry, N-GObject $text_area )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_visibility:
 =begin pod
-=head2 [gtk_entry_] set_visibility
+=head2 [[gtk_] entry_] set_visibility
 
 Sets whether the contents of the entry are visible or not.
 When visibility is set to C<0>, characters are displayed
@@ -367,7 +367,7 @@ sub gtk_entry_set_visibility ( N-GObject $entry, int32 $visible )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_entry_get_visibility:
 =begin pod
-=head2 [gtk_entry_] get_visibility
+=head2 [[gtk_] entry_] get_visibility
 
 Retrieves whether the text in I<entry> is visible. See
 C<gtk_entry_set_visibility()>.
@@ -387,7 +387,7 @@ sub gtk_entry_get_visibility ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_invisible_char:
 =begin pod
-=head2 [gtk_entry_] set_invisible_char
+=head2 [[gtk_] entry_] set_invisible_char
 
 Sets the character to use in place of the actual text when
 C<gtk_entry_set_visibility()> has been called to set text visibility
@@ -417,7 +417,7 @@ sub _big_endian ( --> Bool ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_entry_get_invisible_char:
 =begin pod
-=head2 [gtk_entry_] get_invisible_char
+=head2 [[gtk_] entry_] get_invisible_char
 
 Retrieves the character displayed in place of the real characters
 for entries with visibility set to false. See C<gtk_entry_set_invisible_char()>.
@@ -438,7 +438,7 @@ sub gtk_entry_get_invisible_char ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_unset_invisible_char:
 =begin pod
-=head2 [gtk_entry_] unset_invisible_char
+=head2 [[gtk_] entry_] unset_invisible_char
 
 Unsets the invisible char previously set with
 C<gtk_entry_set_invisible_char()>. So that the
@@ -458,7 +458,7 @@ sub gtk_entry_unset_invisible_char ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_has_frame:
 =begin pod
-=head2 [gtk_entry_] set_has_frame
+=head2 [[gtk_] entry_] set_has_frame
 
 Sets whether the entry has a beveled frame around it.
 
@@ -475,7 +475,7 @@ sub gtk_entry_set_has_frame ( N-GObject $entry, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_has_frame:
 =begin pod
-=head2 [gtk_entry_] get_has_frame
+=head2 [[gtk_] entry_] get_has_frame
 
 Gets the value set by C<gtk_entry_set_has_frame()>.
 
@@ -494,7 +494,7 @@ sub gtk_entry_get_has_frame ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_overwrite_mode:
 =begin pod
-=head2 [gtk_entry_] set_overwrite_mode
+=head2 [[gtk_] entry_] set_overwrite_mode
 
 Sets whether the text is overwritten when typing in the B<Gnome::Gtk3::Entry>.
 
@@ -513,7 +513,7 @@ sub gtk_entry_set_overwrite_mode ( N-GObject $entry, int32 $overwrite )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_overwrite_mode:
 =begin pod
-=head2 [gtk_entry_] get_overwrite_mode
+=head2 [[gtk_] entry_] get_overwrite_mode
 
 Gets the value set by C<gtk_entry_set_overwrite_mode()>.
 
@@ -534,7 +534,7 @@ sub gtk_entry_get_overwrite_mode ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_max_length:
 =begin pod
-=head2 [gtk_entry_] set_max_length
+=head2 [[gtk_] entry_] set_max_length
 
 Sets the maximum allowed length of the contents of the widget. If
 the current contents are longer than the given length, then they
@@ -561,7 +561,7 @@ sub gtk_entry_set_max_length ( N-GObject $entry, int32 $max )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_max_length:
 =begin pod
-=head2 [gtk_entry_] get_max_length
+=head2 [[gtk_] entry_] get_max_length
 
 Retrieves the maximum allowed length of the text in
 I<entry>. See C<gtk_entry_set_max_length()>.
@@ -590,7 +590,7 @@ sub gtk_entry_get_max_length ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_entry_get_text_length:
 =begin pod
-=head2 [gtk_entry_] get_text_length
+=head2 [[gtk_] entry_] get_text_length
 
 Retrieves the current length of the text in
 I<entry>.
@@ -621,7 +621,7 @@ sub gtk_entry_get_text_length ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_activates_default:
 =begin pod
-=head2 [gtk_entry_] set_activates_default
+=head2 [[gtk_] entry_] set_activates_default
 
 If I<setting> is C<1>, pressing Enter in the I<entry> will activate the default
 widget for the window containing the entry. This usually means that
@@ -645,7 +645,7 @@ sub gtk_entry_set_activates_default ( N-GObject $entry, int32 $setting )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_activates_default:
 =begin pod
-=head2 [gtk_entry_] get_activates_default
+=head2 [[gtk_] entry_] get_activates_default
 
 Retrieves the value set by C<gtk_entry_set_activates_default()>.
 
@@ -664,7 +664,7 @@ sub gtk_entry_get_activates_default ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_width_chars:
 =begin pod
-=head2 [gtk_entry_] set_width_chars
+=head2 [[gtk_] entry_] set_width_chars
 
 Changes the size request of the entry to be about the right size
 for I<n_chars> characters. Note that it changes the size
@@ -685,7 +685,7 @@ sub gtk_entry_set_width_chars ( N-GObject $entry, int32 $n_chars )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_width_chars:
 =begin pod
-=head2 [gtk_entry_] get_width_chars
+=head2 [[gtk_] entry_] get_width_chars
 
 Gets the value set by C<gtk_entry_set_width_chars()>.
 
@@ -704,7 +704,7 @@ sub gtk_entry_get_width_chars ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_max_width_chars:
 =begin pod
-=head2 [gtk_entry_] set_max_width_chars
+=head2 [[gtk_] entry_] set_max_width_chars
 
 Sets the desired maximum width in characters of I<entry>.
 
@@ -723,7 +723,7 @@ sub gtk_entry_set_max_width_chars ( N-GObject $entry, int32 $n_chars )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_max_width_chars:
 =begin pod
-=head2 [gtk_entry_] get_max_width_chars
+=head2 [[gtk_] entry_] get_max_width_chars
 
 Retrieves the desired maximum width of I<entry>, in characters.
 See C<gtk_entry_set_max_width_chars()>.
@@ -745,7 +745,7 @@ sub gtk_entry_get_max_width_chars ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_entry_set_text:
 =begin pod
-=head2 [gtk_entry_] set_text
+=head2 [[gtk_] entry_] set_text
 
 Sets the text in the widget to the given
 value, replacing the current contents.
@@ -765,7 +765,7 @@ sub gtk_entry_set_text ( N-GObject $entry, Str $text )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_entry_get_text:
 =begin pod
-=head2 [gtk_entry_] get_text
+=head2 [[gtk_] entry_] get_text
 
 Retrieves the contents of the entry widget.
 See also C<gtk_editable_get_chars()>.
@@ -797,7 +797,7 @@ sub gtk_entry_get_text ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_layout:
 =begin pod
-=head2 [gtk_entry_] get_layout
+=head2 [[gtk_] entry_] get_layout
 
 Gets the B<PangoLayout> used to display the entry.
 The layout is useful to e.g. convert text positions to
@@ -825,7 +825,7 @@ sub gtk_entry_get_layout ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_layout_offsets:
 =begin pod
-=head2 [gtk_entry_] get_layout_offsets
+=head2 [[gtk_] entry_] get_layout_offsets
 
 Obtains the position of the B<PangoLayout> used to render text
 in the entry, in widget coordinates. Useful if you want to line
@@ -862,7 +862,7 @@ sub gtk_entry_get_layout_offsets ( N-GObject $entry, int32 $x, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_alignment:
 =begin pod
-=head2 [gtk_entry_] set_alignment
+=head2 [[gtk_] entry_] set_alignment
 
 Sets the alignment for the contents of the entry. This controls
 the horizontal positioning of the contents when the displayed
@@ -883,7 +883,7 @@ sub gtk_entry_set_alignment ( N-GObject $entry, num32 $xalign )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_alignment:
 =begin pod
-=head2 [gtk_entry_] get_alignment
+=head2 [[gtk_] entry_] get_alignment
 
 Gets the value set by C<gtk_entry_set_alignment()>.
 
@@ -904,7 +904,7 @@ sub gtk_entry_get_alignment ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_completion:
 =begin pod
-=head2 [gtk_entry_] set_completion
+=head2 [[gtk_] entry_] set_completion
 
 Sets I<completion> to be the auxiliary completion object to use with I<entry>.
 All further configuration of the completion mechanism is done on
@@ -926,7 +926,7 @@ sub gtk_entry_set_completion ( N-GObject $entry, N-GObject $completion )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_completion:
 =begin pod
-=head2 [gtk_entry_] get_completion
+=head2 [[gtk_] entry_] get_completion
 
 Returns the auxiliary completion object currently in use by I<entry>.
 
@@ -949,7 +949,7 @@ sub gtk_entry_get_completion ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_layout_index_to_text_index:
 =begin pod
-=head2 [gtk_entry_] layout_index_to_text_index
+=head2 [[gtk_] entry_] layout_index_to_text_index
 
 Converts from a position in the entry contents (returned
 by C<gtk_entry_get_text()>) to a position in the
@@ -972,7 +972,7 @@ sub gtk_entry_layout_index_to_text_index ( N-GObject $entry, int32 $layout_index
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_text_index_to_layout_index:
 =begin pod
-=head2 [gtk_entry_] text_index_to_layout_index
+=head2 [[gtk_] entry_] text_index_to_layout_index
 
 Converts from a position in the entry’s B<PangoLayout> (returned by
 C<gtk_entry_get_layout()>) to a position in the entry contents
@@ -995,7 +995,7 @@ sub gtk_entry_text_index_to_layout_index ( N-GObject $entry, int32 $text_index )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_cursor_hadjustment:
 =begin pod
-=head2 [gtk_entry_] set_cursor_hadjustment
+=head2 [[gtk_] entry_] set_cursor_hadjustment
 
 Hooks up an adjustment to the cursor position in an entry, so that when
 the cursor is moved, the adjustment is scrolled to show that position.
@@ -1020,7 +1020,7 @@ sub gtk_entry_set_cursor_hadjustment ( N-GObject $entry, N-GObject $adjustment )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_cursor_hadjustment:
 =begin pod
-=head2 [gtk_entry_] get_cursor_hadjustment
+=head2 [[gtk_] entry_] get_cursor_hadjustment
 
 Retrieves the horizontal cursor adjustment for the entry.
 See C<gtk_entry_set_cursor_hadjustment()>.
@@ -1043,7 +1043,7 @@ sub gtk_entry_get_cursor_hadjustment ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_progress_fraction:
 =begin pod
-=head2 [gtk_entry_] set_progress_fraction
+=head2 [[gtk_] entry_] set_progress_fraction
 
 Causes the entry’s progress indicator to “fill in” the given
 fraction of the bar. The fraction should be between 0.0 and 1.0,
@@ -1064,7 +1064,7 @@ sub gtk_entry_set_progress_fraction ( N-GObject $entry, num64 $fraction )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_progress_fraction:
 =begin pod
-=head2 [gtk_entry_] get_progress_fraction
+=head2 [[gtk_] entry_] get_progress_fraction
 
 Returns the current fraction of the task that’s been completed.
 See C<gtk_entry_set_progress_fraction()>.
@@ -1086,7 +1086,7 @@ sub gtk_entry_get_progress_fraction ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_progress_pulse_step:
 =begin pod
-=head2 [gtk_entry_] set_progress_pulse_step
+=head2 [[gtk_] entry_] set_progress_pulse_step
 
 Sets the fraction of total entry width to move the progress
 bouncing block for each call to C<gtk_entry_progress_pulse()>.
@@ -1106,7 +1106,7 @@ sub gtk_entry_set_progress_pulse_step ( N-GObject $entry, num64 $fraction )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_progress_pulse_step:
 =begin pod
-=head2 [gtk_entry_] get_progress_pulse_step
+=head2 [[gtk_] entry_] get_progress_pulse_step
 
 Retrieves the pulse step set with C<gtk_entry_set_progress_pulse_step()>.
 
@@ -1127,7 +1127,7 @@ sub gtk_entry_get_progress_pulse_step ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_progress_pulse:
 =begin pod
-=head2 [gtk_entry_] progress_pulse
+=head2 [[gtk_] entry_] progress_pulse
 
 Indicates that some progress is made, but you don’t know how much.
 Causes the entry’s progress indicator to enter “activity mode,”
@@ -1150,7 +1150,7 @@ sub gtk_entry_progress_pulse ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_placeholder_text:
 =begin pod
-=head2 [gtk_entry_] get_placeholder_text
+=head2 [[gtk_] entry_] get_placeholder_text
 
 Retrieves the text that will be displayed when I<entry> is empty and unfocused
 
@@ -1172,7 +1172,7 @@ sub gtk_entry_get_placeholder_text ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_placeholder_text:
 =begin pod
-=head2 [gtk_entry_] set_placeholder_text
+=head2 [[gtk_] entry_] set_placeholder_text
 
 Sets text to be displayed in I<entry> when it is empty and unfocused.
 This can be used to give a visual hint of the expected contents of
@@ -1199,7 +1199,7 @@ sub gtk_entry_set_placeholder_text ( N-GObject $entry, Str $text )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_from_pixbuf:
 =begin pod
-=head2 [gtk_entry_] set_icon_from_pixbuf
+=head2 [[gtk_] entry_] set_icon_from_pixbuf
 
 Sets the icon shown in the specified position using a pixbuf.
 
@@ -1223,7 +1223,7 @@ sub gtk_entry_set_icon_from_pixbuf ( N-GObject $entry, int32 $icon_pos, N-GObjec
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_from_icon_name:
 =begin pod
-=head2 [gtk_entry_] set_icon_from_icon_name
+=head2 [[gtk_] entry_] set_icon_from_icon_name
 
 Sets the icon shown in the entry at the specified position
 from the current icon theme.
@@ -1251,7 +1251,7 @@ sub gtk_entry_set_icon_from_icon_name ( N-GObject $entry, int32 $icon_pos, Str $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_from_gicon:
 =begin pod
-=head2 [gtk_entry_] set_icon_from_gicon
+=head2 [[gtk_] entry_] set_icon_from_gicon
 
 Sets the icon shown in the entry at the specified position
 from the current icon theme.
@@ -1278,7 +1278,7 @@ sub gtk_entry_set_icon_from_gicon ( N-GObject $entry, int32 $icon_pos, N-GObject
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_storage_type:
 =begin pod
-=head2 [gtk_entry_] get_icon_storage_type
+=head2 [[gtk_] entry_] get_icon_storage_type
 
 Gets the type of representation being used by the icon
 to store image data. If the icon has no image data,
@@ -1305,7 +1305,7 @@ sub gtk_entry_get_icon_storage_type ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_pixbuf:
 =begin pod
-=head2 [gtk_entry_] get_icon_pixbuf
+=head2 [[gtk_] entry_] get_icon_pixbuf
 
 Retrieves the image used for the icon.
 
@@ -1334,7 +1334,7 @@ sub gtk_entry_get_icon_pixbuf ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_name:
 =begin pod
-=head2 [gtk_entry_] get_icon_name
+=head2 [[gtk_] entry_] get_icon_name
 
 Retrieves the icon name used for the icon, or C<Any> if there is
 no icon or if the icon was set by some other method (e.g., by
@@ -1359,7 +1359,7 @@ sub gtk_entry_get_icon_name ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_gicon:
 =begin pod
-=head2 [gtk_entry_] get_icon_gicon
+=head2 [[gtk_] entry_] get_icon_gicon
 
 Retrieves the B<GIcon> used for the icon, or C<Any> if there is
 no icon or if the icon was set by some other method (e.g., by
@@ -1386,7 +1386,7 @@ sub gtk_entry_get_icon_gicon ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_activatable:
 =begin pod
-=head2 [gtk_entry_] set_icon_activatable
+=head2 [[gtk_] entry_] set_icon_activatable
 
 Sets whether the icon is activatable.
 
@@ -1408,7 +1408,7 @@ sub gtk_entry_set_icon_activatable ( N-GObject $entry, int32 $icon_pos, int32 $a
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_activatable:
 =begin pod
-=head2 [gtk_entry_] get_icon_activatable
+=head2 [[gtk_] entry_] get_icon_activatable
 
 Returns whether the icon is activatable.
 
@@ -1432,7 +1432,7 @@ sub gtk_entry_get_icon_activatable ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_sensitive:
 =begin pod
-=head2 [gtk_entry_] set_icon_sensitive
+=head2 [[gtk_] entry_] set_icon_sensitive
 
 Sets the sensitivity for the specified icon.
 
@@ -1454,7 +1454,7 @@ sub gtk_entry_set_icon_sensitive ( N-GObject $entry, int32 $icon_pos, int32 $sen
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_sensitive:
 =begin pod
-=head2 [gtk_entry_] get_icon_sensitive
+=head2 [[gtk_] entry_] get_icon_sensitive
 
 Returns whether the icon appears sensitive or insensitive.
 
@@ -1478,7 +1478,7 @@ sub gtk_entry_get_icon_sensitive ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_at_pos:
 =begin pod
-=head2 [gtk_entry_] get_icon_at_pos
+=head2 [[gtk_] entry_] get_icon_at_pos
 
 Finds the icon at the given position and return its index. The
 position’s coordinates are relative to the I<entry>’s top left corner.
@@ -1505,7 +1505,7 @@ sub gtk_entry_get_icon_at_pos ( N-GObject $entry, int32 $x, int32 $y )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_tooltip_text:
 =begin pod
-=head2 [gtk_entry_] set_icon_tooltip_text
+=head2 [[gtk_] entry_] set_icon_tooltip_text
 
 Sets I<tooltip> as the contents of the tooltip for the icon
 at the specified position.
@@ -1533,7 +1533,7 @@ sub gtk_entry_set_icon_tooltip_text ( N-GObject $entry, int32 $icon_pos, Str $to
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_tooltip_text:
 =begin pod
-=head2 [gtk_entry_] get_icon_tooltip_text
+=head2 [[gtk_] entry_] get_icon_tooltip_text
 
 Gets the contents of the tooltip on the icon at the specified
 position in I<entry>.
@@ -1560,7 +1560,7 @@ sub gtk_entry_get_icon_tooltip_text ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_tooltip_markup:
 =begin pod
-=head2 [gtk_entry_] set_icon_tooltip_markup
+=head2 [[gtk_] entry_] set_icon_tooltip_markup
 
 Sets I<tooltip> as the contents of the tooltip for the icon at
 the specified position. I<tooltip> is assumed to be marked up with
@@ -1588,7 +1588,7 @@ sub gtk_entry_set_icon_tooltip_markup ( N-GObject $entry, int32 $icon_pos, Str $
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_tooltip_markup:
 =begin pod
-=head2 [gtk_entry_] get_icon_tooltip_markup
+=head2 [[gtk_] entry_] get_icon_tooltip_markup
 
 Gets the contents of the tooltip on the icon at the specified
 position in I<entry>.
@@ -1615,7 +1615,7 @@ sub gtk_entry_get_icon_tooltip_markup ( N-GObject $entry, int32 $icon_pos )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_icon_drag_source:
 =begin pod
-=head2 [gtk_entry_] set_icon_drag_source
+=head2 [[gtk_] entry_] set_icon_drag_source
 
 Sets up the icon at the given position so that GTK+ will start a drag
 operation when the user clicks and drags the icon.
@@ -1652,7 +1652,7 @@ sub gtk_entry_set_icon_drag_source ( N-GObject $entry, int32 $icon_pos, GtkTarge
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_current_icon_drag_source:
 =begin pod
-=head2 [gtk_entry_] get_current_icon_drag_source
+=head2 [[gtk_] entry_] get_current_icon_drag_source
 
 Returns the index of the icon which is the source of the current
 DND operation, or -1.
@@ -1678,7 +1678,7 @@ sub gtk_entry_get_current_icon_drag_source ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_icon_area:
 =begin pod
-=head2 [gtk_entry_] get_icon_area
+=head2 [[gtk_] entry_] get_icon_area
 
 Gets the area where entry’s icon at I<icon_pos> is drawn.
 This function is useful when drawing something to the
@@ -1707,7 +1707,7 @@ sub gtk_entry_get_icon_area ( N-GObject $entry, int32 $icon_pos, N-GObject $icon
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_im_context_filter_keypress:
 =begin pod
-=head2 [gtk_entry_] im_context_filter_keypress
+=head2 [[gtk_] entry_] im_context_filter_keypress
 
 Allow the B<Gnome::Gtk3::Entry> input method to internally handle key press
 and release events. If this function returns C<1>, then no further
@@ -1738,7 +1738,7 @@ sub gtk_entry_im_context_filter_keypress ( N-GObject $entry, GdkEventKey $event 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_reset_im_context:
 =begin pod
-=head2 [gtk_entry_] reset_im_context
+=head2 [[gtk_] entry_] reset_im_context
 
 Reset the input method context of the entry if needed.
 
@@ -1759,7 +1759,7 @@ sub gtk_entry_reset_im_context ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_input_purpose:
 =begin pod
-=head2 [gtk_entry_] set_input_purpose
+=head2 [[gtk_] entry_] set_input_purpose
 
 Sets the  I<input-purpose> property which
 can be used by on-screen keyboards and other input
@@ -1780,7 +1780,7 @@ sub gtk_entry_set_input_purpose ( N-GObject $entry, int32 $purpose )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_input_purpose:
 =begin pod
-=head2 [gtk_entry_] get_input_purpose
+=head2 [[gtk_] entry_] get_input_purpose
 
 Gets the value of the  I<input-purpose> property.
 
@@ -1799,7 +1799,7 @@ sub gtk_entry_get_input_purpose ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_input_hints:
 =begin pod
-=head2 [gtk_entry_] set_input_hints
+=head2 [[gtk_] entry_] set_input_hints
 
 Sets the  I<input-hints> property, which
 allows input methods to fine-tune their behaviour.
@@ -1819,7 +1819,7 @@ sub gtk_entry_set_input_hints ( N-GObject $entry, int32 $hints )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_input_hints:
 =begin pod
-=head2 [gtk_entry_] get_input_hints
+=head2 [[gtk_] entry_] get_input_hints
 
 Gets the value of the  I<input-hints> property.
 
@@ -1839,7 +1839,7 @@ sub gtk_entry_get_input_hints ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_attributes:
 =begin pod
-=head2 [gtk_entry_] set_attributes
+=head2 [[gtk_] entry_] set_attributes
 
 Sets a B<PangoAttrList>; the attributes in the list are applied to the
 entry text.
@@ -1859,7 +1859,7 @@ sub gtk_entry_set_attributes ( N-GObject $entry, PangoAttrList $attrs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_attributes:
 =begin pod
-=head2 [gtk_entry_] get_attributes
+=head2 [[gtk_] entry_] get_attributes
 
 Gets the attribute list that was set on the entry using
 C<gtk_entry_set_attributes()>, if any.
@@ -1882,7 +1882,7 @@ sub gtk_entry_get_attributes ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_set_tabs:
 =begin pod
-=head2 [gtk_entry_] set_tabs
+=head2 [[gtk_] entry_] set_tabs
 
 Sets a B<PangoTabArray>; the tabstops in the array are applied to the entry
 text.
@@ -1902,7 +1902,7 @@ sub gtk_entry_set_tabs ( N-GObject $entry, PangoTabArray $tabs )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_tabs:
 =begin pod
-=head2 [gtk_entry_] get_tabs
+=head2 [[gtk_] entry_] get_tabs
 
 Gets the tabstops that were set on the entry using C<gtk_entry_set_tabs()>, if
 any.
@@ -1925,7 +1925,7 @@ sub gtk_entry_get_tabs ( N-GObject $entry )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_grab_focus_without_selecting:
 =begin pod
-=head2 [gtk_entry_] grab_focus_without_selecting
+=head2 [[gtk_] entry_] grab_focus_without_selecting
 
 Causes I<entry> to have keyboard focus.
 

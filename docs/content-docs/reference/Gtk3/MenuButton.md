@@ -118,8 +118,8 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_menu_button_new
--------------------
+[gtk_] menu_button_new
+----------------------
 
 Creates a new **Gnome::Gtk3::MenuButton** widget with downwards-pointing arrow as the only child. You can replace the child widget with another **Gnome::Gtk3::Widget** should you wish to.
 
@@ -129,8 +129,8 @@ Since: 3.6
 
     method gtk_menu_button_new ( --> N-GObject  )
 
-[gtk_menu_button_] set_popup
-----------------------------
+[[gtk_] menu_button_] set_popup
+-------------------------------
 
 Sets the **Gnome::Gtk3::Menu** that will be popped up when the button is clicked, or `Any` to disable the button. If *menu-model* or *popover* are set, they will be set to `Any`.
 
@@ -140,8 +140,8 @@ Since: 3.6
 
   * N-GObject $menu; (allow-none): a **Gnome::Gtk3::Menu**
 
-[gtk_menu_button_] get_popup
-----------------------------
+[[gtk_] menu_button_] get_popup
+-------------------------------
 
 Returns the **Gnome::Gtk3::Menu** that pops out of the button. If the button does not use a **Gnome::Gtk3::Menu**, this function returns `Any`.
 
@@ -151,8 +151,8 @@ Since: 3.6
 
     method gtk_menu_button_get_popup ( --> N-GObject  )
 
-[gtk_menu_button_] set_popover
-------------------------------
+[[gtk_] menu_button_] set_popover
+---------------------------------
 
 Sets the **Gnome::Gtk3::Popover** that will be popped up when the button is clicked, or `Any` to disable the button. If *menu-model* or *popup* are set, they will be set to `Any`.
 
@@ -162,8 +162,8 @@ Since: 3.12
 
   * N-GObject $popover; (allow-none): a **Gnome::Gtk3::Popover**
 
-[gtk_menu_button_] get_popover
-------------------------------
+[[gtk_] menu_button_] get_popover
+---------------------------------
 
 Returns the **Gnome::Gtk3::Popover** that pops out of the button. If the button is not using a **Gnome::Gtk3::Popover**, this function returns `Any`.
 
@@ -173,8 +173,8 @@ Since: 3.12
 
     method gtk_menu_button_get_popover ( --> N-GObject  )
 
-[gtk_menu_button_] set_direction
---------------------------------
+[[gtk_] menu_button_] set_direction
+-----------------------------------
 
 Sets the direction in which the popup will be popped up, as well as changing the arrow’s direction. The child will not be changed to an arrow if it was customized.
 
@@ -188,8 +188,8 @@ Since: 3.6
 
   * GtkArrowType $direction; a **Gnome::Gtk3::ArrowType**
 
-[gtk_menu_button_] get_direction
---------------------------------
+[[gtk_] menu_button_] get_direction
+-----------------------------------
 
 Returns the direction the popup will be pointing at when popped up.
 
@@ -199,8 +199,8 @@ Since: 3.6
 
     method gtk_menu_button_get_direction ( --> GtkArrowType  )
 
-[gtk_menu_button_] set_menu_model
----------------------------------
+[[gtk_] menu_button_] set_menu_model
+------------------------------------
 
 Sets the **GMenuModel** from which the popup will be constructed, or `Any` to disable the button.
 
@@ -214,8 +214,8 @@ Since: 3.6
 
   * N-GObject $menu_model; (allow-none): a **GMenuModel**
 
-[gtk_menu_button_] get_menu_model
----------------------------------
+[[gtk_] menu_button_] get_menu_model
+------------------------------------
 
 Returns the **GMenuModel** used to generate the popup.
 
@@ -225,8 +225,8 @@ Since: 3.6
 
     method gtk_menu_button_get_menu_model ( --> N-GObject  )
 
-[gtk_menu_button_] set_align_widget
------------------------------------
+[[gtk_] menu_button_] set_align_widget
+--------------------------------------
 
 Sets the **Gnome::Gtk3::Widget** to use to line the menu with when popped up. Note that the *align_widget* must contain the **Gnome::Gtk3::MenuButton** itself.
 
@@ -240,8 +240,8 @@ Since: 3.6
 
   * N-GObject $align_widget; (allow-none): a **Gnome::Gtk3::Widget**
 
-[gtk_menu_button_] get_align_widget
------------------------------------
+[[gtk_] menu_button_] get_align_widget
+--------------------------------------
 
 Returns the parent **Gnome::Gtk3::Widget** to use to line up with menu.
 
@@ -251,8 +251,8 @@ Since: 3.6
 
     method gtk_menu_button_get_align_widget ( --> N-GObject  )
 
-[gtk_menu_button_] set_use_popover
-----------------------------------
+[[gtk_] menu_button_] set_use_popover
+-------------------------------------
 
 Sets whether to construct a **Gnome::Gtk3::Popover** instead of **Gnome::Gtk3::Menu** when `gtk_menu_button_set_menu_model()` is called. Note that this property is only consulted when a new menu model is set.
 
@@ -262,8 +262,8 @@ Since: 3.12
 
   * Int $use_popover; `1` to construct a popover from the menu model
 
-[gtk_menu_button_] get_use_popover
-----------------------------------
+[[gtk_] menu_button_] get_use_popover
+-------------------------------------
 
 Returns whether a **Gnome::Gtk3::Popover** or a **Gnome::Gtk3::Menu** will be constructed from the menu model.
 

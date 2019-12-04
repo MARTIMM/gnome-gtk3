@@ -250,7 +250,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:2:gtk_level_bar_new:new(:empty)
 =begin pod
-=head2 gtk_level_bar_new
+=head2 [gtk_] level_bar_new
 
 Creates a new B<Gnome::Gtk3::LevelBar>.
 
@@ -271,7 +271,7 @@ sub gtk_level_bar_new (  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_new_for_interval:new(:min,:max)
 =begin pod
-=head2 [gtk_level_bar_] new_for_interval
+=head2 [[gtk_] level_bar_] new_for_interval
 
 Utility constructor that creates a new B<Gnome::Gtk3::LevelBar> for the specified
 interval.
@@ -295,7 +295,7 @@ sub gtk_level_bar_new_for_interval ( num64 $min_value, num64 $max_value )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_set_mode:
 =begin pod
-=head2 [gtk_level_bar_] set_mode
+=head2 [[gtk_] level_bar_] set_mode
 
 Sets the value of the  I<mode> property.
 
@@ -314,7 +314,7 @@ sub gtk_level_bar_set_mode ( N-GObject $self, int32 $mode )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_get_mode:
 =begin pod
-=head2 [gtk_level_bar_] get_mode
+=head2 [[gtk_] level_bar_] get_mode
 
 Returns the value of the  I<mode> property.
 
@@ -335,7 +335,7 @@ sub gtk_level_bar_get_mode ( N-GObject $self )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_set_value:
 =begin pod
-=head2 [gtk_level_bar_] set_value
+=head2 [[gtk_] level_bar_] set_value
 
 Sets the value of the  I<value> property.
 
@@ -354,7 +354,7 @@ sub gtk_level_bar_set_value ( N-GObject $self, num64 $value )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_get_value:
 =begin pod
-=head2 [gtk_level_bar_] get_value
+=head2 [[gtk_] level_bar_] get_value
 
 Returns the value of the  I<value> property.
 
@@ -376,7 +376,7 @@ sub gtk_level_bar_get_value ( N-GObject $self )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_set_min_value:
 =begin pod
-=head2 [gtk_level_bar_] set_min_value
+=head2 [[gtk_] level_bar_] set_min_value
 
 Sets the value of the  I<min-value> property.
 
@@ -398,7 +398,7 @@ sub gtk_level_bar_set_min_value ( N-GObject $self, num64 $value )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_get_min_value:
 =begin pod
-=head2 [gtk_level_bar_] get_min_value
+=head2 [[gtk_] level_bar_] get_min_value
 
 Returns the value of the  I<min-value> property.
 
@@ -419,7 +419,7 @@ sub gtk_level_bar_get_min_value ( N-GObject $self )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_set_max_value:
 =begin pod
-=head2 [gtk_level_bar_] set_max_value
+=head2 [[gtk_] level_bar_] set_max_value
 
 Sets the value of the  I<max-value> property.
 
@@ -441,7 +441,7 @@ sub gtk_level_bar_set_max_value ( N-GObject $self, num64 $value )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_get_max_value:
 =begin pod
-=head2 [gtk_level_bar_] get_max_value
+=head2 [[gtk_] level_bar_] get_max_value
 
 Returns the value of the  I<max-value> property.
 
@@ -462,7 +462,7 @@ sub gtk_level_bar_get_max_value ( N-GObject $self )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_set_inverted:
 =begin pod
-=head2 [gtk_level_bar_] set_inverted
+=head2 [[gtk_] level_bar_] set_inverted
 
 Sets the value of the  I<inverted> property.
 
@@ -481,7 +481,7 @@ sub gtk_level_bar_set_inverted ( N-GObject $self, int32 $inverted )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_get_inverted:
 =begin pod
-=head2 [gtk_level_bar_] get_inverted
+=head2 [[gtk_] level_bar_] get_inverted
 
 Return the value of the  I<inverted> property.
 
@@ -502,7 +502,7 @@ sub gtk_level_bar_get_inverted ( N-GObject $self )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_add_offset_value:
 =begin pod
-=head2 [gtk_level_bar_] add_offset_value
+=head2 [[gtk_] level_bar_] add_offset_value
 
 Adds a new offset marker on the levelbar at the position specified by I<$value>.
 When the bar value is in the interval topped by I<$value> (or between I<$value>
@@ -528,7 +528,7 @@ sub gtk_level_bar_add_offset_value ( N-GObject $self, Str $name, num64 $value )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_level_bar_remove_offset_value:
 =begin pod
-=head2 [gtk_level_bar_] remove_offset_value
+=head2 [[gtk_] level_bar_] remove_offset_value
 
 Removes an offset marker previously added with
 C<gtk_level_bar_add_offset_value()>.
@@ -548,7 +548,7 @@ sub gtk_level_bar_remove_offset_value ( N-GObject $self, Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_level_bar_get_offset_value:
 =begin pod
-=head2 [gtk_level_bar_] get_offset_value
+=head2 [[gtk_] level_bar_] get_offset_value
 
 Fetches the value specified for the offset marker I<$name> in the level bar,
 
@@ -676,7 +676,7 @@ sub gtk_level_bar_new_for_interval ( num64 $min_value, num64 $max_value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] set_mode
+=head2 [[gtk_] level_bar_] set_mode
 
   method gtk_level_bar_set_mode ( GtkLevelBarMode $mode )
 
@@ -690,7 +690,7 @@ sub gtk_level_bar_set_mode ( N-GObject $levelbar, int32 $mode )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_mode
+=head2 [[gtk_] level_bar_] get_mode
 
   method gtk_level_bar_get_mode ( --> GtkLevelBarMode )
 
@@ -705,7 +705,7 @@ sub gtk_level_bar_get_mode ( N-GObject $levelbar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] set_value
+=head2 [[gtk_] level_bar_] set_value
 
   method gtk_level_bar_set_value ( Num $value )
 
@@ -719,7 +719,7 @@ sub gtk_level_bar_set_value ( N-GObject $levelbar, num64 $value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_value
+=head2 [[gtk_] level_bar_] get_value
 
   method gtk_level_bar_get_value ( --> Num )
 
@@ -734,7 +734,7 @@ sub gtk_level_bar_get_value ( N-GObject $levelbar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] set_min_value
+=head2 [[gtk_] level_bar_] set_min_value
 
   method gtk_level_bar_set_min_value ( Num $value )
 
@@ -748,7 +748,7 @@ sub gtk_level_bar_set_min_value ( N-GObject $levelbar, num64 $value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_min_value
+=head2 [[gtk_] level_bar_] get_min_value
 
   method gtk_level_bar_get_min_value ( --> Num )
 
@@ -763,7 +763,7 @@ sub gtk_level_bar_get_min_value ( N-GObject $levelbar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] set_max_value
+=head2 [[gtk_] level_bar_] set_max_value
 
   method gtk_level_bar_set_max_value ( Num $value )
 
@@ -777,7 +777,7 @@ sub gtk_level_bar_set_max_value ( N-GObject $levelbar, num64 $value )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_max_value
+=head2 [[gtk_] level_bar_] get_max_value
 
   method gtk_level_bar_get_max_value ( --> Num )
 
@@ -792,7 +792,7 @@ sub gtk_level_bar_get_max_value ( N-GObject $levelbar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] set_inverted
+=head2 [[gtk_] level_bar_] set_inverted
 
   method gtk_level_bar_set_inverted ( Int $invert )
 
@@ -806,7 +806,7 @@ sub gtk_level_bar_set_inverted ( N-GObject $levelbar, int32 $invert )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_inverted
+=head2 [[gtk_] level_bar_] get_inverted
 
   method gtk_level_bar_get_inverted ( --> Int )
 
@@ -821,7 +821,7 @@ sub gtk_level_bar_get_inverted ( N-GObject $levelbar )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] add_offset_value
+=head2 [[gtk_] level_bar_] add_offset_value
 
 Adds a new offset marker on self at the position specified by value . When the bar value is in the interval topped by value (or between value and “max-value” in case the offset is the last one on the bar) a style class named level-name will be applied when rendering the level bar fill. If another offset marker named name exists, its value will be replaced by value .
 
@@ -839,7 +839,7 @@ sub gtk_level_bar_add_offset_value (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] get_offset_value
+=head2 [[gtk_] level_bar_] get_offset_value
 
 Fetches the value specified for the offset marker name.
 
@@ -860,7 +860,7 @@ sub gtk_level_bar_get_offset_value (
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 [gtk_level_bar_] remove_offset_value
+=head2 [[gtk_] level_bar_] remove_offset_value
 
 Adds a new offset marker on self at the position specified by value . When the bar value is in the interval topped by value (or between value and “max-value” in case the offset is the last one on the bar) a style class named level-name will be applied when rendering the level bar fill. If another offset marker named name exists, its value will be replaced by value.
 This offset name can be used to change color and view of the level bar after passing this offset by setting information in a css file. For example when name is C<my-offset> one can do the following.
