@@ -75,6 +75,8 @@ highlighter: rouge
 #      line_numbers: true
 #      start_line: 1
 
+# show_downloads: true
+
 defaults:
   -
     scope:
