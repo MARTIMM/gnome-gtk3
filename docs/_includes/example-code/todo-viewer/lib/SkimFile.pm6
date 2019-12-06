@@ -2,20 +2,36 @@ use v6;
 
 unit class SkimFile;
 
-has Str $!file;
-submethod BUILD ( Str :$!file where .IO.r ) { }
+enum MarkTypes is export <TODOMARK>;
 
-method get-texts ( --> Array ) {
+has Str $!file-path;
+has Str $.root-basename;
+has Array $.todo-texts;
 
-  my Array $texts = [];
-  my $count = 1;
-  for $!file.IO.slurp.lines -> $line {
-    if $line ~~ m/^ \s* '#' \s* TODO $<todo-text>=[<-[\n]>+ $/ {
+submethod BUILD ( Str :$root, Str :$root-to-file ) {
+  die "File $root-to-file does not exist in $root"
+      unless "$root/$root-to-file".IO.r;
+
+  $!file-path = "$root/$root-to-file";
+  $!root-basename = $root.IO.basename;
+  self!search-texts;
+}
+
+method reread-file ( ) {
+  self!search-texts;
+}
+
+method !search-texts ( ) {
+  $!todo-texts = [];
+  my $line-count = 0;
+  for $!file-path.IO.slurp.lines -> $line {
+    $line-count++;
+
+    if $line ~~ m/^ \s* '#' \s* TODO $<todo-text>=[<-[\n]>+] $/ {
       my Str $t = ~$<todo-text>;
-      $texts.push: [$count, $t];
-      $count++;
+      $!todo-texts.push: [ TODOMARK, $line-count, $t];
     }
   }
 
-  $texts
+note "\nT: \n[", $!todo-texts.join("]\n["), "]";
 }
