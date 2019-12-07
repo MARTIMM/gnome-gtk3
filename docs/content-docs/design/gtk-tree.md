@@ -157,9 +157,9 @@ GObject                                               Object
 │   │   ╰── GtkCellAreaBox
 │   ├── GtkCellRenderer                               CellRenderer
 │   │   ├── GtkCellRendererText                       CellRendererText
-│   │   │   ├── GtkCellRendererAccel
+│   │   │   ├── GtkCellRendererAccel                  CellRendererAccel
 │   │   │   ├── GtkCellRendererCombo                  CellRendererCombo
-│   │   │   ╰── GtkCellRendererSpin
+│   │   │   ╰── GtkCellRendererSpin                   CellRendererSpin
 │   │   ├── GtkCellRendererPixbuf
 │   │   ├── GtkCellRendererProgress                   CellRendererProgress
 │   │   ├── GtkCellRendererSpinner                    CellRendererSpinner
