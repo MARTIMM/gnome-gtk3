@@ -1054,8 +1054,8 @@ sub get-signals ( Str:D $source-content is copy ) {
       when 'G_TYPE_INT' { $return-type = 'Int'; }
       when 'G_TYPE_UINT' { $return-type = 'Int'; }
       when 'G_TYPE_STRING' { $return-type = 'Str'; }
-      when 'G_TYPE_NONE' { $return-type = '' }
-
+      when 'G_TYPE_NONE' { $return-type = ''; }
+      when 'GTK_TYPE_TREE_ITER' { $return-type = 'N-GtkTreeIter'; }
       # show that there is something
       default { $return-type = "Unknown type @args[7]"; }
     }
@@ -1091,6 +1091,9 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'GTK_TYPE_TEXT_ITER' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gtk3::TextIter }}';
         }
+        when 'GTK_TYPE_TREE_ITER' {
+          $arg-type = 'N-GtkTreeIter #`{{ native Gnome::Gtk3::TreeIter }}';
+        }
 
         when 'GDK_TYPE_DISPLAY' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
@@ -1110,7 +1113,9 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'GDK_TYPE_SEAT' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Seat }}';
         }
-
+        when 'GDK_TYPE_MODIFIER_TYPE' {
+          $arg-type = 'GdkModifierType #`{{ from Gnome::Gdk3::Window }}';
+        }
         default { $arg-type = "Unknown type @args[{9 + $i}]"; }
       }
 
