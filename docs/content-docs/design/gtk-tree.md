@@ -158,11 +158,11 @@ GObject                                               Object
 │   ├── GtkCellRenderer                               CellRenderer
 │   │   ├── GtkCellRendererText                       CellRendererText
 │   │   │   ├── GtkCellRendererAccel
-│   │   │   ├── GtkCellRendererCombo
+│   │   │   ├── GtkCellRendererCombo                  CellRendererCombo
 │   │   │   ╰── GtkCellRendererSpin
 │   │   ├── GtkCellRendererPixbuf
 │   │   ├── GtkCellRendererProgress                   CellRendererProgress
-│   │   ├── GtkCellRendererSpinner
+│   │   ├── GtkCellRendererSpinner                    CellRendererSpinner
 │   │   ╰── GtkCellRendererToggle                     CellRendererToggle
 │   ├── GtkFileFilter                                 FileFilter
 │   ├── GtkTreeViewColumn                             TreeViewColumn
