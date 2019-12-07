@@ -193,17 +193,15 @@ Since: 2.14
 
   method handler (
     Str $path_string,
-    Unknown type GTK_TYPE_TREE_ITER $new_iter,
+    N-GtkTreeIter $new_iter,
     Gnome::GObject::Object :widget($combo),
     *%user-options
   );
 
 =item $combo; the object on which the signal is emitted
 
-=item $path_string; a string of the path identifying the edited cell
-(relative to the tree view model)
-=item $new_iter; the new iter selected in the combo box
-(relative to the combo box model)
+=item $path_string; a string of the path identifying the edited cell (relative to the tree view model)
+=item $new_iter; the new iterator selected in the combo box (relative to the combo box model)
 
 =end pod
 
