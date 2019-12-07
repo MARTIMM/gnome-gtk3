@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
 
@@ -79,7 +79,7 @@
   "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3", "Method::Also"
+    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3"
   ],
 
   "test-depends": [ ],
