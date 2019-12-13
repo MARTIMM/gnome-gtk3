@@ -160,7 +160,7 @@ GObject                                               Object
 │   │   │   ├── GtkCellRendererAccel                  CellRendererAccel
 │   │   │   ├── GtkCellRendererCombo                  CellRendererCombo
 │   │   │   ╰── GtkCellRendererSpin                   CellRendererSpin
-│   │   ├── GtkCellRendererPixbuf
+│   │   ├── GtkCellRendererPixbuf                     CellRendererPixbuf
 │   │   ├── GtkCellRendererProgress                   CellRendererProgress
 │   │   ├── GtkCellRendererSpinner                    CellRendererSpinner
 │   │   ╰── GtkCellRendererToggle                     CellRendererToggle
