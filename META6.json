@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome gtk api",
   "name": "Gnome::Gtk3",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
 
@@ -18,8 +18,13 @@
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
     "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
-    "Gnome::Gtk3::CellRendererText": "lib/Gnome/Gtk3/CellRendererText.pm6",
+    "Gnome::Gtk3::CellRendererAccel": "lib/Gnome/Gtk3/CellRendererAccel.pm6",
+    "Gnome::Gtk3::CellRendererCombo": "lib/Gnome/Gtk3/CellRendererCombo.pm6",
+    "Gnome::Gtk3::CellRendererPixbuf": "lib/Gnome/Gtk3/CellRendererPixbuf.pm6",
     "Gnome::Gtk3::CellRendererProgress": "lib/Gnome/Gtk3/CellRendererProgress.pm6",
+    "Gnome::Gtk3::CellRendererSpin": "lib/Gnome/Gtk3/CellRendererSpin.pm6",
+    "Gnome::Gtk3::CellRendererSpinner": "lib/Gnome/Gtk3/CellRendererSpinner.pm6",
+    "Gnome::Gtk3::CellRendererText": "lib/Gnome/Gtk3/CellRendererText.pm6",
     "Gnome::Gtk3::CellRendererToggle": "lib/Gnome/Gtk3/CellRendererToggle.pm6",
     "Gnome::Gtk3::CheckButton": "lib/Gnome/Gtk3/CheckButton.pm6",
     "Gnome::Gtk3::ColorButton": "lib/Gnome/Gtk3/ColorButton.pm6",
@@ -79,7 +84,7 @@
   "source-url": "git://github.com/MARTIMM/perl6-gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3", "Method::Also"
+    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3"
   ],
 
   "test-depends": [ ],

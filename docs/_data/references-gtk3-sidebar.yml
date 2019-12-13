@@ -187,12 +187,32 @@
     url: '/content-docs/reference/Gtk3/CellRenderer.html'
     doc: 1
     test: 1
+  - title: "CellRendererAccel"
+    url: '/content-docs/reference/Gtk3/CellRendererAccel.html'
+    doc: 1
+    test: 1
+  - title: "CellRendererCombo"
+    url: '/content-docs/reference/Gtk3/CellRendererCombo.html'
+    doc: 1
+    test: 1
   - title: "CellRendererText"
     url: '/content-docs/reference/Gtk3/CellRendererText.html'
     doc: 1
     test: 1
+  - title: "CellRendererPixbuf"
+    url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
+    doc: 1
+    test: 1
   - title: "CellRendererProgress"
     url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
+    doc: 1
+    test: 1
+  - title: "CellRendererSpin"
+    url: '/content-docs/reference/Gtk3/CellRendererSpin.html'
+    doc: 1
+    test: 1
+  - title: "CellRendererSpinner"
+    url: '/content-docs/reference/Gtk3/CellRendererSpinner.html'
     doc: 1
     test: 1
   - title: "CellRendererToggle"

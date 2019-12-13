@@ -114,6 +114,7 @@ GtkStyleProviderPriority
 GtkImageType
 GtkBuilderError
 GtkTreeViewColumnSizing
+GtkCellRendererAccelMode
 GtkCellRendererState
 GtkCellRendererMode
 GtkArrowPlacement
@@ -148,6 +149,9 @@ GdkGravity
 GdkAnchorHints
 GdkWindowEdge
 GdkFullscreenMode
+GdkPixbufAlphaMode
+GdkColorspace
+GdkPixbufError
 GdkByteOrder
 GdkModifierType
 GdkModifierIntent

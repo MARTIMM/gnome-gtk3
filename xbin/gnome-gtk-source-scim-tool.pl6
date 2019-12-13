@@ -19,6 +19,7 @@ my Str $output-file;
 my Str ( $section-doc, $short-description, $see-also);
 
 my @gtkdirlist = ();
+my @gdkpixbufdirlist = ();
 my @gdkdirlist = ();
 my @gobjectdirlist = ();
 my @glibdirlist = ();
@@ -133,7 +134,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   # get all subroutines starting with 'GDK_AVAILABLE_IN_ALL' or
   # 'GDK_AVAILABLE_IN_\d_\d' version spec. subroutines starting with
   # 'GDK_DEPRECATED_IN_' are ignored.
-  $include-content ~~ m:g/^^ ['GDK' || 'GTK' || 'GLIB']
+  $include-content ~~ m:g/^^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
                              '_AVAILABLE_IN_' <-[;]>+ ';'
                          /;
   my List $results = $/[*];
@@ -154,7 +155,9 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/ \s* 'G_GNUC_WARN_UNUSED_RESULT' \s* //;
 
     # remove prefix and tidy up a bit
-    $declaration ~~ s/^ ['GDK' || 'GTK' || 'GLIB'] '_AVAILABLE_IN_' .*?  \n //;
+    $declaration ~~ s/^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
+                        '_AVAILABLE_IN_' .*?  \n
+                    //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
     $declaration ~~ s:g/ \s+ / /;
     $declaration ~~ s/\s* 'G_GNUC_PURE' \s*//;
@@ -547,7 +550,13 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 #-------------------------------------------------------------------------------
 sub setup-names ( Str:D $base-sub-name --> List ) {
   my Str $include-file = $base-sub-name;
-  $include-file ~~ s:g/ '_' //;
+  if $include-file ~~ m/ 'gdk_pixbuf' / {
+    $include-file ~~ s:g/ '_' /-/;
+  }
+
+  else {
+    $include-file ~~ s:g/ '_' //;
+  }
 
   my @parts = $base-sub-name.split('_');
   my Str $lib-class = @parts>>.tc.join;
@@ -566,72 +575,85 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
   }
 }}
 
+#`{{
   # assume linux fedora
   my Str $gtk-path = '/usr/include/gtk-3.0/gtk';
   my Str $gdk-path = '/usr/include/gtk-3.0/gdk';
+  my Str $gdk-pixbuf-path = '/usr/include/gtk-3.0/gdk';
   my Str $glib-path = '/usr/include/glib-2.0/glib';
   my Str $gobject-path = '/usr/include/glib-2.0/gobject';
-  my Str $gio-path = '/usr/include/glib-2.0/gio';
-
+#  my Str $gio-path = '/usr/include/glib-2.0/gio';
+}}
+#`{{
   # c-source file text paths, downloaded latest version. the version does not
   # matter much, just searching for documentation.
   my Str $gtk-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/gtk+-3.22.0/gtk';
   my Str $gdk-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/gtk+-3.22.0/gdk';
   my Str $glib-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/glib';
   my Str $gobject-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/gobject';
-  my Str $gio-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/gio';
+#  my Str $gio-srcpath = '/home/marcel/Software/Packages/Sources/Gnome/glib-2.60.0/gio';
+}}
+
+  my $source-root = '/home/marcel/Software/Packages/Sources/Gnome';
+  my @source-list = (
+    "$source-root/gtk+-3.22.0/gtk",
+    "$source-root/gdk-pixbuf-2.38.2/gdk-pixbuf",
+    "$source-root/gtk+-3.22.0/gdk",
+    "$source-root/glib-2.60.0/glib",
+    "$source-root/glib-2.60.0/gobject",
+  );
 
   my Str ( $include-content, $source-content) = ( '', '');
   my Bool $file-found = False;
-  for $gtk-path, $gdk-path, $glib-path, $gobject-path, $gio-path -> $path {
-#note $path;
+  for @source-list -> $path {
+#note "Include $path/$include-file.h";
     if "$path/$include-file.h".IO.r {
       $file-found = True;
-      $include-content = "$path/$include-file.h".IO.slurp;
-
-      given $path {
-        when $gtk-path {
-          if "$gtk-srcpath/$include-file.c".IO.r {
-            $source-content = "$gtk-srcpath/$include-file.c".IO.slurp;
-            $library = "&gtk-lib";
-            $p6-lib-name = 'Gtk3';
-          }
-        }
-
-        when $gdk-path {
-          if "$gdk-srcpath/$include-file.c".IO.r {
-            $source-content = "$gdk-srcpath/$include-file.c".IO.slurp;
-            $library = "&gdk-lib";
-            $p6-lib-name = 'Gdk3';
-          }
-        }
-
-        when $glib-path {
-          if "$glib-srcpath/$include-file.c".IO.r {
-            $source-content = "$glib-srcpath/$include-file.c".IO.slurp;
-            $library = "&glib-lib";
-            $p6-lib-name = 'Glib';
-          }
-        }
-
-        when $gobject-path {
-          if "$gobject-srcpath/$include-file.c".IO.r {
-            $source-content = "$gobject-srcpath/$include-file.c".IO.slurp;
-            $library = "&gobject-lib";
-            $p6-lib-name = 'GObject';
-          }
-        }
-
-        when $gio-path {
-          if "$gio-srcpath/$include-file.c".IO.r {
-            $source-content = "$gio-srcpath/$include-file.c".IO.slurp;
-            $library = "&glib-lib";
-            $p6-lib-name = 'Glib';
-          }
-        }
+      if $include-file eq 'gdk-pixbuf' and "$path/{$include-file}-core.h".IO.r {
+        $include-content = "$path/{$include-file}-core.h".IO.slurp;
+      }
+      else {
+        $include-content = "$path/$include-file.h".IO.slurp;
       }
 
-#note "$library, $p6-lib-name";
+      $source-content = "$path/$include-file.c".IO.slurp
+        if "$path/$include-file.c".IO.r;
+
+#note "Sources: ", ?$include-content, ', ', ?$source-content;
+
+      given $path {
+        when / 'gtk+-3.22.0/gtk' / {
+          $library = '&gtk-lib';
+          $p6-lib-name = 'Gtk3';
+        }
+
+        when / 'gdk-pixbuf' / {
+          $library = '&gdk-pixbuf-lib';
+          $p6-lib-name = 'Gdk3';
+        }
+
+        when / 'gtk+-3.22.0/gdk' / {
+          $library = "&gdk-lib";
+          $p6-lib-name = 'Gdk3';
+        }
+
+        when / 'glib-2.60.0/glib' / {
+          $library = "&glib-lib";
+          $p6-lib-name = 'Glib';
+        }
+
+        when / 'glib-2.60.0/gobject' / {
+          $library = "&gobject-lib";
+          $p6-lib-name = 'GObject';
+        }
+
+#        when $gio-path {
+#          $library = "&glib-lib";
+#          $p6-lib-name = 'Glib';
+#        }
+      }
+
+#note "Library: $library, $p6-lib-name";
       last;
     }
   }
@@ -690,6 +712,7 @@ sub load-dir-lists ( ) {
   my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3';
   @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
   @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
+  @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
   @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
 #  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
@@ -1054,8 +1077,8 @@ sub get-signals ( Str:D $source-content is copy ) {
       when 'G_TYPE_INT' { $return-type = 'Int'; }
       when 'G_TYPE_UINT' { $return-type = 'Int'; }
       when 'G_TYPE_STRING' { $return-type = 'Str'; }
-      when 'G_TYPE_NONE' { $return-type = '' }
-
+      when 'G_TYPE_NONE' { $return-type = ''; }
+      when 'GTK_TYPE_TREE_ITER' { $return-type = 'N-GtkTreeIter'; }
       # show that there is something
       default { $return-type = "Unknown type @args[7]"; }
     }
@@ -1091,6 +1114,9 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'GTK_TYPE_TEXT_ITER' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gtk3::TextIter }}';
         }
+        when 'GTK_TYPE_TREE_ITER' {
+          $arg-type = 'N-GtkTreeIter #`{{ native Gnome::Gtk3::TreeIter }}';
+        }
 
         when 'GDK_TYPE_DISPLAY' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
@@ -1110,7 +1136,9 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'GDK_TYPE_SEAT' {
           $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Seat }}';
         }
-
+        when 'GDK_TYPE_MODIFIER_TYPE' {
+          $arg-type = 'GdkModifierType #`{{ from Gnome::Gdk3::Window }}';
+        }
         default { $arg-type = "Unknown type @args[{9 + $i}]"; }
       }
 
