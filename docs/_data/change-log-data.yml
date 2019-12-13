@@ -4,7 +4,7 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
 
   - 2019-12-07 0.21.0:
-    - Added new modules CellRendererCombo, CellRendererSpinner, CellRendererAccel, CellRendererSpin
+    - Added new modules CellRendererCombo, CellRendererSpinner, CellRendererAccel, CellRendererSpin, CellRendererPixbuf
     - Small changes in Gnome::Gtk3::TreeStore gtk_tree_store_set_value().
 
   - 2019-12-02 0.20.0:

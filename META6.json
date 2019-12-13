@@ -20,6 +20,7 @@
     "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
     "Gnome::Gtk3::CellRendererAccel": "lib/Gnome/Gtk3/CellRendererAccel.pm6",
     "Gnome::Gtk3::CellRendererCombo": "lib/Gnome/Gtk3/CellRendererCombo.pm6",
+    "Gnome::Gtk3::CellRendererPixbuf": "lib/Gnome/Gtk3/CellRendererPixbuf.pm6",
     "Gnome::Gtk3::CellRendererProgress": "lib/Gnome/Gtk3/CellRendererProgress.pm6",
     "Gnome::Gtk3::CellRendererSpin": "lib/Gnome/Gtk3/CellRendererSpin.pm6",
     "Gnome::Gtk3::CellRendererSpinner": "lib/Gnome/Gtk3/CellRendererSpinner.pm6",
