@@ -157,12 +157,12 @@ GObject                                               Object
 │   │   ╰── GtkCellAreaBox
 │   ├── GtkCellRenderer                               CellRenderer
 │   │   ├── GtkCellRendererText                       CellRendererText
-│   │   │   ├── GtkCellRendererAccel
-│   │   │   ├── GtkCellRendererCombo
-│   │   │   ╰── GtkCellRendererSpin
-│   │   ├── GtkCellRendererPixbuf
+│   │   │   ├── GtkCellRendererAccel                  CellRendererAccel
+│   │   │   ├── GtkCellRendererCombo                  CellRendererCombo
+│   │   │   ╰── GtkCellRendererSpin                   CellRendererSpin
+│   │   ├── GtkCellRendererPixbuf                     CellRendererPixbuf
 │   │   ├── GtkCellRendererProgress                   CellRendererProgress
-│   │   ├── GtkCellRendererSpinner
+│   │   ├── GtkCellRendererSpinner                    CellRendererSpinner
 │   │   ╰── GtkCellRendererToggle                     CellRendererToggle
 │   ├── GtkFileFilter                                 FileFilter
 │   ├── GtkTreeViewColumn                             TreeViewColumn

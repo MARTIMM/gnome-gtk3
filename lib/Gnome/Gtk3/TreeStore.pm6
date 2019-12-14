@@ -56,8 +56,6 @@ B<Gnome::Gtk3::TreeModel>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Method::Also;
-
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
@@ -274,8 +272,9 @@ Sets the data in the cell specified by I<$iter> and I<$column>. The type of I<$v
 
 =end pod
 
-method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
-    is also<gtk_tree_store_set_value gtk-tree-store-set-value> {
+sub gtk_tree_store_set_value (
+  N-GObject $tree_store, N-GtkTreeIter $iter, Int $column, Any $value
+) {
 
   my Gnome::GObject::Type $t .= new;
   my @parameter-list = (
@@ -286,7 +285,7 @@ method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
   );
 
   my Gnome::GObject::Value $v;
-  my $type = self.get-column-type($column);
+  my $type = gtk_tree_model_get_column_type( $tree_store, $column);
   given $type {
     when G_TYPE_OBJECT {
       $v .= new( :$type, :value($value.get-native-gobject));
@@ -317,8 +316,7 @@ method set-value ( Gnome::Gtk3::TreeIter $iter, Int $column, Any $value )
   my Callable $f = nativecast( $signature, $ptr);
 
   $f(
-    self.get-native-gobject, $iter.get-native-gboxed,
-    $column, $v.get-native-gboxed
+    $tree_store, $iter, $column, $v.get-native-gboxed
   );
 }
 

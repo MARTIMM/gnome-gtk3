@@ -62,4 +62,4 @@ layout: sidebar
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
 
-* [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO above will not help keeping the sub a sub.
+* [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO above will not help keeping the sub a sub. This might not be needed because I found other ways to keep the sub version.

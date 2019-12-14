@@ -3,11 +3,13 @@ use v6;
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
+use Gnome::Gdk3::Pixbuf;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::ListStore;
 use Gnome::Gtk3::CellRendererText;
+use Gnome::Gtk3::CellRendererPixbuf;
 use Gnome::Gtk3::CellRendererProgress;
 use Gnome::Gtk3::CellRendererToggle;
 use Gnome::Gtk3::TreeView;
@@ -28,9 +30,12 @@ class X {
   }
 }
 
-enum list-field-columns < TITLE-CODE TITLE SOLD LIKE >;
+enum list-field-columns < TITLE-CODE TITLE SOLD LIKE PICT >;
 my Gnome::Gtk3::TreeIter $iter;
 
+my Gnome::Gdk3::Pixbuf $pb .= new(:file<xt/Data/gtk-perl6-64.png>);
+my Int $pb-type = $pb.get-class-gtype;
+#note "Pixbuf type: $pb-type";
 
 my Gnome::Gtk3::Window $w .= new(:title('List store example'));
 #$w.set-position(GTK_WIN_POS_MOUSE);
@@ -41,7 +46,7 @@ my Gnome::Gtk3::Grid $g .= new(:empty);
 $w.gtk-container-add($g);
 
 my Gnome::Gtk3::ListStore $ls .= new(
-  :field-types( G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT)
+  :field-types( G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT, $pb-type)
 );
 
 my Gnome::Gtk3::TreeView $tv .= new(:model($ls()));
@@ -56,7 +61,7 @@ my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<red>);
 $crt1.set-property( 'foreground', $v);
 #$tv.insert-column-with-attributes( -1, 'order no', $crt1);
 my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
-$tvc.set-title('order no');
+$tvc.set-title('Order No');
 $tvc.pack-end( $crt1, 1);
 $tvc.add-attribute( $crt1, 'text', 0);
 $tv.append-column($tvc);
@@ -67,7 +72,7 @@ $v .= new( :type(G_TYPE_STRING), :value<blue>);
 $crt2.set-property( 'foreground', $v);
 #$tv.insert-column-with-attributes( -1, 'title', $crt2);
 $tvc .= new(:empty);
-$tvc.set-title('book title');
+$tvc.set-title('Book Title');
 $tvc.pack-end( $crt2, 1);
 $tvc.add-attribute( $crt2, 'text', 1);
 $tv.append-column($tvc);
@@ -75,7 +80,7 @@ $tv.append-column($tvc);
 
 my Gnome::Gtk3::CellRendererToggle $crt3 .= new(:empty);
 $tvc .= new(:empty);
-$tvc.set-title('book sold out');
+$tvc.set-title('Book sold out');
 $tvc.pack-end( $crt3, 1);
 $tvc.add-attribute( $crt3, 'active', 2);
 $tv.append-column($tvc);
@@ -83,18 +88,34 @@ $tv.append-column($tvc);
 
 my Gnome::Gtk3::CellRendererProgress $crt4 .= new(:empty);
 $tvc .= new(:empty);
-$tvc.set-title('rating');
+$tvc.set-title('Rating');
 $tvc.pack-end( $crt4, 1);
 $tvc.add-attribute( $crt4, 'value', 3);
 $tv.append-column($tvc);
 
 
+my Gnome::Gtk3::CellRendererPixbuf $crt5 .= new(:empty);
+$tvc .= new(:empty);
+$tvc.set-title('Front Page');
+$tvc.pack-end( $crt5, 1);
+$tvc.add-attribute( $crt5, 'pixbuf', 4);
+$tv.append-column($tvc);
+
+
+
 my Array $data = [
-  [ 1001, 'duizend en een nacht', True, 96],
-  [ 2002, 'een beetje later', False, 30],
-  [ 3003, 'en nog een beetje tekst', False, 71]
+  [ 1001, 'duizend en een nacht', True, 96,
+    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/amber-on-256.png>)
+  ],
+  [ 2002, 'een beetje later', False, 30,
+    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/green-on-256.png>)
+  ],
+  [ 3003, 'en nog een beetje tekst', False, 71,
+    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/red-on-256.png>)
+  ]
 ];
 
+#Gnome::N::debug(:on);
 for @$data -> $row {
 #note "Insert: ", $row.kv.join(', ');
   $iter = $ls.gtk-list-store-append;
