@@ -2,8 +2,6 @@ use v6;
 
 unit class Gui;
 
-enum FileListColumns <FILENAME_COL TODO_COUNT_COL>;
-
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
 use Gnome::Gtk3::Main;
@@ -11,37 +9,86 @@ use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
+use Gnome::Gtk3::ListStore;
 use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::CellRendererText;
 use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::TreeIter;
 
-use Gnome::N::X;
+use GuiHandlers;
+
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-has Gnome::Gtk3::TreeView $!file-list-view;
-has Gnome::Gtk3::TreeStore $!file-list-store;
-has Hash $!tree-path-directory;
-#has Array $!insert-path;
+#-------------------------------------------------------------------------------
+enum FileListColumns <FILENAME_COL TODO_COUNT_COL DATA_KEY_COL>;
+enum MarkerListColumns <MARKER_COL LINE_COL COMMENT_COL>;
 
+has Gnome::Gtk3::Main $!main;
+has Gnome::Gtk3::TreeView $!fs-table;
+has Gnome::Gtk3::TreeStore $!files;
+has Gnome::Gtk3::TreeView $!mark-table;
+has Gnome::Gtk3::ListStore $!markers;
+
+has Hash $!data-hash;
+
+#-------------------------------------------------------------------------------
 submethod BUILD ( ) {
-  $!tree-path-directory = %();
-
+  $!main .= new;
+  $!data-hash = %();
 
   my Gnome::Gtk3::Window $w .= new(:title('Todo Viewer'));
   my Gnome::Gtk3::Grid $g .= new(:empty);
   $w.container-add($g);
-  $w.set-border-width(10);
-  $w.set-default-size( 270, 300);
+  $w.container-set-border-width(10);
+  $w.window-set-default-size( 270, 300);
 
+  self!create-file-list-view;
+  $g.grid-attach( $!fs-table, 0, 0, 1, 1);
 
-  $!file-list-store .= new(:field-types( G_TYPE_STRING, G_TYPE_INT));
-  $!file-list-view .= new(:model($!file-list-store));
-  $!file-list-view.set-hexpand(1);
-  $!file-list-view.set-vexpand(1);
-  $!file-list-view.set-headers-visible(1);
-  $g.grid-attach( $!file-list-view, 0, 0, 1, 1);
+  self!create-markers-list-view;
+  $g.grid-attach( $!mark-table, 1, 0, 1, 1);
 
+  my GuiHandlers::ListView $gh-flview .= new;
+  $!fs-table.register-signal(
+    $gh-flview, 'select-list-entry', 'row-activated',
+    :data($!data-hash), :data-col(DATA_KEY_COL),
+    :$!markers, :$!files
+  );
+
+  $!mark-table.register-signal(
+    $gh-flview, 'select-marker-entry', 'row-activated', :$!markers
+  );
+
+  my GuiHandlers::Application $gh-app .= new(:$!main);
+  $w.register-signal( $gh-app, 'exit-todo-viewer', 'destroy');
+
+  $w.show-all;
+}
+
+#-------------------------------------------------------------------------------
+method add-file-data (
+  Str $base-name, Str $filename-path, Array $data
+) {
+
+  # only insert files which have data
+  self!insert-in-table( "$base-name/$filename-path", $data)
+    if $data.elems;
+}
+
+#-------------------------------------------------------------------------------
+method activate ( ) {
+  $!fs-table.tree-view-expand-all;
+  Gnome::Gtk3::Main.new.gtk-main;
+}
+
+#-------------------------------------------------------------------------------
+method !create-file-list-view ( ) {
+  $!files .= new( :field-types( G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING));
+  $!fs-table .= new(:model($!files));
+  $!fs-table.tree-view-set-headers-visible(1);
+  $!fs-table.widget-set-hexpand(1);
+  $!fs-table.widget-set-vexpand(1);
 
   my Gnome::Gtk3::CellRendererText $crt .= new(:empty);
   my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
@@ -49,95 +96,157 @@ submethod BUILD ( ) {
   my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
   $tvc.set-title('Filename');
   $tvc.pack-end( $crt, 1);
-  $tvc.add-attribute( $crt, 'text', 0);
-  $!file-list-view.append-column($tvc);
+  $tvc.add-attribute( $crt, 'text', FILENAME_COL);
+  $!fs-table.tree-view-append-column($tvc);
+
+  $crt .= new(:empty);
+  $v .= new( :type(G_TYPE_STRING), :value<blue>);
+  $crt.set-property( 'foreground', $v);
+  $tvc .= new(:empty);
+  $tvc.set-title('Mark Count');
+  $tvc.pack-end( $crt, 1);
+  $tvc.add-attribute( $crt, 'text', TODO_COUNT_COL);
+  $!fs-table.tree-view-append-column($tvc);
+
+  $crt .= new(:empty);
+  $tvc .= new(:empty);
+  $tvc.set-visible(False);
+  $tvc.pack-end( $crt, 1);
+  $tvc.add-attribute( $crt, 'text', DATA_KEY_COL);
+  $!fs-table.tree-view-append-column($tvc);
+}
+
+#-------------------------------------------------------------------------------
+method !create-markers-list-view ( ) {
+  $!markers .= new(
+    :field-types( G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING)
+  );
+  $!mark-table .= new(:model($!markers));
+  $!mark-table.tree-view-set-headers-visible(1);
+  $!mark-table.widget-set-hexpand(1);
+  $!mark-table.widget-set-vexpand(1);
+
+  my Gnome::Gtk3::CellRendererText $crt .= new(:empty);
+  my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
+  $crt.object-set-property( 'foreground', $v);
+  my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
+  $tvc.set-title('Marker');
+  $tvc.pack-end( $crt, 1);
+  $tvc.add-attribute( $crt, 'text', MARKER_COL);
+  $!mark-table.tree-view-append-column($tvc);
 
   $crt .= new(:empty);
 #  $v .= new( :type(G_TYPE_STRING), :value<blue>);
 #  $crt.set-property( 'foreground', $v);
   $tvc .= new(:empty);
-  $tvc.set-title('Todo Count');
+  $tvc.set-title('Line #');
   $tvc.pack-end( $crt, 1);
-  $tvc.add-attribute( $crt, 'text', 0);
-  $!file-list-view.append-column($tvc);
+  $tvc.add-attribute( $crt, 'text', LINE_COL);
+  $!mark-table.tree-view-append-column($tvc);
 
-
-  $w.show-all;
+  $crt .= new(:empty);
+  $v .= new( :type(G_TYPE_STRING), :value<blue>);
+  $crt.set-property( 'foreground', $v);
+  $tvc .= new(:empty);
+  $tvc.set-title('Comment');
+  $tvc.pack-end( $crt, 1);
+  $tvc.add-attribute( $crt, 'text', COMMENT_COL);
+  $!mark-table.tree-view-append-column($tvc);
 }
 
-method add-file-data (
-  Str $base-name, Str $filename-path, Array $data
-) {
-note "\nFile path: $base-name/$filename-path";
+#-------------------------------------------------------------------------------
+method !insert-in-table ( Str $filename, Array $data ) {
 
-  self!insert-in-table( "$base-name/$filename-path".split('/'), $data);
-}
+  return unless ?$filename;
+  my @path-parts = $filename.split('/');
 
-method activate ( ) {
-  Gnome::Gtk3::Main.new.gtk-main;
-}
-
-method !insert-in-table ( @path-parts, Array $data ) {
-
-  return unless @path-parts.elems;
-
+  # sub to recursevly build the tree store from file and its data
   my Callable $s = sub ( @path-parts is copy, Array :$ts-iter-path is copy ) {
 
     my Bool $found = False;
-    my Str $part;
+    my Str $part = @path-parts.shift;
     my Gnome::Gtk3::TreeIter $iter;
     while ( ($iter = self!get-iter($ts-iter-path)).tree-iter-is-valid ) {
-#      last unless @path-parts.elems;
-      $part = @path-parts.shift;
 
       my Array[Gnome::GObject::Value] $v =
-         $!file-list-store.get-value( $iter, FILENAME_COL);
+         $!files.tree-store-get-value( $iter, FILENAME_COL);
       my Str $filename-table-entry = $v[0].get-string // '-';
       $v[0].unset;
 
       # Test if part is in the treestore at the provided path
-      last unless @path-parts.elems;
       my Order $order = $part cmp $filename-table-entry;
-note "cmp: $part <=> $filename-table-entry: ", $order;
 
       # Insert entry before this one and go a level deeper with the rest
       if $order == Less {
-        $iter = $!file-list-store.insert-before(
+        $iter = $!files.tree-store-insert-before(
           self!get-parent-iter($ts-iter-path),      # parent
           self!get-iter($ts-iter-path)              # sybling
         );
 
-        $!file-list-store.set-value( $iter, FILENAME_COL, $part);
-        $!file-list-store.set-value( $iter, TODO_COUNT_COL, 1);
-        $ts-iter-path.push(0);
-        $s( @path-parts, :$ts-iter-path);
+        $!files.tree-store-set-value( $iter, FILENAME_COL, $part);
+
+        if @path-parts.elems {
+          $ts-iter-path.push(0);
+          $s( @path-parts, :$ts-iter-path)
+        }
+
+        # Coming back from the top means that all is done only other
+        # columns needs to set
+        else {
+          $!files.tree-store-set(
+            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+          );
+          $!data-hash{$filename} = $data;
+        }
+
+        $found = True;
+        last;
       }
 
       elsif $order == Same {
+        # Part is found, go one level deeper if possible
+        if @path-parts.elems {
+          $ts-iter-path.push(0);
+          $s( @path-parts, :$ts-iter-path);
+        }
 
+        # Coming back from the top means that all is done only other
+        # columns needs to set
+        else {
+          $!files.tree-store-set(
+            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+          );
+          $!data-hash{$filename} = $data;
+        }
+
+        $found = True;
+        last;
       }
 
       else { # $order == More
-
+        # Not found yet, try next entry
+        $ts-iter-path[*-1]++;
       }
-
-
-note "Test path: ", @path-parts.perl, ', ', $ts-iter-path;
     }
 
-    # Not found on this level => $iter not defined
-    if !$found and @path-parts.elems {
-      $part = @path-parts.shift;
-      my Gnome::Gtk3::TreeIter $parent-iter = self!get-iter($ts-iter-path);
-      $iter = $!file-list-store.gtk-tree-store-append($parent-iter);
-#Gnome::N::debug(:on);
-#      $!file-list-store.set-value( $iter, FILENAME_COL, $part);
-#      $!file-list-store.set-value( $iter, TODO_COUNT_COL, 0);
-      $!file-list-store.set( $iter, FILENAME_COL, $part, TODO_COUNT_COL, 0);
-#Gnome::N::debug(:off);
+    # Tree path in tree store is not found on this level => $iter not defined
+    if !$found {
+      $iter = self!get-parent-iter($ts-iter-path);
+      $iter = $!files.tree-store-append($iter);
+
+      $!files.tree-store-set-value( $iter, FILENAME_COL, $part);
 
       $ts-iter-path.push(0);
-      $s( @path-parts, :$ts-iter-path);
+      if @path-parts.elems {
+        $s( @path-parts, :$ts-iter-path)
+      }
+
+      else {
+        $!files.tree-store-set(
+          $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+        );
+        $!data-hash{$filename} = $data;
+      }
     }
   }
 
@@ -145,135 +254,22 @@ note "Test path: ", @path-parts.perl, ', ', $ts-iter-path;
   $s( @path-parts, :ts-iter-path([0]));
 }
 
-
-
-#`{{
-method !insert-in-table ( @path-parts, Array $data ) {
-
-  my Callable $s = sub (
-    @path-parts is copy, Array :$ts-iter-path is copy
-  ) {
-
-    $ts-iter-path //= [0,];
-#    my Str $ts-parent-path = $ts-iter-path.join(':');
-#    my Gnome::Gtk3::TreePath $tpp .= new(:string($ts-parent-path));
-#    my Gnome::Gtk3::TreeIter $parent-iter = $!file-list-store.get-iter($tpp);
-    my Gnome::Gtk3::TreeIter $parent-iter;
-    my Gnome::Gtk3::TreeIter $iter = self!get-iter($ts-iter-path);
-
-note "PPP: ", @path-parts.perl, ', ', $ts-iter-path.perl,
-      ', ', $iter.tree-iter-is-valid;
-
-    my Bool $found = False;
-    while ( $iter.tree-iter-is-valid ) {
-
-      my Array[Gnome::GObject::Value] $v =
-         $!file-list-store.get-value( $iter, FILENAME_COL);
-      my Str $filename-table-entry = $v[0].get-string;
-      $v[0].unset;
-
-      # Test if part is in the treestore at the provided path
-      last unless @path-parts.elems;
-      my Str $first-part = @path-parts.shift;
-      my Order $order = $first-part cmp $filename-table-entry;
-note "cmp: $first-part <=> $filename-table-entry: ", $order;
-
-      if $order == Same {
-        # part is found, go one level deeper if possible
-        if @path-parts.elems {
-          $ts-iter-path.push(0);
-note "Go deeper: ", $ts-iter-path.perl;
-          $s( @path-parts, :$ts-iter-path);
-        }
-
-        else {
-          # whole tree is found so only other columns needs to set
-note "Now set value: ", $ts-iter-path.perl, ', ', $!file-list-store.get-path($iter).to-string;
-          $!file-list-store.set-value( $iter, TODO_COUNT_COL, $data.elems);
-          $found = True;
-        }
-        last;
-      }
-
-      elsif $order == Less {
-#        $ts-parent-path = $ts-iter-path.join(':');
-#note "Insert before (last): ", $ts-parent-path;
-#        $tpp .= new(:string($ts-parent-path));
-#        $parent-iter = $!file-list-store.get-iter($tpp);
-
-#        $parent-iter = self!get-parent-iter($ts-iter-path);
-#        my Int $location = self!get-position($ts-iter-path);
-#Gnome::N::debug(:on);
-        $iter = $!file-list-store.insert-before(
-          self!get-parent-iter($ts-iter-path),
-          self!get-iter($ts-iter-path)
-        );
-
-        $!file-list-store.set-value( $iter, FILENAME_COL, $first-part);
-        $ts-iter-path.push(0);
-        $s( @path-parts, :$ts-iter-path);
-#Gnome::N::debug(:off);
-      }
-
-      else {  # $order == More
-        # not found yet, try next entry
-        $ts-iter-path[*-1]++;
-#        $ts-parent-path = $ts-iter-path.join(':');
-#note "NFY: ", $ts-parent-path;
-#        $tpp .= new(:string($ts-parent-path));
-#        $parent-iter = $!file-list-store.get-iter($tpp);
-#note "I: ", $ts-iter-path.perl, ', ', self!get-iter($ts-iter-path);
-
-        $iter = self!get-iter($ts-iter-path);
-      }
-note "next: ", $!file-list-store.get-path($iter).to-string if ?$iter;
-    }
-
-    if !$found {
-#      my Gnome::Gtk3::TreeIter $iter = $parent-iter;
-#      my Int $location;
-      for @path-parts -> $part {
-        $parent-iter = self!get-parent-iter($ts-iter-path);
-#        my Int $location = self!get-position($ts-iter-path);
-        my Gnome::Gtk3::TreeIter $iter =
-          $!file-list-store.gtk-tree-store-append($parent-iter);
-        $!file-list-store.set-value( $iter, FILENAME_COL, $part);
-
-        # prepare for deeper level if any
-        $ts-iter-path.push(0);
-note "!F: $part, ", $!file-list-store.get-path($iter).to-string, ', ', $ts-iter-path;
-      }
-
-#note "SD: ", $!file-list-store.get-path($iter).to-string,
-#              ', ', TODO_COUNT_COL.value, ', ', $data.elems
-#              if ?$iter;
-
-      $!file-list-store.set-value( $iter, TODO_COUNT_COL, $data.elems);
-    }
-  }
-
-
-  # start inserting
-  $s(@path-parts);
-}
-}}
-
-
+#-------------------------------------------------------------------------------
 method !get-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
-note "GI 0: ", $store-location.perl;
+
   my Gnome::Gtk3::TreePath $tp .= new(
     :string($store-location[0 .. *-1].join(':'))
   );
 
-note "GI 1: ", $tp.to-string, ', ', ($!file-list-store.get-iter($tp) // '-');
-  $!file-list-store.get-iter($tp)
+  $!files.tree-model-get-iter($tp)
 }
 
+#-------------------------------------------------------------------------------
 method !get-parent-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
-note "GPI: ", $store-location.perl;
+#note "GPI: ", $store-location.perl;
   my Gnome::Gtk3::TreeIter $parent-iter;
   if $store-location.elems > 1 {
-    $parent-iter = $!file-list-store.get-iter(
+    $parent-iter = $!files.tree-model-get-iter(
       Gnome::Gtk3::TreePath.new(:string($store-location[0 ..^ *-1].join(':')))
     );
   }
@@ -283,8 +279,4 @@ note "GPI: ", $store-location.perl;
   }
 
   $parent-iter
-}
-
-method !get-position ( Array $store-location --> Int ) {
-  $store-location[*-1]
 }

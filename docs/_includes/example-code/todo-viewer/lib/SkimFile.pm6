@@ -2,7 +2,10 @@ use v6;
 
 unit class SkimFile;
 
-enum MarkTypes is export <TODOMARK>;
+enum MarkTypes is export <
+     TODO DOING DONE PLANNING FIXME ARCHIVE HACK CHANGED
+     XXX IDEA NOTE REVIEW
+     >;
 
 has Str $!file-path;
 has Str $.root-basename;
@@ -27,11 +30,23 @@ method !search-texts ( ) {
   for $!file-path.IO.slurp.lines -> $line {
     $line-count++;
 
-    if $line ~~ m/^ \s* '#' \s* TODO $<todo-text>=[<-[\n]>+] $/ {
-      my Str $t = ~$<todo-text>;
-      $!todo-texts.push: [ TODOMARK, $line-count, $t];
+    if $line ~~
+          m/^ \s*
+            [ '#' || '#`{' '{'? || '#`[' '['? || '/*' || '//' ]
+            \s*
+            $<marker>=[ TODO || DOING || DONE || PLANNING || FIXME ||
+                        ARCHIVE || HACK || CHANGED || XXX || IDEA ||
+                        NOTE || REVIEW ]
+            $<xyz-text>=[<-[\n]>+]
+            $/ {
+      my Str $t = ~$<xyz-text>;
+
+      $!todo-texts.push: [
+        ~$<marker>, $line-count, $t
+#        MarkTypes(MarkTypes.enums{~$<marker>}), $line-count, $t
+      ];
     }
   }
 
-note "\nT: \n[", $!todo-texts.join("]\n["), "]";
+#note "\nT: \n[", $!todo-texts.join("]\n["), "]";
 }
