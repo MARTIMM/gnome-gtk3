@@ -7,12 +7,11 @@ layout: sidebar
 ---
 
 ## TODO list of things
-* [ ] **Boxed** values and objects must have the following implemented to prevent memory leaks;
+* [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
+  * [ ] Study ref/unref of gtk objects.
   * [ ] A boolean test to check if object is valid
   * [ ] A clear function which calls some free function -> toggles the valid flag
-  * [ ] A `DESTROY()` submethod which calls the clear method or free func if object is still valid.
-
-* [ ] Study ref/unref of gtk objects.
+  * [ ] A `DESTROY()` submethod which calls the clear method or free function if object is still valid.
 
 * [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
@@ -37,26 +36,27 @@ layout: sidebar
   * [x] gdk
   * [x] gtk
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
-  * [ ] Find the short named subs which are also defined in Any or Mu
-    * append
-    * new
-  * [ ] Add a method to catch the call before the one of Any/Mu
+  * Find the short named subs which are also defined in Any or Mu. Add a method to catch the call before the one of Any/Mu
+    * [ ] append
+    * [ ] new. This method will never be captured.
 
-* [ ] Is there a way to skip all those if's in the `_fallback()`.
+* [ ] Is there a way to skip all those if's in the `_fallback()` routines.
 
-* [x] Caching the sub address in Object must be more specific. There could be a sub name (short version) in more than one module. So the class name of the caller should be stored with it too. We can take the $!gtk-class-name for it. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where .get-text() from Entry was taken to run on a Label.
+* [x] Caching the sub address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where .get-text() from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the $!gtk-class-name for it.
 
 * [ ] Make some of the routines in several packages the same
   * [ ] .clear-object()
-  * [ ] [ ] .set-native-object()
+  * [ ] .set-native-object()
   * [ ] .get-native-object()
   * [ ] .is-valid()
 
-* [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used in the examples and documentation instead of 0 or 1.
+* [ ] Make some of the named arguments to new() the same. We now have :widget, :object, :tree-iter etcetera while the value for these attributes are native objects. Rename these to :native-object. It's more clear. The type for it can differ but will not pose a problem.
 
-* [ ] Reorder the list of methods in all modules in such a way that they are sorted.
+* [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
-* [ ] Many methods return native objects. this could be molded into p6 objects when possible.
+* [ ] Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation
+
+* [ ] Many methods return native objects. this could be molded into perl6 objects when possible.
 
 * [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object.
 
