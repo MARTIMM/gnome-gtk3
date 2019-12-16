@@ -532,8 +532,13 @@ sub gtk_list_store_remove (
   N-GObject $list_store, N-GtkTreeIter $iter
   --> Gnome::Gtk3::TreeIter
 ) {
-  _gtk_list_store_remove( $list_store, $iter);
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  if _gtk_list_store_remove( $list_store, $iter) {
+    Gnome::Gtk3::TreeIter.new(:tree-iter($iter));
+  }
+
+  else {
+    Gnome::Gtk3::TreeIter.new(:tree-iter(N-GtkTreeIter));
+  }
 }
 
 sub _gtk_list_store_remove ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
