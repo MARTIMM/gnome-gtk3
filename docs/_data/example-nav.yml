@@ -21,4 +21,4 @@ nav_menus:
 
   - nav_pages:
     - title: "Todo Viewer"
-      url: "/content-docs/examples/todo-viewer.html"
+      url: "/content-docs/examples/todo-viewer/todo-viewer.html"
