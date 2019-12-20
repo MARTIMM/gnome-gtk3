@@ -9,9 +9,9 @@ layout: sidebar
 ## TODO list of things
 * [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
   * [ ] Study ref/unref of gtk objects.
-  * [ ] A boolean test to check if object is valid
+  * [ ] A boolean test to check if a native object is valid
   * [ ] A clear function which calls some free function -> toggles the valid flag
-  * [ ] A `DESTROY()` submethod which calls the clear method or free function if object is still valid.
+  * [ ] Add `DESTROY()` sub methods which calls the clear method or free function if object is still valid.
 
 * [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
@@ -62,4 +62,29 @@ layout: sidebar
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
 
-* [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO above will not help keeping the sub a sub. This might not be needed because I found other ways to keep the sub version.
+* [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO entry mentioned above will not help keeping the sub a sub. This might not be needed because I found other ways to keep the sub version.
+
+* There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** comments because the github pages understand **{{...}}** to substitute variables.
+
+  * Documentation
+    * [ ] glib
+    * [ ] gobject
+    * [ ] gdk
+    * [ ] gtk
+  * Tests
+    * glib
+      * [ ] subs
+      * [ ] signals
+      * [ ] properties
+    * gobject
+      * [ ] subs
+      * [ ] signals
+      * [ ] properties
+    * gdk
+      * [ ] subs
+      * [ ] signals
+      * [ ] properties
+    * gtk
+      * [ ] subs
+      * [ ] signals
+      * [ ] properties
