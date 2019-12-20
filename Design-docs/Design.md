@@ -23,6 +23,11 @@ bundle exec jekyll serve
     Gnome::N::X.test-call()
 ```
 
+# Make example code downloadable archives
+
+* Tar `tar cvfz todo-viewer.tgz --exclude '.precomp' todo-viewer/`
+* Zip `zip -r todo-viewer.zip todo-viewer --exclude '*.precomp*'`
+
 # Codes used in source modules to mark what is tested or not
 
 The codes will show what is tested or not in the source code. The developer can than see what is tested and what is not. The code always start with `#T` followed with a letter for each type or action;
