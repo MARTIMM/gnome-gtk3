@@ -3,7 +3,7 @@ title: Perl6 GTK+ Examples
 #nav_title: Examples
 nav_menu: example-nav
 sidebar_menu: example-todo-viewer-sidebar
-layout: sidebar
+#layout: sidebar
 ---
 
 # Examples
