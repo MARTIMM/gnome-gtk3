@@ -17,9 +17,6 @@ use Gnome::Gtk3::TreeIter;
 
 use GuiHandlers;
 
-#use Gnome::N::X;
-#Gnome::N::debug(:on);
-
 #-------------------------------------------------------------------------------
 enum FileListColumns <FILENAME_COL TODO_COUNT_COL DATA_KEY_COL>;
 enum MarkerListColumns <MARKER_COL LINE_COL COMMENT_COL>;
@@ -67,13 +64,10 @@ submethod BUILD ( ) {
 }
 
 #-------------------------------------------------------------------------------
-method add-file-data (
-  Str $base-name, Str $filename-path, Array $data
-) {
+method add-file-data ( Str $project-dir, Str $filename-path, Array $data ) {
 
   # only insert files which have data
-  self!insert-in-table( "$base-name/$filename-path", $data)
-    if $data.elems;
+  self!insert-in-table( $project-dir, $filename-path, $data) if $data.elems;
 }
 
 #-------------------------------------------------------------------------------
@@ -100,7 +94,7 @@ method !create-file-list-view ( ) {
   $!fs-table.tree-view-append-column($tvc);
 
   $crt .= new(:empty);
-  $v .= new( :type(G_TYPE_STRING), :value<blue>);
+  $v .= new( :type(G_TYPE_STRING), :value<red>);
   $crt.set-property( 'foreground', $v);
   $tvc .= new(:empty);
   $tvc.set-title('Mark Count');
@@ -136,8 +130,8 @@ method !create-markers-list-view ( ) {
   $!mark-table.tree-view-append-column($tvc);
 
   $crt .= new(:empty);
-#  $v .= new( :type(G_TYPE_STRING), :value<blue>);
-#  $crt.set-property( 'foreground', $v);
+  $v .= new( :type(G_TYPE_STRING), :value<red>);
+  $crt.set-property( 'foreground', $v);
   $tvc .= new(:empty);
   $tvc.set-title('Line #');
   $tvc.pack-end( $crt, 1);
@@ -155,10 +149,11 @@ method !create-markers-list-view ( ) {
 }
 
 #-------------------------------------------------------------------------------
-method !insert-in-table ( Str $filename, Array $data ) {
+method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
 
-  return unless ?$filename;
-  my @path-parts = $filename.split('/');
+  my Str $filename = "$project-dir/$filename-path";
+  my Str $abs-name = $filename.IO.absolute.Str;
+  my @path-parts = $filename-path.split('/');
 
   # sub to recursevly build the tree store from file and its data
   my Callable $s = sub ( @path-parts is copy, Array :$ts-iter-path is copy ) {
@@ -194,9 +189,9 @@ method !insert-in-table ( Str $filename, Array $data ) {
         # columns needs to set
         else {
           $!files.tree-store-set(
-            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $abs-name
           );
-          $!data-hash{$filename} = $data;
+          $!data-hash{$abs-name} = $data;
         }
 
         $found = True;
@@ -214,9 +209,9 @@ method !insert-in-table ( Str $filename, Array $data ) {
         # columns needs to set
         else {
           $!files.tree-store-set(
-            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+            $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $abs-name
           );
-          $!data-hash{$filename} = $data;
+          $!data-hash{$abs-name} = $data;
         }
 
         $found = True;
@@ -243,9 +238,9 @@ method !insert-in-table ( Str $filename, Array $data ) {
 
       else {
         $!files.tree-store-set(
-          $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $filename
+          $iter, TODO_COUNT_COL, "$data.elems()", DATA_KEY_COL, $abs-name
         );
-        $!data-hash{$filename} = $data;
+        $!data-hash{$abs-name} = $data;
       }
     }
   }
@@ -266,7 +261,7 @@ method !get-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
 
 #-------------------------------------------------------------------------------
 method !get-parent-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
-#note "GPI: ", $store-location.perl;
+
   my Gnome::Gtk3::TreeIter $parent-iter;
   if $store-location.elems > 1 {
     $parent-iter = $!files.tree-model-get-iter(

@@ -52,7 +52,6 @@ class ListView {
 
     while $iter.tree-iter-is-valid {
       $iter = $markers.list-store-remove($iter);
-note "IV: ", $iter.tree-iter-is-valid;
     }
 
     # Get the key from the data column and check
@@ -87,9 +86,6 @@ note "IV: ", $iter.tree-iter-is-valid;
   ) {
 
     my Gnome::Gtk3::TreePath $tree-path .= new(:tree-path($n-tree-path));
-
-
-    note "TP: ", $tree-path.to-string;
     my Gnome::Gtk3::TreeIter $iter = $markers.tree-model-get-iter($tree-path);
 
     my Array[Gnome::GObject::Value] $v = $markers.tree-model-get-value(
@@ -100,7 +96,8 @@ note "IV: ", $iter.tree-iter-is-valid;
     my Str $comment = $v[2].get-string // '';
     $v[0].unset;
 
-note "MLC: $!filename, $marker, $line, $comment";
+    note "Start atom editor with folowing data: $!filename, $marker, $line, $comment";
+    run 'atom', $!filename ~ ":$line";
 
     1
   }
