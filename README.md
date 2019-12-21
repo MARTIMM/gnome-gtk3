@@ -21,7 +21,7 @@ This example does the same as the example from `GTK::Simple` to show you the dif
   * Separation of callbacks from other code. Closures are not needed to get data into the callback code. Data can be provided with named arguments to the `register-signal()` method.
   * The package is designed with the usage of glade interface designer in mind. So to build the interface by hand like below, is not necessary. Use of `Gnome::Gtk3::Glade` is preferable when building larger user interfaces.
   * No fancy stuff like tapping into channels to run signal handlers.
-  * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks.. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
+  * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
   * The same method, `register-signal()`, is also used to register other types of signals. There are, for example, events to handle keyboard input and mouse clicks. Not all signal handler types are supported yet but can be installed in time.
 
 ### Cons
@@ -95,21 +95,12 @@ $top-window.show-all;
 $m.gtk-main;
 ```
 
-
-# Documentation
-
-## Release notes
-* [Release notes][release]
-
-## Miscellaneous
-* [Release notes][release]
-
 # TODO
 
 # Versions of involved software
 
-* Program is tested against the latest version of **perl6** on **rakudo** en **moarvm**.
-* Gtk library used **Gtk >= 3.24**.
+* Program is tested against the latest version of **perl6** on **rakudo** en **moarvm**. It is also necessary to have the (almost) newest compiler, because there are some code changes which made e.g. variable argument lists to the native subs possible. Older compilers cannot handle that (before summer 2019 I believe).
+* Gtk library used **Gtk 3.24**. The versioning of GTK+ is a bit different in that there is also a 3.90 and up. This is only meant as a prelude to version 4. So do not use those versions for the perl packages.
 
 
 # Installation
@@ -132,16 +123,15 @@ There are always some problems! If you find one, please help by filing an issue 
 Name: **Marcel Timmerman**
 Github account name: **MARTIMM**
 
-
 [//]: # (---- [refs] ----------------------------------------------------------)
 [changes]: https://martimm.github.io/perl6-gnome-gtk3/CHANGES.html
 [logo]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/gtk-perl6.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/01-hello-world.png
-[screenshot 2]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16a-level-bar.png
-[screenshot 3]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/16b-level-bar.png
-[screenshot 4]: https://martimm.github.io/perl6-gnome-gtk3/images/examples/ex-GtkScale.png
+[screenshot 1]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
+[screenshot 2]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/16a-level-bar.png
+[screenshot 3]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/16b-level-bar.png
+[screenshot 4]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/ex-GtkScale.png
 
 
 [//]: # (Pod documentation rendered with)
