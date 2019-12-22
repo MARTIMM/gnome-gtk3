@@ -180,7 +180,7 @@ Interfaces, in the other hand, create no hierarchy, but they can help homogenize
 For example you can have a program sum the value of a group of AccountableAssets regardless of their being RaceHorses or Planes.
 
 
-# creation subroutines
+# Creation subroutines
 A widget, e.g. Button is created using the BUILD Api of perl like so
 ```
 my Gnome::Gtk3::Button $b .= new(:label('start'));
@@ -197,7 +197,7 @@ my Gnome::Gtk3::Button $b .= new(:widget(gtk_button_new_with_label('start')));
 This is just an example to show it, better is to use `new(:$label)` of course.
 
 
-# variable argument lists
+# Variable argument lists
 This is work of Elizabeth (lizmat)
 
 ```
@@ -221,7 +221,7 @@ sub pera-int-f(Str $format, *@args) {
 pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
 ```
 
-
+# Design graphs
 <!--
 ```plantuml
 @startmindmap
