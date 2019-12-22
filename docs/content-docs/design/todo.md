@@ -67,24 +67,33 @@ layout: sidebar
 * There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** comments because the github pages understand **{{...}}** to substitute variables.
 
   * Documentation
-    * [ ] glib
-    * [ ] gobject
-    * [ ] gdk
-    * [ ] gtk
+    * [ ] **Gnome::Glib**.
+    * [ ] **Gnome::GObject**.
+    * [ ] **Gnome::Gdk3**.
+    * [ ] **Gnome::Gtk3**.
+    * [ ] **Gnome::Gtk3::Glade**.
   * Tests
-    * glib
+    * **Gnome::Glib**
       * [ ] subs
       * [ ] signals
       * [ ] properties
-    * gobject
+    * **Gnome::GObject**
       * [ ] subs
       * [ ] signals
       * [ ] properties
-    * gdk
+    * **Gnome::Gdk3**
       * [ ] subs
       * [ ] signals
       * [ ] properties
-    * gtk
+    * **Gnome::Gtk3**
       * [ ] subs
       * [ ] signals
       * [ ] properties
+
+* Add necessary packages. I am not sure if the Gio and Atk packages are useful additions. Also Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
+  * [ ] **Gnome::Atk**. Accessibility toolkit to implement support for screen readers and other tools.
+  * [ ] **Gnome::Gio**. File and URI handling, asynchronous file operations, volume handling and also for network I/O.
+  * [ ] **Gnome::Cairo**. 2D, vector-based drawing for high-quality graphics.
+  * [ ] **Gnome::Pango**. International text rendering with full Unicode support.
+  * [ ] **Gnome::Clutter**. Animations and scene graph.
+  * [ ] **Gnome::WebKit**. HTML5 web page rendering.
