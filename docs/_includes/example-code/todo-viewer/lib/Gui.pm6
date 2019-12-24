@@ -40,10 +40,10 @@ submethod BUILD ( ) {
   $w.container-set-border-width(10);
   $w.window-set-default-size( 270, 300);
 
-  self!create-file-list-view;
+  self!create-file-table;
   $g.grid-attach( $!fs-table, 0, 0, 1, 1);
 
-  self!create-markers-list-view;
+  self!create-markers-table;
   $g.grid-attach( $!mark-table, 1, 0, 1, 1);
 
   my GuiHandlers::ListView $gh-flview .= new;
@@ -77,7 +77,7 @@ method activate ( ) {
 }
 
 #-------------------------------------------------------------------------------
-method !create-file-list-view ( ) {
+method !create-file-table ( ) {
   $!files .= new( :field-types( G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING));
   $!fs-table .= new(:model($!files));
   $!fs-table.tree-view-set-headers-visible(1);
@@ -101,17 +101,10 @@ method !create-file-list-view ( ) {
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', TODO_COUNT_COL);
   $!fs-table.tree-view-append-column($tvc);
-
-  $crt .= new(:empty);
-  $tvc .= new(:empty);
-  $tvc.set-visible(False);
-  $tvc.pack-end( $crt, 1);
-  $tvc.add-attribute( $crt, 'text', DATA_KEY_COL);
-  $!fs-table.tree-view-append-column($tvc);
 }
 
 #-------------------------------------------------------------------------------
-method !create-markers-list-view ( ) {
+method !create-markers-table ( ) {
   $!markers .= new(
     :field-types( G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING)
   );
@@ -151,16 +144,19 @@ method !create-markers-list-view ( ) {
 #-------------------------------------------------------------------------------
 method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
 
-  my Str $filename = "$project-dir/$filename-path";
-  my Str $abs-name = $filename.IO.absolute.Str;
-  my @path-parts = $filename-path.split('/');
+  # Prepare key to store in 3rd column
+  my Str $abs-name = "$project-dir/$filename-path".IO.absolute.Str;
 
-  # sub to recursevly build the tree store from file and its data
-  my Callable $s = sub ( @path-parts is copy, Array :$ts-iter-path is copy ) {
+  # Sub to recursevly build the tree store from file and its data
+  my Callable $s = sub (
+    @path-parts is copy, Array :$ts-iter-path is copy = []
+  ) {
 
     my Bool $found = False;
-    my Str $part = @path-parts.shift;
     my Gnome::Gtk3::TreeIter $iter;
+    my Str $part = @path-parts.shift;
+
+    $ts-iter-path.push(0);
     while ( ($iter = self!get-iter($ts-iter-path)).tree-iter-is-valid ) {
 
       my Array[Gnome::GObject::Value] $v =
@@ -181,7 +177,6 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
         $!files.tree-store-set-value( $iter, FILENAME_COL, $part);
 
         if @path-parts.elems {
-          $ts-iter-path.push(0);
           $s( @path-parts, :$ts-iter-path)
         }
 
@@ -201,7 +196,6 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
       elsif $order == Same {
         # Part is found, go one level deeper if possible
         if @path-parts.elems {
-          $ts-iter-path.push(0);
           $s( @path-parts, :$ts-iter-path);
         }
 
@@ -231,7 +225,6 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
 
       $!files.tree-store-set-value( $iter, FILENAME_COL, $part);
 
-      $ts-iter-path.push(0);
       if @path-parts.elems {
         $s( @path-parts, :$ts-iter-path)
       }
@@ -245,8 +238,8 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
     }
   }
 
-  # start inserting
-  $s( @path-parts, :ts-iter-path([0]));
+  # Start inserting
+  $s($filename-path.split('/'));
 }
 
 #-------------------------------------------------------------------------------
@@ -270,6 +263,7 @@ method !get-parent-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
   }
 
   else {
+    # Not enough elements, return an invalid iterator
     $parent-iter .= new(:tree-iter(N-GtkTreeIter));
   }
 

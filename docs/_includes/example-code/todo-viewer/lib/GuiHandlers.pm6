@@ -12,9 +12,6 @@ use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
 
-#use Gnome::N::X;
-#Gnome::N::debug(:on);
-
 #-------------------------------------------------------------------------------
 class Application {
 
