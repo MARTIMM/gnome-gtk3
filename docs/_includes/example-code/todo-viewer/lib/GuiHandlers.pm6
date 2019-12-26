@@ -35,8 +35,8 @@ class ListView {
   #-----------------------------------------------------------------------------
   method select-list-entry (
     N-GtkTreePath $n-tree-path, N-GObject $n-treeview-column,
-    Gnome::Gtk3::TreeView :widget($treeview), Hash :$data, Int :$data-col,
-    Gnome::Gtk3::TreeStore :$files, Gnome::Gtk3::ListStore :$markers
+    Hash :$data, Int :$data-col, Gnome::Gtk3::TreeStore :$files,
+    Gnome::Gtk3::ListStore :$markers
     --> Int
   ) {
 
@@ -77,7 +77,6 @@ class ListView {
   #-----------------------------------------------------------------------------
   method select-marker-entry (
     N-GtkTreePath $n-tree-path, N-GObject $n-treeview-column,
-    Gnome::Gtk3::TreeView :widget($treeview),
     Gnome::Gtk3::ListStore :$markers,
     --> Int
   ) {

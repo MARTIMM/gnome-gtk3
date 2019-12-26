@@ -18,5 +18,14 @@ The second class is used to handle events from the two tree views. There is a me
 
 ### select-list-entry
 
+The `row-activated` signal is emitted, it wiil call a handler with the following api;
+```
+  method handler (
+    N-GtkTreePath $path, N-GObject $column,
+    Gnome::GObject::Object :widget($tree_view),
+    *%user-options
+  );
+```
+The first two arguments are obligatory, even when you do not need them. The named attributes are always optional. The user options are those extra named attributes given to the `register-signal()` method. We do not need the `$n-treeview-column` variable but we must declare it with the proper type.
 
 ### select-marker-entry
