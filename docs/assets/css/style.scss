@@ -154,6 +154,13 @@ pre {
   border: $border-width solid $border-color;
 }
 
+/*
+table.rouge-table {
+  max-height: 200px;
+  overflow: auto
+}
+*/
+
 pre code {
   background-color: $code-color;
   //line-height: 0.9;

@@ -1,0 +1,15 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "Todo Viewer"
+  bar_menu:
+  - title: "Introduction"
+    url: "/content-docs/examples/todo-viewer/todo-viewer.html"
+  - title: "Prototype"
+    url: "/content-docs/examples/todo-viewer/prototype.html"
+  - title: "todo-viewer.pl6"
+    url: "/content-docs/examples/todo-viewer/main-program.html"
+  - title: "SkimFile.pm6"
+    url: "/content-docs/examples/todo-viewer/skim-file.html"
+  - title: "Gui.pm6"
+    url: "/content-docs/examples/todo-viewer/gui.html"
+  - title: "GuiHandlers.pm6"
+    url: "/content-docs/examples/todo-viewer/handlers.html"

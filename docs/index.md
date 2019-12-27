@@ -32,6 +32,8 @@ This package, together with a few others is an interface to the great Gnome libr
 ## History
 There is already a bit of history for these packages. It started off building the **GTK::Glade** package which soon became too big. So a part was separated into **GTK::V3**. After some time working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was **GTK::V3::Gtk::GtkButton** and **GTK::V3::Gdk::GdkScreen** to name a few. So, finally it was split into several other packages named, **Gnome::N** for the native linkup on behalf of any other Gnome module, **Gnome::Glib**, **Gnome::GObject**, **Gnome::Gdk3** and **Gnome::Gtk3** according to what is shown [on the developers page here](https://developer.gnome.org/references). The classes in these packages are now renamed into e.g. **Gnome::Gtk3::Button**, **Gnome::Gdk3::Screen**, **Gnome::GObject::Object** and **Gnome::Glib::List**. As a side effect the package **GTK::Glade** is also renamed into **Gnome::Gtk3::Glade** to show that it is from Gnome and that it is based on Gtk version 3.
 
+A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **Gnome::Gtk3** or make other modules. Here, I think for example about the testing of interfaces in **Gnome::T** (I've taken short names like **Gnome::N** to not interfere with eventually new names from Gnome).
+
 ## What are the benefits
 ### Pros
   * The defaults of GTK+ are kept. Therefore, e.g, the buttons are in the proper size compared to what `GTK::Simple` produces. This has to do with presetting the size of the application window. The user might decide to set sizes themselves but the software should not impose this.
@@ -48,49 +50,57 @@ There is already a bit of history for these packages. It started off building th
   * When programs run the first time, it might take some time to compile.
 
 ## Packages
-### Gnome::N
-Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
+* **Gnome::N**: Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
 
-### Gnome::Glib
-C-based object and type system with signals and slots
+* **Gnome::Glib**: C-based object and type system with signals and slots
 
-### Gnome::GObject
-Data structures and utilities for C programs
+* **Gnome::GObject**: Data structures and utilities for C programs
 
-### Gnome::Gdk3
-Low-level abstraction for the windowing system
+* **Gnome::Gdk3**: Low-level abstraction for the windowing system
 
-### Gnome::Gtk3
-Widget toolkit for graphical interfaces
+* **Gnome::Gtk3**: Widget toolkit for graphical interfaces
 
-### Gnome::Gtk3::Glade
-Package to make use of the graphical user interface designer program **Glade**.
+* **Gnome::Gtk3::Glade**: Package to make use of the graphical user interface designer program **Glade**.
 
 # Dependencies on external software
 The software in these packages do not (yet) install the GTK+ libraries and tools (gtk, glib, cairo, pango, glade, etc), so there is a dependency on several libraries which must be installed before the perl6 software can be used.
 
 # Site Contents
-## Tutorial
-A tutorial about using the modules in all its forms.
+* Tutorial: A tutorial about using the modules in all its forms.
 
-## Examples
-A series of examples.
+* Examples: A series of examples.
 
-## Reference
-References of all the modules in all packages. All information is gathered here so there is no need to go to the other packages for information.
+* Reference: References of all the modules in all packages. All information is gathered here so there is no need to go to the other packages for information.
 
-## Design
-Notes on how things are set up.
+* Design: Notes on how things are set up.
 
 # Installation
 
-Before any code can be run we must install the packages we want to use. It is assumed that **Perl6** (See [Perl6 Site](https://perl6.org/downloads/)) and the **GTK+** libraries (See [Gtk Site](https://www.gtk.org/)) are already installed. The program `zef` is used to install the modules. Enter the following command on the command line to install the modules needed for this tutorial and any other dependencies will be installed too.
+Before any code can be run we must install the packages we want to use. It is assumed that **Perl6** (See [Perl6 Site](https://raku.org/downloads/)) and the **GTK+** libraries (See [Gtk Site](https://www.gtk.org/)) are already installed. The program `zef` is used to install the modules. Enter the following command on the command line to install the modules needed for this tutorial and any other dependencies will be installed too. Run `zef install Gnome::Gtk3` to work with GTK+ or `zef install Gnome::Gtk3::Glade` to add some tools.
 
-**NOTE**: It is really important to install the latest version of Perl6 because some of the encountered bugs went away after upgrading. Also some tricks like variable argument lists to native functions were only possible after summer this year(2019).
+**NOTE**: It is really important to install the latest version of Perl6 because some of the encountered bugs went away after upgrading. Also some tricks like variable argument lists to native functions were only possible after summer this year(2019). This means that Rakudo Star is not usable because the newest release is from March 2019.
 
-```
-> zef install Gnome::Gtk3::Glade
-```
+  Some steps to follow if you want to be at the top of things. You need `git` to get software from the github site.
+  1) Make a directory to work in, e.g. Raku
+  2) Go in that directory and run `git clone https://github.com/rakudo/rakudo.git`
+  3) Then go into the created rakudo directory
+  4) Run `perl Configure.pl --gen-moar --gen-nqp --backends=moar`
+  5) Run `make test`
+  6) And run `make install`
+
+  Subsequent updates of the Raku compiler and moarvm can be installed with
+  1) Go into the rakudo directory
+  2) Run `git pull`
+  then repeat steps 4 to 6 from above
+
+  Your path must then be set to the program directories where `$Rakudo` is your `rakudo` directory; `${PATH}:$Rakudo/install/bin:$Rakudo/install/share/perl6/site/bin`
+
+  You can read the README for more details [on the same site](https://github.com/rakudo/rakudo).
+
+  After this, you will notice that the 'raku' command is available next to perl6 so it is also a move forward in the renaming of perl6.
+
+  The rakudo star installation must be removed if it was used, because otherwise there will be two raku compilers wanting to be the captain on your ship. Also all modules must be reinstalled of course and will be installed at `$Rakudo/install/share/perl6/site`.
+
 # Licenses and Attribution
 
 ## Licenses

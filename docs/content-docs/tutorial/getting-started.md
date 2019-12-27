@@ -96,7 +96,7 @@ A few things to note here;
 
 The error tells us that the **Window** class is a subclass of **Bin** which is a container able to contain only one object. This is the reason that we only saw one button in the running program.
 
-Ok. Need to do things differently then. Lets look at our next attempt which is also a bit more interesting too.
+Ok. Need to do things differently then. Lets look at our next attempt which is also a bit more interesting too. The next example is taken from the **GTK::Simple** package so you can compare the two implementations.
 
 ![example window](images/01-hello-world.png)
 
