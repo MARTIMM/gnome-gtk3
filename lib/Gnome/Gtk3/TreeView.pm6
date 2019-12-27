@@ -2863,9 +2863,7 @@ The B<Gnome::GObject::Value> type of property I<tooltip-column> is C<G_TYPE_INT>
 =comment #TP:0:activate-on-single-click:
 =head3 Activate on Single Click
 
-
-The activate-on-single-click property specifies whether the "row-activated" signal
-will be emitted after a single click.
+The activate-on-single-click property specifies whether the "row-activated" signal will be emitted after a single click.
 Since: 3.8
 
 The B<Gnome::GObject::Value> type of property I<activate-on-single-click> is C<G_TYPE_BOOLEAN>.
