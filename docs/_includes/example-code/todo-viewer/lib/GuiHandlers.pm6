@@ -90,7 +90,7 @@ class ListView {
     $v[0].unset;
 
     note "Start atom editor with folowing file $!filename at line $line";
-    run 'atom', $!filename ~ ":$line";
+    shell "atom $!filename:$line &";
 
     1
   }

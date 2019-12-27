@@ -85,7 +85,7 @@ method !create-file-table ( ) {
   $!fs-table.widget-set-vexpand(1);
 
   my Gnome::Gtk3::CellRendererText $crt .= new(:empty);
-  $v .= new( :type(G_TYPE_STRING), :value<blue>);
+  my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.set-property( 'foreground', $v);
   my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
   $tvc.set-title('Filename');

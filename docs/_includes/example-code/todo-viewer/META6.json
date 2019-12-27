@@ -1,7 +1,7 @@
 {
   "description": "Perl6 Gnome todo viewer example",
   "name": "todo-viewer",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "example", "todo-viewer"],
 
