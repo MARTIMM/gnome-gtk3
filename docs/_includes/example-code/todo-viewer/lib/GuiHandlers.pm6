@@ -84,15 +84,12 @@ class ListView {
     my Gnome::Gtk3::TreePath $tree-path .= new(:tree-path($n-tree-path));
     my Gnome::Gtk3::TreeIter $iter = $markers.tree-model-get-iter($tree-path);
 
-    my Array[Gnome::GObject::Value] $v = $markers.tree-model-get-value(
-      $iter, 0, 1, 2
-    );
-    my Str $marker = $v[0].get-string // '';
-    my Int $line = $v[1].get-int // -1;
-    my Str $comment = $v[2].get-string // '';
+    my Array[Gnome::GObject::Value] $v =
+       $markers.tree-model-get-value( $iter, 1);
+    my Int $line = $v[0].get-int // -1;
     $v[0].unset;
 
-    note "Start atom editor with folowing data: $!filename, $marker, $line, $comment";
+    note "Start atom editor with folowing file $!filename at line $line";
     run 'atom', $!filename ~ ":$line";
 
     1
