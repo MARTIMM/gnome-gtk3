@@ -9,9 +9,6 @@ layout: sidebar
 ## TODO list of things
 * [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
   * [ ] Study ref/unref of gtk objects.
-  * [ ] A boolean test to check if a native object is valid
-  * [ ] A clear function which calls some free function -> toggles the valid flag
-  * [ ] Add `DESTROY()` sub methods which calls the clear method or free function if object is still valid.
 
 * [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
@@ -36,19 +33,44 @@ layout: sidebar
   * [x] gdk
   * [x] gtk
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
-  * Find the short named subs which are also defined in Any or Mu. Add a method to catch the call before the one of Any/Mu
+  * Find the short named subs which are also defined in Any or Mu. Add a method to catch the call before the one of **Any** or **Mu**.
     * [ ] append
-    * [ ] new. This method will never be captured.
+    * [ ] new
 
 * [ ] Is there a way to skip all those if's in the `_fallback()` routines.
 
-* [x] Caching the sub address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where .get-text() from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the $!gtk-class-name for it.
+* [x] Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
 
-* [ ] Make some of the routines in several packages the same
-  * [ ] .clear-object()
-  * [ ] .set-native-object()
-  * [ ] .get-native-object()
-  * [ ] .is-valid()
+* Make some of the routines in several packages the same.
+  * `.clear-object()`: A clear function which calls some free function -> toggles the valid flag
+    * [ ] Gnome::Glib::Error
+    * [ ] Gnome::Glib::List
+    * [ ] Gnome::Glib::SList
+    * [ ] Gnome::GObject::Valid
+
+  * `.set-native-object()`
+    * [x] Gnome::GObject::Boxed. `.native-gboxed()` method is deprecated.
+    * [x] Gnome::GObject::Valid
+    * [x] Gnome::GObject::Object
+
+  * `.get-native-object()`
+    * [x] Gnome::GObject::Boxed `.get-native-gboxed()` method is deprecated.
+    * [x] Gnome::GObject::Valid
+    * [x] Gnome::GObject::Object
+
+  * `.is-valid()`: A boolean test to check if a native object is valid
+    * [ ] Gnome::GObject::Object
+    * [ ] Gnome::GObject::Boxed
+    * [ ] Gnome::GObject::Valid
+<!--
+    * [ ] Gnome::GObject::
+    * [ ] Gnome::GObject::
+-->
+
+  * `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if object is still valid.
+    * [ ] Gnome::Glib::Error
+    * [ ] Gnome::GObject::Object
+    * [ ] Gnome::GObject::Boxed
 
 * [ ] Make some of the named arguments to new() the same. We now have :widget, :object, :tree-iter etcetera while the value for these attributes are native objects. Rename these to :native-object. It's more clear. The type for it can differ but will not pose a problem.
 
