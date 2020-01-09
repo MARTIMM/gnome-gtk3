@@ -43,14 +43,14 @@ plugins:
 #   - vendor/ruby/
 
 #theme: jekyll-theme-tactile
-title: Perl6 Interface to Gnome GTK+
-description: Interfacing Perl6 to Gnome GTK+
+title: Raku Interface to Gnome GTK+
+description: Interfacing Raku to Gnome GTK+
 
 email: mt1957@gmail.com
 github_username:  MARTIMM
 github: [metadata]
 
-baseurl: "/perl6-gnome-gtk3"
+baseurl: "/gnome-gtk3"
 #url: "https://martimm.github.io"
 
 markdown: kramdown
