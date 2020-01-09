@@ -2,6 +2,9 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  - 2020-01-10 0.21.2:
+    - Repo renaming. Perl6 to Raku
+
   - 2019-12-16 0.21.1:
     - Bugfixes in gtk_list_store_remove() in ListStore and TreeStore.
 
