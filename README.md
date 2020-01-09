@@ -4,7 +4,7 @@
 
 [![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
 
-Documentation at [this site](http://martimm.github.io/perl6-gnome-gtk3) has the `GNU Free Documentation License`.
+Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the `GNU Free Documentation License`.
 
 # Description
 
@@ -99,7 +99,7 @@ $m.gtk-main;
 
 # Versions of involved software
 
-* Program is tested against the latest version of **perl6** on **rakudo** en **moarvm**. It is also necessary to have the (almost) newest compiler, because there are some code changes which made e.g. variable argument lists to the native subs possible. Older compilers cannot handle that (before summer 2019 I believe). This means that Rakudo Star is not usable because the newest release is from March 2019.
+* Program is tested against the latest version of **Raku** on **rakudo** en **moarvm**. It is also necessary to have the (almost) newest compiler, because there are some code changes which made e.g. variable argument lists to the native subs possible. Older compilers cannot handle that (before summer 2019 I believe). This means that Rakudo Star is not usable because the newest release is from March 2019.
 
   Some steps to follow if you want to be at the top of things. You need `git` to get software from the github site.
   1) Make a directory to work in e.g. Raku
@@ -119,7 +119,7 @@ $m.gtk-main;
 
   You can read the README for more details on the same site: https://github.com/rakudo/rakudo
 
-  After this, you will notice that the 'raku' command is available next to perl6 so it is also a move forward in the renaming of perl6.
+  After this, you will notice that the `raku` command is available next to `perl6` so it is also a move forward in the renaming of perl6.
 
   The rakudo star installation must be removed, because otherwise there will be two raku compilers wanting to be the captain on your ship. Also all modules must be reinstalled of course and are installed at `$Rakudo/install/share/perl6/site`.
 
@@ -133,11 +133,11 @@ There are several dependencies from one package to the other because it was one 
 
 # Issues
 
-There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/perl6-gnome-gtk3/issues).
+There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/gnome-gtk3/issues).
 
 # Attribution
 * First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
-* The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again.
+* The inventors of Raku of course and the writers of the documentation which help me out every time again and again.
 * The builders of the GTK+ library and the documentation.
 * Other helpful modules for their insight and use.
 
@@ -147,15 +147,15 @@ Name: **Marcel Timmerman**
 Github account name: **MARTIMM**
 
 [//]: # (---- [refs] ----------------------------------------------------------)
-[changes]: https://martimm.github.io/perl6-gnome-gtk3/CHANGES.html
-[logo]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/gtk-perl6.png
+[changes]: https://martimm.github.io/gnome-gtk3/CHANGES.html
+[logo]: https://martimm.github.io/gnome-gtk3/content-docs/images/gtk-perl6.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
-[screenshot 2]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/16a-level-bar.png
-[screenshot 3]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/16b-level-bar.png
-[screenshot 4]: https://martimm.github.io/perl6-gnome-gtk3/content-docs/images/examples/ex-GtkScale.png
+[screenshot 1]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
+[screenshot 2]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16a-level-bar.png
+[screenshot 3]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16b-level-bar.png
+[screenshot 4]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/ex-GtkScale.png
 
 
 [//]: # (Pod documentation rendered with)
-[//]: # (pod-render.pl6 --pdf --g=MARTIMM/perl6-gnome-gtk3 lib)
+[//]: # (pod-render.pl6 --md --d=../gnome-gtk3/docs/content-docs/references/Gtk3 lib)
