@@ -17,7 +17,7 @@ bundle exec jekyll serve
     SomeModule._fallback
       try some-sub or Gxyz_somemodule_some_sub => sub address
       callsame() if no address until one is found
-    Substitute native objects for perl6 objects in argument list
+    Substitute native objects for Raku objects in argument list
     Cast first argument when sub is found in another class
 
     Gnome::N::X.test-call()

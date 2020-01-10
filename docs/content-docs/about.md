@@ -8,7 +8,7 @@ layout: default
 
 # About The Project
 
-This project is about interfacing Perl6 to the Gnome GTK+ library version 3.*.
+This project is about interfacing Raku to the Gnome GTK+ library version 3.*.
 
 {% include changes-section.html %}
 
@@ -19,7 +19,7 @@ Github account name: **MARTIMM**
 
 # License
 
-The perl6 software has `The Artistic License 2.0`, See [artistic license](/content-docs/license-soft.html).
+The Raku software has `The Artistic License 2.0`, See [artistic license](/content-docs/license-soft.html).
 Documentation at this site has the `GNU Free Documentation License` and can be read [here](/content-docs/license-doc.html).
 
 ⓒ 2019 Marcel Timmerman.

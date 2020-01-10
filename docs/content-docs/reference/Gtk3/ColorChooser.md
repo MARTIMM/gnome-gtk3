@@ -122,7 +122,7 @@ Since: 3.4
 
 ### An Example
 
-According to the documentation, an array of N-GdkRGBA Structures should be given. Perl6 however, turns a CArray[N-GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either Array[N-GdkRGBA] or Array[Num] can be given. The latter one must always have elems % 4 == 0.
+According to the documentation, an array of N-GdkRGBA Structures should be given. Raku however, turns a CArray[N-GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either Array[N-GdkRGBA] or Array[Num] can be given. The latter one must always have elems % 4 == 0.
 
     use NativeCall;
     use Gnome::Gdk3::RGBA;
@@ -199,7 +199,7 @@ The register method is defined as;
 
 Where
 
-  * $handler-object; An perl6 object holding the handler method =*self*
+  * $handler-object; A Raku object holding the handler method =*self*
 
   * $handler-name; The handler method =*mouse-event*
 

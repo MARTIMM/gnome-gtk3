@@ -3,7 +3,12 @@ notes_title: "Release Notes for all Gnome packages"
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
   - 2020-01-10 0.21.2:
-    - Repo renaming. Perl6 to Raku
+    - Repo renaming. All perl6-gnome-* packages renamed to 'gnome-*'.
+    - All texts Perl\s*6 or p6 is renamed to Raku or raku depending on use.
+    - Some image files wit perl6 in the name are renamed.
+    - Remaining tasks of renaming process comes at a later phase when v6.e or even v6.f.
+      - Change of extensions
+      - Change of methods '.perl()' and variables '$*PERL'
 
   - 2019-12-16 0.21.1:
     - Bugfixes in gtk_list_store_remove() in ListStore and TreeStore.

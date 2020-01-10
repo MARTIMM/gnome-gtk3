@@ -1,9 +1,9 @@
 {
-  "description": "Perl6 Gnome todo viewer example",
+  "description": "Raku - GTK todo viewer example",
   "name": "todo-viewer",
   "version": "0.1.4",
   "authors": [ "Marcel Timmerman"],
-  "tags": [ "gnome", "gtk", "example", "todo-viewer"],
+  "tags": [ "gnome", "GTK+", "example", "todo-viewer"],
 
   "perl": "6.d",
   "license": "Artistic-2.0",

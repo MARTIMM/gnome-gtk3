@@ -42,7 +42,7 @@ new Please note that this class is mostly not instantiated directly but is used 
 
 ### multi method new ( :$widget! )
 
-Create a Perl6 widget object using a native widget from elsewhere. $widget can be a N-GObject or a Perl6 widget like `Gnome::Gtk3::Button`.
+Create a Raku widget object using a native widget from elsewhere. $widget can be a N-GObject or a Raku widget like `Gnome::Gtk3::Button`.
 
     # Some set of radio buttons grouped together
     my Gnome::Gtk3::RadioButton $rb1 .= new(:label('Download everything'));
@@ -74,7 +74,7 @@ Another example is a difficult way to get a button.
 
 ### multi method new ( Str :$build-id! )
 
-Create a Perl6 widget object using a **Gnome::Gtk3::Builder**. The builder object will provide its object (self) to **Gnome::GObject::Object** when the Builder is created. The Builder object is asked to search for id's defined in the GUI glade design.
+Create a Raku widget object using a **Gnome::Gtk3::Builder**. The builder object will provide its object (self) to **Gnome::GObject::Object** when the Builder is created. The Builder object is asked to search for id's defined in the GUI glade design.
 
     my Gnome::Gtk3::Builder $builder .= new(:filename<my-gui.glade>);
     my Gnome::Gtk3::Button $button .= new(:build-id<my-gui-button>);

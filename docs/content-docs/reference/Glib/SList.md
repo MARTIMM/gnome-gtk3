@@ -19,7 +19,7 @@ Note that most of the `N-GSList` functions expect to be passed a pointer to the 
 
 To free the entire list, use `clear-gslist()`.
 
-Many methods are not needed in simple Perl6 use. Most of the time you get a list from a method to process. For example, retrieving information from a widget path, See the example below.
+Many methods are not needed in simple Raku use. Most of the time you get a list from a method to process. For example, retrieving information from a widget path, See the example below.
 
 Synopsis
 ========
