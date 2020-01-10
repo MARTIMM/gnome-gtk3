@@ -1,5 +1,5 @@
 ---
-title: Perl6 GTK+ Design
+title: Raku GTK+ Design
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: design-sidebar
@@ -78,7 +78,7 @@ layout: sidebar
 
 * [ ] Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation
 
-* [ ] Many methods return native objects. this could be molded into perl6 objects when possible.
+* [ ] Many methods return native objects. this could be molded into Raku objects when possible.
 
 * [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object.
 

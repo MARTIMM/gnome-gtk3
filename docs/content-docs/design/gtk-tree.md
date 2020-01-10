@@ -1,5 +1,5 @@
 ---
-title: Perl6 GTK+ Design
+title: Raku GTK+ Design
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: design-sidebar
@@ -8,10 +8,10 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated. Every perl6 class is in the Gnome:: name space. Also prefixes and module path names are removed from the perl6 modules. so Object is really Gnome::GObject::Object and Window is for Gnome::Gtk3::Window. Other modules from Glib and Gdk3 are not displayed here. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons.
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated. Every Raku class is in the Gnome:: name space. Also prefixes and module path names are removed from the Raku modules. so Object is really Gnome::GObject::Object and Window is for Gnome::Gtk3::Window. Other modules from Glib and Gdk3 are not displayed here. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons.
 
 ```
-Tree of Gtk C structures                              Perl 6 module
+Tree of Gtk C structures                              Raku module
 ----------------------------------------------------- ------------------------
 GObject                                               Object
 ├── GInitiallyUnowned                                 InitiallyUnowned

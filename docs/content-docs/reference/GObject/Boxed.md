@@ -1,3 +1,10 @@
+is-valid
+--------
+
+Returns True if native boxed object is valid, otherwise `False`.
+
+    method is-valid ( --> Bool )
+
 get-class-gtype
 ---------------
 

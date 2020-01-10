@@ -10,7 +10,7 @@ This program will read files and shows the todo remarks in a list. At first, we 
 
 ## Download and Install
 
-{% assign downloadimgurl = site.baseurl | append: '/content-docs/images/gtk-perl6.png' %}
+{% assign downloadimgurl = site.baseurl | append: '/content-docs/images/gtk-raku.png' %}
 
 Download the archive files of your choice from below and unpack them in a directory.
 * Click the icon on the right to download a zip archive: <a href="todo-viewer.zip" download> <img src="{{ downloadimgurl }}" alt="zip file" height="30"> </a>

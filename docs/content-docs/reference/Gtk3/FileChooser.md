@@ -26,7 +26,7 @@ File Names and Encodings
 
 When the user is finished selecting files in a *Gnome::Gtk3::FileChooser*, your program can get the selected names either as filenames or as URIs. For URIs, the normal escaping rules are applied if the URI contains non-ASCII characters. However, filenames are always returned in the character set specified by the `G_FILENAME_ENCODING` environment variable. Please see the GLib documentation for more details about this variable.
 
-This means that while you can pass the result of `gtk_file_chooser_get_filename()` to `open()` or `fopen()`, you may not be able to directly set it as the text of a *Gnome::Gtk3::Label* widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use `g_filename_to_utf8()` to convert filenames into strings that can be passed to GTK+ widgets. **Note: open() and fopen() are C functions which are not needed by the perl6 user. Furthermore, the Str perl6 type is already UTF-8**.
+This means that while you can pass the result of `gtk_file_chooser_get_filename()` to `open()` or `fopen()`, you may not be able to directly set it as the text of a *Gnome::Gtk3::Label* widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use `g_filename_to_utf8()` to convert filenames into strings that can be passed to GTK+ widgets. **Note: open() and fopen() are C functions which are not needed by the Raku user. Furthermore, the Str Raku type is already UTF-8**.
 
 Adding Extra Widgets
 --------------------

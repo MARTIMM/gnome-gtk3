@@ -1,5 +1,5 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
@@ -33,7 +33,7 @@ class X {
 enum list-field-columns < TITLE-CODE TITLE SOLD LIKE PICT >;
 my Gnome::Gtk3::TreeIter $iter;
 
-my Gnome::Gdk3::Pixbuf $pb .= new(:file<xt/Data/gtk-perl6-64.png>);
+my Gnome::Gdk3::Pixbuf $pb .= new(:file<xt/Data/gtk-raku-64.png>);
 my Int $pb-type = $pb.get-class-gtype;
 #note "Pixbuf type: $pb-type";
 

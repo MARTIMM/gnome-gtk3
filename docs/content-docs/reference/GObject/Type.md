@@ -8,7 +8,7 @@ SUBTITLE
 
 The GLib Runtime type identification and management system
 
-***Note: The methods described here are mostly used internally and is not interesting for the normal Perl6 user.***
+***Note: The methods described here are mostly used internally and is not interesting for the normal Raku user.***
 
 Description
 ===========
@@ -190,6 +190,8 @@ This macro should only be used in type implementations.
 
 [[g_] type_] check_value
 ------------------------
+
+Checks if value has been initialized to hold values of type g_type.
 
     method g_type_check_value ( N-GObject $value --> Int  )
 

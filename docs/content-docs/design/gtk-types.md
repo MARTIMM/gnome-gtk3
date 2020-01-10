@@ -1,16 +1,16 @@
 ---
-title: Perl6 GTK+ Design
+title: Raku GTK+ Design
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: design-sidebar
 layout: sidebar
 ---
 
-## Types in GTK+ / glib and (native) types in perl6
+## Types in GTK+ / glib and (native) types in Raku
 
-Below there is a table showing all kinds of type definitions used in the several layers C, Glib, GTK, Perl6 and the fundamental types defined in **Gnome::GObject::Type** called GType.
+Below there is a table showing all kinds of type definitions used in the several layers C, Glib, GTK, Raku and the fundamental types defined in **Gnome::GObject::Type** called GType.
 
-| GTK Type | typedef | GType ③ | Native Perl6 | Perl6 Type |
+| GTK Type | typedef | GType ③ | Native Raku | Raku Type |
 | -------- | ------- | ----------- | ------------ |---------- |
 | gboolean | gint    | G_TYPE_BOOLEAN | int32        | Int ① |
 | gchar *  | char *  | G_TYPE_STRING | str          | Str        |
@@ -58,6 +58,6 @@ Below there is a table showing all kinds of type definitions used in the several
 
 ① The boolean values can be given to native subs as `True` or `False`. These values are automatically transformed into 1 and 0 resp. when the are stored in a **int32** type. When a native sub returns a boolean value, it cannot be coerced into a **Bool** typed variable automatically. One must call `.Bool()` on it to do so. Most of the time this is not necessary because the test control statements in perl handle `0` and `1` as `False` and `True` perfectly.
 
-② Enumerated values can be given to native subs and perl6 will convert them automatically to **int32**. The values are always returned as an **int32** and must also be converted explicitly if you want use the enumerated name of the integer.
+② Enumerated values can be given to native subs and Raku will convert them automatically to **int32**. The values are always returned as an **int32** and must also be converted explicitly if you want use the enumerated name of the integer.
 
 ③ The fundamental GType names are needed when a sub can handle a scala of value types. For example the **Gnome::Gtk3::TreeStore** and **Gnome::Gtk3::ListStore** can handle columns of different types. The stores are initialized by defining a GType for each column and later a GValue wrapped into the **Gnome::GObject::Value** is used to set a value for a particular column and row.

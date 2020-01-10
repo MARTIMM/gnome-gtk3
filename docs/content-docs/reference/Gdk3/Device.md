@@ -541,3 +541,4 @@ The **Gnome::GObject::Value** type of property *axes* is `G_TYPE_FLAGS`.
 The tool that is currently used with this device Widget type: GDK_TYPE_DEVICE_TOOL
 
 The **Gnome::GObject::Value** type of property *tool* is `G_TYPE_OBJECT`.
+

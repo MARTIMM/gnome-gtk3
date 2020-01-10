@@ -2,7 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
-use lib '../perl6-gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::N::X;
 use Gnome::GObject::Value;

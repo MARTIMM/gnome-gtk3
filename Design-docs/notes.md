@@ -82,6 +82,5 @@ https://developer.gnome.org/gnome-devel-demos/stable/c.html.en
 https://developer.gnome.org/gdk3/stable/gdk3-Event-Structures.html
 
 https://developer.gnome.org/gtk-tutorial/stable/x2431.html
-http://www.dlugosz.com/Perl6/specdoc.pdf
 
 [//]: # (References)

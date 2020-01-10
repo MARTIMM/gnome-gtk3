@@ -2178,7 +2178,7 @@ A signal which allows you to change how the text displayed in a combo box's entr
 
 Connect a signal handler which returns an allocated string representing I<path>. That string will then be used to set the text in the combo box's entry. The default signal handler uses the text from the prop I<entry-text-column> model column.
 
-Here's an example signal handler which fetches data from the model and displays it in the entry (Still in C and must be converted to perl6...).
+Here's an example signal handler which fetches data from the model and displays it in the entry (Still in C and must be converted to Raku...).
 
 
   method format_entry_text_callback (

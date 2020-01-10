@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 
@@ -9,10 +9,10 @@ my Str $include-filename;
 my Str $lib-class-name;
 
 my Str $base-sub-name;
-my Str $p6-lib-name;
-my Str $p6-class-name;
-my Str $p6-parentlib-name;
-my Str $p6-parentclass-name;
+my Str $raku-lib-name;
+my Str $raku-class-name;
+my Str $raku-parentlib-name;
+my Str $raku-parentclass-name;
 
 my Str $output-file;
 
@@ -41,8 +41,8 @@ sub MAIN (
   my Bool $file-found;
   my Str ( $include-content, $source-content);
   $base-sub-name = $base-name;
-  ( $file-found, $include-filename, $lib-class-name, $p6-class-name,
-    $p6-lib-name, $include-content, $source-content
+  ( $file-found, $include-filename, $lib-class-name, $raku-class-name,
+    $raku-lib-name, $include-content, $source-content
   ) = setup-names($base-name);
 
   if $file-found {
@@ -50,7 +50,7 @@ sub MAIN (
     mkdir( 'xt', 0o766) unless 'xt'.IO.e;
     mkdir( 'xt/NewModules', 0o766) unless 'xt/NewModules'.IO.e;
 
-    ( $p6-parentclass-name, $p6-parentlib-name) =
+    ( $raku-parentclass-name, $raku-parentlib-name) =
        parent-class($include-content);
 
     ( $section-doc, $short-description, $see-also) =
@@ -64,8 +64,8 @@ sub MAIN (
     get-properties($source-content) if $do-all or $prop;
 
     # create var name named after classname. E.g. TextBuffer -> $tb.
-    my Str $m = '$' ~ $p6-class-name.comb(/<[A..Z]>/).join.lc;
-    my Str $class = [~] 'Gnome::', $p6-lib-name, '::', $p6-class-name;
+    my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
+    my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
     my Str $test-content = Q:s:to/EOTEST/;
       use v6;
       use NativeCall;
@@ -115,7 +115,7 @@ sub MAIN (
 
       EOTEST
 
-    "xt/NewModules/$p6-class-name.t".IO.spurt($test-content);
+    "xt/NewModules/$raku-class-name.t".IO.spurt($test-content);
   }
 
   else {
@@ -163,11 +163,11 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/\s* 'G_GNUC_PURE' \s*//;
 #note "\n0 >> $declaration";
 
-    my Str ( $return-type, $p6-return-type) = ( '', '');
+    my Str ( $return-type, $raku-return-type) = ( '', '');
     my Bool $type-is-class;
 
     # convert and remove return type from declaration
-    ( $declaration, $return-type, $p6-return-type, $type-is-class) =
+    ( $declaration, $return-type, $raku-return-type, $type-is-class) =
       get-type( $declaration, :!attr);
 
     # get the subroutine name and remove from declaration
@@ -190,13 +190,13 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     # process arguments
     for $args-declaration.split(/ \s* ',' \s* /) -> $raw-arg {
-      my Str ( $arg, $arg-type, $p6-arg-type);
-      ( $arg, $arg-type, $p6-arg-type, $type-is-class) =
+      my Str ( $arg, $arg-type, $raku-arg-type);
+      ( $arg, $arg-type, $raku-arg-type, $type-is-class) =
         get-type( $raw-arg, :attr);
 
       if ?$arg {
         my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
-#note "pod info: $p6-arg-type, $arg, $pod-doc-item-doc";
+#note "pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
 
         # skip first argument when type is also the class name
         if $first-arg and $type-is-class {
@@ -209,8 +209,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         else {
           # make arguments pod doc
           $pod-args ~= ',' if ?$pod-args;
-          $pod-args ~= " $p6-arg-type \$$arg";
-          $pod-doc-items ~= "=item $p6-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
+          $pod-args ~= " $raku-arg-type \$$arg";
+          $pod-doc-items ~= "=item $raku-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
         }
 
         # add argument to list for sub declaration
@@ -229,7 +229,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $pod-returns = '';
     my Str $returns = '';
     if ?$return-type {
-      $pod-returns = " --> $p6-return-type ";
+      $pod-returns = " --> $raku-return-type ";
       $returns = "\n  returns $return-type";
     }
 
@@ -288,12 +288,12 @@ sub get-deprecated-subs( Str:D $include-content ) {
 
     $declaration ~~ s/ 'GDK_DEPRECATED_IN_' .*? \n //;
 
-    my Str ( $return-type, $p6-return-type) = ( '', '');
+    my Str ( $return-type, $raku-return-type) = ( '', '');
     my Bool $type-is-class;
 
     # convert and remove return type from declaration
     #( $declaration, #`{{ rest is ignored }} ) = get-type( $declaration, :!attr);
-    ( $declaration, $return-type, $p6-return-type, $type-is-class) =
+    ( $declaration, $return-type, $raku-return-type, $type-is-class) =
       get-type( $declaration, :!attr);
 
 #note "1 >> $declaration";
@@ -312,13 +312,13 @@ sub get-deprecated-subs( Str:D $include-content ) {
 
     # process arguments
     for $args-declaration.split(/ \s* ',' \s* /) -> $raw-arg {
-      my Str ( $arg, $arg-type, $p6-arg-type);
-      ( $arg, $arg-type, $p6-arg-type, $type-is-class) =
+      my Str ( $arg, $arg-type, $raku-arg-type);
+      ( $arg, $arg-type, $raku-arg-type, $type-is-class) =
         get-type( $raw-arg, :attr);
 
       if ?$arg {
         my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
-#note "pod info: $p6-arg-type, $arg, $pod-doc-item-doc";
+#note "pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
 
         # skip first argument when type is also the class name
         if $first-arg and $type-is-class {
@@ -331,8 +331,8 @@ sub get-deprecated-subs( Str:D $include-content ) {
         else {
           # make arguments pod doc
           $pod-args ~= ',' if ?$pod-args;
-          $pod-args ~= " $p6-arg-type \$$arg";
-          $pod-doc-items ~= "=item $p6-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
+          $pod-args ~= " $raku-arg-type \$$arg";
+          $pod-doc-items ~= "=item $raku-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
         }
 
         # add argument to list for sub declaration
@@ -347,7 +347,7 @@ sub get-deprecated-subs( Str:D $include-content ) {
     my Str $pod-returns = '';
     my Str $returns = '';
     if ?$return-type {
-      $pod-returns = " --> $p6-return-type ";
+      $pod-returns = " --> $raku-return-type ";
       $returns = "\n  returns $return-type";
     }
 
@@ -388,21 +388,21 @@ sub parent-class ( Str:D $include-content --> List ) {
     \s+ 'parent_class'
   /;
 
-  my Str $p6-lib-parentclass = ~($<lib-parent> // '');
-  my Str $p6-parentlib-name = '';
-  given $p6-lib-parentclass {
+  my Str $raku-lib-parentclass = ~($<lib-parent> // '');
+  my Str $raku-parentlib-name = '';
+  given $raku-lib-parentclass {
     when /^ Gtk / {
-      $p6-parentlib-name = 'Gtk3';
+      $raku-parentlib-name = 'Gtk3';
     }
 
     when /^ Gdk / {
-      $p6-parentlib-name = 'Gdk3';
+      $raku-parentlib-name = 'Gdk3';
     }
   }
 
-  $p6-lib-parentclass ~~ s:g/ ['Gtk' || 'Gdk'|| 'Class'] //;
+  $raku-lib-parentclass ~~ s:g/ ['Gtk' || 'Gdk'|| 'Class'] //;
 
-  ( $p6-lib-parentclass, $p6-parentlib-name);
+  ( $raku-lib-parentclass, $raku-parentlib-name);
 }
 
 #-------------------------------------------------------------------------------
@@ -489,8 +489,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'int32' if $type ~~ m/GQuark/;
   $type = 'N-GObject' if is-n-gobject($type);
 
-  # copy to perl6 type for independent convertions
-  my Str $p6-type = $type;
+  # copy to Raku type for independent convertions
+  my Str $raku-type = $type;
 
   # convert to native perl types
   #$type ~~ s/ g?char \s+ '*' /str/;
@@ -522,29 +522,29 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
 
   # convert to perl types
-  #$p6-type ~~ s/ 'gchar' \s+ '*' /Str/;
-  #$p6-type ~~ s/ str /Str/;
+  #$raku-type ~~ s/ 'gchar' \s+ '*' /Str/;
+  #$raku-type ~~ s/ str /Str/;
 
-  $p6-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
+  $raku-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
                    gushort || guint16 || gulong || guint64 ||
                    gsize || uint32 || uint64 || uint
                  /UInt/;
 
-  $p6-type ~~ s:s/ gboolean || gint || gint32 ||
+  $raku-type ~~ s:s/ gboolean || gint || gint32 ||
                    gchar || gint8 || gshort || gint16 ||
                    glong || gint64 ||
                    gssize || goffset || int32 || int64 || int
                  /Int/;
 
-#  $p6-type ~~ s:s/ int /Int/;
-#  $p6-type ~~ s:s/ uint /UInt/;
-  $p6-type ~~ s:s/ gpointer /Pointer/;
+#  $raku-type ~~ s:s/ int /Int/;
+#  $raku-type ~~ s:s/ uint /UInt/;
+  $raku-type ~~ s:s/ gpointer /Pointer/;
 
-  $p6-type ~~ s:s/ gfloat || gdouble /Num/;
+  $raku-type ~~ s:s/ gfloat || gdouble /Num/;
 
-#note "Result type: $type, p6 type: $p6-type, is class = $type-is-class";
+#note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
 
-  ( $declaration, $type, $p6-type, $type-is-class)
+  ( $declaration, $type, $raku-type, $type-is-class)
 }
 
 #-------------------------------------------------------------------------------
@@ -561,16 +561,16 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
   my @parts = $base-sub-name.split('_');
   my Str $lib-class = @parts>>.tc.join;
 
-  my Str $p6-class = @parts[1..*-1]>>.tc.join;
+  my Str $raku-class = @parts[1..*-1]>>.tc.join;
 #`{{
-  my Str $p6-lib-name = '';
+  my Str $raku-lib-name = '';
   given $lib-class {
     when /^ Gtk / {
-      $p6-lib-name = 'Gtk3';
+      $raku-lib-name = 'Gtk3';
     }
 
     when /^ Gdk / {
-      $p6-lib-name = 'Gdk3';
+      $raku-lib-name = 'Gdk3';
     }
   }
 }}
@@ -624,41 +624,41 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
       given $path {
         when / 'gtk+-3.22.0/gtk' / {
           $library = '&gtk-lib';
-          $p6-lib-name = 'Gtk3';
+          $raku-lib-name = 'Gtk3';
         }
 
         when / 'gdk-pixbuf' / {
           $library = '&gdk-pixbuf-lib';
-          $p6-lib-name = 'Gdk3';
+          $raku-lib-name = 'Gdk3';
         }
 
         when / 'gtk+-3.22.0/gdk' / {
           $library = "&gdk-lib";
-          $p6-lib-name = 'Gdk3';
+          $raku-lib-name = 'Gdk3';
         }
 
         when / 'glib-2.60.0/glib' / {
           $library = "&glib-lib";
-          $p6-lib-name = 'Glib';
+          $raku-lib-name = 'Glib';
         }
 
         when / 'glib-2.60.0/gobject' / {
           $library = "&gobject-lib";
-          $p6-lib-name = 'GObject';
+          $raku-lib-name = 'GObject';
         }
 
 #        when $gio-path {
 #          $library = "&glib-lib";
-#          $p6-lib-name = 'Glib';
+#          $raku-lib-name = 'Glib';
 #        }
       }
 
-#note "Library: $library, $p6-lib-name";
+#note "Library: $library, $raku-lib-name";
       last;
     }
   }
 
-  ( $file-found, $include-file, $lib-class, $p6-class, $p6-lib-name,
+  ( $file-found, $include-file, $lib-class, $raku-class, $raku-lib-name,
     $include-content, $source-content
   )
 }
@@ -709,7 +709,7 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #-------------------------------------------------------------------------------
 sub load-dir-lists ( ) {
 
-  my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3';
+  my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/gnome-gtk3';
   @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
   @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
   @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
@@ -793,12 +793,12 @@ sub substitute-in-template (
     EOTEMPLATE
 
   my Str ( $t1, $t2) = ( '', '');
-  if $p6-parentlib-name and $p6-parentclass-name {
-    $t1 = "use Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
-    $t2 = "also is Gnome::{$p6-parentlib-name}::{$p6-parentclass-name};";
+  if $raku-parentlib-name and $raku-parentclass-name {
+    $t1 = "use Gnome::{$raku-parentlib-name}::{$raku-parentclass-name};";
+    $t2 = "also is Gnome::{$raku-parentlib-name}::{$raku-parentclass-name};";
   }
 
-  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$p6-lib-name}::{$p6-class-name}/;
+  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
@@ -806,7 +806,7 @@ sub substitute-in-template (
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
 
-  $output-file = "xt/NewModules/$p6-class-name.pm6";
+  $output-file = "xt/NewModules/$raku-class-name.pm6";
   $output-file.IO.spurt($template-text);
 
   get-vartypes($include-content) if $do-all or $types;
@@ -886,7 +886,7 @@ sub substitute-in-template (
 
       EOTEMPLATE
 
-    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$p6-lib-name}::{$p6-class-name}/;
+    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
     $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
     $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
     $output-file.IO.spurt( $template-text, :append);
@@ -1748,7 +1748,7 @@ sub get-structures ( Str:D $include-content is copy ) {
     my Str $items-doc = '';
     my Str $struct-doc = '';
     my Str $struct-spec = '';
-    my Str ( $entry-type, $p6-entry-type);
+    my Str ( $entry-type, $raku-entry-type);
     my Bool $type-is-class;
 
     $include-content ~~ m:s/
@@ -1851,7 +1851,7 @@ sub get-structures ( Str:D $include-content is copy ) {
 
       elsif $line ~~ m/^ \s+ $<struct-entry> = [ .*? ] ';' $/ {
         my Str $s = ~($<struct-entry> // '');
-        ( $s, $entry-type, $p6-entry-type, $type-is-class) =
+        ( $s, $entry-type, $raku-entry-type, $type-is-class) =
           get-type( $s, :!attr);
 
         # entry type Str must be converted to str
@@ -1862,7 +1862,7 @@ sub get-structures ( Str:D $include-content is copy ) {
           my @varlist = $s.split( / \s* ',' \s* /);
           for @varlist -> $var {
             $struct-spec ~= "  has $entry-type \$.$var;\n";
-            $items-doc ~~ s/ 'item ___' $var /item $p6-entry-type \$.$var/;
+            $items-doc ~~ s/ 'item ___' $var /item $raku-entry-type \$.$var/;
           }
         }
 
@@ -1870,7 +1870,7 @@ sub get-structures ( Str:D $include-content is copy ) {
         else {
           $struct-spec ~= "  has $entry-type \$.$s;\n";
   #note "check for 'item ___$s'";
-          $items-doc ~~ s/ 'item ___' $s /item $p6-entry-type \$.$s/;
+          $items-doc ~~ s/ 'item ___' $s /item $raku-entry-type \$.$s/;
         }
       }
     }
