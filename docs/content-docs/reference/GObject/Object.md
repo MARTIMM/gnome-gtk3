@@ -168,7 +168,9 @@ The handlers signature is at least `:$widget` of the object on which the call wa
 
 Sets a property on an object.
 
-method g_object_set_property ( Str $property_name, Gnome::GObject::Value $value )
+    method g_object_set_property (
+      Str $property_name, Gnome::GObject::Value $value
+    )
 
   * Str $property_name; the name of the property to set
 
@@ -177,22 +179,36 @@ method g_object_set_property ( Str $property_name, Gnome::GObject::Value $value 
 [[g_] object_] get_property
 ---------------------------
 
-Gets a property of an object. value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed) using g_value_init().
+Gets a property of an object. The value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed).
 
 In general, a copy is made of the property contents and the caller is responsible for freeing the memory by calling g_value_unset().
+
+Next signature is used when no **Gnome::GObject::Value** is available. The routine will create the Value using `$gtype`.
 
     method g_object_get_property (
       Str $property_name, Int $gtype
       --> Gnome::GObject::Value
     )
 
+The following is used when a Value object is available.
+
     method g_object_get_property (
       Str $property_name, Gnome::GObject::Value $value
+      --> Gnome::GObject::Value
     )
 
   * $property_name; the name of the property to get.
 
+  * $gtype; the type of the value, e.g. G_TYPE_INT.
+
   * $value; the property value. The value is stored in the Value object. Use any of the getter methods of Value to get the data. Also setters are available to modify data.
+
+The methods always return a **Gnome::GObject::Value** with the result.
+
+    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.g-object-get-property( 'label', $gv);
+    $gv.g-value-set-string('my text label');
 
 [g_] object_ref
 ---------------
