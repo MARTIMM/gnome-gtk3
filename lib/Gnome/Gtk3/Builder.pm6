@@ -64,7 +64,7 @@ Objects can be referred to by their name and by default refer to objects declare
 It is also possible to bind a property value to another object's property value using the attributes "bind-source" to specify the source object of the binding, "bind-property" to specify the source property and optionally "bind-flags" to specify the binding flags Internally builder implement this using GBinding objects. For more information see C<g_object_bind_property()>
 =end comment
 
-Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the perl6 modules. The "object" field has a meaning in B<Gnome::Gtk3::Glade>.
+Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the Raku modules. The "object" field has a meaning in B<Gnome::Gtk3::Glade>.
 
 =begin comment
 By default, GTK+ tries to find the handler using C<g_module_symbol()>, but this can be changed by passing a custom C<builder-connect-func()> to C<gtk_builder_connect_signals_full()>. The remaining attributes, “after”, “swapped” and “object”, have the same meaning as the corresponding parameters of the C<g_signal_connect_object()> or C<g_signal_connect_data()> functions. A “last_modification_time” attribute is also allowed, but it does not have a meaning to the builder.

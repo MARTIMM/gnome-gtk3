@@ -196,7 +196,7 @@ An example of a B<Gnome::Gtk3::Builder> Template Definition:
 
 Typically, you'll place the template fragment into a file that is bundled with your project, using C<GResource>. In order to load the template, you need to call C<gtk_widget_class_set_template_from_resource()> from the class initialization of your B<Gnome::Gtk3::Widget> type:
 
-=comment TODO replace with perl6 code
+=comment TODO replace with Raku code
 
   static void foo_widget_class_init (FooWidgetClass *klass) {
     // ...
@@ -209,7 +209,7 @@ Typically, you'll place the template fragment into a file that is bundled with y
 You will also need to call C<gtk_widget_init_template()> from the instance
 initialization function:
 
-=comment TODO replace with perl6 code
+=comment TODO replace with Raku code
 
   static void foo_widget_init (FooWidget *self) {
     // ...

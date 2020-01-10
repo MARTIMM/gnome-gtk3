@@ -113,7 +113,7 @@ arguments do not parse properly.
 submethod BUILD ( Bool :$check = False ) {
 
   if not $gui-initialized {
-    # Must setup gtk otherwise perl6 will crash
+    # Must setup gtk otherwise Raku will crash
     my $argc = CArray[int32].new;
     $argc[0] = 1 + @*ARGS.elems;
 

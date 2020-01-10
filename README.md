@@ -137,7 +137,7 @@ There are always some problems! If you find one, please help by filing an issue 
 
 # Attribution
 * First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
-* The inventors of Raku of course and the writers of the documentation which help me out every time again and again.
+* The inventors of Raku, formerly known as Perl 6, of course and the writers of the documentation which helped me out every time again and again.
 * The builders of the GTK+ library and the documentation.
 * Other helpful modules for their insight and use.
 
