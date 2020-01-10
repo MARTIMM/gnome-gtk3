@@ -15,7 +15,7 @@ GLib provides a standard method of reporting errors from a called function to th
 
 The `N-GError` object contains three fields: *domain* indicates the module the error-reporting function is located in, *code* indicates the specific error that occurred, and *message* is a user-readable error message with as many details as possible. Several functions are provided to deal with an error received from a called function: `g_error_matches()` returns `1` if the error matches a given domain and code. To display an error to the user, simply call the `message()` method, perhaps along with additional context known only to the calling function.
 
-This class is greatly simplified because in Perl6 one can use Exception classes to throw any errors. It exists mainly to handle errors coming from other GTK+ functions.
+This class is greatly simplified because in Raku one can use Exception classes to throw any errors. It exists mainly to handle errors coming from other GTK+ functions.
 
 Error domains and codes are conventionally named as follows:
 

@@ -1,7 +1,7 @@
 use v6;
-use lib '../perl6-gnome-gobject/lib';
-#use lib '../perl6-gnome-glib/lib';
-#use lib '../perl6-gnome-native/lib';
+use lib '../gnome-gobject/lib';
+#use lib '../gnome-glib/lib';
+#use lib '../gnome-native/lib';
 use Test;
 
 use Gnome::N::N-GObject;

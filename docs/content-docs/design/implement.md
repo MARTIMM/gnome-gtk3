@@ -1,5 +1,5 @@
 ---
-title: Perl6 GTK+ Design
+title: Raku GTK+ Design
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: design-sidebar
@@ -7,7 +7,7 @@ layout: sidebar
 ---
 
 ## Implementation details
-* The native objects wrapped in perl6 classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere_**.
+* The native objects wrapped in Raku classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere_**.
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. Each `_fallback()` method is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
 
@@ -33,7 +33,7 @@ layout: sidebar
   ```
 
 * Wrapped subs
-  * The C functions can only return simple values like **int32**, **num64**, etc or **Pointer** to the values or structures. This can be handled by Perl6 and is not a problem. However, many subs are defined so that the values are returned in a Pointer argument and Perl users must handle that properly by giving a real location instead of a constant. Also this can be done properly, simple types need a rw trait and structures and arrays are already given by pointer. But to make things a bit comfortable, those functions are converted to return the values normally. **_Many subs stil need to be converted to show this behavior!_**.
+  * The C functions can only return simple values like **int32**, **num64**, etc or **Pointer** to the values or structures. This can be handled by Raku and is not a problem. However, many subs are defined so that the values are returned in a Pointer argument and Perl users must handle that properly by giving a real location instead of a constant. Also this can be done properly, simple types need a rw trait and structures and arrays are already given by pointer. But to make things a bit comfortable, those functions are converted to return the values normally. **_Many subs stil need to be converted to show this behavior!_**.
 
     So the definition of the sub is changed like so;
     ```

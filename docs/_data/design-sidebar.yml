@@ -9,5 +9,5 @@
     url: "/content-docs/design/gtk-tree.html"
   - title: "Todo"
     url: "/content-docs/design/todo.html"
-  - title: "Gtk types and Perl6"
+  - title: "Gtk types and Raku"
     url: "/content-docs/design/gtk-types.html"

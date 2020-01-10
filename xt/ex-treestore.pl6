@@ -1,5 +1,5 @@
 use v6;
-#use lib '../perl6-gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
@@ -41,7 +41,7 @@ $w.gtk-container-add($g);
 
 
 my Gnome::Gtk3::TreeStore $ts .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
-my Gnome::Gtk3::TreeView $tv .= new(:model($ts()));
+my Gnome::Gtk3::TreeView $tv .= new(:model($ts));
 $tv.set-hexpand(1);
 $tv.set-vexpand(1);
 $tv.set-headers-visible(1);
@@ -79,7 +79,10 @@ my Array $data = [
   [ '1', 444, 'def'],
   [ '2', 3345, 'def'],
   [ '2', 35, 'def'],
-  [ '2', 45, 'def'],
+  [ '2:0', 45, 'def'],
+  [ '2:0', 3345, 'def'],
+  [ '2:0:0', 35, 'def'],
+  [ '2:0:0', 45, 'def'],
 ];
 
 

@@ -33,7 +33,7 @@ Setting properties of objects is pretty straightforward with the <property> elem
 
 Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via `gtk_builder_expose_object()`. In general, **Gnome::Gtk3::Builder** allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
 
-Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the perl6 modules. The "object" field has a meaning in **Gnome::Gtk3::Glade**.
+Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the Raku modules. The "object" field has a meaning in **Gnome::Gtk3::Glade**.
 
 Sometimes it is necessary to refer to widgets which have implicitly been constructed by GTK+ as part of a composite widget, to set properties on them or to add further children (e.g. the *vbox* of a **Gnome::Gtk3::Dialog**). This can be achieved by setting the “internal-child” propery of the <child> element to a true value. Note that **Gnome::Gtk3::Builder** still requires an <object> element for the internal child, even if it has already been constructed.
 

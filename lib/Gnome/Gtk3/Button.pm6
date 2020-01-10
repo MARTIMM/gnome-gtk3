@@ -568,7 +568,7 @@ The register method is defined as;
   )
 
 Where
-=item $handler-object; An perl6 object holding the handler method =I<self>
+=item $handler-object; A Raku object holding the handler method =I<self>
 =item $handler-name; The handler method =I<mouse-event>
 =item $signal-name; The signal to connect to =I<button-press-event>
 =item $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.

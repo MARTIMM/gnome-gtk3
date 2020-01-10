@@ -1,0 +1,18 @@
+{
+  "description": "Raku - GTK todo viewer example",
+  "name": "todo-viewer",
+  "version": "0.1.4",
+  "authors": [ "Marcel Timmerman"],
+  "tags": [ "gnome", "GTK+", "example", "todo-viewer"],
+
+  "perl": "6.d",
+  "license": "Artistic-2.0",
+
+  "provides": {
+    "Gui": "lib/Gui.pm6",
+    "GuiHandlers": "lib/GuiHandlers.pm6",
+    "SkimFile": "lib/SkimFile.pm6"
+  },
+
+  "depends": [ "Gnome::Gtk3"]
+}

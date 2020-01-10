@@ -293,7 +293,7 @@ The register method is defined as;
 
 Where
 
-  * $handler-object; An perl6 object holding the handler method =*self*
+  * $handler-object; A Raku object holding the handler method =*self*
 
   * $handler-name; The handler method =*mouse-event*
 

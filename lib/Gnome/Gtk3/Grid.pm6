@@ -280,7 +280,7 @@ sub gtk_grid_insert_column ( N-GObject $grid, int32 $position )
 
 Removes a row from the grid.
 
-Children that are placed in this row are removed and destroyed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up. The native object in the Perl6 object becomes invalid.
+Children that are placed in this row are removed and destroyed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up. The native object in the Raku object becomes invalid.
 
 Since: 3.10
 
@@ -301,7 +301,7 @@ sub gtk_grid_remove_row ( N-GObject $grid, int32 $position )
 
 Removes a column from the grid.
 
-Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left. The native object in the Perl6 object becomes invalid.
+Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left. The native object in the Raku object becomes invalid.
 
 Since: 3.10
 

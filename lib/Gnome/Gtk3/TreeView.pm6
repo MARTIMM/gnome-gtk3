@@ -2457,30 +2457,20 @@ Also here, the types of positional arguments in the signal handler are important
 =comment #TS:0:row-activated:
 =head3 row-activated
 
-The "row-activated" signal is emitted when the method
-C<gtk_tree_view_row_activated()> is called, when the user double
-clicks a treeview row with the "activate-on-single-click"
-property set to C<0>, or when the user single clicks a row when
-the "activate-on-single-click" property set to C<1>. It is also
-emitted when a non-editable row is selected and one of the keys:
-Space, Shift+Space, Return or Enter is pressed.
+The "row-activated" signal is emitted when the method C<gtk_tree_view_row_activated()> is called, when the user double clicks a treeview row with the "activate-on-single-click" property set to C<0>, or when the user single clicks a row when the "activate-on-single-click" property set to C<1>. It is also emitted when a non-editable row is selected and one of the keys: Space, Shift+Space, Return or Enter is pressed.
 
-For selection handling refer to the
-[tree widget conceptual overview][TreeWidget]
-as well as B<Gnome::Gtk3::TreeSelection>.
+For selection handling refer to the [tree widget conceptual overview][TreeWidget] as well as B<Gnome::Gtk3::TreeSelection>.
 
   method handler (
-    Unknown type GTK_TYPE_TREE_PATH $path,
-    Unknown type GTK_TYPE_TREE_VIEW_COLUMN $column,
+    N-GtkTreePath $path,
+    N-GObject $column,
     Gnome::GObject::Object :widget($tree_view),
     *%user-options
   );
 
 =item $tree_view; the object on which the signal is emitted
-
-=item $path; the B<Gnome::Gtk3::TreePath> for the activated row
-
-=item $column; the B<Gnome::Gtk3::TreeViewColumn> in which the activation occurred
+=item $path; the native B<Gnome::Gtk3::TreePath> for the activated row
+=item $column; the native B<Gnome::Gtk3::TreeViewColumn> in which the activation occurred
 
 
 =comment #TS:0:test-expand-row:
@@ -2492,19 +2482,16 @@ signal if you need to control the expandability of individual rows.
 Returns: C<0> to allow expansion, C<1> to reject
 
   method handler (
-    Unknown type GTK_TYPE_TREE_ITER $iter,
-    Unknown type GTK_TYPE_TREE_PATH $path,
+    N-GtkTreeIter $iter,
+    N-GtkTreePath $path,
     Gnome::GObject::Object :widget($tree_view),
     *%user-options
     --> Int
   );
 
 =item $tree_view; the object on which the signal is emitted
-
-=item $iter; the tree iter of the row to expand
-
-=item $path; a tree path that points to the row
-
+=item N-GtkTreeIter $iter; the native B<Gnome::Gtk3::TreeIter> of the row to expand
+=item N-GtkTreePath $path; the native B<Gnome::Gtk3::TreePath> that points to the row
 
 =comment #TS:0:test-collapse-row:
 =head3 test-collapse-row
@@ -2515,17 +2502,15 @@ signal if you need to control the collapsibility of individual rows.
 Returns: C<0> to allow collapsing, C<1> to reject
 
   method handler (
-    Unknown type GTK_TYPE_TREE_ITER $iter,
-    Unknown type GTK_TYPE_TREE_PATH $path,
+    N-GtkTreeIter $iter,
+    N-GtkTreePath $path,
     Gnome::GObject::Object :widget($tree_view),
     *%user-options
     --> Int
   );
 
 =item $tree_view; the object on which the signal is emitted
-
 =item $iter; the tree iter of the row to collapse
-
 =item $path; a tree path that points to the row
 
 
@@ -2535,16 +2520,14 @@ Returns: C<0> to allow collapsing, C<1> to reject
 The given row has been expanded (child nodes are shown).
 
   method handler (
-    Unknown type GTK_TYPE_TREE_ITER $iter,
-    Unknown type GTK_TYPE_TREE_PATH $path,
+    N-GtkTreeIter $iter,
+    N-GtkTreePath $path,
     Gnome::GObject::Object :widget($tree_view),
     *%user-options
   );
 
 =item $tree_view; the object on which the signal is emitted
-
 =item $iter; the tree iter of the expanded row
-
 =item $path; a tree path that points to the row
 
 
@@ -2554,16 +2537,14 @@ The given row has been expanded (child nodes are shown).
 The given row has been collapsed (child nodes are hidden).
 
   method handler (
-    Unknown type GTK_TYPE_TREE_ITER $iter,
-    Unknown type GTK_TYPE_TREE_PATH $path,
+    N-GtkTreeIter $iter,
+    N-GtkTreePath $path,
     Gnome::GObject::Object :widget($tree_view),
     *%user-options
   );
 
 =item $tree_view; the object on which the signal is emitted
-
 =item $iter; the tree iter of the collapsed row
-
 =item $path; a tree path that points to the row
 
 
@@ -2592,7 +2573,7 @@ The position of the cursor (focused cell) has changed.
 
 =item $tree_view; the object on which the signal is emitted
 
-
+=begin comment
 =comment #TS:0:move-cursor:
 =head3 move-cursor
 
@@ -2621,8 +2602,9 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =item $step; the granularity of the move, as a
 
 =item $direction; the direction to move: +1 to move forwards;
+=end comment
 
-
+=begin comment
 =comment #TS:0:select-all:
 =head3 select-all
 
@@ -2707,6 +2689,7 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
   );
 
 =item $treeview;
+=end comment
 
 =end pod
 
@@ -2880,9 +2863,7 @@ The B<Gnome::GObject::Value> type of property I<tooltip-column> is C<G_TYPE_INT>
 =comment #TP:0:activate-on-single-click:
 =head3 Activate on Single Click
 
-
-The activate-on-single-click property specifies whether the "row-activated" signal
-will be emitted after a single click.
+The activate-on-single-click property specifies whether the "row-activated" signal will be emitted after a single click.
 Since: 3.8
 
 The B<Gnome::GObject::Value> type of property I<activate-on-single-click> is C<G_TYPE_BOOLEAN>.

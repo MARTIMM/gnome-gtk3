@@ -820,17 +820,17 @@ The "row-activated" signal is emitted when the method `gtk_tree_view_row_activat
 For selection handling refer to the [tree widget conceptual overview][TreeWidget] as well as **Gnome::Gtk3::TreeSelection**.
 
     method handler (
-      Unknown type GTK_TYPE_TREE_PATH $path,
-      Unknown type GTK_TYPE_TREE_VIEW_COLUMN $column,
+      N-GtkTreePath $path,
+      N-GObject $column,
       Gnome::GObject::Object :widget($tree_view),
       *%user-options
     );
 
   * $tree_view; the object on which the signal is emitted
 
-  * $path; the **Gnome::Gtk3::TreePath** for the activated row
+  * $path; the native **Gnome::Gtk3::TreePath** for the activated row
 
-  * $column; the **Gnome::Gtk3::TreeViewColumn** in which the activation occurred
+  * $column; the native **Gnome::Gtk3::TreeViewColumn** in which the activation occurred
 
 ### test-expand-row
 
@@ -839,8 +839,8 @@ The given row is about to be expanded (show its children nodes). Use this signal
 Returns: `0` to allow expansion, `1` to reject
 
     method handler (
-      Unknown type GTK_TYPE_TREE_ITER $iter,
-      Unknown type GTK_TYPE_TREE_PATH $path,
+      N-GtkTreeIter $iter,
+      N-GtkTreePath $path,
       Gnome::GObject::Object :widget($tree_view),
       *%user-options
       --> Int
@@ -848,9 +848,9 @@ Returns: `0` to allow expansion, `1` to reject
 
   * $tree_view; the object on which the signal is emitted
 
-  * $iter; the tree iter of the row to expand
+  * N-GtkTreeIter $iter; the native **Gnome::Gtk3::TreeIter** of the row to expand
 
-  * $path; a tree path that points to the row
+  * N-GtkTreePath $path; the native **Gnome::Gtk3::TreePath** that points to the row
 
 ### test-collapse-row
 
@@ -859,8 +859,8 @@ The given row is about to be collapsed (hide its children nodes). Use this signa
 Returns: `0` to allow collapsing, `1` to reject
 
     method handler (
-      Unknown type GTK_TYPE_TREE_ITER $iter,
-      Unknown type GTK_TYPE_TREE_PATH $path,
+      N-GtkTreeIter $iter,
+      N-GtkTreePath $path,
       Gnome::GObject::Object :widget($tree_view),
       *%user-options
       --> Int
@@ -877,8 +877,8 @@ Returns: `0` to allow collapsing, `1` to reject
 The given row has been expanded (child nodes are shown).
 
     method handler (
-      Unknown type GTK_TYPE_TREE_ITER $iter,
-      Unknown type GTK_TYPE_TREE_PATH $path,
+      N-GtkTreeIter $iter,
+      N-GtkTreePath $path,
       Gnome::GObject::Object :widget($tree_view),
       *%user-options
     );
@@ -894,8 +894,8 @@ The given row has been expanded (child nodes are shown).
 The given row has been collapsed (child nodes are hidden).
 
     method handler (
-      Unknown type GTK_TYPE_TREE_ITER $iter,
-      Unknown type GTK_TYPE_TREE_PATH $path,
+      N-GtkTreeIter $iter,
+      N-GtkTreePath $path,
       Gnome::GObject::Object :widget($tree_view),
       *%user-options
     );
@@ -927,110 +927,6 @@ The position of the cursor (focused cell) has changed.
     );
 
   * $tree_view; the object on which the signal is emitted
-
-### move-cursor
-
-The *move-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user presses one of the cursor keys.
-
-Applications should not connect to it, but may emit it with `g_signal_emit_by_name()` if they need to control the cursor programmatically. In contrast to `gtk_tree_view_set_cursor()` and `gtk_tree_view_set_cursor_on_cell()` when moving horizontally *move-cursor* does not reset the current selection.
-
-Returns: `1` if *step* is supported, `0` otherwise.
-
-    method handler (
-      Unknown type GTK_TYPE_MOVEMENT_STEP $step,
-      Int $direction,
-      Gnome::GObject::Object :widget($tree_view),
-      *%user-options
-      --> Int
-    );
-
-  * $tree_view; the object on which the signal is emitted.
-
-  * $step; the granularity of the move, as a
-
-  * $direction; the direction to move: +1 to move forwards;
-
-### select-all
-
-    method handler (
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-### unselect-all
-
-    method handler (
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-### select-cursor-row
-
-    method handler (
-      Int $int,
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-  * $int;
-
-### toggle-cursor-row
-
-    method handler (
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-### expand-collapse-cursor-row
-
-    method handler (
-      Int $int,
-      Int $int,
-      Int $int,
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-  * $int;
-
-  * $int;
-
-  * $int;
-
-### select-cursor-parent
-
-    method handler (
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
-
-### start-interactive-search
-
-    method handler (
-      Gnome::GObject::Object :widget($treeview),
-      *%user-options
-      --> Int
-    );
-
-  * $treeview;
 
 Properties
 ==========

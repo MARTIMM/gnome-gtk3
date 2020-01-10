@@ -2,6 +2,9 @@
 
 <!--TODO CHANGES.md to change-log-data.yml converter or vise versa-->
 
+**Note that this file is not maintained at the moment. Need to make copies from site document**
+
+
 * 2019-06-07 0.16.0
   * Added new enums GtkAlign
 

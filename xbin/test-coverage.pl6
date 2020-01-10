@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 use JSON::Fast;
@@ -7,7 +7,7 @@ use JSON::Fast;
 sub MAIN ( *@modules ) {
 
   # load the coverage admin data.
-  my Str $test-coverage-config = "$*HOME/Languages/Perl6/Projects/perl6-gnome-gtk3/docs/_data/testCoverage.json";
+  my Str $test-coverage-config = "$*HOME/Languages/Perl6/Projects/gnome-gtk3/docs/_data/testCoverage.json";
   my %test-coverage = %();
   %test-coverage = from-json($test-coverage-config.IO.slurp // '')
     if $test-coverage-config.IO.r;
@@ -92,7 +92,7 @@ sub MAIN ( *@modules ) {
 }
 
 #-------------------------------------------------------------------------------
-# find all perl6 modules from command line or recursivly from dirs
+# find all Raku modules from command line or recursivly from dirs
 sub find-modules ( *@modules ) {
   for @modules -> Str $m {
     if $m.IO.d {
@@ -108,7 +108,7 @@ sub find-modules ( *@modules ) {
     }
 
     else {
-      note "$m is not a perl6 module";
+      note "$m is not a Raku module";
     }
   }
 }

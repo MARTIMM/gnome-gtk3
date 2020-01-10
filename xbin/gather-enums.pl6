@@ -1,12 +1,12 @@
 use v6;
 
 my @dir-roots = <
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/lib
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gtk3/xt/NewModules
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gdk3/lib
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-gobject/lib
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-glib/lib
-  /home/marcel/Languages/Perl6/Projects/perl6-gnome-native/lib
+  /home/marcel/Languages/Perl6/Projects/gnome-gtk3/lib
+  /home/marcel/Languages/Perl6/Projects/gnome-gtk3/xt/NewModules
+  /home/marcel/Languages/Perl6/Projects/gnome-gdk3/lib
+  /home/marcel/Languages/Perl6/Projects/gnome-gobject/lib
+  /home/marcel/Languages/Perl6/Projects/gnome-glib/lib
+  /home/marcel/Languages/Perl6/Projects/gnome-native/lib
   >;
 
 my @enum-list = ();
