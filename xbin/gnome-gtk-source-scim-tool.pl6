@@ -23,7 +23,8 @@ my @gdkpixbufdirlist = ();
 my @gdkdirlist = ();
 my @gobjectdirlist = ();
 my @glibdirlist = ();
-my @giodirlist = ();
+my @pangodirlist = ();
+#my @giodirlist = ();
 
 my @enum-list = ();
 
@@ -134,7 +135,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   # get all subroutines starting with 'GDK_AVAILABLE_IN_ALL' or
   # 'GDK_AVAILABLE_IN_\d_\d' version spec. subroutines starting with
   # 'GDK_DEPRECATED_IN_' are ignored.
-  $include-content ~~ m:g/^^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
+  $include-content ~~ m:g/^^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB' ||
+                              'PANGO']
                              '_AVAILABLE_IN_' <-[;]>+ ';'
                          /;
   my List $results = $/[*];
@@ -155,7 +157,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/ \s* 'G_GNUC_WARN_UNUSED_RESULT' \s* //;
 
     # remove prefix and tidy up a bit
-    $declaration ~~ s/^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
+    $declaration ~~ s/^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB' || 'PANGO']
                         '_AVAILABLE_IN_' .*?  \n
                     //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
@@ -483,6 +485,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GError' if $type ~~ m/GError/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
+  $type = 'N-PangoItem' if $type ~~ m/PangoItem/;
+
 #  $type = 'int32' if $type ~~ m/GType/;
   $type = 'uint64' if $type ~~ m/GType/;
 
@@ -550,7 +554,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 #-------------------------------------------------------------------------------
 sub setup-names ( Str:D $base-sub-name --> List ) {
   my Str $include-file = $base-sub-name;
-  if $include-file ~~ m/ 'gdk_pixbuf' / {
+  if $include-file ~~ m/ 'gdk_pixbuf' || 'pango' / {
     $include-file ~~ s:g/ '_' /-/;
   }
 
@@ -558,7 +562,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     $include-file ~~ s:g/ '_' //;
   }
 
-  my @parts = $base-sub-name.split('_');
+  my @parts = $base-sub-name.split(/<[_-]>/);
   my Str $lib-class = @parts>>.tc.join;
 
   my Str $raku-class = @parts[1..*-1]>>.tc.join;
@@ -601,6 +605,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     "$source-root/gtk+-3.22.0/gdk",
     "$source-root/glib-2.60.0/glib",
     "$source-root/glib-2.60.0/gobject",
+    "$source-root/pango-1.42.4/pango",
   );
 
   my Str ( $include-content, $source-content) = ( '', '');
@@ -645,6 +650,11 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
         when / 'glib-2.60.0/gobject' / {
           $library = "&gobject-lib";
           $raku-lib-name = 'GObject';
+        }
+
+        when / 'pango-1.42.4/pango' / {
+          $library = "&pango-lib";
+          $raku-lib-name = 'Pango';
         }
 
 #        when $gio-path {
@@ -699,7 +709,11 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
       $is-n-gobject = $type-name ~~ any(|@glibdirlist);
       $is-n-gobject = $type-name ~~ any(|@gobjectdirlist) unless $is-n-gobject;
-      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
+#      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
+    }
+
+    when /^ 'pango' / {
+      $is-n-gobject = $type-name ~~ any(|@pangodirlist);
     }
   }
 
@@ -709,13 +723,15 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #-------------------------------------------------------------------------------
 sub load-dir-lists ( ) {
 
-  my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/gnome-gtk3';
+  my Str $root-dir = '/home/marcel/Languages/Raku/Projects/gnome-gtk3';
   @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
   @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
   @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
   @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
 #  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
+
+  @pangodirlist = "$root-dir/Design-docs/pango-list.txt".IO.slurp.lines;
 
   @enum-list = "$root-dir/Design-docs/scim-tool-enum-list".IO.slurp.lines;
 }
