@@ -7,19 +7,18 @@ layout: sidebar
 ---
 
 ## TODO list of things
-* [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
-  * [ ] Study ref/unref of gtk objects.
 
+#### Study
+* [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
+* [ ] Study Pango and Cairo.
+
+#### Rewriting code
 * [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   ```
   In other packages `gtk_` can be `g_` or `gdk_`.
-  * [x] glib
-  * [x] gobject
-  * [x] gdk
-  * [x] gtk
 
 * [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left of the sub name when used. So the above tests becomes;
   ```
@@ -28,10 +27,7 @@ layout: sidebar
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   ```
   Also here, in other packages `gtk_` can be `g_` or `gdk_`.
-  * [x] glib
-  * [x] gobject
-  * [x] gdk
-  * [x] gtk
+
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
   * Find the short named subs which are also defined in Any or Mu. Add a method to catch the call before the one of **Any** or **Mu**.
     * [ ] append
@@ -43,36 +39,79 @@ layout: sidebar
 
 * Make some of the routines in several packages the same.
   * `.clear-object()`: A clear function which calls some free function -> toggles the valid flag
-    * [ ] Gnome::Glib::Error
-    * [ ] Gnome::Glib::List
-    * [ ] Gnome::Glib::SList
-    * [ ] Gnome::GObject::Valid
+  * usage of the above
+    * [ ] `Gnome::Gdk3::*`
+    * [ ] `Gnome::Glib::*`
+    * [ ] `Gnome::GObject::*`
+    * [ ] `Gnome::Gtk3::*`
+    * [x] `Gnome::Pango::*`
 
-  * `.set-native-object()`
-    * [x] Gnome::GObject::Boxed. `.native-gboxed()` method is deprecated.
-    * [x] Gnome::GObject::Valid
-    * [x] Gnome::GObject::Object
+  * `.set-native-object()` and `.get-native-object()`.
+    * [x] **Gnome::GObject::Boxed**. `.native-gboxed()` method is deprecated.
+    * usage of the above
+      * [ ] `Gnome::Gdk3::*` modified
+      * [ ] `Gnome::Glib::*` modified
+      * [x] `Gnome::GObject::*` modified
+      * [ ] `Gnome::Gtk3::*` modified
+      * [x] `Gnome::Pango::*` modified
 
-  * `.get-native-object()`
-    * [x] Gnome::GObject::Boxed `.get-native-gboxed()` method is deprecated.
-    * [x] Gnome::GObject::Valid
-    * [x] Gnome::GObject::Object
+    * [ ] **Gnome::GObject::Object**. `.native-gobject()` method is deprecated.
+    * usage of the above
+      * [ ] `Gnome::Gdk3::*` modified
+      * [ ] `Gnome::Glib::*` modified
+      * [ ] `Gnome::GObject::*` modified
+      * [ ] `Gnome::Gtk3::*` modified
+      * [x] `Gnome::Pango::*` modified
 
   * `.is-valid()`: A boolean test to check if a native object is valid
+    * [x] Gnome::GObject::Boxed
     * [ ] Gnome::GObject::Object
-    * [ ] Gnome::GObject::Boxed
-    * [ ] Gnome::GObject::Valid
+    * [x] Gnome::GObject::Value `.value-is-valid()` method is deprecated.
+    * [ ] Gnome::Glib::Error `.error-is-valid()` method is deprecated.
+    * [ ] Gnome::Glib::List `.list-is-valid()` method is deprecated.
+    * [ ] Gnome::Glib::SList `.gslist-is-valid()` method is deprecated.
+
+    * usage of the above
+      * [ ] `Gnome::Gdk3::*` modified
+      * [ ] `Gnome::Glib::*` modified
+      * [ ] `Gnome::GObject::*` modified
+      * [ ] `Gnome::Gtk3::*` modified
+      * [x] `Gnome::Pango::*` modified
+
 <!--
     * [ ] Gnome::GObject::
     * [ ] Gnome::GObject::
 -->
 
-  * `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if object is still valid.
-    * [ ] Gnome::Glib::Error
-    * [ ] Gnome::GObject::Object
-    * [ ] Gnome::GObject::Boxed
+* `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid.
 
-* [ ] Make some of the named arguments to new() the same. We now have :widget, :object, :tree-iter etcetera while the value for these attributes are native objects. Rename these to :native-object. It's more clear. The type for it can differ but will not pose a problem.
+  * Standalone classes. A DESTROY method must be declared.
+    * [ ] Gnome::Glib::Error
+    * [ ] Gnome::Glib::List
+    * [ ] Gnome::Glib::SList
+    * [ ] Gnome::GObject::Value
+
+  * Top class is **Gnome::GObject::Boxed**. Classes inheriting from Boxed must define a DESTROY method when native objects must be cleared
+    * [ ] `Gnome::Gtk3::*`
+    * [x] `Gnome::Pango::*`
+
+  * Interface Roles. Roles do not have to specify a DESTROY method unless there are local native objects defined which will be unlikely.
+
+  * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
+
+* Make some of the named arguments to new() the same. We now have :widget, :object, :tree-iter etcetera while the value for these attributes are native objects. Rename these to :native-object. It's more clear. The type for it can differ but will not pose a problem.
+  * Translate :widget, :object etc to :native-object
+    * [ ] Gnome::Gdk3::*
+    * [ ] Gnome::Glib::*
+    * [ ] Gnome::GObject::*
+    * [ ] Gnome::Gtk3::*
+    * [x] Gnome::Pango::*
+  * Drop the use of :empty. Instead an argumentless call should be sufficient.
+    * [ ] Gnome::Gdk3::*
+    * [ ] Gnome::Glib::*
+    * [ ] Gnome::GObject::*
+    * [ ] Gnome::Gtk3::*
+    * [x] Gnome::Pango::*
 
 * [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
@@ -80,37 +119,46 @@ layout: sidebar
 
 * [ ] Many methods return native objects. this could be molded into Raku objects when possible.
 
-* [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object.
+* [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object. Now there are several ways implemented using named arguments on the BUILD() submethod.
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
 
 * [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO entry mentioned above will not help keeping the sub a sub. This might not be needed because I found other ways to keep the sub version.
 
-* There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** comments because the github pages understand **{{...}}** to substitute variables.
+
+#### Documentation
+* There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
 
   * Documentation
+    * [ ] **Gnome::Gdk3**.
     * [ ] **Gnome::Glib**.
     * [ ] **Gnome::GObject**.
-    * [ ] **Gnome::Gdk3**.
     * [ ] **Gnome::Gtk3**.
     * [ ] **Gnome::Gtk3::Glade**.
-  * Tests
-    * **Gnome::Glib**
-      * [ ] subs
-      * [ ] signals
-      * [ ] properties
-    * **Gnome::GObject**
-      * [ ] subs
-      * [ ] signals
-      * [ ] properties
-    * **Gnome::Gdk3**
-      * [ ] subs
-      * [ ] signals
-      * [ ] properties
-    * **Gnome::Gtk3**
-      * [ ] subs
-      * [ ] signals
-      * [ ] properties
+    * [ ] **Gnome::Pango**.
+
+#### Test coverage
+
+* **Gnome::Gdk3**
+  * [ ] subs
+  * [ ] signals
+  * [ ] properties
+* **Gnome::Glib**
+  * [ ] subs
+  * [ ] signals
+  * [ ] properties
+* **Gnome::GObject**
+  * [ ] subs
+  * [ ] signals
+  * [ ] properties
+* **Gnome::Gtk3**
+  * [ ] subs
+  * [ ] signals
+  * [ ] properties
+* **Gnome::Pango**
+  * [ ] subs
+  * [ ] signals
+  * [ ] properties
 
 * Add necessary packages. I am not sure if the Gio and Atk packages are useful additions. Also Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
   * [ ] **Gnome::Atk**. Accessibility toolkit to implement support for screen readers and other tools.
@@ -119,3 +167,7 @@ layout: sidebar
   * [ ] **Gnome::Pango**. International text rendering with full Unicode support.
   * [ ] **Gnome::Clutter**. Animations and scene graph.
   * [ ] **Gnome::WebKit**. HTML5 web page rendering.
+
+#### Site changes.
+  * [ ] Reference pages have two section shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
+  * [ ] In the sidebar of the reference section, the doc and test icons should be replace by one icon. Pressing on it should show a table with test coverage and documentation status. It can also show issues perhaps.
