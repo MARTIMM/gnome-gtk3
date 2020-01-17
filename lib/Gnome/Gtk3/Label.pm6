@@ -272,7 +272,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif %options<label>.defined {
-    note "{self.^name()}.new\(): Deprecated use of :\$label, please use :\$text";
+    Gnome::N::deprecate( 'new(:label)', 'new(:text)', '0.19.0', '0.23.0');
     self.native-gobject(gtk_label_new(%options<label>));
   }
 

@@ -292,8 +292,11 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TODO check if these are needed
-multi method add-gui ( Str:D :$filename! )
-  is DEPRECATED('gtk_builder_add_from_file') {
+multi method add-gui ( Str:D :$filename! ) {
+
+  Gnome::N::deprecate(
+    '.add-gui(:filename)', '.gtk_builder_add_from_file()', '0.18.4', '0.22.0'
+  );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_file(
     self.get-native-gobject, $filename
@@ -302,8 +305,11 @@ multi method add-gui ( Str:D :$filename! )
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-multi method add-gui ( Str:D :$string! )
-  is DEPRECATED('gtk_builder_add_from_string') {
+multi method add-gui ( Str:D :$string! ) {
+
+  Gnome::N::deprecate(
+    '.add-gui(:string)', '.gtk_builder_add_from_string()', '0.18.4', '0.22.0'
+  );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_string(
     self.get-native-gobject, $string);
@@ -393,10 +399,10 @@ proto gtk_builder_add_from_file ( N-GObject $builder, Str $filename, |) { * }
 multi sub gtk_builder_add_from_file (
   N-GObject $builder, Str $filename, Any $error
   --> uint32
-) is DEPRECATED('other multi version of gtk_builder_add_from_file') {
-#  DEPRECATED(
-#    'other multi version of gtk_builder_add_from_file', '0.17.10', '0.22.0'
-#  );
+) {
+  Gnome::N::deprecate(
+    '.gtk_builder_add_from_file( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_file( N-GObject, Str)', '0.17.10', '0.22.0'
+  );
 
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_file( $builder, $filename, $ga)
@@ -472,10 +478,11 @@ proto gtk_builder_add_from_string ( N-GObject $builder, Str $buffer, |) { * }
 multi sub gtk_builder_add_from_string (
   N-GObject $builder, Str $buffer, Int $length, Any $error
   --> uint32
-) is DEPRECATED('other multi version of gtk_builder_add_from_string') {
-#  DEPRECATED(
-#    'other multi version of gtk_builder_add_from_string', '0.17.10', '0.22.0'
-#  );
+) {
+
+  Gnome::N::deprecate(
+    '.gtk_builder_add_from_string( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_string( N-GObject, Str)', '0.17.10', '0.22.0'
+  );
 
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_string( $builder, $buffer, $length, $ga)
