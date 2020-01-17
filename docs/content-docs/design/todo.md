@@ -99,19 +99,24 @@ layout: sidebar
 
   * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
 
-* Make some of the named arguments to new() the same. We now have :widget, :object, :tree-iter etcetera while the value for these attributes are native objects. Rename these to :native-object. It's more clear. The type for it can differ but will not pose a problem.
-  * Translate :widget, :object etc to :native-object
-    * [ ] Gnome::Gdk3::*
-    * [ ] Gnome::Glib::*
-    * [ ] Gnome::GObject::*
-    * [ ] Gnome::Gtk3::*
-    * [x] Gnome::Pango::*
+* Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
+  * Translate `:widget`, `:object` etc to `:native-object`
+    * [ ] **Gnome::GObject::Object** Modify the test for `:widget`
+    * [ ] `Gnome::Gdk3::*` Modify the use for `:widget`
+    * [ ] `Gnome::Glib::*`
+    * [ ] `Gnome::GObject::*`
+    * [ ] `Gnome::Gtk3::*` Modify the use for `:widget`
+    * [x] `Gnome::Pango::*` Never implemented that way
   * Drop the use of :empty. Instead an argumentless call should be sufficient.
-    * [ ] Gnome::Gdk3::*
-    * [ ] Gnome::Glib::*
-    * [ ] Gnome::GObject::*
-    * [ ] Gnome::Gtk3::*
-    * [x] Gnome::Pango::*
+    * [ ] **Gnome::GObject::Object** Remove test of empty options hash
+    * [x] **Gnome::GObject::Boxed** Remove test of empty options hash
+
+    * [ ] `Gnome::GObject::*`
+    * [ ] `Gnome::Gdk3::*`
+    * [ ] `Gnome::Glib::*`
+    * [ ] `Gnome::GObject::*`
+    * [ ] `Gnome::Gtk3::*`
+    * [x] `Gnome::Pango::*` Never implemented that way
 
 * [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
@@ -129,7 +134,7 @@ layout: sidebar
 #### Documentation
 * There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
 
-  * Documentation
+  * Complete documentation and C-Quirks left from the generated output.
     * [ ] **Gnome::Gdk3**.
     * [ ] **Gnome::Glib**.
     * [ ] **Gnome::GObject**.
@@ -169,5 +174,29 @@ layout: sidebar
   * [ ] **Gnome::WebKit**. HTML5 web page rendering.
 
 #### Site changes.
-  * [ ] Reference pages have two section shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
-  * [ ] In the sidebar of the reference section, the doc and test icons should be replace by one icon. Pressing on it should show a table with test coverage and documentation status. It can also show issues perhaps.
+* [ ] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
+
+* [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
+
+* Add more tutorials
+  * [x] Find material of other tutorials and books in other programming languages.
+
+  Change 'Getting Started' into a shorter page
+  * Top level widgets and containers
+    * [ ] Window
+    * [ ] Dialogs
+    * [ ] Grid
+
+  * Controls
+    * [ ] Buttons
+
+  * Display
+    * [ ] Labels
+
+  * Lists
+    * [ ] ListBox
+    * [ ] TreeView
+
+* Add more examples
+  * [ ] Configuration editor
+  * [ ] Simple calculator
