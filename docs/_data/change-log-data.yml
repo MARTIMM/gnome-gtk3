@@ -2,6 +2,7 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   # remove some deprecated methods in Builder at version 0.22.0
+  # remove deprecated option in Label at version 0.24.0
   - 2020-01-10 0.21.2:
     - Repo renaming. All perl6-gnome-* packages renamed to 'gnome-*'.
     - All texts Perl\s*6 or p6 is renamed to Raku or raku depending on use.
