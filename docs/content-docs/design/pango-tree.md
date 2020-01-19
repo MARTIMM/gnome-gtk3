@@ -22,7 +22,7 @@ GObject                                               Gnome::GObject::Object
 │       ╰── PangoXftFontMap
 ├── PangoRenderer
 │   ╰── PangoXftRenderer
-├── PangoContext
+├── PangoContext                                      Context
 ├── PangoCoverage
 ├─✗ PangoEngine
 │   ├─✗ PangoEngineLang
@@ -31,15 +31,15 @@ GObject                                               Gnome::GObject::Object
 ├── PangoFontFace
 ├── PangoFontFamily
 ├── PangoFontset
-├── PangoLayout
+├── PangoLayout                                       Layout
 ├─✗ PangoOTInfo
 ╰─✗ PangoOTRuleset
 
-GInterface                                           Modules are defined as Roles
+GInterface                                            Modules are defined as Roles
 ├── PangoCairoFont
 ╰── PangoCairoFontMap
 
-GEnum                                                Gnome::GObject::Enums
+GEnum                                                 Gnome::GObject::Enums
 ├── PangoAlignment
 ├── PangoAttrType
 ├── PangoBidiType

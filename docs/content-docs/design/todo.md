@@ -47,20 +47,21 @@ layout: sidebar
     * [x] `Gnome::Pango::*`
 
   * `.set-native-object()` and `.get-native-object()`.
-    * [x] **Gnome::GObject::Boxed**. `.native-gboxed()` method is deprecated.
+    * [x] **Gnome::GObject::Boxed**. Old methods are deprecated.
     * usage of the above
-      * [ ] `Gnome::Gdk3::*` modified
-      * [ ] `Gnome::Glib::*` modified
+      * [x] `Gnome::Gdk3::*` modified
+      * [x] `Gnome::Glib::*` modified
       * [x] `Gnome::GObject::*` modified
-      * [ ] `Gnome::Gtk3::*` modified
+      * [x] `Gnome::Gtk3::*` modified
       * [x] `Gnome::Pango::*` modified
 
-    * [ ] **Gnome::GObject::Object**. `.native-gobject()` method is deprecated.
+    * [x] **Gnome::Glib::Option**. Old methods are removed.
+    * [x] **Gnome::GObject::Object**. Old methods are deprecated.
     * usage of the above
-      * [ ] `Gnome::Gdk3::*` modified
-      * [ ] `Gnome::Glib::*` modified
-      * [ ] `Gnome::GObject::*` modified
-      * [ ] `Gnome::Gtk3::*` modified
+      * [x] `Gnome::Gdk3::*` modified
+      * [x] `Gnome::Glib::*` modified
+      * [x] `Gnome::GObject::*` modified
+      * [x] `Gnome::Gtk3::*` modified
       * [x] `Gnome::Pango::*` modified
 
   * `.is-valid()`: A boolean test to check if a native object is valid
@@ -99,14 +100,15 @@ layout: sidebar
 
   * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
 
-* Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
-  * Translate `:widget`, `:object` etc to `:native-object`
-    * [ ] **Gnome::GObject::Object** Modify the test for `:widget`
-    * [ ] `Gnome::Gdk3::*` Modify the use for `:widget`
-    * [ ] `Gnome::Glib::*`
-    * [ ] `Gnome::GObject::*`
+* Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` et cetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
+  * Translate `:widget`, `:object` etc. to `:native-object`
+    * [x] **Gnome::GObject::Object** Modify the test for `:widget`
+    * [x] `Gnome::Gdk3::*` Modify the use for `:widget`
+    * [x] `Gnome::Glib::*`
+    * [x] `Gnome::GObject::*`
     * [ ] `Gnome::Gtk3::*` Modify the use for `:widget`
     * [x] `Gnome::Pango::*` Never implemented that way
+
   * Drop the use of :empty. Instead an argumentless call should be sufficient.
     * [ ] **Gnome::GObject::Object** Remove test of empty options hash
     * [x] **Gnome::GObject::Boxed** Remove test of empty options hash
@@ -117,6 +119,8 @@ layout: sidebar
     * [ ] `Gnome::GObject::*`
     * [ ] `Gnome::Gtk3::*`
     * [x] `Gnome::Pango::*` Never implemented that way
+
+* I'm not sure if the named argument :$widget to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' inheriting from **Gnome::Gtk3::Widget**.
 
 * [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
@@ -189,11 +193,15 @@ layout: sidebar
 
   * Controls
     * [ ] Buttons
+    * [ ] Menus
+    * [ ] ComboxBox
 
   * Display
     * [ ] Labels
+    * [ ] LevelBar
 
-  * Lists
+  * Lists and Edit
+    * [ ] Entry
     * [ ] ListBox
     * [ ] TreeView
 
