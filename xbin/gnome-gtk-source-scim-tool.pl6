@@ -81,8 +81,8 @@ sub MAIN (
       my $class $m;
       #-------------------------------------------------------------------------------
       subtest 'ISA test', {
-        $m .= new(:empty);
-        isa-ok $m, $class, '.new(:empty)';
+        $m .= new;
+        isa-ok $m, $class, '.new()';
       }
 
       #`{{
@@ -695,6 +695,7 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
   my Bool $is-n-gobject = False;
   $type-name .= lc;
+#note "TN: $type-name";
 
   given $type-name {
     when /^ 'gtk' / {
@@ -713,7 +714,11 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
     }
 
     when /^ 'pango' / {
-      $is-n-gobject = $type-name ~~ any(|@pangodirlist);
+      state @modified-pangodirlist = map(
+        { .subst( / '-' /, ''); }, @pangodirlist
+      );
+
+      $is-n-gobject = $type-name ~~ any(|@modified-pangodirlist);
     }
   }
 
@@ -835,13 +840,13 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
-      Create a new plain object.
+      Create a new default object.
 
-        multi method new ( Bool :empty! )
+        multi method new ( )
 
       Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-        multi method new ( N-GObject :$widget! )
+        multi method new ( N-GObject :$native-object! )
 
       Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -850,35 +855,37 @@ sub substitute-in-template (
       =end pod
 
       #TM:0:new():inheriting
-      #TM:0:new(:empty):
-      #TM:0:new(:widget):
+      #TM:0:new():
+      #TM:0:new(:native-object):
       #TM:0:new(:build-id):
 
       submethod BUILD ( *%options ) {
 
       BUILD-ADD-SIGNALS
 
-        # prevent creating wrong widgets
+        # prevent creating wrong native-objects
         return unless self.^name eq 'Gnome::LIBRARYMODULE';
 
         # process all named arguments
-        if ? %options<empty> {
-          # self.native-gobject(BASE-SUBNAME_new());
-        }
-
-        elsif ? %options<widget> || %options<build-id> {
+        if ? %options<widget> || ? %options<native-object> ||
+           ? %options<build-id> {
           # provided in Gnome::GObject::Object
         }
 
         elsif %options.keys.elems {
           die X::Gnome.new(
-            :message('Unsupported options for ' ~ self.^name ~
-                     ': ' ~ %options.keys.join(', ')
+            :message('Unsupported, undefined or wrongly typed options for ' ~
+                     self.^name ~ ': ' ~ %options.keys.join(', ')
                     )
           );
         }
 
-        # only after creating the widget, the gtype is known
+        # create default object
+        else {
+          # self.set-native-object(BASE-SUBNAME_new());
+        }
+
+        # only after creating the native-object, the gtype is known
         self.set-class-info('LIBCLASSNAME');
       }
 
@@ -888,7 +895,7 @@ sub substitute-in-template (
 
         my Callable $s;
         try { $s = &::("BASE-SUBNAME_$native-sub"); };
-      # check for gtk_, gdk_ or g_ !!!
+      # check for gtk_, gdk_, g_, pango_, cairo_ !!!
         try { $s = &::("gtk_$native-sub"); } unless ?$s;
         try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
       #  $s = self._buildable_interface($native-sub) unless ?$s;
