@@ -162,7 +162,7 @@ Create a new tree view object using a model. This can be e.g. a B<Gnome::Gtk3::L
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -172,7 +172,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new(:empty):
 #TM:1:new(:model):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 submethod BUILD ( *%options ) {
 
@@ -186,22 +186,22 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeView';
 
   # process all named arguments
   if %options<empty>:exists {
-    self.native-gobject(gtk_tree_view_new());
+    self.set-native-object(gtk_tree_view_new());
   }
 
   # process all named arguments
   elsif ? %options<model> {
     my $model = %options<model>;
-    $model = $model.get-native-gobject if $model.^name ~~ m/'Gnome::Gtk3'/;
-    self.native-gobject(gtk_tree_view_new_with_model($model));
+    $model = $model.get-native-object if $model.^name ~~ m/'Gnome::Gtk3'/;
+    self.set-native-object(gtk_tree_view_new_with_model($model));
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -213,7 +213,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeView');
 }
 
@@ -554,7 +554,7 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
 
     @attrs.push: $insert;
     @attrs.push: $title;
-    @attrs.push: $renderer.get-native-gobject;
+    @attrs.push: $renderer.get-native-object;
   }
 
   # end list with 0
@@ -567,7 +567,7 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
   );
 
 note "S: ", $signature.perl;
-note "A: ", (self.get-native-gobject, |@attrs, 0).join(', ');
+note "A: ", (self.get-native-object, |@attrs, 0).join(', ');
 
   # get a pointer to the sub, then cast it to a sub with the proper
   # signature. after that, the sub can be called, returning a value.
@@ -576,7 +576,7 @@ note "A: ", (self.get-native-gobject, |@attrs, 0).join(', ');
   );
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( self.get-native-gobject, |@attrs, 0)
+  $f( self.get-native-object, |@attrs, 0)
 }
 
 #`{{

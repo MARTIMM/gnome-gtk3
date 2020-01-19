@@ -116,25 +116,26 @@ submethod BUILD ( *%options ) {
   #  # ... :type<signame>
   #) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::WidgetPath';
 
   # process all named arguments
   if ? %options<empty> {
-    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
-    self.native-gboxed(gtk_widget_path_new());
+    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+    self.set-native-object(gtk_widget_path_new());
     $!widgetpath-is-valid = True;
   }
 
+  #TODO widgetpath is a native-object
   elsif ? %options<widgetpath> {
-    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
-    self.native-gboxed(%options<widgetpath>);
+    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+    self.set-native-object(%options<widgetpath>);
     $!widgetpath-is-valid = %options<widgetpath>.defined;
   }
 
   elsif %options.keys.elems {
     # must clear because exception can be captured!
-    _gtk_widget_path_free(self.get-native-gboxed) if $!widgetpath-is-valid;
+    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     $!widgetpath-is-valid = False;
 
     die X::Gnome.new(
@@ -144,7 +145,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkWidgetPath');
 }
 
@@ -175,7 +176,7 @@ Clear the widget path and return native object to memory.
 =end pod
 
 method clear-widget-path ( ) {
-  _gtk_widget_path_free(self.get-native-gboxed);
+  _gtk_widget_path_free(self.get-native-object);
   $!widgetpath-is-valid = False;
 }
 

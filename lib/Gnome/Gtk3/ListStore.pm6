@@ -153,7 +153,7 @@ Create a new ListStore object with the given field types.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -162,7 +162,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new(:field-types):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -177,15 +177,15 @@ submethod BUILD ( *%options ) {
     self._add_tree_model_signal_types($?CLASS.^name);
   }
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ListStore';
 
   # process all named arguments
   if ? %options<field-types> {
-    self.native-gobject(gtk_list_store_new(|%options<field-types>));
+    self.set-native-object(gtk_list_store_new(|%options<field-types>));
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
     #TODO get types from columns
   }
@@ -198,7 +198,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkListStore');
 }
 
@@ -363,11 +363,11 @@ sub gtk_list_store_set_value (
   my $type = gtk_tree_model_get_column_type( $list_store, $column);
   given $type {
     when G_TYPE_OBJECT {
-      $v .= new( :$type, :value($value.get-native-gobject));
+      $v .= new( :$type, :value($value.get-native-object));
     }
 
     when G_TYPE_BOXED {
-      $v .=  new( :$type, :value($value.get-native-gboxed));
+      $v .=  new( :$type, :value($value.get-native-boxed));
     }
 
 #    when G_TYPE_POINTER { $p .= new(type => ); }
@@ -390,7 +390,7 @@ sub gtk_list_store_set_value (
   state $ptr = cglobal( &gtk-lib, 'gtk_list_store_set_value', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( $list_store, $iter, $column, $v.get-native-gboxed);
+  $f( $list_store, $iter, $column, $v.get-native-object);
 }
 
 #-------------------------------------------------------------------------------
@@ -429,8 +429,8 @@ sub gtk_list_store_set (
 
     @column-values.push: $c;
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-gobject; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-gboxed; }
+      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }
@@ -699,8 +699,8 @@ sub gtk_list_store_insert_with_values (
     # column value
     my $type = gtk_tree_model_get_column_type( $list_store, $c);
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-gobject; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-gboxed; }
+      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }

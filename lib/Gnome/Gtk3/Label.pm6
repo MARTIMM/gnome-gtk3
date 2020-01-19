@@ -240,7 +240,7 @@ Create a new object with mnemonic.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -251,7 +251,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:0:new():inheriting
 #TM:1:new(:text):
 #TM:1:new(:mnemonic):
-#TM:1:new(:widget):
+#TM:1:new(:native-object):
 #TM:1:new(:build-id):
 submethod BUILD ( *%options ) {
 
@@ -260,27 +260,27 @@ submethod BUILD ( *%options ) {
     :w1<populate-popup activate-link>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Label';
 
   if %options<text>.defined {
-    self.native-gobject(gtk_label_new(%options<text>));
+    self.set-native-object(gtk_label_new(%options<text>));
   }
 
   elsif %options<mnemonic>.defined {
-    self.native-gobject(gtk_label_new_with_mnemonic(%options<mnemonic>));
+    self.set-native-object(gtk_label_new_with_mnemonic(%options<mnemonic>));
   }
 
   elsif %options<label>.defined {
     Gnome::N::deprecate( 'new(:label)', 'new(:text)', '0.19.0', '0.23.0');
-    self.native-gobject(gtk_label_new(%options<label>));
+    self.set-native-object(gtk_label_new(%options<label>));
   }
 
   elsif ? %options<mnemonic> {
-    self.native-gobject(gtk_label_new_with_mnemonic(%options<mnemonic>));
+    self.set-native-object(gtk_label_new_with_mnemonic(%options<mnemonic>));
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -292,7 +292,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkLabel');
 }
 

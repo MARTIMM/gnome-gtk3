@@ -180,7 +180,7 @@ Create a GtkLevelBar object.
 
 Create a new GtkLevelBar with a specified range.
 
-  multi method new ( :$widget! )
+  multi method new ( :$native-object! )
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 
@@ -192,7 +192,7 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 
 #TM:1:new(:empty):
 #TM:0:new(:min, :max):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -201,20 +201,20 @@ submethod BUILD ( *%options ) {
     :w1<offset-changed>
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::LevelBar';
 
   if ? %options<empty> {
-    self.native-gobject(gtk_level_bar_new());
+    self.set-native-object(gtk_level_bar_new());
   }
 
   elsif ? %options<min> and ? %options<max> {
-    self.native-gobject(gtk_level_bar_new_for_interval(
+    self.set-native-object(gtk_level_bar_new_for_interval(
       %options<min>, %options<max>)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -226,7 +226,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkLevelBar');
 }
 

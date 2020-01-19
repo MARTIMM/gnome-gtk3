@@ -74,7 +74,7 @@ enum GtkStyleContextPrintFlags is export (
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
 #TM:1:new(:empty):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 
 =begin pod
 =head1 Methods
@@ -83,7 +83,7 @@ my Bool $signals-added = False;
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( N-GObject :$widget! )
+=head3 multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -95,14 +95,14 @@ submethod BUILD ( *%options ) {
     :w0<changed>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::StyleContext';
 
   if ? %options<empty> {
-    self.native-gobject(gtk_style_context_new());
+    self.set-native-object(gtk_style_context_new());
   }
 
-  elsif ? %options<widget> {
+  elsif ? %options<native-object> || ? %options<widget> {
     # provided in GObject
   }
 
@@ -114,7 +114,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkStyleContext');
 }
 

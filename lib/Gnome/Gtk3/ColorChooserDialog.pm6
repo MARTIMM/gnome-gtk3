@@ -75,7 +75,7 @@ Create a new object with a title. The transient $parent-window which may be C<An
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( Gnome::GObject::Object :$widget! )
+  multi method new ( Gnome::GObject::Object :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -84,7 +84,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new(:title,:parent-window):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -99,17 +99,17 @@ submethod BUILD ( *%options ) {
     self._add_color_chooser_signal_types($?CLASS.^name);
   }
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ColorChooserDialog';
 
   # process all named arguments
   if ? %options<title> {
-    self.native-gobject(gtk_color_chooser_dialog_new(
+    self.set-native-object(gtk_color_chooser_dialog_new(
       %options<title>, %options<parent-window>)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -121,7 +121,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkColorChooserDialog');
 }
 

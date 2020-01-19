@@ -136,7 +136,7 @@ Create a new plain object.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -161,10 +161,10 @@ submethod BUILD ( *%options ) {
 #`{{
   # process all named arguments
   if ? %options<empty> {
-    # self.native-gobject(gtk_cell_renderer_new());
+    # self.set-native-object(gtk_cell_renderer_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -177,7 +177,7 @@ submethod BUILD ( *%options ) {
   }
 }}
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkCellRenderer');
 }
 

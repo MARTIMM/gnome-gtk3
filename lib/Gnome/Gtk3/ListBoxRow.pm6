@@ -77,24 +77,24 @@ Create a new plain object.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 =end pod
 
 #TM:0:new(:empty):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ListBoxRow';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_list_box_row_new());
+    self.set-native-object(gtk_list_box_row_new());
   }
 
-  elsif ? %options<widget> {
+  elsif ? %options<native-object> || ? %options<widget> {
     # provided in Gnome::GObject::Object
   }
 
@@ -106,7 +106,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('ListBoxRow');
 }
 

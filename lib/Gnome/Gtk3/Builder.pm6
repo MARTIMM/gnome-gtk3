@@ -242,21 +242,22 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Builder';
 
   if ? %options<filename> {
-    self.native-gobject(gtk_builder_new_from_file(%options<filename>));
+    self.set-native-object(gtk_builder_new_from_file(%options<filename>));
   }
 
   elsif ? %options<string> {
-    self.native-gobject(
+    self.set-native-object(
       gtk_builder_new_from_string( %options<string>, %options<string>.chars)
     );
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_builder_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_builder_new());
   }
 
 #TODO No widget or build-id for a builder!
-#  elsif ? %options<widget> || %options<build-id> {
+#  elsif ? %options<native-object> || %options<build-id> {
 #    # provided in GObject
 #  }
 
@@ -268,7 +269,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else { #elsif ? %options<empty> {
+    self.set-native-object(gtk_builder_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBuilder');
 
 
@@ -299,7 +304,7 @@ multi method add-gui ( Str:D :$filename! ) {
   );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_file(
-    self.get-native-gobject, $filename
+    self.get-native-object, $filename
   );
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
@@ -312,7 +317,7 @@ multi method add-gui ( Str:D :$string! ) {
   );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_string(
-    self.get-native-gobject, $string);
+    self.get-native-object, $string);
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 

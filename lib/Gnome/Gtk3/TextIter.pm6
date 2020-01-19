@@ -101,12 +101,12 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 #TM:1:new(:empty):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TextIter';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gboxed(N-GTextIter.new);
+    self.set-native-object(N-GTextIter.new);
   }
 
   elsif %options.keys.elems {
@@ -117,7 +117,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTextIter');
 }
 

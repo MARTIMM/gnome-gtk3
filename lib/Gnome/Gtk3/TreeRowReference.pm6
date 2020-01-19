@@ -71,13 +71,13 @@ Create an object taking the native object from elsewhere.
 #TM:1:new(:tree-row-reference):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeRowReference';
 
   # process all named arguments
   if ? %options<tree-row-reference> {
-    self.native-gboxed(%options<tree-row-reference>);
-    $!tree-row-reference-is-valid = self.get-native-gboxed.defined;
+    self.set-native-object(%options<tree-row-reference>);
+    $!tree-row-reference-is-valid = self.get-native-object.defined;
   }
 
   elsif %options.keys.elems {
@@ -88,7 +88,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeRowReference');
 }
 
@@ -131,9 +131,9 @@ Frees the native C<N-GtkTreeRowReference> object and after that, tree-row-refere
 =end pod
 
 method clear-tree-row-reference ( ) {
-  _gtk_tree_row_reference_free(self.get-native-gboxed);
+  _gtk_tree_row_reference_free(self.get-native-object);
   $!tree-row-reference-is-valid = False;
-#  self.native-gboxed(N-GtkTreeRowReference);
+#  self.set-native-object(N-GtkTreeRowReference);
 }
 
 #`{{

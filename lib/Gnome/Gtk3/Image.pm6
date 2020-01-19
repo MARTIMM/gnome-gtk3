@@ -183,7 +183,7 @@ Create a new object and load an image from file.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -193,22 +193,22 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new(:empty):
 #TM:1:new(:filename):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Image';
 
   if ?%options<filename> {
-    self.native-gobject(gtk_image_new_from_file(%options<filename>));
+    self.set-native-object(gtk_image_new_from_file(%options<filename>));
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_image_new());
+    self.set-native-object(gtk_image_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -220,7 +220,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkImage');
 }
 

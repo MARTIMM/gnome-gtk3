@@ -248,7 +248,7 @@ Create a dialog with title flags and buttons. It uses C<gtk_dialog_new_with_butt
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -259,7 +259,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:1:new():inheriting
 #TM:1:new(:empty):
 #TM:1:new(:title):
-#TM:1:new(:widget):
+#TM:1:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -271,12 +271,12 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Dialog';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_dialog_new());
+    self.set-native-object(gtk_dialog_new());
   }
 
   elsif ? %options<title> {
@@ -289,12 +289,12 @@ submethod BUILD ( *%options ) {
                 ?? %options<parent>
                 !! %options<parent>();
     }
-    self.native-gobject(
+    self.set-native-object(
       gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -306,7 +306,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkDialog');
 }
 
@@ -874,7 +874,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Dialog';
 
   if ?%options<empty> {
-    self.native-gobject(gtk_dialog_new);
+    self.set-native-object(gtk_dialog_new);
   }
 
   elsif ? %options<widget> || %options<build-id> {

@@ -88,7 +88,7 @@ Create a color button with a new color
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -98,7 +98,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new(:empty):
 #TM:1:new(:color):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -112,19 +112,19 @@ submethod BUILD ( *%options ) {
     self._add_color_chooser_signal_types($?CLASS.^name);
   }
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ColorButton';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_color_button_new());
+    self.set-native-object(gtk_color_button_new());
   }
 
   elsif ? %options<color> {
-    self.native-gobject(gtk_color_button_new_with_rgba(%options<color>));
+    self.set-native-object(gtk_color_button_new_with_rgba(%options<color>));
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -136,7 +136,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkColorButton');
 }
 

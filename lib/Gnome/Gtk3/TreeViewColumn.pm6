@@ -120,20 +120,20 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeViewColumn';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_tree_view_column_new());
+    self.set-native-object(gtk_tree_view_column_new());
   }
 
   elsif ? %options<column> {
-    self.native-gobject(%options<column>);
+    self.set-native-object(%options<column>);
   }
 
 #`{{
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 }}
@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeViewColumn');
 }
 

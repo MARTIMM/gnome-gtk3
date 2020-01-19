@@ -80,7 +80,7 @@ Creates a new button object with a mnemonic
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -92,7 +92,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:1:new(:label):
 #TM:0:new(:mnemonic):
 #TM:1:new(:empty):
-#TM:1:new(:widget):
+#TM:1:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -107,18 +107,19 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Button';
 
   if %options<label>.defined {
-    self.native-gobject(gtk_button_new_with_label(%options<label>));
+    self.set-native-object(gtk_button_new_with_label(%options<label>));
   }
 
   elsif %options<mnemonic>.defined {
-    self.native-gobject(gtk_button_new_with_mnemonic(%options<mnemonic>));
+    self.set-native-object(gtk_button_new_with_mnemonic(%options<mnemonic>));
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_button_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_button_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -130,7 +131,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else { #elsif ? %options<empty> {
+    self.set-native-object(gtk_button_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkButton');
 }
 

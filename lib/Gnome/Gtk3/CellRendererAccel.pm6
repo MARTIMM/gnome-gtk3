@@ -84,7 +84,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:widget):
 #TM:0:new(:build-id):
 
@@ -106,10 +106,10 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_cell_renderer_accel_new());
+    self.set-native-object(gtk_cell_renderer_accel_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -121,7 +121,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else { #if ? %options<empty> {
+    self.set-native-object(gtk_cell_renderer_accel_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkCellRendererAccel');
 }
 

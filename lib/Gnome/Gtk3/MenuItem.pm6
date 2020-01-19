@@ -119,7 +119,7 @@ Create a new object with a mnemonic.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -131,7 +131,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:1:new(:empty):
 #TM:1:new(:label):
 #TM:1:new(:mnemonic):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -144,23 +144,23 @@ submethod BUILD ( *%options ) {
     :w1<toggle-size-allocate>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::MenuItem';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_menu_item_new());
+    self.set-native-object(gtk_menu_item_new());
   }
 
   elsif ? %options<label> {
-    self.native-gobject(gtk_menu_item_new_with_label(%options<label>));
+    self.set-native-object(gtk_menu_item_new_with_label(%options<label>));
   }
 
   elsif ? %options<mnemonic> {
-    self.native-gobject(gtk_menu_item_new_with_mnemonic(%options<mnemonic>));
+    self.set-native-object(gtk_menu_item_new_with_mnemonic(%options<mnemonic>));
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -172,7 +172,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkMenuItem');
 }
 
@@ -1292,7 +1292,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::MenuItem';
 
   if ? %options<empty> {
-    self.native-gobject(gtk_menu_item_new());
+    self.set-native-object(gtk_menu_item_new());
   }
 
   elsif ? %options<widget> || %options<build-id> {
