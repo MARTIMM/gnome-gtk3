@@ -24,11 +24,6 @@ my Str $ui-file = 't/data/ui.glade';
 subtest 'ISA tests', {
   my Gnome::Gtk3::Builder $builder;
   throws-like
-    { $builder .= new; },
-    X::Gnome, "No options used",
-    :message('No options used to create or set the native widget');
-
-  throws-like
     { $builder .= new( :build, :load); },
     X::Gnome, "Wrong options used",
     :message(

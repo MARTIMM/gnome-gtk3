@@ -15,12 +15,6 @@ use Gnome::Gtk3::CssProvider;
 subtest 'ISA test', {
   my Gnome::Gtk3::StyleContext $sc;
   throws-like(
-    { $sc .= new; },
-    X::Gnome, 'must have named arguments',
-    :message(/:s No options used to create/)
-  );
-
-  throws-like(
     { $sc .= new(:odd-arg<xyz>); },
     X::Gnome, 'wrong options used',
     :message(/:s Unsupported options for/)
