@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererProgress;
 my Gnome::Gtk3::CellRendererProgress $crp;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crp .= new(:empty);
-  isa-ok $crp, Gnome::Gtk3::CellRendererProgress, '.new(:empty)';
+  $crp .= new;
+  isa-ok $crp, Gnome::Gtk3::CellRendererProgress, '.new';
 }
 
 #`{{
@@ -43,4 +43,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

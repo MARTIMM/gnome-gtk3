@@ -15,8 +15,8 @@ my Gnome::Gtk3::Grid $g;
 my Gnome::Glib::List $gl;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $g .= new(:empty);
-  isa-ok $g, Gnome::Gtk3::Grid, ".new(:empty)";
+  $g .= new;
+  isa-ok $g, Gnome::Gtk3::Grid, ".new";
 }
 
 #-------------------------------------------------------------------------------

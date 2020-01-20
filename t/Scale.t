@@ -13,8 +13,8 @@ use Gnome::Gtk3::Window;
 my Gnome::Gtk3::Scale $s;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $s .= new(:empty);
-  isa-ok $s, Gnome::Gtk3::Scale, '.new(:empty)';
+  $s .= new;
+  isa-ok $s, Gnome::Gtk3::Scale, '.new';
 
   $s .= new(
     :orientation(GTK_ORIENTATION_HORIZONTAL),
@@ -55,7 +55,7 @@ subtest 'Signals ...', {
     }
   }
 
-  my Gnome::Gtk3::Window $w .= new(:empty);
+  my Gnome::Gtk3::Window $w .= new;
   $w.gtk-container-add($s);
   $w.show-all;
 

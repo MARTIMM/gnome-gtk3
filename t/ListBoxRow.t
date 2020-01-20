@@ -11,8 +11,8 @@ use Gnome::Gtk3::ListBoxRow;
 my Gnome::Gtk3::ListBoxRow $lb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $lb .= new(:empty);
-  isa-ok $lb, Gnome::Gtk3::ListBoxRow, ".new(:empty)";
+  $lb .= new;
+  isa-ok $lb, Gnome::Gtk3::ListBoxRow, ".new";
 }
 
 #`{{

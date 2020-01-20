@@ -105,7 +105,7 @@ Create an object using a native object from elsewhere.
 
 =end pod
 
-#TM:0:new(:empty):
+#TM:0:new():
 #TM:0:new(:widgetpath):
 
 submethod BUILD ( *%options ) {
@@ -121,6 +121,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(gtk_widget_path_new());
     $!widgetpath-is-valid = True;
@@ -143,6 +144,12 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+    self.set-native-object(gtk_widget_path_new());
+    $!widgetpath-is-valid = True;
   }
 
   # only after creating the native-object, the gtype is known

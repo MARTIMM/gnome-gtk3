@@ -15,7 +15,7 @@ use Gnome::Gtk3::TextBuffer;
 my Gnome::Gtk3::TextBuffer $tb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $tb .= new(:empty);
+  $tb .= new;
   isa-ok $tb, Gnome::Gtk3::TextBuffer;
 }
 
@@ -100,7 +100,7 @@ subtest 'Signals ...', {
     }
   }
 
-  my Gnome::Gtk3::TextBuffer $tb .= new(:empty);
+  my Gnome::Gtk3::TextBuffer $tb .= new;
   my Str $text = "hoeperdepoep\nzat op de stoep\n";
   $tb.set-text( $text, $text.chars);
   my Gnome::Gtk3::TextIter $start = $tb.get-iter-at-line(1);

@@ -13,7 +13,7 @@ use Gnome::Gtk3::Label;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::ListBox $lb .= new(:empty);
+my Gnome::Gtk3::ListBox $lb .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $lb, Gnome::Gtk3::ListBox;
@@ -24,7 +24,7 @@ subtest 'Manipulations', {
 
   # Create an entry in a ListBox. This is a grid containing a CheckButton
   # and a Label
-  my Gnome::Gtk3::Grid $grid .= new(:empty);
+  my Gnome::Gtk3::Grid $grid .= new;
 #  $grid.set-visible(True);
 
   my Gnome::Gtk3::CheckButton $check .= new(:label('abc'));

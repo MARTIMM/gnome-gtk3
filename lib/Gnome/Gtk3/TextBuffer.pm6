@@ -81,7 +81,7 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -93,7 +93,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -110,7 +110,8 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TextBuffer';
 
   if ? %options<empty> {
-    my Gnome::Gtk3::TextTagTable $tag-table .= new(:empty);
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    my Gnome::Gtk3::TextTagTable $tag-table .= new;
     self.set-native-object(gtk_text_buffer_new($tag-table()));
   }
 
@@ -124,6 +125,11 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {# if ? %options<empty> {
+    my Gnome::Gtk3::TextTagTable $tag-table .= new;
+    self.set-native-object(gtk_text_buffer_new($tag-table()));
   }
 
   # only after creating the native-object, the gtype is known
@@ -145,7 +151,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_text_buffer_new:new(:empty)
+#TM:2:gtk_text_buffer_new:new()
 =begin pod
 =head2 [gtk_] text_buffer_new
 
@@ -1169,7 +1175,7 @@ sub gtk_text_buffer_get_iter_at_line_offset (
   N-GObject $buffer, Int $line_number, Int $char_offset
   --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my Gnome::Gtk3::TextIter $iter .= new;
   my N-GTextIter $no = $iter.get-native-object;
   _gtk_text_buffer_get_iter_at_line_offset(
     $buffer, $no, $line_number, $char_offset
@@ -1213,7 +1219,7 @@ sub gtk_text_buffer_get_iter_at_line_index (
   N-GObject $buffer, Int $line_number, Int $byte_index
   --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my Gnome::Gtk3::TextIter $iter .= new;
   my N-GTextIter $no = $iter.get-native-object;
   _gtk_text_buffer_get_iter_at_line_index(
     $buffer, $no, $line_number, $byte_index
@@ -1252,7 +1258,7 @@ sub gtk_text_buffer_get_iter_at_offset (
   N-GObject $buffer, Int $char_offset
   --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my Gnome::Gtk3::TextIter $iter .= new;
   my N-GTextIter $no = $iter.get-native-object;
   _gtk_text_buffer_get_iter_at_offset( $buffer, $no, $char_offset);
   $iter.set-native-object($no);
@@ -1286,7 +1292,7 @@ sub gtk_text_buffer_get_iter_at_line (
   N-GObject $buffer, Int $line_number
   --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $iter .= new(:empty);
+  my Gnome::Gtk3::TextIter $iter .= new;
   my N-GTextIter $no = $iter.get-native-object;
   _gtk_text_buffer_get_iter_at_line( $buffer, $no, $line_number);
   $iter.set-native-object($no);
@@ -1317,7 +1323,7 @@ the iter at character offset 0.
 sub gtk_text_buffer_get_start_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $start .= new(:empty);
+  my Gnome::Gtk3::TextIter $start .= new;
   my N-GTextIter $no = $start.get-native-object;
   _gtk_text_buffer_get_start_iter( $buffer, $no);
   $start.set-native-object($no);
@@ -1351,7 +1357,7 @@ character position 0) to the end iterator.
 sub gtk_text_buffer_get_end_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
-  my Gnome::Gtk3::TextIter $end .= new(:empty);
+  my Gnome::Gtk3::TextIter $end .= new;
   my N-GTextIter $no = $end.get-native-object;
   _gtk_text_buffer_get_end_iter( $buffer, $no);
   $end.set-native-object($no);
@@ -1381,9 +1387,9 @@ Returns a list of
 =end pod
 
 sub gtk_text_buffer_get_bounds ( N-GObject $buffer --> List ) {
-  my Gnome::Gtk3::TextIter $i1 .= new(:empty);
+  my Gnome::Gtk3::TextIter $i1 .= new;
   my N-GTextIter $no1 = $i1.get-native-object;
-  my Gnome::Gtk3::TextIter $i2 .= new(:empty);
+  my Gnome::Gtk3::TextIter $i2 .= new;
   my N-GTextIter $no2 = $i2.get-native-object;
 
   _gtk_text_buffer_get_bounds( $buffer, $no1, $no2);
@@ -1625,9 +1631,9 @@ Returned List contains
 =end pod
 
 sub gtk_text_buffer_get_selection_bounds ( N-GObject $buffer --> List ) {
-  my Gnome::Gtk3::TextIter $i1 .= new(:empty);
+  my Gnome::Gtk3::TextIter $i1 .= new;
   my N-GTextIter $no1 = $i1.get-native-object;
-  my Gnome::Gtk3::TextIter $i2 .= new(:empty);
+  my Gnome::Gtk3::TextIter $i2 .= new;
   my N-GTextIter $no2 = $i2.get-native-object;
   my Int $sts = _gtk_text_buffer_get_selection_bounds( $buffer, $no1, $no2);
   $i1.set-native-object($no1);
@@ -2127,7 +2133,7 @@ Since: 2.16
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

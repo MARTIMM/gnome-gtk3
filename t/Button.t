@@ -51,8 +51,8 @@ subtest 'Button as container', {
   is $l.get-text, 'xyz', 'text label from button 1';
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));
-  diag "new(:empty)";
-  my Gnome::Gtk3::Button $button2 .= new(:empty);
+  diag "new";
+  my Gnome::Gtk3::Button $button2 .= new;
   $button2.gtk-container-add($label);
 
   $l($button2.get-child);

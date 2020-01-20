@@ -8,7 +8,7 @@ use Gnome::Gtk3::ComboBox;
 #Gnome::N::debug(:on);
 
 
-my Gnome::Gtk3::ComboBox $cb .= new(:empty);
+my Gnome::Gtk3::ComboBox $cb .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $cb, Gnome::Gtk3::ComboBox;

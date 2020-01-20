@@ -15,8 +15,8 @@ use Gnome::Gtk3::TextTag;
 my Gnome::Gtk3::TextTagTable $ttt;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $ttt .= new(:empty);
-  isa-ok $ttt, Gnome::Gtk3::TextTagTable, '.new(:empty)';
+  $ttt .= new;
+  isa-ok $ttt, Gnome::Gtk3::TextTagTable, '.new';
 }
 
 #-------------------------------------------------------------------------------

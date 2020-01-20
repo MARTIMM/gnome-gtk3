@@ -14,7 +14,7 @@ my Gnome::Gtk3::Box $b;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $b .= new(:empty);
+  $b .= new;
   isa-ok $b, Gnome::Gtk3::Box;
 }
 

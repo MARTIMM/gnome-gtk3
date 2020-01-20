@@ -85,7 +85,7 @@ Create GtkCheckButton object with a label.
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -153,7 +153,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_check_button_new:new(:empty)
+#TM:2:gtk_check_button_new:new()
 =begin pod
 =head2 [gtk_] check_button_new
 

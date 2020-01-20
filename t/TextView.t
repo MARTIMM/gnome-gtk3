@@ -11,8 +11,8 @@ use Gnome::Gtk3::TextView;
 my Gnome::Gtk3::TextView $tv;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $tv .= new(:empty);
-  isa-ok $tv, Gnome::Gtk3::TextView, '.new(:empty)';
+  $tv .= new;
+  isa-ok $tv, Gnome::Gtk3::TextView, '.new';
 }
 
 #`{{

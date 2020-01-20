@@ -47,14 +47,14 @@ Gnome::Gtk3::ListBox implements
 
 Create a ListBox with one row. This row is a grid holding a CheckBox and Label.
 
-  my Gnome::Gtk3::ListBox $lb .= new(:empty);
+  my Gnome::Gtk3::ListBox $lb .= new;
 
   # The widgets
   my Gnome::Gtk3::CheckButton $check .= new(:label('bold'));
   my Gnome::Gtk3::Label $label .= new(:text('Turn on bold font'));
 
   # Add the widgets to the Grid
-  my Gnome::Gtk3::Grid $grid .= new(:empty);
+  my Gnome::Gtk3::Grid $grid .= new;
   $grid.gtk-grid-attach( $check, 0, 0, 1, 1);
   $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
@@ -106,7 +106,7 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -117,7 +117,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
   multi method new ( Str :$build-id! )
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -133,6 +133,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::ListBox';
 
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_list_box_new());
   }
 
@@ -146,6 +147,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_list_box_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -762,7 +767,7 @@ sub gtk_list_box_drag_highlight_row ( N-GObject $box, N-GObject $row )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_list_box_new:new(:empty)
+#TM:2:gtk_list_box_new:new()
 =begin pod
 =head2 [gtk_] list_box_new
 

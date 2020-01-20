@@ -11,7 +11,7 @@ ok True, 'No tests, only to see if module loads well';
 
 #`{{
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::StyleProvider $sp .= new(:empty);
+my Gnome::Gtk3::StyleProvider $sp .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $sp, Gnome::Gtk3::StyleProvider;

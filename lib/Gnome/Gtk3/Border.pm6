@@ -70,7 +70,7 @@ has Bool $.border-is-valid = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object taking the native object from elsewhere.
 
@@ -82,7 +82,7 @@ Create an object and initialize to given values.
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:border):
 #TM:1:new(:left, :right, :top, :bottom):
 
@@ -93,6 +93,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_border_new());
     $!border-is-valid = True;
   }
@@ -118,6 +119,11 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_border_new());
+    $!border-is-valid = True;
   }
 
   # only after creating the native-object, the gtype is known

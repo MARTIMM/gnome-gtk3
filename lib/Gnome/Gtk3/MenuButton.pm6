@@ -134,7 +134,7 @@ also does Gnome::Gtk3::Buildable;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -146,7 +146,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -163,6 +163,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_menu_button_new());
   }
 
@@ -176,6 +177,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_menu_button_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -502,7 +507,7 @@ sub gtk_menu_button_get_use_popover ( N-GObject $menu_button )
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
@@ -573,306 +578,4 @@ Since: 3.12
 Widget type: GTK_TYPE_POPOVER
 
 The B<Gnome::GObject::Value> type of property I<popover> is C<G_TYPE_OBJECT>.
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [gtk_] menu_button_new
-
-Creates a new B<Gnome::Gtk3::MenuButton> widget with downwards-pointing arrow as the only child. You can replace the child widget with another B<Gnome::Gtk3::Widget> should you wish to.
-
-  method gtk_menu_button_new ( --> N-GObject  )
-
-
-Returns N-GObject; The newly created B<Gnome::Gtk3::MenuButton> widget
-=end pod
-
-sub gtk_menu_button_new (  )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] set_popup
-
-Sets the B<Gnome::Gtk3::Menu> that will be popped up when the button is clicked, or C<Any> to disable the button. If C<menu>-model or C<popover> are set, they will be set to C<Any>.
-
-  method gtk_menu_button_set_popup ( N-GObject $menu )
-
-=item N-GObject $menu; (allow-none): a B<Gnome::Gtk3::Menu>
-
-=end pod
-
-sub gtk_menu_button_set_popup ( N-GObject $menu_button, N-GObject $menu )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_popup
-
-Returns the B<Gnome::Gtk3::Menu> that pops out of the button. If the button does not use a B<Gnome::Gtk3::Menu>, this function returns C<Any>.
-
-  method gtk_menu_button_get_popup ( --> N-GObject  )
-
-
-Returns N-GObject; (nullable) (transfer none): a B<Gnome::Gtk3::Menu> or C<Any>
-=end pod
-
-sub gtk_menu_button_get_popup ( N-GObject $menu_button )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] set_popover
-
-Sets the B<Gnome::Gtk3::Popover> that will be popped up when the button is clicked, or C<Any> to disable the button. If C<menu>-model or C<popup> are set, they will be set to C<Any>.
-
-  method gtk_menu_button_set_popover ( N-GObject $popover )
-
-=item N-GObject $popover; (allow-none): a B<Gnome::Gtk3::Popover>
-
-=end pod
-
-sub gtk_menu_button_set_popover ( N-GObject $menu_button, N-GObject $popover )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_popover
-
-Returns the B<Gnome::Gtk3::Popover> that pops out of the button. If the button is not using a B<Gnome::Gtk3::Popover>, this function returns C<Any>.
-
-  method gtk_menu_button_get_popover ( --> N-GObject  )
-
-
-Returns N-GObject; (nullable) (transfer none): a B<Gnome::Gtk3::Popover> or C<Any>
-=end pod
-
-sub gtk_menu_button_get_popover ( N-GObject $menu_button )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] set_direction
-
-Sets the direction in which the popup will be popped up, as well as changing the arrow’s direction. The child will not be changed to an arrow if it was customized.
-
-  method gtk_menu_button_set_direction ( GtkArrowType $direction )
-
-=item GtkArrowType $direction; a B<Gnome::Gtk3::ArrowType>
-
-=end pod
-
-sub gtk_menu_button_set_direction ( N-GObject $menu_button, int32 $direction )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_direction
-
-Returns the direction the popup will be pointing at when popped up.
-
-  method gtk_menu_button_get_direction ( --> GtkArrowType  )
-
-
-Returns GtkArrowType; a B<Gnome::Gtk3::ArrowType> value
-=end pod
-
-sub gtk_menu_button_get_direction ( N-GObject $menu_button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#`{{
-=begin pod
-=head2 [[gtk_] menu_button_] set_menu_model
-
-Sets the C<GMenuModel> from which the popup will be constructed, or C<Any> to disable the button.
-
-  method gtk_menu_button_set_menu_model ( GMenuModel $menu_model )
-
-=item GMenuModel $menu_model; (allow-none): a C<GMenuModel>
-
-=end pod
-
-sub gtk_menu_button_set_menu_model ( N-GObject $menu_button, GMenuModel $menu_model )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_menu_model
-
-Returns the C<GMenuModel> used to generate the popup.
-
-  method gtk_menu_button_get_menu_model ( --> GMenuModel  )
-
-
-Returns GMenuModel; (nullable) (transfer none): a C<GMenuModel> or C<Any>
-=end pod
-
-sub gtk_menu_button_get_menu_model ( N-GObject $menu_button )
-  returns GMenuModel
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] set_align_widget
-
-Sets the B<Gnome::Gtk3::Widget> to use to line the menu with when popped up. Note that the I<align_widget> must contain the B<Gnome::Gtk3::MenuButton> itself.
-
-  method gtk_menu_button_set_align_widget ( N-GObject $align_widget )
-
-=item N-GObject $align_widget; (allow-none): a B<Gnome::Gtk3::Widget>
-
-=end pod
-
-sub gtk_menu_button_set_align_widget ( N-GObject $menu_button, N-GObject $align_widget )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_align_widget
-
-Returns the parent B<Gnome::Gtk3::Widget> to use to line up with menu.
-
-  method gtk_menu_button_get_align_widget ( --> N-GObject  )
-
-
-Returns N-GObject; (nullable) (transfer none): a B<Gnome::Gtk3::Widget> value or C<Any>
-=end pod
-
-sub gtk_menu_button_get_align_widget ( N-GObject $menu_button )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] set_use_popover
-
-Sets whether to construct a B<Gnome::Gtk3::Popover> instead of B<Gnome::Gtk3::Menu> when C<gtk_menu_button_set_menu_model()> is called. Note that this property is only consulted when a new menu model is set.
-
-  method gtk_menu_button_set_use_popover ( Int $use_popover )
-
-=item Int $use_popover; C<1> to construct a popover from the menu model
-
-=end pod
-
-sub gtk_menu_button_set_use_popover ( N-GObject $menu_button, int32 $use_popover )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] menu_button_] get_use_popover
-
-Returns whether a B<Gnome::Gtk3::Popover> or a B<Gnome::Gtk3::Menu> will be constructed from the menu model.
-
-  method gtk_menu_button_get_use_popover ( --> Int  )
-
-
-Returns Int; C<1> if using a B<Gnome::Gtk3::Popover>
-=end pod
-
-sub gtk_menu_button_get_use_popover ( N-GObject $menu_button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new(:empty);
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
-=head3 direction
-
-The B<Gnome::GObject::Value> type of property I<direction> is C<G_TYPE_ENUM>.
-
-The B<Gnome::Gtk3::ArrowType> representing the direction in which the
-menu or popover will be popped out.
-
-=head3 use-popover
-
-The B<Gnome::GObject::Value> type of property I<use-popover> is C<G_TYPE_BOOLEAN>.
-
-Whether to construct a B<Gnome::Gtk3::Popover> from the menu model,
-or a B<Gnome::Gtk3::Menu>.
-
-
-
-=begin comment
-
-=head2 Unsupported properties
-
-=end comment
-
-=head2 Not yet supported properties
-
-
-=head3 popup
-
-The B<Gnome::GObject::Value> type of property I<popup> is C<G_TYPE_OBJECT>.
-
-The B<Gnome::Gtk3::Menu> that will be popped up when the button is clicked.
-
-=head3 menu-model
-
-The B<Gnome::GObject::Value> type of property I<menu-model> is C<G_TYPE_OBJECT>.
-
-The C<GMenuModel> from which the popup will be created.
-Depending on the C<use>-popover property, that may
-be a menu or a popover.
-
-See C<gtk_menu_button_set_menu_model()> for the interaction with the
-C<popup> property.
-
-=head3 align-widget
-
-The B<Gnome::GObject::Value> type of property I<align-widget> is C<G_TYPE_OBJECT>.
-
-The B<Gnome::Gtk3::Widget> to use to align the menu with.
-
-=head3 popover
-
-The B<Gnome::GObject::Value> type of property I<popover> is C<G_TYPE_OBJECT>.
-
-The B<Gnome::Gtk3::Popover> that will be popped up when the button is clicked.
-
 =end pod

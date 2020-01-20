@@ -11,8 +11,8 @@ use Gnome::Gtk3::TextIter;
 my Gnome::Gtk3::TextIter $ti;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $ti .= new(:empty);
-  isa-ok $ti, Gnome::Gtk3::TextIter, '.new(:empty)';
+  $ti .= new;
+  isa-ok $ti, Gnome::Gtk3::TextIter, '.new';
 }
 
 #`{{

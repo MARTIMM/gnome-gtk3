@@ -9,8 +9,8 @@ use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my Gnome::Gtk3::Window $w .= new(:empty);
-  isa-ok $w, Gnome::Gtk3::Window, '.new(:empty)';
+  my Gnome::Gtk3::Window $w .= new;
+  isa-ok $w, Gnome::Gtk3::Window, '.new';
   $w .= new(:title('My test window'));
   isa-ok $w, Gnome::Gtk3::Window, '.new(:title)';
   is $w.get-title, 'My test window', '.get-title()';
@@ -18,7 +18,7 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::Window $w .= new(:empty);
+  my Gnome::Gtk3::Window $w .= new;
   is $w.get-window-type, GTK_WINDOW_TOPLEVEL.value, '.get-window-type()';
 
 #Gnome::N::debug(:on);

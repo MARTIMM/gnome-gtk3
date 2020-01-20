@@ -59,7 +59,7 @@ has Bool $.tree-path-is-valid = False;
 
 Create a new default tree path object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a new tree path with first index.
 
@@ -79,7 +79,7 @@ Create an object taking the native object from elsewhere.
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:first):
 #TM:1:new(:string):
 #TM:1:new(:indices):
@@ -96,6 +96,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_tree_path_new());
     $!tree-path-is-valid = self.get-native-object.defined;
   }
@@ -122,6 +123,12 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_tree_path_new());
+    $!tree-path-is-valid = self.get-native-object.defined;
+  }
+
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreePath');
@@ -160,7 +167,7 @@ method clear-tree-path ( ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_path_new:new(:empty)
+#TM:1:gtk_tree_path_new:new()
 =begin pod
 =head2 [gtk_] tree_path_new
 

@@ -11,8 +11,8 @@ use Gnome::Gtk3::Enums;
 
 #-------------------------------------------------------------------------------
 subtest 'Widget ISA test', {
-  my Gnome::Gtk3::Button $b .= new(:empty);
-  isa-ok $b, Gnome::Gtk3::Widget, '.new(:empty)';
+  my Gnome::Gtk3::Button $b .= new;
+  isa-ok $b, Gnome::Gtk3::Widget, '.new';
 }
 
 #-------------------------------------------------------------------------------

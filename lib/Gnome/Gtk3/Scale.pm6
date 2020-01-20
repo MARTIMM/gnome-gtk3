@@ -110,7 +110,7 @@ Gnome::Gtk3::Scale implements
 
 =head2 Example
 
-  my Gnome::Gtk3::Scale $scale .= new(:empty);
+  my Gnome::Gtk3::Scale $scale .= new;
 
   # Set min and max of scale.
   $scale.set-range( -2e0, .2e2);
@@ -190,7 +190,7 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:min,:max,:step):
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
@@ -205,6 +205,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Scale';
 
   if %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
   }
 
@@ -229,6 +230,10 @@ submethod BUILD ( *%options ) {
     );
   }
 
+  else {#if %options<empty> {
+    self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
+  }
+
   # only after creating the widget, the gtype is known
   self.set-class-info('GtkScale');
 }
@@ -251,7 +256,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_scale_new:new(:empty)
+#TM:2:gtk_scale_new:new()
 =begin pod
 =head2 [gtk_] scale_new
 

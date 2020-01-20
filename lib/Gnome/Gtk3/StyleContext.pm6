@@ -73,7 +73,7 @@ enum GtkStyleContextPrintFlags is export (
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:native-object):
 
 =begin pod
@@ -99,6 +99,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::StyleContext';
 
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_style_context_new());
   }
 
@@ -112,6 +113,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_style_context_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -133,7 +138,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_style_context_new:new(:empty)
+#TM:2:gtk_style_context_new:new()
 =begin pod
 =head2 [gtk_] style_context_new
 
@@ -175,8 +180,8 @@ Since: 3.0
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> (= 1) and C<GTK_STYLE_PROVIDER_PRIORITY_USER> (= 800).
 
   my Gnome::Gdk3::Screen $screen .= new(:default);
-  my Gnome::Gtk3::StyleContext $sc .= new(:empty);
-  my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+  my Gnome::Gtk3::StyleContext $sc .= new;
+  my Gnome::Gtk3::CssProvider $cp .= new;
 
   $sc.add-provider-for-screen(
     $screen, $cp, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
@@ -245,8 +250,8 @@ Since: 3.0
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>
 
   my Gnome::Gdk3::Screen $screen .= new(:default);
-  my Gnome::Gtk3::StyleContext $sc .= new(:empty);
-  my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+  my Gnome::Gtk3::StyleContext $sc .= new;
+  my Gnome::Gtk3::CssProvider $cp .= new;
 
   $sc.add-provider( $cp, 234);
 
@@ -1678,7 +1683,7 @@ Since: 3.0
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

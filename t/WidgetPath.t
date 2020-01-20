@@ -16,7 +16,7 @@ use Gnome::Gtk3::Window;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::WidgetPath $wp .= new(:empty);
+my Gnome::Gtk3::WidgetPath $wp .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $wp, Gnome::Gtk3::WidgetPath;
@@ -31,7 +31,7 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Window $w .= new(:title<Top>);
   $w.gtk-widget-set-name('top-level-window');
 
-  my Gnome::Gtk3::Grid $g .= new(:empty);
+  my Gnome::Gtk3::Grid $g .= new;
   $g.gtk-widget-set-name('top-grid');
   $w.gtk-container-add($g);
 

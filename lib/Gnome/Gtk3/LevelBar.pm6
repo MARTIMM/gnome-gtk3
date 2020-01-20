@@ -41,7 +41,7 @@ them to the new range.
     #   border-color: black;
     #   border-style: 1px;
     # }
-    my Gnome::Gtk3::LevelBar $bar .= new(:empty);
+    my Gnome::Gtk3::LevelBar $bar .= new;
     $bar.add-offset-value( "my-offset", 0.60);
   }
 
@@ -109,7 +109,7 @@ Gnome::Gtk3::LevelBar implements
 
 =head2 Example
 
-  my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+  my Gnome::Gtk3::LevelBar $level-bar .= new;
   $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 =end pod
@@ -190,7 +190,7 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:min, :max):
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
@@ -205,6 +205,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::LevelBar';
 
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_level_bar_new());
   }
 
@@ -224,6 +225,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_level_bar_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -248,7 +253,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_level_bar_new:new(:empty)
+#TM:2:gtk_level_bar_new:new()
 =begin pod
 =head2 [gtk_] level_bar_new
 

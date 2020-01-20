@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererSpinner;
 my Gnome::Gtk3::CellRendererSpinner $crs;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crs .= new(:empty);
-  isa-ok $crs, Gnome::Gtk3::CellRendererSpinner, '.new(:empty)';
+  $crs .= new;
+  isa-ok $crs, Gnome::Gtk3::CellRendererSpinner, '.new';
 }
 
 #`{{
@@ -43,4 +43,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

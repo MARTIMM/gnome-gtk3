@@ -98,7 +98,7 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 =end pod
 }}
 
-#TM:1:new(:empty):
+#TM:1:new():
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -106,6 +106,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(N-GTextIter.new);
   }
 
@@ -115,6 +116,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ? %options<empty> {
+    self.set-native-object(N-GTextIter.new);
   }
 
   # only after creating the native-object, the gtype is known

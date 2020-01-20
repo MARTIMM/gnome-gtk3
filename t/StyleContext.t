@@ -20,16 +20,16 @@ subtest 'ISA test', {
     :message(/:s Unsupported options for/)
   );
 
-  $sc .= new(:empty);
+  $sc .= new;
   isa-ok $sc, Gnome::Gtk3::StyleContext;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Style context manipulations', {
   my Gnome::Gdk3::Screen $screen .= new(:default);
-  my Gnome::Gtk3::StyleContext $sc .= new(:empty);
-  my Gnome::Gtk3::CssProvider $cp1 .= new(:empty);
-  my Gnome::Gtk3::CssProvider $cp2 .= new(:empty);
+  my Gnome::Gtk3::StyleContext $sc .= new;
+  my Gnome::Gtk3::CssProvider $cp1 .= new;
+  my Gnome::Gtk3::CssProvider $cp2 .= new;
 
   $sc.add-provider-for-screen(
     $screen, $cp1, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK

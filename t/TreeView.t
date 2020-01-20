@@ -16,8 +16,8 @@ my Gnome::Gtk3::TreeViewColumn $tvc;
 my Gnome::Gtk3::ListStore $ls;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $tv .= new(:empty);
-  isa-ok $tv, Gnome::Gtk3::TreeView, '.new(:empty)';
+  $tv .= new;
+  isa-ok $tv, Gnome::Gtk3::TreeView, '.new';
 
   $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
   $tv .= new(:model($ls));
@@ -29,8 +29,8 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::ListStore $ls2 .= new(:widget($tv.get-model));
   is $ls.iter-n-children(Any), 0, '.get-model()';
 
-  $tv .= new(:empty);
-  isa-ok $tv, Gnome::Gtk3::TreeView, '.new(:empty)';
+  $tv .= new;
+  isa-ok $tv, Gnome::Gtk3::TreeView, '.new';
   is $tv.get-model.defined, False, 'no model defined';
   $tv.set-model($ls2);
   is $tv.get-model.defined, True, '.set-model()';
@@ -49,7 +49,7 @@ subtest 'Manipulations', {
   $tv.set_activate_on_single_click(True);
   ok $tv.get_activate_on_single_click, '.set_activate_on_single_click()';
 
-  $tvc .= new(:empty);
+  $tvc .= new;
   $tvc.set-title('book title');
   $tv.append-column($tvc);
 

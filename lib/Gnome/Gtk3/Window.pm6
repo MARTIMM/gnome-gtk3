@@ -162,7 +162,7 @@ Create a window using a native object from a builder. See also Gnome::GObject::O
 =end pod
 
 #TM:2:inheriting:*
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:title):
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
@@ -177,6 +177,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Window';
 
   if ?%options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
     self.set-native-object(gtk_window_new($wtype));
   }
@@ -197,6 +198,11 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if ?%options<empty> {
+    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
+    self.set-native-object(gtk_window_new($wtype));
   }
 
   # only after creating the native-object, the gtype is known
@@ -221,7 +227,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_window_new:new(:empty)
+#TM:2:gtk_window_new:new()
 =begin pod
 =head2 [gtk_] window_new
 
@@ -2940,7 +2946,7 @@ This signal is emitted whenever the currently focused widget in this window chan
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

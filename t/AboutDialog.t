@@ -10,7 +10,7 @@ use Gnome::Gtk3::AboutDialog;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
-  my Gnome::Gtk3::AboutDialog $a .= new(:empty);
+  my Gnome::Gtk3::AboutDialog $a .= new;
   isa-ok $a, Gnome::Gtk3::AboutDialog;
 }
 

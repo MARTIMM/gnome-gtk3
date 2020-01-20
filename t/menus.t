@@ -17,17 +17,17 @@ use Gnome::Gtk3::MenuButton;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
-  my Gnome::Gtk3::MenuButton $mb .= new(:empty);
+  my Gnome::Gtk3::MenuButton $mb .= new;
   isa-ok $mb, Gnome::Gtk3::MenuButton;
 
-  my Gnome::Gtk3::Menu $m .= new(:empty);
+  my Gnome::Gtk3::Menu $m .= new;
   isa-ok $m, Gnome::Gtk3::Menu;
   isa-ok $m, Gnome::Gtk3::MenuShell;
 
-  my Gnome::Gtk3::MenuItem $mi .= new(:empty);
+  my Gnome::Gtk3::MenuItem $mi .= new;
   isa-ok $mi, Gnome::Gtk3::MenuItem;
 
-  my Gnome::Gtk3::MenuBar $mba .= new(:empty);
+  my Gnome::Gtk3::MenuBar $mba .= new;
   isa-ok $mba, Gnome::Gtk3::MenuBar;
 }
 

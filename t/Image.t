@@ -11,8 +11,8 @@ use Gnome::Gtk3::Image;
 my Gnome::Gtk3::Image $i;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $i .= new(:empty);
-  isa-ok $i, Gnome::Gtk3::Image, ".new(:empty)";
+  $i .= new;
+  isa-ok $i, Gnome::Gtk3::Image, ".new";
 }
 
 #-------------------------------------------------------------------------------

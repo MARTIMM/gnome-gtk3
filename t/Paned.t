@@ -17,9 +17,9 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::ListBox $lb-left .= new(:empty);
+  my Gnome::Gtk3::ListBox $lb-left .= new;
   $lb-left.set-name('leftListbox');
-  my Gnome::Gtk3::ListBox $lb-right .= new(:empty);
+  my Gnome::Gtk3::ListBox $lb-right .= new;
   $lb-right.set-name('rightListbox');
   $p .= new(:orientation(GTK_ORIENTATION_HORIZONTAL));
   $p.gtk-paned-add1($lb-left);

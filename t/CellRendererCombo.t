@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererCombo;
 my Gnome::Gtk3::CellRendererCombo $crc;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crc .= new(:empty);
-  isa-ok $crc, Gnome::Gtk3::CellRendererCombo, '.new(:empty)';
+  $crc .= new;
+  isa-ok $crc, Gnome::Gtk3::CellRendererCombo, '.new';
 }
 
 #`{{
@@ -43,4 +43,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

@@ -99,7 +99,7 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a GtkToggleButton with a label.
 
@@ -117,7 +117,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new():inheriting
 #TM:1:new(:label):
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -136,6 +136,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ? %options<empty> {
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
     self.set-native-object(gtk_toggle_button_new());
   }
 
@@ -149,6 +150,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#elsif ? %options<empty> {
+    self.set-native-object(gtk_toggle_button_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -171,7 +176,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_toggle_button_new:new(:empty)
+#TM:2:gtk_toggle_button_new:new()
 =begin pod
 =head2 [gtk_] toggle_button_new
 

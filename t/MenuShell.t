@@ -13,7 +13,7 @@ my Gnome::Gtk3::MenuButton $mb;
 my Gnome::Gtk3::MenuShell $ms;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $mb .= new(:empty);
+  $mb .= new;
   $ms .= new(:widget($mb));
 
   isa-ok $ms, Gnome::Gtk3::MenuShell, ".new(:widget)";
