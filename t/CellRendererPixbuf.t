@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererPixbuf;
 my Gnome::Gtk3::CellRendererPixbuf $crp;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crp .= new(:empty);
-  isa-ok $crp, Gnome::Gtk3::CellRendererPixbuf, '.new(:empty)';
+  $crp .= new;
+  isa-ok $crp, Gnome::Gtk3::CellRendererPixbuf, '.new';
 }
 
 #`{{
@@ -43,4 +43,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

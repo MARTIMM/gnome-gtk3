@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererToggle;
 my Gnome::Gtk3::CellRendererToggle $crt;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crt .= new(:empty);
-  isa-ok $crt, Gnome::Gtk3::CellRendererToggle, '.new(:empty)';
+  $crt .= new;
+  isa-ok $crt, Gnome::Gtk3::CellRendererToggle, '.new';
 }
 
 #-------------------------------------------------------------------------------

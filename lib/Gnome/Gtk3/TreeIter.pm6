@@ -91,7 +91,7 @@ Create an object taking the native object from elsewhere. C<.tree-iter-is-valid(
 #TM:1:new(:tree-iter):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeIter';
 
   # process all named arguments
@@ -99,7 +99,7 @@ submethod BUILD ( *%options ) {
     my N-GtkTreeIter $nti;
     if %options<tree-iter>.defined {
       if %options<tree-iter>.^name !~~ m/'N-GtkTreeIter'/ {
-        $nti = %options<tree-iter>.get-native-gboxed;
+        $nti = %options<tree-iter>.get-native-object;
         $!tree-iter-is-valid = %options<tree-iter>.tree-iter-is-valid;
       }
 
@@ -108,7 +108,7 @@ submethod BUILD ( *%options ) {
         $!tree-iter-is-valid = True;
       }
 
-      self.native-gboxed($nti);
+      self.set-native-object($nti);
     }
 
     else {
@@ -124,7 +124,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeIter');
 }
 
@@ -168,7 +168,7 @@ Frees a C<N-GtkTreeIter> struct and after that, tree-iter-is-valid() returns Fal
 =end pod
 
 method clear-tree-iter ( ) {
-  _gtk_tree_iter_free(self.get-native-gboxed);
+  _gtk_tree_iter_free(self.get-native-object);
   $!tree-iter-is-valid = False;
 }
 
@@ -181,7 +181,7 @@ Creates a dynamically allocated tree iterator as a copy of I<iter>.
 
 This function is not intended for use in applications, because you can just copy the structs by value like so;
 
-  Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-gboxed()));
+  Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
 
 You must free this iter with C<clear-tree-iter()>.
 

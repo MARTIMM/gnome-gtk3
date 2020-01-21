@@ -14,8 +14,8 @@ my Gnome::Gtk3::Dialog $d;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
-  $d .= new(:empty);
-  isa-ok $d, Gnome::Gtk3::Dialog, '.new(:empty)';
+  $d .= new;
+  isa-ok $d, Gnome::Gtk3::Dialog, '.new';
 
   my Gnome::Gtk3::Window $top-window .= new(:title('My App'));
   my N-GObject $n = $d.new-with-buttons(

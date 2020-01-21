@@ -1,0 +1,7 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "Pango"
+  bar_menu:
+  - title: "Item"
+    url: '/content-docs/reference/Pango/Item.html'
+    doc: 0
+    test: 0

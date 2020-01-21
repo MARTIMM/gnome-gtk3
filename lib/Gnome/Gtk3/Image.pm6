@@ -19,7 +19,7 @@ B<Gnome::Gdk3::Pixbuf> ("pixel buffer") from a file, and then display that.
 There’s a convenience function to do this, C<gtk_image_set_from_file()>,
 used as follows:
 
-  my Gnome::Gtk3::Image $image .= new(:empty);
+  my Gnome::Gtk3::Image $image .= new;
   $image.set-from-file("myfile.png");
 
 To make it shorter;
@@ -61,7 +61,7 @@ B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
   method create-image ( Str $image-file --> Gnome::Gtk3::Image ) {
 
     my Gnome::Gtk3::Image $image .= new(:filename($image-file));
-    my Gnome::Gtk3::EventBox $eb .= new(:empty);
+    my Gnome::Gtk3::EventBox $eb .= new;
     $eb.gtk-container-add($image);
     $eb.register-signal( self, button-press-handler, 'button_press_event');
 
@@ -175,7 +175,7 @@ enum GtkImageType is export <
 
 Create a new plain object without an image.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a new object and load an image from file.
 
@@ -183,7 +183,7 @@ Create a new object and load an image from file.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -191,24 +191,25 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:filename):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Image';
 
   if ?%options<filename> {
-    self.native-gobject(gtk_image_new_from_file(%options<filename>));
+    self.set-native-object(gtk_image_new_from_file(%options<filename>));
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_image_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_image_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -220,7 +221,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_image_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkImage');
 }
 
@@ -240,7 +245,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_image_new:new(:empty)
+#TM:2:gtk_image_new:new()
 =begin pod
 =head2 [gtk_] image_new
 
@@ -796,7 +801,7 @@ sub gtk_image_get_pixel_size ( N-GObject $image )
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

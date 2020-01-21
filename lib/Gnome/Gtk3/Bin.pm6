@@ -62,12 +62,12 @@ also does Gnome::Gtk3::Buildable;
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 =end pod
 
 #TM:1:new():inheriting
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -76,7 +76,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Bin';
 
   # process all named arguments
-  if ? %options<widget> { # || %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> { # || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -88,7 +88,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBin');
 }
 

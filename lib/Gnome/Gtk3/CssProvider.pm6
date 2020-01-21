@@ -93,11 +93,11 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -105,8 +105,8 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:empty):
-#TM:0:new(:widget):
+#TM:1:new():
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -115,14 +115,15 @@ submethod BUILD ( *%options ) {
     :w2<parsing-error>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::CssProvider';
 
   if ? %options<empty> {
-    self.native-gobject(gtk_css_provider_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_css_provider_new());
   }
 
-  elsif ? %options<widget> || ? %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
     # provided in GObject
   }
 
@@ -134,7 +135,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_css_provider_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkCssProvider');
 }
 
@@ -447,75 +452,3 @@ than when a loading function was called.
 
 
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-sub gtk_css_provider_new ( )
-  returns N-GObject       # GtkCssProvider
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_css_provider_get_named ( Str $name, Str $variant )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_css_provider_load_from_path (
-  N-GObject $css_provider, Str $css-file, OpaquePointer
-) is native(&gtk-lib)
-  { * }
-
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
-submethod BUILD ( *%options ) {
-
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :parseerr<parsing-error>,
-  ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::CssProvider';
-
-  if ? %options<empty> {
-    self.native-gobject(gtk_css_provider_new());
-  }
-
-  elsif ? %options<widget> || ? %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}
-
-#-------------------------------------------------------------------------------
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_css_provider_$native-sub"); } unless ?$s;
-
-  $s = callsame unless ?$s;
-
-  $s
-}

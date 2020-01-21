@@ -13,8 +13,8 @@ my Gnome::Gtk3::CheckButton $cb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
 
-  diag ".new(:empty)";
-  $cb .= new(:empty);
+  diag ".new";
+  $cb .= new;
   isa-ok $cb, Gnome::Gtk3::CheckButton;
   isa-ok $cb, Gnome::Gtk3::ToggleButton;
   isa-ok $cb, Gnome::Gtk3::Button;

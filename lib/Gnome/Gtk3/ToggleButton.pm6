@@ -57,7 +57,7 @@ B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::CheckButton>, B<Gnome::Gtk3::CheckMenuIte
   my Gnome::Gtk3::ToggleButton $start-tggl .= new(:label('Start Process'));
 
   # a toggled signal handler
-  method start-stop-process-handle( :widget($start-tggl) --> Int ) {
+  method start-stop-process-handle( :native-object($start-tggl) --> Int ) {
     if $start-tggl.get-active {
       $start-tggl.set-label('Stop Process');
       # start process ...
@@ -99,7 +99,7 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a GtkToggleButton with a label.
 
@@ -107,7 +107,7 @@ Create a GtkToggleButton with a label.
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -117,8 +117,8 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new():inheriting
 #TM:1:new(:label):
-#TM:1:new(:empty):
-#TM:0:new(:widget):
+#TM:1:new():
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -127,19 +127,20 @@ submethod BUILD ( *%options ) {
     :w0<toggled>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ToggleButton';
 
   # process all named arguments
   if %options<label>.defined {
-    self.native-gobject(gtk_toggle_button_new_with_label(%options<label>));
+    self.set-native-object(gtk_toggle_button_new_with_label(%options<label>));
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_toggle_button_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_toggle_button_new());
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -151,7 +152,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#elsif ? %options<empty> {
+    self.set-native-object(gtk_toggle_button_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkToggleButton');
 }
 
@@ -171,7 +176,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_toggle_button_new:new(:empty)
+#TM:2:gtk_toggle_button_new:new()
 =begin pod
 =head2 [gtk_] toggle_button_new
 

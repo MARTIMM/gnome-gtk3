@@ -237,7 +237,7 @@ my Bool $signals-added = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a dialog with title flags and buttons. It uses C<gtk_dialog_new_with_buttons()> to create the dialog.
 
@@ -248,7 +248,7 @@ Create a dialog with title flags and buttons. It uses C<gtk_dialog_new_with_butt
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-  multi method new ( N-GObject :$widget! )
+  multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -257,9 +257,9 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new():inheriting
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:title):
-#TM:1:new(:widget):
+#TM:1:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -271,12 +271,13 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Dialog';
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gobject(gtk_dialog_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_dialog_new());
   }
 
   elsif ? %options<title> {
@@ -289,12 +290,12 @@ submethod BUILD ( *%options ) {
                 ?? %options<parent>
                 !! %options<parent>();
     }
-    self.native-gobject(
+    self.set-native-object(
       gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -306,7 +307,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_dialog_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkDialog');
 }
 
@@ -328,7 +333,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_dialog_new:new(:empty)
+#TM:2:gtk_dialog_new:new()
 =begin pod
 =head2 [gtk_] dialog_new
 
@@ -777,7 +782,7 @@ The default binding for this signal is the Escape key.
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
@@ -791,113 +796,3 @@ The default border width used around the content area of the dialog, as returned
 
 The B<Gnome::GObject::Value> type of property I<content-area-border> is C<G_TYPE_INT>.
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-# ==============================================================================
-=begin pod
-
-=head1 Methods
-
-=head2 [gtk_] dialog_new
-
-Creates a new dialog box.
-=end pod
-sub gtk_dialog_new ( )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-# ==============================================================================
-=begin pod
-
-=head2 [gtk_] dialog_run
-
-Blocks in a recursive main loop until the dialog either emits the “response” signal, or is destroyed. If the dialog is destroyed during the call to gtk_dialog_run(), gtk_dialog_run() returns GTK_RESPONSE_NONE
-=end pod
-sub gtk_dialog_run ( N-GObject $dialog )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-# ==============================================================================
-=begin pod
-
-=head2 [gtk_] dialog_response
-
-Emits the “response” signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or gtk_dialog_run() will be monitoring the ::response signal and take appropriate action.
-=end pod
-sub gtk_dialog_response ( N-GObject $dialog, int32 $response_id )
-  is native(&gtk-lib)
-  { * }
-
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 new
-
-  multi method new ( Bool :$empty! )
-
-Create an empty dialog
-
-  multi method new ( :$widget! )
-
-Create a dialog using a native object from elsewhere. See also Gnome::GObject::Object.
-
-  multi method new ( Str :$build-id! )
-
-Create a dialog using a native object from a builder. See also Gnome::GObject::Object.
-
-=end pod
-submethod BUILD ( *%options ) {
-
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :signal<close>,
-    :int<response>,
-  ) unless $signals-added;
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Dialog';
-
-  if ?%options<empty> {
-    self.native-gobject(gtk_dialog_new);
-  }
-
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}
-
-#-------------------------------------------------------------------------------
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_dialog_$native-sub"); } unless ?$s;
-
-  $s = callsame unless ?$s;
-
-  $s;
-}

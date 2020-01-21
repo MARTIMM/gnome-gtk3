@@ -12,8 +12,8 @@ use Gnome::Gtk3::Menu;
 my Gnome::Gtk3::Menu $m;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $m .= new(:empty);
-  isa-ok $m, Gnome::Gtk3::Menu, ".new(:empty)";
+  $m .= new;
+  isa-ok $m, Gnome::Gtk3::Menu, ".new";
 }
 
 #-------------------------------------------------------------------------------

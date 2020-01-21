@@ -23,7 +23,8 @@ my @gdkpixbufdirlist = ();
 my @gdkdirlist = ();
 my @gobjectdirlist = ();
 my @glibdirlist = ();
-my @giodirlist = ();
+my @pangodirlist = ();
+#my @giodirlist = ();
 
 my @enum-list = ();
 
@@ -80,8 +81,8 @@ sub MAIN (
       my $class $m;
       #-------------------------------------------------------------------------------
       subtest 'ISA test', {
-        $m .= new(:empty);
-        isa-ok $m, $class, '.new(:empty)';
+        $m .= new;
+        isa-ok $m, $class, '.new()';
       }
 
       #`{{
@@ -134,7 +135,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   # get all subroutines starting with 'GDK_AVAILABLE_IN_ALL' or
   # 'GDK_AVAILABLE_IN_\d_\d' version spec. subroutines starting with
   # 'GDK_DEPRECATED_IN_' are ignored.
-  $include-content ~~ m:g/^^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
+  $include-content ~~ m:g/^^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB' ||
+                              'PANGO']
                              '_AVAILABLE_IN_' <-[;]>+ ';'
                          /;
   my List $results = $/[*];
@@ -155,7 +157,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     $declaration ~~ s/ \s* 'G_GNUC_WARN_UNUSED_RESULT' \s* //;
 
     # remove prefix and tidy up a bit
-    $declaration ~~ s/^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB']
+    $declaration ~~ s/^ ['GDK_PIXBUF' || 'GDK' || 'GTK' || 'GLIB' || 'PANGO']
                         '_AVAILABLE_IN_' .*?  \n
                     //;
 #    $declaration ~~ s:g/ \s* \n \s* / /;
@@ -483,6 +485,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GError' if $type ~~ m/GError/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
+  $type = 'N-PangoItem' if $type ~~ m/PangoItem/;
+
 #  $type = 'int32' if $type ~~ m/GType/;
   $type = 'uint64' if $type ~~ m/GType/;
 
@@ -550,7 +554,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 #-------------------------------------------------------------------------------
 sub setup-names ( Str:D $base-sub-name --> List ) {
   my Str $include-file = $base-sub-name;
-  if $include-file ~~ m/ 'gdk_pixbuf' / {
+  if $include-file ~~ m/ 'gdk_pixbuf' || 'pango' / {
     $include-file ~~ s:g/ '_' /-/;
   }
 
@@ -558,7 +562,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     $include-file ~~ s:g/ '_' //;
   }
 
-  my @parts = $base-sub-name.split('_');
+  my @parts = $base-sub-name.split(/<[_-]>/);
   my Str $lib-class = @parts>>.tc.join;
 
   my Str $raku-class = @parts[1..*-1]>>.tc.join;
@@ -601,6 +605,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     "$source-root/gtk+-3.22.0/gdk",
     "$source-root/glib-2.60.0/glib",
     "$source-root/glib-2.60.0/gobject",
+    "$source-root/pango-1.42.4/pango",
   );
 
   my Str ( $include-content, $source-content) = ( '', '');
@@ -647,6 +652,11 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
           $raku-lib-name = 'GObject';
         }
 
+        when / 'pango-1.42.4/pango' / {
+          $library = "&pango-lib";
+          $raku-lib-name = 'Pango';
+        }
+
 #        when $gio-path {
 #          $library = "&glib-lib";
 #          $raku-lib-name = 'Glib';
@@ -685,6 +695,7 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
   my Bool $is-n-gobject = False;
   $type-name .= lc;
+#note "TN: $type-name";
 
   given $type-name {
     when /^ 'gtk' / {
@@ -699,7 +710,15 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
       $is-n-gobject = $type-name ~~ any(|@glibdirlist);
       $is-n-gobject = $type-name ~~ any(|@gobjectdirlist) unless $is-n-gobject;
-      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
+#      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
+    }
+
+    when /^ 'pango' / {
+      state @modified-pangodirlist = map(
+        { .subst( / '-' /, ''); }, @pangodirlist
+      );
+
+      $is-n-gobject = $type-name ~~ any(|@modified-pangodirlist);
     }
   }
 
@@ -709,13 +728,15 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #-------------------------------------------------------------------------------
 sub load-dir-lists ( ) {
 
-  my Str $root-dir = '/home/marcel/Languages/Perl6/Projects/gnome-gtk3';
+  my Str $root-dir = '/home/marcel/Languages/Raku/Projects/gnome-gtk3';
   @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
   @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
   @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
   @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
 #  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
+
+  @pangodirlist = "$root-dir/Design-docs/pango-list.txt".IO.slurp.lines;
 
   @enum-list = "$root-dir/Design-docs/scim-tool-enum-list".IO.slurp.lines;
 }
@@ -819,13 +840,13 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
-      Create a new plain object.
+      Create a new default object.
 
-        multi method new ( Bool :empty! )
+        multi method new ( )
 
       Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
-        multi method new ( N-GObject :$widget! )
+        multi method new ( N-GObject :$native-object! )
 
       Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -834,35 +855,37 @@ sub substitute-in-template (
       =end pod
 
       #TM:0:new():inheriting
-      #TM:0:new(:empty):
-      #TM:0:new(:widget):
+      #TM:0:new():
+      #TM:0:new(:native-object):
       #TM:0:new(:build-id):
 
       submethod BUILD ( *%options ) {
 
       BUILD-ADD-SIGNALS
 
-        # prevent creating wrong widgets
+        # prevent creating wrong native-objects
         return unless self.^name eq 'Gnome::LIBRARYMODULE';
 
         # process all named arguments
-        if ? %options<empty> {
-          # self.native-gobject(BASE-SUBNAME_new());
-        }
-
-        elsif ? %options<widget> || %options<build-id> {
+        if ? %options<widget> || ? %options<native-object> ||
+           ? %options<build-id> {
           # provided in Gnome::GObject::Object
         }
 
         elsif %options.keys.elems {
           die X::Gnome.new(
-            :message('Unsupported options for ' ~ self.^name ~
-                     ': ' ~ %options.keys.join(', ')
+            :message('Unsupported, undefined or wrongly typed options for ' ~
+                     self.^name ~ ': ' ~ %options.keys.join(', ')
                     )
           );
         }
 
-        # only after creating the widget, the gtype is known
+        # create default object
+        else {
+          # self.set-native-object(BASE-SUBNAME_new());
+        }
+
+        # only after creating the native-object, the gtype is known
         self.set-class-info('LIBCLASSNAME');
       }
 
@@ -872,7 +895,7 @@ sub substitute-in-template (
 
         my Callable $s;
         try { $s = &::("BASE-SUBNAME_$native-sub"); };
-      # check for gtk_, gdk_ or g_ !!!
+      # check for gtk_, gdk_, g_, pango_, cairo_ !!!
         try { $s = &::("gtk_$native-sub"); } unless ?$s;
         try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
       #  $s = self._buildable_interface($native-sub) unless ?$s;
@@ -1413,7 +1436,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
         An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-          my Gnome::Gtk3::Label $label .= new(:empty);
+          my Gnome::Gtk3::Label $label .= new;
           my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
           $label.g-object-get-property( 'label', $gv);
           $gv.g-value-set-string('my text label');

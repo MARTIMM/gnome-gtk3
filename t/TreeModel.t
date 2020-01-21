@@ -15,8 +15,8 @@ ok 1, 'loads ok';
 my Gnome::Gtk3::TreeModel $tm;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-$tm .= new(:empty);
-isa-ok $tm, Gnome::Gtk3::TreeModel, '.new(:empty)';
+$tm .= new;
+isa-ok $tm, Gnome::Gtk3::TreeModel, '.new';
 }
 
 #-------------------------------------------------------------------------------

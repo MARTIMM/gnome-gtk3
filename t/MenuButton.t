@@ -12,8 +12,8 @@ use Gnome::Gtk3::MenuButton;
 my Gnome::Gtk3::MenuButton $mb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new(:empty)";
-  $mb .= new(:empty);
+  diag ".new";
+  $mb .= new;
   isa-ok $mb, Gnome::Gtk3::MenuButton;
 }
 

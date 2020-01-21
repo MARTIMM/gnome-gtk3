@@ -11,8 +11,8 @@ use Gnome::Gtk3::MenuItem;
 my Gnome::Gtk3::MenuItem $mi;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $mi .= new(:empty);
-  isa-ok $mi, Gnome::Gtk3::MenuItem, ".new(:empty)";
+  $mi .= new;
+  isa-ok $mi, Gnome::Gtk3::MenuItem, ".new";
   isa-ok $mi.= new(:label<Open>), Gnome::Gtk3::MenuItem, '.new(:label)';
   isa-ok $mi.= new(:mnemonic<_Open>), Gnome::Gtk3::MenuItem,
     ".new(:mnemonic)";

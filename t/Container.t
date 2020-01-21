@@ -9,7 +9,7 @@ use Gnome::Gtk3::Button;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::Button $b .= new(:empty);
+my Gnome::Gtk3::Button $b .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $b, Gnome::Gtk3::Button;

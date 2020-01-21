@@ -12,8 +12,8 @@ ok 1, 'loads ok';
 my Gnome::Gtk3::TreePath $tp;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $tp .= new(:empty);
-  isa-ok $tp, Gnome::Gtk3::TreePath, '.new(:empty)';
+  $tp .= new;
+  isa-ok $tp, Gnome::Gtk3::TreePath, '.new';
 }
 
 #-------------------------------------------------------------------------------

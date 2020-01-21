@@ -385,10 +385,10 @@ submethod BUILD ( *%options ) {
     :w4<drag-drop drag-data-get drag-data-received popup-menu query-tooltip>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
 #  return unless self.^name eq 'Gnome::Gtk3::Widget';
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkWidget');
 }
 
@@ -1060,7 +1060,7 @@ method get-preferred-width ( --> List ) {
   my int32 $minimum_width;
   my int32 $natural_width;
   _gtk_widget_get_preferred_width(
-    self.get-native-gobject, $minimum_width, $natural_width
+    self.get-native-object, $minimum_width, $natural_width
   );
 
   ( $minimum_width, $natural_width)
@@ -1109,7 +1109,7 @@ method get-preferred-height-for-width ( int32 $width --> List ) {
   my int32 $natural_height;
 
   _gtk_widget_get_preferred_height_for_width(
-    self.get-native-gobject, $width, $minimum_height, $natural_height
+    self.get-native-object, $width, $minimum_height, $natural_height
   );
 
   ( $minimum_height, $natural_height)
@@ -1160,7 +1160,7 @@ method get-preferred-height ( --> List ) {
   my int32 $natural_height;
 
   _gtk_widget_get_preferred_height(
-    self.get-native-gobject, $minimum_height, $natural_height
+    self.get-native-object, $minimum_height, $natural_height
   );
 
   ( $minimum_height, $natural_height)
@@ -1208,7 +1208,7 @@ method get-preferred-width-for-height ( int32 $height --> List ) {
   my int32 $natural_width;
 
   _gtk_widget_get_preferred_width_for_height(
-    self.get-native-gobject, $height, $minimum_width, $natural_width
+    self.get-native-object, $height, $minimum_width, $natural_width
   );
 
   ( $minimum_width, $natural_width);
@@ -1266,7 +1266,7 @@ method get-preferred-height-and-baseline-for-width ( int32 $width --> List ) {
   my int32 $natural_baseline;
 
   _gtk_widget_get_preferred_height_and_baseline_for_width(
-    self.get-native-gobject, $width, $minimum_height, $natural_height,
+    self.get-native-object, $width, $minimum_height, $natural_height,
     $minimum_baseline, $natural_baseline
   );
 
@@ -1322,7 +1322,7 @@ The returned list holds
 method get-preferred-size ( --> List ) {
   my N-GtkRequisition $minimum .= new;
   my N-GtkRequisition $natural .= new;
-  _gtk_widget_get_preferred_size( self.get-native-gobject, $minimum, $natural);
+  _gtk_widget_get_preferred_size( self.get-native-object, $minimum, $natural);
   ( $minimum, $natural)
 }
 
@@ -7470,7 +7470,7 @@ Returns: C<1> if the signal can be activated.
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

@@ -11,8 +11,8 @@ use Gnome::Gtk3::RadioButton;
 my Gnome::Gtk3::RadioButton ( $rb1, $rb2, $rb3);
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new(:empty)";
-  $rb1 .= new(:empty);
+  diag ".new";
+  $rb1 .= new;
   isa-ok $rb1, Gnome::Gtk3::RadioButton;
 
   diag ".new(:label)";

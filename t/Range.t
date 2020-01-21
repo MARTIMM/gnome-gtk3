@@ -19,14 +19,14 @@ use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my Gnome::Gtk3::Scale $s .= new(:empty);
+  my Gnome::Gtk3::Scale $s .= new;
   my Gnome::Gtk3::Range $r .= new(:widget($s));
   isa-ok $r, Gnome::Gtk3::Range;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::Window $w .= new(:empty);
+  my Gnome::Gtk3::Window $w .= new;
   my Gnome::Gtk3::Scale $s .= new(
     :orientation(GTK_ORIENTATION_HORIZONTAL),
     :min(10e0), :max(100e0), :step(5e-1)

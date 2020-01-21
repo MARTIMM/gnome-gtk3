@@ -11,8 +11,8 @@ use Gnome::Gtk3::ToggleButton;
 my Gnome::Gtk3::ToggleButton $tb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new(:empty)";
-  $tb .= new(:empty);
+  diag ".new";
+  $tb .= new;
   isa-ok $tb, Gnome::Gtk3::ToggleButton;
 
   diag ".new(:label)";

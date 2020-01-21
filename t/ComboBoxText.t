@@ -7,7 +7,7 @@ use Gnome::Gtk3::ComboBoxText;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-my Gnome::Gtk3::ComboBoxText $cbt .= new(:empty);
+my Gnome::Gtk3::ComboBoxText $cbt .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $cbt, Gnome::Gtk3::ComboBoxText;

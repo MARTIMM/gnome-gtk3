@@ -14,8 +14,8 @@ use Gnome::N::X;
 my Gnome::Gtk3::TextTag $tt;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-   $tt .= new(:empty);
-  isa-ok $tt, Gnome::Gtk3::TextTag, '.new(:empty)';
+   $tt .= new;
+  isa-ok $tt, Gnome::Gtk3::TextTag, '.new';
 
   $tt .= new(:tag-name<my-very-own-tag-name>);
   isa-ok $tt, Gnome::Gtk3::TextTag, '.new(:tag-name)';
@@ -24,7 +24,7 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  my Gnome::Gtk3::TextTagTable $ttt .= new(:empty);
+  my Gnome::Gtk3::TextTagTable $ttt .= new;
   $ttt.gtk-text-tag-table-add($tt);
   my Gnome::Gtk3::TextTag $tt2 .= new(:tag-name<my-second-tag-name>);
   $ttt.gtk-text-tag-table-add($tt2);

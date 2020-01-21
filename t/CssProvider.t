@@ -40,7 +40,7 @@ $invalid-css-text ~~ s:g/ '{' //;
 $invalid-css-file.IO.spurt($invalid-css-text);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+my Gnome::Gtk3::CssProvider $cp .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $cp, Gnome::Gtk3::CssProvider;
@@ -57,7 +57,7 @@ subtest 'Manipulations', {
     is $e.error-is-valid, False, 'no errors';
 
     subtest 'invalid css from string', {
-      my Gnome::Glib::Quark $quark .= new(:empty);
+      my Gnome::Glib::Quark $quark .= new;
 
       $e = $cp.load-from-data($invalid-css-text);
       is $e.error-is-valid, True, 'there are errors';
@@ -92,7 +92,7 @@ subtest 'Manipulations', {
           N-GObject $section, N-GError $e,
           Gnome::GObject::Object :widget($provider)
         ) {
-          my Gnome::Glib::Quark $quark .= new(:empty);
+          my Gnome::Glib::Quark $quark .= new;
           my Gnome::Glib::Error $error .= new(:gerror($e));
           is $error.error-is-valid, True, 'there are errors';
 

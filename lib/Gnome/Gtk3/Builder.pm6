@@ -126,7 +126,7 @@ Additionally, since 3.10 a special <template> tag has been added to the format a
 
 =head2 Example
 
-  my Gnome::Gtk3::Builder $builder .= new(:empty);
+  my Gnome::Gtk3::Builder $builder .= new;
   my Gnome::Glib::Error $e = $builder.add-from-file($ui-file);
   die $e.message if $e.error-is-valid;
 
@@ -232,7 +232,7 @@ Create an empty builder.
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:filename):
 #TM:0:new(:string):
 
@@ -242,21 +242,22 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Builder';
 
   if ? %options<filename> {
-    self.native-gobject(gtk_builder_new_from_file(%options<filename>));
+    self.set-native-object(gtk_builder_new_from_file(%options<filename>));
   }
 
   elsif ? %options<string> {
-    self.native-gobject(
+    self.set-native-object(
       gtk_builder_new_from_string( %options<string>, %options<string>.chars)
     );
   }
 
   elsif ? %options<empty> {
-    self.native-gobject(gtk_builder_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_builder_new());
   }
 
 #TODO No widget or build-id for a builder!
-#  elsif ? %options<widget> || %options<build-id> {
+#  elsif ? %options<native-object> || %options<build-id> {
 #    # provided in GObject
 #  }
 
@@ -268,7 +269,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else { #elsif ? %options<empty> {
+    self.set-native-object(gtk_builder_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBuilder');
 
 
@@ -292,21 +297,27 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TODO check if these are needed
-multi method add-gui ( Str:D :$filename! )
-  is DEPRECATED('gtk_builder_add_from_file') {
+multi method add-gui ( Str:D :$filename! ) {
+
+  Gnome::N::deprecate(
+    '.add-gui(:filename)', '.gtk_builder_add_from_file()', '0.18.4', '0.22.0'
+  );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_file(
-    self.get-native-gobject, $filename
+    self.get-native-object, $filename
   );
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-multi method add-gui ( Str:D :$string! )
-  is DEPRECATED('gtk_builder_add_from_string') {
+multi method add-gui ( Str:D :$string! ) {
+
+  Gnome::N::deprecate(
+    '.add-gui(:string)', '.gtk_builder_add_from_string()', '0.18.4', '0.22.0'
+  );
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_string(
-    self.get-native-gobject, $string);
+    self.get-native-object, $string);
   die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
 }
 
@@ -393,10 +404,10 @@ proto gtk_builder_add_from_file ( N-GObject $builder, Str $filename, |) { * }
 multi sub gtk_builder_add_from_file (
   N-GObject $builder, Str $filename, Any $error
   --> uint32
-) is DEPRECATED('other multi version of gtk_builder_add_from_file') {
-#  DEPRECATED(
-#    'other multi version of gtk_builder_add_from_file', '0.17.10', '0.22.0'
-#  );
+) {
+  Gnome::N::deprecate(
+    '.gtk_builder_add_from_file( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_file( N-GObject, Str)', '0.17.10', '0.22.0'
+  );
 
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_file( $builder, $filename, $ga)
@@ -472,10 +483,11 @@ proto gtk_builder_add_from_string ( N-GObject $builder, Str $buffer, |) { * }
 multi sub gtk_builder_add_from_string (
   N-GObject $builder, Str $buffer, Int $length, Any $error
   --> uint32
-) is DEPRECATED('other multi version of gtk_builder_add_from_string') {
-#  DEPRECATED(
-#    'other multi version of gtk_builder_add_from_string', '0.17.10', '0.22.0'
-#  );
+) {
+
+  Gnome::N::deprecate(
+    '.gtk_builder_add_from_string( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_string( N-GObject, Str)', '0.17.10', '0.22.0'
+  );
 
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_string( $builder, $buffer, $length, $ga)
@@ -1114,7 +1126,7 @@ sub gtk_builder_extend_with_template ( N-GObject $builder, N-GObject $widget, N-
 
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
-  my Gnome::Gtk3::Label $label .= new(:empty);
+  my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');

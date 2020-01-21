@@ -67,12 +67,12 @@ my Bool $signals-added = False;
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 
-  multi method new ( :$widget! )
+  multi method new ( :$native-object! )
 
 =end pod
 
 #TM:1:new():inheriting
-#TM:1:new(:widget):
+#TM:1:new(:native-object):
 
 submethod BUILD ( *%options ) {
 
@@ -82,10 +82,10 @@ submethod BUILD ( *%options ) {
     :w2<change-value>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Range';
 
-  if ? %options<widget> {
+  if ? %options<native-object> || ? %options<widget> {
     # provided in GObject
   }
 
@@ -97,7 +97,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkRange');
 }
 

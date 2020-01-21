@@ -10,7 +10,7 @@ use Gnome::Gtk3::LevelBar;
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
-  my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+  my Gnome::Gtk3::LevelBar $level-bar .= new;
   $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
   is GtkOrientation($level-bar.get-orientation), GTK_ORIENTATION_VERTICAL,
      '.set-orientation() / .get-orientation()';

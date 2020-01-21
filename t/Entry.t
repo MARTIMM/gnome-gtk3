@@ -11,8 +11,8 @@ use Gnome::Gtk3::Entry;
 my Gnome::Gtk3::Entry $e;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $e .= new(:empty);
-  isa-ok $e, Gnome::Gtk3::Entry, ".new(:empty)";
+  $e .= new;
+  isa-ok $e, Gnome::Gtk3::Entry, ".new";
 }
 
 #-------------------------------------------------------------------------------

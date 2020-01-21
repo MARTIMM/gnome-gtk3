@@ -12,8 +12,8 @@ use Gnome::Gtk3::LevelBar;
 my Gnome::Gtk3::LevelBar $lb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $lb .= new(:empty);
-  isa-ok $lb, Gnome::Gtk3::LevelBar, ".new(:empty)";
+  $lb .= new;
+  isa-ok $lb, Gnome::Gtk3::LevelBar, ".new";
 }
 
 #-------------------------------------------------------------------------------

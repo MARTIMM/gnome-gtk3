@@ -15,7 +15,7 @@ use Gnome::Gtk3::Button;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Glib::Quark $quark .= new(:empty);
+my Gnome::Glib::Quark $quark .= new;
 my Gnome::Glib::Error $e;
 
 my Str $ui-file = 't/data/ui.glade';
@@ -23,11 +23,6 @@ my Str $ui-file = 't/data/ui.glade';
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
   my Gnome::Gtk3::Builder $builder;
-  throws-like
-    { $builder .= new; },
-    X::Gnome, "No options used",
-    :message('No options used to create or set the native widget');
-
   throws-like
     { $builder .= new( :build, :load); },
     X::Gnome, "Wrong options used",
@@ -37,13 +32,13 @@ subtest 'ISA tests', {
           [(build||load) ',']+/
     );
 
-  $builder .= new(:empty);
-  isa-ok $builder, Gnome::Gtk3::Builder, '.new(:empty)';
+  $builder .= new;
+  isa-ok $builder, Gnome::Gtk3::Builder, '.new';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Add ui from file to builder', {
-  my Gnome::Gtk3::Builder $builder .= new(:empty);
+  my Gnome::Gtk3::Builder $builder .= new;
 
   $e = $builder.add-from-file($ui-file);
   nok $e.error-is-valid, ".add-from-file()";
@@ -61,7 +56,7 @@ subtest 'Add ui from file to builder', {
 
 #-------------------------------------------------------------------------------
 subtest 'Test builder errors', {
-  my Gnome::Gtk3::Builder $builder .= new(:empty);
+  my Gnome::Gtk3::Builder $builder .= new;
 
 #  throws-like
 #    { $builder.add-gui(:filename('x.glade')); },
@@ -90,7 +85,7 @@ subtest 'Test builder errors', {
   }
 
   subtest "errorcode return from gtk_builder_add_from_string", {
-    my Gnome::Glib::Quark $quark .= new(:empty);
+    my Gnome::Glib::Quark $quark .= new;
 
     $e = $builder.add-from-string($text);
     ok $e.error-is-valid, "error from .add-from-string()";
@@ -105,7 +100,7 @@ subtest 'Test builder errors', {
 
 #-------------------------------------------------------------------------------
 subtest 'Test items from ui', {
-  my Gnome::Gtk3::Builder $builder .= new(:empty);
+  my Gnome::Gtk3::Builder $builder .= new;
   $e = $builder.add-from-file($ui-file);
   nok $e.error-is-valid, ".add-from-file()";
 

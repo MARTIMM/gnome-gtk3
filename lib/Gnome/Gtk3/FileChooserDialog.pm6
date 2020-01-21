@@ -186,7 +186,7 @@ my Bool $signals-added = False;
 
 Create an object using a native object from elsewhere. See also I<gtk_file_chooser_dialog_new()> below.
 
-=head3 multi method new ( N-GObject :$widget! )
+=head3 multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -197,7 +197,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:4:new(:action):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:4:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -212,7 +212,7 @@ submethod BUILD ( *%options ) {
     self._add_file_chooser_signal_types($?CLASS.^name);
   }
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::FileChooserDialog';
 
   # process all named arguments
@@ -226,12 +226,12 @@ submethod BUILD ( *%options ) {
                 !! %options<parent>();
     }
 
-    self.native-gobject(
+    self.set-native-object(
       gtk_file_chooser_dialog_new( $title, $parent, %options<action>, |@buttons)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
@@ -243,7 +243,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkFileChooserDialog');
 }
 
@@ -331,116 +331,4 @@ sub gtk_file_chooser_dialog_new (
   my Callable $f = nativecast( $signature, $ptr);
 
   $f( $title, $parent, $action, |@buttons, Pointer)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-
-# ==============================================================================
-=begin pod
-
-=head1 Methods
-
-=head2 [[gtk_] file_chooser_] dialog_new_two_buttons
-
-  method gtk_file_chooser_dialog_new_two_buttons (
-    Str $title, N-GObject $parent-window, int32 $file-chooser-action,
-    Str $first_button_text, int32 $first-button-response,
-    Str $secnd-button-text, int32 $secnd-button-response,
-    OpaquePointer $stopper
-    --> N-GObject
-  )
-
-Creates a new filechooser dialog widget. It returns a native object which must be stored in another object. Better, shorter and easier is to use C<.new(....)>. See info below.
-=end pod
-
-
-
-
-
-sub gtk_file_chooser_dialog_new_two_buttons (
-  Str $title, N-GObject $parent-window, int32 $file-chooser-action,
-  Str $first-button-text, int32 $first-button-response,
-  Str $secnd-button-text, int32 $secnd-button-response,
-  OpaquePointer $stopper
-) returns N-GObject       # GtkFileChooserDialog
-  is native(&gtk-lib)
-  is symbol("gtk_file_chooser_dialog_new")
-  { * }
-
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-=begin pod
-=head2 new
-
-  multi method new ( Str :$title! )
-
-Create a filechooser dialog with given title. There will be only two buttons
-C<:bt1text> and C<:bt2text>. These are by default C<Cancel> and C<Accept>.
-There response types are given by  C<:bt1response> and C<:bt2response>.
-Defaults for these are C<GTK_RESPONSE_CANCEL> and C<GTK_RESPONSE_ACCEPT>
-respectively.
-
-The filechooser action is set with C<:action> which has C<GTK_FILE_CHOOSER_ACTION_OPEN> as its default.
-
-The parent window is set by C<:window> and is by default C<Any>.
-
-The values are defined in C<Gnome::Gtk3::Dialog> and C<GtkFileChooser>.
-
-  multi method new ( :$widget! )
-
-Create a filechooser dialog using a native object from elsewhere. See also Gnome::GObject::Object.
-
-  multi method new ( Str :$build-id! )
-
-Create a filechooser dialog using a native object from a builder. See also Gnome::GObject::Object.
-
-=end pod
-submethod BUILD ( *%options ) {
-
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::FileChooserDialog';
-
-  if ? %options<title> {
-    self.native-gobject(
-      gtk_file_chooser_dialog_new_two_buttons(
-        %options<title>, %options<window>//Any,
-        %options<action>//GTK_FILE_CHOOSER_ACTION_OPEN,
-        %options<bt1text>//'Cancel',
-        %options<bt1response>//GTK_RESPONSE_CANCEL,
-        %options<bt2text>//'Accept',
-        %options<bt2response>//GTK_RESPONSE_ACCEPT,
-        Any
-      )
-    );
-  }
-
-  elsif ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
 }

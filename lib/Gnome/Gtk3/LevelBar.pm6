@@ -41,7 +41,7 @@ them to the new range.
     #   border-color: black;
     #   border-style: 1px;
     # }
-    my Gnome::Gtk3::LevelBar $bar .= new(:empty);
+    my Gnome::Gtk3::LevelBar $bar .= new;
     $bar.add-offset-value( "my-offset", 0.60);
   }
 
@@ -109,7 +109,7 @@ Gnome::Gtk3::LevelBar implements
 
 =head2 Example
 
-  my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+  my Gnome::Gtk3::LevelBar $level-bar .= new;
   $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 =end pod
@@ -180,7 +180,7 @@ Create a GtkLevelBar object.
 
 Create a new GtkLevelBar with a specified range.
 
-  multi method new ( :$widget! )
+  multi method new ( :$native-object! )
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 
@@ -190,9 +190,9 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:min, :max):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -201,20 +201,21 @@ submethod BUILD ( *%options ) {
     :w1<offset-changed>
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::LevelBar';
 
   if ? %options<empty> {
-    self.native-gobject(gtk_level_bar_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_level_bar_new());
   }
 
   elsif ? %options<min> and ? %options<max> {
-    self.native-gobject(gtk_level_bar_new_for_interval(
+    self.set-native-object(gtk_level_bar_new_for_interval(
       %options<min>, %options<max>)
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -226,7 +227,11 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_level_bar_new());
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkLevelBar');
 }
 
@@ -248,7 +253,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_level_bar_new:new(:empty)
+#TM:2:gtk_level_bar_new:new()
 =begin pod
 =head2 [gtk_] level_bar_new
 

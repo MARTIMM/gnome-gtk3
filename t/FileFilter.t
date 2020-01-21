@@ -11,8 +11,8 @@ use Gnome::Gtk3::FileFilter;
 my Gnome::Gtk3::FileFilter $ff;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $ff .= new(:empty);
-  isa-ok $ff, Gnome::Gtk3::FileFilter, ".new(:empty)";
+  $ff .= new;
+  isa-ok $ff, Gnome::Gtk3::FileFilter, ".new";
 }
 
 #-------------------------------------------------------------------------------

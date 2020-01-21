@@ -11,8 +11,8 @@ use Gnome::Gtk3::SearchEntry;
 my Gnome::Gtk3::SearchEntry $se;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $se .= new(:empty);
-  isa-ok $se, Gnome::Gtk3::SearchEntry, '.new(:empty)';
+  $se .= new;
+  isa-ok $se, Gnome::Gtk3::SearchEntry, '.new';
 }
 
 #`{{

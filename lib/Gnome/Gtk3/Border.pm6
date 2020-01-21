@@ -70,7 +70,7 @@ has Bool $.border-is-valid = False;
 
 Create a new plain object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create an object taking the native object from elsewhere.
 
@@ -82,7 +82,7 @@ Create an object and initialize to given values.
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:border):
 #TM:1:new(:left, :right, :top, :bottom):
 
@@ -93,12 +93,13 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    self.native-gboxed(gtk_border_new());
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_border_new());
     $!border-is-valid = True;
   }
 
   elsif ? %options<border> {
-    self.native-gboxed(%options<border>);
+    self.set-native-object(%options<border>);
     $!border-is-valid = True if %options<border> ~~ N-GtkBorder;
   }
 
@@ -108,7 +109,7 @@ submethod BUILD ( *%options ) {
     $b.right = %options<right>;
     $b.top = %options<top>;
     $b.bottom = %options<bottom>;
-    self.native-gboxed($b);
+    self.set-native-object($b);
     $!border-is-valid = True;
   }
 
@@ -120,7 +121,12 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_border_new());
+    $!border-is-valid = True;
+  }
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBorder');
 }
 
@@ -152,8 +158,8 @@ Modify left width of border if value is given. Returns left value after modifica
 method left ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set left width, Border is not valid'))
       unless $!border-is-valid;
-  self.get-native-gboxed.left = $value if $value.defined;
-  self.get-native-gboxed.left
+  self.get-native-object.left = $value if $value.defined;
+  self.get-native-object.left
 }
 
 #-------------------------------------------------------------------------------
@@ -170,8 +176,8 @@ Modify right width of border if value is given. Returns right value after modifi
 method right ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set right width, Border is not valid'))
       unless $!border-is-valid;
-  self.get-native-gboxed.right = $value if $value.defined;
-  self.get-native-gboxed.right
+  self.get-native-object.right = $value if $value.defined;
+  self.get-native-object.right
 }
 
 #-------------------------------------------------------------------------------
@@ -188,8 +194,8 @@ Modify top width of border if value is given. Returns top value after modificati
 method top ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set top width, Border is not valid'))
       unless $!border-is-valid;
-  self.get-native-gboxed.top = $value if $value.defined;
-  self.get-native-gboxed.top
+  self.get-native-object.top = $value if $value.defined;
+  self.get-native-object.top
 }
 
 #-------------------------------------------------------------------------------
@@ -206,8 +212,8 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 method bottom ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
       unless $!border-is-valid;
-  self.get-native-gboxed.bottom = $value if $value.defined;
-  self.get-native-gboxed.bottom
+  self.get-native-object.bottom = $value if $value.defined;
+  self.get-native-object.bottom
 }
 
 #-------------------------------------------------------------------------------
@@ -222,7 +228,7 @@ Frees a C<N-GtkBorder> struct and after that, border-is-valid() returns False.
 =end pod
 
 method clear-border ( ) {
-  _gtk_border_free(self.get-native-gboxed);
+  _gtk_border_free(self.get-native-object);
   $!border-is-valid = False;
 }
 

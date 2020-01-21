@@ -59,7 +59,7 @@ has Bool $.tree-path-is-valid = False;
 
 Create a new default tree path object.
 
-  multi method new ( Bool :empty! )
+  multi method new ( )
 
 Create a new tree path with first index.
 
@@ -79,40 +79,41 @@ Create an object taking the native object from elsewhere.
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:1:new(:first):
 #TM:1:new(:string):
 #TM:1:new(:indices):
 #TM:1:new(:tree-path):
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreePath';
 
   # process all named arguments
   if ? %options<tree-path> {
-    self.native-gboxed(%options<tree-path>);
-    $!tree-path-is-valid = self.get-native-gboxed.defined;
+    self.set-native-object(%options<tree-path>);
+    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<empty> {
-    self.native-gboxed(gtk_tree_path_new());
-    $!tree-path-is-valid = self.get-native-gboxed.defined;
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object(gtk_tree_path_new());
+    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<first> {
-    self.native-gboxed(gtk_tree_path_new_first());
-    $!tree-path-is-valid = self.get-native-gboxed.defined;
+    self.set-native-object(gtk_tree_path_new_first());
+    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<indices> {
-    self.native-gboxed(gtk_tree_path_new_from_indices(|%options<indices>));
-    $!tree-path-is-valid = self.get-native-gboxed.defined;
+    self.set-native-object(gtk_tree_path_new_from_indices(|%options<indices>));
+    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<string> {
-    self.native-gboxed(gtk_tree_path_new_from_string(%options<string>));
-    $!tree-path-is-valid = self.get-native-gboxed.defined;
+    self.set-native-object(gtk_tree_path_new_from_string(%options<string>));
+    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif %options.keys.elems {
@@ -123,7 +124,13 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  # only after creating the widget, the gtype is known
+  else {#if ? %options<empty> {
+    self.set-native-object(gtk_tree_path_new());
+    $!tree-path-is-valid = self.get-native-object.defined;
+  }
+
+
+  # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreePath');
 }
 
@@ -155,12 +162,12 @@ Frees a C<N-GtkTreePath> struct and after that, tree-path-is-valid() returns Fal
 =end pod
 
 method clear-tree-path ( ) {
-  _gtk_tree_path_free(self.get-native-gboxed);
+  _gtk_tree_path_free(self.get-native-object);
   $!tree-path-is-valid = False;
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_path_new:new(:empty)
+#TM:1:gtk_tree_path_new:new()
 =begin pod
 =head2 [gtk_] tree_path_new
 

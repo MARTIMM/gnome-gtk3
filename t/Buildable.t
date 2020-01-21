@@ -19,7 +19,7 @@ my Gnome::Glib::Error $e;
 my Gnome::Gtk3::Builder $builder;
 
 my Str $ui-file = 't/data/ui.glade';
-my Gnome::Glib::Quark $quark .= new(:empty);
+my Gnome::Glib::Quark $quark .= new;
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
@@ -38,7 +38,7 @@ subtest 'Interface ...', {
      '.gtk-widget-set-name(): widget-name';
 
 
-  $builder .= new(:empty);
+  $builder .= new;
   $e = $builder.add-from-file($ui-file);
   nok $e.error-is-valid, "ui file added ok";
   note $e.message if $e.error-is-valid;
@@ -61,8 +61,8 @@ subtest 'Interface ...', {
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $b .= new(:empty);
-  isa-ok $b, Gnome::Gtk3::Buildable, '.new(:empty)';
+  $b .= new;
+  isa-ok $b, Gnome::Gtk3::Buildable, '.new';
 }
 
 #-------------------------------------------------------------------------------

@@ -9,13 +9,13 @@ use Gnome::Gtk3::Border;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my Gnome::Gtk3::Border $b1 .= new(:empty);
+  my Gnome::Gtk3::Border $b1 .= new;
   isa-ok $b1, Gnome::Gtk3::Border;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Border manipulations', {
-  my Gnome::Gtk3::Border $b1 .= new(:empty);
+  my Gnome::Gtk3::Border $b1 .= new;
   my Gnome::Gtk3::Border $b2 .= new( :10left, :10right, :5top, :5bottom);
   isa-ok $b2, Gnome::Gtk3::Border;
   is $b2().left, 10, 'left border 10';
@@ -42,7 +42,7 @@ subtest 'Border manipulations', {
 
 #-------------------------------------------------------------------------------
 subtest 'Border error', {
-  my Gnome::Gtk3::Border $b1 .= new(:empty);
+  my Gnome::Gtk3::Border $b1 .= new;
   $b1.clear-border;
 
   ok !$b1.border-is-valid, 'border is not valid';

@@ -110,7 +110,7 @@ Gnome::Gtk3::Scale implements
 
 =head2 Example
 
-  my Gnome::Gtk3::Scale $scale .= new(:empty);
+  my Gnome::Gtk3::Scale $scale .= new;
 
   # Set min and max of scale.
   $scale.set-range( -2e0, .2e2);
@@ -180,7 +180,7 @@ Creates a new GtkScale providinng an orientation and minimum, maximum and step s
 =item $max; maximum value
 =item $step; step increment (tick size) used with keyboard shortcuts
 
-  multi method new ( :$widget! )
+  multi method new ( :$native-object! )
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 
@@ -190,9 +190,9 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 
 =end pod
 
-#TM:1:new(:empty):
+#TM:1:new():
 #TM:0:new(:min,:max,:step):
-#TM:0:new(:widget):
+#TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -201,23 +201,24 @@ submethod BUILD ( *%options ) {
     :double<format-value>,
   ) unless $signals-added;
 
-  # prevent creating wrong widgets
+  # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Scale';
 
   if %options<empty> {
-    self.native-gobject( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
   }
 
   elsif %options<orientation>.defined and ? %options<min>.defined and
      %options<max>.defined and %options<step>.defined {
 
-    self.native-gobject( gtk_scale_new_with_range(
+    self.set-native-object( gtk_scale_new_with_range(
         %options<orientation>, %options<min>, %options<max>, %options<step>
       )
     );
   }
 
-  elsif ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
@@ -227,6 +228,10 @@ submethod BUILD ( *%options ) {
                ': ' ~ %options.keys.join(', ')
               )
     );
+  }
+
+  else {#if %options<empty> {
+    self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
   }
 
   # only after creating the widget, the gtype is known
@@ -251,7 +256,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_scale_new:new(:empty)
+#TM:2:gtk_scale_new:new()
 =begin pod
 =head2 [gtk_] scale_new
 

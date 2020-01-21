@@ -11,8 +11,8 @@ use Gnome::Gtk3::CellRendererAccel;
 my Gnome::Gtk3::CellRendererAccel $cra;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $cra .= new(:empty);
-  isa-ok $cra, Gnome::Gtk3::CellRendererAccel, '.new(:empty)';
+  $cra .= new;
+  isa-ok $cra, Gnome::Gtk3::CellRendererAccel, '.new';
 }
 
 #`{{
@@ -43,4 +43,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

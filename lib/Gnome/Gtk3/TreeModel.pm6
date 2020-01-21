@@ -1071,7 +1071,7 @@ An example
 method foreach ( $func-object, Str $func-name ) {
   if $func-object.^can($func-name) {
     _gtk_tree_model_foreach(
-      self.get-native-gobject,
+      self.get-native-object,
       sub ( $m, $p, $i, $d --> Int ) {
         $func-object."$func-name"(
           self, Gnome::Gtk3::TreePath.new(:tree-path($p)),

@@ -21,8 +21,8 @@ my Gnome::Gtk3::CellRendererText $crt;
 my Gnome::GObject::Value $v;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $crt .= new(:empty);
-  isa-ok $crt, Gnome::Gtk3::CellRendererText, '.new(:empty)';
+  $crt .= new;
+  isa-ok $crt, Gnome::Gtk3::CellRendererText, '.new';
 }
 
 #-------------------------------------------------------------------------------

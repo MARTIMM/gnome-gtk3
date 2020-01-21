@@ -12,8 +12,8 @@ use Gnome::Gtk3::MenuBar;
 my Gnome::Gtk3::MenuBar $mb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $mb .= new(:empty);
-  isa-ok $mb, Gnome::Gtk3::MenuBar, ".new(:empty)";
+  $mb .= new;
+  isa-ok $mb, Gnome::Gtk3::MenuBar, ".new";
 }
 
 #-------------------------------------------------------------------------------

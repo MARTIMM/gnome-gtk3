@@ -27,7 +27,7 @@ Gnome::Gtk3::Orientable is implemented by Gnome::Gtk3::AppChooserWidget, Gnome::
 
 =head2 Example
 
-  my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+  my Gnome::Gtk3::LevelBar $level-bar .= new;
   $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 =end pod

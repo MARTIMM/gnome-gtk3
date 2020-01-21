@@ -9,7 +9,7 @@ use Gnome::Gtk3::ColorChooserWidget;
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my Gnome::Gtk3::ColorChooserWidget $v .= new(:empty);
+  my Gnome::Gtk3::ColorChooserWidget $v .= new;
   isa-ok $v, Gnome::Gtk3::ColorChooserWidget;
 }
 
