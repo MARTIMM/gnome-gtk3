@@ -106,7 +106,7 @@ Create an object using a native object from elsewhere.
 =end pod
 
 #TM:0:new():
-#TM:0:new(:widgetpath):
+#TM:0:new(:native-object):
 
 submethod BUILD ( *%options ) {
 
@@ -129,9 +129,18 @@ submethod BUILD ( *%options ) {
 
   #TODO widgetpath is a native-object
   elsif ? %options<widgetpath> {
+    Gnome::N::deprecate(
+      '.new(:widgetpath())', '.new(:native-object())', '0.21.3', '0.24.0'
+    );
     _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(%options<widgetpath>);
     $!widgetpath-is-valid = %options<widgetpath>.defined;
+  }
+
+  elsif ? %options<native-object> {
+    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+    self.set-native-object(%options<native-object>);
+    $!widgetpath-is-valid = %options<native-object>.defined;
   }
 
   elsif %options.keys.elems {

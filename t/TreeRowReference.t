@@ -42,7 +42,7 @@ subtest 'Manipulations', {
   $tp = $tr.get-path;
   is $tp.to-string, '0', '.get-path()';
 
-  my Gnome::Gtk3::ListStore $ls2 .= new(:widget($tr.get-model));
+  my Gnome::Gtk3::ListStore $ls2 .= new(:native_object($tr.get-model));
   is $ls2.get-n-columns, 2, '.get-model()';
 #  ok $tr.valid, '.gtk_tree_row_reference_valid()';
 

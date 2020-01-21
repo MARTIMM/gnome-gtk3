@@ -90,7 +90,7 @@ subtest 'Manipulations', {
       class X {
         method handle-error (
           N-GObject $section, N-GError $e,
-          Gnome::GObject::Object :widget($provider)
+          Gnome::GObject::Object :native_object($provider)
         ) {
           my Gnome::Glib::Quark $quark .= new;
           my Gnome::Glib::Error $error .= new(:gerror($e));

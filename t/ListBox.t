@@ -45,18 +45,18 @@ subtest 'Manipulations', {
 
   # Get the row and create the ListBoxRow from the native object
   my Gnome::Gtk3::ListBoxRow $lb-row .= new(
-    :widget($lb.get-row-at-index(0))
+    :native_object($lb.get-row-at-index(0))
   );
 
   is $lb-row.is-selected, 0, 'row is not selected';
 
   # Get the native grid object from a child and create the Grid again.
-  my Gnome::Gtk3::Grid $lb-grid .= new(:widget($lb-row.get_child()));
+  my Gnome::Gtk3::Grid $lb-grid .= new(:native_object($lb-row.get_child()));
   $gl .= new(:glist($lb-grid.get-children));
   is $gl.g-list-length, 2, 'two entries in grid';
 
   my Gnome::Gtk3::CheckButton $lb-cb .= new(
-    :widget($lb-grid.get-child-at( 0, 0))
+    :native_object($lb-grid.get-child-at( 0, 0))
   );
   is $lb-cb.get-label, 'abc', 'checkbox label found';
 }

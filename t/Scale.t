@@ -47,7 +47,7 @@ subtest 'Signals ...', {
     has $.signal-processed = False;
 
     method format-value-callback (
-      num64 $value, Gnome::Gtk3::Scale :widget($scale)
+      num64 $value, Gnome::Gtk3::Scale :native_object($scale)
       --> Str
     ) {
       $!signal-processed = True;

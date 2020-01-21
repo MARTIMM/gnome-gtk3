@@ -14,7 +14,7 @@ my Gnome::Gtk3::MenuShell $ms;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $mb .= new;
-  $ms .= new(:widget($mb));
+  $ms .= new(:native_object($mb));
 
   isa-ok $ms, Gnome::Gtk3::MenuShell, ".new(:widget)";
 }

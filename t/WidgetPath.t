@@ -43,7 +43,7 @@ subtest 'Manipulations', {
   $g.gtk-grid-attach( $b2, 0, 1, 1, 1);
 
   note $b1.get-path.perl;
-  $wp .= new(:widgetpath($b1.get-path));
+  $wp .= new(:native-object($b1.get-path));
   is $wp.gtk-widget-path-length, 3, 'length of path is 3';
   is $wp.iter-get-name(0), 'top-level-window', $wp.iter-get-name(0);
   is $wp.iter-get-name(1), 'top-grid', $wp.iter-get-name(1);
@@ -51,7 +51,7 @@ subtest 'Manipulations', {
 
   is $wp.to-string, 'window(top-level-window):dir-ltr.background grid(top-grid):dir-ltr.horizontal button(start-button):dir-ltr.text-button', $wp.to-string;
 
-  $wp .= new(:widgetpath($b2.get-path));
+  $wp .= new(:native-object($b2.get-path));
   is $wp.iter-get-name(2), Any, 'string button 2 not set';
   ok !$wp.iter_has_name( 2, 'stop-button'), 'iter 2 has different name';
   $wp.iter-set-name( 2, 'stop-button');
@@ -85,7 +85,7 @@ subtest 'Manipulations', {
 
   # make a copy and do a check
   my Gnome::Gtk3::WidgetPath $wp-copy .= new(
-    :widgetpath($wp.gtk-widget-path-copy)
+    :native-object($wp.gtk-widget-path-copy)
   );
   is $wp-copy.gtk-widget-path-length, 3, 'copy has same length';
   ok $wp-copy.iter-get-state(2) +& GTK_STATE_FLAG_DIR_LTR.value,

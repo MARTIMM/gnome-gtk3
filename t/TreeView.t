@@ -26,7 +26,7 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::ListStore $ls2 .= new(:widget($tv.get-model));
+  my Gnome::Gtk3::ListStore $ls2 .= new(:native_object($tv.get-model));
   is $ls.iter-n-children(Any), 0, '.get-model()';
 
   $tv .= new;

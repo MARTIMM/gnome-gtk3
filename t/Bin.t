@@ -18,7 +18,7 @@ subtest 'ISA test', {
   diag "gtk_bin_get_child";
   isa-ok $button.get-child, N-GObject, 'Native object from get-child()';
 
-  my Gnome::Gtk3::Widget $w .= new(:widget($button.get-child));
+  my Gnome::Gtk3::Widget $w .= new(:native_object($button.get-child));
   is $w.get-name, 'GtkLabel', 'child widget of button is a label';
 }
 

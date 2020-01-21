@@ -25,7 +25,7 @@ subtest 'ISA tests', {
   );
   isa-ok $n, N-GObject, '.new-with-buttons()';
 
-  $d .= new(:widget($n));
+  $d .= new(:native_object($n));
   isa-ok $d, Gnome::Gtk3::Dialog, '.new(:widget)';
 
   $d .= new(
