@@ -41,8 +41,8 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkComboBox                       ComboBox
 │   │   │   │   │   ├── GtkAppChooserButton
 │   │   │   │   │   ╰── GtkComboBoxText               ComboBoxText
-│   │   │   │   ├── GtkFrame
-│   │   │   │   │   ╰── GtkAspectFrame
+│   │   │   │   ├── GtkFrame                          Frame
+│   │   │   │   │   ╰── GtkAspectFrame                AspectFrame
 │   │   │   │   ├── GtkButton                         Button
 │   │   │   │   │   ├── GtkToggleButton               ToggleButton
 │   │   │   │   │   │   ├── GtkCheckButton            CheckButton
