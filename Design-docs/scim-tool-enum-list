@@ -173,3 +173,6 @@ GParamFlags
 GOptionFlags
 GOptionArg
 GOptionError
+PangoAlignment
+PangoWrapMode
+PangoEllipsizeMode
