@@ -33,7 +33,7 @@ new
 
 Create a new object with the default display.
 
-    multi method new ( Bool :default! )
+    multi method new ( )
 
 Create a new plain object selecting a display by name.
 
@@ -41,7 +41,7 @@ Create a new plain object selecting a display by name.
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 gdk_display_open
 ----------------

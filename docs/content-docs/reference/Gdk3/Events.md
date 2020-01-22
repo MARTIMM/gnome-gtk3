@@ -21,7 +21,7 @@ Declaration
 Example
 -------
 
-    my Gnome::Gtk3::Window $top-window .= new(:empty);
+    my Gnome::Gtk3::Window $top-window .= new;
     $top-window.set-title('Hello GTK!');
     # ... etcetera ...
 
