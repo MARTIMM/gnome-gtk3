@@ -40,7 +40,7 @@ Declaration
 Example
 -------
 
-    my Gnome::Gtk3::Builder $builder .= new(:empty);
+    my Gnome::Gtk3::Builder $builder .= new;
 
     # try to read non existing file
     my Gnome::Glib::Error $e = $builder.add-from-file('x.glade');
@@ -82,7 +82,7 @@ Returns True if native error object is valid, otherwise `False`.
 clear-error
 -----------
 
-Clear the error and return data to memory to pool. The error object is not valid after this call and error-is-valid() will return `False`.
+Clear the error and return data to memory pool. The error object is not valid after this call and error-is-valid() will return `False`.
 
     method clear-error ()
 

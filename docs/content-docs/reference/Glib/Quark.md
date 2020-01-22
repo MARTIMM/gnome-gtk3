@@ -47,7 +47,7 @@ new
 
 Create a new quark object.
 
-    multi method new ( Bool :$empty! )
+    multi method new ( )
 
 [[g_] quark_] try_string
 ------------------------
