@@ -87,9 +87,13 @@ also does Gnome::Gtk3::Buildable;
 =head1 Methods
 =head2 new
 
-Create a new default object.
+Create a new default Frame.
 
   multi method new ( )
+
+Create a new Frame with a label.
+
+  multi method new ( :label! )
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -101,7 +105,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:new():inheriting
+#TM:1:new():inheriting
 #TM:1:new():
 #TM:1:new(:native-object):
 #TM:0:new(:build-id):
