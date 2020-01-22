@@ -7,7 +7,7 @@ use JSON::Fast;
 sub MAIN ( *@modules ) {
 
   # load the coverage admin data.
-  my Str $test-coverage-config = "$*HOME/Languages/Perl6/Projects/gnome-gtk3/docs/_data/testCoverage.json";
+  my Str $test-coverage-config = "$*HOME/Languages/Raku/Projects/gnome-gtk3/docs/_data/testCoverage.json";
   my %test-coverage = %();
   %test-coverage = from-json($test-coverage-config.IO.slurp // '')
     if $test-coverage-config.IO.r;
