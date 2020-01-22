@@ -40,7 +40,7 @@ layout: sidebar
 * Make some of the routines in several packages the same.
   * `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref.
   * [x] **Gnome::GObject::Boxed**. Implement some subs.
-  * [x] **Gnome::GObject::Object**. Imlement `clear-object()`.
+  * [x] **Gnome::GObject::Object**. Implement `clear-object()`.
 
   * `.is-valid()`: A boolean test to check if a native object is valid. Must be done while implementing clear-object.
   * [x] **Gnome::GObject::Boxed** define `.is-valid()` and some other subs
@@ -56,15 +56,14 @@ layout: sidebar
   * [x] `.set-native-object()`
   * [x] `.get-native-object()`.
   * [x] **Gnome::GObject::Boxed**. Old methods are deprecated.
-  * [x] **Gnome::Glib::Option**. Old methods are removed.
   * [x] **Gnome::GObject::Object**. Old methods are deprecated.
-
-
-  * All modules inheriting from **Gnome::GObject::Boxed**
-    * [x] Gnome::GObject::Value `.value-is-valid()` method is deprecated.
+  * Standalone classes. Old methods are removed.
     * [ ] Gnome::Glib::Error `.error-is-valid()` method is deprecated.
     * [ ] Gnome::Glib::List `.list-is-valid()` method is deprecated.
     * [ ] Gnome::Glib::SList `.gslist-is-valid()` method is deprecated.
+
+  * All modules inheriting from **Gnome::GObject::Boxed**
+    * [x] Gnome::GObject::Value `.value-is-valid()` method is deprecated.
     * [ ] Gnome::Gtk3::WidgetPath `.widgetpath-is-valid()` method is deprecated.
     * [ ] Gnome::Gdk3::RGBA `.is-valid()` method implemented.
 
@@ -82,26 +81,27 @@ layout: sidebar
 
 * `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid. Easy to add while implementing `clear-object()`.
 
-  * Standalone or top level classes. A DESTROY method must be declared.
+  * Standalone or top level classes. A DESTROY submethod must be declared.
     * [ ] Gnome::Glib::Error
     * [ ] Gnome::Glib::List
     * [ ] Gnome::Glib::SList
-    * [ ] Gnome::GObject::Value
+    * [x] Gnome::GObject::Value
 
   * Top class is **Gnome::GObject::Boxed**. Classes inheriting from Boxed must define a DESTROY method when native objects must be cleared
     * [ ] `Gnome::Gtk3::*`
     * [x] `Gnome::Pango::*`
 
-  * Interface Roles. Roles do not have to specify a DESTROY method unless there are local native objects defined which will be unlikely.
+  * Interface Roles. Roles do not have to specify a DESTROY submethod unless there are local native objects defined which will be unlikely.
 
   * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
 
 * Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
   * Translate below to `:native-object`
-    * [x] `:widget`
+    * [x] `:widget` everywhere
     * [ ] `:object`
-    * [x] `:widgetpath`
-    * [x] `:rgba` partly in Gnome::Gdk3
+    * [x] `:widgetpath` in Gnome::Gtk3::WidgetPath
+    * [x] `:rgba` partly in Gnome::Gdk3::RGBA
+    * [ ] `:gvalue` in Gnome::GObject::Value
 
   * Drop the use of :empty and :default. Instead an argumentless call should be sufficient.
     * [x] `:empty`
