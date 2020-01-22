@@ -27,7 +27,7 @@ subtest 'ISA tests', {
   $b .= new(:label('abc def'));
   isa-ok $b, Gnome::Gtk3::Button, '.new(:label)';
 
-  $b .= new(:native_object($b.gtk_button_new_with_label('pqr')));
+  $b .= new(:native-object($b.gtk_button_new_with_label('pqr')));
   isa-ok $b, Gnome::Gtk3::Button, '.gtk_button_new_with_label()';
 
   throws-like
@@ -70,7 +70,7 @@ subtest 'Button as container', {
 #TODO is it necessary to inherit
 class BH {
 
-  method click-handler ( :native_object($button), Array :$user-data ) {
+  method click-handler ( :widget($button), Array :$user-data ) {
     isa-ok $button, Gnome::Gtk3::Button;
     is $user-data[0], 'Hello', 'data 0 ok';
     is $user-data[1], 'World', 'data 1 ok';

@@ -49,7 +49,7 @@ my class ShowTabel {
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
 #  note "W: ", gtk_list_store_new( G_TYPE_INT, G_TYPE_STRING) // '-';
-#  $ls .= new(:native_object(gtk_list_store_newv( G_TYPE_INT, G_TYPE_STRING)));
+#  $ls .= new(:native-object(gtk_list_store_newv( G_TYPE_INT, G_TYPE_STRING)));
   $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
   isa-ok $ls, Gnome::Gtk3::ListStore, '.new(:field-types)';
 }

@@ -42,7 +42,7 @@ subtest 'Signals ...', {
   class X {
     has Bool $.signal-processed = False;
 
-    method x ( Str $name, :native_object($levelbar) ) {
+    method x ( Str $name, :native-object($levelbar) ) {
       is $name, GTK_LEVEL_BAR_OFFSET_LOW, 'offset name ok';
       $!signal-processed = True;
     }

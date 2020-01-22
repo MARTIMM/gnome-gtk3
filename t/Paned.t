@@ -31,9 +31,9 @@ subtest 'Manipulations', {
   isa-ok $p.get-child2, N-GObject, 'native object from .get-child2()';
 
   # testing the set names is more accurate.
-  my Gnome::Gtk3::ListBox $lb .= new(:native_object($p.get-child1));
+  my Gnome::Gtk3::ListBox $lb .= new(:native-object($p.get-child1));
   is $lb.get-name, 'leftListbox', 'left listbox found';
-  $lb .= new(:native_object($p.get-child2));
+  $lb .= new(:native-object($p.get-child2));
   is $lb.get-name, 'rightListbox', 'right listbox found';
 }
 

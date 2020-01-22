@@ -34,7 +34,7 @@ subtest 'Manipulations', {
   $ttt.gtk-text-tag-table-remove($tt);
   is $ttt.get-size, 1, '.gtk-text-tag-table-remove()';
 
-  $tt .= new(:native_object($ttt.gtk-text-tag-table-lookup('my-tt')));
+  $tt .= new(:native-object($ttt.gtk-text-tag-table-lookup('my-tt')));
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $tt.get-property( 'name', $gv);
   is $gv.get-string, 'my-tt', '.gtk-text-tag-table-lookup()';

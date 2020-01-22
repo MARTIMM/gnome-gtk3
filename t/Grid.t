@@ -55,12 +55,12 @@ subtest 'Manipulations', {
   is $gl.g-list-length, 2, '.attach-next-to()';
   $gl.clear-list;
 
-  my Gnome::Gtk3::Label $label-widget .= new(:native_object($g.get-child-at( 1, 0)));
+  my Gnome::Gtk3::Label $label-widget .= new(:native-object($g.get-child-at( 1, 0)));
   is $label-widget.get-text, 'note', '.get-child-at()';
 
   # insert a column. label moves a place to the right
   $g.insert-next-to( $button, GTK_POS_RIGHT);
-  $label-widget .= new(:native_object($g.get-child-at( 2, 0)));
+  $label-widget .= new(:native-object($g.get-child-at( 2, 0)));
   is $label-widget.get-text, 'note', '.insert-next-to()';
 
   $g.set-row-spacing(2);
@@ -77,7 +77,7 @@ subtest 'Inherit from Container', {
   is $gl.g-list-length, 2, '.get-children()';
 
 #note $gl.nth-data(1);
-  my Gnome::Gtk3::Label $label-widget .= new(:native_object($gl.nth-data-gobject(0)));
+  my Gnome::Gtk3::Label $label-widget .= new(:native-object($gl.nth-data-gobject(0)));
   is $label-widget.get-text, 'note', 'text from label';
 
   $gl.clear-list;
