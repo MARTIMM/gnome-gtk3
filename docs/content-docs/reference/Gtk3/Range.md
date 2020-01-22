@@ -38,7 +38,7 @@ new
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 
-    multi method new ( :$widget! )
+    multi method new ( :$native-object! )
 
 [[gtk_] range_] set_adjustment
 ------------------------------

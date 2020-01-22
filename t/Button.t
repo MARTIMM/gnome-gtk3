@@ -27,7 +27,7 @@ subtest 'ISA tests', {
   $b .= new(:label('abc def'));
   isa-ok $b, Gnome::Gtk3::Button, '.new(:label)';
 
-  $b .= new(:widget($b.gtk_button_new_with_label('pqr')));
+  $b .= new(:native-object($b.gtk_button_new_with_label('pqr')));
   isa-ok $b, Gnome::Gtk3::Button, '.gtk_button_new_with_label()';
 
   throws-like

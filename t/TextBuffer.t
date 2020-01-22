@@ -50,7 +50,7 @@ subtest 'Manipulations', {
 
   # A tag must be inserted in the table before the tag can be applied
   my Gnome::Gtk3::TextTag $tag .= new(:tag-name<part1>);
-  my Gnome::Gtk3::TextTagTable $tag-table .= new(:widget($tb.get-tag-table));
+  my Gnome::Gtk3::TextTagTable $tag-table .= new(:native-object($tb.get-tag-table));
   $tag-table.gtk-text-tag-table-add($tag);
   $tag .= new(:tag-name<part2>);
   $tag-table.gtk-text-tag-table-add($tag);
@@ -91,7 +91,7 @@ subtest 'Signals ...', {
 
     method handle-insert (
       N-GObject $iter, Str $text, Int $len,
-      Gnome::GObject::Object :widget($text-buffer)
+      Gnome::GObject::Object :native-object($text-buffer)
       --> Int
     ) {
       $!insert-signal-processed = True;
@@ -106,7 +106,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::TextIter $start = $tb.get-iter-at-line(1);
   my Gnome::Gtk3::TextIter $end = $tb.get-iter-at-line(2);
 
-  my Gnome::Gtk3::TextTagTable $tag-table .= new(:widget($tb.get-tag-table));
+  my Gnome::Gtk3::TextTagTable $tag-table .= new(:native-object($tb.get-tag-table));
   my Gnome::Gtk3::TextTag $tag .= new(:tag-name<part1>);
   $tag-table.gtk-text-tag-table-add($tag);
   $tb.apply-tag( $tag, $start, $end);

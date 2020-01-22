@@ -62,7 +62,7 @@ Creates a dynamically allocated tree iterator as a copy of *iter*.
 
 This function is not intended for use in applications, because you can just copy the structs by value like so;
 
-    Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-gboxed()));
+    Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
 
 You must free this iter with `clear-tree-iter()`.
 

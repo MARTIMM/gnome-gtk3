@@ -20,7 +20,7 @@ subtest 'ISA test', {
   isa-ok $cb, Gnome::Gtk3::Button;
 
   diag ".new(:widget)";
-  $cb .= new(:widget($cb.new-with-label('some label')));
+  $cb .= new(:native-object($cb.new-with-label('some label')));
   isa-ok $cb, Gnome::Gtk3::CheckButton;
 }
 

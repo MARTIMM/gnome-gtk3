@@ -39,7 +39,7 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create an object taking the native object from elsewhere.
 

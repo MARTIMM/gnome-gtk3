@@ -35,7 +35,7 @@ Labels may contain “mnemonics”. Mnemonics are underlined characters in the l
 Mnemonics automatically activate any activatable widget the label is inside, such as a **Gnome::Gtk3::Button**; if the label is not inside the mnemonic’s target widget, you have to tell the label about the target using `.new(:mnemonic())`. Here’s a simple example where the label is inside a button:
 
     # Pressing Alt+H will activate this button
-    my Gnome::Gtk3::Button $b .= new(:empty);
+    my Gnome::Gtk3::Button $b .= new;
     my Gnome::Gtk3::Label $l .= new(:mnemonic<_Hello>);
     $b.gtk-container-add($l);
 
@@ -47,7 +47,7 @@ There’s a convenience function to create buttons with a mnemonic label already
 To create a mnemonic for a widget alongside the label, such as a **Gnome::Gtk3::Entry**, you have to point the label at the entry with `gtk_label_set_mnemonic_widget()`:
 
     # Pressing Alt+H will focus the entry
-    my Gnome::Gtk3::Entry $e .= new(:empty);
+    my Gnome::Gtk3::Entry $e .= new;
     my Gnome::Gtk3::Label $l .= new(:mnemonic<_Hello>);
     $l.set-mnemonic-widget($e);
 
@@ -66,7 +66,7 @@ An example looks like this:
     my Str $text = [+] "Go to the",
       "<a href=\"http://www.gtk.org title="&lt;i&gt;Our&lt;/i&gt; website\">",
       "GTK+ website</a> for more...";
-    my Gnome::Gtk3::Label $l .= new(:empty);
+    my Gnome::Gtk3::Label $l .= new;
     $l.set-markup($text);
 
 It is possible to implement custom handling for links and their tooltips with the *activate-link* signal and the `gtk_label_get_current_uri()` function.
@@ -104,7 +104,7 @@ Create a new object with mnemonic.
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
@@ -669,7 +669,7 @@ Properties
 
 An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');

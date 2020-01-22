@@ -26,7 +26,7 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Style context manipulations', {
-  my Gnome::Gdk3::Screen $screen .= new(:default);
+  my Gnome::Gdk3::Screen $screen .= new;
   my Gnome::Gtk3::StyleContext $sc .= new;
   my Gnome::Gtk3::CssProvider $cp1 .= new;
   my Gnome::Gtk3::CssProvider $cp2 .= new;

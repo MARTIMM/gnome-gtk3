@@ -37,14 +37,14 @@ This example shows how to get and show some information from a widget path.
     # Build a gui; a button in a grid
     $w.set-name('top-level-window');
 
-    my Gnome::Gtk3::Grid $g .= new(:empty);
+    my Gnome::Gtk3::Grid $g .= new();
     $w.gtk-container-add($g);
 
     my Gnome::Gtk3::Button $b1 .= new(:label<Start>);
     $g.gtk-grid-attach( $b1, 0, 0, 1, 1);
 
     # Get class names of the button in the widget path
-    my Gnome::Gtk3::WidgetPath $wp .= new(:widgetpath($b1.get-path));
+    my Gnome::Gtk3::WidgetPath $wp .= new(:native-object($b1.get-path));
     my Gnome::Glib::SList $l .= new(:gslist($wp.iter-list-classes(2)));
     is $l.g-slist-length, 1, 'list contains one class';
     is $l.nth-data-str(0), 'text-button', "class is a 'text-button'";

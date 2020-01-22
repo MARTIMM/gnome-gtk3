@@ -61,11 +61,11 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 [gtk_] list_box_row_new
 -----------------------

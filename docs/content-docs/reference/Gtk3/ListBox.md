@@ -52,14 +52,14 @@ Example
 
 Create a ListBox with one row. This row is a grid holding a CheckBox and Label.
 
-    my Gnome::Gtk3::ListBox $lb .= new(:empty);
+    my Gnome::Gtk3::ListBox $lb .= new;
 
     # The widgets
     my Gnome::Gtk3::CheckButton $check .= new(:label('bold'));
     my Gnome::Gtk3::Label $label .= new(:text('Turn on bold font'));
 
     # Add the widgets to the Grid
-    my Gnome::Gtk3::Grid $grid .= new(:empty);
+    my Gnome::Gtk3::Grid $grid .= new;
     $grid.gtk-grid-attach( $check, 0, 0, 1, 1);
     $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
@@ -89,11 +89,11 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 

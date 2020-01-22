@@ -8,7 +8,7 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated. Every Raku class is in the Gnome:: name space. Also prefixes and module path names are removed from the Raku modules. so GObject is implemented in **Gnome::GObject::Object** and Window is implemented in **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons.
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons.
 
 ```
 Tree of Gtk C structures                              Raku module
@@ -271,5 +271,6 @@ GBoxed                                                Gnome::GObject::Boxed
 ├   GtkTreeRowReference                               TreeRowReference
 │                                                     Extracted from TreeModel
 ├── GtkIconSet
-╰── GtkTargetList
+├── GtkTargetList
+╰── GtkWidgetPath                                     WidgetPath
 ```

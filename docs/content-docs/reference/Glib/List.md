@@ -16,7 +16,7 @@ The data contained in each element can be either integer values,
 
 Note that most of the list functions expect to be passed a pointer to the first element in the list. The functions which insert elements return the new start of the list, which may have changed.
 
-To create an empty jast list call `.new(:empty)`.
+To create an empty list just call `.new`.
 
 To remove elements, use `g_list_remove()`.
 
@@ -46,7 +46,7 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create a new list object using an other native list object.
 

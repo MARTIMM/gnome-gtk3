@@ -30,19 +30,21 @@ This object is almost never used directly. Most of the classes inherit from this
 
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
 
-    my Gnome::Gtk3::Button $b .= new(:empty);
+    my Gnome::Gtk3::Button $b .= new;
     $gv.g-value-set-string('Open file');
     $b.g-object-set-property( 'label', $gv);
 
 Methods
 =======
 
-new Please note that this class is mostly not instantiated directly but is used indirectly when child classes are instantiated.
--------------------------------------------------------------------------------------------------------------------------------
+new
+---
 
-### multi method new ( :$widget! )
+Please note that this class is mostly not instantiated directly but is used indirectly when child classes are instantiated.
 
-Create a Raku widget object using a native widget from elsewhere. $widget can be a N-GObject or a Raku widget like `Gnome::Gtk3::Button`.
+### multi method new ( :$native-object! )
+
+Create a Raku object using a native object from elsewhere. $native-object can be a N-GObject or a Raku object like `Gnome::Gtk3::Button`.
 
     # Some set of radio buttons grouped together
     my Gnome::Gtk3::RadioButton $rb1 .= new(:label('Download everything'));
@@ -55,7 +57,7 @@ Create a Raku widget object using a native widget from elsewhere. $widget can be
     loop ( Int $i = 0; $i < $rb-list.g_slist_length; $i++ ) {
       # Get button from the list
       my Gnome::Gtk3::RadioButton $rb .= new(
-        :widget($rb-list.nth-data-gobject($i))
+        :native-object($rb-list.nth-data-gobject($i))
       );
 
       # If radio button is selected (=active) ...
@@ -69,12 +71,12 @@ Create a Raku widget object using a native widget from elsewhere. $widget can be
 Another example is a difficult way to get a button.
 
     my Gnome::Gtk3::Button $start-button .= new(
-      :widget(Gnome::Gtk3::Button.gtk_button_new_with_label('Start'))
+      :native-object(Gnome::Gtk3::Button.gtk_button_new_with_label('Start'))
     );
 
 ### multi method new ( Str :$build-id! )
 
-Create a Raku widget object using a **Gnome::Gtk3::Builder**. The builder object will provide its object (self) to **Gnome::GObject::Object** when the Builder is created. The Builder object is asked to search for id's defined in the GUI glade design.
+Create a Raku object object using a **Gnome::Gtk3::Builder**. The builder object will provide its object (self) to **Gnome::GObject::Object** when the Builder is created. The Builder object is asked to search for id's defined in the GUI glade design.
 
     my Gnome::Gtk3::Builder $builder .= new(:filename<my-gui.glade>);
     my Gnome::Gtk3::Button $button .= new(:build-id<my-gui-button>);
@@ -205,7 +207,7 @@ The following is used when a Value object is available.
 
 The methods always return a **Gnome::GObject::Value** with the result.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');

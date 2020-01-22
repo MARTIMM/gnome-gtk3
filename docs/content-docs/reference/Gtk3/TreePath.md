@@ -29,7 +29,7 @@ new
 
 Create a new default tree path object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create a new tree path with first index.
 

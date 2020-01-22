@@ -20,7 +20,7 @@ use Gnome::Gtk3::Window;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   my Gnome::Gtk3::Scale $s .= new;
-  my Gnome::Gtk3::Range $r .= new(:widget($s));
+  my Gnome::Gtk3::Range $r .= new(:native-object($s));
   isa-ok $r, Gnome::Gtk3::Range;
 }
 

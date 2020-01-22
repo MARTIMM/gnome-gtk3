@@ -90,11 +90,11 @@ new
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
@@ -105,7 +105,7 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
 Creates a new **Gnome::Gtk3::FileFilter** with no rules added to it. Such a filter doesn’t accept any files, so is not particularly useful until you add rules with `gtk_file_filter_add_mime_type()`, `gtk_file_filter_add_pattern()`, or `gtk_file_filter_add_custom()`. To create a filter that accepts any file, use:
 
-    my Gnome::Gtk3::FileFilter $filter .= new(:empty);
+    my Gnome::Gtk3::FileFilter $filter .= new;
     $filter.add-pattern("*");
 
 Returns: a new **Gnome::Gtk3::FileFilter**

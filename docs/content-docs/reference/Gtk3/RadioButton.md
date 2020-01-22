@@ -73,7 +73,7 @@ Create a group with two radio buttons
     $top-window.set-border-width(20);
 
     # Create a grid and add it to the window
-    my Gnome::Gtk3::Grid $grid .= new(:empty);
+    my Gnome::Gtk3::Grid $grid .= new;
     $top-window.gtk-container-add($grid);
 
     # Creat the radio buttons
@@ -97,7 +97,7 @@ Methods
 
 Create a new plain object.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create a new object and add to the group defined by the list.
 
@@ -113,7 +113,7 @@ Create a new object with a label.
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 

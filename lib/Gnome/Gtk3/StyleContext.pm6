@@ -179,7 +179,7 @@ Since: 3.0
 =item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>.
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> (= 1) and C<GTK_STYLE_PROVIDER_PRIORITY_USER> (= 800).
 
-  my Gnome::Gdk3::Screen $screen .= new(:default);
+  my Gnome::Gdk3::Screen $screen .= new;
   my Gnome::Gtk3::StyleContext $sc .= new;
   my Gnome::Gtk3::CssProvider $cp .= new;
 
@@ -249,7 +249,6 @@ Since: 3.0
 =item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
 =item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK_STYLE_PROVIDER_PRIORITY_FALLBACK> and C<GTK_STYLE_PROVIDER_PRIORITY_USER>
 
-  my Gnome::Gdk3::Screen $screen .= new(:default);
   my Gnome::Gtk3::StyleContext $sc .= new;
   my Gnome::Gtk3::CssProvider $cp .= new;
 
