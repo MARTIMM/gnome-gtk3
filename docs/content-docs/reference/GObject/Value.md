@@ -52,6 +52,13 @@ Create an object using a native object from elsewhere.
 
     multi method new ( N-GObject :$gvalue! )
 
+clear-object
+------------
+
+Clear and invalidate Value object
+
+    method clear-object
+
 [g_] value_init
 ---------------
 
