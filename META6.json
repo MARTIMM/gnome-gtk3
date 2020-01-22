@@ -11,6 +11,7 @@
   "provides": {
 
     "Gnome::Gtk3::AboutDialog": "lib/Gnome/Gtk3/AboutDialog.pm6",
+    "Gnome::Gtk3::AspectFrame": "lib/Gnome/Gtk3/AspectFrame.pm6",
     "Gnome::Gtk3::Bin": "lib/Gnome/Gtk3/Bin.pm6",
     "Gnome::Gtk3::Border": "lib/Gnome/Gtk3/Border.pm6",
     "Gnome::Gtk3::Box": "lib/Gnome/Gtk3/Box.pm6",
