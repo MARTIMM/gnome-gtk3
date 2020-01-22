@@ -8,7 +8,7 @@ Description
 
 The **Gnome::Gtk3::Image** widget displays an image. Various kinds of object can be displayed as an image; most typically, you would load a **Gnome::Gdk3::Pixbuf** ("pixel buffer") from a file, and then display that. There’s a convenience function to do this, `gtk_image_set_from_file()`, used as follows:
 
-    my Gnome::Gtk3::Image $image .= new(:empty);
+    my Gnome::Gtk3::Image $image .= new;
     $image.set-from-file("myfile.png");
 
 To make it shorter;
@@ -42,7 +42,7 @@ Handling button press events on a Gnome::Gtk3::Image.
     method create-image ( Str $image-file --> Gnome::Gtk3::Image ) {
 
       my Gnome::Gtk3::Image $image .= new(:filename($image-file));
-      my Gnome::Gtk3::EventBox $eb .= new(:empty);
+      my Gnome::Gtk3::EventBox $eb .= new;
       $eb.gtk-container-add($image);
       $eb.register-signal( self, button-press-handler, 'button_press_event');
 
@@ -107,7 +107,7 @@ new
 
 Create a new plain object without an image.
 
-    multi method new ( Bool :empty! )
+    multi method new ( )
 
 Create a new object and load an image from file.
 
@@ -115,7 +115,7 @@ Create a new object and load an image from file.
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
@@ -310,7 +310,7 @@ Properties
 
 An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');

@@ -28,7 +28,7 @@ Adding a custom offset on the bar
       #   border-color: black;
       #   border-style: 1px;
       # }
-      my Gnome::Gtk3::LevelBar $bar .= new(:empty);
+      my Gnome::Gtk3::LevelBar $bar .= new;
       $bar.add-offset-value( "my-offset", 0.60);
     }
 
@@ -71,7 +71,7 @@ Declaration
 Example
 -------
 
-    my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+    my Gnome::Gtk3::LevelBar $level-bar .= new;
     $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 Types
@@ -112,7 +112,7 @@ Create a GtkLevelBar object.
 
 Create a new GtkLevelBar with a specified range.
 
-    multi method new ( :$widget! )
+    multi method new ( :$native-object! )
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 

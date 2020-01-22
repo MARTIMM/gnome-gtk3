@@ -173,7 +173,7 @@ new
 
 Create an object using a native object from elsewhere. See also *gtk_file_chooser_dialog_new()* below.
 
-### multi method new ( N-GObject :$widget! )
+### multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 

@@ -78,7 +78,7 @@ Declaration
 Example
 -------
 
-    my Gnome::Gtk3::Scale $scale .= new(:empty);
+    my Gnome::Gtk3::Scale $scale .= new;
 
     # Set min and max of scale.
     $scale.set-range( -2e0, .2e2);
@@ -117,7 +117,7 @@ Creates a new GtkScale providinng an orientation and minimum, maximum and step s
 
   * $step; step increment (tick size) used with keyboard shortcuts
 
-    multi method new ( :$widget! )
+    multi method new ( :$native-object! )
 
 Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
 

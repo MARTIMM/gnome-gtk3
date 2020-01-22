@@ -54,8 +54,8 @@ Example
 -------
 
     my Gnome::Gtk3::Paned $p .= new(:orientation(GTK_ORIENTATION_HORIZONTAL));
-    my Gnome::Gtk3::ListBox $lb1 .= new(:empty);
-    my Gnome::Gtk3::ListBox $lb2 .= new(:empty);
+    my Gnome::Gtk3::ListBox $lb1 .= new;
+    my Gnome::Gtk3::ListBox $lb2 .= new;
     $p.gtk-paned-add1($lb1);
     $p.gtk-paned-add2($lb2);
 
@@ -71,7 +71,7 @@ Create a new object with an orientation set to `GTK_ORIENTATION_HORIZONTAL` or `
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
@@ -333,7 +333,7 @@ Properties
 
 An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');

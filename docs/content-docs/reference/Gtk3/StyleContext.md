@@ -50,7 +50,7 @@ new
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-### multi method new ( N-GObject :$widget! )
+### multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
@@ -88,9 +88,9 @@ Since: 3.0
 
   * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK_STYLE_PROVIDER_PRIORITY_FALLBACK` (= 1) and `GTK_STYLE_PROVIDER_PRIORITY_USER` (= 800).
 
-    my Gnome::Gdk3::Screen $screen .= new(:default);
-    my Gnome::Gtk3::StyleContext $sc .= new(:empty);
-    my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+    my Gnome::Gdk3::Screen $screen .= new;
+    my Gnome::Gtk3::StyleContext $sc .= new;
+    my Gnome::Gtk3::CssProvider $cp .= new;
 
     $sc.add-provider-for-screen(
       $screen, $cp, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
@@ -124,9 +124,8 @@ Since: 3.0
 
   * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK_STYLE_PROVIDER_PRIORITY_FALLBACK` and `GTK_STYLE_PROVIDER_PRIORITY_USER`
 
-    my Gnome::Gdk3::Screen $screen .= new(:default);
-    my Gnome::Gtk3::StyleContext $sc .= new(:empty);
-    my Gnome::Gtk3::CssProvider $cp .= new(:empty);
+    my Gnome::Gtk3::StyleContext $sc .= new;
+    my Gnome::Gtk3::CssProvider $cp .= new;
 
     $sc.add-provider( $cp, 234);
 
@@ -660,7 +659,7 @@ Properties
 
 An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');

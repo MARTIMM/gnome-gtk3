@@ -42,7 +42,7 @@ new
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$widget! )
+    multi method new ( N-GObject :$native-object! )
 
 [[gtk_] bin_] get_child
 -----------------------

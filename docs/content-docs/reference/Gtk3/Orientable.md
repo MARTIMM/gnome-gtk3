@@ -26,7 +26,7 @@ Declaration
 Example
 -------
 
-    my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+    my Gnome::Gtk3::LevelBar $level-bar .= new;
     $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
 
 Methods
