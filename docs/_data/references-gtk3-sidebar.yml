@@ -40,6 +40,10 @@
     url: '/content-docs/reference/Gtk3/Container.html'
     doc: 1
     test: 1
+  - title: "Frame"
+    url: '/content-docs/reference/Gtk3/Frame.html'
+    doc: 3
+    test: 31
   - title: "Grid"
     url: '/content-docs/reference/Gtk3/Grid.html'
     doc: 1
