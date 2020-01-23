@@ -1,4 +1,4 @@
-#TL:0:Gnome::Gtk3::AspectFrame:
+#TL:1:Gnome::Gtk3::AspectFrame:
 
 use v6;
 #-------------------------------------------------------------------------------
@@ -51,17 +51,23 @@ also is Gnome::Gtk3::Frame;
 also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
 
-Create a new AspectFrame.
+Create a new AspectFrame with all bells and wistles.
 
   multi method new (
-    Str :$label!, Num :$xalign!, Num :$yalign, Num :$ratio!,
-    Bool :$obey-child!
+    Str :$label!, Num :$xalign?, Num :$yalign?, Num :$ratio>?,
+    Bool :$obey-child?
   )
+
+=item Str $label; Label text.
+=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned). By default set to 0.0.
+=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned). By default set to 0.0.
+=item Num $ratio; The desired aspect ratio. By default set to 1.0.
+=item Int $obey_child; If C<True>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
+
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -73,8 +79,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:new():inheriting
-#TM:1:new(:label,:xalign,:yalign,:ratio,:obey-child):
+#TM:1:new(:label):
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -89,17 +94,31 @@ submethod BUILD ( *%options ) {
     # provided in Gnome::GObject::Object
   }
 
+  elsif ?%options<label> {
+    my Num ( $xalign, $yalign, $ratio);
+    $xalign = %options<xalign> // 0.0e0;
+    $yalign = %options<yalign> // 0.0e0;
+    $ratio = %options<ratio> // 1.0e0;
+    my Bool $obey-child = %options<obey-child> // !%options<ratio>;
+
+    self.set-native-object(
+      gtk_aspect_frame_new(
+        %options<label>, $xalign, $yalign, $ratio, $obey-child
+      )
+    );
+  }
+
   elsif %options.keys.elems {
     die X::Gnome.new(
-      :message('Unsupported, undefined or wrongly typed options for ' ~
+      :message('Unsupported, undefined, incomplete or wrongly typed options for ' ~
                self.^name ~ ': ' ~ %options.keys.join(', ')
               )
     );
   }
 
-  # create default object
+  # no options found
   else {
-    # self.set-native-object(gtk_aspect_frame_new());
+    die X::Gnome.new(:message('No options found'));
   }
 
   # only after creating the native-object, the gtype is known
@@ -115,8 +134,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
+  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkAspectFrame');
   $s = callsame unless ?$s;
@@ -126,7 +144,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_aspect_frame_new:
+#TM:2:gtk_aspect_frame_new:new(:label)
 =begin pod
 =head2 gtk_aspect_frame_new
 
@@ -149,7 +167,7 @@ sub gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $rati
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_aspect_frame_set:
+#TM:1:gtk_aspect_frame_set:
 =begin pod
 =head2 gtk_aspect_frame_set
 
@@ -181,28 +199,28 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=comment #TP:0:xalign:
+=comment #TP:1:xalign:
 =head3 Horizontal Alignment
 
-
+X alignment of the child.
 
 The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
 
-=comment #TP:0:yalign:
+=comment #TP:1:yalign:
 =head3 Vertical Alignment
 
-
+Y alignment of the child.
 
 The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
 
 =comment #TP:0:ratio:
 =head3 Ratio
 
-
+Aspect ratio if obey_child is FALSE.
 
 The B<Gnome::GObject::Value> type of property I<ratio> is C<G_TYPE_FLOAT>.
 
-=comment #TP:0:obey-child:
+=comment #TP:1:obey-child:
 =head3 Obey child
 
 Force aspect ratio to match that of the frame's child
