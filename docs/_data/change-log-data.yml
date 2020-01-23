@@ -5,7 +5,7 @@ notes:
   # remove deprecated option in Label at version 0.24.0
 
   - 2020-01-22 0.22.0:
-    - Add module Frame, AspectFrame, Spinner, Switch in Gnome::Gtk3
+    - Add module Frame, AspectFrame, Spinner, Switch, ProgressBar, MessageDialog in Gnome::Gtk3
 
   - 2020-01-18 0.21.3:
     - renaming calls to `*native-gobject()` and `*native-gboxed()`.

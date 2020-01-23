@@ -840,15 +840,15 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
-      Create a new default object.
+      Create a new RAKU-CLASS-NAME object.
 
         multi method new ( )
 
-      Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+      Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
         multi method new ( N-GObject :$native-object! )
 
-      Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+      Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
         multi method new ( Str :$build-id! )
 
@@ -874,9 +874,10 @@ sub substitute-in-template (
 
         elsif %options.keys.elems {
           die X::Gnome.new(
-            :message('Unsupported, undefined or wrongly typed options for ' ~
-                     self.^name ~ ': ' ~ %options.keys.join(', ')
-                    )
+            :message(
+              'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+              self.^name ~ ': ' ~ %options.keys.join(', ')
+            )
           );
         }
 
@@ -909,6 +910,7 @@ sub substitute-in-template (
 
       EOTEMPLATE
 
+    $template-text ~~ s:g/ 'RAKU-CLASS-NAME' /$raku-class-name/;
     $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
     $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
     $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
