@@ -149,8 +149,8 @@ GObject                                               Gnome::GObject::Object
 │   │   ├─✗ GtkHSV
 │   │   ├── GtkInvisible
 │   │   ├── GtkProgressBar
-│   │   ├── GtkSpinner
-│   │   ├── GtkSwitch
+│   │   ├── GtkSpinner                                Spinner
+│   │   ├── GtkSwitch                                 Switch
 │   │   ╰── GtkLevelBar                               LevelBar
 │   ├── GtkAdjustment
 │   ├── GtkCellArea

@@ -117,6 +117,10 @@
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
     doc: 1
+  - title: "Spinner"
+    url: "/content-docs/reference/Gtk3/Spinner.html"
+    doc: 3
+    test: 1
   - title: "TextView"
     url: "/content-docs/reference/Gtk3/TextView.html"
     doc: 1
