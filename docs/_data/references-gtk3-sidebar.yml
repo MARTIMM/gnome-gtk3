@@ -30,6 +30,10 @@
 
 - bar_title: "Containers"
   bar_menu:
+  - title: "AspectFrame"
+    url: '/content-docs/reference/Gtk3/AspectFrame.html'
+    doc: 3
+    test: 1
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
     doc: 1
