@@ -1,0 +1,93 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::GObject::Type;
+use Gnome::GObject::Value;
+use Gnome::Gtk3::ProgressBar;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::ProgressBar $pb;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $pb .= new;
+  isa-ok $pb, Gnome::Gtk3::ProgressBar, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  $pb.set-text('My pb');
+  is $pb.get-text, 'My pb', '.set-text() / .get-text()';
+
+  $pb.set_fraction(5e-1);
+  is $pb.get-fraction, 0.5, '.set_fraction() / .get-fraction()';
+
+  $pb.set-pulse-step(1e-1);
+  is $pb.get-pulse-step, 0.1, '.set-pulse-step() / .get-pulse-step()';
+
+  $pb.set-inverted(True);
+  is $pb.get-inverted, 1, '.set-inverted() / .get-inverted()';
+
+  $pb.set-ellipsize(2);
+  is $pb.get-ellipsize, 2, '.set-ellipsize() / .get-ellipsize()';
+
+  $pb.set-show-text(True);
+  is $pb.get-show-text, 1, '.set-show-text() / .get-show-text()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
+  $pb.g-object-get-property( 'inverted', $gv);
+  is $gv.get-boolean, 1, 'property inverted';
+  $gv.unset;
+
+  $gv .= new(:init(G_TYPE_BOOLEAN));
+  $pb.g-object-get-property( 'show-text', $gv);
+  is $gv.get-boolean, 1, 'property show-text';
+  $gv.unset;
+
+  $gv .= new(:init(G_TYPE_DOUBLE));
+  $pb.g-object-get-property( 'fraction', $gv);
+  is-approx $gv.get-double, 0.5, 'property fraction';
+  $gv.unset;
+
+  $gv .= new(:init(G_TYPE_DOUBLE));
+  $pb.g-object-get-property( 'pulse-step', $gv);
+  is-approx $gv.get-double, 0.1, 'property pulse-step';
+  $gv.unset;
+
+#`{{
+  $pb.pulse;
+  $pb.pulse;
+  is $pb.get-fraction, 0.6, '.set_fraction() / .get-fraction()';
+  $gv .= new(:init(G_TYPE_DOUBLE));
+  $pb.g-object-get-property( 'fraction', $gv);
+  is-approx $gv.get-double, 0.6, '.pulse()';
+  $gv.unset;
+}}
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+}
+}}
+
+#-------------------------------------------------------------------------------
+done-testing;
