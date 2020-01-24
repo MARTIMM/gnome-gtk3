@@ -20,7 +20,7 @@ layout: sidebar
   ```
   In other packages `gtk_` can be `g_` or `gdk_`.
 
-* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left of the sub name when used. So the above tests becomes;
+* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left off the sub name when used. So the above tests becomes;
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
