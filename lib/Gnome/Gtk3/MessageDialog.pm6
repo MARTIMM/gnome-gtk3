@@ -344,7 +344,7 @@ sub _gtk_message_dialog_new_with_markup (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_message_dialog_set_markup:
+#TM:1:gtk_message_dialog_set_markup:
 =begin pod
 =head2 [gtk_message_dialog_] set_markup
 
@@ -364,7 +364,7 @@ sub gtk_message_dialog_set_markup ( N-GObject $message_dialog, Str $str  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_message_dialog_format_secondary_text:
+#TM:1:gtk_message_dialog_format_secondary_text:
 =begin pod
 =head2 [gtk_message_dialog_] format_secondary_text
 
@@ -392,13 +392,14 @@ sub _gtk_message_dialog_format_secondary_text (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_message_dialog_format_secondary_markup:
+#TM:1:gtk_message_dialog_format_secondary_markup:
 =begin pod
 =head2 [gtk_message_dialog_] format_secondary_markup
 
 Sets the secondary text of the message dialog to be I<$message> (with C<printf()>-style), which is marked up with the [Pango text markup language][PangoMarkupFormat].
 
-Due to an oversight, this function does not escape special XML characters like C<gtk_message_dialog_new_with_markup()> does. Thus, if the arguments may contain special XML characters, you should use C<g_markup_printf_escaped()> to escape it.
+Due to an oversight, this function does not escape special XML characters like C<gtk_message_dialog_new_with_markup()> does.
+=comment Thus, if the arguments may contain special XML characters, you should use C<g_markup_printf_escaped()> to escape it.
 
 =begin comment
 |[<!-- language="C" -->
@@ -431,7 +432,7 @@ sub _gtk_message_dialog_format_secondary_markup ( N-GObject $message_dialog, Str
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_message_dialog_get_message_area:
+#TM:1:gtk_message_dialog_get_message_area:
 =begin pod
 =head2 [gtk_message_dialog_] get_message_area
 
@@ -477,15 +478,14 @@ The B<Gnome::GObject::Value> type of property I<message-type> is C<G_TYPE_ENUM>.
 The buttons shown in the message dialog
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<buttons> is C<G_TYPE_ENUM>.
 
-=comment #TP:0:text:
+=comment #TP:1:text:
 =head3 Text
-
 
 The primary text of the message dialog. If the dialog has
 a secondary text, this will appear as the title.
+
 Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
@@ -493,16 +493,15 @@ The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 =comment #TP:0:use-markup:
 =head3 Use Markup
 
-
 C<1> if the primary text of the dialog includes Pango markup.
 See C<pango_parse_markup()>.
+
 Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<use-markup> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:secondary-text:
+=comment #TP:1:secondary-text:
 =head3 Secondary Text
-
 
 The secondary text of the message dialog.
 Since: 2.10
@@ -512,7 +511,6 @@ The B<Gnome::GObject::Value> type of property I<secondary-text> is C<G_TYPE_STRI
 =comment #TP:0:secondary-use-markup:
 =head3 Use Markup in secondary
 
-
 C<1> if the secondary text of the dialog includes Pango markup.
 See C<pango_parse_markup()>.
 Since: 2.10
@@ -521,7 +519,6 @@ The B<Gnome::GObject::Value> type of property I<secondary-use-markup> is C<G_TYP
 
 =comment #TP:0:message-area:
 =head3 Message area
-
 
 The B<Gnome::Gtk3::Box> that corresponds to the message area of this dialog.  See
 C<gtk_message_dialog_get_message_area()> for a detailed description of this

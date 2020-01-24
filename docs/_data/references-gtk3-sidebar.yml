@@ -27,6 +27,10 @@
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
     doc: 2
     test: 2
+  - title: "MessageDialog"
+    url: "/content-docs/reference/Gtk3/MessageDialog.html"
+    doc: 2
+    test: 2
 
 - bar_title: "Containers"
   bar_menu:
