@@ -603,8 +603,8 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
     "$source-root/gtk+-3.24.13/gtk",
     "$source-root/gdk-pixbuf-2.38.2/gdk-pixbuf",
     "$source-root/gtk+-3.24.13/gdk",
-    "$source-root/glib-2.60.0/glib",
-    "$source-root/glib-2.60.0/gobject",
+    "$source-root/glib-2.60.7/glib",
+    "$source-root/glib-2.60.7/gobject",
     "$source-root/pango-1.42.4/pango",
   );
 
