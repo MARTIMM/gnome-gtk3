@@ -44,7 +44,7 @@ Example
 
     # try to read non existing file
     my Gnome::Glib::Error $e = $builder.add-from-file('x.glade');
-    die $e.message if $e.error-is-valid;
+    die $e.message if $e.is-valid;
 
 Types
 =====
@@ -64,27 +64,27 @@ Methods
 new
 ---
 
-### multi method new ( UInt :$domain!, Int :$code!, Str :$error-message! )
+Create a new Error object. A domain, which is a string must be converted to an unsigned integer with one of the Quark conversion methods. See **Gnome::Glib::Quark**.
 
-Create a new error object. A domain, which is a string must be converted to an unsigned integer with one of the Quark conversion methods. See *Gnome::Glib::Quark*.
+    multi method new ( UInt :$domain!, Int :$code!, Str :$error-message! )
 
-### multi method new ( N-GError :$gerror! )
+Create a new Error object using an other native error object.
 
-Create a new error object using an other native error object.
+    multi method new ( N-GError :$native-object! )
 
-error-is-valid
---------------
+is-valid
+--------
 
 Returns True if native error object is valid, otherwise `False`.
 
-    method error-is-valid ( --> Bool )
+    method is-valid ( --> Bool )
 
-clear-error
------------
+clear-object
+------------
 
-Clear the error and return data to memory pool. The error object is not valid after this call and error-is-valid() will return `False`.
+Clear the error and return data to memory pool. The error object is not valid after this call and `is-valid()` will return `False`.
 
-    method clear-error ()
+    method clear-object ()
 
 domain
 ------
@@ -131,7 +131,7 @@ Makes a copy of the native error object.
     my Gnome::Glib::Error $e = ...;
 
     # later one can copy the error if needed and create a second object
-    my Gnome::Glib::Error $e2 .= new(:gerror($e.g-error-copy));
+    my Gnome::Glib::Error $e2 .= new(:native-object($e.g-error-copy));
 
 Returns: a new `N-GError`
 

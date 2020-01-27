@@ -58,8 +58,8 @@ layout: sidebar
   * [x] **Gnome::GObject::Boxed**. Old methods are deprecated.
   * [x] **Gnome::GObject::Object**. Old methods are deprecated.
   * Standalone classes. Old methods are removed.
-    * [ ] Gnome::Glib::Error `.error-is-valid()` method is deprecated.
-    * [ ] Gnome::Glib::List `.list-is-valid()` method is deprecated.
+    * [x] Gnome::Glib::Error `.error-is-valid()` method is deprecated.
+    * [x] Gnome::Glib::List `.list-is-valid()` method is deprecated.
     * [ ] Gnome::Glib::SList `.gslist-is-valid()` method is deprecated.
 
   * All modules inheriting from **Gnome::GObject::Boxed**
@@ -82,8 +82,8 @@ layout: sidebar
 * `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid. Easy to add while implementing `clear-object()`.
 
   * Standalone or top level classes. A DESTROY submethod must be declared.
-    * [ ] Gnome::Glib::Error
-    * [ ] Gnome::Glib::List
+    * [x] Gnome::Glib::Error
+    * [x] Gnome::Glib::List
     * [ ] Gnome::Glib::SList
     * [x] Gnome::GObject::Value
 
@@ -101,11 +101,11 @@ layout: sidebar
     * [ ] `:object`
     * [x] `:widgetpath` in Gnome::Gtk3::WidgetPath
     * [x] `:rgba` partly in Gnome::Gdk3::RGBA
-    * [ ] `:gvalue` in Gnome::GObject::Value
+    * [x] `:gvalue` in Gnome::GObject::Value
 
   * Drop the use of :empty and :default. Instead an argumentless call should be sufficient.
     * [x] `:empty`
-    * [ ] `:default`
+    * [x] `:default`
 
 * I'm not sure if the named argument :$widget to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' inheriting from **Gnome::Gtk3::Widget**.
 
