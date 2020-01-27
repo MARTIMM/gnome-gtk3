@@ -52,7 +52,7 @@ subtest 'Manipulations', {
   is $wp.to-string, 'window(top-level-window):dir-ltr.background grid(top-grid):dir-ltr.horizontal button(start-button):dir-ltr.text-button', $wp.to-string;
 
   $wp .= new(:native-object($b2.get-path));
-  is $wp.iter-get-name(2), Any, 'string button 2 not set';
+  is $wp.iter-get-name(2), Str, 'string button 2 not set';
   ok !$wp.iter_has_name( 2, 'stop-button'), 'iter 2 has different name';
   $wp.iter-set-name( 2, 'stop-button');
   ok $wp.iter_has_name( 2, 'stop-button'), "iter 2 now has 'stop-button' name";

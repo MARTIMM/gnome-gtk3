@@ -30,12 +30,12 @@ subtest 'Manipulations', {
   $md.format-secondary-text('En een gewone mededeling');
   my Gnome::Gtk3::Box $container .= new(:native-object($md.get-message-area));
 
-  my Gnome::Glib::List $l .= new(:glist($container.get-children));
+  my Gnome::Glib::List $l .= new(:native-object($container.get-children));
   is $l.length, 2, '2 messages in dialog';
 
-  my Gnome::Gtk3::Label $lbl .= new(:native-object($l.nth-data-gobject(0)));
+  my Gnome::Gtk3::Label $lbl .= new(:native-object($l.nth-data(0)));
   is $lbl.get-text, 'abacadabra', '.set-markup()';
-  $lbl .= new(:native-object($l.nth-data-gobject(1)));
+  $lbl .= new(:native-object($l.nth-data(1)));
   is $lbl.get-text, 'En een gewone mededeling', '.format-secondary-text()';
 }
 

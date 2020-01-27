@@ -24,20 +24,20 @@ subtest 'Manipulations', {
 
   my Gnome::Gtk3::Button $button .= new(:label('press here'));
   $g.gtk-grid-attach( $button, 0, 0, 1, 1);
-  $gl .= new(:glist($g.get-children));
+  $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 1, '.gtk-grid-attach()';
-  $gl.clear-list;
+  $gl.clear-object;
 
   $g.remove-row(0);
   nok $g.get-children, '.remove-row()';
-#  $gl .= new(:glist($g.get-children));
+#  $gl .= new(:native-object($g.get-children));
 #  is $gl.g-list-length, 0, '.remove-row()';
 
   $button .= new(:label('press here'));
   $g.grid-attach( $button, 0, 0, 1, 1);
-  $gl .= new(:glist($g.get-children));
+  $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 1, '.grid-attach() testing _fallback()';
-  $gl.clear-list;
+  $gl.clear-object;
   $g.remove-row(0);
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
@@ -45,15 +45,15 @@ subtest 'Manipulations', {
   $g.remove-column(0);
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
-  $gl .= new(:glist($g.get-children));
+  $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 1, '.attach() testing _fallback()';
-  $gl.clear-list;
+  $gl.clear-object;
 
   my Gnome::Gtk3::Label $label .= new(:text('note'));
   $g.attach-next-to( $label, $button, GTK_POS_RIGHT, 1, 1);
-  $gl .= new(:glist($g.get-children));
+  $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 2, '.attach-next-to()';
-  $gl.clear-list;
+  $gl.clear-object;
 
   my Gnome::Gtk3::Label $label-widget .= new(:native-object($g.get-child-at( 1, 0)));
   is $label-widget.get-text, 'note', '.get-child-at()';
@@ -73,14 +73,14 @@ subtest 'Manipulations', {
 #-------------------------------------------------------------------------------
 subtest 'Inherit from Container', {
 
-  $gl .= new(:glist($g.get-children));
+  $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 2, '.get-children()';
 
 #note $gl.nth-data(1);
-  my Gnome::Gtk3::Label $label-widget .= new(:native-object($gl.nth-data-gobject(0)));
+  my Gnome::Gtk3::Label $label-widget .= new(:native-object($gl.nth-data(0)));
   is $label-widget.get-text, 'note', 'text from label';
 
-  $gl.clear-list;
+  $gl.clear-object;
   $gl = Gnome::Glib::List;
 }
 

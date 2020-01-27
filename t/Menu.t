@@ -19,7 +19,7 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $m.gtk-menu-reposition;
-  is $m.get-active, Any, 'returned native object';
+  is $m.get-active, N-GObject, '.gtk-menu-reposition() / .get-active()';
 }
 
 #`{{
