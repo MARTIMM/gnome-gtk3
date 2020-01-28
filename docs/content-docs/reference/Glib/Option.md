@@ -375,7 +375,7 @@ The method returns a list of;
 
   * Array, the modified argument values
 
-  * a Gnome::Glib::Error if any. Check .error-is-valid() of this object.
+  * a Gnome::Glib::Error if any. Check .is-valid() of this object.
 
 [[g_] option_] context_add_group
 --------------------------------

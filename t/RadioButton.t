@@ -40,11 +40,11 @@ subtest 'Manipulations', {
   $l .= new(:gslist($rb2.get-group));
   is $l.g-slist-length, 3, 'group now has three members';
 
-  my Gnome::Gtk3::RadioButton $b .= new(:native-object($l.nth-data-gobject(1)));
+  my Gnome::Gtk3::RadioButton $b .= new(:native-object($l.nth-data(1)));
   is $b.get-label, 'rb2', "found label 'rb2' from 2nd radio button";
-  $b .= new(:native-object($l.nth-data-gobject(0)));
+  $b .= new(:native-object($l.nth-data(0)));
   is $b.get-label, 'rb3', "found label 'rb3' from 1st radio button";
-  $b .= new(:native-object($l.nth-data-gobject(2)));
+  $b .= new(:native-object($l.nth-data(2)));
   is $b.get-label, 'rb1', "found label 'rb1' from 3rd radio button";
 }
 

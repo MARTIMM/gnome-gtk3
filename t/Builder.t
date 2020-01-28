@@ -41,11 +41,11 @@ subtest 'Add ui from file to builder', {
   my Gnome::Gtk3::Builder $builder .= new;
 
   $e = $builder.add-from-file($ui-file);
-  nok $e.error-is-valid, ".add-from-file()";
+  nok $e.is-valid, ".add-from-file()";
 
   my Str $text = $ui-file.IO.slurp;
   $e = $builder.add-from-string($text);
-  nok $e.error-is-valid, ".add-from-string()";
+  nok $e.is-valid, ".add-from-string()";
 
   my N-GObject $b = $builder.new-from-string( $text, $text.chars);
   ok $b.defined, '.new-from-string()';
@@ -75,7 +75,7 @@ subtest 'Test builder errors', {
 
   subtest "errorcode return from gtk_builder_add_from_file", {
     $e = $builder.add-from-file('x.glade');
-    ok $e.error-is-valid, "error from .add-from-file()";
+    ok $e.is-valid, "error from .add-from-file()";
     ok $e.domain > 0, "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'g-file-error-quark', 'error domain ok';
     is $e.code, 4, 'error code for this error is 4 and is from file IO';
@@ -88,7 +88,7 @@ subtest 'Test builder errors', {
     my Gnome::Glib::Quark $quark .= new;
 
     $e = $builder.add-from-string($text);
-    ok $e.error-is-valid, "error from .add-from-string()";
+    ok $e.is-valid, "error from .add-from-string()";
     is $e.domain, $builder.error-quark(), "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'gtk-builder-error-quark',
        "error domain: $quark.to-string($e.domain())";
@@ -102,7 +102,7 @@ subtest 'Test builder errors', {
 subtest 'Test items from ui', {
   my Gnome::Gtk3::Builder $builder .= new;
   $e = $builder.add-from-file($ui-file);
-  nok $e.error-is-valid, ".add-from-file()";
+  nok $e.is-valid, ".add-from-file()";
 
   isa-ok $builder.get-object('my-button-1'), N-GObject, '.get-object()';
 

@@ -109,7 +109,7 @@ Since: 3.2
 
 Loads *$data* into the provider, and by doing so clears any previously loaded information.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
 A way to track errors while loading CSS is to connect to the sig `parsing-error` signal.
 
@@ -127,7 +127,7 @@ A way to track errors while loading CSS is to connect to the sig `parsing-error`
 
 Loads the data contained in *$path* into the provider, clearing any previously loaded information.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid() of that object to see if there was an error.
 
 A way to track errors while loading CSS is to connect to the sig `parsing-error` signal.
 

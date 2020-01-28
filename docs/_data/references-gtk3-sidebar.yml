@@ -27,9 +27,17 @@
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
     doc: 2
     test: 2
+  - title: "MessageDialog"
+    url: "/content-docs/reference/Gtk3/MessageDialog.html"
+    doc: 2
+    test: 2
 
 - bar_title: "Containers"
   bar_menu:
+  - title: "AspectFrame"
+    url: '/content-docs/reference/Gtk3/AspectFrame.html'
+    doc: 3
+    test: 1
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
     doc: 1
@@ -40,6 +48,10 @@
     url: '/content-docs/reference/Gtk3/Container.html'
     doc: 1
     test: 1
+  - title: "Frame"
+    url: '/content-docs/reference/Gtk3/Frame.html'
+    doc: 3
+    test: 31
   - title: "Grid"
     url: '/content-docs/reference/Gtk3/Grid.html'
     doc: 1
@@ -109,6 +121,14 @@
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
     doc: 1
+  - title: "ProgressBar"
+    url: "/content-docs/reference/Gtk3/ProgressBar.html"
+    doc: 3
+    test: 1
+  - title: "Spinner"
+    url: "/content-docs/reference/Gtk3/Spinner.html"
+    doc: 3
+    test: 1
   - title: "TextView"
     url: "/content-docs/reference/Gtk3/TextView.html"
     doc: 1

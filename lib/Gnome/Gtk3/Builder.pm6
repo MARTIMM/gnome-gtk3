@@ -128,7 +128,7 @@ Additionally, since 3.10 a special <template> tag has been added to the format a
 
   my Gnome::Gtk3::Builder $builder .= new;
   my Gnome::Glib::Error $e = $builder.add-from-file($ui-file);
-  die $e.message if $e.error-is-valid;
+  die $e.message if $e.is-valid;
 
   my Gnome::Gtk3::Button .= new(:build-id<my-glade-button-id>);
 
@@ -306,7 +306,7 @@ multi method add-gui ( Str:D :$filename! ) {
   my Gnome::Glib::Error $e = gtk_builder_add_from_file(
     self.get-native-object, $filename
   );
-  die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
+  die X::Gnome.new(:message($e.message)) if $e.is-valid;
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -318,7 +318,7 @@ multi method add-gui ( Str:D :$string! ) {
 
   my Gnome::Glib::Error $e = gtk_builder_add_from_string(
     self.get-native-object, $string);
-  die X::Gnome.new(:message($e.message)) if $e.error-is-valid;
+  die X::Gnome.new(:message($e.message)) if $e.is-valid;
 }
 
 #-------------------------------------------------------------------------------
@@ -385,7 +385,7 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 You should not use this function with untrusted files (ie: files that are not part of your application). Broken B<Gnome::Gtk3::Builder> files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test C<.is-valid()> of that object to see if there was an error.
 
 Since: 2.12
 
@@ -419,7 +419,7 @@ multi sub gtk_builder_add_from_file (
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_file( $builder, $filename, $ga);
-  Gnome::Glib::Error.new(:gerror($ga[0]))
+  Gnome::Glib::Error.new(:native-object($ga[0]))
 }
 
 sub _gtk_builder_add_from_file (
@@ -440,7 +440,7 @@ Most users will probably want to use C<gtk_builder_new_from_resource()>.
 
 If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
 
 Since: 3.4
 
@@ -468,7 +468,7 @@ Most users will probably want to use C<gtk_builder_new_from_string()>.
 
 If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
 
 Since: 2.12
 
@@ -499,7 +499,7 @@ multi sub gtk_builder_add_from_string (
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_builder_add_from_string( $builder, $buffer, $buffer.chars, $ga);
-  Gnome::Glib::Error.new(:gerror($ga[0]));
+  Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
 sub _gtk_builder_add_from_string (
@@ -524,7 +524,7 @@ B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object_
 
 If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test C<.is-valid()> flag to see if there was an error.
 
 Since: 2.14
 

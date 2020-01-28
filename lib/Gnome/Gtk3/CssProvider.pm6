@@ -224,7 +224,7 @@ sub gtk_css_provider_to_string ( N-GObject $provider )
 
 Loads I<$data> into the provider, and by doing so clears any previously loaded information.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
 A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
 
@@ -245,11 +245,12 @@ proto gtk_css_provider_load_from_data (
 multi sub gtk_css_provider_load_from_data (
   N-GObject $css_provider, Str $data, Int $length, Any $error
   --> uint32
-) is DEPRECATED('other multi version of gtk_css_provider_load_from_data') {
-#  DEPRECATED(
-#    'other multi version of gtk_css_provider_load_from_data',
-#    '0.17.12', '0.22.0'
-#  );
+) {
+  Gnome::N::deprecate(
+    '.gtk_css_provider_load_from_data( Str, Int, Any --> Int )',
+    '.gtk_css_provider_load_from_data( Str, Int --> Gnome::Glib::Error )',
+   '0.22.0', '0.24.0'
+  );
 
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_css_provider_load_from_data( $css_provider, $data, $length, $ga)
@@ -261,7 +262,7 @@ multi sub gtk_css_provider_load_from_data (
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_css_provider_load_from_data( $css_provider, $data, $data.chars, $ga);
-  Gnome::Glib::Error.new(:gerror($ga[0]));
+  Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
 sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error )
@@ -304,7 +305,7 @@ sub gtk_css_provider_load_from_file ( N-GObject $css_provider, N-GObject $file, 
 
 Loads the data contained in I<$path> into the provider, clearing any previously loaded information.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid() of that object to see if there was an error.
 
 A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
 
@@ -321,7 +322,12 @@ proto gtk_css_provider_load_from_path (
 multi sub gtk_css_provider_load_from_path (
   N-GObject $css_provider, Str $path, Any $error
   --> int32
-) is DEPRECATED('other multi version of gtk_css_provider_load_from_path') {
+) {
+  Gnome::N::deprecate(
+    '.gtk_css_provider_load_from_path( Str, Any --> Int )',
+    '.gtk_css_provider_load_from_path( Str --> Gnome::Glib::Error )',
+   '0.22.0', '0.24.0'
+  );
 
   _gtk_css_provider_load_from_path( $css_provider, $path, Any);
 }
@@ -332,7 +338,7 @@ multi sub gtk_css_provider_load_from_path (
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
   _gtk_css_provider_load_from_path( $css_provider, $path, $ga);
-  Gnome::Glib::Error.new(:gerror($ga[0]));
+  Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
 sub _gtk_css_provider_load_from_path (

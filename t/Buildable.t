@@ -40,8 +40,8 @@ subtest 'Interface ...', {
 
   $builder .= new;
   $e = $builder.add-from-file($ui-file);
-  nok $e.error-is-valid, "ui file added ok";
-  note $e.message if $e.error-is-valid;
+  nok $e.is-valid, "ui file added ok";
+  note $e.message if $e.is-valid;
 
   # set name is from Buildable, not from Widget
   $l .= new(:build-id<my-label-1>);

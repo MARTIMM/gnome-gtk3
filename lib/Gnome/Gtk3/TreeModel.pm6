@@ -613,7 +613,7 @@ sub gtk_tree_model_get_value (
   for @columns -> $column {
     my N-GValue $v .= new;
     _gtk_tree_model_get_value( $tree_model, $iter, $column, $v);
-    $va.push: Gnome::GObject::Value.new(:gvalue($v));
+    $va.push: Gnome::GObject::Value.new(:native-object($v));
   }
 
   $va

@@ -2,35 +2,40 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TreeIter;
-ok 1, 'loads ok';
+use Gnome::GObject::Type;
+use Gnome::GObject::Value;
+use Gnome::Gtk3::Spinner;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TreeIter $ti;
+my Gnome::Gtk3::Spinner $s;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  my N-GtkTreeIter $nti .= new(
-    :stamp(1001), :userdata1(CArray[Str].new('a')),
-    :userdata2(CArray[Str].new('b')), :userdata3(CArray[Str].new('c'))
-  );
-  $ti .= new(:tree-iter($nti));
-  isa-ok $ti, Gnome::Gtk3::TreeIter, '.new(:tree-iter)';
+  $s .= new;
+  isa-ok $s, Gnome::Gtk3::Spinner, '.new()';
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Manipulations', {
+subtest 'Properties ...', {
+  $s.spinner-start;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
+  $s.g-object-get-property( 'active', $gv);
+  is $gv.get-boolean, 1, 'property active';
+  $gv.unset;
 
-  my Gnome::Gtk3::TreeIter $ti-copy .= new(:tree-iter($ti.copy));
-  is $ti-copy.get-native-object.stamp, 1001, '.gtk-tree-iter-copy()';
-  ok $ti-copy.tree-iter-is-valid, '.tree-iter-is-valid()';
-  $ti-copy.clear-tree-iter;
-  nok $ti-copy.tree-iter-is-valid, '.clear-tree-iter()';
+  $s.spinner-stop;
+  $gv .= new(:init(G_TYPE_BOOLEAN));
+  $s.g-object-get-property( 'active', $gv);
+  is $gv.get-boolean, 0, '.spinner-start() / .spinner-stop()';
+  $gv.unset;
 }
 
 #`{{
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
@@ -38,10 +43,6 @@ subtest 'Inherit ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
 }
 
 #-------------------------------------------------------------------------------

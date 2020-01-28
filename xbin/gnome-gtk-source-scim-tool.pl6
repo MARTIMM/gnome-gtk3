@@ -231,8 +231,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $pod-returns = '';
     my Str $returns = '';
     if ?$return-type {
-      $pod-returns = " --> $raku-return-type ";
-      $returns = "\n  returns $return-type";
+      $pod-returns = " --> $raku-return-type";
+      $returns = "--> $return-type";
     }
 
     my Str $start-comment = $variable-args-list ?? '#`{{' ~ "\n" !! '';
@@ -253,7 +253,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
       $pod-doc-items$pod-doc-return
       =end pod
 
-      sub $sub-name ( $args )$returns
+      sub $sub-name ( $args $returns )
         is native($library)
         \{ * \}$end-comment
       EOSUB
@@ -600,11 +600,11 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
 
   my $source-root = '/home/marcel/Software/Packages/Sources/Gnome';
   my @source-list = (
-    "$source-root/gtk+-3.22.0/gtk",
+    "$source-root/gtk+-3.24.13/gtk",
     "$source-root/gdk-pixbuf-2.38.2/gdk-pixbuf",
-    "$source-root/gtk+-3.22.0/gdk",
-    "$source-root/glib-2.60.0/glib",
-    "$source-root/glib-2.60.0/gobject",
+    "$source-root/gtk+-3.24.13/gdk",
+    "$source-root/glib-2.60.7/glib",
+    "$source-root/glib-2.60.7/gobject",
     "$source-root/pango-1.42.4/pango",
   );
 
@@ -627,7 +627,7 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
 #note "Sources: ", ?$include-content, ', ', ?$source-content;
 
       given $path {
-        when / 'gtk+-3.22.0/gtk' / {
+        when / 'gtk+-' <-[/]>+ '/gtk' / {
           $library = '&gtk-lib';
           $raku-lib-name = 'Gtk3';
         }
@@ -637,22 +637,22 @@ sub setup-names ( Str:D $base-sub-name --> List ) {
           $raku-lib-name = 'Gdk3';
         }
 
-        when / 'gtk+-3.22.0/gdk' / {
+        when / 'gtk+-' <-[/]>+ '/gdk' / {
           $library = "&gdk-lib";
           $raku-lib-name = 'Gdk3';
         }
 
-        when / 'glib-2.60.0/glib' / {
+        when / 'glib-' <-[/]>+ '/glib' / {
           $library = "&glib-lib";
           $raku-lib-name = 'Glib';
         }
 
-        when / 'glib-2.60.0/gobject' / {
+        when / 'glib-' <-[/]>+ '/gobject' / {
           $library = "&gobject-lib";
           $raku-lib-name = 'GObject';
         }
 
-        when / 'pango-1.42.4/pango' / {
+        when / 'pango-' <-[/]>+ '/pango' / {
           $library = "&pango-lib";
           $raku-lib-name = 'Pango';
         }
@@ -840,15 +840,15 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
-      Create a new default object.
+      Create a new RAKU-CLASS-NAME object.
 
         multi method new ( )
 
-      Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+      Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
         multi method new ( N-GObject :$native-object! )
 
-      Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+      Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
         multi method new ( Str :$build-id! )
 
@@ -874,9 +874,10 @@ sub substitute-in-template (
 
         elsif %options.keys.elems {
           die X::Gnome.new(
-            :message('Unsupported, undefined or wrongly typed options for ' ~
-                     self.^name ~ ': ' ~ %options.keys.join(', ')
-                    )
+            :message(
+              'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+              self.^name ~ ': ' ~ %options.keys.join(', ')
+            )
           );
         }
 
@@ -909,6 +910,7 @@ sub substitute-in-template (
 
       EOTEMPLATE
 
+    $template-text ~~ s:g/ 'RAKU-CLASS-NAME' /$raku-class-name/;
     $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
     $template-text ~~ s:g/ 'BASE-SUBNAME' /$base-sub-name/;
     $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;

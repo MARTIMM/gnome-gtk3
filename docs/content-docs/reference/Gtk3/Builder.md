@@ -85,7 +85,7 @@ Example
 
     my Gnome::Gtk3::Builder $builder .= new;
     my Gnome::Glib::Error $e = $builder.add-from-file($ui-file);
-    die $e.message if $e.error-is-valid;
+    die $e.message if $e.is-valid;
 
     my Gnome::Gtk3::Button .= new(:build-id<my-glade-button-id>);
 
@@ -185,7 +185,7 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 You should not use this function with untrusted files (ie: files that are not part of your application). Broken **Gnome::Gtk3::Builder** files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag of that object to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
 Since: 2.12
 
@@ -205,7 +205,7 @@ Most users will probably want to use `gtk_builder_new_from_string()`.
 
 If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
-Returns: Gnome::Glib::Error. Test the error-is-valid flag to see if there was an error.
+Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
 
 Since: 2.12
 

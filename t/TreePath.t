@@ -20,13 +20,13 @@ subtest 'ISA test', {
 subtest 'Manipulations', {
 
   my Gnome::Gtk3::TreePath $tp-copy .= new(:tree-path($tp.gtk-tree-path-copy));
-  isa-ok $tp-copy.get-native-gboxed, N-GtkTreePath, '.gtk-tree-path-copy()';
+  isa-ok $tp-copy.get-native-object, N-GtkTreePath, '.gtk-tree-path-copy()';
   ok $tp-copy.tree-path-is-valid, '.tree-path-is-valid()';
   $tp-copy.clear-tree-path;
   nok $tp-copy.tree-path-is-valid, '.clear-tree-path()';
 
   $tp .= new(:first);
-  isa-ok $tp-copy.get-native-gboxed, N-GtkTreePath, '.new(:first)';
+  isa-ok $tp-copy.get-native-object, N-GtkTreePath, '.new(:first)';
   is $tp.to-string, '0', '.to-string()';
   $tp.append-index(10);
   is $tp.to-string, '0:10', '.append-index()';

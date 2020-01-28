@@ -4,6 +4,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
 use Gnome::GObject::Object;
 use Gnome::Glib::List;
 use Gnome::Glib::Main;
@@ -23,7 +24,6 @@ my Gnome::Gtk3::Button $b;
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
 
-  diag "new(:label)";
   $b .= new(:label('abc def'));
   isa-ok $b, Gnome::Gtk3::Button, '.new(:label)';
 
@@ -35,10 +35,9 @@ subtest 'ISA tests', {
     X::Gnome, 'wrong arguments to get-label()',
     :message(/:s Calling gtk_button_get_label .*? will never work /);
 
-  diag "gtk_button_set_label() / gtk_button_get_label()";
-  is $b.get-label, 'pqr', 'text on button ok';
+  is $b.get-label, 'pqr', 'gtk_button_get_label()';
   $b.set-label('xyz');
-  is $b.get-label, 'xyz', 'text on button changed ok';
+  is $b.get-label, 'xyz', 'gtk_button_set_label() / gtk_button_get_label()';
 }
 
 #-------------------------------------------------------------------------------
@@ -46,23 +45,24 @@ subtest 'Button as container', {
   $b .= new(:label('xyz'));
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
-  my Gnome::Glib::List $gl .= new(:glist($b.get-children));
-  $l($gl.nth-data-gobject(0));
+  my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
+
+  # same as $l .= new(:native-object($gl.nth-data(0)));
+  $l.set-native-object(nativecast( N-GObject, $gl.nth-data(0)));
   is $l.get-text, 'xyz', 'text label from button 1';
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));
-  diag "new";
   my Gnome::Gtk3::Button $button2 .= new;
   $button2.gtk-container-add($label);
 
-  $l($button2.get-child);
+  $l .= new(:native-object($button2.get-child));
   is $l.get-text, 'pqr', 'text label from button 2';
 
   # Next statement is not able to get the text directly
   # when gtk-container-add is used.
-  is $button2.get-label, Any, 'text cannot be returned like this anymore';
+  is $button2.get-label, Str, 'text cannot be returned like this anymore';
 
-  $gl.clear-list;
+  $gl.clear-object;
   $gl = Gnome::Glib::List;
 }
 
