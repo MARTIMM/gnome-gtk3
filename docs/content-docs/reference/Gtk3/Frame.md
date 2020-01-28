@@ -61,9 +61,13 @@ Methods
 new
 ---
 
-Create a new default object.
+Create a new default Frame.
 
     multi method new ( )
+
+Create a new Frame with a label.
+
+    multi method new ( :label! )
 
 Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 

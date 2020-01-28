@@ -40,7 +40,7 @@ Example
     my Gnome::Gtk3::ListBox $lb .= new(:build-id<listboxFromGui>);
 
 
-    my Gnome::Glib::List $gl .= new(:glist($lb.get-children));
+    my Gnome::Glib::List $gl .= new(:native-object($lb.get-children));
     for ^$gl.g-list-length -> $entry-index {
       my Gnome::Gtk3::ListBoxRow $lb-row .=
         new(:widget($lb.get-row-at-index($entry-index)));
