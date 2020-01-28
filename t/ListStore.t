@@ -101,7 +101,7 @@ subtest 'Interface TreeModel', {
   my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, Col0, Col1, Col2);
   is $va[Col0].get-int, 1001, '.get-value(): col0';
   is $va[Col1].get-string, 'duizend en een nacht', '.get-value(): col1';
-  is $va[Col2].get-native-gboxed.g-type, G_TYPE_INVALID,
+  is $va[Col2].get-native-object.g-type, G_TYPE_INVALID,
      '3rd column is invalid';
   $va[Col0].unset;
   $va[Col1].unset;

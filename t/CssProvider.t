@@ -1,4 +1,5 @@
 use v6;
+#use lib '../gnome-native/lib';
 use NativeCall;
 use Test;
 
@@ -51,16 +52,14 @@ subtest 'Manipulations', {
 
   #-----------------------------------------------------------------------------
   subtest 'load-from-data', {
-    is $cp.load-from-data( $css-text, $css-text.chars, Any), 1, 'css load ok';
-
     my Gnome::Glib::Error $e = $cp.load-from-data($css-text);
-    is $e.error-is-valid, False, 'no errors';
+    is $e.is-valid, False, 'no errors';
 
     subtest 'invalid css from string', {
       my Gnome::Glib::Quark $quark .= new;
 
       $e = $cp.load-from-data($invalid-css-text);
-      is $e.error-is-valid, True, 'there are errors';
+      is $e.is-valid, True, 'there are errors';
 
       is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
       is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
@@ -74,7 +73,7 @@ subtest 'Manipulations', {
   #-----------------------------------------------------------------------------
   subtest 'load-from-path', {
   #Gnome::N::debug(:on);
-    is $cp.load-from-path( $css-file, Any), 1, 'css load ok';
+    nok $cp.load-from-path($css-file).is-valid, 'css load ok';
 
     my Str $css = $cp.to-string;
     like $css, / \. green /, 'green class found';
@@ -83,7 +82,7 @@ subtest 'Manipulations', {
 
 
     my Gnome::Glib::Error $e = $cp.load-from-path($css-file);
-    is $e.error-is-valid, False, 'no errors';
+    is $e.is-valid, False, 'no errors';
 
     subtest 'invalid css from file', {
       my Bool $signal-processed = False;
@@ -93,8 +92,8 @@ subtest 'Manipulations', {
           Gnome::GObject::Object :native-object($provider)
         ) {
           my Gnome::Glib::Quark $quark .= new;
-          my Gnome::Glib::Error $error .= new(:gerror($e));
-          is $error.error-is-valid, True, 'there are errors';
+          my Gnome::Glib::Error $error .= new(:native-object($e));
+          is $error.is-valid, True, 'there are errors';
 
           is $error.domain, $cp.error-quark(), "domain code: $error.domain()";
           is $quark.to-string($error.domain), 'gtk-css-provider-error-quark',

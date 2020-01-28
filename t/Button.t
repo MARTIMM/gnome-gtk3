@@ -4,6 +4,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
 use Gnome::GObject::Object;
 use Gnome::Glib::List;
 use Gnome::Glib::Main;
@@ -45,7 +46,9 @@ subtest 'Button as container', {
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
   my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
-  $l .= new(:native-object($gl.nth-data(0)));
+
+  # same as $l .= new(:native-object($gl.nth-data(0)));
+  $l.set-native-object(nativecast( N-GObject, $gl.nth-data(0)));
   is $l.get-text, 'xyz', 'text label from button 1';
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));

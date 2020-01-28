@@ -24,7 +24,7 @@ subtest 'ISA tests', {
 subtest 'Interface ColorChooser', {
   $ccd .= new(:title('my color chooser dialog'));
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog;
-  my Gnome::Gdk3::RGBA $r .= new(:rgba($ccd.get-rgba));
+  my Gnome::Gdk3::RGBA $r .= new(:native-object($ccd.get-rgba));
   is $r.to-string, 'rgb(255,255,255)', '.get-rgba()';
 
   $r.gdk-rgba-parse('rgba(0,255,0,0.5)');
