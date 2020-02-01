@@ -79,7 +79,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkPopoverMenu
 │   │   │   │   ├── GtkRevealer
 │   │   │   │   ├── GtkSearchBar
-│   │   │   │   ├── GtkStackSidebar
+│   │   │   │   ├── GtkStackSidebar                   StackSidebar
 │   │   │   │   ╰── GtkViewport
 │   │   │   ├── GtkBox                                Box
 │   │   │   │   ├── GtkAppChooserWidget
@@ -98,7 +98,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
-│   │   │   │   ├── GtkStackSwitcher
+│   │   │   │   ├── GtkStackSwitcher                  StackSwitcher
 │   │   │   │   ├── GtkStatusbar
 │   │   │   │   ╰─✗ GtkVBox                           Deprecated
 │   │   │   ├── GtkFixed
@@ -117,7 +117,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │       ╰── GtkRecentChooserMenu
 │   │   │   ├── GtkNotebook
 │   │   │   ├── GtkSocket
-│   │   │   ├── GtkStack
+│   │   │   ├── GtkStack                              Stack
 │   │   │   ├─✗ GtkTable                              Deprecated
 │   │   │   ├── GtkTextView                           TextView
 │   │   │   ├── GtkToolbar

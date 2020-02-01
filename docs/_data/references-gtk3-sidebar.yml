@@ -141,6 +141,22 @@
     doc: 1
     test: 1
 
+  - title: "-"
+
+  - title: "Stack"
+    url: '/content-docs/reference/Gtk3/Stack.html'
+    doc: 1
+    test: 1
+  - title: "StackSidebar"
+    url: '/content-docs/reference/Gtk3/StackSidebar.html'
+    doc: 1
+    test: 1
+  - title: "StackSwitcher"
+    url: '/content-docs/reference/Gtk3/StackSwitcher.html'
+    doc: 1
+    test: 1
+
+
 - bar_title: "Lists"
   bar_menu:
   - title: "ComboBox"
