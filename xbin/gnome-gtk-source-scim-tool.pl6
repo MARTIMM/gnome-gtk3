@@ -804,8 +804,6 @@ sub substitute-in-template (
     #use Gnome::Gtk3::Buildable;
 
     #-------------------------------------------------------------------------------
-    # /usr/include/gtk-3.0/gtk/INCLUDE
-    # https://developer.gnome.org/WWW
     unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
     ALSO-IS-LIBRARY-PARENT
     #also does Gnome::Gtk3::Buildable;
