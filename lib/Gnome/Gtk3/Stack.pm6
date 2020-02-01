@@ -8,7 +8,7 @@ use v6;
 
 A stacking container
 
-![](images/X.png)
+![](images/stack.png)
 
 =head1 Description
 
