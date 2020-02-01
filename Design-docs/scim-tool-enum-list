@@ -109,6 +109,7 @@ GtkEventSequenceState
 GtkPanDirection
 GtkPopoverConstraint
 GtkTreeModelFlags
+GtkStackTransitionType
 GtkTextBufferTargetInfo
 GtkStyleProviderPriority
 GtkImageType
@@ -125,10 +126,10 @@ GtkFileChooserConfirmation
 GtkFileChooserError
 GtkFileFilterFlags
 GtkTextSearchFlags
+GtkButtonsType
 GtkTreeViewDropPosition
 GtkStyleContextPrintFlags
 GtkWidgetHelpType
-GtkButtonsType
 GdkFilterReturn
 GdkEventType
 GdkVisibilityState
