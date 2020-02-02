@@ -92,6 +92,17 @@
 
   - title: '-'
 
+  - title: "ComboBox"
+    url: "/content-docs/reference/Gtk3/ComboBox.html"
+    doc: 1
+    test: 1
+  - title: "ComboBoxText"
+    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
+    doc: 1
+    test: 1
+
+  - title: '-'
+
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
     doc: 1
@@ -143,6 +154,10 @@
 
   - title: "-"
 
+  - title: "Notebook"
+    url: '/content-docs/reference/Gtk3/Notebook.html'
+    doc: 1
+    test: 1
   - title: "Stack"
     url: '/content-docs/reference/Gtk3/Stack.html'
     doc: 1
@@ -159,17 +174,6 @@
 
 - bar_title: "Lists"
   bar_menu:
-  - title: "ComboBox"
-    url: "/content-docs/reference/Gtk3/ComboBox.html"
-    doc: 1
-    test: 1
-  - title: "ComboBoxText"
-    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
-    doc: 1
-    test: 1
-
-  - title: '-'
-
   - title: "ListBox"
     url: '/content-docs/reference/Gtk3/ListBox.html'
     doc: 1
@@ -255,8 +259,6 @@
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
     doc: 1
     test: 1
-
-
 
 - bar_title: "Menu Classes"
   bar_menu:

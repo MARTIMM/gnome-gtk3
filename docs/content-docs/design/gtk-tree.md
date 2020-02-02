@@ -115,7 +115,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkMenuBar                        MenuBar
 │   │   │   │   ╰── GtkMenu                           Menu
 │   │   │   │       ╰── GtkRecentChooserMenu
-│   │   │   ├── GtkNotebook
+│   │   │   ├── GtkNotebook                           Notebook
 │   │   │   ├── GtkSocket
 │   │   │   ├── GtkStack                              Stack
 │   │   │   ├─✗ GtkTable                              Deprecated
