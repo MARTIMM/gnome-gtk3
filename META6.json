@@ -58,6 +58,7 @@
     "Gnome::Gtk3::MenuShell": "lib/Gnome/Gtk3/MenuShell.pm6",
     "Gnome::Gtk3::MessageDialog": "lib/Gnome/Gtk3/MessageDialog.pm6",
     "Gnome::Gtk3::Misc": "lib/Gnome/Gtk3/Misc.pm6",
+    "Gnome::Gtk3::Notebook": "lib/Gnome/Gtk3/Notebook.pm6",
     "Gnome::Gtk3::Orientable": "lib/Gnome/Gtk3/Orientable.pm6",
     "Gnome::Gtk3::Paned": "lib/Gnome/Gtk3/Paned.pm6",
     "Gnome::Gtk3::ProgressBar": "lib/Gnome/Gtk3/ProgressBar.pm6",
