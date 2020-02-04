@@ -4,6 +4,9 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
   # remove deprecated option in Label at version 0.24.0
 
+  - 2020-02-05 0.23.1:
+    - Adjust **Gnome::Gtk3::Widget** method `gtk_widget_get_allocation()`
+
   - 2020-02-01 0.23.0:
     - Add module Stack, StackSwitcher, StackSidebar, Notebook in Gnome::Gtk3
 
