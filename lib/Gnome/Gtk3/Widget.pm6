@@ -2926,49 +2926,45 @@ If a widget is not visible, its allocated size is 0.
 
 Since: 3.20
 
-  method gtk_widget_get_allocated_size ( GtkAllocation $allocation, int32 $baseline )
+  method gtk_widget_get_allocated_size (
+    GtkAllocation $allocation, int32 $baseline
+  )
 
-=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
+=item GtkAllocation $allocation; a pointer to a B<Gnome::Gtk3::Allocation> to copy to
 =item int32 $baseline; (out) (allow-none): a pointer to an integer to copy to
 
 =end pod
 
-sub gtk_widget_get_allocated_size ( N-GObject $widget, GtkAllocation $allocation, int32 $baseline )
-  is native(&gtk-lib)
+sub gtk_widget_get_allocated_size (
+  N-GObject $widget, GtkAllocation $allocation, int32 $baseline
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_allocation
+#TM:4:gtk_widget_get_allocation:QAManager::Gui::TopLevel
 =begin pod
 =head2 [[gtk_] widget_] get_allocation
 
 Retrieves the widget’s allocation.
 
-Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will
-be its “adjusted” allocation, that is, the widget’s parent
-container typically calls C<gtk_widget_size_allocate()> with an
-allocation, and that allocation is then adjusted (to handle margin
-and alignment for example) before assignment to the widget.
-C<gtk_widget_get_allocation()> returns the adjusted allocation that
-was actually assigned to the widget. The adjusted allocation is
-guaranteed to be completely contained within the
-C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container>
-is guaranteed that its children stay inside the assigned bounds,
-but not that they have exactly the bounds the container assigned.
-There is no way to get the original allocation assigned by
-C<gtk_widget_size_allocate()>, since it isn’t stored; if a container
-implementation needs that information it will have to track it itself.
+Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls C<gtk_widget_size_allocate()> with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget. C<gtk_widget_get_allocation()> returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container> is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by C<gtk_widget_size_allocate()>, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
 
 Since: 2.18
 
-  method gtk_widget_get_allocation ( GtkAllocation $allocation )
-
-=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
+  method gtk_widget_get_allocation ( --> N-GdkRectangle )
 
 =end pod
 
-sub gtk_widget_get_allocation ( N-GObject $widget, GtkAllocation $allocation )
-  is native(&gtk-lib)
+sub gtk_widget_get_allocation ( N-GObject $widget --> N-GdkRectangle ) {
+  my N-GdkRectangle $r .= new;
+  _gtk_widget_get_allocation( $widget, $r);
+  $r
+}
+
+sub _gtk_widget_get_allocation (
+  N-GObject $widget, N-GdkRectangle $allocation is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_allocation')
   { * }
 
 #-------------------------------------------------------------------------------
