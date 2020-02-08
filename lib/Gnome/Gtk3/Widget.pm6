@@ -6592,14 +6592,11 @@ C<0> to propagate the event further.
 =comment #TS:0:focus-in-event:
 =head3 focus-in-event
 
-The I<focus-in-event> signal will be emitted when the keyboard focus
-enters the I<widget>'s window.
+The I<focus-in-event> signal will be emitted when the keyboard focus enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
-to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
     GdkEventFocus $event,
@@ -6615,14 +6612,11 @@ C<0> to propagate the event further.
 =comment #TS:0:focus-out-event:
 =head3 focus-out-event
 
-The I<focus-out-event> signal will be emitted when the keyboard focus
-leaves the I<widget>'s window.
+The I<focus-out-event> signal will be emitted when the keyboard focus leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
-to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
     GdkEventFocus $event,
