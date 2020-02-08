@@ -408,19 +408,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-#`{{ obsolete
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-# pinched from Gnome::GObject::Signal because of a dependency on GdkEvent
-sub gtk_widget_connect_object_event(
-  N-GObject $widget, Str $signal,
-  Callable $handler ( N-GObject, GdkEvent, OpaquePointer ),
-  OpaquePointer $data, int32 $connect_flags
-) returns uint64
-  is native(&gobject-lib)
-  is symbol('g_signal_connect_object')
-  { * }
-}}
 #`{{
 #TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
@@ -618,6 +605,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_set_no_show_all
 =begin pod
@@ -704,7 +692,7 @@ sub gtk_widget_unmap ( N-GObject $widget )
 =head2 [gtk_] widget_realize
 
 Creates the GDK (windowing system) resources associated with a
-widget.  For example, I<widget>->window will be created when a widget
+widget.  For example, a I<widget>'s window will be created when a widget
 is realized.  Normally realization happens implicitly; if you show
 a widget and all its parent containers, then the widget will be
 realized and mapped automatically.
@@ -748,6 +736,7 @@ associated with the widget, such as I<widget>->window).
 sub gtk_widget_unrealize ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
