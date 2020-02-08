@@ -66,8 +66,8 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkFlowBoxChild
 │   │   │   │   ├── GtkHandleBox
 │   │   │   │   ├── GtkListBoxRow                     ListBoxRow
-│   │   │   │   ├── GtkToolItem
-│   │   │   │   │   ├── GtkToolButton
+│   │   │   │   ├── GtkToolItem                       ToolItem
+│   │   │   │   │   ├── GtkToolButton                 ToolButton
 │   │   │   │   │   │   ├── GtkMenuToolButton
 │   │   │   │   │   │   ╰── GtkToggleToolButton
 │   │   │   │   │   │       ╰── GtkRadioToolButton

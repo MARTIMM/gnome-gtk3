@@ -79,6 +79,8 @@
     "Gnome::Gtk3::TextTagTable": "lib/Gnome/Gtk3/TextTagTable.pm6",
     "Gnome::Gtk3::TextView": "lib/Gnome/Gtk3/TextView.pm6",
     "Gnome::Gtk3::ToggleButton": "lib/Gnome/Gtk3/ToggleButton.pm6",
+    "Gnome::Gtk3::ToolButton": "lib/Gnome/Gtk3/ToolButton.pm6",
+    "Gnome::Gtk3::ToolItem": "lib/Gnome/Gtk3/ToolItem.pm6",
     "Gnome::Gtk3::TreeIter": "lib/Gnome/Gtk3/TreeIter.pm6",
     "Gnome::Gtk3::TreeModel": "lib/Gnome/Gtk3/TreeModel.pm6",
     "Gnome::Gtk3::TreePath": "lib/Gnome/Gtk3/TreePath.pm6",
