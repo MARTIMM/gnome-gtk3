@@ -2,7 +2,7 @@
 
 # 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊 ⌺🗲
 
-- bar_title: "Toplevels"
+- bar_title: "Toplevel Widgets"
   bar_menu:
   - title: "Window"
     url: '/content-docs/reference/Gtk3/Window.html'
@@ -65,7 +65,7 @@
     doc: 1
     test: 1
 
-- bar_title: "Control"
+- bar_title: "Input Output"
   bar_menu:
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
@@ -77,9 +77,6 @@
     test: 1
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
-    doc: 1
-  - title: "MenuButton"
-    url: '/content-docs/reference/Gtk3/MenuButton.html'
     doc: 1
   - title: "RadioButton"
     url: "/content-docs/reference/Gtk3/RadioButton.html"
@@ -112,6 +109,11 @@
     doc: 1
     test: 1
 
+  - title: "TextView"
+    url: "/content-docs/reference/Gtk3/TextView.html"
+    doc: 1
+    test: 1
+
   - title: '-'
 
   - title: "Scale"
@@ -139,10 +141,6 @@
   - title: "Spinner"
     url: "/content-docs/reference/Gtk3/Spinner.html"
     doc: 3
-    test: 1
-  - title: "TextView"
-    url: "/content-docs/reference/Gtk3/TextView.html"
-    doc: 1
     test: 1
 
   - title: "-"
@@ -266,12 +264,26 @@
     url: '/content-docs/reference/Gtk3/Menu.html'
     doc: 1
     test: 1
+  - title: "MenuButton"
+    url: '/content-docs/reference/Gtk3/MenuButton.html'
+    doc: 1
   - title: "MenuItem"
     url: "/content-docs/reference/Gtk3/MenuItem.html"
     doc: 1
     test: 1
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
+    test: 1
+
+- bar_title: "Toolbar Classes"
+  bar_menu:
+  - title: "ToolButton"
+    url: '/content-docs/reference/Gtk3/ToolButton.html'
+    doc: 1
+    test: 1
+  - title: "ToolItem"
+    url: '/content-docs/reference/Gtk3/ToolItem.html'
     doc: 1
     test: 1
 
