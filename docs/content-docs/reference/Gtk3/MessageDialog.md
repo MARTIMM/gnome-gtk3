@@ -72,14 +72,14 @@ new
 Create a new MessageDialog object.
 
     multi method new (
-      Str :$message!, N-GObject $parent?, GtkDialogFlags $flags?,
-      GtkMessageType $type?, GtkButtonsType $buttons?
+      Str :$message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
+      GtkMessageType :$type?, GtkButtonsType :$buttons?
       --> N-GObject
     )
 
     multi method new (
-      Str :$markup-message!, N-GObject $parent?, GtkDialogFlags $flags?,
-      GtkMessageType $type?, GtkButtonsType $buttons?
+      Str :$markup-message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
+      GtkMessageType :$type?, GtkButtonsType :$buttons?
       --> N-GObject
     )
 
