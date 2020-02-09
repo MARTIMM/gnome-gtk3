@@ -136,14 +136,14 @@ enum GtkButtonsType is export (
 Create a new MessageDialog object.
 
   multi method new (
-    Str :$message!, N-GObject $parent?, GtkDialogFlags $flags?,
-    GtkMessageType $type?, GtkButtonsType $buttons?
+    Str :$message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
+    GtkMessageType :$type?, GtkButtonsType :$buttons?
     --> N-GObject
   )
 
   multi method new (
-    Str :$markup-message!, N-GObject $parent?, GtkDialogFlags $flags?,
-    GtkMessageType $type?, GtkButtonsType $buttons?
+    Str :$markup-message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
+    GtkMessageType :$type?, GtkButtonsType :$buttons?
     --> N-GObject
   )
 
@@ -182,8 +182,8 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ?%options<message> {
-    my N-GObject $parent = %options<parent> // N-GObject;
-    $parent .= self.get-native-object if $parent ~~ Gnome::GObject::Object;
+    my $parent = %options<parent> // N-GObject;
+    $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
 
     my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
     my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
@@ -197,8 +197,8 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ?%options<markup-message> {
-    my N-GObject $parent = %options<parent> // N-GObject;
-    $parent .= self.get-native-object if $parent ~~ Gnome::GObject::Object;
+    my $parent = %options<parent> // N-GObject;
+    $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
 
     my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
     my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
