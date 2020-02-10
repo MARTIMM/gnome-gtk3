@@ -1126,41 +1126,41 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
         when 'G_TYPE_INT' { $arg-type = 'Int'; }
         when 'G_TYPE_UINT' { $return-type = 'Int'; }
-        when 'G_TYPE_LONG' { $arg-type = 'int64 #`{{use NativeCall}}'; }
+        when 'G_TYPE_LONG' { $arg-type = 'int64 #`{ use NativeCall }'; }
         when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
-        when 'G_TYPE_DOUBLE' { $arg-type = 'num64 #`{{use NativeCall}}'; }
+        when 'G_TYPE_DOUBLE' { $arg-type = 'num64 #`{ use NativeCall }'; }
         when 'G_TYPE_STRING' { $arg-type = 'Str'; }
         when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
 
-        when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{{ is object }}'; }
-        when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{{ is widget }}'; }
+        when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{ is object }'; }
+        when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{ is widget }'; }
         when 'GTK_TYPE_TEXT_ITER' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gtk3::TextIter }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
         }
         when 'GTK_TYPE_TREE_ITER' {
-          $arg-type = 'N-GtkTreeIter #`{{ native Gnome::Gtk3::TreeIter }}';
+          $arg-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
         }
 
         when 'GDK_TYPE_DISPLAY' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Display }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
         }
         when 'GDK_TYPE_DEVICE' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Device }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Device }';
         }
         when 'GDK_TYPE_DEVICE_TOOL' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::DeviceTool }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::DeviceTool }';
         }
         when 'GDK_TYPE_MONITOR' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Monitor }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Monitor }';
         }
         when 'GDK_TYPE_SCREEN' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Screen }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Screen }';
         }
         when 'GDK_TYPE_SEAT' {
-          $arg-type = 'N-GObject #`{{ native Gnome::Gdk3::Seat }}';
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Seat }';
         }
         when 'GDK_TYPE_MODIFIER_TYPE' {
-          $arg-type = 'GdkModifierType #`{{ from Gnome::Gdk3::Window }}';
+          $arg-type = 'GdkModifierType #`{ from Gnome::Gdk3::Window }';
         }
         default { $arg-type = "Unknown type @args[{9 + $i}]"; }
       }
