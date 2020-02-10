@@ -408,19 +408,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-#`{{ obsolete
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-# pinched from Gnome::GObject::Signal because of a dependency on GdkEvent
-sub gtk_widget_connect_object_event(
-  N-GObject $widget, Str $signal,
-  Callable $handler ( N-GObject, GdkEvent, OpaquePointer ),
-  OpaquePointer $data, int32 $connect_flags
-) returns uint64
-  is native(&gobject-lib)
-  is symbol('g_signal_connect_object')
-  { * }
-}}
 #`{{
 #TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
@@ -618,6 +605,7 @@ sub gtk_widget_show_all ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_set_no_show_all
 =begin pod
@@ -704,7 +692,7 @@ sub gtk_widget_unmap ( N-GObject $widget )
 =head2 [gtk_] widget_realize
 
 Creates the GDK (windowing system) resources associated with a
-widget.  For example, I<widget>->window will be created when a widget
+widget.  For example, a I<widget>'s window will be created when a widget
 is realized.  Normally realization happens implicitly; if you show
 a widget and all its parent containers, then the widget will be
 realized and mapped automatically.
@@ -748,6 +736,7 @@ associated with the widget, such as I<widget>->window).
 sub gtk_widget_unrealize ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -2926,49 +2915,45 @@ If a widget is not visible, its allocated size is 0.
 
 Since: 3.20
 
-  method gtk_widget_get_allocated_size ( GtkAllocation $allocation, int32 $baseline )
+  method gtk_widget_get_allocated_size (
+    GtkAllocation $allocation, int32 $baseline
+  )
 
-=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
+=item GtkAllocation $allocation; a pointer to a B<Gnome::Gtk3::Allocation> to copy to
 =item int32 $baseline; (out) (allow-none): a pointer to an integer to copy to
 
 =end pod
 
-sub gtk_widget_get_allocated_size ( N-GObject $widget, GtkAllocation $allocation, int32 $baseline )
-  is native(&gtk-lib)
+sub gtk_widget_get_allocated_size (
+  N-GObject $widget, GtkAllocation $allocation, int32 $baseline
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_allocation
+#TM:4:gtk_widget_get_allocation:QAManager::Gui::TopLevel
 =begin pod
 =head2 [[gtk_] widget_] get_allocation
 
 Retrieves the widget’s allocation.
 
-Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will
-be its “adjusted” allocation, that is, the widget’s parent
-container typically calls C<gtk_widget_size_allocate()> with an
-allocation, and that allocation is then adjusted (to handle margin
-and alignment for example) before assignment to the widget.
-C<gtk_widget_get_allocation()> returns the adjusted allocation that
-was actually assigned to the widget. The adjusted allocation is
-guaranteed to be completely contained within the
-C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container>
-is guaranteed that its children stay inside the assigned bounds,
-but not that they have exactly the bounds the container assigned.
-There is no way to get the original allocation assigned by
-C<gtk_widget_size_allocate()>, since it isn’t stored; if a container
-implementation needs that information it will have to track it itself.
+Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls C<gtk_widget_size_allocate()> with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget. C<gtk_widget_get_allocation()> returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container> is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by C<gtk_widget_size_allocate()>, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
 
 Since: 2.18
 
-  method gtk_widget_get_allocation ( GtkAllocation $allocation )
-
-=item GtkAllocation $allocation; (out): a pointer to a B<Gnome::Gtk3::Allocation> to copy to
+  method gtk_widget_get_allocation ( --> N-GdkRectangle )
 
 =end pod
 
-sub gtk_widget_get_allocation ( N-GObject $widget, GtkAllocation $allocation )
-  is native(&gtk-lib)
+sub gtk_widget_get_allocation ( N-GObject $widget --> N-GdkRectangle ) {
+  my N-GdkRectangle $r .= new;
+  _gtk_widget_get_allocation( $widget, $r);
+  $r
+}
+
+sub _gtk_widget_get_allocation (
+  N-GObject $widget, N-GdkRectangle $allocation is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_allocation')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -6596,14 +6581,11 @@ C<0> to propagate the event further.
 =comment #TS:0:focus-in-event:
 =head3 focus-in-event
 
-The I<focus-in-event> signal will be emitted when the keyboard focus
-enters the I<widget>'s window.
+The I<focus-in-event> signal will be emitted when the keyboard focus enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
-to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
     GdkEventFocus $event,
@@ -6619,14 +6601,11 @@ C<0> to propagate the event further.
 =comment #TS:0:focus-out-event:
 =head3 focus-out-event
 
-The I<focus-out-event> signal will be emitted when the keyboard focus
-leaves the I<widget>'s window.
+The I<focus-out-event> signal will be emitted when the keyboard focus leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
-to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs to enable the B<GDK_FOCUS_CHANGE_MASK> mask.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
     GdkEventFocus $event,

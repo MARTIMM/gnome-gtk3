@@ -211,62 +211,6 @@ Recursively shows a widget, and any child widgets (if the widget is a container)
 
     method gtk_widget_show_all ( )
 
-[[gtk_] widget_] set_no_show_all
---------------------------------
-
-Sets the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget.
-
-This is mostly for use in constructing widget hierarchies with externally controlled visibility, see **Gnome::Gtk3::UIManager**.
-
-Since: 2.4
-
-    method gtk_widget_set_no_show_all ( Int $no_show_all )
-
-  * Int $no_show_all; the new value for the “no-show-all” property
-
-[[gtk_] widget_] get_no_show_all
---------------------------------
-
-Returns the current value of the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget.
-
-Returns: the current value of the “no-show-all” property.
-
-Since: 2.4
-
-    method gtk_widget_get_no_show_all ( --> Int  )
-
-[gtk_] widget_map
------------------
-
-This function is only for use in widget implementations. Causes a widget to be mapped if it isn’t already.
-
-    method gtk_widget_map ( )
-
-[gtk_] widget_unmap
--------------------
-
-This function is only for use in widget implementations. Causes a widget to be unmapped if it’s currently mapped.
-
-    method gtk_widget_unmap ( )
-
-[gtk_] widget_realize
----------------------
-
-Creates the GDK (windowing system) resources associated with a widget. For example, *widget*->window will be created when a widget is realized. Normally realization happens implicitly; if you show a widget and all its parent containers, then the widget will be realized and mapped automatically.
-
-Realizing a widget requires all the widget’s parent widgets to be realized; calling `gtk_widget_realize()` realizes the widget’s parents in addition to *widget* itself. If a widget is not yet inside a toplevel window when you realize it, bad things will happen.
-
-This function is primarily used in widget implementations, and isn’t very useful otherwise. Many times when you think you might need it, a better approach is to connect to a signal that will be called after the widget is realized automatically, such as sig `draw`. Or simply `g_signal_connect()` to the sig `realize` signal.
-
-    method gtk_widget_realize ( )
-
-[gtk_] widget_unrealize
------------------------
-
-This function is only useful in widget implementations. Causes a widget to be unrealized (frees all GDK resources associated with the widget, such as *widget*->window).
-
-    method gtk_widget_unrealize ( )
-
 [[gtk_] widget_] queue_draw
 ---------------------------
 
@@ -1243,9 +1187,11 @@ If a widget is not visible, its allocated size is 0.
 
 Since: 3.20
 
-    method gtk_widget_get_allocated_size ( GtkAllocation $allocation, int32 $baseline )
+    method gtk_widget_get_allocated_size (
+      GtkAllocation $allocation, int32 $baseline
+    )
 
-  * GtkAllocation $allocation; (out): a pointer to a **Gnome::Gtk3::Allocation** to copy to
+  * GtkAllocation $allocation; a pointer to a **Gnome::Gtk3::Allocation** to copy to
 
   * int32 $baseline; (out) (allow-none): a pointer to an integer to copy to
 
@@ -1258,9 +1204,7 @@ Note, when implementing a **Gnome::Gtk3::Container**: a widget’s allocation wi
 
 Since: 2.18
 
-    method gtk_widget_get_allocation ( GtkAllocation $allocation )
-
-  * GtkAllocation $allocation; (out): a pointer to a **Gnome::Gtk3::Allocation** to copy to
+    method gtk_widget_get_allocation ( --> N-GdkRectangle )
 
 [[gtk_] widget_] set_allocation
 -------------------------------

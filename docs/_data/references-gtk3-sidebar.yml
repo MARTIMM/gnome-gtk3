@@ -2,7 +2,7 @@
 
 # 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊 ⌺🗲
 
-- bar_title: "Toplevels"
+- bar_title: "Toplevel Widgets"
   bar_menu:
   - title: "Window"
     url: '/content-docs/reference/Gtk3/Window.html'
@@ -65,7 +65,7 @@
     doc: 1
     test: 1
 
-- bar_title: "Control"
+- bar_title: "Input Output"
   bar_menu:
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
@@ -78,9 +78,6 @@
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
     doc: 1
-  - title: "MenuButton"
-    url: '/content-docs/reference/Gtk3/MenuButton.html'
-    doc: 1
   - title: "RadioButton"
     url: "/content-docs/reference/Gtk3/RadioButton.html"
     doc: 1
@@ -92,12 +89,28 @@
 
   - title: '-'
 
+  - title: "ComboBox"
+    url: "/content-docs/reference/Gtk3/ComboBox.html"
+    doc: 1
+    test: 1
+  - title: "ComboBoxText"
+    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
+    doc: 1
+    test: 1
+
+  - title: '-'
+
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
     doc: 1
     test: 1
   - title: "SearchEntry"
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
+    doc: 1
+    test: 1
+
+  - title: "TextView"
+    url: "/content-docs/reference/Gtk3/TextView.html"
     doc: 1
     test: 1
 
@@ -129,10 +142,6 @@
     url: "/content-docs/reference/Gtk3/Spinner.html"
     doc: 3
     test: 1
-  - title: "TextView"
-    url: "/content-docs/reference/Gtk3/TextView.html"
-    doc: 1
-    test: 1
 
   - title: "-"
 
@@ -141,19 +150,28 @@
     doc: 1
     test: 1
 
+  - title: "-"
+
+  - title: "Notebook"
+    url: '/content-docs/reference/Gtk3/Notebook.html'
+    doc: 1
+    test: 1
+  - title: "Stack"
+    url: '/content-docs/reference/Gtk3/Stack.html'
+    doc: 1
+    test: 1
+  - title: "StackSidebar"
+    url: '/content-docs/reference/Gtk3/StackSidebar.html'
+    doc: 1
+    test: 1
+  - title: "StackSwitcher"
+    url: '/content-docs/reference/Gtk3/StackSwitcher.html'
+    doc: 1
+    test: 1
+
+
 - bar_title: "Lists"
   bar_menu:
-  - title: "ComboBox"
-    url: "/content-docs/reference/Gtk3/ComboBox.html"
-    doc: 1
-    test: 1
-  - title: "ComboBoxText"
-    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
-    doc: 1
-    test: 1
-
-  - title: '-'
-
   - title: "ListBox"
     url: '/content-docs/reference/Gtk3/ListBox.html'
     doc: 1
@@ -240,20 +258,32 @@
     doc: 1
     test: 1
 
-
-
 - bar_title: "Menu Classes"
   bar_menu:
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
     doc: 1
     test: 1
+  - title: "MenuButton"
+    url: '/content-docs/reference/Gtk3/MenuButton.html'
+    doc: 1
   - title: "MenuItem"
     url: "/content-docs/reference/Gtk3/MenuItem.html"
     doc: 1
     test: 1
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
+    test: 1
+
+- bar_title: "Toolbar Classes"
+  bar_menu:
+  - title: "ToolButton"
+    url: '/content-docs/reference/Gtk3/ToolButton.html'
+    doc: 1
+    test: 1
+  - title: "ToolItem"
+    url: '/content-docs/reference/Gtk3/ToolItem.html'
     doc: 1
     test: 1
 

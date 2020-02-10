@@ -66,8 +66,8 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkFlowBoxChild
 │   │   │   │   ├── GtkHandleBox
 │   │   │   │   ├── GtkListBoxRow                     ListBoxRow
-│   │   │   │   ├── GtkToolItem
-│   │   │   │   │   ├── GtkToolButton
+│   │   │   │   ├── GtkToolItem                       ToolItem
+│   │   │   │   │   ├── GtkToolButton                 ToolButton
 │   │   │   │   │   │   ├── GtkMenuToolButton
 │   │   │   │   │   │   ╰── GtkToggleToolButton
 │   │   │   │   │   │       ╰── GtkRadioToolButton
@@ -79,7 +79,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkPopoverMenu
 │   │   │   │   ├── GtkRevealer
 │   │   │   │   ├── GtkSearchBar
-│   │   │   │   ├── GtkStackSidebar
+│   │   │   │   ├── GtkStackSidebar                   StackSidebar
 │   │   │   │   ╰── GtkViewport
 │   │   │   ├── GtkBox                                Box
 │   │   │   │   ├── GtkAppChooserWidget
@@ -98,7 +98,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
-│   │   │   │   ├── GtkStackSwitcher
+│   │   │   │   ├── GtkStackSwitcher                  StackSwitcher
 │   │   │   │   ├── GtkStatusbar
 │   │   │   │   ╰─✗ GtkVBox                           Deprecated
 │   │   │   ├── GtkFixed
@@ -115,9 +115,9 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   ├── GtkMenuBar                        MenuBar
 │   │   │   │   ╰── GtkMenu                           Menu
 │   │   │   │       ╰── GtkRecentChooserMenu
-│   │   │   ├── GtkNotebook
+│   │   │   ├── GtkNotebook                           Notebook
 │   │   │   ├── GtkSocket
-│   │   │   ├── GtkStack
+│   │   │   ├── GtkStack                              Stack
 │   │   │   ├─✗ GtkTable                              Deprecated
 │   │   │   ├── GtkTextView                           TextView
 │   │   │   ├── GtkToolbar
