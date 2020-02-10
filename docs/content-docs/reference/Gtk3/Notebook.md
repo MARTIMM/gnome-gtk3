@@ -635,8 +635,8 @@ Supported signals
 Emitted when the user or a function changes the current page.
 
     method handler (
-      N-GObject #`{{ is widget }} $page,
-       $page_num,
+      N-GObject #`{ is widget } $page,
+      UInt $page_num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
@@ -655,8 +655,8 @@ the *page-reordered* signal is emitted in the notebook right after a page has be
 Since: 2.10
 
     method handler (
-      Unknown type GTK_TYPE_NOTEBOOK_TAB $child,
-      - $page_num,
+      N-GObject #`{ is widget } $child,
+      UInt $page_num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
@@ -675,8 +675,8 @@ the *page-removed* signal is emitted in the notebook right after a page is remov
 Since: 2.10
 
     method handler (
-      Int $child,
-      - $page_num,
+      N-GObject #`{ is widget } $child,
+      UInt $page_num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
@@ -695,8 +695,8 @@ the *page-added* signal is emitted in the notebook right after a page is added t
 Since: 2.10
 
     method handler (
-      Int $child,
-      - $page_num,
+      N-GObject #`{ is widget } $child,
+      UInt $page_num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
@@ -714,14 +714,14 @@ The *create-window* signal is emitted when a detachable tab is dropped on the ro
 
 A handler for this signal can create a window containing a notebook where the tab will be attached. It is also responsible for moving/resizing the window and adding the necessary properties to the notebook (e.g. the *group-name* ).
 
-Returns: (transfer none): a **Gnome::Gtk3::Notebook** that *page* should be added to, or `Any`.
+Returns: a **Gnome::Gtk3::Notebook** that *page* should be added to, or `Any`.
 
 Since: 2.12
 
     method handler (
-      Unknown type GTK_TYPE_DIRECTION_TYPE $page,
-      - $x,
-      - $y,
+      N-GObject #`{ is widget } $page,
+      Int $x,
+      Int $y,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
     );
@@ -737,71 +737,71 @@ Since: 2.12
 ### reorder-tab
 
     method handler (
-      Unknown type GTK_TYPE_DIRECTION_TYPE $unknown type gtk_type_direction_type,
-      Int $int,
+      Int $arg1, #`{ GtkDirectionType }
+      Int $arg2, #`{ Bool }
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
     );
 
-  * $notebook;
+  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
 
-  * $unknown type gtk_type_direction_type;
+  * $arg1; ?
 
-  * $int;
+  * $arg2; ?
 
 ### page-reordered
 
     method handler (
-      N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-       $,
+      N-GObject $child, #`{ is widget }
+      uint $page-num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
     );
 
-  * $notebook;
+  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
 
-  * $n-gobject #`{{ is widget }};
+  * $child; the child Gtk Widget affected
 
-  * $;
+  * $page-num; the new page number for child
 
 ### page-removed
 
     method handler (
-      N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-       $,
+      N-GObject $child, #`{ is widget }
+      uint $page-num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
     );
 
-  * $notebook;
+  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
 
-  * $n-gobject #`{{ is widget }};
+  * $child; the child Gtk Widget affected
 
-  * $;
+  * $page-num; the new page number for child
 
 ### page-added
 
     method handler (
-      N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-       $,
+      N-GObject $child, #`{ is widget }
+      uint $page-num,
       Gnome::GObject::Object :widget($notebook),
       *%user-options
       --> Int
     );
 
-  * $notebook;
+  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
 
-  * $n-gobject #`{{ is widget }};
+  * $child; the child Gtk Widget affected
 
-  * $;
+  * $page-num; the new page number for child
 
 ### create-window
 
     method handler (
-      N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
+      N-GObject #`{ is widget } $n-gobject #`{ is widget },
       Int $int,
       Int $int,
       Gnome::GObject::Object :widget($notebook),
@@ -811,7 +811,7 @@ Since: 2.12
 
   * $notebook;
 
-  * $n-gobject #`{{ is widget }};
+  * $n-gobject #`{ is widget };
 
   * $int;
 

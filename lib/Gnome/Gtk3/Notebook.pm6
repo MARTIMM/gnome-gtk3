@@ -1139,120 +1139,100 @@ Also here, the types of positional arguments in the signal handler are important
 Emitted when the user or a function changes the current page.
 
   method handler (
-    N-GObject #`{{ is widget }} $page,
-     $page_num,
+    N-GObject #`{ is widget } $page,
+    UInt $page_num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
 =item $notebook; the object which received the signal.
-
 =item $page; the new current page
-
 =item $page_num; the index of the page
 
 
 =comment #TS:0:page-reordered:
 =head3 page-reordered
 
-the I<page-reordered> signal is emitted in the notebook
-right after a page has been reordered.
+the I<page-reordered> signal is emitted in the notebook right after a page has been reordered.
 
 Since: 2.10
 
   method handler (
-    Unknown type GTK_TYPE_NOTEBOOK_TAB $child,
-    - $page_num,
+    N-GObject #`{ is widget } $child,
+    UInt $page_num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
 =item $notebook; the B<Gnome::Gtk3::Notebook>
-
 =item $child; the child B<Gnome::Gtk3::Widget> affected
-
 =item $page_num; the new page number for I<child>
 
 
 =comment #TS:0:page-removed:
 =head3 page-removed
 
-the I<page-removed> signal is emitted in the notebook
-right after a page is removed from the notebook.
+the I<page-removed> signal is emitted in the notebook right after a page is removed from the notebook.
 
 Since: 2.10
 
   method handler (
-    Int $child,
-    - $page_num,
+    N-GObject #`{ is widget } $child,
+    UInt $page_num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
 =item $notebook; the B<Gnome::Gtk3::Notebook>
-
 =item $child; the child B<Gnome::Gtk3::Widget> affected
-
 =item $page_num; the I<child> page number
 
 
 =comment #TS:0:page-added:
 =head3 page-added
 
-the I<page-added> signal is emitted in the notebook
-right after a page is added to the notebook.
+the I<page-added> signal is emitted in the notebook right after a page is added to the notebook.
 
 Since: 2.10
 
   method handler (
-    Int $child,
-    - $page_num,
+    N-GObject #`{ is widget } $child,
+    UInt $page_num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
 =item $notebook; the B<Gnome::Gtk3::Notebook>
-
 =item $child; the child B<Gnome::Gtk3::Widget> affected
-
 =item $page_num; the new page number for I<child>
 
 
 =comment #TS:0:create-window:
 =head3 create-window
 
-The I<create-window> signal is emitted when a detachable
-tab is dropped on the root window.
+The I<create-window> signal is emitted when a detachable tab is dropped on the root window.
 
-A handler for this signal can create a window containing
-a notebook where the tab will be attached. It is also
-responsible for moving/resizing the window and adding the
-necessary properties to the notebook (e.g. the
- I<group-name> ).
+A handler for this signal can create a window containing a notebook where the tab will be attached. It is also responsible for moving/resizing the window and adding the necessary properties to the notebook (e.g. the I<group-name> ).
 
-Returns: (transfer none): a B<Gnome::Gtk3::Notebook> that I<page> should be
-added to, or C<Any>.
+Returns: a B<Gnome::Gtk3::Notebook> that I<page> should be added to, or C<Any>.
 
 Since: 2.12
 
   method handler (
-    Unknown type GTK_TYPE_DIRECTION_TYPE $page,
-    - $x,
-    - $y,
+    N-GObject #`{ is widget } $page,
+    Int $x,
+    Int $y,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
   );
 
 =item $notebook; the B<Gnome::Gtk3::Notebook> emitting the signal
-
 =item $page; the tab of I<notebook> that is being detached
-
 =item $x; the X coordinate where the drop happens
-
 =item $y; the Y coordinate where the drop happens
 
 
@@ -1260,67 +1240,71 @@ Since: 2.12
 =head3 reorder-tab
 
   method handler (
-    Unknown type GTK_TYPE_DIRECTION_TYPE $unknown type gtk_type_direction_type,
-    Int $int,
+    Int $arg1, #`{ GtkDirectionType }
+    Int $arg2, #`{ Bool }
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
-=item $notebook;
-=item $unknown type gtk_type_direction_type;
-=item $int;
+=item $notebook; the B<Gnome::Gtk3::Notebook> emitting the signal
+=item $arg1; ?
+=item $arg2; ?
+
 
 =comment #TS:0:page-reordered:
 =head3 page-reordered
 
   method handler (
-    N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-     $,
+    N-GObject $child, #`{ is widget }
+    uint $page-num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
-=item $notebook;
-=item $n-gobject #`{{ is widget }};
-=item $;
+=item $notebook; the B<Gnome::Gtk3::Notebook> emitting the signal
+=item $child; the child Gtk Widget affected
+=item $page-num; the new page number for child
+
 
 =comment #TS:0:page-removed:
 =head3 page-removed
 
   method handler (
-    N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-     $,
+    N-GObject $child, #`{ is widget }
+    uint $page-num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
-=item $notebook;
-=item $n-gobject #`{{ is widget }};
-=item $;
+=item $notebook; the B<Gnome::Gtk3::Notebook> emitting the signal
+=item $child; the child Gtk Widget affected
+=item $page-num; the new page number for child
+
 
 =comment #TS:0:page-added:
 =head3 page-added
 
   method handler (
-    N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
-     $,
+    N-GObject $child, #`{ is widget }
+    uint $page-num,
     Gnome::GObject::Object :widget($notebook),
     *%user-options
     --> Int
   );
 
-=item $notebook;
-=item $n-gobject #`{{ is widget }};
-=item $;
+=item $notebook; the B<Gnome::Gtk3::Notebook> emitting the signal
+=item $child; the child Gtk Widget affected
+=item $page-num; the new page number for child
+
 
 =comment #TS:0:create-window:
 =head3 create-window
 
   method handler (
-    N-GObject #`{{ is widget }} $n-gobject #`{{ is widget }},
+    N-GObject #`{ is widget } $n-gobject #`{ is widget },
     Int $int,
     Int $int,
     Gnome::GObject::Object :widget($notebook),
@@ -1329,7 +1313,7 @@ Since: 2.12
   );
 
 =item $notebook;
-=item $n-gobject #`{{ is widget }};
+=item $n-gobject #`{ is widget };
 =item $int;
 =item $int;
 
