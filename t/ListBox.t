@@ -59,13 +59,20 @@ subtest 'Manipulations', {
     :native-object($lb-grid.get-child-at( 0, 0))
   );
   is $lb-cb.get-label, 'abc', 'checkbox label found';
+
+
+  # get selected entries
+  class X {
+    method cb (
+      Gnome::Gtk3::ListBox $lbx, Gnome::Gtk3::ListBoxRow $lbxr, :$test ) {
+      note "WN: $lbx.widget-get-name(), $test";
+    }
+  }
+
+  $lb.gtk_list_box_selected_foreach( X.new, 'cb', :test<abc>);
 }
 
 #`{{
-#-------------------------------------------------------------------------------
-subtest 'Manipulations', {
-}
-
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
 }
