@@ -376,29 +376,64 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_box_selected_foreach:
+#TM:1:gtk_list_box_selected_foreach:
 =begin pod
 =head2 [[gtk_] list_box_] selected_foreach
 
-Calls a function for each selected child.
-
-Note that the selection cannot be modified from within this function.
+Calls a function for each selected child. Note that the selection cannot be modified from within this function.
 
 Since: 3.14
 
-  method gtk_list_box_selected_foreach ( GtkListBoxForeachFunc $func, Pointer $data )
+  method gtk_list_box_selected_foreach (
+    $callback-object, Str $callback_name, *%user-options
+  )
 
-=item GtkListBoxForeachFunc $func; (scope call): the function to call for each selected child
-=item Pointer $data; user data to pass to the function
+=item $callback-object; Object wherein the callback method is declared
+=item Str $callback-name; Name of the callback method
+=item %user-options; named arguments which will be provided to the callback
+
+The callback method signature is
+
+  method f (
+    Gnome::Gtk3::ListBox $listbox, Gnome::Gtk3::GtkListRow $row,
+    *%user-options
+  )
 
 =end pod
+sub gtk_list_box_selected_foreach (
+  N-GObject $box, Any:D $func-object, Str:D $func-name, *%user-options
+) {
+  if $func-object.^can($func-name) {
+    _gtk_list_box_selected_foreach(
+      $box,
+      sub ( $n-lb, $n-lbr, $d ) {
+        $func-object."$func-name"(
+          Gnome::Gtk3::ListBox.new(:native-object($n-lb)),
+          Gnome::Gtk3::ListBoxRow.new(:native-object($n-lbr)),
+          |%user-options
+        )
+      },
+      OpaquePointer
+    );
+  }
 
-sub gtk_list_box_selected_foreach ( N-GObject $box, GtkListBoxForeachFunc $func, Pointer $data )
-  is native(&gtk-lib)
+  else {
+    note "Method $func-name not found in object $func-object.perl()"
+      if $Gnome::N::x-debug;
+  }
+}
+
+sub _gtk_list_box_selected_foreach (
+  N-GObject $box,
+  Callable $callback (
+    N-GObject $n-listbox, N-GObject $n-listboxrow, OpaquePointer $d
+  ),
+  OpaquePointer $user_data
+) is native(&gtk-lib)
+  is symbol('gtk_list_box_selected_foreach')
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_box_get_selected_rows:

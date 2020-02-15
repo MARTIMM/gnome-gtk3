@@ -4,6 +4,7 @@ use Test;
 
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Button;
+use Gnome::Gtk3::Label;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -23,11 +24,26 @@ subtest 'Inherit ...', {
   is $b.get-border-width, 10, 'border is now 10';
 }
 
-#`{{
-
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  subtest 'container-foreach', {
+    class X {
+      method cb ( $nw, :$label ) {
+        my Gnome::Gtk3::Widget $w .= new(:native-object($nw));
+        is $w.widget-get-name(), 'GtkLabel', 'GtkLabel';
+        my Gnome::Gtk3::Label $l .= new(:native-object($nw));
+        is $l.get-text, $label, 'label text';
+      }
+    }
+
+    #Gnome::N::debug(:on);
+    $b .= new(:label<some-text>);
+    $b.container-foreach( X.new, 'cb', :label<some-text>);
+    #Gnome::N::debug(:off);
+  }
 }
+
+#`{{
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {

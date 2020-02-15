@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::Glib::List;
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::ListBox;
 use Gnome::Gtk3::ListBoxRow;
 use Gnome::Gtk3::Grid;
@@ -29,11 +30,11 @@ subtest 'Manipulations', {
 
   my Gnome::Gtk3::CheckButton $check .= new(:label('abc'));
 #  $check.set-visible(True);
-  $grid.gtk-grid-attach( $check(), 0, 0, 1, 1);
+  $grid.gtk-grid-attach( $check, 0, 0, 1, 1);
 
   my Gnome::Gtk3::Label $label .= new(:text('first entry'));
 #  $label.set-visible(True);
-  $grid.gtk-grid-attach( $label(), 1, 0, 1, 1);
+  $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
   # Add the grid to the ListBox
   $lb.gtk-container-add($grid);
@@ -49,6 +50,11 @@ subtest 'Manipulations', {
   );
 
   is $lb-row.is-selected, 0, 'row is not selected';
+  $lb.select-all;
+  is $lb-row.is-selected, 0, 'row is not selected';
+  $lb.set-selection-mode(GTK_SELECTION_MULTIPLE);
+  $lb.select-all;
+  is $lb-row.is-selected, 1, 'row is selected';
 
   # Get the native grid object from a child and create the Grid again.
   my Gnome::Gtk3::Grid $lb-grid .= new(:native-object($lb-row.get_child()));
@@ -59,13 +65,24 @@ subtest 'Manipulations', {
     :native-object($lb-grid.get-child-at( 0, 0))
   );
   is $lb-cb.get-label, 'abc', 'checkbox label found';
+
+  subtest 'selected-foreach', {
+    # get selected entries
+    class X {
+      method cb (
+        Gnome::Gtk3::ListBox $lbx, Gnome::Gtk3::ListBoxRow $lbxr, :$test ) {
+        is $lbx.widget-get-name(), 'GtkListBox', 'listbox';
+        is $lbxr.widget-get-name(), 'GtkListBoxRow', 'listboxrow';
+        is $test, 'abc', 'user option';
+      }
+    }
+
+  #Gnome::N::debug(:on);
+    $lb.selected-foreach( X.new, 'cb', :test<abc>);
+  }
 }
 
 #`{{
-#-------------------------------------------------------------------------------
-subtest 'Manipulations', {
-}
-
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
 }

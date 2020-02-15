@@ -47,6 +47,7 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::GObject::Object;
+use Gnome::Gtk3::TextTag;
 
 use Gnome::Gtk3::Buildable;
 
@@ -214,27 +215,58 @@ sub gtk_text_tag_table_lookup ( N-GObject $table, Str $name )
   is native(&gtk-lib)
   { * }
 
-#`{{
+
 #-------------------------------------------------------------------------------
-#TM:0:gtk_text_tag_table_foreach:
+#TM:1:gtk_text_tag_table_foreach:
 =begin pod
 =head2 [gtk_] text_tag_table_foreach
 
-Calls I<func> on each tag in I<table>, with user data I<data>.
-Note that the table may not be modified while iterating
-over it (you can’t add/remove tags).
+Calls a function on each tag in this table, with named arguments in %user-data. Note that the table may not be modified while iterating over it (you can’t add/remove tags).
 
-  method gtk_text_tag_table_foreach ( GtkTextTagTableForeach $func, Pointer $data )
+  method gtk_text_tag_table_foreach (
+    $callback-object, Str $callback_name, *%user-options
+  )
 
-=item GtkTextTagTableForeach $func; (scope call): a function to call on each tag
-=item Pointer $data; user data
+=item $callback-object; Object wherein the callback method is declared
+=item Str $callback-name; Name of the callback method
+=item %user-options; named arguments which will be provided to the callback
 
+The callback method signature is
+
+  method f ( Gnome::Gtk3::TextTag $tag, *%user-options )
 =end pod
 
-sub gtk_text_tag_table_foreach ( N-GObject $table, GtkTextTagTableForeach $func, Pointer $data )
-  is native(&gtk-lib)
+sub gtk_text_tag_table_foreach (
+  N-GObject $table, Any:D $func-object, Str:D $func-name, *%user-options
+) {
+  if $func-object.^can($func-name) {
+    _gtk_text_tag_table_foreach(
+      $table,
+      sub ( $n-tag, $d ) {
+        $func-object."$func-name"(
+          Gnome::Gtk3::TextTag.new(:native-object($n-tag)),
+          |%user-options
+        )
+      },
+      OpaquePointer
+    );
+  }
+
+  else {
+    note "Method $func-name not found in object $func-object.perl()"
+      if $Gnome::N::x-debug;
+  }
+}
+
+sub _gtk_text_tag_table_foreach (
+  N-GObject $table,
+  Callable $func (
+    N-GObject $n-tag, OpaquePointer $d
+  ),
+  OpaquePointer $user_data
+) is native(&gtk-lib)
+  is symbol('gtk_text_tag_table_foreach')
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_text_tag_table_get_size:
