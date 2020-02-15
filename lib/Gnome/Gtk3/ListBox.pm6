@@ -381,16 +381,17 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
 =begin pod
 =head2 [[gtk_] list_box_] selected_foreach
 
-Calls a function for each selected child.
-
-Note that the selection cannot be modified from within this function.
+Calls a function for each selected child. Note that the selection cannot be modified from within this function.
 
 Since: 3.14
 
-  method gtk_list_box_selected_foreach ( GtkListBoxForeachFunc $func, Pointer $data )
+  method gtk_list_box_selected_foreach (
+    $callback-object, Str $callback_name, *%user-options
+  )
 
-=item GtkListBoxForeachFunc $func; (scope call): the function to call for each selected child
-=item Pointer $data; user data to pass to the function
+=item $callback-object; Object wherein the callback method is declared
+=item Str $callback-name; Name of the callback method
+=item %user-options; named arguments which will be provided to the callback
 
 The callback method signature is
 
@@ -413,7 +414,7 @@ sub gtk_list_box_selected_foreach (
           |%user-options
         )
       },
-      OpaquePointer;
+      OpaquePointer
     );
   }
 

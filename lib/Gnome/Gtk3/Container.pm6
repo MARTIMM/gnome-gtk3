@@ -384,6 +384,7 @@ Invokes a callback on each non-internal child of this container. For all practic
 
 =item $callback-object; Object wherein the callback method is declared
 =item Str $callback-name; Name of the callback method
+=item %user-options; named arguments which will be provided to the callback
 
 The callback method signature is
 
