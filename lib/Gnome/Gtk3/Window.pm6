@@ -29,7 +29,7 @@ An example of a UI definition fragment with accel groups:
     <initial-focus name="thunderclap"/>
   </object>
   ...
-  <object class="B<Gnome::Gtk3::AccelGroup>" id="accelgroup1"/>
+  <object class="GtkAccelGroup>" id="accelgroup1"/>
 
 The B<Gnome::Gtk3::Window> implementation of the B<Gnome::Gtk3::Buildable> interface supports setting a child as the titlebar by specifying “titlebar” as the “type” attribute of a <child> element.
 
