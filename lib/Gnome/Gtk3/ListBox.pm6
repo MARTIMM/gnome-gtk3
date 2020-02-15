@@ -398,7 +398,7 @@ The callback method signature is
   method f (
     Gnome::Gtk3::ListBox $listbox, Gnome::Gtk3::GtkListRow $row,
     *%user-options
-  );
+  )
 
 =end pod
 sub gtk_list_box_selected_foreach (

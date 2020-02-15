@@ -388,7 +388,7 @@ Invokes a callback on each non-internal child of this container. For all practic
 
 The callback method signature is
 
-  method f ( N-GObject $w, *%user-options );
+  method f ( N-GObject $w, *%user-options )
 
 A small example
 
