@@ -41,6 +41,25 @@ subtest 'Manipulations', {
 
   $gv = $tt.get-property( 'name', G_TYPE_STRING);
   is $gv.get-string, 'my-tt', '.gtk-text-tag-table-lookup()';
+
+  subtest 'gtk-text-tag-table-foreach', {
+    class X {
+      method cb ( Gnome::Gtk3::TextTag $tt, :$test ) {
+#        note "WN: $tt.perl(), $test";
+        my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+        $tt.g-object-get-property( 'name', $gv);
+        is $gv.g-value-get-string, 'my-tt', 'tag name';
+
+        $gv .= new(:init(G_TYPE_BOOLEAN));
+        $tt.g-object-get-property( 'editable', $gv);
+        is $gv.g-value-get-boolean, 1, 'editable';
+      }
+    }
+
+#Gnome::N::debug(:on);
+    $ttt.gtk-text-tag-table-foreach( X.new, 'cb', :test<abcdef>);
+    #Gnome::N::debug(:off);
+  }
 }
 
 #`{{
