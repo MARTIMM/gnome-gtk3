@@ -30,12 +30,12 @@ my class ShowTabel {
   }
 
   method show-entry (
-    Gnome::Gtk3::TreeStore $c-ts,
+    N-GObject $nc-ts,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
   ) {
     my Str $row = $c-path.to-string;
-
+    my Gnome::Gtk3::TreeStore $c-ts .= new(:native-object($nc-ts));
     my Array[Gnome::GObject::Value] $va;
     $va = $c-ts.get-value( $c-iter, Col0, Col1);
 
