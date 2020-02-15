@@ -372,7 +372,7 @@ sub gtk_container_check_resize ( N-GObject $container )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_container_foreach:
+#TM:1:gtk_container_foreach:
 =begin pod
 =head2 [gtk_] container_foreach
 
@@ -415,8 +415,8 @@ sub gtk_container_foreach (
   if $func-object.^can($func-name) {
     _gtk_container_foreach(
       $container,
-      sub ( $w, $d ) {
-        $func-object."$func-name"( $w, |%user-options)
+      sub ( $n-w, $d ) {
+        $func-object."$func-name"( $n-w, |%user-options)
       },
       OpaquePointer
     );
@@ -430,7 +430,7 @@ sub gtk_container_foreach (
 
 sub _gtk_container_foreach (
   N-GObject $container,
-  Callable $callback ( N-GObject $w, OpaquePointer $d),
+  Callable $callback ( N-GObject $n-w, OpaquePointer $d),
   OpaquePointer $user_data
 ) is native(&gtk-lib)
   is symbol('gtk_container_foreach')

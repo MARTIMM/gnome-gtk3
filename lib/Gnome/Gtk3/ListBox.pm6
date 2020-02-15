@@ -377,7 +377,7 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_list_box_selected_foreach:
+#TM:1:gtk_list_box_selected_foreach:
 =begin pod
 =head2 [[gtk_] list_box_] selected_foreach
 
@@ -407,10 +407,10 @@ sub gtk_list_box_selected_foreach (
   if $func-object.^can($func-name) {
     _gtk_list_box_selected_foreach(
       $box,
-      sub ( $lb, $lbr, $d ) {
+      sub ( $n-lb, $n-lbr, $d ) {
         $func-object."$func-name"(
-          Gnome::Gtk3::ListBox.new(:native-object($lb)),
-          Gnome::Gtk3::ListBoxRow.new(:native-object($lbr)),
+          Gnome::Gtk3::ListBox.new(:native-object($n-lb)),
+          Gnome::Gtk3::ListBoxRow.new(:native-object($n-lbr)),
           |%user-options
         )
       },
