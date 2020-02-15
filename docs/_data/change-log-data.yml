@@ -7,7 +7,8 @@ notes:
   - 2020-02-05 0.23.2:
     - Add gtk_container_foreach to Container
     - Add gtk_list_box_selected_foreach to ListBox
-    - Add gtk_text_tag_table_foreach to TaxtTagTable
+    - Add gtk_text_tag_table_foreach to TextTagTable
+    - Modified gtk_tree_model_foreach in TreeModel
 
   - 2020-02-05 0.23.1:
     - Adjust **Gnome::Gtk3::Widget** method `gtk_widget_get_allocation()`
