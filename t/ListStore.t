@@ -28,11 +28,12 @@ my class ShowTabel {
   }
 
   method show-entry (
-    Gnome::Gtk3::ListStore $c-ls,
+    N-GObject $nc-ls,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
   ) {
     my Str $row = $c-path.to-string;
+    my Gnome::Gtk3::ListStore $c-ls .= new(:native-object($nc-ls));
     my Array[Gnome::GObject::Value] $va = $c-ls.get-value( $c-iter, Col0, Col1);
 
     note $row.fmt('%5.5s'), ' | ',
@@ -128,25 +129,29 @@ subtest 'Interface TreeModel', {
   is $ls.get-path($ls.iter-nth-child( Any, 0)).to-string, '0',
      '.iter-nth-child()';
 
-  my class X {
-    has $!row-count = 0;
+  subtest 'gtk-container-foreach', {
+    my class X {
+      has $!row-count = 0;
 
-    method row-loop (
-      Gnome::Gtk3::ListStore $l-loop,
-      Gnome::Gtk3::TreePath $p-loop,
-      Gnome::Gtk3::TreeIter $i-loop
-    ) {
-      is $p-loop.to-string, $!row-count.Str, 'row ok';
-      is $ls.get-path($i-loop).to-string, $p-loop.to-string, 'iter == path';
+      method row-loop (
+        N-GObject $nl-loop,
+        Gnome::Gtk3::TreePath $p-loop,
+        Gnome::Gtk3::TreeIter $i-loop,
+        :$test
+      ) {
+        is $p-loop.to-string, $!row-count.Str, 'row ok';
+        is $ls.get-path($i-loop).to-string, $p-loop.to-string, 'iter == path';
+        once is $test, 'abcdef', 'found test named attribute';
+        $!row-count++;
 
-      $!row-count++;
-
-      # stop walking to the next row
-      1
+        # stop walking to the next row
+        1
+      }
     }
-  }
 
-  $ls.foreach( X.new, 'row-loop');
+#Gnome::N::debug(:on);
+    $ls.gtk-tree-model-foreach( X.new, 'row-loop', :test<abcdef>);
+  }
 }
 
 #-------------------------------------------------------------------------------

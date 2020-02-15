@@ -189,6 +189,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+#use Gnome::GObject::Object;
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
 use Gnome::Gtk3::TreeIter;
@@ -1002,25 +1003,29 @@ sub gtk_tree_model_get_valist ( N-GObject $tree_model, N-GtkTreeIter $iter, va_l
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_model_foreach:t/ListStore.t
 =begin pod
-=head2 foreach
+=head2 [gtk_] tree_model_foreach
 
 Calls func on each node in model in a depth-first fashion.
 
 If I<func> returns C<1>, then the tree ceases to be walked,
 and C<gtk_tree_model_foreach()> returns.
 
-  method foreach ( $function-object, Str $function-name )
+  method gtk_tree_model_foreach ( $function-object, Str $function-name )
 
 =item $function-object; an object where the function is defined
 =item $function-name; the name of the function which is called
+=item %user-options; named arguments which will be provided to the callback
 
 The function signature is
 
   method f (
-    Gnome::Gtk3::TreeModel $store,
+    N-GObject $n-store,
     Gnome::Gtk3::TreePath $path,
-    Gnome::Gtk3::TreeIter $iter
+    Gnome::Gtk3::TreeIter $iter,
+    *%user-options
   )
+
+The value in $n-store is a native object and cannot be created into a Raku object here because it is not known if this is a ListStore or a TreeStore object.
 
 An example
 
@@ -1039,12 +1044,13 @@ An example
   # define class for handler
   class X {
     method row-loop (
-      Gnome::Gtk3::ListStore $store,
+      N-GObject $n-store,
       Gnome::Gtk3::TreePath $path,
       Gnome::Gtk3::TreeIter $iter
     ) {
       # get values for this iterator
-      my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, 0);
+      my Gnome::Gtk3::ListStore $store .= new(:native-object($n-store));
+      my Array[Gnome::GObject::Value] $va = $store.get-value( $iter, 0);
 
       # do something with this row ...
 
@@ -1068,18 +1074,30 @@ An example
 
 =end pod
 
-method foreach ( $func-object, Str $func-name ) {
+sub gtk_tree_model_foreach (
+  N-GObject $m, $func-object, Str $func-name, *%user-options
+) {
   if $func-object.^can($func-name) {
     _gtk_tree_model_foreach(
-      self.get-native-object,
-      sub ( $m, $p, $i, $d --> Int ) {
+      $m,
+      sub ( $n-m, $n-p, $n-i, $d --> Int ) {
+#TODO? Cannot find type of model: liststore or treestore
+#        my Gnome::GObject::Object $tm .= new(:native-object($n-m));
+#        note $tm.perl, ', ', $tm.get-class-name;
         $func-object."$func-name"(
-          self, Gnome::Gtk3::TreePath.new(:tree-path($p)),
-          Gnome::Gtk3::TreeIter.new(:tree-iter($i))
+          $n-m,
+          Gnome::Gtk3::TreePath.new(:tree-path($n-p)),
+          Gnome::Gtk3::TreeIter.new(:tree-iter($n-i)),
+          |%user-options
         )
       },
       OpaquePointer
     );
+  }
+
+  else {
+    note "Method $func-name not found in object $func-object.perl()"
+      if $Gnome::N::x-debug;
   }
 }
 
