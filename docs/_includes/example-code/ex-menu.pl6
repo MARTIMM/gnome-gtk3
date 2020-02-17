@@ -57,7 +57,7 @@ my int32 $menu-shell-gtype = $type.g_type_from_name('GtkMenuShell');
 my Gnome::Gtk3::Window $top-window .= new(:title('A window with a menu'));
 $top-window.set-size-request( 300, 300);
 
-my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new;
 $top-window.gtk-container-add($grid);
 
 my Gnome::Gtk3::Menu $menu = make-menubar-menu( $ash, 'menuitem_response');
@@ -68,13 +68,13 @@ my Gnome::Gtk3::Menu $menu = make-menubar-menu( $ash, 'menuitem_response');
 my Gnome::Gtk3::MenuItem $root-menu .= new(:label('Root Menu'));
 $root-menu.set-submenu($menu);
 
-my Gnome::Gtk3::MenuBar $menu-bar .= new(:empty);
+my Gnome::Gtk3::MenuBar $menu-bar .= new;
 $grid.gtk_grid_attach( $menu-bar, 0, 0, 1, 1);
 $menu-bar.gtk-menu-shell-append($root-menu);
 
 # In the C example a plain button is used. Here I'll try a button
 # specially made to show a popup menu
-my Gnome::Gtk3::MenuButton $menu-button .= new(:empty);
+my Gnome::Gtk3::MenuButton $menu-button .= new;
 $grid.gtk-grid-attach( $menu-button, 0, 1, 1, 1);
 $menu-button.set-label('press me');
 
@@ -104,7 +104,7 @@ sub make-menubar-menu (
   AppSignalHandlers $ash, Str $handler-name
   --> Gnome::Gtk3::Menu
 ) {
-  my Gnome::Gtk3::Menu $menu .= new(:empty);
+  my Gnome::Gtk3::Menu $menu .= new;
 
   #note "native menu: $menu()";
   #note "menu shell gtype code: $menu-shell-gtype";
@@ -139,7 +139,7 @@ sub make-menubutton-menu (
   AppSignalHandlers $ash, Str $handler-name
   --> Gnome::Gtk3::Menu
 ) {
-  my Gnome::Gtk3::Menu $menu .= new(:empty);
+  my Gnome::Gtk3::Menu $menu .= new;
 
   #note "native menu: $menu()";
   #note "menu shell gtype code: $menu-shell-gtype";

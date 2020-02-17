@@ -23,7 +23,7 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:empty);
+my Gnome::Gtk3::Window $top-window .= new;
 $top-window.set-title('With Button');
 
 # Create button

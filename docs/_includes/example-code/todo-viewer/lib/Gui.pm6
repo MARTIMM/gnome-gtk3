@@ -35,7 +35,7 @@ submethod BUILD ( ) {
   $!data-hash = %();
 
   my Gnome::Gtk3::Window $w .= new(:title('Todo Viewer'));
-  my Gnome::Gtk3::Grid $g .= new(:empty);
+  my Gnome::Gtk3::Grid $g .= new;
   $w.container-add($g);
   $w.container-set-border-width(10);
   $w.window-set-default-size( 270, 300);
@@ -84,19 +84,19 @@ method !create-file-table ( ) {
   $!fs-table.widget-set-hexpand(1);
   $!fs-table.widget-set-vexpand(1);
 
-  my Gnome::Gtk3::CellRendererText $crt .= new(:empty);
+  my Gnome::Gtk3::CellRendererText $crt .= new;
   my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.set-property( 'foreground', $v);
-  my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
+  my Gnome::Gtk3::TreeViewColumn $tvc .= new;
   $tvc.set-title('Filename');
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', FILENAME_COL);
   $!fs-table.tree-view-append-column($tvc);
 
-  $crt .= new(:empty);
+  $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<red>);
   $crt.set-property( 'foreground', $v);
-  $tvc .= new(:empty);
+  $tvc .= new;
   $tvc.set-title('Mark Count');
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', TODO_COUNT_COL);
@@ -113,28 +113,28 @@ method !create-markers-table ( ) {
   $!mark-table.widget-set-hexpand(1);
   $!mark-table.widget-set-vexpand(1);
 
-  my Gnome::Gtk3::CellRendererText $crt .= new(:empty);
+  my Gnome::Gtk3::CellRendererText $crt .= new;
   my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.object-set-property( 'foreground', $v);
-  my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
+  my Gnome::Gtk3::TreeViewColumn $tvc .= new;
   $tvc.set-title('Marker');
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', MARKER_COL);
   $!mark-table.tree-view-append-column($tvc);
 
-  $crt .= new(:empty);
+  $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<red>);
   $crt.set-property( 'foreground', $v);
-  $tvc .= new(:empty);
+  $tvc .= new;
   $tvc.set-title('Line #');
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', LINE_COL);
   $!mark-table.tree-view-append-column($tvc);
 
-  $crt .= new(:empty);
+  $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.set-property( 'foreground', $v);
-  $tvc .= new(:empty);
+  $tvc .= new;
   $tvc.set-title('Comment');
   $tvc.pack-end( $crt, 1);
   $tvc.add-attribute( $crt, 'text', COMMENT_COL);

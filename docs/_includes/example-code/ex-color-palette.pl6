@@ -10,6 +10,9 @@ use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
 # Instantiate main module for UI control
 my Gnome::Gtk3::Main $m .= new;
 
@@ -24,14 +27,14 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:empty);
+my Gnome::Gtk3::Window $top-window .= new;
 $top-window.set-title('Color Chooser Widget Demo');
 $top-window.set-border-width(20);
 
-my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new;
 $top-window.gtk-container-add($grid);
 
-my Gnome::Gtk3::ColorChooserWidget $ccw .= new(:empty);
+my Gnome::Gtk3::ColorChooserWidget $ccw .= new;
 $grid.gtk-grid-attach( $ccw, 0, 0, 4, 1);
 
 my N-GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
