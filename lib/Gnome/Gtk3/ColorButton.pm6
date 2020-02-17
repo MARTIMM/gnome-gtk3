@@ -42,6 +42,7 @@ B<Gnome::Gtk3::ColorSelectionDialog>, B<Gnome::Gtk3::FontButton>
   unit class Gnome::Gtk3::ColorButton;
   also is Gnome::Gtk3::Button;
   also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::ColorChooser;
 
 =head2 Example
 
@@ -62,6 +63,7 @@ use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::Button;
 
 use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -70,6 +72,7 @@ use Gnome::Gtk3::Buildable;
 unit class Gnome::Gtk3::ColorButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Button;
 also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -154,6 +157,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
+  $s = self._color_chooser_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkColorButton');
   $s = callsame unless ?$s;
