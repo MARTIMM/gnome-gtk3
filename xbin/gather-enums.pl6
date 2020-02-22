@@ -10,6 +10,9 @@ my @dir-roots = <
   /home/marcel/Languages/Raku/Projects/gnome-gobject/lib
   /home/marcel/Languages/Raku/Projects/gnome-gobject/xt/NewModules
 
+  /home/marcel/Languages/Raku/Projects/gnome-gio/lib
+  /home/marcel/Languages/Raku/Projects/gnome-gio/xt/NewModules
+
   /home/marcel/Languages/Raku/Projects/gnome-glib/lib
   /home/marcel/Languages/Raku/Projects/gnome-glib/xt/NewModules
 
