@@ -4,10 +4,14 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
   # remove deprecated option in Label at version 0.24.0
 
+  - 2020-02-23 0.24.0:
+    - Add modules Application and ApplicationWindow in Gnome::Gtk3. This introduced the Gnome::Gio package with the modules Application, Enums and MenuModel.
+    - Many deprecated parts will be removed when version 0.24.1 passes.
+
   - 2020-02-17 0.23.3:
     - Bug fixed in ColorButton. Missing implementation of an interface ColorChooser.
     - TextView method `gtk_text_buffer_set_text()` is improved. The length of a string is no longer needed.
-    
+
   - 2020-02-05 0.23.2:
     - Add gtk_container_foreach to Container
     - Add gtk_list_box_selected_foreach to ListBox
