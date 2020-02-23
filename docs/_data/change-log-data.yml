@@ -4,6 +4,9 @@ notes:
   # remove some deprecated methods in Builder at version 0.22.0
   # remove deprecated option in Label at version 0.24.0
 
+  - 2020-02-25 0.25.0:
+    - Add Assistant module in Gnome::Gtk3.
+
   - 2020-02-23 0.24.0:
     - Add modules Application and ApplicationWindow in Gnome::Gtk3. This introduced the Gnome::Gio package with the modules Application, Enums and MenuModel.
     - Many deprecated parts will be removed when version 0.24.1 passes.
