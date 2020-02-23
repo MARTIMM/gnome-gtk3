@@ -246,8 +246,25 @@ I<len> is -1, I<text> must be nul-terminated. I<text> must be valid UTF-8.
 
 =end pod
 
-sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
+proto sub gtk_text_buffer_set_text ( N-GObject $buffer, Str, | ) {*}
+multi sub gtk_text_buffer_set_text (
+  N-GObject $buffer, Str $text, Int $len
+) {
+  Gnome::N::deprecate(
+    '.gtk_text_buffer_set_text( Str $text, Int $len)',
+    '.gtk_text_buffer_set_text(Str $text)',
+     '0.23.2', '0.25.0'
+  );
+  _gtk_text_buffer_set_text( $buffer, $text, $len);
+}
+
+multi sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text ) {
+  _gtk_text_buffer_set_text( $buffer, $text, $text.chars);
+}
+
+sub _gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
   is native(&gtk-lib)
+  is symbol('gtk_text_buffer_set_text')
   { * }
 
 #-------------------------------------------------------------------------------

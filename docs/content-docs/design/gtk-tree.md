@@ -31,7 +31,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   │   │   ├── GtkPageSetupUnixDialog
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
 │   │   │   │   │   │   ╰── GtkRecentChooserDialog
-│   │   │   │   │   ├── GtkApplicationWindow
+│   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
 │   │   │   │   │   ├── GtkAssistant
 │   │   │   │   │   ├── GtkOffscreenWindow
 │   │   │   │   │   ├── GtkPlug
@@ -176,8 +176,8 @@ GObject                                               Gnome::GObject::Object
 │   │   ╰─✗ GtkRadioAction                            Deprecated
 │   ╰─✗ GtkRecentAction                               Deprecated
 ├─✗ GtkActionGroup                                    Deprecated
-├─✗ GApplication                                      Gnome::Gio not implemented
-│   ╰─✗ GtkApplication                                Depends on Gio
+├── GApplication                                      Gnome::Gio::Application
+│   ╰── GtkApplication                                Application
 ├── GtkBuilder                                        Builder
 ├── GtkCellAreaContext
 ├── GtkClipboard
@@ -205,9 +205,9 @@ GObject                                               Gnome::GObject::Object
 │   ├── GtkIMContextSimple
 │   ╰── GtkIMMulticontext
 ├── GtkListStore                                      ListStore
-├─✗ GMountOperation                                   Gnome::Gio not implemented
-│   ╰─✗ GtkMountOperation                             Depends on Gio
-├─✗ GEmblemedIcon                                     Gnome::Gio not implemented
+├── GMountOperation                                   
+│   ╰── GtkMountOperation                             
+├── GEmblemedIcon                                     
 │   ╰─✗ GtkNumerableIcon                              Deprecated
 ├── GtkPageSetup
 ├── GtkPrinter

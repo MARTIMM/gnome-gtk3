@@ -86,6 +86,10 @@
     url: "/content-docs/reference/Gtk3/ToggleButton.html"
     doc: 1
     test: 1
+  - title: "Switch"
+    url: "/content-docs/reference/Gtk3/Switch.html"
+    doc: 1
+    test: 1
 
   - title: '-'
 

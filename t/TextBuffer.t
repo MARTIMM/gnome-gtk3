@@ -23,7 +23,8 @@ subtest 'ISA test', {
 subtest 'Manipulations', {
   is $tb.get-line-count, 1, '.get-line-count(), 1 line';
   my Str $text = "hoeperdepoep\nzat op de stoep\n";
-  $tb.set-text( $text, $text.chars);
+
+  $tb.set-text($text);
   is $tb.get-line-count, 3, '.get-line-count(), 3 lines';
   is $tb.get-char-count, $text.chars, '.get-char-count()';
 
@@ -102,7 +103,7 @@ subtest 'Signals ...', {
 
   my Gnome::Gtk3::TextBuffer $tb .= new;
   my Str $text = "hoeperdepoep\nzat op de stoep\n";
-  $tb.set-text( $text, $text.chars);
+  $tb.set-text($text);
   my Gnome::Gtk3::TextIter $start = $tb.get-iter-at-line(1);
   my Gnome::Gtk3::TextIter $end = $tb.get-iter-at-line(2);
 

@@ -1,0 +1,15 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "Gio"
+  bar_menu:
+  - title: "Application"
+    url: '/content-docs/reference/Gio/Application.html'
+    doc: 1
+    test: 1
+  - title: "Enums"
+    url: '/content-docs/reference/Gio/Enums.html'
+    doc: 1
+    test: 1
+  - title: "MenuModel"
+    url: '/content-docs/reference/Gio/MenuModel.html'
+    doc: 1
+    test: 1

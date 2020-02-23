@@ -128,10 +128,12 @@ layout: sidebar
   * Complete documentation and C-Quirks left from the generated output.
     * [ ] **Gnome::Gdk3**.
     * [ ] **Gnome::Glib**.
+    * [ ] **Gnome::Gio**. Not much yet!
     * [ ] **Gnome::GObject**.
     * [ ] **Gnome::Gtk3**.
     * [ ] **Gnome::Gtk3::Glade**.
-    * [ ] **Gnome::Pango**.
+    * [ ] **Gnome::Pango**. Not much yet!
+    * [ ] **Gnome::Cairo**. Not much yet!
 
 #### Test coverage
 
@@ -156,9 +158,9 @@ layout: sidebar
   * [ ] signals
   * [ ] properties
 
-* Add necessary packages. I am not sure if the Gio and Atk packages are useful additions. Also Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
+* Add necessary packages. I am not sure if the Gio and Atk packages are useful additions. Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
   * [ ] **Gnome::Atk**. Accessibility toolkit to implement support for screen readers and other tools.
-  * [ ] **Gnome::Gio**. File and URI handling, asynchronous file operations, volume handling and also for network I/O.
+  * [ ] **Gnome::Gio**. File and URI handling, asynchronous file operations, volume handling and also for network I/O, application and settings, D-Bus.
   * [ ] **Gnome::Cairo**. 2D, vector-based drawing for high-quality graphics.
   * [ ] **Gnome::Pango**. International text rendering with full Unicode support.
   * [ ] **Gnome::Clutter**. Animations and scene graph.
@@ -168,6 +170,8 @@ layout: sidebar
 * [ ] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
 
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
+
+* [ ] The sidebar for Gtk references is messy. Should be ordered better.
 
 * Add more tutorials
   * [x] Find material of other tutorials and books in other programming languages.
@@ -195,3 +199,5 @@ layout: sidebar
 * Add more examples
   * [ ] Configuration editor
   * [ ] Simple calculator
+
+* [ ] Check licensing of the whole project, contact Gnome.

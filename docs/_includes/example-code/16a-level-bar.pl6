@@ -69,21 +69,21 @@ class AppSignalHandlers {
     );
 
     my Gnome::Gtk3::TextBuffer $text-buffer .= new(
-      :widget($!text-view.get-buffer)
+      :native-object($!text-view.get-buffer)
     );
 
-    $text-buffer.set-text( $text, $text.chars);
+    $text-buffer.set-text($text);
   }
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:empty);
+my Gnome::Gtk3::Window $top-window .= new;
 
 $top-window.set-title('Level Bar Demo');
 $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
-my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new;
 $top-window.gtk-container-add($grid);
 
 # Create the other widgets and add them to the grid
@@ -96,10 +96,10 @@ $grid.gtk-grid-attach( $dec-button, 1, 0, 1, 1);
 my Gnome::Gtk3::ToggleButton $inverted-button .= new(:label("Inverted"));
 $grid.gtk-grid-attach( $inverted-button, 2, 0, 1, 1);
 
-my Gnome::Gtk3::LevelBar $level-bar .= new(:empty);
+my Gnome::Gtk3::LevelBar $level-bar .= new;
 $grid.gtk-grid-attach( $level-bar, 0, 1, 3, 1);
 
-my Gnome::Gtk3::TextView $text-view .= new(:empty);
+my Gnome::Gtk3::TextView $text-view .= new;
 $grid.gtk-grid-attach( $text-view, 0, 2, 3, 1);
 
 #$grid.debug(:on);

@@ -104,6 +104,14 @@ defaults:
       sidebar_menu: references-gobject-sidebar
   -
     scope:
+      path: "content-docs/reference/Gio"
+    values:
+      layout: reference-page
+      title: References to the Gio package modules
+      nav_menu: references-nav
+      sidebar_menu: references-gio-sidebar
+  -
+    scope:
       path: "content-docs/reference/Glib"
     values:
       layout: reference-page
@@ -126,3 +134,19 @@ defaults:
       title: References to the Glade package modules
       nav_menu: references-nav
       sidebar_menu: references-glade-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Pango"
+    values:
+      layout: reference-page
+      title: References to the Pango package modules
+      nav_menu: references-nav
+      sidebar_menu: references-pango-sidebar
+  -
+    scope:
+      path: "content-docs/reference/Cairo"
+    values:
+      layout: reference-page
+      title: References to the Cairo package modules
+      nav_menu: references-nav
+      sidebar_menu: references-cairo-sidebar

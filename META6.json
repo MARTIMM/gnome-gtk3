@@ -1,9 +1,9 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.23.2",
+  "version": "0.24.0",
   "authors": [ "Marcel Timmerman"],
-  "tags": [ "gnome", "gtk", "gdk", "glib", "gobject"],
+  "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio"],
 
   "perl": "6.d",
   "license": "Artistic-2.0",
@@ -11,6 +11,8 @@
   "provides": {
 
     "Gnome::Gtk3::AboutDialog": "lib/Gnome/Gtk3/AboutDialog.pm6",
+    "Gnome::Gtk3::Application": "lib/Gnome/Gtk3/Application.pm6",
+    "Gnome::Gtk3::ApplicationWindow": "lib/Gnome/Gtk3/ApplicationWindow.pm6",
     "Gnome::Gtk3::AspectFrame": "lib/Gnome/Gtk3/AspectFrame.pm6",
     "Gnome::Gtk3::Bin": "lib/Gnome/Gtk3/Bin.pm6",
     "Gnome::Gtk3::Border": "lib/Gnome/Gtk3/Border.pm6",
@@ -96,7 +98,7 @@
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gdk3"
+    "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3"
   ],
 
   "test-depends": [ ],
