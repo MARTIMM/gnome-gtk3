@@ -50,22 +50,11 @@ If the desktop environment does not display the menubar, then B<Gnome::Gtk3::App
 
 =head2 Handling fallback yourself
 
-[A simple example](https://git.gnome.org/browse/gtk+/tree/examples/sunny.c)
+=comment [A simple example](https://git.gnome.org/browse/gtk+/tree/examples/sunny.c)
 
-The XML format understood by B<Gnome::Gtk3::Builder> for B<GMenuModel> consists
-of a toplevel `<menu>` element, which contains one or more `<item>`
-elements. Each `<item>` element contains `<attribute>` and `<link>`
-elements with a mandatory name attribute. `<link>` elements have the
-same content model as `<menu>`. Instead of `<link name="submenu>` or
-`<link name="section">`, you can use `<submenu>` or `<section>`
-elements.
+The XML format understood by B<Gnome::Gtk3::Builder> for B<GMenuModel> consists of a toplevel `<menu>` element, which contains one or more `<item>` elements. Each `<item>` element contains `<attribute>` and `<link>` elements with a mandatory name attribute. `<link>` elements have the same content model as `<menu>`. Instead of `<link name="submenu>` or `<link name="section">`, you can use `<submenu>` or `<section>` elements.
 
-Attribute values can be translated using gettext, like other B<Gnome::Gtk3::Builder>
-content. `<attribute>` elements can be marked for translation with a
-`translatable="yes"` attribute. It is also possible to specify message
-context and translator comments, using the context and comments attributes.
-To make use of this, the B<Gnome::Gtk3::Builder> must have been given the gettext
-domain to use.
+Attribute values can be translated using gettext, like other B<Gnome::Gtk3::Builder> content. `<attribute>` elements can be marked for translation with a `translatable="yes"` attribute. It is also possible to specify message context and translator comments, using the context and comments attributes. To make use of this, the B<Gnome::Gtk3::Builder> must have been given the gettext domain to use.
 
 The following attributes are used when constructing menu items:
 - "label": a user-visible string to display
