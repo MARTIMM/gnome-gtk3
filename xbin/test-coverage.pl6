@@ -60,6 +60,7 @@ sub MAIN ( *@modules ) {
       when /Glade/ { $path = "content-docs/reference/Glade/$module-name"; }
       when /Gtk3/ { $path = "content-docs/reference/Gtk3/$module-name"; }
       when /Gdk3/ { $path = "content-docs/reference/Gdk3/$module-name"; }
+      when /Gio/ { $path = "content-docs/reference/Gio/$module-name"; }
       when /GObject/ { $path = "content-docs/reference/GObject/$module-name"; }
       when /Glib/ { $path = "content-docs/reference/Glib/$module-name"; }
       when /N/ { $path = "content-docs/reference/Native/$module-name"; }
