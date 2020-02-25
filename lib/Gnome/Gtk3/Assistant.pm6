@@ -200,12 +200,7 @@ sub gtk_assistant_new (  --> N-GObject )
 =begin pod
 =head2 [gtk_assistant_] next_page
 
-Navigate to the next page.
-
-It is a programming error to call this function when
-there is no next page.
-
-This function is for use when creating pages of the
+Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the
 B<GTK_ASSISTANT_PAGE_CUSTOM> type.
 
 Since: 3.0
@@ -224,13 +219,7 @@ sub gtk_assistant_next_page ( N-GObject $assistant  )
 =begin pod
 =head2 [gtk_assistant_] previous_page
 
-Navigate to the previous visited page.
-
-It is a programming error to call this function when
-no previous page is available.
-
-This function is for use when creating pages of the
-B<GTK_ASSISTANT_PAGE_CUSTOM> type.
+Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the B<GTK_ASSISTANT_PAGE_CUSTOM> type.
 
 Since: 3.0
 
@@ -244,15 +233,11 @@ sub gtk_assistant_previous_page ( N-GObject $assistant  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_get_current_page:
+#TM:1:gtk_assistant_get_current_page:
 =begin pod
 =head2 [gtk_assistant_] get_current_page
 
-Returns the page number of the current page.
-
-Returns: The index (starting from 0) of the current
-page in the I<assistant>, or -1 if the I<assistant> has no pages,
-or no current page.
+Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
 
 Since: 2.10
 
@@ -266,21 +251,17 @@ sub gtk_assistant_get_current_page ( N-GObject $assistant --> int32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_set_current_page:
+#TM:1:gtk_assistant_set_current_page:
 =begin pod
 =head2 [gtk_assistant_] set_current_page
 
-Switches the page to I<page_num>.
-
-Note that this will only be necessary in custom buttons,
-as the I<assistant> flow can be set with
-C<gtk_assistant_set_forward_page_func()>.
+Switches the page to I<$page_num>. Note that this will only be necessary in custom buttons, as the assistant flow can be set with C<gtk_assistant_set_forward_page_func()>.
 
 Since: 2.10
 
   method gtk_assistant_set_current_page ( Int $page_num )
 
-=item Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the I<assistant>, nothing will be done.
+=item Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
 
 =end pod
 
@@ -293,9 +274,7 @@ sub gtk_assistant_set_current_page ( N-GObject $assistant, int32 $page_num  )
 =begin pod
 =head2 [gtk_assistant_] get_n_pages
 
-Returns the number of pages in the I<assistant>
-
-Returns: the number of pages in the I<assistant>
+Returns the number of pages in the assistant.
 
 Since: 2.10
 
@@ -313,16 +292,13 @@ sub gtk_assistant_get_n_pages ( N-GObject $assistant --> int32 )
 =begin pod
 =head2 [gtk_assistant_] get_nth_page
 
-Returns the child widget contained in page number I<page_num>.
-
-Returns: (nullable) (transfer none): the child widget, or C<Any>
-if I<page_num> is out of bounds
+Returns the child widget contained in page number I<$page_num>, or C<Any> if I<$page_num> is out of bounds
 
 Since: 2.10
 
   method gtk_assistant_get_nth_page ( Int $page_num --> N-GObject )
 
-=item Int $page_num; the index of a page in the I<assistant>, or -1 to get the last page
+=item Int $page_num; the index of a page in the assistant, or -1 to get the last page
 
 =end pod
 
@@ -331,13 +307,11 @@ sub gtk_assistant_get_nth_page ( N-GObject $assistant, int32 $page_num --> N-GOb
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_prepend_page:
+#TM:1:gtk_assistant_prepend_page:
 =begin pod
 =head2 [gtk_assistant_] prepend_page
 
-Prepends a page to the I<assistant>.
-
-Returns: the index (starting at 0) of the inserted page
+Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
 
 Since: 2.10
 
@@ -356,9 +330,7 @@ sub gtk_assistant_prepend_page ( N-GObject $assistant, N-GObject $page --> int32
 =begin pod
 =head2 [gtk_assistant_] append_page
 
-Appends a page to the I<assistant>.
-
-Returns: the index (starting at 0) of the inserted page
+Appends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
 
 Since: 2.10
 
@@ -373,11 +345,11 @@ sub gtk_assistant_append_page ( N-GObject $assistant, N-GObject $page --> int32 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_insert_page:
+#TM:1:gtk_assistant_insert_page:
 =begin pod
 =head2 [gtk_assistant_] insert_page
 
-Inserts a page in the I<assistant> at a given position.
+Inserts a I<$page> in the assistant at a given position.
 
 Returns: the index (starting from 0) of the inserted page
 
@@ -386,7 +358,7 @@ Since: 2.10
   method gtk_assistant_insert_page ( N-GObject $page, Int $position --> Int )
 
 =item N-GObject $page; a B<Gnome::Gtk3::Widget>
-=item Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the I<assistant>
+=item Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
 =end pod
 
@@ -395,17 +367,17 @@ sub gtk_assistant_insert_page ( N-GObject $assistant, N-GObject $page, int32 $po
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_remove_page:
+#TM:1:gtk_assistant_remove_page:
 =begin pod
 =head2 [gtk_assistant_] remove_page
 
-Removes the I<page_num>’s page from I<assistant>.
+Removes the I<$page_num>’s page from assistant.
 
 Since: 3.2
 
   method gtk_assistant_remove_page ( Int $page_num )
 
-=item Int $page_num; the index of a page in the I<assistant>, or -1 to remove the last page
+=item Int $page_num; the index of a page in the assistant, or -1 to remove the last page
 
 =end pod
 
@@ -447,9 +419,7 @@ sub gtk_assistant_set_forward_page_func ( N-GObject $assistant, GtkAssistantPage
 =begin pod
 =head2 [gtk_assistant_] set_page_type
 
-Sets the page type for I<page>.
-
-The page type determines the page behavior in the I<assistant>.
+Sets the page type for I<$page>. The page type determines the page behavior in the assistant.
 
 Since: 2.10
 
@@ -457,8 +427,8 @@ Since: 2.10
     N-GObject $page, GtkAssistantPageType $type
   )
 
-=item N-GObject $page; a page of I<assistant>
-=item GtkAssistantPageType $type; the new type for I<page>
+=item N-GObject $page; a page of assistant
+=item GtkAssistantPageType $type; the new type for I<$page>
 
 =end pod
 
@@ -471,15 +441,16 @@ sub gtk_assistant_set_page_type ( N-GObject $assistant, N-GObject $page, int32 $
 =begin pod
 =head2 [gtk_assistant_] get_page_type
 
-Gets the page type of I<page>.
-
-Returns: the page type of I<page>
+Gets the page type of I<$page>.
 
 Since: 2.10
 
-  method gtk_assistant_get_page_type ( N-GObject $page --> GtkAssistantPageType )
+  method gtk_assistant_get_page_type (
+    N-GObject $page
+    --> GtkAssistantPageType
+  )
 
-=item N-GObject $page; a page of I<assistant>
+=item N-GObject $page; a page of Iassistant
 
 =end pod
 
@@ -488,21 +459,18 @@ sub gtk_assistant_get_page_type ( N-GObject $assistant, N-GObject $page --> int3
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_set_page_title:
+#TM:1:gtk_assistant_set_page_title:
 =begin pod
 =head2 [gtk_assistant_] set_page_title
 
-Sets a title for I<page>.
-
-The title is displayed in the header area of the assistant
-when I<page> is the current page.
+Sets a title for I<$page>. The title is displayed in the header area of the assistant when I<$page> is the current page.
 
 Since: 2.10
 
   method gtk_assistant_set_page_title ( N-GObject $page, Str $title )
 
-=item N-GObject $page; a page of I<assistant>
-=item Str $title; the new title for I<page>
+=item N-GObject $page; a page of assistant
+=item Str $title; the new title for I<$page>
 
 =end pod
 
@@ -511,19 +479,17 @@ sub gtk_assistant_set_page_title ( N-GObject $assistant, N-GObject $page, Str $t
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_get_page_title:
+#TM:1:gtk_assistant_get_page_title:
 =begin pod
 =head2 [gtk_assistant_] get_page_title
 
-Gets the title for I<page>.
-
-Returns: the title for I<page>
+Gets the title for I<$page>.
 
 Since: 2.10
 
   method gtk_assistant_get_page_title ( N-GObject $page --> Str )
 
-=item N-GObject $page; a page of I<assistant>
+=item N-GObject $page; a page of assistant
 
 =end pod
 
@@ -532,21 +498,18 @@ sub gtk_assistant_get_page_title ( N-GObject $assistant, N-GObject $page --> Str
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_set_page_complete:
+#TM:1:gtk_assistant_set_page_complete:
 =begin pod
 =head2 [gtk_assistant_] set_page_complete
 
-Sets whether I<page> contents are complete.
-
-This will make I<assistant> update the buttons state
-to be able to continue the task.
+Sets whether I<$page> contents are complete. This will make assistant update the buttons state to be able to continue the task.
 
 Since: 2.10
 
   method gtk_assistant_set_page_complete ( N-GObject $page, Int $complete )
 
-=item N-GObject $page; a page of I<assistant>
-=item Int $complete; the completeness status of the page
+=item N-GObject $page; a page of assistant
+=item Int $complete; the completeness status of the page. C<1> to set page complete.
 
 =end pod
 
@@ -555,19 +518,17 @@ sub gtk_assistant_set_page_complete ( N-GObject $assistant, N-GObject $page, int
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_get_page_complete:
+#TM:1:gtk_assistant_get_page_complete:
 =begin pod
 =head2 [gtk_assistant_] get_page_complete
 
-Gets whether I<page> is complete.
-
-Returns: C<1> if I<page> is complete.
+Gets whether I<$page> is complete. C<1> if I<$page> is complete.
 
 Since: 2.10
 
   method gtk_assistant_get_page_complete ( N-GObject $page --> Int )
 
-=item N-GObject $page; a page of I<assistant>
+=item N-GObject $page; a page of assistant
 
 =end pod
 

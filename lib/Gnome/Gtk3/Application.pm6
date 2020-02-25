@@ -126,7 +126,6 @@ submethod BUILD ( *%options ) {
     #_add_..._signal_types($?CLASS.^name);
   }
 
-
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Application';
 
