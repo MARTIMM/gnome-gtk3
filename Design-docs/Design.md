@@ -47,7 +47,18 @@ It is binary, so combinations are possible exept with 16. 2 and 4 is not easy to
 
 Absence of codes means that a particular item is not tested.
 
+# Proto use with multi sub
+Need a proto because otherwise the signature.parms will
+become Mu in Gnome::N::test-call()
+```
+proto gtk_builder_add_from_file ( N-GObject, Str, |) { * }
+multi sub gtk_builder_add_from_file (
+  N-GObject $builder, Str $filename, Any $error
+  --> uint32
+) { ... }
 
+multi ...
+```
 
 # Interface using modules
 

@@ -32,7 +32,7 @@ GObject                                               Gnome::GObject::Object
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
 │   │   │   │   │   │   ╰── GtkRecentChooserDialog
 │   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
-│   │   │   │   │   ├── GtkAssistant
+│   │   │   │   │   ├── GtkAssistant                  Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow
 │   │   │   │   │   ├── GtkPlug
 │   │   │   │   │   ╰── GtkShortcutsWindow

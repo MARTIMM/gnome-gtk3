@@ -130,6 +130,7 @@ GtkButtonsType
 GtkTreeViewDropPosition
 GtkStyleContextPrintFlags
 GtkWidgetHelpType
+GtkAssistantPageType
 GdkFilterReturn
 GdkEventType
 GdkVisibilityState

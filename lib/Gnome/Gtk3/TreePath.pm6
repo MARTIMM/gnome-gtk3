@@ -96,7 +96,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_tree_path_new());
     $!tree-path-is-valid = self.get-native-object.defined;
   }

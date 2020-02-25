@@ -347,6 +347,17 @@
     tut: ''
     ex: ''
 
+- bar_title: "Application Control"
+  bar_menu:
+  - title: "Assitant"
+    url: "/content-docs/reference/Gtk3/Assitant.html"
+  - title: "Application"
+    url: "/content-docs/reference/Gtk3/Application.html"
+  - title: "ApplicationWindow"
+    url: "/content-docs/reference/Gtk3/ApplicationWindow.html"
+#settings
+#resources
+
 - bar_title: "Miscelleneous"
   bar_menu:
   - title: "Border"

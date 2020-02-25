@@ -1,12 +1,19 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
-  # remove some deprecated methods in Builder at version 0.22.0
-  # remove deprecated option in Label at version 0.24.0
+  - 2020-02-25 0.25.1:
+    - add-gui() from Gnome::Gtk3::Builder is removed in favor of gtk_builder_add_from_file() and gtk_builder_add_from_string().
+    - Old version of gtk_builder_add_from_file() and gtk_builder_add_from_string() is removed.
+    - Removed .new(:label) in favor of .new(:text) in Gnome::Gtk3::Label.
+    - Bugfixed in ApplicationWindow module
+
+  - 2020-02-25 0.25.0:
+    - Add Assistant module in Gnome::Gtk3.
+    - Bugfixes and document updates.
+    - Many deprecated parts in Gnome::Gtk3 would be removed at version 0.24.0 but will be postponed until 0.30.0.
 
   - 2020-02-23 0.24.0:
     - Add modules Application and ApplicationWindow in Gnome::Gtk3. This introduced the Gnome::Gio package with the modules Application, Enums and MenuModel.
-    - Many deprecated parts will be removed when version 0.24.1 passes.
 
   - 2020-02-17 0.23.3:
     - Bug fixed in ColorButton. Missing implementation of an interface ColorChooser.

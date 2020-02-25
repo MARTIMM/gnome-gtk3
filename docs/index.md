@@ -43,22 +43,16 @@ A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **G
 This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, Cairo, GObject, Gio and Glib. Not all libraries are available yet like Pango and Cairo and not all modules are defined in any of those packages.
 
 * **Gnome::N**: Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
-
 * **Gnome::Glib**: C-based object and type system with signals and slots
-  **Gnome::Gio**
+* **Gnome::Gio**
   * Files: File and URI handling, asynchronous file operations, volume handling
   * Networking: Networking and sockets API with streams
   * Application: Support of resources and other types of settings
-
 * **Gnome::GObject**: Data structures and utilities for C programs
-
 * **Gnome::Gdk3**: Low-level abstraction for the windowing system
-
 * **Gnome::Gtk3**: Widget toolkit for graphical interfaces
-
 * **Gnome::Pango**: International text rendering with full Unicode support
 * **Gnome::Cairo**: 2D, vector-based drawing for high-quality graphics
-
 * **Gnome::Gtk3::Glade**: Package to make use of the graphical user interface designer program **Glade**.
 
 # Site Contents
