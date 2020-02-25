@@ -214,3 +214,5 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * [ ] Simple calculator
 
 * [ ] Check licensing of the whole project, contact Gnome.
+
+* [ ] Remove changelog from About page and add separate pages for the changelog from the packages.

@@ -97,11 +97,7 @@ Since: 2.10
 [gtk_assistant_] next_page
 --------------------------
 
-Navigate to the next page.
-
-It is a programming error to call this function when there is no next page.
-
-This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
+Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
 
 Since: 3.0
 
@@ -110,11 +106,7 @@ Since: 3.0
 [gtk_assistant_] previous_page
 ------------------------------
 
-Navigate to the previous visited page.
-
-It is a programming error to call this function when no previous page is available.
-
-This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
+Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
 
 Since: 3.0
 
@@ -123,9 +115,7 @@ Since: 3.0
 [gtk_assistant_] get_current_page
 ---------------------------------
 
-Returns the page number of the current page.
-
-Returns: The index (starting from 0) of the current page in the *assistant*, or -1 if the *assistant* has no pages, or no current page.
+Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
 
 Since: 2.10
 
@@ -134,22 +124,18 @@ Since: 2.10
 [gtk_assistant_] set_current_page
 ---------------------------------
 
-Switches the page to *page_num*.
-
-Note that this will only be necessary in custom buttons, as the *assistant* flow can be set with `gtk_assistant_set_forward_page_func()`.
+Switches the page to *$page_num*. Note that this will only be necessary in custom buttons, as the assistant flow can be set with `gtk_assistant_set_forward_page_func()`.
 
 Since: 2.10
 
     method gtk_assistant_set_current_page ( Int $page_num )
 
-  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the *assistant*, nothing will be done.
+  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
 
 [gtk_assistant_] get_n_pages
 ----------------------------
 
-Returns the number of pages in the *assistant*
-
-Returns: the number of pages in the *assistant*
+Returns the number of pages in the assistant.
 
 Since: 2.10
 
@@ -158,22 +144,18 @@ Since: 2.10
 [gtk_assistant_] get_nth_page
 -----------------------------
 
-Returns the child widget contained in page number *page_num*.
-
-Returns: (nullable) (transfer none): the child widget, or `Any` if *page_num* is out of bounds
+Returns the child widget contained in page number *$page_num*, or `Any` if *$page_num* is out of bounds
 
 Since: 2.10
 
     method gtk_assistant_get_nth_page ( Int $page_num --> N-GObject )
 
-  * Int $page_num; the index of a page in the *assistant*, or -1 to get the last page
+  * Int $page_num; the index of a page in the assistant, or -1 to get the last page
 
 [gtk_assistant_] prepend_page
 -----------------------------
 
-Prepends a page to the *assistant*.
-
-Returns: the index (starting at 0) of the inserted page
+Prepends a *$page* to the assistant. Returns the index (starting at 0) of the inserted page.
 
 Since: 2.10
 
@@ -184,9 +166,7 @@ Since: 2.10
 [gtk_assistant_] append_page
 ----------------------------
 
-Appends a page to the *assistant*.
-
-Returns: the index (starting at 0) of the inserted page
+Appends a *$page* to the assistant. Returns the index (starting at 0) of the inserted page.
 
 Since: 2.10
 
@@ -197,7 +177,7 @@ Since: 2.10
 [gtk_assistant_] insert_page
 ----------------------------
 
-Inserts a page in the *assistant* at a given position.
+Inserts a *$page* in the assistant at a given position.
 
 Returns: the index (starting from 0) of the inserted page
 
@@ -207,25 +187,23 @@ Since: 2.10
 
   * N-GObject $page; a **Gnome::Gtk3::Widget**
 
-  * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the *assistant*
+  * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
 [gtk_assistant_] remove_page
 ----------------------------
 
-Removes the *page_num*’s page from *assistant*.
+Removes the *$page_num*’s page from assistant.
 
 Since: 3.2
 
     method gtk_assistant_remove_page ( Int $page_num )
 
-  * Int $page_num; the index of a page in the *assistant*, or -1 to remove the last page
+  * Int $page_num; the index of a page in the assistant, or -1 to remove the last page
 
 [gtk_assistant_] set_page_type
 ------------------------------
 
-Sets the page type for *page*.
-
-The page type determines the page behavior in the *assistant*.
+Sets the page type for *$page*. The page type determines the page behavior in the assistant.
 
 Since: 2.10
 
@@ -233,78 +211,71 @@ Since: 2.10
       N-GObject $page, GtkAssistantPageType $type
     )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of assistant
 
-  * GtkAssistantPageType $type; the new type for *page*
+  * GtkAssistantPageType $type; the new type for *$page*
 
 [gtk_assistant_] get_page_type
 ------------------------------
 
-Gets the page type of *page*.
-
-Returns: the page type of *page*
+Gets the page type of *$page*.
 
 Since: 2.10
 
-    method gtk_assistant_get_page_type ( N-GObject $page --> GtkAssistantPageType )
+    method gtk_assistant_get_page_type (
+      N-GObject $page
+      --> GtkAssistantPageType
+    )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of Iassistant
 
 [gtk_assistant_] set_page_title
 -------------------------------
 
-Sets a title for *page*.
-
-The title is displayed in the header area of the assistant when *page* is the current page.
+Sets a title for *$page*. The title is displayed in the header area of the assistant when *$page* is the current page.
 
 Since: 2.10
 
     method gtk_assistant_set_page_title ( N-GObject $page, Str $title )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of assistant
 
-  * Str $title; the new title for *page*
+  * Str $title; the new title for *$page*
 
 [gtk_assistant_] get_page_title
 -------------------------------
 
-Gets the title for *page*.
-
-Returns: the title for *page*
+Gets the title for *$page*.
 
 Since: 2.10
 
     method gtk_assistant_get_page_title ( N-GObject $page --> Str )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of assistant
 
 [gtk_assistant_] set_page_complete
 ----------------------------------
 
-Sets whether *page* contents are complete.
-
-This will make *assistant* update the buttons state to be able to continue the task.
+Sets whether *$page* contents are complete. This will make assistant update the buttons state to be able to continue the task.
 
 Since: 2.10
 
     method gtk_assistant_set_page_complete ( N-GObject $page, Int $complete )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of assistant
 
-  * Int $complete; the completeness status of the page
+  * Int $complete; the completeness status of the page. `1` to set page complete.
 
 [gtk_assistant_] get_page_complete
 ----------------------------------
 
-Gets whether *page* is complete.
-
-Returns: `1` if *page* is complete.
+Gets whether *$page* is complete. `1` if *$page* is complete.
 
 Since: 2.10
 
     method gtk_assistant_get_page_complete ( N-GObject $page --> Int )
 
-  * N-GObject $page; a page of *assistant*
+  * N-GObject $page; a page of assistant
 
 [gtk_assistant_] add_action_widget
 ----------------------------------
