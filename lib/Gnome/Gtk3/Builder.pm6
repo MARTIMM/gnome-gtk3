@@ -252,7 +252,7 @@ submethod BUILD ( *%options ) {
   }
 
   elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_builder_new());
   }
 
@@ -293,32 +293,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s = callsame unless ?$s;
 
   $s;
-}
-
-#-------------------------------------------------------------------------------
-#TODO check if these are needed
-multi method add-gui ( Str:D :$filename! ) {
-
-  Gnome::N::deprecate(
-    '.add-gui(:filename)', '.gtk_builder_add_from_file()', '0.18.4', '0.22.0'
-  );
-
-  my Gnome::Glib::Error $e = gtk_builder_add_from_file(
-    self.get-native-object, $filename
-  );
-  die X::Gnome.new(:message($e.message)) if $e.is-valid;
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-multi method add-gui ( Str:D :$string! ) {
-
-  Gnome::N::deprecate(
-    '.add-gui(:string)', '.gtk_builder_add_from_string()', '0.18.4', '0.22.0'
-  );
-
-  my Gnome::Glib::Error $e = gtk_builder_add_from_string(
-    self.get-native-object, $string);
-  die X::Gnome.new(:message($e.message)) if $e.is-valid;
 }
 
 #-------------------------------------------------------------------------------
@@ -398,22 +372,7 @@ Since: 2.12
 
 =end pod
 
-# need a proto because otherwise the signature.parms will
-# become Mu in Gnome::N::test-call()
-proto gtk_builder_add_from_file ( N-GObject $builder, Str $filename, |) { * }
-multi sub gtk_builder_add_from_file (
-  N-GObject $builder, Str $filename, Any $error
-  --> uint32
-) {
-  Gnome::N::deprecate(
-    '.gtk_builder_add_from_file( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_file( N-GObject, Str)', '0.17.10', '0.22.0'
-  );
-
-  my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_builder_add_from_file( $builder, $filename, $ga)
-}
-
-multi sub gtk_builder_add_from_file (
+sub gtk_builder_add_from_file (
   N-GObject $builder, Str $filename
   --> Gnome::Glib::Error
 ) {
@@ -472,28 +431,13 @@ Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
 
 Since: 2.12
 
-  method gtk_builder_add_from_string ( Str $buffer, UInt $length, N-GObject $error --> UInt  )
+  method gtk_builder_add_from_string ( Str $buffer --> N-GObject $error )
 
 =item Str $buffer; the string to parse
-=item Int $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
 
 =end pod
 
-proto gtk_builder_add_from_string ( N-GObject $builder, Str $buffer, |) { * }
-multi sub gtk_builder_add_from_string (
-  N-GObject $builder, Str $buffer, Int $length, Any $error
-  --> uint32
-) {
-
-  Gnome::N::deprecate(
-    '.gtk_builder_add_from_string( N-GObject, Str, Any --> uint32)', '.gtk_builder_add_from_string( N-GObject, Str)', '0.17.10', '0.22.0'
-  );
-
-  my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_builder_add_from_string( $builder, $buffer, $length, $ga)
-}
-
-multi sub gtk_builder_add_from_string (
+sub gtk_builder_add_from_string (
   N-GObject $builder, Str $buffer
   --> Gnome::Glib::Error
 ) {

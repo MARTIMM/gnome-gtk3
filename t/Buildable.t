@@ -23,8 +23,6 @@ my Gnome::Glib::Quark $quark .= new;
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
-  diag ' ';
-
   $l .= new(:text('text for a label'));
   $l.set-name('buildable');
   is $l.get-name, 'buildable', '.get-name(): buildable';

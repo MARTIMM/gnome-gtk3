@@ -271,15 +271,6 @@ submethod BUILD ( *%options ) {
     self.set-native-object(gtk_label_new_with_mnemonic(%options<mnemonic>));
   }
 
-  elsif %options<label>.defined {
-    Gnome::N::deprecate( 'new(:label)', 'new(:text)', '0.19.0', '0.23.0');
-    self.set-native-object(gtk_label_new(%options<label>));
-  }
-
-  elsif ? %options<mnemonic> {
-    self.set-native-object(gtk_label_new_with_mnemonic(%options<mnemonic>));
-  }
-
   elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
