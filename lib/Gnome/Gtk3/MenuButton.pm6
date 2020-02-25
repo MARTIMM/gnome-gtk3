@@ -163,7 +163,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_menu_button_new());
   }
 

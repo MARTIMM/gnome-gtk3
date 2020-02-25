@@ -121,7 +121,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(gtk_widget_path_new());
     $!widgetpath-is-valid = True;
@@ -130,7 +130,7 @@ submethod BUILD ( *%options ) {
   #TODO widgetpath is a native-object
   elsif ? %options<widgetpath> {
     Gnome::N::deprecate(
-      '.new(:widgetpath())', '.new(:native-object())', '0.21.3', '0.24.0'
+      '.new(:widgetpath())', '.new(:native-object())', '0.21.3', '0.30.0'
     );
     _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(%options<widgetpath>);

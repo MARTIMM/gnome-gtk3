@@ -99,7 +99,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::StyleContext';
 
   if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_style_context_new());
   }
 

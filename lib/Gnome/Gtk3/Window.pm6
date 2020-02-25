@@ -177,7 +177,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Window';
 
   if ?%options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.24.0');
+    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
     self.set-native-object(gtk_window_new($wtype));
   }
