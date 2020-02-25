@@ -123,7 +123,7 @@ layout: sidebar
 
 
 #### Documentation
-* There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
+There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
 
   * Complete documentation and C-Quirks left from the generated output.
     * [ ] **Gnome::Gdk3**.
@@ -134,6 +134,17 @@ layout: sidebar
     * [ ] **Gnome::Gtk3::Glade**.
     * [ ] **Gnome::Pango**. Not much yet!
     * [ ] **Gnome::Cairo**. Not much yet!
+
+* Documentation and examples mentioning the use of 0 and 1, must be rewritten to show True and False where possible.
+
+* All the several possibilities to use a method should be removed eventually and kept only one name. Keep the names where clashes could take place like `get-name()` from **Builder** and **Widget**. These must be kept as `builder-get-name()` and `widget-get-name()` resp. Dashes are preverred.
+  * [ ] Method names kept are the names without the module prefixes. Sometimes a method must be added to prevent calling a method from **Any** or **Mu**. Examples
+    * `gtk_grid_attach()` -> `attach()`.
+    * `gtk_label_new()` -> `new()`. Handled with submethod `BUILD()`.
+    * `gtk_widget_set_name()` -> `widget-set-name()`. Cannot be too short.
+    * `gtk-list-store-append()` -> `append()`. Needs an extra method.
+  * [ ] Adjust documentation.
+  * [ ] Add deprecate messages for the to be removed names.
 
 #### Test coverage
 
@@ -172,6 +183,8 @@ layout: sidebar
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
 * [ ] The sidebar for Gtk references is messy. Should be ordered better.
+
+* [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
 * Add more tutorials
   * [x] Find material of other tutorials and books in other programming languages.

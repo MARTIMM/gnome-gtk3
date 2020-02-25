@@ -31,7 +31,7 @@ Then show the window and everything in it [24] and start the main loop [26].
 
 To run the program, save the code in a file called `simple-example.pl6` and type the following on the command line (in windows you can double click on the filename).
 ```
-perl6 simple-example.pl6 <Enter>
+raku simple-example.pl6 <Enter>
 ```
 #### What we have learned
 So, what we have learned here are several specific things which will always come back in all user interface based programs.
@@ -104,7 +104,7 @@ Ok. Need to do things differently then. Lets look at our next attempt which is a
 {% include example-code/01-hello-world.pl6 %}
 {% endhighlight %}
 
-We will use a **Grid** to add the buttons to. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Perl6 packages. However, the **Grid** class can do it all for you and easier.
+We will use a **Grid** to add the buttons to. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Raku packages. However, the **Grid** class can do it all for you and easier.
 
 The method `.set-border-width()` on the **Window** is used to get some space around our buttons [43]. Then an empty grid is created and added to the window [46,47]. The buttons are created [50,51] but the second button is disabled with `.set-sensitive()` [52]. This will be visible as a grayed-out button.
 

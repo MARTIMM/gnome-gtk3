@@ -13,9 +13,9 @@ layout: sidebar
 
 * Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have methods like `_file_chooser_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned interface module this can be e.g. **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
 
-* All classes deriving from **Gnome::GObject::Object** know about the `:widget(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**.
+* All classes deriving from **Gnome::GObject::Object** know about the `:native-object(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**. In most cases a Raku object can be provided. The method will retrieve the native object from the given Raku object.
 
-* The same classes also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. For this, see also **Gnome::Gtk3::Glade**. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
+* The same classes also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
 
   An example to see both named arguments in use is when cleaning a list box;
   ```
@@ -27,7 +27,7 @@ layout: sidebar
     last unless $nw.defined;
 
     # Instantiate a container object using the :widget argument
-    my Gnome::Gtk3::ListBoxRow $row .= new(:widget($nw));
+    my Gnome::Gtk3::ListBoxRow $row .= new(:native-object($nw));
     $row.gtk-widget-destroy;
   }
   ```
@@ -82,7 +82,7 @@ layout: sidebar
     ```
     $button.gtk_widget_set_visible(True);
     ```
-    **_Documentation and examples mentions the use of 0 and 1 a lot and must be rewritten_**.
+    **_Documentation and examples mentioning the use of 0 and 1, must be rewritten to show True and False where possible_**.
 
     Testing the returned 'boolean' can be done using if/else and no extra changes are needed. However, to store it, the value must be coersed into Bool if one needs it that way.
     ```

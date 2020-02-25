@@ -12,7 +12,7 @@ The following is a (not very exhaustive) list of points which make up the design
 
 * Native objects are wrapped into Raku classes. The native objects are mostly created or imported using the `.new()` method of the class and stored in the class with `.native-gobject()`. In rare occasions, the user may retrieve the object by using `.get-native-gobject()`.
 
-* I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** as closely as possible by keeping the names of the native functions the same as provided in their libraries.
+* I want to follow the interface of the classes in **Gtk**, **Gdk** and **Glib** as closely as possible by keeping the names of the native functions the same as provided by their libraries.
 
 * The native subroutines are defined in their corresponding Raku classes. They are defined and looked up in such a way that they are usable as methods in those classes.
 
@@ -24,7 +24,7 @@ The following is a (not very exhaustive) list of points which make up the design
   ```
   can be used as
   ```
-  my Gnome::Gtk3::Button $button .= new(:empty);
+  my Gnome::Gtk3::Button $button .= new;
   $button.gtk_button_set_label('Start Program');
   ```
 
@@ -82,9 +82,10 @@ The following is a (not very exhaustive) list of points which make up the design
 
   So it follows that the sub `get_name()` from **Gnome::Gtk3::Buildable** interface has a higher priority than `get_name()` found in **Gnome::Gtk3::Widget** when search starts at e.g. **Gnome::Gtk3::Button** class. To prevent these situations you better only leave of the prefixes `gtk_`, `gdk_` or `g_` to get `buildable-get-name()` or `widget-get-name()`.
 
+*  **_Note: Because of all these possibilities, chances are that you will use several names to call the same method and that will be confusing when you reread your code. So therefore, in the near future, work will be done to only yield the shortest method names where possible and use of dashed versions only._**
+
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Raku packages to support. Exceptions are e.g. **Gnome::Gtk3::Misc** which is kept to keep the hierarchy of classes in tact.
-  * The original idea was to have the interface build by the glade interface designer. This lib was in the *GTK::Glade*(now **Gnome::Gtk3::Glade**) project before refactoring. Therefore a **Gnome::Gtk3::Button** does not have to have all subs to create a button because the **Gnome::Gtk3::Builder** module will do that. On the other hand a **Gnome::Gtk3::ListBox** is a widget which is changed dynamically most of the time and therefore need more subs to manipulate the widget and its contents. All this is changing a bit now that there is a script that generates Raku module code for me.
   * The need to implement classes like **Gnome::Gtk3::Assistant**, **Gnome::Gtk3::Plug** or **Gnome::Gtk3::ScrolledWindow** is on a low priority because these can all be instantiated by **Gnome::Gtk3::Builder** using your Glade design.
 
 * There are native subroutines which need a native object as one of their arguments. The `gtk_grid_attach()` in **Gnome::Gtk3::Grid** is an example of such a routine. The declaration of the `gtk_grid_attach()` native sub is;
@@ -96,9 +97,9 @@ The following is a (not very exhaustive) list of points which make up the design
     { * }
   ```
 
-  The afore mentioned method `get-native-gobject()` is defined in **Gnome::GObject::Object** to return the native object so we can use the gtk_grid_attach as follows. For other types `get-native-gboxed()` is needed.
+  The afore mentioned method `get-native-gobject()` is defined in **Gnome::GObject::Object** to return the native object so we can use the gtk_grid_attach as follows.
   ```
-  my Gnome::Gtk3::Grid $grid .= new(:empty);
+  my Gnome::Gtk3::Grid $grid .= new;
   my Gnome::Gtk3::Label $label .= new(:label('my label'));
   $grid.gtk-grid-attach( $label.get-native-gobject(), 0, 0, 1, 1);
   ```
