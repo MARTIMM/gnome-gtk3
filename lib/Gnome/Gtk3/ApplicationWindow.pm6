@@ -27,7 +27,7 @@ If the desktop environment does not display the menubar, then B<Gnome::Gtk3::App
 =head2 A B<Gnome::Gtk3::ApplicationWindow> with a menubar
 
   my Gnome::Gtk3::Application $app .= new(:app-id("org.gtk.test"));
-  my Str $gui-interface = Q:to/EOGUI/;
+  my Str $gui-interface = Q:to/EOMENU/;
     <interface>
       <menu id='menubar'>
         <submenu label='_Edit'>
@@ -36,7 +36,7 @@ If the desktop environment does not display the menubar, then B<Gnome::Gtk3::App
         </submenu>
       </menu>
     </interface>
-    EOGUI
+    EOMENU
 
   my Gnome::Gtk3::Builder $builder .= new(:string($gui-interface));
 
@@ -116,6 +116,7 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Application;
 
 #use Gnome::Gtk3::Orientable;
 #use Gnome::Gtk3::Buildable;
@@ -134,7 +135,7 @@ also is Gnome::Gtk3::Window;
 
 Create a new ApplicationWindow object.
 
-  multi method new ( )
+  multi method new (N-GObject :$application!)
 
 Create a ApplicationWindow object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -147,19 +148,24 @@ Create a ApplicationWindow object using a native object returned from a builder.
 =end pod
 
 #TM:0:new():inheriting
-#TM:0:new():
+#TM:1:new(:application):
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
 
-
-
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::ApplicationWindow';
 
   # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
+  if ? %options<application> {
+    my $a = %options<application>;
+    $a .= get-native-object if $a ~~ Gnome::Gtk3::Application;
+    self.set-native-object(gtk_application_window_new($a));
+note "A: $a.perl()";
+  }
+
+  elsif ? %options<widget> || ? %options<native-object> ||
      ? %options<build-id> {
     # provided in Gnome::GObject::Object
   }
