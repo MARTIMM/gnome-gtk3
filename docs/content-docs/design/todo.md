@@ -146,6 +146,8 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * [ ] Adjust documentation.
   * [ ] Add deprecate messages for the to be removed names.
 
+* [ ] Remove `Since <version>` lines. These lines are version remarks of Gnome libraries and not of the Raku modules.
+
 #### Test coverage
 
 * **Gnome::Gdk3**

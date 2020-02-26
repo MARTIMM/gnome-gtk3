@@ -1719,9 +1719,9 @@ sub get-enumerations ( Str:D $include-content is copy ) {
         $enum-spec = "\n=end pod\n\n#TE:0:$enum-name:\nenum $enum-name is export (\n";
       }
 
-#      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
-#        # ignore
-#      }
+      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
+        # ignore
+      }
 
       elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [ \S .* ] $ / {
         if $get-item-doc {
@@ -1863,9 +1863,9 @@ sub get-structures ( Str:D $include-content is copy ) {
           "class $struct-name is export is repr\('CStruct') \{\n";
       }
 
-#      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
-#        # ignore
-#      }
+      elsif $line ~~ m/ ^ \s+ '*' \s* 'Since:' .* $ / {
+        # ignore
+      }
 
       elsif $line ~~ m/ ^ \s+ '*' \s+ $<doc> = [ \S .* ] $ / {
         if $get-item-doc {
@@ -1940,7 +1940,7 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 
   $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
   $text ~~ s/ \s* '*/' .* $ //;                     # Doc end
-#  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
+  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;  # Stability: status
   $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
