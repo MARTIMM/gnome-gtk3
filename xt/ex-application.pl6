@@ -2,8 +2,10 @@
 
 use v6.d;
 #use lib '../gnome-gobject/lib';
-use lib 'lib';
+use lib '../gnome-gio/lib';
+#use lib 'lib';
 
+use Gnome::Gio::Enums;
 use Gnome::Gio::MenuModel;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Grid;
@@ -21,6 +23,27 @@ my Gnome::Gtk3::Main $m .= new;
 class AppSignalHandlers {
   method exit-program ( --> Int ) {
     $m.gtk-main-quit;
+
+    1
+  }
+
+  method app-registered (
+    Gnome::Gtk3::Application :widget($app), :$grid, :$menubar
+    --> Int
+  ) {
+    note 'registered';
+
+    $app.set-menubar($menubar);
+
+    my Gnome::Gtk3::ApplicationWindow $app-window .= new(:application($app));
+
+    $app-window.set-title('Application Window Test');
+    $app-window.set-border-width(20);
+    $app-window.register-signal( self, 'exit-program', 'destroy');
+
+    $app-window.container-add($grid);
+
+    $app-window.show-all;
 
     1
   }
@@ -50,28 +73,27 @@ my Str $gui-interface = Q:to/EOMENU/;
 
 my AppSignalHandlers $ah .= new;
 
-my Gnome::Gtk3::Application $app .= new(:app-id<appTest.io.github.martimm>);
 my Gnome::Gtk3::Builder $builder .= new(:string($gui-interface));
 my Gnome::Gio::MenuModel $menubar .= new(:build-id<menubar>);
-$app.set-menubar($menubar);
-my Gnome::Gtk3::ApplicationWindow $app-window .= new(:application($app));
 
-
-$app-window.set-title('Application Window Test');
-note "show: ", $app-window.get_show_menubar;
-$app-window.set_show_menubar(True);
-$app-window.register-signal( $ah, 'exit-program', 'destroy');
-$app-window.set-border-width(20);
-
-my Gnome::Gtk3::Grid $g .= new;
-$app-window.container-add($g);
-
+# prepare widgets which are directly below window
+my Gnome::Gtk3::Grid $grid .= new;
 my Gnome::Gtk3::Button $b1 .= new(:label<Start>);
 $b1.register-signal( $ah, 'exit-program', 'clicked');
 my Gnome::Gtk3::Button $b2 .= new(:label<Stop>);
 $b2.register-signal( $ah, 'exit-program', 'clicked');
-$g.grid-attach( $b1, 0, 0, 1, 1);
-$g.grid-attach( $b2, 0, 1, 1, 1);
+$grid.grid-attach( $b1, 0, 0, 1, 1);
+$grid.grid-attach( $b2, 1, 0, 1, 1);
 
-$app-window.show-all;
+my Gnome::Gtk3::Application $app .= new(
+  :app-id<appTest.io.github.martimm>, :flags(G_APPLICATION_NON_UNIQUE)
+);
+$app.register-signal(
+  $ah, 'app-registered', 'startup', :$grid, :$menubar
+);
+
+my Gnome::Glib::Error $e = $app.application-register;
+die $e.message if $e.is-valid;
+#note 'Reg\'ged: ', $app.get-is-registered;
+
 $m.gtk-main;
