@@ -43,7 +43,7 @@ GObject                                   Gnome::GObject::Object
 ├── GDBusInterfaceSkeleton
 ├── GMenuModel                            MenuModel
 │   ├── GDBusMenuModel
-│   ╰── GMenu
+│   ╰─✗ GMenu                             ?? https://developer.gnome.org/GMenu/
 ├── GDBusMessage
 ├── GDBusMethodInvocation
 ├── GDBusObjectManagerClient
@@ -158,85 +158,7 @@ GInterface
 ├── GTlsServerConnection
 ╰── GVolume
 GFlags                                    Enums. Where defined in one file
-├── GAppInfoCreateFlags
-├── GApplicationFlags
-├── GAskPasswordFlags
-├── GBusNameOwnerFlags
-├── GBusNameWatcherFlags
-├── GConverterFlags
-├── GDBusCallFlags
-├── GDBusCapabilityFlags
-├── GDBusConnectionFlags
-├── GDBusInterfaceSkeletonFlags
-├── GDBusMessageFlags
-├── GDBusObjectManagerClientFlags
-├── GDBusPropertyInfoFlags
-├── GDBusProxyFlags
-├── GDBusSendMessageFlags
-├── GDBusServerFlags
-├── GDBusSignalFlags
-├── GDBusSubtreeFlags
-├── GDriveStartFlags
-├── GFileAttributeInfoFlags
-├── GFileCopyFlags
-├── GFileCreateFlags
-├── GFileMeasureFlags
-├── GFileMonitorFlags
-├── GFileQueryInfoFlags
-├── GIOStreamSpliceFlags
-├── GMountMountFlags
-├── GMountUnmountFlags
-├── GOutputStreamSpliceFlags
-├── GResolverNameLookupFlags
-├── GResourceFlags
-├── GResourceLookupFlags
-├── GSettingsBindFlags
-├── GSocketMsgFlags
-├── GSubprocessFlags
-├── GTestDBusFlags
-├── GTlsCertificateFlags
-├── GTlsDatabaseVerifyFlags
-╰── GTlsPasswordFlags
-GEnum                                     Enums. Together with GFlags
-├── GBusType
-├── GConverterResult
-├── GCredentialsType
-├── GDataStreamByteOrder
-├── GDataStreamNewlineType
-├── GDBusError
-├── GDBusMessageByteOrder
-├── GDBusMessageHeaderField
-├── GDBusMessageType
-├── GDriveStartStopType
-├── GEmblemOrigin
-├── GFileAttributeStatus
-├── GFileAttributeType
-├── GFileMonitorEvent
-├── GFileType
-├── GFilesystemPreviewType
-├── GIOErrorEnum
-├── GIOModuleScopeFlags
-├── GMountOperationResult
-├── GNetworkConnectivity
-├── GNotificationPriority
-├── GPasswordSave
-├── GPollableReturn
-├── GResolverError
-├── GResolverRecordType
-├── GResourceError
-├── GSocketClientEvent
-├── GSocketFamily
-├── GSocketType
-├── GSocketProtocol
-├── GSocketListenerEvent
-├── GTlsAuthenticationMode
-├── GTlsCertificateRequestFlags
-├── GTlsDatabaseLookupFlags
-├── GTlsError
-├── GTlsInteractionResult
-├── GTlsRehandshakeMode
-├── GUnixSocketAddressType
-╰── GZlibCompressorFormat
+GEnum                                            together with GFlags
 GBoxed
 ├── GDBusAnnotationInfo
 ├── GDBusArgInfo
@@ -247,7 +169,7 @@ GBoxed
 ├── GDBusSignalInfo
 ├── GFileAttributeInfoList
 ├── GFileAttributeMatcher
-├── GResource
+├── GResource                             Resource
 ├── GSettingsSchema
 ├── GSettingsSchemaKey
 ├── GSettingsSchemaSource
