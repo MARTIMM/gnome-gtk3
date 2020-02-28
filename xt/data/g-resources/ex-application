@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Run glib-compile-resources xt/data/g-resources/ex-application -->
+<gresources>
+  <gresource prefix="/io/github/martimm/test/application">
+    <file compressed="true">xt/data/g-resources/ex-application-menu.ui</file>
+  </gresource>
+</gresources>
