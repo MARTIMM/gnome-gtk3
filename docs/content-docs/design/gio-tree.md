@@ -157,8 +157,8 @@ GInterface
 ├── GTlsFileDatabase
 ├── GTlsServerConnection
 ╰── GVolume
-GFlags                                    Enums. Where defined in one file
-GEnum                                            together with GFlags
+GFlags                                    Enums. GFlags and Enums are defined
+GEnum                                            in one file
 GBoxed
 ├── GDBusAnnotationInfo
 ├── GDBusArgInfo
