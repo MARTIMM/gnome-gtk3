@@ -33,7 +33,7 @@ class X {
 enum list-field-columns < TITLE-CODE TITLE SOLD LIKE PICT >;
 my Gnome::Gtk3::TreeIter $iter;
 
-my Gnome::Gdk3::Pixbuf $pb .= new(:file<xt/Data/gtk-raku-64.png>);
+my Gnome::Gdk3::Pixbuf $pb .= new(:file<xt/data/gtk-raku-64.png>);
 my Int $pb-type = $pb.get-class-gtype;
 #note "Pixbuf type: $pb-type";
 
@@ -105,13 +105,13 @@ $tv.append-column($tvc);
 
 my Array $data = [
   [ 1001, 'duizend en een nacht', True, 96,
-    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/amber-on-256.png>)
+    Gnome::Gdk3::Pixbuf.new(:file<xt/data/amber-on-256.png>)
   ],
   [ 2002, 'een beetje later', False, 30,
-    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/green-on-256.png>)
+    Gnome::Gdk3::Pixbuf.new(:file<xt/data/green-on-256.png>)
   ],
   [ 3003, 'en nog een beetje tekst', False, 71,
-    Gnome::Gdk3::Pixbuf.new(:file<xt/Data/red-on-256.png>)
+    Gnome::Gdk3::Pixbuf.new(:file<xt/data/red-on-256.png>)
   ]
 ];
 
