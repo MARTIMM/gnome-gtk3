@@ -243,6 +243,7 @@ GNetworkConnectivity
 GOptionFlags
 GOptionArg
 GOptionError
+GResourceLookupFlags
 PangoAlignment
 PangoWrapMode
 PangoEllipsizeMode
