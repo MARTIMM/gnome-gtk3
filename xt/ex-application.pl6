@@ -8,7 +8,6 @@ use lib '../gnome-gio/lib';
 
 use Gnome::Gio::Enums;
 use Gnome::Gio::MenuModel;
-use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Application;
@@ -17,8 +16,6 @@ use Gnome::Gtk3::Builder;
 
 use Gnome::N::X;
 #Gnome::N::debug(:on);
-
-#my Gnome::Gtk3::Main $m .= new;
 
 #-------------------------------------------------------------------------------
 my Str $gui-interface = Q:to/EOMENU/;
@@ -56,54 +53,41 @@ class AppSignalHandlers {
 
     $!app .= new(
       :app-id<io.github.martimm.test.application>,
-      :flags(G_APPLICATION_NON_UNIQUE)
+      :flags(G_APPLICATION_NON_UNIQUE),
+      :!initialize
     );
 
     # startup signal fired after registration
-    $!app.register-signal( self, 'app-registered', 'startup');
+    $!app.register-signal( self, 'app-startup', 'startup');
 
-    #
+    # fired after g_application_quit
     $!app.register-signal( self, 'app-shutdown', 'shutdown');
 
-    #
+    # fired after g_application_run
     $!app.register-signal( self, 'app-activate', 'activate');
 
     #
     $!app.register-signal( self, 'app-open', 'open');
 
-    my Gnome::Glib::Error $e = $!app.application-register;
+    # now we can register the application.
+    my Gnome::Glib::Error $e = $!app.register;
     die $e.message if $e.is-valid;
   }
 
   #-----------------------------------------------------------------------------
-  method exit-program ( --> Int ) {
-#    $m.gtk-main-quit;
-    $!app.quit;
-
-    1
+  method app-startup ( Gnome::Gtk3::Application :widget($!app) ) {
+note 'app registered';
+    $!app.run;
   }
 
   #-----------------------------------------------------------------------------
-  method app-registered ( Gnome::Gtk3::Application :widget($!app) --> Int ) {
-    note 'registered';
-    $!app.activate;
-#    my Gnome::Gtk3::Main $m .= new(:$app);
-
-    1
-  }
-
-  #-----------------------------------------------------------------------------
-  method app-shutdown ( Gnome::Gtk3::Application :widget($!app) --> Int ) {
-#    $!app.release;
+  method app-shutdown ( Gnome::Gtk3::Application :widget($!app) ) {
 note 'app shutdown';
-
-    1
   }
 
   #-----------------------------------------------------------------------------
-  method app-activate ( Gnome::Gtk3::Application :widget($!app) --> Int ) {
-#    $!app.hold;
-note 'app activate';
+  method app-activate ( Gnome::Gtk3::Application :widget($!app) ) {
+note 'app activated';
 
     my Gnome::Gtk3::Builder $builder .= new(:string($gui-interface));
     $!menubar .= new(:build-id<menubar>);
@@ -121,20 +105,22 @@ note 'app activate';
     $b1.register-signal( self, 'exit-program', 'clicked');
 
     $!app-window.container-add($!grid);
-#    $!app-window.show-all;
-    $!app.run;
+    $!app-window.show-all;
 
 
-    note 'Reg\'ged: ', $!app.get-is-registered;
-    note 'resource base path: ', $!app.get-resource-base-path;
-    note 'app id: ', $!app.get-application-id;
-
-    1
+    note "\nInfo:\n  Registered: ", $!app.get-is-registered;
+    note '  resource base path: ', $!app.get-resource-base-path;
+    note '  app id: ', $!app.get-application-id;
   }
 
   #-----------------------------------------------------------------------------
-  method app-open ( Gnome::Gtk3::Application :widget($!app) --> Int ) {
+  method app-open ( Gnome::Gtk3::Application :widget($!app) ) {
 note 'app open';
+  }
+
+  #-----------------------------------------------------------------------------
+  method exit-program ( --> Int ) {
+    $!app.quit;
 
     1
   }
@@ -144,5 +130,3 @@ note 'app open';
 
 #-------------------------------------------------------------------------------
 my AppSignalHandlers $ah .= new;
-
-#$m.gtk-main;
