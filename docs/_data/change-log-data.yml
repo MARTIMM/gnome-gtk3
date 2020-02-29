@@ -1,8 +1,12 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
-  - 2020-02-25 0.26.2:
+  - 2020-02-29 0.25.3:
+    - Add gtk_builder_new_from_resource(), gtk_builder_add_from_resource() and .new(:resource) to Gnome::Gtk::Builder.
+
+  - 2020-02-25 0.25.2:
     - Bugfixes in the Application module in Gio and Gtk.
+
   - 2020-02-25 0.25.1:
     - add-gui() from Gnome::Gtk3::Builder is removed in favor of gtk_builder_add_from_file() and gtk_builder_add_from_string().
     - Old version of gtk_builder_add_from_file() and gtk_builder_add_from_string() is removed.
