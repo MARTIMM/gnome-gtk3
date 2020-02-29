@@ -52,6 +52,7 @@ layout: sidebar
     * [ ] `Gnome::GObject::*`
     * [ ] `Gnome::Gtk3::*`
     * [x] `Gnome::Pango::*`
+    * [x] `Gnome::Gio::*`
 
   * [x] `.set-native-object()`
   * [x] `.get-native-object()`.
@@ -107,7 +108,7 @@ layout: sidebar
     * [x] `:empty`
     * [x] `:default`
 
-* I'm not sure if the named argument :$widget to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' inheriting from **Gnome::Gtk3::Widget**.
+* I'm not sure if the named argument :$widget to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
 
 * [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
@@ -118,8 +119,6 @@ layout: sidebar
 * [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object. Now there are several ways implemented using named arguments on the BUILD() submethod.
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
-
-* [ ] Use **Method::Also** to have several names for methods. Later on, the other methods can be deprecated. This might be needed when the export TODO entry mentioned above will not help keeping the sub a sub. This might not be needed because I found other ways to keep the sub version.
 
 
 #### Documentation
