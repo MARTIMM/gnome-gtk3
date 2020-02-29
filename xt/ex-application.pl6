@@ -3,11 +3,12 @@
 use v6.d;
 #use lib '../gnome-gobject/lib';
 use lib '../gnome-native/lib';
-use lib '../gnome-gio/lib';
-#use lib 'lib';
+#use lib '../gnome-gio/lib';
+use lib 'lib';
 
 use Gnome::Gio::Enums;
 use Gnome::Gio::MenuModel;
+use Gnome::Gio::Resource;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Application;
@@ -18,31 +19,9 @@ use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Str $gui-interface = Q:to/EOMENU/;
-  <interface>
-    <menu id="menubar">
-      <section>
-        <item>
-          <attribute name="label" translatable="yes">Incendio</attribute>
-          <attribute name="action">app.incendio</attribute>
-        </item>
-      </section>
-      <section>
-        <attribute name="label" translatable="yes">Defensive Charms</attribute>
-        <item>
-          <attribute name="label" translatable="yes">Expelliarmus</attribute>
-          <attribute name="action">app.expelliarmus</attribute>
-          <!--attribute name="icon">/usr/share/my-app/poof!.png</attribute-->
-        </item>
-      </section>
-    </menu>
-  </interface>
-  EOMENU
-
-
-#-------------------------------------------------------------------------------
 class AppSignalHandlers {
 
+  has Str $!app-id;
   has Gnome::Gtk3::Application $!app;
   has Gnome::Gtk3::Grid $!grid;
   has Gnome::Gio::MenuModel $!menubar;
@@ -51,10 +30,14 @@ class AppSignalHandlers {
   #-----------------------------------------------------------------------------
   submethod BUILD ( ) {
 
+    my Gnome::Gio::Resource $r .= new(
+      :load<xt/data/g-resources/ex-application.gresource>
+    );
+    $r.register;
+
+    $!app-id = 'io.github.martimm.test.application';
     $!app .= new(
-      :app-id<io.github.martimm.test.application>,
-      :flags(G_APPLICATION_NON_UNIQUE),
-      :!initialize
+      :$!app-id, :flags(G_APPLICATION_NON_UNIQUE), :!initialize
     );
 
     # startup signal fired after registration
@@ -89,7 +72,13 @@ note 'app shutdown';
   method app-activate ( Gnome::Gtk3::Application :widget($!app) ) {
 note 'app activated';
 
-    my Gnome::Gtk3::Builder $builder .= new(:string($gui-interface));
+    my Gnome::Gtk3::Builder $builder .= new;
+    my Gnome::Glib::Error $e = $builder.add-from-resource(
+      $!app.get-resource-base-path ~
+      '/xt/data/g-resources/ex-application-menu.ui'
+    );
+    die $e.message if $e.is-valid;
+
     $!menubar .= new(:build-id<menubar>);
     $!app.set-menubar($!menubar);
 
@@ -106,7 +95,6 @@ note 'app activated';
 
     $!app-window.container-add($!grid);
     $!app-window.show-all;
-
 
     note "\nInfo:\n  Registered: ", $!app.get-is-registered;
     note '  resource base path: ', $!app.get-resource-base-path;

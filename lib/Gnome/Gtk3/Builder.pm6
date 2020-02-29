@@ -235,6 +235,7 @@ Create an empty builder.
 #TM:1:new():
 #TM:0:new(:filename):
 #TM:0:new(:string):
+#TM:4:new(:resource):ex-application.pl6
 
 submethod BUILD ( *%options ) {
 
@@ -251,15 +252,16 @@ submethod BUILD ( *%options ) {
     );
   }
 
+  elsif ? %options<resource> {
+    self.set-native-object(
+      gtk_builder_new_from_resource(%options<resource>)
+    );
+  }
+
   elsif ? %options<empty> {
     Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_builder_new());
   }
-
-#TODO No widget or build-id for a builder!
-#  elsif ? %options<native-object> || %options<build-id> {
-#    # provided in GObject
-#  }
 
   elsif %options.keys.elems {
     die X::Gnome.new(
@@ -269,7 +271,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  else { #elsif ? %options<empty> {
+  else {
     self.set-native-object(gtk_builder_new());
   }
 
@@ -321,21 +323,17 @@ sub gtk_builder_error_quark (  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_builder_new:
+#TM:2:gtk_builder_new:new()
 =begin pod
 =head2 [gtk_] builder_new
 
 Creates a new empty builder object.
 
-=comment add C<gtk_builder_new_from_resource()> when ready
+This function is only useful if you intend to make multiple calls to C<gtk_builder_add_from_file()>, C<gtk_builder_add_from_resource()> or C<gtk_builder_add_from_string()> in order to merge multiple UI descriptions into a single builder.
 
-This function is only useful if you intend to make multiple calls to C<gtk_builder_add_from_file()> or C<gtk_builder_add_from_string()> in order to merge multiple UI descriptions into a single builder.
-
-Most users will probably want to use C<gtk_builder_new_from_file()> C<gtk_builder_new_from_string()>.
+Most users will probably want to use C<gtk_builder_new_from_file()>, C<gtk_builder_new_from_resource()> or C<gtk_builder_new_from_string()>.
 
 Returns: a new (empty) B<Gnome::Gtk3::Builder> object
-
-Since: 2.12
 
   method gtk_builder_new ( --> N-GObject  )
 
@@ -360,8 +358,6 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 You should not use this function with untrusted files (ie: files that are not part of your application). Broken B<Gnome::Gtk3::Builder> files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
 Returns: Gnome::Glib::Error. Test C<.is-valid()> of that object to see if there was an error.
-
-Since: 2.12
 
   method gtk_builder_add_from_file (
     Str $filename, N-GObject $error
@@ -388,8 +384,8 @@ sub _gtk_builder_add_from_file (
   is symbol('gtk_builder_add_from_file')
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
+#TM:4:gtk_builder_add_from_resource:ex-application.pl6
 =begin pod
 =head2 [[gtk_] builder_] add_from_resource
 
@@ -401,20 +397,32 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
 
-Since: 3.4
-
-  method gtk_builder_add_from_resource ( Str $resource_path, N-GObject $error --> UInt  )
+  method gtk_builder_add_from_resource (
+    Str $resource_path
+    --> Gnome::Glib::Error
+  )
 
 =item Str $resource_path; the path of the resource file to parse
 =item N-GObject $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
-sub gtk_builder_add_from_resource ( N-GObject $builder, Str $resource_path, N-GObject $error )
-  returns uint32
-  is native(&gtk-lib)
+sub gtk_builder_add_from_resource (
+  N-GObject $builder, Str $path
+  --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_builder_add_from_resource( $builder, $path, $ga);
+  Gnome::Glib::Error.new(:native-object($ga[0]))
+}
+
+sub _gtk_builder_add_from_resource (
+  N-GObject $builder, Str $resource_path, CArray[N-GError] $error
+  --> int32
+) is native(&gtk-lib)
+  is symbol('gtk_builder_add_from_resource')
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_add_from_string:
@@ -428,8 +436,6 @@ Most users will probably want to use C<gtk_builder_new_from_string()>.
 If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of C<GTK_BUILDER_ERROR>, C<G_MARKUP_ERROR> or C<G_FILE_ERROR>. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
 
 Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
-
-Since: 2.12
 
   method gtk_builder_add_from_string ( Str $buffer --> N-GObject $error )
 
@@ -470,8 +476,6 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 Returns: Gnome::Glib::Error. Test C<.is-valid()> flag to see if there was an error.
 
-Since: 2.14
-
   method gtk_builder_add_objects_from_file ( Str $filename, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
 =item Str $filename; the name of the file to parse
@@ -505,8 +509,6 @@ B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object_
 
 Returns: A positive value on success, 0 if an error occurred
 
-Since: 3.4
-
   method gtk_builder_add_objects_from_resource ( Str $resource_path, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
 =item Str $resource_path; the path of the resource file to parse
@@ -539,8 +541,6 @@ B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object_
 
 Returns: A positive value on success, 0 if an error occurred
 
-Since: 2.14
-
   method gtk_builder_add_objects_from_string ( Str $buffer, UInt $length, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
 =item Str $buffer; the string to parse
@@ -567,8 +567,6 @@ increment the reference count of the returned object.
 Returns: (nullable) (transfer none): the object named I<name> or C<Any> if
 it could not be found in the object tree.
 
-Since: 2.12
-
   method gtk_builder_get_object ( Str $name --> N-GObject  )
 
 =item Str $name; name of object to get
@@ -593,8 +591,6 @@ Returns: (element-type GObject) (transfer container): a newly-allocated C<GSList
 constructed by the B<Gnome::Gtk3::Builder> instance. It should be freed by
 C<g_slist_free()>
 
-Since: 2.12
-
   method gtk_builder_get_objects ( --> N-GObject  )
 
 
@@ -613,8 +609,6 @@ sub gtk_builder_get_objects ( N-GObject $builder )
 
 Add I<object> to the I<builder> object pool so it can be referenced just like any
 other object built by builder.
-
-Since: 3.8
 
   method gtk_builder_expose_object ( Str $name, N-GObject $object )
 
@@ -655,8 +649,6 @@ On Linux and Unices, this is not necessary; applications should instead
 be compiled with the -Wl,--export-dynamic CFLAGS, and linked against
 gmodule-export-2.0.
 
-Since: 2.12
-
   method gtk_builder_connect_signals ( Pointer $user_data )
 
 =item Pointer $user_data; user data to pass back with all signals
@@ -676,8 +668,6 @@ sub gtk_builder_connect_signals ( N-GObject $builder, Pointer $user_data )
 This function can be thought of the interpreted language binding
 version of C<gtk_builder_connect_signals()>, except that it does not
 require GModule to function correctly.
-
-Since: 2.12
 
   method gtk_builder_connect_signals_full ( GtkBuilderConnectFunc $func, Pointer $user_data )
 
@@ -699,8 +689,6 @@ sub gtk_builder_connect_signals_full ( N-GObject $builder, GtkBuilderConnectFunc
 Sets the translation domain of I<builder>.
 See prop C<translation-domain>.
 
-Since: 2.12
-
   method gtk_builder_set_translation_domain ( Str $domain )
 
 =item Str $domain; (allow-none): the translation domain or C<Any>
@@ -719,8 +707,6 @@ Gets the translation domain of I<builder>.
 
 Returns: the translation domain. This string is owned
 by the builder object and must not be modified or freed.
-
-Since: 2.12
 
   method gtk_builder_get_translation_domain ( --> Str  )
 
@@ -744,8 +730,6 @@ implementing the B<Gnome::Gtk3::Buildable> interface on a type.
 
 Returns: the C<GType> found for I<type_name> or C<G_TYPE_INVALID>
 if no type was found
-
-Since: 2.12
 
   method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
 
@@ -777,8 +761,6 @@ C<GError> from the C<GTK_BUILDER_ERROR> domain.
 
 Returns: C<1> on success
 
-Since: 2.12
-
   method gtk_builder_value_from_string ( GParamSpec $pspec, Str $string, N-GObject $value, N-GObject $error --> Int  )
 
 =item GParamSpec $pspec; the C<GParamSpec> for the property
@@ -809,8 +791,6 @@ C<GError> from the C<GTK_BUILDER_ERROR> domain.
 
 Returns: C<1> on success
 
-Since: 2.12
-
   method gtk_builder_value_from_string_type ( N-GObject $type, Str $string, N-GObject $value, N-GObject $error --> Int  )
 
 =item N-GObject $type; the C<GType> of the value
@@ -839,8 +819,6 @@ user interface descriptions that are shipped as part of your program.
 
 Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
-Since: 3.10
-
   method gtk_builder_new_from_file ( Str $filename --> N-GObject  )
 
 =item Str $filename; filename of user interface description file
@@ -852,21 +830,18 @@ sub gtk_builder_new_from_file ( Str $filename )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
+#TM:4:gtk_builder_new_from_resource:ex-application.pl6
 =begin pod
 =head2 [[gtk_] builder_] new_from_resource
 
 Builds the [B<Gnome::Gtk3::Builder> UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) at I<resource_path>.
 
-If there is an error locating the resource or parsing the
-description, then the program will be aborted.
+If there is an error locating the resource or parsing the description, then the program will be aborted.
 
 Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
-Since: 3.10
-
-  method gtk_builder_new_from_resource ( Str $resource_path --> N-GObject  )
+  method gtk_builder_new_from_resource ( Str $resource_path --> N-GObject )
 
 =item Str $resource_path; a C<GResource> resource path
 
@@ -876,7 +851,7 @@ sub gtk_builder_new_from_resource ( Str $resource_path )
   returns N-GObject
   is native(&gtk-lib)
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_new_from_string:
@@ -893,8 +868,6 @@ aborted. You should not attempt to parse user interface description
 from untrusted sources.
 
 Returns: a B<Gnome::Gtk3::Builder> containing the interface described by I<string>
-
-Since: 3.10
 
   method gtk_builder_new_from_string ( Str $string, Int $length --> N-GObject  )
 
@@ -920,8 +893,6 @@ for any callback symbols that are added. Using this method allows for better
 encapsulation as it does not require that callback symbols be declared in
 the global namespace.
 
-Since: 3.10
-
   method gtk_builder_add_callback_symbol ( Str $callback_name, GCallback $callback_symbol )
 
 =item Str $callback_name; The name of the callback, as expected in the XML
@@ -941,8 +912,6 @@ sub gtk_builder_add_callback_symbol ( N-GObject $builder, Str $callback_name, GC
 
 A convenience function to add many callbacks instead of calling
 C<gtk_builder_add_callback_symbol()> for each symbol.
-
-Since: 3.10
 
   method gtk_builder_add_callback_symbols ( Str $first_callback_name, GCallback $first_callback_symbol )
 
@@ -970,8 +939,6 @@ using C<gtk_builder_connect_signals_full()>
 
 Returns: (nullable): The callback symbol in I<builder> for I<callback_name>, or C<Any>
 
-Since: 3.10
-
   method gtk_builder_lookup_callback_symbol ( Str $callback_name --> GCallback  )
 
 =item Str $callback_name; The name of the callback
@@ -993,8 +960,6 @@ Sets the application associated with I<builder>.
 
 You only need this function if there is more than one C<GApplication>
 in your process. I<application> cannot be C<Any>.
-
-Since: 3.10
 
   method gtk_builder_set_application ( N-GObject $application )
 
@@ -1022,8 +987,6 @@ for constructing proxies, use C<gtk_builder_set_application()>.
 
 Returns: (nullable) (transfer none): the application being used by the builder,
 or C<Any>
-
-Since: 3.10
 
   method gtk_builder_get_application ( --> N-GObject  )
 
@@ -1083,8 +1046,6 @@ The translation domain used when translating property values that
 have been marked as translatable in interface descriptions.
 If the translation domain is C<Any>, B<Gnome::Gtk3::Builder> uses C<gettext()>,
 otherwise C<g_dgettext()>.
-
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<translation-domain> is C<G_TYPE_STRING>.
 
