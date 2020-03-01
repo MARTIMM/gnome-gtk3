@@ -9,10 +9,16 @@ layout: sidebar
 ## TODO list of things
 
 #### Study
-* [ ] Study references and object creation in the light of memory leaks in **Object** and **Boxed** objects.
-* [ ] Study Pango and Cairo.
+* [ ] References and object creation in the light of memory leaks.
+* [x] Applications behaviour from Gtk and Gio packages
+* [x] Resources from Gio package
+* [ ] Menus and Actions
+* [ ] Pango
+* [ ] Cairo.
 
 #### Rewriting code
+* Below notes can go to implementation details when done
+
 * [x] Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
@@ -74,7 +80,12 @@ layout: sidebar
       * [ ] `Gnome::GObject::*` modified
       * [ ] `Gnome::Gtk3::*` modified
       * [x] `Gnome::Pango::*` modified
+      * [x] `Gnome::Gio::*` modified
 
+  * Prevent name clashes
+    * set-name() in Gnome::Gtk3::Widget must stay while
+    * [ ] Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
+    * [ ] Gnome::Gio::Action set-name() must become `action-set-name()`;
 <!--
     * [ ] Gnome::GObject::
     * [ ] Gnome::GObject::

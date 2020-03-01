@@ -93,7 +93,7 @@ GObject                                   Gnome::GObject::Object
 ├── GResolver
 ├── GSettingsBackend
 ├── GSettings
-├── GSimpleAction
+├── GSimpleAction                         SimpleAction
 ├── GSimpleActionGroup
 ├── GSimpleAsyncResult
 ├── GSimpleProxyResolver
@@ -121,7 +121,7 @@ GObject                                   Gnome::GObject::Object
 ├── GZlibCompressor
 ╰── GZlibDecompressor
 GInterface
-├── GAction
+├── GAction                               Action
 ├── GActionGroup
 ├── GActionMap
 ├── GAppInfo
