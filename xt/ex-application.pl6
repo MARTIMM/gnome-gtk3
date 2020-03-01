@@ -2,8 +2,8 @@
 
 use v6.d;
 #use lib '../gnome-gobject/lib';
-use lib '../gnome-native/lib';
-#use lib '../gnome-gio/lib';
+#use lib '../gnome-native/lib';
+use lib '../gnome-gio/lib';
 use lib 'lib';
 
 use Gnome::Gio::Enums;
@@ -35,9 +35,9 @@ class AppSignalHandlers {
     );
     $r.register;
 
-    $!app-id = 'io.github.martimm.test.application';
     $!app .= new(
-      :$!app-id, :flags(G_APPLICATION_NON_UNIQUE), :!initialize
+      :app-id('io.github.martimm.test.application'),
+      :flags(G_APPLICATION_NON_UNIQUE), :!initialize
     );
 
     # startup signal fired after registration
@@ -71,6 +71,8 @@ note 'app shutdown';
   #-----------------------------------------------------------------------------
   method app-activate ( Gnome::Gtk3::Application :widget($!app) ) {
 note 'app activated';
+
+    $!app-id = $!app.get-resource-base-path;
 
     my Gnome::Gtk3::Builder $builder .= new;
     my Gnome::Glib::Error $e = $builder.add-from-resource(
