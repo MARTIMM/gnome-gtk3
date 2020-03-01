@@ -982,6 +982,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   $items-src-doc.push(primary-doc-changes($item)) if $gather-items-doc;
 
   $sub-doc ~~ s/ ^ \s+ //;
+  $sub-doc ~~ s/ \n\s*Since:\s+\d+\.\d+\s*\n //;
 
   ( primary-doc-changes($sub-doc), $items-src-doc )
 }
@@ -1938,13 +1939,13 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
   $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':'+ .*? \n //;
 #  $text ~~ s/ ^^ \s+ '*' \s+ $lib-class-name ':' .*? \n //;
 
-  $text ~~ s/ ^^ '/**' .*? \n //;                   # Doc start
-  $text ~~ s/ \s* '*/' .* $ //;                     # Doc end
-  $text ~~ s/ ^^ \s+ '*' \s+ Since: .*? \n //;      # Since: version
-#  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //; # Deprecated: version
-#  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;  # Stability: status
-  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;   # Leading star
-  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;               # Leading star on Empty line
+  $text ~~ s/ ^^ '/**' .*? \n //;                       # Doc start
+  $text ~~ s/ \s* '*/' .* $ //;                         # Doc end
+  $text ~~ s/ ^^ \s* '*'? \s* 'Since:' \d+\.\d+ \n //;  # Since: version
+#  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //;    # Deprecated: version
+#  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;     # Stability: status
+  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;       # Leading star
+  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;                   # Leading star on Empty line
 #  $text ~~ s:g/ ^^ \s* \n //;
 
   $text ~ "\n\n"
