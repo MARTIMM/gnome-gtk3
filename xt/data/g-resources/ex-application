@@ -2,6 +2,6 @@
 <!-- Run glib-compile-resources xt/data/g-resources/ex-application -->
 <gresources>
   <gresource prefix="/io/github/martimm/test/application">
-    <file compressed="true">xt/data/g-resources/ex-application-menu.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">xt/data/g-resources/ex-application-menu.ui</file>
   </gresource>
 </gresources>

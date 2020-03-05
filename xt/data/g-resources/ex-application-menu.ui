@@ -22,9 +22,16 @@
       <section>
         <item>
           <attribute name="label">New</attribute>
+          <!--
+            my Gnome::Gio::SimpleAction $file-new .= new(:name<file-new>);
+            $file-new.register-signal( self, 'file-new', 'activate');
+            $!app.add-action($file-new);
+          -->
+          <attribute name='action'>app.file-new</attribute>
         </item>
         <item>
           <attribute name ="label">Quit</attribute>
+          <attribute name='action'>app.file-quit</attribute>
         </item>
       </section>
     </submenu>
