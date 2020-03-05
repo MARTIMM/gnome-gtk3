@@ -13,6 +13,8 @@ layout: sidebar
 * [x] Applications behaviour from Gtk and Gio packages
 * [x] Resources from Gio package
 * [ ] Menus and Actions
+* [ ] Drag and Drop
+* [ ] DBus I/O
 * [ ] Pango
 * [ ] Cairo.
 
@@ -26,13 +28,13 @@ layout: sidebar
   ```
   In other packages `gtk_` can be `g_` or `gdk_`.
 
-* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left off the sub name when used. So the above tests becomes;
+* [x] Add a test to `_fallback()` so that the prefix 'gtk_' can be left off the subname when used. So the above tests becomes;
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   ```
-  Also here, in other packages `gtk_` can be `g_` or `gdk_`.
+  Also here, in other packages `gtk_` can be `g_`, `gdk_` etc.
 
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
   * Find the short named subs which are also defined in Any or Mu. Add a method to catch the call before the one of **Any** or **Mu**.
@@ -131,6 +133,14 @@ layout: sidebar
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
 
+* [ ] It is not possible to inherit from the modules to create your own class due to the way the classes are BUILD(). Review the initialization methods to overcome this.
+
+* Move pieces of code from FALLBACK in **Gnome::GObject::Object** to **Gnome::N::X** so that other toplevel classes can use it too.
+  * [x] `convert-to-natives()`
+  * [ ] casting
+  * [ ] move methods `set-class-info()` / `get-class-info()` to **Gnome::N::X** as well as the storage into $!gtk-class-gtype. This means that the sub `g_type_from_name()` from **Gnome::GObject::Type** must be duplicated to prevent circular dependency.
+
+* [ ] Remove CALL-ME methods
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
