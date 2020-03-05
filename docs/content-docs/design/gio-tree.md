@@ -123,7 +123,7 @@ GObject                                   Gnome::GObject::Object
 GInterface
 ├── GAction                               Action
 ├── GActionGroup
-├── GActionMap
+├── GActionMap                            ActionMap
 ├── GAppInfo
 ├── GAsyncInitable
 ├── GAsyncResult
