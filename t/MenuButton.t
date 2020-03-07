@@ -12,28 +12,25 @@ use Gnome::Gtk3::MenuButton;
 my Gnome::Gtk3::MenuButton $mb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new";
   $mb .= new;
-  isa-ok $mb, Gnome::Gtk3::MenuButton;
+  isa-ok $mb, Gnome::Gtk3::MenuButton, '.new()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  diag ".set-direction() / .get-direction()";
   $mb.set-direction(GTK_ARROW_RIGHT);
-  is GtkArrowType($mb.get-direction), GTK_ARROW_RIGHT, 'arrow set right';
+  is GtkArrowType($mb.get-direction), GTK_ARROW_RIGHT,
+     '.set-direction() / .get-direction()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
-  diag ".set-label() / .get-label()";
   $mb.set-label('set bold');
-  is $mb.get-label, 'set bold', 'label set';
+  is $mb.get-label, 'set bold', '.set-label() / .get-label()';
 
-  diag ".set-active() / .get-active()";
-  is $mb.get-active, 0, 'Not active';
+  is $mb.get-active, 0, '.set-active()';
   $mb.set-active(1);
-  is $mb.get-active, 1, 'Active';
+  is $mb.get-active, 1, '.set-active()';
 }
 
 #`{{

@@ -35,16 +35,16 @@ subtest 'Inherit CellRenderer', {
 #  $w.gtk-container-add($b);
 #  $w.show-all;
 
-  diag ".get-preferred-width(): " ~ $crt.get-preferred-width($b).join(', ');
-  diag ".get-preferred-height-for-width(): " ~
+  ok 1, ".get-preferred-width(): " ~ $crt.get-preferred-width($b).join(', ');
+  ok 1, ".get-preferred-height-for-width(): " ~
        $crt.get-preferred-height-for-width( $b, 10);
-  diag ".get-preferred-height(): " ~ $crt.get-preferred-height($b);
-  diag ".get-preferred-width-for-height(): " ~
+  ok 1, ".get-preferred-height(): " ~ $crt.get-preferred-height($b);
+  ok 1, ".get-preferred-width-for-height(): " ~
        $crt.get-preferred-width-for-height( $b, 10);
 
   my @ps = $crt.get-preferred-size($b);
-  diag [~] ".get-preferred-size() [0]: ", @ps[0].width, ', ', @ps[0].height;
-  diag [~] ".get-preferred-size() [1]: ", @ps[1].width, ', ', @ps[1].height;
+  ok 1, [~] ".get-preferred-size() [0]: ", @ps[0].width, ', ', @ps[0].height;
+  ok 1, [~] ".get-preferred-size() [1]: ", @ps[1].width, ', ', @ps[1].height;
 
   $crt.set-fixed-size( 10, 10);
   is-deeply $crt.get-fixed-size, (10, 10),

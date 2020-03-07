@@ -76,16 +76,16 @@ subtest 'Interface TreeModel', {
   is $ls.get-column-type(Col0), G_TYPE_INT, '.get-column-type()';
 
   $tp .= new(:first);
-  diag 'Iterator set to first row: ' ~ $tp.to-string;
+  ok 1, 'Iterator set to first row: ' ~ $tp.to-string;
   $iter = $ls.get-iter($tp);
   ok $iter.tree-iter-is-valid, '.get-iter()';
   $tp.next;
   $tp.next;
-  diag 'Iterator set to 3rd row: ' ~ $tp.to-string;
+  ok 1, 'Iterator set to 3rd row: ' ~ $tp.to-string;
   $iter = $ls.get-iter($tp);
   nok $iter.tree-iter-is-valid, 'past the last row';
 
-  diag 'Iterator set to 2nd row: 1';
+  ok 1, 'Iterator set to 2nd row: 1';
   $iter = $ls.get-iter-from-string('1');
   ok $iter.tree-iter-is-valid, '.get-iter-from-string()';
   #$iter = $ls.gtk_tree_model_get_iter_from_string('0:1');
@@ -108,12 +108,12 @@ subtest 'Interface TreeModel', {
   $va[Col1].unset;
 
   my Int $sts = $ls.iter-next($iter);
-  diag "there is a next path: $sts";
+  ok 1, "there is a next path: $sts";
   $tp = $ls.get-path($iter);
   is $tp.to-string, '1', '.iter-next()';
 
   $sts = $ls.iter-previous($iter);
-  diag "there is a previous path: $sts";
+  ok 1, "there is a previous path: $sts";
   $tp = $ls.get-path($iter);
   is $tp.to-string, '0', '.iter-previous()';
 
@@ -251,9 +251,9 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::TreeIter $sibling-iter = $ls.get-iter-from-string('3');
   $iter = $ls.insert-before($sibling-iter);
   $tp = $ls.get-path($sibling-iter);
-  diag "sibling moved from 3 to $tp.to-string()";
+  ok 1, "sibling moved from 3 to $tp.to-string()";
   $tp = $ls.get-path($iter);
-  diag "iter set to $tp.to-string()";
+  ok 1, "iter set to $tp.to-string()";
   $ls.gtk-list-store-set( $iter, Col0, 123, Col1, 'I am lost of words');
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'I am lost of words', '.insert-before(): col1 ok';
@@ -262,9 +262,9 @@ subtest 'Manipulations', {
 
   $iter = $ls.insert-after($sibling-iter);
   $tp = $ls.get-path($sibling-iter);
-  diag "sibling moved from 4 to $tp.to-string()";
+  ok 1, "sibling moved from 4 to $tp.to-string()";
   $tp = $ls.get-path($iter);
-  diag "iter set to $tp.to-string()";
+  ok 1, "iter set to $tp.to-string()";
   $ls.gtk-list-store-set( $iter, Col0, 1098, Col1, '#me too');
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, '#me too', '.insert-after(): col1 ok';

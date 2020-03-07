@@ -11,38 +11,33 @@ use Gnome::Gtk3::ToggleButton;
 my Gnome::Gtk3::ToggleButton $tb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new";
   $tb .= new;
-  isa-ok $tb, Gnome::Gtk3::ToggleButton;
+  isa-ok $tb, Gnome::Gtk3::ToggleButton, '.new()';
 
-  diag ".new(:label)";
   $tb .= new(:label<Bold>);
-  isa-ok $tb, Gnome::Gtk3::ToggleButton;
+  isa-ok $tb, Gnome::Gtk3::ToggleButton, '.new(:label)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  diag ".set-active() / .get-active()";
-  is $tb.get-active, 0, 'Not active';
+  is $tb.get-active, 0, '.get-active()';
   $tb.set-active(1);
-  is $tb.get-active, 1, 'Active';
+  is $tb.get-active, 1, '.set-active()';
 
-  diag ".set-mode() / .get-mode()";
-  is $tb.get-mode, 0, 'Not a separate indicator';
+  is $tb.get-mode, 0, '.get-mode()';
   $tb.set-mode(1);
-  is $tb.get-mode, 1, 'Separate indicator';
+  is $tb.get-mode, 1, '.set-mode()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
-  diag ".get-label / .set-label";
-  is $tb.get-label, 'Bold', 'label ok';
+  is $tb.get-label, 'Bold', '.get-label';
   $tb.set-label('Underline');
+  is $tb.get-label, 'Underline', '.set-label';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  diag "signal 'toggled'";
   my Bool $triggered = False;
   class X {
     method t-event ( :$widget ) {
