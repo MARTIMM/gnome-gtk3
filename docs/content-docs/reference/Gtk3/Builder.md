@@ -164,13 +164,11 @@ The following example shows the fields of a returned error when a faulty string 
 
 Creates a new empty builder object.
 
-This function is only useful if you intend to make multiple calls to `gtk_builder_add_from_file()` or `gtk_builder_add_from_string()` in order to merge multiple UI descriptions into a single builder.
+This function is only useful if you intend to make multiple calls to `gtk_builder_add_from_file()`, `gtk_builder_add_from_resource()` or `gtk_builder_add_from_string()` in order to merge multiple UI descriptions into a single builder.
 
-Most users will probably want to use `gtk_builder_new_from_file()` `gtk_builder_new_from_string()`.
+Most users will probably want to use `gtk_builder_new_from_file()`, `gtk_builder_new_from_resource()` or `gtk_builder_new_from_string()`.
 
 Returns: a new (empty) **Gnome::Gtk3::Builder** object
-
-Since: 2.12
 
     method gtk_builder_new ( --> N-GObject  )
 
@@ -187,14 +185,32 @@ You should not use this function with untrusted files (ie: files that are not pa
 
 Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
-Since: 2.12
-
     method gtk_builder_add_from_file (
       Str $filename, N-GObject $error
       --> Gnome::Glib::Error
     )
 
   * Str $filename; the name of the file to parse
+
+[[gtk_] builder_] add_from_resource
+-----------------------------------
+
+Parses a resource file containing a [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) and merges it with the current contents of *builder*.
+
+Most users will probably want to use `gtk_builder_new_from_resource()`.
+
+If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
+
+Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
+
+    method gtk_builder_add_from_resource (
+      Str $resource_path
+      --> Gnome::Glib::Error
+    )
+
+  * Str $resource_path; the path of the resource file to parse
+
+  * N-GObject $error; (allow-none): return location for an error, or `Any`
 
 [[gtk_] builder_] add_from_string
 ---------------------------------
@@ -207,13 +223,9 @@ If an error occurs, a valid Gnome::Glib::Error object is returned with an error 
 
 Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
 
-Since: 2.12
-
-    method gtk_builder_add_from_string ( Str $buffer, UInt $length, N-GObject $error --> UInt  )
+    method gtk_builder_add_from_string ( Str $buffer --> N-GObject $error )
 
   * Str $buffer; the string to parse
-
-  * Int $length; the length of *buffer* (may be -1 if *buffer* is nul-terminated)
 
 [[gtk_] builder_] get_object
 ----------------------------
@@ -221,8 +233,6 @@ Since: 2.12
 Gets the object named *name*. Note that this function does not increment the reference count of the returned object.
 
 Returns: (nullable) (transfer none): the object named *name* or `Any` if it could not be found in the object tree.
-
-Since: 2.12
 
     method gtk_builder_get_object ( Str $name --> N-GObject  )
 
@@ -234,8 +244,6 @@ Since: 2.12
 Looks up a type by name, using the virtual function that **Gnome::Gtk3::Builder** has for that purpose. This is mainly used when implementing the **Gnome::Gtk3::Buildable** interface on a type.
 
 Returns: the `GType` found for *type_name* or `G_TYPE_INVALID` if no type was found
-
-Since: 2.12
 
     method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
 
@@ -250,11 +258,22 @@ If there is an error opening the file or parsing the description then the progra
 
 Returns: a **Gnome::Gtk3::Builder** containing the described interface
 
-Since: 3.10
-
     method gtk_builder_new_from_file ( Str $filename --> N-GObject  )
 
   * Str $filename; filename of user interface description file
+
+[[gtk_] builder_] new_from_resource
+-----------------------------------
+
+Builds the [**Gnome::Gtk3::Builder** UI definition](https://developer.gnome.org/gtk3/3.24/GtkBuilder.html#BUILDER-UI) at *resource_path*.
+
+If there is an error locating the resource or parsing the description, then the program will be aborted.
+
+Returns: a **Gnome::Gtk3::Builder** containing the described interface
+
+    method gtk_builder_new_from_resource ( Str $resource_path --> N-GObject )
+
+  * Str $resource_path; a `GResource` resource path
 
 [[gtk_] builder_] new_from_string
 ---------------------------------
@@ -266,8 +285,6 @@ If *string* is `Any`-terminated, then *length* should be -1. If *length* is not 
 If there is an error parsing *string* then the program will be aborted. You should not attempt to parse user interface description from untrusted sources.
 
 Returns: a **Gnome::Gtk3::Builder** containing the interface described by *string*
-
-Since: 3.10
 
     method gtk_builder_new_from_string ( Str $string, Int $length --> N-GObject  )
 
@@ -281,8 +298,6 @@ Since: 3.10
 Sets the application associated with *builder*.
 
 You only need this function if there is more than one `GApplication` in your process. *application* cannot be `Any`.
-
-Since: 3.10
 
     method gtk_builder_set_application ( N-GObject $application )
 
@@ -298,8 +313,6 @@ The **Gnome::Gtk3::Application** is used for creating action proxies as requeste
 By default, the builder uses the default application: the one from `g_application_get_default()`. If you want to use another application for constructing proxies, use `gtk_builder_set_application()`.
 
 Returns: (nullable) (transfer none): the application being used by the builder, or `Any`
-
-Since: 3.10
 
     method gtk_builder_get_application ( --> N-GObject  )
 
@@ -319,8 +332,6 @@ Supported properties
 ### translation-domain
 
 The translation domain used when translating property values that have been marked as translatable in interface descriptions. If the translation domain is `Any`, **Gnome::Gtk3::Builder** uses `gettext()`, otherwise `g_dgettext()`.
-
-Since: 2.12
 
 The **Gnome::GObject::Value** type of property *translation-domain* is `G_TYPE_STRING`.
 

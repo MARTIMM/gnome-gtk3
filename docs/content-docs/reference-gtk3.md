@@ -30,7 +30,7 @@ The following modules will not be implemented in this Raku package because they 
 
 * GtkSymbolicColor — Symbolic colors
 * GtkGradient — Gradients
-* Resource Files — Deprecated routines for handling resource files. In GTK+ 3.0, resource files have been deprecated and replaced by CSS-like style sheets, which are understood by GtkCssProvider.
+* Resource Files mentioned [here](https://developer.gnome.org/gtk3/stable/gtk3-Resource-Files.html) — Deprecated routines for handling resource files. In GTK+ 3.0, resource files have been deprecated and replaced by CSS-like style sheets, which are understood by **Gnome::Gtk3::GtkCssProvider**. However, there are methods like `gtk_builder_add_from_resource()` in **Gnome::Gtk3::Builder** which load files from directories from the so called resources path. This is an entirely different matter. Definitions and modules are found in **Gnome::Gio::Resource**.
 * GtkStyle — Deprecated object that holds style information for widgets
 * GtkHScale — A horizontal slider widget for selecting a value from a range
 * GtkVScale — A vertical slider widget for selecting a value from a range

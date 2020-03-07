@@ -23,15 +23,6 @@ my Str $ui-file = 't/data/ui.glade';
 #-------------------------------------------------------------------------------
 subtest 'ISA tests', {
   my Gnome::Gtk3::Builder $builder;
-  throws-like
-    { $builder .= new( :build, :load); },
-    X::Gnome, "Wrong options used",
-    :message(
-      /:s Unsupported options for
-          'Gnome::Gtk3::Builder:'
-          [(build||load) ',']+/
-    );
-
   $builder .= new;
   isa-ok $builder, Gnome::Gtk3::Builder, '.new';
 }
@@ -58,20 +49,9 @@ subtest 'Add ui from file to builder', {
 subtest 'Test builder errors', {
   my Gnome::Gtk3::Builder $builder .= new;
 
-#  throws-like
-#    { $builder.add-gui(:filename('x.glade')); },
-#    X::Gnome, "non existent file not added",
-#    :message('Failed to open file “x.glade”: No such file or directory');
-
-
   # Get the text glade text again and corrupt it by removing an element
   my Str $text = $ui-file.IO.slurp;
   $text ~~ s/ '<interface>' //;
-
-#  throws-like
-#    { $builder.add-gui(:string($text)); },
-#    X::Gnome, "erronenous xml file added",
-#    :message("<input>:4:40 Unhandled tag: <requires>");
 
   subtest "errorcode return from gtk_builder_add_from_file", {
     $e = $builder.add-from-file('x.glade');
@@ -79,9 +59,9 @@ subtest 'Test builder errors', {
     ok $e.domain > 0, "domain code: $e.domain()";
     is $quark.to-string($e.domain), 'g-file-error-quark', 'error domain ok';
     is $e.code, 4, 'error code for this error is 4 and is from file IO';
-    is $e.message,
-       'Failed to open file “x.glade”: No such file or directory',
-       $e.message;
+#    is $e.message,
+#       'Failed to open file “x.glade”: No such file or directory',
+#       $e.message;
   }
 
   subtest "errorcode return from gtk_builder_add_from_string", {
@@ -94,7 +74,7 @@ subtest 'Test builder errors', {
        "error domain: $quark.to-string($e.domain())";
     is $e.code, GTK_BUILDER_ERROR_UNHANDLED_TAG.value,
        'error code for this error is GTK_BUILDER_ERROR_UNHANDLED_TAG';
-    is $e.message, '<input>:4:40 Unhandled tag: <requires>', $e.message;
+#    is $e.message, '<input>:4:40 Unhandled tag: <requires>', $e.message;
   }
 }
 

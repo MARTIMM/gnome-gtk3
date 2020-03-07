@@ -68,10 +68,10 @@ Methods
 new
 ---
 
-Create a new object with a valid application id and application flags.
+Create a new object with a valid application id and a mask of GApplicationFlags values.
 
     multi method new (
-      Bool :$app-id!, GApplicationFlags :$flags = G_APPLICATION_FLAGS_NONE
+      Bool :$app-id!, Int :$flags = G_APPLICATION_FLAGS_NONE
     )
 
 Create an object using a native object from elsewhere.
@@ -116,7 +116,7 @@ g_application_new
 
 Creates a new **Gnome::Gio::Application** instance.
 
-If non-`Any`, the application id must be valid. See `g_application_id_is_valid()`.
+If defined, the application id must be valid. See `g_application_id_is_valid()`.
 
 If no application ID is given then some features of **Gnome::Gio::Application** (most notably application uniqueness) will be disabled.
 
@@ -135,60 +135,16 @@ Returns: a new **Gnome::Gio::Application** instance
 
 Gets the unique identifier for *application*.
 
-Returns: the identifier for *application*, owned by *application*
-
-Since: 2.28
-
     method g_application_get_application_id ( --> Str  )
 
 [g_application_] set_application_id
 -----------------------------------
 
-Sets the unique identifier for *application*.
-
-The application id can only be modified if *application* has not yet been registered.
-
-If non-`Any`, the application id must be valid. See `g_application_id_is_valid()`.
-
-Since: 2.28
+Sets the unique identifier for *application*. The application id can only be modified if *application* has not yet been registered. The application id must be valid, see `g_application_id_is_valid()`.
 
     method g_application_set_application_id ( Str $application_id )
 
   * Str $application_id; (nullable): the identifier for *application*
-
-[g_application_] get_dbus_connection
-------------------------------------
-
-Gets the **GDBusConnection** being used by the application, or `Any`.
-
-If **Gnome::Gio::Application** is using its D-Bus backend then this function will return the **GDBusConnection** being used for uniqueness and communication with the desktop environment and other instances of the application.
-
-If **Gnome::Gio::Application** is not using D-Bus then this function will return `Any`. This includes the situation where the D-Bus backend would normally be in use but we were unable to connect to the bus.
-
-This function must not be called before the application has been registered. See `g_application_get_is_registered()`.
-
-Returns: (transfer none): a **GDBusConnection**, or `Any`
-
-Since: 2.34
-
-    method g_application_get_dbus_connection ( --> N-GObject  )
-
-[g_application_] get_dbus_object_path
--------------------------------------
-
-Gets the D-Bus object path being used by the application, or `Any`.
-
-If **Gnome::Gio::Application** is using its D-Bus backend then this function will return the D-Bus object path that **Gnome::Gio::Application** is using. If the application is the primary instance then there is an object published at this path. If the application is not the primary instance then the result of this function is undefined.
-
-If **Gnome::Gio::Application** is not using D-Bus then this function will return `Any`. This includes the situation where the D-Bus backend would normally be in use but we were unable to connect to the bus.
-
-This function must not be called before the application has been registered. See `g_application_get_is_registered()`.
-
-Returns: the object path, or `Any`
-
-Since: 2.34
-
-    method g_application_get_dbus_object_path ( --> Str  )
 
 [g_application_] get_inactivity_timeout
 ---------------------------------------
@@ -198,8 +154,6 @@ Gets the current inactivity timeout for the application.
 This is the amount of time (in milliseconds) after the last call to `g_application_release()` before the application stops running.
 
 Returns: the timeout, in milliseconds
-
-Since: 2.28
 
     method g_application_get_inactivity_timeout ( --> UInt  )
 
@@ -212,8 +166,6 @@ This is the amount of time (in milliseconds) after the last call to `g_applicati
 
 This call has no side effects of its own. The value set here is only used for next time `g_application_release()` drops the use count to zero. Any timeouts currently in progress are not impacted.
 
-Since: 2.28
-
     method g_application_set_inactivity_timeout ( UInt $inactivity_timeout )
 
   * UInt $inactivity_timeout; the timeout, in milliseconds
@@ -225,24 +177,18 @@ Gets the flags for *application*.
 
 See **GApplicationFlags**.
 
-Since: 2.28
-
     method g_application_get_flags ( --> Int )
 
 [g_application_] set_flags
 --------------------------
 
-Sets the flags for *application*.
-
-The flags can only be modified if *application* has not yet been registered.
+Sets the flags for *application*. The flags can only be modified if *application* has not yet been registered.
 
 See **GApplicationFlags**.
 
-Since: 2.28
+    method g_application_set_flags ( Int $flags )
 
-    method g_application_set_flags ( GApplicationFlags $flags )
-
-  * GApplicationFlags $flags; the flags for *application*
+  * Int $flags; a mask of GApplicationFlags values
 
 [g_application_] get_resource_base_path
 ---------------------------------------
@@ -253,8 +199,6 @@ See `g_application_set_resource_base_path()` for more information.
 
 Returns: (nullable): the base resource path, if one is set
 
-Since: 2.42
-
     method g_application_get_resource_base_path ( --> Str  )
 
 [g_application_] set_resource_base_path
@@ -262,19 +206,17 @@ Since: 2.42
 
 Sets (or unsets) the base resource path of *application*.
 
-The path is used to automatically load various [application resources][gresource] such as menu layouts and action descriptions. The various types of resources will be found at fixed names relative to the given base path.
+The path is used to automatically load various application resources such as menu layouts and action descriptions. The various types of resources will be found at fixed names relative to the given base path.
 
 By default, the resource base path is determined from the application ID by prefixing '/' and replacing each '.' with '/'. This is done at the time that the **Gnome::Gio::Application** object is constructed. Changes to the application ID after that point will not have an impact on the resource base path.
 
-As an example, if the application has an ID of "org.example.app" then the default resource base path will be "/org/example/app". If this is a **Gnome::Gtk3::Application** (and you have not manually changed the path) then **Gnome::Gtk3:: will** then search for the menus of the application at "/org/example/app/gtk/menus.ui".
+As an example, if the application has an ID of "org.example.app" then the default resource base path will be "/org/example/app". If this is a **Gnome::Gtk3::Application** (and you have not manually changed the path) then the object will then search for the menus of the application at "/org/example/app/gtk/menus.ui".
 
-See **GResource** for more information about adding resources to your application.
+See **Gnome::Gio::Resource** for more information about adding resources to your application.
 
 You can disable automatic resource loading functionality by setting the path to `Any`.
 
 Changing the resource base path once the application is running is not recommended. The point at which the resource path is consulted for forming paths for various purposes is unspecified. When writing a sub-class of **Gnome::Gio::Application** you should either set the *resource-base-path* property at construction time, or call this function during the instance initialization. Alternatively, you can call this function in the **Gnome::Gio::ApplicationClass**.startup virtual function, before chaining up to the parent implementation.
-
-Since: 2.42
 
     method g_application_set_resource_base_path ( Str $resource_path )
 
@@ -299,8 +241,6 @@ If *handle-local-options* needs to see the list of filenames, then the use of `G
 
 It is important to use the proper GVariant format when retrieving the options with `g_variant_dict_lookup()`: - for `G_OPTION_ARG_NONE`, use b - for `G_OPTION_ARG_STRING`, use &s - for `G_OPTION_ARG_INT`, use i - for `G_OPTION_ARG_INT64`, use x - for `G_OPTION_ARG_DOUBLE`, use d - for `G_OPTION_ARG_FILENAME`, use ^ay - for `G_OPTION_ARG_STRING_ARRAY`, use &as - for `G_OPTION_ARG_FILENAME_ARRAY`, use ^aay
 
-Since: 2.40
-
     method g_application_add_main_option_entries ( N-GOptionEntry $entries )
 
   * N-GOptionEntry $entries; (array zero-terminated=1) (element-type N-GOptionEntry) a `Any`-terminated list of **N-GOptionEntrys**
@@ -315,8 +255,6 @@ Calling this function is the equivalent of calling `g_application_add_main_optio
 The parsed arguments will be packed into a **GVariantDict** which is passed to *handle-local-options*. If `G_APPLICATION_HANDLES_COMMAND_LINE` is set, then it will also be sent to the primary instance. See `g_application_add_main_option_entries()` for more details.
 
 See **N-GOptionEntry** for more documentation of the arguments.
-
-Since: 2.42
 
     method g_application_add_main_option (
       Str $long_name, char $short_name, GOptionFlags $flags,
@@ -342,15 +280,13 @@ Adds a **N-GOptionGroup** to the commandline handling of *application*.
 
 This function is comparable to `g_option_context_add_group()`.
 
-Unlike `g_application_add_main_option_entries()`, this function does not deal with `Any` *arg_data* and never transmits options to the primary instance.
+Unlike `g_application_add_main_option_entries()`, this function does not deal with undefined *arg_data* and never transmits options to the primary instance.
 
 The reason for that is because, by the time the options arrive at the primary instance, it is typically too late to do anything with them. Taking the GTK option group as an example: GTK will already have been initialised by the time the *command-line* handler runs. In the case that this is not the first-running instance of the application, the existing instance may already have been running for a very long time.
 
 This means that the options from **N-GOptionGroup** are only really usable in the case that the instance of the application being run is the first instance. Passing options like `--display=` or `--gdk-debug=` on future runs will have no effect on the existing primary instance.
 
 Calling this function will cause the options in the supplied option group to be parsed, but it does not cause you to be "opted in" to the new functionality whereby unrecognised options are rejected even if `G_APPLICATION_HANDLES_COMMAND_LINE` was given.
-
-Since: 2.40
 
     method g_application_add_option_group ( N-GOptionGroup $group )
 
@@ -359,17 +295,13 @@ Since: 2.40
 [g_application_] set_option_context_parameter_string
 ----------------------------------------------------
 
-Sets the parameter string to be used by the commandline handling of *application*.
+Sets the parameter string to be used by the commandline handling of *application*. This function registers the argument to be passed to `g_option_context_new()` when the internal **GOptionContext** of *application* is created. See `g_option_context_new()` for more information about *parameter_string*.
 
-This function registers the argument to be passed to `g_option_context_new()` when the internal **GOptionContext** of *application* is created.
+    method g_application_set_option_context_parameter_string (
+      Str $parameter_string
+    )
 
-See `g_option_context_new()` for more information about *parameter_string*.
-
-Since: 2.56
-
-    method g_application_set_option_context_parameter_string ( Str $parameter_string )
-
-  * Str $parameter_string; (nullable): a string which is displayed in the first line of `--help` output, after the usage summary `programname [OPTION...]`.
+  * Str $parameter_string; a string which is displayed in the first line of `--help` output, after the usage summary `programname [OPTION...]`.
 
 [g_application_] set_option_context_summary
 -------------------------------------------
@@ -377,8 +309,6 @@ Since: 2.56
 Adds a summary to the *application* option context.
 
 See `g_option_context_set_summary()` for more information.
-
-Since: 2.56
 
     method g_application_set_option_context_summary ( Str $summary )
 
@@ -391,8 +321,6 @@ Adds a description to the *application* option context.
 
 See `g_option_context_set_description()` for more information.
 
-Since: 2.56
-
     method g_application_set_option_context_description ( Str $description )
 
   * Str $description; (nullable): a string to be shown in `--help` output after the list of options, or `Any`
@@ -400,13 +328,7 @@ Since: 2.56
 [g_application_] get_is_registered
 ----------------------------------
 
-Checks if *application* is registered.
-
-An application is registered if `g_application_register()` has been successfully called.
-
-Returns: `1` if *application* is registered
-
-Since: 2.28
+Checks if *application* is registered. An application is registered if `g_application_register()` has been successfully called. Returns: `1` if *application* is registered.
 
     method g_application_get_is_registered ( --> Int  )
 
@@ -420,8 +342,6 @@ If *application* is remote then it means that another instance of application al
 The value of this property cannot be accessed before `g_application_register()` has been called. See `g_application_get_is_registered()`.
 
 Returns: `1` if *application* is remote
-
-Since: 2.28
 
     method g_application_get_is_remote ( --> Int  )
 
@@ -444,15 +364,14 @@ In the event of an error (such as *cancellable* being cancelled, or a failure to
 
 Note: the return value of this function is not an indicator that this instance is or is not the primary instance of the application. See `g_application_get_is_remote()` for that.
 
-Returns: `1` if registration succeeded
+Returns a valid error object if registration didn't succeed.
 
-Since: 2.28
-
-    method g_application_register ( N-GObject $cancellable, N-GError $error --> Int  )
+    method g_application_register (
+      N-GObject :$cancellable
+      --> Gnome::Glib::Error
+    )
 
   * N-GObject $cancellable; (nullable): a **GCancellable**, or `Any`
-
-  * N-GError $error; a pointer to a NULL **GError**, or `Any`
 
 g_application_hold
 ------------------
@@ -481,11 +400,7 @@ g_application_activate
 
 Activates the application.
 
-In essence, this results in the *activate* signal being emitted in the primary instance.
-
-The application must be registered before calling this function.
-
-Since: 2.28
+In essence, this results in the *activate* signal being emitted in the primary instance. The application must be registered before calling this function.
 
     method g_application_activate ( )
 
@@ -501,8 +416,6 @@ In essence, this results in the *open* signal being emitted in the primary insta
 *hint* is simply passed through to the *open* signal. It is intended to be used by applications that have multiple modes for opening files (eg: "view" vs "edit", etc). Unless you have a need for this functionality, you should use "".
 
 The application must be registered before calling this function and it must have the `G_APPLICATION_HANDLES_OPEN` flag set.
-
-Since: 2.28
 
     method g_application_open ( N-GObject $files, Int $n_files, Str $hint )
 
@@ -521,13 +434,9 @@ This function is intended to be run from `main()` and its return value is intend
 
 **Gnome::Gio::Application** will attempt to parse the commandline arguments. You can add commandline flags to the list of recognised options by way of `g_application_add_main_option_entries()`. After this, the *handle-local-options* signal is emitted, from which the application can inspect the values of its **N-GOptionEntrys**.
 
-    I<handle-local-options> is a good place to handle options
-
-such as `--version`, where an immediate reply from the local process is desired (instead of communicating with an already-running instance). A *handle-local-options* handler can stop further processing by returning a non-negative value, which then becomes the exit status of the process.
+    I<handle-local-options> is a good place to handle options such as `--version`, where an immediate reply from the local process is desired (instead of communicating with an already-running instance). A  I<handle-local-options> handler can stop further processing by returning a non-negative value, which then becomes the exit status of the process.
 
 What happens next depends on the flags: if `G_APPLICATION_HANDLES_COMMAND_LINE` was specified then the remaining commandline arguments are sent to the primary instance, where a *command-line* signal is emitted. Otherwise, the remaining commandline arguments are assumed to be a list of files. If there are no files listed, the application is activated via the *activate* signal. If there are one or more files, and `G_APPLICATION_HANDLES_OPEN` was specified then the files are opened via the *open* signal.
-
-If you are interested in doing more complicated local handling of the commandline then you should implement your own **Gnome::Gio::Application** subclass and override `local_command_line()`. In this case, you most likely want to return `1` from your `local_command_line()` implementation to suppress the default handling. See [Gnome::Gio::Application-example-cmdline2.c][Gnome::Gio::Application-example-cmdline2] for an example.
 
 If, after the above is done, the use count of the application is zero then the exit status is returned immediately. If the use count is non-zero then the default main context is iterated until the use count falls to zero, at which point 0 is returned.
 
@@ -537,17 +446,11 @@ This function sets the prgname (`g_set_prgname()`), if not already set, to the b
 
 Much like `g_main_loop_run()`, this function will acquire the main context for the duration that the application is running.
 
-Since 2.40, applications that are not explicitly flagged as services or launchers (ie: neither `G_APPLICATION_IS_SERVICE` or `G_APPLICATION_IS_LAUNCHER` are given as flags) will check (from the default handler for local_command_line) if "--Gnome::Gio::Application-service" was given in the command line. If this flag is present then normal commandline processing is interrupted and the `G_APPLICATION_IS_SERVICE` flag is set. This provides a "compromise" solution whereby running an application directly from the commandline will invoke it in the normal way (which can be useful for debugging) while still allowing applications to be D-Bus activated in service mode. The D-Bus service file should invoke the executable with "--Gnome::Gio::Application-service" as the sole commandline argument. This approach is suitable for use by most graphical applications but should not be used from applications like editors that need precise control over when processes invoked via the commandline will exit and what their exit status will be.
+Since 2.40, applications that are not explicitly flagged as services or launchers (ie: neither `G_APPLICATION_IS_SERVICE` or `G_APPLICATION_IS_LAUNCHER` are given as flags) will check (from the default handler for local_command_line) if "--gapplication-service" was given in the command line. If this flag is present then normal commandline processing is interrupted and the `G_APPLICATION_IS_SERVICE` flag is set. This provides a "compromise" solution whereby running an application directly from the commandline will invoke it in the normal way (which can be useful for debugging) while still allowing applications to be D-Bus activated in service mode. The D-Bus service file should invoke the executable with "--gapplication-service" as the sole commandline argument. This approach is suitable for use by most graphical applications but should not be used from applications like editors that need precise control over when processes invoked via the commandline will exit and what their exit status will be.
 
 Returns: the exit status
 
-Since: 2.28
-
-    method g_application_run ( int32 $argc, CArray[Str] $argv --> int32  )
-
-  * int32 $argc; the argc from `main()` (or 0 if *argv* is `Any`)
-
-  * CArray[Str] $argv; (array length=argc) (element-type filename) (nullable): the argv from `main()`, or `Any`
+    method g_application_run ( --> int32  )
 
 g_application_quit
 ------------------
@@ -559,8 +462,6 @@ Upon return to the mainloop, `g_application_run()` will return, calling only the
 The hold count is ignored. Take care if your code has called `g_application_hold()` on the application and is therefore still expecting it to exist. (Note that you may have called `g_application_hold()` indirectly, for example through `gtk_application_add_window()`.)
 
 The result of calling `g_application_run()` again after it returns is unspecified.
-
-Since: 2.32
 
     method g_application_quit ( )
 
@@ -575,8 +476,6 @@ If there is no default application then `Any` is returned.
 
 Returns: (transfer none): the default application for this process, or `Any`
 
-Since: 2.32
-
     method g_application_get_default ( --> N-GObject  )
 
 [g_application_] set_default
@@ -585,8 +484,6 @@ Since: 2.32
 Sets or unsets the default application for the process, as returned by `g_application_get_default()`.
 
 This function does not take its own reference on *application*. If *application* is destroyed then the default application will revert back to `Any`.
-
-Since: 2.32
 
     method g_application_set_default ( )
 
@@ -601,8 +498,6 @@ The busy state will be exposed to other processes, so a session shell will use t
 
 To cancel the busy indication, use `g_application_unmark_busy()`.
 
-Since: 2.38
-
     method g_application_mark_busy ( )
 
 [g_application_] unmark_busy
@@ -614,8 +509,6 @@ When the busy count reaches zero, the new state will be propagated to other proc
 
 This function must only be called to cancel the effect of a previous call to `g_application_mark_busy()`.
 
-Since: 2.38
-
     method g_application_unmark_busy ( )
 
 [g_application_] get_is_busy
@@ -624,8 +517,6 @@ Since: 2.38
 Gets the application's current busy state, as set through `g_application_mark_busy()` or `g_application_bind_busy_property()`.
 
 Returns: `1` if *application* is currenty marked as busy
-
-Since: 2.44
 
     method g_application_get_is_busy ( --> Int  )
 
@@ -646,8 +537,6 @@ If a previous notification was sent with the same *id*, it will be replaced with
 
 If *notification* is no longer relevant, it can be withdrawn with `g_application_withdraw_notification()`.
 
-Since: 2.40
-
     method g_application_send_notification ( Str $id, N-GObject $notification )
 
   * Str $id; (nullable): id of the notification, or `Any`
@@ -665,8 +554,6 @@ This function works even for notifications sent in previous executions of this a
 
 Note that notifications are dismissed when the user clicks on one of the buttons in a notification or triggers its default action, so there is no need to explicitly withdraw the notification in that case.
 
-Since: 2.40
-
     method g_application_withdraw_notification ( Str $id )
 
   * Str $id; id of a previously sent notification
@@ -678,8 +565,6 @@ Marks *application* as busy (see `g_application_mark_busy()`) while *property* o
 
 The binding holds a reference to *application* while it is active, but not to *object*. Instead, the binding is destroyed when *object* is finalized.
 
-Since: 2.44
-
     method g_application_bind_busy_property ( Pointer $object, Str $property )
 
   * Pointer $object; (type GObject.Object): a **GObject**
@@ -690,8 +575,6 @@ Since: 2.44
 -------------------------------------
 
 Destroys a binding between *property* and the busy state of *application* that was previously created with `g_application_bind_busy_property()`.
-
-Since: 2.44
 
     method g_application_unbind_busy_property ( Pointer $object, Str $property )
 
@@ -823,8 +706,6 @@ You can override `local_command_line()` if you need more powerful capabilities t
 
 Returns: an exit code. If you have handled your options and want to exit the process, return a non-negative option, 0 for success, and a positive value for failure. To continue, return -1 to let the default option processing continue.
 
-Since: 2.40
-
     method handler (
       Unknown type G_TYPE_VARIANT_DICT $options,
       Gnome::GObject::Object :widget($application),
@@ -843,8 +724,6 @@ The *name-lost* signal is emitted only on the registered primary instance when a
 The default handler for this signal calls `g_application_quit()`.
 
 Returns: `1` if the signal has been handled
-
-Since: 2.60
 
     method handler (
       Gnome::GObject::Object :widget($application),
@@ -907,7 +786,5 @@ The **Gnome::GObject::Value** type of property *action-group* is `G_TYPE_OBJECT`
 
 ### Is busy
 
-Whether the application is currently marked as busy through `g_application_mark_busy()` or `g_application_bind_busy_property()`. Since: 2.44
-
-The **Gnome::GObject::Value** type of property *is-busy* is `G_TYPE_BOOLEAN`.
+Whether the application is currently marked as busy through `g_application_mark_busy()` or `g_application_bind_busy_property()`. The **Gnome::GObject::Value** type of property *is-busy* is `G_TYPE_BOOLEAN`.
 

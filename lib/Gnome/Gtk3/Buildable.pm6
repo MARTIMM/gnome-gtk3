@@ -48,7 +48,7 @@ submethod BUILD ( *%options ) { }
 # no pod. user does not have to know about it.
 # Hook for modules using this interface. Same principle as _fallback but
 # does not need callsame. Also this method must be usable without
-# an instated object
+# an instanciated object.
 method _buildable_interface ( Str $native-sub --> Callable ) {
 
   my Callable $s;

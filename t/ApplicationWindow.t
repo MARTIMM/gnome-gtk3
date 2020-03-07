@@ -3,19 +3,21 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::ApplicationWindow;
+ok 1, 'loads ok';
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
+#`{{
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::ApplicationWindow $aw;
 #-------------------------------------------------------------------------------
+
 subtest 'ISA test', {
-  $aw .= new;
-  isa-ok $aw, Gnome::Gtk3::ApplicationWindow, '.new()';
+$aw .= new;
+isa-ok $aw, Gnome::Gtk3::ApplicationWindow, '.new()';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 }
@@ -43,4 +45,3 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
-

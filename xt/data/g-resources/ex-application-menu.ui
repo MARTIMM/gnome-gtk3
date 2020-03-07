@@ -1,0 +1,48 @@
+<interface>
+  <menu id="menubar">
+    <!--
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Incendio</attribute>
+        <attribute name="action">app.incendio</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="label" translatable="yes">Defensive Charms</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Expelliarmus</attribute>
+        <attribute name="action">app.expelliarmus</attribute>
+        <attribute name="icon">/usr/share/my-app/poof!.png</attribute>
+      </item>
+    </section>
+    -->
+
+    <submenu>
+      <attribute name="label">File</attribute>
+      <section>
+        <item>
+          <attribute name="label">New</attribute>
+          <!--
+            my Gnome::Gio::SimpleAction $file-new .= new(:name<file-new>);
+            $file-new.register-signal( self, 'file-new', 'activate');
+            $!app.add-action($file-new);
+          -->
+          <attribute name='action'>app.file-new</attribute>
+        </item>
+        <item>
+          <attribute name ="label">Quit</attribute>
+          <attribute name='action'>app.file-quit</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">Edit</attribute>
+    </submenu>
+    <submenu>
+      <attribute name="label">Choices</attribute>
+    </submenu>
+    <submenu>
+      <attribute name="label">Help</attribute>
+    </submenu>
+  </menu>
+</interface>

@@ -1208,3 +1208,10 @@ Since: 2.44
 
   * G_NETWORK_CONNECTIVITY_FULL: The host is connected to a network, and appears to be able to reach the full Internet.
 
+enum GResourceLookupFlags
+-------------------------
+
+GResourceLookupFlags determine how resource path lookups are handled.
+
+  * G_RESOURCE_LOOKUP_FLAGS_NONE: No flags set.
+

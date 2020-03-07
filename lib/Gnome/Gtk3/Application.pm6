@@ -111,6 +111,7 @@ Create a Application object using a native object returned from a builder. See a
 =end pod
 
 #TM:1:new(:app-id):
+#TM:1:new():
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
 
@@ -131,16 +132,11 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<app-id> {
-    if self.g_application_id_is_valid(%options<app-id>) {
-      my GApplicationFlags $f = %options<flags> // G_APPLICATION_FLAGS_NONE;
-      self.set-native-object(gtk_application_new( %options<app-id>, $f));
-    }
-
-    else {
-      die X::Gnome.new(
-        :message("Invalid application id: %options<app-id>")
-      );
-    }
+    self.set-native-object(
+      gtk_application_new(
+        %options<app-id>, %options<flags> // G_APPLICATION_FLAGS_NONE
+      )
+    );
   }
 
   elsif ? %options<widget> || ? %options<native-object> ||
@@ -159,7 +155,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    # self.set-native-object(gtk_application_new());
+    self.set-native-object(gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
   }
 
   # only after creating the native-object, the gtype is known
@@ -206,8 +202,6 @@ If no application ID is given then some features (most notably application uniqu
 
 Returns: a new B<Gnome::Gtk3::Application> instance
 
-Since: 3.0
-
   method gtk_application_new ( Str $application_id, GApplicationFlags $flags --> N-GObject )
 
 =item Str $application_id; (allow-none): The application ID.
@@ -231,7 +225,7 @@ typically, you should add new application windows in response
 to the emission of the  I<activate> signal.
 
 This call is equivalent to setting the  I<application>
-property of I<window> to I<application>.
+property of I<$window> to I<application>.
 
 Normally, the connection between the application and the window
 will remain until the window is destroyed, but you can explicitly
@@ -240,15 +234,13 @@ remove it with C<gtk_application_remove_window()>.
 GTK+ will keep the I<application> running as long as it has
 any windows.
 
-Since: 3.0
-
   method gtk_application_add_window ( N-GObject $window )
 
 =item N-GObject $window; a B<Gnome::Gtk3::Window>
 
 =end pod
 
-sub gtk_application_add_window ( N-GObject $application, N-GObject $window  )
+sub gtk_application_add_window ( N-GObject $application, N-GObject $window )
   is native(&gtk-lib)
   { * }
 
@@ -265,8 +257,6 @@ C<Any>.
 
 The application may stop running as a result of a call to this
 function.
-
-Since: 3.0
 
   method gtk_application_remove_window ( N-GObject $window )
 
@@ -295,8 +285,6 @@ deletion.
 
 Returns: (element-type B<Gnome::Gtk3::Window>) (transfer none): a B<GList> of B<Gnome::Gtk3::Window>
 
-Since: 3.0
-
   method gtk_application_get_windows ( --> N-GList )
 
 
@@ -316,8 +304,6 @@ C<gtk_application_set_app_menu()>.
 
 Returns: (transfer none) (nullable): the application menu of I<application>
 or C<Any> if no application menu has been set.
-
-Since: 3.4
 
   method gtk_application_get_app_menu ( --> N-GObject )
 
@@ -351,8 +337,6 @@ environment.
 Use the base B<GActionMap> interface to add actions, to respond to the user
 selecting these menu items.
 
-Since: 3.4
-
   method gtk_application_set_app_menu ( N-GObject $app_menu )
 
 =item N-GObject $app_menu; (allow-none): a B<GMenuModel>, or C<Any>
@@ -372,8 +356,6 @@ Returns the menu model that has been set with
 C<gtk_application_set_menubar()>.
 
 Returns: (transfer none): the menubar for windows of I<application>
-
-Since: 3.4
 
   method gtk_application_get_menubar ( --> N-GObject )
 
@@ -407,8 +389,6 @@ menubar (if set) remains in each individual window.
 
 Use the base B<GActionMap> interface to add actions, to respond to the
 user selecting these menu items.
-
-Since: 3.4
 
   method gtk_application_set_menubar ( N-GObject $menubar )
 
@@ -453,8 +433,6 @@ request. It should be used as an argument to C<gtk_application_uninhibit()>
 in order to remove the request. If the platform does not support
 inhibiting or the request failed for some reason, 0 is returned.
 
-Since: 3.4
-
   method gtk_application_inhibit ( N-GObject $window, GtkApplicationInhibitFlags $flags, Str $reason --> UInt )
 
 =item N-GObject $window; (allow-none): a B<Gnome::Gtk3::Window>, or C<Any>
@@ -474,8 +452,6 @@ sub gtk_application_inhibit ( N-GObject $application, N-GObject $window, GtkAppl
 
 Removes an inhibitor that has been established with C<gtk_application_inhibit()>.
 Inhibitors are also cleared when the application exits.
-
-Since: 3.4
 
   method gtk_application_uninhibit ( UInt $cookie )
 
@@ -500,8 +476,6 @@ when the application is running in a sandbox).
 
 Returns: C<1> if any of the actions specified in I<flags> are inhibited
 
-Since: 3.4
-
   method gtk_application_is_inhibited ( GtkApplicationInhibitFlags $flags --> Int )
 
 =item GtkApplicationInhibitFlags $flags; what types of actions should be queried
@@ -525,8 +499,6 @@ C<gtk_application_window_get_id()>.
 
 Returns: (nullable) (transfer none): the window with ID I<id>, or
 C<Any> if there is no window with this ID
-
-Since: 3.6
 
   method gtk_application_get_window_by_id ( UInt $id --> N-GObject )
 
@@ -553,8 +525,6 @@ recently-focused window within this application.
 Returns: (transfer none) (nullable): the active window, or C<Any> if
 there isn't one.
 
-Since: 3.6
-
   method gtk_application_get_active_window ( --> N-GObject )
 
 
@@ -575,8 +545,6 @@ See C<gtk_application_set_accels_for_action()>.
 Returns: (transfer full): a C<Any>-terminated array of strings,
 free with C<g_strfreev()> when done
 
-Since: 3.12
-
   method gtk_application_list_action_descriptions ( --> CArray[Str] )
 
 
@@ -596,8 +564,6 @@ the given action.
 
 Returns: (transfer full): accelerators for I<detailed_action_name>, as
 a C<Any>-terminated array. Free with C<g_strfreev()> when no longer needed
-
-Since: 3.12
 
   method gtk_application_get_accels_for_action ( Str $detailed_action_name --> CArray[Str] )
 
@@ -632,8 +598,6 @@ If you are unsure, check it with C<gtk_accelerator_parse()> first.
 
 Returns: (transfer full): a C<Any>-terminated array of actions for I<accel>
 
-Since: 3.14
-
   method gtk_application_get_actions_for_accel ( Str $accel --> CArray[Str] )
 
 =item Str $accel; an accelerator that can be parsed by C<gtk_accelerator_parse()>
@@ -658,8 +622,6 @@ array for I<accels>.
 
 For the I<detailed_action_name>, see C<g_action_parse_detailed_name()> and
 C<g_action_print_detailed_name()>.
-
-Since: 3.12
 
   method gtk_application_set_accels_for_action ( Str $detailed_action_name, CArray[Str] $accels )
 
@@ -714,8 +676,6 @@ replaced with your own.
 
 Returns: C<1> if you should set an app menu
 
-Since: 3.14
-
   method gtk_application_prefers_app_menu ( --> Int )
 
 
@@ -736,8 +696,6 @@ for more information.
 
 Returns: (transfer none): Gets the menu with the
 given id from the automatically loaded resources
-
-Since: 3.14
 
   method gtk_application_get_menu_by_id ( Str $id --> N-GObject )
 
@@ -788,8 +746,6 @@ Also here, the types of positional arguments in the signal handler are important
 Emitted when a B<Gnome::Gtk3::Window> is added to I<application> through
 C<gtk_application_add_window()>.
 
-Since: 3.2
-
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
     Gnome::GObject::Object :widget($application),
@@ -807,8 +763,6 @@ Since: 3.2
 Emitted when a B<Gnome::Gtk3::Window> is removed from I<application>,
 either as a side-effect of being destroyed or explicitly
 through C<gtk_application_remove_window()>.
-
-Since: 3.2
 
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
@@ -861,8 +815,6 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 
 Set this property to C<1> to register with the session manager.
-Since: 3.4
-
 The B<Gnome::GObject::Value> type of property I<register-session> is C<G_TYPE_BOOLEAN>.
 
 =comment #TP:0:screensaver-active:
@@ -873,8 +825,6 @@ This property is C<1> if GTK+ believes that the screensaver is
 currently active. GTK+ only tracks session state (including this)
 when  I<register-session> is set to C<1>.
 Tracking the screensaver state is supported on Linux.
-Since: 3.24
-
 The B<Gnome::GObject::Value> type of property I<screensaver-active> is C<G_TYPE_BOOLEAN>.
 
 =comment #TP:0:app-menu:

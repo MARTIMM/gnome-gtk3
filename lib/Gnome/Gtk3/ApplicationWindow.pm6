@@ -162,7 +162,6 @@ submethod BUILD ( *%options ) {
     my $a = %options<application>;
     $a .= get-native-object if $a ~~ Gnome::Gtk3::Application;
     self.set-native-object(gtk_application_window_new($a));
-note "A: $a.perl()";
   }
 
   elsif ? %options<widget> || ? %options<native-object> ||
@@ -181,7 +180,7 @@ note "A: $a.perl()";
 
   # create default object
   else {
-    # self.set-native-object(gtk_application_window_new());
+    die X::Gnome.new(:message('No options provided for ' ~ self.^name));
   }
 
   # only after creating the native-object, the gtype is known
@@ -216,8 +215,6 @@ Creates a new B<Gnome::Gtk3::ApplicationWindow>.
 
 Returns: a newly created B<Gnome::Gtk3::ApplicationWindow>
 
-Since: 3.4
-
   method gtk_application_window_new ( N-GObject $application --> N-GObject )
 
 =item N-GObject $application; a B<Gnome::Gtk3::Application>
@@ -235,8 +232,6 @@ sub gtk_application_window_new ( N-GObject $application --> N-GObject )
 
 Sets whether the window will display a menubar for the app menu
 and menubar as needed.
-
-Since: 3.4
 
   method gtk_application_window_set_show_menubar ( Int $show_menubar )
 
@@ -258,8 +253,6 @@ and menubar as needed.
 
 Returns: C<1> if I<window> will display a menubar when needed
 
-Since: 3.4
-
   method gtk_application_window_get_show_menubar ( --> Int )
 
 
@@ -279,8 +272,6 @@ a B<Gnome::Gtk3::Application>, returns `0`.
 
 Returns: the unique ID for I<window>, or `0` if the window
 has not yet been added to a B<Gnome::Gtk3::Application>
-
-Since: 3.6
 
   method gtk_application_window_get_id ( --> UInt )
 
@@ -302,8 +293,6 @@ it.
 
 I<window> takes resposibility for destroying I<help_overlay>.
 
-Since: 3.20
-
   method gtk_application_window_set_help_overlay ( N-GObject $help_overlay )
 
 =item N-GObject $help_overlay; (nullable): a B<Gnome::Gtk3::ShortcutsWindow>
@@ -323,8 +312,6 @@ Gets the B<Gnome::Gtk3::ShortcutsWindow> that has been set up with
 a prior call to C<gtk_application_window_set_help_overlay()>.
 
 Returns: (transfer none) (nullable): the help overlay associated with I<window>, or C<Any>
-
-Since: 3.20
 
   method gtk_application_window_get_help_overlay ( --> N-GObject )
 
