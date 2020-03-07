@@ -142,6 +142,12 @@ layout: sidebar
 
 * [ ] Remove CALL-ME methods
 
+* [x] There is an issue about tests going wrong because of a different native speaking language instead of English.
+
+* [ ] An extention to the language issue above, error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch.
+
+* [ ] To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::N. This is also good to have translations there. Need to use tools for that.
+
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
 
