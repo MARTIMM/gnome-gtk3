@@ -11,34 +11,29 @@ use Gnome::Gtk3::RadioButton;
 my Gnome::Gtk3::RadioButton ( $rb1, $rb2, $rb3);
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  diag ".new";
   $rb1 .= new;
-  isa-ok $rb1, Gnome::Gtk3::RadioButton;
+  isa-ok $rb1, Gnome::Gtk3::RadioButton, '.new()';
 
-  diag ".new(:label)";
   $rb1 .= new(:label('abc'));
-  isa-ok $rb1, Gnome::Gtk3::RadioButton;
+  isa-ok $rb1, Gnome::Gtk3::RadioButton, '.new(:label)';
 
-  diag ".new(:group-from)";
   my Gnome::Gtk3::RadioButton $rb2 .= new(:group-from($rb1));
-  isa-ok $rb2, Gnome::Gtk3::RadioButton;
+  isa-ok $rb2, Gnome::Gtk3::RadioButton, '.new(:group-from)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  diag ".new(:group-from, :label)";
   $rb1 .= new(:label<rb1>);
   $rb2 .= new( :group-from($rb1), :label<rb2>);
 
   my Gnome::Glib::SList $l .= new(:gslist($rb2.get-group));
-  is $l.g-slist-length, 2, 'group has two members';
+  is $l.g-slist-length, 2, '.new(:group-from, :label) / .get-group';
 
   # new radio button is shifted up front in the list
-  diag ".new(:group, :label)";
   $rb3 .= new( :group($l), :label<rb3>);
   $l .= new(:gslist($rb2.get-group));
-  is $l.g-slist-length, 3, 'group now has three members';
+  is $l.g-slist-length, 3, '.new(:group, :label)';
 
   my Gnome::Gtk3::RadioButton $b .= new(:native-object($l.nth-data(1)));
   is $b.get-label, 'rb2', "found label 'rb2' from 2nd radio button";
@@ -79,7 +74,7 @@ subtest 'Themes ...', {
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
 
-  diag "signal 'group-changed'";
+  ok 1, "signal 'group-changed'";
   my Bool $triggered = False;
 
   class X {

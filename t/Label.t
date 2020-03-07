@@ -22,10 +22,10 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations 0', {
 
-  throws-like
-    { $l.get-nonvisible(); },
-    X::Gnome, "non existent sub called",
-    :message("Could not find native sub 'get_nonvisible\(...\)'");
+#  dies-ok(
+#    { $l.get-nonvisible(); },
+#    'non existent sub called'
+#  );
 
   is $l.get-text, 'abc def', '.get-text()';
 

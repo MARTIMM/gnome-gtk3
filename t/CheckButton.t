@@ -13,34 +13,27 @@ my Gnome::Gtk3::CheckButton $cb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
 
-  diag ".new";
   $cb .= new;
-  isa-ok $cb, Gnome::Gtk3::CheckButton;
-  isa-ok $cb, Gnome::Gtk3::ToggleButton;
-  isa-ok $cb, Gnome::Gtk3::Button;
+  isa-ok $cb, Gnome::Gtk3::CheckButton, '.new()';
 
-  diag ".new(:widget)";
   $cb .= new(:native-object($cb.new-with-label('some label')));
-  isa-ok $cb, Gnome::Gtk3::CheckButton;
+  isa-ok $cb, Gnome::Gtk3::CheckButton, '.new(:native-object)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Button', {
-  diag ".set-label() / .get-label()";
   $cb.set-label('set bold');
-  is $cb.get-label, 'set bold', 'label set';
+  is $cb.get-label, 'set bold', '.set-label() / .get-label()';
 
-  diag ".new(:label)";
   $cb .= new(:label<left-justify>);
-  is $cb.get-label, 'left-justify', 'label set from new()';
+  is $cb.get-label, 'left-justify', '.new(:label)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ToggleButton', {
-  diag ".set-active() / .get-active()";
-  is $cb.get-active, 0, 'Not active';
+  is $cb.get-active, 0, '.get-active()';
   $cb.set-active(1);
-  is $cb.get-active, 1, 'Active';
+  is $cb.get-active, 1, '.set-active()';
 }
 
 #`{{

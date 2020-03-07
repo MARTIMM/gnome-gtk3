@@ -2,7 +2,6 @@ use v6;
 use NativeCall;
 use Test;
 
-diag "load";
 use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::FileChooser;
 use Gnome::Gtk3::FileChooserDialog;
@@ -28,7 +27,6 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Interface FileChooser', {
-  diag '.set-action / .get-action';
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
   is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
      'GtkFileChooserAction save';
@@ -44,11 +42,8 @@ subtest 'Interface FileChooser', {
      GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,
      'GtkFileChooserAction create folder';
 
-  diag '.set-local-only / .get-local-only';
   $fcd.set-local-only(1);
-  ok ?$fcd.get-local-only, 'local only';
-  $fcd.set-local-only(0);
-  ok !$fcd.get-local-only, 'not local only';
+  ok ?$fcd.get-local-only, '.set-local-only / .get-local-only';
 }
 
 #-------------------------------------------------------------------------------
