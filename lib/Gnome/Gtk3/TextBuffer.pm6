@@ -129,7 +129,7 @@ submethod BUILD ( *%options ) {
 
   else {# if ? %options<empty> {
     my Gnome::Gtk3::TextTagTable $tag-table .= new;
-    self.set-native-object(gtk_text_buffer_new($tag-table()));
+    self.set-native-object(gtk_text_buffer_new($tag-table.get-native-object));
   }
 
   # only after creating the native-object, the gtype is known

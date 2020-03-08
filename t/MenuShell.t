@@ -1,4 +1,5 @@
 use v6;
+#use lib '../gnome-gobject/lib';
 use NativeCall;
 use Test;
 
@@ -16,7 +17,7 @@ subtest 'ISA test', {
   $mb .= new;
   $ms .= new(:native-object($mb));
 
-  isa-ok $ms, Gnome::Gtk3::MenuShell, ".new(:widget)";
+  isa-ok $ms, Gnome::Gtk3::MenuShell, ".new(:native-object)";
 }
 
 #`{{

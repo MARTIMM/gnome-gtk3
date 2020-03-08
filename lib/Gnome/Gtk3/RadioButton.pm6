@@ -187,7 +187,7 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<group> and ? %options<label> {
     my $g = %options<group>;
-    $g = $g() if $g ~~ Gnome::Glib::SList;
+    $g = $g.get-native-object if $g ~~ Gnome::Glib::SList;
     self.set-native-object(
       gtk_radio_button_new_with_label( $g, %options<label>)
     );
@@ -195,7 +195,7 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<group-from> and ? %options<label> {
     my $w = %options<group-from>;
-    $w = $w() if $w ~~ Gnome::Gtk3::RadioButton;
+    $w = $w.get-native-object if $w ~~ Gnome::Gtk3::RadioButton;
     self.set-native-object(
       gtk_radio_button_new_with_label_from_widget( $w, %options<label>)
     );
@@ -203,7 +203,7 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<group-from> {
     my $w = %options<group-from>;
-    $w = $w() if $w ~~ Gnome::GObject::Object;
+    $w = $w.get-native-object if $w ~~ Gnome::GObject::Object;
     self.set-native-object(gtk_radio_button_new_from_widget($w));
   }
 
@@ -213,7 +213,7 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<group> {
     my $g = %options<group>;
-    $g = $g() if $g ~~ Gnome::Glib::SList;
+    $g = $g.get-native-object if $g ~~ Gnome::Glib::SList;
     self.set-native-object(gtk_radio_button_new($g));
   }
 

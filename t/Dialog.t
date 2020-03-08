@@ -26,12 +26,12 @@ subtest 'ISA tests', {
   isa-ok $n, N-GObject, '.new-with-buttons()';
 
   $d .= new(:native-object($n));
-  isa-ok $d, Gnome::Gtk3::Dialog, '.new(:widget)';
+  isa-ok $d, Gnome::Gtk3::Dialog, '.new(:native-object)';
 
   $d .= new(
     :title('msg dialog'), :parent($top-window),
     :flags(GTK_DIALOG_MODAL +| GTK_DIALOG_DESTROY_WITH_PARENT),
-    :button-spec('Ok', GTK_RESPONSE_ACCEPT, "Cancel", GTK_RESPONSE_REJECT)
+    :button-spec( 'Ok', GTK_RESPONSE_ACCEPT, "Cancel", GTK_RESPONSE_REJECT)
   );
   isa-ok $d, Gnome::Gtk3::Dialog, '.new(:title)';
 }

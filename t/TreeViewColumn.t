@@ -48,7 +48,7 @@ subtest 'Manipulations', {
   $tvc.pack-end( $crt, 1);
 
   $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
-  $tv .= new(:model($ls()));
+  $tv .= new(:model($ls.get-native-object));
   $iter = $ls.gtk-list-store-append;
   $tvc.cell-set-cell-data( $ls, $iter, 0, 0);
 #  ok $tvc.cell-is-visible, '.cell-is-visible()';

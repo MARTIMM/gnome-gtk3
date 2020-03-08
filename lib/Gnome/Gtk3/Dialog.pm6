@@ -282,14 +282,11 @@ submethod BUILD ( *%options ) {
 
   elsif ? %options<title> {
     my Str $title = %options<title> // Str;
-    my N-GObject $parent = N-GObject;
+#    my N-GObject $parent = N-GObject;
     my Int $flags = %options<flags> // 0;
     my @buttons = %options<button-spec> // ();
-    if ? %options<parent> {
-      $parent = %options<parent> ~~ N-GObject
-                ?? %options<parent>
-                !! %options<parent>();
-    }
+    my $parent = %options<parent>;
+    $parent .= get-native-object unless $parent ~~ N-GObject;
     self.set-native-object(
       gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons)
     );
