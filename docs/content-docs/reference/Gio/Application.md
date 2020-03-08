@@ -49,9 +49,7 @@ Implemented Interfaces
 
 Gnome::Gio::Application implements
 
-  * Gnome::Gio::ActionGroup
-
-  * Gnome::Gio::ActionMap
+  * [Gnome::Gio::ActionMap](ActionMap.html)
 
 Synopsis
 ========
@@ -61,6 +59,7 @@ Declaration
 
     unit class Gnome::Gio::Application;
     also is Gnome::GObject::Object;
+    also does Gnome::Gio::ActionMap;
 
 Methods
 =======
