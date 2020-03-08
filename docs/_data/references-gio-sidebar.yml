@@ -5,6 +5,10 @@
     url: '/content-docs/reference/Gio/Action.html'
     doc: 1
     test: 1
+  - title: "ActionMap"
+    url: '/content-docs/reference/Gio/ActionMap.html'
+    doc: 1
+    test: 1
   - title: "Application"
     url: '/content-docs/reference/Gio/Application.html'
     doc: 1
@@ -19,5 +23,9 @@
     test: 1
   - title: "Resource"
     url: '/content-docs/reference/Gio/Resource.html'
+    doc: 1
+    test: 1
+  - title: "SimpleAction"
+    url: '/content-docs/reference/Gio/SimpleAction.html'
     doc: 1
     test: 1
