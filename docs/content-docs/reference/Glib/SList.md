@@ -63,23 +63,12 @@ Create a new plain object. The value doesn't have to be True nor False. The name
 
 Create an object using a native object from elsewhere.
 
-clear-gslist
+clear-object
 ------------
 
-Clear the native list and let gslist-is-valid() return False.
+Clear the native list and let .is-valid() return False.
 
-    clear-gslist ( )
-
-[g_] slist_alloc
-----------------
-
-Allocates space for one `N-GSList` element. It is called by the `g_slist_append()`, `g_slist_prepend()`, `g_slist_insert()` and `g_slist_insert_sorted()` functions and so is rarely used on its own.
-
-Returns: a pointer to the newly-allocated `N-GSList` element.
-
-    method g_slist_alloc ( --> N-GSList  )
-
-  * G_GNUC_WARN_UNUSED_RESUL $T;
+    clear-object ( )
 
 [g_] slist_reverse
 ------------------

@@ -18,10 +18,10 @@ subtest 'Border manipulations', {
   my Gnome::Gtk3::Border $b1 .= new;
   my Gnome::Gtk3::Border $b2 .= new( :10left, :10right, :5top, :5bottom);
   isa-ok $b2, Gnome::Gtk3::Border;
-  is $b2().left, 10, 'left border 10';
-  is $b2().right, 10, 'right border 10';
-  is $b2().top, 5, 'left border 5';
-  is $b2().bottom, 5, 'left border 5';
+  is $b2.get-native-object.left, 10, 'left border 10';
+  is $b2.get-native-object.right, 10, 'right border 10';
+  is $b2.get-native-object.top, 5, 'left border 5';
+  is $b2.get-native-object.bottom, 5, 'left border 5';
 
   my Gnome::Gtk3::Border $b3 .= new(:border($b2.gtk_border_copy));
   isa-ok $b3, Gnome::Gtk3::Border;

@@ -15,8 +15,6 @@ my Gnome::Gtk3::Label $l;
 subtest 'ISA test', {
   $l .= new(:text('abc def'));
   isa-ok $l, Gnome::Gtk3::Label, ".new(:text)";
-  isa-ok $l, Gnome::Gtk3::Widget, 'a parent: Widget';
-  isa-ok $l(), N-GObject, 'the native object: N-GObject';
 }
 
 #-------------------------------------------------------------------------------
@@ -30,7 +28,7 @@ subtest 'Manipulations 0', {
   is $l.get-text, 'abc def', '.get-text()';
 
   my Gnome::Gtk3::Label $label2 .= new(:text('pqr'));
-  $l .= new(:native-object($label2()));
+  $l .= new(:native-object($label2.get-native-object));
   is $l.get-text, 'pqr', '.new(:widget)';
 
   $l .= new(:mnemonic('Search _filename'));

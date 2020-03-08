@@ -1,14 +1,15 @@
 #!/usr/bin/env raku
 
 use v6.d;
-use lib '../gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 #use lib '../gnome-native/lib';
-use lib '../gnome-glib/lib';
-use lib '../gnome-gio/lib';
-use lib 'lib';
+#use lib '../gnome-glib/lib';
+#use lib '../gnome-gio/lib';
+#use lib 'lib';
 
 use NativeCall;
 
+use Gnome::N::N-GVariant;
 use Gnome::Gio::Enums;
 use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;

@@ -45,31 +45,14 @@ layout: sidebar
 
 * [x] Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
 
-* Make some of the routines in several packages the same.
-  * `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref.
-  * [x] **Gnome::GObject::Boxed**. Implement some subs.
-  * [x] **Gnome::GObject::Object**. Implement `clear-object()`.
+* Make some of the routines in toplevel classes the same.
+  * [ ] `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref. In Boxed this must be an abstract method.
 
-  * `.is-valid()`: A boolean test to check if a native object is valid. Must be done while implementing clear-object.
-  * [x] **Gnome::GObject::Boxed** define `.is-valid()` and some other subs
-  * [ ] **Gnome::GObject::Object** define `.is-valid()` and some other subs
-
-  * usage of the above in classes and tests
-    * [ ] `Gnome::Gdk3::*`
-    * [ ] `Gnome::Glib::*`
-    * [ ] `Gnome::GObject::*`
-    * [ ] `Gnome::Gtk3::*`
-    * [x] `Gnome::Pango::*`
-    * [x] `Gnome::Gio::*`
+  * [ ] `.is-valid()`: A boolean test to check if a native object is valid.
 
   * [x] `.set-native-object()`
   * [x] `.get-native-object()`.
-  * [x] **Gnome::GObject::Boxed**. Old methods are deprecated.
-  * [x] **Gnome::GObject::Object**. Old methods are deprecated.
-  * Standalone classes. Old methods are removed.
-    * [x] Gnome::Glib::Error `.error-is-valid()` method is deprecated.
-    * [x] Gnome::Glib::List `.list-is-valid()` method is deprecated.
-    * [ ] Gnome::Glib::SList `.gslist-is-valid()` method is deprecated.
+
 
   * All modules inheriting from **Gnome::GObject::Boxed**
     * [x] Gnome::GObject::Value `.value-is-valid()` method is deprecated.
@@ -98,8 +81,9 @@ layout: sidebar
   * Standalone or top level classes. A DESTROY submethod must be declared.
     * [x] Gnome::Glib::Error
     * [x] Gnome::Glib::List
-    * [ ] Gnome::Glib::SList
+    * [x] Gnome::Glib::SList
     * [x] Gnome::GObject::Value
+    * [ ] Gnome::GObject::Param
 
   * Top class is **Gnome::GObject::Boxed**. Classes inheriting from Boxed must define a DESTROY method when native objects must be cleared
     * [ ] `Gnome::Gtk3::*`
@@ -140,7 +124,7 @@ layout: sidebar
   * [ ] casting
   * [ ] move methods `set-class-info()` / `get-class-info()` to **Gnome::N::X** as well as the storage into $!gtk-class-gtype. This means that the sub `g_type_from_name()` from **Gnome::GObject::Type** must be duplicated to prevent circular dependency.
 
-* [ ] Remove CALL-ME methods
+* [x] Remove CALL-ME methods and all uses of them
 
 * [x] There is an issue about tests going wrong because of a different native speaking language instead of English.
 
@@ -149,6 +133,8 @@ layout: sidebar
 * [ ] To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::N. This is also good to have translations there. Need to use tools for that.
 
 * [ ] For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
+
+* [ ] Add `method clear-object ( ) { !!! }` to **Gnome::GObject::Boxed**. This removes the need to set/clear `$!is-valid` using calls to methods from the child objects. `.set-native-object()` will handle the clearing then from there.
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.

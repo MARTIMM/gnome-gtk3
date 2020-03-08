@@ -165,17 +165,17 @@ Create an object using a native option context object from elsewhere.
 
     multi method new ( N-GOptionContext :$context! )
 
-option-context-is-valid
------------------------
+is-valid
+--------
 
 Returns True if native option context object is valid, otherwise `False`.
 
-    method option-context-is-valid ( --> Bool )
+    method is-valid ( --> Bool )
 
 
 
 
-Clear the error and return data to memory to pool. The option context object is not valid after this call and option-context-is-valid() will return `False`.
+Clear the error and return data to memory to pool. The option context object is not valid after this call and .is-valid() will return `False`.
 
     method clear-option-context ()
 

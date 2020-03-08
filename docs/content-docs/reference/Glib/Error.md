@@ -19,15 +19,15 @@ This class is greatly simplified because in Raku one can use Exception classes t
 
 Error domains and codes are conventionally named as follows:
 
-- The error domain is called *NAMESPACE*_*MODULE*_ERROR. For instance glib file utilities uses G_FILE_ERROR.
+  * The error domain is called *NAMESPACE*_*MODULE*_ERROR. For instance glib file utilities uses G_FILE_ERROR.
 
-- The quark function for the error domain is called <namespace>_<module>_error_quark, for example `g-file-error-quark()`.
+  * The quark function for the error domain is called <namespace>_<module>_error_quark, for example `g-file-error-quark()`.
 
-- The error codes are in an enumeration called <Namespace><Module>Error, for example `GFileError`.
+  * The error codes are in an enumeration called <Namespace><Module>Error, for example `GFileError`.
 
-- Members of the error code enumeration are called <NAMESPACE>_<MODULE>_ERROR_<CODE>, for example `G_FILE_ERROR_NOENT`.
+  * Members of the error code enumeration are called <NAMESPACE>_<MODULE>_ERROR_<CODE>, for example `G_FILE_ERROR_NOENT`.
 
-- If there's a "generic" or "unknown" error code for unrecoverable errors it doesn't make sense to distinguish with specific codes, it should be called <NAMESPACE>_<MODULE>_ERROR_FAILED, for example `G_SPAWN_ERROR_FAILED`. In the case of error code enumerations that may be extended in future releases, you should generally not handle this error code explicitly, but should instead treat any unrecognized error code as equivalent to FAILED.
+  * If there's a "generic" or "unknown" error code for unrecoverable errors it doesn't make sense to distinguish with specific codes, it should be called <NAMESPACE>_<MODULE>_ERROR_FAILED, for example `G_SPAWN_ERROR_FAILED`. In the case of error code enumerations that may be extended in future releases, you should generally not handle this error code explicitly, but should instead treat any unrecognized error code as equivalent to FAILED.
 
 Synopsis
 ========
@@ -42,7 +42,7 @@ Example
 
     my Gnome::Gtk3::Builder $builder .= new;
 
-    # try to read non existing file
+    # Try to read non existing file
     my Gnome::Glib::Error $e = $builder.add-from-file('x.glade');
     die $e.message if $e.is-valid;
 
