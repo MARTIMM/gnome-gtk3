@@ -1,9 +1,10 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
-  - 2020-03-01 0.26.0
+  - 2020-03-08 0.26.0:
     - Add modules GAction, GSimpleAction to Gnome::Gio
     - Add modules GVariantType, GVariant to Gnome::Glib
+    - Many changes and bugfixes under the hood in all packages
 
   - 2020-02-29 0.25.3:
     - Add gtk_builder_new_from_resource(), gtk_builder_add_from_resource() and .new(:resource) to Gnome::Gtk::Builder.
