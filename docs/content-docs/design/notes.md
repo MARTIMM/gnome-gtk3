@@ -82,7 +82,13 @@ The following is a (not very exhaustive) list of points which make up the design
 
   So it follows that the sub `get_name()` from **Gnome::Gtk3::Buildable** interface has a higher priority than `get_name()` found in **Gnome::Gtk3::Widget** when search starts at e.g. **Gnome::Gtk3::Button** class. To prevent these situations you better only leave of the prefixes `gtk_`, `gdk_` or `g_` to get `buildable-get-name()` or `widget-get-name()`.
 
-*  **_Note: Because of all these possibilities, chances are that you will use several names to call the same method and that will be confusing when you reread your code. So therefore, in the near future, work will be done to only yield the shortest method names where possible and use of dashed versions only._**
+*  **_Note: Because of all these possibilities, chances are that you will use several names to call the same method and that will be confusing when you reread your code. So therefore, in the near future, work will be done to only yield the shortest method names where possible and use of dashed versions only._** So from the examples above the following subs will end up being defined (also after some work);
+    * `.insert-before()` from **Gnome::Gtk3::ListStore**
+    * `.attach()` from **Gnome::Gtk3::Grid**
+    * `.reset()` from **Gnome::GObject::Value**
+    * `.widget_get_name()` from **Gnome::Gtk3::Widget**
+    * `.buildable-get-name()` from **Gnome::Gtk3::Buildable**
+
 
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Raku packages to support. Exceptions are e.g. **Gnome::Gtk3::Misc** which is kept to keep the hierarchy of classes in tact.
@@ -131,3 +137,18 @@ The following is a (not very exhaustive) list of points which make up the design
     **NOTE** Also this is changed; Now all types of signals can be processed, although some native objects provided to the signal handler might not yet possible to wrap in a Raku class because the class is not implemented.
 
   * Many subroutines also return native objects. For some of them, the type is known and can therefore be returned in a Raku class object instead of a native object.
+
+* All toplevel classes will have several common subroutines and objects;
+  * A native object such as `N-GObject`, `N-GError`, `N-GVariant` etc.
+  * `.get-native-object()` to return a native object.
+  * `.set-native-object()` to set a native object.
+  * `.is-valid()` to check its validity.
+  * `.clear-object()` to cleanup the native object.
+  * `.new(:native-object)` to initialize a Raku object with another native object.
+  * `.set-class-info()` to set class information. This can only be used from BUILD only!
+  * `.get-class-gtype()` to get the calculated class type number. Derived from a **Gnome::GObject::Type** method. Also used mainly from internal methods.
+  * `.get-class-name()` to get the GTK+ class name set by `.set-class-info()`.
+  * `BUILD()` and `DESTROY()` to build and destroy objects and to prevent memory leaks also by using GTK refs and unrefs.
+  * `FALLBACK()` to start search of subs and pretend they are methods.
+
+* All(?) classes should be inheritable which is not yet the case.
