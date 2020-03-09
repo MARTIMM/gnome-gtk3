@@ -124,7 +124,7 @@ layout: sidebar
   * [ ] casting
   * [ ] move methods `set-class-info()` / `get-class-info()` to **Gnome::N::X** as well as the storage into $!gtk-class-gtype. This means that the sub `g_type_from_name()` from **Gnome::GObject::Type** must be duplicated to prevent circular dependency.
 
-* [x] Remove CALL-ME methods and all uses of them
+* [x] Remove CALL-ME methods and all uses of them.
 
 * [x] There is an issue about tests going wrong because of a different native speaking language instead of English.
 
@@ -135,6 +135,8 @@ layout: sidebar
 * [ ] For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
 * [ ] Add `method clear-object ( ) { !!! }` to **Gnome::GObject::Boxed**. This removes the need to set/clear `$!is-valid` using calls to methods from the child objects. `.set-native-object()` will handle the clearing then from there.
+
+* [ ] Add a toplevel class to support standalone classes in glib something like **Gnome::GObject::Boxed** is.
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
