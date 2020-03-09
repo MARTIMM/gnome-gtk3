@@ -23,7 +23,8 @@ subtest 'Manipulations', {
   is $e.get-text, 'new text in entry', '.set-text() / .get-text()';
   is $e.get-text-length, 'new text in entry'.chars, '.get-text-length()';
 
-  is Uni.new($e.get-invisible-char).NFC.Str, '●', 'invisible char is ●';
+# next is an implementation depending test so skip it!
+#  is Uni.new($e.get-invisible-char).NFC.Str, '●', 'invisible char is ●';
 }
 
 #`{{
