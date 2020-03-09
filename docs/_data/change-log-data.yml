@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-03-09 0.26.1:
+    - bugfixes in tests. Tests are skipped because of dependencies on language and other implementation details of GTK+.
+    
   - 2020-03-08 0.26.0:
     - Add modules GAction, GSimpleAction to Gnome::Gio
     - Add modules GVariantType, GVariant to Gnome::Glib
