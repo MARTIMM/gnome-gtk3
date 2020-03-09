@@ -15,14 +15,15 @@ subtest 'ISA test', {
   isa-ok $m, Gnome::Gtk3::Main, ".new(:check)";
 }
 
+#`{{
 #-------------------------------------------------------------------------------
+# depending on version, which might differ, skip tests
 subtest 'Manipulations', {
   ok !$m.gtk-check-version( 3, 24, 0), 'version ok';
   is $m.gtk-check-version( 2, 0, 0), 'GTK+ version too new (major mismatch)',
      'GTK+ version too new';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
 }
