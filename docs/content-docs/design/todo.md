@@ -9,7 +9,7 @@ layout: sidebar
 ## TODO list of things
 
 #### Study
-* [ ] References and object creation in the light of memory leaks.
+* [ ] [References and object creation in the light of memory leaks](https://developer.gnome.org/gobject/stable/gobject-memory.html#gobject-memory-refcount).
 * [x] Applications behaviour from Gtk and Gio packages
 * [x] Resources from Gio package
 * [ ] Menus and Actions
