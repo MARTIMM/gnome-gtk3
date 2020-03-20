@@ -22,6 +22,7 @@ Every radio button is a member of some group of radio buttons. When one is
 selected, all other radio buttons in the same group are deselected. A
 B<Gnome::Gtk3::RadioButton> is one way of giving the user a choice from many options.
 
+=begin comment
 Radio button widgets are created with C<gtk_radio_button_new()>, passing C<Any>
 as the argument if this is the first radio button in a group. In subsequent
 calls, the group you wish to add this button to should be passed as an
@@ -40,7 +41,7 @@ use C<gtk_radio_button_set_group()>.
 
 The group list does not need to be freed, as each B<Gnome::Gtk3::RadioButton> will remove
 itself and its list item when it is destroyed.
-
+=end comment
 
 =head2 Css Nodes
 
@@ -152,11 +153,11 @@ Create a new object with a label.
 
   multi method new ( Str :$label! )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+Create an object using a native object from a builder.
 
   multi method new ( Str :$build-id! )
 
@@ -178,63 +179,71 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::RadioButton';
+  if self.^name eq 'Gnome::Gtk3::RadioButton' or ? %options<RadioButton> {
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_radio_button_new(Any));
+    # check if native object is set by other parent class BUILDers
+if self.get-native-object.defined { } #self.is-valid { }
+
+    elsif ? %options<empty> {
+      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+      self.set-native-object(gtk_radio_button_new(Any));
+    }
+
+    elsif ? %options<group> and ? %options<label> {
+      my $g = %options<group>;
+      $g .= get-native-object if $g ~~ Gnome::Glib::SList;
+
+      self.set-native-object(
+        gtk_radio_button_new_with_label( $g, %options<label>)
+      );
+    }
+
+    elsif ? %options<group-from> and ? %options<label> {
+      my $w = %options<group-from>;
+      $w .= get-native-object if $w ~~ Gnome::Gtk3::RadioButton;
+      self.set-native-object(
+        gtk_radio_button_new_with_label_from_widget( $w, %options<label>)
+      );
+    }
+
+    elsif ? %options<group-from> {
+      my $w = %options<group-from>;
+      $w .= get-native-object if $w ~~ Gnome::GObject::Object;
+      self.set-native-object(gtk_radio_button_new_from_widget($w));
+    }
+
+    elsif ? %options<label> {
+      self.set-native-object(gtk_radio_button_new_with_label( Any, %options<label>));
+    }
+
+    elsif ? %options<group> {
+      my $g = %options<group>;
+      $g .= get-native-object if $g ~~ Gnome::Glib::SList;
+      self.set-native-object(gtk_radio_button_new($g));
+    }
+
+#`{{
+    elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
+      # provided in GObject
+    }
+}}
+#`{{
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+}}
+
+    else {#if ? %options<empty> {
+      self.set-native-object(gtk_radio_button_new(Any));
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkRadioButton');
   }
-
-  elsif ? %options<group> and ? %options<label> {
-    my $g = %options<group>;
-    $g = $g.get-native-object if $g ~~ Gnome::Glib::SList;
-    self.set-native-object(
-      gtk_radio_button_new_with_label( $g, %options<label>)
-    );
-  }
-
-  elsif ? %options<group-from> and ? %options<label> {
-    my $w = %options<group-from>;
-    $w = $w.get-native-object if $w ~~ Gnome::Gtk3::RadioButton;
-    self.set-native-object(
-      gtk_radio_button_new_with_label_from_widget( $w, %options<label>)
-    );
-  }
-
-  elsif ? %options<group-from> {
-    my $w = %options<group-from>;
-    $w = $w.get-native-object if $w ~~ Gnome::GObject::Object;
-    self.set-native-object(gtk_radio_button_new_from_widget($w));
-  }
-
-  elsif ? %options<label> {
-    self.set-native-object(gtk_radio_button_new_with_label( Any, %options<label>));
-  }
-
-  elsif ? %options<group> {
-    my $g = %options<group>;
-    $g = $g.get-native-object if $g ~~ Gnome::Glib::SList;
-    self.set-native-object(gtk_radio_button_new($g));
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_radio_button_new(Any));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkRadioButton');
 }
 
 #-------------------------------------------------------------------------------
@@ -304,7 +313,7 @@ Returns: a new radio button.
 
   method gtk_radio_button_new_with_label ( N-GSList $group, Str $label --> N-GObject  )
 
-=item N-GSList $group; (element-type B<Gnome::Gtk3::RadioButton>) (allow-none): an existing radio button group, or C<Any> if you are creating a new group.
+=item N-GSList $group; an existing radio button group, or C<Any> if you are creating a new group.
 =item Str $label; the text label to display next to the radio button.
 
 =end pod
@@ -515,60 +524,3 @@ Since: 2.4
 
 
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-sub gtk_radio_button_new ( N-GSList $group --> N-GObject )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_new_from_widget ( N-GObject $group_member --> N-GObject )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_new_with_label ( N-GSList $group, Str $label )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_new_with_label_from_widget (
-  N-GObject $group_member, Str $label
-) returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_set_group ( N-GObject $radio_button, N-GSList $group )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_get_group ( N-GObject $radio_button )
-  returns N-GSList
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_radio_button_join_group (
-  N-GObject $radio_button, N-GObject $group_source
-) returns N-GSList
-  is native(&gtk-lib)
-  { * }

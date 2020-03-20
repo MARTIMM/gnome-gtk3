@@ -1,4 +1,5 @@
 use v6;
+
 use NativeCall;
 use Test;
 
@@ -8,7 +9,10 @@ use Gnome::Gtk3::RadioButton;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::RadioButton ( $rb1, $rb2, $rb3);
+my Gnome::Gtk3::RadioButton ( $rb1, $rb2, $rb3, $b);
+my Gnome::Glib::SList $l;
+#my Gnome::Glib::SList $l2;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $rb1 .= new;
@@ -27,18 +31,18 @@ subtest 'Manipulations', {
   $rb1 .= new(:label<rb1>);
   $rb2 .= new( :group-from($rb1), :label<rb2>);
 
-  my Gnome::Glib::SList $l .= new(:gslist($rb2.get-group));
+  $l .= new(:native-object($rb2.get-group));
   is $l.g-slist-length, 2, '.new(:group-from, :label) / .get-group';
 
   # new radio button is shifted up front in the list
   $rb3 .= new( :group($l), :label<rb3>);
-  $l .= new(:gslist($rb2.get-group));
+  $l .= new(:native-object($rb1.get-group));
   is $l.g-slist-length, 3, '.new(:group, :label)';
 
-  my Gnome::Gtk3::RadioButton $b .= new(:native-object($l.nth-data(1)));
-  is $b.get-label, 'rb2', "found label 'rb2' from 2nd radio button";
   $b .= new(:native-object($l.nth-data(0)));
   is $b.get-label, 'rb3', "found label 'rb3' from 1st radio button";
+  $b .= new(:native-object($l.nth-data(1)));
+  is $b.get-label, 'rb2', "found label 'rb2' from 2nd radio button";
   $b .= new(:native-object($l.nth-data(2)));
   is $b.get-label, 'rb1', "found label 'rb1' from 3rd radio button";
 }
@@ -81,7 +85,7 @@ subtest 'Signals ...', {
     method r-event ( :$widget ) {
       isa-ok $widget, Gnome::Gtk3::RadioButton,
              'signal received on proper widget';
-      my Gnome::Glib::SList $l .= new(:gslist($widget.get-group));
+      my Gnome::Glib::SList $l .= new(:native-object($widget.get-group));
       is $l.g-slist-length, 4, 'group now has four members';
       $triggered = True;
     }
