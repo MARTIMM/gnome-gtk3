@@ -8,20 +8,18 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy and is used here to show what is implemented and what is deprecated in Glib and GObject. Module path names are removed from the Raku modules. E.g. Value is implemented as **Gnome::GObject::Value** and Error as **Gnome::Glib::Error**. `├─✗` in front of a Glib/GObject module means that it is deprecated or will not be implemented for other reasons.
+Below there is a table of the object hierarchy and is used here to show what is implemented and what is deprecated in Glib. Module path names are removed from the Raku modules when in Gnome::Glib. E.g. Error is implemented as **Gnome::Glib::Error**. `├─✗` in front of a Glib module means that it is deprecated or will not be implemented for other reasons.
 
 ```
 Tree of Glib C structures           Raku module
 ----------------------------------- ------------------------
-GObject                             Gnome::GObject::Object
-├──                                       
-╰──
-
-GBoxed                              Gnome::GObject::Boxed
-├── GValue                          Value  
-╰──
-
-GError                              Error
-GList                               List
-
+TopLevelClassSupport                Gnome::N::TopLevelClassSupport
+├─ GError                           Error
+├─ GList                            List
+├─ GMain                            Main
+├─ GQuark                           Quark
+├─ GSlist                           Slist
+├─ GVariant                         Variant
+├─ GVariantType                     VariantType
+├─ GVariantBuilder                  VariantBuilder
 ```

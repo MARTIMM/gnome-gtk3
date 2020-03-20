@@ -1,5 +1,4 @@
 use v6;
-#use lib '../gnome-glib/lib';
 
 use NativeCall;
 use Test;
@@ -47,10 +46,19 @@ subtest 'Button as container', {
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
   my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
-
-  # same as $l .= new(:native-object($gl.nth-data(0)));
-  $l.set-native-object(nativecast( N-GObject, $gl.nth-data(0)));
+  $l .= new(:native-object($gl.nth-data(0)));
   is $l.get-text, 'xyz', 'text label from button 1';
+
+
+  class X {
+    method cfe ( $nw ) {
+      $l .= new(:native-object($nw));
+      is $l.widget-get-name, 'GtkLabel', 'widget name ok';
+      is $l.get-text, 'xyz', 'text label from button 1';
+    }
+  }
+  $b.gtk_container_foreach( X.new, 'cfe');
+
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));
   my Gnome::Gtk3::Button $button2 .= new;
@@ -64,11 +72,9 @@ subtest 'Button as container', {
   is $button2.get-label, Str, 'text cannot be returned like this anymore';
 
   $gl.clear-object;
-  $gl = Gnome::Glib::List;
 }
 
 #-------------------------------------------------------------------------------
-#TODO is it necessary to inherit
 class BH {
 
   method click-handler ( :widget($button), Array :$user-data ) {

@@ -131,18 +131,15 @@ submethod BUILD ( *%options ) {
   }
 
 ```
-All this is a bit awkward and messy and is all because of using a role for an interface module instead of using classes. It is not possible to define the same method in several roles, like e.g. `_interface()` because they clash when multiple roles are imported. Classes would behave better and then callsame could be used too. The problem then would be (surely for Buildable) that an interface class is inherited by multiple classes which are in the same inheritance tree;
+All this is a bit awkward and messy and is all because of using a role for an interface module instead of using classes. It is not possible to define the same method in several roles, like e.g. `_interface()` because they clash when the same role is imported multiple times in the tree. Classes would behave better and then callsame could be used too. The problem then would be (surely for Buildable) that an interface class is inherited by multiple classes which are in the same inheritance tree;
 
 
 ```plantuml
 scale 0.7
-title Dependency details for hierargy and interfaces
+title Dependency details for hierargy and interfaces, plan A
 
-class Button
-class Bin
-class Container
-class Widget
-
+'class TopLevelClassSupport << (C, #efad00) catch all class >>
+class UserClass << (C, #00ffff) user class >>
 class Buildable << (I, #efed80) Interface >>
 
 Buildable <|-- Widget
@@ -150,29 +147,708 @@ Buildable <|-- Container
 Buildable <|-- Bin
 Buildable <|-- Button
 
+'TopLevelClassSupport <|-- Object
+Object <|-- InitiallyUnowned
+InitiallyUnowned <|-- Widget
 Widget <|-- Container
 Container <|-- Bin
 Bin <|-- Button
+Button <|-- UserClass
 
+```
+## Review the use of interfaces and where they are being used
+
+If you look in the diagram above, we see that **Buildable** is used in all classes below **InitiallyUnowned**. The methods are kind of inherited by the classes below it. Following this we should then use something like the diagram below. By the way, the latest developments are that a 'catch all' class is build and displayed below too.
+
+```plantuml
+
+scale 0.7
+title Dependency details for hierargy and interfaces, plan B
+
+class TopLevelClassSupport << (C, #efad00) catch all class >>
+class TopLevelInterfaceSupport << (I, #efad00) catch all interface >>
+class Buildable << (I, #efed80) Interface >>
+
+TopLevelInterfaceSupport <|-- Buildable
+Buildable <|-- Widget
+class UserClass << (C, #00ffff) user class >>
+
+TopLevelClassSupport <|-- Object
+Object <|-- InitiallyUnowned
+InitiallyUnowned <|-- Widget
+Widget <|-- Container
+Container <|-- Bin
+Bin <|-- Button
+Button <|-- UserClass
+```
+
+This is a lot easier. To see if this is at all possible, a list must be made of classes who use an interface and if the below classes are using it too. In a way they did, e.g. if **Button** did not had the interface to **Buildable**, it would use the calls of the interface used by **Bin** or **Container** so effectively it is the same as in the second diagram.
+
+Below is a tree of modules. The letters are explained at the bottom.
+
+```
+Tree of Gtk C structures                              Interface use
+----------------------------------------------------- ------------------------
+GObject                                               
+├── GInitiallyUnowned
+│   ├── GtkWidget                                     b
+│   │   ├── GtkContainer                              b
+│   │   │   ├── GtkBin                                b
+│   │   │   │   ├── GtkWindow                         b
+│   │   │   │   │   ├── GtkDialog                     b
+│   │   │   │   │   │   ├── GtkAboutDialog            b
+│   │   │   │   │   │   ├── GtkAppChooserDialog       b,ap
+│   │   │   │   │   │   ├── GtkColorChooserDialog     b,cc
+│   │   │   │   │   │   ├─✗ GtkColorSelectionDialog   b
+│   │   │   │   │   │   ├── GtkFileChooserDialog      b,fic
+│   │   │   │   │   │   ├── GtkFontChooserDialog      b,foc
+│   │   │   │   │   │   ├─✗ GtkFontSelectionDialog    b
+│   │   │   │   │   │   ├── GtkMessageDialog          b
+│   │   │   │   │   │   ├── GtkPageSetupUnixDialog    b
+│   │   │   │   │   │   ├── GtkPrintUnixDialog        b
+│   │   │   │   │   │   ╰── GtkRecentChooserDialog    b,rc
+│   │   │   │   │   ├── GtkApplicationWindow          b
+│   │   │   │   │   ├── GtkAssistant                  b
+│   │   │   │   │   ├── GtkOffscreenWindow            b
+│   │   │   │   │   ├── GtkPlug                       b
+│   │   │   │   │   ╰── GtkShortcutsWindow            b
+│   │   │   │   ├── GtkActionBar                      b
+│   │   │   │   ├─✗ GtkAlignment                      b
+│   │   │   │   ├── GtkComboBox                       b,cl,ce
+│   │   │   │   │   ├── GtkAppChooserButton           b,ap,cl,ce
+│   │   │   │   │   ╰── GtkComboBoxText               b,cl,ce
+│   │   │   │   ├── GtkFrame                          b
+│   │   │   │   │   ╰── GtkAspectFrame                b
+│   │   │   │   ├── GtkButton                         b,ac
+│   │   │   │   │   ├── GtkToggleButton               b,ac
+│   │   │   │   │   │   ├── GtkCheckButton            b,ac
+│   │   │   │   │   │   │   ╰── GtkRadioButton        b,ac
+│   │   │   │   │   │   ╰── GtkMenuButton             b,ac
+│   │   │   │   │   ├── GtkColorButton                b,ac,cc
+│   │   │   │   │   ├── GtkFontButton                 b,ac,foc
+│   │   │   │   │   ├── GtkLinkButton                 b,ac
+│   │   │   │   │   ├── GtkLockButton                 b,ac
+│   │   │   │   │   ├── GtkModelButton                b,ac
+│   │   │   │   │   ╰── GtkScaleButton                b,o,ac
+│   │   │   │   │       ╰── GtkVolumeButton           b,o,ac
+│   │   │   │   ├── GtkMenuItem                       b,ac
+│   │   │   │   │   ├── GtkCheckMenuItem              b,ac
+│   │   │   │   │   │   ╰── GtkRadioMenuItem          b,ac
+│   │   │   │   │   ├─✗ GtkImageMenuItem              b,ac
+│   │   │   │   │   ├── GtkSeparatorMenuItem          b,ac
+│   │   │   │   │   ╰─✗ GtkTearoffMenuItem            b,ac
+│   │   │   │   ├── GtkEventBox                       b
+│   │   │   │   ├── GtkExpander                       b
+│   │   │   │   ├── GtkFlowBoxChild                   b
+│   │   │   │   ├── GtkHandleBox                      b
+│   │   │   │   ├── GtkListBoxRow                     b,ac
+│   │   │   │   ├── GtkToolItem                       b
+│   │   │   │   │   ├── GtkToolButton                 b,ac
+│   │   │   │   │   │   ├── GtkMenuToolButton         b,ac
+│   │   │   │   │   │   ╰── GtkToggleToolButton       b,ac
+│   │   │   │   │   │       ╰── GtkRadioToolButton    b,ac
+│   │   │   │   │   ╰── GtkSeparatorToolItem          b
+│   │   │   │   ├── GtkOverlay                        b
+│   │   │   │   ├── GtkScrolledWindow                 b
+│   │   │   │   │   ╰── GtkPlacesSidebar              b
+│   │   │   │   ├── GtkPopover                        b
+│   │   │   │   │   ╰── GtkPopoverMenu                b
+│   │   │   │   ├── GtkRevealer                       b
+│   │   │   │   ├── GtkSearchBar                      b
+│   │   │   │   ├── GtkStackSidebar                   b
+│   │   │   │   ╰── GtkViewport                       b,s
+│   │   │   ├── GtkBox                                b,o
+│   │   │   │   ├── GtkAppChooserWidget               b,o,ap
+│   │   │   │   ├── GtkButtonBox                      b,o
+│   │   │   │   │   ├─✗ GtkHButtonBox                 b,o
+│   │   │   │   │   ╰─✗ GtkVButtonBox                 b,o
+│   │   │   │   ├── GtkColorChooserWidget             b,o,cc
+│   │   │   │   ├─✗ GtkColorSelection                 b,o
+│   │   │   │   ├── GtkFileChooserButton              b,o,fic
+│   │   │   │   ├── GtkFileChooserWidget              b,o,fic
+│   │   │   │   ├── GtkFontChooserWidget              b,o,foc
+│   │   │   │   ├─✗ GtkFontSelection                  b,o
+│   │   │   │   ├─✗ GtkHBox                           b,o
+│   │   │   │   ├── GtkInfoBar                        b,o
+│   │   │   │   ├── GtkRecentChooserWidget            b,o,rc
+│   │   │   │   ├── GtkShortcutsSection               b,o
+│   │   │   │   ├── GtkShortcutsGroup                 b,o
+│   │   │   │   ├── GtkShortcutsShortcut              b,o
+│   │   │   │   ├── GtkStackSwitcher                  b,o
+│   │   │   │   ├── GtkStatusbar                      b,o
+│   │   │   │   ╰─✗ GtkVBox                           b,o
+│   │   │   ├── GtkFixed                              b
+│   │   │   ├── GtkFlowBox                            b,o
+│   │   │   ├── GtkGrid                               b,o
+│   │   │   ├── GtkHeaderBar                          b
+│   │   │   ├── GtkPaned                              b,o
+│   │   │   │   ├─✗ GtkHPaned                         b,o
+│   │   │   │   ╰─✗ GtkVPaned                         b,o
+│   │   │   ├── GtkIconView                           b,cl,s
+│   │   │   ├── GtkLayout                             b,s
+│   │   │   ├── GtkListBox                            b
+│   │   │   ├── GtkMenuShell                          b
+│   │   │   │   ├── GtkMenuBar                        b
+│   │   │   │   ╰── GtkMenu                           b
+│   │   │   │       ╰── GtkRecentChooserMenu          b,rc
+│   │   │   ├── GtkNotebook                           b
+│   │   │   ├── GtkSocket                             b
+│   │   │   ├── GtkStack                              b
+│   │   │   ├─✗ GtkTable                              b
+│   │   │   ├── GtkTextView                           b,s
+│   │   │   ├── GtkToolbar                            b,o,tsh
+│   │   │   ├── GtkToolItemGroup                      b,tsh
+│   │   │   ├── GtkToolPalette                        b,o,s
+│   │   │   ╰── GtkTreeView                           b,s
+│   │   ├─✗ GtkMisc                                   b
+│   │   │   ├── GtkLabel                              b
+│   │   │   │   ╰── GtkAccelLabel                     b
+│   │   │   ├─✗ GtkArrow                              b
+│   │   │   ╰── GtkImage                              b
+│   │   ├── GtkCalendar                               b
+│   │   ├── GtkCellView                               b,o,cl
+│   │   ├── GtkDrawingArea                            b
+│   │   ├── GtkEntry                                  b,ce,e
+│   │   │   ├── GtkSearchEntry                        b,ce,e
+│   │   │   ╰── GtkSpinButton                         b,o,ce,e
+│   │   ├── GtkGLArea                                 b
+│   │   ├── GtkRange                                  b,o
+│   │   │   ├── GtkScale                              b,o
+│   │   │   │   ├─✗ GtkHScale                         b,o
+│   │   │   │   ╰─✗ GtkVScale                         b,o
+│   │   │   ╰── GtkScrollbar                          b,o
+│   │   │       ├─✗ GtkHScrollbar                     b,o
+│   │   │       ╰─✗ GtkVScrollbar                     b,o
+│   │   ├── GtkSeparator                              b,o
+│   │   │   ├─✗ GtkHSeparator                         b,o
+│   │   │   ╰─✗ GtkVSeparator                         b,o
+│   │   ├─✗ GtkHSV                                    b
+│   │   ├─✗ GtkInvisible                              b
+│   │   ├── GtkProgressBar                            b,o
+│   │   ├── GtkSpinner                                b
+│   │   ├── GtkSwitch                                 b,ac
+│   │   ╰── GtkLevelBar                               b,o
+│   ├── GtkAdjustment
+│   ├── GtkCellArea                                   b,cl
+│   │   ╰── GtkCellAreaBox                            b,o,cl
+│   ├── GtkCellRenderer                               
+│   │   ├── GtkCellRendererText                       
+│   │   │   ├── GtkCellRendererAccel                  
+│   │   │   ├── GtkCellRendererCombo                  
+│   │   │   ╰── GtkCellRendererSpin                   
+│   │   ├── GtkCellRendererPixbuf                     
+│   │   ├── GtkCellRendererProgress                   o
+│   │   ├── GtkCellRendererSpinner                    
+│   │   ╰── GtkCellRendererToggle                     
+│   ├── GtkFileFilter                                 b
+│   ├── GtkTreeViewColumn                             b,cl
+│   ╰── GtkRecentFilter                               b
+├── GtkAccelGroup
+├── GtkAccelMap
+├── AtkObject
+│   ╰── GtkAccessible
+├─✗ GtkAction                                         b
+│   ├─✗ GtkToggleAction                               b
+│   │   ╰─✗ GtkRadioAction                            b
+│   ╰─✗ GtkRecentAction                               b,rc
+├─✗ GtkActionGroup                                    b
+├── GApplication                                      
+│   ╰── GtkApplication                                
+├── GtkBuilder                                        
+├── GtkCellAreaContext
+├── GtkClipboard
+├── GtkCssProvider                                    sp
+├── GtkEntryBuffer                                    
+├── GtkEntryCompletion                                b,cl
+├── GtkEventController
+│   ├── GtkEventControllerKey
+│   ├── GtkEventControllerMotion
+│   ├── GtkEventControllerScroll
+│   ├── GtkGesture
+│   │   ├── GtkGestureSingle
+│   │   │   ├── GtkGestureDrag
+│   │   │   │   ╰── GtkGesturePan
+│   │   │   ├── GtkGestureLongPress
+│   │   │   ├── GtkGestureMultiPress
+│   │   │   ├── GtkGestureStylus
+│   │   │   ╰── GtkGestureSwipe
+│   │   ├── GtkGestureRotate
+│   │   ╰── GtkGestureZoom
+│   ╰── GtkPadController
+├── GtkIconFactory                                    b
+├── GtkIconTheme
+├── GtkIMContext
+│   ├── GtkIMContextSimple
+│   ╰── GtkIMMulticontext
+├── GtkListStore                                      b,tm,tds,tdd,ts
+├── GMountOperation                                   
+│   ╰── GtkMountOperation                             
+├── GEmblemedIcon                                     
+│   ╰─✗ GtkNumerableIcon                              
+├── GtkPageSetup
+├── GtkPrinter
+├── GtkPrintContext
+├── GtkPrintJob
+├── GtkPrintOperation                                 pop
+├── GtkPrintSettings
+├── GtkRcStyle
+├── GtkRecentManager
+├── GtkSettings                                       sp
+├── GtkSizeGroup                                      b
+├─✗ GtkStatusIcon                                     
+├─✗ GtkStyle                                          
+├── GtkStyleContext                                   
+├── GtkTextBuffer                                     
+├── GtkTextChildAnchor
+├── GtkTextMark
+├── GtkTextTag                                        
+├── GtkTextTagTable                                   b
+├─✗ GtkThemingEngine                                  
+├── GtkTreeModelFilter                                tm,tds
+├── GtkTreeModelSort                                  tm,tds,ts
+├── GtkTreeSelection
+├── GtkTreeStore                                      b,tm,tds,tdd,ts
+├─✗ GtkUIManager                                      b
+├── GtkWindowGroup
+├── GtkTooltip
+╰── GtkPrintBackend
+
+GInterface                                            
+├── GtkBuildable                                      B
+├── GtkActionable                                     ac
+├─✗ GtkActivatable                                    
+├── GtkAppChooser                                     ap
+├── GtkCellLayout                                     cl
+├── GtkCellEditable                                   ce
+├── GtkOrientable                                     o
+├── GtkColorChooser                                   cc
+├── GtkStyleProvider                                  sp
+├── GtkEditable                                       e
+├── GtkFileChooser                                    fic
+├── GtkFontChooser                                    foc
+├── GtkScrollable                                     s
+├── GtkTreeModel                                      tm
+├── GtkTreeDragSource                                 tds
+├── GtkTreeDragDest                                   tdd
+├── GtkTreeSortable                                   ts
+├── GtkPrintOperationPreview                          pop
+├── GtkRecentChooser                                  rc
+╰── GtkToolShell                                      tsh
+```
+
+A second list is the administration of options to the BUILD process
+```
+Tree of Gtk C structures                              options
+----------------------------------------------------- ------------------------
+GObject                                               :native-object
+                                                      :build-id
+├── GInitiallyUnowned                                 -
+│   ├── GtkWidget                                     -
+│   │   ├── GtkContainer                              -
+│   │   │   ├── GtkBin                                -
+│   │   │   │   ├── GtkWindow                         :*
+                                                      :title
+│   │   │   │   │   ├── GtkDialog                     :*
+                                                      :title
+│   │   │   │   │   │   ├── GtkAboutDialog            :*
+│   │   │   │   │   │   ├── GtkAppChooserDialog       
+│   │   │   │   │   │   ├── GtkColorChooserDialog     
+│   │   │   │   │   │   ├── GtkFileChooserDialog      
+│   │   │   │   │   │   ├── GtkFontChooserDialog      
+│   │   │   │   │   │   ├── GtkMessageDialog          
+│   │   │   │   │   │   ├── GtkPageSetupUnixDialog    
+│   │   │   │   │   │   ├── GtkPrintUnixDialog        
+│   │   │   │   │   │   ╰── GtkRecentChooserDialog    
+│   │   │   │   │   ├── GtkApplicationWindow          
+│   │   │   │   │   ├── GtkAssistant                  
+│   │   │   │   │   ├── GtkOffscreenWindow            
+│   │   │   │   │   ├── GtkPlug                       
+│   │   │   │   │   ╰── GtkShortcutsWindow            
+│   │   │   │   ├── GtkActionBar                      
+│   │   │   │   ├── GtkComboBox                       
+│   │   │   │   │   ├── GtkAppChooserButton           
+│   │   │   │   │   ╰── GtkComboBoxText               
+│   │   │   │   ├── GtkFrame                          
+│   │   │   │   │   ╰── GtkAspectFrame                
+│   │   │   │   ├── GtkButton                         
+│   │   │   │   │   ├── GtkToggleButton               
+│   │   │   │   │   │   ├── GtkCheckButton            
+│   │   │   │   │   │   │   ╰── GtkRadioButton        
+│   │   │   │   │   │   ╰── GtkMenuButton             
+│   │   │   │   │   ├── GtkColorButton                
+│   │   │   │   │   ├── GtkFontButton                 
+│   │   │   │   │   ├── GtkLinkButton                 
+│   │   │   │   │   ├── GtkLockButton                 
+│   │   │   │   │   ├── GtkModelButton                
+│   │   │   │   │   ╰── GtkScaleButton                
+│   │   │   │   │       ╰── GtkVolumeButton           
+│   │   │   │   ├── GtkMenuItem                       
+│   │   │   │   │   ├── GtkCheckMenuItem              
+│   │   │   │   │   │   ╰── GtkRadioMenuItem          
+│   │   │   │   │   ├── GtkSeparatorMenuItem          
+│   │   │   │   ├── GtkEventBox                       
+│   │   │   │   ├── GtkExpander                       
+│   │   │   │   ├── GtkFlowBoxChild                   
+│   │   │   │   ├── GtkHandleBox                      
+│   │   │   │   ├── GtkListBoxRow                     
+│   │   │   │   ├── GtkToolItem                       
+│   │   │   │   │   ├── GtkToolButton                 
+│   │   │   │   │   │   ├── GtkMenuToolButton         
+│   │   │   │   │   │   ╰── GtkToggleToolButton       
+│   │   │   │   │   │       ╰── GtkRadioToolButton    
+│   │   │   │   │   ╰── GtkSeparatorToolItem          
+│   │   │   │   ├── GtkOverlay                        
+│   │   │   │   ├── GtkScrolledWindow                 
+│   │   │   │   │   ╰── GtkPlacesSidebar              
+│   │   │   │   ├── GtkPopover                        
+│   │   │   │   │   ╰── GtkPopoverMenu                
+│   │   │   │   ├── GtkRevealer                       
+│   │   │   │   ├── GtkSearchBar                      
+│   │   │   │   ├── GtkStackSidebar                   
+│   │   │   │   ╰── GtkViewport                       
+│   │   │   ├── GtkBox                                
+│   │   │   │   ├── GtkAppChooserWidget               
+│   │   │   │   ├── GtkButtonBox                      
+│   │   │   │   ├── GtkColorChooserWidget             
+│   │   │   │   ├── GtkFileChooserButton              
+│   │   │   │   ├── GtkFileChooserWidget              
+│   │   │   │   ├── GtkFontChooserWidget              
+│   │   │   │   ├── GtkInfoBar                        
+│   │   │   │   ├── GtkRecentChooserWidget            
+│   │   │   │   ├── GtkShortcutsSection               
+│   │   │   │   ├── GtkShortcutsGroup                 
+│   │   │   │   ├── GtkShortcutsShortcut              
+│   │   │   │   ├── GtkStackSwitcher                  
+│   │   │   │   ╰── GtkStatusbar                      
+│   │   │   ├── GtkFixed                              
+│   │   │   ├── GtkFlowBox                            
+│   │   │   ├── GtkGrid                               
+│   │   │   ├── GtkHeaderBar                          
+│   │   │   ├── GtkPaned                              
+│   │   │   ├── GtkIconView                           
+│   │   │   ├── GtkLayout                             
+│   │   │   ├── GtkListBox                            
+│   │   │   ├── GtkMenuShell                          
+│   │   │   │   ├── GtkMenuBar                        
+│   │   │   │   ╰── GtkMenu                           
+│   │   │   │       ╰── GtkRecentChooserMenu          
+│   │   │   ├── GtkNotebook                           
+│   │   │   ├── GtkSocket                             
+│   │   │   ├── GtkStack                              
+│   │   │   ├── GtkTextView                           
+│   │   │   ├── GtkToolbar                            
+│   │   │   ├── GtkToolItemGroup                      
+│   │   │   ├── GtkToolPalette                        
+│   │   │   ╰── GtkTreeView                           
+│   │   ├─✗ GtkMisc                                   
+│   │   │   ├── GtkLabel                              
+│   │   │   │   ╰── GtkAccelLabel                     
+│   │   │   ╰── GtkImage                              
+│   │   ├── GtkCalendar                               
+│   │   ├── GtkCellView                               
+│   │   ├── GtkDrawingArea                            
+│   │   ├── GtkEntry                                  
+│   │   │   ├── GtkSearchEntry                        
+│   │   │   ╰── GtkSpinButton                         
+│   │   ├── GtkGLArea                                 
+│   │   ├── GtkRange                                  
+│   │   │   ├── GtkScale                              
+│   │   │   ╰── GtkScrollbar                          
+│   │   ├── GtkSeparator                              
+│   │   ├── GtkProgressBar                            
+│   │   ├── GtkSpinner                                
+│   │   ├── GtkSwitch                                 
+│   │   ╰── GtkLevelBar                               
+│   ├── GtkAdjustment
+│   ├── GtkCellArea                                   
+│   │   ╰── GtkCellAreaBox                            
+│   ├── GtkCellRenderer                               
+│   │   ├── GtkCellRendererText                       
+│   │   │   ├── GtkCellRendererAccel                  
+│   │   │   ├── GtkCellRendererCombo                  
+│   │   │   ╰── GtkCellRendererSpin                   
+│   │   ├── GtkCellRendererPixbuf                     
+│   │   ├── GtkCellRendererProgress                   
+│   │   ├── GtkCellRendererSpinner                    
+│   │   ╰── GtkCellRendererToggle                     
+│   ├── GtkFileFilter                                 
+│   ├── GtkTreeViewColumn                             
+│   ╰── GtkRecentFilter                               
+├── GtkAccelGroup
+├── GtkAccelMap
+├── AtkObject
+│   ╰── GtkAccessible
+├── GApplication                                      
+│   ╰── GtkApplication                                
+├── GtkBuilder                                        
+├── GtkCellAreaContext
+├── GtkClipboard
+├── GtkCssProvider                                    
+├── GtkEntryBuffer                                    
+├── GtkEntryCompletion                                
+├── GtkEventController
+│   ├── GtkEventControllerKey
+│   ├── GtkEventControllerMotion
+│   ├── GtkEventControllerScroll
+│   ├── GtkGesture
+│   │   ├── GtkGestureSingle
+│   │   │   ├── GtkGestureDrag
+│   │   │   │   ╰── GtkGesturePan
+│   │   │   ├── GtkGestureLongPress
+│   │   │   ├── GtkGestureMultiPress
+│   │   │   ├── GtkGestureStylus
+│   │   │   ╰── GtkGestureSwipe
+│   │   ├── GtkGestureRotate
+│   │   ╰── GtkGestureZoom
+│   ╰── GtkPadController
+├── GtkIconFactory                                    
+├── GtkIconTheme
+├── GtkIMContext
+│   ├── GtkIMContextSimple
+│   ╰── GtkIMMulticontext
+├── GtkListStore                                      
+├── GMountOperation                                   
+│   ╰── GtkMountOperation                             
+├── GEmblemedIcon                                     
+│   ╰─✗ GtkNumerableIcon                              
+├── GtkPageSetup
+├── GtkPrinter
+├── GtkPrintContext
+├── GtkPrintJob
+├── GtkPrintOperation                                 
+├── GtkPrintSettings
+├── GtkRcStyle
+├── GtkRecentManager
+├── GtkSettings                                       
+├── GtkSizeGroup                                      
+├── GtkStyleContext                                   
+├── GtkTextBuffer                                     
+├── GtkTextChildAnchor
+├── GtkTextMark
+├── GtkTextTag                                        
+├── GtkTextTagTable                                   
+├── GtkTreeModelFilter                                
+├── GtkTreeModelSort                                  
+├── GtkTreeSelection
+├── GtkTreeStore                                      
+├── GtkWindowGroup
+├── GtkTooltip
+╰── GtkPrintBackend
+
+GInterface                                            
+├── GtkBuildable                                      B
+├── GtkActionable                                     ac
+├── GtkAppChooser                                     ap
+├── GtkCellLayout                                     cl
+├── GtkCellEditable                                   ce
+├── GtkOrientable                                     o
+├── GtkColorChooser                                   cc
+├── GtkStyleProvider                                  sp
+├── GtkEditable                                       e
+├── GtkFileChooser                                    fic
+├── GtkFontChooser                                    foc
+├── GtkScrollable                                     s
+├── GtkTreeModel                                      tm
+├── GtkTreeDragSource                                 tds
+├── GtkTreeDragDest                                   tdd
+├── GtkTreeSortable                                   ts
+├── GtkPrintOperationPreview                          pop
+├── GtkRecentChooser                                  rc
+╰── GtkToolShell                                      tsh
+```
+
+After plotting the dependencies on **GtkBuildable**, it looks as if the class can be inherited by the highest class where it is needed, such as **Widget** and all child widgets will then have the methods available of that interface. After plotting all interface modules in above chart, the conclusion taken above is correct.
+Also the interface module cannot be a role type anymore when it uses the **TopLevelInterfaceSupport** class. This is because there will be clashes when another interface module also inherits from the **TopLevelInterfaceSupport** class.
+
+## Structure of modules, plan B
+
+```plantuml
+
+scale 0.8
+
+class TopLevelClassSupport << (R, #efad00) catch all typed role >> {
+  has Any $!n-native-object
+  has Bool $.is-valid = False
+
+  has Int $!class-gtype
+  has Str $!class-name
+  has Str $!class-name-of-sub
+
+  my Bool $gui-initialized = False
+
+  new()
+
+  BUILD()
+
+  FALLBACK()
+  _fallback()
+
+  get-native-object()
+  set-native-object()
+
+  {abstract} native-object-ref()
+  {abstract} native-object-unref()
+  clear-object()
+  DESTROY()
+
+  set-class-info()
+  set-class-name-of-sub()
+  get-class-name-of-sub()
+  get-class-gtype()
+}
+
+note left of TopLevelClassSupport
+  <b>$!n-native-object</b> is where the native object
+  is stored. It is used by the toplevel class and its
+  descendent classes. The type is always the same as
+  set by all classes inheriting from the same toplevel
+  class.
+
+  <b>$.is-valid</b> is a readable variable and is checked
+  to see if $!n-native-object is valid.
+
+  <b>$!class-gtype</b>, <b>$!class-name</b> and
+  <b>$!class-name-of-sub</b> are used to keep track
+  of native class types and names.
+
+  <b>$gui-initialized</b> is used to check on native
+  initialization. It is defined that it is global to all
+  of the TopLevelClassSupport classes.
+
+  --
+
+  Method <b>new()</b> is defined to cleanup the native object
+  in case of an assignement like <b><i>$c .= new(...);</i></b>.
+  The native object, if any, must be cleared first.
+
+  <b>BUILD()</b> must check for <b>$gui-initialized</b>
+  and also handle the <b>:native-object</b> option
+
+  <b>FALLBACK</b> is called when a method is not available
+  in the classes. It starts a search for a native sub with
+  the method name in the tree using <b>_fallback()</b>. The
+  search starts at the lowest child _fallback() working up
+  to the top level class.
+
+  The search will end with this <b>_fallback()</b>.
+
+  <b>get-native-object()</b> and <b>set-native-object()</b>
+  get and set the native object. They also handle
+  referencing.
+
+  {abstract} native-object-ref()
+  {abstract} native-object-unref()
+  clear-object()
+  DESTROY()
+
+  set-class-info()
+  set-class-name-of-sub()
+  get-class-name-of-sub()
+  get-class-gtype()
+end note
+
+
+class SomeGxxxClassTop {
+  BUILD()
+  _fallback()
+  native-object-ref()
+  native-object-unref()
+}
+
+note left of SomeGxxxClassTop
+  <b>BUILD()</b> handles this classes options
+  to create a specialized native object. It
+  uses <b>set-native-object()</b> to store it.
+
+  <b>_fallback()</b> is passed through to search
+  for native subs defined in this class. Use <b>callsame()</b>
+  when no sub is found.
+
+  <b>native-object-ref()</b> and <b>native-object-unref()</b>
+  are implementations of the abstract methods of
+  its parent.
+end note
+
+note left of SomeGxxxClass
+  <b>BUILD()</b> and <b>set-native-object()</b> do the same
+  as above.
+
+  <b>_fallback()</b> does the same as in its parent and
+  addition also tries to search for native subroutines in
+  its interface parent class.
+end note
+
+class SomeGxxxClass {
+  BUILD()
+  _fallback()
+}
+
+class UserClass << (C, #00ffff) user class >> {
+  new()
+  BUILD()
+}
+
+note left of UserClass
+  With the <b>new()</b> method, the user is able to inject
+  options to control parent classes to create a native
+  object on behalf of this user class. Later this
+  classes <b>BUILD()</b> method can modify it.
+
+  <b>BUILD()</b> is for processing the users object options
+  and/or to modify the native object created by one of
+  the parents
+end note
+
+class TopLevelInterfaceSupport << (R, #efad00) catch all interface >> {
+  _interface()
+}
+
+note right of TopLevelInterfaceSupport
+  Not sure if this support class
+  is needed
+end note
+
+class SomeGxxxInterface << Interface >> {
+  _interface()
+}
+
+note right of SomeGxxxInterface
+  There wil be no <b>new()</b>, <b>BUILD()</b>
+  or any use of storage of native
+  objects.
+
+  <b>_interface()</b> has the same task
+  as the <b>_fallback()</b> method in
+  normal classes.
+end note
+
+'Connections of classes and interfaces
+
+TopLevelClassSupport <|-- SomeGxxxClassTop
+SomeGxxxClassTop <|-- SomeGxxxClass
+SomeGxxxClass <|-- UserClass
+
+TopLevelInterfaceSupport <|-- SomeGxxxInterface
+SomeGxxxInterface <|-- SomeGxxxClass
 ```
 
 ## Definitions of interfaces and class inheritance
 
 ### Interfaces
 
-**Interfaces** define a common contract. Such as an interface called IAnimal, where all animals share functions such as Eat(), Move(), Attack() etc. While all of them share the same functions, all or most of them have a different way (implementation) of achieving it. **Interfaces** are for *'can do'* or *'can be treated as'* type of relationships. In Raku this is called a role.
+**Interfaces** define a common contract. Such as an interface called IAnimal, where all animals share functions such as Eat(), Move(), Attack() etc. While all of them share the same functions, all or most of them have a different way (implementation) of achieving it. **Interfaces** are for **_can do_** or **_can be treated as_** type of relationships. In Raku this is called a role.
 
 ### Classes
-**Abstract** ( as well as **concrete** ) classes are for *'is a'* kind of relationship. **Abstract or concrete classes** define a common implementation and optionally common contracts. For example a simple Calculator could qualify as an abstract class which implements all the basic logical and bitwise operators and then gets extended by ScientificCalculator, GraphicalCalculator and so on.
+**Abstract** ( as well as **concrete** ) classes are for **_is a_** kind of relationship. **Abstract or concrete classes** define a common implementation and optionally common contracts. For example a simple Calculator could qualify as an abstract class which implements all the basic logical and bitwise operators and then gets extended by ScientificCalculator, GraphicalCalculator and so on.
 
 Look at these examples:
 
-class Bird **is an** Animal **can do** Flight;
-class Plane **is a** Vehicle **can do** Flight, **can be treated as** AccountableAsset;
-class Mosquito **is an** Animal **can do** Flight;
-class Horse **is an** Animal;
-class RaceHorse **is a** Horse **can be treated as** AccountableAsset;
-class Pegasus **is a** Horse **can do** Flight;
+class Bird **_is an_** Animal **_can do_** Flight;
+class Plane **_is a_** Vehicle **can do_** Flight, **_can be treated as_** AccountableAsset;
+class Mosquito **_is an_** Animal **_can do_** Flight;
+class Horse **_is an_** Animal;
+class RaceHorse **_is a_** Horse **_can be treated as_** AccountableAsset;
+class Pegasus **is a** Horse **_can do_** Flight;
 
 Bird, Mosquito and Horse are Animals. They are related. They inherit common methods from Animal like eat(), metabolize() and reproduce(). Maybe they override these methods, adding a little extra to them, but they take advantage of the default behavior implemented in Animal like metabolizeGlucose().
 

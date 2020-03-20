@@ -486,6 +486,10 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
   $type = 'N-PangoItem' if $type ~~ m/PangoItem/;
+  $type = 'N-Variant' if $type ~~ m/Variant/;
+  $type = 'N-VariantBuilder' if $type ~~ m/VariantBuilder/;
+  $type = 'N-VariantType' if $type ~~ m/VariantType/;
+  $type = 'N-VariantIter' if $type ~~ m/VariantIter/;
 
 #  $type = 'int32' if $type ~~ m/GType/;
   $type = 'uint64' if $type ~~ m/GType/;
@@ -817,7 +821,6 @@ sub substitute-in-template (
     ALSO-IS-LIBRARY-PARENT
     #also does Gnome::Gtk3::Buildable;
     #also does Gnome::Gtk3::Orientable;
-
     EOTEMPLATE
 
   my Str ( $t1, $t2) = ( '', '');
@@ -826,6 +829,7 @@ sub substitute-in-template (
     $t2 = "also is Gnome::{$raku-parentlib-name}::{$raku-parentclass-name};";
   }
 
+  $template-text ~~ s:g/ 'MODULENAME' /$raku-class-name/;
   $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
@@ -851,7 +855,7 @@ sub substitute-in-template (
 
         multi method new ( )
 
-      Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+      Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
         multi method new ( N-GObject :$native-object! )
 
@@ -863,34 +867,42 @@ sub substitute-in-template (
 
       #TM:0:new():inheriting
       #TM:0:new():
-      #TM:0:new(:native-object):
-      #TM:0:new(:build-id):
+      #TM:0:new(:native-object):Gnome::N::TopLevelClassSupport
+      #TM:4:new(:build-id):Gnome::GObject::Object
 
       submethod BUILD ( *%options ) {
 
       BUILD-ADD-SIGNALS
 
         # prevent creating wrong native-objects
-        return unless self.^name eq 'Gnome::LIBRARYMODULE';
+        if self.^name eq 'Gnome::LIBRARYMODULE' or %options<MODULENAME> {
 
-        # process all named arguments
-        if ? %options<widget> || ? %options<native-object> ||
-           ? %options<build-id> {
-          # provided in Gnome::GObject::Object
-        }
+          # check if native object is set by other parent class BUILDers
+          if self.is-valid { }
 
-        elsif %options.keys.elems {
-          die X::Gnome.new(
-            :message(
-              'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-              self.^name ~ ': ' ~ %options.keys.join(', ')
-            )
-          );
-        }
+          # process all named arguments
+          elsif %options.elems == 0 {
+            die X::Gnome.new(:message('No options specified ' ~ self.^name));
+          }
 
-        # create default object
-        else {
-          # self.set-native-object(BASE-SUBNAME_new());
+          if ? %options<native-object> || ? %options<build-id> {
+            # provided in Gnome::N::TopLevelClassSupport
+            # and in Gnome::GObject::Object
+          }
+
+          elsif %options.keys.elems {
+            die X::Gnome.new(
+              :message(
+                'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+                self.^name ~ ': ' ~ %options.keys.join(', ')
+              )
+            );
+          }
+
+          # create default object
+          else {
+            # self.set-native-object(BASE-SUBNAME_new());
+          }
         }
 
         # only after creating the native-object, the gtype is known

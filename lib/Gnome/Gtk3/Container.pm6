@@ -437,7 +437,7 @@ sub _gtk_container_foreach (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_container_get_children:
+#TM:4:gtk_container_get_children:Button.t
 =begin pod
 =head2 [[gtk_] container_] get_children
 

@@ -320,6 +320,7 @@ enum GtkWidgetHelpType is export (
 );
 
 #-------------------------------------------------------------------------------
+#TODO refactor into Boxed type class
 =begin pod
 =head2 class N-GtkRequisition
 

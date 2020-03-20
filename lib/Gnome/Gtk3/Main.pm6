@@ -82,7 +82,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-use Gnome::Glib::Option;
+use Gnome::Glib::OptionContext;
 use Gnome::Gdk3::Events;
 
 #-------------------------------------------------------------------------------
