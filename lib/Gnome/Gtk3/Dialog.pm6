@@ -129,7 +129,7 @@ Gnome::Gtk3::Dialog implements
 
 =head2 See Also
 
-B<Gnome::Gtk3::VBox>, B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
+B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
 
 =head1 Synopsis
 =head2 Declaration
