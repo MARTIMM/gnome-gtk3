@@ -76,7 +76,7 @@ use Gnome::Gio::MenuModel;
 use Gnome::Gio::Enums;
 use Gnome::Glib::List;
 use Gnome::Glib::Error;
-use Gnome::Glib::Option;
+use Gnome::Glib::OptionContext;
 
 #use Gnome::Gio::ActionGroup;
 #use Gnome::Gio::ActionMap;
