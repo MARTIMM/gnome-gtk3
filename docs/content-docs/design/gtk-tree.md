@@ -12,9 +12,11 @@ Below there is a table of the object hierarchy taken from [the developers page](
 
 ```
 Tree of Gtk C structures                              Raku module
------------------------------------------------------ ------------------------
-GObject                                               Gnome::GObject::Object
-├── GInitiallyUnowned                                 Gnome::GObject::InitiallyUnowned
+----------------------------------------------        ------------------------
+TopLevelClassSupport                           Gnome::N::TopLevelClassSupport
+│
+GObject                                        Gnome::GObject::Object
+├── GInitiallyUnowned                          Gnome::GObject::InitiallyUnowned
 │   ├── GtkWidget                                     Widget
 │   │   ├── GtkContainer                              Container
 │   │   │   ├── GtkBin                                Bin

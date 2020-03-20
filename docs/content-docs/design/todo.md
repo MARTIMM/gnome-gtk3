@@ -136,7 +136,20 @@ layout: sidebar
 
 * [ ] Add `method clear-object ( ) { !!! }` to **Gnome::GObject::Boxed**. This removes the need to set/clear `$!is-valid` using calls to methods from the child objects. `.set-native-object()` will handle the clearing then from there.
 
-* [ ] Add a toplevel class to support standalone classes in glib something like **Gnome::GObject::Boxed** is.
+* [x] Add a toplevel class to support standalone classes in glib something like **Gnome::GObject::Boxed** is. The class is called **Gnome::N::TopLevelClassSupport**.
+  * [x] **Gnome::Glib::Error**
+  * [x] **Gnome::Glib::List**
+  * [x] **Gnome::Glib::Slist**
+  * [x] **Gnome::Glib::Variant**
+  * [x] **Gnome::Glib::VariantIter**
+  * [x] **Gnome::Glib::VariantType**
+  * [x] **Gnome::Glib::VariantBuilder**
+
+  * [ ] **Gnome::GObject::Object**
+  * [ ] **Gnome::GObject::Boxed**
+<!--   * [ ] **Gnome::GObject::** -->
+
+
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
@@ -163,6 +176,8 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * [ ] Add deprecate messages for the to be removed names.
 
 * [ ] Remove `Since <version>` lines. These lines are version remarks of Gnome libraries and not of the Raku modules.
+
+* [ ] Remove documentation of native `xyz_new()` creation subs. What is needed will be covered by options like `.new(:$xyz)` in `BUILD()`. The subs can also be prefixed with an underscore '\_' to make them unavailable, e.g. `_xyz_new()`.
 
 #### Test coverage
 

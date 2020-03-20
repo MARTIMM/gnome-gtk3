@@ -11,7 +11,9 @@ Below there is a table of the object hierarchy taken from [the developers page](
 
 ```
 Tree of Pango C structures                            Raku module
------------------------------------------------------ ------------------------
+-----------------------------------------------       ------------------------
+TopLevelClassSupport                            Gnome::N::TopLevelClassSupport
+│
 GObject                                               Gnome::GObject::Object
 ├── PangoFont
 │   ╰── PangoFcFont
@@ -35,7 +37,7 @@ GObject                                               Gnome::GObject::Object
 ├─✗ PangoOTInfo
 ╰─✗ PangoOTRuleset
 
-GInterface                                            Modules are defined as Roles
+GInterface                                            
 ├── PangoCairoFont
 ╰── PangoCairoFontMap
 
