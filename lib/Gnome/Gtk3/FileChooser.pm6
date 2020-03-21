@@ -115,7 +115,7 @@ I<Gnome::Gtk3::FileChooserDialog>, I<Gnome::Gtk3::FileChooserWidget>, I<Gnome::G
 
   # get-filenames() is from FileChooser class
   my Gnome::Glib::SList $fnames .= new(
-    :gslist($file-select-dialog.get-filenames)
+    :native-object($file-select-dialog.get-filenames)
   );
 
   my @files-to-process = ();

@@ -45,7 +45,7 @@ This example shows how to get and show some information from a widget path.
 
     # Get class names of the button in the widget path
     my Gnome::Gtk3::WidgetPath $wp .= new(:native-object($b1.get-path));
-    my Gnome::Glib::SList $l .= new(:gslist($wp.iter-list-classes(2)));
+    my Gnome::Glib::SList $l .= new(:native-object($wp.iter-list-classes(2)));
     is $l.g-slist-length, 1, 'list contains one class';
     is $l.nth-data-str(0), 'text-button', "class is a 'text-button'";
 
@@ -147,4 +147,3 @@ Returns: the element's data, or `Any` if the position is off the end of the `N-G
   * N-GSList $list; a `N-GSList`
 
   * UInt $n; the position of the element
-

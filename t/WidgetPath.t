@@ -62,7 +62,7 @@ subtest 'Manipulations', {
   is $wp.to-string,
    'window(top-level-window):dir-ltr.background grid(top-grid):dir-ltr.horizontal button(stop-button):dir-ltr.text-button', $wp.to-string;
 
-  my Gnome::Glib::SList $l .= new(:gslist($wp.iter-list-classes(2)));
+  my Gnome::Glib::SList $l .= new(:native-object($wp.iter-list-classes(2)));
   is $l.g-slist-length, 1, 'list contains one class';
   is $l.nth-data-str(0), 'text-button', "class is a 'text-button'";
 
