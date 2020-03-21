@@ -128,38 +128,42 @@ submethod BUILD ( *%options ) {
   }
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Application';
+  #return unless self.^name eq 'Gnome::Gtk3::Application';
+  if self.^name eq 'Gnome::Gtk3::Application' or %options<Application> {
 
-  # process all named arguments
-  if ? %options<app-id> {
-    self.set-native-object(
-      gtk_application_new(
-        %options<app-id>, %options<flags> // G_APPLICATION_FLAGS_NONE
-      )
-    );
+    # process all named arguments
+    if self.is-valid { }
+
+    elsif ? %options<app-id> {
+      self.set-native-object(
+        gtk_application_new(
+          %options<app-id>, %options<flags> // G_APPLICATION_FLAGS_NONE
+        )
+      );
+    }
+
+    elsif ? %options<widget> || ? %options<native-object> ||
+       ? %options<build-id> {
+      # provided in Gnome::GObject::Object
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message(
+          'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+          self.^name ~ ': ' ~ %options.keys.join(', ')
+        )
+      );
+    }
+
+    # create default object
+    else {
+      self.set-native-object(gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkApplication');
   }
-
-  elsif ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    self.set-native-object(gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkApplication');
 }
 
 #-------------------------------------------------------------------------------

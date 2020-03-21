@@ -182,7 +182,7 @@ submethod BUILD ( *%options ) {
   if self.^name eq 'Gnome::Gtk3::RadioButton' or ? %options<RadioButton> {
 
     # check if native object is set by other parent class BUILDers
-if self.get-native-object.defined { } #self.is-valid { }
+    if self.is-valid { }
 
     elsif ? %options<empty> {
       Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
