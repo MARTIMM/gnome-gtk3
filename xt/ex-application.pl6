@@ -35,7 +35,7 @@ class AppSignalHandlers is Gnome::Gtk3::Application {
 
   #-----------------------------------------------------------------------------
   submethod new ( |c ) {
-    self.bless( :Application, |c);
+    self.bless( :GtkApplication, |c);
   }
 
   #-----------------------------------------------------------------------------

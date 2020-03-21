@@ -129,7 +129,7 @@ submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
   #return unless self.^name eq 'Gnome::Gtk3::Application';
-  if self.^name eq 'Gnome::Gtk3::Application' or %options<Application> {
+  if self.^name eq 'Gnome::Gtk3::Application' or %options<GtkApplication> {
 
     # process all named arguments
     if self.is-valid { }

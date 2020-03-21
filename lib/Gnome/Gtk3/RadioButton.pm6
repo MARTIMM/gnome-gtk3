@@ -179,7 +179,7 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::RadioButton' or ? %options<RadioButton> {
+  if self.^name eq 'Gnome::Gtk3::RadioButton' or ? %options<GtkRadioButton> {
 
     # check if native object is set by other parent class BUILDers
     if self.is-valid { }
