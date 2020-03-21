@@ -12,7 +12,7 @@ layout: sidebar
 * [ ] [References and object creation in the light of memory leaks](https://developer.gnome.org/gobject/stable/gobject-memory.html#gobject-memory-refcount).
 * [x] Applications behaviour from Gtk and Gio packages
 * [x] Resources from Gio package
-* [ ] Menus and Actions
+* [x] Menus and Actions
 * [ ] Drag and Drop
 * [ ] DBus I/O
 * [ ] Pango
@@ -46,29 +46,15 @@ layout: sidebar
 * [x] Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
 
 * Make some of the routines in toplevel classes the same.
-  * [ ] `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref. In Boxed this must be an abstract method.
+  * [x] `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref. In Boxed this must be an abstract method. This is done now in the TopLevelClassSupport
 
-  * [ ] `.is-valid()`: A boolean test to check if a native object is valid.
+  * [x] `.is-valid()`: A boolean test to check if a native object is valid.
 
   * [x] `.set-native-object()`
   * [x] `.get-native-object()`.
 
-
-  * All modules inheriting from **Gnome::GObject::Boxed**
-    * [x] Gnome::GObject::Value `.value-is-valid()` method is deprecated.
-    * [ ] Gnome::Gtk3::WidgetPath `.widgetpath-is-valid()` method is deprecated.
-    * [ ] Gnome::Gdk3::RGBA `.is-valid()` method implemented.
-
-    * usage of the above in classes and tests
-      * [ ] `Gnome::Gdk3::*` modified
-      * [ ] `Gnome::Glib::*` modified
-      * [ ] `Gnome::GObject::*` modified
-      * [ ] `Gnome::Gtk3::*` modified
-      * [x] `Gnome::Pango::*` modified
-      * [x] `Gnome::Gio::*` modified
-
   * Prevent name clashes
-    * set-name() in Gnome::Gtk3::Widget must stay while
+    * [ ] set-name() in Gnome::Gtk3::Widget must stay while
     * [ ] Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
     * [ ] Gnome::Gio::Action set-name() must become `action-set-name()`;
 <!--
@@ -76,44 +62,23 @@ layout: sidebar
     * [ ] Gnome::GObject::
 -->
 
-* `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid. Easy to add while implementing `clear-object()`.
-
-  * Standalone or top level classes. A DESTROY submethod must be declared.
-    * [x] Gnome::Glib::Error
-    * [x] Gnome::Glib::List
-    * [x] Gnome::Glib::SList
-    * [x] Gnome::GObject::Value
-    * [ ] Gnome::GObject::Param
-
-  * Top class is **Gnome::GObject::Boxed**. Classes inheriting from Boxed must define a DESTROY method when native objects must be cleared
-    * [ ] `Gnome::Gtk3::*`
-    * [x] `Gnome::Pango::*`
+* [x] `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid. Easy to add while implementing `clear-object()`. This is done now in the TopLevelClassSupport, a catch all class.
 
   * Interface Roles. Roles do not have to specify a DESTROY submethod unless there are local native objects defined which will be unlikely.
 
   * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
 
-* Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
-  * Translate below to `:native-object`
-    * [x] `:widget` everywhere
-    * [ ] `:object`
-    * [x] `:widgetpath` in Gnome::Gtk3::WidgetPath
-    * [x] `:rgba` partly in Gnome::Gdk3::RGBA
-    * [x] `:gvalue` in Gnome::GObject::Value
+* [x] Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
 
-  * Drop the use of :empty and :default. Instead an argumentless call should be sufficient.
-    * [x] `:empty`
-    * [x] `:default`
+* [x] Drop the use of `:empty` and `:default`. Instead an argumentless call should be sufficient.
 
-* I'm not sure if the named argument :$widget to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
+* I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
 
 * [ ] I have noticed that True and False can be used on int32 typed values. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation.
 
 * [ ] Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation
 
 * [ ] Many methods return native objects. this could be molded into Raku objects when possible.
-
-* [ ] Make it possible to call e.g. `.gtk_label_new()` on a typed object. Now there are several ways implemented using named arguments on the BUILD() submethod.
 
 * [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
 
