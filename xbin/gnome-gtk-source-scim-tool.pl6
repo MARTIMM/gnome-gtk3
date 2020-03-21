@@ -867,7 +867,7 @@ sub substitute-in-template (
 
       #TM:0:new():inheriting
       #TM:0:new():
-      #TM:0:new(:native-object):Gnome::N::TopLevelClassSupport
+      #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
       #TM:4:new(:build-id):Gnome::GObject::Object
 
       submethod BUILD ( *%options ) {
@@ -875,7 +875,7 @@ sub substitute-in-template (
       BUILD-ADD-SIGNALS
 
         # prevent creating wrong native-objects
-        if self.^name eq 'Gnome::LIBRARYMODULE' or %options<MODULENAME> {
+        if self.^name eq 'Gnome::LIBRARYMODULE' or %options<LIBCLASSNAME> {
 
           # check if native object is set by other parent class BUILDers
           if self.is-valid { }
