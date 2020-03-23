@@ -9,12 +9,12 @@ use v6.d;
 
 use NativeCall;
 
-use Gnome::N::N-GVariant;
+#use Gnome::N::N-GVariant;
 use Gnome::Gio::Enums;
-use Gnome::Gio::MenuModel;
+#use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
-use Gnome::Gio::SimpleAction;
-use Gnome::Glib::Variant;
+#use Gnome::Gio::SimpleAction;
+#use Gnome::Glib::Variant;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Application;
@@ -30,7 +30,7 @@ class AppSignalHandlers is Gnome::Gtk3::Application {
   has Str $!app-rbpath;
 #  has Gnome::Gtk3::Application $!app;
   has Gnome::Gtk3::Grid $!grid;
-  has Gnome::Gio::MenuModel $!menubar;
+#  has Gnome::Gio::MenuModel $!menubar;
   has Gnome::Gtk3::ApplicationWindow $!app-window;
 
   #-----------------------------------------------------------------------------
@@ -94,6 +94,7 @@ note 'app activated';
     );
     die $e.message if $e.is-valid;
 
+#`{{ menu xml is from gtk 2* and must be upgraded
     $!menubar .= new(:build-id<menubar>);
     self.set-menubar($!menubar);
 
@@ -106,6 +107,7 @@ note 'app activated';
     $menu-entry .= new(:name<file-quit>);
     $menu-entry.register-signal( self, 'file-quit', 'activate');
     self.add-action($menu-entry);
+}}
 
     $!app-window .= new(:application(self));
     $!app-window.set-title('Application Window Test');
@@ -144,18 +146,14 @@ note 'app open: ', $nf;
   #-- [menu] -------------------------------------------------------------------
   # File > New
   method file-new (
-    N-GVariant $parameter, Gnome::GObject::Object :widget($file-new-action)
+    Gnome::GObject::Object :widget($file-new-action)
   ) {
     note "Select 'New' from 'File' menu";
-    note "p: ", $parameter.perl;
-    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
-    note "tsv: ", $v.is-valid;
-    note "ts: ", $v.get-type-string if $v.is-valid;
   }
 
   # File > Quit
   method file-quit (
-    N-GVariant $parameter, Gnome::GObject::Object :widget($file-quit-action)
+    Gnome::GObject::Object :widget($file-quit-action)
     --> Int
   ) {
     note "Select 'Quit' from 'File' menu";
