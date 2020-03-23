@@ -145,32 +145,20 @@ submethod BUILD ( *%options ) {
     #_add_..._signal_types($?CLASS.^name);
   }
 
-
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Notebook';
+  if self.^name eq 'Gnome::Gtk3::Notebook' or %options<GtkNotebook> {
 
-  # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
+    # process all named arguments
+    if self.is-valid { }
+
+    # create default object
+    else {
+      self.set-native-object(_gtk_notebook_new());
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkNotebook');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    self.set-native-object(gtk_notebook_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkNotebook');
 }
 
 #-------------------------------------------------------------------------------
@@ -201,8 +189,9 @@ Creates a new B<Gnome::Gtk3::Notebook> widget with no pages.
 
 =end pod
 
-sub gtk_notebook_new ( --> N-GObject )
+sub _gtk_notebook_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_notebook_new')
   { * }
 
 #-------------------------------------------------------------------------------
