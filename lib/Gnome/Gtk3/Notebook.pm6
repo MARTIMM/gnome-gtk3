@@ -177,42 +177,37 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-
 #-------------------------------------------------------------------------------
-#TM:1:gtk_notebook_new:
-=begin pod
-=head2 gtk_notebook_new
-
-Creates a new B<Gnome::Gtk3::Notebook> widget with no pages.
-
-  method gtk_notebook_new ( --> N-GObject )
-
-=end pod
-
+#TM:2:_gtk_notebook_new:new()
+# Creates a new Notebook widget with no pages.
 sub _gtk_notebook_new ( --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_notebook_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_notebook_append_page:
+#TM:4:gtk_notebook_append_page:QAManager package
 =begin pod
 =head2 [gtk_notebook_] append_page
 
-Appends a page to I<notebook>.
+Appends a page to the I<notebook>.
 
-Returns: the index (starting from 0) of the appended
-page in the notebook, or -1 if function fails
+Returns: the index (starting from 0) of the appended page in the notebook, or -1 if function fails
 
-  method gtk_notebook_append_page ( N-GObject $child, N-GObject $tab_label --> Int )
+  method gtk_notebook_append_page (
+    N-GObject $child, N-GObject $tab_label
+    --> Int
+  )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to use as the contents of the page
-=item N-GObject $tab_label; (allow-none): the B<Gnome::Gtk3::Widget> to be used as the label for the page, or C<Any> to use the default label, “page N”
+=item N-GObject $child; the B<Gnome::Gtk3::Widget> to use as the contents of the page.
+=item N-GObject $tab_label; the B<Gnome::Gtk3::Widget> to be used as the label for the page, or an undefined value to use the default label, “page N”
 
 =end pod
 
-sub gtk_notebook_append_page ( N-GObject $notebook, N-GObject $child, N-GObject $tab_label --> int32 )
-  is native(&gtk-lib)
+sub gtk_notebook_append_page (
+  N-GObject $notebook, N-GObject $child, N-GObject $tab_label
+  --> int32
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
