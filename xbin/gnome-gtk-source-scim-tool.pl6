@@ -66,6 +66,7 @@ sub MAIN (
 
     # create var name named after classname. E.g. TextBuffer -> $tb.
     my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
+    my Str $mgc = '$mgc';
     my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
     my Str $test-content = Q:s:to/EOTEST/;
       use v6;
@@ -77,6 +78,20 @@ sub MAIN (
       #use Gnome::N::X;
       #Gnome::N::debug(:on);
 
+      #`{{
+      #-------------------------------------------------------------------------------
+      class MyGuiClass is $class {
+        submethod new ( |c ) {
+          self.bless( :$lib-class-name, |c);
+        }
+      }
+
+      subtest 'User class test', {
+        my MyGuiClass $mgc .= new;
+        isa-ok $mgc, $class, '.new()';
+      }
+
+      }}
       #-------------------------------------------------------------------------------
       my $class $m;
       #-------------------------------------------------------------------------------
@@ -802,6 +817,26 @@ sub substitute-in-template (
     =comment  also does Gnome::Gtk3::Buildable;
     =comment  also does Gnome::Gtk3::Orientable;
 
+    =begin comment
+    =head2 Inheriting this class
+
+    Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+      use Gnome::LIBRARYMODULE;
+
+      unit class MyGuiClass;
+      also is Gnome::LIBRARYMODULE;
+
+      submethod new ( |c ) {
+        # let the Gnome::LIBRARYMODULE class process the options
+        self.bless( :LIBCLASSNAME, |c);
+      }
+
+      submethod BUILD ( ... ) {
+        ...
+      }
+
+    =end comment
     =comment head2 Example
 
     =end pod
@@ -837,6 +872,7 @@ sub substitute-in-template (
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
+  $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
 
   $output-file = "xt/NewModules/$raku-class-name.pm6";
   $output-file.IO.spurt($template-text);
@@ -884,12 +920,12 @@ sub substitute-in-template (
           elsif %options.elems == 0 {
             die X::Gnome.new(:message('No options specified ' ~ self.^name));
           }
-
+      #`{{
           if ? %options<native-object> || ? %options<build-id> {
             # provided in Gnome::N::TopLevelClassSupport
             # and in Gnome::GObject::Object
           }
-
+      }}
           elsif %options.keys.elems {
             die X::Gnome.new(
               :message(
