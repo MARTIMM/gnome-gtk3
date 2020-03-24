@@ -279,6 +279,10 @@
     url: '/content-docs/reference/Gtk3/MenuShell.html'
     doc: 1
     test: 1
+  - title: "RecentChooserMenu"
+    url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
+    doc: 1
+    test: 1
 
 - bar_title: "Toolbar Classes"
   bar_menu:
