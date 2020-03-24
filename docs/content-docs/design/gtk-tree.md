@@ -8,11 +8,12 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons.
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules made inheritable are noted with ♥. Inheritance is a bit more complex than normal, info will be given in due time. Modules in under construction are marked with ⛏. Modules that will change a lot and even that it can be removed are marked with ⛔. The symbol 🗸 means that the module is tested, unneeded subs are removed, documentation done etc. (that will show up almost nowhere :- ).
+
 
 ```
-Tree of Gtk C structures                              Raku module
-----------------------------------------------        ------------------------
+Tree of Gtk C structures                       Raku module
+---------------------------------------------- --------------------------------
 TopLevelClassSupport                           Gnome::N::TopLevelClassSupport
 │
 GObject                                        Gnome::GObject::Object
@@ -21,8 +22,8 @@ GObject                                        Gnome::GObject::Object
 │   │   ├── GtkContainer                              Container
 │   │   │   ├── GtkBin                                Bin
 │   │   │   │   ├── GtkWindow                         Window
-│   │   │   │   │   ├── GtkDialog                     Dialog
-│   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog
+│   │   │   │   │   ├── GtkDialog                     Dialog ♥
+│   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog ♥
 │   │   │   │   │   │   ├── GtkAppChooserDialog
 │   │   │   │   │   │   ├── GtkColorChooserDialog     ColorChooserDialog
 │   │   │   │   │   │   ├─✗ GtkColorSelectionDialog   Deprecated
@@ -39,30 +40,30 @@ GObject                                        Gnome::GObject::Object
 │   │   │   │   │   ├── GtkPlug
 │   │   │   │   │   ╰── GtkShortcutsWindow
 │   │   │   │   ├── GtkActionBar
-│   │   │   │   ├─✗ GtkAlignment                      Deprecated
-│   │   │   │   ├── GtkComboBox                       ComboBox
+│   │   │   │   ├─✗ GtkAlignment               Deprecated
+│   │   │   │   ├── GtkComboBox                ComboBox
 │   │   │   │   │   ├── GtkAppChooserButton
-│   │   │   │   │   ╰── GtkComboBoxText               ComboBoxText
-│   │   │   │   ├── GtkFrame                          Frame
-│   │   │   │   │   ╰── GtkAspectFrame                AspectFrame
-│   │   │   │   ├── GtkButton                         Button
-│   │   │   │   │   ├── GtkToggleButton               ToggleButton
-│   │   │   │   │   │   ├── GtkCheckButton            CheckButton
-│   │   │   │   │   │   │   ╰── GtkRadioButton        RadioButton
-│   │   │   │   │   │   ╰── GtkMenuButton             MenuButton
-│   │   │   │   │   ├── GtkColorButton                ColorButton
+│   │   │   │   │   ╰── GtkComboBoxText        ComboBoxText
+│   │   │   │   ├── GtkFrame                   Frame
+│   │   │   │   │   ╰── GtkAspectFrame         AspectFrame
+│   │   │   │   ├── GtkButton                  Button
+│   │   │   │   │   ├── GtkToggleButton        ToggleButton
+│   │   │   │   │   │   ├── GtkCheckButton     CheckButton
+│   │   │   │   │   │   │   ╰── GtkRadioButton RadioButton
+│   │   │   │   │   │   ╰── GtkMenuButton      MenuButton
+│   │   │   │   │   ├── GtkColorButton         ColorButton
 │   │   │   │   │   ├── GtkFontButton
 │   │   │   │   │   ├── GtkLinkButton
 │   │   │   │   │   ├── GtkLockButton
 │   │   │   │   │   ├── GtkModelButton
 │   │   │   │   │   ╰── GtkScaleButton
 │   │   │   │   │       ╰── GtkVolumeButton
-│   │   │   │   ├── GtkMenuItem                       MenuItem
+│   │   │   │   ├── GtkMenuItem                MenuItem
 │   │   │   │   │   ├── GtkCheckMenuItem
 │   │   │   │   │   │   ╰── GtkRadioMenuItem
-│   │   │   │   │   ├─✗ GtkImageMenuItem              Deprecated
+│   │   │   │   │   ├─✗ GtkImageMenuItem       Deprecated
 │   │   │   │   │   ├── GtkSeparatorMenuItem
-│   │   │   │   │   ╰─✗ GtkTearoffMenuItem            Deprecated
+│   │   │   │   │   ╰─✗ GtkTearoffMenuItem     Deprecated
 │   │   │   │   ├── GtkEventBox
 │   │   │   │   ├── GtkExpander
 │   │   │   │   ├── GtkFlowBoxChild
@@ -81,109 +82,109 @@ GObject                                        Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkPopoverMenu
 │   │   │   │   ├── GtkRevealer
 │   │   │   │   ├── GtkSearchBar
-│   │   │   │   ├── GtkStackSidebar                   StackSidebar
+│   │   │   │   ├── GtkStackSidebar            StackSidebar
 │   │   │   │   ╰── GtkViewport
-│   │   │   ├── GtkBox                                Box
+│   │   │   ├── GtkBox                         Box
 │   │   │   │   ├── GtkAppChooserWidget
 │   │   │   │   ├── GtkButtonBox
-│   │   │   │   │   ├─✗ GtkHButtonBox                 Deprecated
-│   │   │   │   │   ╰─✗ GtkVButtonBox                 Deprecated
-│   │   │   │   ├── GtkColorChooserWidget             ColorChooserWidget
-│   │   │   │   ├─✗ GtkColorSelection                 Deprecated
+│   │   │   │   │   ├─✗ GtkHButtonBox          Deprecated
+│   │   │   │   │   ╰─✗ GtkVButtonBox          Deprecated
+│   │   │   │   ├── GtkColorChooserWidget      ColorChooserWidget
+│   │   │   │   ├─✗ GtkColorSelection          Deprecated
 │   │   │   │   ├── GtkFileChooserButton
 │   │   │   │   ├── GtkFileChooserWidget
 │   │   │   │   ├── GtkFontChooserWidget
-│   │   │   │   ├─✗ GtkFontSelection                  Deprecated
-│   │   │   │   ├─✗ GtkHBox                           Deprecated
+│   │   │   │   ├─✗ GtkFontSelection           Deprecated
+│   │   │   │   ├─✗ GtkHBox                    Deprecated
 │   │   │   │   ├── GtkInfoBar
 │   │   │   │   ├── GtkRecentChooserWidget
 │   │   │   │   ├── GtkShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
-│   │   │   │   ├── GtkStackSwitcher                  StackSwitcher
+│   │   │   │   ├── GtkStackSwitcher           StackSwitcher
 │   │   │   │   ├── GtkStatusbar
-│   │   │   │   ╰─✗ GtkVBox                           Deprecated
+│   │   │   │   ╰─✗ GtkVBox                    Deprecated
 │   │   │   ├── GtkFixed
 │   │   │   ├── GtkFlowBox
-│   │   │   ├── GtkGrid                               Grid
+│   │   │   ├── GtkGrid                        Grid ♥
 │   │   │   ├── GtkHeaderBar
-│   │   │   ├── GtkPaned                              Paned
-│   │   │   │   ├─✗ GtkHPaned                         Deprecated
-│   │   │   │   ╰─✗ GtkVPaned                         Deprecated
+│   │   │   ├── GtkPaned                       Paned
+│   │   │   │   ├─✗ GtkHPaned                  Deprecated
+│   │   │   │   ╰─✗ GtkVPaned                  Deprecated
 │   │   │   ├── GtkIconView
 │   │   │   ├── GtkLayout
-│   │   │   ├── GtkListBox                            ListBox
-│   │   │   ├── GtkMenuShell                          MenuShell
-│   │   │   │   ├── GtkMenuBar                        MenuBar
-│   │   │   │   ╰── GtkMenu                           Menu
-│   │   │   │       ╰── GtkRecentChooserMenu
-│   │   │   ├── GtkNotebook                           Notebook
+│   │   │   ├── GtkListBox                     ListBox
+│   │   │   ├── GtkMenuShell                   MenuShell
+│   │   │   │   ├── GtkMenuBar                 MenuBar
+│   │   │   │   ╰── GtkMenu                    Menu
+│   │   │   │       ╰── GtkRecentChooserMenu   RecentChooserMenu ♥
+│   │   │   ├── GtkNotebook                    Notebook ♥
 │   │   │   ├── GtkSocket
-│   │   │   ├── GtkStack                              Stack
-│   │   │   ├─✗ GtkTable                              Deprecated
-│   │   │   ├── GtkTextView                           TextView
+│   │   │   ├── GtkStack                       Stack
+│   │   │   ├─✗ GtkTable                       Deprecated
+│   │   │   ├── GtkTextView                    TextView
 │   │   │   ├── GtkToolbar
 │   │   │   ├── GtkToolItemGroup
 │   │   │   ├── GtkToolPalette
-│   │   │   ╰── GtkTreeView                           TreeView
-│   │   ├─✗ GtkMisc                                   Deprecated, Keep hierarchy
-│   │   │   ├── GtkLabel                              Label
+│   │   │   ╰── GtkTreeView                    TreeView
+│   │   ├─✗ GtkMisc                            Deprecated, Keep hierarchy
+│   │   │   ├── GtkLabel                       Label
 │   │   │   │   ╰── GtkAccelLabel
-│   │   │   ├─✗ GtkArrow                              Deprecated
-│   │   │   ╰── GtkImage                              Image
+│   │   │   ├─✗ GtkArrow                       Deprecated
+│   │   │   ╰── GtkImage                       Image
 │   │   ├── GtkCalendar
 │   │   ├── GtkCellView
 │   │   ├── GtkDrawingArea
-│   │   ├── GtkEntry                                  Entry
-│   │   │   ├── GtkSearchEntry                        SearchEntry
+│   │   ├── GtkEntry                           Entry
+│   │   │   ├── GtkSearchEntry                 SearchEntry
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea
-│   │   ├── GtkRange                                  Range
-│   │   │   ├── GtkScale                              Scale
-│   │   │   │   ├─✗ GtkHScale                         Deprecated
-│   │   │   │   ╰─✗ GtkVScale                         Deprecated
+│   │   ├── GtkRange                           Range
+│   │   │   ├── GtkScale                       Scale
+│   │   │   │   ├─✗ GtkHScale                  Deprecated
+│   │   │   │   ╰─✗ GtkVScale                  Deprecated
 │   │   │   ╰── GtkScrollbar
-│   │   │       ├─✗ GtkHScrollbar                     Deprecated
-│   │   │       ╰─✗ GtkVScrollbar                     Deprecated
+│   │   │       ├─✗ GtkHScrollbar              Deprecated
+│   │   │       ╰─✗ GtkVScrollbar              Deprecated
 │   │   ├── GtkSeparator
-│   │   │   ├─✗ GtkHSeparator                         Deprecated
-│   │   │   ╰─✗ GtkVSeparator                         Deprecated
-│   │   ├─✗ GtkHSV                                    Deprecated
-│   │   ├─✗ GtkInvisible                              Used internally for D&D
-│   │   ├── GtkProgressBar                            ProgressBar
-│   │   ├── GtkSpinner                                Spinner
-│   │   ├── GtkSwitch                                 Switch
-│   │   ╰── GtkLevelBar                               LevelBar
+│   │   │   ├─✗ GtkHSeparator                  Deprecated
+│   │   │   ╰─✗ GtkVSeparator                  Deprecated
+│   │   ├─✗ GtkHSV                             Deprecated
+│   │   ├─✗ GtkInvisible                       Used internally for D&D
+│   │   ├── GtkProgressBar                     ProgressBar
+│   │   ├── GtkSpinner                         Spinner
+│   │   ├── GtkSwitch                          Switch
+│   │   ╰── GtkLevelBar                        LevelBar
 │   ├── GtkAdjustment
 │   ├── GtkCellArea
 │   │   ╰── GtkCellAreaBox
-│   ├── GtkCellRenderer                               CellRenderer
-│   │   ├── GtkCellRendererText                       CellRendererText
-│   │   │   ├── GtkCellRendererAccel                  CellRendererAccel
-│   │   │   ├── GtkCellRendererCombo                  CellRendererCombo
-│   │   │   ╰── GtkCellRendererSpin                   CellRendererSpin
-│   │   ├── GtkCellRendererPixbuf                     CellRendererPixbuf
-│   │   ├── GtkCellRendererProgress                   CellRendererProgress
-│   │   ├── GtkCellRendererSpinner                    CellRendererSpinner
-│   │   ╰── GtkCellRendererToggle                     CellRendererToggle
-│   ├── GtkFileFilter                                 FileFilter
-│   ├── GtkTreeViewColumn                             TreeViewColumn
+│   ├── GtkCellRenderer                        CellRenderer
+│   │   ├── GtkCellRendererText                CellRendererText
+│   │   │   ├── GtkCellRendererAccel           CellRendererAccel
+│   │   │   ├── GtkCellRendererCombo           CellRendererCombo
+│   │   │   ╰── GtkCellRendererSpin            CellRendererSpin
+│   │   ├── GtkCellRendererPixbuf              CellRendererPixbuf
+│   │   ├── GtkCellRendererProgress            CellRendererProgress
+│   │   ├── GtkCellRendererSpinner             CellRendererSpinner
+│   │   ╰── GtkCellRendererToggle              CellRendererToggle
+│   ├── GtkFileFilter                          FileFilter
+│   ├── GtkTreeViewColumn                      TreeViewColumn
 │   ╰── GtkRecentFilter
 ├── GtkAccelGroup
 ├── GtkAccelMap
 ├── AtkObject
 │   ╰── GtkAccessible
-├─✗ GtkAction                                         Deprecated
-│   ├─✗ GtkToggleAction                               Deprecated
-│   │   ╰─✗ GtkRadioAction                            Deprecated
-│   ╰─✗ GtkRecentAction                               Deprecated
-├─✗ GtkActionGroup                                    Deprecated
-├── GApplication                                      Gnome::Gio::Application
-│   ╰── GtkApplication                                Application
-├── GtkBuilder                                        Builder
+├─✗ GtkAction                                  Deprecated
+│   ├─✗ GtkToggleAction                        Deprecated
+│   │   ╰─✗ GtkRadioAction                     Deprecated
+│   ╰─✗ GtkRecentAction                        Deprecated
+├─✗ GtkActionGroup                             Deprecated
+├── GApplication                               Gnome::Gio::Application
+│   ╰── GtkApplication                         Application ♥
+├── GtkBuilder                                 Builder
 ├── GtkCellAreaContext
 ├── GtkClipboard
-├── GtkCssProvider                                    CssProvider
+├── GtkCssProvider                             CssProvider
 ├── GtkEntryBuffer
 ├── GtkEntryCompletion
 ├── GtkEventController
@@ -206,11 +207,11 @@ GObject                                        Gnome::GObject::Object
 ├── GtkIMContext
 │   ├── GtkIMContextSimple
 │   ╰── GtkIMMulticontext
-├── GtkListStore                                      ListStore
+├── GtkListStore                               ListStore
 ├── GMountOperation                                   
 │   ╰── GtkMountOperation                             
 ├── GEmblemedIcon                                     
-│   ╰─✗ GtkNumerableIcon                              Deprecated
+│   ╰─✗ GtkNumerableIcon                       Deprecated
 ├── GtkPageSetup
 ├── GtkPrinter
 ├── GtkPrintContext
@@ -221,39 +222,41 @@ GObject                                        Gnome::GObject::Object
 ├── GtkRecentManager
 ├── GtkSettings
 ├── GtkSizeGroup
-├─✗ GtkStatusIcon                                     Deprecated
-├─✗ GtkStyle                                          Deprecated
-├── GtkStyleContext                                   StyleContext
-├── GtkTextBuffer                                     TextBuffer
+├─✗ GtkStatusIcon                              Deprecated
+├─✗ GtkStyle                                   Deprecated
+├── GtkStyleContext                            StyleContext
+├── GtkTextBuffer                              TextBuffer
 ├── GtkTextChildAnchor
 ├── GtkTextMark
-├── GtkTextTag                                        TextTag
-├── GtkTextTagTable                                   TextTagTable
-├─✗ GtkThemingEngine                                  Deprecated
+├── GtkTextTag                                 TextTag
+├── GtkTextTagTable                            TextTagTable
+├─✗ GtkThemingEngine                           Deprecated
 ├── GtkTreeModelFilter
 ├── GtkTreeModelSort
 ├── GtkTreeSelection
-├── GtkTreeStore                                      TreeStore
-├─✗ GtkUIManager                                      Deprecated
+├── GtkTreeStore                               TreeStore
+├─✗ GtkUIManager                               Deprecated
 ├── GtkWindowGroup
 ├── GtkTooltip
 ╰── GtkPrintBackend
 
-GInterface                                            Modules are defined as Roles
-├── GtkBuildable                                      Buildable
+TopLevelInterfaceSupport               Gnome::N::TopLevelInterfaceSupport
+│
+GInterface                                            
+├── GtkBuildable                       Buildable
 ├── GtkActionable
-├─✗ GtkActivatable                                    Deprecated
+├─✗ GtkActivatable                     Deprecated
 ├── GtkAppChooser
 ├── GtkCellLayout
 ├── GtkCellEditable
-├── GtkOrientable                                     Orientable
-├── GtkColorChooser                                   ColorChooser
-├── GtkStyleProvider                                  StyleProvider
+├── GtkOrientable                      Orientable
+├── GtkColorChooser                    ColorChooser
+├── GtkStyleProvider                   StyleProvider
 ├── GtkEditable
-├── GtkFileChooser                                    FileChooser
+├── GtkFileChooser                     FileChooser
 ├── GtkFontChooser
 ├── GtkScrollable
-├── GtkTreeModel                                      TreeModel
+├── GtkTreeModel                       TreeModel
 ├── GtkTreeDragSource
 ├── GtkTreeDragDest
 ├── GtkTreeSortable
@@ -261,18 +264,19 @@ GInterface                                            Modules are defined as Rol
 ├── GtkRecentChooser
 ╰── GtkToolShell
 
-GBoxed                                                Gnome::GObject::Boxed
+TopLevelClassSupport                   Gnome::N::TopLevelClassSupport
+│
+GBoxed                                 Gnome::GObject::Boxed
 ├── GtkPaperSize
-├── GtkTextIter                                       TextIter
+├── GtkTextIter                        TextIter
 ├── GtkSelectionData
 ├── GtkRequisition
-├── GtkBorder                                         Border
-├── GtkTreeIter                                       TreeIter
-├── GtkCssSection                                     CssSection
-├── GtkTreePath                                       TreePath
-├   GtkTreeRowReference                               TreeRowReference
-│                                                     Extracted from TreeModel
+├── GtkBorder                          Border
+├── GtkTreeIter                        TreeIter
+├── GtkCssSection                      CssSection
+├── GtkTreePath                        TreePath
+├   GtkTreeRowReference                TreeRowReference, extr. from TreeModel
 ├── GtkIconSet
 ├── GtkTargetList
-╰── GtkWidgetPath                                     WidgetPath
+╰── GtkWidgetPath                      WidgetPath
 ```
