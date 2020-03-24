@@ -150,31 +150,33 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::AboutDialog';
+  if self.^name eq 'Gnome::Gtk3::AboutDialog' or %options<GtkAboutDialog> {
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_about_dialog_new());
+    if ? %options<empty> {
+      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+      self.set-native-object(gtk_about_dialog_new());
+    }
+#`{{
+    elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
+      # provided in GObject
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+}}
+
+    else {  # if ? %options<empty> {
+      self.set-native-object(gtk_about_dialog_new());
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkAboutDialog');
   }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {  # if ? %options<empty> {
-    self.set-native-object(gtk_about_dialog_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkAboutDialog');
 }
 
 #-------------------------------------------------------------------------------
