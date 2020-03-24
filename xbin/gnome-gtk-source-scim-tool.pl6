@@ -939,10 +939,10 @@ sub substitute-in-template (
           else {
             # self.set-native-object(BASE-SUBNAME_new());
           }
-        }
 
-        # only after creating the native-object, the gtype is known
-        self.set-class-info('LIBCLASSNAME');
+          # only after creating the native-object, the gtype is known
+          self.set-class-info('LIBCLASSNAME');
+        }
       }
 
       #-------------------------------------------------------------------------------
