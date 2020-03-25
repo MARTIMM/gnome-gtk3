@@ -119,7 +119,7 @@ Window placement can be influenced using this enumeration. Note that using GTK_W
 =item GTK_WIN_POS_CENTER. Windows should be placed in the center of the screen.
 =item GTK_WIN_POS_MOUSE. Windows should be placed at the current mouse position.
 =item GTK_WIN_POS_CENTER_ALWAYS. Keep window centered as it changes size, etc.
-=item GTK_WIN_POS_CENTER_PARENT. Center the window on its transient parent.
+=item GTK_WIN_POS_CENTER_ON_PARENT. Center the window on its transient parent.
 
 =end pod
 
