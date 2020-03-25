@@ -42,7 +42,6 @@ B<Gnome::Gtk3::RecentChooser>
   also does Gnome::Gtk3::Buildable;
 =comment  also does Gnome::Gtk3::Orientable;
 
-=begin comment
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -61,7 +60,6 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=end comment
 =comment head2 Example
 
 =end pod

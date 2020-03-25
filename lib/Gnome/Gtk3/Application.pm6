@@ -62,6 +62,24 @@ Gnome::Gtk3::Application implements
 =comment  also does Gnome::Gio::ActionGroup;
 =comment  also does Gnome::Gio::ActionMap;
 
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Application;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Application;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Application class process the options
+    self.bless( :GtkApplication, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =comment head2 Example
 
 =end pod

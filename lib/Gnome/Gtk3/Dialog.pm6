@@ -138,6 +138,24 @@ B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
   also is Gnome::Gtk3::Window;
   also does Gnome::Gtk3::Buildable;
 
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Dialog;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Dialog;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Dialog class process the options
+    self.bless( :GtkDialog, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =head2 Example
 
   my Gnome::Gtk3::Dialog $dialog .= new(:build-id<simple-dialog>);

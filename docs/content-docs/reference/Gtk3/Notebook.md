@@ -89,6 +89,25 @@ Declaration
     also is Gnome::Gtk3::Container;
     also does Gnome::Gtk3::Buildable;
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Notebook;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Notebook;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Notebook class process the options
+      self.bless( :GtkNotebook, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
@@ -107,25 +126,21 @@ Create a Notebook object using a native object returned from a builder. See also
 
     multi method new ( Str :$build-id! )
 
-gtk_notebook_new
-----------------
-
-Creates a new **Gnome::Gtk3::Notebook** widget with no pages.
-
-    method gtk_notebook_new ( --> N-GObject )
-
 [gtk_notebook_] append_page
 ---------------------------
 
-Appends a page to *notebook*.
+Appends a page to the *notebook*.
 
 Returns: the index (starting from 0) of the appended page in the notebook, or -1 if function fails
 
-    method gtk_notebook_append_page ( N-GObject $child, N-GObject $tab_label --> Int )
+    method gtk_notebook_append_page (
+      N-GObject $child, N-GObject $tab_label
+      --> Int
+    )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page.
 
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or an undefined value to use the default label, “page N”
 
 [gtk_notebook_] append_page_menu
 --------------------------------

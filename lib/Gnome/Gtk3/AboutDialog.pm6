@@ -37,6 +37,24 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
   also is Gnome::Gtk3::Dialog;
   also does Gnome::Gtk3::Buildable;
 
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::AboutDialog;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::AboutDialog;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::AboutDialog class process the options
+    self.bless( :GtkAboutDialog, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =head1 Example
 
   my Gnome::Gtk3::AboutDialog $about .= new;

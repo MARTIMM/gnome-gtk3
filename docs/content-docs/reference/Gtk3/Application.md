@@ -59,6 +59,25 @@ Declaration
     unit class Gnome::Gtk3::Application;
     also is Gnome::Gio::Application;
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Application;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Application;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Application class process the options
+      self.bless( :GtkApplication, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
@@ -94,8 +113,6 @@ If no application ID is given then some features (most notably application uniqu
 
 Returns: a new **Gnome::Gtk3::Application** instance
 
-Since: 3.0
-
     method gtk_application_new ( Str $application_id, GApplicationFlags $flags --> N-GObject )
 
   * Str $application_id; (allow-none): The application ID.
@@ -109,13 +126,11 @@ Adds a window to *application*.
 
 This call can only happen after the *application* has started; typically, you should add new application windows in response to the emission of the *activate* signal.
 
-This call is equivalent to setting the *application* property of *window* to *application*.
+This call is equivalent to setting the *application* property of *$window* to *application*.
 
 Normally, the connection between the application and the window will remain until the window is destroyed, but you can explicitly remove it with `gtk_application_remove_window()`.
 
 GTK+ will keep the *application* running as long as it has any windows.
-
-Since: 3.0
 
     method gtk_application_add_window ( N-GObject $window )
 
@@ -129,8 +144,6 @@ Remove a window from *application*.
 If *window* belongs to *application* then this call is equivalent to setting the *application* property of *window* to `Any`.
 
 The application may stop running as a result of a call to this function.
-
-Since: 3.0
 
     method gtk_application_remove_window ( N-GObject $window )
 
@@ -147,8 +160,6 @@ The list that is returned should not be modified in any way. It will only remain
 
 Returns: (element-type **Gnome::Gtk3::Window**) (transfer none): a **GList** of **Gnome::Gtk3::Window**
 
-Since: 3.0
-
     method gtk_application_get_windows ( --> N-GList )
 
 [gtk_application_] get_app_menu
@@ -157,8 +168,6 @@ Since: 3.0
 Returns the menu model that has been set with `gtk_application_set_app_menu()`.
 
 Returns: (transfer none) (nullable): the application menu of *application* or `Any` if no application menu has been set.
-
-Since: 3.4
 
     method gtk_application_get_app_menu ( --> N-GObject )
 
@@ -175,8 +184,6 @@ If supported, the application menu will be rendered by the desktop environment.
 
 Use the base **GActionMap** interface to add actions, to respond to the user selecting these menu items.
 
-Since: 3.4
-
     method gtk_application_set_app_menu ( N-GObject $app_menu )
 
   * N-GObject $app_menu; (allow-none): a **GMenuModel**, or `Any`
@@ -187,8 +194,6 @@ Since: 3.4
 Returns the menu model that has been set with `gtk_application_set_menubar()`.
 
 Returns: (transfer none): the menubar for windows of *application*
-
-Since: 3.4
 
     method gtk_application_get_menubar ( --> N-GObject )
 
@@ -205,8 +210,6 @@ Depending on the desktop environment, this may appear at the top of each window,
 
 Use the base **GActionMap** interface to add actions, to respond to the user selecting these menu items.
 
-Since: 3.4
-
     method gtk_application_set_menubar ( N-GObject $menubar )
 
   * N-GObject $menubar; (allow-none): a **GMenuModel**, or `Any`
@@ -219,8 +222,6 @@ Returns the **Gnome::Gtk3::ApplicationWindow** with the given ID.
 The ID of a **Gnome::Gtk3::ApplicationWindow** can be retrieved with `gtk_application_window_get_id()`.
 
 Returns: (nullable) (transfer none): the window with ID *id*, or `Any` if there is no window with this ID
-
-Since: 3.6
 
     method gtk_application_get_window_by_id ( UInt $id --> N-GObject )
 
@@ -235,8 +236,6 @@ The active window is the one that was most recently focused (within the applicat
 
 Returns: (transfer none) (nullable): the active window, or `Any` if there isn't one.
 
-Since: 3.6
-
     method gtk_application_get_active_window ( --> N-GObject )
 
 [gtk_application_] list_action_descriptions
@@ -246,8 +245,6 @@ Lists the detailed action names which have associated accelerators. See `gtk_app
 
 Returns: (transfer full): a `Any`-terminated array of strings, free with `g_strfreev()` when done
 
-Since: 3.12
-
     method gtk_application_list_action_descriptions ( --> CArray[Str] )
 
 [gtk_application_] get_accels_for_action
@@ -256,8 +253,6 @@ Since: 3.12
 Gets the accelerators that are currently associated with the given action.
 
 Returns: (transfer full): accelerators for *detailed_action_name*, as a `Any`-terminated array. Free with `g_strfreev()` when no longer needed
-
-Since: 3.12
 
     method gtk_application_get_accels_for_action ( Str $detailed_action_name --> CArray[Str] )
 
@@ -276,8 +271,6 @@ It is a programmer error to pass an invalid accelerator string. If you are unsur
 
 Returns: (transfer full): a `Any`-terminated array of actions for *accel*
 
-Since: 3.14
-
     method gtk_application_get_actions_for_accel ( Str $accel --> CArray[Str] )
 
   * Str $accel; an accelerator that can be parsed by `gtk_accelerator_parse()`
@@ -290,8 +283,6 @@ Sets zero or more keyboard accelerators that will trigger the given action. The 
 To remove all accelerators for an action, use an empty, zero-terminated array for *accels*.
 
 For the *detailed_action_name*, see `g_action_parse_detailed_name()` and `g_action_print_detailed_name()`.
-
-Since: 3.12
 
     method gtk_application_set_accels_for_action ( Str $detailed_action_name, CArray[Str] $accels )
 
@@ -318,8 +309,6 @@ This function will return `0` on Mac OS and a default app menu will be created a
 
 Returns: `1` if you should set an app menu
 
-Since: 3.14
-
     method gtk_application_prefers_app_menu ( --> Int )
 
 [gtk_application_] get_menu_by_id
@@ -328,8 +317,6 @@ Since: 3.14
 Gets a menu from automatically loaded resources. See [Automatic resources][automatic-resources] for more information.
 
 Returns: (transfer none): Gets the menu with the given id from the automatically loaded resources
-
-Since: 3.14
 
     method gtk_application_get_menu_by_id ( Str $id --> N-GObject )
 
@@ -373,8 +360,6 @@ Supported signals
 
 Emitted when a **Gnome::Gtk3::Window** is added to *application* through `gtk_application_add_window()`.
 
-Since: 3.2
-
     method handler (
       Unknown type GTK_TYPE_WINDOW $window,
       Gnome::GObject::Object :widget($application),
@@ -388,8 +373,6 @@ Since: 3.2
 ### window-removed
 
 Emitted when a **Gnome::Gtk3::Window** is removed from *application*, either as a side-effect of being destroyed or explicitly through `gtk_application_remove_window()`.
-
-Since: 3.2
 
     method handler (
       Unknown type GTK_TYPE_WINDOW $window,
@@ -429,15 +412,11 @@ Supported properties
 
 ### Register session
 
-Set this property to `1` to register with the session manager. Since: 3.4
-
-The **Gnome::GObject::Value** type of property *register-session* is `G_TYPE_BOOLEAN`.
+Set this property to `1` to register with the session manager. The **Gnome::GObject::Value** type of property *register-session* is `G_TYPE_BOOLEAN`.
 
 ### Screensaver Active
 
-This property is `1` if GTK+ believes that the screensaver is currently active. GTK+ only tracks session state (including this) when *register-session* is set to `1`. Tracking the screensaver state is supported on Linux. Since: 3.24
-
-The **Gnome::GObject::Value** type of property *screensaver-active* is `G_TYPE_BOOLEAN`.
+This property is `1` if GTK+ believes that the screensaver is currently active. GTK+ only tracks session state (including this) when *register-session* is set to `1`. Tracking the screensaver state is supported on Linux. The **Gnome::GObject::Value** type of property *screensaver-active* is `G_TYPE_BOOLEAN`.
 
 ### Application menu
 
