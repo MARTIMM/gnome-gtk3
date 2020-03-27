@@ -214,3 +214,262 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 * [ ] Check licensing of the whole project, contact Gnome.
 
 * [ ] Remove changelog from About page and add separate pages for the changelog from the packages.
+
+
+# Checklist
+    - main_doc:
+      - 'title, description, see also': 0
+      - 'inheritance, synopsis, example': 0
+      - typos: 0
+    - subs_doc:
+      - 'add $ to variables': 0
+      - 'use True/False when boolean input': 0
+      - 'remove Since version text': 0
+      - 'check if :native-object is used and documented in BUILDs': 0
+      - typos: 0
+      - examples: 0
+    - 'complete all tests': 0
+    - 'remove unusable subs': 0
+    - cleanup: 0
+
+Gnome::N
+TopLevelClassSupport
+
+Gnome::GObject
+InitiallyUnowned
+
+Gnome::Gtk3
+Widget
+Container
+Bin
+Window
+Dialog
+AboutDialog
+ChooserDialog
+ColorChooserDialog
+FileChooserDialog
+FontChooserDialog
+MessageDialog
+PageSetupUnixDialog
+GtkPrintUnixDialog
+GtkRecentChooserDialog
+ApplicationWindow
+Assistant
+GtkOffscreenWindow
+GtkPlug
+GtkShortcutsWindow
+ActionBar
+ComboBox
+AppChooserButton
+ComboBoxText
+Frame
+AspectFrame
+Button
+ToggleButton
+CheckButton
+RadioButton
+MenuButton
+ColorButton
+FontButton
+LinkButton
+LockButton
+ModelButton
+ScaleButton
+VolumeButton
+MenuItem
+CheckMenuItem
+RadioMenuItem
+SeparatorMenuItem
+EventBox
+Expander
+FlowBoxChild
+HandleBox
+ListBoxRow             
+ToolItem                   
+ToolButton
+MenuToolButton
+ToggleToolButton
+RadioToolButton
+SeparatorToolItem
+Overlay
+ScrolledWindow
+PlacesSidebar
+Popover
+PopoverMenu
+Revealer
+SearchBar
+StackSidebar
+Viewport
+Box
+AppChooserWidget
+ButtonBox
+ColorChooserWidget
+FileChooserButton
+FileChooserWidget
+FontChooserWidget
+InfoBar
+RecentChooserWidget
+ShortcutsSection
+ShortcutsGroup
+ShortcutsShortcut
+StackSwitcher          
+Statusbar
+Fixed
+FlowBox
+Grid
+HeaderBar
+Paned
+IconView
+Layout
+ListBox
+MenuShell
+MenuBar
+Menu
+RecentChooserMenu
+Notebook
+Socket
+Stack
+TextView
+Toolbar
+ToolItemGroup
+ToolPalette
+TreeView
+Label
+AccelLabel
+Image
+Calendar
+CellView
+DrawingArea
+Entry
+SearchEntry
+SpinButton
+GLArea
+Range
+Scale
+Scrollbar
+Separator
+ProgressBar
+Spinner
+Switch
+LevelBar
+Adjustment
+CellArea
+CellAreaBox
+CellRenderer
+CellRendererText
+CellRendererAccel
+CellRendererCombo
+CellRendererSpin
+CellRendererPixbuf
+CellRendererProgress
+CellRendererSpinner
+CellRendererToggle
+FileFilter
+TreeViewColumn
+RecentFilter
+AccelGroup
+AccelMap
+Accessible
+Application
+Builder
+CellAreaContext
+Clipboard
+CssProvider
+EntryBuffer
+EntryCompletion
+EventController
+EventControllerKey
+EventControllerMotion
+EventControllerScroll
+Gesture
+GestureSingle
+GestureDrag
+GesturePan
+GestureLongPress
+GestureMultiPress
+GestureStylus
+GestureSwipe
+GestureRotate
+GestureZoom
+PadController
+IconFactory
+IconTheme
+IMContext
+IMContextSimple
+IMMulticontext
+ListStore
+MountOperation
+PageSetup
+Printer
+PrintContext
+PrintJob
+PrintOperation
+PrintSettings
+RcStyle
+RecentManager
+Settings
+SizeGroup
+StyleContext
+TextBuffer
+TextChildAnchor
+TextMark
+TextTag
+TextTagTable
+TreeModelFilter
+TreeModelSort
+TreeSelection
+TreeStore
+WindowGroup
+Tooltip
+PrintBackend
+
+
+
+
+TopLevelInterfaceSupport               Gnome::N::TopLevelInterfaceSupport
+│
+GInterface                                            
+├── GtkBuildable                       Buildable
+├── GtkActionable
+├─✗ GtkActivatable                     Deprecated
+├── GtkAppChooser
+├── GtkCellLayout
+├── GtkCellEditable
+├── GtkOrientable                      Orientable
+├── GtkColorChooser                    ColorChooser
+├── GtkStyleProvider                   StyleProvider
+├── GtkEditable
+├── GtkFileChooser                     FileChooser
+├── GtkFontChooser
+├── GtkScrollable
+├── GtkTreeModel                       TreeModel
+├── GtkTreeDragSource
+├── GtkTreeDragDest
+├── GtkTreeSortable
+├── GtkPrintOperationPreview
+├── GtkRecentChooser
+╰── GtkToolShell
+
+Gnome::GObject
+Boxed
+PaperSize
+TextIter
+SelectionData
+Requisition
+Border
+TreeIter
+CssSection
+TreePath
+TreeRowReference
+IconSet
+TargetList
+WidgetPath
+
+Gnome::Atk
+Object
+
+
+Gnome::Gio
+Application
+MountOperation                                   
+EmblemedIcon                                     

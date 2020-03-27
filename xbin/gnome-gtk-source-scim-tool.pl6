@@ -911,7 +911,7 @@ sub substitute-in-template (
       BUILD-ADD-SIGNALS
 
         # prevent creating wrong native-objects
-        if self.^name eq 'Gnome::LIBRARYMODULE' or %options<LIBCLASSNAME> {
+        if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
 
           # check if native object is set by other parent class BUILDers
           if self.is-valid { }

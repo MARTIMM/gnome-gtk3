@@ -11,6 +11,22 @@
     tut: ''
     ex: '/content-docs/examples/toplevel/Window.html'
 
+    checklist:
+    - main_doc:
+      - 'title, description, see also': 0
+      - 'inheritance, synopsis, example': 0
+      - typos: 0
+    - subs_doc:
+      - 'add $ to variables': 0
+      - 'use True/False when boolean input': 0
+      - 'remove Since version text': 0
+      - 'check if :native-object is used and documented in BUILDs': 0
+      - typos: 0
+      - examples: 0
+    - 'complete all tests': 0
+    - 'remove unusable subs': 0
+    - cleanup: 0
+
   - title: '-'
 
   - title: "Dialog"

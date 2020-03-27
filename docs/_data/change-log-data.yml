@@ -1,6 +1,10 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-03-24 0.27.0
+    - Add RecentChooserMenu in Gnome::Gtk3.
+    - Gnome::N::TopLevelClassSupport is implemented in Gnome::Glib and Gnome::GObject. Gnome::Gio must still be checked.
+
   - 2020-03-23 0.26.3
     - Provide gtk_css_provider_to_string() method to the CssProvider class.
 
