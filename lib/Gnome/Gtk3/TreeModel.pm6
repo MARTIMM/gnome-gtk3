@@ -424,20 +424,20 @@ sub gtk_tree_model_get_iter (
   N-GObject $tree_model, N-GtkTreePath $path
   --> Gnome::Gtk3::TreeIter
 ) {
-  my Gnome::Gtk3::TreeIter $iter;
+#  my Gnome::Gtk3::TreeIter $iter;
   my N-GtkTreeIter $ni .= new;
   my Int $sts = _gtk_tree_model_get_iter( $tree_model, $ni, $path);
 
   if $sts {
-    $iter .= new(:native-object($ni));
+    Gnome::Gtk3::TreeIter.new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:native-object(N-GtkTreeIter));
+    Gnome::Gtk3::TreeIter.new(:native-object(N-GtkTreeIter));
   }
 
-  $iter
+#  $iter
 }
 
 sub _gtk_tree_model_get_iter (

@@ -45,7 +45,7 @@ Create a new tree path object using indices.
 
 Create an object taking the native object from elsewhere.
 
-    multi method new ( N-GtkTreePath :tree-path! )
+    multi method new ( N-GtkTreePath :native-object! )
 
 clear-tree-path
 ---------------
@@ -239,4 +239,3 @@ Returns `1` if this path is a descendant of *$ancestor* or *$ancestor* contains 
     method gtk_tree_path_is_descendant ( N-GtkTreePath $ancestor --> Int  )
 
   * N-GtkTreePath $ancestor; another **Gnome::Gtk3::TreePath**-struct
-
