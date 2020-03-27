@@ -264,7 +264,7 @@ method !get-parent-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
 
   else {
     # Not enough elements, return an invalid iterator
-    $parent-iter .= new(:tree-iter(N-GtkTreeIter));
+    $parent-iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $parent-iter

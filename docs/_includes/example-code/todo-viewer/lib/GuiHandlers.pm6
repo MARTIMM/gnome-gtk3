@@ -52,7 +52,7 @@ class ListView {
     }
 
     # Get the key from the data column and check
-    $tree-path .= new(:tree-path($n-tree-path));
+    $tree-path .= new(:native-object($n-tree-path));
     $iter = $files.tree-model-get-iter($tree-path);
     my Array[Gnome::GObject::Value] $v = $files.tree-model-get-value(
       $iter, $data-col
@@ -81,7 +81,7 @@ class ListView {
     --> Int
   ) {
 
-    my Gnome::Gtk3::TreePath $tree-path .= new(:tree-path($n-tree-path));
+    my Gnome::Gtk3::TreePath $tree-path .= new(:native-object($n-tree-path));
     my Gnome::Gtk3::TreeIter $iter = $markers.tree-model-get-iter($tree-path);
 
     my Array[Gnome::GObject::Value] $v =
