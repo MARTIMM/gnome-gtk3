@@ -90,7 +90,6 @@ submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Border';
-note "Opts border: %options.perl()";
   if self.is-valid { }
 
   # process all named arguments
