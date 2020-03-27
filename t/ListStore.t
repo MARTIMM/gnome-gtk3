@@ -24,7 +24,7 @@ enum ColumnNames < Col0 Col1 Col2 >; # Col2 is not used or set!
 
 my class ShowTabel {
   submethod BUILD ( ) {
-    note "\n Row  | Number | String\n------+--------+-------------------";
+    diag "\n Row  | Number | String\n------+--------+-------------------";
   }
 
   method show-entry (
@@ -36,9 +36,9 @@ my class ShowTabel {
     my Gnome::Gtk3::ListStore $c-ls .= new(:native-object($nc-ls));
     my Array[Gnome::GObject::Value] $va = $c-ls.get-value( $c-iter, Col0, Col1);
 
-    note $row.fmt('%5.5s'), ' | ',
-         $va[Col0].get-int.fmt('%6d'), ' | ',
-         $va[Col1].get-string;
+    diag [~] $row.fmt('%5.5s'), ' | ',
+             $va[Col0].get-int.fmt('%6d'), ' | ',
+             $va[Col1].get-string;
 
     $va[Col0].unset;
     $va[Col1].unset;
@@ -272,13 +272,13 @@ subtest 'Manipulations', {
   #Gnome::N::debug(:on);
   Gnome::N::debug(:off);
   $ls.foreach( ShowTabel.new, 'show-entry');
-  note ' ';
+#  note ' ';
 
   $ls.gtk-list-store-clear;
   is $ls.iter-n-children(Any), 0, '.gtk-list-store-clear() no entries in table';
 
   $ls.foreach( ShowTabel.new, 'show-entry');
-  note ' ';
+#  note ' ';
 
 }
 

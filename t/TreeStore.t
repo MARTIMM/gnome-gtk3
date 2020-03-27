@@ -1,4 +1,5 @@
 use v6;
+#use lib '../gnome-native/lib';
 use NativeCall;
 use Test;
 
@@ -26,7 +27,7 @@ enum VAEntries < E0 E1 >; # entries in va
 
 my class ShowTabel {
   submethod BUILD ( ) {
-    note "\n Row  | Number | String\n------+--------+-------------------";
+    diag "\n Row  | Number | String\n------+--------+-------------------";
   }
 
   method show-entry (
@@ -39,9 +40,9 @@ my class ShowTabel {
     my Array[Gnome::GObject::Value] $va;
     $va = $c-ts.get-value( $c-iter, Col0, Col1);
 
-    note $row.fmt('%5.5s'), ' | ',
-         $va[Col0].get-int.fmt('%6d'), ' | ',
-         $va[Col1].get-string;
+    diag [~] $row.fmt('%5.5s'), ' | ',
+             $va[Col0].get-int.fmt('%6d'), ' | ',
+             $va[Col1].get-string;
 
     $va[Col0].unset;
     $va[Col1].unset;
@@ -162,20 +163,23 @@ subtest 'Manipulations', {
   ok $ts.is-ancestor( $parent-iter, $iter), '.is-ancestor()';
   is $ts.iter-depth($parent-iter), 1, '.iter-depth()';
 
+
+#Gnome::N::debug(:on);
   $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2:2')));
-  ok $ts.iter-is-valid($iter), '.iter-is-valid()';
-  $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('12:20:1')));
-  nok $ts.iter-is-valid($iter), '.iter-is-valid() not valid get-iter() returns Null';
+  ok $iter.is-valid, '.is-valid()';
+  $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('1200:20:1')));
+  nok $iter.is-valid, '.is-valid() not valid get-iter() returns Null';
+#Gnome::N::debug(:off);
 
   $ts.foreach( ShowTabel.new, 'show-entry');
-  note ' ';
+  #note ' ';
 
 
   $ts.tree-store-clear;
   is $ts.iter-n-children(Any), 0, '.tree-store-clear()';
 
   $ts.foreach( ShowTabel.new, 'show-entry');
-  note ' ';
+  #note ' ';
 }
 
 #`{{
