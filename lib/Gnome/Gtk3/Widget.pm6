@@ -5354,8 +5354,7 @@ Returns: The C<N-WidgetPath> representing the widget.
 
 =end pod
 
-sub gtk_widget_get_path ( N-GObject $widget )
-  returns N-GtkWidgetPath
+sub gtk_widget_get_path ( N-GObject $widget --> N-GtkWidgetPath )
   is native(&gtk-lib)
   { * }
 

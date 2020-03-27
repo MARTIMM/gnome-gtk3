@@ -23,7 +23,7 @@ subtest 'Border manipulations', {
   is $b2.get-native-object.top, 5, 'left border 5';
   is $b2.get-native-object.bottom, 5, 'left border 5';
 
-  my Gnome::Gtk3::Border $b3 .= new(:border($b2.gtk_border_copy));
+  my Gnome::Gtk3::Border $b3 .= new(:native-object($b2.gtk_border_copy));
   isa-ok $b3, Gnome::Gtk3::Border;
   is $b3.left, 10, 'left border 10 after copy';
   is $b3.right, 10, 'right border 10 after copy';
@@ -35,17 +35,17 @@ subtest 'Border manipulations', {
   is $b3.top(15), 15, 'left border now 15';
   is $b3.bottom(15), 15, 'left border now 15';
 
-  $b1.clear-border;
-  $b2.clear-border;
-  $b3.clear-border;
+  $b1.clear-object;
+  $b2.clear-object;
+  $b3.clear-object;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Border error', {
   my Gnome::Gtk3::Border $b1 .= new;
-  $b1.clear-border;
+  $b1.clear-object;
 
-  ok !$b1.border-is-valid, 'border is not valid';
+  ok !$b1.is-valid, 'border is not valid';
 
   throws-like(
     { $b1.left(10); },

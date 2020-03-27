@@ -16,18 +16,18 @@ subtest 'ISA test', {
     :stamp(1001), :userdata1(CArray[Str].new('a')),
     :userdata2(CArray[Str].new('b')), :userdata3(CArray[Str].new('c'))
   );
-  $ti .= new(:tree-iter($nti));
-  isa-ok $ti, Gnome::Gtk3::TreeIter, '.new(:tree-iter)';
+  $ti .= new(:native-object($nti));
+  isa-ok $ti, Gnome::Gtk3::TreeIter, '.new(:native-object)';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  my Gnome::Gtk3::TreeIter $ti-copy .= new(:tree-iter($ti.copy));
+  my Gnome::Gtk3::TreeIter $ti-copy .= new(:native-object($ti.copy));
   is $ti-copy.get-native-object.stamp, 1001, '.gtk-tree-iter-copy()';
-  ok $ti-copy.tree-iter-is-valid, '.tree-iter-is-valid()';
-  $ti-copy.clear-tree-iter;
-  nok $ti-copy.tree-iter-is-valid, '.clear-tree-iter()';
+  ok $ti-copy.is-valid, '.is-valid()';
+  $ti-copy.clear-object;
+  nok $ti-copy.is-valid, '.clear-object()';
 }
 
 #`{{

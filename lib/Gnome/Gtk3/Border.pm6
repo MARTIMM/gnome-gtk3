@@ -62,7 +62,7 @@ class N-GtkBorder is export is repr('CStruct') {
 }
 
 #-------------------------------------------------------------------------------
-has Bool $.border-is-valid = False;
+#has Bool $.border-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -74,7 +74,7 @@ Create a new plain object.
 
 Create an object taking the native object from elsewhere.
 
-  multi method new ( N-GtkBorder :border! )
+  multi method new ( N-GtkBorder :native-object! )
 
 Create an object and initialize to given values.
 
@@ -90,27 +90,30 @@ submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Border';
+note "Opts border: %options.perl()";
+  if self.is-valid { }
 
   # process all named arguments
-  if ? %options<empty> {
+  elsif ? %options<empty> {
     Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_border_new());
-    $!border-is-valid = True;
+    self.set-native-object(_gtk_border_new());
+#    $!border-is-valid = True;
   }
 
   elsif ? %options<border> {
+#    $!border-is-valid = True if %options<border> ~~ N-GtkBorder;
+    Gnome::N::deprecate( '.new(:border)', '.new(:native-object)', '0.21.3', '0.30.0');
     self.set-native-object(%options<border>);
-    $!border-is-valid = True if %options<border> ~~ N-GtkBorder;
   }
 
   elsif %options<left> or %options<right> or %options<top> or %options<bottom> {
-    my N-GtkBorder $b = gtk_border_new();
+    my N-GtkBorder $b = _gtk_border_new();
     $b.left = %options<left>;
     $b.right = %options<right>;
     $b.top = %options<top>;
     $b.bottom = %options<bottom>;
     self.set-native-object($b);
-    $!border-is-valid = True;
+#    $!border-is-valid = True;
   }
 
   elsif %options.keys.elems {
@@ -122,8 +125,8 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_border_new());
-    $!border-is-valid = True;
+    self.set-native-object(_gtk_border_new());
+#    $!border-is-valid = True;
   }
 
   # only after creating the native-object, the gtype is known
@@ -157,7 +160,7 @@ Modify left width of border if value is given. Returns left value after modifica
 
 method left ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set left width, Border is not valid'))
-      unless $!border-is-valid;
+      unless self.is-valid;
   self.get-native-object.left = $value if $value.defined;
   self.get-native-object.left
 }
@@ -175,7 +178,7 @@ Modify right width of border if value is given. Returns right value after modifi
 
 method right ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set right width, Border is not valid'))
-      unless $!border-is-valid;
+      unless self.is-valid;
   self.get-native-object.right = $value if $value.defined;
   self.get-native-object.right
 }
@@ -193,7 +196,7 @@ Modify top width of border if value is given. Returns top value after modificati
 
 method top ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set top width, Border is not valid'))
-      unless $!border-is-valid;
+      unless self.is-valid;
   self.get-native-object.top = $value if $value.defined;
   self.get-native-object.top
 }
@@ -211,13 +214,14 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 
 method bottom ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
-      unless $!border-is-valid;
+      unless self.is-valid;
   self.get-native-object.bottom = $value if $value.defined;
   self.get-native-object.bottom
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:clear-border:
+#`{{
+# TM:1:clear-border:
 =begin pod
 =head2 clear-border
 
@@ -226,10 +230,16 @@ Frees a C<N-GtkBorder> struct and after that, border-is-valid() returns False.
   method clear-border ( )
 
 =end pod
-
+}}
 method clear-border ( ) {
-  _gtk_border_free(self.get-native-object);
-  $!border-is-valid = False;
+#  _gtk_border_free(self.get-native-object);
+#  $!border-is-valid = False;
+
+  self.clear-object();
+
+  Gnome::N::deprecate(
+    '.clear-border()', '.clear-object()', '0.27.10', '0.30.0'
+  );
 }
 
 #-------------------------------------------------------------------------------
@@ -243,9 +253,29 @@ Return the validity of th native structure. After a call to clear-border() this 
 
 =end pod
 # method is implicitly define above
+method border-is-valid ( --> Bool ) {
+  Gnome::N::deprecate(
+    '.border-is-valid()', '.is-valid()', '0.27.10', '0.30.0'
+  );
+
+  self.is-valid
+}
+
+#-------------------------------------------------------------------------------
+# ? no ref/unref for a variant type
+method native-object-ref ( $n-native-object --> Any ) {
+  $n-native-object
+}
+
+#-------------------------------------------------------------------------------
+method native-object-unref ( $n-native-object ) {
+#  _g_object_free($n-native-object)
+  _gtk_border_free($n-native-object)
+}
 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_border_new:
+#`{{
 =begin pod
 =head2 [gtk_] border_new
 
@@ -258,10 +288,11 @@ Since: 2.14
   method gtk_border_new ( --> N-GtkBorder )
 
 =end pod
-
-sub gtk_border_new ( )
+}}
+sub _gtk_border_new ( )
   returns N-GtkBorder
   is native(&gtk-lib)
+  is symbol('gtk_border_new')
   { * }
 
 #-------------------------------------------------------------------------------

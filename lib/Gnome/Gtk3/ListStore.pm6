@@ -533,11 +533,11 @@ sub gtk_list_store_remove (
   --> Gnome::Gtk3::TreeIter
 ) {
   if _gtk_list_store_remove( $list_store, $iter) {
-    Gnome::Gtk3::TreeIter.new(:tree-iter($iter));
+    Gnome::Gtk3::TreeIter.new(:native-object($iter));
   }
 
   else {
-    Gnome::Gtk3::TreeIter.new(:tree-iter(N-GtkTreeIter));
+    Gnome::Gtk3::TreeIter.new(:native-object(N-GtkTreeIter));
   }
 }
 
@@ -566,7 +566,7 @@ sub gtk_list_store_insert (
 ) {
   my N-GtkTreeIter $iter .= new;
   _gtk_list_store_insert( $list_store, $iter, $position);
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
 
 sub _gtk_list_store_insert (
@@ -600,7 +600,7 @@ sub gtk_list_store_insert_before (
   my N-GtkTreeIter $n-sibling = $sibling // N-GtkTreeIter.new;
   _gtk_list_store_insert_before( $list_store, $iter, $sibling);
 
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
 
 sub _gtk_list_store_insert_before (
@@ -634,7 +634,7 @@ sub gtk_list_store_insert_after (
   my N-GtkTreeIter $n-sibling = $sibling // N-GtkTreeIter.new;
   _gtk_list_store_insert_after( $list_store, $iter, $sibling);
 
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
 
 sub _gtk_list_store_insert_after (
@@ -732,7 +732,7 @@ sub gtk_list_store_insert_with_values (
   my N-GtkTreeIter $ni .= new;
   $f( $list_store, $ni, $position, |@column-values, -1);
 
-  Gnome::Gtk3::TreeIter.new(:tree-iter($ni))
+  Gnome::Gtk3::TreeIter.new(:native-object($ni))
 }
 
 #`{{
@@ -779,7 +779,7 @@ sub gtk_list_store_prepend ( N-GObject $list_store --> Gnome::Gtk3::TreeIter ) {
   my N-GtkTreeIter $iter .= new;
   _gtk_list_store_prepend( $list_store, $iter);
 
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
 
 sub _gtk_list_store_prepend ( N-GObject $list_store, N-GtkTreeIter $iter is rw )
@@ -805,7 +805,7 @@ sub gtk_list_store_append ( N-GObject $list_store --> Gnome::Gtk3::TreeIter ) {
   my N-GtkTreeIter $iter .= new;
   _gtk_list_store_append( $list_store, $iter);
 
-  Gnome::Gtk3::TreeIter.new(:tree-iter($iter))
+  Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
 
 sub _gtk_list_store_append ( N-GObject $list_store, N-GtkTreeIter $iter is rw )

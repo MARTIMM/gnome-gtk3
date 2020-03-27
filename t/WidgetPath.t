@@ -1,5 +1,6 @@
 use v6;
 #use lib '../gnome-gobject/lib';
+#use lib '../gnome-native/lib';
 
 use NativeCall;
 use Test;
@@ -20,9 +21,9 @@ my Gnome::Gtk3::WidgetPath $wp .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   isa-ok $wp, Gnome::Gtk3::WidgetPath;
-  ok $wp.widgetpath-is-valid, 'widgetpath is valid';
-  $wp.clear-widget-path;
-  nok $wp.widgetpath-is-valid, 'widgetpath not valid anymore';
+  ok $wp.is-valid, 'widgetpath is valid';
+  $wp.clear-object;
+  nok $wp.is-valid, 'widgetpath not valid anymore';
 }
 
 #-------------------------------------------------------------------------------
@@ -42,9 +43,13 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Button $b2 .= new(:label<Stop>);
   $g.gtk-grid-attach( $b2, 0, 1, 1, 1);
 
-  note $b1.get-path.perl;
+#note "path: ", $b1.get-path.Str;
+#Gnome::N::debug(:on);
   $wp .= new(:native-object($b1.get-path));
+#note "path $wp.get-native-object-no-reffing()";
+  ok $wp.is-valid, '.get-path()';
   is $wp.gtk-widget-path-length, 3, 'length of path is 3';
+
   is $wp.iter-get-name(0), 'top-level-window', $wp.iter-get-name(0);
   is $wp.iter-get-name(1), 'top-grid', $wp.iter-get-name(1);
   is $wp.iter-get-name(2), 'start-button', $wp.iter-get-name(2);
@@ -90,7 +95,7 @@ subtest 'Manipulations', {
   is $wp-copy.gtk-widget-path-length, 3, 'copy has same length';
   ok $wp-copy.iter-get-state(2) +& GTK_STATE_FLAG_DIR_LTR.value,
      'flag GTK_STATE_FLAG_DIR_LTR in copy is there too';
-  $wp-copy.clear-widget-path;
+  $wp-copy.clear-object;
 
 #  ok $wp.gtk_widget_path_iter_has_class( 0, 'GtkWindow'), 'top class is a Window';
 

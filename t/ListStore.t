@@ -78,18 +78,18 @@ subtest 'Interface TreeModel', {
   $tp .= new(:first);
   ok 1, 'Iterator set to first row: ' ~ $tp.to-string;
   $iter = $ls.get-iter($tp);
-  ok $iter.tree-iter-is-valid, '.get-iter()';
+  ok $iter.is-valid, '.get-iter()';
   $tp.next;
   $tp.next;
   ok 1, 'Iterator set to 3rd row: ' ~ $tp.to-string;
   $iter = $ls.get-iter($tp);
-  nok $iter.tree-iter-is-valid, 'past the last row';
+  nok $iter.is-valid, 'past the last row';
 
   ok 1, 'Iterator set to 2nd row: 1';
   $iter = $ls.get-iter-from-string('1');
-  ok $iter.tree-iter-is-valid, '.get-iter-from-string()';
+  ok $iter.is-valid, '.get-iter-from-string()';
   #$iter = $ls.gtk_tree_model_get_iter_from_string('0:1');
-  #ok $iter.tree-iter-is-valid, '.gtk_tree_model_get_iter_from_string()';
+  #ok $iter.is-valid, '.gtk_tree_model_get_iter_from_string()';
 
   is $ls.get-string-from-iter($iter), '1', '.get-string-from-iter()';
 
@@ -99,11 +99,9 @@ subtest 'Interface TreeModel', {
   $tp = $ls.get-path($iter);
   is $tp.to-string, '0', '.get-path()';
 
-  my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, Col0, Col1, Col2);
+  my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col0].get-int, 1001, '.get-value(): col0';
   is $va[Col1].get-string, 'duizend en een nacht', '.get-value(): col1';
-  is $va[Col2].get-native-object.g-type, G_TYPE_INVALID,
-     '3rd column is invalid';
   $va[Col0].unset;
   $va[Col1].unset;
 
@@ -119,7 +117,7 @@ subtest 'Interface TreeModel', {
 
   my Gnome::Gtk3::TreeIter $child-iter;
   $child-iter = $ls.iter-children($iter);
-  nok $child-iter.tree-iter-is-valid,
+  nok $child-iter.is-valid,
       '.iter-children(): ListStore has no children';
   nok $ls.iter-has-child($iter),
       '.iter-has-child(): ListStore has no children';
@@ -237,11 +235,11 @@ subtest 'Manipulations', {
   # remove the 'abacadabra' row
   $iter = $ls.get-iter-from-string('1');
   $iter = $ls.gtk-list-store-remove($iter);
-  ok $iter.tree-iter-is-valid, '.gtk-list-store-remove()';
+  ok $iter.is-valid, '.gtk-list-store-remove()';
 
   $iter = $ls.gtk-list-store-insert(2);
   $ls.gtk-list-store-set( $iter, Col0, 555, Col1, 'en een nieuwe entry');
-  ok $iter.tree-iter-is-valid, '.gtk-list-store-insert()';
+  ok $iter.is-valid, '.gtk-list-store-insert()';
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'en een nieuwe entry',
      '.gtk-list-store-insert(): col1 ok';

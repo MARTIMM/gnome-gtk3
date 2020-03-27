@@ -429,12 +429,12 @@ sub gtk_tree_model_get_iter (
   my Int $sts = _gtk_tree_model_get_iter( $tree_model, $ni, $path);
 
   if $sts {
-    $iter .= new(:tree-iter($ni));
+    $iter .= new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:tree-iter(N-GtkTreeIter));
+    $iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $iter
@@ -472,12 +472,12 @@ sub gtk_tree_model_get_iter_from_string (
   my Int $sts = _gtk_tree_model_get_iter_from_string( $tree_model, $ni, $path);
 
   if $sts {
-    $iter .= new(:tree-iter($ni));
+    $iter .= new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:tree-iter(N-GtkTreeIter));
+    $iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $iter
@@ -535,12 +535,12 @@ sub gtk_tree_model_get_iter_first (
   my Int $sts = _gtk_tree_model_get_iter_first( $tree_model, $ni);
 
   if $sts {
-    $iter .= new(:tree-iter($ni));
+    $iter .= new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:tree-iter(N-GtkTreeIter));
+    $iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $iter
@@ -576,7 +576,7 @@ sub gtk_tree_model_get_path (
   --> Gnome::Gtk3::TreePath
 ) {
   my N-GtkTreePath $tree-path = _gtk_tree_model_get_path( $tree_model, $iter);
-  Gnome::Gtk3::TreePath.new(:$tree-path)
+  Gnome::Gtk3::TreePath.new(:native-object($tree-path))
 }
 
 sub _gtk_tree_model_get_path ( N-GObject $tree_model, N-GtkTreeIter $iter )
@@ -701,12 +701,12 @@ sub gtk_tree_model_iter_children (
   my Int $sts = _gtk_tree_model_iter_children( $tree_model, $ni, $parent);
 
   if $sts {
-    $iter .= new(:tree-iter($ni));
+    $iter .= new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:tree-iter(N-GtkTreeIter));
+    $iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $iter
@@ -798,12 +798,12 @@ sub gtk_tree_model_iter_nth_child (
 
   my Int $sts = _gtk_tree_model_iter_nth_child( $tree_model, $ni, $parent, $n);
   if $sts {
-    $iter .= new(:tree-iter($ni));
+    $iter .= new(:native-object($ni));
   }
 
   else {
     # create an invalid object
-    $iter .= new(:tree-iter(N-GtkTreeIter));
+    $iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $iter
@@ -1086,8 +1086,8 @@ sub gtk_tree_model_foreach (
 #        note $tm.perl, ', ', $tm.get-class-name;
         $func-object."$func-name"(
           $n-m,
-          Gnome::Gtk3::TreePath.new(:tree-path($n-p)),
-          Gnome::Gtk3::TreeIter.new(:tree-iter($n-i)),
+          Gnome::Gtk3::TreePath.new(:native-object($n-p)),
+          Gnome::Gtk3::TreeIter.new(:native-object($n-i)),
           |%user-options
         )
       },
