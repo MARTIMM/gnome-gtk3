@@ -1074,6 +1074,10 @@ An example
 
 =end pod
 
+method foreach ( |c ) {
+  self.gtk_tree_model_foreach(|c);
+}
+
 sub gtk_tree_model_foreach (
   N-GObject $m, $func-object, Str $func-name, *%user-options
 ) {
