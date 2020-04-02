@@ -62,11 +62,18 @@ layout: sidebar
     * [ ] Gnome::GObject::
 -->
 
+Defining DESTROY() at the top was a big mistake! Obvious when you think of it! dereferencing or cleaning up a native object should only be done explicitly because when the Raku object goes out of scope doesn't mean that the native object isn't in use anymore.
+
+Also calling clear-object() in BUILD() is wrong for the same reason.
+
+<!--
+
 * [x] `DESTROY()`: Cleanup methods called on garbage collection. The sub calls the clear method or free function if the native object is still valid. Easy to add while implementing `clear-object()`. This is done now in the TopLevelClassSupport, a catch all class.
 
   * Interface Roles. Roles do not have to specify a DESTROY submethod unless there are local native objects defined which will be unlikely.
 
   * Top class is **Gnome::GObject::Object**. A DESTROY method will be defined here because there is the native object stored.
+-->
 
 * [x] Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
 
@@ -144,6 +151,8 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Remove documentation of native `xyz_new()` creation subs. What is needed will be covered by options like `.new(:$xyz)` in `BUILD()`. The subs can also be prefixed with an underscore '\_' to make them unavailable, e.g. `_xyz_new()`.
 
+* [ ] Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
+
 #### Test coverage
 
 * **Gnome::Gdk3**
@@ -217,28 +226,48 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 
 # Checklist
-    - main_doc:
-      - 'title, description, see also': 0
-      - 'inheritance, synopsis, example': 0
-      - typos: 0
-    - subs_doc:
-      - 'add $ to variables': 0
-      - 'use True/False when boolean input': 0
-      - 'remove Since version text': 0
-      - 'check if :native-object is used and documented in BUILDs': 0
-      - typos: 0
-      - examples: 0
-    - 'complete all tests': 0
-    - 'remove unusable subs': 0
-    - cleanup: 0
 
-Gnome::N
+## Head keys
+### Main documentation
+* dt: title, description, see also
+* db: inheritance, synopsis, example
+* bt: typos
+
+### Subs and methods documentation
+* s$: Add $ to variables
+* sb: Use True/False when boolean input
+  - 'remove Since version text': 0
+  - 'check if :native-object is used and documented in BUILDs': 0
+  - typos: 0
+  - examples: 0
+- 'complete all tests': 0
+- 'remove unusable subs': 0
+- cleanup: 0
+
+**Gnome::N**
 TopLevelClassSupport
 
-Gnome::GObject
-InitiallyUnowned
+**Gnome::Glib**
+**Boxed Gnome::Glib**
 
-Gnome::Gtk3
+**Gnome::GObject**
+Boxed
+InitiallyUnowned
+Object
+
+**Boxed Gnome::GObject**
+
+**Gnome::Atk**
+Object
+
+**Gnome::Gio**
+Application
+MountOperation                                   
+EmblemedIcon                                     
+
+**Gnome::Gdk3**
+
+**Gnome::Gtk3**
 Widget
 Container
 Bin
@@ -423,35 +452,28 @@ WindowGroup
 Tooltip
 PrintBackend
 
+**Interfaces**
+Buildable
+Actionable
+AppChooser
+CellLayout
+CellEditable
+Orientable
+ColorChooser
+StyleProvider
+Editable
+FileChooser
+FontChooser
+Scrollable
+TreeModel
+TreeDragSource
+TreeDragDest
+TreeSortable
+PrintOperationPreview
+RecentChooser
+ToolShell
 
-
-
-TopLevelInterfaceSupport               Gnome::N::TopLevelInterfaceSupport
-│
-GInterface                                            
-├── GtkBuildable                       Buildable
-├── GtkActionable
-├─✗ GtkActivatable                     Deprecated
-├── GtkAppChooser
-├── GtkCellLayout
-├── GtkCellEditable
-├── GtkOrientable                      Orientable
-├── GtkColorChooser                    ColorChooser
-├── GtkStyleProvider                   StyleProvider
-├── GtkEditable
-├── GtkFileChooser                     FileChooser
-├── GtkFontChooser
-├── GtkScrollable
-├── GtkTreeModel                       TreeModel
-├── GtkTreeDragSource
-├── GtkTreeDragDest
-├── GtkTreeSortable
-├── GtkPrintOperationPreview
-├── GtkRecentChooser
-╰── GtkToolShell
-
-Gnome::GObject
-Boxed
+**Boxed Gnome::Gtk3**
 PaperSize
 TextIter
 SelectionData
@@ -464,12 +486,3 @@ TreeRowReference
 IconSet
 TargetList
 WidgetPath
-
-Gnome::Atk
-Object
-
-
-Gnome::Gio
-Application
-MountOperation                                   
-EmblemedIcon                                     
