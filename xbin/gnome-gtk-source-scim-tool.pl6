@@ -913,20 +913,20 @@ sub substitute-in-template (
         # prevent creating wrong native-objects
         if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
 
-          # check if native object is set by other parent class BUILDers
+          # check if native object is set by a parent class
           if self.is-valid { }
 
-          # process all named arguments
-          elsif %options.elems == 0 {
-            die X::Gnome.new(:message('No options specified ' ~ self.^name));
-          }
-      #`{{
-          if ? %options<native-object> || ? %options<build-id> {
-            # provided in Gnome::N::TopLevelClassSupport
-            # and in Gnome::GObject::Object
-          }
-      }}
-          elsif %options.keys.elems {
+          # process all options
+
+          # check if common options are handled by some parent
+          elsif %options<native-object>:exists || %options<widget>:exists { }
+          elsif %options<build-id>:exists { }
+
+          # elsif ? %options<> {
+          # }
+
+          # check if there are unknown options
+          elsif %options.elems {
             die X::Gnome.new(
               :message(
                 'Unsupported, undefined, incomplete or wrongly typed options for ' ~
@@ -935,10 +935,19 @@ sub substitute-in-template (
             );
           }
 
+          #`{{ when there are no defaults use this
+          # check if there are any options
+          elsif %options.elems == 0 {
+            die X::Gnome.new(:message('No options specified ' ~ self.^name));
+          }
+          }}
+
+          #`{{ when there are options use this instead
           # create default object
           else {
-            # self.set-native-object(BASE-SUBNAME_new());
+            self.set-native-object(BASE-SUBNAME_new());
           }
+          }}
 
           # only after creating the native-object, the gtype is known
           self.set-class-info('LIBCLASSNAME');
