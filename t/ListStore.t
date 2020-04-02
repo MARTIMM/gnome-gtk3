@@ -1,5 +1,6 @@
 use v6;
-#use lib '../gnome-gobject/lib';
+use lib '../gnome-gobject/lib';
+use lib '../gnome-native/lib';
 
 use NativeCall;
 use Test;
@@ -13,14 +14,14 @@ use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::ListStore;
 
 use Gnome::N::X;
-#Gnome::N::debug(:on);
+Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::ListStore $ls;
 my Gnome::Gtk3::TreeIter $iter;
 my Gnome::Gtk3::TreePath $tp;
 
-enum ColumnNames < Col0 Col1 Col2 >; # Col2 is not used or set!
+enum ColumnNames < Col0 Col1 >;
 
 my class ShowTabel {
   submethod BUILD ( ) {
@@ -31,17 +32,22 @@ my class ShowTabel {
     N-GObject $nc-ls,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
+    --> int32
   ) {
+note 'step 0';
     my Str $row = $c-path.to-string;
+note 'step 1';
     my Gnome::Gtk3::ListStore $c-ls .= new(:native-object($nc-ls));
+note 'step 2';
     my Array[Gnome::GObject::Value] $va = $c-ls.get-value( $c-iter, Col0, Col1);
+note 'step 3';
 
     diag [~] $row.fmt('%5.5s'), ' | ',
              $va[Col0].get-int.fmt('%6d'), ' | ',
              $va[Col1].get-string;
 
-    $va[Col0].unset;
-    $va[Col1].unset;
+    $va[Col0].clear-object;
+    $va[Col1].clear-object;
 
     0
   }
@@ -58,8 +64,12 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 # Setup test
 $iter = $ls.gtk-list-store-append;
+note 'path: ', $ls.get-path($iter).to-string();
+note "append res: $iter.get-native-object()";
 $ls.set-value( $iter, Col0, 1001);
+note 'value set 1';
 $ls.set-value( $iter, Col1, 'duizend en een nacht');
+note 'value set 2';
 
 $iter = $ls.gtk-list-store-append;
 $ls.gtk-list-store-set( $iter, Col0, 2002, Col1, 'een beetje later');
@@ -95,15 +105,15 @@ subtest 'Interface TreeModel', {
 
   $iter = $ls.get-iter-first;
   is $ls.get-string-from-iter($iter), '0', '.get-iter-first()';
-
+Gnome::N::debug(:off);
   $tp = $ls.get-path($iter);
   is $tp.to-string, '0', '.get-path()';
 
   my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col0].get-int, 1001, '.get-value(): col0';
   is $va[Col1].get-string, 'duizend en een nacht', '.get-value(): col1';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   my Int $sts = $ls.iter-next($iter);
   ok 1, "there is a next path: $sts";
@@ -136,6 +146,7 @@ subtest 'Interface TreeModel', {
         Gnome::Gtk3::TreePath $p-loop,
         Gnome::Gtk3::TreeIter $i-loop,
         :$test
+        --> Int
       ) {
         is $p-loop.to-string, $!row-count.Str, 'row ok';
         is $ls.get-path($i-loop).to-string, $p-loop.to-string, 'iter == path';
@@ -147,12 +158,12 @@ subtest 'Interface TreeModel', {
       }
     }
 
-#Gnome::N::debug(:on);
     $ls.gtk-tree-model-foreach( X.new, 'row-loop', :test<abcdef>);
   }
 }
 
 #-------------------------------------------------------------------------------
+Gnome::N::debug(:on);
 subtest 'Signals TreeModel', {
 
   my class X {
@@ -220,8 +231,8 @@ subtest 'Manipulations', {
   is $tp.to-string, '0', '.insert-with-values()';
   my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'abacadabra', '.insert-with-values(): col1 ok';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   $iter = $ls.gtk-list-store-prepend;
   $tp = $ls.get-path($iter);
@@ -229,8 +240,8 @@ subtest 'Manipulations', {
   $ls.gtk-list-store-set( $iter, Col0, 4004, Col1, 'dus');
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'dus', '.gtk-list-store-prepend(): col1 ok';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   # remove the 'abacadabra' row
   $iter = $ls.get-iter-from-string('1');
@@ -243,20 +254,21 @@ subtest 'Manipulations', {
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'en een nieuwe entry',
      '.gtk-list-store-insert(): col1 ok';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   my Gnome::Gtk3::TreeIter $sibling-iter = $ls.get-iter-from-string('3');
   $iter = $ls.insert-before($sibling-iter);
   $tp = $ls.get-path($sibling-iter);
   ok 1, "sibling moved from 3 to $tp.to-string()";
   $tp = $ls.get-path($iter);
+
   ok 1, "iter set to $tp.to-string()";
   $ls.gtk-list-store-set( $iter, Col0, 123, Col1, 'I am lost of words');
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, 'I am lost of words', '.insert-before(): col1 ok';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   $iter = $ls.insert-after($sibling-iter);
   $tp = $ls.get-path($sibling-iter);
@@ -266,8 +278,8 @@ subtest 'Manipulations', {
   $ls.gtk-list-store-set( $iter, Col0, 1098, Col1, '#me too');
   $va = $ls.get-value( $iter, Col0, Col1);
   is $va[Col1].get-string, '#me too', '.insert-after(): col1 ok';
-  $va[Col0].unset;
-  $va[Col1].unset;
+  $va[Col0].clear-object;
+  $va[Col1].clear-object;
 
   #Gnome::N::debug(:on);
   Gnome::N::debug(:off);
@@ -279,7 +291,6 @@ subtest 'Manipulations', {
 
   $ls.foreach( ShowTabel.new, 'show-entry');
 #  note ' ';
-
 }
 
 #`{{

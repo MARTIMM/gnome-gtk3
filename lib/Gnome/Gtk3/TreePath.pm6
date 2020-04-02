@@ -91,6 +91,8 @@ submethod BUILD ( *%options ) {
 
   if self.is-valid { }
 
+  elsif %options<native-object>:exists or %options<widget>:exists  { }
+
   # process all named arguments
   elsif ? %options<tree-path> {
     Gnome::N::deprecate( '.new(:tree-path)', '.new(:native-object)', '0.21.3', '0.30.0');
@@ -118,7 +120,7 @@ submethod BUILD ( *%options ) {
     self.set-native-object(gtk_tree_path_new_from_string(%options<string>));
 #    $!tree-path-is-valid = self.get-native-object.defined;
   }
-#`{{
+
   elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
@@ -126,7 +128,6 @@ submethod BUILD ( *%options ) {
               )
     );
   }
-}}
 
   else {#if ? %options<empty> {
     self.set-native-object(gtk_tree_path_new());

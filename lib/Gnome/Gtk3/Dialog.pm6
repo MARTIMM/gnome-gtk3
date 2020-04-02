@@ -292,8 +292,13 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   if self.^name eq 'Gnome::Gtk3::Dialog' or %options<GtkDialog> {
 
+    if self.is-valid { }
+
     # process all named arguments
-    if ? %options<empty> {
+    elsif ? %options<native-object> || ? %options<widget> ||
+      %options<build-id> { }
+
+    elsif ? %options<empty> {
       Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
       self.set-native-object(gtk_dialog_new());
     }

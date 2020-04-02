@@ -1,4 +1,5 @@
 use v6;
+use lib '../gnome-gobject/lib';
 #use lib '../gnome-native/lib';
 use NativeCall;
 use Test;
@@ -44,8 +45,8 @@ my class ShowTabel {
              $va[Col0].get-int.fmt('%6d'), ' | ',
              $va[Col1].get-string;
 
-    $va[Col0].unset;
-    $va[Col1].unset;
+    $va[Col0].clear-object;
+    $va[Col1].clear-object;
 
     0
   }
@@ -67,8 +68,8 @@ subtest 'Manipulations', {
   is $va[Col0].get-int, 1001, 'col 0:.set-value() / .get-value()';
   is $va[Col1].get-string, 'duizend en een nacht',
       'col 1:.set-value() / .get-value()';
-  $va[E0].unset;
-  $va[E1].unset;
+  $va[E0].clear-object;
+  $va[E1].clear-object;
 
   $tp .= new(:string('0'));
   $parent-iter = $ts.get-iter($tp);
@@ -81,8 +82,8 @@ subtest 'Manipulations', {
   is $va[E0].get-int, 2, 'col 0:.set-value() / .get-value()';
   is $va[E1].get-string, 'en nog wat nachten',
       'col 1:.set-value() / .get-value()';
-  $va[E0].unset;
-  $va[E1].unset;
+  $va[E0].clear-object;
+  $va[E1].clear-object;
 
   $tp .= new(:string('0'));
   $parent-iter = $ts.get-iter($tp);
@@ -90,13 +91,13 @@ subtest 'Manipulations', {
   $ts.set( $iter, Col0, 3, Col1, 'en nog een zinnetje');
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'en nog een zinnetje', '.gtk-tree-store-set()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('0:0')));
   $ts.remove($iter);
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'en nog een zinnetje', '.gtk_tree_store_remove()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $iter = $ts.insert( Any, 0);
   $ts.set( $iter, Col0, 5005, Col1, 'dus');
@@ -110,7 +111,7 @@ subtest 'Manipulations', {
   $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('0:0:0')));
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'je kan me wat', '.gtk_tree_store_insert()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $iter = $ts.insert-before( Any, Any);
   $ts.set( $iter, Col0, 9091, Col1, 'wat zal ik nou weer eens tikken...');
@@ -125,7 +126,7 @@ subtest 'Manipulations', {
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'wat zal ik nou weer eens tikken... deel 3',
      '.gtk_tree_store_insert_before()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $iter = $ts.insert-after( Any, Any);
   $ts.set( $iter, Col0, 9092, Col1, 'the rain in spain...');
@@ -140,7 +141,7 @@ subtest 'Manipulations', {
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'the rain in spain... deel 3',
      '.gtk_tree_store_insert_after()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $parent-iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2')));
   $iter = $ts.insert-with-values(
@@ -150,7 +151,7 @@ subtest 'Manipulations', {
   $iter = $ts.get-iter(Gnome::Gtk3::TreePath.new(:string('2:2')));
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'one o one', '.insert-with-values()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   $tp .= new(:string('1:0'));
   $parent-iter = $ts.get-iter($tp);
@@ -158,7 +159,7 @@ subtest 'Manipulations', {
   $ts.set( $iter, Col0, 123, Col1, 'uno dos tres');
   $va = $ts.get-value( $iter, Col1);
   is $va[E0].get-string, 'uno dos tres', '.gtk-tree-store-prepend()';
-  $va[E0].unset;
+  $va[E0].clear-object;
 
   ok $ts.is-ancestor( $parent-iter, $iter), '.is-ancestor()';
   is $ts.iter-depth($parent-iter), 1, '.iter-depth()';

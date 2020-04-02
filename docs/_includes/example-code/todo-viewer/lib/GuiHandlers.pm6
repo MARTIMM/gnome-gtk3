@@ -58,7 +58,7 @@ class ListView {
       $iter, $data-col
     );
     my Str $data-key = $v[0].get-string // '';
-    $v[0].unset;
+    $v[0].clear-object;
 
     # Return if there is no filename key
     return 1 unless ?$data-key;
@@ -87,7 +87,7 @@ class ListView {
     my Array[Gnome::GObject::Value] $v =
        $markers.tree-model-get-value( $iter, 1);
     my Int $line = $v[0].get-int // -1;
-    $v[0].unset;
+    $v[0].clear-object;
 
     note "Start atom editor with folowing file $!filename at line $line";
     shell "atom $!filename:$line &";

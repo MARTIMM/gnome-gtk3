@@ -53,6 +53,13 @@ The B<Gnome::Gtk3::TreeIter> is the primary structure for accessing a B<Gnome::G
 =end pod
 
 #TT:1:N-GtkTreeIter:
+#`{{
+class N-GtkTreeIter
+  is repr('CPointer')
+  is export
+  { }
+}}
+
 class N-GtkTreeIter is export is repr('CStruct') {
   has int32 $.stamp;
   has Pointer $.userdata1;
@@ -75,8 +82,9 @@ class N-GtkTreeIter is export is repr('CStruct') {
   }
 }
 
+
 #-------------------------------------------------------------------------------
-has Bool $.tree-iter-is-valid = False;
+#has Bool $.tree-iter-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -94,7 +102,11 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeIter';
 
+#note"tree iter: ", %options.perl, ', ', self.is-valid();
+
   if self.is-valid { }
+
+  elsif %options<native-object>:exists or %options<widget>:exists  { }
 
   # process all named arguments
   elsif %options<tree-iter>:exists {
@@ -122,7 +134,7 @@ submethod BUILD ( *%options ) {
 #      $!tree-iter-is-valid = False;
 #    }
   }
-#`{{
+
   elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
@@ -130,7 +142,8 @@ submethod BUILD ( *%options ) {
               )
     );
   }
-}}
+
+#note"Tree iter: ", self.get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeIter');

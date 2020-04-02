@@ -91,9 +91,9 @@ As the Raku user can see above, the types are specific to the C implementation w
 Gnome::Gtk3::ListStore implements
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::TreeModel](TreeModel.html)
-=item Gnome::Gtk3::TreeDragSource
-=item Gnome::Gtk3::TreeDragDest
-=item Gnome::Gtk3::TreeSortable
+=comment item Gnome::Gtk3::TreeDragSource
+=comment item Gnome::Gtk3::TreeDragDest
+=comment item Gnome::Gtk3::TreeSortable
 
 =head2 See Also
 
@@ -199,6 +199,8 @@ submethod BUILD ( *%options ) {
     );
   }
 }}
+
+#note "ListStore: ", self.get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkListStore');
@@ -352,7 +354,10 @@ Sets the data in the cell specified by I<$iter> and I<$column>. The type of I<$v
 sub gtk_list_store_set_value (
   N-GObject $list_store, N-GtkTreeIter $iter, Int $column, Any $value
 ) {
+#note "tree iter: $iter";
+#note "list store: $list_store";
 
+#`{{
   my Gnome::GObject::Type $t .= new;
   my @parameter-list = (
     Parameter.new(type => N-GObject),
@@ -360,7 +365,7 @@ sub gtk_list_store_set_value (
     Parameter.new(type => int32),
     Parameter.new(type => N-GValue)
   );
-
+}}
   my Gnome::GObject::Value $v;
   my $type = gtk_tree_model_get_column_type( $list_store, $column);
   given $type {
@@ -369,7 +374,8 @@ sub gtk_list_store_set_value (
     }
 
     when G_TYPE_BOXED {
-      $v .=  new( :$type, :value($value.get-native-boxed));
+#      $v .=  new( :$type, :value($value.get-native-boxed));
+      $v .=  new( :$type, :value($value.get-native-object));
     }
 
 #    when G_TYPE_POINTER { $p .= new(type => ); }
@@ -381,10 +387,11 @@ sub gtk_list_store_set_value (
     }
   }
 
+#`{{
   # create signature
   my Signature $signature .= new(
     :params(|@parameter-list),
-    :returns(int32)
+#    :returns(int32)
   );
 
   # get a pointer to the sub, then cast it to a sub with the proper
@@ -392,8 +399,15 @@ sub gtk_list_store_set_value (
   state $ptr = cglobal( &gtk-lib, 'gtk_list_store_set_value', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( $list_store, $iter, $column, $v.get-native-object);
+#  $f( $list_store, $iter, $column, $v.get-native-object);
+}}
+  _gtk_list_store_set_value( $list_store, $iter, $column, $v.get-native-object);
 }
+
+sub _gtk_list_store_set_value ( N-GObject, N-GtkTreeIter, int32, N-GValue )
+  is native(&gtk-lib)
+  is symbol('gtk_list_store_set_value')
+  { * }
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_list_store_set:
@@ -616,7 +630,7 @@ sub _gtk_list_store_insert_before (
 =begin pod
 =head2 [[gtk_] list_store_] insert_after
 
-Inserts a new row after I<$sibling>. If I<$sibling> is C<Any>, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
+Inserts a new row after I<$sibling>. If I<$sibling> is undefined, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call C<gtk_list_store_set()> or C<gtk_list_store_set_value()>.
 
   method gtk_list_store_insert_after (
     Gnome::Gtk3::TreeIter $sibling
@@ -627,14 +641,17 @@ Inserts a new row after I<$sibling>. If I<$sibling> is C<Any>, then the row will
 
 =end pod
 
-# $sibling is untyped to be able to receive Any
+# ?? $sibling is untyped to be able to receive Any
 sub gtk_list_store_insert_after (
-  N-GObject $list_store, $sibling
+  N-GObject:D $list_store, N-GtkTreeIter $sibling
   --> Gnome::Gtk3::TreeIter
 ) {
   my N-GtkTreeIter $iter .= new;
+note "empty iter $iter";
   my N-GtkTreeIter $n-sibling = $sibling // N-GtkTreeIter.new;
+note "sibling $n-sibling";
   _gtk_list_store_insert_after( $list_store, $iter, $sibling);
+note "new iter $iter";
 
   Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
@@ -806,6 +823,7 @@ sub gtk_list_store_append ( N-GObject $list_store --> Gnome::Gtk3::TreeIter ) {
 
   my N-GtkTreeIter $iter .= new;
   _gtk_list_store_append( $list_store, $iter);
+#note "append: $iter";
 
   Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }

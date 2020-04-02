@@ -43,22 +43,22 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
   $pb.g-object-get-property( 'inverted', $gv);
   is $gv.get-boolean, 1, 'property inverted';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $pb.g-object-get-property( 'show-text', $gv);
   is $gv.get-boolean, 1, 'property show-text';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_DOUBLE));
   $pb.g-object-get-property( 'fraction', $gv);
   is-approx $gv.get-double, 0.5, 'property fraction';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_DOUBLE));
   $pb.g-object-get-property( 'pulse-step', $gv);
   is-approx $gv.get-double, 0.1, 'property pulse-step';
-  $gv.unset;
+  $gv.clear-object;
 
 #`{{
   $pb.pulse;
@@ -67,7 +67,7 @@ subtest 'Properties ...', {
   $gv .= new(:init(G_TYPE_DOUBLE));
   $pb.g-object-get-property( 'fraction', $gv);
   is-approx $gv.get-double, 0.6, '.pulse()';
-  $gv.unset;
+  $gv.clear-object;
 }}
 }
 

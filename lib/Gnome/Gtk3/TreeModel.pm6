@@ -575,6 +575,9 @@ sub gtk_tree_model_get_path (
   N-GObject $tree_model, N-GtkTreeIter $iter
   --> Gnome::Gtk3::TreePath
 ) {
+#note"tree iter: $iter";
+#note"tree model: $tree_model";
+
   my N-GtkTreePath $tree-path = _gtk_tree_model_get_path( $tree_model, $iter);
   Gnome::Gtk3::TreePath.new(:native-object($tree-path))
 }
@@ -592,7 +595,7 @@ sub _gtk_tree_model_get_path ( N-GObject $tree_model, N-GtkTreeIter $iter )
 
 Returns an array of values found at the I<$iter> and I<$column>s.
 
-When done with each I<value>, C<.g_value_unset()> needs to be called to free any allocated memory.
+When done with each I<value>, C<.clear-object()> needs to be called to free any allocated memory.
 
   method gtk_tree_model_get_value (
     Gnome::Gtk3::TreeIter $iter, Int $column, ...
@@ -1055,7 +1058,7 @@ An example
       # do something with this row ...
 
       my Int $value = $va[0].get-int;
-      $va[0].g-value-unset;
+      $va[0].clear-object;
 
       if $value != 1001 {
         # let the search continue
@@ -1075,25 +1078,39 @@ An example
 =end pod
 
 method foreach ( |c ) {
+#TODO call the parameter substitutor from the top level class and
+# call the sub directly. This will then be faster because the sub is
+# not searched for. Also a debug message must be added.
+
   self.gtk_tree_model_foreach(|c);
 }
 
 sub gtk_tree_model_foreach (
-  N-GObject $m, $func-object, Str $func-name, *%user-options
+  N-GObject:D $m, Any:D $func-object, Str:D $func-name, *%user-options
 ) {
+
   if $func-object.^can($func-name) {
     _gtk_tree_model_foreach(
       $m,
-      sub ( $n-m, $n-p, $n-i, $d --> Int ) {
+      sub (
+        N-GObject $n-m, N-GtkTreePath $n-p, N-GtkTreeIter $n-i,
+        OpaquePointer $d
+        --> int32
+      ) {
+#note "TP 0: $n-p, $n-i";
+note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
+
 #TODO? Cannot find type of model: liststore or treestore
 #        my Gnome::GObject::Object $tm .= new(:native-object($n-m));
 #        note $tm.perl, ', ', $tm.get-class-name;
-        $func-object."$func-name"(
+        my int32 $sts = $func-object."$func-name"(
           $n-m,
           Gnome::Gtk3::TreePath.new(:native-object($n-p)),
           Gnome::Gtk3::TreeIter.new(:native-object($n-i)),
           |%user-options
-        )
+        );
+note "returns $sts";
+$sts
       },
       OpaquePointer
     );
@@ -1108,7 +1125,7 @@ sub gtk_tree_model_foreach (
 sub _gtk_tree_model_foreach (
   N-GObject $model,
   Callable $func (
-    N-GObject $m, N-GObject $p, N-GtkTreeIter $i, OpaquePointer $d
+    N-GObject $m, N-GtkTreePath $p, N-GtkTreeIter $i, OpaquePointer $d
     --> int32
   ), OpaquePointer $user_data
 ) is native(&gtk-lib)

@@ -31,12 +31,12 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
   $s.g-object-get-property( 'active', $gv);
   is $gv.get-boolean, 1, 'property active';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $s.g-object-get-property( 'state', $gv);
   is $gv.get-boolean, 1, 'property state';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #`{{

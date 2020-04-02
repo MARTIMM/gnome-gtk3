@@ -1,4 +1,5 @@
 use v6;
+#use lib '../gnome-native/lib';
 use NativeCall;
 use Test;
 
@@ -37,14 +38,14 @@ subtest 'Inherit CellRenderer', {
 
   ok 1, ".get-preferred-width(): " ~ $crt.get-preferred-width($b).join(', ');
   ok 1, ".get-preferred-height-for-width(): " ~
-       $crt.get-preferred-height-for-width( $b, 10);
-  ok 1, ".get-preferred-height(): " ~ $crt.get-preferred-height($b);
+       $crt.get-preferred-height-for-width( $b, 10).join(', ');
+  ok 1, ".get-preferred-height(): " ~ $crt.get-preferred-height($b).join(', ');
   ok 1, ".get-preferred-width-for-height(): " ~
-       $crt.get-preferred-width-for-height( $b, 10);
+       $crt.get-preferred-width-for-height( $b, 10).join(', ');
 
-  my @ps = $crt.get-preferred-size($b);
-  ok 1, [~] ".get-preferred-size() [0]: ", @ps[0].width, ', ', @ps[0].height;
-  ok 1, [~] ".get-preferred-size() [1]: ", @ps[1].width, ', ', @ps[1].height;
+  my $ps = $crt.get-preferred-size($b);
+  ok 1, [~] ".get-preferred-size() [0]: ", $ps[0].width, ', ', $ps[0].height;
+  ok 1, [~] ".get-preferred-size() [1]: ", $ps[1].width, ', ', $ps[1].height;
 
   $crt.set-fixed-size( 10, 10);
   is-deeply $crt.get-fixed-size, (10, 10),
