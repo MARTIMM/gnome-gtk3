@@ -21,6 +21,7 @@
       - 'use True/False when boolean input': 0
       - 'remove Since version text': 0
       - 'check if :native-object is used and documented in BUILDs': 0
+      - 'replace C<Any> with undefined':0
       - typos: 0
       - examples: 0
     - 'complete all tests': 0
