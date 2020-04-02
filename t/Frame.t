@@ -50,17 +50,17 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $f.g-object-get-property( 'label', $gv);
   is $gv.get-string, 'new label', 'property label';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_FLOAT));
   $f.g-object-get-property( 'label-xalign', $gv);
   is-approx $gv.get-float, 0.8e0, 'property label-xalign';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_FLOAT));
   $f.g-object-get-property( 'label-yalign', $gv);
   is-approx $gv.get-float, 0.03e0, 'property label-yalign';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #`{{

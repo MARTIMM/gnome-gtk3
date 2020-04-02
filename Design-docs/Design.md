@@ -184,7 +184,7 @@ Button <|-- UserClass
 
 This is a lot easier. To see if this is at all possible, a list must be made of classes who use an interface and if the below classes are using it too. In a way they did, e.g. if **Button** did not had the interface to **Buildable**, it would use the calls of the interface used by **Bin** or **Container** so effectively it is the same as in the second diagram.
 
-Below is a tree of modules. The letters are explained at the bottom.
+Below is a tree of modules. The letters are explained at the bottom and are linked to the name of the interface module, e.g. b is for Buildable class.
 
 ```
 Tree of Gtk C structures                              Interface use
@@ -414,230 +414,9 @@ GObject
 ╰── GtkPrintBackend
 
 GInterface                                            
-├── GtkBuildable                                      B
+├── GtkBuildable                                      b
 ├── GtkActionable                                     ac
 ├─✗ GtkActivatable                                    
-├── GtkAppChooser                                     ap
-├── GtkCellLayout                                     cl
-├── GtkCellEditable                                   ce
-├── GtkOrientable                                     o
-├── GtkColorChooser                                   cc
-├── GtkStyleProvider                                  sp
-├── GtkEditable                                       e
-├── GtkFileChooser                                    fic
-├── GtkFontChooser                                    foc
-├── GtkScrollable                                     s
-├── GtkTreeModel                                      tm
-├── GtkTreeDragSource                                 tds
-├── GtkTreeDragDest                                   tdd
-├── GtkTreeSortable                                   ts
-├── GtkPrintOperationPreview                          pop
-├── GtkRecentChooser                                  rc
-╰── GtkToolShell                                      tsh
-```
-
-A second list is the administration of options to the BUILD process
-```
-Tree of Gtk C structures                              options
------------------------------------------------------ ------------------------
-GObject                                               :native-object
-                                                      :build-id
-├── GInitiallyUnowned                                 -
-│   ├── GtkWidget                                     -
-│   │   ├── GtkContainer                              -
-│   │   │   ├── GtkBin                                -
-│   │   │   │   ├── GtkWindow                         :*
-                                                      :title
-│   │   │   │   │   ├── GtkDialog                     :*
-                                                      :title
-│   │   │   │   │   │   ├── GtkAboutDialog            :*
-│   │   │   │   │   │   ├── GtkAppChooserDialog       
-│   │   │   │   │   │   ├── GtkColorChooserDialog     
-│   │   │   │   │   │   ├── GtkFileChooserDialog      
-│   │   │   │   │   │   ├── GtkFontChooserDialog      
-│   │   │   │   │   │   ├── GtkMessageDialog          
-│   │   │   │   │   │   ├── GtkPageSetupUnixDialog    
-│   │   │   │   │   │   ├── GtkPrintUnixDialog        
-│   │   │   │   │   │   ╰── GtkRecentChooserDialog    
-│   │   │   │   │   ├── GtkApplicationWindow          
-│   │   │   │   │   ├── GtkAssistant                  
-│   │   │   │   │   ├── GtkOffscreenWindow            
-│   │   │   │   │   ├── GtkPlug                       
-│   │   │   │   │   ╰── GtkShortcutsWindow            
-│   │   │   │   ├── GtkActionBar                      
-│   │   │   │   ├── GtkComboBox                       
-│   │   │   │   │   ├── GtkAppChooserButton           
-│   │   │   │   │   ╰── GtkComboBoxText               
-│   │   │   │   ├── GtkFrame                          
-│   │   │   │   │   ╰── GtkAspectFrame                
-│   │   │   │   ├── GtkButton                         
-│   │   │   │   │   ├── GtkToggleButton               
-│   │   │   │   │   │   ├── GtkCheckButton            
-│   │   │   │   │   │   │   ╰── GtkRadioButton        
-│   │   │   │   │   │   ╰── GtkMenuButton             
-│   │   │   │   │   ├── GtkColorButton                
-│   │   │   │   │   ├── GtkFontButton                 
-│   │   │   │   │   ├── GtkLinkButton                 
-│   │   │   │   │   ├── GtkLockButton                 
-│   │   │   │   │   ├── GtkModelButton                
-│   │   │   │   │   ╰── GtkScaleButton                
-│   │   │   │   │       ╰── GtkVolumeButton           
-│   │   │   │   ├── GtkMenuItem                       
-│   │   │   │   │   ├── GtkCheckMenuItem              
-│   │   │   │   │   │   ╰── GtkRadioMenuItem          
-│   │   │   │   │   ├── GtkSeparatorMenuItem          
-│   │   │   │   ├── GtkEventBox                       
-│   │   │   │   ├── GtkExpander                       
-│   │   │   │   ├── GtkFlowBoxChild                   
-│   │   │   │   ├── GtkHandleBox                      
-│   │   │   │   ├── GtkListBoxRow                     
-│   │   │   │   ├── GtkToolItem                       
-│   │   │   │   │   ├── GtkToolButton                 
-│   │   │   │   │   │   ├── GtkMenuToolButton         
-│   │   │   │   │   │   ╰── GtkToggleToolButton       
-│   │   │   │   │   │       ╰── GtkRadioToolButton    
-│   │   │   │   │   ╰── GtkSeparatorToolItem          
-│   │   │   │   ├── GtkOverlay                        
-│   │   │   │   ├── GtkScrolledWindow                 
-│   │   │   │   │   ╰── GtkPlacesSidebar              
-│   │   │   │   ├── GtkPopover                        
-│   │   │   │   │   ╰── GtkPopoverMenu                
-│   │   │   │   ├── GtkRevealer                       
-│   │   │   │   ├── GtkSearchBar                      
-│   │   │   │   ├── GtkStackSidebar                   
-│   │   │   │   ╰── GtkViewport                       
-│   │   │   ├── GtkBox                                
-│   │   │   │   ├── GtkAppChooserWidget               
-│   │   │   │   ├── GtkButtonBox                      
-│   │   │   │   ├── GtkColorChooserWidget             
-│   │   │   │   ├── GtkFileChooserButton              
-│   │   │   │   ├── GtkFileChooserWidget              
-│   │   │   │   ├── GtkFontChooserWidget              
-│   │   │   │   ├── GtkInfoBar                        
-│   │   │   │   ├── GtkRecentChooserWidget            
-│   │   │   │   ├── GtkShortcutsSection               
-│   │   │   │   ├── GtkShortcutsGroup                 
-│   │   │   │   ├── GtkShortcutsShortcut              
-│   │   │   │   ├── GtkStackSwitcher                  
-│   │   │   │   ╰── GtkStatusbar                      
-│   │   │   ├── GtkFixed                              
-│   │   │   ├── GtkFlowBox                            
-│   │   │   ├── GtkGrid                               
-│   │   │   ├── GtkHeaderBar                          
-│   │   │   ├── GtkPaned                              
-│   │   │   ├── GtkIconView                           
-│   │   │   ├── GtkLayout                             
-│   │   │   ├── GtkListBox                            
-│   │   │   ├── GtkMenuShell                          
-│   │   │   │   ├── GtkMenuBar                        
-│   │   │   │   ╰── GtkMenu                           
-│   │   │   │       ╰── GtkRecentChooserMenu          
-│   │   │   ├── GtkNotebook                           
-│   │   │   ├── GtkSocket                             
-│   │   │   ├── GtkStack                              
-│   │   │   ├── GtkTextView                           
-│   │   │   ├── GtkToolbar                            
-│   │   │   ├── GtkToolItemGroup                      
-│   │   │   ├── GtkToolPalette                        
-│   │   │   ╰── GtkTreeView                           
-│   │   ├─✗ GtkMisc                                   
-│   │   │   ├── GtkLabel                              
-│   │   │   │   ╰── GtkAccelLabel                     
-│   │   │   ╰── GtkImage                              
-│   │   ├── GtkCalendar                               
-│   │   ├── GtkCellView                               
-│   │   ├── GtkDrawingArea                            
-│   │   ├── GtkEntry                                  
-│   │   │   ├── GtkSearchEntry                        
-│   │   │   ╰── GtkSpinButton                         
-│   │   ├── GtkGLArea                                 
-│   │   ├── GtkRange                                  
-│   │   │   ├── GtkScale                              
-│   │   │   ╰── GtkScrollbar                          
-│   │   ├── GtkSeparator                              
-│   │   ├── GtkProgressBar                            
-│   │   ├── GtkSpinner                                
-│   │   ├── GtkSwitch                                 
-│   │   ╰── GtkLevelBar                               
-│   ├── GtkAdjustment
-│   ├── GtkCellArea                                   
-│   │   ╰── GtkCellAreaBox                            
-│   ├── GtkCellRenderer                               
-│   │   ├── GtkCellRendererText                       
-│   │   │   ├── GtkCellRendererAccel                  
-│   │   │   ├── GtkCellRendererCombo                  
-│   │   │   ╰── GtkCellRendererSpin                   
-│   │   ├── GtkCellRendererPixbuf                     
-│   │   ├── GtkCellRendererProgress                   
-│   │   ├── GtkCellRendererSpinner                    
-│   │   ╰── GtkCellRendererToggle                     
-│   ├── GtkFileFilter                                 
-│   ├── GtkTreeViewColumn                             
-│   ╰── GtkRecentFilter                               
-├── GtkAccelGroup
-├── GtkAccelMap
-├── AtkObject
-│   ╰── GtkAccessible
-├── GApplication                                      
-│   ╰── GtkApplication                                
-├── GtkBuilder                                        
-├── GtkCellAreaContext
-├── GtkClipboard
-├── GtkCssProvider                                    
-├── GtkEntryBuffer                                    
-├── GtkEntryCompletion                                
-├── GtkEventController
-│   ├── GtkEventControllerKey
-│   ├── GtkEventControllerMotion
-│   ├── GtkEventControllerScroll
-│   ├── GtkGesture
-│   │   ├── GtkGestureSingle
-│   │   │   ├── GtkGestureDrag
-│   │   │   │   ╰── GtkGesturePan
-│   │   │   ├── GtkGestureLongPress
-│   │   │   ├── GtkGestureMultiPress
-│   │   │   ├── GtkGestureStylus
-│   │   │   ╰── GtkGestureSwipe
-│   │   ├── GtkGestureRotate
-│   │   ╰── GtkGestureZoom
-│   ╰── GtkPadController
-├── GtkIconFactory                                    
-├── GtkIconTheme
-├── GtkIMContext
-│   ├── GtkIMContextSimple
-│   ╰── GtkIMMulticontext
-├── GtkListStore                                      
-├── GMountOperation                                   
-│   ╰── GtkMountOperation                             
-├── GEmblemedIcon                                     
-│   ╰─✗ GtkNumerableIcon                              
-├── GtkPageSetup
-├── GtkPrinter
-├── GtkPrintContext
-├── GtkPrintJob
-├── GtkPrintOperation                                 
-├── GtkPrintSettings
-├── GtkRcStyle
-├── GtkRecentManager
-├── GtkSettings                                       
-├── GtkSizeGroup                                      
-├── GtkStyleContext                                   
-├── GtkTextBuffer                                     
-├── GtkTextChildAnchor
-├── GtkTextMark
-├── GtkTextTag                                        
-├── GtkTextTagTable                                   
-├── GtkTreeModelFilter                                
-├── GtkTreeModelSort                                  
-├── GtkTreeSelection
-├── GtkTreeStore                                      
-├── GtkWindowGroup
-├── GtkTooltip
-╰── GtkPrintBackend
-
-GInterface                                            
-├── GtkBuildable                                      B
-├── GtkActionable                                     ac
 ├── GtkAppChooser                                     ap
 ├── GtkCellLayout                                     cl
 ├── GtkCellEditable                                   ce
@@ -908,251 +687,211 @@ sub pera-int-f(Str $format, *@args) {
 pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
 ```
 
-# Design graphs
-<!--
-```plantuml
-@startmindmap
-scale 0.7
+# Memory
+Notes from https://developer.gnome.org/gtk3/stable/gtk-question-index.html
 
-title GTK Class hierary
-* GObject
- * GInitiallyUnowned
-  * Gtk3::Widget
-   * Gtk3::Misc
-    * Gtk3::Entry
-    * Gtk3::Image
-    * Gtk3::Label
-   * Gtk3::LevelBar
-   * Gtk3::Container
-    * ...
+### Why does my program leak memory, if I destroy a widget immediately after creating it ?
 
-  * Gtk3::FileFilter
-
- * Screen
- * Window
- * Display
- * Device
-
- * Gtk3::Builder
- * Gtk3::TextBuffer
- * Gtk3::CssProvider
-@endmindmap
+If GtkFoo isn't a toplevel window, then
+```
+foo = gtk_foo_new ();
+gtk_widget_destroy (foo);
 ```
 
-```plantuml
-@startmindmap
-scale 0.7
+is a memory leak, because no one assumed the initial floating reference. If you are using a widget and you aren't immediately packing it into a container, then you probably want standard reference counting, not floating reference counting.
 
-title GTK Class hierary at Gtk3::Container
+To get this, you must acquire a reference to the widget and drop the floating reference (“ref and sink” in GTK+ parlance) after creating it:
 
-* Gtk3::Container
- * Gtk3::Bin
-  * Gtk3::Button
-   * Gtk3::ToggleButton
-    * Gtk3::CheckButton
-     * Gtk3::RadioButton
-   * Gtk3::ColorButton
-
-  * Gtk3::Window
-   * Gtk3::Dialog
-    * Gtk3::AboutDialog
-    * Gtk3::FileChooserDialog
-
-  * Gtk3::MenuItem
-
- * Gtk3::TextView
- * Gtk3::Paned
-@endmindmap
+```
+foo = gtk_foo_new ();
+g_object_ref_sink (foo);
 ```
 
+When you want to get rid of the widget, you must call gtk_widget_destroy() to break any external connections to the widget before dropping your reference:
 
-```plantuml
-@startmindmap
-scale 0.7
-title Interface classes
-* GObject::Interface
- * Gtk3::FileChooser
- * Gtk3::Orientable
- * Gtk3::ColorChooser
-
-@endmindmap
+```
+gtk_widget_destroy (foo);
+g_object_unref (foo);
 ```
 
-```plantuml
-@startmindmap
-scale 0.7
-title Wrapped structure classes
-* GObject::Boxed
- * Gtk3::Border
- * Gtk3::TextIter
- * GObject::Value
- * Gtk3::WidgetPath
+When you immediately add a widget to a container, it takes care of assuming the initial floating reference and you don't have to worry about reference counting at all ... just call gtk_widget_destroy() to get rid of the widget.
 
-@endmindmap
+# Internationalize
+### How do I internationalize a GTK+ program?
+
+Most people use GNU gettext, already required in order to install GLib. On a UNIX or Linux system with gettext installed, type info gettext to read the documentation.
+
+The short checklist on how to use gettext is: call bindtextdomain() so gettext can find the files containing your translations, call textdomain() to set the default translation domain, call bind_textdomain_codeset() to request that all translated strings are returned in UTF-8, then call gettext() to look up each string to be translated in the default domain.
+
+gi18n.h provides the following shorthand macros for convenience. Conventionally, people define macros as follows for convenience:
+
 ```
--->
-<!--
-```plantuml
-scale 0.7
-hide members
-hide circle
-
-title Standalone classes
-
-class X
-
-class GLib::Main
-class GLib::List
-class GLib::SList
-class GObject::Type
-class GObject::Signal
-
-class Gtk3::Main
+#define  _(x)     gettext (x)
+#define N_(x)     x
+#define C_(ctx,x) pgettext (ctx, x)
 ```
--->
 
+You use N_() (N stands for no-op) to mark a string for translation in a location where a function call to gettext() is not allowed, such as in an array initializer. You eventually have to call gettext() on the string to actually fetch the translation. _() both marks the string for translation and actually translates it. The C_() macro (C stands for context) adds an additional context to the string that is marked for translation, which can help to disambiguate short strings that might need different translations in different parts of your program.
 
-```plantuml
-scale 0.7
-title Dependency details for signal processing
+Code using these macros ends up looking like this:
 
+```
+#include <gi18n.h>
 
-package Gnome::Gtk3 {
-  class Builder
-}
+static const char *global_variable = N_("Translate this string");
 
-package Gnome::Gdk3 {
-  class Events
+static void
+make_widgets (void)
+{
+   GtkWidget *label1;
+   GtkWidget *label2;
 
-  class GdkEvent << (S, #dfdfff) Struct >>
-}
+   label1 = gtk_label_new (_("Another string to translate"));
+   label2 = gtk_label_new (_(global_variable));
+...
+```
 
-package Gnome::GObject {
-  class Object {
-    N-GObject $!gobject
-    GSignal $!g-signal
-    Array $builders
+Libraries using gettext should use dgettext() instead of gettext(), which allows them to specify the translation domain each time they ask for a translation. Libraries should also avoid calling textdomain(), since they will be specifying the domain instead of using the default.
+
+With the convention that the macro GETTEXT_PACKAGE is defined to hold your libraries translation domain, gi18n-lib.h can be included to provide the following convenience:
+
+```
+#define _(x) dgettext (GETTEXT_PACKAGE, x)
+```
+
+### How do I use non-ASCII characters in GTK+ programs ?
+
+GTK+ uses Unicode (more exactly UTF-8) for all text. UTF-8 encodes each Unicode codepoint as a sequence of one to six bytes and has a number of nice properties which make it a good choice for working with Unicode text in C programs:
+
+    ASCII characters are encoded by their familiar ASCII codepoints.
+
+    ASCII characters never appear as part of any other character.
+
+    The zero byte doesn't occur as part of a character, so that UTF-8 strings can be manipulated with the usual C library functions for handling zero-terminated strings.
+
+More information about Unicode and UTF-8 can be found in the UTF-8 and Unicode FAQ for Unix/Linux. GLib provides functions for converting strings between UTF-8 and other encodings, see g_locale_to_utf8() and g_convert().
+
+Text coming from external sources (e.g. files or user input), has to be converted to UTF-8 before being handed over to GTK+. The following example writes the content of a IS0-8859-1 encoded text file to stdout:
+
+```
+gchar *text, *utf8_text;
+gsize length;
+GError *error = NULL;
+
+if (g_file_get_contents (filename, &text, &length, NULL))
+  {
+     utf8_text = g_convert (text, length, "UTF-8", "ISO-8859-1",
+                            NULL, NULL, &error);
+     if (error != NULL)
+       {
+         fprintf ("Couldn't convert file %s to UTF-8\n", filename);
+         g_error_free (error);
+       }
+     else
+       g_print (utf8_text);
   }
-
-  'hide members
-  class Signal
-}
-
-'class usage
-Builder "0..*" --o Object
-'Builder --|> Object
-Object *-> Signal
-'Signal <--* Object
-Signal o--> "GdkEvent"
-Events o-> GdkEvent
-
-'package dependencies
-'Gtk3 ...> Gdk3
-'note right on link
-'  Nomal use as some Gtk3
-'  classes use Gdk3 classes
-'end note
-
-'Gtk3 ...> GObject
-'note right on link
-'  Normal use as many Gtk3
-'  classes inherit from
-'  Object
-'end note
-
-'Gtk3 <... GObject
-'note right on link
-'  dependency is solved by
-'  handing over the Builder
-'  address to GObject
-
-'  also dependency on Main
-'  is solved by redefining a sub
-'  to initialize GTK+
-'end note
-
-'Gdk3 ..> GObject
-'note right on link
-'  Normal use as some Gdk3
-'  classes inherit from
-'  Object
-'end note
-
-'Gdk3 <.. GObject
-'note right on link
-'  dependency solved by
-'  moving some sub
-'  declarations to GObject
-'  and Wiget
-'end note
+else
+  fprintf (stderr, "Unable to read file %s\n", filename);
 ```
 
+For string literals in the source code, there are several alternatives for handling non-ASCII content:
+
+* **direct UTF-8**: If your editor and compiler are capable of handling UTF-8 encoded sources, it is very convenient to simply use UTF-8 for string literals, since it allows you to edit the strings in "wysiwyg". Note that choosing this option may reduce the portability of your code.
+
+**escaped UTF-8**: Even if your toolchain can't handle UTF-8 directly, you can still encode string literals in UTF-8 by using octal or hexadecimal escapes like \212 or \xa8 to encode each byte. This is portable, but modifying the escaped strings is not very convenient. Be careful when mixing hexadecimal escapes with ordinary text; "\xa8abcd" is a string of length 1 !
+
+**runtime conversion**: If the string literals can be represented in an encoding which your toolchain can handle (e.g. IS0-8859-1), you can write your source files in that encoding and use g_convert() to convert the strings to UTF-8 at runtime. Note that this has some runtime overhead, so you may want to move the conversion out of inner loops.
+
+Here is an example showing the three approaches using the copyright sign © which has Unicode and ISO-8859-1 codepoint 169 and is represented in UTF-8 by the two bytes 194, 169, or "\302\251" as a string literal:
+
+```
+g_print ("direct UTF-8: ©");
+g_print ("escaped UTF-8: \302\251");
+text = g_convert ("runtime conversion: ©", -1, "ISO-8859-1", "UTF-8", NULL, NULL, NULL);
+g_print(text);
+g_free (text);
+```
+
+If you are using gettext() to localize your application, you need to call bind_textdomain_codeset() to ensure that translated strings are returned in UTF-8 encoding.
+
+# Design graphs
+
 ```plantuml
+
 scale 0.7
-title Dependency details for hierargy and interfaces
+title Dependency details between packages
+allowmixing
 
-package Gnome::Gtk3 {
-  class Button
-  class Bin
-  class Container
-  class Widget
+!include <tupadr3/common>
+!include <tupadr3/font-awesome/archive>
+!include <tupadr3/font-awesome/cogs>
 
-  class Buildable << (I, #efed80) Interface >>
+
+package Glib {
+  FA_COGS(Glib) #e0e0ff
+}
+package GObject {
+  FA_COGS(GObject) #e0e0ff
+}
+package Gio {
+  FA_COGS(Gio) #e0e0ff
+}
+package Gtk {
+  FA_COGS(Gtk) #e0e0ff
+}
+package Gdk {
+  FA_COGS(Gdk) #e0e0ff
+}
+'package Pango {
+'  FA_COGS(Pango) #e0e0ff
+'}
+'package Cairo {
+'  FA_COGS(Cairo) #e0e0ff
+'}
+
+
+package Gnome::N {
+  FA_COGS(RN)
 }
 
+package Gnome::Glib {
+  FA_COGS(RGlib)
+}
+package Gnome::Gio {
+  FA_COGS(RGio)
+}
 package Gnome::GObject {
-  class InitiallyUnowned
-  class Object
+  FA_COGS(RGObject)
+}
+package Gnome::Gdk3 {
+  FA_COGS(RGdk3)
+}
+package Gnome::Gtk3 {
+  FA_COGS(RGtk3)
 }
 
-Object <|-- InitiallyUnowned
-InitiallyUnowned <|-- Widget
-Widget <|-- Container
-Container <|-- Bin
-Bin <|-- Button
 
-Widget o-> Buildable
-Container o-> Buildable
-Button o-> Buildable
+Gnome::Gdk3 <.. Gnome::Gtk3
+Gnome::Gio <.. Gnome::Gtk3
+Gnome::GObject <... Gnome::Gtk3
+Gnome::Glib <... Gnome::Gtk3
+Gnome::N <... Gnome::Gtk3
+Gtk <....... Gnome::Gtk3
 
-```
+Gnome::GObject <.... Gnome::Gdk3
+Gnome::Glib <... Gnome::Gdk3
+Gnome::N <... Gnome::Gdk3
+Gdk <...... Gnome::Gdk3
 
-<!-- Restjes ...
+Gnome::N <.. Gnome::Gio
+Gnome::GObject <.. Gnome::Gio
+Gnome::Glib <.. Gnome::Gio
+Gio <.... Gnome::Gio
 
-```plantuml
-scale 0.7
-hide members
-hide circle
+Gnome::N <.. Gnome::GObject
+GObject <... Gnome::GObject
 
-'class Gui
-'class GSignal
-'GSignal <|-- Gtk3::Widget
-'X <-* Gui
-
-
-Gtk3::Bin <|-- Gtk3::Button
-Gtk3::Button <|-- Gtk3::ToggleButton
-Gtk3::ToggleButton <|-- Gtk3::CheckButton
-Gtk3::CheckButton <|-- Gtk3::RadioButton
-
-Gtk3::Bin <|-- Gtk3::Window
-Gtk3::Window <|-- Gtk3::Dialog
-Gtk3::Dialog <|-- Gtk3::AboutDialog
-Gtk3::Dialog <|-- Gtk3::FileChooserDialog
-
-Gtk3::Widget <|-- Gtk3::Label
-Gtk3::Widget <|-- Gtk3::Entry
-
-Gtk3::Container <|-- Gtk3::Bin
-Gtk3::Container <|-- Gtk3::TextView
-Gtk3::Widget <|-- Gtk3::Container
-
-GInitiallyUnowned <|-- Gtk3::Widget
-GObject <|-- GInitiallyUnowned
-
-Gtk3::Bin <|-- Gtk3::MenuItem
-
-GInitiallyUnowned <|-- Gtk3::FileFilter
+Gnome::N <.. Gnome::Glib
+Glib <... Gnome::Glib
 
 ```
--->

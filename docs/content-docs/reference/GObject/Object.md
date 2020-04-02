@@ -55,7 +55,7 @@ An example where a `Pointer` is returned from the `.nth-data()` method in the si
     );
 
     # Get all radio buttons in the group of button $rb2
-    my Gnome::GObject::SList $rb-list .= new(:gslist($rb2.get-group));
+    my Gnome::GObject::SList $rb-list .= new(:native-object($rb2.get-group));
     loop ( Int $i = 0; $i < $rb-list.g_slist_length; $i++ ) {
       # Get button from the list
       my Gnome::Gtk3::RadioButton $rb .= new(
@@ -231,4 +231,3 @@ If the pointer to the *GObject* may be reused in future (for example, if it is a
     method g_object_unref ( N-GObject $object )
 
   * N-GObject $object; a *GObject*
-

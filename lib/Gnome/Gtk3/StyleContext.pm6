@@ -363,7 +363,7 @@ Note that passing a state other than the current state of I<context>
 is not recommended unless the style context has been saved with
 C<gtk_style_context_save()>.
 
-When I<value> is no longer needed, C<g_value_unset()> must be called
+When I<value> is no longer needed, C<clear-object()> must be called
 to free any allocated memory.
 
 Since: 3.0
@@ -700,7 +700,7 @@ sub gtk_style_context_has_class ( N-GObject $context, Str $class_name )
 
 Gets the value for a widget style property.
 
-When I<value> is no longer needed, C<g_value_unset()> must be called to free any allocated memory.
+When I<value> is no longer needed, C<clear-object()> must be called to free any allocated memory.
 
   method gtk_style_context_get_style_property (
     Str $property_name, N-GObject $value

@@ -75,7 +75,7 @@ Create a new object with a valid application id and a mask of GApplicationFlags 
 
 Create an object using a native object from elsewhere.
 
-    multi method new ( N-GObject :$object! )
+    multi method new ( N-GObject :$native-object! )
 
 [g_application_] id_is_valid
 ----------------------------
@@ -786,4 +786,3 @@ The **Gnome::GObject::Value** type of property *action-group* is `G_TYPE_OBJECT`
 ### Is busy
 
 Whether the application is currently marked as busy through `g_application_mark_busy()` or `g_application_bind_busy_property()`. The **Gnome::GObject::Value** type of property *is-busy* is `G_TYPE_BOOLEAN`.
-

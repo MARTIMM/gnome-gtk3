@@ -162,7 +162,7 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
       my Array[Gnome::GObject::Value] $v =
          $!files.tree-store-get-value( $iter, FILENAME_COL);
       my Str $filename-table-entry = $v[0].get-string // '-';
-      $v[0].unset;
+      $v[0].clear-object;
 
       # Test if part is in the treestore at the provided path
       my Order $order = $part cmp $filename-table-entry;
@@ -264,7 +264,7 @@ method !get-parent-iter ( Array $store-location --> Gnome::Gtk3::TreeIter ) {
 
   else {
     # Not enough elements, return an invalid iterator
-    $parent-iter .= new(:tree-iter(N-GtkTreeIter));
+    $parent-iter .= new(:native-object(N-GtkTreeIter));
   }
 
   $parent-iter

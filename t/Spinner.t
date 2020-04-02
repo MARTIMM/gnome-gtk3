@@ -23,13 +23,13 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
   $s.g-object-get-property( 'active', $gv);
   is $gv.get-boolean, 1, 'property active';
-  $gv.unset;
+  $gv.clear-object;
 
   $s.spinner-stop;
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $s.g-object-get-property( 'active', $gv);
   is $gv.get-boolean, 0, '.spinner-start() / .spinner-stop()';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #`{{

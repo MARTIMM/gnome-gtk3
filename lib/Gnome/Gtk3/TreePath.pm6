@@ -51,7 +51,7 @@ class N-GtkTreePath
   { }
 
 #-------------------------------------------------------------------------------
-has Bool $.tree-path-is-valid = False;
+#has Bool $.tree-path-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -75,7 +75,7 @@ Create a new tree path object using indices.
 
 Create an object taking the native object from elsewhere.
 
-  multi method new ( N-GtkTreePath :tree-path! )
+  multi method new ( N-GtkTreePath :native-object! )
 
 =end pod
 
@@ -83,37 +83,42 @@ Create an object taking the native object from elsewhere.
 #TM:1:new(:first):
 #TM:1:new(:string):
 #TM:1:new(:indices):
-#TM:1:new(:tree-path):
+#TM:1:new(:native-object):
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreePath';
 
+  if self.is-valid { }
+
+  elsif %options<native-object>:exists or %options<widget>:exists  { }
+
   # process all named arguments
-  if ? %options<tree-path> {
+  elsif ? %options<tree-path> {
+    Gnome::N::deprecate( '.new(:tree-path)', '.new(:native-object)', '0.21.3', '0.30.0');
     self.set-native-object(%options<tree-path>);
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<empty> {
     Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
     self.set-native-object(gtk_tree_path_new());
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<first> {
     self.set-native-object(gtk_tree_path_new_first());
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<indices> {
     self.set-native-object(gtk_tree_path_new_from_indices(|%options<indices>));
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif ? %options<string> {
     self.set-native-object(gtk_tree_path_new_from_string(%options<string>));
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
   elsif %options.keys.elems {
@@ -126,7 +131,7 @@ submethod BUILD ( *%options ) {
 
   else {#if ? %options<empty> {
     self.set-native-object(gtk_tree_path_new());
-    $!tree-path-is-valid = self.get-native-object.defined;
+#    $!tree-path-is-valid = self.get-native-object.defined;
   }
 
 
@@ -150,8 +155,20 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+# ? no ref/unref for a variant type
+method native-object-ref ( $n-native-object --> Any ) {
+  $n-native-object
+}
+
+#-------------------------------------------------------------------------------
+method native-object-unref ( $n-native-object ) {
+  _gtk_tree_path_free($n-native-object)
+}
+
+#-------------------------------------------------------------------------------
+#`{{
 #TODO Destroy calls clear-tree-path
-#TM:1:clear-tree-path:
+# TM:1:clear-tree-path:
 =begin pod
 =head2 clear-tree-path
 
@@ -160,10 +177,17 @@ Frees a C<N-GtkTreePath> struct and after that, tree-path-is-valid() returns Fal
   method clear-tree-path ( )
 
 =end pod
+}}
 
 method clear-tree-path ( ) {
-  _gtk_tree_path_free(self.get-native-object);
-  $!tree-path-is-valid = False;
+#  _gtk_tree_path_free(self.get-native-object);
+#  $!tree-path-is-valid = False;
+
+  Gnome::N::deprecate(
+    '.clear-tree-path()', '.clear-object()', '0.27.0', '0.30.0'
+  );
+
+  self.clear-object;
 }
 
 #-------------------------------------------------------------------------------

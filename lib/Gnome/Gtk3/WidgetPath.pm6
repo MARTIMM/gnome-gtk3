@@ -81,14 +81,14 @@ unit class Gnome::Gtk3::WidgetPath:auth<github:MARTIMM>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------
-#TT:-:N-GtkWidgetPath
+#TT:1:N-GtkWidgetPath
 class N-GtkWidgetPath
   is repr('CPointer')
   is export
   { }
 
 #-------------------------------------------------------------------------------
-has Bool $.widgetpath-is-valid = False;
+#has Bool $.widgetpath-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -119,12 +119,14 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::WidgetPath';
 
+  if self.is-valid { }
+
   # process all named arguments
-  if ? %options<empty> {
+  elsif ? %options<empty> {
     Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(gtk_widget_path_new());
-    $!widgetpath-is-valid = True;
+#    $!widgetpath-is-valid = True;
   }
 
   #TODO widgetpath is a native-object
@@ -132,11 +134,12 @@ submethod BUILD ( *%options ) {
     Gnome::N::deprecate(
       '.new(:widgetpath())', '.new(:native-object())', '0.21.3', '0.30.0'
     );
-    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(%options<widgetpath>);
-    $!widgetpath-is-valid = %options<widgetpath>.defined;
+#    $!widgetpath-is-valid = %options<widgetpath>.defined;
   }
 
+#`{{
   elsif ? %options<native-object> {
     _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(%options<native-object>);
@@ -154,11 +157,11 @@ submethod BUILD ( *%options ) {
               )
     );
   }
-
+}}
   else {#if ? %options<empty> {
-    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
+#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(gtk_widget_path_new());
-    $!widgetpath-is-valid = True;
+#    $!widgetpath-is-valid = True;
   }
 
   # only after creating the native-object, the gtype is known
@@ -181,7 +184,19 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:clear-widgetpath
+# ? no ref/unref for a variant type
+method native-object-ref ( $n-native-object --> Any ) {
+  $n-native-object
+}
+
+#-------------------------------------------------------------------------------
+method native-object-unref ( $n-native-object ) {
+  _gtk_widget_path_free($n-native-object)
+}
+
+#-------------------------------------------------------------------------------
+#`{{
+# TM:1:clear-widgetpath
 =begin pod
 =head2 clear-widget-path
 
@@ -190,12 +205,20 @@ Clear the widget path and return native object to memory.
   method clear-widget-path ( )
 
 =end pod
+}}
 
 method clear-widget-path ( ) {
-  _gtk_widget_path_free(self.get-native-object);
-  $!widgetpath-is-valid = False;
+#  _gtk_widget_path_free(self.get-native-object);
+#  $!widgetpath-is-valid = False;
+
+  Gnome::N::deprecate(
+    '.clear-widget-path()', '.clear-object()', '0.27.0', '0.30.0'
+  );
+
+  self.clear-object
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:1:widgetpath-is-valid
 =begin pod
@@ -207,6 +230,16 @@ Returns True if native object is valid, otherwise False.
 
 =end pod
 # getter defined implicitly above
+}}
+
+method widgetpath-is-valid ( --> Bool ) {
+
+  Gnome::N::deprecate(
+    '.widgetpath-is-valid()', '.is-valid()', '0.27.0', '0.30.0'
+  );
+
+  self.is-valid
+}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_widget_path_new
@@ -324,15 +357,21 @@ Returns the number of widget B<GTypes> between the represented widget and its to
 
 Returns: the number of elements in the path
 
-Since: 3.0
-
   method gtk_widget_path_length ( --> Int )
 
 =end pod
+#`{{
+sub gtk_widget_path_length ( N-GtkWidgetPath $path --> int32 ) {
+  note "wp: $path";
+  my $i = _gtk_widget_path_length($path);
+  note "i = $i";
+  $i
+}
+}}
 
-sub gtk_widget_path_length ( N-GtkWidgetPath $path )
-  returns int32
+sub gtk_widget_path_length ( N-GtkWidgetPath $path --> int32 )
   is native(&gtk-lib)
+#  is symbol('gtk_widget_path_length')
   { * }
 
 #-------------------------------------------------------------------------------

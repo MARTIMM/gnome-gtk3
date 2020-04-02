@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.26.2",
+  "version": "0.27.0.1",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio"],
 
@@ -67,6 +67,7 @@
     "Gnome::Gtk3::ProgressBar": "lib/Gnome/Gtk3/ProgressBar.pm6",
     "Gnome::Gtk3::RadioButton": "lib/Gnome/Gtk3/RadioButton.pm6",
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
+    "Gnome::Gtk3::RecentChooserMenu": "lib/Gnome/Gtk3/RecentChooserMenu.pm6",
     "Gnome::Gtk3::Scale": "lib/Gnome/Gtk3/Scale.pm6",
     "Gnome::Gtk3::SearchEntry": "lib/Gnome/Gtk3/SearchEntry.pm6",
     "Gnome::Gtk3::Spinner": "lib/Gnome/Gtk3/Spinner.pm6",

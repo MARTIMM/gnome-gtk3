@@ -66,6 +66,7 @@ sub MAIN (
 
     # create var name named after classname. E.g. TextBuffer -> $tb.
     my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
+    my Str $mgc = '$mgc';
     my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
     my Str $test-content = Q:s:to/EOTEST/;
       use v6;
@@ -77,6 +78,20 @@ sub MAIN (
       #use Gnome::N::X;
       #Gnome::N::debug(:on);
 
+      #`{{
+      #-------------------------------------------------------------------------------
+      class MyGuiClass is $class {
+        submethod new ( |c ) {
+          self.bless( :$lib-class-name, |c);
+        }
+      }
+
+      subtest 'User class test', {
+        my MyGuiClass $mgc .= new;
+        isa-ok $mgc, $class, '.new()';
+      }
+
+      }}
       #-------------------------------------------------------------------------------
       my $class $m;
       #-------------------------------------------------------------------------------
@@ -802,6 +817,26 @@ sub substitute-in-template (
     =comment  also does Gnome::Gtk3::Buildable;
     =comment  also does Gnome::Gtk3::Orientable;
 
+    =begin comment
+    =head2 Inheriting this class
+
+    Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+      use Gnome::LIBRARYMODULE;
+
+      unit class MyGuiClass;
+      also is Gnome::LIBRARYMODULE;
+
+      submethod new ( |c ) {
+        # let the Gnome::LIBRARYMODULE class process the options
+        self.bless( :LIBCLASSNAME, |c);
+      }
+
+      submethod BUILD ( ... ) {
+        ...
+      }
+
+    =end comment
     =comment head2 Example
 
     =end pod
@@ -837,6 +872,7 @@ sub substitute-in-template (
   $template-text ~~ s:g/ 'MODULE-SHORTDESCRIPTION' /$short-description/;
   $template-text ~~ s:g/ 'MODULE-DESCRIPTION' /$section-doc/;
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
+  $template-text ~~ s:g/ 'LIBCLASSNAME' /$lib-class-name/;
 
   $output-file = "xt/NewModules/$raku-class-name.pm6";
   $output-file.IO.spurt($template-text);
@@ -867,7 +903,7 @@ sub substitute-in-template (
 
       #TM:0:new():inheriting
       #TM:0:new():
-      #TM:0:new(:native-object):Gnome::N::TopLevelClassSupport
+      #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
       #TM:4:new(:build-id):Gnome::GObject::Object
 
       submethod BUILD ( *%options ) {
@@ -875,22 +911,22 @@ sub substitute-in-template (
       BUILD-ADD-SIGNALS
 
         # prevent creating wrong native-objects
-        if self.^name eq 'Gnome::LIBRARYMODULE' or %options<MODULENAME> {
+        if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
 
-          # check if native object is set by other parent class BUILDers
+          # check if native object is set by a parent class
           if self.is-valid { }
 
-          # process all named arguments
-          elsif %options.elems == 0 {
-            die X::Gnome.new(:message('No options specified ' ~ self.^name));
-          }
+          # process all options
 
-          if ? %options<native-object> || ? %options<build-id> {
-            # provided in Gnome::N::TopLevelClassSupport
-            # and in Gnome::GObject::Object
-          }
+          # check if common options are handled by some parent
+          elsif %options<native-object>:exists || %options<widget>:exists { }
+          elsif %options<build-id>:exists { }
 
-          elsif %options.keys.elems {
+          # elsif ? %options<> {
+          # }
+
+          # check if there are unknown options
+          elsif %options.elems {
             die X::Gnome.new(
               :message(
                 'Unsupported, undefined, incomplete or wrongly typed options for ' ~
@@ -899,14 +935,23 @@ sub substitute-in-template (
             );
           }
 
+          #`{{ when there are no defaults use this
+          # check if there are any options
+          elsif %options.elems == 0 {
+            die X::Gnome.new(:message('No options specified ' ~ self.^name));
+          }
+          }}
+
+          #`{{ when there are options use this instead
           # create default object
           else {
-            # self.set-native-object(BASE-SUBNAME_new());
+            self.set-native-object(BASE-SUBNAME_new());
           }
-        }
+          }}
 
-        # only after creating the native-object, the gtype is known
-        self.set-class-info('LIBCLASSNAME');
+          # only after creating the native-object, the gtype is known
+          self.set-class-info('LIBCLASSNAME');
+        }
       }
 
       #-------------------------------------------------------------------------------

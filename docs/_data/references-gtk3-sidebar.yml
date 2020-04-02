@@ -11,6 +11,23 @@
     tut: ''
     ex: '/content-docs/examples/toplevel/Window.html'
 
+    checklist:
+    - main_doc:
+      - 'title, description, see also': 0
+      - 'inheritance, synopsis, example': 0
+      - typos: 0
+    - subs_doc:
+      - 'add $ to variables': 0
+      - 'use True/False when boolean input': 0
+      - 'remove Since version text': 0
+      - 'check if :native-object is used and documented in BUILDs': 0
+      - 'replace C<Any> with undefined':0
+      - typos: 0
+      - examples: 0
+    - 'complete all tests': 0
+    - 'remove unusable subs': 0
+    - cleanup: 0
+
   - title: '-'
 
   - title: "Dialog"
@@ -277,6 +294,10 @@
     test: 1
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
+    test: 1
+  - title: "RecentChooserMenu"
+    url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
     doc: 1
     test: 1
 

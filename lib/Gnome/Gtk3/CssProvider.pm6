@@ -205,9 +205,6 @@ C<gtk_css_provider_new()> will basically create a duplicate of
 the provider.
 
 Returns: a new string representing the I<provider>.
-
-Since: 3.2
-
   method gtk_css_provider_to_string ( --> char  )
 
 =end pod
@@ -348,30 +345,25 @@ sub _gtk_css_provider_load_from_path (
   is symbol('gtk_css_provider_load_from_path')
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_css_provider_load_from_resource:
+#TM:4:gtk_css_provider_load_from_resource:QAManager package
 =begin pod
 =head2 [[gtk_] css_provider_] load_from_resource
 
-Loads the data contained in the resource at I<resource_path> into
+Loads the data contained in the resource at I<$resource_path> into
 the B<Gnome::Gtk3::CssProvider>, clearing any previously loaded information.
 
-To track errors while loading CSS, connect to the
-sig C<parsing-error> signal.
-
-Since: 3.16
-
+To track errors while loading CSS, connect to the sig C<parsing-error> signal.
   method gtk_css_provider_load_from_resource ( Str $resource_path )
 
 =item Str $resource_path; a C<GResource> resource path
 
 =end pod
 
-sub gtk_css_provider_load_from_resource ( N-GObject $css_provider, Str $resource_path )
-  is native(&gtk-lib)
+sub gtk_css_provider_load_from_resource (
+  N-GObject $css_provider, Str $resource_path
+) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_css_provider_get_named:

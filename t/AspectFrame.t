@@ -35,7 +35,7 @@ subtest 'Manipulations', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_FLOAT));
   $af.g-object-get-property( 'xalign', $gv);
   is-approx $gv.get-float, 0.2e0, '.frame_set()';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #-------------------------------------------------------------------------------
@@ -46,17 +46,17 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_FLOAT));
   $af.g-object-get-property( 'xalign', $gv);
   is-approx $gv.get-float, 0.15e0, 'property xalign';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_FLOAT));
   $af.g-object-get-property( 'yalign', $gv);
   is-approx $gv.get-float, 0.0e0, 'property yalign';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $af.g-object-get-property( 'obey-child', $gv);
   is $gv.get-boolean, 1, 'property obey-child';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #`{{

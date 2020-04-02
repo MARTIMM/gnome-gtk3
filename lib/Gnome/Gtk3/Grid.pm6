@@ -46,6 +46,24 @@ Gnome::Gtk3::Grid implements
   also is Gnome::Gtk3::Container;
   also does Gnome::Gtk3::Buildable;
 
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Grid;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Grid;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Grid class process the options
+    self.bless( :GtkGrid, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =comment head2 Example
 
 =end pod
@@ -92,31 +110,32 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Grid';
+  if self.^name eq 'Gnome::Gtk3::Grid' or %options<GtkGrid> {
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_grid_new());
+    if ? %options<empty> {
+      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+      self.set-native-object(gtk_grid_new());
+    }
+
+    elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+      # provided in GObject
+    }
+#`{{
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+}}
+    else {#if ? %options<empty> {
+      self.set-native-object(gtk_grid_new());
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkGrid');
   }
-
-  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_grid_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkGrid');
 }
 
 #-------------------------------------------------------------------------------

@@ -32,9 +32,9 @@ subtest 'ISA test', {
   $ls.gtk-list-store-set( $iter, Col0, 4, Col1, 'wat meer tekst');
 
   $tp .= new(:first);
-  $tr .= new(:tree-row-reference($ls.gtk-tree-row-reference-new($tp)));
-  isa-ok $tr, Gnome::Gtk3::TreeRowReference, '.new(:tree-row-reference)';
-  ok $tr.tree-row-reference-is-valid, '.tree-row-reference-is-valid()';
+  $tr .= new(:native-object($ls.gtk-tree-row-reference-new($tp)));
+  isa-ok $tr, Gnome::Gtk3::TreeRowReference, '.new(:native-object)';
+  ok $tr.is-valid, '.is-valid()';
 }
 
 #-------------------------------------------------------------------------------
@@ -46,14 +46,14 @@ subtest 'Manipulations', {
   is $ls2.get-n-columns, 2, '.get-model()';
 #  ok $tr.valid, '.gtk_tree_row_reference_valid()';
 
-  my Gnome::Gtk3::TreeRowReference $tr2 .= new(:tree-row-reference($tr.copy));
+  my Gnome::Gtk3::TreeRowReference $tr2 .= new(:native-object($tr.copy));
   $tp = $tr2.get-path;
   is $tp.to-string, '0', '.gtk_tree_row_reference_copy()';
 
 
 
-  $tr.clear-tree-row-reference;
-  nok $tr.tree-row-reference-is-valid, '.clear-tree-row-reference()';
+  $tr.clear-object;
+  nok $tr.is-valid, '.clear-object()';
 #  nok $tr.valid, '.gtk_tree_row_reference_valid() not valid';
 }
 

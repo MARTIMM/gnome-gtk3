@@ -10,7 +10,7 @@ use Gnome::Gtk3::Dialog;
 my Gnome::Gtk3::Main $m .= new;
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 
 class AppSignalHandlers {
@@ -28,11 +28,11 @@ class AppSignalHandlers {
     );
 
     my Gnome::Gtk3::Box $content-area .= new(
-      :widget($dialog.get-content-area)
+      :native-object($dialog.get-content-area)
     );
 
     my Gnome::Gtk3::Label $label .= new(:text($message));
-    $content-area.gtk_container_add($label());
+    $content-area.gtk_container_add($label);
 
     # Show the dialog. After return (Ok pressed) the dialog widget
     # is destroyed. show-all() must be called, otherwise the message

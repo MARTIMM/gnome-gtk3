@@ -44,12 +44,12 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
   $md.g-object-get-property( 'text', $gv);
   is $gv.get-string, 'aba<i>ca</i>dabra', 'property text';
-  $gv.unset;
+  $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_STRING));
   $md.g-object-get-property( 'secondary-text', $gv);
   is $gv.get-string, 'En een gewone mededeling', 'property secondary-text';
-  $gv.unset;
+  $gv.clear-object;
 }
 
 #`{{

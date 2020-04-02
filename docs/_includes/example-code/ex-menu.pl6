@@ -13,7 +13,7 @@ use Gnome::Gtk3::MenuItem;
 use Gnome::Gtk3::MenuButton;
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 # This example is translated from C shown on the site at
 # https://developer.gnome.org/gtk-tutorial/stable/x1577.html

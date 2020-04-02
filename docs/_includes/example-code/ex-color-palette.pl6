@@ -94,7 +94,7 @@ for .5, .6 ... 1.0 -> $rgb-gray {
 }
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 $ccw.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette1);
 $cb.add-palette( GTK_ORIENTATION_VERTICAL, 6, 36, $palette2);

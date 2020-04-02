@@ -410,7 +410,6 @@ sub gtk_cell_renderer_get_preferred_size (
   _gtk_cell_renderer_get_preferred_size(
     $cell, $widget, $minimum_size, $natural_size
   );
-
   ( $minimum_size, $natural_size)
 }
 

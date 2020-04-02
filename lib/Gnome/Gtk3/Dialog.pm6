@@ -138,6 +138,24 @@ B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
   also is Gnome::Gtk3::Window;
   also does Gnome::Gtk3::Buildable;
 
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Dialog;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Dialog;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Dialog class process the options
+    self.bless( :GtkDialog, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =head2 Example
 
   my Gnome::Gtk3::Dialog $dialog .= new(:build-id<simple-dialog>);
@@ -272,44 +290,51 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Dialog';
+  if self.^name eq 'Gnome::Gtk3::Dialog' or %options<GtkDialog> {
 
-  # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_dialog_new());
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif ? %options<native-object> || ? %options<widget> ||
+      %options<build-id> { }
+
+    elsif ? %options<empty> {
+      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+      self.set-native-object(gtk_dialog_new());
+    }
+
+    elsif ? %options<title> {
+      my Str $title = %options<title> // Str;
+  #    my N-GObject $parent = N-GObject;
+      my Int $flags = %options<flags> // 0;
+      my @buttons = %options<button-spec> // ();
+      my $parent = %options<parent>;
+      $parent .= get-native-object unless $parent ~~ N-GObject;
+      self.set-native-object(
+        gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons)
+      );
+    }
+#`{{
+    elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
+      # provided in Gnome::GObject::Object
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+}}
+
+    else {#if ? %options<empty> {
+      self.set-native-object(gtk_dialog_new());
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkDialog');
   }
-
-  elsif ? %options<title> {
-    my Str $title = %options<title> // Str;
-#    my N-GObject $parent = N-GObject;
-    my Int $flags = %options<flags> // 0;
-    my @buttons = %options<button-spec> // ();
-    my $parent = %options<parent>;
-    $parent .= get-native-object unless $parent ~~ N-GObject;
-    self.set-native-object(
-      gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons)
-    );
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_dialog_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkDialog');
 }
 
 #-------------------------------------------------------------------------------

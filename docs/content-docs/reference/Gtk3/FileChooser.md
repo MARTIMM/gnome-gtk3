@@ -66,7 +66,7 @@ Example to show how to get filenames from the dialog
 
     # get-filenames() is from FileChooser class
     my Gnome::Glib::SList $fnames .= new(
-      :gslist($file-select-dialog.get-filenames)
+      :native-object($file-select-dialog.get-filenames)
     );
 
     my @files-to-process = ();
@@ -1119,4 +1119,3 @@ The **Gnome::GObject::Value** type of property *extra-widget* is `G_TYPE_OBJECT`
 Application supplied widget for extra options.
 
 Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
-

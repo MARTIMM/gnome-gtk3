@@ -52,13 +52,13 @@ class ListView {
     }
 
     # Get the key from the data column and check
-    $tree-path .= new(:tree-path($n-tree-path));
+    $tree-path .= new(:native-object($n-tree-path));
     $iter = $files.tree-model-get-iter($tree-path);
     my Array[Gnome::GObject::Value] $v = $files.tree-model-get-value(
       $iter, $data-col
     );
     my Str $data-key = $v[0].get-string // '';
-    $v[0].unset;
+    $v[0].clear-object;
 
     # Return if there is no filename key
     return 1 unless ?$data-key;
@@ -81,13 +81,13 @@ class ListView {
     --> Int
   ) {
 
-    my Gnome::Gtk3::TreePath $tree-path .= new(:tree-path($n-tree-path));
+    my Gnome::Gtk3::TreePath $tree-path .= new(:native-object($n-tree-path));
     my Gnome::Gtk3::TreeIter $iter = $markers.tree-model-get-iter($tree-path);
 
     my Array[Gnome::GObject::Value] $v =
        $markers.tree-model-get-value( $iter, 1);
     my Int $line = $v[0].get-int // -1;
-    $v[0].unset;
+    $v[0].clear-object;
 
     note "Start atom editor with folowing file $!filename at line $line";
     shell "atom $!filename:$line &";

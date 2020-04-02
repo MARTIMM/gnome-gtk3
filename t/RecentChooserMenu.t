@@ -2,35 +2,37 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TreeIter;
-ok 1, 'loads ok';
+use Gnome::Gtk3::RecentChooserMenu;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
+#`{{}}
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::TreeIter $ti;
-#-------------------------------------------------------------------------------
-subtest 'ISA test', {
-  my N-GtkTreeIter $nti .= new(
-    :stamp(1001), :userdata1(CArray[Str].new('a')),
-    :userdata2(CArray[Str].new('b')), :userdata3(CArray[Str].new('c'))
-  );
-  $ti .= new(:native-object($nti));
-  isa-ok $ti, Gnome::Gtk3::TreeIter, '.new(:native-object)';
+class MyGuiClass is Gnome::Gtk3::RecentChooserMenu {
+  submethod new ( |c ) {
+    self.bless( :GtkRecentChooserMenu, |c);
+  }
 }
 
-#-------------------------------------------------------------------------------
-subtest 'Manipulations', {
+subtest 'User class test', {
+  my MyGuiClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::RecentChooserMenu, '.new()';
+}
 
-  my Gnome::Gtk3::TreeIter $ti-copy .= new(:native-object($ti.copy));
-  is $ti-copy.get-native-object.stamp, 1001, '.gtk-tree-iter-copy()';
-  ok $ti-copy.is-valid, '.is-valid()';
-  $ti-copy.clear-object;
-  nok $ti-copy.is-valid, '.clear-object()';
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::RecentChooserMenu $rcm;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $rcm .= new;
+  isa-ok $rcm, Gnome::Gtk3::RecentChooserMenu, '.new()';
 }
 
 #`{{
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ...', {

@@ -26,7 +26,7 @@ An example of a UI definition fragment with accel groups:
       <initial-focus name="thunderclap"/>
     </object>
     ...
-    <object class="B<Gnome::Gtk3::AccelGroup>" id="accelgroup1"/>
+    <object class="GtkAccelGroup>" id="accelgroup1"/>
 
 The **Gnome::Gtk3::Window** implementation of the **Gnome::Gtk3::Buildable** interface supports setting a child as the titlebar by specifying “titlebar” as the “type” attribute of a <child> element.
 
@@ -96,7 +96,7 @@ Window placement can be influenced using this enumeration. Note that using GTK_W
 
   * GTK_WIN_POS_CENTER_ALWAYS. Keep window centered as it changes size, etc.
 
-  * GTK_WIN_POS_CENTER_PARENT. Center the window on its transient parent.
+  * GTK_WIN_POS_CENTER_ON_PARENT. Center the window on its transient parent.
 
 Methods
 =======

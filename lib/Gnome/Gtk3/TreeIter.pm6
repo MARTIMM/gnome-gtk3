@@ -53,6 +53,13 @@ The B<Gnome::Gtk3::TreeIter> is the primary structure for accessing a B<Gnome::G
 =end pod
 
 #TT:1:N-GtkTreeIter:
+#`{{
+class N-GtkTreeIter
+  is repr('CPointer')
+  is export
+  { }
+}}
+
 class N-GtkTreeIter is export is repr('CStruct') {
   has int32 $.stamp;
   has Pointer $.userdata1;
@@ -75,45 +82,57 @@ class N-GtkTreeIter is export is repr('CStruct') {
   }
 }
 
+
 #-------------------------------------------------------------------------------
-has Bool $.tree-iter-is-valid = False;
+#has Bool $.tree-iter-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
 
-Create an object taking the native object from elsewhere. C<.tree-iter-is-valid()> will return True or False depending on the state of the provided object.
+Create an object taking the native object from elsewhere. C<.is-valid()> will return True or False depending on the state of the provided object.
 
-  multi method new ( Gnome::Gtk3::TreeIter :$tree-iter! )
+  multi method new ( Gnome::Gtk3::TreeIter :$native-object! )
 
 =end pod
 
-#TM:1:new(:tree-iter):
+#TM:1:new(:native-object):
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TreeIter';
 
+#note"tree iter: ", %options.perl, ', ', self.is-valid();
+
+  if self.is-valid { }
+
+  elsif %options<native-object>:exists or %options<widget>:exists  { }
+
   # process all named arguments
-  if %options<tree-iter>:exists {
+  elsif %options<tree-iter>:exists {
+
+    Gnome::N::deprecate(
+      '.new(:tree-iter)', '.new(:native-object)', '0.27.10', '0.30.0'
+    );
+
     my N-GtkTreeIter $nti;
     if %options<tree-iter>.defined {
       if %options<tree-iter>.^name !~~ m/'N-GtkTreeIter'/ {
         $nti = %options<tree-iter>.get-native-object;
-        $!tree-iter-is-valid = %options<tree-iter>.tree-iter-is-valid;
+#        $!tree-iter-is-valid = %options<tree-iter>.tree-iter-is-valid;
       }
 
       else {
         $nti = %options<tree-iter>;
-        $!tree-iter-is-valid = True;
+#        $!tree-iter-is-valid = True;
       }
 
       self.set-native-object($nti);
     }
 
-    else {
-      $!tree-iter-is-valid = False;
-    }
+#    else {
+#      $!tree-iter-is-valid = False;
+#    }
   }
 
   elsif %options.keys.elems {
@@ -123,6 +142,8 @@ submethod BUILD ( *%options ) {
               )
     );
   }
+
+#note"Tree iter: ", self.get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreeIter');
@@ -145,8 +166,19 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+# ? no ref/unref for a variant type
+method native-object-ref ( $n-native-object --> Any ) {
+  $n-native-object
+}
+
+#-------------------------------------------------------------------------------
+method native-object-unref ( $n-native-object ) {
+  _gtk_tree_iter_free($n-native-object)
+}
+
+#-------------------------------------------------------------------------------
 # doc for attribute defined above
-#TM:1:tree-iter-is-valid:
+# TM:1:tree-iter-is-valid:
 =begin pod
 =head2 tree-iter-is-valid
 
@@ -155,9 +187,18 @@ Method to test if the native object is valid.
   method tree-iter-is-valid ( --> Bool )
 
 =end pod
+method tree-iter-is-valid ( --> Bool ) {
+
+  Gnome::N::deprecate(
+    '.tree-iter-is-valid()', '.is-valid()', '0.27.0', '0.30.0'
+  );
+
+  self.is-valid
+}
 
 #-------------------------------------------------------------------------------
-#TM:1:clear-tree-iter:
+#`{{
+# TM:1:clear-tree-iter:
 =begin pod
 =head2 clear-tree-iter
 
@@ -166,10 +207,18 @@ Frees a C<N-GtkTreeIter> struct and after that, tree-iter-is-valid() returns Fal
   method clear-tree-iter ( )
 
 =end pod
+}}
 
 method clear-tree-iter ( ) {
-  _gtk_tree_iter_free(self.get-native-object);
-  $!tree-iter-is-valid = False;
+
+  Gnome::N::deprecate(
+    '.clear-tree-iter()', '.clear-object()', '0.27.0', '0.30.0'
+  );
+
+  self.clear-object
+
+#  _gtk_tree_iter_free(self.get-native-object);
+#  $!tree-iter-is-valid = False;
 }
 
 #-------------------------------------------------------------------------------
@@ -183,7 +232,7 @@ This function is not intended for use in applications, because you can just copy
 
   Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
 
-You must free this iter with C<clear-tree-iter()>.
+You must free this iter with C<clear-object()>.
 
 Returns: a newly-allocated copy of I<iter>
 

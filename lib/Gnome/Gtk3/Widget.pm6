@@ -331,7 +331,7 @@ A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. Se
 
 =end pod
 
-#TT:0:N-GtkRequisition:
+#TT:2:N-GtkRequisition:CellRenderer.t
 class N-GtkRequisition is export is repr('CStruct') {
   has int32 $.width;
   has int32 $.height;
@@ -1308,6 +1308,7 @@ The returned list holds
 
 =end pod
 
+#`{{
 #TM:1:get-preferred-size
 method get-preferred-size ( --> List ) {
   my N-GtkRequisition $minimum .= new;
@@ -1315,6 +1316,7 @@ method get-preferred-size ( --> List ) {
   _gtk_widget_get_preferred_size( self.get-native-object, $minimum, $natural);
   ( $minimum, $natural)
 }
+}}
 
 #TM:1:gtk_widget_get_preferred_size
 sub gtk_widget_get_preferred_size ( N-GObject $widget --> List ) {
@@ -5354,8 +5356,7 @@ Returns: The C<N-WidgetPath> representing the widget.
 
 =end pod
 
-sub gtk_widget_get_path ( N-GObject $widget )
-  returns N-GtkWidgetPath
+sub gtk_widget_get_path ( N-GObject $widget --> N-GtkWidgetPath )
   is native(&gtk-lib)
   { * }
 
