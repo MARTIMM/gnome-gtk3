@@ -14,7 +14,7 @@ use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::ListStore;
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::ListStore $ls;
@@ -163,7 +163,7 @@ Gnome::N::debug(:off);
 }
 
 #-------------------------------------------------------------------------------
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 subtest 'Signals TreeModel', {
 
   my class X {

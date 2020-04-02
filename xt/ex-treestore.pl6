@@ -14,7 +14,7 @@ use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::TreeIter;
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 
 my Gnome::Gtk3::Main $m .= new;

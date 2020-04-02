@@ -71,5 +71,5 @@ for ^100 {
 }
 
 
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 $ls.foreach( ShowTabel.new, 'show-entry');

@@ -10,7 +10,7 @@ use Gnome::Gtk3::Dialog;
 my Gnome::Gtk3::Main $m .= new;
 
 use Gnome::N::X;
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
 
 
 class AppSignalHandlers {
