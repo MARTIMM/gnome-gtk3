@@ -1098,7 +1098,7 @@ sub gtk_tree_model_foreach (
         --> int32
       ) {
 #note "TP 0: $n-p, $n-i";
-note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
+#note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
 
 #TODO? Cannot find type of model: liststore or treestore
 #        my Gnome::GObject::Object $tm .= new(:native-object($n-m));
@@ -1109,8 +1109,8 @@ note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
           Gnome::Gtk3::TreeIter.new(:native-object($n-i)),
           |%user-options
         );
-note "returns $sts";
-$sts
+#note "returns $sts";
+#$sts
       },
       OpaquePointer
     );
