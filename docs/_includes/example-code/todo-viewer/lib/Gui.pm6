@@ -157,7 +157,7 @@ method !insert-in-table ( Str $project-dir, Str $filename-path, Array $data ) {
     my Str $part = @path-parts.shift;
 
     $ts-iter-path.push(0);
-    while ( ($iter = self!get-iter($ts-iter-path)).tree-iter-is-valid ) {
+    while ( ($iter = self!get-iter($ts-iter-path)).is-valid ) {
 
       my Array[Gnome::GObject::Value] $v =
          $!files.tree-store-get-value( $iter, FILENAME_COL);

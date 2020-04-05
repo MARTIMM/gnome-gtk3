@@ -47,7 +47,7 @@ class ListView {
     $tree-path .= new(:string('0'));
     $iter = $markers.tree-model-get-iter($tree-path);
 
-    while $iter.tree-iter-is-valid {
+    while $iter.is-valid {
       $iter = $markers.list-store-remove($iter);
     }
 
