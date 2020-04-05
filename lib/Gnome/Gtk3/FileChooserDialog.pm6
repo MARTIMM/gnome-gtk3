@@ -223,7 +223,7 @@ submethod BUILD ( *%options ) {
     if ? %options<parent> {
       $parent = %options<parent> ~~ N-GObject
                 ?? %options<parent>
-                !! %options<parent>();
+                !! %options<parent>.get-native-object-no-reffing;
     }
 
     self.set-native-object(

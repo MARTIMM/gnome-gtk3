@@ -40,7 +40,7 @@ $w.gtk-container-add($g);
 
 
 my Gnome::Gtk3::ListStore $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
-my Gnome::Gtk3::TreeView $tv .= new(:model($ls()));
+my Gnome::Gtk3::TreeView $tv .= new(:model($ls));
 $tv.set-hexpand(1);
 $tv.set-vexpand(1);
 $tv.set-headers-visible(1);
@@ -50,6 +50,7 @@ $g.gtk-grid-attach( $tv, 0, 0, 1, 1);
 my Gnome::Gtk3::CellRendererText $crt1 .= new;
 my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<red>);
 $crt1.set-property( 'foreground', $v);
+$v.clear-object;
 #$tv.insert-column-with-attributes( -1, 'order no', $crt1);
 my Gnome::Gtk3::TreeViewColumn $tvc .= new;
 $tvc.set-title('order no');
@@ -59,8 +60,9 @@ $tv.append-column($tvc);
 
 
 my Gnome::Gtk3::CellRendererText $crt2 .= new;
-my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
+$v .= new( :type(G_TYPE_STRING), :value<blue>);
 $crt2.set-property( 'foreground', $v);
+$v.clear-object;
 #$tv.insert-column-with-attributes( -1, 'title', $crt2);
 $tvc .= new;
 $tvc.set-title('book title');
