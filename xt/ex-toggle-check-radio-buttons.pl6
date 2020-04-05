@@ -31,7 +31,7 @@ my Gnome::Gtk3::Window $top-window .= new(:title('Two Toggles'));
 $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
-my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new;
 $top-window.gtk-container-add($grid);
 
 # Create toggle and check buttons
