@@ -8,6 +8,7 @@ GtkTextExtendSelection
 GtkResizeMode
 GtkWindowType
 GtkWindowPosition
+GtkAssistantPageType
 GtkAlign
 GtkArrowType
 GtkBaselinePosition
@@ -111,6 +112,8 @@ GtkPopoverConstraint
 GtkTreeModelFlags
 GtkStackTransitionType
 GtkTextBufferTargetInfo
+GtkCornerType
+GtkPolicyType
 GtkStyleProviderPriority
 GtkImageType
 GtkBuilderError
@@ -130,7 +133,6 @@ GtkButtonsType
 GtkTreeViewDropPosition
 GtkStyleContextPrintFlags
 GtkWidgetHelpType
-GtkAssistantPageType
 GdkFilterReturn
 GdkEventType
 GdkVisibilityState
@@ -172,7 +174,6 @@ GdkWindowTypeHint
 GdkInputSource
 GdkInputMode
 GdkDeviceType
-GParamFlags
 GAppInfoCreateFlags
 GConverterFlags
 GConverterResult
@@ -240,11 +241,11 @@ GSocketListenerEvent
 GSubprocessFlags
 GNotificationPriority
 GNetworkConnectivity
+GResourceLookupFlags
 GOptionFlags
 GOptionArg
 GOptionError
 GVariantClass
-GResourceLookupFlags
 PangoAlignment
 PangoWrapMode
 PangoEllipsizeMode
