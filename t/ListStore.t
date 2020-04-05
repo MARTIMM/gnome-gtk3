@@ -60,12 +60,8 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 # Setup test
 $iter = $ls.gtk-list-store-append;
-note 'path: ', $ls.get-path($iter).to-string();
-note "append res: $iter.get-native-object()";
 $ls.set-value( $iter, Col0, 1001);
-note 'value set 1';
 $ls.set-value( $iter, Col1, 'duizend en een nacht');
-note 'value set 2';
 
 $iter = $ls.gtk-list-store-append;
 $ls.gtk-list-store-set( $iter, Col0, 2002, Col1, 'een beetje later');
@@ -280,13 +276,11 @@ subtest 'Manipulations', {
   #Gnome::N::debug(:on);
   Gnome::N::debug(:off);
   $ls.foreach( ShowTabel.new, 'show-entry');
-#  note ' ';
 
   $ls.gtk-list-store-clear;
   is $ls.iter-n-children(Any), 0, '.gtk-list-store-clear() no entries in table';
 
   $ls.foreach( ShowTabel.new, 'show-entry');
-#  note ' ';
 }
 
 #`{{

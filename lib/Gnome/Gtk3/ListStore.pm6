@@ -647,11 +647,8 @@ sub gtk_list_store_insert_after (
   --> Gnome::Gtk3::TreeIter
 ) {
   my N-GtkTreeIter $iter .= new;
-note "empty iter $iter";
   my N-GtkTreeIter $n-sibling = $sibling // N-GtkTreeIter.new;
-note "sibling $n-sibling";
   _gtk_list_store_insert_after( $list_store, $iter, $sibling);
-note "new iter $iter";
 
   Gnome::Gtk3::TreeIter.new(:native-object($iter))
 }
