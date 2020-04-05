@@ -919,7 +919,7 @@ sub substitute-in-template (
           # process all options
 
           # check if common options are handled by some parent
-          elsif %options<native-object>:exists || %options<widget>:exists { }
+          elsif %options<native-object>:exists or %options<widget>:exists { }
           elsif %options<build-id>:exists { }
 
           # elsif ? %options<> {
