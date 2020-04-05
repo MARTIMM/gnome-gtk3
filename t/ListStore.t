@@ -34,13 +34,9 @@ my class ShowTabel {
     Gnome::Gtk3::TreeIter $c-iter
     --> int32
   ) {
-note 'step 0';
     my Str $row = $c-path.to-string;
-note 'step 1';
     my Gnome::Gtk3::ListStore $c-ls .= new(:native-object($nc-ls));
-note 'step 2';
     my Array[Gnome::GObject::Value] $va = $c-ls.get-value( $c-iter, Col0, Col1);
-note 'step 3';
 
     diag [~] $row.fmt('%5.5s'), ' | ',
              $va[Col0].get-int.fmt('%6d'), ' | ',
