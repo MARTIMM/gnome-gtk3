@@ -48,6 +48,10 @@
     url: "/content-docs/reference/Gtk3/MessageDialog.html"
     doc: 2
     test: 2
+  - title: "ScrolledWindow"
+    url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
+    doc: 2
+    test: 2
 
 - bar_title: "Containers"
   bar_menu:
@@ -381,6 +385,10 @@
 
 - bar_title: "Miscelleneous"
   bar_menu:
+  - title: "Adjustment"
+    url: "/content-docs/reference/Gtk3/Adjustment.html"
+    doc: 1
+    test: 1
   - title: "Border"
     url: "/content-docs/reference/Gtk3/Border.html"
     doc: 3
