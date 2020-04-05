@@ -5,7 +5,7 @@ sub MAIN ( Str $class ) {
   my Bool $loaded = False;
   try {
     require ::($class);
-    my $o = ::($class).new(:empty);
+    my $o = ::($class).new;
     note "M: ", $o.WHAT;
 
     $loaded = True;

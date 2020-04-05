@@ -42,7 +42,7 @@ my Gnome::Gtk3::Window $w .= new(:title('List store example'));
 $w.set-border-width(10);
 $w.set-default-size( 270, 250);
 
-my Gnome::Gtk3::Grid $g .= new(:empty);
+my Gnome::Gtk3::Grid $g .= new;
 $w.gtk-container-add($g);
 
 my Gnome::Gtk3::ListStore $ls .= new(
@@ -56,46 +56,46 @@ $tv.set-headers-visible(1);
 $g.gtk-grid-attach( $tv, 0, 0, 1, 1);
 
 
-my Gnome::Gtk3::CellRendererText $crt1 .= new(:empty);
+my Gnome::Gtk3::CellRendererText $crt1 .= new;
 my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<red>);
 $crt1.set-property( 'foreground', $v);
 #$tv.insert-column-with-attributes( -1, 'order no', $crt1);
-my Gnome::Gtk3::TreeViewColumn $tvc .= new(:empty);
+my Gnome::Gtk3::TreeViewColumn $tvc .= new;
 $tvc.set-title('Order No');
 $tvc.pack-end( $crt1, 1);
 $tvc.add-attribute( $crt1, 'text', TITLE-CODE);
 $tv.append-column($tvc);
 
 
-my Gnome::Gtk3::CellRendererText $crt2 .= new(:empty);
+my Gnome::Gtk3::CellRendererText $crt2 .= new;
 $v .= new( :type(G_TYPE_STRING), :value<blue>);
 $crt2.set-property( 'foreground', $v);
 #$tv.insert-column-with-attributes( -1, 'title', $crt2);
-$tvc .= new(:empty);
+$tvc .= new;
 $tvc.set-title('Book Title');
 $tvc.pack-end( $crt2, 1);
 $tvc.add-attribute( $crt2, 'text', TITLE);
 $tv.append-column($tvc);
 
 
-my Gnome::Gtk3::CellRendererToggle $crt3 .= new(:empty);
-$tvc .= new(:empty);
+my Gnome::Gtk3::CellRendererToggle $crt3 .= new;
+$tvc .= new;
 $tvc.set-title('Book sold out');
 $tvc.pack-end( $crt3, 1);
 $tvc.add-attribute( $crt3, 'active', SOLD);
 $tv.append-column($tvc);
 
 
-my Gnome::Gtk3::CellRendererProgress $crt4 .= new(:empty);
-$tvc .= new(:empty);
+my Gnome::Gtk3::CellRendererProgress $crt4 .= new;
+$tvc .= new;
 $tvc.set-title('Rating');
 $tvc.pack-end( $crt4, 1);
 $tvc.add-attribute( $crt4, 'value', LIKE);
 $tv.append-column($tvc);
 
 
-my Gnome::Gtk3::CellRendererPixbuf $crt5 .= new(:empty);
-$tvc .= new(:empty);
+my Gnome::Gtk3::CellRendererPixbuf $crt5 .= new;
+$tvc .= new;
 $tvc.set-title('Front Page');
 $tvc.pack-end( $crt5, 1);
 $tvc.add-attribute( $crt5, 'pixbuf', PICT);

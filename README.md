@@ -63,12 +63,12 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:empty);
+my Gnome::Gtk3::Window $top-window .= new;
 $top-window.set-title('Hello GTK!');
 $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
-my Gnome::Gtk3::Grid $grid .= new(:empty);
+my Gnome::Gtk3::Grid $grid .= new;
 $top-window.gtk-container-add($grid);
 
 # Create buttons and disable the second one

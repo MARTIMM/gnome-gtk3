@@ -111,7 +111,7 @@ The following is a (not very exhaustive) list of points which make up the design
   ```
   However, the signatures of all subroutines are checked against the arguments provided, so it is possible to retrieve the native object hidden in the object when a Raku type is noticed. So the example becomes more simple;
   ```
-  my Gnome::Gtk3::Grid $grid .= new(:empty);
+  my Gnome::Gtk3::Grid $grid .= new;
   my Gnome::Gtk3::Label $label .= new(:label('server name'));
   $grid.gtk-grid-attach( $label, 0, 0, 1, 1);
   ```
