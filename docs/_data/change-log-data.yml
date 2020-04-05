@@ -1,12 +1,15 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-04-06 0.27.3
+    - Add modules Adjustment, ScrolledWindow in Gnome::Gtk3.
+
   - 2020-04-05 0.27.2
     - Removed a level of exception handling to get a stackdump when an error is encountered. Somehow this stack dump is unavailable in some situations.
     - Many changes in example programs for deprecated code.
 
   - 2020-04-04 0.27.1
-    - Add ScrolledWindow in Gnome::Gtk3.
+    - Add module ScrolledWindow in Gnome::Gtk3.
 
   - 2020-03-24 0.27.0
     - Add RecentChooserMenu in Gnome::Gtk3.
