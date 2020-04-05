@@ -77,10 +77,10 @@ class AppSignalHandlers {
     );
 
     my Gnome::Gtk3::TextBuffer $text-buffer .= new(
-      :widget($!text-view.get-buffer)
+      :native-object($!text-view.get-buffer)
     );
 
-    $text-buffer.set-text( $text, $text.chars);
+    $text-buffer.set-text($text);
   }
 }
 
@@ -136,7 +136,7 @@ $top-window.register-signal( $ash, 'exit-program', 'delete-event');
 # Show everything and activate all
 $top-window.show-all;
 
-my Gnome::Gtk3::Range $range .= new(:widget($scale));
+my Gnome::Gtk3::Range $range .= new(:native-object($scale));
 my N-GdkRectangle $rectangle = $range.get-range-rect;
 note "Scale rectangle: $rectangle.x(), $rectangle.y(), $rectangle.width(), $rectangle.height()";
 

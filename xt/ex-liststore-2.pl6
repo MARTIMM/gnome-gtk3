@@ -49,7 +49,7 @@ my Gnome::Gtk3::ListStore $ls .= new(
   :field-types( G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT, $pb-type)
 );
 
-my Gnome::Gtk3::TreeView $tv .= new(:model($ls()));
+my Gnome::Gtk3::TreeView $tv .= new(:model($ls));
 $tv.set-hexpand(1);
 $tv.set-vexpand(1);
 $tv.set-headers-visible(1);
