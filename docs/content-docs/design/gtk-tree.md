@@ -77,7 +77,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkSeparatorToolItem
 │   │   │   │   ├── GtkOverlay
 │   │   │   │   ├── GtkScrolledWindow           ScrolledWindow
-│   │   │   │   │   ╰── GtkPlacesSidebar
+│   │   │   │   │   ╰── GtkPlacesSidebar        PlacesSidebar
 │   │   │   │   ├── GtkPopover
 │   │   │   │   │   ╰── GtkPopoverMenu
 │   │   │   │   ├── GtkRevealer
