@@ -101,6 +101,25 @@ Returns: (nullable) (transfer none): The tag, or `Any` if none by that name is i
 
   * Str $name; name of a tag
 
+[gtk_] text_tag_table_foreach
+-----------------------------
+
+Calls a function on each tag in this table, with named arguments in %user-data. Note that the table may not be modified while iterating over it (you can’t add/remove tags).
+
+    method gtk_text_tag_table_foreach (
+      $callback-object, Str $callback_name, *%user-options
+    )
+
+  * $callback-object; Object wherein the callback method is declared
+
+  * Str $callback-name; Name of the callback method
+
+  * %user-options; named arguments which will be provided to the callback
+
+The callback method signature is
+
+    method f ( Gnome::Gtk3::TextTag $tag, *%user-options )
+
 [[gtk_] text_tag_table_] get_size
 ---------------------------------
 

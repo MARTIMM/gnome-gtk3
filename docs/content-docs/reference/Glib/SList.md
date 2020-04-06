@@ -28,6 +28,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::SList;
+    also is Gnome::N::TopLevelClassSupport;
 
 Example
 -------
@@ -49,6 +50,14 @@ This example shows how to get and show some information from a widget path.
     is $l.g-slist-length, 1, 'list contains one class';
     is $l.nth-data-str(0), 'text-button', "class is a 'text-button'";
 
+Types
+=====
+
+class N-GSList
+--------------
+
+Structure to create a single linked list. This native object is stored here to prevent circular dependencies.
+
 Methods
 =======
 
@@ -57,18 +66,13 @@ new
 
 ### multi method new ( Bool :$empty! )
 
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
+Create a new plain object.
 
-### multi method new ( N-GSList :$gslist! )
+    multi method new ( )
 
 Create an object using a native object from elsewhere.
 
-clear-object
-------------
-
-Clear the native list and let .is-valid() return False.
-
-    clear-object ( )
+    multi method new ( N-GSList :$native-object! )
 
 [g_] slist_reverse
 ------------------
@@ -147,3 +151,4 @@ Returns: the element's data, or `Any` if the position is off the end of the `N-G
   * N-GSList $list; a `N-GSList`
 
   * UInt $n; the position of the element
+

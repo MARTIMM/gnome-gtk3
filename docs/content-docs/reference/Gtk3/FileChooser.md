@@ -1119,3 +1119,4 @@ The **Gnome::GObject::Value** type of property *extra-widget* is `G_TYPE_OBJECT`
 Application supplied widget for extra options.
 
 Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
+

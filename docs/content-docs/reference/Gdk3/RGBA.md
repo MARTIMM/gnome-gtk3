@@ -103,13 +103,6 @@ Since: 3.0
 
   * N-GdkRGBA $rgba; a **Gnome::Gdk3::RGBA**
 
-clear-object
-------------
-
-Clear native object and invalidate this object
-
-    method clear-object ( )
-
 gdk_rgba_hash
 -------------
 

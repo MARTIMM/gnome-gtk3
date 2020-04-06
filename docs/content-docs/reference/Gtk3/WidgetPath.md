@@ -38,20 +38,6 @@ Create an object using a native object from elsewhere.
 
     multi method new ( N-GtkWidgetPath :$widgetpath! )
 
-clear-widget-path
------------------
-
-Clear the widget path and return native object to memory.
-
-    method clear-widget-path ( )
-
-widgetpath-is-valid
--------------------
-
-Returns True if native object is valid, otherwise False.
-
-    method widgetpath-is-valid ( --> Bool )
-
 [gtk_] widget_path_new
 ----------------------
 
@@ -89,8 +75,6 @@ Since: 3.2
 Returns the number of widget **GTypes** between the represented widget and its topmost container.
 
 Returns: the number of elements in the path
-
-Since: 3.0
 
     method gtk_widget_path_length ( --> Int )
 

@@ -31,20 +31,6 @@ Create an object taking the native object from elsewhere.
 
     multi method new ( N-GtkTreeRowReference :tree-row-reference! )
 
-tree-row-reference-is-valid
----------------------------
-
-Method to test if the native object is valid.
-
-    method tree-row-reference-is-valid ( --> Bool )
-
-clear-tree-row-reference
-------------------------
-
-Frees the native `N-GtkTreeRowReference` object and after that, tree-row-reference-is-valid() returns False.
-
-    method clear-tree-row-reference ( )
-
 [gtk_] tree_row_reference_get_path
 ----------------------------------
 

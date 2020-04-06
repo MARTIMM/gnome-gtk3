@@ -323,13 +323,15 @@ The **Gnome::GObject::Value** type of property *underline* is `G_TYPE_ENUM`.
 
 ### Wrap mode
 
-Whether to wrap lines never, at word boundaries_COMMA_ or at character boundaries Default value: False
+Whether to wrap lines never, at word boundaries_COMMA_ or at character boundaries. Default value: False
 
 The **Gnome::GObject::Value** type of property *wrap-mode* is `G_TYPE_ENUM`.
 
 ### Invisible
 
-Whether this text is hidden. Note that there may still be problems with the support for invisible text, in particular when navigating programmatically inside a buffer containing invisible segments. Since: 2.8
+Whether this text is hidden. Note that there may still be problems with the support for invisible text, in particular when navigating programmatically inside a buffer containing invisible segments.
+
+Since: 2.8
 
 The **Gnome::GObject::Value** type of property *invisible* is `G_TYPE_BOOLEAN`.
 
@@ -341,7 +343,9 @@ The **Gnome::GObject::Value** type of property *paragraph-background* is `G_TYPE
 
 ### Fallback
 
-Whether font fallback is enabled. When set to `1`, other fonts will be substituted where the current font is missing glyphs. Since: 3.16
+Whether font fallback is enabled. When set to `1`, other fonts will be substituted where the current font is missing glyphs.
+
+Since: 3.16
 
 The **Gnome::GObject::Value** type of property *fallback* is `G_TYPE_BOOLEAN`.
 

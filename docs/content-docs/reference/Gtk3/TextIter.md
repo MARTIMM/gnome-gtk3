@@ -51,13 +51,6 @@ Returns: a copy of the *iter*, free with `gtk_text_iter_free()`
 
     method gtk_text_iter_copy ( --> N-GObject  )
 
-[gtk_] text_iter_free
----------------------
-
-Free an iterator allocated on the heap. This function is intended for use in language bindings, and is not especially useful for applications, because iterators can simply be allocated on the stack.
-
-    method gtk_text_iter_free ( )
-
 [gtk_] text_iter_assign
 -----------------------
 
@@ -903,9 +896,9 @@ Tests whether two iterators are equal, using the fastest possible mechanism. Thi
 
 Returns: `1` if the iterators point to the same place in the buffer
 
-    method gtk_text_iter_equal ( N-GObject $rhs --> Int  )
+    method gtk_text_iter_equal ( N-GTextIter $rhs --> Int  )
 
-  * N-GObject $rhs; another **Gnome::Gtk3::TextIter**
+  * N-GTextIter $rhs; another **Gnome::Gtk3::TextIter**
 
 [gtk_] text_iter_compare
 ------------------------
@@ -914,9 +907,9 @@ A `qsort()`-style function that returns negative if *lhs* is less than *rhs*, po
 
 Returns: -1 if *lhs* is less than *rhs*, 1 if *lhs* is greater, 0 if they are equal
 
-    method gtk_text_iter_compare ( N-GObject $rhs --> Int  )
+    method gtk_text_iter_compare ( N-GTextIter $rhs --> Int  )
 
-  * N-GObject $rhs; another **Gnome::Gtk3::TextIter**
+  * N-GTextIter $rhs; another **Gnome::Gtk3::TextIter**
 
 [[gtk_] text_iter_] in_range
 ----------------------------
@@ -925,18 +918,18 @@ Checks whether *iter* falls in the range [*start*, *end*). *start* and *end* mus
 
 Returns: `1` if *iter* is in the range
 
-    method gtk_text_iter_in_range ( N-GObject $start, N-GObject $end --> Int  )
+    method gtk_text_iter_in_range ( N-GTextIter $start, N-GTextIter $end --> Int  )
 
-  * N-GObject $start; start of range
+  * N-GTextIter $start; start of range
 
-  * N-GObject $end; end of range
+  * N-GTextIter $end; end of range
 
 [gtk_] text_iter_order
 ----------------------
 
 Swaps the value of *first* and *second* if *second* comes before *first* in the buffer. That is, ensures that *first* and *second* are in sequence. Most text buffer functions that take a range call this automatically on your behalf, so there’s no real reason to call it yourself in those cases. There are some exceptions, such as `gtk_text_iter_in_range()`, that expect a pre-sorted range.
 
-    method gtk_text_iter_order ( N-GObject $second )
+    method gtk_text_iter_order ( N-GTextIter $second )
 
-  * N-GObject $second; another **Gnome::Gtk3::TextIter**
+  * N-GTextIter $second; another **Gnome::Gtk3::TextIter**
 

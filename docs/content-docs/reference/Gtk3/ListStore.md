@@ -90,12 +90,6 @@ Gnome::Gtk3::ListStore implements
 
   * [Gnome::Gtk3::TreeModel](TreeModel.html)
 
-  * Gnome::Gtk3::TreeDragSource
-
-  * Gnome::Gtk3::TreeDragDest
-
-  * Gnome::Gtk3::TreeSortable
-
 See Also
 --------
 
@@ -207,7 +201,7 @@ Inserts a new row before *$sibling*. If *$sibling* is `Any`, then the row will b
 [[gtk_] list_store_] insert_after
 ---------------------------------
 
-Inserts a new row after *$sibling*. If *$sibling* is `Any`, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
+Inserts a new row after *$sibling*. If *$sibling* is undefined, then the row will be prepended to the beginning of the list. The returned iterator will point to this new row. The row will be empty after this function is called. To fill in values, you need to call `gtk_list_store_set()` or `gtk_list_store_set_value()`.
 
     method gtk_list_store_insert_after (
       Gnome::Gtk3::TreeIter $sibling

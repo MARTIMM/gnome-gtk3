@@ -158,6 +158,42 @@ Removes *widget* from *container*. *widget* must be inside *container*. Note tha
 
     method gtk_container_check_resize ( )
 
+[gtk_] container_foreach
+------------------------
+
+Invokes a callback on each non-internal child of this container. For all practical purposes, this function should iterate over precisely those child widgets that were added to the container by the application with explicit `add()` calls.
+
+    method gtk_container_foreach (
+      $callback-object, Str $callback_name, *%user-options
+    )
+
+  * $callback-object; Object wherein the callback method is declared
+
+  * Str $callback-name; Name of the callback method
+
+  * %user-options; named arguments which will be provided to the callback
+
+The callback method signature is
+
+    method f ( N-GObject $w, *%user-options )
+
+A small example
+
+    # Define a class for the callback
+    class X {
+      method cb ( N-GObject $nw, :$test = '???' ) {
+        my Gnome::Gtk3::Widget $w .= new(:native-object($nw));
+        note "WN: $w.widget-get-name(), $test";
+      }
+    }
+
+    # Setup a grid with widgets
+    Gnome::Gtk3::Grid $grid .= new;
+    ... insert some widgets ...
+
+    # Call foreach to walk over all children in the grid
+    $grid.container-foreach( X.new, 'cb', :test<abcdef>);
+
 [[gtk_] container_] get_children
 --------------------------------
 

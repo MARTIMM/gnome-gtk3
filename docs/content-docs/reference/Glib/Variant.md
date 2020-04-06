@@ -117,6 +117,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::Variant;
+    also is Gnome::N::TopLevelClassSupport;
 
 GVariantClass
 -------------
@@ -184,10 +185,6 @@ Methods
 new
 ---
 
-Create a new Variant object.
-
-    multi method new ( Str :$type-string!, Array :$values! )
-
 Create a new Variant object by parsing the type and data provided in strings.
 
     multi method new ( Str :$type-string!, Str :$data-string! )
@@ -195,13 +192,6 @@ Create a new Variant object by parsing the type and data provided in strings.
 Create a Variant object using a native object from elsewhere.
 
     multi method new ( N-GVariant :$native-object! )
-
-clear-object
-------------
-
-Clear the error and return data to memory pool. The error object is not valid after this call and `is-valid()` will return `False`.
-
-    method clear-object ()
 
 [g_variant_] get_type
 ---------------------
@@ -649,9 +639,9 @@ Returns: (transfer full): the item contained in the variant
 
 Returns the string value of a **Gnome::Glib::Variant** instance with a string type. This includes the types `G_VARIANT_TYPE_STRING`, `G_VARIANT_TYPE_OBJECT_PATH` and `G_VARIANT_TYPE_SIGNATURE`.
 
-The string will always be UTF-8 encoded, and will never be `Any`.
+The string will always be UTF-8 encoded, and will never be undefined.
 
-If *length* is non-`Any` then the length of the string (in bytes) is returned there. For trusted values, this information is already known. For untrusted values, a `strlen()` will be performed.
+If *length* is defined then the length of the string (in bytes) is returned there. For trusted values, this information is already known. For untrusted values, a `strlen()` will be performed.
 
 It is an error to call this function with a *value* of any type other than those three.
 
@@ -659,9 +649,7 @@ The return value remains valid as long as *value* exists.
 
 Returns: (transfer none): the constant string, UTF-8 encoded
 
-    method g_variant_get_string ( UInt $length --> Str )
-
-  * UInt $length; (optional) (default 0) (out): a pointer to a **gsize**, to store the length
+    method g_variant_get_string ( --> Str )
 
 [g_variant_] dup_string
 -----------------------
@@ -934,21 +922,6 @@ Returns: (transfer full): a newly-allocated string holding the result.
 
   * Int $type_annotate; `1` if type information should be included in the output
 
-[g_variant_] print_string
--------------------------
-
-Behaves as `g_variant_print()`, but operates on a **GString**.
-
-If *string* is non-`Any` then it is appended to and returned. Else, a new empty **GString** is allocated and it is returned.
-
-Returns: a **GString** containing the string
-
-    method g_variant_print_string ( N-GVariant $string, Int $type_annotate --> N-GVariant )
-
-  * N-GVariant $string; (nullable) (default NULL): a **GString**, or `Any`
-
-  * Int $type_annotate; `1` if type information should be included in the output
-
 g_variant_hash
 --------------
 
@@ -1032,21 +1005,6 @@ Returns: (transfer full): the byteswapped form of *value*
 
     method g_variant_parse_error_quark ( --> Int )
 
-g_variant_new
--------------
-
-Creates a new GVariant instance.
-
-The type of the created instance and the arguments that are expected by this function are determined by format_string. Please note that the syntax of the format string is very likely to be extended in the future.
-
-The first character of the format string must not be '*' '?' '@' or 'r'; in essence, a new Gnome::Glib::Variant must always be constructed by this function (and not merely passed through it unmodified).
-
-Note that the arguments must be of the correct width for their types specified in format_string.
-
-    method g_variant_new ( Str $type-string --> N-GVariant )
-
-  * Str $format_string;
-
 [g_variant_] check_format_string
 --------------------------------
 
@@ -1097,15 +1055,6 @@ An example
       $v.g-variant-parse( 'au', '[100,200]');
 
 See also the [GVariant Text Format](https://developer.gnome.org/glib/stable/gvariant-text.html).
-
-[g_variant_] parse_error_print_context
---------------------------------------
-
-    method g_variant_parse_error_print_context ( N-GError $error, Str $source_str --> Str )
-
-  * N-GError $error;
-
-  * Str $source_str;
 
 g_variant_compare
 -----------------

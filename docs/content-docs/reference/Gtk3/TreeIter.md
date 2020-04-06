@@ -37,9 +37,9 @@ Methods
 new
 ---
 
-Create an object taking the native object from elsewhere. `.tree-iter-is-valid()` will return True or False depending on the state of the provided object.
+Create an object taking the native object from elsewhere. `.is-valid()` will return True or False depending on the state of the provided object.
 
-    multi method new ( Gnome::Gtk3::TreeIter :$tree-iter! )
+    multi method new ( Gnome::Gtk3::TreeIter :$native-object! )
 
 tree-iter-is-valid
 ------------------
@@ -47,13 +47,6 @@ tree-iter-is-valid
 Method to test if the native object is valid.
 
     method tree-iter-is-valid ( --> Bool )
-
-clear-tree-iter
----------------
-
-Frees a `N-GtkTreeIter` struct and after that, tree-iter-is-valid() returns False.
-
-    method clear-tree-iter ( )
 
 [gtk_] tree_iter_copy
 ---------------------
@@ -64,7 +57,7 @@ This function is not intended for use in applications, because you can just copy
 
     Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
 
-You must free this iter with `clear-tree-iter()`.
+You must free this iter with `clear-object()`.
 
 Returns: a newly-allocated copy of *iter*
 
