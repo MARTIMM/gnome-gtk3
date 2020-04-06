@@ -65,6 +65,7 @@
     "Gnome::Gtk3::Notebook": "lib/Gnome/Gtk3/Notebook.pm6",
     "Gnome::Gtk3::Orientable": "lib/Gnome/Gtk3/Orientable.pm6",
     "Gnome::Gtk3::Paned": "lib/Gnome/Gtk3/Paned.pm6",
+    "Gnome::Gtk3::PlacesSidebar": "lib/Gnome/Gtk3/PlacesSidebar.pm6",
     "Gnome::Gtk3::ProgressBar": "lib/Gnome/Gtk3/ProgressBar.pm6",
     "Gnome::Gtk3::RadioButton": "lib/Gnome/Gtk3/RadioButton.pm6",
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
