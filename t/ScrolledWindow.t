@@ -1,7 +1,10 @@
 use v6;
-use lib '../gnome-native/lib';
+#use lib '../gnome-native/lib';
 use NativeCall;
 use Test;
+
+#use Gnome::GObject::Type;
+#use Gnome::GObject::Value;
 
 use Gnome::Gtk3::Adjustment;
 use Gnome::Gtk3::ScrolledWindow;
@@ -48,20 +51,17 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $va.clear-object;
   $va .= new(
-    :value(1e1), :lower(0e0), :upper(1e2),
+    :value(1e1), :lower(0e0), :upper(1.1e2),
     :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
   );
-  is $va.get-upper, 1e2, 'Adjustment.get-upper()';
-  $sw.set-vadjustment($va);
-  $va.clear-object;
+  is $va.get-upper, 1.1e2, 'Adjustment.get-upper()';
 
-Gnome::N::debug(:on);
-my $n-va = $sw.get-vadjustment;
-note "VA: $n-va",
-  my Gnome::Gtk3::Adjustment $a .= new(:native-object($n-va));#$sw.get-vadjustment));
-  is $a.get-upper, 1e2, '.set-vadjustment() / .get-vadjustment()';
+  $sw.set-vadjustment($va);
+#Never cleanup !!!  $va.clear-object;
+
+  my Gnome::Gtk3::Adjustment $a .= new(:native-object($sw.get-vadjustment));
+  is $a.get-upper, 1.1e2, '.set-vadjustment() / .get-vadjustment()';
 }
 
 #`{{

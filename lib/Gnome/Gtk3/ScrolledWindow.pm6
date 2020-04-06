@@ -307,11 +307,11 @@ sub _gtk_scrolled_window_new (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scrolled_window_set_hadjustment:
+#TM:1:gtk_scrolled_window_set_hadjustment:
 =begin pod
 =head2 [gtk_scrolled_window_] set_hadjustment
 
-Sets the B<Gnome::Gtk3::Adjustment> for the horizontal scrollbar.
+Sets the B<Gnome::Gtk3::Adjustment> for the horizontal scrollbar. You cannot cleanup the adjustment object afterwards because the scrolled window keeps a reference to it.
 
   method gtk_scrolled_window_set_hadjustment ( N-GObject $hadjustment )
 
@@ -324,15 +324,15 @@ sub gtk_scrolled_window_set_hadjustment ( N-GObject $scrolled_window, N-GObject 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scrolled_window_set_vadjustment:
+#TM:1:gtk_scrolled_window_set_vadjustment:
 =begin pod
 =head2 [gtk_scrolled_window_] set_vadjustment
 
-Sets the B<Gnome::Gtk3::Adjustment> for the vertical scrollbar.
+Sets the B<Gnome::Gtk3::Adjustment> for the vertical scrollbar. You cannot cleanup the adjustment object afterwards because the scrolled window keeps a reference to it.
 
   method gtk_scrolled_window_set_vadjustment ( N-GObject $vadjustment )
 
-=item N-GObject $vadjustment; (nullable): the B<Gnome::Gtk3::Adjustment> to use, or C<Any> to create a new one
+=item N-GObject $vadjustment; (nullable): the B<Gnome::Gtk3::Adjustment> to use, or C<Any> to create a new one.
 
 =end pod
 
@@ -341,7 +341,7 @@ sub gtk_scrolled_window_set_vadjustment ( N-GObject $scrolled_window, N-GObject 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scrolled_window_get_hadjustment:
+#TM:1:gtk_scrolled_window_get_hadjustment:
 =begin pod
 =head2 [gtk_scrolled_window_] get_hadjustment
 
@@ -361,7 +361,7 @@ sub gtk_scrolled_window_get_hadjustment ( N-GObject $scrolled_window --> N-GObje
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scrolled_window_get_vadjustment:
+#TM:1:gtk_scrolled_window_get_vadjustment:
 =begin pod
 =head2 [gtk_scrolled_window_] get_vadjustment
 

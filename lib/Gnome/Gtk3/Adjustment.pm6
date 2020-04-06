@@ -365,7 +365,6 @@ Retrieves the maximum value of the adjustment.
 
 Returns: The current maximum value of the adjustment
 
-
   method gtk_adjustment_get_upper ( --> Num )
 
 
