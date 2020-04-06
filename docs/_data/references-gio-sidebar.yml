@@ -17,6 +17,10 @@
     url: '/content-docs/reference/Gio/Enums.html'
     doc: 1
     test: 1
+  - title: "File"
+    url: '/content-docs/reference/Gio/File.html'
+    doc: 1
+    test: 1
   - title: "MenuModel"
     url: '/content-docs/reference/Gio/MenuModel.html'
     doc: 1

@@ -159,6 +159,10 @@
   - title: "LevelBar"
     url: "/content-docs/reference/Gtk3/LevelBar.html"
     doc: 1
+  - title: "PlacesSidebar"
+    url: "/content-docs/reference/Gtk3/PlacesSidebar.html"
+    doc: 3
+    test: 1
   - title: "ProgressBar"
     url: "/content-docs/reference/Gtk3/ProgressBar.html"
     doc: 3
