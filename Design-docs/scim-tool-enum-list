@@ -112,6 +112,7 @@ GtkPopoverConstraint
 GtkTreeModelFlags
 GtkStackTransitionType
 GtkTextBufferTargetInfo
+GtkPlacesOpenFlags
 GtkCornerType
 GtkPolicyType
 GtkStyleProviderPriority
