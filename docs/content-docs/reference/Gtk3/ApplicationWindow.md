@@ -22,7 +22,7 @@ A **Gnome::Gtk3::ApplicationWindow** with a menubar
 ---------------------------------------------------
 
     my Gnome::Gtk3::Application $app .= new(:app-id("org.gtk.test"));
-    my Str $gui-interface = Q:to/EOGUI/;
+    my Str $gui-interface = Q:to/EOMENU/;
       <interface>
         <menu id='menubar'>
           <submenu label='_Edit'>
@@ -31,7 +31,7 @@ A **Gnome::Gtk3::ApplicationWindow** with a menubar
           </submenu>
         </menu>
       </interface>
-      EOGUI
+      EOMENU
 
     my Gnome::Gtk3::Builder $builder .= new(:string($gui-interface));
 
@@ -72,7 +72,7 @@ new
 
 Create a new ApplicationWindow object.
 
-    multi method new ( )
+    multi method new (N-GObject :$application!)
 
 Create a ApplicationWindow object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
@@ -89,8 +89,6 @@ Creates a new **Gnome::Gtk3::ApplicationWindow**.
 
 Returns: a newly created **Gnome::Gtk3::ApplicationWindow**
 
-Since: 3.4
-
     method gtk_application_window_new ( N-GObject $application --> N-GObject )
 
   * N-GObject $application; a **Gnome::Gtk3::Application**
@@ -99,8 +97,6 @@ Since: 3.4
 ------------------------------------------
 
 Sets whether the window will display a menubar for the app menu and menubar as needed.
-
-Since: 3.4
 
     method gtk_application_window_set_show_menubar ( Int $show_menubar )
 
@@ -113,8 +109,6 @@ Returns whether the window will display a menubar for the app menu and menubar a
 
 Returns: `1` if *window* will display a menubar when needed
 
-Since: 3.4
-
     method gtk_application_window_get_show_menubar ( --> Int )
 
 [gtk_application_window_] get_id
@@ -124,8 +118,6 @@ Returns the unique ID of the window. If the window has not yet been added to a *
 
 Returns: the unique ID for *window*, or `0` if the window has not yet been added to a **Gnome::Gtk3::Application**
 
-Since: 3.6
-
     method gtk_application_window_get_id ( --> UInt )
 
 [gtk_application_window_] set_help_overlay
@@ -134,8 +126,6 @@ Since: 3.6
 Associates a shortcuts window with the application window, and sets up an action with the name win.show-help-overlay to present it.
 
 *window* takes resposibility for destroying *help_overlay*.
-
-Since: 3.20
 
     method gtk_application_window_set_help_overlay ( N-GObject $help_overlay )
 
@@ -147,8 +137,6 @@ Since: 3.20
 Gets the **Gnome::Gtk3::ShortcutsWindow** that has been set up with a prior call to `gtk_application_window_set_help_overlay()`.
 
 Returns: (transfer none) (nullable): the help overlay associated with *window*, or `Any`
-
-Since: 3.20
 
     method gtk_application_window_get_help_overlay ( --> N-GObject )
 

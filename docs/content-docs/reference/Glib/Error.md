@@ -36,6 +36,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::Error;
+    also is Gnome::N::TopLevelClassSupport;
 
 Example
 -------
@@ -71,20 +72,6 @@ Create a new Error object. A domain, which is a string must be converted to an u
 Create a new Error object using an other native error object.
 
     multi method new ( N-GError :$native-object! )
-
-is-valid
---------
-
-Returns True if native error object is valid, otherwise `False`.
-
-    method is-valid ( --> Bool )
-
-clear-object
-------------
-
-Clear the error and return data to memory pool. The error object is not valid after this call and `is-valid()` will return `False`.
-
-    method clear-object ()
 
 domain
 ------

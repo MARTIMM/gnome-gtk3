@@ -98,11 +98,7 @@ Converts the provider into a string representation in CSS format.
 
 Using `gtk_css_provider_load_from_data()` with the return value from this function on a new provider created with `gtk_css_provider_new()` will basically create a duplicate of the provider.
 
-Returns: a new string representing the *provider*.
-
-Since: 3.2
-
-    method gtk_css_provider_to_string ( --> char  )
+Returns: a new string representing the *provider*. method gtk_css_provider_to_string ( --> char )
 
 [[gtk_] css_provider_] load_from_data
 -------------------------------------
@@ -134,6 +130,15 @@ A way to track errors while loading CSS is to connect to the sig `parsing-error`
     method gtk_css_provider_load_from_path ( Str $path --> Gnome::Glib::Error )
 
   * Str $path; the path of a filename to load, in the GLib filename encoding
+
+[[gtk_] css_provider_] load_from_resource
+-----------------------------------------
+
+Loads the data contained in the resource at *$resource_path* into the **Gnome::Gtk3::CssProvider**, clearing any previously loaded information.
+
+To track errors while loading CSS, connect to the sig `parsing-error` signal. method gtk_css_provider_load_from_resource ( Str $resource_path )
+
+  * Str $resource_path; a `GResource` resource path
 
 [[gtk_] css_provider_] get_named
 --------------------------------

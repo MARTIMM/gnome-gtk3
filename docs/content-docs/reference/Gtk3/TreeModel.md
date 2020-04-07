@@ -196,7 +196,7 @@ This path should be freed with `.clear-tree-path()`.
 
 Returns an array of values found at the *$iter* and *$column*s.
 
-When done with each *value*, `.g_value_unset()` needs to be called to free any allocated memory.
+When done with each *value*, `.clear-object()` needs to be called to free any allocated memory.
 
     method gtk_tree_model_get_value (
       Gnome::Gtk3::TreeIter $iter, Int $column, ...
@@ -308,26 +308,31 @@ Returns: `1`, if *iter* is set to the parent of *child*
 
   * N-GtkTreeIter $child; the **Gnome::Gtk3::TreeIter**-struct
 
-foreach
--------
+[gtk_] tree_model_foreach
+-------------------------
 
 Calls func on each node in model in a depth-first fashion.
 
 If *func* returns `1`, then the tree ceases to be walked, and `gtk_tree_model_foreach()` returns.
 
-    method foreach ( $function-object, Str $function-name )
+    method gtk_tree_model_foreach ( $function-object, Str $function-name )
 
   * $function-object; an object where the function is defined
 
   * $function-name; the name of the function which is called
 
+  * %user-options; named arguments which will be provided to the callback
+
 The function signature is
 
     method f (
-      Gnome::Gtk3::TreeModel $store,
+      N-GObject $n-store,
       Gnome::Gtk3::TreePath $path,
-      Gnome::Gtk3::TreeIter $iter
+      Gnome::Gtk3::TreeIter $iter,
+      *%user-options
     )
+
+The value in $n-store is a native object and cannot be created into a Raku object here because it is not known if this is a ListStore or a TreeStore object.
 
 An example
 
@@ -346,17 +351,18 @@ An example
     # define class for handler
     class X {
       method row-loop (
-        Gnome::Gtk3::ListStore $store,
+        N-GObject $n-store,
         Gnome::Gtk3::TreePath $path,
         Gnome::Gtk3::TreeIter $iter
       ) {
         # get values for this iterator
-        my Array[Gnome::GObject::Value] $va = $ls.get-value( $iter, 0);
+        my Gnome::Gtk3::ListStore $store .= new(:native-object($n-store));
+        my Array[Gnome::GObject::Value] $va = $store.get-value( $iter, 0);
 
         # do something with this row ...
 
         my Int $value = $va[0].get-int;
-        $va[0].g-value-unset;
+        $va[0].clear-object;
 
         if $value != 1001 {
           # let the search continue

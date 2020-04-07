@@ -33,6 +33,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::List;
+    also is Gnome::N::TopLevelClassSupport;
 
 Example 1
 ---------
@@ -60,6 +61,14 @@ To call a function for each element in the list, use `g_list_foreach()`.
 
     $list.list-foreach( H.new, 'h');
 
+Types
+=====
+
+class N-GList
+-------------
+
+Structure to create a doubly linked list.
+
 Methods
 =======
 
@@ -72,21 +81,7 @@ Create a new plain object.
 
 Create a new list object using an other native list object.
 
-    multi method new ( N-GError :$glist! )
-
-is-valid
---------
-
-Returns True if native list object is valid, otherwise `False`.
-
-    method is-valid ( --> Bool )
-
-clear-object
-------------
-
-Clear the list and data. The list object is not valid after this call and is-valid() will return `False`.
-
-    method clear-object ()
+    multi method new ( N-GList :$native-object! )
 
 [g_] list_copy
 --------------

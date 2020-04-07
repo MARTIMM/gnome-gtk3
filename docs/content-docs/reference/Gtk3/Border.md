@@ -43,7 +43,7 @@ Create a new plain object.
 
 Create an object taking the native object from elsewhere.
 
-    multi method new ( N-GtkBorder :border! )
+    multi method new ( N-GtkBorder :native-object! )
 
 Create an object and initialize to given values.
 
@@ -77,30 +77,12 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 
     method bottom ( Int $value? --> Int )
 
-clear-border
-------------
-
-Frees a `N-GtkBorder` struct and after that, border-is-valid() returns False.
-
-    method clear-border ( )
-
 border-is-valid
 ---------------
 
 Return the validity of th native structure. After a call to clear-border() this flag is set to False and the object should not be used anymore.
 
     method border-is-valid ( --> Bool )
-
-[gtk_] border_new
------------------
-
-Allocates a new `Gnome::Gtk3::Border`-struct and initializes its elements to zero.
-
-Returns: a newly allocated `N-GtkBorder`-struct. Free with `clear-border()`
-
-Since: 2.14
-
-    method gtk_border_new ( --> N-GtkBorder )
 
 [gtk_] border_copy
 ------------------

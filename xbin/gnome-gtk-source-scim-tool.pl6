@@ -791,22 +791,6 @@ sub substitute-in-template (
 
     MODULE-DESCRIPTION
 
-    =begin comment
-    =head2 Implemented Interfaces
-
-    Gnome::LIBRARYMODULE implements
-    =comment item Gnome::Atk::ImplementorIface
-    =comment item [Gnome::Gtk3::Buildable](Buildable.html)
-    =comment item [Gnome::Gtk3::Orientable](Orientable.html)
-
-    =head2 Known implementations
-
-    Gnome::LIBRARYMODULE is implemented by
-
-    =item
-
-    =end comment
-
     MODULE-SEEALSO
 
     =head1 Synopsis
@@ -814,8 +798,6 @@ sub substitute-in-template (
 
       unit class Gnome::LIBRARYMODULE;
       ALSO-IS-LIBRARY-PARENT
-    =comment  also does Gnome::Gtk3::Buildable;
-    =comment  also does Gnome::Gtk3::Orientable;
 
     =begin comment
     =head2 Inheriting this class
@@ -848,14 +830,9 @@ sub substitute-in-template (
     use Gnome::N::N-GObject;
     USE-LIBRARY-PARENT
 
-    #use Gnome::Gtk3::Orientable;
-    #use Gnome::Gtk3::Buildable;
-
     #-------------------------------------------------------------------------------
     unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
     ALSO-IS-LIBRARY-PARENT
-    #also does Gnome::Gtk3::Buildable;
-    #also does Gnome::Gtk3::Orientable;
     EOTEMPLATE
 
   my Str ( $t1, $t2) = ( '', '');
@@ -919,7 +896,7 @@ sub substitute-in-template (
           # process all options
 
           # check if common options are handled by some parent
-          elsif %options<native-object>:exists || %options<widget>:exists { }
+          elsif %options<native-object>:exists or %options<widget>:exists { }
           elsif %options<build-id>:exists { }
 
           # elsif ? %options<> {
@@ -963,8 +940,6 @@ sub substitute-in-template (
       # check for gtk_, gdk_, g_, pango_, cairo_ !!!
         try { $s = &::("gtk_$native-sub"); } unless ?$s;
         try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-      #  $s = self._buildable_interface($native-sub) unless ?$s;
-      #  $s = self._orientable_interface($native-sub) unless ?$s;
 
         self.set-class-name-of-sub('LIBCLASSNAME');
         $s = callsame unless ?$s;

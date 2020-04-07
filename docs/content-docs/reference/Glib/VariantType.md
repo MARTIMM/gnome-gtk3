@@ -108,14 +108,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::VariantType;
-
-Types
-=====
-
-class N-GVariantType
---------------------
-
-A type in the GVariant type system
+    also is Gnome::N::TopLevelClassSupport;
 
 Methods
 =======
@@ -134,20 +127,6 @@ Create a VariantType object using a native object from elsewhere. See also **Gno
 Create a VariantType object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-is-valid
---------
-
-Returns True if native error object is valid, otherwise `False`.
-
-    method is-valid ( --> Bool )
-
-clear-object
-------------
-
-Clear the error and return data to memory pool. The error object is not valid after this call and `is-valid()` will return `False`.
-
-    method clear-object ()
 
 [g_variant_type_] string_is_valid
 ---------------------------------

@@ -12,16 +12,6 @@ A single radio button performs the same basic function as a **Gnome::Gtk3::Check
 
 Every radio button is a member of some group of radio buttons. When one is selected, all other radio buttons in the same group are deselected. A **Gnome::Gtk3::RadioButton** is one way of giving the user a choice from many options.
 
-Radio button widgets are created with `gtk_radio_button_new()`, passing `Any` as the argument if this is the first radio button in a group. In subsequent calls, the group you wish to add this button to should be passed as an argument. Optionally, `new(:label())` or `gtk_radio_button_new_with_label()` can be used if you want a text label on the radio button.
-
-Alternatively, when adding widgets to an existing group of radio buttons, use `gtk_radio_button_new_from_widget()` with a **Gnome::Gtk3::RadioButton** that already has a group assigned to it. The convenience function `gtk_radio_button_new_with_label_from_widget()` is also provided.
-
-To retrieve the group a **Gnome::Gtk3::RadioButton** is assigned to, use `gtk_radio_button_get_group()`.
-
-To remove a **Gnome::Gtk3::RadioButton** from one group and make it part of a new one, use `gtk_radio_button_set_group()`.
-
-The group list does not need to be freed, as each **Gnome::Gtk3::RadioButton** will remove itself and its list item when it is destroyed.
-
 Css Nodes
 ---------
 
@@ -111,11 +101,11 @@ Create a new object with a label.
 
     multi method new ( Str :$label! )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+Create an object using a native object from elsewhere.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+Create an object using a native object from a builder.
 
     multi method new ( Str :$build-id! )
 
@@ -148,7 +138,7 @@ Returns: a new radio button.
 
     method gtk_radio_button_new_with_label ( N-GSList $group, Str $label --> N-GObject  )
 
-  * N-GSList $group; (element-type **Gnome::Gtk3::RadioButton**) (allow-none): an existing radio button group, or `Any` if you are creating a new group.
+  * N-GSList $group; an existing radio button group, or `Any` if you are creating a new group.
 
   * Str $label; the text label to display next to the radio button.
 

@@ -52,13 +52,6 @@ Create an object using a native object from elsewhere.
 
     multi method new ( N-GObject :$gvalue! )
 
-clear-object
-------------
-
-Clear and invalidate Value object
-
-    method clear-object
-
 [g_] value_init
 ---------------
 
@@ -82,7 +75,7 @@ Returns: the **N-GValue** structure that has been passed in
 [g_] value_unset
 ----------------
 
-Clears the current value in *value* (if any) and "unsets" the type, this releases all resources associated with this GValue. An unset value is the same as an uninitialized (zero-filled) **N-GValue** structure.
+Clears the current value (if any) and "unsets" the type, this releases all resources associated with this GValue. An unset value is the same as an uninitialized (zero-filled) **N-GValue** structure. The method `.is-valid()` will return False after the call.
 
     method g_value_unset ( )
 

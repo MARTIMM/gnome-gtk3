@@ -1,21 +1,21 @@
-is-valid
---------
+Gnome::GObject::Boxed
+=====================
 
-Returns True if native boxed object is valid, otherwise `False`.
+A mechanism to wrap opaque C structures registered by the type system
 
-    method is-valid ( --> Bool )
+Description
+===========
 
-get-class-gtype
----------------
+GBoxed is a generic wrapper mechanism for arbitrary C structures. The only thing the type system needs to know about the structures is how to copy free them, beyond that they are treated as opaque chunks of memory.
 
-Return class's type code after registration. this is like calling Gnome::GObject::Type.new().g_type_from_name(GTK+ class type name).
+Boxed types are useful for simple value-holder structures like rectangles or points. They can also be used for wrapping structures defined in non-GObject based libraries.
 
-    method get-class-gtype ( --> Int )
+Synopsis
+========
 
-get-class-name
---------------
+Declaration
+-----------
 
-Return class name.
-
-    method get-class-name ( --> Str )
+    unit class Gnome::GObject::Boxed:auth<github:MARTIMM>;
+    also is Gnome::N::TopLevelClassSupport;
 

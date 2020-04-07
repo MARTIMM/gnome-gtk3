@@ -148,7 +148,7 @@ GInterface
 ├── GDtlsConnection
 ├── GDtlsServerConnection
 ├── GFileDescriptorBased
-├── GFile
+├── GFile                               File
 ├── GSocketConnectable
 ├── GListModel
 ├── GMount

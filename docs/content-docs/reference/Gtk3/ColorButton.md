@@ -42,6 +42,7 @@ Declaration
     unit class Gnome::Gtk3::ColorButton;
     also is Gnome::Gtk3::Button;
     also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::ColorChooser;
 
 Example
 -------

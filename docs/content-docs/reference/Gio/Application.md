@@ -737,7 +737,7 @@ Properties
 
 An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
 
-    my Gnome::Gtk3::Label $label .= new(:empty);
+    my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
     $label.g-object-get-property( 'label', $gv);
     $gv.g-value-set-string('my text label');
@@ -786,3 +786,4 @@ The **Gnome::GObject::Value** type of property *action-group* is `G_TYPE_OBJECT`
 ### Is busy
 
 Whether the application is currently marked as busy through `g_application_mark_busy()` or `g_application_bind_busy_property()`. The **Gnome::GObject::Value** type of property *is-busy* is `G_TYPE_BOOLEAN`.
+

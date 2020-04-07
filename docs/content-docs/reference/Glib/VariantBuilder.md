@@ -15,16 +15,7 @@ Declaration
 -----------
 
     unit class Gnome::Glib::VariantBuilder;
-
-Types
-=====
-
-class N-GVariantBuilder
------------------------
-
-A utility type for constructing container-type GVariant instances. This is an opaque structure and may only be accessed using the functions from this class.
-
-N-GVariantBuilder is not threadsafe in any way. Do not attempt to access it from more than one thread.
+    also is Gnome::N::TopLevelClassSupport;
 
 Methods
 =======
@@ -43,27 +34,6 @@ Create a new VariantNuilder object.
 Create a Variant object using a native object from elsewhere.
 
     multi method new ( N-GVariantBuilder :$native-object! )
-
-get-native-object
------------------
-
-Get native object from this class. Do not keep it around because it can be dereferenced and invalidated whithout you knowing it.
-
-    method get-native-object ( --> N-GVariantBuilder )
-
-set-native-object
------------------
-
-Set native object in this class. The native object kept in this class will be dereferenced and invalidated.
-
-    method set-native-object ( N-GVariantBuilder $n-gvariant-builder )
-
-clear-object
-------------
-
-Clear the error and return data to memory pool. The error object is not valid after this call and `is-valid()` will return `False`.
-
-    method clear-object ()
 
 [g_] variant_builder_new
 ------------------------
@@ -133,16 +103,6 @@ This function leaves the **Gnome::Glib::VariantBuilder** structure set to all-ze
 Opens a subcontainer inside the given *builder*. When done adding items to the subcontainer, `g_variant_builder_close()` must be called. *type* is the type of the container: so to build a tuple of several values, *type* must include the tuple itself.
 
 It is an error to call this function in any way that would cause an inconsistent value to be constructed (ie: adding too many values or a value of an incorrect type).
-
-Example of building a nested variant: |[<!-- language="C" --> N-GVariantBuilder builder; guint32 some_number = `get_number()`; g_autoptr (GHashTable) some_dict = `get_dict()`; GHashTableIter iter; const gchar *key; const GVariant *value; g_autoptr (GVariant) output = NULL;
-
-g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ua{sv})")); g_variant_builder_add (&builder, "u", some_number); g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
-
-g_hash_table_iter_init (&iter, some_dict); while (g_hash_table_iter_next (&iter, (gpointer *) &key, (gpointer *) &value)) { g_variant_builder_open (&builder, G_VARIANT_TYPE ("{sv}")); g_variant_builder_add (&builder, "s", key); g_variant_builder_add (&builder, "v", value); g_variant_builder_close (&builder); }
-
-g_variant_builder_close (&builder);
-
-output = g_variant_builder_end (&builder); ]|
 
     method g_variant_builder_open ( N-GVariantType $type )
 

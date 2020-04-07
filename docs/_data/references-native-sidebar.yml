@@ -7,3 +7,5 @@
 #    url: '/content-docs/nyi-reference.html'
   - title: "X"
     url: '/content-docs/reference/Native/X.html'
+  - title: "TopLevelClassSupport"
+    url: '/content-docs/reference/Native/TopLevelClassSupport.html'

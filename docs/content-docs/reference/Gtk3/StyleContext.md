@@ -184,7 +184,7 @@ Note that not all CSS properties that are supported by GTK+ can be retrieved in 
 
 Note that passing a state other than the current state of *context* is not recommended unless the style context has been saved with `gtk_style_context_save()`.
 
-When *value* is no longer needed, `g_value_unset()` must be called to free any allocated memory.
+When *value* is no longer needed, `clear-object()` must be called to free any allocated memory.
 
 Since: 3.0
 
@@ -345,7 +345,7 @@ Since: 3.0
 
 Gets the value for a widget style property.
 
-When *value* is no longer needed, `g_value_unset()` must be called to free any allocated memory.
+When *value* is no longer needed, `clear-object()` must be called to free any allocated memory.
 
     method gtk_style_context_get_style_property (
       Str $property_name, N-GObject $value
