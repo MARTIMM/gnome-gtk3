@@ -1,17 +1,25 @@
 use v6;
+#use NativeCall;
 use lib '../gnome-gobject/lib';
 #use lib '../gnome-glib/lib';
 #use lib '../gnome-native/lib';
 use Test;
 
+use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Glib::Error;
 use Gnome::Glib::Quark;
-use Gnome::GObject::Object;
+
+#use Gnome::GObject::Object;
+#use Gnome::GObject::Type;
+
+use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::Button;
+use Gnome::Gtk3::Window;
 
-#use Gnome::N::X;
+use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -92,6 +100,61 @@ subtest 'Test items from ui', {
   is $b.get-border-width, 0, '.get-border-width()';
 
   #$b.gtk-widget-show;
+}
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::Main $m .= new;
+
+class X {
+  method window-quit ( :$o1, :$o2 --> Int ) {
+    is $o1, 'o1', 'option 1 found';
+    $m.gtk-main-quit;
+    1
+  }
+}
+
+class Z {
+  method button-click ( :$o3, :$o4 --> Int ) {
+    is $o3, 'o3', 'option 3 found';
+    1
+  }
+}
+
+class Y {
+  method send-signals ( :$widget, :$window, :$button --> Str ) {
+
+    $button.emit-by-name('clicked');
+    $window.emit-by-name('destroy');
+
+    return 'done'
+  }
+}
+
+subtest 'Find signals in ui', {
+  my Gnome::Gtk3::Builder $builder .= new;
+  $e = $builder.add-from-file('t/data/builder-window-signal.ui');
+  nok $e.is-valid, "builder-window-signal.ui added";
+
+  my Gnome::Gtk3::Window $w .= new(:build-id<top>);
+
+  my X $x .= new;
+  my Z $z .= new;
+  my Hash $handlers = %(
+    :window-quit( $x, :o1<o1>, :o2<o2>),
+    :button-click( $z, :o3<o3>, :o4<o4>)
+  );
+#Gnome::N::debug(:on);
+  $builder.connect-signals-full($handlers);
+#Gnome::N::debug(:off);
+  my Promise $p = $builder.start-thread(
+    Y.new, 'send-signals', :window($w),
+    :button(Gnome::Gtk3::Button.new(:build-id<help>))
+  );
+
+  $w.show-all;
+  $m.gtk-main;
+
+  is $p.result, 'done', 'exit thread ok';
 }
 
 #-------------------------------------------------------------------------------

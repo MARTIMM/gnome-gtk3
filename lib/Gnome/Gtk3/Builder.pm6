@@ -141,6 +141,7 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Glib::Error;
 use Gnome::GObject::Object;
+use Gnome::GObject::Type;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -242,7 +243,14 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Builder';
 
-  if ? %options<filename> {
+  if self.is-valid { }
+
+  # process all options
+
+  # check if common options are handled by some parent
+  elsif %options<native-object>:exists or %options<widget>:exists { }
+
+  elsif ? %options<filename> {
     self.set-native-object(gtk_builder_new_from_file(%options<filename>));
   }
 
@@ -263,17 +271,28 @@ submethod BUILD ( *%options ) {
     self.set-native-object(gtk_builder_new());
   }
 
+  # check if there are unknown options
   elsif %options.keys.elems {
     die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
+      :message('Unsupported, undefined, incomplete or wrongly typed options for ' ~ self.^name ~
                ': ' ~ %options.keys.join(', ')
               )
     );
   }
 
+  #`{{ when there are no defaults use this
+  # check if there are any options
+  elsif %options.elems == 0 {
+    die X::Gnome.new(:message('No options specified ' ~ self.^name));
+  }
+  }}
+
+  ##`{{ when there are defaults use this instead
+  # create default object
   else {
     self.set-native-object(gtk_builder_new());
   }
+  #}}
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBuilder');
@@ -660,8 +679,9 @@ sub gtk_builder_connect_signals ( N-GObject $builder, Pointer $user_data )
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
+#TM:0:gtk_builder_connect_signals_full:
+#`{{TODO experimental no doc yet
 =begin pod
 =head2 [[gtk_] builder_] connect_signals_full
 
@@ -669,17 +689,73 @@ This function can be thought of the interpreted language binding
 version of C<gtk_builder_connect_signals()>, except that it does not
 require GModule to function correctly.
 
-  method gtk_builder_connect_signals_full ( GtkBuilderConnectFunc $func, Pointer $user_data )
+  method gtk_builder_connect_signals_full (
+    Any:D $handler-object, Str:D $handler-method, *%options
+  )
 
-=item GtkBuilderConnectFunc $func; (scope call): the function used to connect the signals
-=item Pointer $user_data; arbitrary data that will be passed to the connection function
+=item Callable $builder-connect-func; the function used to connect the signals
+=item *%options; Any named arguments the user wants to send to the handler.
+
+The C<$handler-method()> must have the following signature and returns nothing;
+    N-GObject $builder,
+    N-GObject $object,
+    Str $signal-name,
+    Str $handler-name,
+  ),
+
+=item N-GObject $builder; a GtkBuilder
+=item N-GObject $object; object to connect a signal to
+=item Str $signal-name; name of the signal
+=item Str $handler-name; name of the handler
 
 =end pod
+}}
 
-sub gtk_builder_connect_signals_full ( N-GObject $builder, GtkBuilderConnectFunc $func, Pointer $user_data )
+sub gtk_builder_connect_signals_full ( N-GObject $builder, Hash $handlers ) {
+  _gtk_builder_connect_signals_full(
+    $builder,
+    sub (
+      N-GObject $builder, N-GObject $object, Str $signal-name,
+      Str $handler-name, N-GObject $ignore-d0, int32 $ignore-d1,
+      OpaquePointer $ignore-d2
+    ) {
+      my Str $oname = Gnome::GObject::Type.g_type_name_from_instance($object);
+      if $oname ~~ /^ Gtk / and $handlers{$handler-name}:exists {
+        $oname ~~ s/^ Gtk /Gnome::Gtk3::/;
+        my $handler-object = $handlers{$handler-name}[0];
+        my %options = %(|$handlers{$handler-name}[1..*-1]);
+
+        require ::($oname);
+        my $gtk-object = ::($oname).new(:native-object($object));
+        note "Connect $oname, $handler-name for signal $signal-name"
+          if $Gnome::N::x-debug;
+
+        $gtk-object.register-signal(
+          $handler-object, $handler-name, $signal-name, |%options
+        ) if $handler-object.^can("$handler-name");
+      }
+
+      else {
+        note "Cannot handle $oname typed objects. Signalhandler for signal $signal-name not activated" if $Gnome::N::x-debug;
+      }
+    },
+    OpaquePointer
+  )
+}
+
+sub _gtk_builder_connect_signals_full (
+  N-GObject $builder,
+  Callable $func (
+    N-GObject $b, N-GObject $object,
+    Str $signal_name, Str $handler_name,
+    N-GObject $connect_object, int32 $flags,
+    OpaquePointer $d
+  ),
+  Pointer $user_data
+) is symbol('gtk_builder_connect_signals_full')
   is native(&gtk-lib)
   { * }
-}}
+#}}
 
 #`{{
 #-------------------------------------------------------------------------------
