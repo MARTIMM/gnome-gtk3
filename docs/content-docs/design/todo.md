@@ -9,7 +9,9 @@ layout: sidebar
 ## TODO list of things
 
 #### Study
-* [ ] [References and object creation in the light of memory leaks](https://developer.gnome.org/gobject/stable/gobject-memory.html#gobject-memory-refcount).
+* [x] [References and object creation in the light of memory leaks](https://developer.gnome.org/gobject/stable/gobject-memory.html#gobject-memory-refcount).
+  * Cannot automatically cleanup the natice object in the Raku object when object gets destroyed.
+  * Users of the packages must therefore clean the objects themselves when appropriate using `.widget-destroy()` or `.clean-object()`.
 * [x] Applications behaviour from Gtk and Gio packages
 * [x] Resources from Gio package
 * [x] Menus and Actions
@@ -64,7 +66,7 @@ layout: sidebar
 
 Defining DESTROY() at the top was a big mistake! Obvious when you think of it! dereferencing or cleaning up a native object should only be done explicitly because when the Raku object goes out of scope doesn't mean that the native object isn't in use anymore.
 
-Also calling clear-object() in BUILD() is wrong for the same reason.
+Also calling clear-object() in BUILD() and several other places is wrong for the same reason.
 
 <!--
 
@@ -87,14 +89,9 @@ Also calling clear-object() in BUILD() is wrong for the same reason.
 
 * [ ] Many methods return native objects. this could be molded into Raku objects when possible.
 
-* [ ] Add 'is export' to all subs in interface modules. This can help when the subs are needed directly from the interface using modules. Perhaps it can also simplify the `_fallback()` calls to search for subs in interfaces.
+* [ ] Interface modules are defined as Raku roles. This must be changed into classes.
 
 * [ ] It is not possible to inherit from the modules to create your own class due to the way the classes are BUILD(). Review the initialization methods to overcome this.
-
-* Move pieces of code from FALLBACK in **Gnome::GObject::Object** to **Gnome::N::X** so that other toplevel classes can use it too.
-  * [x] `convert-to-natives()`
-  * [ ] casting
-  * [ ] move methods `set-class-info()` / `get-class-info()` to **Gnome::N::X** as well as the storage into $!gtk-class-gtype. This means that the sub `g_type_from_name()` from **Gnome::GObject::Type** must be duplicated to prevent circular dependency.
 
 * [x] Remove CALL-ME methods and all uses of them.
 
@@ -106,22 +103,9 @@ Also calling clear-object() in BUILD() is wrong for the same reason.
 
 * [ ] For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
-* [ ] Add `method clear-object ( ) { !!! }` to **Gnome::GObject::Boxed**. This removes the need to set/clear `$!is-valid` using calls to methods from the child objects. `.set-native-object()` will handle the clearing then from there.
-
 * [x] Add a toplevel class to support standalone classes in glib something like **Gnome::GObject::Boxed** is. The class is called **Gnome::N::TopLevelClassSupport**.
-  * [x] **Gnome::Glib::Error**
-  * [x] **Gnome::Glib::List**
-  * [x] **Gnome::Glib::Slist**
-  * [x] **Gnome::Glib::Variant**
-  * [x] **Gnome::Glib::VariantIter**
-  * [x] **Gnome::Glib::VariantType**
-  * [x] **Gnome::Glib::VariantBuilder**
 
-  * [ ] **Gnome::GObject::Object**
-  * [ ] **Gnome::GObject::Boxed**
-<!--   * [ ] **Gnome::GObject::** -->
-
-
+* [ ] When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native container. Testing should be done to find the proper native object.
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
