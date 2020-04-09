@@ -1,6 +1,12 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-04-06 0.27.4
+    - Enabled method gtk_label_set_markup() in Gnome::Gtk3::Label.
+    - Enabled method gtk_builder_connect_signals_full in Gnome::Gtk3::Builder.
+    - Modified gtk_builder_new_from_string( $text, $text.chars), so that the length can be left out and the argument is now deprecated.
+    - Enabled method g_type_name_from_instance() to Gnom::GObject::Type.
+
   - 2020-04-06 0.27.3
     - Add modules Adjustment, ScrolledWindow, PlacesSidebar in Gnome::Gtk3.
 

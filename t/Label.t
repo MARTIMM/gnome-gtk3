@@ -43,9 +43,14 @@ subtest 'Manipulations 0', {
   $l.set-text-with-mnemonic('Search _filename');
   is $l.get-text, 'Search filename', '.set-text-with-mnemonic()';
 
+  $l.set-markup('Be <b>Strong</b>');
+  is $l.get-text, 'Be Strong', '.set-markup()';
+
   $l.set-label('Search <u>filename</u>');
   is $l.get-label, 'Search <u>filename</u>', '.set-label() / .get-label()';
-  is $l.get-text, 'Search <u>filename</u>', '.get-text() after set label';
+  is $l.get-text, 'Search filename', '.get-text() after set label';
+  $l.set-use-markup(0);
+  is $l.get-text, 'Search <u>filename</u>', '.get-text() after turn off markup';
 }
 
 #-------------------------------------------------------------------------------

@@ -178,6 +178,21 @@ Returns: the text of the label widget. This string is owned by the widget and mu
 
     method gtk_label_get_label ( --> Str  )
 
+[[gtk_] label_] set_markup
+--------------------------
+
+Parses *$str* which is marked up with the Pango text markup language, setting the label’s text and attribute list based on the parse results.
+
+This function will set the *use-markup* property to `1` as a side effect.
+
+If you set the label contents using the *label* property you should also ensure that you set the *use-markup* property accordingly.
+
+See also: `gtk_label_set_text()`
+
+    method gtk_label_set_markup ( Str $str )
+
+  * Str $str; a markup string (see [Pango markup format][PangoMarkupFormat])
+
 [[gtk_] label_] set_use_markup
 ------------------------------
 

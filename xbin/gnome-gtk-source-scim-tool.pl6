@@ -919,7 +919,7 @@ sub substitute-in-template (
           }
           }}
 
-          #`{{ when there are options use this instead
+          #`{{ when there are defaults use this instead
           # create default object
           else {
             self.set-native-object(BASE-SUBNAME_new());

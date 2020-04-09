@@ -499,18 +499,15 @@ sub gtk_label_get_label ( N-GObject $label )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_label_set_markup:
 =begin pod
 =head2 [[gtk_] label_] set_markup
 
-Parses I<$str> which is marked up with the
-[Pango text markup language][PangoMarkupFormat], setting the
-label’s text and attribute list based on the parse results.
+Parses I<$str> which is marked up with the Pango text markup language, setting the label’s text and attribute list based on the parse results.
 
-If the I<$str> is external data, you may need to escape it with
-C<g_markup_escape_text()> or C<g_markup_printf_escaped()>:
+=begin comment
+If the I<$str> is external data, you may need to escape it with C<g_markup_escape_text()> or C<g_markup_printf_escaped()>:
 
   my Gnome::Glib::Markup .= new(...)
   my Str $format = "<span style=\"italic\">\C<s></span>";
@@ -524,13 +521,11 @@ markup = g_markup_printf_escaped (format, str);
 gtk_label_set_markup (GTK_LABEL (label), markup);
 g_free (markup);
 ]|
+=end comment
 
-This function will set the  I<use-markup> property to C<1> as
-a side effect.
+This function will set the  I<use-markup> property to C<1> as a side effect.
 
-If you set the label contents using the  I<label> property you
-should also ensure that you set the  I<use-markup> property
-accordingly.
+If you set the label contents using the  I<label> property you should also ensure that you set the  I<use-markup> property accordingly.
 
 See also: C<gtk_label_set_text()>
 
@@ -543,7 +538,6 @@ See also: C<gtk_label_set_text()>
 sub gtk_label_set_markup ( N-GObject $label, Str $str )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_label_set_use_markup:
