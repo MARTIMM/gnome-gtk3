@@ -46,11 +46,11 @@ subtest 'Add ui from file to builder', {
   $e = $builder.add-from-string($text);
   nok $e.is-valid, ".add-from-string()";
 
-  my N-GObject $b = $builder.new-from-string( $text, $text.chars);
-  ok $b.defined, '.new-from-string()';
+  $builder .= new(:string($text));
+  ok $builder.defined, '.new(:string)';
 
-  $b = $builder.new-from-file($ui-file);
-  ok $b.defined, '.new-from-file()';
+  $builder .= new(:file($ui-file));
+  ok $builder.defined, '.new-from-file()';
 }
 
 #-------------------------------------------------------------------------------
@@ -104,6 +104,23 @@ subtest 'Test items from ui', {
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Main $m .= new;
+my Str $ui = q:to/EOUI/;
+    <?xml version="1.0" encoding="UTF-8"?>
+    <interface>
+      <requires lib="gtk+" version="3.20"/>
+
+      <object class="GtkWindow" id="top">
+        <property name="title">top window</property>
+        <signal name="destroy" handler="window-quit"/>
+        <child>
+          <object class="GtkButton" id="help">
+            <property name="label">Help</property>
+            <signal name="clicked" handler="button-click"/>
+          </object>
+        </child>
+      </object>
+    </interface>
+    EOUI
 
 class X {
   method window-quit ( :$o1, :$o2 --> Int ) {
@@ -123,7 +140,11 @@ class Z {
 class Y {
   method send-signals ( :$widget, :$window, :$button --> Str ) {
 
+    while $m.gtk-events-pending() { $m.iteration-do(False); }
     $button.emit-by-name('clicked');
+    sleep 0.5;
+
+    while $m.gtk-events-pending() { $m.iteration-do(False); }
     $window.emit-by-name('destroy');
 
     return 'done'
@@ -131,9 +152,13 @@ class Y {
 }
 
 subtest 'Find signals in ui', {
-  my Gnome::Gtk3::Builder $builder .= new;
-  $e = $builder.add-from-file('t/data/builder-window-signal.ui');
-  nok $e.is-valid, "builder-window-signal.ui added";
+  my Gnome::Gtk3::Builder $builder .= new(:string($ui));
+
+  # add a small delay. sometimes there is a weird error;
+  # 'Gdk-Message: 13:49:15.306: Builder.t: Fatal IO error 0 (Success) on
+  # X server :0.'
+  # It seems this delay helps.
+  sleep 0.5;
 
   my Gnome::Gtk3::Window $w .= new(:build-id<top>);
 
