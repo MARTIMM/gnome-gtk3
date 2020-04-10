@@ -102,6 +102,9 @@ subtest 'Test items from ui', {
   #$b.gtk-widget-show;
 }
 
+#`{{
+Other X11 errors prevent good tests
+
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Main $m .= new;
 my Str $ui = q:to/EOUI/;
@@ -181,6 +184,7 @@ subtest 'Find signals in ui', {
 
   is $p.result, 'done', 'exit thread ok';
 }
+}}
 
 #-------------------------------------------------------------------------------
 done-testing;
