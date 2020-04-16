@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.27.4.1",
+  "version": "0.27.5",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio"],
 
@@ -66,6 +66,8 @@
     "Gnome::Gtk3::Orientable": "lib/Gnome/Gtk3/Orientable.pm6",
     "Gnome::Gtk3::Paned": "lib/Gnome/Gtk3/Paned.pm6",
     "Gnome::Gtk3::PlacesSidebar": "lib/Gnome/Gtk3/PlacesSidebar.pm6",
+    "Gnome::Gtk3::Popover": "lib/Gnome/Gtk3/Popover.pm6",
+    "Gnome::Gtk3::PopoverMenu": "lib/Gnome/Gtk3/PopoverMenu.pm6",
     "Gnome::Gtk3::ProgressBar": "lib/Gnome/Gtk3/ProgressBar.pm6",
     "Gnome::Gtk3::RadioButton": "lib/Gnome/Gtk3/RadioButton.pm6",
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
@@ -92,6 +94,7 @@
     "Gnome::Gtk3::TreeModel": "lib/Gnome/Gtk3/TreeModel.pm6",
     "Gnome::Gtk3::TreePath": "lib/Gnome/Gtk3/TreePath.pm6",
     "Gnome::Gtk3::TreeRowReference": "lib/Gnome/Gtk3/TreeRowReference.pm6",
+    "Gnome::Gtk3::TreeSelection": "lib/Gnome/Gtk3/TreeSelection.pm6",
     "Gnome::Gtk3::TreeStore": "lib/Gnome/Gtk3/TreeStore.pm6",
     "Gnome::Gtk3::TreeView": "lib/Gnome/Gtk3/TreeView.pm6",
     "Gnome::Gtk3::TreeViewColumn": "lib/Gnome/Gtk3/TreeViewColumn.pm6",
