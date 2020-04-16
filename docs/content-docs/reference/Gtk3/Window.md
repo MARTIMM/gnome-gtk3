@@ -668,15 +668,13 @@ Sets up the icon representing a **Gnome::Gtk3::Window**. This icon is used when 
 
 The icon should be provided in whatever size it was naturally drawn; that is, don’t scale the image before passing it to GTK+. Scaling is postponed until the last minute, when the desired final size is known, to allow best quality.
 
-If you have your icon hand-drawn in multiple sizes, use `gtk_window_set_icon_list()`. Then the best size will be used.
-
-This function is equivalent to calling `gtk_window_set_icon_list()` with a 1-element list.
+If you have your icon hand-drawn in multiple sizes, use `gtk_window_set_icon_list()`. Then the best size will be used. This function is equivalent to calling `gtk_window_set_icon_list()` with a 1-element list.
 
 See also `gtk_window_set_default_icon_list()` to set the icon for all windows in your application in one go.
 
     method gtk_window_set_icon ( N-GObject $icon )
 
-  * N-GObject $icon; (allow-none): icon image, or `Any`
+  * N-GObject $icon; icon image, or undefined
 
 [[gtk_] window_] set_icon_name
 ------------------------------
