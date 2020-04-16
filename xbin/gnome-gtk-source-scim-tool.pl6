@@ -505,6 +505,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-VariantBuilder' if $type ~~ m/VariantBuilder/;
   $type = 'N-VariantType' if $type ~~ m/VariantType/;
   $type = 'N-VariantIter' if $type ~~ m/VariantIter/;
+  $type = 'N-GtkTreeIter' if $type ~~ m/GtkTreeIter/;
+  $type = 'N-GtkTreePath' if $type ~~ m/GtkTreePath/;
 
 #  $type = 'int32' if $type ~~ m/GType/;
   $type = 'uint64' if $type ~~ m/GType/;
@@ -899,35 +901,44 @@ sub substitute-in-template (
           elsif %options<native-object>:exists or %options<widget>:exists { }
           elsif %options<build-id>:exists { }
 
-          # elsif ? %options<> {
-          # }
-
-          # check if there are unknown options
-          elsif %options.elems {
-            die X::Gnome.new(
-              :message(
-                'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-                self.^name ~ ': ' ~ %options.keys.join(', ')
-              )
-            );
-          }
-
-          #`{{ when there are no defaults use this
-          # check if there are any options
-          elsif %options.elems == 0 {
-            die X::Gnome.new(:message('No options specified ' ~ self.^name));
-          }
-          }}
-
-          #`{{ when there are defaults use this instead
-          # create default object
           else {
-            self.set-native-object(BASE-SUBNAME_new());
+            my $no;
+            # if ? %options<> {
+            #    $no = ...
+            # }
+
+            #`{{ use this when the module is not made inheritable
+            # check if there are unknown options
+            elsif %options.elems {
+              die X::Gnome.new(
+                :message(
+                  'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+                  self.^name ~ ': ' ~ %options.keys.join(', ')
+                )
+              );
+            }
+            }}
+
+            #`{{ when there are no defaults use this
+            # check if there are any options
+            elsif %options.elems == 0 {
+              die X::Gnome.new(:message('No options specified ' ~ self.^name));
+            }
+            }}
+
+            #`{{ when there are defaults use this instead
+            # create default object
+            else {
+              $no = BASE-SUBNAME_new();
+            }
+            }}
+
+            self.set-native-object($no);
           }
-          }}
 
           # only after creating the native-object, the gtype is known
           self.set-class-info('LIBCLASSNAME');
+
         }
       }
 

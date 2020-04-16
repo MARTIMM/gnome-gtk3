@@ -227,9 +227,9 @@ Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
 [[gtk_] builder_] get_object
 ----------------------------
 
-Gets the object named *name*. Note that this function does not increment the reference count of the returned object.
+Gets the object named *$name*. Note that this function does not increment the reference count of the returned object.
 
-Returns: (nullable) (transfer none): the object named *name* or `Any` if it could not be found in the object tree.
+Returns: the object named *$name* or undefined if it could not be found in the object tree.
 
     method gtk_builder_get_object ( Str $name --> N-GObject  )
 
@@ -242,7 +242,7 @@ This method will process the signal elements from the loaded XML and with the he
 
     method gtk_builder_connect_signals_full ( Hash $handlers )
 
-  * Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key whish is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also `register-signal()` in **Gnome::GObject::Object**.
+  * Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also `register-signal()` in **Gnome::GObject::Object**.
 
 An example where a gui is described in XML. It has a Window with a Button, both having a signal description;
 
@@ -286,26 +286,22 @@ An example where a gui is described in XML. It has a Window with a Button, both 
 
     # Load the user interface description
     my Gnome::Gtk3::Builder $builder .= new;
-    $e = $builder.add-from-string($ui);
+    my Gnome::Gtk3::Builder $builder .= new(:string($ui));
 
-    # When valid, register signals
-    if $e.is-valid {
+    my Gnome::Gtk3::Window $w .= new(:build-id<top>);
 
-      my Gnome::Gtk3::Window $w .= new(:build-id<top>);
+    # It is possible to devide the works over more than one class
+    my X $x .= new;
+    my Y $y .= new;
 
-      # It is possible to devide the works over more than one class
-      my X $x .= new;
-      my Y $y .= new;
+    # Create the handlers table
+    my Hash $handlers = %(
+      :window-quit( $x, :o1<o1>, :o2<o2>),
+      :button-click( $y, :o3<o3>, :o4<o4>)
+    );
 
-      # Create the handlers table
-      my Hash $handlers = %(
-        :window-quit( $x, :o1<o1>, :o2<o2>),
-        :button-click( $y, :o3<o3>, :o4<o4>)
-      );
-
-      # Register all signals
-      $builder.connect-signals-full($handlers);
-    }
+    # Register all signals
+    $builder.connect-signals-full($handlers);
 
 [[gtk_] builder_] get_type_from_name
 ------------------------------------

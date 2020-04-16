@@ -44,9 +44,9 @@ GObject                                   Gnome::GObject::Object
 ├── GDBusAuthObserver
 ├── GDBusConnection
 ├── GDBusInterfaceSkeleton
-├─✗ GMenuModel                            Use Gnome::Gtk3::Menu*
-│   ├─✗ GDBusMenuModel
-│   ╰─✗ GMenu                             See also https://developer.gnome.org/GMenu/
+├─- GMenuModel                            MenuModel
+│   ├─- GDBusMenuModel
+│   ╰─- GMenu                             
 ├── GDBusMessage
 ├── GDBusMethodInvocation
 ├── GDBusObjectManagerClient
@@ -96,7 +96,7 @@ GObject                                   Gnome::GObject::Object
 ├── GResolver
 ├── GSettingsBackend
 ├── GSettings
-├── GSimpleAction                         SimpleAction (not needed ?) ⛔
+├── GSimpleAction                         SimpleAction
 ├── GSimpleActionGroup
 ├── GSimpleAsyncResult
 ├── GSimpleProxyResolver

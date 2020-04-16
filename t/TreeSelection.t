@@ -2,28 +2,34 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::Dialog;
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::TreeSelection;
+ok 1, 'loads ok';
+done-testing;
+=finish
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
+#`{{
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::Dialog $d;
+class MyGuiClass is Gnome::Gtk3::TreeSelection {
+  submethod new ( |c ) {
+    self.bless( :GtkTreeSelection, |c);
+  }
+}
 
+subtest 'User class test', {
+  my MyGuiClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::TreeSelection, '.new()';
+}
+
+}}
 #-------------------------------------------------------------------------------
-subtest 'ISA tests', {
-  $d .= new;
-  isa-ok $d, Gnome::Gtk3::Dialog, '.new';
-
-  my Gnome::Gtk3::Window $parent .= new(:title('My App'));
-  $d .= new(
-    :title('msg dialog'), :$parent,
-    :flags(GTK_DIALOG_MODAL +| GTK_DIALOG_DESTROY_WITH_PARENT),
-    :button-spec( 'Ok', GTK_RESPONSE_ACCEPT, "Cancel", GTK_RESPONSE_REJECT)
-  );
-  isa-ok $d, Gnome::Gtk3::Dialog, '.new(:title)';
+my Gnome::Gtk3::TreeSelection $ts;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $ts .= new;
+  isa-ok $ts, Gnome::Gtk3::TreeSelection, '.new()';
 }
 
 #`{{

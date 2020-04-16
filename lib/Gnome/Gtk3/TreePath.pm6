@@ -57,15 +57,17 @@ class N-GtkTreePath
 =head1 Methods
 =head2 new
 
-Create a new default tree path object.
+Create a new default tree path object. This refers to a row.
 
   multi method new ( )
 
-Create a new tree path with first index.
+Create a new tree path with first index. The string representation of this path is “0”.
 
   multi method new ( Bool :first! )
 
-Create a new tree path object using a string.
+Create a new tree path object using a string. Creates a new B<Gnome::Gtk3::TreePath>-struct initialized to I<$string>.
+
+I<$string> is expected to be a colon separated list of numbers. For example, the string “10:4:0” would create a path of depth 3 pointing to the 11th child of the root node, the 5th child of that 11th child, and the 1st child of that 5th child. If an invalid path string is passed in, the native object is undefined.
 
   multi method new ( Str :$string! )
 
@@ -94,46 +96,47 @@ submethod BUILD ( *%options ) {
   elsif %options<native-object>:exists or %options<widget>:exists  { }
 
   # process all named arguments
-  elsif ? %options<tree-path> {
-    Gnome::N::deprecate( '.new(:tree-path)', '.new(:native-object)', '0.21.3', '0.30.0');
-    self.set-native-object(%options<tree-path>);
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+  else {
+    my $no;
 
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_tree_path_new());
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+    if ? %options<tree-path> {
+      Gnome::N::deprecate(
+        '.new(:tree-path)', '.new(:native-object)', '0.21.3', '0.30.0'
+      );
+      $no = %options<tree-path>;
+    }
 
-  elsif ? %options<first> {
-    self.set-native-object(gtk_tree_path_new_first());
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+    elsif ? %options<empty> {
+      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+      $no = _gtk_tree_path_new();
+    }
 
-  elsif ? %options<indices> {
-    self.set-native-object(gtk_tree_path_new_from_indices(|%options<indices>));
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+    elsif ? %options<first> {
+      $no = _gtk_tree_path_new_first();
+    }
 
-  elsif ? %options<string> {
-    self.set-native-object(gtk_tree_path_new_from_string(%options<string>));
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+    elsif ? %options<indices> {
+      $no = _gtk_tree_path_new_from_indices(|%options<indices>);
+    }
 
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
+    elsif ? %options<string> {
+      $no = _gtk_tree_path_new_from_string(%options<string>);
+    }
 
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_tree_path_new());
-#    $!tree-path-is-valid = self.get-native-object.defined;
-  }
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
 
+    else {
+      $no = _gtk_tree_path_new();
+    }
+
+    self.set-native-object($no);
+  }
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkTreePath');
@@ -191,7 +194,8 @@ method clear-tree-path ( ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_path_new:new()
+#TM:1:_gtk_tree_path_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] tree_path_new
 
@@ -203,14 +207,16 @@ Returns: A newly created B<Gnome::Gtk3::TreePath>-struct.
 
 
 =end pod
+}}
 
-sub gtk_tree_path_new (  )
-  returns N-GtkTreePath
+sub _gtk_tree_path_new ( --> N-GtkTreePath )
   is native(&gtk-lib)
+  is symbol('gtk_tree_path_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_path_new_from_string:
+#TM:1:_gtk_tree_path_new_from_string:
+#`{{
 =begin pod
 =head2 [[gtk_] tree_path_] new_from_string
 
@@ -229,14 +235,16 @@ Returns: A newly-created B<Gnome::Gtk3::TreePath>-struct, or C<Any>
 =item Str $path; The string representation of a path
 
 =end pod
+}}
 
-sub gtk_tree_path_new_from_string ( Str $path )
-  returns N-GtkTreePath
+sub _gtk_tree_path_new_from_string ( Str $path --> N-GtkTreePath )
   is native(&gtk-lib)
+  is symbol('gtk_tree_path_new_from_string')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_path_new_from_indices:
+#TM:1:_gtk_tree_path_new_from_indices:
+#`{{
 =begin pod
 =head2 [[gtk_] tree_path_] new_from_indices
 
@@ -251,8 +259,8 @@ Since: 2.2
 =item Int list of indices
 
 =end pod
-
-sub gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
+}}
+sub _gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
 
   my @parameterList = ();
   for @indices -> Int $i {
@@ -309,26 +317,22 @@ sub gtk_tree_path_new_from_indicesv ( int32 $indices, uint64 $length )
 =begin pod
 =head2 [[gtk_] tree_path_] to_string
 
-Generates a string representation of the path.
-
-This string is a “:” separated list of numbers.
-For example, “4:10:0:3” would be an acceptable
-return value for this string.
+Generates a string representation of the path. This string is a “:” separated list of numbers. For example, “4:10:0:3” would be an acceptable return value for this string.
 
 Returns: A newly-allocated string.
-Must be freed with C<g_free()>.
+=comment Must be freed with C<g_free()>.
 
   method gtk_tree_path_to_string ( --> Str  )
 
 =end pod
 
-sub gtk_tree_path_to_string ( N-GtkTreePath $path )
-  returns Str
+sub gtk_tree_path_to_string ( N-GtkTreePath $path --> Str )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_tree_path_new_first:new(:first)
+#TM:2:_gtk_tree_path_new_first:new(:first)
+#`{{
 =begin pod
 =head2 [[gtk_] tree_path_] new_first
 
@@ -340,10 +344,10 @@ Returns: A new B<Gnome::Gtk3::TreePath>-struct
 
 
 =end pod
-
-sub gtk_tree_path_new_first (  )
-  returns N-GtkTreePath
+}}
+sub _gtk_tree_path_new_first ( --> N-GtkTreePath )
   is native(&gtk-lib)
+  is symbol('gtk_tree_path_new_first')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -397,8 +401,7 @@ Returns: The depth of I<path>
 
 =end pod
 
-sub gtk_tree_path_get_depth ( N-GtkTreePath $path )
-  returns int32
+sub gtk_tree_path_get_depth ( N-GtkTreePath $path --> int32 )
   is native(&gtk-lib)
   { * }
 

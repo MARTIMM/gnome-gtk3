@@ -81,6 +81,11 @@ Create a new plain object and load pixbuf from file.
 
     method gdk_pixbuf_error_quark ( --> Int  )
 
+[gdk_pixbuf_] gdk_pixbuf_get_type
+---------------------------------
+
+    method gdk_pixbuf_get_type ( --> Int )
+
 [gdk_pixbuf_] get_colorspace
 ----------------------------
 

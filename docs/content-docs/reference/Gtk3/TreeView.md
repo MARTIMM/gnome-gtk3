@@ -69,13 +69,6 @@ Css Nodes
 
 **Gnome::Gtk3::TreeView** has a main CSS node with name treeview and style class .view. It has a subnode with name header, which is the parent for all the column header widgets' CSS nodes. For rubberband selection, a subnode with name rubberband is used.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::TreeView implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -89,7 +82,25 @@ Declaration
 
     unit class Gnome::Gtk3::TreeView;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::TreeView;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::TreeView;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::TreeView class process the options
+      self.bless( :GtkTreeView, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Types
 =====
@@ -162,6 +173,13 @@ Sets the model for a **Gnome::Gtk3::TreeView**. If the *tree_view* already has a
     method gtk_tree_view_set_model ( N-GObject $model )
 
   * N-GObject $model; (allow-none): The model.
+
+[[gtk_] tree_view_] get_selection
+---------------------------------
+
+Gets the **Gnome::Gtk3::TreeSelection** associated with *tree_view*.
+
+    method gtk_tree_view_get_selection ( --> N-GObject  )
 
 [[gtk_] tree_view_] get_headers_visible
 ---------------------------------------
@@ -398,6 +416,22 @@ Returns the window that *tree_view* renders to. This is used primarily to compar
 Returns: (nullable) (transfer none): A **Gnome::Gdk3::Window**, or `Any` when *tree_view* hasn’t been realized yet.
 
     method gtk_tree_view_get_bin_window ( --> N-GObject  )
+
+[[gtk_] tree_view_] get_cell_area
+---------------------------------
+
+Fills the bounding rectangle in bin_window coordinates for the cell at the row specified by *$path* and the column specified by *$column*. If *$path* is undefined, or points to a path not currently displayed, the *y* and *height* fields of the rectangle will be filled with 0. If *$column* is undefined, the *x* and *width* fields will be filled with 0. The sum of all cell rects does not cover the entire tree; there are extra pixels in between rows, for example. The returned rectangle is equivalent to the *cell_area* passed to `gtk_cell_renderer_render()`.
+
+    method gtk_tree_view_get_cell_area (
+      N-GtkTreePath $path, N-GObject $column
+      --> N-GdkRectangle
+    )
+
+  * N-GtkTreePath $path; a **Gnome::Gtk3::TreePath** for the row, or `Any` to get only horizontal coordinates
+
+  * N-GObject $column; a **Gnome::Gtk3::TreeViewColumn** for the column, or `Any` to get only vertical coordinates
+
+Returns a N-GdkRectangle rectangle to fill with cell rectangle
 
 [[gtk_] tree_view_] get_visible_rect
 ------------------------------------

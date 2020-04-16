@@ -26,6 +26,7 @@ An example of a UI Definition fragment for a tree store:
     </columns>
   </object>
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::TreeStore implements
@@ -34,6 +35,7 @@ Gnome::Gtk3::TreeStore implements
 =item Gnome::Gtk3::TreeDragSource
 =item Gnome::Gtk3::TreeDragDest
 =item Gnome::Gtk3::TreeSortable
+=end comment
 
 =head2 See Also
 
@@ -44,11 +46,29 @@ B<Gnome::Gtk3::TreeModel>
 
   unit class Gnome::Gtk3::TreeStore;
   also is Gnome::GObject::Object;
-  also does Gnome::Gtk3::Buildable;
-  also does Gnome::Gtk3::TreeModel;
+=comment  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::TreeModel;
 =comment  also does Gnome::Gtk3::TreeDragSource;
 =comment  also does Gnome::Gtk3::TreeDragDest;
 =comment  also does Gnome::Gtk3::TreeSortable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::TreeStore;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::TreeStore;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::TreeStore class process the options
+    self.bless( :GtkTreeStore, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -88,11 +108,13 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create a new TreeStore object with the given field types.
+Creates a new tree store as with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
+
+As an example, C<.new( :field-types( G_TYPE_INT, G_TYPE_STRING, $pixbuf.get-type());> will create a new B<Gnome::Gtk3::TreeStore> with three columns, of type int, string and a pixbuf respectively. Note that there is no C<GDK_TYPE_PIXBUF> type because it is not a fundamental type like C<G_TYPE_INT>.
 
   multi method new ( Bool :@field-types! )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
@@ -119,27 +141,21 @@ submethod BUILD ( *%options ) {
   }
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::TreeStore';
+  if self.^name eq 'Gnome::Gtk3::TreeStore' or %options<GtkTreeStore> {
 
-  # process all named arguments
-  if ? %options<field-types> {
-    self.set-native-object(gtk_tree_store_new(|%options<field-types>));
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif ? %options<native-object> || ? %options<widget> ||
+      %options<build-id> { }
+
+    elsif ? %options<field-types> {
+      self.set-native-object(_gtk_tree_store_new(|%options<field-types>));
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkTreeStore');
   }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkTreeStore');
 }
 
 #-------------------------------------------------------------------------------
@@ -164,7 +180,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_tree_store_new:new(:field-types)
+#TM:2:_gtk_tree_store_new:new(:field-types)
+#`{{
 =begin pod
 =head2 [gtk_] tree_store_new
 
@@ -181,8 +198,8 @@ Returns: a new B<Gnome::Gtk3::TreeStore>
 =item Int $column-type; all B<GType> types for the columns, from first to last
 
 =end pod
-
-sub gtk_tree_store_new ( *@column-types --> N-GObject ) {
+}}
+sub _gtk_tree_store_new ( *@column-types --> N-GObject ) {
 
   # arg list starts with n_columns
   my @parameter-list = (
@@ -596,7 +613,7 @@ Since: 2.10
     --> Gnome::Gtk3::TreeIter
   )
 
-=item Gnome::Gtk3::TreeIter $parent; A valid iterator, or C<Any>.
+=item Gnome::Gtk3::TreeIter $parent; A valid iterator, or undefined.
 =item Int $position; position to insert the new row, or -1 to append after existing rows
 =item Int $column, $value, ...; the rest are pairs of column number and value
 

@@ -57,28 +57,21 @@ The XML format understood by B<Gnome::Gtk3::Builder> for B<GMenuModel> consists 
 Attribute values can be translated using gettext, like other B<Gnome::Gtk3::Builder> content. `<attribute>` elements can be marked for translation with a `translatable="yes"` attribute. It is also possible to specify message context and translator comments, using the context and comments attributes. To make use of this, the B<Gnome::Gtk3::Builder> must have been given the gettext domain to use.
 
 The following attributes are used when constructing menu items:
-- "label": a user-visible string to display
-- "action": the prefixed name of the action to trigger
-- "target": the parameter to use when activating the action
-- "icon" and "verb-icon": names of icons that may be displayed
-- "submenu-action": name of an action that may be used to determine
-     if a submenu can be opened
-- "hidden-when": a string used to determine when the item will be hidden.
-     Possible values include "action-disabled", "action-missing", "macos-menubar".
+=item "label": a user-visible string to display
+=item "action": the prefixed name of the action to trigger
+=item "target": the parameter to use when activating the action
+=item "icon" and "verb-icon": names of icons that may be displayed
+=item "submenu-action": name of an action that may be used to determine if a submenu can be opened
+=item "hidden-when": a string used to determine when the item will be hidden. Possible values include "action-disabled", "action-missing", "macos-menubar".
 
 The following attributes are used when constructing sections:
-- "label": a user-visible string to use as section heading
-- "display-hint": a string used to determine special formatting for the section.
-    Possible values include "horizontal-buttons".
-- "text-direction": a string used to determine the B<Gnome::Gtk3::TextDirection> to use
-    when "display-hint" is set to "horizontal-buttons". Possible values
-    include "rtl", "ltr", and "none".
+=item "label": a user-visible string to use as section heading
+=item "display-hint": a string used to determine special formatting for the section. Possible values include "horizontal-buttons".
+=item "text-direction": a string used to determine the B<Gnome::Gtk3::TextDirection> to use when "display-hint" is set to "horizontal-buttons". Possible values include "rtl", "ltr", and "none".
 
 The following attributes are used when constructing submenus:
-- "label": a user-visible string to display
-- "icon": icon name to display
-
-
+=item "label": a user-visible string to display
+=item "icon": icon name to display
 
 =begin comment
 =head2 Implemented Interfaces
@@ -96,8 +89,6 @@ Gnome::Gtk3::ApplicationWindow is implemented by
 
 =end comment
 
-
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -105,6 +96,25 @@ Gnome::Gtk3::ApplicationWindow is implemented by
   also is Gnome::Gtk3::Window;
 =comment  also does Gnome::Gtk3::Buildable;
 =comment  also does Gnome::Gtk3::Orientable;
+
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::ApplicationWindow;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::ApplicationWindow;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::ApplicationWindow class process the options
+    self.bless( :GtkApplicationWindow, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -133,7 +143,7 @@ also is Gnome::Gtk3::Window;
 =head1 Methods
 =head2 new
 
-Create a new ApplicationWindow object.
+Create a new B<Gnome::Gtk3::ApplicationWindow> based on a B<Gnome::Gtk3::Application> object.
 
   multi method new (N-GObject :$application!)
 
@@ -149,42 +159,43 @@ Create a ApplicationWindow object using a native object returned from a builder.
 
 #TM:0:new():inheriting
 #TM:1:new(:application):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):
+#TM:4:new(:build-id):
 
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::ApplicationWindow';
+  if self.^name eq 'Gnome::Gtk3::ApplicationWindow' or %options<GtkApplicationWindow> {
 
-  # process all named arguments
-  if ? %options<application> {
-    my $a = %options<application>;
-    $a .= get-native-object if $a ~~ Gnome::Gtk3::Application;
-    self.set-native-object(gtk_application_window_new($a));
+    if self.is-valid { }
+
+    elsif %options<widget>:exists or %options<native-object>:exists or
+      %options<build-id>:exists { }
+
+    # process all named arguments
+    elsif ? %options<application> {
+      my $a = %options<application>;
+      $a .= get-native-object if $a ~~ Gnome::Gtk3::Application;
+      self.set-native-object(_gtk_application_window_new($a));
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message(
+          'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+          self.^name ~ ': ' ~ %options.keys.join(', ')
+        )
+      );
+    }
+
+    # create default object
+    else {
+      die X::Gnome.new(:message('No options provided for ' ~ self.^name));
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkApplicationWindow');
   }
-
-  elsif ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    die X::Gnome.new(:message('No options provided for ' ~ self.^name));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkApplicationWindow');
 }
 
 #-------------------------------------------------------------------------------
@@ -193,7 +204,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_application_window_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 #  $s = self._buildable_interface($native-sub) unless ?$s;
@@ -207,7 +217,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_new:
+#TM:0:_gtk_application_window_new:
+#`{{
 =begin pod
 =head2 gtk_application_window_new
 
@@ -220,9 +231,11 @@ Returns: a newly created B<Gnome::Gtk3::ApplicationWindow>
 =item N-GObject $application; a B<Gnome::Gtk3::Application>
 
 =end pod
+}}
 
-sub gtk_application_window_new ( N-GObject $application --> N-GObject )
+sub _gtk_application_window_new ( N-GObject $application --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_application_window_new')
   { * }
 
 #-------------------------------------------------------------------------------

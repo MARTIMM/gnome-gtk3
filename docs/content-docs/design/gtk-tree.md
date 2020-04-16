@@ -10,7 +10,6 @@ layout: sidebar
 
 Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules made inheritable are noted with ♥. Inheritance is a bit more complex than normal, info will be given in due time. Modules in under construction are marked with ⛏. Modules that will change a lot and even that it can be removed are marked with ⛔. The symbol 🗸 means that the module is tested, unneeded subs are removed, documentation done etc. (that will show up almost nowhere :- ).
 
-
 ```
 Tree of Gtk C structures                        Raku module
 ----------------------------------------------- --------------------------------
@@ -30,11 +29,11 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   │   ├── GtkFileChooserDialog      FileChooserDialog
 │   │   │   │   │   │   ├── GtkFontChooserDialog
 │   │   │   │   │   │   ├─✗ GtkFontSelectionDialog    Deprecated
-│   │   │   │   │   │   ├── GtkMessageDialog          MessageDialog
+│   │   │   │   │   │   ├── GtkMessageDialog          MessageDialog ♥
 │   │   │   │   │   │   ├── GtkPageSetupUnixDialog
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
 │   │   │   │   │   │   ╰── GtkRecentChooserDialog
-│   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
+│   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow ♥
 │   │   │   │   │   ├── GtkAssistant                  Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow
 │   │   │   │   │   ├── GtkPlug
@@ -68,9 +67,9 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkExpander
 │   │   │   │   ├── GtkFlowBoxChild
 │   │   │   │   ├── GtkHandleBox
-│   │   │   │   ├── GtkListBoxRow                     ListBoxRow
-│   │   │   │   ├── GtkToolItem                       ToolItem
-│   │   │   │   │   ├── GtkToolButton                 ToolButton
+│   │   │   │   ├── GtkListBoxRow               ListBoxRow
+│   │   │   │   ├── GtkToolItem                     ToolItem
+│   │   │   │   │   ├── GtkToolButton               ToolButton
 │   │   │   │   │   │   ├── GtkMenuToolButton
 │   │   │   │   │   │   ╰── GtkToggleToolButton
 │   │   │   │   │   │       ╰── GtkRadioToolButton
@@ -78,8 +77,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkOverlay
 │   │   │   │   ├── GtkScrolledWindow           ScrolledWindow
 │   │   │   │   │   ╰── GtkPlacesSidebar        PlacesSidebar
-│   │   │   │   ├── GtkPopover
-│   │   │   │   │   ╰── GtkPopoverMenu
+│   │   │   │   ├── GtkPopover                  Popover
+│   │   │   │   │   ╰── GtkPopoverMenu          PopoverMenu
 │   │   │   │   ├── GtkRevealer
 │   │   │   │   ├── GtkSearchBar
 │   │   │   │   ├── GtkStackSidebar             StackSidebar
@@ -126,7 +125,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ├── GtkToolbar
 │   │   │   ├── GtkToolItemGroup
 │   │   │   ├── GtkToolPalette
-│   │   │   ╰── GtkTreeView                     TreeView
+│   │   │   ╰── GtkTreeView                     TreeView ♥
 │   │   ├─✗ GtkMisc                             Deprecated, Keep hierarchy
 │   │   │   ├── GtkLabel                        Label
 │   │   │   │   ╰── GtkAccelLabel
@@ -233,8 +232,8 @@ GObject                                         Gnome::GObject::Object
 ├─✗ GtkThemingEngine                            Deprecated
 ├── GtkTreeModelFilter
 ├── GtkTreeModelSort
-├── GtkTreeSelection
-├── GtkTreeStore                                TreeStore
+├── GtkTreeSelection                            ⛔TreeSelection
+├── GtkTreeStore                                TreeStore ♥
 ├─✗ GtkUIManager                                Deprecated
 ├── GtkWindowGroup
 ├── GtkTooltip

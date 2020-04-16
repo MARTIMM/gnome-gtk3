@@ -236,6 +236,10 @@
     url: '/content-docs/reference/Gtk3/TreeRowReference.html'
     doc: 3
     test: 31
+  - title: "TreeSelection"
+    url: '/content-docs/reference/Gtk3/TreeSelection.html'
+    doc: 1
+    test: 1
 
   - title: '-'
 
@@ -302,6 +306,14 @@
     test: 1
   - title: "MenuShell"
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+    doc: 1
+    test: 1
+  - title: "Popover"
+    url: '/content-docs/reference/Gtk3/Popover.html'
+    doc: 1
+    test: 1
+  - title: "PopoverMenu"
+    url: '/content-docs/reference/Gtk3/PopoverMenu.html'
     doc: 1
     test: 1
   - title: "RecentChooserMenu"
