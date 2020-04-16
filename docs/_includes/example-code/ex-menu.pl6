@@ -50,8 +50,8 @@ class AppSignalHandlers {
 # Initialize the callback handler class
 my AppSignalHandlers $ash .= new;
 
-my Gnome::GObject::Type $type .= new;
-my int32 $menu-shell-gtype = $type.g_type_from_name('GtkMenuShell');
+#my Gnome::GObject::Type $type .= new;
+#my int32 $menu-shell-gtype = $type.g_type_from_name('GtkMenuShell');
 
 # Create a top level window and set a title
 my Gnome::Gtk3::Window $top-window .= new(:title('A window with a menu'));
