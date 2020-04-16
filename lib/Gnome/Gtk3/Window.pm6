@@ -1448,29 +1448,17 @@ sub gtk_window_get_icon_list ( N-GObject $window )
 =begin pod
 =head2 [[gtk_] window_] set_icon
 
-Sets up the icon representing a B<Gnome::Gtk3::Window>. This icon is used when
-the window is minimized (also known as iconified).  Some window
-managers or desktop environments may also place it in the window
-frame, or display it in other contexts. On others, the icon is not
-used at all, so your mileage may vary.
+Sets up the icon representing a B<Gnome::Gtk3::Window>. This icon is used when the window is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts. On others, the icon is not used at all, so your mileage may vary.
 
-The icon should be provided in whatever size it was naturally
-drawn; that is, don’t scale the image before passing it to
-GTK+. Scaling is postponed until the last minute, when the desired
-final size is known, to allow best quality.
+The icon should be provided in whatever size it was naturally drawn; that is, don’t scale the image before passing it to GTK+. Scaling is postponed until the last minute, when the desired final size is known, to allow best quality.
 
-If you have your icon hand-drawn in multiple sizes, use
-C<gtk_window_set_icon_list()>. Then the best size will be used.
+If you have your icon hand-drawn in multiple sizes, use C<gtk_window_set_icon_list()>. Then the best size will be used. This function is equivalent to calling C<gtk_window_set_icon_list()> with a 1-element list.
 
-This function is equivalent to calling C<gtk_window_set_icon_list()>
-with a 1-element list.
-
-See also C<gtk_window_set_default_icon_list()> to set the icon
-for all windows in your application in one go.
+See also C<gtk_window_set_default_icon_list()> to set the icon for all windows in your application in one go.
 
   method gtk_window_set_icon ( N-GObject $icon )
 
-=item N-GObject $icon; (allow-none): icon image, or C<Any>
+=item N-GObject $icon; icon image, or undefined
 
 =end pod
 
