@@ -49,11 +49,33 @@ The XML format understood by **Gnome::Gtk3::Builder** for **GMenuModel** consist
 
 Attribute values can be translated using gettext, like other **Gnome::Gtk3::Builder** content. `<attribute>` elements can be marked for translation with a `translatable="yes"` attribute. It is also possible to specify message context and translator comments, using the context and comments attributes. To make use of this, the **Gnome::Gtk3::Builder** must have been given the gettext domain to use.
 
-The following attributes are used when constructing menu items: - "label": a user-visible string to display - "action": the prefixed name of the action to trigger - "target": the parameter to use when activating the action - "icon" and "verb-icon": names of icons that may be displayed - "submenu-action": name of an action that may be used to determine if a submenu can be opened - "hidden-when": a string used to determine when the item will be hidden. Possible values include "action-disabled", "action-missing", "macos-menubar".
+The following attributes are used when constructing menu items:
 
-The following attributes are used when constructing sections: - "label": a user-visible string to use as section heading - "display-hint": a string used to determine special formatting for the section. Possible values include "horizontal-buttons". - "text-direction": a string used to determine the **Gnome::Gtk3::TextDirection** to use when "display-hint" is set to "horizontal-buttons". Possible values include "rtl", "ltr", and "none".
+  * "label": a user-visible string to display
 
-The following attributes are used when constructing submenus: - "label": a user-visible string to display - "icon": icon name to display
+  * "action": the prefixed name of the action to trigger
+
+  * "target": the parameter to use when activating the action
+
+  * "icon" and "verb-icon": names of icons that may be displayed
+
+  * "submenu-action": name of an action that may be used to determine if a submenu can be opened
+
+  * "hidden-when": a string used to determine when the item will be hidden. Possible values include "action-disabled", "action-missing", "macos-menubar".
+
+The following attributes are used when constructing sections:
+
+  * "label": a user-visible string to use as section heading
+
+  * "display-hint": a string used to determine special formatting for the section. Possible values include "horizontal-buttons".
+
+  * "text-direction": a string used to determine the **Gnome::Gtk3::TextDirection** to use when "display-hint" is set to "horizontal-buttons". Possible values include "rtl", "ltr", and "none".
+
+The following attributes are used when constructing submenus:
+
+  * "label": a user-visible string to display
+
+  * "icon": icon name to display
 
 Synopsis
 ========
@@ -64,13 +86,32 @@ Declaration
     unit class Gnome::Gtk3::ApplicationWindow;
     also is Gnome::Gtk3::Window;
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::ApplicationWindow;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::ApplicationWindow;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::ApplicationWindow class process the options
+      self.bless( :GtkApplicationWindow, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
 new
 ---
 
-Create a new ApplicationWindow object.
+Create a new **Gnome::Gtk3::ApplicationWindow** based on a **Gnome::Gtk3::Application** object.
 
     multi method new (N-GObject :$application!)
 
@@ -81,17 +122,6 @@ Create a ApplicationWindow object using a native object from elsewhere. See also
 Create a ApplicationWindow object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-gtk_application_window_new
---------------------------
-
-Creates a new **Gnome::Gtk3::ApplicationWindow**.
-
-Returns: a newly created **Gnome::Gtk3::ApplicationWindow**
-
-    method gtk_application_window_new ( N-GObject $application --> N-GObject )
-
-  * N-GObject $application; a **Gnome::Gtk3::Application**
 
 [gtk_application_window_] set_show_menubar
 ------------------------------------------

@@ -23,21 +23,6 @@ An example of a UI Definition fragment for a tree store:
       </columns>
     </object>
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::TreeStore implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * [Gnome::Gtk3::TreeModel](TreeModel.html)
-
-  * Gnome::Gtk3::TreeDragSource
-
-  * Gnome::Gtk3::TreeDragDest
-
-  * Gnome::Gtk3::TreeSortable
-
 See Also
 --------
 
@@ -51,8 +36,25 @@ Declaration
 
     unit class Gnome::Gtk3::TreeStore;
     also is Gnome::GObject::Object;
-    also does Gnome::Gtk3::Buildable;
-    also does Gnome::Gtk3::TreeModel;
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::TreeStore;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::TreeStore;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::TreeStore class process the options
+      self.bless( :GtkTreeStore, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Methods
 =======
@@ -60,30 +62,19 @@ Methods
 new
 ---
 
-Create a new TreeStore object with the given field types.
+Creates a new tree store as with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
+
+As an example, `.new( :field-types( G_TYPE_INT, G_TYPE_STRING, $pixbuf.get-type());` will create a new **Gnome::Gtk3::TreeStore** with three columns, of type int, string and a pixbuf respectively. Note that there is no `GDK_TYPE_PIXBUF` type because it is not a fundamental type like `G_TYPE_INT`.
 
     multi method new ( Bool :@field-types! )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-[gtk_] tree_store_new
----------------------
-
-Creates a new tree store as with columns each of the types passed in. Note that only types derived from standard GObject fundamental types are supported.
-
-As an example, `$ts.gtk_tree_store_new( G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);` will create a new **Gnome::Gtk3::TreeStore** with three columns, of type int, and two of type string respectively.
-
-Returns: a new **Gnome::Gtk3::TreeStore**
-
-    method gtk_tree_store_new ( Int $column-type, ... --> N-GObject  )
-
-  * Int $column-type; all **GType** types for the columns, from first to last
 
 [[gtk_] tree_store_] set_value
 ------------------------------
@@ -190,7 +181,7 @@ Since: 2.10
       --> Gnome::Gtk3::TreeIter
     )
 
-  * Gnome::Gtk3::TreeIter $parent; A valid iterator, or `Any`.
+  * Gnome::Gtk3::TreeIter $parent; A valid iterator, or undefined.
 
   * Int $position; position to insert the new row, or -1 to append after existing rows
 

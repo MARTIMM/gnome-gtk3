@@ -29,8 +29,9 @@ Connecting the popup signal handler.
         if $event.event-any.type ~~ GDK_BUTTON_PRESS {
           my GdkEventButton $event-button = $event;
           if $event-button.button ~~ GDK_BUTTON_SECONDARY {
-            $menu.gtk_menu_popup(
-              Any, Any, Any, Any, $event-button.button, $event-button.time
+
+            $menu.pop-at-widget(
+              $window, GDK_GRAVITY_SOUTH, GDK_GRAVITY_CENTER, $event
             );
 
             $ret-value = 1;
@@ -66,10 +67,6 @@ The main CSS node of **Gnome::Gtk3::Menu** has name **menu**, and there are two 
 Implemented Interfaces
 ----------------------
 
-Gnome::Gtk3::Menu implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -78,7 +75,6 @@ Declaration
 
     unit class Gnome::Gtk3::Menu;
     also is Gnome::Gtk3::MenuShell;
-    also does Gnome::Gtk3::Buildable;
 
 Types
 =====
@@ -112,14 +108,60 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-[gtk_] menu_new
----------------
+[[gtk_] menu_] popup_at_rect
+----------------------------
 
-Creates a new **Gnome::Gtk3::Menu**
+Displays *$menu* and makes it available for selection.
 
-Returns: a new **Gnome::Gtk3::Menu**
+See `gtk_menu_popup_at_widget()` and `gtk_menu_popup_at_pointer()`, which handle more common cases for popping up menus.
 
-    method gtk_menu_new ( --> N-GObject  )
+The menu will be positioned at *$rect*, aligning their anchor points. *$rect* is relative to the top-left corner of *$rect_window*. *$rect_anchor* and *$menu_anchor* determine anchor points on *$rect* and *$menu* to pin together. *$menu* can optionally be offset by *$rect-anchor-dx* and *$rect-anchor-dy*.
+
+Anchors should be specified under the assumption that the text direction is left-to-right; they will be flipped horizontally automatically if the text direction is right-to-left.
+
+Other properties that influence the behaviour of this function are *anchor-hints* and *menu-type-hint*. Connect to the *popped-up* signal to find out how it was actually positioned.
+
+    method gtk_menu_popup_at_rect (
+      N-GObject $rect_window, N-GdkRectangle $rect,
+      GdkGravity $rect_anchor, GdkGravity $menu_anchor,
+      GdkEvent $trigger_event
+    )
+
+  * N-GObject $rect_window; the **Gnome::Gdk3::Window** *$rect* is relative to
+
+  * N-GObject $rect; the **Gnome::Gdk3::Rectangle** to align the *menu* with
+
+  * GdkGravity $rect_anchor; the point on *$rect* to align with *menu*'s anchor point
+
+  * GdkGravity $menu_anchor; the point on *menu* to align with *rect*'s anchor point
+
+  * GdkEvent $trigger_event; the **Gnome::Gdk3::Event** that initiated this request or undefined if it's the current event
+
+[[gtk_] menu_] popup_at_widget
+------------------------------
+
+Displays the *menu* and makes it available for selection.
+
+![](images/popup-anchors.png)
+
+The menu will be positioned at *$widget*, aligning their anchor points. *$widget_anchor* and *$menu_anchor* determine anchor points on *$widget* and the menu to pin together.
+
+Anchors should be specified under the assumption that the text direction is left-to-right; they will be flipped horizontally automatically if the text direction is right-to-left.
+
+Other properties that influence the behaviour of this function are *anchor-hints* and *menu-type-hint*. Connect to the *popped-up* signal to find out how it was actually positioned.
+
+    method gtk_menu_popup_at_widget (
+      N-GObject $widget, GdkGravity $widget_anchor,
+      GdkGravity $menu_anchor, GdkEvent $trigger_event
+    )
+
+  * N-GObject $widget; the widget to align the menu with
+
+  * GdkGravity $widget_anchor; the point on *$widget* to align with the menu's anchor point
+
+  * GdkGravity $menu_anchor; the point on the menu to align with *$widget*'s anchor point
+
+  * GdkEvent $trigger_event; (nullable): the *GdkEvent* that initiated this request or `Any` if it's the current event
 
 [gtk_] menu_reposition
 ----------------------
@@ -193,8 +235,6 @@ Retrieves the accelerator path set on the menu.
 
 Returns: the accelerator path set on the menu.
 
-Since: 2.14
-
     method gtk_menu_get_accel_path ( --> Str  )
 
 [gtk_] menu_detach
@@ -229,8 +269,6 @@ Moves *child* to a new *position* in the list of *menu* children.
 
 Sets the **Gnome::Gdk3::Screen** on which the menu will be displayed.
 
-Since: 2.2
-
     method gtk_menu_set_screen ( N-GObject $screen )
 
   * N-GObject $screen; (allow-none): a **Gnome::Gdk3::Screen**, or `Any` if the screen should be determined by the widget the menu is attached to
@@ -241,8 +279,6 @@ Since: 2.2
 Adds a new **Gnome::Gtk3::MenuItem** to a (table) menu. The number of “cells” that an item will occupy is specified by *left_attach*, *right_attach*, *top_attach* and *bottom_attach*. These each represent the leftmost, rightmost, uppermost and lower column and row numbers of the table. (Columns and rows are indexed from zero).
 
 Note that this function is not related to `gtk_menu_detach()`.
-
-Since: 2.4
 
     method gtk_menu_attach ( N-GObject $child, UInt $left_attach, UInt $right_attach, UInt $top_attach, UInt $bottom_attach )
 
@@ -263,8 +299,6 @@ Informs GTK+ on which monitor a menu should be popped up. See `gdk_monitor_get_g
 
 This function should be called from a **Gnome::Gtk3::MenuPositionFunc** if the menu should not appear on the same monitor as the pointer. This information can’t be reliably inferred from the coordinates returned by a **Gnome::Gtk3::MenuPositionFunc**, since, for very long menus, these coordinates may extend beyond the monitor boundaries or even the screen boundaries.
 
-Since: 2.4
-
     method gtk_menu_set_monitor ( Int $monitor_num )
 
   * Int $monitor_num; the number of the monitor on which the menu should be popped up
@@ -275,8 +309,6 @@ Since: 2.4
 Retrieves the number of the monitor on which to show the menu.
 
 Returns: the number of the monitor on which the menu should be popped up or -1, if no monitor has been set
-
-Since: 2.14
 
     method gtk_menu_get_monitor ( --> Int  )
 
@@ -294,8 +326,6 @@ Returns a list of the menus which are attached to this widget. This list is owne
 
 Returns: (element-type **Gnome::Gtk3::Widget**) (transfer none): the list of menus attached to his widget.
 
-Since: 2.6
-
     method gtk_menu_get_for_attach_widget ( N-GObject $widget --> N-GList  )
 
   * N-GObject $widget; a **Gnome::Gtk3::Widget**
@@ -304,8 +334,6 @@ Since: 2.6
 --------------------------------------
 
 Sets whether the menu should reserve space for drawing toggles or icons, regardless of their actual presence.
-
-Since: 2.18
 
     method gtk_menu_set_reserve_toggle_size ( Int $reserve_toggle_size )
 
@@ -317,8 +345,6 @@ Since: 2.18
 Returns whether the menu reserves space for toggles and icons, regardless of their actual presence.
 
 Returns: Whether the menu reserves toggle space
-
-Since: 2.18
 
     method gtk_menu_get_reserve_toggle_size ( --> Int  )
 
@@ -382,8 +408,6 @@ The blue menu is *menu*'s ideal position, the green menu is *flipped_rect*, and 
 
 See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *rect-anchor-dy*, and *menu-type-hint*.
 
-Since: 3.22 Stability: Unstable
-
     method handler (
       Unknown type G_TYPE_POINTER $flipped_rect,
       Unknown type G_TYPE_POINTER $final_rect,
@@ -418,13 +442,13 @@ Supported properties
 
 ### Active
 
-The index of the currently selected menu item, or -1 if no menu item is selected. Since: 2.14
+The index of the currently selected menu item, or -1 if no menu item is selected.
 
 The **Gnome::GObject::Value** type of property *active* is `G_TYPE_INT`.
 
 ### Accel Group
 
-The accel group holding accelerators for the menu. Since: 2.14
+The accel group holding accelerators for the menu.
 
 Widget type: GTK_TYPE_ACCEL_GROUP
 
@@ -432,13 +456,13 @@ The **Gnome::GObject::Value** type of property *accel-group* is `G_TYPE_OBJECT`.
 
 ### Accel Path
 
-An accel path used to conveniently construct accel paths of child items. Since: 2.14
+An accel path used to conveniently construct accel paths of child items.
 
 The **Gnome::GObject::Value** type of property *accel-path* is `G_TYPE_STRING`.
 
 ### Attach Widget
 
-The widget the menu is attached to. Setting this property attaches the menu without a **Gnome::Gtk3::MenuDetachFunc**. If you need to use a detacher, use `gtk_menu_attach_to_widget()` directly. Since: 2.14
+The widget the menu is attached to. Setting this property attaches the menu without a **Gnome::Gtk3::MenuDetachFunc**. If you need to use a detacher, use `gtk_menu_attach_to_widget()` directly.
 
 Widget type: GTK_TYPE_WIDGET
 
@@ -446,37 +470,37 @@ The **Gnome::GObject::Value** type of property *attach-widget* is `G_TYPE_OBJECT
 
 ### Monitor
 
-The monitor the menu will be popped up on. Since: 2.14
+The monitor the menu will be popped up on.
 
 The **Gnome::GObject::Value** type of property *monitor* is `G_TYPE_INT`.
 
 ### Reserve Toggle Size
 
-A boolean that indicates whether the menu reserves space for toggles and icons, regardless of their actual presence. This property should only be changed from its default value for special-purposes such as tabular menus. Regular menus that are connected to a menu bar or context menus should reserve toggle space for consistency. Since: 2.18
+A boolean that indicates whether the menu reserves space for toggles and icons, regardless of their actual presence. This property should only be changed from its default value for special-purposes such as tabular menus. Regular menus that are connected to a menu bar or context menus should reserve toggle space for consistency.
 
 The **Gnome::GObject::Value** type of property *reserve-toggle-size* is `G_TYPE_BOOLEAN`.
 
 ### Anchor hints
 
-Positioning hints for aligning the menu relative to a rectangle. These hints determine how the menu should be positioned in the case that the menu would fall off-screen if placed in its ideal position. ![](images/popup-flip.png) For example, `GDK_ANCHOR_FLIP_Y` will replace `GDK_GRAVITY_NORTH_WEST` with `GDK_GRAVITY_SOUTH_WEST` and vice versa if the menu extends beyond the bottom edge of the monitor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *rect-anchor-dx*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+Positioning hints for aligning the menu relative to a rectangle. These hints determine how the menu should be positioned in the case that the menu would fall off-screen if placed in its ideal position. ![](images/popup-flip.png) For example, `GDK_ANCHOR_FLIP_Y` will replace `GDK_GRAVITY_NORTH_WEST` with `GDK_GRAVITY_SOUTH_WEST` and vice versa if the menu extends beyond the bottom edge of the monitor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *rect-anchor-dx*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*.
 
 The **Gnome::GObject::Value** type of property *anchor-hints* is `G_TYPE_FLAGS`.
 
 ### Rect anchor dx
 
-Horizontal offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+Horizontal offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dy*, *menu-type-hint*, and *popped-up*.
 
 The **Gnome::GObject::Value** type of property *rect-anchor-dx* is `G_TYPE_INT`.
 
 ### Rect anchor dy
 
-Vertical offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *menu-type-hint*, and *popped-up*. Since: 3.22 Stability: Unstable
+Vertical offset to apply to the menu, i.e. the rectangle or widget anchor. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *menu-type-hint*, and *popped-up*.
 
 The **Gnome::GObject::Value** type of property *rect-anchor-dy* is `G_TYPE_INT`.
 
 ### Menu type hint
 
-The **Gnome::Gdk3::WindowTypeHint** to use for the menu's **Gnome::Gdk3::Window**. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *rect-anchor-dy*, and *popped-up*. Since: 3.22 Stability: Unstable Widget type: GDK_TYPE_WINDOW_TYPE_HINT
+The **Gnome::Gdk3::WindowTypeHint** to use for the menu's **Gnome::Gdk3::Window**. See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at_pointer()`, *anchor-hints*, *rect-anchor-dx*, *rect-anchor-dy*, and *popped-up*. Widget type: GDK_TYPE_WINDOW_TYPE_HINT
 
 The **Gnome::GObject::Value** type of property *menu-type-hint* is `G_TYPE_ENUM`.
 

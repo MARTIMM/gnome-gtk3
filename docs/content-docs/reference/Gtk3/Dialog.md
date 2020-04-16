@@ -10,13 +10,13 @@ Dialog boxes are a convenient way to prompt the user for a small amount of input
 
 GTK+ treats a dialog as a window split vertically. The top section is a VBox, and is where widgets such as a **Gnome::Gtk3::Label** or a be packed. The bottom area is known as the “action area”. This is generally used for packing buttons into the dialog which may perform functions such as cancel, ok, or apply.
 
-**Gnome::Gtk3::Dialog** boxes are created with a call to `gtk_dialog_new()` or `gtk_dialog_new_with_buttons()`. `gtk_dialog_new_with_buttons()` is recommended; it allows you to set the dialog title, some convenient flags, and add simple buttons.
+**Gnome::Gtk3::Dialog** boxes are created with a call to `.new()` or `.new(:$title)`. `.new(:$title)` is recommended; it allows you to set the dialog title, some convenient flags (with `:$flags`), and add simple buttons (with `:$buttons`).
 
 If “dialog” is a newly created dialog, the two primary areas of the window can be accessed through `gtk_dialog_get_content_area()` and `gtk_dialog_get_action_area()`, as can be seen from the example below.
 
 A “modal” dialog (that is, one which freezes the rest of the application from user input), can be created by calling `gtk_window_set_modal()` on the dialog. Use the `GTK_WINDOW()` macro to cast the widget returned from `gtk_dialog_new()` into a **Gnome::Gtk3::Window**. When using `gtk_dialog_new_with_buttons()` you can also pass the **GTK_DIALOG_MODAL** flag to make a dialog modal.
 
-If you add buttons to **Gnome::Gtk3::Dialog** using `gtk_dialog_new_with_buttons()`, `gtk_dialog_add_button()`, `gtk_dialog_add_buttons()`, or `gtk_dialog_add_action_widget()`, clicking the button will emit a signal called *response* with a response ID that you specified. GTK+ will never assign a meaning to positive response IDs; these are entirely user-defined. But for convenience, you can use the response IDs in the **Gnome::Gtk3::ResponseType** enumeration (these all have values less than zero). If a dialog receives a delete event, the *response* signal will be emitted with a response ID of **GTK_RESPONSE_DELETE_EVENT**.
+If you add buttons to **Gnome::Gtk3::Dialog** using `.new(:$buttons)`, `gtk_dialog_add_button()`, `gtk_dialog_add_buttons()`, or `gtk_dialog_add_action_widget()`, clicking the button will emit a signal called *response* with a response ID that you specified. GTK+ will never assign a meaning to positive response IDs; these are entirely user-defined. But for convenience, you can use the response IDs in the **Gnome::Gtk3::ResponseType** enumeration (these all have values less than zero). If a dialog receives a delete event, the *response* signal will be emitted with a response ID of **GTK_RESPONSE_DELETE_EVENT**.
 
 If you want to block waiting for a dialog to return before returning control flow to your code, you can call `gtk_dialog_run()`. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
 
@@ -82,7 +82,6 @@ Declaration
 
     unit class Gnome::Gtk3::Dialog;
     also is Gnome::Gtk3::Window;
-    also does Gnome::Gtk3::Buildable;
 
 Inheriting this class
 ---------------------
@@ -165,64 +164,20 @@ Create a new plain object.
 
     multi method new ( )
 
-Create a dialog with title flags and buttons. It uses `gtk_dialog_new_with_buttons()` to create the dialog.
+Create a dialog with title flags and buttons.
 
     multi method new (
       Str :$title!, Gnome::GObject::Object :$parent, Int :$flags,
       List :$buttons-spec
     )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-[gtk_] dialog_new
------------------
-
-Creates a new dialog box.
-
-Widgets should not be packed into this **Gnome::Gtk3::Window** directly, but into the *vbox* and *action_area*, as described above.
-
-Returns: the new dialog as a **Gnome::Gtk3::Widget**
-
-    method gtk_dialog_new ( --> N-GObject  )
-
-[[gtk_] dialog_] new_with_buttons
----------------------------------
-
-Creates a new **Gnome::Gtk3::Dialog** with title *$title* (or `Any` for the default title; see `gtk_window_set_title()`) and transient parent *$parent* (or `Any` for none; see `gtk_window_set_transient_for()`). The *$flags* argument can be used to make the dialog modal (**GTK_DIALOG_MODAL**) and/or to have it destroyed along with its transient parent (**GTK_DIALOG_DESTROY_WITH_PARENT**). After *$flags*, button text/response ID pairs should be listed, with a `Any` pointer ending the list. Button text can be arbitrary text. A response ID can be any positive number, or one of the values in the **GtkResponseType** enumeration. If the user clicks one of these dialog buttons, **Gnome::Gtk3::Dialog** will emit the *response* signal with the corresponding response ID. If a **Gnome::Gtk3::Dialog** receives the *delete-event* signal, it will emit *response* with a response ID of **GTK_RESPONSE_DELETE_EVENT**. However, destroying a dialog does not emit the *response* signal; so be careful relying on *response* when using the **GTK_DIALOG_DESTROY_WITH_PARENT** flag. Buttons are from left to right, so the first button in the list will be the leftmost button in the dialog.
-
-Here’s a simple example:
-
-    my $dialog = gtk_dialog_new_with_buttons(
-      "My dialog", $top-window,
-      GTK_DIALOG_MODAL +| GTK_DIALOG_DESTROY_WITH_PARENT,
-      'Ok', GTK_RESPONSE_ACCEPT, "Cancel", GTK_RESPONSE_REJECT
-    );
-
-Returns: a new native Dialog.
-
-    method gtk_dialog_new_with_buttons (
-      Str $title, N-GObject $parent, Int $flags,
-      *@buttons-spec
-      --> N-GObject
-    )
-
-  * Str $title; (allow-none): Title of the dialog, or `Any`.
-
-  * N-GObject $parent; Transient parent of the dialog, or `Any`.
-
-  * Int $flags. A mask of GtkDialogFlags values.
-
-  * *@buttons-spec is a list button specifications. The list has an even number of members of which;
-
-    * Str $button-label to go on the button.
-
-    * $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
 
 [[gtk_] dialog_] add_action_widget
 ----------------------------------
@@ -262,7 +217,7 @@ Calls `gtk_widget_set_sensitive (widget, *setting*)` for each widget in the dial
 [[gtk_] dialog_] set_default_response
 -------------------------------------
 
-Sets the last widget in the dialog’s action area with the given *response_id* as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
+Sets the last widget in the dialog’s action area with the given *$response_id* as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
 
     method gtk_dialog_set_default_response ( Int $response_id )
 
@@ -273,9 +228,7 @@ Sets the last widget in the dialog’s action area with the given *response_id* 
 
 Gets the widget button that uses the given response ID in the action area of a dialog.
 
-Returns: (nullable) (transfer none): the *widget* button that uses the given *response_id*, or `Any`.
-
-Since: 2.20
+Returns: the *widget* button that uses the given *response_id*, or undefined.
 
     method gtk_dialog_get_widget_for_response ( Int $response_id --> N-GObject  )
 
@@ -286,9 +239,7 @@ Since: 2.20
 
 Gets the response id of a widget in the action area of a dialog.
 
-Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn’t have a response id set.
-
-Since: 2.8
+Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn’t have a response id set. DeleteMsgDialog
 
     method gtk_dialog_get_response_for_widget ( N-GObject $widget --> Int  )
 
@@ -339,9 +290,7 @@ Returns: response ID
 
 Returns the content area of *dialog*.
 
-Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**.
-
-Since: 2.14
+Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**. DeleteMsgDialog
 
     method gtk_dialog_get_content_area ( --> N-GObject  )
 
@@ -350,9 +299,7 @@ Since: 2.14
 
 Returns the header bar of *dialog*. Note that the headerbar is only used by the dialog if the *use-header-bar* property is `1`.
 
-Returns: (transfer none): the header bar
-
-Since: 3.12
+Returns: (transfer none): the header bar DeleteMsgDialog
 
     method gtk_dialog_get_header_bar ( --> N-GObject  )
 
