@@ -1,4 +1,4 @@
-#TL:0:Gnome::Gtk3::MessageDialog:
+#TL:1:Gnome::Gtk3::MessageDialog:
 
 use v6;
 #-------------------------------------------------------------------------------
@@ -61,11 +61,13 @@ An example for a non-modal dialog:
 The B<Gnome::Gtk3::MessageDialog> implementation of the B<Gnome::Gtk3::Buildable> interface exposes the message area as an internal child with the name “message_area”.
 
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::MessageDialog implements
 =comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Buildable](Buildable.html)
+=end comment
 
 =head2 See Also
 
@@ -76,7 +78,25 @@ B<Gnome::Gtk3::Dialog>
 
   unit class Gnome::Gtk3::MessageDialog;
   also is Gnome::Gtk3::Dialog;
-  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Buildable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::MessageDialog;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::MessageDialog;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::MessageDialog class process the options
+    self.bless( :GtkMessageDialog, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -141,6 +161,8 @@ Create a new MessageDialog object.
     --> N-GObject
   )
 
+ Creates a new message dialog, which is a simple dialog with some text that is marked up with the [Pango text markup language][PangoMarkupFormat].
+
   multi method new (
     Str :$markup-message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
     GtkMessageType :$type?, GtkButtonsType :$buttons?
@@ -173,60 +195,63 @@ Create a MessageDialog object using a native object from a builder. See also B<G
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::MessageDialog';
+  if self.^name eq 'Gnome::Gtk3::MessageDialog' or %options<GtkMessageDialog> {
 
-  # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif ? %options<widget> || ? %options<native-object> ||
+       ? %options<build-id> {
+      # provided in Gnome::GObject::Object
+    }
+
+    elsif ?%options<message> {
+      my $parent = %options<parent> // N-GObject;
+      $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
+
+      my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
+      my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
+      my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
+
+      self.set-native-object(
+        _gtk_message_dialog_new(
+          $parent, $flags, $type, $buttons, %options<message>
+        )
+      );
+    }
+
+    elsif ?%options<markup-message> {
+      my $parent = %options<parent> // N-GObject;
+      $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
+
+      my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
+      my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
+      my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
+
+      self.set-native-object(
+        _gtk_message_dialog_new_with_markup(
+          $parent, $flags, $type, $buttons, %options<markup-message>
+        )
+      );
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message(
+          'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+          self.^name ~ ': ' ~ %options.keys.join(', ')
+        )
+      );
+    }
+
+    # create default object
+    else {
+      die X::Gnome.new(:message('No options found'));
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkMessageDialog');
   }
-
-  elsif ?%options<message> {
-    my $parent = %options<parent> // N-GObject;
-    $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
-
-    my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
-    my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
-    my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
-
-    self.set-native-object(
-      gtk_message_dialog_new(
-        $parent, $flags, $type, $buttons, %options<message>
-      )
-    );
-  }
-
-  elsif ?%options<markup-message> {
-    my $parent = %options<parent> // N-GObject;
-    $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
-
-    my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
-    my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
-    my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
-
-    self.set-native-object(
-      gtk_message_dialog_new_with_markup(
-        $parent, $flags, $type, $buttons, %options<markup-message>
-      )
-    );
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    die X::Gnome.new(:message('No options found'));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkMessageDialog');
 }
 
 #-------------------------------------------------------------------------------
@@ -249,7 +274,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_message_dialog_new:new(:message)
+#TM:2:_gtk_message_dialog_new:new(:message)
+#`{{
 =begin pod
 =head2 gtk_message_dialog_new
 
@@ -270,23 +296,24 @@ Returns: (transfer none): a new B<Gnome::Gtk3::MessageDialog>
 =item Str $message; A string
 
 =end pod
-
-sub gtk_message_dialog_new (
+}}
+sub _gtk_message_dialog_new (
   N-GObject $parent, int32 $flags, int32 $type, int32 $buttons,
   Str $message
   --> N-GObject
 ) {
   $message ~~ s:g/ '%' / %% /;
-  _gtk_message_dialog_new( $parent, $flags, $type, $buttons, $message)
+  __gtk_message_dialog_new( $parent, $flags, $type, $buttons, $message)
 }
 
-sub _gtk_message_dialog_new ( N-GObject $parent, int32 $flags, int32 $type, int32 $buttons, Str $message --> N-GObject )
+sub __gtk_message_dialog_new ( N-GObject $parent, int32 $flags, int32 $type, int32 $buttons, Str $message --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_message_dialog_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_message_dialog_new_with_markup:new(:markup-message)
+#TM:2:_gtk_message_dialog_new_with_markup:new(:markup-message)
+#`{{
 =begin pod
 =head2 [gtk_message_dialog_] new_with_markup
 
@@ -307,8 +334,7 @@ markup);
 =end comment
 
 Returns: a new B<Gnome::Gtk3::MessageDialog>
-
-Since: 2.4
+DeleteMsgDialog
 
   method gtk_message_dialog_new_with_markup (
     N-GObject $parent, GtkDialogFlags $flags, GtkMessageType $type,
@@ -323,19 +349,20 @@ Since: 2.4
 =item Str $message; a string
 
 =end pod
+}}
 
-sub gtk_message_dialog_new_with_markup (
+sub _gtk_message_dialog_new_with_markup (
   N-GObject $parent, int32 $flags, int32 $type, int32 $buttons,
   Str $message
   --> N-GObject
 ) {
   $message ~~ s:g/ '%' / %% /;
-  _gtk_message_dialog_new_with_markup(
+  __gtk_message_dialog_new_with_markup(
     $parent, $flags, $type, $buttons, $message
   )
 }
 
-sub _gtk_message_dialog_new_with_markup (
+sub __gtk_message_dialog_new_with_markup (
   N-GObject $parent, int32 $flags, int32 $type, int32 $buttons,
   Str $message
   --> N-GObject
@@ -350,8 +377,7 @@ sub _gtk_message_dialog_new_with_markup (
 
 Sets the text of the message dialog to be I<$str>, which is marked
 up with the L<Pango text markup language|PangoMarkupFormathttps://developer.gnome.org/pygtk/stable/pango-markup-language.html>.
-
-Since: 2.4
+DeleteMsgDialog
 
   method gtk_message_dialog_set_markup ( Str $str )
 
@@ -369,8 +395,7 @@ sub gtk_message_dialog_set_markup ( N-GObject $message_dialog, Str $str  )
 =head2 [gtk_message_dialog_] format_secondary_text
 
 Sets the secondary text of the message dialog to be I<$message>.
-
-Since: 2.6
+DeleteMsgDialog
 
   method gtk_message_dialog_format_secondary_text ( Str $message )
 
@@ -411,8 +436,7 @@ gtk_message_dialog_format_secondary_markup (message_dialog,
 g_free (msg);
 ]|
 =end comment
-
-Since: 2.6
+DeleteMsgDialog
 
   method gtk_message_dialog_format_secondary_markup ( Str $message )
 
@@ -439,8 +463,7 @@ sub _gtk_message_dialog_format_secondary_markup ( N-GObject $message_dialog, Str
 Returns the message area of the dialog. This is the box where the dialog’s primary and secondary labels are packed. You can add your own extra content to that box and it will appear below those labels. See C<gtk_dialog_get_content_area()> for the corresponding function in the parent B<Gnome::Gtk3::Dialog>.
 
 Returns: (transfer none): A B<Gnome::Gtk3::Box> corresponding to the “message area” in the I<message_dialog>.
-
-Since: 2.22
+DeleteMsgDialog
 
   method gtk_message_dialog_get_message_area ( --> N-GObject )
 
@@ -485,8 +508,7 @@ The B<Gnome::GObject::Value> type of property I<buttons> is C<G_TYPE_ENUM>.
 
 The primary text of the message dialog. If the dialog has
 a secondary text, this will appear as the title.
-
-Since: 2.10
+DeleteMsgDialog
 
 The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
@@ -495,16 +517,14 @@ The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
 C<1> if the primary text of the dialog includes Pango markup.
 See C<pango_parse_markup()>.
-
-Since: 2.10
+DeleteMsgDialog
 
 The B<Gnome::GObject::Value> type of property I<use-markup> is C<G_TYPE_BOOLEAN>.
 
 =comment #TP:1:secondary-text:
 =head3 Secondary Text
 
-The secondary text of the message dialog.
-Since: 2.10
+The secondary text of the message dialog.DeleteMsgDialog
 
 The B<Gnome::GObject::Value> type of property I<secondary-text> is C<G_TYPE_STRING>.
 
@@ -512,8 +532,7 @@ The B<Gnome::GObject::Value> type of property I<secondary-text> is C<G_TYPE_STRI
 =head3 Use Markup in secondary
 
 C<1> if the secondary text of the dialog includes Pango markup.
-See C<pango_parse_markup()>.
-Since: 2.10
+See C<pango_parse_markup()>.DeleteMsgDialog
 
 The B<Gnome::GObject::Value> type of property I<secondary-use-markup> is C<G_TYPE_BOOLEAN>.
 
@@ -522,8 +541,7 @@ The B<Gnome::GObject::Value> type of property I<secondary-use-markup> is C<G_TYP
 
 The B<Gnome::Gtk3::Box> that corresponds to the message area of this dialog.  See
 C<gtk_message_dialog_get_message_area()> for a detailed description of this
-area.
-Since: 2.22
+area.DeleteMsgDialog
 Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<message-area> is C<G_TYPE_OBJECT>.

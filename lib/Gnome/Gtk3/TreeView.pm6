@@ -72,14 +72,14 @@ An example of a UI definition fragment with B<Gnome::Gtk3::TreeView>:
 
 B<Gnome::Gtk3::TreeView> has a main CSS node with name treeview and style class .view. It has a subnode with name header, which is the parent for all the column header widgets' CSS nodes. For rubberband selection, a subnode with name rubberband is used.
 
-
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::TreeView implements
 =comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =comment item Gnome::Gtk3::Scrollable.
-
+=end comment
 
 =head2 See Also
 
@@ -90,9 +90,27 @@ B<Gnome::Gtk3::TreeViewColumn>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::Tr
 
   unit class Gnome::Gtk3::TreeView;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
+=comment   also does Gnome::Gtk3::Buildable;
 =comment also does Gnome::Atk::ImplementorIface
 =comment also does Gnome::Gtk3::Scrollable.
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::TreeView;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::TreeView;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::TreeView class process the options
+    self.bless( :GtkTreeView, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -104,9 +122,11 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Glib::List;
+use Gnome::Gdk3::Types;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::TreePath;
 #use Gnome::Atk::ImplementorIface;
 #use Gnome::Gtk3::Scrollable;
 
@@ -187,39 +207,40 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::TreeView';
+  if self.^name eq 'Gnome::Gtk3::TreeView' or %options<GtkTreeView> {
 
-  # process all named arguments
-  if %options<empty>:exists {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_tree_view_new());
+    if self.is-valid { }
+
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      # process all named arguments
+      if %options<empty>:exists {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = gtk_tree_view_new();
+      }
+
+      # process all named arguments
+      elsif ? %options<model> {
+        my $model = %options<model>;
+        $model .= get-native-object-no-reffing
+          if $model.^can('get-native-object-no-reffing');
+        $no = gtk_tree_view_new_with_model($model);
+      }
+
+      else {
+        $no = gtk_tree_view_new();
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkTreeView');
   }
-
-  # process all named arguments
-  elsif ? %options<model> {
-    my $model = %options<model>;
-    $model = $model.get-native-object if $model.^name ~~ m/'Gnome::Gtk3'/;
-    self.set-native-object(gtk_tree_view_new_with_model($model));
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if %options<empty>:exists {
-    self.set-native-object(gtk_tree_view_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkTreeView');
 }
 
 #-------------------------------------------------------------------------------
@@ -240,7 +261,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
-
 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_tree_view_new:new()
@@ -316,7 +336,7 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
   is native(&gtk-lib)
   { * }
 
-#`{{
+#`{{}}
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_selection:
 =begin pod
@@ -332,7 +352,7 @@ sub gtk_tree_view_get_selection ( N-GObject $tree_view )
   returns N-GObject
   is native(&gtk-lib)
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:1:gtk_tree_view_get_headers_visible:
@@ -812,9 +832,9 @@ This function only works if the model is set, and I<path> is a valid row on the
 model.  If the model changes before the I<tree_view> is realized, the centered
 path will be modified to reflect this change.
 
-  method gtk_tree_view_scroll_to_cell ( GtkTreePath $path, N-GObject $column, Int $use_align, Num $row_align, Num $col_align )
+  method gtk_tree_view_scroll_to_cell ( N-GtkTreePath $path, N-GObject $column, Int $use_align, Num $row_align, Num $col_align )
 
-=item GtkTreePath $path; (allow-none): The path of the row to move to, or C<Any>.
+=item N-GtkTreePath $path; (allow-none): The path of the row to move to, or C<Any>.
 =item N-GObject $column; (allow-none): The B<Gnome::Gtk3::TreeViewColumn> to move horizontally to, or C<Any>.
 =item Int $use_align; whether to use alignment arguments, or C<0>.
 =item Num $row_align; The vertical alignment of the row specified by I<path>.
@@ -822,7 +842,7 @@ path will be modified to reflect this change.
 
 =end pod
 
-sub gtk_tree_view_scroll_to_cell ( N-GObject $tree_view, GtkTreePath $path, N-GObject $column, int32 $use_align, num32 $row_align, num32 $col_align )
+sub gtk_tree_view_scroll_to_cell ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $column, int32 $use_align, num32 $row_align, num32 $col_align )
   is native(&gtk-lib)
   { * }
 }}
@@ -835,14 +855,14 @@ sub gtk_tree_view_scroll_to_cell ( N-GObject $tree_view, GtkTreePath $path, N-GO
 
 Activates the cell determined by I<path> and I<column>.
 
-  method gtk_tree_view_row_activated ( GtkTreePath $path, N-GObject $column )
+  method gtk_tree_view_row_activated ( N-GtkTreePath $path, N-GObject $column )
 
-=item GtkTreePath $path; The B<Gnome::Gtk3::TreePath> to be activated.
+=item N-GtkTreePath $path; The B<Gnome::Gtk3::TreePath> to be activated.
 =item N-GObject $column; The B<Gnome::Gtk3::TreeViewColumn> to be activated.
 
 =end pod
 
-sub gtk_tree_view_row_activated ( N-GObject $tree_view, GtkTreePath $path, N-GObject $column )
+sub gtk_tree_view_row_activated ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $column )
   is native(&gtk-lib)
   { * }
 }}
@@ -890,13 +910,13 @@ I<path> as necessary.
 
 Since: 2.2
 
-  method gtk_tree_view_expand_to_path ( GtkTreePath $path )
+  method gtk_tree_view_expand_to_path ( N-GtkTreePath $path )
 
-=item GtkTreePath $path; path to a row.
+=item N-GtkTreePath $path; path to a row.
 
 =end pod
 
-sub gtk_tree_view_expand_to_path ( N-GObject $tree_view, GtkTreePath $path )
+sub gtk_tree_view_expand_to_path ( N-GObject $tree_view, N-GtkTreePath $path )
   is native(&gtk-lib)
   { * }
 }}
@@ -911,14 +931,14 @@ Opens the row so its children are visible.
 
 Returns: C<1> if the row existed and had children
 
-  method gtk_tree_view_expand_row ( GtkTreePath $path, Int $open_all --> Int  )
+  method gtk_tree_view_expand_row ( N-GtkTreePath $path, Int $open_all --> Int  )
 
-=item GtkTreePath $path; path to a row
+=item N-GtkTreePath $path; path to a row
 =item Int $open_all; whether to recursively expand, or just expand immediate children
 
 =end pod
 
-sub gtk_tree_view_expand_row ( N-GObject $tree_view, GtkTreePath $path, int32 $open_all )
+sub gtk_tree_view_expand_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 $open_all )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -934,13 +954,13 @@ Collapses a row (hides its child rows, if they exist).
 
 Returns: C<1> if the row was collapsed.
 
-  method gtk_tree_view_collapse_row ( GtkTreePath $path --> Int  )
+  method gtk_tree_view_collapse_row ( N-GtkTreePath $path --> Int  )
 
-=item GtkTreePath $path; path to a row in the I<tree_view>
+=item N-GtkTreePath $path; path to a row in the I<tree_view>
 
 =end pod
 
-sub gtk_tree_view_collapse_row ( N-GObject $tree_view, GtkTreePath $path )
+sub gtk_tree_view_collapse_row ( N-GObject $tree_view, N-GtkTreePath $path )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -975,13 +995,13 @@ Returns C<1> if the node pointed to by I<path> is expanded in I<tree_view>.
 
 Returns: C<1> if B<path> is expanded.
 
-  method gtk_tree_view_row_expanded ( GtkTreePath $path --> Int  )
+  method gtk_tree_view_row_expanded ( N-GtkTreePath $path --> Int  )
 
-=item GtkTreePath $path; A B<Gnome::Gtk3::TreePath> to test expansion state.
+=item N-GtkTreePath $path; A B<Gnome::Gtk3::TreePath> to test expansion state.
 
 =end pod
 
-sub gtk_tree_view_row_expanded ( N-GObject $tree_view, GtkTreePath $path )
+sub gtk_tree_view_row_expanded ( N-GObject $tree_view, N-GtkTreePath $path )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1055,15 +1075,15 @@ can only happen when the widget is realized.
 If I<path> is invalid for I<model>, the current cursor (if any) will be unset
 and the function will return without failing.
 
-  method gtk_tree_view_set_cursor ( GtkTreePath $path, N-GObject $focus_column, Int $start_editing )
+  method gtk_tree_view_set_cursor ( N-GtkTreePath $path, N-GObject $focus_column, Int $start_editing )
 
-=item GtkTreePath $path; A B<Gnome::Gtk3::TreePath>
+=item N-GtkTreePath $path; A B<Gnome::Gtk3::TreePath>
 =item N-GObject $focus_column; (allow-none): A B<Gnome::Gtk3::TreeViewColumn>, or C<Any>
 =item Int $start_editing; C<1> if the specified cell should start being edited.
 
 =end pod
 
-sub gtk_tree_view_set_cursor ( N-GObject $tree_view, GtkTreePath $path, N-GObject $focus_column, int32 $start_editing )
+sub gtk_tree_view_set_cursor ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $focus_column, int32 $start_editing )
   is native(&gtk-lib)
   { * }
 }}
@@ -1091,16 +1111,16 @@ and the function will return without failing.
 
 Since: 2.2
 
-  method gtk_tree_view_set_cursor_on_cell ( GtkTreePath $path, N-GObject $focus_column, N-GObject $focus_cell, Int $start_editing )
+  method gtk_tree_view_set_cursor_on_cell ( N-GtkTreePath $path, N-GObject $focus_column, N-GObject $focus_cell, Int $start_editing )
 
-=item GtkTreePath $path; A B<Gnome::Gtk3::TreePath>
+=item N-GtkTreePath $path; A B<Gnome::Gtk3::TreePath>
 =item N-GObject $focus_column; (allow-none): A B<Gnome::Gtk3::TreeViewColumn>, or C<Any>
 =item N-GObject $focus_cell; (allow-none): A B<Gnome::Gtk3::CellRenderer>, or C<Any>
 =item Int $start_editing; C<1> if the specified cell should start being edited.
 
 =end pod
 
-sub gtk_tree_view_set_cursor_on_cell ( N-GObject $tree_view, GtkTreePath $path, N-GObject $focus_column, N-GObject $focus_cell, int32 $start_editing )
+sub gtk_tree_view_set_cursor_on_cell ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $focus_column, N-GObject $focus_cell, int32 $start_editing )
   is native(&gtk-lib)
   { * }
 }}
@@ -1117,14 +1137,14 @@ currently has focus, then *I<focus_column> will be C<Any>.
 The returned B<Gnome::Gtk3::TreePath> must be freed with C<gtk_tree_path_free()> when
 you are done with it.
 
-  method gtk_tree_view_get_cursor ( GtkTreePath $path, N-GObject $focus_column )
+  method gtk_tree_view_get_cursor ( N-GtkTreePath $path, N-GObject $focus_column )
 
-=item GtkTreePath $path; (out) (transfer full) (optional) (nullable): A pointer to be filled with the current cursor path, or C<Any>
+=item N-GtkTreePath $path; (out) (transfer full) (optional) (nullable): A pointer to be filled with the current cursor path, or C<Any>
 =item N-GObject $focus_column; (out) (transfer none) (optional) (nullable): A pointer to be filled with the current focus column, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_cursor ( N-GObject $tree_view, GtkTreePath $path, N-GObject $focus_column )
+sub gtk_tree_view_get_cursor ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $focus_column )
   is native(&gtk-lib)
   { * }
 }}
@@ -1177,50 +1197,59 @@ C<gtk_tree_view_convert_widget_to_bin_window_coords()>.
 
 Returns: C<1> if a row exists at that coordinate.
 
-  method gtk_tree_view_get_path_at_pos ( Int $x, Int $y, GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
+  method gtk_tree_view_get_path_at_pos ( Int $x, Int $y, N-GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
 
 =item Int $x; The x position to be identified (relative to bin_window).
 =item Int $y; The y position to be identified (relative to bin_window).
-=item GtkTreePath $path; (out) (optional) (nullable): A pointer to a B<Gnome::Gtk3::TreePath> pointer to be filled in, or C<Any>
+=item N-GtkTreePath $path; (out) (optional) (nullable): A pointer to a B<Gnome::Gtk3::TreePath> pointer to be filled in, or C<Any>
 =item N-GObject $column; (out) (transfer none) (optional) (nullable): A pointer to a B<Gnome::Gtk3::TreeViewColumn> pointer to be filled in, or C<Any>
 =item Int $cell_x; (out) (optional): A pointer where the X coordinate relative to the cell can be placed, or C<Any>
 =item Int $cell_y; (out) (optional): A pointer where the Y coordinate relative to the cell can be placed, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_path_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
+sub gtk_tree_view_get_path_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, N-GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
   returns int32
   is native(&gtk-lib)
   { * }
 }}
-#`{{
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_cell_area:
 =begin pod
 =head2 [[gtk_] tree_view_] get_cell_area
 
-Fills the bounding rectangle in bin_window coordinates for the cell at the
-row specified by I<path> and the column specified by I<column>.  If I<path> is
-C<Any>, or points to a path not currently displayed, the I<y> and I<height> fields
-of the rectangle will be filled with 0. If I<column> is C<Any>, the I<x> and I<width>
-fields will be filled with 0.  The sum of all cell rects does not cover the
-entire tree; there are extra pixels in between rows, for example. The
-returned rectangle is equivalent to the I<cell_area> passed to
-C<gtk_cell_renderer_render()>.  This function is only valid if I<tree_view> is
-realized.
+Fills the bounding rectangle in bin_window coordinates for the cell at the row specified by I<$path> and the column specified by I<$column>.  If I<$path> is undefined, or points to a path not currently displayed, the I<y> and I<height> fields of the rectangle will be filled with 0. If I<$column> is undefined, the I<x> and I<width> fields will be filled with 0.  The sum of all cell rects does not cover the entire tree; there are extra pixels in between rows, for example. The returned rectangle is equivalent to the I<cell_area> passed to C<gtk_cell_renderer_render()>.
 
-  method gtk_tree_view_get_cell_area ( GtkTreePath $path, N-GObject $column, N-GObject $rect )
+  method gtk_tree_view_get_cell_area (
+    N-GtkTreePath $path, N-GObject $column
+    --> N-GdkRectangle
+  )
 
-=item GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> for the row, or C<Any> to get only horizontal coordinates
-=item N-GObject $column; (allow-none): a B<Gnome::Gtk3::TreeViewColumn> for the column, or C<Any> to get only vertical coordinates
-=item N-GObject $rect; (out): rectangle to fill with cell rect
+=item N-GtkTreePath $path; a B<Gnome::Gtk3::TreePath> for the row, or C<Any> to get only horizontal coordinates
+=item N-GObject $column; a B<Gnome::Gtk3::TreeViewColumn> for the column, or C<Any> to get only vertical coordinates
+
+Returns a N-GdkRectangle rectangle to fill with cell rectangle
 
 =end pod
 
-sub gtk_tree_view_get_cell_area ( N-GObject $tree_view, GtkTreePath $path, N-GObject $column, N-GObject $rect )
-  is native(&gtk-lib)
+sub gtk_tree_view_get_cell_area (
+  N-GObject $tree_view, N-GtkTreePath $path, N-GObject $column
+  --> N-GdkRectangle
+) {
+  my N-GdkRectangle $rect .= new;
+  _gtk_tree_view_get_cell_area( $tree_view, $path, $column, $rect);
+
+  $rect
+}
+
+sub _gtk_tree_view_get_cell_area (
+  N-GObject $tree_view, N-GtkTreePath $path, N-GObject $column,
+  N-GdkRectangle $rect is rw
+) is native(&gtk-lib)
+  is symbol('gtk_tree_view_get_cell_area')
   { * }
-}}
+
 #`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_background_area:
@@ -1238,15 +1267,15 @@ returned by C<gtk_tree_view_get_cell_area()>, which returns only the cell
 itself, excluding surrounding borders and the tree expander area.
 
 
-  method gtk_tree_view_get_background_area ( GtkTreePath $path, N-GObject $column, N-GObject $rect )
+  method gtk_tree_view_get_background_area ( N-GtkTreePath $path, N-GObject $column, N-GObject $rect )
 
-=item GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> for the row, or C<Any> to get only horizontal coordinates
+=item N-GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> for the row, or C<Any> to get only horizontal coordinates
 =item N-GObject $column; (allow-none): a B<Gnome::Gtk3::TreeViewColumn> for the column, or C<Any> to get only vertical coordiantes
 =item N-GObject $rect; (out): rectangle to fill with cell background rect
 
 =end pod
 
-sub gtk_tree_view_get_background_area ( N-GObject $tree_view, GtkTreePath $path, N-GObject $column, N-GObject $rect )
+sub gtk_tree_view_get_background_area ( N-GObject $tree_view, N-GtkTreePath $path, N-GObject $column, N-GObject $rect )
   is native(&gtk-lib)
   { * }
 }}
@@ -1285,14 +1314,14 @@ Returns: C<1>, if valid paths were placed in I<start_path> and I<end_path>.
 
 Since: 2.8
 
-  method gtk_tree_view_get_visible_range ( GtkTreePath $start_path, GtkTreePath $end_path --> Int  )
+  method gtk_tree_view_get_visible_range ( N-GtkTreePath $start_path, N-GtkTreePath $end_path --> Int  )
 
-=item GtkTreePath $start_path; (out) (allow-none): Return location for start of region, or C<Any>.
-=item GtkTreePath $end_path; (out) (allow-none): Return location for end of region, or C<Any>.
+=item N-GtkTreePath $start_path; (out) (allow-none): Return location for start of region, or C<Any>.
+=item N-GtkTreePath $end_path; (out) (allow-none): Return location for end of region, or C<Any>.
 
 =end pod
 
-sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, GtkTreePath $start_path, GtkTreePath $end_path )
+sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, N-GtkTreePath $start_path, N-GtkTreePath $end_path )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1326,18 +1355,18 @@ C<0> otherwise.
 
 Since: 3.0
 
-  method gtk_tree_view_is_blank_at_pos ( Int $x, Int $y, GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
+  method gtk_tree_view_is_blank_at_pos ( Int $x, Int $y, N-GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
 
 =item Int $x; The x position to be identified (relative to bin_window)
 =item Int $y; The y position to be identified (relative to bin_window)
-=item GtkTreePath $path; (out) (allow-none): A pointer to a B<Gnome::Gtk3::TreePath> pointer to be filled in, or C<Any>
+=item N-GtkTreePath $path; (out) (allow-none): A pointer to a B<Gnome::Gtk3::TreePath> pointer to be filled in, or C<Any>
 =item N-GObject $column; (out) (allow-none): A pointer to a B<Gnome::Gtk3::TreeViewColumn> pointer to be filled in, or C<Any>
 =item Int $cell_x; (out) (allow-none): A pointer where the X coordinate relative to the cell can be placed, or C<Any>
 =item Int $cell_y; (out) (allow-none): A pointer where the Y coordinate relative to the cell can be placed, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_is_blank_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
+sub gtk_tree_view_is_blank_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, N-GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1430,14 +1459,14 @@ sub gtk_tree_view_unset_rows_drag_dest ( N-GObject $tree_view )
 Sets the row that is highlighted for feedback.
 If I<path> is C<Any>, an existing highlight is removed.
 
-  method gtk_tree_view_set_drag_dest_row ( GtkTreePath $path, GtkTreeViewDropPosition $pos )
+  method gtk_tree_view_set_drag_dest_row ( N-GtkTreePath $path, GtkTreeViewDropPosition $pos )
 
-=item GtkTreePath $path; (allow-none): The path of the row to highlight, or C<Any>
+=item N-GtkTreePath $path; (allow-none): The path of the row to highlight, or C<Any>
 =item GtkTreeViewDropPosition $pos; Specifies whether to drop before, after or into the row
 
 =end pod
 
-sub gtk_tree_view_set_drag_dest_row ( N-GObject $tree_view, GtkTreePath $path, int32 $pos )
+sub gtk_tree_view_set_drag_dest_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 $pos )
   is native(&gtk-lib)
   { * }
 
@@ -1448,14 +1477,14 @@ sub gtk_tree_view_set_drag_dest_row ( N-GObject $tree_view, GtkTreePath $path, i
 
 Gets information about the row that is highlighted for feedback.
 
-  method gtk_tree_view_get_drag_dest_row ( GtkTreePath $path, GtkTreeViewDropPosition $pos )
+  method gtk_tree_view_get_drag_dest_row ( N-GtkTreePath $path, GtkTreeViewDropPosition $pos )
 
-=item GtkTreePath $path; (out) (optional) (nullable): Return location for the path of the highlighted row, or C<Any>.
+=item N-GtkTreePath $path; (out) (optional) (nullable): Return location for the path of the highlighted row, or C<Any>.
 =item GtkTreeViewDropPosition $pos; (out) (optional): Return location for the drop position, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_drag_dest_row ( N-GObject $tree_view, GtkTreePath $path, int32 $pos )
+sub gtk_tree_view_get_drag_dest_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 $pos )
   is native(&gtk-lib)
   { * }
 
@@ -1472,16 +1501,16 @@ return C<0> if I<tree_view> is not realized or does not have a model.
 Returns: whether there is a row at the given position, C<1> if this
 is indeed the case.
 
-  method gtk_tree_view_get_dest_row_at_pos ( Int $drag_x, Int $drag_y, GtkTreePath $path, GtkTreeViewDropPosition $pos --> Int  )
+  method gtk_tree_view_get_dest_row_at_pos ( Int $drag_x, Int $drag_y, N-GtkTreePath $path, GtkTreeViewDropPosition $pos --> Int  )
 
 =item Int $drag_x; the position to determine the destination row for
 =item Int $drag_y; the position to determine the destination row for
-=item GtkTreePath $path; (out) (optional) (nullable): Return location for the path of the highlighted row, or C<Any>.
+=item N-GtkTreePath $path; (out) (optional) (nullable): Return location for the path of the highlighted row, or C<Any>.
 =item GtkTreeViewDropPosition $pos; (out) (optional): Return location for the drop position, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_dest_row_at_pos ( N-GObject $tree_view, int32 $drag_x, int32 $drag_y, GtkTreePath $path, int32 $pos )
+sub gtk_tree_view_get_dest_row_at_pos ( N-GObject $tree_view, int32 $drag_x, int32 $drag_y, N-GtkTreePath $path, int32 $pos )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1496,13 +1525,13 @@ This image is used for a drag icon.
 
 Returns: (transfer full): a newly-allocated surface of the drag icon.
 
-  method gtk_tree_view_create_row_drag_icon ( GtkTreePath $path --> cairo_surface_t  )
+  method gtk_tree_view_create_row_drag_icon ( N-GtkTreePath $path --> cairo_surface_t  )
 
-=item GtkTreePath $path; a B<Gnome::Gtk3::TreePath> in I<tree_view>
+=item N-GtkTreePath $path; a B<Gnome::Gtk3::TreePath> in I<tree_view>
 
 =end pod
 
-sub gtk_tree_view_create_row_drag_icon ( N-GObject $tree_view, GtkTreePath $path )
+sub gtk_tree_view_create_row_drag_icon ( N-GObject $tree_view, N-GtkTreePath $path )
   returns cairo_surface_t
   is native(&gtk-lib)
   { * }
@@ -2294,14 +2323,14 @@ See also C<gtk_tooltip_set_tip_area()>.
 
 Since: 2.12
 
-  method gtk_tree_view_set_tooltip_row ( N-GObject $tooltip, GtkTreePath $path )
+  method gtk_tree_view_set_tooltip_row ( N-GObject $tooltip, N-GtkTreePath $path )
 
 =item N-GObject $tooltip; a B<Gnome::Gtk3::Tooltip>
-=item GtkTreePath $path; a B<Gnome::Gtk3::TreePath>
+=item N-GtkTreePath $path; a B<Gnome::Gtk3::TreePath>
 
 =end pod
 
-sub gtk_tree_view_set_tooltip_row ( N-GObject $tree_view, N-GObject $tooltip, GtkTreePath $path )
+sub gtk_tree_view_set_tooltip_row ( N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path )
   is native(&gtk-lib)
   { * }
 
@@ -2324,16 +2353,16 @@ See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
 
 Since: 2.12
 
-  method gtk_tree_view_set_tooltip_cell ( N-GObject $tooltip, GtkTreePath $path, N-GObject $column, N-GObject $cell )
+  method gtk_tree_view_set_tooltip_cell ( N-GObject $tooltip, N-GtkTreePath $path, N-GObject $column, N-GObject $cell )
 
 =item N-GObject $tooltip; a B<Gnome::Gtk3::Tooltip>
-=item GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> or C<Any>
+=item N-GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> or C<Any>
 =item N-GObject $column; (allow-none): a B<Gnome::Gtk3::TreeViewColumn> or C<Any>
 =item N-GObject $cell; (allow-none): a B<Gnome::Gtk3::CellRenderer> or C<Any>
 
 =end pod
 
-sub gtk_tree_view_set_tooltip_cell ( N-GObject $tree_view, N-GObject $tooltip, GtkTreePath $path, N-GObject $column, N-GObject $cell )
+sub gtk_tree_view_set_tooltip_cell ( N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path, N-GObject $column, N-GObject $cell )
   is native(&gtk-lib)
   { * }
 
@@ -2358,18 +2387,18 @@ Returns: whether or not the given tooltip context points to a row.
 
 Since: 2.12
 
-  method gtk_tree_view_get_tooltip_context ( Int $x, Int $y, Int $keyboard_tip, N-GObject $model, GtkTreePath $path, GtkTreeIter $iter --> Int  )
+  method gtk_tree_view_get_tooltip_context ( Int $x, Int $y, Int $keyboard_tip, N-GObject $model, N-GtkTreePath $path, GtkTreeIter $iter --> Int  )
 
 =item Int $x; (inout): the x coordinate (relative to widget coordinates)
 =item Int $y; (inout): the y coordinate (relative to widget coordinates)
 =item Int $keyboard_tip; whether this is a keyboard tooltip or not
 =item N-GObject $model; (out) (optional) (nullable) (transfer none): a pointer to receive a B<Gnome::Gtk3::TreeModel> or C<Any>
-=item GtkTreePath $path; (out) (optional): a pointer to receive a B<Gnome::Gtk3::TreePath> or C<Any>
+=item N-GtkTreePath $path; (out) (optional): a pointer to receive a B<Gnome::Gtk3::TreePath> or C<Any>
 =item GtkTreeIter $iter; (out) (optional): a pointer to receive a B<Gnome::Gtk3::TreeIter> or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_tooltip_context ( N-GObject $tree_view, int32 $x, int32 $y, int32 $keyboard_tip, N-GObject $model, GtkTreePath $path, GtkTreeIter $iter )
+sub gtk_tree_view_get_tooltip_context ( N-GObject $tree_view, int32 $x, int32 $y, int32 $keyboard_tip, N-GObject $model, N-GtkTreePath $path, GtkTreeIter $iter )
   returns int32
   is native(&gtk-lib)
   { * }
