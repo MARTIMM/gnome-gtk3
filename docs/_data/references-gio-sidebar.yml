@@ -21,10 +21,6 @@
     url: '/content-docs/reference/Gio/File.html'
     doc: 1
     test: 1
-  - title: "MenuModel"
-    url: '/content-docs/reference/Gio/MenuModel.html'
-    doc: 1
-    test: 1
   - title: "Resource"
     url: '/content-docs/reference/Gio/Resource.html'
     doc: 1
