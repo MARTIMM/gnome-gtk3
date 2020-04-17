@@ -614,11 +614,7 @@ Typical usage of this function might be:
   $dialog.gtk_widget_destroy;
 
 
-Note that even though the recursive main loop gives the effect of a
-modal dialog (it prevents the user from interacting with other
-windows in the same window group while the dialog is run), callbacks
-such as timeouts, IO channel watches, DND drops, etc, will
-be triggered during a C<gtk_dialog_run()> call.
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a C<gtk_dialog_run()> call.
 
 Returns: response ID
 
@@ -640,7 +636,6 @@ sub gtk_dialog_run ( N-GObject $dialog )
 Returns the content area of I<dialog>.
 
 Returns: (type B<Gnome::Gtk3::.Box>) the content area B<Gnome::Gtk3::Box>.
-DeleteMsgDialog
 
   method gtk_dialog_get_content_area ( --> N-GObject  )
 
