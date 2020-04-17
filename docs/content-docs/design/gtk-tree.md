@@ -145,7 +145,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkScrollbar
 │   │   │       ├─✗ GtkHScrollbar               Deprecated
 │   │   │       ╰─✗ GtkVScrollbar               Deprecated
-│   │   ├── GtkSeparator
+│   │   ├── GtkSeparator                        Separator
 │   │   │   ├─✗ GtkHSeparator                   Deprecated
 │   │   │   ╰─✗ GtkVSeparator                   Deprecated
 │   │   ├─✗ GtkHSV                              Deprecated
