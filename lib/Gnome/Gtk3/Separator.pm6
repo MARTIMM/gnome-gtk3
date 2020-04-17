@@ -100,11 +100,14 @@ submethod BUILD ( *%options ) {
 
     else {
       my $no;
-      if ? %options<orientation> {
-        $no = _gtk_separator_new(%options<orientation>);
+      if %options<orientation>.defined {
+        $no = %options<orientation>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        $no = _gtk_separator_new($no);
       }
 
-      #`{{ use this when the module is not made inheritable
+      ##`{{ use this when the module is not made inheritable
       # check if there are unknown options
       elsif %options.elems {
         die X::Gnome.new(
@@ -114,7 +117,7 @@ submethod BUILD ( *%options ) {
           )
         );
       }
-      }}
+      #}}
 
       ##`{{ when there are no defaults use this
       # check if there are any options
