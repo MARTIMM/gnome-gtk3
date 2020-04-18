@@ -167,6 +167,10 @@
     url: "/content-docs/reference/Gtk3/ProgressBar.html"
     doc: 3
     test: 1
+  - title: "Separator"
+    url: "/content-docs/reference/Gtk3/Separator.html"
+    doc: 3
+    test: 1
   - title: "Spinner"
     url: "/content-docs/reference/Gtk3/Spinner.html"
     doc: 3
