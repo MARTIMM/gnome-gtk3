@@ -243,6 +243,7 @@ sub gtk_text_tag_table_foreach (
     _gtk_text_tag_table_foreach(
       $table,
       sub ( $n-tag, $d ) {
+        CATCH { default { .message.note; .backtrace.concise.note } }
         $func-object."$func-name"(
           Gnome::Gtk3::TextTag.new(:native-object($n-tag)),
           |%user-options

@@ -408,6 +408,7 @@ sub gtk_list_box_selected_foreach (
     _gtk_list_box_selected_foreach(
       $box,
       sub ( $n-lb, $n-lbr, $d ) {
+        CATCH { default { .message.note; .backtrace.concise.note } }
         $func-object."$func-name"(
           Gnome::Gtk3::ListBox.new(:native-object($n-lb)),
           Gnome::Gtk3::ListBoxRow.new(:native-object($n-lbr)),
