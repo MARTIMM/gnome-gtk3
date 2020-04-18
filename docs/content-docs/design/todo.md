@@ -107,7 +107,7 @@ Also calling clear-object() in BUILD() and several other places is wrong for the
 
 * [ ] When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to find the proper native object.
 
-* [ ] Add `CATCH { default { .message.note; .backtrace.concise.note } }` in callback routines. This is done for all callback routines which are registered using `.register-signal()` but other places must be searched for, e.g. like foreach in **Gnome::Gtk3::Container**.
+* [x] Add `CATCH { default { .message.note; .backtrace.concise.note } }` at the top of callback routines. This is done for all callback routines which are registered using `.register-signal()` but other places must be searched for, e.g. like foreach in **Gnome::Gtk3::Container**.
 
 #### Documentation
 There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
@@ -162,7 +162,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * [ ] signals
   * [ ] properties
 
-* Add necessary packages. I am not sure if the Gio and Atk packages are useful additions. Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
+* Add necessary packages. I am not sure if the Atk package is a useful addition. Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
   * [ ] **Gnome::Atk**. Accessibility toolkit to implement support for screen readers and other tools.
   * [ ] **Gnome::Gio**. File and URI handling, asynchronous file operations, volume handling and also for network I/O, application and settings, D-Bus.
   * [ ] **Gnome::Cairo**. 2D, vector-based drawing for high-quality graphics.
@@ -175,7 +175,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
-* [ ] The sidebar for Gtk references is messy. Should be ordered better.
+* [ ] The sidebar for Gtk references is messy. Should be ordered alphabetically perhaps.
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
