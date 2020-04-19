@@ -1,10 +1,15 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-04-17 0.28.0:
+    - Added modules Gnome::Gtk3::TreeSelection, Gnome::Gtk3::Popover, Gnome::Gtk3::PopoverMenu and Gnome::Gtk3::Separator.
+    - Add 'CATCH { default { .message.note; .backtrace.concise.note } }' to callback code in modules Gnome::GObject::Object and Container, ListBox, TextTagTable and TreeModel in Gnome::Gtk3. This prevents the situation that a moarvm panic occurs without a stackdump to follow. This improves the search for errors and typos very much.
+    - Enabled gtk_tree_view_expand_to_path(), gtk_tree_view_row_expanded(), gtk_tree_view_expand_row() and gtk_tree_view_collapse_row() in Gnome::Gtk3::TreeView.
+    - $str.chars() changed into $str.encode.bytes in a few places. This is the correct lenght, thanks Alain Barbason.
+
   - 2020-04-11 0.27.5:
     - Enabled method gtk_tree_view_get_cell_area(), gtk_tree_view_get_selection() in Gnome::Gtk3::TreeView
     - Enabled method gtk_menu_popup-at-widget(), gtk_menu_popup_at_rect() in Gnome::Gtk3::Menu.
-    - Added modules Gnome::Gtk3::TreeSelection, Gnome::Gtk3::Popover, Gnome::Gtk3::PopoverMenu.
     - Cleanup and some modifications in Gnome::Gtk3::TreeStore.
     - Added `gdk_pixbuf_get_type()` in Gnome::Gdk3::Pixbuf to support a missing type GDK_TYPE_PIXBUF. This cannot be encoded because it is not a fundamental type like G_TYPE_INT.
     - Made classes ApplicationWindow, Application, Dialog, AboutDialog, MessageDialog, Grid, RecentChooserMenu, Notebook, TreeView and TreeStore in Gnome::Gtk3 inheritable.
@@ -13,20 +18,18 @@ notes:
     - Enabled method gtk_label_set_markup() in Gnome::Gtk3::Label.
     - Enabled method gtk_builder_connect_signals_full in Gnome::Gtk3::Builder.
     - Modified gtk_builder_new_from_string( $text, $text.chars), so that the length can be left out and the argument is now deprecated.
-    - Enabled method g_type_name_from_instance() to Gnom::GObject::Type.
 
   - 2020-04-06 0.27.3:
-    - Add modules Adjustment, ScrolledWindow, PlacesSidebar in Gnome::Gtk3.
+    - Enabled method g_type_name_from_instance() to Gnom::GObject::Type.
 
   - 2020-04-05 0.27.2:
     - Removed a level of exception handling to get a stackdump when an error is encountered. Somehow this stack dump is unavailable in some situations.
-    - Many changes in example programs for deprecated code.
 
   - 2020-04-04 0.27.1:
-    - Add module ScrolledWindow in Gnome::Gtk3.
+    - Many changes in example programs for deprecated code.
 
   - 2020-03-24 0.27.0:
-    - Add RecentChooserMenu in Gnome::Gtk3.
+    - Add modules Adjustment, ScrolledWindow, PlacesSidebar, RecentChooserMenu, and ScrolledWindow in Gnome::Gtk3.
     - Gnome::N::TopLevelClassSupport is implemented in Gnome::Glib and Gnome::GObject. Gnome::Gio must still be checked.
 
   - 2020-03-23 0.26.3:

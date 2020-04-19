@@ -46,14 +46,14 @@ B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
   # Define a button press event handler
   method button-press-handler (
     GdkEventButton $event, Gnome::Gtk3::EventBox :widget($event-box)
-    --> Bool
+    --> Int
   ) {
     say "Event box clicked at coordinates $event.x(), $event.y()");
 
     # Returning TRUE means we handled the event, so the signal
     # emission should be stopped (don’t call any further callbacks
     # that may be connected). Return FALSE to continue invoking callbacks.
-    True;
+    1;
   }
 
   # Create an image and setup a button click event on the image.

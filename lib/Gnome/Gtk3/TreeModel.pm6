@@ -1097,6 +1097,7 @@ sub gtk_tree_model_foreach (
         OpaquePointer $d
         --> int32
       ) {
+        CATCH { default { .message.note; .backtrace.concise.note } }
 #note "TP 0: $n-p, $n-i";
 #note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
 

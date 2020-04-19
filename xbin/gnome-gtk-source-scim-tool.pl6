@@ -904,7 +904,10 @@ sub substitute-in-template (
           else {
             my $no;
             # if ? %options<> {
-            #    $no = ...
+            #   $no = %options<>;
+            #   $no .= get-native-object-no-reffing
+            #     if $no.^can('get-native-object-no-reffing');
+            #   $no = ...($no);
             # }
 
             #`{{ use this when the module is not made inheritable

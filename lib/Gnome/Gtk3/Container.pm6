@@ -416,6 +416,7 @@ sub gtk_container_foreach (
     _gtk_container_foreach(
       $container,
       sub ( $n-w, $d ) {
+        CATCH { default { .message.note; .backtrace.concise.note } }
         $func-object."$func-name"( $n-w, |%user-options)
       },
       OpaquePointer

@@ -259,7 +259,9 @@ multi sub gtk_text_buffer_set_text (
 }
 
 multi sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text ) {
-  _gtk_text_buffer_set_text( $buffer, $text, $text.chars);
+  _gtk_text_buffer_set_text(
+    $buffer, $text, $text.encode.bytes #`{{$text.chars}}
+  );
 }
 
 sub _gtk_text_buffer_set_text ( N-GObject $buffer, Str $text, int32 $len )
@@ -493,7 +495,6 @@ in its entirety and must be nul-terminated and valid UTF-8. Emits the
 actually occurs in the default handler for the signal. I<iter> will point
 to the end of the inserted text on return.
 
-Since: 3.16
 
   method gtk_text_buffer_insert_markup (
     Gnome::Gtk3::TextIter $iter, Str $markup, Int $len
@@ -583,7 +584,6 @@ re-initialized to point to the location where text was deleted.
 
 Returns: C<1> if the buffer was modified
 
-Since: 2.6
 
   method gtk_text_buffer_backspace (
     Gnome::Gtk3::TextIter $iter, Int $interactive, Int $default_editable
@@ -763,7 +763,6 @@ be another mark in the buffer with the same name.
 Emits the  I<mark-set> signal as notification of the mark's
 initial placement.
 
-Since: 2.12
 
   method gtk_text_buffer_add_mark ( N-GObject $mark, N-GObject $where )
 
@@ -1003,7 +1002,6 @@ inefficient since the temporarily-selected region will force stuff
 to be recalculated. This function moves them as a unit, which can
 be optimized.
 
-Since: 2.4
 
   method gtk_text_buffer_select_range ( N-GObject $ins, N-GObject $bound )
 
@@ -1530,7 +1528,6 @@ Indicates whether the buffer has some text currently selected.
 
 Returns: C<1> if the there is text selected
 
-Since: 2.10
 
   method gtk_text_buffer_get_has_selection ( --> Int  )
 
@@ -1773,7 +1770,6 @@ C<gtk_target_list_add_text_targets()>.
 
 Returns: (transfer none): the B<Gnome::Gtk3::TargetList>
 
-Since: 2.10
 
   method gtk_text_buffer_get_copy_target_list ( --> GtkTargetList  )
 
@@ -1798,7 +1794,6 @@ C<gtk_target_list_add_text_targets()>.
 
 Returns: (transfer none): the B<Gnome::Gtk3::TargetList>
 
-Since: 2.10
 
   method gtk_text_buffer_get_paste_target_list ( --> GtkTargetList  )
 
@@ -2149,7 +2144,6 @@ The paste-done signal is emitted after paste operation has been completed.
 This is useful to properly scroll the view to the end of the pasted text.
 See C<gtk_text_buffer_paste_clipboard()> for more details.
 
-Since: 2.16
 
   method handler (
     N-GObject $clipboard,
@@ -2195,7 +2189,6 @@ The B<Gnome::GObject::Value> type of property I<tag-table> is C<G_TYPE_OBJECT>.
 
 The text content of the buffer. Without child widgets and images,
 see C<gtk_text_buffer_get_text()> for more information.
-Since: 2.8
 
 The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
@@ -2204,7 +2197,6 @@ The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
 
 Whether the buffer has some text currently selected.
-Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<has-selection> is C<G_TYPE_BOOLEAN>.
 
@@ -2215,7 +2207,6 @@ The B<Gnome::GObject::Value> type of property I<has-selection> is C<G_TYPE_BOOLE
 The position of the insert mark (as offset from the beginning
 of the buffer). It is useful for getting notified when the
 cursor moves.
-Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<cursor-position> is C<G_TYPE_INT>.
 
@@ -2226,7 +2217,6 @@ The B<Gnome::GObject::Value> type of property I<cursor-position> is C<G_TYPE_INT
 
 The list of targets this buffer supports for clipboard copying
 and as DND source.
-Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<copy-target-list> is C<G_TYPE_BOXED>.
 
@@ -2236,7 +2226,6 @@ The B<Gnome::GObject::Value> type of property I<copy-target-list> is C<G_TYPE_BO
 
 The list of targets this buffer supports for clipboard pasting
 and as DND destination.
-Since: 2.10
 
 The B<Gnome::GObject::Value> type of property I<paste-target-list> is C<G_TYPE_BOXED>.
 =end comment

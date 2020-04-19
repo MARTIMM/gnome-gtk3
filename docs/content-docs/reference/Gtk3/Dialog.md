@@ -290,7 +290,7 @@ Returns: response ID
 
 Returns the content area of *dialog*.
 
-Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**. DeleteMsgDialog
+Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**.
 
     method gtk_dialog_get_content_area ( --> N-GObject  )
 
