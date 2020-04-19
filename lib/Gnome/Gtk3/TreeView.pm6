@@ -410,7 +410,6 @@ sub gtk_tree_view_columns_autosize ( N-GObject $tree_view )
 
 Returns C<1> if all header columns are clickable, otherwise C<0>
 
-Since: 2.10
 
   method gtk_tree_view_get_headers_clickable ( --> Int  )
 
@@ -445,7 +444,6 @@ sub gtk_tree_view_set_headers_clickable ( N-GObject $tree_view, int32 $setting )
 
 Gets the setting set by C<gtk_tree_view_set_activate_on_single_click()>. The method returns C<1> if row-activated will be emitted on a single click.
 
-Since: 3.8
 
   method gtk_tree_view_get_activate_on_single_click ( --> Int  )
 
@@ -463,7 +461,6 @@ sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view )
 
 Cause the  I<row-activated> signal to be emitted on a single click instead of a double click.
 
-Since: 3.8
 
   method gtk_tree_view_set_activate_on_single_click ( Int $single )
 
@@ -645,7 +642,6 @@ Queries the number of columns in the given I<tree_view>.
 
 Returns: The number of columns in the I<tree_view>
 
-Since: 3.4
 
   method gtk_tree_view_get_n_columns ( --> UInt  )
 
@@ -899,16 +895,12 @@ sub gtk_tree_view_collapse_all ( N-GObject $tree_view )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_expand_to_path:
+#TM:4:gtk_tree_view_expand_to_path:QAManager
 =begin pod
 =head2 [[gtk_] tree_view_] expand_to_path
 
-Expands the row at I<path>. This will also expand all parent rows of
-I<path> as necessary.
-
-Since: 2.2
+Expands the row at I<$path>. This will also expand all parent rows of I<$path> as necessary.
 
   method gtk_tree_view_expand_to_path ( N-GtkTreePath $path )
 
@@ -919,11 +911,9 @@ Since: 2.2
 sub gtk_tree_view_expand_to_path ( N-GObject $tree_view, N-GtkTreePath $path )
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_expand_row:
+#TM:4:gtk_tree_view_expand_row:QAManager
 =begin pod
 =head2 [[gtk_] tree_view_] expand_row
 
@@ -931,7 +921,10 @@ Opens the row so its children are visible.
 
 Returns: C<1> if the row existed and had children
 
-  method gtk_tree_view_expand_row ( N-GtkTreePath $path, Int $open_all --> Int  )
+  method gtk_tree_view_expand_row (
+    N-GtkTreePath $path, Bool $open_all
+    --> Int
+  )
 
 =item N-GtkTreePath $path; path to a row
 =item Int $open_all; whether to recursively expand, or just expand immediate children
@@ -942,11 +935,9 @@ sub gtk_tree_view_expand_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 
   returns int32
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_collapse_row:
+#TM:4:gtk_tree_view_collapse_row:QAManager
 =begin pod
 =head2 [[gtk_] tree_view_] collapse_row
 
@@ -964,7 +955,7 @@ sub gtk_tree_view_collapse_row ( N-GObject $tree_view, N-GtkTreePath $path )
   returns int32
   is native(&gtk-lib)
   { * }
-}}
+
 #`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_map_expanded_rows:
@@ -985,19 +976,14 @@ sub gtk_tree_view_map_expanded_rows ( N-GObject $tree_view, GtkTreeViewMappingFu
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_row_expanded:
+#TM:4:gtk_tree_view_row_expanded:QAManager
 =begin pod
 =head2 [[gtk_] tree_view_] row_expanded
 
-Returns C<1> if the node pointed to by I<path> is expanded in I<tree_view>.
-
-Returns: C<1> if B<path> is expanded.
+Returns C<1> if the node pointed to by I<$path> is expanded.
 
   method gtk_tree_view_row_expanded ( N-GtkTreePath $path --> Int  )
-
-=item N-GtkTreePath $path; A B<Gnome::Gtk3::TreePath> to test expansion state.
 
 =end pod
 
@@ -1005,7 +991,6 @@ sub gtk_tree_view_row_expanded ( N-GObject $tree_view, N-GtkTreePath $path )
   returns int32
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_reorderable:
@@ -1109,7 +1094,6 @@ realized.
 If I<path> is invalid for I<model>, the current cursor (if any) will be unset
 and the function will return without failing.
 
-Since: 2.2
 
   method gtk_tree_view_set_cursor_on_cell ( N-GtkTreePath $path, N-GObject $focus_column, N-GObject $focus_cell, Int $start_editing )
 
@@ -1312,7 +1296,6 @@ The paths should be freed with C<gtk_tree_path_free()> after use.
 
 Returns: C<1>, if valid paths were placed in I<start_path> and I<end_path>.
 
-Since: 2.8
 
   method gtk_tree_view_get_visible_range ( N-GtkTreePath $start_path, N-GtkTreePath $end_path --> Int  )
 
@@ -1353,7 +1336,6 @@ C<gtk_tree_view_get_path_at_pos()> for more information.
 Returns: C<1> if the area at the given coordinates is blank,
 C<0> otherwise.
 
-Since: 3.0
 
   method gtk_tree_view_is_blank_at_pos ( Int $x, Int $y, N-GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
 
@@ -1675,7 +1657,6 @@ will be returned.
 
 Returns: (transfer none): the entry currently in use as search entry.
 
-Since: 2.10
 
   method gtk_tree_view_get_search_entry ( --> N-GObject  )
 
@@ -1698,7 +1679,6 @@ in our interface at all time at a fixed position.  Passing C<Any> for
 I<entry> will make the interactive search code use the built-in popup
 entry again.
 
-Since: 2.10
 
   method gtk_tree_view_set_search_entry ( N-GObject $entry )
 
@@ -1719,7 +1699,6 @@ Returns the positioning function currently in use.
 
 Returns: the currently used function for positioning the search dialog.
 
-Since: 2.10
 
   method gtk_tree_view_get_search_position_func ( --> GtkTreeViewSearchPositionFunc  )
 
@@ -1739,7 +1718,6 @@ sub gtk_tree_view_get_search_position_func ( N-GObject $tree_view )
 
 Sets the function to use when positioning the search dialog.
 
-Since: 2.10
 
   method gtk_tree_view_set_search_position_func ( GtkTreeViewSearchPositionFunc $func, Pointer $data, GDestroyNotify $destroy )
 
@@ -1762,7 +1740,6 @@ sub gtk_tree_view_set_search_position_func ( N-GObject $tree_view, GtkTreeViewSe
 Converts widget coordinates to coordinates for the
 tree (the full scrollable area of the tree).
 
-Since: 2.12
 
   method gtk_tree_view_convert_widget_to_tree_coords ( Int $wx, Int $wy, Int $tx, Int $ty )
 
@@ -1785,7 +1762,6 @@ sub gtk_tree_view_convert_widget_to_tree_coords ( N-GObject $tree_view, int32 $w
 Converts tree coordinates (coordinates in full scrollable area of the tree)
 to widget coordinates.
 
-Since: 2.12
 
   method gtk_tree_view_convert_tree_to_widget_coords ( Int $tx, Int $ty, Int $wx, Int $wy )
 
@@ -1808,7 +1784,6 @@ sub gtk_tree_view_convert_tree_to_widget_coords ( N-GObject $tree_view, int32 $t
 Converts widget coordinates to coordinates for the bin_window
 (see C<gtk_tree_view_get_bin_window()>).
 
-Since: 2.12
 
   method gtk_tree_view_convert_widget_to_bin_window_coords ( Int $wx, Int $wy, Int $bx, Int $by )
 
@@ -1831,7 +1806,6 @@ sub gtk_tree_view_convert_widget_to_bin_window_coords ( N-GObject $tree_view, in
 Converts bin_window coordinates (see C<gtk_tree_view_get_bin_window()>)
 to widget relative coordinates.
 
-Since: 2.12
 
   method gtk_tree_view_convert_bin_window_to_widget_coords ( Int $bx, Int $by, Int $wx, Int $wy )
 
@@ -1854,7 +1828,6 @@ sub gtk_tree_view_convert_bin_window_to_widget_coords ( N-GObject $tree_view, in
 Converts tree coordinates (coordinates in full scrollable area of the tree)
 to bin_window coordinates.
 
-Since: 2.12
 
   method gtk_tree_view_convert_tree_to_bin_window_coords ( Int $tx, Int $ty, Int $bx, Int $by )
 
@@ -1877,7 +1850,6 @@ sub gtk_tree_view_convert_tree_to_bin_window_coords ( N-GObject $tree_view, int3
 Converts bin_window coordinates to coordinates for the
 tree (the full scrollable area of the tree).
 
-Since: 2.12
 
   method gtk_tree_view_convert_bin_window_to_tree_coords ( Int $bx, Int $by, Int $tx, Int $ty )
 
@@ -1903,7 +1875,6 @@ rows have the same height.
 Only enable this option if all rows are the same height and all
 columns are of type C<GTK_TREE_VIEW_COLUMN_FIXED>.
 
-Since: 2.6
 
   method gtk_tree_view_set_fixed_height_mode ( Int $enable )
 
@@ -1924,7 +1895,6 @@ Returns whether fixed height mode is turned on for I<tree_view>.
 
 Returns: C<1> if I<tree_view> is in fixed height mode
 
-Since: 2.6
 
   method gtk_tree_view_get_fixed_height_mode ( --> Int  )
 
@@ -1946,7 +1916,6 @@ Hover selection makes the selected row follow the pointer.
 Currently, this works only for the selection modes
 C<GTK_SELECTION_SINGLE> and C<GTK_SELECTION_BROWSE>.
 
-Since: 2.6
 
   method gtk_tree_view_set_hover_selection ( Int $hover )
 
@@ -1967,7 +1936,6 @@ Returns whether hover selection mode is turned on for I<tree_view>.
 
 Returns: C<1> if I<tree_view> is in hover selection mode
 
-Since: 2.6
 
   method gtk_tree_view_get_hover_selection ( --> Int  )
 
@@ -1988,7 +1956,6 @@ Enables or disables the hover expansion mode of I<tree_view>.
 Hover expansion makes rows expand or collapse if the pointer
 moves over them.
 
-Since: 2.6
 
   method gtk_tree_view_set_hover_expand ( Int $expand )
 
@@ -2009,7 +1976,6 @@ Returns whether hover expansion mode is turned on for I<tree_view>.
 
 Returns: C<1> if I<tree_view> is in hover expansion mode
 
-Since: 2.6
 
   method gtk_tree_view_get_hover_expand ( --> Int  )
 
@@ -2030,7 +1996,6 @@ Enables or disables rubber banding in I<tree_view>.  If the selection mode
 is B<GTK_SELECTION_MULTIPLE>, rubber banding will allow the user to select
 multiple rows by dragging the mouse.
 
-Since: 2.10
 
   method gtk_tree_view_set_rubber_banding ( Int $enable )
 
@@ -2053,7 +2018,6 @@ user to select multiple rows by dragging the mouse.
 
 Returns: C<1> if rubber banding in I<tree_view> is enabled.
 
-Since: 2.10
 
   method gtk_tree_view_get_rubber_banding ( --> Int  )
 
@@ -2076,7 +2040,6 @@ in I<tree_view>.
 Returns: C<1> if a rubber banding operation is currently being
 done in I<tree_view>.
 
-Since: 2.12
 
   method gtk_tree_view_is_rubber_banding_active ( --> Int  )
 
@@ -2097,7 +2060,6 @@ Returns the current row separator function.
 
 Returns: the current row separator function.
 
-Since: 2.6
 
   method gtk_tree_view_get_row_separator_func ( --> GtkTreeViewRowSeparatorFunc  )
 
@@ -2119,7 +2081,6 @@ Sets the row separator function, which is used to determine
 whether a row should be drawn as a separator. If the row separator
 function is C<Any>, no separators are drawn. This is the default value.
 
-Since: 2.6
 
   method gtk_tree_view_set_row_separator_func ( GtkTreeViewRowSeparatorFunc $func, Pointer $data, GDestroyNotify $destroy )
 
@@ -2144,7 +2105,6 @@ Returns which grid lines are enabled in I<tree_view>.
 Returns: a B<Gnome::Gtk3::TreeViewGridLines> value indicating which grid lines
 are enabled.
 
-Since: 2.10
 
   method gtk_tree_view_get_grid_lines ( --> GtkTreeViewGridLines  )
 
@@ -2163,7 +2123,6 @@ sub gtk_tree_view_get_grid_lines ( N-GObject $tree_view )
 
 Sets which grid lines to draw in I<tree_view>.
 
-Since: 2.10
 
   method gtk_tree_view_set_grid_lines ( GtkTreeViewGridLines $grid_lines )
 
@@ -2186,7 +2145,6 @@ Returns whether or not tree lines are drawn in I<tree_view>.
 Returns: C<1> if tree lines are drawn in I<tree_view>, C<0>
 otherwise.
 
-Since: 2.10
 
   method gtk_tree_view_get_enable_tree_lines ( --> Int  )
 
@@ -2206,7 +2164,6 @@ sub gtk_tree_view_get_enable_tree_lines ( N-GObject $tree_view )
 Sets whether to draw lines interconnecting the expanders in I<tree_view>.
 This does not have any visible effects for lists.
 
-Since: 2.10
 
   method gtk_tree_view_set_enable_tree_lines ( Int $enabled )
 
@@ -2231,7 +2188,6 @@ can set a custom indentation in this case using
 C<gtk_tree_view_set_level_indentation()>.
 This does not have any visible effects for lists.
 
-Since: 2.12
 
   method gtk_tree_view_set_show_expanders ( Int $enabled )
 
@@ -2253,7 +2209,6 @@ Returns whether or not expanders are drawn in I<tree_view>.
 Returns: C<1> if expanders are drawn in I<tree_view>, C<0>
 otherwise.
 
-Since: 2.12
 
   method gtk_tree_view_get_show_expanders ( --> Int  )
 
@@ -2276,7 +2231,6 @@ pixels, a value of 0 disables this feature and in this case only the default
 indentation will be used.
 This does not have any visible effects for lists.
 
-Since: 2.12
 
   method gtk_tree_view_set_level_indentation ( Int $indentation )
 
@@ -2299,7 +2253,6 @@ in I<tree_view>.
 Returns: the amount of extra indentation for child levels in
 I<tree_view>.  A return value of 0 means that this feature is disabled.
 
-Since: 2.12
 
   method gtk_tree_view_get_level_indentation ( --> Int  )
 
@@ -2321,7 +2274,6 @@ Sets the tip area of I<tooltip> to be the area covered by the row at I<path>.
 See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
 See also C<gtk_tooltip_set_tip_area()>.
 
-Since: 2.12
 
   method gtk_tree_view_set_tooltip_row ( N-GObject $tooltip, N-GtkTreePath $path )
 
@@ -2351,7 +2303,6 @@ mouse cursor for this function to operate correctly.
 
 See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
 
-Since: 2.12
 
   method gtk_tree_view_set_tooltip_cell ( N-GObject $tooltip, N-GtkTreePath $path, N-GObject $column, N-GObject $cell )
 
@@ -2385,7 +2336,6 @@ to be relative to I<tree_view>’s bin_window if I<keyboard_tooltip> is C<0>.
 
 Returns: whether or not the given tooltip context points to a row.
 
-Since: 2.12
 
   method gtk_tree_view_get_tooltip_context ( Int $x, Int $y, Int $keyboard_tip, N-GObject $model, N-GtkTreePath $path, GtkTreeIter $iter --> Int  )
 
@@ -2420,7 +2370,6 @@ I<tree_view> will connect a  I<query-tooltip> signal handler.
 Note that the signal handler sets the text with C<gtk_tooltip_set_markup()>,
 so &, <, etc have to be escaped in the text.
 
-Since: 2.12
 
   method gtk_tree_view_set_tooltip_column ( Int $column )
 
@@ -2443,7 +2392,6 @@ displaying tooltips on I<tree_view>’s rows.
 Returns: the index of the tooltip column that is currently being
 used, or -1 if this is disabled.
 
-Since: 2.12
 
   method gtk_tree_view_get_tooltip_column ( --> Int  )
 
@@ -2811,7 +2759,6 @@ B<Gnome::Gtk3::TreeView> by assuming that all rows have the same height.
 Only enable this option if all rows are the same height.
 Please see C<gtk_tree_view_set_fixed_height_mode()> for more
 information on this option.
-Since: 2.4
 
 The B<Gnome::GObject::Value> type of property I<fixed-height-mode> is C<G_TYPE_BOOLEAN>.
 
@@ -2825,7 +2772,6 @@ Currently, this works only for the selection modes
 C<GTK_SELECTION_SINGLE> and C<GTK_SELECTION_BROWSE>.
 This mode is primarily intended for treeviews in popups, e.g.
 in B<Gnome::Gtk3::ComboBox> or B<Gnome::Gtk3::EntryCompletion>.
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<hover-selection> is C<G_TYPE_BOOLEAN>.
 
@@ -2838,7 +2784,6 @@ Hover expansion makes rows expand or collapse if the pointer moves
 over them.
 This mode is primarily intended for treeviews in popups, e.g.
 in B<Gnome::Gtk3::ComboBox> or B<Gnome::Gtk3::EntryCompletion>.
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<hover-expand> is C<G_TYPE_BOOLEAN>.
 
@@ -2847,7 +2792,6 @@ The B<Gnome::GObject::Value> type of property I<hover-expand> is C<G_TYPE_BOOLEA
 
 
 C<1> if the view has expanders.
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<show-expanders> is C<G_TYPE_BOOLEAN>.
 
@@ -2856,7 +2800,6 @@ The B<Gnome::GObject::Value> type of property I<show-expanders> is C<G_TYPE_BOOL
 
 
 Extra indentation for each level.
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<level-indentation> is C<G_TYPE_INT>.
 
@@ -2898,7 +2841,6 @@ The B<Gnome::GObject::Value> type of property I<tooltip-column> is C<G_TYPE_INT>
 =head3 Activate on Single Click
 
 The activate-on-single-click property specifies whether the "row-activated" signal will be emitted after a single click.
-Since: 3.8
 
 The B<Gnome::GObject::Value> type of property I<activate-on-single-click> is C<G_TYPE_BOOLEAN>.
 =end pod
