@@ -12,11 +12,7 @@ A bin with a decorative frame and optional label
 
 =head1 Description
 
-
-The frame widget is a bin that surrounds its child with a decorative
-frame and an optional label. If present, the label is drawn in a gap
-in the top side of the frame. The position of the label can be
-controlled with C<gtk_frame_set_label_align()>.
+The frame widget is a bin that surrounds its child with a decorative frame and an optional label. If present, the label is drawn in a gap in the top side of the frame. The position of the label can be controlled with C<gtk_frame_set_label_align()>.
 
 
 =head2 B<Gnome::Gtk3::Frame> as B<Gnome::Gtk3::Buildable>
@@ -41,26 +37,42 @@ An example of a UI definition fragment with B<Gnome::Gtk3::Frame>:
   ├── <label widget>
   ╰── <child>
 
-B<Gnome::Gtk3::Frame> has a main CSS node named “frame” and a subnode named “border”. The
-“border” node is used to draw the visible border. You can set the appearance
-of the border using CSS properties like “border-style” on the “border” node.
+B<Gnome::Gtk3::Frame> has a main CSS node named “frame” and a subnode named “border”. The “border” node is used to draw the visible border. You can set the appearance of the border using CSS properties like “border-style” on the “border” node.
 
-The border node can be given the style class “.flat”, which is used by themes
-to disable drawing of the border. To do this from code, call
-C<gtk_frame_set_shadow_type()> with C<GTK_SHADOW_NONE> to add the “.flat” class or any other shadow type to remove it.
+The border node can be given the style class “.flat”, which is used by themes to disable drawing of the border. To do this from code, call C<gtk_frame_set_shadow_type()> with C<GTK_SHADOW_NONE> to add the “.flat” class or any other shadow type to remove it.
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Frame implements
 =comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Buildable](Buildable.html)
+=end comment
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Frame;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Buildable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Frame;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Frame;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Frame class process the options
+    self.bless( :GtkFrame, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -82,7 +94,6 @@ also is Gnome::Gtk3::Bin;
 also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
@@ -113,33 +124,32 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Frame';
+  if self.^name eq 'Gnome::Gtk3::Frame' or %options<GtkFrame> {
 
-  # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<widget>:exists or %options<native-object>:exists or
+       %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      if ? %options<label> {
+        $no = gtk_frame_new(%options<label>);
+      }
+
+      # create default object
+      else {
+        $no = gtk_frame_new(Str);
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkFrame');
   }
-
-  elsif ? %options<label> {
-    self.set-native-object(gtk_frame_new(%options<label>));
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported, undefined or wrongly typed options for ' ~
-               self.^name ~ ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # create default object
-  else {
-    self.set-native-object(gtk_frame_new(Str));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkFrame');
 }
 
 #-------------------------------------------------------------------------------
@@ -148,7 +158,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_frame_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 #  $s = self._buildable_interface($native-sub) unless ?$s;
@@ -159,7 +168,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
-
 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_frame_new:new():new(:label)
