@@ -4,6 +4,8 @@ notes:
   - 2020-04-17 0.28.0:
     - Added modules Gnome::Gtk3::TreeSelection, Gnome::Gtk3::Popover, Gnome::Gtk3::PopoverMenu and Gnome::Gtk3::Separator.
     - Add 'CATCH { default { .message.note; .backtrace.concise.note } }' to callback code in modules Gnome::GObject::Object and Container, ListBox, TextTagTable and TreeModel in Gnome::Gtk3. This prevents the situation that a moarvm panic occurs without a stackdump to follow. This improves the search for errors and typos very much.
+    - Enabled gtk_tree_view_expand_to_path(), gtk_tree_view_row_expanded(), gtk_tree_view_expand_row() and gtk_tree_view_collapse_row() in Gnome::Gtk3::TreeView.
+    - $str.chars() changed into $str.encode.bytes in a few places. This is the correct lenght, thanks Alain Barbason.
 
   - 2020-04-11 0.27.5:
     - Enabled method gtk_tree_view_get_cell_area(), gtk_tree_view_get_selection() in Gnome::Gtk3::TreeView
