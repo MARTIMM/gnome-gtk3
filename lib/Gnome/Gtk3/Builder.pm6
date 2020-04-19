@@ -472,7 +472,9 @@ sub gtk_builder_add_from_string (
   --> Gnome::Glib::Error
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_builder_add_from_string( $builder, $buffer, $buffer.chars, $ga);
+  _gtk_builder_add_from_string(
+    $builder, $buffer, $buffer.encode.bytes #`{{$buffer.chars}}, $ga
+  );
   Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 

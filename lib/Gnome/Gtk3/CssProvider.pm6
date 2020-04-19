@@ -258,7 +258,9 @@ multi sub gtk_css_provider_load_from_data (
   --> Gnome::Glib::Error
 ) {
   my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_css_provider_load_from_data( $css_provider, $data, $data.chars, $ga);
+  _gtk_css_provider_load_from_data(
+    $css_provider, $data, $data.encode.bytes #`{{$data.chars}}, $ga
+  );
   Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
