@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-04-17 0.28.1:
+    - Made Gnome::Gtk3::CheckButton and Gnome::Gtk3::RadioButton inheritable.
+
   - 2020-04-17 0.28.0:
     - Added modules Gnome::Gtk3::TreeSelection, Gnome::Gtk3::Popover, Gnome::Gtk3::PopoverMenu and Gnome::Gtk3::Separator.
     - Add 'CATCH { default { .message.note; .backtrace.concise.note } }' to callback code in modules Gnome::GObject::Object and Container, ListBox, TextTagTable and TreeModel in Gnome::Gtk3. This prevents the situation that a moarvm panic occurs without a stackdump to follow. This improves the search for errors and typos very much.
