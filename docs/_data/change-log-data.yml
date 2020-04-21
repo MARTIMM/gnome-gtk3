@@ -2,7 +2,8 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   - 2020-04-17 0.28.1:
-    - Made Gnome::Gtk3::CheckButton, Gnome::Gtk3::Scale and Gnome::Gtk3::RadioButton inheritable.
+    - Made Gnome::Gtk3::CheckButton, Gnome::Gtk3::Scale, Gnome::Gtk3::Image and Gnome::Gtk3::RadioButton inheritable.
+    - Added a few multi to submethod BUILD to create an image from pixbufs and resources.
 
   - 2020-04-17 0.28.0:
     - Added modules Gnome::Gtk3::TreeSelection, Gnome::Gtk3::Popover, Gnome::Gtk3::PopoverMenu and Gnome::Gtk3::Separator.
