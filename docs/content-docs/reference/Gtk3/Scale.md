@@ -15,7 +15,7 @@ Note that using the same upper and lower bounds for the **Gnome::Gtk3::Scale** (
 **Gnome::Gtk3::Scale** as **Gnome::Gtk3::Buildable**
 ----------------------------------------------------
 
-**Gnome::Gtk3::Scale** supports a custom <marks> element, which can contain multiple <mark> elements. The “value” and “position” attributes have the same meaning as `gtk_scale_add_mark()` parameters of the same name. If the element is not empty, its content is taken as the markup to show at the mark. It can be translated with the usual ”translatable” and “context” attributes.
+**Gnome::Gtk3::Scale** supports a custom <marks> element, which can contain multiple `mark` elements. The “value” and “position” attributes have the same meaning as `gtk_scale_add_mark()` parameters of the same name. If the element is not empty, its content is taken as the markup to show at the mark. It can be translated with the usual ”translatable” and “context” attributes.
 
 Css Nodes
 ---------
@@ -55,15 +55,6 @@ The main CSS node gets the 'marks-before' and/or 'marks-after' style classes add
 
 If the scale is displaying the value (see *draw-value*), there is subnode with name value.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Scale implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * [Gnome::Gtk3::Orientable](Orientable.html)
-
 Synopsis
 ========
 
@@ -72,8 +63,25 @@ Declaration
 
     unit class Gnome::Gtk3::Scale;
     also is Gnome::Gtk3::Range;
-    also does Gnome::Gtk3::Buildable;
-    also does Gnome::Gtk3::Orientable;
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Scale;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Scale;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Scale class process the options
+      self.bless( :GtkScale, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Example
 -------
@@ -105,9 +113,25 @@ Methods
 new
 ---
 
-Creates a new GtkScale providinng an orientation and minimum, maximum and step size.
+Creates a new **Gnome::Gtk3::Scale** based on ahorizontal orientation and an undefined adjustment. See below.
 
-    multi method new ( Int :$orientation!, Num $min!, Num $max!, Num $step! )
+    multi method new ( )
+
+Creates a new **Gnome::Gtk3::Scale** based on an orientation and adjustment.
+
+    multi method new ( GtkOrientation :$orientation!, N-GObject :$adjustment! )
+
+  * $orientation; the scale’s orientation.
+
+  * $adjustment; a value of type **Gnome::Gtk3::Adjustment** which sets the range of the scale, or NULL to create a new adjustment.
+
+Creates a new scale widget with the given orientation that lets the user input a number between *$min* and *$max* (including *$min* and *$max*) with the increment *step*. *step* must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
+
+Note that the way in which the precision is derived works best if *$step* is a power of ten. If the resulting precision is not suitable for your needs, use `gtk_scale_set_digits()` to correct it.
+
+    multi method new (
+      GtkOrientation :$orientation!, Num $min!, Num $max!, Num $step!
+    )
 
   * $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
 
@@ -124,42 +148,6 @@ Create an object using a native object from elsewhere. See also Gnome::GObject::
     multi method new ( Str :$build-id! )
 
 Create an object using a native object from a builder. See also Gnome::GObject::Object.
-
-[gtk_] scale_new
-----------------
-
-Creates a new **Gnome::Gtk3::Scale**.
-
-Returns: a new **Gnome::Gtk3::Scale**
-
-Since: 3.0
-
-    method gtk_scale_new ( GtkOrientation $orientation, N-GObject $adjustment --> N-GObject  )
-
-  * GtkOrientation $orientation; the scale’s orientation.
-
-  * N-GObject $adjustment; (nullable): the **Gnome::Gtk3::Adjustment** which sets the range of the scale, or `Any` to create a new adjustment.
-
-[[gtk_] scale_] new_with_range
-------------------------------
-
-Creates a new scale widget with the given orientation that lets the user input a number between *min* and *max* (including *min* and *max*) with the increment *step*. *step* must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
-
-Note that the way in which the precision is derived works best if *step* is a power of ten. If the resulting precision is not suitable for your needs, use `gtk_scale_set_digits()` to correct it.
-
-Returns: a new **Gnome::Gtk3::Scale**
-
-Since: 3.0
-
-    method gtk_scale_new_with_range ( GtkOrientation $orientation, Num $min, Num $max, Num $step --> N-GObject  )
-
-  * GtkOrientation $orientation; the scale’s orientation.
-
-  * Num $min; minimum value
-
-  * Num $max; maximum value
-
-  * Num $step; step increment (tick size) used with keyboard shortcuts
 
 [[gtk_] scale_] set_digits
 --------------------------
@@ -204,8 +192,6 @@ Returns: whether the current value is displayed as a string
 
 If *has_origin* is set to `1` (the default), the scale will highlight the part of the scale between the origin (bottom or left side) of the scale and the current value.
 
-Since: 3.4
-
     method gtk_scale_set_has_origin ( Int $has_origin )
 
   * Int $has_origin; `1` if the scale has an origin
@@ -216,8 +202,6 @@ Since: 3.4
 Returns whether the scale has an origin.
 
 Returns: `1` if the scale has an origin.
-
-Since: 3.4
 
     method gtk_scale_get_has_origin ( --> Int  )
 
@@ -250,8 +234,6 @@ If *markup* is not `Any`, text is shown next to the tick mark.
 
 To remove marks from a scale, use `gtk_scale_clear_marks()`.
 
-Since: 2.16
-
     method gtk_scale_add_mark ( Num $value, GtkPositionType $position, Str $markup )
 
   * Num $value; the value at which the mark is placed, must be between the lower and upper limits of the scales’ adjustment
@@ -264,8 +246,6 @@ Since: 2.16
 ---------------------------
 
 Removes any marks that have been added with `gtk_scale_add_mark()`.
-
-Since: 2.16
 
     method gtk_scale_clear_marks ( )
 

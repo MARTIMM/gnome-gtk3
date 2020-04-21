@@ -139,7 +139,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea
 │   │   ├── GtkRange                            Range
-│   │   │   ├── GtkScale                        Scale
+│   │   │   ├── GtkScale                        ♥ Scale
 │   │   │   │   ├─✗ GtkHScale                   ⛔
 │   │   │   │   ╰─✗ GtkVScale                   ⛔
 │   │   │   ╰── GtkScrollbar
