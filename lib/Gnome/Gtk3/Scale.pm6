@@ -233,6 +233,15 @@ submethod BUILD ( *%options ) {
         );
       }
 }}
+      elsif %options<orientation>.defined and ? %options<adjustment>.defined {
+        # get the native adjustment
+        $no = %options<adjustment>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        # now create the native scale
+        $no = _gtk_scale_new( %options<orientation>, $no);
+      }
+
       else {
         $no = _gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any);
       }
