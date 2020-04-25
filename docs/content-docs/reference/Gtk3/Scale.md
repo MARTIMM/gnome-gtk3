@@ -299,7 +299,7 @@ Here's an example signal handler which displays a value 1.0 as with "-->1.0<--".
 Returns: allocated string representing *$value*
 
     method handler (
-      num64 #`{{use NativeCall}} $value,
+      num64 $value,
       Gnome::GObject::Object :widget($scale),
       *%user-options
       --> Str

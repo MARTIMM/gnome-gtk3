@@ -448,12 +448,12 @@ The *tool-changed* signal is emitted on pen/eraser **Gnome::Gdk3::Devices** when
 Since: 3.22
 
     method handler (
-      N-GObject #`{{ native Gnome::Gdk3::DeviceTool }} $tool,
+      N-GObject $tool,
       Gnome::GObject::Object :widget($device),
       *%user-options
     );
 
-  * $device; the **Gnome::Gdk3::Device** that changed.
+  * $device; the native object for **Gnome::Gdk3::Device** that changed.
 
   * $tool; The new current tool
 
