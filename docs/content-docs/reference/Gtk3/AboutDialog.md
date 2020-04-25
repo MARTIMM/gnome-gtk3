@@ -29,34 +29,6 @@ Declaration
     unit class Gnome::Gtk3::AboutDialog;
     also is Gnome::Gtk3::Dialog;
 
-```plantuml
-@startuml
-scale 0.8
-
-package Gnome::GObject as gobject <<Rectangle>> {
-  class InitialyUnowned
-  class Object
-
-  Object <|-- InitialyUnowned
-}
-
-package Gnome::Gtk3 as gtk3 <<Rectangle>> {
-  class AboutDialog
-  Interface Buildable <Interface>
-  Dialog <|- AboutDialog
-  Window <|- Dialog
-  Bin <|- Window
-  Container <|- Bin
-  Widget <|- Container
-  InitialyUnowned <|- Widget
-
-  Buildable <|-- Widget
-}
-
-gobject <--[hidden]- gtk3
-@enduml
-```
-
 Inheriting this class
 ---------------------
 
