@@ -32,6 +32,10 @@ layout: sidebar
           "<strong>Test coverage: {{ site.data.testCoverage[page.path]["routines"]["coverage"] }} %</strong><br /><br /><strong>Table of Contents</strong><br /><br />"
         );
 
+
+        // create TOC anchor
+        $("#category").append('<a name="toc-table"/>');
+
         $("h1,h2,h3,h4,h5,h6").each(function(i,item){
           var tag = $(item).get(0).localName;
           $(item).attr("id","wow"+i);
@@ -40,10 +44,13 @@ layout: sidebar
           if( text != "Interfacing Raku to Gnome GTK+" &
               text != "TITLE" & text != "SUBTITLE"
             ) {
+            /* create e.g. <a class="newh1" href="#wow1">h1 text</a></br> */
             $("#category").append(
-              '<a class="new'+tag+'" href="#wow'+i+'">'+text+'</a></br>'
+              '<a class="new' + tag + '" href="#wow' + i + '">' + text +
+              '</a></br>'
             );
           }
+          $(this).wrap('<a href="#toc-table"></a>');
 
           $(".newh1").css("margin-left",0);
           $(".newh2").css("margin-left",15);
@@ -55,7 +62,7 @@ layout: sidebar
       });
     </script>
   </head>
-  <body>
+  <body id="reference-page">
     <div id="category"></div>
 
     <div id="content"> {{ content }} </div>
