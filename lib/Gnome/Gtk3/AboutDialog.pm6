@@ -39,7 +39,9 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
   also is Gnome::Gtk3::Dialog;
 =comment  also does Gnome::Gtk3::Buildable;
 
-=begin code :lang<plantuml>
+=begin comment
+
+= begin code :lang<plantuml>
 @startuml
 scale 0.8
 
@@ -65,7 +67,9 @@ package Gnome::Gtk3 as gtk3 <<Rectangle>> {
 
 gobject <--[hidden]- gtk3
 @enduml
-=end code
+= end code
+
+=end comment
 
 =head2 Inheriting this class
 
