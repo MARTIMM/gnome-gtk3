@@ -640,7 +640,7 @@ with "-->1.0<--".
 Returns: allocated string representing I<$value>
 
   method handler (
-    num64 #`{{use NativeCall}} $value,
+    num64 $value,
     Gnome::GObject::Object :widget($scale),
     *%user-options
     --> Str
