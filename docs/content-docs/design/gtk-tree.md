@@ -47,8 +47,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkAspectFrame          AspectFrame
 │   │   │   │   ├── GtkButton                   Button
 │   │   │   │   │   ├── GtkToggleButton         ToggleButton
-│   │   │   │   │   │   ├── GtkCheckButton      CheckButton
-│   │   │   │   │   │   │   ╰── GtkRadioButton  RadioButton
+│   │   │   │   │   │   ├── GtkCheckButton      ♥ CheckButton
+│   │   │   │   │   │   │   ╰── GtkRadioButton  ♥ RadioButton
 │   │   │   │   │   │   ╰── GtkMenuButton       MenuButton
 │   │   │   │   │   ├── GtkColorButton          ColorButton
 │   │   │   │   │   ├── GtkFontButton
@@ -139,7 +139,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea
 │   │   ├── GtkRange                            Range
-│   │   │   ├── GtkScale                        Scale
+│   │   │   ├── GtkScale                        ♥ Scale
 │   │   │   │   ├─✗ GtkHScale                   ⛔
 │   │   │   │   ╰─✗ GtkVScale                   ⛔
 │   │   │   ╰── GtkScrollbar

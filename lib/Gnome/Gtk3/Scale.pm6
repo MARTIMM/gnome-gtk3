@@ -13,31 +13,15 @@ A slider widget for selecting a value from a range
 =head1 Description
 
 
-A B<Gnome::Gtk3::Scale> is a slider control used to select a numeric value.
-To use it, you’ll probably want to investigate the methods on
-its base class, B<Gnome::Gtk3::Range>, in addition to the methods for B<Gnome::Gtk3::Scale> itself.
-To set the value of a scale, you would normally use C<gtk_range_set_value()>.
-To detect changes to the value, you would normally use the
- I<value-changed> signal.
+A B<Gnome::Gtk3::Scale> is a slider control used to select a numeric value. To use it, you’ll probably want to investigate the methods on its base class, B<Gnome::Gtk3::Range>, in addition to the methods for B<Gnome::Gtk3::Scale> itself. To set the value of a scale, you would normally use C<gtk_range_set_value()>. To detect changes to the value, you would normally use the I<value-changed> signal.
 
-Note that using the same upper and lower bounds for the B<Gnome::Gtk3::Scale> (through
-the B<Gnome::Gtk3::Range> methods) will hide the slider itself. This is useful for
-applications that want to show an undeterminate value on the scale, without
-changing the layout of the application (such as movie or music players).
-
+Note that using the same upper and lower bounds for the B<Gnome::Gtk3::Scale> (through the B<Gnome::Gtk3::Range> methods) will hide the slider itself. This is useful for applications that want to show an undeterminate value on the scale, without changing the layout of the application (such as movie or music players).
 
 =head2 B<Gnome::Gtk3::Scale> as B<Gnome::Gtk3::Buildable>
 
-B<Gnome::Gtk3::Scale> supports a custom <marks> element, which can contain multiple
-<mark> elements. The “value” and “position” attributes have the same
-meaning as C<gtk_scale_add_mark()> parameters of the same name. If the
-element is not empty, its content is taken as the markup to show at
-the mark. It can be translated with the usual ”translatable” and
-“context” attributes.
-
+B<Gnome::Gtk3::Scale> supports a custom <marks> element, which can contain multiple C<<mark>> elements. The “value” and “position” attributes have the same meaning as C<gtk_scale_add_mark()> parameters of the same name. If the element is not empty, its content is taken as the markup to show at the mark. It can be translated with the usual ”translatable” and “context” attributes.
 
 =head2 Css Nodes
-
 
   scale[.fine-tune][.marks-before][.marks-after]
   ├── marks.top
@@ -58,37 +42,24 @@ the mark. It can be translated with the usual ”translatable” and
       ┊    ╰── [label]
       ╰── mark
 
-B<Gnome::Gtk3::Scale> has a main CSS node with name scale and a subnode for its contents,
-with subnodes named trough and slider.
+B<Gnome::Gtk3::Scale> has a main CSS node with name scale and a subnode for its contents, with subnodes named trough and slider.
 
-The main node gets the style class .fine-tune added when the scale is in
-'fine-tuning' mode.
+The main node gets the style class .fine-tune added when the scale is in 'fine-tuning' mode.
 
-If the scale has an origin (see C<gtk_scale_set_has_origin()>), there is a
-subnode with name highlight below the trough node that is used for rendering
-the highlighted part of the trough.
+If the scale has an origin (see C<gtk_scale_set_has_origin()>), there is a subnode with name highlight below the trough node that is used for rendering the highlighted part of the trough.
 
-If the scale is showing a fill level (see C<gtk_range_set_show_fill_level()>),
-there is a subnode with name fill below the trough node that is used for
-rendering the filled in part of the trough.
+If the scale is showing a fill level (see C<gtk_range_set_show_fill_level()>), there is a subnode with name fill below the trough node that is used for rendering the filled in part of the trough.
 
-If marks are present, there is a marks subnode before or after the contents
-node, below which each mark gets a node with name mark. The marks nodes get
-either the .top or .bottom style class.
+If marks are present, there is a marks subnode before or after the contents node, below which each mark gets a node with name mark. The marks nodes get either the .top or .bottom style class.
 
-The mark node has a subnode named indicator. If the mark has text, it also
-has a subnode named label. When the mark is either above or left of the
-scale, the label subnode is the first when present. Otherwise, the indicator
-subnode is the first.
+The mark node has a subnode named indicator. If the mark has text, it also has a subnode named label. When the mark is either above or left of the scale, the label subnode is the first when present. Otherwise, the indicator subnode is the first.
 
-The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
-added depending on what marks are present.
+The main CSS node gets the 'marks-before' and/or 'marks-after' style classes added depending on what marks are present.
 
-If the scale is displaying the value (see  I<draw-value>), there is
-subnode with name value.
+If the scale is displaying the value (see  I<draw-value>), there is subnode with name value.
 
 
-
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Scale implements
@@ -96,6 +67,7 @@ Gnome::Gtk3::Scale implements
 =comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
+=end comment
 
 
 
@@ -105,8 +77,27 @@ Gnome::Gtk3::Scale implements
 
   unit class Gnome::Gtk3::Scale;
   also is Gnome::Gtk3::Range;
-  also does Gnome::Gtk3::Buildable;
-  also does Gnome::Gtk3::Orientable;
+=comment  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Orientable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Scale;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Scale;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Scale class process the options
+    self.bless( :GtkScale, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 
 =head2 Example
 
@@ -162,18 +153,25 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=begin comment
-Creates a new GtkScale based on an orientation and adjustment.
+Creates a new B<Gnome::Gtk3::Scale> based on ahorizontal orientation and an undefined adjustment. See below.
 
-  multi method new ( Int :$orientation!, N-GObject :$adjustment! )
+  multi method new ( )
 
-=item $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
-=item $adjustment; a value of type GtkAdjustment which sets the range of the scale, or NULL to create a new adjustment.
-=end comment
+Creates a new B<Gnome::Gtk3::Scale> based on an orientation and adjustment.
 
-Creates a new GtkScale providinng an orientation and minimum, maximum and step size.
+  multi method new ( GtkOrientation :$orientation!, N-GObject :$adjustment! )
 
-  multi method new ( Int :$orientation!, Num $min!, Num $max!, Num $step! )
+=item $orientation; the scale’s orientation.
+=item $adjustment; a value of type B<Gnome::Gtk3::Adjustment> which sets the range of the scale, or NULL to create a new adjustment.
+
+
+Creates a new scale widget with the given orientation that lets the user input a number between I<$min> and I<$max> (including I<$min> and I<$max>) with the increment I<step>.  I<step> must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
+
+Note that the way in which the precision is derived works best if I<$step> is a power of ten. If the resulting precision is not suitable for your needs, use C<gtk_scale_set_digits()> to correct it.
+
+  multi method new (
+    GtkOrientation :$orientation!, Num $min!, Num $max!, Num $step!
+  )
 
 =item $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
 =item $min; minimum value
@@ -191,9 +189,9 @@ Create an object using a native object from a builder. See also Gnome::GObject::
 =end pod
 
 #TM:1:new():
-#TM:0:new(:min,:max,:step):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:min,:max,:step):QAManager
+#TM:4:new(:native-object):TopLevelClassSupport
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
@@ -202,40 +200,58 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Scale';
+  if self.^name eq 'Gnome::Gtk3::Scale' or %options<GtkScale> {
 
-  if %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
+    # process all named arguments
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      if %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any);
+      }
+
+      elsif %options<orientation>.defined and ? %options<min>.defined and
+         %options<max>.defined and %options<step>.defined {
+
+        $no = _gtk_scale_new_with_range(
+          %options<orientation>, %options<min>, %options<max>, %options<step>
+        );
+      }
+#`{{
+      elsif %options.keys.elems {
+        die X::Gnome.new(
+          :message('Unsupported options for ' ~ self.^name ~
+                   ': ' ~ %options.keys.join(', ')
+                  )
+        );
+      }
+}}
+      elsif %options<orientation>.defined and ? %options<adjustment>.defined {
+        # get the native adjustment
+        $no = %options<adjustment>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        # now create the native scale
+        $no = _gtk_scale_new( %options<orientation>, $no);
+      }
+
+      else {
+        $no = _gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any);
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the widget, the gtype is known
+    self.set-class-info('GtkScale');
   }
-
-  elsif %options<orientation>.defined and ? %options<min>.defined and
-     %options<max>.defined and %options<step>.defined {
-
-    self.set-native-object( gtk_scale_new_with_range(
-        %options<orientation>, %options<min>, %options<max>, %options<step>
-      )
-    );
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if %options<empty> {
-    self.set-native-object( gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any));
-  }
-
-  # only after creating the widget, the gtype is known
-  self.set-class-info('GtkScale');
 }
 
 #-------------------------------------------------------------------------------
@@ -256,7 +272,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_scale_new:new()
+#TM:2:_gtk_scale_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] scale_new
 
@@ -264,7 +281,6 @@ Creates a new B<Gnome::Gtk3::Scale>.
 
 Returns: a new B<Gnome::Gtk3::Scale>
 
-Since: 3.0
 
   method gtk_scale_new ( GtkOrientation $orientation, N-GObject $adjustment --> N-GObject  )
 
@@ -272,14 +288,17 @@ Since: 3.0
 =item N-GObject $adjustment; (nullable): the B<Gnome::Gtk3::Adjustment> which sets the range of the scale, or C<Any> to create a new adjustment.
 
 =end pod
+}}
 
-sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
+sub _gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_scale_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_scale_new_with_range:new(:orientation,:min,:max,:step)
+#TM:2:_gtk_scale_new_with_range:new(:orientation,:min,:max,:step)
+#`{{
 =begin pod
 =head2 [[gtk_] scale_] new_with_range
 
@@ -295,7 +314,6 @@ needs, use C<gtk_scale_set_digits()> to correct it.
 
 Returns: a new B<Gnome::Gtk3::Scale>
 
-Since: 3.0
 
   method gtk_scale_new_with_range ( GtkOrientation $orientation, Num $min, Num $max, Num $step --> N-GObject  )
 
@@ -305,10 +323,12 @@ Since: 3.0
 =item Num $step; step increment (tick size) used with keyboard shortcuts
 
 =end pod
+}}
 
-sub gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64 $step )
+sub _gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64 $step )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_scale_new_with_range')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -402,7 +422,6 @@ the scale will highlight the part of the scale
 between the origin (bottom or left side) of the scale
 and the current value.
 
-Since: 3.4
 
   method gtk_scale_set_has_origin ( Int $has_origin )
 
@@ -423,7 +442,6 @@ Returns whether the scale has an origin.
 
 Returns: C<1> if the scale has an origin.
 
-Since: 3.4
 
   method gtk_scale_get_has_origin ( --> Int  )
 
@@ -484,7 +502,6 @@ the caller.
 Returns: (transfer none) (nullable): the B<PangoLayout> for this scale,
 or C<Any> if the  I<draw-value> property is C<0>.
 
-Since: 2.4
 
   method gtk_scale_get_layout ( --> PangoLayout  )
 
@@ -511,7 +528,6 @@ and from pixels using C<PANGO_PIXELS()> or B<PANGO_SCALE>.
 If the  I<draw-value> property is C<0>, the return
 values are undefined.
 
-Since: 2.4
 
   method gtk_scale_get_layout_offsets ( Int $x, Int $y )
 
@@ -540,7 +556,6 @@ If I<markup> is not C<Any>, text is shown next to the tick mark.
 
 To remove marks from a scale, use C<gtk_scale_clear_marks()>.
 
-Since: 2.16
 
   method gtk_scale_add_mark ( Num $value, GtkPositionType $position, Str $markup )
 
@@ -561,7 +576,6 @@ sub gtk_scale_add_mark ( N-GObject $scale, num64 $value, int32 $position, Str $m
 
 Removes any marks that have been added with C<gtk_scale_add_mark()>.
 
-Since: 2.16
 
   method gtk_scale_clear_marks ( )
 

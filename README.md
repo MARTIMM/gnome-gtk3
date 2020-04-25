@@ -144,6 +144,7 @@ There are always some problems! If you find one, please help by filing an issue 
 * The inventors of Raku, formerly known as Perl 6, of course and the writers of the documentation which helped me out every time again and again.
 * The builders of the GTK+ library and the documentation.
 * Other helpful modules for their insight and use.
+* Documentation from [Wikibooks](https://en.wikibooks.org/wiki/GTK%2B_By_Example) and [Zetcode](http://zetcode.com/tutorials/gtktutorial/)
 
 # Author
 

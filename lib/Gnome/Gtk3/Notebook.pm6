@@ -148,8 +148,8 @@ Create a Notebook object using a native object returned from a builder. See also
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelClassSupport
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
@@ -168,6 +168,10 @@ submethod BUILD ( *%options ) {
 
     # process all named arguments
     if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
 
     # create default object
     else {

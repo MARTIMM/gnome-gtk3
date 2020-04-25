@@ -31,10 +31,12 @@ A B<Gnome::Gtk3::CheckButton> with indicator (see C<gtk_toggle_button_set_mode()
 
 A B<Gnome::Gtk3::CheckButton> without indicator changes the name of its main node to button and adds a .check style class to it. The subnode is invisible in this case.
 
+=begin comment
 =head2 Implemented Interfaces
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 =item Gnome::Gtk3::Activatable
+=end comment
 
 =head2 See Also
 
@@ -45,7 +47,25 @@ B<Gnome::Gtk3::CheckMenuItem>, B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::ToggleButt
 
   unit class Gnome::Gtk3::CheckButton;
   also is Gnome::Gtk3::ToggleButton;
-  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Buildable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::CheckButton;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::CheckButton;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::CheckButton class process the options
+    self.bless( :GtkCheckButton, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =head2 Example
 
@@ -81,7 +101,7 @@ also does Gnome::Gtk3::Buildable;
 
 Create GtkCheckButton object with a label.
 
-  multi method new ( Str :$label! )
+  multi method new ( Str :$label!, Bool :$mnemonic = False )
 
 Create a new plain object.
 
@@ -100,41 +120,50 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:0:new():inheriting
 #TM:1:new(:label):
 #TM:1:new():
-#TM:1:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelClass
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::CheckButton';
+  if self.^name eq 'Gnome::Gtk3::CheckButton' or ? %options<GtkCheckButton> {
 
-  if %options<label>.defined {
-    self.set-native-object(gtk_check_button_new_with_label(%options<label>));
+    # check if native object is set by other parent class BUILDers
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+      my Bool $mnemonic = %options<mnemonic> // False;
+
+      if %options<label>.defined {
+        if $mnemonic {
+          $no = _gtk_check_button_new_with_mnemonic(%options<label>);
+        }
+
+        else {
+          $no = _gtk_check_button_new_with_label(%options<label>);
+        }
+      }
+
+      elsif ? %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_check_button_new();
+      }
+
+      else { #elsif ? %options<empty> {
+        $no = _gtk_check_button_new();
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkCheckButton');
   }
-
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_check_button_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else { #elsif ? %options<empty> {
-    self.set-native-object(gtk_check_button_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkCheckButton');
 }
 
 #-------------------------------------------------------------------------------
@@ -153,7 +182,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_check_button_new:new()
+#TM:2:_gtk_check_button_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] check_button_new
 
@@ -161,17 +191,19 @@ Creates a new B<Gnome::Gtk3::CheckButton>.
 
 Returns: a B<Gnome::Gtk3::Widget>.
 
-  method gtk_check_button_new ( --> N-GObject  )
+  method gtk_check_button_new ( --> N-GObject )
 
 =end pod
+}}
 
-sub gtk_check_button_new (  )
-  returns N-GObject
+sub _gtk_check_button_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_check_button_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:3:gtk_check_button_new_with_label:net(:label)
+#TM:3:_gtk_check_button_new_with_label:new(:label)
+#`{{
 =begin pod
 =head2 [[gtk_] check_button_] new_with_label
 
@@ -179,19 +211,21 @@ Creates a new B<Gnome::Gtk3::CheckButton> with a B<Gnome::Gtk3::Label> to the ri
 
 Returns: a B<Gnome::Gtk3::Widget>.
 
-  method gtk_check_button_new_with_label ( Str $label --> N-GObject  )
+  method gtk_check_button_new_with_label ( Str $label --> N-GObject )
 
 =item Str $label; the text for the check button.
 
 =end pod
+}}
 
-sub gtk_check_button_new_with_label ( Str $label )
-  returns N-GObject
+sub _gtk_check_button_new_with_label ( Str $label --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_check_button_new_with_label')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_check_button_new_with_mnemonic:
+#TM:2:_gtk_check_button_new_with_mnemonic:new(:mnemonic)
+#`{{
 =begin pod
 =head2 [[gtk_] check_button_] new_with_mnemonic
 
@@ -206,8 +240,10 @@ Returns: a new B<Gnome::Gtk3::CheckButton>
 =item Str $label; The text of the button, with an underscore in front of the mnemonic character
 
 =end pod
+}}
 
-sub gtk_check_button_new_with_mnemonic ( Str $label )
+sub _gtk_check_button_new_with_mnemonic ( Str $label )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_check_button_new_with_mnemonic')
   { * }

@@ -139,6 +139,8 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
 
+* [ ] Add plantuml diagrams to documents
+
 #### Test coverage
 
 * **Gnome::Gdk3**

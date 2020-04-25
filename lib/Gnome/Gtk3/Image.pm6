@@ -12,12 +12,7 @@ A widget displaying an image
 
 =head1 Description
 
-
-The B<Gnome::Gtk3::Image> widget displays an image. Various kinds of object
-can be displayed as an image; most typically, you would load a
-B<Gnome::Gdk3::Pixbuf> ("pixel buffer") from a file, and then display that.
-There’s a convenience function to do this, C<gtk_image_set_from_file()>,
-used as follows:
+The B<Gnome::Gtk3::Image> widget displays an image. Various kinds of object can be displayed as an image; most typically, you would load a B<Gnome::Gdk3::Pixbuf> ("pixel buffer") from a file, and then display that. There’s a convenience function to do this, C<gtk_image_set_from_file()>, used as follows:
 
   my Gnome::Gtk3::Image $image .= new;
   $image.set-from-file("myfile.png");
@@ -26,20 +21,11 @@ To make it shorter;
 
   my Gnome::Gtk3::Image $image .= new(:filename<myfile.png>);
 
-If the file isn’t loaded successfully, the image will contain a
-“broken image” icon similar to that used in many web browsers.
-If you want to handle errors in loading the file yourself,
-for example by displaying an error message, then load the image with
-C<gdk_pixbuf_new_from_file()>, then create the B<Gnome::Gtk3::Image> with
-C<gtk_image_new_from_pixbuf()>.
+If the file isn’t loaded successfully, the image will contain a “broken image” icon similar to that used in many web browsers. If you want to handle errors in loading the file yourself, for example by displaying an error message, then load the image with C<gdk_pixbuf_new_from_file()>, then create the B<Gnome::Gtk3::Image> with C<gtk_image_new_from_pixbuf()>.
 
-The image file may contain an animation, if so the B<Gnome::Gtk3::Image> will
-display an animation (B<Gnome::Gdk3::PixbufAnimation>) instead of a static image.
+The image file may contain an animation, if so the B<Gnome::Gtk3::Image> will display an animation (B<Gnome::Gdk3::PixbufAnimation>) instead of a static image.
 
-B<Gnome::Gtk3::Image> is a “no window” widget (has no B<Gnome::Gdk3::Window> of its own),
-so by default does not receive events. If you want to receive events
-on the image, such as button clicks, place the image inside a
-B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
+B<Gnome::Gtk3::Image> is a “no window” widget (has no B<Gnome::Gdk3::Window> of its own), so by default does not receive events. If you want to receive events on the image, such as button clicks, place the image inside a B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
 
 =head2 Handling button press events on a Gnome::Gtk3::Image.
 
@@ -69,45 +55,58 @@ B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
   }
 
 
-When handling events on the event box, keep in mind that coordinates
-in the image may be different from event box coordinates due to
-the alignment and padding settings on the image (see B<Gnome::Gtk3::Misc>).
-The simplest way to solve this is to set the alignment to 0.0
-(left/top), and set the padding to zero. Then the origin of
-the image will be the same as the origin of the event box.
+When handling events on the event box, keep in mind that coordinates in the image may be different from event box coordinates due to the alignment and padding settings on the image (see B<Gnome::Gtk3::Misc>). The simplest way to solve this is to set the alignment to 0.0 (left/top), and set the padding to zero. Then the origin of the image will be the same as the origin of the event box.
 
 A note: B<Gnome::Gtk3::Misc> is almost completely deprecated. It exists only to support the inheritance tree below the Misc class. For alignment and padding look for the methods in B<Gnome::Gtk3::Widget>.
 
 =begin comment
-Sometimes an application will want to avoid depending on external data
-files, such as image files. GTK+ comes with a program to avoid this,
-called “gdk-pixbuf-csource”. This library
-allows you to convert an image into a C variable declaration, which
-can then be loaded into a B<Gnome::Gdk3::Pixbuf> using
-C<gdk_pixbuf_new_from_inline()>.
+Sometimes an application will want to avoid depending on external data files, such as image files. GTK+ comes with a program to avoid this, called “gdk-pixbuf-csource”. This library allows you to convert an image into a C variable declaration, which can then be loaded into a B<Gnome::Gdk3::Pixbuf> using C<gdk_pixbuf_new_from_inline()>.
 =end comment
 
 
 =head2 Css Nodes
 
-
 B<Gnome::Gtk3::Image> has a single CSS node with the name image.
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Image implements
 =comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Buildable](Buildable.html)
+=end comment
+
 
 =comment head2 See Also
 =comment B<Gnome::Gdk3::Pixbuf>
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Image;
   also is Gnome::Gtk3::Misc;
-  also does Gnome::Gtk3::Buildable;
+=comment   also does Gnome::Gtk3::Buildable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Image;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Image;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Image class process the options
+    self.bless( :GtkImage, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=comment head2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -135,14 +134,7 @@ also does Gnome::Gtk3::Buildable;
 =begin pod
 =head2 enum GtkImageType
 
-Describes the image data representation used by a B<Gnome::Gtk3::Image>. If you
-want to get the image from the widget, you can only get the
-currently-stored representation. e.g.  if the
-C<gtk_image_get_storage_type()> returns B<GTK_IMAGE_PIXBUF>, then you can
-call C<gtk_image_get_pixbuf()> but not C<gtk_image_get_stock()>.  For empty
-images, you can request any storage type (call any of the "get"
-functions), but they will all return C<Any> values.
-
+Describes the image data representation used by a B<Gnome::Gtk3::Image>. If you want to get the image from the widget, you can only get the currently-stored representation. e.g.  if the C<gtk_image_get_storage_type()> returns B<GTK_IMAGE_PIXBUF>, then you can call C<gtk_image_get_pixbuf()> but not C<gtk_image_get_stock()>.  For empty images, you can request any storage type (call any of the "get" functions), but they will all return C<Any> values.
 
 =item GTK_IMAGE_EMPTY: there is no image displayed by the widget
 =item GTK_IMAGE_PIXBUF: the widget contains a B<Gnome::Gdk3::Pixbuf>
@@ -177,13 +169,49 @@ Create a new plain object without an image.
 
   multi method new ( )
 
-Create a new object and load an image from file.
+
+Creates a new B<Gnome::Gtk3::Image> displaying the file I<filename>. If the file isn’t found or can’t be loaded, the resulting B<Gnome::Gtk3::Image> will display a “broken image” icon.
+
+If the file contains an animation, the image will contain an animation.
+
+If you need to detect failures to load the file, use C<gdk_pixbuf_new_from_file()> to load the file yourself, then create the B<Gnome::Gtk3::Image> from the pixbuf. (Or for animations, use C<gdk_pixbuf_animation_new_from_file()>).
+
+The storage type (C<gtk_image_get_storage_type()>) of the returned image is not defined, it will be whatever is appropriate for displaying the file. Create a new object and load an image from file.
 
   multi method new ( Str :$filename! )
+
+
+Creates a new B<Gnome::Gtk3::Image> displaying the resource file I<$resource-path>. If the file isn’t found or can’t be loaded, the resulting B<Gnome::Gtk3::Image> will display a “broken image” icon. This function never returns C<Any>, it always returns a valid B<Gnome::Gtk3::Image> widget.
+
+If the file contains an animation, the image will contain an animation.
+
+If you need to detect failures to load the file, use C<gdk_pixbuf_new_from_file()> to load the file yourself, then create the B<Gnome::Gtk3::Image> from the pixbuf. (Or for animations, use C<gdk_pixbuf_animation_new_from_file()>).
+
+The storage type (C<gtk_image_get_storage_type()>) of the returned image is not defined, it will be whatever is appropriate for displaying the file.
+
+  multi method new ( Str :$resource-path! )
+
+
+Creates a new B<Gnome::Gtk3::Image> displaying I<$pixbuf>. The B<Gnome::Gtk3::Image> does not assume a reference to the pixbuf; you still need to unref it if you own references. B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
+
+Note that this function just creates an B<Gnome::Gtk3::Image> from the pixbuf. The B<Gnome::Gtk3::Image> created will not react to state changes. Should you want that, you should use C<gtk_image_new_from_icon_name()>.
+
+  multi method new ( Str :$pixbuf! )
+
+
+=begin comment
+Creates a B<Gnome::Gtk3::Image> displaying the given animation. The B<Gnome::Gtk3::Image> does not assume a reference to the animation; you still need to unref it if you own references. B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
+
+Note that the animation frames are shown using a timeout with B<G_PRIORITY_DEFAULT>. When using animations to indicate busyness, keep in mind that the animation will only be shown if the main loop is not busy with something that has a higher priority.
+
+  multi method new ( Str :$animation! )
+=end comment
+
 
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -193,40 +221,57 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 #TM:1:new():
 #TM:1:new(:filename):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:0:new(:resource-path):
+#TM:0:new(:pixbuf):
+#TM:0:new(:animation):
+#TM:4:new(:native-object):TopLevelClassSupport
+#TM:4:new(:build-id):Object
+
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Image';
+  if self.^name eq 'Gnome::Gtk3::Image' or %options<GtkImage> {
 
-  if ?%options<filename> {
-    self.set-native-object(gtk_image_new_from_file(%options<filename>));
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      if ?%options<filename> {
+        $no = _gtk_image_new_from_file(%options<filename>);
+      }
+
+      elsif ?%options<resource-path> {
+        $no = _gtk_image_new_from_resource(%options<resource-path>);
+      }
+
+      elsif ?%options<pixbuf> {
+        $no = _gtk_image_new_from_pixbuf(%options<resource-path>);
+      }
+
+#      elsif ?%options<animation> {
+#        $no = _gtk_image_new_from_animation(%options<resource-path>);
+#      }
+
+      elsif ? %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_image_new();
+      }
+
+      else {
+        $no = _gtk_image_new();
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkImage');
   }
-
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_image_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_image_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkImage');
 }
 
 #-------------------------------------------------------------------------------
@@ -245,7 +290,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_image_new:new()
+#TM:2:_gtk_image_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] image_new
 
@@ -257,14 +303,17 @@ Returns: a newly created B<Gnome::Gtk3::Image> widget.
 
 
 =end pod
+}}
 
-sub gtk_image_new (  )
+sub _gtk_image_new (  )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_image_new_from_file:new(:filename)
+#TM:2:_gtk_image_new_from_file:new(:filename)
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_file
 
@@ -292,15 +341,17 @@ Returns: a new B<Gnome::Gtk3::Image>
 =item Str $filename; (type filename): a filename
 
 =end pod
+}}
 
-sub gtk_image_new_from_file ( Str $filename )
+sub _gtk_image_new_from_file ( Str $filename )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new_from_file')
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_new_from_resource:
+#TM:0:_gtk_image_new_from_resource:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_resource
 
@@ -330,15 +381,16 @@ Since: 3.4
 =item Str $resource_path; a resource path
 
 =end pod
-
-sub gtk_image_new_from_resource ( Str $resource_path )
+}}
+sub _gtk_image_new_from_resource ( Str $resource_path )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new_from_resource')
   { * }
-}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_new_from_pixbuf:
+#TM:0:_gtk_image_new_from_pixbuf:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_pixbuf
 
@@ -358,15 +410,16 @@ Returns: a new B<Gnome::Gtk3::Image>
 =item N-GObject $pixbuf; (allow-none): a B<Gnome::Gdk3::Pixbuf>, or C<Any>
 
 =end pod
-
-sub gtk_image_new_from_pixbuf ( N-GObject $pixbuf )
+}}
+sub _gtk_image_new_from_pixbuf ( N-GObject $pixbuf )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new_from_pixbuf')
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_new_from_animation:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_animation
 
@@ -387,10 +440,13 @@ Returns: a new B<Gnome::Gtk3::Image> widget
 =item GdkPixbufAnimation $animation; an animation
 
 =end pod
+}}
 
-sub gtk_image_new_from_animation ( GdkPixbufAnimation $animation )
+#`{{
+sub _gtk_image_new_from_animation ( GdkPixbufAnimation $animation )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new_from_animation')
   { * }
 }}
 
@@ -420,8 +476,10 @@ sub gtk_image_new_from_icon_name ( Str $icon_name, int32 $size )
   is native(&gtk-lib)
   { * }
 
+#`{{ Gnome::Gio::Icon not yet supported
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_new_from_gicon:
+#TM:0:_gtk_image_new_from_gicon:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_gicon
 
@@ -440,11 +498,14 @@ Since: 2.14
 =item GtkIconSize $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
 
 =end pod
+}}
 
-sub gtk_image_new_from_gicon ( N-GObject $icon, int32 $size )
+sub _gtk_image_new_from_gicon ( N-GObject $icon, int32 $size )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_image_new_from_gicon')
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------

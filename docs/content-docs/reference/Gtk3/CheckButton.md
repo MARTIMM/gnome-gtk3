@@ -27,15 +27,6 @@ A **Gnome::Gtk3::CheckButton** with indicator (see `gtk_toggle_button_set_mode()
 
 A **Gnome::Gtk3::CheckButton** without indicator changes the name of its main node to button and adds a .check style class to it. The subnode is invisible in this case.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Actionable
-
-  * Gnome::Gtk3::Activatable
-
 See Also
 --------
 
@@ -49,7 +40,25 @@ Declaration
 
     unit class Gnome::Gtk3::CheckButton;
     also is Gnome::Gtk3::ToggleButton;
-    also does Gnome::Gtk3::Buildable;
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::CheckButton;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::CheckButton;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::CheckButton class process the options
+      self.bless( :GtkCheckButton, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Example
 -------
@@ -69,7 +78,7 @@ new
 
 Create GtkCheckButton object with a label.
 
-    multi method new ( Str :$label! )
+    multi method new ( Str :$label!, Bool :$mnemonic = False )
 
 Create a new plain object.
 
@@ -82,35 +91,4 @@ Create an object using a native object from elsewhere. See also **Gnome::GObject
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-[gtk_] check_button_new
------------------------
-
-Creates a new **Gnome::Gtk3::CheckButton**.
-
-Returns: a **Gnome::Gtk3::Widget**.
-
-    method gtk_check_button_new ( --> N-GObject  )
-
-[[gtk_] check_button_] new_with_label
--------------------------------------
-
-Creates a new **Gnome::Gtk3::CheckButton** with a **Gnome::Gtk3::Label** to the right of it.
-
-Returns: a **Gnome::Gtk3::Widget**.
-
-    method gtk_check_button_new_with_label ( Str $label --> N-GObject  )
-
-  * Str $label; the text for the check button.
-
-[[gtk_] check_button_] new_with_mnemonic
-----------------------------------------
-
-Creates a new **Gnome::Gtk3::CheckButton** containing a label. The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the check button.
-
-Returns: a new **Gnome::Gtk3::CheckButton**
-
-    method gtk_check_button_new_with_mnemonic ( Str $label --> N-GObject  )
-
-  * Str $label; The text of the button, with an underscore in front of the mnemonic character
 
