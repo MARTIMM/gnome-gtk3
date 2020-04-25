@@ -26,16 +26,46 @@ Note that GTK+ sets a default title of `_("About %s")` on the dialog window (whe
 
 It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome::Gtk3::Dialog>, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
 
+=begin comment
 =head2 Implemented Interfaces
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =comment item Gnome::Atk::ImplementorIface
+=end comment
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::AboutDialog;
   also is Gnome::Gtk3::Dialog;
-  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Buildable;
+
+=begin code :lang<plantuml>
+@startuml
+scale 0.8
+
+package Gnome::GObject as gobject <<Rectangle>> {
+  class InitialyUnowned
+  class Object
+
+  Object <|-- InitialyUnowned
+}
+
+package Gnome::Gtk3 as gtk3 <<Rectangle>> {
+  class AboutDialog
+  Interface Buildable <Interface>
+  Dialog <|- AboutDialog
+  Window <|- Dialog
+  Bin <|- Window
+  Container <|- Bin
+  Widget <|- Container
+  InitialyUnowned <|- Widget
+
+  Buildable <|-- Widget
+}
+
+gobject <--[hidden]- gtk3
+@enduml
+=end code
 
 =head2 Inheriting this class
 
