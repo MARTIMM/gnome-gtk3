@@ -12,42 +12,17 @@ A single line text entry field
 
 =head1 Description
 
+The B<Gnome::Gtk3::Entry> widget is a single line text entry widget. A fairly large set of key bindings are supported by default. If the entered text is longer than the allocation of the widget, the widget will scroll so that the cursor position is visible.
 
-The B<Gnome::Gtk3::Entry> widget is a single line text entry
-widget. A fairly large set of key bindings are supported
-by default. If the entered text is longer than the allocation
-of the widget, the widget will scroll so that the cursor
-position is visible.
+When using an entry for passwords and other sensitive information, it can be put into “password mode” using C<gtk_entry_set_visibility()>. In this mode, entered text is displayed using a “invisible” character. By default, GTK+ picks the best invisible character that is available in the current font, but it can be changed with C<gtk_entry_set_invisible_char()>. Since 2.16, GTK+ displays a warning when Caps Lock or input methods might interfere with entering text in a password entry. The warning can be turned off with the  I<caps-lock-warning> property.
 
-When using an entry for passwords and other sensitive information,
-it can be put into “password mode” using C<gtk_entry_set_visibility()>.
-In this mode, entered text is displayed using a “invisible” character.
-By default, GTK+ picks the best invisible character that is available
-in the current font, but it can be changed with
-C<gtk_entry_set_invisible_char()>. Since 2.16, GTK+ displays a warning
-when Caps Lock or input methods might interfere with entering text in
-a password entry. The warning can be turned off with the
- I<caps-lock-warning> property.
+Since 2.16, B<Gnome::Gtk3::Entry> has the ability to display progress or activity information behind the text. To make an entry display such information, use C<gtk_entry_set_progress_fraction()> or C<gtk_entry_set_progress_pulse_step()>.
 
-Since 2.16, B<Gnome::Gtk3::Entry> has the ability to display progress or activity
-information behind the text. To make an entry display such information,
-use C<gtk_entry_set_progress_fraction()> or C<gtk_entry_set_progress_pulse_step()>.
+=begin comment
+Additionally, B<Gnome::Gtk3::Entry> can show icons at either side of the entry. These icons can be activatable by clicking, can be set up as drag source and can have tooltips. To add an icon, use C<gtk_entry_set_icon_from_gicon()> or one of the various other functions that set an icon from a stock id, an icon name or a pixbuf. To trigger an action when the user clicks an icon, connect to the  I<icon-press> signal. To allow DND operations from an icon, use C<gtk_entry_set_icon_drag_source()>. To set a tooltip on an icon, use C<gtk_entry_set_icon_tooltip_text()> or the corresponding function for markup.
+=end comment
 
-Additionally, B<Gnome::Gtk3::Entry> can show icons at either side of the entry. These
-icons can be activatable by clicking, can be set up as drag source and
-can have tooltips. To add an icon, use C<gtk_entry_set_icon_from_gicon()> or
-one of the various other functions that set an icon from a stock id, an
-icon name or a pixbuf. To trigger an action when the user clicks an icon,
-connect to the  I<icon-press> signal. To allow DND operations
-from an icon, use C<gtk_entry_set_icon_drag_source()>. To set a tooltip on
-an icon, use C<gtk_entry_set_icon_tooltip_text()> or the corresponding function
-for markup.
-
-Note that functionality or information that is only available by clicking
-on an icon in an entry may not be accessible at all to users which are not
-able to use a mouse or other pointing device. It is therefore recommended
-that any such functionality should also be available by other means, e.g.
-via the context menu of the entry.
+Note that functionality or information that is only available by clicking on an icon in an entry may not be accessible at all to users which are not able to use a mouse or other pointing device. It is therefore recommended that any such functionality should also be available by other means, e.g. via the context menu of the entry.
 
 
 =head2 Css Nodes
@@ -61,30 +36,21 @@ via the context menu of the entry.
   ├── [progress[.pulse]]
   ╰── [window.popup]
 
-B<Gnome::Gtk3::Entry> has a main node with the name entry. Depending on the properties
-of the entry, the style classes .read-only and .flat may appear. The style
-classes .warning and .error may also be used with entries.
+B<Gnome::Gtk3::Entry> has a main node with the name entry. Depending on the properties of the entry, the style classes .read-only and .flat may appear. The style classes .warning and .error may also be used with entries.
 
-When the entry shows icons, it adds subnodes with the name image and the
-style class .left or .right, depending on where the icon appears.
+When the entry shows icons, it adds subnodes with the name image and the style class .left or .right, depending on where the icon appears.
 
 When the entry has a selection, it adds a subnode with the name selection.
 
-When the entry shows progress, it adds a subnode with the name progress.
-The node has the style class .pulse when the shown progress is pulsing.
+When the entry shows progress, it adds a subnode with the name progress. The node has the style class .pulse when the shown progress is pulsing.
 
 The CSS node for a context menu is added as a subnode below entry as well.
 
-The undershoot nodes are used to draw the underflow indication when content
-is scrolled out of view. These nodes get the .left and .right style classes
-added depending on where the indication is drawn.
+The undershoot nodes are used to draw the underflow indication when content is scrolled out of view. These nodes get the .left and .right style classes added depending on where the indication is drawn.
 
-When touch is used and touch selection handles are shown, they are using
-CSS nodes with name cursor-handle. They get the .top or .bottom style class
-depending on where they are shown in relation to the selection. If there is
-just a single handle for the text cursor, it gets the style class
-.insertion-cursor.
+When touch is used and touch selection handles are shown, they are using CSS nodes with name cursor-handle. They get the .top or .bottom style class depending on where they are shown in relation to the selection. If there is just a single handle for the text cursor, it gets the style class .insertion-cursor.
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Entry implements
@@ -92,6 +58,7 @@ Gnome::Gtk3::Entry implements
 =item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Editable
 =item Gnome::Gtk3::CellEditable
+=end comment
 
 =head2 See Also
 
@@ -102,7 +69,25 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
 
   unit class Gnome::Gtk3::Entry;
   also is Gnome::Gtk3::Widget;
-  also does Gnome::Gtk3::Buildable;
+=comment  also does Gnome::Gtk3::Buildable;
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Entry;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Entry;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Entry class process the options
+    self.bless( :GtkEntry, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -188,32 +173,33 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Entry';
+  if self.^name eq 'Gnome::Gtk3::Entry' or %options<GtkEntry> {
 
-  # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_entry_new());
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      # process all named arguments
+      if ? %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_entry_new();
+      }
+
+      else {
+        $no = _gtk_entry_new();
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkEntry');
   }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_entry_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkEntry');
 }
 
 #-------------------------------------------------------------------------------
@@ -232,9 +218,9 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-
 #-------------------------------------------------------------------------------
-#TM:2:gtk_entry_new:
+#TM:2:_gtk_entry_new:
+#`{{
 =begin pod
 =head2 [gtk_] entry_new
 
@@ -246,12 +232,15 @@ Returns: a new B<Gnome::Gtk3::Entry>.
 
 
 =end pod
+}}
 
-sub gtk_entry_new (  )
+sub _gtk_entry_new (  )
   returns N-GObject
   is native(&gtk-lib)
+  is symbol('gtk_entry_new')
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_new_with_buffer:
 =begin pod
@@ -273,6 +262,7 @@ sub gtk_entry_new_with_buffer ( N-GObject $buffer )
   returns N-GObject
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_entry_get_buffer:
