@@ -43,7 +43,7 @@ Then a colon ':' with a hex digit to show if it is tested or not;
   * 2 tested elsewhere
   * 4 used elsewhere
   * FF Not supported
-It is binary, so combinations are possible exept with 16. 2 and 4 is not easy to find out. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
+It is binary, so combinations are possible exept with 255. 2 and 4 is not easy to find out. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
 
 Absence of codes means that a particular item is not tested.
 
@@ -138,21 +138,21 @@ All this is a bit awkward and messy and is all because of using a role for an in
 scale 0.7
 title Dependency details for hierargy and interfaces, plan A
 
-'class TopLevelClassSupport << (C, #efad00) catch all class >>
+class TopLevelClassSupport < Catch all class >
 class UserClass << (C, #00ffff) user class >>
-class Buildable << (I, #efed80) Interface >>
+interface Buildable < Interface >
 
 Buildable <|-- Widget
 Buildable <|-- Container
 Buildable <|-- Bin
 Buildable <|-- Button
 
-'TopLevelClassSupport <|-- Object
+TopLevelClassSupport <|-- Object
 Object <|-- InitiallyUnowned
 InitiallyUnowned <|-- Widget
-Widget <|-- Container
-Container <|-- Bin
-Bin <|-- Button
+Widget <|- Container
+Container <|- Bin
+Bin <|- Button
 Button <|-- UserClass
 
 ```
@@ -165,9 +165,9 @@ If you look in the diagram above, we see that **Buildable** is used in all class
 scale 0.7
 title Dependency details for hierargy and interfaces, plan B
 
-class TopLevelClassSupport << (C, #efad00) catch all class >>
+class TopLevelClassSupport < Catch all class >
 class TopLevelInterfaceSupport << (I, #efad00) catch all interface >>
-class Buildable << (I, #efed80) Interface >>
+interface Buildable < Interface >
 
 TopLevelInterfaceSupport <|-- Buildable
 Buildable <|-- Widget
@@ -176,9 +176,9 @@ class UserClass << (C, #00ffff) user class >>
 TopLevelClassSupport <|-- Object
 Object <|-- InitiallyUnowned
 InitiallyUnowned <|-- Widget
-Widget <|-- Container
-Container <|-- Bin
-Bin <|-- Button
+Widget <|- Container
+Container <|- Bin
+Bin <|- Button
 Button <|-- UserClass
 ```
 
@@ -445,7 +445,7 @@ Also the interface module cannot be a role type anymore when it uses the **TopLe
 
 scale 0.8
 
-class TopLevelClassSupport << (R, #efad00) catch all typed role >> {
+class TopLevelClassSupport < Catch all class > {
   has Any $!n-native-object
   has Bool $.is-valid = False
 
@@ -578,7 +578,7 @@ note left of UserClass
   the parents
 end note
 
-class TopLevelInterfaceSupport << (R, #efad00) catch all interface >> {
+class TopLevelInterfaceSupport < Catch all interface > {
   _interface()
 }
 
@@ -587,7 +587,7 @@ note right of TopLevelInterfaceSupport
   is needed
 end note
 
-class SomeGxxxInterface << Interface >> {
+interface SomeGxxxInterface < Interface > {
   _interface()
 }
 

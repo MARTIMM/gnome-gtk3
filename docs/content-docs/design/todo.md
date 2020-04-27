@@ -155,17 +155,22 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 * [x] Jekyll shows errors which must be removed. Site content looks good however.
 
 * Add more tutorials
-  * [x] Find material of other tutorials and books in other programming languages.
+  * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
 
   Change 'Getting Started' into a shorter page
   * Top level widgets and containers
-    * [ ] Window
+    * [ ] (Scrolled)Window, Frame
+      * [ ] size of window
+      * [ ] window icon
+      * [ ] destroy signal
+      * [ ] border
     * [ ] Dialogs
     * [ ] Grid
 
   * Controls
     * [ ] Buttons
     * [ ] Menus
+    * [ ] Toolbar
     * [ ] ComboxBox
 
   * Display
@@ -177,11 +182,30 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
     * [ ] ListBox
     * [ ] TreeView
 
+  * [ ] Signals
+  * [ ] Threads
+  * [ ] Builder
+    * [ ] Glade
+    * [ ] Gui XML description
+    * [ ] Menu XML description
+  * [ ] Inheriting
+  * [ ] Styling
+  * [ ] Resources
+
+  * Debugging
+    * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
+      * [ ] G-DEBUG all
+      * [ ] G_MESSAGES_DEBUG all
+      * [ ] G_SLICE debug-blocks
+    * `Gnome::N::debug()`.
+    * Do's and Don'ts.
+      * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
+
 * Add more examples
   * [ ] Configuration editor
   * [ ] Simple calculator
 
-* [ ] Check licensing of the whole project, contact Gnome.
+* [ ] Check licensing of the whole project, contact Gnome?
 
 * [ ] Remove changelog from About page and add separate pages for the changelog from the packages.
 
