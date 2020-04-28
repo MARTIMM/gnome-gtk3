@@ -196,14 +196,6 @@ The title of the color selection dialog Since: 2.4
 
 The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
 
-#`{{
-
-### Current RGBA Color
-
-The RGBA color. Since: 3.0
-
-The **Gnome::GObject::Value** type of property *rgba* is `G_TYPE_BOXED`. }}
-
 ### Show Editor
 
 Set this property to `1` to skip the palette in the dialog and go directly to the color editor. This property should be used in cases where the palette in the editor would be redundant, such as when the color button is already part of a palette. Since: 3.20

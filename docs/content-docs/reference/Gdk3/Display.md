@@ -477,14 +477,14 @@ The *seat-added* signal is emitted whenever a new seat is made known to the wind
 Since: 3.20
 
     method handler (
-      N-GObject #`{{ native Gnome::Gdk3::Seat }} $seat,
+      N-GObject $seat,
       Gnome::GObject::Object :widget($display),
       *%user-options
     );
 
   * $display; the object on which the signal is emitted
 
-  * $seat; the seat that was just added
+  * $seat; the native seat for Gnome::Gdk3::Seat that was just added
 
 ### seat-removed
 
@@ -493,14 +493,14 @@ The *seat-removed* signal is emitted whenever a seat is removed by the windowing
 Since: 3.20
 
     method handler (
-      N-GObject #`{{ native Gnome::Gdk3::Seat }} $seat,
+      N-GObject $seat,
       Gnome::GObject::Object :widget($display),
       *%user-options
     );
 
   * $display; the object on which the signal is emitted
 
-  * $seat; the seat that was just removed
+  * $seat; the native seat for Gnome::Gdk3::Seatthat was just removed
 
 ### monitor-added
 
@@ -509,14 +509,14 @@ The *monitor-added* signal is emitted whenever a monitor is added.
 Since: 3.22
 
     method handler (
-      N-GObject #`{{ native Gnome::Gdk3::Monitor }} $monitor,
+      N-GObject $monitor,
       Gnome::GObject::Object :widget($display),
       *%user-options
     );
 
   * $display; the objedct on which the signal is emitted
 
-  * $monitor; the monitor that was just added
+  * $monitor; the native monitor Gnome::Gdk3::Monitor that was just added
 
 ### monitor-removed
 
@@ -525,12 +525,12 @@ The *monitor-removed* signal is emitted whenever a monitor is removed.
 Since: 3.22
 
     method handler (
-      N-GObject #`{{ native Gnome::Gdk3::Monitor }} $monitor,
+      N-GObject $monitor,
       Gnome::GObject::Object :widget($display),
       *%user-options
     );
 
   * $display; the object on which the signal is emitted
 
-  * $monitor; the monitor that was just removed
+  * $monitor; the native monitor Gnome::Gdk3::Monitor that was just removed
 

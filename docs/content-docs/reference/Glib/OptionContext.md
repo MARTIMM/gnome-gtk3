@@ -430,11 +430,7 @@ Since: 2.6
 
   * Str $description; a description for this group to be shown in `--help`. This string is translated using the translation domain or translation function of the group
 
-  * Str $help_description; a description for the '--help-*name*' option. This string is translated using the translation domain or translation function of the group #`{{ Pointer $user_data?, N-GDestroyNotify $destroy?
-
-  * Pointer $user_data; user data that will be passed to the pre- and post-parse hooks, the error hook and to callbacks of `G_OPTION_ARG_CALLBACK` options, is optional
-
-  * Callable $destroy; a function that will be called to free *user_data*, is optional }}
+  * Str $help_description; a description for the '--help-*name*' option. This string is translated using the translation domain or translation function of the group
 
 [[g_] option_] group_add_entries
 --------------------------------

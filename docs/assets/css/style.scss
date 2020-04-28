@@ -353,14 +353,18 @@ p {
   font-size: $text-font-size;
 }
 
+#reference-page {
+  overflow-y: scroll;
+//  height: 200px;
+}
 
 // Adding 'Contents' headline to the TOC
 #category {
-  height: 200px;
-  overflow-y: scroll;
+//  height: 200px;
+//  overflow-y: scroll;
 
-  border: 1px solid #aaa;
-  border-radius: 5px;
+//  border: 1px solid #aaa;
+//  border-radius: 5px;
   padding: 1.5em;
 
   a {
@@ -369,12 +373,12 @@ p {
 }
 
 #content {
-  margin: 1em 0 0.5em 0;
-  height: 500px;
-  overflow-y: scroll;
+//  margin: 1em 0 0.5em 0;
+//  height: 500px;
+//  overflow-y: scroll;
 
-  border: 1px solid #aaa;
-  border-radius: 5px;
+//  border: 1px solid #aaa;
+//  border-radius: 5px;
   padding: 1.5em;
 
   //position: fixed;

@@ -110,7 +110,7 @@ Also calling clear-object() in BUILD() and several other places is wrong for the
 * [x] Add `CATCH { default { .message.note; .backtrace.concise.note } }` at the top of callback routines. This is done for all callback routines which are registered using `.register-signal()` but other places must be searched for, e.g. like foreach in **Gnome::Gtk3::Container**.
 
 #### Documentation
-There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify **#`{\{...}\}** in pod doc comments because the github pages understand **{{...}}** to substitute variables.
+There are still a lot of bugs and documentation anomalies. Also not all subs, signals and properties are covered in tests. As a side note, modify certain Raku comments in pod doc because the github pages understand some of them to substitute variables.
 
   * Complete documentation and C-Quirks left from the generated output.
     * [ ] **Gnome::Gdk3**.
@@ -139,41 +139,12 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
 
-* [ ] Add plantuml diagrams to documents
+* [ ] Each user class inheriting a Raku G*::object must have a new() to create the native object. this must be repeated for other client use classes because only the leaf new() is run!
 
-#### Test coverage
-
-* **Gnome::Gdk3**
-  * [ ] subs
-  * [ ] signals
-  * [ ] properties
-* **Gnome::Glib**
-  * [ ] subs
-  * [ ] signals
-  * [ ] properties
-* **Gnome::GObject**
-  * [ ] subs
-  * [ ] signals
-  * [ ] properties
-* **Gnome::Gtk3**
-  * [ ] subs
-  * [ ] signals
-  * [ ] properties
-* **Gnome::Pango**
-  * [ ] subs
-  * [ ] signals
-  * [ ] properties
-
-* Add necessary packages. I am not sure if the Atk package is a useful addition. Clutter and WebKit are low priority projects. Not mentioned are Tracker, Poppler, Telepathy, Folks, Champlain, Geoclue2 and Geocode-glib which is of personal interest.
-  * [ ] **Gnome::Atk**. Accessibility toolkit to implement support for screen readers and other tools.
-  * [ ] **Gnome::Gio**. File and URI handling, asynchronous file operations, volume handling and also for network I/O, application and settings, D-Bus.
-  * [ ] **Gnome::Cairo**. 2D, vector-based drawing for high-quality graphics.
-  * [ ] **Gnome::Pango**. International text rendering with full Unicode support.
-  * [ ] **Gnome::Clutter**. Animations and scene graph.
-  * [ ] **Gnome::WebKit**. HTML5 web page rendering.
+* [ ] Add plantuml diagrams to documents. Not (yet?) possible on github pages.
 
 #### Site changes.
-* [ ] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
+* [x] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
 
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
@@ -181,18 +152,25 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
+* [x] Jekyll shows errors which must be removed. Site content looks good however.
+
 * Add more tutorials
-  * [x] Find material of other tutorials and books in other programming languages.
+  * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
 
   Change 'Getting Started' into a shorter page
   * Top level widgets and containers
-    * [ ] Window
+    * [ ] (Scrolled)Window, Frame
+      * [ ] size of window
+      * [ ] window icon
+      * [ ] destroy signal
+      * [ ] border
     * [ ] Dialogs
     * [ ] Grid
 
   * Controls
     * [ ] Buttons
     * [ ] Menus
+    * [ ] Toolbar
     * [ ] ComboxBox
 
   * Display
@@ -204,11 +182,30 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
     * [ ] ListBox
     * [ ] TreeView
 
+  * [ ] Signals
+  * [ ] Threads
+  * [ ] Builder
+    * [ ] Glade
+    * [ ] Gui XML description
+    * [ ] Menu XML description
+  * [ ] Inheriting
+  * [ ] Styling
+  * [ ] Resources
+
+  * Debugging
+    * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
+      * [ ] G-DEBUG all
+      * [ ] G_MESSAGES_DEBUG all
+      * [ ] G_SLICE debug-blocks
+    * `Gnome::N::debug()`.
+    * Do's and Don'ts.
+      * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
+
 * Add more examples
   * [ ] Configuration editor
   * [ ] Simple calculator
 
-* [ ] Check licensing of the whole project, contact Gnome.
+* [ ] Check licensing of the whole project, contact Gnome?
 
 * [ ] Remove changelog from About page and add separate pages for the changelog from the packages.
 
@@ -222,255 +219,263 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 * bt: typos
 
 ### Subs and methods documentation
-* s$: Add $ to variables
+Legend for head of table
+
+* T: type column
+  * p: package name
+  * t: is top level of classes,
+  * b: boxed type
+  * i: interface type
+  * s: standalone type
+  * not filled means standard class
+* s\$: Add \$ to variables
 * sb: Use True/False when boolean input
-  - 'remove Since version text': 0
-  - 'check if :native-object is used and documented in BUILDs': 0
-  - typos: 0
-  - examples: 0
-- 'complete all tests': 0
-- 'remove unusable subs': 0
-- cleanup: 0
+* sv: Remove Since version text
+* no: Check if :native-object is used and documented in BUILDs
+* to: Check typos
+* ex: Add examples
+* ct: Complete all tests
+* cm: Cleanup subs/methods documentation, remove unusable subs and native new() doc, add =head3 to new() for each multi.
+* cp: Cleanup properties documentation
+* cs: Cleanup signals documentation
 
-**Gnome::N**
-TopLevelClassSupport
 
-**Gnome::Glib**
-**Boxed Gnome::Glib**
 
-**Gnome::GObject**
-Boxed
-InitiallyUnowned
-Object
-
-**Boxed Gnome::GObject**
-
-**Gnome::Atk**
-Object
-
-**Gnome::Gio**
-Application
-MountOperation                                   
-EmblemedIcon                                     
-
-**Gnome::Gdk3**
-
-**Gnome::Gtk3**
-Widget
-Container
-Bin
-Window
-Dialog
-AboutDialog
-ChooserDialog
-ColorChooserDialog
-FileChooserDialog
-FontChooserDialog
-MessageDialog
-PageSetupUnixDialog
-GtkPrintUnixDialog
-GtkRecentChooserDialog
-ApplicationWindow
-Assistant
-GtkOffscreenWindow
-GtkPlug
-GtkShortcutsWindow
-ActionBar
-ComboBox
-AppChooserButton
-ComboBoxText
-Frame
-AspectFrame
-Button
-ToggleButton
-CheckButton
-RadioButton
-MenuButton
-ColorButton
-FontButton
-LinkButton
-LockButton
-ModelButton
-ScaleButton
-VolumeButton
-MenuItem
-CheckMenuItem
-RadioMenuItem
-SeparatorMenuItem
-EventBox
-Expander
-FlowBoxChild
-HandleBox
-ListBoxRow             
-ToolItem                   
-ToolButton
-MenuToolButton
-ToggleToolButton
-RadioToolButton
-SeparatorToolItem
-Overlay
-ScrolledWindow
-PlacesSidebar
-Popover
-PopoverMenu
-Revealer
-SearchBar
-StackSidebar
-Viewport
-Box
-AppChooserWidget
-ButtonBox
-ColorChooserWidget
-FileChooserButton
-FileChooserWidget
-FontChooserWidget
-InfoBar
-RecentChooserWidget
-ShortcutsSection
-ShortcutsGroup
-ShortcutsShortcut
-StackSwitcher          
-Statusbar
-Fixed
-FlowBox
-Grid
-HeaderBar
-Paned
-IconView
-Layout
-ListBox
-MenuShell
-MenuBar
-Menu
-RecentChooserMenu
-Notebook
-Socket
-Stack
-TextView
-Toolbar
-ToolItemGroup
-ToolPalette
-TreeView
-Label
-AccelLabel
-Image
-Calendar
-CellView
-DrawingArea
-Entry
-SearchEntry
-SpinButton
-GLArea
-Range
-Scale
-Scrollbar
-Separator
-ProgressBar
-Spinner
-Switch
-LevelBar
-Adjustment
-CellArea
-CellAreaBox
-CellRenderer
-CellRendererText
-CellRendererAccel
-CellRendererCombo
-CellRendererSpin
-CellRendererPixbuf
-CellRendererProgress
-CellRendererSpinner
-CellRendererToggle
-FileFilter
-TreeViewColumn
-RecentFilter
-AccelGroup
-AccelMap
-Accessible
-Application
-Builder
-CellAreaContext
-Clipboard
-CssProvider
-EntryBuffer
-EntryCompletion
-EventController
-EventControllerKey
-EventControllerMotion
-EventControllerScroll
-Gesture
-GestureSingle
-GestureDrag
-GesturePan
-GestureLongPress
-GestureMultiPress
-GestureStylus
-GestureSwipe
-GestureRotate
-GestureZoom
-PadController
-IconFactory
-IconTheme
-IMContext
-IMContextSimple
-IMMulticontext
-ListStore
-MountOperation
-PageSetup
-Printer
-PrintContext
-PrintJob
-PrintOperation
-PrintSettings
-RcStyle
-RecentManager
-Settings
-SizeGroup
-StyleContext
-TextBuffer
-TextChildAnchor
-TextMark
-TextTag
-TextTagTable
-TreeModelFilter
-TreeModelSort
-TreeSelection
-TreeStore
-WindowGroup
-Tooltip
-PrintBackend
-
-**Interfaces**
-Buildable
-Actionable
-AppChooser
-CellLayout
-CellEditable
-Orientable
-ColorChooser
-StyleProvider
-Editable
-FileChooser
-FontChooser
-Scrollable
-TreeModel
-TreeDragSource
-TreeDragDest
-TreeSortable
-PrintOperationPreview
-RecentChooser
-ToolShell
-
-**Boxed Gnome::Gtk3**
-PaperSize
-TextIter
-SelectionData
-Requisition
-Border
-TreeIter
-CssSection
-TreePath
-TreeRowReference
-IconSet
-TargetList
-WidgetPath
+| Module/Class            |T |s$|sb|sv|no|to|ex|ct|cm|cp|cs|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
+**Gnome::N**              |p | #| #| #| #| #| #| #| #| #| #|
+N-GObject                 |  |  |  |  |  |  |  |  |  |  |  |
+NativeLib                 |
+TopLevelClassSupport      |t|
+X                         |
+**Gnome::Glib**           |p|#|#|#|#|#|#|#|#|#|#|
+**Gnome::GObject**        |p|#|#|#|#|#|#|#|#|#|#|
+Boxed                     |  |
+Enums                     |s|
+InitiallyUnowned          |
+Object                    |
+Signal                    |s|
+Type                      |s|
+value                     |b|
+**Gnome::Atk**            |p|#|#|#|#|#|#|#|#|#|#|
+Object                    ||
+**Gnome::Gio**            |p|#|#|#|#|#|#|#|#|#|#|
+Application               ||
+EmblemedIcon||
+MountOperation||
+**Gnome::Gdk3**           |p|#|#|#|#|#|#|#|#|#|#|
+**Gnome::Gtk3**           |p|#|#|#|#|#|#|#|#|#|#|
+AboutDialog|
+AccelGroup|
+AccelLabel|
+AccelMap|
+Accessible|
+Actionable|i|
+ActionBar|
+Adjustment|
+AppChooserButton|
+AppChooser|i|
+AppChooserWidget|
+Application|
+ApplicationWindow|
+AspectFrame|
+Assistant|
+Bin|
+Border|b|
+Box|
+Buildable|i|
+Builder|
+Button|
+ButtonBox|
+Calendar|
+CellArea|
+CellAreaBox|
+CellAreaContext|
+CellEditable|i|
+CellLayout|i|
+CellRenderer|
+CellRendererAccel|
+CellRendererCombo|
+CellRendererPixbuf|
+CellRendererProgress|
+CellRendererSpin|
+CellRendererSpinner|
+CellRendererText|
+CellRendererToggle|
+CellView|
+CheckButton|
+CheckMenuItem|
+ChooserDialog|
+Clipboard|
+ColorButton|
+ColorChooserDialog|
+ColorChooser|i|
+ColorChooserWidget|
+ComboBox|
+ComboBoxText|
+Container|
+CssProvider|
+CssSection|b|
+Dialog|
+DrawingArea|
+Editable|i|
+Entry|
+EntryBuffer|
+EntryCompletion|
+EventBox|
+EventController|
+EventControllerKey|
+EventControllerMotion|
+EventControllerScroll|
+Expander|
+FileChooserButton|
+FileChooserDialog|
+FileChooser|i|
+FileChooserWidget|
+FileFilter|
+Fixed|
+FlowBox|
+FlowBoxChild|
+FontButton|
+FontChooserDialog|
+FontChooser|i|
+FontChooserWidget|
+Frame|
+Gesture|
+GestureDrag|
+GestureLongPress|
+GestureMultiPress|
+GesturePan|
+GestureRotate|
+GestureSingle|
+GestureStylus|
+GestureSwipe|
+GestureZoom|
+GLArea|
+Grid|
+GtkOffscreenWindow|
+GtkPlug|
+GtkPrintUnixDialog|
+GtkRecentChooserDialog|
+GtkShortcutsWindow|
+HandleBox|
+HeaderBar|
+IconFactory|
+IconSet|b|
+IconTheme|
+IconView|
+Image|
+IMContext|
+IMContextSimple|
+IMMulticontext|
+InfoBar|
+Label|
+Layout|
+LevelBar|
+LinkButton|
+ListBox|
+ListBoxRow|
+ListStore|
+LockButton|
+Menu|
+MenuBar|
+MenuButton|
+MenuItem|
+MenuShell|
+MenuToolButton|
+MessageDialog|
+ModelButton|
+MountOperation|
+Notebook|
+Orientable|i|
+Overlay|
+PadController|
+PageSetup|
+PageSetupUnixDialog|
+Paned|
+PaperSize|b|
+PlacesSidebar|
+Popover|
+PopoverMenu|
+PrintBackend|
+PrintContext|
+Printer|
+PrintJob|
+PrintOperation|
+PrintOperationPreview|i|
+PrintSettings|
+ProgressBar|
+RadioButton|
+RadioMenuItem|
+RadioToolButton|
+Range|
+RcStyle|
+RecentChooser|i|
+RecentChooserMenu|
+RecentChooserWidget|
+RecentFilter|
+RecentManager|
+Requisition|b|
+Revealer|
+Scale|
+ScaleButton|
+Scrollable|i|
+Scrollbar|
+ScrolledWindow|
+SearchBar|
+SearchEntry|
+SelectionData|b|
+Separator|
+SeparatorMenuItem|
+SeparatorToolItem|
+Settings|
+ShortcutsGroup|
+ShortcutsSection|
+ShortcutsShortcut|
+SizeGroup|
+Socket|
+SpinButton|
+Spinner|
+Stack|
+StackSidebar|
+StackSwitcher|
+Statusbar|
+StyleContext|
+StyleProvider|i|
+Switch|
+TargetList|b|
+TextBuffer|
+TextChildAnchor|
+TextIter|b|
+TextMark|
+TextTag|
+TextTagTable|
+TextView|
+ToggleButton|
+ToggleToolButton|
+Toolbar|
+ToolButton|
+ToolItem|
+ToolItemGroup|
+ToolPalette|
+ToolShell|i|
+Tooltip|
+TreeDragDest|i|
+TreeDragSource|i|
+TreeIter|b|
+TreeModelFilter|
+TreeModel|i|
+TreeModelSort|
+TreePath|b|
+TreeRowReference|b|
+TreeSelection|
+TreeSortable|i|
+TreeStore|
+TreeView|
+TreeViewColumn|
+Viewport|
+VolumeButton|
+Widget|
+WidgetPath|b|
+Window|
+WindowGroup|

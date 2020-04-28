@@ -1924,8 +1924,8 @@ Returns: (nullable) (transfer none): the **Gnome::Gdk3::Window** of the embedded
 Since: 2.18
 
     method handler (
-      num64 #`{{use NativeCall}} $x,
-      num64 #`{{use NativeCall}} $y,
+      num64 $x,
+      num64 $y,
       Gnome::GObject::Object :widget($window),
       *%user-options
       --> Unknown type GDK_TYPE_WINDOW
@@ -1936,60 +1936,6 @@ Since: 2.18
   * $x; x coordinate in the window
 
   * $y; y coordinate in the window
-
-### to-embedder
-
-The *to-embedder* signal is emitted to translate coordinates in an offscreen window to its embedder.
-
-See also *from-embedder*.
-
-Since: 2.18
-
-    method handler (
-      num64 #`{{use NativeCall}} $offscreen_x,
-      num64 #`{{use NativeCall}} $offscreen_y,
-      Unknown type G_TYPE_POINTER $embedder_x,
-      Unknown type G_TYPE_POINTER $embedder_y,
-      Gnome::GObject::Object :widget($window),
-      *%user-options
-    );
-
-  * $window; the offscreen window on which the signal is emitted
-
-  * $offscreen_x; x coordinate in the offscreen window
-
-  * $offscreen_y; y coordinate in the offscreen window
-
-  * $embedder_x; (out) (type double): return location for the x coordinate in the embedder window
-
-  * $embedder_y; (out) (type double): return location for the y coordinate in the embedder window
-
-### from-embedder
-
-The *from-embedder* signal is emitted to translate coordinates in the embedder of an offscreen window to the offscreen window.
-
-See also *to-embedder*.
-
-Since: 2.18
-
-    method handler (
-      num64 #`{{use NativeCall}} $embedder_x,
-      num64 #`{{use NativeCall}} $embedder_y,
-      Unknown type G_TYPE_POINTER $offscreen_x,
-      Unknown type G_TYPE_POINTER $offscreen_y,
-      Gnome::GObject::Object :widget($window),
-      *%user-options
-    );
-
-  * $window; the offscreen window on which the signal is emitted
-
-  * $embedder_x; x coordinate in the embedder window
-
-  * $embedder_y; y coordinate in the embedder window
-
-  * $offscreen_x; (out) (type double): return location for the x coordinate in the offscreen window
-
-  * $offscreen_y; (out) (type double): return location for the y coordinate in the offscreen window
 
 ### moved-to-rect
 

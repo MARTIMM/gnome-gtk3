@@ -342,7 +342,7 @@ Since: 2.4
 
 The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
 
-#`{{
+=begin comment
 =comment #TP:0:rgba:
 =head3 Current RGBA Color
 
@@ -351,7 +351,8 @@ The RGBA color.
 Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
-}}
+=end comment
+
 =comment #TP:0:show-editor:
 =head3 Show Editor
 
