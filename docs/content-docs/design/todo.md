@@ -170,7 +170,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * Controls
     * [ ] Buttons
     * [ ] Menus
-    * [ ] Toolbar
+    * [ ] Toolbars
     * [ ] ComboxBox
 
   * Display
