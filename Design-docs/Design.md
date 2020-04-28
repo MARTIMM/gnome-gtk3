@@ -816,10 +816,41 @@ If you are using gettext() to localize your application, you need to call bind_t
 
 # Design graphs
 
+## Details at the top
+Most classes at the top depend on TopLevelClassSupport. A few classes are independent.
+```plantuml
+'scale 0.7
+set namespaceSeparator ::
+
+class Gnome::N::TopLevelClassSupport < Catch all class >
+'interface Gnome::Gtk3::Buildable < Interface >
+
+class Gnome::GObject::Type
+class Gnome::Gtk3::Enums
+
+Gnome::N::TopLevelClassSupport <|--- Gnome::Glib::Error
+
+'Gnome::Gtk3::Buildable <|-- Gnome::Gtk3::Widget
+
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Boxed
+Gnome::GObject::Object <|-- Gnome::GObject::InitiallyUnowned
+Gnome::GObject::Boxed <|-- Gnome::GObject::Value
+Gnome::GObject::Object *-left-> Gnome::GObject::Signal
+
+Gnome::GObject::InitiallyUnowned <|-- Gnome::Gtk3::Widget
+Gnome::GObject::InitiallyUnowned <|-- Gnome::Gtk3::Adjustment
+
+'Gnome::N::TopLevelClassSupport <|-- Gnome::Gio::Application
+Gnome::GObject::Object <|-- Gnome::Gio::Application
+Gnome::Gio::Application <|-- Gnome::Gtk3::Application
+```
+
+## Dependency details between packages
 ```plantuml
 
 scale 0.7
-title Dependency details between packages
+'title Dependency details between packages
 allowmixing
 
 !include <tupadr3/common>
