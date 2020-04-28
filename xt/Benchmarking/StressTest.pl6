@@ -1,5 +1,5 @@
 use v6;
-use lib '../gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::N::X;
 
@@ -77,4 +77,4 @@ for ^$count {
   $tt += $t1;
 }
 
-note "Gui build time: $tt.fmt('%.3f') / $count = {($tt / $count).fmt('%.3f')} per build";
+note "\nGui build report of 100 widgets in a grid\n  nbr loops: $count\n  total time: $tt.fmt('%.3f')\n  time per build: {($tt / $count).fmt('%.3f')} sec\n  nbr rounds per sec: {($count / $tt).fmt('%.3f')}";
