@@ -6,7 +6,14 @@ sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
 
-# Tutorial
+# Tutorials
 
-This tutorial is about building your own **GUI** (Graphical User Interface) in **Perl6** based on the **Gnome** libraries **gtk3**, **gdk3** and **glib**.
-This tutorial will first explain the modules in the package `Gnome::Gtk3` and then the modules from `Gnome::Gtk3::Glade`. As GTK+ builds upon other libraries such as Glib and Gdk, the `Gnome::Gtk3` also builds upon `Gnome::Gdk3` and `Gnome::Glib`. There are a few more libraries and are mentioned when needed. The first few parts of the tutorial is about building your GUI by hand and the later sections will be about making use of the generated *XML* file from the GTK+ GUI designer program *Glade*. On the website there is also a section explaining some of the design ideas of the perl6 Gnome::* packages. There is also a reference section of the implemented modules.
+The tutorial section tries to explain how you can build your own **GUI** (Graphical User Interface) in **Raku** based on the **gnome** libraries such as **gtk**, **gdk** and **glib**. As the GTK+ library builds upon other libraries such as glib and gdk, the **Gnome::Gtk3** package depends on **Gnome::Gdk3** and **Gnome::Glib** among others.
+
+Many techniques will pass and lead you along all kinds of details like creating and showing windows, adding widgets, using dialogs and sending signals to name a few.
+
+The first few parts of the tutorial is about building your GUI by hand. There are some intermezzo's in between to tell you something about how the Raku modules are set up. Later sections will be about making use of *XML* files, possibly generated from the GTK+ GUI designer program *Glade*, how to make use of stylesheets, resources, applications, drag and drop, .... On the website there is also a section explaining some of the design ideas of the perl6 **Gnome::*** packages. There is also a reference section of the implemented modules.
+
+What is not explained is how to install the Gtk libraries and install Raku or the Raku modules.
+
+Have fun!
