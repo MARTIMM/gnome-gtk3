@@ -14,7 +14,7 @@ class AppSignalHandlers {
   has Int $!hid2;
 
   # Handle 'Hello World' button click
-  method chng-sig ( :$button2 --> Int ) {
+  method chng-sig ( :$button2 ) {
 
     $button2.handler-disconnect($!hid2) if $!hid2;
     $!hid2 = $button2.register-signal(
@@ -22,22 +22,16 @@ class AppSignalHandlers {
     );
 
     note "new handler id: $!hid2";
-
-    1
   }
 
   # Handle 'Goodbye' button click
-  method test-sig ( :$text --> Int ) {
+  method test-sig ( :$text ) {
     note "Text: $text";
-
-    1
   }
 
   # Handle window managers 'close app' button
-  method exit-program ( --> Int ) {
+  method exit-program ( ) {
     $m.gtk-main-quit;
-
-    1
   }
 }
 
