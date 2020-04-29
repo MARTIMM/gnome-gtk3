@@ -154,33 +154,51 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [x] Jekyll shows errors which must be removed. Site content looks good however.
 
-* Add more tutorials
+* Tutorials
   * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
 
-  Change 'Getting Started' into a shorter page
-  * Top level widgets and containers
-    * [ ] (Scrolled)Window, Frame
-      * [ ] size of window
-      * [ ] window icon
-      * [ ] destroy signal
-      * [ ] border
+  * Getting started
+    * [x] Empty window
+    * [x] Window with a button
+    * [x] Show a mistake of two buttons in window
+    * [x] Buttons in a grid
+
+  * Intermezzo (skippable)
+    * [ ] Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
+    * [ ] Method names of the native subroutines
+
+  * Window details
+    * [ ] Window decoration, title and icon
+    * [ ] Window size
+    * [ ] Centering with position
+    * [ ] Destroy signal
+
+    * [ ] (Scrolled)Window
     * [ ] Dialogs
+
+    * [ ] Frame
+        * [ ] container border
     * [ ] Grid
 
-  * Controls
-    * [ ] Buttons
-    * [ ] Menus
-    * [ ] Toolbars
-    * [ ] ComboxBox
+  * Intermezzo (skippable)
+    * [ ] Common method names used in classes
+    * [ ] Initialization of classes
 
-  * Display
-    * [ ] Labels
-    * [ ] LevelBar
+  * Widgets
+    * Controls
+      * [ ] Buttons
+      * [ ] Menus
+      * [ ] Toolbars
+      * [ ] ComboxBox
 
-  * Lists and Edit
-    * [ ] Entry
-    * [ ] ListBox
-    * [ ] TreeView
+    * Display
+      * [ ] Labels
+      * [ ] LevelBar
+
+    * Lists and Edit
+      * [ ] Entry
+      * [ ] ListBox
+      * [ ] TreeView
 
   * [ ] Signals
   * [ ] Threads
@@ -188,20 +206,32 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
     * [ ] Glade
     * [ ] Gui XML description
     * [ ] Menu XML description
-  * [ ] Inheriting
   * [ ] Styling
   * [ ] Resources
+  * [ ] Inheriting
+
+  * [ ] Drag and drop
+  * [ ] Drawing
+  * [ ] Font and other text handling
+
+  * [ ] Application
+    * [ ] Phases
+    * [ ] Signals
+    * [ ] Multiple program entities or not
+    * [ ] D-Bus
 
   * Debugging
+    * Testing your program with Gnome::T.
+    * `Gnome::N::debug()`.
     * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
       * [ ] G-DEBUG all
       * [ ] G_MESSAGES_DEBUG all
       * [ ] G_SLICE debug-blocks
-    * `Gnome::N::debug()`.
+    * CATCH in callback handler to intercept an Exception when registering a callback using `g_signal_connect_object()` instead of `.register-signal()`.
     * Do's and Don'ts.
       * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
 
-* Add more examples
+* Code examples
   * [ ] Configuration editor
   * [ ] Simple calculator
 
