@@ -29,6 +29,8 @@ Declaration
     unit class Gnome::Gtk3::AboutDialog;
     also is Gnome::Gtk3::Dialog;
 
+![](plantuml/AboutDialog.png)
+
 Inheriting this class
 ---------------------
 

@@ -39,6 +39,9 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
   also is Gnome::Gtk3::Dialog;
 =comment  also does Gnome::Gtk3::Buildable;
 
+=head2 Uml Diagram
+![](plantuml/AboutDialog.png)
+
 =begin comment
 
 = begin code :lang<plantuml>
