@@ -1,5 +1,5 @@
 use v6;
-use lib '../gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
