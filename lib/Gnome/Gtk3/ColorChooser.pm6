@@ -326,19 +326,6 @@ The positional arguments of the signal handler are all obligatory as well as the
   my Gnome::Gtk3::Window $w .= new( ... );
   $w.register-signal( self, 'mouse-event', 'button-press-event');
 
-The register method is defined as;
-
-  my Bool $is-registered = $widget.register-signal (
-    $handler-object, $handler-name, $signal-name,
-    :$user-option1, ..., :$user-optionN
-  )
-
-Where
-=item $handler-object; A Raku object holding the handler method =I<self>
-=item $handler-name; The handler method =I<mouse-event>
-=item $signal-name; The signal to connect to =I<button-press-event>
-=item $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.
-
 =head2 Second method
 
   my Gnome::Gtk3::Window $w .= new( ... );
