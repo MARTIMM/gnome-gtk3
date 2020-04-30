@@ -5,6 +5,7 @@ use Test;
 
 use Gnome::N::N-GObject;
 use Gnome::GObject::Object;
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
 use Gnome::Glib::List;
 use Gnome::Glib::Main;
@@ -27,22 +28,25 @@ subtest 'ISA tests', {
   $b .= new(:label('abc def'));
   isa-ok $b, Gnome::Gtk3::Button, '.new(:label)';
 
-  $b .= new(:native-object($b.gtk_button_new_with_label('pqr')));
-  isa-ok $b, Gnome::Gtk3::Button, '.gtk_button_new_with_label()';
+  $b .= new(:mnemonic('_pqr'));
+  isa-ok $b, Gnome::Gtk3::Button, '.new(:mnemonic)';
+
+  $b .= new( :icon-name('audio-volume-high'), :icon-size(GTK_ICON_SIZE_BUTTON));
+  isa-ok $b, Gnome::Gtk3::Button, '.new(:icon-name, :icon-size)';
 
 #  dies-ok(
 #    { $b.get-label('xyz'); },
 #    'wrong arguments to get-label()'
 #  );
-
-  is $b.get-label, 'pqr', 'gtk_button_get_label()';
-  $b.set-label('xyz');
-  is $b.get-label, 'xyz', 'gtk_button_set_label() / gtk_button_get_label()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Button as container', {
   $b .= new(:label('xyz'));
+  is $b.get-label, 'xyz', 'gtk_button_get_label()';
+  $b.set-label('xyz');
+  is $b.get-label, 'xyz', 'gtk_button_set_label() / gtk_button_get_label()';
+
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
   my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
