@@ -16,9 +16,9 @@ Gnome::Gtk3::Dialog <|- Gnome::Gtk3::AboutDialog
 Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::ColorChooserDialog
 Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::FileChooserDialog
 Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::MessageDialog
-'Gnome::Gtk3::Dialog <|--- Gnome::Gtk3::AppChooserDialog
-'Gnome::Gtk3::Dialog <|--- Gnome::Gtk3::FontChooserDialog
-'Gnome::Gtk3::Dialog <|--- Gnome::Gtk3::RecentChooserDialog
+Gnome::Gtk3::Dialog <|--- Gnome::Gtk3::AppChooserDialog
+Gnome::Gtk3::Dialog <|--- Gnome::Gtk3::FontChooserDialog
+Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::RecentChooserDialog
 
 Gnome::Gtk3::Window <|- Gnome::Gtk3::Dialog
 Gnome::Gtk3::Bin <|- Gnome::Gtk3::Window
