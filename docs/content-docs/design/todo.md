@@ -141,7 +141,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Each user class inheriting a Raku G*::object must have a new() to create the native object. this must be repeated for other client use classes because only the leaf new() is run!
 
-* [ ] Add plantuml diagrams to documents. Not (yet?) possible on github pages.
+* [ ] Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate png and use those.
 
 #### Site changes.
 * [x] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
@@ -152,22 +152,22 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
-* [x] Jekyll shows errors which must be removed. Site content looks good however.
+* [ ] Jekyll shows errors which must be removed. Site content looks good however.
 
-* Tutorials
+* [ ] Tutorials
   * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
 
-  * Getting started
+  * [x] Getting started
     * [x] Empty window
     * [x] Window with a button
     * [x] Show a mistake of two buttons in window
     * [x] Buttons in a grid
 
-  * Intermezzo (skippable)
+  * [ ] Intermezzo (skippable)
     * [ ] Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
     * [ ] Method names of the native subroutines
 
-  * Window details
+  * [ ] Window details
     * [ ] Window decoration, title and icon
     * [ ] Window size
     * [ ] Centering with position
@@ -180,11 +180,11 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
         * [ ] container border
     * [ ] Grid
 
-  * Intermezzo (skippable)
+  * [ ] Intermezzo (skippable)
     * [ ] Common method names used in classes
     * [ ] Initialization of classes
 
-  * Widgets
+  * [ ] Widgets
     * Controls
       * [ ] Buttons
       * [ ] Menus
@@ -242,13 +242,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 # Checklist
 
-## Head keys
-### Main documentation
-* dt: title, description, see also
-* db: inheritance, synopsis, example
-* bt: typos
-
-### Subs and methods documentation
+### Main documentation, subs and methods documentation
 Legend for head of table
 
 * T: type column
@@ -257,66 +251,78 @@ Legend for head of table
   * b: boxed type
   * i: interface type
   * s: standalone type
+  * N: native class
+  * L: native library connection
   * not filled means standard class
-* s\$: Add \$ to variables
-* sb: Use True/False when boolean input
-* sv: Remove Since version text
-* no: Check if :native-object is used and documented in BUILDs
-* to: Check typos
-* ex: Add examples
-* ct: Complete all tests
-* cm: Cleanup subs/methods documentation, remove unusable subs and native new() doc, add =head3 to new() for each multi.
-* cp: Cleanup properties documentation
-* cs: Cleanup signals documentation
 
+* md: Module documentation
+  * Title, description, see also, UML, synopsis
+  * Inheritance when supported, example use
+  * Remove interface information
+* bd: Build documentation
+  * Use test of `is-valid()` and ease of using `.set-native-object()`.
+  * Remove check for wrong / unavailable options if inheritable.
+  * Add =head3 to each `.new()` option.
+  * Remove doc for :native-object or :build-id except where it is defined
+* sd: Subroutine documentation
+  * Add examples to subs.
+  * Inhibit unusable subroutines and doc.
+  * Remove native `.gtk_..._new_...()` documentation.
+  * Add \$ to variables and use `True`/`False` when boolean input
+  * Remove Since version text
+* cp: Cleanup documentation
+  * Subroutines and Methods
+  * Properties
+  * Signals
+  * Types
+* ct: Testing
+  * Complete `BUILD()` tests.
+  * Complete subroutine tests
 
+Entries can be
+* x: Done or first letter of operation when not all applies
+* #: No info
+* Empty: Not done
 
-| Module/Class            |T |s$|sb|sv|no|to|ex|ct|cm|cp|cs|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::N**              |p | #| #| #| #| #| #| #| #| #| #|
-N-GObject                 |  |  |  |  |  |  |  |  |  |  |  |
-NativeLib                 |
-TopLevelClassSupport      |t|
-X                         |
-**Gnome::Glib**           |p|#|#|#|#|#|#|#|#|#|#|
-**Gnome::GObject**        |p|#|#|#|#|#|#|#|#|#|#|
+| Module/Class            |T |md|bd|sd|cp|ct|
+|-------------------------|--|--|--|--|--|--|
+**Gnome::N**              |p | #| #| #| #| #|
+N-GObject                 |N |  |  |  |  |  |
+NativeLib                 |L |  |  |  |  |  |
+TopLevelClassSupport      |t |  |  |  |  |  |
+X                         |  |  |  |  |  |  |
+**Gnome::Glib**           |p | #| #| #| #| #|
+**Gnome::GObject**        |p | #| #| #| #| #|
 Boxed                     |  |
-Enums                     |s|
+Enums                     |s |
 InitiallyUnowned          |
 Object                    |
-Signal                    |s|
-Type                      |s|
-value                     |b|
-**Gnome::Atk**            |p|#|#|#|#|#|#|#|#|#|#|
-Object                    ||
-**Gnome::Gio**            |p|#|#|#|#|#|#|#|#|#|#|
-Application               ||
-EmblemedIcon||
-MountOperation||
-**Gnome::Gdk3**           |p|#|#|#|#|#|#|#|#|#|#|
-**Gnome::Gtk3**           |p|#|#|#|#|#|#|#|#|#|#|
-AboutDialog|
-AccelGroup|
-AccelLabel|
-AccelMap|
-Accessible|
-Actionable|i|
-ActionBar|
-Adjustment|
-AppChooserButton|
-AppChooser|i|
-AppChooserWidget|
-Application|
-ApplicationWindow|
-AspectFrame|
-Assistant|
-Bin|
-Border|b|
-Box|
-Buildable|i|
-Builder|
-Button|
-ButtonBox|
+Signal                    |s |
+Type                      |s |
+value                     |b |
+**Gnome::Gtk3**           |p | #| #| #| #| #|
+AboutDialog               |  | x| x|  |  |  |
+AccelGroup                |
+AccelLabel                |
+AccelMap                  |
+Accessible                |
+Actionable                |i |
+ActionBar                 |
+Adjustment                |
+AppChooserButton          |
+AppChooser                |i |
+AppChooserWidget          |
+Application               |
+ApplicationWindow         |
+AspectFrame               |
+Assistant                 |
+Bin                       |
+Border                    |b |
+Box                       |
+Buildable                 |i |
+Builder                   |
+Button                    |  | x| x|  |  |  |
+ButtonBox                 |
 Calendar|
 CellArea|
 CellAreaBox|
@@ -509,3 +515,10 @@ Widget|
 WidgetPath|b|
 Window|
 WindowGroup|
+**Gnome::Gdk3**           |p | #| #| #| #| #|
+**Gnome::Atk**            |p | #| #| #| #| #|
+Object                    |  |
+**Gnome::Gio**            |p | #| #| #| #| #|
+Application               |  |
+EmblemedIcon||
+MountOperation||
