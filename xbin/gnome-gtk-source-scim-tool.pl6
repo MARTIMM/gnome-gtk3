@@ -801,6 +801,12 @@ sub substitute-in-template (
       unit class Gnome::LIBRARYMODULE;
       ALSO-IS-LIBRARY-PARENT
 
+
+    =comment head2 Uml Diagram
+
+    =comment ![](plantuml/.png)
+
+
     =begin comment
     =head2 Inheriting this class
 
@@ -866,10 +872,13 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
+      =head3 new()
+      
       Create a new RAKU-CLASS-NAME object.
 
         multi method new ( )
 
+      =begin comment
       Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
         multi method new ( N-GObject :$native-object! )
@@ -877,6 +886,7 @@ sub substitute-in-template (
       Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
         multi method new ( Str :$build-id! )
+      =end comment
 
       =end pod
 
