@@ -12,10 +12,9 @@ A widget that emits a signal when clicked on
 
 =head1 Description
 
-The B<Gnome::Gtk3::Button> widget is generally used to trigger a callback function that is called when the button is pressed.  The various signals and how to use them are outlined below.
+The B<Gnome::Gtk3::Button> widget is generally used to trigger a callback function that is called when the button is pressed. The various signals and how to use them are outlined below.
 
-The B<Gnome::Gtk3::Button> widget can hold any valid child widget.  That is, it can hold almost any other standard B<Gnome::Gtk3::Widget>.  The most commonly used child is the B<Gnome::Gtk3::Label>.
-
+The B<Gnome::Gtk3::Button> widget can hold any valid child widget. That is, it can hold almost any other standard B<Gnome::Gtk3::Widget>. The most commonly used child is the B<Gnome::Gtk3::Label> and is the default.
 
 =head2 Css Nodes
 
@@ -25,18 +24,32 @@ Other style classes that are commonly used with B<Gnome::Gtk3::Button> include .
 
 Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton>, B<Gnome::Gtk3::VolumeButton>, B<Gnome::Gtk3::LockButton>, B<Gnome::Gtk3::ColorButton>, B<Gnome::Gtk3::FontButton> or B<Gnome::Gtk3::FileChooserButton> use style classes such as .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate themselves from a plain B<Gnome::Gtk3::Button>.
 
-=head2 Implemented Interfaces
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item Gnome::Gtk3::Actionable
-=item Gnome::Gtk3::Activatable
-
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Button;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
+
+=head2 Uml Diagram
+![](plantuml/buttons.png)
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Button;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Button;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Button class process the options
+    self.bless( :GtkButton, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =head2 Example
 
@@ -49,6 +62,7 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
+use Gnome::Gtk3::Enums;
 
 use Gnome::Gtk3::Buildable;
 
@@ -66,18 +80,37 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 new()
+
+Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button, use C<gtk_container_add()>.
 
   multi method new ( )
 
-Creates a new button object with a label
+=head3 new(:label)
+
+Creates a B<Gnome::Gtk3::Button> widget with a B<Gnome::Gtk3::Label> child containing the given text.
 
   multi method new ( Str :$label! )
 
-Creates a new button object with a mnemonic
+=head3 new( :icon-name, :icon-size)
+
+Creates a new button containing an icon from the current icon theme.
+
+If the icon name isn’t known, a “broken image” icon will be displayed instead. If the current icon theme is changed, the icon will be updated appropriately.
+
+This function is a convenience wrapper around C<gtk_button_new()> and C<gtk_button_set_image()>.
+
+You can use the I<gtk3-icon-browser> tool to browse through currently installed icons. The default for `$icon-size` is `GTK_ICON_SIZE_SMALL_TOOLBAR`.
+
+  multi method new ( Str :$icon-name!, GtkIconSize :$icon-size?)
+
+=head3 new(:mnemonic)
+
+Creates a new B<Gnome::Gtk3::Button> containing a label. If characters in I<label> are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. Pressing Alt and that key activates the button.
 
   multi method new ( Str :$mnemonic! )
 
+=begin comment
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$native-object! )
@@ -85,11 +118,13 @@ Create an object using a native object from elsewhere. See also B<Gnome::GObject
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+=end comment
 
 =end pod
 
 #TM:2:new():inheriting:CheckButton
 #TM:1:new(:label):
+#TM:0:new(:icon-name,:size):
 #TM:0:new(:mnemonic):
 #TM:1:new():
 #TM:1:new(:native-object):
@@ -104,39 +139,46 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Button';
+  if self.^name eq 'Gnome::Gtk3::Button' or %options<GtkButton> {
 
-  if %options<label>.defined {
-    self.set-native-object(gtk_button_new_with_label(%options<label>));
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      if %options<label>.defined {
+        $no = _gtk_button_new_with_label(%options<label>);
+      }
+
+      elsif %options<icon-name>.defined {
+        my GtkIconSize $icon-size =
+          %options<icon-size> // GTK_ICON_SIZE_SMALL_TOOLBAR;
+        $no = _gtk_button_new_from_icon_name( %options<icon-name>, $icon-size);
+      }
+
+      elsif %options<mnemonic>.defined {
+        $no = _gtk_button_new_with_mnemonic(%options<mnemonic>);
+      }
+
+      elsif ? %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_button_new();
+      }
+
+      else {
+        $no = _gtk_button_new();
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkButton');
   }
-
-  elsif %options<mnemonic>.defined {
-    self.set-native-object(gtk_button_new_with_mnemonic(%options<mnemonic>));
-  }
-
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_button_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else { #elsif ? %options<empty> {
-    self.set-native-object(gtk_button_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkButton');
 }
 
 #-------------------------------------------------------------------------------
@@ -156,7 +198,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_button_new:new()
+#TM:2:_gtk_button_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] button_new
 
@@ -168,14 +211,16 @@ Returns: The newly created B<Gnome::Gtk3::Button> widget.
 
 
 =end pod
+}}
 
-sub gtk_button_new (  )
-  returns N-GObject
+sub _gtk_button_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_button_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:3:gtk_button_new_with_label:new(:label)
+#TM:3:_gtk_button_new_with_label:new(:label)
+#`{{
 =begin pod
 =head2 [[gtk_] button_] new_with_label
 
@@ -189,14 +234,16 @@ Returns: The newly created B<Gnome::Gtk3::Button> widget.
 =item Str $label; The text you want the B<Gnome::Gtk3::Label> to hold.
 
 =end pod
+}}
 
-sub gtk_button_new_with_label ( Str $label )
-  returns N-GObject
+sub _gtk_button_new_with_label ( Str $label --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_button_new_with_label')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_button_new_from_icon_name:
+#TM:0:_gtk_button_new_from_icon_name:
+#`{{
 =begin pod
 =head2 [[gtk_] button_] new_from_icon_name
 
@@ -211,7 +258,6 @@ C<gtk_button_set_image()>.
 
 Returns: a new B<Gnome::Gtk3::Button> displaying the themed icon
 
-Since: 3.10
 
   method gtk_button_new_from_icon_name (
     Str $icon_name,
@@ -223,14 +269,16 @@ Since: 3.10
 =item GtkIconSize $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
 
 =end pod
+}}
 
-sub gtk_button_new_from_icon_name ( Str $icon_name, int32 $size )
-  returns N-GObject
+sub _gtk_button_new_from_icon_name ( Str $icon_name, int32 $size --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_button_new_from_icon_name')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_button_new_with_mnemonic:
+#TM:0:_gtk_button_new_with_mnemonic:
+#`{{
 =begin pod
 =head2 [[gtk_] button_] new_with_mnemonic
 
@@ -248,10 +296,11 @@ Returns: a new B<Gnome::Gtk3::Button>
 =item Str $label; The text of the button, with an underscore in front of the mnemonic character
 
 =end pod
+}}
 
-sub gtk_button_new_with_mnemonic ( Str $label )
-  returns N-GObject
+sub _gtk_button_new_with_mnemonic ( Str $label --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_button_new_with_mnemonic')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -403,8 +452,6 @@ displayed if the label text is C<Any> or if
 sig B<always-show-image> is C<1>. You don’t have to call
 C<gtk_widget_show()> on I<image> yourself.
 
-Since: 2.6
-
   method gtk_button_set_image ( N-GObject $image )
 
 =item N-GObject $image; a widget to set as the image for the button
@@ -427,7 +474,6 @@ or constructed by C<gtk_button_new_from_stock()>.
 Returns: (nullable) (transfer none): a B<Gnome::Gtk3::Widget> or C<Any> in case
 there is no image
 
-Since: 2.6
 
   method gtk_button_get_image ( --> N-GObject  )
 
@@ -447,7 +493,6 @@ sub gtk_button_get_image ( N-GObject $button )
 Sets the position of the image relative to the text
 inside the button.
 
-Since: 2.10
 
   method gtk_button_set_image_position ( GtkPositionType $position )
 
@@ -469,7 +514,6 @@ inside the button.
 
 Returns: the position
 
-Since: 2.10
 
   method gtk_button_get_image_position ( --> GtkPositionType  )
 
@@ -492,7 +536,6 @@ setting and always show the image, if available.
 Use this property if the button  would be useless or hard to use
 without the image.
 
-Since: 3.6
 
   method gtk_button_set_always_show_image ( Int $always_show )
 
@@ -514,7 +557,6 @@ setting and always show the image, if available.
 
 Returns: C<1> if the button will always show the image
 
-Since: 3.6
 
   method gtk_button_get_always_show_image ( --> Int  )
 
@@ -536,7 +578,6 @@ This function should be rarely needed.
 
 Returns: (transfer none): I<button>’s event window.
 
-Since: 2.22
 
   method gtk_button_get_event_window ( --> N-GObject  )
 
@@ -633,7 +674,6 @@ The B<Gnome::GObject::Value> type of property I<relief> is C<G_TYPE_ENUM>.
 =head3 Image widget
 
 The child widget to appear next to the button text.
-Since: 2.6
 Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<image> is C<G_TYPE_OBJECT>.
@@ -644,7 +684,6 @@ The B<Gnome::GObject::Value> type of property I<image> is C<G_TYPE_OBJECT>.
 
 
 The position of the image relative to the text inside the button.
-Since: 2.10
 Widget type: GTK_TYPE_POSITION_TYPE
 
 The B<Gnome::GObject::Value> type of property I<image-position> is C<G_TYPE_ENUM>.
@@ -657,7 +696,6 @@ If C<1>, the button will ignore the  I<gtk-button-images>
 setting and always show the image, if available.
 Use this property if the button would be useless or hard to use
 without the image.
-Since: 3.6
 
 The B<Gnome::GObject::Value> type of property I<always-show-image> is C<G_TYPE_BOOLEAN>.
 
