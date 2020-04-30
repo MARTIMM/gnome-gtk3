@@ -12,7 +12,6 @@ Display information about an application
 
 =head1 Description
 
-
 The B<Gnome::Gtk3::AboutDialog> offers a simple way to display information about a program like its logo, name, copyright, website and license. It is also possible to give credits to the authors, documenters, translators and artists who have worked on the program. An about dialog is typically opened when the user selects the `About` option from the `Help` menu. All parts of the dialog are optional.
 
 About dialogs often contain links and email addresses. B<Gnome::Gtk3::AboutDialog> displays these as clickable links. By default, it calls gtk_show_uri() when a user clicks one. The behavior can be overridden with the C<activate-link> signal.
@@ -23,24 +22,19 @@ To make constructing a B<Gnome::Gtk3::AboutDialog> as convenient as possible, yo
 
 Note that GTK+ sets a default title of `_("About %s")` on the dialog window (where \%s is replaced by the name of the application, but in order to ensure proper translation of the title, applications should set the title property explicitly when constructing a B<Gnome::Gtk3::AboutDialog>.
 
+It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome::Gtk3::Dialog>, e.g. C<using gtk_dialog_run()>. In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
 
-It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome::Gtk3::Dialog>, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the C<GTK_RESPONSE_CANCEL> response id.
-
-=begin comment
-=head2 Implemented Interfaces
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item Gnome::Atk::ImplementorIface
-=end comment
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::AboutDialog;
   also is Gnome::Gtk3::Dialog;
-=comment  also does Gnome::Gtk3::Buildable;
+
 
 =head2 Uml Diagram
-![](plantuml/AboutDialog.png)
+
+![](plantuml/dialogs.png)
 
 =begin comment
 
@@ -132,7 +126,6 @@ also does Gnome::Gtk3::Buildable;
 
 The type of license for an application. This enumeration can be expanded at later date.
 
-Since: 3.0
 
 
 =item GTK_LICENSE_UNKNOWN: No license specified
@@ -180,10 +173,13 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 new()
+
 Create a new plain object.
 
   multi method new ( )
 
+=begin comment
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$native-object! )
@@ -191,6 +187,7 @@ Create an object using a native object from elsewhere. See also B<Gnome::GObject
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+=end comment
 
 =end pod
 
@@ -207,26 +204,25 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong widgets
   if self.^name eq 'Gnome::Gtk3::AboutDialog' or %options<GtkAboutDialog> {
 
-    if ? %options<empty> {
-      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-      self.set-native-object(gtk_about_dialog_new());
-    }
-#`{{
-    elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-      # provided in GObject
-    }
+    if self.is-valid { }
 
-    elsif %options.keys.elems {
-      die X::Gnome.new(
-        :message('Unsupported options for ' ~ self.^name ~
-                 ': ' ~ %options.keys.join(', ')
-                )
-      );
-    }
-}}
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
 
-    else {  # if ? %options<empty> {
-      self.set-native-object(gtk_about_dialog_new());
+    else {
+      my $no;
+
+      if ? %options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        $no = _gtk_about_dialog_new();
+      }
+
+      else {  # if ? %options<empty> {
+        $no = _gtk_about_dialog_new();
+      }
+
+      self.set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -252,7 +248,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_new:
+#TM:0:_gtk_about_dialog_new:
+#`{{
 =begin pod
 =head2 [gtk_] about_dialog_new
 
@@ -260,17 +257,17 @@ Creates a new B<Gnome::Gtk3::AboutDialog>.
 
 Returns: a newly created native AboutDialog object.
 
-Since: 2.6
 
   method gtk_about_dialog_new ( --> N-GObject  )
 
 
 Returns N-GObject; a newly created native C<GtkAboutDialog>
 =end pod
+}}
 
-sub gtk_about_dialog_new (  )
-  returns N-GObject
+sub _gtk_about_dialog_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_about_dialog_new')
   { * }
 
 #`{{
@@ -303,7 +300,6 @@ Returns the program name displayed in the about dialog.
 Returns: The program name. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.12
 
   method gtk_about_dialog_get_program_name ( --> Str  )
 
@@ -323,7 +319,6 @@ sub gtk_about_dialog_get_program_name ( N-GObject $about )
 Sets the name to display in the about dialog.
 If this is not set, it defaults to C<g_get_application_name()>.
 
-Since: 2.12
 
   method gtk_about_dialog_set_program_name ( Str $name )
 
@@ -345,7 +340,6 @@ Returns the version string.
 Returns: The version string. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_version ( --> Str  )
 
@@ -364,7 +358,6 @@ sub gtk_about_dialog_get_version ( N-GObject $about )
 
 Sets the version string to display in the about dialog.
 
-Since: 2.6
 
   method gtk_about_dialog_set_version ( Str $version )
 
@@ -386,7 +379,6 @@ Returns the copyright string.
 Returns: The copyright string. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_copyright ( --> Str  )
 
@@ -406,7 +398,6 @@ sub gtk_about_dialog_get_copyright ( N-GObject $about )
 Sets the copyright string to display in the about dialog.
 This should be a short string of one or two lines.
 
-Since: 2.6
 
   method gtk_about_dialog_set_copyright ( Str $copyright )
 
@@ -428,7 +419,6 @@ Returns the comments string.
 Returns: The comments. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_comments ( --> Str  )
 
@@ -448,7 +438,6 @@ sub gtk_about_dialog_get_comments ( N-GObject $about )
 Sets the comments string to display in the about dialog.
 This should be a short string of one or two lines.
 
-Since: 2.6
 
   method gtk_about_dialog_set_comments ( Str $comments )
 
@@ -470,7 +459,6 @@ Returns the license information.
 Returns: The license information. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_license ( --> Str  )
 
@@ -491,7 +479,6 @@ Sets the license information to be displayed in the secondary
 license dialog. If I<license> is C<Any>, the license button is
 hidden.
 
-Since: 2.6
 
   method gtk_about_dialog_set_license ( Str $license )
 
@@ -514,7 +501,6 @@ list of known licenses.
 This function overrides the license set using
 C<gtk_about_dialog_set_license()>.
 
-Since: 3.0
 
   method gtk_about_dialog_set_license_type ( GtkLicense $license_type )
 
@@ -535,7 +521,6 @@ Retrieves the license set using C<gtk_about_dialog_set_license_type()>
 
 Returns: a I<Gnome::Gtk3::License> value
 
-Since: 3.0
 
   method gtk_about_dialog_get_license_type ( --> GtkLicense  )
 
@@ -557,7 +542,6 @@ automatically wrapped.
 
 Returns: C<1> if the license text is wrapped
 
-Since: 2.8
 
   method gtk_about_dialog_get_wrap_license ( --> Int  )
 
@@ -577,7 +561,6 @@ sub gtk_about_dialog_get_wrap_license ( N-GObject $about )
 Sets whether the license text in I<about> is
 automatically wrapped.
 
-Since: 2.8
 
   method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
 
@@ -599,7 +582,6 @@ Returns the website URL.
 Returns: The website URL. The string is owned by the about
 dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_website ( --> Str  )
 
@@ -618,7 +600,6 @@ sub gtk_about_dialog_get_website ( N-GObject $about )
 
 Sets the URL to use for the website link.
 
-Since: 2.6
 
   method gtk_about_dialog_set_website ( Str $website )
 
@@ -640,7 +621,6 @@ Returns the label used for the website link.
 Returns: The label used for the website link. The string is
 owned by the about dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_website_label ( --> Str  )
 
@@ -659,7 +639,6 @@ sub gtk_about_dialog_get_website_label ( N-GObject $about )
 
 Sets the label to be used for the website link.
 
-Since: 2.6
 
   method gtk_about_dialog_set_website_label ( Str $website_label )
 
@@ -683,7 +662,6 @@ Returns: (array zero-terminated=1) (transfer none): A
 C<Any>-terminated string array containing the authors. The array is
 owned by the about dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_authors ( --> CArray[Str]  )
 
@@ -703,7 +681,6 @@ sub gtk_about_dialog_get_authors ( N-GObject $about )
 Sets the strings which are displayed in the authors tab
 of the secondary credits dialog.
 
-Since: 2.6
 
   method gtk_about_dialog_set_authors ( CArray[Str] $authors )
 
@@ -727,7 +704,6 @@ Returns: (array zero-terminated=1) (transfer none): A
 C<Any>-terminated string array containing the documenters. The
 array is owned by the about dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_documenters ( --> CArray[Str]  )
 
@@ -747,7 +723,6 @@ sub gtk_about_dialog_get_documenters ( N-GObject $about )
 Sets the strings which are displayed in the documenters tab
 of the secondary credits dialog.
 
-Since: 2.6
 
   method gtk_about_dialog_set_documenters ( CArray[Str] $documenters )
 
@@ -771,7 +746,6 @@ Returns: (array zero-terminated=1) (transfer none): A
 C<Any>-terminated string array containing the artists. The array is
 owned by the about dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_artists ( --> CArray[Str]  )
 
@@ -791,7 +765,6 @@ sub gtk_about_dialog_get_artists ( N-GObject $about )
 Sets the strings which are displayed in the artists tab
 of the secondary credits dialog.
 
-Since: 2.6
 
   method gtk_about_dialog_set_artists ( CArray[Str] $artists )
 
@@ -814,7 +787,6 @@ in the translators tab of the secondary credits dialog.
 Returns: The translator credits string. The string is
 owned by the about dialog and must not be modified.
 
-Since: 2.6
 
   method gtk_about_dialog_get_translator_credits ( --> Str  )
 
@@ -839,7 +811,6 @@ The intended use for this string is to display the translator of the language wh
 
 It is a good idea to use the customary msgid “translator-credits” for this purpose, since translators will already know the purpose of that msgid, and since I<Gnome::Gtk3::AboutDialog> will detect if “translator-credits” is untranslated and hide the tab.
 
-Since: 2.6
 
   method gtk_about_dialog_set_translator_credits ( Str $translator_credits )
 
@@ -862,7 +833,6 @@ Returns: (transfer none): the pixbuf displayed as logo. The
 pixbuf is owned by the about dialog. If you want to keep a
 reference to it, you have to call C<g_object_ref()> on it.
 
-Since: 2.6
 
   method gtk_about_dialog_get_logo ( --> N-GObject  )
 
@@ -883,7 +853,6 @@ Sets the pixbuf to be displayed as logo in the about dialog.
 If it is C<Any>, the default window icon set with
 C<gtk_window_set_default_icon()> will be used.
 
-Since: 2.6
 
   method gtk_about_dialog_set_logo ( N-GObject $logo )
 
@@ -906,7 +875,6 @@ Returns: the icon name displayed as logo. The string is
 owned by the dialog. If you want to keep a reference
 to it, you have to call C<g_strdup()> on it.
 
-Since: 2.6
 
   method gtk_about_dialog_get_logo_icon_name ( --> Str )
 
@@ -927,7 +895,6 @@ Sets the pixbuf to be displayed as logo in the about dialog.
 If it is C<Any>, the default window icon set with
 C<gtk_window_set_default_icon()> will be used.
 
-Since: 2.6
 
   method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
 
@@ -946,7 +913,6 @@ sub gtk_about_dialog_set_logo_icon_name ( N-GObject $about, Str $icon_name )
 
 Creates a new section in the Credits page.
 
-Since: 3.4
 
   method gtk_about_dialog_add_credit_section ( Str $section_name, CArray[Str] $people )
 
@@ -976,7 +942,6 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 The name of the program.
 If this is not set, it defaults to C<g_get_application_name()>.
 
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
 
@@ -985,7 +950,6 @@ The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING
 
 The version of the program.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 
@@ -994,7 +958,6 @@ The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 
 Copyright information for the program.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
 
@@ -1005,7 +968,6 @@ Comments about the program. This string is displayed in a label
 in the main dialog, thus it should be a short explanation of
 the main purpose of the program, not a detailed list of features.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
 
@@ -1021,7 +983,6 @@ When setting this property to a non-C<Any> value, the
 sig I<license-type> property is set to C<GTK_LICENSE_CUSTOM>
 as a side effect.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
 
@@ -1044,7 +1005,6 @@ For any other I<Gnome::Gtk3::License> value, the contents of the
 sig I<license> property are also set by this property as
 a side effect.
 
-Since: 3.0
 
 Widget type: GTK_TYPE_LICENSE
 
@@ -1056,7 +1016,6 @@ The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
 The URL for the link to the website of the program.
 This should be a string starting with "http://.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
 
@@ -1065,7 +1024,6 @@ The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
 
 The label for the link to the website of the program.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
 
@@ -1078,7 +1036,6 @@ The authors of the program, as an C<Any>-terminated array of strings.
 Each string may contain email addresses and URLs, which will be displayed
 as links, see the introduction for more details.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
 
@@ -1089,7 +1046,6 @@ The people documenting the program, as an C<Any>-terminated array of strings.
 Each string may contain email addresses and URLs, which will be displayed
 as links, see the introduction for more details.
 
-Since: 2.6
 
 
 The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
@@ -1101,7 +1057,6 @@ The people who contributed artwork to the program, as a C<Any>-terminated
 array of strings. Each string may contain email addresses and URLs, which
 will be displayed as links, see the introduction for more details.
 
-Since: 2.6
 
 
 The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
@@ -1113,7 +1068,6 @@ Credits to the translators. This string should be marked as translatable.
 The string may contain email addresses and URLs, which will be displayed
 as links, see the introduction for more details.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
 
@@ -1123,7 +1077,6 @@ The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_
 A logo for the about box. If it is C<Any>, the default window icon
 set with C<gtk_window_set_default_icon()> will be used.
 
-Since: 2.6
 
 Widget type: it defaults to gtk_window_get_default_icon_list()
 
@@ -1136,7 +1089,6 @@ The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 A named icon to use as the logo for the about box. This property
 overrides the sig I<logo> property.
 
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
 
@@ -1145,7 +1097,6 @@ The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRI
 
 Whether to wrap the text in the license dialog.
 
-Since: 2.8
 
 The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
 

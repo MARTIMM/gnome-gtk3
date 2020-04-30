@@ -179,7 +179,6 @@ enum GtkDirectionType is export (
 
 Built-in stock icon sizes.
 
-
 =item GTK_ICON_SIZE_INVALID: Invalid size.
 =item GTK_ICON_SIZE_MENU: Size appropriate for menus (16px).
 =item GTK_ICON_SIZE_SMALL_TOOLBAR: Size appropriate for small toolbars (16px).
@@ -191,7 +190,7 @@ Built-in stock icon sizes.
 
 =end pod
 
-#TE:0:GtkIconSize:
+#TE:4:GtkIconSize:Button.t
 enum GtkIconSize is export (
   'GTK_ICON_SIZE_INVALID',
   'GTK_ICON_SIZE_MENU',
