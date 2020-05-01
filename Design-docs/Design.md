@@ -690,6 +690,12 @@ pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
 # Memory
 Notes from https://developer.gnome.org/gtk3/stable/gtk-question-index.html
 
+### How does memory management work in GTK+? Should I free data returned from functions?
+
+See the documentation for GObject and GInitiallyUnowned. For GObject note specifically g_object_ref() and g_object_unref(). GInitiallyUnowned is a subclass of GObject so the same points apply, except that it has a "floating" state (explained in its documentation).
+
+For strings returned from functions, they will be declared "const" if they should not be freed. Non-const strings should be freed with g_free(). Arrays follow the same rule. If you find an undocumented exception to the rules, please report a bug on GitLab.
+
 ### Why does my program leak memory, if I destroy a widget immediately after creating it ?
 
 If GtkFoo isn't a toplevel window, then
@@ -703,18 +709,21 @@ is a memory leak, because no one assumed the initial floating reference. If you 
 To get this, you must acquire a reference to the widget and drop the floating reference (“ref and sink” in GTK+ parlance) after creating it:
 
 ```
-foo = gtk_foo_new ();
-g_object_ref_sink (foo);
+foo = gtk_foo_new ();         # floating reference
+g_object_ref_sink (foo);      # acquire a reference and drop floating ref
 ```
 
 When you want to get rid of the widget, you must call gtk_widget_destroy() to break any external connections to the widget before dropping your reference:
 
 ```
-gtk_widget_destroy (foo);
-g_object_unref (foo);
+gtk_widget_destroy (foo);     # get rid of the widget
+g_object_unref (foo);         # drop reference
 ```
 
 When you immediately add a widget to a container, it takes care of assuming the initial floating reference and you don't have to worry about reference counting at all ... just call gtk_widget_destroy() to get rid of the widget.
+
+**Notes**
+* gtk_foo_new -> floating reference if from **InitiallyUnowned**
 
 # Internationalize
 ### How do I internationalize a GTK+ program?

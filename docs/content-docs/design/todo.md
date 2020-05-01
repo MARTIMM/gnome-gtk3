@@ -163,24 +163,27 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
     * [x] Show a mistake of two buttons in window
     * [x] Buttons in a grid
 
-  * [ ] Intermezzo (skippable)
-    * [ ] Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
-    * [ ] Method names of the native subroutines
+  * [x] Intermezzo: method names
+    * [x] Method names of the native subroutines
 
   * [ ] Window details
     * [ ] Window decoration, title and icon
     * [ ] Window size
     * [ ] Centering with position
     * [ ] Destroy signal
+    * [ ] Some Container methods
+    * [ ] Some Widget methods
+
+  * [ ] Intermezzo: search of native subroutines
+    * [ ] Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
 
     * [ ] (Scrolled)Window
     * [ ] Dialogs
 
     * [ ] Frame
-        * [ ] container border
     * [ ] Grid
 
-  * [ ] Intermezzo (skippable)
+  * [ ] Intermezzo: common names and init
     * [ ] Common method names used in classes
     * [ ] Initialization of classes
 
@@ -200,25 +203,38 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
       * [ ] ListBox
       * [ ] TreeView
 
+  * [ ] Intermezzo: widget life cycle
+    * [ ] Widget creation. Reference state, weak references
+    * [ ] Widget (un)referencing
+    * [ ] Destroy
+    * [ ] Finalization
+    * [ ] `.clear-object()`
+
   * [ ] Signals
   * [ ] Threads
+    * Main
+      * [ ] Start loop
+      * [ ] Stop loop
+      * [ ] Nest loops
+      * [ ] Loop Context
+      * [ ] Process events
   * [ ] Builder
     * [ ] Glade
     * [ ] Gui XML description
     * [ ] Menu XML description
   * [ ] Styling
   * [ ] Resources
-  * [ ] Inheriting
-
-  * [ ] Drag and drop
-  * [ ] Drawing
-  * [ ] Font and other text handling
+  * [ ] Inheriting a class
 
   * [ ] Application
     * [ ] Phases
     * [ ] Signals
     * [ ] Multiple program entities or not
-    * [ ] D-Bus
+
+  * [ ] Drag and drop
+  * [ ] Drawing
+  * [ ] Font and other text handling
+  * [ ] D-Bus
 
   * Debugging
     * Testing your program with Gnome::T.
