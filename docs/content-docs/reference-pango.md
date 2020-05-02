@@ -10,6 +10,14 @@ The modules are all generated from the C source code and the documentation refer
 
 Each entry in the sidebar shows the name of a module with two icons, one icon to show the state of documentation and one for the state of testing. When hoovering over the icons a tool tip appears with a message about its state.
 
+## Color coding of the entries in the sidebar
+* <strong style="color:#005f00;">object classes</strong>
+* <strong style="color:#9000af;">interface classes</strong>
+* <strong style="color:#d5000d;">widget classes</strong>
+* <strong style="color:#00a0a0;">boxed classes</strong>
+* <strong style="color:#006f6f;">standalone classes</strong>
+
+<!--
 The documentation icons are
 * 📔 There is no documentation. Older modules were made by hand and did not have documentation. Now, with the help of a Raku program C-source files are skimmed to get the subroutines and types along with their documentation. The entry will not be active.
 * 🕮 Documentation generated. Documentation is only generated. Needs a rewrite to change c-code examples etc. Also subroutines are commented out when there are unsupported (for now) dependencies or that subroutines do not have any use in the Raku environment.
@@ -23,6 +31,7 @@ The test icons are
 * 🗲 Signals are tested when available, otherwise it is skipped.
 * ⌺ Styling is tested when available, otherwise it is skipped.
 * 🗸 All that is available is tested.
+-->
 
 ## Deprecated classes in Pango
 
