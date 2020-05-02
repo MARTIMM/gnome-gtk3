@@ -148,7 +148,10 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
-* [x] The sidebar for Gtk references is messy. Should be ordered alphabetically perhaps.
+* [x] The sidebar for Gtk references is messy.
+  * [x] Should be ordered alphabetically.
+  * [x] Coloring should make clear if class is widget, interface, boxed or miscellenous.
+  * [x] Gnome::Gtk3 Reference main doc must be modified
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
