@@ -2,11 +2,18 @@
 ---
 @import "jekyll-theme-tactile";
 
-$menu-bgcolor: #9696bf;
-$menu-bgcolor-active: #e6e6ef;
-$menu-border-color-active: #777;
-$menu-border-color: #ddd;
-$menu-border-width: 2px;
+$menu-bgcolor:              #9696bf;
+$menu-bgcolor-active:       #e6e6ef;
+$menu-border-color-active:  #777;
+$menu-border-color:         #ddd;
+$menu-border-width:         2px;
+
+// default link color   #d5000d
+$menu-color-object:     #005f00;
+$menu-color-interface:  #9000af;
+$menu-color-widget:     #d5000d;
+$menu-color-boxed:      #00a0a0;
+$menu-color-standalone: #006f6f;
 
 $code-color: #46465f;
 
@@ -293,9 +300,30 @@ ol li {
         float: right;
       }
     }
-
+/*
     li.active {
       background-color: $menu-bgcolor-active;
+    }
+*/
+
+    li.interface a {
+      color: $menu-color-interface;
+    }
+
+    li.widget a {
+      color: $menu-color-widget;
+    }
+
+    li.boxed a {
+      color: $menu-color-boxed;
+    }
+
+    li.object a {
+      color: $menu-color-object;
+    }
+
+    li.standalone a {
+      color: $menu-color-standalone;
     }
   }
 }
