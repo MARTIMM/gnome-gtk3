@@ -8,12 +8,13 @@ $menu-border-color-active:  #777;
 $menu-border-color:         #ddd;
 $menu-border-width:         2px;
 
-// default link color   #d5000d
-$menu-color-object:     #005f00;
-$menu-color-interface:  #9000af;
-$menu-color-widget:     #d5000d;
-$menu-color-boxed:      #00a0a0;
-$menu-color-standalone: #006f6f;
+// default link color       #d5000d
+$menu-color-toplevel:       #e58080;
+$menu-color-object:         #a04500;
+$menu-color-widget:         #f54045;
+$menu-color-interface:      #bf00bf;
+$menu-color-boxed:          #00afaf;
+$menu-color-standalone:     #80bf00;
 
 $code-color: #46465f;
 
@@ -306,24 +307,40 @@ ol li {
     }
 */
 
+    li.toplevel a {
+      font-weight: bolder;
+      color: $menu-color-toplevel;
+      line-height: 1.1;
+    }
+
     li.interface a {
+      font-weight: bolder;
       color: $menu-color-interface;
+      line-height: 1.1;
     }
 
     li.widget a {
+      font-weight: bolder;
       color: $menu-color-widget;
+      line-height: 1.1;
     }
 
     li.boxed a {
+      font-weight: bolder;
       color: $menu-color-boxed;
+      line-height: 1.1;
     }
 
     li.object a {
+      font-weight: bolder;
       color: $menu-color-object;
+      line-height: 1.1;
     }
 
     li.standalone a {
+      font-weight: bolder;
       color: $menu-color-standalone;
+      line-height: 1.1;
     }
   }
 }

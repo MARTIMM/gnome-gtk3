@@ -1,37 +1,30 @@
 # https://jekyllrb.com/tutorials/navigation/
-- bar_title: "Gdk3"
+- bar_title: "Gdk3 Classes"
   bar_menu:
   - title: "Device"
+    type: object
     url: '/content-docs/reference/Gdk3/Device.html'
-    doc: 1
-    test: 1
   - title: "Display"
+    type: object
     url: '/content-docs/reference/Gdk3/Display.html'
-    doc: 1
-    test: 1
   - title: "Events"
+    type: standalone
     url: '/content-docs/reference/Gdk3/Events.html'
-    doc: 1
-    test: 1
-#  - title: "Keysyms"
-#    url: '/content-docs/reference/Gdk3/.html'
+  - title: "Keysyms"
+    type: standalone
+    url: '/content-docs/reference/Gdk3/Keysyms.html'
   - title: "Pixbuf"
+    type: object
     url: '/content-docs/reference/Gdk3/Pixbuf.html'
-    doc: 1
-    test: 1
   - title: "RGBA"
+    type: boxed
     url: '/content-docs/reference/Gdk3/RGBA.html'
-    doc: 1
-    test: 1
   - title: "Screen"
+    type: object
     url: '/content-docs/reference/Gdk3/Screen.html'
-    doc: 1
-    test: 1
   - title: "Types"
+    type: standalone
     url: '/content-docs/reference/Gdk3/Types.html'
-    doc: 1
-    test: 1
   - title: "Window"
+    type: object
     url: '/content-docs/reference/Gdk3/Window.html'
-    doc: 1
-    test: 1
