@@ -229,6 +229,14 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
   * [ ] Resources
   * [ ] Inheriting a class
 
+  * [ ] Intermezzo: tell something about
+    * [ ] Object
+    * [ ] InitiallyUnowned
+    * [ ] Boxed: https://en.wikipedia.org/wiki/GObject
+      Some data structures that are too simple to be made full-fledged class types (with all the overhead incurred) may still need to be registered with the type system. For example, we might have a class to which we want to add a background-color property, whose values should be instances of a structure that looks like struct color { int r, g, b; }. To avoid having to subclass GObject, we can create a boxed type to represent this structure, and provide functions for copying and freeing. GObject ships with a handful of boxed types wrapping simple GLib data types. Another use for boxed types is as a way to wrap foreign objects in a tagged container that the type system can identify and will know how to copy and free.
+    * [ ] Interfaces: https://en.wikipedia.org/wiki/GObject
+      Most types in a GObject application will be classes — in the normal object-oriented sense of the word — derived directly or indirectly from the root class, GObject. There are also interfaces, which, unlike classic Java-style interfaces, can contain implemented methods. GObject interfaces can thus be described as mixins.
+
   * [ ] Application
     * [ ] Phases
     * [ ] Signals
