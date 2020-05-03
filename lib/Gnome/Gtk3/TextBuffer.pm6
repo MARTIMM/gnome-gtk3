@@ -20,6 +20,7 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::TextIter>, B<Gnome::Gtk3::TextMark>
 =head2 Declaration
 
   unit class Gnome::Gtk3::TextBuffer;
+  also is Gnome::GObject::Object;
 
 =comment head2 Example
 
