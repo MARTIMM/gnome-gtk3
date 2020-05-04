@@ -170,7 +170,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
     * [x] Method names of the native subroutines
 
   * [ ] Window details
-    * [ ] Window decoration, title and icon
+    * [x] Window decoration, title and icon
     * [ ] Window size
     * [ ] Centering with position
     * [ ] Destroy signal
