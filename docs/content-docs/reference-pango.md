@@ -13,10 +13,12 @@ Each entry in the sidebar shows the name of a module with two icons, one icon to
 ## Color coding of the entries in the sidebar
 * <strong style="color:#e58080;">Toplevel classes</strong> are classes who inherit directly from **Gnome::N::TopLevelClassSupport**. Examples of such classes are **Gnome::GObject::Object** and **Gnome::Glib::Error**.
 * <strong style="color:#a04500;">Object classes</strong> are classes which inherit directly or indirectly from **Gnome::GObject::Object**.
-* <strong style="color:#f54045;">Widget classes</strong> are also indirectly inheriting from **Gnome::GObject::Object** but made a special category here to easily find a user interface class.
 * <strong style="color:#bf00bf;">Interface classes</strong>. Most types in an application will be classes — in the normal object-oriented sense of the word — derived directly or indirectly from the root class, **Gnome::GObject::Object**. There are also interfaces, which can contain implemented methods. These are mixed in in the appropriate class. E.g. the interface **Gnome::Gtk3::Buildable** is mixed into the **Gnome::Gtk3::Widget** class. <!--Interfaces can thus be described as mixins.-->
 * <strong style="color:#00afaf;">Boxed classes</strong>. Some data structures that are too simple to be made full-fledged class types. <!-- (with all the overhead incurred) may still need to be registered with the type system. --> An example is **Gnome::Gdk3::RGBA** which holds only a few numbers representing the RGB colors and Alpha channel. It would be too much to let it inherit from **Gnome::GObject::Object**. <!--For example, we might have a class to which we want to add a background-color property, whose values should be instances of a structure that looks like struct color { int r, g, b; }. To avoid having to subclass GObject, we can create a boxed type to represent this structure, and provide functions for copying and freeing. GObject ships with a handful of boxed types wrapping simple GLib data types. Another use for boxed types is as a way to wrap foreign objects in a tagged container that the type system can identify and will know how to copy and free.-->
 * <strong style="color:#80bf00;">Standalone classes</strong> are classes which do not inherit from other classes. Most of the time they even do not have a native object to work with. An example is **Gnome::Glib::Quark**.
+
+<!-- * <strong style="color:#f54045;">Widget classes</strong> are also indirectly inheriting from **Gnome::GObject::Object** but made a special category here to easily find a user interface class.
+-->
 
 <!--
 The documentation icons are
