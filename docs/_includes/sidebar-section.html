@@ -5,177 +5,18 @@
     <ul class="sidebar-list">
 
     {% for item in sb_menu.bar_menu %}
-      {% if item.title == '-' %}
-        <li><hr class="small" /></li>
+      {% assign url = site.baseurl | append: item.url %}
+
+      {% if item.type %}
+        {% assign classstr = item.type %}
       {% else %}
-
-        {% assign url = site.baseurl | append: item.url %}
-
-        {% assign classstr = "" %}
-        {% if item.url == page.url %}
-          {% assign classstr = "active" %}
-        {% else %}
-          {% assign classstr = "inactive" %}
-        {% endif %}
-
-        {% if item.doc %}
-        {% assign docStatus = item.doc %}
-        {% else %}
-        {% assign docStatus = 0 %}
-        {% endif %}
-
-        {% if !item.test %}
-        {% assign testStatus = item.test %}
-        {% else %}
-        {% assign testStatus = 0 %}
-        {% endif %}
-
-        {% if item.testok %}
-        {% assign testDone = 1 %}
-        {% else %}
-        {% assign testDone = 0 %}
-        {% endif %}
-
-        {% if page.sidebar_menu contains "references-" %}
-          <li class="{{ classstr }}">
-            {% if docStatus == 0 %}
-              <a>{{ item.title }}
-            {% elsif item.url != page.url %}
-              <a href="{{ url }}"> {{ item.title }}
-            {% else %}
-              <a>{{ item.title }}
-            {% endif %}
-
-            <div class="module-state">
-              <div class="tooltip">
-                {% if docStatus == 0 %}
-                  📔
-                  <span class="tooltiptext">
-                    There is no documentation
-                  </span>
-                {% elsif docStatus == 1 %}
-                  🕮
-                  <span class="tooltiptext">
-                    Documentation generated
-                  </span>
-                {% elsif docStatus == 2 %}
-                  📖
-                  <span class="tooltiptext">
-                    Documentation rewritten
-                  </span>
-                {% elsif docStatus == 3 %}
-                  🗸
-                  <span class="tooltiptext">
-                    Documentation has examples
-                  </span>
-                {% endif %}
-              </div>
-
-              <div class="tooltip">
-                <!-- 0 no tests -->
-                {% if testStatus == 0 %}
-                {% assign status_chars = '🗒' %}
-                  🗒
-
-                <!-- 1 module parses and new() works -->
-                {% elsif testStatus == 1 %}
-                {% assign status_chars = '🗇' %}
-                  🗇
-
-                <!-- 2 subs and methods tested, assume 3 (1 + 2) -->
-                {% elsif testStatus == 2 or testStatus == 3 %}
-                {% assign status_chars = '🗇🗊' %}
-                  🗊
-
-                <!-- 4 signals tested, assume 5 (1 + 4) -->
-                {% elsif testStatus == 4 or testStatus == 5 %}
-                {% assign status_chars = '🗇🗲' %}
-                  🗲
-
-                <!-- 6 (2 + 4), assume 7 (1 + 2 + 4) -->
-                {% elsif testStatus == 6 or testStatus == 7 %}
-                {% assign status_chars = '🗇🗊🗲' %}
-                  🗲
-
-                <!-- 8 properties tested, assume 9 (1 + 8) -->
-                {% elsif testStatus == 8 or testStatus == 9 %}
-                {% assign status_chars = '🗇🖉' %}
-                  🖉
-
-                <!-- 10 (2 + 8), assume 11 (1 + 2 + 8) -->
-                {% elsif testStatus == 10 or testStatus == 11 %}
-                {% assign status_chars = '🗇🗊🖉' %}
-                  🖉
-
-                <!-- 12 (4 + 8), assume 13 (1 + 4 + 8) -->
-                {% elsif testStatus == 12 or testStatus == 13 %}
-                {% assign status_chars = '🗇🗲🖉' %}
-                  🖉
-
-                <!-- 14 (2 + 4 + 8), assume 15 (1 + 2 + 4 + 8) -->
-                {% elsif testStatus == 12 or testStatus == 13 %}
-                {% assign status_chars = '🗇🗊🗲🖉' %}
-                  🖉
-
-                <!-- 16 theme tested, assume 17 (1 + 16) -->
-                {% elsif testStatus == 16 or testStatus == 17 %}
-                {% assign status_chars = '🗇⌺' %}
-                  ⌺
-
-
-                {% elsif testStatus == 31 %}
-                {% assign status_chars = '🗇🗊🗲🖉⌺' %}
-                  🗸
-
-
-
-                {% elsif testStatus == 5 %}
-                {% assign status_chars = '🗊🗲⌺' %}
-                  ⌺
-                {% elsif testStatus == 6 %}
-                {% assign status_chars = '🗊🗲⌺' %}
-                  ⌺
-                {% elsif testStatus == 7 %}
-                {% assign status_chars = '🗊🗲⌺🗸' %}
-                  🗸
-                {% endif %}
-
-
-                {% if testDone == 1 %}
-                {% assign status_chars = status_chars | append:' -> 🗸' %}
-                {% endif %}
-
-
-                  <span class="tooltiptext">
-                    {% assign pp = page.dir | append:item.title | append:'.md' %}
-                    {% assign pp = pp | remove_first:'/' %}
-                    <strong>Test coverage: {{ status_chars }}
-                    </strong><br />
-                  </span>
-
-              </div>
-
-              <!--div class="tooltip">
-                {% if item.ex %}
-                  {% assign exurl = site.baseurl | append: item.ex %}
-                  <a href="{{ exurl }}" rel="help" target="_blank">⚒</a>
-                {% endif %}
-              </div-->
-            </div>
-            </a>
-          </li>
-
-        {% else %}
-          <li class="{{ classstr }}">
-            {% if item.url != page.url %}
-              <a href="{{ url }}"> {{ item.title }}
-            {% else %}
-              <a>{{ item.title }}
-            {% endif %}
-            </a>
-          </li>
-        {% endif %}
+        {% assign classstr = "object" %}
       {% endif %}
+
+      <li class="{{ classstr }}">
+        <a href="{{ url }}"> {{ item.title }} </a>
+      </li>
+
     {% endfor %}
 
     </ul>

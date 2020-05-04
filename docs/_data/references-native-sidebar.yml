@@ -1,11 +1,16 @@
 # https://jekyllrb.com/tutorials/navigation/
-- bar_title: "Native"
+- bar_title: "Native Classes"
   bar_menu:
 #  - title: "N-GObject"
 #    url: '/content-docs/nyi-reference.html'
 #  - title: "NativeLib"
 #    url: '/content-docs/nyi-reference.html'
-  - title: "X"
-    url: '/content-docs/reference/Native/X.html'
-  - title: "TopLevelClassSupport"
+  - title: NativeLib
+    type: standalone
+    url: '/content-docs/reference/Native/NativeLib.html'
+  - title: TopLevelClassSupport
+    type: standalone
     url: '/content-docs/reference/Native/TopLevelClassSupport.html'
+  - title: X
+    type: standalone
+    url: '/content-docs/reference/Native/X.html'

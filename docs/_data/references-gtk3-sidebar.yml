@@ -2,262 +2,65 @@
 
 # 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊 ⌺🗲
 
-- bar_title: "Toplevel Widgets"
+- bar_title: "Gtk3 Classes"
   bar_menu:
-  - title: "Window"
-    url: '/content-docs/reference/Gtk3/Window.html'
-    doc: 1
-    test: 2
-    tut: ''
-    ex: '/content-docs/examples/toplevel/Window.html'
 
-    checklist:
-    - main_doc:
-      - 'title, description, see also': 0
-      - 'inheritance, synopsis, example': 0
-      - typos: 0
-    - subs_doc:
-      - 'add $ to variables': 0
-      - 'use True/False when boolean input': 0
-      - 'remove Since version text': 0
-      - 'check if :native-object is used and documented in BUILDs': 0
-      - 'replace C<Any> with undefined': 0
-      - typos: 0
-      - examples: 0
-    - 'complete all tests': 0
-    - 'remove unusable subs': 0
-    - cleanup: 0
-
-  - title: '-'
-
-  - title: "Dialog"
-    url: "/content-docs/reference/Gtk3/Dialog.html"
-    doc: 2
-    test: 1
   - title: "AboutDialog"
+    type: widget
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
     doc: 1
-  - title: "ColorChooserDialog"
-    url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
+  - title: "Adjustment"
+    url: "/content-docs/reference/Gtk3/Adjustment.html"
     doc: 1
-  - title: "FileChooserDialog"
-    url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
-    doc: 2
-    test: 2
-  - title: "MessageDialog"
-    url: "/content-docs/reference/Gtk3/MessageDialog.html"
-    doc: 2
-    test: 2
-  - title: "ScrolledWindow"
-    url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
-    doc: 2
-    test: 2
-
-- bar_title: "Containers"
-  bar_menu:
+    test: 1
+  - title: "Application"
+    url: "/content-docs/reference/Gtk3/Application.html"
+    doc: 1
+  - title: "ApplicationWindow"
+    url: "/content-docs/reference/Gtk3/ApplicationWindow.html"
+    type: widget
+    doc: 1
   - title: "AspectFrame"
     url: '/content-docs/reference/Gtk3/AspectFrame.html'
+    type: widget
     doc: 3
     test: 1
+  - title: "Assistant"
+    url: "/content-docs/reference/Gtk3/Assistant.html"
+    type: widget
+    doc: 1
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
+    type: widget
     doc: 1
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
+    type: widget
     doc: 1
-  - title: 'Container'
-    url: '/content-docs/reference/Gtk3/Container.html'
-    doc: 1
-    test: 1
-  - title: "Frame"
-    url: '/content-docs/reference/Gtk3/Frame.html'
+  - title: "Border"
+    url: "/content-docs/reference/Gtk3/Border.html"
+    type: boxed
     doc: 3
-    test: 31
-  - title: "Grid"
-    url: '/content-docs/reference/Gtk3/Grid.html'
-    doc: 1
-    test: 1
-  - title: "MenuBar"
-    url: '/content-docs/reference/Gtk3/MenuBar.html'
-    doc: 1
-    test: 1
-  - title: "Paned"
-    url: "/content-docs/reference/Gtk3/Paned.html"
-    doc: 1
-    test: 1
-
-- bar_title: "Input Output"
-  bar_menu:
+    test: 11
+    testok: 1
+    tut: ''
+    ex: ''
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
+    type: widget
     doc: 1
     test: 1
-  - title: "CheckButton"
-    url: "/content-docs/reference/Gtk3/CheckButton.html"
+  - title: "Buildable"
+    url: "/content-docs/reference/Gtk3/Buildable.html"
+    type: interface
     doc: 1
     test: 1
-  - title: "ColorButton"
-    url: "/content-docs/reference/Gtk3/ColorButton.html"
-    doc: 1
-  - title: "RadioButton"
-    url: "/content-docs/reference/Gtk3/RadioButton.html"
-    doc: 1
-    test: 1
-  - title: "ToggleButton"
-    url: "/content-docs/reference/Gtk3/ToggleButton.html"
-    doc: 1
-    test: 1
-  - title: "Switch"
-    url: "/content-docs/reference/Gtk3/Switch.html"
-    doc: 1
-    test: 1
-
-  - title: '-'
-
-  - title: "ComboBox"
-    url: "/content-docs/reference/Gtk3/ComboBox.html"
-    doc: 1
-    test: 1
-  - title: "ComboBoxText"
-    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
-    doc: 1
-    test: 1
-
-  - title: '-'
-
-  - title: "Entry"
-    url: "/content-docs/reference/Gtk3/Entry.html"
-    doc: 1
-    test: 1
-  - title: "SearchEntry"
-    url: "/content-docs/reference/Gtk3/SearchEntry.html"
-    doc: 1
-    test: 1
-
-  - title: "TextView"
-    url: "/content-docs/reference/Gtk3/TextView.html"
-    doc: 1
-    test: 1
-
-  - title: '-'
-
-  - title: "Scale"
-    url: "/content-docs/reference/Gtk3/Scale.html"
-    doc: 1
-    test: 1
-
-- bar_title: "Display"
-  bar_menu:
-  - title: "Image"
-    url: "/content-docs/reference/Gtk3/Image.html"
-    doc: 1
-    test: 1
-  - title: "Label"
-    url: "/content-docs/reference/Gtk3/Label.html"
-    doc: 1
-    test: 1
-  - title: "LevelBar"
-    url: "/content-docs/reference/Gtk3/LevelBar.html"
-    doc: 1
-  - title: "PlacesSidebar"
-    url: "/content-docs/reference/Gtk3/PlacesSidebar.html"
+  - title: "Builder"
+    url: "/content-docs/reference/Gtk3/Builder.html"
     doc: 3
     test: 1
-  - title: "ProgressBar"
-    url: "/content-docs/reference/Gtk3/ProgressBar.html"
-    doc: 3
-    test: 1
-  - title: "Separator"
-    url: "/content-docs/reference/Gtk3/Separator.html"
-    doc: 3
-    test: 1
-  - title: "Spinner"
-    url: "/content-docs/reference/Gtk3/Spinner.html"
-    doc: 3
-    test: 1
-
-  - title: "-"
-
-  - title: "ColorChooserWidget"
-    url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
-    doc: 1
-    test: 1
-
-  - title: "-"
-
-  - title: "Notebook"
-    url: '/content-docs/reference/Gtk3/Notebook.html'
-    doc: 1
-    test: 1
-  - title: "Stack"
-    url: '/content-docs/reference/Gtk3/Stack.html'
-    doc: 1
-    test: 1
-  - title: "StackSidebar"
-    url: '/content-docs/reference/Gtk3/StackSidebar.html'
-    doc: 1
-    test: 1
-  - title: "StackSwitcher"
-    url: '/content-docs/reference/Gtk3/StackSwitcher.html'
-    doc: 1
-    test: 1
-
-
-- bar_title: "Lists"
-  bar_menu:
-  - title: "ListBox"
-    url: '/content-docs/reference/Gtk3/ListBox.html'
-    doc: 1
-    test: 1
-  - title: "ListBoxRow"
-    url: '/content-docs/reference/Gtk3/ListBoxRow.html'
-    doc: 1
-    test: 1
-
-  - title: '-'
-
-  - title: "TreeIter"
-    url: '/content-docs/reference/Gtk3/TreeIter.html'
-    doc: 1
-    test: 31
-  - title: "TreeModel"
-    url: '/content-docs/reference/Gtk3/TreeModel.html'
-    doc: 1
-    test: 31
-  - title: "TreePath"
-    url: '/content-docs/reference/Gtk3/TreePath.html'
-    doc: 1
-    test: 31
-  - title: "TreeView"
-    url: '/content-docs/reference/Gtk3/TreeView.html'
-    doc: 1
-    test: 1
-  - title: "TreeViewColumn"
-    url: '/content-docs/reference/Gtk3/TreeViewColumn.html'
-    doc: 3
-    test: 31
-  - title: "TreeRowReference"
-    url: '/content-docs/reference/Gtk3/TreeRowReference.html'
-    doc: 3
-    test: 31
-  - title: "TreeSelection"
-    url: '/content-docs/reference/Gtk3/TreeSelection.html'
-    doc: 1
-    test: 1
-
-  - title: '-'
-
-  - title: "ListStore"
-    url: '/content-docs/reference/Gtk3/ListStore.html'
-    doc: 1
-    test: 1
-  - title: "TreeStore"
-    url: '/content-docs/reference/Gtk3/TreeStore.html'
-    doc: 1
-    test: 1
-
-  - title: '-'
-
+    tut: ''
+    ex: ''
   - title: "CellRenderer"
     url: '/content-docs/reference/Gtk3/CellRenderer.html'
     doc: 1
@@ -294,51 +97,265 @@
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
     doc: 1
     test: 1
-
-- bar_title: "Menu Classes"
-  bar_menu:
+  - title: "CheckButton"
+    url: "/content-docs/reference/Gtk3/CheckButton.html"
+    type: widget
+    doc: 1
+    test: 1
+  - title: "ColorButton"
+    url: "/content-docs/reference/Gtk3/ColorButton.html"
+    type: widget
+    doc: 1
+  - title: "ColorChooser"
+    url: "/content-docs/reference/Gtk3/ColorChooser.html"
+    type: interface
+    doc: 3
+    test: 2
+  - title: "ColorChooserDialog"
+    url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
+    type: widget
+    doc: 1
+  - title: "ColorChooserWidget"
+    url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
+    doc: 1
+    test: 1
+    type: widget
+  - title: "ComboBox"
+    url: "/content-docs/reference/Gtk3/ComboBox.html"
+    doc: 1
+    test: 1
+    type: widget
+  - title: "ComboBoxText"
+    url: "/content-docs/reference/Gtk3/ComboBoxText.html"
+    doc: 1
+    type: widget
+    test: 1
+  - title: 'Container'
+    url: '/content-docs/reference/Gtk3/Container.html'
+    type: widget
+    doc: 1
+    test: 1
+  - title: "CssProvider"
+    url: "/content-docs/reference/Gtk3/CssProvider.html"
+    doc: 1
+    test: 1
+  - title: "Dialog"
+    url: "/content-docs/reference/Gtk3/Dialog.html"
+    type: widget
+    doc: 2
+    test: 1
+  - title: "Entry"
+    url: "/content-docs/reference/Gtk3/Entry.html"
+    type: widget
+    doc: 1
+    test: 1
+  - title: "Enums"
+    type: standalone
+    url: "/content-docs/reference/Gtk3/Enums.html"
+    doc: 1
+    test: 1
+  - title: "FileChooser"
+    url: "/content-docs/reference/Gtk3/FileChooser.html"
+    type: interface
+    doc: 0
+  - title: "FileChooserDialog"
+    url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
+    type: widget
+    doc: 2
+    test: 2
+  - title: "FileFilter"
+    url: "/content-docs/reference/Gtk3/FileFilter.html"
+    doc: 1
+    test: 1
+  - title: "Frame"
+    url: '/content-docs/reference/Gtk3/Frame.html'
+    type: widget
+    doc: 3
+    test: 31
+  - title: "Grid"
+    type: widget
+    url: '/content-docs/reference/Gtk3/Grid.html'
+    doc: 1
+    test: 1
+  - title: "Image"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Image.html"
+    doc: 1
+    test: 1
+  - title: "Label"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Label.html"
+    doc: 1
+    test: 1
+  - title: "LevelBar"
+    type: widget
+    url: "/content-docs/reference/Gtk3/LevelBar.html"
+    doc: 1
+  - title: "ListBox"
+    type: widget
+    url: '/content-docs/reference/Gtk3/ListBox.html'
+    doc: 1
+    test: 1
+  - title: "ListBoxRow"
+    type: widget
+    url: '/content-docs/reference/Gtk3/ListBoxRow.html'
+    doc: 1
+    test: 1
+  - title: "ListStore"
+    url: '/content-docs/reference/Gtk3/ListStore.html'
+    doc: 1
+    test: 1
+  - title: "Main"
+    type: standalone
+    url: "/content-docs/reference/Gtk3/Main.html"
+    doc: 1
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
+    type: widget
+    doc: 1
+    test: 1
+  - title: "MenuBar"
+    url: '/content-docs/reference/Gtk3/MenuBar.html'
+    type: widget
     doc: 1
     test: 1
   - title: "MenuButton"
+    type: widget
     url: '/content-docs/reference/Gtk3/MenuButton.html'
     doc: 1
   - title: "MenuItem"
+    type: widget
     url: "/content-docs/reference/Gtk3/MenuItem.html"
     doc: 1
     test: 1
   - title: "MenuShell"
+    type: widget
     url: '/content-docs/reference/Gtk3/MenuShell.html'
     doc: 1
     test: 1
+  - title: "MessageDialog"
+    type: widget
+    url: "/content-docs/reference/Gtk3/MessageDialog.html"
+    doc: 2
+    test: 2
+  - title: "Misc"
+    type: widget
+#    url: "/content-docs/reference/Gtk3/Misc.html"
+    url: "/content-docs/nyi-default.html"
+    doc: 0
+    test: 0
+  - title: "Notebook"
+    type: widget
+    url: '/content-docs/reference/Gtk3/Notebook.html'
+    doc: 1
+    test: 1
+  - title: "Paned"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Paned.html"
+    doc: 1
+    test: 1
+  - title: "Orientable"
+    url: "/content-docs/reference/Gtk3/Orientable.html"
+    type: interface
+    doc: 2
+    test: 2
+  - title: "PlacesSidebar"
+    type: widget
+    url: "/content-docs/reference/Gtk3/PlacesSidebar.html"
+    doc: 3
+    test: 1
   - title: "Popover"
+    type: widget
     url: '/content-docs/reference/Gtk3/Popover.html'
     doc: 1
     test: 1
   - title: "PopoverMenu"
+    type: widget
     url: '/content-docs/reference/Gtk3/PopoverMenu.html'
     doc: 1
     test: 1
+  - title: "ProgressBar"
+    type: widget
+    url: "/content-docs/reference/Gtk3/ProgressBar.html"
+    doc: 3
+    test: 1
+  - title: "Range"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Range.html"
+    doc: 1
+    test: 1
+  - title: "RadioButton"
+    type: widget
+    url: "/content-docs/reference/Gtk3/RadioButton.html"
+    doc: 1
+    test: 1
   - title: "RecentChooserMenu"
+    type: widget
     url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
     doc: 1
     test: 1
-
-- bar_title: "Toolbar Classes"
-  bar_menu:
-  - title: "ToolButton"
-    url: '/content-docs/reference/Gtk3/ToolButton.html'
+  - title: "Scale"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Scale.html"
     doc: 1
     test: 1
-  - title: "ToolItem"
-    url: '/content-docs/reference/Gtk3/ToolItem.html'
+  - title: "ScrolledWindow"
+    type: widget
+    url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
+    doc: 2
+    test: 2
+  - title: "SearchEntry"
+    type: widget
+    url: "/content-docs/reference/Gtk3/SearchEntry.html"
     doc: 1
     test: 1
-
-- bar_title: "Text"
-  bar_menu:
+  - title: "Separator"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Separator.html"
+    doc: 3
+    test: 1
+  - title: "Spinner"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Spinner.html"
+    doc: 3
+    test: 1
+  - title: "Stack"
+    type: widget
+    url: '/content-docs/reference/Gtk3/Stack.html'
+    doc: 1
+    test: 1
+  - title: "StackSidebar"
+    type: widget
+    url: '/content-docs/reference/Gtk3/StackSidebar.html'
+    doc: 1
+    test: 1
+  - title: "StackSwitcher"
+    type: widget
+    url: '/content-docs/reference/Gtk3/StackSwitcher.html'
+    doc: 1
+    test: 1
+  - title: "StyleContext"
+    type: widget
+    url: "/content-docs/reference/Gtk3/StyleContext.html"
+    doc: 1
+    test: 1
+    tut: ''
+    ex: ''
+  - title: "StyleProvider"
+    type: widget
+    url: "/content-docs/reference/Gtk3/StyleProvider.html"
+    type: interface
+    doc: 1
+    test: 0
+    tut: ''
+    ex: ''
+  - title: "Switch"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Switch.html"
+    doc: 1
+    test: 1
   - title: "TextBuffer"
+    type: object
     url: "/content-docs/reference/Gtk3/TextBuffer.html"
     doc: 1
     test: 1
@@ -354,107 +371,81 @@
     url: '/content-docs/reference/Gtk3/TextTagTable.html'
     doc: 1
     test: 1
-
-- bar_title: "Style Classes"
-  bar_menu:
-  - title: "CssProvider"
-    url: "/content-docs/reference/Gtk3/CssProvider.html"
+  - title: "TextView"
+    type: widget
+    url: "/content-docs/reference/Gtk3/TextView.html"
     doc: 1
     test: 1
-  - title: "StyleContext"
-    url: "/content-docs/reference/Gtk3/StyleContext.html"
+  - title: "ToggleButton"
+    type: widget
+    url: "/content-docs/reference/Gtk3/ToggleButton.html"
     doc: 1
     test: 1
-    tut: ''
-    ex: ''
-
-- bar_title: "Interface Classes"
-  bar_menu:
-  - title: "Buildable"
-    url: "/content-docs/reference/Gtk3/Buildable.html"
+  - title: "ToolButton"
+    type: widget
+    url: '/content-docs/reference/Gtk3/ToolButton.html'
     doc: 1
     test: 1
-  - title: "ColorChooser"
-    url: "/content-docs/reference/Gtk3/ColorChooser.html"
+  - title: "ToolItem"
+    type: widget
+    url: '/content-docs/reference/Gtk3/ToolItem.html'
+    doc: 1
+    test: 1
+  - title: "TreeIter"
+    url: '/content-docs/reference/Gtk3/TreeIter.html'
+    type: boxed
+    doc: 1
+    test: 31
+  - title: "TreeModel"
+    type: interface
+    url: '/content-docs/reference/Gtk3/TreeModel.html'
+    doc: 1
+    test: 31
+  - title: "TreePath"
+    type: boxed
+    url: '/content-docs/reference/Gtk3/TreePath.html'
+    doc: 1
+    test: 31
+  - title: "TreeView"
+    type: widget
+    url: '/content-docs/reference/Gtk3/TreeView.html'
+    doc: 1
+    test: 1
+  - title: "TreeViewColumn"
+    url: '/content-docs/reference/Gtk3/TreeViewColumn.html'
     doc: 3
-    test: 2
-  - title: "FileChooser"
-    url: "/content-docs/reference/Gtk3/FileChooser.html"
-    doc: 0
-  - title: "Orientable"
-    url: "/content-docs/reference/Gtk3/Orientable.html"
-    doc: 2
-    test: 2
-  - title: "StyleProvider"
-    url: "/content-docs/reference/Gtk3/StyleProvider.html"
-    doc: 1
-    test: 0
-    tut: ''
-    ex: ''
-
-- bar_title: "Application Control"
-  bar_menu:
-  - title: "Assitant"
-    url: "/content-docs/reference/Gtk3/Assitant.html"
-  - title: "Application"
-    url: "/content-docs/reference/Gtk3/Application.html"
-  - title: "ApplicationWindow"
-    url: "/content-docs/reference/Gtk3/ApplicationWindow.html"
-#settings
-#resources
-
-- bar_title: "Miscelleneous"
-  bar_menu:
-  - title: "Adjustment"
-    url: "/content-docs/reference/Gtk3/Adjustment.html"
-    doc: 1
-    test: 1
-  - title: "Border"
-    url: "/content-docs/reference/Gtk3/Border.html"
+    test: 31
+  - title: "TreeRowReference"
+    type: boxed
+    url: '/content-docs/reference/Gtk3/TreeRowReference.html'
     doc: 3
-    test: 11
-    testok: 1
-    tut: ''
-    ex: ''
-  - title: "Builder"
-    url: "/content-docs/reference/Gtk3/Builder.html"
-    doc: 3
-    test: 1
-    tut: ''
-    ex: ''
-  - title: "Enums"
-    url: "/content-docs/reference/Gtk3/Enums.html"
+    test: 31
+  - title: "TreeSelection"
+    url: '/content-docs/reference/Gtk3/TreeSelection.html'
     doc: 1
     test: 1
-  - title: "FileFilter"
-    url: "/content-docs/reference/Gtk3/FileFilter.html"
+  - title: "TreeStore"
+    url: '/content-docs/reference/Gtk3/TreeStore.html'
     doc: 1
     test: 1
-  - title: "Main"
-    url: "/content-docs/reference/Gtk3/Main.html"
-    doc: 1
-  - title: "Misc"
-    url: "/content-docs/reference/Gtk3/Misc.html"
-    doc: 0
-    test: 0
-  - title: "Range"
-    url: "/content-docs/reference/Gtk3/Range.html"
-    doc: 1
-    test: 1
-
-  - title: "-"
-
   - title: "Widget"
     url: '/content-docs/reference/Gtk3/Widget.html'
+    type: widget
     doc: 1
     test: 1
     tut: ''
     ex: ''
   - title: "WidgetPath"
+    type: boxed
     url: '/content-docs/reference/Gtk3/WidgetPath.html'
     doc: 1
     test: 1
     tut: ''
     ex: ''
-
-  - title: "-"
+  - title: "Window"
+    type: widget
+    url: '/content-docs/reference/Gtk3/Window.html'
+    doc: 1
+    test: 2
+    tut: ''
+    ex: '/content-docs/examples/toplevel/Window.html'

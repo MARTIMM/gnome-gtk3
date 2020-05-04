@@ -141,67 +141,124 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Each user class inheriting a Raku G*::object must have a new() to create the native object. this must be repeated for other client use classes because only the leaf new() is run!
 
-* [ ] Add plantuml diagrams to documents. Not (yet?) possible on github pages.
+* [ ] Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate png and use those.
 
 #### Site changes.
 * [x] Reference pages have two sections shown per module. One for a table of contents and one for generated html from the pod doc of the module. Turn this into one display. Also the header of a section should be clickable to return to the table of contents.
 
 * [ ] In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
-* [ ] The sidebar for Gtk references is messy. Should be ordered alphabetically perhaps.
+* [x] The sidebar for Gtk references is messy.
+  * [x] Should be ordered alphabetically.
+  * [x] Coloring should make clear if class is widget, interface, boxed or miscellenous.
+  * [x] Gnome::Gtk3 Reference main doc must be modified
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
-* [x] Jekyll shows errors which must be removed. Site content looks good however.
+* [ ] Jekyll shows errors which must be removed. Site content looks good however.
 
-* Add more tutorials
+* [ ] Tutorials
   * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
 
-  Change 'Getting Started' into a shorter page
-  * Top level widgets and containers
-    * [ ] (Scrolled)Window, Frame
-      * [ ] size of window
-      * [ ] window icon
-      * [ ] destroy signal
-      * [ ] border
+  * [x] Getting started
+    * [x] Empty window
+    * [x] Window with a button
+    * [x] Show a mistake of two buttons in window
+    * [x] Buttons in a grid
+
+  * [x] Intermezzo: method names
+    * [x] Method names of the native subroutines
+
+  * [ ] Window details
+    * [ ] Window decoration, title and icon
+    * [ ] Window size
+    * [ ] Centering with position
+    * [ ] Destroy signal
+    * [ ] Some Container methods
+    * [ ] Some Widget methods
+
+  * [ ] Intermezzo: search of native subroutines
+    * [ ] Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
+
+    * [ ] (Scrolled)Window
     * [ ] Dialogs
+
+    * [ ] Frame
     * [ ] Grid
 
-  * Controls
-    * [ ] Buttons
-    * [ ] Menus
-    * [ ] Toolbar
-    * [ ] ComboxBox
+  * [ ] Intermezzo: common names and init
+    * [ ] Common method names used in classes
+    * [ ] Initialization of classes
 
-  * Display
-    * [ ] Labels
-    * [ ] LevelBar
+  * [ ] Widgets
+    * Controls
+      * [ ] Buttons
+      * [ ] Menus
+      * [ ] Toolbars
+      * [ ] ComboxBox
 
-  * Lists and Edit
-    * [ ] Entry
-    * [ ] ListBox
-    * [ ] TreeView
+    * Display
+      * [ ] Labels
+      * [ ] LevelBar
+
+    * Lists and Edit
+      * [ ] Entry
+      * [ ] ListBox
+      * [ ] TreeView
+
+  * [ ] Intermezzo: widget life cycle
+    * [ ] Widget creation. Reference state, weak references
+    * [ ] Widget (un)referencing
+    * [ ] Destroy
+    * [ ] Finalization
+    * [ ] `.clear-object()`
 
   * [ ] Signals
   * [ ] Threads
+    * Main
+      * [ ] Start loop
+      * [ ] Stop loop
+      * [ ] Nest loops
+      * [ ] Loop Context
+      * [ ] Process events
   * [ ] Builder
     * [ ] Glade
     * [ ] Gui XML description
     * [ ] Menu XML description
-  * [ ] Inheriting
   * [ ] Styling
   * [ ] Resources
+  * [ ] Inheriting a class
+
+  * [ ] Intermezzo: tell something about
+    * [ ] Object
+    * [ ] InitiallyUnowned
+    * [ ] Boxed: https://en.wikipedia.org/wiki/GObject
+      Some data structures that are too simple to be made full-fledged class types (with all the overhead incurred) may still need to be registered with the type system. For example, we might have a class to which we want to add a background-color property, whose values should be instances of a structure that looks like struct color { int r, g, b; }. To avoid having to subclass GObject, we can create a boxed type to represent this structure, and provide functions for copying and freeing. GObject ships with a handful of boxed types wrapping simple GLib data types. Another use for boxed types is as a way to wrap foreign objects in a tagged container that the type system can identify and will know how to copy and free.
+    * [ ] Interfaces: https://en.wikipedia.org/wiki/GObject
+      Most types in a GObject application will be classes — in the normal object-oriented sense of the word — derived directly or indirectly from the root class, GObject. There are also interfaces, which, unlike classic Java-style interfaces, can contain implemented methods. GObject interfaces can thus be described as mixins.
+
+  * [ ] Application
+    * [ ] Phases
+    * [ ] Signals
+    * [ ] Multiple program entities or not
+
+  * [ ] Drag and drop
+  * [ ] Drawing
+  * [ ] Font and other text handling
+  * [ ] D-Bus
 
   * Debugging
+    * Testing your program with Gnome::T.
+    * `Gnome::N::debug()`.
     * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
       * [ ] G-DEBUG all
       * [ ] G_MESSAGES_DEBUG all
       * [ ] G_SLICE debug-blocks
-    * `Gnome::N::debug()`.
+    * CATCH in callback handler to intercept an Exception when registering a callback using `g_signal_connect_object()` instead of `.register-signal()`.
     * Do's and Don'ts.
       * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
 
-* Add more examples
+* Code examples
   * [ ] Configuration editor
   * [ ] Simple calculator
 
@@ -212,13 +269,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 # Checklist
 
-## Head keys
-### Main documentation
-* dt: title, description, see also
-* db: inheritance, synopsis, example
-* bt: typos
-
-### Subs and methods documentation
+### Main documentation, subs and methods documentation
 Legend for head of table
 
 * T: type column
@@ -227,66 +278,78 @@ Legend for head of table
   * b: boxed type
   * i: interface type
   * s: standalone type
+  * N: native class
+  * L: native library connection
   * not filled means standard class
-* s\$: Add \$ to variables
-* sb: Use True/False when boolean input
-* sv: Remove Since version text
-* no: Check if :native-object is used and documented in BUILDs
-* to: Check typos
-* ex: Add examples
-* ct: Complete all tests
-* cm: Cleanup subs/methods documentation, remove unusable subs and native new() doc, add =head3 to new() for each multi.
-* cp: Cleanup properties documentation
-* cs: Cleanup signals documentation
 
+* md: Module documentation
+  * Title, description, see also, UML, synopsis
+  * Inheritance when supported, example use
+  * Remove interface information
+* bd: Build documentation
+  * Use test of `is-valid()` and ease of using `.set-native-object()`.
+  * Remove check for wrong / unavailable options if inheritable.
+  * Add =head3 to each `.new()` option.
+  * Remove doc for :native-object or :build-id except where it is defined
+* sd: Subroutine documentation
+  * Add examples to subs.
+  * Inhibit unusable subroutines and doc.
+  * Remove native `.gtk_..._new_...()` documentation.
+  * Add \$ to variables and use `True`/`False` when boolean input
+  * Remove Since version text
+* cp: Cleanup documentation
+  * Subroutines and Methods
+  * Properties
+  * Signals
+  * Types
+* ct: Testing
+  * Complete `BUILD()` tests.
+  * Complete subroutine tests
 
+Entries can be
+* x: Done or first letter of operation when not all applies
+* #: No info
+* Empty: Not done
 
-| Module/Class            |T |s$|sb|sv|no|to|ex|ct|cm|cp|cs|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::N**              |p | #| #| #| #| #| #| #| #| #| #|
-N-GObject                 |  |  |  |  |  |  |  |  |  |  |  |
-NativeLib                 |
-TopLevelClassSupport      |t|
-X                         |
-**Gnome::Glib**           |p|#|#|#|#|#|#|#|#|#|#|
-**Gnome::GObject**        |p|#|#|#|#|#|#|#|#|#|#|
+| Module/Class            |T |md|bd|sd|cp|ct|
+|-------------------------|--|--|--|--|--|--|
+**Gnome::N**              |p | #| #| #| #| #|
+N-GObject                 |N |  |  |  |  |  |
+NativeLib                 |L |  |  |  |  |  |
+TopLevelClassSupport      |t |  |  |  |  |  |
+X                         |  |  |  |  |  |  |
+**Gnome::Glib**           |p | #| #| #| #| #|
+**Gnome::GObject**        |p | #| #| #| #| #|
 Boxed                     |  |
-Enums                     |s|
+Enums                     |s |
 InitiallyUnowned          |
 Object                    |
-Signal                    |s|
-Type                      |s|
-value                     |b|
-**Gnome::Atk**            |p|#|#|#|#|#|#|#|#|#|#|
-Object                    ||
-**Gnome::Gio**            |p|#|#|#|#|#|#|#|#|#|#|
-Application               ||
-EmblemedIcon||
-MountOperation||
-**Gnome::Gdk3**           |p|#|#|#|#|#|#|#|#|#|#|
-**Gnome::Gtk3**           |p|#|#|#|#|#|#|#|#|#|#|
-AboutDialog|
-AccelGroup|
-AccelLabel|
-AccelMap|
-Accessible|
-Actionable|i|
-ActionBar|
-Adjustment|
-AppChooserButton|
-AppChooser|i|
-AppChooserWidget|
-Application|
-ApplicationWindow|
-AspectFrame|
-Assistant|
-Bin|
-Border|b|
-Box|
-Buildable|i|
-Builder|
-Button|
-ButtonBox|
+Signal                    |s |
+Type                      |s |
+value                     |b |
+**Gnome::Gtk3**           |p | #| #| #| #| #|
+AboutDialog               |  | x| x|  |  |  |
+AccelGroup                |
+AccelLabel                |
+AccelMap                  |
+Accessible                |
+Actionable                |i |
+ActionBar                 |
+Adjustment                |
+AppChooserButton          |
+AppChooser                |i |
+AppChooserWidget          |
+Application               |
+ApplicationWindow         |
+AspectFrame               |
+Assistant                 |
+Bin                       |
+Border                    |b |
+Box                       |
+Buildable                 |i |
+Builder                   |
+Button                    |  | x| x|  |  |  |
+ButtonBox                 |
 Calendar|
 CellArea|
 CellAreaBox|
@@ -479,3 +542,10 @@ Widget|
 WidgetPath|b|
 Window|
 WindowGroup|
+**Gnome::Gdk3**           |p | #| #| #| #| #|
+**Gnome::Atk**            |p | #| #| #| #| #|
+Object                    |  |
+**Gnome::Gio**            |p | #| #| #| #| #|
+Application               |  |
+EmblemedIcon||
+MountOperation||

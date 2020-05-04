@@ -1,5 +1,5 @@
 ---
-title: References to the package modules
+title: References to the Gdk3 package modules
 nav_menu: references-nav
 sidebar_menu: references-gdk3-sidebar
 layout: sidebar

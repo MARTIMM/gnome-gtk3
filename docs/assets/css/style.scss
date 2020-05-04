@@ -2,11 +2,19 @@
 ---
 @import "jekyll-theme-tactile";
 
-$menu-bgcolor: #9696bf;
-$menu-bgcolor-active: #e6e6ef;
-$menu-border-color-active: #777;
-$menu-border-color: #ddd;
-$menu-border-width: 2px;
+$menu-bgcolor:              #9696bf;
+$menu-bgcolor-active:       #e6e6ef;
+$menu-border-color-active:  #777;
+$menu-border-color:         #ddd;
+$menu-border-width:         2px;
+
+// default link color       #d5000d
+$menu-color-toplevel:       #e58080;
+$menu-color-object:         #a04500;
+$menu-color-widget:         #f54045;
+$menu-color-interface:      #bf00bf;
+$menu-color-boxed:          #00afaf;
+$menu-color-standalone:     #80bf00;
 
 $code-color: #46465f;
 
@@ -16,7 +24,7 @@ $border-width: 4px;
 $menu-text-font-size: 15px;
 $sbar-text-font-size: 13px;
 $sbarhdr-text-font-size: 15px;
-$text-font-size: 15px;
+$text-font-size: 16px;
 $code-font-size: 12px;
 
 body {
@@ -98,11 +106,13 @@ header hr {
 h1 {
   font-size: 23px;
   font-weight: bold;
+  margin-bottom: 8px;
 }
 
 h2 {
   font-size: 20px;
   font-weight: bold;
+  margin-top: 4px;
   margin-bottom: 8px;
   color: #d53030;
 }
@@ -165,12 +175,12 @@ pre code {
   background-color: $code-color;
   //line-height: 0.9;
   margin: 0;
-  font-size: $code-font-size;
 }
 
 code {
   background-color: transparent;
   color: #8e280e;
+  font-size: $code-font-size;
 }
 
 div.release-notes {
@@ -291,9 +301,46 @@ ol li {
         float: right;
       }
     }
-
+/*
     li.active {
       background-color: $menu-bgcolor-active;
+    }
+*/
+
+    li.toplevel a {
+      font-weight: bolder;
+      color: $menu-color-toplevel;
+      line-height: 1.1;
+    }
+
+    li.interface a {
+      font-weight: bolder;
+      color: $menu-color-interface;
+      line-height: 1.1;
+    }
+
+    li.widget a {
+      font-weight: bolder;
+      color: $menu-color-widget;
+      line-height: 1.1;
+    }
+
+    li.boxed a {
+      font-weight: bolder;
+      color: $menu-color-boxed;
+      line-height: 1.1;
+    }
+
+    li.object a {
+      font-weight: bolder;
+      color: $menu-color-object;
+      line-height: 1.1;
+    }
+
+    li.standalone a {
+      font-weight: bolder;
+      color: $menu-color-standalone;
+      line-height: 1.1;
     }
   }
 }

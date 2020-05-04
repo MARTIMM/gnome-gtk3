@@ -2,8 +2,12 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::Window;
+#use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Popover;
+ok 1, 'loads ok';
+
+done-testing;
+=finish
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -27,6 +31,7 @@ my Gnome::Gtk3::Window $w .= new(:title<Test-Popup>);
 my Gnome::Gtk3::Popover $p;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
+  #$w.container-add($p);
   $p .= new(:relative-to($w));
   isa-ok $p, Gnome::Gtk3::Popover, '.new(:relative-to)';
 }

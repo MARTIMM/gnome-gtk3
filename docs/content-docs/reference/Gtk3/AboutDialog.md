@@ -18,7 +18,7 @@ To make constructing a **Gnome::Gtk3::AboutDialog** as convenient as possible, y
 
 Note that GTK+ sets a default title of `_("About %s")` on the dialog window (where \%s is replaced by the name of the application, but in order to ensure proper translation of the title, applications should set the title property explicitly when constructing a **Gnome::Gtk3::AboutDialog**.
 
-It is also possible to show a **Gnome::Gtk3::AboutDialog** like any other **Gnome::Gtk3::Dialog**, e.g. using gtk_dialog_run(). In this case, you might need to know that the “Close” button returns the `GTK_RESPONSE_CANCEL` response id.
+It is also possible to show a **Gnome::Gtk3::AboutDialog** like any other **Gnome::Gtk3::Dialog**, e.g. `using gtk_dialog_run()`. In this case, you might need to know that the “Close” button returns the `GTK_RESPONSE_CANCEL` response id.
 
 Synopsis
 ========
@@ -28,6 +28,11 @@ Declaration
 
     unit class Gnome::Gtk3::AboutDialog;
     also is Gnome::Gtk3::Dialog;
+
+Uml Diagram
+-----------
+
+![](plantuml/dialogs.png)
 
 Inheriting this class
 ---------------------
@@ -70,8 +75,6 @@ enum GtkLicense
 
 The type of license for an application. This enumeration can be expanded at later date.
 
-Since: 3.0
-
   * GTK_LICENSE_UNKNOWN: No license specified
 
   * GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
@@ -108,30 +111,11 @@ Methods
 new
 ---
 
+### new()
+
 Create a new plain object.
 
     multi method new ( )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] about_dialog_new
------------------------
-
-Creates a new **Gnome::Gtk3::AboutDialog**.
-
-Returns: a newly created native AboutDialog object.
-
-Since: 2.6
-
-    method gtk_about_dialog_new ( --> N-GObject  )
-
-Returns N-GObject; a newly created native `GtkAboutDialog`
 
 [[gtk_] about_dialog_] get_program_name
 ---------------------------------------
@@ -140,16 +124,12 @@ Returns the program name displayed in the about dialog.
 
 Returns: The program name. The string is owned by the about dialog and must not be modified.
 
-Since: 2.12
-
     method gtk_about_dialog_get_program_name ( --> Str  )
 
 [[gtk_] about_dialog_] set_program_name
 ---------------------------------------
 
 Sets the name to display in the about dialog. If this is not set, it defaults to `g_get_application_name()`.
-
-Since: 2.12
 
     method gtk_about_dialog_set_program_name ( Str $name )
 
@@ -162,16 +142,12 @@ Returns the version string.
 
 Returns: The version string. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_version ( --> Str  )
 
 [[gtk_] about_dialog_] set_version
 ----------------------------------
 
 Sets the version string to display in the about dialog.
-
-Since: 2.6
 
     method gtk_about_dialog_set_version ( Str $version )
 
@@ -184,16 +160,12 @@ Returns the copyright string.
 
 Returns: The copyright string. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_copyright ( --> Str  )
 
 [[gtk_] about_dialog_] set_copyright
 ------------------------------------
 
 Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
-
-Since: 2.6
 
     method gtk_about_dialog_set_copyright ( Str $copyright )
 
@@ -206,16 +178,12 @@ Returns the comments string.
 
 Returns: The comments. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_comments ( --> Str  )
 
 [[gtk_] about_dialog_] set_comments
 -----------------------------------
 
 Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
-
-Since: 2.6
 
     method gtk_about_dialog_set_comments ( Str $comments )
 
@@ -228,16 +196,12 @@ Returns the license information.
 
 Returns: The license information. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_license ( --> Str  )
 
 [[gtk_] about_dialog_] set_license
 ----------------------------------
 
 Sets the license information to be displayed in the secondary license dialog. If *license* is `Any`, the license button is hidden.
-
-Since: 2.6
 
     method gtk_about_dialog_set_license ( Str $license )
 
@@ -250,8 +214,6 @@ Sets the license of the application showing the *about* dialog from a list of kn
 
 This function overrides the license set using `gtk_about_dialog_set_license()`.
 
-Since: 3.0
-
     method gtk_about_dialog_set_license_type ( GtkLicense $license_type )
 
   * GtkLicense $license_type; the type of license
@@ -263,8 +225,6 @@ Retrieves the license set using `gtk_about_dialog_set_license_type()`
 
 Returns: a *Gnome::Gtk3::License* value
 
-Since: 3.0
-
     method gtk_about_dialog_get_license_type ( --> GtkLicense  )
 
 [[gtk_] about_dialog_] get_wrap_license
@@ -274,16 +234,12 @@ Returns whether the license text in *about* is automatically wrapped.
 
 Returns: `1` if the license text is wrapped
 
-Since: 2.8
-
     method gtk_about_dialog_get_wrap_license ( --> Int  )
 
 [[gtk_] about_dialog_] set_wrap_license
 ---------------------------------------
 
 Sets whether the license text in *about* is automatically wrapped.
-
-Since: 2.8
 
     method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
 
@@ -296,16 +252,12 @@ Returns the website URL.
 
 Returns: The website URL. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_website ( --> Str  )
 
 [[gtk_] about_dialog_] set_website
 ----------------------------------
 
 Sets the URL to use for the website link.
-
-Since: 2.6
 
     method gtk_about_dialog_set_website ( Str $website )
 
@@ -318,16 +270,12 @@ Returns the label used for the website link.
 
 Returns: The label used for the website link. The string is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_website_label ( --> Str  )
 
 [[gtk_] about_dialog_] set_website_label
 ----------------------------------------
 
 Sets the label to be used for the website link.
-
-Since: 2.6
 
     method gtk_about_dialog_set_website_label ( Str $website_label )
 
@@ -340,16 +288,12 @@ Returns the string which are displayed in the authors tab of the secondary credi
 
 Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the authors. The array is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_authors ( --> CArray[Str]  )
 
 [[gtk_] about_dialog_] set_authors
 ----------------------------------
 
 Sets the strings which are displayed in the authors tab of the secondary credits dialog.
-
-Since: 2.6
 
     method gtk_about_dialog_set_authors ( CArray[Str] $authors )
 
@@ -362,16 +306,12 @@ Returns the string which are displayed in the documenters tab of the secondary c
 
 Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the documenters. The array is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_documenters ( --> CArray[Str]  )
 
 [[gtk_] about_dialog_] set_documenters
 --------------------------------------
 
 Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
-
-Since: 2.6
 
     method gtk_about_dialog_set_documenters ( CArray[Str] $documenters )
 
@@ -384,16 +324,12 @@ Returns the string which are displayed in the artists tab of the secondary credi
 
 Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the artists. The array is owned by the about dialog and must not be modified.
 
-Since: 2.6
-
     method gtk_about_dialog_get_artists ( --> CArray[Str]  )
 
 [[gtk_] about_dialog_] set_artists
 ----------------------------------
 
 Sets the strings which are displayed in the artists tab of the secondary credits dialog.
-
-Since: 2.6
 
     method gtk_about_dialog_set_artists ( CArray[Str] $artists )
 
@@ -405,8 +341,6 @@ Since: 2.6
 Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
 Returns: The translator credits string. The string is owned by the about dialog and must not be modified.
-
-Since: 2.6
 
     method gtk_about_dialog_get_translator_credits ( --> Str  )
 
@@ -421,8 +355,6 @@ The intended use for this string is to display the translator of the language wh
 
 It is a good idea to use the customary msgid “translator-credits” for this purpose, since translators will already know the purpose of that msgid, and since *Gnome::Gtk3::AboutDialog* will detect if “translator-credits” is untranslated and hide the tab.
 
-Since: 2.6
-
     method gtk_about_dialog_set_translator_credits ( Str $translator_credits )
 
   * Str $translator_credits; (allow-none): the translator credits
@@ -434,16 +366,12 @@ Returns the pixbuf displayed as logo in the about dialog.
 
 Returns: (transfer none): the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
 
-Since: 2.6
-
     method gtk_about_dialog_get_logo ( --> N-GObject  )
 
 [[gtk_] about_dialog_] set_logo
 -------------------------------
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
-
-Since: 2.6
 
     method gtk_about_dialog_set_logo ( N-GObject $logo )
 
@@ -456,16 +384,12 @@ Returns the icon name displayed as logo in the about dialog.
 
 Returns: the icon name displayed as logo. The string is owned by the dialog. If you want to keep a reference to it, you have to call `g_strdup()` on it.
 
-Since: 2.6
-
     method gtk_about_dialog_get_logo_icon_name ( --> Str )
 
 [[gtk_] about_dialog_] set_logo_icon_name
 -----------------------------------------
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
-
-Since: 2.6
 
     method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
 
@@ -475,8 +399,6 @@ Since: 2.6
 -----------------------------------------
 
 Creates a new section in the Credits page.
-
-Since: 3.4
 
     method gtk_about_dialog_add_credit_section ( Str $section_name, CArray[Str] $people )
 
@@ -498,15 +420,11 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 
 The name of the program. If this is not set, it defaults to `g_get_application_name()`.
 
-Since: 2.12
-
 The **Gnome::GObject::Value** type of property *program-name* is `G_TYPE_STRING`.
 
 ### Program version
 
 The version of the program.
-
-Since: 2.6
 
 The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
 
@@ -514,23 +432,17 @@ The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
 
 Copyright information for the program.
 
-Since: 2.6
-
 The **Gnome::GObject::Value** type of property *copyright* is `G_TYPE_STRING`.
 
 ### Comments string
 
 Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
 
-Since: 2.6
-
 The **Gnome::GObject::Value** type of property *comments* is `G_TYPE_STRING`.
 
 ### License
 
 The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the "wrap-license" property is set to `1`; otherwise the text itself must contain the intended linebreaks. When setting this property to a non-`Any` value, the sig *license-type* property is set to `GTK_LICENSE_CUSTOM` as a side effect.
-
-Since: 2.6
 
 The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
 
@@ -546,8 +458,6 @@ If `GTK_LICENSE_CUSTOM` is used, the current contents of the sig *license* prope
 
 For any other *Gnome::Gtk3::License* value, the contents of the sig *license* property are also set by this property as a side effect.
 
-Since: 3.0
-
 Widget type: GTK_TYPE_LICENSE
 
 The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
@@ -556,15 +466,11 @@ The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
 
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
-Since: 2.6
-
 The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
 
 ### Website label
 
 The label for the link to the website of the program.
-
-Since: 2.6
 
 The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
 
@@ -572,15 +478,11 @@ The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING
 
 A named icon to use as the logo for the about box. This property overrides the sig *logo* property.
 
-Since: 2.6
-
 The **Gnome::GObject::Value** type of property *logo-icon-name* is `G_TYPE_STRING`.
 
 ### Wrap license
 
 Whether to wrap the text in the license dialog.
-
-Since: 2.8
 
 The **Gnome::GObject::Value** type of property *wrap-license* is `G_TYPE_BOOLEAN`.
 
@@ -600,23 +502,6 @@ The positional arguments of the signal handler are all obligatory as well as the
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
     $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-The register method is defined as;
-
-    my Bool $is-registered = $widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
-
-Where
-
-  * $handler-object; A Raku object holding the handler method =*self*
-
-  * $handler-name; The handler method =*mouse-event*
-
-  * $signal-name; The signal to connect to =*button-press-event*
-
-  * $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.
 
 Second method
 -------------

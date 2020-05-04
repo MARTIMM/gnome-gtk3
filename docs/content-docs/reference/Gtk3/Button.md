@@ -10,7 +10,7 @@ Description
 
 The **Gnome::Gtk3::Button** widget is generally used to trigger a callback function that is called when the button is pressed. The various signals and how to use them are outlined below.
 
-The **Gnome::Gtk3::Button** widget can hold any valid child widget. That is, it can hold almost any other standard **Gnome::Gtk3::Widget**. The most commonly used child is the **Gnome::Gtk3::Label**.
+The **Gnome::Gtk3::Button** widget can hold any valid child widget. That is, it can hold almost any other standard **Gnome::Gtk3::Widget**. The most commonly used child is the **Gnome::Gtk3::Label** and is the default.
 
 Css Nodes
 ---------
@@ -21,15 +21,6 @@ Other style classes that are commonly used with **Gnome::Gtk3::Button** include 
 
 Button-like widgets like **Gnome::Gtk3::ToggleButton**, **Gnome::Gtk3::MenuButton**, **Gnome::Gtk3::VolumeButton**, **Gnome::Gtk3::LockButton**, **Gnome::Gtk3::ColorButton**, **Gnome::Gtk3::FontButton** or **Gnome::Gtk3::FileChooserButton** use style classes such as .toggle, .popup, .scale, .lock, .color, .font, .file to differentiate themselves from a plain **Gnome::Gtk3::Button**.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Actionable
-
-  * Gnome::Gtk3::Activatable
-
 Synopsis
 ========
 
@@ -38,7 +29,28 @@ Declaration
 
     unit class Gnome::Gtk3::Button;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
+
+Uml Diagram ![](plantuml/buttons.png)
+-------------------------------------
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Button;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Button;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Button class process the options
+      self.bless( :GtkButton, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Example
 -------
@@ -51,48 +63,19 @@ Methods
 new
 ---
 
-Create a new plain object.
-
-    multi method new ( )
-
-Creates a new button object with a label
-
-    multi method new ( Str :$label! )
-
-Creates a new button object with a mnemonic
-
-    multi method new ( Str :$mnemonic! )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] button_new
------------------
+### new()
 
 Creates a new **Gnome::Gtk3::Button** widget. To add a child widget to the button, use `gtk_container_add()`.
 
-Returns: The newly created **Gnome::Gtk3::Button** widget.
+    multi method new ( )
 
-    method gtk_button_new ( --> N-GObject  )
-
-[[gtk_] button_] new_with_label
--------------------------------
+### new(:label)
 
 Creates a **Gnome::Gtk3::Button** widget with a **Gnome::Gtk3::Label** child containing the given text.
 
-Returns: The newly created **Gnome::Gtk3::Button** widget.
+    multi method new ( Str :$label! )
 
-    method gtk_button_new_with_label ( Str $label --> N-GObject  )
-
-  * Str $label; The text you want the **Gnome::Gtk3::Label** to hold.
-
-[[gtk_] button_] new_from_icon_name
------------------------------------
+### new(:icon-name)
 
 Creates a new button containing an icon from the current icon theme.
 
@@ -100,30 +83,15 @@ If the icon name isn’t known, a “broken image” icon will be displayed inst
 
 This function is a convenience wrapper around `gtk_button_new()` and `gtk_button_set_image()`.
 
-Returns: a new **Gnome::Gtk3::Button** displaying the themed icon
+You can use the *gtk3-icon-browser* tool to browse through currently installed icons.
 
-Since: 3.10
+    multi method new ( Str :$icon-name! )
 
-    method gtk_button_new_from_icon_name (
-      Str $icon_name,
-      GtkIconSize $size
-      --> N-GObject
-    )
-
-  * Str $icon_name; an icon name
-
-  * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
-
-[[gtk_] button_] new_with_mnemonic
-----------------------------------
+### new(:mnemonic)
 
 Creates a new **Gnome::Gtk3::Button** containing a label. If characters in *label* are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. Pressing Alt and that key activates the button.
 
-Returns: a new **Gnome::Gtk3::Button**
-
-    method gtk_button_new_with_mnemonic ( Str $label --> N-GObject  )
-
-  * Str $label; The text of the button, with an underscore in front of the mnemonic character
+    multi method new ( Str :$mnemonic! )
 
 [gtk_] button_clicked
 ---------------------
@@ -193,8 +161,6 @@ Returns: `1` if an embedded underline in the button label indicates the mnemonic
 
 Set the image of *button* to the given widget. The image will be displayed if the label text is `Any` or if sig **always-show-image** is `1`. You don’t have to call `gtk_widget_show()` on *image* yourself.
 
-Since: 2.6
-
     method gtk_button_set_image ( N-GObject $image )
 
   * N-GObject $image; a widget to set as the image for the button
@@ -206,16 +172,12 @@ Gets the widget that is currenty set as the image of *button*. This may have bee
 
 Returns: (nullable) (transfer none): a **Gnome::Gtk3::Widget** or `Any` in case there is no image
 
-Since: 2.6
-
     method gtk_button_get_image ( --> N-GObject  )
 
 [[gtk_] button_] set_image_position
 -----------------------------------
 
 Sets the position of the image relative to the text inside the button.
-
-Since: 2.10
 
     method gtk_button_set_image_position ( GtkPositionType $position )
 
@@ -228,8 +190,6 @@ Gets the position of the image relative to the text inside the button.
 
 Returns: the position
 
-Since: 2.10
-
     method gtk_button_get_image_position ( --> GtkPositionType  )
 
 [[gtk_] button_] set_always_show_image
@@ -238,8 +198,6 @@ Since: 2.10
 If `1`, the button will ignore the sig **gtk-button-images** setting and always show the image, if available.
 
 Use this property if the button would be useless or hard to use without the image.
-
-Since: 3.6
 
     method gtk_button_set_always_show_image ( Int $always_show )
 
@@ -252,8 +210,6 @@ Returns whether the button will ignore the sig **gtk-button-images** setting and
 
 Returns: `1` if the button will always show the image
 
-Since: 3.6
-
     method gtk_button_get_always_show_image ( --> Int  )
 
 [[gtk_] button_] get_event_window
@@ -262,8 +218,6 @@ Since: 3.6
 Returns the button’s event window if it is realized, `Any` otherwise. This function should be rarely needed.
 
 Returns: (transfer none): *button*’s event window.
-
-Since: 2.22
 
     method gtk_button_get_event_window ( --> N-GObject  )
 
@@ -283,23 +237,6 @@ The positional arguments of the signal handler are all obligatory as well as the
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
     $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-The register method is defined as;
-
-    my Bool $is-registered = $widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
-
-Where
-
-  * $handler-object; A Raku object holding the handler method =*self*
-
-  * $handler-name; The handler method =*mouse-event*
-
-  * $signal-name; The signal to connect to =*button-press-event*
-
-  * $user-option*; User options are given to the user unchanged as named arguments. The name 'widget' is reserved.
 
 Second method
 -------------
@@ -362,13 +299,13 @@ The **Gnome::GObject::Value** type of property *relief* is `G_TYPE_ENUM`.
 
 ### Image position
 
-The position of the image relative to the text inside the button. Since: 2.10 Widget type: GTK_TYPE_POSITION_TYPE
+The position of the image relative to the text inside the button. Widget type: GTK_TYPE_POSITION_TYPE
 
 The **Gnome::GObject::Value** type of property *image-position* is `G_TYPE_ENUM`.
 
 ### Always show image
 
-If `1`, the button will ignore the *gtk-button-images* setting and always show the image, if available. Use this property if the button would be useless or hard to use without the image. Since: 3.6
+If `1`, the button will ignore the *gtk-button-images* setting and always show the image, if available. Use this property if the button would be useless or hard to use without the image.
 
 The **Gnome::GObject::Value** type of property *always-show-image* is `G_TYPE_BOOLEAN`.
 
