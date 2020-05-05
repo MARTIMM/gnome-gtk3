@@ -11,9 +11,18 @@ We will dive a little deeper with what we can do with the Gnome::Gtk3::Window. W
 
 ## Changing icon in decoration
 
-Normally the window decoration would be something like the following;
-![window deco](images/window-deco1.png)
-You see in the upper left corner a default icon. This one is from an X11 window manager used on Fedora Linux. We are going to replace it with ![icon](images/icons8-invoice-100.png) using the following piece of code. The width and height is automatically scaled to its proper size.
+<p>
+<img src="images/window-deco1.png" width="108" style="float:left; margin-right:8px"/>
+Normally the window decoration would be something like the one you see in the upper left corner of an application. This one is a default icon from the Gtk ApplicationWindow class (very dark, almost invisible).
+</p>
+<br/>
+<p>
+<img src="images/icons8-invoice-100.png" width="108" style="float:left; margin-right:8px"/>
+We are going to replace it with this icon shown on the left using the following piece of code. The width and height is automatically scaled to its proper size. The icon can be found <a href="https://icons8.com" target="\_blank">here at icons8</a>.
+</p>
+<br/>
+<br/>
+<br/>
 
 {% highlight raku linenos %}
 use Gnome::Gtk3::Window;
@@ -37,13 +46,12 @@ We need an Error class from Glib and a Pixbuf class from Gdk3 [2,3]. Next the wi
 
 ![new icon](images/window-deco2.png)
 
+## Window sizing and resizing
 
+To set a size of the window at the start of the program one can use several methods. `$window.gtk-window-set-default-size()` sets an existing window to that size or larger. This 'larger' depends on what is placed in the window which need at least the sum of natural sizes of the containing widgets. The user is still able to shrink the window if the natural sizes of the widgets within permits.
 
+There is another method to set the size. `$window.gtk_widget_set_size_request()` which is a size method for any widget. When called on a window, it cannot be made smaller by the user.
 
-  * [ ] Window details
-    * [ ] Window decoration, title and icon
-    * [ ] Window size
-    * [ ] Centering with position
-    * [ ] Destroy signal
-    * [ ] Some Container methods
-    * [ ] Some Widget methods
+Also a resize method is available as `$window.gtk_window_resize()` <!--[`$window.gtk_window_resize()`](../reference/Gtk3/Window.html#wow101).-->
+
+The information about current sizes is retrieved by calling `$window.gtk_get_size()`.
