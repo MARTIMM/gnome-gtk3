@@ -155,7 +155,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
 * [ ] Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
-* [ ] Jekyll shows errors which must be removed. Site content looks good however.
+* [x] Jekyll shows errors which must be removed. Site content looks good however.
 
 * [ ] Tutorials
   * [x] Find material of other tutorials and books in other programming languages. E.g. Zetcode and Wikibooks
@@ -171,7 +171,7 @@ There are still a lot of bugs and documentation anomalies. Also not all subs, si
 
   * [ ] Window details
     * [x] Window decoration, title and icon
-    * [ ] Window size
+    * [x] Window size
     * [ ] Centering with position
     * [ ] Destroy signal
     * [ ] Some Container methods
