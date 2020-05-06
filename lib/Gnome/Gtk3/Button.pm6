@@ -64,14 +64,11 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Enums;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkbutton.h
 # https://developer.gnome.org/gtk3/stable/GtkButton.html
 unit class Gnome::Gtk3::Button:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -189,7 +186,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_button_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkButton');
   $s = callsame unless ?$s;
@@ -208,7 +204,6 @@ Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button
 Returns: The newly created B<Gnome::Gtk3::Button> widget.
 
   method gtk_button_new ( --> N-GObject  )
-
 
 =end pod
 }}

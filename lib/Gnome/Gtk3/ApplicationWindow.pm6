@@ -73,30 +73,21 @@ The following attributes are used when constructing submenus:
 =item "label": a user-visible string to display
 =item "icon": icon name to display
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ApplicationWindow implements
 =comment item Gnome::Atk::ImplementorIface
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Orientable](Orientable.html)
-
-=head2 Known implementations
-
-Gnome::Gtk3::ApplicationWindow is implemented by
-
-=item
-
-=end comment
+=comment item Gnome::Gio::ActionGroup
+=item Gnome::Gio::ActionMap
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::ApplicationWindow;
   also is Gnome::Gtk3::Window;
-=comment  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::Orientable;
-
+=comment  also does Gnome::Atk::ImplementorIface;
+=comment  also does Gnome::Gio::ActionGroup;
+  also does Gnome::Gio::ActionMap;
 
 =head2 Inheriting this class
 
@@ -127,18 +118,16 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Application;
-
-#use Gnome::Gtk3::Orientable;
-#use Gnome::Gtk3::Buildable;
+use Gnome::Gio::ActionMap;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::ApplicationWindow:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Window;
-#also does Gnome::Gtk3::Buildable;
-#also does Gnome::Gtk3::Orientable;
+#also does Gnome::Atk::ImplementorIface;
+#also does Gnome::Gio::ActionGroup;
+also does Gnome::Gio::ActionMap;
 
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
@@ -206,8 +195,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_application_window_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
+  $s = self._action_map_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkApplicationWindow');
   $s = callsame unless ?$s;
