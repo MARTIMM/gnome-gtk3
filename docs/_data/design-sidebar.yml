@@ -1,14 +1,26 @@
 # https://jekyllrb.com/tutorials/navigation/
-- bar_title: "Sections"
+- bar_title: "Design"
   bar_menu:
   - title: "Design notes"
     url: "/content-docs/design/notes.html"
   - title: "Implementation"
     url: "/content-docs/design/implement.html"
-  - title: "Todo"
-    url: "/content-docs/design/todo.html"
   - title: "Gtk+ types and Raku"
     url: "/content-docs/design/gtk-types.html"
+
+- bar_title: "Change notes"
+  bar_menu:
+  - title: "Todo"
+    url: "/content-docs/design/todo.html"
+  - title: "Done"
+    url: "/content-docs/design/todo-done.html"
+  - title: "Change log"
+    url: "/content-docs/design/change-log.html"
+  - title: "Check list"
+    url: "/content-docs/design/check-list.html"
+
+- bar_title: "Gnome Class Trees"
+  bar_menu:
   - title: "Gnome::Gtk Class Tree"
     url: "/content-docs/design/gtk-tree.html"
   - title: "Gnome::Gio Class Tree"
