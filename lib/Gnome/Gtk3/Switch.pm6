@@ -28,8 +28,6 @@ B<Gnome::Gtk3::Switch> has two css nodes, the main node with the name switch and
 Gnome::Gtk3::Switch implements
 =comment item Gnome::Gtk3::Actionable
 
-=item
-
 =head2 See Also
 
 B<Gnome::Gtk3::ToggleButton>
