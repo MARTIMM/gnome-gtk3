@@ -39,12 +39,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::MenuItem implements
 
-  * Gnome::Atk::ImplementorIface
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Activatable
-
   * Gnome::Gtk3::Actionable
 
 See Also

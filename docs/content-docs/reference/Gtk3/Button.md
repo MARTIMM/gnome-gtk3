@@ -75,7 +75,7 @@ Creates a **Gnome::Gtk3::Button** widget with a **Gnome::Gtk3::Label** child con
 
     multi method new ( Str :$label! )
 
-### new(:icon-name)
+### new( :icon-name, :icon-size)
 
 Creates a new button containing an icon from the current icon theme.
 
@@ -83,9 +83,9 @@ If the icon name isn’t known, a “broken image” icon will be displayed inst
 
 This function is a convenience wrapper around `gtk_button_new()` and `gtk_button_set_image()`.
 
-You can use the *gtk3-icon-browser* tool to browse through currently installed icons.
+You can use the *gtk3-icon-browser* tool to browse through currently installed icons. The default for `$icon-size` is `GTK_ICON_SIZE_SMALL_TOOLBAR`.
 
-    multi method new ( Str :$icon-name! )
+    multi method new ( Str :$icon-name!, GtkIconSize :$icon-size?)
 
 ### new(:mnemonic)
 

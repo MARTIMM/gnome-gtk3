@@ -1,7 +1,9 @@
 # https://jekyllrb.com/tutorials/navigation/
 - bar_title: "Chapters"
   bar_menu:
-  - title: "Getting Started"
+  - title: Getting Started
     url: "/content-docs/tutorial/getting-started.html"
   - title: "Intermezzo: methods"
     url: "/content-docs/tutorial/intermezzo-methods.html"
+  - title: Window details
+    url: "/content-docs/tutorial/window-details.html"

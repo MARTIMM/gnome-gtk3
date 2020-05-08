@@ -2,31 +2,31 @@
 title: About the Program
 #nav_title: About
 nav_menu: default-nav
-change_notes: change-log-data
+#change_notes: change-log-data
 layout: default
 ---
 
 # About The Project
 
-This project is about interfacing Raku to the Gnome GTK+ library version 3.*.
+This project is language binding of Raku to the Gnome libraries where GTK+ libraries has version 3.\*.
 
-{% include changes-section.html %}
+# Attribution
 
-# Author
+_**Note: Need to look at this more closely regarding the GTK licenses!**_
 
-Name: **Marcel Timmerman**
-Github account name: **MARTIMM**
+## Licenses
+* GTK is entirely open-source under the [LGPL license](content-docs/license-lgpl.txt).
+* The Raku module libraries are available under the [Artistic license version 2.0](content-docs/license-art.txt).
+* Documentation on this site is under the [GNU free documentation license version 1.3](content-docs/license-doc.txt).
 
-# License
+## Attribution
+* First of all, I would like to thank the developers of the **GTK::Simple** project because of the information I got while reading the code. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
+* The inventors of Raku, formerly Perl6, of course and the writers of the documentation which helps me out every time again and again. Also the people replying to questions on several mailing-lists were a great help.
+* The builders of the GTK+ libraries and the documentation for it have helped me a lot too to see how things work, (although not all is yet clear). Their source code is also very helpful in the way that I could write a program to generate Raku source code from it. After that, only some fiddling a bit to get the modules to load, and a bit more to adjust some of the subroutines. Also, many images used in their documentation are reused here in the reference guides.
+* <img src="images/gtk-perl6.png" style="float:left; margin-right:4px;" width="100" /> The icon used for these packages is build up from that of GTK+ and the Raku Camelia, the butterfly. Camelia is **™** to **Larry Wall**. Other icon sources ised in the documentation are **icons8.com.**
+<br/>
+<br/>
+<br/>
 
-The Raku software has `The Artistic License 2.0`, See [artistic license](/content-docs/license-soft.html).
-Documentation at this site has the `GNU Free Documentation License` and can be read [here](/content-docs/license-doc.html).
-
-ⓒ 2019 Marcel Timmerman.
-
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.3
-or any later version published by the Free Software Foundation;
-with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-A copy of the license is included in the section entitled "GNU
-Free Documentation License".
+## Author and Copyright
+**ⓒ 2019 .. ∞ Marcel Timmerman.** known as **MARTIMM** on **github** and **CPAN** / **Pause**

@@ -19,15 +19,6 @@ A menu is “active” when it is visible onscreen and the user is selecting fro
 
 There is also is a concept of the current menu and a current menu item. The current menu item is the selected menu item that is furthest down in the hierarchy. (Every active menu shell does not necessarily contain a selected menu item, but if it does, then the parent menu shell must also contain a selected menu item.) The current menu is the menu that contains the current menu item. It will always have a GTK grab and receive all key presses.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::MenuShell implements
-
-  * Gnome::Atk::ImplementorIface
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -36,7 +27,6 @@ Declaration
 
     unit class Gnome::Gtk3::MenuShell;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

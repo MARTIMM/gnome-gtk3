@@ -12,13 +12,6 @@ For toolbar items that contain buttons, see the **Gnome::Gtk3::ToolButton**, **G
 
 See the **Gnome::Gtk3::Toolbar** class for a description of the toolbar widget, and **Gnome::Gtk3::ToolShell** for a description of the tool shell interface.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ToolItem implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -32,7 +25,6 @@ Declaration
 
     unit class Gnome::Gtk3::ToolItem;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

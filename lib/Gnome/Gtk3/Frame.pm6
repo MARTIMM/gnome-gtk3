@@ -41,14 +41,6 @@ B<Gnome::Gtk3::Frame> has a main CSS node named “frame” and a subnode named 
 
 The border node can be given the style class “.flat”, which is used by themes to disable drawing of the border. To do this from code, call C<gtk_frame_set_shadow_type()> with C<GTK_SHADOW_NONE> to add the “.flat” class or any other shadow type to remove it.
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Frame implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=end comment
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -84,14 +76,12 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Frame:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -160,8 +150,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_frame_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkFrame');
   $s = callsame unless ?$s;

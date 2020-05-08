@@ -20,6 +20,7 @@ Declaration
 -----------
 
     unit class Gnome::Gtk3::TextBuffer;
+    also is Gnome::GObject::Object;
 
 Types
 =====
@@ -215,8 +216,6 @@ Returns: whether an insertion was possible at *iter*
 
 Inserts the text in *markup* at position *iter*. *markup* will be inserted in its entirety and must be nul-terminated and valid UTF-8. Emits the *insert-text* signal, possibly multiple times; insertion actually occurs in the default handler for the signal. *iter* will point to the end of the inserted text on return.
 
-Since: 3.16
-
     method gtk_text_buffer_insert_markup (
       Gnome::Gtk3::TextIter $iter, Str $markup, Int $len
     )
@@ -267,8 +266,6 @@ Performs the appropriate action as if the user hit the delete key with the curso
 Because the buffer is modified, all outstanding iterators become invalid after calling this function; however, the *iter* will be re-initialized to point to the location where text was deleted.
 
 Returns: `1` if the buffer was modified
-
-Since: 2.6
 
     method gtk_text_buffer_backspace (
       Gnome::Gtk3::TextIter $iter, Int $interactive, Int $default_editable
@@ -505,8 +502,6 @@ Used to keep track of whether the buffer has been modified since the last time i
 Indicates whether the buffer has some text currently selected.
 
 Returns: `1` if the there is text selected
-
-Since: 2.10
 
     method gtk_text_buffer_get_has_selection ( --> Int  )
 
@@ -812,8 +807,6 @@ See also: `gtk_text_buffer_end_user_action()`, `gtk_text_buffer_insert_interacti
 
 The paste-done signal is emitted after paste operation has been completed. This is useful to properly scroll the view to the end of the pasted text. See `gtk_text_buffer_paste_clipboard()` for more details.
 
-Since: 2.16
-
     method handler (
       N-GObject $clipboard,
       Gnome::GObject::Object :widget($textbuffer),
@@ -839,19 +832,19 @@ Supported properties
 
 ### Text
 
-The text content of the buffer. Without child widgets and images, see `gtk_text_buffer_get_text()` for more information. Since: 2.8
+The text content of the buffer. Without child widgets and images, see `gtk_text_buffer_get_text()` for more information.
 
 The **Gnome::GObject::Value** type of property *text* is `G_TYPE_STRING`.
 
 ### Has selection
 
-Whether the buffer has some text currently selected. Since: 2.10
+Whether the buffer has some text currently selected.
 
 The **Gnome::GObject::Value** type of property *has-selection* is `G_TYPE_BOOLEAN`.
 
 ### Cursor position
 
-The position of the insert mark (as offset from the beginning of the buffer). It is useful for getting notified when the cursor moves. Since: 2.10
+The position of the insert mark (as offset from the beginning of the buffer). It is useful for getting notified when the cursor moves.
 
 The **Gnome::GObject::Value** type of property *cursor-position* is `G_TYPE_INT`.
 

@@ -58,9 +58,9 @@ Gnome::Gtk3::Application implements
 
   unit class Gnome::Gtk3::Application;
   also is Gnome::Gio::Application;
+  also does Gnome::Gio::ActionMap;
 
 =comment  also does Gnome::Gio::ActionGroup;
-=comment  also does Gnome::Gio::ActionMap;
 
 =head2 Inheriting this class
 
@@ -96,15 +96,15 @@ use Gnome::Glib::List;
 use Gnome::Glib::Error;
 use Gnome::Glib::OptionContext;
 
+use Gnome::Gio::ActionMap;
 #use Gnome::Gio::ActionGroup;
-#use Gnome::Gio::ActionMap;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Application:auth<github:MARTIMM>;
 also is Gnome::Gio::Application;
+also does Gnome::Gio::ActionMap;
 
 #also does Gnome::Gio::ActionGroup;
-#also does Gnome::Gio::ActionMap;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -193,8 +193,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
+  $s = self._action_map_interface($native-sub) unless ?$s;
 #also does Gnome::Gio::ActionGroup;
 #also does Gnome::Gio::ActionMap;
 

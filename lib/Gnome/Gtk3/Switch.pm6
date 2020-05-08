@@ -23,22 +23,10 @@ B<Gnome::Gtk3::Switch> can also handle situations where the underlying state cha
 
 B<Gnome::Gtk3::Switch> has two css nodes, the main node with the name switch and a subnode named slider. Neither of them is using any style classes.
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Switch implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =comment item Gnome::Gtk3::Actionable
-=comment item Gnome::Gtk3::Activatable
-
-=head2 Known implementations
-
-Gnome::Gtk3::Switch is implemented by
-
-=item
-
-=end comment
 
 =head2 See Also
 
@@ -49,7 +37,6 @@ B<Gnome::Gtk3::ToggleButton>
 
   unit class Gnome::Gtk3::Switch;
   also is Gnome::Gtk3::Widget;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -61,14 +48,12 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Switch:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
-also does Gnome::Gtk3::Buildable;
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -160,8 +145,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkSwitch');
   $s = callsame unless ?$s;

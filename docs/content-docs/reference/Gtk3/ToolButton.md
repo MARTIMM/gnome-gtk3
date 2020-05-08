@@ -24,8 +24,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::ToolButton implements
 
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -39,7 +37,6 @@ Declaration
 
     unit class Gnome::Gtk3::ToolButton;
     also is Gnome::Gtk3::ToolItem;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

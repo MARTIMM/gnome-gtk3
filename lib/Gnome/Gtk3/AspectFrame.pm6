@@ -22,14 +22,12 @@ B<Gnome::Gtk3::AspectFrame> uses a CSS node with name frame.
 
 Gnome::Gtk3::AspectFrame implements
 =comment item Gnome::Atk::ImplementorIface
-[Gnome::Gtk3::Buildable](Buildable.html)
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::AspectFrame;
   also is Gnome::Gtk3::Frame;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -48,7 +46,6 @@ use Gnome::Gtk3::Buildable;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::AspectFrame:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Frame;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -134,7 +131,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkAspectFrame');
   $s = callsame unless ?$s;

@@ -72,13 +72,6 @@ A tab node gets the .dnd style class while it is moved with drag-and-drop.
 The nodes are always arranged from left-to-right, regardless of text direction.
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Notebook implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
-
 =head2 See Also
 
 B<Gnome::Gtk3::Container>
@@ -88,7 +81,6 @@ B<Gnome::Gtk3::Container>
 
   unit class Gnome::Gtk3::Notebook;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
 
 =head2 Inheriting this class
 
@@ -118,12 +110,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Notebook:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -191,7 +181,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_notebook_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkNotebook');
   $s = callsame unless ?$s;

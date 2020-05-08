@@ -72,14 +72,10 @@ An example of a UI definition fragment with B<Gnome::Gtk3::TreeView>:
 
 B<Gnome::Gtk3::TreeView> has a main CSS node with name treeview and style class .view. It has a subnode with name header, which is the parent for all the column header widgets' CSS nodes. For rubberband selection, a subnode with name rubberband is used.
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::TreeView implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =comment item Gnome::Gtk3::Scrollable.
-=end comment
 
 =head2 See Also
 
@@ -90,8 +86,6 @@ B<Gnome::Gtk3::TreeViewColumn>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::Tr
 
   unit class Gnome::Gtk3::TreeView;
   also is Gnome::Gtk3::Container;
-=comment   also does Gnome::Gtk3::Buildable;
-=comment also does Gnome::Atk::ImplementorIface
 =comment also does Gnome::Gtk3::Scrollable.
 
 =head2 Inheriting this class
@@ -125,9 +119,7 @@ use Gnome::Glib::List;
 use Gnome::Gdk3::Types;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::TreePath;
-#use Gnome::Atk::ImplementorIface;
 #use Gnome::Gtk3::Scrollable;
 
 #-------------------------------------------------------------------------------
@@ -135,8 +127,6 @@ use Gnome::Gtk3::TreePath;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::TreeView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
-#also does Gnome::Atk::ImplementorIface
 #also does Gnome::Gtk3::Scrollable.
 
 
@@ -251,10 +241,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_tree_view_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
-#use Gnome::Atk::ImplementorIface;
-#use Gnome::Gtk3::Scrollable;
 
   self.set-class-name-of-sub('GtkTreeView');
   $s = callsame unless ?$s;

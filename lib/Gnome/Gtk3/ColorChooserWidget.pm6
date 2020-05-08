@@ -38,17 +38,13 @@ Since: 3.4
 
 
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ColorChooserWidget implements
 
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item [Gnome::Gtk3::Orientable](Orientable.html)
+=comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
-=end comment
 
 =head2 See Also
 
@@ -59,8 +55,6 @@ B<Gnome::Gtk3::ColorChooserDialog>
 
   unit class Gnome::Gtk3::ColorChooserWidget;
   also is Gnome::Gtk3::Box;
-  also does Gnome::Gtk3::Buildable;
-  also does Gnome::Gtk3::Orientable;
   also does Gnome::Gtk3::ColorChooser;
 
 =comment head2 Example
@@ -83,8 +77,6 @@ use Gnome::Gtk3::ColorChooser;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ColorChooserWidget:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
-also does Gnome::Gtk3::Buildable;
-also does Gnome::Gtk3::Orientable;
 also does Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
@@ -161,8 +153,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_color_chooser_widget_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-  $s = self._orientable_interface($native-sub) unless ?$s;
   $s = self._color_chooser_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkColorChooserWidget');

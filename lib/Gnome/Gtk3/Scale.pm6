@@ -59,26 +59,11 @@ The main CSS node gets the 'marks-before' and/or 'marks-after' style classes add
 If the scale is displaying the value (see  I<draw-value>), there is subnode with name value.
 
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Scale implements
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item [Gnome::Gtk3::Orientable](Orientable.html)
-=end comment
-
-
-
-
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Scale;
   also is Gnome::Gtk3::Range;
-=comment  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::Orientable;
 
 =head2 Inheriting this class
 
@@ -135,16 +120,11 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Range;
 
-use Gnome::Gtk3::Buildable;
-use Gnome::Gtk3::Orientable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkscale.h
 # https://developer.gnome.org/gtk3/stable/GtkScale.html
 unit class Gnome::Gtk3::Scale:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Range;
-also does Gnome::Gtk3::Buildable;
-also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -262,8 +242,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_scale_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkScale');
   $s = callsame unless ?$s;

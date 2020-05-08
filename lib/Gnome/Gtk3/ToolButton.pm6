@@ -27,9 +27,6 @@ B<Gnome::Gtk3::ToolButton> has a single CSS node with name toolbutton.
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ToolButton implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Activatable](Activatable.html)
 =comment item [Gnome::Gtk3::Actionable](Actionable.html)
 
 =head2 See Also
@@ -42,7 +39,6 @@ B<Gnome::Gtk3::Toolbar>, B<Gnome::Gtk3::MenuToolButton>, B<Gnome::Gtk3::ToggleTo
 
   unit class Gnome::Gtk3::ToolButton;
   also is Gnome::Gtk3::ToolItem;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -54,12 +50,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::ToolItem;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::ToolButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::ToolItem;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -157,8 +151,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkToolButton');
   $s = callsame unless ?$s;

@@ -115,7 +115,6 @@ To summarize, make sure you use a I<ResponseType> when you use I<Gnome::Gtk3::Fi
 =head2 Implemented Interfaces
 
 =comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 =head2 See Also
@@ -127,7 +126,6 @@ B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
 
   unit class Gnome::Gtk3::FileChooserDialog;
   also is Gnome::Gtk3::Dialog;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::FileChooser;
 
 =head2 Example
@@ -159,15 +157,11 @@ use Gnome::N::NativeLib;
 use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::FileChooser;
 
-use Gnome::Gtk3::Buildable;
-use Gnome::Gtk3::FileChooser;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkfilechooserdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkFileChooserDialog.html
 unit class Gnome::Gtk3::FileChooserDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::FileChooser;
 
 #-------------------------------------------------------------------------------
@@ -254,7 +248,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   # search this module first
   try { $s = &::($native-sub); } if $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._file_chooser_interface($native-sub) unless ?$s;
 
   # any other parent class

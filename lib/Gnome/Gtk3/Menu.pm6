@@ -67,18 +67,12 @@ Applications can display a B<Gnome::Gtk3::Menu> as a popup menu by calling the C
 
 The main CSS node of B<Gnome::Gtk3::Menu> has name B<menu>, and there are two subnodes with name arrow, for scrolling menu arrows. These subnodes get the .top and .bottom style classes.
 
-=head2 Implemented Interfaces
-
-=comment Gnome::Gtk3::Menu implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Menu;
   also is Gnome::Gtk3::MenuShell;
-=comment   also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -95,14 +89,11 @@ use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Window;
 use Gnome::Gtk3::MenuShell;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkmenu.h
 # https://developer.gnome.org/gtk3/stable/GtkMenu.html
 unit class Gnome::Gtk3::Menu:auth<github:MARTIMM>;
 also is Gnome::Gtk3::MenuShell;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -200,7 +191,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_menu_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMenu');
   $s = callsame unless ?$s;

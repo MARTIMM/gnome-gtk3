@@ -145,11 +145,6 @@ em, strong {
 }
 
 
-.tooltiptext strong {
-//  color: #8e280e;
-  color: #afffff; //#fff;
-}
-
 div.inner {
   width: 95%;
 }
@@ -162,6 +157,11 @@ pre {
   padding: 10px;
   background-color: $code-color;
   border: $border-width solid $border-color;
+}
+
+
+table td {
+  text-align: left;
 }
 
 /*
@@ -184,8 +184,10 @@ code {
 }
 
 div.release-notes {
+/*
   overflow: scroll;
   height: 300px;
+*/
 }
 
 #reference-container {
@@ -343,6 +345,12 @@ ol li {
       line-height: 1.1;
     }
   }
+}
+
+
+.tooltiptext strong {
+//  color: #8e280e;
+  color: #afffff; //#fff;
 }
 
 // From w3schools

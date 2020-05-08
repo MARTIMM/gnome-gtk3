@@ -44,17 +44,6 @@ Css Nodes
 
 `Gnome::Gtk3::ComboBoxText` has a single CSS node with name combobox. It adds the style class .combo to the main CSS nodes of its entry and button children, and the .linked class to the node of its internal box.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ComboBoxText implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::CellLayout
-
-  * Gnome::Gtk3::CellEditable
-
 See Also
 --------
 
@@ -68,7 +57,6 @@ Declaration
 
     unit class Gnome::Gtk3::ComboBoxText;
     also is Gnome::Gtk3::ComboBox;
-    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

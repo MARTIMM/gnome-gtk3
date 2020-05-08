@@ -22,8 +22,6 @@ of the “steppers”. It also provides properties and methods for setting a
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Range implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head1 Synopsis
@@ -31,7 +29,6 @@ Gnome::Gtk3::Range implements
 
   unit class Gnome::Gtk3::Range;
   also is Gnome::Gtk3::Widget;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::Orientable;
 
 =comment head2 Example
@@ -55,7 +52,6 @@ use Gnome::Gtk3::Orientable;
 # https://developer.gnome.org/stable/GtkRange.html#gtk-range-get-fill-level
 unit class Gnome::Gtk3::Range:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -109,7 +105,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_range_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
 
   $s = callsame unless ?$s;

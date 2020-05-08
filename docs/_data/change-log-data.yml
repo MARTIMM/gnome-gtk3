@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-05-04 0.28.3:
+    - Modules using interfaces are rewritten in such a way that the interface is only mixed in the top most class where the interface is used.
+
   - 2020-04-28 0.28.2:
     - Some improvements to start-thread() in Gnome::GObject::Object.
     - Method register-signal() now returns an integer instead of a boolean. This integer is a handler-id which can be used to disconnect the signal with g_signal_handler_disconnect(). When handler is 0, the registration failed. The other method to connect a signal is g_signal_connect_object() which will also return a handler id.

@@ -16,33 +16,11 @@ The B<Gnome::Gtk3::Adjustment> object represents a value which has an associated
 
 The B<Gnome::Gtk3::Adjustment> object does not update the value itself. Instead it is left up to the owner of the B<Gnome::Gtk3::Adjustment> to control the value.
 
-
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Adjustment implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Orientable](Orientable.html)
-
-=head2 Known implementations
-
-Gnome::Gtk3::Adjustment is implemented by
-
-=item
-
-=end comment
-
-
-
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Adjustment;
   also is Gnome::GObject::InitiallyUnowned;
-
-=comment  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::Orientable;
 
 =begin comment
 =head2 Inheriting this class
@@ -75,16 +53,10 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::GObject::InitiallyUnowned;
 
-
-#use Gnome::Gtk3::Orientable;
-#use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Adjustment:auth<github:MARTIMM>;
 also is Gnome::GObject::InitiallyUnowned;
 
-#also does Gnome::Gtk3::Buildable;
-#also does Gnome::Gtk3::Orientable;
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 class N-GtkAdjustment
@@ -207,8 +179,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_adjustment_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkAdjustment');
   $s = callsame unless ?$s;

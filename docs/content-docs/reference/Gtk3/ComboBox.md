@@ -44,10 +44,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::ComboBox implements
 
-  * Gnome::Gtk3::CellLayout
-
-  * Gnome::Gtk3::CellEditable
-
 See Also
 --------
 
@@ -61,7 +57,6 @@ Declaration
 
     unit class Gnome::Gtk3::ComboBox;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

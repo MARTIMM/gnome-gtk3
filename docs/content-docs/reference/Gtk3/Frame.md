@@ -38,13 +38,6 @@ Css Nodes
 
 The border node can be given the style class “.flat”, which is used by themes to disable drawing of the border. To do this from code, call `gtk_frame_set_shadow_type()` with `GTK_SHADOW_NONE` to add the “.flat” class or any other shadow type to remove it.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Frame implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -53,7 +46,25 @@ Declaration
 
     unit class Gnome::Gtk3::Frame;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Frame;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Frame;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Frame class process the options
+      self.bless( :GtkFrame, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Methods
 =======

@@ -25,10 +25,7 @@ Recently used files are supported since GTK+ 2.10.
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::RecentChooserMenu implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Orientable](Orientable.html)
-
+=comment item Gnome::Gtk3::RecentChooser
 
 =head2 See Also
 
@@ -39,8 +36,7 @@ B<Gnome::Gtk3::RecentChooser>
 
   unit class Gnome::Gtk3::RecentChooserMenu;
   also is Gnome::Gtk3::Menu;
-  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::Orientable;
+=comment  also does Gnome::Gtk3::RecentChooser;
 
 =head2 Inheriting this class
 
@@ -71,14 +67,10 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Menu;
 
-#use Gnome::Gtk3::Orientable;
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::RecentChooserMenu:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Menu;
-also does Gnome::Gtk3::Buildable;
-#also does Gnome::Gtk3::Orientable;
+
 #-------------------------------------------------------------------------------
 
 =begin pod
@@ -149,8 +141,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_recent_chooser_menu_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkRecentChooserMenu');
   $s = callsame unless ?$s;

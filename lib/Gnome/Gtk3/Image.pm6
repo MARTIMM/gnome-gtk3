@@ -68,15 +68,6 @@ Sometimes an application will want to avoid depending on external data files, su
 
 B<Gnome::Gtk3::Image> has a single CSS node with the name image.
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Image implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=end comment
-
-
 =comment head2 See Also
 =comment B<Gnome::Gdk3::Pixbuf>
 
@@ -86,7 +77,6 @@ Gnome::Gtk3::Image implements
 
   unit class Gnome::Gtk3::Image;
   also is Gnome::Gtk3::Misc;
-=comment   also does Gnome::Gtk3::Buildable;
 
 =head2 Inheriting this class
 
@@ -117,14 +107,11 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Misc;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkimage.h
 # https://developer.gnome.org/gtk3/stable/GtkImage.html
 unit class Gnome::Gtk3::Image:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Misc;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -281,7 +268,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_image_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkImage');
   $s = callsame unless ?$s;

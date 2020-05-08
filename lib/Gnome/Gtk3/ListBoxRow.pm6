@@ -13,8 +13,6 @@ A row in a Gnome::Gtk3::ListBox.
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ListBoxRow implements
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Actionable
 
 =head2 See Also
@@ -26,7 +24,6 @@ C<Gnome::Gtk3::ListBox>
 
   unit class Gnome::Gtk3::ListBoxRow;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -57,14 +54,11 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ListBoxRow:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -123,7 +117,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_list_box_row_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('ListBoxRow');
   $s = callsame unless ?$s;

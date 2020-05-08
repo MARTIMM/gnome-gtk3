@@ -48,14 +48,6 @@ Here is a UI definition fragment specifying C<GtkComboBoxText> items:
 
 C<Gnome::Gtk3::ComboBoxText> has a single CSS node with name combobox. It adds the style class .combo to the main CSS nodes of its entry and button children, and the .linked class to the node of its internal box.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ComboBoxText implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item Gnome::Gtk3::CellLayout
-=item Gnome::Gtk3::CellEditable
-
 
 =head2 See Also
 
@@ -66,7 +58,6 @@ C<Gnome::Gtk3::ComboBox>
 
   unit class Gnome::Gtk3::ComboBoxText;
   also is Gnome::Gtk3::ComboBox;
-  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -79,14 +70,11 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::ComboBox;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkcombobox.h
 # https://developer.gnome.org/gtk3/stable/GtkComboBox.html
 unit class Gnome::Gtk3::ComboBoxText:auth<github:MARTIMM>;
 also is Gnome::Gtk3::ComboBox;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -150,7 +138,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_combo_box_text_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkComboBoxText');
   $s = callsame unless ?$s;

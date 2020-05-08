@@ -39,20 +39,12 @@ a selected menu item.) The current menu is the menu that
 contains the current menu item. It will always have a GTK
 grab and receive all key presses.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::MenuShell implements
-
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::MenuShell;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -65,15 +57,12 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuShell:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -135,7 +124,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_menu_shell_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMenuShell');
   $s = callsame unless ?$s;

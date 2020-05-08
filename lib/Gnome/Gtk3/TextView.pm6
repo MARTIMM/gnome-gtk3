@@ -34,9 +34,6 @@ If a context menu is opened, the window node will appear as a subnode of the mai
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::TextView implements
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Scrollable
 
 =head2 See Also
@@ -48,7 +45,6 @@ B<Gnome::Gtk3::TextBuffer>, B<Gnome::Gtk3::TextIter>
 
   unit class Gnome::Gtk3::TextView;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -70,7 +66,6 @@ use Gnome::Gtk3::Buildable;
 # https://developer.gnome.org/gtk3/stable/GtkTextView.html
 unit class Gnome::Gtk3::TextView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -215,7 +210,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_text_view_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkTextView');
   $s = callsame unless ?$s;

@@ -26,10 +26,7 @@ it from a plain B<Gnome::Gtk3::Button>, it gets the .color style class.
 
 =head2 Implemented Interfaces
 
-=item Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item Gnome::Gtk3::Actionable
-=item Gnome::Gtk3::Activatable
+Gnome::Gtk3::ColorButton implements
 =item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
 =head2 See Also
@@ -41,7 +38,6 @@ B<Gnome::Gtk3::ColorSelectionDialog>, B<Gnome::Gtk3::FontButton>
 
   unit class Gnome::Gtk3::ColorButton;
   also is Gnome::Gtk3::Button;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::ColorChooser;
 
 =head2 Example
@@ -62,7 +58,6 @@ use Gnome::N::N-GObject;
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::Button;
 
-use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
@@ -71,7 +66,6 @@ use Gnome::Gtk3::ColorChooser;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ColorButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Button;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
@@ -156,7 +150,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_color_button_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._color_chooser_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkColorButton');

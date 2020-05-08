@@ -40,23 +40,11 @@ you can use C<gtk_search_entry_handle_event()> to pass events.
 
 Since: 3.6
 
-
-
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::SearchEntry implements
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item Gnome::Gtk3::Editable
-=item Gnome::Gtk3::CellEditable
-
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::SearchEntry;
   also is Gnome::Gtk3::Entry;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -70,14 +58,11 @@ use Gnome::N::NativeLib;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Entry;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtksearchentry.h
 # https://developer.gnome.org/gtk3/stable/GtkSearchEntry.html
 unit class Gnome::Gtk3::SearchEntry:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Entry;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -152,7 +137,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_search_entry_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkSearchEntry');
   $s = callsame unless ?$s;

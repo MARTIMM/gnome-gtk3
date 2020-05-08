@@ -32,7 +32,6 @@ B<Gnome::Gtk3::Assistant> has a single CSS node with the name assistant.
 
 Gnome::Gtk3::Assistant implements
 =comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 
 =head1 Synopsis
@@ -40,7 +39,6 @@ Gnome::Gtk3::Assistant implements
 
   unit class Gnome::Gtk3::Assistant;
   also is Gnome::Gtk3::Window;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -52,9 +50,6 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Window;
-
-#use Gnome::Gtk3::Orientable;
-#use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Assistant:auth<github:MARTIMM>;
@@ -169,8 +164,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkAssistant');
   $s = callsame unless ?$s;

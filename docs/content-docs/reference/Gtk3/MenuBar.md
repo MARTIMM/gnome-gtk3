@@ -15,15 +15,6 @@ Css Nodes
 
 **Gnome::Gtk3::MenuBar** has a single CSS node with name menubar.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::MenuBar implements
-
-  * Gnome::Atk::ImplementorIface
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -37,7 +28,6 @@ Declaration
 
     unit class Gnome::Gtk3::MenuBar;
     also is Gnome::Gtk3::MenuShell;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

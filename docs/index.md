@@ -116,22 +116,3 @@ Before any code can be run we must install the packages we want to use. It is as
   After this, you will notice that the `raku` command is available next to `perl6` so it is also a move forward in the renaming of Perl6 to Raku.
 
   The rakudo star installation must be removed if it was used, because otherwise there will be two Raku compilers wanting to be the captain on your ship. Also all modules must be reinstalled of course and will be installed at `$Rakudo/install/share/perl6/site`.
-
-# Licenses and Attribution
-
-_**Need to look at this more closely regarding the GTK licenses!**_
-
-## Licenses
-* GTK is entirely open-source under the [LGPL license](content-docs/license-lgpl.txt).
-* The Raku module libraries are available under the [Artistic license version 2.0](content-docs/license-art.txt).
-* Documentation on this site is under the [GNU free documentation license version 1.3](content-docs/license-doc.txt).
-
-## Attribution
-* First of all, I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
-* The inventors of Perl6 of course and the writers of the documentation which help me out every time again and again. Also the people replying to questions on several mailing-lists were a great help.
-* The builders of the GTK+ library and the documentation have helped me a lot too to see how things work, (although not all is yet clear). Their source code is also very helpful in the way that I could write a program to generate Perl6 source code from it. After that, only some fiddling a bit to get the modules to load, and a bit more to adjust some of the subroutines. Also, many images used in their documentation is reused here in the reference guides.
-
-## Author
-Name: **Marcel Timmerman**
-
-Github account name: **MARTIMM**

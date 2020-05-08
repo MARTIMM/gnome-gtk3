@@ -26,7 +26,6 @@ Declaration
 
     unit class Gnome::Gtk3::AspectFrame;
     also is Gnome::Gtk3::Frame;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

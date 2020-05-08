@@ -17,13 +17,6 @@ Css Nodes
 
 **Gnome::Gtk3::Spinner** has a single CSS node with the name spinner. When the animation is active, the *checked* pseudoclass is added to this node.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Spinner implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -37,7 +30,6 @@ Declaration
 
     unit class Gnome::Gtk3::Spinner;
     also is Gnome::Gtk3::Widget;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

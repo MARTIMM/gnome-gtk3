@@ -72,9 +72,36 @@ Methods
 new
 ---
 
-Create a new plain object and load pixbuf from file.
+### :$file
 
-    multi method new ( Str :$file!, Bool :$throw = True )
+Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If image is not found, a broken image icon is loaded instead.
+
+    multi method new ( Str :$file! )
+
+### :$file, :$width, :$height
+
+Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If image is not found, a broken image icon is loaded instead.
+
+The image will be scaled to fit in the requested size, preserving the image's aspect ratio. Note that the returned pixbuf may be smaller than width x height , if the aspect ratio requires it. To load and image at the requested size, regardless of aspect ratio, add :preserve_aspect_ratio, see below.
+
+    method new ( Str :$file, Int :$width, Int :$height )
+
+### :$file, :$width, :$height, :$preserve_aspect_ratio
+
+Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If image is not found, a broken image icon is loaded instead.
+
+When preserving the aspect ratio, a width of -1 will cause the image to be scaled to the exact given height, and a height of -1 will cause the image to be scaled to the exact given width. When not preserving aspect ratio, a width or height of -1 means to not scale the image at all in that dimension.
+
+    method new (
+      Str :$file!, Int :$width!, Int :$height!,
+      Bool :$preserve_aspect_ratio!
+    )
+
+### :$resource
+
+Creates a new pixbuf by loading an image from a Gio resource file. The file format is detected automatically. If image is not found, a broken image icon is loaded instead.
+
+    multi method new ( Str :$resource! )
 
 [gdk_pixbuf_] error_quark
 -------------------------
@@ -226,62 +253,6 @@ Return value: a new pixbuf
   * Int $width; width of region in this pixel buffer
 
   * Int $height; height of region in this pixel buffer
-
-[gdk_pixbuf_] new_from_file
----------------------------
-
-Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If NULL is returned, then error will be set. Possible errors are in the GDK_PIXBUF_ERROR and G_FILE_ERROR domains.
-
-    method gdk_pixbuf_new_from_file ( Str $filename, N-GError $error --> N-GObject  )
-
-  * Str $filename;
-
-  * N-GError $error;
-
-[gdk_pixbuf_] new_from_file_at_size
------------------------------------
-
-Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If NULL is returned, then error will be set. Possible errors are in the GDK_PIXBUF_ERROR and G_FILE_ERROR domains.
-
-The image will be scaled to fit in the requested size, preserving the image's aspect ratio. Note that the returned pixbuf may be smaller than width x height , if the aspect ratio requires it. To load and image at the requested size, regardless of aspect ratio, use gdk_pixbuf_new_from_file_at_scale().
-
-    method gdk_pixbuf_new_from_file_at_size ( Str $filename, Int $width, Int $height, N-GError $error --> N-GObject  )
-
-  * Str $filename;
-
-  * Int $width;
-
-  * Int $height;
-
-  * N-GError $error;
-
-[gdk_pixbuf_] new_from_file_at_scale
-------------------------------------
-
-Creates a new pixbuf by loading an image from a file. The file format is detected automatically. If NULL is returned, then error will be set. Possible errors are in the GDK_PIXBUF_ERROR and G_FILE_ERROR domains. The image will be scaled to fit in the requested size, optionally preserving the image's aspect ratio.
-
-When preserving the aspect ratio, a width of -1 will cause the image to be scaled to the exact given height, and a height of -1 will cause the image to be scaled to the exact given width. When not preserving aspect ratio, a width or height of -1 means to not scale the image at all in that dimension. Negative values for width and height are allowed since 2.8.
-
-    method gdk_pixbuf_new_from_file_at_scale ( Str $filename, Int $width, Int $height, Int $preserve_aspect_ratio, N-GError $error --> N-GObject  )
-
-  * Str $filename;
-
-  * Int $width;
-
-  * Int $height;
-
-  * Int $preserve_aspect_ratio;
-
-  * N-GError $error;
-
-[gdk_pixbuf_] new_from_resource
--------------------------------
-
-    method gdk_pixbuf_new_from_resource ( Str $resource_path, N-GError $error --> N-GObject  )
-
-  * Str $resource_path;
-
-  * N-GError $error;
 
 [gdk_pixbuf_] new_from_bytes
 ----------------------------

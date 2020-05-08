@@ -109,14 +109,11 @@ use Gnome::N::NativeLib;
 #use Gnome::GObject::Object;
 use Gnome::Gtk3::Dialog;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkaboutdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
 unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -238,7 +235,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_about_dialog_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
 #note "ad $native-sub: ", $s;
   self.set-class-name-of-sub('GtkAboutDialog');
