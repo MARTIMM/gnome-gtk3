@@ -58,6 +58,7 @@ Declaration
 
     unit class Gnome::Gtk3::Application;
     also is Gnome::Gio::Application;
+    also does Gnome::Gio::ActionMap;
 
 Inheriting this class
 ---------------------

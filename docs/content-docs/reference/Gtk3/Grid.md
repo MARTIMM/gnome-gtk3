@@ -22,8 +22,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::Grid implements
 
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
   * [Gnome::Gtk3::Orientable](Orientable.html)
 
 Synopsis
@@ -34,7 +32,7 @@ Declaration
 
     unit class Gnome::Gtk3::Grid;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::Orientable;
 
 Inheriting this class
 ---------------------

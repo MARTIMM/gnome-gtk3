@@ -10,11 +10,6 @@ The **Gnome::Gtk3::Bin** widget is a container with just one child. It is not ve
 
 Many GTK+ widgets are subclasses of **Gnome::Gtk3::Bin**, including **Gnome::Gtk3::Window**, **Gnome::Gtk3::Button**, **Gnome::Gtk3::Frame**, **Gnome::Gtk3::HandleBox** or **Gnome::Gtk3::ScrolledWindow**.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -23,7 +18,6 @@ Declaration
 
     unit class Gnome::Gtk3::Bin;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

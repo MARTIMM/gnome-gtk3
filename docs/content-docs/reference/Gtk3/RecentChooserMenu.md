@@ -19,8 +19,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::RecentChooserMenu implements
 
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -34,7 +32,6 @@ Declaration
 
     unit class Gnome::Gtk3::RecentChooserMenu;
     also is Gnome::Gtk3::Menu;
-    also does Gnome::Gtk3::Buildable;
 
 Inheriting this class
 ---------------------

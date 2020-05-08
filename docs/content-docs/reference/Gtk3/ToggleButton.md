@@ -21,15 +21,6 @@ Css Nodes
 
 **Gnome::Gtk3::ToggleButton** has a single CSS node with name button. To differentiate it from a plain **Gnome::Gtk3::Button**, it gets the .toggle style class.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Actionable
-
-  * Gnome::Gtk3::Activatable
-
 See Also
 --------
 
@@ -43,7 +34,6 @@ Declaration
 
     unit class Gnome::Gtk3::ToggleButton;
     also is Gnome::Gtk3::Button;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

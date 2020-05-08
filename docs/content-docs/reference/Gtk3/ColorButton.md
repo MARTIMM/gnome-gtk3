@@ -18,13 +18,7 @@ Css Nodes
 Implemented Interfaces
 ----------------------
 
-  * Atk::ImplementorIface
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Actionable
-
-  * Gnome::Gtk3::Activatable
+Gnome::Gtk3::ColorButton implements
 
   * [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
@@ -41,7 +35,6 @@ Declaration
 
     unit class Gnome::Gtk3::ColorButton;
     also is Gnome::Gtk3::Button;
-    also does Gnome::Gtk3::Buildable;
     also does Gnome::Gtk3::ColorChooser;
 
 Example

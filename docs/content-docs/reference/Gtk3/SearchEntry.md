@@ -22,17 +22,6 @@ Often, **Gnome::Gtk3::SearchEntry** will be fed events by means of being placed 
 
 Since: 3.6
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::SearchEntry implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Editable
-
-  * Gnome::Gtk3::CellEditable
-
 Synopsis
 ========
 
@@ -41,7 +30,6 @@ Declaration
 
     unit class Gnome::Gtk3::SearchEntry;
     also is Gnome::Gtk3::Entry;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

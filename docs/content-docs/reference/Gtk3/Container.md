@@ -70,13 +70,6 @@ An example of these properties in UI definitions:
       </focus-chain>
     </object>
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Container implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -85,7 +78,6 @@ Declaration
 
     unit class Gnome::Gtk3::Container;
     also is Gnome::Gtk3::Widget;
-    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

@@ -31,8 +31,6 @@ Implemented Interfaces
 
 Gnome::Gtk3::Assistant implements
 
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -41,7 +39,6 @@ Declaration
 
     unit class Gnome::Gtk3::Assistant;
     also is Gnome::Gtk3::Window;
-    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

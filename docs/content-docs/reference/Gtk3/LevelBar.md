@@ -57,6 +57,13 @@ Css Nodes
 
 In horizontal orientation, the nodes are always arranged from left to right, regardless of text direction.
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::LevelBar implements
+
+  * [Gnome::Gtk3::Orientable](Orientable.html)
+
 Synopsis
 ========
 

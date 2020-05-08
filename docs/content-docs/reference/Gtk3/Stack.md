@@ -19,11 +19,6 @@ Css Nodes
 
 **Gnome::Gtk3::Stack** has a single CSS node named stack.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Stack implements
-
 See Also
 --------
 
@@ -37,7 +32,6 @@ Declaration
 
     unit class Gnome::Gtk3::Stack;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
 
 Types
 =====

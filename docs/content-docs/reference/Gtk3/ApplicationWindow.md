@@ -77,6 +77,13 @@ The following attributes are used when constructing submenus:
 
   * "icon": icon name to display
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::ApplicationWindow implements
+
+  * Gnome::Gio::ActionMap
+
 Synopsis
 ========
 

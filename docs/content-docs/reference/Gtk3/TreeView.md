@@ -69,6 +69,11 @@ Css Nodes
 
 **Gnome::Gtk3::TreeView** has a main CSS node with name treeview and style class .view. It has a subnode with name header, which is the parent for all the column header widgets' CSS nodes. For rubberband selection, a subnode with name rubberband is used.
 
+Implemented Interfaces
+----------------------
+
+Gnome::Gtk3::TreeView implements
+
 See Also
 --------
 

@@ -28,15 +28,6 @@ See Also
 
 **Gnome::Gtk3::ScrolledWindow**
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ListBox implements
-
-  * Gnome::Atk::ImplementorIface
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 

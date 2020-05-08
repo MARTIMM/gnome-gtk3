@@ -21,13 +21,6 @@ When circumstances require it, **Gnome::Gtk3::StackSidebar** adds the .needs-att
 
 Since: 3.16
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::StackSidebar implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 
@@ -36,7 +29,6 @@ Declaration
 
     unit class Gnome::Gtk3::StackSidebar;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

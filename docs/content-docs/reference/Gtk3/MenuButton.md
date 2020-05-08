@@ -81,15 +81,6 @@ Css Nodes
 
 **Gnome::Gtk3::MenuButton** has a single CSS node with name button. To differentiate it from a plain **Gnome::Gtk3::Button**, it gets the .popup style class.
 
-Known implementations
----------------------
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * Gnome::Gtk3::Actionable
-
-  * Gnome::Gtk3::Activatable
-
 Synopsis
 ========
 
@@ -98,7 +89,6 @@ Declaration
 
     unit class Gnome::Gtk3::MenuButton;
     also is Gnome::Gtk3::ToggleButton;
-    also does Gnome::Gtk3::Buildable;
 
 Methods
 =======

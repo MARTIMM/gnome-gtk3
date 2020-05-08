@@ -43,13 +43,6 @@ Style classes that are typically used with the main CSS node are .csd (when clie
 
 **Gnome::Gtk3::Window** adds the .titlebar and .default-decoration style classes to the widget that is added as a titlebar child.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Window implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 Synopsis
 ========
 

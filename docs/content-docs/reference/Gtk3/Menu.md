@@ -64,9 +64,6 @@ Css Nodes
 
 The main CSS node of **Gnome::Gtk3::Menu** has name **menu**, and there are two subnodes with name arrow, for scrolling menu arrows. These subnodes get the .top and .bottom style classes.
 
-Implemented Interfaces
-----------------------
-
 Synopsis
 ========
 

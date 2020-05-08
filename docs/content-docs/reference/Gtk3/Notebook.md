@@ -67,13 +67,6 @@ A tab node gets the .dnd style class while it is moved with drag-and-drop.
 
 The nodes are always arranged from left-to-right, regardless of text direction.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Notebook implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
 See Also
 --------
 
@@ -87,7 +80,6 @@ Declaration
 
     unit class Gnome::Gtk3::Notebook;
     also is Gnome::Gtk3::Container;
-    also does Gnome::Gtk3::Buildable;
 
 Inheriting this class
 ---------------------

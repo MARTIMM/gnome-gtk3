@@ -23,15 +23,6 @@ Css Nodes
 
 When circumstances require it, **Gnome::Gtk3::StackSwitcher** adds the .needs-attention style class to the widgets representing the stack pages.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::StackSwitcher implements
-
-  * [Gnome::Gtk3::Buildable](Buildable.html)
-
-  * [Gnome::Gtk3::Orientable](Orientable.html)
-
 See Also
 --------
 
@@ -45,8 +36,6 @@ Declaration
 
     unit class Gnome::Gtk3::StackSwitcher;
     also is Gnome::Gtk3::Box;
-    also does Gnome::Gtk3::Buildable;
-    also does Gnome::Gtk3::Orientable;
 
 Methods
 =======
