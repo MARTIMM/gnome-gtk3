@@ -68,7 +68,6 @@ The `_fallback()` method in a module, which also uses an interface, should also 
 unit class Gnome::Gtk3::FileChooserDialog;
 also is Gnome::Gtk3::Dialog;                # parent class
 also does Gnome::Gtk3::FileChooser;         # interface
-also does Gnome::Gtk3::Buildable;           # interface
 
 ...
 
@@ -81,7 +80,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
 
   # then in interfaces
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._file_chooser_interface($native-sub) unless ?$s;
 
   # stamp class mark on it

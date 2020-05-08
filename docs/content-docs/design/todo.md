@@ -15,12 +15,6 @@ layout: sidebar
 * Cairo
 
 #### Rewriting code
-* Is there a way to skip all those if's in the `_fallback()` routines.
-* Prevent name clashes. The methods from interfaces have lower priority than those from the classes. Therefore `.set-name()` from Buildable must be written like `.buildable-set-name()`.
-  * set-name() in Gnome::Gtk3::Widget must stay while
-  * Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
-  * Gnome::Gio::Action set-name() must become `action-set-name()`;
-
 * I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
 
 * I have noticed that True and False can be used on int32 typed values when provided to the native sub in the argument list. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation yet. The return values are not coersed automatically to Bool but most of the time not needed.
@@ -40,15 +34,11 @@ layout: sidebar
   ```
   which is a teeny bit more cumbersome but also I find that the action is a side effect where the variables `$width` and `$height` are changed in the process. In this case not very confusing but other cases might be.
 
-* Interface modules are defined as Raku roles and are mixed into all classes where the GTK documentation points out that the class uses an interface. After some investigation I found out that the role only needs to be mixed in at the topmost class of the using classes. All child classes inherit the interface data.
-
-* It is not possible to inherit from the modules to create your own class due to the way the classes are BUILD(). Review the initialization methods to overcome this.
-
 * Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch.
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
-* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to find the proper native object.
+* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
 
 
 #### Documentation

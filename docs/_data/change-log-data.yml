@@ -2,6 +2,7 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   - 2020-05-04 0.28.3:
+    - Modules using interfaces are rewritten in such a way that the interface is only mixed in the top most class where the interface is used.
 
   - 2020-04-28 0.28.2:
     - Some improvements to start-thread() in Gnome::GObject::Object.

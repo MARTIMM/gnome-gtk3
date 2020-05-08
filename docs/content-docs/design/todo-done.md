@@ -17,6 +17,16 @@ layout: sidebar
 * Menus and Actions
 
 #### Rewriting code
+* Is there a way to skip all those if's in the `_fallback()` routines.
+* Prevent name clashes. The methods from interfaces have lower priority than those from the classes. Therefore `.set-name()` from Buildable must be written like `.buildable-set-name()`.
+  * set-name() in Gnome::Gtk3::Widget must stay while
+  * Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
+  * Gnome::Gio::Action set-name() must become `action-set-name()`;
+
+* Interface modules are defined as Raku roles and are mixed into all classes where the GTK documentation points out that the class uses an interface. After some investigation I found out that the role only needs to be mixed in at the topmost class of the using classes. All child classes inherit the interface data.
+
+* It is not possible to inherit from the modules to create your own class due to the way the classes are BUILD(). Review the initialization methods to overcome this.
+
 * Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
   try { $s = &::("gtk_list_store_$native-sub"); };
