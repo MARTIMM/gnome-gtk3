@@ -60,22 +60,6 @@ B<Gnome::Gtk3::ScrolledWindow> also sets the positional style classes (.left, .r
 If both scrollbars are visible, the area where they meet is drawn with a subnode named junction.
 
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ScrolledWindow implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Orientable](Orientable.html)
-
-=head2 Known implementations
-
-Gnome::Gtk3::ScrolledWindow is implemented by
-
-=item
-
-=end comment
-
 =head2 See Also
 
 B<Gnome::Gtk3::Scrollable>, B<Gnome::Gtk3::Viewport>, B<Gnome::Gtk3::Adjustment>
@@ -85,8 +69,6 @@ B<Gnome::Gtk3::Scrollable>, B<Gnome::Gtk3::Viewport>, B<Gnome::Gtk3::Adjustment>
 
   unit class Gnome::Gtk3::ScrolledWindow;
   also is Gnome::Gtk3::Bin;
-=comment  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::Orientable;
 
 =begin comment
 =head2 Inheriting this class
@@ -121,14 +103,9 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Adjustment;
 
-#use Gnome::Gtk3::Orientable;
-#use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::ScrolledWindow:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-#also does Gnome::Gtk3::Buildable;
-#also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -271,8 +248,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkScrolledWindow');
   $s = callsame unless ?$s;

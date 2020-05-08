@@ -31,13 +31,6 @@ A B<Gnome::Gtk3::CheckButton> with indicator (see C<gtk_toggle_button_set_mode()
 
 A B<Gnome::Gtk3::CheckButton> without indicator changes the name of its main node to button and adds a .check style class to it. The subnode is invisible in this case.
 
-=begin comment
-=head2 Implemented Interfaces
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item Gnome::Gtk3::Actionable
-=item Gnome::Gtk3::Activatable
-=end comment
-
 =head2 See Also
 
 B<Gnome::Gtk3::CheckMenuItem>, B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::RadioButton>
@@ -47,7 +40,6 @@ B<Gnome::Gtk3::CheckMenuItem>, B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::ToggleButt
 
   unit class Gnome::Gtk3::CheckButton;
   also is Gnome::Gtk3::ToggleButton;
-=comment  also does Gnome::Gtk3::Buildable;
 
 =head2 Inheriting this class
 
@@ -85,14 +77,11 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::ToggleButton;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkcheckbutton.h
 # https://developer.gnome.org/gtk3/stable/GtkCheckButton.html
 unit class Gnome::Gtk3::CheckButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::ToggleButton;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -173,7 +162,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_check_button_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkCheckButton');
   $s = callsame unless ?$s;

@@ -64,7 +64,6 @@ regardless of text direction.
 
 =head2 Implemented Interfaces
 =comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head2 See Also
@@ -76,7 +75,6 @@ B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::Grid>, B<Gnome::Gtk3::Layout>
 
   unit class Gnome::Gtk3::Box;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::Orientable;
 
 =head2 Example
@@ -92,7 +90,6 @@ use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Enums;
 
 use Gnome::Gtk3::Orientable;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -100,7 +97,6 @@ use Gnome::Gtk3::Buildable;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Box:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -178,7 +174,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_box_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkBox');

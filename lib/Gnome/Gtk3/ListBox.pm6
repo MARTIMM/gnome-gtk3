@@ -30,12 +30,6 @@ B<Gnome::Gtk3::ListBox> uses a single CSS node with name list. B<Gnome::Gtk3::Li
 
 B<Gnome::Gtk3::ScrolledWindow>
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ListBox implements
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -88,14 +82,11 @@ use Gnome::Glib::List;
 use Gnome::Gtk3::ListBoxRow;
 use Gnome::Gtk3::Container;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklistbox.h
 # https://developer.gnome.org/gtk3/stable/GtkListBox.html
 unit class Gnome::Gtk3::ListBox:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -164,7 +155,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_list_box_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkListBox');
   $s = callsame unless ?$s;

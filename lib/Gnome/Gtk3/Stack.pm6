@@ -24,13 +24,6 @@ The B<Gnome::Gtk3::Stack> widget was added in GTK+ 3.10.
 B<Gnome::Gtk3::Stack> has a single CSS node named stack.
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Stack implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
-
-
 =head2 See Also
 
 B<Gnome::Gtk3::Notebook>, B<Gnome::Gtk3::StackSwitcher>
@@ -40,7 +33,6 @@ B<Gnome::Gtk3::Notebook>, B<Gnome::Gtk3::StackSwitcher>
 
   unit class Gnome::Gtk3::Stack;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -52,12 +44,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Stack:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -152,7 +142,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_stack_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkStack');
   $s = callsame unless ?$s;

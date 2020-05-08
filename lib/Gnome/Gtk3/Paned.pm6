@@ -62,8 +62,6 @@ regardless of text direction.
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Paned implements
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item Gnome::Atk::ImplementorIface
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 
@@ -72,7 +70,6 @@ Gnome::Gtk3::Paned implements
 
   unit class Gnome::Gtk3::Paned;
   also is Gnome::Gtk3::Container;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::Orientable;
 
 =head2 Example
@@ -101,7 +98,6 @@ use Gnome::Gtk3::Orientable;
 # https://developer.gnome.org/gtk3/stable/GtkPaned.html
 unit class Gnome::Gtk3::Paned:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -169,7 +165,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_paned_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkPaned');

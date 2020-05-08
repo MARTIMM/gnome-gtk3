@@ -27,14 +27,6 @@ B<Gnome::Gtk3::StackSwitcher> has a single CSS node named stackswitcher and styl
 When circumstances require it, B<Gnome::Gtk3::StackSwitcher> adds the .needs-attention style class to the widgets representing the stack pages.
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::StackSwitcher implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item [Gnome::Gtk3::Orientable](Orientable.html)
-
-
 =head2 See Also
 
 B<Gnome::Gtk3::Stack>
@@ -44,8 +36,6 @@ B<Gnome::Gtk3::Stack>
 
   unit class Gnome::Gtk3::StackSwitcher;
   also is Gnome::Gtk3::Box;
-  also does Gnome::Gtk3::Buildable;
-  also does Gnome::Gtk3::Orientable;
 
 =comment head2 Example
 
@@ -57,14 +47,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Box;
-use Gnome::Gtk3::Orientable;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::StackSwitcher:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
-also does Gnome::Gtk3::Buildable;
-also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -126,8 +112,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_stack_switcher_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
-  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkStackSwitcher');
   $s = callsame unless ?$s;

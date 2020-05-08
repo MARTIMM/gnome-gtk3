@@ -20,13 +20,6 @@ For toolbar items that contain buttons, see the B<Gnome::Gtk3::ToolButton>, B<Gn
 See the B<Gnome::Gtk3::Toolbar> class for a description of the toolbar widget, and B<Gnome::Gtk3::ToolShell> for a description of the tool shell interface.
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ToolItem implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=comment item [Gnome::Gtk3::Activatable](Activatable.html)
-
 =head2 See Also
 
 B<Gnome::Gtk3::Toolbar>, B<Gnome::Gtk3::ToolButton>, B<Gnome::Gtk3::SeparatorToolItem>
@@ -36,7 +29,6 @@ B<Gnome::Gtk3::Toolbar>, B<Gnome::Gtk3::ToolButton>, B<Gnome::Gtk3::SeparatorToo
 
   unit class Gnome::Gtk3::ToolItem;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -48,12 +40,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::ToolItem:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -128,11 +118,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   my Callable $s;
   try { $s = &::("gtk_tool_item_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkToolItem');
   $s = callsame unless ?$s;

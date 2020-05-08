@@ -45,12 +45,6 @@ Style classes that are typically used with the main CSS node are .csd (when clie
 
 B<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes to the widget that is added as a titlebar child.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Window implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -79,14 +73,11 @@ use Gnome::Gdk3::Window;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Bin;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkwindow.h
 # https://developer.gnome.org/gtk3/stable/GtkWindow.html
 unit class Gnome::Gtk3::Window:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -217,7 +208,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_window_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkWindow');
   $s = callsame unless ?$s;

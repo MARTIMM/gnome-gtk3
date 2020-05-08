@@ -26,20 +26,11 @@ When circumstances require it, B<Gnome::Gtk3::StackSidebar> adds the .needs-atte
 Since: 3.16
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::StackSidebar implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
-
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::StackSidebar;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
-
 
 =comment head2 Example
 
@@ -51,12 +42,10 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::StackSidebar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -118,7 +107,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_stack_sidebar_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkStackSidebar');
   $s = callsame unless ?$s;

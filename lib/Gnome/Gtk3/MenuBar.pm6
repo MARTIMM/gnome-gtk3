@@ -23,11 +23,6 @@ many menu items.
 
 B<Gnome::Gtk3::MenuBar> has a single CSS node with name menubar.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::MenuBar implements
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head2 See Also
 
@@ -38,7 +33,6 @@ B<Gnome::Gtk3::MenuShell>, B<Gnome::Gtk3::Menu>, B<Gnome::Gtk3::MenuItem>
 
   unit class Gnome::Gtk3::MenuBar;
   also is Gnome::Gtk3::MenuShell;
-  also does Gnome::Gtk3::Buildable;
 
 =comment head2 Example
 
@@ -52,14 +46,11 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::MenuShell;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuBar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::MenuShell;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 #my Bool $signals-added = False;
@@ -125,7 +116,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_menu_bar_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMenuBar');
   $s = callsame unless ?$s;

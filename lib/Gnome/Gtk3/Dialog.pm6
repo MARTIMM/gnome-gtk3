@@ -76,17 +76,6 @@ An example of a dialog UI definition fragment:
     </action-widgets>
   </object>
 
-
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Dialog implements
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-
-=end comment
-
 =head2 See Also
 
 B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
@@ -136,15 +125,12 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Window;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkDialog.html
 
 unit class Gnome::Gtk3::Dialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Window;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -295,7 +281,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_dialog_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkDialog');
   $s = callsame unless ?$s;

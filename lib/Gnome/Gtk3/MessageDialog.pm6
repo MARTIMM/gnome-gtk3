@@ -61,14 +61,6 @@ An example for a non-modal dialog:
 The B<Gnome::Gtk3::MessageDialog> implementation of the B<Gnome::Gtk3::Buildable> interface exposes the message area as an internal child with the name “message_area”.
 
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::MessageDialog implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=end comment
-
 =head2 See Also
 
 B<Gnome::Gtk3::Dialog>
@@ -78,7 +70,6 @@ B<Gnome::Gtk3::Dialog>
 
   unit class Gnome::Gtk3::MessageDialog;
   also is Gnome::Gtk3::Dialog;
-=comment  also does Gnome::Gtk3::Buildable;
 
 =head2 Inheriting this class
 
@@ -110,12 +101,10 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::MessageDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -263,8 +252,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-#  $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkMessageDialog');
   $s = callsame unless ?$s;

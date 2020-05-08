@@ -89,15 +89,10 @@ to the level for the current value.
 In horizontal orientation, the nodes are always arranged from left to right,
 regardless of text direction.
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::LevelBar implements
-=item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
-
-=end comment
 
 =head1 Synopsis
 =head2 Declaration
@@ -120,8 +115,6 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::Gtk3::Widget;
-
-use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -130,7 +123,6 @@ use Gnome::Gtk3::Orientable;
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::LevelBar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -243,7 +235,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_level_bar_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkLevelBar');

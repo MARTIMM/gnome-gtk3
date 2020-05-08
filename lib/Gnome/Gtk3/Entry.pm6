@@ -50,15 +50,11 @@ The undershoot nodes are used to draw the underflow indication when content is s
 
 When touch is used and touch selection handles are shown, they are using CSS nodes with name cursor-handle. They get the .top or .bottom style class depending on where they are shown in relation to the selection. If there is just a single handle for the text cursor, it gets the style class .insertion-cursor.
 
-=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::Entry implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item Gnome::Gtk3::Editable
 =item Gnome::Gtk3::CellEditable
-=end comment
 
 =head2 See Also
 
@@ -69,7 +65,6 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
 
   unit class Gnome::Gtk3::Entry;
   also is Gnome::Gtk3::Widget;
-=comment  also does Gnome::Gtk3::Buildable;
 
 =head2 Inheriting this class
 
@@ -102,14 +97,11 @@ use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Image;
 use Gnome::Gtk3::Widget;
 
-use Gnome::Gtk3::Buildable;
-
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Entry:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
-also does Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -210,7 +202,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_entry_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkEntry');
   $s = callsame unless ?$s;

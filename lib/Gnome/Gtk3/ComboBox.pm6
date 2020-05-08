@@ -48,8 +48,8 @@ A B<Gnome::Gtk3::ComboBox> with an entry has a single CSS node with name combobo
 
 Gnome::Gtk3::ComboBox implements
 =comment item Gnome::Atk::ImplementorIface
-=item Gnome::Gtk3::CellLayout
-=item Gnome::Gtk3::CellEditable
+=comment item Gnome::Gtk3::CellLayout
+=comment item Gnome::Gtk3::CellEditable
 
 =head2 See Also
 
@@ -60,7 +60,6 @@ B<Gnome::Gtk3::ComboBoxText>, B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::CellRend
 
   unit class Gnome::Gtk3::ComboBox;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
@@ -73,8 +72,6 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
-
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -151,7 +148,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_combo_box_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkComboBox');
   $s = callsame unless ?$s;

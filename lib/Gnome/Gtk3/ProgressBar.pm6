@@ -32,8 +32,6 @@ B<Gnome::Gtk3::ProgressBar> has a main CSS node with name progressbar and subnod
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::ProgressBar implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 =item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head1 Synopsis
@@ -41,7 +39,6 @@ Gnome::Gtk3::ProgressBar implements
 
   unit class Gnome::Gtk3::ProgressBar;
   also is Gnome::Gtk3::Widget;
-  also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::Orientable;
 
 =comment head2 Example
@@ -55,14 +52,12 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Orientable;
-use Gnome::Gtk3::Buildable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ProgressBar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
-also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
@@ -125,7 +120,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkProgressBar');
