@@ -328,7 +328,7 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
 =begin pod
 =head2 [[gtk_] tree_view_] get_selection
 
-Gets the B<Gnome::Gtk3::TreeSelection> associated with I<tree_view>.
+Gets the B<Gnome::Gtk3::TreeSelection> associated with this I<tree_view>.
 
   method gtk_tree_view_get_selection ( --> N-GObject  )
 
