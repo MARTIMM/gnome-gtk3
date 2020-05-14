@@ -1,61 +1,60 @@
 ```plantuml
-scale 0.8
-
+scale 0.9
+skinparam packageStyle rectangle
 set namespaceSeparator ::
-
-package Gnome::N << Rectangle >> {
-}
-
-package Gnome::GObject << Rectangle >> {
-}
-
-package Gnome::Gtk3 << Rectangle >> {
-}
+hide members
 
 
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::ToggleButton
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::ColorButton
-Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::CheckButton
-Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::MenuButton
-Gnome::Gtk3::CheckButton <|-- Gnome::Gtk3::RadioButton
-Gnome::Gtk3::Button <|--- Gnome::Gtk3::FontButton
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::LinkButton
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::LockButton
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
-Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
-Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
+class Gnome::N::TopLevelClassSupport < Catch all class >
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 
-Gnome::Gtk3::Bin <|--- Gnome::Gtk3::Button
-Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
-Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+'class Gnome::GObject::InitialyUnowned
+'class Gnome::GObject::Object
+Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 
 Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
+
+Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
+Gnome::Gtk3::Bin <|-- Gnome::Gtk3::Button
+
+
 
 Interface Gnome::Gtk3::Buildable <Interface>
 Gnome::Gtk3::Buildable <|- Gnome::Gtk3::Widget
 
 Interface Gnome::Gtk3::Actionable <Interface>
-Gnome::Gtk3::Actionable <|-- Gnome::Gtk3::Button
+Gnome::Gtk3::Actionable <|- Gnome::Gtk3::Button
 
-Interface Gnome::Gtk3::Orientable <Interface>
-Gnome::Gtk3::Orientable <|-- Gnome::Gtk3::ScaleButton
+'Interface Gnome::Gtk3::Orientable <Interface>
+'Gnome::Gtk3::Orientable <|-- Gnome::Gtk3::ScaleButton
 
-Interface Gnome::Gtk3::ColorChooser <Interface>
-Gnome::Gtk3::ColorChooser <|-- Gnome::Gtk3::ColorButton
+'Interface Gnome::Gtk3::ColorChooser <Interface>
+'Gnome::Gtk3::ColorChooser <|-- Gnome::Gtk3::ColorButton
 
-Interface Gnome::Gtk3::FontChooser <Interface>
-Gnome::Gtk3::FontChooser <|-- Gnome::Gtk3::FontButton
+'Interface Gnome::Gtk3::FontChooser <Interface>
+'Gnome::Gtk3::FontChooser <|-- Gnome::Gtk3::FontButton
 
 'Gnome::GObject <--[hidden]- Gnome::Gtk3
 
 
-class Gnome::GObject::InitialyUnowned
-class Gnome::GObject::Object
-Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 
-class Gnome::N::TopLevelClassSupport < Catch all class >
-Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ToggleButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ColorButton
+'Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::CheckButton
+'Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::MenuButton
+'Gnome::Gtk3::CheckButton <|-- Gnome::Gtk3::RadioButton
+'Gnome::Gtk3::Button <|--- Gnome::Gtk3::FontButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LinkButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LockButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
+'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
+
 ```
+
+
+<!--
 │   │   │   │   ├── GtkButton                   ♥ Button
 │   │   │   │   │   ├── GtkToggleButton         ToggleButton
 │   │   │   │   │   │   ├── GtkCheckButton      ♥ CheckButton
@@ -87,3 +86,4 @@ Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 ├── GtkOrientable                                     o
 ├── GtkColorChooser                                   cc
 ├── GtkFontChooser                                    foc
+-->
