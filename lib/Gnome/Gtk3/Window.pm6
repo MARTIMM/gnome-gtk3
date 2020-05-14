@@ -50,7 +50,28 @@ B<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes 
 
   unit class Gnome::Gtk3::Window;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
+
+=head2 Uml Diagram
+
+![](plantuml/Window.png)
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Window;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Window;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Window class process the options
+    self.bless( :GtkWindow, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =head2 Example
 
@@ -95,7 +116,7 @@ A B<Gnome::Gtk3::Window> can be one of these types. Most things you’d consider
 
 =end pod
 
-#TE:0:GtkWindowType:
+#TE:1:GtkWindowType:
 enum GtkWindowType is export <
   GTK_WINDOW_TOPLEVEL GTK_WINDOW_POPUP
 >;
@@ -114,7 +135,7 @@ Window placement can be influenced using this enumeration. Note that using GTK_W
 
 =end pod
 
-#TE:0:GtkWindowPosition:
+#TE:4:GtkWindowPosition:QAManager
 enum GtkWindowPosition is export <
   GTK_WIN_POS_NONE
   GTK_WIN_POS_CENTER
@@ -130,25 +151,27 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create an empty top level window or popup.
+=head3 new()
+
+Creates a new B<Gnome::Gtk3::Window>, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be C<GTK_WINDOW_TOPLEVEL>. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use B<Gnome::Gtk3::Menu>), you might use C<GTK_WINDOW_POPUP>. C<GTK_WINDOW_POPUP> is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, C<GTK_WINDOW_POPUP> means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the window manager.
+
+If you simply want an undecorated window (no window borders), use C<gtk_window_set_decorated()>, don’t use C<GTK_WINDOW_POPUP>.
+
+All top-level windows created by C<gtk_window_new()> are stored in an internal top-level window list.  This list can be obtained from C<gtk_window_list_toplevels()>. Due to Gtk+ keeping a reference to the window internally, C<gtk_window_new()> does not return a reference to the caller.
+
+To delete a B<Gnome::Gtk3::Window>, call C<gtk_widget_destroy()>.
 
   multi method new (
-    Bool :$empty!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
+    GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
   )
+
+=head3 method new( :title!, :window-type?)
 
 Create a top level window or popup with title set.
 
   multi method new (
     Bool :$title!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
   )
-
-Create a window using a native object from elsewhere. See also Gnome::GObject::Object.
-
-  multi method new ( :$native-object! )
-
-Create a window using a native object from a builder. See also Gnome::GObject::Object.
-
-  multi method new ( Str :$build-id! )
 
 =end pod
 
@@ -160,44 +183,46 @@ Create a window using a native object from a builder. See also Gnome::GObject::O
 
 submethod BUILD ( *%options ) {
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w0<activate-default keys-changed enable-debugging>,
-    :w1<activate-focus enable-debugging set-focus>,
+    :w0<activate-default activate-focus keys-changed>,
+    :w1<enable-debugging set-focus>,
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Window';
+  if self.^name eq 'Gnome::Gtk3::Window' or %options<GtkWindow> {
 
-  if ?%options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-    self.set-native-object(gtk_window_new($wtype));
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      if ?%options<empty> {
+        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
+        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
+        $no = _gtk_window_new($wtype);
+      }
+
+      else {
+        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
+        $no = _gtk_window_new($wtype);
+      }
+
+      self.set-native-object($no);
+      if ? %options<title> {
+        Gnome::N::deprecate(
+          '.new(:title)', '.gtk_window_set_title()', '0.28.3', '0.32.0'
+        );
+        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
+        self.gtk_window_set_title(%options<title>);
+      }
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkWindow');
   }
-
-  elsif ? %options<title> {
-    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-    self.set-native-object(gtk_window_new($wtype));
-    self.gtk_window_set_title(%options<title>);
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ?%options<empty> {
-    my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-    self.set-native-object(gtk_window_new($wtype));
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkWindow');
 }
 
 #-------------------------------------------------------------------------------
@@ -217,7 +242,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_window_new:new()
+#TM:2:_gtk_window_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] window_new
 
@@ -236,9 +262,10 @@ Returns: a new B<Gnome::Gtk3::Window>.
 =item GtkWindowType $type; type of window
 
 =end pod
+}}
 
-sub gtk_window_new ( int32 $type )
-  returns N-GObject
+sub _gtk_window_new ( int32 $type --> N-GObject )
+  is symbol('gtk_window_new')
   is native(&gtk-lib)
   { * }
 
@@ -2841,7 +2868,7 @@ Also here, the types of positional arguments in the signal handler are important
 =comment #TS:0:activate-focus:
 =head3 activate-focus
 
-The I<activate-focus> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of I<window>.
+The I<activate-focus> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of I<$window>.
 
   method handler (
     Gnome::GObject::Object :widget($window),
@@ -2854,10 +2881,7 @@ The I<activate-focus> signal is a [keybinding signal](https://developer.gnome.or
 =comment #TS:0:activate-default:
 =head3 activate-default
 
-The I<activate-default> signal is a
-[keybinding signal][B<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user activates the default widget
-of I<window>.
+The I<activate-default> signal is a [keybinding signal][B<Gnome::Gtk3::BindingSignal>] which gets emitted when the user activates the default widget of I<$window>.
 
   method handler (
     Gnome::GObject::Object :widget($window),
@@ -2870,8 +2894,7 @@ of I<window>.
 =comment #TS:0:keys-changed:
 =head3 keys-changed
 
-The I<keys-changed> signal gets emitted when the set of accelerators
-or mnemonics that are associated with I<window> changes.
+The I<keys-changed> signal gets emitted when the set of accelerators or mnemonics that are associated with I<$window> changes.
 
   method handler (
     Gnome::GObject::Object :widget($window),
@@ -2884,7 +2907,7 @@ or mnemonics that are associated with I<window> changes.
 =comment #TS:0:enable-debugging:
 =head3 enable-debugging
 
-The I<enable-debugging> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user enables or disables interactive debugging. When I<toggle> is C<1>, interactive debugging is toggled on or off, when it is C<0>, the debugger will be pointed at the widget under the pointer.
+The I<enable-debugging> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user enables or disables interactive debugging. When I<$toggle> is C<1>, interactive debugging is toggled on or off, when it is C<0>, the debugger will be pointed at the widget under the pointer.
 
 The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 
@@ -2894,6 +2917,7 @@ Return: C<1> if the key binding was handled
     int32 $toggle,
     Gnome::GObject::Object :widget($window),
     *%user-options
+    --> Int
   );
 
 =item $window; the window on which the signal is emitted
