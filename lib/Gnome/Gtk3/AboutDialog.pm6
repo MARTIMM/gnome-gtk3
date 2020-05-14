@@ -34,7 +34,7 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
 
 =head2 Uml Diagram
 
-![](plantuml/dialogs.png)
+![](plantuml/AboutDialog.png)
 
 =begin comment
 
@@ -172,19 +172,9 @@ my Bool $signals-added = False;
 
 =head3 new()
 
-Create a new plain object.
+Creates a new B<Gnome::Gtk3::AboutDialog>.
 
   multi method new ( )
-
-=begin comment
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
-
-  multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-=end comment
 
 =end pod
 
