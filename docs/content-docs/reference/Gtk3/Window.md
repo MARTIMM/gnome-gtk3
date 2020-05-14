@@ -51,7 +51,30 @@ Declaration
 
     unit class Gnome::Gtk3::Window;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
+
+Uml Diagram
+-----------
+
+![](plantuml/Window.png)
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Window;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Window;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Window class process the options
+      self.bless( :GtkWindow, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Example
 -------
@@ -97,28 +120,7 @@ Methods
 new
 ---
 
-Create an empty top level window or popup.
-
-    multi method new (
-      Bool :$empty!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
-    )
-
-Create a top level window or popup with title set.
-
-    multi method new (
-      Bool :$title!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
-    )
-
-Create a window using a native object from elsewhere. See also Gnome::GObject::Object.
-
-    multi method new ( :$native-object! )
-
-Create a window using a native object from a builder. See also Gnome::GObject::Object.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] window_new
------------------
+### new()
 
 Creates a new **Gnome::Gtk3::Window**, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be `GTK_WINDOW_TOPLEVEL`. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use **Gnome::Gtk3::Menu**), you might use `GTK_WINDOW_POPUP`. `GTK_WINDOW_POPUP` is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, `GTK_WINDOW_POPUP` means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the window manager.
 
@@ -128,11 +130,17 @@ All top-level windows created by `gtk_window_new()` are stored in an internal to
 
 To delete a **Gnome::Gtk3::Window**, call `gtk_widget_destroy()`.
 
-Returns: a new **Gnome::Gtk3::Window**.
+    multi method new (
+      Bool :$empty!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
+    )
 
-    method gtk_window_new ( GtkWindowType $type --> N-GObject  )
+### method new( :title!, :window-type?)
 
-  * GtkWindowType $type; type of window
+Create a top level window or popup with title set.
+
+    multi method new (
+      Bool :$title!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
+    )
 
 [[gtk_] window_] set_title
 --------------------------
