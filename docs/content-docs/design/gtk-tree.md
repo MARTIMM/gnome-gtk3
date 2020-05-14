@@ -8,7 +8,7 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules made inheritable are noted with ♥. Inheritance is a bit more complex than normal, info will be given in due time. Modules under construction are marked with ⛏. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. The symbol 🗸 means that the module is tested, unneeded subs are removed, documentation done etc. (that will show up almost nowhere :- ).
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules made inheritable are noted with ♥. Inheritance is a bit more complex than normal, info will be given in due time. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. The symbol 🗸 means that the module is tested, unneeded subs are removed, documentation done etc. (that will show up almost nowhere :- ). All modules under construction are not marked with an icon.
 
 ```
 Tree of Gtk C structures                        Raku module
@@ -20,7 +20,7 @@ GObject                                         Gnome::GObject::Object
 │   ├── GtkWidget                                     Widget
 │   │   ├── GtkContainer                              Container
 │   │   │   ├── GtkBin                                Bin
-│   │   │   │   ├── GtkWindow                         Window
+│   │   │   │   ├── GtkWindow                         ♥ Window
 │   │   │   │   │   ├── GtkDialog                     ♥ Dialog
 │   │   │   │   │   │   ├── GtkAboutDialog            ♥ AboutDialog
 │   │   │   │   │   │   ├── GtkAppChooserDialog

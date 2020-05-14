@@ -29,10 +29,11 @@ Legend for head of table
   * Remove check for wrong / unavailable options if inheritable.
   * Add =head3 to each `.new()` option.
   * Remove doc for :native-object or :build-id except where it is defined
+  * Deprecate any option which can be done in a supsequent call like :$title in Window.
+  * Move native `.gtk_..._new_...()` documentation to the Build doc. These subroutines must be prefixed with an underscore '\_' to make them unavailable, e.g. `._gtk_..._new_...()`.
 * sd: Subroutine documentation and additions
   * Add examples to subroutines.
   * Inhibit unusable subroutines and documentation.
-  * Remove native `.gtk_..._new_...()` documentation. The subroutines must be prefixed with an underscore '\_' to make them unavailable, e.g. `._xyz_new()`.
   * Add \$ to variables and use `True`/`False` when boolean input
   * Remove Since version text
 * cp: Cleanup documentation
@@ -266,7 +267,7 @@ Viewport|
 VolumeButton|
 Widget                    |  |  |  |  |  |  |* |
 WidgetPath|b|
-Window                    |  |  |  |  |  |  |* |
+Window                    |  | x| x|  |  |  |* |
 WindowGroup|
 **Gnome::Gdk3**           |p | #| #| #| #| #| #|
 **Gnome::GObject**        |p | #| #| #| #| #| #|
@@ -278,6 +279,12 @@ Signal                    |- |  |  |  |  |  |* |
 Type                      |s |
 value                     |b |
 **Gnome::Glib**           |p | #| #| #| #| #| #|
+Error                     |  |  |  |  |  |  |  |
+List                      |  |  |  |  |  |  |  |
+Main                      |  |  |  |  |  |  |  |
+Quark                     |  |  |  |  |  |  |  |
+SList                     |  |  |  |  |  |  |  |
+Variant                   |  |  |  |  |  |  |  |
 **Gnome::Gio**            |p | #| #| #| #| #| #|
 Action                    |i |
 ActionMap                 |i |
@@ -291,10 +298,11 @@ Resource                  |b |
 SimpleAction              |  |
 **Gnome::N**              |p | #| #| #| #| #| #|
 N-GObject                 |N |  |  |  |  |  |  |
-NativeLib                 |L |  |  |  |  |  |  |
-TopLevelClassSupport      |t |  |  |  |  |  |  |
-X                         |  |  |  |  |  |  |  |
+NativeLib                 |L |  |  |  |  |  |- |
+TopLevelClassSupport      |t |  |  |  |  |  |* |
+X                         |  |  |  |  |  |  |* |
 
-<!--**Gnome::Atk**            |p | #| #| #| #| #| #|
+<!--
+**Gnome::Atk**            |p | #| #| #| #| #| #|
 Object                    |  |
 -->
