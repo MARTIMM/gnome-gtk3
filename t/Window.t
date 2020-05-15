@@ -1,6 +1,6 @@
 use v6;
-use lib '../gnome-native/lib';
-use lib '../gnome-gobject/lib';
+#use lib '../gnome-native/lib';
+#use lib '../gnome-gobject/lib';
 use NativeCall;
 use Test;
 
@@ -107,7 +107,7 @@ subtest 'Themes ...', {
 }
 }}
 
-#`{{
+##`{{
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
   #use Gnome::Glib::Main;
@@ -115,10 +115,10 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::Main $main .= new;
 
   class SignalHandlers {
-    has Bool $.signal-processed = False;
+    has Bool $!signal-processed = False;
 
     method enable-debugging-handler (
-      int32 $toggle, Gnome::Gtk3::Window :$widget
+      Int $toggle, Gnome::Gtk3::Window :$widget
       --> Int
     ) {
 
@@ -126,23 +126,25 @@ subtest 'Signals ...', {
       is $toggle, 1, 'test $toggle';
       $!signal-processed = True;
 
-      0
+      1
     }
 
     method signal-emitter ( Gnome::Gtk3::Window :$widget --> Str ) {
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
 
-      $widget.emit-by-name(
-        'enable-debugging', $widget, 1,
-        #:returns-value, :parameters(int32,int32)
+      note 'rv: ', $widget.emit-by-name(
+        'enable-debugging', 1, :return-type(int32), :parameters([int32,])
       );
-      is self.signal-processed, True, 'enable-debugging signal processed';
 
-      #self.signal-processed = False;
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      is $!signal-processed, True, '\'enable-debugging\' signal processed';
+
+      #$!signal-processed = False;
       #$mh-in-handler.emit-by-name( ..., $mh-in-handler);
-      #is $xs.signal-processed, True, '... signal processed';
+      #is $!signal-processed, True, '\'...\' signal processed';
 
-      sleep(1.0);
+      sleep(0.3);
       $main.gtk-main-quit;
 
       'done'
@@ -150,11 +152,11 @@ Gnome::N::debug(:on);
   }
 
   my Gnome::Gtk3::Window $w .= new;
-  my SignalHandlers $xs .= new;
-  $w.register-signal( $xs, 'enable-debugging-handler', 'enable-debugging');
+  my SignalHandlers $sh .= new;
+  $w.register-signal( $sh, 'enable-debugging-handler', 'enable-debugging');
 
   my Promise $p = $w.start-thread(
-    $xs, 'signal-emitter',
+    $sh, 'signal-emitter',
     # G_PRIORITY_DEFAULT,
     # :!new-context,
     # :start-time(now + 3)
@@ -168,7 +170,7 @@ Gnome::N::debug(:on);
 
   is $p.result, 'done', 'emitter finished';
 }
-}}
+#}}
 
 #-------------------------------------------------------------------------------
 done-testing;

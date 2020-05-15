@@ -1,4 +1,6 @@
 use v6;
+#use lib '../gnome-native/lib';
+#use lib '../gnome-gobject/lib';
 
 use NativeCall;
 use Test;
@@ -8,8 +10,6 @@ use Gnome::GObject::Object;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
 use Gnome::Glib::List;
-use Gnome::Glib::Main;
-use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
@@ -18,8 +18,6 @@ use Gnome::Gtk3::Label;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-# used later on in tests
-my Gnome::Gtk3::Main $main .= new;
 my Gnome::Gtk3::Button $b;
 
 #-------------------------------------------------------------------------------
@@ -79,60 +77,69 @@ subtest 'Button as container', {
 }
 
 #-------------------------------------------------------------------------------
-class BH {
-
-  method click-handler ( :widget($button), Array :$user-data ) {
-    isa-ok $button, Gnome::Gtk3::Button;
-    is $user-data[0], 'Hello', 'data 0 ok';
-    is $user-data[1], 'World', 'data 1 ok';
-    is $user-data[2], '!', 'data 2 ok';
-  }
-}
-
-#-------------------------------------------------------------------------------
 subtest 'Button connect and emit signal', {
 
-  # register button signal
+  use Gnome::Gtk3::Main;
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method click-handler (
+      Gnome::Gtk3::Button :widget($button), Array :$user-data
+    ) {
+      isa-ok $button, Gnome::Gtk3::Button;
+      is $user-data[0], 'Hello', 'data 0 ok';
+      is $user-data[1], 'World', 'data 1 ok';
+      is $user-data[2], '!', 'data 2 ok';
+
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Button :$widget --> Str ) {
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      $widget.emit-by-name('clicked');
+      sleep(0.3);
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      sleep(0.3);
+      is $!signal-processed, True, '\'clicked\' signal processed';
+
+      #$!signal-processed = False;
+      #$mh-in-handler.emit-by-name( ..., $mh-in-handler);
+      #is $!signal-processed, True, '... signal processed';
+
+#      sleep(1.0);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  # create new button, register button signal and prepare user data
   $b .= new(:label('xyz'));
 
   # prevent errors from gnome gtk
   my Gnome::Gtk3::Window $w .= new;
   $w.container-add($b);
+  $w.show-all;
 
   my Array $data = [];
   $data[0] = 'Hello';
   $data[1] = 'World';
 
-  my BH $x .= new;
-  $b.register-signal( $x, 'click-handler', 'clicked', :user-data($data));
+  my SignalHandlers $sh .= new;
+  $b.register-signal( $sh, 'click-handler', 'clicked', :user-data($data));
 
-  # add after registration
+  # add after registration to see if that comes through too
   $data[2] = '!';
 
-  my Promise $p = start {
-    # wait for loop to start
-    sleep(1.1);
-
-    is $main.gtk-main-level, 1, "loop level now 1";
-
-    my Gnome::Glib::Main $gmain .= new;
-    my $main-context = $gmain.context-get-thread-default;
-
-    $gmain.context-invoke(
-      $main-context,
-      -> $d {
-        $b.emit-by-name( 'clicked', $b);
-
-        sleep(1.0);
-        $main.gtk-main-quit;
-
-        0
-      },
-      OpaquePointer
-    );
-
-    'test done'
-  }
+  my Promise $p = $b.start-thread(
+    $sh, 'signal-emitter',
+    # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
+    # :!new-context,
+    # :start-time(now + 1)
+  );
 
   is $main.gtk-main-level, 0, "loop level 0";
   $main.gtk-main;
