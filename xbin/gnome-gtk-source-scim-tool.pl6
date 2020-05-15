@@ -139,7 +139,7 @@ sub MAIN (
           my Gnome::Gtk3::Main \$main .= new;
 
           class SignalHandlers {
-            has Bool \$.signal-processed = False;
+            has Bool \$!signal-processed = False;
 
             method ... ( 'any-args', $class :\$widget #`{{ --> ...}} ) {
 
@@ -149,27 +149,45 @@ sub MAIN (
 
             method signal-emitter ( $class :\$widget --> Str ) {
 
-              \$widget.emit-by-name\( 'signal', \$widget, 'any-args');
-              is self.signal-processed, True, '... signal processed';
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
 
-              #self.signal-processed = False;
-              #\$widget.emit-by-name\( 'signal', \$widget, 'any-args');
-              #is \$xs.signal-processed, True, '... signal processed';
+              \$widget.emit-by-name\(
+                'signal',
+              #  'any-args',
+              #  :return-type(int32),
+              #  :parameters([int32,])
+              );
+              is \$!signal-processed, True, '\\'...\\' signal processed';
 
-              sleep\(1.0);
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
+
+              #\$!signal-processed = False;
+              #\$widget.emit-by-name\(
+              #  'signal',
+              #  'any-args',
+              #  :return-type(int32),
+              #  :parameters([int32,])
+              #);
+              #is \$!signal-processed, True, '\\'...\\' signal processed';
+
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
+              sleep\(0.4);
               \$main.gtk-main-quit;
 
               'done'
             }
           }
 
-
           my $class $m .= new;
-          my SignalHandlers \$xs .= new;
-          $m.register-signal\( \$xs, 'method', 'signal');
+
+          #my Gnome::Gtk3::Window \$w .= new;
+          #\$w.container-add(\$m);
+
+          my SignalHandlers \$sh .= new;
+          $m.register-signal\( \$sh, 'method', 'signal');
 
           my Promise \$p = $m.start-thread\(
-            \$xs, 'signal-emitter',
+            \$sh, 'signal-emitter',
             # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
             # :!new-context,
             # :start-time(now + 1)
