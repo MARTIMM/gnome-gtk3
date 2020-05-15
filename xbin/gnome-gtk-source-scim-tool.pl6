@@ -32,10 +32,12 @@ my @enum-list = ();
 sub MAIN (
   Str:D $base-name, Bool :$main = False, Bool :$sig = False,
   Bool :$prop = False, Bool :$sub = False, Bool :$dep = False,
-  Bool :$types = False
+  Bool :$types = False, Bool :$test = False
 ) {
 
-  my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $dep, $types);
+  my Bool $do-all = !(
+    [or] $main, $sig, $prop, $sub, $dep, $types, $test
+  );
 
   load-dir-lists();
 
@@ -64,74 +66,148 @@ sub MAIN (
     get-signals($source-content) if $do-all or $sig;
     get-properties($source-content) if $do-all or $prop;
 
-    # create var name named after classname. E.g. TextBuffer -> $tb.
-    my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
-    my Str $mgc = '$mgc';
-    my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
-    my Str $test-content = Q:s:to/EOTEST/;
-      use v6;
-      use NativeCall;
-      use Test;
+    if $test {
+      # create var name named after classname. E.g. TextBuffer -> $tb.
+      my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
+      my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
+      my Str $test-content = Q:q:s:b:to/EOTEST/;
+        use v6;
+        use NativeCall;
+        use Test;
 
-      use $class;
+        use $class;
 
-      #use Gnome::N::X;
-      #Gnome::N::debug(:on);
+        #use Gnome::N::X;
+        #Gnome::N::debug(:on);
 
-      #`{{
-      #-------------------------------------------------------------------------------
-      class MyGuiClass is $class {
-        submethod new ( |c ) {
-          self.bless( :$lib-class-name, |c);
+        #-------------------------------------------------------------------------------
+        my $class $m;
+        #-------------------------------------------------------------------------------
+        subtest 'ISA test', {
+          $m .= new;
+          isa-ok $m, $class, '.new()';
         }
-      }
 
-      subtest 'User class test', {
-        my MyGuiClass $mgc .= new;
-        isa-ok $mgc, $class, '.new()';
-      }
+        #`{{
+        #-------------------------------------------------------------------------------
+        subtest 'Manipulations', {
+        }
 
-      }}
-      #-------------------------------------------------------------------------------
-      my $class $m;
-      #-------------------------------------------------------------------------------
-      subtest 'ISA test', {
-        $m .= new;
-        isa-ok $m, $class, '.new()';
-      }
+        #-------------------------------------------------------------------------------
+        subtest 'Inherit $class', {
+          class MyClass is $class {
+            method new ( |c ) {
+              self.bless( :$lib-class-name, |c);
+            }
 
-      #`{{
-      #-------------------------------------------------------------------------------
-      subtest 'Manipulations', {
-      }
+            submethod BUILD ( *%options ) {
 
-      #-------------------------------------------------------------------------------
-      subtest 'Inherit ...', {
-      }
+            }
+          }
 
-      #-------------------------------------------------------------------------------
-      subtest 'Interface ...', {
-      }
+          my MyClass \$mgc .= new;
+          isa-ok \$mgc, $class, '.new()';
+        }
 
-      #-------------------------------------------------------------------------------
-      subtest 'Properties ...', {
-      }
+        #-------------------------------------------------------------------------------
+        subtest 'Interface ...', {
+        }
 
-      #-------------------------------------------------------------------------------
-      subtest 'Themes ...', {
-      }
+        #-------------------------------------------------------------------------------
+        subtest 'Properties ...', {
+          use Gnome::GObject::Value;
+          use Gnome::GObject::Type;
 
-      #-------------------------------------------------------------------------------
-      subtest 'Signals ...', {
-      }
-      }}
+          my $class $m .= new;
 
-      #-------------------------------------------------------------------------------
-      done-testing;
+          my Gnome::GObject::Value \$gv .= new\(:init(G_TYPE_...));
+          $m.g-object-get-property\( '...', \$gv);
+          #\$gv.g-value-set-...\(...);
+          is \$gv.g-value-get-...\(...), ..., 'property ...';
+          \$gv.clear-object;
+        }
 
-      EOTEST
+        #-------------------------------------------------------------------------------
+        subtest 'Themes ...', {
+        }
 
-    "xt/NewModules/$raku-class-name.t".IO.spurt($test-content);
+        #-------------------------------------------------------------------------------
+        subtest 'Signals ...', {
+          #use Gnome::Glib::Main;
+          use Gnome::Gtk3::Main;
+
+          my Gnome::Gtk3::Main \$main .= new;
+
+          class SignalHandlers {
+            has Bool \$!signal-processed = False;
+
+            method ... ( 'any-args', $class :\$widget #`{{ --> ...}} ) {
+
+              isa-ok \$widget, $class;
+              \$!signal-processed = True;
+            }
+
+            method signal-emitter ( $class :\$widget --> Str ) {
+
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
+
+              \$widget.emit-by-name\(
+                'signal',
+              #  'any-args',
+              #  :return-type(int32),
+              #  :parameters([int32,])
+              );
+              is \$!signal-processed, True, '\\'...\\' signal processed';
+
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
+
+              #\$!signal-processed = False;
+              #\$widget.emit-by-name\(
+              #  'signal',
+              #  'any-args',
+              #  :return-type(int32),
+              #  :parameters([int32,])
+              #);
+              #is \$!signal-processed, True, '\\'...\\' signal processed';
+
+              while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
+              sleep\(0.4);
+              \$main.gtk-main-quit;
+
+              'done'
+            }
+          }
+
+          my $class $m .= new;
+
+          #my Gnome::Gtk3::Window \$w .= new;
+          #\$w.container-add(\$m);
+
+          my SignalHandlers \$sh .= new;
+          $m.register-signal\( \$sh, 'method', 'signal');
+
+          my Promise \$p = $m.start-thread\(
+            \$sh, 'signal-emitter',
+            # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
+            # :!new-context,
+            # :start-time(now + 1)
+          );
+
+          is \$main.gtk-main-level, 0, "loop level 0";
+          \$main.gtk-main;
+          #is \$main.gtk-main-level, 0, "loop level is 0 again";
+
+          is \$p.result, 'done', 'emitter finished';
+        }
+        }}
+
+        #-------------------------------------------------------------------------------
+        done-testing;
+
+        EOTEST
+
+      "xt/NewModules/$raku-class-name.t".IO.spurt($test-content);
+    }
   }
 
   else {
@@ -873,7 +949,7 @@ sub substitute-in-template (
       =head2 new
 
       =head3 new()
-      
+
       Create a new RAKU-CLASS-NAME object.
 
         multi method new ( )

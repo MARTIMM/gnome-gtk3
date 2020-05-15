@@ -20,8 +20,8 @@ use Gnome::Gtk3::Window;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   my Gnome::Gtk3::Scale $s .= new;
-  my Gnome::Gtk3::Range $r .= new(:native-object($s));
-  isa-ok $r, Gnome::Gtk3::Range;
+#  my Gnome::Gtk3::Range $r .= new(:native-object($s));
+  isa-ok $s, Gnome::Gtk3::Range;
 }
 
 #-------------------------------------------------------------------------------
@@ -34,7 +34,11 @@ subtest 'Manipulations', {
   $w.gtk-container-add($s);
   $w.show-all;
 
+#`{{
+Not a good test. Depending on desktop theme, coordinates and sizes may vary and therefore unknown.
+
   my N-GdkRectangle $ra = $s.get-range-rect;
+note "R: $ra.perl()";
   ok $ra.x > 1, 'x > 1: ' ~ $ra.x;
   ok $ra.y > 1, 'y > 1: ' ~ $ra.y;
   ok $ra.width > 1, 'width > 1: ' ~ $ra.width;
@@ -43,6 +47,14 @@ subtest 'Manipulations', {
   my Int ( $slider_start, $slider_end) = $s.get-slider-range;
   ok $slider_start > 1, 'slider_start: ' ~ $slider_start;
   ok $slider_end > 1, 'slider_end: ' ~ $slider_end;
+}}
+
+  is $s.get-value, 10e0, '.new()';
+  $s.set-value(1.12e1);
+  is $s.get-value, 112e-1, '.set-value() / .get-value()';
+
+  $s.set-range( 13e0, 100e0);
+  is $s.get-value, 1.3e1, '.set-range()';
 }
 
 #`{{

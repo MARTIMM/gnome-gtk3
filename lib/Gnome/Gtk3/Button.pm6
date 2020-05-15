@@ -31,7 +31,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
   also is Gnome::Gtk3::Bin;
 
 =head2 Uml Diagram
-![](plantuml/buttons.png)
+![](plantuml/Button.png)
 
 =head2 Inheriting this class
 
@@ -106,16 +106,6 @@ You can use the I<gtk3-icon-browser> tool to browse through currently installed 
 Creates a new B<Gnome::Gtk3::Button> containing a label. If characters in I<label> are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. Pressing Alt and that key activates the button.
 
   multi method new ( Str :$mnemonic! )
-
-=begin comment
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
-
-  multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-=end comment
 
 =end pod
 

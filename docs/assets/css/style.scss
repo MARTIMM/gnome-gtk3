@@ -26,6 +26,7 @@ $sbar-text-font-size: 13px;
 $sbarhdr-text-font-size: 15px;
 $text-font-size: 16px;
 $code-font-size: 12px;
+$text-strong-font-weight: lighter;
 
 body {
   line-height: 1.1;
@@ -406,6 +407,10 @@ ol li {
 p {
   margin-bottom: 10px;
   font-size: $text-font-size;
+
+  strong {
+    font-weight: $text-strong-font-weight;
+  }
 }
 
 #reference-page {

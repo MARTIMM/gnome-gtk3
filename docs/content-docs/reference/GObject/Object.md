@@ -84,7 +84,7 @@ Start a thread in such a way that the function can modify the user interface in 
 
     method start-thread (
       $handler-object, Str:D $handler-name, Int $priority = G_PRIORITY_DEFAULT,
-      Bool :$new-context = False, *%user-options
+      Bool :$new-context = False, Num :$start-time, *%user-options
       --> Promise
     )
 
@@ -96,7 +96,9 @@ Start a thread in such a way that the function can modify the user interface in 
 
   * $new-context; Whether to run the handler in a new context or to run it in the context of the main loop. Default is to run in the main loop.
 
-  * *%user-options; Any name not used above is provided to the handler
+  * $start-time. Start time of thread. Default is now + 1 sec. Most of the time a thread starts too fast when some widget are not ready yet. All depends of course what the thread has to do.
+
+  * *%user-options; Any name but :start-time and :new-context is provided to the handler.
 
 Returns a `Promise` object. If the call fails, the object is undefined.
 
@@ -152,22 +154,18 @@ The methods always return a **Gnome::GObject::Value** with the result.
 [g_] object_ref
 ---------------
 
-Increases the reference count of *object*.
+Increases the reference count of this object and returns the same object.
 
-Since GLib 2.56, if `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type of *object* will be propagated to the return type (using the GCC `typeof()` extension), so any casting the caller needs to do on the return type must be explicit.
-
-Returns: the same *object*
-
-    method g_object_ref ( N-GObject $object --> N-GObject  )
-
-  * N-GObject $object; a *GObject*
+    method g_object_ref ( --> N-GObject  )
 
 [g_] object_unref
 -----------------
 
 Decreases the reference count of the native object. When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
 
-    method g_object_unref ( N-GObject $object )
+When the object has a floating reference because it is not added to a container or it is not a toplevel window, the reference is first sunk followed by `g_object_unref()`.
+
+    method g_object_unref ( )
 
   * N-GObject $object; a *GObject*
 
