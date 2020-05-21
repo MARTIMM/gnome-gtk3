@@ -2,7 +2,7 @@ notes_title: "Release Notes for all Gnome packages"
 
 notes:
   - 2020-05-21 0.28.5:
-    - Add missing routines and properties to Gnome::Gtk3::Widget.
+    - 
 
   - 2020-05-15 0.28.4:
     - Several parts in Gnome::GObject and Gnome::N are improved.

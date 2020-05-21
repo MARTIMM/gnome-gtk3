@@ -4133,6 +4133,8 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   is native(&gtk-lib)
   { * }
 
+
+#`{{ deprecated. kept here to keep me from inserting :-/
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_margin_left
 =begin pod
@@ -4211,6 +4213,7 @@ See the prop C<margin-right> property.
 sub gtk_widget_set_margin_right ( N-GObject $widget, int32 $margin )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_margin_start
@@ -7684,6 +7687,8 @@ This property adds margin outside of the widget's normal size
 request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
 
+=begin comment
+deprecated: kept this in to keep me from inserting :-\
 =comment #TP:0:margin-left:
 =head3 Margin on Left
 
@@ -7703,6 +7708,7 @@ request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
 
 The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
+=end comment
 
 =comment #TP:0:margin:
 =head3 All Margins
