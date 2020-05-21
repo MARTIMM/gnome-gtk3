@@ -1590,42 +1590,6 @@ Sets the vertical alignment of *widget*. See the prop `valign` property.
 
   * GtkAlign $align; the vertical alignment
 
-[[gtk_] widget_] get_margin_left
---------------------------------
-
-Gets the value of the prop `margin-left` property.
-
-Returns: The start margin of *widget*
-
-    method gtk_widget_get_margin_left ( --> Int  )
-
-[[gtk_] widget_] set_margin_left
---------------------------------
-
-Sets the start margin of *widget*. See the prop `margin-left` property.
-
-    method gtk_widget_set_margin_left ( Int $margin )
-
-  * Int $margin; the start margin
-
-[[gtk_] widget_] get_margin_right
----------------------------------
-
-Gets the value of the prop `margin-right` property.
-
-Returns: The start margin of *widget*
-
-    method gtk_widget_get_margin_right ( --> Int  )
-
-[[gtk_] widget_] set_margin_right
----------------------------------
-
-Sets the start margin of *widget*. See the prop `margin-right` property.
-
-    method gtk_widget_set_margin_right ( Int $margin )
-
-  * Int $margin; the start margin
-
 [[gtk_] widget_] get_margin_start
 ---------------------------------
 
@@ -2929,16 +2893,6 @@ The **Gnome::GObject::Value** type of property *margin-top* is `G_TYPE_INT`.
 ### Margin on Bottom
 
 Margin on bottom side of widget. This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `gtk_widget_set_size_request()` for example.
-
-### Margin on Left
-
-Margin on left side of widget. This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `gtk_widget_set_size_request()` for example.
-
-### Margin on Right
-
-Margin on right side of widget. This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `gtk_widget_set_size_request()` for example.
-
-The **Gnome::GObject::Value** type of property *margin-bottom* is `G_TYPE_INT`.
 
 ### All Margins
 
