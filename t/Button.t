@@ -14,7 +14,7 @@ use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
 
-#use Gnome::N::X;
+use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -86,8 +86,9 @@ subtest 'Button connect and emit signal', {
     has Bool $!signal-processed = False;
 
     method click-handler (
-      Gnome::Gtk3::Button :widget($button), Array :$user-data
+      Gnome::Gtk3::Button :_widget($button), Array :$user-data, :$_handler-id
     ) {
+#  note "click-handler handler id: $_handler-id";
       isa-ok $button, Gnome::Gtk3::Button;
       is $user-data[0], 'Hello', 'data 0 ok';
       is $user-data[1], 'World', 'data 1 ok';
@@ -96,7 +97,7 @@ subtest 'Button connect and emit signal', {
       $!signal-processed = True;
     }
 
-    method signal-emitter ( Gnome::Gtk3::Button :$widget --> Str ) {
+    method signal-emitter ( Gnome::Gtk3::Button :_widget($widget) --> Str ) {
       while $main.gtk-events-pending() { $main.iteration-do(False); }
       $widget.emit-by-name('clicked');
       sleep(0.3);
@@ -129,7 +130,10 @@ subtest 'Button connect and emit signal', {
   $data[1] = 'World';
 
   my SignalHandlers $sh .= new;
-  $b.register-signal( $sh, 'click-handler', 'clicked', :user-data($data));
+  my $hid = $b.register-signal(
+    $sh, 'click-handler', 'clicked', :user-data($data)
+  );
+#  note "handler id: $hid";
 
   # add after registration to see if that comes through too
   $data[2] = '!';
