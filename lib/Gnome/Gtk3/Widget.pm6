@@ -347,7 +347,6 @@ Callback type for adding a function to update animations. See C<gtk_widget_add_t
 Returns: C<G_SOURCE_CONTINUE> if the tick callback should continue to be called,
 C<G_SOURCE_REMOVE> if the tick callback should be removed.
 
-Since: 3.8
 
 
 =item ___widget: the widget
@@ -618,7 +617,6 @@ calls to C<gtk_widget_show_all()> will affect this widget.
 This is mostly for use in constructing widget hierarchies with externally
 controlled visibility, see B<Gnome::Gtk3::UIManager>.
 
-Since: 2.4
 
   method gtk_widget_set_no_show_all ( Int $no_show_all )
 
@@ -641,7 +639,6 @@ will affect this widget.
 
 Returns: the current value of the “no-show-all” property.
 
-Since: 2.4
 
   method gtk_widget_get_no_show_all ( --> Int  )
 
@@ -763,7 +760,6 @@ Note that special-purpose widgets may contain special code for
 rendering to the screen and might appear differently on screen
 and when rendered using C<gtk_widget_draw()>.
 
-Since: 3.0
 
   method gtk_widget_draw ( cairo_t $cr )
 
@@ -840,7 +836,6 @@ Normally you would only use this function in widget
 implementations. You might also use it to schedule a redraw of a
 B<Gnome::Gtk3::DrawingArea> or some portion thereof.
 
-Since: 3.0
 
   method gtk_widget_queue_draw_region ( cairo_region_t $region )
 
@@ -886,7 +881,6 @@ sub gtk_widget_queue_resize ( N-GObject $widget )
 This function works like C<gtk_widget_queue_resize()>,
 except that the widget is not invalidated.
 
-Since: 2.4
 
   method gtk_widget_queue_resize_no_redraw ( )
 
@@ -911,7 +905,6 @@ reposition its contents.
 
 An example user of this function is C<gtk_widget_set_halign()>.
 
-Since: 3.20
 
   method gtk_widget_queue_allocate ( )
 
@@ -952,7 +945,6 @@ Unrealized widgets do not have a frame clock.
 Returns: (nullable) (transfer none): a B<Gnome::Gdk3::FrameClock>,
 or C<NULL> if widget is unrealized
 
-Since: 3.8
 
   method gtk_widget_get_frame_clock ( --> N-GObject  )
 
@@ -997,7 +989,6 @@ prop C<valign> properties.
 If the child widget does not have a valign of C<GTK_ALIGN_BASELINE> the
 baseline argument is ignored and -1 is used instead.
 
-Since: 3.10
 
   method gtk_widget_size_allocate_with_baseline ( GtkAllocation $allocation, Int $baseline )
 
@@ -1464,7 +1455,6 @@ its ancestors mapped.
 
 Returns: C<1> if the accelerator can be activated.
 
-Since: 2.4
 
   method gtk_widget_can_activate_accel ( UInt $signal_id --> Int  )
 
@@ -1561,7 +1551,6 @@ gdk_event_free (event);
 Returns: the return value from the event signal emission: C<1>
 if the event was handled, and C<0> otherwise
 
-Since: 2.20
 
   method gtk_widget_send_focus_change ( GdkEvent $event --> Int  )
 
@@ -1690,7 +1679,6 @@ Specifies whether I<widget> can own the input focus. See
 C<gtk_widget_grab_focus()> for actually setting the input focus on a
 widget.
 
-Since: 2.18
 
   method gtk_widget_set_can_focus ( Int $can_focus )
 
@@ -1712,7 +1700,6 @@ C<gtk_widget_set_can_focus()>.
 
 Returns: C<1> if I<widget> can own the input focus, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_get_can_focus ( --> Int  )
 
@@ -1735,7 +1722,6 @@ input focus, and only having the focus within a toplevel.
 
 Returns: C<1> if the widget has the global input focus.
 
-Since: 2.18
 
   method gtk_widget_has_focus ( --> Int  )
 
@@ -1786,7 +1772,6 @@ C<gtk_widget_has_focus()>.
 
 Returns: C<1> if the widget should display a “focus rectangle”
 
-Since: 3.2
 
   method gtk_widget_has_visible_focus ( --> Int  )
 
@@ -1833,7 +1818,6 @@ Making mouse clicks not grab focus is useful in places like toolbars where
 you don’t want the keyboard focus removed from the main area of the
 application.
 
-Since: 3.20
 
   method gtk_widget_set_focus_on_click ( Int $focus_on_click )
 
@@ -1856,7 +1840,6 @@ See C<gtk_widget_set_focus_on_click()>.
 Returns: C<1> if the widget should grab focus when it is clicked with
 the mouse.
 
-Since: 3.20
 
   method gtk_widget_get_focus_on_click ( --> Int  )
 
@@ -1877,7 +1860,6 @@ Specifies whether I<widget> can be a default widget. See
 C<gtk_widget_grab_default()> for details about the meaning of
 “default”.
 
-Since: 2.18
 
   method gtk_widget_set_can_default ( Int $can_default )
 
@@ -1899,7 +1881,6 @@ C<gtk_widget_set_can_default()>.
 
 Returns: C<1> if I<widget> can be a default widget, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_get_can_default ( --> Int  )
 
@@ -1922,7 +1903,6 @@ toplevel. See C<gtk_widget_set_can_default()>.
 Returns: C<1> if I<widget> is the current default widget within
 its toplevel, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_has_default ( --> Int  )
 
@@ -1970,7 +1950,6 @@ is the default.
 See C<gtk_widget_grab_default()> for details about the meaning of
 “default”.
 
-Since: 2.18
 
   method gtk_widget_set_receives_default ( Int $receives_default )
 
@@ -1996,7 +1975,6 @@ See C<gtk_widget_set_receives_default()>.
 Returns: C<1> if I<widget> acts as the default widget when focused,
 C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_get_receives_default ( --> Int  )
 
@@ -2020,7 +1998,6 @@ See also C<gtk_grab_add()>.
 
 Returns: C<1> if the widget is in the grab_widgets stack
 
-Since: 2.18
 
   method gtk_widget_has_grab ( --> Int  )
 
@@ -2046,7 +2023,6 @@ devices. See C<gtk_device_grab_add()>.
 Returns: C<1> if there is an ongoing grab on I<device>
 by another B<Gnome::Gtk3::Widget> than I<widget>.
 
-Since: 3.0
 
   method gtk_widget_device_is_shadowed ( N-GObject $device --> Int  )
 
@@ -2124,7 +2100,6 @@ down to all B<Gnome::Gtk3::Container> children by different means than turning o
 state flag down the hierarchy, both C<gtk_widget_get_state_flags()> and
 C<gtk_widget_is_sensitive()> will make use of these.
 
-Since: 3.0
 
   method gtk_widget_set_state_flags ( GtkStateFlags $flags, Int $clear )
 
@@ -2146,7 +2121,6 @@ This function is for use in widget implementations. Turns off flag
 values for the current widget state (insensitive, prelighted, etc.).
 See C<gtk_widget_set_state_flags()>.
 
-Since: 3.0
 
   method gtk_widget_unset_state_flags ( GtkStateFlags $flags )
 
@@ -2174,7 +2148,6 @@ should look at C<gtk_style_context_get_state()>.
 
 Returns: The state flags for widget
 
-Since: 3.0
 
   method gtk_widget_get_state_flags ( --> GtkStateFlags  )
 
@@ -2219,7 +2192,6 @@ own and its parent widget’s sensitivity. See C<gtk_widget_is_sensitive()>.
 
 Returns: C<1> if the widget is sensitive
 
-Since: 2.18
 
   method gtk_widget_get_sensitive ( --> Int  )
 
@@ -2241,7 +2213,6 @@ it is sensitive itself and also its parent widget is sensitive
 
 Returns: C<1> if the widget is effectively sensitive
 
-Since: 2.18
 
   method gtk_widget_is_sensitive ( --> Int  )
 
@@ -2266,7 +2237,6 @@ This function simply calls C<gtk_widget_show()> or C<gtk_widget_hide()>
 but is nicer to use when the visibility of the widget depends on
 some condition.
 
-Since: 2.18
 
   method gtk_widget_set_visible ( Int $visible )
 
@@ -2293,7 +2263,6 @@ See C<gtk_widget_set_visible()>.
 
 Returns: C<1> if the widget is visible
 
-Since: 2.18
 
   method gtk_widget_get_visible ( --> Int  )
 
@@ -2319,7 +2288,6 @@ See also C<gtk_widget_get_visible()> and C<gtk_widget_set_visible()>
 
 Returns: C<1> if the widget and all its parents are visible
 
-Since: 3.8
 
   method gtk_widget_is_visible ( --> Int  )
 
@@ -2347,7 +2315,6 @@ calling this function with I<has_window> = C<0>.
 This function should only be called by widget implementations,
 and they should call it in their C<init()> function.
 
-Since: 2.18
 
   method gtk_widget_set_has_window ( Int $has_window )
 
@@ -2369,7 +2336,6 @@ C<gtk_widget_set_has_window()>.
 
 Returns: C<1> if I<widget> has a window, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_get_has_window ( --> Int  )
 
@@ -2394,7 +2360,6 @@ widget.
 
 Returns: C<1> if I<widget> is a toplevel, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_is_toplevel ( --> Int  )
 
@@ -2416,7 +2381,6 @@ to if it is mapped and visible.
 
 Returns: C<1> if I<widget> is drawable, C<0> otherwise
 
-Since: 2.18
 
   method gtk_widget_is_drawable ( --> Int  )
 
@@ -2440,7 +2404,6 @@ and registered.
 This function should only ever be called in a derived widget's
 “realize” or “unrealize” implementation.
 
-Since: 2.20
 
   method gtk_widget_set_realized ( Int $realized )
 
@@ -2461,7 +2424,6 @@ Determines whether I<widget> is realized.
 
 Returns: C<1> if I<widget> is realized, C<0> otherwise
 
-Since: 2.20
 
   method gtk_widget_get_realized ( --> Int  )
 
@@ -2483,7 +2445,6 @@ Marks the widget as being realized.
 This function should only ever be called in a derived widget's
 “map” or “unmap” implementation.
 
-Since: 2.20
 
   method gtk_widget_set_mapped ( Int $mapped )
 
@@ -2504,7 +2465,6 @@ Whether the widget is mapped.
 
 Returns: C<1> if the widget is mapped, C<0> otherwise.
 
-Since: 2.20
 
   method gtk_widget_get_mapped ( --> Int  )
 
@@ -2555,7 +2515,6 @@ See C<gtk_widget_set_app_paintable()>
 
 Returns: C<1> if the widget is app paintable
 
-Since: 2.18
 
   method gtk_widget_get_app_paintable ( --> Int  )
 
@@ -2755,7 +2714,6 @@ widget’s C<init()> function.
 
 Note that this function does not add any reference to I<window>.
 
-Since: 2.18
 
   method gtk_widget_set_window ( N-GObject $window )
 
@@ -2776,7 +2734,6 @@ Returns the widget’s window if it is realized, C<Any> otherwise
 
 Returns: (transfer none) (nullable): I<widget>’s window.
 
-Since: 2.14
 
   method gtk_widget_get_window ( --> N-GObject  )
 
@@ -2802,7 +2759,6 @@ this up. This is now deprecated and you should use C<gtk_widget_register_window(
 instead. Old code will keep working as is, although some new features like
 transparency might not work perfectly.
 
-Since: 3.8
 
   method gtk_widget_register_window ( N-GObject $window )
 
@@ -2823,7 +2779,6 @@ Unregisters a B<Gnome::Gdk3::Window> from the widget that was previously set up 
 C<gtk_widget_register_window()>. You need to call this when the window is
 no longer used by the widget, such as when you destroy it.
 
-Since: 3.8
 
   method gtk_widget_unregister_window ( N-GObject $window )
 
@@ -2889,7 +2844,6 @@ widgets in sig C<size_allocate>.
 
 Returns: the baseline of the I<widget>, or -1 if none
 
-Since: 3.10
 
   method gtk_widget_get_allocated_baseline ( --> int32  )
 
@@ -2916,7 +2870,6 @@ the value returned by this function.
 
 If a widget is not visible, its allocated size is 0.
 
-Since: 3.20
 
   method gtk_widget_get_allocated_size (
     GtkAllocation $allocation, int32 $baseline
@@ -2941,7 +2894,6 @@ Retrieves the widget’s allocation.
 
 Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls C<gtk_widget_size_allocate()> with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget. C<gtk_widget_get_allocation()> returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the C<gtk_widget_size_allocate()> allocation, however. So a B<Gnome::Gtk3::Container> is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by C<gtk_widget_size_allocate()>, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
 
-Since: 2.18
 
   method gtk_widget_get_allocation ( --> N-GdkRectangle )
 
@@ -2974,7 +2926,6 @@ The B<Gnome::Gtk3::WidgetClass>::adjust_size_allocation virtual method adjusts t
 allocation inside C<gtk_widget_size_allocate()> to create an adjusted
 allocation.
 
-Since: 2.18
 
   method gtk_widget_set_allocation ( GtkAllocation $allocation )
 
@@ -3002,7 +2953,6 @@ B<Gnome::Gtk3::Container>, the area must contain all children's clips.
 If this function is not called by I<widget> during a ::size-allocate handler,
 the clip will be set to I<widget>'s allocation.
 
-Since: 3.14
 
   method gtk_widget_set_clip ( GtkAllocation $clip )
 
@@ -3027,7 +2977,6 @@ happen. Other toolkits call it the bounding box.
 Historically, in GTK+ the clip area has been equal to the allocation
 retrieved via C<gtk_widget_get_allocation()>.
 
-Since: 3.14
 
   method gtk_widget_get_clip ( GtkAllocation $clip )
 
@@ -3114,7 +3063,6 @@ Returns: C<1> if stopping keyboard navigation is fine, C<0>
 if the emitting widget should try to handle the keyboard
 navigation attempt in its parent container(s).
 
-Since: 2.12
 
   method gtk_widget_keynav_failed ( GtkDirectionType $direction --> Int  )
 
@@ -3140,7 +3088,6 @@ Note that the effect of C<gdk_window_beep()> can be configured in many
 ways, depending on the windowing backend and the desktop environment
 or window manager that is used.
 
-Since: 2.12
 
   method gtk_widget_error_bell ( )
 
@@ -3286,7 +3233,6 @@ C<0> from C<gtk_widget_get_has_window()>);
 to get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox>
 and receive events on the event box.
 
-Since: 3.0
 
   method gtk_widget_set_device_events ( N-GObject $device, GdkEventMask $events )
 
@@ -3307,7 +3253,6 @@ sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEven
 Adds the device events in the bitfield I<events> to the event mask for
 I<widget>. See C<gtk_widget_set_device_events()> for details.
 
-Since: 3.0
 
   method gtk_widget_add_device_events ( N-GObject $device, GdkEventMask $events )
 
@@ -3341,7 +3286,6 @@ shown causes it to flicker once on Windows.
 For child widgets it doesn’t work if any affected widget has a native window, or
 disables double buffering.
 
-Since: 3.8
 
   method gtk_widget_set_opacity ( Num $opacity )
 
@@ -3363,7 +3307,6 @@ See C<gtk_widget_set_opacity()>.
 
 Returns: the requested opacity for this widget.
 
-Since: 3.8
 
   method gtk_widget_get_opacity ( --> Num  )
 
@@ -3387,7 +3330,6 @@ It does so by descending through the B<Gnome::Gdk3::Window> hierarchy
 and enabling the same mask that is has for core events
 (i.e. the one that C<gdk_window_get_events()> returns).
 
-Since: 3.0
 
   method gtk_widget_set_device_enabled ( N-GObject $device, Int $enabled )
 
@@ -3410,7 +3352,6 @@ children. See C<gtk_widget_set_device_enabled()>.
 
 Returns: C<1> is I<device> is enabled for I<widget>
 
-Since: 3.0
 
   method gtk_widget_get_device_enabled ( N-GObject $device --> Int  )
 
@@ -3552,7 +3493,6 @@ free those resources when the widget is unrealized.
 
 Returns: (transfer none): the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
-Since: 2.2
 
   method gtk_widget_get_screen ( --> N-GObject  )
 
@@ -3577,7 +3517,6 @@ window at the top.
 Returns: C<1> if there is a B<Gnome::Gdk3::Screen> associated
 with the widget.
 
-Since: 2.2
 
   method gtk_widget_has_screen ( --> Int  )
 
@@ -3602,7 +3541,6 @@ See C<gdk_window_get_scale_factor()>.
 
 Returns: the scale factor for I<widget>
 
-Since: 3.10
 
   method gtk_widget_get_scale_factor ( --> Int  )
 
@@ -3629,7 +3567,6 @@ free those resources when the widget is unrealized.
 
 Returns: (transfer none): the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
-Since: 2.2
 
   method gtk_widget_get_display ( --> N-GObject  )
 
@@ -3680,7 +3617,6 @@ clipboard already exists, a new one will
 be created. Once a clipboard object has
 been created, it is persistent for all time.
 
-Since: 2.2
 
   method gtk_widget_get_clipboard ( GdkAtom $selection --> N-GObject  )
 
@@ -3990,7 +3926,6 @@ I<widget> will start receiving multiple, per device enter/leave events. Note
 that if custom B<Gnome::Gdk3::Windows> are created in sig C<realize>,
 C<gdk_window_set_support_multidevice()> will have to be called manually on them.
 
-Since: 3.0
 
   method gtk_widget_set_support_multidevice ( Int $support_multidevice )
 
@@ -4014,7 +3949,6 @@ accessibles of the parent class.
 
 This function should only be called from class init functions of widgets.
 
-Since: 3.2
 
   method gtk_widget_class_set_accessible_type ( GtkWidgetClass $widget_class, N-GObject $type )
 
@@ -4047,7 +3981,6 @@ and the accessible’s default role will be used instead.
 
 This function should only be called from class init functions of widgets.
 
-Since: 3.2
 
   method gtk_widget_class_set_accessible_role ( GtkWidgetClass $widget_class, AtkRole $role )
 
@@ -4171,7 +4104,6 @@ C<GTK_ALIGN_BASELINE>.
 
 Returns: the vertical alignment of I<widget>
 
-Since: 3.10
 
   method gtk_widget_get_valign_with_baseline ( --> GtkAlign  )
 
@@ -4202,6 +4134,85 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_widget_get_margin_left
+=begin pod
+=head2 [[gtk_] widget_] get_margin_left
+
+Gets the value of the prop C<margin-left> property.
+
+Returns: The start margin of I<widget>
+
+
+  method gtk_widget_get_margin_left ( --> Int  )
+
+
+=end pod
+
+sub gtk_widget_get_margin_left ( N-GObject $widget )
+  returns int32
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_widget_set_margin_left
+=begin pod
+=head2 [[gtk_] widget_] set_margin_left
+
+Sets the start margin of I<widget>.
+See the prop C<margin-left> property.
+
+
+  method gtk_widget_set_margin_left ( Int $margin )
+
+=item Int $margin; the start margin
+
+=end pod
+
+sub gtk_widget_set_margin_left ( N-GObject $widget, int32 $margin )
+  is native(&gtk-lib)
+  { * }
+
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_widget_get_margin_right
+=begin pod
+=head2 [[gtk_] widget_] get_margin_right
+
+Gets the value of the prop C<margin-right> property.
+
+Returns: The start margin of I<widget>
+
+
+  method gtk_widget_get_margin_right ( --> Int  )
+
+
+=end pod
+
+sub gtk_widget_get_margin_right ( N-GObject $widget )
+  returns int32
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_widget_set_margin_right
+=begin pod
+=head2 [[gtk_] widget_] set_margin_right
+
+Sets the start margin of I<widget>.
+See the prop C<margin-right> property.
+
+
+  method gtk_widget_set_margin_right ( Int $margin )
+
+=item Int $margin; the start margin
+
+=end pod
+
+sub gtk_widget_set_margin_right ( N-GObject $widget, int32 $margin )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_margin_start
 =begin pod
 =head2 [[gtk_] widget_] get_margin_start
@@ -4210,7 +4221,6 @@ Gets the value of the prop C<margin-start> property.
 
 Returns: The start margin of I<widget>
 
-Since: 3.12
 
   method gtk_widget_get_margin_start ( --> Int  )
 
@@ -4230,7 +4240,6 @@ sub gtk_widget_get_margin_start ( N-GObject $widget )
 Sets the start margin of I<widget>.
 See the prop C<margin-start> property.
 
-Since: 3.12
 
   method gtk_widget_set_margin_start ( Int $margin )
 
@@ -4251,7 +4260,6 @@ Gets the value of the prop C<margin-end> property.
 
 Returns: The end margin of I<widget>
 
-Since: 3.12
 
   method gtk_widget_get_margin_end ( --> Int  )
 
@@ -4271,7 +4279,6 @@ sub gtk_widget_get_margin_end ( N-GObject $widget )
 Sets the end margin of I<widget>.
 See the prop C<margin-end> property.
 
-Since: 3.12
 
   method gtk_widget_set_margin_end ( Int $margin )
 
@@ -4292,7 +4299,6 @@ Gets the value of the prop C<margin-top> property.
 
 Returns: The top margin of I<widget>
 
-Since: 3.0
 
   method gtk_widget_get_margin_top ( --> Int  )
 
@@ -4312,7 +4318,6 @@ sub gtk_widget_get_margin_top ( N-GObject $widget )
 Sets the top margin of I<widget>.
 See the prop C<margin-top> property.
 
-Since: 3.0
 
   method gtk_widget_set_margin_top ( Int $margin )
 
@@ -4333,7 +4338,6 @@ Gets the value of the prop C<margin-bottom> property.
 
 Returns: The bottom margin of I<widget>
 
-Since: 3.0
 
   method gtk_widget_get_margin_bottom ( --> Int  )
 
@@ -4353,7 +4357,6 @@ sub gtk_widget_get_margin_bottom ( N-GObject $widget )
 Sets the bottom margin of I<widget>.
 See the prop C<margin-bottom> property.
 
-Since: 3.0
 
   method gtk_widget_set_margin_bottom ( Int $margin )
 
@@ -4401,7 +4404,6 @@ are the events that the widget will receive when I<device> operates on it.
 
 Returns: device event mask for I<widget>
 
-Since: 3.0
 
   method gtk_widget_get_device_events ( N-GObject $device --> GdkEventMask  )
 
@@ -4501,7 +4503,6 @@ by updating its widget path. B<Gnome::Gtk3::Containers> may want
 to use this on a child when reordering it in a way that a different
 style might apply to it. See also C<gtk_container_get_path_for_child()>.
 
-Since: 3.0
 
   method gtk_widget_reset_style ( )
 
@@ -4568,7 +4569,6 @@ sub gtk_widget_get_pango_context ( N-GObject $widget )
 Sets the C<cairo_font_options_t> used for Pango rendering in this widget.
 When not set, the default font options for the B<Gnome::Gdk3::Screen> will be used.
 
-Since: 3.18
 
   method gtk_widget_set_font_options ( cairo_font_options_t $options )
 
@@ -4671,7 +4671,6 @@ Finds a style property of a widget class by name.
 Returns: (transfer none): the C<GParamSpec> of the style property or
 C<Any> if I<class> has no style property with that name.
 
-Since: 2.2
 
   method gtk_widget_class_find_style_property ( GtkWidgetClass $klass, Str $property_name --> GParamSpec  )
 
@@ -4696,7 +4695,6 @@ Returns: (array length=n_properties) (transfer container): a
 newly allocated array of C<GParamSpec>*. The array must be
 freed with C<g_free()>.
 
-Since: 2.2
 
   method gtk_widget_class_list_style_properties ( GtkWidgetClass $klass, UInt $n_properties --> GParamSpec  )
 
@@ -4865,7 +4863,6 @@ Sets a shape for this widget’s GDK window. This allows for
 transparent windows etc., see C<gdk_window_shape_combine_region()>
 for more information.
 
-Since: 3.0
 
   method gtk_widget_shape_combine_region ( cairo_region_t $region )
 
@@ -4886,7 +4883,6 @@ Sets an input shape for this widget’s GDK window. This allows for
 windows which react to mouse click in a nonrectangular region, see
 C<gdk_window_input_shape_combine_region()> for more information.
 
-Since: 3.0
 
   method gtk_widget_input_shape_combine_region ( cairo_region_t $region )
 
@@ -4918,7 +4914,6 @@ Returns: (element-type B<Gnome::Gtk3::Widget>) (transfer container): the list of
 mnemonic labels; free this list
 with C<g_list_free()> when you are done with it.
 
-Since: 2.4
 
   method gtk_widget_list_mnemonic_labels ( --> N-GObject  )
 
@@ -4942,7 +4937,6 @@ widget is destroyed, so the caller must make sure to update
 its internal state at this point as well, by using a connection
 to the sig C<destroy> signal or a weak notifier.
 
-Since: 2.4
 
   method gtk_widget_add_mnemonic_label ( N-GObject $label )
 
@@ -4964,7 +4958,6 @@ this widget. (See C<gtk_widget_list_mnemonic_labels()>). The widget
 must have previously been added to the list with
 C<gtk_widget_add_mnemonic_label()>.
 
-Since: 2.4
 
   method gtk_widget_remove_mnemonic_label ( N-GObject $label )
 
@@ -4990,7 +4983,6 @@ tooltip window will be used.
 If the custom window should have the default theming it needs to
 have the name “gtk-tooltip”, see C<gtk_widget_set_name()>.
 
-Since: 2.12
 
   method gtk_widget_set_tooltip_window ( N-GObject $custom_window )
 
@@ -5013,7 +5005,6 @@ using C<gtk_widget_set_tooltip_window()>.
 
 Returns: (transfer none): The B<Gnome::Gtk3::Window> of the current tooltip.
 
-Since: 2.12
 
   method gtk_widget_get_tooltip_window ( --> N-GObject  )
 
@@ -5034,7 +5025,6 @@ Triggers a tooltip query on the display where the toplevel of I<widget>
 is located. See C<gtk_tooltip_trigger_tooltip_query()> for more
 information.
 
-Since: 2.12
 
   method gtk_widget_trigger_tooltip_query ( )
 
@@ -5056,7 +5046,6 @@ handler for the sig C<query-tooltip> signal.
 
 See also the prop C<tooltip-text> property and C<gtk_tooltip_set_text()>.
 
-Since: 2.12
 
   method gtk_widget_set_tooltip_text ( Str $text )
 
@@ -5078,7 +5067,6 @@ Gets the contents of the tooltip for I<widget>.
 Returns: (nullable): the tooltip text, or C<Any>. You should free the
 returned string with C<g_free()> when done.
 
-Since: 2.12
 
   method gtk_widget_get_tooltip_text ( --> Str  )
 
@@ -5104,7 +5092,6 @@ and of the default handler for the sig C<query-tooltip> signal.
 See also the prop C<tooltip-markup> property and
 C<gtk_tooltip_set_markup()>.
 
-Since: 2.12
 
   method gtk_widget_set_tooltip_markup ( Str $markup )
 
@@ -5126,7 +5113,6 @@ Gets the contents of the tooltip for I<widget>.
 Returns: (nullable): the tooltip text, or C<Any>. You should free the
 returned string with C<g_free()> when done.
 
-Since: 2.12
 
   method gtk_widget_get_tooltip_markup ( --> Str  )
 
@@ -5146,7 +5132,6 @@ sub gtk_widget_get_tooltip_markup ( N-GObject $widget )
 Sets the has-tooltip property on I<widget> to I<has_tooltip>.  See
 prop C<has-tooltip> for more information.
 
-Since: 2.12
 
   method gtk_widget_set_has_tooltip ( Int $has_tooltip )
 
@@ -5168,7 +5153,6 @@ prop C<has-tooltip> for more information.
 
 Returns: current value of has-tooltip on I<widget>.
 
-Since: 2.12
 
   method gtk_widget_get_has_tooltip ( --> Int  )
 
@@ -5197,7 +5181,6 @@ use “else if” statements to check which window should be drawn.
 
 Returns: C<1> if I<window> should be drawn
 
-Since: 3.0
 
   method gtk_cairo_should_draw_window ( cairo_t $cr, N-GObject $window --> Int  )
 
@@ -5225,7 +5208,6 @@ preparing an expose event to be emitted with the sig C<draw>
 signal. It is intended to help porting multiwindow widgets from
 GTK+ 2 to the rendering architecture of GTK+ 3.
 
-Since: 3.0
 
   method gtk_cairo_transform_to_window ( cairo_t $cr, N-GObject $widget, N-GObject $window )
 
@@ -5250,7 +5232,6 @@ Allocates a new B<Gnome::Gtk3::Requisition>-struct and initializes its elements 
 Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should
 be freed with C<gtk_requisition_free()>.
 
-Since: 3.0
 
   method gtk_requisition_new ( --> N-GtkRequisition  )
 
@@ -5371,7 +5352,6 @@ Sets the name to be used for CSS matching of widgets.
 If this function is not called for a given class, the name
 of the parent class is used.
 
-Since: 3.20
 
   method gtk_widget_class_set_css_name ( GtkWidgetClass $widget_class, char $name )
 
@@ -5414,7 +5394,6 @@ See C<gdk_keymap_get_modifier_mask()>.
 
 Returns: the modifier mask used for I<intent>.
 
-Since: 3.4
 
   method gtk_widget_get_modifier_mask ( GdkModifierIntent $intent --> GdkModifierType  )
 
@@ -5441,7 +5420,6 @@ I<prefix>.`action-name`.
 If I<group> is C<Any>, a previously inserted group for I<name> is removed
 from I<widget>.
 
-Since: 3.6
 
   method gtk_widget_insert_action_group ( Str $name, N-GObject $group )
 
@@ -5484,7 +5462,6 @@ have to worry about when a B<Gnome::Gdk3::FrameClock> is assigned to a widget.
 Returns: an id for the connection of this callback. Remove the callback
 by passing it to C<gtk_widget_remove_tick_callback()>
 
-Since: 3.8
 
   method gtk_widget_add_tick_callback ( GtkTickCallback $callback, Pointer $user_data, GDestroyNotify $notify --> UInt  )
 
@@ -5508,7 +5485,6 @@ sub gtk_widget_add_tick_callback ( N-GObject $widget, GtkTickCallback $callback,
 Removes a tick callback previously registered with
 C<gtk_widget_add_tick_callback()>.
 
-Since: 3.8
 
   method gtk_widget_remove_tick_callback ( UInt $id )
 
@@ -5542,7 +5518,6 @@ composite templates, it’s important to build the composite widgets
 before the construct properties are set. Properties passed to C<g_object_new()>
 should take precedence over properties set in the private template XML.
 
-Since: 3.10
 
   method gtk_widget_init_template ( )
 
@@ -5596,7 +5571,6 @@ For convenience, C<gtk_widget_class_set_template_from_resource()> is also provid
 Note that any class that installs templates must call C<gtk_widget_init_template()>
 in the widget’s instance initializer.
 
-Since: 3.10
 
   method gtk_widget_class_set_template ( GtkWidgetClass $widget_class, N-GObject $template_bytes )
 
@@ -5619,7 +5593,6 @@ A convenience function to call C<gtk_widget_class_set_template()>.
 Note that any class that installs templates must call C<gtk_widget_init_template()>
 in the widget’s instance initializer.
 
-Since: 3.10
 
   method gtk_widget_class_set_template_from_resource ( GtkWidgetClass $widget_class, Str $resource_name )
 
@@ -5643,7 +5616,6 @@ defined for I<widget_type>. See C<gtk_builder_add_callback_symbol()>.
 Note that this must be called from a composite widget classes class
 initializer after calling C<gtk_widget_class_set_template()>.
 
-Since: 3.10
 
   method gtk_widget_class_bind_template_callback_full ( GtkWidgetClass $widget_class, Str $callback_name, GCallback $callback_symbol )
 
@@ -5669,7 +5641,6 @@ used when parsing B<Gnome::Gtk3::Builder> XML from this class’s template data.
 Note that this must be called from a composite widget classes class
 initializer after calling C<gtk_widget_class_set_template()>.
 
-Since: 3.10
 
   method gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilderConnectFunc $connect_func, Pointer $connect_data, GDestroyNotify $connect_data_destroy )
 
@@ -5714,7 +5685,6 @@ might be more convenient to use.
 Note that this must be called from a composite widget classes class
 initializer after calling C<gtk_widget_class_set_template()>.
 
-Since: 3.10
 
   method gtk_widget_class_bind_template_child_full ( GtkWidgetClass $widget_class, Str $name, Int $internal_child, Int $struct_offset )
 
@@ -5743,7 +5713,6 @@ If no action group was found matching I<prefix>, then C<Any> is returned.
 
 Returns: (transfer none) (nullable): A C<GActionGroup> or C<Any>.
 
-Since: 3.16
 
   method gtk_widget_get_action_group ( Str $prefix --> N-GObject  )
 
@@ -5769,7 +5738,6 @@ Retrieves a %NULL-terminated array of strings containing the prefixes of
 
 Returns: a C<Any> terminated array of strings.
 
-Since: 3.16
 
 =end pod
 
@@ -5787,7 +5755,6 @@ sub gtk_widget_list_action_prefixes( N-GObject $widget )
 Sets the font map to use for Pango rendering. When not set, the widget
 will inherit the font map from its parent.
 
-Since: 3.18
 
   method gtk_widget_set_font_map ( PangoFontMap $font_map )
 
@@ -5808,7 +5775,6 @@ Gets the font map that has been set with C<gtk_widget_set_font_map()>.
 
 Returns: (transfer none) (nullable): A C<PangoFontMap>, or C<Any>
 
-Since: 3.18
 
   method gtk_widget_get_font_map ( --> PangoFontMap  )
 
@@ -5990,7 +5956,6 @@ hidden).
 The I<state-flags-changed> signal is emitted when the widget state
 changes, see C<gtk_widget_get_state_flags()>.
 
-Since: 3.0
 
   method handler (
     Int $flags,
@@ -6051,7 +6016,6 @@ B<Gnome::Gtk3::StyleContext> as returned by C<gtk_widget_get_style_context()>.
 Note that style-modifying functions like C<gtk_widget_override_color()> also
 cause this signal to be emitted.
 
-Since: 3.0
 
   method handler (
     Gnome::GObject::Object :widget($widget),
@@ -6145,7 +6109,6 @@ C<cairo_copy_clip_rectangle_list()>.
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
-Since: 3.0
 
   method handler (
     Unknown type CAIRO_GOBJECT_TYPE_CONTEXT $cr,
@@ -6230,7 +6193,6 @@ Returns: C<1> if stopping keyboard navigation is fine, C<0>
 if the emitting widget should try to handle the keyboard
 navigation attempt in its parent container(s).
 
-Since: 2.12
 
   method handler (
     Int $direction,
@@ -6921,7 +6883,6 @@ animation), otherwise it returns C<0>.
 
 Returns: C<1> if the failed drag operation has been already handled.
 
-Since: 2.12
 
   method handler (
     Unknown type GDK_TYPE_DRAG_CONTEXT $context,
@@ -7276,7 +7237,6 @@ drawable was drawn into.
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
-Since: 2.14
 
   method handler (
     GdkEventExpose $event,
@@ -7303,7 +7263,6 @@ application grabs the pointer or keyboard again.
 Returns: C<1> to stop other handlers from being invoked for
 the event. C<0> to propagate the event further.
 
-Since: 2.8
 
   method handler (
     GdkEventGrabBroken $event,
@@ -7334,7 +7293,6 @@ destined function calls.
 
 Returns: C<1> if I<tooltip> should be shown right now, C<0> otherwise.
 
-Since: 2.12
 
   method handler (
     Int $x,
@@ -7554,7 +7512,6 @@ Whether the widget should grab focus when it is clicked with the mouse.
 This property is only relevant for widgets that can take focus.
 Before 3.20, several widgets (B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::FileChooserButton>,
 B<Gnome::Gtk3::ComboBox>) implemented this property individually.
-Since: 3.20
 
 The B<Gnome::GObject::Value> type of property I<focus-on-click> is C<G_TYPE_BOOLEAN>.
 
@@ -7622,7 +7579,6 @@ Note that setting this property to C<1> for the first time will change
 the event masks of the B<Gnome::Gdk3::Windows> of this widget to include leave-notify
 and motion-notify events.  This cannot and will not be undone when the
 property is set to C<0> again.
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
 
@@ -7638,7 +7594,6 @@ will automatically be set to C<1> and there will be taken care of
  I<query-tooltip> in the default signal handler.
 Note that if both  I<tooltip-text> and  I<tooltip-markup>
 are set, the last one wins.
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
 
@@ -7655,7 +7610,6 @@ will automatically be set to C<1> and there will be taken care of
  I<query-tooltip> in the default signal handler.
 Note that if both  I<tooltip-text> and  I<tooltip-markup>
 are set, the last one wins.
-Since: 2.12
 
 The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
 
@@ -7664,7 +7618,6 @@ The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRI
 
 
 The widget's window if it is realized, C<Any> otherwise.
-Since: 2.14
 Widget type: GDK_TYPE_WINDOW
 
 The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
@@ -7674,7 +7627,6 @@ The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
 
 
 How to distribute horizontal space if widget gets extra space, see B<Gnome::Gtk3::Align>
-Since: 3.0
 Widget type: GTK_TYPE_ALIGN
 
 The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
@@ -7684,7 +7636,6 @@ The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
 
 
 How to distribute vertical space if widget gets extra space, see B<Gnome::Gtk3::Align>
-Since: 3.0
 Widget type: GTK_TYPE_ALIGN
 
 The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
@@ -7698,7 +7649,6 @@ left-to-right and right-to-left text directions.
 This property adds margin outside of the widget's normal size
 request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
-Since: 3.12
 
 The B<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
 
@@ -7711,7 +7661,6 @@ left-to-right and right-to-left text directions.
 This property adds margin outside of the widget's normal size
 request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
-Since: 3.12
 
 The B<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
 
@@ -7723,7 +7672,6 @@ Margin on top side of widget.
 This property adds margin outside of the widget's normal size
 request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
 
@@ -7735,7 +7683,24 @@ Margin on bottom side of widget.
 This property adds margin outside of the widget's normal size
 request, the margin will be added in addition to the size from
 C<gtk_widget_set_size_request()> for example.
-Since: 3.0
+
+=comment #TP:0:margin-left:
+=head3 Margin on Left
+
+
+Margin on left side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
+
+=comment #TP:0:margin-right:
+=head3 Margin on Right
+
+
+Margin on right side of widget.
+This property adds margin outside of the widget's normal size
+request, the margin will be added in addition to the size from
+C<gtk_widget_set_size_request()> for example.
 
 The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
 
@@ -7745,7 +7710,6 @@ The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
 
 Sets all four sides' margin at once. If read, returns max
 margin on any side.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
 
@@ -7754,7 +7718,6 @@ The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
 
 
 Whether to expand horizontally. See C<gtk_widget_set_hexpand()>.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
 
@@ -7763,7 +7726,6 @@ The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
 
 
 Whether to use the  I<hexpand> property. See C<gtk_widget_get_hexpand_set()>.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
 
@@ -7772,7 +7734,6 @@ The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN
 
 
 Whether to expand vertically. See C<gtk_widget_set_vexpand()>.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
 
@@ -7781,7 +7742,6 @@ The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
 
 
 Whether to use the  I<vexpand> property. See C<gtk_widget_get_vexpand_set()>.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
 
@@ -7790,7 +7750,6 @@ The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN
 
 
 Whether to expand in both directions. Setting this sets both  I<hexpand> and  I<vexpand>
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
 
@@ -7801,7 +7760,6 @@ The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
 The requested opacity of the widget. See C<gtk_widget_set_opacity()> for
 more details about window opacity.
 Before 3.8 this was only available in B<Gnome::Gtk3::Window>
-Since: 3.8
 
 The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
 
@@ -7811,7 +7769,6 @@ The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
 
 The scale factor of the widget. See C<gtk_widget_get_scale_factor()> for
 more details about widget scaling.
-Since: 3.10
 
 The B<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
 =end pod
