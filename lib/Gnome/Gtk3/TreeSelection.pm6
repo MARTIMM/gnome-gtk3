@@ -233,8 +233,9 @@ sub gtk_tree_selection_set_select_function ( N-GObject $selection, GtkTreeSelect
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_selection_get_user_data:
+# TM:0:gtk_tree_selection_get_user_data:
 =begin pod
 =head2 [gtk_tree_selection_] get_user_data
 
@@ -250,6 +251,7 @@ Returns: The user data.
 sub gtk_tree_selection_get_user_data ( N-GObject $selection --> Pointer )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_selection_get_tree_view:
@@ -295,19 +297,38 @@ sub gtk_tree_selection_get_select_function ( N-GObject $selection --> GtkTreeSel
 =begin pod
 =head2 [gtk_tree_selection_] get_selected
 
-Sets I<$iter> to the currently selected node if I<selection> is set to B<GTK_SELECTION_SINGLE> or B<GTK_SELECTION_BROWSE>.  I<$iter> may be NULL if you just want to test if I<selection> has any selected nodes.  I<model> is filled with the current model as a convenience.  This function will not work if you use I<selection> is B<GTK_SELECTION_MULTIPLE>.
+Sets I<$iter> to the currently selected node if I<selection> is set to B<GTK_SELECTION_SINGLE> or B<GTK_SELECTION_BROWSE>. I<$iter> may be NULL if you just want to test if I<selection> has any selected nodes.  I<model> is filled with the current model as a convenience.  This function will not work if you use I<selection> is B<GTK_SELECTION_MULTIPLE>.
 
-Returns: TRUE, if there is a selected node.
+Returns: 1, if there is a selected node.
 
-  method gtk_tree_selection_get_selected ( N-GObject $model, N-GtkTreeIter $iter --> Int )
+  method gtk_tree_selection_get_selected (
+    N-GObject $model, N-GtkTreeIter $iter --> Int
+  )
 
-=item N-GObject $model; (out) (allow-none) (transfer none): A pointer to set to the B<Gnome::Gtk3::TreeModel>, or NULL.
-=item N-GtkTreeIter $iter; (out) (allow-none): The B<Gnome::Gtk3::TreeIter>, or NULL.
+  =item N-GObject $model; A pointer to set to the B<Gnome::Gtk3::TreeModel>, or undefined.
+  =item N-GtkTreeIter $iter; The B<Gnome::Gtk3::TreeIter>, or undefined.
+
+  method gtk_tree_selection_get_selected ( --> List )
+
+  The list will return the status, model and iter. If status is 1, then there is a selected node.
 
 =end pod
 
-sub gtk_tree_selection_get_selected ( N-GObject $selection, N-GObject $model, N-GtkTreeIter $iter --> int32 )
-  is native(&gtk-lib)
+sub gtk_tree_selection_get_selected ( N-GObject $selection --> List ) {
+  my N-GtkTreeIter $n-ti;
+  my N-GObject $n-mdl;
+  my Int $sts = _gtk_tree_selection_get_selected(
+    $selection, $n-mdl, $n-ti
+  );
+
+  ( $sts, $n-ti, $n-mdl)
+}
+
+sub _gtk_tree_selection_get_selected (
+  N-GObject $selection, N-GObject $model is rw, N-GtkTreeIter $iter is rw
+  --> int32
+) is native(&gtk-lib)
+  is symbol('gtk_tree_selection_get_selected')
   { * }
 
 #-------------------------------------------------------------------------------
