@@ -408,11 +408,12 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
-#`{{
+
+#-------------------------------------------------------------------------------
 #TODO No widget new creation because of unknown id. Can be retrieved but
 # is a bit complex
-#-------------------------------------------------------------------------------
-#TM:0:gtk_widget_new
+#TM:0:_gtk_widget_new
+#`{{
 =begin pod
 =head2 [gtk_] widget_new
 
@@ -431,49 +432,40 @@ Returns: a new native C<GtkWidget> of type I<widget_type>
 =item Str $first_property_name; name of first property to set @...: value of first property, followed by more properties, C<Any>-terminated
 
 =end pod
-
-sub gtk_widget_new ( N-GObject $type, Str $first_property_name, Any $any = Any )
-  returns N-GObject
-  is native(&gtk-lib)
+}}
+#`{{
+sub _gtk_widget_new (
+  N-GObject $type, Str $first_property_name, $first-value, OpaquePointer --> N-GObject
+) is native(&gtk-lib)
+  is symbol('gtk_widget_new')
   { * }
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_destroy
+#TM:4:gtk_widget_destroy:several programs
 =begin pod
 =head2 [gtk_] widget_destroy
 
 Destroys a widget.
 
-When a widget is destroyed all references it holds on other objects
-will be released:
+When a widget is destroyed all references it holds on other objects will be released:
 
-- if the widget is inside a container, it will be removed from its
-parent
-- if the widget is a container, all its children will be destroyed,
-recursively
-- if the widget is a top level, it will be removed from the list
-of top level widgets that GTK+ maintains internally
+=item if the widget is inside a container, it will be removed from its parent
+=item if the widget is a container, all its children will be destroyed, recursively
+=item if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
 
-It's expected that all references held on the widget will also
-be released; you should connect to the sig C<destroy> signal
-if you hold a reference to I<widget> and you wish to remove it when
-this function is called. It is not necessary to do so if you are
-implementing a B<Gnome::Gtk3::Container>, as you'll be able to use the
-B<Gnome::Gtk3::ContainerClass>.C<remove()> virtual function for that.
+It's expected that all references held on the widget will also be released; you should connect to the sig C<destroy> signal if you hold a reference to this widget and you wish to remove it when this function is called.
+=begin comment
+It is not necessary to do so if you are implementing a B<Gnome::Gtk3::Container>, as you'll be able to use the I<ContainerClass>.I<remove()> virtual function for that.
+=end comment
 
-It's important to notice that C<gtk_widget_destroy()> will only cause
-the I<widget> to be finalized if no additional references, acquired
-using C<g_object_ref()>, are held on it. In case additional references
-are in place, the I<widget> will be in an "inert" state after calling
-this function; I<widget> will still point to valid memory, allowing you
-to release the references you hold, but you may not query the widget's
-own state.
+=begin comment
+It's important to notice that C<gtk_widget_destroy()> will only cause the widget to be finalized if no additional references, acquired using C<g_object_ref()>, are held on it. In case additional references are in place, the I<widget> will be in an "inert" state after calling this function; I<widget> will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
+=end comment
 
-You should typically call this function on top level widgets, and
-rarely on child widgets.
+You should typically call this function on top level widgets, and rarely on child widgets.
 
-See also: C<gtk_container_remove()>
+See also: C<gtk_container_remove()> in L<Gnome::Gtk3::Container|Container.html>.
 
   method gtk_widget_destroy ( )
 
@@ -484,8 +476,9 @@ sub gtk_widget_destroy ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
+#`{{ Typical use for C
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_destroyed
+# TM:0:gtk_widget_destroyed
 =begin pod
 =head2 [gtk_] widget_destroyed
 
@@ -506,6 +499,7 @@ of the same dialog.
 sub gtk_widget_destroyed ( N-GObject $widget, N-GObject $widget_pointer )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_unparent
