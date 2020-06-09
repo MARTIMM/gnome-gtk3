@@ -1,6 +1,9 @@
 notes_title: "Release Notes for all Gnome packages"
 
 notes:
+  - 2020-06-09 0.28.6:
+    - Gnome::Gtk3::Widget module work.
+
   - 2020-05-21 0.28.5:
     - changes for issue #11
 
