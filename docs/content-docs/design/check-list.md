@@ -110,7 +110,7 @@ Container|
 CssProvider|
 CssSection|b|
 Dialog                    |  |  |  |  |  |  |* |
-DrawingArea|
+DrawingArea               |  | x| x| x| x| x|  |
 Editable|i|
 Entry|
 EntryBuffer|

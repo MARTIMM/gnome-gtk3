@@ -133,8 +133,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkImage                        Image
 │   │   ├── GtkCalendar
 │   │   ├── GtkCellView
-│   │   ├── GtkDrawingArea
-│   │   ├── GtkEntry                            Entry
+│   │   ├── GtkDrawingArea                      🗸 DrawingArea
+│   │   ├── GtkEntry                            ♥ Entry
 │   │   │   ├── GtkSearchEntry                  SearchEntry
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea

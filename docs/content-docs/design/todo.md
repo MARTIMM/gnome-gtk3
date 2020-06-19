@@ -42,7 +42,7 @@ layout: sidebar
 
 
 #### Documentation
-
+<!--
 * All the several possibilities to use a method should be removed eventually and kept only one name. Keep the names where clashes could take place like `get-name()` from **Builder** and **Widget**. Dashes are prevered.
   * Method names kept are the names without the module prefixes. Sometimes a method must be added to prevent calling a method from **Any** or **Mu**. Examples
     * `gtk_grid_attach()` -> `attach()`.
@@ -51,6 +51,7 @@ layout: sidebar
     * `gtk-list-store-append()` -> `append()`. Needs an extra method.
   * Adjust documentation.
   * Add deprecate messages for the to be removed names.
+-->
 
 * Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
   * Cannot automatically cleanup the natice object in the Raku object when object gets destroyed.
@@ -59,6 +60,8 @@ layout: sidebar
 * Each user class inheriting a Raku G*::object must have a new() to create the native object. this must be repeated for other client use classes because only the leaf new() is run!
 
 * Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate png and use those.
+
+* Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
 
 #### Site changes.
 * In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
