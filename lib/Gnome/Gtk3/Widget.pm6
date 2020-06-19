@@ -476,7 +476,7 @@ sub gtk_widget_destroy ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
-#`{{ Typical use for C
+#`{{
 #-------------------------------------------------------------------------------
 # TM:0:gtk_widget_destroyed
 =begin pod
@@ -501,14 +501,13 @@ sub gtk_widget_destroyed ( N-GObject $widget, N-GObject $widget_pointer )
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_unparent
+# TM:0:gtk_widget_unparent
 =begin pod
 =head2 [gtk_] widget_unparent
 
-This function is only for use in widget implementations.
-Should be called by implementations of the remove method
-on B<Gnome::Gtk3::Container>, to dissociate a child from the container.
+This function is only for use in widget implementations. Should be called by implementations of the remove method on B<Gnome::Gtk3::Container>, to dissociate a child from the container.
 
   method gtk_widget_unparent ( )
 
@@ -518,26 +517,20 @@ on B<Gnome::Gtk3::Container>, to dissociate a child from the container.
 sub gtk_widget_unparent ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_show
+#TM:1:gtk_widget_show:
 =begin pod
 =head2 [gtk_] widget_show
 
-Flags a widget to be displayed. Any widget that isn’t shown will
-not appear on the screen. If you want to show all the widgets in a
-container, it’s easier to call C<gtk_widget_show_all()> on the
-container, instead of individually showing the widgets.
+Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call C<gtk_widget_show_all()> on the container, instead of individually showing the widgets.
 
-Remember that you have to show the containers containing a widget,
-in addition to the widget itself, before it will appear onscreen.
+Remember that you have to show the containers containing a widget, in addition to the widget itself, before it will appear onscreen.
 
-When a toplevel container is shown, it is immediately realized and
-mapped; other shown widgets are realized and mapped when their
-toplevel container is realized and mapped.
+When a toplevel container is shown, it is immediately realized and mapped; other shown widgets are realized and mapped when their toplevel container is realized and mapped.
 
   method gtk_widget_show ( )
-
 
 =end pod
 
@@ -546,15 +539,13 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_hide
+#TM:1:gtk_widget_hide:
 =begin pod
 =head2 [gtk_] widget_hide
 
-Reverses the effects of C<gtk_widget_show()>, causing the widget to be
-hidden (invisible to the user).
+Reverses the effects of C<gtk_widget_show()>, causing the widget to be hidden (invisible to the user).
 
   method gtk_widget_hide ( )
-
 
 =end pod
 
@@ -563,18 +554,13 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_show_now
+#TM:1:gtk_widget_show_now
 =begin pod
 =head2 [[gtk_] widget_] show_now
 
-Shows a widget. If the widget is an unmapped toplevel widget
-(i.e. a B<Gnome::Gtk3::Window> that has not yet been shown), enter the main
-loop and wait for the window to actually be mapped. Be careful;
-because the main loop is running, anything can happen during
-this function.
+Shows a widget. If the widget is an unmapped toplevel widget (i.e. a B<Gnome::Gtk3::Window> that has not yet been shown), enter the main loop and wait for the window to actually be mapped. Be careful; because the main loop is running, anything can happen during this function.
 
   method gtk_widget_show_now ( )
-
 
 =end pod
 
@@ -583,12 +569,11 @@ sub gtk_widget_show_now ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_show_all
+#TM:1:gtk_widget_show_all
 =begin pod
 =head2 [[gtk_] widget_] show_all
 
-Recursively shows a widget, and any child widgets (if the widget is
-a container).
+Recursively shows a widget, and any child widgets (if the widget is a container).
 
   method gtk_widget_show_all ( )
 
@@ -610,7 +595,6 @@ calls to C<gtk_widget_show_all()> will affect this widget.
 
 This is mostly for use in constructing widget hierarchies with externally
 controlled visibility, see B<Gnome::Gtk3::UIManager>.
-
 
   method gtk_widget_set_no_show_all ( Int $no_show_all )
 
@@ -730,30 +714,17 @@ sub gtk_widget_unrealize ( N-GObject $widget )
   { * }
 }}
 
-#`{{
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_draw
 =begin pod
 =head2 [gtk_] widget_draw
 
-Draws I<widget> to I<cr>. The top left corner of the widget will be
-drawn to the currently set origin point of I<cr>.
+Draws I<widget> to I<$cr>. The top left corner of the widget will be drawn to the currently set origin point of I<$cr>.
 
-You should pass a cairo context as I<cr> argument that is in an
-original state. Otherwise the resulting drawing is undefined. For
-example changing the operator using C<cairo_set_operator()> or the
-line width using C<cairo_set_line_width()> might have unwanted side
-effects.
-You may however change the context’s transform matrix - like with
-C<cairo_scale()>, C<cairo_translate()> or C<cairo_set_matrix()> and clip
-region with C<cairo_clip()> prior to calling this function. Also, it
-is fine to modify the context with C<cairo_save()> and
-C<cairo_push_group()> prior to calling this function.
+You should pass a cairo context as I<cr> argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using C<cairo_set_operator()> or the line width using C<cairo_set_line_width()> might have unwanted side effects. You may however change the context’s transform matrix - like with C<cairo_scale()>, C<cairo_translate()> or C<cairo_set_matrix()> and clip region with C<cairo_clip()> prior to calling this function. Also, it is fine to modify the context with C<cairo_save()> and C<cairo_push_group()> prior to calling this function.
 
-Note that special-purpose widgets may contain special code for
-rendering to the screen and might appear differently on screen
-and when rendered using C<gtk_widget_draw()>.
-
+Note that special-purpose widgets may contain special code for rendering to the screen and might appear differently on screen and when rendered using C<gtk_widget_draw()>.
 
   method gtk_widget_draw ( cairo_t $cr )
 
@@ -761,10 +732,12 @@ and when rendered using C<gtk_widget_draw()>.
 
 =end pod
 
-sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
+use Cairo;
+
+sub gtk_widget_draw ( N-GObject $widget, Cairo::cairo_t $cr )
   is native(&gtk-lib)
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_queue_draw
@@ -2325,8 +2298,7 @@ sub gtk_widget_set_has_window ( N-GObject $widget, int32 $has_window )
 =begin pod
 =head2 [[gtk_] widget_] get_has_window
 
-Determines whether I<widget> has a B<Gnome::Gdk3::Window> of its own. See
-C<gtk_widget_set_has_window()>.
+Determines whether I<widget> has a B<Gnome::Gdk3::Window> of its own. See C<gtk_widget_set_has_window()>.
 
 Returns: C<1> if I<widget> has a window, C<0> otherwise
 
@@ -2342,15 +2314,13 @@ sub gtk_widget_get_has_window ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_is_toplevel
+#TM:1:gtk_widget_is_toplevel
 =begin pod
 =head2 [[gtk_] widget_] is_toplevel
 
 Determines whether I<widget> is a toplevel widget.
 
-Currently only B<Gnome::Gtk3::Window> and B<Gnome::Gtk3::Invisible> (and out-of-process
-B<Gnome::Gtk3::Plugs>) are toplevel widgets. Toplevel widgets have no parent
-widget.
+Currently only B<Gnome::Gtk3::Window> and B<Gnome::Gtk3::Invisible> (and out-of-process B<Gnome::Gtk3::Plugs>) are toplevel widgets. Toplevel widgets have no parent widget.
 
 Returns: C<1> if I<widget> is a toplevel, C<0> otherwise
 
@@ -2366,18 +2336,16 @@ sub gtk_widget_is_toplevel ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_is_drawable
+#TM:1:gtk_widget_is_drawable
 =begin pod
 =head2 [[gtk_] widget_] is_drawable
 
-Determines whether I<widget> can be drawn to. A widget can be drawn
-to if it is mapped and visible.
+Determines whether I<widget> can be drawn to. A widget can be drawn to if it is mapped and visible.
 
 Returns: C<1> if I<widget> is drawable, C<0> otherwise
 
 
   method gtk_widget_is_drawable ( --> Int  )
-
 
 =end pod
 

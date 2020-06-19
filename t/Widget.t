@@ -23,6 +23,16 @@ subtest 'Manipulations', {
   $b.set-visible(1);
   is $b.get-visible, 1, '.set-visible()';
 
+  lives-ok {$b.show-now;}, '.show-now()';
+  lives-ok {$b.widget-hide;}, '.widget-hide()';
+  lives-ok {$b.widget-show;}, '.widget-show()';
+  lives-ok {$b.show-all;}, '.show-all()';
+
+  # not drawable because not visible/mapped
+  nok $b.is-drawable, '.is-drawable()';
+
+  nok $b.is-toplevel, '.is-toplevel()';
+
   $b.set-tooltip-text('Nooooo don\'t touch that button!!!!!!!');
   is $b.get-tooltip-text, 'Nooooo don\'t touch that button!!!!!!!',
      '.set-tooltip-text() / .get-tooltip-text()';
