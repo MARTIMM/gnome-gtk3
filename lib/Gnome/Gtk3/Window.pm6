@@ -164,22 +164,13 @@ To delete a B<Gnome::Gtk3::Window>, call C<gtk_widget_destroy()>.
   multi method new (
     GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
   )
-
-=head3 method new( :title!, :window-type?)
-
-Create a top level window or popup with title set.
-
-  multi method new (
-    Bool :$title!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
-  )
-
 =end pod
 
 #TM:2:inheriting:*
 #TM:1:new():
-#TM:1:new(:title):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:1:new(:window-type):
+#TM:4:new(:native-object):TopLevelClassSupport
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
   $signals-added = self.add-signal-types( $?CLASS.^name,
