@@ -254,8 +254,7 @@ Since: 3.0
 
 =end pod
 
-sub gtk_widget_path_new (  )
-  returns N-GtkWidgetPath
+sub gtk_widget_path_new ( --> N-GtkWidgetPath )
   is native(&gtk-lib)
   { * }
 
@@ -317,7 +316,7 @@ sub gtk_widget_path_unref ( N-GtkWidgetPath $path )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_path_free
+#TM:0:_gtk_widget_path_free
 #`{{
 No pod info. user must use clear-widgetpath()
 }}
@@ -503,7 +502,7 @@ sub gtk_widget_path_iter_set_object_type ( N-GtkWidgetPath $path, int32 $pos, in
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_path_iter_get_object_name
+#TM:1:gtk_widget_path_iter_get_object_name
 =begin pod
 =head2 [[gtk_] widget_path_] iter_get_object_name
 
