@@ -20,6 +20,9 @@ my @dir-roots = <
 
   /home/marcel/Languages/Raku/Projects/gnome-pango/lib
   /home/marcel/Languages/Raku/Projects/gnome-pango/xt/NewModules
+
+  /home/marcel/Languages/Raku/Projects/gnome-cairo/lib
+  /home/marcel/Languages/Raku/Projects/gnome-cairo/xt/NewModules
   >;
 
 my @enum-list = ();
@@ -27,7 +30,7 @@ my @enum-list = ();
 for @dir-roots -> $dir-root {
   try {
     my Proc $p = run "egrep", "-rIh", "--color=never",
-                     "enum [[:alnum:]]+ is export",
+                     "enum [0-9A-Za-z_]+ is export",
                      $dir-root, :out;
 
     for $p.out.lines -> $line {
@@ -43,4 +46,4 @@ for @dir-roots -> $dir-root {
   }
 }
 
-'Design-docs/scim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");
+'Design-docs/skim-tool-enum-list'.IO.spurt(@enum-list.join("\n") ~ "\n");
