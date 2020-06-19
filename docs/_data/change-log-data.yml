@@ -3,6 +3,11 @@ notes_title: "Release Notes for all Gnome packages"
 notes:
   - 2020-06-09 0.28.6:
     - Gnome::Gtk3::Widget module work.
+      - Documentation improved
+      - Add more tests
+      - Dropped methods gtk_widget_destroyed, gtk_widget_unparent
+    - Add Gnome::Gtk3::DrawingArea. First experiments to use Cairo.
+    - It is a pitty that I cannot use the Raku Cairo package because I cannot fit it into the calls of the existing Gnome packages. First some experiments to see if parts can be implemented before I copy the entire lib and split it up in appropriate module. Also, although it has examples, it lacks documentation which than can be added and displayed on the github pages using the docs from the Cairo site.
 
   - 2020-05-21 0.28.5:
     - changes for issue #11
