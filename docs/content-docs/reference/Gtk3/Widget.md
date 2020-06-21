@@ -151,15 +151,17 @@ Destroys a widget.
 
 When a widget is destroyed all references it holds on other objects will be released:
 
-- if the widget is inside a container, it will be removed from its parent - if the widget is a container, all its children will be destroyed, recursively - if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
+  * if the widget is inside a container, it will be removed from its parent
 
-It's expected that all references held on the widget will also be released; you should connect to the sig `destroy` signal if you hold a reference to *widget* and you wish to remove it when this function is called. It is not necessary to do so if you are implementing a **Gnome::Gtk3::Container**, as you'll be able to use the **Gnome::Gtk3::ContainerClass**.`remove()` virtual function for that.
+  * if the widget is a container, all its children will be destroyed, recursively
 
-It's important to notice that `gtk_widget_destroy()` will only cause the *widget* to be finalized if no additional references, acquired using `g_object_ref()`, are held on it. In case additional references are in place, the *widget* will be in an "inert" state after calling this function; *widget* will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
+  * if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
+
+It's expected that all references held on the widget will also be released; you should connect to the sig `destroy` signal if you hold a reference to this widget and you wish to remove it when this function is called.
 
 You should typically call this function on top level widgets, and rarely on child widgets.
 
-See also: `gtk_container_remove()`
+See also: `gtk_container_remove()` in [Gnome::Gtk3::Container](Container.html).
 
     method gtk_widget_destroy ( )
 

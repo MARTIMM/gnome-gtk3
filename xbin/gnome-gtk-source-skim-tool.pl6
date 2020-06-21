@@ -66,7 +66,7 @@ sub MAIN (
     get-signals($source-content) if $do-all or $sig;
     get-properties($source-content) if $do-all or $prop;
 
-    if $test {
+    if $test or $do-all {
       # create var name named after classname. E.g. TextBuffer -> $tb.
       my Str $m = '$' ~ $raku-class-name.comb(/<[A..Z]>/).join.lc;
       my Str $class = [~] 'Gnome::', $raku-lib-name, '::', $raku-class-name;
@@ -1089,7 +1089,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
       }
 
       else {
-        $sub-doc ~= "\n" ~ ~($<doc> // '');
+        $sub-doc ~= " " ~ ~($<doc> // '');
       }
     }
 
@@ -1101,11 +1101,11 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
         $items-src-doc.push(primary-doc-changes($item));
 
         $gather-items-doc = False;
-        $sub-doc ~= "\n";
+        $sub-doc ~= " ";
       }
 
       else {
-        $sub-doc ~= "\n";
+        $sub-doc ~= " ";
       }
     }
   }
@@ -2079,8 +2079,10 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;       # Leading star
   $text ~~ s:g/ ^^ \s+ '*' \s* \n //;                   # Leading star on Empty line
 #  $text ~~ s:g/ ^^ \s* \n //;
+  $text ~~ s:g/ \n / /;
 
-  $text ~ "\n\n"
+#  $text ~ "\n\n"
+  $text
 }
 
 #-------------------------------------------------------------------------------

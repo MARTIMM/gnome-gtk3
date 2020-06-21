@@ -29,7 +29,8 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 #  $wp.append-type(GTK_TYPE_WINDOW);
-  my Gnome::Gtk3::Window $w .= new(:title<Top>);
+  my Gnome::Gtk3::Window $w .= new;
+  $w.set-title('Top');
   $w.gtk-widget-set-name('top-level-window');
 
   my Gnome::Gtk3::Grid $g .= new;
@@ -53,6 +54,10 @@ subtest 'Manipulations', {
   is $wp.iter-get-name(0), 'top-level-window', $wp.iter-get-name(0);
   is $wp.iter-get-name(1), 'top-grid', $wp.iter-get-name(1);
   is $wp.iter-get-name(2), 'start-button', $wp.iter-get-name(2);
+
+  is $wp.iter_get_object_name(0), 'window', $wp.iter-get-object_name(0);
+  is $wp.iter_get_object_name(1), 'grid', $wp.iter-get-object_name(1);
+  is $wp.iter_get_object_name(2), 'button', $wp.iter-get-object_name(2);
 
   is $wp.to-string, 'window(top-level-window):dir-ltr.background grid(top-grid):dir-ltr.horizontal button(start-button):dir-ltr.text-button', $wp.to-string;
 

@@ -1,6 +1,6 @@
 use v6;
-use lib '../gnome-gobject/lib';
-use lib '../gnome-native/lib';
+#use lib '../gnome-gobject/lib';
+#use lib '../gnome-native/lib';
 
 use NativeCall;
 use Test;
@@ -63,6 +63,7 @@ $iter = $ls.gtk-list-store-append;
 $ls.set-value( $iter, Col0, 1001);
 $ls.set-value( $iter, Col1, 'duizend en een nacht');
 
+#Gnome::N::debug(:on);
 $iter = $ls.gtk-list-store-append;
 $ls.gtk-list-store-set( $iter, Col0, 2002, Col1, 'een beetje later');
 
@@ -97,7 +98,8 @@ subtest 'Interface TreeModel', {
 
   $iter = $ls.get-iter-first;
   is $ls.get-string-from-iter($iter), '0', '.get-iter-first()';
-Gnome::N::debug(:off);
+
+  #Gnome::N::debug(:off);
   $tp = $ls.get-path($iter);
   is $tp.to-string, '0', '.get-path()';
 
@@ -274,7 +276,7 @@ subtest 'Manipulations', {
   $va[Col1].clear-object;
 
   #Gnome::N::debug(:on);
-  Gnome::N::debug(:off);
+  #Gnome::N::debug(:off);
   $ls.foreach( ShowTabel.new, 'show-entry');
 
   $ls.gtk-list-store-clear;

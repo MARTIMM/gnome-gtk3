@@ -10,8 +10,8 @@ use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::CellRendererText;
+use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::TreeIter;
 
@@ -34,11 +34,12 @@ submethod BUILD ( ) {
   $!main .= new;
   $!data-hash = %();
 
-  my Gnome::Gtk3::Window $w .= new(:title('Todo Viewer'));
+  my Gnome::Gtk3::Window $w .= new;
   my Gnome::Gtk3::Grid $g .= new;
   $w.container-add($g);
   $w.container-set-border-width(10);
   $w.window-set-default-size( 270, 300);
+  $w.set-title('Todo Viewer');
 
   self!create-file-table;
   $g.grid-attach( $!fs-table, 0, 0, 1, 1);

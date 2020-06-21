@@ -36,6 +36,9 @@ Legend for head of table
   * Inhibit unusable subroutines and documentation.
   * Add \$ to variables and use `True`/`False` when boolean input
   * Remove Since version text
+  * Change `returns` into `-->`. Lower prio.
+  * Provide single word method names. Lower prio.
+  * Try to insert url references. Lower prio.
 * cp: Cleanup documentation
   * Subroutines and Methods
   * Properties
@@ -107,7 +110,7 @@ Container|
 CssProvider|
 CssSection|b|
 Dialog                    |  |  |  |  |  |  |* |
-DrawingArea|
+DrawingArea               |  | x| x| x| x| x|  |
 Editable|i|
 Entry|
 EntryBuffer|
