@@ -15,9 +15,6 @@ subtest 'ISA test', {
 
   $cb .= new;
   isa-ok $cb, Gnome::Gtk3::CheckButton, '.new()';
-
-  $cb .= new(:native-object($cb.new-with-label('some label')));
-  isa-ok $cb, Gnome::Gtk3::CheckButton, '.new(:native-object)';
 }
 
 #-------------------------------------------------------------------------------
