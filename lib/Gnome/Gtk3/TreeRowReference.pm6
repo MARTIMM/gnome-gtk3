@@ -114,7 +114,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 # ? no ref/unref for a variant type
-method native-object-ref ( $n-native-object --> N-GObject ) {
+method native-object-ref ( $n-native-object ) {
   $n-native-object
 }
 

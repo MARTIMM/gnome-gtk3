@@ -714,7 +714,7 @@ sub gtk_widget_unrealize ( N-GObject $widget )
   { * }
 }}
 
-
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_draw
 =begin pod
@@ -737,7 +737,7 @@ use Cairo;
 sub gtk_widget_draw ( N-GObject $widget, Cairo::cairo_t $cr )
   is native(&gtk-lib)
   { * }
-
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_queue_draw
