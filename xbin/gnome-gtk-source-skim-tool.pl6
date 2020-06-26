@@ -598,7 +598,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   # process all types from GtkEnum and some
   # use bin/gather-enums.pl6 to create a list in
-  # doc/Design-docs/scim-tool-enum-list.txt
+  # doc/Design-docs/skim-tool-enum-list.txt
   if $type ~~ any(@enum-list) {
     $type = 'int32';
   }
@@ -844,7 +844,7 @@ sub load-dir-lists ( ) {
 
   @pangodirlist = "$root-dir/Design-docs/pango-list.txt".IO.slurp.lines;
 
-  @enum-list = "$root-dir/Design-docs/scim-tool-enum-list".IO.slurp.lines;
+  @enum-list = "$root-dir/Design-docs/skim-tool-enum-list".IO.slurp.lines;
 }
 
 #-------------------------------------------------------------------------------
