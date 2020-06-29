@@ -282,13 +282,19 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::GObject::InitiallyUnowned;
+
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
+
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
-
 use Gnome::Gtk3::Buildable;
+
+use Gnome::Cairo;
+use Gnome::Cairo::Enums;
+use Gnome::Cairo::Types;
 
 subset GtkAllocation of N-GdkRectangle;
 #-------------------------------------------------------------------------------
@@ -714,9 +720,8 @@ sub gtk_widget_unrealize ( N-GObject $widget )
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_draw
+#TM:4:gtk_widget_draw:xt/c5.pl6
 =begin pod
 =head2 [gtk_] widget_draw
 
@@ -732,12 +737,10 @@ Note that special-purpose widgets may contain special code for rendering to the 
 
 =end pod
 
-use Cairo;
 
-sub gtk_widget_draw ( N-GObject $widget, Cairo::cairo_t $cr )
+sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_queue_draw
@@ -6049,7 +6052,7 @@ changed on an object. The signal's detail holds the property name.
 
 
 =begin comment
-=comment #TS:0:draw:
+=comment #TS:4:draw:xt/c4.pl6
 =head3 draw
 
 This signal is emitted when a widget is supposed to render itself. This widget's top left corner must be painted at the origin of the passed in context and be sized to the values returned by C<gtk_widget_get_allocated_width()> and C<gtk_widget_get_allocated_height()>.
