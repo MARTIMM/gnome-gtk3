@@ -108,7 +108,8 @@
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3"
+    "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3",
+    "Gnome::Cairo"
   ],
 
   "test-depends": [ ],
