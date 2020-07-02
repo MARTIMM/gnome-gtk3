@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.28.5.2",
+  "version": "0.28.6",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio"],
 
@@ -108,7 +108,8 @@
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3"
+    "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3",
+    "Gnome::Cairo"
   ],
 
   "test-depends": [ ],

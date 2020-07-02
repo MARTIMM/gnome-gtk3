@@ -32,8 +32,8 @@ nav_menus:
       url: "/content-docs/reference-gio.html"
 #    - title: "Pango"
 #      url: "/content-docs/reference-pango.html"
-#    - title: "Cairo"
-#      url: "/content-docs/reference-cairo.html"
+    - title: "Cairo"
+      url: "/content-docs/reference-cairo.html"
 
   - nav_pages:
 #    - title: "Glade"

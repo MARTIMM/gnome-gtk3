@@ -8,7 +8,9 @@ notes:
       - Add more tests
       - Dropped methods gtk_widget_destroyed, gtk_widget_unparent
     - Add Gnome::Gtk3::DrawingArea. First experiments to use Cairo.
-    - It is a pitty that I cannot use the Raku Cairo package because I cannot fit it into the calls of the existing Gnome packages. First some experiments to see if parts can be implemented before I copy the entire lib and split it up in appropriate module. Also, although it has examples, it lacks documentation which than can be added and displayed on the github pages using the docs from the Cairo site.
+    - It is a pitty that I cannot use the Raku Cairo package of Timo because I cannot fit it into the calls of the existing Gnome packages. An entire new project is created called Gnome::Cairo. Need to mention that Cairo is not a Gnome product but named here this way because the way to access the classes and methods are about the same as with the other Gnome projects of mine.
+    - Added gtk_widget_draw() to Gnome::Gtk3::Widget and tested the draw signal.
+    - Added gdk_window_create_similar_surface() and gdk_window_create_similar_image_surface() to Gnome::Gdk3::Window.
     - Modified convert-to-natives() in Gnome::N::TopLevelClassSupport that it checks for destination argument type. When it detects num32 or num64 all source values are coerced using .Num(). This means that next examples are now valid for Num arguments; 10, 1/2, 0e2, '2.3' (these are Int, Rat, Num and Str resp).
 
   - 2020-05-21 0.28.5:

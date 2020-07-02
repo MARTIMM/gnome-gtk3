@@ -282,13 +282,19 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::GObject::InitiallyUnowned;
+
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
+
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
-
 use Gnome::Gtk3::Buildable;
+
+use Gnome::Cairo;
+use Gnome::Cairo::Enums;
+use Gnome::Cairo::Types;
 
 subset GtkAllocation of N-GdkRectangle;
 #-------------------------------------------------------------------------------
@@ -714,9 +720,8 @@ sub gtk_widget_unrealize ( N-GObject $widget )
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_draw
+#TM:4:gtk_widget_draw:xt/c5.pl6
 =begin pod
 =head2 [gtk_] widget_draw
 
@@ -732,12 +737,10 @@ Note that special-purpose widgets may contain special code for rendering to the 
 
 =end pod
 
-use Cairo;
 
-sub gtk_widget_draw ( N-GObject $widget, Cairo::cairo_t $cr )
+sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_queue_draw
@@ -1499,6 +1502,7 @@ to a widget that is semantically owned by the first widget even though
 it’s not a direct child - for instance, a search entry in a floating
 window similar to the quick search in B<Gnome::Gtk3::TreeView>.
 
+=begin comment
 An example of its usage is:
 
 |[<!-- language="C" -->
@@ -1514,6 +1518,7 @@ gtk_widget_send_focus_change (widget, fevent);
 
 gdk_event_free (event);
 ]|
+=end comment
 
 Returns: the return value from the event signal emission: C<1>
 if the event was handled, and C<0> otherwise
@@ -2692,18 +2697,13 @@ sub gtk_widget_set_window ( N-GObject $widget, N-GObject $window )
 =begin pod
 =head2 [[gtk_] widget_] get_window
 
-Returns the widget’s window if it is realized, C<Any> otherwise
-
-Returns: (transfer none) (nullable): I<widget>’s window.
-
+Returns the widget’s GdkWindow if it is realized, it is undefined otherwise.
 
   method gtk_widget_get_window ( --> N-GObject  )
 
-
 =end pod
 
-sub gtk_widget_get_window ( N-GObject $widget )
-  returns N-GObject
+sub gtk_widget_get_window ( N-GObject $widget --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -6049,42 +6049,30 @@ changed on an object. The signal's detail holds the property name.
 =item $child_property; the B<GParamSpec> of the changed child property
 =end comment
 
+
+
 =begin comment
-=comment #TS:0:draw:
+=comment #TS:4:draw:xt/c4.pl6
 =head3 draw
 
-This signal is emitted when a widget is supposed to render itself.
-The I<widget>'s top left corner must be painted at the origin of
-the passed in context and be sized to the values returned by
-C<gtk_widget_get_allocated_width()> and
-C<gtk_widget_get_allocated_height()>.
+This signal is emitted when a widget is supposed to render itself. This widget's top left corner must be painted at the origin of the passed in context and be sized to the values returned by C<gtk_widget_get_allocated_width()> and C<gtk_widget_get_allocated_height()>.
 
-Signal handlers connected to this signal can modify the cairo
-context passed as I<cr> in any way they like and don't need to
-restore it. The signal emission takes care of calling C<cairo_save()>
-before and C<cairo_restore()> after invoking the handler.
+Signal handlers connected to this signal can modify the cairo context passed as I<$cr> in any way they like and don't need to restore it. The signal emission takes care of calling C<cairo_save()> before and C<cairo_restore()> after invoking the handler.
 
-The signal handler will get a I<cr> with a clip region already set to the
-widget's dirty region, i.e. to the area that needs repainting.  Complicated
-widgets that want to avoid redrawing themselves completely can get the full
-extents of the clip region with C<gdk_cairo_get_clip_rectangle()>, or they can
-get a finer-grained representation of the dirty region with
-C<cairo_copy_clip_rectangle_list()>.
+The signal handler will get a I<$cr> with a clip region already set to the widget's dirty region, i.e. to the area that needs repainting. Complicated widgets that want to avoid redrawing themselves completely can get the full extents of the clip region with C<gdk_cairo_get_clip_rectangle()>, or they can get a finer-grained representation of the dirty region with C<cairo_copy_clip_rectangle_list()>.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
-
+Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
-    Unknown type CAIRO_GOBJECT_TYPE_CONTEXT $cr,
+    cairo_t $cr,
     Gnome::GObject::Object :widget($widget),
     *%user-options
     --> Int
   );
 
+=item $cr; the cairo context to draw to
 =item $widget; the object which received the signal
 
-=item $cr; the cairo context to draw to
 
 
 =comment #TS:0:mnemonic-activate:
@@ -6483,15 +6471,12 @@ C<0> to propagate the event further.
 =item $event; the event which triggered this signal.
 
 
-=comment #TS:0:configure-event:
+=comment #TS:4:configure-event:Gnome::Cairo tests
 =head3 configure-event
 
-The I<configure-event> signal will be emitted when the size, position or
-stacking of the I<widget>'s window has changed.
+The I<configure-event> signal will be emitted when the size, position or stacking of the I<widget>'s window has changed.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
-to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
-automatically for all new windows.
+To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
