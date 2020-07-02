@@ -180,7 +180,7 @@ If `GDK_ANCHOR_SLIDE_X` is set, the window can be shifted horizontally to fit on
 
 In general, when multiple flags are set, flipping should take precedence over sliding, which should take precedence over resizing.
 
-Since: 3.22 Stability: Unstable
+Stability: Unstable
 
   * GDK_ANCHOR_FLIP_X: allow flipping anchors horizontally
 
@@ -225,8 +225,6 @@ enum GdkFullscreenMode
 ----------------------
 
 Indicates which monitor (in a multi-head setup) a window should span over when in fullscreen mode.
-
-Since: 3.8
 
   * GDK_FULLSCREEN_ON_CURRENT_MONITOR: Fullscreen on current monitor only.
 
@@ -312,27 +310,6 @@ Methods
 new
 ---
 
-    multi method new ( Bool :$empty! )
-
-Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
-
-    multi method new ( Gnome::GObject::Object :$window! )
-
-Create an object using a native window object from elsewhere.
-
-gdk_window_new
---------------
-
-Creates a new **Gnome::Gdk3::Window** using the attributes from *attributes*. See **Gnome::Gdk3::WindowAttr** and **Gnome::Gdk3::WindowAttributesType** for more details. Note: to use this on displays other than the default display, *parent* must be specified.
-
-Returns: (transfer full): the new **Gnome::Gdk3::Window**
-
-    method gdk_window_new ( GdkWindowAttr $attributes, Int $attributes_mask --> N-GObject  )
-
-  * GdkWindowAttr $attributes; attributes of the new window
-
-  * Int $attributes_mask; (type **Gnome::Gdk3::WindowAttributesType**): mask indicating which fields in *attributes* are valid
-
 gdk_window_destroy
 ------------------
 
@@ -356,8 +333,6 @@ Check to see if a window is destroyed..
 
 Returns: `1` if the window is destroyed
 
-Since: 2.18
-
     method gdk_window_is_destroyed ( --> Int  )
 
 [[gdk_] window_] get_visual
@@ -365,20 +340,12 @@ Since: 2.18
 
 Gets the **Gnome::Gdk3::Visual** describing the pixel format of *window*.
 
-Returns: (transfer none): a **Gnome::Gdk3::Visual**
-
-Since: 2.24
-
     method gdk_window_get_visual ( --> N-GObject  )
 
 [[gdk_] window_] get_screen
 ---------------------------
 
 Gets the **Gnome::Gdk3::Screen** associated with a **Gnome::Gdk3::Window**.
-
-Returns: (transfer none): the **Gnome::Gdk3::Screen** associated with *window*
-
-Since: 2.24
 
     method gdk_window_get_screen ( --> N-GObject  )
 
@@ -388,8 +355,6 @@ Since: 2.24
 Gets the **Gnome::Gdk3::Display** associated with a **Gnome::Gdk3::Window**.
 
 Returns: (transfer none): the **Gnome::Gdk3::Display** associated with *window*
-
-Since: 2.24
 
     method gdk_window_get_display ( --> N-GObject  )
 
@@ -481,7 +446,7 @@ Moves *window* to *rect*, aligning their anchor points.
 
 Connect to the *moved-to-rect* signal to find out how it was actually positioned.
 
-Since: 3.22 Stability: Private
+Stability: Private
 
     method gdk_window_move_to_rect ( N-GObject $rect, GdkGravity $rect_anchor, GdkGravity $window_anchor, GdkAnchorHints $anchor_hints, Int $rect_anchor_dx, Int $rect_anchor_dy )
 
@@ -539,8 +504,6 @@ If *sibling* is `Any`, then this either raises (if *above* is `1`) or lowers the
 
 If *window* is a toplevel, the window manager may choose to deny the request to move the window in the Z-order, `gdk_window_restack()` only requests the restack, does not guarantee it.
 
-Since: 2.18
-
     method gdk_window_restack ( N-GObject $sibling, Int $above )
 
   * N-GObject $sibling; (allow-none): a **Gnome::Gdk3::Window** that is a sibling of *window*, or `Any`
@@ -583,8 +546,6 @@ Determines whether or not the desktop environment shuld be hinted that the windo
 
 Returns: whether or not the window should receive input focus.
 
-Since: 2.22
-
     method gdk_window_get_accept_focus ( --> Int  )
 
 [[gdk_] window_] set_accept_focus
@@ -593,8 +554,6 @@ Since: 2.22
 Setting *accept_focus* to `0` hints the desktop environment that the window doesn’t want to receive input focus.
 
 On X, it is the responsibility of the window manager to interpret this hint. ICCCM-compliant window manager usually respect it.
-
-Since: 2.4
 
     method gdk_window_set_accept_focus ( Int $accept_focus )
 
@@ -607,8 +566,6 @@ Determines whether or not the desktop environment should be hinted that the wind
 
 Returns: whether or not the window wants to receive input focus when it is mapped.
 
-Since: 2.22
-
     method gdk_window_get_focus_on_map ( --> Int  )
 
 [[gdk_] window_] set_focus_on_map
@@ -617,8 +574,6 @@ Since: 2.22
 Setting *focus_on_map* to `0` hints the desktop environment that the window doesn’t want to receive input focus when it is mapped. focus_on_map should be turned off for windows that aren’t triggered interactively (such as popups from network activity).
 
 On X, it is the responsibility of the window manager to interpret this hint. Window managers following the freedesktop.org window manager extension specification should respect it.
-
-Since: 2.6
 
     method gdk_window_set_focus_on_map ( Int $focus_on_map )
 
@@ -648,8 +603,6 @@ Some backends may not support native child windows.
 
 Returns: `1` if the window has a native window, `0` otherwise
 
-Since: 2.18
-
     method gdk_window_ensure_native ( --> Int  )
 
 [[gdk_] window_] set_child_shapes
@@ -673,8 +626,6 @@ This function is distinct from `gdk_window_set_child_shapes()` because it includ
 
 Sets the input shape mask of *window* to the union of input shape masks for all children of *window*, ignoring the input shape mask of *window* itself. Contrast with `gdk_window_merge_child_input_shapes()` which includes the input shape mask of *window* in the masks to be merged.
 
-Since: 2.10
-
     method gdk_window_set_child_input_shapes ( )
 
 [[gdk_] window_] merge_child_input_shapes
@@ -683,8 +634,6 @@ Since: 2.10
 Merges the input shape masks for any child windows into the input shape mask for *window*. i.e. the union of all input masks for *window* and its children will become the new input mask for *window*. See `gdk_window_input_shape_combine_region()`.
 
 This function is distinct from `gdk_window_set_child_input_shapes()` because it includes *window*’s input shape mask in the set of shapes to be merged.
-
-Since: 2.10
 
     method gdk_window_merge_child_input_shapes ( )
 
@@ -699,8 +648,6 @@ If *pass_through* is `1` then such pointer events happen as if the window wasn't
 
 Note that a window with *pass_through* `1` can still have a subwindow without pass through, so you can get events on a subset of a window. And in that cases you would get the in-between related events such as the pointer enter/leave events on its way to the destination window.
 
-Since: 3.18
-
     method gdk_window_set_pass_through ( Int $pass_through )
 
   * Int $pass_through; a boolean
@@ -711,8 +658,6 @@ Since: 3.18
 Returns whether input to the window is passed through to the window below.
 
 See `gdk_window_set_pass_through()` for details
-
-Since: 3.18
 
     method gdk_window_get_pass_through ( --> Int  )
 
@@ -741,8 +686,6 @@ Determines whether or not the window is an input only window.
 
 Returns: `1` if *window* is input only
 
-Since: 2.22
-
     method gdk_window_is_input_only ( --> Int  )
 
 [[gdk_] window_] is_shaped
@@ -751,8 +694,6 @@ Since: 2.22
 Determines whether or not the window is shaped.
 
 Returns: `1` if *window* is shaped
-
-Since: 2.22
 
     method gdk_window_is_shaped ( --> Int  )
 
@@ -771,8 +712,6 @@ Returns: window state bitfield
 Checks whether the window has a native window or not. Note that you can use `gdk_window_ensure_native()` if a native window is needed.
 
 Returns: `1` if the *window* has a native window, `0` otherwise.
-
-Since: 2.22
 
     method gdk_window_has_native ( --> Int  )
 
@@ -794,8 +733,6 @@ This function returns the type hint set for a window.
 
 Returns: The type hint set for *window*
 
-Since: 2.10
-
     method gdk_window_get_type_hint ( --> GdkWindowTypeHint32  )
 
 [[gdk_] window_] get_modal_hint
@@ -804,8 +741,6 @@ Since: 2.10
 Determines whether or not the window manager is hinted that *window* has modal behaviour.
 
 Returns: whether or not the window has the modal hint set.
-
-Since: 2.22
 
     method gdk_window_get_modal_hint ( --> Int  )
 
@@ -825,8 +760,6 @@ You should only use this on windows for which you have previously called `gdk_wi
 
 Toggles whether a window should appear in a task list or window list. If a window’s semantic type as specified with `gdk_window_set_type_hint()` already fully describes the window, this function should not be called in addition, instead you should allow the window to be treated according to standard policy for its semantic type.
 
-Since: 2.2
-
     method gdk_window_set_skip_taskbar_hint ( Int $skips_taskbar )
 
   * Int $skips_taskbar; `1` to skip the taskbar
@@ -836,8 +769,6 @@ Since: 2.2
 
 Toggles whether a window should appear in a pager (workspace switcher, or other desktop utility program that displays a small thumbnail representation of the windows on the desktop). If a window’s semantic type as specified with `gdk_window_set_type_hint()` already fully describes the window, this function should not be called in addition, instead you should allow the window to be treated according to standard policy for its semantic type.
 
-Since: 2.2
-
     method gdk_window_set_skip_pager_hint ( Int $skips_pager )
 
   * Int $skips_pager; `1` to skip the pager
@@ -846,8 +777,6 @@ Since: 2.2
 ---------------------------------
 
 Toggles whether a window needs the user's urgent attention.
-
-Since: 2.8
 
     method gdk_window_set_urgency_hint ( Int $urgent )
 
@@ -879,8 +808,6 @@ This function will take care of destroying the **Gnome::Gdk3::DrawingContext**.
 
 It is an error to call this function without a matching `gdk_window_begin_frame()` first.
 
-Since: 3.22
-
     method gdk_window_end_draw_frame ( N-GObject $context )
 
   * N-GObject $context; the **Gnome::Gdk3::DrawingContext** created by `gdk_window_begin_draw_frame()`
@@ -909,8 +836,6 @@ The window manager and session manager use a window’s role to distinguish it f
 -------------------------------
 
 When using GTK+, typically you should use `gtk_window_set_startup_id()` instead of this low-level function.
-
-Since: 2.12
 
     method gdk_window_set_startup_id ( Str $startup_id )
 
@@ -947,16 +872,12 @@ Retrieves a **Gnome::Gdk3::Cursor** pointer for the cursor currently set on the 
 
 Returns: (nullable) (transfer none): a **Gnome::Gdk3::Cursor**, or `Any`. The returned object is owned by the **Gnome::Gdk3::Window** and should not be unreferenced directly. Use `gdk_window_set_cursor()` to unset the cursor of the window
 
-Since: 2.18
-
     method gdk_window_get_cursor ( --> N-GObject  )
 
 [[gdk_] window_] set_device_cursor
 ----------------------------------
 
 Sets a specific **Gnome::Gdk3::Cursor** for a given device when it gets inside *window*. Use `gdk_cursor_new_for_display()` or `gdk_cursor_new_from_pixbuf()` to create the cursor. To make the cursor invisible, use `GDK_BLANK_CURSOR`. Passing `Any` for the *cursor* argument to `gdk_window_set_cursor()` means that *window* will use the cursor of its parent window. Most windows should use this default.
-
-Since: 3.0
 
     method gdk_window_set_device_cursor ( N-GObject $device, N-GObject $cursor )
 
@@ -970,8 +891,6 @@ Since: 3.0
 Retrieves a **Gnome::Gdk3::Cursor** pointer for the *device* currently set on the specified **Gnome::Gdk3::Window**, or `Any`. If the return value is `Any` then there is no custom cursor set on the specified window, and it is using the cursor for its parent window.
 
 Returns: (nullable) (transfer none): a **Gnome::Gdk3::Cursor**, or `Any`. The returned object is owned by the **Gnome::Gdk3::Window** and should not be unreferenced directly. Use `gdk_window_set_cursor()` to unset the cursor of the window
-
-Since: 3.0
 
     method gdk_window_get_device_cursor ( N-GObject $device --> N-GObject  )
 
@@ -1016,8 +935,6 @@ On the X11 platform the returned size is the size reported in the most-recently-
 
 Returns: The width of *window*
 
-Since: 2.24
-
     method gdk_window_get_width ( --> int32  )
 
 [[gdk_] window_] get_height
@@ -1028,8 +945,6 @@ Returns the height of the given *window*.
 On the X11 platform the returned size is the size reported in the most-recently-processed configure event, rather than the current size on the X server.
 
 Returns: The height of *window*
-
-Since: 2.24
 
     method gdk_window_get_height ( --> int32  )
 
@@ -1066,8 +981,6 @@ Returns: not meaningful, ignore
 
 Obtains the position of a window position in root window coordinates. This is similar to `gdk_window_get_origin()` but allows you to pass in any position in the window, not just the origin.
 
-Since: 2.18
-
     method gdk_window_get_root_coords ( Int $x, Int $y, Int $root_x, Int $root_y )
 
   * Int $x; X coordinate in window
@@ -1089,8 +1002,6 @@ You should always use this function when writing generic code that walks up a wi
 
 See also: `gdk_window_coords_from_parent()`
 
-Since: 2.22
-
     method gdk_window_coords_to_parent ( Num $x, Num $y, Num $parent_x, Num $parent_y )
 
   * Num $x; X coordinate in child’s coordinate system
@@ -1111,8 +1022,6 @@ For normal windows, calling this function is equivalent to subtracting the retur
 You should always use this function when writing generic code that walks down a window hierarchy.
 
 See also: `gdk_window_coords_to_parent()`
-
-Since: 2.22
 
     method gdk_window_coords_from_parent ( Num $parent_x, Num $parent_y, Num $x, Num $y )
 
@@ -1153,7 +1062,7 @@ A higher value means that drawing is automatically scaled up to a higher resolut
 
 The scale of a window may change during runtime, if this happens a configure event will be sent to the toplevel window.
 
-Since: 3.10 Returns: the scale factor
+Returns: the scale factor
 
     method gdk_window_get_scale_factor ( --> Int  )
 
@@ -1165,8 +1074,6 @@ Obtains the current device position and modifier state. The position is given in
 Use `gdk_window_get_device_position_double()` if you need subpixel precision.
 
 Returns: (nullable) (transfer none): The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
-
-Since: 3.0
 
     method gdk_window_get_device_position ( N-GObject $device, Int $x, Int $y, GdkModifierType $mask --> N-GObject  )
 
@@ -1184,8 +1091,6 @@ Since: 3.0
 Obtains the current device position in doubles and modifier state. The position is given in coordinates relative to the upper left corner of *window*.
 
 Returns: (nullable) (transfer none): The window underneath *device* (as with `gdk_device_get_window_at_position()`), or `Any` if the window is not known to GDK.
-
-Since: 3.10
 
     method gdk_window_get_device_position_double ( N-GObject $device, Num $x, Num $y, GdkModifierType $mask --> N-GObject  )
 
@@ -1230,8 +1135,6 @@ See also: `gdk_offscreen_window_get_embedder()`
 
 Returns: (transfer none): effective parent of *window*
 
-Since: 2.22
-
     method gdk_window_get_effective_parent ( --> N-GObject  )
 
 [[gdk_] window_] get_effective_toplevel
@@ -1244,8 +1147,6 @@ Works like `gdk_window_get_toplevel()`, but treats an offscreen window's embedde
 See also: `gdk_offscreen_window_get_embedder()`
 
 Returns: (transfer none): the effective toplevel window containing *window*
-
-Since: 2.22
 
     method gdk_window_get_effective_toplevel ( --> N-GObject  )
 
@@ -1280,8 +1181,6 @@ The list is returned in (relative) stacking order, i.e. the lowest window is fir
 
 Returns: (transfer container) (element-type **Gnome::Gdk3::Window**): list of child windows inside *window*
 
-Since: 3.10
-
     method gdk_window_get_children_with_user_data ( Pointer $user_data --> N-GList  )
 
   * Pointer $user_data; user data to look for
@@ -1313,8 +1212,6 @@ Sets the event mask for a given device (Normally a floating device, not attached
 
 See the [input handling overview][event-masks] for details.
 
-Since: 3.0
-
     method gdk_window_set_device_events ( N-GObject $device, GdkEventMask $event_mask )
 
   * N-GObject $device; **Gnome::Gdk3::Device** to enable events for.
@@ -1328,8 +1225,6 @@ Returns the event mask for *window* corresponding to an specific device.
 
 Returns: device event mask for *window*
 
-Since: 3.0
-
     method gdk_window_get_device_events ( N-GObject $device --> GdkEventMask  )
 
   * N-GObject $device; a **Gnome::Gdk3::Device**.
@@ -1338,8 +1233,6 @@ Since: 3.0
 ----------------------------------
 
 Sets the event mask for any floating device (i.e. not attached to any visible pointer) that has the source defined as *source*. This event mask will be applied both to currently existing, newly added devices after this call, and devices being attached/detached.
-
-Since: 3.0
 
     method gdk_window_set_source_events ( GdkInputSource $source, GdkEventMask $event_mask )
 
@@ -1402,8 +1295,6 @@ Returns the group leader window for *window*. See `gdk_window_set_group()`.
 
 Returns: (transfer none): the group leader window for *window*
 
-Since: 2.4
-
     method gdk_window_get_group ( --> N-GObject  )
 
 [[gdk_] window_] set_decorations
@@ -1443,12 +1334,150 @@ The *functions* argument is the logical OR of values from the **WMFunction** enu
 
   * GdkWMFunction $functions; bitmask of operations to allow on *window*
 
+[[gdk_] window_] create_similar_surface
+---------------------------------------
+
+Create a new surface that is as compatible as possible with the given *window*. For example the new surface will have the same fallback resolution and font options as *window*. Generally, the new surface will also use the same backend as *window*, unless that is not possible for some reason. The type of the returned surface may be examined with `cairo_surface_get_type()`.
+
+Initially the surface contents are all 0 (transparent if contents have transparency, black otherwise.)
+
+### Example
+
+The next example shows how to get a surface from a **Gnome::Gtk3::DrawingArea**. This code can be run as an initialization step when called from a *realize* signal registered on the drawing area widget. This surface can then be saved in an attribute. Later, when a *draw* signal is fired. the surface can be stored in the provided cairo context using `.set-source-surface()` and used to paint the drawing.
+
+    class X {
+      has Gnome::Cairo::Surface $!surface;
+
+      # called by signal 'realize'
+      method make-drawing (
+        Gnome::Gtk3::DrawingArea :widget($drawing-area)
+        --> Int
+      ) {
+
+        my Int $width = $drawing-area.get-allocated-width;
+        my Int $height = $drawing-area.get-allocated-height;
+
+        my Gnome::Gdk3::Window $window .= new(
+          :native-object($drawing-area.get-window)
+        );
+
+        $!surface .= new(
+          :native-object(
+            $window.create-similar-image-surface(
+              CAIRO_CONTENT_COLOR, $width, $height
+            )
+          )
+        );
+
+
+        given Gnome::Cairo.new(:$!surface) {
+          .set-source-rgb( 0.1, 0.1, 0.1);
+
+          # select your own font if 'Z003' is not available
+          .select-font-face(
+            "Z003", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD
+          );
+
+          .set-font-size(18);
+
+          # A bit of Natasha Beddingfield (your widget should be large enough!)
+          for
+             20, 30, "Most relationships seem so transitory",
+             20, 60, "They're all good but not the permanent one",
+             20, 120, "Who doesn't long for someone to hold",
+             20, 150, "Who knows how to love you without being told",
+             20, 180, "Somebody tell me why I'm on my own",
+             20, 210, "If there's a soulmate for everyone"
+             -> $x, $y, $text {
+
+            .move-to( $x, $y);
+            .show-text($text);
+          }
+
+          .clear-object;
+        }
+
+        1;
+      }
+
+      # Called by the draw signal after changing the window.
+      method redraw ( cairo_t $n-cx, --> Int ) {
+
+        # we have received a cairo context in which our surface must be set.
+        my Gnome::Cairo $cairo-context .= new(:native-object($n-cx));
+        $cairo-context.set-source-surface( $!surface, 0, 0);
+
+        # just repaint the whole scenery
+        $cairo-context.paint;
+
+        1
+      }
+    }
+
+Returns: a pointer to the newly allocated surface. The caller owns the surface and should call `cairo_surface_destroy()` when done with it.
+
+This function always returns a valid pointer, but it will return a pointer to a “nil” surface if the surface of this Window is already in an error state or any other error occurs.
+
+    method gdk_window_create_similar_surface (
+      cairo_content_t $content, int32 $width, int32 $height
+      --> cairo_surface_t
+    )
+
+  * cairo_content_t $content; an enum describing the content for the new surface
+
+  * int32 $width; width of the new surface
+
+  * int32 $height; height of the new surface
+
+[[gdk_] window_] create_similar_image_surface
+---------------------------------------------
+
+Create a new image surface that is efficient to draw on the given *window*.
+
+Initially the surface contents are all 0 (transparent if contents have transparency, black otherwise.)
+
+The *width* and *height* of the new surface are not affected by the scaling factor of the *window*, or by the *scale* argument; they are the size of the surface in device pixels. If you wish to create an image surface capable of holding the contents of *window* you can use:
+
+### Example
+
+    my Gnome::Gtk3::DrawingArea $drawing-area;
+    my Int $width = $drawing-area.get-allocated-width;
+    my Int $height = $drawing-area.get-allocated-height;
+    ny Int $scale = $drawing-area.get_scale_factor;
+
+    my Gnome::Gdk3::Window $window .= new(:native-object(
+      $drawing-area.get-window)
+    );
+
+    my Gnome::Cairo::Surface $surface .= new(
+      :native-object(
+        $window.create-similar-image-surface(
+          CAIRO_FORMAT_ARGB32, $width, $height, $scale
+        )
+      )
+    );
+
+Returns: a pointer to the newly allocated surface. The caller owns the surface and should call `cairo_surface_destroy()` when done with it.
+
+This function always returns a valid pointer, but it will return a pointer to a “nil” surface if *other* is already in an error state or any other error occurs.
+
+    method gdk_window_create_similar_image_surface (
+      cairo_format_t $format, int32 $width, int32 $height, int32 $scale
+      --> cairo_surface_t
+    )
+
+  * cairo_format_t $format; the format for the new surface
+
+  * int32 $width; width of the new surface
+
+  * int32 $height; height of the new surface
+
+  * int32 $scale; the scale of the new surface, or 0 to use same as *window*
+
 gdk_window_beep
 ---------------
 
 Emits a short beep associated to *window* in the appropriate display, if supported. Otherwise, emits a short beep on the display just as `gdk_display_beep()`.
-
-Since: 2.12
 
     method gdk_window_beep ( )
 
@@ -1515,8 +1544,6 @@ If the window was already fullscreen, then this function does nothing.
 
 On X11, asks the window manager to put *window* in a fullscreen state, if the window manager supports this operation. Not all window managers support this, and some deliberately ignore it or don’t have a concept of “fullscreen”; so you can’t rely on the fullscreenification actually happening. But it will happen with most standard window managers, and GDK makes a best effort to get it to happen.
 
-Since: 2.2
-
     method gdk_window_fullscreen ( )
 
 [[gdk_] window_] fullscreen_on_monitor
@@ -1543,8 +1570,6 @@ If the XINERAMA extension is not available or not usable, this function has no e
 
 Not all window managers support this, so you can’t rely on the fullscreen window to span over the multiple monitors when **GDK_FULLSCREEN_ON_ALL_MONITORS** is specified.
 
-Since: 3.8
-
     method gdk_window_set_fullscreen_mode ( GdkFullscreenMode $mode )
 
   * GdkFullscreenMode $mode; fullscreen mode
@@ -1556,8 +1581,6 @@ Obtains the **Gnome::Gdk3::FullscreenMode** of the *window*.
 
 Returns: The **Gnome::Gdk3::FullscreenMode** applied to the window when fullscreen.
 
-Since: 3.8
-
     method gdk_window_get_fullscreen_mode ( --> GdkFullscreenMode  )
 
 gdk_window_unfullscreen
@@ -1567,8 +1590,6 @@ Moves the window out of fullscreen mode. If the window was not fullscreen, does 
 
 On X11, asks the window manager to move *window* out of the fullscreen state, if the window manager supports this operation. Not all window managers support this, and some deliberately ignore it or don’t have a concept of “fullscreen”; so you can’t rely on the unfullscreenification actually happening. But it will happen with most standard window managers, and GDK makes a best effort to get it to happen.
 
-Since: 2.2
-
     method gdk_window_unfullscreen ( )
 
 [[gdk_] window_] set_keep_above
@@ -1577,8 +1598,6 @@ Since: 2.2
 Set if *window* must be kept above other windows. If the window was already above, then this function does nothing.
 
 On X11, asks the window manager to keep *window* above, if the window manager supports this operation. Not all window managers support this, and some deliberately ignore it or don’t have a concept of “keep above”; so you can’t rely on the window being kept above. But it will happen with most standard window managers, and GDK makes a best effort to get it to happen.
-
-Since: 2.4
 
     method gdk_window_set_keep_above ( Int $setting )
 
@@ -1590,8 +1609,6 @@ Since: 2.4
 Set if *window* must be kept below other windows. If the window was already below, then this function does nothing.
 
 On X11, asks the window manager to keep *window* below, if the window manager supports this operation. Not all window managers support this, and some deliberately ignore it or don’t have a concept of “keep below”; so you can’t rely on the window being kept below. But it will happen with most standard window managers, and GDK makes a best effort to get it to happen.
-
-Since: 2.4
 
     method gdk_window_set_keep_below ( Int $setting )
 
@@ -1609,8 +1626,6 @@ For child windows this function only works for non-native windows.
 For setting up per-pixel alpha topelevels, see `gdk_screen_get_rgba_visual()`, and for non-toplevels, see `gdk_window_set_composited()`.
 
 Support for non-toplevel windows was added in 3.8.
-
-Since: 2.12
 
     method gdk_window_set_opacity ( Num $opacity )
 
@@ -1647,8 +1662,6 @@ This function assumes that the drag is controlled by the client pointer device, 
 
 Begins a window resize operation (for a toplevel window). You might use this function to implement a “window resize grip,” for example; in fact **Gnome::Gtk3::Statusbar** uses it. The function works best with window managers that support the [Extended Window Manager Hints](http://www.freedesktop.org/Standards/wm-spec) but has a fallback implementation for other window managers.
 
-Since: 3.4
-
     method gdk_window_begin_resize_drag_for_device ( GdkWindowEdge $edge, N-GObject $device, Int $button, Int $root_x, Int $root_y, UInt $timestamp )
 
   * GdkWindowEdge $edge; the edge or corner from which the drag is started
@@ -1684,8 +1697,6 @@ This function assumes that the drag is controlled by the client pointer device, 
 -------------------------------------------
 
 Begins a window move operation (for a toplevel window). You might use this function to implement a “window move grip,” for example. The function works best with window managers that support the [Extended Window Manager Hints](http://www.freedesktop.org/Standards/wm-spec) but has a fallback implementation for other window managers.
-
-Since: 3.4
 
     method gdk_window_begin_move_drag_for_device ( N-GObject $device, Int $button, Int $root_x, Int $root_y, UInt $timestamp )
 
@@ -1769,8 +1780,6 @@ gdk_offscreen_window_get_embedder
 
 This function informs GDK that the geometry of an embedded offscreen window has changed. This is necessary for GDK to keep track of which offscreen window the pointer is in.
 
-Since: 2.18
-
     method gdk_window_geometry_changed ( )
 
 [[gdk_] window_] set_support_multidevice
@@ -1779,8 +1788,6 @@ Since: 2.18
 This function will enable multidevice features in *window*.
 
 Multidevice aware windows will need to handle properly multiple, per device enter/leave events, device grabs and grab ownerships.
-
-Since: 3.0
 
     method gdk_window_set_support_multidevice ( Int $support_multidevice )
 
@@ -1793,8 +1800,6 @@ Returns `1` if the window is aware of the existence of multiple devices.
 
 Returns: `1` if the window handles multidevice features.
 
-Since: 3.0
-
     method gdk_window_get_support_multidevice ( --> Int  )
 
 [[gdk_] window_] get_frame_clock
@@ -1802,7 +1807,7 @@ Since: 3.0
 
 Gets the frame clock for the window. The frame clock for a window never changes unless the window is reparented to a new toplevel window.
 
-Since: 3.8 Returns: (transfer none): the frame clock
+Returns: (transfer none): the frame clock
 
     method gdk_window_get_frame_clock ( --> N-GObject  )
 
@@ -1815,8 +1820,6 @@ Some types of applications, e.g. paint programs, need to see all motion events a
 
 By default, event compression is enabled.
 
-Since: 3.12
-
     method gdk_window_set_event_compression ( Int $event_compression )
 
   * Int $event_compression; `1` if motion events should be compressed
@@ -1828,8 +1831,6 @@ Get the current event compression setting for this window.
 
 Returns: `1` if motion events will be compressed
 
-Since: 3.12
-
     method gdk_window_get_event_compression ( --> Int  )
 
 [[gdk_] window_] set_shadow_width
@@ -1838,8 +1839,6 @@ Since: 3.12
 Newer GTK+ windows using client-side decorations use extra geometry around their frames for effects like shadows and invisible borders. Window managers that want to maximize windows or snap to edges need to know where the extents of the actual frame lie, so that users don’t feel like windows are snapping against random invisible edges.
 
 Note that this property is automatically updated by GTK+, so this function should only be used by applications which do not use GTK+ to create toplevel windows.
-
-Since: 3.12
 
     method gdk_window_set_shadow_width ( Int $left, Int $right, Int $top, Int $bottom )
 
@@ -1858,8 +1857,6 @@ Asks the windowing system to show the window menu. The window menu is the menu s
 
 Returns: `1` if the window menu was shown and `0` otherwise.
 
-Since: 3.14
-
     method gdk_window_show_window_menu ( GdkEvent $event --> Int  )
 
   * GdkEvent $event; a **Gnome::Gdk3::Event** to show the menu for
@@ -1874,8 +1871,6 @@ If the creation of the **Gnome::Gdk3::GLContext** failed, *error* will be set.
 Before using the returned **Gnome::Gdk3::GLContext**, you will need to call `gdk_gl_context_make_current()` or `gdk_gl_context_realize()`.
 
 Returns: (transfer full): the newly created **Gnome::Gdk3::GLContext**, or `Any` on error
-
-Since: 3.16
 
     method gdk_window_create_gl_context ( N-GError $error --> N-GObject  )
 
@@ -1921,8 +1916,6 @@ The *pick-embedded-child* signal is emitted to find an embedded child at the giv
 
 Returns: (nullable) (transfer none): the **Gnome::Gdk3::Window** of the embedded child at *x*, *y*, or `Any`
 
-Since: 2.18
-
     method handler (
       num64 $x,
       num64 $y,
@@ -1945,7 +1938,7 @@ Emitted when the position of *window* is finalized after being moved to a destin
 
 *flipped_rect* is the ideal position of *window* after any possible flipping, but before any possible sliding. *final_rect* is *flipped_rect*, but possibly translated in the case that flipping is still ineffective in keeping *window* on-screen.
 
-Since: 3.22 Stability: Private
+Stability: Private
 
     method handler (
       Unknown type G_TYPE_POINTER $flipped_rect,
