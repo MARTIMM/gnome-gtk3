@@ -1,7 +1,34 @@
 # https://jekyllrb.com/tutorials/navigation/
 - bar_title: "Cairo"
   bar_menu:
-#  - title: ""
-#    url: '/content-docs/reference/Cairo/.html'
+  - title: "Enums"
+    url: '/content-docs/reference/Cairo/Enums.html'
+    type: standalone
+  - title: "FontFace"
+    url: '/content-docs/reference/Cairo/FontFace.html'
+    type: toplevel
+  - title: "FontOptions"
+    url: '/content-docs/reference/Cairo/FontOptions.html'
+    type: toplevel
+  - title: "ImageSurface"
+    url: '/content-docs/reference/Cairo/ImageSurface.html'
+  - title: "Matrix"
+    url: '/content-docs/reference/Cairo/Matrix.html'
+    type: toplevel
+  - title: "Path"
+    url: '/content-docs/reference/Cairo/Path.html'
+    type: toplevel
+  - title: "Pattern"
+    url: '/content-docs/reference/Cairo/Pattern.html'
+    type: toplevel
+  - title: "ScaledFont"
+    url: '/content-docs/reference/Cairo/ScaledFont.html'
+    type: toplevel
+  - title: "Surface"
+    url: '/content-docs/reference/Cairo/Surface.html'
+    type: toplevel
+  - title: "Types"
+    url: '/content-docs/reference/Cairo/Types.html'
+    type: standalone
 #    doc: 0
 #    test: 0
