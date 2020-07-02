@@ -63,6 +63,8 @@ layout: sidebar
 
 * Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
 
+* Split off documentation from Gnome::Gtk3 package and move it to my main gtk github pages site at https://martimm.github.io/.
+
 #### Site changes.
 * In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
