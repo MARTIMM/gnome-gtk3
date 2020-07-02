@@ -165,22 +165,6 @@ See also: `gtk_container_remove()` in [Gnome::Gtk3::Container](Container.html).
 
     method gtk_widget_destroy ( )
 
-[gtk_] widget_destroyed
------------------------
-
-This function sets **widget_pointer* to `Any` if *widget_pointer* != `Any`. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect `gtk_widget_destroyed()` as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to `Any`. Useful for example to avoid multiple copies of the same dialog.
-
-    method gtk_widget_destroyed ( N-GObject $widget_pointer )
-
-  * N-GObject $widget_pointer; (inout) (transfer none): address of a variable that contains *widget*
-
-[gtk_] widget_unparent
-----------------------
-
-This function is only for use in widget implementations. Should be called by implementations of the remove method on **Gnome::Gtk3::Container**, to dissociate a child from the container.
-
-    method gtk_widget_unparent ( )
-
 [gtk_] widget_show
 ------------------
 
@@ -212,6 +196,19 @@ Shows a widget. If the widget is an unmapped toplevel widget (i.e. a **Gnome::Gt
 Recursively shows a widget, and any child widgets (if the widget is a container).
 
     method gtk_widget_show_all ( )
+
+[gtk_] widget_draw
+------------------
+
+Draws *widget* to *$cr*. The top left corner of the widget will be drawn to the currently set origin point of *$cr*.
+
+You should pass a cairo context as *cr* argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using `cairo_set_operator()` or the line width using `cairo_set_line_width()` might have unwanted side effects. You may however change the context’s transform matrix - like with `cairo_scale()`, `cairo_translate()` or `cairo_set_matrix()` and clip region with `cairo_clip()` prior to calling this function. Also, it is fine to modify the context with `cairo_save()` and `cairo_push_group()` prior to calling this function.
+
+Note that special-purpose widgets may contain special code for rendering to the screen and might appear differently on screen and when rendered using `gtk_widget_draw()`.
+
+    method gtk_widget_draw ( cairo_t $cr )
+
+  * cairo_t $cr; a cairo context to draw to
 
 [[gtk_] widget_] queue_draw
 ---------------------------
@@ -505,16 +502,6 @@ Returns: return from the event signal emission (`1` if the event was handled)
 Sends the focus change *event* to *widget*
 
 This function is not meant to be used by applications. The only time it should be used is when it is necessary for a **Gnome::Gtk3::Widget** to assign focus to a widget that is semantically owned by the first widget even though it’s not a direct child - for instance, a search entry in a floating window similar to the quick search in **Gnome::Gtk3::TreeView**.
-
-An example of its usage is:
-
-|[<!-- language="C" --> **Gnome::Gdk3::Event** *fevent = gdk_event_new (GDK_FOCUS_CHANGE);
-
-fevent->focus_change.type = GDK_FOCUS_CHANGE; fevent->focus_change.in = TRUE; fevent->focus_change.window = _gtk_widget_get_window (widget); if (fevent->focus_change.window != NULL) g_object_ref (fevent->focus_change.window);
-
-gtk_widget_send_focus_change (widget, fevent);
-
-gdk_event_free (event); ]|
 
 Returns: the return value from the event signal emission: `1` if the event was handled, and `0` otherwise
 
@@ -1043,9 +1030,7 @@ Note that this function does not add any reference to *window*.
 [[gtk_] widget_] get_window
 ---------------------------
 
-Returns the widget’s window if it is realized, `Any` otherwise
-
-Returns: (transfer none) (nullable): *widget*’s window.
+Returns the widget’s GdkWindow if it is realized, it is undefined otherwise.
 
     method gtk_widget_get_window ( --> N-GObject  )
 

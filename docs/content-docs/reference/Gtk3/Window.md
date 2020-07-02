@@ -131,15 +131,7 @@ All top-level windows created by `gtk_window_new()` are stored in an internal to
 To delete a **Gnome::Gtk3::Window**, call `gtk_widget_destroy()`.
 
     multi method new (
-      Bool :$empty!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
-    )
-
-### method new( :title!, :window-type?)
-
-Create a top level window or popup with title set.
-
-    multi method new (
-      Bool :$title!, GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
+      GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
     )
 
 [[gtk_] window_] set_title
@@ -1282,7 +1274,7 @@ Supported signals
 
 ### activate-focus
 
-The *activate-focus* signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of *window*.
+The *activate-focus* signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of *$window*.
 
     method handler (
       Gnome::GObject::Object :widget($window),
@@ -1293,7 +1285,7 @@ The *activate-focus* signal is a [keybinding signal](https://developer.gnome.org
 
 ### activate-default
 
-The *activate-default* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user activates the default widget of *window*.
+The *activate-default* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user activates the default widget of *$window*.
 
     method handler (
       Gnome::GObject::Object :widget($window),
@@ -1304,7 +1296,7 @@ The *activate-default* signal is a [keybinding signal][**Gnome::Gtk3::BindingSig
 
 ### keys-changed
 
-The *keys-changed* signal gets emitted when the set of accelerators or mnemonics that are associated with *window* changes.
+The *keys-changed* signal gets emitted when the set of accelerators or mnemonics that are associated with *$window* changes.
 
     method handler (
       Gnome::GObject::Object :widget($window),
@@ -1315,7 +1307,7 @@ The *keys-changed* signal gets emitted when the set of accelerators or mnemonics
 
 ### enable-debugging
 
-The *enable-debugging* signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user enables or disables interactive debugging. When *toggle* is `1`, interactive debugging is toggled on or off, when it is `0`, the debugger will be pointed at the widget under the pointer.
+The *enable-debugging* signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user enables or disables interactive debugging. When *$toggle* is `1`, interactive debugging is toggled on or off, when it is `0`, the debugger will be pointed at the widget under the pointer.
 
 The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 
@@ -1325,6 +1317,7 @@ Return: `1` if the key binding was handled
       int32 $toggle,
       Gnome::GObject::Object :widget($window),
       *%user-options
+      --> Int
     );
 
   * $window; the window on which the signal is emitted
