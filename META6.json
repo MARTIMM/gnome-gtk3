@@ -109,7 +109,7 @@
 
   "depends": [
     "Gnome::N", "Gnome::Glib", "Gnome::Gio", "Gnome::GObject", "Gnome::Gdk3",
-    "Gnome::Cairo"
+    "Gnome::Cairo", "Method::Also"
   ],
 
   "test-depends": [ ],
