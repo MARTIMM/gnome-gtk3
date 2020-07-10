@@ -3,6 +3,11 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::GObject::Value;
+use Gnome::GObject::Type;
+
+use Gnome::Gdk3::Window;
+
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
@@ -21,16 +26,52 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
   is $b.get-visible, 0, '.get-visible()';
   $b.set-visible(1);
-  is $b.get-visible, 1, '.set-visible()';
+  ok $b.get-visible, '.set-visible()';
+  ok $b.is-visible, '.is-visible()';
+  nok $b.get-has-window, '.get-has-window() is False';
+
+  # does not set .get-has-window()
+  my Gnome::Gdk3::Window $gdk-window .= new;
+  nok $b.get-has-window, '.get-has-window() still False';
+  lives-ok {$b.set-window($gdk-window);}, '.set-window()';
+  ok $b.get-window.defined, '.get-window()';
+  $b.set-has-window(True);
+  ok $b.get-has-window, '.set-has-window()';
+  lives-ok {$b.register-window($gdk-window);}, '.register-window()';
+  lives-ok {$b.unregister-window($gdk-window);}, '.unregister-window()';
+  $b.set-has-window(False);
+  nok $b.get-has-window, '.get-has-window() False again';
+
+  # no parent or parent window -> undefined
+  nok $b.get-parent.defined, '.get-parent()';
+  nok $b.get-parent-window.defined, '.get-parent-window()';
 
   lives-ok {$b.show-now;}, '.show-now()';
   lives-ok {$b.widget-hide;}, '.widget-hide()';
   lives-ok {$b.widget-show;}, '.widget-show()';
   lives-ok {$b.show-all;}, '.show-all()';
+  lives-ok {$b.hide;}, '.hide()';
+  lives-ok {$b.show;}, '.show()';
+
+  lives-ok { $b.get_allocated_width;}, '.get_allocated_width()';
+  lives-ok { $b.get_allocated_height;}, '.get_allocated_height()';
+  lives-ok { $b.get_allocated_baseline;}, '.get_allocated_baseline()';
+  lives-ok { diag $b.get_allocated_size;}, '.get_allocated_size()';
+  lives-ok { diag $b.get_allocation;}, '.get_allocation()';
+
+  my N-GtkAllocation $a = $b.get-clip;
+  note $a.perl;
+
+  $b.set_no_show_all(True);
+  ok $b.get-no-show-all, '.set_no_show_all() / .get-no-show-all()';
 
   # not drawable because not visible/mapped
+  nok $b.get-realized, '.get-realized()';
+  nok $b.get-mapped, '.get-mapped()';
   nok $b.is-drawable, '.is-drawable()';
 
+  $b.set_app_paintable(1);
+  ok $b.get_app_paintable, '.set_app_paintable() / .get_app_paintable()';
   nok $b.is-toplevel, '.is-toplevel()';
 
   $b.set-tooltip-text('Nooooo don\'t touch that button!!!!!!!');
@@ -91,6 +132,35 @@ subtest 'Manipulations', {
   $l4b = $b.gtk_widget_get_preferred_width;
 #note $l4b;
   is $l4 cmp $l4b, Same, '.gtk_widget_get_preferred_width()';
+
+  $b.set-sensitive(False);
+  nok $b.get-sensitive, '.set-sensitive() / .get-sensitive()';
+  nok $b.is-sensitive, '.is-sensitive()';
+
+  $b.gtk-widget-destroy;
+  nok $b.is-valid, '.destroy()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my Gnome::GObject::Value $gv;
+
+  my Gnome::Gtk3::Button $b .= new(:label<abc>);
+  $b.set_no_show_all(True);
+  $b.set-name('test-button');
+
+  $gv .= new(:init(G_TYPE_STRING));
+  $b.g-object-get-property( 'name', $gv);
+  is $gv.g-value-get-string, 'test-button', 'get property name';
+  $gv.clear-object;
+
+  $gv .= new(:init(G_TYPE_BOOLEAN));
+  $b.g-object-get-property( 'no-show-all', $gv);
+  ok $gv.g-value-get-boolean, 'get property no-show-all';
+  $gv.g-value-set-boolean(False);
+  $b.g-object-set-property( 'no-show-all', $gv);
+  is $b.get_no_show_all, 0, 'set property no-show-all';
+  $gv.clear-object;
 }
 
 #`{{
@@ -100,10 +170,6 @@ subtest 'Inherit ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
 }
 
 #-------------------------------------------------------------------------------
