@@ -217,10 +217,6 @@ ul {
     list-style-type: square;
     padding-left: 15px;
     margin-left: 15px;
-
-    li {
-      list-style-type: circle;
-    }
   }
 
   .task-list-item {
@@ -229,7 +225,8 @@ ul {
     margin-left: 0px;
 
     li {
-      margin-left: 20px;
+      list-style-position: inside;
+      margin-left: 25px;
     }
   }
 }

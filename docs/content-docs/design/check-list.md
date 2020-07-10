@@ -304,6 +304,17 @@ N-GObject                 |N |  |  |  |  |  |  |
 NativeLib                 |L |  |  |  |  |  |- |
 TopLevelClassSupport      |t |  |  |  |  |  |* |
 X                         |  |  |  |  |  |  |* |
+**Gnome::Cairo**          |p | #| #| #| #| #| #|
+Enums                     |  |  |  |  |  |  |  |
+FontFace                  |  |  |  |  |  |  |  |
+FontOptions               |  |  |  |  |  |  |  |
+ImageSurface              |  |  |  |  |  |  |  |
+Matrix                    |  |  |  |  |  |  |  |
+Path                      |  |  |  |  |  |  |  |
+Pattern                   |  |  |  |  |  |  |  |
+ScaledFont                |  |  |  |  |  |  |  |
+Surface                   |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |  |
 
 <!--
 **Gnome::Atk**            |p | #| #| #| #| #| #|
