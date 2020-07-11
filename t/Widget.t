@@ -91,6 +91,21 @@ subtest 'Manipulations', {
   $b.set-vexpand-set(False);
   nok $b.get-vexpand-set, '.set-vexpand-set()';
 
+  $b.set-halign(GTK_ALIGN_START);
+  is GtkAlign($b.get-halign), GTK_ALIGN_START, '.set-halign() / .get-halign()';
+
+  $b.set-valign(GTK_ALIGN_START);
+  is GtkAlign($b.get-valign), GTK_ALIGN_START, '.set-valign() / .get-valign()';
+
+  $b.set-direction(GTK_TEXT_DIR_RTL);
+  is GtkTextDirection($b.get-direction), GTK_TEXT_DIR_RTL,
+    '.set-direction() / .get-direction()';
+
+  $b.set-default-direction(GTK_TEXT_DIR_LTR);
+  is GtkTextDirection($b.get-default-direction), GTK_TEXT_DIR_LTR,
+    '.set-default-direction() / .get-default-direction()';
+
+
   $b.set_app_paintable(1);
   ok $b.get_app_paintable, '.set_app_paintable() / .get_app_paintable()';
   nok $b.is-toplevel, '.is-toplevel()';

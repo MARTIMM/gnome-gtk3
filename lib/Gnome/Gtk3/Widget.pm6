@@ -297,6 +297,7 @@ use Gnome::Gtk3::Buildable;
 use Gnome::Cairo;
 use Gnome::Cairo::Enums;
 use Gnome::Cairo::Types;
+#use Gnome::Cairo::FontOptions;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
@@ -3433,14 +3434,11 @@ sub gtk_widget_set_vexpand_set ( N-GObject $widget, int32 $set )
 =begin pod
 =head2 [[gtk_] widget_] queue_compute_expand
 
-Mark I<widget> as needing to recompute its expand flags. Call
-this function when setting legacy expand child properties
-on the child of a container.
+Mark I<widget> as needing to recompute its expand flags. Call this function when setting legacy expand child properties on the child of a container.
 
 See C<gtk_widget_compute_expand()>.
 
   method gtk_widget_queue_compute_expand ( )
-
 
 =end pod
 
@@ -3453,17 +3451,11 @@ sub gtk_widget_queue_compute_expand ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] compute_expand
 
-Computes whether a container should give this widget extra space
-when possible. Containers should check this, rather than
-looking at C<gtk_widget_get_hexpand()> or C<gtk_widget_get_vexpand()>.
+Computes whether a container should give this widget extra space when possible. Containers should check this, rather than looking at C<gtk_widget_get_hexpand()> or C<gtk_widget_get_vexpand()>.
 
-This function already checks whether the widget is visible, so
-visibility does not need to be checked separately. Non-visible
-widgets are not expanded.
+This function already checks whether the widget is visible, so visibility does not need to be checked separately. Non-visible widgets are not expanded.
 
-The computed expand value uses either the expand setting explicitly
-set on the widget itself, or, if none has been explicitly set,
-the widget may expand if some of its children do.
+The computed expand value uses either the expand setting explicitly set on the widget itself, or, if none has been explicitly set, the widget may expand if some of its children do.
 
 Returns: whether widget tree rooted here should be expanded
 
@@ -3483,8 +3475,7 @@ sub gtk_widget_compute_expand ( N-GObject $widget, int32 $orientation )
 =begin pod
 =head2 [[gtk_] widget_] get_support_multidevice
 
-Returns C<1> if I<widget> is multiple pointer aware. See
-C<gtk_widget_set_support_multidevice()> for more information.
+Returns C<1> if I<widget> is multiple pointer aware. See C<gtk_widget_set_support_multidevice()> for more information.
 
 Returns: C<1> if I<widget> is multidevice aware.
 
@@ -3503,11 +3494,7 @@ sub gtk_widget_get_support_multidevice ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_support_multidevice
 
-Enables or disables multiple pointer awareness. If this setting is C<1>,
-I<widget> will start receiving multiple, per device enter/leave events. Note
-that if custom B<Gnome::Gdk3::Windows> are created in sig C<realize>,
-C<gdk_window_set_support_multidevice()> will have to be called manually on them.
-
+Enables or disables multiple pointer awareness. If this setting is C<1>, I<widget> will start receiving multiple, per device enter/leave events. Note that if custom B<Gnome::Gdk3::Windows> are created in sig C<realize>, C<gdk_window_set_support_multidevice()> will have to be called manually on them.
 
   method gtk_widget_set_support_multidevice ( Int $support_multidevice )
 
@@ -3519,9 +3506,9 @@ sub gtk_widget_set_support_multidevice ( N-GObject $widget, int32 $support_multi
   is native(&gtk-lib)
   { * }
 
-#`{{
+#`{{ drop
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_set_accessible_type
+# TM:0:gtk_widget_class_set_accessible_type
 =begin pod
 =head2 [[gtk_] widget_] class_set_accessible_type
 
@@ -3542,9 +3529,11 @@ This function should only be called from class init functions of widgets.
 sub gtk_widget_class_set_accessible_type ( GtkWidgetClass $widget_class, N-GObject $type )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{ drop
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_set_accessible_role
+# TM:0:gtk_widget_class_set_accessible_role
 =begin pod
 =head2 [[gtk_] widget_] class_set_accessible_role
 
@@ -3609,21 +3598,17 @@ sub gtk_widget_get_accessible ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_halign
+#TM:1:gtk_widget_get_halign
 =begin pod
 =head2 [[gtk_] widget_] get_halign
 
 Gets the value of the prop C<halign> property.
 
-For backwards compatibility reasons this method will never return
-C<GTK_ALIGN_BASELINE>, but instead it will convert it to
-C<GTK_ALIGN_FILL>. Baselines are not supported for horizontal
-alignment.
+For backwards compatibility reasons this method will never return C<GTK_ALIGN_BASELINE>, but instead it will convert it to C<GTK_ALIGN_FILL>. Baselines are not supported for horizontal alignment.
 
 Returns: the horizontal alignment of I<widget>
 
   method gtk_widget_get_halign ( --> GtkAlign  )
-
 
 =end pod
 
@@ -3633,12 +3618,11 @@ sub gtk_widget_get_halign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_halign
+#TM:1:gtk_widget_set_halign
 =begin pod
 =head2 [[gtk_] widget_] set_halign
 
-Sets the horizontal alignment of I<widget>.
-See the prop C<halign> property.
+Sets the horizontal alignment of I<widget>. See the prop C<halign> property.
 
   method gtk_widget_set_halign ( GtkAlign $align )
 
@@ -3651,18 +3635,13 @@ sub gtk_widget_set_halign ( N-GObject $widget, int32 $align )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_valign
+#TM:1:gtk_widget_get_valign
 =begin pod
 =head2 [[gtk_] widget_] get_valign
 
 Gets the value of the prop C<valign> property.
 
-For backwards compatibility reasons this method will never return
-C<GTK_ALIGN_BASELINE>, but instead it will convert it to
-C<GTK_ALIGN_FILL>. If your widget want to support baseline aligned
-children it must use C<gtk_widget_get_valign_with_baseline()>, or
-`g_object_get (widget, "valign", &value, NULL)`, which will
-also report the true value.
+For backwards compatibility reasons this method will never return C<GTK_ALIGN_BASELINE>, but instead it will convert it to C<GTK_ALIGN_FILL>. If your widget want to support baseline aligned children it must use C<gtk_widget_get_valign_with_baseline()>, or `g_object_get (widget, "valign", &value, NULL)`, which will also report the true value.
 
 Returns: the vertical alignment of I<widget>, ignoring baseline alignment
 
@@ -3677,33 +3656,11 @@ sub gtk_widget_get_valign ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_valign_with_baseline
-=begin pod
-=head2 [[gtk_] widget_] get_valign_with_baseline
-
-Gets the value of the prop C<valign> property, including
-C<GTK_ALIGN_BASELINE>.
-
-Returns: the vertical alignment of I<widget>
-
-
-  method gtk_widget_get_valign_with_baseline ( --> GtkAlign  )
-
-
-=end pod
-
-sub gtk_widget_get_valign_with_baseline ( N-GObject $widget )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_valign
+#TM:1:gtk_widget_set_valign
 =begin pod
 =head2 [[gtk_] widget_] set_valign
 
-Sets the vertical alignment of I<widget>.
-See the prop C<valign> property.
+Sets the vertical alignment of I<widget>. See the prop C<valign> property.
 
   method gtk_widget_set_valign ( GtkAlign $align )
 
@@ -3715,6 +3672,22 @@ sub gtk_widget_set_valign ( N-GObject $widget, int32 $align )
   is native(&gtk-lib)
   { * }
 
+
+#-------------------------------------------------------------------------------
+#TM:0:gtk_widget_get_valign_with_baseline
+=begin pod
+=head2 [[gtk_] widget_] get_valign_with_baseline
+
+Gets the value of the prop C<valign> property, including C<GTK_ALIGN_BASELINE>.
+
+  method gtk_widget_get_valign_with_baseline ( --> GtkAlign  )
+
+=end pod
+
+sub gtk_widget_get_valign_with_baseline ( N-GObject $widget )
+  returns int32
+  is native(&gtk-lib)
+  { * }
 
 #`{{ deprecated. kept here to keep me from inserting :-/
 #-------------------------------------------------------------------------------
@@ -3804,11 +3777,7 @@ sub gtk_widget_set_margin_right ( N-GObject $widget, int32 $margin )
 
 Gets the value of the prop C<margin-start> property.
 
-Returns: The start margin of I<widget>
-
-
   method gtk_widget_get_margin_start ( --> Int  )
-
 
 =end pod
 
@@ -3822,9 +3791,7 @@ sub gtk_widget_get_margin_start ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_margin_start
 
-Sets the start margin of I<widget>.
-See the prop C<margin-start> property.
-
+Sets the start margin of I<widget>. See the prop C<margin-start> property.
 
   method gtk_widget_set_margin_start ( Int $margin )
 
@@ -3843,11 +3810,7 @@ sub gtk_widget_set_margin_start ( N-GObject $widget, int32 $margin )
 
 Gets the value of the prop C<margin-end> property.
 
-Returns: The end margin of I<widget>
-
-
   method gtk_widget_get_margin_end ( --> Int  )
-
 
 =end pod
 
@@ -3861,9 +3824,7 @@ sub gtk_widget_get_margin_end ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_margin_end
 
-Sets the end margin of I<widget>.
-See the prop C<margin-end> property.
-
+Sets the end margin of I<widget>. See the prop C<margin-end> property.
 
   method gtk_widget_set_margin_end ( Int $margin )
 
@@ -3882,11 +3843,7 @@ sub gtk_widget_set_margin_end ( N-GObject $widget, int32 $margin )
 
 Gets the value of the prop C<margin-top> property.
 
-Returns: The top margin of I<widget>
-
-
   method gtk_widget_get_margin_top ( --> Int  )
-
 
 =end pod
 
@@ -3900,9 +3857,7 @@ sub gtk_widget_get_margin_top ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_margin_top
 
-Sets the top margin of I<widget>.
-See the prop C<margin-top> property.
-
+Sets the top margin of I<widget>. See the prop C<margin-top> property.
 
   method gtk_widget_set_margin_top ( Int $margin )
 
@@ -3921,11 +3876,7 @@ sub gtk_widget_set_margin_top ( N-GObject $widget, int32 $margin )
 
 Gets the value of the prop C<margin-bottom> property.
 
-Returns: The bottom margin of I<widget>
-
-
   method gtk_widget_get_margin_bottom ( --> Int  )
-
 
 =end pod
 
@@ -3939,9 +3890,7 @@ sub gtk_widget_get_margin_bottom ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_margin_bottom
 
-Sets the bottom margin of I<widget>.
-See the prop C<margin-bottom> property.
-
+Sets the bottom margin of I<widget>. See the prop C<margin-bottom> property.
 
   method gtk_widget_set_margin_bottom ( Int $margin )
 
@@ -3958,18 +3907,13 @@ sub gtk_widget_set_margin_bottom ( N-GObject $widget, int32 $margin )
 =begin pod
 =head2 [[gtk_] widget_] get_events
 
-Returns the event mask (see B<Gnome::Gdk3::EventMask>) for the widget. These are the
-events that the widget will receive.
+Returns the event mask (see B<Gnome::Gdk3::EventMask>) for the widget. These are the events that the widget will receive.
 
-Note: Internally, the widget event mask will be the logical OR of the event
-mask set through C<gtk_widget_set_events()> or C<gtk_widget_add_events()>, and the
-event mask necessary to cater for every B<Gnome::Gtk3::EventController> created for the
-widget.
+Note: Internally, the widget event mask will be the logical OR of the event mask set through C<gtk_widget_set_events()> or C<gtk_widget_add_events()>, and the event mask necessary to cater for every B<Gnome::Gtk3::EventController> created for the widget.
 
 Returns: event mask for I<widget>
 
   method gtk_widget_get_events ( --> Int  )
-
 
 =end pod
 
@@ -3978,17 +3922,12 @@ sub gtk_widget_get_events ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_device_events
 =begin pod
 =head2 [[gtk_] widget_] get_device_events
 
-Returns the events mask for the widget corresponding to an specific device. These
-are the events that the widget will receive when I<device> operates on it.
-
-Returns: device event mask for I<widget>
-
+Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when I<device> operates on it.
 
   method gtk_widget_get_device_events ( N-GObject $device --> GdkEventMask  )
 
@@ -4000,18 +3939,15 @@ sub gtk_widget_get_device_events ( N-GObject $widget, N-GObject $device )
   returns GdkEventMask
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_is_ancestor
 =begin pod
 =head2 [[gtk_] widget_] is_ancestor
 
-Determines whether I<widget> is somewhere inside I<ancestor>, possibly with
-intermediate containers.
+Determines whether I<widget> is somewhere inside I<ancestor>, possibly with intermediate containers.
 
-Returns: C<1> if I<ancestor> contains I<widget> as a child,
-grandchild, great grandchild, etc.
+Returns: C<1> if I<ancestor> contains I<widget> as a child, grandchild, great grandchild, etc.
 
   method gtk_widget_is_ancestor ( N-GObject $ancestor --> Int  )
 
@@ -4029,14 +3965,9 @@ sub gtk_widget_is_ancestor ( N-GObject $widget, N-GObject $ancestor )
 =begin pod
 =head2 [[gtk_] widget_] translate_coordinates
 
-Translate coordinates relative to I<src_widget>’s allocation to coordinates
-relative to I<dest_widget>’s allocations. In order to perform this
-operation, both widgets must be realized, and must share a common
-toplevel.
+Translate coordinates relative to I<src_widget>’s allocation to coordinates relative to I<dest_widget>’s allocations. In order to perform this operation, both widgets must be realized, and must share a common toplevel.
 
-Returns: C<0> if either widget was not realized, or there
-was no common ancestor. In this case, nothing is stored in
-*I<dest_x> and *I<dest_y>. Otherwise C<1>.
+Returns: C<0> if either widget was not realized, or there was no common ancestor. In this case, nothing is stored in *I<dest_x> and *I<dest_y>. Otherwise C<1>.
 
   method gtk_widget_translate_coordinates ( N-GObject $dest_widget, Int $src_x, Int $src_y, Int $dest_x, Int $dest_y --> Int  )
 
@@ -4058,18 +3989,11 @@ sub gtk_widget_translate_coordinates ( N-GObject $src_widget, N-GObject $dest_wi
 =begin pod
 =head2 [[gtk_] widget_] hide_on_delete
 
-Utility function; intended to be connected to the sig C<delete-event>
-signal on a B<Gnome::Gtk3::Window>. The function calls C<gtk_widget_hide()> on its
-argument, then returns C<1>. If connected to ::delete-event, the
-result is that clicking the close button for a window (on the
-window frame, top right corner usually) will hide but not destroy
-the window. By default, GTK+ destroys windows when ::delete-event
-is received.
+Utility function; intended to be connected to the sig C<delete-event> signal on a B<Gnome::Gtk3::Window>. The function calls C<gtk_widget_hide()> on its argument, then returns C<1>. If connected to ::delete-event, the result is that clicking the close button for a window (on the window frame, top right corner usually) will hide but not destroy the window. By default, GTK+ destroys windows when ::delete-event is received.
 
 Returns: C<1>
 
   method gtk_widget_hide_on_delete ( --> Int  )
-
 
 =end pod
 
@@ -4083,14 +4007,9 @@ sub gtk_widget_hide_on_delete ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] reset_style
 
-Updates the style context of I<widget> and all descendants
-by updating its widget path. B<Gnome::Gtk3::Containers> may want
-to use this on a child when reordering it in a way that a different
-style might apply to it. See also C<gtk_container_get_path_for_child()>.
-
+Updates the style context of I<widget> and all descendants by updating its widget path. B<Gnome::Gtk3::Containers> may want to use this on a child when reordering it in a way that a different style might apply to it. See also C<gtk_container_get_path_for_child()>.
 
   method gtk_widget_reset_style ( )
-
 
 =end pod
 
@@ -4164,23 +4083,24 @@ When not set, the default font options for the B<Gnome::Gdk3::Screen> will be us
 sub gtk_widget_set_font_options ( N-GObject $widget, cairo_font_options_t $options )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
+#TM:0:gtk_widget_get_font_options
 =begin pod
-=head2 cairo_font_options_t
+=head2 [[gtk_] widget_] get_font_options
 
+Returns the cairo_font_options_t used for Pango rendering. When not set, the defaults font options for the GdkScreen will be used.
 
-
-  method cairo_font_options_t (  $*gtk_widget_get_font_options GtkWidget *widget )
-
-=item  $*gtk_widget_get_font_options GtkWidget *widget;
+  method gtk_widget_get_font_options ( -->  $*gtk_widget_get_font_options )
 
 =end pod
 
-sub cairo_font_options_t (  $*gtk_widget_get_font_options GtkWidget *widget )
+sub gtk_widget_get_font_options ( N-GObject $widget --> cairo_font_options_t )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_create_pango_layout
 =begin pod
@@ -4207,7 +4127,9 @@ sub gtk_widget_create_pango_layout ( N-GObject $widget, Str $text )
   returns PangoLayout
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_class_install_style_property
 =begin pod
@@ -4353,22 +4275,13 @@ sub gtk_widget_style_get ( N-GObject $widget, Str $first_property_name, Any $any
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_direction
+#TM:1:gtk_widget_set_direction
 =begin pod
 =head2 [[gtk_] widget_] set_direction
 
-Sets the reading direction on a particular widget. This direction
-controls the primary direction for widgets containing text,
-and also the direction in which the children of a container are
-packed. The ability to set the direction is present in order
-so that correct localization into languages with right-to-left
-reading directions can be done. Generally, applications will
-let the default reading direction present, except for containers
-where the containers are arranged in an order that is explicitly
-visual rather than logical (such as buttons for text justification).
+Sets the reading direction on a particular widget. This direction controls the primary direction for widgets containing text, and also the direction in which the children of a container are packed. The ability to set the direction is present in order so that correct localization into languages with right-to-left reading directions can be done. Generally, applications will let the default reading direction present, except for containers where the containers are arranged in an order that is explicitly visual rather than logical (such as buttons for text justification).
 
-If the direction is set to C<GTK_TEXT_DIR_NONE>, then the value
-set by C<gtk_widget_set_default_direction()> will be used.
+If the direction is set to C<GTK_TEXT_DIR_NONE>, then the value set by C<gtk_widget_set_default_direction()> will be used.
 
   method gtk_widget_set_direction ( GtkTextDirection $dir )
 
@@ -4381,17 +4294,13 @@ sub gtk_widget_set_direction ( N-GObject $widget, int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_direction
+#TM:1:gtk_widget_get_direction
 =begin pod
 =head2 [[gtk_] widget_] get_direction
 
-Gets the reading direction for a particular widget. See
-C<gtk_widget_set_direction()>.
+Gets the reading direction for a particular widget. See C<gtk_widget_set_direction()>.
 
-Returns: the reading direction for the widget.
-
-  method gtk_widget_get_direction ( --> GtkTextDirection  )
-
+  method gtk_widget_get_direction ( --> GtkTextDirection )
 
 =end pod
 
@@ -4401,12 +4310,11 @@ sub gtk_widget_get_direction ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_default_direction
+#TM:1:gtk_widget_set_default_direction
 =begin pod
 =head2 [[gtk_] widget_] set_default_direction
 
-Sets the default reading direction for widgets where the
-direction has not been explicitly set by C<gtk_widget_set_direction()>.
+Sets the default reading direction for widgets where the direction has not been explicitly set by C<gtk_widget_set_direction()>.
 
   method gtk_widget_set_default_direction ( GtkTextDirection $dir )
 
@@ -4419,17 +4327,13 @@ sub gtk_widget_set_default_direction ( int32 $dir )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_default_direction
+#TM:1:gtk_widget_get_default_direction
 =begin pod
 =head2 [[gtk_] widget_] get_default_direction
 
-Obtains the current default reading direction. See
-C<gtk_widget_set_default_direction()>.
+Obtains the current default reading direction. See C<gtk_widget_set_default_direction()>.
 
-Returns: the current default direction.
-
-  method gtk_widget_get_default_direction ( --> GtkTextDirection  )
-
+  method gtk_widget_get_default_direction ( --> GtkTextDirection )
 
 =end pod
 
@@ -4444,10 +4348,7 @@ sub gtk_widget_get_default_direction (  )
 =begin pod
 =head2 [[gtk_] widget_] shape_combine_region
 
-Sets a shape for this widget’s GDK window. This allows for
-transparent windows etc., see C<gdk_window_shape_combine_region()>
-for more information.
-
+Sets a shape for this widget’s GDK window. This allows for transparent windows etc., see C<gdk_window_shape_combine_region()> for more information.
 
   method gtk_widget_shape_combine_region ( cairo_region_t $region )
 
@@ -4455,7 +4356,8 @@ for more information.
 
 =end pod
 
-sub gtk_widget_shape_combine_region ( N-GObject $widget, cairo_region_t $region )
+sub gtk_widget_shape_combine_region (
+  N-GObject $widget, cairo_region_t $region )
   is native(&gtk-lib)
   { * }
 
@@ -4486,22 +4388,9 @@ sub gtk_widget_input_shape_combine_region ( N-GObject $widget, cairo_region_t $r
 =begin pod
 =head2 [[gtk_] widget_] list_mnemonic_labels
 
-Returns a newly allocated list of the widgets, normally labels, for
-which this widget is the target of a mnemonic (see for example,
-C<gtk_label_set_mnemonic_widget()>).
-The widgets in the list are not individually referenced. If you
-want to iterate through the list and perform actions involving
-callbacks that might destroy the widgets, you
-must call `g_list_foreach (result,
-(GFunc)g_object_ref, NULL)` first, and then unref all the
-widgets afterwards.
-Returns: (element-type B<Gnome::Gtk3::Widget>) (transfer container): the list of
-mnemonic labels; free this list
-with C<g_list_free()> when you are done with it.
-
+Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, C<gtk_label_set_mnemonic_widget()>). The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g_list_foreach (result, (GFunc)g_object_ref, NULL)` first, and then unref all the widgets afterwards. Returns: (element-type B<Gnome::Gtk3::Widget>) (transfer container): the list of mnemonic labels; free this list with C<g_list_free()> when you are done with it.
 
   method gtk_widget_list_mnemonic_labels ( --> N-GObject  )
-
 
 =end pod
 
@@ -4515,13 +4404,7 @@ sub gtk_widget_list_mnemonic_labels ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] add_mnemonic_label
 
-Adds a widget to the list of mnemonic labels for
-this widget. (See C<gtk_widget_list_mnemonic_labels()>). Note the
-list of mnemonic labels for the widget is cleared when the
-widget is destroyed, so the caller must make sure to update
-its internal state at this point as well, by using a connection
-to the sig C<destroy> signal or a weak notifier.
-
+Adds a widget to the list of mnemonic labels for this widget. (See C<gtk_widget_list_mnemonic_labels()>). Note the list of mnemonic labels for the widget is cleared when the widget is destroyed, so the caller must make sure to update its internal state at this point as well, by using a connection to the sig C<destroy> signal or a weak notifier.
 
   method gtk_widget_add_mnemonic_label ( N-GObject $label )
 
@@ -4538,11 +4421,7 @@ sub gtk_widget_add_mnemonic_label ( N-GObject $widget, N-GObject $label )
 =begin pod
 =head2 [[gtk_] widget_] remove_mnemonic_label
 
-Removes a widget from the list of mnemonic labels for
-this widget. (See C<gtk_widget_list_mnemonic_labels()>). The widget
-must have previously been added to the list with
-C<gtk_widget_add_mnemonic_label()>.
-
+Removes a widget from the list of mnemonic labels for this widget. (See C<gtk_widget_list_mnemonic_labels()>). The widget must have previously been added to the list with C<gtk_widget_add_mnemonic_label()>.
 
   method gtk_widget_remove_mnemonic_label ( N-GObject $label )
 
@@ -4559,15 +4438,9 @@ sub gtk_widget_remove_mnemonic_label ( N-GObject $widget, N-GObject $label )
 =begin pod
 =head2 [[gtk_] widget_] set_tooltip_window
 
-Replaces the default, usually yellow, window used for displaying
-tooltips with I<custom_window>. GTK+ will take care of showing and
-hiding I<custom_window> at the right moment, to behave likewise as
-the default tooltip window. If I<custom_window> is C<Any>, the default
-tooltip window will be used.
+Replaces the default, usually yellow, window used for displaying tooltips with I<custom_window>. GTK+ will take care of showing and hiding I<custom_window> at the right moment, to behave likewise as the default tooltip window. If I<custom_window> is undefined, the default tooltip window will be used.
 
-If the custom window should have the default theming it needs to
-have the name “gtk-tooltip”, see C<gtk_widget_set_name()>.
-
+If the custom window should have the default theming it needs to have the name “gtk-tooltip”, see C<gtk_widget_set_name()>.
 
   method gtk_widget_set_tooltip_window ( N-GObject $custom_window )
 
@@ -4584,15 +4457,11 @@ sub gtk_widget_set_tooltip_window ( N-GObject $widget, N-GObject $custom_window 
 =begin pod
 =head2 [[gtk_] widget_] get_tooltip_window
 
-Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the
-B<Gnome::Gtk3::Window> created by default, or the custom tooltip window set
-using C<gtk_widget_set_tooltip_window()>.
+Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the B<Gnome::Gtk3::Window> created by default, or the custom tooltip window set using C<gtk_widget_set_tooltip_window()>.
 
 Returns: (transfer none): The B<Gnome::Gtk3::Window> of the current tooltip.
 
-
   method gtk_widget_get_tooltip_window ( --> N-GObject  )
-
 
 =end pod
 
@@ -4606,13 +4475,9 @@ sub gtk_widget_get_tooltip_window ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] trigger_tooltip_query
 
-Triggers a tooltip query on the display where the toplevel of I<widget>
-is located. See C<gtk_tooltip_trigger_tooltip_query()> for more
-information.
-
+Triggers a tooltip query on the display where the toplevel of I<widget> is located. See C<gtk_tooltip_trigger_tooltip_query()> for more information.
 
   method gtk_widget_trigger_tooltip_query ( )
-
 
 =end pod
 
@@ -4625,12 +4490,9 @@ sub gtk_widget_trigger_tooltip_query ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_tooltip_text
 
-Sets I<text> as the contents of the tooltip. This function will take
-care of setting prop C<has-tooltip> to C<1> and of the default
-handler for the sig C<query-tooltip> signal.
+Sets I<text> as the contents of the tooltip. This function will take care of setting prop C<has-tooltip> to C<1> and of the default handler for the sig C<query-tooltip> signal.
 
 See also the prop C<tooltip-text> property and C<gtk_tooltip_set_text()>.
-
 
   method gtk_widget_set_tooltip_text ( Str $text )
 
@@ -4647,14 +4509,9 @@ sub gtk_widget_set_tooltip_text ( N-GObject $widget, Str $text )
 =begin pod
 =head2 [[gtk_] widget_] get_tooltip_text
 
-Gets the contents of the tooltip for I<widget>.
-
-Returns: (nullable): the tooltip text, or C<Any>. You should free the
-returned string with C<g_free()> when done.
-
+Gets the contents of the tooltip for I<widget> or undefined.
 
   method gtk_widget_get_tooltip_text ( --> Str  )
-
 
 =end pod
 
@@ -4668,14 +4525,11 @@ sub gtk_widget_get_tooltip_text ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_tooltip_markup
 
-Sets I<markup> as the contents of the tooltip, which is marked up with
-the [Pango text markup language](https://developer.gnome.org/pango/stable/PangoMarkupFormat.html).
+Sets I<markup> as the contents of the tooltip, which is marked up with the [Pango text markup language](https://developer.gnome.org/pango/stable/PangoMarkupFormat.html).
 
-This function will take care of setting prop C<has-tooltip> to C<1>
-and of the default handler for the sig C<query-tooltip> signal.
+This function will take care of setting prop C<has-tooltip> to C<1> and of the default handler for the sig C<query-tooltip> signal.
 
-See also the prop C<tooltip-markup> property and
-C<gtk_tooltip_set_markup()>.
+See also the prop C<tooltip-markup> property and C<gtk_tooltip_set_markup()>.
 
 
   method gtk_widget_set_tooltip_markup ( Str $markup )
@@ -4693,14 +4547,9 @@ sub gtk_widget_set_tooltip_markup ( N-GObject $widget, Str $markup )
 =begin pod
 =head2 [[gtk_] widget_] get_tooltip_markup
 
-Gets the contents of the tooltip for I<widget>.
-
-Returns: (nullable): the tooltip text, or C<Any>. You should free the
-returned string with C<g_free()> when done.
-
+Gets the contents of the tooltip for I<widget> or undefined. C<g_free()> when done.
 
   method gtk_widget_get_tooltip_markup ( --> Str  )
-
 
 =end pod
 
@@ -4714,9 +4563,7 @@ sub gtk_widget_get_tooltip_markup ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_has_tooltip
 
-Sets the has-tooltip property on I<widget> to I<has_tooltip>.  See
-prop C<has-tooltip> for more information.
-
+Sets the has-tooltip property on I<widget> to I<has_tooltip>.  See prop C<has-tooltip> for more information.
 
   method gtk_widget_set_has_tooltip ( Int $has_tooltip )
 
@@ -4733,14 +4580,9 @@ sub gtk_widget_set_has_tooltip ( N-GObject $widget, int32 $has_tooltip )
 =begin pod
 =head2 [[gtk_] widget_] get_has_tooltip
 
-Returns the current value of the has-tooltip property.  See
-prop C<has-tooltip> for more information.
-
-Returns: current value of has-tooltip on I<widget>.
-
+Returns the current value of the has-tooltip property.  See prop C<has-tooltip> for more information.
 
   method gtk_widget_get_has_tooltip ( --> Int  )
-
 
 =end pod
 
