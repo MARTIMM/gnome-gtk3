@@ -44,21 +44,22 @@ Legend for head of table
   * Properties
   * Signals
   * Types
-* ct: Testing
+* ct: Testing: ⅓ or ⅔ means any test is partly done. Sometimes not all subs can be tested because subs might need a more complete setup before being useful.
   * Complete `BUILD()` tests.
-  * Complete subroutine tests
+  * Complete subroutine tests.
+  * Complete properties tests.
 * pr: Priority
   * A star has more priority to finish than others
 
 Entries can be
-* x: Done or first letter of operation when not all applies
+* 🗸: Done or first letter of operation when not all applies
 * #: No info
 * Empty: Not done
 
 | Module/Class            |T |md|bd|sd|cp|ct|pr|
 |-------------------------|--|--|--|--|--|--|--|
 **Gnome::Gtk3**           |p | #| #| #| #| #| #|
-AboutDialog               |  | x| x|  |  |  |  |
+AboutDialog               |  | 🗸| 🗸|  |  |  |  |
 AccelGroup                |
 AccelLabel                |
 AccelMap                  |
@@ -78,7 +79,7 @@ Border                    |b |
 Box                       |
 Buildable                 |i |
 Builder                   |
-Button                    |  | x| x|  |  |  |  |
+Button                    |  | 🗸| 🗸|  |  |  |  |
 ButtonBox                 |
 Calendar|
 CellArea|
@@ -110,7 +111,7 @@ Container|
 CssProvider|
 CssSection|b|
 Dialog                    |  |  |  |  |  |  |* |
-DrawingArea               |  | x| x| x| x| x|  |
+DrawingArea               |  | 🗸| 🗸| 🗸| 🗸| 🗸|  |
 Editable|i|
 Entry|
 EntryBuffer|
@@ -268,9 +269,9 @@ TreeView|
 TreeViewColumn|
 Viewport|
 VolumeButton|
-Widget                    |  |  |  |  |  |  |* |
+Widget                    |  |  |  |  |  | ⅔|* |
 WidgetPath|b|
-Window                    |  | x| x|  |  |  |* |
+Window                    |  | 🗸| 🗸|  |  |  |* |
 WindowGroup|
 **Gnome::Gdk3**           |p | #| #| #| #| #| #|
 **Gnome::GObject**        |p | #| #| #| #| #| #|
