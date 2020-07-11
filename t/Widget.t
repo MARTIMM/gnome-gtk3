@@ -56,11 +56,18 @@ subtest 'Manipulations', {
   lives-ok { $b.get_allocated_width;}, '.get_allocated_width()';
   lives-ok { $b.get_allocated_height;}, '.get_allocated_height()';
   lives-ok { $b.get_allocated_baseline;}, '.get_allocated_baseline()';
-  lives-ok { diag $b.get_allocated_size;}, '.get_allocated_size()';
-  lives-ok { diag $b.get_allocation;}, '.get_allocation()';
+  lives-ok { $b.get_allocated_size;}, '.get_allocated_size()';
+  lives-ok { $b.get_allocation;}, '.get_allocation()';
+  lives-ok { $b.get-clip;}, '.get-clip()';
+  lives-ok { $b.get-toplevel;}, '.get-toplevel()';
 
-  my N-GtkAllocation $a = $b.get-clip;
-  note $a.perl;
+  $b.set_size_request( 100, 101);
+  my List $l = $b.get_size_request;
+  is $l[0], 100, '.set_size_request()';
+  is $l[1], 101, '.get_size_request()';
+
+  $b.set-opacity(0.8);
+  is $b.get-opacity, 0.8, '.set-opacity() / .get-opacity()';
 
   $b.set_no_show_all(True);
   ok $b.get-no-show-all, '.set_no_show_all() / .get-no-show-all()';
@@ -69,6 +76,20 @@ subtest 'Manipulations', {
   nok $b.get-realized, '.get-realized()';
   nok $b.get-mapped, '.get-mapped()';
   nok $b.is-drawable, '.is-drawable()';
+
+  nok $b.get-hexpand, '.get-hexpand()';
+  $b.set-hexpand(True);
+  ok $b.get-hexpand, '.set-hexpand()';
+  ok $b.get-hexpand-set, '.get-hexpand-set()';
+  $b.set-hexpand-set(False);
+  nok $b.get-hexpand-set, '.set-hexpand-set()';
+
+  nok $b.get-vexpand, '.get-vexpand()';
+  $b.set-vexpand(True);
+  ok $b.get-vexpand, '.set-vexpand()';
+  ok $b.get-vexpand-set, '.get-vexpand-set()';
+  $b.set-vexpand-set(False);
+  nok $b.get-vexpand-set, '.set-vexpand-set()';
 
   $b.set_app_paintable(1);
   ok $b.get_app_paintable, '.set_app_paintable() / .get_app_paintable()';

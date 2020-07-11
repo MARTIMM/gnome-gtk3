@@ -379,12 +379,25 @@ class GtkTickCallback is export is repr('CStruct') {
 
 A N-GtkAllocation of a widget represents a region which has been allocated to the widget by its parent. It is a subregion of its parents allocation. See GtkWidget’s geometry management section for more information.
 
-The structure has the same properties as N-GdkRectangle
+=item Int $.x;
+=item Int $.y;
+=item Int $.width;
+=item Int $.height;
 
 =end pod
 
-#TT:0::N-GtkAllocation
-subset N-GtkAllocation of N-GdkRectangle is export;
+
+# use of this statement works but will show the N-GdkRectangle type, not
+# the N-GtkAllocation type, so we define like the rectangle
+#my constant N-GtkAllocation is export = N-GdkRectangle;
+
+#TT:1:N-GtkAllocation:
+class N-GtkAllocation is export is repr('CStruct') {
+  has int32 $.x;
+  has int32 $.y;
+  has int32 $.width;
+  has int32 $.height;
+}
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -2630,7 +2643,7 @@ returns a List with
 sub gtk_widget_get_allocated_size ( N-GObject $widget --> List ) {
    my N-GtkAllocation $a .= new;
    my int32 $b;
-   _gtk_widget_get_allocated_size( $a, $b);
+   _gtk_widget_get_allocated_size( $widget, $a, $b);
 
   ( $a, $b)
 }
@@ -2749,25 +2762,11 @@ sub _gtk_widget_get_clip ( N-GObject $widget, N-GtkAllocation $clip )
 =begin pod
 =head2 [[gtk_] widget_] child_focus
 
-This function is used by custom widget implementations; if you're
-writing an app, you’d use C<gtk_widget_grab_focus()> to move the focus
-to a particular widget, and C<gtk_container_set_focus_chain()> to
-change the focus tab order. So you may want to investigate those
-functions instead.
+This function is used by custom widget implementations; if you're writing an app, you’d use C<gtk_widget_grab_focus()> to move the focus to a particular widget, and C<gtk_container_set_focus_chain()> to change the focus tab order. So you may want to investigate those functions instead.
 
-C<gtk_widget_child_focus()> is called by containers as the user moves
-around the window using keyboard shortcuts. I<direction> indicates
-what kind of motion is taking place (up, down, left, right, tab
-forward, tab backward). C<gtk_widget_child_focus()> emits the
-sig C<focus> signal; widgets override the default handler
-for this signal in order to implement appropriate focus behavior.
+C<gtk_widget_child_focus()> is called by containers as the user moves around the window using keyboard shortcuts. I<direction> indicates what kind of motion is taking place (up, down, left, right, tab forward, tab backward). C<gtk_widget_child_focus()> emits the sig C<focus> signal; widgets override the default handler for this signal in order to implement appropriate focus behavior.
 
-The default ::focus handler for a widget should return C<1> if
-moving in I<direction> left the focus on a focusable location inside
-that widget, and C<0> if moving in I<direction> moved the focus
-outside the widget. If returning C<1>, widgets normally
-call C<gtk_widget_grab_focus()> to place the focus accordingly;
-if returning C<0>, they don’t modify the current focus location.
+The default ::focus handler for a widget should return C<1> if moving in I<direction> left the focus on a focusable location inside that widget, and C<0> if moving in I<direction> moved the focus outside the widget. If returning C<1>, widgets normally call C<gtk_widget_grab_focus()> to place the focus accordingly; if returning C<0>, they don’t modify the current focus location.
 
 Returns: C<1> if focus ended up inside I<widget>
 
@@ -2787,40 +2786,21 @@ sub gtk_widget_child_focus ( N-GObject $widget, int32 $direction )
 =begin pod
 =head2 [[gtk_] widget_] keynav_failed
 
-This function should be called whenever keyboard navigation within
-a single widget hits a boundary. The function emits the
-sig C<keynav-failed> signal on the widget and its return
-value should be interpreted in a way similar to the return value of
-C<gtk_widget_child_focus()>:
+This function should be called whenever keyboard navigation within a single widget hits a boundary. The function emits the sig C<keynav-failed> signal on the widget and its return value should be interpreted in a way similar to the return value of C<gtk_widget_child_focus()>:
 
-When C<1> is returned, stay in the widget, the failed keyboard
-navigation is OK and/or there is nowhere we can/should move the
-focus to.
+When C<1> is returned, stay in the widget, the failed keyboard navigation is OK and/or there is nowhere we can/should move the focus to.
 
-When C<0> is returned, the caller should continue with keyboard
-navigation outside the widget, e.g. by calling
-C<gtk_widget_child_focus()> on the widget’s toplevel.
+When C<0> is returned, the caller should continue with keyboard navigation outside the widget, e.g. by calling C<gtk_widget_child_focus()> on the widget’s toplevel.
 
-The default ::keynav-failed handler returns C<1> for
-C<GTK_DIR_TAB_FORWARD> and C<GTK_DIR_TAB_BACKWARD>. For the other
-values of B<Gnome::Gtk3::DirectionType> it returns C<0>.
+The default ::keynav-failed handler returns C<1> for C<GTK_DIR_TAB_FORWARD> and C<GTK_DIR_TAB_BACKWARD>. For the other values of B<Gnome::Gtk3::DirectionType> it returns C<0>.
 
-Whenever the default handler returns C<1>, it also calls
-C<gtk_widget_error_bell()> to notify the user of the failed keyboard
-navigation.
+Whenever the default handler returns C<1>, it also calls C<gtk_widget_error_bell()> to notify the user of the failed keyboard navigation.
 
-A use case for providing an own implementation of ::keynav-failed
-(either by connecting to it or by overriding it) would be a row of
-B<Gnome::Gtk3::Entry> widgets where the user should be able to navigate the
-entire row with the cursor keys, as e.g. known from user interfaces
-that require entering license keys.
+A use case for providing an own implementation of ::keynav-failed (either by connecting to it or by overriding it) would be a row of B<Gnome::Gtk3::Entry> widgets where the user should be able to navigate the entire row with the cursor keys, as e.g. known from user interfaces that require entering license keys.
 
-Returns: C<1> if stopping keyboard navigation is fine, C<0>
-if the emitting widget should try to handle the keyboard
-navigation attempt in its parent container(s).
+Returns: C<1> if stopping keyboard navigation is fine, C<0> if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
 
-
-  method gtk_widget_keynav_failed ( GtkDirectionType $direction --> Int  )
+  method gtk_widget_keynav_failed ( GtkDirectionType $direction --> Int )
 
 =item GtkDirectionType $direction; direction of focus movement
 
@@ -2836,14 +2816,9 @@ sub gtk_widget_keynav_failed ( N-GObject $widget, int32 $direction )
 =begin pod
 =head2 [[gtk_] widget_] error_bell
 
-Notifies the user about an input-related error on this widget.
-If the prop C<gtk-error-bell> setting is C<1>, it calls
-C<gdk_window_beep()>, otherwise it does nothing.
+Notifies the user about an input-related error on this widget. If the prop C<gtk-error-bell> setting is C<1>, it calls C<gdk_window_beep()>, otherwise it does nothing.
 
-Note that the effect of C<gdk_window_beep()> can be configured in many
-ways, depending on the windowing backend and the desktop environment
-or window manager that is used.
-
+Note that the effect of C<gdk_window_beep()> can be configured in many ways, depending on the windowing backend and the desktop environment or window manager that is used.
 
   method gtk_widget_error_bell ( )
 
@@ -2855,40 +2830,21 @@ sub gtk_widget_error_bell ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_size_request
+#TM:1:gtk_widget_set_size_request
 =begin pod
 =head2 [[gtk_] widget_] set_size_request
 
-Sets the minimum size of a widget; that is, the widget’s size
-request will be at least I<width> by I<height>. You can use this
-function to force a widget to be larger than it normally would be.
+Sets the minimum size of a widget; that is, the widget’s size request will be at least I<width> by I<height>. You can use this function to force a widget to be larger than it normally would be.
 
-In most cases, C<gtk_window_set_default_size()> is a better choice for
-toplevel windows than this function; setting the default size will
-still allow users to shrink the window. Setting the size request
-will force them to leave the window at least as large as the size
-request. When dealing with window sizes,
-C<gtk_window_set_geometry_hints()> can be a useful function as well.
+In most cases, C<gtk_window_set_default_size()> is a better choice for toplevel windows than this function; setting the default size will still allow users to shrink the window. Setting the size request will force them to leave the window at least as large as the size request. When dealing with window sizes, C<gtk_window_set_geometry_hints()> can be a useful function as well.
 
-Note the inherent danger of setting any fixed size - themes,
-translations into other languages, different fonts, and user action
-can all change the appropriate size for a given widget. So, it's
-basically impossible to hardcode a size that will always be
-correct.
+Note the inherent danger of setting any fixed size - themes, translations into other languages, different fonts, and user action can all change the appropriate size for a given widget. So, it's basically impossible to hardcode a size that will always be correct.
 
-The size request of a widget is the smallest size a widget can
-accept while still functioning well and drawing itself correctly.
-However in some strange cases a widget may be allocated less than
-its requested size, and in many cases a widget may be allocated more
-space than it requested.
+The size request of a widget is the smallest size a widget can accept while still functioning well and drawing itself correctly. However in some strange cases a widget may be allocated less than its requested size, and in many cases a widget may be allocated more space than it requested.
 
-If the size request in a given direction is -1 (unset), then
-the “natural” size request of the widget will be used instead.
+If the size request in a given direction is -1 (unset), then the “natural” size request of the widget will be used instead.
 
-The size request set here does not include any margin from the
-B<Gnome::Gtk3::Widget> properties margin-left, margin-right, margin-top, and
-margin-bottom, but it does include pretty much all other padding
-or border properties set by any subclass of B<Gnome::Gtk3::Widget>.
+The size request set here does not include any margin from the B<Gnome::Gtk3::Widget> properties margin-left, margin-right, margin-top, and margin-bottom, but it does include pretty much all other padding or border properties set by any subclass of B<Gnome::Gtk3::Widget>.
 
   method gtk_widget_set_size_request ( Int $width, Int $height )
 
@@ -2902,27 +2858,29 @@ sub gtk_widget_set_size_request ( N-GObject $widget, int32 $width, int32 $height
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_size_request
+#TM:1:gtk_widget_get_size_request
 =begin pod
 =head2 [[gtk_] widget_] get_size_request
 
-Gets the size request that was explicitly set for the widget using
-C<gtk_widget_set_size_request()>. A value of -1 stored in I<width> or
-I<height> indicates that that dimension has not been set explicitly
-and the natural requisition of the widget will be used instead. See
-C<gtk_widget_set_size_request()>. To get the size a widget will
-actually request, call C<gtk_widget_get_preferred_size()> instead of
-this function.
+Gets the size request that was explicitly set for the widget using C<gtk_widget_set_size_request()>. A value of -1 stored in I<width> or I<height> indicates that that dimension has not been set explicitly and the natural requisition of the widget will be used instead. See C<gtk_widget_set_size_request()>. To get the size a widget will actually request, call C<gtk_widget_get_preferred_size()> instead of this function.
 
-  method gtk_widget_get_size_request ( Int $width, Int $height )
+  method gtk_widget_get_size_request ( --> List )
 
-=item Int $width; (out) (allow-none): return location for width, or C<Any>
-=item Int $height; (out) (allow-none): return location for height, or C<Any>
+Returns a List with following members;
+=item Int $width or undefined.
+=item Int $height or undefined.
 
 =end pod
+sub gtk_widget_get_size_request ( N-GObject $widget --> List ) {
+   _gtk_widget_get_size_request( $widget, my int32 $w, my int32 $h);
 
-sub gtk_widget_get_size_request ( N-GObject $widget, int32 $width, int32 $height )
-  is native(&gtk-lib)
+   ( $w, $h)
+}
+
+sub _gtk_widget_get_size_request (
+  N-GObject $widget, int32 $width is rw, int32 $height is rw
+) is native(&gtk-lib)
+  is symbol('gtk_widget_get_size_request')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -2930,17 +2888,7 @@ sub gtk_widget_get_size_request ( N-GObject $widget, int32 $width, int32 $height
 =begin pod
 =head2 [[gtk_] widget_] set_events
 
-Sets the event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event
-mask determines which events a widget will receive. Keep in mind
-that different widgets have different default event masks, and by
-changing the event mask you may disrupt a widget’s functionality,
-so be careful. This function must be called while a widget is
-unrealized. Consider C<gtk_widget_add_events()> for widgets that are
-already realized, or if you want to preserve the existing event
-mask. This function can’t be used with widgets that have no window.
-(See C<gtk_widget_get_has_window()>).  To get events on those widgets,
-place them inside a B<Gnome::Gtk3::EventBox> and receive events on the event
-box.
+Sets the event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event mask determines which events a widget will receive. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a widget’s functionality, so be careful. This function must be called while a widget is unrealized. Consider C<gtk_widget_add_events()> for widgets that are already realized, or if you want to preserve the existing event mask. This function can’t be used with widgets that have no window. (See C<gtk_widget_get_has_window()>). To get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox> and receive events on the event box.
 
   method gtk_widget_set_events ( Int $events )
 
@@ -2957,9 +2905,7 @@ sub gtk_widget_set_events ( N-GObject $widget, int32 $events )
 =begin pod
 =head2 [[gtk_] widget_] add_events
 
-Adds the events in the bitfield I<events> to the event mask for
-I<widget>. See C<gtk_widget_set_events()> and the
-[input handling overview][event-masks] for details.
+Adds the events in the bitfield I<events> to the event mask for I<widget>. See C<gtk_widget_set_events()> and the L<input handling overview|https://developer.gnome.org/gtk3/stable/chap-input-handling.html#event-masks> for details.
 
   method gtk_widget_add_events ( Int $events )
 
@@ -2971,33 +2917,24 @@ sub gtk_widget_add_events ( N-GObject $widget, int32 $events )
   is native(&gtk-lib)
   { * }
 
-#`{{
+
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_set_device_events
 =begin pod
 =head2 [[gtk_] widget_] set_device_events
 
-Sets the device event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event
-mask determines which events a widget will receive from I<device>. Keep
-in mind that different widgets have different default event masks, and by
-changing the event mask you may disrupt a widget’s functionality,
-so be careful. This function must be called while a widget is
-unrealized. Consider C<gtk_widget_add_device_events()> for widgets that are
-already realized, or if you want to preserve the existing event
-mask. This function can’t be used with windowless widgets (which return
-C<0> from C<gtk_widget_get_has_window()>);
-to get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox>
-and receive events on the event box.
+Sets the device event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event mask determines which events a widget will receive from I<device>. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a widget’s functionality, so be careful. This function must be called while a widget is unrealized. Consider C<gtk_widget_add_device_events()> for widgets that are already realized, or if you want to preserve the existing event mask. This function can’t be used with windowless widgets (which return C<0> from C<gtk_widget_get_has_window()>); to get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox> and receive events on the event box.
 
-
-  method gtk_widget_set_device_events ( N-GObject $device, GdkEventMask $events )
+  method gtk_widget_set_device_events (
+    N-GObject $device, GdkEventMask $events
+  )
 
 =item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item GdkEventMask $events; event mask
 
 =end pod
 
-sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEventMask $events )
+sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, int32 $events )
   is native(&gtk-lib)
   { * }
 
@@ -3006,42 +2943,32 @@ sub gtk_widget_set_device_events ( N-GObject $widget, N-GObject $device, GdkEven
 =begin pod
 =head2 [[gtk_] widget_] add_device_events
 
-Adds the device events in the bitfield I<events> to the event mask for
-I<widget>. See C<gtk_widget_set_device_events()> for details.
+Adds the device events in the bitfield I<events> to the event mask for I<widget>. See C<gtk_widget_set_device_events()> for details.
 
 
-  method gtk_widget_add_device_events ( N-GObject $device, GdkEventMask $events )
+  method gtk_widget_add_device_events (
+    N-GObject $device, GdkEventMask $events
+  )
 
 =item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item GdkEventMask $events; an event mask, see B<Gnome::Gdk3::EventMask>
 
 =end pod
 
-sub gtk_widget_add_device_events ( N-GObject $widget, N-GObject $device, GdkEventMask $events )
+sub gtk_widget_add_device_events ( N-GObject $widget, N-GObject $device, int32 $events )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_opacity
+#TM:1:gtk_widget_set_opacity
 =begin pod
 =head2 [[gtk_] widget_] set_opacity
 
-Request the I<widget> to be rendered partially transparent,
-with opacity 0 being fully transparent and 1 fully opaque. (Opacity values
-are clamped to the [0,1] range.).
-This works on both toplevel widget, and child widgets, although there
-are some limitations:
+Request the I<widget> to be rendered partially transparent, with opacity 0 being fully transparent and 1 fully opaque. (Opacity values are clamped to the [0,1] range.). This works on both toplevel widget, and child widgets, although there are some limitations:
 
-For toplevel widgets this depends on the capabilities of the windowing
-system. On X11 this has any effect only on X screens with a compositing manager
-running. See C<gtk_widget_is_composited()>. On Windows it should work
-always, although setting a window’s opacity after the window has been
-shown causes it to flicker once on Windows.
+For toplevel widgets this depends on the capabilities of the windowing system. On X11 this has any effect only on X screens with a compositing manager running. See C<gtk_widget_is_composited()>. On Windows it should work always, although setting a window’s opacity after the window has been shown causes it to flicker once on Windows.
 
-For child widgets it doesn’t work if any affected widget has a native window, or
-disables double buffering.
-
+For child widgets it doesn’t work if any affected widget has a native window, or disables double buffering.
 
   method gtk_widget_set_opacity ( Num $opacity )
 
@@ -3054,18 +2981,13 @@ sub gtk_widget_set_opacity ( N-GObject $widget, num64 $opacity )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_opacity
+#TM:1:gtk_widget_get_opacity
 =begin pod
 =head2 [[gtk_] widget_] get_opacity
 
-Fetches the requested opacity for this widget.
-See C<gtk_widget_set_opacity()>.
+Fetches the requested opacity for this widget. See C<gtk_widget_set_opacity()>.
 
-Returns: the requested opacity for this widget.
-
-
-  method gtk_widget_get_opacity ( --> Num  )
-
+  method gtk_widget_get_opacity ( --> Num )
 
 =end pod
 
@@ -3079,13 +3001,9 @@ sub gtk_widget_get_opacity ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_device_enabled
 
-Enables or disables a B<Gnome::Gdk3::Device> to interact with I<widget>
-and all its children.
+Enables or disables a B<Gnome::Gdk3::Device> to interact with I<widget> and all its children.
 
-It does so by descending through the B<Gnome::Gdk3::Window> hierarchy
-and enabling the same mask that is has for core events
-(i.e. the one that C<gdk_window_get_events()> returns).
-
+It does so by descending through the B<Gnome::Gdk3::Window> hierarchy and enabling the same mask that it has for core events (i.e. the one that C<gdk_window_get_events()> returns).
 
   method gtk_widget_set_device_enabled ( N-GObject $device, Int $enabled )
 
@@ -3103,11 +3021,7 @@ sub gtk_widget_set_device_enabled ( N-GObject $widget, N-GObject $device, int32 
 =begin pod
 =head2 [[gtk_] widget_] get_device_enabled
 
-Returns whether I<device> can interact with I<widget> and its
-children. See C<gtk_widget_set_device_enabled()>.
-
-Returns: C<1> is I<device> is enabled for I<widget>
-
+Returns whether I<device> can interact with I<widget> and its children. See C<gtk_widget_set_device_enabled()>.
 
   method gtk_widget_get_device_enabled ( N-GObject $device --> Int  )
 
@@ -3121,27 +3035,17 @@ sub gtk_widget_get_device_enabled ( N-GObject $widget, N-GObject $device )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_toplevel
+#TM:1:gtk_widget_get_toplevel
 =begin pod
 =head2 [[gtk_] widget_] get_toplevel
 
-This function returns the topmost widget in the container hierarchy
-I<widget> is a part of. If I<widget> has no parent widgets, it will be
-returned as the topmost widget. No reference will be added to the
-returned widget; it should not be unreferenced.
+This function returns the topmost widget in the container hierarchy this widget is a part of. If I<widget> has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
 
-Note the difference in behavior vs. C<gtk_widget_get_ancestor()>;
-`gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW)`
-would return
-C<Any> if I<widget> wasn’t inside a toplevel window, and if the
-window was inside a B<Gnome::Gtk3::Window>-derived widget which was in turn
-inside the toplevel B<Gnome::Gtk3::Window>. While the second case may
-seem unlikely, it actually happens when a B<Gnome::Gtk3::Plug> is embedded
-inside a B<Gnome::Gtk3::Socket> within the same application.
+Note the difference in behavior vs. C<gtk_widget_get_ancestor()>; `gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW)` would return C<Any> if I<widget> wasn’t inside a toplevel window, and if the window was inside a B<Gnome::Gtk3::Window>-derived widget which was in turn inside the toplevel B<Gnome::Gtk3::Window>. While the second case may seem unlikely, it actually happens when a B<Gnome::Gtk3::Plug> is embedded inside a B<Gnome::Gtk3::Socket> within the same application.
 
-To reliably find the toplevel B<Gnome::Gtk3::Window>, use
-C<gtk_widget_get_toplevel()> and call C<gtk_widget_is_toplevel()>
-on the result.
+To reliably find the toplevel B<Gnome::Gtk3::Window>, use C<gtk_widget_get_toplevel()> and call C<gtk_widget_is_toplevel()> on the result.
+
+=begin comment
 |[<!-- language="C" -->
 B<Gnome::Gtk3::Widget> *toplevel = gtk_widget_get_toplevel (widget);
 if (gtk_widget_is_toplevel (toplevel))
@@ -3149,12 +3053,11 @@ if (gtk_widget_is_toplevel (toplevel))
 // Perform action on toplevel.
 }
 ]|
+=end comment
 
-Returns: (transfer none): the topmost ancestor of I<widget>, or I<widget> itself
-if there’s no ancestor.
+Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
   method gtk_widget_get_toplevel ( --> N-GObject  )
-
 
 =end pod
 
@@ -3168,17 +3071,11 @@ sub gtk_widget_get_toplevel ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] get_ancestor
 
-Gets the first ancestor of I<widget> with type I<widget_type>. For example,
-`gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)` gets
-the first B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be
-added to the returned widget; it should not be unreferenced. See note
-about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for
-C<gtk_widget_get_toplevel()>.
+Gets the first ancestor of I<widget> with type I<widget_type>. For example, C<.gtk_widget_get_ancestor(GTK_TYPE_BOX)> gets the first native B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for C<gtk_widget_get_toplevel()>.
 
-Note that unlike C<gtk_widget_is_ancestor()>, C<gtk_widget_get_ancestor()>
-considers I<widget> to be an ancestor of itself.
+Note that unlike C<gtk_widget_is_ancestor()>, C<gtk_widget_get_ancestor()> considers I<widget> to be an ancestor of itself.
 
-Returns: (transfer none) (nullable): the ancestor widget, or C<Any> if not found
+Returns: the ancestor widget, or undefined if not found
 
   method gtk_widget_get_ancestor ( N-GObject $widget_type --> N-GObject  )
 
@@ -3196,12 +3093,9 @@ sub gtk_widget_get_ancestor ( N-GObject $widget, N-GObject $widget_type )
 =begin pod
 =head2 [[gtk_] widget_] get_visual
 
-Gets the visual that will be used to render I<widget>.
+Gets the visual (a native GdkVisual) that will be used to render I<widget>.
 
-Returns: (transfer none): the visual for I<widget>
-
-  method gtk_widget_get_visual ( --> N-GObject  )
-
+  method gtk_widget_get_visual ( --> N-GObject )
 
 =end pod
 
@@ -3215,13 +3109,9 @@ sub gtk_widget_get_visual ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] set_visual
 
-Sets the visual that should be used for by widget and its children for
-creating B<Gnome::Gdk3::Windows>. The visual must be on the same B<Gnome::Gdk3::Screen> as
-returned by C<gtk_widget_get_screen()>, so handling the
-sig C<screen-changed> signal is necessary.
+Sets the visual that should be used for by widget and its children for creating B<Gnome::Gdk3::Windows>. The visual must be on the same B<Gnome::Gdk3::Screen> as returned by C<gtk_widget_get_screen()>, so handling the sig C<screen-changed> signal is necessary.
 
-Setting a new I<visual> will not cause I<widget> to recreate its windows,
-so you should call this function before I<widget> is realized.
+Setting a new I<visual> will not cause I<widget> to recreate its windows, so you should call this function before I<widget> is realized.
 
   method gtk_widget_set_visual ( N-GObject $visual )
 
@@ -3238,20 +3128,13 @@ sub gtk_widget_set_visual ( N-GObject $widget, N-GObject $visual )
 =begin pod
 =head2 [[gtk_] widget_] get_screen
 
-Get the B<Gnome::Gdk3::Screen> from the toplevel window associated with
-this widget. This function can only be called after the widget
-has been added to a widget hierarchy with a B<Gnome::Gtk3::Window>
-at the top.
+Get the native GdkScreen from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
-In general, you should only create screen specific
-resources when a widget has been realized, and you should
-free those resources when the widget is unrealized.
+In general, you should only create screen specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
 Returns: (transfer none): the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
-
   method gtk_widget_get_screen ( --> N-GObject  )
-
 
 =end pod
 
@@ -3265,17 +3148,11 @@ sub gtk_widget_get_screen ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] has_screen
 
-Checks whether there is a B<Gnome::Gdk3::Screen> is associated with
-this widget. All toplevel widgets have an associated
-screen, and all widgets added into a hierarchy with a toplevel
-window at the top.
+Checks whether there is a B<Gnome::Gdk3::Screen> is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
 
-Returns: C<1> if there is a B<Gnome::Gdk3::Screen> associated
-with the widget.
-
+Returns: C<1> if there is a B<Gnome::Gdk3::Screen> associated with the widget.
 
   method gtk_widget_has_screen ( --> Int  )
-
 
 =end pod
 
@@ -3289,17 +3166,13 @@ sub gtk_widget_has_screen ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] get_scale_factor
 
-Retrieves the internal scale factor that maps from window coordinates
-to the actual device pixels. On traditional systems this is 1, on
-high density outputs, it can be a higher value (typically 2).
+Retrieves the internal scale factor that maps from window coordinates to the actual device pixels. On traditional systems this is 1, on high density outputs, it can be a higher value (typically 2).
 
 See C<gdk_window_get_scale_factor()>.
 
-Returns: the scale factor for I<widget>
-
+Returns: the scale factor for I<widget>.
 
   method gtk_widget_get_scale_factor ( --> Int  )
-
 
 =end pod
 
@@ -3313,19 +3186,13 @@ sub gtk_widget_get_scale_factor ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] get_display
 
-Get the B<Gnome::Gdk3::Display> for the toplevel window associated with
-this widget. This function can only be called after the widget
-has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
+Get the B<Gnome::Gdk3::Display> for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
-In general, you should only create display specific
-resources when a widget has been realized, and you should
-free those resources when the widget is unrealized.
+In general, you should only create display specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
 Returns: (transfer none): the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
-
   method gtk_widget_get_display ( --> N-GObject  )
-
 
 =end pod
 
@@ -3341,14 +3208,11 @@ sub gtk_widget_get_display ( N-GObject $widget )
 
 Gets the settings object holding the settings used for this widget.
 
-Note that this function can only be called when the B<Gnome::Gtk3::Widget>
-is attached to a toplevel, since the settings object is specific
-to a particular B<Gnome::Gdk3::Screen>.
+Note that this function can only be called when the B<Gnome::Gtk3::Widget> is attached to a toplevel, since the settings object is specific to a particular B<Gnome::Gdk3::Screen>.
 
 Returns: (transfer none): the relevant B<Gnome::Gtk3::Settings> object
 
   method gtk_widget_get_settings ( --> N-GObject  )
-
 
 =end pod
 
@@ -3387,24 +3251,15 @@ sub gtk_widget_get_clipboard ( N-GObject $widget, GdkAtom $selection )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_hexpand
+#TM:1:gtk_widget_get_hexpand
 =begin pod
 =head2 [[gtk_] widget_] get_hexpand
 
-Gets whether the widget would like any available extra horizontal
-space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE
-generally receive the extra space. For example, a list or
-scrollable area or document in your window would often be set to
-expand.
+Gets whether the widget would like any available extra horizontal space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE generally receive the extra space. For example, a list or scrollable area or document in your window would often be set to expand.
 
-Containers should use C<gtk_widget_compute_expand()> rather than
-this function, to see whether a widget, or any of its children,
-has the expand flag set. If any child of a widget wants to
-expand, the parent may ask to expand also.
+Containers should use C<gtk_widget_compute_expand()> rather than this function, to see whether a widget, or any of its children, has the expand flag set. If any child of a widget wants to expand, the parent may ask to expand also.
 
-This function only looks at the widget’s own hexpand flag, rather
-than computing whether the entire widget tree rooted at this widget
-wants to expand.
+This function only looks at the widget’s own hexpand flag, rather than computing whether the entire widget tree rooted at this widget wants to expand.
 
 Returns: whether hexpand flag is set
 
@@ -3419,35 +3274,19 @@ sub gtk_widget_get_hexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_hexpand
+#TM:1:gtk_widget_set_hexpand
 =begin pod
 =head2 [[gtk_] widget_] set_hexpand
 
-Sets whether the widget would like any available extra horizontal
-space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE
-generally receive the extra space. For example, a list or
-scrollable area or document in your window would often be set to
-expand.
+Sets whether the widget would like any available extra horizontal space. When a user resizes a B<Gnome::Gtk3::Window>, widgets with expand=TRUE generally receive the extra space. For example, a list or scrollable area or document in your window would often be set to expand.
 
-Call this function to set the expand flag if you would like your
-widget to become larger horizontally when the window has extra
-room.
+Call this function to set the expand flag if you would like your widget to become larger horizontally when the window has extra room.
 
-By default, widgets automatically expand if any of their children
-want to expand. (To see if a widget will automatically expand given
-its current children and state, call C<gtk_widget_compute_expand()>. A
-container can decide how the expandability of children affects the
-expansion of the container by overriding the compute_expand virtual
-method on B<Gnome::Gtk3::Widget>.).
+By default, widgets automatically expand if any of their children want to expand. (To see if a widget will automatically expand given its current children and state, call C<gtk_widget_compute_expand()>. A container can decide how the expandability of children affects the expansion of the container by overriding the compute_expand virtual method on B<Gnome::Gtk3::Widget>.).
 
-Setting hexpand explicitly with this function will override the
-automatic expand behavior.
+Setting hexpand explicitly with this function will override the automatic expand behavior.
 
-This function forces the widget to expand or not to expand,
-regardless of children.  The override occurs because
-C<gtk_widget_set_hexpand()> sets the hexpand-set property (see
-C<gtk_widget_set_hexpand_set()>) which causes the widget’s hexpand
-value to be used, rather than looking at children and widget state.
+This function forces the widget to expand or not to expand, regardless of children.  The override occurs because C<gtk_widget_set_hexpand()> sets the hexpand-set property (see C<gtk_widget_set_hexpand_set()>) which causes the widget’s hexpand value to be used, rather than looking at children and widget state.
 
   method gtk_widget_set_hexpand ( Int $expand )
 
@@ -3460,20 +3299,15 @@ sub gtk_widget_set_hexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_hexpand_set
+#TM:1:gtk_widget_get_hexpand_set
 =begin pod
 =head2 [[gtk_] widget_] get_hexpand_set
 
-Gets whether C<gtk_widget_set_hexpand()> has been used to
-explicitly set the expand flag on this widget.
+Gets whether C<gtk_widget_set_hexpand()> has been used to explicitly set the expand flag on this widget.
 
-If hexpand is set, then it overrides any computed
-expand value based on child widgets. If hexpand is not
-set, then the expand value depends on whether any
-children of the widget would like to expand.
+If hexpand is set, then it overrides any computed expand value based on child widgets. If hexpand is not set, then the expand value depends on whether any children of the widget would like to expand.
 
-There are few reasons to use this function, but it’s here
-for completeness and consistency.
+There are few reasons to use this function, but it’s here for completeness and consistency.
 
 Returns: whether hexpand has been explicitly set
 
@@ -3488,27 +3322,19 @@ sub gtk_widget_get_hexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_hexpand_set
+#TM:1:gtk_widget_set_hexpand_set
 =begin pod
 =head2 [[gtk_] widget_] set_hexpand_set
 
-Sets whether the hexpand flag (see C<gtk_widget_get_hexpand()>) will
-be used.
+Sets whether the hexpand flag (see C<gtk_widget_get_hexpand()>) will be used.
 
-The hexpand-set property will be set automatically when you call
-C<gtk_widget_set_hexpand()> to set hexpand, so the most likely
-reason to use this function would be to unset an explicit expand
-flag.
+The hexpand-set property will be set automatically when you call C<gtk_widget_set_hexpand()> to set hexpand, so the most likely reason to use this function would be to unset an explicit expand flag.
 
-If hexpand is set, then it overrides any computed
-expand value based on child widgets. If hexpand is not
-set, then the expand value depends on whether any
-children of the widget would like to expand.
+If hexpand is set, then it overrides any computed expand value based on child widgets. If hexpand is not set, then the expand value depends on whether any children of the widget would like to expand.
 
-There are few reasons to use this function, but it’s here
-for completeness and consistency.
+There are few reasons to use this function, but it’s here for completeness and consistency.
 
-  method gtk_widget_set_hexpand_set ( Int $set )
+  method gtk_widget_set_hexpand_set ( Bool $set )
 
 =item Int $set; value for hexpand-set property
 
@@ -3519,7 +3345,7 @@ sub gtk_widget_set_hexpand_set ( N-GObject $widget, int32 $set )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_vexpand
+#TM:1:gtk_widget_get_vexpand
 =begin pod
 =head2 [[gtk_] widget_] get_vexpand
 
@@ -3541,7 +3367,7 @@ sub gtk_widget_get_vexpand ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_vexpand
+#TM:1:gtk_widget_set_vexpand
 =begin pod
 =head2 [[gtk_] widget_] set_vexpand
 
@@ -3561,7 +3387,7 @@ sub gtk_widget_set_vexpand ( N-GObject $widget, int32 $expand )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_vexpand_set
+#TM:1:gtk_widget_get_vexpand_set
 =begin pod
 =head2 [[gtk_] widget_] get_vexpand_set
 
@@ -3583,7 +3409,7 @@ sub gtk_widget_get_vexpand_set ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_set_vexpand_set
+#TM:1:gtk_widget_set_vexpand_set
 =begin pod
 =head2 [[gtk_] widget_] set_vexpand_set
 
