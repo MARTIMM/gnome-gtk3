@@ -4,7 +4,8 @@ class ABC {
   method s ( Int $i ) { say $i + 10; }
 }
 
-subset DEF of ABC;
+#subset DEF of ABC;
+my constant DEF = ABC:D;
 
 my ABC $a .= new;
 $a.s(10);
