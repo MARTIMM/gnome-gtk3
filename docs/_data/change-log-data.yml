@@ -4,7 +4,7 @@
   - Add .gtk_widget_set_no_show_all(), .gtk_widget_get_no_show_all() subs.
   - Dropped .gtk_widget_queue_resize(), .gtk_widget_queue_resize_no_redraw() .gtk_widget_queue_allocate(), .gtk_widget_event(), .gtk_widget_send_focus_change(), .gtk_widget_set_has_window(), .gtk_widget_set_realized(), .gtk_widget_set_mapped(), .gtk_widget_set_parent(), .gtk_widget_set_parent_window(), .gtk_widget_set_child_visible(), .gtk_widget_get_child_visible(), .gtk_widget_set_allocation(), .gtk_widget_set_clip()
   - Renamed GtkAllocation to N-GtkAllocation.
-  - add tests for subs and properties.
+  - Tests are added for subs and properties.
   - Cleaning up documentation.
 
 - 2020-06-09 0.28.7:
