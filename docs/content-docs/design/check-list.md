@@ -10,7 +10,7 @@ layout: sidebar
 ### Main documentation, subs and methods documentation
 Legend for head of table
 
-* T: type column
+* T: type column with following values
   * p: package name
   * t: is top level of classes,
   * b: boxed type
@@ -34,27 +34,28 @@ Legend for head of table
 * sd: Subroutine documentation and additions
   * Add examples to subroutines.
   * Inhibit unusable subroutines and documentation.
-  * Add \$ to variables and use `True`/`False` when boolean input
-  * Remove Since version text
-  * Change `returns` into `-->`. Lower prio.
+  * Add sigils to variables and use `True`/`False` when boolean input
+  * Remove Since version text because versions are for GTK+ and not for the Raku modules. The first argument e.g. 'I<widget>' must become 'this widget'.
+  * Change `returns type` into `--> type`.
   * Provide single word method names. Lower prio.
   * Try to insert url references. Lower prio.
 * cp: Cleanup documentation
-  * Subroutines and Methods
+  * Subroutines and Methods.
   * Properties
   * Signals
   * Types
-* ct: Testing: ⅓ or ⅔ means any test is partly done. Sometimes not all subs can be tested because subs might need a more complete setup before being useful.
+* ct: Testing
   * Complete `BUILD()` tests.
   * Complete subroutine tests.
   * Complete properties tests.
 * pr: Priority
   * A star has more priority to finish than others
 
-Entries can be
-* 🗸: Done or first letter of operation when not all applies
-* #: No info
-* Empty: Not done
+Entry values can be
+* #: No info. Mostly for package names but sometimes there are no signals or properties for a class.
+* Empty: Not done.
+* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on oher types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful.
+* 🗸: Done
 
 | Module/Class            |T |md|bd|sd|cp|ct|pr|
 |-------------------------|--|--|--|--|--|--|--|
@@ -269,7 +270,7 @@ TreeView|
 TreeViewColumn|
 Viewport|
 VolumeButton|
-Widget                    |  |  |  |  |  | ⅔|* |
+Widget                    |  | 🗸| 🗸|  | ½| ⅔|* |
 WidgetPath|b|
 Window                    |  | 🗸| 🗸|  |  |  |* |
 WindowGroup|
