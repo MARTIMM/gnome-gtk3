@@ -54,7 +54,7 @@ Legend for head of table
 Entry values can be
 * #: No info. Mostly for package names but sometimes there are no signals or properties for a class.
 * Empty: Not done.
-* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on oher types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful.
+* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also that I don't know what to do with i
 * 🗸: Done
 
 | Module/Class            |T |md|bd|sd|cp|ct|pr|
