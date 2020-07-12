@@ -177,6 +177,20 @@ subtest 'Manipulations', {
   nok $b.is-valid, '.destroy()';
 }
 
+#`{{ drop
+#-------------------------------------------------------------------------------
+subtest 'Requisitions ...', {
+  my Gnome::Gtk3::Button $b .= new(:label<abc>);
+  my N-GtkRequisition $r = $b.requisition-new;
+  is $r.width, 0, '.requisition-new().width()';
+  is $r.height, 0, '.requisition-new().height()';
+
+  my N-GtkRequisition $rc = $b.gtk_requisition_copy($r);
+  is $r.width, 0, '.gtk_requisition_copy().width()';
+  is $r.height, 0, '.gtk_requisition_copy().height()';
+}
+}}
+
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   my Gnome::GObject::Value $gv;

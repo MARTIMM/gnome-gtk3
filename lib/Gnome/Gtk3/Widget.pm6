@@ -3936,7 +3936,7 @@ Returns the events mask for the widget corresponding to an specific device. Thes
 =end pod
 
 sub gtk_widget_get_device_events ( N-GObject $widget, N-GObject $device )
-  returns GdkEventMask
+  returns int32
   is native(&gtk-lib)
   { * }
 
@@ -4649,16 +4649,13 @@ sub gtk_cairo_transform_to_window ( cairo_t $cr, N-GObject $widget, N-GObject $w
   { * }
 }}
 
-#`{{
+#`{{ drop
 #-------------------------------------------------------------------------------
+#TM:1:gtk_requisition_new
 =begin pod
 =head2 [gtk_] requisition_new
 
-Allocates a new B<Gnome::Gtk3::Requisition>-struct and initializes its elements to zero.
-
-Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should
-be freed with C<gtk_requisition_free()>.
-
+Allocates a new B<Gnome::Gtk3::Requisition>-struct and initializes its elements to zero. Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should be freed with C<gtk_requisition_free()>.
 
   method gtk_requisition_new ( --> N-GtkRequisition  )
 
@@ -4666,32 +4663,42 @@ be freed with C<gtk_requisition_free()>.
 
 =end pod
 
-sub gtk_requisition_new ( )
-  returns N-GtkRequisition
+sub gtk_requisition_new( N-GObject $widget --> N-GtkRequisition ) {
+  _gtk_requisition_new()
+}
+
+sub _gtk_requisition_new ( --> N-GtkRequisition )
   is native(&gtk-lib)
+  is symbol('gtk_requisition_new')
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:1:gtk_requisition_copy
 =begin pod
 =head2 [gtk_] requisition_copy
 
-Copies a B<Gnome::Gtk3::Requisition>.
+Copies a B<Gnome::Gtk3::Requisition>. Returns: a copy of I<$requisition>'
 
-Returns: a copy of I<requisition>
-
-  method gtk_requisition_copy ( N-GtkRequisition $requisition --> N-GtkRequisition  )
+  method gtk_requisition_copy (
+    N-GtkRequisition $requisition --> N-GtkRequisition
+  )
 
 =item N-GtkRequisition $requisition; a B<Gnome::Gtk3::Requisition>
 
 =end pod
 
-sub gtk_requisition_copy ( N-GtkRequisition $requisition )
-  returns N-GtkRequisition
-  is native(&gtk-lib)
-  { * }
-}}
+sub gtk_requisition_copy (
+  N-GObject $widget, N-GtkRequisition $requisition
+  --> N-GtkRequisition
+) {
+  _gtk_requisition_copy($requisition);
+}
 
-#`{{
+sub _gtk_requisition_copy ( N-GtkRequisition $requisition --> N-GtkRequisition )
+  is native(&gtk-lib)
+  is symbol('gtk_requisition_copy')
+  { * }
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 [gtk_] requisition_free
@@ -4714,14 +4721,11 @@ sub gtk_requisition_free ( N-GtkRequisition $requisition )
 =begin pod
 =head2 [[gtk_] widget_] in_destruction
 
-Returns whether the widget is currently being destroyed.
-This information can sometimes be used to avoid doing
-unnecessary work.
+Returns whether the widget is currently being destroyed. This information can sometimes be used to avoid doing unnecessary work.
 
 Returns: C<1> if I<widget> is being destroyed
 
   method gtk_widget_in_destruction ( --> Int  )
-
 
 =end pod
 
@@ -4735,14 +4739,11 @@ sub gtk_widget_in_destruction ( N-GObject $widget )
 =begin pod
 =head2 [[gtk_] widget_] get_style_context
 
-Returns the style context associated to I<widget>. The returned object is
-guaranteed to be the same for the lifetime of I<widget>.
+Returns the style context associated to I<widget>. The returned object is guaranteed to be the same for the lifetime of I<widget>.
 
-Returns: (transfer none): a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and
-must not be freed.
+Returns: (transfer none): a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
 
   method gtk_widget_get_style_context ( --> N-GObject  )
-
 
 =end pod
 
@@ -4774,13 +4775,11 @@ sub gtk_widget_get_path ( N-GObject $widget --> N-GtkWidgetPath )
 =begin pod
 =head2 [[gtk_] widget_] class_set_css_name
 
-Sets the name to be used for CSS matching of widgets.
+Sets the name to be used for CSS matching of widgets. If this function is not called for a given class, the name of the parent class is used.
 
-If this function is not called for a given class, the name
-of the parent class is used.
-
-
-  method gtk_widget_class_set_css_name ( GtkWidgetClass $widget_class, char $name )
+  method gtk_widget_class_set_css_name (
+    GtkWidgetClass $widget_class, char $name
+  )
 
 =item GtkWidgetClass $widget_class; class to set the name on
 =item char $name; name to use
@@ -4793,11 +4792,11 @@ sub gtk_widget_class_set_css_name ( GtkWidgetClass $widget_class, char $name )
 
 #-------------------------------------------------------------------------------
 =begin pod
-=head2 char
+=head2 [[gtk_] widget_] class_get_css_name
 
+Gets the name used by this class for matching in CSS code. See gtk_widget_class_set_css_name() for details.
 
-
-  method char (  $* gtk_widget_class_get_css_name GtkWidgetClass *widget_class )
+  method gtk_widget_class_get_css_name ( GtkWidgetClass $widget_class )
 
 =item  $* gtk_widget_class_get_css_name GtkWidgetClass *widget_class;
 
@@ -4814,8 +4813,7 @@ sub char (  $* gtk_widget_class_get_css_name GtkWidgetClass *widget_class )
 =begin pod
 =head2 [[gtk_] widget_] get_modifier_mask
 
-Returns the modifier mask the I<widget>’s windowing system backend
-uses for a particular purpose.
+Returns the modifier mask the I<widget>’s windowing system backend uses for a particular purpose.
 
 See C<gdk_keymap_get_modifier_mask()>.
 
