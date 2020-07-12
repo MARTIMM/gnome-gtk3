@@ -10,7 +10,7 @@ layout: sidebar
 ### Main documentation, subs and methods documentation
 Legend for head of table
 
-* T: type column
+* T: type column with following values
   * p: package name
   * t: is top level of classes,
   * b: boxed type
@@ -34,31 +34,33 @@ Legend for head of table
 * sd: Subroutine documentation and additions
   * Add examples to subroutines.
   * Inhibit unusable subroutines and documentation.
-  * Add \$ to variables and use `True`/`False` when boolean input
-  * Remove Since version text
-  * Change `returns` into `-->`. Lower prio.
+  * Add sigils to variables and use `True`/`False` when boolean input
+  * Remove Since version text because versions are for GTK+ and not for the Raku modules. The first argument e.g. 'I<widget>' must become 'this widget'.
+  * Change `returns type` into `--> type`.
   * Provide single word method names. Lower prio.
   * Try to insert url references. Lower prio.
 * cp: Cleanup documentation
-  * Subroutines and Methods
+  * Subroutines and Methods.
   * Properties
   * Signals
   * Types
 * ct: Testing
   * Complete `BUILD()` tests.
-  * Complete subroutine tests
+  * Complete subroutine tests.
+  * Complete properties tests.
 * pr: Priority
   * A star has more priority to finish than others
 
-Entries can be
-* x: Done or first letter of operation when not all applies
-* #: No info
-* Empty: Not done
+Entry values can be
+* #: No info. Mostly for package names but sometimes there are no signals or properties for a class.
+* Empty: Not done.
+* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also that I don't know what to do with i
+* 🗸: Done
 
 | Module/Class            |T |md|bd|sd|cp|ct|pr|
 |-------------------------|--|--|--|--|--|--|--|
 **Gnome::Gtk3**           |p | #| #| #| #| #| #|
-AboutDialog               |  | x| x|  |  |  |  |
+AboutDialog               |  | 🗸| 🗸|  |  |  |  |
 AccelGroup                |
 AccelLabel                |
 AccelMap                  |
@@ -78,7 +80,7 @@ Border                    |b |
 Box                       |
 Buildable                 |i |
 Builder                   |
-Button                    |  | x| x|  |  |  |  |
+Button                    |  | 🗸| 🗸|  |  |  |  |
 ButtonBox                 |
 Calendar|
 CellArea|
@@ -110,7 +112,7 @@ Container|
 CssProvider|
 CssSection|b|
 Dialog                    |  |  |  |  |  |  |* |
-DrawingArea               |  | x| x| x| x| x|  |
+DrawingArea               |  | 🗸| 🗸| 🗸| 🗸| 🗸|  |
 Editable|i|
 Entry|
 EntryBuffer|
@@ -268,9 +270,9 @@ TreeView|
 TreeViewColumn|
 Viewport|
 VolumeButton|
-Widget                    |  |  |  |  |  |  |* |
+Widget                    |  | 🗸| 🗸|  | ½| ⅔|* |
 WidgetPath|b|
-Window                    |  | x| x|  |  |  |* |
+Window                    |  | 🗸| 🗸|  |  |  |* |
 WindowGroup|
 **Gnome::Gdk3**           |p | #| #| #| #| #| #|
 **Gnome::GObject**        |p | #| #| #| #| #| #|
@@ -304,6 +306,17 @@ N-GObject                 |N |  |  |  |  |  |  |
 NativeLib                 |L |  |  |  |  |  |- |
 TopLevelClassSupport      |t |  |  |  |  |  |* |
 X                         |  |  |  |  |  |  |* |
+**Gnome::Cairo**          |p | #| #| #| #| #| #|
+Enums                     |  |  |  |  |  |  |  |
+FontFace                  |  |  |  |  |  |  |  |
+FontOptions               |  |  |  |  |  |  |  |
+ImageSurface              |  |  |  |  |  |  |  |
+Matrix                    |  |  |  |  |  |  |  |
+Path                      |  |  |  |  |  |  |  |
+Pattern                   |  |  |  |  |  |  |  |
+ScaledFont                |  |  |  |  |  |  |  |
+Surface                   |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |  |
 
 <!--
 **Gnome::Atk**            |p | #| #| #| #| #| #|

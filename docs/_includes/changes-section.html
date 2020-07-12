@@ -1,9 +1,18 @@
 <!-- h1>{{ site.data[page.change_notes].notes_title }}</h1 -->
 <div class="release-notes">
+  {% assign counter = 0 %}
 
-  {% for date in site.data[page.change_notes].notes  %}
+  <!-- loop through an array of hashes; key = date, val = array of notes -->
+  {% for date in site.data[page.change_notes]  %}
+
+    <!-- loop through -->
     {% for entry in date %}
 
+      <!--
+        have to make a note again
+        [0] == key of a hash
+        [1] == value of that hash
+      -->
       <h3>{{ entry[0] }}</h3>
 
       <ul>
@@ -12,10 +21,9 @@
         {% endfor %}
       </ul>
 
-
     {% endfor %}
-    <!-- it still counts even in comments! nice! -->
-    <!-- {% increment counter %} -->
+
+    {% assign counter = counter | plus:1 %}
     {% if counter > 10 %}
       <br/><br/>
       <strong>... older log entries ...</strong>

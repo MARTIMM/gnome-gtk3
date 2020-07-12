@@ -9,6 +9,11 @@ See https://www.systutorials.com/docs/linux/man/7-gtk-options/
 ```
 bundle exec jekyll serve
 ```
+## Web site config
+```plantuml
+scale 0.8
+```
+
 # native sub search
 ```
   SomeModule.some-sub()

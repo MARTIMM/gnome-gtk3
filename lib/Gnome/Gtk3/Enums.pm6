@@ -229,15 +229,13 @@ enum GtkSensitivityType is export (
 
 Reading directions for text.
 
-
 =item GTK_TEXT_DIR_NONE: No direction.
 =item GTK_TEXT_DIR_LTR: Left to right text direction.
 =item GTK_TEXT_DIR_RTL: Right to left text direction.
 
-
 =end pod
 
-#TE:0:GtkTextDirection:
+#TE:2:GtkTextDirection:
 enum GtkTextDirection is export (
   'GTK_TEXT_DIR_NONE',
   'GTK_TEXT_DIR_LTR',
