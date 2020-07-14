@@ -29,7 +29,8 @@ use Gnome::Gtk3::Window;
 use Gnome::Glib::Error;
 use Gnome::Gdk3::Pixbuf;
 
-my Gnome::Gtk3::Window $window .= new(:title<Window>);
+my Gnome::Gtk3::Window $window .= new;
+$window.set-title('Window');
 my Gnome::Gdk3::Pixbuf $win-icon .= new(:file<icons8-invoice-100.png>);
 
 my Gnome::Glib::Error $e = $win-icon.last-error;
@@ -55,3 +56,38 @@ There is another method to set the size. `$window.gtk_widget_set_size_request()`
 Also a resize method is available as `$window.gtk_window_resize()` <!--[`$window.gtk_window_resize()`](../reference/Gtk3/Window.html#wow101).-->
 
 The information about current sizes is retrieved by calling `$window.gtk_get_size()`.
+
+## Placement of a Window or Dialog
+
+When an application is started and its top level window mapped and realized, it can appear anywhere on the screen. You have some control over it where the window can show up. The call `$window.gtk_window_set_position($position)` is the way to do it. Th `$position` is an enummeration with the values `GTK_WIN_POS_NONE`, `GTK_WIN_POS_CENTER`, `GTK_WIN_POS_MOUSE`, `GTK_WIN_POS_CENTER_ALWAYS` or `GTK_WIN_POS_CENTER_ON_PARENT`. Most values are obvious and `GTK_WIN_POS_NONE` does not influence any placement so there it is up to the display manager which, on my system, searches for the most empty spot on the desktop and places it there.
+
+You can also control the placement in depth a bit as you can obscure the several windows on your desktop with another. To prevent obscuring your dialog, you can call for instance `$dialog.gtk_window_set_keep_above(True)`.
+
+Then if you also want to grab the focus explicitly in your application, call `$dialog.gtk_window_set_modal(True)`. Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use `$dialog.gtk_window_set_transient_for($main-window)` to make the dialog transient for the parent. Most window managers will then disallow lowering the dialog below the parent. That saves us the call to `gtk_window_set_keep_above` explained above.
+
+#### What have we learned
+
+We have seen how we can manipulate the main window (or dialog) to show up on different places on your desktop, set a starting size, above other windows or grab a focus on a window.
+
+to conclude;
+
+```
+use Gnome::Gtk3::Window;
+use Gnome::Glib::Error;
+use Gnome::Gdk3::Pixbuf;
+
+my Gnome::Gdk3::Pixbuf $win-icon .= new(:file<icons8-invoice-100.png>);
+my Gnome::Glib::Error $e = $win-icon.last-error;
+
+given my Gnome::Gtk3::Window $window .= new {
+  .set-title('Window');
+  $e.is-valid ??
+    { die "Error icon file: $e.message()" } !!
+    .set-icon($win-icon);
+  .set-position(GTK_WIN_POS_CENTER_ON_PARENT);
+  .set-size-request( 200, 300);
+  .set-keep-above(True);
+}
+```
+
+A neat trick where the topological variable `$_` is set to `$window` by the `given` statement. All of those things you know and suddenly you find a different way to express things. This one I found in the README of Timo's module **Cairo**.
