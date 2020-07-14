@@ -1742,67 +1742,6 @@ If *group* is `Any`, a previously inserted group for *name* is removed from *wid
 
   * N-GObject $group; (allow-none): a `GActionGroup`, or `Any`
 
-[[gtk_] widget_] remove_tick_callback
--------------------------------------
-
-Removes a tick callback previously registered with `gtk_widget_add_tick_callback()`.
-
-    method gtk_widget_remove_tick_callback ( UInt $id )
-
-  * UInt $id; an id returned by `gtk_widget_add_tick_callback()`
-
-[[gtk_] widget_] init_template
-------------------------------
-
-Creates and initializes child widgets defined in templates. This function must be called in the instance initializer for any class which assigned itself a template using `gtk_widget_class_set_template()`
-
-It is important to call this function in the instance initializer of a **Gnome::Gtk3::Widget** subclass and not in `GObject`.`constructed()` or `GObject`.`constructor()` for two reasons.
-
-One reason is that generally derived widgets will assume that parent class composite widgets have been created in their instance initializers.
-
-Another reason is that when calling `g_object_new()` on a widget with composite templates, it’s important to build the composite widgets before the construct properties are set. Properties passed to `g_object_new()` should take precedence over properties set in the private template XML.
-
-    method gtk_widget_init_template ( )
-
-[[gtk_] widget_] get_template_child
------------------------------------
-
-Fetch an object build from the template XML for *widget_type* in this *widget* instance.
-
-This will only report children which were previously declared with `gtk_widget_class_bind_template_child_full()` or one of its variants.
-
-This function is only meant to be called for code which is private to the *widget_type* which declared the child and is meant for language bindings which cannot easily make use of the GObject structure offsets.
-
-Returns: (transfer none): The object built in the template XML with the id *name*
-
-    method gtk_widget_get_template_child ( N-GObject $widget_type, Str $name --> N-GObject  )
-
-  * N-GObject $widget_type; The `GType` to get a template child for
-
-  * Str $name; The “id” of the child defined in the template XML
-
-[[gtk_] widget_] get_action_group
----------------------------------
-
-Retrieves the `GActionGroup` that was registered using *prefix*. The resulting `GActionGroup` may have been registered to *widget* or any **Gnome::Gtk3::Widget** in its ancestry.
-
-If no action group was found matching *prefix*, then `Any` is returned.
-
-Returns: (transfer none) (nullable): A `GActionGroup` or `Any`.
-
-    method gtk_widget_get_action_group ( Str $prefix --> N-GObject  )
-
-  * Str $prefix; The “prefix” of the action group.
-
-[[gtk_] widget_] list_action_prefixes
--------------------------------------
-
-Retrieves a %NULL-terminated array of strings containing the prefixes of * #GActionGroup's available to @widget.
-
-    method gtk_widget_list_action_prefixes( --> Array[Str] )
-
-Returns: a `Any` terminated array of strings.
-
 Signals
 =======
 

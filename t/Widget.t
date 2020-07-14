@@ -173,6 +173,8 @@ subtest 'Manipulations', {
   nok $b.get-sensitive, '.set-sensitive() / .get-sensitive()';
   nok $b.is-sensitive, '.is-sensitive()';
 
+#note $b.list-action-prefixes[0];
+
   $b.gtk-widget-destroy;
   nok $b.is-valid, '.destroy()';
 }

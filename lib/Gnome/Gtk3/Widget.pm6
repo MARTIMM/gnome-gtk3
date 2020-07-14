@@ -4863,30 +4863,13 @@ sub gtk_widget_insert_action_group ( N-GObject $widget, Str $name, N-GObject $gr
 =begin pod
 =head2 [[gtk_] widget_] add_tick_callback
 
-Queues an animation frame update and adds a callback to be called
-before each frame. Until the tick callback is removed, it will be
-called frequently (usually at the frame rate of the output device
-or as quickly as the application can be repainted, whichever is
-slower). For this reason, is most suitable for handling graphics
-that change every frame or every few frames. The tick callback does
-not automatically imply a relayout or repaint. If you want a
-repaint or relayout, and aren’t changing widget properties that
-would trigger that (for example, changing the text of a B<Gnome::Gtk3::Label>),
-then you will have to call C<gtk_widget_queue_resize()> or
-C<gtk_widget_queue_draw_area()> yourself.
+Queues an animation frame update and adds a callback to be called before each frame. Until the tick callback is removed, it will be called frequently (usually at the frame rate of the output device or as quickly as the application can be repainted, whichever is slower). For this reason, is most suitable for handling graphics that change every frame or every few frames. The tick callback does not automatically imply a relayout or repaint. If you want a repaint or relayout, and aren’t changing widget properties that would trigger that (for example, changing the text of a B<Gnome::Gtk3::Label>), then you will have to call C<gtk_widget_queue_resize()> or C<gtk_widget_queue_draw_area()> yourself.
 
-C<gdk_frame_clock_get_frame_time()> should generally be used for timing
-continuous animations and
-C<gdk_frame_timings_get_predicted_presentation_time()> if you are
-trying to display isolated frames at particular times.
+C<gdk_frame_clock_get_frame_time()> should generally be used for timing continuous animations and C<gdk_frame_timings_get_predicted_presentation_time()> if you are trying to display isolated frames at particular times.
 
-This is a more convenient alternative to connecting directly to the
-sig C<update> signal of B<Gnome::Gdk3::FrameClock>, since you don't
-have to worry about when a B<Gnome::Gdk3::FrameClock> is assigned to a widget.
+This is a more convenient alternative to connecting directly to the sig C<update> signal of B<Gnome::Gdk3::FrameClock>, since you don't have to worry about when a B<Gnome::Gdk3::FrameClock> is assigned to a widget.
 
-Returns: an id for the connection of this callback. Remove the callback
-by passing it to C<gtk_widget_remove_tick_callback()>
-
+Returns: an id for the connection of this callback. Remove the callback by passing it to C<gtk_widget_remove_tick_callback()>
 
   method gtk_widget_add_tick_callback ( GtkTickCallback $callback, Pointer $user_data, GDestroyNotify $notify --> UInt  )
 
@@ -4902,14 +4885,13 @@ sub gtk_widget_add_tick_callback ( N-GObject $widget, GtkTickCallback $callback,
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_remove_tick_callback
 =begin pod
 =head2 [[gtk_] widget_] remove_tick_callback
 
-Removes a tick callback previously registered with
-C<gtk_widget_add_tick_callback()>.
-
+Removes a tick callback previously registered with C<gtk_widget_add_tick_callback()>.
 
   method gtk_widget_remove_tick_callback ( UInt $id )
 
@@ -4920,32 +4902,23 @@ C<gtk_widget_add_tick_callback()>.
 sub gtk_widget_remove_tick_callback ( N-GObject $widget, uint32 $id )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{ drop
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_init_template
+# TM:0:gtk_widget_init_template
 =begin pod
 =head2 [[gtk_] widget_] init_template
 
-Creates and initializes child widgets defined in templates. This
-function must be called in the instance initializer for any
-class which assigned itself a template using C<gtk_widget_class_set_template()>
+Creates and initializes child widgets defined in templates. This function must be called in the instance initializer for any class which assigned itself a template using C<gtk_widget_class_set_template()>
 
-It is important to call this function in the instance initializer
-of a B<Gnome::Gtk3::Widget> subclass and not in C<GObject>.C<constructed()> or
-C<GObject>.C<constructor()> for two reasons.
+It is important to call this function in the instance initializer of a B<Gnome::Gtk3::Widget> subclass and not in C<GObject>.C<constructed()> or C<GObject>.C<constructor()> for two reasons.
 
-One reason is that generally derived widgets will assume that parent
-class composite widgets have been created in their instance
-initializers.
+One reason is that generally derived widgets will assume that parent class composite widgets have been created in their instance initializers.
 
-Another reason is that when calling C<g_object_new()> on a widget with
-composite templates, it’s important to build the composite widgets
-before the construct properties are set. Properties passed to C<g_object_new()>
-should take precedence over properties set in the private template XML.
-
+Another reason is that when calling C<g_object_new()> on a widget with composite templates, it’s important to build the composite widgets before the construct properties are set. Properties passed to C<g_object_new()> should take precedence over properties set in the private template XML.
 
   method gtk_widget_init_template ( )
-
 
 =end pod
 
@@ -4954,23 +4927,22 @@ sub gtk_widget_init_template ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_template_child
+# TM:0:gtk_widget_get_template_child
 =begin pod
 =head2 [[gtk_] widget_] get_template_child
 
 Fetch an object build from the template XML for I<widget_type> in this I<widget> instance.
 
-This will only report children which were previously declared with
-C<gtk_widget_class_bind_template_child_full()> or one of its
-variants.
+This will only report children which were previously declared with C<gtk_widget_class_bind_template_child_full()> or one of its variants.
 
-This function is only meant to be called for code which is private to the I<widget_type> which
-declared the child and is meant for language bindings which cannot easily make use
-of the GObject structure offsets.
+This function is only meant to be called for code which is private to the I<widget_type> which declared the child and is meant for language bindings which cannot easily make use of the GObject structure offsets.
 
 Returns: (transfer none): The object built in the template XML with the id I<name>
 
-  method gtk_widget_get_template_child ( N-GObject $widget_type, Str $name --> N-GObject  )
+  method gtk_widget_get_template_child (
+    N-GObject $widget_type, Str $name
+    --> N-GObject
+  )
 
 =item N-GObject $widget_type; The C<GType> to get a template child for
 =item Str $name; The “id” of the child defined in the template XML
@@ -4982,9 +4954,8 @@ sub gtk_widget_get_template_child ( N-GObject $widget, N-GObject $widget_type, S
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_set_template
+# TM:0:gtk_widget_class_set_template
 =begin pod
 =head2 [[gtk_] widget_] class_set_template
 
@@ -5009,7 +4980,7 @@ sub gtk_widget_class_set_template ( GtkWidgetClass $widget_class, N-GObject $tem
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_set_template_from_resource
+# TM:0:gtk_widget_class_set_template_from_resource
 =begin pod
 =head2 [[gtk_] widget_] class_set_template_from_resource
 
@@ -5031,7 +5002,7 @@ sub gtk_widget_class_set_template_from_resource ( GtkWidgetClass $widget_class, 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_bind_template_callback_full
+# TM:0:gtk_widget_class_bind_template_callback_full
 =begin pod
 =head2 [[gtk_] widget_] class_bind_template_callback_full
 
@@ -5054,9 +5025,8 @@ sub gtk_widget_class_bind_template_callback_full ( GtkWidgetClass $widget_class,
   is native(&gtk-lib)
   { * }
 
-
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_set_connect_func
+# TM:0:gtk_widget_class_set_connect_func
 =begin pod
 =head2 [[gtk_] widget_] class_set_connect_func
 
@@ -5065,7 +5035,6 @@ used when parsing B<Gnome::Gtk3::Builder> XML from this class’s template data.
 
 Note that this must be called from a composite widget classes class
 initializer after calling C<gtk_widget_class_set_template()>.
-
 
   method gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilderConnectFunc $connect_func, Pointer $connect_data, GDestroyNotify $connect_data_destroy )
 
@@ -5079,11 +5048,9 @@ initializer after calling C<gtk_widget_class_set_template()>.
 sub gtk_widget_class_set_connect_func ( GtkWidgetClass $widget_class, GtkBuilderConnectFunc $connect_func, Pointer $connect_data, GDestroyNotify $connect_data_destroy )
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_class_bind_template_child_full
+# TM:0:gtk_widget_class_bind_template_child_full
 =begin pod
 =head2 [[gtk_] widget_] class_bind_template_child_full
 
@@ -5125,19 +5092,15 @@ sub gtk_widget_class_bind_template_child_full ( GtkWidgetClass $widget_class, St
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_action_group
 =begin pod
 =head2 [[gtk_] widget_] get_action_group
 
-Retrieves the C<GActionGroup> that was registered using I<prefix>. The resulting
-C<GActionGroup> may have been registered to I<widget> or any B<Gnome::Gtk3::Widget> in its
-ancestry.
+Retrieves the C<GActionGroup> that was registered using I<$prefix>. The resulting C<GActionGroup> may have been registered to I<widget> or any B<Gnome::Gtk3::Widget> in its ancestry. If no action group was found matching I<$prefix>, then undefined is returned.
 
-If no action group was found matching I<prefix>, then C<Any> is returned.
-
-Returns: (transfer none) (nullable): A C<GActionGroup> or C<Any>.
-
+Returns: A C<GActionGroup> or undefined.
 
   method gtk_widget_get_action_group ( Str $prefix --> N-GObject  )
 
@@ -5163,13 +5126,14 @@ Retrieves a %NULL-terminated array of strings containing the prefixes of
 
 Returns: a C<Any> terminated array of strings.
 
-
 =end pod
+
 
 sub gtk_widget_list_action_prefixes( N-GObject $widget )
   returns CArray[Str]
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
