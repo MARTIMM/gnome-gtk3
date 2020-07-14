@@ -270,7 +270,7 @@ TreeView|
 TreeViewColumn|
 Viewport|
 VolumeButton|
-Widget                    |  | 🗸| 🗸|  | ½| ⅔|* |
+Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|* |
 WidgetPath|b|
 Window                    |  | 🗸| 🗸|  |  |  |* |
 WindowGroup|

@@ -1,3 +1,10 @@
+- 2020-07-09 0.29.1:
+  - extending some tutorials
+  - removed a navigation file from doc site by accident
+
+  - Changes in Gnome::Gtk3::Widget;
+  - Dropped .gtk_widget_init_template(), .gtk_widget_get_template_child() and several other template methods
+
 - 2020-07-09 0.29.0:
   - Changes in Gnome::Gtk3::Widget;
   - Add .destroy(), .show(), .hide(), .draw()  methods to minimize function name size. E.g. draw() calls gtk_widget_draw() which could only be shortened to widget_draw().
