@@ -164,6 +164,7 @@ To delete a B<Gnome::Gtk3::Window>, call C<gtk_widget_destroy()>.
   multi method new (
     GtkWindowType :$window-type = GTK_WINDOW_TOPLEVEL
   )
+
 =end pod
 
 #TM:2:inheriting:*
