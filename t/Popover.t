@@ -27,7 +27,8 @@ subtest 'User class test', {
 
 }}
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::Window $w .= new(:title<Test-Popup>);
+my Gnome::Gtk3::Window $w .= new;
+$w.set-title('Test Popup');
 my Gnome::Gtk3::Popover $p;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {

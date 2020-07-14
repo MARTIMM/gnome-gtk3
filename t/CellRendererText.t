@@ -31,7 +31,7 @@ subtest 'Inherit CellRenderer', {
   is GtkSizeRequestMode($crt.get-request-mode),
      GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH, '.get-request-mode()';
 
-#  $w .= new(:title('test'));
+#  $w .= new;
   $b .= new(:label<Start>);
 #  $w.gtk-container-add($b);
 #  $w.show-all;

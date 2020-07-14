@@ -17,7 +17,8 @@ subtest 'ISA tests', {
   $d .= new;
   isa-ok $d, Gnome::Gtk3::Dialog, '.new';
 
-  my Gnome::Gtk3::Window $parent .= new(:title('My App'));
+  my Gnome::Gtk3::Window $parent .= new;
+  $parent.set-title('My App');
   $d .= new(
     :title('msg dialog'), :$parent,
     :flags(GTK_DIALOG_MODAL +| GTK_DIALOG_DESTROY_WITH_PARENT),
