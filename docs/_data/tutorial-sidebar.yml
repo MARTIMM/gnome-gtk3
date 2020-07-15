@@ -3,7 +3,9 @@
   bar_menu:
   - title: Getting Started
     url: "/content-docs/tutorial/getting-started.html"
-  - title: "Intermezzo: methods"
+  - title: "Intermezzo: Methods"
     url: "/content-docs/tutorial/intermezzo-methods.html"
-  - title: Window details
+  - title: Window Details
     url: "/content-docs/tutorial/window-details.html"
+  - title: Signals
+    url: "/content-docs/tutorial/signals.html"
