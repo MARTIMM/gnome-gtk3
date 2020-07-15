@@ -1919,7 +1919,8 @@ Returns: (nullable) (transfer none): the **Gnome::Gdk3::Window** of the embedded
     method handler (
       num64 $x,
       num64 $y,
-      Gnome::GObject::Object :widget($window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($window),
       *%user-options
       --> Unknown type GDK_TYPE_WINDOW
     );
@@ -1941,7 +1942,8 @@ Emitted when the position of *window* is finalized after being moved to a destin
 Stability: Private
 
     method handler (
-      Unknown type G_TYPE_POINTER $flipped_rect,
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(ipped_rect,
       Unknown type G_TYPE_POINTER $final_rect,
       Int $flipped_x,
       Int $flipped_y,

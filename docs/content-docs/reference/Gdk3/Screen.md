@@ -211,7 +211,8 @@ The *size-changed* signal is emitted when the pixel width or height of a screen 
 Since: 2.2
 
     method handler (
-      Gnome::GObject::Object :widget($screen),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($screen),
       *%user-options
     );
 
@@ -224,7 +225,8 @@ The *composited-changed* signal is emitted when the composited status of the scr
 Since: 2.10
 
     method handler (
-      Gnome::GObject::Object :widget($screen),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($screen),
       *%user-options
     );
 
@@ -239,7 +241,8 @@ Only for X11 and OS X for now. A future implementation for Win32 may be a possib
 Since: 2.14
 
     method handler (
-      Gnome::GObject::Object :widget($screen),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($screen),
       *%user-options
     );
 

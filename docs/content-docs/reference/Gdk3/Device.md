@@ -435,7 +435,8 @@ Supported signals
 The *changed* signal is emitted either when the **Gnome::Gdk3::Device** has changed the number of either axes or keys. For example In X this will normally happen when the slave device routing events through the master device changes (for example, user switches from the USB mouse to a tablet), in that case the master device will change to reflect the new slave device axes and keys.
 
     method handler (
-      Gnome::GObject::Object :widget($device),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($device),
       *%user-options
     );
 
@@ -448,8 +449,8 @@ The *tool-changed* signal is emitted on pen/eraser **Gnome::Gdk3::Devices** when
 Since: 3.22
 
     method handler (
-      N-GObject $tool,
-      Gnome::GObject::Object :widget($device),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($device),
       *%user-options
     );
 

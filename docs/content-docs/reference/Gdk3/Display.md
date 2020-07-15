@@ -448,7 +448,8 @@ Supported signals
 The *opened* signal is emitted when the connection to the windowing system for *display* is opened.
 
     method handler (
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
@@ -462,7 +463,8 @@ Since: 2.2
 
     method handler (
       Int $is_error,
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
@@ -478,7 +480,8 @@ Since: 3.20
 
     method handler (
       N-GObject $seat,
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
@@ -494,7 +497,8 @@ Since: 3.20
 
     method handler (
       N-GObject $seat,
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
@@ -510,7 +514,8 @@ Since: 3.22
 
     method handler (
       N-GObject $monitor,
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
@@ -526,7 +531,8 @@ Since: 3.22
 
     method handler (
       N-GObject $monitor,
-      Gnome::GObject::Object :widget($display),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($display),
       *%user-options
     );
 
