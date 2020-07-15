@@ -7,7 +7,8 @@ use Gnome::Gtk3::Window;
 my Gnome::Gtk3::Main $m .= new;
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:title<Window>);
+my Gnome::Gtk3::Window $top-window .= new;
+$top-window.set-title('Window');
 
 # Show everything and activate all
 $top-window.show-all;

@@ -12,7 +12,8 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:title<Example>);
+my Gnome::Gtk3::Window $top-window .= new
+$top-window.set-title('Example');
 
 # Initialize the callback handler class and register the method for the event
 my AppSignalHandlers $ash .= new;

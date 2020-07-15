@@ -54,7 +54,8 @@ my AppSignalHandlers $ash .= new;
 #my int32 $menu-shell-gtype = $type.g_type_from_name('GtkMenuShell');
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:title('A window with a menu'));
+my Gnome::Gtk3::Window $top-window .= new;
+$top-window.set-title('A window with a menu');
 $top-window.set-size-request( 300, 300);
 
 my Gnome::Gtk3::Grid $grid .= new;

@@ -18,7 +18,8 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new(:title<Example>);
+my Gnome::Gtk3::Window $top-window .= new;
+$top-window.set-title('Example');
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
