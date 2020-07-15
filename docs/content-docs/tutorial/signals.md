@@ -61,5 +61,24 @@ The handler id is also returned from the call to `.register-signal()`. More on t
 
 ## Unregistering signals
 
+There are times that you want to get rid of a signal when your program gets into another phase. For instance in the example above, the drawing area can be replaced with something else or removed altogether and the button may get another function. You could remove the button too and create a new one and register a new handler but there could be reasons that it wouldn't be easy to do so, for instance you have the button object but don't know in which container it is placed in. Here the handler id comes in because you need it to remove the handler.
+
+```
+has Int $!handler-id;
+has Gnome::Gtk3::Button $!bttn;
+...
+
+$!bttn .= new(:label<Draw>);
+$!handler-id = $draw-bttn.register-signal(
+  HandlerObject.new, 'draw-picture', 'clicked',
+  :draw-area($da)
+);
+...
+
+# After some time we want to change the 'clicked' signal handling
+$!bttn.handler-disconnect($!handler-id);
+...
+```
+So, that was easy 😉.
 
 ## Other signals
