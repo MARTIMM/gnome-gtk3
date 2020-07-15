@@ -71,32 +71,62 @@ layout: sidebar
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
 * Tutorials
-  * Window details
-    * [x] Window decoration, title and icon
-    * [x] Window size
-    * Centering with position
-    * Destroy signal
-    * Some Container methods
-    * Some Widget methods
+  * [x] Getting Started
+    * A Simple Window
+    * Simple Window with a Button
+    * Simple Window with two Buttons
+  * [x] Intermezzo: Methods
+    * Method naming
 
-  * Intermezzo: search of native subroutines
+  * [x] Window Details
+    * Window decoration, title and icon
+    * Window size
+    * Centering with position
+    * Modal windows / dialogs
+    * Above windows
+    <!--
+    * [ ] Some Container methods
+    * [ ] Some Widget methods
+    -->
+
+  * [ ] Signals
+    * Sinals and Events repetition
+    * Some other signals
+    * Unregistering signals
+
+  * [ ] Intermezzo: search of native subroutines
     * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
     * FALLBACK -> \_fallback() -> callsame()
     * Substitution of arguments
+      * `enum -> Int` if target is `int*`
+      * `Bool -> Int` if target is `int*`
+      * `Int -> int*` automatic by Raku
+      * `* -> num*` if target is `num*`
 
-    * (Scrolled)Window
-    * Dialogs
+<!--
+#  - title: Dialog
+#  - title: TreeModel
+#  - title: Radio buttons
+#  - title:
+#  - title:
+#  - title: ApplicationWindow
+#  - title:
+#  - title:
+#  - title: Debugging
+#  - title: Xml
+#  - title: Glade program
+#  - title: threading
+-->
 
-    * Frame
-    * Grid
+  * [ ] Widgets
+    * Containers
+      * ScrolledWindow
+      * Dialogs
+      * Frame
+      * Grid
 
-  * Intermezzo: common names and init
-    * Common method names used in classes
-    * Initialization of classes
-
-  * Widgets
     * Controls
-      * Buttons
+      * Buttons: radio, check, toggle
       * Menus
       * Toolbars
       * ComboxBox
@@ -104,36 +134,46 @@ layout: sidebar
     * Display
       * Labels
       * LevelBar
+      * Scale
 
     * Lists and Edit
       * Entry
       * ListBox
-      * TreeView
+      * TreeModel
 
-  * Intermezzo: widget life cycle
+  * [ ] Intermezzo: common names and init
+    * Common method names used in classes: clear-object, is-valid
+    * Common init method attributes, :native-object
+    * Initialization of classes
+
+  * [ ] A bit more about ListView, TreeView, TreeModel
+
+  * [ ] Intermezzo: widget life cycle
     * Widget creation. Reference state, weak references
     * Widget (un)referencing
+    * Mapping and realizing
     * Destroy
     * Finalization
     * `.clear-object()`
 
-  * Signals
-  * Threads
+  * [ ] Threads
     * Main
       * Start loop
       * Stop loop
       * Nest loops
       * Loop Context
       * Process events
-  * Builder
+
+  * [ ] Builder
     * Glade
     * Gui XML description
     * Menu XML description
-  * Styling
-  * Resources
-  * Inheriting a class
 
-  * Intermezzo: tell something about
+  * [ ] Styling
+  * [ ] Resources
+  * [ ] Inheriting a class
+
+  * [ ] Intermezzo: tell something about
     * Object
     * InitiallyUnowned
     * Boxed: https://en.wikipedia.org/wiki/GObject
@@ -141,17 +181,17 @@ layout: sidebar
     * Interfaces: https://en.wikipedia.org/wiki/GObject
       Most types in a GObject application will be classes — in the normal object-oriented sense of the word — derived directly or indirectly from the root class, GObject. There are also interfaces, which, unlike classic Java-style interfaces, can contain implemented methods. GObject interfaces can thus be described as mixins.
 
-  * Application
+  * [ ] ApplicationWindow
     * Phases
     * Signals
     * Multiple program entities or not
 
-  * Drag and drop
-  * Drawing
-  * Font and other text handling
-  * D-Bus
+  * [ ] Drag and drop
+  * [ ] Drawing
+  * [ ] Font and other text handling
+  * [ ] D-Bus
 
-  * Debugging
+  * [ ] Debugging
     * Testing your program with Gnome::T.
     * `Gnome::N::debug()`.
     * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
@@ -163,9 +203,11 @@ layout: sidebar
       * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
 
 * Code examples
-  * Configuration editor
-  * Simple calculator
+  * [x] Todo Viewer
+  * [ ] Simple calculator
+  * [ ] Animation with a clock
+  * [ ] A new widget
 
-* Check licensing of the whole project, contact Gnome?
+* [ ] Check licensing of the whole project, contact Gnome?
 
-* Remove changelog from About page and add separate pages for the changelog from the packages.
+* [x] Remove changelog from About page and add separate pages for the changelog from the packages.
