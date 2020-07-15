@@ -958,7 +958,8 @@ signal that the scrolled window’s child may listen to and scroll itself.
   method handler (
     Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
     Int $horizontal,
-    Gnome::GObject::Object :widget($scrolled_window),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($scrolled_window),
     *%user-options
     --> Int
   );
@@ -983,7 +984,8 @@ container hierarchy. The default bindings for this signal are
 
   method handler (
     Unknown type GTK_TYPE_DIRECTION_TYPE $direction_type,
-    Gnome::GObject::Object :widget($scrolled_window),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($scrolled_window),
     *%user-options
   );
 
@@ -1008,7 +1010,8 @@ if intending to provide behavior on horizontal edges.
 
   method handler (
     Unknown type GTK_TYPE_POSITION_TYPE $pos,
-    Gnome::GObject::Object :widget($scrolled_window),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($scrolled_window),
     *%user-options
   );
 
@@ -1033,7 +1036,8 @@ if intending to provide behavior on horizontal edges.
 
   method handler (
     Unknown type GTK_TYPE_POSITION_TYPE $pos,
-    Gnome::GObject::Object :widget($scrolled_window),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($scrolled_window),
     *%user-options
   );
 

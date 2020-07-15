@@ -249,7 +249,8 @@ Supported signals
 This signal is emitted when a menu shell is deactivated.
 
     method handler (
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -260,7 +261,8 @@ This signal is emitted when a menu shell is deactivated.
 This signal is emitted when a selection has been completed within a menu shell.
 
     method handler (
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -272,7 +274,8 @@ An keybinding signal which moves the current menu item in the direction specifie
 
     method handler (
       Unknown type GTK_TYPE_MENU_DIRECTION_TYPE $direction,
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -286,7 +289,8 @@ An action signal that activates the current menu item within the menu shell.
 
     method handler (
       Int $force_hide,
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -299,7 +303,8 @@ An action signal that activates the current menu item within the menu shell.
 An action signal which cancels the selection within the menu shell. Causes the *selection-done* signal to be emitted.
 
     method handler (
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -311,7 +316,8 @@ A keybinding signal which moves the focus in the given *direction*.
 
     method handler (
       Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
-      Gnome::GObject::Object :widget($menushell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menushell),
       *%user-options
     );
 
@@ -329,7 +335,8 @@ Since: 2.12
 
     method handler (
       Int $distance,
-      Gnome::GObject::Object :widget($menu_shell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menu_shell),
       *%user-options
       --> Int
     );
@@ -349,7 +356,8 @@ Since: 3.2
     method handler (
       N-GObject $child,
       Int $position,
-      Gnome::GObject::Object :widget($menu_shell),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menu_shell),
       *%user-options
     );
 

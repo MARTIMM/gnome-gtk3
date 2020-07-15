@@ -703,7 +703,8 @@ Also here, the types of positional arguments in the signal handler are important
 Emitted when the range value changes.
 
   method handler (
-    Gnome::GObject::Object :widget($range),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($range),
     *%user-options
   );
 
@@ -718,7 +719,8 @@ chance to adjust the bounds.
 
   method handler (
     Unknown type G_TYPE_DOUBLE $value,
-    Gnome::GObject::Object :widget($range),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($range),
     *%user-options
   );
 
@@ -734,7 +736,8 @@ Virtual function that moves the slider. Used for keybindings.
 
   method handler (
     Unknown type GTK_TYPE_SCROLL_TYPE $step,
-    Gnome::GObject::Object :widget($range),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($range),
     *%user-options
   );
 
@@ -769,7 +772,8 @@ the signal, C<0> to propagate the signal further
   method handler (
     Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
     Unknown type G_TYPE_DOUBLE $value,
-    Gnome::GObject::Object :widget($range),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($range),
     *%user-options
     --> Int
   );

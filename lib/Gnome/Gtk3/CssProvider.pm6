@@ -440,7 +440,8 @@ than when a loading function was called.
   method handler (
     N-GObject $section,
     N-GError $error,
-    Gnome::GObject::Object :widget($provider),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($provider),
     *%user-options
   );
 

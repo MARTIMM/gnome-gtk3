@@ -595,7 +595,8 @@ See also: `gtk_text_buffer_insert()`, `gtk_text_buffer_insert_range()`.
       N-GObject $location,
       Str $text,
       Int $len,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -618,7 +619,8 @@ See also: `gtk_text_buffer_insert_pixbuf()`.
     method handler (
       N-GObject $location,
       N-GObject $pixbuf,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -639,7 +641,8 @@ See also: `gtk_text_buffer_insert_child_anchor()`.
     method handler (
       N-GObject $location,
       N-GObject $anchor,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -660,7 +663,8 @@ See also: `gtk_text_buffer_delete()`.
     method handler (
       N-GObject $start,
       N-GObject $end,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -675,7 +679,8 @@ See also: `gtk_text_buffer_delete()`.
 The *changed* signal is emitted when the content of a **Gnome::Gtk3::TextBuffer** has changed.
 
     method handler (
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -688,7 +693,8 @@ The *modified-changed* signal is emitted when the modified bit of a **Gnome::Gtk
 See also: `gtk_text_buffer_set_modified()`.
 
     method handler (
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -703,7 +709,8 @@ See also: `gtk_text_buffer_create_mark()`, `gtk_text_buffer_move_mark()`.
     method handler (
       N-GObject $location,
       N-GObject $mark,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -721,7 +728,8 @@ See also: `gtk_text_buffer_delete_mark()`.
 
     method handler (
       N-GObject $mark,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -741,7 +749,8 @@ See also: `gtk_text_buffer_apply_tag()`, `gtk_text_buffer_insert_with_tags()`, `
       N-GObject $tag,
       N-GObject $start,
       N-GObject $end,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -765,7 +774,8 @@ See also: `gtk_text_buffer_remove_tag()`.
       N-GObject $tag,
       N-GObject $start,
       N-GObject $end,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -784,7 +794,8 @@ The *begin-user-action* signal is emitted at the beginning of a single user-visi
 See also: `gtk_text_buffer_begin_user_action()`, `gtk_text_buffer_insert_interactive()`, `gtk_text_buffer_insert_range_interactive()`, `gtk_text_buffer_delete_interactive()`, `gtk_text_buffer_backspace()`, `gtk_text_buffer_delete_selection()`.
 
     method handler (
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -797,7 +808,8 @@ The *end-user-action* signal is emitted at the end of a single user-visible oper
 See also: `gtk_text_buffer_end_user_action()`, `gtk_text_buffer_insert_interactive()`, `gtk_text_buffer_insert_range_interactive()`, `gtk_text_buffer_delete_interactive()`, `gtk_text_buffer_backspace()`, `gtk_text_buffer_delete_selection()`, `gtk_text_buffer_backspace()`.
 
     method handler (
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 
@@ -809,7 +821,8 @@ The paste-done signal is emitted after paste operation has been completed. This 
 
     method handler (
       N-GObject $clipboard,
-      Gnome::GObject::Object :widget($textbuffer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($textbuffer),
       *%user-options
     );
 

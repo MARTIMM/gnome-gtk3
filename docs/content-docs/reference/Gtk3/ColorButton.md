@@ -158,7 +158,8 @@ Note that this signal is only emitted when the user changes the color. If you ne
 Since: 2.4
 
     method handler (
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
     );
 

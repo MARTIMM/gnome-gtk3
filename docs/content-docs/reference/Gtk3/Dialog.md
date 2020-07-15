@@ -343,7 +343,8 @@ Emitted when an action widget is clicked, the dialog receives a delete event, or
 
     method handler (
       Int $response_id,
-      Gnome::GObject::Object :widget($dialog),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($dialog),
       *%user-options
     );
 
@@ -358,7 +359,8 @@ The *close* signal is a keybinding signal which gets emitted when the user uses 
 The default binding for this signal is the Escape key.
 
     method handler (
-      Gnome::GObject::Object :widget($dialog),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($dialog),
       *%user-options
     );
 

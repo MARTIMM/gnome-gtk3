@@ -201,7 +201,8 @@ It is the responsibility of the application to update the model and store I<new_
   method handler (
     Str $path,
     Str $new_text,
-    Gnome::GObject::Object :widget($renderer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($renderer),
     *%user-options
   );
 

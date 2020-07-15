@@ -594,7 +594,8 @@ The default bindings for this signal come in two variants, the variant with the 
       Unknown type GTK_TYPE_MOVEMENT_STEP $step,
       Int $count,
       Int $extend_selection,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -613,7 +614,8 @@ The *copy-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSigna
 The default binding for this signal is Ctrl-c.
 
     method handler (
-      Gnome::GObject::Object :widget($label),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($label),
       *%user-options
     );
 
@@ -627,7 +629,8 @@ If you need to add items to the context menu, connect to this signal and append 
 
     method handler (
       Unknown type GTK_TYPE_MENU $menu,
-      Gnome::GObject::Object :widget($label),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($label),
       *%user-options
     );
 
@@ -646,7 +649,8 @@ The default bindings for this signal are all forms of the Enter key.
 Since: 2.18
 
     method handler (
-      Gnome::GObject::Object :widget($label),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($label),
       *%user-options
     );
 
@@ -662,7 +666,8 @@ Since: 2.18
 
     method handler (
       Str $uri,
-      Gnome::GObject::Object :widget($label),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($label),
       *%user-options
       --> Int
     );

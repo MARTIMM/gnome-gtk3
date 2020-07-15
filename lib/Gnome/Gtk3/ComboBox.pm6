@@ -987,7 +987,8 @@ with an entry.
 Since: 2.4
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 
@@ -1005,7 +1006,8 @@ Since: 2.12
 
   method handler (
     Gnome::Gtk3::ScrollType $scroll_type,
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 
@@ -1026,7 +1028,8 @@ The default binding for this signal is Alt+Down.
 Since: 2.12
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 
@@ -1045,7 +1048,8 @@ The default bindings for this signal are Alt+Up and Escape.
 Since: 2.12
 
   method handler (
-    Gnome::GObject::Object :widget($button),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($button),
     *%user-options
     --> Int
   );
@@ -1098,7 +1102,8 @@ Since: 3.4
 
   method handler (
     Str $path,
-    Gnome::GObject::Object :widget($combo),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($combo),
     *%user-options
     --> Unknown type G_TYPE_STRING
   );
@@ -2105,7 +2110,8 @@ with an entry.
 Since: 2.4
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -2122,7 +2128,8 @@ The default binding for this signal is Alt+Down.
 Since: 2.12
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -2140,7 +2147,8 @@ The default bindings for this signal are Alt+Up and Escape.
 Since: 2.12
 
   method handler (
-    Gnome::GObject::Object :widget($button),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($button),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -2162,7 +2170,8 @@ The I<move-active signal> is a [keybinding signal][B<Gnome::Gtk3::BindingSignal>
 Since: 2.12
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     :handler-arg0($scroll_type),
     :$user-option1, ..., :$user-optionN
   );
@@ -2207,7 +2216,8 @@ for the current B<Gnome::Gtk3::ComboBox> model.
 Since: 3.4
 
   method handler (
-    Gnome::GObject::Object :widget($combo),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($combo),
     :handler-arg0($path),
     :$user-option1, ..., :$user-optionN
   );

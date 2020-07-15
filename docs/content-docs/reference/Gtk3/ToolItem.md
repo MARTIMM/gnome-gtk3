@@ -409,7 +409,8 @@ The toolbar may cache the result of this signal. When the tool item changes how 
 Returns: `1` if the signal was handled, `0` if not
 
     method handler (
-      Gnome::GObject::Object :widget($tool_item),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tool_item),
       *%user-options
       --> Int
     );
@@ -421,7 +422,8 @@ Returns: `1` if the signal was handled, `0` if not
 This signal is emitted when some property of the toolbar that the item is a child of changes. For custom subclasses of **Gnome::Gtk3::ToolItem**, the default handler of this signal use the functions - `gtk_tool_shell_get_orientation()` - `gtk_tool_shell_get_style()` - `gtk_tool_shell_get_icon_size()` - `gtk_tool_shell_get_relief_style()` to find out what the toolbar should look like and change themselves accordingly.
 
     method handler (
-      Gnome::GObject::Object :widget($tool_item),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tool_item),
       *%user-options
     );
 

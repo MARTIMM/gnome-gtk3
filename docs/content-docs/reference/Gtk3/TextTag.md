@@ -149,7 +149,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       N-GObject $object,
       GdkEvent $event,
       N-GObject $iter,
-      Gnome::GObject::Object :widget($tag),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tag),
       *%user-options
       --> Int
     );

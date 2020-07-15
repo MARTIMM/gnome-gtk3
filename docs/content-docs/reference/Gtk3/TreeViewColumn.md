@@ -553,7 +553,8 @@ Supported signals
 ### clicked
 
     method handler (
-      Gnome::GObject::Object :widget($treeviewcolumn),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($treeviewcolumn),
       *%user-options
     );
 

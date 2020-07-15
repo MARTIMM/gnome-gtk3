@@ -899,7 +899,8 @@ Since: 3.10
 
   method handler (
     N-GObject $row,
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     *%user-options
   );
 
@@ -916,7 +917,8 @@ set of selected rows changes.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     *%user-options
   );
 
@@ -935,7 +937,8 @@ The default bindings for this signal is Ctrl-a.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     *%user-options
   );
 
@@ -954,7 +957,8 @@ The default bindings for this signal is Ctrl-Shift-a.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     *%user-options
   );
 
@@ -970,7 +974,8 @@ Since: 3.10
 
   method handler (
     N-GObject $row,
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     *%user-options
   );
 
@@ -982,7 +987,8 @@ Since: 3.10
 =head3 activate-cursor-row
 
   method handler (
-    Gnome::GObject::Object :widget($listbox),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($listbox),
     *%user-options
   );
 
@@ -992,7 +998,8 @@ Since: 3.10
 =head3 toggle-cursor-row
 
   method handler (
-    Gnome::GObject::Object :widget($listbox),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($listbox),
     *%user-options
   );
 
@@ -1004,7 +1011,8 @@ Since: 3.10
   method handler (
     GtkMovementStep $arg1,
     Int $arg2,
-    Gnome::GObject::Object :widget($listbox),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($listbox),
     *%user-options
   );
 
@@ -1016,7 +1024,8 @@ Since: 3.10
 =head3 activate
 
   method handler (
-    Gnome::GObject::Object :widget($listbox),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($listbox),
     *%user-options
   );
 
@@ -1711,7 +1720,8 @@ If you want to be notified when the user activates a row (by key or not), use th
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1722,7 +1732,8 @@ Since: 3.10
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1736,7 +1747,8 @@ set of selected rows changes.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1754,7 +1766,8 @@ The default bindings for this signal is Ctrl-a.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1772,7 +1785,8 @@ The default bindings for this signal is Ctrl-Shift-a.
 Since: 3.14
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1783,7 +1797,8 @@ Since: 3.14
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1801,7 +1816,8 @@ the sig C<selected-rows-changed> signal instead.
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :handler-arg0($row),
     :$user-option1, ..., :$user-optionN
   );
@@ -1817,7 +1833,8 @@ The sig I<row-activated> signal is emitted when a row has been activated by the 
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     :handler-arg0($row),
     :$user-option1, ..., :$user-optionN
   );
@@ -1838,7 +1855,8 @@ Since: 3.10
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($box),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($box),
     GtkMovementStep :handler-arg0($arg1),
     Int :handler-arg1($arg2),
     :$user-option1, ..., :$user-optionN

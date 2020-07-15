@@ -601,7 +601,8 @@ Also here, the types of positional arguments in the signal handler are important
 Emitted when the item is activated.
 
   method handler (
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 
@@ -616,7 +617,8 @@ submenu. For normal applications, the relevant signal is
  I<activate>.
 
   method handler (
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 
@@ -629,7 +631,8 @@ submenu. For normal applications, the relevant signal is
 
   method handler (
     Unknown type G_TYPE_POINTER $unknown type g_type_pointer,
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 
@@ -642,7 +645,8 @@ submenu. For normal applications, the relevant signal is
 
   method handler (
     Int $int,
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 
@@ -653,7 +657,8 @@ submenu. For normal applications, the relevant signal is
 =head3 select
 
   method handler (
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 
@@ -663,7 +668,8 @@ submenu. For normal applications, the relevant signal is
 =head3 deselect
 
   method handler (
-    Gnome::GObject::Object :widget($menuitem),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menuitem),
     *%user-options
   );
 

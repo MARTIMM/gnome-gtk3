@@ -326,7 +326,8 @@ Also here, the types of positional arguments in the signal handler are important
   method handler (
     N-GObject $tag,
     Int $size_changed,
-    Gnome::GObject::Object :widget($texttagtable),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($texttagtable),
     *%user-options
   );
 
@@ -340,7 +341,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     N-GObject $tag,
-    Gnome::GObject::Object :widget($texttagtable),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($texttagtable),
     *%user-options
   );
 
@@ -353,7 +355,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     N-GObject $tag,
-    Gnome::GObject::Object :widget($texttagtable),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($texttagtable),
     *%user-options
   );
 

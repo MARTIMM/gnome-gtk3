@@ -243,7 +243,8 @@ delay of 150 milliseconds after the last change to the entry text.
 Since: 3.10
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -265,7 +266,8 @@ The default bindings for this signal is Ctrl-g.
 Since: 3.16
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -287,7 +289,8 @@ The default bindings for this signal is Ctrl-Shift-g.
 Since: 3.16
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -308,7 +311,8 @@ The default bindings for this signal is Escape.
 Since: 3.16
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 

@@ -1880,7 +1880,8 @@ There are too many key combinations to list them all here.
     Unknown type GTK_TYPE_MOVEMENT_STEP $step,
     Int $count,
     Int $extend_selection,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -1908,7 +1909,8 @@ There are no default bindings for this signal.
   method handler (
     Unknown type GTK_TYPE_SCROLL_STEP $step,
     Int $count,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -1931,7 +1933,8 @@ mark. The "anchor" mark gets placed at the same position as the
 This signal has no default bindings.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -1950,7 +1953,8 @@ This signal has no default bindings.
 
   method handler (
     Str $string,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -1978,7 +1982,8 @@ backwords.
   method handler (
     Unknown type GTK_TYPE_DELETE_TYPE $type,
     Int $count,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2000,7 +2005,8 @@ The default bindings for this signal are
 Backspace and Shift-Backspace.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2018,7 +2024,8 @@ The default bindings for this signal are
 Ctrl-x and Shift-Delete.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2036,7 +2043,8 @@ The default bindings for this signal are
 Ctrl-c and Ctrl-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2055,7 +2063,8 @@ The default bindings for this signal are
 Ctrl-v and Shift-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2072,7 +2081,8 @@ which gets emitted to toggle the overwrite mode of the text view.
 The default bindings for this signal is Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2099,7 +2109,8 @@ or B<Gnome::Gtk3::Toolbar> or another kind of container.
 
   method handler (
     N-GObject $popup,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2121,7 +2132,8 @@ for selecting and Shift-Ctrl-a and Ctrl-\ for unselecting.
 
   method handler (
     Int $select,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2141,7 +2153,8 @@ property.
 The default binding for this signal is F7.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2162,7 +2175,8 @@ Since: 2.20
 
   method handler (
     Str $preedit,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
   );
 
@@ -2186,7 +2200,8 @@ Since: 3.16
     Unknown type GTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE $location,
     Unknown type GTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE $start,
     Unknown type GTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE $end,
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     *%user-options
     --> int32
   );
@@ -4036,7 +4051,8 @@ mark. The "anchor" mark gets placed at the same position as the
 This signal has no default bindings.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4053,7 +4069,8 @@ The default bindings for this signal are
 Backspace and Shift-Backspace.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4069,7 +4086,8 @@ The default bindings for this signal are
 Ctrl-x and Shift-Delete.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4085,7 +4103,8 @@ The default bindings for this signal are
 Ctrl-c and Ctrl-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4102,7 +4121,8 @@ The default bindings for this signal are
 Ctrl-v and Shift-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4118,7 +4138,8 @@ which gets emitted to toggle the overwrite mode of the text view.
 The default bindings for this signal is Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4135,7 +4156,8 @@ property.
 The default binding for this signal is F7.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -4165,7 +4187,8 @@ There are too many key combinations to list them all here.
 - Ctrl-PageUp/PageDown keys move horizontally by pages
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($step),
     :handler-arg1($count),
     :handler-arg2($extend_selection),
@@ -4190,7 +4213,8 @@ is visible in a containing scrolled window.
 There are no default bindings for this signal.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($step),
     :handler-arg1($count),
     :$user-option1, ..., :$user-optionN
@@ -4211,7 +4235,8 @@ fixed string at the cursor.
 This signal has no default bindings.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($string),
     :$user-option1, ..., :$user-optionN
   );
@@ -4236,7 +4261,8 @@ deleting a word and Ctrl-Backspace for deleting a word
 backwords.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($type),
     :handler-arg1($count),
     :$user-option1, ..., :$user-optionN
@@ -4264,7 +4290,8 @@ type of I<widget>, but check whether I<popup> is a B<Gnome::Gtk3::Menu>
 or B<Gnome::Gtk3::Toolbar> or another kind of container.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($popup),
     :$user-option1, ..., :$user-optionN
   );
@@ -4284,7 +4311,8 @@ The default bindings for this signal are Ctrl-a and Ctrl-/
 for selecting and Shift-Ctrl-a and Ctrl-\ for unselecting.
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($select),
     :$user-option1, ..., :$user-optionN
   );
@@ -4306,7 +4334,8 @@ is actually editable.
 Since: 2.20
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($preedit),
     :$user-option1, ..., :$user-optionN
   );
@@ -4325,7 +4354,8 @@ event. C<GDK_EVENT_PROPAGATE> to propagate the event further.
 Since: 3.16
 
   method handler (
-    Gnome::GObject::Object :widget($text_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($text_view),
     :handler-arg0($granularity),
     :handler-arg1($location),
     :handler-arg2($start),

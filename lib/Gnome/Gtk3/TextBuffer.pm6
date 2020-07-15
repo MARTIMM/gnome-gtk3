@@ -1859,7 +1859,8 @@ C<gtk_text_buffer_insert_range()>.
     N-GObject $location,
     Str $text,
     Int $len,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -1888,7 +1889,8 @@ See also: C<gtk_text_buffer_insert_pixbuf()>.
   method handler (
     N-GObject $location,
     N-GObject $pixbuf,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -1916,7 +1918,8 @@ See also: C<gtk_text_buffer_insert_child_anchor()>.
   method handler (
     N-GObject $location,
     N-GObject $anchor,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -1945,7 +1948,8 @@ See also: C<gtk_text_buffer_delete()>.
   method handler (
     N-GObject $start,
     N-GObject $end,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -1963,7 +1967,8 @@ The I<changed> signal is emitted when the content of a B<Gnome::Gtk3::TextBuffer
 has changed.
 
   method handler (
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -1980,7 +1985,8 @@ See also:
 C<gtk_text_buffer_set_modified()>.
 
   method handler (
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2000,7 +2006,8 @@ C<gtk_text_buffer_move_mark()>.
   method handler (
     N-GObject $location,
     N-GObject $mark,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2022,7 +2029,8 @@ C<gtk_text_buffer_delete_mark()>.
 
   method handler (
     N-GObject $mark,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2050,7 +2058,8 @@ C<gtk_text_buffer_insert_range()>.
     N-GObject $tag,
     N-GObject $start,
     N-GObject $end,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2080,7 +2089,8 @@ C<gtk_text_buffer_remove_tag()>.
     N-GObject $tag,
     N-GObject $start,
     N-GObject $end,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2108,7 +2118,8 @@ C<gtk_text_buffer_backspace()>,
 C<gtk_text_buffer_delete_selection()>.
 
   method handler (
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2131,7 +2142,8 @@ C<gtk_text_buffer_delete_selection()>,
 C<gtk_text_buffer_backspace()>.
 
   method handler (
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 
@@ -2148,7 +2160,8 @@ See C<gtk_text_buffer_paste_clipboard()> for more details.
 
   method handler (
     N-GObject $clipboard,
-    Gnome::GObject::Object :widget($textbuffer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($textbuffer),
     *%user-options
   );
 

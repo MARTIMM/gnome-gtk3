@@ -2432,7 +2432,8 @@ For selection handling refer to the [tree widget conceptual overview][TreeWidget
   method handler (
     N-GtkTreePath $path,
     N-GObject $column,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
   );
 
@@ -2452,7 +2453,8 @@ Returns: C<0> to allow expansion, C<1> to reject
   method handler (
     N-GtkTreeIter $iter,
     N-GtkTreePath $path,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
     --> Int
   );
@@ -2472,7 +2474,8 @@ Returns: C<0> to allow collapsing, C<1> to reject
   method handler (
     N-GtkTreeIter $iter,
     N-GtkTreePath $path,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
     --> Int
   );
@@ -2490,7 +2493,8 @@ The given row has been expanded (child nodes are shown).
   method handler (
     N-GtkTreeIter $iter,
     N-GtkTreePath $path,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
   );
 
@@ -2507,7 +2511,8 @@ The given row has been collapsed (child nodes are hidden).
   method handler (
     N-GtkTreeIter $iter,
     N-GtkTreePath $path,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
   );
 
@@ -2522,7 +2527,8 @@ The given row has been collapsed (child nodes are hidden).
 The number of columns of the treeview has changed.
 
   method handler (
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
   );
 
@@ -2535,7 +2541,8 @@ The number of columns of the treeview has changed.
 The position of the cursor (focused cell) has changed.
 
   method handler (
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
   );
 
@@ -2560,7 +2567,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
   method handler (
     Unknown type GTK_TYPE_MOVEMENT_STEP $step,
     Int $direction,
-    Gnome::GObject::Object :widget($tree_view),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_view),
     *%user-options
     --> Int
   );
@@ -2577,7 +2585,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =head3 select-all
 
   method handler (
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2588,7 +2597,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =head3 unselect-all
 
   method handler (
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2600,7 +2610,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 
   method handler (
     Int $int,
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2612,7 +2623,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =head3 toggle-cursor-row
 
   method handler (
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2626,7 +2638,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
     Int $int,
     Int $int,
     Int $int,
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2640,7 +2653,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =head3 select-cursor-parent
 
   method handler (
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );
@@ -2651,7 +2665,8 @@ Returns: C<1> if I<step> is supported, C<0> otherwise.
 =head3 start-interactive-search
 
   method handler (
-    Gnome::GObject::Object :widget($treeview),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeview),
     *%user-options
     --> Int
   );

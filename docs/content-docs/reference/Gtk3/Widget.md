@@ -1783,7 +1783,8 @@ Signals that all holders of a reference to the widget should release the referen
 This signal is not suitable for saving widget state.
 
     method handler (
-      Gnome::GObject::Object :widget($object),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($object),
       *%user-options
     );
 
@@ -1793,7 +1794,8 @@ This signal is not suitable for saving widget state.
 
 The *show* signal is emitted when *widget* is shown, for example with `gtk_widget_show()`.
 
-    method handler (
+    meInt :$_handler_id,
+      Gnome::GObject::Object :_widget(
       Gnome::GObject::Object :widget($widget),
       *%user-options
     );
@@ -1802,12 +1804,7 @@ The *show* signal is emitted when *widget* is shown, for example with `gtk_widge
 
 ### hide
 
-The *hide* signal is emitted when *widget* is hidden, for example with `gtk_widget_hide()`.
-
-    method handler (
-      Gnome::GObject::Object :widget($widget),
-      *%user-options
-    );
+The *hide* signal is emitted when *widget* is hidden, for example with `gtk_widget_hide()`. Int :$_handler_id, Gnome::GObject::Object :_widget( method handler ( Gnome::GObject::Object :widget($widget), *%user-options );
 
   * $widget; the object which received the signal.
 
@@ -1815,7 +1812,7 @@ The *hide* signal is emitted when *widget* is hidden, for example with `gtk_widg
 
 The *map* signal is emitted when *widget* is going to be mapped, that is when the widget is visible (which is controlled with `gtk_widget_set_visible()`) and all its parents up to the toplevel widget are also visible. Once the map has occurred, *map-event* will be emitted.
 
-The *map* signal can be used to determine whether a widget will be drawn, for instance it can resume an animation that was stopped during the emission of *unmap*.
+The *map* signal can be used to determine whether a widget will be drawn, for instance it can resume an animation that was stopped during the emisInt :$_handler_id, Gnome::GObject::Object :_widget(
 
     method handler (
       Gnome::GObject::Object :widget($widget),
@@ -1828,7 +1825,7 @@ The *map* signal can be used to determine whether a widget will be drawn, for in
 
 The *unmap* signal is emitted when *widget* is going to be unmapped, which means that either it or any of its parents up to the toplevel widget have been set as hidden.
 
-As *unmap* indicates that a widget will not be shown any longer, it can be used to, for example, stop an animation on the widget.
+As IInt :$_handler_id, Gnome::GObject::Object :_widget( will not be shown any longer, it can be used to, for example, stop an animation on the widget.
 
     method handler (
       Gnome::GObject::Object :widget($widget),
@@ -1839,7 +1836,7 @@ As *unmap* indicates that a widget will not be shown any longer, it can be used 
 
 ### realize
 
-The *realize* signal is emitted when *widget* is associated with a **Gnome::Gdk3::Window**, which means that `gtk_widget_realize()` has been called or the widget has been mapped (that is, it is going to be drawn).
+The Int :$_handler_id, Gnome::GObject::Object :_widget(en *widget* is associated with a **Gnome::Gdk3::Window**, which means that `gtk_widget_realize()` has been called or the widget has been mapped (that is, it is going to be drawn).
 
     method handler (
       Gnome::GObject::Object :widget($widget),
@@ -1850,14 +1847,14 @@ The *realize* signal is emitted when *widget* is associated with a **Gnome::Gdk3
 
 ### unrealize
 
-The *unrealize* signal is emitted when the **Gnome::Gdk3::Window** associated with *widget* is destroyed, which means that `gtk_widget_unrealize()` has been called or the widget has been unmapped (that is, it is going to be hidden).
+The Int :$_handler_id, Gnome::GObject::Object :_widget(when the **Gnome::Gdk3::Window** associated with *widget* is destroyed, which means that `gtk_widget_unrealize()` has been called or the widget has been unmapped (that is, it is going to be hidden).
 
     method handler (
       Gnome::GObject::Object :widget($widget),
       *%user-options
     );
 
-  * $widget; the object which received the signal.
+  * $widget; the object which received the signal. Int :$_handler_id, Gnome::GObject::Object :_widget(
 
 ### size-allocate
 
@@ -1871,7 +1868,10 @@ The *unrealize* signal is emitted when the **Gnome::Gdk3::Window** associated wi
 
   * $allocation; (a native **Gnome::Gtk3::Allocation**): the region which has been allocated to the widget.
 
-### state-flags-changed
+heaInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 The *state-flags-changed* signal is emitted when the widget state changes, see `gtk_widget_get_state_flags()`.
 
@@ -1884,6 +1884,8 @@ The *state-flags-changed* signal is emitted when the widget state changes, see `
   * $widget; the object which received the signal.
 
   * $flags; The previous state flags of GtkStateFlags type.
+
+Int :$_handler_id, Gnome::GObject::Object :_widget(
 
 ### parent-set
 
@@ -1899,7 +1901,10 @@ The *parent-set* signal is emitted when a new parent has been set on a widget.
 
   * $old_parent; (allow-none): the previous parent, or `Any` if the widget just got its initial parent.
 
-### hierarchy-changed
+heaInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 The *hierarchy-changed* signal is emitted when the anchored state of a widget changes. A widget is “anchored” when its toplevel ancestor is a **Gnome::Gtk3::Window**. This signal is emitted when a widget changes from un-anchored to anchored or vice-versa.
 
@@ -1913,7 +1918,10 @@ The *hierarchy-changed* signal is emitted when the anchored state of a widget ch
 
   * $previous_toplevel; (allow-none): the previous toplevel ancestor, or `Any` if the widget was previously unanchored
 
-### style-updated
+heaInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 The *style-updated* signal is a convenience signal that is emitted when the *changed* signal is emitted on the *widget*'s associated **Gnome::Gtk3::StyleContext** as returned by `gtk_widget_get_style_context()`.
 
@@ -1923,6 +1931,8 @@ Note that style-modifying functions like `gtk_widget_override_color()` also caus
       Gnome::GObject::Object :widget($widget),
       *%user-options
     );
+
+Int :$_handler_id, Gnome::GObject::Object :_widget(
 
   * $widget; the object on which the signal is emitted
 
@@ -1940,7 +1950,10 @@ The *direction-changed* signal is emitted when the text direction of a widget ch
 
   * $previous_direction; the previous text direction of *widget*, a GtkTextDirection.
 
-### grab-notify
+heaInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 The *grab-notify* signal is emitted when a widget becomes shadowed by a GTK+ grab (not a pointer or keyboard grab) on another widget, or when it becomes unshadowed due to a grab being removed.
 
@@ -1952,9 +1965,16 @@ A widget is shadowed by a `gtk_grab_add()` when the topmost grab widget in the g
       *%user-options
     );
 
-  * $widget; the object which received the signal
+  * $widget; the object which received the signal Int :$_handler_id, Gnome::GObject::Object :_widget(
 
   * $was_grabbed; `0` if the widget becomes shadowed, `1` if it becomes unshadowed
+
+Int :$_handler_id, Gnome::GObject::Object :_widget(
+
+comInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 ### grab-focus
 
@@ -1967,7 +1987,7 @@ A widget is shadowed by a `gtk_grab_add()` when the topmost grab widget in the g
 
 ### focus
 
-Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
+RetuInt :$_handler_id, Gnome::GObject::Object :_widget(s from being invoked for the event. `0` to propagate the event further.
 
     method handler (
       Int $direction,
@@ -1986,7 +2006,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       Int $direction,
       Gnome::GObject::Object :widget($widget),
       *%user-options
-    );
+    );Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
 
   * $widget; the object which received the signal, a GtkDirectionType.
 
@@ -2005,7 +2026,7 @@ Returns: `1` if stopping keyboard navigation is fine, `0` if the emitting widget
       --> Int
     );
 
-  * $widget; the object which received the signal
+  * $widget; the object which received the signal Int :$_handler_id, Gnome::GObject::Object :_widget(
 
   * $direction; the direction of movement, a GtkDirectionType.
 
@@ -2015,7 +2036,8 @@ The GTK+ main loop will emit three signals for each GDK event delivered to a wid
 
 Returns: `1` to stop other handlers from being invoked for the event and to cancel the emission of the second specific *event* signal. `0` to propagate the event further and to allow the emission of the second signal. The *event-after* signal is emitted regardless of the return value.
 
-    method handler (
+    meInt :$_handler_id,
+      Gnome::GObject::Object :_widget(
       GdkEvent $event,
       Gnome::GObject::Object :widget($widget),
       *%user-options
@@ -2034,7 +2056,8 @@ After the emission of the *event* signal and (optionally) the second more specif
       GdkEvent $event,
       Gnome::GObject::Object :widget($widget),
       *%user-options
-    );
+    );Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
 
   * $widget; the object which received the signal.
 
@@ -2054,7 +2077,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       GdkEventButton $event,
       Gnome::GObject::Object :widget($widget),
       *%user-options
-      --> Int
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
     );
 
   * $widget; the object which received the signal.
@@ -2075,7 +2099,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       GdkEventButton $event,
       Gnome::GObject::Object :widget($widget),
       *%user-options
-      --> Int
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
     );
 
   * $widget; the object which received the signal.
@@ -2093,7 +2118,8 @@ This signal will be sent to the grab widget if there is one.
 Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
 
     method handler (
-      GdkEventScroll $event,
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
       Gnome::GObject::Object :widget($widget),
       *%user-options
       --> Int
@@ -2107,7 +2133,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
 The *motion-notify-event* signal is emitted when the pointer moves over the widget's **Gnome::Gdk3::Window**.
 
-To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_POINTER_MOTION_MASK** mask.
+To rInt :$_handler_id, Gnome::GObject::Object :_widget(::Gdk3::Window> associated to the widget needs to enable the **GDK_POINTER_MOTION_MASK** mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2124,9 +2150,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
   * $event; the event which triggered this signal.
 
-### composited-changed
-
-The *composited-changed* signal is emitted when the composited status of *widgets* screen changes. See `gdk_screen_is_composited()`.
+### composited-changed Int :$_handler_id, Gnome::GObject::Object :_widget( The *composited-changed* signal is emitted when the composited status of *widgets* screen changes. See `gdk_screen_is_composited()`.
 
     method handler (
       Gnome::GObject::Object :widget($widget),
@@ -2140,7 +2164,7 @@ The *composited-changed* signal is emitted when the composited status of *widget
 
 The *delete-event* signal is emitted if a user requests that a toplevel window is closed. The default handler for this signal destroys the window. Connecting `gtk_widget_hide_on_delete()` to this signal will cause the window to be hidden instead, so that it can later be shown again without reconstructing it.
 
-Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
+Returns: `1` to stop other handlers from being invoked for the event. `0`Int :$_handler_id, Gnome::GObject::Object :_widget(.
 
     method handler (
       GdkEvent $event,
@@ -2158,7 +2182,7 @@ The *destroy-event* signal is emitted when a **Gnome::Gdk3::Window** is destroye
 
 To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_STRUCTURE_MASK** mask. GDK will enable this mask automatically for all new windows.
 
-Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
+RetuInt :$_handler_id, Gnome::GObject::Object :_widget(s from being invoked for the event. `0` to propagate the event further.
 
     method handler (
       GdkEvent $event,
@@ -2177,7 +2201,7 @@ The *key-press-event* signal is emitted when a key is pressed. The signal emissi
 
 To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_KEY_PRESS_MASK** mask.
 
-This signal will be sent to the grab widget if there is one.
+ThisInt :$_handler_id, Gnome::GObject::Object :_widget(b widget if there is one.
 
 Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
 
@@ -2198,7 +2222,7 @@ The *key-release-event* signal is emitted when a key is released.
 
 To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_KEY_RELEASE_MASK** mask.
 
-This signal will be sent to the grab widget if there is one.
+ThisInt :$_handler_id, Gnome::GObject::Object :_widget(b widget if there is one.
 
 Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
 
@@ -2217,9 +2241,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
 The *enter-notify-event* will be emitted when the pointer enters the *widget*'s window.
 
-To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_ENTER_NOTIFY_MASK** mask.
-
-This signal will be sent to the grab widget if there is one.
+To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_ENTER_NOTIFY_MASK** mask. Int :$_handler_id, Gnome::GObject::Object :_widget( This signal will be sent to the grab widget if there is one.
 
 Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
 
@@ -2236,7 +2258,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
 ### leave-notify-event
 
-The *leave-notify-event* will be emitted when the pointer leaves the *widget*'s window.
+The Int :$_handler_id, Gnome::GObject::Object :_widget(mitted when the pointer leaves the *widget*'s window.
 
 To receive this signal, the **Gnome::Gdk3::Window** associated to the widget needs to enable the **GDK_LEAVE_NOTIFY_MASK** mask.
 
@@ -2253,7 +2275,10 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
   * $widget; the object which received the signal
 
-  * $event; the event which triggered this signal.
+iteInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(ered this signal.
 
 ### configure-event
 
@@ -2269,6 +2294,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       *%user-options
       --> Int
     );
+
+Int :$_handler_id, Gnome::GObject::Object :_widget(
 
   * $widget; the object which received the signal
 
@@ -2291,7 +2318,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
   * $widget; the object which received the signal
 
-  * $event; the event which triggered this signal.
+  * $event; the event which triggered this signal. Int :$_handler_id, Gnome::GObject::Object :_widget(
 
 ### focus-out-event
 
@@ -2312,7 +2339,10 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
   * $event; the event which triggered this signal.
 
-### map-event
+heaInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
 
 The *map-event* signal will be emitted when the *widget*'s window is mapped. A window is mapped when it becomes visible on the screen.
 
@@ -2331,6 +2361,11 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
   * $event; the event which triggered this signal.
 
+comInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(
+
 ### unmap-event
 
 The *unmap-event* signal will be emitted when the *widget*'s window is unmapped. A window is unmapped when it becomes invisible on the screen.
@@ -2346,6 +2381,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
       --> Int
     );
 
+Int :$_handler_id, Gnome::GObject::Object :_widget(
+
   * $widget; the object which received the signal
 
   * $event; the event which triggered this signal.
@@ -2359,7 +2396,8 @@ This signal will be sent to the grab widget if there is one.
 Returns: `1` to stop other handlers from being invoked for the event. `0` to propagate the event further.
 
     method handler (
-      GdkEventProximity $event,
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
       Gnome::GObject::Object :widget($widget),
       *%user-options
     );
@@ -2378,7 +2416,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       GdkEventProximity $event,
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );
@@ -2398,7 +2437,8 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
     method handler (
       GdkEventGrabBroken $event,
       Gnome::GObject::Object :widget($widget),
-      *%user-options
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
       --> Int
     );
 
@@ -2410,13 +2450,14 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
 Emitted when *has-tooltip* is `1` and the hover timeout has expired with the cursor hovering "above" *widget*; or emitted when *widget* got focus in keyboard mode.
 
-Using the given coordinates, the signal handler should determine whether a tooltip should be shown for *widget*. If this is the case `1` should be returned, `0` otherwise. Note that if *keyboard_mode* is `1`, the values of *x* and *y* are undefined and should not be used.
+UsinInt :$_handler_id, Gnome::GObject::Object :_widget(gnal handler should determine whether a tooltip should be shown for *widget*. If this is the case `1` should be returned, `0` otherwise. Note that if *keyboard_mode* is `1`, the values of *x* and *y* are undefined and should not be used.
 
 The signal handler is free to manipulate *tooltip* with the therefore destined function calls.
 
 Returns: `1` if *tooltip* should be shown right now, `0` otherwise.
 
-    method handler (
+    meInt :$_handler_id,
+      Gnome::GObject::Object :_widget(
       Int $x,
       Int $y,
       Int $keyboard_mode,
@@ -2430,7 +2471,10 @@ Returns: `1` if *tooltip* should be shown right now, `0` otherwise.
 
   * $x; the x coordinate of the cursor position where the request has been emitted, relative to *widget*'s left side
 
-  * $y; the y coordinate of the cursor position where the request has been emitted, relative to *widget*'s top
+iteInt
+======
+
+:$_handler_id, Gnome::GObject::Object :_widget(ursor position where the request has been emitted, relative to *widget*'s top
 
   * $keyboard_mode; `1` if the tooltip was triggered using the keyboard
 
@@ -2444,7 +2488,8 @@ Returns: `1` if a menu was activated
 
     method handler (
       Gnome::GObject::Object :widget($widget),
-      *%user-options
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget(
       --> Int
     );
 

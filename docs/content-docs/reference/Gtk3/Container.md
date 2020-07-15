@@ -362,7 +362,8 @@ Supported signals
 
     method handler (
       N-GObject $widget,
-      Gnome::GObject::Object :widget($container),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($container),
       *%user-options
     );
 
@@ -374,7 +375,8 @@ Supported signals
 
     method handler (
       N-GObject $widget,
-      Gnome::GObject::Object :widget($container),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($container),
       *%user-options
     );
 
@@ -385,7 +387,8 @@ Supported signals
 ### check-resize
 
     method handler (
-      Gnome::GObject::Object :widget($container),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($container),
       *%user-options
     );
 
@@ -395,7 +398,8 @@ Supported signals
 
     method handler (
       N-GObject $widget,
-      Gnome::GObject::Object :widget($container),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($container),
       *%user-options
     );
 

@@ -498,7 +498,8 @@ Also here, the types of positional arguments in the signal handler are important
 This signal is emitted when a menu shell is deactivated.
 
   method handler (
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -512,7 +513,8 @@ This signal is emitted when a selection has been
 completed within a menu shell.
 
   method handler (
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -527,7 +529,8 @@ in the direction specified by I<direction>.
 
   method handler (
     Unknown type GTK_TYPE_MENU_DIRECTION_TYPE $direction,
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -544,7 +547,8 @@ the menu shell.
 
   method handler (
     Int $force_hide,
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -560,7 +564,8 @@ An action signal which cancels the selection within the menu shell.
 Causes the  I<selection-done> signal to be emitted.
 
   method handler (
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -575,7 +580,8 @@ given I<direction>.
 
   method handler (
     Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
-    Gnome::GObject::Object :widget($menushell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menushell),
     *%user-options
   );
 
@@ -596,7 +602,8 @@ Since: 2.12
 
   method handler (
     Int $distance,
-    Gnome::GObject::Object :widget($menu_shell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menu_shell),
     *%user-options
     --> Int
   );
@@ -621,7 +628,8 @@ Since: 3.2
   method handler (
     N-GObject $child,
     Int $position,
-    Gnome::GObject::Object :widget($menu_shell),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menu_shell),
     *%user-options
   );
 

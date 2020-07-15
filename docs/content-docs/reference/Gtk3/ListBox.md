@@ -413,7 +413,8 @@ Since: 3.10
 
     method handler (
       N-GObject $row,
-      Gnome::GObject::Object :widget($box),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($box),
       *%user-options
     );
 
@@ -428,7 +429,8 @@ The *selected-rows-changed* signal is emitted when the set of selected rows chan
 Since: 3.14
 
     method handler (
-      Gnome::GObject::Object :widget($box),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($box),
       *%user-options
     );
 
@@ -443,7 +445,8 @@ The default bindings for this signal is Ctrl-a.
 Since: 3.14
 
     method handler (
-      Gnome::GObject::Object :widget($box),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($box),
       *%user-options
     );
 
@@ -458,7 +461,8 @@ The default bindings for this signal is Ctrl-Shift-a.
 Since: 3.14
 
     method handler (
-      Gnome::GObject::Object :widget($box),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($box),
       *%user-options
     );
 
@@ -472,7 +476,8 @@ Since: 3.10
 
     method handler (
       N-GObject $row,
-      Gnome::GObject::Object :widget($box),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($box),
       *%user-options
     );
 
@@ -483,7 +488,8 @@ Since: 3.10
 ### activate-cursor-row
 
     method handler (
-      Gnome::GObject::Object :widget($listbox),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($listbox),
       *%user-options
     );
 
@@ -492,7 +498,8 @@ Since: 3.10
 ### toggle-cursor-row
 
     method handler (
-      Gnome::GObject::Object :widget($listbox),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($listbox),
       *%user-options
     );
 
@@ -503,7 +510,8 @@ Since: 3.10
     method handler (
       GtkMovementStep $arg1,
       Int $arg2,
-      Gnome::GObject::Object :widget($listbox),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($listbox),
       *%user-options
     );
 
@@ -516,7 +524,8 @@ Since: 3.10
 ### activate
 
     method handler (
-      Gnome::GObject::Object :widget($listbox),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($listbox),
       *%user-options
     );
 

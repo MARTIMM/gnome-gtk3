@@ -441,7 +441,8 @@ The *scroll-child* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal*
     method handler (
       Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
       Int $horizontal,
-      Gnome::GObject::Object :widget($scrolled_window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($scrolled_window),
       *%user-options
       --> Int
     );
@@ -458,7 +459,8 @@ The *move-focus-out* signal is a [keybinding signal][**Gnome::Gtk3::BindingSigna
 
     method handler (
       Unknown type GTK_TYPE_DIRECTION_TYPE $direction_type,
-      Gnome::GObject::Object :widget($scrolled_window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($scrolled_window),
       *%user-options
     );
 
@@ -476,7 +478,8 @@ Note: The *pos* argument is LTR/RTL aware, so callers should be aware too if int
 
     method handler (
       Unknown type GTK_TYPE_POSITION_TYPE $pos,
-      Gnome::GObject::Object :widget($scrolled_window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($scrolled_window),
       *%user-options
     );
 
@@ -494,7 +497,8 @@ Note: The *pos* argument is LTR/RTL aware, so callers should be aware too if int
 
     method handler (
       Unknown type GTK_TYPE_POSITION_TYPE $pos,
-      Gnome::GObject::Object :widget($scrolled_window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($scrolled_window),
       *%user-options
     );
 

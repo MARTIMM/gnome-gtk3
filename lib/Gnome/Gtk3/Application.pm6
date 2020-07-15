@@ -769,7 +769,8 @@ C<gtk_application_add_window()>.
 
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
-    Gnome::GObject::Object :widget($application),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($application),
     *%user-options
   );
 
@@ -787,7 +788,8 @@ through C<gtk_application_remove_window()>.
 
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
-    Gnome::GObject::Object :widget($application),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($application),
     *%user-options
   );
 
@@ -808,7 +810,8 @@ until state has been saved.
 Since: 3.24.8
 
   method handler (
-    Gnome::GObject::Object :widget($application),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($application),
     *%user-options
   );
 

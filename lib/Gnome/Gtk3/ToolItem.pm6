@@ -816,7 +816,8 @@ menu.
 Returns: C<1> if the signal was handled, C<0> if not
 
   method handler (
-    Gnome::GObject::Object :widget($tool_item),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tool_item),
     *%user-options
     --> Int
   );
@@ -838,7 +839,8 @@ to find out what the toolbar should look like and change
 themselves accordingly.
 
   method handler (
-    Gnome::GObject::Object :widget($tool_item),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tool_item),
     *%user-options
   );
 

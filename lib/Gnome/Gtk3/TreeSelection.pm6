@@ -622,7 +622,8 @@ of rows are selected, and it may occasionally be emitted when nothing
 has happened.
 
   method handler (
-    Gnome::GObject::Object :widget($treeselection),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeselection),
     *%user-options
   );
 

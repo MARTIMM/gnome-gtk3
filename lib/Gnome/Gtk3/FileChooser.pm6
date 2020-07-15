@@ -1886,7 +1886,8 @@ C<gtk_file_chooser_set_current_folder_uri()>,
 C<gtk_file_chooser_get_current_folder_uri()>.
 
   method handler (
-    Gnome::GObject::Object :widget($chooser),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($chooser),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1907,7 +1908,8 @@ C<gtk_file_chooser_unselect_uri()>, C<gtk_file_chooser_get_uri()>,
 C<gtk_file_chooser_get_uris()>.
 
   method handler (
-    Gnome::GObject::Object :widget($chooser),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($chooser),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1930,7 +1932,8 @@ C<gtk_file_chooser_get_preview_filename()>,
 C<gtk_file_chooser_get_preview_uri()>.
 
   method handler (
-    Gnome::GObject::Object :widget($chooser),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($chooser),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -1949,7 +1952,8 @@ C<gtk_file_chooser_get_filenames()>, C<gtk_file_chooser_get_uri()>,
 C<gtk_file_chooser_get_uris()>.
 
   method handler (
-    Gnome::GObject::Object :widget($chooser),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($chooser),
     :$user-option1, ..., :$user-optionN
   );
 
@@ -2005,7 +2009,8 @@ Returns: a B<GtkFileChooserConfirmation> value that indicates which action to ta
 Since: 2.8
 
   method handler (
-    Gnome::GObject::Object :widget($chooser),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($chooser),
     :$user-option1, ..., :$user-optionN
     --> GtkFileChooserConfirmation
   );

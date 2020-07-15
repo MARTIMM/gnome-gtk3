@@ -619,7 +619,8 @@ Returns: allocated string representing I<$value>
 
   method handler (
     num64 $value,
-    Gnome::GObject::Object :widget($scale),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($scale),
     *%user-options
     --> Str
   );

@@ -1277,7 +1277,8 @@ Supported signals
 The *activate-focus* signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of *$window*.
 
     method handler (
-      Gnome::GObject::Object :widget($window),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($window),
       *%user-options
     );
 
@@ -1287,7 +1288,8 @@ The *activate-focus* signal is a [keybinding signal](https://developer.gnome.org
 
 The *activate-default* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user activates the default widget of *$window*.
 
-    method handler (
+    meInt :$_handler_id,
+      Gnome::GObject::Object :_widget(
       Gnome::GObject::Object :widget($window),
       *%user-options
     );
@@ -1296,12 +1298,7 @@ The *activate-default* signal is a [keybinding signal][**Gnome::Gtk3::BindingSig
 
 ### keys-changed
 
-The *keys-changed* signal gets emitted when the set of accelerators or mnemonics that are associated with *$window* changes.
-
-    method handler (
-      Gnome::GObject::Object :widget($window),
-      *%user-options
-    );
+The *keys-changed* signal gets emitted when the set of accelerators or mnemonics that are associated with *$window* changes. Int :$_handler_id, Gnome::GObject::Object :_widget( method handler ( Gnome::GObject::Object :widget($window), *%user-options );
 
   * $window; the window which received the signal
 
@@ -1311,14 +1308,7 @@ The *enable-debugging* signal is a [keybinding signal](https://developer.gnome.o
 
 The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 
-Return: `1` if the key binding was handled
-
-    method handler (
-      int32 $toggle,
-      Gnome::GObject::Object :widget($window),
-      *%user-options
-      --> Int
-    );
+Return: `1` if the key binding was handled Int :$_handler_id, Gnome::GObject::Object :_widget( method handler ( int32 $toggle, Gnome::GObject::Object :widget($window), *%user-options --> Int );
 
   * $window; the window on which the signal is emitted
 
@@ -1326,7 +1316,7 @@ Return: `1` if the key binding was handled
 
 ### set-focus
 
-This signal is emitted whenever the currently focused widget in this window changes.
+ThisInt :$_handler_id, Gnome::GObject::Object :_widget( currently focused widget in this window changes.
 
     method handler (
       N-GObject $widget,

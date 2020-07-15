@@ -749,7 +749,8 @@ the specified location.
   method handler (
     Unknown type G_TYPE_OBJECT $location,
     Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -794,7 +795,8 @@ that this signal is emitted for populating popovers as well.
     N-GObject #`{ is widget } $container,
     Unknown type G_TYPE_FILE $selected_item,
     Unknown type G_TYPE_VOLUME $selected_volume,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -816,7 +818,8 @@ cannot be started for some reason.
   method handler (
     Str $primary,
     Str $secondary,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -840,7 +843,8 @@ Deprecated: 3.18: use the  I<show-other-locations> signal
 to connect to network servers.
 
   method handler (
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -857,7 +861,8 @@ a URL like "http://http.example.com".
 
 
   method handler (
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -886,7 +891,8 @@ are not allowed in the specified I<dest_file>).
     Unknown type GDK_TYPE_DRAG_CONTEXT $context,
     Unknown type G_TYPE_OBJECT $dest_file,
     Unknown type G_TYPE_POINTER /* GList of N-GFile */  $source_file_list,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
     --> Int
   );
@@ -912,7 +918,8 @@ of the drag-and-drop operation.
 
   method handler (
     Int $actions,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
     --> Int
   );
@@ -937,7 +944,8 @@ which should be copied/moved/etc. based on the specified I<action>.
     Unknown type G_TYPE_POINTER $source_file_list,
     Unknown type /* GList of N-GFile */
                         G_TYPE_INT $action,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -965,7 +973,8 @@ in a new tab or window, in a similar way than  I<open-location>
 
 
   method handler (
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -984,7 +993,8 @@ volumes and discovered network addresses.
 
   method handler (
     Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -1004,7 +1014,8 @@ progress of the operation and, for example, show a notification.
 
   method handler (
     Unknown type G_TYPE_MOUNT_OPERATION $mount_operation,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -1024,7 +1035,8 @@ progress of the operation and, for example, show a notification.
 
   method handler (
     Unknown type G_TYPE_MOUNT_OPERATION $mount_operation,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 
@@ -1043,7 +1055,8 @@ tag in the tracker database.
 
   method handler (
     Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-    Gnome::GObject::Object :widget($sidebar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($sidebar),
     *%user-options
   );
 

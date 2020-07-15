@@ -625,7 +625,8 @@ Since: 3.6
 
   method handler (
     Str $name,
-    Gnome::GObject::Object :widget($levelbar),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($levelbar),
     *%user-options
   );
 

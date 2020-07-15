@@ -410,7 +410,8 @@ Should be connected if you wish to perform an action whenever the
 B<Gnome::Gtk3::ToggleButton>'s state is changed.
 
   method handler (
-    Gnome::GObject::Object :widget($togglebutton),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($togglebutton),
     *%user-options
   );
 

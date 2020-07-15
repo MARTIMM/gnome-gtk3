@@ -336,7 +336,8 @@ The places sidebar emits this signal when the user selects a location in it. The
     method handler (
       Unknown type G_TYPE_OBJECT $location,
       Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -362,7 +363,8 @@ Before 3.18, the *container* always was a **Gnome::Gtk3::Menu**, and you were ex
       N-GObject #`{ is widget } $container,
       Unknown type G_TYPE_FILE $selected_item,
       Unknown type G_TYPE_VOLUME $selected_volume,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -379,7 +381,8 @@ The places sidebar emits this signal when it needs the calling application to pr
     method handler (
       Str $primary,
       Str $secondary,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -396,7 +399,8 @@ The places sidebar emits this signal when it needs the calling application to pr
 Deprecated: 3.18: use the *show-other-locations* signal to connect to network servers.
 
     method handler (
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -407,7 +411,8 @@ Deprecated: 3.18: use the *show-other-locations* signal to connect to network se
 The places sidebar emits this signal when it needs the calling application to present an way to directly enter a location. For example, the application may bring up a dialog box asking for a URL like "http://http.example.com".
 
     method handler (
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -427,7 +432,8 @@ Returns: The drag action to use, for example, **GDK_ACTION_COPY** or **GDK_ACTIO
       Unknown type GDK_TYPE_DRAG_CONTEXT $context,
       Unknown type G_TYPE_OBJECT $dest_file,
       Unknown type G_TYPE_POINTER /* GList of N-GFile */  $source_file_list,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
       --> Int
     );
@@ -448,7 +454,8 @@ Returns: the final drag action that the sidebar should pass to the drag side of 
 
     method handler (
       Int $actions,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
       --> Int
     );
@@ -466,7 +473,8 @@ The places sidebar emits this signal when the user completes a drag-and-drop ope
       Unknown type G_TYPE_POINTER $source_file_list,
       Unknown type /* GList of N-GFile */
                           G_TYPE_INT $action,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -485,7 +493,8 @@ The places sidebar emits this signal when it needs the calling application to pr
 Deprecated: 3.20: use the *show-other-locations-with-flags* which includes the open flags in order to allow the user to specify to open in a new tab or window, in a similar way than *open-location*
 
     method handler (
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -497,7 +506,8 @@ The places sidebar emits this signal when it needs the calling application to pr
 
     method handler (
       Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -511,7 +521,8 @@ The places sidebar emits this signal when it starts a new operation because the 
 
     method handler (
       Unknown type G_TYPE_MOUNT_OPERATION $mount_operation,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -525,7 +536,8 @@ The places sidebar emits this signal when it starts a new operation because the 
 
     method handler (
       Unknown type G_TYPE_MOUNT_OPERATION $mount_operation,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 
@@ -539,7 +551,8 @@ The places sidebar emits this signal when it needs the calling application to pr
 
     method handler (
       Unknown type GTK_TYPE_PLACES_OPEN_FLAGS $open_flags,
-      Gnome::GObject::Object :widget($sidebar),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($sidebar),
       *%user-options
     );
 

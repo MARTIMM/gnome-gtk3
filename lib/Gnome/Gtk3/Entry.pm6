@@ -1996,7 +1996,8 @@ type of I<widget>.
 
   method handler (
     - $popup,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2019,7 +2020,8 @@ activation of entries.
 The default bindings for this signal are all forms of the Enter key.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2051,7 +2053,8 @@ There are too many key combinations to list them all here.
     Str $step,
     - $count,
     - $extend_selection,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2076,7 +2079,8 @@ This signal has no default bindings.
 
   method handler (
     Unknown type GTK_TYPE_DELETE_TYPE $string,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2103,7 +2107,8 @@ deleting a word.
   method handler (
     - $type,
     - $count,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2125,7 +2130,8 @@ The default bindings for this signal are
 Backspace and Shift-Backspace.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2143,7 +2149,8 @@ The default bindings for this signal are
 Ctrl-x and Shift-Delete.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2161,7 +2168,8 @@ The default bindings for this signal are
 Ctrl-c and Ctrl-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2180,7 +2188,8 @@ The default bindings for this signal are
 Ctrl-v and Shift-Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2197,7 +2206,8 @@ which gets emitted to toggle the overwrite mode of the entry.
 The default bindings for this signal is Insert.
 
   method handler (
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2215,7 +2225,8 @@ Since: 2.16
   method handler (
     Unknown type GTK_TYPE_ENTRY_ICON_POSITION $icon_pos,
     Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 
@@ -2237,7 +2248,8 @@ Since: 2.16
   method handler (
     Str $icon_pos,
     - $event,
-    Gnome::GObject::Object :widget($entry),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($entry),
     *%user-options
   );
 

@@ -941,7 +941,8 @@ Normally you do not need to connect to this signal, unless you need to keep trac
 See also: `gtk_file_chooser_set_current_folder()`, `gtk_file_chooser_get_current_folder()`, `gtk_file_chooser_set_current_folder_uri()`, `gtk_file_chooser_get_current_folder_uri()`.
 
     method handler (
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -956,7 +957,8 @@ Normally you do not need to connect to this signal, as it is easier to wait for 
 See also: `gtk_file_chooser_select_filename()`, `gtk_file_chooser_unselect_filename()`, `gtk_file_chooser_get_filename()`, `gtk_file_chooser_get_filenames()`, `gtk_file_chooser_select_uri()`, `gtk_file_chooser_unselect_uri()`, `gtk_file_chooser_get_uri()`, `gtk_file_chooser_get_uris()`.
 
     method handler (
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -971,7 +973,8 @@ Once you have installed a preview widget with `gtk_file_chooser_set_preview_widg
 See also: `gtk_file_chooser_set_preview_widget()`, `gtk_file_chooser_set_preview_widget_active()`, `gtk_file_chooser_set_use_preview_label()`, `gtk_file_chooser_get_preview_filename()`, `gtk_file_chooser_get_preview_uri()`.
 
     method handler (
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -986,7 +989,8 @@ Normally you do not need to connect to this signal. It is used internally by *Gn
 See also: `gtk_file_chooser_get_filename()`, `gtk_file_chooser_get_filenames()`, `gtk_file_chooser_get_uri()`, `gtk_file_chooser_get_uris()`.
 
     method handler (
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
     );
 
@@ -1005,7 +1009,8 @@ Returns: a **GtkFileChooserConfirmation** value that indicates which action to t
 Since: 2.8
 
     method handler (
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
       --> GtkFileChooserConfirmation
     );

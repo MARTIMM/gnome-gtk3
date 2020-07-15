@@ -310,7 +310,8 @@ Supported signals
 Emitted when the item is activated.
 
     method handler (
-      Gnome::GObject::Object :widget($menuitem),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
@@ -321,7 +322,8 @@ Emitted when the item is activated.
 Emitted when the item is activated, but also if the menu item has a submenu. For normal applications, the relevant signal is *activate*.
 
     method handler (
-      Gnome::GObject::Object :widget($menuitem),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
@@ -331,7 +333,8 @@ Emitted when the item is activated, but also if the menu item has a submenu. For
 
     method handler (
       Int $int,
-      Gnome::GObject::Object :widget($menuitem),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
@@ -342,7 +345,8 @@ Emitted when the item is activated, but also if the menu item has a submenu. For
 ### select
 
     method handler (
-      Gnome::GObject::Object :widget($menuitem),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
@@ -351,7 +355,8 @@ Emitted when the item is activated, but also if the menu item has a submenu. For
 ### deselect
 
     method handler (
-      Gnome::GObject::Object :widget($menuitem),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 

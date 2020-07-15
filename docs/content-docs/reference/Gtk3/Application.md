@@ -363,7 +363,8 @@ Emitted when a **Gnome::Gtk3::Window** is added to *application* through `gtk_ap
 
     method handler (
       Unknown type GTK_TYPE_WINDOW $window,
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -377,7 +378,8 @@ Emitted when a **Gnome::Gtk3::Window** is removed from *application*, either as 
 
     method handler (
       Unknown type GTK_TYPE_WINDOW $window,
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -392,7 +394,8 @@ Emitted when the session manager is about to end the session, only if *register-
 Since: 3.24.8
 
     method handler (
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 

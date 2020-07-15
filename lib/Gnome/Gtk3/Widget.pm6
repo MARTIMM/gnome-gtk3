@@ -5221,7 +5221,8 @@ if all references are released.
 This signal is not suitable for saving widget state.
 
   method handler (
-    Gnome::GObject::Object :widget($object),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($object),
     *%user-options
   );
 
@@ -5234,7 +5235,8 @@ This signal is not suitable for saving widget state.
 The I<show> signal is emitted when I<widget> is shown, for example with
 C<gtk_widget_show()>.
 
-  method handler (
+  meInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($widget),
     *%user-options
   );
@@ -5247,7 +5249,8 @@ C<gtk_widget_show()>.
 
 The I<hide> signal is emitted when I<widget> is hidden, for example with
 C<gtk_widget_hide()>.
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   method handler (
     Gnome::GObject::Object :widget($widget),
     *%user-options
@@ -5267,7 +5270,8 @@ be emitted.
 
 The I<map> signal can be used to determine whether a widget will be drawn,
 for instance it can resume an animation that was stopped during the
-emission of  I<unmap>.
+emisInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
   method handler (
     Gnome::GObject::Object :widget($widget),
@@ -5284,7 +5288,8 @@ The I<unmap> signal is emitted when I<widget> is going to be unmapped, which
 means that either it or any of its parents up to the toplevel widget have
 been set as hidden.
 
-As I<unmap> indicates that a widget will not be shown any longer, it can be
+As IInt :$_handler_id,
+    Gnome::GObject::Object :_widget( will not be shown any longer, it can be
 used to, for example, stop an animation on the widget.
 
   method handler (
@@ -5298,7 +5303,8 @@ used to, for example, stop an animation on the widget.
 =comment #TS:0:realize:
 =head3 realize
 
-The I<realize> signal is emitted when I<widget> is associated with a
+The Int :$_handler_id,
+    Gnome::GObject::Object :_widget(en I<widget> is associated with a
 B<Gnome::Gdk3::Window>, which means that C<gtk_widget_realize()> has been called or the
 widget has been mapped (that is, it is going to be drawn).
 
@@ -5313,7 +5319,8 @@ widget has been mapped (that is, it is going to be drawn).
 =comment #TS:0:unrealize:
 =head3 unrealize
 
-The I<unrealize> signal is emitted when the B<Gnome::Gdk3::Window> associated with
+The Int :$_handler_id,
+    Gnome::GObject::Object :_widget(when the B<Gnome::Gdk3::Window> associated with
 I<widget> is destroyed, which means that C<gtk_widget_unrealize()> has been
 called or the widget has been unmapped (that is, it is going to be
 hidden).
@@ -5324,7 +5331,8 @@ hidden).
   );
 
 =item $widget; the object which received the signal.
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 =comment #TS:0:size-allocate:
 =head3 size-allocate
@@ -5340,7 +5348,8 @@ hidden).
 =item $allocation; (a native B<Gnome::Gtk3::Allocation>): the region which has been allocated to the widget.
 
 =comment #TS:0:state-flags-changed:
-=head3 state-flags-changed
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<state-flags-changed> signal is emitted when the widget state
 changes, see C<gtk_widget_get_state_flags()>.
@@ -5356,7 +5365,8 @@ changes, see C<gtk_widget_get_state_flags()>.
 
 =item $flags; The previous state flags of GtkStateFlags type.
 
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =comment #TS:0:parent-set:
 =head3 parent-set
 
@@ -5376,7 +5386,8 @@ just got its initial parent.
 
 
 =comment #TS:0:hierarchy-changed:
-=head3 hierarchy-changed
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<hierarchy-changed> signal is emitted when the
 anchored state of a widget changes. A widget is
@@ -5396,7 +5407,8 @@ a widget changes from un-anchored to anchored or vice-versa.
 
 
 =comment #TS:0:style-updated:
-=head3 style-updated
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<style-updated> signal is a convenience signal that is emitted when the
  I<changed> signal is emitted on the I<widget>'s associated
@@ -5410,7 +5422,8 @@ cause this signal to be emitted.
     Gnome::GObject::Object :widget($widget),
     *%user-options
   );
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $widget; the object on which the signal is emitted
 
 
@@ -5432,7 +5445,8 @@ of a widget changes.
 
 
 =comment #TS:0:grab-notify:
-=head3 grab-notify
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<grab-notify> signal is emitted when a widget becomes
 shadowed by a GTK+ grab (not a pointer or keyboard grab) on
@@ -5450,7 +5464,8 @@ its ancestor.
   );
 
 =item $widget; the object which received the signal
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $was_grabbed; C<0> if the widget becomes shadowed, C<1>
 if it becomes unshadowed
 
@@ -5474,7 +5489,8 @@ changed on an object. The signal's detail holds the property name.
 =end comment
 
 
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =begin comment
 =comment #TS:4:draw:xt/c4.pl6
 =head3 draw
@@ -5491,7 +5507,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
     cairo_t $cr,
     Gnome::GObject::Object :widget($widget),
     *%user-options
-    --> Int
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   );
 
 =item $cr; the cairo context to draw to
@@ -5505,7 +5522,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
-  method handler (
+  meInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Int $arg1,
     Gnome::GObject::Object :widget($widget),
     *%user-options
@@ -5518,7 +5536,8 @@ C<0> to propagate the event further.
 =end comment
 
 
-=comment #TS:0:grab-focus:
+=comInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =head3 grab-focus
 
   method handler (
@@ -5532,7 +5551,8 @@ C<0> to propagate the event further.
 =comment #TS:0:focus:
 =head3 focus
 
-Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
+RetuInt :$_handler_id,
+    Gnome::GObject::Object :_widget(s from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
     Int $direction,
@@ -5553,7 +5573,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
     Int $direction,
     Gnome::GObject::Object :widget($widget),
     *%user-options
-  );
+  );Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 =item $widget; the object which received the signal, a GtkDirectionType.
 
@@ -5579,7 +5600,8 @@ navigation attempt in its parent container(s).
   );
 
 =item $widget; the object which received the signal
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $direction; the direction of movement, a GtkDirectionType.
 
 
@@ -5598,7 +5620,8 @@ C<0> to propagate the event further and to allow the emission of
 the second signal. The I<event-after> signal is emitted regardless of
 the return value.
 
-  method handler (
+  meInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
     GdkEvent $event,
     Gnome::GObject::Object :widget($widget),
     *%user-options
@@ -5622,7 +5645,8 @@ regardless of the previous two signals handlers return values.
     GdkEvent $event,
     Gnome::GObject::Object :widget($widget),
     *%user-options
-  );
+  );Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 =item $widget; the object which received the signal.
 
@@ -5647,7 +5671,8 @@ C<0> to propagate the event further.
     GdkEventButton $event,
     Gnome::GObject::Object :widget($widget),
     *%user-options
-    --> Int
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   );
 
 =item $widget; the object which received the signal.
@@ -5673,7 +5698,8 @@ C<0> to propagate the event further.
     GdkEventButton $event,
     Gnome::GObject::Object :widget($widget),
     *%user-options
-    --> Int
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   );
 
 =item $widget; the object which received the signal.
@@ -5697,7 +5723,8 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventScroll $event,
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($widget),
     *%user-options
     --> Int
@@ -5713,7 +5740,8 @@ C<0> to propagate the event further.
 The I<motion-notify-event> signal is emitted when the pointer moves
 over the widget's B<Gnome::Gdk3::Window>.
 
-To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget
+To rInt :$_handler_id,
+    Gnome::GObject::Object :_widget(::Gdk3::Window> associated to the widget
 needs to enable the B<GDK_POINTER_MOTION_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
@@ -5734,7 +5762,8 @@ C<0> to propagate the event further.
 
 =comment #TS:0:composited-changed:
 =head3 composited-changed
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 The I<composited-changed> signal is emitted when the composited
 status of I<widgets> screen changes.
 See C<gdk_screen_is_composited()>.
@@ -5758,7 +5787,8 @@ this signal will cause the window to be hidden instead, so that
 it can later be shown again without reconstructing it.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
-C<0> to propagate the event further.
+C<0>Int :$_handler_id,
+    Gnome::GObject::Object :_widget(.
 
   method handler (
     GdkEvent $event,
@@ -5782,7 +5812,8 @@ To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget need
 to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable this mask
 automatically for all new windows.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
+RetuInt :$_handler_id,
+    Gnome::GObject::Object :_widget(s from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
@@ -5805,7 +5836,8 @@ emission will reoccur at the key-repeat rate when the key is kept pressed.
 To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the B<GDK_KEY_PRESS_MASK> mask.
 
-This signal will be sent to the grab widget if there is one.
+ThisInt :$_handler_id,
+    Gnome::GObject::Object :_widget(b widget if there is one.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
@@ -5829,7 +5861,8 @@ The I<key-release-event> signal is emitted when a key is released.
 To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the B<GDK_KEY_RELEASE_MASK> mask.
 
-This signal will be sent to the grab widget if there is one.
+ThisInt :$_handler_id,
+    Gnome::GObject::Object :_widget(b widget if there is one.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
@@ -5853,7 +5886,8 @@ the I<widget>'s window.
 
 To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
 to enable the B<GDK_ENTER_NOTIFY_MASK> mask.
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 This signal will be sent to the grab widget if there is one.
 
 Returns: C<1> to stop other handlers from being invoked for the event.
@@ -5873,7 +5907,8 @@ C<0> to propagate the event further.
 =comment #TS:0:leave-notify-event:
 =head3 leave-notify-event
 
-The I<leave-notify-event> will be emitted when the pointer leaves
+The Int :$_handler_id,
+    Gnome::GObject::Object :_widget(mitted when the pointer leaves
 the I<widget>'s window.
 
 To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget needs
@@ -5892,7 +5927,8 @@ C<0> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-=item $event; the event which triggered this signal.
+=iteInt :$_handler_id,
+    Gnome::GObject::Object :_widget(ered this signal.
 
 
 =comment #TS:4:configure-event:Gnome::Cairo tests
@@ -5911,7 +5947,8 @@ C<0> to propagate the event further.
     *%user-options
     --> Int
   );
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $widget; the object which received the signal
 =item $event; the event which triggered this signal.
 
@@ -5934,7 +5971,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 
 =item $widget; the object which received the signal
 =item $event; the event which triggered this signal.
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 =comment #TS:0:focus-out-event:
 =head3 focus-out-event
@@ -5957,7 +5995,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 
 
 =comment #TS:0:map-event:
-=head3 map-event
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<map-event> signal will be emitted when the I<widget>'s window is
 mapped. A window is mapped when it becomes visible on the screen.
@@ -5980,7 +6019,8 @@ C<0> to propagate the event further.
 =item $event; the event which triggered this signal.
 
 
-=comment #TS:0:unmap-event:
+=comInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =head3 unmap-event
 
 The I<unmap-event> signal will be emitted when the I<widget>'s window is
@@ -5999,7 +6039,8 @@ C<0> to propagate the event further.
     *%user-options
     --> Int
   );
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $widget; the object which received the signal
 =item $event; the event which triggered this signal.
 
@@ -6019,7 +6060,8 @@ C<0> to propagate the event further.
 
   method handler (
     GdkEventProperty $event,
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
     --> Int
   );
@@ -6034,7 +6076,8 @@ C<0> to propagate the event further.
 The I<selection-clear-event> signal will be emitted when the
 the I<widget>'s window has lost ownership of a selection.
 
-Returns: C<1> to stop other handlers from being invoked for the event.
+RetuInt :$_handler_id,
+    Gnome::GObject::Object :_widget(s from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
@@ -6048,7 +6091,8 @@ C<0> to propagate the event further.
 =item $event; the event which triggered this signal.
 
 
-=comment #TS:0:selection-request-event:
+=comInt :$_handler_id,
+    Gnome::GObject::Object :_widget(ent:
 =head3 selection-request-event
 
 The I<selection-request-event> signal will be emitted when
@@ -6064,7 +6108,8 @@ C<0> to propagate the event further.
     *%user-options
     --> Int
   );
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $widget; the object which received the signal
 =item $event; the event which triggered this signal.
 
@@ -6087,7 +6132,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
 
 =comment #TS:0:selection-received:
 =head3 selection-received
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   method handler (
     N-GObject $data,
     UInt $time,
@@ -6107,7 +6153,8 @@ Returns: C<1> to stop other handlers from being invoked for the event. C<0> to p
   method handler (
     N-GObject $data,
     UInt $info,
-    UInt $time,
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($widget),
     *%user-options
   );
@@ -6131,7 +6178,8 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventProximity $event,
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($widget),
     *%user-options
   );
@@ -6153,7 +6201,8 @@ C<0> to propagate the event further.
 
   method handler (
     GdkEventProximity $event,
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
     --> Int
   );
@@ -6169,7 +6218,8 @@ C<0> to propagate the event further.
 The I<drag-leave> signal is emitted on the drop site when the cursor
 leaves the widget. A typical reason to connect to this signal is to
 undo things done in  I<drag-motion>, e.g. undo highlighting
-with C<gtk_drag_unhighlight()>.
+withInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 
 Likewise, the  I<drag-leave> signal is also emitted before the I<drag-drop> signal, for instance to allow cleaning up of a preview item
@@ -6187,7 +6237,8 @@ created in the  I<drag-motion> signal handler.
 =item $context; the drag context, a native Gnome::Gdk3::DragContext
 =item $time; the timestamp of the motion event
 
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =comment #TS:0:drag-begin:
 =head3 drag-begin
 
@@ -6210,7 +6261,8 @@ override what the default handler did.
 
 
 =comment #TS:0:drag-end:
-=head3 drag-end
+=heaInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 
 The I<drag-end> signal is emitted on the drag source when a drag is
 finished.  A typical reason to connect to this signal is to undo
@@ -6317,7 +6369,8 @@ gtk_drag_highlight (widget);
 target = gtk_drag_dest_find_target (widget, context, NULL);
 if (target == GDK_NONE)
 gdk_drag_status (context, 0, time);
-else
+elseInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 {
 private_data->pending_status
 = gdk_drag_context_get_suggested_action (context);
@@ -6353,7 +6406,8 @@ gdk_drag_status (context, 0, time);
 else
 gdk_drag_status (context,
 private_data->suggested_action,
-time);
+timeInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 }
 else
 {
@@ -6382,7 +6436,8 @@ Returns: whether the cursor position is in a drop zone
 
 =item $y; the y coordinate of the current cursor position
 
-=item $time; the timestamp of the motion event
+=iteInt :$_handler_id,
+    Gnome::GObject::Object :_widget(otion event
 
 
 =comment #TS:0:drag-drop:
@@ -6469,7 +6524,8 @@ whether the data was processed successfully.
 Applications must create some means to determine why the signal was emitted
 and therefore whether to call C<gdk_drag_status()> or C<gtk_drag_finish()>.
 
-The handler may inspect the selected action with
+The Int :$_handler_id,
+    Gnome::GObject::Object :_widget(d action with
 C<gdk_drag_context_get_selected_action()> before calling
 C<gtk_drag_finish()>, e.g. to implement C<GDK_ACTION_ASK> as
 shown in the following example:
@@ -6507,7 +6563,8 @@ gtk_widget_destroy (dialog);
 if (response == GTK_RESPONSE_YES)
 action = GDK_ACTION_MOVE;
 else
-action = GDK_ACTION_COPY;
+actiInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
 }
 
 gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
@@ -6531,7 +6588,8 @@ gtk_drag_finish (context, FALSE, FALSE, time);
 =item $widget; the object which received the signal
 
 =item $context; the drag context
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
 =item $x; where the drop happened
 
 =item $y; where the drop happened
@@ -6556,7 +6614,8 @@ to enable the B<GDK_VISIBILITY_NOTIFY_MASK> mask.
 Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
-Deprecated: 3.12: Modern composited windowing systems with pervasive
+DeprInt :$_handler_id,
+    Gnome::GObject::Object :_widget( windowing systems with pervasive
 transparency make it impossible to track the visibility of a window
 reliably, so this signal can not be guaranteed to provide useful
 information.
@@ -6581,7 +6640,8 @@ toplevel window associated to the I<widget> changes.
 
 To receive this signal the B<Gnome::Gdk3::Window> associated to the widget
 needs to enable the B<GDK_STRUCTURE_MASK> mask. GDK will enable
-this mask automatically for all new windows.
+thisInt :$_handler_id,
+    Gnome::GObject::Object :_widget( windows.
 
 Returns: C<1> to stop other handlers from being invoked for the
 event. C<0> to propagate the event further.
@@ -6613,7 +6673,8 @@ C<0> to propagate the event further.
 
 
   method handler (
-    GdkEventExpose $event,
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($widget),
     *%user-options
     --> Int
@@ -6641,7 +6702,8 @@ the event. C<0> to propagate the event further.
   method handler (
     GdkEventGrabBroken $event,
     Gnome::GObject::Object :widget($widget),
-    *%user-options
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     --> Int
   );
 
@@ -6656,7 +6718,8 @@ Emitted when  I<has-tooltip> is C<1> and the hover timeout
 has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got
 focus in keyboard mode.
 
-Using the given coordinates, the signal handler should determine
+UsinInt :$_handler_id,
+    Gnome::GObject::Object :_widget(gnal handler should determine
 whether a tooltip should be shown for I<widget>. If this is the case
 C<1> should be returned, C<0> otherwise.  Note that if
 I<keyboard_mode> is C<1>, the values of I<x> and I<y> are undefined and
@@ -6668,7 +6731,8 @@ destined function calls.
 Returns: C<1> if I<tooltip> should be shown right now, C<0> otherwise.
 
 
-  method handler (
+  meInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Int $x,
     Int $y,
     Int $keyboard_mode,
@@ -6683,7 +6747,8 @@ Returns: C<1> if I<tooltip> should be shown right now, C<0> otherwise.
 =item $x; the x coordinate of the cursor position where the request has
 been emitted, relative to I<widget>'s left side
 
-=item $y; the y coordinate of the cursor position where the request has
+=iteInt :$_handler_id,
+    Gnome::GObject::Object :_widget(ursor position where the request has
 been emitted, relative to I<widget>'s top
 
 =item $keyboard_mode; C<1> if the tooltip was triggered using the keyboard
@@ -6703,7 +6768,8 @@ Returns: C<1> if a menu was activated
 
   method handler (
     Gnome::GObject::Object :widget($widget),
-    *%user-options
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
     --> Int
   );
 

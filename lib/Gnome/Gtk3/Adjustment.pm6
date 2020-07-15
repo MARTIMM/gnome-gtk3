@@ -570,7 +570,8 @@ Emitted when one or more of the B<Gnome::Gtk3::Adjustment> properties have been
 changed, other than the  I<value> property.
 
   method handler (
-    Gnome::GObject::Object :widget($adjustment),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($adjustment),
     *%user-options
   );
 
@@ -583,7 +584,8 @@ changed, other than the  I<value> property.
 Emitted when the  I<value> property has been changed.
 
   method handler (
-    Gnome::GObject::Object :widget($adjustment),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($adjustment),
     *%user-options
   );
 

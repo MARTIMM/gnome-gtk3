@@ -198,7 +198,8 @@ Note that this signal may be emitted at any time as the css provider may opt to 
     method handler (
       N-GObject $section,
       N-GError $error,
-      Gnome::GObject::Object :widget($provider),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($provider),
       *%user-options
     );
 

@@ -1312,7 +1312,8 @@ This signal is emitted when a row in the model has changed.
   method handler (
     N-GObject $path,
     N-GtkTreeIter $iter,
-    Gnome::GObject::Object :widget($tree_model),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_model),
     *%user-options
   );
 
@@ -1328,7 +1329,8 @@ This signal is emitted when a row in the model is deleted.
 
   method handler (
     N-GObject $path,
-    Gnome::GObject::Object :widget($tree_model),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_model),
     *%user-options
   );
 
@@ -1347,7 +1349,8 @@ Note that the row may still be empty at this point, since it is a common pattern
   method handler (
     N-GObject $path,
     N-GtkTreeIter $iter,
-    Gnome::GObject::Object :widget($tree_model),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_model),
     *%user-options
   );
 
@@ -1364,7 +1367,8 @@ This signal is emitted when a row has gotten the first child row or lost its las
   method handler (
     N-GObject $path,
     N-GtkTreeIter $iter,
-    Gnome::GObject::Object :widget($tree_model),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_model),
     *%user-options
   );
 
@@ -1384,7 +1388,8 @@ Note that this signal is not emitted when rows are reordered by DND, since this 
     N-GObject $path,
     N-GtkTreeIter $iter,
     CArray[int32] $new-order,
-    Gnome::GObject::Object :widget($tree_model),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tree_model),
     *%user-options
   );
 

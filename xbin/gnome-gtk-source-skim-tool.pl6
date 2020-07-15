@@ -1404,7 +1404,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 #note "IDoc: $item-count, ", $idoc;
       if $item-count == 0 {
         $first-arg =
-          "$idoc<item-type> \:widget\(\$$idoc<item-name>\)";
+          "Int :$_handle_id,\n    $idoc<item-type> \:_widget\(\$$idoc<item-name>\)";
       }
 
       else {

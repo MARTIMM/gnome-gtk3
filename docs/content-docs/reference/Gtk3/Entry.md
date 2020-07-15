@@ -914,7 +914,8 @@ If *populate-all* is `1`, this signal will also be emitted to populate touch pop
 
     method handler (
       - $popup,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -931,7 +932,8 @@ While this signal is used as a [keybinding signal][**Gnome::Gtk3::BindingSignal*
 The default bindings for this signal are all forms of the Enter key.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -949,7 +951,8 @@ The default bindings for this signal come in two variants, the variant with the 
       Str $step,
       - $count,
       - $extend_selection,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -969,7 +972,8 @@ This signal has no default bindings.
 
     method handler (
       Unknown type GTK_TYPE_DELETE_TYPE $string,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -988,7 +992,8 @@ The default bindings for this signal are Delete for deleting a character and Ctr
     method handler (
       - $type,
       - $count,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1005,7 +1010,8 @@ The *backspace* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] 
 The default bindings for this signal are Backspace and Shift-Backspace.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1018,7 +1024,8 @@ The *cut-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal
 The default bindings for this signal are Ctrl-x and Shift-Delete.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1031,7 +1038,8 @@ The *copy-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSigna
 The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1044,7 +1052,8 @@ The *paste-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSign
 The default bindings for this signal are Ctrl-v and Shift-Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1057,7 +1066,8 @@ The *toggle-overwrite* signal is a [keybinding signal][**Gnome::Gtk3::BindingSig
 The default bindings for this signal is Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1072,7 +1082,8 @@ Since: 2.16
     method handler (
       Unknown type GTK_TYPE_ENTRY_ICON_POSITION $icon_pos,
       Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 
@@ -1091,7 +1102,8 @@ Since: 2.16
     method handler (
       Str $icon_pos,
       - $event,
-      Gnome::GObject::Object :widget($entry),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($entry),
       *%user-options
     );
 

@@ -894,7 +894,8 @@ See also: C<gtk_cell_renderer_stop_editing()>.
 Since: 2.4
 
   method handler (
-    Gnome::GObject::Object :widget($renderer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($renderer),
     *%user-options
   );
 
@@ -932,7 +933,8 @@ Since: 2.6
   method handler (
     Unknown type GTK_TYPE_CELL_EDITABLE $editable,
     Str $path,
-    Gnome::GObject::Object :widget($renderer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($renderer),
     *%user-options
   );
 

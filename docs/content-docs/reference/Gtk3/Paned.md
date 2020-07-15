@@ -248,7 +248,8 @@ Since: 2.0
 
     method handler (
       Int $reversed,
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );
@@ -266,7 +267,8 @@ The default binding is Tab.
 Since: 2.0
 
     method handler (
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );
@@ -281,7 +283,8 @@ Since: 2.0
 
     method handler (
       Int $scroll_type,
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );
@@ -300,7 +303,8 @@ Since: 2.0
 
     method handler (
       Int $reversed,
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );
@@ -318,7 +322,8 @@ The default binding for this signal is Return or Space.
 Since: 2.0
 
     method handler (
-      Gnome::GObject::Object :widget($widget),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($widget),
       *%user-options
       --> Int
     );

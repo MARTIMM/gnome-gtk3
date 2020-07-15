@@ -2863,7 +2863,8 @@ Also here, the types of positional arguments in the signal handler are important
 The I<activate-focus> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user activates the currently focused widget of I<$window>.
 
   method handler (
-    Gnome::GObject::Object :widget($window),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($window),
     *%user-options
   );
 
@@ -2875,7 +2876,8 @@ The I<activate-focus> signal is a [keybinding signal](https://developer.gnome.or
 
 The I<activate-default> signal is a [keybinding signal][B<Gnome::Gtk3::BindingSignal>] which gets emitted when the user activates the default widget of I<$window>.
 
-  method handler (
+  meInt :$_handler_id,
+    Gnome::GObject::Object :_widget(
     Gnome::GObject::Object :widget($window),
     *%user-options
   );
@@ -2887,7 +2889,8 @@ The I<activate-default> signal is a [keybinding signal][B<Gnome::Gtk3::BindingSi
 =head3 keys-changed
 
 The I<keys-changed> signal gets emitted when the set of accelerators or mnemonics that are associated with I<$window> changes.
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   method handler (
     Gnome::GObject::Object :widget($window),
     *%user-options
@@ -2904,7 +2907,8 @@ The I<enable-debugging> signal is a [keybinding signal](https://developer.gnome.
 The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 
 Return: C<1> if the key binding was handled
-
+Int :$_handler_id,
+    Gnome::GObject::Object :_widget(
   method handler (
     int32 $toggle,
     Gnome::GObject::Object :widget($window),
@@ -2919,7 +2923,8 @@ Return: C<1> if the key binding was handled
 =comment #TS:0:set-focus:
 =head3 set-focus
 
-This signal is emitted whenever the currently focused widget in this window changes.
+ThisInt :$_handler_id,
+    Gnome::GObject::Object :_widget( currently focused widget in this window changes.
 
   method handler (
     N-GObject $widget,

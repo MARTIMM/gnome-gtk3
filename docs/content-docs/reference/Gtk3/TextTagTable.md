@@ -168,7 +168,8 @@ Supported signals
     method handler (
       N-GObject $tag,
       Int $size_changed,
-      Gnome::GObject::Object :widget($texttagtable),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($texttagtable),
       *%user-options
     );
 
@@ -182,7 +183,8 @@ Supported signals
 
     method handler (
       N-GObject $tag,
-      Gnome::GObject::Object :widget($texttagtable),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($texttagtable),
       *%user-options
     );
 
@@ -194,7 +196,8 @@ Supported signals
 
     method handler (
       N-GObject $tag,
-      Gnome::GObject::Object :widget($texttagtable),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($texttagtable),
       *%user-options
     );
 

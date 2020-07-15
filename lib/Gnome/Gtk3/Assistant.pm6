@@ -701,7 +701,8 @@ The I<cancel> signal is emitted when then the cancel button is clicked.
 Since: 2.10
 
   method handler (
-    Gnome::GObject::Object :widget($assistant),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($assistant),
     *%user-options
   );
 
@@ -721,7 +722,8 @@ Since: 2.10
 
   method handler (
     N-GObject #`{ is widget } $page,
-    Gnome::GObject::Object :widget($assistant),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($assistant),
     *%user-options
   );
 
@@ -748,7 +750,8 @@ page.
 Since: 2.10
 
   method handler (
-    Gnome::GObject::Object :widget($assistant),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($assistant),
     *%user-options
   );
 
@@ -765,7 +768,8 @@ page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
 Since: 2.10
 
   method handler (
-    Gnome::GObject::Object :widget($assistant),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($assistant),
     *%user-options
   );
 
@@ -776,7 +780,8 @@ Since: 2.10
 =head3 escape
 
   method handler (
-    Gnome::GObject::Object :widget($assistant),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($assistant),
     *%user-options
   );
 

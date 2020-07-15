@@ -212,7 +212,8 @@ Since: 2.10
     uint32 $accel_key,
     uint32 $accel_mods,
     uint32 $hardware_keycode,
-    Gnome::GObject::Object :widget($accel),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($accel),
     *%user-options
     --> Int
   );
@@ -237,7 +238,8 @@ Since: 2.10
 
   method handler (
     Str $path_string,
-    Gnome::GObject::Object :widget($accel),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($accel),
     *%user-options
   );
 

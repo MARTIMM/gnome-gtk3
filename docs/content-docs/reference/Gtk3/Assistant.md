@@ -385,7 +385,8 @@ The *cancel* signal is emitted when then the cancel button is clicked.
 Since: 2.10
 
     method handler (
-      Gnome::GObject::Object :widget($assistant),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
@@ -401,7 +402,8 @@ Since: 2.10
 
     method handler (
       N-GObject #`{ is widget } $page,
-      Gnome::GObject::Object :widget($assistant),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
@@ -420,7 +422,8 @@ A handler for the *apply* signal should carry out the actions for which the wiza
 Since: 2.10
 
     method handler (
-      Gnome::GObject::Object :widget($assistant),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
@@ -433,7 +436,8 @@ The *close* signal is emitted either when the close button of a summary page is 
 Since: 2.10
 
     method handler (
-      Gnome::GObject::Object :widget($assistant),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
@@ -442,7 +446,8 @@ Since: 2.10
 ### escape
 
     method handler (
-      Gnome::GObject::Object :widget($assistant),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 

@@ -1136,7 +1136,8 @@ Emitted when the user or a function changes the current page.
   method handler (
     N-GObject #`{ is widget } $page,
     UInt $page_num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1156,7 +1157,8 @@ Since: 2.10
   method handler (
     N-GObject #`{ is widget } $child,
     UInt $page_num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1176,7 +1178,8 @@ Since: 2.10
   method handler (
     N-GObject #`{ is widget } $child,
     UInt $page_num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1196,7 +1199,8 @@ Since: 2.10
   method handler (
     N-GObject #`{ is widget } $child,
     UInt $page_num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1221,7 +1225,8 @@ Since: 2.12
     N-GObject #`{ is widget } $page,
     Int $x,
     Int $y,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
   );
 
@@ -1237,7 +1242,8 @@ Since: 2.12
   method handler (
     Int $arg1, #`{ GtkDirectionType }
     Int $arg2, #`{ Bool }
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1253,7 +1259,8 @@ Since: 2.12
   method handler (
     N-GObject $child, #`{ is widget }
     uint $page-num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1269,7 +1276,8 @@ Since: 2.12
   method handler (
     N-GObject $child, #`{ is widget }
     uint $page-num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1285,7 +1293,8 @@ Since: 2.12
   method handler (
     N-GObject $child, #`{ is widget }
     uint $page-num,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Int
   );
@@ -1302,7 +1311,8 @@ Since: 2.12
     N-GObject #`{ is widget } $n-gobject #`{ is widget },
     Int $int,
     Int $int,
-    Gnome::GObject::Object :widget($notebook),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($notebook),
     *%user-options
     --> Unknown type GTK_TYPE_NOTEBOOK
   );

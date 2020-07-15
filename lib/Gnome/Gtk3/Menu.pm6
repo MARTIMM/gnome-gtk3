@@ -819,7 +819,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     Unknown type GTK_TYPE_SCROLL_TYPE $scroll_type,
-    Gnome::GObject::Object :widget($menu),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menu),
     *%user-options
   );
 
@@ -860,7 +861,8 @@ C<gtk_menu_popup_at_pointer()>,  I<anchor-hints>,
     Unknown type G_TYPE_POINTER $final_rect,
     Int $flipped_x,
     Int $flipped_y,
-    Gnome::GObject::Object :widget($menu),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($menu),
     *%user-options
   );
 

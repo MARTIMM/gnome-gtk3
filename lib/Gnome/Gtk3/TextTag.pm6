@@ -289,7 +289,8 @@ event. C<0> to propagate the event further.
     N-GObject $object,
     GdkEvent $event,
     N-GObject $iter,
-    Gnome::GObject::Object :widget($tag),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($tag),
     *%user-options
     --> Int
   );

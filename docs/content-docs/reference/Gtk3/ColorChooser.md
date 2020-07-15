@@ -215,7 +215,8 @@ Since: 3.4
 
     method handler (
       N-GdkRGBA $color,
-      Gnome::GObject::Object :widget($chooser),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($chooser),
       :$user-option1, ..., :$user-optionN
     );
 

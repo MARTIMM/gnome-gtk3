@@ -512,7 +512,8 @@ of the group that a button belongs to changes.
 
 
   method handler (
-    Gnome::GObject::Object :widget($button),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($button),
     *%user-options
   );
 

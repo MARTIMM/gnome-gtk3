@@ -298,7 +298,8 @@ Applications should never connect to this signal, but use the
 notify::active signal.
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 
@@ -328,7 +329,8 @@ Since: 3.14
 
   method handler (
     Int $state,
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
     --> Int
   );

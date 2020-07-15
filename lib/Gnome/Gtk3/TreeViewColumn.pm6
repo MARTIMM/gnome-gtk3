@@ -1198,7 +1198,8 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 clicked
 
   method handler (
-    Gnome::GObject::Object :widget($treeviewcolumn),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($treeviewcolumn),
     *%user-options
   );
 

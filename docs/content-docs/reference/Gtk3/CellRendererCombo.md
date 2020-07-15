@@ -95,7 +95,8 @@ Since: 2.14
     method handler (
       Str $path_string,
       N-GtkTreeIter $new_iter,
-      Gnome::GObject::Object :widget($combo),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($combo),
       *%user-options
     );
 

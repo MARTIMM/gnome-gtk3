@@ -295,7 +295,8 @@ as well, use the notify::color signal.
 Since: 2.4
 
   method handler (
-    Gnome::GObject::Object :widget($widget),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 

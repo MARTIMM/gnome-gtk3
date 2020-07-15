@@ -260,7 +260,8 @@ Supported signals
 Emitted when the button has been activated (pressed and released).
 
     method handler (
-      Gnome::GObject::Object :widget($button),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($button),
       *%user-options
     );
 

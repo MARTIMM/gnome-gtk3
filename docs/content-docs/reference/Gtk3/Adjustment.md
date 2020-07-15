@@ -248,7 +248,8 @@ Supported signals
 Emitted when one or more of the **Gnome::Gtk3::Adjustment** properties have been changed, other than the *value* property.
 
     method handler (
-      Gnome::GObject::Object :widget($adjustment),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($adjustment),
       *%user-options
     );
 
@@ -259,7 +260,8 @@ Emitted when one or more of the **Gnome::Gtk3::Adjustment** properties have been
 Emitted when the *value* property has been changed.
 
     method handler (
-      Gnome::GObject::Object :widget($adjustment),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($adjustment),
       *%user-options
     );
 

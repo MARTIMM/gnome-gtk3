@@ -1027,7 +1027,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     N-GObject $widget,
-    Gnome::GObject::Object :widget($container),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($container),
     *%user-options
   );
 
@@ -1039,7 +1040,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     N-GObject $widget,
-    Gnome::GObject::Object :widget($container),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($container),
     *%user-options
   );
 
@@ -1050,7 +1052,8 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 check-resize
 
   method handler (
-    Gnome::GObject::Object :widget($container),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($container),
     *%user-options
   );
 
@@ -1061,7 +1064,8 @@ Also here, the types of positional arguments in the signal handler are important
 
   method handler (
     N-GObject $widget,
-    Gnome::GObject::Object :widget($container),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($container),
     *%user-options
   );
 

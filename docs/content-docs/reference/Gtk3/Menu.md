@@ -383,7 +383,8 @@ Supported signals
 
     method handler (
       Unknown type GTK_TYPE_SCROLL_TYPE $scroll_type,
-      Gnome::GObject::Object :widget($menu),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menu),
       *%user-options
     );
 
@@ -410,7 +411,8 @@ See `gtk_menu_popup_at_rect()`, `gtk_menu_popup_at_widget()`, `gtk_menu_popup_at
       Unknown type G_TYPE_POINTER $final_rect,
       Int $flipped_x,
       Int $flipped_y,
-      Gnome::GObject::Object :widget($menu),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($menu),
       *%user-options
     );
 

@@ -284,7 +284,8 @@ opposite of the value currently stored at I<path>.
 
   method handler (
     Str $path,
-    Gnome::GObject::Object :widget($cell_renderer),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($cell_renderer),
     *%user-options
   );
 

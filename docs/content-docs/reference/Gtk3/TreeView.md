@@ -182,7 +182,7 @@ Sets the model for a **Gnome::Gtk3::TreeView**. If the *tree_view* already has a
 [[gtk_] tree_view_] get_selection
 ---------------------------------
 
-Gets the **Gnome::Gtk3::TreeSelection** associated with *tree_view*.
+Gets the **Gnome::Gtk3::TreeSelection** associated with this *tree_view*.
 
     method gtk_tree_view_get_selection ( --> N-GObject  )
 
@@ -846,7 +846,8 @@ For selection handling refer to the [tree widget conceptual overview][TreeWidget
     method handler (
       N-GtkTreePath $path,
       N-GObject $column,
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
     );
 
@@ -865,7 +866,8 @@ Returns: `0` to allow expansion, `1` to reject
     method handler (
       N-GtkTreeIter $iter,
       N-GtkTreePath $path,
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
       --> Int
     );
@@ -885,7 +887,8 @@ Returns: `0` to allow collapsing, `1` to reject
     method handler (
       N-GtkTreeIter $iter,
       N-GtkTreePath $path,
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
       --> Int
     );
@@ -903,7 +906,8 @@ The given row has been expanded (child nodes are shown).
     method handler (
       N-GtkTreeIter $iter,
       N-GtkTreePath $path,
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
     );
 
@@ -920,7 +924,8 @@ The given row has been collapsed (child nodes are hidden).
     method handler (
       N-GtkTreeIter $iter,
       N-GtkTreePath $path,
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
     );
 
@@ -935,7 +940,8 @@ The given row has been collapsed (child nodes are hidden).
 The number of columns of the treeview has changed.
 
     method handler (
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
     );
 
@@ -946,7 +952,8 @@ The number of columns of the treeview has changed.
 The position of the cursor (focused cell) has changed.
 
     method handler (
-      Gnome::GObject::Object :widget($tree_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($tree_view),
       *%user-options
     );
 

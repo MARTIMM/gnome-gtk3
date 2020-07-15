@@ -449,7 +449,8 @@ This signal is emitted when the tool button is clicked with the mouse
 or activated with the keyboard.
 
   method handler (
-    Gnome::GObject::Object :widget($toolbutton),
+    Int :$_handler_id,
+    Gnome::GObject::Object :_widget($toolbutton),
     *%user-options
   );
 

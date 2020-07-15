@@ -138,7 +138,8 @@ It is the responsibility of the application to update the model with the correct
 
     method handler (
       Str $path,
-      Gnome::GObject::Object :widget($cell_renderer),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($cell_renderer),
       *%user-options
     );
 

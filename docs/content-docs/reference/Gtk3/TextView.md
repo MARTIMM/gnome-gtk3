@@ -945,7 +945,8 @@ The default bindings for this signal come in two variants, the variant with the 
       Unknown type GTK_TYPE_MOVEMENT_STEP $step,
       Int $count,
       Int $extend_selection,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -966,7 +967,8 @@ There are no default bindings for this signal.
     method handler (
       Unknown type GTK_TYPE_SCROLL_STEP $step,
       Int $count,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -983,7 +985,8 @@ The *set-anchor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**]
 This signal has no default bindings.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -997,7 +1000,8 @@ This signal has no default bindings.
 
     method handler (
       Str $string,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1016,7 +1020,8 @@ The default bindings for this signal are Delete for deleting a character, Ctrl-D
     method handler (
       Unknown type GTK_TYPE_DELETE_TYPE $type,
       Int $count,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1033,7 +1038,8 @@ The *backspace* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] 
 The default bindings for this signal are Backspace and Shift-Backspace.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1046,7 +1052,8 @@ The *cut-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal
 The default bindings for this signal are Ctrl-x and Shift-Delete.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1059,7 +1066,8 @@ The *copy-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSigna
 The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1072,7 +1080,8 @@ The *paste-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSign
 The default bindings for this signal are Ctrl-v and Shift-Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1085,7 +1094,8 @@ The *toggle-overwrite* signal is a [keybinding signal][**Gnome::Gtk3::BindingSig
 The default bindings for this signal is Insert.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1103,7 +1113,8 @@ The signal handler should not make assumptions about the type of *widget*, but c
 
     method handler (
       N-GObject $popup,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1119,7 +1130,8 @@ The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and Shi
 
     method handler (
       Int $select,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1134,7 +1146,8 @@ The *toggle-cursor-visible* signal is a [keybinding signal][**Gnome::Gtk3::Bindi
 The default binding for this signal is F7.
 
     method handler (
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
@@ -1150,7 +1163,8 @@ Since: 2.20
 
     method handler (
       Str $preedit,
-      Gnome::GObject::Object :widget($text_view),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($text_view),
       *%user-options
     );
 
