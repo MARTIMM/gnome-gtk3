@@ -167,7 +167,8 @@ Since GLib 2.40, if no handler is connected to this signal then the default beha
 
     method handler (
       N-GVariant $parameter,
-      Gnome::GObject::Object :widget($simple),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($simple),
       *%user-options
     );
 
@@ -193,7 +194,8 @@ The handler need not set the state to the requested value. It could set it to an
 
     method handler (
       Unknown type G_TYPE_VARIANT $value,
-      Gnome::GObject::Object :widget($simple),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($simple),
       *%user-options
     );
 

@@ -620,7 +620,8 @@ Supported signals
 The *startup* signal is emitted on the primary instance immediately after registration. See `g_application_register()`.
 
     method handler (
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -631,7 +632,8 @@ The *startup* signal is emitted on the primary instance immediately after regist
 The *shutdown* signal is emitted only on the registered primary instance immediately after the main loop terminates.
 
     method handler (
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -642,7 +644,8 @@ The *shutdown* signal is emitted only on the registered primary instance immedia
 The *activate* signal is emitted on the primary instance when an activation occurs. See `g_application_activate()`.
 
     method handler (
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -656,7 +659,8 @@ The *open* signal is emitted on the primary instance when there are files to ope
       Unknown type G_TYPE_POINTER $files,
       Int $n_files,
       Str $hint,
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
     );
 
@@ -676,7 +680,8 @@ Returns: An integer that is set as the exit status for the calling process. See 
 
     method handler (
       Unknown type G_TYPE_APPLICATION_COMMAND_LINE $command_line,
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
       --> Int
     );
@@ -707,7 +712,8 @@ Returns: an exit code. If you have handled your options and want to exit the pro
 
     method handler (
       Unknown type G_TYPE_VARIANT_DICT $options,
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
       --> Int
     );
@@ -725,7 +731,8 @@ The default handler for this signal calls `g_application_quit()`.
 Returns: `1` if the signal has been handled
 
     method handler (
-      Gnome::GObject::Object :widget($application),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($application),
       *%user-options
       --> Int
     );

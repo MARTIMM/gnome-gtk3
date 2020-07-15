@@ -413,7 +413,8 @@ Signal handlers may query the model (particularly the added items) and expect to
       Int $position,
       Int $removed,
       Int $added,
-      Gnome::GObject::Object :widget($model),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($model),
       *%user-options
     );
 
