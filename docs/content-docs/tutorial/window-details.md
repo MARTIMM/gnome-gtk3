@@ -1,11 +1,11 @@
 ---
-title: Tutorial - Window details
+title: Tutorial - Window Details
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
-# Window details
+# Window Details
 
 We will dive a little deeper with what we can do with the Gnome::Gtk3::Window. W've seen that it can hold one widget. We could do a little bit more with this window such as placement of the window on screen or replace the default icon in the decoration. Let's start!
 

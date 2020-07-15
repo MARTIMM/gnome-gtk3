@@ -1,11 +1,11 @@
 ---
-title: Tutorial - Intermezzo methods
+title: Tutorial - Intermezzo Methods
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
-# Intermezzo
+# Intermezzo: Methods
 
 ## Method naming
 
@@ -33,7 +33,6 @@ For the moment, names cannot be too short. For example there is a subroutine `gt
 my Gnome::Gtk3::Grid $grid .= new;
 $grid.gtk_grid_attach( $label, 0, 0, 1, 1);
 $grid.grid_attach( $label, 0, 0, 1, 1);
-$grid.grid-attach( $label, 0, 0, 1, 1);
 ```
 
-A last word on how it is noted in the references. Take `.gtk_button_set_label()` for instance. The table of contents and the header of the method in the reference will be shown as _[[gtk\_] button\_] set\_label_. For the method `.gtk_grid_attach()` this will be _[[gtk\_] grid\_attach_. The underscores may be replaced by dashes.
+A last word on how it is noted in the references. Take method `.gtk_button_set_label()` for instance. The table of contents and the header of the method in the reference will be shown as _[[gtk\_] button\_] set\_label_. For the method `.gtk_grid_attach()` this will be _[gtk\_] grid\_attach_. The underscores may be replaced by dashes. When a method like `.attach()` is defined, this notation will be changed into _[[gtk\_] grid\_] attach_.

@@ -41,7 +41,7 @@ So, what we have learned here are several specific things which will always come
 * Registration of your callback handlers to handle specific signals.
 * Starting and stopping of the main loop.
 
-## Simple Window With A Button
+## Simple Window with a Button
 
 The next step is to have some action using a button. The button is placed in the window and clicking on the button will stop the program.
 
@@ -60,7 +60,7 @@ What is new is the creation of a button [21-23] and how it is added to the windo
 Now save the code in `window-button.pl6` and run it. Pressing the button will stop the program.
 
 
-## Simple Window With Two Buttons
+## Simple Window with two Buttons
 
 Lets go on quickly and add another button with the `.gtk-container-add()` method. The relevant part is shown below.
 
