@@ -137,16 +137,27 @@ Return the direct parent type of the passed in type. If the passed in type has n
 
 Returns: the parent type
 
-    method g_type_parent ( UInt --> UInt )
+    method g_type_parent ( UInt $parent-type --> UInt )
 
 [g_] type_depth
 ---------------
 
 Returns the length of the ancestry of the passed in type. This includes the type itself, so that e.g. a fundamental type has depth 1.
 
-Returns: the depth of *type*
+Returns: the depth of *$type*
 
-    method g_type_depth ( --> UInt  )
+    method g_type_depth ( UInt $type --> UInt  )
+
+[[g_] type_] next_base
+----------------------
+
+Given a *$leaf_type* and a *$root_type* which is contained in its anchestry, return the type that *$root_type* is the immediate parent of. In other words, this function determines the type that is derived directly from *$root_type* which is also a base class of *$leaf_type*. Given a root type and a leaf type, this function can be used to determine the types and order in which the leaf type is descended from the root type.
+
+Returns: immediate child of *$root_type* and anchestor of *$leaf_type*
+
+    method g_type_next_base ( Int $root_type --> Int )
+
+  * int32 $root_type; immediate parent of the returned type
 
 [[g_] type_] is_a
 -----------------
@@ -196,4 +207,15 @@ Checks if value has been initialized to hold values of type g_type.
     method g_type_check_value ( N-GObject $value --> Int  )
 
   * N-GObject $value;
+
+[[g_] type_] name_from_instance
+-------------------------------
+
+Get name of type from the instance.
+
+    method g_type_name_from_instance ( int32 $instance --> Str  )
+
+  * int32 $instance;
+
+Returns the name of the instance.
 
