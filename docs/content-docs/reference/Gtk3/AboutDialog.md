@@ -113,7 +113,7 @@ new
 
 ### new()
 
-Create a new plain object.
+Creates a new **Gnome::Gtk3::AboutDialog**.
 
     multi method new ( )
 

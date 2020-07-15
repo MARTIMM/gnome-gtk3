@@ -53,15 +53,6 @@ Returns: the current selection mode
 
     method gtk_tree_selection_get_mode ( --> GtkSelectionMode )
 
-[gtk_tree_selection_] get_user_data
------------------------------------
-
-Returns the user data for the selection function.
-
-Returns: The user data.
-
-    method gtk_tree_selection_get_user_data ( --> Pointer )
-
 [gtk_tree_selection_] get_tree_view
 -----------------------------------
 
@@ -74,15 +65,21 @@ Returns: (transfer none): A **Gnome::Gtk3::TreeView**
 [gtk_tree_selection_] get_selected
 ----------------------------------
 
-Sets *iter* to the currently selected node if *selection* is set to **GTK_SELECTION_SINGLE** or **GTK_SELECTION_BROWSE**. *iter* may be NULL if you just want to test if *selection* has any selected nodes. *model* is filled with the current model as a convenience. This function will not work if you use *selection* is **GTK_SELECTION_MULTIPLE**.
+Sets *$iter* to the currently selected node if *selection* is set to **GTK_SELECTION_SINGLE** or **GTK_SELECTION_BROWSE**. *$iter* may be NULL if you just want to test if *selection* has any selected nodes. *model* is filled with the current model as a convenience. This function will not work if you use *selection* is **GTK_SELECTION_MULTIPLE**.
 
-Returns: TRUE, if there is a selected node.
+Returns: 1, if there is a selected node.
 
-    method gtk_tree_selection_get_selected ( N-GObject $model, N-GtkTreeIter $iter --> Int )
+    method gtk_tree_selection_get_selected (
+      N-GObject $model, N-GtkTreeIter $iter --> Int
+    )
 
-  * N-GObject $model; (out) (allow-none) (transfer none): A pointer to set to the **Gnome::Gtk3::TreeModel**, or NULL.
+  * N-GObject $model; A pointer to set to the **Gnome::Gtk3::TreeModel**, or undefined.
 
-  * N-GtkTreeIter $iter; (out) (allow-none): The **Gnome::Gtk3::TreeIter**, or NULL.
+  * N-GtkTreeIter $iter; The **Gnome::Gtk3::TreeIter**, or undefined.
+
+method gtk_tree_selection_get_selected ( --> List )
+
+The list will return the status, model and iter. If status is 1, then there is a selected node.
 
 [gtk_tree_selection_] get_selected_rows
 ---------------------------------------
@@ -93,7 +90,7 @@ Returns: (element-type **Gnome::Gtk3::TreePath**) (transfer full): A **GList** c
 
     method gtk_tree_selection_get_selected_rows ( N-GObject $model --> N-GList )
 
-  * N-GObject $model; (out) (allow-none) (transfer none): A pointer to set to the **Gnome::Gtk3::TreeModel**, or `Any`.
+  * N-GObject $model; A pointer to set to the **Gnome::Gtk3::TreeModel**, or `Any`.
 
 [gtk_tree_selection_] count_selected_rows
 -----------------------------------------
@@ -237,7 +234,8 @@ Supported signals
 Emitted whenever the selection has (possibly) changed. Please note that this signal is mostly a hint. It may only be emitted once when a range of rows are selected, and it may occasionally be emitted when nothing has happened.
 
     method handler (
-      Gnome::GObject::Object :widget($treeselection),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($treeselection),
       *%user-options
     );
 

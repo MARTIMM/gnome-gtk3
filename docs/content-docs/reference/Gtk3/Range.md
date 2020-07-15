@@ -80,8 +80,6 @@ If a range is flippable, it will switch its direction if it is horizontal and it
 
 See `gtk_widget_get_direction()`.
 
-Since: 2.18
-
     method gtk_range_set_flippable ( Int $flippable )
 
   * Int $flippable; `1` to make the range flippable
@@ -93,8 +91,6 @@ Gets the value set by `gtk_range_set_flippable()`.
 
 Returns: `1` if the range is flippable
 
-Since: 2.18
-
     method gtk_range_get_flippable ( --> Int  )
 
 [[gtk_] range_] set_slider_size_fixed
@@ -103,8 +99,6 @@ Since: 2.18
 Sets whether the range’s slider has a fixed size, or a size that depends on its adjustment’s page size.
 
 This function is useful mainly for **Gnome::Gtk3::Range** subclasses.
-
-Since: 2.20
 
     method gtk_range_set_slider_size_fixed ( Int $size_fixed )
 
@@ -118,8 +112,6 @@ This function is useful mainly for **Gnome::Gtk3::Range** subclasses.
 See `gtk_range_set_slider_size_fixed()`.
 
 Returns: whether the range’s slider has a fixed size.
-
-Since: 2.20
 
     method gtk_range_get_slider_size_fixed ( --> Int  )
 
@@ -141,8 +133,6 @@ This function returns sliders range along the long dimension, in widget->window 
 
 This function is useful mainly for **Gnome::Gtk3::Range** subclasses.
 
-Since: 2.20
-
     method gtk_range_get_slider_range ( --> List )
 
 Returns a `List` where
@@ -156,8 +146,6 @@ Returns a `List` where
 
 Sets the sensitivity policy for the stepper that points to the 'lower' end of the **Gnome::Gtk3::Range**’s adjustment.
 
-Since: 2.10
-
     method gtk_range_set_lower_stepper_sensitivity ( GtkSensitivityType $sensitivity )
 
   * GtkSensitivityType $sensitivity; the lower stepper’s sensitivity policy.
@@ -169,16 +157,12 @@ Gets the sensitivity policy for the stepper that points to the 'lower' end of th
 
 Returns: The lower stepper’s sensitivity policy.
 
-Since: 2.10
-
     method gtk_range_get_lower_stepper_sensitivity ( --> GtkSensitivityType  )
 
 [[gtk_] range_] set_upper_stepper_sensitivity
 ---------------------------------------------
 
 Sets the sensitivity policy for the stepper that points to the 'upper' end of the **Gnome::Gtk3::Range**’s adjustment.
-
-Since: 2.10
 
     method gtk_range_set_upper_stepper_sensitivity ( GtkSensitivityType $sensitivity )
 
@@ -190,8 +174,6 @@ Since: 2.10
 Gets the sensitivity policy for the stepper that points to the 'upper' end of the **Gnome::Gtk3::Range**’s adjustment.
 
 Returns: The upper stepper’s sensitivity policy.
-
-Since: 2.10
 
     method gtk_range_get_upper_stepper_sensitivity ( --> GtkSensitivityType  )
 
@@ -231,16 +213,12 @@ Sets the current value of the range; if the value is outside the minimum or maxi
 
 Gets the current value of the range.
 
-Returns: current value of the range.
-
     method gtk_range_get_value ( --> Num  )
 
 [[gtk_] range_] set_show_fill_level
 -----------------------------------
 
 Sets whether a graphical fill level is show on the trough. See `gtk_range_set_fill_level()` for a general description of the fill level concept.
-
-Since: 2.12
 
     method gtk_range_set_show_fill_level ( Int $show_fill_level )
 
@@ -253,16 +231,12 @@ Gets whether the range displays the fill level graphically.
 
 Returns: `1` if *range* shows the fill level.
 
-Since: 2.12
-
     method gtk_range_get_show_fill_level ( --> Int  )
 
 [[gtk_] range_] set_restrict_to_fill_level
 ------------------------------------------
 
 Sets whether the slider is restricted to the fill level. See `gtk_range_set_fill_level()` for a general description of the fill level concept.
-
-Since: 2.12
 
     method gtk_range_set_restrict_to_fill_level ( Int $restrict_to_fill_level )
 
@@ -274,8 +248,6 @@ Since: 2.12
 Gets whether the range is restricted to the fill level.
 
 Returns: `1` if *range* is restricted to the fill level.
-
-Since: 2.12
 
     method gtk_range_get_restrict_to_fill_level ( --> Int  )
 
@@ -290,8 +262,6 @@ This amount of prebuffering can be displayed on the range’s trough and is them
 
 Additionally, it’s possible to restrict the range’s slider position to values which are smaller than the fill level. This is controller by `gtk_range_set_restrict_to_fill_level()` and is by default enabled.
 
-Since: 2.12
-
     method gtk_range_set_fill_level ( Num $fill_level )
 
   * Num $fill_level; the new position of the fill level indicator
@@ -303,16 +273,12 @@ Gets the current position of the fill level indicator.
 
 Returns: The current fill level
 
-Since: 2.12
-
     method gtk_range_get_fill_level ( --> Num  )
 
 [[gtk_] range_] set_round_digits
 --------------------------------
 
 Sets the number of digits to round the value to when it changes. See *change-value*.
-
-Since: 2.24
 
     method gtk_range_set_round_digits ( Int $round_digits )
 
@@ -324,8 +290,6 @@ Since: 2.24
 Gets the number of digits to round the value to when it changes. See *change-value*.
 
 Returns: the number of digits to round to
-
-Since: 2.24
 
     method gtk_range_get_round_digits ( --> Int  )
 
@@ -368,7 +332,8 @@ Supported signals
 Emitted when the range value changes.
 
     method handler (
-      Gnome::GObject::Object :widget($range),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($range),
       *%user-options
     );
 
@@ -380,7 +345,8 @@ Emitted before clamping a value, to give the application a chance to adjust the 
 
     method handler (
       Unknown type G_TYPE_DOUBLE $value,
-      Gnome::GObject::Object :widget($range),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($range),
       *%user-options
     );
 
@@ -394,7 +360,8 @@ Virtual function that moves the slider. Used for keybindings.
 
     method handler (
       Unknown type GTK_TYPE_SCROLL_TYPE $step,
-      Gnome::GObject::Object :widget($range),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($range),
       *%user-options
     );
 
@@ -412,12 +379,11 @@ It is not possible to use delayed update policies in an overridden *change-value
 
 Returns: `1` to prevent other handlers from being invoked for the signal, `0` to propagate the signal further
 
-Since: 2.6
-
     method handler (
       Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
       Unknown type G_TYPE_DOUBLE $value,
-      Gnome::GObject::Object :widget($range),
+      Int :$_handler_id,
+      Gnome::GObject::Object :_widget($range),
       *%user-options
       --> Int
     );
