@@ -2,9 +2,9 @@
   - Extending window tutorial.
   - Added Signal tutorial.
   - Repaired an accidently removed navigation file from the doc site.
-
   - Changes in Gnome::Gtk3::Widget;
   - Dropped .gtk_widget_init_template(), .gtk_widget_get_template_child() and several other template methods
+  - Modified the structure types of `GdkEvent*` into `N-GdkEvent*` in Gnome::Gdk3::Events. The older types are deprecated and are removed in version 0.20.0 of the Gnome::Gdk3 package.
 
 - 2020-07-09 0.29.0:
   - Changes in Gnome::Gtk3::Widget;
