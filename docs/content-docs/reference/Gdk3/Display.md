@@ -147,7 +147,7 @@ Returns: (nullable): the next **Gnome::Gdk3::Event** to be processed, or `Any` i
 
 Since: 2.2
 
-    method gdk_display_get_event ( --> GdkEvent  )
+    method gdk_display_get_event ( --> N-GdkEvent  )
 
 [[gdk_] display_] peek_event
 ----------------------------
@@ -158,7 +158,7 @@ Returns: (nullable): a copy of the first **Gnome::Gdk3::Event** on the event que
 
 Since: 2.2
 
-    method gdk_display_peek_event ( --> GdkEvent  )
+    method gdk_display_peek_event ( --> N-GdkEvent  )
 
 [[gdk_] display_] put_event
 ---------------------------
@@ -167,9 +167,9 @@ Appends a copy of the given event onto the front of the event queue for *display
 
 Since: 2.2
 
-    method gdk_display_put_event ( GdkEvent $event )
+    method gdk_display_put_event ( N-GdkEvent $event )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**.
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**.
 
 [[gdk_] display_] has_pending
 -----------------------------
@@ -420,7 +420,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -431,7 +431,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

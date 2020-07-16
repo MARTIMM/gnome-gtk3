@@ -82,13 +82,13 @@ Emits the “event” signal on the **Gnome::Gtk3::TextTag**.
 Returns: result of signal emission (whether the event was handled)
 
     method gtk_text_tag_event (
-      N-GObject $event_object, GdkEvent $event, N-GObject $iter
+      N-GObject $event_object, N-GdkEvent $event, N-GObject $iter
       --> Int
     )
 
   * N-GObject $event_object; object that received the event, such as a widget
 
-  * GdkEvent $event; the event
+  * N-GdkEvent $event; the event
 
   * N-GObject $iter; location where the event was received
 
@@ -116,7 +116,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -127,7 +127,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
@@ -147,7 +147,7 @@ Returns: `1` to stop other handlers from being invoked for the event. `0` to pro
 
     method handler (
       N-GObject $object,
-      GdkEvent $event,
+      N-GdkEvent $event,
       N-GObject $iter,
       Int :$_handler_id,
       Gnome::GObject::Object :_widget($tag),

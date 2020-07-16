@@ -902,9 +902,9 @@ Returns: `1` if a mnemonic or accelerator was found and activated.
 
 Since: 2.4
 
-    method gtk_window_activate_key ( GdkEventKey $event --> Int  )
+    method gtk_window_activate_key ( N-GdkEventKey $event --> Int  )
 
-  * GdkEventKey $event; a **Gnome::Gdk3::EventKey**
+  * N-GdkEventKey $event; a **Gnome::Gdk3::EventKey**
 
 [[gtk_] window_] propagate_key_event
 ------------------------------------
@@ -915,9 +915,9 @@ Returns: `1` if a widget in the focus chain handled the event.
 
 Since: 2.4
 
-    method gtk_window_propagate_key_event ( GdkEventKey $event --> Int  )
+    method gtk_window_propagate_key_event ( N-GdkEventKey $event --> Int  )
 
-  * GdkEventKey $event; a **Gnome::Gdk3::EventKey**
+  * N-GdkEventKey $event; a **Gnome::Gdk3::EventKey**
 
 [gtk_] window_present
 ---------------------
@@ -1249,7 +1249,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -1260,7 +1260,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

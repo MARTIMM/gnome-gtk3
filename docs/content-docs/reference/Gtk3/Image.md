@@ -26,7 +26,7 @@ Handling button press events on a Gnome::Gtk3::Image.
 
     # Define a button press event handler
     method button-press-handler (
-      GdkEventButton $event, Gnome::Gtk3::EventBox :widget($event-box)
+      N-GdkEventButton $event, Gnome::Gtk3::EventBox :widget($event-box)
       --> Int
     ) {
       say "Event box clicked at coordinates $event.x(), $event.y()");

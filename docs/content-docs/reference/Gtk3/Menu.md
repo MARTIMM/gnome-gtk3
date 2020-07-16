@@ -20,14 +20,14 @@ Connecting the popup signal handler.
     class HandlerClass {
 
       method popup-handler (
-        GdkEvent $event, Gnome::Gtk3::Window :widget($window), :$menu
+        N-GdkEvent $event, Gnome::Gtk3::Window :widget($window), :$menu
         --> Int
       ) {
 
         my Int $ret-value = 0;
 
         if $event.event-any.type ~~ GDK_BUTTON_PRESS {
-          my GdkEventButton $event-button = $event;
+          my N-GdkEventButton $event-button = $event;
           if $event-button.button ~~ GDK_BUTTON_SECONDARY {
 
             $menu.pop-at-widget(
@@ -121,7 +121,7 @@ Other properties that influence the behaviour of this function are *anchor-hints
     method gtk_menu_popup_at_rect (
       N-GObject $rect_window, N-GdkRectangle $rect,
       GdkGravity $rect_anchor, GdkGravity $menu_anchor,
-      GdkEvent $trigger_event
+      N-GdkEvent $trigger_event
     )
 
   * N-GObject $rect_window; the **Gnome::Gdk3::Window** *$rect* is relative to
@@ -132,7 +132,7 @@ Other properties that influence the behaviour of this function are *anchor-hints
 
   * GdkGravity $menu_anchor; the point on *menu* to align with *rect*'s anchor point
 
-  * GdkEvent $trigger_event; the **Gnome::Gdk3::Event** that initiated this request or undefined if it's the current event
+  * N-GdkEvent $trigger_event; the **Gnome::Gdk3::Event** that initiated this request or undefined if it's the current event
 
 [[gtk_] menu_] popup_at_widget
 ------------------------------
@@ -149,7 +149,7 @@ Other properties that influence the behaviour of this function are *anchor-hints
 
     method gtk_menu_popup_at_widget (
       N-GObject $widget, GdkGravity $widget_anchor,
-      GdkGravity $menu_anchor, GdkEvent $trigger_event
+      GdkGravity $menu_anchor, N-GdkEvent $trigger_event
     )
 
   * N-GObject $widget; the widget to align the menu with
@@ -158,7 +158,7 @@ Other properties that influence the behaviour of this function are *anchor-hints
 
   * GdkGravity $menu_anchor; the point on the menu to align with *$widget*'s anchor point
 
-  * GdkEvent $trigger_event; (nullable): the *GdkEvent* that initiated this request or `Any` if it's the current event
+  * N-GdkEvent $trigger_event; (nullable): the *N-GdkEvent* that initiated this request or `Any` if it's the current event
 
 [gtk_] menu_reposition
 ----------------------
@@ -356,7 +356,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -367,7 +367,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

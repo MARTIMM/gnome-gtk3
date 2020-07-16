@@ -793,9 +793,9 @@ Returns: `1` if the input method handled the key event.
 
 Since: 2.22
 
-    method gtk_entry_im_context_filter_keypress ( GdkEventKey $event --> Int  )
+    method gtk_entry_im_context_filter_keypress ( N-GdkEventKey $event --> Int  )
 
-  * GdkEventKey $event; (type **Gnome::Gdk3::.EventKey**): the key event
+  * N-GdkEventKey $event; (type **Gnome::Gdk3::.EventKey**): the key event
 
 [[gtk_] entry_] reset_im_context
 --------------------------------
@@ -870,7 +870,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -881,7 +881,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

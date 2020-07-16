@@ -585,13 +585,13 @@ of C<gtk_key_snooper_install()> if you need this feature.
 
 5. After finishing the delivery the event is popped from the event stack.
 
-  method gtk_main_do_event ( GdkEvent $event )
+  method gtk_main_do_event ( N-GdkEvent $event )
 
-=item GdkEvent $event; An event to process (normally passed by GDK)
+=item N-GdkEvent $event; An event to process (normally passed by GDK)
 
 =end pod
 
-sub gtk_main_do_event ( GdkEvent $event )
+sub gtk_main_do_event ( N-GdkEvent $event )
   is native(&gtk-lib)
   { * }
 
@@ -826,13 +826,13 @@ Returns: (transfer full) (nullable): a copy of the current event, or
 C<Any> if there is no current event. The returned event must be
 freed with C<gdk_event_free()>.
 
-  method gtk_get_current_event ( --> GdkEvent  )
+  method gtk_get_current_event ( --> N-GdkEvent  )
 
 
 =end pod
 
 sub gtk_get_current_event (  )
-  returns GdkEvent
+  returns N-GdkEvent
   is native(&gtk-lib)
   { * }
 
@@ -912,13 +912,13 @@ originally.
 Returns: (transfer none) (nullable): the widget that originally
 received I<event>, or C<Any>
 
-  method gtk_get_event_widget ( GdkEvent $event --> N-GObject  )
+  method gtk_get_event_widget ( N-GdkEvent $event --> N-GObject  )
 
-=item GdkEvent $event; a B<Gnome::Gdk3::Event>
+=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
 
 =end pod
 
-sub gtk_get_event_widget ( GdkEvent $event )
+sub gtk_get_event_widget ( N-GdkEvent $event )
   returns N-GObject
   is native(&gtk-lib)
   { * }
@@ -947,14 +947,14 @@ certainly better ways to achieve your goals. For example, use
 C<gdk_window_invalidate_rect()> or C<gtk_widget_queue_draw()> instead
 of making up expose events.
 
-  method gtk_propagate_event ( N-GObject $widget, GdkEvent $event )
+  method gtk_propagate_event ( N-GObject $widget, N-GdkEvent $event )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget>
-=item GdkEvent $event; an event
+=item N-GdkEvent $event; an event
 
 =end pod
 
-sub gtk_propagate_event ( N-GObject $widget, GdkEvent $event )
+sub gtk_propagate_event ( N-GObject $widget, N-GdkEvent $event )
   is native(&gtk-lib)
   { * }
 

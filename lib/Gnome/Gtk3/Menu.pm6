@@ -24,14 +24,14 @@ Applications can display a B<Gnome::Gtk3::Menu> as a popup menu by calling the C
   class HandlerClass {
 
     method popup-handler (
-      GdkEvent $event, Gnome::Gtk3::Window :widget($window), :$menu
+      N-GdkEvent $event, Gnome::Gtk3::Window :widget($window), :$menu
       --> Int
     ) {
 
       my Int $ret-value = 0;
 
       if $event.event-any.type ~~ GDK_BUTTON_PRESS {
-        my GdkEventButton $event-button = $event;
+        my N-GdkEventButton $event-button = $event;
         if $event-button.button ~~ GDK_BUTTON_SECONDARY {
 
           $menu.pop-at-widget(
@@ -271,20 +271,20 @@ Other properties that influence the behaviour of this function are I<anchor-hint
   method gtk_menu_popup_at_rect (
     N-GObject $rect_window, N-GdkRectangle $rect,
     GdkGravity $rect_anchor, GdkGravity $menu_anchor,
-    GdkEvent $trigger_event
+    N-GdkEvent $trigger_event
   )
 
 =item N-GObject $rect_window; the B<Gnome::Gdk3::Window> I<$rect> is relative to
 =item N-GObject $rect; the B<Gnome::Gdk3::Rectangle> to align the I<menu> with
 =item GdkGravity $rect_anchor; the point on I<$rect> to align with I<menu>'s anchor point
 =item GdkGravity $menu_anchor; the point on I<menu> to align with I<rect>'s anchor point
-=item GdkEvent $trigger_event; the B<Gnome::Gdk3::Event> that initiated this request or undefined if it's the current event
+=item N-GdkEvent $trigger_event; the B<Gnome::Gdk3::Event> that initiated this request or undefined if it's the current event
 
 =end pod
 
 sub gtk_menu_popup_at_rect (
   N-GObject $menu, N-GObject $rect_window, N-GdkRectangle $rect,
-  int32 $rect_anchor, int32 $menu_anchor, GdkEvent $trigger_event
+  int32 $rect_anchor, int32 $menu_anchor, N-GdkEvent $trigger_event
 ) is native(&gtk-lib)
   { * }
 
@@ -309,17 +309,17 @@ Other properties that influence the behaviour of this function are I<anchor-hint
 
   method gtk_menu_popup_at_widget (
     N-GObject $widget, GdkGravity $widget_anchor,
-    GdkGravity $menu_anchor, GdkEvent $trigger_event
+    GdkGravity $menu_anchor, N-GdkEvent $trigger_event
   )
 
 =item N-GObject $widget; the widget to align the menu with
 =item GdkGravity $widget_anchor; the point on I<$widget> to align with the menu's anchor point
 =item GdkGravity $menu_anchor; the point on the menu to align with I<$widget>'s anchor point
-=item GdkEvent $trigger_event; (nullable): the I<GdkEvent> that initiated this request or C<Any> if it's the current event
+=item N-GdkEvent $trigger_event; (nullable): the I<N-GdkEvent> that initiated this request or C<Any> if it's the current event
 
 =end pod
 
-sub gtk_menu_popup_at_widget ( N-GObject $menu, N-GObject $widget, int32 $widget_anchor, int32 $menu_anchor, GdkEvent $trigger_event )
+sub gtk_menu_popup_at_widget ( N-GObject $menu, N-GObject $widget, int32 $widget_anchor, int32 $menu_anchor, N-GdkEvent $trigger_event )
   is native(&gtk-lib)
   { * }
 
@@ -344,13 +344,13 @@ Properties that influence the behaviour of this function are
 out how it was actually positioned.
 
 
-  method gtk_menu_popup_at_pointer ( GdkEvent $trigger_event )
+  method gtk_menu_popup_at_pointer ( N-GdkEvent $trigger_event )
 
-=item GdkEvent $trigger_event; (nullable): the B<Gnome::Gdk3::Event> that initiated this request or C<Any> if it's the current event
+=item N-GdkEvent $trigger_event; (nullable): the B<Gnome::Gdk3::Event> that initiated this request or C<Any> if it's the current event
 
 =end pod
 
-sub gtk_menu_popup_at_pointer ( N-GObject $menu, GdkEvent $trigger_event )
+sub gtk_menu_popup_at_pointer ( N-GObject $menu, N-GdkEvent $trigger_event )
   is native(&gtk-lib)
   { * }
 }}
@@ -792,7 +792,7 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
   # connect a signal on window object
   my Gnome::Gtk3::Window $w .= new( ... );
@@ -802,7 +802,7 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   my Gnome::Gtk3::Window $w .= new( ... );
   my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
+    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
   ) {
     ...
   }

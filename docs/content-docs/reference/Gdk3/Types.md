@@ -155,8 +155,8 @@ Defines how device grabs interact with other devices.
 
   * GDK_OWNERSHIP_APPLICATION: Other devices’ events are blocked for the whole application.
 
-enum GdkEventMask
------------------
+enum N-GdkEventMask
+-------------------
 
 A set of bit-flags to indicate which events a window is to receive. Most of these masks map onto one or more of the **Gnome::Gdk3::EventType** event types above.
 

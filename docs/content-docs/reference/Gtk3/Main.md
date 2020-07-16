@@ -239,9 +239,9 @@ While you should not call this function directly, you might want to know how exa
 
 5. After finishing the delivery the event is popped from the event stack.
 
-    method gtk_main_do_event ( GdkEvent $event )
+    method gtk_main_do_event ( N-GdkEvent $event )
 
-  * GdkEvent $event; An event to process (normally passed by GDK)
+  * N-GdkEvent $event; An event to process (normally passed by GDK)
 
 [[gtk_] main_] gtk_main
 -----------------------
@@ -364,7 +364,7 @@ For example, if you are handling a *clicked* signal, the current event will be t
 
 Returns: (transfer full) (nullable): a copy of the current event, or `Any` if there is no current event. The returned event must be freed with `gdk_event_free()`.
 
-    method gtk_get_current_event ( --> GdkEvent  )
+    method gtk_get_current_event ( --> N-GdkEvent  )
 
 [gtk_] get_current_event_time
 -----------------------------
@@ -402,9 +402,9 @@ If *event* is `Any` or the event was not associated with any widget, returns `An
 
 Returns: (transfer none) (nullable): the widget that originally received *event*, or `Any`
 
-    method gtk_get_event_widget ( GdkEvent $event --> N-GObject  )
+    method gtk_get_event_widget ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 [gtk_] propagate_event
 ----------------------
@@ -417,9 +417,9 @@ Events received by GTK+ from GDK normally begin in `gtk_main_do_event()`. Depend
 
 All that said, you most likely don’t want to use any of these functions; synthesizing events is rarely needed. There are almost certainly better ways to achieve your goals. For example, use `gdk_window_invalidate_rect()` or `gtk_widget_queue_draw()` instead of making up expose events.
 
-    method gtk_propagate_event ( N-GObject $widget, GdkEvent $event )
+    method gtk_propagate_event ( N-GObject $widget, N-GdkEvent $event )
 
   * N-GObject $widget; a **Gnome::Gtk3::Widget**
 
-  * GdkEvent $event; an event
+  * N-GdkEvent $event; an event
 

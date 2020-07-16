@@ -488,9 +488,9 @@ toggles when it gets a mouse click.
 
 Returns: C<1> if the event was consumed/handled
 
-  method gtk_cell_renderer_activate ( GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> Int  )
+  method gtk_cell_renderer_activate ( N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> Int  )
 
-=item GdkEvent $event; a B<Gnome::Gdk3::Event>
+=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
 =item N-GObject $widget; widget that received the event
 =item Str $path; widget-dependent string representation of the event location;  e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
 =item N-GObject $background_area; background area as passed to C<gtk_cell_renderer_render()>
@@ -499,7 +499,7 @@ Returns: C<1> if the event was consumed/handled
 
 =end pod
 
-sub gtk_cell_renderer_activate ( N-GObject $cell, GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
+sub gtk_cell_renderer_activate ( N-GObject $cell, N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -515,9 +515,9 @@ Passes an activate event to the cell renderer for possible processing.
 
 Returns: (nullable) (transfer none): A new B<Gnome::Gtk3::CellEditable>, or C<Any>
 
-  method gtk_cell_renderer_start_editing ( GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> N-GObject  )
+  method gtk_cell_renderer_start_editing ( N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> N-GObject  )
 
-=item GdkEvent $event; a B<Gnome::Gdk3::Event>
+=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
 =item N-GObject $widget; widget that received the event
 =item Str $path; widget-dependent string representation of the event location; e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
 =item N-GObject $background_area; background area as passed to C<gtk_cell_renderer_render()>
@@ -526,7 +526,7 @@ Returns: (nullable) (transfer none): A new B<Gnome::Gtk3::CellEditable>, or C<An
 
 =end pod
 
-sub gtk_cell_renderer_start_editing ( N-GObject $cell, GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
+sub gtk_cell_renderer_start_editing ( N-GObject $cell, N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
   returns N-GObject
   is native(&gtk-lib)
   { * }
@@ -862,7 +862,7 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
   # connect a signal on window object
   my Gnome::Gtk3::Window $w .= new( ... );
@@ -872,7 +872,7 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   my Gnome::Gtk3::Window $w .= new( ... );
   my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
+    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
   ) {
     ...
   }

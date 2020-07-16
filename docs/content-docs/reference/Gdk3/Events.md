@@ -26,9 +26,9 @@ Example
     # ... etcetera ...
 
     # Define a handler method
-    method handle-keypress ( GdkEvent $event, :$widget ) {
+    method handle-keypress ( N-GdkEvent $event, :$widget ) {
       if $event.event-any.type ~~ GDK_KEY_PRESS {
-        my GdkEventKey $event-key = $event;
+        my N-GdkEventKey $event-key = $event;
         if $event.event-key.keyval eq 's' {
           # key 's' pressed, stop process ...
         }
@@ -40,7 +40,7 @@ Example
 
 If the handler handles only one event type, the method can also be defined as
 
-    method handle-keypress ( GdkEventKey $event-key, :$widget ) {
+    method handle-keypress ( N-GdkEventKey $event-key, :$widget ) {
       if $event-key.type ~~ GDK_KEY_PRESS and $event-key.keyval eq 's' {
         # key 's' pressed, stop process ...
       }
@@ -326,8 +326,11 @@ Specifies why a selection ownership was changed.
 
   * GDK_OWNER_CHANGE_CLOSE: the client was closed
 
-class GdkEventAny
------------------
+Types
+=====
+
+class N-GdkEventAny
+-------------------
 
 Contains the fields which are common to all event structs. Any event pointer can safely be cast to a pointer to a `Gnome::Gdk3::EventAny` to access these fields.
 
@@ -337,8 +340,8 @@ Contains the fields which are common to all event structs. Any event pointer can
 
   * Int $.send_event: `1` if the event was sent explicitly.
 
-class GdkEventVisibility
-------------------------
+class N-GdkEventVisibility
+--------------------------
 
 Generated when the window visibility status has changed.
 
@@ -352,8 +355,8 @@ Deprecated: 3.12: Modern composited windowing systems with pervasive transparenc
 
   * `Gdk3VisibilityState` $.state: the new visibility state (`GDK_VISIBILITY_FULLY_OBSCURED`, `GDK_VISIBILITY_PARTIAL` or `GDK_VISIBILITY_UNOBSCURED`).
 
-class GdkEventMotion
---------------------
+class N-GdkEventMotion
+----------------------
 
 Generated when the pointer moves.
 
@@ -381,8 +384,8 @@ Generated when the pointer moves.
 
   * Num $.y_root: the y coordinate of the pointer relative to the root of the screen.
 
-class GdkEventButton
---------------------
+class N-GdkEventButton
+----------------------
 
 Used for button press and button release events. The *type* field will be one of `GDK_BUTTON_PRESS`, `GDK_2BUTTON_PRESS`, `GDK_3BUTTON_PRESS` or `GDK_BUTTON_RELEASE`,
 
@@ -422,8 +425,8 @@ For a double click to occur, the second button press must occur within 1/4 of a 
 
   * Num $.y_root: the y coordinate of the pointer relative to the root of the screen.
 
-class GdkEventScroll
---------------------
+class N-GdkEventScroll
+----------------------
 
 Generated from button presses for the buttons 4 to 7. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
@@ -455,8 +458,8 @@ Some GDK backends can also generate “smooth” scroll events, which can be rec
 
   * Num $.delta_y: the y coordinate of the scroll delta
 
-class GdkEventKey
------------------
+class N-GdkEventKey
+-------------------
 
 Describes a key press or key release event.
 
@@ -482,8 +485,8 @@ Describes a key press or key release event.
 
   * ___is_modifier: a flag that indicates if *hardware_keycode* is mapped to a modifier. Since 2.10
 
-class GdkEventCrossing
-----------------------
+class N-GdkEventCrossing
+------------------------
 
 Generated when the pointer enters or leaves a window.
 
@@ -513,8 +516,8 @@ Generated when the pointer enters or leaves a window.
 
   * UInt $.state: (type `Gnome::Gdk3::ModifierType`): a bit-mask representing the state of the modifier keys (e.g. Control, Shift and Alt) and the pointer buttons. See `Gnome::Gdk3::ModifierType`.
 
-class GdkEventFocus
--------------------
+class N-GdkEventFocus
+---------------------
 
 Describes a change of keyboard focus.
 
@@ -526,8 +529,8 @@ Describes a change of keyboard focus.
 
   * Int $.in: `1` if the window has gained the keyboard focus, `0` if it has lost the focus.
 
-class GdkEventConfigure
------------------------
+class N-GdkEventConfigure
+-------------------------
 
 Generated when a window size or position has changed.
 
@@ -545,8 +548,8 @@ Generated when a window size or position has changed.
 
   * Int $.height: the new height of the window.
 
-class GdkEventProximity
------------------------
+class N-GdkEventProximity
+-------------------------
 
 Proximity events are generated when using GDK’s wrapper for the XInput extension. The XInput extension is an add-on for standard X that allows you to use nonstandard devices such as graphics tablets. A proximity event indicates that the stylus has moved in or out of contact with the tablet, or perhaps that the user’s finger has moved in or out of contact with a touch screen.
 
@@ -562,8 +565,8 @@ This event type will be used pretty rarely. It only is important for XInput awar
 
   * N-GObject $.device: the master device that the event originated from. Use `gdk_event_get_source_device()` to get the slave device.
 
-class GdkEventSetting
----------------------
+class N-GdkEventSetting
+-----------------------
 
 Generated when a setting is modified.
 
@@ -577,8 +580,8 @@ Generated when a setting is modified.
 
   * Str $.name: the name of the setting.
 
-class GdkEventWindowState
--------------------------
+class N-GdkEventWindowState
+---------------------------
 
 Generated when the state of a toplevel window changes.
 
@@ -592,10 +595,10 @@ Generated when the state of a toplevel window changes.
 
   * `Gnome::Gdk3::WindowState` $.new_window_state: the new window state, a combination of `Gnome::Gdk3::WindowState` bits.
 
-class GdkEventGrabBroken
-------------------------
+class N-GdkEventGrabBroken
+--------------------------
 
-Generated when a pointer or keyboard grab is broken. On X11, this happens when the grab window becomes unviewable (i.e. it or one of its ancestors is unmapped), or if the same application grabs the pointer or keyboard again. Note that implicit grabs (which are initiated by button presses) can also cause `GdkEventGrabBroken` events.
+Generated when a pointer or keyboard grab is broken. On X11, this happens when the grab window becomes unviewable (i.e. it or one of its ancestors is unmapped), or if the same application grabs the pointer or keyboard again. Note that implicit grabs (which are initiated by button presses) can also cause `N-GdkEventGrabBroken` events.
 
 Since: 2.8
 
@@ -611,8 +614,8 @@ Since: 2.8
 
   * N-GObject $.grab_window: If this event is caused by another grab in the same application, *grab_window* contains the new grab window. Otherwise *grab_window* is `Any`.
 
-class GdkEventTouchpadSwipe
----------------------------
+class N-GdkEventTouchpadSwipe
+-----------------------------
 
 Generated during touchpad swipe gestures.
 
@@ -642,8 +645,8 @@ Generated during touchpad swipe gestures.
 
   * UInt $.state: (type `Gnome::Gdk3::ModifierType`): a bit-mask representing the state of the modifier keys (e.g. Control, Shift and Alt) and the pointer buttons. See `Gnome::Gdk3::ModifierType`.
 
-class GdkEventTouchpadPinch
----------------------------
+class N-GdkEventTouchpadPinch
+-----------------------------
 
 Generated during touchpad swipe gestures.
 
@@ -677,8 +680,8 @@ Generated during touchpad swipe gestures.
 
   * UInt $.state: (type `Gnome::Gdk3::ModifierType`): a bit-mask representing the state of the modifier keys (e.g. Control, Shift and Alt) and the pointer buttons. See `Gnome::Gdk3::ModifierType`.
 
-class GdkEventPadButton
------------------------
+class N-GdkEventPadButton
+-------------------------
 
 Generated during `GDK_SOURCE_TABLET_PAD` button presses and releases.
 
@@ -698,8 +701,8 @@ Since: 3.22
 
   * UInt $.mode: The current mode of *group*. Different groups in a `GDK_SOURCE_TABLET_PAD` device may have different current modes.
 
-class GdkEventPadAxis
----------------------
+class N-GdkEventPadAxis
+-----------------------
 
 Generated during `GDK_SOURCE_TABLET_PAD` interaction with tactile sensors.
 
@@ -721,8 +724,8 @@ Since: 3.22
 
   * Num $.value: The current value for the given axis.
 
-class GdkEventPadGroupMode
---------------------------
+class N-GdkEventPadGroupMode
+----------------------------
 
 Generated during `GDK_SOURCE_TABLET_PAD` mode switches in a group.
 
@@ -740,41 +743,38 @@ Since: 3.22
 
   * UInt $.mode: The new mode of *group*. Different groups in a `GDK_SOURCE_TABLET_PAD` device may have different current modes.
 
-class GdkEvent
---------------
+class N-GdkEvent
+----------------
 
-A `GdkEvent` contains a union of all of the event types, and allows access to the data fields in a number of ways.
+A `N-GdkEvent` contains a union of all of the event types, and allows access to the data fields in a number of ways.
 
 The event type is always the first field in all of the event types, and can always be accessed with the following code, no matter what type of event it is:
 
-    method my-handler ( GdkEvent $event ) {
+    method my-handler ( N-GdkEvent $event ) {
       if $event.type ~~ GDK_BUTTON_PRESS {
-        my GdkEventButton $event-button = $event;
+        my N-GdkEventButton $event-button := $event-button;
         ...
       }
 
       elsif $event.type ~~ GDK_KEY_RELEASE {
-        my GdkEventKey $event-key = $event;
+        my N-GdkEventKey $event-key := $event-key;
         ...
       }
     }
 
 The event structures contain data specific to each type of event in GDK. The type is a union of all structures explained above.
 
-Not yet implemented event structures
-------------------------------------
+### struct N-GdkEventExpose ***this event structure is not yet implemented***
 
-### struct GdkEventExpose
+### struct N-GdkEventTouch ***this event structure is not yet implemented***
 
-### struct GdkEventTouch
+### struct N-GdkEventSelection ***this event structure is not yet implemented***
 
-### struct GdkEventSelection
+### struct N-GdkEventProperty ***this event structure is not yet implemented***
 
-### struct GdkEventProperty
+### struct N-GdkEventOwnerChange ***this event structure is not yet implemented***
 
-### struct GdkEventOwnerChange
-
-### struct GdkEventDND
+### struct N-GdkEventDND ***this event structure is not yet implemented***
 
 gdk_events_pending
 ------------------
@@ -785,32 +785,14 @@ Returns: `1` if any events are pending.
 
     method gdk_events_pending ( --> Int  )
 
-gdk_event_get
--------------
-
-Checks all open displays for a **Gnome::Gdk3::Event** to process,to be processed on, fetching events from the windowing system if necessary. See `gdk_display_get_event()`.
-
-Returns: (nullable): the next **Gnome::Gdk3::Event** to be processed, or `Any` if no events are pending. The returned **Gnome::Gdk3::Event** should be freed with `gdk_event_free()`.
-
-    method gdk_event_get ( --> GdkEvent  )
-
-gdk_event_peek
---------------
-
-If there is an event waiting in the event queue of some open display, returns a copy of it. See `gdk_display_peek_event()`.
-
-Returns: (nullable): a copy of the first **Gnome::Gdk3::Event** on some event queue, or `Any` if no events are in any queues. The returned **Gnome::Gdk3::Event** should be freed with `gdk_event_free()`.
-
-    method gdk_event_peek ( --> GdkEvent  )
-
 gdk_event_put
 -------------
 
 Appends a copy of the given event onto the front of the event queue for event->any.window’s display, or the default event queue if event->any.window is `Any`. See `gdk_display_put_event()`.
 
-    method gdk_event_put ( GdkEvent $event )
+    method gdk_event_put ( N-GdkEvent $event )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**.
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**.
 
 gdk_event_new
 -------------
@@ -821,29 +803,9 @@ Returns: a newly-allocated **Gnome::Gdk3::Event**. The returned **Gnome::Gdk3::E
 
 Since: 2.2
 
-    method gdk_event_new ( GdkEventType $type --> GdkEvent  )
+    method gdk_event_new ( GdkEventType $type --> N-GdkEvent  )
 
   * GdkEventType $type; a **Gnome::Gdk3::EventType**
-
-gdk_event_copy
---------------
-
-Copies a **Gnome::Gdk3::Event**, copying or incrementing the reference count of the resources associated with it (e.g. **Gnome::Gdk3::Window**’s and strings).
-
-Returns: a copy of *event*. The returned **Gnome::Gdk3::Event** should be freed with `gdk_event_free()`.
-
-    method gdk_event_copy ( GdkEvent $event --> GdkEvent  )
-
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
-
-gdk_event_free
---------------
-
-Frees a **Gnome::Gdk3::Event**, freeing or decrementing any resources associated with it. Note that this function should only be called with events returned from functions such as `gdk_event_peek()`, `gdk_event_get()`, `gdk_event_copy()` and `gdk_event_new()`.
-
-    method gdk_event_free ( GdkEvent $event )
-
-  * GdkEvent $event; a **Gnome::Gdk3::Event**.
 
 gdk_event_get_window
 --------------------
@@ -854,9 +816,9 @@ Returns: (transfer none): The **Gnome::Gdk3::Window** associated with the event
 
 Since: 3.10
 
-    method gdk_event_get_window ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_window ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_get_time
 ------------------
@@ -865,9 +827,9 @@ Returns the time stamp from *event*, if there is one; otherwise returns **GDK_CU
 
 Returns: time stamp field from *event*
 
-    method gdk_event_get_time ( GdkEvent $event --> UInt  )
+    method gdk_event_get_time ( N-GdkEvent $event --> UInt  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_get_state
 -------------------
@@ -876,9 +838,9 @@ If the event contains a “state” field, puts that field in *state*. Otherwise
 
 Returns: `1` if there was a state field in the event
 
-    method gdk_event_get_state ( GdkEvent $event, GdkModifierType $state --> Int  )
+    method gdk_event_get_state ( N-GdkEvent $event, GdkModifierType $state --> Int  )
 
-  * GdkEvent $event; (allow-none): a **Gnome::Gdk3::Event** or `Any`
+  * N-GdkEvent $event; (allow-none): a **Gnome::Gdk3::Event** or `Any`
 
   * GdkModifierType $state; (out): return location for state
 
@@ -889,9 +851,9 @@ Extract the event window relative x/y coordinates from an event.
 
 Returns: `1` if the event delivered event window coordinates
 
-    method gdk_event_get_coords ( GdkEvent $event, Num $x_win, Num $y_win --> Int  )
+    method gdk_event_get_coords ( N-GdkEvent $event, Num $x_win, Num $y_win --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * Num $x_win; (out) (optional): location to put event window x coordinate
 
@@ -904,9 +866,9 @@ Extract the root window relative x/y coordinates from an event.
 
 Returns: `1` if the event delivered root window coordinates
 
-    method gdk_event_get_root_coords ( GdkEvent $event, Num $x_root, Num $y_root --> Int  )
+    method gdk_event_get_root_coords ( N-GdkEvent $event, Num $x_root, Num $y_root --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * Num $x_root; (out) (optional): location to put root window x coordinate
 
@@ -921,9 +883,9 @@ Returns: `1` if the event delivered a button number
 
 Since: 3.2
 
-    method gdk_event_get_button ( GdkEvent $event, UInt $button --> Int  )
+    method gdk_event_get_button ( N-GdkEvent $event, UInt $button --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * UInt $button; (out): location to store mouse button number
 
@@ -936,9 +898,9 @@ Returns: `1` if the event delivered a click count
 
 Since: 3.2
 
-    method gdk_event_get_click_count ( GdkEvent $event, UInt $click_count --> Int  )
+    method gdk_event_get_click_count ( N-GdkEvent $event, UInt $click_count --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * UInt $click_count; (out): location to store click count
 
@@ -951,9 +913,9 @@ Returns: `1` if the event delivered a key symbol
 
 Since: 3.2
 
-    method gdk_event_get_keyval ( GdkEvent $event, UInt $keyval --> Int  )
+    method gdk_event_get_keyval ( N-GdkEvent $event, UInt $keyval --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * UInt $keyval; (out): location to store the keyval
 
@@ -968,9 +930,9 @@ Returns: `1` if the event delivered a hardware keycode
 
 Since: 3.2
 
-    method gdk_event_get_keycode ( GdkEvent $event, UInt $keycode --> Int  )
+    method gdk_event_get_keycode ( N-GdkEvent $event, UInt $keycode --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * UInt $keycode; (out): location to store the keycode
 
@@ -983,9 +945,9 @@ Returns: `1` if the event delivered a scroll direction
 
 Since: 3.2
 
-    method gdk_event_get_scroll_direction ( GdkEvent $event, GdkScrollDirection $direction --> Int  )
+    method gdk_event_get_scroll_direction ( N-GdkEvent $event, GdkScrollDirection $direction --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * GdkScrollDirection $direction; (out): location to store the scroll direction
 
@@ -998,9 +960,9 @@ Returns: `1` if the event contains smooth scroll information
 
 Since: 3.4
 
-    method gdk_event_get_scroll_deltas ( GdkEvent $event, Num $delta_x, Num $delta_y --> Int  )
+    method gdk_event_get_scroll_deltas ( N-GdkEvent $event, Num $delta_x, Num $delta_y --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * Num $delta_x; (out): return location for X delta
 
@@ -1009,9 +971,9 @@ Since: 3.4
 gdk_event_is_scroll_stop_event
 ------------------------------
 
-    method gdk_event_is_scroll_stop_event ( GdkEvent $event --> Int  )
+    method gdk_event_is_scroll_stop_event ( N-GdkEvent $event --> Int  )
 
-  * GdkEvent $event;
+  * N-GdkEvent $event;
 
 gdk_event_set_device
 --------------------
@@ -1020,9 +982,9 @@ Sets the device for *event* to *device*. The event must have been allocated by G
 
 Since: 3.0
 
-    method gdk_event_set_device ( GdkEvent $event, N-GObject $device )
+    method gdk_event_set_device ( N-GdkEvent $event, N-GObject $device )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
@@ -1035,9 +997,9 @@ Returns: (nullable) (transfer none): a **Gnome::Gdk3::Device**, or `Any`.
 
 Since: 3.0
 
-    method gdk_event_get_device ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_device ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**.
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**.
 
 gdk_event_set_source_device
 ---------------------------
@@ -1048,9 +1010,9 @@ The event must have been allocated by GTK+, for instance by `gdk_event_copy()`.
 
 Since: 3.0
 
-    method gdk_event_set_source_device ( GdkEvent $event, N-GObject $device )
+    method gdk_event_set_source_device ( N-GdkEvent $event, N-GObject $device )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * N-GObject $device; a **Gnome::Gdk3::Device**
 
@@ -1065,9 +1027,9 @@ Returns: (nullable) (transfer none): a **Gnome::Gdk3::Device**, or `Any`.
 
 Since: 3.0
 
-    method gdk_event_get_source_device ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_source_device ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_request_motions
 -------------------------
@@ -1080,9 +1042,9 @@ This function should be used instead of `gdk_window_get_pointer()` to request fu
 
 Since: 2.12
 
-    method gdk_event_request_motions ( GdkEventMotion $event )
+    method gdk_event_request_motions ( N-GdkEventMotion $event )
 
-  * GdkEventMotion $event; a valid **Gnome::Gdk3::Event**
+  * N-GdkEventMotion $event; a valid **Gnome::Gdk3::Event**
 
 gdk_event_triggers_context_menu
 -------------------------------
@@ -1095,9 +1057,9 @@ Returns: `1` if the event should trigger a context menu.
 
 Since: 3.4
 
-    method gdk_event_triggers_context_menu ( GdkEvent $event --> Int  )
+    method gdk_event_triggers_context_menu ( N-GdkEvent $event --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**, currently only button events are meaningful values
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**, currently only button events are meaningful values
 
 [[gdk_] events_] get_distance
 -----------------------------
@@ -1108,11 +1070,11 @@ Returns: `1` if the distance could be calculated.
 
 Since: 3.0
 
-    method gdk_events_get_distance ( GdkEvent $event1, GdkEvent $event2, Num $distance --> Int  )
+    method gdk_events_get_distance ( N-GdkEvent $event1, N-GdkEvent $event2, Num $distance --> Int  )
 
-  * GdkEvent $event1; first **Gnome::Gdk3::Event**
+  * N-GdkEvent $event1; first **Gnome::Gdk3::Event**
 
-  * GdkEvent $event2; second **Gnome::Gdk3::Event**
+  * N-GdkEvent $event2; second **Gnome::Gdk3::Event**
 
   * Num $distance; (out): return location for the distance
 
@@ -1125,11 +1087,11 @@ Returns: `1` if the angle could be calculated.
 
 Since: 3.0
 
-    method gdk_events_get_angle ( GdkEvent $event1, GdkEvent $event2, Num $angle --> Int  )
+    method gdk_events_get_angle ( N-GdkEvent $event1, N-GdkEvent $event2, Num $angle --> Int  )
 
-  * GdkEvent $event1; first **Gnome::Gdk3::Event**
+  * N-GdkEvent $event1; first **Gnome::Gdk3::Event**
 
-  * GdkEvent $event2; second **Gnome::Gdk3::Event**
+  * N-GdkEvent $event2; second **Gnome::Gdk3::Event**
 
   * Num $angle; (out): return location for the relative angle between both events
 
@@ -1142,11 +1104,11 @@ Returns: `1` if the center could be calculated.
 
 Since: 3.0
 
-    method gdk_events_get_center ( GdkEvent $event1, GdkEvent $event2, Num $x, Num $y --> Int  )
+    method gdk_events_get_center ( N-GdkEvent $event1, N-GdkEvent $event2, Num $x, Num $y --> Int  )
 
-  * GdkEvent $event1; first **Gnome::Gdk3::Event**
+  * N-GdkEvent $event1; first **Gnome::Gdk3::Event**
 
-  * GdkEvent $event2; second **Gnome::Gdk3::Event**
+  * N-GdkEvent $event2; second **Gnome::Gdk3::Event**
 
   * Num $x; (out): return location for the X coordinate of the center
 
@@ -1159,9 +1121,9 @@ Sets the screen for *event* to *screen*. The event must have been allocated by G
 
 Since: 2.2
 
-    method gdk_event_set_screen ( GdkEvent $event, N-GObject $screen )
+    method gdk_event_set_screen ( N-GdkEvent $event, N-GObject $screen )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * N-GObject $screen; a **Gnome::Gdk3::Screen**
 
@@ -1174,9 +1136,9 @@ Returns: (transfer none): the screen for the event
 
 Since: 2.2
 
-    method gdk_event_get_screen ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_screen ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_get_event_type
 ------------------------
@@ -1187,9 +1149,9 @@ Returns: a **Gnome::Gdk3::EventType**
 
 Since: 3.10
 
-    method gdk_event_get_event_type ( GdkEvent $event --> GdkEventType  )
+    method gdk_event_get_event_type ( N-GdkEvent $event --> GdkEventType  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_get_seat
 ------------------
@@ -1200,9 +1162,9 @@ Returns: (transfer none): The **Gnome::Gdk3::Seat** of this event
 
 Since: 3.20
 
-    method gdk_event_get_seat ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_seat ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_set_show_events
 -------------------
@@ -1246,9 +1208,9 @@ Returns: (transfer none): The current device tool, or `Any`
 
 Since: 3.22
 
-    method gdk_event_get_device_tool ( GdkEvent $event --> N-GObject  )
+    method gdk_event_get_device_tool ( N-GdkEvent $event --> N-GObject  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_set_device_tool
 -------------------------
@@ -1257,9 +1219,9 @@ Sets the device tool for this event, should be rarely used.
 
 Since: 3.22
 
-    method gdk_event_set_device_tool ( GdkEvent $event, N-GObject $tool )
+    method gdk_event_set_device_tool ( N-GdkEvent $event, N-GObject $tool )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
   * N-GObject $tool; (nullable): tool to set on the event, or `Any`
 
@@ -1274,9 +1236,9 @@ Returns: The associated keyboard scancode or 0
 
 Since: 3.22
 
-    method gdk_event_get_scancode ( GdkEvent $event --> int32  )
+    method gdk_event_get_scancode ( N-GdkEvent $event --> int32  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event**
 
 gdk_event_get_pointer_emulated
 ------------------------------
@@ -1287,7 +1249,7 @@ Returns: `1` if this event is emulated
 
 Since: 3.22
 
-    method gdk_event_get_pointer_emulated ( GdkEvent $event --> Int  )
+    method gdk_event_get_pointer_emulated ( N-GdkEvent $event --> Int  )
 
-  * GdkEvent $event; **event**: a **Gnome::Gdk3::Event**
+  * N-GdkEvent $event; **event**: a **Gnome::Gdk3::Event**
 

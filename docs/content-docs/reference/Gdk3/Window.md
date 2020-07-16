@@ -1192,7 +1192,7 @@ Gets the event mask for *window* for all master input devices. See `gdk_window_s
 
 Returns: event mask for *window*
 
-    method gdk_window_get_events ( --> GdkEventMask  )
+    method gdk_window_get_events ( --> N-GdkEventMask  )
 
 [[gdk_] window_] set_events
 ---------------------------
@@ -1201,9 +1201,9 @@ The event mask for a window determines which events will be reported for that wi
 
 See the [input handling overview][event-masks] for details.
 
-    method gdk_window_set_events ( GdkEventMask $event_mask )
+    method gdk_window_set_events ( N-GdkEventMask $event_mask )
 
-  * GdkEventMask $event_mask; event mask for *window*
+  * N-GdkEventMask $event_mask; event mask for *window*
 
 [[gdk_] window_] set_device_events
 ----------------------------------
@@ -1212,11 +1212,11 @@ Sets the event mask for a given device (Normally a floating device, not attached
 
 See the [input handling overview][event-masks] for details.
 
-    method gdk_window_set_device_events ( N-GObject $device, GdkEventMask $event_mask )
+    method gdk_window_set_device_events ( N-GObject $device, N-GdkEventMask $event_mask )
 
   * N-GObject $device; **Gnome::Gdk3::Device** to enable events for.
 
-  * GdkEventMask $event_mask; event mask for *window*
+  * N-GdkEventMask $event_mask; event mask for *window*
 
 [[gdk_] window_] get_device_events
 ----------------------------------
@@ -1225,7 +1225,7 @@ Returns the event mask for *window* corresponding to an specific device.
 
 Returns: device event mask for *window*
 
-    method gdk_window_get_device_events ( N-GObject $device --> GdkEventMask  )
+    method gdk_window_get_device_events ( N-GObject $device --> N-GdkEventMask  )
 
   * N-GObject $device; a **Gnome::Gdk3::Device**.
 
@@ -1234,11 +1234,11 @@ Returns: device event mask for *window*
 
 Sets the event mask for any floating device (i.e. not attached to any visible pointer) that has the source defined as *source*. This event mask will be applied both to currently existing, newly added devices after this call, and devices being attached/detached.
 
-    method gdk_window_set_source_events ( GdkInputSource $source, GdkEventMask $event_mask )
+    method gdk_window_set_source_events ( GdkInputSource $source, N-GdkEventMask $event_mask )
 
   * GdkInputSource $source; a **Gnome::Gdk3::InputSource** to define the source class.
 
-  * GdkEventMask $event_mask; event mask for *window*
+  * N-GdkEventMask $event_mask; event mask for *window*
 
 [[gdk_] window_] get_source_events
 ----------------------------------
@@ -1247,7 +1247,7 @@ Returns the event mask for *window* corresponding to the device class specified 
 
 Returns: source event mask for *window*
 
-    method gdk_window_get_source_events ( GdkInputSource $source --> GdkEventMask  )
+    method gdk_window_get_source_events ( GdkInputSource $source --> N-GdkEventMask  )
 
   * GdkInputSource $source; a **Gnome::Gdk3::InputSource** to define the source class.
 
@@ -1857,9 +1857,9 @@ Asks the windowing system to show the window menu. The window menu is the menu s
 
 Returns: `1` if the window menu was shown and `0` otherwise.
 
-    method gdk_window_show_window_menu ( GdkEvent $event --> Int  )
+    method gdk_window_show_window_menu ( N-GdkEvent $event --> Int  )
 
-  * GdkEvent $event; a **Gnome::Gdk3::Event** to show the menu for
+  * N-GdkEvent $event; a **Gnome::Gdk3::Event** to show the menu for
 
 [[gdk_] window_] create_gl_context
 ----------------------------------
@@ -1887,7 +1887,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -1898,7 +1898,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

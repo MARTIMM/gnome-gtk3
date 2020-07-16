@@ -1462,13 +1462,13 @@ Rarely-used function. This function is used to emit the event signals on a widge
 
 Returns: return from the event signal emission (C<1> if the event was handled)
 
-  method gtk_widget_event ( GdkEvent $event --> Int  )
+  method gtk_widget_event ( N-GdkEvent $event --> Int  )
 
-=item GdkEvent $event; a B<Gnome::Gdk3::Event>
+=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
 
 =end pod
 
-sub gtk_widget_event ( N-GObject $widget, GdkEvent $event )
+sub gtk_widget_event ( N-GObject $widget, N-GdkEvent $event )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -1506,13 +1506,13 @@ Returns: the return value from the event signal emission: C<1>
 if the event was handled, and C<0> otherwise
 
 
-  method gtk_widget_send_focus_change ( GdkEvent $event --> Int  )
+  method gtk_widget_send_focus_change ( N-GdkEvent $event --> Int  )
 
-=item GdkEvent $event; a B<Gnome::Gdk3::Event> of type GDK_FOCUS_CHANGE
+=item N-GdkEvent $event; a B<Gnome::Gdk3::Event> of type GDK_FOCUS_CHANGE
 
 =end pod
 
-sub gtk_widget_send_focus_change ( N-GObject $widget, GdkEvent $event )
+sub gtk_widget_send_focus_change ( N-GObject $widget, N-GdkEvent $event )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -2927,11 +2927,11 @@ sub gtk_widget_add_events ( N-GObject $widget, int32 $events )
 Sets the device event mask (see B<Gnome::Gdk3::EventMask>) for a widget. The event mask determines which events a widget will receive from I<device>. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a widget’s functionality, so be careful. This function must be called while a widget is unrealized. Consider C<gtk_widget_add_device_events()> for widgets that are already realized, or if you want to preserve the existing event mask. This function can’t be used with windowless widgets (which return C<0> from C<gtk_widget_get_has_window()>); to get events on those widgets, place them inside a B<Gnome::Gtk3::EventBox> and receive events on the event box.
 
   method gtk_widget_set_device_events (
-    N-GObject $device, GdkEventMask $events
+    N-GObject $device, N-GdkEventMask $events
   )
 
 =item N-GObject $device; a B<Gnome::Gdk3::Device>
-=item GdkEventMask $events; event mask
+=item N-GdkEventMask $events; event mask
 
 =end pod
 
@@ -2948,11 +2948,11 @@ Adds the device events in the bitfield I<events> to the event mask for I<widget>
 
 
   method gtk_widget_add_device_events (
-    N-GObject $device, GdkEventMask $events
+    N-GObject $device, N-GdkEventMask $events
   )
 
 =item N-GObject $device; a B<Gnome::Gdk3::Device>
-=item GdkEventMask $events; an event mask, see B<Gnome::Gdk3::EventMask>
+=item N-GdkEventMask $events; an event mask, see B<Gnome::Gdk3::EventMask>
 
 =end pod
 
@@ -3929,7 +3929,7 @@ sub gtk_widget_get_events ( N-GObject $widget )
 
 Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when I<device> operates on it.
 
-  method gtk_widget_get_device_events ( N-GObject $device --> GdkEventMask  )
+  method gtk_widget_get_device_events ( N-GObject $device --> N-GdkEventMask  )
 
 =item N-GObject $device; a B<Gnome::Gdk3::Device>
 
@@ -5189,7 +5189,7 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
   # connect a signal on window object
   my Gnome::Gtk3::Window $w .= new( ... );
@@ -5199,7 +5199,7 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   my Gnome::Gtk3::Window $w .= new( ... );
   my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
+    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
   ) {
     ...
   }
@@ -5620,7 +5620,7 @@ the second signal. The I<event-after> signal is emitted regardless of
 the return value.
 
   method handler (
-    GdkEvent $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5641,7 +5641,7 @@ regardless of the previous two signals handlers return values.
 
 
   method handler (
-    GdkEvent $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5667,7 +5667,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventButton $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5694,7 +5694,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventButton $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5722,7 +5722,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventScroll $event,
+    N-GdkEventScroll $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5748,7 +5748,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventMotion $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5789,7 +5789,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEvent $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5815,7 +5815,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEvent $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5841,7 +5841,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventKey $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5866,7 +5866,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventKey $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5892,7 +5892,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventCrossing $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5918,7 +5918,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventCrossing $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5940,7 +5940,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventConfigure $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5961,7 +5961,7 @@ To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget need
 Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
-    GdkEventFocus $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -5982,7 +5982,7 @@ To receive this signal, the B<Gnome::Gdk3::Window> associated to the widget need
 Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
-    GdkEventFocus $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6007,7 +6007,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventAny $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6032,7 +6032,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventAny $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6057,7 +6057,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventProperty $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6078,7 +6078,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventSelection $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6100,7 +6100,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventSelection $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6117,7 +6117,7 @@ C<0> to propagate the event further.
 Returns: C<1> to stop other handlers from being invoked for the event. C<0> to propagate the event further.
 
   method handler (
-    GdkEventSelection $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6176,7 +6176,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventProximity $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6198,7 +6198,7 @@ Returns: C<1> to stop other handlers from being invoked for the event.
 C<0> to propagate the event further.
 
   method handler (
-    GdkEventProximity $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6671,7 +6671,7 @@ C<0> to propagate the event further.
 
 
   method handler (
-    GdkEventExpose $event,
+    N-GdkEvent $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6698,7 +6698,7 @@ the event. C<0> to propagate the event further.
 
 
   method handler (
-    GdkEventGrabBroken $event,
+    N-GdkEventGrab $event,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options

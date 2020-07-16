@@ -71,9 +71,9 @@ Returns: `GDK_EVENT_STOP` if the key press event resulted in a search beginning 
 
 Since: 3.16
 
-    method gtk_search_entry_handle_event ( GdkEvent $event --> Int  )
+    method gtk_search_entry_handle_event ( N-GdkEvent $event --> Int  )
 
-  * GdkEvent $event; a key event
+  * N-GdkEvent $event; a key event
 
 Signals
 =======
@@ -86,7 +86,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -97,7 +97,7 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
+      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }

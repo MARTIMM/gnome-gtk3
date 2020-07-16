@@ -206,17 +206,17 @@ Emits the “event” signal on the B<Gnome::Gtk3::TextTag>.
 Returns: result of signal emission (whether the event was handled)
 
   method gtk_text_tag_event (
-    N-GObject $event_object, GdkEvent $event, N-GObject $iter
+    N-GObject $event_object, N-GdkEvent $event, N-GObject $iter
     --> Int
   )
 
 =item N-GObject $event_object; object that received the event, such as a widget
-=item GdkEvent $event; the event
+=item N-GdkEvent $event; the event
 =item N-GObject $iter; location where the event was received
 
 =end pod
 
-sub gtk_text_tag_event ( N-GObject $tag, N-GObject $event_object, GdkEvent $event, N-GObject $iter )
+sub gtk_text_tag_event ( N-GObject $tag, N-GObject $event_object, N-GdkEvent $event, N-GObject $iter )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -254,7 +254,7 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
   # connect a signal on window object
   my Gnome::Gtk3::Window $w .= new( ... );
@@ -264,7 +264,7 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   my Gnome::Gtk3::Window $w .= new( ... );
   my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
+    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
   ) {
     ...
   }
@@ -287,7 +287,7 @@ event. C<0> to propagate the event further.
 
   method handler (
     N-GObject $object,
-    GdkEvent $event,
+    N-GdkEvent $event,
     N-GObject $iter,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($tag),
