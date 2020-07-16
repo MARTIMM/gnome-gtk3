@@ -275,14 +275,23 @@ WidgetPath|b|
 Window                    |  | 🗸| 🗸|  |  |  |* |
 WindowGroup|
 **Gnome::Gdk3**           |p | #| #| #| #| #| #|
+Device                    |  |  |  |  |  |  |  |
+Display                   |  |  |  |  |  |  |  |
+Events                    |  |  |  |  |  |  |* |
+Keysyms                   |  |  |  |  |  |  |  |
+Pixbuf                    |  |  |  |  |  |  |  |
+RGBA                      |  |  |  |  |  |  |  |
+Screen                    |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |* |
+Window                    |  |  |  |  |  |  |  |
 **Gnome::GObject**        |p | #| #| #| #| #| #|
-Boxed                     |t |
-Enums                     |s |
-InitiallyUnowned          |
+Boxed                     |t |  |  |  |  |  |  |
+Enums                     |s |  |  |  |  |  |  |
+InitiallyUnowned          |  |  |  |  |  |  |  |
 Object                    |t |  |  |  |  |  |* |
 Signal                    |- |  |  |  |  |  |* |
-Type                      |s |
-value                     |b |
+Type                      |s |  |  |  |  |  |  |
+value                     |b |  |  |  |  |  |  |
 **Gnome::Glib**           |p | #| #| #| #| #| #|
 Error                     |  |  |  |  |  |  |  |
 List                      |  |  |  |  |  |  |  |
@@ -291,16 +300,16 @@ Quark                     |  |  |  |  |  |  |  |
 SList                     |  |  |  |  |  |  |  |
 Variant                   |  |  |  |  |  |  |  |
 **Gnome::Gio**            |p | #| #| #| #| #| #|
-Action                    |i |
-ActionMap                 |i |
-Application               |  |
-EmblemedIcon              |  |
-Enums                     |s |
-File                      |i |
-MenuModel                 |  |
-MountOperation            |  |
-Resource                  |b |
-SimpleAction              |  |
+Action                    |i |  |  |  |  |  |  |
+ActionMap                 |i |  |  |  |  |  |  |
+Application               |  |  |  |  |  |  |  |
+EmblemedIcon              |  |  |  |  |  |  |  |
+Enums                     |s |  |  |  |  |  |  |
+File                      |i |  |  |  |  |  |  |
+MenuModel                 |  |  |  |  |  |  |  |
+MountOperation            |  |  |  |  |  |  |  |
+Resource                  |b |  |  |  |  |  |  |
+SimpleAction              |  |  |  |  |  |  |  |
 **Gnome::N**              |p | #| #| #| #| #| #|
 N-GObject                 |N |  |  |  |  |  |  |
 NativeLib                 |L |  |  |  |  |  |- |

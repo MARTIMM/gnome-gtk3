@@ -190,6 +190,8 @@ layout: sidebar
   * [ ] Drawing
   * [ ] Font and other text handling
   * [ ] D-Bus
+  * [ ] Cairo
+  * [ ] Pango
 
   * [ ] Debugging
     * Testing your program with Gnome::T.
