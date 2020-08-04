@@ -29,7 +29,7 @@ Example
     method handle-keypress ( N-GdkEvent $event, :$widget ) {
       if $event.event-any.type ~~ GDK_KEY_PRESS {
         my N-GdkEventKey $event-key = $event;
-        if $event.event-key.keyval eq 's' {
+        if Buf.new($event.event-key.keyval).decode eq 's' {
           # key 's' pressed, stop process ...
         }
       }
@@ -41,7 +41,8 @@ Example
 If the handler handles only one event type, the method can also be defined as
 
     method handle-keypress ( N-GdkEventKey $event-key, :$widget ) {
-      if $event-key.type ~~ GDK_KEY_PRESS and $event-key.keyval eq 's' {
+      if $event-key.type ~~ GDK_KEY_PRESS and
+        Buf.new($event-key.keyval).decode eq 's' {
         # key 's' pressed, stop process ...
       }
     }
