@@ -14,7 +14,7 @@ use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -119,6 +119,8 @@ subtest 'Button connect and emit signal', {
 
   # create new button, register button signal and prepare user data
   $b .= new(:label('xyz'));
+
+#Gnome::N::debug(:on);
 
   # prevent errors from gnome gtk
   my Gnome::Gtk3::Window $w .= new;
