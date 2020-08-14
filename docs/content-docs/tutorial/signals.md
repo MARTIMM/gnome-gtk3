@@ -83,7 +83,7 @@ So, that was easy 😉.
 
 ## Other Signals
 
-Each of the Gnome objects who can handle signals have some detailed information in their documentation. I we look for example at the `key-press-event` defined for **Gnome::Gtk3::Widget** we see the following handler declaration;
+Each of the Gnome objects who can handle signals have some detailed information in their documentation. If we look for example at the `key-press-event` defined for **Gnome::Gtk3::Widget** we see the following handler declaration;
 ```
 method handler (
   N-GdkEventKey $event,
@@ -126,3 +126,5 @@ The `N-GdkEvent` type is a union of event structures of which `N-GdkEventKey` is
 You can test the keys for its values such as `GDK_KEY_Return` used in the example. The names can be found here: **Gnome::Gdk3::Keysyms**.
 
 ## Sending Signals
+
+Most of the time the program only have to sit back and wait for the user of your precious application to press a button or generate an action of some sort. Sometimes, however, you would like the program to respond to other actions. For example, you would like to show a counter of how many files have been processed by the program. Normally, this cannot be shown as long as that part is reading files.
