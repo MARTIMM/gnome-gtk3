@@ -127,4 +127,4 @@ You can test the keys for its values such as `GDK_KEY_Return` used in the exampl
 
 ## Sending Signals
 
-Most of the time the program only have to sit back and wait for the user of your precious application to press a button or generate an action of some sort. Sometimes, however, you would like the program to respond to other actions. For example, you would like to show a counter of how many files have been processed by the program. Normally, this cannot be shown as long as that part is reading files.
+Most of the time the program only have to sit back and wait for the user of your precious application to press a button or generate an action of some sort. Sometimes, however, you would like the program to respond to other actions. For example, you would like to update a counter to show how many files have been processed by the program. Normally, this cannot be shown as long as that part is reading files. The interface freezes if this part is taking too much of its time.
