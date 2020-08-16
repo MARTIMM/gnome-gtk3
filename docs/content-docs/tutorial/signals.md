@@ -1,10 +1,10 @@
 ---
-title: Tutorial - Sinals and Events
+title: Tutorial - Signals and Events
 nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
-# Sinals and Events
+# Signals and Events
 
 We are going to see a bit more about signals. First some repetition. We define our signal handler methods in a class of its own. The purpose of that is to separate the handling of signals from the main code. This class can be setup around some object with all information it needs. An example could be the handling of a group of radio-buttons. Below a slight different approach where you can see that the class has its business with the top leven window.
 
@@ -125,6 +125,58 @@ The `N-GdkEvent` type is a union of event structures of which `N-GdkEventKey` is
 
 You can test the keys for its values such as `GDK_KEY_Return` used in the example. The names can be found here: **Gnome::Gdk3::Keysyms**.
 
-## Sending Signals
+## Event Loop
 
-Most of the time the program only have to sit back and wait for the user of your precious application to press a button or generate an action of some sort. Sometimes, however, you would like the program to respond to other actions. For example, you would like to update a counter to show how many files have been processed by the program. Normally, this cannot be shown as long as that part is reading files. The interface freezes if this part is taking too much of its time.
+Most of the time the program only have to sit back and wait for the user of your precious application to press a button or generate an action of some sort. Most of the time the actions are short lived and the program returns to its waiting state. This state is called the event loop where the program is waiting for events to happen. The state is entered with the call to `Gnome::Gtk3::Main.new().gtk-main()` and ended with `.gtk-main-quit()` in the **Gnome::Gtk3::Main** object.
+
+However, every action performed by your code will freeze the user interface. As mentioned above, this processing time is mostly short and the freezing is barely noticed. When you have to do something substantial you will have to check for events yourself and let the library process the queued events to prevent an unresponsive interface.
+
+You can do this by inserting the following code on regular spots in your code;
+```
+my Gnome::Gtk3::Main $main;
+...
+while $main.events-pending {
+  $main.main-iteration;
+}
+```
+Or an even smaller snippet;
+```
+my Bool $exited = ? $main.main-iteration(False);
+```
+Only you won't know if there were any events processed. The value returned is 0 or 1 to show if the current event loop was exited.
+
+Yes, current event loop, because event loops can be nested, although, I do not yet have a good example for it. It seems that dialog widgets use a local event loop. I can imagine that a modal dialog shields the events from parent windows off by doing that but that needs to be found out yet. To get the current loop nesting level call `$main.main-level()`.
+
+There are other ways to run code and keep the interface responsive as is shown in the next example. It shows a scale widget which you can change and two buttons _Start Update_ and _Stop Update_. The start update button is used to start a process in a thread which mimic computations and show results by moving the scale left or right. The stop update button stops that process. While running, all gui elements stay responsive while running the 'updates' like button clicks and window resizes.
+
+![image](images/signals-background-example.png)
+
+Class **X** is controlling a few veriables which are accessed from several threads and need therefore some protection using semaphores. There is a package for this called **Semaphore::ReadersWriters**. See also [readers-writers problem on wikipedia](https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem). Initializing the semaphores [22-25] uses two keys to control two semaphores for the variables `$!promise` and `$!running-update`. Later you see examples of reading [35,52] and writing [54,55-61].
+
+You cannot blindly start a thread and try to update the interface from there. The Glib library provides several ways to enter a thread safely. The routine `.start-thread()` from **Gnome::GObject::Object** does that for you and returns a **Promise** object [56-59]. Option `:start-time` gives you the opportinity to let the thread wait a little before taking off. `:new-context` is a necessary option which controls the creation of a separate context. This is needed if one is to show the changes in the Gui otherwise it will still use the main loop and the Gui will freeze.
+
+Initialization and configuration takes place at 76-107 after which all is shown [108] and the event loop entered [109].
+
+{% highlight raku linenos %}
+{% include example-code/Signals/change-gui-from-thread.pl6 %}
+{% endhighlight %}
+
+## Sending Events
+
+I believe that sending an event to some widget is seldom used but it is possible to, for example, send a click event to a button and start the action for that event. A test interface (already in the making) could make use of this so a Gui can be tested by a script instead of the tedious and repeatative work of pressing all buttons and providing input to see if the program still works.
+
+In the next program example w'll see the use of `.emit-by-name()` from **Gnome::GObject::Signal**. It is a bit of a fun application which could work much more easy using `.set-active()` on the check box widget but there is also our motto **_TIMTOWTDI_** or **_There Is More Than One Way To Do It!_**
+
+![image](images/signals-emit-by-name.png)
+
+Clicking on the button named 'Pick a Box' will choose a checkbox to send a `clicked` event to one of the check buttons. After receiving the event, the checkbox toggles between its on or off state and calls the callback routine. This routine writes the result information to the console wherein the program is started.
+
+{% highlight raku linenos %}
+{% include example-code/Signals/emit-event.pl6 %}
+{% endhighlight %}
+
+Most of the code is obvious after having shown several examples. The initialization of class **X** generates 20 check buttons and place these in the first row [14-27] of the provided grid [46]. We use the `toggled` signal to call the `.check-box-toggle()` method [25].
+
+The second row is occupied by the button over all its horizontal grid cells, 20 cells that is [48,49]. It is setup to call method `$x.pick-a-box()` after procesing the `clicked` event [50].
+
+The method `$x.pick-a-box()` will randomly choose one of the generated check buttons to send the event `clicked` to. Here the method `.emit-by-name()` is called to do just that [39].
