@@ -75,6 +75,7 @@ layout: sidebar
     * A Simple Window
     * Simple Window with a Button
     * Simple Window with two Buttons
+
   * [x] Intermezzo: Methods
     * Method naming
 
@@ -89,10 +90,13 @@ layout: sidebar
     * [ ] Some Widget methods
     -->
 
-  * [ ] Signals
-    * Sinals and Events repetition
-    * Some other signals
-    * Unregistering signals
+  * [x] Signals
+    * Signals and Events
+    * Declaration of the Registration Method
+    * Unregistering Signals
+    * Other signals
+    * Event Loop
+    * Sending Events
 
   * [ ] Intermezzo: search of native subroutines
     * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
@@ -185,6 +189,8 @@ layout: sidebar
     * Phases
     * Signals
     * Multiple program entities or not
+
+  * [ ] Command line arguments of GTK
 
   * [ ] Drag and drop
   * [ ] Drawing
