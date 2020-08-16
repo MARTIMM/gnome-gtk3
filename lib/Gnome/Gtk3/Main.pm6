@@ -8,18 +8,17 @@ use v6;
 
 Library initialization, main event loop, and events
 
-
 =head1 Description
 
 Before using GTK+, you need to initialize it; initialization connects to the window system display, and parses some standard command line arguments. The C<gtk_init()> macro initializes GTK+. C<gtk_init()> exits the application if errors occur; to avoid this, use C<gtk_init_check()>. C<gtk_init_check()> allows you to recover from a failed GTK+ initialization - you might start up your application in text mode instead.
 
-However, in these Gnome packages the initialization takes place automatically as soon as possible. It happens when an object is created which has B<Gnome::GObject::Object> as its parent. It calls C<gtk_init_check()> to initialize GTK+. If other actions are needed before using GTK, it is necessary to inititialize by hand. This will be as easy as instatiating this class;
+However, in these Gnome packages the initialization takes place automatically as soon as possible. It happens when an object is created which has B<Gnome::GObject::Object> as its parent. It calls C<gtk_init_check()> to initialize GTK+. If other actions are needed before using GTK, it is necessary to initialize by hand. This will be as easy as instantiating this class;
 
   my Gnome::Gtk3::Main .= new;
 
 Like all GUI toolkits, GTK+ uses an event-driven programming model. When the user is doing nothing, GTK+ sits in the “main loop” and waits for input. If the user performs some action - say, a mouse click - then the main loop “wakes up” and delivers an event to GTK+. GTK+ forwards the event to one or more widgets.
 
-When widgets receive an event, they frequently emit one or more “signals”. Signals notify your program that "something interesting happened" by invoking functions you’ve connected to the signal with C<g_signal_connect()>. Functions connected to a signal are often termed “callbacks”.
+When widgets receive an event, they frequently emit one or more “signals”. Signals notify your program that "something interesting happened" by invoking functions you’ve connected to the signal with C<register-signal()> from B<Gnome::GObject::Object>. Functions connected to a signal are often termed “callbacks”.
 
 When your callbacks are invoked, you would typically take some action - for example, when an Open button is clicked you might display a B<Gnome::Gtk3::FileChooserDialog>. After a callback finishes, GTK+ will return to the main loop and await more user input.
 
@@ -31,17 +30,17 @@ When your callbacks are invoked, you would typically take some action - for exam
   }
 
   sub MAIN ( ... ) {
-    my Gnome::Gtk3::Window $top-window .= new(:title('My Application Window'));
+    my Gnome::Gtk3::Window $top-window .= new;
+    $top-window.set-title('My Application Window');
 
-    # Set up our GUI elements
+    # Set up GUI elements
     ...
 
     # Register signal handlers
     ...
 
+    # Show all of the Gui and start event loop
     $top-window.show-all;
-
-    # Start event loop
     Gnome::Gtk3::Main.new.gtk-main;
 
     # Event loop finished, exit program
@@ -62,12 +61,10 @@ https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
 
 =head2 Example
 
-  my Gnome::Gtk3::Main $main .= new;
-
   # Setup user interface
   ...
   # Start main loop
-  $main.gtk-main;
+  Gnome::Gtk3::Main.new.gtk-main;
 
   # Elsewhere in some exit handler
   method exit ( ) {
@@ -101,8 +98,7 @@ Create a GtkMain object. Initialization of GTK is automatically executed if not 
 
   submethod BUILD ( Bool :$check = False )
 
-=item $check; Use checked initialization. Program will not fail when commandline
-arguments do not parse properly.
+=item $check; Use checked initialization. Program will not fail when commandline arguments do not parse properly.
 
 =end pod
 
@@ -681,16 +677,13 @@ sub gtk_main_iteration (  )
 =begin pod
 =head2 [[gtk_] main_] iteration_do
 
-Runs a single iteration of the mainloop.
-If no events are available either return or block depending on
-the value of I<blocking>.
+Runs a single iteration of the mainloop. If no events are available either return or block depending on the value of I<blocking>.
 
-Returns: C<1> if C<gtk_main_quit()> has been called for the
-innermost mainloop
+Returns: C<1> if C<gtk_main_quit()> has been called for the innermost mainloop
 
-  method gtk_main_iteration_do ( Int $blocking --> Int  )
+  method gtk_main_iteration_do ( Bool $blocking --> Int  )
 
-=item Int $blocking; C<1> if you want GTK+ to block if no events are pending
+=item Bool $blocking; C<True> if you want GTK+ to block if no events are pending
 
 =end pod
 
