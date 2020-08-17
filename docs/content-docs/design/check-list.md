@@ -150,11 +150,6 @@ GestureSwipe|
 GestureZoom|
 GLArea|
 Grid                      |  |  |  |  |  |  |  |  |  |* |
-GtkOffscreenWindow|
-GtkPlug|
-GtkPrintUnixDialog|
-GtkRecentChooserDialog|
-GtkShortcutsWindow|
 HandleBox|
 HeaderBar|
 IconFactory|
@@ -185,6 +180,7 @@ MessageDialog|
 ModelButton|
 MountOperation|
 Notebook|
+OffscreenWindow|
 Orientable|i|
 Overlay|
 PadController|
@@ -193,6 +189,7 @@ PageSetupUnixDialog|
 Paned|
 PaperSize|b|
 PlacesSidebar|
+Plug|
 Popover|
 PopoverMenu|
 PrintBackend|
@@ -202,6 +199,7 @@ PrintJob|
 PrintOperation|
 PrintOperationPreview|i|
 PrintSettings|
+PrintUnixDialog|
 ProgressBar|
 RadioButton|
 RadioMenuItem|
@@ -209,6 +207,7 @@ RadioToolButton|
 Range|
 RcStyle|
 RecentChooser|i|
+RecentChooserDialog|
 RecentChooserMenu|
 RecentChooserWidget|
 RecentFilter|
@@ -230,6 +229,7 @@ Settings|
 ShortcutsGroup|
 ShortcutsSection|
 ShortcutsShortcut|
+ShortcutsWindow|
 SizeGroup|
 Socket|
 SpinButton|
