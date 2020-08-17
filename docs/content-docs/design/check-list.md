@@ -84,7 +84,7 @@ CellRendererText|
 CellRendererToggle|
 CheckButton|
 ColorButton|
-ColorChooser              |i|
+ColorChooser              |i |
 ColorChooserDialog|
 ColorChooserWidget|
 ComboBox|
@@ -95,7 +95,7 @@ Dialog                    |  |  |  |  |  |  |  |  |  |* |
 DrawingArea               |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| ✗|
 Entry|
 Enums                     |s |  |  |  | ✗| ✗|  | ✗| ✗|* |
-FileChooser               |i|
+FileChooser               |i |
 FileChooserDialog|
 FileFilter|
 Frame                     |  |  |  |  |  |  |  |  |  |* |
@@ -115,7 +115,7 @@ MenuShell|
 MessageDialog|
 Misc|
 Notebook|
-Orientable                |i|
+Orientable                |i |
 Paned|
 PlacesSidebar|
 Popover|
@@ -134,33 +134,27 @@ Stack|
 StackSidebar|
 StackSwitcher|
 StyleContext|
-StyleProvider             |i|
+StyleProvider             |i |
 Switch|
 TextBuffer|
-TextIter                  |b|
+TextIter                  |b |
 TextTag|
 TextTagTable|
 TextView|
 ToggleButton|
 ToolButton|
 ToolItem|
-TreeIter|b|
-   TreeModelFilter|
-TreeModel|i|
-TreeModelSort|
-TreePath|b|
+TreeIter                  |b |
+TreeModel                 |i |
+TreePath                  |b |
 TreeRowReference|b|
 TreeSelection|
-TreeSortable|i|
 TreeStore|
 TreeView|
 TreeViewColumn|
-Viewport|
-VolumeButton|
 Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
-WidgetPath|b|
+WidgetPath                |b |
 Window                    |  | 🗸| 🗸|  |  |  |  |  |  |* |
-WindowGroup|
 
 <!--
 AccelGroup                |
@@ -276,10 +270,16 @@ ToggleToolButton|
 Toolbar|
 ToolItemGroup|
 ToolPalette|
-ToolShell|i|
+ToolShell                 |i|
 Tooltip|
-TreeDragDest|i|
-TreeDragSource|i|
+TreeDragDest              |i|
+TreeDragSource            |i|
+TreeModelFilter|
+TreeModelSort|
+TreeSortable              |i|
+Viewport|
+VolumeButton|
+WindowGroup|
 
 -->
 
