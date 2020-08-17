@@ -62,16 +62,7 @@ Entry values can be
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 AboutDialog               |  | 🗸| 🗸| ¾|  |  |  |  |  | ✗|
-AccelGroup                |
-AccelLabel                |
-AccelMap                  |
-Accessible                |
-Actionable                |i |
-ActionBar                 |
 Adjustment                |
-AppChooserButton          |
-AppChooser                |i |
-AppChooserWidget          |
 Application               |
 ApplicationWindow         |
 AspectFrame               |
@@ -82,13 +73,6 @@ Box                       |
 Buildable                 |i |
 Builder                   |
 Button                    |  | 🗸| 🗸| 🗸| 🗸| 🗸| ½| | | ✗|
-ButtonBox                 |
-Calendar|
-CellArea|
-CellAreaBox|
-CellAreaContext|
-CellEditable|i|
-CellLayout|i|
 CellRenderer|
 CellRendererAccel|
 CellRendererCombo|
@@ -98,170 +82,70 @@ CellRendererSpin|
 CellRendererSpinner|
 CellRendererText|
 CellRendererToggle|
-CellView|
 CheckButton|
-CheckMenuItem|
-ChooserDialog|
-Clipboard|
 ColorButton|
+ColorChooser              |i|
 ColorChooserDialog|
-ColorChooser|i|
 ColorChooserWidget|
 ComboBox|
 ComboBoxText|
 Container|
 CssProvider|
-CssSection|b|
 Dialog                    |  |  |  |  |  |  |  |  |  |* |
 DrawingArea               |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| ✗|
-Editable|
 Entry|
 Enums                     |s |  |  |  | ✗| ✗|  | ✗| ✗|* |
-EntryBuffer|
-EntryCompletion|
-EventBox|
-EventController|
-EventControllerKey|
-EventControllerMotion|
-EventControllerScroll|
-Expander|
-FileChooserButton|
+FileChooser               |i|
 FileChooserDialog|
-FileChooser|i|
-FileChooserWidget|
 FileFilter|
-Fixed|
-FlowBox|
-FlowBoxChild|
-FontButton|
-FontChooserDialog|
-FontChooser|i|
-FontChooserWidget|
 Frame                     |  |  |  |  |  |  |  |  |  |* |
-Gesture|
-GestureDrag|
-GestureLongPress|
-GestureMultiPress|
-GesturePan|
-GestureRotate|
-GestureSingle|
-GestureStylus|
-GestureSwipe|
-GestureZoom|
-GLArea|
 Grid                      |  |  |  |  |  |  |  |  |  |* |
-HandleBox|
-HeaderBar|
-IconFactory|
-IconSet|b|
-IconTheme|
-IconView|
 Image|
-IMContext|
-IMContextSimple|
-IMMulticontext|
-InfoBar|
 Label|
-Layout|
 LevelBar|
-LinkButton|
 ListBox|
 ListBoxRow|
 ListStore|
-LockButton|
 Main                      |s | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗|P |
 Menu                      |
 MenuBar                   |
 MenuButton                |
 MenuItem                  |
 MenuShell|
-MenuToolButton|
 MessageDialog|
-ModelButton|
-MountOperation|
+Misc|
 Notebook|
-OffscreenWindow|
-Orientable|i|
-Overlay|
-PadController|
-PageSetup|
-PageSetupUnixDialog|
+Orientable                |i|
 Paned|
-PaperSize|b|
 PlacesSidebar|
-Plug|
 Popover|
 PopoverMenu|
-PrintBackend|
-PrintContext|
-Printer|
-PrintJob|
-PrintOperation|
-PrintOperationPreview|i|
-PrintSettings|
-PrintUnixDialog|
 ProgressBar|
 RadioButton|
-RadioMenuItem|
-RadioToolButton|
 Range|
-RcStyle|
-RecentChooser|i|
-RecentChooserDialog|
 RecentChooserMenu|
-RecentChooserWidget|
-RecentFilter|
-RecentManager|
-Requisition|b|
-Revealer|
 Scale|
-ScaleButton|
-Scrollable|i|
-Scrollbar|
 ScrolledWindow|
 SearchBar|
 SearchEntry|
-SelectionData|b|
 Separator|
-SeparatorMenuItem|
-SeparatorToolItem|
-Settings|
-ShortcutsGroup|
-ShortcutsSection|
-ShortcutsShortcut|
-ShortcutsWindow|
-SizeGroup|
-Socket|
-SpinButton|
 Spinner|
 Stack|
 StackSidebar|
 StackSwitcher|
-Statusbar|
 StyleContext|
-StyleProvider|i|
+StyleProvider             |i|
 Switch|
-TargetList|b|
 TextBuffer|
-TextChildAnchor|
-TextIter|b|
-TextMark|
+TextIter                  |b|
 TextTag|
 TextTagTable|
 TextView|
 ToggleButton|
-ToggleToolButton|
-Toolbar|
 ToolButton|
 ToolItem|
-ToolItemGroup|
-ToolPalette|
-ToolShell|i|
-Tooltip|
-TreeDragDest|i|
-TreeDragSource|i|
 TreeIter|b|
-TreeModelFilter|
+   TreeModelFilter|
 TreeModel|i|
 TreeModelSort|
 TreePath|b|
@@ -277,6 +161,127 @@ Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
 WidgetPath|b|
 Window                    |  | 🗸| 🗸|  |  |  |  |  |  |* |
 WindowGroup|
+
+<!--
+AccelGroup                |
+AccelLabel                |
+AccelMap                  |
+Accessible                |
+Actionable                |i |
+ActionBar                 |
+AppChooserButton          |
+AppChooser                |i |
+AppChooserWidget          |
+ButtonBox                 |
+Calendar|
+CellArea|
+CellAreaBox|
+CellAreaContext|
+CellEditable              |i|
+CellLayout                |i|
+CellView|
+CheckMenuItem|
+ChooserDialog|
+Clipboard|
+CssSection                |b|
+Editable|
+EntryBuffer|
+EntryCompletion|
+EventBox|
+EventController|
+EventControllerKey|
+EventControllerMotion|
+EventControllerScroll|
+Expander|
+FileChooserButton|
+FileChooserWidget|
+Fixed|
+FlowBox|
+FlowBoxChild|
+FontButton|
+FontChooserDialog|
+FontChooser               |i|
+FontChooserWidget|
+Gesture|
+GestureDrag|
+GestureLongPress|
+GestureMultiPress|
+GesturePan|
+GestureRotate|
+GestureSingle|
+GestureStylus|
+GestureSwipe|
+GestureZoom|
+GLArea|
+HandleBox|
+HeaderBar|
+IconFactory|
+IconSet|b|
+IconTheme|
+IconView|
+IMContext|
+IMContextSimple|
+IMMulticontext|
+InfoBar|
+Layout|
+LinkButton|
+LockButton|
+MenuToolButton|
+ModelButton|
+MountOperation|
+OffscreenWindow|
+Overlay|
+PadController|
+PageSetup|
+PageSetupUnixDialog|
+PaperSize                 |b|
+Plug|
+PrintBackend|
+PrintContext|
+Printer|
+PrintJob|
+PrintOperation|
+PrintOperationPreview     |i|
+PrintSettings|
+PrintUnixDialog|
+RadioMenuItem|
+RadioToolButton|
+RcStyle|
+RecentChooser|i|
+RecentChooserDialog|
+RecentChooserWidget|
+RecentFilter|
+RecentManager|
+Requisition|b|
+Revealer|
+ScaleButton|
+Scrollable|i|
+Scrollbar|
+SelectionData|b|
+SeparatorMenuItem|
+SeparatorToolItem|
+Settings|
+ShortcutsGroup|
+ShortcutsSection|
+ShortcutsShortcut|
+ShortcutsWindow|
+SizeGroup|
+Socket|
+SpinButton|
+Statusbar|
+TargetList                |b|
+TextChildAnchor|
+TextMark|
+ToggleToolButton|
+Toolbar|
+ToolItemGroup|
+ToolPalette|
+ToolShell|i|
+Tooltip|
+TreeDragDest|i|
+TreeDragSource|i|
+
+-->
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
