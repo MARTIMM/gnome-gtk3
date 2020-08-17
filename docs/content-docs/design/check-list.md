@@ -15,52 +15,53 @@ Legend for head of table
   * t: is top level of classes,
   * b: boxed type
   * i: interface type
-  * s: standalone type
+  * s: standalone module or type
   * N: native class
   * L: native library connection
   * not filled means standard class
 
-* md: Module documentation
-  * Title, description, see also, UML, synopsis
-  * Inheritance when supported, example use
-  * Remove interface information
-* bd: Build documentation
-  * Use test of `is-valid()` and ease of using `.set-native-object()`.
-  * Remove check for wrong / unavailable options if inheritable.
-  * Add =head3 to each `.new()` option.
-  * Remove doc for :native-object or :build-id except where it is defined
-  * Deprecate any option which can be done in a supsequent call like :$title in Window.
-  * Move native `.gtk_..._new_...()` documentation to the Build doc. These subroutines must be prefixed with an underscore '\_' to make them unavailable, e.g. `._gtk_..._new_...()`.
-* sd: Subroutine documentation and additions
-  * Add examples to subroutines.
-  * Inhibit unusable subroutines and documentation.
-  * Add sigils to variables and use `True`/`False` when boolean input
-  * Remove Since version text because versions are for GTK+ and not for the Raku modules. The first argument e.g. 'I<widget>' must become 'this widget'.
-  * Change `returns type` into `--> type`.
-  * Provide single word method names. Lower prio.
-  * Try to insert url references. Lower prio.
-* cp: Cleanup documentation
-  * Subroutines and Methods.
-  * Properties
-  * Signals
-  * Types
-* ct: Testing
-  * Complete `BUILD()` tests.
-  * Complete subroutine tests.
-  * Complete properties tests.
-* pr: Priority
+* Documentation
+  * dm: Module documentation
+    * Title, Description, UML
+    * See also, UML, Synopsis
+    * Inheritance when supported
+    * Synopsis and example use
+    * Remove interface information
+  * db: Build documentation and initialization
+    * Use test of `is-valid()` and ease of using `.set-native-object()`.
+    * Remove check for wrong / unavailable options if inheritable.
+    * Add =head3 to each `.new()` option.
+    * Remove doc for :native-object or :build-id except where it is defined
+    * Deprecate any option which can be done in a supsequent call like :$title in Window.
+    * Move native `.gtk_..._new_...()` documentation to the Build doc. These subroutines must be prefixed with an underscore '\_' to make them unavailable, e.g. `._gtk_..._new_...()`.
+  * ds: Method and subroutine documentation and additions
+    * Add examples to subroutines.
+    * Inhibit unusable subroutines and documentation, make note when no support.
+    * Add sigils to variables and use `True`/`False` when boolean input. Many cases of C<Any> should become C<undefined>. Change first argument e.g. 'I<widget>' into text 'this widget' first arguments are mostly not provided because the are in the object.
+    * Remove Since version text because versions are for GTK+ and not for the Raku modules.
+    * Change `returns type` into `--> type`.
+    * Provide single word method names. Lower prio.
+    * Try to insert url references. Lower prio.
+  * de: Signal and event documentation.
+  * dp: Properties documentation.
+* Testing.
+  * ts: Subroutines and Methods.
+  * te: Signals and events.
+  * tp: Properties.
+* no: Notes
   * A star has more priority to finish than others
-
+  * C depends on Cairo
+  * P depends on Pango
 Entry values can be
-* #: No info. Mostly for package names but sometimes there are no signals or properties for a class.
+* ✗: No info. Mostly for package names but sometimes there are no signals or properties for a class.
 * Empty: Not done.
-* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also that I don't know what to do with i
+* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
 * 🗸: Done
 
-| Module/Class            |T |md|bd|sd|cp|ct|pr|
-|-------------------------|--|--|--|--|--|--|--|
-**Gnome::Gtk3**           |p | #| #| #| #| #| #|
-AboutDialog               |  | 🗸| 🗸|  |  |  |  |
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+AboutDialog               |  | 🗸| 🗸| ¾|  |  |  |  |  | ✗|
 AccelGroup                |
 AccelLabel                |
 AccelMap                  |
@@ -80,7 +81,7 @@ Border                    |b |
 Box                       |
 Buildable                 |i |
 Builder                   |
-Button                    |  | 🗸| 🗸|  |  |  |  |
+Button                    |  | 🗸| 🗸| 🗸| 🗸| 🗸| ½| | | ✗|
 ButtonBox                 |
 Calendar|
 CellArea|
@@ -111,10 +112,11 @@ ComboBoxText|
 Container|
 CssProvider|
 CssSection|b|
-Dialog                    |  |  |  |  |  |  |* |
-DrawingArea               |  | 🗸| 🗸| 🗸| 🗸| 🗸|  |
-Editable|i|
+Dialog                    |  |  |  |  |  |  |  |  |  |* |
+DrawingArea               |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| ✗|
+Editable|
 Entry|
+Enums                     |s |  |  |  | ✗| ✗|  | ✗| ✗|* |
 EntryBuffer|
 EntryCompletion|
 EventBox|
@@ -135,7 +137,7 @@ FontButton|
 FontChooserDialog|
 FontChooser|i|
 FontChooserWidget|
-Frame                     |  |  |  |  |  |  |* |
+Frame                     |  |  |  |  |  |  |  |  |  |* |
 Gesture|
 GestureDrag|
 GestureLongPress|
@@ -147,7 +149,7 @@ GestureStylus|
 GestureSwipe|
 GestureZoom|
 GLArea|
-Grid                      |  |  |  |  |  |  |* |
+Grid                      |  |  |  |  |  |  |  |  |  |* |
 GtkOffscreenWindow|
 GtkPlug|
 GtkPrintUnixDialog|
@@ -172,10 +174,11 @@ ListBox|
 ListBoxRow|
 ListStore|
 LockButton|
-Menu|
-MenuBar|
-MenuButton|
-MenuItem|
+Main                      |s | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗|P |
+Menu                      |
+MenuBar                   |
+MenuButton                |
+MenuItem                  |
 MenuShell|
 MenuToolButton|
 MessageDialog|
@@ -270,36 +273,48 @@ TreeView|
 TreeViewColumn|
 Viewport|
 VolumeButton|
-Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|* |
+Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
 WidgetPath|b|
-Window                    |  | 🗸| 🗸|  |  |  |* |
+Window                    |  | 🗸| 🗸|  |  |  |  |  |  |* |
 WindowGroup|
-**Gnome::Gdk3**           |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::Gdk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Device                    |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |
-Events                    |  |  |  |  |  |  |* |
+Events                    |  |  |  |  |  |  |  |  |  |* |
 Keysyms                   |  |  |  |  |  |  |  |
 Pixbuf                    |  |  |  |  |  |  |  |
 RGBA                      |  |  |  |  |  |  |  |
 Screen                    |  |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |* |
+Types                     |  |  |  |  |  |  |  |  |  |* |
 Window                    |  |  |  |  |  |  |  |
-**Gnome::GObject**        |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::GObject**        |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Boxed                     |t |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  |  |  |
 InitiallyUnowned          |  |  |  |  |  |  |  |
-Object                    |t |  |  |  |  |  |* |
-Signal                    |- |  |  |  |  |  |* |
+Object                    |t |  |  |  |  |  |  |  |  |* |
+Signal                    |- |  |  |  |  |  |  |  |  |* |
 Type                      |s |  |  |  |  |  |  |
 value                     |b |  |  |  |  |  |  |
-**Gnome::Glib**           |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::Glib**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Error                     |  |  |  |  |  |  |  |
 List                      |  |  |  |  |  |  |  |
 Main                      |  |  |  |  |  |  |  |
 Quark                     |  |  |  |  |  |  |  |
 SList                     |  |  |  |  |  |  |  |
 Variant                   |  |  |  |  |  |  |  |
-**Gnome::Gio**            |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::Gio**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Action                    |i |  |  |  |  |  |  |
 ActionMap                 |i |  |  |  |  |  |  |
 Application               |  |  |  |  |  |  |  |
@@ -310,12 +325,18 @@ MenuModel                 |  |  |  |  |  |  |  |
 MountOperation            |  |  |  |  |  |  |  |
 Resource                  |b |  |  |  |  |  |  |
 SimpleAction              |  |  |  |  |  |  |  |
-**Gnome::N**              |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::N**              |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 N-GObject                 |N |  |  |  |  |  |  |
 NativeLib                 |L |  |  |  |  |  |- |
 TopLevelClassSupport      |t |  |  |  |  |  |* |
 X                         |  |  |  |  |  |  |* |
-**Gnome::Cairo**          |p | #| #| #| #| #| #|
+
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+**Gnome::Cairo**          |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Enums                     |  |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |  |
@@ -328,6 +349,6 @@ Surface                   |  |  |  |  |  |  |  |
 Types                     |  |  |  |  |  |  |  |
 
 <!--
-**Gnome::Atk**            |p | #| #| #| #| #| #|
+**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Object                    |  |
 -->
