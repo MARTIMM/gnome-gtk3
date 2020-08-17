@@ -465,8 +465,7 @@ sub gtk_get_locale_direction ( --> int32 )
 
 Checks if any events are pending. This can be used to update the UI and invoke timeouts etc. while doing some time intensive computation.
 
-=head3 Updating the UI during a long computation
-
+=head3 Example Updating the UI during a long computation
 
   # computation going on...
 
