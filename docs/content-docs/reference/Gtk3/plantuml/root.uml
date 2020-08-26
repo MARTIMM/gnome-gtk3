@@ -1,0 +1,13 @@
+@startuml
+scale 0.9
+skinparam packageStyle rectangle
+set namespaceSeparator ::
+hide members
+
+
+class Gnome::N::TopLevelClassSupport < Catch all class >
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+
+Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
+Gnome::GObject::Object *-> Gnome::GObject::Signal
+@enduml
