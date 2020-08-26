@@ -270,6 +270,10 @@ Gnome::Gtk3::Widget implements
   also is Gnome::GObject::InitiallyUnowned;
   also does Gnome::Gtk3::Buildable;
 
+=head2 Uml Diagram
+
+![](plantuml/Widget.png)
+
 =head2 Example
 
   # create a button and set a tooltip

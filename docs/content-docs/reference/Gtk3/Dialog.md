@@ -83,6 +83,11 @@ Declaration
     unit class Gnome::Gtk3::Dialog;
     also is Gnome::Gtk3::Window;
 
+Uml Diagram
+-----------
+
+![](plantuml/Dialog.png)
+
 Inheriting this class
 ---------------------
 

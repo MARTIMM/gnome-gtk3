@@ -85,7 +85,10 @@ B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
 
   unit class Gnome::Gtk3::Dialog;
   also is Gnome::Gtk3::Window;
-=comment  also does Gnome::Gtk3::Buildable;
+
+=head2 Uml Diagram
+
+![](plantuml/Dialog.png)
 
 =head2 Inheriting this class
 

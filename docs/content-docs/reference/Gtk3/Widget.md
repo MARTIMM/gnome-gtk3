@@ -113,6 +113,11 @@ Declaration
     also is Gnome::GObject::InitiallyUnowned;
     also does Gnome::Gtk3::Buildable;
 
+Uml Diagram
+-----------
+
+![](plantuml/Widget.png)
+
 Example
 -------
 
