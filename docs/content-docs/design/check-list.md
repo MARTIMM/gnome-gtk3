@@ -58,6 +58,12 @@ Entry values can be
 * ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
 * 🗸: Done
 
+<style>
+table {
+  width: 90%;
+}
+</style>
+
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
@@ -155,6 +161,8 @@ TreeViewColumn|
 Widget                    |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
 WidgetPath                |b |
 Window                    |  | 🗸| 🗸|  |  |  |  |  |  |* |
+
+<br/>
 
 <!--
 AccelGroup                |
@@ -283,77 +291,93 @@ WindowGroup|
 
 -->
 
+<br/>
+
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Gdk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Device                    |  |  |  |  |  |  |  |
-Display                   |  |  |  |  |  |  |  |
+Device                    |  |  |  |  |  |  |  |  |  |  |
+Display                   |  |  |  |  |  |  |  |  |  |  |
 Events                    |  |  |  |  |  |  |  |  |  |* |
-Keysyms                   |  |  |  |  |  |  |  |
-Pixbuf                    |  |  |  |  |  |  |  |
-RGBA                      |  |  |  |  |  |  |  |
-Screen                    |  |  |  |  |  |  |  |
+Keysyms                   |  |  |  |  |  |  |  |  |  |  |
+Pixbuf                    |  |  |  |  |  |  |  |  |  |  |
+RGBA                      |  |  |  |  |  |  |  |  |  |  |
+Screen                    |  |  |  |  |  |  |  |  |  |  |
 Types                     |  |  |  |  |  |  |  |  |  |* |
-Window                    |  |  |  |  |  |  |  |
+Window                    |  |  |  |  |  |  |  |  |  |  |
+
+<br/>
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::GObject**        |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Boxed                     |t |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  |  |  |
-InitiallyUnowned          |  |  |  |  |  |  |  |
+Boxed                     |t |  |  |  |  |  |  |  |  |  |
+Enums                     |s |  |  |  |  |  |  |  |  |  |
+InitiallyUnowned          |  |  |  |  |  |  |  |  |  |  |
 Object                    |t |  |  |  |  |  |  |  |  |* |
 Signal                    |- |  |  |  |  |  |  |  |  |* |
-Type                      |s |  |  |  |  |  |  |
-value                     |b |  |  |  |  |  |  |
+Type                      |s |  |  |  |  |  |  |  |  |  |
+value                     |b |  |  |  |  |  |  |  |  |  |
+
+<br/>
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Glib**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Error                     |  |  |  |  |  |  |  |
-List                      |  |  |  |  |  |  |  |
-Main                      |  |  |  |  |  |  |  |
-Quark                     |  |  |  |  |  |  |  |
-SList                     |  |  |  |  |  |  |  |
-Variant                   |  |  |  |  |  |  |  |
+Error                     |  |  |  |  |  |  |  |  |  |  |
+List                      |  |  |  |  |  |  |  |  |  |  |
+Main                      |  |  |  |  |  |  |  |  |  |  |
+Quark                     |  |  |  |  |  |  |  |  |  |  |
+SList                     |  |  |  |  |  |  |  |  |  |  |
+Variant                   |  |  |  |  |  |  |  |  |  |  |
+
+<br/>
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Gio**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Action                    |i |  |  |  |  |  |  |
-ActionMap                 |i |  |  |  |  |  |  |
-Application               |  |  |  |  |  |  |  |
-EmblemedIcon              |  |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  |  |  |
-File                      |i |  |  |  |  |  |  |
-MenuModel                 |  |  |  |  |  |  |  |
-MountOperation            |  |  |  |  |  |  |  |
-Resource                  |b |  |  |  |  |  |  |
-SimpleAction              |  |  |  |  |  |  |  |
+Action                    |i |  |  |  |  |  |  |  |  |  |
+ActionMap                 |i |  |  |  |  |  |  |  |  |  |
+Application               |  |  |  |  |  |  |  |  |  |  |
+EmblemedIcon              |  |  |  |  |  |  |  |  |  |  |
+Enums                     |s |  |  |  |  |  |  |  |  |  |
+File                      |i |  |  |  |  |  |  |  |  |  |
+MenuModel                 |  |  |  |  |  |  |  |  |  |  |
+MountOperation            |  |  |  |  |  |  |  |  |  |  |
+Resource                  |b |  |  |  |  |  |  |  |  |  |
+SimpleAction              |  |  |  |  |  |  |  |  |  |  |
+
+<br/>
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::N**              |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-N-GObject                 |N |  |  |  |  |  |  |
-NativeLib                 |L |  |  |  |  |  |- |
-TopLevelClassSupport      |t |  |  |  |  |  |* |
-X                         |  |  |  |  |  |  |* |
+N-GObject                 |N |  |  |  |  |  |  |  |  |  |
+NativeLib                 |L |  |  |  |  |  |  |  |  |- |
+TopLevelClassSupport      |t |  |  |  |  |  |  |  |  |* |
+X                         |  |  |  |  |  |  |  |  |  |* |
+
+<br/>
 
 | Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Cairo**          |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Enums                     |  |  |  |  |  |  |  |
-FontFace                  |  |  |  |  |  |  |  |
-FontOptions               |  |  |  |  |  |  |  |
-ImageSurface              |  |  |  |  |  |  |  |
-Matrix                    |  |  |  |  |  |  |  |
-Path                      |  |  |  |  |  |  |  |
-Pattern                   |  |  |  |  |  |  |  |
-ScaledFont                |  |  |  |  |  |  |  |
-Surface                   |  |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |  |
+Enums                     |  |  |  |  |  |  |  |  |  |  |
+FontFace                  |  |  |  |  |  |  |  |  |  |  |
+FontOptions               |  |  |  |  |  |  |  |  |  |  |
+ImageSurface              |  |  |  |  |  |  |  |  |  |  |
+Matrix                    |  |  |  |  |  |  |  |  |  |  |
+Path                      |  |  |  |  |  |  |  |  |  |  |
+Pattern                   |  |  |  |  |  |  |  |  |  |  |
+ScaledFont                |  |  |  |  |  |  |  |  |  |  |
+Surface                   |  |  |  |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |  |  |  |  |
+
+<br/>
 
 <!--
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Object                    |  |
+Object                    |  |  |  |  |  |  |  |  |  |  |
 -->
