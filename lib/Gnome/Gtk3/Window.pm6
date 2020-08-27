@@ -53,7 +53,7 @@ B<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes 
 
 =head2 Uml Diagram
 
-![](plantuml/Window.png)
+![](plantuml/Window.svg)
 
 =head2 Inheriting this class
 
