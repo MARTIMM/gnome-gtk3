@@ -130,6 +130,7 @@ ProgressBar|
 RadioButton|
 Range|
 RecentChooserMenu|
+Revealer                  |  | 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| ¾|  |
 Scale|
 ScrolledWindow|
 SearchBar|
@@ -255,7 +256,6 @@ RecentChooserWidget|
 RecentFilter|
 RecentManager|
 Requisition|b|
-Revealer|
 ScaleButton|
 Scrollable|i|
 Scrollbar|

@@ -1,3 +1,6 @@
+- 2020-08-27 0.29.2:
+  - Add class Revealer to Gnome::Gtk3
+  
 - 2020-07-09 0.29.1:
   - Extending window tutorial.
   - Added Signal tutorial.
