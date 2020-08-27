@@ -77,7 +77,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 
   my Gnome::Gtk3::Window $w .= new(:title('My Button In My Window'));
   my Gnome::Gtk3::Button $b .= new(:label('The Button'));
-  $w.gtk-container-add($b);
+  $w.container-add($b);
   $w.show-all;
 
   my Gnome::Gtk3::Main $m .= new;

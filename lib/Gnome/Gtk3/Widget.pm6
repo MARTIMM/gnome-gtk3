@@ -272,7 +272,7 @@ Gnome::Gtk3::Widget implements
 
 =head2 Uml Diagram
 
-![](plantuml/Widget.png)
+![](plantuml/Widget.svg)
 
 =head2 Example
 

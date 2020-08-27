@@ -31,7 +31,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
   also is Gnome::Gtk3::Bin;
 
 =head2 Uml Diagram
-![](plantuml/Button.png)
+![](plantuml/Button.svg)
 
 =head2 Inheriting this class
 

@@ -116,7 +116,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/Widget.png)
+![](plantuml/Widget.svg)
 
 Example
 -------

@@ -30,7 +30,7 @@ Declaration
     unit class Gnome::Gtk3::Button;
     also is Gnome::Gtk3::Bin;
 
-Uml Diagram ![](plantuml/Button.png)
+Uml Diagram ![](plantuml/Button.svg)
 ------------------------------------
 
 Inheriting this class
