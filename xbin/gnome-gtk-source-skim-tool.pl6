@@ -880,7 +880,7 @@ sub substitute-in-template (
 
     =comment head2 Uml Diagram
 
-    =comment ![](plantuml/.png)
+    =comment ![](plantuml/.svg)
 
 
     =begin comment
@@ -1111,10 +1111,14 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   }
 
   # in case there is no doc, we need to save the last item still
-  $items-src-doc.push(primary-doc-changes($item)) if $gather-items-doc;
+  if $gather-items-doc {
+    $items-src-doc.push(primary-doc-changes($item));
+  }
 
-  $sub-doc ~~ s/ ^ \s+ //;
-  $sub-doc ~~ s/ \n\s*Since:\s+\d+\.\d+\s*\n //;
+  # cleanup documentation of sub
+  $sub-doc ~~ s/ 'Since:' \s*? \d+\.\d+ //;
+  $sub-doc ~~ s/^ \s+ //;
+
 
   ( primary-doc-changes($sub-doc), $items-src-doc )
 }
@@ -1404,7 +1408,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 #note "IDoc: $item-count, ", $idoc;
       if $item-count == 0 {
         $first-arg =
-          "Int :$_handle_id,\n    $idoc<item-type> \:_widget\(\$$idoc<item-name>\)";
+          "Int :\$_handle_id,\n    $idoc<item-type> \:_widget\(\$$idoc<item-name>\)";
       }
 
       else {
