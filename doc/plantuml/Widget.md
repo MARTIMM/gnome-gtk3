@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 'scale 0.9
 skinparam packageStyle rectangle
@@ -23,6 +24,7 @@ class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
 'Gnome::Gtk3::Button -|> Gnome::Gtk3::Bin
 'Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
 'Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
+'Gnome::Gtk3::Stack -|> Gnome::Gtk3::Container
 
 
 
@@ -54,6 +56,7 @@ class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
 'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
 @enduml
 
+```
 
 <!--
 │   │   │   │   ├── GtkButton                   ♥ Button
