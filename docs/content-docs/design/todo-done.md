@@ -15,6 +15,7 @@ layout: sidebar
 * Applications behaviour from Gtk and Gio packages
 * Resources from Gio package
 * Menus and Actions
+* Cairo
 
 #### Rewriting code
 * Is there a way to skip all those if's in the `_fallback()` routines.

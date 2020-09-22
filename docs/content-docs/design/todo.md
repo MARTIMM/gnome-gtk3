@@ -12,7 +12,6 @@ layout: sidebar
 * Drag and Drop
 * DBus I/O
 * Pango
-* Cairo
 
 #### Rewriting code
 * I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
@@ -64,6 +63,25 @@ layout: sidebar
 * Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
 
 * Split up documentation from Gnome::Gtk3 package and move it to the other Gnome projects. The main github entry site at https://martimm.github.io/ should then refer to all projects.
+
+* I've found mistakes in the documentation when enum values are returned. E.g.
+`.gtk_stack_get_transition_type()` in **Gnome::Gtk3::Stack** which returns an integer. I mistakenly took that number to be the enum value; In the doc shown as
+  ```
+    method gtk_stack_get_transition_type ( --> GtkStackTransitionType )
+  ```
+  while it should be
+  ```
+    method gtk_stack_get_transition_type ( --> Int )
+  ```
+  This example is corrected but there are many places where this is not. To test for its value one can do;
+  ```
+  if $returned-value == GTK_STACK_TRANSITION_TYPE_OVER_DOWN.value { ... }
+  ```
+  where `GTK_STACK_TRANSITION_TYPE_OVER_DOWN` is an example value of the enum type `GtkStackTransitionType`, or
+  ```
+  if GtkStackTransitionType($returned-value) ~~ GTK_STACK_TRANSITION_TYPE_OVER_DOWN { ... }
+  ```
+  which is more readable because of the enum type name used where the returned value should fit in.
 
 #### Site changes.
 * In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
