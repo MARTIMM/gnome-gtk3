@@ -44,11 +44,10 @@ The codes will show what is tested or not in the source code. The developer can 
   * `T` for structures
 Then a colon ':' with a hex digit to show if it is tested or not;
   * 0 not tested
-  * 1 tested in test script
-  * 2 tested elsewhere
-  * 4 used elsewhere
-  * FF Not supported
-It is binary, so combinations are possible exept with 255. 2 and 4 is not easy to find out. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`.
+  * 1 tested in test script for this module
+  * 2 tested elsewhere in test scripts for this package
+  * 4 used elsewhere in test scripts or used programs
+It is binary, so combinations are possible. 2 and 4 is not easy to find out. Then another colon followed with the name of the module, method, signal or type. E.g. `#TL:1:Gnome::Gtk3::Widget` or `#TM:0:gtk_widget_get_path`. When 2 and 4 are set, or combinations thereof, another column might follow to show the source. There might be more than one. E.g. `TM:3:gtk_color_chooser_add_palette:ColorChooserWidget`. There can be another column with a file- or package name when it is known where it is tested or used.
 
 Absence of codes means that a particular item is not tested.
 
