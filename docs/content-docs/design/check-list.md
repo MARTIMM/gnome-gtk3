@@ -137,7 +137,7 @@ SearchBar|
 SearchEntry|
 Separator|
 Spinner|
-Stack|
+Stack                     |  | 🗸| 🗸| 🗸| ✗|🗸| 🗸| ✗| 🗸|  |
 StackSidebar|
 StackSwitcher|
 StyleContext|
