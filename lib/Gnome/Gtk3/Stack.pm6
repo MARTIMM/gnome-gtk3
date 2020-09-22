@@ -34,6 +34,27 @@ B<Gnome::Gtk3::Notebook>, B<Gnome::Gtk3::StackSwitcher>
   unit class Gnome::Gtk3::Stack;
   also is Gnome::Gtk3::Container;
 
+=comment head2 Uml Diagram
+=comment ![](plantuml/Button.svg)
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Stack;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Stack;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Stack class process the options
+    self.bless( :GtkStack, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =comment head2 Example
 
 =end pod
@@ -59,6 +80,7 @@ These enumeration values describe the possible transitions between pages in a Gt
 New values may be added to this enumeration over time.
 
 =end pod
+#TT:1:GtkStackTransitionType:
 enum GtkStackTransitionType is export <
   GTK_STACK_TRANSITION_TYPE_NONE
   GTK_STACK_TRANSITION_TYPE_CROSSFADE
@@ -101,37 +123,33 @@ Create a Stack object using a native object returned from a builder. See also B<
 
 =end pod
 
+#TM:0:new():inheriting:
 #TM:0:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:4:new(:native-object):TopLevelClassSupport
+#TM:4:new(:build-id):Object
 submethod BUILD ( *%options ) {
 
-  # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Stack';
+  # prevent creating wrong objects
+  if self.^name eq 'Gnome::Gtk3::Stack' or %options<GtkStack> {
 
-  # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
+
+    else {
+      my $no;
+
+      # create default object
+      $no = _gtk_stack_new();
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkStack');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    # self.set-native-object(gtk_stack_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkStack');
 }
 
 #-------------------------------------------------------------------------------
@@ -150,21 +168,20 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_stack_new:
+#TM:1:_gtk_stack_new:
+#`{{
 =begin pod
-=head2 gtk_stack_new
+=head2 _gtk_stack_new
 
 Creates a new B<Gnome::Gtk3::Stack> container.
 
-Since: 3.10
-
   method gtk_stack_new ( --> N-GObject )
 
-
 =end pod
-
-sub gtk_stack_new (  --> N-GObject )
+}}
+sub _gtk_stack_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_stack_new')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -175,7 +192,6 @@ sub gtk_stack_new (  --> N-GObject )
 Adds a child to I<stack>.
 The child is identified by the I<name>.
 
-Since: 3.10
 
   method gtk_stack_add_named ( N-GObject $child, Str $name )
 
@@ -198,7 +214,6 @@ The child is identified by the I<name>. The I<title>
 will be used by B<Gnome::Gtk3::StackSwitcher> to represent
 I<child> in a tab bar, so it should be short.
 
-Since: 3.10
 
   method gtk_stack_add_titled ( N-GObject $child, Str $name, Str $title )
 
@@ -223,7 +238,6 @@ name.
 
 Returns: (transfer none) (nullable): the requested child of the B<Gnome::Gtk3::Stack>
 
-Since: 3.12
 
   method gtk_stack_get_child_by_name ( Str $name --> N-GObject )
 
@@ -251,7 +265,6 @@ Note that the I<child> widget has to be visible itself
 (see C<gtk_widget_show()>) in order to become the visible
 child of I<stack>.
 
-Since: 3.10
 
   method gtk_stack_set_visible_child ( N-GObject $child )
 
@@ -273,7 +286,6 @@ there are no visible children.
 
 Returns: (transfer none) (nullable): the visible child of the B<Gnome::Gtk3::Stack>
 
-Since: 3.10
 
   method gtk_stack_get_visible_child ( --> N-GObject )
 
@@ -300,7 +312,6 @@ Note that the child widget has to be visible itself
 (see C<gtk_widget_show()>) in order to become the visible
 child of I<stack>.
 
-Since: 3.10
 
   method gtk_stack_set_visible_child_name ( Str $name )
 
@@ -322,7 +333,6 @@ C<Any> if there is no visible child.
 
 Returns: (transfer none) (nullable): the name of the visible child of the B<Gnome::Gtk3::Stack>
 
-Since: 3.10
 
   method gtk_stack_get_visible_child_name ( --> Str )
 
@@ -344,7 +354,6 @@ Note that the child widget has to be visible itself
 (see C<gtk_widget_show()>) in order to become the visible
 child of I<stack>.
 
-Since: 3.10
 
   method gtk_stack_set_visible_child_full ( Str $name, GtkStackTransitionType $transition )
 
@@ -371,7 +380,6 @@ Since 3.16, homogeneity can be controlled separately
 for horizontal and vertical size, with the
  I<hhomogeneous> and  I<vhomogeneous>.
 
-Since: 3.10
 
   method gtk_stack_set_homogeneous ( Int $homogeneous )
 
@@ -393,7 +401,6 @@ See C<gtk_stack_set_homogeneous()>.
 
 Returns: whether I<stack> is homogeneous.
 
-Since: 3.10
 
   method gtk_stack_get_homogeneous ( --> Int )
 
@@ -414,7 +421,6 @@ If it is homogeneous, the B<Gnome::Gtk3::Stack> will request the same
 width for all its children. If it isn't, the stack
 may change width when a different child becomes visible.
 
-Since: 3.16
 
   method gtk_stack_set_hhomogeneous ( Int $hhomogeneous )
 
@@ -436,7 +442,6 @@ See C<gtk_stack_set_hhomogeneous()>.
 
 Returns: whether I<stack> is horizontally homogeneous.
 
-Since: 3.16
 
   method gtk_stack_get_hhomogeneous ( --> Int )
 
@@ -457,7 +462,6 @@ If it is homogeneous, the B<Gnome::Gtk3::Stack> will request the same
 height for all its children. If it isn't, the stack
 may change height when a different child becomes visible.
 
-Since: 3.16
 
   method gtk_stack_set_vhomogeneous ( Int $vhomogeneous )
 
@@ -479,7 +483,6 @@ See C<gtk_stack_set_vhomogeneous()>.
 
 Returns: whether I<stack> is vertically homogeneous.
 
-Since: 3.16
 
   method gtk_stack_get_vhomogeneous ( --> Int )
 
@@ -498,7 +501,6 @@ sub gtk_stack_get_vhomogeneous ( N-GObject $stack --> int32 )
 Sets the duration that transitions between pages in I<stack>
 will take.
 
-Since: 3.10
 
   method gtk_stack_set_transition_duration ( UInt $duration )
 
@@ -520,7 +522,6 @@ transitions between pages in I<stack> will take.
 
 Returns: the transition duration
 
-Since: 3.10
 
   method gtk_stack_get_transition_duration ( --> UInt )
 
@@ -544,7 +545,6 @@ The transition type can be changed without problems
 at runtime, so it is possible to change the animation
 based on the page that is about to become current.
 
-Since: 3.10
 
   method gtk_stack_set_transition_type ( GtkStackTransitionType $transition )
 
@@ -566,7 +566,6 @@ for transitions between pages in I<stack>.
 
 Returns: the current transition type of I<stack>
 
-Since: 3.10
 
   method gtk_stack_get_transition_type ( --> GtkStackTransitionType )
 
@@ -587,7 +586,6 @@ another.
 
 Returns: C<1> if the transition is currently running, C<0> otherwise.
 
-Since: 3.12
 
   method gtk_stack_get_transition_running ( --> Int )
 
@@ -609,7 +607,6 @@ property is set to C<1>, I<stack> will interpolate its size between
 the current one and the one it'll take after changing the
 visible child, according to the set transition duration.
 
-Since: 3.18
 
   method gtk_stack_set_interpolate_size ( Int $interpolate_size )
 
@@ -631,7 +628,6 @@ the sizes of children on page switch.
 
 Returns: C<1> if child sizes are interpolated
 
-Since: 3.18
 
   method gtk_stack_get_interpolate_size ( --> Int )
 
@@ -669,7 +665,6 @@ The B<Gnome::GObject::Value> type of property I<homogeneous> is C<G_TYPE_BOOLEAN
 
 
 C<1> if the stack allocates the same width for all children.
-Since: 3.16
 
 The B<Gnome::GObject::Value> type of property I<hhomogeneous> is C<G_TYPE_BOOLEAN>.
 
@@ -678,7 +673,6 @@ The B<Gnome::GObject::Value> type of property I<hhomogeneous> is C<G_TYPE_BOOLEA
 
 
 C<1> if the stack allocates the same height for all children.
-Since: 3.16
 
 The B<Gnome::GObject::Value> type of property I<vhomogeneous> is C<G_TYPE_BOOLEAN>.
 
@@ -776,7 +770,6 @@ Sets a flag specifying whether the child requires the user attention.
 This is used by the B<Gnome::Gtk3::StackSwitcher> to change the appearance of the
 corresponding button when a page needs attention and it is not the
 current one.
-Since: 3.12
 
 The B<Gnome::GObject::Value> type of property I<needs-attention> is C<G_TYPE_BOOLEAN>.
 =end pod
