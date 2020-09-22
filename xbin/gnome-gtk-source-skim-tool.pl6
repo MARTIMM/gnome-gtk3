@@ -118,13 +118,18 @@ sub MAIN (
           use Gnome::GObject::Value;
           use Gnome::GObject::Type;
 
-          my $class $m .= new;
+          #my $class $m .= new;
 
-          my Gnome::GObject::Value \$gv .= new\(:init(G_TYPE_...));
-          $m.g-object-get-property\( '...', \$gv);
-          #\$gv.g-value-set-...\(...);
-          is \$gv.g-value-get-...\(...), ..., 'property ...';
-          \$gv.clear-object;
+          sub test-property ( \$type, Str \$prop, Str \$routine, \$value ) {
+            my Gnome::GObject::Value \$gv .= new\(:init(\$type));
+            $m.get-property\( \$prop, \$gv);
+            my \$gv-value = \$gv."\$routine"\();
+            is \$gv-value, \$value, "property \$prop";
+            \$gv.clear-object;
+          }
+
+          # example call
+          #test-property\( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
         }
 
         #-------------------------------------------------------------------------------
