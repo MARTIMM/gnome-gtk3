@@ -1,4 +1,6 @@
 use v6;
+#use lib '../gnome-native/lib';
+
 use NativeCall;
 use Test;
 
@@ -75,8 +77,7 @@ subtest 'Manipulations', {
   nok $s.get-vhomogeneous, '.set-vhomogeneous() / .get-vhomogeneous()';
 
   $s.set-transition-type(GTK_STACK_TRANSITION_TYPE_OVER_DOWN);
-  is GtkStackTransitionType($s.get_transition_type),
-     GTK_STACK_TRANSITION_TYPE_OVER_DOWN,
+  is $s.get_transition_type, GTK_STACK_TRANSITION_TYPE_OVER_DOWN,
      '.set-transition-type() / .get_transition_type()';
 
   $s.set-interpolate-size(True);

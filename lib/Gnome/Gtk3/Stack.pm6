@@ -495,12 +495,19 @@ sub gtk_stack_set_transition_type ( N-GObject $stack, int32 $transition  )
 
 Gets the type of animation that will be used for transitions between pages in this stack.
 
-  method gtk_stack_get_transition_type ( --> int32 )
+  method gtk_stack_get_transition_type ( --> GtkStackTransitionType )
 
 =end pod
 
-sub gtk_stack_get_transition_type ( N-GObject $stack --> int32 )
+sub gtk_stack_get_transition_type (
+  N-GObject $stack --> GtkStackTransitionType
+) {
+  GtkStackTransitionType(_gtk_stack_get_transition_type($stack))
+}
+
+sub _gtk_stack_get_transition_type ( N-GObject $stack --> int32 )
   is native(&gtk-lib)
+  is symbol('gtk_stack_get_transition_type')
   { * }
 
 #-------------------------------------------------------------------------------

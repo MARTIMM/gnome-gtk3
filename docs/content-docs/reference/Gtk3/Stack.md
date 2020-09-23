@@ -259,7 +259,7 @@ The transition type can be changed without problems at runtime, so it is possibl
 
 Gets the type of animation that will be used for transitions between pages in this stack.
 
-    method gtk_stack_get_transition_type ( --> int32 )
+    method gtk_stack_get_transition_type ( --> GtkStackTransitionType )
 
 [gtk_stack_] get_transition_running
 -----------------------------------
