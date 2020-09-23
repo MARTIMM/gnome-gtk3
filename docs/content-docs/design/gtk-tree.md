@@ -6,9 +6,11 @@ sidebar_menu: design-sidebar
 layout: sidebar
 ---
 
+{% assign u1 = site.baseurl | append: "/content-docs/design/check-list.html" %}
+
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules made inheritable are noted with ♥. Inheritance is a bit more complex than normal, info will be given in due time. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. The symbol 🗸 means that the module is tested, unneeded subs are removed, documentation done etc. (that will show up almost nowhere :- ). All modules under construction are not marked with an icon.
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. All modules under construction are not marked with an icon. For further progress info check [this page]({{u1}}).
 
 ```
 Tree of Gtk C structures                        Raku module
@@ -20,20 +22,20 @@ GObject                                         Gnome::GObject::Object
 │   ├── GtkWidget                                     Widget
 │   │   ├── GtkContainer                              Container
 │   │   │   ├── GtkBin                                Bin
-│   │   │   │   ├── GtkWindow                         ♥ Window
-│   │   │   │   │   ├── GtkDialog                     ♥ Dialog
-│   │   │   │   │   │   ├── GtkAboutDialog            ♥ AboutDialog
+│   │   │   │   ├── GtkWindow                         Window
+│   │   │   │   │   ├── GtkDialog                     Dialog
+│   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog
 │   │   │   │   │   │   ├── GtkAppChooserDialog
 │   │   │   │   │   │   ├── GtkColorChooserDialog     ColorChooserDialog
 │   │   │   │   │   │   ├─✗ GtkColorSelectionDialog   ⛔
 │   │   │   │   │   │   ├── GtkFileChooserDialog      FileChooserDialog
 │   │   │   │   │   │   ├── GtkFontChooserDialog
 │   │   │   │   │   │   ├─✗ GtkFontSelectionDialog    ⛔
-│   │   │   │   │   │   ├── GtkMessageDialog          ♥ MessageDialog
+│   │   │   │   │   │   ├── GtkMessageDialog          MessageDialog
 │   │   │   │   │   │   ├── GtkPageSetupUnixDialog
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
 │   │   │   │   │   │   ╰── GtkRecentChooserDialog
-│   │   │   │   │   ├── GtkApplicationWindow          ♥ ApplicationWindow
+│   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
 │   │   │   │   │   ├── GtkAssistant                  Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow
 │   │   │   │   │   ├── GtkPlug
@@ -45,10 +47,10 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkComboBoxText         ComboBoxText
 │   │   │   │   ├── GtkFrame                    Frame
 │   │   │   │   │   ╰── GtkAspectFrame          AspectFrame
-│   │   │   │   ├── GtkButton                   ♥ Button
+│   │   │   │   ├── GtkButton                   Button
 │   │   │   │   │   ├── GtkToggleButton         ToggleButton
-│   │   │   │   │   │   ├── GtkCheckButton      ♥ CheckButton
-│   │   │   │   │   │   │   ╰── GtkRadioButton  ♥ RadioButton
+│   │   │   │   │   │   ├── GtkCheckButton      CheckButton
+│   │   │   │   │   │   │   ╰── GtkRadioButton  RadioButton
 │   │   │   │   │   │   ╰── GtkMenuButton       MenuButton
 │   │   │   │   │   ├── GtkColorButton          ColorButton
 │   │   │   │   │   ├── GtkFontButton
@@ -105,7 +107,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ╰─✗ GtkVBox                     ⛔
 │   │   │   ├── GtkFixed
 │   │   │   ├── GtkFlowBox
-│   │   │   ├── GtkGrid                         ♥ Grid
+│   │   │   ├── GtkGrid                         Grid
 │   │   │   ├── GtkHeaderBar
 │   │   │   ├── GtkPaned                        Paned
 │   │   │   │   ├─✗ GtkHPaned                   ⛔
@@ -116,8 +118,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ├── GtkMenuShell                    MenuShell
 │   │   │   │   ├── GtkMenuBar                  MenuBar
 │   │   │   │   ╰── GtkMenu                     Menu
-│   │   │   │       ╰── GtkRecentChooserMenu    ♥ RecentChooserMenu
-│   │   │   ├── GtkNotebook                     ♥ Notebook
+│   │   │   │       ╰── GtkRecentChooserMenu    RecentChooserMenu
+│   │   │   ├── GtkNotebook                     Notebook
 │   │   │   ├── GtkSocket
 │   │   │   ├── GtkStack                        Stack
 │   │   │   ├─✗ GtkTable                        ⛔
@@ -125,7 +127,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ├── GtkToolbar
 │   │   │   ├── GtkToolItemGroup
 │   │   │   ├── GtkToolPalette
-│   │   │   ╰── GtkTreeView                     ♥ TreeView
+│   │   │   ╰── GtkTreeView                     TreeView
 │   │   ├─✗ GtkMisc                             ⛔, Created to keep hierarchy
 │   │   │   ├── GtkLabel                        Label
 │   │   │   │   ╰── GtkAccelLabel
@@ -133,23 +135,23 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkImage                        Image
 │   │   ├── GtkCalendar
 │   │   ├── GtkCellView
-│   │   ├── GtkDrawingArea                      🗸 DrawingArea
-│   │   ├── GtkEntry                            ♥ Entry
+│   │   ├── GtkDrawingArea                      DrawingArea
+│   │   ├── GtkEntry                            Entry
 │   │   │   ├── GtkSearchEntry                  SearchEntry
 │   │   │   ╰── GtkSpinButton
 │   │   ├── GtkGLArea
 │   │   ├── GtkRange                            Range
-│   │   │   ├── GtkScale                        ♥ Scale
+│   │   │   ├── GtkScale                        Scale
 │   │   │   │   ├─✗ GtkHScale                   ⛔
 │   │   │   │   ╰─✗ GtkVScale                   ⛔
 │   │   │   ╰── GtkScrollbar
 │   │   │       ├─✗ GtkHScrollbar               ⛔
 │   │   │       ╰─✗ GtkVScrollbar               ⛔
-│   │   ├── GtkSeparator                        🗸 Separator
+│   │   ├── GtkSeparator                        Separator
 │   │   │   ├─✗ GtkHSeparator                   ⛔
 │   │   │   ╰─✗ GtkVSeparator                   ⛔
 │   │   ├─✗ GtkHSV                              ⛔
-│   │   ├─✗ GtkInvisible                        Used internally for D&D
+│   │   ├─✗ GtkInvisible                        ⛔ Used internally for D&D
 │   │   ├── GtkProgressBar                      ProgressBar
 │   │   ├── GtkSpinner                          Spinner
 │   │   ├── GtkSwitch                           Switch
@@ -179,7 +181,7 @@ GObject                                         Gnome::GObject::Object
 │   ╰─✗ GtkRecentAction                         ⛔
 ├─✗ GtkActionGroup                              ⛔
 ├── GApplication                                Gnome::Gio::Application
-│   ╰── GtkApplication                          ♥ Application
+│   ╰── GtkApplication                          Application
 ├── GtkBuilder                                  Builder
 ├── GtkCellAreaContext
 ├── GtkClipboard
@@ -233,7 +235,7 @@ GObject                                         Gnome::GObject::Object
 ├── GtkTreeModelFilter
 ├── GtkTreeModelSort
 ├── GtkTreeSelection                            ⛔TreeSelection
-├── GtkTreeStore                                ♥ TreeStore
+├── GtkTreeStore                                TreeStore
 ├─✗ GtkUIManager                                ⛔
 ├── GtkWindowGroup
 ├── GtkTooltip
