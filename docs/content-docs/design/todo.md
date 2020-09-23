@@ -83,6 +83,22 @@ layout: sidebar
   ```
   which is more readable because of the enum type name used where the returned value should fit in.
 
+  Even better would it be when a second sub is made, calling the native one and returns the value as an enum value. Using the example;
+  ```
+  sub gtk_stack_get_transition_type (
+    N-GObject $stack --> GtkStackTransitionType
+  ) {
+    GtkStackTransitionType(_gtk_stack_get_transition_type($stack))
+  }
+
+  sub _gtk_stack_get_transition_type ( N-GObject $stack --> int32 )
+    is native(&gtk-lib)
+    is symbol('gtk_stack_get_transition_type')
+    { * }
+  ```
+
+  I'll go for the last example but will take some time to find all returned enum
+
 #### Site changes.
 * In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
 
