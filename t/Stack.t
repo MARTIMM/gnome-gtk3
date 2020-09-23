@@ -120,11 +120,30 @@ subtest 'Properties ...', {
 #  test-property( G_TYPE_, '', '', );
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
+subtest 'Inherit Gnome::Gtk3::Stack', {
+  class MyClass is Gnome::Gtk3::Stack {
+    method new ( |c ) {
+      self.bless( :GtkStack, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+      self.set-transition-duration(2001);
+      self.set-transition-type(GTK_STACK_TRANSITION_TYPE_OVER_DOWN);
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Stack, '.new()';
+
+  is $mgc.get-transition-duration, 2001, 'my transition';
+  is GtkStackTransitionType($mgc.get_transition_type),
+     GTK_STACK_TRANSITION_TYPE_OVER_DOWN, 'my transition type';
+
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
 }

@@ -123,8 +123,8 @@ Create a Stack object using a native object returned from a builder. See also B<
 
 =end pod
 
-#TM:0:new():inheriting:
-#TM:0:new():
+#TM:1:new():inheriting:
+#TM:1:new():
 #TM:4:new(:native-object):TopLevelClassSupport
 #TM:4:new(:build-id):Object
 submethod BUILD ( *%options ) {
