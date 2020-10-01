@@ -203,7 +203,7 @@ GObject                                         Gnome::GObject::Object
 │   │   ├── GtkGestureRotate
 │   │   ╰── GtkGestureZoom
 │   ╰── GtkPadController
-├── GtkIconFactory
+├─✗ GtkIconFactory                              ⛔
 ├── GtkIconTheme
 ├── GtkIMContext
 │   ├── GtkIMContextSimple
