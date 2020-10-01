@@ -1139,15 +1139,19 @@ sub get-section ( Str:D $source-content --> List ) {
 
   my Str $section-doc = ~$/;
 
+  # get short description and remove it from $section-doc
   $section-doc ~~ m:i/
       ^^ \s+ '*' \s+ '@Short_description:' \s* $<text> = [.*?] $$
   /;
   my Str $short-description = ~($<text>//'');
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Short_description:' [.*?] \n //;
 
+
+  # get see also and remove it from $section-doc
   $section-doc ~~ m:i/ ^^ \s+ '*' \s+ '@See_also:' \s* $<text> = [.*?] $$ /;
   my Str $see-also = ~($<text>//'');
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@See_also:' [.*?] \n //;
+
 
   # cleanup rest
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
@@ -2085,10 +2089,11 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
   $text ~~ s/ ^^ \s* '*'? \s* 'Since:' \d+\.\d+ \n //;  # Since: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //;    # Deprecated: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;     # Stability: status
-  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) $$ /$/[0]/;       # Leading star
-  $text ~~ s:g/ ^^ \s+ '*' \s* \n //;                   # Leading star on Empty line
+  $text ~~ s:g/ ^^ \s+ '*' \s+ '-' \s? (.*?) \n /=item $/[0]/; # doc star + dash
+  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) \n /$/[0] \n/;    # doc star + doc
+  $text ~~ s:g/ ^^ \s+ '*' \s*? \n /\n/;                # doc star + empty
 #  $text ~~ s:g/ ^^ \s* \n //;
-  $text ~~ s:g/ \n / /;
+#  $text ~~ s:g/ \n / /;
 
 #  $text ~ "\n\n"
   $text
