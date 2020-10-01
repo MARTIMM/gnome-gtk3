@@ -1,12 +1,13 @@
 use v6;
 
+#-------------------------------------------------------------------------------
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Image;
 use Gnome::Gtk3::Main;
 
-
+#-------------------------------------------------------------------------------
 my Gnome::Gtk3::Window $w .= new;
 $w.set-title('icon-image');
 
@@ -48,11 +49,10 @@ $w.set-size-request( 100, 100);
 
 Gnome::Gtk3::Main.new.gtk-main;
 
-
 #-------------------------------------------------------------------------------
 sub add-image ( Gnome::Gtk3::Grid $g, Int $col, Int $row,  Str $iname ) {
 
   my Gnome::Gtk3::Image $i .= new;
-  $i.set-from-icon-name( $iname, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  $i.set-from-icon-name( $iname, GTK_ICON_SIZE_DIALOG);
   $g.grid-attach( $i, $col, $row, 1, 1);
 }
