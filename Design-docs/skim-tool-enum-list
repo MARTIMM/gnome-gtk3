@@ -122,6 +122,7 @@ GtkWidgetHelpType
 GtkCellRendererAccelMode
 GtkCornerType
 GtkPolicyType
+GtkRevealerTransitionType
 GtkPlacesOpenFlags
 GtkStackTransitionType
 GtkTreeViewDropPosition
@@ -133,6 +134,9 @@ GtkFileChooserConfirmation
 GtkFileChooserError
 GtkButtonsType
 GtkStyleContextPrintFlags
+GtkIconViewDropPosition
+GtkIconLookupFlags
+GtkIconThemeError
 GtkWindowType
 GtkWindowPosition
 GdkWindowWindowClass
@@ -151,7 +155,6 @@ GdkModifierIntent
 GdkStatus
 GdkGrabStatus
 GdkGrabOwnership
-GdkEventMask
 GdkGLError
 GdkWindowTypeHint
 GdkAxisUse
@@ -252,10 +255,6 @@ PangoAlignment
 PangoWrapMode
 PangoEllipsizeMode
 cairo_status_t
-CairoStatus
-cairo_path_data_type_t
-PathDataTypes
-cairo_status_t
 cairo_content_t
 cairo_format_t
 cairo_operator_t
@@ -278,3 +277,8 @@ cairo_pattern_type_t
 cairo_extend_t
 cairo_filter_t
 cairo_region_overlap_t
+cairo_svg_version_t
+cairo_svg_unit_t
+cairo_pdf_version_t
+cairo_pdf_outline_flags_t
+cairo_pdf_metadata_t
