@@ -70,99 +70,101 @@ table {
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 AboutDialog               |  | 🗸| 🗸| 🗸| ¾|  |  |  |  |  | |
-Adjustment                |
-Application               |  | 🗸|
-ApplicationWindow         |  | 🗸|
-AspectFrame               |
-Assistant                 |
-Bin                       |
-Border                    |b |
-Box                       |
-Buildable                 |i |
-Builder                   |
+Adjustment                |  |  |  |  |  |  |  |  |  |  |  |
+Application               |  | 🗸|  |  |  |  |  |  |  |  |  |
+ApplicationWindow         |  | 🗸|  |  |  |  |  |  |  |  |  |
+AspectFrame               |  |  |  |  |  |  |  |  |  |  |  |
+Assistant                 |  |  |  |  |  |  |  |  |  |  |  |
+Bin                       |  |  |  |  |  |  |  |  |  |  |  |
+Border                    |b |  |  |  |  |  |  |  |  |  |  |
+Box                       |  |  |  |  |  |  |  |  |  |  |  |
+Buildable                 |i |  |  |  |  |  |  |  |  |  |  |
+Builder                   |  |  |  |  |  |  |  |  |  |  |  |
 Button                    |  | 🗸| 🗸| 🗸| 🗸| 🗸| 🗸| ½| | | |
-CellRenderer              |
-CellRendererAccel         |
-CellRendererCombo         |
-CellRendererPixbuf        |
-CellRendererProgress      |
-CellRendererSpin          |
-CellRendererSpinner       |
-CellRendererText          |
-CellRendererToggle        |
-CheckButton               |  | 🗸|
-ColorButton               |
-ColorChooser              |i |
-ColorChooserDialog        |
-ColorChooserWidget        |
-ComboBox                  |
-ComboBoxText              |
-Container                 |
-CssProvider               |
+CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
+CheckButton               |  | 🗸|  |  |  |  |  |  |  |  |  |
+ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |i |  |  |  |  |  |  |  |  |  |  |
+ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |
+ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |
+Container                 |  |  |  |  |  |  |  |  |  |  |  |
+CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
 Dialog                    |  | 🗸|  |  |  |  |  |  |  |  |* |
 DrawingArea               |  |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| |
-Entry                     |  | 🗸|
+Entry                     |  | 🗸|  |  |  |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗|* |
-FileChooser               |i |
-FileChooserDialog         |
-FileFilter                |
+FileChooser               |i |  |  |  |  |  |  |  |  |  |  |
+FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
+FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
 Frame                     |  |  |  |  |  |  |  |  |  |  |* |
 Grid                      |  | 🗸|  |  |  |  |  |  |  |  |* |
-Image                     |
-Label                     |
-LevelBar                  |
-ListBox                   |
-ListBoxRow                |
-ListStore                 |
+IconTheme                 |  |  |  |  |  |  |  |  |  |  |  |
+IconView                  |  |  |  |  |  |  |  |  |  |  |  |
+Image                     |  |  |  |  |  |  |  |  |  |  |  |
+Label                     |  |  |  |  |  |  |  |  |  |  |  |
+LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
+ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
+ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
+ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
 Main                      |s |  | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗|P |
-Menu                      |
-MenuBar                   |
-MenuButton                |
-MenuItem                  |
-MenuShell                 |
-MessageDialog             |  | 🗸|
-Misc                      |
-Notebook                  |  | 🗸|
-Orientable                |i |
-Paned                     |
-PlacesSidebar             |
-Popover                   |
-PopoverMenu               |
-ProgressBar               |
-RadioButton               |  | 🗸|
-Range                     |
-RecentChooserMenu         |  | 🗸|
+Menu                      |  |  |  |  |  |  |  |  |  |  |  |
+MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
+MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
+MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
+MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
+MessageDialog             |  | 🗸|  |  |  |  |  |  |  |  |  |
+Misc                      |  |  |  |  |  |  |  |  |  |  |  |
+Notebook                  |  | 🗸|  |  |  |  |  |  |  |  |  |
+Orientable                |i |  |  |  |  |  |  |  |  |  |  |
+Paned                     |  |  |  |  |  |  |  |  |  |  |  |
+PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |
+Popover                   |  |  |  |  |  |  |  |  |  |  |  |
+PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |
+ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |
+RadioButton               |  | 🗸|  |  |  |  |  |  |  |  |  |
+Range                     |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooserMenu         |  | 🗸|  |  |  |  |  |  |  |  |  |
 Revealer                  |  |  | 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| ¾|  |
-Scale                     |  | 🗸|
-ScrolledWindow            |
-SearchBar                 |
-SearchEntry               |
-Separator                 |
-Spinner                   |
+Scale                     |  | 🗸|  |  |  |  |  |  |  |  |  |
+ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
+SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
+SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
+Separator                 |  |  |  |  |  |  |  |  |  |  |  |
+Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
 Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗|🗸| 🗸| ✗| 🗸|  |
-StackSidebar              |
-StackSwitcher             |
-StyleContext              |
-StyleProvider             |i |
-Switch                    |
-TextBuffer                |
-TextIter                  |b |
-TextTag                   |
-TextTagTable              |
-TextView                  |
-ToggleButton              |
-ToolButton                |
-ToolItem                  |
-TreeIter                  |b |
-TreeModel                 |i |
-TreePath                  |b |
-TreeRowReference          |b |
-TreeSelection             |
-TreeStore                 |  | 🗸|
-TreeView                  |  | 🗸|
-TreeViewColumn            |
+StackSidebar              |  |  |  |  |  |  |  |  |  |  |  |
+StackSwitcher             |  |  |  |  |  |  |  |  |  |  |  |
+StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
+StyleProvider             |i |  |  |  |  |  |  |  |  |  |  |
+Switch                    |  |  |  |  |  |  |  |  |  |  |  |
+TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |
+TextIter                  |b |  |  |  |  |  |  |  |  |  |  |
+TextTag                   |  |  |  |  |  |  |  |  |  |  |  |
+TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |
+TextView                  |  |  |  |  |  |  |  |  |  |  |  |
+ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |
+ToolButton                |  |  |  |  |  |  |  |  |  |  |  |
+ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |
+TreeIter                  |b |  |  |  |  |  |  |  |  |  |  |
+TreeModel                 |i |  |  |  |  |  |  |  |  |  |  |
+TreePath                  |b |  |  |  |  |  |  |  |  |  |  |
+TreeRowReference          |b |  |  |  |  |  |  |  |  |  |  |
+TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
+TreeStore                 |  | 🗸|  |  |  |  |  |  |  |  |  |
+TreeView                  |  | 🗸|  |  |  |  |  |  |  |  |  |
+TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
 Widget                    |  |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
-WidgetPath                |b |
+WidgetPath                |b |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | 🗸| 🗸| 🗸|  |  |  |  |  |  |* |
 
 <br/>
@@ -220,10 +222,6 @@ GestureZoom|
 GLArea|
 HandleBox|
 HeaderBar|
-IconFactory|
-IconSet|b|
-IconTheme|
-IconView|
 IMContext|
 IMContextSimple|
 IMMulticontext|

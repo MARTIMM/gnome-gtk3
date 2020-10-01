@@ -1,4 +1,5 @@
-- 2020-09-23 0.29.4:
+- 2020-09-23 0.30.0:
+  - Add modules Gnome::Gtk3::IconTheme and Gnome::Gtk3::IconView.
 
 - 2020-09-22 0.29.3:
   - Completed documentation and tests for Gnome::Gtk3::Stack

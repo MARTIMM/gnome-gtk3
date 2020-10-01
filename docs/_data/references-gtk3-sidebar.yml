@@ -182,6 +182,12 @@
     url: "/content-docs/reference/Gtk3/Image.html"
     doc: 1
     test: 1
+  - title: "IconTheme"
+    type: widget
+    url: "/content-docs/reference/Gtk3/IconTheme.html"
+  - title: "IconView"
+    type: widget
+    url: "/content-docs/reference/Gtk3/IconView.html"
   - title: "Label"
     type: widget
     url: "/content-docs/reference/Gtk3/Label.html"
