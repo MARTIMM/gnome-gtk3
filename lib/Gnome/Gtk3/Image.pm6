@@ -441,10 +441,7 @@ sub _gtk_image_new_from_animation ( GdkPixbufAnimation $animation )
 =begin pod
 =head2 [[gtk_] image_] new_from_icon_name
 
-Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme.
-If the icon name isn’t known, a “broken image” icon will be
-displayed instead.  If the current icon theme is changed, the icon
-will be updated appropriately.
+Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead.  If the current icon theme is changed, the icon will be updated appropriately. You can use the program `gtk3-icon-browser` to get the available names in the current selected theme.
 
 Returns: a new B<Gnome::Gtk3::Image> displaying the themed icon
 
