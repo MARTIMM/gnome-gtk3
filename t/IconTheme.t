@@ -1,0 +1,176 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::Gtk3::IconTheme;
+use Gnome::Gdk3::Screen;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::IconTheme $it;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $it .= new;
+  isa-ok $it, Gnome::Gtk3::IconTheme, '.new()';
+
+  $it .= new(:default);
+  isa-ok $it, Gnome::Gtk3::IconTheme, '.new(:default)';
+
+  my Gnome::Gdk3::Screen $screen .= new;
+  $it .= new(:$screen);
+  isa-ok $it, Gnome::Gtk3::IconTheme, '.new(:screen)';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  my Gnome::Glib::List $l;
+  $l .= new(:native-object($it.list-icons('Places')));
+#  my Int $length = $l.g_list_length;
+  my Gnome::Glib::List $lcopy = $l.copy;
+  while ?$lcopy {
+    my Str $ldata = nativecast( Str,  $lcopy.data);
+#note $ldata;
+    like $ldata, /^ [<.alnum> | '-']+ $/, '.list-icons()';
+    last;
+    #$lcopy .= next;
+  }
+
+  # TODO memory leak .... elements are not freed!
+  $l.clear-object;
+
+
+  $l .= new(:native-object($it.list-contexts));
+  $lcopy = $l.copy;
+  while ?$lcopy {
+    my Str $ldata = nativecast( Str,  $lcopy.data);
+#note $ldata;
+    like $ldata, /^ [<.alnum> | '-']+ $/, '.list-contexts()';
+    last;
+    #$lcopy .= next;
+  }
+
+  like $it.get-example-icon-name, /^ [<.alnum> | '-']+ $/,
+       '.get-example-icon-name()';;
+
+  # TODO memory leak .... elements are not freed!
+  $l.clear-object;
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::IconTheme', {
+  class MyClass is Gnome::Gtk3::IconTheme {
+    method new ( |c ) {
+      self.bless( :GtkIconTheme, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::IconTheme, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::IconTheme $it .= new;
+
+  sub test-property ( $type, Str $prop, Str $routine, $value ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $it.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    is $gv-value, $value, "property $prop";
+    $gv.clear-object;
+  }
+
+  # example call
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  #use Gnome::Glib::Main;
+  use Gnome::Gtk3::Main;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... ( 'any-args', Gnome::Gtk3::IconTheme :$widget #`{{ --> ...}} ) {
+
+      isa-ok $widget, Gnome::Gtk3::IconTheme;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::IconTheme :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::IconTheme $it .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.container-add($m);
+
+  my SignalHandlers $sh .= new;
+  $it.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $it.start-thread(
+    $sh, 'signal-emitter',
+    # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
+}}
+
+#-------------------------------------------------------------------------------
+done-testing;
