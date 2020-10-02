@@ -1122,6 +1122,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
   # cleanup documentation of sub
   $sub-doc ~~ s/ 'Since:' \s*? \d+\.\d+ //;
+  $sub-doc ~~ s/ '  Returns:'/\n\nReturns:/;
   $sub-doc ~~ s/^ \s+ //;
 
 
