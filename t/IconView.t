@@ -83,11 +83,12 @@ subtest 'Manipulations', {
   # TODO memory leak .... elements are not freed!
   $l.clear-object;
 
-
   my N-GObject $n-ts = $iv.get-model;
+  isa-ok $n-ts, N-GObject, '.get-model()';
+
+
   $iv.set-columns(1);
   $iv.set-text-column(Col0);
-  isa-ok $n-ts, N-GObject, '.get-model()';
 
   my Gnome::Gtk3::TreeStore $ts .= new(:native-object($n-ts));
   my Gnome::Gtk3::TreeIter $ti;
