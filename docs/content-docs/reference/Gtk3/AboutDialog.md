@@ -32,7 +32,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/AboutDialog.png)
+![](plantuml/AboutDialog.svg)
 
 Inheriting this class
 ---------------------

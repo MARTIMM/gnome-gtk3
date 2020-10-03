@@ -34,7 +34,7 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
 
 =head2 Uml Diagram
 
-![](plantuml/AboutDialog.png)
+![](plantuml/AboutDialog.svg)
 
 =begin comment
 
