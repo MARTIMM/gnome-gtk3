@@ -88,7 +88,7 @@ B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
 
 =head2 Uml Diagram
 
-![](plantuml/Dialog.png)
+![](plantuml/Dialog.svg)
 
 =head2 Inheriting this class
 

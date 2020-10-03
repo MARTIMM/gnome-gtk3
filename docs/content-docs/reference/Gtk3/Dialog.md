@@ -86,7 +86,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/Dialog.png)
+![](plantuml/Dialog.svg)
 
 Inheriting this class
 ---------------------
