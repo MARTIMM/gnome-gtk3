@@ -108,8 +108,8 @@ FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
 Frame                     |  |  |  |  |  |  |  |  |  |  |* |
 Grid                      |  | 🗸|  |  |  |  |  |  |  |  |* |
-IconTheme                 |  |  |  |  |  |  |  |  |  |  |  |
-IconView                  |  |  |  |  |  |  |  |  |  |  |  |
+IconTheme                 |  |  | 🗸|  |  |  |  |  |  |  |  |
+IconView                  |  |  | 🗸|  |  |  |  |  |  |  |  |
 Image                     |  |  |  |  |  |  |  |  |  |  |  |
 Label                     |  |  |  |  |  |  |  |  |  |  |  |
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
