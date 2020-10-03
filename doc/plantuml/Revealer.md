@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 'scale 0.9
 skinparam packageStyle rectangle
@@ -52,7 +53,7 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
 'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
 @enduml
-
+```
 
 <!--
 │   │   │   │   ├── GtkButton                   ♥ Button
