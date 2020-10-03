@@ -1,0 +1,217 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::N::N-GObject;
+use Gnome::GObject::Type;
+use Gnome::GObject::Value;
+use Gnome::Gtk3::TreeStore;
+use Gnome::Gtk3::TreeModel;
+use Gnome::Gtk3::TreeIter;
+use Gnome::Gtk3::TreePath;
+use Gnome::Gtk3::IconView;
+use Gnome::Gtk3::IconTheme;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::TreeStore $ts;
+my Gnome::Gtk3::TreeIter $iter;
+my Gnome::Gtk3::TreeIter $parent-iter;
+my Gnome::Gtk3::TreeIter $sibling-iter;
+my Gnome::Gtk3::TreePath $tp;
+my Array[Gnome::GObject::Value] $va;
+
+enum ColumnNames < Col0 Col1 Col2 >; # Col2 is not used or set!
+enum VAEntries < E0 E1 >; # entries in va
+
+my class ShowTabel {
+  submethod BUILD ( ) {
+    diag "\n Row  |  String\n------+-------------------";
+  }
+
+  method show-entry (
+    N-GObject $nc-ts,
+    Gnome::Gtk3::TreePath $c-path,
+    Gnome::Gtk3::TreeIter $c-iter
+  ) {
+    my Str $row = $c-path.to-string;
+    my Gnome::Gtk3::TreeStore $c-ts .= new(:native-object($nc-ts));
+    my Array[Gnome::GObject::Value] $va;
+    $va = $c-ts.get-value( $c-iter, Col0);
+
+    diag [~] $row.fmt('%5.5s'), ' | ', $va[Col0].get-string;
+
+    $va[Col0].clear-object;
+
+    0
+  }
+}
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::IconView $iv;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $iv .= new;
+  isa-ok $iv, Gnome::Gtk3::IconView, '.new()';
+
+
+  my Gnome::Gtk3::TreeStore $ts .= new(:field-types(G_TYPE_STRING));
+  $iv .= new(:model($ts));
+  isa-ok $iv, Gnome::Gtk3::IconView, '.new(:model)';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  my Gnome::Gtk3::IconTheme $it .= new(:default);
+  my Gnome::Glib::List $l;
+  $l .= new(:native-object($it.list-icons('Places')));
+#  my Int $length = $l.g_list_length;
+  my @some-icon-names = ();
+  my Int $count = 0;
+  my Gnome::Glib::List $lcopy = $l.copy;
+  while ?$lcopy {
+    my Str $ldata = nativecast( Str,  $lcopy.data);
+#note $ldata;
+#    like $ldata, /^ [<.alnum> | '-']+ $/, '.list-icons()';
+    last if $count++ > 10;
+    @some-icon-names.push: $ldata;
+    $lcopy .= next;
+  }
+
+  # TODO memory leak .... elements are not freed!
+  $l.clear-object;
+
+
+  my N-GObject $n-ts = $iv.get-model;
+  $iv.set-columns(1);
+  $iv.set-text-column(Col0);
+  isa-ok $n-ts, N-GObject, '.get-model()';
+
+  my Gnome::Gtk3::TreeStore $ts .= new(:native-object($n-ts));
+  my Gnome::Gtk3::TreeIter $ti;
+  for @some-icon-names -> $iname {
+    $ti .= new(:native-object($ts.tree-store-append(Any)));
+    $ts.set( $ti, Col0, $iname);
+  }
+
+  $ts.foreach( ShowTabel.new, 'show-entry');
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::IconView', {
+  class MyClass is Gnome::Gtk3::IconView {
+    method new ( |c ) {
+      self.bless( :GtkIconView, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::IconView, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::IconView $iv .= new;
+
+  sub test-property ( $type, Str $prop, Str $routine, $value ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $iv.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    is $gv-value, $value, "property $prop";
+    $gv.clear-object;
+  }
+
+  # example call
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  #use Gnome::Glib::Main;
+  use Gnome::Gtk3::Main;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... ( 'any-args', Gnome::Gtk3::IconView :$widget #`{{ --> ...}} ) {
+
+      isa-ok $widget, Gnome::Gtk3::IconView;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::IconView :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::IconView $iv .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.container-add($m);
+
+  my SignalHandlers $sh .= new;
+  $iv.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $iv.start-thread(
+    $sh, 'signal-emitter',
+    # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
+}}
+
+#-------------------------------------------------------------------------------
+done-testing;
