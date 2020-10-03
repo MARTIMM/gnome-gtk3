@@ -10,15 +10,6 @@ Description
 
 The **Gnome::Gtk3::ColorChooserDialog** widget is a dialog for choosing a color. It implements the **Gnome::Gtk3::ColorChooser** interface.
 
-Since: 3.4
-
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ColorChooserDialog implements
-
-  * [Gnome::Gtk3::ColorChooser](ColorChooser.html)
-
 See Also
 --------
 
@@ -33,6 +24,11 @@ Declaration
     unit class Gnome::Gtk3::ColorChooserDialog;
     also is Gnome::Gtk3::Dialog;
     also does Gnome::Gtk3::ColorChooser;
+
+Uml Diagram
+-----------
+
+![](plantuml/ColorChooserDialog.svg)
 
 Example
 -------

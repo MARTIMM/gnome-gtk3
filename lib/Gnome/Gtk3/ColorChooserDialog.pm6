@@ -12,20 +12,13 @@ A dialog for choosing colors
 
 =head1 Description
 
-The B<Gnome::Gtk3::ColorChooserDialog> widget is a dialog for choosing
-a color. It implements the B<Gnome::Gtk3::ColorChooser> interface.
+The B<Gnome::Gtk3::ColorChooserDialog> widget is a dialog for choosing a color. It implements the B<Gnome::Gtk3::ColorChooser> interface.
 
-Since: 3.4
-
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ColorChooserDialog implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
 =head2 See Also
 
 B<Gnome::Gtk3::ColorChooser>, B<Gnome::Gtk3::Dialog>
+
 
 =head1 Synopsis
 =head2 Declaration
@@ -33,6 +26,12 @@ B<Gnome::Gtk3::ColorChooser>, B<Gnome::Gtk3::Dialog>
   unit class Gnome::Gtk3::ColorChooserDialog;
   also is Gnome::Gtk3::Dialog;
   also does Gnome::Gtk3::ColorChooser;
+
+
+=head2 Uml Diagram
+
+![](plantuml/ColorChooserDialog.svg)
+
 
 =head2 Example
 
@@ -49,7 +48,7 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Dialog;
 
-use Gnome::Gtk3::Buildable;
+#use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::ColorChooser;
 
 #-------------------------------------------------------------------------------
