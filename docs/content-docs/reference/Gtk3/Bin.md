@@ -19,6 +19,11 @@ Declaration
     unit class Gnome::Gtk3::Bin;
     also is Gnome::Gtk3::Container;
 
+Uml Diagram
+-----------
+
+![](plantuml/Bin.svg)
+
 Example
 -------
 

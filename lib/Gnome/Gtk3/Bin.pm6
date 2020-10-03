@@ -23,7 +23,13 @@ B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::HandleBox> or B<Gn
   unit class Gnome::Gtk3::Bin;
   also is Gnome::Gtk3::Container;
 
+
+=head2 Uml Diagram
+
+![](plantuml/Bin.svg)
+
 =head2 Example
+
 
 An example using a B<Gnome::Gtk3::Button> which is a direct descendant of B<Gnome::Gtk3::Bin>. Here it is shown that a button is also a kind of a container which in principle can hold anything but by default it holds a label. The widget's name is by default set to its class name. So, a Button has 'GtkButton' and a Label has 'GtkLabel'.
 
