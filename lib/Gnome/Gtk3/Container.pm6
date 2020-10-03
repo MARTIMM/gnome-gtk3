@@ -145,6 +145,12 @@ An example of these properties in UI definitions:
   unit class Gnome::Gtk3::Container;
   also is Gnome::Gtk3::Widget;
 
+
+=head2 Uml Diagram
+
+![](plantuml/Container.svg)
+
+
 =comment head2 Example
 
 =end pod
