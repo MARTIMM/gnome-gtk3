@@ -1,38 +1,44 @@
 ```plantuml
 @startuml
-'scale 0.9
+scale 0.9
 skinparam packageStyle rectangle
 skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
 hide members
 
-Interface Gnome::Gtk3::Buildable <Interface>
-class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 
-'class Gnome::GObject::InitialyUnowned
-'class Gnome::GObject::Object
+Interface Gnome::Gtk3::Buildable <Interface>
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
+
+Interface Gnome::Gtk3::Actionable <Interface>
+class Gnome::Gtk3::Actionable <<(R,#80ffff)>>
+
+Interface Gnome::Gtk3::Orientable <Interface>
+class Gnome::Gtk3::Orientable <<(R,#80ffff)>>
+
+
+
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 Gnome::GObject::Object *-> Gnome::GObject::Signal
 
 Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
 
+Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
+Gnome::Gtk3::Bin <|--- Gnome::Gtk3::Button
+
+
+
 class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
 
-Gnome::Gtk3::Button -|> Gnome::Gtk3::Bin
-Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
-Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
-
-
-
-'Interface Gnome::Gtk3::Actionable <Interface>
-'Gnome::Gtk3::Actionable <|-- Gnome::Gtk3::Button
-'class Gnome::Gtk3::Button implements Gnome::Gtk3::Actionable
+class Gnome::Gtk3::Button implements Gnome::Gtk3::Actionable
 
 'Interface Gnome::Gtk3::Orientable <Interface>
 'Gnome::Gtk3::Orientable <|-- Gnome::Gtk3::ScaleButton
+class Gnome::Gtk3::ScaleButton implements Gnome::Gtk3::Orientable
 
 'Interface Gnome::Gtk3::ColorChooser <Interface>
 'Gnome::Gtk3::ColorChooser <|-- Gnome::Gtk3::ColorButton
@@ -53,7 +59,7 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LinkButton
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LockButton
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
-'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
+Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
 'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
 @enduml
 ```

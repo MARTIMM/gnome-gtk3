@@ -6,6 +6,7 @@ skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
 hide members
 
+Interface Gnome::Gtk3::Buildable <Interface>
 class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
 class Gnome::N::TopLevelClassSupport < Catch all class >

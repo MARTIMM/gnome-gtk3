@@ -2,6 +2,7 @@
 @startuml
 'scale 0.9
 skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
 hide members
 
@@ -17,6 +18,8 @@ Gnome::GObject::Object *-> Gnome::GObject::Signal
 Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
 
 class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
+Interface Gnome::Gtk3::Buildable <Interface>
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
 Gnome::Gtk3::Revealer -|> Gnome::Gtk3::Bin
 Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container

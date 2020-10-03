@@ -2,12 +2,16 @@
 @startuml
 'scale 0.9
 skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
 hide members
 
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+
+Interface Gnome::Gtk3::Buildable <Interface>
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
 'class Gnome::GObject::InitialyUnowned
 'class Gnome::GObject::Object
