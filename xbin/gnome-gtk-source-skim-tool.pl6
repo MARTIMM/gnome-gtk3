@@ -994,12 +994,12 @@ sub substitute-in-template (
 
           else {
             my $no;
-            # if ? %options<> {
-            #   $no = %options<>;
-            #   $no .= get-native-object-no-reffing
-            #     if $no.^can('get-native-object-no-reffing');
-            #   $no = ...($no);
-            # }
+            if ? %options<___x___> {
+              $no = %options<___x___>;
+              $no .= get-native-object-no-reffing
+                if $no.^can('get-native-object-no-reffing');
+              $no = _BASE-SUBNAME_new___x___($no);
+            }
 
             #`{{ use this when the module is not made inheritable
             # check if there are unknown options
@@ -1023,7 +1023,7 @@ sub substitute-in-template (
             #`{{ when there are defaults use this instead
             # create default object
             else {
-              $no = BASE-SUBNAME_new();
+              $no = _BASE-SUBNAME_new();
             }
             }}
 
