@@ -1,9 +1,12 @@
+```plantuml
 @startuml
 'scale 0.9
 skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
 hide members
 
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
@@ -52,7 +55,7 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
 'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
 @enduml
-
+```
 
 <!--
 │   │   │   │   ├── GtkButton                   ♥ Button
