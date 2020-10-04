@@ -1,4 +1,7 @@
-- 2020-09-23 0.30.0:
+- 2020-10-04 0.30.1:
+  - Made Label inheritable.
+
+- 2020-10-04 0.30.0:
   - Add modules Gnome::Gtk3::IconTheme and Gnome::Gtk3::IconView.
   - Made UML diagrams more consistent with other diagrams from other modules.
 
