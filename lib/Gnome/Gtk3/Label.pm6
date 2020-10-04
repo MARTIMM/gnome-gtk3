@@ -12,10 +12,7 @@ A widget that displays a small to medium amount of text
 
 =head1 Description
 
-
-The B<Gnome::Gtk3::Label> widget displays a small amount of text. As the name
-implies, most labels are used to label another widget such as a
-B<Gnome::Gtk3::Button>, a B<Gnome::Gtk3::MenuItem>, or a B<Gnome::Gtk3::ComboBox>.
+The B<Gnome::Gtk3::Label> widget displays a small amount of text. As the name implies, most labels are used to label another widget such as a B<Gnome::Gtk3::Button>, a B<Gnome::Gtk3::MenuItem>, or a B<Gnome::Gtk3::ComboBox>.
 
 
 =head2 Css Nodes
@@ -26,25 +23,15 @@ B<Gnome::Gtk3::Button>, a B<Gnome::Gtk3::MenuItem>, or a B<Gnome::Gtk3::ComboBox
   ┊
   ╰── [link]
 
-B<Gnome::Gtk3::Label> has a single CSS node with the name label. A wide variety
-of style classes may be applied to labels, such as .title, .subtitle,
-.dim-label, etc. In the B<Gnome::Gtk3::ShortcutsWindow>, labels are used wth the
-.keycap style class.
+B<Gnome::Gtk3::Label> has a single CSS node with the name label. A wide variety of style classes may be applied to labels, such as .title, .subtitle, .dim-label, etc. In the B<Gnome::Gtk3::ShortcutsWindow>, labels are used with the .keycap style class.
 
 If the label has a selection, it gets a subnode with name selection.
 
-If the label has links, there is one subnode per link. These subnodes
-carry the link or visited state depending on whether they have been
-visited.
+If the label has links, there is one subnode per link. These subnodes carry the link or visited state depending on whether they have been visited.
 
-=begin comment
 =head2 Gnome::Gtk3::Label as Gnome::Gtk3::Buildable
 
-The B<Gnome::Gtk3::Label> implementation of the B<Gnome::Gtk3::Buildable> interface supports a
-custom <attributes> element, which supports any number of <attribute>
-elements. The <attribute> element has attributes named “name“, “value“,
-“start“ and “end“ and allows you to specify B<PangoAttribute> values for
-this label.
+The B<Gnome::Gtk3::Label> implementation of the B<Gnome::Gtk3::Buildable> interface supports a custom <attributes> element, which supports any number of <attribute> elements. The <attribute> element has attributes named “name“, “value“, “start“ and “end“ and allows you to specify B<PangoAttribute> values for this label.
 
 An example of a UI definition fragment specifying Pango attributes:
 
@@ -55,29 +42,15 @@ An example of a UI definition fragment specifying Pango attributes:
     </attributes>
   </object>
 
-=end comment
 
-The start and end attributes specify the range of characters to which the
-Pango attribute applies. If start and end are not specified, the attribute is
-applied to the whole text. Note that specifying ranges does not make much
-sense with translatable attributes. Use markup embedded in the translatable
-content instead.
+The start and end attributes specify the range of characters to which the Pango attribute applies. If start and end are not specified, the attribute is applied to the whole text. Note that specifying ranges does not make much sense with translatable attributes. Use markup embedded in the translatable content instead.
 
 
 =head2 Mnemonics
 
-Labels may contain “mnemonics”. Mnemonics are
-underlined characters in the label, used for keyboard navigation.
-Mnemonics are created by providing a string with an underscore before
-the mnemonic character, such as `"_File"`, to the
-functions C<gtk_label_new_with_mnemonic()> or
-C<gtk_label_set_text_with_mnemonic()>.
+Labels may contain “mnemonics”. Mnemonics are underlined characters in the label, used for keyboard navigation. Mnemonics are created by providing a string with an underscore before the mnemonic character, such as `"_File"`, to the functions C<gtk_label_new_with_mnemonic()> or C<gtk_label_set_text_with_mnemonic()>.
 
-Mnemonics automatically activate any activatable widget the label is
-inside, such as a B<Gnome::Gtk3::Button>; if the label is not inside the
-mnemonic’s target widget, you have to tell the label about the target
-using C<.new(:mnemonic())>. Here’s a simple example where
-the label is inside a button:
+Mnemonics automatically activate any activatable widget the label is inside, such as a B<Gnome::Gtk3::Button>; if the label is not inside the mnemonic’s target widget, you have to tell the label about the target using C<.new(:mnemonic())>. Here’s a simple example where the label is inside a button:
 
   # Pressing Alt+H will activate this button
   my Gnome::Gtk3::Button $b .= new;
@@ -85,16 +58,13 @@ the label is inside a button:
   $b.gtk-container-add($l);
 
 
-There’s a convenience function to create buttons with a mnemonic label
-already inside:
+There’s a convenience function to create buttons with a mnemonic label already inside:
 
   # Pressing Alt+H will activate this button
   my Gnome::Gtk3::Button $b .= new(:mnemonic<_Hello>);
 
 
-To create a mnemonic for a widget alongside the label, such as a
-B<Gnome::Gtk3::Entry>, you have to point the label at the entry with
-C<gtk_label_set_mnemonic_widget()>:
+To create a mnemonic for a widget alongside the label, such as a B<Gnome::Gtk3::Entry>, you have to point the label at the entry with C<gtk_label_set_mnemonic_widget()>:
 
   # Pressing Alt+H will focus the entry
   my Gnome::Gtk3::Entry $e .= new;
@@ -104,9 +74,7 @@ C<gtk_label_set_mnemonic_widget()>:
 =begin comment
 =head2 Markup (styled text)
 
-To make it easy to format text in a label (changing colors,
-fonts, etc.), label text can be provided in a simple
-[markup format][PangoMarkupFormat].
+To make it easy to format text in a label (changing colors, fonts, etc.), label text can be provided in a simple [markup format][PangoMarkupFormat].
 
 Here’s how to create a label with a small font:
 |[<!-- language="C" -->
@@ -114,69 +82,34 @@ Here’s how to create a label with a small font:
   gtk_label_set_markup (GTK_LABEL (label), "<small>Small text</small>");
 ]|
 
-(See [complete documentation][PangoMarkupFormat] of available
-tags in the Pango manual.)
+(See [complete documentation][PangoMarkupFormat] of available tags in the Pango manual.)
 
-The markup passed to C<gtk_label_set_markup()> must be valid; for example,
-literal <, > and & characters must be escaped as &lt;, &gt;, and &amp;.
-If you pass text obtained from the user, file, or a network to
-C<gtk_label_set_markup()>, you’ll want to escape it with
-C<g_markup_escape_text()> or C<g_markup_printf_escaped()>.
+The markup passed to C<gtk_label_set_markup()> must be valid; for example, literal <, > and & characters must be escaped as &lt;, &gt;, and &amp;. If you pass text obtained from the user, file, or a network to C<gtk_label_set_markup()>, you’ll want to escape it with C<g_markup_escape_text()> or C<g_markup_printf_escaped()>.
 
-Markup strings are just a convenient way to set the B<PangoAttrList> on
-a label; C<gtk_label_set_attributes()> may be a simpler way to set
-attributes in some cases. Be careful though; B<PangoAttrList> tends to
-cause internationalization problems, unless you’re applying attributes
-to the entire string (i.e. unless you set the range of each attribute
-to [0, C<G_MAXINT>)). The reason is that specifying the start_index and
-end_index for a B<PangoAttribute> requires knowledge of the exact string
-being displayed, so translations will cause problems.
+Markup strings are just a convenient way to set the B<PangoAttrList> on a label; C<gtk_label_set_attributes()> may be a simpler way to set attributes in some cases. Be careful though; B<PangoAttrList> tends to cause internationalization problems, unless you’re applying attributes to the entire string (i.e. unless you set the range of each attribute to [0, C<G_MAXINT>)). The reason is that specifying the start_index and end_index for a B<PangoAttribute> requires knowledge of the exact string being displayed, so translations will cause problems.
 =end comment
 
 =head2 Selectable labels
 
-Labels can be made selectable with C<gtk_label_set_selectable()>.
-Selectable labels allow the user to copy the label contents to
-the clipboard. Only labels that contain useful-to-copy information
-— such as error messages — should be made selectable.
+Labels can be made selectable with C<gtk_label_set_selectable()>. Selectable labels allow the user to copy the label contents to the clipboard. Only labels that contain useful-to-copy information — such as error messages — should be made selectable.
 
 =begin comment
 =head2 Text layout
 
-A label can contain any number of paragraphs, but will have
-performance problems if it contains more than a small number.
-Paragraphs are separated by newlines or other paragraph separators
-understood by Pango.
+A label can contain any number of paragraphs, but will have performance problems if it contains more than a small number. Paragraphs are separated by newlines or other paragraph separators understood by Pango.
 
-Labels can automatically wrap text if you call
-C<gtk_label_set_line_wrap()>.
+Labels can automatically wrap text if you call C<gtk_label_set_line_wrap()>.
 
-C<gtk_label_set_justify()> sets how the lines in a label align
-with one another. If you want to set how the label as a whole
-aligns in its available space, see the  I<halign> and
- I<valign> properties.
+C<gtk_label_set_justify()> sets how the lines in a label align with one another. If you want to set how the label as a whole aligns in its available space, see the  I<halign> and  I<valign> properties.
 
-The  I<width-chars> and  I<max-width-chars> properties
-can be used to control the size allocation of ellipsized or wrapped
-labels. For ellipsizing labels, if either is specified (and less
-than the actual text size), it is used as the minimum width, and the actual
-text size is used as the natural width of the label. For wrapping labels,
-width-chars is used as the minimum width, if specified, and max-width-chars
-is used as the natural width. Even if max-width-chars specified, wrapping
-labels will be rewrapped to use all of the available width.
+The  I<width-chars> and  I<max-width-chars> properties can be used to control the size allocation of ellipsized or wrapped labels. For ellipsizing labels, if either is specified (and less than the actual text size), it is used as the minimum width, and the actual text size is used as the natural width of the label. For wrapping labels, width-chars is used as the minimum width, if specified, and max-width-chars is used as the natural width. Even if max-width-chars specified, wrapping labels will be rewrapped to use all of the available width.
 
-Note that the interpretation of  I<width-chars> and
- I<max-width-chars> has changed a bit with the introduction of
-[width-for-height geometry management.][geometry-management]
+Note that the interpretation of  I<width-chars> and  I<max-width-chars> has changed a bit with the introduction of width-for-height geometry management.
 =end comment
 
 =head2 Links
 
-Since 2.18, GTK+ supports markup for clickable hyperlinks in addition
-to regular Pango markup. The markup for links is borrowed from HTML,
-using the `<a>` with “href“ and “title“ attributes. GTK+ renders links
-similar to the way they appear in web browsers, with colored, underlined
-text. The “title“ attribute is displayed as a tooltip on the link.
+Since 2.18, GTK+ supports markup for clickable hyperlinks in addition to regular Pango markup. The markup for links is borrowed from HTML, using the `<a>` with “href“ and “title“ attributes. GTK+ renders links similar to the way they appear in web browsers, with colored, underlined text. The “title“ attribute is displayed as a tooltip on the link.
 
 An example looks like this:
 
@@ -186,14 +119,35 @@ An example looks like this:
   my Gnome::Gtk3::Label $l .= new;
   $l.set-markup($text);
 
-It is possible to implement custom handling for links and their tooltips with
-the  I<activate-link> signal and the C<gtk_label_get_current_uri()> function.
+It is possible to implement custom handling for links and their tooltips with the  I<activate-link> signal and the C<gtk_label_get_current_uri()> function.
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Label;
   also is Gnome::Gtk3::Misc;
+
+=head2 Uml Diagram
+
+![](plantuml/Label.svg)
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Label;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Label;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Label class process the options
+    self.bless( :GtkLabel, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
 
 =comment head2 Example
 
@@ -220,25 +174,32 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create a new object with text.
+=head3 new()
 
-  multi method new ( Str :text! )
+Creates a new label without text.
+
+  multi method new ( )
+
+=head3 new(:text)
+
+Creates a new label with the given text inside it.
+
+  multi method new ( Str :$text! )
+
+=head3 new(:mnemonic)
 
 Create a new object with mnemonic.
 
-  multi method new ( Str :mnemonic! )
+If characters in I<str> are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use '__' (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. The mnemonic key can be used to activate another widget, chosen automatically, or explicitly using C<gtk_label_set_mnemonic_widget()>.
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+If C<gtk_label_set_mnemonic_widget()> is not called, then the first activatable ancestor of the B<Gnome::Gtk3::Label> will be chosen as the mnemonic widget. For instance, if the label is inside a button or menu item, the button or menu item will automatically become the mnemonic widget and be activated by the mnemonic.
 
-  multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
+  multi method new ( Str :$mnemonic! )
 
 =end pod
 
-#TM:0:new():inheriting
+#TM:0:inheriting
+#TM:0:new():
 #TM:1:new(:text):
 #TM:1:new(:mnemonic):
 #TM:1:new(:native-object):
@@ -251,26 +212,34 @@ submethod BUILD ( *%options ) {
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Label';
+  if self.^name eq 'Gnome::Gtk3::Label' or %options<GtkLabel> {
 
-  if %options<text>.defined {
-    self.set-native-object(gtk_label_new(%options<text>));
-  }
+    if self.is-valid { }
 
-  elsif %options<mnemonic>.defined {
-    self.set-native-object(gtk_label_new_with_mnemonic(%options<mnemonic>));
-  }
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<widget>:exists or
+      %options<build-id>:exists { }
 
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in GObject
-  }
+    else {
+      my $no;
 
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
+      if %options<text>.defined {
+        $no = _gtk_label_new(%options<text>);
+      }
+
+      elsif %options<mnemonic>.defined {
+        $no = _gtk_label_new_with_mnemonic(%options<mnemonic>);
+      }
+
+#      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+#      }}
+
+      self.set-native-object($no);
+    }
   }
 
   # only after creating the native-object, the gtype is known
@@ -293,7 +262,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_label_new:new(:text)
+#TM:2:_gtk_label_new:new(:text)
+#`{{
 =begin pod
 =head2 [gtk_] label_new
 
@@ -307,14 +277,16 @@ Returns: the new B<Gnome::Gtk3::Label>
 =item Str $str; (allow-none): The text of the label
 
 =end pod
+}}
 
-sub gtk_label_new ( Str $str )
-  returns N-GObject
+sub _gtk_label_new ( Str $str --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_label_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_label_new_with_mnemonic:new(:mnemonic)
+#TM:2:_gtk_label_new_with_mnemonic:new(:mnemonic)
+#`{{
 =begin pod
 =head2 [[gtk_] label_] new_with_mnemonic
 
@@ -340,10 +312,11 @@ Returns: the new B<Gnome::Gtk3::Label>
 =item Str $str; (allow-none): The text of the label, with an underscore in front of the mnemonic character
 
 =end pod
+}}
 
-sub gtk_label_new_with_mnemonic ( Str $str )
-  returns N-GObject
+sub _gtk_label_new_with_mnemonic ( Str $str --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_label_new_with_mnemonic')
   { * }
 
 #-------------------------------------------------------------------------------
