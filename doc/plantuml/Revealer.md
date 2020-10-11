@@ -8,12 +8,16 @@ hide members
 
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
-Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|--- Gnome::GObject::Object
+
+Interface Gnome::GObject::Signal <Interface>
+class Gnome::GObject::Signal <<(R,#80ffff)>>
 
 'class Gnome::GObject::InitialyUnowned
 'class Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
-Gnome::GObject::Object *-> Gnome::GObject::Signal
+'Gnome::GObject::Object *-> Gnome::GObject::Signal
+Gnome::GObject::Signal <|.. Gnome::GObject::Object
 
 Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
 
