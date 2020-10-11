@@ -314,8 +314,8 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |
 Boxed                     |t |  |  |  |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  |  |  |  |  |  |
 InitiallyUnowned          |  |  |  |  |  |  |  |  |  |  |
-Object                    |t |  |  |  |  |  |  |  |  |* |
-Signal                    |- |  |  |  |  |  |  |  |  |* |
+Object                    |t | 🗸| 🗸|  |  |  |  |  |  |* |
+Signal                    |i |  |  |  |  |  |  |  |  |* |
 Type                      |s |  |  |  |  |  |  |  |  |  |
 value                     |b |  |  |  |  |  |  |  |  |  |
 
