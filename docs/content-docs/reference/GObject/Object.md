@@ -16,6 +16,12 @@ Declaration
 
     unit class Gnome::GObject::Object;
     also is Gnome::N::TopLevelClassSupport;
+    also does Gnome::GObject::Signal;
+
+Uml Diagram
+-----------
+
+![](plantuml/Object.svg)
 
 Methods
 =======
@@ -92,7 +98,7 @@ Two examples of a registration and the handlers signature
 
     # callback method
     method keyboard-handler (
-      GdkEvent $event, :$_widget, :$_handler_id, :$uo --> Int
+      N-GdkEvent $event, :$_widget, :$_handler_id, :$uo --> Int
     ) { ... }
 
 An more complete example to register and use a simple callback handler
@@ -211,8 +217,6 @@ When the object has a floating reference because it is not added to a container 
 --------------------------
 
 Checks whether *object* has a [floating][floating-ref] reference.
-
-Since: 2.10
 
 Returns: `1` if *object* has a floating reference
 
