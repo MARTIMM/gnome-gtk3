@@ -12,6 +12,7 @@ layout: sidebar
 * Drag and Drop
 * DBus I/O
 * Pango
+* Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html).
 
 #### Rewriting code
 * I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
@@ -33,12 +34,15 @@ layout: sidebar
   ```
   which is a teeny bit more cumbersome but also I find that the action is a side effect where the variables `$width` and `$height` are changed in the process. In this case not very confusing but other cases might be.
 
-* Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch.
+* Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch. Gtk already has done this for several return messages from the Gtk libraries.
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
 * When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
 
+#### Add other packages
+* [ ] Pango
+* [ ] Atk
 
 #### Documentation
 <!--
@@ -243,6 +247,9 @@ layout: sidebar
     * CATCH in callback handler to intercept an Exception when registering a callback using `g_signal_connect_object()` instead of `.register-signal()`.
     * Do's and Don'ts.
       * Do not call `.clean-object()` on iterators, widgets, or in callback handlers.
+
+  * [ ] Preparations for Gtk4
+    * Use GtkApplication instead of basic window build up.
 
 * Code examples
   * [x] Todo Viewer

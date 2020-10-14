@@ -16,22 +16,22 @@ There is already a bit of history for this package. It started off building the 
 # Example
 
 This example does the same as the example from `GTK::Simple` to show you the differences between the implementations. What immediately is clear is that this example is somewhat longer. To sum up;
+
 ### Pros
   * The defaults of GTK+ are kept. Therefore the buttons are in the proper size compared to what GTK::Simple produces.
   * Separation of callbacks from other code. Closures are not needed to get data into the callback code. Data can be provided with named arguments to the `register-signal()` method.
-  * The package is designed with the usage of glade interface designer in mind. So to build the interface by hand like below, is not necessary. Use of `Gnome::Gtk3::Glade` is preferable when building larger user interfaces.
   * No fancy stuff like tapping into channels to run signal handlers.
   * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
   * The same method, `register-signal()`, is also used to register other types of signals. There are, for example, events to handle keyboard input and mouse clicks. Not all signal handlers can be written yet because the provided native objects can not be imported into a Raku object because of its missing class.
 
 ### Cons
-  * The code is larger.
+  * The code is larger because it is more low level, that is, closer to the GTK+ api.
   * Code is somewhat slower. The setup of the example shown next is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
 
 
-|![-this screenshot-][screenshot 1]|
-|:--:|
-|**A screenshot of the example**|
+|![][screenshot 1a]|![][screenshot 1b]|
+|:--:|:--:|
+|**A screenshot of the example** | **A screenshot of Gtk Simple**|
 
 The code can be found down on the [Getting Started](https://martimm.github.io/gnome-gtk3/content-docs/tutorial/getting-started.html) page.
 
@@ -157,7 +157,8 @@ Github account name: **MARTIMM**
 [logo]: https://martimm.github.io/gnome-gtk3/content-docs/images/gtk-perl6.png
 [devel refs]: https://developer.gnome.org/references
 
-[screenshot 1]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
+[screenshot 1a]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
+[screenshot 1b]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world-GTK-Simple.png
 [screenshot 2]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16a-level-bar.png
 [screenshot 3]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16b-level-bar.png
 [screenshot 4]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/ex-GtkScale.png

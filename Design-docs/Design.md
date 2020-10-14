@@ -700,6 +700,7 @@ For strings returned from functions, they will be declared "const" if they shoul
 
 ### Why does my program leak memory, if I destroy a widget immediately after creating it ?
 
+
 If GtkFoo isn't a toplevel window, then
 ```
 foo = gtk_foo_new ();
