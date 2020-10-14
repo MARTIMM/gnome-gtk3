@@ -12,7 +12,7 @@ layout: sidebar
 * Drag and Drop
 * DBus I/O
 * Pango
-* Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html).
+* Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html) and [here](https://docs.raku.org/language/nativecall#Explicit_memory_management).
 
 #### Rewriting code
 * I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
