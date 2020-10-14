@@ -19,11 +19,13 @@
   - title: "Check list"
     url: "/content-docs/design/check-list.html"
 
-- bar_title: "Gnome Class Trees"
+- bar_title: "Class Trees"
   bar_menu:
-  - title: "Gnome::Gtk Class Tree"
+  - title: "Gnome::Gtk3"
     url: "/content-docs/design/gtk-tree.html"
-  - title: "Gnome::Gio Class Tree"
+  - title: "Gnome::Gdk3"
+    url: "/content-docs/design/gdk-tree.html"
+  - title: "Gnome::Gio"
     url: "/content-docs/design/gio-tree.html"
 #  - title: "Gnome::Pango Class Tree"
 #    url: "/content-docs/design/pango-tree.html"

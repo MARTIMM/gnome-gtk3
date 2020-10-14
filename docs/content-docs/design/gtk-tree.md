@@ -241,23 +241,23 @@ GObject                                         Gnome::GObject::Object
 ├── GtkTooltip
 ╰── GtkPrintBackend
 
-TopLevelInterfaceSupport               Gnome::N::TopLevelInterfaceSupport
+TopLevelInterfaceSupport              Gnome::N::TopLevelInterfaceSupport
 │
 GInterface                                            
-├── GtkBuildable                       Buildable
+├── GtkBuildable                      Buildable
 ├── GtkActionable
-├─✗ GtkActivatable                     ⛔
+├─✗ GtkActivatable                    ⛔
 ├── GtkAppChooser
 ├── GtkCellLayout
 ├── GtkCellEditable
-├── GtkOrientable                      Orientable
-├── GtkColorChooser                    ColorChooser
-├── GtkStyleProvider                   StyleProvider
+├── GtkOrientable                     Orientable
+├── GtkColorChooser                   ColorChooser
+├── GtkStyleProvider                  StyleProvider
 ├── GtkEditable
-├── GtkFileChooser                     FileChooser
+├── GtkFileChooser                    FileChooser
 ├── GtkFontChooser
 ├── GtkScrollable
-├── GtkTreeModel                       TreeModel
+├── GtkTreeModel                      TreeModel
 ├── GtkTreeDragSource
 ├── GtkTreeDragDest
 ├── GtkTreeSortable
@@ -265,19 +265,24 @@ GInterface
 ├── GtkRecentChooser
 ╰── GtkToolShell
 
-TopLevelClassSupport                   Gnome::N::TopLevelClassSupport
+TopLevelClassSupport                  Gnome::N::TopLevelClassSupport
 │
-GBoxed                                 Gnome::GObject::Boxed
+GBoxed                                Gnome::GObject::Boxed
 ├── GtkPaperSize
-├── GtkTextIter                        TextIter
+├── GtkTextIter                       TextIter
 ├── GtkSelectionData
 ├── GtkRequisition
-├── GtkBorder                          Border
-├── GtkTreeIter                        TreeIter
+├── GtkBorder                         Border
+├── GtkTreeIter                       TreeIter
 ├── GtkCssSection
-├── GtkTreePath                        TreePath
-├   GtkTreeRowReference                TreeRowReference, extr. from TreeModel
+├── GtkTreePath                       TreePath
+├   GtkTreeRowReference               TreeRowReference, extr. from TreeModel
 ├── GtkIconSet
 ├── GtkTargetList
-╰── GtkWidgetPath                      WidgetPath
+╰── GtkWidgetPath                     WidgetPath
+
+X                                     Some other gtk classes
+├─ GtkSourceLanguage                
+├─ GtkSourceLanguagesManager
+├─ GtkSpell
 ```
