@@ -3,7 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::N::N-GObject;
-use Gnome::Gtk3::StatusBar;
+use Gnome::Gtk3::Statusbar;
 use Gnome::Gtk3::Box;
 use Gnome::Gtk3::Label;
 
@@ -11,14 +11,14 @@ use Gnome::Gtk3::Label;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::StatusBar $sb1;
-my Gnome::Gtk3::StatusBar $sb2;
+my Gnome::Gtk3::Statusbar $sb1;
+my Gnome::Gtk3::Statusbar $sb2;
 #my Gnome::Gtk3::Label $l;
 #my Gnome::Gtk3::Box $b;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $sb1 .= new;
-  isa-ok $sb1, Gnome::Gtk3::StatusBar, '.new()';
+  isa-ok $sb1, Gnome::Gtk3::Statusbar, '.new()';
 }
 
 #-------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ class X {
     is $l.get-label(), $test, $testing;
   }
 
-  method do-test ( Gnome::Gtk3::StatusBar $sb, Str :$test, Str :$testing ) {
+  method do-test ( Gnome::Gtk3::Statusbar $sb, Str :$test, Str :$testing ) {
     my Gnome::Gtk3::Box $b .= new(:native-object($sb.get-message-area));
     $b.container-foreach( self, 'test-label', :$test, :$testing);
   }
@@ -84,10 +84,10 @@ subtest 'Manipulations', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Inherit Gnome::Gtk3::StatusBar', {
-  class MyClass is Gnome::Gtk3::StatusBar {
+subtest 'Inherit Gnome::Gtk3::Statusbar', {
+  class MyClass is Gnome::Gtk3::Statusbar {
     method new ( |c ) {
-      self.bless( :GtkStatusBar, |c);
+      self.bless( :GtkStatusbar, |c);
     }
 
     submethod BUILD ( *%options ) {
@@ -96,7 +96,7 @@ subtest 'Inherit Gnome::Gtk3::StatusBar', {
   }
 
   my MyClass $mgc .= new;
-  isa-ok $mgc, Gnome::Gtk3::StatusBar, '.new()';
+  isa-ok $mgc, Gnome::Gtk3::Statusbar, '.new()';
 }
 
 #-------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method push-pop (
-      Int $cid, Str $text, Gnome::Gtk3::StatusBar :$widget,
+      Int $cid, Str $text, Gnome::Gtk3::Statusbar :$widget,
       Int :$test-cid, Str :$test-text
     ) {
       $!signal-processed = True;
@@ -119,7 +119,7 @@ subtest 'Signals ...', {
     }
 
     method signal-emitter (
-      Gnome::Gtk3::StatusBar :$widget, Int :$cid, Str :$msg --> Str
+      Gnome::Gtk3::Statusbar :$widget, Int :$cid, Str :$msg --> Str
     ) {
 
       while $main.gtk-events-pending() { $main.iteration-do(False); }
@@ -141,7 +141,7 @@ subtest 'Signals ...', {
     }
   }
 
-  my Gnome::Gtk3::StatusBar $sb .= new;
+  my Gnome::Gtk3::Statusbar $sb .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
   #$w.container-add($m);

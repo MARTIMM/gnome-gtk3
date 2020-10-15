@@ -103,7 +103,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
 │   │   │   │   ├── GtkStackSwitcher            StackSwitcher
-│   │   │   │   ├── GtkStatusbar
+│   │   │   │   ├── GtkStatusbar                Statusbar
 │   │   │   │   ╰─✗ GtkVBox                     ⛔
 │   │   │   ├── GtkFixed
 │   │   │   ├── GtkFlowBox

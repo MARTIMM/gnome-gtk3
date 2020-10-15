@@ -1,10 +1,10 @@
-#TL:1:Gnome::Gtk3::StatusBar:
+#TL:1:Gnome::Gtk3::Statusbar:
 
 use v6;
 #-------------------------------------------------------------------------------
 =begin pod
 
-=head1 Gnome::Gtk3::StatusBar
+=head1 Gnome::Gtk3::Statusbar
 
 Report messages of minor importance to the user
 
@@ -36,7 +36,7 @@ The message at the top of the stack can be removed using C<.gtk_statusbar_pop()>
 =head1 Synopsis
 =head2 Declaration
 
-  unit class Gnome::Gtk3::StatusBar;
+  unit class Gnome::Gtk3::Statusbar;
   also is Gnome::Gtk3::Box;
 
 
@@ -49,14 +49,14 @@ The message at the top of the stack can be removed using C<.gtk_statusbar_pop()>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::StatusBar;
+  use Gnome::Gtk3::Statusbar;
 
   unit class MyGuiClass;
-  also is Gnome::Gtk3::StatusBar;
+  also is Gnome::Gtk3::Statusbar;
 
   submethod new ( |c ) {
-    # let the Gnome::Gtk3::StatusBar class process the options
-    self.bless( :GtkStatusBar, |c);
+    # let the Gnome::Gtk3::Statusbar class process the options
+    self.bless( :GtkStatusbar, |c);
   }
 
   submethod BUILD ( ... ) {
@@ -75,7 +75,7 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::Box;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::StatusBar:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Statusbar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -122,7 +122,7 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::StatusBar' or %options<GtkStatusBar> {
+  if self.^name eq 'Gnome::Gtk3::Statusbar' or %options<GtkStatusbar> {
 
     # check if native object is set by a parent class
     if self.is-valid { }
@@ -172,7 +172,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkStatusBar');
+    self.set-class-info('GtkStatusbar');
   }
 }
 
@@ -185,7 +185,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-  self.set-class-name-of-sub('GtkStatusBar');
+  self.set-class-name-of-sub('GtkStatusbar');
   $s = callsame unless ?$s;
 
   $s;

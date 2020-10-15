@@ -84,7 +84,7 @@
     "Gnome::Gtk3::Stack": "lib/Gnome/Gtk3/Stack.pm6",
     "Gnome::Gtk3::StackSidebar": "lib/Gnome/Gtk3/StackSidebar.pm6",
     "Gnome::Gtk3::StackSwitcher": "lib/Gnome/Gtk3/StackSwitcher.pm6",
-    "Gnome::Gtk3::StatusBar": "lib/Gnome/Gtk3/StatusBar.pm6",
+    "Gnome::Gtk3::Statusbar": "lib/Gnome/Gtk3/Statusbar.pm6",
     "Gnome::Gtk3::StyleContext": "lib/Gnome/Gtk3/StyleContext.pm6",
     "Gnome::Gtk3::StyleProvider": "lib/Gnome/Gtk3/StyleProvider.pm6",
     "Gnome::Gtk3::Switch": "lib/Gnome/Gtk3/Switch.pm6",
