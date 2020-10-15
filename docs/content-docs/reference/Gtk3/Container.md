@@ -79,6 +79,11 @@ Declaration
     unit class Gnome::Gtk3::Container;
     also is Gnome::Gtk3::Widget;
 
+Uml Diagram
+-----------
+
+![](plantuml/Container.svg)
+
 Types
 =====
 

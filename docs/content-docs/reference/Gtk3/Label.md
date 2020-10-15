@@ -19,11 +19,25 @@ Css Nodes
     ┊
     ╰── [link]
 
-**Gnome::Gtk3::Label** has a single CSS node with the name label. A wide variety of style classes may be applied to labels, such as .title, .subtitle, .dim-label, etc. In the **Gnome::Gtk3::ShortcutsWindow**, labels are used wth the .keycap style class.
+**Gnome::Gtk3::Label** has a single CSS node with the name label. A wide variety of style classes may be applied to labels, such as .title, .subtitle, .dim-label, etc. In the **Gnome::Gtk3::ShortcutsWindow**, labels are used with the .keycap style class.
 
 If the label has a selection, it gets a subnode with name selection.
 
 If the label has links, there is one subnode per link. These subnodes carry the link or visited state depending on whether they have been visited.
+
+Gnome::Gtk3::Label as Gnome::Gtk3::Buildable
+--------------------------------------------
+
+The **Gnome::Gtk3::Label** implementation of the **Gnome::Gtk3::Buildable** interface supports a custom <attributes> element, which supports any number of <attribute> elements. The <attribute> element has attributes named “name“, “value“, “start“ and “end“ and allows you to specify **PangoAttribute** values for this label.
+
+An example of a UI definition fragment specifying Pango attributes:
+
+    <object class="GtkLabel">
+      <attributes>
+        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+        <attribute name="background" value="red" start="5" end="10"/>"
+      </attributes>
+    </object>
 
 The start and end attributes specify the range of characters to which the Pango attribute applies. If start and end are not specified, the attribute is applied to the whole text. Note that specifying ranges does not make much sense with translatable attributes. Use markup embedded in the translatable content instead.
 
@@ -80,53 +94,57 @@ Declaration
     unit class Gnome::Gtk3::Label;
     also is Gnome::Gtk3::Misc;
 
+Uml Diagram
+-----------
+
+![](plantuml/Label.svg)
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::Label;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::Label;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::Label class process the options
+      self.bless( :GtkLabel, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
 new
 ---
 
-Create a new object with text.
+### new()
 
-    multi method new ( Str :text! )
+Creates a new label without text.
+
+    multi method new ( )
+
+### new(:text)
+
+Creates a new label with the given text inside it.
+
+    multi method new ( Str :$text! )
+
+### new(:mnemonic)
 
 Create a new object with mnemonic.
-
-    multi method new ( Str :mnemonic! )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] label_new
-----------------
-
-Creates a new label with the given text inside it. You can pass `Any` to get an empty label widget.
-
-Returns: the new **Gnome::Gtk3::Label**
-
-    method gtk_label_new ( Str $str --> N-GObject  )
-
-  * Str $str; (allow-none): The text of the label
-
-[[gtk_] label_] new_with_mnemonic
----------------------------------
-
-Creates a new **Gnome::Gtk3::Label**, containing the text in *str*.
 
 If characters in *str* are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use '__' (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. The mnemonic key can be used to activate another widget, chosen automatically, or explicitly using `gtk_label_set_mnemonic_widget()`.
 
 If `gtk_label_set_mnemonic_widget()` is not called, then the first activatable ancestor of the **Gnome::Gtk3::Label** will be chosen as the mnemonic widget. For instance, if the label is inside a button or menu item, the button or menu item will automatically become the mnemonic widget and be activated by the mnemonic.
 
-Returns: the new **Gnome::Gtk3::Label**
-
-    method gtk_label_new_with_mnemonic ( Str $str --> N-GObject  )
-
-  * Str $str; (allow-none): The text of the label, with an underscore in front of the mnemonic character
+    multi method new ( Str :$mnemonic! )
 
 [[gtk_] label_] set_text
 ------------------------
