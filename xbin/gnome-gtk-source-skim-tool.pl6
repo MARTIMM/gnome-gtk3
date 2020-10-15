@@ -792,10 +792,14 @@ sub pod-sub-name ( Str:D $sub-name --> Str ) {
   # sometimes the sub name does not start with the base name
   if $sub-name ~~ m/ ^ $base-sub-name / {
     my Str $s = $sub-name;
+
+    # remove base subname and an '_', then test if there is another '_' to
+    # see if a part could be made optional by circumventing with '[' and ']'.
     $s ~~ s/^ $base-sub-name '_' //;
-    if $s ~~ m/ '_' / {
-      $pod-sub-name = [~] '[', $base-sub-name, '_] ', $s;
-    }
+    $pod-sub-name = [~] '[', $base-sub-name, '_] ', $s if $s ~~ m/ '_' /;
+
+    # then make the first part optional
+    $pod-sub-name ~~ s/^ ( <-[_]>+ '_' ) /[$0] /;
   }
 
   $pod-sub-name
@@ -998,7 +1002,7 @@ sub substitute-in-template (
               $no = %options<___x___>;
               $no .= get-native-object-no-reffing
                 if $no.^can('get-native-object-no-reffing');
-              $no = _BASE-SUBNAME_new___x___($no);
+              #$no = _BASE-SUBNAME_new___x___($no);
             }
 
             #`{{ use this when the module is not made inheritable
