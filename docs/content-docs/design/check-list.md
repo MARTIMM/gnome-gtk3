@@ -141,9 +141,10 @@ SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
-Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗|🗸| 🗸| ✗| 🗸|  |
+Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
 StackSidebar              |  |  |  |  |  |  |  |  |  |  |  |
 StackSwitcher             |  |  |  |  |  |  |  |  |  |  |  |
+Statusbar                 |  | 🗸| 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗|  |
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
 StyleProvider             |i |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |
@@ -166,6 +167,8 @@ TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
 Widget                    |  |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
 WidgetPath                |b |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | 🗸| 🗸| 🗸|  |  |  |  |  |  |* |
+
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|N | -->
 
 <br/>
 
@@ -270,7 +273,6 @@ ShortcutsWindow|
 SizeGroup|
 Socket|
 SpinButton|
-Statusbar|
 TargetList                |b|
 TextChildAnchor|
 TextMark|

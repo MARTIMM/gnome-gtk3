@@ -81,7 +81,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkPlacesSidebar        PlacesSidebar
 │   │   │   │   ├── GtkPopover                  Popover
 │   │   │   │   │   ╰── GtkPopoverMenu          PopoverMenu
-│   │   │   │   ├── GtkRevealer
+│   │   │   │   ├── GtkRevealer                 Revealer
 │   │   │   │   ├── GtkSearchBar
 │   │   │   │   ├── GtkStackSidebar             StackSidebar
 │   │   │   │   ╰── GtkViewport
@@ -112,7 +112,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ├── GtkPaned                        Paned
 │   │   │   │   ├─✗ GtkHPaned                   ⛔
 │   │   │   │   ╰─✗ GtkVPaned                   ⛔
-│   │   │   ├── GtkIconView
+│   │   │   ├── GtkIconView                     IconView
 │   │   │   ├── GtkLayout
 │   │   │   ├── GtkListBox                      ListBox
 │   │   │   ├── GtkMenuShell                    MenuShell
@@ -204,7 +204,7 @@ GObject                                         Gnome::GObject::Object
 │   │   ╰── GtkGestureZoom
 │   ╰── GtkPadController
 ├─✗ GtkIconFactory                              ⛔
-├── GtkIconTheme
+├── GtkIconTheme                                IconTheme
 ├── GtkIMContext
 │   ├── GtkIMContextSimple
 │   ╰── GtkIMMulticontext
