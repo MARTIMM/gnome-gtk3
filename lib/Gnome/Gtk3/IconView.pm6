@@ -216,7 +216,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #TM:1:_gtk_icon_view_new:
 #`{{
 =begin pod
-=head2 gtk_icon_view_new
+=head2 [gtk_] icon_view_new
 
 Creates a new B<Gnome::Gtk3::IconView> widget
 
@@ -237,7 +237,7 @@ sub _gtk_icon_view_new (  --> N-GObject )
 #TM:0:_gtk_icon_view_new_with_area:
 #`{{
 =begin pod
-=head2 [gtk_icon_view_] new_with_area
+=head2 [[gtk_] icon_view_] new_with_area
 
 Creates a new B<Gnome::Gtk3::IconView> widget using the specified I<area> to layout cells inside the icons.
 
@@ -259,7 +259,7 @@ sub _gtk_icon_view_new_with_area ( N-GObject $area --> N-GObject )
 #TM:0:_gtk_icon_view_new_with_model:
 #`{{
 =begin pod
-=head2 [gtk_icon_view_] new_with_model
+=head2 [[gtk_] icon_view_] new_with_model
 
 Creates a new B<Gnome::Gtk3::IconView> widget with the model I<model>.
 
@@ -280,7 +280,7 @@ sub _gtk_icon_view_new_with_model ( N-GObject $model --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_model:
 =begin pod
-=head2 [gtk_icon_view_] set_model
+=head2 [[gtk_] icon_view_] set_model
 
 Sets the model for a B<Gnome::Gtk3::IconView>. If the I<icon_view> already has a model set, it will remove it before setting the new model.  If I<model> is C<Any>, then it will unset the old model.
 
@@ -297,7 +297,7 @@ sub gtk_icon_view_set_model ( N-GObject $icon_view, N-GObject $model  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_icon_view_get_model:
 =begin pod
-=head2 [gtk_icon_view_] get_model
+=head2 [[gtk_] icon_view_] get_model
 
 Returns the model the B<Gnome::Gtk3::IconView> is based on.  Returns C<Any> if the model is unset.
 
@@ -315,7 +315,7 @@ sub gtk_icon_view_get_model ( N-GObject $icon_view --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_text_column:
 =begin pod
-=head2 [gtk_icon_view_] set_text_column
+=head2 [[gtk_] icon_view_] set_text_column
 
 Sets the column with text for I<icon_view> to be I<column>. The text column must be of type B<G_TYPE_STRING>.
 
@@ -332,7 +332,7 @@ sub gtk_icon_view_set_text_column ( N-GObject $icon_view, int32 $column  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_text_column:
 =begin pod
-=head2 [gtk_icon_view_] get_text_column
+=head2 [[gtk_] icon_view_] get_text_column
 
 Returns the column with text for I<icon_view>.
 
@@ -350,7 +350,7 @@ sub gtk_icon_view_get_text_column ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_markup_column:
 =begin pod
-=head2 [gtk_icon_view_] set_markup_column
+=head2 [[gtk_] icon_view_] set_markup_column
 
 Sets the column with markup information for I<icon_view> to be I<column>. The markup column must be of type B<G_TYPE_STRING>. If the markup column is set to something, it overrides the text column set by C<gtk_icon_view_set_text_column()>.
 
@@ -367,7 +367,7 @@ sub gtk_icon_view_set_markup_column ( N-GObject $icon_view, int32 $column  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_markup_column:
 =begin pod
-=head2 [gtk_icon_view_] get_markup_column
+=head2 [[gtk_] icon_view_] get_markup_column
 
 Returns the column with markup text for I<icon_view>.
 
@@ -385,7 +385,7 @@ sub gtk_icon_view_get_markup_column ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_pixbuf_column:
 =begin pod
-=head2 [gtk_icon_view_] set_pixbuf_column
+=head2 [[gtk_] icon_view_] set_pixbuf_column
 
 Sets the column with pixbufs for I<icon_view> to be I<column>. The pixbuf column must be of type B<GDK_TYPE_PIXBUF>
 
@@ -402,7 +402,7 @@ sub gtk_icon_view_set_pixbuf_column ( N-GObject $icon_view, int32 $column  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_pixbuf_column:
 =begin pod
-=head2 [gtk_icon_view_] get_pixbuf_column
+=head2 [[gtk_] icon_view_] get_pixbuf_column
 
 Returns the column with pixbufs for I<icon_view>.
 
@@ -420,7 +420,7 @@ sub gtk_icon_view_get_pixbuf_column ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_item_orientation:
 =begin pod
-=head2 [gtk_icon_view_] set_item_orientation
+=head2 [[gtk_] icon_view_] set_item_orientation
 
 Sets the I<item-orientation> property which determines whether the labels  are drawn beside the icons instead of below.
 
@@ -437,7 +437,7 @@ sub gtk_icon_view_set_item_orientation ( N-GObject $icon_view, int32 $orientatio
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_orientation:
 =begin pod
-=head2 [gtk_icon_view_] get_item_orientation
+=head2 [[gtk_] icon_view_] get_item_orientation
 
 Returns the value of the I<item-orientation> property which determines  whether the labels are drawn beside the icons instead of below.
 
@@ -455,7 +455,7 @@ sub gtk_icon_view_get_item_orientation ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_columns:
 =begin pod
-=head2 [gtk_icon_view_] set_columns
+=head2 [[gtk_] icon_view_] set_columns
 
 Sets the I<columns> property which determines in how many columns the icons are arranged. If I<columns> is -1, the number of columns will be chosen automatically  to fill the available area.
 
@@ -472,7 +472,7 @@ sub gtk_icon_view_set_columns ( N-GObject $icon_view, int32 $columns  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_columns:
 =begin pod
-=head2 [gtk_icon_view_] get_columns
+=head2 [[gtk_] icon_view_] get_columns
 
 Returns the value of the I<columns> property.
 
@@ -490,7 +490,7 @@ sub gtk_icon_view_get_columns ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_item_width:
 =begin pod
-=head2 [gtk_icon_view_] set_item_width
+=head2 [[gtk_] icon_view_] set_item_width
 
 Sets the I<item-width> property which specifies the width  to use for each item. If it is set to -1, the icon view will  automatically determine a suitable item size.
 
@@ -507,7 +507,7 @@ sub gtk_icon_view_set_item_width ( N-GObject $icon_view, int32 $item_width  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_width:
 =begin pod
-=head2 [gtk_icon_view_] get_item_width
+=head2 [[gtk_] icon_view_] get_item_width
 
 Returns the value of the I<item-width> property.
 
@@ -525,7 +525,7 @@ sub gtk_icon_view_get_item_width ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_spacing:
 =begin pod
-=head2 [gtk_icon_view_] set_spacing
+=head2 [[gtk_] icon_view_] set_spacing
 
 Sets the I<spacing> property which specifies the space  which is inserted between the cells (i.e. the icon and  the text) of an item.
 
@@ -542,7 +542,7 @@ sub gtk_icon_view_set_spacing ( N-GObject $icon_view, int32 $spacing  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_spacing:
 =begin pod
-=head2 [gtk_icon_view_] get_spacing
+=head2 [[gtk_] icon_view_] get_spacing
 
 Returns the value of the I<spacing> property.
 
@@ -560,7 +560,7 @@ sub gtk_icon_view_get_spacing ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_row_spacing:
 =begin pod
-=head2 [gtk_icon_view_] set_row_spacing
+=head2 [[gtk_] icon_view_] set_row_spacing
 
 Sets the I<row-spacing> property which specifies the space  which is inserted between the rows of the icon view.
 
@@ -577,7 +577,7 @@ sub gtk_icon_view_set_row_spacing ( N-GObject $icon_view, int32 $row_spacing  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_row_spacing:
 =begin pod
-=head2 [gtk_icon_view_] get_row_spacing
+=head2 [[gtk_] icon_view_] get_row_spacing
 
 Returns the value of the I<row-spacing> property.
 
@@ -595,7 +595,7 @@ sub gtk_icon_view_get_row_spacing ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_column_spacing:
 =begin pod
-=head2 [gtk_icon_view_] set_column_spacing
+=head2 [[gtk_] icon_view_] set_column_spacing
 
 Sets the I<column-spacing> property which specifies the space  which is inserted between the columns of the icon view.
 
@@ -612,7 +612,7 @@ sub gtk_icon_view_set_column_spacing ( N-GObject $icon_view, int32 $column_spaci
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_column_spacing:
 =begin pod
-=head2 [gtk_icon_view_] get_column_spacing
+=head2 [[gtk_] icon_view_] get_column_spacing
 
 Returns the value of the I<column-spacing> property.
 
@@ -630,7 +630,7 @@ sub gtk_icon_view_get_column_spacing ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_margin:
 =begin pod
-=head2 [gtk_icon_view_] set_margin
+=head2 [[gtk_] icon_view_] set_margin
 
 Sets the I<margin> property which specifies the space  which is inserted at the top, bottom, left and right  of the icon view.
 
@@ -647,7 +647,7 @@ sub gtk_icon_view_set_margin ( N-GObject $icon_view, int32 $margin  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_margin:
 =begin pod
-=head2 [gtk_icon_view_] get_margin
+=head2 [[gtk_] icon_view_] get_margin
 
 Returns the value of the I<margin> property.
 
@@ -665,7 +665,7 @@ sub gtk_icon_view_get_margin ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_item_padding:
 =begin pod
-=head2 [gtk_icon_view_] set_item_padding
+=head2 [[gtk_] icon_view_] set_item_padding
 
 Sets the  I<item-padding> property which specifies the padding around each of the icon view’s items.
 
@@ -682,7 +682,7 @@ sub gtk_icon_view_set_item_padding ( N-GObject $icon_view, int32 $item_padding  
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_padding:
 =begin pod
-=head2 [gtk_icon_view_] get_item_padding
+=head2 [[gtk_] icon_view_] get_item_padding
 
 Returns the value of the I<item-padding> property.
 
@@ -700,7 +700,7 @@ sub gtk_icon_view_get_item_padding ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_path_at_pos:
 =begin pod
-=head2 [gtk_icon_view_] get_path_at_pos
+=head2 [[gtk_] icon_view_] get_path_at_pos
 
 Finds the path at the point (I<x>, I<y>), relative to bin_window coordinates. See C<gtk_icon_view_get_item_at_pos()>, if you are also interested in the cell at the specified position.  See C<gtk_icon_view_convert_widget_to_bin_window_coords()> for converting widget coordinates to bin_window coordinates.
 
@@ -720,7 +720,7 @@ sub gtk_icon_view_get_path_at_pos ( N-GObject $icon_view, int32 $x, int32 $y -->
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_at_pos:
 =begin pod
-=head2 [gtk_icon_view_] get_item_at_pos
+=head2 [[gtk_] icon_view_] get_item_at_pos
 
 Finds the path at the point (I<x>, I<y>), relative to bin_window coordinates. In contrast to C<gtk_icon_view_get_path_at_pos()>, this function also  obtains the cell at the specified position. The returned path should be freed with C<gtk_tree_path_free()>. See C<gtk_icon_view_convert_widget_to_bin_window_coords()> for converting widget coordinates to bin_window coordinates.
 
@@ -742,7 +742,7 @@ sub gtk_icon_view_get_item_at_pos ( N-GObject $icon_view, int32 $x, int32 $y, N-
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_visible_range:
 =begin pod
-=head2 [gtk_icon_view_] get_visible_range
+=head2 [[gtk_] icon_view_] get_visible_range
 
 Sets I<start_path> and I<end_path> to be the first and last visible path.  Note that there may be invisible paths in between.  Both paths should be freed with C<gtk_tree_path_free()> after use.
 
@@ -762,7 +762,7 @@ sub gtk_icon_view_get_visible_range ( N-GObject $icon_view, N-GtkTreePath $start
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_activate_on_single_click:
 =begin pod
-=head2 [gtk_icon_view_] set_activate_on_single_click
+=head2 [[gtk_] icon_view_] set_activate_on_single_click
 
 Causes the  I<item-activated> signal to be emitted on a single click instead of a double click.
 
@@ -779,7 +779,7 @@ sub gtk_icon_view_set_activate_on_single_click ( N-GObject $icon_view, int32 $si
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_activate_on_single_click:
 =begin pod
-=head2 [gtk_icon_view_] get_activate_on_single_click
+=head2 [[gtk_] icon_view_] get_activate_on_single_click
 
 Gets the setting set by C<gtk_icon_view_set_activate_on_single_click()>.
 
@@ -798,7 +798,7 @@ sub gtk_icon_view_get_activate_on_single_click ( N-GObject $icon_view --> int32 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_selected_foreach:
 =begin pod
-=head2 [gtk_icon_view_] selected_foreach
+=head2 [[gtk_] icon_view_] selected_foreach
 
 Calls a function for each selected icon. Note that the model or selection cannot be modified from within this function.
 
@@ -817,7 +817,7 @@ sub gtk_icon_view_selected_foreach ( N-GObject $icon_view, GtkIconViewForeachFun
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_selection_mode:
 =begin pod
-=head2 [gtk_icon_view_] set_selection_mode
+=head2 [[gtk_] icon_view_] set_selection_mode
 
 Sets the selection mode of the I<icon_view>.
 
@@ -834,7 +834,7 @@ sub gtk_icon_view_set_selection_mode ( N-GObject $icon_view, int32 $mode  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_selection_mode:
 =begin pod
-=head2 [gtk_icon_view_] get_selection_mode
+=head2 [[gtk_] icon_view_] get_selection_mode
 
 Gets the selection mode of the I<icon_view>.
 
@@ -852,7 +852,7 @@ sub gtk_icon_view_get_selection_mode ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_select_path:
 =begin pod
-=head2 [gtk_icon_view_] select_path
+=head2 [[gtk_] icon_view_] select_path
 
 Selects the row at I<path>.
 
@@ -869,7 +869,7 @@ sub gtk_icon_view_select_path ( N-GObject $icon_view, N-GtkTreePath $path  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_unselect_path:
 =begin pod
-=head2 [gtk_icon_view_] unselect_path
+=head2 [[gtk_] icon_view_] unselect_path
 
 Unselects the row at I<path>.
 
@@ -886,7 +886,7 @@ sub gtk_icon_view_unselect_path ( N-GObject $icon_view, N-GtkTreePath $path  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_path_is_selected:
 =begin pod
-=head2 [gtk_icon_view_] path_is_selected
+=head2 [[gtk_] icon_view_] path_is_selected
 
 Returns C<1> if the icon pointed to by I<path> is currently selected. If I<path> does not point to a valid location, C<0> is returned.
 
@@ -905,7 +905,7 @@ sub gtk_icon_view_path_is_selected ( N-GObject $icon_view, N-GtkTreePath $path -
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_row:
 =begin pod
-=head2 [gtk_icon_view_] get_item_row
+=head2 [[gtk_] icon_view_] get_item_row
 
 Gets the row in which the item I<path> is currently displayed. Row numbers start at 0.
 
@@ -924,7 +924,7 @@ sub gtk_icon_view_get_item_row ( N-GObject $icon_view, N-GtkTreePath $path --> i
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_item_column:
 =begin pod
-=head2 [gtk_icon_view_] get_item_column
+=head2 [[gtk_] icon_view_] get_item_column
 
 Gets the column in which the item I<path> is currently displayed. Column numbers start at 0.
 
@@ -943,7 +943,7 @@ sub gtk_icon_view_get_item_column ( N-GObject $icon_view, N-GtkTreePath $path --
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_selected_items:
 =begin pod
-=head2 [gtk_icon_view_] get_selected_items
+=head2 [[gtk_] icon_view_] get_selected_items
 
 Creates a list of paths of all selected items. Additionally, if you are planning on modifying the model after calling this function, you may want to convert the returned list into a list of B<Gnome::Gtk3::TreeRowReferences>. To do this, you can use C<gtk_tree_row_reference_new()>.  To free the return value, use: |[<!-- language="C" --> g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free); ]|
 
@@ -961,7 +961,7 @@ sub gtk_icon_view_get_selected_items ( N-GObject $icon_view --> N-GList )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_select_all:
 =begin pod
-=head2 [gtk_icon_view_] select_all
+=head2 [[gtk_] icon_view_] select_all
 
 Selects all the icons. I<icon_view> must has its selection mode set to B<GTK_SELECTION_MULTIPLE>.
 
@@ -977,7 +977,7 @@ sub gtk_icon_view_select_all ( N-GObject $icon_view  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_unselect_all:
 =begin pod
-=head2 [gtk_icon_view_] unselect_all
+=head2 [[gtk_] icon_view_] unselect_all
 
 Unselects all the icons.
 
@@ -993,7 +993,7 @@ sub gtk_icon_view_unselect_all ( N-GObject $icon_view  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_item_activated:
 =begin pod
-=head2 [gtk_icon_view_] item_activated
+=head2 [[gtk_] icon_view_] item_activated
 
 Activates the item determined by I<path>.
 
@@ -1010,7 +1010,7 @@ sub gtk_icon_view_item_activated ( N-GObject $icon_view, N-GtkTreePath $path  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_cursor:
 =begin pod
-=head2 [gtk_icon_view_] set_cursor
+=head2 [[gtk_] icon_view_] set_cursor
 
 Sets the current keyboard focus to be at I<path>, and selects it.  This is useful when you want to focus the user’s attention on a particular item. If I<cell> is not C<Any>, then focus is given to the cell specified by  it. Additionally, if I<start_editing> is C<1>, then editing should be  started in the specified cell.    This function is often followed by `gtk_widget_grab_focus  (icon_view)` in order to give keyboard focus to the widget.   Please note that editing can only happen when the widget is realized.
 
@@ -1029,7 +1029,7 @@ sub gtk_icon_view_set_cursor ( N-GObject $icon_view, N-GtkTreePath $path, N-GObj
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_cursor:
 =begin pod
-=head2 [gtk_icon_view_] get_cursor
+=head2 [[gtk_] icon_view_] get_cursor
 
 Fills in I<path> and I<cell> with the current cursor path and cell.  If the cursor isn’t currently set, then *I<path> will be C<Any>.   If no cell currently has focus, then *I<cell> will be C<Any>.  The returned B<Gnome::Gtk3::TreePath> must be freed with C<gtk_tree_path_free()>.
 
@@ -1049,7 +1049,7 @@ sub gtk_icon_view_get_cursor ( N-GObject $icon_view, N-GtkTreePath $path, N-GObj
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_scroll_to_path:
 =begin pod
-=head2 [gtk_icon_view_] scroll_to_path
+=head2 [[gtk_] icon_view_] scroll_to_path
 
 Moves the alignments of I<icon_view> to the position specified by I<path>.   I<row_align> determines where the row is placed, and I<col_align> determines  where I<column> is placed.  Both are expected to be between 0.0 and 1.0.  0.0 means left/top alignment, 1.0 means right/bottom alignment, 0.5 means  center.  If I<use_align> is C<0>, then the alignment arguments are ignored, and the tree does the minimum amount of work to scroll the item onto the screen. This means that the item will be scrolled to the edge closest to its current position.  If the item is currently visible on the screen, nothing is done.  This function only works if the model is set, and I<path> is a valid row on  the model. If the model changes before the I<icon_view> is realized, the  centered path will be modified to reflect this change.
 
@@ -1070,7 +1070,7 @@ sub gtk_icon_view_scroll_to_path ( N-GObject $icon_view, N-GtkTreePath $path, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_enable_model_drag_source:
 =begin pod
-=head2 [gtk_icon_view_] enable_model_drag_source
+=head2 [[gtk_] icon_view_] enable_model_drag_source
 
 Turns I<icon_view> into a drag source for automatic DND. Calling this method sets  I<reorderable> to C<0>.
 
@@ -1090,7 +1090,7 @@ sub gtk_icon_view_enable_model_drag_source ( N-GObject $icon_view, int32 $start_
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_enable_model_drag_dest:
 =begin pod
-=head2 [gtk_icon_view_] enable_model_drag_dest
+=head2 [[gtk_] icon_view_] enable_model_drag_dest
 
 Turns I<icon_view> into a drop destination for automatic DND. Calling this method sets  I<reorderable> to C<0>.
 
@@ -1109,7 +1109,7 @@ sub gtk_icon_view_enable_model_drag_dest ( N-GObject $icon_view, GtkTargetEntry 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_unset_model_drag_source:
 =begin pod
-=head2 [gtk_icon_view_] unset_model_drag_source
+=head2 [[gtk_] icon_view_] unset_model_drag_source
 
 Undoes the effect of C<gtk_icon_view_enable_model_drag_source()>. Calling this method sets  I<reorderable> to C<0>.
 
@@ -1125,7 +1125,7 @@ sub gtk_icon_view_unset_model_drag_source ( N-GObject $icon_view  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_unset_model_drag_dest:
 =begin pod
-=head2 [gtk_icon_view_] unset_model_drag_dest
+=head2 [[gtk_] icon_view_] unset_model_drag_dest
 
 Undoes the effect of C<gtk_icon_view_enable_model_drag_dest()>. Calling this method sets  I<reorderable> to C<0>.
 
@@ -1142,7 +1142,7 @@ sub gtk_icon_view_unset_model_drag_dest ( N-GObject $icon_view  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_reorderable:
 =begin pod
-=head2 [gtk_icon_view_] set_reorderable
+=head2 [[gtk_] icon_view_] set_reorderable
 
 This function is a convenience function to allow you to reorder models that support the B<Gnome::Gtk3::TreeDragSourceIface> and the B<Gnome::Gtk3::TreeDragDestIface>.  Both B<Gnome::Gtk3::TreeStore> and B<Gnome::Gtk3::ListStore> support these.  If I<reorderable> is C<1>, then the user can reorder the model by dragging and dropping rows.  The developer can listen to these changes by connecting to the model's row_inserted and row_deleted signals. The reordering is implemented by setting up the icon view as a drag source and destination. Therefore, drag and drop can not be used in a reorderable view for any other purpose.  This function does not give you any degree of control over the order -- any reordering is allowed.  If more control is needed, you should probably handle drag and drop manually.
 
@@ -1159,7 +1159,7 @@ sub gtk_icon_view_set_reorderable ( N-GObject $icon_view, int32 $reorderable  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_reorderable:
 =begin pod
-=head2 [gtk_icon_view_] get_reorderable
+=head2 [[gtk_] icon_view_] get_reorderable
 
 Retrieves whether the user can reorder the list via drag-and-drop.  See C<gtk_icon_view_set_reorderable()>.
 
@@ -1177,7 +1177,7 @@ sub gtk_icon_view_get_reorderable ( N-GObject $icon_view --> int32 )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_drag_dest_item:
 =begin pod
-=head2 [gtk_icon_view_] set_drag_dest_item
+=head2 [[gtk_] icon_view_] set_drag_dest_item
 
 Sets the item that is highlighted for feedback.
 
@@ -1195,7 +1195,7 @@ sub gtk_icon_view_set_drag_dest_item ( N-GObject $icon_view, N-GtkTreePath $path
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_drag_dest_item:
 =begin pod
-=head2 [gtk_icon_view_] get_drag_dest_item
+=head2 [[gtk_] icon_view_] get_drag_dest_item
 
 Gets information about the item that is highlighted for feedback.
 
@@ -1213,7 +1213,7 @@ sub gtk_icon_view_get_drag_dest_item ( N-GObject $icon_view, N-GtkTreePath $path
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_dest_item_at_pos:
 =begin pod
-=head2 [gtk_icon_view_] get_dest_item_at_pos
+=head2 [[gtk_] icon_view_] get_dest_item_at_pos
 
 Determines the destination item for a given position.
 
@@ -1235,7 +1235,7 @@ sub gtk_icon_view_get_dest_item_at_pos ( N-GObject $icon_view, int32 $drag_x, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_create_drag_icon:
 =begin pod
-=head2 [gtk_icon_view_] create_drag_icon
+=head2 [[gtk_] icon_view_] create_drag_icon
 
 Creates a B<cairo_surface_t> representation of the item at I<path>.   This image is used for a drag icon.
 
@@ -1254,7 +1254,7 @@ sub gtk_icon_view_create_drag_icon ( N-GObject $icon_view, N-GtkTreePath $path -
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_convert_widget_to_bin_window_coords:
 =begin pod
-=head2 [gtk_icon_view_] convert_widget_to_bin_window_coords
+=head2 [[gtk_] icon_view_] convert_widget_to_bin_window_coords
 
 Converts widget coordinates to coordinates for the bin_window, as expected by e.g. C<gtk_icon_view_get_path_at_pos()>.
 
@@ -1274,7 +1274,7 @@ sub gtk_icon_view_convert_widget_to_bin_window_coords ( N-GObject $icon_view, in
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_cell_rect:
 =begin pod
-=head2 [gtk_icon_view_] get_cell_rect
+=head2 [[gtk_] icon_view_] get_cell_rect
 
 Fills the bounding rectangle in widget coordinates for the cell specified by I<path> and I<cell>. If I<cell> is C<Any> the main cell area is used.  This function is only valid if I<icon_view> is realized.
 
@@ -1295,7 +1295,7 @@ sub gtk_icon_view_get_cell_rect ( N-GObject $icon_view, N-GtkTreePath $path, N-G
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_tooltip_item:
 =begin pod
-=head2 [gtk_icon_view_] set_tooltip_item
+=head2 [[gtk_] icon_view_] set_tooltip_item
 
 Sets the tip area of I<tooltip> to be the area covered by the item at I<path>. See also C<gtk_icon_view_set_tooltip_column()> for a simpler alternative. See also C<gtk_tooltip_set_tip_area()>.
 
@@ -1313,7 +1313,7 @@ sub gtk_icon_view_set_tooltip_item ( N-GObject $icon_view, N-GObject $tooltip, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_tooltip_cell:
 =begin pod
-=head2 [gtk_icon_view_] set_tooltip_cell
+=head2 [[gtk_] icon_view_] set_tooltip_cell
 
 Sets the tip area of I<tooltip> to the area which I<cell> occupies in the item pointed to by I<path>. See also C<gtk_tooltip_set_tip_area()>.  See also C<gtk_icon_view_set_tooltip_column()> for a simpler alternative.
 
@@ -1332,7 +1332,7 @@ sub gtk_icon_view_set_tooltip_cell ( N-GObject $icon_view, N-GObject $tooltip, N
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_tooltip_context:
 =begin pod
-=head2 [gtk_icon_view_] get_tooltip_context
+=head2 [[gtk_] icon_view_] get_tooltip_context
 
 This function is supposed to be used in a  I<query-tooltip> signal handler for B<Gnome::Gtk3::IconView>.  The I<x>, I<y> and I<keyboard_tip> values which are received in the signal handler, should be passed to this function without modification.  The return value indicates whether there is an icon view item at the given coordinates (C<1>) or not (C<0>) for mouse tooltips. For keyboard tooltips the item returned will be the cursor item. When C<1>, then any of I<model>, I<path> and I<iter> which have been provided will be set to point to that row and the corresponding model. I<x> and I<y> will always be converted to be relative to I<icon_view>’s bin_window if I<keyboard_tooltip> is C<0>.
 
@@ -1356,7 +1356,7 @@ sub gtk_icon_view_get_tooltip_context ( N-GObject $icon_view, int32 $x, int32 $y
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_set_tooltip_column:
 =begin pod
-=head2 [gtk_icon_view_] set_tooltip_column
+=head2 [[gtk_] icon_view_] set_tooltip_column
 
 If you only plan to have simple (text-only) tooltips on full items, you can use this function to have B<Gnome::Gtk3::IconView> handle these automatically for you. I<column> should be set to the column in I<icon_view>’s model containing the tooltip texts, or -1 to disable this feature.  When enabled,  I<has-tooltip> will be set to C<1> and I<icon_view> will connect a  I<query-tooltip> signal handler.  Note that the signal handler sets the text with C<gtk_tooltip_set_markup()>, so &, <, etc have to be escaped in the text.
 
@@ -1373,7 +1373,7 @@ sub gtk_icon_view_set_tooltip_column ( N-GObject $icon_view, int32 $column  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_icon_view_get_tooltip_column:
 =begin pod
-=head2 [gtk_icon_view_] get_tooltip_column
+=head2 [[gtk_] icon_view_] get_tooltip_column
 
 Returns the column of I<icon_view>’s model which is being used for displaying tooltips on I<icon_view>’s rows.
 

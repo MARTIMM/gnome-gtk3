@@ -187,7 +187,7 @@ sub _gtk_stack_new ( --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_add_named:
 =begin pod
-=head2 [gtk_stack_] add_named
+=head2 [[gtk_] stack_] add_named
 
 Adds a child to this stack. The child is identified by the I<$name>.
 
@@ -205,7 +205,7 @@ sub gtk_stack_add_named ( N-GObject $stack, N-GObject $child, Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_add_titled:
 =begin pod
-=head2 [gtk_stack_] add_titled
+=head2 [[gtk_] stack_] add_titled
 
 Adds a child to this stack. The child is identified by the I<$name>. The I<$title> will be used by B<Gnome::Gtk3::StackSwitcher> to represent I<$child> in a tab bar, so it should be short.
 
@@ -224,7 +224,7 @@ sub gtk_stack_add_titled ( N-GObject $stack, N-GObject $child, Str $name, Str $t
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_child_by_name:
 =begin pod
-=head2 [gtk_stack_] get_child_by_name
+=head2 [[gtk_] stack_] get_child_by_name
 
 Finds the child of the B<Gnome::Gtk3::Stack> with the name given as the argument. Returns C<Any> if there is no child with this name.
 
@@ -243,7 +243,7 @@ sub gtk_stack_get_child_by_name ( N-GObject $stack, Str $name --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_visible_child:
 =begin pod
-=head2 [gtk_stack_] set_visible_child
+=head2 [[gtk_] stack_] set_visible_child
 
 Makes I<$child> the visible child of this stack.
 
@@ -264,7 +264,7 @@ sub gtk_stack_set_visible_child ( N-GObject $stack, N-GObject $child  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_visible_child:
 =begin pod
-=head2 [gtk_stack_] get_visible_child
+=head2 [[gtk_] stack_] get_visible_child
 
 Gets the currently visible child of this stack, or C<Any> if there are no visible children.
 
@@ -281,7 +281,7 @@ sub gtk_stack_get_visible_child ( N-GObject $stack --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_visible_child_name:
 =begin pod
-=head2 [gtk_stack_] set_visible_child_name
+=head2 [[gtk_] stack_] set_visible_child_name
 
 Makes the child with the given name visible.
 
@@ -302,7 +302,7 @@ sub gtk_stack_set_visible_child_name ( N-GObject $stack, Str $name  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_visible_child_name:
 =begin pod
-=head2 [gtk_stack_] get_visible_child_name
+=head2 [[gtk_] stack_] get_visible_child_name
 
 Returns the name of the currently visible child of this stack, or C<Any> if there is no visible child.
 
@@ -319,7 +319,7 @@ sub gtk_stack_get_visible_child_name ( N-GObject $stack --> Str )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_visible_child_full:
 =begin pod
-=head2 [gtk_stack_] set_visible_child_full
+=head2 [[gtk_] stack_] set_visible_child_full
 
 Makes the child with the given name visible.
 
@@ -342,7 +342,7 @@ sub gtk_stack_set_visible_child_full (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_homogeneous:
 =begin pod
-=head2 [gtk_stack_] set_homogeneous
+=head2 [[gtk_] stack_] set_homogeneous
 
 Sets the B<Gnome::Gtk3::Stack> to be homogeneous or not. If it is homogeneous, the B<Gnome::Gtk3::Stack> will request the same size for all its children. If it isn't, the stack may change size when a different child becomes visible.
 
@@ -361,7 +361,7 @@ sub gtk_stack_set_homogeneous ( N-GObject $stack, int32 $homogeneous  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_homogeneous:
 =begin pod
-=head2 [gtk_stack_] get_homogeneous
+=head2 [[gtk_] stack_] get_homogeneous
 
 Gets whether this stack is homogeneous. See C<gtk_stack_set_homogeneous()>.
 
@@ -376,7 +376,7 @@ sub gtk_stack_get_homogeneous ( N-GObject $stack --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_hhomogeneous:
 =begin pod
-=head2 [gtk_stack_] set_hhomogeneous
+=head2 [[gtk_] stack_] set_hhomogeneous
 
 Sets the B<Gnome::Gtk3::Stack> to be horizontally homogeneous or not. If it is homogeneous, the B<Gnome::Gtk3::Stack> will request the same width for all its children. If it isn't, the stack may change width when a different child becomes visible.
 
@@ -393,7 +393,7 @@ sub gtk_stack_set_hhomogeneous ( N-GObject $stack, int32 $hhomogeneous  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_hhomogeneous:
 =begin pod
-=head2 [gtk_stack_] get_hhomogeneous
+=head2 [[gtk_] stack_] get_hhomogeneous
 
 Gets whether this stack is horizontally homogeneous. See C<gtk_stack_set_hhomogeneous()>.
 
@@ -408,7 +408,7 @@ sub gtk_stack_get_hhomogeneous ( N-GObject $stack --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_vhomogeneous:
 =begin pod
-=head2 [gtk_stack_] set_vhomogeneous
+=head2 [[gtk_] stack_] set_vhomogeneous
 
 Sets the B<Gnome::Gtk3::Stack> to be vertically homogeneous or not. If it is homogeneous, the B<Gnome::Gtk3::Stack> will request the same height for all its children. If it isn't, the stack may change height when a different child becomes visible.
 
@@ -425,7 +425,7 @@ sub gtk_stack_set_vhomogeneous ( N-GObject $stack, int32 $vhomogeneous  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_vhomogeneous:
 =begin pod
-=head2 [gtk_stack_] get_vhomogeneous
+=head2 [[gtk_] stack_] get_vhomogeneous
 
 Gets whether this stack is vertically homogeneous. See C<gtk_stack_set_vhomogeneous()>.
 
@@ -440,7 +440,7 @@ sub gtk_stack_get_vhomogeneous ( N-GObject $stack --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_transition_duration:
 =begin pod
-=head2 [gtk_stack_] set_transition_duration
+=head2 [[gtk_] stack_] set_transition_duration
 
 Sets the duration that transitions between pages in this stack will take.
 
@@ -457,7 +457,7 @@ sub gtk_stack_set_transition_duration ( N-GObject $stack, uint32 $duration  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_transition_duration:
 =begin pod
-=head2 [gtk_stack_] get_transition_duration
+=head2 [[gtk_] stack_] get_transition_duration
 
 Returns the amount of time (in milliseconds) that transitions between pages in this stack will take.
 
@@ -472,7 +472,7 @@ sub gtk_stack_get_transition_duration ( N-GObject $stack --> uint32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_transition_type:
 =begin pod
-=head2 [gtk_stack_] set_transition_type
+=head2 [[gtk_] stack_] set_transition_type
 
 Sets the type of animation that will be used for transitions between pages in this stack. Available types include various kinds of fades and slides.
 
@@ -491,7 +491,7 @@ sub gtk_stack_set_transition_type ( N-GObject $stack, int32 $transition  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_transition_type:
 =begin pod
-=head2 [gtk_stack_] get_transition_type
+=head2 [[gtk_] stack_] get_transition_type
 
 Gets the type of animation that will be used for transitions between pages in this stack.
 
@@ -513,7 +513,7 @@ sub _gtk_stack_get_transition_type ( N-GObject $stack --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_transition_running:
 =begin pod
-=head2 [gtk_stack_] get_transition_running
+=head2 [[gtk_] stack_] get_transition_running
 
 Returns whether this stack is currently in a transition from one page to another. C<1> if the transition is currently running, C<0> otherwise.
 
@@ -528,7 +528,7 @@ sub gtk_stack_get_transition_running ( N-GObject $stack --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_set_interpolate_size:
 =begin pod
-=head2 [gtk_stack_] set_interpolate_size
+=head2 [[gtk_] stack_] set_interpolate_size
 
 Sets whether or not this stack will interpolate its size when changing the visible child. If the I<$interpolate-size> property is set to C<1>, this stack will interpolate its size between the current one and the one it'll take after changing the visible child, according to the set transition duration.
 
@@ -546,7 +546,7 @@ sub gtk_stack_set_interpolate_size (
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_get_interpolate_size:
 =begin pod
-=head2 [gtk_stack_] get_interpolate_size
+=head2 [[gtk_] stack_] get_interpolate_size
 
 Returns wether the B<Gnome::Gtk3::Stack> is set up to interpolate between the sizes of children on page switch. Returns: C<1> if child sizes are interpolated, C<0> otherwise.
 

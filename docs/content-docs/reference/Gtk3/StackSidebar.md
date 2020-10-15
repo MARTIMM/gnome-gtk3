@@ -48,8 +48,8 @@ Create a StackSidebar object using a native object returned from a builder. See 
 
     multi method new ( Str :$build-id! )
 
-gtk_stack_sidebar_new
----------------------
+[gtk_] stack_sidebar_new
+------------------------
 
 Creates a new sidebar.
 
@@ -59,8 +59,8 @@ Since: 3.16
 
     method gtk_stack_sidebar_new ( --> N-GObject )
 
-[gtk_stack_sidebar_] set_stack
-------------------------------
+[[gtk_] stack_sidebar_] set_stack
+---------------------------------
 
 Set the **Gnome::Gtk3::Stack** associated with this **Gnome::Gtk3::StackSidebar**.
 
@@ -72,8 +72,8 @@ Since: 3.16
 
   * N-GObject $stack; a **Gnome::Gtk3::Stack**
 
-[gtk_stack_sidebar_] get_stack
-------------------------------
+[[gtk_] stack_sidebar_] get_stack
+---------------------------------
 
 Retrieves the stack. See `gtk_stack_sidebar_set_stack()`.
 

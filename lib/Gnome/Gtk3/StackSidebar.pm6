@@ -118,7 +118,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_sidebar_new:
 =begin pod
-=head2 gtk_stack_sidebar_new
+=head2 [gtk_] stack_sidebar_new
 
 Creates a new sidebar.
 
@@ -138,7 +138,7 @@ sub gtk_stack_sidebar_new (  --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_stack_sidebar_set_stack:
 =begin pod
-=head2 [gtk_stack_sidebar_] set_stack
+=head2 [[gtk_] stack_sidebar_] set_stack
 
 Set the B<Gnome::Gtk3::Stack> associated with this B<Gnome::Gtk3::StackSidebar>.
 
@@ -159,7 +159,7 @@ sub gtk_stack_sidebar_set_stack ( N-GObject $sidebar, N-GObject $stack  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_stack_sidebar_get_stack:
 =begin pod
-=head2 [gtk_stack_sidebar_] get_stack
+=head2 [[gtk_] stack_sidebar_] get_stack
 
 Retrieves the stack.
 See C<gtk_stack_sidebar_set_stack()>.

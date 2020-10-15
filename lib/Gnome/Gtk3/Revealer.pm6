@@ -192,7 +192,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #TM:2:_gtk_revealer_new:new
 #`{{
 =begin pod
-=head2 gtk_revealer_new
+=head2 [gtk_] revealer_new
 
 Creates a new B<Gnome::Gtk3::Revealer>.  Returns: a newly created B<Gnome::Gtk3::Revealer>  Since: 3.10
 
@@ -209,7 +209,7 @@ sub _gtk_revealer_new (  --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_get_reveal_child:
 =begin pod
-=head2 [gtk_revealer_] get_reveal_child
+=head2 [[gtk_] revealer_] get_reveal_child
 
 Returns whether the child is currently revealed. See C<gtk_revealer_set_reveal_child()>.  This function returns C<1> as soon as the transition to the revealed state is started. To learn whether the child is fully revealed (ie the transition is completed), use C<gtk_revealer_get_child_revealed()>.
 
@@ -226,7 +226,7 @@ sub gtk_revealer_get_reveal_child ( N-GObject $revealer --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_set_reveal_child:
 =begin pod
-=head2 [gtk_revealer_] set_reveal_child
+=head2 [[gtk_] revealer_] set_reveal_child
 
 Tells the B<Gnome::Gtk3::Revealer> to reveal or conceal its child.  The transition will be animated with the current transition type of the I<revealer>.
 
@@ -243,7 +243,7 @@ sub gtk_revealer_set_reveal_child ( N-GObject $revealer, int32 $reveal_child  )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_get_child_revealed:
 =begin pod
-=head2 [gtk_revealer_] get_child_revealed
+=head2 [[gtk_] revealer_] get_child_revealed
 
 Returns whether the child is fully revealed, in other words whether the transition to the revealed state is completed.
 
@@ -258,7 +258,7 @@ sub gtk_revealer_get_child_revealed ( N-GObject $revealer --> int32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_get_transition_duration:
 =begin pod
-=head2 [gtk_revealer_] get_transition_duration
+=head2 [[gtk_] revealer_] get_transition_duration
 
 Returns the amount of time (in milliseconds) that transitions will take.
 
@@ -273,7 +273,7 @@ sub gtk_revealer_get_transition_duration ( N-GObject $revealer --> uint32 )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_set_transition_duration:
 =begin pod
-=head2 [gtk_revealer_] set_transition_duration
+=head2 [[gtk_] revealer_] set_transition_duration
 
 Sets the duration that transitions will take.
 
@@ -290,7 +290,7 @@ sub gtk_revealer_set_transition_duration ( N-GObject $revealer, uint32 $duration
 #-------------------------------------------------------------------------------
 #TM:1:gtk_revealer_set_transition_type:
 =begin pod
-=head2 [gtk_revealer_] set_transition_type
+=head2 [[gtk_] revealer_] set_transition_type
 
 Sets the type of animation that will be used for transitions in I<revealer>. Available types include various kinds of fades and slides.
 
@@ -310,7 +310,7 @@ sub gtk_revealer_set_transition_type (
 #-------------------------------------------------------------------------------
 #TM:0:gtk_revealer_get_transition_type:
 =begin pod
-=head2 [gtk_revealer_] get_transition_type
+=head2 [[gtk_] revealer_] get_transition_type
 
 Gets the type of animation that will be used for transitions in I<revealer>.
 

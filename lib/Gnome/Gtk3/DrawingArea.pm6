@@ -210,7 +210,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #TM:2:_gtk_drawing_area_new:new()
 #`{{
 =begin pod
-=head2 _gtk_drawing_area_new
+=head2 [gtk_] drawing_area_new
 
 Creates a new drawing area.
 

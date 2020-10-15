@@ -55,8 +55,8 @@ Create a StackSwitcher object using a native object returned from a builder. See
 
     multi method new ( Str :$build-id! )
 
-gtk_stack_switcher_new
-----------------------
+[gtk_] stack_switcher_new
+-------------------------
 
 Create a new **Gnome::Gtk3::StackSwitcher**.
 
@@ -66,8 +66,8 @@ Since: 3.10
 
     method gtk_stack_switcher_new ( --> N-GObject )
 
-[gtk_stack_switcher_] set_stack
--------------------------------
+[[gtk_] stack_switcher_] set_stack
+----------------------------------
 
 Sets the stack to control.
 
@@ -77,8 +77,8 @@ Since: 3.10
 
   * N-GObject $stack; a **Gnome::Gtk3::Stack**
 
-[gtk_stack_switcher_] get_stack
--------------------------------
+[[gtk_] stack_switcher_] get_stack
+----------------------------------
 
 Retrieves the stack, or `Any` if none has been set explicitly. See `gtk_stack_switcher_set_stack()`.
 

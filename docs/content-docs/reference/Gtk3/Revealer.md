@@ -59,8 +59,8 @@ Creates a new **Gnome::Gtk3::Revealer**.
 
     multi method new ( )
 
-[gtk_revealer_] get_reveal_child
---------------------------------
+[[gtk_] revealer_] get_reveal_child
+-----------------------------------
 
 Returns whether the child is currently revealed. See `gtk_revealer_set_reveal_child()`. This function returns `1` as soon as the transition to the revealed state is started. To learn whether the child is fully revealed (ie the transition is completed), use `gtk_revealer_get_child_revealed()`.
 
@@ -68,8 +68,8 @@ Returns: `1` if the child is revealed.
 
     method gtk_revealer_get_reveal_child ( --> Int )
 
-[gtk_revealer_] set_reveal_child
---------------------------------
+[[gtk_] revealer_] set_reveal_child
+-----------------------------------
 
 Tells the **Gnome::Gtk3::Revealer** to reveal or conceal its child. The transition will be animated with the current transition type of the *revealer*.
 
@@ -77,22 +77,22 @@ Tells the **Gnome::Gtk3::Revealer** to reveal or conceal its child. The transiti
 
   * Int $reveal_child; `True` to reveal the child
 
-[gtk_revealer_] get_child_revealed
-----------------------------------
+[[gtk_] revealer_] get_child_revealed
+-------------------------------------
 
 Returns whether the child is fully revealed, in other words whether the transition to the revealed state is completed.
 
     method gtk_revealer_get_child_revealed ( --> Int )
 
-[gtk_revealer_] get_transition_duration
----------------------------------------
+[[gtk_] revealer_] get_transition_duration
+------------------------------------------
 
 Returns the amount of time (in milliseconds) that transitions will take.
 
     method gtk_revealer_get_transition_duration ( --> UInt )
 
-[gtk_revealer_] set_transition_duration
----------------------------------------
+[[gtk_] revealer_] set_transition_duration
+------------------------------------------
 
 Sets the duration that transitions will take.
 
@@ -100,8 +100,8 @@ Sets the duration that transitions will take.
 
   * UInt $duration; the new duration, in milliseconds
 
-[gtk_revealer_] set_transition_type
------------------------------------
+[[gtk_] revealer_] set_transition_type
+--------------------------------------
 
 Sets the type of animation that will be used for transitions in *revealer*. Available types include various kinds of fades and slides.
 
@@ -111,8 +111,8 @@ Sets the type of animation that will be used for transitions in *revealer*. Avai
 
   * GtkRevealerTransitionType $transition; the new transition type
 
-[gtk_revealer_] get_transition_type
------------------------------------
+[[gtk_] revealer_] get_transition_type
+--------------------------------------
 
 Gets the type of animation that will be used for transitions in *revealer*.
 

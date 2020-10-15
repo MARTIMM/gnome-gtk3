@@ -122,7 +122,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_stack_switcher_new:new()
 =begin pod
-=head2 gtk_stack_switcher_new
+=head2 [gtk_] stack_switcher_new
 
 Create a new B<Gnome::Gtk3::StackSwitcher>.
 
@@ -142,7 +142,7 @@ sub gtk_stack_switcher_new ( --> N-GObject )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_stack_switcher_set_stack:
 =begin pod
-=head2 [gtk_stack_switcher_] set_stack
+=head2 [[gtk_] stack_switcher_] set_stack
 
 Sets the stack to control.
 
@@ -161,7 +161,7 @@ sub gtk_stack_switcher_set_stack ( N-GObject $switcher, N-GObject $stack  )
 #-------------------------------------------------------------------------------
 #TM:0:gtk_stack_switcher_get_stack:
 =begin pod
-=head2 [gtk_stack_switcher_] get_stack
+=head2 [[gtk_] stack_switcher_] get_stack
 
 Retrieves the stack, or C<Any> if none has been set explicitly. See C<gtk_stack_switcher_set_stack()>.
 
