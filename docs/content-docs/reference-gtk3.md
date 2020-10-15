@@ -8,8 +8,6 @@ layout: sidebar
 
 The modules are all generated from the GTK+ C source code and the documentation refers specifically to operations in C. Most of it is converted on the fly into Raku types or Raku native types. Sometimes, however, there is a mention of an operation like for instance, referencing or un-referencing objects. Those parts must be investigated still to see what the impact exactly is in Raku.
 
-Each entry in the sidebar shows the name of a module with two icons, one icon to show the state of documentation and one for the state of testing. When hoovering over the icons a tool tip appears with a message about its state.
-
 ## Color coding of the entries in the sidebar
 * <strong style="color:#e58080;">Toplevel classes</strong> are classes who inherit directly from **Gnome::N::TopLevelClassSupport**. Examples of such classes are **Gnome::GObject::Object** and **Gnome::Glib::Error**.
 * <strong style="color:#a04500;">Object classes</strong> are classes which inherit directly or indirectly from **Gnome::GObject::Object**.
