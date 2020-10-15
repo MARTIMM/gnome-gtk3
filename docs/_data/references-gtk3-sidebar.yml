@@ -183,7 +183,7 @@
     doc: 1
     test: 1
   - title: "IconTheme"
-    type: widget
+    type: object
     url: "/content-docs/reference/Gtk3/IconTheme.html"
   - title: "IconView"
     type: widget
@@ -338,6 +338,11 @@
   - title: "StackSwitcher"
     type: widget
     url: '/content-docs/reference/Gtk3/StackSwitcher.html'
+    doc: 1
+    test: 1
+  - title: "Statusbar"
+    type: widget
+    url: '/content-docs/reference/Gtk3/Statusbar.html'
     doc: 1
     test: 1
   - title: "StyleContext"
