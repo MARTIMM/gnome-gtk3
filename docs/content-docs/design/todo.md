@@ -41,8 +41,8 @@ layout: sidebar
 * When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
 
 #### Add other packages
-* [ ] Pango
-* [ ] Atk
+* [ ] Pango.
+* [ ] Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
 
 #### Documentation
 <!--
