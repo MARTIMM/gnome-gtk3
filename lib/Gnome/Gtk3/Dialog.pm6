@@ -693,22 +693,17 @@ Also here, the types of positional arguments in the signal handler are important
 =comment #TS:0:response:
 =head3 response
 
-Emitted when an action widget is clicked, the dialog receives a
-delete event, or the application programmer calls C<gtk_dialog_response()>.
-On a delete event, the response ID is B<GTK_RESPONSE_DELETE_EVENT>.
-Otherwise, it depends on which action widget was clicked.
+Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls C<gtk_dialog_response()>. On a delete event, the response ID is B<GTK_RESPONSE_DELETE_EVENT>. Otherwise, it depends on which action widget was clicked.
 
   method handler (
-    Int $response_id,
+    int32 $response_id,
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($dialog),
     *%user-options
   );
 
 =item $dialog; the object on which the signal is emitted
-
-=item $response_id; the response ID
-
+=item $response_id; the response ID. There is a caveat here when using just Int as a type. All enumerations in GTK+ are int32 type integers. Here the predefined response ids are negative so the user could define other responses using positive numbers. When the Int type is used, one will not receive the negative numbers because they are returned as a positive number. E.g. GTK_RESPONSE_REJECT is -2 but you will get 4294967294 which is 0xfffffffe.
 
 =comment #TS:0:close:
 =head3 close
