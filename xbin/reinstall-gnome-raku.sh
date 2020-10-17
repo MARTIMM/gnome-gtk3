@@ -20,4 +20,7 @@ zef uninstall Gnome::GObject
 zef uninstall Gnome::Glib
 zef uninstall Gnome::N
 
+echo -n >> xt/data/Gnome-Install-Times.txt
+date >> xt/data/Gnome-Install-Times.txt
+raku -v >> xt/data/Gnome-Install-Times.txt
 /usr/bin/time -v zef -a -o xt/data/Gnome-Install-Times.txt --update install Gnome::Gtk3::Gtk3
