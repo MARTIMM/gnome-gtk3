@@ -1,0 +1,11 @@
+
+Mon Oct 19 16:24:10 CEST 2020
+This is Rakudo version 2020.09-70-g2d461268f built on MoarVM version 2020.09-12-g8c41f6692
+implementing Raku 6.d.
+101.56user 3.44system 0:55.37elapsed 189%CPU (0avgtext+0avgdata 635900maxresident)k
+472inputs+75112outputs (0major+1860322minor)pagefaults 0swaps
+237.61user 7.06system 2:40.31elapsed 152%CPU (0avgtext+0avgdata 770600maxresident)k
+0inputs+325312outputs (0major+4005479minor)pagefaults 0swaps
+Command exited with non-zero status 1
+367.80user 17.00system 4:17.23elapsed 149%CPU (0avgtext+0avgdata 578600maxresident)k
+0inputs+378528outputs (0major+10487823minor)pagefaults 0swaps
