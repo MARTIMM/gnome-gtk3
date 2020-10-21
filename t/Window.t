@@ -115,22 +115,24 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method enable-debugging-handler (
-      Int $toggle, Gnome::Gtk3::Window :$widget
+      Int $toggle, Gnome::Gtk3::Window :$_widget
       --> Int
     ) {
 
-      isa-ok $widget, Gnome::Gtk3::Window;
+      isa-ok $_widget, Gnome::Gtk3::Window;
       is $toggle, 1, 'test $toggle';
       $!signal-processed = True;
 
       1
     }
 
-    method signal-emitter ( Gnome::Gtk3::Window :$widget --> Str ) {
+    method signal-emitter ( Gnome::Gtk3::Window :$_widget --> Str ) {
 #Gnome::N::debug(:on);
       while $main.gtk-events-pending() { $main.iteration-do(False); }
 
-      note 'rv: ', $widget.emit-by-name(
+      # will not emit signal: $_widget.set-interactive-debugging(True);
+
+      $_widget.emit-by-name(
         'enable-debugging', 1, :return-type(int32), :parameters([int32,])
       );
 
@@ -141,7 +143,7 @@ subtest 'Signals ...', {
       #$mh-in-handler.emit-by-name( ..., $mh-in-handler);
       #is $!signal-processed, True, '\'...\' signal processed';
 
-      sleep(0.3);
+#      sleep(0.3);
       $main.gtk-main-quit;
 
       'done'
