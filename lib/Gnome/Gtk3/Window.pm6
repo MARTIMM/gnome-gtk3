@@ -2899,7 +2899,7 @@ Int :$_handler_id,
 =item $window; the window which received the signal
 
 
-=comment #TS:0:enable-debugging:
+=comment #TS:1:enable-debugging:
 =head3 enable-debugging
 
 The I<enable-debugging> signal is a [keybinding signal](https://developer.gnome.org/gtk3/3.24/gtk3-Bindings.html#GtkBindingSignal) which gets emitted when the user enables or disables interactive debugging. When I<$toggle> is C<1>, interactive debugging is toggled on or off, when it is C<0>, the debugger will be pointed at the widget under the pointer.
