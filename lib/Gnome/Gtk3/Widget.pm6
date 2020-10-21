@@ -284,8 +284,6 @@ Gnome::Gtk3::Widget implements
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Method::Also;
-
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 
@@ -511,16 +509,13 @@ See also: C<gtk_container_remove()> in L<Gnome::Gtk3::Container|Container.html>.
 
 =end pod
 
-method destroy ( )
-  is also<gtk-widget-destroy widget-destroy gtk_widget_destroy widget_destroy>
-{
-  _gtk_widget_destroy(self.get-native-object-no-reffing);
-  self.set-native-object(N-GObject);
+# prevent calling parent class destroy method e.g in Any or Mu
+method destroy ( ) {
+  gtk_widget_destroy(self.get-native-object-no-reffing);
 }
 
-sub _gtk_widget_destroy ( N-GObject $widget )
+sub gtk_widget_destroy ( N-GObject $widget )
   is native(&gtk-lib)
-  is symbol('gtk_widget_destroy')
   { * }
 
 #`{{
