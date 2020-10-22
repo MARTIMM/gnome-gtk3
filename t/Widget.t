@@ -175,8 +175,8 @@ subtest 'Manipulations', {
 
 #note $b.list-action-prefixes[0];
 
-  $b.gtk-widget-destroy;
-  nok $b.is-valid, '.destroy()';
+#  $b.gtk-widget-destroy;
+#  nok $b.is-valid, '.destroy()';
 }
 
 #`{{ drop
