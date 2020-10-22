@@ -38,7 +38,9 @@ layout: sidebar
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
-* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible the create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
+* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible to create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
+
+* When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
 #### Add other packages
 * [ ] Pango.
@@ -57,12 +59,12 @@ layout: sidebar
 -->
 
 * Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
-  * Cannot automatically cleanup the natice object in the Raku object when object gets destroyed.
+  * Cannot automatically cleanup the native object in the Raku object when object gets destroyed.
   * Users of the packages must therefore clean the objects themselves when appropriate using `.widget-destroy()` or `.clean-object()`.
 
-* Each user class inheriting a Raku G*::object must have a new() to create the native object. this must be repeated for other client use classes because only the leaf new() is run!
+* Each user class inheriting a Raku G*::object must have a new() to create the native object. This must be repeated for other subsequent inheriting classes because only the top new() is run!
 
-* Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate png and use those.
+* Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate svg and use those.
 
 * Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
 
@@ -104,8 +106,6 @@ layout: sidebar
   I'll go for the last example but will take some time to find all returned enum
 
 #### Site changes.
-* In the sidebar of the reference section, the doc and test icons should be replaced by one icon. Pressing on it should show a table with test coverage and documentation status instead of showing at the top of the ref page. It can also show issues perhaps.
-
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
 * Tutorials
@@ -144,6 +144,7 @@ layout: sidebar
       * `Bool -> Int` if target is `int*`
       * `Int -> int*` automatic by Raku
       * `* -> num*` if target is `num*`
+    * Using `$obj.?xyz()` in a class inheriting from `Gnome::*` fails when `.xyz()` is not defined. It is caused by the FALLBACK routine. Must use `$obj.^lookup('xyz')` to check before calling.
 
 <!--
 #  - title: Dialog
@@ -160,35 +161,72 @@ layout: sidebar
 #  - title: threading
 -->
 
-  * [ ] Widgets
-    * Containers
-      * ScrolledWindow
+  * [ ] Widgets, a non-exhoustive list according to the glade program
+    * Toplevel widgets
+      * Window
+      * ApplicationWindow
       * Dialogs
-      * Frame
+        * AboutDialog
+        * FileChooserDialog
+        * MessageDialog
+      * Assistant
+
+    * Containers
       * Grid
+      * Notebook
+      * Frame
+      * ListBox
+      * ScrolledWindow
+      * Revealer
+      * Stack
 
     * Controls
-      * Buttons: radio, check, toggle
-      * Menus
-      * Toolbars
+      * Buttons
+        * RadioButton
+        * CheckButton
+        * ToggleButton
+        * ColorButton
+        * FontButton
       * ComboxBox
+      * ComboxBoxText
+      * Entry, SearchEntry
+      * Switch
 
     * Display
-      * Labels
+      * Label
       * LevelBar
-      * Scale
+      * Menu
+      * Separator
+      * DrawingArea
 
+    * Extra
+      * Models
+        * TreeModel
+        * ListStore
+        * TreeStore
+        * TreeView
+      * Text
+        * TextBuffer
+        * EntryBuffer
+        * TextTag
+        * TextTagTable
+      * Choosers
+        * ColorChooserWidget
+        * FontChooserWidget
+<!--
     * Lists and Edit
-      * Entry
+      * TextView
+      * Menus
       * ListBox
-      * TreeModel
+      * ListView, TreeView, TreeModel
+      * Toolbars
+      * Scale
+-->
 
   * [ ] Intermezzo: common names and init
-    * Common method names used in classes: clear-object, is-valid
-    * Common init method attributes, :native-object
-    * Initialization of classes
-
-  * [ ] A bit more about ListView, TreeView, TreeModel
+    * Common method names used in classes: `clear-object()`, `is-valid()`
+    * Common init method attributes, `:native-object`, `:build-id`
+    * Initialization of classes, `gtk-main-init()`
 
   * [ ] Intermezzo: widget life cycle
     * Widget creation. Reference state, weak references
@@ -198,6 +236,7 @@ layout: sidebar
     * Finalization
     * `.clear-object()`
 
+<!--
   * [ ] Threads
     * Main
       * Start loop
@@ -205,6 +244,7 @@ layout: sidebar
       * Nest loops
       * Loop Context
       * Process events
+-->
 
   * [ ] Builder
     * Glade
@@ -213,7 +253,8 @@ layout: sidebar
 
   * [ ] Styling
   * [ ] Resources
-  * [ ] Inheriting a class
+  * [ ] Inheriting a class. Making a singleton class. Invalidate the object after $xyz.widget-destroy() is called. Example singleton statusbar.
+
 
   * [ ] Intermezzo: tell something about
     * Object
@@ -221,26 +262,29 @@ layout: sidebar
     * Boxed: https://en.wikipedia.org/wiki/GObject
       Some data structures that are too simple to be made full-fledged class types (with all the overhead incurred) may still need to be registered with the type system. For example, we might have a class to which we want to add a background-color property, whose values should be instances of a structure that looks like struct color { int r, g, b; }. To avoid having to subclass GObject, we can create a boxed type to represent this structure, and provide functions for copying and freeing. GObject ships with a handful of boxed types wrapping simple GLib data types. Another use for boxed types is as a way to wrap foreign objects in a tagged container that the type system can identify and will know how to copy and free.
     * Interfaces: https://en.wikipedia.org/wiki/GObject
-      Most types in a GObject application will be classes — in the normal object-oriented sense of the word — derived directly or indirectly from the root class, GObject. There are also interfaces, which, unlike classic Java-style interfaces, can contain implemented methods. GObject interfaces can thus be described as mixins.
+      Most types in the `Gnome::*` libraries will be classes, derived directly or indirectly from the root class **Gnome::N::TopLevelClassSupport**. There are also interfaces, which can contain implemented methods and variables. These interfaces are declared as roles and are mixed in, in the appropriate class. E.g. a role **Gnome::Gtk3::Buildable** is mixed in **Gnome::Gtk3::Widget**. All objects created from classes inheriting from **Gnome::Gtk3::Widget** can then use the methods from **Gnome::Gtk3::Buildable** too.
 
   * [ ] ApplicationWindow
     * Phases
     * Signals
     * Multiple program entities or not
 
-  * [ ] Command line arguments of GTK
-
   * [ ] Drag and drop
-  * [ ] Drawing
-  * [ ] Font and other text handling
+  * [ ] Drawing with Cairo
+  * [ ] Font and other text handling with Pango
   * [ ] D-Bus
   * [ ] Cairo
   * [ ] Pango
 
   * [ ] Debugging
-    * Testing your program with Gnome::T.
     * `Gnome::N::debug()`.
-    * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE).
+    * Testing your program with **Gnome::T.**
+    * Gtk Inspector
+      * `> gsettings set org.gtk.Settings.Debug enable-inspector-keybinding true`
+      * `ctrl-shift-D` or `ctrl-shift-I`
+      * `$window.set-interactive-debugging(True)`
+      * env var GTK_DEBUG=interactive
+    * Environment variables: See also [Running GLib Applications: GLib Reference Manual](https://developer.gnome.org/glib/stable/glib-running.html#G_SLICE) and [GTK variables and commandline options](https://developer.gnome.org/gtk3/stable/gtk-running.html).
       * G-DEBUG all
       * G_MESSAGES_DEBUG all
       * G_SLICE debug-blocks
