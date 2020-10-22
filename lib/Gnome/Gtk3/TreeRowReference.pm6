@@ -27,10 +27,8 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::GObject::Boxed;
-use Gnome::Gtk3::TreeIter; # when placed after TreePath, the TreeRowReference
-                           # type becomes unknown ?????
+use Gnome::Gtk3::TreeIter;
 use Gnome::Gtk3::TreePath;
-
 #use Gnome::Gtk3::TreeModel;
 
 #-------------------------------------------------------------------------------

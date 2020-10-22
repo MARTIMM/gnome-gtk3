@@ -19,6 +19,7 @@ A struct that specifies a TreePath.
 =comment head2 Example
 
 =end pod
+#=finish
 
 #-------------------------------------------------------------------------------
 use NativeCall;
@@ -28,11 +29,16 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::GObject::Boxed;
 
+# next use statement is a bogus line needed to prevent Raku issuing
+# 'Object does not exist in serialization context' when testing TreeSelection
+use Gnome::GObject::Object;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::TreePath:auth<github:MARTIMM>;
 also is Gnome::GObject::Boxed;
+#also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
 =begin pod

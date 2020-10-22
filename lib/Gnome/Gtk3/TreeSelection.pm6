@@ -1,6 +1,7 @@
 #TL:1:Gnome::Gtk3::TreeSelection:
 
 use v6;
+
 #-------------------------------------------------------------------------------
 =begin pod
 
@@ -57,6 +58,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 =comment head2 Example
 
 =end pod
+
 #-------------------------------------------------------------------------------
 use NativeCall;
 
