@@ -158,6 +158,9 @@
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     type: interface
     doc: 0
+  - title: "FileChooserButton"
+    url: "/content-docs/reference/Gtk3/FileChooserButton.html"
+    type: widget
   - title: "FileChooserDialog"
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
     type: widget

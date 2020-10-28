@@ -104,6 +104,7 @@ DrawingArea               |  |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| |
 Entry                     |  | 🗸|  |  |  |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗|* |
 FileChooser               |i |  |  |  |  |  |  |  |  |  |  |
+FileChooserButton         |  | 🗸| 🗸| 🗸|🗸| 🗸| 🗸|½|  |⅓ |  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
 Frame                     |  |  |  |  |  |  |  |  |  |  |* |
@@ -142,8 +143,8 @@ SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
 Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
-StackSidebar              |  |  |  |  |  |  |  |  |  |  |  |
-StackSwitcher             |  |  |  |  |  |  |  |  |  |  |  |
+StackSidebar              |  |  | 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
+StackSwitcher             |  |  | 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
 Statusbar                 |  | 🗸| 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗|  |
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
 StyleProvider             |i |  |  |  |  |  |  |  |  |  |  |
