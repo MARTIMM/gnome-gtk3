@@ -50,10 +50,7 @@ Legend for head of table
   * **ts**: Subroutines and Methods.
   * **te**: Signals and events.
   * **tp**: Properties.
-* **N**: Notes
-  * A star has more priority to finish than others
-  * C depends on Cairo
-  * P depends on Pango
+
 Entry values can be
 * ✗: No info. Mostly for package names but sometimes there are no signals or properties for a class.
 * Empty: Not done.
@@ -66,9 +63,9 @@ table {
 }
 </style>
 
-| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp|N |
+| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp| |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 AboutDialog               |  | 🗸| 🗸| 🗸| ¾|  |  |  |  |  | |
 Adjustment                |  |  |  |  |  |  |  |  |  |  |  |
 Application               |  | 🗸|  |  |  |  |  |  |  |  |  |
@@ -99,16 +96,16 @@ ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  |  |  |  |  |  |  |  |  |  |  |
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
-Dialog                    |  | 🗸|  |  |  |  |  |  |  |  |* |
+Dialog                    |  | 🗸|  |  |  |  |  |  |  |  | |
 DrawingArea               |  |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| |
 Entry                     |  | 🗸|  |  |  |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗|* |
+Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗| |
 FileChooser               |i |  |  |  |  |  |  |  |  |  |  |
 FileChooserButton         |  | 🗸| 🗸| 🗸|🗸| 🗸| 🗸|½|  |⅓ |  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
-Frame                     |  |  |  |  |  |  |  |  |  |  |* |
-Grid                      |  | 🗸|  |  |  |  |  |  |  |  |* |
+Frame                     |  |  |  |  |  |  |  |  |  |  | |
+Grid                      |  | 🗸|  |  |  |  |  |  |  |  | |
 IconTheme                 |  |  | 🗸|  |  |  |  |  |  |  |  |
 IconView                  |  |  | 🗸|  |  |  |  |  |  |  |  |
 Image                     |  |  |  |  |  |  |  |  |  |  |  |
@@ -117,7 +114,7 @@ LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
 ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |s |  | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗|P |
+Main                      |s |  | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗| |
 Menu                      |  |  |  |  |  |  |  |  |  |  |  |
 MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
 MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
@@ -165,11 +162,11 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | 🗸|  |  |  |  |  |  |  |  |  |
 TreeView                  |  | 🗸|  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  |* |
+Widget                    |  |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  | |
 WidgetPath                |b |  |  |  |  |  |  |  |  |  |  |
-Window                    |  | 🗸| 🗸| 🗸|  |  |  |  |  |  |* |
+Window                    |  | 🗸| 🗸| 🗸|  |  |  |  |  |  | |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|N | -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp| | -->
 
 <br/>
 
@@ -296,37 +293,37 @@ WindowGroup|
 
 <br/>
 
-| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp|N |
+| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp| |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Gdk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::Gdk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 Device                    |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |
-Events                    |  |  |  |  |  |  |  |  |  |  |* |
+Events                    |  |  |  |  |  |  |  |  |  |  | |
 Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |
 Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |
 RGBA                      |  |  |  |  |  |  |  |  |  |  |  |
 Screen                    |  |  |  |  |  |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |  |  |  |  |* |
+Types                     |  |  |  |  |  |  |  |  |  |  | |
 Window                    |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|N |
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp| |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
-**Gnome::GObject**        |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::GObject**        |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 Boxed                     |t |  |  |  |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  |  |  |  |  |  |
 InitiallyUnowned          |  |  |  |  |  |  |  |  |  |  |
-Object                    |t | 🗸| 🗸|  |  |  |  |  |  |* |
-Signal                    |i |  |  |  |  |  |  |  |  |* |
+Object                    |t | 🗸| 🗸|  |  |  |  |  |  | |
+Signal                    |i |  |  |  |  |  |  |  |  | |
 Type                      |s |  |  |  |  |  |  |  |  |  |
 value                     |b |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|ts|te|N |
+| Module/Class            |T |dm|db|ds|de|ts|te| |
 |-------------------------|--|--|--|--|--|--|--|--|
-**Gnome::Glib**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::Glib**           |p | ✗| ✗| ✗| ✗| ✗| ✗| |
 Error                     |  |  |  |  |  |  |  |  |
 List                      |  |  |  |  |  |  |  |  |
 Main                      |  |  |  |  |  |  |  |  |
@@ -336,9 +333,9 @@ Variant                   |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|ts|te|N |
+| Module/Class            |T |dm|db|ds|de|ts|te| |
 |-------------------------|--|--|--|--|--|--|--|--|
-**Gnome::Gio**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::Gio**            |p | ✗| ✗| ✗| ✗| ✗| ✗| |
 Action                    |i |  |  |  |  |  |  |  |
 ActionMap                 |i |  |  |  |  |  |  |  |
 Application               |  |  |  |  |  |  |  |  |
@@ -352,19 +349,19 @@ SimpleAction              |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|ts|N |
+| Module/Class            |T |dm|db|ds|ts| |
 |-------------------------|--|--|--|--|--|--|
-**Gnome::N**              |p | ✗| ✗| ✗| ✗| ✗|
+**Gnome::N**              |p | ✗| ✗| ✗| ✗| |
 N-GObject                 |N |  |  |  |  |  |
-NativeLib                 |L |  |  |  |  |- |
-TopLevelClassSupport      |t |  |  |  |  |* |
-X                         |  |  |  |  |  |* |
+NativeLib                 |L |  |  |  |  | |
+TopLevelClassSupport      |t |  |  |  |  | |
+X                         |  |  |  |  |  | |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|ts|N |
+| Module/Class            |T |dm|db|ds|ts| |
 |-------------------------|--|--|--|--|--|--|
-**Gnome::Cairo**          |p | ✗| ✗| ✗| ✗| ✗|
+**Gnome::Cairo**          |p | ✗| ✗| ✗| ✗| |
 Enums                     |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |
@@ -379,8 +376,8 @@ Types                     |  |  |  |  |  |  |
 <br/>
 
 <!--
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|n |
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp| |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
+**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 Object                    |  |  |  |  |  |  |  |  |  |  |
 -->
