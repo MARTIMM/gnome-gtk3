@@ -61,7 +61,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Container;
@@ -109,10 +109,14 @@ enum GtkStackTransitionType is export <
 =head1 Methods
 =head2 new
 
+=head3 new()
+
 Create a new Stack object.
 
   multi method new ( )
 
+=begin comment
+=head3 new()
 Create a Stack object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$native-object! )
@@ -120,7 +124,7 @@ Create a Stack object using a native object from elsewhere. See also B<Gnome::GO
 Create a Stack object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
-
+=end comment
 =end pod
 
 #TM:1:new():inheriting:

@@ -37,41 +37,25 @@ Declaration
     unit class Gnome::Gtk3::StackSwitcher;
     also is Gnome::Gtk3::Box;
 
+Uml Diagram ![](plantuml/StackSwitcher.svg)
+-------------------------------------------
+
 Methods
 =======
 
 new
 ---
 
+### new()
+
 Create a new StackSwitcher object.
 
     multi method new ( )
-
-Create a StackSwitcher object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create a StackSwitcher object using a native object returned from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] stack_switcher_new
--------------------------
-
-Create a new **Gnome::Gtk3::StackSwitcher**.
-
-Returns: a new **Gnome::Gtk3::StackSwitcher**.
-
-Since: 3.10
-
-    method gtk_stack_switcher_new ( --> N-GObject )
 
 [[gtk_] stack_switcher_] set_stack
 ----------------------------------
 
 Sets the stack to control.
-
-Since: 3.10
 
     method gtk_stack_switcher_set_stack ( N-GObject $stack )
 
@@ -81,8 +65,6 @@ Since: 3.10
 ----------------------------------
 
 Retrieves the stack, or `Any` if none has been set explicitly. See `gtk_stack_switcher_set_stack()`.
-
-Since: 3.10
 
     method gtk_stack_switcher_get_stack ( --> N-GObject )
 
@@ -99,13 +81,15 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 Supported properties
 --------------------
 
+#-------------------------------------------------------------------------------
+
 ### Icon Size
 
 Use the "icon-size" property to change the size of the image displayed when a **Gnome::Gtk3::StackSwitcher** is displaying icons.
 
-Since: 3.20
-
 The **Gnome::GObject::Value** type of property *icon-size* is `G_TYPE_INT`.
+
+#-------------------------------------------------------------------------------
 
 ### Stack
 

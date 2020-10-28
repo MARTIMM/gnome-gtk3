@@ -71,17 +71,11 @@ Methods
 new
 ---
 
+### new()
+
 Create a new Stack object.
 
     multi method new ( )
-
-Create a Stack object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create a Stack object using a native object returned from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
 
 [[gtk_] stack_] add_named
 -------------------------

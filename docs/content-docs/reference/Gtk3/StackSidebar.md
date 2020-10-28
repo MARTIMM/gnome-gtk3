@@ -19,8 +19,6 @@ Css Nodes
 
 When circumstances require it, **Gnome::Gtk3::StackSidebar** adds the .needs-attention style class to the widgets representing the stack pages.
 
-Since: 3.16
-
 Synopsis
 ========
 
@@ -30,34 +28,20 @@ Declaration
     unit class Gnome::Gtk3::StackSidebar;
     also is Gnome::Gtk3::Bin;
 
+Uml Diagram ![](plantuml/StackSidebar.svg)
+------------------------------------------
+
 Methods
 =======
 
 new
 ---
 
+### new()
+
 Create a new StackSidebar object.
 
     multi method new ( )
-
-Create a StackSidebar object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create a StackSidebar object using a native object returned from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] stack_sidebar_new
-------------------------
-
-Creates a new sidebar.
-
-Returns: the new **Gnome::Gtk3::StackSidebar**
-
-Since: 3.16
-
-    method gtk_stack_sidebar_new ( --> N-GObject )
 
 [[gtk_] stack_sidebar_] set_stack
 ---------------------------------
@@ -65,8 +49,6 @@ Since: 3.16
 Set the **Gnome::Gtk3::Stack** associated with this **Gnome::Gtk3::StackSidebar**.
 
 The sidebar widget will automatically update according to the order (packing) and items within the given **Gnome::Gtk3::Stack**.
-
-Since: 3.16
 
     method gtk_stack_sidebar_set_stack ( N-GObject $stack )
 
@@ -78,8 +60,6 @@ Since: 3.16
 Retrieves the stack. See `gtk_stack_sidebar_set_stack()`.
 
 Returns: the associated **Gnome::Gtk3::Stack** or `Any` if none has been set explicitly
-
-Since: 3.16
 
     method gtk_stack_sidebar_get_stack ( --> N-GObject )
 

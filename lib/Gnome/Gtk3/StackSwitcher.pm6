@@ -31,11 +31,17 @@ When circumstances require it, B<Gnome::Gtk3::StackSwitcher> adds the .needs-att
 
 B<Gnome::Gtk3::Stack>
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::StackSwitcher;
   also is Gnome::Gtk3::Box;
+
+
+=head2 Uml Diagram
+![](plantuml/StackSwitcher.svg)
+
 
 =comment head2 Example
 
@@ -43,7 +49,7 @@ B<Gnome::Gtk3::Stack>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Box;
@@ -57,9 +63,13 @@ also is Gnome::Gtk3::Box;
 =head1 Methods
 =head2 new
 
+=head3 new()
+
 Create a new StackSwitcher object.
 
   multi method new ( )
+
+=begin comment
 
 Create a StackSwitcher object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
@@ -69,10 +79,11 @@ Create a StackSwitcher object using a native object returned from a builder. See
 
   multi method new ( Str :$build-id! )
 
+=end comment
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
+#TM:1:new(:native-object):
 #TM:0:new(:build-id):
 
 submethod BUILD ( *%options ) {
@@ -97,7 +108,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(gtk_stack_switcher_new());
+    self.set-native-object(_gtk_stack_switcher_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -120,7 +131,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_stack_switcher_new:new()
+#TM:1:_gtk_stack_switcher_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] stack_switcher_new
 
@@ -128,25 +140,23 @@ Create a new B<Gnome::Gtk3::StackSwitcher>.
 
 Returns: a new B<Gnome::Gtk3::StackSwitcher>.
 
-Since: 3.10
-
   method gtk_stack_switcher_new ( --> N-GObject )
 
 
 =end pod
+}}
 
-sub gtk_stack_switcher_new ( --> N-GObject )
+sub _gtk_stack_switcher_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_stack_switcher_new')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_stack_switcher_set_stack:
+#TM:1:gtk_stack_switcher_set_stack:
 =begin pod
 =head2 [[gtk_] stack_switcher_] set_stack
 
 Sets the stack to control.
-
-Since: 3.10
 
   method gtk_stack_switcher_set_stack ( N-GObject $stack )
 
@@ -159,13 +169,11 @@ sub gtk_stack_switcher_set_stack ( N-GObject $switcher, N-GObject $stack  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_stack_switcher_get_stack:
+#TM:1:gtk_stack_switcher_get_stack:
 =begin pod
 =head2 [[gtk_] stack_switcher_] get_stack
 
 Retrieves the stack, or C<Any> if none has been set explicitly. See C<gtk_stack_switcher_set_stack()>.
-
-Since: 3.10
 
   method gtk_stack_switcher_get_stack ( --> N-GObject )
 
@@ -188,16 +196,15 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=comment #TP:0:icon-size:
+#-------------------------------------------------------------------------------
+=comment #TP:1:icon-size:
 =head3 Icon Size
 
 Use the "icon-size" property to change the size of the image displayed when a B<Gnome::Gtk3::StackSwitcher> is displaying icons.
 
-Since: 3.20
-
 The B<Gnome::GObject::Value> type of property I<icon-size> is C<G_TYPE_INT>.
 
-
+#-------------------------------------------------------------------------------
 =comment #TP:0:stack:
 =head3 Stack
 
