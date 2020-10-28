@@ -7,14 +7,11 @@ set namespaceSeparator ::
 hide members
 
 
-'Class and interface decorations
+'Class and interface declarations
 class Gnome::N::TopLevelClassSupport < Catch all class >
 
 Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
-
-'class Gnome::GObject::InitialyUnowned
-'class Gnome::GObject::Object
 
 
 class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
@@ -25,14 +22,20 @@ class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 Gnome::N::TopLevelClassSupport <|--- Gnome::GObject::Object
 Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
-'Gnome::GObject::Object *-> Gnome::GObject::Signal
 Gnome::GObject::Signal <|.. Gnome::GObject::Object
 
-'Gnome::Gtk3::Button -|> Gnome::Gtk3::Bin
-'Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
 Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 
 
+@enduml
+```
+<!--
+
+'class Gnome::GObject::InitialyUnowned
+'class Gnome::GObject::Object
+
+'Gnome::Gtk3::Button -|> Gnome::Gtk3::Bin
+'Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
 
 'Interface Gnome::Gtk3::Actionable <Interface>
 'Gnome::Gtk3::Actionable <|-- Gnome::Gtk3::Button
@@ -62,9 +65,8 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
 'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
 'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
-@enduml
-```
 
+-->
 <!--
 │   │   │   │   ├── GtkButton                   ♥ Button
 │   │   │   │   │   ├── GtkToggleButton         ToggleButton
