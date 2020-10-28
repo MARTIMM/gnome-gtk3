@@ -196,7 +196,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:icon-size:
 =head3 Icon Size
 
@@ -204,7 +204,7 @@ Use the "icon-size" property to change the size of the image displayed when a B<
 
 The B<Gnome::GObject::Value> type of property I<icon-size> is C<G_TYPE_INT>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:stack:
 =head3 Stack
 

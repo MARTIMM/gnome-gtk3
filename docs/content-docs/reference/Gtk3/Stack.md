@@ -291,15 +291,11 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 Supported properties
 --------------------
 
-#-------------------------------------------------------------------------------
-
 ### Homogeneous
 
 Homogeneous sizing Default value: True
 
 The **Gnome::GObject::Value** type of property *homogeneous* is `G_TYPE_BOOLEAN`.
-
-#-------------------------------------------------------------------------------
 
 ### Horizontally homogeneous
 
@@ -307,15 +303,11 @@ The **Gnome::GObject::Value** type of property *homogeneous* is `G_TYPE_BOOLEAN`
 
 The **Gnome::GObject::Value** type of property *hhomogeneous* is `G_TYPE_BOOLEAN`.
 
-#-------------------------------------------------------------------------------
-
 ### Vertically homogeneous
 
 `1` if the stack allocates the same height for all children.
 
 The **Gnome::GObject::Value** type of property *vhomogeneous* is `G_TYPE_BOOLEAN`.
-
-#-------------------------------------------------------------------------------
 
 ### Visible child
 
@@ -323,21 +315,15 @@ The widget currently visible in the stack. Widget type: GTK_TYPE_WIDGET
 
 The **Gnome::GObject::Value** type of property *visible-child* is `G_TYPE_OBJECT`.
 
-#-------------------------------------------------------------------------------
-
 ### Name of visible child
 
 The name of the widget currently visible in the stack Default value: Any
 
 The **Gnome::GObject::Value** type of property *visible-child-name* is `G_TYPE_STRING`.
 
-#-------------------------------------------------------------------------------
-
 ### Transition duration
 
 The **Gnome::GObject::Value** type of property *transition-duration* is `G_TYPE_UINT`.
-
-#-------------------------------------------------------------------------------
 
 ### Transition type
 
@@ -345,21 +331,15 @@ The type of animation used to transition. Default value: False.
 
 The **Gnome::GObject::Value** type of property *transition-type* is `G_TYPE_ENUM`.
 
-#-------------------------------------------------------------------------------
-
 ### Transition running
 
 Whether or not the transition is currently running. Default value: False.
 
 The **Gnome::GObject::Value** type of property *transition-running* is `G_TYPE_BOOLEAN`.
 
-#-------------------------------------------------------------------------------
-
 ### Interpolate size
 
 Whether or not the size should smoothly change when changing between differently sized children. Default value: False.
 
 The **Gnome::GObject::Value** type of property *interpolate-size* is `G_TYPE_BOOLEAN`.
-
-#-------------------------------------------------------------------------------
 

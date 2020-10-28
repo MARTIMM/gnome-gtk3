@@ -81,15 +81,11 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 Supported properties
 --------------------
 
-#-------------------------------------------------------------------------------
-
 ### Icon Size
 
 Use the "icon-size" property to change the size of the image displayed when a **Gnome::Gtk3::StackSwitcher** is displaying icons.
 
 The **Gnome::GObject::Value** type of property *icon-size* is `G_TYPE_INT`.
-
-#-------------------------------------------------------------------------------
 
 ### Stack
 

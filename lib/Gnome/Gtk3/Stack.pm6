@@ -575,7 +575,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:homogeneous:
 =head3 Homogeneous
 
@@ -584,7 +584,7 @@ Default value: True
 
 The B<Gnome::GObject::Value> type of property I<homogeneous> is C<G_TYPE_BOOLEAN>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:hhomogeneous:
 =head3 Horizontally homogeneous
 
@@ -592,7 +592,7 @@ C<1> if the stack allocates the same width for all children.
 
 The B<Gnome::GObject::Value> type of property I<hhomogeneous> is C<G_TYPE_BOOLEAN>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:vhomogeneous:
 =head3 Vertically homogeneous
 
@@ -600,7 +600,7 @@ C<1> if the stack allocates the same height for all children.
 
 The B<Gnome::GObject::Value> type of property I<vhomogeneous> is C<G_TYPE_BOOLEAN>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:visible-child:
 =head3 Visible child
 
@@ -608,7 +608,7 @@ The widget currently visible in the stack. Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<visible-child> is C<G_TYPE_OBJECT>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:visible-child-name:
 =head3 Name of visible child
 
@@ -616,13 +616,13 @@ The name of the widget currently visible in the stack Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<visible-child-name> is C<G_TYPE_STRING>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:transition-duration:
 =head3 Transition duration
 
 The B<Gnome::GObject::Value> type of property I<transition-duration> is C<G_TYPE_UINT>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:transition-type:
 =head3 Transition type
 
@@ -630,7 +630,7 @@ The type of animation used to transition. Default value: False.
 
 The B<Gnome::GObject::Value> type of property I<transition-type> is C<G_TYPE_ENUM>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:transition-running:
 =head3 Transition running
 
@@ -638,7 +638,7 @@ Whether or not the transition is currently running. Default value: False.
 
 The B<Gnome::GObject::Value> type of property I<transition-running> is C<G_TYPE_BOOLEAN>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:1:interpolate-size:
 =head3 Interpolate size
 
@@ -646,7 +646,7 @@ Whether or not the size should smoothly change when changing between differently
 
 The B<Gnome::GObject::Value> type of property I<interpolate-size> is C<G_TYPE_BOOLEAN>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =begin comment
 ----- Child Property Details -----
 
@@ -657,7 +657,7 @@ The name of the child page. Default value: Any.
 
 The B<Gnome::GObject::Value> type of property I<name> is C<G_TYPE_STRING>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:title:
 =head3 Title
 
@@ -665,7 +665,7 @@ The title of the child page. Default value: Any.
 
 The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:icon-name:
 =head3 Icon name
 
@@ -674,13 +674,13 @@ Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<icon-name> is C<G_TYPE_STRING>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:position:
 =head3 Position
 
 The B<Gnome::GObject::Value> type of property I<position> is C<G_TYPE_INT>.
 
-#-------------------------------------------------------------------------------
+=comment -----------------------------------------------------------------------
 =comment #TP:0:needs-attention:
 =head3 Needs Attention
 
