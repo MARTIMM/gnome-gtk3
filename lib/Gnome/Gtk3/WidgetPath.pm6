@@ -96,7 +96,7 @@ class N-GtkWidgetPath
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-  multi method new ( Bool :$empty! )
+  multi method new ( )
 
 
 Create an object using a native object from elsewhere.
@@ -431,7 +431,10 @@ Returns: the position where the element was inserted.
 
 Since: 3.2
 
-  method gtk_widget_path_append_with_siblings ( N-GObject $siblings, UInt $sibling_index --> Int  )
+  method gtk_widget_path_append_with_siblings (
+    N-GObject $siblings, UInt $sibling_index
+    --> Int
+  )
 
 =item N-GtkWidgetPath $siblings; a widget path describing a list of siblings. This path may not contain any siblings itself and it must not be modified afterwards.
 =item UInt $sibling_index; index into I<siblings> for where the added element is positioned.
