@@ -138,6 +138,7 @@ ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |
+SpinButton                |  |  |  |  |  |  |  |  |  |  |  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
 Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
 StackSidebar              |  |  | 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
@@ -270,7 +271,6 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-SpinButton|
 TargetList                |b|
 TextChildAnchor|
 TextMark|

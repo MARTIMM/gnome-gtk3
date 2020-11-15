@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.32.0",
+  "version": "0.33.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -81,6 +81,7 @@
     "Gnome::Gtk3::ScrolledWindow": "lib/Gnome/Gtk3/ScrolledWindow.pm6",
     "Gnome::Gtk3::SearchEntry": "lib/Gnome/Gtk3/SearchEntry.pm6",
     "Gnome::Gtk3::Separator": "lib/Gnome/Gtk3/Separator.pm6",
+    "Gnome::Gtk3::SpinButton": "lib/Gnome/Gtk3/SpinButton.pm6",
     "Gnome::Gtk3::Spinner": "lib/Gnome/Gtk3/Spinner.pm6",
     "Gnome::Gtk3::Stack": "lib/Gnome/Gtk3/Stack.pm6",
     "Gnome::Gtk3::StackSidebar": "lib/Gnome/Gtk3/StackSidebar.pm6",
