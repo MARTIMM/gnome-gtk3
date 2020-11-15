@@ -16,6 +16,7 @@ zef uninstall Gnome::Glib
 zef uninstall Gnome::N
 
 echo '' >> xt/data/Gnome-Install-Times.txt
+echo '' >> xt/data/Gnome-Install-Times.txt
 date >> xt/data/Gnome-Install-Times.txt
 raku -v >> xt/data/Gnome-Install-Times.txt
 
@@ -24,13 +25,13 @@ raku -v >> xt/data/Gnome-Install-Times.txt
 export LC_ALL=fr_FR.UTF-8
 
 echo '' >> xt/data/Gnome-Install-Times.txt
-echo 'install Gnome::N Gnome::Glib Gnome::GObject' >> xt/data/Gnome-Install-Times.txt
+echo 'Install Gnome::N Gnome::Glib Gnome::GObject' >> xt/data/Gnome-Install-Times.txt
 /usr/bin/time -a -o xt/data/Gnome-Install-Times.txt zef --update install Gnome::N Gnome::Glib Gnome::GObject
 
 echo '' >> xt/data/Gnome-Install-Times.txt
-echo 'install Gnome::Cairo Gnome::Gio Gnome::Gdk3' >> xt/data/Gnome-Install-Times.txt
+echo 'Install Gnome::Cairo Gnome::Gio Gnome::Gdk3' >> xt/data/Gnome-Install-Times.txt
 /usr/bin/time -a -o xt/data/Gnome-Install-Times.txt zef --update install Gnome::Cairo Gnome::Gio Gnome::Gdk3
 
 echo '' >> xt/data/Gnome-Install-Times.txt
-echo 'install Gnome::Gtk3' >> xt/data/Gnome-Install-Times.txt
+echo 'Install Gnome::Gtk3' >> xt/data/Gnome-Install-Times.txt
 /usr/bin/time -a -o xt/data/Gnome-Install-Times.txt zef --update install Gnome::Gtk3

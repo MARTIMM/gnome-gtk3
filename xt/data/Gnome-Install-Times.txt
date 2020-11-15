@@ -1,11 +1,16 @@
+Fri Oct 30 19:56:51 CET 2020
+Welcome to Rakudo(tm) v2020.10-13-g39c515957.
+Implementing the Raku(tm) programming language v6.d.
+Built on MoarVM version 2020.10.
 
-Mon Oct 19 16:24:10 CEST 2020
-This is Rakudo version 2020.09-70-g2d461268f built on MoarVM version 2020.09-12-g8c41f6692
-implementing Raku 6.d.
-101.56user 3.44system 0:55.37elapsed 189%CPU (0avgtext+0avgdata 635900maxresident)k
-472inputs+75112outputs (0major+1860322minor)pagefaults 0swaps
-237.61user 7.06system 2:40.31elapsed 152%CPU (0avgtext+0avgdata 770600maxresident)k
-0inputs+325312outputs (0major+4005479minor)pagefaults 0swaps
-Command exited with non-zero status 1
-367.80user 17.00system 4:17.23elapsed 149%CPU (0avgtext+0avgdata 578600maxresident)k
-0inputs+378528outputs (0major+10487823minor)pagefaults 0swaps
+Install Gnome::N Gnome::Glib Gnome::GObject
+143.35user 4.40system 1:28.44elapsed 167%CPU (0avgtext+0avgdata 631632maxresident)k
+24816inputs+132792outputs (0major+2858879minor)pagefaults 0swaps
+
+Install Gnome::Cairo Gnome::Gio Gnome::Gdk3
+246.52user 6.41system 2:44.48elapsed 153%CPU (0avgtext+0avgdata 754688maxresident)k
+3064inputs+324600outputs (1major+4020132minor)pagefaults 0swaps
+
+Install Gnome::Gtk3
+638.45user 25.79system 7:38.00elapsed 145%CPU (0avgtext+0avgdata 718508maxresident)k
+6720inputs+864312outputs (2major+16236698minor)pagefaults 0swaps
