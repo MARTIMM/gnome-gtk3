@@ -86,10 +86,23 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head2 new( :value, :lower, :upper, :step_increment, :page_increment, :page_size)
+
 Create a new Adjustment object.
 
-  multi method new ( )
+  multi method new (
+    num64 $value!, num64 $lower!, num64 $upper!, num64 $step_increment!,
+    num64 $page_increment!, num64 $page_size!
+  )
 
+=item Num $value; the initial value.
+=item Num $lower; the minimum value.
+=item Num $upper; the maximum value
+=item Num $step_increment; the step increment
+=item Num $page_increment; the page increment
+=item Num $page_size; the page size
+
+=begin comment
 Create a Adjustment object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
@@ -97,11 +110,12 @@ Create a Adjustment object using a native object from elsewhere. See also B<Gnom
 Create a Adjustment object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+=end comment
 
 =end pod
 
 #TM:0:new():inheriting
-#TM:0:new():
+#TM:0:new(:value,:lower,:upper,:$step_increment,:page_increment,:page_size
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 
@@ -135,9 +149,9 @@ submethod BUILD ( *%options ) {
       %options<page_increment>:exists and %options<page_size>:exists {
 
       self.set-native-object(_gtk_adjustment_new(
-          %options<value>, %options<lower>, %options<upper>,
-          %options<step_increment>, %options<page_increment>,
-          %options<page_size>
+          %options<value>.Num, %options<lower>.Num, %options<upper>.Num,
+          %options<step_increment>.Num, %options<page_increment>.Num,
+          %options<page_size>.Num
         )
       );
     }
