@@ -31,7 +31,7 @@ Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
 Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
-Gnome::Gtk3::Widget ..|> Gnome::Gtk3::Buildable
+Gnome::Gtk3::Buildable <|. Gnome::Gtk3::Widget
 
 Gnome::Gtk3::Widget <|- Gnome::Gtk3::Entry
 Gnome::Gtk3::Entry ..|> Gnome::Gtk3::CellEditable
