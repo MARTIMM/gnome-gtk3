@@ -1,3 +1,4 @@
+GtkIconViewDropPosition
 GtkBuilderError
 GtkAssistantPageType
 GtkAlign
@@ -112,6 +113,8 @@ GtkTreeModelFlags
 GtkTextWindowType
 GtkTextViewLayer
 GtkTextExtendSelection
+GtkIconLookupFlags
+GtkIconThemeError
 GtkEntryIconPosition
 GtkTreeViewColumnSizing
 GtkStyleProviderPriority
@@ -132,13 +135,10 @@ GtkImageType
 GtkFileChooserAction
 GtkFileChooserConfirmation
 GtkFileChooserError
+GtkSpinButtonUpdatePolicy
+GtkSpinType
 GtkButtonsType
 GtkStyleContextPrintFlags
-GtkIconViewDropPosition
-GtkIconLookupFlags
-GtkIconThemeError
-GtkWindowType
-GtkWindowPosition
 GdkWindowWindowClass
 GdkWindowType
 GdkWindowAttributesType
