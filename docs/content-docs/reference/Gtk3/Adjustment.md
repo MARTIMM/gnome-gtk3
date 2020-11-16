@@ -19,10 +19,10 @@ Declaration
     unit class Gnome::Gtk3::Adjustment;
     also is Gnome::GObject::InitiallyUnowned;
 
-class N-GtkAdjustment
----------------------
+Uml Diagram
+-----------
 
-The **Gnome::Gtk3::Adjustment**-struct contains only private fields and should not be directly accessed.
+![](plantuml/SpinButton.svg)
 
 Methods
 =======
@@ -112,16 +112,12 @@ Alternatively, using a single `g_object_set()` for all the properties to change,
 
 Retrieves the maximum value of the adjustment.
 
-Returns: The current maximum value of the adjustment
-
     method gtk_adjustment_get_upper ( --> Num )
 
 [gtk_adjustment_] set_upper
 ---------------------------
 
-Sets the maximum value of the adjustment.
-
-Note that values will be restricted by `upper - page-size` if the page-size property is nonzero.
+Sets the maximum value of the adjustment. Note that values will be restricted by `upper - page-size` if the page-size property is nonzero.
 
 See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the *changed* signal when setting multiple adjustment properties.
 
@@ -133,8 +129,6 @@ See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the
 ------------------------------------
 
 Retrieves the step increment of the adjustment.
-
-Returns: The current step increment of the adjustment.
 
     method gtk_adjustment_get_step_increment ( --> Num )
 
@@ -154,16 +148,12 @@ See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the
 
 Retrieves the page increment of the adjustment.
 
-Returns: The current page increment of the adjustment
-
     method gtk_adjustment_get_page_increment ( --> Num )
 
 [gtk_adjustment_] set_page_increment
 ------------------------------------
 
-Sets the page increment of the adjustment.
-
-See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the *changed* signal when setting multiple adjustment properties.
+Sets the page increment of the adjustment. See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the *changed* signal when setting multiple adjustment properties.
 
     method gtk_adjustment_set_page_increment ( Num $page_increment )
 
@@ -174,16 +164,12 @@ See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the
 
 Retrieves the page size of the adjustment.
 
-Returns: The current page size of the adjustment
-
     method gtk_adjustment_get_page_size ( --> Num )
 
 [gtk_adjustment_] set_page_size
 -------------------------------
 
-Sets the page size of the adjustment.
-
-See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the **Gnome::Gtk3::Adjustment**::changed signal when setting multiple adjustment properties.
+Sets the page size of the adjustment. See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the **Gnome::Gtk3::Adjustment**::changed signal when setting multiple adjustment properties.
 
     method gtk_adjustment_set_page_size ( Num $page_size )
 
@@ -192,9 +178,7 @@ See `gtk_adjustment_set_lower()` about how to compress multiple emissions of the
 gtk_adjustment_configure
 ------------------------
 
-Sets all properties of the adjustment at once.
-
-Use this function to avoid multiple emissions of the *changed* signal. See `gtk_adjustment_set_lower()` for an alternative way of compressing multiple emissions of *changed* into one.
+Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the *changed* signal. See `gtk_adjustment_set_lower()` for an alternative way of compressing multiple emissions of *changed* into one.
 
     method gtk_adjustment_configure ( Num $value, Num $lower, Num $upper, Num $step_increment, Num $page_increment, Num $page_size )
 
@@ -214,8 +198,6 @@ Use this function to avoid multiple emissions of the *changed* signal. See `gtk_
 ---------------------------------------
 
 Gets the smaller of step increment and page increment.
-
-Returns: the minimum increment of *adjustment*
 
     method gtk_adjustment_get_minimum_increment ( --> Num )
 

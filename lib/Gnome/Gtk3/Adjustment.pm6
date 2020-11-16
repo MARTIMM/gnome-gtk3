@@ -16,11 +16,18 @@ The B<Gnome::Gtk3::Adjustment> object represents a value which has an associated
 
 The B<Gnome::Gtk3::Adjustment> object does not update the value itself. Instead it is left up to the owner of the B<Gnome::Gtk3::Adjustment> to control the value.
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Adjustment;
   also is Gnome::GObject::InitiallyUnowned;
+
+
+=head2 Uml Diagram
+
+![](plantuml/SpinButton.svg)
+
 
 =begin comment
 =head2 Inheriting this class
@@ -56,27 +63,6 @@ use Gnome::GObject::InitiallyUnowned;
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Adjustment:auth<github:MARTIMM>;
 also is Gnome::GObject::InitiallyUnowned;
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 class N-GtkAdjustment
-
-The B<Gnome::Gtk3::Adjustment>-struct contains only private fields and
-should not be directly accessed.
-
-=end pod
-
-#TT:1:N-GtkAdjustment:
-#`{{
-class N-GtkAdjustment is export is repr('CStruct') {
-  has GInitiallyUnowned $.parent_instance;
-  has GtkAdjustmentPrivate $.priv;
-}
-}}
-class N-GtkAdjustment
-  is repr('CPointer')
-  is export
-  { }
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -115,7 +101,7 @@ Create a Adjustment object using a native object returned from a builder. See al
 =end pod
 
 #TM:0:new():inheriting
-#TM:0:new(:value,:lower,:upper,:step-increment,:page-increment,:page-size
+#TM:1:new(:value,:lower,:upper,:step-increment,:page-increment,:page-size
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 
@@ -338,18 +324,9 @@ sub gtk_adjustment_get_lower ( N-GObject $adjustment --> num64 )
 
 Sets the minimum value of the adjustment.
 
-When setting multiple adjustment properties via their individual
-setters, multiple  I<changed> signals will be emitted.
-However, since the emission of the  I<changed> signal
-is tied to the emission of the  I<notify> signals of the changed
-properties, it’s possible to compress the  I<changed>
-signals into one by calling C<g_object_freeze_notify()> and
-C<g_object_thaw_notify()> around the calls to the individual setters.
+When setting multiple adjustment properties via their individual setters, multiple  I<changed> signals will be emitted. However, since the emission of the  I<changed> signal is tied to the emission of the  I<notify> signals of the changed properties, it’s possible to compress the  I<changed> signals into one by calling C<g_object_freeze_notify()> and C<g_object_thaw_notify()> around the calls to the individual setters.
 
-Alternatively, using a single C<g_object_set()> for all the properties
-to change, or using C<gtk_adjustment_configure()> has the same effect
-of compressing  I<changed> emissions.
-
+Alternatively, using a single C<g_object_set()> for all the properties to change, or using C<gtk_adjustment_configure()> has the same effect of compressing  I<changed> emissions.
 
   method gtk_adjustment_set_lower ( Num $lower )
 
@@ -368,10 +345,7 @@ sub gtk_adjustment_set_lower ( N-GObject $adjustment, num64 $lower  )
 
 Retrieves the maximum value of the adjustment.
 
-Returns: The current maximum value of the adjustment
-
   method gtk_adjustment_get_upper ( --> Num )
-
 
 =end pod
 
@@ -384,14 +358,9 @@ sub gtk_adjustment_get_upper ( N-GObject $adjustment --> num64 )
 =begin pod
 =head2 [gtk_adjustment_] set_upper
 
-Sets the maximum value of the adjustment.
+Sets the maximum value of the adjustment. Note that values will be restricted by `upper - page-size` if the page-size property is nonzero.
 
-Note that values will be restricted by `upper - page-size`
-if the page-size property is nonzero.
-
-See C<gtk_adjustment_set_lower()> about how to compress multiple
-emissions of the  I<changed> signal when setting
-multiple adjustment properties.
+See C<gtk_adjustment_set_lower()> about how to compress multiple emissions of the  I<changed> signal when setting multiple adjustment properties.
 
   method gtk_adjustment_set_upper ( Num $upper )
 
@@ -404,16 +373,13 @@ sub gtk_adjustment_set_upper ( N-GObject $adjustment, num64 $upper  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_get_step_increment:
+#TM:1:gtk_adjustment_get_step_increment:
 =begin pod
 =head2 [gtk_adjustment_] get_step_increment
 
 Retrieves the step increment of the adjustment.
 
-Returns: The current step increment of the adjustment.
-
   method gtk_adjustment_get_step_increment ( --> Num )
-
 
 =end pod
 
@@ -422,15 +388,13 @@ sub gtk_adjustment_get_step_increment ( N-GObject $adjustment --> num64 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_set_step_increment:
+#TM:1:gtk_adjustment_set_step_increment:
 =begin pod
 =head2 [gtk_adjustment_] set_step_increment
 
 Sets the step increment of the adjustment.
 
-See C<gtk_adjustment_set_lower()> about how to compress multiple
-emissions of the  I<changed> signal when setting
-multiple adjustment properties.
+See C<gtk_adjustment_set_lower()> about how to compress multiple emissions of the  I<changed> signal when setting multiple adjustment properties.
 
   method gtk_adjustment_set_step_increment ( Num $step_increment )
 
@@ -443,16 +407,13 @@ sub gtk_adjustment_set_step_increment ( N-GObject $adjustment, num64 $step_incre
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_get_page_increment:
+#TM:1:gtk_adjustment_get_page_increment:
 =begin pod
 =head2 [gtk_adjustment_] get_page_increment
 
 Retrieves the page increment of the adjustment.
 
-Returns: The current page increment of the adjustment
-
   method gtk_adjustment_get_page_increment ( --> Num )
-
 
 =end pod
 
@@ -461,15 +422,11 @@ sub gtk_adjustment_get_page_increment ( N-GObject $adjustment --> num64 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_set_page_increment:
+#TM:1:gtk_adjustment_set_page_increment:
 =begin pod
 =head2 [gtk_adjustment_] set_page_increment
 
-Sets the page increment of the adjustment.
-
-See C<gtk_adjustment_set_lower()> about how to compress multiple
-emissions of the  I<changed> signal when setting
-multiple adjustment properties.
+Sets the page increment of the adjustment. See C<gtk_adjustment_set_lower()> about how to compress multiple emissions of the  I<changed> signal when setting multiple adjustment properties.
 
   method gtk_adjustment_set_page_increment ( Num $page_increment )
 
@@ -482,16 +439,13 @@ sub gtk_adjustment_set_page_increment ( N-GObject $adjustment, num64 $page_incre
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_get_page_size:
+#TM:1:gtk_adjustment_get_page_size:
 =begin pod
 =head2 [gtk_adjustment_] get_page_size
 
 Retrieves the page size of the adjustment.
 
-Returns: The current page size of the adjustment
-
   method gtk_adjustment_get_page_size ( --> Num )
-
 
 =end pod
 
@@ -500,15 +454,11 @@ sub gtk_adjustment_get_page_size ( N-GObject $adjustment --> num64 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_set_page_size:
+#TM:1:gtk_adjustment_set_page_size:
 =begin pod
 =head2 [gtk_adjustment_] set_page_size
 
-Sets the page size of the adjustment.
-
-See C<gtk_adjustment_set_lower()> about how to compress multiple
-emissions of the B<Gnome::Gtk3::Adjustment>::changed signal when setting
-multiple adjustment properties.
+Sets the page size of the adjustment. See C<gtk_adjustment_set_lower()> about how to compress multiple emissions of the B<Gnome::Gtk3::Adjustment>::changed signal when setting multiple adjustment properties.
 
   method gtk_adjustment_set_page_size ( Num $page_size )
 
@@ -521,16 +471,11 @@ sub gtk_adjustment_set_page_size ( N-GObject $adjustment, num64 $page_size  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_configure:
+#TM:1:gtk_adjustment_configure:
 =begin pod
 =head2 gtk_adjustment_configure
 
-Sets all properties of the adjustment at once.
-
-Use this function to avoid multiple emissions of the
- I<changed> signal. See C<gtk_adjustment_set_lower()>
-for an alternative way of compressing multiple emissions of
- I<changed> into one.
+Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the  I<changed> signal. See C<gtk_adjustment_set_lower()> for an alternative way of compressing multiple emissions of  I<changed> into one.
 
   method gtk_adjustment_configure ( Num $value, Num $lower, Num $upper, Num $step_increment, Num $page_increment, Num $page_size )
 
@@ -548,16 +493,13 @@ sub gtk_adjustment_configure ( N-GObject $adjustment, num64 $value, num64 $lower
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_adjustment_get_minimum_increment:
+#TM:1:gtk_adjustment_get_minimum_increment:
 =begin pod
 =head2 [gtk_adjustment_] get_minimum_increment
 
 Gets the smaller of step increment and page increment.
 
-Returns: the minimum increment of I<adjustment>
-
   method gtk_adjustment_get_minimum_increment ( --> Num )
-
 
 =end pod
 
@@ -643,34 +585,31 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=comment #TP:0:value:
+=comment #TP:1:value:
 =head3 Value
-
 
 The value of the adjustment.
 
 The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:lower:
-=head3 Minimum Value
 
+=comment #TP:1:lower:
+=head3 Minimum Value
 
 The minimum value of the adjustment.
 
 The B<Gnome::GObject::Value> type of property I<lower> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:upper:
+
+=comment #TP:1:upper:
 =head3 Maximum Value
 
-
-The maximum value of the adjustment.
-Note that values will be restricted by
-`upper - page-size` if the page-size
-property is nonzero.
+The maximum value of the adjustment. Note that values will be restricted by `upper - page-size` if the page-size property is nonzero.
 
 The B<Gnome::GObject::Value> type of property I<upper> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:step-increment:
+
+=comment #TP:1:step-increment:
 =head3 Step Increment
 
 
@@ -678,22 +617,19 @@ The step increment of the adjustment.
 
 The B<Gnome::GObject::Value> type of property I<step-increment> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:page-increment:
-=head3 Page Increment
 
+=comment #TP:1:page-increment:
+=head3 Page Increment
 
 The page increment of the adjustment.
 
 The B<Gnome::GObject::Value> type of property I<page-increment> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:page-size:
+
+=comment #TP:1:page-size:
 =head3 Page Size
 
-
-The page size of the adjustment.
-Note that the page-size is irrelevant and should be set to zero
-if the adjustment is used for a simple scalar value, e.g. in a
-B<Gnome::Gtk3::SpinButton>.
+The page size of the adjustment. Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a B<Gnome::Gtk3::SpinButton>.
 
 The B<Gnome::GObject::Value> type of property I<page-size> is C<G_TYPE_DOUBLE>.
 =end pod
