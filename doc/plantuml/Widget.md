@@ -19,7 +19,6 @@ class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 'class Gnome::GObject::InitialyUnowned
 'class Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
-'Gnome::GObject::Object *-> Gnome::GObject::Signal
 Gnome::GObject::Signal <|.. Gnome::GObject::Object
 
 Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
