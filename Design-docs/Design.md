@@ -654,15 +654,16 @@ A widget, e.g. Button is created using the BUILD Api of perl like so
 my Gnome::Gtk3::Button $b .= new(:label('start'));
 ```
 Under the hood it calls `gtk_button_new_with_label('start')`. These subs cannot be called directly if one wants to do that, because the subs are searched for and to do that the class must be instantiated.
+
 ```
 my Gnome::Gtk3::Button $b .= new;
 $b .= new(:widget($b.new-with-label('start'));
 ```
 This is messy. so to do it directly, these subs should be exported and then can be used like; (note that a full name must be used now!)
 ```
-my Gnome::Gtk3::Button $b .= new(:widget(gtk_button_new_with_label('start')));
+my Gnome::Gtk3::Button $b .= new(:native-object(gtk_button_new_with_label('start')));
 ```
-This is just an example to show it, better is to use `new(:$label)` of course.
+This is just an example how it could be done, however, implementations will provide the proper `.new()` with the proper options.
 
 
 # Variable argument lists
@@ -688,6 +689,7 @@ sub pera-int-f(Str $format, *@args) {
 
 pera-int-f("Pera + Mela = %d + %d %s\n", 25, 12, "cippas");
 ```
+
 
 # Memory
 Notes from https://developer.gnome.org/gtk3/stable/gtk-question-index.html
