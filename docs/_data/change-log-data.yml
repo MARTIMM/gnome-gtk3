@@ -1,5 +1,6 @@
 - 2020-11-15 0.33.0:
   - Add module **Gnome::Gtk3::SpinButton**.
+  - Some bugs removed from **Gnome::Gtk3::Adjustment**. Also completed testing and documenting.
 
 - 2020-10-24 0.32.0:
   - Add module **Gnome::Gtk3::FileChooserButton**.
