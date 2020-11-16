@@ -200,14 +200,7 @@ submethod BUILD ( *%options ) {
     else {
       my $no;
 
-      if ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_about_dialog_new();
-      }
-
-      else {  # if ? %options<empty> {
-        $no = _gtk_about_dialog_new();
-      }
+      $no = _gtk_about_dialog_new();
 
       self.set-native-object($no);
     }

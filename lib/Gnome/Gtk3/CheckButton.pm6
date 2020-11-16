@@ -138,12 +138,7 @@ submethod BUILD ( *%options ) {
         }
       }
 
-      elsif ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_check_button_new();
-      }
-
-      else { #elsif ? %options<empty> {
+      else {
         $no = _gtk_check_button_new();
       }
 

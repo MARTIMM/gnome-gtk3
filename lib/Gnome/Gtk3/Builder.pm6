@@ -247,14 +247,8 @@ submethod BUILD ( *%options ) {
 
   else {
     my $no;
-    if ? %options<filename> {
-      Gnome::N::deprecate(
-        '.new(:filename)', '.new(:file)', '0.27.3', '0.35.0'
-      );
-      $no = _gtk_builder_new_from_file(%options<filename>);
-    }
 
-    elsif ? %options<file> {
+    if ? %options<file> {
       $no = _gtk_builder_new_from_file(%options<file>);
     }
 
@@ -264,11 +258,6 @@ submethod BUILD ( *%options ) {
 
     elsif ? %options<resource> {
       $no = _gtk_builder_new_from_resource(%options<resource>);
-    }
-
-    elsif ? %options<empty> {
-      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-      $no = _gtk_builder_new();
     }
 
     # check if there are unknown options

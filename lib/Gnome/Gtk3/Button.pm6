@@ -151,11 +151,6 @@ submethod BUILD ( *%options ) {
         $no = _gtk_button_new_with_mnemonic(%options<mnemonic>);
       }
 
-      elsif ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_button_new();
-      }
-
       else {
         $no = _gtk_button_new();
       }

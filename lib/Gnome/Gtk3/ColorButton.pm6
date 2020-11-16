@@ -113,12 +113,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::ColorButton';
 
   # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_color_button_new());
-  }
-
-  elsif ? %options<color> {
+  if ? %options<color> {
     self.set-native-object(gtk_color_button_new_with_rgba(%options<color>));
   }
 

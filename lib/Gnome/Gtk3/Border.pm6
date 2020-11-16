@@ -92,19 +92,6 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Border';
   if self.is-valid { }
 
-  # process all named arguments
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(_gtk_border_new());
-#    $!border-is-valid = True;
-  }
-
-  elsif ? %options<border> {
-#    $!border-is-valid = True if %options<border> ~~ N-GtkBorder;
-    Gnome::N::deprecate( '.new(:border)', '.new(:native-object)', '0.21.3', '0.30.0');
-    self.set-native-object(%options<border>);
-  }
-
   elsif %options<left> or %options<right> or %options<top> or %options<bottom> {
     my N-GtkBorder $b = _gtk_border_new();
     $b.left = %options<left>;
@@ -112,7 +99,6 @@ submethod BUILD ( *%options ) {
     $b.top = %options<top>;
     $b.bottom = %options<bottom>;
     self.set-native-object($b);
-#    $!border-is-valid = True;
   }
 
   elsif %options.keys.elems {
@@ -125,7 +111,6 @@ submethod BUILD ( *%options ) {
 
   else {#if ? %options<empty> {
     self.set-native-object(_gtk_border_new());
-#    $!border-is-valid = True;
   }
 
   # only after creating the native-object, the gtype is known
@@ -216,48 +201,6 @@ method bottom ( Int $value? --> Int ) {
       unless self.is-valid;
   self.get-native-object.bottom = $value if $value.defined;
   self.get-native-object.bottom
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-# TM:1:clear-border:
-=begin pod
-=head2 clear-border
-
-Frees a C<N-GtkBorder> struct and after that, border-is-valid() returns False.
-
-  method clear-border ( )
-
-=end pod
-}}
-method clear-border ( ) {
-#  _gtk_border_free(self.get-native-object);
-#  $!border-is-valid = False;
-
-  self.clear-object();
-
-  Gnome::N::deprecate(
-    '.clear-border()', '.clear-object()', '0.27.10', '0.30.0'
-  );
-}
-
-#-------------------------------------------------------------------------------
-#TM:1:border-is-valid:
-=begin pod
-=head2 border-is-valid
-
-Return the validity of th native structure. After a call to clear-border() this flag is set to False and the object should not be used anymore.
-
-  method border-is-valid ( --> Bool )
-
-=end pod
-# method is implicitly define above
-method border-is-valid ( --> Bool ) {
-  Gnome::N::deprecate(
-    '.border-is-valid()', '.is-valid()', '0.27.10', '0.30.0'
-  );
-
-  self.is-valid
 }
 
 #-------------------------------------------------------------------------------

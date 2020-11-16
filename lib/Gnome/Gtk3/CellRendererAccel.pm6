@@ -40,7 +40,6 @@ use Gnome::Gtk3::CellRendererText;
 unit class Gnome::Gtk3::CellRendererAccel:auth<github:MARTIMM>;
 also is Gnome::Gtk3::CellRendererText;
 
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Types
@@ -105,12 +104,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::CellRendererAccel';
 
   # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_cell_renderer_accel_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in Gnome::GObject::Object
   }
 
