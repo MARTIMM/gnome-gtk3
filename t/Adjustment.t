@@ -30,7 +30,7 @@ my Gnome::Gtk3::Adjustment $a;
 subtest 'ISA test', {
   $a .= new(
     :value(1e1), :lower(0e0), :upper(1e2),
-    :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
+    :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
   isa-ok $a, Gnome::Gtk3::Adjustment, '.new(... options ...)';
 }
@@ -61,7 +61,7 @@ subtest 'Properties ...', {
   $a.clear-object;
   $a .= new(
     :value(1e1), :lower(11e0), :upper(1e2),
-    :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
+    :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
 
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_DOUBLE));

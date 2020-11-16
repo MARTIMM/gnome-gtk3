@@ -86,13 +86,13 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head2 new( :value, :lower, :upper, :step_increment, :page_increment, :page_size)
+=head2 new( :value, :lower, :upper, :step-increment, :page-increment, :page-size)
 
 Create a new Adjustment object.
 
   multi method new (
-    num64 $value!, num64 $lower!, num64 $upper!, num64 $step_increment!,
-    num64 $page_increment!, num64 $page_size!
+    num64 $value!, num64 $lower!, num64 $upper!, num64 $step-increment!,
+    num64 $page-increment!, num64 $page-size!
   )
 
 =item Num $value; the initial value.
@@ -115,7 +115,7 @@ Create a Adjustment object using a native object returned from a builder. See al
 =end pod
 
 #TM:0:new():inheriting
-#TM:0:new(:value,:lower,:upper,:$step_increment,:page_increment,:page_size
+#TM:0:new(:value,:lower,:upper,:step-increment,:page-increment,:page-size
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 
@@ -145,8 +145,29 @@ submethod BUILD ( *%options ) {
     elsif %options<build-id>:exists { }
 
     elsif %options<value>:exists and %options<lower>:exists and
+      %options<upper>:exists and %options<step-increment>:exists and
+      %options<page-increment>:exists and %options<page-size>:exists {
+
+      self.set-native-object(_gtk_adjustment_new(
+          %options<value>.Num, %options<lower>.Num, %options<upper>.Num,
+          %options<step-increment>.Num, %options<page-increment>.Num,
+          %options<page-size>.Num
+        )
+      );
+    }
+
+    elsif %options<value>:exists and %options<lower>:exists and
       %options<upper>:exists and %options<step_increment>:exists and
       %options<page_increment>:exists and %options<page_size>:exists {
+
+      Gnome::N::deprecate(
+        '.new(:page_increment)', '.new(:page-increment)', '0.33.0', '0.38.0'
+      );
+      Gnome::N::deprecate(
+        '.new(:page_size)', '.new(:page-size)', '0.33.0', '0.38.0');
+      Gnome::N::deprecate(
+        '.new(:step_increment)', '.new(:step-increment)', '0.33.0', '0.38.0'
+      );
 
       self.set-native-object(_gtk_adjustment_new(
           %options<value>.Num, %options<lower>.Num, %options<upper>.Num,

@@ -30,17 +30,27 @@ Methods
 new
 ---
 
+new( :value, :lower, :upper, :step-increment, :page-increment, :page-size)
+--------------------------------------------------------------------------
+
 Create a new Adjustment object.
 
-    multi method new ( )
+    multi method new (
+      num64 $value!, num64 $lower!, num64 $upper!, num64 $step-increment!,
+      num64 $page-increment!, num64 $page-size!
+    )
 
-Create a Adjustment object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+  * Num $value; the initial value.
 
-    multi method new ( N-GObject :$native-object! )
+  * Num $lower; the minimum value.
 
-Create a Adjustment object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+  * Num $upper; the maximum value
 
-    multi method new ( Str :$build-id! )
+  * Num $step_increment; the step increment
+
+  * Num $page_increment; the page increment
+
+  * Num $page_size; the page size
 
 [gtk_adjustment_] clamp_page
 ----------------------------
