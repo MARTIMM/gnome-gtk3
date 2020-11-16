@@ -48,6 +48,7 @@ B<Gnome::Gtk3::Entry>
 
   unit class Gnome::Gtk3::SpinButton;
   also is Gnome::Gtk3::Entry;
+  also does Gnome::Gtk3::Orientable;
 
 
 =head2 Uml Diagram
@@ -152,6 +153,7 @@ use Gnome::Gtk3::Orientable;
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::SpinButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Entry;
+also does Gnome::Gtk3::Orientable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -168,7 +170,7 @@ The spin button update policy determines whether the spin button displays values
 
 =end pod
 
-#TE:0:GtkSpinButtonUpdatePolicy:
+#TE:1:GtkSpinButtonUpdatePolicy:
 enum GtkSpinButtonUpdatePolicy is export (
   'GTK_UPDATE_ALWAYS',
   'GTK_UPDATE_IF_VALID'
@@ -190,7 +192,7 @@ The values of the B<Gnome::Gtk3::SpinType> enumeration are used to specify the c
 
 =end pod
 
-#TE:0:GtkSpinType:
+#TE:1:GtkSpinType:
 enum GtkSpinType is export (
   'GTK_SPIN_STEP_FORWARD',
   'GTK_SPIN_STEP_BACKWARD',
@@ -200,22 +202,6 @@ enum GtkSpinType is export (
   'GTK_SPIN_END',
   'GTK_SPIN_USER_DEFINED'
 );
-
-#`{{
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 class N-GtkSpinButton
-
-The B<Gnome::Gtk3::SpinButton>-struct contains only private data and should not be directly modified.
-
-=end pod
-
-#TT:0:N-GtkSpinButton:
-class N-GtkSpinButton is export is repr('CStruct') {
-  has N-GObject $.entry;
-  has GtkSpinButtonPrivate $.priv;
-}
-}}
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -992,19 +978,19 @@ Widget type: GTK_TYPE_ADJUSTMENT
 The B<Gnome::GObject::Value> type of property I<adjustment> is C<G_TYPE_OBJECT>.
 
 
-=comment #TP:0:climb-rate:
+=comment #TP:1:climb-rate:
 =head3 Climb Rate
 
 The B<Gnome::GObject::Value> type of property I<climb-rate> is C<G_TYPE_DOUBLE>.
 
 
-=comment #TP:0:digits:
+=comment #TP:1:digits:
 =head3 Digits
 
 The B<Gnome::GObject::Value> type of property I<digits> is C<G_TYPE_UINT>.
 
 
-=comment #TP:0:snap-to-ticks:
+=comment #TP:1:snap-to-ticks:
 =head3 Snap to Ticks
 
 Whether erroneous values are automatically changed to a spin button's nearest step increment
@@ -1013,7 +999,7 @@ Default value: False
 The B<Gnome::GObject::Value> type of property I<snap-to-ticks> is C<G_TYPE_BOOLEAN>.
 
 
-=comment #TP:0:numeric:
+=comment #TP:1:numeric:
 =head3 Numeric
 
 Whether non-numeric characters should be ignored
@@ -1022,7 +1008,7 @@ Default value: False
 The B<Gnome::GObject::Value> type of property I<numeric> is C<G_TYPE_BOOLEAN>.
 
 
-=comment #TP:0:wrap:
+=comment #TP:1:wrap:
 =head3 Wrap
 
 Whether a spin button should wrap upon reaching its limits
@@ -1031,7 +1017,7 @@ Default value: False
 The B<Gnome::GObject::Value> type of property I<wrap> is C<G_TYPE_BOOLEAN>.
 
 
-=comment #TP:0:update-policy:
+=comment #TP:1:update-policy:
 =head3 Update Policy
 
 Whether the spin button should update always, or only when the value is legal
@@ -1040,7 +1026,7 @@ Default value: False
 The B<Gnome::GObject::Value> type of property I<update-policy> is C<G_TYPE_ENUM>.
 
 
-=comment #TP:0:value:
+=comment #TP:1:value:
 =head3 Value
 
 The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_DOUBLE>.

@@ -1,4 +1,6 @@
 use v6;
+#use lib '../gnome-gobject/lib';
+
 use NativeCall;
 use Test;
 
@@ -95,46 +97,41 @@ subtest 'Inherit Gnome::Gtk3::SpinButton', {
   is $adj.get-lower, 5e-1, '.spin_button_configure()';
 }
 
-#`{{ mem consuming problem?
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   use Gnome::GObject::Value;
   use Gnome::GObject::Type;
 
+#`{{
   my Gnome::Gtk3::Adjustment $adj .= new(
     :value(11.1), :lower(10), :upper(40), :step-increment(0.1),
     :page-increment(0.5), :page-size(10)
   );
 
-  $sb .= new( :adjustment($adj), :climb_rate(1), :digits(3));
+  my Gnome::Gtk3::SpinButton $sb2 .= new(
+    :adjustment($adj), :climb_rate(1e0), :digits(3)
+  );
+}}
 
-  sub test-property ( $type, Str $prop, Str $routine, $value ) {
-note "tp: $type, Str $prop, Str $routine, $value";
-    my Gnome::GObject::Value $gv .= new(:init($type));
-note '1';
-    $sb.get-property( $prop, $gv);
-note '2';
+  sub test-property ( Int$type, Str $prop, Str $routine, $value ) {
+    my Gnome::GObject::Value $gv = $sb.get-property( $prop, $type);
     my $gv-value = $gv."$routine"();
-note "V: $gv-value";
     is $gv-value, $value, "property $prop";
     $gv.clear-object;
   }
 
   # example call
-  test-property( G_TYPE_BOOLEAN, 'snap-to-ticks', 'get-boolean', 1);
-#`{{
   test-property( G_TYPE_DOUBLE, 'climb-rate', 'get-double', 1e0);
+  test-property( G_TYPE_UINT, 'digits', 'get-uint', 3);
   test-property( G_TYPE_BOOLEAN, 'snap-to-ticks', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'numeric', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'update-policy', 'get-boolean', 1);
+  test-property( G_TYPE_ENUM, 'update-policy', 'get-enum', 1);
   $sb.set-value(11.3);
   test-property( G_TYPE_DOUBLE, 'value', 'get-double', 11.3e0);
-}}
 #  test-property( G_TYPE_BOOLEAN, '', '', );
 #  test-property( G_TYPE_BOOLEAN, '', '', );
 }
-}}
 
 #`{{
 #-------------------------------------------------------------------------------

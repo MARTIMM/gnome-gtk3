@@ -46,6 +46,7 @@ Declaration
 
     unit class Gnome::Gtk3::SpinButton;
     also is Gnome::Gtk3::Entry;
+    also does Gnome::Gtk3::Orientable;
 
 Uml Diagram
 -----------
