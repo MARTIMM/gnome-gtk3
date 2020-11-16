@@ -51,6 +51,8 @@ Gnome::Gtk3::Entry implements
 
   * Gnome::Gtk3::CellEditable
 
+![](plantuml/Entry.svg)
+
 See Also
 --------
 

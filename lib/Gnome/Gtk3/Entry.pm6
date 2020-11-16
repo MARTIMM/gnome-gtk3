@@ -56,6 +56,12 @@ Gnome::Gtk3::Entry implements
 =item Gnome::Gtk3::Editable
 =item Gnome::Gtk3::CellEditable
 
+
+=comment head2 Uml Diagram
+
+![](plantuml/Entry.svg)
+
+
 =head2 See Also
 
 B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
