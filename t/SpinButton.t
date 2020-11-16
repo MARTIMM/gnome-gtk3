@@ -12,26 +12,76 @@ use Gnome::Gtk3::Adjustment;
 my Gnome::Gtk3::SpinButton $sb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
+
+  $sb .= new( :step(1), :min(0), :max(10));
+  isa-ok $sb, Gnome::Gtk3::SpinButton, '.new( :step, :min, :max)';
+
   my Gnome::Gtk3::Adjustment $adj .= new(
-    :value(11.1), :lower(10), :upper(40), :step_increment(0.1),
-    :page_increment(0.5), :page_size(10));
-#  $adj.clamp-page( 10, 20);
-#  $adj.set-value(11.2);
+    :value(11.1), :lower(10), :upper(40), :step-increment(0.1),
+    :page-increment(0.5), :page-size(10)
+  );
 
   $sb .= new( :adjustment($adj), :climb_rate(1), :digits(3));
-  isa-ok $sb, Gnome::Gtk3::SpinButton, '.new()';
+  isa-ok $sb, Gnome::Gtk3::SpinButton,
+          '.new( :adjustment, :climb_rate, :digits)';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  my Gnome::Gtk3::Adjustment $adj .= new(
+    :value(11.2), :lower(10), :upper(40), :step-increment(0.1),
+    :page-increment(0.5), :page-size(10)
+  );
+
+  $sb.spin_button_configure( $adj, 1, 2);
+  my Gnome::Gtk3::Adjustment $adj2 .= new(:native-object($sb.get_adjustment));
+  is $adj.get-lower, 10e0, '.spin_button_configure()';
+
+  $sb.set_adjustment($adj);
+  $adj2 .= new(:native-object($sb.get_adjustment));
+  is $adj.get-value, 11.2e0, '.set_adjustment() / .get_adjustment()';
+
+  $sb.set-digits(3);
+  is $sb.get-digits, 3, '.set-digits() / .get-digits()';
+
+  $sb.set-increments( 1.12, 4.5);
+  my Num ( $step, $page) = $sb.get-increments;
+  is $step, 1.12e0, '.set-increments() / .get-increments(): step';
+  is $page, 4.5e0, '.set-increments() / .get-increments(): page';
+
+  $sb.set-range( 11, 101);
+  my Num ( $min, $max) = $sb.get-range;
+  is $min, 11e0, '.set-range() / .get-range(): min';
+  is $max, 101e0, '.set-range() / .get-range(): max';
+
+  $sb.set-value(11.3);
+  is $sb.get-value, 11.3e0, '.set-value() / .get-value()';
+  is $sb.get-value-as-int, 11, '.get-value-as-int()';
+
+  $sb.set-update-policy(GTK_UPDATE_IF_VALID);
+  is $sb.get-update-policy, GTK_UPDATE_IF_VALID,
+     '.set-update-policy() / .get-update-policy()';
+
+  $sb.set-numeric(True);
+  ok ?$sb.get-numeric, '.set-numeric() / .get-numeric()';
+
+  $sb.spin_button_spin( GTK_SPIN_STEP_BACKWARD, 0.01);
+  is-approx $sb.get-value, 11.29e0, '.spin_button_spin()';
+
+  $sb.set-wrap(True);
+  ok ?$sb.get-wrap, '.set-wrap() / .get-wrap()';
+
+  $sb.set-snap-to-ticks(True);
+  ok ?$sb.get-snap-to-ticks, '.set-snap-to-ticks() / .get-snap-to-ticks()';
+
+  $sb.spin_button_update;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::SpinButton', {
   class MyClass is Gnome::Gtk3::SpinButton {
     method new ( |c ) {
-      self.bless( :GtkSpinButton, |c);
+      self.bless( :GtkSpinButton, :step(1), :min(0.5), :max(10), |c);
     }
 
     submethod BUILD ( *%options ) {
@@ -41,31 +91,52 @@ subtest 'Inherit Gnome::Gtk3::SpinButton', {
 
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::SpinButton, '.new()';
+  my Gnome::Gtk3::Adjustment $adj .= new(:native-object($mgc.get_adjustment));
+  is $adj.get-lower, 5e-1, '.spin_button_configure()';
 }
 
-#-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-
+#`{{ mem consuming problem?
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   use Gnome::GObject::Value;
   use Gnome::GObject::Type;
 
-  #my Gnome::Gtk3::SpinButton $sb .= new;
+  my Gnome::Gtk3::Adjustment $adj .= new(
+    :value(11.1), :lower(10), :upper(40), :step-increment(0.1),
+    :page-increment(0.5), :page-size(10)
+  );
+
+  $sb .= new( :adjustment($adj), :climb_rate(1), :digits(3));
 
   sub test-property ( $type, Str $prop, Str $routine, $value ) {
+note "tp: $type, Str $prop, Str $routine, $value";
     my Gnome::GObject::Value $gv .= new(:init($type));
+note '1';
     $sb.get-property( $prop, $gv);
+note '2';
     my $gv-value = $gv."$routine"();
+note "V: $gv-value";
     is $gv-value, $value, "property $prop";
     $gv.clear-object;
   }
 
   # example call
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'snap-to-ticks', 'get-boolean', 1);
+#`{{
+  test-property( G_TYPE_DOUBLE, 'climb-rate', 'get-double', 1e0);
+  test-property( G_TYPE_BOOLEAN, 'snap-to-ticks', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'numeric', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'update-policy', 'get-boolean', 1);
+  $sb.set-value(11.3);
+  test-property( G_TYPE_DOUBLE, 'value', 'get-double', 11.3e0);
+}}
+#  test-property( G_TYPE_BOOLEAN, '', '', );
+#  test-property( G_TYPE_BOOLEAN, '', '', );
 }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }

@@ -38,71 +38,6 @@ The main properties of a B<Gnome::Gtk3::SpinButton> are through an adjustment. S
 
 B<Gnome::Gtk3::SpinButtons> main CSS node has the name spinbutton. It creates subnodes for the entry and the two buttons, with these names. The button nodes have the style classes .up and .down. The B<Gnome::Gtk3::Entry> subnodes (if present) are put below the entry node. The orientation of the spin button is reflected in the .vertical or .horizontal style class on the main node.
 
-=head2 Using a B<Gnome::Gtk3::SpinButton> to get an integer
-
-|[<!-- language="C" -->
-// Provides a function to retrieve an integer value from a B<Gnome::Gtk3::SpinButton>
-// and creates a spin button to model percentage values.
-
-gint
-grab_int_value (B<Gnome::Gtk3::SpinButton> *button,
-                gpointer       user_data)
-{
-  return gtk_spin_button_get_value_as_int (button);
-}
-
-void
-create_integer_spin_button (void)
-{
-
-  B<Gnome::Gtk3::Widget> *window, *button;
-  B<Gnome::Gtk3::Adjustment> *adjustment;
-
-  adjustment = gtk_adjustment_new (50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
-
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-
-  // creates the spinbutton, with no decimal places
-  button = gtk_spin_button_new (adjustment, 1.0, 0);
-  gtk_container_add (GTK_CONTAINER (window), button);
-
-  gtk_widget_show_all (window);
-}
-]|
-
-## Using a B<Gnome::Gtk3::SpinButton> to get a floating point value
-
-|[<!-- language="C" -->
-// Provides a function to retrieve a floating point value from a
-// B<Gnome::Gtk3::SpinButton>, and creates a high precision spin button.
-
-gfloat
-grab_float_value (B<Gnome::Gtk3::SpinButton> *button,
-                  gpointer       user_data)
-{
-  return gtk_spin_button_get_value (button);
-}
-
-void
-create_floating_spin_button (void)
-{
-  B<Gnome::Gtk3::Widget> *window, *button;
-  B<Gnome::Gtk3::Adjustment> *adjustment;
-
-  adjustment = gtk_adjustment_new (2.500, 0.0, 5.0, 0.001, 0.1, 0.0);
-
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-
-  // creates the spinbutton, with three decimal places
-  button = gtk_spin_button_new (adjustment, 0.001, 3);
-  gtk_container_add (GTK_CONTAINER (window), button);
-
-  gtk_widget_show_all (window);
-}
- * ]|
-
 
 =head2 See Also
 
@@ -115,9 +50,9 @@ B<Gnome::Gtk3::Entry>
   also is Gnome::Gtk3::Entry;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/.svg)
+![](plantuml/SpinButton.svg)
 
 
 =head2 Inheriting this class
@@ -138,7 +73,70 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=comment head2 Example
+
+=head2 Example
+
+=head3 Using a B<Gnome::Gtk3::SpinButton> to get an integer
+
+An example which shows a B<Gnome::Gtk3::SpinButton> in a B<Gnome::Gtk3::Window> which models percentage values. The class also has a signal handler to copy an integer value from the SpinButton in a local storage. This can be retrieved by calling C<.local-store()>.
+
+  has Int $.local-store;
+  method grab-int-value ( Gnome::Gtk3::SpinButton :_widget($button) ) {
+     $!local-store = $button.get-value-as-int;
+  }
+
+  method create-integer-spin-button ( ) {
+
+    my Gnome::Gtk3::Adjustment $adjustment .= new(
+      :value(50.0), :lower(0.0), :upper(100.0), :step-increment(1.0),
+      :page-increment(5.0), :page-size(0.0)
+    );
+    $!local-store = 50.0;
+
+    # creates the spinbutton, with no decimal places
+    my Gnome::Gtk3::SpinButton $button .= new(
+      :$adjustment, :climb_rate(1.0), :digits(0)
+    );
+    $button.register-signal( self, 'grab-int-value', 'value-changed');
+
+    given my Gnome::Gtk3::Window $window .= new {
+      .set-title('my 1st spin button demo');
+      .set-border-width(5);
+      .container_add($button);
+      .show_all;
+    }
+  }
+
+
+=head3 Using a B<Gnome::Gtk3::SpinButton> to get a floating point value
+
+The second example shows a B<Gnome::Gtk3::SpinButton> which provides a method to retrieve a floating point value. The SpinButton is created as a high precision spin button.
+
+  has Gnome::Gtk3::Window $!window;
+  has Gnome::Gtk3::SpinButton $!button;
+
+  method grab-float-value ( --> Num ) {
+    $!button.get-value
+  }
+
+  method create-floating-spin-button ( ) {
+
+    my Gnome::Gtk3::Adjustment $adjustment .= new(
+      :value(2.500), :lower(0.0), :upper(5.0),
+      :step-increment(0.001), :page-increment(0.1),
+      :page-size(0.0)
+    );
+
+    # creates the spinbutton, with three decimal places
+    $!button .= new( :$adjustment, :climb_rate(0.001), :digits(3));
+
+    given $!window .= new {
+      .set-title('my 2nd spin button demo');
+      .set-border-width(5);
+      .container_add($!button);
+      .show_all;
+    }
+  }
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -261,7 +259,7 @@ Create a SpinButton object using a native object returned from a builder. See al
 
 =end pod
 
-#TM:0:new():inheriting
+#TM:1:new():inheriting
 #TM:1:new(:adjustment!,:climb_rate,:digits):
 #TM:1:new(:min,:max,:step):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
@@ -367,25 +365,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_configure:
-=begin pod
-=head2 [gtk_] spin_button_configure
-
-Changes the properties of an existing spin button. The adjustment, climb rate, and number of decimal places are updated accordingly.
-
-  method gtk_spin_button_configure ( N-GObject $adjustment, Num $climb_rate, UInt $digits )
-
-=item N-GObject $adjustment; (nullable): a B<Gnome::Gtk3::Adjustment> to replace the spin button’s existing adjustment, or C<Any> to leave its current adjustment unchanged
-=item Num $climb_rate; the new climb rate
-=item UInt $digits; the number of decimal places to display in the spin button
-
-=end pod
-
-sub gtk_spin_button_configure ( N-GObject $spin_button, N-GObject $adjustment, num64 $climb_rate, uint32 $digits  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
 #TM:1:_gtk_spin_button_new:
 #`{{
 =begin pod
@@ -433,7 +412,26 @@ sub _gtk_spin_button_new_with_range ( num64 $min, num64 $max, num64 $step --> N-
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_adjustment:
+#TM:1:gtk_spin_button_configure:
+=begin pod
+=head2 [gtk_] spin_button_configure
+
+Changes the properties of an existing spin button. The adjustment, climb rate, and number of decimal places are updated accordingly.
+
+  method gtk_spin_button_configure ( N-GObject $adjustment, Num $climb_rate, UInt $digits )
+
+=item N-GObject $adjustment; a B<Gnome::Gtk3::Adjustment> to replace the spin button’s existing adjustment, or C<Any> to leave its current adjustment unchanged
+=item Num $climb_rate; the new climb rate
+=item UInt $digits; the number of decimal places to display in the spin button
+
+=end pod
+
+sub gtk_spin_button_configure ( N-GObject $spin_button, N-GObject $adjustment, num64 $climb_rate, uint32 $digits  )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:gtk_spin_button_set_adjustment:
 =begin pod
 =head2 [[gtk_] spin_button_] set_adjustment
 
@@ -450,7 +448,7 @@ sub gtk_spin_button_set_adjustment ( N-GObject $spin_button, N-GObject $adjustme
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_adjustment:
+#TM:1:gtk_spin_button_get_adjustment:
 =begin pod
 =head2 [[gtk_] spin_button_] get_adjustment
 
@@ -460,7 +458,6 @@ Returns: (transfer none): the B<Gnome::Gtk3::Adjustment> of I<spin_button>
 
   method gtk_spin_button_get_adjustment ( --> N-GObject )
 
-
 =end pod
 
 sub gtk_spin_button_get_adjustment ( N-GObject $spin_button --> N-GObject )
@@ -468,7 +465,7 @@ sub gtk_spin_button_get_adjustment ( N-GObject $spin_button --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_digits:
+#TM:1:gtk_spin_button_set_digits:
 =begin pod
 =head2 [[gtk_] spin_button_] set_digits
 
@@ -485,7 +482,7 @@ sub gtk_spin_button_set_digits ( N-GObject $spin_button, uint32 $digits  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_digits:
+#TM:1:gtk_spin_button_get_digits:
 =begin pod
 =head2 [[gtk_] spin_button_] get_digits
 
@@ -495,7 +492,6 @@ Returns: the current precision
 
   method gtk_spin_button_get_digits ( --> UInt )
 
-
 =end pod
 
 sub gtk_spin_button_get_digits ( N-GObject $spin_button --> uint32 )
@@ -503,7 +499,7 @@ sub gtk_spin_button_get_digits ( N-GObject $spin_button --> uint32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_increments:
+#TM:1:gtk_spin_button_set_increments:
 =begin pod
 =head2 [[gtk_] spin_button_] set_increments
 
@@ -521,25 +517,35 @@ sub gtk_spin_button_set_increments ( N-GObject $spin_button, num64 $step, num64 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_increments:
+#TM:1:gtk_spin_button_get_increments:
 =begin pod
 =head2 [[gtk_] spin_button_] get_increments
 
 Gets the current step and page the increments used by I<spin_button>. See C<gtk_spin_button_set_increments()>.
 
-  method gtk_spin_button_get_increments ( Num $step, Num $page )
+  method gtk_spin_button_get_increments ( --> List )
 
-=item Num $step; (out) (allow-none): location to store step increment, or C<Any>
-=item Num $page; (out) (allow-none): location to store page increment, or C<Any>
+Returned List holds;
+=item Num $step; location to store step increment, or C<Any>
+=item Num $page; location to store page increment, or C<Any>
 
 =end pod
 
-sub gtk_spin_button_get_increments ( N-GObject $spin_button, num64 $step, num64 $page  )
-  is native(&gtk-lib)
+sub gtk_spin_button_get_increments ( N-GObject $spin_button --> List ) {
+  my num64 ( $step, $page);
+  _gtk_spin_button_get_increments( $spin_button, $step, $page);
+
+  ( $step, $page)
+}
+
+sub _gtk_spin_button_get_increments (
+  N-GObject $spin_button, num64 $step is rw, num64 $page is rw
+) is native(&gtk-lib)
+  is symbol('gtk_spin_button_get_increments')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_range:
+#TM:1:gtk_spin_button_set_range:
 =begin pod
 =head2 [[gtk_] spin_button_] set_range
 
@@ -557,34 +563,42 @@ sub gtk_spin_button_set_range ( N-GObject $spin_button, num64 $min, num64 $max  
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_range:
+#TM:1:gtk_spin_button_get_range:
 =begin pod
 =head2 [[gtk_] spin_button_] get_range
 
 Gets the range allowed for I<spin_button>. See C<gtk_spin_button_set_range()>.
 
-  method gtk_spin_button_get_range ( Num $min, Num $max )
+  method gtk_spin_button_get_range ( --> List )
 
-=item Num $min; (out) (allow-none): location to store minimum allowed value, or C<Any>
-=item Num $max; (out) (allow-none): location to store maximum allowed value, or C<Any>
+Returned List holds;
+=item Num $min; location to store minimum allowed value, or C<Any>
+=item Num $max; location to store maximum allowed value, or C<Any>
 
 =end pod
 
-sub gtk_spin_button_get_range ( N-GObject $spin_button, num64 $min, num64 $max  )
-  is native(&gtk-lib)
+
+sub gtk_spin_button_get_range ( N-GObject $spin_button --> List ) {
+  my num64 ( $min, $max);
+  _gtk_spin_button_get_range( $spin_button, $min, $max);
+
+  ( $min, $max)
+}
+
+sub _gtk_spin_button_get_range (
+  N-GObject $spin_button, num64 $min is rw, num64 $max is rw
+) is native(&gtk-lib)
+  is symbol('gtk_spin_button_get_range')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_value:
+#TM:1:gtk_spin_button_get_value:
 =begin pod
 =head2 [[gtk_] spin_button_] get_value
 
 Get the value in the I<spin_button>.
 
-Returns: the value of I<spin_button>
-
   method gtk_spin_button_get_value ( --> Num )
-
 
 =end pod
 
@@ -593,7 +607,7 @@ sub gtk_spin_button_get_value ( N-GObject $spin_button --> num64 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_value_as_int:
+#TM:1:gtk_spin_button_get_value_as_int:
 =begin pod
 =head2 [[gtk_] spin_button_] get_value_as_int
 
@@ -611,7 +625,7 @@ sub gtk_spin_button_get_value_as_int ( N-GObject $spin_button --> int32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_value:
+#TM:1:gtk_spin_button_set_value:
 =begin pod
 =head2 [[gtk_] spin_button_] set_value
 
@@ -628,7 +642,7 @@ sub gtk_spin_button_set_value ( N-GObject $spin_button, num64 $value  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_update_policy:
+#TM:1:gtk_spin_button_set_update_policy:
 =begin pod
 =head2 [[gtk_] spin_button_] set_update_policy
 
@@ -645,7 +659,7 @@ sub gtk_spin_button_set_update_policy ( N-GObject $spin_button, int32 $policy  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_update_policy:
+#TM:1:gtk_spin_button_get_update_policy:
 =begin pod
 =head2 [[gtk_] spin_button_] get_update_policy
 
@@ -655,24 +669,29 @@ Returns: the current update policy
 
   method gtk_spin_button_get_update_policy ( --> GtkSpinButtonUpdatePolicy )
 
-
 =end pod
 
-#TODO int32 -> GtkSpinButtonUpdatePolicy
-sub gtk_spin_button_get_update_policy ( N-GObject $spin_button --> int32 )
+sub gtk_spin_button_get_update_policy (
+  N-GObject $spin_button --> GtkSpinButtonUpdatePolicy
+) {
+  GtkSpinButtonUpdatePolicy(_gtk_spin_button_get_update_policy($spin_button))
+}
+
+sub _gtk_spin_button_get_update_policy ( N-GObject $spin_button --> int32 )
   is native(&gtk-lib)
+  is symbol('gtk_spin_button_get_update_policy')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_numeric:
+#TM:1:gtk_spin_button_set_numeric:
 =begin pod
 =head2 [[gtk_] spin_button_] set_numeric
 
 Sets the flag that determines if non-numeric text can be typed into the spin button.
 
-  method gtk_spin_button_set_numeric ( Int $numeric )
+  method gtk_spin_button_set_numeric ( Bool $numeric )
 
-=item Int $numeric; flag indicating if only numeric entry is allowed
+=item Bool $numeric; flag indicating if only numeric entry is allowed
 
 =end pod
 
@@ -681,13 +700,11 @@ sub gtk_spin_button_set_numeric ( N-GObject $spin_button, int32 $numeric  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_numeric:
+#TM:1:gtk_spin_button_get_numeric:
 =begin pod
 =head2 [[gtk_] spin_button_] get_numeric
 
-Returns whether non-numeric text can be typed into the spin button. See C<gtk_spin_button_set_numeric()>.
-
-Returns: C<1> if only numeric text can be entered
+Returns whether non-numeric text can be typed into the spin button. See C<gtk_spin_button_set_numeric()>. Returns: C<1> if only numeric text can be entered
 
   method gtk_spin_button_get_numeric ( --> Int )
 
@@ -699,7 +716,7 @@ sub gtk_spin_button_get_numeric ( N-GObject $spin_button --> int32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_spin:
+#TM:1:gtk_spin_button_spin:
 =begin pod
 =head2 [gtk_] spin_button_spin
 
@@ -717,15 +734,15 @@ sub gtk_spin_button_spin ( N-GObject $spin_button, int32 $direction, num64 $incr
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_wrap:
+#TM:1:gtk_spin_button_set_wrap:
 =begin pod
 =head2 [[gtk_] spin_button_] set_wrap
 
 Sets the flag that determines if a spin button value wraps around to the opposite limit when the upper or lower limit of the range is exceeded.
 
-  method gtk_spin_button_set_wrap ( Int $wrap )
+  method gtk_spin_button_set_wrap ( Bool $wrap )
 
-=item Int $wrap; a flag indicating if wrapping behavior is performed
+=item Bool $wrap; a flag indicating if wrapping behavior is performed
 
 =end pod
 
@@ -734,7 +751,7 @@ sub gtk_spin_button_set_wrap ( N-GObject $spin_button, int32 $wrap  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_wrap:
+#TM:1:gtk_spin_button_get_wrap:
 =begin pod
 =head2 [[gtk_] spin_button_] get_wrap
 
@@ -752,15 +769,15 @@ sub gtk_spin_button_get_wrap ( N-GObject $spin_button --> int32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_set_snap_to_ticks:
+#TM:1:gtk_spin_button_set_snap_to_ticks:
 =begin pod
 =head2 [[gtk_] spin_button_] set_snap_to_ticks
 
 Sets the policy as to whether values are corrected to the nearest step increment when a spin button is activated after providing an invalid value.
 
-  method gtk_spin_button_set_snap_to_ticks ( Int $snap_to_ticks )
+  method gtk_spin_button_set_snap_to_ticks ( Bool $snap_to_ticks )
 
-=item Int $snap_to_ticks; a flag indicating if invalid values should be corrected
+=item Bool $snap_to_ticks; a flag indicating if invalid values should be corrected
 
 =end pod
 
@@ -769,16 +786,13 @@ sub gtk_spin_button_set_snap_to_ticks ( N-GObject $spin_button, int32 $snap_to_t
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_get_snap_to_ticks:
+#TM:1:gtk_spin_button_get_snap_to_ticks:
 =begin pod
 =head2 [[gtk_] spin_button_] get_snap_to_ticks
 
-Returns whether the values are corrected to the nearest step. See C<gtk_spin_button_set_snap_to_ticks()>.
-
-Returns: C<1> if values are snapped to the nearest step
+Returns whether the values are corrected to the nearest step. See C<gtk_spin_button_set_snap_to_ticks()>. Returns: C<1> if values are snapped to the nearest step
 
   method gtk_spin_button_get_snap_to_ticks ( --> Int )
-
 
 =end pod
 
@@ -787,14 +801,13 @@ sub gtk_spin_button_get_snap_to_ticks ( N-GObject $spin_button --> int32 )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_spin_button_update:
+#TM:1:gtk_spin_button_update:
 =begin pod
 =head2 [gtk_] spin_button_update
 
 Manually force an update of the spin button.
 
   method gtk_spin_button_update ( )
-
 
 =end pod
 
@@ -978,17 +991,18 @@ Widget type: GTK_TYPE_ADJUSTMENT
 
 The B<Gnome::GObject::Value> type of property I<adjustment> is C<G_TYPE_OBJECT>.
 
+
 =comment #TP:0:climb-rate:
 =head3 Climb Rate
 
-
 The B<Gnome::GObject::Value> type of property I<climb-rate> is C<G_TYPE_DOUBLE>.
+
 
 =comment #TP:0:digits:
 =head3 Digits
 
-
 The B<Gnome::GObject::Value> type of property I<digits> is C<G_TYPE_UINT>.
+
 
 =comment #TP:0:snap-to-ticks:
 =head3 Snap to Ticks
@@ -998,6 +1012,7 @@ Default value: False
 
 The B<Gnome::GObject::Value> type of property I<snap-to-ticks> is C<G_TYPE_BOOLEAN>.
 
+
 =comment #TP:0:numeric:
 =head3 Numeric
 
@@ -1005,6 +1020,7 @@ Whether non-numeric characters should be ignored
 Default value: False
 
 The B<Gnome::GObject::Value> type of property I<numeric> is C<G_TYPE_BOOLEAN>.
+
 
 =comment #TP:0:wrap:
 =head3 Wrap
@@ -1014,6 +1030,7 @@ Default value: False
 
 The B<Gnome::GObject::Value> type of property I<wrap> is C<G_TYPE_BOOLEAN>.
 
+
 =comment #TP:0:update-policy:
 =head3 Update Policy
 
@@ -1022,9 +1039,9 @@ Default value: False
 
 The B<Gnome::GObject::Value> type of property I<update-policy> is C<G_TYPE_ENUM>.
 
+
 =comment #TP:0:value:
 =head3 Value
-
 
 The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_DOUBLE>.
 =end pod

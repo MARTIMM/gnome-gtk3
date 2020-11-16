@@ -326,13 +326,12 @@
   - title: "Spinner"
     type: widget
     url: "/content-docs/reference/Gtk3/Spinner.html"
-    doc: 3
-    test: 1
+  - title: "SpinButton"
+    type: widget
+    url: "/content-docs/reference/Gtk3/SpinButton.html"
   - title: "Stack"
     type: widget
     url: '/content-docs/reference/Gtk3/Stack.html'
-    doc: 1
-    test: 1
   - title: "StackSidebar"
     type: widget
     url: '/content-docs/reference/Gtk3/StackSidebar.html'
