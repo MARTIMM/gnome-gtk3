@@ -8,7 +8,7 @@ use v6;
 
 A widget displaying an image
 
-=comment ![](images/image.png)
+![](images/image.png)
 
 =head1 Description
 
@@ -27,7 +27,56 @@ The image file may contain an animation, if so the B<Gnome::Gtk3::Image> will di
 
 B<Gnome::Gtk3::Image> is a “no window” widget (has no B<Gnome::Gdk3::Window> of its own), so by default does not receive events. If you want to receive events on the image, such as button clicks, place the image inside a B<Gnome::Gtk3::EventBox>, then connect to the event signals on the event box.
 
-=head2 Handling button press events on a Gnome::Gtk3::Image.
+When handling events on the event box, keep in mind that coordinates in the image may be different from event box coordinates due to the alignment and padding settings on the image (see B<Gnome::Gtk3::Misc>). The simplest way to solve this is to set the alignment to 0.0 (left/top), and set the padding to zero. Then the origin of the image will be the same as the origin of the event box.
+
+A note: B<Gnome::Gtk3::Misc> is almost completely deprecated. It exists only to support the inheritance tree below the Misc class. For alignment and padding look for the methods in B<Gnome::Gtk3::Widget>.
+
+=begin comment
+Sometimes an application will want to avoid depending on external data files, such as image files. GTK+ comes with a program to avoid this, called “gdk-pixbuf-csource”. This library allows you to convert an image into a C variable declaration, which can then be loaded into a B<Gnome::Gdk3::Pixbuf> using C<gdk_pixbuf_new_from_inline()>.
+=end comment
+
+
+=head2 Css Nodes
+
+B<Gnome::Gtk3::Image> has a single CSS node with the name image.
+
+=comment head2 See Also
+=comment B<Gnome::Gdk3::Pixbuf>
+
+
+=head1 Synopsis
+=head2 Declaration
+
+  unit class Gnome::Gtk3::Image;
+  also is Gnome::Gtk3::Misc;
+
+
+=head2 Uml Diagram
+
+![](plantuml/Image.svg)
+
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Image;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Image;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Image class process the options
+    self.bless( :GtkImage, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+
+=head2 Example
+=head3 Handling button press events on a Gnome::Gtk3::Image.
 
   # Define a button press event handler
   method button-press-handler (
@@ -54,50 +103,6 @@ B<Gnome::Gtk3::Image> is a “no window” widget (has no B<Gnome::Gdk3::Window>
     $image;
   }
 
-
-When handling events on the event box, keep in mind that coordinates in the image may be different from event box coordinates due to the alignment and padding settings on the image (see B<Gnome::Gtk3::Misc>). The simplest way to solve this is to set the alignment to 0.0 (left/top), and set the padding to zero. Then the origin of the image will be the same as the origin of the event box.
-
-A note: B<Gnome::Gtk3::Misc> is almost completely deprecated. It exists only to support the inheritance tree below the Misc class. For alignment and padding look for the methods in B<Gnome::Gtk3::Widget>.
-
-=begin comment
-Sometimes an application will want to avoid depending on external data files, such as image files. GTK+ comes with a program to avoid this, called “gdk-pixbuf-csource”. This library allows you to convert an image into a C variable declaration, which can then be loaded into a B<Gnome::Gdk3::Pixbuf> using C<gdk_pixbuf_new_from_inline()>.
-=end comment
-
-
-=head2 Css Nodes
-
-B<Gnome::Gtk3::Image> has a single CSS node with the name image.
-
-=comment head2 See Also
-=comment B<Gnome::Gdk3::Pixbuf>
-
-
-=head1 Synopsis
-=head2 Declaration
-
-  unit class Gnome::Gtk3::Image;
-  also is Gnome::Gtk3::Misc;
-
-=head2 Inheriting this class
-
-Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
-
-  use Gnome::Gtk3::Image;
-
-  unit class MyGuiClass;
-  also is Gnome::Gtk3::Image;
-
-  submethod new ( |c ) {
-    # let the Gnome::Gtk3::Image class process the options
-    self.bless( :GtkImage, |c);
-  }
-
-  submethod BUILD ( ... ) {
-    ...
-  }
-
-=comment head2 Example
-
 =end pod
 #-------------------------------------------------------------------------------
 use NativeCall;
@@ -105,7 +110,12 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Misc;
+
+use Gnome::Cairo::Types;
+use Gnome::Cairo::Surface;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkimage.h
@@ -135,7 +145,7 @@ Describes the image data representation used by a B<Gnome::Gtk3::Image>. If you 
 
 =end pod
 
-#TE:0:GtkImageType:
+#TE:1:GtkImageType:
 enum GtkImageType is export <
   GTK_IMAGE_EMPTY
   GTK_IMAGE_PIXBUF
@@ -152,6 +162,7 @@ enum GtkImageType is export <
 =head1 Methods
 =head2 new
 
+=head3 new()
 Create a new plain object without an image.
 
   multi method new ( )
@@ -161,12 +172,15 @@ Creates a new B<Gnome::Gtk3::Image> displaying the file I<filename>. If the file
 
 If the file contains an animation, the image will contain an animation.
 
-If you need to detect failures to load the file, use C<gdk_pixbuf_new_from_file()> to load the file yourself, then create the B<Gnome::Gtk3::Image> from the pixbuf. (Or for animations, use C<gdk_pixbuf_animation_new_from_file()>).
+If you need to detect failures to load the file, use C<gdk_pixbuf_new_from_file()> to load the file yourself, then create the B<Gnome::Gtk3::Image> from the pixbuf.
+=comment (Or for animations, use C<.new(:animation)>).
 
 The storage type (C<gtk_image_get_storage_type()>) of the returned image is not defined, it will be whatever is appropriate for displaying the file. Create a new object and load an image from file.
 
   multi method new ( Str :$filename! )
 
+
+=head3 new(:resource-path)
 
 Creates a new B<Gnome::Gtk3::Image> displaying the resource file I<$resource-path>. If the file isn’t found or can’t be loaded, the resulting B<Gnome::Gtk3::Image> will display a “broken image” icon. This function never returns C<Any>, it always returns a valid B<Gnome::Gtk3::Image> widget.
 
@@ -179,14 +193,18 @@ The storage type (C<gtk_image_get_storage_type()>) of the returned image is not 
   multi method new ( Str :$resource-path! )
 
 
+=head3 new(:pixbuf)
+
 Creates a new B<Gnome::Gtk3::Image> displaying I<$pixbuf>. The B<Gnome::Gtk3::Image> does not assume a reference to the pixbuf; you still need to unref it if you own references. B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
 
 Note that this function just creates an B<Gnome::Gtk3::Image> from the pixbuf. The B<Gnome::Gtk3::Image> created will not react to state changes. Should you want that, you should use C<gtk_image_new_from_icon_name()>.
 
-  multi method new ( Str :$pixbuf! )
+  multi method new ( N-GObject :$pixbuf! )
 
 
 =begin comment
+=head3 new(:animation)
+
 Creates a B<Gnome::Gtk3::Image> displaying the given animation. The B<Gnome::Gtk3::Image> does not assume a reference to the animation; you still need to unref it if you own references. B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
 
 Note that the animation frames are shown using a timeout with B<G_PRIORITY_DEFAULT>. When using animations to indicate busyness, keep in mind that the animation will only be shown if the main loop is not busy with something that has a higher priority.
@@ -195,6 +213,45 @@ Note that the animation frames are shown using a timeout with B<G_PRIORITY_DEFAU
 =end comment
 
 
+=head3 new( :icon-name, :size)
+
+Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead.  If the current icon theme is changed, the icon will be updated appropriately. You can use the program `gtk3-icon-browser` to get the available names in the current selected theme.
+
+  multi method new (
+    Str:D :$icon-name!, GtkIconSize :$size = GTK_ICON_SIZE_BUTTON
+  )
+
+=item Str $icon_name; an icon name
+=item GtkIconSize $size; a stock icon size (an enum B<GtkIconSize>)
+
+
+=begin comment
+=head3 new( :gicon, :size)
+
+Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead.  If the current icon theme is changed, the icon will be updated appropriately.
+
+  multi method new (
+    N-GObject:D :$gicon!, GtkIconSize :$size = GTK_ICON_SIZE_BUTTON
+  )
+
+=item N-GObject $gicon; an icon from Gnome::Gio::GIcon
+=item GtkIconSize $size; a stock icon size (an enum B<GtkIconSize>)
+
+=end comment
+
+
+=begin comment
+=head3 new(:surface)
+
+Creates a new B<Gnome::Gtk3::Image> displaying I<surface>. The B<Gnome::Gtk3::Image> does not assume a reference to the surface; you still need to unref it if you own references. B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
+
+  multi method new ( cairo_surface_t:D :$surface! )
+
+=end comment
+
+
+
+=begin comment
 Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
 
   multi method new ( N-GObject :$native-object! )
@@ -203,6 +260,7 @@ Create an object using a native object from elsewhere. See also B<Gnome::GObject
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+=end comment
 
 =end pod
 
@@ -211,6 +269,9 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:0:new(:resource-path):
 #TM:0:new(:pixbuf):
 #TM:0:new(:animation):
+#TM:1:new(:icon-name,:size):
+#TM:0:new(:gicon,:size):
+#TM:1:new(:surface):
 #TM:4:new(:native-object):TopLevelClassSupport
 #TM:4:new(:build-id):Object
 
@@ -236,6 +297,28 @@ submethod BUILD ( *%options ) {
         $no = _gtk_image_new_from_resource(%options<resource-path>);
       }
 
+      elsif ?%options<icon-name> {
+        my GtkIconSize $size = %options<size> // GTK_ICON_SIZE_BUTTON;
+        $no = _gtk_image_new_from_icon_name( %options<icon-name>, $size);
+      }
+
+      elsif ?%options<surface> {
+        $no = %options<surface>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        $no = _gtk_image_new_from_surface($no);
+      }
+
+#`{{
+      elsif ?%options<gicon> {
+        $no = %options<gicon>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+
+        my GtkIconSize $size = %options<size> // GTK_ICON_SIZE_BUTTON;
+        $no = _gtk_image_new_from_icon_name( $no, $size);
+      }
+}}
       elsif ?%options<pixbuf> {
         $no = %options<pixbuf>;
         $no .= get-native-object-no-reffing
@@ -243,9 +326,11 @@ submethod BUILD ( *%options ) {
         $no = _gtk_image_new_from_pixbuf($no);
       }
 
-#      elsif ?%options<animation> {
-#        $no = _gtk_image_new_from_animation(%options<resource-path>);
-#      }
+#`{{
+      elsif ?%options<animation> {
+        $no = _gtk_image_new_from_animation(%options<animation>);
+      }
+}}
 
       else {
         $no = _gtk_image_new();
@@ -357,9 +442,6 @@ image is not defined, it will be whatever is appropriate for
 displaying the file.
 
 Returns: a new B<Gnome::Gtk3::Image>
-
-Since: 3.4
-
   method gtk_image_new_from_resource ( Str $resource_path --> N-GObject  )
 
 =item Str $resource_path; a resource path
@@ -434,26 +516,26 @@ sub _gtk_image_new_from_animation ( GdkPixbufAnimation $animation )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_new_from_icon_name:
+#TM:1:_gtk_image_new_from_icon_name:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_icon_name
 
 Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead.  If the current icon theme is changed, the icon will be updated appropriately. You can use the program `gtk3-icon-browser` to get the available names in the current selected theme.
 
 Returns: a new B<Gnome::Gtk3::Image> displaying the themed icon
-
-Since: 2.6
-
   method gtk_image_new_from_icon_name ( Str $icon_name, GtkIconSize $size --> N-GObject  )
 
 =item Str $icon_name; an icon name
 =item GtkIconSize $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
 
 =end pod
+}}
 
-sub gtk_image_new_from_icon_name ( Str $icon_name, int32 $size )
-  returns N-GObject
-  is native(&gtk-lib)
+sub _gtk_image_new_from_icon_name (
+  Str $icon_name, int32 $size --> N-GObject
+) is native(&gtk-lib)
+  is symbol('gtk_image_new_from_icon_name')
   { * }
 
 #`{{ Gnome::Gio::Icon not yet supported
@@ -469,9 +551,6 @@ displayed instead.  If the current icon theme is changed, the icon
 will be updated appropriately.
 
 Returns: a new B<Gnome::Gtk3::Image> displaying the themed icon
-
-Since: 2.14
-
   method gtk_image_new_from_gicon ( N-GObject $icon, GtkIconSize $size --> N-GObject  )
 
 =item N-GObject $icon; an icon
@@ -480,16 +559,15 @@ Since: 2.14
 =end pod
 }}
 
-sub _gtk_image_new_from_gicon ( N-GObject $icon, int32 $size )
-  returns N-GObject
+sub _gtk_image_new_from_gicon ( N-GObject $icon, int32 $size --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_image_new_from_gicon')
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_new_from_surface:
+#TM:1:_gtk_image_new_from_surface:
+#`{{
 =begin pod
 =head2 [[gtk_] image_] new_from_surface
 
@@ -500,19 +578,17 @@ B<Gnome::Gtk3::Image> will add its own reference rather than adopting yours.
 
 Returns: a new B<Gnome::Gtk3::Image>
 
-Since: 3.10
-
-  method gtk_image_new_from_surface ( cairo_surface_t $surface --> N-GObject  )
+  method gtk_image_new_from_surface ( cairo_surface_t $surface --> N-GObject )
 
 =item cairo_surface_t $surface; (allow-none): a B<cairo_surface_t>, or C<Any>
 
 =end pod
-
-sub gtk_image_new_from_surface ( cairo_surface_t $surface )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
 }}
+
+sub _gtk_image_new_from_surface ( cairo_surface_t $surface --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_image_new_from_surface')
+  { * }
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_clear:
@@ -520,8 +596,6 @@ sub gtk_image_new_from_surface ( cairo_surface_t $surface )
 =head2 [gtk_] image_clear
 
 Resets the image to be empty.
-
-Since: 2.8
 
   method gtk_image_clear ( )
 
@@ -609,9 +683,6 @@ sub gtk_image_set_from_animation ( N-GObject $image, GdkPixbufAnimation $animati
 =head2 [[gtk_] image_] set_from_icon_name
 
 See C<gtk_image_new_from_icon_name()> for details.
-
-Since: 2.6
-
   method gtk_image_set_from_icon_name ( Str $icon_name, GtkIconSize $size )
 
 =item Str $icon_name; an icon name
@@ -629,9 +700,6 @@ sub gtk_image_set_from_icon_name ( N-GObject $image, Str $icon_name, int32 $size
 =head2 [[gtk_] image_] set_from_gicon
 
 See C<gtk_image_new_from_gicon()> for details.
-
-Since: 2.14
-
   method gtk_image_set_from_gicon ( N-GObject $icon, GtkIconSize $size )
 
 =item N-GObject $icon; an icon
@@ -650,9 +718,6 @@ sub gtk_image_set_from_gicon ( N-GObject $image, N-GObject $icon, int32 $size )
 =head2 [[gtk_] image_] set_from_surface
 
 See C<gtk_image_new_from_surface()> for details.
-
-Since: 3.10
-
   method gtk_image_set_from_surface ( cairo_surface_t $surface )
 
 =item cairo_surface_t $surface; a cairo_surface_t
@@ -672,9 +737,6 @@ sub gtk_image_set_from_surface ( N-GObject $image, cairo_surface_t $surface )
 Sets the pixel size to use for named icons. If the pixel size is set
 to a value != -1, it is used instead of the icon size set by
 C<gtk_image_set_from_icon_name()>.
-
-Since: 2.6
-
   method gtk_image_set_pixel_size ( Int $pixel_size )
 
 =item Int $pixel_size; the new pixel size
@@ -696,29 +758,27 @@ the return value will be C<GTK_IMAGE_EMPTY>.
 
 Returns: image representation being used
 
-  method gtk_image_get_storage_type ( --> GtkImageType  )
-
+  method gtk_image_get_storage_type ( --> GtkImageType )
 
 =end pod
 
-sub gtk_image_get_storage_type ( N-GObject $image )
-  returns int32
+sub gtk_image_get_storage_type ( N-GObject $image  --> GtkImageType ) {
+  GtkImageType(_gtk_image_get_storage_type($image))
+}
+
+sub _gtk_image_get_storage_type ( N-GObject $image --> int32 )
   is native(&gtk-lib)
+  is symbol('gtk_image_get_storage_type')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_get_pixbuf:
+#TM:1:gtk_image_get_pixbuf:
 =begin pod
 =head2 [[gtk_] image_] get_pixbuf
 
-Gets the B<Gnome::Gdk3::Pixbuf> being displayed by the B<Gnome::Gtk3::Image>.
-The storage type of the image must be C<GTK_IMAGE_EMPTY> or
-C<GTK_IMAGE_PIXBUF> (see C<gtk_image_get_storage_type()>).
-The caller of this function does not own a reference to the
-returned pixbuf.
+Gets the B<Gnome::Gdk3::Pixbuf> being displayed by the B<Gnome::Gtk3::Image>. The storage type of the image must be C<GTK_IMAGE_EMPTY> or C<GTK_IMAGE_PIXBUF> (see C<gtk_image_get_storage_type()>). The caller of this function does not own a reference to the returned pixbuf.
 
-Returns: (nullable) (transfer none): the displayed pixbuf, or C<Any> if
-the image is empty
+Returns: the displayed pixbuf, or C<Any> if the image is empty
 
   method gtk_image_get_pixbuf ( --> N-GObject  )
 
@@ -747,7 +807,6 @@ the image is empty
 
   method gtk_image_get_animation ( --> GdkPixbufAnimation  )
 
-
 =end pod
 
 sub gtk_image_get_animation ( N-GObject $image )
@@ -756,53 +815,41 @@ sub gtk_image_get_animation ( N-GObject $image )
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_image_get_icon_name:
+#TM:1:gtk_image_get_icon_name:
 =begin pod
 =head2 [[gtk_] image_] get_icon_name
 
-Gets the icon name and size being displayed by the B<Gnome::Gtk3::Image>.
-The storage type of the image must be C<GTK_IMAGE_EMPTY> or
-C<GTK_IMAGE_ICON_NAME> (see C<gtk_image_get_storage_type()>).
-The returned string is owned by the B<Gnome::Gtk3::Image> and should not
-be freed.
+Gets the icon name and size being displayed by the B<Gnome::Gtk3::Image>. The storage type of the image must be C<GTK_IMAGE_EMPTY> or C<GTK_IMAGE_ICON_NAME> (see C<gtk_image_get_storage_type()>). The returned string is owned by the B<Gnome::Gtk3::Image> and should not be freed.
 
-Since: 2.6
+  method gtk_image_get_icon_name ( --> List )
 
-  method gtk_image_get_icon_name ( CArray[Str] $icon_name, GtkIconSize $size )
-
-=item CArray[Str] $icon_name; (out) (transfer none) (allow-none): place to store an icon name, or C<Any>
-=item GtkIconSize $size; (out) (allow-none) (type int): place to store an icon size (B<Gnome::Gtk3::IconSize>), or C<Any>
+The returned List holds
+=item Str $icon_name; the icon name, or C<Any>
+=item GtkIconSize $size; the icon size of type (B<GtkIconSize>), or C<Any>
 
 =end pod
 
-sub gtk_image_get_icon_name ( N-GObject $image --> List ){
-  my CArray[CArray[Str]] $icon_name .= new;
-  _gtk_image_get_icon_name( $image, $icon_name, my int32 $size);
+sub gtk_image_get_icon_name ( N-GObject $image --> List ) {
+  my $in = CArray[Str].new('');
+  my int32 $size .= new;
+  _gtk_image_get_icon_name( $image, $in, $size);
 
-  ( $icon_name[0][0], $size)
+  ( $in[0], GtkIconSize($size))
 }
 
 sub _gtk_image_get_icon_name (
-  N-GObject $image, CArray[CArray[Str]] $icon_name, int32 $size is rw
+  N-GObject $image, CArray[Str] $icon_name, int32 $size is rw
 ) is native(&gtk-lib)
   is symbol("gtk_image_get_icon_name")
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_image_get_gicon:
 =begin pod
 =head2 [[gtk_] image_] get_gicon
 
-Gets the B<GIcon> and size being displayed by the B<Gnome::Gtk3::Image>.
-The storage type of the image must be C<GTK_IMAGE_EMPTY> or
-C<GTK_IMAGE_GICON> (see C<gtk_image_get_storage_type()>).
-The caller of this function does not own a reference to the
-returned B<GIcon>.
-
-Since: 2.14
+Gets the B<GIcon> and size being displayed by the B<Gnome::Gtk3::Image>. The storage type of the image must be C<GTK_IMAGE_EMPTY> or C<GTK_IMAGE_GICON> (see C<gtk_image_get_storage_type()>). The caller of this function does not own a reference to the returned B<GIcon>.
 
   method gtk_image_get_gicon ( N-GObject $gicon, GtkIconSize $size )
 
@@ -822,17 +869,12 @@ sub gtk_image_get_gicon ( N-GObject $image, N-GObject $gicon, int32 $size )
 
 Gets the pixel size used for named icons.
 
-Returns: the pixel size used for named icons.
-
-Since: 2.6
-
   method gtk_image_get_pixel_size ( --> Int  )
 
 
 =end pod
 
-sub gtk_image_get_pixel_size ( N-GObject $image )
-  returns int32
+sub gtk_image_get_pixel_size ( N-GObject $image --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -855,15 +897,14 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 A B<Gnome::Gdk3::Pixbuf> to display
 Widget type: GDK_TYPE_PIXBUF
 
-
 The B<Gnome::GObject::Value> type of property I<pixbuf> is C<G_TYPE_OBJECT>.
+
 
 =comment #TP:0:surface:
 =head3 Surface
 
-
-
 The B<Gnome::GObject::Value> type of property I<surface> is C<G_TYPE_BOXED>.
+
 
 =comment #TP:0:file:
 =head3 Filename
@@ -871,8 +912,8 @@ The B<Gnome::GObject::Value> type of property I<surface> is C<G_TYPE_BOXED>.
 Filename to load and display
 Default value: Any
 
-
 The B<Gnome::GObject::Value> type of property I<file> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:pixbuf-animation:
 =head3 Animation
@@ -880,39 +921,36 @@ The B<Gnome::GObject::Value> type of property I<file> is C<G_TYPE_STRING>.
 B<Gnome::Gdk3::PixbufAnimation> to display
 Widget type: GDK_TYPE_PIXBUF_ANIMATION
 
-
 The B<Gnome::GObject::Value> type of property I<pixbuf-animation> is C<G_TYPE_OBJECT>.
+
 
 =comment #TP:0:icon-name:
 =head3 Icon Name
 
-
 The name of the icon in the icon theme. If the icon theme is
 changed, the image will be updated automatically.
-Since: 2.6
 
 The B<Gnome::GObject::Value> type of property I<icon-name> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:gicon:
 =head3 Icon
 
-
 The GIcon displayed in the B<Gnome::Gtk3::Image>. For themed icons,
 If the icon theme is changed, the image will be updated
 automatically.
-Since: 2.14
 Widget type: G_TYPE_ICON
 
 The B<Gnome::GObject::Value> type of property I<gicon> is C<G_TYPE_OBJECT>.
 
+
 =comment #TP:0:resource:
 =head3 Resource
 
-
 A path to a resource file to display.
-Since: 3.8
 
 The B<Gnome::GObject::Value> type of property I<resource> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:storage-type:
 =head3 Storage type
@@ -920,18 +958,16 @@ The B<Gnome::GObject::Value> type of property I<resource> is C<G_TYPE_STRING>.
 The representation being used for image data
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<storage-type> is C<G_TYPE_ENUM>.
+
 
 =comment #TP:0:use-fallback:
 =head3 Use Fallback
-
 
 Whether the icon displayed in the B<Gnome::Gtk3::Image> will use
 standard icon names fallback. The value of this property
 is only relevant for images of type C<GTK_IMAGE_ICON_NAME>
 and C<GTK_IMAGE_GICON>.
-Since: 3.0
 
 The B<Gnome::GObject::Value> type of property I<use-fallback> is C<G_TYPE_BOOLEAN>.
 =end pod
