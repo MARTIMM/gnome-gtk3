@@ -230,10 +230,6 @@ A way to track errors while loading CSS is to connect to the sig C<parsing-error
 
 =end pod
 
-proto gtk_css_provider_load_from_data (
-  N-GObject $css_provider, Str $data, |
-) { * }
-
 sub gtk_css_provider_load_from_data (
   N-GObject $css_provider, Str $data
   --> Gnome::Glib::Error
@@ -245,8 +241,10 @@ sub gtk_css_provider_load_from_data (
   Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
-sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error --> int32 )
-  is native(&gtk-lib)
+sub _gtk_css_provider_load_from_data (
+  N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error
+  --> int32
+) is native(&gtk-lib)
   is symbol('gtk_css_provider_load_from_data')
   { * }
 
@@ -293,10 +291,6 @@ A way to track errors while loading CSS is to connect to the sig C<parsing-error
 =item Str $path; the path of a filename to load, in the GLib filename encoding
 
 =end pod
-
-proto gtk_css_provider_load_from_path (
-  N-GObject $css_provider, Str $path, |
-) { * }
 
 sub gtk_css_provider_load_from_path (
   N-GObject $css_provider, Str $path

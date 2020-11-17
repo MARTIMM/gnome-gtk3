@@ -125,7 +125,7 @@ submethod BUILD ( *%options ) {
     self.set-native-object(gtk_toggle_button_new_with_label(%options<label>));
   }
 
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
+  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 
