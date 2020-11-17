@@ -2,6 +2,9 @@
   - Add module **Gnome::Gtk3::SpinButton**.
   - Some bugs removed from **Gnome::Gtk3::Adjustment**. Also completed testing and documenting.
   - Removed deprecations due since version 0.30.0
+  - Added init options :png and :icon-name to `.new()` of **Gnome::Gtk3::Image**. Also added tests. Needed to extend **Gnome::Cairo::ImageSurface** with new options.
+  - Changed gtk_image_get_storage_type in Image to return GtkImageType type as the documentation says
+  - Added and tested a few other methods to Image.
 
 - 2020-10-24 0.32.0:
   - Add module **Gnome::Gtk3::FileChooserButton**.
