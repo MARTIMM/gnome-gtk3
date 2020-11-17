@@ -178,12 +178,7 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::TextView';
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_text_view_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
     # provided in GObject
   }
 

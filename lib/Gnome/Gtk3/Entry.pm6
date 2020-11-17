@@ -183,14 +183,7 @@ submethod BUILD ( *%options ) {
       my $no;
 
       # process all named arguments
-      if ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_entry_new();
-      }
-
-      else {
-        $no = _gtk_entry_new();
-      }
+      $no = _gtk_entry_new();
 
       self.set-native-object($no);
     }

@@ -118,11 +118,6 @@ submethod BUILD ( *%options ) {
   if self.is-valid { }
 
   # process all named arguments
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(N-GTextIter.new);
-  }
-
   elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~

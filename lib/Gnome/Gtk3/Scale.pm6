@@ -192,12 +192,7 @@ submethod BUILD ( *%options ) {
     else {
       my $no;
 
-      if %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any);
-      }
-
-      elsif %options<orientation>.defined and ? %options<min>.defined and
+      if %options<orientation>.defined and ? %options<min>.defined and
          %options<max>.defined and %options<step>.defined {
 
         $no = _gtk_scale_new_with_range(

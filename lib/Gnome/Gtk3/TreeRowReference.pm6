@@ -75,14 +75,6 @@ submethod BUILD ( *%options ) {
   if self.is-valid { }
 
   # process all named arguments
-  elsif ? %options<tree-row-reference> {
-    Gnome::N::deprecate(
-      '.new(:tree-row-reference)', '.new(:native-object)', '0.25.0', '0.30.0'
-    );
-    self.set-native-object(%options<tree-row-reference>);
-    $!tree-row-reference-is-valid = self.get-native-object.defined;
-  }
-
   elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
@@ -119,53 +111,6 @@ method native-object-ref ( $n-native-object ) {
 #-------------------------------------------------------------------------------
 method native-object-unref ( $n-native-object ) {
   _gtk_tree_row_reference_free($n-native-object)
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-# doc for attribute defined above
-# TM:1:tree-row-reference-is-valid:
-=begin pod
-=head2 tree-row-reference-is-valid
-
-Method to test if the native object is valid.
-
-  method tree-row-reference-is-valid ( --> Bool )
-
-=end pod
-}}
-method tree-row-reference-is-valid ( ) {
-
-  Gnome::N::deprecate(
-    '.tree-row-reference-is-valid()', '.is-valid()', '0.27.0', '0.30.0'
-  );
-
-  self.is-valid
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-# TM:1:clear-tree-row-reference:
-=begin pod
-=head2 clear-tree-row-reference
-
-Frees the native C<N-GtkTreeRowReference> object and after that, tree-row-reference-is-valid() returns False.
-
-  method clear-tree-row-reference ( )
-
-=end pod
-}}
-
-method clear-tree-row-reference ( ) {
-  _gtk_tree_row_reference_free(self.get-native-object);
-  $!tree-row-reference-is-valid = False;
-#  self.set-native-object(N-GtkTreeRowReference);
-
-  Gnome::N::deprecate(
-    '.clear-tree-row-reference()', '.clear-object()', '0.27.0', '0.30.0'
-  );
-
-  self.clear-object
 }
 
 #`{{

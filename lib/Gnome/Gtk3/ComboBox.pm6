@@ -115,12 +115,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::ComboBox';
 
   #TODO %options.keys ~~ any(<native-object build-id id name>) { ... }
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_combo_box_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
     # provided in GObject
   }
 

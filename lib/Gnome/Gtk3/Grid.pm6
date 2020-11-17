@@ -110,12 +110,7 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   if self.^name eq 'Gnome::Gtk3::Grid' or %options<GtkGrid> {
 
-    if ? %options<empty> {
-      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-      self.set-native-object(gtk_grid_new());
-    }
-
-    elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+    if ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
       # provided in GObject
     }
 #`{{
@@ -127,7 +122,7 @@ submethod BUILD ( *%options ) {
       );
     }
 }}
-    else {#if ? %options<empty> {
+    else {
       self.set-native-object(gtk_grid_new());
     }
 

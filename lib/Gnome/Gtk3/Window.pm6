@@ -189,27 +189,8 @@ submethod BUILD ( *%options ) {
       %options<build-id>:exists { }
 
     else {
-      my $no;
-
-      if ?%options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-        $no = _gtk_window_new($wtype);
-      }
-
-      else {
-        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-        $no = _gtk_window_new($wtype);
-      }
-
-      self.set-native-object($no);
-      if ? %options<title> {
-        Gnome::N::deprecate(
-          '.new(:title)', '.gtk_window_set_title()', '0.28.3', '0.32.0'
-        );
-        my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
-        self.gtk_window_set_title(%options<title>);
-      }
+      my $wtype = %options<window-type> // GTK_WINDOW_TOPLEVEL;
+      self.set-native-object(_gtk_window_new($wtype));
     }
 
     # only after creating the native-object, the gtype is known

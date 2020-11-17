@@ -84,12 +84,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::ListBoxRow';
 
   # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_list_box_row_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> {
+  if ? %options<native-object> || ? %options<widget> {
     # provided in Gnome::GObject::Object
   }
 

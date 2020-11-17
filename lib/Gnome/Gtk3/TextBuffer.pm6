@@ -110,13 +110,7 @@ submethod BUILD ( *%options ) {
 
   return unless self.^name eq 'Gnome::Gtk3::TextBuffer';
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    my Gnome::Gtk3::TextTagTable $tag-table .= new;
-    self.set-native-object(gtk_text_buffer_new($tag-table()));
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
     # provided in GObject
   }
 
@@ -128,7 +122,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-  else {# if ? %options<empty> {
+  else {
     my Gnome::Gtk3::TextTagTable $tag-table .= new;
     self.set-native-object(gtk_text_buffer_new($tag-table.get-native-object));
   }
@@ -247,19 +241,7 @@ I<len> is -1, I<text> must be nul-terminated. I<text> must be valid UTF-8.
 
 =end pod
 
-proto sub gtk_text_buffer_set_text ( N-GObject $buffer, Str, | ) {*}
-multi sub gtk_text_buffer_set_text (
-  N-GObject $buffer, Str $text, Int $len
-) {
-  Gnome::N::deprecate(
-    '.gtk_text_buffer_set_text( Str $text, Int $len)',
-    '.gtk_text_buffer_set_text(Str $text)',
-     '0.23.2', '0.25.0'
-  );
-  _gtk_text_buffer_set_text( $buffer, $text, $len);
-}
-
-multi sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text ) {
+sub gtk_text_buffer_set_text ( N-GObject $buffer, Str $text ) {
   _gtk_text_buffer_set_text(
     $buffer, $text, $text.encode.bytes #`{{$text.chars}}
   );

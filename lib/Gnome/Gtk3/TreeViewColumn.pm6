@@ -124,12 +124,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TreeViewColumn';
 
   # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_tree_view_column_new());
-  }
-
-  elsif ? %options<column> {
+  if ? %options<column> {
     self.set-native-object(%options<column>);
   }
 

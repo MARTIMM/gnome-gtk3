@@ -118,12 +118,7 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::CssProvider';
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_css_provider_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
     # provided in GObject
   }
 
@@ -239,21 +234,7 @@ proto gtk_css_provider_load_from_data (
   N-GObject $css_provider, Str $data, |
 ) { * }
 
-multi sub gtk_css_provider_load_from_data (
-  N-GObject $css_provider, Str $data, Int $length, Any $error
-  --> uint32
-) {
-  Gnome::N::deprecate(
-    '.gtk_css_provider_load_from_data( Str, Int, Any --> Int )',
-    '.gtk_css_provider_load_from_data( Str, Int --> Gnome::Glib::Error )',
-   '0.22.0', '0.24.0'
-  );
-
-  my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_css_provider_load_from_data( $css_provider, $data, $length, $ga)
-}
-
-multi sub gtk_css_provider_load_from_data (
+sub gtk_css_provider_load_from_data (
   N-GObject $css_provider, Str $data
   --> Gnome::Glib::Error
 ) {
@@ -264,8 +245,7 @@ multi sub gtk_css_provider_load_from_data (
   Gnome::Glib::Error.new(:native-object($ga[0]));
 }
 
-sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error )
-  returns int32
+sub _gtk_css_provider_load_from_data ( N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error --> int32 )
   is native(&gtk-lib)
   is symbol('gtk_css_provider_load_from_data')
   { * }
@@ -318,20 +298,7 @@ proto gtk_css_provider_load_from_path (
   N-GObject $css_provider, Str $path, |
 ) { * }
 
-multi sub gtk_css_provider_load_from_path (
-  N-GObject $css_provider, Str $path, Any $error
-  --> int32
-) {
-  Gnome::N::deprecate(
-    '.gtk_css_provider_load_from_path( Str, Any --> Int )',
-    '.gtk_css_provider_load_from_path( Str --> Gnome::Glib::Error )',
-   '0.22.0', '0.24.0'
-  );
-
-  _gtk_css_provider_load_from_path( $css_provider, $path, Any);
-}
-
-multi sub gtk_css_provider_load_from_path (
+sub gtk_css_provider_load_from_path (
   N-GObject $css_provider, Str $path
   --> Gnome::Glib::Error
 ) {
@@ -342,7 +309,7 @@ multi sub gtk_css_provider_load_from_path (
 
 sub _gtk_css_provider_load_from_path (
   N-GObject $css_provider, Str $path, CArray[N-GError] $error
-) returns int32
+  --> int32 )
   is native(&gtk-lib)
   is symbol('gtk_css_provider_load_from_path')
   { * }

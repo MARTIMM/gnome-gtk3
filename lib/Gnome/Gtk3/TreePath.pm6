@@ -105,19 +105,7 @@ submethod BUILD ( *%options ) {
   else {
     my $no;
 
-    if ? %options<tree-path> {
-      Gnome::N::deprecate(
-        '.new(:tree-path)', '.new(:native-object)', '0.21.3', '0.30.0'
-      );
-      $no = %options<tree-path>;
-    }
-
-    elsif ? %options<empty> {
-      Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-      $no = _gtk_tree_path_new();
-    }
-
-    elsif ? %options<first> {
+    if ? %options<first> {
       $no = _gtk_tree_path_new_first();
     }
 
@@ -172,31 +160,6 @@ method native-object-ref ( $n-native-object --> Any ) {
 #-------------------------------------------------------------------------------
 method native-object-unref ( $n-native-object ) {
   _gtk_tree_path_free($n-native-object)
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-#TODO Destroy calls clear-tree-path
-# TM:1:clear-tree-path:
-=begin pod
-=head2 clear-tree-path
-
-Frees a C<N-GtkTreePath> struct and after that, tree-path-is-valid() returns False.
-
-  method clear-tree-path ( )
-
-=end pod
-}}
-
-method clear-tree-path ( ) {
-#  _gtk_tree_path_free(self.get-native-object);
-#  $!tree-path-is-valid = False;
-
-  Gnome::N::deprecate(
-    '.clear-tree-path()', '.clear-object()', '0.27.0', '0.30.0'
-  );
-
-  self.clear-object;
 }
 
 #-------------------------------------------------------------------------------

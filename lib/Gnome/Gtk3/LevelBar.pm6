@@ -196,12 +196,7 @@ submethod BUILD ( *%options ) {
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::LevelBar';
 
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_level_bar_new());
-  }
-
-  elsif ? %options<min> and ? %options<max> {
+  if ? %options<min> and ? %options<max> {
     self.set-native-object(gtk_level_bar_new_for_interval(
       %options<min>, %options<max>)
     );

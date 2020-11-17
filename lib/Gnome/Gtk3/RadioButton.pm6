@@ -183,12 +183,7 @@ submethod BUILD ( *%options ) {
       my $no;
       my Bool $mnemonic = %options<mnemonic> // False;
 
-      if ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_radio_button_new(Any);
-      }
-
-      elsif ? %options<group> and ? %options<label> {
+      if ? %options<group> and ? %options<label> {
         my $g = %options<group>;
         $g .= get-native-object if $g ~~ Gnome::Glib::SList;
         if $mnemonic {

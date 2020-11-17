@@ -108,33 +108,6 @@ submethod BUILD ( *%options ) {
 
   elsif %options<native-object>:exists or %options<widget>:exists  { }
 
-  # process all named arguments
-  elsif %options<tree-iter>:exists {
-
-    Gnome::N::deprecate(
-      '.new(:tree-iter)', '.new(:native-object)', '0.27.10', '0.30.0'
-    );
-
-    my N-GtkTreeIter $nti;
-    if %options<tree-iter>.defined {
-      if %options<tree-iter>.^name !~~ m/'N-GtkTreeIter'/ {
-        $nti = %options<tree-iter>.get-native-object;
-#        $!tree-iter-is-valid = %options<tree-iter>.tree-iter-is-valid;
-      }
-
-      else {
-        $nti = %options<tree-iter>;
-#        $!tree-iter-is-valid = True;
-      }
-
-      self.set-native-object($nti);
-    }
-
-#    else {
-#      $!tree-iter-is-valid = False;
-#    }
-  }
-
   elsif %options.keys.elems {
     die X::Gnome.new(
       :message('Unsupported options for ' ~ self.^name ~
@@ -174,51 +147,6 @@ method native-object-ref ( $n-native-object --> Any ) {
 #-------------------------------------------------------------------------------
 method native-object-unref ( $n-native-object ) {
   _gtk_tree_iter_free($n-native-object)
-}
-
-#-------------------------------------------------------------------------------
-# doc for attribute defined above
-# TM:1:tree-iter-is-valid:
-=begin pod
-=head2 tree-iter-is-valid
-
-Method to test if the native object is valid.
-
-  method tree-iter-is-valid ( --> Bool )
-
-=end pod
-method tree-iter-is-valid ( --> Bool ) {
-
-  Gnome::N::deprecate(
-    '.tree-iter-is-valid()', '.is-valid()', '0.27.0', '0.30.0'
-  );
-
-  self.is-valid
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-# TM:1:clear-tree-iter:
-=begin pod
-=head2 clear-tree-iter
-
-Frees a C<N-GtkTreeIter> struct and after that, tree-iter-is-valid() returns False.
-
-  method clear-tree-iter ( )
-
-=end pod
-}}
-
-method clear-tree-iter ( ) {
-
-  Gnome::N::deprecate(
-    '.clear-tree-iter()', '.clear-object()', '0.27.0', '0.30.0'
-  );
-
-  self.clear-object
-
-#  _gtk_tree_iter_free(self.get-native-object);
-#  $!tree-iter-is-valid = False;
 }
 
 #-------------------------------------------------------------------------------

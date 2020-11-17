@@ -125,12 +125,7 @@ submethod BUILD ( *%options ) {
     self.set-native-object(gtk_toggle_button_new_with_label(%options<label>));
   }
 
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_toggle_button_new());
-  }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
+  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
     # provided in GObject
   }
 

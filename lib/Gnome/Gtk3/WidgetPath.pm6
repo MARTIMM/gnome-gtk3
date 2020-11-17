@@ -122,43 +122,7 @@ submethod BUILD ( *%options ) {
   if self.is-valid { }
 
   # process all named arguments
-  elsif ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
-    self.set-native-object(gtk_widget_path_new());
-#    $!widgetpath-is-valid = True;
-  }
-
-  #TODO widgetpath is a native-object
-  elsif ? %options<widgetpath> {
-    Gnome::N::deprecate(
-      '.new(:widgetpath())', '.new(:native-object())', '0.21.3', '0.30.0'
-    );
-#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
-    self.set-native-object(%options<widgetpath>);
-#    $!widgetpath-is-valid = %options<widgetpath>.defined;
-  }
-
-#`{{
-  elsif ? %options<native-object> {
-    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
-    self.set-native-object(%options<native-object>);
-    $!widgetpath-is-valid = %options<native-object>.defined;
-  }
-
-  elsif %options.keys.elems {
-    # must clear because exception can be captured!
-    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
-    $!widgetpath-is-valid = False;
-
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}}
-  else {#if ? %options<empty> {
+  else {
 #    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
     self.set-native-object(gtk_widget_path_new());
 #    $!widgetpath-is-valid = True;
@@ -192,53 +156,6 @@ method native-object-ref ( $n-native-object --> Any ) {
 #-------------------------------------------------------------------------------
 method native-object-unref ( $n-native-object ) {
   _gtk_widget_path_free($n-native-object)
-}
-
-#-------------------------------------------------------------------------------
-#`{{
-# TM:1:clear-widgetpath
-=begin pod
-=head2 clear-widget-path
-
-Clear the widget path and return native object to memory.
-
-  method clear-widget-path ( )
-
-=end pod
-}}
-
-method clear-widget-path ( ) {
-#  _gtk_widget_path_free(self.get-native-object);
-#  $!widgetpath-is-valid = False;
-
-  Gnome::N::deprecate(
-    '.clear-widget-path()', '.clear-object()', '0.27.0', '0.30.0'
-  );
-
-  self.clear-object
-}
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:1:widgetpath-is-valid
-=begin pod
-=head2 widgetpath-is-valid
-
-Returns True if native object is valid, otherwise False.
-
-  method widgetpath-is-valid ( --> Bool )
-
-=end pod
-# getter defined implicitly above
-}}
-
-method widgetpath-is-valid ( --> Bool ) {
-
-  Gnome::N::deprecate(
-    '.widgetpath-is-valid()', '.is-valid()', '0.27.0', '0.30.0'
-  );
-
-  self.is-valid
 }
 
 #-------------------------------------------------------------------------------

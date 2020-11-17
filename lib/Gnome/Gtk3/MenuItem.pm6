@@ -142,12 +142,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::MenuItem';
 
   # process all named arguments
-  if ? %options<empty> {
-    Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-    self.set-native-object(gtk_menu_item_new());
-  }
-
-  elsif ? %options<label> {
+  if ? %options<label> {
     self.set-native-object(gtk_menu_item_new_with_label(%options<label>));
   }
 

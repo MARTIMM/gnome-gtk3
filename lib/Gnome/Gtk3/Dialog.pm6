@@ -250,12 +250,7 @@ submethod BUILD ( *%options ) {
     else {
       my $no;
 
-      if ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_dialog_new();
-      }
-
-      elsif ? %options<title> {
+      if ? %options<title> {
         my Str $title = %options<title> // Str;
         my Int $flags = %options<flags> // 0;
         my @buttons = %options<button-spec> // ();

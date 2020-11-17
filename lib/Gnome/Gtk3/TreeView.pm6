@@ -208,13 +208,7 @@ submethod BUILD ( *%options ) {
       my $no;
 
       # process all named arguments
-      if %options<empty>:exists {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = gtk_tree_view_new();
-      }
-
-      # process all named arguments
-      elsif ? %options<model> {
+      if ? %options<model> {
         my $model = %options<model>;
         $model .= get-native-object-no-reffing
           if $model.^can('get-native-object-no-reffing');
