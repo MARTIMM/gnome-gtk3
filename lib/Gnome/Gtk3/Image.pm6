@@ -237,17 +237,15 @@ submethod BUILD ( *%options ) {
       }
 
       elsif ?%options<pixbuf> {
-        $no = _gtk_image_new_from_pixbuf(%options<resource-path>);
+        $no = %options<pixbuf>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        $no = _gtk_image_new_from_pixbuf($no);
       }
 
 #      elsif ?%options<animation> {
 #        $no = _gtk_image_new_from_animation(%options<resource-path>);
 #      }
-
-      elsif ? %options<empty> {
-        Gnome::N::deprecate( '.new(:empty)', '.new()', '0.21.3', '0.30.0');
-        $no = _gtk_image_new();
-      }
 
       else {
         $no = _gtk_image_new();
@@ -397,8 +395,7 @@ Returns: a new B<Gnome::Gtk3::Image>
 
 =end pod
 }}
-sub _gtk_image_new_from_pixbuf ( N-GObject $pixbuf )
-  returns N-GObject
+sub _gtk_image_new_from_pixbuf ( N-GObject $pixbuf --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_image_new_from_pixbuf')
   { * }
