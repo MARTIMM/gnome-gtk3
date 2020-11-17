@@ -263,12 +263,14 @@ Gnome::Gtk3::Widget implements
 
 =end comment
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Widget;
   also is Gnome::GObject::InitiallyUnowned;
   also does Gnome::Gtk3::Buildable;
+
 
 =head2 Uml Diagram
 
