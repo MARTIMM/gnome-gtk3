@@ -1,5 +1,5 @@
 use v6;
-use lib '../gnome-gobject/lib', '../gnome-native/lib';
+#use lib '../gnome-gobject/lib', '../gnome-native/lib';
 use NativeCall;
 use Test;
 
