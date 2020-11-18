@@ -38,12 +38,12 @@ subtest 'ISA test', {
 
   $ha .= new(
     :value(1e1), :lower(0e0), :upper(1e2),
-    :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
+    :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
 
   $va .= new(
     :value(1e1), :lower(0e0), :upper(1e2),
-    :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
+    :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
   $sw .= new( :hadjustment($ha), :vadjustment($va));
   isa-ok $sw, Gnome::Gtk3::ScrolledWindow, '.new(...options...)';
@@ -53,7 +53,7 @@ subtest 'ISA test', {
 subtest 'Manipulations', {
   $va .= new(
     :value(1e1), :lower(0e0), :upper(1.1e2),
-    :step_increment(1e0), :page_increment(1e1), :page_size(2e1)
+    :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
   is $va.get-upper, 1.1e2, 'Adjustment.get-upper()';
 

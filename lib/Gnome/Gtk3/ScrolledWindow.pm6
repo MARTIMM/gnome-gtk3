@@ -212,9 +212,11 @@ submethod BUILD ( *%options ) {
 
     elsif ? %options<hadjustment> and ? %options<hadjustment> {
       my $n-ha = %options<hadjustment>;
-      $n-ha .= get-native-object if $n-ha.^can('get-native-object');
+      $n-ha .= get-native-object-no-reffing
+        if $n-ha.^can('get-native-object-no-reffing');
       my $n-va = %options<vadjustment>;
-      $n-va .= get-native-object if $n-va.^can('get-native-object');
+      $n-va .= get-native-object-no-reffing
+        if $n-va.^can('get-native-object-no-reffing');
       self.set-native-object(_gtk_scrolled_window_new( $n-ha, $n-va));
     }
 
