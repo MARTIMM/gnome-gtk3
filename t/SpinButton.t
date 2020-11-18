@@ -23,9 +23,9 @@ subtest 'ISA test', {
     :page-increment(0.5), :page-size(10)
   );
 
-  $sb .= new( :adjustment($adj), :climb_rate(1), :digits(3));
+  $sb .= new( :adjustment($adj), :climb-rate(1), :digits(3));
   isa-ok $sb, Gnome::Gtk3::SpinButton,
-          '.new( :adjustment, :climb_rate, :digits)';
+          '.new( :adjustment, :climb-rate, :digits)';
 }
 
 #-------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ subtest 'Properties ...', {
   );
 
   my Gnome::Gtk3::SpinButton $sb2 .= new(
-    :adjustment($adj), :climb_rate(1e0), :digits(3)
+    :adjustment($adj), :climb-rate(1e0), :digits(3)
   );
 }}
 

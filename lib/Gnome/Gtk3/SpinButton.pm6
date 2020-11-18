@@ -96,7 +96,7 @@ An example which shows a B<Gnome::Gtk3::SpinButton> in a B<Gnome::Gtk3::Window> 
 
     # creates the spinbutton, with no decimal places
     my Gnome::Gtk3::SpinButton $button .= new(
-      :$adjustment, :climb_rate(1.0), :digits(0)
+      :$adjustment, :climb-rate(1.0), :digits(0)
     );
     $button.register-signal( self, 'grab-int-value', 'value-changed');
 
@@ -129,7 +129,7 @@ The second example shows a B<Gnome::Gtk3::SpinButton> which provides a method to
     );
 
     # creates the spinbutton, with three decimal places
-    $!button .= new( :$adjustment, :climb_rate(0.001), :digits(3));
+    $!button .= new( :$adjustment, :climb-rate(0.001), :digits(3));
 
     given $!window .= new {
       .set-title('my 2nd spin button demo');
@@ -211,16 +211,17 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 new( :adjustment, :climb_rate, :digits)
+=head3 new( :adjustment, :climb-rate, :digits)
 
 Create a new SpinButton object.
 
   multi method new (
-    N-GObject :$adjustment!, Num :$climb_rate = 1e-1, UInt :$digits = 1
+    N-GObject :$adjustment!, Num :$climb-rate = 1e-1,
+    UInt :$digits = 1
   )
 
 =item N-GObject $adjustment; the B<Gnome::Gtk3::Adjustment> object that this spin button should use.
-=item Num $climb_rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
+=item Num $climb-rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
 =item UInt $digits; the number of decimal places to display.
 
 =head3 new( :min, :max, :step)
@@ -246,7 +247,7 @@ Create a SpinButton object using a native object returned from a builder. See al
 =end pod
 
 #TM:1:new():inheriting
-#TM:1:new(:adjustment!,:climb_rate,:digits):
+#TM:1:new(:adjustment!,:climb-rate,:digits):
 #TM:1:new(:min,:max,:step):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
@@ -290,7 +291,13 @@ submethod BUILD ( *%options ) {
         $no-a = $no-a.get-native-object-no-reffing
           if $no-a.^can('get-native-object-no-reffing');
 
-        my Num $climb_rate = %options<climb_rate>.Num // 1e-1;
+        Gnome::N::deprecate(
+          '.new(:climb_rate)', '.new(:climb-rate)', '0.33.0', '0.38.0'
+        ) if %options<climb_rate>:exists;
+
+        my Num $climb_rate = %options<climb-rate>.Num //
+          %options<climb_rate>.Num // 1e-1;
+
         my Int $digits = %options<digits> // 1;
         $no = _gtk_spin_button_new( $no-a, $climb_rate, $digits);
       }
@@ -360,15 +367,18 @@ Creates a new B<Gnome::Gtk3::SpinButton>.
 
 Returns: The new spin button as a B<Gnome::Gtk3::Widget>
 
-  method gtk_spin_button_new ( N-GObject $adjustment, Num $climb_rate, UInt $digits --> N-GObject )
+  method gtk_spin_button_new (
+    N-GObject $adjustment, Num $climb-rate, UInt $digits
+    --> N-GObject
+  )
 
 =item N-GObject $adjustment; (allow-none): the B<Gnome::Gtk3::Adjustment> object that this spin button should use, or C<Any>
-=item Num $climb_rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
+=item Num $climb-rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
 =item UInt $digits; the number of decimal places to display
 
 =end pod
 }}
-sub _gtk_spin_button_new ( N-GObject $adjustment, num64 $climb_rate, uint32 $digits --> N-GObject )
+sub _gtk_spin_button_new ( N-GObject $adjustment, num64 $climb-rate, uint32 $digits --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_spin_button_new')
   { * }
@@ -404,15 +414,17 @@ sub _gtk_spin_button_new_with_range ( num64 $min, num64 $max, num64 $step --> N-
 
 Changes the properties of an existing spin button. The adjustment, climb rate, and number of decimal places are updated accordingly.
 
-  method gtk_spin_button_configure ( N-GObject $adjustment, Num $climb_rate, UInt $digits )
+  method gtk_spin_button_configure (
+    N-GObject $adjustment, Num $climb-rate, UInt $digits
+  )
 
 =item N-GObject $adjustment; a B<Gnome::Gtk3::Adjustment> to replace the spin button’s existing adjustment, or C<Any> to leave its current adjustment unchanged
-=item Num $climb_rate; the new climb rate
+=item Num $climb-rate; the new climb rate
 =item UInt $digits; the number of decimal places to display in the spin button
 
 =end pod
 
-sub gtk_spin_button_configure ( N-GObject $spin_button, N-GObject $adjustment, num64 $climb_rate, uint32 $digits  )
+sub gtk_spin_button_configure ( N-GObject $spin_button, N-GObject $adjustment, num64 $climb-rate, uint32 $digits  )
   is native(&gtk-lib)
   { * }
 
@@ -634,7 +646,9 @@ sub gtk_spin_button_set_value ( N-GObject $spin_button, num64 $value  )
 
 Sets the update behavior of a spin button. This determines whether the spin button is always updated or only when a valid value is set.
 
-  method gtk_spin_button_set_update_policy ( GtkSpinButtonUpdatePolicy $policy )
+  method gtk_spin_button_set_update_policy (
+    GtkSpinButtonUpdatePolicy $policy
+  )
 
 =item GtkSpinButtonUpdatePolicy $policy; a B<Gnome::Gtk3::SpinButtonUpdatePolicy> value
 
@@ -653,7 +667,9 @@ Gets the update behavior of a spin button. See C<gtk_spin_button_set_update_poli
 
 Returns: the current update policy
 
-  method gtk_spin_button_get_update_policy ( --> GtkSpinButtonUpdatePolicy )
+  method gtk_spin_button_get_update_policy (
+    --> GtkSpinButtonUpdatePolicy
+  )
 
 =end pod
 
@@ -708,7 +724,9 @@ sub gtk_spin_button_get_numeric ( N-GObject $spin_button --> int32 )
 
 Increment or decrement a spin button’s value in a specified direction by a specified amount.
 
-  method gtk_spin_button_spin ( GtkSpinType $direction, Num $increment )
+  method gtk_spin_button_spin (
+    GtkSpinType $direction, Num $increment
+  )
 
 =item GtkSpinType $direction; a B<Gnome::Gtk3::SpinType> indicating the direction to spin
 =item Num $increment; step increment to apply in the specified direction
@@ -833,7 +851,7 @@ Also here, the types of positional arguments in the signal handler are important
 
 =head2 Supported signals
 
-
+=begin comment
 =comment #TS:0:input:
 =head3 input
 
@@ -858,8 +876,10 @@ was not handled, and C<GTK_INPUT_ERROR> if the conversion failed.
 =item $spin_button; the object on which the signal was emitted
 
 =item $new_value; (out) (type double): return location for the new value
+=end comment
 
 
+=begin comment
 =comment #TS:0:output:
 =head3 output
 
@@ -895,9 +915,10 @@ Returns: C<1> if the value has been displayed
   );
 
 =item $spin_button; the object on which the signal was emitted
+=end comment
 
 
-=comment #TS:0:value-changed:
+=comment #TS:4:value-changed:xt/ex-spin-button-1.raku
 =head3 value-changed
 
 The I<value-changed> signal is emitted when the value represented by
@@ -915,8 +936,7 @@ I<spinbutton> changes. Also see the  I<output> signal.
 =comment #TS:0:wrapped:
 =head3 wrapped
 
-The I<wrapped> signal is emitted right after the spinbutton wraps
-from its maximum to minimum value or vice-versa.
+The I<wrapped> signal is emitted right after the spinbutton wraps from its maximum to minimum value or vice-versa.
 
 Since: 2.10
 
@@ -932,17 +952,14 @@ Since: 2.10
 =comment #TS:0:change-value:
 =head3 change-value
 
-The I<change-value> signal is a [keybinding signal][B<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user initiates a value change.
+The I<change-value> signal is a [keybinding signal][B<Gnome::Gtk3::BindingSignal>] which gets emitted when the user initiates a value change.
 
-Applications should not connect to it, but may emit it with
-C<g_signal_emit_by_name()> if they need to control the cursor
-programmatically.
+Applications should not connect to it, but may emit it with C<g_signal_emit_by_name()> if they need to control the cursor programmatically.
 
 The default bindings for this signal are Up/Down and PageUp and/PageDown.
 
   method handler (
-    Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
+    Int $scroll-type,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($spin_button),
     *%user-options
@@ -950,7 +967,7 @@ The default bindings for this signal are Up/Down and PageUp and/PageDown.
 
 =item $spin_button; the object on which the signal was emitted
 
-=item $scroll; a B<Gnome::Gtk3::ScrollType> to specify the speed and amount of change
+=item $scroll-type; an integer of the B<GtkScrollType> enumeration to specify the speed and amount of change
 
 
 =end pod
@@ -969,6 +986,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
+=begin comment
 =comment #TP:0:adjustment:
 =head3 Adjustment
 
@@ -976,6 +994,7 @@ The adjustment that holds the value of the spin button
 Widget type: GTK_TYPE_ADJUSTMENT
 
 The B<Gnome::GObject::Value> type of property I<adjustment> is C<G_TYPE_OBJECT>.
+=end comment
 
 
 =comment #TP:1:climb-rate:

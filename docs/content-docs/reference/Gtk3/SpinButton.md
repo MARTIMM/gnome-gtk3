@@ -94,7 +94,7 @@ An example which shows a **Gnome::Gtk3::SpinButton** in a **Gnome::Gtk3::Window*
 
       # creates the spinbutton, with no decimal places
       my Gnome::Gtk3::SpinButton $button .= new(
-        :$adjustment, :climb_rate(1.0), :digits(0)
+        :$adjustment, :climb-rate(1.0), :digits(0)
       );
       $button.register-signal( self, 'grab-int-value', 'value-changed');
 
@@ -126,7 +126,7 @@ The second example shows a **Gnome::Gtk3::SpinButton** which provides a method t
       );
 
       # creates the spinbutton, with three decimal places
-      $!button .= new( :$adjustment, :climb_rate(0.001), :digits(3));
+      $!button .= new( :$adjustment, :climb-rate(0.001), :digits(3));
 
       given $!window .= new {
         .set-title('my 2nd spin button demo');
@@ -173,17 +173,18 @@ Methods
 new
 ---
 
-### new( :adjustment, :climb_rate, :digits)
+### new( :adjustment, :climb-rate, :digits)
 
 Create a new SpinButton object.
 
     multi method new (
-      N-GObject :$adjustment!, Num :$climb_rate = 1e-1, UInt :$digits = 1
+      N-GObject :$adjustment!, Num :$climb-rate = 1e-1,
+      UInt :$digits = 1
     )
 
   * N-GObject $adjustment; the **Gnome::Gtk3::Adjustment** object that this spin button should use.
 
-  * Num $climb_rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
+  * Num $climb-rate; specifies by how much the rate of change in the value will accelerate if you continue to hold down an up/down button or arrow key
 
   * UInt $digits; the number of decimal places to display.
 
@@ -204,11 +205,13 @@ This is a convenience constructor that allows creation of a numeric **Gnome::Gtk
 
 Changes the properties of an existing spin button. The adjustment, climb rate, and number of decimal places are updated accordingly.
 
-    method gtk_spin_button_configure ( N-GObject $adjustment, Num $climb_rate, UInt $digits )
+    method gtk_spin_button_configure (
+      N-GObject $adjustment, Num $climb-rate, UInt $digits
+    )
 
   * N-GObject $adjustment; a **Gnome::Gtk3::Adjustment** to replace the spin button’s existing adjustment, or `Any` to leave its current adjustment unchanged
 
-  * Num $climb_rate; the new climb rate
+  * Num $climb-rate; the new climb rate
 
   * UInt $digits; the number of decimal places to display in the spin button
 
@@ -326,7 +329,9 @@ Sets the value of *spin_button*.
 
 Sets the update behavior of a spin button. This determines whether the spin button is always updated or only when a valid value is set.
 
-    method gtk_spin_button_set_update_policy ( GtkSpinButtonUpdatePolicy $policy )
+    method gtk_spin_button_set_update_policy (
+      GtkSpinButtonUpdatePolicy $policy
+    )
 
   * GtkSpinButtonUpdatePolicy $policy; a **Gnome::Gtk3::SpinButtonUpdatePolicy** value
 
@@ -337,7 +342,9 @@ Gets the update behavior of a spin button. See `gtk_spin_button_set_update_polic
 
 Returns: the current update policy
 
-    method gtk_spin_button_get_update_policy ( --> GtkSpinButtonUpdatePolicy )
+    method gtk_spin_button_get_update_policy (
+      --> GtkSpinButtonUpdatePolicy
+    )
 
 [[gtk_] spin_button_] set_numeric
 ---------------------------------
@@ -360,7 +367,9 @@ Returns whether non-numeric text can be typed into the spin button. See `gtk_spi
 
 Increment or decrement a spin button’s value in a specified direction by a specified amount.
 
-    method gtk_spin_button_spin ( GtkSpinType $direction, Num $increment )
+    method gtk_spin_button_spin (
+      GtkSpinType $direction, Num $increment
+    )
 
   * GtkSpinType $direction; a **Gnome::Gtk3::SpinType** indicating the direction to spin
 
@@ -441,45 +450,6 @@ Also here, the types of positional arguments in the signal handler are important
 Supported signals
 -----------------
 
-### input
-
-The *input* signal can be used to influence the conversion of the users input into a double value. The signal handler is expected to use `gtk_entry_get_text()` to retrieve the text of the entry and set *new_value* to the new value.
-
-The default conversion uses `g_strtod()`.
-
-Returns: `1` for a successful conversion, `0` if the input was not handled, and `GTK_INPUT_ERROR` if the conversion failed.
-
-    method handler (
-      Unknown type G_TYPE_POINTER $new_value,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($spin_button),
-      *%user-options
-      --> Int
-    );
-
-  * $spin_button; the object on which the signal was emitted
-
-  * $new_value; (out) (type double): return location for the new value
-
-### output
-
-The *output* signal can be used to change to formatting of the value that is displayed in the spin buttons entry. |[<!-- language="C" --> // show leading zeros static gboolean on_output (**Gnome::Gtk3::SpinButton** *spin, gpointer data) { **Gnome::Gtk3::Adjustment** *adjustment; gchar *text; int value;
-
-adjustment = gtk_spin_button_get_adjustment (spin); value = (int)gtk_adjustment_get_value (adjustment); text = g_strdup_printf ("`02d`", value); gtk_entry_set_text (GTK_ENTRY (spin), text); g_free (text);
-
-return TRUE; } ]|
-
-Returns: `1` if the value has been displayed
-
-    method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($spin_button),
-      *%user-options
-      --> Int
-    );
-
-  * $spin_button; the object on which the signal was emitted
-
 ### value-changed
 
 The *value-changed* signal is emitted when the value represented by *spinbutton* changes. Also see the *output* signal.
@@ -515,7 +485,7 @@ Applications should not connect to it, but may emit it with `g_signal_emit_by_na
 The default bindings for this signal are Up/Down and PageUp and/PageDown.
 
     method handler (
-      Unknown type GTK_TYPE_SCROLL_TYPE $scroll,
+      Int $scroll-type,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($spin_button),
       *%user-options
@@ -523,7 +493,7 @@ The default bindings for this signal are Up/Down and PageUp and/PageDown.
 
   * $spin_button; the object on which the signal was emitted
 
-  * $scroll; a **Gnome::Gtk3::ScrollType** to specify the speed and amount of change
+  * $scroll-type; an integer of the **GtkScrollType** enumeration to specify the speed and amount of change
 
 Properties
 ==========
@@ -537,12 +507,6 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 
 Supported properties
 --------------------
-
-### Adjustment
-
-The adjustment that holds the value of the spin button Widget type: GTK_TYPE_ADJUSTMENT
-
-The **Gnome::GObject::Value** type of property *adjustment* is `G_TYPE_OBJECT`.
 
 ### Climb Rate
 
