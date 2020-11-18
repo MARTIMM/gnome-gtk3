@@ -22,7 +22,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/SpinButton.svg)
+![](plantuml/Adjustment.svg)
 
 Methods
 =======
@@ -36,8 +36,9 @@ new( :value, :lower, :upper, :step-increment, :page-increment, :page-size)
 Create a new Adjustment object.
 
     multi method new (
-      num64 $value!, num64 $lower!, num64 $upper!, num64 $step-increment!,
-      num64 $page-increment!, num64 $page-size!
+      num64 :$value!, num64 :$lower!, num64 :$upper!,
+      num64 :$step-increment!, num64 :$page-increment!,
+      num64 :$page-size!
     )
 
   * Num $value; the initial value.

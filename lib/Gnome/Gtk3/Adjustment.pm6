@@ -26,7 +26,7 @@ The B<Gnome::Gtk3::Adjustment> object does not update the value itself. Instead 
 
 =head2 Uml Diagram
 
-![](plantuml/SpinButton.svg)
+![](plantuml/Adjustment.svg)
 
 
 =begin comment
@@ -77,8 +77,9 @@ my Bool $signals-added = False;
 Create a new Adjustment object.
 
   multi method new (
-    num64 $value!, num64 $lower!, num64 $upper!, num64 $step-increment!,
-    num64 $page-increment!, num64 $page-size!
+    num64 :$value!, num64 :$lower!, num64 :$upper!,
+    num64 :$step-increment!, num64 :$page-increment!,
+    num64 :$page-size!
   )
 
 =item Num $value; the initial value.
