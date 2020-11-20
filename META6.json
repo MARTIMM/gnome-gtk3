@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.33.0",
+  "version": "0.34.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -98,6 +98,7 @@
     "Gnome::Gtk3::ToggleButton": "lib/Gnome/Gtk3/ToggleButton.pm6",
     "Gnome::Gtk3::ToolButton": "lib/Gnome/Gtk3/ToolButton.pm6",
     "Gnome::Gtk3::ToolItem": "lib/Gnome/Gtk3/ToolItem.pm6",
+    "Gnome::Gtk3::Tooltip": "lib/Gnome/Gtk3/Tooltip.pm6",
     "Gnome::Gtk3::TreeIter": "lib/Gnome/Gtk3/TreeIter.pm6",
     "Gnome::Gtk3::TreeModel": "lib/Gnome/Gtk3/TreeModel.pm6",
     "Gnome::Gtk3::TreePath": "lib/Gnome/Gtk3/TreePath.pm6",

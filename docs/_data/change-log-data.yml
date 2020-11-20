@@ -1,3 +1,7 @@
+- 2020-11-15 0.34.0:
+  - Add module **Gnome::Gtk3::Tooltip**.
+  - Bugfixes in the TreeView set of modules. Also methods and docs added with tests.
+
 - 2020-11-15 0.33.0:
   - Add module **Gnome::Gtk3::SpinButton**.
   - Some bugs removed from **Gnome::Gtk3::Adjustment**. Also completed testing and documenting.
