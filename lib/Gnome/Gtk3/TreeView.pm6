@@ -1118,15 +1118,11 @@ sub gtk_tree_view_get_cursor ( N-GObject $tree_view, N-GtkTreePath $path, N-GObj
 =begin pod
 =head2 [[gtk_] tree_view_] get_bin_window
 
-Returns the window that I<tree_view> renders to.
-This is used primarily to compare to `event->window`
-to confirm that the event on I<tree_view> is on the right window.
+Returns the window that I<tree_view> renders to. This is used primarily to compare to `event->window` to confirm that the event on I<tree_view> is on the right window.
 
-Returns: (nullable) (transfer none): A B<Gnome::Gdk3::Window>, or C<Any> when I<tree_view>
-hasn’t been realized yet.
+Returns: A native B<Gnome::Gdk3::Window>, or C<Any> when the I<tree_view> hasn’t been realized yet.
 
-  method gtk_tree_view_get_bin_window ( --> N-GObject  )
-
+  method gtk_tree_view_get_bin_window ( --> N-GObject )
 
 =end pod
 
@@ -1135,48 +1131,57 @@ sub gtk_tree_view_get_bin_window ( N-GObject $tree_view )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_get_path_at_pos:
+#TM:2:gtk_tree_view_get_path_at_pos:ex-liststore-3.raku
 =begin pod
 =head2 [[gtk_] tree_view_] get_path_at_pos
 
-Finds the path at the point (I<x>, I<y>), relative to bin_window coordinates
-(please see C<gtk_tree_view_get_bin_window()>).
-That is, I<x> and I<y> are relative to an events coordinates. I<x> and I<y> must
-come from an event on the I<tree_view> only where `event->window ==
-C<gtk_tree_view_get_bin_window()>`. It is primarily for
-things like popup menus. If I<path> is non-C<Any>, then it will be filled
-with the B<Gnome::Gtk3::TreePath> at that point.  This path should be freed with
-C<gtk_tree_path_free()>.  If I<column> is non-C<Any>, then it will be filled
-with the column at that point.  I<cell_x> and I<cell_y> return the coordinates
-relative to the cell background (i.e. the I<background_area> passed to
-C<gtk_cell_renderer_render()>).  This function is only meaningful if
-I<tree_view> is realized.  Therefore this function will always return C<0>
-if I<tree_view> is not realized or does not have a model.
+Finds the path at the point (I<$x>, I<$y>), relative to bin_window coordinates (please see C<gtk_tree_view_get_bin_window()>). That is, I<$x> and I<$y> are relative to an events coordinates. I<$x> and I<$y> must come from an event on the I<tree_view> only where `event->window == C<gtk_tree_view_get_bin_window()>`. It is primarily for things like popup menus. If I<$path> is non-C<Any>, then it will be set with the B<Gnome::Gtk3::TreePath> at that point.  This path should be freed with C<.clear-object()>.  If I<$column> is defined, then it set with the column at that point.  I<$cell_x> and I<$cell_y> return the coordinates relative to the cell background (i.e. the I<background_area> passed to C<gtk_cell_renderer_render()>).  This function is only meaningful if I<tree_view> is realized.  Therefore this function will always return C<0> if I<tree_view> is not realized or does not have a model.
 
-For converting widget coordinates (eg. the ones you get from
-B<Gnome::Gtk3::Widget>::query-tooltip), please see
-C<gtk_tree_view_convert_widget_to_bin_window_coords()>.
+For converting widget coordinates (eg. the ones you get from B<Gnome::Gtk3::Widget>::query-tooltip), please see C<gtk_tree_view_convert_widget_to_bin_window_coords()>.
 
-Returns: C<1> if a row exists at that coordinate.
-
-  method gtk_tree_view_get_path_at_pos ( Int $x, Int $y, N-GtkTreePath $path, N-GObject $column, Int $cell_x, Int $cell_y --> Int  )
+  method gtk_tree_view_get_path_at_pos (
+    Int $x, Int $y --> List
+  )
 
 =item Int $x; The x position to be identified (relative to bin_window).
 =item Int $y; The y position to be identified (relative to bin_window).
-=item N-GtkTreePath $path; (out) (optional) (nullable): A pointer to a B<Gnome::Gtk3::TreePath> pointer to be filled in, or C<Any>
-=item N-GObject $column; (out) (transfer none) (optional) (nullable): A pointer to a B<Gnome::Gtk3::TreeViewColumn> pointer to be filled in, or C<Any>
-=item Int $cell_x; (out) (optional): A pointer where the X coordinate relative to the cell can be placed, or C<Any>
-=item Int $cell_y; (out) (optional): A pointer where the Y coordinate relative to the cell can be placed, or C<Any>
+
+The returned list holds
+=item Bool $exists: C<True> if a row exists at that coordinate.
+=item N-GtkTreePath $path; A native B<Gnome::Gtk3::TreePath>, or C<Any>
+=item N-GObject $column; A native B<Gnome::Gtk3::TreeViewColumn>, or C<Any>
+=item Int $cell_x; X coordinate relative to the cell, or C<Any>
+=item Int $cell_y; Y coordinate relative to the cell, or C<Any>
 
 =end pod
 
-sub gtk_tree_view_get_path_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, N-GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
-  returns int32
-  is native(&gtk-lib)
+sub gtk_tree_view_get_path_at_pos (
+  N-GObject $tree_view, int32 $x, int32 $y --> List
+) {
+  my $np-tp = CArray[N-GtkTreePath].new(N-GtkTreePath);
+  my $np-tvc = CArray[N-GObject].new(N-GObject);
+  my int32 $cx = 0;
+  my int32 $cy = 0;
+  my Int $is-path = _gtk_tree_view_get_path_at_pos(
+    $tree_view, $x, $y, $np-tp, $np-tvc, $cx, $cy
+  );
+
+  ( ?$is-path, Gnome::Gtk3::TreePath.new(:native-object($np-tp[0])),
+    Gnome::Gtk3::TreeViewColumn.new(:native-object($np-tvc[0])),
+    $cx, $cy
+  )
+}
+
+sub _gtk_tree_view_get_path_at_pos (
+  N-GObject $tree_view, int32 $x, int32 $y,
+  CArray[N-GtkTreePath] $path, CArray[N-GObject] $column,
+  int32 $cell_x is rw, int32 $cell_y is rw
+  --> int32
+) is native(&gtk-lib)
+  is symbol('gtk_tree_view_get_path_at_pos')
   { * }
-}}
+#}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_cell_area:
@@ -1289,29 +1294,20 @@ sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, N-GtkTreePath $start
   is native(&gtk-lib)
   { * }
 }}
+
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_is_blank_at_pos:
+#TM:1:gtk_tree_view_is_blank_at_pos:
 =begin pod
 =head2 [[gtk_] tree_view_] is_blank_at_pos
 
-Determine whether the point (I<x>, I<y>) in I<tree_view> is blank, that is no
-cell content nor an expander arrow is drawn at the location. If so, the
-location can be considered as the background. You might wish to take
-special action on clicks on the background, such as clearing a current
-selection, having a custom context menu or starting rubber banding.
+Determine whether the point (I<x>, I<y>) in I<tree_view> is blank, that is no cell content nor an expander arrow is drawn at the location. If so, the location can be considered as the background. You might wish to take special action on clicks on the background, such as clearing a current selection, having a custom context menu or starting rubber banding.
 
-The I<x> and I<y> coordinate that are provided must be relative to bin_window
-coordinates.  That is, I<x> and I<y> must come from an event on I<tree_view>
-where `event->window == C<gtk_tree_view_get_bin_window()>`.
+The I<x> and I<y> coordinate that are provided must be relative to bin_window coordinates.  That is, I<x> and I<y> must come from an event on I<tree_view> where `event->window == C<gtk_tree_view_get_bin_window()>`.
 
-For converting widget coordinates (eg. the ones you get from
-B<Gnome::Gtk3::Widget>::query-tooltip), please see
-C<gtk_tree_view_convert_widget_to_bin_window_coords()>.
+For converting widget coordinates (eg. the ones you get from B<Gnome::Gtk3::Widget>::query-tooltip), please see C<gtk_tree_view_convert_widget_to_bin_window_coords()>.
 
-The I<path>, I<column>, I<cell_x> and I<cell_y> arguments will be filled in
-likewise as for C<gtk_tree_view_get_path_at_pos()>.  Please see
-C<gtk_tree_view_get_path_at_pos()> for more information.
+The I<path>, I<column>, I<cell_x> and I<cell_y> arguments will be filled in likewise as for C<gtk_tree_view_get_path_at_pos()>.  Please see C<gtk_tree_view_get_path_at_pos()> for more information.
 
 Returns: C<1> if the area at the given coordinates is blank,
 C<0> otherwise.
@@ -1757,25 +1753,40 @@ sub gtk_tree_view_convert_tree_to_widget_coords ( N-GObject $tree_view, int32 $t
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_convert_widget_to_bin_window_coords:
+#TM:2:gtk_tree_view_convert_widget_to_bin_window_coords:ex-liststore-3.raku
 =begin pod
 =head2 [[gtk_] tree_view_] convert_widget_to_bin_window_coords
 
-Converts widget coordinates to coordinates for the bin_window
-(see C<gtk_tree_view_get_bin_window()>).
+Converts widget coordinates to coordinates for the bin_window (see C<gtk_tree_view_get_bin_window()>).
 
-
-  method gtk_tree_view_convert_widget_to_bin_window_coords ( Int $wx, Int $wy, Int $bx, Int $by )
+  method gtk_tree_view_convert_widget_to_bin_window_coords (
+    Int $wx, Int $wy
+    --> List
+  )
 
 =item Int $wx; X coordinate relative to the widget
 =item Int $wy; Y coordinate relative to the widget
-=item Int $bx; (out): return location for bin_window X coordinate
-=item Int $by; (out): return location for bin_window Y coordinate
+
+The returned List holds;
+=item Int $bx; bin_window X coordinate
+=item Int $by; bin_window Y coordinate
 
 =end pod
 
-sub gtk_tree_view_convert_widget_to_bin_window_coords ( N-GObject $tree_view, int32 $wx, int32 $wy, int32 $bx, int32 $by )
-  is native(&gtk-lib)
+sub gtk_tree_view_convert_widget_to_bin_window_coords (
+  N-GObject $tree_view, int32 $wx, int32 $wy --> List
+) {
+  _gtk_tree_view_convert_widget_to_bin_window_coords(
+    $tree_view, $wx, $wy, my int32 $bx, my int32 $by
+  );
+
+  ( $bx, $by)
+}
+
+sub _gtk_tree_view_convert_widget_to_bin_window_coords (
+  N-GObject $tree_view, int32 $wx, int32 $wy, int32 $bx is rw, int32 $by is rw
+) is native(&gtk-lib)
+  is symbol('gtk_tree_view_convert_widget_to_bin_window_coords')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -2244,16 +2255,12 @@ sub gtk_tree_view_get_level_indentation ( N-GObject $tree_view )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_set_tooltip_row:
 =begin pod
 =head2 [[gtk_] tree_view_] set_tooltip_row
 
-Sets the tip area of I<tooltip> to be the area covered by the row at I<path>.
-See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
-See also C<gtk_tooltip_set_tip_area()>.
-
+Sets the tip area of I<tooltip> to be the area covered by the row at I<path>. See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative. See also C<gtk_tooltip_set_tip_area()>.
 
   method gtk_tree_view_set_tooltip_row ( N-GObject $tooltip, N-GtkTreePath $path )
 
@@ -2262,41 +2269,41 @@ See also C<gtk_tooltip_set_tip_area()>.
 
 =end pod
 
-sub gtk_tree_view_set_tooltip_row ( N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path )
-  is native(&gtk-lib)
+sub gtk_tree_view_set_tooltip_row (
+  N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_set_tooltip_cell:
+#TM:2:gtk_tree_view_set_tooltip_cell:xt/ex-liststore-3.raku
 =begin pod
 =head2 [[gtk_] tree_view_] set_tooltip_cell
 
-Sets the tip area of I<tooltip> to the area I<path>, I<column> and I<cell> have
-in common.  For example if I<path> is C<Any> and I<column> is set, the tip
-area will be set to the full area covered by I<column>.  See also
-C<gtk_tooltip_set_tip_area()>.
+Sets the tip area of I<$tooltip> to the area I<$path>, I<$column> and I<$cell> have in common.  For example if I<$path> is undefined and I<$column> is set, the tip area will be set to the full area covered by I<$column>.  See also C<gtk_tooltip_set_tip_area()>.
 
-Note that if I<path> is not specified and I<cell> is set and part of a column
-containing the expander, the tooltip might not show and hide at the correct
-position.  In such cases I<path> must be set to the current node under the
-mouse cursor for this function to operate correctly.
+Note that if I<$path> is not specified and I<$cell> is set and part of a column containing the expander, the tooltip might not show and hide at the correct position.  In such cases I<path> must be set to the current node under the mouse cursor for this function to operate correctly.
 
 See also C<gtk_tree_view_set_tooltip_column()> for a simpler alternative.
 
-
-  method gtk_tree_view_set_tooltip_cell ( N-GObject $tooltip, N-GtkTreePath $path, N-GObject $column, N-GObject $cell )
+  method gtk_tree_view_set_tooltip_cell (
+    N-GObject $tooltip, N-GtkTreePath $path,
+    N-GObject $column, N-GObject $cell
+  )
 
 =item N-GObject $tooltip; a B<Gnome::Gtk3::Tooltip>
-=item N-GtkTreePath $path; (allow-none): a B<Gnome::Gtk3::TreePath> or C<Any>
-=item N-GObject $column; (allow-none): a B<Gnome::Gtk3::TreeViewColumn> or C<Any>
-=item N-GObject $cell; (allow-none): a B<Gnome::Gtk3::CellRenderer> or C<Any>
+=item N-GtkTreePath $path; a B<Gnome::Gtk3::TreePath> or C<Any>
+=item N-GObject $column; a B<Gnome::Gtk3::TreeViewColumn> or C<Any>
+=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer> or C<Any>
 
 =end pod
 
-sub gtk_tree_view_set_tooltip_cell ( N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path, N-GObject $column, N-GObject $cell )
-  is native(&gtk-lib)
+sub gtk_tree_view_set_tooltip_cell (
+  N-GObject $tree_view, N-GObject $tooltip, N-GtkTreePath $path,
+  N-GObject $column, N-GObject $cell
+) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_tooltip_context:
 =begin pod

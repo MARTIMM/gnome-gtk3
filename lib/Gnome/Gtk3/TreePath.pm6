@@ -221,8 +221,6 @@ Creates a new path with I<first_index> and I<varargs> as indices.
 
 Returns: A newly created B<Gnome::Gtk3::TreePath>-struct
 
-Since: 2.2
-
   method gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath  )
 
 =item Int list of indices
@@ -263,8 +261,6 @@ sub _gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
 Creates a new path with the given I<indices> array of I<length>.
 
 Returns: A newly created B<Gnome::Gtk3::TreePath>-struct
-
-Since: 3.12
 
   method gtk_tree_path_new_from_indicesv (
     Int $indices, UInt $length --> N-GtkTreePath

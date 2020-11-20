@@ -95,10 +95,6 @@ Create a new plain object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere.
-
-  multi method new ( N-GObject :$column! )
-
 =begin comment
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -121,33 +117,58 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::TreeViewColumn';
+  if self.^name eq 'Gnome::Gtk3::TreeViewColumn' #`{{ or %options<GtkTreeViewColumn> }} {
 
-  # process all named arguments
-  if ? %options<column> {
-    self.set-native-object(%options<column>);
-  }
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # process all named arguments
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists or %options<widget>:exists { }
+    elsif %options<build-id>:exists { }
+
+    else {
+      my $no;
 
 #`{{
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
+    if ? %options<column> {
+      my $no = %options<column>;
+      $no = $no-a.get-native-object-no-reffing
+        if $no-a.^can('get-native-object-no-reffing');
+#      self.set-native-object(%options<column>);
+    }
 }}
 
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
+#      #`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      if %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+#      }}
 
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_tree_view_column_new());
-  }
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
 
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkTreeViewColumn');
+      else {
+        $no = _gtk_tree_view_column_new;
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkTreeViewColumn');
+  }
 }
 
 #-------------------------------------------------------------------------------
@@ -169,7 +190,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_column_new:new()
+#TM:1:_gtk_tree_view_column_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] tree_view_column_new
 
@@ -181,9 +203,10 @@ Returns: A newly created B<Gnome::Gtk3::TreeViewColumn>.
 
 
 =end pod
+}}
 
-sub gtk_tree_view_column_new (  )
-  returns N-GObject
+sub _gtk_tree_view_column_new ( --> N-GObject )
+  is symbol('gtk_tree_view_column_new')
   is native(&gtk-lib)
   { * }
 
@@ -196,8 +219,6 @@ sub gtk_tree_view_column_new (  )
 Creates a new B<Gnome::Gtk3::TreeViewColumn> using I<area> to render its cells.
 
 Returns: A newly created B<Gnome::Gtk3::TreeViewColumn>.
-
-Since: 3.0
 
   method gtk_tree_view_column_new_with_area ( N-GObject $area --> N-GObject  )
 
@@ -537,8 +558,6 @@ sub gtk_tree_view_column_get_sizing ( N-GObject $tree_column )
 
 Returns the current X offset of this tree column in pixels.
 
-Since: 3.2
-
   method gtk_tree_view_column_get_x_offset ( --> Int  )
 
 =end pod
@@ -727,8 +746,6 @@ Sets the column to take available extra space.  This space is shared equally amo
 
 Along with “fixed-width”, the “expand” property changes when the column is resized by the user.
 
-Since: 2.4
-
   method gtk_tree_view_column_set_expand ( Int $expand )
 
 =item Int $expand; C<1> if the column should expand to fill available space.
@@ -745,8 +762,6 @@ sub gtk_tree_view_column_set_expand ( N-GObject $tree_column, int32 $expand )
 =head2 [[gtk_] tree_view_column_] get_expand
 
 Returns C<1> if the column expands to fill available space.
-
-Since: 2.4
 
   method gtk_tree_view_column_get_expand ( --> Int  )
 
@@ -1065,8 +1080,6 @@ sub gtk_tree_view_column_cell_is_visible ( N-GObject $tree_column )
 
 Sets the current keyboard focus to be at I<cell>, if the column contains 2 or more editable and activatable cells.
 
-Since: 2.2
-
   method gtk_tree_view_column_focus_cell ( Gnome::Gtk3::CellRenderer $cell )
 
 =item Gnome::Gtk3::CellRenderer $cell; A cell renderer
@@ -1109,8 +1122,6 @@ sub gtk_tree_view_column_cell_get_position ( N-GObject $tree_column, N-GObject $
 
 Flags the column, and the cell renderers added to this column, to have their sizes renegotiated.
 
-Since: 2.8
-
   method gtk_tree_view_column_queue_resize ( )
 
 
@@ -1127,8 +1138,6 @@ sub gtk_tree_view_column_queue_resize ( N-GObject $tree_column )
 
 Returns the B<Gnome::Gtk3::TreeView> wherein I<tree_column> has been inserted. If I<column> is currently not inserted in any tree view, C<Any> is returned.
 
-Since: 2.12
-
   method gtk_tree_view_column_get_tree_view ( --> N-GObject  )
 
 =end pod
@@ -1144,8 +1153,6 @@ sub gtk_tree_view_column_get_tree_view ( N-GObject $tree_column )
 =head2 [[gtk_] tree_view_column_] get_button
 
 Returns the button used in the treeview column header
-
-Since: 3.0
 
   method gtk_tree_view_column_get_button ( --> N-GObject  )
 
@@ -1361,8 +1368,6 @@ The B<Gnome::GObject::Value> type of property I<sort-order> is C<G_TYPE_ENUM>.
 
 Logical sort column ID this column sorts on when selected for sorting. Setting the sort column ID makes the column header
 clickable. Set to -1 to make the column unsortable.
-Since: 2.18
-
 
 The B<Gnome::GObject::Value> type of property I<sort-column-id> is C<G_TYPE_INT>.
 
@@ -1372,9 +1377,7 @@ The B<Gnome::GObject::Value> type of property I<sort-column-id> is C<G_TYPE_INT>
 
 The B<Gnome::Gtk3::CellArea> used to layout cell renderers for this column.
 If no area is specified when creating the tree view column with C<gtk_tree_view_column_new_with_area()>
-a horizontally oriented B<Gnome::Gtk3::CellAreaBox> will be used.
-Since: 3.0
-Widget type: GTK_TYPE_CELL_AREA
+a horizontally oriented B<Gnome::Gtk3::CellAreaBox> will be used.Widget type: GTK_TYPE_CELL_AREA
 
 The B<Gnome::GObject::Value> type of property I<cell-area> is C<G_TYPE_OBJECT>.
 =end pod
