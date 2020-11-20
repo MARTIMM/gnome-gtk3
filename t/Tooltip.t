@@ -1,0 +1,141 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::Gtk3::Tooltip;
+ok True, 'loads ok';
+
+done-testing;
+=finish
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::Tooltip $t;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  $t .= new;
+  isa-ok $t, Gnome::Gtk3::Tooltip, '.new()';
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::Tooltip', {
+  class MyClass is Gnome::Gtk3::Tooltip {
+    method new ( |c ) {
+      self.bless( :GtkTooltip, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Tooltip, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::Tooltip $t .= new;
+
+  sub test-property ( $type, Str $prop, Str $routine, $value ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $t.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    is $gv-value, $value, "property $prop";
+    $gv.clear-object;
+  }
+
+  # example call
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  #use Gnome::Glib::Main;
+  use Gnome::Gtk3::Main;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... ( 'any-args', Gnome::Gtk3::Tooltip :$widget #`{{ --> ...}} ) {
+
+      isa-ok $widget, Gnome::Gtk3::Tooltip;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Tooltip :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::Tooltip $t .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.container-add($m);
+
+  my SignalHandlers $sh .= new;
+  $t.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $t.start-thread(
+    $sh, 'signal-emitter',
+    # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
+}}
+
+#-------------------------------------------------------------------------------
+done-testing;
