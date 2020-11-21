@@ -1,5 +1,5 @@
 use v6;
-#use lib '../gnome-gobject/lib';
+use lib '../gnome-gobject/lib';
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
@@ -55,22 +55,22 @@ class X {
       my Gnome::Gtk3::TreePath $path := $pp[1];
       my Gnome::Gtk3::TreeViewColumn $column := $pp[2];
 
-note "xy: $x, $y, $cc[0], $cc[1], $pp[3], $pp[4], path: $path.to-string(), $column.get-title()";
+#note "xy: $x, $y, $cc[0], $cc[1], $pp[3], $pp[4], path: $path.to-string(), $column.get-title()";
 
 #note "tt: $n-tooltip.perl()";
 
     my Gnome::Gtk3::Tooltip $tooltip .= new(:native-object($n-tooltip));
     if $column.get-title eq 'Front Page' {
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
       $show-tooltip = 1;
       my Int $idx = $path.to-string.Int;
-note "set tooltip path $idx: {$tooltips[$idx].substr( 0, 20)} …";
+#note "set tooltip path $idx: {$tooltips[$idx].substr( 0, 20)} …";
       $tooltip.set-text($tooltips[$idx]);
 #      $tooltip.set-visible(True);
 
       $treeview.set-tooltip-cell( $tooltip, $path, $column, N-GObject);
 #      $treeview.set-tooltip-row( $tooltip, $path);
-Gnome::N::debug(:off);
+#Gnome::N::debug(:off);
     }
 #    note 'tv: ', $treeview.perl;
 #Gnome::N::debug(:off);
@@ -89,14 +89,14 @@ my Gnome::Gtk3::TreeIter $iter;
 # must initialize a pixbuf before a class type is known because
 # pixbuf is not a basic type like G_TYPE_INT or G_TYPE_DOUBLE.
 my %defaults = :width(80), :height(80), :preserve_aspect_ratio(True);
-my Array $Xtooltips = [
+my Array $tooltips = [
   'Albert Finney and Diane Cilento in Tom Jones (1963): \'Fielding\'s novel might have been made for the screen.\' Photograph: Everett Collection/ Rex Features',
 
   'Detail of the frontispiece of the fourth edition of The Pilgrim\'s Progress (1680). Photograph: Alamy',
 
   'On the island of Lilliput: a colour print from an 1860s edition of Gulliver’s Travels. Photograph: Alamy',
 ];
-my Array $tooltips = [
+my Array $Xtooltips = [
   't1',
   't2',
   't3',
