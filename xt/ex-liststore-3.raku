@@ -1,5 +1,5 @@
 use v6;
-use lib '../gnome-gobject/lib';
+#use lib '../gnome-gobject/lib';
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
