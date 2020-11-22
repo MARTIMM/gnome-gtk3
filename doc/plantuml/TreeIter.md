@@ -1,0 +1,117 @@
+```plantuml
+@startuml
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide members
+
+'Class and interface declarations
+class Gnome::N::TopLevelClassSupport < Catch all class >
+'Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+
+'Interface Gnome::GObject::Signal <Interface>
+'class Gnome::GObject::Signal <<(R,#80ffff)>>
+
+
+'Class dependencies
+'Gnome::GObject::Signal <|. Gnome::GObject::Object
+
+
+
+'Gnome::GObject::Object <|-- Gnome::Gtk3::Tooltip
+
+'Connections
+'Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Boxed
+
+'Gnome::GObject::Object <|-- Gnome::Gtk3::TreeSelection
+Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreeIter
+'Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreePath
+'Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreeIter
+'Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreePath
+@enduml
+```
+<!--
+'scale 0.9
+
+Interface Gnome::Gtk3::Buildable <Interface>
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
+
+Interface Gnome::Gtk3::Actionable <Interface>
+class Gnome::Gtk3::Actionable <<(R,#80ffff)>>
+
+Interface Gnome::Gtk3::Orientable <Interface>
+class Gnome::Gtk3::Orientable <<(R,#80ffff)>>
+
+class Gnome::Gtk3::Widget implements Gnome::Gtk3::Buildable
+
+class Gnome::Gtk3::Button implements Gnome::Gtk3::Actionable
+
+class Gnome::Gtk3::ScaleButton implements Gnome::Gtk3::Orientable
+
+'Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
+'Gnome::GObject::Object *-> Gnome::GObject::Signal
+
+Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
+Gnome::Gtk3::Bin <|--- Gnome::Gtk3::Button
+
+
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ToggleButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ColorButton
+'Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::CheckButton
+'Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::MenuButton
+'Gnome::Gtk3::CheckButton <|-- Gnome::Gtk3::RadioButton
+'Gnome::Gtk3::Button <|--- Gnome::Gtk3::FontButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LinkButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LockButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
+Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
+'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
+
+'Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
+
+
+'Interface Gnome::Gtk3::ColorChooser <Interface>
+'Gnome::Gtk3::ColorChooser <|-- Gnome::Gtk3::ColorButton
+
+'Interface Gnome::Gtk3::FontChooser <Interface>
+'Gnome::Gtk3::FontChooser <|-- Gnome::Gtk3::FontButton
+
+'Gnome::GObject <--[hidden]- Gnome::Gtk3
+
+-->
+
+<!--
+│   │   │   │   ├── GtkButton                   ♥ Button
+│   │   │   │   │   ├── GtkToggleButton         ToggleButton
+│   │   │   │   │   │   ├── GtkCheckButton      ♥ CheckButton
+│   │   │   │   │   │   │   ╰── GtkRadioButton  ♥ RadioButton
+│   │   │   │   │   │   ╰── GtkMenuButton       MenuButton
+│   │   │   │   │   ├── GtkColorButton          ColorButton
+│   │   │   │   │   ├── GtkFontButton
+│   │   │   │   │   ├── GtkLinkButton
+│   │   │   │   │   ├── GtkLockButton
+│   │   │   │   │   ├── GtkModelButton
+│   │   │   │   │   ╰── GtkScaleButton
+│   │   │   │   │       ╰── GtkVolumeButton
+
+│   │   │   │   ├── GtkButton                         b,ac
+│   │   │   │   │   ├── GtkToggleButton               b,ac
+│   │   │   │   │   │   ├── GtkCheckButton            b,ac
+│   │   │   │   │   │   │   ╰── GtkRadioButton        b,ac
+│   │   │   │   │   │   ╰── GtkMenuButton             b,ac
+│   │   │   │   │   ├── GtkColorButton                b,ac,cc
+│   │   │   │   │   ├── GtkFontButton                 b,ac,foc
+│   │   │   │   │   ├── GtkLinkButton                 b,ac
+│   │   │   │   │   ├── GtkLockButton                 b,ac
+│   │   │   │   │   ├── GtkModelButton                b,ac
+│   │   │   │   │   ╰── GtkScaleButton                b,o,ac
+│   │   │   │   │       ╰── GtkVolumeButton           b,o,ac
+
+├── GtkBuildable                                      b
+├── GtkActionable                                     ac
+├── GtkOrientable                                     o
+├── GtkColorChooser                                   cc
+├── GtkFontChooser                                    foc
+-->

@@ -15,47 +15,32 @@ Declaration
     unit class Gnome::Gtk3::TreeIter;
     also is Gnome::GObject::Boxed;
 
+Uml Diagram
+-----------
+
+![](plantuml/TreeIter.svg)
+
 Types
 =====
 
 class N-GtkTreeIter
 -------------------
 
-The **Gnome::Gtk3::TreeIter** is the primary structure for accessing a **Gnome::Gtk3::TreeModel**. Models are expected to put a unique integer in the *stamp* member, and put model-specific data in the three *user_data* members.
-
-  * Int $.stamp: a unique stamp to catch invalid iterators
-
-  * Pointer $.user_data: model-specific data
-
-  * Pointer $.user_data2: model-specific data
-
-  * Pointer $.user_data3: model-specific data
+The **Gnome::Gtk3::TreeIter** is the primary structure for accessing a **Gnome::Gtk3::TreeModel**. Tree iterators are not created by the users application but are returned from TreeModel implementations such as **Gnome::Gtk3::TreeStore**.
 
 Methods
 =======
-
-new
----
-
-Create an object taking the native object from elsewhere. `.is-valid()` will return True or False depending on the state of the provided object.
-
-    multi method new ( Gnome::Gtk3::TreeIter :$native-object! )
-
-tree-iter-is-valid
-------------------
-
-Method to test if the native object is valid.
-
-    method tree-iter-is-valid ( --> Bool )
 
 [gtk_] tree_iter_copy
 ---------------------
 
 Creates a dynamically allocated tree iterator as a copy of *iter*.
 
-This function is not intended for use in applications, because you can just copy the structs by value like so;
+This function is not intended for use in applications, because you can just copy the structures by value like so;
 
-    Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
+    Gnome::Gtk3::TreeIter $new_iter .= new(
+     :native-object($iter.get-native-object())
+    );
 
 You must free this iter with `clear-object()`.
 

@@ -10,11 +10,18 @@ use v6;
 
 A struct that specifies a TreeIter.
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::TreeIter;
   also is Gnome::GObject::Boxed;
+
+
+=head2 Uml Diagram
+
+![](plantuml/TreeIter.svg)
+
 
 =comment head2 Example
 
@@ -43,13 +50,16 @@ also is Gnome::GObject::Boxed;
 =begin pod
 =head2 class N-GtkTreeIter
 
-The B<Gnome::Gtk3::TreeIter> is the primary structure for accessing a B<Gnome::Gtk3::TreeModel>. Models are expected to put a unique integer in the I<stamp> member, and put model-specific data in the three I<user_data> members.
+The B<Gnome::Gtk3::TreeIter> is the primary structure for accessing a B<Gnome::Gtk3::TreeModel>. Tree iterators are not created by the users application but are returned from TreeModel implementations such as B<Gnome::Gtk3::TreeStore>.
+
+=begin comment
+Models are expected to put a unique integer in the I<stamp> member, and put model-specific data in the three I<user_data> members.
 
 =item Int $.stamp: a unique stamp to catch invalid iterators
 =item Pointer $.user_data: model-specific data
 =item Pointer $.user_data2: model-specific data
 =item Pointer $.user_data3: model-specific data
-
+=end comment
 =end pod
 
 #TT:1:N-GtkTreeIter:
@@ -88,15 +98,17 @@ class N-GtkTreeIter is export is repr('CStruct') {
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
+=begin comment
 =head2 new
 
 Create an object taking the native object from elsewhere. C<.is-valid()> will return True or False depending on the state of the provided object.
 
   multi method new ( Gnome::Gtk3::TreeIter :$native-object! )
 
+=end comment
 =end pod
 
-#TM:1:new(:native-object):
+#TM:4:new(:native-object):
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -156,9 +168,11 @@ method native-object-unref ( $n-native-object ) {
 
 Creates a dynamically allocated tree iterator as a copy of I<iter>.
 
-This function is not intended for use in applications, because you can just copy the structs by value like so;
+This function is not intended for use in applications, because you can just copy the structures by value like so;
 
-  Gnome::Gtk3::TreeIter $new_iter .= new(:widget($iter.get-native-object()));
+  Gnome::Gtk3::TreeIter $new_iter .= new(
+   :native-object($iter.get-native-object())
+  );
 
 You must free this iter with C<clear-object()>.
 
@@ -170,8 +184,11 @@ Returns: a newly-allocated copy of I<iter>
 
 =end pod
 
-sub gtk_tree_iter_copy ( N-GtkTreeIter $iter )
-  returns N-GtkTreeIter
+method copy ( --> N-GtkTreeIter ) {
+  gtk_tree_iter_copy(self.get-native-object);
+}
+
+sub gtk_tree_iter_copy ( N-GtkTreeIter $iter --> N-GtkTreeIter )
   is native(&gtk-lib)
   { * }
 
