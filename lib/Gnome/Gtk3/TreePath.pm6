@@ -6,15 +6,24 @@ use v6;
 
 =head1 Gnome::Gtk3::TreePath
 
-=head1 Description
-
 A struct that specifies a TreePath.
+
+
+=comment head1 Description
+=comment A struct that specifies a TreePath.
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::TreePath;
   also is Gnome::GObject::Boxed;
+
+
+=head2 Uml Diagram
+
+![](plantuml/TreePath.svg)
+
 
 =comment head2 Example
 
@@ -34,8 +43,6 @@ use Gnome::GObject::Boxed;
 use Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
-# /usr/include/gtk-3.0/gtk/INCLUDE
-# https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::TreePath:auth<github:MARTIMM>;
 also is Gnome::GObject::Boxed;
 #also is Gnome::GObject::Object;
@@ -56,8 +63,6 @@ class N-GtkTreePath
   is export
   { }
 
-#-------------------------------------------------------------------------------
-#has Bool $.tree-path-is-valid = False;
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
@@ -91,7 +96,7 @@ Create an object taking the native object from elsewhere.
 #TM:1:new(:first):
 #TM:1:new(:string):
 #TM:1:new(:indices):
-#TM:1:new(:native-object):
+#TM:4:new(:native-object):
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -252,7 +257,7 @@ sub _gtk_tree_path_new_from_indices ( *@indices --> N-GtkTreePath ) {
   $f( |@indices, -1)
 }
 
-#`{{ To me the above function is good enough
+#`{{ For me, the above function seems good enough
 #-------------------------------------------------------------------------------
 # TM:0:gtk_tree_path_new_from_indicesv:
 =begin pod
@@ -410,8 +415,6 @@ sub _gtk_tree_path_get_indices ( N-GtkTreePath $path )
 Returns the current indices of I<path>.
 
 This is an array of integers, each representing a node in a tree. It also returns the number of elements in the array.
-
-Since: 3.0
 
   method gtk_tree_path_get_indices_with_depth ( --> List  )
 
@@ -575,7 +578,9 @@ sub gtk_tree_path_down ( N-GtkTreePath $path )
 
 Returns C<1> if I<$descendant> is a descendant of this path or contained inside.
 
-  method gtk_tree_path_is_ancestor ( N-GtkTreePath $descendant --> Int  )
+  method gtk_tree_path_is_ancestor (
+    N-GtkTreePath $descendant --> Int
+  )
 
 =item N-GtkTreePath $descendant; another B<Gnome::Gtk3::TreePath>-struct
 
@@ -593,7 +598,9 @@ sub gtk_tree_path_is_ancestor ( N-GtkTreePath $path, N-GtkTreePath $descendant )
 
 Returns C<1> if this path is a descendant of I<$ancestor> or I<$ancestor> contains this path somewhere below it
 
-  method gtk_tree_path_is_descendant ( N-GtkTreePath $ancestor --> Int  )
+  method gtk_tree_path_is_descendant (
+    N-GtkTreePath $ancestor --> Int
+  )
 
 =item N-GtkTreePath $ancestor; another B<Gnome::Gtk3::TreePath>-struct
 

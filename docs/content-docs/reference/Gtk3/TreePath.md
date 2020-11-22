@@ -1,9 +1,6 @@
 Gnome::Gtk3::TreePath
 =====================
 
-Description
-===========
-
 A struct that specifies a TreePath.
 
 Synopsis
@@ -14,6 +11,11 @@ Declaration
 
     unit class Gnome::Gtk3::TreePath;
     also is Gnome::GObject::Boxed;
+
+Uml Diagram
+-----------
+
+![](plantuml/TreePath.svg)
 
 Types
 =====
@@ -107,8 +109,6 @@ Returns the current indices of *path*.
 
 This is an array of integers, each representing a node in a tree. It also returns the number of elements in the array.
 
-Since: 3.0
-
     method gtk_tree_path_get_indices_with_depth ( --> List  )
 
 Returns a list of
@@ -176,7 +176,9 @@ Moves *path* to point to the first child of the current path.
 
 Returns `1` if *$descendant* is a descendant of this path or contained inside.
 
-    method gtk_tree_path_is_ancestor ( N-GtkTreePath $descendant --> Int  )
+    method gtk_tree_path_is_ancestor (
+      N-GtkTreePath $descendant --> Int
+    )
 
   * N-GtkTreePath $descendant; another **Gnome::Gtk3::TreePath**-struct
 
@@ -185,7 +187,9 @@ Returns `1` if *$descendant* is a descendant of this path or contained inside.
 
 Returns `1` if this path is a descendant of *$ancestor* or *$ancestor* contains this path somewhere below it
 
-    method gtk_tree_path_is_descendant ( N-GtkTreePath $ancestor --> Int  )
+    method gtk_tree_path_is_descendant (
+      N-GtkTreePath $ancestor --> Int
+    )
 
   * N-GtkTreePath $ancestor; another **Gnome::Gtk3::TreePath**-struct
 
