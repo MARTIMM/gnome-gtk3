@@ -53,7 +53,9 @@ subtest 'Manipulations', {
   $tvc.set-title('book title');
   $tv.append-column($tvc);
 
-  my Gnome::Gtk3::TreeViewColumn $tvc2 .= new(:column($tv.get-column(0)));
+  my Gnome::Gtk3::TreeViewColumn $tvc2 .= new(
+    :native-object($tv.get-column(0))
+  );
   is $tvc2.get-title, 'book title', '.append-column() / .get-column()';
 }
 

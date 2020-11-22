@@ -131,18 +131,20 @@ submethod BUILD ( *%options ) {
     else {
       my $no;
 
-#`{{
-    if ? %options<column> {
-      my $no = %options<column>;
-      $no = $no-a.get-native-object-no-reffing
-        if $no-a.^can('get-native-object-no-reffing');
-#      self.set-native-object(%options<column>);
-    }
-}}
+      if ? %options<column> {
+        Gnome::N::deprecate(
+          '.new(:column)', '.new(:native-object)', '0.34.0', '0.39.0'
+        );
+        my $no = %options<column>;
+        $no = $no.get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+
+#        self.set-native-object(%options<column>);
+      }
 
 #      #`{{ use this when the module is not made inheritable
       # check if there are unknown options
-      if %options.elems {
+      elsif %options.elems {
         die X::Gnome.new(
           :message(
             'Unsupported, undefined, incomplete or wrongly typed options for ' ~
