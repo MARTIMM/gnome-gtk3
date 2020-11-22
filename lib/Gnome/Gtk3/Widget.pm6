@@ -276,6 +276,7 @@ Gnome::Gtk3::Widget implements
 
 ![](plantuml/Widget.svg)
 
+
 =head2 Example
 
   # create a button and set a tooltip
@@ -3712,6 +3713,7 @@ sub gtk_widget_get_margin_left ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+# deprecated. kept here to keep me from inserting :-/
 #TM:0:gtk_widget_set_margin_left
 =begin pod
 =head2 [[gtk_] widget_] set_margin_left
@@ -3732,6 +3734,7 @@ sub gtk_widget_set_margin_left ( N-GObject $widget, int32 $margin )
 
 
 #-------------------------------------------------------------------------------
+# deprecated. kept here to keep me from inserting :-/
 #TM:0:gtk_widget_get_margin_right
 =begin pod
 =head2 [[gtk_] widget_] get_margin_right
@@ -3752,6 +3755,7 @@ sub gtk_widget_get_margin_right ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
+# deprecated. kept here to keep me from inserting :-/
 #TM:0:gtk_widget_set_margin_right
 =begin pod
 =head2 [[gtk_] widget_] set_margin_right
