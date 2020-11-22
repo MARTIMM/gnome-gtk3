@@ -32,6 +32,7 @@ class X {
     $m.main-quit;
   }
 
+  # tips from https://www.reddit.com/r/learnpython/comments/b6dva1/gtk3_adding_tooltips_to_treeview_cells/
   method tooltip (
     Int $x, Int $y, Int $kb-mode, N-GObject $n-tooltip,
     Gnome::Gtk3::TreeView :_widget($treeview), Array :$tooltips
