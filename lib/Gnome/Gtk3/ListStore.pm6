@@ -14,37 +14,6 @@ The B<Gnome::Gtk3::ListStore> object is a list model for use with a B<Gnome::Gtk
 
 The B<Gnome::Gtk3::ListStore> can accept most GObject types as a column type, though it can’t accept all custom types.  Internally, it will keep a copy of data passed in (such as a string or a boxed pointer).  Columns that accept B<GObjects> are handled a little differently.  The B<Gnome::Gtk3::ListStore> will keep a reference to the object instead of copying the value.  As a result, if the object is modified, it is up to the application writer to call C<gtk_tree_model_row_changed()> to emit the  I<row-changed> signal.  This most commonly affects lists with B<Gnome::Gdk3::Pixbufs> stored.
 
-An example for creating a simple list store:
-
-  enum ColumnNames { < COLUMN_STRING COLUMN_INT COLUMN_BOOLEAN > };
-
-  my Gnome::Gtk3::TreePath $path;
-  my Gnome::Gtk3::TreeIter $iter;
-  my Gnome::Gtk3::ListStore $list-store .= new(
-    :field-types( G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN)
-  );
-
-  # Create 10 entries in the ListStore
-  for ^10 -> $i {
-
-    # Get data from somewhere
-    my Str $some-data = get-some-data($i);
-
-    # Add a new row to the model
-    $iter = $list-store.gtk-list-store-append;
-    $list-store.gtk-list-store-set(
-      $iter, COLUMN_STRING,   some_data,
-             COLUMN_INT,      i,
-             COLUMN_BOOLEAN,  0
-    );
-  }
-
-  # Modify a particular row, here it is the boolean value on the 5th row.
-  $path .= new(:string("4"));
-  $iter = $list-store.get-iter($path);
-  $path.clear-tree-path;
-  $list-store.gtk-list-store-set( $iter, COLUMN_BOOLEAN, 1);
-
 =head2 Atomic Operations
 
 It is important to note that only the method C<gtk_list_store_insert_with_values()>
@@ -109,6 +78,40 @@ B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::TreeStore>
 =comment  also does Gnome::Gtk3::TreeDragSource;
 =comment  also does Gnome::Gtk3::TreeDragDest;
 =comment  also does Gnome::Gtk3::TreeSortable;
+
+
+=head2 Example
+
+An example to create a simple list store:
+
+  enum ColumnNames { < COLUMN_STRING COLUMN_INT COLUMN_BOOLEAN > };
+
+  my Gnome::Gtk3::TreePath $path;
+  my Gnome::Gtk3::TreeIter $iter;
+  my Gnome::Gtk3::ListStore $list-store .= new(
+    :field-types( G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN)
+  );
+
+  # Create 10 entries in the ListStore
+  for ^10 -> $i {
+
+    # Get data from somewhere
+    my Str $some-data = get-some-data($i);
+
+    # Add a new row to the model
+    $iter = $list-store.gtk-list-store-append;
+    $list-store.gtk-list-store-set(
+      $iter, COLUMN_STRING,   some_data,
+             COLUMN_INT,      i,
+             COLUMN_BOOLEAN,  0
+    );
+  }
+
+  # Modify a particular row, here it is the boolean value on the 5th row.
+  $path .= new(:string("4"));
+  $iter = $list-store.get-iter($path);
+  $path.clear-tree-path;
+  $list-store.gtk-list-store-set( $iter, COLUMN_BOOLEAN, 1);
 
 =end pod
 #-------------------------------------------------------------------------------
