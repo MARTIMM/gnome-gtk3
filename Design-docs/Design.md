@@ -14,6 +14,11 @@ bundle exec jekyll serve
 scale 0.8
 ```
 
+# replace text in atom (with regex and case sensitive)
+## replace 'returns' for '-->'
+search: `\)\s+returns\s+([A-Za-z0-9_\[\]-]+)`
+replace `--> $1 )`
+
 # native sub search
 ```
   SomeModule.some-sub()
