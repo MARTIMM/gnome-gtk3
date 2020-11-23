@@ -29,13 +29,19 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new default tree path object. This refers to a row.
 
     multi method new ( )
 
+### :first
+
 Create a new tree path with first index. The string representation of this path is “0”.
 
     multi method new ( Bool :first! )
+
+### :string
 
 Create a new tree path object using a string. Creates a new **Gnome::Gtk3::TreePath**-struct initialized to *$string*.
 
@@ -43,13 +49,11 @@ Create a new tree path object using a string. Creates a new **Gnome::Gtk3::TreeP
 
     multi method new ( Str :$string! )
 
+### :indices
+
 Create a new tree path object using indices.
 
     multi method new ( Array :$indices! )
-
-Create an object taking the native object from elsewhere.
-
-    multi method new ( N-GtkTreePath :native-object! )
 
 [[gtk_] tree_path_] to_string
 -----------------------------

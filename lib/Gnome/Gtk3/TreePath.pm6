@@ -67,14 +67,19 @@ class N-GtkTreePath
 =begin pod
 =head1 Methods
 =head2 new
+=head3 default, no options
 
 Create a new default tree path object. This refers to a row.
 
   multi method new ( )
 
+=head3 :first
+
 Create a new tree path with first index. The string representation of this path is “0”.
 
   multi method new ( Bool :first! )
+
+=head3 :string
 
 Create a new tree path object using a string. Creates a new B<Gnome::Gtk3::TreePath>-struct initialized to I<$string>.
 
@@ -82,13 +87,17 @@ I<$string> is expected to be a colon separated list of numbers. For example, the
 
   multi method new ( Str :$string! )
 
+=head3 :indices
+
 Create a new tree path object using indices.
 
   multi method new ( Array :$indices! )
 
+=begin comment
 Create an object taking the native object from elsewhere.
 
   multi method new ( N-GtkTreePath :native-object! )
+=end comment
 
 =end pod
 
@@ -96,7 +105,7 @@ Create an object taking the native object from elsewhere.
 #TM:1:new(:first):
 #TM:1:new(:string):
 #TM:1:new(:indices):
-#TM:4:new(:native-object):
+#TM:4:new(:native-object):TopLevelSupportClass
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -276,8 +285,7 @@ Returns: A newly created B<Gnome::Gtk3::TreePath>-struct
 
 =end pod
 
-sub gtk_tree_path_new_from_indicesv ( int32 $indices, uint64 $length )
-  returns N-GtkTreePath
+sub gtk_tree_path_new_from_indicesv ( int32 $indices, uint64 $length --> N-GtkTreePath )
   is native(&gtk-lib)
   { * }
 }}
@@ -401,8 +409,7 @@ sub gtk_tree_path_get_indices ( N-GtkTreePath $path --> Array ) {
   $ix2
 }
 
-sub _gtk_tree_path_get_indices ( N-GtkTreePath $path )
-  returns CArray[int32]
+sub _gtk_tree_path_get_indices ( N-GtkTreePath $path --> CArray[int32] )
   is native(&gtk-lib)
   is symbol('gtk_tree_path_get_indices')
   { * }
@@ -438,7 +445,7 @@ sub gtk_tree_path_get_indices_with_depth ( N-GtkTreePath $path --> List ) {
 
 sub _gtk_tree_path_get_indices_with_depth (
   N-GtkTreePath $path, int32 $depth is rw
-) returns CArray[int32]
+--> CArray[int32] )
   is native(&gtk-lib)
   is symbol('gtk_tree_path_get_indices_with_depth')
   { * }
@@ -474,8 +481,7 @@ Returns: a new B<Gnome::Gtk3::TreePath>-struct
 
 =end pod
 
-sub gtk_tree_path_copy ( N-GtkTreePath $path )
-  returns N-GtkTreePath
+sub gtk_tree_path_copy ( N-GtkTreePath $path --> N-GtkTreePath )
   is native(&gtk-lib)
   { * }
 
@@ -498,8 +504,7 @@ Returns: -1, 0 or 1
 
 =end pod
 
-sub gtk_tree_path_compare ( N-GtkTreePath $a, N-GtkTreePath $b )
-  returns int32
+sub gtk_tree_path_compare ( N-GtkTreePath $a, N-GtkTreePath $b --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -533,8 +538,7 @@ the move was made
 
 =end pod
 
-sub gtk_tree_path_prev ( N-GtkTreePath $path )
-  returns int32
+sub gtk_tree_path_prev ( N-GtkTreePath $path --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -551,8 +555,7 @@ Returns: C<1> if I<path> has a parent, and the move was made
 
 =end pod
 
-sub gtk_tree_path_up ( N-GtkTreePath $path )
-  returns int32
+sub gtk_tree_path_up ( N-GtkTreePath $path --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -586,8 +589,7 @@ Returns C<1> if I<$descendant> is a descendant of this path or contained inside.
 
 =end pod
 
-sub gtk_tree_path_is_ancestor ( N-GtkTreePath $path, N-GtkTreePath $descendant )
-  returns int32
+sub gtk_tree_path_is_ancestor ( N-GtkTreePath $path, N-GtkTreePath $descendant --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -606,7 +608,6 @@ Returns C<1> if this path is a descendant of I<$ancestor> or I<$ancestor> contai
 
 =end pod
 
-sub gtk_tree_path_is_descendant ( N-GtkTreePath $path, N-GtkTreePath $ancestor )
-  returns int32
+sub gtk_tree_path_is_descendant ( N-GtkTreePath $path, N-GtkTreePath $ancestor --> int32 )
   is native(&gtk-lib)
   { * }
