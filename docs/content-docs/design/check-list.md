@@ -155,9 +155,9 @@ TextView                  |  |  |  |  |  |  |  |  |  |  |  |
 ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |
 ToolButton                |  |  |  |  |  |  |  |  |  |  |  |
 ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |
-TreeIter                  |b |  |  |  |  |  |  |  |  |  |  |
-TreeModel                 |i |  |  |  |  |  |  |  |  |  |  |
-TreePath                  |b |  |  |  |  |  |  |  |  |  |  |
+TreeIter                  |b | ✗| 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
+TreeModel                 |i | ✗| 🗸| 🗸|  |  |  |  |  |  |  |
+TreePath                  |b | ✗| 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
 TreeRowReference          |b |  |  |  |  |  |  |  |  |  |  |
 TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | 🗸|  |  |  |  |  |  |  |  |  |
