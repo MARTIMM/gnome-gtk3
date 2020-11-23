@@ -88,6 +88,12 @@ B<Gnome::Gtk3::TreeViewColumn>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::Tr
   also is Gnome::Gtk3::Container;
 =comment also does Gnome::Gtk3::Scrollable.
 
+
+=head2 Uml Diagram
+
+![](plantuml/TreeView.svg)
+
+
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -162,28 +168,33 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new plain object.
 
   multi method new ( )
+
+=head3 :model
 
 Create a new tree view object using a model. This can be e.g. a B<Gnome::Gtk3::ListStore> or B<Gnome::Gtk3::TreeStore>.
 
   multi method new ( Bool :model! )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=begin comment
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
-
+=end comment
 =end pod
 
 #TM:1:new():
 #TM:1:new(:model):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelSupportClass
+#TM:4:new(:build-id):Object
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -209,14 +220,14 @@ submethod BUILD ( *%options ) {
 
       # process all named arguments
       if ? %options<model> {
-        my $model = %options<model>;
-        $model .= get-native-object-no-reffing
-          if $model.^can('get-native-object-no-reffing');
-        $no = gtk_tree_view_new_with_model($model);
+        $no = %options<model>;
+        $no .= get-native-object-no-reffing
+          if $no.^can('get-native-object-no-reffing');
+        $no = _gtk_tree_view_new_with_model($no);
       }
 
       else {
-        $no = gtk_tree_view_new();
+        $no = _gtk_tree_view_new();
       }
 
       self.set-native-object($no);
@@ -235,6 +246,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_tree_view_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  #try { $s = self._scrollable_interface($native-sub); } unless ?$s;
 
   self.set-class-name-of-sub('GtkTreeView');
   $s = callsame unless ?$s;
@@ -243,7 +255,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_tree_view_new:new()
+#TM:2:_gtk_tree_view_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] tree_view_new
 
@@ -252,27 +265,29 @@ Creates a new B<Gnome::Gtk3::TreeView> widget.
   method gtk_tree_view_new ( --> N-GObject  )
 
 =end pod
-
-sub gtk_tree_view_new (  )
-  returns N-GObject
+}}
+sub _gtk_tree_view_new ( --> N-GObject )
+  is symbol('gtk_tree_view_new')
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_new_with_model:new(:model)
+#TM:1:_gtk_tree_view_new_with_model:new(:model)
+#`{{
 =begin pod
 =head2 [[gtk_] tree_view_] new_with_model
 
 Creates a new B<Gnome::Gtk3::TreeView> widget with the model initialized to I<model>.
 
-  method gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject  )
+  method gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject )
 
 =item N-GObject $model; the model.
 
 =end pod
+}}
 
-sub gtk_tree_view_new_with_model ( N-GObject $model )
-  returns N-GObject
+sub _gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject )
+  is symbol('gtk_tree_view_new_with_model')
   is native(&gtk-lib)
   { * }
 
@@ -281,19 +296,15 @@ sub gtk_tree_view_new_with_model ( N-GObject $model )
 =begin pod
 =head2 [[gtk_] tree_view_] get_model
 
-Returns the model the B<Gnome::Gtk3::TreeView> is based on.  Returns C<Any> if the
-model is unset.
+Returns the model the B<Gnome::Gtk3::TreeView> is based on.  Returns C<Any> if the model is unset.
 
-Returns: (transfer none) (nullable): A B<Gnome::Gtk3::TreeModel>, or C<Any> if
-none is currently being used.
+Returns: A B<Gnome::Gtk3::TreeModel>, or C<Any> if none is currently being used.
 
   method gtk_tree_view_get_model ( --> N-GObject  )
 
-
 =end pod
 
-sub gtk_tree_view_get_model ( N-GObject $tree_view )
-  returns N-GObject
+sub gtk_tree_view_get_model ( N-GObject $tree_view --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -302,9 +313,7 @@ sub gtk_tree_view_get_model ( N-GObject $tree_view )
 =begin pod
 =head2 [[gtk_] tree_view_] set_model
 
-Sets the model for a B<Gnome::Gtk3::TreeView>.  If the I<tree_view> already has a model
-set, it will remove it before setting the new model.  If I<model> is C<Any>,
-then it will unset the old model.
+Sets the model for a B<Gnome::Gtk3::TreeView>.  If the I<tree_view> already has a model set, it will remove it before setting the new model.  If I<model> is C<Any>, then it will unset the old model.
 
   method gtk_tree_view_set_model ( N-GObject $model )
 
@@ -316,7 +325,6 @@ sub gtk_tree_view_set_model ( N-GObject $tree_view, N-GObject $model )
   is native(&gtk-lib)
   { * }
 
-#`{{}}
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_get_selection:
 =begin pod
@@ -328,8 +336,7 @@ Gets the B<Gnome::Gtk3::TreeSelection> associated with this I<tree_view>.
 
 =end pod
 
-sub gtk_tree_view_get_selection ( N-GObject $tree_view )
-  returns N-GObject
+sub gtk_tree_view_get_selection ( N-GObject $tree_view --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -345,8 +352,7 @@ Returns C<1> if the headers on the I<tree_view> are visible.
 
 =end pod
 
-sub gtk_tree_view_get_headers_visible ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_headers_visible ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -376,7 +382,6 @@ Resizes all columns to their optimal width. Only works after the treeview has be
 
   method gtk_tree_view_columns_autosize ( )
 
-
 =end pod
 
 sub gtk_tree_view_columns_autosize ( N-GObject $tree_view )
@@ -390,13 +395,11 @@ sub gtk_tree_view_columns_autosize ( N-GObject $tree_view )
 
 Returns C<1> if all header columns are clickable, otherwise C<0>
 
-
   method gtk_tree_view_get_headers_clickable ( --> Int  )
 
 =end pod
 
-sub gtk_tree_view_get_headers_clickable ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_headers_clickable ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -424,13 +427,11 @@ sub gtk_tree_view_set_headers_clickable ( N-GObject $tree_view, int32 $setting )
 
 Gets the setting set by C<gtk_tree_view_set_activate_on_single_click()>. The method returns C<1> if row-activated will be emitted on a single click.
 
-
-  method gtk_tree_view_get_activate_on_single_click ( --> Int  )
+  method gtk_tree_view_get_activate_on_single_click ( --> Int )
 
 =end pod
 
-sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -441,10 +442,9 @@ sub gtk_tree_view_get_activate_on_single_click ( N-GObject $tree_view )
 
 Cause the  I<row-activated> signal to be emitted on a single click instead of a double click.
 
+  method gtk_tree_view_set_activate_on_single_click ( Bool $single )
 
-  method gtk_tree_view_set_activate_on_single_click ( Int $single )
-
-=item Int $single; C<1> to emit row-activated on a single click
+=item Bool $single; C<True> to emit row-activated on a single click
 
 =end pod
 
@@ -457,7 +457,7 @@ sub gtk_tree_view_set_activate_on_single_click ( N-GObject $tree_view, int32 $si
 =begin pod
 =head2 [[gtk_] tree_view_] append_column
 
-Appends I<$column> to the list of columns. If this tree view has “fixed_height” mode enabled, then I<$column> must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Appends I<$column> to the list of columns. If this tree view has “fixed_height” mode enabled, then I<$column> must have its “sizing” property set to be C<GTK_TREE_VIEW_COLUMN_FIXED>.
 
 Returns: The number of columns in I<tree_view> after appending.
 
@@ -470,8 +470,7 @@ Returns: The number of columns in I<tree_view> after appending.
 
 =end pod
 
-sub gtk_tree_view_append_column ( N-GObject $tree_view, N-GObject $column )
-  returns int32
+sub gtk_tree_view_append_column ( N-GObject $tree_view, N-GObject $column --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -480,7 +479,7 @@ sub gtk_tree_view_append_column ( N-GObject $tree_view, N-GObject $column )
 =begin pod
 =head2 [[gtk_] tree_view_] remove_column
 
-Removes I<column> from I<tree_view>.
+Removes I<$column> from this I<tree_view>.
 
 Returns: The number of columns in I<tree_view> after removing.
 
@@ -490,8 +489,7 @@ Returns: The number of columns in I<tree_view> after removing.
 
 =end pod
 
-sub gtk_tree_view_remove_column ( N-GObject $tree_view, N-GObject $column )
-  returns int32
+sub gtk_tree_view_remove_column ( N-GObject $tree_view, N-GObject $column --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -500,22 +498,20 @@ sub gtk_tree_view_remove_column ( N-GObject $tree_view, N-GObject $column )
 =begin pod
 =head2 [[gtk_] tree_view_] insert_column
 
-This inserts the I<column> into the I<tree_view> at I<position>.  If I<position> is
--1, then the column is inserted at the end. If I<tree_view> has
-“fixed_height” mode enabled, then I<column> must have its “sizing” property
-set to be GTK_TREE_VIEW_COLUMN_FIXED.
+This inserts the I<$column> into the I<tree_view> at I<$position>.  If I<$position> is -1, then the column is inserted at the end. If I<tree_view> has “fixed_height” mode enabled, then I<$column> must have its “sizing” property set to be C<GTK_TREE_VIEW_COLUMN_FIXED>.
 
 Returns: The number of columns in I<tree_view> after insertion.
 
-  method gtk_tree_view_insert_column ( N-GObject $column, Int $position --> Int  )
+  method gtk_tree_view_insert_column (
+    N-GObject $column, Int $position --> Int
+  )
 
 =item N-GObject $column; The B<Gnome::Gtk3::TreeViewColumn> to be inserted.
 =item Int $position; The position to insert I<column> in.
 
 =end pod
 
-sub gtk_tree_view_insert_column ( N-GObject $tree_view, N-GObject $column, int32 $position )
-  returns int32
+sub gtk_tree_view_insert_column ( N-GObject $tree_view, N-GObject $column, int32 $position --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -526,7 +522,7 @@ sub gtk_tree_view_insert_column ( N-GObject $tree_view, N-GObject $column, int32
 =comment head2 [gtk_tree_view_] insert_column_with_attributes
 =head2 insert-column-with-attributes
 
-Creates a new B<Gnome::Gtk3::TreeViewColumn> and inserts it into the I<tree_view> at I<position>.  If I<position> is -1, then the newly created column is inserted at the end.  The column is initialized with the attributes given. If I<tree_view> has “fixed_height” mode enabled, then the new column will have its sizing property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Creates a new B<Gnome::Gtk3::TreeViewColumn> and inserts it into the I<tree_view> at I<$position>.  If I<$position> is -1, then the newly created column is inserted at the end.  The column is initialized with the attributes given. If I<tree_view> has “fixed_height” mode enabled, then the new column will have its sizing property set to be C<GTK_TREE_VIEW_COLUMN_FIXED>.
 
 Returns: The number of columns in this treeview after insertion.
 
@@ -568,8 +564,8 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
     :returns(int32)
   );
 
-note "S: ", $signature.perl;
-note "A: ", (self.get-native-object, |@attrs, 0).join(', ');
+#note "S: ", $signature.perl;
+#note "A: ", (self.get-native-object, |@attrs, 0).join(', ');
 
   # get a pointer to the sub, then cast it to a sub with the proper
   # signature. after that, the sub can be called, returning a value.
@@ -607,8 +603,7 @@ Returns: number of columns in the tree view post-insert
 
 =end pod
 
-sub gtk_tree_view_insert_column_with_data_func ( N-GObject $tree_view, int32 $position, Str $title, N-GObject $cell, GtkTreeCellDataFunc $func, Pointer $data, GDestroyNotify $dnotify )
-  returns int32
+sub gtk_tree_view_insert_column_with_data_func ( N-GObject $tree_view, int32 $position, Str $title, N-GObject $cell, GtkTreeCellDataFunc $func, Pointer $data, GDestroyNotify $dnotify --> int32 )
   is native(&gtk-lib)
   { * }
 }}
@@ -628,8 +623,7 @@ Returns: The number of columns in the I<tree_view>
 
 =end pod
 
-sub gtk_tree_view_get_n_columns ( N-GObject $tree_view )
-  returns uint32
+sub gtk_tree_view_get_n_columns ( N-GObject $tree_view --> uint32 )
   is native(&gtk-lib)
   { * }
 
@@ -646,8 +640,7 @@ Gets the B<Gnome::Gtk3::TreeViewColumn> at the given position in the B<tree_view
 
 =end pod
 
-sub gtk_tree_view_get_column ( N-GObject $tree_view, int32 $n )
-  returns N-GObject
+sub gtk_tree_view_get_column ( N-GObject $tree_view, int32 $n --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -666,8 +659,7 @@ Returns: (element-type B<Gnome::Gtk3::TreeViewColumn>) (transfer container): A l
 
 =end pod
 
-sub gtk_tree_view_get_columns ( N-GObject $tree_view )
-  returns N-GList
+sub gtk_tree_view_get_columns ( N-GObject $tree_view --> N-GList )
   is native(&gtk-lib)
   { * }
 
@@ -727,8 +719,7 @@ Returns: (transfer none): The expander column.
 
 =end pod
 
-sub gtk_tree_view_get_expander_column ( N-GObject $tree_view )
-  returns N-GObject
+sub gtk_tree_view_get_expander_column ( N-GObject $tree_view --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -911,8 +902,7 @@ Returns: C<1> if the row existed and had children
 
 =end pod
 
-sub gtk_tree_view_expand_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 $open_all )
-  returns int32
+sub gtk_tree_view_expand_row ( N-GObject $tree_view, N-GtkTreePath $path, int32 $open_all --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -931,8 +921,7 @@ Returns: C<1> if the row was collapsed.
 
 =end pod
 
-sub gtk_tree_view_collapse_row ( N-GObject $tree_view, N-GtkTreePath $path )
-  returns int32
+sub gtk_tree_view_collapse_row ( N-GObject $tree_view, N-GtkTreePath $path --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -967,8 +956,7 @@ Returns C<1> if the node pointed to by I<$path> is expanded.
 
 =end pod
 
-sub gtk_tree_view_row_expanded ( N-GObject $tree_view, N-GtkTreePath $path )
-  returns int32
+sub gtk_tree_view_row_expanded ( N-GObject $tree_view, N-GtkTreePath $path --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1017,8 +1005,7 @@ Returns: C<1> if the tree can be reordered.
 
 =end pod
 
-sub gtk_tree_view_get_reorderable ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_reorderable ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1126,8 +1113,7 @@ Returns: A native B<Gnome::Gdk3::Window>, or C<Any> when the I<tree_view> hasn�
 
 =end pod
 
-sub gtk_tree_view_get_bin_window ( N-GObject $tree_view )
-  returns N-GObject
+sub gtk_tree_view_get_bin_window ( N-GObject $tree_view --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -1289,8 +1275,7 @@ Returns: C<1>, if valid paths were placed in I<start_path> and I<end_path>.
 
 =end pod
 
-sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, N-GtkTreePath $start_path, N-GtkTreePath $end_path )
-  returns int32
+sub gtk_tree_view_get_visible_range ( N-GObject $tree_view, N-GtkTreePath $start_path, N-GtkTreePath $end_path --> int32 )
   is native(&gtk-lib)
   { * }
 }}
@@ -1324,8 +1309,7 @@ C<0> otherwise.
 
 =end pod
 
-sub gtk_tree_view_is_blank_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, N-GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y )
-  returns int32
+sub gtk_tree_view_is_blank_at_pos ( N-GObject $tree_view, int32 $x, int32 $y, N-GtkTreePath $path, N-GObject $column, int32 $cell_x, int32 $cell_y --> int32 )
   is native(&gtk-lib)
   { * }
 }}
@@ -1468,8 +1452,7 @@ is indeed the case.
 
 =end pod
 
-sub gtk_tree_view_get_dest_row_at_pos ( N-GObject $tree_view, int32 $drag_x, int32 $drag_y, N-GtkTreePath $path, int32 $pos )
-  returns int32
+sub gtk_tree_view_get_dest_row_at_pos ( N-GObject $tree_view, int32 $drag_x, int32 $drag_y, N-GtkTreePath $path, int32 $pos --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1489,8 +1472,7 @@ Returns: (transfer full): a newly-allocated surface of the drag icon.
 
 =end pod
 
-sub gtk_tree_view_create_row_drag_icon ( N-GObject $tree_view, N-GtkTreePath $path )
-  returns cairo_surface_t
+sub gtk_tree_view_create_row_drag_icon ( N-GObject $tree_view, N-GtkTreePath $path --> cairo_surface_t )
   is native(&gtk-lib)
   { * }
 }}
@@ -1531,8 +1513,7 @@ Returns: whether or not to let the user search interactively
 
 =end pod
 
-sub gtk_tree_view_get_enable_search ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_enable_search ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1550,8 +1531,7 @@ Returns: the column the interactive search code searches in.
 
 =end pod
 
-sub gtk_tree_view_get_search_column ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_search_column ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1595,8 +1575,7 @@ Returns: the currently used compare function for the search code.
 
 =end pod
 
-sub gtk_tree_view_get_search_equal_func ( N-GObject $tree_view )
-  returns GtkTreeViewSearchEqualFunc
+sub gtk_tree_view_get_search_equal_func ( N-GObject $tree_view --> GtkTreeViewSearchEqualFunc )
   is native(&gtk-lib)
   { * }
 }}
@@ -1639,8 +1618,7 @@ Returns: (transfer none): the entry currently in use as search entry.
 
 =end pod
 
-sub gtk_tree_view_get_search_entry ( N-GObject $tree_view )
-  returns N-GObject
+sub gtk_tree_view_get_search_entry ( N-GObject $tree_view --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -1681,8 +1659,7 @@ Returns: the currently used function for positioning the search dialog.
 
 =end pod
 
-sub gtk_tree_view_get_search_position_func ( N-GObject $tree_view )
-  returns GtkTreeViewSearchPositionFunc
+sub gtk_tree_view_get_search_position_func ( N-GObject $tree_view --> GtkTreeViewSearchPositionFunc )
   is native(&gtk-lib)
   { * }
 }}
@@ -1892,8 +1869,7 @@ Returns: C<1> if I<tree_view> is in fixed height mode
 
 =end pod
 
-sub gtk_tree_view_get_fixed_height_mode ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_fixed_height_mode ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1933,8 +1909,7 @@ Returns: C<1> if I<tree_view> is in hover selection mode
 
 =end pod
 
-sub gtk_tree_view_get_hover_selection ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_hover_selection ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -1973,8 +1948,7 @@ Returns: C<1> if I<tree_view> is in hover expansion mode
 
 =end pod
 
-sub gtk_tree_view_get_hover_expand ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_hover_expand ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2015,8 +1989,7 @@ Returns: C<1> if rubber banding in I<tree_view> is enabled.
 
 =end pod
 
-sub gtk_tree_view_get_rubber_banding ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_rubber_banding ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2037,8 +2010,7 @@ done in I<tree_view>.
 
 =end pod
 
-sub gtk_tree_view_is_rubber_banding_active ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_is_rubber_banding_active ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 #`{{
@@ -2057,8 +2029,7 @@ Returns: the current row separator function.
 
 =end pod
 
-sub gtk_tree_view_get_row_separator_func ( N-GObject $tree_view )
-  returns GtkTreeViewRowSeparatorFunc
+sub gtk_tree_view_get_row_separator_func ( N-GObject $tree_view --> GtkTreeViewRowSeparatorFunc )
   is native(&gtk-lib)
   { * }
 }}
@@ -2102,8 +2073,7 @@ are enabled.
 
 =end pod
 
-sub gtk_tree_view_get_grid_lines ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_grid_lines ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2142,8 +2112,7 @@ otherwise.
 
 =end pod
 
-sub gtk_tree_view_get_enable_tree_lines ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_enable_tree_lines ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2206,8 +2175,7 @@ otherwise.
 
 =end pod
 
-sub gtk_tree_view_get_show_expanders ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_show_expanders ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2250,8 +2218,7 @@ I<tree_view>.  A return value of 0 means that this feature is disabled.
 
 =end pod
 
-sub gtk_tree_view_get_level_indentation ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_level_indentation ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
@@ -2335,8 +2302,7 @@ Returns: whether or not the given tooltip context points to a row.
 
 =end pod
 
-sub gtk_tree_view_get_tooltip_context ( N-GObject $tree_view, int32 $x, int32 $y, int32 $keyboard_tip, N-GObject $model, N-GtkTreePath $path, GtkTreeIter $iter )
-  returns int32
+sub gtk_tree_view_get_tooltip_context ( N-GObject $tree_view, int32 $x, int32 $y, int32 $keyboard_tip, N-GObject $model, N-GtkTreePath $path, GtkTreeIter $iter --> int32 )
   is native(&gtk-lib)
   { * }
 }}
@@ -2379,14 +2345,11 @@ displaying tooltips on I<tree_view>’s rows.
 Returns: the index of the tooltip column that is currently being
 used, or -1 if this is disabled.
 
-
   method gtk_tree_view_get_tooltip_column ( --> Int  )
-
 
 =end pod
 
-sub gtk_tree_view_get_tooltip_column ( N-GObject $tree_view )
-  returns int32
+sub gtk_tree_view_get_tooltip_column ( N-GObject $tree_view --> int32 )
   is native(&gtk-lib)
   { * }
 
