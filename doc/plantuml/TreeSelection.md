@@ -13,16 +13,16 @@ Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
 
 
-'Connections
+'Class dependencies
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Signal <|. Gnome::GObject::Object
-Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Boxed
+'Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Boxed
 
 Gnome::GObject::Object <|-- Gnome::Gtk3::TreeSelection
-Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreeIter
-Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreePath
-Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreeIter
-Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreePath
+'Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreeIter
+'Gnome::GObject::Boxed <|-- Gnome::Gtk3::TreePath
+'Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreeIter
+'Gnome::Gtk3::TreeSelection -->  Gnome::Gtk3::TreePath
 @enduml
 ```
 <!--
