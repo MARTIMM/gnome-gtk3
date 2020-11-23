@@ -38,9 +38,10 @@ my Int $pb-type = $pb.get-class-gtype;
 #note "Pixbuf type: $pb-type";
 
 my Gnome::Gtk3::Window $w .= new(:title('List store example'));
-#$w.set-position(GTK_WIN_POS_MOUSE);
+$w.set-position(GTK_WIN_POS_MOUSE);
+$w.set-keep-above(True);
 $w.set-border-width(10);
-$w.set-default-size( 270, 250);
+#$w.set-default-size( 270, 250);
 
 my Gnome::Gtk3::Grid $g .= new;
 $w.gtk-container-add($g);
@@ -115,12 +116,13 @@ my Array $data = [
   ]
 ];
 
-#Gnome::N::debug(:on);
+Gnome::N::debug(:on);
 for @$data -> $row {
 #note "Insert: ", $row.kv.join(', ');
   $iter = $ls.gtk-list-store-append;
   $ls.gtk-list-store-set( $iter, |$row.kv);
 }
+Gnome::N::debug(:off);
 
 my X $x .= new;
 $w.register-signal( $x, 'exit-gui', 'destroy');

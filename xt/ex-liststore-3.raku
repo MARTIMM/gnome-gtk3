@@ -39,9 +39,6 @@ class X {
     --> int32
   ) {
 
-#CATCH {.note};
-#Gnome::N::debug(:on);
-
     my int32 $show-tooltip = 0;
 
     # convert widget coordinates into those of the treeview
@@ -56,25 +53,16 @@ class X {
       my Gnome::Gtk3::TreePath $path := $pp[1];
       my Gnome::Gtk3::TreeViewColumn $column := $pp[2];
 
-#note "xy: $x, $y, $cc[0], $cc[1], $pp[3], $pp[4], path: $path.to-string(), $column.get-title()";
+      # check if we are at the proper column, i.e. the last one.
+      if $column.get-title eq 'Front Page' {
+        $show-tooltip = 1;
 
-#note "tt: $n-tooltip.perl()";
+        my Gnome::Gtk3::Tooltip $tooltip .= new(:native-object($n-tooltip));
+        my Int $idx = $path.to-string.Int;
+        $tooltip.set-text($tooltips[$idx]);
 
-    my Gnome::Gtk3::Tooltip $tooltip .= new(:native-object($n-tooltip));
-    if $column.get-title eq 'Front Page' {
-#Gnome::N::debug(:on);
-      $show-tooltip = 1;
-      my Int $idx = $path.to-string.Int;
-#note "set tooltip path $idx: {$tooltips[$idx].substr( 0, 20)} …";
-      $tooltip.set-text($tooltips[$idx]);
-#      $tooltip.set-visible(True);
-
-      $treeview.set-tooltip-cell( $tooltip, $path, $column, N-GObject);
-#      $treeview.set-tooltip-row( $tooltip, $path);
-#Gnome::N::debug(:off);
-    }
-#    note 'tv: ', $treeview.perl;
-#Gnome::N::debug(:off);
+        $treeview.set-tooltip-cell( $tooltip, $path, $column, N-GObject);
+      }
 
       $path.clear-object;
     }
@@ -96,11 +84,6 @@ my Array $tooltips = [
   'Detail of the frontispiece of the fourth edition of The Pilgrim\'s Progress (1680). Photograph: Alamy',
 
   'On the island of Lilliput: a colour print from an 1860s edition of Gulliver’s Travels. Photograph: Alamy',
-];
-my Array $Xtooltips = [
-  't1',
-  't2',
-  't3',
 ];
 
 my Gnome::Gdk3::Pixbuf $b1 .= new( :file<xt/data/b1-tomj.jpg>, |%defaults);
