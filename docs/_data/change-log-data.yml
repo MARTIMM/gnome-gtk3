@@ -1,3 +1,6 @@
+- 2020-11-24 0.34.1:
+  - TreeModel docs
+
 - 2020-11-15 0.34.0:
   - Add module **Gnome::Gtk3::Tooltip**.
   - Bugfixes in the TreeView set of modules.
