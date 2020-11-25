@@ -302,7 +302,7 @@ sub gtk_tree_store_set_value (
   );
 
   my Gnome::GObject::Value $v;
-  my $type = gtk_tree_model_get_column_type( $tree_store, $column);
+  my UInt $type = gtk_tree_model_get_column_type( $tree_store, $column);
   given $type {
     when G_TYPE_OBJECT {
       $v .= new( :$type, :value($value.get-native-object));
@@ -369,7 +369,7 @@ sub gtk_tree_store_set (
   my @column-values = ();
   my Gnome::GObject::Value $v;
   for @column-value-list -> $c, $value {
-    my $type = gtk_tree_model_get_column_type( $tree_store, $c);
+    my UInt $type = gtk_tree_model_get_column_type( $tree_store, $c);
 
     @column-values.push: $c;
     given $type {
@@ -649,7 +649,7 @@ sub gtk_tree_store_insert_with_values (
     @column-values.push: $c;
 
     # column value
-    my $type = gtk_tree_model_get_column_type( $tree_store, $c);
+    my UInt $type = gtk_tree_model_get_column_type( $tree_store, $c);
     given $type {
       when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
       when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }

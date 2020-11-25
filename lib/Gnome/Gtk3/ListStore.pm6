@@ -369,8 +369,12 @@ sub gtk_list_store_set_value (
     Parameter.new(type => N-GValue)
   );
 }}
+
+#TODO gtk_tree_model_get_column_type should become self.get-column-type()
+# this means sub -> method or something else...
+
   my Gnome::GObject::Value $v;
-  my $type = gtk_tree_model_get_column_type( $list_store, $column);
+  my UInt $type = gtk_tree_model_get_column_type( $list_store, $column);
   given $type {
     when G_TYPE_OBJECT {
       $v .= new( :$type, :value($value.get-native-object));
@@ -444,7 +448,7 @@ sub gtk_list_store_set (
   my @column-values = ();
   my Gnome::GObject::Value $v;
   for @column-value-list -> $c, $value {
-    my $type = gtk_tree_model_get_column_type( $list_store, $c);
+    my UInt $type = gtk_tree_model_get_column_type( $list_store, $c);
 
     @column-values.push: $c;
     given $type {
@@ -716,7 +720,7 @@ sub gtk_list_store_insert_with_values (
     @column-values.push: $c;
 
     # column value
-    my $type = gtk_tree_model_get_column_type( $list_store, $c);
+    my UInt $type = gtk_tree_model_get_column_type( $list_store, $c);
     given $type {
       when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
       when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
