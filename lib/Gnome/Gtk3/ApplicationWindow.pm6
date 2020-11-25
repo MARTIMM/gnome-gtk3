@@ -132,13 +132,19 @@ also does Gnome::Gio::ActionMap;
 =head1 Methods
 =head2 new
 
+=head3 :application
+
 Create a new B<Gnome::Gtk3::ApplicationWindow> based on a B<Gnome::Gtk3::Application> object.
 
-  multi method new (N-GObject :$application!)
+  multi method new ( N-GObject :$application! )
 
-Create a ApplicationWindow object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=head3 :native-object
+
+Create a ApplicationWindow object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
+=head3 :build-id
 
 Create a ApplicationWindow object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 

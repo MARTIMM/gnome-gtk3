@@ -118,13 +118,19 @@ Methods
 new
 ---
 
+### :application
+
 Create a new **Gnome::Gtk3::ApplicationWindow** based on a **Gnome::Gtk3::Application** object.
 
-    multi method new (N-GObject :$application!)
+    multi method new ( N-GObject :$application! )
 
-Create a ApplicationWindow object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a ApplicationWindow object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
     multi method new ( N-GObject :$native-object! )
+
+### :build-id
 
 Create a ApplicationWindow object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
