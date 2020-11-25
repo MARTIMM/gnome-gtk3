@@ -10,6 +10,7 @@ A widget used to guide users through multi-step operations
 
 ![](images/assistant.png)
 
+
 =head1 Description
 
 A B<Gnome::Gtk3::Assistant> is a widget used to represent a generally complex operation splitted in several steps, guiding the user through its pages and controlling the page flow to collect the necessary data.
@@ -18,11 +19,13 @@ The design of B<Gnome::Gtk3::Assistant> is that it controls what buttons to show
 
 If you have a case that doesn’t quite fit in B<Gnome::Gtk3::Assistants> way of handling buttons, you can use the B<GTK_ASSISTANT_PAGE_CUSTOM> page type and handle buttons yourself.
 
+
 =head2 B<Gnome::Gtk3::Assistant> as B<Gnome::Gtk3::Buildable>
 
 The B<Gnome::Gtk3::Assistant> implementation of the B<Gnome::Gtk3::Buildable> interface exposes the I<action_area> as internal children with the name “action_area”.
 
 To add pages to an assistant in B<Gnome::Gtk3::Builder>, simply add it as a child to the B<Gnome::Gtk3::Assistant> object, and set its child properties as necessary.
+
 
 =head2 Css Nodes
 
@@ -39,6 +42,11 @@ Gnome::Gtk3::Assistant implements
 
   unit class Gnome::Gtk3::Assistant;
   also is Gnome::Gtk3::Window;
+
+
+=head2 Uml Diagram
+
+![](plantuml/Assistant.svg)
 
 =comment head2 Example
 
@@ -97,23 +105,29 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new Assistant object.
 
   multi method new ( )
 
-Create a Assistant object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create a Assistant object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelSupportClass
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
@@ -126,7 +140,6 @@ submethod BUILD ( *%options ) {
     # signals from interfaces
     #_add_..._signal_types($?CLASS.^name);
   }
-
 
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::Assistant';
@@ -148,7 +161,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(gtk_assistant_new());
+    self.set-native-object(_gtk_assistant_new());
   }
 
   # only after creating the native-object, the gtype is known
@@ -172,20 +185,21 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_assistant_new:new()
+#TM:2:_gtk_assistant_new:new()
+#`{{
 =begin pod
 =head2 gtk_assistant_new
 
 Creates a new B<Gnome::Gtk3::Assistant>.
 
-Since: 2.10
-
   method gtk_assistant_new ( --> N-GObject )
 
 =end pod
+}}
 
-sub gtk_assistant_new (  --> N-GObject )
+sub _gtk_assistant_new (  --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_assistant_new')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -195,8 +209,6 @@ sub gtk_assistant_new (  --> N-GObject )
 
 Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the
 B<GTK_ASSISTANT_PAGE_CUSTOM> type.
-
-Since: 3.0
 
   method gtk_assistant_next_page ( )
 
@@ -214,8 +226,6 @@ sub gtk_assistant_next_page ( N-GObject $assistant  )
 
 Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the B<GTK_ASSISTANT_PAGE_CUSTOM> type.
 
-Since: 3.0
-
   method gtk_assistant_previous_page ( )
 
 
@@ -232,8 +242,6 @@ sub gtk_assistant_previous_page ( N-GObject $assistant  )
 
 Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
 
-Since: 2.10
-
   method gtk_assistant_get_current_page ( --> Int )
 
 
@@ -249,8 +257,6 @@ sub gtk_assistant_get_current_page ( N-GObject $assistant --> int32 )
 =head2 [gtk_assistant_] set_current_page
 
 Switches the page to I<$page_num>. Note that this will only be necessary in custom buttons, as the assistant flow can be set with C<gtk_assistant_set_forward_page_func()>.
-
-Since: 2.10
 
   method gtk_assistant_set_current_page ( Int $page_num )
 
@@ -269,8 +275,6 @@ sub gtk_assistant_set_current_page ( N-GObject $assistant, int32 $page_num  )
 
 Returns the number of pages in the assistant.
 
-Since: 2.10
-
   method gtk_assistant_get_n_pages ( --> Int )
 
 
@@ -286,8 +290,6 @@ sub gtk_assistant_get_n_pages ( N-GObject $assistant --> int32 )
 =head2 [gtk_assistant_] get_nth_page
 
 Returns the child widget contained in page number I<$page_num>, or C<Any> if I<$page_num> is out of bounds
-
-Since: 2.10
 
   method gtk_assistant_get_nth_page ( Int $page_num --> N-GObject )
 
@@ -306,8 +308,6 @@ sub gtk_assistant_get_nth_page ( N-GObject $assistant, int32 $page_num --> N-GOb
 
 Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
 
-Since: 2.10
-
   method gtk_assistant_prepend_page ( N-GObject $page --> Int )
 
 =item N-GObject $page; a B<Gnome::Gtk3::Widget>
@@ -324,8 +324,6 @@ sub gtk_assistant_prepend_page ( N-GObject $assistant, N-GObject $page --> int32
 =head2 [gtk_assistant_] append_page
 
 Appends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
-
-Since: 2.10
 
   method gtk_assistant_append_page ( N-GObject $page --> Int )
 
@@ -346,8 +344,6 @@ Inserts a I<$page> in the assistant at a given position.
 
 Returns: the index (starting from 0) of the inserted page
 
-Since: 2.10
-
   method gtk_assistant_insert_page ( N-GObject $page, Int $position --> Int )
 
 =item N-GObject $page; a B<Gnome::Gtk3::Widget>
@@ -365,8 +361,6 @@ sub gtk_assistant_insert_page ( N-GObject $assistant, N-GObject $page, int32 $po
 =head2 [gtk_assistant_] remove_page
 
 Removes the I<$page_num>’s page from assistant.
-
-Since: 3.2
 
   method gtk_assistant_remove_page ( Int $page_num )
 
@@ -392,8 +386,6 @@ Setting I<page_func> to C<Any> will make the assistant to
 use the default forward function, which just goes to the
 next visible page.
 
-Since: 2.10
-
   method gtk_assistant_set_forward_page_func ( GtkAssistantPageFunc $page_func, Pointer $data, GDestroyNotify $destroy )
 
 =item GtkAssistantPageFunc $page_func; (allow-none): the B<Gnome::Gtk3::AssistantPageFunc>, or C<Any> to use the default one
@@ -413,8 +405,6 @@ sub gtk_assistant_set_forward_page_func ( N-GObject $assistant, GtkAssistantPage
 =head2 [gtk_assistant_] set_page_type
 
 Sets the page type for I<$page>. The page type determines the page behavior in the assistant.
-
-Since: 2.10
 
   method gtk_assistant_set_page_type (
     N-GObject $page, GtkAssistantPageType $type
@@ -436,8 +426,6 @@ sub gtk_assistant_set_page_type ( N-GObject $assistant, N-GObject $page, int32 $
 
 Gets the page type of I<$page>.
 
-Since: 2.10
-
   method gtk_assistant_get_page_type (
     N-GObject $page
     --> GtkAssistantPageType
@@ -458,8 +446,6 @@ sub gtk_assistant_get_page_type ( N-GObject $assistant, N-GObject $page --> int3
 
 Sets a title for I<$page>. The title is displayed in the header area of the assistant when I<$page> is the current page.
 
-Since: 2.10
-
   method gtk_assistant_set_page_title ( N-GObject $page, Str $title )
 
 =item N-GObject $page; a page of assistant
@@ -478,8 +464,6 @@ sub gtk_assistant_set_page_title ( N-GObject $assistant, N-GObject $page, Str $t
 
 Gets the title for I<$page>.
 
-Since: 2.10
-
   method gtk_assistant_get_page_title ( N-GObject $page --> Str )
 
 =item N-GObject $page; a page of assistant
@@ -496,8 +480,6 @@ sub gtk_assistant_get_page_title ( N-GObject $assistant, N-GObject $page --> Str
 =head2 [gtk_assistant_] set_page_complete
 
 Sets whether I<$page> contents are complete. This will make assistant update the buttons state to be able to continue the task.
-
-Since: 2.10
 
   method gtk_assistant_set_page_complete ( N-GObject $page, Int $complete )
 
@@ -517,8 +499,6 @@ sub gtk_assistant_set_page_complete ( N-GObject $assistant, N-GObject $page, int
 
 Gets whether I<$page> is complete. C<1> if I<$page> is complete.
 
-Since: 2.10
-
   method gtk_assistant_get_page_complete ( N-GObject $page --> Int )
 
 =item N-GObject $page; a page of assistant
@@ -536,8 +516,6 @@ sub gtk_assistant_get_page_complete ( N-GObject $assistant, N-GObject $page --> 
 
 Adds a widget to the action area of a B<Gnome::Gtk3::Assistant>.
 
-Since: 2.10
-
   method gtk_assistant_add_action_widget ( N-GObject $child )
 
 =item N-GObject $child; a B<Gnome::Gtk3::Widget>
@@ -554,8 +532,6 @@ sub gtk_assistant_add_action_widget ( N-GObject $assistant, N-GObject $child  )
 =head2 [gtk_assistant_] remove_action_widget
 
 Removes a widget from the action area of a B<Gnome::Gtk3::Assistant>.
-
-Since: 2.10
 
   method gtk_assistant_remove_action_widget ( N-GObject $child )
 
@@ -582,8 +558,6 @@ One situation where it can be necessary to call this
 function is when changing a value on the current page
 affects the future page flow of the assistant.
 
-Since: 2.10
-
   method gtk_assistant_update_buttons_state ( )
 
 
@@ -608,8 +582,6 @@ or undone. For example, showing a progress page to track
 a long-running, unreversible operation after the user has
 clicked apply on a confirmation page.
 
-Since: 2.22
-
   method gtk_assistant_commit ( )
 
 
@@ -626,8 +598,6 @@ sub gtk_assistant_commit ( N-GObject $assistant  )
 
 Sets whether the assistant is adding padding around
 the page.
-
-Since: 3.18
 
   method gtk_assistant_set_page_has_padding ( N-GObject $page, Int $has_padding )
 
@@ -648,7 +618,6 @@ sub gtk_assistant_set_page_has_padding ( N-GObject $assistant, N-GObject $page, 
 Gets whether page has padding.
 
 Returns: C<1> if I<page> has padding
-Since: 3.18
 
   method gtk_assistant_get_page_has_padding ( N-GObject $page --> Int )
 
@@ -698,8 +667,6 @@ Also here, the types of positional arguments in the signal handler are important
 
 The I<cancel> signal is emitted when then the cancel button is clicked.
 
-Since: 2.10
-
   method handler (
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($assistant),
@@ -717,8 +684,6 @@ assistant's current page, before making the new page visible.
 
 A handler for this signal can do any preparations which are
 necessary before showing I<page>.
-
-Since: 2.10
 
   method handler (
     N-GObject #`{ is widget } $page,
@@ -747,8 +712,6 @@ C<GTK_ASSISTANT_PAGE_PROGRESS> after the confirmation page and handle
 this operation within the  I<prepare> signal of the progress
 page.
 
-Since: 2.10
-
   method handler (
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($assistant),
@@ -764,8 +727,6 @@ Since: 2.10
 The I<close> signal is emitted either when the close button of
 a summary page is clicked, or when the apply button in the last
 page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
-
-Since: 2.10
 
   method handler (
     Int :$_handler_id,
@@ -811,7 +772,6 @@ C<1> if the assistant uses a B<Gnome::Gtk3::HeaderBar> for action buttons
 instead of the action-area.
 For technical reasons, this property is declared as an integer
 property, but you should only set it to C<1> or C<0>.
-Since: 3.12
 
 The B<Gnome::GObject::Value> type of property I<use-header-bar> is C<G_TYPE_INT>.
 =end pod
