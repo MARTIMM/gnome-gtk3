@@ -46,19 +46,6 @@ Acquiring a Gnome::Gtk3::TreeIter
     $iter = $ls.get-iter($path);
     $path.clear-tree-path;
 
-Known implementations
----------------------
-
-Gnome::Gtk3::TreeModel is implemented by
-
-  * [Gnome::Gtk3::ListStore](ListStore.html)
-
-  * Gnome::Gtk3::TreeModelFilter
-
-  * Gnome::Gtk3::TreeModelSort
-
-  * Gnome::Gtk3::TreeStore.
-
 See Also
 --------
 
@@ -71,6 +58,9 @@ Declaration
 -----------
 
     unit role Gnome::Gtk3::TreeModel;
+
+Uml Diagram ![](plantuml/TreeModel.svg)
+---------------------------------------
 
 Types
 =====
@@ -127,7 +117,7 @@ Returns the number of columns supported by *tree_model*.
 
 Returns the type of the column.
 
-    method gtk_tree_model_get_column_type ( Int $index --> int32  )
+    method gtk_tree_model_get_column_type ( Int $index --> UInt )
 
   * Int $index; the column index
 

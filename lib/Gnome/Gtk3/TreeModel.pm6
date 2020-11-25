@@ -389,7 +389,7 @@ sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
 
 Returns the type of the column.
 
-  method gtk_tree_model_get_column_type ( Int $index --> Int )
+  method gtk_tree_model_get_column_type ( Int $index --> UInt )
 
 =item Int $index; the column index
 
