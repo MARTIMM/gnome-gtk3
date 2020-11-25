@@ -86,6 +86,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
+
 =head1 Example
 
   my Gnome::Gtk3::AboutDialog $about .= new;
@@ -170,17 +171,29 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 new()
+=head3 default, no options
 
 Creates a new B<Gnome::Gtk3::AboutDialog>.
 
   multi method new ( )
 
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
+
+  multi method new ( N-GObject :$native-object! )
+
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelSupportClass
+#TM:0:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
