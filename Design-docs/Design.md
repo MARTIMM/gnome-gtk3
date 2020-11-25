@@ -19,6 +19,10 @@ scale 0.8
 search: `\)\s+returns\s+([A-Za-z0-9_\[\]-]+)`
 replace `--> $1 )`
 
+## replace Since version messages
+search: `\s*Since:\s+\d+\.\d+`
+replace: ``
+
 # native sub search
 ```
   SomeModule.some-sub()
