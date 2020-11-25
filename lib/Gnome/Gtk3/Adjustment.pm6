@@ -72,7 +72,7 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head2 new( :value, :lower, :upper, :step-increment, :page-increment, :page-size)
+=head2 :value, :lower, :upper, :step-increment, :page-increment, :page-size
 
 Create a new Adjustment object.
 
@@ -89,15 +89,17 @@ Create a new Adjustment object.
 =item Num $page_increment; the page increment
 =item Num $page_size; the page size
 
-=begin comment
-Create a Adjustment object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+=head3 :native-object
 
-  multi method new ( N-GObject :$native-object! )
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
-Create a Adjustment object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+  multi method new ( N-GtkTreePath :$native-object! )
+
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
-=end comment
 
 =end pod
 

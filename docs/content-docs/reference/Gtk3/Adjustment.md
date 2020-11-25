@@ -30,8 +30,8 @@ Methods
 new
 ---
 
-new( :value, :lower, :upper, :step-increment, :page-increment, :page-size)
---------------------------------------------------------------------------
+:value, :lower, :upper, :step-increment, :page-increment, :page-size
+--------------------------------------------------------------------
 
 Create a new Adjustment object.
 
@@ -52,6 +52,18 @@ Create a new Adjustment object.
   * Num $page_increment; the page increment
 
   * Num $page_size; the page size
+
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
+
+    multi method new ( N-GtkTreePath :$native-object! )
+
+### :build-id
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
 
 [gtk_adjustment_] clamp_page
 ----------------------------
