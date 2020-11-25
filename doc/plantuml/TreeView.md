@@ -31,9 +31,10 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 Gnome::Gtk3::TreeView -|> Gnome::Gtk3::Container
 Gnome::Gtk3::TreeView ..|> Gnome::Gtk3::Scrollable
 
-
 @enduml
 ```
+
+
 <!--
 
 'class Gnome::GObject::InitialyUnowned
