@@ -114,15 +114,24 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 :app-id, :flags
+
 Create a new Application object.
 
-  multi method new ( )
+  multi method new (
+    Str :$app-id!,
+    GApplicationFlags :$flags = G_APPLICATION_FLAGS_NONE
+  )
 
-Create a Application object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create a Application object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 

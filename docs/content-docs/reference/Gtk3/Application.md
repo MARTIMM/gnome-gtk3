@@ -85,15 +85,24 @@ Methods
 new
 ---
 
+### :app-id, :flags
+
 Create a new Application object.
 
-    multi method new ( )
+    multi method new (
+      Str :$app-id!,
+      GApplicationFlags :$flags = G_APPLICATION_FLAGS_NONE
+    )
 
-Create a Application object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create a Application object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
