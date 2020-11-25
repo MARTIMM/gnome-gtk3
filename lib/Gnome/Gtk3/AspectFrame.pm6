@@ -10,24 +10,35 @@ A frame that constrains its child to a particular aspect ratio
 
 =comment ![](images/X.png)
 
+
 =head1 Description
 
 The B<Gnome::Gtk3::AspectFrame> is useful when you want pack a widget so that it can resize but always retains the same aspect ratio. For instance, one might be drawing a small preview of a larger image. B<Gnome::Gtk3::AspectFrame> derives from B<Gnome::Gtk3::Frame>, so it can draw a label and a frame around the child. The frame will be “shrink-wrapped” to the size of the child.
+
 
 =head2 Css Nodes
 
 B<Gnome::Gtk3::AspectFrame> uses a CSS node with name frame.
 
+=begin comment
 =head2 Implemented Interfaces
 
 Gnome::Gtk3::AspectFrame implements
 =comment item Gnome::Atk::ImplementorIface
+=end comment
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::AspectFrame;
   also is Gnome::Gtk3::Frame;
+
+
+=head2 Uml Diagram
+
+![](plantuml/AspectFrame.svg)
+
 
 =comment head2 Example
 
@@ -52,11 +63,13 @@ also is Gnome::Gtk3::Frame;
 =head1 Methods
 =head2 new
 
+=head3 :label, :xalign, :yalign, :ratio, :obey-child
+
 Create a new AspectFrame with all bells and wistles.
 
   multi method new (
-    Str :$label!, Num :$xalign?, Num :$yalign?, Num :$ratio>?,
-    Bool :$obey-child?
+    Str :$label!, Num :$xalign = 0.0e0, Num :$yalign = 0.0e0,
+    Num :$ratio = 1.0e0, Bool :$obey-child?
   )
 
 =item Str $label; Label text.
@@ -66,9 +79,13 @@ Create a new AspectFrame with all bells and wistles.
 =item Int $obey_child; If C<True>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
 
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
+=head3 :build-id
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -77,8 +94,8 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new(:label):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):TopLevelSupportClass
+#TM:4:new(:build-id):Object
 
 submethod BUILD ( *%options ) {
 
@@ -99,7 +116,7 @@ submethod BUILD ( *%options ) {
     my Bool $obey-child = %options<obey-child> // !%options<ratio>;
 
     self.set-native-object(
-      gtk_aspect_frame_new(
+      _gtk_aspect_frame_new(
         %options<label>, $xalign, $yalign, $ratio, $obey-child
       )
     );
@@ -140,7 +157,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_aspect_frame_new:new(:label)
+#TM:2:_gtk_aspect_frame_new:new(:label)
+#`{{
 =begin pod
 =head2 gtk_aspect_frame_new
 
@@ -157,9 +175,11 @@ Returns: the new B<Gnome::Gtk3::AspectFrame>.
 =item Int $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
 
 =end pod
+}}
 
-sub gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $ratio, int32 $obey_child --> N-GObject )
+sub _gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $ratio, int32 $obey_child --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_aspect_frame_new')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -169,7 +189,9 @@ sub gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $rati
 
 Set parameters for an existing B<Gnome::Gtk3::AspectFrame>.
 
-  method gtk_aspect_frame_set ( Num $xalign, Num $yalign, Num $ratio, Int $obey_child )
+  method gtk_aspect_frame_set (
+    Num $xalign, Num $yalign, Num $ratio, Int $obey_child
+  )
 
 =item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
 =item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)

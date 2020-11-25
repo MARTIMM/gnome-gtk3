@@ -13,11 +13,6 @@ Css Nodes
 
 **Gnome::Gtk3::AspectFrame** uses a CSS node with name frame.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::AspectFrame implements
-
 Synopsis
 ========
 
@@ -27,17 +22,24 @@ Declaration
     unit class Gnome::Gtk3::AspectFrame;
     also is Gnome::Gtk3::Frame;
 
+Uml Diagram
+-----------
+
+![](plantuml/AspectFrame.svg)
+
 Methods
 =======
 
 new
 ---
 
+### :label, :xalign, :yalign, :ratio, :obey-child
+
 Create a new AspectFrame with all bells and wistles.
 
     multi method new (
-      Str :$label!, Num :$xalign?, Num :$yalign?, Num :$ratio>?,
-      Bool :$obey-child?
+      Str :$label!, Num :$xalign = 0.0e0, Num :$yalign = 0.0e0,
+      Num :$ratio = 1.0e0, Bool :$obey-child?
     )
 
   * Str $label; Label text.
@@ -50,39 +52,26 @@ Create a new AspectFrame with all bells and wistles.
 
   * Int $obey_child; If `True`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
     multi method new ( N-GObject :$native-object! )
+
+### :build-id
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-gtk_aspect_frame_new
---------------------
-
-Create a new **Gnome::Gtk3::AspectFrame**.
-
-Returns: the new **Gnome::Gtk3::AspectFrame**.
-
-    method gtk_aspect_frame_new ( Str $label, Num $xalign, Num $yalign, Num $ratio, Int $obey_child --> N-GObject )
-
-  * Str $label; (allow-none): Label text.
-
-  * Num $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
-
-  * Num $yalign; Vertical alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
-
-  * Num $ratio; The desired aspect ratio.
-
-  * Int $obey_child; If `1`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child.
 
 gtk_aspect_frame_set
 --------------------
 
 Set parameters for an existing **Gnome::Gtk3::AspectFrame**.
 
-    method gtk_aspect_frame_set ( Num $xalign, Num $yalign, Num $ratio, Int $obey_child )
+    method gtk_aspect_frame_set (
+      Num $xalign, Num $yalign, Num $ratio, Int $obey_child
+    )
 
   * Num $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
 
