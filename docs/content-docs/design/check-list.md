@@ -68,10 +68,10 @@ table {
 **Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 AboutDialog               |  | 🗸| 🗸| 🗸| ¾|  |  |  |  |  | |
 Adjustment                |  |  | 🗸| 🗸| 🗸|🗸| 🗸| 🗸| | 🗸|  |
-Application               |  | 🗸|  |  |  |  |  |  |  |  |  |
-ApplicationWindow         |  | 🗸|  |  |  |  |  |  |  |  |  |
-AspectFrame               |  |  |  |  |  |  |  |  |  |  |  |
-Assistant                 |  |  |  |  |  |  |  |  |  |  |  |
+Application               |  | 🗸|  | 🗸|  |  |  |  |  |  |  |
+ApplicationWindow         |  | 🗸|  | 🗸|  |  |  |  |  |  |  |
+AspectFrame               |  |  | 🗸| 🗸| 🗸| ✗|  | 🗸| ✗|  |  |
+Assistant                 |  |  | 🗸| 🗸|  |  |  |  |  |  |  |
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |b |  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |

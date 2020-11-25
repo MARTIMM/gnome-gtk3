@@ -1,5 +1,6 @@
 - 2020-11-24 0.34.1:
-  - TreeModel docs
+  - Doc changes
+  - Bug fix in TreeModel. `.gtk_tree_model_get_column_type()` should return uint32 instead of int32 because returned type is unsigned.
 
 - 2020-11-15 0.34.0:
   - Add module **Gnome::Gtk3::Tooltip**.
