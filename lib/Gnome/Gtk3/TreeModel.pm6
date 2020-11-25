@@ -161,28 +161,25 @@ into account:
 =end comment
 
 
-
-=head2 Known implementations
-
-Gnome::Gtk3::TreeModel is implemented by
-
-=item [Gnome::Gtk3::ListStore](ListStore.html)
-=item Gnome::Gtk3::TreeModelFilter
-=item Gnome::Gtk3::TreeModelSort
-=item Gnome::Gtk3::TreeStore.
-
 =head2 See Also
 
 B<Gnome::Gtk3::TreeView>, B<Gnome::Gtk3::TreeStore>, B<Gnome::Gtk3::ListStore>,
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit role Gnome::Gtk3::TreeModel;
 
+
+=head2 Uml Diagram
+![](plantuml/TreeModel.svg)
+
+
 =comment head2 Example
 
 =end pod
+
 #-------------------------------------------------------------------------------
 use NativeCall;
 
@@ -392,15 +389,15 @@ sub gtk_tree_model_get_n_columns ( N-GObject $tree_model )
 
 Returns the type of the column.
 
-  method gtk_tree_model_get_column_type ( Int $index --> int32  )
+  method gtk_tree_model_get_column_type ( Int $index --> Int )
 
 =item Int $index; the column index
 
 =end pod
 
-sub gtk_tree_model_get_column_type ( N-GObject $tree_model, int32 $index )
-  returns int32
-  is native(&gtk-lib)
+sub gtk_tree_model_get_column_type (
+  N-GObject $tree_model, int32 $index --> uint32
+) is native(&gtk-lib)
   is export
   { * }
 
