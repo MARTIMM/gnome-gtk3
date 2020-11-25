@@ -55,6 +55,12 @@ Create a new tree path object using indices.
 
     multi method new ( Array :$indices! )
 
+### :native-object
+
+Create an object using a native object from elsewhere.
+
+    multi method new ( N-GtkTreePath :native-object! )
+
 [[gtk_] tree_path_] to_string
 -----------------------------
 

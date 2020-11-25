@@ -87,17 +87,20 @@ I<$string> is expected to be a colon separated list of numbers. For example, the
 
   multi method new ( Str :$string! )
 
+
 =head3 :indices
 
 Create a new tree path object using indices.
 
   multi method new ( Array :$indices! )
 
-=begin comment
-Create an object taking the native object from elsewhere.
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere.
 
   multi method new ( N-GtkTreePath :native-object! )
-=end comment
+
 
 =end pod
 
