@@ -36,37 +36,6 @@ It is also possible to show a B<Gnome::Gtk3::AboutDialog> like any other B<Gnome
 
 ![](plantuml/AboutDialog.svg)
 
-=begin comment
-
-= begin code :lang<plantuml>
-@startuml
-scale 0.8
-
-package Gnome::GObject as gobject <<Rectangle>> {
-  class InitialyUnowned
-  class Object
-
-  Object <|-- InitialyUnowned
-}
-
-package Gnome::Gtk3 as gtk3 <<Rectangle>> {
-  class AboutDialog
-  Interface Buildable <Interface>
-  Dialog <|- AboutDialog
-  Window <|- Dialog
-  Bin <|- Window
-  Container <|- Bin
-  Widget <|- Container
-  InitialyUnowned <|- Widget
-
-  Buildable <|-- Widget
-}
-
-gobject <--[hidden]- gtk3
-@enduml
-= end code
-
-=end comment
 
 =head2 Inheriting this class
 
@@ -107,7 +76,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
-#use Gnome::GObject::Object;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
@@ -123,8 +93,6 @@ also is Gnome::Gtk3::Dialog;
 =head2 enum GtkLicense
 
 The type of license for an application. This enumeration can be expanded at later date.
-
-
 
 =item GTK_LICENSE_UNKNOWN: No license specified
 =item GTK_LICENSE_CUSTOM: A license text is going to be specified by the developer
@@ -240,7 +208,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:0:_gtk_about_dialog_new:
+#TM:1:_gtk_about_dialog_new:
 #`{{
 =begin pod
 =head2 [gtk_] about_dialog_new
@@ -283,34 +251,28 @@ sub gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name, Any $an
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_get_program_name:
+#TM:1:gtk_about_dialog_get_program_name:
 =begin pod
 =head2 [[gtk_] about_dialog_] get_program_name
 
 Returns the program name displayed in the about dialog.
 
-Returns: The program name. The string is owned by the about
-dialog and must not be modified.
+Returns: The program name. The string is owned by the about dialog and must not be modified.
 
-
-  method gtk_about_dialog_get_program_name ( --> Str  )
-
+  method gtk_about_dialog_get_program_name ( --> Str )
 
 =end pod
 
-sub gtk_about_dialog_get_program_name ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_program_name ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_set_program_name:
+#TM:1:gtk_about_dialog_set_program_name:
 =begin pod
 =head2 [[gtk_] about_dialog_] set_program_name
 
-Sets the name to display in the about dialog.
-If this is not set, it defaults to C<g_get_application_name()>.
-
+Sets the name to display in the about dialog. If this is not set, it defaults to C<g_get_application_name()>.
 
   method gtk_about_dialog_set_program_name ( Str $name )
 
@@ -318,38 +280,33 @@ If this is not set, it defaults to C<g_get_application_name()>.
 
 =end pod
 
-sub gtk_about_dialog_set_program_name ( N-GObject $about, Str $name )
+sub gtk_about_dialog_set_program_name ( N-GObject $about, gchar-ptr $name )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_get_version:
+#TM:1:gtk_about_dialog_get_version:
 =begin pod
 =head2 [[gtk_] about_dialog_] get_version
 
 Returns the version string.
 
-Returns: The version string. The string is owned by the about
-dialog and must not be modified.
-
+Returns: The version string. The string is owned by the about dialog and must not be modified.
 
   method gtk_about_dialog_get_version ( --> Str  )
 
-
 =end pod
 
-sub gtk_about_dialog_get_version ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_version ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_set_version:
+#TM:1:gtk_about_dialog_set_version:
 =begin pod
 =head2 [[gtk_] about_dialog_] set_version
 
 Sets the version string to display in the about dialog.
-
 
   method gtk_about_dialog_set_version ( Str $version )
 
@@ -357,33 +314,29 @@ Sets the version string to display in the about dialog.
 
 =end pod
 
-sub gtk_about_dialog_set_version ( N-GObject $about, Str $version )
+sub gtk_about_dialog_set_version ( N-GObject $about, gchar-ptr $version )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_get_copyright:
+#TM:1:gtk_about_dialog_get_copyright:
 =begin pod
 =head2 [[gtk_] about_dialog_] get_copyright
 
 Returns the copyright string.
 
-Returns: The copyright string. The string is owned by the about
-dialog and must not be modified.
-
+Returns: The copyright string. The string is owned by the about dialog and must not be modified.
 
   method gtk_about_dialog_get_copyright ( --> Str  )
 
-
 =end pod
 
-sub gtk_about_dialog_get_copyright ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_copyright ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_set_copyright:
+#TM:1:gtk_about_dialog_set_copyright:
 =begin pod
 =head2 [[gtk_] about_dialog_] set_copyright
 
@@ -397,39 +350,33 @@ This should be a short string of one or two lines.
 
 =end pod
 
-sub gtk_about_dialog_set_copyright ( N-GObject $about, Str $copyright )
+sub gtk_about_dialog_set_copyright ( N-GObject $about, gchar-ptr $copyright )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_get_comments:
+#TM:1:gtk_about_dialog_get_comments:
 =begin pod
 =head2 [[gtk_] about_dialog_] get_comments
 
 Returns the comments string.
 
-Returns: The comments. The string is owned by the about
-dialog and must not be modified.
-
+Returns: The comments. The string is owned by the about dialog and must not be modified.
 
   method gtk_about_dialog_get_comments ( --> Str  )
 
-
 =end pod
 
-sub gtk_about_dialog_get_comments ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_comments ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_about_dialog_set_comments:
+#TM:1:gtk_about_dialog_set_comments:
 =begin pod
 =head2 [[gtk_] about_dialog_] set_comments
 
-Sets the comments string to display in the about dialog.
-This should be a short string of one or two lines.
-
+Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
 
   method gtk_about_dialog_set_comments ( Str $comments )
 
@@ -437,7 +384,7 @@ This should be a short string of one or two lines.
 
 =end pod
 
-sub gtk_about_dialog_set_comments ( N-GObject $about, Str $comments )
+sub gtk_about_dialog_set_comments ( N-GObject $about, gchar-ptr $comments )
   is native(&gtk-lib)
   { * }
 
@@ -448,17 +395,13 @@ sub gtk_about_dialog_set_comments ( N-GObject $about, Str $comments )
 
 Returns the license information.
 
-Returns: The license information. The string is owned by the about
-dialog and must not be modified.
+Returns: The license information. The string is owned by the about dialog and must not be modified.
 
-
-  method gtk_about_dialog_get_license ( --> Str  )
-
+  method gtk_about_dialog_get_license ( --> Str )
 
 =end pod
 
-sub gtk_about_dialog_get_license ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_license ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
@@ -478,7 +421,7 @@ hidden.
 
 =end pod
 
-sub gtk_about_dialog_set_license ( N-GObject $about, Str $license )
+sub gtk_about_dialog_set_license ( N-GObject $about, gchar-ptr $license )
   is native(&gtk-lib)
   { * }
 
@@ -500,7 +443,7 @@ C<gtk_about_dialog_set_license()>.
 
 =end pod
 
-sub gtk_about_dialog_set_license_type ( N-GObject $about, int32 $license_type )
+sub gtk_about_dialog_set_license_type ( N-GObject $about, gint $license_type )
   is native(&gtk-lib)
   { * }
 
@@ -519,8 +462,7 @@ Returns: a I<Gnome::Gtk3::License> value
 
 =end pod
 
-sub gtk_about_dialog_get_license_type ( N-GObject $about )
-  returns int32
+sub gtk_about_dialog_get_license_type ( N-GObject $about --> gint )
   is native(&gtk-lib)
   { * }
 
@@ -540,8 +482,7 @@ Returns: C<1> if the license text is wrapped
 
 =end pod
 
-sub gtk_about_dialog_get_wrap_license ( N-GObject $about )
-  returns int32
+sub gtk_about_dialog_get_wrap_license ( N-GObject $about --> gboolean )
   is native(&gtk-lib)
   { * }
 
@@ -560,7 +501,7 @@ automatically wrapped.
 
 =end pod
 
-sub gtk_about_dialog_set_wrap_license ( N-GObject $about, int32 $wrap_license )
+sub gtk_about_dialog_set_wrap_license ( N-GObject $about, gboolean $wrap_license )
   is native(&gtk-lib)
   { * }
 
@@ -580,8 +521,7 @@ dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_website ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_website ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
@@ -610,8 +550,7 @@ sub gtk_about_dialog_set_website ( N-GObject $about, Str $website )
 
 Returns the label used for the website link.
 
-Returns: The label used for the website link. The string is
-owned by the about dialog and must not be modified.
+Returns: The label used for the website link. The string is owned by the about dialog and must not be modified.
 
 
   method gtk_about_dialog_get_website_label ( --> Str  )
@@ -619,8 +558,7 @@ owned by the about dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_website_label ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_website_label ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
@@ -638,7 +576,7 @@ Sets the label to be used for the website link.
 
 =end pod
 
-sub gtk_about_dialog_set_website_label ( N-GObject $about, Str $website_label )
+sub gtk_about_dialog_set_website_label ( N-GObject $about, gchar-ptr $website_label )
   is native(&gtk-lib)
   { * }
 
@@ -647,12 +585,9 @@ sub gtk_about_dialog_set_website_label ( N-GObject $about, Str $website_label )
 =begin pod
 =head2 [[gtk_] about_dialog_] get_authors
 
-Returns the string which are displayed in the authors tab
-of the secondary credits dialog.
+Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A
-C<Any>-terminated string array containing the authors. The array is
-owned by the about dialog and must not be modified.
+Returns: A 0-terminated string array containing the authors. The array is owned by the about dialog and must not be modified.
 
 
   method gtk_about_dialog_get_authors ( --> CArray[Str]  )
@@ -660,8 +595,7 @@ owned by the about dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_authors ( N-GObject $about )
-  returns CArray[Str]
+sub gtk_about_dialog_get_authors ( N-GObject $about --> gchar-pptr )
   is native(&gtk-lib)
   { * }
 
@@ -670,8 +604,7 @@ sub gtk_about_dialog_get_authors ( N-GObject $about )
 =begin pod
 =head2 [[gtk_] about_dialog_] set_authors
 
-Sets the strings which are displayed in the authors tab
-of the secondary credits dialog.
+Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
 
   method gtk_about_dialog_set_authors ( CArray[Str] $authors )
@@ -680,7 +613,7 @@ of the secondary credits dialog.
 
 =end pod
 
-sub gtk_about_dialog_set_authors ( N-GObject $about, CArray[Str] $authors )
+sub gtk_about_dialog_set_authors ( N-GObject $about, gchar-pptr $authors )
   is native(&gtk-lib)
   { * }
 
@@ -689,12 +622,9 @@ sub gtk_about_dialog_set_authors ( N-GObject $about, CArray[Str] $authors )
 =begin pod
 =head2 [[gtk_] about_dialog_] get_documenters
 
-Returns the string which are displayed in the documenters
-tab of the secondary credits dialog.
+Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A
-C<Any>-terminated string array containing the documenters. The
-array is owned by the about dialog and must not be modified.
+Returns: A 0-terminated string array containing the documenters. The array is owned by the about dialog and must not be modified.
 
 
   method gtk_about_dialog_get_documenters ( --> CArray[Str]  )
@@ -702,8 +632,7 @@ array is owned by the about dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_documenters ( N-GObject $about )
-  returns CArray[Str]
+sub gtk_about_dialog_get_documenters ( N-GObject $about --> gchar-pptr )
   is native(&gtk-lib)
   { * }
 
@@ -712,17 +641,16 @@ sub gtk_about_dialog_get_documenters ( N-GObject $about )
 =begin pod
 =head2 [[gtk_] about_dialog_] set_documenters
 
-Sets the strings which are displayed in the documenters tab
-of the secondary credits dialog.
+Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
 
   method gtk_about_dialog_set_documenters ( CArray[Str] $documenters )
 
-=item CArray[Str] $documenters; (array zero-terminated=1): a C<Any>-terminated array of strings
+=item CArray[Str] $documenters; a 0-terminated array of strings
 
 =end pod
 
-sub gtk_about_dialog_set_documenters ( N-GObject $about, CArray[Str] $documenters )
+sub gtk_about_dialog_set_documenters ( N-GObject $about, gchar-pptr $documenters )
   is native(&gtk-lib)
   { * }
 
@@ -731,12 +659,9 @@ sub gtk_about_dialog_set_documenters ( N-GObject $about, CArray[Str] $documenter
 =begin pod
 =head2 [[gtk_] about_dialog_] get_artists
 
-Returns the string which are displayed in the artists tab
-of the secondary credits dialog.
+Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A
-C<Any>-terminated string array containing the artists. The array is
-owned by the about dialog and must not be modified.
+Returns: A 0-terminated string array containing the artists. The array is owned by the about dialog and must not be modified.
 
 
   method gtk_about_dialog_get_artists ( --> CArray[Str]  )
@@ -744,8 +669,7 @@ owned by the about dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_artists ( N-GObject $about )
-  returns CArray[Str]
+sub gtk_about_dialog_get_artists ( N-GObject $about --> gchar-pptr )
   is native(&gtk-lib)
   { * }
 
@@ -760,11 +684,11 @@ of the secondary credits dialog.
 
   method gtk_about_dialog_set_artists ( CArray[Str] $artists )
 
-=item CArray[Str] $artists; (array zero-terminated=1): a C<Any>-terminated array of strings
+=item CArray[Str] $artists;a 0-terminated array of strings
 
 =end pod
 
-sub gtk_about_dialog_set_artists ( N-GObject $about, CArray[Str] $artists )
+sub gtk_about_dialog_set_artists ( N-GObject $about, gchar-pptr $artists )
   is native(&gtk-lib)
   { * }
 
@@ -773,11 +697,9 @@ sub gtk_about_dialog_set_artists ( N-GObject $about, CArray[Str] $artists )
 =begin pod
 =head2 [[gtk_] about_dialog_] get_translator_credits
 
-Returns the translator credits string which is displayed
-in the translators tab of the secondary credits dialog.
+Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
-Returns: The translator credits string. The string is
-owned by the about dialog and must not be modified.
+Returns: The translator credits string. The string is owned by the about dialog and must not be modified.
 
 
   method gtk_about_dialog_get_translator_credits ( --> Str  )
@@ -785,8 +707,7 @@ owned by the about dialog and must not be modified.
 
 =end pod
 
-sub gtk_about_dialog_get_translator_credits ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_translator_credits ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
@@ -810,7 +731,7 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
 =end pod
 
-sub gtk_about_dialog_set_translator_credits ( N-GObject $about, Str $translator_credits )
+sub gtk_about_dialog_set_translator_credits ( N-GObject $about, gchar-ptr $translator_credits )
   is native(&gtk-lib)
   { * }
 
@@ -821,18 +742,13 @@ sub gtk_about_dialog_set_translator_credits ( N-GObject $about, Str $translator_
 
 Returns the pixbuf displayed as logo in the about dialog.
 
-Returns: (transfer none): the pixbuf displayed as logo. The
-pixbuf is owned by the about dialog. If you want to keep a
-reference to it, you have to call C<g_object_ref()> on it.
-
+Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call C<g_object_ref()> on it.
 
   method gtk_about_dialog_get_logo ( --> N-GObject  )
 
-
 =end pod
 
-sub gtk_about_dialog_get_logo ( N-GObject $about )
-  returns N-GObject
+sub gtk_about_dialog_get_logo ( N-GObject $about --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -841,9 +757,7 @@ sub gtk_about_dialog_get_logo ( N-GObject $about )
 =begin pod
 =head2 [[gtk_] about_dialog_] set_logo
 
-Sets the pixbuf to be displayed as logo in the about dialog.
-If it is C<Any>, the default window icon set with
-C<gtk_window_set_default_icon()> will be used.
+Sets the pixbuf to be displayed as logo in the about dialog. If it is C<Any>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
 
 
   method gtk_about_dialog_set_logo ( N-GObject $logo )
@@ -873,8 +787,7 @@ to it, you have to call C<g_strdup()> on it.
 
 =end pod
 
-sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about )
-  returns Str
+sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
@@ -894,7 +807,7 @@ C<gtk_window_set_default_icon()> will be used.
 
 =end pod
 
-sub gtk_about_dialog_set_logo_icon_name ( N-GObject $about, Str $icon_name )
+sub gtk_about_dialog_set_logo_icon_name ( N-GObject $about, gchar-ptr $icon_name )
   is native(&gtk-lib)
   { * }
 
@@ -913,7 +826,7 @@ Creates a new section in the Credits page.
 
 =end pod
 
-sub gtk_about_dialog_add_credit_section ( N-GObject $about, Str $section_name, CArray[Str] $people )
+sub gtk_about_dialog_add_credit_section ( N-GObject $about, gchar-ptr $section_name, gchar-pptr $people )
   is native(&gtk-lib)
   { * }
 
@@ -928,79 +841,63 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
   $label.g-object-get-property( 'label', $gv);
   $gv.g-value-set-string('my text label');
 
+
+
 =comment #TP:0:program-name:
 =head3 Program name
 
-The name of the program.
-If this is not set, it defaults to C<g_get_application_name()>.
-
+The name of the program. If this is not set, it defaults to C<g_get_application_name()>.
 
 The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:version:
 =head3 Program version
 
 The version of the program.
 
-
 The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:copyright:
 =head3 Copyright string
 
 Copyright information for the program.
 
-
 The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:comments:
 =head3 Comments string
 
-Comments about the program. This string is displayed in a label
-in the main dialog, thus it should be a short explanation of
-the main purpose of the program, not a detailed list of features.
-
+Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
 
 The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:license:
 =head3 License
 
-The license of the program. This string is displayed in a
-text view in a secondary dialog, therefore it is fine to use
-a long multi-paragraph text. Note that the text is only wrapped
-in the text view if the "wrap-license" property is set to C<1>;
-otherwise the text itself must contain the intended linebreaks.
-When setting this property to a non-C<Any> value, the
-sig I<license-type> property is set to C<GTK_LICENSE_CUSTOM>
-as a side effect.
-
+The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the "wrap-license" property is set to C<1>; otherwise the text itself must contain the intended linebreaks. When setting this property to a non-C<Any> value, the sig I<license-type> property is set to C<GTK_LICENSE_CUSTOM> as a side effect.
 
 The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:license-type:
 =head3 License Type
 
-The license of the program, as a value of the C<GtkLicense> enumeration.
+The license of the program, as a value of the C<GtkLicense> enumeration. The I<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
 
-The I<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer
-and link the user to the appropriate online resource for the license
-text.
+If C<GTK_LICENSE_UNKNOWN> is used, the link used will be the same specified in the sig I<website> property.
 
-If C<GTK_LICENSE_UNKNOWN> is used, the link used will be the same
-specified in the sig I<website> property.
+If C<GTK_LICENSE_CUSTOM> is used, the current contents of the sig I<license> property are used.
 
-If C<GTK_LICENSE_CUSTOM> is used, the current contents of the
-sig I<license> property are used.
-
-For any other I<Gnome::Gtk3::License> value, the contents of the
-sig I<license> property are also set by this property as
-a side effect.
-
+For any other I<Gnome::Gtk3::License> value, the contents of the sig I<license> property are also set by this property as a side effect.
 
 Widget type: GTK_TYPE_LICENSE
 
 The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
+
 
 =comment #TP:0:website:
 =head3 Website URL
@@ -1008,14 +905,13 @@ The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
 The URL for the link to the website of the program.
 This should be a string starting with "http://.
 
-
 The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:website-label:
 =head3 Website label
 
 The label for the link to the website of the program.
-
 
 The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
 
@@ -1024,220 +920,63 @@ The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRIN
 =comment #TP:0:authors:
 =head3 Authors
 
-The authors of the program, as an C<Any>-terminated array of strings.
-Each string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
+The authors of the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
+
 
 =comment #TP:0:documenters:
 =head3 Documenters
 
-The people documenting the program, as an C<Any>-terminated array of strings.
-Each string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
-
+The people documenting the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
+
 
 =comment #TP:0:artists:
 =head3 Artists
 
-The people who contributed artwork to the program, as a C<Any>-terminated
-array of strings. Each string may contain email addresses and URLs, which
-will be displayed as links, see the introduction for more details.
-
-
+The people who contributed artwork to the program, as a C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
+
 
 =comment #TP:0:translator-credits:
 =head3 Translator credits
 
-Credits to the translators. This string should be marked as translatable.
-The string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
+Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:logo:
 =head3 Logo
 
-A logo for the about box. If it is C<Any>, the default window icon
-set with C<gtk_window_set_default_icon()> will be used.
-
+A logo for the about box. If it is C<Any>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
 
 Widget type: it defaults to gtk_window_get_default_icon_list()
 
 The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 =end comment
 
+
 =comment #TP:0:logo-icon-name:
 =head3 Logo Icon Name
 
-A named icon to use as the logo for the about box. This property
-overrides the sig I<logo> property.
-
+A named icon to use as the logo for the about box. This property overrides the sig I<logo> property.
 
 The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:wrap-license:
 =head3 Wrap license
 
 Whether to wrap the text in the license dialog.
 
-
 The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
 
 =end pod
 
-#`{{
-=begin comment
-
-=head2 Unsupported properties
-
-=end comment
-
-
-
-=head2 Supported properties
-
-=head3 program-name
-
-The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
-
-The name of the program.
-If this is not set, it defaults to C<g_get_application_name()>.
-
-=head3 version
-
-The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
-
-The version of the program.
-
-=head3 copyright
-
-The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
-
-Copyright information for the program.
-
-=head3 comments
-
-The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
-
-Comments about the program. This string is displayed in a label
-in the main dialog, thus it should be a short explanation of
-the main purpose of the program, not a detailed list of features.
-
-=head3 license
-
-The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
-
-The license of the program. This string is displayed in a
-text view in a secondary dialog, therefore it is fine to use
-a long multi-paragraph text. Note that the text is only wrapped
-in the text view if the "wrap-license" property is set to C<1>;
-otherwise the text itself must contain the intended linebreaks.
-When setting this property to a non-C<Any> value, the
-C<license>-type property is set to C<GTK_LICENSE_CUSTOM>
-as a side effect.
-
-=head3 license-type
-
-The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
-
-The license of the program, as a value of the C<GtkLicense> enumeration.
-
-The B<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer
-and link the user to the appropriate online resource for the license
-text.
-
-If C<GTK_LICENSE_UNKNOWN> is used, the link used will be the same
-specified in the C<website> property.
-
-If C<GTK_LICENSE_CUSTOM> is used, the current contents of the
-C<license> property are used.
-
-For any other B<Gnome::Gtk3::License> value, the contents of the
-C<license> property are also set by this property as
-a side effect.
-
-
-=head3 website
-
-The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
-
-The URL for the link to the website of the program.
-This should be a string starting with "http://.
-
-=head3 website-label
-
-The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
-
-The label for the link to the website of the program.
-
-
-=head3 translator-credits
-
-The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
-
-Credits to the translators. This string should be marked as translatable.
-The string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
-=head3 logo-icon-name
-
-The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
-
-A named icon to use as the logo for the about box. This property
-overrides the C<logo> property.
-
-=head3 wrap-license
-
-The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
-
-Whether to wrap the text in the license dialog.
-
-
-
-=head2 Not yet supported properties
-
-=head3 authors
-
-The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
-
-The authors of the program, as a C<Any>-terminated array of strings.
-Each string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
-=head3 documenters
-
-The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
-
-The people documenting the program, as a C<Any>-terminated array of strings.
-Each string may contain email addresses and URLs, which will be displayed
-as links, see the introduction for more details.
-
-=head3 artists
-
-The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
-
-The people who contributed artwork to the program, as a C<Any>-terminated
-array of strings. Each string may contain email addresses and URLs, which
-will be displayed as links, see the introduction for more details.
-
-=head3 logo
-
-The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
-
-A logo for the about box. If it is C<Any>, the default window icon
-set with C<gtk_window_set_default_icon()> will be used.
-
-=end pod
-}}
 
 #-------------------------------------------------------------------------------
 =begin pod
