@@ -97,9 +97,9 @@ subtest 'Button connect and emit signal', {
       $!signal-processed = True;
     }
 
-    method signal-emitter ( Gnome::Gtk3::Button :_widget($widget) --> Str ) {
+    method signal-emitter ( Gnome::Gtk3::Button :_widget($button) --> Str ) {
       while $main.gtk-events-pending() { $main.iteration-do(False); }
-      $widget.emit-by-name('clicked');
+      $button.emit-by-name('clicked');
       sleep(0.3);
       while $main.gtk-events-pending() { $main.iteration-do(False); }
 
