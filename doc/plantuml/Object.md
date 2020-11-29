@@ -1,6 +1,6 @@
 ```plantuml
 @startuml
-'scale 0.9
+
 skinparam packageStyle rectangle
 skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
@@ -13,9 +13,8 @@ Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
 
 'Class connections
-Gnome::N::TopLevelClassSupport <|--- Gnome::GObject::Object
-'Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
-Gnome::GObject::Signal <|.. Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+Gnome::GObject::Signal <|. Gnome::GObject::Object
 
 @enduml
 ```
