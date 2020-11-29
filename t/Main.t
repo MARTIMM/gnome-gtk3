@@ -21,14 +21,14 @@ subtest 'ISA test', {
   is-deeply @*ARGS, ['--raku-option',], 'all but the last option removed';
 }
 
-subtest 'Manipulations', {
+#subtest 'Manipulations', {
 #depending on version, which might differ, skip tests
 #  ok !$m.gtk-check-version( 3, 24, 0), 'version ok';
 #  is $m.gtk-check-version( 2, 0, 0), 'GTK+ version too new (major mismatch)',
 #     'GTK+ version too new';
 
-  diag GtkTextDirection($m.get-locale-direction);
-}
+#  diag GtkTextDirection($m.get-locale-direction);
+#}
 
 #-------------------------------------------------------------------------------
 

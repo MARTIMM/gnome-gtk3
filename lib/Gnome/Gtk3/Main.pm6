@@ -79,6 +79,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
 use Gnome::Glib::OptionContext;
 use Gnome::Gdk3::Events;
 
@@ -111,17 +112,17 @@ submethod BUILD ( Bool :$check = False ) {
 
   if not $gui-initialized {
     # Must setup gtk otherwise Raku will crash
-    my $argc = CArray[int32].new;
+    my $argc = int-ptr.new;
     $argc[0] = 1 + @*ARGS.elems;
 
-    my $arg_arr = CArray[Str].new;
+    my $arg_arr = char-pptr.new;
     my Int $arg-count = 0;
     $arg_arr[$arg-count++] = $*PROGRAM.Str;
     for @*ARGS -> $arg {
       $arg_arr[$arg-count++] = $arg;
     }
 
-    my $argv = CArray[CArray[Str]].new;
+    my $argv = char-ppptr.new;
     $argv[0] = $arg_arr;
 
     $check ?? gtk_init_check( $argc, $argv) !! gtk_init( $argc, $argv);
