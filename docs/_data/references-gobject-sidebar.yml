@@ -3,15 +3,15 @@
   bar_menu:
   - title: Boxed
     type: toplevel
-    url: '/content-docs/nyi-default.html'
-  - title: InitiallyUnowned
-    type: object
-    url: '/content-docs/nyi-default.html'
+    url: '/content-docs/reference/GObject/Boxed.html'
+#  - title: InitiallyUnowned
+#    type: object
+#    url: '/content-docs/reference/GObject/InitiallyUnowned.html'
   - title: "Object"
     type: toplevel
     url: '/content-docs/reference/GObject/Object.html'
   - title: "Signal"
-    type: standalone
+    type: interface
     url: '/content-docs/reference/GObject/Signal.html'
   - title: "Type"
     type: standalone
