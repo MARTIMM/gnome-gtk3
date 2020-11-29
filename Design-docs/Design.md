@@ -14,16 +14,16 @@ bundle exec jekyll serve
 scale 0.8
 ```
 
-# replace text in atom (with regex and case sensitive)
-## replace 'returns' for '-->'
+# Replace text in atom (with regex and case sensitive)
+## Replace 'returns' for '-->'
 search: `\)\s+returns\s+([A-Za-z0-9_\[\]-]+)`
 replace `--> $1 )`
 
-## replace Since version messages
+## Replace Since version messages
 search: `\s*Since:\s+\d+\.\d+`
 replace: ``
 
-# native sub search
+# Native sub search
 ```
   SomeModule.some-sub()
   Gnome::GObject::Object.FALLBACK()
@@ -37,7 +37,7 @@ replace: ``
     Gnome::N::X.test-call()
 ```
 
-# Make example code downloadable archives
+# Example code to make downloadable archives
 
 * Tar `tar cvfz todo-viewer.tgz --exclude '.precomp' todo-viewer/`
 * Zip `zip -r todo-viewer.zip todo-viewer --exclude '*.precomp*'`
