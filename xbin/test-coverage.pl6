@@ -15,8 +15,10 @@ sub MAIN ( *@modules ) {
   my @m = lazy gather find-modules(|@modules);
   for @m -> Str $module {
 
-    # get content and process it.
+    # get content, remove data past '=finish' mark, and process it.
     my Str $content = $module.IO.slurp;
+    $content ~~ s/ \s* '=finish' .* $//;
+
     my Bool $load-tested = load-coverage($content);
     my ( $subs-total, $subs-tested, $sub-hash) = sub-coverage($content);
     my ( $sigs-total, $sigs-tested, $sig-hash) = signal-coverage($content);
@@ -57,13 +59,15 @@ sub MAIN ( *@modules ) {
     # create a path used on the github site
     my Str $path;
     given $module {
-      when /Glade/ { $path = "content-docs/reference/Glade/$module-name"; }
+#      when /Glade/ { $path = "content-docs/reference/Glade/$module-name"; }
       when /Gtk3/ { $path = "content-docs/reference/Gtk3/$module-name"; }
       when /Gdk3/ { $path = "content-docs/reference/Gdk3/$module-name"; }
       when /Gio/ { $path = "content-docs/reference/Gio/$module-name"; }
       when /GObject/ { $path = "content-docs/reference/GObject/$module-name"; }
       when /Glib/ { $path = "content-docs/reference/Glib/$module-name"; }
       when /N/ { $path = "content-docs/reference/Native/$module-name"; }
+      when /Cairo/ { $path = "content-docs/reference/Cairo/$module-name"; }
+      when /Pango/ { $path = "content-docs/reference/Pango/$module-name"; }
     }
 
     %test-coverage{$path}<unit-load> = { :$load-tested };
@@ -104,7 +108,11 @@ sub find-modules ( *@modules ) {
     }
 
     # check if module exists
-    elsif $m.IO.r and $m ~~ m/ \. [ pm || pl ] 6? $/ {
+    elsif $m.IO.r and $m ~~ m/ \.
+                               [ pm6 || pl6 ] ||
+                               [ raku [ doc || test || mod ] ]
+                               $
+                             / {
       take $m.Str;
     }
 
