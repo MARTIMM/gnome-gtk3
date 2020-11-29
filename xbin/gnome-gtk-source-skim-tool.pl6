@@ -550,14 +550,22 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   #drop the const
   $type ~~ s:g/ const //;
 
-  # convert a pointer char type
-  if $type ~~ m/ g?char \s* '*' / {
-    $type ~~ s/ g?char \s* '*' / Str /;
+  # convert pointer char types
+  $type ~~ s/ g?char \s* '*' \s* '*' \s* '*' /gchar-ppptr/;
+  $type ~~ s/ g?char \s* '*' \s* '*' /gchar-pptr/;
+  $type ~~ s/ g?char \s* '*' /gchar-ptr/;
 
-    # if there is still another pointer, make a CArray
-    $type = "CArray[$type]" if $type ~~ m/ '*' /;
-    $type ~~ s:g/ \s* //;
-  }
+  # convert other pointer types
+  $type ~~ s/ void \s* '*' /void-ptr/;
+  $type ~~ s/ g?int \s* '*' /gint-ptr/;
+
+#  if $type ~~ m/ g?char \s* '*' / {
+#    $type ~~ s/ g?char \s* '*' / Str /;
+#
+#    # if there is still another pointer, make a CArray
+#    $type = "CArray[$type]" if $type ~~ m/ '*' /;
+#    $type ~~ s:g/ \s* //;
+#  }
 
   if $declaration ~~ m/ ^ '...' / {
     $type = 'Any';
@@ -589,11 +597,13 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GtkTreeIter' if $type ~~ m/GtkTreeIter/;
   $type = 'N-GtkTreePath' if $type ~~ m/GtkTreePath/;
 
-#  $type = 'int32' if $type ~~ m/GType/;
+  $type = 'N-GObject' if is-n-gobject($type);
+
+#`{{
   $type = 'uint64' if $type ~~ m/GType/;
 
   $type = 'int32' if $type ~~ m/GQuark/;
-  $type = 'N-GObject' if is-n-gobject($type);
+}}
 
   # copy to Raku type for independent convertions
   my Str $raku-type = $type;
@@ -604,16 +614,18 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   # process all types from GtkEnum and some
   # use bin/gather-enums.pl6 to create a list in
   # doc/Design-docs/skim-tool-enum-list.txt
-  if $type ~~ any(@enum-list) {
-    $type = 'int32';
-  }
+  $type = 'GEnum' if $type ~~ any(@enum-list);
 
-  $type ~~ s:s/ gboolean || gint || gint32 /int32/;
+#`{{ not translated anymore. they are mapped in Gnome::N::GlibToRakuTypes
+
+  $type ~~ s:s/ gboolean || gint /int/;
+  $type ~~ s:s/ gint32 /int32/;
   $type ~~ s:s/ g?char || gint8 /int8/;
   $type ~~ s:s/ gshort || gint16 /int16/;
   $type ~~ s:s/ glong || gint64 /int64/;
 
-  $type ~~ s:s/ guint || guint32 /uint32/;
+  $type ~~ s:s/ guint32 /uint32/;
+  $type ~~ s:s/ guint /uint/;
   $type ~~ s:s/ guchar || guint8 /byte/;
   $type ~~ s:s/ gushort || guint16 /uint16/;
   $type ~~ s:s/ gulong || guint64 /uint64/;
@@ -625,11 +637,14 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 
   $type ~~ s:s/ int /int32/;
   $type ~~ s:s/ gpointer /Pointer/;
-
+}}
 
   # convert to perl types
   #$raku-type ~~ s/ 'gchar' \s+ '*' /Str/;
   #$raku-type ~~ s/ str /Str/;
+  $raku-type ~~ s:s/ g?char\-ppptr / CArray[CArray[Str]] /;
+  $raku-type ~~ s:s/ g?char\-pptr / CArray[Str] /;
+  $raku-type ~~ s:s/ g?char\-ptr / Str /;
 
   $raku-type ~~ s:s/ guint || guint32 || guchar || guint8 ||
                    gushort || guint16 || gulong || guint64 ||
@@ -645,7 +660,6 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 #  $raku-type ~~ s:s/ int /Int/;
 #  $raku-type ~~ s:s/ uint /UInt/;
   $raku-type ~~ s:s/ gpointer /Pointer/;
-
   $raku-type ~~ s:s/ gfloat || gdouble /Num/;
 
 #note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
@@ -921,6 +935,7 @@ sub substitute-in-template (
     use Gnome::N::X;
     use Gnome::N::NativeLib;
     use Gnome::N::N-GObject;
+    use Gnome::N::GlibToRakuTypes;
     USE-LIBRARY-PARENT
 
     #-------------------------------------------------------------------------------
