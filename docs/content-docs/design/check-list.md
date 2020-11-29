@@ -11,8 +11,7 @@ layout: sidebar
 Legend for head of table
 
 * **T**: type column with following values
-  * p: package name
-  * t: is top level of classes,
+  * t: is top level of classes, well, TopLevelClassSupport really is but here it is in the Gnome sense of things
   * b: boxed type
   * i: interface type
   * s: standalone module or type
@@ -50,12 +49,13 @@ Legend for head of table
   * **ts**: Subroutines and Methods.
   * **te**: Signals and events.
   * **tp**: Properties.
+* 12: Issue number 12 check.
 
 Entry values can be
 * ✗: No info. Mostly for package names but sometimes there are no signals or properties for a class.
 * Empty: Not done.
 * ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
-* 🗸: Done
+* ✓: Done
 
 <style>
 table {
@@ -63,21 +63,20 @@ table {
 }
 </style>
 
-| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp| |
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Gtk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
-AboutDialog               |  | 🗸| 🗸| 🗸| ¾|  |  |  |  |  | |
-Adjustment                |  |  | 🗸| 🗸| 🗸|🗸| 🗸| 🗸| | 🗸|  |
-Application               |  | 🗸|  | 🗸|  |  |  |  |  |  |  |
-ApplicationWindow         |  | 🗸|  | 🗸|  |  |  |  |  |  |  |
-AspectFrame               |  |  | 🗸| 🗸| 🗸| ✗|  | 🗸| ✗|  |  |
-Assistant                 |  |  | 🗸| 🗸|  |  |  |  |  |  |  |
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓|
+Adjustment                |  |  | ✓| ✓| ✓|✓| ✓| ✓| | ✓|  |
+Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
+ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
+AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
+Assistant                 |  |  | ✓| ✓|  |  |  |  |  |  |  |
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |b |  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
 Buildable                 |i |  |  |  |  |  |  |  |  |  |  |
 Builder                   |  |  |  |  |  |  |  |  |  |  |  |
-Button                    |  | 🗸| 🗸| 🗸| 🗸| 🗸| 🗸| ½| | | |
+Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½| | | |
 CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |
@@ -87,7 +86,7 @@ CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
-CheckButton               |  | 🗸|  |  |  |  |  |  |  |  |  |
+CheckButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooser              |i |  |  |  |  |  |  |  |  |  |  |
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
@@ -96,54 +95,54 @@ ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  |  |  |  |  |  |  |  |  |  |  |
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
-Dialog                    |  | 🗸|  |  |  |  |  |  |  |  | |
-DrawingArea               |  |  | ½| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗| |
-Entry                     |  | 🗸|  |  |  |  |  |  |  |  |  |
+Dialog                    |  | ✓|  |  |  |  |  |  |  |  | |
+DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗| |
+Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |
 Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗| |
 FileChooser               |i |  |  |  |  |  |  |  |  |  |  |
-FileChooserButton         |  | 🗸| 🗸| 🗸|🗸| 🗸| 🗸|½|  |⅓ |  |
+FileChooserButton         |  | ✓| ✓| ✓|✓| ✓| ✓|½|  |⅓ |  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
 Frame                     |  |  |  |  |  |  |  |  |  |  | |
-Grid                      |  | 🗸|  |  |  |  |  |  |  |  | |
-IconTheme                 |  |  | 🗸|  |  |  |  |  |  |  |  |
-IconView                  |  |  | 🗸|  |  |  |  |  |  |  |  |
-Image                     |  |  | 🗸| 🗸| 🗸| ✗| 🗸| ⅓| ✗|  |  |
-Label                     |  | 🗸|  |  |  |  |  |  |  |  |  |
+Grid                      |  | ✓|  |  |  |  |  |  |  |  | |
+IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
+IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
+Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |
+Label                     |  | ✓|  |  |  |  |  |  |  |  |  |
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
 ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |s |  | 🗸| 🗸| ⅔| ✗| ✗| ½| ✗| ✗| |
+Main                      |s |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗| |
 Menu                      |  |  |  |  |  |  |  |  |  |  |  |
 MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
 MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
 MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
 MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
-MessageDialog             |  | 🗸|  |  |  |  |  |  |  |  |  |
+MessageDialog             |  | ✓|  |  |  |  |  |  |  |  |  |
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |
-Notebook                  |  | 🗸|  |  |  |  |  |  |  |  |  |
+Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
 Orientable                |i |  |  |  |  |  |  |  |  |  |  |
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |
 PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |
 Popover                   |  |  |  |  |  |  |  |  |  |  |  |
 PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |
 ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |
-RadioButton               |  | 🗸|  |  |  |  |  |  |  |  |  |
+RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 Range                     |  |  |  |  |  |  |  |  |  |  |  |
-RecentChooserMenu         |  | 🗸|  |  |  |  |  |  |  |  |  |
-Revealer                  |  |  | 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| ¾|  |
-Scale                     |  | 🗸|  |  |  |  |  |  |  |  |  |
+RecentChooserMenu         |  | ✓|  |  |  |  |  |  |  |  |  |
+Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |
+Scale                     |  | ✓|  |  |  |  |  |  |  |  |  |
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |
-SpinButton                |  | 🗸| 🗸| 🗸| 🗸| 🗸| 🗸| 🗸|  | 🗸|  |
+SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
-Stack                     |  | 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
-StackSidebar              |  |  | 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
-StackSwitcher             |  |  | 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗| 🗸|  |
-Statusbar                 |  | 🗸| 🗸| 🗸| 🗸| 🗸| ✗| 🗸| 🗸| ✗|  |
+Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
+StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
+StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
+Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
 StyleProvider             |i |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |
@@ -155,19 +154,19 @@ TextView                  |  |  |  |  |  |  |  |  |  |  |  |
 ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |
 ToolButton                |  |  |  |  |  |  |  |  |  |  |  |
 ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |
-TreeIter                  |b | ✗| 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
-TreeModel                 |i | ✗| 🗸| 🗸|  |  |  |  |  |  |  |
-TreePath                  |b | ✗| 🗸| 🗸| 🗸| ✗| ✗| 🗸| ✗| ✗|  |
+TreeIter                  |b | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
+TreeModel                 |i | ✗| ✓| ✓|  |  |  |  |  |  |  |
+TreePath                  |b | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
 TreeRowReference          |b |  |  |  |  |  |  |  |  |  |  |
 TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
-TreeStore                 |  | 🗸|  |  |  |  |  |  |  |  |  |
-TreeView                  |  | 🗸|  |  |  |  |  |  |  |  |  |
+TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |
+TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  |  | 🗸| 🗸| ⅔| ½| ⅔|  |  |  | |
+Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔|  |  |  | |
 WidgetPath                |b |  |  |  |  |  |  |  |  |  |  |
-Window                    |  | 🗸| 🗸| 🗸|  |  |  |  |  |  | |
+Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  | |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp| | -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12| -->
 
 <br/>
 
@@ -293,9 +292,8 @@ WindowGroup|
 
 <br/>
 
-| Module/Class            |T |I |dm|db|ds|de|dp|ts|te|tp| |
+| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Gdk3**           |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
 Device                    |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |
 Events                    |  |  |  |  |  |  |  |  |  |  | |
@@ -308,22 +306,19 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp| |
+| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
-**Gnome::GObject**        |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
-Boxed                     |t |  |  |  |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  |  |  |  |  |  |
-InitiallyUnowned          |  |  |  |  |  |  |  |  |  |  |
-Object                    |t | 🗸| 🗸|  |  |  |  |  |  | |
-Signal                    |i |  |  |  |  |  |  |  |  | |
-Type                      |s |  |  |  |  |  |  |  |  |  |
-value                     |b |  |  |  |  |  |  |  |  |  |
+Boxed                     |t | ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
+InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
+Object                    |t | ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|
+Signal                    |i | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|
+Type                      |s | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
+value                     |b | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|ts|te| |
+| Gnome::Glib             |T |dm|db|ds|de|ts|te|12|
 |-------------------------|--|--|--|--|--|--|--|--|
-**Gnome::Glib**           |p | ✗| ✗| ✗| ✗| ✗| ✗| |
 Error                     |  |  |  |  |  |  |  |  |
 List                      |  |  |  |  |  |  |  |  |
 Main                      |  |  |  |  |  |  |  |  |
@@ -333,9 +328,8 @@ Variant                   |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|de|ts|te| |
+| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|
 |-------------------------|--|--|--|--|--|--|--|--|
-**Gnome::Gio**            |p | ✗| ✗| ✗| ✗| ✗| ✗| |
 Action                    |i |  |  |  |  |  |  |  |
 ActionMap                 |i |  |  |  |  |  |  |  |
 Application               |  |  |  |  |  |  |  |  |
@@ -349,19 +343,18 @@ SimpleAction              |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|ts| |
+| Gnome::N                |T |dm|db|ds|ts|12|
 |-------------------------|--|--|--|--|--|--|
-**Gnome::N**              |p | ✗| ✗| ✗| ✗| |
-N-GObject                 |N |  |  |  |  |  |
-NativeLib                 |L |  |  |  |  | |
-TopLevelClassSupport      |t |  |  |  |  | |
-X                         |  |  |  |  |  | |
+GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|
+N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|
+NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|
+TopLevelClassSupport      |t |  |  |  |  | ✓|
+X                         |  |  |  |  |  | ✓|
 
 <br/>
 
-| Module/Class            |T |dm|db|ds|ts| |
+| Gnome::Cairo            |T |dm|db|ds|ts|12|
 |-------------------------|--|--|--|--|--|--|
-**Gnome::Cairo**          |p | ✗| ✗| ✗| ✗| |
 Enums                     |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |
@@ -376,8 +369,8 @@ Types                     |  |  |  |  |  |  |
 <br/>
 
 <!--
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp| |
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| |
+**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Object                    |  |  |  |  |  |  |  |  |  |  |
 -->
