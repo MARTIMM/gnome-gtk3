@@ -1,14 +1,9 @@
-TITLE
-=====
-
 Gnome::GObject::Type
-
-SUBTITLE
-========
+====================
 
 The GLib Runtime type identification and management system
 
-***Note: The methods described here are mostly used internally and is not interesting for the normal Raku user.***
+***Note: The methods described here are mostly used internally and is not of much interest for the normal Raku user.***
 
 Description
 ===========
@@ -27,27 +22,12 @@ Declaration
 
     unit class Gnome::GObject::Type;
 
-class N-GTypeInstance
----------------------
-
-An opaque structure used as the base of all type instances.
-
-class N-GTypeInterface
-----------------------
-
-An opaque structure used as the base of all interface types.
-
-class N-GTypeClass
-------------------
-
-An opaque structure used as the base of all type instances.
-
 class N-GTypeQuery
 ------------------
 
 A structure holding information for a specific type. It is filled in by the `g_type_query()` function.
 
-  * int32 $.type: the **N-GType** value of the type.
+  * UInt $.type: the GType value of the type.
 
   * Str $.type_name: the name of the type.
 
@@ -55,69 +35,33 @@ A structure holding information for a specific type. It is filled in by the `g_t
 
   * UInt $.instance_size: the size of the instance structure.
 
-class N-GTypeInfo
------------------
-
-This structure is used to provide the type system with the information required to initialize and destruct (finalize) a type's class and its instances.
-
-The initialized structure is passed to the `g_type_register_static()` function (or is copied into the provided *N-GTypeInfo* structure in the `g_type_plugin_complete_type_info()`). The type system will perform a deep copy of this structure, so its memory does not need to be persistent across invocation of `g_type_register_static()`.
-
-  * UInt $.class_size: Size of the class structure (required for interface, classed and instantiatable types)
-
-  * GBaseInitFunc $.base_init: Location of the base initialization function (optional)
-
-  * GBaseFinalizeFunc $.base_finalize: Location of the base finalization function (optional)
-
-  * GClassInitFunc $.class_init: Location of the class initialization function for classed and instantiatable types. Location of the default vtable inititalization function for interface types. (optional) This function is used both to fill in virtual functions in the class or default vtable, and to do type-specific setup such as registering signals and object properties.
-
-  * GClassFinalizeFunc $.class_finalize: Location of the class finalization function for classed and instantiatable types. Location of the default vtable finalization function for interface types. (optional)
-
-  * Pointer $.class_data: User-supplied data passed to the class init/finalize functions
-
-  * UInt $.instance_size: Size of the instance (object) structure (required for instantiatable types only)
-
-  * UInt $.n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the [slice allocator][glib-Memory-Slices] now.
-
-  * GInstanceInitFunc $.instance_init: Location of the instance initialization function (optional, for instantiatable types only)
-
-  * int32 $.value_table: A *N-GTypeValueTable* function table for generic handling of GValues of this type (usually only useful for fundamental types)
-
-class N-GTypeFundamentalInfo
-----------------------------
-
-A structure that provides information to the type system which is used specifically for managing fundamental types.
-
-  * int32 $.type_flags: *N-GTypeFundamentalFlags* describing the characteristics of the fundamental type
-
-class N-GInterfaceInfo
-----------------------
-
-A structure that provides information to the type system which is used specifically for managing interface types.
-
-  * GInterfaceInitFunc $.interface_init: location of the interface initialization function
-
-  * GInterfaceFinalizeFunc $.interface_finalize: location of the interface finalization function
-
-  * Pointer $.interface_data: user-supplied data passed to the interface init/finalize functions
-
 Methods
 =======
 
 new
 ---
 
-### multi method new ( )
+### default, no options
 
-Create a new plain object. In contrast with other objects, this class doesn't wrap a native object, so therefore no named arguments to specify something
+Create a new plain object. In contrast with other objects, this class doesn't wrap a native object, so therefore no options to specify something.
 
 [g_] type_name
 --------------
 
 Get the unique name that is assigned to a type ID. Note that this function (like all other GType API) cannot cope with invalid type IDs. `G_TYPE_INVALID` may be passed to this function, as may be any other validly registered type ID, but randomized type IDs should not be passed in and will most likely lead to a crash.
 
-Returns: static type name or `Any`
+Returns: static type name or undefined
 
-    method g_type_name ( UInt $type --> Str )
+    method g_type_name ( UInt $gtype --> Str )
+
+[g_] type_qname
+---------------
+
+Get the corresponding quark of the type IDs name.
+
+Returns: the type names quark or 0
+
+    method g_type_qname ( --> UInt  )
 
 [[g_] type_] from_name
 ----------------------
@@ -148,17 +92,6 @@ Returns: the depth of *$type*
 
     method g_type_depth ( UInt $type --> UInt  )
 
-[[g_] type_] next_base
-----------------------
-
-Given a *$leaf_type* and a *$root_type* which is contained in its anchestry, return the type that *$root_type* is the immediate parent of. In other words, this function determines the type that is derived directly from *$root_type* which is also a base class of *$leaf_type*. Given a root type and a leaf type, this function can be used to determine the types and order in which the leaf type is descended from the root type.
-
-Returns: immediate child of *$root_type* and anchestor of *$leaf_type*
-
-    method g_type_next_base ( Int $root_type --> Int )
-
-  * int32 $root_type; immediate parent of the returned type
-
 [[g_] type_] is_a
 -----------------
 
@@ -166,9 +99,18 @@ If *$is_a_type* is a derivable type, check whether *$type* is a descendant of *$
 
 Returns: `1` if *$type* is a *$is_a_type*.
 
-    method g_type_is_a ( UInt $type, UInt $is_a_type --> Int  )
+    method g_type_is_a ( UInt $type, UInt $is_a_type --> Int )
 
   * UInt $is_a_type; possible anchestor of *$type* or interface that *$type* could conform to.
+
+[g_] type_query
+---------------
+
+Queries the type system for information about a specific type. This function will fill in a user-provided structure to hold type-specific information. If an invalid *GType* is passed in, the *$type* member of the *N-GTypeQuery* is 0. All members filled into the *N-GTypeQuery* structure should be considered constant and have to be left untouched.
+
+    method g_type_query ( int32 $type --> N-GTypeQuery )
+
+  * N-GTypeQuery $query; a structure that is filled in with constant values upon success
 
 [[g_] type_] check_instance_cast
 --------------------------------
@@ -195,25 +137,16 @@ This macro should only be used in type implementations.
       N-GObject $instance, UInt $iface_type --> Int
     )
 
-  * int32 $instance;
+  * N-GObject $instance; the native object to check.
 
-  * int32 $iface_type;
-
-[[g_] type_] check_value
-------------------------
-
-Checks if value has been initialized to hold values of type g_type.
-
-    method g_type_check_value ( N-GObject $value --> Int  )
-
-  * N-GObject $value;
+  * UInt $iface_type; the gtype the instance is inheriting from.
 
 [[g_] type_] name_from_instance
 -------------------------------
 
 Get name of type from the instance.
 
-    method g_type_name_from_instance ( int32 $instance --> Str  )
+    method g_type_name_from_instance ( N-GObject $instance --> Str  )
 
   * int32 $instance;
 

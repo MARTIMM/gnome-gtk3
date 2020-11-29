@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="194px" preserveAspectRatio="none" style="width:183px;height:194px;" version="1.1" viewBox="0 0 183 194" width="183px" zoomAndPan="magnify"><defs><filter height="300%" id="f1bwecyx62dz9l" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[2fb3f9b624b0544b9841d5da78ec0508]
+cluster Gnome::GObject--><rect fill="#FFFFFF" filter="url(#f1bwecyx62dz9l)" height="175" style="stroke: #000000; stroke-width: 1.5;" width="164" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="131" x="23.5" y="21.9951">Gnome::GObject</text><!--MD5=[52303d185de782118d4739c052001bf2]
+class Gnome::GObject::Signal--><rect codeLine="11" fill="#FEFECE" filter="url(#f1bwecyx62dz9l)" height="32" id="Gnome::GObject::Signal" style="stroke: #A80036; stroke-width: 1.5;" width="131" x="23.5" y="42"/><ellipse cx="38.5" cy="58" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M39.7031,58.1406 Q40.0625,58.2188 40.3281,58.5 Q40.6094,58.7656 41,59.5469 L43.2344,64 L40.5469,64 L39.0469,60.875 Q38.9844,60.7344 38.875,60.5 Q38.2188,59.1094 37.3281,59.1094 L36.5469,59.1094 L36.5469,64 L34.1094,64 L34.1094,51.6094 L37.6406,51.6094 Q40.0313,51.6094 41.0625,52.4531 Q42.1094,53.2969 42.1094,55.2031 Q42.1094,56.4844 41.4844,57.25 Q40.875,58 39.7031,58.1406 Z M36.5469,53.6719 L36.5469,57.0469 L37.7031,57.0469 Q38.7188,57.0469 39.1406,56.6563 Q39.5781,56.25 39.5781,55.3438 Q39.5781,54.4531 39.1406,54.0625 Q38.7188,53.6719 37.7031,53.6719 L36.5469,53.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="38" x="52.5" y="62.1807">Signal</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="59" x="98.5" y="39"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="99.5" y="51.1387">Interface</text><!--MD5=[c2016d28441601ceb0a74f47a4537d14]
+class Gnome::GObject::Object--><rect fill="#FEFECE" filter="url(#f1bwecyx62dz9l)" height="32" id="Gnome::GObject::Object" style="stroke: #A80036; stroke-width: 1.5;" width="72" x="53" y="134"/><ellipse cx="68" cy="150" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M70.9688,155.6406 Q70.3906,155.9375 69.75,156.0781 Q69.1094,156.2344 68.4063,156.2344 Q65.9063,156.2344 64.5781,154.5938 Q63.2656,152.9375 63.2656,149.8125 Q63.2656,146.6875 64.5781,145.0313 Q65.9063,143.375 68.4063,143.375 Q69.1094,143.375 69.75,143.5313 Q70.4063,143.6875 70.9688,143.9844 L70.9688,146.7031 Q70.3438,146.125 69.75,145.8594 Q69.1563,145.5781 68.5313,145.5781 Q67.1875,145.5781 66.5,146.6563 Q65.8125,147.7188 65.8125,149.8125 Q65.8125,151.9063 66.5,152.9844 Q67.1875,154.0469 68.5313,154.0469 Q69.1563,154.0469 69.75,153.7813 Q70.3438,153.5 70.9688,152.9219 L70.9688,155.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="40" x="82" y="154.1807">Object</text><!--MD5=[f8ffcf4587ba956cb48626a4231e4d21]
+reverse link Gnome::GObject::Signal to Gnome::GObject::Object--><path codeLine="14" d="M89,94.61 C89,108.31 89,123.22 89,133.96 " fill="none" id="Gnome::GObject::Signal-backto-Gnome::GObject::Object" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="82,94.27,89,74.27,96,94.27,82,94.27" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[90bf39494f853e436417c39d41cfe2e4]
+@startuml
+
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide members
+
+'Class and interface decorations
+
+Interface Gnome::GObject::Signal <Interface>
+class Gnome::GObject::Signal <<(R,#80ffff)>>
+
+'Class connections
+Gnome::GObject::Signal <|.. Gnome::GObject::Object
+
+@enduml
+
+@startuml
+
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide members
+
+
+Interface Gnome::GObject::Signal <Interface>
+class Gnome::GObject::Signal <<(R,#80ffff)>>
+
+Gnome::GObject::Signal <|.. Gnome::GObject::Object
+
+@enduml
+
+PlantUML version 1.2020.19(Mon Oct 12 17:10:01 CEST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

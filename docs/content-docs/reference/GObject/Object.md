@@ -55,17 +55,13 @@ Register a handler to process a signal or an event. There are several types of c
 
   * $signal-name; The name of the event to be handled. Each gtk object has its own series of signals.
 
-  * %user-options; Any other user data in whatever type provided as one or more named arguments. These arguments are provided to the user handler when an event for the handler is fired.
+  * %user-options; Any other user data in whatever type provided as one or more named arguments. These arguments are provided to the user handler when an event for the handler is fired. The names starting with '_' are reserved to provide other info to the user.
 
-    There will always be one named argument `:$widget` which holds the class object on which the signal was registered. The name 'widget' is therefore reserved.
+    The following reserved named arguments are available;
 
-    The named attribute `:$widget` will be deprecated in the future. The name will be changed into `:$_widget` to give the user a free hand in user provided named arguments. The names starting with '_' will then be reserved to provide special info to the user.
+      * `:$_widget`; The instance which registered the signal
 
-    The following named arguments can be used
-
-      * `:$_widget`; The instance which registered the signal.
-
-      * `:$_handler-id`; The handler id which is returned from the registration.
+      * `:$_handler-id`; The handler id which is returned from the registration
 
 The method returns a handler id which can be used for example to disconnect the callback later.
 
@@ -83,27 +79,34 @@ Two examples of a registration and the handlers signature
 
     # button clicks.
     # register callback
-    $button.register-signal( $ho, 'click-button', 'clicked', :uo(...));
+    $button.register-signal(
+      $handler-object, 'click-button', 'clicked', :uo(...)
+    );
 
-    # callback method
-    method click-button ( :$_widget, :$_handler_id, :$uo ) { ... }
+    # callback method in users handler class
+    method click-button ( :$_widget, :$_handler_id, :$uo ) {
+      ...
+    }
 
-
+Second example
 
     # keyboard key presses.
     # register callback
     $window.register-signal(
-      $ho, 'keyboard-handler', 'key-press-event', :uo(...)
+      $handler-object, 'keyboard-handler',
+      'key-press-event', :uo(...)
     );
 
-    # callback method
+    # callback method in users handler class
     method keyboard-handler (
-      N-GdkEvent $event, :$_widget, :$_handler_id, :$uo --> Int
+      N-GdkEvent $event, :$_widget, :$_handler_id, :$uo
+      --> gboolean
     ) { ... }
 
-An more complete example to register and use a simple callback handler
+A more complete example to register and use a simple callback handler
 
-    # create a class with a handler method to process a button click event
+    # create a class with a handler method to process
+    # a button click event
     class X {
       method click-handler ( Array :$my-data ) {
         say $my-data.join(' ');
@@ -115,7 +118,10 @@ An more complete example to register and use a simple callback handler
     my Array $data = [<Hello World>];
 
     # register button signal
-    $button.register-signal( X.new, 'click-handler', 'clicked', :my-data($data));
+    $button.register-signal(
+      X.new, 'click-handler', 'clicked',
+      :my-data([$data-item1, $data-item2])
+    );
 
 start-thread
 ------------
@@ -200,7 +206,7 @@ The methods always return a **Gnome::GObject::Value** with the result.
 
 Increases the reference count of this object and returns the same object.
 
-    method g_object_ref ( --> N-GObject  )
+    method g_object_ref ( --> N-GObject )
 
 [g_] object_unref
 -----------------
@@ -211,27 +217,27 @@ When the object has a floating reference because it is not added to a container 
 
     method g_object_unref ( )
 
-  * N-GObject $object; a *GObject*
+  * N-GObject $object; a native *GObject*.
 
 [[g_] object_] is_floating
 --------------------------
 
-Checks whether *object* has a [floating][floating-ref] reference.
+Checks whether *object* has a floating reference.
 
 Returns: `1` if *object* has a floating reference
 
-    method g_object_is_floating ( Pointer $object --> Int  )
+    method g_object_is_floating ( --> Int  )
 
   * Pointer $object; (type GObject.Object): a *GObject*
 
 [[g_] object_] ref_sink
 -----------------------
 
-Increase the reference count of *object*, and possibly remove the [floating][floating-ref] reference, if *object* has a floating reference.
+Increase the reference count of this native *object*, and possibly remove the floating reference, if *object* has a floating reference.
 
 In other words, if the object is floating, then this call "assumes ownership" of the floating reference, converting it to a normal reference by clearing the floating flag while leaving the reference count unchanged. If the object is not floating, then this call adds a new normal reference increasing the reference count by one.
 
-Since GLib 2.56, the type of *object* will be propagated to the return type under the same conditions as for `g_object_ref()`.
+The type of *object* will be propagated to the return type under the same conditions as for `g_object_ref()`.
 
 Returns: N-GObject
 

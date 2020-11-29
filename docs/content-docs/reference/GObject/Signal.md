@@ -12,7 +12,12 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::GObject::Signal;
+    unit role Gnome::GObject::Signal;
+
+Uml Diagram
+-----------
+
+![](plantuml/Signal.svg)
 
 Example
 -------
@@ -28,7 +33,7 @@ Example
     # Define proper handler. The handler API must describe all arguments
     # and their types.
     my Callable $handler = sub (
-      N-GObject $native-widget, GdkEvent $event, OpaquePointer $ignore-d
+      N-GObject $native-widget, N-GdkEvent $event, OpaquePointer $ignored
     ) {
       ...
     }
@@ -43,7 +48,7 @@ The other option to connect a signal is to use the `register-signal()` method de
 
     # Define handler method. The handler API must describe all positional
     # arguments and their types.
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( N-GdkEvent $event, :$_widget , :$_handler-id) { ... }
 
     # Get a window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -51,8 +56,13 @@ The other option to connect a signal is to use the `register-signal()` method de
     # Then register
     $w.register-signal( self, 'mouse-event', 'button-press-event');
 
+When some of the primitive types are needed like `gboolean` or `guint`, you can just use the module **Gnome::N::GlibToRakuTypes** and leave the types as they are found in the docs. It might be tricky to choose the proper type: e.g. is a `guint` an `unsigned int32` or `unsigned int64`? By the way, enumerations can be typed `GEnum`.
+
 Methods
 =======
+
+[[g_] signal_] connect_object
+-----------------------------
 
 Connects a callback function to a signal for a particular object.
 
@@ -67,40 +77,43 @@ Connects a callback function to a signal for a particular object.
 Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to the default if no handlers are connected.
 
     g_signal_emit_by_name (
-      Str $detailed-signal, *@handler-arguments, *%options
+      Str $detailed-signal, *@handler-arguments,
+      Array :$parameters, :$return-type
     )
 
-  * $signal; a string of the form "signal-name::detail". '::detail' part is mostly not defined such as a button click signal called 'clicked'.
+  * $detailed-signal; a string of the form "signal-name::detail". '::detail' part is mostly not defined such as a button click signal called 'clicked'.
 
   * *@handler-arguments; a series of arguments needed for the signal handler.
 
-  * *%options; needed to modify argument types and return value;
+  * :parameters([type, ...]); a series of types, one for each argument.
 
-    * :parameters([type, ...]); a series of types, one for each argument. Most of the time the types are correctly interpreted but for e.g. int64 or num64 this option must be provided. All types for all arguments must be specified if used.
-
-    * :return-type(type); specifies the type of the return value. When there is no return value, you can omit this. An error is be thrown by GTK+ when a return value type is not specified while the signal handler does return something.
-
-    (Window.t:46695): GLib-GObject-WARNING **: 15:04:59.689: ../gobject/gsignal.c:3417: value location for 'gboolean' passed as NULL
+  * :return-type(type); specifies the type of the return value. When there is no return value, you can omit this.
 
 ### An example
 
+      use Gnome::N::GlibToRakuTypes;
+      ...
+
       # The extra argument here is $toggle
       method enable-debugging-handler (
-        int32 $toggle, Gnome::Gtk3::Window :$widget
-        --> int32
+        gboolean $toggle, Gnome::Gtk3::Window :$_widget
+        --> gboolean
       ) {
         ...
         1
       }
 
-      $w.register-signal( self, 'enable-debugging-handler', 'enable-debugging');
+      $window.register-signal(
+        self, 'enable-debugging-handler', 'enable-debugging'
+      );
 
       ... loop started ...
       ... in another thread ...
       my Gnome::Gtk3::Main $main .= new;
       while $main.gtk-events-pending() { $main.iteration-do(False); }
-      $widget.emit-by-name(
-        'enable-debugging', 1, :return-type(int32), :parameters([int32,])
+      $window.emit-by-name(
+        'enable-debugging', 1,
+        :parameters([gboolean,]), :return-type(gboolean)
       );
 
       ...
@@ -115,4 +128,15 @@ The handler_id has to be a valid signal handler id, connected to a signal of ins
     g_signal_handler_disconnect( Int $handler_id )
 
   * $handler_id; Handler id of the handler to be disconnected.
+
+[g_] signal_name
+----------------
+
+Given the signal's identifier, finds its name. Two different signals may have the same name, if they have differing types.
+
+    g_signal_name( UInt $signal-id --> Str )
+
+  * $signal-id; the signal's identifying number.
+
+Returns the signal name, or NULL if the signal number was invalid.
 

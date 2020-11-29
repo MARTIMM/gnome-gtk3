@@ -6,11 +6,11 @@ Standard Parameter and Value Types
 Description
 ===========
 
-GValue provides an abstract container structure which can be copied, transformed and compared while holding a value of any (derived) type, which is registered as a GType with a GTypeValueTable in its GTypeInfo structure. Parameter specifications for most value types can be created as GParamSpec derived instances, to implement e.g. GObject properties which operate on GValue containers.
+This class provides an abstract container structure which can be copied, transformed and compared while holding a value of any (derived) type, which is registered as a GType with a GTypeValueTable in its GTypeInfo structure. Parameter specifications for most value types can be created as GParamSpec derived instances, to implement e.g. GObject properties which operate on GValue containers. (note that not everything is implemented in Raku)
 
 Parameter names need to start with a letter (a-z or A-Z). Subsequent characters can be letters, numbers or a '-'. All other characters are replaced by a '-' during construction.
 
-GValue is a polymorphic type that can hold values of any other type operations and thus can be used as a type initializer for `g_value_init()` and are defined by a separate interface. See the [standard values API][gobject-Standard-Parameter-and-Value-Types] for details
+**N-GValue** is a polymorphic type that can hold values of any other type operations and thus can be used as a type initializer for `g_value_init()` and are defined by a separate interface. See the standard values API for details
 
 The **N-GValue** structure is basically a variable container that consists of a type identifier and a specific value of that type. The type identifier within a **N-GValue** structure always determines the type of the associated value. To create an undefined **N-GValue** structure, simply create a zero-filled **N-GValue** structure. To initialize the **N-GValue**, use the `g_value_init()` function. A **N-GValue** cannot be used until it is initialized. The basic type operations (such as freeing and copying) are determined by the **GTypeValueTable** associated with the type ID stored in the **N-GValue**. Other **N-GValue** operations (such as converting values between types) are provided by this interface.
 
@@ -23,13 +23,18 @@ Declaration
     unit class Gnome::GObject::Value;
     also is Gnome::GObject::Boxed;
 
+Uml Diagram
+-----------
+
+![](plantuml/Value.svg)
+
 Types
 =====
 
 N-GValue
 --------
 
-A structure to hold a type and a value. Its type is readable from the structure as a 32 bit integer and holds type values like `G_TYPE_UCHAR` and `G_TYPE_LONG`. These names are defined in **Gnome::GObject::Type**.
+A structure to hold a type and a value. Its type is readable from the structure as a 32 bit integer and holds type values like `G_TYPE_UCHAR` and `G_TYPE_LONG`. Dynamic types from native widgets are also used. The static type names are defined in **Gnome::GObject::Type**.
 
     my Gnome::GObject::Value $v .= new( :type(G_TYPE_ULONG), :value(765237654));
     say $v.get-native-object.g-type;  # 36
@@ -40,28 +45,40 @@ Methods
 new
 ---
 
+### :init
+
 Create a value object and initialize to type. Exampes of a type is G_TYPE_INT or G_TYPE_BOOLEAN.
 
     multi method new ( Int :$init! )
+
+### :type, :value
 
 Create a value object and initialize to type and set a value.
 
     multi method new ( Int :$type!, Any :$value! )
 
+### :gvalue
+
 Create an object using a native object from elsewhere.
 
     multi method new ( N-GObject :$gvalue! )
 
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
+
+    multi method new ( N-GObject :$native-object! )
+
 [g_] value_init
 ---------------
 
-Initializes *$value* with the default value of *$g_type*.
+Initializes with the default value of *$g_type*.
 
 Returns: the **N-GValue** structure that has been passed in
 
     method g_value_init ( UInt $g_type --> N-GValue  )
 
-  * uInt $g_type; Type the **N-GValue** should hold values of.
+  * UInt $g_type; Type the **N-GValue** should hold values of.
 
 [g_] value_reset
 ----------------
@@ -70,7 +87,7 @@ Clears the current value in this object and resets it to the default value (as i
 
 Returns: the **N-GValue** structure that has been passed in
 
-    method g_value_reset ( --> N-GValue  )
+    method g_value_reset ( --> N-GValue )
 
 [g_] value_unset
 ----------------
@@ -79,80 +96,44 @@ Clears the current value (if any) and "unsets" the type, this releases all resou
 
     method g_value_unset ( )
 
-[[g_] value_] set_instance
---------------------------
-
-Sets the value from an instantiatable type via the value_table's `collect_value()` function.
-
-    method g_value_set_instance ( Pointer $instance )
-
-  * Pointer $instance; (nullable): the instance
-
-[[g_] value_] init_from_instance
---------------------------------
-
-Initializes and sets *value* from an instantiatable type via the value_table's `collect_value()` function.
-
-Note: The *value* will be initialised with the exact type of *instance*. If you wish to set the *value*'s type to a different GType (such as a parent class GType), you need to manually call `g_value_init()` and `g_value_set_instance()`.
-
-Since: 2.42
-
-    method g_value_init_from_instance ( Pointer $instance )
-
-  * Pointer $instance; (type GObject.TypeInstance): the instance
-
-[[g_] value_] fits_pointer
---------------------------
-
-Determines if *value* will fit inside the size of a pointer value. This is an internal function introduced mainly for C marshallers.
-
-Returns: `1` if *value* will fit inside a pointer value.
-
-    method g_value_fits_pointer ( --> Int  )
-
-[[g_] value_] peek_pointer
---------------------------
-
-Returns the value contents as pointer. This function asserts that `g_value_fits_pointer()` returned `1` for the passed in value. This is an internal function introduced mainly for C marshallers.
-
-Returns: (transfer none): the value contents as pointer
-
-    method g_value_peek_pointer ( --> Pointer  )
-
 [[g_] value_] type_compatible
 -----------------------------
 
-Returns whether a **N-GValue** of type *src_type* can be copied into a **N-GValue** of type *dest_type*.
+Returns whether a **N-GValue** of type *$src_type* can be copied into a **N-GValue** of type *$dest_type*.
 
-Returns: `1` if `g_value_copy()` is possible with *src_type* and *dest_type*.
+Returns: `1` if `g_value_copy()` is possible with *$src_type* and *dest_type*.
 
-    method g_value_type_compatible ( uInt $src_type, uInt $dest_type --> Int  )
+    method g_value_type_compatible (
+      UInt $src_type, UInt $dest_type --> Int
+    )
 
-  * uInt $src_type; source type to be copied.
+  * UInt $src_type; source type to be copied.
 
-  * uInt $dest_type; destination type for copying.
+  * UInt $dest_type; destination type for copying.
 
 [[g_] value_] type_transformable
 --------------------------------
 
-Check whether `g_value_transform()` is able to transform values of type *src_type* into values of type *dest_type*. Note that for the types to be transformable, they must be compatible or a transformation function must be registered.
+Check whether `g_value_transform()` is able to transform values of type *$src_type* into values of type *$dest_type*. Note that for the types to be transformable, they must be compatible or a transformation function must be registered.
 
 Returns: `1` if the transformation is possible, `0` otherwise.
 
-    method g_value_type_transformable ( uInt $src_type, uInt $dest_type --> Int  )
+    method g_value_type_transformable (
+      UInt $src_type, UInt $dest_type --> Int
+    )
 
-  * uInt $src_type; Source type.
+  * UInt $src_type; Source type.
 
-  * uInt $dest_type; Target type.
+  * UInt $dest_type; Target type.
 
 [g_] value_transform
 --------------------
 
-Tries to cast the contents of *src_value* into a type appropriate to store in *dest_value*, e.g. to transform a `G_TYPE_INT` value into a `G_TYPE_FLOAT` value. Performing transformations between value types might incur precision lossage. Especially transformations into strings might reveal seemingly arbitrary results and shouldn't be relied upon for production code (such as rcfile value or object property serialization).
+Tries to cast the contents of this value into a type appropriate to store in *$dest_value*, e.g. to transform a `G_TYPE_INT` value into a `G_TYPE_FLOAT` value. Performing transformations between value types might incur precision lossage. Especially transformations into strings might reveal seemingly arbitrary results and shouldn't be relied upon for production code (such as rcfile value or object property serialization).
 
-Returns: Whether a transformation rule was found and could be applied. Upon failing transformations, *dest_value* is left untouched.
+Returns: Whether a transformation rule was found and could be applied. Upon failing transformations, *$dest_value* is left untouched and `0` is returned.
 
-    method g_value_transform ( N-GValue $dest_value --> Int  )
+    method g_value_transform ( N-GValue $dest_value --> Int )
 
   * N-GValue $dest_value; Target value.
 
@@ -160,8 +141,6 @@ Returns: Whether a transformation rule was found and could be applied. Upon fail
 --------------------
 
 Set the contents of a `G_TYPE_CHAR` typed **N-GValue** to *$v_char*.
-
-Since: 2.32
 
     method g_value_set_schar ( Int $v_char )
 
@@ -171,8 +150,6 @@ Since: 2.32
 --------------------
 
 Get the signed 8 bit integer contents of a `G_TYPE_CHAR` typed **N-GValue**.
-
-Since: 2.32
 
     method g_value_get_schar ( --> Int  )
 
@@ -229,16 +206,16 @@ Get the contents of a `G_TYPE_INT` typed **N-GValue**.
 
 Set the contents of a `G_TYPE_UINT` typed **N-GValue** to *$v_uint*.
 
-    method g_value_set_uint ( guInt $v_uint )
+    method g_value_set_uint ( UInt $v_uint )
 
-  * guInt $v_uint; unsigned integer value to be set
+  * gUInt $v_uint; unsigned integer value to be set
 
 [g_] value_get_uint
 -------------------
 
 Get the contents of a `G_TYPE_UINT` typed **N-GValue**.
 
-    method g_value_get_uint ( --> guInt  )
+    method g_value_get_uint ( --> UInt  )
 
 [g_] value_set_long
 -------------------
@@ -295,17 +272,17 @@ Set the contents of a `G_TYPE_UINT64` typed **N-GValue** to *$v_uint64*.
 
     method g_value_set_uint64 ( UInt $v_uint64 )
 
-  * guInt $v_uint64; unsigned 64bit integer value to be set
+  * gUInt $v_uint64; unsigned 64bit integer value to be set
 
-[g_] value_get_uint64
----------------------
+[[g_] value_] get_uint64
+------------------------
 
 Get the contents of a `G_TYPE_UINT64` typed **N-GValue**.
 
-    method g_value_get_uint64 ( --> guInt  )
+    method g_value_get_uint64 ( --> gUInt  )
 
-[g_] value_set_float
---------------------
+[[g_] value_] set_float
+-----------------------
 
 Set the contents of a `G_TYPE_FLOAT` typed **N-GValue** to *$v_float*.
 
@@ -313,15 +290,15 @@ Set the contents of a `G_TYPE_FLOAT` typed **N-GValue** to *$v_float*.
 
   * Num $v_float; float value to be set
 
-[g_] value_get_float
---------------------
+[[g_] value_] get_float
+-----------------------
 
 Get the contents of a `G_TYPE_FLOAT` typed **N-GValue**.
 
-    method g_value_get_float ( --> Num  )
+    method g_value_get_float ( --> Num )
 
-[g_] value_set_double
----------------------
+[[g_] value_] set_double
+------------------------
 
 Set the contents of a `G_TYPE_DOUBLE` typed **N-GValue** to *$v_double*.
 
@@ -329,15 +306,15 @@ Set the contents of a `G_TYPE_DOUBLE` typed **N-GValue** to *$v_double*.
 
   * Num $v_double; double value to be set
 
-[g_] value_get_double
----------------------
+[[g_] value_] get_double
+------------------------
 
 Get the contents of a `G_TYPE_DOUBLE` typed **N-GValue**.
 
     method g_value_get_double ( --> Num  )
 
-[g_] value_set_string
----------------------
+[[g_] value_] set_string
+------------------------
 
 Set the contents of a `G_TYPE_STRING` typed **N-GValue** to *$v_string*.
 
@@ -345,12 +322,28 @@ Set the contents of a `G_TYPE_STRING` typed **N-GValue** to *$v_string*.
 
   * Str $v_string; caller-owned string to be duplicated for the **N-GValue**
 
-[g_] value_get_string
----------------------
+[[g_] value_] get_string
+------------------------
 
 Get the contents of a `G_TYPE_STRING` typed **N-GValue**.
 
 Returns: string content of *$value*
 
     method g_value_get_string ( --> Str  )
+
+[[g_] value_] set_gtype
+-----------------------
+
+Set the contents of a `G_TYPE_GTYPE` **N-GValue** to *v_gtype*.
+
+    method g_value_set_gtype ( UInt $v_gtype )
+
+  * UInt $v_gtype; **GType** to be set
+
+[[g_] value_] get_gtype
+-----------------------
+
+Get the type of **N-GValue**.
+
+    method g_value_get_gtype ( --> UInt  )
 

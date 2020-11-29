@@ -6,7 +6,7 @@ A mechanism to wrap opaque C structures registered by the type system
 Description
 ===========
 
-GBoxed is a generic wrapper mechanism for arbitrary C structures. The only thing the type system needs to know about the structures is how to copy free them, beyond that they are treated as opaque chunks of memory.
+GBoxed is a generic wrapper mechanism for arbitrary C structures. The only thing the type system needs to know about the structures is how to copy and free them, beyond that they are treated as opaque chunks of memory.
 
 Boxed types are useful for simple value-holder structures like rectangles or points. They can also be used for wrapping structures defined in non-GObject based libraries.
 
@@ -18,4 +18,9 @@ Declaration
 
     unit class Gnome::GObject::Boxed:auth<github:MARTIMM>;
     also is Gnome::N::TopLevelClassSupport;
+
+Uml Diagram
+-----------
+
+![](plantuml/Boxed.svg)
 
