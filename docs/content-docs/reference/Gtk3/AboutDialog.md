@@ -136,7 +136,7 @@ Returns the program name displayed in the about dialog.
 
 Returns: The program name. The string is owned by the about dialog and must not be modified.
 
-    method gtk_about_dialog_get_program_name ( --> Str  )
+    method gtk_about_dialog_get_program_name ( --> Str )
 
 [[gtk_] about_dialog_] set_program_name
 ---------------------------------------
@@ -208,7 +208,7 @@ Returns the license information.
 
 Returns: The license information. The string is owned by the about dialog and must not be modified.
 
-    method gtk_about_dialog_get_license ( --> Str  )
+    method gtk_about_dialog_get_license ( --> Str )
 
 [[gtk_] about_dialog_] set_license
 ----------------------------------
@@ -222,7 +222,7 @@ Sets the license information to be displayed in the secondary license dialog. If
 [[gtk_] about_dialog_] set_license_type
 ---------------------------------------
 
-Sets the license of the application showing the *about* dialog from a list of known licenses.
+Sets the license of the application showing the this about dialog dialog from a list of known licenses.
 
 This function overrides the license set using `gtk_about_dialog_set_license()`.
 
@@ -242,7 +242,7 @@ Returns: a *Gnome::Gtk3::License* value
 [[gtk_] about_dialog_] get_wrap_license
 ---------------------------------------
 
-Returns whether the license text in *about* is automatically wrapped.
+Returns whether the license text in this about dialog is automatically wrapped.
 
 Returns: `1` if the license text is wrapped
 
@@ -251,7 +251,7 @@ Returns: `1` if the license text is wrapped
 [[gtk_] about_dialog_] set_wrap_license
 ---------------------------------------
 
-Sets whether the license text in *about* is automatically wrapped.
+Sets whether the license text in this about dialog is automatically wrapped.
 
     method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
 
@@ -273,7 +273,7 @@ Sets the URL to use for the website link.
 
     method gtk_about_dialog_set_website ( Str $website )
 
-  * Str $website; (allow-none): a URL string starting with "http://"
+  * Str $website; a URL string starting with "http://"
 
 [[gtk_] about_dialog_] get_website_label
 ----------------------------------------
@@ -298,54 +298,59 @@ Sets the label to be used for the website link.
 
 Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the authors. The array is owned by the about dialog and must not be modified.
+Returns: An array containing the authors.
 
-    method gtk_about_dialog_get_authors ( --> CArray[Str]  )
+    method gtk_about_dialog_get_authors ( --> Array )
 
 [[gtk_] about_dialog_] set_authors
 ----------------------------------
 
 Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_authors ( CArray[Str] $authors )
+    method gtk_about_dialog_set_authors ( *@authors )
 
-  * CArray[Str] $authors; (array zero-terminated=1): a `Any`-terminated array of strings
+  * @authors; a list of string arguments
+
+### Example
+
+    my Gnome::Gtk3::AboutDialog $a .= new;
+    $a.set-authors( 'mt++', 'pietje puk');
 
 [[gtk_] about_dialog_] get_documenters
 --------------------------------------
 
 Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the documenters. The array is owned by the about dialog and must not be modified.
+Returns: An array containing the documenters
 
-    method gtk_about_dialog_get_documenters ( --> CArray[Str]  )
+    method gtk_about_dialog_get_documenters ( --> Array )
 
 [[gtk_] about_dialog_] set_documenters
 --------------------------------------
 
 Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_documenters ( CArray[Str] $documenters )
+    method gtk_about_dialog_set_documenters ( *@documenters )
 
-  * CArray[Str] $documenters; (array zero-terminated=1): a `Any`-terminated array of strings
+  * @documenters; an list of string arguments
 
 [[gtk_] about_dialog_] get_artists
 ----------------------------------
 
 Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
-Returns: (array zero-terminated=1) (transfer none): A `Any`-terminated string array containing the artists. The array is owned by the about dialog and must not be modified.
+Returns: A string array containing the artists.
 
-    method gtk_about_dialog_get_artists ( --> CArray[Str]  )
+    method gtk_about_dialog_get_artists ( --> Array )
 
 [[gtk_] about_dialog_] set_artists
 ----------------------------------
 
 Sets the strings which are displayed in the artists tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_artists ( CArray[Str] $artists )
+    method gtk_about_dialog_set_artists ( *@artists )
 
-  * CArray[Str] $artists; (array zero-terminated=1): a `Any`-terminated array of strings
+  * @artists; A list of string arguments
 
 [[gtk_] about_dialog_] get_translator_credits
 ---------------------------------------------
@@ -376,47 +381,49 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
 Returns the pixbuf displayed as logo in the about dialog.
 
-Returns: (transfer none): the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
+Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
 
     method gtk_about_dialog_get_logo ( --> N-GObject  )
 
 [[gtk_] about_dialog_] set_logo
 -------------------------------
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
     method gtk_about_dialog_set_logo ( N-GObject $logo )
 
-  * N-GObject $logo; (allow-none): a *Gnome::Gdk3::Pixbuf*, or `Any`
+  * N-GObject $logo; a *Gnome::Gdk3::Pixbuf*, or undefined
 
 [[gtk_] about_dialog_] get_logo_icon_name
 -----------------------------------------
 
 Returns the icon name displayed as logo in the about dialog.
 
-Returns: the icon name displayed as logo. The string is owned by the dialog. If you want to keep a reference to it, you have to call `g_strdup()` on it.
+Returns: the icon name displayed as logo.
 
     method gtk_about_dialog_get_logo_icon_name ( --> Str )
 
 [[gtk_] about_dialog_] set_logo_icon_name
 -----------------------------------------
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is `Any`, the default window icon set with `gtk_window_set_default_icon()` will be used.
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
     method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
 
-  * Str $icon_name; (allow-none): an icon name, or `Any`
+  * Str $icon_name; an icon name, or undefined
 
 [[gtk_] about_dialog_] add_credit_section
 -----------------------------------------
 
 Creates a new section in the Credits page.
 
-    method gtk_about_dialog_add_credit_section ( Str $section_name, CArray[Str] $people )
+    method gtk_about_dialog_add_credit_section (
+      Str $section_name, *@people
+    )
 
   * Str $section_name; The name of the section
 
-  * CArray[Str] $people; (array zero-terminated=1): The people who belong to that section
+  * @people; A list of people who belong to that section
 
 Properties
 ==========
@@ -460,9 +467,7 @@ The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
 
 ### License Type
 
-The license of the program, as a value of the `GtkLicense` enumeration.
-
-The *Gnome::Gtk3::AboutDialog* will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
+The license of the program, as a value of the `GtkLicense` enumeration. The *Gnome::Gtk3::AboutDialog* will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
 
 If `GTK_LICENSE_UNKNOWN` is used, the link used will be the same specified in the sig *website* property.
 
@@ -485,6 +490,12 @@ The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
 The label for the link to the website of the program.
 
 The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
+
+### Translator credits
+
+Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The **Gnome::GObject::Value** type of property *translator-credits* is `G_TYPE_STRING`.
 
 ### Logo Icon Name
 
