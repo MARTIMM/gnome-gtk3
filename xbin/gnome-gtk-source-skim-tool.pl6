@@ -138,17 +138,21 @@ sub MAIN (
 
         #-------------------------------------------------------------------------------
         subtest 'Signals ...', {
-          #use Gnome::Glib::Main;
           use Gnome::Gtk3::Main;
+          use Gnome::N::GlibToRakuTypes;
 
           my Gnome::Gtk3::Main \$main .= new;
 
           class SignalHandlers {
             has Bool \$!signal-processed = False;
 
-            method ... ( 'any-args', $class :\$widget #`{{ --> ...}} ) {
+            method ... (
+              'any-args',
+              $class :\$_widget, gulong :\$_handler-id
+              # --> ...
+            ) {
 
-              isa-ok \$widget, $class;
+              isa-ok \$_widget, $class;
               \$!signal-processed = True;
             }
 

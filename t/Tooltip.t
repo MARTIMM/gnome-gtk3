@@ -71,15 +71,20 @@ subtest 'Themes ...', {
 subtest 'Signals ...', {
   #use Gnome::Glib::Main;
   use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
 
   my Gnome::Gtk3::Main $main .= new;
 
   class SignalHandlers {
     has Bool $!signal-processed = False;
 
-    method ... ( 'any-args', Gnome::Gtk3::Tooltip :$widget #`{{ --> ...}} ) {
+    method ... (
+      'any-args',
+      Gnome::Gtk3::Tooltip :$_widget, gulong :$_handler-id
+      # --> ...
+    ) {
 
-      isa-ok $widget, Gnome::Gtk3::Tooltip;
+      isa-ok $_widget, Gnome::Gtk3::Tooltip;
       $!signal-processed = True;
     }
 
