@@ -21,16 +21,36 @@ layout: sidebar
 
     <!--script type="text/javascript">hljs.initHighlightingOnLoad();</script-->
     <script type="text/javascript">
+      // run when page is loaded and ready
       $(document).ready(function(){
-        $("#category").append(
-          "<strong>Number of defined methods: {{ site.data.testCoverage[page.path]["routines"]["subs-total"] }}</strong><br />"
-        );
-        $("#category").append(
-          "<strong>Number of tested methods: {{ site.data.testCoverage[page.path]["routines"]["subs-tested"] }}</strong><br />"
-        );
-        $("#category").append(
-          "<strong>Test coverage: {{ site.data.testCoverage[page.path]["routines"]["coverage"] }} %</strong><br /><br /><strong>Table of Contents</strong><br /><br />"
-        );
+        // create a table showing coverage of tests etc.
+        var content = "<center><table class='coverage'>";
+        content += "<tr>";
+        content += "<th>Type</th><th>Total</th><th>Tested</th><th>Coverage</th>";
+        content += "</tr><tr><td> Routines </td><td>";
+        content += {{site.data.testCoverage[page.path]["routines"]["subs-total"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["routines"]["subs-tested"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["routines"]["coverage"]}};
+
+        content += " %</td></tr><tr><td> Signals </td><td>";
+        content += {{site.data.testCoverage[page.path]["signals"]["sigs-total"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["signals"]["sigs-tested"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["signals"]["coverage"]}};
+
+        content += " %</td></tr><tr><td> Properties </td><td>";
+        content += {{site.data.testCoverage[page.path]["properties"]["props-total"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["properties"]["props-tested"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["properties"]["coverage"]}};
+
+        content += " %</td></tr></table></center>";
+
+        $("#category").append(content);
 
 
         // create TOC anchor

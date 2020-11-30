@@ -165,6 +165,17 @@ table td {
   text-align: left;
 }
 
+table.coverage {
+  float: right;
+  text-align: left;
+  width: 50%;
+  border: 2px solid #800;
+  th, td {
+    padding: 2px;
+  }
+  font-size: 12px;
+}
+
 /*
 table.rouge-table {
   max-height: 200px;
