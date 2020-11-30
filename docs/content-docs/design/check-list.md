@@ -65,7 +65,7 @@ table {
 
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓|
 Adjustment                |  |  | ✓| ✓| ✓|✓| ✓| ✓| | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
