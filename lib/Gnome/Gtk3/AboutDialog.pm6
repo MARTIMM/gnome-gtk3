@@ -270,6 +270,11 @@ Sets the name to display in the about dialog. If this is not set, it defaults to
 
 =end pod
 
+method set-program-name ( gchar-ptr $name ) {
+  my N-GObject $no = self.get-native-object-no-reffing;
+  gtk_about_dialog_set_program_name( $no, $name);
+}
+
 sub gtk_about_dialog_set_program_name ( N-GObject $about, gchar-ptr $name )
   is native(&gtk-lib)
   { * }
