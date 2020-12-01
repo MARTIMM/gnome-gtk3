@@ -34,6 +34,13 @@ layout: sidebar
         content += "</td><td>";
         content += {{site.data.testCoverage[page.path]["routines"]["coverage"]}};
 
+        content += " %</td></tr><tr><td> Types </td><td>";
+        content += {{site.data.testCoverage[page.path]["types"]["types-total"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["types"]["types-tested"]}};
+        content += "</td><td>";
+        content += {{site.data.testCoverage[page.path]["types"]["coverage"]}};
+
         content += " %</td></tr><tr><td> Signals </td><td>";
         content += {{site.data.testCoverage[page.path]["signals"]["sigs-total"]}};
         content += "</td><td>";
