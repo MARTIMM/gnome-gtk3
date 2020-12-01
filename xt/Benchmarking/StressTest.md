@@ -9,7 +9,8 @@ Window
       1 Button to exit main loop
 ```
 
-| loop count | grid widgets | total time  | time per build  | builds per sec
-|------------|--------------|-------------|-----------------|---------------|
+| loop count | grid widgets | total time  | time per build  | builds per sec| |
+|------------|--------------|-------------|-----------------|---------------|--|
 | 5          | 100 buttons  | 0.712       | 0.142           | 7.022
 | 5          | 100 entries  | 0.829       | 0.166           | 6.034
+| 5          | 100 entries  | 1.869       | 0.374           | 2.676 | 2020 11 30

@@ -12,10 +12,9 @@ use Gnome::Gtk3::Button;
 
 #-------------------------------------------------------------------------------
 class X {
-  method test-quit ( --> Int ) {
+  method test-quit ( ) {
     my Gnome::Gtk3::Main $m0 .= new;
     $m0.gtk-main-quit;
-    1
   }
 
   # in separate thread, keep $m local
