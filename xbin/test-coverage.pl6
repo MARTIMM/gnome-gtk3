@@ -27,19 +27,19 @@ sub MAIN ( *@modules ) {
 
     my Rat $sub-coverage = $subs-total
            ?? 100.0 * $subs-tested/$subs-total
-           !! 0.0;
+           !! 100.0;  # No subs ==> always 100 % coverage
 
     my Rat $sig-coverage = $sigs-total
            ?? 100.0 * $sigs-tested/$sigs-total
-           !! 0.0;
+           !! 100.0;
 
     my Rat $prop-coverage = $props-total
            ?? 100.0 * $props-tested/$props-total
-           !! 0.0;
+           !! 100.0;
 
     my Rat $type-coverage = $types-total
            ?? 100.0 * $types-tested/$types-total
-           !! 0.0;
+           !! 100.0;
 
     note Q:qq:to/EOREPORT/;
 
