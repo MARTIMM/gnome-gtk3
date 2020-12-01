@@ -15,7 +15,7 @@ layout: sidebar
 * Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html) and [here](https://docs.raku.org/language/nativecall#Explicit_memory_management).
 
 #### Rewriting code
-* I'm not sure if the named argument `:$widget` to a signal handler needs to be renamed. It holds the Raku object which registered the signal. This might not always be a 'widget' i.e. inheriting from **Gnome::Gtk3::Widget**.
+* Is there a way to skip all those if's in the `_fallback()` routines.
 
 * I have noticed that True and False can be used on int32 typed values when provided to the native sub in the argument list. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation yet. The return values are not coersed automatically to Bool but most of the time not needed.
 
@@ -34,6 +34,8 @@ layout: sidebar
   ```
   which is a teeny bit more cumbersome but also I find that the action is a side effect where the variables `$width` and `$height` are changed in the process. In this case not very confusing but other cases might be.
 
+* Add methods for most used subs and for those subs where the name is brought back to one word like the `.remove()` for the sub `.gtk_list_store_remove()`.
+
 * Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch. Gtk already has done this for several return messages from the Gtk libraries.
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
@@ -43,8 +45,8 @@ layout: sidebar
 * When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
 #### Add other packages
-* [ ] Pango.
-* [ ] Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
+* Pango.
+* Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
 
 #### Documentation
 <!--
@@ -64,7 +66,7 @@ layout: sidebar
 
 * Each user class inheriting a Raku G*::object must have a new() to create the native object. This must be repeated for other subsequent inheriting classes because only the top new() is run!
 
-* Add plantuml diagrams to documents. Not (yet?) possible on github pages to do it directly. For the moment generate svg and use those.
+* Add plantuml diagrams to documents. SVG is the best picture format.
 
 * Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
 

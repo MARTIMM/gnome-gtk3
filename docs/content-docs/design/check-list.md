@@ -10,29 +10,28 @@ layout: sidebar
 ### Main documentation, subs and methods documentation
 Legend for head of table
 
-* **T**: type column with following values
-  * t: is top level of classes, well, TopLevelClassSupport really is but here it is in the Gnome sense of things
-  * b: boxed type
-  * i: interface type
-  * s: standalone module or type
-  * N: native class
-  * L: native library connection
-  * not filled means standard class
+* **T**: Type column with following values
+  * **Tl**: Top level of classes, well, TopLevelClassSupport really is above most save the standalone ones. Here it is in the Gnome sense of things.
+  * **Bx**: Boxed type.
+  * **R**: Interface type programmed as Raku roles.
+  * **S**: Standalone module or type.
+  * **N**: Native class structure or union.
+  * **L**: Native library connection.
+  * Not filled in means that it is a standard class.
 
-* **I**: Inheritable
+* **I**: Inheritable by a user class.
 
 * Documentation
   * **dm**: Module documentation
-    * Title, Description, UML
+    * Title, Description
     * See also, UML, Synopsis
-    * Inheritance when supported
-    * Synopsis and example use
+    * Inheritance description and example when supported
+    * Example of use
     * Remove interface information
   * **db**: Build documentation and initialization
     * Use test of `is-valid()` and ease of using `.set-native-object()`.
     * Remove check for wrong / unavailable options if inheritable.
     * Add =head3 to each `.new()` option.
-    * Remove doc for :native-object or :build-id except where it is defined
     * Deprecate any option which can be done in a supsequent call like :$title in Window.
     * Move native `.gtk_..._new_...()` documentation to the Build doc. These subroutines must be prefixed with an underscore '\_' to make them unavailable, e.g. `._gtk_..._new_...()`.
   * **ds**: Method and subroutine documentation and additions
@@ -52,9 +51,9 @@ Legend for head of table
 * 12: Issue number 12 check.
 
 Entry values can be
-* ✗: No info. Mostly for package names but sometimes there are no signals or properties for a class.
+* ✗: No info. Unavailable e.g. there are no signals or properties for a class.
 * Empty: Not done.
-* ⅓, ½ or ⅔ is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
+* ⅓, ½, ⅔, etc, is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
 * ✓: Done
 
 <style>
@@ -66,17 +65,17 @@ table {
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓|
-Adjustment                |  |  | ✓| ✓| ✓|✓| ✓| ✓| | ✓|  |
+Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
 AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
 Assistant                 |  |  | ✓| ✓|  |  |  |  |  |  |  |
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
-Border                    |b |  |  |  |  |  |  |  |  |  |  |
+Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
-Buildable                 |i |  |  |  |  |  |  |  |  |  |  |
+Buildable                 |R |  |  |  |  |  |  |  |  |  |  |
 Builder                   |  |  |  |  |  |  |  |  |  |  |  |
-Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½| | | |
+Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |
 CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |
@@ -88,7 +87,7 @@ CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
 CheckButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooser              |i |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |R |  |  |  |  |  |  |  |  |  |  |
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
@@ -98,8 +97,8 @@ CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  | |
 DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗| |
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  | ✗| ✗|  | ✗| ✗| |
-FileChooser               |i |  |  |  |  |  |  |  |  |  |  |
+Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗| |
+FileChooser               |R |  |  |  |  |  |  |  |  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓|✓| ✓| ✓|½|  |⅓ |  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
@@ -113,7 +112,7 @@ LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
 ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |s |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗| |
+Main                      |S |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗| |
 Menu                      |  |  |  |  |  |  |  |  |  |  |  |
 MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
 MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
@@ -122,7 +121,7 @@ MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
 MessageDialog             |  | ✓|  |  |  |  |  |  |  |  |  |
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |
 Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
-Orientable                |i |  |  |  |  |  |  |  |  |  |  |
+Orientable                |R |  |  |  |  |  |  |  |  |  |  |
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |
 PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |
 Popover                   |  |  |  |  |  |  |  |  |  |  |  |
@@ -144,26 +143,26 @@ StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
 StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
 Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
-StyleProvider             |i |  |  |  |  |  |  |  |  |  |  |
+StyleProvider             |R |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |
 TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |
-TextIter                  |b |  |  |  |  |  |  |  |  |  |  |
+TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |
 TextTag                   |  |  |  |  |  |  |  |  |  |  |  |
 TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |
 TextView                  |  |  |  |  |  |  |  |  |  |  |  |
 ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |
 ToolButton                |  |  |  |  |  |  |  |  |  |  |  |
 ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |
-TreeIter                  |b | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-TreeModel                 |i | ✗| ✓| ✓|  |  |  |  |  |  |  |
-TreePath                  |b | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-TreeRowReference          |b |  |  |  |  |  |  |  |  |  |  |
+TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
+TreeModel                 |R | ✗| ✓| ✓|  |  |  |  |  |  |  |
+TreePath                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
+TreeRowReference          |Bx|  |  |  |  |  |  |  |  |  |  |
 TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
 Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔|  |  |  | |
-WidgetPath                |b |  |  |  |  |  |  |  |  |  |  |
+WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  | |
 
 <!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12| -->
@@ -175,10 +174,10 @@ AccelGroup                |
 AccelLabel                |
 AccelMap                  |
 Accessible                |
-Actionable                |i |
+Actionable                |R |
 ActionBar                 |
 AppChooserButton          |
-AppChooser                |i |
+AppChooser                |R |
 AppChooserWidget          |
 ButtonBox                 |
 Calendar|
@@ -308,12 +307,12 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |
 
 | Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
-Boxed                     |t | ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
+Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
 InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
-Object                    |t | ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|
-Signal                    |i | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|
-Type                      |s | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
-value                     |b | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
+Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|
+Signal                    |R | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|
+Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
+value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 
 <br/>
 
@@ -330,15 +329,15 @@ Variant                   |  |  |  |  |  |  |  |  |
 
 | Gnome::Gio              |T |dm|db|ds|de|ts|te|12|
 |-------------------------|--|--|--|--|--|--|--|--|
-Action                    |i |  |  |  |  |  |  |  |
-ActionMap                 |i |  |  |  |  |  |  |  |
+Action                    |R |  |  |  |  |  |  |  |
+ActionMap                 |R |  |  |  |  |  |  |  |
 Application               |  |  |  |  |  |  |  |  |
 EmblemedIcon              |  |  |  |  |  |  |  |  |
-Enums                     |s |  |  |  |  |  |  |  |
-File                      |i |  |  |  |  |  |  |  |
+Enums                     |S |  |  |  |  |  |  |  |
+File                      |R |  |  |  |  |  |  |  |
 MenuModel                 |  |  |  |  |  |  |  |  |
 MountOperation            |  |  |  |  |  |  |  |  |
-Resource                  |b |  |  |  |  |  |  |  |
+Resource                  |Bx|  |  |  |  |  |  |  |
 SimpleAction              |  |  |  |  |  |  |  |  |
 
 <br/>
@@ -348,7 +347,7 @@ SimpleAction              |  |  |  |  |  |  |  |  |
 GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|
 N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|
 NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|
-TopLevelClassSupport      |t |  |  |  |  | ✓|
+TopLevelClassSupport      |Tl|  |  |  |  | ✓|
 X                         |  |  |  |  |  | ✓|
 
 <br/>

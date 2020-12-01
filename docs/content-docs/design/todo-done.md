@@ -18,15 +18,15 @@ layout: sidebar
 * Cairo
 
 #### Rewriting code
-* Is there a way to skip all those if's in the `_fallback()` routines.
+* Named arguments `:$widget` to a users signal handler needs to be renamed to prevent user defined argument clashes. It holds the Raku object which registered the signal. The attribute is now renamed to `:$_widget`. Another is added in the mean time `$_handler-id`. With this, one can deregister a signal. All attributes starting wit '_' are reserved.
+
 * Prevent name clashes. The methods from interfaces have lower priority than those from the classes. Therefore `.set-name()` from Buildable must be written like `.buildable-set-name()`.
   * set-name() in Gnome::Gtk3::Widget must stay while
   * Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
   * Gnome::Gio::Action set-name() must become `action-set-name()`;
+  It is solved by defining Raku `role`s for the interfaces and bind them to the topmost class where it is used. Testing is in the order of normal class subs first and the interface ones after.
 
-* Interface modules are defined as Raku roles and are mixed into all classes where the GTK documentation points out that the class uses an interface. After some investigation I found out that the role only needs to be mixed in at the topmost class of the using classes. All child classes inherit the interface data.
-
-* It is not possible to inherit from the modules to create your own class due to the way the classes are BUILD(). Review the initialization methods to overcome this.
+* It is possible to inherit from the modules to create your own class using some protocol. Not all classes are prepared yet, see the checklist to see if they are inheritable.
 
 * Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
@@ -44,6 +44,20 @@ layout: sidebar
   Also here, in other packages `gtk_` can be `g_`, `gdk_` etc.
 
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
+
+* Created a benchmark to see if a real method is much faster than the search of a native sub (should be though, but how much?). I have added method `.set-program-name()` to **Gnome::Gtk3::AboutDialog** and setup a few tests in `xt/Benchmarking/method-vs-subs.raku`. The below table is the result.
+  In this table you can also see that the shorter name and underscore versions are faster but not much. The method version is fastest and is will be a new TODO for future work. Suppose to add methods only for most used subs and for those subs where the name is brought back to one word like the `.remove()` mentioned in a previous point.
+
+| runs/sec | Note  |
+|----------|-------|
+| 3570.41 |Native sub search `.gtk-about-dialog-set-program-name()`, **slowest**|
+| 4202.83 |Native sub search `.about-dialog-set-program-name()` **1.18 times faster than slowest**|
+| 6092.70 |Native sub search `.set_program_name()` **1.71 times faster than slowest**|
+| 6367.26 |Native sub search `.gtk_about_dialog_set_program_name()` **1.78 times faster than slowest**|
+| 6526.21 |Native sub search `.about_dialog_set_program_name()` **1.83 times faster than slowest**|
+| 31229.39 &nbsp;|Method call `.set-program-name()` **8.75 times faster than slowest**|
+
+  <br/>
 
 * Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
 
