@@ -38,6 +38,11 @@ Declaration
     unit class Gnome::Glib::Error;
     also is Gnome::N::TopLevelClassSupport;
 
+Uml Diagram
+-----------
+
+![](plantuml/Error.svg)
+
 Example
 -------
 
@@ -53,9 +58,9 @@ Types
 class N-GError;
 ---------------
 
-  * has uint32 $.domain; The set domain.
+  * has UInt $.domain; The set domain.
 
-  * has int32 $.code; The set error code.
+  * has Int $.code; The set error code.
 
   * has Str $.message; The error message.
 
@@ -65,9 +70,13 @@ Methods
 new
 ---
 
+### :domain, :code, :error-message
+
 Create a new Error object. A domain, which is a string must be converted to an unsigned integer with one of the Quark conversion methods. See **Gnome::Glib::Quark**.
 
     multi method new ( UInt :$domain!, Int :$code!, Str :$error-message! )
+
+### :native-object
 
 Create a new Error object using an other native error object.
 
@@ -93,21 +102,6 @@ message
 Return the error message in the error object. Returns `Str` if object is invalid.
 
     method message ( --> Str )
-
-[[g_] error_] new_literal
--------------------------
-
-Creates a new `N-GError`.
-
-    method g_error_new_literal (
-      UInt $domain, Int $code, Str $message --> N-GError
-    )
-
-  * UInt $domain; error domain
-
-  * Int $code; error code
-
-  * Str $message; error message
 
 [g_] error_copy
 ---------------
