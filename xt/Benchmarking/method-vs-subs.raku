@@ -39,7 +39,19 @@ my @bt6 = timethis(
   }
 );
 
-compare @bt1, @bt2, @bt3, @bt4, @bt5, @bt6;
+my @bt7 = timethis(
+  'Method .buildable-set-name()', 2000, {
+    $a.buildable-set-name('AboutDialogTest');
+  }
+);
+
+my @bt8 = timethis(
+  'Native sub search .buildable_set_name()', 600, {
+    $a.buildable_set_name('AboutDialogTest');
+  }
+);
+
+compare @bt1, @bt2, @bt3, @bt4, @bt5, @bt6, @bt7, @bt8;
 
 #-------------------------------------------------------------------------------
 sub show ( Str $test, $count, $total, $mean, $rps, $remark = '' ) {
@@ -55,6 +67,8 @@ sub show ( Str $test, $count, $total, $mean, $rps, $remark = '' ) {
 
 #-------------------------------------------------------------------------------
 sub timethis ( Str $test, Int $count, Callable $test-routine --> List ) {
+
+  note "Run test $test";
   my Duration $total-time;
   loop ( my Int $test-count = 0; $test-count < $count; $test-count++ ) {
     $test-routine();

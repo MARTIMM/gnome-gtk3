@@ -62,7 +62,7 @@ method _buildable_interface ( Str $native-sub --> Callable ) {
 #-------------------------------------------------------------------------------
 #TM:1:gtk_buildable_set_name:
 =begin pod
-=head2 [[gtk_] buildable_] set_name
+=head2 [[gtk_] buildable_set_name
 
 Sets the name of the I<buildable> object.
 
@@ -74,6 +74,11 @@ Since: 2.12
 
 =end pod
 
+method buildable-set-name ( Str $name ) {
+  my N-GObject $buildable = self.get-native-object-no-reffing;
+  gtk_buildable_set_name( $buildable, $name);
+}
+
 sub gtk_buildable_set_name ( N-GObject $buildable, Str $name )
   is native(&gtk-lib)
   { * }
@@ -81,7 +86,7 @@ sub gtk_buildable_set_name ( N-GObject $buildable, Str $name )
 #-------------------------------------------------------------------------------
 #TM:1:gtk_buildable_get_name:
 =begin pod
-=head2 [[gtk_] buildable_] get_name
+=head2 [[gtk_] buildable_get_name
 
 Gets the name of the I<buildable> object.
 
