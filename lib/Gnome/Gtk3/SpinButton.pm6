@@ -295,8 +295,9 @@ submethod BUILD ( *%options ) {
           '.new(:climb_rate)', '.new(:climb-rate)', '0.33.0', '0.38.0'
         ) if %options<climb_rate>:exists;
 
-        my Num $climb_rate = %options<climb-rate>.Num //
-          %options<climb_rate>.Num // 1e-1;
+        my Num $climb_rate = (
+          %options<climb-rate> // %options<climb_rate> // 1e-1
+        ).Num;
 
         my Int $digits = %options<digits> // 1;
         $no = _gtk_spin_button_new( $no-a, $climb_rate, $digits);
