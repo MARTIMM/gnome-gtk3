@@ -54,7 +54,6 @@ Declaration
 
     unit class Gnome::Gtk3::MenuItem;
     also is Gnome::Gtk3::Bin;
-    also does Gnome::Gtk3::Buildable;
 
 Example
 -------

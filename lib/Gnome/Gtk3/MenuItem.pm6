@@ -73,7 +73,6 @@ B<Gnome::Gtk3::Bin>, B<Gnome::Gtk3::MenuShell>
 
   unit class Gnome::Gtk3::MenuItem;
   also is Gnome::Gtk3::Bin;
-  also does Gnome::Gtk3::Buildable;
 
 =head2 Example
 
