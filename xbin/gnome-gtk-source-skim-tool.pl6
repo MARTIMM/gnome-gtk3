@@ -976,16 +976,19 @@ sub substitute-in-template (
       =head1 Methods
       =head2 new
 
-      =head3 new()
+      =head3 default, no options
 
       Create a new RAKU-CLASS-NAME object.
 
         multi method new ( )
 
-      =begin comment
+      =head3 :native-object
+
       Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
         multi method new ( N-GObject :$native-object! )
+
+      =head3 :build-id
 
       Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
