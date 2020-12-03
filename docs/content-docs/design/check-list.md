@@ -11,7 +11,7 @@ layout: sidebar
 Legend for head of table
 
 * **T**: Type column with following values
-  * **Tl**: Top level of classes, well, TopLevelClassSupport really is above most save the standalone ones. Here it is in the Gnome sense of things.
+  * **Tl**: Inherit directly from TopLevelClassSupport.
   * **Bx**: Boxed type.
   * **R**: Interface type programmed as Raku roles.
   * **S**: Standalone module or type.
@@ -295,12 +295,12 @@ WindowGroup|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|
 Device                    |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |
-Events                    |  |  |  |  |  |  |  |  |  |  | |
+Events                    |  |  |  |  |  |  |  |  |  |  |  |
 Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |
 Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |
 RGBA                      |  |  |  |  |  |  |  |  |  |  |  |
 Screen                    |  |  |  |  |  |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |  |  |  |  | |
+Types                     |  |  |  |  |  |  |  |  |  |  |  |
 Window                    |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
@@ -316,14 +316,14 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 
 <br/>
 
-| Gnome::Glib             |T |dm|db|ds|de|ts|te|12|
-|-------------------------|--|--|--|--|--|--|--|--|
-Error                     |  |  |  |  |  |  |  |  |
-List                      |  |  |  |  |  |  |  |  |
-Main                      |  |  |  |  |  |  |  |  |
-Quark                     |  |  |  |  |  |  |  |  |
-SList                     |  |  |  |  |  |  |  |  |
-Variant                   |  |  |  |  |  |  |  |  |
+| Gnome::Glib             |T |dm|db|ds|ts|12|
+|-------------------------|--|--|--|--|--|--|
+Error                     |Tl| ✓| ✓| ✓| ✓| ✓|
+List                      |Tl|  |  |  |  |  |
+Main                      |S |  |  |  |  |  |
+Quark                     |S |  |  |  |  |  |
+SList                     |  |  |  |  |  |  |
+Variant                   |  |  |  |  |  |  |
 
 <br/>
 
@@ -347,7 +347,7 @@ SimpleAction              |  |  |  |  |  |  |  |  |
 GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|
 N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|
 NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|
-TopLevelClassSupport      |Tl|  |  |  |  | ✓|
+TopLevelClassSupport      |S |  |  |  |  | ✓|
 X                         |  |  |  |  |  | ✓|
 
 <br/>
