@@ -319,11 +319,12 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 | Gnome::Glib             |T |dm|db|ds|ts|12|
 |-------------------------|--|--|--|--|--|--|
 Error                     |Tl| ✓| ✓| ✓| ✓| ✓|
-List                      |Tl|  |  |  |  |  |
-Main                      |S |  |  |  |  |  |
-Quark                     |S |  |  |  |  |  |
-SList                     |  |  |  |  |  |  |
-Variant                   |  |  |  |  |  |  |
+List                      |Tl| ✓| ✓| ✓| ✓| ✓|
+Main                      |S | ✓| ✓| ✓| ✓| ✓|
+Quark                     |S | ✓| ✓| ✓| ✓| ✓|
+SList                     |Tl| ✓| ✓| ✓| ✓| ✓|
+
+<!--Variant                   |  |  |  |  |  |  |-->
 
 <br/>
 
