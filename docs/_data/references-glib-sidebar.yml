@@ -4,38 +4,25 @@
   - title: "Error"
     type: toplevel
     url: '/content-docs/reference/Glib/Error.html'
-    doc: 3
-    test: 5
   - title: "List"
     type: toplevel
     url: '/content-docs/reference/Glib/List.html'
-    doc: 1
-    test: 1
   - title: "Main"
     type: standalone
     url: '/content-docs/reference/Glib/Main.html'
-    doc: 0
-    test: 1
-  - title: OptionContext
-    type: toplevel
-    url: '/content-docs/reference/Glib/OptionContext.html'
-    doc: 0
-    test: 1
+#  - title: OptionContext
+#    type: toplevel
+#    url: '/content-docs/reference/Glib/OptionContext.html'
   - title: "Quark"
     type: standalone
     url: '/content-docs/reference/Glib/Quark.html'
-    doc: 3
-    test: 5
   - title: "SList"
     type: toplevel
     url: '/content-docs/reference/Glib/SList.html'
-    doc: 1
-    test: 1
-  - title: "Variant"
-    type: toplevel
-    url: '/content-docs/reference/Glib/Variant.html'
-    doc: 1
-    test: 1
+#  - title: "Variant"
+#    type: toplevel
+#    url: '/content-docs/reference/Glib/Variant.html'
+
 #  - title: "VariantBuilder"
 #    type: toplevel
 #    url: '/content-docs/reference/Glib/VariantBuilder.html'
