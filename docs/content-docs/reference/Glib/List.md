@@ -14,11 +14,11 @@ The double linked list does not keep track of the number of items and does not k
 
 Note that most of the list functions expect to be passed a pointer to the first element in the list.
 
-To create an empty list just call `.new`.
+Raku does have plenty ways of its own two handle data for any kind of problem so a doubly linked list is not really needed. This class, however, is provided (partly) to handle returned information from other GTK+ methods. E.g. A Container can return child widgets in a List like this.
 
-Raku does have plenty ways of its own two handle data for any kind of problem so a doubly linked list is note really needed. This class, however, is provided (partly) to handle returned information from other GTK+ methods. E.g. A Container can return child widgets in a List like this.
+To remove elements, use `g_list_remove()`.
 
-To navigate in a list, use `g_list_first()`, `g_list_last()`, `next()`, `previous()`.
+To navigate in a list, use `g_list_first()`, `g_list_last()`, `next()`, `previous()`, etc.
 
 To find elements in the list use `g_list_nth()`, `g_list_nth_data()`, `g_list_foreach()` and `g_list_find_custom()`.
 
@@ -35,31 +35,62 @@ Declaration
     unit class Gnome::Glib::List;
     also is Gnome::N::TopLevelClassSupport;
 
-Example 1
----------
+Uml Diagram
+-----------
 
-To visit all elements in the list, use a loop over the list:
+![](plantuml/List.svg)
 
-    my Gnome::Glib::List $ll = $list;
-    while ?$ll {
-      ... do something with data in $ll.data ...
-      $ll .= next;
-    }
+Example 1, a while loop to visit all widgets in a grid
+------------------------------------------------------
 
-Example 2
----------
+    my Gnome::Glib::List $list .= new(
+      :native-object($grid.get-children)
+    );
 
-To call a function for each element in the list, use `g_list_foreach()`.
+    while ?$list {
+      # do something with data at $list.data
+      my Gnome::Gtk3::Widget $w .= new(
+        :native-object(my N-GObject $no = $list.data)
+      );
 
-    class H {
-      method h ( Gnome::Glib::List $hl, Int $hi, Pointer $hd ) {
-       ... do something with the list item $hl at index $hi and data $hd ...
+      given $w.widget-get-name {
+        when 'GtkLabel' {
+          my Gnome::Gtk3::Label $hl .= new(:native-object($no));
+          ...
+        }
+        ...
       }
 
-      ...
+      $list .= next;
     }
 
-    $list.list-foreach( H.new, 'h');
+    $list.clear-object;
+
+Example 2, using list-foreach to visit all items in the list
+------------------------------------------------------------
+
+    class ListHandlerClass {
+      method list-handler (
+        Gnome::Glib::List $hl, Int $hi, Pointer $hd
+      ) {
+        # do something with the list item at $hl at index $hi and data $hd
+        my Gnome::Gtk3::Widget $w .= new(:native-object($hd));
+        given $w.widget-get-name {
+          when 'GtkLabel' {
+            my Gnome::Gtk3::Label $hl .= new(:native-object($hd));
+            ...
+          }
+          ...
+        }
+      }
+    }
+
+    my Gnome::Glib::List $list .= new(
+      :native-object($grid.get-children)
+    );
+
+    $list.list-foreach( ListHandlerClass.new, 'list-handler');
+    $list.clear-object;
 
 Types
 =====
@@ -75,24 +106,17 @@ Methods
 new
 ---
 
+### Default, no options
+
 Create a new plain object.
 
     multi method new ( )
 
+### :native-object
+
 Create a new list object using an other native list object.
 
     multi method new ( N-GList :$native-object! )
-
-[g_] list_copy
---------------
-
-Copies a **N-GList**.
-
-Note that this is a "shallow" copy. If the list elements consist of pointers to data, the pointers are copied but the actual data is not. See `g_list_copy_deep()` if you need to copy the data as well.
-
-Returns: the start of the new list that holds the same data as this list.
-
-    method g_list_copy ( --> Gnome::Glib::List )
 
 [g_] list_nth
 -------------
@@ -103,9 +127,31 @@ This iterates over the list until it reaches the *n*-th position. If you intend 
 
 Returns: the element, or `Any` if the position is off the end of the **Gnome::Glib::List**
 
-    method g_list_nth ( UInt $n --> N-GList  )
+    method g_list_nth ( UInt $n --> Gnome::Glib::List )
 
   * UInt $n; the position of the element, counting from 0
+
+[[g_] list_] nth_prev
+---------------------
+
+Gets the element *n* places before *list*.
+
+Returns: the element, or `Any` if the position is off the end of the **Gnome::Glib::List**
+
+    method g_list_nth_prev ( UInt $n --> Gnome::Glib::List )
+
+  * UInt $n; the position of the element, counting from 0
+
+[g_] list_find
+--------------
+
+Finds the element in a **Gnome::Glib::List** which contains the given data.
+
+Returns: the found **Gnome::Glib::List** element, or undefined if it is not found
+
+    method g_list_find ( Pointer $data --> Gnome::Glib::List )
+
+  * Pointer $data; the element data to find
 
 [[g_] list_] find_custom
 ------------------------
@@ -156,7 +202,29 @@ An example where a search is done through a list of widgets returned from, for e
       ... get data from found widget ...
     }
 
-This example might not be the best choice when all fields are searched through this way because most elements are passed multiple times after all tests. To prevent this, one could continue the search from where it returned a defined list. The other option is to use `g_list_foreach()` defined below.
+This example might not be the best choice when all fields are searched through this way because most elements are passed multiple times after all tests. To prevent this, one could continue the search from where it returned a defined list. The other option is to use `g_list_foreach()` explained below.
+
+[g_] list_position
+------------------
+
+Gets the position of the given element in the **Gnome::Glib::List** (starting from 0).
+
+Returns: the position of the element in the **Gnome::Glib::List**, or -1 if the element is not found
+
+    method g_list_position ( N-GList $llink --> Int )
+
+  * N-GList $llink; an element in the **Gnome::Glib::List**
+
+[g_] list_index
+---------------
+
+Gets the position of the element containing the given data (starting from 0).
+
+Returns: the index of the element containing the data, or -1 if the data is not found
+
+    method g_list_index ( Pointer $data --> Int )
+
+  * Pointer $data; the data to find
 
 [g_] list_last
 --------------

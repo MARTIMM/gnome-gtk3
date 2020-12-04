@@ -1,12 +1,7 @@
-TITLE
-=====
-
 Gnome::Glib::Quark
+==================
 
-SUBTITLE
-========
-
-a 2-way association between a string and a unique integer identifier
+Quark - a 2-way association between a string and a unique integer identifier
 
 Description
 ===========
@@ -35,7 +30,8 @@ Example
     use Test;
     use Gnome::Glib::Quark;
 
-    my Int $q = $quark.try-string('my string');
+    my Gnome::Glib::Quark $quark .= new;
+    my UInt $q = $quark.try-string('my string');
     is $q, 0, 'no quark for string';
 
     $q = $quark.from-string('my 2nd string');
@@ -44,6 +40,8 @@ Example
 
 new
 ---
+
+### default, no options
 
 Create a new quark object.
 

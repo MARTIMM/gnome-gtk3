@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="209px" preserveAspectRatio="none" style="width:321px;height:209px;" version="1.1" viewBox="0 0 321 209" width="321px" zoomAndPan="magnify"><defs><filter height="300%" id="f4w7fh9kylwjf" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[b969295f0ec9b4fa482091c3e26049be]
+cluster Gnome::N--><rect fill="#FFFFFF" filter="url(#f4w7fh9kylwjf)" height="83" style="stroke: #000000; stroke-width: 1.5;" width="302" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="79" x="118.5" y="21.9951">Gnome::N</text><!--MD5=[7014305771524741221fad0afd94da17]
+cluster Gnome::Glib--><rect fill="#FFFFFF" filter="url(#f4w7fh9kylwjf)" height="83" style="stroke: #000000; stroke-width: 1.5;" width="114" x="101" y="114"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="98" x="109" y="128.9951">Gnome::Glib</text><!--MD5=[0b8e281ccd00c72019a31d78e9f95b5d]
+class Gnome::N::TopLevelClassSupport--><rect codeLine="9" fill="#FEFECE" filter="url(#f4w7fh9kylwjf)" height="32" id="Gnome::N::TopLevelClassSupport" style="stroke: #A80036; stroke-width: 1.5;" width="269" x="23.5" y="42"/><ellipse cx="38.5" cy="58" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M41.4688,63.6406 Q40.8906,63.9375 40.25,64.0781 Q39.6094,64.2344 38.9063,64.2344 Q36.4063,64.2344 35.0781,62.5938 Q33.7656,60.9375 33.7656,57.8125 Q33.7656,54.6875 35.0781,53.0313 Q36.4063,51.375 38.9063,51.375 Q39.6094,51.375 40.25,51.5313 Q40.9063,51.6875 41.4688,51.9844 L41.4688,54.7031 Q40.8438,54.125 40.25,53.8594 Q39.6563,53.5781 39.0313,53.5781 Q37.6875,53.5781 37,54.6563 Q36.3125,55.7188 36.3125,57.8125 Q36.3125,59.9063 37,60.9844 Q37.6875,62.0469 39.0313,62.0469 Q39.6563,62.0469 40.25,61.7813 Q40.8438,61.5 41.4688,60.9219 L41.4688,63.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="137" x="52.5" y="62.1807">TopLevelClassSupport</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="98" x="197.5" y="39"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="88" x="202.5" y="51.1387">Catch all class</text><!--MD5=[58d5265fcdd88a461c30c13cb1b198ac]
+class Gnome::Glib::List--><rect fill="#FEFECE" filter="url(#f4w7fh9kylwjf)" height="32" id="Gnome::Glib::List" style="stroke: #A80036; stroke-width: 1.5;" width="53" x="131.5" y="149"/><ellipse cx="146.5" cy="165" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M149.4688,170.6406 Q148.8906,170.9375 148.25,171.0781 Q147.6094,171.2344 146.9063,171.2344 Q144.4063,171.2344 143.0781,169.5938 Q141.7656,167.9375 141.7656,164.8125 Q141.7656,161.6875 143.0781,160.0313 Q144.4063,158.375 146.9063,158.375 Q147.6094,158.375 148.25,158.5313 Q148.9063,158.6875 149.4688,158.9844 L149.4688,161.7031 Q148.8438,161.125 148.25,160.8594 Q147.6563,160.5781 147.0313,160.5781 Q145.6875,160.5781 145,161.6563 Q144.3125,162.7188 144.3125,164.8125 Q144.3125,166.9063 145,167.9844 Q145.6875,169.0469 147.0313,169.0469 Q147.6563,169.0469 148.25,168.7813 Q148.8438,168.5 149.4688,167.9219 L149.4688,170.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="21" x="160.5" y="169.1807">List</text><!--MD5=[68204fd21e9688d732d411415c3c4cf4]
+reverse link Gnome::N::TopLevelClassSupport to Gnome::Glib::List--><path codeLine="12" d="M158,94.1 C158,112.76 158,134.73 158,148.98 " fill="none" id="Gnome::N::TopLevelClassSupport-backto-Gnome::Glib::List" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="151,94.04,158,74.04,165,94.04,151,94.04" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4e72239f1fe1a6ba9b7cbf08e174cbfd]
+@startuml
+
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide members
+
+'Class and interface decorations
+class Gnome::N::TopLevelClassSupport < Catch all class >
+
+'Class connections
+Gnome::N::TopLevelClassSupport <|- - Gnome::Glib::List
+@enduml
+
+@startuml
+
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide members
+
+class Gnome::N::TopLevelClassSupport < Catch all class >
+
+Gnome::N::TopLevelClassSupport <|- - Gnome::Glib::List
+@enduml
+
+PlantUML version 1.2020.19(Mon Oct 12 17:10:01 CEST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
