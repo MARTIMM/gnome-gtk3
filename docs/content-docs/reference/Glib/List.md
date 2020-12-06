@@ -118,6 +118,17 @@ Create a new list object using an other native list object.
 
     multi method new ( N-GList :$native-object! )
 
+[g_] list_copy
+--------------
+
+Copies a **N-GList**.
+
+Note that this is a "shallow" copy. If the list elements consist of pointers to data, the pointers are copied but the actual data is not. See `g_list_copy_deep()` if you need to copy the data as well.
+
+Returns: the start of the new list that holds the same data as this list.
+
+    method g_list_copy ( --> Gnome::Glib::List )
+
 [g_] list_nth
 -------------
 

@@ -67,17 +67,13 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::IconTheme $it .= new(:default);
   my Gnome::Glib::List $l;
   $l .= new(:native-object($it.list-icons('Places')));
-#  my Int $length = $l.g_list_length;
   my @some-icon-names = ();
   my Int $count = 0;
-  my Gnome::Glib::List $lcopy = $l.copy;
-  while ?$lcopy {
-    my Str $ldata = nativecast( Str,  $lcopy.data);
-#note $ldata;
-#    like $ldata, /^ [<.alnum> | '-']+ $/, '.list-icons()';
+  while ?$l {
+    my Str $ldata = nativecast( Str,  $l.data);
     last if $count++ > 10;
     @some-icon-names.push: $ldata;
-    $lcopy .= next;
+    $l .= next;
   }
 
   # TODO memory leak .... elements are not freed!

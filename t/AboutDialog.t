@@ -4,6 +4,7 @@ use Test;
 
 use Gnome::Gtk3::AboutDialog;
 use Gnome::Gdk3::Pixbuf;
+use Gnome::N::GlibToRakuTypes;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -15,6 +16,12 @@ my Gnome::Gtk3::AboutDialog $a;
 subtest 'ISA tests', {
   $a .= new;
   isa-ok $a, Gnome::Gtk3::AboutDialog;
+}
+
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
 }
 
 #-------------------------------------------------------------------------------
@@ -57,7 +64,6 @@ subtest 'Manipulations', {
   is-deeply $a.get-authors, [ 'mt++1', 'pietje puk1'],
      '.set-authors() / .get-authors()';
 
-#Gnome::N::debug(:on);
   $a.set-documenters( 'mt++2', 'pietje puk2');
   is-deeply $a.get-documenters, [ 'mt++2', 'pietje puk2'],
      '.set-documenters() / .get-documenters()';
@@ -86,6 +92,7 @@ subtest 'Manipulations', {
 }
 
 #-------------------------------------------------------------------------------
+#Gnome::N::debug(:on);
 subtest 'Properties ...', {
   use Gnome::GObject::Value;
   use Gnome::GObject::Type;
@@ -161,7 +168,7 @@ subtest 'Signals ...', {
     method activate (
       Str $uri,
       Gnome::Gtk3::AboutDialog :$_widget, gulong :$_handler-id
-      --> Int
+      --> gboolean
     ) {
 
       isa-ok $_widget, Gnome::Gtk3::AboutDialog;
@@ -179,8 +186,8 @@ subtest 'Signals ...', {
       $widget.emit-by-name(
         'activate-link',
         'https://example.com/my-favourite-items.html',
-      #  :return-type(int32),
-      #  :parameters([int32,])
+        :return-type(gboolean),
+        :parameters([gchar-ptr,])
       );
       is $!signal-processed, True, '\'activate-link\' signal processed';
 

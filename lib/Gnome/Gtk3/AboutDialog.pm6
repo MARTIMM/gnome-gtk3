@@ -190,7 +190,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-#note "ad $native-sub: ", $s;
+#note "ad $native-sub: ", $s.signature if ?$s;
   self.set-class-name-of-sub('GtkAboutDialog');
   $s = callsame unless ?$s;
 

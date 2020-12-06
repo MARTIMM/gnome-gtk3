@@ -27,14 +27,10 @@ subtest 'ISA test', {
 subtest 'Manipulations', {
   my Gnome::Glib::List $l;
   $l .= new(:native-object($it.list-icons('Places')));
-#  my Int $length = $l.g_list_length;
-  my Gnome::Glib::List $lcopy = $l.copy;
-  while ?$lcopy {
-    my Str $ldata = nativecast( Str,  $lcopy.data);
-#note $ldata;
+  while ?$l {
+    my Str $ldata = nativecast( Str,  $l.data);
     like $ldata, /^ [<.alnum> | '-']+ $/, '.list-icons()';
     last;
-    #$lcopy .= next;
   }
 
   # TODO memory leak .... elements are not freed!
@@ -42,13 +38,10 @@ subtest 'Manipulations', {
 
 
   $l .= new(:native-object($it.list-contexts));
-  $lcopy = $l.copy;
-  while ?$lcopy {
-    my Str $ldata = nativecast( Str,  $lcopy.data);
-#note $ldata;
+  while ?$l {
+    my Str $ldata = nativecast( Str,  $l.data);
     like $ldata, /^ [<.alnum> | '-']+ $/, '.list-contexts()';
     last;
-    #$lcopy .= next;
   }
 
   like $it.get-example-icon-name, /^ [<.alnum> | '-']+ $/,
