@@ -74,7 +74,7 @@ subtest 'Manipulations', {
 
   my Gnome::Glib::SList $l .= new(:native-object($wp.iter-list-classes(2)));
   is $l.g-slist-length, 1, 'list contains one class';
-  is $l.nth-data-str(0), 'text-button', "class is a 'text-button'";
+  is $l.nth-data(0), 'text-button', "class is a 'text-button'";
 
   ok $wp.iter-get-state(2) +& GTK_STATE_FLAG_DIR_LTR.value,
      'flag GTK_STATE_FLAG_DIR_LTR ok';
