@@ -44,6 +44,8 @@ layout: sidebar
 
 * When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
+* The use of native types needs some change. The Raku native types are all fixed sized types like `int32` etc. Also the semi native type has a range capable for 64 integers. On my machine however (a 64 bit processor), the C `int` has a range suitable only for 32 bit integers. There are c compiler include files which have definitions like `INT_MAX`, `INT_MIN` and `UINT_MAX`. Now a few programs are made in package Gnome::N which are run at install time to generate a module **Gnome::N::GlibToRakuTypes**. It is meant to be a type mapping from types used in the Gnome packages to those of Raku taking into account the sizes of int and long which could differ depending on the processor. Also the `OpaquePointer` must be substituted by `Pointer` because the first is deprecated in Raku.
+
 #### Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
