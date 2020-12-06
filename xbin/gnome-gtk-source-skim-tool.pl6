@@ -88,6 +88,13 @@ sub MAIN (
           isa-ok $m, $class, '.new()';
         }
 
+        #-------------------------------------------------------------------------------
+        # set environment variable 'raku-test-all' if rest must be tested too.
+        unless %*ENV<raku_test_all>:exists {
+          done-testing;
+          exit;
+        }
+
         #`{{
         #-------------------------------------------------------------------------------
         subtest 'Manipulations', {
