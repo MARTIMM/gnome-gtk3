@@ -48,7 +48,8 @@ Legend for head of table
   * **ts**: Subroutines and Methods.
   * **te**: Signals and events.
   * **tp**: Properties.
-* 12: Issue number 12 check.
+* 12: Issue number 12; check use of types and modify.
+* 14: Issue number 14; implement methods on shortest name, deprecate rest, remove from docs.
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -62,8 +63,8 @@ table {
 }
 </style>
 
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓|
 Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |

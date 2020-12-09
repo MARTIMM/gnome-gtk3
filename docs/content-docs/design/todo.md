@@ -46,6 +46,8 @@ layout: sidebar
 
 * The use of native types needs some change. The Raku native types are all fixed sized types like `int32` etc. Also the semi native type has a range capable for 64 integers. On my machine however (a 64 bit processor), the C `int` has a range suitable only for 32 bit integers. There are c compiler include files which have definitions like `INT_MAX`, `INT_MIN` and `UINT_MAX`. Now a few programs are made in package Gnome::N which are run at install time to generate a module **Gnome::N::GlibToRakuTypes**. It is meant to be a type mapping from types used in the Gnome packages to those of Raku taking into account the sizes of int and long which could differ depending on the processor. Also the `OpaquePointer` must be substituted by `Pointer` because the first is deprecated in Raku.
 
+* Benchmarking (see results in [done](todo-done.html)) made me opening an issue (#14) about slowness of the packages. For the moment, the most relevant methods are created in each module bypassing the search for native subs. The names will become the shortest possible and having dashes if any. Documentation will be changed for those entries showing only one possibility. The original names will still be possible to use. Later a deprecation proces is started to have everyone using the short names only.
+
 #### Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
