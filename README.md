@@ -1,8 +1,20 @@
 ![gtk logo][logo]
-
+<!--
+[![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
+-->
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
 
-[![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
+![T][travis-svg] ![A][appveyor-svg] ![L][license-svg]
+
+[travis-svg]: https://travis-ci.org/MARTIMM/gnome-gtk3.svg?branch=master
+[travis-run]: https://travis-ci.org/MARTIMM/gnome-gtk3
+
+[appveyor-svg]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gtk3?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-run]: https://ci.appveyor.com/project/MARTIMM/gnome-gtk3/branch/master
+
+[license-svg]: http://martimm.github.io/label/License-label.svg
+[licence-lnk]: http://www.perlfoundation.org/artistic_license_2_0
+
 
 Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the `GNU Free Documentation License`.
 
@@ -99,6 +111,13 @@ $top-window.show-all;
 $m.gtk-main;
 ```
 
+## Documentation
+* [ 🔗 Website](http://martimm.github.io/gnome-gtk3)
+* [ 🔗 Travis-ci run on master branch][travis-run]
+* [ 🔗 Appveyor run on master branch][appveyor-run]
+* [ 🔗 License document][licence-lnk]
+* [ 🔗 Release notes][changes]
+
 # TODO
 
 # Versions of involved software
@@ -131,6 +150,8 @@ $m.gtk-main;
 
 
 # Installation
+The version of Raku must be at least 2020.10, otherwise a few tests will not run!
+
 There are several dependencies from one package to the other because it was one package in the past. To get all packages, just install the *Gnome::Gtk3* package and the rest will be installed with it.
 
 `zef install Gnome::Gtk3`
@@ -145,7 +166,8 @@ There are always some problems! If you find one, please help by filing an issue 
 * I would like to thank the developers of the `GTK::Simple` project because of the information I got while reading the code. Also because one of the files is copied unaltered for which I did not had to think about to get that right. The examples in that project are also useful to compare code with each other and to see what is or is not possible.
 * Other helpful modules for their insight and use. E.g. the Cairo package of Timo.
 * Documentation from [Wikibooks](https://en.wikibooks.org/wiki/GTK%2B_By_Example) and [Zetcode](http://zetcode.com/tutorials/gtktutorial/)
-* Helpful hands are there when issues are raised or after requesting for help developers returning ideas tips etc for documentation; Pixlmixr, Hkdtam, JackKuhan, Alain Barbason, Clifton Wood, Rob Ransbottom.
+* Helpful hands are there when issues are raised, after requesting for help or developers returning ideas tips, etcetera for documentation; Pixlmixr, Hkdtam, JackKuhan, Alain Barbason, Clifton Wood, Rob Ransbottom, Håkon Hægland (some names are Github names).
+* Icons used from www.iconfinder.com, humility icons, Andy Fitzsimon, licensed GPL.
 
 # Author
 
