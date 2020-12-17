@@ -126,7 +126,7 @@ subtest 'Properties ...', {
   test-property( G_TYPE_BOOLEAN, 'snap-to-ticks', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'numeric', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', 1);
-  test-property( G_TYPE_ENUM, 'update-policy', 'get-enum', 1);
+#  test-property( G_TYPE_ENUM, 'update-policy', 'get-enum', 1);
   $sb.set-value(11.3);
   test-property( G_TYPE_DOUBLE, 'value', 'get-double', 11.3e0);
 #  test-property( G_TYPE_BOOLEAN, '', '', );
