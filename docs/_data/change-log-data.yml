@@ -1,3 +1,7 @@
+- 2020-11-24 0.34.2:
+  - Bugfixes in tests
+  - AboutDialog has methods for each native sub which causes about 8 times speed increase.
+
 - 2020-11-24 0.34.1:
   - Doc changes;
     - using Gnome::N::GlibToRakuTypes, types are replaced with types from that module giving a benefit of central coordination of glib types while keeping the native subs as closely as they are described.
