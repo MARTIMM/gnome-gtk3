@@ -129,185 +129,171 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-[[gtk_] about_dialog_] get_program_name
----------------------------------------
+get-program-name
+----------------
 
 Returns the program name displayed in the about dialog.
 
 Returns: The program name. The string is owned by the about dialog and must not be modified.
 
-    method gtk_about_dialog_get_program_name ( --> Str )
+    method get-program-name ( --> Str )
 
-[[gtk_] about_dialog_] set_program_name
----------------------------------------
+set-program-name
+----------------
 
 Sets the name to display in the about dialog. If this is not set, it defaults to `g_get_application_name()`.
 
-    method gtk_about_dialog_set_program_name ( Str $name )
+    method set-program-name ( Str $name )
 
   * Str $name; the program name
 
-[[gtk_] about_dialog_] get_version
-----------------------------------
+get-version
+-----------
 
 Returns the version string.
 
 Returns: The version string. The string is owned by the about dialog and must not be modified.
 
-    method gtk_about_dialog_get_version ( --> Str  )
+    method get-version ( --> Str  )
 
-[[gtk_] about_dialog_] set_version
-----------------------------------
+set-version
+-----------
 
 Sets the version string to display in the about dialog.
 
-    method gtk_about_dialog_set_version ( Str $version )
+    method set-version ( Str $version )
 
-  * Str $version; (allow-none): the version string
+  * Str $version; the version string
 
-[[gtk_] about_dialog_] get_copyright
-------------------------------------
+get-copyright
+-------------
 
 Returns the copyright string.
 
 Returns: The copyright string. The string is owned by the about dialog and must not be modified.
 
-    method gtk_about_dialog_get_copyright ( --> Str  )
+    method get-copyright ( --> Str )
 
-[[gtk_] about_dialog_] set_copyright
-------------------------------------
+set-copyright
+-------------
 
 Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
 
-    method gtk_about_dialog_set_copyright ( Str $copyright )
+    method set-copyright ( Str $copyright )
 
-  * Str $copyright; (allow-none): the copyright string
+  * Str $copyright; the copyright string
 
-[[gtk_] about_dialog_] get_comments
------------------------------------
+get-comments
+------------
 
-Returns the comments string.
+Returns the comments string. The string is owned by the about dialog and must not be modified.
 
-Returns: The comments. The string is owned by the about dialog and must not be modified.
+    method get-comments ( --> Str )
 
-    method gtk_about_dialog_get_comments ( --> Str  )
-
-[[gtk_] about_dialog_] set_comments
------------------------------------
+set-comments
+------------
 
 Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
 
-    method gtk_about_dialog_set_comments ( Str $comments )
+    method set-comments ( Str $comments )
 
-  * Str $comments; (allow-none): a comments string
+  * Str $comments; a comments string
 
-[[gtk_] about_dialog_] get_license
-----------------------------------
+get-license
+-----------
 
-Returns the license information.
+Returns the license information.The string is owned by the about dialog and must not be modified.
 
-Returns: The license information. The string is owned by the about dialog and must not be modified.
+    method get-license ( --> Str )
 
-    method gtk_about_dialog_get_license ( --> Str )
-
-[[gtk_] about_dialog_] set_license
-----------------------------------
+set-license
+-----------
 
 Sets the license information to be displayed in the secondary license dialog. If *license* is `Any`, the license button is hidden.
 
-    method gtk_about_dialog_set_license ( Str $license )
+    method set-license ( Str $license )
 
-  * Str $license; (allow-none): the license information or `Any`
+  * Str $license; the license information or `Any`
 
-[[gtk_] about_dialog_] set_license_type
----------------------------------------
+set-license-type
+----------------
 
-Sets the license of the application showing the this about dialog dialog from a list of known licenses.
+Sets the license of the application showing the this about dialog dialog from a list of known licenses. This function overrides the license set using `set-license()`.
 
-This function overrides the license set using `gtk_about_dialog_set_license()`.
-
-    method gtk_about_dialog_set_license_type ( GtkLicense $license_type )
+    method set-license-type ( GtkLicense $license_type )
 
   * GtkLicense $license_type; the type of license
 
-[[gtk_] about_dialog_] get_license_type
----------------------------------------
+get-license-type
+----------------
 
-Retrieves the license set using `gtk_about_dialog_set_license_type()`
+Retrieves the license set using `set_license_type()`. Returns a *GtkLicense* value.
 
-Returns: a *Gnome::Gtk3::License* value
+    method get-license-type ( --> GtkLicense  )
 
-    method gtk_about_dialog_get_license_type ( --> GtkLicense  )
+get-wrap-license
+----------------
 
-[[gtk_] about_dialog_] get_wrap_license
----------------------------------------
+Returns `True` if the license text in this about dialog is automatically wrapped.
 
-Returns whether the license text in this about dialog is automatically wrapped.
+    method get-wrap-license ( --> Bool )
 
-Returns: `1` if the license text is wrapped
-
-    method gtk_about_dialog_get_wrap_license ( --> Int  )
-
-[[gtk_] about_dialog_] set_wrap_license
----------------------------------------
+set-wrap-license
+----------------
 
 Sets whether the license text in this about dialog is automatically wrapped.
 
-    method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
+    method set-wrap-license ( Bool $wrap_license )
 
-  * Int $wrap_license; whether to wrap the license
+  * Bool $wrap_license; whether to wrap the license
 
-[[gtk_] about_dialog_] get_website
-----------------------------------
+get-website
+-----------
 
-Returns the website URL.
+Returns the website URL. The string is owned by the about dialog and must not be modified.
 
-Returns: The website URL. The string is owned by the about dialog and must not be modified.
+    method get-website ( --> Str  )
 
-    method gtk_about_dialog_get_website ( --> Str  )
-
-[[gtk_] about_dialog_] set_website
-----------------------------------
+set-website
+-----------
 
 Sets the URL to use for the website link.
 
-    method gtk_about_dialog_set_website ( Str $website )
+    method set-website ( Str $website )
 
   * Str $website; a URL string starting with "http://"
 
-[[gtk_] about_dialog_] get_website_label
-----------------------------------------
+get-website-label
+-----------------
 
-Returns the label used for the website link.
+Returns the label used for the website link. The string is owned by the about dialog and must not be modified.
 
-Returns: The label used for the website link. The string is owned by the about dialog and must not be modified.
+    method get-website-label ( --> Str )
 
-    method gtk_about_dialog_get_website_label ( --> Str  )
-
-[[gtk_] about_dialog_] set_website_label
-----------------------------------------
+set-website-label
+-----------------
 
 Sets the label to be used for the website link.
 
-    method gtk_about_dialog_set_website_label ( Str $website_label )
+    method set-website-label ( Str $website_label )
 
   * Str $website_label; the label used for the website link
 
-[[gtk_] about_dialog_] get_authors
-----------------------------------
+get-authors
+-----------
 
 Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
 Returns: An array containing the authors.
 
-    method gtk_about_dialog_get_authors ( --> Array )
+    method get-authors ( --> Array )
 
-[[gtk_] about_dialog_] set_authors
-----------------------------------
+set-authors
+-----------
 
 Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_authors ( *@authors )
+    method set-authors ( *@authors )
 
   * @authors; a list of string arguments
 
@@ -316,53 +302,51 @@ Sets the strings which are displayed in the authors tab of the secondary credits
     my Gnome::Gtk3::AboutDialog $a .= new;
     $a.set-authors( 'mt++', 'pietje puk');
 
-[[gtk_] about_dialog_] get_documenters
---------------------------------------
+get-documenters
+---------------
 
 Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
 Returns: An array containing the documenters
 
-    method gtk_about_dialog_get_documenters ( --> Array )
+    method get-documenters ( --> Array )
 
-[[gtk_] about_dialog_] set_documenters
---------------------------------------
+set-documenters
+---------------
 
 Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_documenters ( *@documenters )
+    method set-documenters ( *@documenters )
 
   * @documenters; an list of string arguments
 
-[[gtk_] about_dialog_] get_artists
-----------------------------------
+get-artists
+-----------
 
 Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
 Returns: A string array containing the artists.
 
-    method gtk_about_dialog_get_artists ( --> Array )
+    method get-artists ( --> Array )
 
-[[gtk_] about_dialog_] set_artists
-----------------------------------
+set-artists
+-----------
 
 Sets the strings which are displayed in the artists tab of the secondary credits dialog.
 
-    method gtk_about_dialog_set_artists ( *@artists )
+    method set-artists ( *@artists )
 
   * @artists; A list of string arguments
 
-[[gtk_] about_dialog_] get_translator_credits
----------------------------------------------
+get-translator-credits
+----------------------
 
-Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
+Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog. The string is owned by the about dialog and must not be modified.
 
-Returns: The translator credits string. The string is owned by the about dialog and must not be modified.
+    method get-translator-credits ( --> Str  )
 
-    method gtk_about_dialog_get_translator_credits ( --> Str  )
-
-[[gtk_] about_dialog_] set_translator_credits
----------------------------------------------
+set-translator-credits
+----------------------
 
 Sets the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
@@ -372,52 +356,52 @@ The intended use for this string is to display the translator of the language wh
 
 It is a good idea to use the customary msgid “translator-credits” for this purpose, since translators will already know the purpose of that msgid, and since *Gnome::Gtk3::AboutDialog* will detect if “translator-credits” is untranslated and hide the tab.
 
-    method gtk_about_dialog_set_translator_credits ( Str $translator_credits )
+    method set-translator-credits ( Str $translator_credits )
 
-  * Str $translator_credits; (allow-none): the translator credits
+  * Str $translator_credits; the translator credits
 
-[[gtk_] about_dialog_] get_logo
--------------------------------
+get-logo
+--------
 
 Returns the pixbuf displayed as logo in the about dialog.
 
 Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
 
-    method gtk_about_dialog_get_logo ( --> N-GObject  )
+    method get-logo ( --> N-GObject  )
 
-[[gtk_] about_dialog_] set_logo
--------------------------------
+set-logo
+--------
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
-    method gtk_about_dialog_set_logo ( N-GObject $logo )
+    method set-logo ( Gnome::Gdk3::Pixbuf $logo )
 
-  * N-GObject $logo; a *Gnome::Gdk3::Pixbuf*, or undefined
+  * Gnome::Gdk3::Pixbuf $logo; a *Gnome::Gdk3::Pixbuf* object
 
-[[gtk_] about_dialog_] get_logo_icon_name
------------------------------------------
+get-logo-icon-name
+------------------
 
 Returns the icon name displayed as logo in the about dialog.
 
 Returns: the icon name displayed as logo.
 
-    method gtk_about_dialog_get_logo_icon_name ( --> Str )
+    method get-logo-icon-name ( --> Str )
 
-[[gtk_] about_dialog_] set_logo_icon_name
------------------------------------------
+set-logo-icon-name
+------------------
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `g=tk_window_set_default_icon()` will be used.
 
-    method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
+    method set-logo-icon-name ( Str $icon_name )
 
   * Str $icon_name; an icon name, or undefined
 
-[[gtk_] about_dialog_] add_credit_section
------------------------------------------
+add-credit-section
+------------------
 
 Creates a new section in the Credits page.
 
-    method gtk_about_dialog_add_credit_section (
+    method add-credit-section (
       Str $section_name, *@people
     )
 

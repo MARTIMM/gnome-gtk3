@@ -72,8 +72,8 @@ subtest 'Manipulations', {
   is-deeply $a.get-artists, [ 'mt++3', 'pietje puk3'],
      '.set-artists() / .get-artists()';
 
-  $a.set_translator_credits('He, who has invented Raku, thanks a lot');
-  is $a.get_translator_credits, 'He, who has invented Raku, thanks a lot',
+  $a.set-translator-credits('He, who has invented Raku, thanks a lot');
+  is $a.get-translator-credits, 'He, who has invented Raku, thanks a lot',
      '.set_translator_credits() / .get_translator_credits()';
 
   my Gnome::Gdk3::Pixbuf $p1 .= new(:file<t/data/Add.png>);
@@ -86,7 +86,7 @@ subtest 'Manipulations', {
   is $a.get-logo-icon-name, 'folder-blue',
      '.set-logo-icon-name() / .get-logo-icon-name()';
 
-  $a.add_credit_section( 'piano players', 'lou de haringboer', 'kniertje');
+  $a.add-credit-section( 'piano players', 'lou de haringboer', 'kniertje');
 #note
 #, '.() / .()';
 }
@@ -128,9 +128,9 @@ subtest 'Properties ...', {
     );
   }
 
-  test-property(
-    G_TYPE_ENUM, 'license-type', 'get-enum', GTK_LICENSE_MIT_X11.value
-  );
+  #test-property(
+  #  G_TYPE_ENUM, 'license-type', 'get-enum', GTK_LICENSE_MIT_X11.value
+  #);
 
   test-property(
     G_TYPE_STRING, 'website', 'get-string',

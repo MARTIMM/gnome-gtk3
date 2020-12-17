@@ -78,6 +78,8 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::N::GlibToRakuTypes;
 
+use Gnome::Gdk3::Pixbuf;
+
 use Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
@@ -241,38 +243,43 @@ sub gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name, Any $an
 }}
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_program_name:
+#TM:1:get-program-name:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_program_name
+=head2 get-program-name
 
 Returns the program name displayed in the about dialog.
 
 Returns: The program name. The string is owned by the about dialog and must not be modified.
 
-  method gtk_about_dialog_get_program_name ( --> Str )
+  method get-program-name ( --> Str )
 
 =end pod
+
+method get-program-name ( --> gchar-ptr ) {
+#  self.__f__( &gtk_about_dialog_get_program_name, :!convert, :!cast )
+  gtk_about_dialog_get_program_name(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_program_name ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_program_name:
+#TM:1:set-program-name:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_program_name
+=head2 set-program-name
 
 Sets the name to display in the about dialog. If this is not set, it defaults to C<g_get_application_name()>.
 
-  method gtk_about_dialog_set_program_name ( Str $name )
+  method set-program-name ( Str $name )
 
 =item Str $name; the program name
 
 =end pod
 
-method set-program-name ( gchar-ptr $name ) {
-  my N-GObject $no = self.get-native-object-no-reffing;
-  gtk_about_dialog_set_program_name( $no, $name);
+method set-program-name ( $name ) {
+#  self.__f__( &gtk_about_dialog_set_program_name, |@p, :!convert, :!cast )
+  gtk_about_dialog_set_program_name( self.get-native-object-no-reffing, $name);
 }
 
 sub gtk_about_dialog_set_program_name ( N-GObject $about, gchar-ptr $name )
@@ -280,175 +287,224 @@ sub gtk_about_dialog_set_program_name ( N-GObject $about, gchar-ptr $name )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_version:
+#TM:1:get-version:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_version
+=head2 get-version
 
 Returns the version string.
 
 Returns: The version string. The string is owned by the about dialog and must not be modified.
 
-  method gtk_about_dialog_get_version ( --> Str  )
+  method get-version ( --> Str  )
 
 =end pod
+
+method get-version ( --> gchar-ptr ) {
+  gtk_about_dialog_get_version(self.get-native-object-no-reffing);
+#  self.__f__( &gtk_about_dialog_get_version, :!convert, :!cast )
+}
 
 sub gtk_about_dialog_get_version ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_version:
+#TM:1:set-version:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_version
+=head2 set-version
 
 Sets the version string to display in the about dialog.
 
-  method gtk_about_dialog_set_version ( Str $version )
+  method set-version ( Str $version )
 
-=item Str $version; (allow-none): the version string
+=item Str $version; the version string
 
 =end pod
+
+method set-version ( $version ) {
+#  self.__f__( &gtk_about_dialog_set_version, |@p, :!convert, :!cast )
+  gtk_about_dialog_set_version(
+    self.get-native-object-no-reffing, $version
+  );
+}
 
 sub gtk_about_dialog_set_version ( N-GObject $about, gchar-ptr $version )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_copyright:
+#TM:1:get-copyright:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_copyright
+=head2 get-copyright
 
 Returns the copyright string.
 
 Returns: The copyright string. The string is owned by the about dialog and must not be modified.
 
-  method gtk_about_dialog_get_copyright ( --> Str  )
+  method get-copyright ( --> Str )
 
 =end pod
+
+method get-copyright ( ) {
+#  self.__f__( &gtk_about_dialog_get_copyright, :!convert, :!cast )
+  gtk_about_dialog_get_copyright(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_copyright ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_copyright:
+#TM:1:set-copyright:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_copyright
+=head2 set-copyright
 
-Sets the copyright string to display in the about dialog.
-This should be a short string of one or two lines.
+Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
 
+  method set-copyright ( Str $copyright )
 
-  method gtk_about_dialog_set_copyright ( Str $copyright )
-
-=item Str $copyright; (allow-none): the copyright string
+=item Str $copyright; the copyright string
 
 =end pod
+
+method set-copyright ( $copyright ) {
+  gtk_about_dialog_set_copyright(
+    self.get-native-object-no-reffing, $copyright
+  );
+#  self.__f__( &gtk_about_dialog_set_copyright, |@p, :!convert, :!cast )
+}
 
 sub gtk_about_dialog_set_copyright ( N-GObject $about, gchar-ptr $copyright )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_comments:
+#TM:1:get-comments:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_comments
+=head2 get-comments
 
-Returns the comments string.
+Returns the comments string. The string is owned by the about dialog and must not be modified.
 
-Returns: The comments. The string is owned by the about dialog and must not be modified.
-
-  method gtk_about_dialog_get_comments ( --> Str  )
+  method get-comments ( --> Str )
 
 =end pod
+
+method get-comments ( --> Str ) {
+  gtk_about_dialog_get_comments(
+    self.get-native-object-no-reffing
+  )
+}
 
 sub gtk_about_dialog_get_comments ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_comments:
+#TM:1:set-comments:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_comments
+=head2 set-comments
 
 Sets the comments string to display in the about dialog. This should be a short string of one or two lines.
 
-  method gtk_about_dialog_set_comments ( Str $comments )
+  method set-comments ( Str $comments )
 
-=item Str $comments; (allow-none): a comments string
+=item Str $comments; a comments string
 
 =end pod
+
+method set-comments ( Str $comments ) {
+  gtk_about_dialog_set_comments(
+    self.get-native-object-no-reffing, $comments
+  )
+}
 
 sub gtk_about_dialog_set_comments ( N-GObject $about, gchar-ptr $comments )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_license:
+#TM:1:get-license:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_license
+=head2 get-license
 
-Returns the license information.
+Returns the license information.The string is owned by the about dialog and must not be modified.
 
-Returns: The license information. The string is owned by the about dialog and must not be modified.
-
-  method gtk_about_dialog_get_license ( --> Str )
+  method get-license ( --> Str )
 
 =end pod
+
+method get-license ( --> Str ) {
+  gtk_about_dialog_get_license(
+    self.get-native-object-no-reffing
+  )
+}
 
 sub gtk_about_dialog_get_license ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_license:
+#TM:1:set-license:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_license
+=head2 set-license
 
 Sets the license information to be displayed in the secondary license dialog. If I<license> is C<Any>, the license button is hidden.
 
-  method gtk_about_dialog_set_license ( Str $license )
+  method set-license ( Str $license )
 
-=item Str $license; (allow-none): the license information or C<Any>
+=item Str $license; the license information or C<Any>
 
 =end pod
+
+method set-license ( Str $license ) {
+  gtk_about_dialog_set_license(
+    self.get-native-object-no-reffing, $license
+  )
+}
 
 sub gtk_about_dialog_set_license ( N-GObject $about, gchar-ptr $license )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_license_type:
+#TM:1:set-license-type:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_license_type
+=head2 set-license-type
 
-Sets the license of the application showing the this about dialog dialog from a list of known licenses.
+Sets the license of the application showing the this about dialog dialog from a list of known licenses. This function overrides the license set using C<set-license()>.
 
-This function overrides the license set using C<gtk_about_dialog_set_license()>.
-
-
-  method gtk_about_dialog_set_license_type ( GtkLicense $license_type )
+  method set-license-type ( GtkLicense $license_type )
 
 =item GtkLicense $license_type; the type of license
 
 =end pod
+
+method set-license-type ( GtkLicense $license_type ) {
+  gtk_about_dialog_set_license_type(
+    self.get-native-object-no-reffing, $license_type
+  )
+}
 
 sub gtk_about_dialog_set_license_type ( N-GObject $about, gint $license_type )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_license_type:
+#TM:1:get-license-type:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_license_type
+=head2 get-license-type
 
-Retrieves the license set using C<gtk_about_dialog_set_license_type()>
+Retrieves the license set using C<set_license_type()>. Returns a I<GtkLicense> value.
 
-Returns: a I<Gnome::Gtk3::License> value
-
-  method gtk_about_dialog_get_license_type ( --> GtkLicense  )
+  method get-license-type ( --> GtkLicense  )
 
 =end pod
+
+method get-license-type ( --> GtkLicense ) {
+  GtkLicense(
+    _gtk_about_dialog_get_license_type(self.get-native-object-no-reffing)
+  );
+}
 
 sub gtk_about_dialog_get_license_type ( N-GObject $about --> GtkLicense ) {
   GtkLicense(_gtk_about_dialog_get_license_type($about));
@@ -460,120 +516,157 @@ sub _gtk_about_dialog_get_license_type ( N-GObject $about --> gint )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_wrap_license:
+#TM:1:get-wrap-license:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_wrap_license
+=head2 get-wrap-license
 
-Returns whether the license text in this about dialog is automatically wrapped.
+Returns C<True> if the license text in this about dialog is automatically wrapped.
 
-Returns: C<1> if the license text is wrapped
-
-  method gtk_about_dialog_get_wrap_license ( --> Int  )
+  method get-wrap-license ( --> Bool )
 
 =end pod
+
+method get-wrap-license ( --> Bool ) {
+  gtk_about_dialog_get_wrap_license(self.get-native-object-no-reffing).Bool
+}
 
 sub gtk_about_dialog_get_wrap_license ( N-GObject $about --> gboolean )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_wrap_license:
+#TM:1:set-wrap-license:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_wrap_license
+=head2 set-wrap-license
 
 Sets whether the license text in this about dialog is automatically wrapped.
 
-  method gtk_about_dialog_set_wrap_license ( Int $wrap_license )
+  method set-wrap-license ( Bool $wrap_license )
 
-=item Int $wrap_license; whether to wrap the license
+=item Bool $wrap_license; whether to wrap the license
 
 =end pod
 
-sub gtk_about_dialog_set_wrap_license ( N-GObject $about, gboolean $wrap_license )
-  is native(&gtk-lib)
+method set-wrap-license ( Int $wrap_license ) {
+  gtk_about_dialog_set_wrap_license(
+    self.get-native-object-no-reffing, $wrap_license
+  )
+}
+
+sub gtk_about_dialog_set_wrap_license (
+  N-GObject $about, gboolean $wrap_license
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_website:
+#TM:1:get-website:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_website
+=head2 get-website
 
-Returns the website URL.
+Returns the website URL. The string is owned by the about dialog and must not be modified.
 
-Returns: The website URL. The string is owned by the about
-dialog and must not be modified.
-
-  method gtk_about_dialog_get_website ( --> Str  )
+  method get-website ( --> Str  )
 
 =end pod
+
+method get-website ( --> Str ) {
+  gtk_about_dialog_get_website(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_website ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_website:
+#TM:1:set-website:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_website
+=head2 set-website
 
 Sets the URL to use for the website link.
 
-  method gtk_about_dialog_set_website ( Str $website )
+  method set-website ( Str $website )
 
 =item Str $website; a URL string starting with "http://"
 
 =end pod
+
+method set-website ( Str $website ) {
+  gtk_about_dialog_set_website(
+    self.get-native-object-no-reffing, $website
+  )
+}
 
 sub gtk_about_dialog_set_website ( N-GObject $about, gchar-ptr $website )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_website_label:
+#TM:1:get-website-label:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_website_label
+=head2 get-website-label
 
-Returns the label used for the website link.
+Returns the label used for the website link. The string is owned by the about dialog and must not be modified.
 
-Returns: The label used for the website link. The string is owned by the about dialog and must not be modified.
-
-  method gtk_about_dialog_get_website_label ( --> Str  )
+  method get-website-label ( --> Str )
 
 =end pod
+
+method get-website-label ( --> Str ) {
+  gtk_about_dialog_get_website_label(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_website_label ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_website_label:
+#TM:1:set-website-label:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_website_label
+=head2 set-website-label
 
 Sets the label to be used for the website link.
 
-  method gtk_about_dialog_set_website_label ( Str $website_label )
+  method set-website-label ( Str $website_label )
 
 =item Str $website_label; the label used for the website link
 
 =end pod
+
+method set-website-label ( Str $website_label ) {
+  gtk_about_dialog_set_website_label(
+    self.get-native-object-no-reffing, $website_label
+  )
+}
 
 sub gtk_about_dialog_set_website_label ( N-GObject $about, gchar-ptr $website_label )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_authors:
+#TM:1:get-authors:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_authors
+=head2 get-authors
 
 Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
 Returns: An array containing the authors.
 
-  method gtk_about_dialog_get_authors ( --> Array )
+  method get-authors ( --> Array )
 
 =end pod
+
+method get-authors ( --> Array ) {
+  my $authors = _gtk_about_dialog_get_authors(
+    self.get-native-object-no-reffing
+  );
+  my @authors = ();
+  my Int $i = 0;
+  while $authors[$i] ne '\0' {
+    @authors.push: $authors[$i++];
+  }
+
+  @authors
+}
 
 sub gtk_about_dialog_get_authors ( N-GObject $about --> Array ) {
   my $authors = _gtk_about_dialog_get_authors($about);
@@ -592,13 +685,13 @@ sub _gtk_about_dialog_get_authors ( N-GObject $about --> gchar-pptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_authors:
+#TM:1:set-authors:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_authors
+=head2 set-authors
 
 Sets the strings which are displayed in the authors tab of the secondary credits dialog.
 
-  method gtk_about_dialog_set_authors ( *@authors )
+  method set-authors ( *@authors )
 
 =item @authors; a list of string arguments
 
@@ -608,6 +701,11 @@ Sets the strings which are displayed in the authors tab of the secondary credits
   $a.set-authors( 'mt++', 'pietje puk');
 
 =end pod
+
+method set-authors ( *@authors ) {
+  my $authors = gchar-pptr.new( |@authors, '\0');
+  _gtk_about_dialog_set_authors( self.get-native-object-no-reffing, $authors);
+}
 
 sub gtk_about_dialog_set_authors ( N-GObject $about, *@authors ) {
   my $authors = gchar-pptr.new( |@authors, '\0');
@@ -620,17 +718,30 @@ sub _gtk_about_dialog_set_authors ( N-GObject $about, char-pptr $authors )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_documenters:
+#TM:1:get-documenters:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_documenters
+=head2 get-documenters
 
 Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
 Returns: An array containing the documenters
 
-  method gtk_about_dialog_get_documenters ( --> Array )
+  method get-documenters ( --> Array )
 
 =end pod
+
+method get-documenters ( --> Array ) {
+  my gchar-pptr $documenters = _gtk_about_dialog_get_documenters(
+    self.get-native-object-no-reffing
+  );
+  my @documenters = ();
+  my Int $i = 0;
+  while $documenters[$i] ne '\0' {
+    @documenters.push: $documenters[$i++];
+  }
+
+  @documenters
+}
 
 sub gtk_about_dialog_get_documenters ( N-GObject $about --> Array ) {
   my gchar-pptr $documenters = _gtk_about_dialog_get_documenters($about);
@@ -649,17 +760,24 @@ sub _gtk_about_dialog_get_documenters ( N-GObject $about --> gchar-pptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_documenters:
+#TM:1:set-documenters:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_documenters
+=head2 set-documenters
 
 Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
 
-  method gtk_about_dialog_set_documenters ( *@documenters )
+  method set-documenters ( *@documenters )
 
 =item @documenters; an list of string arguments
 
 =end pod
+
+method set-documenters ( *@documenters ) {
+  my $documenters = gchar-pptr.new( |@documenters, '\0');
+  _gtk_about_dialog_set_documenters(
+    self.get-native-object-no-reffing, $documenters
+  );
+}
 
 sub gtk_about_dialog_set_documenters ( N-GObject $about, *@documenters ) {
   my $documenters = gchar-pptr.new( |@documenters, '\0');
@@ -673,17 +791,30 @@ sub _gtk_about_dialog_set_documenters (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_artists:
+#TM:1:get-artists:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_artists
+=head2 get-artists
 
 Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
 Returns: A string array containing the artists.
 
-  method gtk_about_dialog_get_artists ( --> Array )
+  method get-artists ( --> Array )
 
 =end pod
+
+method get-artists ( --> Array ) {
+  my gchar-pptr $artists = _gtk_about_dialog_get_artists(
+    self.get-native-object-no-reffing
+  );
+  my @artists = ();
+  my Int $i = 0;
+  while $artists[$i] ne '\0' {
+    @artists.push: $artists[$i++];
+  }
+
+  @artists
+}
 
 sub gtk_about_dialog_get_artists ( N-GObject $about --> Array ) {
   my gchar-pptr $artists = _gtk_about_dialog_get_artists($about);
@@ -702,17 +833,22 @@ sub _gtk_about_dialog_get_artists ( N-GObject $about --> gchar-pptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_artists:
+#TM:1:set-artists:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_artists
+=head2 set-artists
 
 Sets the strings which are displayed in the artists tab of the secondary credits dialog.
 
-  method gtk_about_dialog_set_artists ( *@artists )
+  method set-artists ( *@artists )
 
 =item @artists; A list of string arguments
 
 =end pod
+
+method set-artists ( *@artists ) {
+  my $artists = gchar-pptr.new( |@artists, '\0');
+  _gtk_about_dialog_set_artists( self.get-native-object-no-reffing, $artists);
+}
 
 sub gtk_about_dialog_set_artists ( N-GObject $about, *@artists ) {
   my $artists = gchar-pptr.new( |@artists, '\0');
@@ -725,26 +861,28 @@ sub _gtk_about_dialog_set_artists ( N-GObject $about, gchar-pptr $artists )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_translator_credits:
+#TM:1:get-translator-credits:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_translator_credits
+=head2 get-translator-credits
 
-Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog.
+Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog. The string is owned by the about dialog and must not be modified.
 
-Returns: The translator credits string. The string is owned by the about dialog and must not be modified.
-
-  method gtk_about_dialog_get_translator_credits ( --> Str  )
+  method get-translator-credits ( --> Str  )
 
 =end pod
+
+method get-translator-credits ( --> Str ) {
+  gtk_about_dialog_get_translator_credits(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_translator_credits ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_translator_credits:
+#TM:1:set-translator-credits:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_translator_credits
+=head2 set-translator-credits
 
 Sets the translator credits string which is displayed in the translators tab of the secondary credits dialog.
 
@@ -754,80 +892,104 @@ The intended use for this string is to display the translator of the language wh
 
 It is a good idea to use the customary msgid “translator-credits” for this purpose, since translators will already know the purpose of that msgid, and since I<Gnome::Gtk3::AboutDialog> will detect if “translator-credits” is untranslated and hide the tab.
 
+  method set-translator-credits ( Str $translator_credits )
 
-  method gtk_about_dialog_set_translator_credits ( Str $translator_credits )
-
-=item Str $translator_credits; (allow-none): the translator credits
+=item Str $translator_credits; the translator credits
 
 =end pod
 
-sub gtk_about_dialog_set_translator_credits ( N-GObject $about, gchar-ptr $translator_credits )
-  is native(&gtk-lib)
+method set-translator-credits ( Str $translator_credits ) {
+  gtk_about_dialog_set_translator_credits(
+    self.get-native-object-no-reffing, $translator_credits
+  );
+}
+
+sub gtk_about_dialog_set_translator_credits (
+  N-GObject $about, gchar-ptr $translator_credits
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_logo:
+#TM:1:get-logo:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_logo
+=head2 get-logo
 
 Returns the pixbuf displayed as logo in the about dialog.
 
 Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call C<g_object_ref()> on it.
 
-  method gtk_about_dialog_get_logo ( --> N-GObject  )
+  method get-logo ( --> N-GObject  )
 
 =end pod
+
+method get-logo ( --> N-GObject ) {
+  gtk_about_dialog_get_logo(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_logo ( N-GObject $about --> N-GObject )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_logo:
+#TM:1:set-logo:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_logo
+=head2 set-logo
 
 Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with C<gtk_window_set_default_icon()> will be used.
 
-  method gtk_about_dialog_set_logo ( N-GObject $logo )
+  method set-logo ( Gnome::Gdk3::Pixbuf $logo )
 
-=item N-GObject $logo; a I<Gnome::Gdk3::Pixbuf>, or undefined
+=item Gnome::Gdk3::Pixbuf $logo; a I<Gnome::Gdk3::Pixbuf> object
 
 =end pod
+
+method set-logo ( Gnome::Gdk3::Pixbuf $logo ) {
+  self._f( &gtk_about_dialog_set_logo, $logo, :convert, :!cast);
+}
 
 sub gtk_about_dialog_set_logo ( N-GObject $about, N-GObject $logo )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_get_logo_icon_name:
+#TM:1:get-logo-icon-name:
 =begin pod
-=head2 [[gtk_] about_dialog_] get_logo_icon_name
+=head2 get-logo-icon-name
 
 Returns the icon name displayed as logo in the about dialog.
 
 Returns: the icon name displayed as logo.
 
-  method gtk_about_dialog_get_logo_icon_name ( --> Str )
+  method get-logo-icon-name ( --> Str )
 
 =end pod
+
+method get-logo-icon-name ( --> Str ) {
+  gtk_about_dialog_get_logo_icon_name(self.get-native-object-no-reffing)
+}
 
 sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_set_logo_icon_name:
+#TM:1:set-logo-icon-name:
 =begin pod
-=head2 [[gtk_] about_dialog_] set_logo_icon_name
+=head2 set-logo-icon-name
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with C<gtk_window_set_default_icon()> will be used.
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with C<g=tk_window_set_default_icon()> will be used.
 
-  method gtk_about_dialog_set_logo_icon_name ( Str $icon_name )
+  method set-logo-icon-name ( Str $icon_name )
 
 =item Str $icon_name; an icon name, or undefined
 
 =end pod
+
+method set-logo-icon-name ( Str $icon_name ) {
+  gtk_about_dialog_set_logo_icon_name(
+    self.get-native-object-no-reffing, $icon_name
+  );
+}
 
 sub gtk_about_dialog_set_logo_icon_name (
   N-GObject $about, gchar-ptr $icon_name
@@ -835,13 +997,13 @@ sub gtk_about_dialog_set_logo_icon_name (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_about_dialog_add_credit_section:
+#TM:1:add-credit-section:
 =begin pod
-=head2 [[gtk_] about_dialog_] add_credit_section
+=head2 add-credit-section
 
 Creates a new section in the Credits page.
 
-  method gtk_about_dialog_add_credit_section (
+  method add-credit-section (
     Str $section_name, *@people
   )
 
@@ -849,6 +1011,13 @@ Creates a new section in the Credits page.
 =item @people; A list of people who belong to that section
 
 =end pod
+
+method add-credit-section ( Str $section_name, *@people ) {
+  my $people = gchar-pptr.new( |@people, '\0');
+  _gtk_about_dialog_add_credit_section(
+    self.get-native-object-no-reffing, $section_name, $people
+  );
+}
 
 sub gtk_about_dialog_add_credit_section (
   N-GObject $about, gchar-ptr $section_name, *@people
