@@ -23,6 +23,36 @@ replace `--> $1 )`
 search: `\s*Since:\s+\d+\.\d+`
 replace: ``
 
+# Benchmarking result notes
+* Always use normal arguments in the method which substitutes a native call search. Do not use slurpy arguments and flatten them in the call to the native sub.
+* Call subs directly when there are no arguments or arguments that do not need some conversion like `Str` or `Int`. Also, the call is made on a subroutine of a leaf class. That means that casting is not necessary.
+* Call sub via TopLevelSupportClass helper for conversion and/or casting using :convert or :cast (both are by default `True`).
+
+# Installing on windows
+## Testing on Appveyor
+* Links
+  * https://www.appveyor.com/docs/build-configuration/
+  * https://www.gtk.org/docs/installations/windows
+  * https://www.archlinux.org/pacman/pacman.8.html
+* Using Visual studio 2019 image
+  * has git.
+  * has perl.
+  * has MSYS2 installed in directory C:\msys64.
+  * has curl.
+* Search path with SafeDllSearchMode enabled (default)
+  * The directory from which the application loaded.
+  * The system directory. Use the GetSystemDirectory function to get the path of this directory.
+  * The 16-bit system directory. There is no function that obtains the path of this directory, but it is searched.
+  * The Windows directory. Use the GetWindowsDirectory function to get the path of this directory.
+  * The current directory.
+  * The directories that are listed in the PATH environment variable. Note that this does not include the per-application path specified by the App Paths registry key. The App Paths key is not used when computing the DLL search path.
+* Install GTK
+  * `bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gtk3"`
+  * `bash -lc "pacman -S --noconfirm mingw-w64-x86_64-toolchain base-devel"`
+* Install Raku
+  * `choco install rakudostar`
+
+
 # Native sub search
 ```
   SomeModule.some-sub()
