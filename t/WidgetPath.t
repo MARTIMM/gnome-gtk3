@@ -5,6 +5,7 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::N::N-GObject;
 use Gnome::GObject::Type;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Enums;
@@ -13,7 +14,7 @@ use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::WidgetPath;
 use Gnome::Gtk3::Window;
 
-#use Gnome::N::X;
+use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -74,7 +75,7 @@ subtest 'Manipulations', {
 
   my Gnome::Glib::SList $l .= new(:native-object($wp.iter-list-classes(2)));
   is $l.g-slist-length, 1, 'list contains one class';
-  is $l.nth-data(0), 'text-button', "class is a 'text-button'";
+  is nativecast( Str, $l.nth-data(0)), 'text-button', "class is a 'text-button'";
 
   ok $wp.iter-get-state(2) +& GTK_STATE_FLAG_DIR_LTR.value,
      'flag GTK_STATE_FLAG_DIR_LTR ok';

@@ -71,6 +71,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 use Gnome::Glib::SList;
 use Gnome::GObject::Boxed;
 
@@ -707,7 +708,7 @@ sub gtk_widget_path_iter_clear_classes ( N-GtkWidgetPath $path, int32 $pos )
 =begin pod
 =head2 [[gtk_] widget_path_] iter_list_classes
 
-Returns a list with all the class names defined for the widget at position I<pos> in the hierarchy defined in I<path>.
+Returns a list with all the class names defined for the widget at position I<$pos> in the hierarchy defined in I<path>.
 
 Returns: The list of classes, This is a list of strings, the C<GSList> contents are owned by GTK+, but you should use C<g_slist_free()> to free the list itself.
 
@@ -719,8 +720,7 @@ Since: 3.0
 
 =end pod
 
-sub gtk_widget_path_iter_list_classes ( N-GtkWidgetPath $path, int32 $pos )
-  returns N-GSList
+sub gtk_widget_path_iter_list_classes ( N-GtkWidgetPath $path, gint32 $pos --> N-GSList )
   is native(&gtk-lib)
   { * }
 
