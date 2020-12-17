@@ -73,8 +73,6 @@ The following is a (not very exhaustive) list of points which make up the design
 
   All have their pros and cons. Longer names show where they are defined and short ones are easier to write. I propose to use short names when the subs are defined in the class you're calling them from and use the longer names when they are in parent classes and interface classes, also to prevent problems like explained above. You can still leave the 'gtk_' part off without having doubt where the heck the sub came from. Take care using short names like `.append()`, `.new()` and others. As explained above, these are methods from **Any** or **Mu**. Some of them can be trapped by adding a method `append` to the module which can call the proper GTK+ sub, but for now that will be a TODO.
 
-  Benchmarking showed considerable improvements using methods instead of having a search for native subs. The methods will have only the shortest names and later (much later) a deprecation proces is started to have everyone use only the short names. It will be visible in the documentation when a method is implemented because alternatives are removed. E.g. an entry showing `[[gtk_] about_dialog_] get_program_name` will become `get-program-name`.
-
 * There is still a chance that a different method is found than the one you had in mind. The subs `gtk_widget_get_name()` and `gtk_buildable_get_name()` have the same short version n.l. `get_name()`. So it is important to know what the search path is, which is;
   * search in the current class
   * search in their interfaces
@@ -91,10 +89,12 @@ The following is a (not very exhaustive) list of points which make up the design
     * `.widget_get_name()` from **Gnome::Gtk3::Widget**
     * `.buildable-get-name()` from **Gnome::Gtk3::Buildable**
 
+* Benchmarking showed considerable improvements using methods instead of having a search for native subs. The methods will have only the shortest names and later (much later) a deprecation proces is started to have everyone use only the short names. It will be visible in the documentation when a method is implemented as alternatives are removed. E.g. an entry showing `[[gtk_] about_dialog_] get_program_name` will become `get-program-name`.
+
+  Newly created modules will not have this flexibility anymore. Only one name for each method. Furthermore, the above mentioned names `reset` and `attach` are then possible.
 
 * Not all native subs or even classes will be implemented or implemented much later because of the following reasons;
   * Many subs and classes in **GTK+** are deprecated. It seems logical to not implement them because there is no history of the Raku packages to support. Exceptions are e.g. **Gnome::Gtk3::Misc** which is kept to keep the hierarchy of classes in tact.
-  * The need to implement classes like **Gnome::Gtk3::Assistant**, **Gnome::Gtk3::Plug** or **Gnome::Gtk3::ScrolledWindow** is on a low priority because these can all be instantiated by **Gnome::Gtk3::Builder** using your Glade design.
 
 * There are native subroutines which need a native object as one of their arguments. The `gtk_grid_attach()` in **Gnome::Gtk3::Grid** is an example of such a routine. The declaration of the `gtk_grid_attach()` native sub is;
   ```

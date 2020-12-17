@@ -57,6 +57,7 @@ layout: sidebar
 | 6526.21 |Native sub search `.about_dialog_set_program_name()` **1.83 times faster than slowest**|
 | 31229.39 &nbsp;|Method call `.set-program-name()` **8.75 times faster than slowest**|
 
+While this is faster, some of the calls must process the arguments before they are send to the native subroutine. This means that it can be slower than this. New  tests have shown that it can be in the range of 2 to 14 times faster than the original search method.
   <br/>
 
 * Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
