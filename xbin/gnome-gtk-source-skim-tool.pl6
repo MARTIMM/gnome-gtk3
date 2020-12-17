@@ -372,122 +372,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   }
 }
 
-#`{{
-#-------------------------------------------------------------------------------
-sub get-deprecated-subs( Str:D $include-content ) {
-
-  my Hash $dep-versions = {};
-  my Str $sub-doc = '';
-  my Array $items-src-doc = [];
-  my Bool $variable-args-list;
-
-  $include-content ~~ m:g/^^ 'GDK_DEPRECATED_IN_' <-[;]>+ ';'/;
-  my List $results = $/[*];
-
-  # process subroutines
-  for @$results -> $r {
-    my Str $declaration = ~$r;
-
-    $declaration ~~ m/ 'GDK_DEPRECATED_IN_'
-                       $<version> = [ <[\d_]>+ ]
-                     /;
-    my Str $version = ~($<version> // '');
-    $version ~~ s:g/ '_' /./;
-#note "0 >> $declaration";
-
-    $declaration ~~ s/ 'GDK_DEPRECATED_IN_' .*? \n //;
-
-    my Str ( $return-type, $raku-return-type) = ( '', '');
-    my Bool $type-is-class;
-
-    # convert and remove return type from declaration
-    #( $declaration, #`{{ rest is ignored }} ) = get-type( $declaration, :!attr);
-    ( $declaration, $return-type, $raku-return-type, $type-is-class) =
-      get-type( $declaration, :!attr);
-
-#note "1 >> $declaration";
-    # get the subroutine name and remove from declaration
-    $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
-    my Str $sub-name = ~$<sub-name>;
-    $declaration ~~ s/ $sub-name \s* //;
-    note "get deprecated sub $sub-name version $version";
-
-    # remove any brackets, and other stuff left before arguments are processed
-    $declaration ~~ s:g/ <[();]> || 'void' || 'G_GNUC_NULL_TERMINATED' //;
-
-    my Str $args-declaration = $declaration;
-    my Str ( $pod-args, $args, $pod-doc-items) = ( '', '', '');
-    my Bool $first-arg = True;
-
-    # process arguments
-    for $args-declaration.split(/ \s* ',' \s* /) -> $raw-arg {
-      my Str ( $arg, $arg-type, $raku-arg-type);
-      ( $arg, $arg-type, $raku-arg-type, $type-is-class) =
-        get-type( $raw-arg, :attr);
-
-      if ?$arg {
-        my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
-#note "pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
-
-        # skip first argument when type is also the class name
-        if $first-arg and $type-is-class {
-        }
-
-        # skip also when variable is $any set to default Any type
-        elsif $arg eq 'any = Any' {
-        }
-
-        else {
-          # make arguments pod doc
-          $pod-args ~= ',' if ?$pod-args;
-          $pod-args ~= " $raku-arg-type \$$arg";
-          $pod-doc-items ~= "=item $raku-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
-        }
-
-        # add argument to list for sub declaration
-        $args ~= ', ' if ?$args;
-        $args ~= "$arg-type \$$arg";
-      }
-
-      $first-arg = False;
-    }
-
-    my Str $pod-doc-return = '';
-    my Str $pod-returns = '';
-    my Str $returns = '';
-    if ?$return-type {
-      $pod-returns = " --> $raku-return-type ";
-      $returns = "\n  returns $return-type";
-    }
-
-    $dep-versions{$version} = [] unless $dep-versions{$version}:exists;
-    $dep-versions{$version}.push: "method $sub-name ($pod-args$pod-returns )";
-  }
-
-
-  my Str $deprecated-subs = '';
-  if ?$dep-versions {
-    $deprecated-subs = Q:to/EODEPSUB/;
-      #-------------------------------------------------------------------------------
-      =begin pod
-      =head1 List of deprecated (not implemented!) methods
-      EODEPSUB
-
-    for $dep-versions.keys.sort -> $version {
-      $deprecated-subs ~= "\n=head2 Since $version\n";
-      for @($dep-versions{$version}) -> $sub is copy {
-        $sub ~~ s/ '(' <-[)]> * ')' /( ... )/;
-        $deprecated-subs ~= "=head3 $sub\n";
-      }
-    }
-
-    $deprecated-subs ~= "=end pod\n\n";
-  }
-
-  $output-file.IO.spurt( $deprecated-subs, :append);
-}
-}}
-
 #-------------------------------------------------------------------------------
 sub parent-class ( Str:D $include-content --> List ) {
 
@@ -1069,6 +953,7 @@ sub substitute-in-template (
         }
       }
 
+      #`{{
       #-------------------------------------------------------------------------------
       # no pod. user does not have to know about it.
       method _fallback ( $native-sub is copy --> Callable ) {
@@ -1084,6 +969,7 @@ sub substitute-in-template (
 
         $s;
       }
+      }}
 
       EOTEMPLATE
 
