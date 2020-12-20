@@ -331,8 +331,9 @@ Appends a I<$page> to the assistant. Returns the index (starting at 0) of the in
 
 =end pod
 
-sub gtk_assistant_append_page ( N-GObject $assistant, N-GObject $page --> int32 )
-  is native(&gtk-lib)
+sub gtk_assistant_append_page (
+  N-GObject $assistant, N-GObject $page --> int32
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
@@ -415,8 +416,9 @@ Sets the page type for I<$page>. The page type determines the page behavior in t
 
 =end pod
 
-sub gtk_assistant_set_page_type ( N-GObject $assistant, N-GObject $page, int32 $type  )
-  is native(&gtk-lib)
+sub gtk_assistant_set_page_type (
+  N-GObject $assistant, N-GObject $page, int32 $type
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
@@ -435,8 +437,9 @@ Gets the page type of I<$page>.
 
 =end pod
 
-sub gtk_assistant_get_page_type ( N-GObject $assistant, N-GObject $page --> int32 )
-  is native(&gtk-lib)
+sub gtk_assistant_get_page_type (
+  N-GObject $assistant, N-GObject $page --> int32
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
