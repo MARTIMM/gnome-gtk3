@@ -1,14 +1,20 @@
 use v6;
-use lib '../gnome-native/lib';
-use P5times;
+#use lib '../gnome-native/lib';
+#use lib '../gnome-test/lib';
+#use P5times;
 
+use Gnome::T::Benchmark;
 use Gnome::Gtk3::AboutDialog;
-use Gnome::Gdk3::Pixbuf;
+#use Gnome::Gdk3::Pixbuf;
 #use Gnome::N::GlibToRakuTypes;
 
 my Gnome::Gtk3::AboutDialog $a .= new;
+my Gnome::T::Benchmark $b .= new(
+  :default-count(500), :project<gnome-gtk3>, :project-version<0.34.2.1>,
+  :sub-project<AboutDialog>, :path<xt/Benchmarking/Data>
+);
 
-my @bt1 = timethis( 'Method calls', 500, {
+$b.run-test( 'Method calls', {
     $a.set-program-name('AboutDialog.t');
     my Str $s = $a.get-program-name;
 
@@ -55,8 +61,7 @@ my @bt1 = timethis( 'Method calls', 500, {
   }
 );
 
-my @bt2 = timethis(
-  'Native sub search', 500, {
+$b.run-test( 'Native sub search', {
     $a.gtk-about-dialog-set-program-name('AboutDialog.t');
     my Str $s = $a.gtk-about-dialog-get-program-name;
 
@@ -109,67 +114,10 @@ my @bt2 = timethis(
   }
 );
 
-compare @bt1, @bt2;
+$b.compare-tests;
 
-#-------------------------------------------------------------------------------
-sub show (
-  Str $test, $count, $totalu, $totals, $total, $mean, $rps, $remark = ''
-) {
-  note (
-    "\n$test",
-    "Count:             $count",
-    "Total user time:   " ~ ($totalu/1e6).fmt('%.5f'),
-    "Total system time: " ~ ($totals/1e6).fmt('%.5f'),
-    "Total of both:     " ~ ($total/1e6).fmt('%.5f'),
-    "Mean of both:      " ~ ($mean/1e6).fmt('%.5f'),
-    "Runs/sec:          $rps.fmt('%.2f')$remark",
-  ).join("\n  ");
-}
+#$b.show-test('Native sub search');
+#$b.show-test('Method calls');
+$b.save-tests;
 
-#-------------------------------------------------------------------------------
-sub timethis ( Str $test, Int $count, Callable $test-routine --> List ) {
-
-  note "Run test $test";
-  my Int ( $total-time, $total-utime, $total-stime) = ( 0, 0, 0);
-  my ( $user1, $system1, $cuser1, $csystem1);
-
-  loop ( my Int $test-count = 0; $test-count < $count; $test-count++ ) {
-    ENTER {
-      ( $user1, $system1, $cuser1, $csystem1) = times;
-    }
-
-    $test-routine();
-
-
-    LEAVE {
-      my ( $user2, $system2, $cuser2, $csystem2) = times;
-      $total-utime += ($user2 - $user1);
-      $total-stime += ($system2 - $system1);
-    }
-  }
-
-  $total-time = ($total-utime + $total-stime);
-
-  ( $test, $count, $total-utime, $total-stime, $total-time,
-    $total-time/$count, $count/$total-time * 1e6
-  )
-}
-
-#-------------------------------------------------------------------------------
-sub compare ( **@data ) {
-
-  my $slowest;
-  my Str $remark;
-  for (|@data).sort( -> $a, $b { $a[6] <=> $b[6] }) -> @x {
-    if $slowest.defined {
-      $remark = ', ' ~ (@x[6] / $slowest).fmt('%.2f') ~ ' times faster than slowest';
-    }
-
-    else {
-      $remark = ', slowest';
-      $slowest = @x[6];
-    }
-
-    show |@x, $remark;
-  }
-}
+#$b.md-test-table( '0.34.2.1', '2020.10.109', 'AboutDialog', 0, 1);

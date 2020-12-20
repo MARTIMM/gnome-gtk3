@@ -289,6 +289,7 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 
 use Gnome::GObject::InitiallyUnowned;
 
@@ -482,9 +483,9 @@ sub _gtk_widget_new (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:4:gtk_widget_destroy:several programs
+#TM:4:destroy:several programs
 =begin pod
-=head2 [[gtk_] widget_] destroy
+=head2 destroy
 
 Destroys a widget.
 
@@ -500,21 +501,20 @@ It is not necessary to do so if you are implementing a B<Gnome::Gtk3::Container>
 =end comment
 
 =begin comment
-It's important to notice that C<gtk_widget_destroy()> will only cause the widget to be finalized if no additional references, acquired using C<g_object_ref()>, are held on it. In case additional references are in place, the I<widget> will be in an "inert" state after calling this function; I<widget> will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
+It's important to notice that C<destroy()> will only cause the widget to be finalized if no additional references, acquired using C<g_object_ref()>, are held on it. In case additional references are in place, the I<widget> will be in an "inert" state after calling this function; I<widget> will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
 =end comment
 
 You should typically call this function on top level widgets, and rarely on child widgets.
 
 See also: C<gtk_container_remove()> in L<Gnome::Gtk3::Container|Container.html>.
 
-  method gtk_widget_destroy ( )
-
+  method destroy ( )
 
 =end pod
 
 # prevent calling parent class destroy method e.g in Any or Mu
 method destroy ( ) {
-  gtk_widget_destroy(self.get-native-object-no-reffing);
+  self._f( &gtk_widget_destroy, :!convert, :sub-class<GtkWidget>)
 }
 
 sub gtk_widget_destroy ( N-GObject $widget )
@@ -559,22 +559,22 @@ sub gtk_widget_unparent ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_show:
+#TM:1:show:
 =begin pod
-=head2 [[gtk_] widget_] show
+=head2 show
 
-Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call C<gtk_widget_show_all()> on the container, instead of individually showing the widgets.
+Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call C<show-all()> on the container, instead of individually showing the widgets.
 
 Remember that you have to show the containers containing a widget, in addition to the widget itself, before it will appear onscreen.
 
 When a toplevel container is shown, it is immediately realized and mapped; other shown widgets are realized and mapped when their toplevel container is realized and mapped.
 
-  method gtk_widget_show ( )
+  method show ( )
 
 =end pod
 
 method show ( ) {
-  gtk_widget_show(self.get-native-object-no-reffing);
+  self._f( &gtk_widget_show, :!convert, :sub-class<GtkWidget>)
 }
 
 sub gtk_widget_show ( N-GObject $widget )
@@ -582,18 +582,18 @@ sub gtk_widget_show ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_hide:
+#TM:1:hide:
 =begin pod
-=head2 [[gtk_] widget_] hide
+=head2 hide
 
 Reverses the effects of C<gtk_widget_show()>, causing the widget to be hidden (invisible to the user).
 
-  method gtk_widget_hide ( )
+  method hide ( )
 
 =end pod
 
 method hide ( ) {
-  gtk_widget_hide(self.get-native-object-no-reffing);
+  self._f( &gtk_widget_hide, :!convert)
 }
 
 sub gtk_widget_hide ( N-GObject $widget )
@@ -601,65 +601,81 @@ sub gtk_widget_hide ( N-GObject $widget )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_show_now
+#TM:1:show-now
 =begin pod
-=head2 [[gtk_] widget_] show_now
+=head2 show-now
 
 Shows a widget. If the widget is an unmapped toplevel widget (i.e. a B<Gnome::Gtk3::Window> that has not yet been shown), enter the main loop and wait for the window to actually be mapped. Be careful; because the main loop is running, anything can happen during this function.
 
-  method gtk_widget_show_now ( )
+  method show-now ( )
 
 =end pod
+
+method show-now ( ) {
+  self._f( &gtk_widget_show_now, :!convert, :sub-class<GtkWidget>)
+}
 
 sub gtk_widget_show_now ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_show_all
+#TM:1:show-all
 =begin pod
-=head2 [[gtk_] widget_] show_all
+=head2 show-all
 
 Recursively shows a widget, and any child widgets (if the widget is a container).
 
-  method gtk_widget_show_all ( )
-
+  method show-all ( )
 
 =end pod
+
+method show-all ( ) {
+  self._f( &gtk_widget_show_all, :!convert, :sub-class<GtkWidget>)
+}
 
 sub gtk_widget_show_all ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_set_no_show_all
+#TM:1:set-no-show-all
 =begin pod
-=head2 [[gtk_] widget_] set_no_show_all
+=head2 set-no-show-all
 
-Sets the prop C<no-show-all> property, which determines whether calls to C<gtk_widget_show_all()> will affect this widget. This is mostly for use in constructing widget hierarchies with externally controlled visibility, see B<Gnome::Gtk3::UIManager>.
+Sets the prop C<no-show-all> property, which determines whether calls to C<show_all()> will affect this widget. This is mostly for use in constructing widget hierarchies with externally controlled visibility,
+=comment see B<Gnome::Gtk3::UIManager>.
 
-  method gtk_widget_set_no_show_all ( Bool $no_show_all )
+  method set-no-show-all ( Bool $no_show_all )
 
-=item Int $no_show_all; the new value for the “no-show-all” property
+=item Bool $no_show_all; the new value for the “no-show-all” property
 
 =end pod
 
-sub gtk_widget_set_no_show_all ( N-GObject $widget, int32 $no_show_all )
+method set-no-show-all ( Bool $no_show_all ) {
+  self._f( &gtk_widget_set_no_show_all, $no_show_all, :sub-class<GtkWidget>)
+}
+
+sub gtk_widget_set_no_show_all ( N-GObject $widget, gboolean $no_show_all )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_get_no_show_all
+#TM:1:get_no_show_all
 =begin pod
-=head2 [[gtk_] widget_] get_no_show_all
+=head2 get_no_show_all
 
 Returns the current value of the prop C<no-show-all> property, which determines whether calls to C<gtk_widget_show_all()> will affect this widget.
 
-  method gtk_widget_get_no_show_all ( --> Int )
+  method get_no_show_all ( --> Bool )
 
 =end pod
 
-sub gtk_widget_get_no_show_all ( N-GObject $widget --> int32 )
+method get_no_show_all ( --> Bool ) {
+  self._f( &gtk_widget_get_no_show_all, :!convert, :sub-class<GtkWidget>).Bool
+}
+
+sub gtk_widget_get_no_show_all ( N-GObject $widget --> gboolean )
   is native(&gtk-lib)
   { * }
 
@@ -749,25 +765,24 @@ sub gtk_widget_unrealize ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:4:gtk_widget_draw:xt/c5.pl6
+#TM:4:draw:gnome-cairo/xt/c5.pl6
 =begin pod
-=head2 [[gtk_] widget_] draw
+=head2 draw
 
 Draws I<widget> to I<$cr>. The top left corner of the widget will be drawn to the currently set origin point of I<$cr>.
 
-You should pass a cairo context as I<cr> argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using C<cairo_set_operator()> or the line width using C<cairo_set_line_width()> might have unwanted side effects. You may however change the context’s transform matrix - like with C<cairo_scale()>, C<cairo_translate()> or C<cairo_set_matrix()> and clip region with C<cairo_clip()> prior to calling this function. Also, it is fine to modify the context with C<cairo_save()> and C<cairo_push_group()> prior to calling this function.
+You should pass a cairo context as I<$cr> argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using C<cairo_set_operator()> or the line width using C<cairo_set_line_width()> might have unwanted side effects. You may however change the context’s transform matrix - like with C<cairo_scale()>, C<cairo_translate()> or C<cairo_set_matrix()> and clip region with C<cairo_clip()> prior to calling this function. Also, it is fine to modify the context with C<cairo_save()> and C<cairo_push_group()> prior to calling this function.
 
 Note that special-purpose widgets may contain special code for rendering to the screen and might appear differently on screen and when rendered using C<gtk_widget_draw()>.
 
-  method gtk_widget_draw ( cairo_t $cr )
+  method draw ( Gnome::Cairo $cr )
 
 =item cairo_t $cr; a cairo context to draw to
 
 =end pod
 
-method draw ( **@params ) {
-  self.convert-to-natives( &gtk_widget_draw, @params);
-  gtk_widget_draw( self.get-native-object-no-reffing, |@params);
+method draw ( Gnome::Cairo $cr ) {
+  self._f( &gtk_widget_draw, $cr, :sub-class<GtkWidget>);
 }
 
 sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
@@ -775,24 +790,28 @@ sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_queue_draw
+#TM:2:queue-draw:xt/Benchmarking/Modules/Widget.raku
 =begin pod
-=head2 [[gtk_] widget_] queue_draw
+=head2 queue-draw
 
-Equivalent to calling C<gtk_widget_queue_draw_area()> for the entire area of a widget.
+Equivalent to calling C<queue_draw_area()> for the entire area of a widget.
 
-  method gtk_widget_queue_draw ( )
+  method queue-draw ( )
 
 =end pod
+
+method queue-draw ( ) {
+  gtk_widget_queue_draw(self.get-native-object-no-reffing);
+}
 
 sub gtk_widget_queue_draw ( N-GObject $widget )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_queue_draw_area
+#TM:2:queue-draw-area:xt/Benchmarking/Modules/Widget.raku
 =begin pod
-=head2 [[gtk_] widget_] queue_draw_area
+=head2 queue-draw-area
 
 Convenience function that calls C<gtk_widget_queue_draw_region()> on the region created from the given coordinates.
 
@@ -800,7 +819,7 @@ The region here is specified in widget coordinates. Widget coordinates are a bit
 
 I<$width> or I<$height> may be 0, in this case this function does nothing. Negative values for I<$width> and I<$height> are not allowed.
 
-  method gtk_widget_queue_draw_area ( Int $x, Int $y, Int $width, Int $height )
+  method queue-draw-area ( Int $x, Int $y, Int $width, Int $height )
 
 =item Int $x; x coordinate of upper-left corner of rectangle to redraw
 =item Int $y; y coordinate of upper-left corner of rectangle to redraw
@@ -809,8 +828,16 @@ I<$width> or I<$height> may be 0, in this case this function does nothing. Negat
 
 =end pod
 
-sub gtk_widget_queue_draw_area ( N-GObject $widget, int32 $x, int32 $y, int32 $width, int32 $height )
-  is native(&gtk-lib)
+method queue-draw-area ( Int $x, Int $y, Int $width, Int $height ) {
+
+  self._f(
+    &gtk_widget_queue_draw_area, $x, $y, $width, $height, :sub-class<GtkWidget>
+  );
+}
+
+sub gtk_widget_queue_draw_area (
+  N-GObject $widget, gint $x, gint $y, gint $width, gint $height
+) is native(&gtk-lib)
   { * }
 
 #`{{ needs cairo_region_t
@@ -891,13 +918,13 @@ sub gtk_widget_queue_allocate ( N-GObject $widget )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_get_frame_clock
+#TM:2:get-frame-clock:xt/Benchmarking/Modules/Widget.raku
 =begin pod
-=head2 [[gtk_] widget_] get_frame_clock
+=head2 get-frame-clock
 
 Obtains the frame clock for a widget. The frame clock is a global “ticker” that can be used to drive animations and repaints. The most common reason to get the frame clock is to call C<gdk_frame_clock_get_frame_time()>, in order to get a time to use for animating. For example you might record the start of the animation with an initial value from C<gdk_frame_clock_get_frame_time()>, and then update the animation by calling C<gdk_frame_clock_get_frame_time()> again during each repaint.
 
-C<gdk_frame_clock_request_phase()> will result in a new frame on the clock, but won’t necessarily repaint any widgets. To repaint a widget, you have to use C<gtk_widget_queue_draw()> which invalidates the widget (thus scheduling it to receive a draw on the next frame). C<gtk_widget_queue_draw()> will also end up requesting a frame on the appropriate frame clock.
+C<gdk_frame_clock_request_phase()> will result in a new frame on the clock, but won’t necessarily repaint any widgets. To repaint a widget, you have to use C<queue-draw()> which invalidates the widget (thus scheduling it to receive a draw on the next frame). C<queue-draw()> will also end up requesting a frame on the appropriate frame clock.
 
 A widget’s frame clock will not change while the widget is mapped. Reparenting a widget (which implies a temporary unmap) can change the widget’s frame clock.
 
@@ -905,12 +932,15 @@ Unrealized widgets do not have a frame clock.
 
 Returns: a B<Gnome::Gdk3::FrameClock> orundefined if widget is unrealized
 
-  method gtk_widget_get_frame_clock ( --> N-GObject )
+  method get-frame-clock ( --> N-GObject )
 
 =end pod
 
-sub gtk_widget_get_frame_clock ( N-GObject $widget )
-  returns N-GObject
+method get-frame-clock ( --> N-GObject ) {
+  self._f( &gtk_widget_get_frame_clock, :!convert, :sub-class<GtkWidget>)
+}
+
+sub gtk_widget_get_frame_clock ( N-GObject $widget --> N-GObject )
   is native(&gtk-lib)
   { * }
 
