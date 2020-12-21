@@ -256,7 +256,6 @@ Returns: The program name. The string is owned by the about dialog and must not 
 =end pod
 
 method get-program-name ( --> gchar-ptr ) {
-#  self.__f__( &gtk_about_dialog_get_program_name, :!convert, :!cast )
   gtk_about_dialog_get_program_name(self.get-native-object-no-reffing)
 }
 
@@ -278,7 +277,6 @@ Sets the name to display in the about dialog. If this is not set, it defaults to
 =end pod
 
 method set-program-name ( $name ) {
-#  self.__f__( &gtk_about_dialog_set_program_name, |@p, :!convert, :!cast )
   gtk_about_dialog_set_program_name( self.get-native-object-no-reffing, $name);
 }
 
@@ -301,7 +299,6 @@ Returns: The version string. The string is owned by the about dialog and must no
 
 method get-version ( --> gchar-ptr ) {
   gtk_about_dialog_get_version(self.get-native-object-no-reffing);
-#  self.__f__( &gtk_about_dialog_get_version, :!convert, :!cast )
 }
 
 sub gtk_about_dialog_get_version ( N-GObject $about --> gchar-ptr )
@@ -322,7 +319,6 @@ Sets the version string to display in the about dialog.
 =end pod
 
 method set-version ( $version ) {
-#  self.__f__( &gtk_about_dialog_set_version, |@p, :!convert, :!cast )
   gtk_about_dialog_set_version(
     self.get-native-object-no-reffing, $version
   );
@@ -346,7 +342,6 @@ Returns: The copyright string. The string is owned by the about dialog and must 
 =end pod
 
 method get-copyright ( ) {
-#  self.__f__( &gtk_about_dialog_get_copyright, :!convert, :!cast )
   gtk_about_dialog_get_copyright(self.get-native-object-no-reffing)
 }
 
@@ -371,7 +366,6 @@ method set-copyright ( $copyright ) {
   gtk_about_dialog_set_copyright(
     self.get-native-object-no-reffing, $copyright
   );
-#  self.__f__( &gtk_about_dialog_set_copyright, |@p, :!convert, :!cast )
 }
 
 sub gtk_about_dialog_set_copyright ( N-GObject $about, gchar-ptr $copyright )
@@ -944,7 +938,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 =end pod
 
 method set-logo ( Gnome::Gdk3::Pixbuf $logo ) {
-  self._f( &gtk_about_dialog_set_logo, $logo, :convert, :!cast);
+  self._f( &gtk_about_dialog_set_logo, $logo, :convert);
 }
 
 sub gtk_about_dialog_set_logo ( N-GObject $about, N-GObject $logo )
