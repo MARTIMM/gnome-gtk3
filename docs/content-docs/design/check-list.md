@@ -53,7 +53,7 @@ Legend for head of table
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
-* Empty: Not done.
+* Empty: Not done or do not have a value like for **T** or **I**.
 * ⅓, ½, ⅔, etc, is a raw measure of things partly done. Some subs are not yet available because of dependencies on other types which are not yet implemented. Also, not all subs can be tested because subs might need a more complete setup before being useful. Could also be, that I don't know what to do with it 😄.
 * ✓: Done
 
