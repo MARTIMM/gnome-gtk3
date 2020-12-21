@@ -49,7 +49,7 @@ Legend for head of table
   * **te**: Signals and events.
   * **tp**: Properties.
 * 12: Issue number 12; check use of types and modify.
-* 14: Issue number 14; implement methods on shortest name, deprecate rest, remove from docs.
+* 14: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -162,11 +162,11 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔|  |  |  | |
+Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
-Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  | |
+Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12| -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14| -->
 
 <br/>
 
