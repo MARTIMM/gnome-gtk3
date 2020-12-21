@@ -1,44 +1,44 @@
 ---
 "0.34.2.1": 
   "2020.10.109": 
-    AboutDialog: 
-      test-time: "2020-12-20T14:54:05.238347Z"
-      test1: 
-        total-utime: 3255135
-        mean: 6516.214
-        count: 500
-        rps: 153.46334543340657
-        speedup: 0
-        total-time: 3258107
-        total-stime: 2972
-        test-text: "Native sub search"
-      test0: 
-        mean: 761.614
-        total-stime: 2963
-        count: 500
-        rps: 1313.0010740348785
-        test-text: "Method calls"
-        speedup: 8.555795980641111
-        total-utime: 377844
-        total-time: 380807
     Widget: 
-      test-time: "2020-12-20T20:57:58.797133Z"
+      test-time: "2020-12-21T13:08:22.246032Z"
       test0: 
-        total-utime: 411821
-        speedup: 2.290204379173135
-        total-time: 412909
-        test-text: "Destroy Method call"
-        total-stime: 1088
-        mean: 825.818
-        rps: 1210.9205660327093
+        rps: 803.0980309642476
+        test-text: "Method calls"
         count: 500
+        mean: 1245.178
+        total-time: 622589
+        speedup: 2.1173695648333006
+        total-stime: 6129
+        total-utime: 616460
       test1: 
-        count: 500
+        total-stime: 3122
+        total-utime: 1315129
         speedup: 0
-        total-stime: 5310
-        rps: 528.739084181607
-        total-time: 945646
-        total-utime: 940336
-        test-text: "Native destroy sub"
-        mean: 1891.292
+        total-time: 1318251
+        mean: 2636.502
+        rps: 379.29043861904904
+        count: 500
+        test-text: "Native sub search"
+    AboutDialog: 
+      test1: 
+        total-time: 16024962
+        count: 500
+        total-stime: 63113
+        speedup: 0
+        test-text: "Native sub search"
+        mean: 32049.924
+        total-utime: 15961849
+        rps: 31.201322037456315
+      test-time: "2020-12-21T09:55:34.819235Z"
+      test0: 
+        speedup: 8.343405492030401
+        total-utime: 1900518
+        mean: 3841.348
+        rps: 260.3252816459222
+        total-time: 1920674
+        count: 500
+        test-text: "Method calls"
+        total-stime: 20156
 ...
