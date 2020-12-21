@@ -22,6 +22,12 @@ subtest 'Widget ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
   is $b.get-visible, 0, '.get-visible()';
@@ -53,24 +59,27 @@ subtest 'Manipulations', {
   lives-ok {$b.hide;}, '.hide()';
   lives-ok {$b.show;}, '.show()';
 
-  lives-ok { $b.get_allocated_width;}, '.get_allocated_width()';
-  lives-ok { $b.get_allocated_height;}, '.get_allocated_height()';
-  lives-ok { $b.get_allocated_baseline;}, '.get_allocated_baseline()';
-  lives-ok { $b.get_allocated_size;}, '.get_allocated_size()';
-  lives-ok { $b.get_allocation;}, '.get_allocation()';
+  my N-GtkAllocation $allocation .= new( :x(2), :y(2), :width(50), :height(20));
+  $b.size-allocate($allocation);
+  is $b.get-allocated-width, 50, '.get-allocated-width()';
+  is $b.get-allocated-height, 20, '.get-allocated-height()';
+
+  lives-ok { $b.get-allocated-baseline;}, '.get-allocated-baseline()';
+  lives-ok { $b.get-allocated-size;}, '.get-allocated-size()';
+  lives-ok { $b.get-allocation;}, '.get-allocation()';
   lives-ok { $b.get-clip;}, '.get-clip()';
   lives-ok { $b.get-toplevel;}, '.get-toplevel()';
 
-  $b.set_size_request( 100, 101);
-  my List $l = $b.get_size_request;
-  is $l[0], 100, '.set_size_request()';
-  is $l[1], 101, '.get_size_request()';
+  $b.set-size-request( 100, 101);
+  my List $l = $b.get-size-request;
+  is $l[0], 100, '.set-size-request()';
+  is $l[1], 101, '.get-size-request()';
 
   $b.set-opacity(0.8);
   is $b.get-opacity, 0.8, '.set-opacity() / .get-opacity()';
 
-  $b.set_no_show_all(True);
-  ok $b.get-no-show-all, '.set_no_show_all() / .get-no-show-all()';
+  $b.set-no-show-all(True);
+  ok $b.get-no-show-all, '.set-no-show-all() / .get-no-show-all()';
 
   # not drawable because not visible/mapped
   nok $b.get-realized, '.get-realized()';
@@ -106,8 +115,8 @@ subtest 'Manipulations', {
     '.set-default-direction() / .get-default-direction()';
 
 
-  $b.set_app_paintable(1);
-  ok $b.get_app_paintable, '.set_app_paintable() / .get_app_paintable()';
+  $b.set-app-paintable(1);
+  ok $b.get-app-paintable, '.set-app-paintable() / .get-app-paintable()';
   nok $b.is-toplevel, '.is-toplevel()';
 
   $b.set-tooltip-text('Nooooo don\'t touch that button!!!!!!!');
@@ -123,8 +132,8 @@ subtest 'Manipulations', {
   is $l1.elems, 2, '.get-preferred-size()';
   ok $l1[0].width == $l1[1].width, 'widths are the same';
   ok $l1[0].height == $l1[1].height, 'heights are the same';
-  my $l1b = $b.gtk_widget_get_preferred_size;
-  is $l1b.elems, 2, '.gtk_widget_get_preferred_size()';
+  my $l1b = $b.get-preferred-size;
+  is $l1b.elems, 2, '.get-preferred-size()';
   ok $l1[0].width == $l1b[0].width, 'widths are the same';
   ok $l1[0].height == $l1b[0].height, 'heights are the same';
 #note $l1b;
@@ -136,38 +145,38 @@ subtest 'Manipulations', {
   is $l2[3], -1, 'no baseline';
 #note $l2;
 
-  my $l3 = $b.gtk_widget_get_preferred_height_and_baseline_for_width(30);
+  my $l3 = $b.get-preferred-height-and-baseline-for-width(30);
   is $l2 cmp $l3, Same,
-             '.gtk_widget_get_preferred_height_and_baseline_for_width()';
+             '.get-preferred-height-and-baseline-for-width()';
 #note $l3;
 
   my $l4 = $b.get-preferred-width-for-height(10);
 #note $l4;
   is $l4.elems, 2, '.get-preferred-width-for-height()';
-  my $l4b = $b.gtk_widget_get_preferred_width_for_height(10);
+  my $l4b = $b.get-preferred-width-for-height(10);
 #note $l4b;
-  is $l4 cmp $l4b, Same, '.gtk_widget_get_preferred_width_for_height()';
+  is $l4 cmp $l4b, Same, '.get-preferred-width-for-height()';
 
   $l4 = $b.get-preferred-height;
 #note $l4;
   is $l4.elems, 2, '.get-preferred-height()';
-  $l4b = $b.gtk_widget_get_preferred_height;
+  $l4b = $b.get-preferred-height;
 #note $l4b;
-  is $l4 cmp $l4b, Same, '.gtk_widget_get_preferred_height()';
+  is $l4 cmp $l4b, Same, '.get-preferred-height()';
 
   $l4 = $b.get-preferred-height-for-width(10);
 #note $l4;
   is $l4.elems, 2, '.get-preferred-height-for-width()';
-  $l4b = $b.gtk_widget_get_preferred_height_for_width(10);
+  $l4b = $b.get-preferred-height-for-width(10);
 #note $l4b;
-  is $l4 cmp $l4b, Same, '.gtk_widget_get_preferred_height_for_width()';
+  is $l4 cmp $l4b, Same, '.get-preferred-height-for-width()';
 
   $l4 = $b.get-preferred-width;
 #note $l4;
   is $l4.elems, 2, '.get-preferred-width()';
-  $l4b = $b.gtk_widget_get_preferred_width;
+  $l4b = $b.get-preferred-width;
 #note $l4b;
-  is $l4 cmp $l4b, Same, '.gtk_widget_get_preferred_width()';
+  is $l4 cmp $l4b, Same, '.get-preferred-width()';
 
   $b.set-sensitive(False);
   nok $b.get-sensitive, '.set-sensitive() / .get-sensitive()';
@@ -175,7 +184,7 @@ subtest 'Manipulations', {
 
 #note $b.list-action-prefixes[0];
 
-#  $b.gtk-widget-destroy;
+#  $b.destroy;
 #  nok $b.is-valid, '.destroy()';
 }
 
@@ -187,9 +196,9 @@ subtest 'Requisitions ...', {
   is $r.width, 0, '.requisition-new().width()';
   is $r.height, 0, '.requisition-new().height()';
 
-  my N-GtkRequisition $rc = $b.gtk_requisition_copy($r);
-  is $r.width, 0, '.gtk_requisition_copy().width()';
-  is $r.height, 0, '.gtk_requisition_copy().height()';
+  my N-GtkRequisition $rc = $b.gtk-requisition-copy($r);
+  is $r.width, 0, '.gtk-requisition-copy().width()';
+  is $r.height, 0, '.gtk-requisition-copy().height()';
 }
 }}
 
@@ -198,7 +207,7 @@ subtest 'Properties ...', {
   my Gnome::GObject::Value $gv;
 
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
-  $b.set_no_show_all(True);
+  $b.set-no-show-all(True);
   $b.set-name('test-button');
 
   $gv .= new(:init(G_TYPE_STRING));
@@ -211,7 +220,7 @@ subtest 'Properties ...', {
   ok $gv.g-value-get-boolean, 'get property no-show-all';
   $gv.g-value-set-boolean(False);
   $b.g-object-set-property( 'no-show-all', $gv);
-  is $b.get_no_show_all, 0, 'set property no-show-all';
+  is $b.get-no-show-all, False, 'set property no-show-all';
   $gv.clear-object;
 }
 

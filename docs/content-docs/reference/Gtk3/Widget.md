@@ -162,8 +162,8 @@ A N-GtkAllocation of a widget represents a region which has been allocated to th
 Methods
 =======
 
-[[gtk_] widget_] destroy
-------------------------
+destroy
+-------
 
 Destroys a widget.
 
@@ -181,78 +181,78 @@ You should typically call this function on top level widgets, and rarely on chil
 
 See also: `gtk_container_remove()` in [Gnome::Gtk3::Container](Container.html).
 
-    method gtk_widget_destroy ( )
+    method destroy ( )
 
-[[gtk_] widget_] show
----------------------
+show
+----
 
-Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call `gtk_widget_show_all()` on the container, instead of individually showing the widgets.
+Flags a widget to be displayed. Any widget that isn’t shown will not appear on the screen. If you want to show all the widgets in a container, it’s easier to call `show-all()` on the container, instead of individually showing the widgets.
 
 Remember that you have to show the containers containing a widget, in addition to the widget itself, before it will appear onscreen.
 
 When a toplevel container is shown, it is immediately realized and mapped; other shown widgets are realized and mapped when their toplevel container is realized and mapped.
 
-    method gtk_widget_show ( )
+    method show ( )
 
-[[gtk_] widget_] hide
----------------------
+hide
+----
 
 Reverses the effects of `gtk_widget_show()`, causing the widget to be hidden (invisible to the user).
 
-    method gtk_widget_hide ( )
+    method hide ( )
 
-[[gtk_] widget_] show_now
--------------------------
+show-now
+--------
 
 Shows a widget. If the widget is an unmapped toplevel widget (i.e. a **Gnome::Gtk3::Window** that has not yet been shown), enter the main loop and wait for the window to actually be mapped. Be careful; because the main loop is running, anything can happen during this function.
 
-    method gtk_widget_show_now ( )
+    method show-now ( )
 
-[[gtk_] widget_] show_all
--------------------------
+show-all
+--------
 
 Recursively shows a widget, and any child widgets (if the widget is a container).
 
-    method gtk_widget_show_all ( )
+    method show-all ( )
 
-[[gtk_] widget_] set_no_show_all
---------------------------------
+set-no-show-all
+---------------
 
-Sets the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget. This is mostly for use in constructing widget hierarchies with externally controlled visibility, see **Gnome::Gtk3::UIManager**.
+Sets the prop `no-show-all` property, which determines whether calls to `show_all()` will affect this widget. This is mostly for use in constructing widget hierarchies with externally controlled visibility,
 
-    method gtk_widget_set_no_show_all ( Bool $no_show_all )
+    method set-no-show-all ( Bool $no_show_all )
 
-  * Int $no_show_all; the new value for the “no-show-all” property
+  * Bool $no_show_all; the new value for the “no-show-all” property
 
-[[gtk_] widget_] get_no_show_all
---------------------------------
+get-no-show-all
+---------------
 
 Returns the current value of the prop `no-show-all` property, which determines whether calls to `gtk_widget_show_all()` will affect this widget.
 
-    method gtk_widget_get_no_show_all ( --> Int )
+    method get-no-show-all ( --> Bool )
 
-[[gtk_] widget_] draw
----------------------
+draw
+----
 
 Draws *widget* to *$cr*. The top left corner of the widget will be drawn to the currently set origin point of *$cr*.
 
-You should pass a cairo context as *cr* argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using `cairo_set_operator()` or the line width using `cairo_set_line_width()` might have unwanted side effects. You may however change the context’s transform matrix - like with `cairo_scale()`, `cairo_translate()` or `cairo_set_matrix()` and clip region with `cairo_clip()` prior to calling this function. Also, it is fine to modify the context with `cairo_save()` and `cairo_push_group()` prior to calling this function.
+You should pass a cairo context as *$cr* argument that is in an original state. Otherwise the resulting drawing is undefined. For example changing the operator using `cairo_set_operator()` or the line width using `cairo_set_line_width()` might have unwanted side effects. You may however change the context’s transform matrix - like with `cairo_scale()`, `cairo_translate()` or `cairo_set_matrix()` and clip region with `cairo_clip()` prior to calling this function. Also, it is fine to modify the context with `cairo_save()` and `cairo_push_group()` prior to calling this function.
 
 Note that special-purpose widgets may contain special code for rendering to the screen and might appear differently on screen and when rendered using `gtk_widget_draw()`.
 
-    method gtk_widget_draw ( cairo_t $cr )
+    method draw ( Gnome::Cairo $cr )
 
   * cairo_t $cr; a cairo context to draw to
 
-[[gtk_] widget_] queue_draw
----------------------------
+queue-draw
+----------
 
-Equivalent to calling `gtk_widget_queue_draw_area()` for the entire area of a widget.
+Equivalent to calling `queue_draw_area()` for the entire area of a widget.
 
-    method gtk_widget_queue_draw ( )
+    method queue-draw ( )
 
-[[gtk_] widget_] queue_draw_area
---------------------------------
+queue-draw-area
+---------------
 
 Convenience function that calls `gtk_widget_queue_draw_region()` on the region created from the given coordinates.
 
@@ -260,7 +260,7 @@ The region here is specified in widget coordinates. Widget coordinates are a bit
 
 *$width* or *$height* may be 0, in this case this function does nothing. Negative values for *$width* and *$height* are not allowed.
 
-    method gtk_widget_queue_draw_area ( Int $x, Int $y, Int $width, Int $height )
+    method queue-draw-area ( Int $x, Int $y, Int $width, Int $height )
 
   * Int $x; x coordinate of upper-left corner of rectangle to redraw
 
@@ -270,12 +270,12 @@ The region here is specified in widget coordinates. Widget coordinates are a bit
 
   * Int $height; height of region to draw
 
-[[gtk_] widget_] get_frame_clock
---------------------------------
+get-frame-clock
+---------------
 
 Obtains the frame clock for a widget. The frame clock is a global “ticker” that can be used to drive animations and repaints. The most common reason to get the frame clock is to call `gdk_frame_clock_get_frame_time()`, in order to get a time to use for animating. For example you might record the start of the animation with an initial value from `gdk_frame_clock_get_frame_time()`, and then update the animation by calling `gdk_frame_clock_get_frame_time()` again during each repaint.
 
-`gdk_frame_clock_request_phase()` will result in a new frame on the clock, but won’t necessarily repaint any widgets. To repaint a widget, you have to use `gtk_widget_queue_draw()` which invalidates the widget (thus scheduling it to receive a draw on the next frame). `gtk_widget_queue_draw()` will also end up requesting a frame on the appropriate frame clock.
+`gdk_frame_clock_request_phase()` will result in a new frame on the clock, but won’t necessarily repaint any widgets. To repaint a widget, you have to use `queue-draw()` which invalidates the widget (thus scheduling it to receive a draw on the next frame). `queue-draw()` will also end up requesting a frame on the appropriate frame clock.
 
 A widget’s frame clock will not change while the widget is mapped. Reparenting a widget (which implies a temporary unmap) can change the widget’s frame clock.
 
@@ -283,10 +283,10 @@ Unrealized widgets do not have a frame clock.
 
 Returns: a **Gnome::Gdk3::FrameClock** orundefined if widget is unrealized
 
-    method gtk_widget_get_frame_clock ( --> N-GObject )
+    method get-frame-clock ( --> N-GObject )
 
-[[gtk_] widget_] size_allocate
-------------------------------
+size-allocate
+-------------
 
 This function is only used by GtkContainer subclasses, to assign a size and position to their child widgets.
 
@@ -294,12 +294,12 @@ In this function, the allocation may be adjusted. It will be forced to a 1x1 min
 
 For baseline support in containers you need to use gtk_widget_size_allocate_with_baseline() instead.
 
-    method gtk_widget_size_allocate ( N-GtkAllocation $allocation )
+    method size-allocate ( N-GtkAllocation $allocation )
 
   * N-GtkAllocation $allocation;
 
-[[gtk_] widget_] size_allocate_with_baseline
---------------------------------------------
+size-allocate-with-baseline
+---------------------------
 
 This function is only used by **Gnome::Gtk3::Container** subclasses, to assign a size, position and (optionally) baseline to their child widgets.
 
@@ -307,20 +307,22 @@ In this function, the allocation and baseline may be adjusted. It will be forced
 
 If the child widget does not have a valign of `GTK_ALIGN_BASELINE` the baseline argument is ignored and -1 is used instead.
 
-    method gtk_widget_size_allocate_with_baseline ( N-GtkAllocation $allocation, Int $baseline )
+    method size-allocate-with-baseline (
+      N-GtkAllocation $allocation, Int $baseline
+    )
 
   * N-GtkAllocation $allocation; position and size to be allocated to *widget*
 
   * Int $baseline; The baseline of the child, or -1
 
-[[gtk_] widget_] get_request_mode
----------------------------------
+get-request-mode
+----------------
 
 Gets whether the widget prefers a height-for-width layout or a width-for-height layout.
 
-GtkBin widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
+**Gnome::Gtk3::Bin** widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
 
-    method gtk_widget_get_request_mode ( --> GtkSizeRequestMode  )
+    method get-request-mode ( --> GtkSizeRequestMode )
 
 [[gtk_] widget_] get_preferred_width
 ------------------------------------

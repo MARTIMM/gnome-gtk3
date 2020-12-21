@@ -1,6 +1,8 @@
 use v6;
 
 use Gnome::T::Benchmark;
+use Gnome::Gtk3::Widget;
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Button;
 
 my Gnome::Gtk3::Button $*button;
@@ -10,8 +12,9 @@ my Gnome::T::Benchmark $b .= new(
   :sub-project<Widget>, :path<xt/Benchmarking/Data>
 );
 
+my N-GtkAllocation $allocation .= new( :x(2), :y(2), :width(50), :height(20));
 $b.run-test(
-  'Destroy Method call',
+  'Method calls',
   {
     given $*button {
       .show;
@@ -19,10 +22,13 @@ $b.run-test(
       .show-now;
       .show-all;
       .set-no-show-all(True);
-      my Bool $b = .get_no_show_all;
+      my Bool $b = .get-no-show-all;
       .queue-draw;
       .queue-draw-area( 10, 10, 100, 100);
       .get-frame-clock;
+      .size-allocate($allocation);
+      .size-allocate-with-baseline( $allocation, 10);
+      my GtkSizeRequestMode $re = .get-request-mode;
 
       .destroy;
     }
@@ -33,7 +39,7 @@ $b.run-test(
 
 #$button .= new(:label<Start>);
 $b.run-test(
-  'Native destroy sub',
+  'Native sub search',
   {
     given $*button {
       .gtk-widget-show;
@@ -41,10 +47,13 @@ $b.run-test(
       .gtk-widget-show-now;
       .gtk-widget-show-all;
       .gtk-widget-set-no-show-all(True);
-      my Int $i = .gtk-widget-get_no_show_all;
+      my Int $i = .gtk-widget-get-no-show-all;
       .gtk-widget-queue-draw;
       .gtk-widget-queue-draw-area( 10, 10, 100, 100);
       .gtk-widget-get-frame-clock;
+      .gtk-widget-size-allocate($allocation);
+      .gtk-widget-size-allocate-with-baseline( $allocation, 10);
+      $i = .gtk-widget-get-request-mode;
 
       .gtk-widget-destroy;
     }

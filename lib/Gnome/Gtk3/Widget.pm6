@@ -404,6 +404,8 @@ class N-GtkAllocation is export is repr('CStruct') {
   has int32 $.y;
   has int32 $.width;
   has int32 $.height;
+
+  submethod TWEAK ( :$!x = 0, :$!y = 0, :$!width = 1, :$!height = 1 ) { }
 }
 
 #-------------------------------------------------------------------------------
@@ -661,17 +663,17 @@ sub gtk_widget_set_no_show_all ( N-GObject $widget, gboolean $no_show_all )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:get_no_show_all
+#TM:1:get-no-show-all
 =begin pod
-=head2 get_no_show_all
+=head2 get-no-show-all
 
 Returns the current value of the prop C<no-show-all> property, which determines whether calls to C<gtk_widget_show_all()> will affect this widget.
 
-  method get_no_show_all ( --> Bool )
+  method get-no-show-all ( --> Bool )
 
 =end pod
 
-method get_no_show_all ( --> Bool ) {
+method get-no-show-all ( --> Bool ) {
   self._f( &gtk_widget_get_no_show_all, :!convert, :sub-class<GtkWidget>).Bool
 }
 
@@ -801,7 +803,7 @@ Equivalent to calling C<queue_draw_area()> for the entire area of a widget.
 =end pod
 
 method queue-draw ( ) {
-  gtk_widget_queue_draw(self.get-native-object-no-reffing);
+  self._f( &gtk_widget_queue_draw, :!convert, :sub-class<GtkWidget>)
 }
 
 sub gtk_widget_queue_draw ( N-GObject $widget )
@@ -945,9 +947,9 @@ sub gtk_widget_get_frame_clock ( N-GObject $widget --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_size_allocate
+#TM:2:size-allocate:xt/Benchmarking/Modules/Widget.raku
 =begin pod
-=head2 [[gtk_] widget_] size_allocate
+=head2 size-allocate
 
 This function is only used by GtkContainer subclasses, to assign a size and position to their child widgets.
 
@@ -955,20 +957,26 @@ In this function, the allocation may be adjusted. It will be forced to a 1x1 min
 
 For baseline support in containers you need to use gtk_widget_size_allocate_with_baseline() instead.
 
-  method gtk_widget_size_allocate ( N-GtkAllocation $allocation )
+  method size-allocate ( N-GtkAllocation $allocation )
 
 =item N-GtkAllocation $allocation;
 
 =end pod
+
+method size-allocate ( N-GtkAllocation $allocation ) {
+  self._f(
+    &gtk_widget_size_allocate, $allocation, :!convert, :sub-class<GtkWidget>
+  )
+}
 
 sub gtk_widget_size_allocate ( N-GObject $widget, N-GtkAllocation $allocation )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_widget_size_allocate_with_baseline
+#TM:2:size-allocate-with-baseline:xt/Benchmarking/Modules/Widget.raku
 =begin pod
-=head2 [[gtk_] widget_] size_allocate_with_baseline
+=head2 size-allocate-with-baseline
 
 This function is only used by B<Gnome::Gtk3::Container> subclasses, to assign a size, position and (optionally) baseline to their child widgets.
 
@@ -976,32 +984,50 @@ In this function, the allocation and baseline may be adjusted. It will be forced
 
 If the child widget does not have a valign of C<GTK_ALIGN_BASELINE> the baseline argument is ignored and -1 is used instead.
 
-  method gtk_widget_size_allocate_with_baseline ( N-GtkAllocation $allocation, Int $baseline )
+  method size-allocate-with-baseline (
+    N-GtkAllocation $allocation, Int $baseline
+  )
 
 =item N-GtkAllocation $allocation; position and size to be allocated to I<widget>
 =item Int $baseline; The baseline of the child, or -1
 
 =end pod
 
-sub gtk_widget_size_allocate_with_baseline ( N-GObject $widget, N-GtkAllocation $allocation, int32 $baseline )
-  is native(&gtk-lib)
+method size-allocate-with-baseline (
+  N-GtkAllocation $allocation, Int $baseline
+) {
+  self._f(
+    &gtk_widget_size_allocate_with_baseline, $allocation, $baseline,
+    :!convert, :sub-class<GtkWidget>
+  )
+}
+
+sub gtk_widget_size_allocate_with_baseline (
+  N-GObject $widget, N-GtkAllocation $allocation, gint $baseline
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_widget_get_request_mode
+#TM:1:get-request-mode
 =begin pod
-=head2 [[gtk_] widget_] get_request_mode
+=head2 get-request-mode
 
 Gets whether the widget prefers a height-for-width layout or a width-for-height layout.
 
-GtkBin widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
+B<Gnome::Gtk3::Bin> widgets generally propagate the preference of their child, container widgets need to request something either in context of their children or in context of their allocation capabilities.
 
-  method gtk_widget_get_request_mode ( --> GtkSizeRequestMode  )
+  method get-request-mode ( --> GtkSizeRequestMode )
 
 =end pod
 
-sub gtk_widget_get_request_mode ( N-GObject $widget )
-  returns int32
+method get-request-mode ( --> GtkSizeRequestMode ) {
+  GtkSizeRequestMode( self._f(
+      &gtk_widget_get_request_mode, :sub-class<GtkWidget>
+    )
+  )
+}
+
+sub gtk_widget_get_request_mode ( N-GObject $widget --> GEnum )
   is native(&gtk-lib)
   { * }
 
