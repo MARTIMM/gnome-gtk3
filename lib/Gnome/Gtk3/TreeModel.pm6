@@ -186,6 +186,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 #use Gnome::GObject::Object;
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
@@ -1001,16 +1002,17 @@ sub gtk_tree_model_get_valist ( N-GObject $tree_model, N-GtkTreeIter $iter, va_l
 }}
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_tree_model_foreach:t/ListStore.t
+#TM:2:foreach:t/ListStore.t
 =begin pod
-=head2 [gtk_] tree_model_foreach
+=head2 foreach
 
 Calls func on each node in model in a depth-first fashion.
 
-If I<func> returns C<1>, then the tree ceases to be walked,
-and C<gtk_tree_model_foreach()> returns.
+If I<func> returns C<1>, then the tree ceases to be walked, and C<foreach()> returns.
 
-  method gtk_tree_model_foreach ( $function-object, Str $function-name )
+  method foreach (
+    $function-object, Str $function-name, *%user-options
+  )
 
 =item $function-object; an object where the function is defined
 =item $function-name; the name of the function which is called
@@ -1023,6 +1025,7 @@ The function signature is
     Gnome::Gtk3::TreePath $path,
     Gnome::Gtk3::TreeIter $iter,
     *%user-options
+    --> Bool
   )
 
 The value in $n-store is a native object and cannot be created into a Raku object here because it is not known if this is a ListStore or a TreeStore object.
@@ -1047,6 +1050,7 @@ An example
       N-GObject $n-store,
       Gnome::Gtk3::TreePath $path,
       Gnome::Gtk3::TreeIter $iter
+      --> Bool
     ) {
       # get values for this iterator
       my Gnome::Gtk3::ListStore $store .= new(:native-object($n-store));
@@ -1057,15 +1061,15 @@ An example
       my Int $value = $va[0].get-int;
       $va[0].clear-object;
 
-      if $value != 1001 {
+      if $value of col 0 != 1001 {
         # let the search continue
-        0
+        False
       }
 
       # value of col 0 == 1001
       else {
         # stop walking to the next row
-        1
+        True
       }
     }
   }
@@ -1074,17 +1078,44 @@ An example
 
 =end pod
 
-method foreach ( |c ) {
-#TODO call the parameter substitutor from the top level class and
-# call the sub directly. This will then be faster because the sub is
-# not searched for. Also a debug message must be added.
+method foreach ( $function-object, Str $function-name, *%user-options ) {
 
-  self.gtk_tree_model_foreach(|c);
+  if $function-object.^can($function-name) {
+    sub local-handler (
+      N-GObject $n-m, N-GtkTreePath $n-p, N-GtkTreeIter $n-i,
+      OpaquePointer $d
+      --> gboolean
+    ) {
+      CATCH { default { .message.note; .backtrace.concise.note } }
+#note "TP 0: $n-p, $n-i";
+#note "TP 1: ", gtk_tree_model_get_string_from_iter( $m, $n-i);
+      my Bool $sts = $function-object."$function-name"(
+        $n-m,
+        Gnome::Gtk3::TreePath.new(:native-object($n-p)),
+        Gnome::Gtk3::TreeIter.new(:native-object($n-i)),
+        |%user-options
+      );
+
+#note "returns $sts";
+      $sts ?? 1 !! 0
+    }
+
+    self._f(
+      &_gtk_tree_model_foreach, &local-handler, OpaquePointer,
+      :!convert, :sub-class<GtkTreeModel>
+    ) if self.iter-n-children(Any);
+  }
+
+  else {
+    note "Method $function-name not found in object $function-object.gist()"
+      if $Gnome::N::x-debug;
+  }
 }
 
 sub gtk_tree_model_foreach (
   N-GObject:D $m, Any:D $func-object, Str:D $func-name, *%user-options
 ) {
+  Gnome::N::deprecate( 'gtk_tree_model_foreach', 'foreach', '0.34.2', '0.40.0');
 
   if $func-object.^can($func-name) {
     _gtk_tree_model_foreach(

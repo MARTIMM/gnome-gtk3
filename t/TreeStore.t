@@ -35,8 +35,11 @@ my class ShowTabel {
     N-GObject $nc-ts,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
+    --> Bool
   ) {
+#note "SE: $nc-ts, $c-path, $c-iter";
     my Str $row = $c-path.to-string;
+#note "R: $row";
     my Gnome::Gtk3::TreeStore $c-ts .= new(:native-object($nc-ts));
     my Array[Gnome::GObject::Value] $va;
     $va = $c-ts.get-value( $c-iter, Col0, Col1);
@@ -48,7 +51,7 @@ my class ShowTabel {
     $va[Col0].clear-object;
     $va[Col1].clear-object;
 
-    0
+    False
   }
 }
 
@@ -56,6 +59,12 @@ my class ShowTabel {
 subtest 'ISA test', {
   $ts .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
   isa-ok $ts, Gnome::Gtk3::TreeStore, '.new(:field-types)';
+}
+
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
 }
 
 #-------------------------------------------------------------------------------

@@ -32,7 +32,7 @@ my class ShowTabel {
     N-GObject $nc-ls,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
-    --> int32
+    --> Bool
   ) {
     my Str $row = $c-path.to-string;
     my Gnome::Gtk3::ListStore $c-ls .= new(:native-object($nc-ls));
@@ -45,7 +45,7 @@ my class ShowTabel {
     $va[Col0].clear-object;
     $va[Col1].clear-object;
 
-    0
+    False
   }
 }
 
@@ -55,6 +55,12 @@ subtest 'ISA test', {
 #  $ls .= new(:native-object(gtk_list_store_newv( G_TYPE_INT, G_TYPE_STRING)));
   $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
   isa-ok $ls, Gnome::Gtk3::ListStore, '.new(:field-types)';
+}
+
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
 }
 
 #-------------------------------------------------------------------------------
@@ -131,7 +137,7 @@ subtest 'Interface TreeModel', {
   is $ls.get-path($ls.iter-nth-child( Any, 0)).to-string, '0',
      '.iter-nth-child()';
 
-  subtest 'gtk-container-foreach', {
+  subtest 'foreach', {
     my class X {
       has $!row-count = 0;
 
@@ -140,7 +146,7 @@ subtest 'Interface TreeModel', {
         Gnome::Gtk3::TreePath $p-loop,
         Gnome::Gtk3::TreeIter $i-loop,
         :$test
-        --> Int
+        --> Bool
       ) {
         is $p-loop.to-string, $!row-count.Str, 'row ok';
         is $ls.get-path($i-loop).to-string, $p-loop.to-string, 'iter == path';
@@ -148,11 +154,11 @@ subtest 'Interface TreeModel', {
         $!row-count++;
 
         # stop walking to the next row
-        1
+        True
       }
     }
 
-    $ls.gtk-tree-model-foreach( X.new, 'row-loop', :test<abcdef>);
+    $ls.foreach( X.new, 'row-loop', :test<abcdef>);
   }
 }
 

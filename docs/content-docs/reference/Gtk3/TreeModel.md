@@ -298,14 +298,16 @@ Returns: `1`, if *iter* is set to the parent of *child*
 
   * N-GtkTreeIter $child; the **Gnome::Gtk3::TreeIter**-struct
 
-[gtk_] tree_model_foreach
--------------------------
+foreach
+-------
 
 Calls func on each node in model in a depth-first fashion.
 
-If *func* returns `1`, then the tree ceases to be walked, and `gtk_tree_model_foreach()` returns.
+If *func* returns `1`, then the tree ceases to be walked, and `foreach()` returns.
 
-    method gtk_tree_model_foreach ( $function-object, Str $function-name )
+    method foreach (
+      $function-object, Str $function-name, *%user-options
+    )
 
   * $function-object; an object where the function is defined
 
@@ -320,6 +322,7 @@ The function signature is
       Gnome::Gtk3::TreePath $path,
       Gnome::Gtk3::TreeIter $iter,
       *%user-options
+      --> Bool
     )
 
 The value in $n-store is a native object and cannot be created into a Raku object here because it is not known if this is a ListStore or a TreeStore object.
@@ -344,6 +347,7 @@ An example
         N-GObject $n-store,
         Gnome::Gtk3::TreePath $path,
         Gnome::Gtk3::TreeIter $iter
+        --> Bool
       ) {
         # get values for this iterator
         my Gnome::Gtk3::ListStore $store .= new(:native-object($n-store));
@@ -354,15 +358,15 @@ An example
         my Int $value = $va[0].get-int;
         $va[0].clear-object;
 
-        if $value != 1001 {
+        if $value of col 0 != 1001 {
           # let the search continue
-          0
+          False
         }
 
         # value of col 0 == 1001
         else {
           # stop walking to the next row
-          1
+          True
         }
       }
     }

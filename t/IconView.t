@@ -35,6 +35,7 @@ my class ShowTabel {
     N-GObject $nc-ts,
     Gnome::Gtk3::TreePath $c-path,
     Gnome::Gtk3::TreeIter $c-iter
+    --> Bool
   ) {
     my Str $row = $c-path.to-string;
     my Gnome::Gtk3::TreeStore $c-ts .= new(:native-object($nc-ts));
@@ -45,7 +46,7 @@ my class ShowTabel {
 
     $va[Col0].clear-object;
 
-    0
+    False
   }
 }
 
