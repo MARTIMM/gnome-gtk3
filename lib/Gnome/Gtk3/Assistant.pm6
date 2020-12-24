@@ -31,11 +31,6 @@ To add pages to an assistant in B<Gnome::Gtk3::Builder>, simply add it as a chil
 
 B<Gnome::Gtk3::Assistant> has a single CSS node with the name assistant.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Assistant implements
-=comment item Gnome::Atk::ImplementorIface
-
 
 =head1 Synopsis
 =head2 Declaration
@@ -48,6 +43,25 @@ Gnome::Gtk3::Assistant implements
 
 ![](plantuml/Assistant.svg)
 
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Assistant;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Assistant;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Assistant class process the options
+    self.bless( :GtkAssistant, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
 =comment head2 Example
 
 =end pod
@@ -57,6 +71,7 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
@@ -142,30 +157,27 @@ submethod BUILD ( *%options ) {
   }
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::Assistant';
+  if self.^name eq 'Gnome::Gtk3::Assistant' or %options<GtkAssistant> {
 
-  # process all named arguments
-  if ? %options<widget> || ? %options<native-object> ||
-     ? %options<build-id> {
-    # provided in Gnome::GObject::Object
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif ? %options<widget> || ? %options<native-object> ||
+       ? %options<build-id> {
+      # provided in Gnome::GObject::Object
+    }
+
+    # create default object
+    else {
+      my $no;
+
+      $no = _gtk_assistant_new();
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkAssistant');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message(
-        'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-        self.^name ~ ': ' ~ %options.keys.join(', ')
-      )
-    );
-  }
-
-  # create default object
-  else {
-    self.set-native-object(_gtk_assistant_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkAssistant');
 }
 
 #-------------------------------------------------------------------------------
@@ -203,68 +215,81 @@ sub _gtk_assistant_new (  --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_next_page:
+#TM:0:next-page:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] next_page
+=head2 next-page
 
 Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the
 B<GTK_ASSISTANT_PAGE_CUSTOM> type.
 
-  method gtk_assistant_next_page ( )
-
+  method next-page ( )
 
 =end pod
 
-sub gtk_assistant_next_page ( N-GObject $assistant  )
+method next-page ( ) {
+  gtk_assistant_next_page(self.get-native-object-no-reffing);
+}
+
+sub gtk_assistant_next_page ( N-GObject $assistant )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_previous_page:
+#TM:0:previous-page:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] previous_page
+=head2 previous-page
 
 Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the B<GTK_ASSISTANT_PAGE_CUSTOM> type.
 
-  method gtk_assistant_previous_page ( )
-
+  method previous-page ( )
 
 =end pod
+
+method previous-page ( ) {
+  gtk_assistant_previous_page(self.get-native-object-no-reffing);
+}
 
 sub gtk_assistant_previous_page ( N-GObject $assistant  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_current_page:
+#TM:1:get-current-page:
 =begin pod
-=head2 [gtk_assistant_] get_current_page
+=head2 get-current-page
 
 Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
 
-  method gtk_assistant_get_current_page ( --> Int )
-
+  method get-current-page ( --> Int )
 
 =end pod
 
-sub gtk_assistant_get_current_page ( N-GObject $assistant --> int32 )
+method get-current-page ( --> Int ) {
+  gtk_assistant_get_current_page(self.get-native-object-no-reffing);
+}
+
+sub gtk_assistant_get_current_page ( N-GObject $assistant --> gint )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_set_current_page:
+#TM:1:set-current-page:
 =begin pod
-=head2 [gtk_assistant_] set_current_page
+=head2 set-current-page
 
 Switches the page to I<$page_num>. Note that this will only be necessary in custom buttons, as the assistant flow can be set with C<gtk_assistant_set_forward_page_func()>.
 
-  method gtk_assistant_set_current_page ( Int $page_num )
+  method set-current-page ( Int $page_num )
 
 =item Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
 
 =end pod
 
-sub gtk_assistant_set_current_page ( N-GObject $assistant, int32 $page_num  )
+method set-current-page ( Int $page_num ) {
+  gtk_assistant_set_current_page( self.get-native-object-no-reffing, $page_num);
+}
+
+sub gtk_assistant_set_current_page ( N-GObject $assistant, gint $page_num  )
   is native(&gtk-lib)
   { * }
 
