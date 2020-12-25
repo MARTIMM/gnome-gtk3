@@ -294,67 +294,90 @@ sub gtk_assistant_set_current_page ( N-GObject $assistant, gint $page_num  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_n_pages:
+#TM:1:get-n-pages:
 =begin pod
-=head2 [gtk_assistant_] get_n_pages
+=head2 get-n-pages
 
 Returns the number of pages in the assistant.
 
-  method gtk_assistant_get_n_pages ( --> Int )
-
+  method get-n-pages ( --> Int )
 
 =end pod
 
-sub gtk_assistant_get_n_pages ( N-GObject $assistant --> int32 )
+method get-n-pages ( --> Int ) {
+  gtk_assistant_get_n_pages( self.get-native-object-no-reffing)
+}
+
+sub gtk_assistant_get_n_pages ( N-GObject $assistant --> gint )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_nth_page:
+#TM:1:get-nth-page:
 =begin pod
-=head2 [gtk_assistant_] get_nth_page
+=head2 get-nth-page
 
 Returns the child widget contained in page number I<$page_num>, or C<Any> if I<$page_num> is out of bounds
 
-  method gtk_assistant_get_nth_page ( Int $page_num --> N-GObject )
+  method get-nth-page ( Int $page_num --> N-GObject )
 
 =item Int $page_num; the index of a page in the assistant, or -1 to get the last page
 
 =end pod
 
-sub gtk_assistant_get_nth_page ( N-GObject $assistant, int32 $page_num --> N-GObject )
-  is native(&gtk-lib)
+method get-nth-page ( Int $page_num --> N-GObject ) {
+  gtk_assistant_get_nth_page( self.get-native-object-no-reffing, $page_num)
+}
+
+sub gtk_assistant_get_nth_page (
+  N-GObject $assistant, gint $page_num --> N-GObject
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_prepend_page:
+#TM:1:prepend-page:
 =begin pod
-=head2 [gtk_assistant_] prepend_page
+=head2 prepend-page
 
-Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
+Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page. C<$page> can be any widget making up the content of a page in this Assistant.
 
-  method gtk_assistant_prepend_page ( N-GObject $page --> Int )
+  method prepend-page ( $page --> Int )
 
 =item N-GObject $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
 
-sub gtk_assistant_prepend_page ( N-GObject $assistant, N-GObject $page --> int32 )
-  is native(&gtk-lib)
+method prepend-page ( $page --> Int ) {
+  gtk_assistant_prepend_page(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing
+  )
+}
+
+sub gtk_assistant_prepend_page (
+  N-GObject $assistant, N-GObject $page --> gint
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_append_page:
+#TM:1:append-page:
 =begin pod
-=head2 [gtk_assistant_] append_page
+=head2 append-page
 
 Appends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
 
-  method gtk_assistant_append_page ( N-GObject $page --> Int )
+  method append-page ( N-GObject $page --> Int )
 
 =item N-GObject $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
+
+method append-page ( $page --> Int ) {
+  gtk_assistant_append_page(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing
+  )
+}
 
 sub gtk_assistant_append_page (
   N-GObject $assistant, N-GObject $page --> int32
