@@ -60,7 +60,7 @@ $tv.append-column($tvc);
 
 
 my Gnome::Gtk3::CellRendererText $crt2 .= new;
-my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
+$v .= new( :type(G_TYPE_STRING), :value<blue>);
 $crt2.set-property( 'foreground', $v);
 #$tv.insert-column-with-attributes( -1, 'title', $crt2);
 $tvc .= new;
@@ -89,7 +89,7 @@ my Array $data = [
 my Gnome::Gtk3::TreePath $tp;
 my Gnome::Gtk3::TreeIter $parent-iter;
 for @$data -> $row {
-note "Insert: ", $row.kv.join(', ');
+#note "Insert: ", $row.kv.join(', ');
   $tp .= new(:string($row.shift));
   $parent-iter = $ts.get-iter($tp);
   $iter = $ts.insert-with-values( $parent-iter, -1, |$row.kv);
