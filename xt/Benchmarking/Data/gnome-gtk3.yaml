@@ -1,44 +1,66 @@
 ---
+"0.34.3": 
+  "2020.10.109": 
+    Assistant: 
+      test-time: "2020-12-27T17:48:13.908309Z"
+      test0: 
+        test-text: "Method calls"
+        speedup: 9.864509994910177
+        total-utime: 385974
+        mean: 967.6175
+        rps: 1033.466219864771
+        total-time: 387047
+        count: 400
+        total-stime: 1073
+      test1: 
+        rps: 104.76609790025168
+        total-stime: 3813
+        count: 400
+        mean: 9545.0725
+        total-utime: 3814216
+        total-time: 3818029
+        test-text: "Native sub search"
+        speedup: 0
 "0.34.2.1": 
   "2020.10.109": 
-    Widget: 
-      test-time: "2020-12-21T13:08:22.246032Z"
-      test0: 
-        rps: 803.0980309642476
-        test-text: "Method calls"
-        count: 500
-        mean: 1245.178
-        total-time: 622589
-        speedup: 2.1173695648333006
-        total-stime: 6129
-        total-utime: 616460
-      test1: 
-        total-stime: 3122
-        total-utime: 1315129
-        speedup: 0
-        total-time: 1318251
-        mean: 2636.502
-        rps: 379.29043861904904
-        count: 500
-        test-text: "Native sub search"
     AboutDialog: 
       test1: 
-        total-time: 16024962
-        count: 500
-        total-stime: 63113
+        mean: 32049.924
         speedup: 0
         test-text: "Native sub search"
-        mean: 32049.924
+        total-stime: 63113
         total-utime: 15961849
+        total-time: 16024962
+        count: 500
         rps: 31.201322037456315
       test-time: "2020-12-21T09:55:34.819235Z"
       test0: 
-        speedup: 8.343405492030401
-        total-utime: 1900518
         mean: 3841.348
-        rps: 260.3252816459222
-        total-time: 1920674
         count: 500
         test-text: "Method calls"
+        speedup: 8.343405492030401
         total-stime: 20156
+        total-utime: 1900518
+        total-time: 1920674
+        rps: 260.3252816459222
+    Widget: 
+      test0: 
+        test-text: "Method calls"
+        mean: 1245.178
+        speedup: 2.1173695648333006
+        total-utime: 616460
+        total-stime: 6129
+        total-time: 622589
+        count: 500
+        rps: 803.0980309642476
+      test-time: "2020-12-21T13:08:22.246032Z"
+      test1: 
+        mean: 2636.502
+        total-stime: 3122
+        count: 500
+        test-text: "Native sub search"
+        rps: 379.29043861904904
+        speedup: 0
+        total-utime: 1315129
+        total-time: 1318251
 ...

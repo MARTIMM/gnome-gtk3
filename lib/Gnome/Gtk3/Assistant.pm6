@@ -62,7 +62,31 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=comment head2 Example
+=head2 Example
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Assistant;
+
+  submethod new ( |c ) {
+    self.bless( :GtkAssistant, |c);
+  }
+
+  submethod BUILD ( ) {
+    my Gnome::Gtk3::Frame $intro-page .= new(...);
+    ...
+    self.add-page( $intro-page, GTK_ASSISTANT_PAGE_INTRO, 'Introduction');
+
+    my Gnome::Gtk3::Frame $install-page .= new(...);
+    ...
+    self.add-page( $install-page, GTK_ASSISTANT_PAGE_CONTENT, 'Installing');
+    ...
+  }
+
+  method add-page ( $page, GtkAssistantPageType $type, Str $title ) {
+    self.append-page($page);
+    self.set-page-type($type // GTK_ASSISTANT_PAGE_CONTENT);
+    self.set-page-title($title);
+  }
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -339,11 +363,11 @@ sub gtk_assistant_get_nth_page (
 =begin pod
 =head2 prepend-page
 
-Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page. C<$page> can be any widget making up the content of a page in this Assistant.
+Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page. C<$page> can be any widget making up the content of a page in this assistant.
 
   method prepend-page ( $page --> Int )
 
-=item N-GObject $page; a B<Gnome::Gtk3::Widget>
+=item $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
 
@@ -364,11 +388,11 @@ sub gtk_assistant_prepend_page (
 =begin pod
 =head2 append-page
 
-Appends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page.
+Appends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page. C<$page> can be any widget making up the content of a page in this assistant.
 
   method append-page ( N-GObject $page --> Int )
 
-=item N-GObject $page; a B<Gnome::Gtk3::Widget>
+=item $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
 
@@ -385,39 +409,54 @@ sub gtk_assistant_append_page (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_insert_page:
+#TM:1:insert-page:
 =begin pod
-=head2 [gtk_assistant_] insert_page
+=head2 insert-page
 
-Inserts a I<$page> in the assistant at a given position.
+Inserts a I<$page> in the assistant at a given position. C<$page> can be any widget making up the content of a page in this assistant.
 
 Returns: the index (starting from 0) of the inserted page
 
-  method gtk_assistant_insert_page ( N-GObject $page, Int $position --> Int )
+  method insert-page (
+    N-GObject $page, Int $position --> Int
+  )
 
-=item N-GObject $page; a B<Gnome::Gtk3::Widget>
+=item $page; a B<Gnome::Gtk3::Widget>
 =item Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
 =end pod
 
-sub gtk_assistant_insert_page ( N-GObject $assistant, N-GObject $page, int32 $position --> int32 )
-  is native(&gtk-lib)
+method insert-page ( $page, Int $position --> Int ) {
+  gtk_assistant_insert_page(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing,
+    $position
+  )
+}
+
+sub gtk_assistant_insert_page (
+  N-GObject $assistant, N-GObject $page, gint $position --> gint
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_remove_page:
+#TM:1:remove-page:
 =begin pod
-=head2 [gtk_assistant_] remove_page
+=head2 remove-page
 
-Removes the I<$page_num>’s page from assistant.
+Removes the I<$page-num>’s page from assistant. C<$page> is a previously inserted widget.
 
-  method gtk_assistant_remove_page ( Int $page_num )
+  method remove-page ( Int $page-num )
 
-=item Int $page_num; the index of a page in the assistant, or -1 to remove the last page
+=item Int $page-num; the index of a page in the assistant, or -1 to remove the last page
 
 =end pod
 
-sub gtk_assistant_remove_page ( N-GObject $assistant, int32 $page_num  )
+method remove-page ( Int $page-num ) {
+  gtk_assistant_remove_page( self.get-native-object-no-reffing, $page-num )
+}
+
+sub gtk_assistant_remove_page ( N-GObject $assistant, gint $page-num  )
   is native(&gtk-lib)
   { * }
 
@@ -449,235 +488,308 @@ sub gtk_assistant_set_forward_page_func ( N-GObject $assistant, GtkAssistantPage
 }}
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_set_page_type:
+#TM:1:set-page-type:
 =begin pod
-=head2 [gtk_assistant_] set_page_type
+=head2 set-page-type
 
-Sets the page type for I<$page>. The page type determines the page behavior in the assistant.
+Sets the page type for I<$page>. The page type determines the page behavior in the assistant. C<$page> is a previously added page.
 
-  method gtk_assistant_set_page_type (
-    N-GObject $page, GtkAssistantPageType $type
+  method set-page-type (
+    $page, GtkAssistantPageType $type
   )
 
-=item N-GObject $page; a page of assistant
+=item $page; a page of assistant
 =item GtkAssistantPageType $type; the new type for I<$page>
 
 =end pod
 
+method set-page-type ( $page, GtkAssistantPageType $type ) {
+  gtk_assistant_set_page_type(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing, $type.value
+  )
+}
+
 sub gtk_assistant_set_page_type (
-  N-GObject $assistant, N-GObject $page, int32 $type
+  N-GObject $assistant, N-GObject $page, GEnum $type
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_page_type:
+#TM:1:get-page-type:
 =begin pod
-=head2 [gtk_assistant_] get_page_type
+=head2 get-page-type
 
-Gets the page type of I<$page>.
+Gets the page type of I<$page>. C<$page> is a previously added widget.
 
-  method gtk_assistant_get_page_type (
-    N-GObject $page
-    --> GtkAssistantPageType
+  method get-page-type (
+    N-GObject $page --> GtkAssistantPageType
   )
 
-=item N-GObject $page; a page of Iassistant
+=item $page; a page of Iassistant
 
 =end pod
 
+method get-page-type ( $page --> GtkAssistantPageType ) {
+  GtkAssistantPageType(
+    gtk_assistant_get_page_type(
+      self.get-native-object-no-reffing,
+      $page.get-native-object-no-reffing
+    )
+  )
+}
+
 sub gtk_assistant_get_page_type (
-  N-GObject $assistant, N-GObject $page --> int32
+  N-GObject $assistant, N-GObject $page --> GEnum
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_set_page_title:
+#TM:1:set-page-title:
 =begin pod
-=head2 [gtk_assistant_] set_page_title
+=head2 set-page-title
 
-Sets a title for I<$page>. The title is displayed in the header area of the assistant when I<$page> is the current page.
+Sets a title for I<$page>. The title is displayed in the header area of the assistant when I<$page> is the current page. C<$page> is a previously added widget.
 
-  method gtk_assistant_set_page_title ( N-GObject $page, Str $title )
+  method set-page-title ( $page, Str $title )
 
-=item N-GObject $page; a page of assistant
+=item $page; a page of assistant
 =item Str $title; the new title for I<$page>
 
 =end pod
 
-sub gtk_assistant_set_page_title ( N-GObject $assistant, N-GObject $page, Str $title  )
-  is native(&gtk-lib)
+method set-page-title ( $page, Str $title ) {
+  gtk_assistant_set_page_title(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing, $title
+  )
+}
+
+sub gtk_assistant_set_page_title (
+  N-GObject $assistant, N-GObject $page, Str $title
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_page_title:
+#TM:1:get-page-title:
 =begin pod
-=head2 [gtk_assistant_] get_page_title
+=head2 get-page-title
 
-Gets the title for I<$page>.
+Gets the title for I<$page>. C<$page> is a previously added widget.
 
-  method gtk_assistant_get_page_title ( N-GObject $page --> Str )
+  method get-page-title ( $page --> Str )
 
-=item N-GObject $page; a page of assistant
+=item $page; a page of assistant
 
 =end pod
 
-sub gtk_assistant_get_page_title ( N-GObject $assistant, N-GObject $page --> Str )
-  is native(&gtk-lib)
+method get-page-title ( $page --> Str ) {
+  gtk_assistant_get_page_title(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing
+  )
+}
+
+sub gtk_assistant_get_page_title (
+  N-GObject $assistant, N-GObject $page --> Str
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_set_page_complete:
+#TM:1:set-page-complete:
 =begin pod
-=head2 [gtk_assistant_] set_page_complete
+=head2 set-page-complete
 
-Sets whether I<$page> contents are complete. This will make assistant update the buttons state to be able to continue the task.
+Sets whether I<$page> contents are complete. This will make assistant update the buttons state to be able to continue the task. C<$page> is a previously added widget.
 
-  method gtk_assistant_set_page_complete ( N-GObject $page, Int $complete )
+  method set-page-complete ( $page, Bool $complete )
 
-=item N-GObject $page; a page of assistant
-=item Int $complete; the completeness status of the page. C<1> to set page complete.
+=item $page; a page of assistant
+=item Bool $complete; the completeness status of the page. C<True> to set page complete.
 
 =end pod
 
-sub gtk_assistant_set_page_complete ( N-GObject $assistant, N-GObject $page, int32 $complete  )
-  is native(&gtk-lib)
+method set-page-complete ( $page, Bool $complete ) {
+  gtk_assistant_set_page_complete(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing, $complete.Int
+  )
+}
+
+sub gtk_assistant_set_page_complete (
+  N-GObject $assistant, N-GObject $page, gboolean $complete
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_assistant_get_page_complete:
+#TM:1:get-page-complete:
 =begin pod
-=head2 [gtk_assistant_] get_page_complete
+=head2 get-page-complete
 
-Gets whether I<$page> is complete. C<1> if I<$page> is complete.
+Gets whether I<$page> is complete. C<True> if I<$page> is complete.
 
-  method gtk_assistant_get_page_complete ( N-GObject $page --> Int )
+  method get-page-complete ( N-GObject $page --> Bool )
 
-=item N-GObject $page; a page of assistant
+=item $page; a page of assistant
 
 =end pod
 
-sub gtk_assistant_get_page_complete ( N-GObject $assistant, N-GObject $page --> int32 )
-  is native(&gtk-lib)
+method get-page-complete ( $page --> Bool ) {
+  gtk_assistant_get_page_complete(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing
+  ).Bool
+}
+
+sub gtk_assistant_get_page_complete (
+  N-GObject $assistant, N-GObject $page --> gboolean
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_add_action_widget:
+#TM:2:add-action-widget:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] add_action_widget
+=head2 add-action-widget
 
 Adds a widget to the action area of a B<Gnome::Gtk3::Assistant>.
 
-  method gtk_assistant_add_action_widget ( N-GObject $child )
+  method add-action-widget ( $child )
 
-=item N-GObject $child; a B<Gnome::Gtk3::Widget>
+=item $child; an action widget.
 
 =end pod
 
-sub gtk_assistant_add_action_widget ( N-GObject $assistant, N-GObject $child  )
+method add-action-widget ( $child ) {
+  gtk_assistant_add_action_widget(
+    self.get-native-object-no-reffing,
+    $child.get-native-object-no-reffing
+  )
+}
+
+sub gtk_assistant_add_action_widget ( N-GObject $assistant, N-GObject $child )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_remove_action_widget:
+#TM:2:remove-action-widget:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] remove_action_widget
+=head2 remove-action-widget
 
 Removes a widget from the action area of a B<Gnome::Gtk3::Assistant>.
 
-  method gtk_assistant_remove_action_widget ( N-GObject $child )
+  method remove-action-widget ( $child )
 
-=item N-GObject $child; a B<Gnome::Gtk3::Widget>
+=item $child; a previously added action widget
 
 =end pod
 
-sub gtk_assistant_remove_action_widget ( N-GObject $assistant, N-GObject $child  )
+method remove-action-widget ( $child ) {
+  gtk_assistant_remove_action_widget(
+    self.get-native-object-no-reffing,
+    $child.get-native-object-no-reffing
+  )
+}
+
+sub gtk_assistant_remove_action_widget (
+  N-GObject $assistant, N-GObject $child
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:2:update-buttons-state:xt/Benchmarking/Modules/Assistant.raku
+=begin pod
+=head2 update-buttons-state
+
+Forces the I<assistant> to recompute the buttons state.
+
+GTK+ automatically takes care of this in most situations, e.g. when the user goes to a different page, or when the visibility or completeness of a page changes.
+
+One situation where it can be necessary to call this function is when changing a value on the current page affects the future page flow of the assistant.
+
+  method update-buttons-state ( )
+
+=end pod
+
+method update-buttons-state ( ) {
+  gtk_assistant_update_buttons_state(self.get-native-object-no-reffing)
+}
+
+sub gtk_assistant_update_buttons_state ( N-GObject $assistant )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_update_buttons_state:
+#TM:2:commit:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] update_buttons_state
+=head2 commit
 
-Forces I<assistant> to recompute the buttons state.
+Erases the visited page history so the back button is not shown on the current page, and removes the cancel button from subsequent pages.
 
-GTK+ automatically takes care of this in most situations,
-e.g. when the user goes to a different page, or when the
-visibility or completeness of a page changes.
+Use this when the information provided up to the current page is hereafter deemed permanent and cannot be modified or undone. For example, showing a progress page to track a long-running, unreversible operation after the user has clicked apply on a confirmation page.
 
-One situation where it can be necessary to call this
-function is when changing a value on the current page
-affects the future page flow of the assistant.
-
-  method gtk_assistant_update_buttons_state ( )
-
+  method commit ( )
 
 =end pod
 
-sub gtk_assistant_update_buttons_state ( N-GObject $assistant  )
+method commit ( ) {
+  gtk_assistant_commit(self.get-native-object-no-reffing)
+}
+
+sub gtk_assistant_commit ( N-GObject $assistant )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_commit:
+#TM:2:set-page-has-padding:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 gtk_assistant_commit
+=head2 set-page-has-padding
 
-Erases the visited page history so the back button is not
-shown on the current page, and removes the cancel button
-from subsequent pages.
+Sets whether the assistant is adding padding around the page.
 
-Use this when the information provided up to the current
-page is hereafter deemed permanent and cannot be modified
-or undone. For example, showing a progress page to track
-a long-running, unreversible operation after the user has
-clicked apply on a confirmation page.
+  method set-page-has-padding ( $page, Bool $has_padding )
 
-  method gtk_assistant_commit ( )
-
+=item $page; a page of I<assistant>
+=item Bool $has_padding; whether this page has padding
 
 =end pod
 
-sub gtk_assistant_commit ( N-GObject $assistant  )
-  is native(&gtk-lib)
+method set-page-has-padding ( $page, Bool $has_padding ) {
+  gtk_assistant_set_page_has_padding(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing, $has_padding.Int
+  )
+}
+
+sub gtk_assistant_set_page_has_padding (
+  N-GObject $assistant, N-GObject $page, gboolean $has_padding
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_set_page_has_padding:
+#TM:2:gtk_assistant_get_page_has_padding:xt/Benchmarking/Modules/Assistant.raku
 =begin pod
-=head2 [gtk_assistant_] set_page_has_padding
-
-Sets whether the assistant is adding padding around
-the page.
-
-  method gtk_assistant_set_page_has_padding ( N-GObject $page, Int $has_padding )
-
-=item N-GObject $page; a page of I<assistant>
-=item Int $has_padding; whether this page has padding
-
-=end pod
-
-sub gtk_assistant_set_page_has_padding ( N-GObject $assistant, N-GObject $page, int32 $has_padding  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_assistant_get_page_has_padding:
-=begin pod
-=head2 [gtk_assistant_] get_page_has_padding
+=head2 get-page-has-padding
 
 Gets whether page has padding.
 
-Returns: C<1> if I<page> has padding
+Returns: C<True> if I<$page> has padding
 
-  method gtk_assistant_get_page_has_padding ( N-GObject $page --> Int )
+  method gtk_assistant_get_page_has_padding ( $page --> Bool )
 
-=item N-GObject $page; a page of I<assistant>
+=item $page; a page of I<assistant>
 
 =end pod
 
-sub gtk_assistant_get_page_has_padding ( N-GObject $assistant, N-GObject $page --> int32 )
-  is native(&gtk-lib)
+method get-page-has-padding ( $page --> Bool ) {
+  gtk_assistant_get_page_has_padding(
+    self.get-native-object-no-reffing,
+    $page.get-native-object-no-reffing
+  ).Bool
+}
+
+sub gtk_assistant_get_page_has_padding (
+  N-GObject $assistant, N-GObject $page --> gboolean
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
@@ -730,16 +842,12 @@ The I<cancel> signal is emitted when then the cancel button is clicked.
 =comment #TS:0:prepare:
 =head3 prepare
 
-The I<prepare> signal is emitted when a new page is set as the
-assistant's current page, before making the new page visible.
-
-A handler for this signal can do any preparations which are
-necessary before showing I<page>.
+The I<prepare> signal is emitted when a new page is set as the assistant's current page, before making the new page visible. A handler for this signal can do any preparations which are necessary before showing I<page>.
 
   method handler (
-    N-GObject #`{ is widget } $page,
+    N-GObject $page,
     Int :$_handler_id,
-    Gnome::GObject::Object :_widget($assistant),
+    Gnome::Gtk3::Assistant :_widget($assistant),
     *%user-options
   );
 
@@ -753,19 +861,13 @@ necessary before showing I<page>.
 
 The I<apply> signal is emitted when the apply button is clicked.
 
-The default behavior of the B<Gnome::Gtk3::Assistant> is to switch to the page
-after the current page, unless the current page is the last one.
+The default behavior of the B<Gnome::Gtk3::Assistant> is to switch to the page after the current page, unless the current page is the last one.
 
-A handler for the I<apply> signal should carry out the actions for
-which the wizard has collected data. If the action takes a long time
-to complete, you might consider putting a page of type
-C<GTK_ASSISTANT_PAGE_PROGRESS> after the confirmation page and handle
-this operation within the  I<prepare> signal of the progress
-page.
+A handler for the I<apply> signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider putting a page of type C<GTK_ASSISTANT_PAGE_PROGRESS> after the confirmation page and handle this operation within the  I<prepare> signal of the progress page.
 
   method handler (
     Int :$_handler_id,
-    Gnome::GObject::Object :_widget($assistant),
+    Gnome::Gtk3::Assistant :_widget($assistant),
     *%user-options
   );
 
@@ -775,13 +877,11 @@ page.
 =comment #TS:0:close:
 =head3 close
 
-The I<close> signal is emitted either when the close button of
-a summary page is clicked, or when the apply button in the last
-page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
+The I<close> signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
 
   method handler (
     Int :$_handler_id,
-    Gnome::GObject::Object :_widget($assistant),
+    Gnome::Gtk3::Assistant :_widget($assistant),
     *%user-options
   );
 
@@ -793,7 +893,7 @@ page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
 
   method handler (
     Int :$_handler_id,
-    Gnome::GObject::Object :_widget($assistant),
+    Gnome::Gtk3::Assistant :_widget($assistant),
     *%user-options
   );
 
@@ -819,10 +919,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =head3 Use Header Bar
 
 
-C<1> if the assistant uses a B<Gnome::Gtk3::HeaderBar> for action buttons
-instead of the action-area.
-For technical reasons, this property is declared as an integer
-property, but you should only set it to C<1> or C<0>.
+C<1> if the assistant uses a B<Gnome::Gtk3::HeaderBar> for action buttons instead of the action-area. For technical reasons, this property is declared as an integer property, but you should only set it to C<1> or C<0>.
 
 The B<Gnome::GObject::Value> type of property I<use-header-bar> is C<G_TYPE_INT>.
 =end pod

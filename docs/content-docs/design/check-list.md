@@ -70,7 +70,7 @@ Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
 AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
-Assistant                 |  |  | ✓| ✓|  |  |  |  |  |  |  |
+Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
