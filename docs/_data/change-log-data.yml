@@ -1,3 +1,6 @@
+- 2020-12-21 0.34.4:
+  - Speeding up Assistant and modify documents. Also make Assistant inheritable.
+
 - 2020-12-21 0.34.3:
   - AboutDialog speedup by adding methods for many native subroutines. Speedup is about 8 times faster. Documentation is modified to show the most useful call. Also Widget has a few methods added which gives a speedup of about 2.5 times.
   - Testing of some modules is shortened. The idea is to do it with all test scripts. Setting an environment variable `raku_test_all` will then run through all tests. This will make the testing phase shorter. However, installing will still take much time.
