@@ -1,66 +1,66 @@
 ---
+"0.34.2.1": 
+  "2020.10.109": 
+    Widget: 
+      test-time: "2020-12-21T13:08:22.246032Z"
+      test0: 
+        rps: 803.0980309642476
+        mean: 1245.178
+        total-time: 622589
+        total-stime: 6129
+        total-utime: 616460
+        test-text: "Method calls"
+        count: 500
+        speedup: 2.1173695648333006
+      test1: 
+        mean: 2636.502
+        total-utime: 1315129
+        total-time: 1318251
+        total-stime: 3122
+        rps: 379.29043861904904
+        test-text: "Native sub search"
+        count: 500
+        speedup: 0
+    AboutDialog: 
+      test-time: "2020-12-29T14:45:44.513081Z"
+      test0: 
+        total-stime: 4136
+        test-text: "Method calls"
+        total-time: 376225
+        rps: 1328.9919595986444
+        total-utime: 372089
+        speedup: 8.525039537510798
+        count: 500
+        mean: 752.45
+      test1: 
+        count: 500
+        speedup: 0
+        total-time: 3207333
+        test-text: "Native sub search"
+        mean: 6414.666
+        total-stime: 5836
+        total-utime: 3201497
+        rps: 155.89276199259632
 "0.34.3": 
   "2020.10.109": 
     Assistant: 
-      test-time: "2020-12-27T17:48:13.908309Z"
-      test0: 
-        test-text: "Method calls"
-        speedup: 9.864509994910177
-        total-utime: 385974
-        mean: 967.6175
-        rps: 1033.466219864771
-        total-time: 387047
-        count: 400
-        total-stime: 1073
       test1: 
-        rps: 104.76609790025168
+        test-text: "Native sub search"
+        speedup: 0
         total-stime: 3813
-        count: 400
         mean: 9545.0725
+        count: 400
         total-utime: 3814216
         total-time: 3818029
-        test-text: "Native sub search"
-        speedup: 0
-"0.34.2.1": 
-  "2020.10.109": 
-    AboutDialog: 
-      test1: 
-        mean: 32049.924
-        speedup: 0
-        test-text: "Native sub search"
-        total-stime: 63113
-        total-utime: 15961849
-        total-time: 16024962
-        count: 500
-        rps: 31.201322037456315
-      test-time: "2020-12-21T09:55:34.819235Z"
+        rps: 104.76609790025168
       test0: 
-        mean: 3841.348
-        count: 500
+        total-stime: 1073
+        mean: 967.6175
+        speedup: 9.864509994910177
+        count: 400
+        total-utime: 385974
         test-text: "Method calls"
-        speedup: 8.343405492030401
-        total-stime: 20156
-        total-utime: 1900518
-        total-time: 1920674
-        rps: 260.3252816459222
-    Widget: 
-      test0: 
-        test-text: "Method calls"
-        mean: 1245.178
-        speedup: 2.1173695648333006
-        total-utime: 616460
-        total-stime: 6129
-        total-time: 622589
-        count: 500
-        rps: 803.0980309642476
-      test-time: "2020-12-21T13:08:22.246032Z"
-      test1: 
-        mean: 2636.502
-        total-stime: 3122
-        count: 500
-        test-text: "Native sub search"
-        rps: 379.29043861904904
-        speedup: 0
-        total-utime: 1315129
-        total-time: 1318251
+        rps: 1033.466219864771
+        total-time: 387047
+      test-time: "2020-12-27T17:48:13.908309Z"
 ...
