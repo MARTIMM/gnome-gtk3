@@ -655,7 +655,7 @@ method get-authors ( --> Array ) {
   );
   my @authors = ();
   my Int $i = 0;
-  while $authors[$i] ne '\0' {
+  while $authors[$i].defined {
     @authors.push: $authors[$i++];
   }
 
@@ -666,7 +666,7 @@ sub gtk_about_dialog_get_authors ( N-GObject $about --> Array ) {
   my $authors = _gtk_about_dialog_get_authors($about);
   my @authors = ();
   my Int $i = 0;
-  while $authors[$i] ne '\0' {
+  while $authors[$i].defined {
     @authors.push: $authors[$i++];
   }
 
@@ -697,12 +697,12 @@ Sets the strings which are displayed in the authors tab of the secondary credits
 =end pod
 
 method set-authors ( *@authors ) {
-  my $authors = gchar-pptr.new( |@authors, '\0');
+  my $authors = gchar-pptr.new( |@authors, Str);
   _gtk_about_dialog_set_authors( self.get-native-object-no-reffing, $authors);
 }
 
 sub gtk_about_dialog_set_authors ( N-GObject $about, *@authors ) {
-  my $authors = gchar-pptr.new( |@authors, '\0');
+  my $authors = gchar-pptr.new( |@authors, Str);
   _gtk_about_dialog_set_authors( $about, $authors);
 }
 
@@ -730,7 +730,7 @@ method get-documenters ( --> Array ) {
   );
   my @documenters = ();
   my Int $i = 0;
-  while $documenters[$i] ne '\0' {
+  while $documenters[$i].defined {
     @documenters.push: $documenters[$i++];
   }
 
@@ -741,7 +741,7 @@ sub gtk_about_dialog_get_documenters ( N-GObject $about --> Array ) {
   my gchar-pptr $documenters = _gtk_about_dialog_get_documenters($about);
   my @documenters = ();
   my Int $i = 0;
-  while $documenters[$i] ne '\0' {
+  while $documenters[$i].defined {
     @documenters.push: $documenters[$i++];
   }
 
@@ -767,14 +767,14 @@ Sets the strings which are displayed in the documenters tab of the secondary cre
 =end pod
 
 method set-documenters ( *@documenters ) {
-  my $documenters = gchar-pptr.new( |@documenters, '\0');
+  my $documenters = gchar-pptr.new( |@documenters, Str);
   _gtk_about_dialog_set_documenters(
     self.get-native-object-no-reffing, $documenters
   );
 }
 
 sub gtk_about_dialog_set_documenters ( N-GObject $about, *@documenters ) {
-  my $documenters = gchar-pptr.new( |@documenters, '\0');
+  my $documenters = gchar-pptr.new( |@documenters, Str);
   _gtk_about_dialog_set_documenters( $about, $documenters);
 }
 
@@ -803,7 +803,7 @@ method get-artists ( --> Array ) {
   );
   my @artists = ();
   my Int $i = 0;
-  while $artists[$i] ne '\0' {
+  while $artists[$i].defined {
     @artists.push: $artists[$i++];
   }
 
@@ -814,7 +814,7 @@ sub gtk_about_dialog_get_artists ( N-GObject $about --> Array ) {
   my gchar-pptr $artists = _gtk_about_dialog_get_artists($about);
   my @artists = ();
   my Int $i = 0;
-  while $artists[$i] ne '\0' {
+  while $artists[$i].defined {
     @artists.push: $artists[$i++];
   }
 
@@ -840,12 +840,12 @@ Sets the strings which are displayed in the artists tab of the secondary credits
 =end pod
 
 method set-artists ( *@artists ) {
-  my $artists = gchar-pptr.new( |@artists, '\0');
+  my $artists = gchar-pptr.new( |@artists, Str);
   _gtk_about_dialog_set_artists( self.get-native-object-no-reffing, $artists);
 }
 
 sub gtk_about_dialog_set_artists ( N-GObject $about, *@artists ) {
-  my $artists = gchar-pptr.new( |@artists, '\0');
+  my $artists = gchar-pptr.new( |@artists, Str);
   _gtk_about_dialog_set_artists( $about, $artists);
 }
 
@@ -1007,7 +1007,7 @@ Creates a new section in the Credits page.
 =end pod
 
 method add-credit-section ( Str $section_name, *@people ) {
-  my $people = gchar-pptr.new( |@people, '\0');
+  my $people = gchar-pptr.new( |@people, Str);
   _gtk_about_dialog_add_credit_section(
     self.get-native-object-no-reffing, $section_name, $people
   );
@@ -1016,7 +1016,7 @@ method add-credit-section ( Str $section_name, *@people ) {
 sub gtk_about_dialog_add_credit_section (
   N-GObject $about, gchar-ptr $section_name, *@people
 ) {
-  my $people = gchar-pptr.new( |@people, '\0');
+  my $people = gchar-pptr.new( |@people, Str);
   _gtk_about_dialog_add_credit_section( $about, $section_name, $people);
 }
 
