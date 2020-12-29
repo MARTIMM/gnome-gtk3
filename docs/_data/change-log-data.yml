@@ -1,3 +1,6 @@
+- 2020-12-29 0.34.5:
+  - Bugfixes in AboutDialog.
+
 - 2020-12-21 0.34.4:
   - Speeding up Assistant and modify documents. Also make Assistant inheritable.
 
