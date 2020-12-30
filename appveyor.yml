@@ -1,0 +1,57 @@
+# See also
+#  https://www.appveyor.com/docs/build-configuration/
+#  https://www.gtk.org/docs/installations/windows
+#  https://www.archlinux.org/pacman/pacman.8.html
+
+os: Visual Studio 2019
+version: 0.34.5.0
+image:
+  - Visual Studio 2019
+
+platform: x64
+
+branches:
+  # whitelist
+  only:
+#    - master
+    - module
+    - develop
+
+environment:
+  raku_test_all: 1
+
+install:
+  - set PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
+
+  # install raku from git
+  - cd C:\
+  - git clone https://github.com/rakudo/rakudo.git
+  - cd rakudo
+  - perl Configure.pl --gen-moar --gen-nqp --backends=moar
+  - gmake install
+  - set PATH=C:\rakudo\install\bin;C:\rakudo\install\share\perl6\site\bin;%PATH%
+  - cmd: dir C:\rakudo\install\bin
+
+  # install zef from git
+  - cd C:\
+  - git clone https://github.com/ugexe/zef.git
+  - cd zef
+  - cmd: rakudo.exe -I. bin/zef install .
+  - cmd: dir C:\rakudo\install\share\perl6\site\bin
+
+  # set path to use MSYS2 tools like pacman
+  - cd C:\
+  - set PATH=C:\msys64\usr\bin;C:\msys64\usr\lib;%PATH%
+  - bash -lc "pacman -S --noconfirm mingw-w64-x86_64-gtk3"
+  - refreshenv
+
+build: off
+
+test_script:
+
+  # set path to use Raku, Zef and GTK libraries
+  - set PATH=C:\rakudo\install\bin;C:\rakudo\install\share\perl6\site\bin;C:\msys64\mingw64\bin;%PATH%
+
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - cmd: zef --/test --deps-only install .
+  - cmd: zef --verbose install .

@@ -1,0 +1,31 @@
+branches:
+  only:
+    - master
+#    - module
+
+language: perl6
+
+perl6:
+  - latest
+
+#before_install:
+#  - sudo apt-get -y install ... libxml2-dev
+
+install:
+#  - git clone https://gitlab.gnome.org/GNOME/jhbuild.git
+#  - cd jhbuild
+#  - ./autogen.sh
+#  - make
+#  - make install
+#  - cd ..
+#  - set PATH=~/.local/bin:$PATH
+#  - jhbuild sanitycheck
+#  - jhbuild build gtk+
+#  - jhbuild info gtk+
+
+  - wget https://download.gnome.org/sources/gtk+/3.24/gtk%2B-3.24.24.tar.xz
+  - tar xvf gtk+-3.24.24.tar.xz
+  - 
+
+  - rakudobrew build zef
+  - zef --depsonly install .
