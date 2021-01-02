@@ -13,8 +13,17 @@ use Gnome::Gtk3::Label;
 my Gnome::Gtk3::Label $l;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
+  $l .= new(:text(Str));
+  isa-ok $l, Gnome::Gtk3::Label, ".new(:text) undefined text";
+
   $l .= new(:text('abc def'));
   isa-ok $l, Gnome::Gtk3::Label, ".new(:text)";
+}
+
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
 }
 
 #-------------------------------------------------------------------------------
@@ -32,9 +41,9 @@ subtest 'Manipulations 0', {
   is $l.get-text, 'pqr', '.new(:widget)';
 
   $l .= new(:mnemonic('Search _filename'));
-  $l.set-use-markup(1);
+  $l.set-use-markup(True);
   ok $l.get-use-markup, '.get-use-markup() / .set-use-markup()';
-  $l.set-use-underline(1);
+  $l.set-use-underline(True);
   ok $l.get-use-underline, '.get-use-underline() / .set-use-underline()';
   is $l.get-text, 'Search filename', '.new(:mnemonic)';
 
@@ -49,7 +58,7 @@ subtest 'Manipulations 0', {
   $l.set-label('Search <u>filename</u>');
   is $l.get-label, 'Search <u>filename</u>', '.set-label() / .get-label()';
   is $l.get-text, 'Search filename', '.get-text() after set label';
-  $l.set-use-markup(0);
+  $l.set-use-markup(False);
   is $l.get-text, 'Search <u>filename</u>', '.get-text() after turn off markup';
 }
 
