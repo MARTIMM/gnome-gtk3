@@ -8,7 +8,7 @@ use Gnome::Gtk3::Button;
 my Gnome::Gtk3::Button $*button;
 
 my Gnome::T::Benchmark $b .= new(
-  :default-count(1000), :project<gnome-gtk3>, :project-version<0.34.2.1>,
+  :default-count(1000), :project<gnome-gtk3>, :project-version<0.34.2.1-native:0.18.5.2>,
   :sub-project<Widget>, :path<xt/Benchmarking/Data>
 );
 

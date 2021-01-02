@@ -10,7 +10,7 @@ use Gnome::Gtk3::AboutDialog;
 
 my Gnome::Gtk3::AboutDialog $a .= new;
 my Gnome::T::Benchmark $b .= new(
-  :default-count(500), :project<gnome-gtk3>, :project-version<0.34.2.1>,
+  :default-count(500), :project<gnome-gtk3>, :project-version<0.34.2.1-native:0.18.5.2>,
   :sub-project<AboutDialog>, :path<xt/Benchmarking/Data>
 );
 
