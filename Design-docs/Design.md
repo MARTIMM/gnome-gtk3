@@ -26,7 +26,7 @@ replace: ``
 # Benchmarking result notes
 * Always use normal arguments in the method which substitutes a native call search. Do not use slurpy arguments and flatten them in the call to the native sub.
 * Call subs directly when there are no arguments or arguments that do not need some conversion like `Str` or `Int`. Also, the call is made on a subroutine of a leaf class. That means that casting is not necessary.
-* Call sub via TopLevelSupportClass helper for conversion and/or casting using :convert or :cast (both are by default `True`).
+* Call sub via TopLevelSupportClass helper for casting using :sub-class('gtk-name').
 
 # Installing on windows
 ## Testing on Appveyor
