@@ -13,9 +13,9 @@ platform: x64
 branches:
   # whitelist
   only:
-#    - master
-    - module
-    - develop
+    - master
+#    - module
+#    - develop
 
 environment:
   raku_test_all: 1

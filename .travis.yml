@@ -1,7 +1,8 @@
 branches:
   only:
-    - master
+#    - master
 #    - module
+    - xyz
 
 language: perl6
 
@@ -25,7 +26,7 @@ install:
 
   - wget https://download.gnome.org/sources/gtk+/3.24/gtk%2B-3.24.24.tar.xz
   - tar xvf gtk+-3.24.24.tar.xz
-  - 
+#  -
 
   - rakudobrew build zef
   - zef --depsonly install .
