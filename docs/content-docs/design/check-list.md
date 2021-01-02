@@ -50,6 +50,7 @@ Legend for head of table
   * **tp**: Properties.
 * 12: Issue number 12; check use of types and modify.
 * 14: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
+* en: Test cut off if raku_test_all env variable is not set
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -63,14 +64,14 @@ table {
 }
 </style>
 
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|en|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
 Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
 AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
-Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|
+Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓| ✓|
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
@@ -108,7 +109,7 @@ Grid                      |  | ✓|  |  |  |  |  |  |  |  | |
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |
-Label                     |  | ✓|  |  |  |  |  |  |  |  |  |
+Label                     |  | ✓| ✓| ✓|  |  |  |  |  |  |  |  | ✓|
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
