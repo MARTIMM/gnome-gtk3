@@ -516,7 +516,7 @@ See also: C<gtk_container_remove()> in L<Gnome::Gtk3::Container|Container.html>.
 
 # prevent calling parent class destroy method e.g in Any or Mu
 method destroy ( ) {
-  self._f( &gtk_widget_destroy, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_destroy(self._f('GtkWidget'));
 }
 
 sub gtk_widget_destroy ( N-GObject $widget )
@@ -576,7 +576,7 @@ When a toplevel container is shown, it is immediately realized and mapped; other
 =end pod
 
 method show ( ) {
-  self._f( &gtk_widget_show, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_show(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show ( N-GObject $widget )
@@ -595,7 +595,7 @@ Reverses the effects of C<gtk_widget_show()>, causing the widget to be hidden (i
 =end pod
 
 method hide ( ) {
-  self._f( &gtk_widget_hide, :!convert)
+  gtk_widget_hide(self._f('GtkWidget'));
 }
 
 sub gtk_widget_hide ( N-GObject $widget )
@@ -614,7 +614,7 @@ Shows a widget. If the widget is an unmapped toplevel widget (i.e. a B<Gnome::Gt
 =end pod
 
 method show-now ( ) {
-  self._f( &gtk_widget_show_now, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_show_now(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show_now ( N-GObject $widget )
@@ -633,7 +633,7 @@ Recursively shows a widget, and any child widgets (if the widget is a container)
 =end pod
 
 method show-all ( ) {
-  self._f( &gtk_widget_show_all, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_show_all(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show_all ( N-GObject $widget )
@@ -655,7 +655,7 @@ Sets the prop C<no-show-all> property, which determines whether calls to C<show_
 =end pod
 
 method set-no-show-all ( Bool $no_show_all ) {
-  self._f( &gtk_widget_set_no_show_all, $no_show_all, :sub-class<GtkWidget>)
+  gtk_widget_set_no_show_all( self._f('GtkWidget'), $no_show_all.Int);
 }
 
 sub gtk_widget_set_no_show_all ( N-GObject $widget, gboolean $no_show_all )
@@ -674,7 +674,7 @@ Returns the current value of the prop C<no-show-all> property, which determines 
 =end pod
 
 method get-no-show-all ( --> Bool ) {
-  self._f( &gtk_widget_get_no_show_all, :!convert, :sub-class<GtkWidget>).Bool
+  gtk_widget_get_no_show_all(self._f('GtkWidget')).Bool;
 }
 
 sub gtk_widget_get_no_show_all ( N-GObject $widget --> gboolean )
@@ -784,7 +784,11 @@ Note that special-purpose widgets may contain special code for rendering to the 
 =end pod
 
 method draw ( Gnome::Cairo $cr ) {
-  self._f( &gtk_widget_draw, $cr, :sub-class<GtkWidget>);
+  my N-GObject $no = $cr;
+  $no .= get-native-object-no-reffing
+    if $no.^can('get-native-object-no-reffing');
+
+  gtk_widget_draw( self._f('GtkWidget'), $no);
 }
 
 sub gtk_widget_draw ( N-GObject $widget, cairo_t $cr )
@@ -803,7 +807,7 @@ Equivalent to calling C<queue_draw_area()> for the entire area of a widget.
 =end pod
 
 method queue-draw ( ) {
-  self._f( &gtk_widget_queue_draw, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_queue_draw(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_draw ( N-GObject $widget )
@@ -831,9 +835,8 @@ I<$width> or I<$height> may be 0, in this case this function does nothing. Negat
 =end pod
 
 method queue-draw-area ( Int $x, Int $y, Int $width, Int $height ) {
-
-  self._f(
-    &gtk_widget_queue_draw_area, $x, $y, $width, $height, :sub-class<GtkWidget>
+  gtk_widget_queue_draw_area(
+    self._f('GtkWidget'), $x, $y, $width, $height
   );
 }
 
@@ -939,7 +942,7 @@ Returns: a B<Gnome::Gdk3::FrameClock> orundefined if widget is unrealized
 =end pod
 
 method get-frame-clock ( --> N-GObject ) {
-  self._f( &gtk_widget_get_frame_clock, :!convert, :sub-class<GtkWidget>)
+  gtk_widget_get_frame_clock(self._f('GtkWidget'));
 }
 
 sub gtk_widget_get_frame_clock ( N-GObject $widget --> N-GObject )
@@ -964,9 +967,7 @@ For baseline support in containers you need to use gtk_widget_size_allocate_with
 =end pod
 
 method size-allocate ( N-GtkAllocation $allocation ) {
-  self._f(
-    &gtk_widget_size_allocate, $allocation, :!convert, :sub-class<GtkWidget>
-  )
+  gtk_widget_size_allocate( self._f('GtkWidget'), $allocation);
 }
 
 sub gtk_widget_size_allocate ( N-GObject $widget, N-GtkAllocation $allocation )
@@ -996,10 +997,9 @@ If the child widget does not have a valign of C<GTK_ALIGN_BASELINE> the baseline
 method size-allocate-with-baseline (
   N-GtkAllocation $allocation, Int $baseline
 ) {
-  self._f(
-    &gtk_widget_size_allocate_with_baseline, $allocation, $baseline,
-    :!convert, :sub-class<GtkWidget>
-  )
+  gtk_widget_size_allocate_with_baseline(
+    self._f('GtkWidget'), $allocation, $baseline
+  );
 }
 
 sub gtk_widget_size_allocate_with_baseline (
@@ -1021,9 +1021,8 @@ B<Gnome::Gtk3::Bin> widgets generally propagate the preference of their child, c
 =end pod
 
 method get-request-mode ( --> GtkSizeRequestMode ) {
-  GtkSizeRequestMode( self._f(
-      &gtk_widget_get_request_mode, :sub-class<GtkWidget>
-    )
+  GtkSizeRequestMode(
+    gtk_widget_get_request_mode(self._f('GtkWidget'))
   )
 }
 

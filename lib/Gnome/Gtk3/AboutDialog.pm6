@@ -938,7 +938,10 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 =end pod
 
 method set-logo ( Gnome::Gdk3::Pixbuf $logo ) {
-  self._f( &gtk_about_dialog_set_logo, $logo, :convert);
+  gtk_about_dialog_set_logo(
+    self.get-native-object-no-reffing,
+    $logo.get-native-object-no-reffing
+  );
 }
 
 sub gtk_about_dialog_set_logo ( N-GObject $about, N-GObject $logo )
