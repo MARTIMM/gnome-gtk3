@@ -209,7 +209,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:0:inheriting
+#TM:1:inheriting
 #TM:1:new(:text):
 #TM:1:new(:mnemonic):
 #TM:1:new(:native-object):
@@ -915,7 +915,9 @@ sub gtk_label_get_lines ( N-GObject $label --> gint )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:set-pattern:xt/Benchmarking/Modules/Label.raku
+#TM:0:set-pattern:xt/Benchmarking/Modules/Label.raku
+#TODO set-pattern() does not seem to set pattern property
+
 =begin pod
 =head2 set-pattern
 
@@ -1103,45 +1105,68 @@ sub gtk_label_get_angle ( N-GObject $label --> gdouble )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_select_region:
+#TM:2:select-region:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] select_region
+=head2 select-region
 
-Selects a range of characters in the label, if the label is selectable.
-See C<gtk_label_set_selectable()>. If the label is not selectable,
-this function has no effect. If I<start_offset> or
-I<end_offset> are -1, then the end of the label will be substituted.
+Selects a range of characters in the label, if the label is selectable. See C<set-selectable()>. If the label is not selectable, this function has no effect. If I<$start_offset> or I<$end_offset> are -1, then the end of the label will be substituted.
 
-  method gtk_label_select_region ( Int $start_offset, Int $end_offset )
+  method select-region ( Int $start_offset, Int $end_offset )
 
 =item Int $start_offset; start offset (in characters not bytes)
 =item Int $end_offset; end offset (in characters not bytes)
 
 =end pod
 
-sub gtk_label_select_region ( N-GObject $label, int32 $start_offset, int32 $end_offset )
-  is native(&gtk-lib)
+method select-region ( Int $start, Int $end ) {
+  gtk_label_select_region( self._f('GtkLabel'), $start, $end)
+}
+
+sub gtk_label_select_region (
+  N-GObject $label, gint $start_offset, gint $end_offset
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_selection_bounds:
+#TM:2:get-selection-bounds:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_selection_bounds
+=head2 get-selection-bounds
 
-Gets the selected range of characters in the label, returning C<1>
-if there’s a selection.
+Gets the selected range of characters in the label, returning C<True> if there’s a selection.
 
-Returns: C<1> if selection is non-empty
+  method gtk_label_get_selection_bounds ( --> List )
 
-  method gtk_label_get_selection_bounds ( Int $start, Int $end --> Int  )
-
-=item Int $start; (out): return location for start of selection, as a character offset
-=item Int $end; (out): return location for end of selection, as a character offset
+This method returns a list of which
+=item Bool $non-empty: C<True> if selection is non-empty
+=item Int $start; start of selection, as a character offset
+=item Int $end; end of selection, as a character offset
 
 =end pod
 
-sub gtk_label_get_selection_bounds ( N-GObject $label, int32 $start, int32 $end --> int32 )
-  is native(&gtk-lib)
+method get-selection-bounds ( --> List ) {
+  my gint $start;
+  my gint $end;
+  my Bool $non-empty = _gtk_label_get_selection_bounds(
+    self._f('GtkLabel'), $start, $end
+  ).Bool;
+
+  ( $non-empty, $start, $end)
+}
+
+sub gtk_label_get_selection_bounds ( N-GObject $label --> List ) {
+  my gint $start;
+  my gint $end;
+  my Bool $non-empty = _gtk_label_get_selection_bounds(
+    $label, $start, $end
+  ).Bool;
+
+  ( $non-empty, $start, $end)
+}
+
+sub _gtk_label_get_selection_bounds (
+  N-GObject $label, gint $start is rw, gint $end is rw --> gboolean
+) is native(&gtk-lib)
+  is symbol('gtk_label_get_selection_bounds')
   { * }
 
 #`{{
@@ -1196,171 +1221,198 @@ sub gtk_label_get_layout_offsets ( N-GObject $label, int32 $x, int32 $y )
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_set_single_line_mode:
+#TM:2:set-single-line-mode:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] set_single_line_mode
+=head2 set-single-line-mode
 
 Sets whether the label is in single line mode.
 
-  method gtk_label_set_single_line_mode ( Int $single_line_mode )
+  method set-single-line-mode ( Bool $single_line_mode )
 
-=item Int $single_line_mode; C<1> if the label should be in single line mode
+=item Int $single_line_mode; C<True> if the label should be in single line mode
 
 =end pod
 
-sub gtk_label_set_single_line_mode ( N-GObject $label, int32 $single_line_mode )
-  is native(&gtk-lib)
+method set-single-line-mode ( Bool $single_line_mode ) {
+  gtk_label_set_single_line_mode( self._f('GtkLabel'), $single_line_mode)
+}
+
+sub gtk_label_set_single_line_mode (
+  N-GObject $label, gboolean $single_line_mode
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_single_line_mode:
+#TM:2:get-single-line-mode:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_single_line_mode
+=head2 get-single-line-mode
 
 Returns whether the label is in single line mode.
 
-Returns: C<1> when the label is in single line mode.
+Returns: C<True> when the label is in single line mode.
 
-  method gtk_label_get_single_line_mode ( --> Int  )
-
+  method get-single-line-mode ( --> Bool )
 
 =end pod
 
-sub gtk_label_get_single_line_mode ( N-GObject $label --> int32 )
+method get-single-line-mode ( --> Bool ) {
+  gtk_label_get_single_line_mode( self._f('GtkLabel')).Bool
+}
+
+sub gtk_label_get_single_line_mode ( N-GObject $label --> gboolean )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_current_uri:
+#TM:2:get-current-uri:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_current_uri
+=head2 get-current-uri
 
-Returns the URI for the currently active link in the label.
-The active link is the one under the mouse pointer or, in a
-selectable label, the link in which the text cursor is currently
-positioned.
+Returns the URI for the currently active link in the label. The active link is the one under the mouse pointer or, in a selectable label, the link in which the text cursor is currently positioned.
 
-This function is intended for use in a  I<activate-link> handler
-or for use in a  I<query-tooltip> handler.
+This function is intended for use in a  I<activate-link> handler or for use in a  I<query-tooltip> handler.
 
-Returns: the currently active URI. The string is owned by GTK+ and must
-not be freed or modified.
+Returns: the currently active URI. The string is owned by GTK+ and must not be freed or modified.
 
-  method gtk_label_get_current_uri ( --> Str  )
-
+  method get-current-uri ( --> Str )
 
 =end pod
+
+method get-current-uri ( --> Str ) {
+  gtk_label_get_current_uri( self._f('GtkLabel'))
+}
 
 sub gtk_label_get_current_uri ( N-GObject $label --> Str )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_set_track_visited_links:
+#TM:2:set-track-visited-links:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] set_track_visited_links
+=head2 set-track-visited-links
 
-Sets whether the label should keep track of clicked
-links (and use a different color for them).
+Sets whether the label should keep track of clicked links (and use a different color for them).
 
-  method gtk_label_set_track_visited_links ( Int $track_links )
+  method set-track-visited-links ( Bool $track_links )
 
-=item Int $track_links; C<1> to track visited links
+=item Bool $track_links; C<True> to track visited links
 
 =end pod
 
-sub gtk_label_set_track_visited_links ( N-GObject $label, int32 $track_links )
+method set-track-visited-links ( Bool $track_links ) {
+  gtk_label_set_track_visited_links( self._f('GtkLabel'), $track_links)
+}
+
+sub gtk_label_set_track_visited_links (
+  N-GObject $label, gboolean $track_links
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:2:get-track-visited-links:xt/Benchmarking/Modules/Label.raku
+=begin pod
+=head2 get-track-visited-links
+
+Returns whether the label is currently keeping track of clicked links.
+
+Returns: C<True> if clicked links are remembered
+
+  method get-track-visited-links ( --> Bool )
+
+=end pod
+
+method get-track-visited-links ( --> Bool ) {
+  gtk_label_get_track_visited_links( self._f('GtkLabel')).Bool
+}
+
+sub gtk_label_get_track_visited_links ( N-GObject $label --> gboolean )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_track_visited_links:
+#TM:2:set-xalign:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_track_visited_links
+=head2 set-xalign
 
-Returns whether the label is currently keeping track
-of clicked links.
+Sets the I<xalign> property for I<label>.
 
-Returns: C<1> if clicked links are remembered
-
-  method gtk_label_get_track_visited_links ( --> Int  )
-
-
-=end pod
-
-sub gtk_label_get_track_visited_links ( N-GObject $label --> int32 )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_label_set_xalign:
-=begin pod
-=head2 [[gtk_] label_] set_xalign
-
-Sets the  I<xalign> property for I<label>.
-
-  method gtk_label_set_xalign ( Num $xalign )
+  method set-xalign ( Num $xalign )
 
 =item Num $xalign; the new xalign value, between 0 and 1
 
 =end pod
 
-sub gtk_label_set_xalign ( N-GObject $label, num32 $xalign )
+method set-xalign ( $xalign ) {
+  gtk_label_set_xalign( self._f('GtkLabel'), $xalign.Num)
+}
+
+sub gtk_label_set_xalign ( N-GObject $label, gfloat $xalign )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_xalign:
+#TM:2:get-xalign:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_xalign
+=head2 get-xalign
 
 Gets the  I<xalign> property for I<label>.
 
 Returns: the xalign property
 
-  method gtk_label_get_xalign ( --> Num  )
-
+  method get-xalign ( --> Num  )
 
 =end pod
 
-sub gtk_label_get_xalign ( N-GObject $label --> num32 )
+method get-xalign ( --> Num ) {
+  gtk_label_get_xalign( self._f('GtkLabel'))
+}
+
+sub gtk_label_get_xalign ( N-GObject $label --> gfloat )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_set_yalign:
+#TM:2:set-yalign:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] set_yalign
+=head2 set-yalign
 
-Sets the  I<yalign> property for I<label>.
+Sets the I<yalign> property for I<label>.
 
-  method gtk_label_set_yalign ( Num $yalign )
+  method set-yalign ( Num $yalign )
 
 =item Num $yalign; the new yalign value, between 0 and 1
 
 =end pod
 
-sub gtk_label_set_yalign ( N-GObject $label, num32 $yalign )
+method set-yalign ( $yalign ) {
+  gtk_label_set_yalign( self._f('GtkLabel'), $yalign.Num)
+}
+
+sub gtk_label_set_yalign ( N-GObject $label, gfloat $yalign )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_label_get_yalign:
+#TM:2:get-yalign:xt/Benchmarking/Modules/Label.raku
 =begin pod
-=head2 [[gtk_] label_] get_yalign
+=head2 get-yalign
 
 Gets the  I<yalign> property for I<label>.
 
 Returns: the yalign property
 
-  method gtk_label_get_yalign ( --> Num  )
-
+  method get-yalign ( --> Num  )
 
 =end pod
 
-sub gtk_label_get_yalign ( N-GObject $label --> num32 )
+method get-yalign ( --> Num ) {
+  gtk_label_get_yalign( self._f('GtkLabel'))
+}
+
+sub gtk_label_get_yalign ( N-GObject $label --> gfloat )
   is native(&gtk-lib)
   { * }
+
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -1394,8 +1446,8 @@ Also here, the types of positional arguments in the signal handler are important
 
 =head2 Supported signals
 
-
-=comment #TS:0:move-cursor:
+=begin comment
+=comment # TS:0:move-cursor:
 =head3 move-cursor
 
 The I<move-cursor> signal is a keybinding signal (GtkBindingSignal)
@@ -1416,7 +1468,7 @@ There are too many key combinations to list them all here.
 - Home/End keys move to the ends of the buffer
 
   method handler (
-    Unknown type GTK_TYPE_MOVEMENT_STEP $step,
+    Int $step,  # is a member of GtkMovementStep
     Int $count,
     Int $extend_selection,
     Int :$_handler_id,
@@ -1431,16 +1483,17 @@ There are too many key combinations to list them all here.
 =item $count; the number of I<step> units to move
 
 =item $extend_selection; C<1> if the move should extend the selection
+=end comment
+
 
 
 =comment #TS:0:copy-clipboard:
 =head3 copy-clipboard
 
-The I<copy-clipboard> signal is a
-[keybinding signal][B<Gnome::Gtk3::BindingSignal>]
+The I<copy-clipboard> signal is a keybinding signal
 which gets emitted to copy the selection to the clipboard.
 
-The default binding for this signal is Ctrl-c.
+The default binding for this signal is C<Ctrl-c>.
 
   method handler (
     Int :$_handler_id,
@@ -1462,7 +1515,7 @@ If you need to add items to the context menu, connect
 to this signal and append your menuitems to the I<menu>.
 
   method handler (
-    Unknown type GTK_TYPE_MENU $menu,
+    N-GObject $menu, # a native Gnome::Gtk3::Menu
     Int :$_handler_id,
     Gnome::GObject::Object :_widget($label),
     *%user-options
@@ -1476,13 +1529,12 @@ to this signal and append your menuitems to the I<menu>.
 =comment #TS:0:activate-current-link:
 =head3 activate-current-link
 
-A [keybinding signal][B<Gnome::Gtk3::BindingSignal>]
-which gets emitted when the user activates a link in the label.
+A keybinding signal which gets emitted when the user activates a link in the label.
 
 Applications may also emit the signal with C<g_signal_emit_by_name()>
 if they need to control activation of URIs programmatically.
 
-The default bindings for this signal are all forms of the Enter key.
+The default bindings for this signal are all forms of the C<Enter> key.
 
   method handler (
     Int :$_handler_id,
@@ -1531,46 +1583,37 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
-=comment #TP:0:label:
+=comment #TP:1:label:
 =head3 Label
 
-
-The contents of the label.
-If the string contains [Pango XML markup][PangoMarkupFormat], you will
-have to set the  I<use-markup> property to C<1> in order for the
-label to display the markup attributes. See also C<gtk_label_set_markup()>
-for a convenience function that sets both this property and the
- I<use-markup> property at the same time.
-If the string contains underlines acting as mnemonics, you will have to
-set the  I<use-underline> property to C<1> in order for the label
-to display them.
+The contents of the label. If the string contains [Pango XML markup][PangoMarkupFormat], you will have to set the  I<use-markup> property to C<1> in order for the label to display the markup attributes. See also C<gtk_label_set_markup()> for a convenience function that sets both this property and the  I<use-markup> property at the same time. If the string contains underlines acting as mnemonics, you will have to set the  I<use-underline> property to C<1> in order for the label to display them.
 
 The B<Gnome::GObject::Value> type of property I<label> is C<G_TYPE_STRING>.
+
 
 =comment #TP:0:attributes:
 =head3 Attributes
 
-
-
 The B<Gnome::GObject::Value> type of property I<attributes> is C<G_TYPE_BOXED>.
 
-=comment #TP:0:use-markup:
+
+=comment #TP:1:use-markup:
 =head3 Use markup
 
 The text of the label includes XML markup. See C<pango_parse_markup()>
-Default value: False
-
+Default value: 0
 
 The B<Gnome::GObject::Value> type of property I<use-markup> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:use-underline:
+
+=comment #TP:1:use-underline:
 =head3 Use underline
 
 If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key
-Default value: False
-
+Default value: 0
 
 The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLEAN>.
+
 
 =comment #TP:0:justify:
 =head3 Justification
@@ -1578,12 +1621,11 @@ The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLE
 The alignment of the lines in the text of the label relative to each other. This does NOT affect the alignment of the label within its allocation. See B<Gnome::Gtk3::Label>:xalign for that
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<justify> is C<G_TYPE_ENUM>.
 
-=comment #TP:0:xalign:
-=head3 X align
 
+=comment #TP:1:xalign:
+=head3 X align
 
 The xalign property determines the horizontal aligment of the label text
 inside the labels size allocation. Compare this to  I<halign>,
@@ -1592,7 +1634,7 @@ space available for the label.
 
 The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
 
-=comment #TP:0:yalign:
+=comment #TP:1:yalign:
 =head3 Y align
 
 
@@ -1604,26 +1646,26 @@ space available for the label.
 The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
 
 =comment #TP:0:pattern:
+=comment TODO not set by set-pattern()
 =head3 Pattern
 
-A string with _ characters in positions correspond to characters in the text to underline
+A string with _ characters in positions correspond to characters in the text to underline.
 Default value: Any
-
 
 The B<Gnome::GObject::Value> type of property I<pattern> is C<G_TYPE_STRING>.
 
-=comment #TP:0:wrap:
+
+=comment #TP:1:wrap:
 =head3 Line wrap
 
 If set, wrap lines if the text becomes too wide
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<wrap> is C<G_TYPE_BOOLEAN>.
+
 
 =comment #TP:0:wrap-mode:
 =head3 Line wrap mode
-
 
 If line wrapping is on (see the  I<wrap> property) this controls
 how the line wrapping is done. The default is C<PANGO_WRAP_WORD>, which
@@ -1632,21 +1674,21 @@ Widget type: PANGO_TYPE_WRAP_MODE
 
 The B<Gnome::GObject::Value> type of property I<wrap-mode> is C<G_TYPE_ENUM>.
 
-=comment #TP:0:selectable:
+
+=comment #TP:1:selectable:
 =head3 Selectable
 
 Whether the label text can be selected with the mouse
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<selectable> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:mnemonic-keyval:
+
+=comment #TP:1:mnemonic-keyval:
 =head3 Mnemonic key
 
-
-
 The B<Gnome::GObject::Value> type of property I<mnemonic-keyval> is C<G_TYPE_UINT>.
+
 
 =comment #TP:0:mnemonic-widget:
 =head3 Mnemonic widget
@@ -1654,26 +1696,23 @@ The B<Gnome::GObject::Value> type of property I<mnemonic-keyval> is C<G_TYPE_UIN
 The widget to be activated when the label's mnemonic key is pressed
 Widget type: GTK_TYPE_WIDGET
 
-
 The B<Gnome::GObject::Value> type of property I<mnemonic-widget> is C<G_TYPE_OBJECT>.
 
-=comment #TP:0:cursor-position:
+
+=comment #TP:1:cursor-position:
 =head3 Cursor Position
-
-
 
 The B<Gnome::GObject::Value> type of property I<cursor-position> is C<G_TYPE_INT>.
 
-=comment #TP:0:selection-bound:
+
+=comment #TP:1:selection-bound:
 =head3 Selection Bound
-
-
 
 The B<Gnome::GObject::Value> type of property I<selection-bound> is C<G_TYPE_INT>.
 
+
 =comment #TP:0:ellipsize:
 =head3 Ellipsize
-
 
 The preferred place to ellipsize the string, if the label does
 not have enough room to display the entire string, specified as a
@@ -1689,9 +1728,9 @@ Widget type: PANGO_TYPE_ELLIPSIZE_MODE
 
 The B<Gnome::GObject::Value> type of property I<ellipsize> is C<G_TYPE_ENUM>.
 
-=comment #TP:0:width-chars:
-=head3 Width In Characters
 
+=comment #TP:1:width-chars:
+=head3 Width In Characters
 
 The desired width of the label, in characters. If this property is set to
 -1, the width will be calculated automatically.
@@ -1699,12 +1738,11 @@ See the section on [text layout][label-text-layout]
 for details of how  I<width-chars> and  I<max-width-chars>
 determine the width of ellipsized and wrapped labels.
 
-
 The B<Gnome::GObject::Value> type of property I<width-chars> is C<G_TYPE_INT>.
 
-=comment #TP:0:single-line-mode:
-=head3 Single Line Mode
 
+=comment #TP:1:single-line-mode:
+=head3 Single Line Mode
 
 Whether the label is in single line mode. In single line mode,
 the height of the label does not depend on the actual text, it
@@ -1712,24 +1750,22 @@ is always set to ascent + descent of the font. This can be an
 advantage in situations where resizing the label because of text
 changes would be distracting, e.g. in a statusbar.
 
-
 The B<Gnome::GObject::Value> type of property I<single-line-mode> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:angle:
-=head3 Angle
 
+=comment #TP:1:angle:
+=head3 Angle
 
 The angle that the baseline of the label makes with the horizontal,
 in degrees, measured counterclockwise. An angle of 90 reads from
 from bottom to top, an angle of 270, from top to bottom. Ignored
 if the label is selectable.
 
-
 The B<Gnome::GObject::Value> type of property I<angle> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:max-width-chars:
-=head3 Maximum Width In Characters
 
+=comment #TP:1:max-width-chars:
+=head3 Maximum Width In Characters
 
 The desired maximum width of the label, in characters. If this property
 is set to -1, the width will be calculated automatically.
@@ -1737,12 +1773,11 @@ See the section on [text layout][label-text-layout]
 for details of how  I<width-chars> and  I<max-width-chars>
 determine the width of ellipsized and wrapped labels.
 
-
 The B<Gnome::GObject::Value> type of property I<max-width-chars> is C<G_TYPE_INT>.
+
 
 =comment #TP:0:track-visited-links:
 =head3 Track visited links
-
 
 Set this property to C<1> to make the label track which links
 have been visited. It will then apply the B<GTK_STATE_FLAG_VISITED>
@@ -1750,9 +1785,9 @@ when rendering this link, in addition to B<GTK_STATE_FLAG_LINK>.
 
 The B<Gnome::GObject::Value> type of property I<track-visited-links> is C<G_TYPE_BOOLEAN>.
 
+
 =comment #TP:0:lines:
 =head3 Number of lines
-
 
 The number of lines to which an ellipsized, wrapping label
 should be limited. This property has no effect if the

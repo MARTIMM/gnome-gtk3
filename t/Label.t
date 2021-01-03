@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::N::N-GObject;
+use Gnome::Gdk3::Keysyms;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::Label;
@@ -85,19 +86,60 @@ subtest 'Manipulations 1', {
   is $label.get-text, "Text to copy", 'label text found from config';
 }
 
-#`{{
-#-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  $l.set-text('Search filename');
+  $l.set-xalign(0.23);
+  $l.set-yalign(0.21);
+#  $l.set-justify(GTK_JUSTIFY_RIGHT);
+  $l.gtk-label-set-pattern('___   _');
+  $l.set-line-wrap(True);
+  $l.set-selectable(True);
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value, Bool :$apprx = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $l.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $apprx {
+      is-approx $gv-value, $value, "property $prop, " ~ $gv-value;
+    }
+
+    else {
+      is $gv-value, $value, "property $prop, " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  test-property( G_TYPE_STRING, 'label', 'get-string', 'Search filename');
+  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'use-underline', 'get-boolean', 0);
+#  test-property( G_TYPE_ENUM, 'justify', 'get-enum', GTK_JUSTIFY_RIGHT.value);
+  test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :apprx);
+  test-property( G_TYPE_FLOAT, 'yalign', 'get-float', 21e-2, :apprx);
+#TODO  test-property( G_TYPE_STRING, 'pattern', 'get-string', '___   _');
+  test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', 1);
+#  test-property( G_TYPE_ENUM, 'wrap-mode', 'get-enum', ....value);
+  test-property( G_TYPE_BOOLEAN, 'selectable', 'get-boolean', 1);
+  test-property(
+    G_TYPE_UINT, 'mnemonic-keyval', 'get-uint', GDK_KEY_VoidSymbol
+  );
+
+  test-property( G_TYPE_INT, 'cursor-position', 'get-int', 0);
+  test-property( G_TYPE_INT, 'selection-bound', 'get-int', 0);
+  test-property( G_TYPE_INT, 'width-chars', 'get-int', -1);
+  test-property( G_TYPE_BOOLEAN, 'single-line-mode', 'get-boolean', 0);
+  test-property( G_TYPE_DOUBLE, 'angle', 'get-double', 0e0, :apprx);
+  test-property( G_TYPE_INT, 'max-width-chars', 'get-int', -1);
+  test-property( G_TYPE_BOOLEAN, 'track-visited-links', 'get-boolean', 1);
+  test-property( G_TYPE_INT, 'lines', 'get-int', -1);
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }
@@ -106,6 +148,23 @@ subtest 'Themes ...', {
 subtest 'Signals ...', {
 }
 }}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::Label', {
+  class MyClass is Gnome::Gtk3::Label {
+    method new ( |c ) {
+      self.bless( :GtkLabel, |c, :text(''));
+    }
+
+    submethod BUILD ( *%options ) {
+      self.set-text('default label text');
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Label, '$mgc.new()';
+  is $mgc.get-text, 'default label text', 'self.get-text() / $mgc.get-text()';
+}
 
 #-------------------------------------------------------------------------------
 done-testing;
