@@ -1100,9 +1100,8 @@ method foreach ( $function-object, Str $function-name, *%user-options ) {
       $sts ?? 1 !! 0
     }
 
-    self._f(
-      &_gtk_tree_model_foreach, &local-handler, OpaquePointer,
-      :!convert, :sub-class<GtkTreeModel>
+    _gtk_tree_model_foreach(
+      self._f('GtkTreeModel'), &local-handler, OpaquePointer,
     ) if self.iter-n-children(Any);
   }
 
