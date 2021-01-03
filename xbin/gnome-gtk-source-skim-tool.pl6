@@ -127,16 +127,28 @@ sub MAIN (
 
           #my $class $m .= new;
 
-          sub test-property ( \$type, Str \$prop, Str \$routine, \$value ) {
+          sub test-property (
+            \$type, Str \$prop, Str \$routine, \$value, Bool :\$approx = False
+          ) {
             my Gnome::GObject::Value \$gv .= new\(:init(\$type));
             $m.get-property\( \$prop, \$gv);
             my \$gv-value = \$gv."\$routine"\();
-            is \$gv-value, \$value, "property \$prop";
+            if \$approx {
+              is-approx \$gv-value, \$value,
+                "property \$prop, value: " ~ \$gv-value;
+            }
+
+            else {
+              is \$gv-value, \$value,
+                "property \$prop, value: " ~ \$gv-value;
+            }
             \$gv.clear-object;
           }
 
-          # example call
+          # example calls
           #test-property\( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+          #test-property\( G_TYPE_STRING, 'label', 'get-string', '...');
+          #test-property\( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
         }
 
         #-------------------------------------------------------------------------------
