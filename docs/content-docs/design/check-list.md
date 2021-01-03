@@ -96,25 +96,25 @@ ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  |  |  |  |  |  |  |  |  |  |  |
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
-Dialog                    |  | ✓|  |  |  |  |  |  |  |  | |
-DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗| |
+Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |
+DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |
-Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗| |
+Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |
 FileChooser               |R |  |  |  |  |  |  |  |  |  |  |
-FileChooserButton         |  | ✓| ✓| ✓|✓| ✓| ✓|½|  |⅓ |  |
+FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
-Frame                     |  |  |  |  |  |  |  |  |  |  | |
-Grid                      |  | ✓|  |  |  |  |  |  |  |  | |
+Frame                     |  |  |  |  |  |  |  |  |  |  |  |
+Grid                      |  | ✓|  |  |  |  |  |  |  |  |  |
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |
-Label                     |  | ✓| ✓| ✓|  |  |  |  |  |  |  |  | ✓|
+Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅗| ✓| ✓| ✓|
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
 ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |S |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗| |
+Main                      |S |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗|  |
 Menu                      |  |  |  |  |  |  |  |  |  |  |  |
 MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
 MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
