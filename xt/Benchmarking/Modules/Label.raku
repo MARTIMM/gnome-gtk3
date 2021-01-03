@@ -1,10 +1,14 @@
 use v6;
 
 use Gnome::T::Benchmark;
+
 use Gnome::N::N-GObject;
+#use Gnome::N::X;
+
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Entry;
+
 
 my Gnome::Gtk3::Entry $entry .= new;
 my Gnome::Gtk3::Label $*Label .= new(:text(Str));
@@ -46,8 +50,19 @@ $b.run-test(
       $b = .get-line-wrap;
       .set-selectable(True);
       $b = .get-selectable;
-      .set-angle(270.234e0);
+      .set-angle(270.234);
       my Num $n = .get-angle;
+      .select-region( 10, 11);
+      my List $l = .get-selection-bounds;
+      .set-single-line-mode(True);
+      $b = .get-single-line-mode;
+      $s = .get-current-uri;
+      .set-track-visited-links(True);
+      $b = .get-track-visited-links;
+      .set-xalign(0.2);
+      $n = .get-xalign;
+      .set-yalign(0.2);
+      $n = .get-yalign;
     }
   },
 #  :prepare( { $*Label .= new(:label<Start>); } ),
@@ -88,6 +103,17 @@ $b.run-test(
       $i = .gtk-label-get-selectable;
       .gtk-label-set-angle(270.234e0);
       my Num $n = .gtk-label-get-angle;
+      .gtk-label-select-region( 10, 11);
+      my List $l = .gtk-label-get-selection-bounds;
+      .gtk-label-set-single-line-mode(1);
+      $i = .gtk-label-get-single-line-mode;
+      $s = .gtk-label-get-current-uri;
+      .gtk-label-set-track-visited-links(1);
+      $i = .gtk-label-get-track-visited-links;
+      .gtk-label-set-xalign(0.2e0);
+      $n = .gtk-label-get-xalign;
+      .gtk-label-set-yalign(0.2e0);
+      $n = .gtk-label-get-yalign;
     }
   },
 #  :prepare( { $*Label .= new(:label<Start>); } ),
