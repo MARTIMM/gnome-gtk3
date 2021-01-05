@@ -85,7 +85,7 @@ use Gnome::Gtk3::Dialog;
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkaboutdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
-unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>:ver<0.2.0>;
 also is Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------

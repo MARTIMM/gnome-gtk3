@@ -99,7 +99,7 @@ use Gnome::N::GlibToRakuTypes;
 use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Assistant:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Assistant:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::Gtk3::Window;
 also does Gnome::Gtk3::Buildable;
 
