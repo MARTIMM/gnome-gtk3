@@ -31,13 +31,11 @@ my @enum-list = ();
 #-------------------------------------------------------------------------------
 sub MAIN (
   Str:D $base-name, Bool :$main = False, Bool :$sig = False,
-  Bool :$prop = False, Bool :$sub = False, Bool :$dep = False,
+  Bool :$prop = False, Bool :$sub = False,
   Bool :$types = False, Bool :$test = False
 ) {
 
-  my Bool $do-all = !(
-    [or] $main, $sig, $prop, $sub, $dep, $types, $test
-  );
+  my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $types, $test );
 
   load-dir-lists();
 
@@ -62,7 +60,6 @@ sub MAIN (
     substitute-in-template( $do-all, $main, $types, $include-content);
 
     get-subroutines( $include-content, $source-content) if $do-all or $sub;
-#    get-deprecated-subs($include-content) if $do-all or $dep;
     get-signals($source-content) if $do-all or $sig;
     get-properties($source-content) if $do-all or $prop;
 
@@ -294,7 +291,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     # get the subroutine name and remove from declaration
     $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
-    note "get sub $sub-name";
     $declaration ~~ s/ $sub-name \s* //;
 
     # remove any brackets, and other stuff left before arguments are processed
@@ -358,19 +354,26 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $end-comment = $variable-args-list ?? "\n" ~ '}}' !! '';
 
     my $pod-sub-name = pod-sub-name($sub-name);
+    note "get sub as $pod-sub-name";
     my Str $sub = Q:qq:to/EOSUB/;
 
       $start-comment#-------------------------------------------------------------------------------
-      #TM:0:$sub-name:
+      #TM:0:$pod-sub-name:
       =begin pod
       =head2 $pod-sub-name
 
       $sub-doc
 
-        method $sub-name ($pod-args$pod-returns )
+        method $pod-sub-name ($pod-args$pod-returns )
 
       $pod-doc-items$pod-doc-return
       =end pod
+
+      method $pod-sub-name ($pod-args$pod-returns ) \{
+        $sub-name\(
+          self\._f\('$lib-class-name'), $pod-args
+        );
+      \}
 
       sub $sub-name ( $args $returns )
         is native($library)
@@ -712,6 +715,23 @@ sub pod-sub-name ( Str:D $sub-name --> Str ) {
 
   # sometimes the sub name does not start with the base name
   if $sub-name ~~ m/ ^ $base-sub-name / {
+    $pod-sub-name = $sub-name;
+
+    # remove base subname and an '_', then test if there is another '_' to
+    # see if a part could be made optional by circumventing with '[' and ']'.
+    $pod-sub-name ~~ s/^ $base-sub-name '_' //;
+  }
+
+  # and replace '_' with '-'
+  $pod-sub-name ~~ s:g/ '_' /-/;
+
+  $pod-sub-name
+
+#`{{
+  my Str $pod-sub-name = $sub-name;
+
+  # sometimes the sub name does not start with the base name
+  if $sub-name ~~ m/ ^ $base-sub-name / {
     my Str $s = $sub-name;
 
     # remove base subname and an '_', then test if there is another '_' to
@@ -724,6 +744,7 @@ sub pod-sub-name ( Str:D $sub-name --> Str ) {
   }
 
   $pod-sub-name
+}}
 }
 
 #-------------------------------------------------------------------------------
@@ -846,7 +867,7 @@ sub substitute-in-template (
     USE-LIBRARY-PARENT
 
     #-------------------------------------------------------------------------------
-    unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
+    unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
     ALSO-IS-LIBRARY-PARENT
     EOTEMPLATE
 
