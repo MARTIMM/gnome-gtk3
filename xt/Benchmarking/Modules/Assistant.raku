@@ -1,6 +1,6 @@
 use v6;
 #use lib '../gnome-native/lib';
-use lib '../gnome-test/lib';
+#use lib '../gnome-test/lib';
 
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
@@ -9,9 +9,12 @@ use Gnome::Gtk3::Assistant;
 use Gnome::Gtk3::Frame;
 use Gnome::Gtk3::Button;
 
+my Str $project-version = Gnome::T::Benchmark.meta6-version;
+my Str $sub-project = Gnome::T::Benchmark.type-version(Gnome::Gtk3::Assistant);
+
 my Gnome::T::Benchmark $b .= new(
-  :default-count(400), :project<gnome-gtk3>, :project-version<0.34.3>,
-  :sub-project<Assistant>, :path<xt/Benchmarking/Data>
+  :default-count(400), :project<gnome-gtk3>, :$project-version,
+  :$sub-project, :path<xt/Benchmarking/Data>
 );
 
 my Gnome::Gtk3::Assistant $*assistant;
@@ -114,14 +117,9 @@ $b.run-test( 'Native sub search', {
   ),
 );
 
-$b.compare-tests;
 
-#$b.show-test('Native sub search');
-#$b.show-test('Method calls');
-
-note '';
 $b.load-tests;
 $b.modify-tests;
 $b.save-tests;
 
-$b.md-test-table( '0.34.3', '2020.10.109', 'Assistant', 0, 1);
+$b.search-compare-tests( :$project-version, :$sub-project, :!tables);

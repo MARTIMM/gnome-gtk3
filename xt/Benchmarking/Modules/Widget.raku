@@ -7,10 +7,14 @@ use Gnome::Gtk3::Button;
 
 my Gnome::Gtk3::Button $*button;
 
+my Str $project-version = Gnome::T::Benchmark.meta6-version;
+my Str $sub-project = Gnome::T::Benchmark.type-version(Gnome::Gtk3::Widget);
+
 my Gnome::T::Benchmark $b .= new(
-  :default-count(1000), :project<gnome-gtk3>, :project-version<0.34.2.1-native:0.18.5.2>,
-  :sub-project<Widget>, :path<xt/Benchmarking/Data>
+  :default-count(1000), :project<gnome-gtk3>, :$project-version,
+  :$sub-project, :path<xt/Benchmarking/Data>
 );
+
 
 my N-GtkAllocation $allocation .= new( :x(2), :y(2), :width(50), :height(20));
 $b.run-test(
@@ -62,10 +66,8 @@ $b.run-test(
   :count(500)
 );
 
-$b.compare-tests;
-
-#$b.show-test('Native sub search');
-#$b.show-test('Method calls');
+$b.load-tests;
+$b.modify-tests;
 $b.save-tests;
 
-#$b.md-test-table( '0.34.2.1', '2020.10.109', 'AboutDialog', 0, 1);
+$b.search-compare-tests( :$project-version, :$sub-project, :!tables);
