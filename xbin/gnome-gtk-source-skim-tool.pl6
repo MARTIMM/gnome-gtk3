@@ -28,14 +28,17 @@ my @pangodirlist = ();
 
 my @enum-list = ();
 
+my Bool $class-is-leaf;
+
 #-------------------------------------------------------------------------------
 sub MAIN (
   Str:D $base-name, Bool :$main = False, Bool :$sig = False,
   Bool :$prop = False, Bool :$sub = False,
-  Bool :$types = False, Bool :$test = False
+  Bool :$types = False, Bool :$test = False,
+  Bool :$leaf = True
 ) {
-
   my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $types, $test );
+  $class-is-leaf = $leaf;
 
   load-dir-lists();
 
@@ -302,7 +305,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 #note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
     my Str $args-declaration = $declaration;
-    my Str ( $pod-args, $args, $pod-doc-items) = ( '', '', '');
+    my Str ( $pod-args, $call-args, $args, $pod-doc-items) = ( '', '', '', '');
     my Bool $first-arg = True;
 
     # process arguments
@@ -326,7 +329,9 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         else {
           # make arguments pod doc
           $pod-args ~= ',' if ?$pod-args;
+          $call-args ~= ',' if ?$pod-args;
           $pod-args ~= " $raku-arg-type \$$arg";
+          $call-args ~= " \$$arg";
           $pod-doc-items ~= "=item $raku-arg-type \$$arg; {$pod-doc-item-doc//''}\n";
         }
 
@@ -354,32 +359,100 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $end-comment = $variable-args-list ?? "\n" ~ '}}' !! '';
 
     my $pod-sub-name = pod-sub-name($sub-name);
-    note "get sub as $pod-sub-name";
-    my Str $sub = Q:qq:to/EOSUB/;
 
-      $start-comment#-------------------------------------------------------------------------------
-      #TM:0:$pod-sub-name:
-      =begin pod
-      =head2 $pod-sub-name
+    my Str $sub = '';
+    my Str $no-cnv = '';
+    $no-cnv = Q:q:to/EOCNV/ if $pod-args ~~ / 'N-GObject' /;
+      #my $no = $...;
+      #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
 
-      $sub-doc
+      EOCNV
 
-        method $pod-sub-name ($pod-args$pod-returns )
+    my Str $method-args = $pod-args;
+    $method-args ~~ s:g/ 'N-GObject ' //;
 
-      $pod-doc-items$pod-doc-return
-      =end pod
+    if $sub-name ~~ m/^ $base-sub-name '_new' / {
+      note "get sub as _$sub-name";
+      $sub = Q:qq:to/EOSUB/;
 
-      method $pod-sub-name ($pod-args$pod-returns ) \{
-        $sub-name\(
-          self\._f\('$lib-class-name'), $pod-args
-        );
-      \}
+        $start-comment#-------------------------------------------------------------------------------
+        #TM:1:_$sub-name:
+        #`\{\{
+        =begin pod
+        =head2 _$sub-name
 
-      sub $sub-name ( $args $returns )
-        is native($library)
-        \{ * \}$end-comment
-      EOSUB
+        $sub-doc
 
+          method _$sub-name ($pod-args$pod-returns )
+
+        $pod-doc-items$pod-doc-return
+        =end pod
+        \}\}
+
+        sub _$sub-name ( $args $returns )
+          is native($library)
+          is symbol\('$sub-name')
+          \{ * \}$end-comment
+        EOSUB
+    }
+
+    elsif $class-is-leaf {
+      note "get sub as $pod-sub-name";
+
+      $sub = Q:qq:to/EOSUB/;
+
+        $start-comment#-------------------------------------------------------------------------------
+        #TM:0:$pod-sub-name:
+        =begin pod
+        =head2 $pod-sub-name
+
+        $sub-doc
+
+          method $pod-sub-name ($pod-args$pod-returns )
+
+        $pod-doc-items$pod-doc-return
+        =end pod
+
+        method $pod-sub-name ($method-args$pod-returns ) \{
+          $no-cnv$sub-name\(
+            self\.get-native-object-no-reffing,$call-args
+          );
+        \}
+
+        sub $sub-name ( $args $returns )
+          is native($library)
+          \{ * \}$end-comment
+        EOSUB
+    }
+
+    else {
+      note "get sub as $pod-sub-name";
+
+      $sub = Q:qq:to/EOSUB/;
+
+        $start-comment#-------------------------------------------------------------------------------
+        #TM:0:$pod-sub-name:
+        =begin pod
+        =head2 $pod-sub-name
+
+        $sub-doc
+
+          method $pod-sub-name ($pod-args$pod-returns )
+
+        $pod-doc-items$pod-doc-return
+        =end pod
+
+        method $pod-sub-name ($method-args$pod-returns ) \{
+          $no-cnv$sub-name\(
+            self\._f\('$lib-class-name'),$call-args
+          );
+        \}
+
+        sub $sub-name ( $args $returns )
+          is native($library)
+          \{ * \}$end-comment
+        EOSUB
+    }
 
 #    note $sub;
 
