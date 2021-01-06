@@ -169,7 +169,7 @@ use Gnome::Gtk3::Enums;
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklabel.h
 # https://developer.gnome.org/gtk3/stable/GtkLabel.html
-unit class Gnome::Gtk3::Label:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::Label:auth<github:MARTIMM>:ver<0.2.1>;
 also is Gnome::Gtk3::Misc;
 
 #-------------------------------------------------------------------------------
@@ -650,16 +650,15 @@ If the label has been set so that it has an mnemonic key (using e.g. C<set-marku
 
 The target widget will be accelerated by emitting the B<Gnome::Gtk3::Widget>::mnemonic-activate signal on it. The default handler for this signal will activate the widget if there are no mnemonic collisions and toggle focus between the colliding widgets otherwise.
 
-  method set-mnemonic-widget ( $widget )
+  method set-mnemonic-widget ( N-GObject $widget )
 
-=item N-GObject $widget; (allow-none): the target B<Gnome::Gtk3::Widget>
+=item N-GObject $widget; the target B<Gnome::Gtk3::Widget> or undefined
 
 =end pod
 
 method set-mnemonic-widget ( $widget ) {
   my $no = $widget;
-  $no .= get-native-object-no-reffing
-    if $no.^can('get-native-object-no-reffing');
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_label_set_mnemonic_widget( self._f('GtkLabel'), $no)
 }
@@ -675,7 +674,7 @@ sub gtk_label_set_mnemonic_widget ( N-GObject $label, N-GObject $widget )
 
 Retrieves the target of the mnemonic (keyboard shortcut) of this label. See C<set-mnemonic-widget()>.
 
-Returns: the target of the label’s mnemonic, or C<Any> if none has been set and the default algorithm will be used.
+Returns: the target of the label’s mnemonic, or undefined if none has been set and the default algorithm will be used.
 
   method get-mnemonic-widget ( --> N-GObject )
 

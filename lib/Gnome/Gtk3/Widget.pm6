@@ -777,16 +777,15 @@ You should pass a cairo context as I<$cr> argument that is in an original state.
 
 Note that special-purpose widgets may contain special code for rendering to the screen and might appear differently on screen and when rendered using C<gtk_widget_draw()>.
 
-  method draw ( Gnome::Cairo $cr )
+  method draw ( cairo_t $cr )
 
-=item cairo_t $cr; a cairo context to draw to
+=item cairo_t $cr; a cairo context (B<Gnome::Cairo>) to draw to
 
 =end pod
 
-method draw ( Gnome::Cairo $cr ) {
-  my N-GObject $no = $cr;
-  $no .= get-native-object-no-reffing
-    if $no.^can('get-native-object-no-reffing');
+method draw ( $cr ) {
+  my $no = $cr;
+  $no .= get-native-object-no-reffing unless $no ~~ cairo_t;
 
   gtk_widget_draw( self._f('GtkWidget'), $no);
 }

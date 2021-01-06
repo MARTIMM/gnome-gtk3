@@ -99,7 +99,7 @@ use Gnome::N::GlibToRakuTypes;
 use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Assistant:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::Assistant:auth<github:MARTIMM>:ver<0.1.1>;
 also is Gnome::Gtk3::Window;
 also does Gnome::Gtk3::Buildable;
 
@@ -365,17 +365,18 @@ sub gtk_assistant_get_nth_page (
 
 Prepends a I<$page> to the assistant. Returns the index (starting at 0) of the inserted page. C<$page> can be any widget making up the content of a page in this assistant.
 
-  method prepend-page ( $page --> Int )
+  method prepend-page ( N-GObject $page --> Int )
 
-=item $page; a B<Gnome::Gtk3::Widget>
+=item N-GObject $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
 
 method prepend-page ( $page --> Int ) {
-  gtk_assistant_prepend_page(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing
-  )
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_prepend_page( self.get-native-object-no-reffing, $no);
 }
 
 sub gtk_assistant_prepend_page (
@@ -392,15 +393,16 @@ Appends a I<$page> to the assistant. Returns the index (starting at 0) of the in
 
   method append-page ( N-GObject $page --> Int )
 
-=item $page; a B<Gnome::Gtk3::Widget>
+=item N-GObject $page; a B<Gnome::Gtk3::Widget>
 
 =end pod
 
 method append-page ( $page --> Int ) {
-  gtk_assistant_append_page(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing
-  )
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_append_page( self.get-native-object-no-reffing, $no)
 }
 
 sub gtk_assistant_append_page (
@@ -421,17 +423,17 @@ Returns: the index (starting from 0) of the inserted page
     N-GObject $page, Int $position --> Int
   )
 
-=item $page; a B<Gnome::Gtk3::Widget>
+=item N-GObject $page; a B<Gnome::Gtk3::Widget>
 =item Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
 =end pod
 
 method insert-page ( $page, Int $position --> Int ) {
-  gtk_assistant_insert_page(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing,
-    $position
-  )
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_insert_page( self.get-native-object-no-reffing, $no, $position)
 }
 
 sub gtk_assistant_insert_page (
@@ -495,18 +497,21 @@ sub gtk_assistant_set_forward_page_func ( N-GObject $assistant, GtkAssistantPage
 Sets the page type for I<$page>. The page type determines the page behavior in the assistant. C<$page> is a previously added page.
 
   method set-page-type (
-    $page, GtkAssistantPageType $type
+    N-GObject $page, GtkAssistantPageType $type
   )
 
-=item $page; a page of assistant
+=item N-GObject $page; a page of assistant
 =item GtkAssistantPageType $type; the new type for I<$page>
 
 =end pod
 
 method set-page-type ( $page, GtkAssistantPageType $type ) {
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
   gtk_assistant_set_page_type(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing, $type.value
+    self.get-native-object-no-reffing, $no, $type.value
   )
 }
 
@@ -526,16 +531,17 @@ Gets the page type of I<$page>. C<$page> is a previously added widget.
     N-GObject $page --> GtkAssistantPageType
   )
 
-=item $page; a page of Iassistant
+=item N-GObject $page; a page of Iassistant
 
 =end pod
 
 method get-page-type ( $page --> GtkAssistantPageType ) {
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
   GtkAssistantPageType(
-    gtk_assistant_get_page_type(
-      self.get-native-object-no-reffing,
-      $page.get-native-object-no-reffing
-    )
+    gtk_assistant_get_page_type( self.get-native-object-no-reffing, $no)
   )
 }
 
@@ -551,18 +557,19 @@ sub gtk_assistant_get_page_type (
 
 Sets a title for I<$page>. The title is displayed in the header area of the assistant when I<$page> is the current page. C<$page> is a previously added widget.
 
-  method set-page-title ( $page, Str $title )
+  method set-page-title ( N-GObject $page, Str $title )
 
-=item $page; a page of assistant
+=item N-GObject $page; a page of assistant
 =item Str $title; the new title for I<$page>
 
 =end pod
 
 method set-page-title ( $page, Str $title ) {
-  gtk_assistant_set_page_title(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing, $title
-  )
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_set_page_title( self.get-native-object-no-reffing, $no, $title)
 }
 
 sub gtk_assistant_set_page_title (
@@ -577,17 +584,18 @@ sub gtk_assistant_set_page_title (
 
 Gets the title for I<$page>. C<$page> is a previously added widget.
 
-  method get-page-title ( $page --> Str )
+  method get-page-title ( N-GObject $page --> Str )
 
-=item $page; a page of assistant
+=item N-GObject $page; a page of assistant
 
 =end pod
 
 method get-page-title ( $page --> Str ) {
-  gtk_assistant_get_page_title(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing
-  )
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_get_page_title( self.get-native-object-no-reffing, $no)
 }
 
 sub gtk_assistant_get_page_title (
@@ -610,9 +618,12 @@ Sets whether I<$page> contents are complete. This will make assistant update the
 =end pod
 
 method set-page-complete ( $page, Bool $complete ) {
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
   gtk_assistant_set_page_complete(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing, $complete.Int
+    self.get-native-object-no-reffing, $no, $complete.Int
   )
 }
 
@@ -630,15 +641,16 @@ Gets whether I<$page> is complete. C<True> if I<$page> is complete.
 
   method get-page-complete ( N-GObject $page --> Bool )
 
-=item $page; a page of assistant
+=item N-GObject $page; a page of assistant
 
 =end pod
 
 method get-page-complete ( $page --> Bool ) {
-  gtk_assistant_get_page_complete(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing
-  ).Bool
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_get_page_complete( self.get-native-object-no-reffing, $no).Bool
 }
 
 sub gtk_assistant_get_page_complete (
@@ -653,17 +665,19 @@ sub gtk_assistant_get_page_complete (
 
 Adds a widget to the action area of a B<Gnome::Gtk3::Assistant>.
 
-  method add-action-widget ( $child )
+  method add-action-widget ( N-GObject $child )
 
-=item $child; an action widget.
+=item N-GObject $child; an action widget.
 
 =end pod
 
 method add-action-widget ( $child ) {
-  gtk_assistant_add_action_widget(
-    self.get-native-object-no-reffing,
-    $child.get-native-object-no-reffing
-  )
+
+  my $no = $child;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+#note 'no: ', $child.^name, ', ', $no.^name;
+
+  gtk_assistant_add_action_widget( self.get-native-object-no-reffing, $no)
 }
 
 sub gtk_assistant_add_action_widget ( N-GObject $assistant, N-GObject $child )
@@ -677,17 +691,18 @@ sub gtk_assistant_add_action_widget ( N-GObject $assistant, N-GObject $child )
 
 Removes a widget from the action area of a B<Gnome::Gtk3::Assistant>.
 
-  method remove-action-widget ( $child )
+  method remove-action-widget ( N-GObject $child )
 
-=item $child; a previously added action widget
+=item N-GObject $child; a previously added action widget
 
 =end pod
 
 method remove-action-widget ( $child ) {
-  gtk_assistant_remove_action_widget(
-    self.get-native-object-no-reffing,
-    $child.get-native-object-no-reffing
-  )
+
+  my $no = $child;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
+  gtk_assistant_remove_action_widget( self.get-native-object-no-reffing, $no)
 }
 
 sub gtk_assistant_remove_action_widget (
@@ -746,17 +761,20 @@ sub gtk_assistant_commit ( N-GObject $assistant )
 
 Sets whether the assistant is adding padding around the page.
 
-  method set-page-has-padding ( $page, Bool $has_padding )
+  method set-page-has-padding ( N-GObject $page, Bool $has_padding )
 
-=item $page; a page of I<assistant>
+=item N-GObject $page; a page of I<assistant>
 =item Bool $has_padding; whether this page has padding
 
 =end pod
 
 method set-page-has-padding ( $page, Bool $has_padding ) {
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
   gtk_assistant_set_page_has_padding(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing, $has_padding.Int
+    self.get-native-object-no-reffing, $no, $has_padding.Int
   )
 }
 
@@ -774,16 +792,19 @@ Gets whether page has padding.
 
 Returns: C<True> if I<$page> has padding
 
-  method gtk_assistant_get_page_has_padding ( $page --> Bool )
+  method gtk_assistant_get_page_has_padding ( N-GObject $page --> Bool )
 
-=item $page; a page of I<assistant>
+=item N-GObject $page; a page of I<assistant>
 
 =end pod
 
 method get-page-has-padding ( $page --> Bool ) {
+
+  my $no = $page;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+
   gtk_assistant_get_page_has_padding(
-    self.get-native-object-no-reffing,
-    $page.get-native-object-no-reffing
+    self.get-native-object-no-reffing, $no
   ).Bool
 }
 
