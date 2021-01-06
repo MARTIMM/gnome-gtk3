@@ -13,15 +13,11 @@ layout: sidebar
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. Each `_fallback()` method is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.
 
-* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have methods like `_file_chooser_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned interface module this can be e.g. **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module.
-  **_This is going to change_**; (for the user, this will be unnoticeble!)
-  * The interface modules are now role types but will become normal classes.
-  * The interface modules are inheriting from a toplevel service class.
-  * `_file_chooser_interface()` mentioned above will become just `_interface()`.
+* Interface modules like e.g. **Gnome::Gtk3::FileChooser**, have methods like `_file_chooser_interface()` which is called by the interface using modules from their `_fallback()` method. For the mentioned interface module this can be e.g. **Gnome::Gtk3::FileChooserDialog**. All methods defined by that interface can be used by the interface using module and its inheriting classes.
 
-* All classes deriving from **Gnome::GObject::Object** know about the `:native-object(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**. In most cases a Raku object can be provided. The method will retrieve the native object from the given Raku object.
+* All classes deriving from **Gnome::N::TopLevelClassSupport** know about the `:native-object(…)` named attribute when instantiating a widget class. This is used when the result of another native sub returns a **N-GObject**. In most cases a Raku object can be provided. The method will retrieve the native object from the given Raku object.
 
-* The same classes also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.gtk_builder_get_object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
+* Classes inheriting from **Gnome::GObject::Object** also recognize the named argument `:build-id(…)` which is used to get a **N-GObject** from a **Gnome::Gtk3::Builder** object. It does something like `$builder.get-object(…)`. A builder must be initialized and loaded with a GUI description before to be useful. This option works for all child classes too if those classes are managed by **Gnome::Gtk3::Builder**.
 
   An example to see both named arguments in use is when cleaning a list box;
   ```
@@ -39,7 +35,7 @@ layout: sidebar
   ```
 
 * Wrapped subs
-  * The C functions can only return simple values like **int32**, **num64**, etc or **Pointer** to the values or structures. This can be handled by Raku and is not a problem. However, many subs are defined so that the values are returned in a Pointer argument and Perl users must handle that properly by giving a real location instead of a constant. Also this can be done properly, simple types need a rw trait and structures and arrays are already given by pointer. But to make things a bit comfortable, those functions are converted to return the values normally. **_Many subs stil need to be converted to show this behavior!_**.
+  * The C functions can only return simple values like **int32**, **num64**, etc or **Pointer** to the values or structures. This can be handled by Raku and is not a problem. However, many subs are defined so that the values are returned in a Pointer argument and Raku users must handle that properly by giving a real location instead of a constant. Also this can be done properly, simple types need a rw trait and structures and arrays are already given by pointer. But to make things a bit comfortable, those functions are converted to return the values normally. **_Many subs still need to be converted to show this behavior!_**.
 
     So the definition of the sub is changed like so;
     ```
@@ -92,8 +88,7 @@ layout: sidebar
 
     Testing the returned 'boolean' can be done using if/else and no extra changes are needed. However, to store it, the value must be coersed into Bool if one needs it that way.
     ```
-    sub gtk_widget_get_visible ( N-GObject $widget )
-      returns int32
+    sub gtk_widget_get_visible ( N-GObject $widget --> int32 )
       is native(&gtk-lib)
       { * }
     ```
@@ -110,3 +105,6 @@ layout: sidebar
     To wrap a sub like above is a bit too much so it is not done.
 
   * Subs are also wrapped to cope with subroutines which have variable argument lists.
+
+  * In the mean time, doing benchmark tests, using a method for those wrappers showed a good speedup of 8 to 10 times. The module generator will now generate a method side by side to the native sub declaration enabling the possible convertions mentioned above.
+    Older modules will also get these methods for the speedup and to simplify the interface. The downside is that debugging with `Gnome::N::debug(:on);` will not show much when invoking these methods.
