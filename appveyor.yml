@@ -4,7 +4,7 @@
 #  https://www.archlinux.org/pacman/pacman.8.html
 
 os: Visual Studio 2019
-version: 0.34.5.0
+#version: 0.34.5.0
 image:
   - Visual Studio 2019
 
