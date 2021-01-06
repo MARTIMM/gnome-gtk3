@@ -133,7 +133,7 @@ RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 Range                     |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooserMenu         |  | ✓|  |  |  |  |  |  |  |  |  |
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |
-Scale                     |  | ✓|  |  |  |  |  |  |  |  |  |
+Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓| ✓|
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
@@ -167,7 +167,7 @@ Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14| -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|en| -->
 
 <br/>
 

@@ -1,5 +1,8 @@
+- 2021-01-06 0.34.7:
+  - Scale speedup with new methods. Tests and benchmarking added and docs improved.
+
 - 2021-01-03 0.34.6:
-  - Label Speedup with new methods. Tests and benchmarking added and docs improved.
+  - Label speedup with new methods. Tests and benchmarking added and docs improved.
   - Bugfix in TreeModel. Caused by changes in helper function _f() in TopLevelClassSuppert.
 
 - 2020-12-29 0.34.5:

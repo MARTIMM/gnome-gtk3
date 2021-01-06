@@ -24,19 +24,30 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $s.set-digits(2);
-  is $s.get-digits, 2, '.set-digits() / .get-digits()';
+  given $s {
+    .set-digits(2);
+    is .get-digits, 2, '.set-digits() / .get-digits()';
 
-  $s.set-draw-value(1);
-  is $s.get-draw-value, 1, '.set-draw-value() / .get-draw-value()';
+    .set-draw-value(True);
+    ok .get-draw-value, '.set-draw-value() / .get-draw-value()';
 
-  $s.set-value-pos(GTK_POS_TOP);
-  is GtkPositionType($s.get-value-pos), GTK_POS_TOP,
-     '.set-value-pos() / .get-value-pos()';
+    .set-value-pos(GTK_POS_TOP);
+    is GtkPositionType(.get-value-pos), GTK_POS_TOP,
+       '.set-value-pos() / .get-value-pos()';
 
-  $s.set_has_origin(1);
-  is $s.get_has_origin, 1, '.set_has_origin() / .get_has_origin()';
+    .set-has-origin(True);
+    ok .get-has-origin, '.set-has-origin() / .get-has-origin()';
+
+    .add-mark( 2.2, GTK_POS_TOP, '11e-1');
+    .clear-marks;
+  }
 }
 
 #`{{

@@ -117,13 +117,14 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Range;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkscale.h
 # https://developer.gnome.org/gtk3/stable/GtkScale.html
-unit class Gnome::Gtk3::Scale:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::Scale:auth<github:MARTIMM>:ver<0.2.0>;
 also is Gnome::Gtk3::Range;
 
 #-------------------------------------------------------------------------------
@@ -196,7 +197,8 @@ submethod BUILD ( *%options ) {
          %options<max>.defined and %options<step>.defined {
 
         $no = _gtk_scale_new_with_range(
-          %options<orientation>, %options<min>, %options<max>, %options<step>
+          %options<orientation>,
+          %options<min>.Num, %options<max>.Num, %options<step>.Num
         );
       }
 #`{{
@@ -211,8 +213,7 @@ submethod BUILD ( *%options ) {
       elsif %options<orientation>.defined and ? %options<adjustment>.defined {
         # get the native adjustment
         $no = %options<adjustment>;
-        $no .= get-native-object-no-reffing
-          if $no.^can('get-native-object-no-reffing');
+        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
         # now create the native scale
         $no = _gtk_scale_new( %options<orientation>, $no);
       }
@@ -263,8 +264,7 @@ Returns: a new B<Gnome::Gtk3::Scale>
 =end pod
 }}
 
-sub _gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
-  returns N-GObject
+sub _gtk_scale_new ( int32 $orientation, N-GObject $adjustment --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_scale_new')
   { * }
@@ -298,264 +298,292 @@ Returns: a new B<Gnome::Gtk3::Scale>
 =end pod
 }}
 
-sub _gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64 $step )
-  returns N-GObject
+sub _gtk_scale_new_with_range ( int32 $orientation, num64 $min, num64 $max, num64 $step --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_scale_new_with_range')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_set_digits:
+#TM:1:set-digits:
 =begin pod
-=head2 [[gtk_] scale_] set_digits
+=head2 set-digits
 
-Sets the number of decimal places that are displayed in the value.
-Also causes the value of the adjustment to be rounded off to this
-number of digits, so the retrieved value matches the value the user saw.
+Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded to this number of digits, so the retrieved value matches the displayed one, if  I<draw-value> is C<1> when the value changes. If you want to enforce rounding the value when  I<draw-value> is C<0>, you can set  I<round-digits> instead.  Note that rounding to a small number of digits can interfere with the smooth autoscrolling that is built into B<Gnome::Gtk3::Scale>. As an alternative, you can use the  I<format-value> signal to format the displayed value yourself.
 
-Note that rounding to a small number of digits can interfere with
-the smooth autoscrolling that is built into B<Gnome::Gtk3::Scale>. As an alternative,
-you can use the  I<format-value> signal to format the displayed
-value yourself.
-
-  method gtk_scale_set_digits ( Int $digits )
+  method set-digits ( Int $digits )
 
 =item Int $digits; the number of decimal places to display, e.g. use 1 to display 1.0, 2 to display 1.00, etc
 
 =end pod
 
-sub gtk_scale_set_digits ( N-GObject $scale, int32 $digits )
+method set-digits ( Int $digits ) {
+  gtk_scale_set_digits(
+    self.get-native-object-no-reffing, $digits
+  );
+}
+
+sub gtk_scale_set_digits ( N-GObject $scale, gint $digits  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_get_digits:
+#TM:1:get-digits:
 =begin pod
-=head2 [[gtk_] scale_] get_digits
+=head2 get-digits
 
 Gets the number of decimal places that are displayed in the value.
 
 Returns: the number of decimal places that are displayed
 
-  method gtk_scale_get_digits ( --> Int  )
-
+  method get-digits ( --> Int )
 
 =end pod
 
-sub gtk_scale_get_digits ( N-GObject $scale )
-  returns int32
+method get-digits ( --> Int ) {
+  gtk_scale_get_digits(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_scale_get_digits ( N-GObject $scale --> gint )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_set_draw_value:
+#TM:1:set-draw-value:
 =begin pod
-=head2 [[gtk_] scale_] set_draw_value
+=head2 set-draw-value
 
-Specifies whether the current value is displayed as a string next
-to the slider.
+Specifies whether the current value is displayed as a string next  to the slider.
 
-  method gtk_scale_set_draw_value ( Int $draw_value )
+  method set-draw-value ( Bool $draw_value )
 
-=item Int $draw_value; C<1> to draw the value
+=item Int $draw_value; C<True> to draw the value
 
 =end pod
 
-sub gtk_scale_set_draw_value ( N-GObject $scale, int32 $draw_value )
+method set-draw-value ( $draw_value ) {
+  gtk_scale_set_draw_value(
+    self.get-native-object-no-reffing, $draw_value.Int
+  );
+}
+
+sub gtk_scale_set_draw_value ( N-GObject $scale, gboolean $draw_value  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_get_draw_value:
+#TM:1:get-draw-value:
 =begin pod
-=head2 [[gtk_] scale_] get_draw_value
+=head2 get-draw-value
 
-Returns whether the current value is displayed as a string
-next to the slider.
+Returns whether the current value is displayed as a string  next to the slider.
 
 Returns: whether the current value is displayed as a string
 
-  method gtk_scale_get_draw_value ( --> Int  )
-
+  method get-draw-value ( --> Bool )
 
 =end pod
 
-sub gtk_scale_get_draw_value ( N-GObject $scale )
-  returns int32
+method get-draw-value ( --> Bool ) {
+  gtk_scale_get_draw_value(
+    self.get-native-object-no-reffing,
+  ).Bool;
+}
+
+sub gtk_scale_get_draw_value ( N-GObject $scale --> gboolean )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_set_has_origin:
+#TM:1:set-has-origin:
 =begin pod
-=head2 [[gtk_] scale_] set_has_origin
+=head2 set-has-origin
 
-If I<has_origin> is set to C<1> (the default),
-the scale will highlight the part of the scale
-between the origin (bottom or left side) of the scale
-and the current value.
+If  I<$has-origin> is set to C<True> (the default), the scale will highlight the part of the trough between the origin (bottom or left side) and the current value.
 
+  method set-has-origin ( Bool $has_origin )
 
-  method gtk_scale_set_has_origin ( Int $has_origin )
-
-=item Int $has_origin; C<1> if the scale has an origin
+=item Int $has_origin; C<True> if the scale has an origin
 
 =end pod
 
-sub gtk_scale_set_has_origin ( N-GObject $scale, int32 $has_origin )
+method set-has-origin ( $has_origin ) {
+  gtk_scale_set_has_origin(
+    self.get-native-object-no-reffing, $has_origin.Int
+  );
+}
+
+sub gtk_scale_set_has_origin ( N-GObject $scale, gboolean $has_origin  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_has_origin:
+#TM:1:get-has-origin:
 =begin pod
-=head2 [[gtk_] scale_] get_has_origin
+=head2 get-has-origin
 
 Returns whether the scale has an origin.
 
-Returns: C<1> if the scale has an origin.
+Returns: C<True> if the scale has an origin.
 
-
-  method gtk_scale_get_has_origin ( --> Int  )
-
+  method get-has-origin ( --> Bool )
 
 =end pod
 
-sub gtk_scale_get_has_origin ( N-GObject $scale )
-  returns int32
+method get-has-origin ( --> Bool ) {
+  gtk_scale_get_has_origin(
+    self.get-native-object-no-reffing,
+  ).Bool;
+}
+
+sub gtk_scale_get_has_origin ( N-GObject $scale --> gboolean )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_set_value_pos:
+#TM:1:set-value-pos:
 =begin pod
-=head2 [[gtk_] scale_] set_value_pos
+=head2 set-value-pos
 
 Sets the position in which the current value is displayed.
 
-  method gtk_scale_set_value_pos ( GtkPositionType $pos )
+  method set-value-pos ( GtkPositionType $pos )
 
 =item GtkPositionType $pos; the position in which the current value is displayed
 
 =end pod
 
-sub gtk_scale_set_value_pos ( N-GObject $scale, int32 $pos )
+method set-value-pos ( GtkPositionType $pos ) {
+  gtk_scale_set_value_pos( self.get-native-object-no-reffing, $pos.value);
+}
+
+sub gtk_scale_set_value_pos ( N-GObject $scale, GEnum $pos )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_scale_get_value_pos:
+#TM:1:get-value-pos:
 =begin pod
-=head2 [[gtk_] scale_] get_value_pos
+=head2 get-value-pos
 
 Gets the position in which the current value is displayed.
 
 Returns: the position in which the current value is displayed
 
-  method gtk_scale_get_value_pos ( --> GtkPositionType  )
-
+  method get-value-pos ( --> GtkPositionType )
 
 =end pod
 
-sub gtk_scale_get_value_pos ( N-GObject $scale )
-  returns int32
+method get-value-pos ( --> GtkPositionType ) {
+  GtkPositionType(
+    gtk_scale_get_value_pos(self.get-native-object-no-reffing)
+  );
+}
+
+sub gtk_scale_get_value_pos ( N-GObject $scale --> GEnum )
   is native(&gtk-lib)
   { * }
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_layout:
+#TM:0:get-layout:
 =begin pod
-=head2 [[gtk_] scale_] get_layout
+=head2 get-layout
 
-Gets the B<PangoLayout> used to display the scale. The returned
-object is owned by the scale so does not need to be freed by
-the caller.
+Gets the B<PangoLayout> used to display the scale. The returned object is owned by the scale so does not need to be freed by the caller.
 
-Returns: (transfer none) (nullable): the B<PangoLayout> for this scale,
-or C<Any> if the  I<draw-value> property is C<0>.
+Returns: (transfer none) (nullable): the B<PangoLayout> for this scale, or C<Any> if the  I<draw-value> property is C<0>.
 
-
-  method gtk_scale_get_layout ( --> PangoLayout  )
+  method get-layout ( --> N-GObject )
 
 
 =end pod
 
-sub gtk_scale_get_layout ( N-GObject $scale )
-  returns PangoLayout
+method get-layout ( --> N-GObject ) {
+
+  gtk_scale_get_layout(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_scale_get_layout ( N-GObject $scale --> N-GObject )
   is native(&gtk-lib)
   { * }
 }}
-
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_get_layout_offsets:
+#TM:0:get-layout-offsets:
 =begin pod
-=head2 [[gtk_] scale_] get_layout_offsets
+=head2 get-layout-offsets
 
-Obtains the coordinates where the scale will draw the
-B<PangoLayout> representing the text in the scale. Remember
-when using the B<PangoLayout> function you need to convert to
-and from pixels using C<PANGO_PIXELS()> or B<PANGO_SCALE>.
+Obtains the coordinates where the scale will draw the  B<PangoLayout> representing the text in the scale. Remember when using the B<PangoLayout> function you need to convert to and from pixels using C<PANGO_PIXELS()> or B<PANGO_SCALE>.   If the  I<draw-value> property is C<0>, the return  values are undefined.
 
-If the  I<draw-value> property is C<0>, the return
-values are undefined.
+  method get-layout-offsets ( Int-ptr $x, Int-ptr $y )
 
-
-  method gtk_scale_get_layout_offsets ( Int $x, Int $y )
-
-=item Int $x; (out) (allow-none): location to store X offset of layout, or C<Any>
-=item Int $y; (out) (allow-none): location to store Y offset of layout, or C<Any>
+=item Int-ptr $x; (out) (allow-none): location to store X offset of layout, or C<Any>
+=item Int-ptr $y; (out) (allow-none): location to store Y offset of layout, or C<Any>
 
 =end pod
 
-sub gtk_scale_get_layout_offsets ( N-GObject $scale, int32 $x, int32 $y )
+method get-layout-offsets ( Int-ptr $x, Int-ptr $y ) {
+
+  gtk_scale_get_layout_offsets(
+    self.get-native-object-no-reffing, $x, $y
+  );
+}
+
+sub gtk_scale_get_layout_offsets ( N-GObject $scale, gint-ptr $x, gint-ptr $y  )
   is native(&gtk-lib)
   { * }
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_add_mark:
+#TM:0:add-mark:
 =begin pod
-=head2 [[gtk_] scale_] add_mark
+=head2 add-mark
 
-Adds a mark at I<value>.
+Adds a mark at I<value>.  A mark is indicated visually by drawing a tick mark next to the scale, and GTK+ makes it easy for the user to position the scale exactly at the marks value.  If I<markup> is not C<Any>, text is shown next to the tick mark.  To remove marks from a scale, use C<gtk_scale_clear_marks()>.
 
-A mark is indicated visually by drawing a tick mark next to the scale,
-and GTK+ makes it easy for the user to position the scale exactly at the
-marks value.
-
-If I<markup> is not C<Any>, text is shown next to the tick mark.
-
-To remove marks from a scale, use C<gtk_scale_clear_marks()>.
-
-
-  method gtk_scale_add_mark ( Num $value, GtkPositionType $position, Str $markup )
+  method add-mark ( Num $value, GtkPositionType $position, Str $markup )
 
 =item Num $value; the value at which the mark is placed, must be between the lower and upper limits of the scales’ adjustment
-=item GtkPositionType $position; where to draw the mark. For a horizontal scale, B<GTK_POS_TOP> and C<GTK_POS_LEFT> are drawn above the scale, anything else below. For a vertical scale, B<GTK_POS_LEFT> and C<GTK_POS_TOP> are drawn to the left of the scale, anything else to the right.
-=item Str $markup; (allow-none): Text to be shown at the mark, using [Pango markup][PangoMarkupFormat], or C<Any>
+
+=item GtkPositionType $position; where to draw the mark. For a horizontal scale, C<GTK_POS_TOP> and C<GTK_POS_LEFT> are drawn above the scale, anything else below. For a vertical scale, C<GTK_POS_LEFT> and C<GTK_POS_TOP> are drawn to the left of the scale, anything else to the right.
+
+=item  Str  $markup; Text to be shown at the mark, using L<Pango markup|https://developer.gnome.org/pygtk/stable/pango-markup-language.html>, or undefined
 
 =end pod
 
-sub gtk_scale_add_mark ( N-GObject $scale, num64 $value, int32 $position, Str $markup )
+method add-mark ( $value, GtkPositionType $position,  Str  $markup ) {
+  gtk_scale_add_mark(
+    self.get-native-object-no-reffing, $value.Num, $position.value, $markup
+  );
+}
+
+sub gtk_scale_add_mark ( N-GObject $scale, gdouble $value, GEnum $position, gchar-ptr $markup  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_scale_clear_marks:
+#TM:0:clear-marks:
 =begin pod
-=head2 [[gtk_] scale_] clear_marks
+=head2 clear-marks
 
 Removes any marks that have been added with C<gtk_scale_add_mark()>.
 
-
-  method gtk_scale_clear_marks ( )
-
+  method clear-marks ( )
 
 =end pod
 
-sub gtk_scale_clear_marks ( N-GObject $scale )
+method clear-marks ( ) {
+
+  gtk_scale_clear_marks(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_scale_clear_marks ( N-GObject $scale  )
   is native(&gtk-lib)
   { * }
 
@@ -624,321 +652,5 @@ Returns: allocated string representing I<$value>
 
 =item $value; the value to format
 
-
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#`{{
-=begin pod
-=head2 [gtk_] scale_new
-
-Creates a new native scale object
-
-  method gtk_scale_new (
-    Int $orientation, N-GObject $adjustment
-    --> N-GObject
-  )
-
-Returns a native widget. It is not advised to use it. The new()/BUILD() method can handle this better and easier.
-
-=item $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
-=item $adjustment; a value of type GtkAdjustment which sets the range of the scale, or NULL to create a new adjustment.
-=end pod
-
-sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-}}
-
-sub gtk_scale_new ( int32 $orientation, N-GObject $adjustment )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] new_with_range
-
-Creates a new native scale object
-
-  method gtk_scale_new_with_range (
-    Int $orientation, Num $min, Num $max, Num $step
-    --> N-GObject
-  )
-
-Returns a native widget. It is not advised to use it. The new()/BUILD() method can handle this better and easier.
-
-=item $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
-=item $adjustment; a value of type GtkAdjustment which sets the range of the scale, or NULL to create a new adjustment.
-=end pod
-
-sub gtk_scale_new_with_range (
-  int32 $orientation, num64 $min, num64 $max, num64 $step
-) returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] set_digits
-
-Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded to this number of digits, so the retrieved value matches the displayed one, if “draw-value” is 1 when the value changes. If you want to enforce rounding the value when “draw-value” is 0, you can set “round-digits” instead.
-
-Note that rounding to a small number of digits can interfere with the smooth autoscrolling that is built into GtkScale. As an alternative, you can use the “format-value” signal to format the displayed value yourself.
-
-  method gtk_scale_set_digits ( Int $digits )
-
-=item $digits; the number of decimal places to display, e.g. use 1 to display 1.0, 2 to display 1.00, etc
-
-=end pod
-
-sub gtk_scale_set_digits ( N-GObject $scale, int32  $digits )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] set_draw_value
-
-Specifies whether the current value is displayed as a string next to the slider.
-
-  method gtk_scale_set_draw_value ( Int $draw-value )
-
-=item $draw-value; set to 1 to draw the value.
-
-=end pod
-
-sub gtk_scale_set_draw_value ( N-GObject $scale, int32 $draw-value )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] set_has_origin
-
-If “has-origin” is set to 1 (the default), the scale will highlight the part of the trough between the origin (bottom or left side) and the current value.
-
-  method gtk_scale_set_has_origin ( Int $has-origin )
-
-=item $has-origin; 1 if the scale has an origin.
-
-=end pod
-
-sub gtk_scale_set_has_origin ( N-GObject $scale, int32 $has-origin )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] set_value_pos
-
-Sets the position in which the current value is displayed.
-
-  method gtk_scale_set_value_pos ( Int $pos )
-
-=item $pos; the position in which the current value is displayed. This value is of type GtkPositionType found in C<Gnome::Gtk3::Enums>.
-
-=end pod
-
-sub gtk_scale_set_value_pos ( N-GObject $scale, int32 $pos )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] get_digits
-
-Gets the number of decimal places that are displayed in the value.
-
-  method gtk_scale_get_digits ( )
-
-Returns the number of digits.
-
-=end pod
-
-sub gtk_scale_get_digits ( N-GObject $scale )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] get_draw_value
-
-Returns whether the current value is displayed as a string next to the slider.
-
-  method gtk_scale_get_draw_value (  --> Int )
-
-Returns 1 when the current value is displayed as a string next to the slider.
-
-=end pod
-
-sub gtk_scale_get_draw_value ( N-GObject $scale )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] get_has_origin
-
-Returns whether the scale has an origin.
-
-  method gtk_scale_get_has_origin ( --> Int )
-
-Returns 1 if the scale has an origin.
-
-=end pod
-
-sub gtk_scale_get_has_origin ( N-GObject $scale )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] get_value_pos
-
-Gets the position in which the current value is displayed.
-
-  method gtk_scale_get_value_pos (  --> Int )
-
-Returns the position in which the current value is displayed. The value is an enum type GtkPositionType defined in C<Gnome::Gtk3::Enums>.
-
-=end pod
-
-sub gtk_scale_get_value_pos ( N-GObject $scale )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=comment gtk_scale_get_layout
-
-#-------------------------------------------------------------------------------
-#`{{
-=begin pod
-=head2 [[gtk_] scale_] get_layout_offsets
-
-Obtains the coordinates where the scale will draw the PangoLayout representing the text in the scale. Remember when using the PangoLayout function you need to convert to and from pixels using PANGO_PIXELS() or PANGO_SCALE.
-
-If the “draw-value” property is FALSE, the return values are undefined.
-
-  method gtk_scale_get_layout_offsets ( Int $x, Int $y )
-
-=item
-
-Returns
-
-=end pod
-
-sub gtk_scale_get_layout_offsets (
-  N-GObject $scale, int32 $x is rw, int32 $y is rw
-) is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] add_mark
-
-  method gtk_scale_add_mark ( Num $value, Int $pos, Str $markup )
-
-=item $value; the value at which the mark is placed, must be between the lower and upper limits of the scales’ adjustment
-=item $position; where to draw the mark. For a horizontal scale, GTK_POS_TOP and GTK_POS_LEFT are drawn above the scale, anything else below. For a vertical scale, GTK_POS_LEFT and GTK_POS_TOP are drawn to the left of the scale, anything else to the right. This is an enum type of C<GtkPositionType> defined in C<Gnome::Gtk3::Enums>.
-=item $markup; Text to be shown at the mark, using Pango markup, or NULL.
-=end pod
-
-sub gtk_scale_add_mark (
-  N-GObject $scale, num64 $value, int32 $pos, Str $markup
-) is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 [[gtk_] scale_] clear_marks
-
-Removes any marks that have been added with C<gtk_scale_add_mark()>.
-
-  method gtk_scale_clear_marks ( )
-
-=end pod
-
-sub gtk_scale_clear_marks ( N-GObject $scale )
-  is native(&gtk-lib)
-  { * }
-
-#`{{
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2
-
-  method  (  -->  )
-
-=item
-
-Returns
-
-=end pod
-
-sub  ( N-GObject $scale )
-  returns
-  is native(&gtk-lib)
-  { * }
-}}
-
-#`{{
-sub  ( N-GObject )
-  returns
-  is native(&gdk-lib)
-  { * }
-
-sub  ( N-GObject )
-  returns
-  is native(&g-lib)
-  { * }
-
-
-
-  is symbol('')
-}}
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-=head2 Not yet supported signals
-=head3 format-value
-
-Signal which allows you to change how the scale value is displayed. Connect a signal handler which returns an allocated string representing value. That string will then be used to display the scale's value.
-
-If no user-provided handlers are installed, the value will be displayed on its own, rounded according to the value of the “digits” property.
 
 =end pod

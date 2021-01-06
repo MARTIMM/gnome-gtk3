@@ -149,105 +149,97 @@ Create an object using a native object from elsewhere. See also Gnome::GObject::
 
 Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
-[[gtk_] scale_] set_digits
---------------------------
+set-digits
+----------
 
-Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded off to this number of digits, so the retrieved value matches the value the user saw.
+Sets the number of decimal places that are displayed in the value. Also causes the value of the adjustment to be rounded to this number of digits, so the retrieved value matches the displayed one, if *draw-value* is `1` when the value changes. If you want to enforce rounding the value when *draw-value* is `0`, you can set *round-digits* instead. Note that rounding to a small number of digits can interfere with the smooth autoscrolling that is built into **Gnome::Gtk3::Scale**. As an alternative, you can use the *format-value* signal to format the displayed value yourself.
 
-Note that rounding to a small number of digits can interfere with the smooth autoscrolling that is built into **Gnome::Gtk3::Scale**. As an alternative, you can use the *format-value* signal to format the displayed value yourself.
-
-    method gtk_scale_set_digits ( Int $digits )
+    method set-digits ( Int $digits )
 
   * Int $digits; the number of decimal places to display, e.g. use 1 to display 1.0, 2 to display 1.00, etc
 
-[[gtk_] scale_] get_digits
---------------------------
+get-digits
+----------
 
 Gets the number of decimal places that are displayed in the value.
 
 Returns: the number of decimal places that are displayed
 
-    method gtk_scale_get_digits ( --> Int  )
+    method get-digits ( --> Int )
 
-[[gtk_] scale_] set_draw_value
-------------------------------
+set-draw-value
+--------------
 
 Specifies whether the current value is displayed as a string next to the slider.
 
-    method gtk_scale_set_draw_value ( Int $draw_value )
+    method set-draw-value ( Bool $draw_value )
 
-  * Int $draw_value; `1` to draw the value
+  * Int $draw_value; `True` to draw the value
 
-[[gtk_] scale_] get_draw_value
-------------------------------
+get-draw-value
+--------------
 
 Returns whether the current value is displayed as a string next to the slider.
 
 Returns: whether the current value is displayed as a string
 
-    method gtk_scale_get_draw_value ( --> Int  )
+    method get-draw-value ( --> Bool )
 
-[[gtk_] scale_] set_has_origin
-------------------------------
+set-has-origin
+--------------
 
-If *has_origin* is set to `1` (the default), the scale will highlight the part of the scale between the origin (bottom or left side) of the scale and the current value.
+If *$has-origin* is set to `True` (the default), the scale will highlight the part of the trough between the origin (bottom or left side) and the current value.
 
-    method gtk_scale_set_has_origin ( Int $has_origin )
+    method set-has-origin ( Bool $has_origin )
 
-  * Int $has_origin; `1` if the scale has an origin
+  * Int $has_origin; `True` if the scale has an origin
 
-[[gtk_] scale_] get_has_origin
-------------------------------
+get-has-origin
+--------------
 
 Returns whether the scale has an origin.
 
-Returns: `1` if the scale has an origin.
+Returns: `True` if the scale has an origin.
 
-    method gtk_scale_get_has_origin ( --> Int  )
+    method get-has-origin ( --> Bool )
 
-[[gtk_] scale_] set_value_pos
------------------------------
+set-value-pos
+-------------
 
 Sets the position in which the current value is displayed.
 
-    method gtk_scale_set_value_pos ( GtkPositionType $pos )
+    method set-value-pos ( GtkPositionType $pos )
 
   * GtkPositionType $pos; the position in which the current value is displayed
 
-[[gtk_] scale_] get_value_pos
------------------------------
+get-value-pos
+-------------
 
 Gets the position in which the current value is displayed.
 
 Returns: the position in which the current value is displayed
 
-    method gtk_scale_get_value_pos ( --> GtkPositionType  )
+    method get-value-pos ( --> GtkPositionType )
 
-[[gtk_] scale_] add_mark
-------------------------
+add-mark
+--------
 
-Adds a mark at *value*.
+Adds a mark at *value*. A mark is indicated visually by drawing a tick mark next to the scale, and GTK+ makes it easy for the user to position the scale exactly at the marks value. If *markup* is not `Any`, text is shown next to the tick mark. To remove marks from a scale, use `gtk_scale_clear_marks()`.
 
-A mark is indicated visually by drawing a tick mark next to the scale, and GTK+ makes it easy for the user to position the scale exactly at the marks value.
-
-If *markup* is not `Any`, text is shown next to the tick mark.
-
-To remove marks from a scale, use `gtk_scale_clear_marks()`.
-
-    method gtk_scale_add_mark ( Num $value, GtkPositionType $position, Str $markup )
+    method add-mark ( Num $value, GtkPositionType $position, Str $markup )
 
   * Num $value; the value at which the mark is placed, must be between the lower and upper limits of the scales’ adjustment
 
-  * GtkPositionType $position; where to draw the mark. For a horizontal scale, **GTK_POS_TOP** and `GTK_POS_LEFT` are drawn above the scale, anything else below. For a vertical scale, **GTK_POS_LEFT** and `GTK_POS_TOP` are drawn to the left of the scale, anything else to the right.
+  * GtkPositionType $position; where to draw the mark. For a horizontal scale, `GTK_POS_TOP` and `GTK_POS_LEFT` are drawn above the scale, anything else below. For a vertical scale, `GTK_POS_LEFT` and `GTK_POS_TOP` are drawn to the left of the scale, anything else to the right.
 
-  * Str $markup; (allow-none): Text to be shown at the mark, using [Pango markup][PangoMarkupFormat], or `Any`
+  * Str $markup; Text to be shown at the mark, using [Pango markup](https://developer.gnome.org/pygtk/stable/pango-markup-language.html), or undefined
 
-[[gtk_] scale_] clear_marks
----------------------------
+clear-marks
+-----------
 
 Removes any marks that have been added with `gtk_scale_add_mark()`.
 
-    method gtk_scale_clear_marks ( )
+    method clear-marks ( )
 
 Signals
 =======
