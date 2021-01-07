@@ -65,6 +65,12 @@ If the scale is displaying the value (see  I<draw-value>), there is subnode with
   unit class Gnome::Gtk3::Scale;
   also is Gnome::Gtk3::Range;
 
+
+=head2 Uml Diagram
+
+![](plantuml/Scale.svg)
+
+
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -133,10 +139,14 @@ my Bool $signals-added = False;
 =begin pod
 =head1 Methods
 =head2 new
+=head3 default, no options
 
 Creates a new B<Gnome::Gtk3::Scale> based on ahorizontal orientation and an undefined adjustment. See below.
 
   multi method new ( )
+
+
+=head3 :orientation, :adjustment
 
 Creates a new B<Gnome::Gtk3::Scale> based on an orientation and adjustment.
 
@@ -145,13 +155,14 @@ Creates a new B<Gnome::Gtk3::Scale> based on an orientation and adjustment.
 =item $orientation; the scale’s orientation.
 =item $adjustment; a value of type B<Gnome::Gtk3::Adjustment> which sets the range of the scale, or NULL to create a new adjustment.
 
+=head3 :orientation, :min, :max, :step
 
 Creates a new scale widget with the given orientation that lets the user input a number between I<$min> and I<$max> (including I<$min> and I<$max>) with the increment I<step>.  I<step> must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
 
 Note that the way in which the precision is derived works best if I<$step> is a power of ten. If the resulting precision is not suitable for your needs, use C<gtk_scale_set_digits()> to correct it.
 
   multi method new (
-    GtkOrientation :$orientation!, Num $min!, Num $max!, Num $step!
+    GtkOrientation :$orientation!, Num :$min!, Num :$max!, Num :$step!
   )
 
 =item $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
@@ -159,13 +170,20 @@ Note that the way in which the precision is derived works best if I<$step> is a 
 =item $max; maximum value
 =item $step; step increment (tick size) used with keyboard shortcuts
 
-  multi method new ( :$native-object! )
 
-Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
+
+  multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
-Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
 =end pod
 
@@ -201,15 +219,7 @@ submethod BUILD ( *%options ) {
           %options<min>.Num, %options<max>.Num, %options<step>.Num
         );
       }
-#`{{
-      elsif %options.keys.elems {
-        die X::Gnome.new(
-          :message('Unsupported options for ' ~ self.^name ~
-                   ': ' ~ %options.keys.join(', ')
-                  )
-        );
-      }
-}}
+
       elsif %options<orientation>.defined and ? %options<adjustment>.defined {
         # get the native adjustment
         $no = %options<adjustment>;

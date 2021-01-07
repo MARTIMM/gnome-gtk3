@@ -64,6 +64,11 @@ Declaration
     unit class Gnome::Gtk3::Scale;
     also is Gnome::Gtk3::Range;
 
+Uml Diagram
+-----------
+
+![](plantuml/Scale.svg)
+
 Inheriting this class
 ---------------------
 
@@ -113,9 +118,13 @@ Methods
 new
 ---
 
+### default, no options
+
 Creates a new **Gnome::Gtk3::Scale** based on ahorizontal orientation and an undefined adjustment. See below.
 
     multi method new ( )
+
+### :orientation, :adjustment
 
 Creates a new **Gnome::Gtk3::Scale** based on an orientation and adjustment.
 
@@ -125,12 +134,14 @@ Creates a new **Gnome::Gtk3::Scale** based on an orientation and adjustment.
 
   * $adjustment; a value of type **Gnome::Gtk3::Adjustment** which sets the range of the scale, or NULL to create a new adjustment.
 
+### :orientation, :min, :max, :step
+
 Creates a new scale widget with the given orientation that lets the user input a number between *$min* and *$max* (including *$min* and *$max*) with the increment *step*. *step* must be nonzero; it’s the distance the slider moves when using the arrow keys to adjust the scale value.
 
 Note that the way in which the precision is derived works best if *$step* is a power of ten. If the resulting precision is not suitable for your needs, use `gtk_scale_set_digits()` to correct it.
 
     multi method new (
-      GtkOrientation :$orientation!, Num $min!, Num $max!, Num $step!
+      GtkOrientation :$orientation!, Num :$min!, Num :$max!, Num :$step!
     )
 
   * $orientation; the scale’s orientation. Value is a GtkOrientation enum from GtkEnums.
@@ -141,13 +152,17 @@ Note that the way in which the precision is derived works best if *$step* is a p
 
   * $step; step increment (tick size) used with keyboard shortcuts
 
-    multi method new ( :$native-object! )
+### :native-object
 
-Create an object using a native object from elsewhere. See also Gnome::GObject::Object.
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
+
+    multi method new ( N-GObject :$native-object! )
+
+### :build-id
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also Gnome::GObject::Object.
 
 set-digits
 ----------
