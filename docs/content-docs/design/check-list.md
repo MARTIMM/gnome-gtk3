@@ -48,9 +48,8 @@ Legend for head of table
   * **ts**: Subroutines and Methods.
   * **te**: Signals and events.
   * **tp**: Properties.
-* 12: Issue number 12; check use of types and modify.
-* 14: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
-* en: Test cut off if raku_test_all env variable is not set
+* **12**: Issue number 12; check use of types and modify.
+* **14**: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -64,14 +63,14 @@ table {
 }
 </style>
 
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|en|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓|
 Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
 AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
-Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓| ✓|
+Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
@@ -109,7 +108,7 @@ Grid                      |  | ✓|  |  |  |  |  |  |  |  |  |
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |
-Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅗| ✓| ✓| ✓|
+Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅗| ✓| ✓|
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
@@ -133,7 +132,7 @@ RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 Range                     |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooserMenu         |  | ✓|  |  |  |  |  |  |  |  |  |
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |
-Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓| ✓|
+Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
@@ -167,7 +166,7 @@ Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|en| -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14| -->
 
 <br/>
 
@@ -293,8 +292,8 @@ WindowGroup|
 
 <br/>
 
-| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Device                    |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |
 Events                    |  |  |  |  |  |  |  |  |  |  |  |
@@ -307,8 +306,8 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|
+| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
 Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
 InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
 Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|
@@ -318,8 +317,8 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 
 <br/>
 
-| Gnome::Glib             |T |dm|db|ds|ts|12|
-|-------------------------|--|--|--|--|--|--|
+| Gnome::Glib             |T |dm|db|ds|ts|12|14|
+|-------------------------|--|--|--|--|--|--|--|
 Error                     |Tl| ✓| ✓| ✓| ✓| ✓|
 List                      |Tl| ✓| ✓| ✓| ✓| ✓|
 Main                      |S | ✓| ✓| ✓| ✓| ✓|
@@ -330,8 +329,8 @@ SList                     |Tl| ✓| ✓| ✓| ✓| ✓|
 
 <br/>
 
-| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|
-|-------------------------|--|--|--|--|--|--|--|--|
+| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|
 Action                    |R |  |  |  |  |  |  |  |
 ActionMap                 |R |  |  |  |  |  |  |  |
 Application               |  |  |  |  |  |  |  |  |
@@ -345,8 +344,8 @@ SimpleAction              |  |  |  |  |  |  |  |  |
 
 <br/>
 
-| Gnome::N                |T |dm|db|ds|ts|12|
-|-------------------------|--|--|--|--|--|--|
+| Gnome::N                |T |dm|db|ds|ts|12|14|
+|-------------------------|--|--|--|--|--|--|--|
 GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|
 N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|
 NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|
@@ -355,8 +354,8 @@ X                         |  |  |  |  |  | ✓|
 
 <br/>
 
-| Gnome::Cairo            |T |dm|db|ds|ts|12|
-|-------------------------|--|--|--|--|--|--|
+| Gnome::Cairo            |T |dm|db|ds|ts|12|14|
+|-------------------------|--|--|--|--|--|--|--|
 Enums                     |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |
@@ -371,8 +370,8 @@ Types                     |  |  |  |  |  |  |
 <br/>
 
 <!--
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|12|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|
+| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|12|14|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
 **Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 Object                    |  |  |  |  |  |  |  |  |  |  |
 -->
