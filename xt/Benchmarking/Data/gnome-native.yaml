@@ -1,0 +1,32 @@
+---
+Raku-2020.12.32: 
+  "Gnome::N-0.18.5.3": 
+    NativeLib-0.2.1.1: 
+      test0: 
+        rps: 122512.83628242149
+        count: 100000
+        total-time: 816241
+        mean: 8.16241
+        test-text: "direct without cache"
+        total-stime: 39949
+        total-utime: 776292
+      test-time: "2021-01-11T13:48:33.502425Z"
+    NativeLib-0.2.1: 
+      test0: 
+        total-utime: 760667
+        total-stime: 30818
+        total-time: 791485
+        test-text: "calculated with cache"
+        rps: 126344.78227635393
+        count: 100000
+        mean: 7.91485
+      test-time: "2021-01-10T19:07:30.255880Z"
+      test1: 
+        total-utime: 768666
+        mean: 7.98709
+        count: 100000
+        total-time: 798709
+        rps: 125202.04479979567
+        test-text: "direct without cache"
+        total-stime: 30043
+...
