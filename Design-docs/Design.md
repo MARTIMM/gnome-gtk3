@@ -477,12 +477,16 @@ GInterface
 ╰── GtkToolShell                                      tsh
 ```
 
+
 After plotting the dependencies on **GtkBuildable**, it looks as if the class can be inherited by the highest class where it is needed, such as **Widget** and all child widgets will then have the methods available of that interface. After plotting all interface modules in above chart, the conclusion taken above is correct.
-Also the interface module cannot be a role type anymore when it uses the **TopLevelInterfaceSupport** class. This is because there will be clashes when another interface module also inherits from the **TopLevelInterfaceSupport** class.
+Also the interface module will have a role type.
 
 ## Structure of modules, plan B
 
 ```plantuml
+'skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+'set namespaceSeparator ::
 
 scale 0.8
 
@@ -619,20 +623,22 @@ note left of UserClass
   the parents
 end note
 
-class TopLevelInterfaceSupport < Catch all interface > {
-  _interface()
-}
+'class TopLevelInterfaceSupport < Catch all interface > {
+'  _interface()
+'}
 
-note right of TopLevelInterfaceSupport
-  Not sure if this support class
-  is needed
-end note
+'note right of TopLevelInterfaceSupport
+'  Not sure if this support class
+'  is needed
+'end note
 
 interface SomeGxxxInterface < Interface > {
   _interface()
 }
+Interface  SomeGxxxInterface<Interface>
+class SomeGxxxInterface <<(R,#80ffff)>>
 
-note right of SomeGxxxInterface
+note top of SomeGxxxInterface
   There wil be no <b>new()</b>, <b>BUILD()</b>
   or any use of storage of native
   objects.
@@ -648,8 +654,8 @@ TopLevelClassSupport <|-- SomeGxxxClassTop
 SomeGxxxClassTop <|-- SomeGxxxClass
 SomeGxxxClass <|-- UserClass
 
-TopLevelInterfaceSupport <|-- SomeGxxxInterface
-SomeGxxxInterface <|-- SomeGxxxClass
+'TopLevelInterfaceSupport <|-- SomeGxxxInterface
+SomeGxxxClass .|> SomeGxxxInterface
 ```
 
 ## Definitions of interfaces and class inheritance
