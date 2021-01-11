@@ -20,6 +20,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $fcb.set-title('abc');
   is $fcb.get-title, 'abc', '.set-title() / .get-title()';

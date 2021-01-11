@@ -16,6 +16,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $r.set_transition_type(GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT);
   is GtkRevealerTransitionType($r.get_transition_type),

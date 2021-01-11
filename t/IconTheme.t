@@ -24,6 +24,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Glib::List $l;
   $l .= new(:native-object($it.list-icons('Places')));

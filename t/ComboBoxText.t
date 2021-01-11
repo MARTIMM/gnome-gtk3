@@ -14,6 +14,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $cbt.append-text('Amerika');
   $cbt.append-text('Australia');

@@ -16,6 +16,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $ff.set-name('text documents');
   is $ff.get-name, 'text documents', '.get-name() / .set-name()';

@@ -17,6 +17,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $m.gtk-menu-reposition;
   is $m.get-active, N-GObject, '.gtk-menu-reposition() / .get-active()';

@@ -18,6 +18,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $pb.set-text('My pb');
   is $pb.get-text, 'My pb', '.set-text() / .get-text()';

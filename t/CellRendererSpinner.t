@@ -15,6 +15,12 @@ subtest 'ISA test', {
   isa-ok $crs, Gnome::Gtk3::CellRendererSpinner, '.new';
 }
 
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {

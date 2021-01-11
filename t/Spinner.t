@@ -18,6 +18,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   $s.spinner-start;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
@@ -33,6 +39,7 @@ subtest 'Properties ...', {
 }
 
 #`{{
+
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 }

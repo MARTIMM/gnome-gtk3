@@ -15,6 +15,12 @@ subtest 'ISA test', {
   isa-ok $cra, Gnome::Gtk3::CellRendererAccel, '.new';
 }
 
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {

@@ -19,6 +19,12 @@ isa-ok $aw, Gnome::Gtk3::ApplicationWindow, '.new()';
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 }
 

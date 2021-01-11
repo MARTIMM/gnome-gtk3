@@ -26,6 +26,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Interface FileChooser', {
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
   is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,

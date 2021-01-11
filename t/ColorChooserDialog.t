@@ -21,6 +21,12 @@ subtest 'ISA tests', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Interface ColorChooser', {
   $ccd .= new(:title('my color chooser dialog'));
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog;

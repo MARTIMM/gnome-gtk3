@@ -16,6 +16,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::ListBox $lb-left .= new;
   $lb-left.set-name('leftListbox');

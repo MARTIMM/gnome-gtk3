@@ -40,6 +40,12 @@ subtest 'ISA tests', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Button as container', {
   $b .= new(:label('xyz'));
   is $b.get-label, 'xyz', 'gtk_button_get_label()';

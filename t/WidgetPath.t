@@ -28,6 +28,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 #  $wp.append-type(GTK_TYPE_WINDOW);
   my Gnome::Gtk3::Window $w .= new;

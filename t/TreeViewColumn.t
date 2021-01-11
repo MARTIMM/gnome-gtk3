@@ -27,6 +27,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 #  $crt .= new;
 #  $tvc.add-attribute( $crt, 'text', 0);

@@ -32,6 +32,12 @@ subtest 'ISA tests', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'menu item labels and such', {
   my Gnome::Gtk3::MenuItem $mi .= new(:label<Open>);
   isa-ok $mi, Gnome::Gtk3::MenuItem, 'MenuItem with label';

@@ -17,6 +17,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   is GtkPackDirection($mb.get-pack-direction), GTK_PACK_DIRECTION_LTR,
     '.get-pack-direction()';

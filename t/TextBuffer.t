@@ -21,6 +21,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   is $tb.get-line-count, 1, '.get-line-count(), 1 line';
   my Str $text = "hoeperdepoep\nzat op de stoep\n";

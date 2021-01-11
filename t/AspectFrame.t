@@ -22,6 +22,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
   is $af.get-label, 'blub', '.set-label() / .get-label()';
   $af.set-label-align( 0.8e0, 0.03e0);

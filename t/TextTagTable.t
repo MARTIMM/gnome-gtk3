@@ -20,6 +20,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::TextTag $tt .= new(:tag-name<my-tt>);
   ok $ttt.gtk-text-tag-table-add($tt), '.gtk-text-tag-table-add()';

@@ -25,6 +25,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Style context manipulations', {
   my Gnome::Gdk3::Screen $screen .= new;
   my Gnome::Gtk3::StyleContext $sc .= new;

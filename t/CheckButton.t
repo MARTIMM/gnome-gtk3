@@ -18,6 +18,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Inherit Button', {
   $cb.set-label('set bold');
   is $cb.get-label, 'set bold', '.set-label() / .get-label()';

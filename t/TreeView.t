@@ -25,6 +25,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::ListStore $ls2 .= new(:native-object($tv.get-model));
   is $ls.iter-n-children(Any), 0, '.get-model()';

@@ -36,6 +36,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   is $a.get-value, 10e0, '.get-value()';
   $a.clamp-page( 11e0, 1e2);

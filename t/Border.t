@@ -14,6 +14,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Border manipulations', {
   my Gnome::Gtk3::Border $b1 .= new;
   my Gnome::Gtk3::Border $b2 .= new( :10left, :10right, :5top, :5bottom);

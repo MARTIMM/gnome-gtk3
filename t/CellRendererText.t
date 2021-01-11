@@ -27,6 +27,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Inherit CellRenderer', {
   is GtkSizeRequestMode($crt.get-request-mode),
      GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH, '.get-request-mode()';

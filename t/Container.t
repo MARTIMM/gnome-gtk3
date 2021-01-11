@@ -18,6 +18,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Inherit ...', {
   is $b.get-border-width, 0, 'border is 0';
   $b.set-border-width(10);

@@ -23,6 +23,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $f.set-label('blah');
   is $f.get-label, 'blah', '.set-label() / .get-label()';

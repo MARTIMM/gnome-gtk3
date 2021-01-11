@@ -29,6 +29,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::Adjustment $adj .= new(
     :value(11.2), :lower(10), :upper(40), :step-increment(0.1),

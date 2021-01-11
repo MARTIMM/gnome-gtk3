@@ -22,6 +22,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 class X {
 
   method test-label ( N-GObject $nw, Str :$test, Str :$testing ) {

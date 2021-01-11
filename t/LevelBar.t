@@ -17,6 +17,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $lb .= new( :min(2.3e0), :max(3.8e0));
   is $lb.get-min-value, 2.3e0, '.new( :min, :max) / .get-min-value()';

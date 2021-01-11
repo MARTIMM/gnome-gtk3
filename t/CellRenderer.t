@@ -8,4 +8,10 @@ ok 1, 'loads ok';
 # rest is tested using CellRendererText and friends
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 done-testing;

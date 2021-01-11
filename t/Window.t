@@ -16,6 +16,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::Window $w .= new;
   is GtkWindowType($w.get-window-type), GTK_WINDOW_TOPLEVEL,

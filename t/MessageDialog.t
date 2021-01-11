@@ -25,6 +25,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $md.set-markup('aba<i>ca</i>dabra');
   $md.format-secondary-text('En een gewone mededeling');

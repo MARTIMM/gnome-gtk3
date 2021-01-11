@@ -17,6 +17,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $mb.set-direction(GTK_ARROW_RIGHT);
   is GtkArrowType($mb.get-direction), GTK_ARROW_RIGHT,

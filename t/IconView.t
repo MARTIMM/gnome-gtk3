@@ -57,10 +57,15 @@ subtest 'ISA test', {
   $iv .= new;
   isa-ok $iv, Gnome::Gtk3::IconView, '.new()';
 
-
   my Gnome::Gtk3::TreeStore $ts .= new(:field-types(G_TYPE_STRING));
   $iv .= new(:model($ts));
   isa-ok $iv, Gnome::Gtk3::IconView, '.new(:model)';
+}
+
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
 }
 
 #-------------------------------------------------------------------------------

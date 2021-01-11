@@ -36,6 +36,12 @@ subtest 'ISA tests', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Add ui from file to builder', {
   my Gnome::Gtk3::Builder $builder .= new;
 

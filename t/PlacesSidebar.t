@@ -32,6 +32,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $ps.set-open-flags(GTK_PLACES_OPEN_NORMAL +| GTK_PLACES_OPEN_NEW_TAB);
   is $ps.get-open-flags, GTK_PLACES_OPEN_NORMAL +| GTK_PLACES_OPEN_NEW_TAB,

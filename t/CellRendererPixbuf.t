@@ -15,6 +15,12 @@ subtest 'ISA test', {
   isa-ok $crp, Gnome::Gtk3::CellRendererPixbuf, '.new';
 }
 
+#-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {

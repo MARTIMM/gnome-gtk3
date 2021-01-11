@@ -21,6 +21,12 @@ subtest 'ISA test', {
 }
 
 #-------------------------------------------------------------------------------
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
   my Gnome::Gtk3::TreeIter $ti-copy .= new(:native-object($ti.copy));
