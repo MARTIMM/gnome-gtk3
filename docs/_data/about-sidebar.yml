@@ -1,0 +1,16 @@
+# https://jekyllrb.com/tutorials/navigation/
+- bar_title: "About"
+  bar_menu:
+  - title: "About"
+    url: "/content-docs/about/about.html"
+  - title: "Release notes"
+    url: "/content-docs/about/release-notes-gtk3.html"
+
+- bar_title: "Licenses"
+  bar_menu:
+  - title: "LGPL"
+    url: "/content-docs/about/license-lgpl.txt"
+  - title: "Artistic"
+    url: "/content-docs/about/license-art.txt"
+  - title: "Documentation"
+    url: "/content-docs/about/license-doc.txt"

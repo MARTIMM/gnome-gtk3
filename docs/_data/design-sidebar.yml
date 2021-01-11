@@ -8,14 +8,14 @@
   - title: "Gtk+ types and Raku"
     url: "/content-docs/design/gtk-types.html"
 
-- bar_title: "Change notes"
+- bar_title: "Other notes"
   bar_menu:
   - title: "Todo"
     url: "/content-docs/design/todo.html"
   - title: "Done"
     url: "/content-docs/design/todo-done.html"
-  - title: "Change log"
-    url: "/content-docs/design/change-log.html"
+#  - title: "Change log"
+#    url: "/content-docs/design/change-log.html"
   - title: "Check list"
     url: "/content-docs/design/check-list.html"
 

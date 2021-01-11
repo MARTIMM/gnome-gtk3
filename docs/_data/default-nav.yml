@@ -10,7 +10,7 @@ nav_menus:
     - title: "Examples"
       url: "/content-docs/examples.html"
     - title: "About"
-      url: '/content-docs/about.html'
+      url: '/content-docs/about/about.html'
       right: true
     - title: "Design"
       url: "/content-docs/design.html"

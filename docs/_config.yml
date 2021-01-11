@@ -82,7 +82,7 @@ highlighter: rouge
 defaults:
   -
     scope:
-      path: "content-docs/reference/Gtk3"
+      path: content-docs/reference/Gtk3
     values:
       layout: reference-page
       title: References to the Gtk3 package modules
@@ -90,7 +90,7 @@ defaults:
       sidebar_menu: references-gtk3-sidebar
   -
     scope:
-      path: "content-docs/reference/Gdk3"
+      path: content-docs/reference/Gdk3
     values:
       layout: reference-page
       title: References to the Gdk3 package modules
