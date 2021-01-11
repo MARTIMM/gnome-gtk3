@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-01-11 0.34.9:
+- Test cut off by check of `raku_test_all` env variable to shorten total test time.
+
 #### 2021-01-07 0.34.8:
 - Document fixes of Scale module and add UML diagram.
 
