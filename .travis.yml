@@ -1,16 +1,13 @@
 branches:
   only:
-#    - master
-    - module
+    - master
+#    - module
 #    - xyz
 
 language: perl6
 
 perl6:
   - latest
-
-before_install:
-  - sudo apt-get -y install libgtk-3-0
 
 install:
   - rakudobrew build zef
