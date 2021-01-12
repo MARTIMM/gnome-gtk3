@@ -1,8 +1,15 @@
 branches:
   only:
-    - master
-#    - module
+#    - master
+    - module
 #    - xyz
+
+env:
+  - raku_test_all=1
+
+dist: xenial
+services:
+  - xvfb
 
 language: perl6
 
