@@ -104,7 +104,7 @@ FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
 Frame                     |  |  |  |  |  |  |  |  |  |  |  |
-Grid                      |  | ✓|  |  |  |  |  |  |  |  |  |
+Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |

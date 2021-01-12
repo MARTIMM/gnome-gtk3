@@ -29,7 +29,7 @@ unless %*ENV<raku_test_all>:exists {
 subtest 'Manipulations', {
 
   my Gnome::Gtk3::Button $button .= new(:label('press here'));
-  $g.gtk-grid-attach( $button, 0, 0, 1, 1);
+  $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 1, '.gtk-grid-attach()';
   $gl.clear-object;
@@ -40,7 +40,7 @@ subtest 'Manipulations', {
 #  is $gl.g-list-length, 0, '.remove-row()';
 
   $button .= new(:label('press here'));
-  $g.grid-attach( $button, 0, 0, 1, 1);
+  $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:native-object($g.get-children));
   is $gl.g-list-length, 1, '.grid-attach() testing _fallback()';
   $gl.clear-object;
