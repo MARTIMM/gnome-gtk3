@@ -364,7 +364,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $no-cnv = '';
     $no-cnv = Q:q:to/EOCNV/ if $pod-args ~~ / 'N-GObject' /;
       #my $no = $...;
-      #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
 
       EOCNV
 
@@ -990,7 +990,6 @@ sub substitute-in-template (
       Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
         multi method new ( Str :$build-id! )
-      =end comment
 
       =end pod
 
@@ -1019,8 +1018,7 @@ sub substitute-in-template (
             my $no;
             if ? %options<___x___> {
               $no = %options<___x___>;
-              $no .= get-native-object-no-reffing
-                if $no.^can('get-native-object-no-reffing');
+              $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
               #$no = _BASE-SUBNAME_new___x___($no);
             }
 
@@ -1069,6 +1067,8 @@ sub substitute-in-template (
       # check for gtk_, gdk_, g_, pango_, cairo_ !!!
         try { $s = &::("gtk_$native-sub"); } unless ?$s;
         try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+
+        #$s = self._..._interface($native-sub) unless ?$s;
 
         self.set-class-name-of-sub('LIBCLASSNAME');
         $s = callsame unless ?$s;
