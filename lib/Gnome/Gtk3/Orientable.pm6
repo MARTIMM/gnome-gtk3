@@ -11,13 +11,11 @@ An interface for flippable widgets
 =head1 Description
 
 
-The B<Gnome::Gtk3::Orientable> interface is implemented by all widgets that can be oriented horizontally or vertically. Historically, such widgets have been realized as subclasses of a common base class (e.g B<Gnome::Gtk3::Box>/B<Gnome::Gtk3::HBox>/B<Gnome::Gtk3::VBox> or B<Gnome::Gtk3::Scale>/B<Gnome::Gtk3::HScale>/B<Gnome::Gtk3::VScale>). B<Gnome::Gtk3::Orientable> is more flexible in that it allows the orientation to be changed at runtime, allowing the widgets to “flip”.
+The B<Gnome::Gtk3::Orientable> interface is implemented by all widgets that can be oriented horizontally or vertically. Historically, such widgets have been realized as subclasses of a common base class (e.g B<HBox>/B<VBox> or B<HScale>/B<VScale>). B<Gnome::Gtk3::Orientable> is more flexible in that it allows the orientation to be changed at runtime, allowing the widgets to “flip”.
+
+Note that B<HBox>/B<VBox> or B<HScale>/B<VScale> are not implemented in this Raku package because these classes are deprecated.
 
 B<Gnome::Gtk3::Orientable> was introduced in GTK+ 2.16.
-
-=head2 Known implementations
-
-Gnome::Gtk3::Orientable is implemented by Gnome::Gtk3::AppChooserWidget, Gnome::Gtk3::Box, Gnome::Gtk3::ButtonBox, Gnome::Gtk3::CellAreaBox, Gnome::Gtk3::CellRendererProgress, Gnome::Gtk3::CellView, Gnome::Gtk3::ColorChooserWidget, Gnome::Gtk3::ColorSelection, Gnome::Gtk3::FileChooserButton, Gnome::Gtk3::FileChooserWidget, Gnome::Gtk3::FlowBox, Gnome::Gtk3::FontChooserWidget, Gnome::Gtk3::FontSelection, Gnome::Gtk3::Grid, Gnome::Gtk3::InfoBar, Gnome::Gtk3::LevelBar, Gnome::Gtk3::Paned, Gnome::Gtk3::ProgressBar, Gnome::Gtk3::Range, Gnome::Gtk3::RecentChooserWidget, Gnome::Gtk3::Scale, Gnome::Gtk3::ScaleButton, Gnome::Gtk3::Scrollbar, Gnome::Gtk3::Separator, Gnome::Gtk3::ShortcutsGroup, Gnome::Gtk3::ShortcutsSection, Gnome::Gtk3::ShortcutsShortcut, Gnome::Gtk3::SpinButton, Gnome::Gtk3::StackSwitcher, Gnome::Gtk3::Statusbar, Gnome::Gtk3::ToolPalette, Gnome::Gtk3::Toolbar and Gnome::Gtk3::VolumeButton.
 
 
 =head1 Synopsis
@@ -38,6 +36,8 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 
+use Gnome::Gtk3::Enums;
+
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkorientable.h
 # https://developer.gnome.org/gtk3/stable/gtk3-Orientable.html
@@ -50,7 +50,7 @@ unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
 
 #TM:1:new():interfacing
 # interfaces are not instantiated
-submethod BUILD ( *%options ) { }
+#submethod BUILD ( *%options ) { }
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
@@ -68,32 +68,69 @@ method _orientable_interface ( Str $native-sub --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_orientable_set_orientation:
+#TM:1:set-orientation:
 =begin pod
-=head2 [[gtk_] orientable_] set_orientation
+=head2 set-orientation
 
-  method gtk_orientable_get_orientation ( GtkOrientation )
+  method set-orientation ( GtkOrientation $orientation )
 
 Sets the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
 
 =end pod
+
+method set-orientation ( GtkOrientation $orientation ) {
+  gtk_orientable_set_orientation(
+    self.get-native-object-no-reffing, $orientation.value
+  );
+}
 
 sub gtk_orientable_set_orientation ( N-GObject $orientable, int32 $orientation )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_orientable_get_orientation:
+#TM:1:get-orientation:
 =begin pod
-=head2 [[gtk_] orientable_] get_orientation
+=head2 get-orientation
 
-  method gtk_orientable_get_orientation ( --> GtkOrientation $orientation )
+  method get-orientation ( --> GtkOrientation )
 
 Retrieves the orientation of the I<orientable>.
 
 =end pod
 
+method get-orientation ( --> GtkOrientation ) {
+  GtkOrientation(
+    gtk_orientable_get_orientation(self.get-native-object-no-reffing)
+  );
+}
+
 sub gtk_orientable_get_orientation ( N-GObject $orientable )
   returns int32
   is native(&gtk-lib)
   { * }
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.g-object-get-property( 'label', $gv);
+  $gv.g-value-set-string('my text label');
+
+=head2 Supported properties
+
+=comment #TP:0:orientation:
+=head3 Orientation
+
+The orientation of the orientable.
+Widget type: GTK_TYPE_ORIENTATION
+
+The B<Gnome::GObject::Value> type of property I<orientation> is C<G_TYPE_ENUM>.
+=end pod
