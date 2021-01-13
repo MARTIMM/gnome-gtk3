@@ -105,7 +105,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkStackSwitcher            StackSwitcher
 │   │   │   │   ├── GtkStatusbar                Statusbar
 │   │   │   │   ╰─✗ GtkVBox                     ⛔
-│   │   │   ├── GtkFixed
+│   │   │   ├── GtkFixed                        Fixed
 │   │   │   ├── GtkFlowBox
 │   │   │   ├── GtkGrid                         Grid
 │   │   │   ├── GtkHeaderBar

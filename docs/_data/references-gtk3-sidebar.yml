@@ -137,63 +137,47 @@
     test: 1
   - title: "CssProvider"
     url: "/content-docs/reference/Gtk3/CssProvider.html"
-    doc: 1
-    test: 1
   - title: "Dialog"
     url: "/content-docs/reference/Gtk3/Dialog.html"
     type: widget
-    doc: 2
-    test: 1
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
     type: widget
-    doc: 1
-    test: 1
   - title: "Enums"
     type: standalone
     url: "/content-docs/reference/Gtk3/Enums.html"
-    doc: 1
-    test: 1
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     type: interface
-    doc: 0
   - title: "FileChooserButton"
     url: "/content-docs/reference/Gtk3/FileChooserButton.html"
     type: widget
   - title: "FileChooserDialog"
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
     type: widget
-    doc: 2
-    test: 2
   - title: "FileFilter"
     url: "/content-docs/reference/Gtk3/FileFilter.html"
-    doc: 1
-    test: 1
+  - title: "Fixed"
+    url: '/content-docs/reference/Gtk3/Fixed.html'
+    type: widget
   - title: "Frame"
     url: '/content-docs/reference/Gtk3/Frame.html'
     type: widget
-    doc: 3
-    test: 31
   - title: "Grid"
-    type: widget
     url: '/content-docs/reference/Gtk3/Grid.html'
-    doc: 1
-    test: 1
+    type: widget
   - title: "Image"
-    type: widget
     url: "/content-docs/reference/Gtk3/Image.html"
-    doc: 1
-    test: 1
+    type: widget
   - title: "IconTheme"
-    type: object
     url: "/content-docs/reference/Gtk3/IconTheme.html"
+    type: object
   - title: "IconView"
-    type: widget
     url: "/content-docs/reference/Gtk3/IconView.html"
-  - title: "Label"
     type: widget
+  - title: "Label"
     url: "/content-docs/reference/Gtk3/Label.html"
+    type: widget
     doc: 1
     test: 1
   - title: "LevelBar"

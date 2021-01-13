@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-01-11 0.35.0:
+- Grid and Orientable speedup with new methods. Tests and benchmarking added and docs improved.
+- New module **Gnome::Gtk3::Fixed**
 
 #### 2021-01-11 0.34.9:
 - Test cut off by check of `raku_test_all` env variable to shorten total test time.
@@ -34,7 +37,7 @@ layout: sidebar
 
 #### 2020-11-24 0.34.1:
 - Doc changes;
-  - using Gnome::N::GlibToRakuTypes, types are replaced with types from that module giving a benefit of central coordination of glib types while keeping the native subs as closely as they are described.
+  - using **Gnome::N::GlibToRakuTypes**, types are replaced with types from that module giving a benefit of central coordination of glib types while keeping the native subs as closely as they are described.
 - AboutDialog; changed some native subs to get rid of the use of CArray[] looking from the users side.
 - Bug fix in TreeModel. `.gtk_tree_model_get_column_type()` should return uint32 instead of int32 because returned type is unsigned. This will be replaced by GType from GlibToRakuTypes mentioned above.
 

@@ -74,7 +74,7 @@ Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓
 Bin                       |  |  |  |  |  |  |  |  |  |  |  |
 Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
 Box                       |  |  |  |  |  |  |  |  |  |  |  |
-Buildable                 |R |  |  |  |  |  |  |  |  |  |  |
+Buildable                 |R | ✗|  |  |  |  |  |  |  |  |  |
 Builder                   |  |  |  |  |  |  |  |  |  |  |  |
 Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |
 CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |
@@ -88,7 +88,7 @@ CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
 CheckButton               |  | ✓|  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooser              |R |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |R | ✗|  |  |  |  |  |  |  |  |  |
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
@@ -99,10 +99,11 @@ Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |
 DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |
-FileChooser               |R |  |  |  |  |  |  |  |  |  |  |
+FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
+Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 Frame                     |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
@@ -122,7 +123,7 @@ MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
 MessageDialog             |  | ✓|  |  |  |  |  |  |  |  |  |
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |
 Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
-Orientable                |R |  |  |  |  |  |  |  |  |  |  |
+Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |
 PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |
 Popover                   |  |  |  |  |  |  |  |  |  |  |  |
@@ -144,7 +145,7 @@ StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
 StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
 Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
-StyleProvider             |R |  |  |  |  |  |  |  |  |  |  |
+StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |
 TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |
 TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |
@@ -175,10 +176,10 @@ AccelGroup                |
 AccelLabel                |
 AccelMap                  |
 Accessible                |
-Actionable                |R |
+Actionable                |R | ✗|
 ActionBar                 |
 AppChooserButton          |
-AppChooser                |R |
+AppChooser                |R | ✗|
 AppChooserWidget          |
 ButtonBox                 |
 Calendar|
@@ -203,7 +204,6 @@ EventControllerScroll|
 Expander|
 FileChooserButton|
 FileChooserWidget|
-Fixed|
 FlowBox|
 FlowBoxChild|
 FontButton|
