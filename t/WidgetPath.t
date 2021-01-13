@@ -62,7 +62,14 @@ subtest 'Manipulations', {
   is $wp.iter-get-name(1), 'top-grid', $wp.iter-get-name(1);
   is $wp.iter-get-name(2), 'start-button', $wp.iter-get-name(2);
 
-  is $wp.iter_get_object_name(0), 'window', $wp.iter-get-object_name(0);
+  if %*ENV<travis-ci-tests> {
+    skip 'travis differs, older GTK+ version', 1;
+  }
+
+  else {
+    is $wp.iter_get_object_name(0), 'window', $wp.iter-get-object_name(0);
+  }
+
   is $wp.iter_get_object_name(1), 'grid', $wp.iter-get-object_name(1);
   is $wp.iter_get_object_name(2), 'button', $wp.iter-get-object_name(2);
 

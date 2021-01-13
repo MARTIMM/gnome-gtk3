@@ -65,7 +65,15 @@ subtest 'Manipulations', {
   is $b.get-allocated-height, 20, '.get-allocated-height()';
 
   lives-ok { $b.get-allocated-baseline;}, '.get-allocated-baseline()';
-  lives-ok { $b.get-allocated-size;}, '.get-allocated-size()';
+
+  if %*ENV<travis-ci-tests> {
+    skip 'travis differs, older GTK+ version', 1;
+  }
+
+  else {
+    lives-ok { $b.get-allocated-size;}, '.get-allocated-size()';
+  }
+
   lives-ok { $b.get-allocation;}, '.get-allocation()';
   lives-ok { $b.get-clip;}, '.get-clip()';
   lives-ok { $b.get-toplevel;}, '.get-toplevel()';

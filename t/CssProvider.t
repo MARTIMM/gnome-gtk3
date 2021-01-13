@@ -72,7 +72,14 @@ subtest 'Manipulations', {
          "error domain: $quark.to-string($e.domain())";
       is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
          'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
-      is $e.message, '<data>:3:8Invalid name of pseudo-class', $e.message;
+
+      if %*ENV<travis-ci-tests> {
+        skip 'travis differs, older GTK+ version', 1;
+      }
+
+      else {
+        is $e.message, '<data>:3:8Invalid name of pseudo-class', $e.message;
+      }
     }
   }
 
@@ -84,8 +91,14 @@ subtest 'Manipulations', {
     my Str $css = $cp.to-string;
     like $css, / \. green /, 'green class found';
     like $css, / 'rgb(48,143,143);' /, 'background color found';
-    like $css, / 'font-stretch: initial;' /, 'some extra attributes';
 
+    if %*ENV<travis-ci-tests> {
+      skip 'travis differs, older GTK+ version', 1;
+    }
+
+    else {
+      like $css, / 'font-stretch: initial;' /, 'some extra attributes';
+    }
 
     my Gnome::Glib::Error $e = $cp.load-from-path($css-file);
     is $e.is-valid, False, 'no errors';
@@ -106,8 +119,14 @@ subtest 'Manipulations', {
              "error domain: $quark.to-string($e.domain())";
           is $error.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
              'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
-          like $error.message, /:s Invalid name of pseudo\-class/,
-               $error.message;
+
+          if %*ENV<travis-ci-tests> {
+            skip 'travis differs, older GTK+ version', 1;
+          }
+
+          else {
+            like $error.message, /:s Invalid name of pseudo\-class/, $error.message;
+          }
 
           $signal-processed = True;
         }

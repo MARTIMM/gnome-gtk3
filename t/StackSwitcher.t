@@ -47,7 +47,13 @@ subtest 'Properties ...', {
     $gv.clear-object;
   }
 
-  test-property( G_TYPE_INT, 'icon-size', 'get-int', 1);
+  if %*ENV<travis-ci-tests> {
+    skip 'travis differs, older GTK+ version', 1;
+  }
+
+  else {
+    test-property( G_TYPE_INT, 'icon-size', 'get-int', 1);
+  }
 #  test-property( G_TYPE_OBJECT, 'stack', 'get-object', N-GObject);
 }
 
