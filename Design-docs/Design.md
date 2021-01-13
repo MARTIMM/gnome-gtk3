@@ -572,14 +572,14 @@ note left of TopLevelClassSupport
 end note
 
 
-class SomeGxxxClassTop {
+class SomeFooClassTop {
   BUILD()
   _fallback()
   native-object-ref()
   native-object-unref()
 }
 
-note left of SomeGxxxClassTop
+note left of SomeFooClassTop
   <b>BUILD()</b> handles this classes options
   to create a specialized native object. It
   uses <b>set-native-object()</b> to store it.
@@ -593,7 +593,7 @@ note left of SomeGxxxClassTop
   its parent.
 end note
 
-note left of SomeGxxxClass
+note left of SomeFooClass
   <b>BUILD()</b> and <b>set-native-object()</b> do the same
   as above.
 
@@ -602,7 +602,7 @@ note left of SomeGxxxClass
   its interface parent class.
 end note
 
-class SomeGxxxClass {
+class SomeFooClass {
   BUILD()
   _fallback()
 }
@@ -632,13 +632,13 @@ end note
 '  is needed
 'end note
 
-interface SomeGxxxInterface < Interface > {
-  _interface()
+interface SomeFooInterface < Interface > {
+  _someFoo_interface()
 }
-Interface  SomeGxxxInterface<Interface>
-class SomeGxxxInterface <<(R,#80ffff)>>
+Interface  SomeFooInterface<Interface>
+class SomeFooInterface <<(R,#80ffff)>>
 
-note top of SomeGxxxInterface
+note top of SomeFooInterface
   There wil be no <b>new()</b>, <b>BUILD()</b>
   or any use of storage of native
   objects.
@@ -650,12 +650,12 @@ end note
 
 'Connections of classes and interfaces
 
-TopLevelClassSupport <|-- SomeGxxxClassTop
-SomeGxxxClassTop <|-- SomeGxxxClass
-SomeGxxxClass <|-- UserClass
+TopLevelClassSupport <|-- SomeFooClassTop
+SomeFooClassTop <|-- SomeFooClass
+SomeFooClass <|-- UserClass
 
-'TopLevelInterfaceSupport <|-- SomeGxxxInterface
-SomeGxxxClass .|> SomeGxxxInterface
+'TopLevelInterfaceSupport <|-- SomeFooInterface
+SomeFooClass .|> SomeFooInterface
 ```
 
 ## Definitions of interfaces and class inheritance
