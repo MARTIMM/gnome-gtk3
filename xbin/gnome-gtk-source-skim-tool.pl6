@@ -29,16 +29,20 @@ my @pangodirlist = ();
 my @enum-list = ();
 
 my Bool $class-is-leaf;
+my Bool $class-is-role;
 
 #-------------------------------------------------------------------------------
 sub MAIN (
   Str:D $base-name, Bool :$main = False, Bool :$sig = False,
   Bool :$prop = False, Bool :$sub = False,
   Bool :$types = False, Bool :$test = False,
-  Bool :$leaf = True
+  Bool :$leaf = False, Bool :$role = False
 ) {
   my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $types, $test );
-  $class-is-leaf = $leaf;
+
+  # Gtk interfaces (roles) are always leaf classes
+  $class-is-role = $role;
+  $class-is-leaf = ($leaf or $role);
 
   load-dir-lists();
 
@@ -363,9 +367,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     my Str $sub = '';
     my Str $no-cnv = '';
     $no-cnv = Q:q:to/EOCNV/ if $pod-args ~~ / 'N-GObject' /;
-      #my $no = $...;
+      #my $no = $xyz;
         #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-
       EOCNV
 
     my Str $method-args = $pod-args;
@@ -414,7 +417,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         =end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
-          $no-cnv$sub-name\(
+          $no-cnv
+          $sub-name\(
             self\.get-native-object-no-reffing,$call-args
           );
         \}
@@ -443,7 +447,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         =end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
-          $no-cnv$sub-name\(
+          $no-cnv
+          $sub-name\(
             self\._f\('$lib-class-name'),$call-args
           );
         \}
@@ -877,7 +882,7 @@ sub substitute-in-template (
 ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
-    #TL:0:Gnome::LIBRARYMODULE:
+    #TL:1:Gnome::LIBRARYMODULE:
 
     use v6;
     #-------------------------------------------------------------------------------
@@ -897,52 +902,79 @@ sub substitute-in-template (
 
     =head1 Synopsis
     =head2 Declaration
-
-      unit class Gnome::LIBRARYMODULE;
-      ALSO-IS-LIBRARY-PARENT
-
-
-    =comment head2 Uml Diagram
-
-    =comment ![](plantuml/.svg)
-
-
-    =begin comment
-    =head2 Inheriting this class
-
-    Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
-
-      use Gnome::LIBRARYMODULE;
-
-      unit class MyGuiClass;
-      also is Gnome::LIBRARYMODULE;
-
-      submethod new ( |c ) {
-        # let the Gnome::LIBRARYMODULE class process the options
-        self.bless( :LIBCLASSNAME, |c);
-      }
-
-      submethod BUILD ( ... ) {
-        ...
-      }
-
-    =end comment
-    =comment head2 Example
-
-    =end pod
-    #-------------------------------------------------------------------------------
-    use NativeCall;
-
-    use Gnome::N::X;
-    use Gnome::N::NativeLib;
-    use Gnome::N::N-GObject;
-    use Gnome::N::GlibToRakuTypes;
-    USE-LIBRARY-PARENT
-
-    #-------------------------------------------------------------------------------
-    unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
-    ALSO-IS-LIBRARY-PARENT
     EOTEMPLATE
+
+  if $class-is-role {
+    # no extra info for roles
+    $template-text ~= Q:q:to/EOTEMPLATE/;
+
+        unit role Gnome::LIBRARYMODULE;
+
+      =end pod
+      #-------------------------------------------------------------------------------
+      use NativeCall;
+
+      use Gnome::N::X;
+      use Gnome::N::NativeLib;
+      use Gnome::N::N-GObject;
+      use Gnome::N::GlibToRakuTypes;
+      USE-LIBRARY-PARENT
+
+      #-------------------------------------------------------------------------------
+      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      ALSO-IS-LIBRARY-PARENT
+      EOTEMPLATE
+  }
+
+  else {
+    $template-text ~= Q:q:to/EOTEMPLATE/;
+
+        unit class Gnome::LIBRARYMODULE;
+        ALSO-IS-LIBRARY-PARENT
+
+
+      =comment head2 Uml Diagram
+
+      =comment ![](plantuml/.svg)
+
+
+      =begin comment
+      =head2 Inheriting this class
+
+      Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+        use Gnome::LIBRARYMODULE;
+
+        unit class MyGuiClass;
+        also is Gnome::LIBRARYMODULE;
+
+        submethod new ( |c ) {
+          # let the Gnome::LIBRARYMODULE class process the options
+          self.bless( :LIBCLASSNAME, |c);
+        }
+
+        submethod BUILD ( ... ) {
+          ...
+        }
+
+      =end comment
+      =comment head2 Example
+
+      =end pod
+      #-------------------------------------------------------------------------------
+      use NativeCall;
+
+      use Gnome::N::X;
+      use Gnome::N::NativeLib;
+      use Gnome::N::N-GObject;
+      use Gnome::N::GlibToRakuTypes;
+      USE-LIBRARY-PARENT
+
+      #-------------------------------------------------------------------------------
+      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      ALSO-IS-LIBRARY-PARENT
+      EOTEMPLATE
+  }
 
   my Str ( $t1, $t2) = ( '', '');
   if $raku-parentlib-name and $raku-parentclass-name {
@@ -966,118 +998,148 @@ sub substitute-in-template (
   get-vartypes($include-content) if $do-all or $types;
 
   if $do-all or $main {
-    $template-text = Q:q:to/EOTEMPLATE/;
-      #-------------------------------------------------------------------------------
-      BOOL-SIGNALS-ADDED
-      =begin pod
-      =head1 Methods
-      =head2 new
+    if $class-is-role {
+      $template-text = Q:q:to/EOTEMPLATE/;
+        #-------------------------------------------------------------------------------
+        =begin pod
+        =head1 Methods
+        =end pod
 
-      =head3 default, no options
+        # interfaces are not instantiated
+        #submethod BUILD ( *%options ) { }
 
-      Create a new RAKU-CLASS-NAME object.
+        #-------------------------------------------------------------------------------
+        # no pod. user does not have to know about it.
+        method INTERFACE_NAME ( $native-sub --> Callable ) {
 
-        multi method new ( )
+          my Callable $s;
+          try { $s = &::("BASE-SUBNAME_$native-sub"); };
+        # check for gtk_, gdk_, g_, pango_, cairo_ !!!
+          try { $s = &::("gtk_$native-sub"); } unless ?$s;
+          try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-      =head3 :native-object
-
-      Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
-
-        multi method new ( N-GObject :$native-object! )
-
-      =head3 :build-id
-
-      Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
-
-        multi method new ( Str :$build-id! )
-
-      =end pod
-
-      #TM:0:new():inheriting
-      #TM:0:new():
-      #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
-      #TM:4:new(:build-id):Gnome::GObject::Object
-
-      submethod BUILD ( *%options ) {
-
-      BUILD-ADD-SIGNALS
-
-        # prevent creating wrong native-objects
-        if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
-
-          # check if native object is set by a parent class
-          if self.is-valid { }
-
-          # process all options
-
-          # check if common options are handled by some parent
-          elsif %options<native-object>:exists or %options<widget>:exists { }
-          elsif %options<build-id>:exists { }
-
-          else {
-            my $no;
-            if ? %options<___x___> {
-              $no = %options<___x___>;
-              $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-              #$no = _BASE-SUBNAME_new___x___($no);
-            }
-
-            #`{{ use this when the module is not made inheritable
-            # check if there are unknown options
-            elsif %options.elems {
-              die X::Gnome.new(
-                :message(
-                  'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-                  self.^name ~ ': ' ~ %options.keys.join(', ')
-                )
-              );
-            }
-            }}
-
-            #`{{ when there are no defaults use this
-            # check if there are any options
-            elsif %options.elems == 0 {
-              die X::Gnome.new(:message('No options specified ' ~ self.^name));
-            }
-            }}
-
-            #`{{ when there are defaults use this instead
-            # create default object
-            else {
-              $no = _BASE-SUBNAME_new();
-            }
-            }}
-
-            self.set-native-object($no);
-          }
-
-          # only after creating the native-object, the gtype is known
-          self.set-class-info('LIBCLASSNAME');
-
+          $s;
         }
-      }
 
-      #`{{
-      #-------------------------------------------------------------------------------
-      # no pod. user does not have to know about it.
-      method _fallback ( $native-sub is copy --> Callable ) {
+        EOTEMPLATE
 
-        my Callable $s;
-        try { $s = &::("BASE-SUBNAME_$native-sub"); };
-      # check for gtk_, gdk_, g_, pango_, cairo_ !!!
-        try { $s = &::("gtk_$native-sub"); } unless ?$s;
-        try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      my Str $iname = $base-sub-name;
+      $iname ~~ s/ [ gtk | gdk | gio ] '_' //;
+      $template-text ~~ s/ INTERFACE_NAME /_{$iname}_interface/;
+    }
 
-        #$s = self._..._interface($native-sub) unless ?$s;
+    else {
+      $template-text = Q:q:to/EOTEMPLATE/;
+        #-------------------------------------------------------------------------------
+        BOOL-SIGNALS-ADDED
+        =begin pod
+        =head1 Methods
+        =head2 new
 
-        self.set-class-name-of-sub('LIBCLASSNAME');
-        $s = callsame unless ?$s;
+        =head3 default, no options
 
-        $s;
-      }
-      }}
+        Create a new RAKU-CLASS-NAME object.
 
-      EOTEMPLATE
+          multi method new ( )
+
+        =head3 :native-object
+
+        Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+
+          multi method new ( N-GObject :$native-object! )
+
+        =head3 :build-id
+
+        Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+
+          multi method new ( Str :$build-id! )
+
+        =end pod
+
+        #TM:0:new():inheriting
+        #TM:0:new():
+        #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+        #TM:4:new(:build-id):Gnome::GObject::Object
+
+        submethod BUILD ( *%options ) {
+
+        BUILD-ADD-SIGNALS
+
+          # prevent creating wrong native-objects
+          if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
+
+            # check if native object is set by a parent class
+            if self.is-valid { }
+
+            # process all options
+
+            # check if common options are handled by some parent
+            elsif %options<native-object>:exists or %options<widget>:exists { }
+            elsif %options<build-id>:exists { }
+
+            else {
+              my $no;
+              if ? %options<___x___> {
+                $no = %options<___x___>;
+                $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+                #$no = _BASE-SUBNAME_new___x___($no);
+              }
+
+              #`{{ use this when the module is not made inheritable
+              # check if there are unknown options
+              elsif %options.elems {
+                die X::Gnome.new(
+                  :message(
+                    'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+                    self.^name ~ ': ' ~ %options.keys.join(', ')
+                  )
+                );
+              }
+              }}
+
+              #`{{ when there are no defaults use this
+              # check if there are any options
+              elsif %options.elems == 0 {
+                die X::Gnome.new(:message('No options specified ' ~ self.^name));
+              }
+              }}
+
+              #`{{ when there are defaults use this instead
+              # create default object
+              else {
+                $no = _BASE-SUBNAME_new();
+              }
+              }}
+
+              self.set-native-object($no);
+            }
+
+            # only after creating the native-object, the gtype is known
+            self.set-class-info('LIBCLASSNAME');
+
+          }
+        }
+
+        #-------------------------------------------------------------------------------
+        # no pod. user does not have to know about it.
+        method _fallback ( $native-sub --> Callable ) {
+
+          my Callable $s;
+          try { $s = &::("BASE-SUBNAME_$native-sub"); };
+        # check for gtk_, gdk_, g_, pango_, cairo_ !!!
+          try { $s = &::("gtk_$native-sub"); } unless ?$s;
+          try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+
+          #$s = self._xyz_interface($native-sub) unless ?$s;
+
+          self.set-class-name-of-sub('LIBCLASSNAME');
+          $s = callsame unless ?$s;
+
+          $s;
+        }
+
+        EOTEMPLATE
+    }
 
     $template-text ~~ s:g/ 'RAKU-CLASS-NAME' /$raku-class-name/;
     $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
