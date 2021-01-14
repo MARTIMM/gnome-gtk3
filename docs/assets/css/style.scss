@@ -19,7 +19,7 @@ $menu-color-standalone:     #80bf00;
 $code-color: #46465f;
 
 $border-color: #bbb;
-$border-width: 4px;
+$border-width: 6px;
 
 $menu-text-font-size: 15px;
 $sbar-text-font-size: 13px;
@@ -161,10 +161,6 @@ pre {
 }
 
 
-table td {
-  text-align: left;
-}
-
 table.coverage {
   float: right;
   text-align: left;
@@ -183,6 +179,10 @@ table.rouge-table {
 }
 */
 
+td {
+  text-align: left;
+}
+
 pre code {
   background-color: $code-color;
   //line-height: 0.9;
@@ -193,6 +193,30 @@ code {
   background-color: transparent;
   color: #8e280e;
   font-size: $code-font-size;
+}
+
+td.code {
+  pre {
+/*   background-color: transparent;
+    color: #8e280e;*/
+    font-size: $code-font-size;
+    scrollbar-width: thin;
+  }
+
+//  padding: 0;
+  padding: 0 5px 0 2px;
+}
+
+td.gutter {
+  pre.lineno {
+/*   background-color: transparent;
+  color: #8e280e;*/
+    font-size: $code-font-size;
+    scrollbar-width: thin;
+  }
+
+//  padding: 0;
+  padding: 0 5px 0 2px;
 }
 
 div.release-notes {
@@ -423,6 +447,8 @@ p {
 
 #reference-page {
   overflow-y: scroll;
+  scrollbar-width: thin;
+
 //  height: 200px;
 }
 
@@ -472,7 +498,8 @@ p {
 // having a lineno-container made it easier to style line number
 // code blocks without impacting normal code blocks
 .lineno-container > figure > pre {
-  padding: 0px;
+//  padding: 0px;
+  padding: 0 5px 0 2px;
 }
 
 .highlight {
@@ -496,6 +523,7 @@ p {
     pre {
       text-align: left;
       margin-bottom: 0px;
+      padding: 0 5px 0 2px;
     }
   }
 }
