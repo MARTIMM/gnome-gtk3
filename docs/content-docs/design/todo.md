@@ -112,6 +112,7 @@ layout: sidebar
     { * }
   ```
 
+
   I'll go for the last example but will take some time to find all returned enum
 
 #### Site changes.
@@ -145,33 +146,34 @@ layout: sidebar
     * Event Loop
     * Sending Events
 
-  * [ ] Intermezzo: search of native subroutines
-    * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
-    * FALLBACK -> \_fallback() -> callsame()
-    * Substitution of arguments
-      * `enum -> Int` if target is `int*`
-      * `Bool -> Int` if target is `int*`
-      * `Int -> int*` automatic by Raku
-      * `* -> num*` if target is `num*`
-    * Using `$obj.?xyz()` in a class inheriting from `Gnome::*` fails when `.xyz()` is not defined. It is caused by the FALLBACK routine. Must use `$obj.^lookup('xyz')` to check before calling.
+  <!--    
+    * [ ] Intermezzo: search of native subroutines
+      * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
+      * FALLBACK -> \_fallback() -> callsame()
+      * Substitution of arguments
+        * `enum -> Int` if target is `int*`
+        * `Bool -> Int` if target is `int*`
+        * `Int -> int*` automatic by Raku
+        * `* -> num*` if target is `num*`
+      * Using `$obj.?xyz()` in a class inheriting from `Gnome::*` fails when `.xyz()` is not defined. It is caused by the FALLBACK routine. Must use `$obj.^lookup('xyz')` to check before calling.
+  -->
+  <!--
+  #  - title: Dialog
+  #  - title: TreeModel
+  #  - title: Radio buttons
+  #  - title:
+  #  - title:
+  #  - title: ApplicationWindow
+  #  - title:
+  #  - title:
+  #  - title: Debugging
+  #  - title: Xml
+  #  - title: Glade program
+  #  - title: threading
+  -->
 
-<!--
-#  - title: Dialog
-#  - title: TreeModel
-#  - title: Radio buttons
-#  - title:
-#  - title:
-#  - title: ApplicationWindow
-#  - title:
-#  - title:
-#  - title: Debugging
-#  - title: Xml
-#  - title: Glade program
-#  - title: threading
--->
-
-  * [ ] Widgets, a non-exhoustive list according to the glade program
-    * Toplevel widgets
+  * Widgets, a non-exhoustive list according to the glade program
+    * [ ] Toplevel widgets
       * Window
       * ApplicationWindow
       * Dialogs
@@ -180,7 +182,7 @@ layout: sidebar
         * MessageDialog
       * Assistant
 
-    * Containers
+    * [ ] Containers
       * Grid
       * Notebook
       * Frame
@@ -189,7 +191,7 @@ layout: sidebar
       * Revealer
       * Stack
 
-    * Controls
+    * [ ] Controls
       * Buttons
         * RadioButton
         * CheckButton
@@ -201,14 +203,14 @@ layout: sidebar
       * Entry, SearchEntry
       * Switch
 
-    * Display
+    * [ ] Display
       * Label
       * LevelBar
       * Menu
       * Separator
       * DrawingArea
 
-    * Extra
+    * [ ] Extra
       * Models
         * TreeModel
         * ListStore

@@ -16,7 +16,7 @@ use NativeCall;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktypes.h
-unit class Gnome::Gtk3::Enums:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Enums:auth<github:MARTIMM>:ver<0.1.0>;
 
 #-------------------------------------------------------------------------------
 =begin pod
