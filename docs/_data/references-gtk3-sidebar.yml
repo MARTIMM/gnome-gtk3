@@ -95,22 +95,19 @@
     test: 1
   - title: "CellRendererToggle"
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
-    doc: 1
-    test: 1
+    type: widget
+  - title: "CheckMenuItem"
+    url: "/content-docs/reference/Gtk3/CheckMenuItem.html"
+    type: widget
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
     type: widget
-    doc: 1
-    test: 1
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
     type: widget
-    doc: 1
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
     type: interface
-    doc: 3
-    test: 2
   - title: "ColorChooserDialog"
     url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
     type: widget

@@ -86,7 +86,8 @@ CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
-CheckButton               |  | ✓|  |  |  |  |  |  |  |  |  |
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooser              |R | ✗|  |  |  |  |  |  |  |  |  |
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
@@ -189,7 +190,6 @@ CellAreaContext|
 CellEditable              |i|
 CellLayout                |i|
 CellView|
-CheckMenuItem|
 ChooserDialog|
 Clipboard|
 CssSection                |b|

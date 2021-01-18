@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-01-18 0.35.1:
+- New module **Gnome::Gtk3::GtkCheckMenuItem**.
+
 #### 2021-01-11 0.35.0:
 - Grid and Orientable speedup with new methods. Tests and benchmarking added and docs improved.
 - New module **Gnome::Gtk3::Fixed**
