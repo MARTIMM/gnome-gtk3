@@ -1,7 +1,7 @@
 branches:
   only:
     - master
-#    - module
+    - module
 #    - xyz
 
 language: perl6
@@ -17,7 +17,7 @@ services:
   - xvfb
 
 before_install:
-  sudo apt install at-spi2-core
+  sudo apt get -y install at-spi2-core
 
 install:
   - rakudobrew build zef
