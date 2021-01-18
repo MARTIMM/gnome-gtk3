@@ -47,7 +47,7 @@ subtest 'Properties ...', {
     $gv.clear-object;
   }
 
-  if %*ENV<travis-ci-tests> {
+  if %*ENV<travis_ci_tests> {
     skip 'travis differs, older GTK+ version', 1;
   }
 

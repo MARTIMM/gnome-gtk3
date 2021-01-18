@@ -73,7 +73,7 @@ subtest 'Manipulations', {
       is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
          'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
 
-      if %*ENV<travis-ci-tests> {
+      if %*ENV<travis_ci_tests> {
         skip 'travis differs, older GTK+ version', 1;
       }
 
@@ -92,7 +92,7 @@ subtest 'Manipulations', {
     like $css, / \. green /, 'green class found';
     like $css, / 'rgb(48,143,143);' /, 'background color found';
 
-    if %*ENV<travis-ci-tests> {
+    if %*ENV<travis_ci_tests> {
       skip 'travis differs, older GTK+ version', 1;
     }
 
@@ -120,7 +120,7 @@ subtest 'Manipulations', {
           is $error.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
              'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
 
-          if %*ENV<travis-ci-tests> {
+          if %*ENV<travis_ci_tests> {
             skip 'travis differs, older GTK+ version', 1;
           }
 
