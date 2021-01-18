@@ -9,8 +9,7 @@ perl6:
   - latest
 
 env:
-  - raku_test_all=1
-  - travis-ci-tests=1
+  - raku_test_all=1 travis-ci-tests=1
 
 dist: xenial
 services:
