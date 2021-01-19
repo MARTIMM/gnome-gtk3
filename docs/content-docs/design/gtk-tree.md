@@ -60,8 +60,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰── GtkScaleButton
 │   │   │   │   │       ╰── GtkVolumeButton
 │   │   │   │   ├── GtkMenuItem                 MenuItem
-│   │   │   │   │   ├── GtkCheckMenuItem        GtkCheckMenuItem
-│   │   │   │   │   │   ╰── GtkRadioMenuItem
+│   │   │   │   │   ├── GtkCheckMenuItem        CheckMenuItem
+│   │   │   │   │   │   ╰── GtkRadioMenuItem    RadioMenuItem
 │   │   │   │   │   ├─✗ GtkImageMenuItem        ⛔
 │   │   │   │   │   ├── GtkSeparatorMenuItem
 │   │   │   │   │   ╰─✗ GtkTearoffMenuItem      ⛔

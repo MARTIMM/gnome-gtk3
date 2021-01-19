@@ -277,33 +277,24 @@
   - title: "RadioButton"
     type: widget
     url: "/content-docs/reference/Gtk3/RadioButton.html"
-    doc: 1
-    test: 1
+  - title: "RadioMenuItem"
+    type: widget
+    url: "/content-docs/reference/Gtk3/RadioMenuItem.html"
   - title: "RecentChooserMenu"
     type: widget
     url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
-    doc: 1
-    test: 1
   - title: "Scale"
     type: widget
     url: "/content-docs/reference/Gtk3/Scale.html"
-    doc: 1
-    test: 1
   - title: "ScrolledWindow"
     type: widget
     url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
-    doc: 2
-    test: 2
   - title: "SearchEntry"
     type: widget
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
-    doc: 1
-    test: 1
   - title: "Separator"
     type: widget
     url: "/content-docs/reference/Gtk3/Separator.html"
-    doc: 3
-    test: 1
   - title: "Spinner"
     type: widget
     url: "/content-docs/reference/Gtk3/Spinner.html"

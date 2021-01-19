@@ -122,7 +122,7 @@ MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
 MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
 MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
 MessageDialog             |  | ✓|  |  |  |  |  |  |  |  |  |
-Misc                      |  |  |  |  |  |  |  |  |  |  |  |
+Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |
 Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
 Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |
@@ -131,6 +131,7 @@ Popover                   |  |  |  |  |  |  |  |  |  |  |  |
 PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |
 ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |
 RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |
+RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|
 Range                     |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooserMenu         |  | ✓|  |  |  |  |  |  |  |  |  |
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |
@@ -248,7 +249,6 @@ PrintOperation|
 PrintOperationPreview     |i|
 PrintSettings|
 PrintUnixDialog|
-RadioMenuItem|
 RadioToolButton|
 RcStyle|
 RecentChooser|i|
