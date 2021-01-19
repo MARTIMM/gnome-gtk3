@@ -63,7 +63,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ├── GtkCheckMenuItem        CheckMenuItem
 │   │   │   │   │   │   ╰── GtkRadioMenuItem    RadioMenuItem
 │   │   │   │   │   ├─✗ GtkImageMenuItem        ⛔
-│   │   │   │   │   ├── GtkSeparatorMenuItem
+│   │   │   │   │   ├── GtkSeparatorMenuItem    SeparatorMenuItem
 │   │   │   │   │   ╰─✗ GtkTearoffMenuItem      ⛔
 │   │   │   │   ├── GtkEventBox
 │   │   │   │   ├── GtkExpander

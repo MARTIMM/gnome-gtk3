@@ -295,6 +295,9 @@
   - title: "Separator"
     type: widget
     url: "/content-docs/reference/Gtk3/Separator.html"
+  - title: "SeparatorMenuItem"
+    type: widget
+    url: "/content-docs/reference/Gtk3/SeparatorMenuItem.html"
   - title: "Spinner"
     type: widget
     url: "/content-docs/reference/Gtk3/Spinner.html"

@@ -140,6 +140,7 @@ ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |
+SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
 Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
@@ -261,7 +262,6 @@ ScaleButton|
 Scrollable|i|
 Scrollbar|
 SelectionData|b|
-SeparatorMenuItem|
 SeparatorToolItem|
 Settings|
 ShortcutsGroup|
