@@ -366,10 +366,26 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     my Str $sub = '';
     my Str $no-cnv = '';
-    $no-cnv = Q:q:to/EOCNV/ if $pod-args ~~ / 'N-GObject' /;
-      #my $no = $xyz;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-      EOCNV
+    if $pod-args ~~ / 'N-GObject' / {
+      $no-cnv = Q:q:to/EOCNV/
+        #my $no = $xyz;
+          #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        EOCNV
+    }
+
+    elsif $pod-args ~~ / 'N-GSList' / {
+      $no-cnv = Q:q:to/EOCNV/
+        #my $no = $xyz;
+          #$no .= get-native-object-no-reffing unless $no ~~ N-GSList;
+        EOCNV
+    }
+
+    elsif $pod-args ~~ / 'N-GList' / {
+      $no-cnv = Q:q:to/EOCNV/
+        #my $no = $xyz;
+          #$no .= get-native-object-no-reffing unless $no ~~ N-GList;
+        EOCNV
+    }
 
     my Str $method-args = $pod-args;
     $method-args ~~ s:g/ 'N-GObject ' //;
@@ -1057,7 +1073,7 @@ sub substitute-in-template (
         =end pod
 
         #TM:0:new():inheriting
-        #TM:0:new():
+        #TM:1:new():
         #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
         #TM:4:new(:build-id):Gnome::GObject::Object
 
@@ -1071,12 +1087,11 @@ sub substitute-in-template (
             # check if native object is set by a parent class
             if self.is-valid { }
 
-            # process all options
-
             # check if common options are handled by some parent
             elsif %options<native-object>:exists or %options<widget>:exists { }
             elsif %options<build-id>:exists { }
 
+            # process all other options
             else {
               my $no;
               if ? %options<___x___> {
