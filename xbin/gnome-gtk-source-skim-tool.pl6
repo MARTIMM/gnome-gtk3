@@ -1135,6 +1135,7 @@ sub substitute-in-template (
           }
         }
 
+        #`{{
         #-------------------------------------------------------------------------------
         # no pod. user does not have to know about it.
         method _fallback ( $native-sub --> Callable ) {
@@ -1152,6 +1153,7 @@ sub substitute-in-template (
 
           $s;
         }
+        }}
 
         EOTEMPLATE
     }
