@@ -146,6 +146,9 @@ layout: sidebar
     * Event Loop
     * Sending Events
 
+  * [x] Intermezzo: Inheriting
+    * Inheriting widget classes
+
   <!--    
     * [ ] Intermezzo: search of native subroutines
       * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
@@ -172,58 +175,58 @@ layout: sidebar
   #  - title: threading
   -->
 
-  * Widgets, a non-exhoustive list according to the glade program
-    * [ ] Toplevel widgets
-      * Window
-      * ApplicationWindow
-      * Dialogs
-        * AboutDialog
-        * FileChooserDialog
-        * MessageDialog
-      * Assistant
+  * [ ] Toplevel widgets
+    * Dialogs
+      * AboutDialog
+      * FileChooserDialog
+      * MessageDialog
+    * Window (already done above)
+    * ApplicationWindow
 
-    * [ ] Containers
-      * Grid
-      * Notebook
-      * Frame
-      * ListBox
-      * ScrolledWindow
-      * Revealer
-      * Stack
 
-    * [ ] Controls
-      * Buttons
-        * RadioButton
-        * CheckButton
-        * ToggleButton
-        * ColorButton
-        * FontButton
-      * ComboxBox
-      * ComboxBoxText
-      * Entry, SearchEntry
-      * Switch
+  * [ ] Containers
+    * Grid
+    * Notebook
+    * Frame
+    * ListBox
+    * ScrolledWindow
+    * Revealer
+    * Stack
 
-    * [ ] Display
-      * Label
-      * LevelBar
-      * Menu
-      * Separator
-      * DrawingArea
+  * [ ] Controls
+    * Buttons
+      * RadioButton
+      * CheckButton
+      * ToggleButton
+      * ColorButton
+      * FontButton
+    * ComboxBox
+    * ComboxBoxText
+    * Entry, SearchEntry
+    * Switch
 
-    * [ ] Extra
-      * Models
-        * TreeModel
-        * ListStore
-        * TreeStore
-        * TreeView
-      * Text
-        * TextBuffer
-        * EntryBuffer
-        * TextTag
-        * TextTagTable
-      * Choosers
-        * ColorChooserWidget
-        * FontChooserWidget
+  * [ ] Display
+    * Label
+    * LevelBar
+    * Menu
+    * Separator
+    * DrawingArea
+
+  * [ ] Models
+    * TreeModel
+    * ListStore
+    * TreeStore
+    * TreeView
+
+  * [ ] Text
+    * TextBuffer
+    * EntryBuffer
+    * TextTag
+    * TextTagTable
+
+  * [ ] Choosers
+    * ColorChooserWidget
+    * FontChooserWidget
 <!--
     * Lists and Edit
       * TextView

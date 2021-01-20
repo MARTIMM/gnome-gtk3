@@ -18,15 +18,14 @@ layout: sidebar
 * Cairo
 
 #### Rewriting code
-* Named arguments `:$widget` to a users signal handler needs to be renamed to prevent user defined argument clashes. It holds the Raku object which registered the signal. The attribute is now renamed to `:$_widget`. Another is added in the mean time `$_handler-id`. With this, one can deregister a signal. All attributes starting wit '_' are reserved.
+* Named arguments `:$widget` to a users signal handler needs to be renamed to prevent user defined argument clashes. It holds the Raku object which registered the signal. The attribute is now renamed to `:$_widget`. Another is added in the mean time `$_handler-id`. With this, one can deregister a signal. All attributes starting with '_' are reserved.
 
-* Prevent name clashes. The methods from interfaces have lower priority than those from the classes. Therefore `.set-name()` from Buildable must be written like `.buildable-set-name()`.
-  * set-name() in Gnome::Gtk3::Widget must stay while
-  * Gnome::Gtk3::Buildable set-name() must become `buildable-set-name()`;
-  * Gnome::Gio::Action set-name() must become `action-set-name()`;
-  It is solved by defining Raku `role`s for the interfaces and bind them to the topmost class where it is used. Testing is in the order of normal class subs first and the interface ones after.
+* Prevent name clashes. The methods from interfaces have lower priority than those from the classes.
+  * `set-name()` in **Gnome::Gtk3::Widget** must stay.
+  * **Gnome::Gtk3::Buildable** set-name() must become `buildable-set-name()`.
+  * **Gnome::Gio::Action** set-name() must become `action-set-name()`.
 
-* It is possible to inherit from the modules to create your own class using some protocol. Not all classes are prepared yet, see the checklist to see if they are inheritable.
+* It is possible to inherit from the modules to create your own class using some protocol. Not all classes are prepared yet, see the checklist to see if they are made inheritable. Some classes will never be inheritable because it is not usefull. The roles (interfaces) are never inheritable, they will error if you do.
 
 * Reverse testing procedures in `_fallback()` methods. Now the shortest names are found first.
   ```
@@ -46,7 +45,7 @@ layout: sidebar
   The call to the sub `gtk_list_store_remove` can now be one of `.gtk_list_store_remove()`, `.list_store_remove()` or `.remove()` and the dashed ('-') counterparts. Bringing it down to only one word like the 'remove' above, will not always work. Special cases are `new()` and other methods from classes like **Any** or **Mu**.
 
 * Created a benchmark to see if a real method is much faster than the search of a native sub (should be though, but how much?). I have added method `.set-program-name()` to **Gnome::Gtk3::AboutDialog** and setup a few tests in `xt/Benchmarking/method-vs-subs.raku`. The below table is the result.
-  In this table you can also see that the shorter name and underscore versions are faster but not much. The method version is fastest and is will be a new TODO for future work. Suppose to add methods only for most used subs and for those subs where the name is brought back to one word like the `.remove()` mentioned in a previous point.
+  In this table you can also see that the shorter name and underscore versions are faster but not much. The method version is fastest and it will be a new TODO for future work. To start, only add methods for most used subs and for those subs where the name is brought back to one word like the `.remove()` mentioned in a previous point.
 
 | runs/sec | Note  |
 |----------|-------|
@@ -66,11 +65,10 @@ While this is faster, some of the calls must process the arguments before they a
   * `.clear-object()`: A clear function which calls some native free function if any, then invalidates the native object. This is always a class inheriting from Boxed. The exception is **Gnome::GObject::Object** where it is done on behalf of the child classes and also uses native unref. In Boxed this must be an abstract method. This is done now in the TopLevelClassSupport
 
   * `.is-valid()`: A boolean test to check if a native object is valid.
-
   * `.set-native-object()`
   * `.get-native-object()`.
 
-* Defining DESTROY() at the top was a big mistake! Obvious when you think of it! dereferencing or cleaning up a native object should only be done explicitly because when the Raku object goes out of scope doesn't mean that the native object isn't in use anymore. Also calling `.clear-object()` in `.new()` and several other places is wrong for the same reason.
+* Defining DESTROY() at the top was a big mistake! Obvious when you think of it! Dereferencing or cleaning up a native object should only be done explicitly because when the Raku object goes out of scope doesn't mean that the native object isn't in use anymore. Also calling `.clear-object()` in `.new()` and several other places is wrong for the same reason.
 
 * Make some of the named arguments to new() the same. We now have `:widget`, `:object`, `:tree-iter` etcetera while the value for these attributes are native objects. Rename these to `:native-object`. It's more clear. The type for it can differ but will not pose a problem.
 

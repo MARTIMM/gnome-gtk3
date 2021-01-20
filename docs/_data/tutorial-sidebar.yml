@@ -9,3 +9,9 @@
     url: "/content-docs/tutorial/window-details.html"
   - title: Signals
     url: "/content-docs/tutorial/signals.html"
+  - title: "Intermezzo: Inheriting"
+    url: "/content-docs/tutorial/intermezzo-inheriting.html"
+  - title: Dialogs
+    url: "/content-docs/tutorial/dialogs.html"
+  - title: ApplicationWindow
+    url: "/content-docs/tutorial/application-window.html"
