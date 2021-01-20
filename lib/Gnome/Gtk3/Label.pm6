@@ -718,7 +718,7 @@ Sets the alignment of the lines in the text of the label relative to each other.
 
   method set-justify ( GtkJustification $jtype )
 
-=item GtkJustification $jtype; a B<Gnome::Gtk3::Justification>
+=item GtkJustification $jtype; a C<GtkJustification> enum type
 
 =end pod
 
@@ -1066,7 +1066,7 @@ sub gtk_label_get_selectable ( N-GObject $label --> gboolean )
 =begin pod
 =head2 set-angle
 
-Sets the angle of rotation for the label. An angle of 90 reads from from bottom to top, an angle of 270, from top to bottom. The angle setting for the label is ignored if the label is selectable, wrapped, or ellipsized.
+Sets the angle of rotation for the label. An angle of 90 reads from bottom to top, an angle of 270, from top to bottom. The angle setting for the label is ignored if the label is selectable, wrapped, or ellipsized.
 
   method set-angle ( Num $angle )
 
