@@ -303,6 +303,7 @@ submethod BUILD ( *%options ) {
   }
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub --> Callable ) {
@@ -320,7 +321,7 @@ method _fallback ( $native-sub --> Callable ) {
 
   $s;
 }
-
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_radio_menu_item_new:
