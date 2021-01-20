@@ -4142,7 +4142,6 @@ When not set, the default font options for the B<Gnome::Gdk3::Screen> will be us
 sub gtk_widget_set_font_options ( N-GObject $widget, cairo_font_options_t $options )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_widget_get_font_options
@@ -4158,6 +4157,7 @@ Returns the cairo_font_options_t used for Pango rendering. When not set, the def
 sub gtk_widget_get_font_options ( N-GObject $widget --> cairo_font_options_t )
   is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
