@@ -127,7 +127,7 @@ Please note that C<GTK_BUTTONS_OK>, C<GTK_BUTTONS_YES_NO> and C<GTK_BUTTONS_OK_C
 
 =end pod
 
-#TE:0:GtkButtonsType:
+#TE:4:GtkButtonsType:question-answer project
 enum GtkButtonsType is export (
   'GTK_BUTTONS_NONE',
   'GTK_BUTTONS_OK',
@@ -141,8 +141,9 @@ enum GtkButtonsType is export (
 =begin pod
 =head1 Methods
 =head2 new
+=head3 :message
 
-Create a new MessageDialog object.
+Creates a new message dialog, which is a simple dialog with some text the user may want to see. When the user clicks a button a “response” signal is emitted with response IDs from B<Gnome::Gtk3::ResponseType>. See B<Gnome::Gtk3::Dialog> for more details.
 
   multi method new (
     Str :$message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
@@ -150,7 +151,15 @@ Create a new MessageDialog object.
     --> N-GObject
   )
 
- Creates a new message dialog, which is a simple dialog with some text that is marked up with the [Pango text markup language][PangoMarkupFormat].
+=item Str $message; a string. XML is converted to proper text.
+=item N-GObject $parent; transient parent, or C<Any> for none
+=item GtkDialogFlags $flags; flags. Default is GTK_DIALOG_MODAL.
+=item GtkMessageType $type; type of message. Default is GTK_MESSAGE_INFO.
+=item GtkButtonsType $buttons; set of buttons to use. Default is  GTK_BUTTONS_CLOSE.
+
+=head3 :markup-message
+
+Creates a new message dialog, which is a simple dialog with some text that is marked up with the L<Pango text markup language|https://developer.gnome.org/pygtk/stable/pango-markup-language.html>. When the user clicks a button a “response” signal is emitted with response IDs from B<Gnome::Gtk3::ResponseType>. See B<Gnome::Gtk3::Dialog> for more details.
 
   multi method new (
     Str :$markup-message!, N-GObject :$parent?, GtkDialogFlags :$flags?,
@@ -158,28 +167,32 @@ Create a new MessageDialog object.
     --> N-GObject
   )
 
+=item Str $markup-message; a string with Pango markup
 =item N-GObject $parent; transient parent, or C<Any> for none
 =item GtkDialogFlags $flags; flags. Default is GTK_DIALOG_MODAL.
 =item GtkMessageType $type; type of message. Default is GTK_MESSAGE_INFO.
 =item GtkButtonsType $buttons; set of buttons to use. Default is  GTK_BUTTONS_CLOSE.
-=item Str $message; a string. XML is converted to proper text.
-=item Str $markup-message; a string with Pango markup
 
 
-Create a MessageDialog object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+=head3 :native-object
+
+Create a MessageDialog object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create a MessageDialog object using a native object from a builder. See also B<Gnome::GObject::Object>.
+=head3 :build-id
+
+Create a MessageDialog object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
 =end pod
 
+#TM:4:new():inheriting:question-answer project
 #TM:1:new(:message):
 #TM:1:new(:markup-message):
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 
 submethod BUILD ( *%options ) {
 
@@ -224,6 +237,8 @@ submethod BUILD ( *%options ) {
       );
     }
 
+    #`{{ use this when the module is not made inheritable
+    # check if there are unknown options
     elsif %options.keys.elems {
       die X::Gnome.new(
         :message(
@@ -232,8 +247,8 @@ submethod BUILD ( *%options ) {
         )
       );
     }
+    }}
 
-    # create default object
     else {
       die X::Gnome.new(:message('No options found'));
     }
@@ -321,7 +336,7 @@ markup);
 =end comment
 
 Returns: a new B<Gnome::Gtk3::MessageDialog>
-DeleteMsgDialog
+
 
   method gtk_message_dialog_new_with_markup (
     N-GObject $parent, GtkDialogFlags $flags, GtkMessageType $type,
@@ -358,40 +373,51 @@ sub __gtk_message_dialog_new_with_markup (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_message_dialog_set_markup:
+#TM:1:set-markup:
 =begin pod
-=head2 [gtk_message_dialog_] set_markup
+=head2 set-markup
 
-Sets the text of the message dialog to be I<$str>, which is marked
-up with the L<Pango text markup language|PangoMarkupFormathttps://developer.gnome.org/pygtk/stable/pango-markup-language.html>.
-DeleteMsgDialog
+Sets the text of the message dialog to be I<$str>, which is marked up with the L<Pango text markup language|PangoMarkupFormathttps://developer.gnome.org/pygtk/stable/pango-markup-language.html>.
 
-  method gtk_message_dialog_set_markup ( Str $str )
+  method set-markup ( Str $str )
 
-=item Str $str; markup string (see [Pango markup format][PangoMarkupFormat])
+=item Str $str; markup string
 
 =end pod
+
+method set-markup (  Str  $str ) {
+  gtk_message_dialog_set_markup(
+    self.get-native-object-no-reffing, $str
+  );
+}
 
 sub gtk_message_dialog_set_markup ( N-GObject $message_dialog, Str $str  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_message_dialog_format_secondary_text:
+#TM:1:format-secondary-text:
 =begin pod
-=head2 [gtk_message_dialog_] format_secondary_text
+=head2 secondary-text
 
 Sets the secondary text of the message dialog to be I<$message>.
-DeleteMsgDialog
 
-  method gtk_message_dialog_format_secondary_text ( Str $message )
+  method secondary-text ( Str $message )
 
 =item Str $message; a string
 
 =end pod
 
+
+method secondary-text ( Str $message is copy ) {
+  $message ~~ s:g/ '%' / %% /;
+  _gtk_message_dialog_format_secondary_text(
+    self.get-native-object-no-reffing, $message
+  );
+}
+
 sub gtk_message_dialog_format_secondary_text (
-  N-GObject $message_dialog, Str $message
+  N-GObject $message_dialog, Str $message is copy
 ) {
   $message ~~ s:g/ '%' / %% /;
   _gtk_message_dialog_format_secondary_text( $message_dialog, $message)
@@ -404,32 +430,26 @@ sub _gtk_message_dialog_format_secondary_text (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_message_dialog_format_secondary_markup:
+#TM:1:secondary-markup:
 =begin pod
-=head2 [gtk_message_dialog_] format_secondary_markup
+=head2 secondary-markup
 
-Sets the secondary text of the message dialog to be I<$message> (with C<printf()>-style), which is marked up with the [Pango text markup language][PangoMarkupFormat].
+Sets the secondary text of the message dialog to be I<$message>, which is marked up with the Pango text markup language.
 
-Due to an oversight, this function does not escape special XML characters like C<gtk_message_dialog_new_with_markup()> does.
-=comment Thus, if the arguments may contain special XML characters, you should use C<g_markup_printf_escaped()> to escape it.
+Due to an oversight, this function does not escape special XML characters like C<gtk_message_dialog_new_with_markup()> does. Thus, if the arguments may contain special XML characters, you should call some routine to escape it.
 
-=begin comment
-|[<!-- language="C" -->
-gchar *msg;
-
-msg = g_markup_printf_escaped (message_format, ...);
-gtk_message_dialog_format_secondary_markup (message_dialog,
-"C<s>", msg);
-g_free (msg);
-]|
-=end comment
-DeleteMsgDialog
-
-  method gtk_message_dialog_format_secondary_markup ( Str $message )
+  method secondary-markup ( Str $message )
 
 =item Str $message; a message
 
 =end pod
+
+method secondary-markup ( Str $message_format ) {
+  gtk_message_dialog_format_secondary_markup(
+    self.get-native-object-no-reffing, $message_format
+  );
+}
+
 sub gtk_message_dialog_format_secondary_markup (
   N-GObject $message_dialog, Str $message
 ) {
@@ -443,18 +463,23 @@ sub _gtk_message_dialog_format_secondary_markup ( N-GObject $message_dialog, Str
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_message_dialog_get_message_area:
+#TM:1:get-message-area:
 =begin pod
-=head2 [gtk_message_dialog_] get_message_area
+=head2 get-message-area
 
-Returns the message area of the dialog. This is the box where the dialog’s primary and secondary labels are packed. You can add your own extra content to that box and it will appear below those labels. See C<gtk_dialog_get_content_area()> for the corresponding function in the parent B<Gnome::Gtk3::Dialog>.
+Returns the message area of the dialog. This is the box where the dialog’s primary and secondary labels are packed. You can add your own extra content to that box and it will appear below those labels. See C<.get-content-area()> described in the parent class B<Gnome::Gtk3::Dialog>.
 
-Returns: (transfer none): A B<Gnome::Gtk3::Box> corresponding to the “message area” in the I<message_dialog>.
-DeleteMsgDialog
+Returns: A B<Gnome::Gtk3::Box> corresponding to the “message area” in the I<message_dialog>.
 
-  method gtk_message_dialog_get_message_area ( --> N-GObject )
+  method get-message-area ( --> N-GObject )
 
 =end pod
+
+method get-message-area ( --> N-GObject ) {
+  gtk_message_dialog_get_message_area(
+    self.get-native-object-no-reffing,
+  );
+}
 
 sub gtk_message_dialog_get_message_area ( N-GObject $message_dialog --> N-GObject )
   is native(&gtk-lib)
@@ -495,31 +520,31 @@ The B<Gnome::GObject::Value> type of property I<buttons> is C<G_TYPE_ENUM>.
 
 The primary text of the message dialog. If the dialog has
 a secondary text, this will appear as the title.
-DeleteMsgDialog
+
 
 The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
 
-=comment #TP:0:use-markup:
+=comment #TP:1:use-markup:
 =head3 Use Markup
 
 C<1> if the primary text of the dialog includes Pango markup.
 See C<pango_parse_markup()>.
-DeleteMsgDialog
+
 
 The B<Gnome::GObject::Value> type of property I<use-markup> is C<G_TYPE_BOOLEAN>.
 
 =comment #TP:1:secondary-text:
 =head3 Secondary Text
 
-The secondary text of the message dialog.DeleteMsgDialog
+The secondary text of the message dialog.
 
 The B<Gnome::GObject::Value> type of property I<secondary-text> is C<G_TYPE_STRING>.
 
-=comment #TP:0:secondary-use-markup:
+=comment #TP:1:secondary-use-markup:
 =head3 Use Markup in secondary
 
 C<1> if the secondary text of the dialog includes Pango markup.
-See C<pango_parse_markup()>.DeleteMsgDialog
+See C<pango_parse_markup()>.
 
 The B<Gnome::GObject::Value> type of property I<secondary-use-markup> is C<G_TYPE_BOOLEAN>.
 
@@ -528,7 +553,7 @@ The B<Gnome::GObject::Value> type of property I<secondary-use-markup> is C<G_TYP
 
 The B<Gnome::Gtk3::Box> that corresponds to the message area of this dialog.  See
 C<gtk_message_dialog_get_message_area()> for a detailed description of this
-area.DeleteMsgDialog
+area.
 Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<message-area> is C<G_TYPE_OBJECT>.

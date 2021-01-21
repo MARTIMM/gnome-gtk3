@@ -33,7 +33,7 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $md.set-markup('aba<i>ca</i>dabra');
-  $md.format-secondary-text('En een gewone mededeling');
+  $md.secondary-text('En een gewone mededeling');
   my Gnome::Gtk3::Box $container .= new(:native-object($md.get-message-area));
 
   my Gnome::Glib::List $l .= new(:native-object($container.get-children));
@@ -47,15 +47,52 @@ subtest 'Manipulations', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $md.g-object-get-property( 'text', $gv);
-  is $gv.get-string, 'aba<i>ca</i>dabra', 'property text';
-  $gv.clear-object;
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
 
-  $gv .= new(:init(G_TYPE_STRING));
-  $md.g-object-get-property( 'secondary-text', $gv);
-  is $gv.get-string, 'En een gewone mededeling', 'property secondary-text';
-  $gv.clear-object;
+  #my Gnome::Gtk3::MessageDialog $md .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value, Bool :$approx = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $md.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  test-property( G_TYPE_STRING, 'text', 'get-string', 'aba<i>ca</i>dabra');
+  test-property( G_TYPE_STRING, 'secondary-text', 'get-string', 'En een gewone mededeling');
+
+  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'secondary-use-markup', 'get-boolean', 0);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::MessageDialog', {
+  class MyClass is Gnome::Gtk3::MessageDialog {
+    method new ( |c ) {
+      self.bless(
+        :GtkMessageDialog, |c, :buttons(GTK_BUTTONS_YES_NO)
+      );
+    }
+
+    submethod BUILD ( *%options ) {
+      self.format-secondary-markup('Press <b>Yes</b> if you are');
+    }
+  }
+
+  my MyClass $mgc .= new(:message('Well, that is something!'));
+  isa-ok $mgc, Gnome::Gtk3::MessageDialog, '$mgc.new()';
 }
 
 #`{{
