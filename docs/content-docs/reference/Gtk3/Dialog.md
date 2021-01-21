@@ -244,7 +244,7 @@ Returns: the *widget* button that uses the given *response_id*, or undefined.
 
 Gets the response id of a widget in the action area of a dialog.
 
-Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn’t have a response id set. DeleteMsgDialog
+Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn’t have a response id set.
 
     method gtk_dialog_get_response_for_widget ( N-GObject $widget --> Int  )
 
@@ -304,7 +304,7 @@ Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**.
 
 Returns the header bar of *dialog*. Note that the headerbar is only used by the dialog if the *use-header-bar* property is `1`.
 
-Returns: (transfer none): the header bar DeleteMsgDialog
+Returns: (transfer none): the header bar
 
     method gtk_dialog_get_header_bar ( --> N-GObject  )
 
@@ -347,7 +347,7 @@ Supported signals
 Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls `gtk_dialog_response()`. On a delete event, the response ID is **GTK_RESPONSE_DELETE_EVENT**. Otherwise, it depends on which action widget was clicked.
 
     method handler (
-      Int $response_id,
+      int32 $response_id,
       Int :$_handler_id,
       Gnome::GObject::Object :_widget($dialog),
       *%user-options
@@ -355,7 +355,7 @@ Emitted when an action widget is clicked, the dialog receives a delete event, or
 
   * $dialog; the object on which the signal is emitted
 
-  * $response_id; the response ID
+  * $response_id; the response ID. There is a caveat here when using just Int as a type. All enumerations in GTK+ are int32 type integers. Here the predefined response ids are negative so the user could define other responses using positive numbers. When the Int type is used, one will not receive the negative numbers because they are returned as a positive number. E.g. GTK_RESPONSE_REJECT is -2 but you will get 4294967294 which is 0xfffffffe.
 
 ### close
 

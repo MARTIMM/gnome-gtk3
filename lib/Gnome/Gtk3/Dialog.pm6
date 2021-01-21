@@ -537,7 +537,7 @@ of a dialog.
 
 Returns: the response id of I<widget>, or C<GTK_RESPONSE_NONE>
 if I<widget> doesn’t have a response id set.
-DeleteMsgDialog
+
 
   method gtk_dialog_get_response_for_widget ( N-GObject $widget --> Int  )
 
@@ -640,7 +640,7 @@ headerbar is only used by the dialog if the
  I<use-header-bar> property is C<1>.
 
 Returns: (transfer none): the header bar
-DeleteMsgDialog
+
 
   method gtk_dialog_get_header_bar ( --> N-GObject  )
 
