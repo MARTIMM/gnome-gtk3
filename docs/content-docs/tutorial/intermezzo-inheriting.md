@@ -23,9 +23,9 @@ Of course, make a method to do it is easy enough but it can be more beautiful.
 
 ## Inheriting
 
-Inheriting a widget class can make things nicer because a class name can describe the label better. So how do we make a class like that?
+Inheriting a widget class can make things nicer because a class name can describe the result better. So how do we make a class like that?
 
-We must create our class by defining a `new()` method for it. This method creates the object by providing the necessary options if there are any but most importantly, it must provide a special option `:GtkLabel` to let the label build routine know that it must process the options to create a native label object.
+First we must create our class by defining a `new()` method for it. This method creates the object by providing the necessary options if there are any but most importantly, it must provide a special option `:GtkLabel` to let the label build routine know that it must process the options to create a native label object. Of course, other widget types need other named arguments. The reference of a widget makes it clear if it can be inherited and which argument must be given.
 
 Then the `BUILD()` must do the additional steps to let the label be what it should be. This time rotating a smaller angle.
 
@@ -35,11 +35,11 @@ use Gnome::Gtk3::Label;
 
 unit class VerticalHeaderLabel is Gnome::Gtk3::Label;
 
-submethod new ( |c ) {
-  self.bless( :GtkLabel, |c);
+submethod new ( |c ) {                                                    # ①
+  self.bless( :GtkLabel, |c);                                             # ②
 }
 
-submethod BUILD ( ) {
+submethod BUILD ( ) {                                                     # ③
   my Str $text = '<b><small>' ~ self.get-text ~ '</small></b>';
   self.set-text($text);
   self.set-use-markup(True);
@@ -54,7 +54,7 @@ Example use;
 my Gnome::Gtk3::Grid $grid .= new;
 my Int $col = 1;
 for ('success tests', 'failed tests', 'skipped tests', 'total') -> $hdr {
-  my VerticalHeaderLabel $v .= new(:text($hdr)); # ①
+  my VerticalHeaderLabel $v .= new(:text($hdr));                          # ④
   $grid.attach( $v, $col++, 0, 1, 1);
 }
 
@@ -80,9 +80,19 @@ for @$data -> @d {
 }
 ```
 
-Taraaa ... the result!<br/>
+A bit of explanation is in order…
+① `|c` is used here to get the lot of arguments in a Capture.
+
+② Then, `c` is flattened in the call of bless. Note the `:GtkLabel` is used here to give **Gnome::Gtk3::Label** a signal to process the named arguments like `:text`. It is also possible to provide named arguments there to symplify the users need to provide them.
+
+③ The BUILD routine in this example gets the label text to add some markup. Also it needs to turn on markup processing. The angle is now set to 80 degrees so that it is not completely vertical.
+
+④ In the second part of the example, you see the usage of the class brought back to a single line where there is no fuzz about bolding and what not.
+
+And naturally you want to see the result!<br/>
 ![](images/inheriting-example.png)
 
+You need however a window around it and start the main loop, but that, you already knew 😄
 
 ## Inheriting another level
 
