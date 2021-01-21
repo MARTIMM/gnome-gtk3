@@ -121,7 +121,7 @@ MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
 MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
 MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
 MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
-MessageDialog             |  | ✓|  |  |  |  |  |  |  |  |  |
+MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |
 Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
 Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
