@@ -1,5 +1,5 @@
 ---
-title: Tutorial - Getting Started
+title: Tutorial - Inheriting Widget Classes
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
@@ -9,7 +9,7 @@ layout: sidebar
 
 ## Introduction
 
-There are situations in your projects that a widget gets dressed up the same way all the time and stray away from the defaults of a widget. For instance, you might want several labels to change a font and make it bold. So you repeat the steps all the time you create a label. For example the below label has a smaller font and printed bold. Also rotated for 90 degrees (useful in a grid to make columns small, e.g. showing checkboxes or small numbers);
+There are situations in your projects that a widget gets dressed up the same way all the time and stray away from the defaults of a widget. For instance, you might want several labels to change a font and make it bold. So you repeat the steps all the time you create a label. For example the below label has a smaller font and printed bold. Also rotated for 90 degrees (useful in a grid to make columns small, e.g. when showing checkboxes or small numbers);
 
 ```
 $text = "<b><small>$text</small></b>";
@@ -18,14 +18,14 @@ $label.set-use-markup;
 $label.set-angle(90);
 ```
 
-Of course, make a method to do it is easy enough but it can be more beautiful.
+Of course, we can make a method to do all that and that is easy enough. In some cases it is also the best thing you can do. However, the code can be more readable when such items are put away in some class and a proper name can then describe the result better. Beside that, it can be shared with other projects.
 
 
 ## Inheriting
 
-Inheriting a widget class can make things nicer because a class name can describe the result better. So how do we make a class like that?
+Putting things in a class is the subject then. How on earth can we have the behavior of the label without coding it all again? Well, inheriting the label class is the key to the solution! So, how do we make a class like that? In Raku, we use the `is` trait in the class declaration to get the beavior of a parent class.
 
-First we must create our class by defining a `new()` method for it. This method creates the object by providing the necessary options if there are any but most importantly, it must provide a special option `:GtkLabel` to let the label build routine know that it must process the options to create a native label object. Of course, other widget types need other named arguments. The reference of a widget makes it clear if it can be inherited and which argument must be given.
+But we must do a bit more to let the parent class process the arguments and generate a native object. We must define a `new()` method for it to `bless()` the class to a living object. This method creates the object by providing the necessary options if there are any but most importantly, it must provide a special option `:GtkLabel` to let the label build routine know that it must process the options to create a native label object. Of course, other widget types need other named arguments. The reference of a widget makes it clear if it can be inherited and which argument must be given.
 
 Then the `BUILD()` must do the additional steps to let the label be what it should be. This time rotating a smaller angle.
 

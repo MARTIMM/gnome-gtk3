@@ -1,11 +1,11 @@
 ---
-title: Tutorial - Intermezzo Methods
+title: Tutorial - Methods
 #nav_title: Examples
 nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
-# Intermezzo: Methods
+# Methods
 
 ## Method naming
 
