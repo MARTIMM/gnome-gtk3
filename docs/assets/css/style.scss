@@ -17,11 +17,19 @@ $menu-color-boxed:          #00afaf;
 $menu-color-standalone:     #80bf00;
 
 $code-color:                #46465f;
-$link-color:                #207f8f;
-$hx-link-color:             #20506f;
+$link-color:                #207f9f;
+$hx-link-color:             #20507f;
 
-$border-color: #bbb;
-$border-width: 6px;
+$h1-link-color:             #20a07f;
+$h2-link-color:             #20907f;
+$h3-link-color:             #20807f;
+$h4-link-color:             #20707f;
+$h5-link-color:             #20607f;
+$h6-link-color:             #20507f;
+
+$table-border-color:        #206060;
+$border-color:              #bbb;
+$border-width:              6px;
 
 $menu-text-font-size: 15px;
 $sbar-text-font-size: 13px;
@@ -38,6 +46,7 @@ h1 {
   font-size: 23px;
   font-weight: bold;
   margin-bottom: 8px;
+  color: $h1-link-color;
 }
 
 h2 {
@@ -45,30 +54,30 @@ h2 {
   font-weight: bold;
   margin-top: 4px;
   margin-bottom: 8px;
-  color: #d53030;
+  color: $h2-link-color;
 }
 
 h3 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #d5000d;
+  color: $h3-link-color;
 }
 
 h4 {
   font-size: 16px;
   font-weight: bold;
-  color: #d5000d;
+  color: $h4-link-color;
 }
 
 h5 {
   font-size: 14px;
-  color: #d5000d;
+  color: $h5-link-color;
 }
 
 h6 {
   font-size: 12px;
-  color: #d5000d;
+  color: $h6-link-color;
 }
 
 .hx-link, .newh1, .newh2, .newh3, .newh4, .newh5, .newh6 {
@@ -175,7 +184,7 @@ table.coverage {
   float: right;
   text-align: left;
   width: 50%;
-  border: 2px solid #800;
+  border: 2px solid $table-border-color;
   th, td {
     padding: 2px;
   }
