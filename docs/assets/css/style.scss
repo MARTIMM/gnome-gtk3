@@ -16,7 +16,9 @@ $menu-color-interface:      #bf00bf;
 $menu-color-boxed:          #00afaf;
 $menu-color-standalone:     #80bf00;
 
-$code-color: #46465f;
+$code-color:                #46465f;
+$link-color:                #207f8f;
+$hx-link-color:             #20506f;
 
 $border-color: #bbb;
 $border-width: 6px;
@@ -30,6 +32,57 @@ $text-strong-font-weight: lighter;
 
 body {
   line-height: 1.1;
+}
+
+h1 {
+  font-size: 23px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  color: #d53030;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #d5000d;
+}
+
+h4 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d5000d;
+}
+
+h5 {
+  font-size: 14px;
+  color: #d5000d;
+}
+
+h6 {
+  font-size: 12px;
+  color: #d5000d;
+}
+
+.hx-link, .newh1, .newh2, .newh3, .newh4, .newh5, .newh6 {
+  color: $hx-link-color;
+}
+
+a:hover {
+  color: $hx-link-color;
+}
+
+pre {
+  padding: 10px;
+  background-color: $code-color;
+  border: $border-width solid $border-color;
 }
 
 header {
@@ -104,43 +157,6 @@ header hr {
   width: 100%;
 }
 
-h1 {
-  font-size: 23px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-h2 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 4px;
-  margin-bottom: 8px;
-  color: #d53030;
-}
-
-h3 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #d5000d;
-}
-
-h4 {
-  font-size: 16px;
-  font-weight: bold;
-  color: #d5000d;
-}
-
-h5 {
-  font-size: 14px;
-  color: #d5000d;
-}
-
-h6 {
-  font-size: 12px;
-  color: #d5000d;
-}
-
 em, strong {
   color: #8e280e;
 }
@@ -152,12 +168,6 @@ div.inner {
 
 div.highlight, div.highlighter-rouge, pre {
   border-radius: $border-width;
-}
-
-pre {
-  padding: 10px;
-  background-color: $code-color;
-  border: $border-width solid $border-color;
 }
 
 
