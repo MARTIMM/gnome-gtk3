@@ -112,8 +112,9 @@ layout: sidebar
     { * }
   ```
 
-
   I'll go for the last example but will take some time to find all returned enum
+
+* In some situations, modules need to be imported just for a name from an enumerated type. In those cases it would be better when all enums go into the **Enums** module instead of having some of them in a specific module. E.g. `GTK_WIN_POS_MOUSE` comes from **Window**, `GTK_RESPONSE_NO` from **Dialog** and `GTK_MESSAGE_WARNING` from **Enums**. We might need to include all three of the modules when dealing with e.g. a **MessageDialog**.
 
 #### Site changes.
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
