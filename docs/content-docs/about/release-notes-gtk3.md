@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-01-21 0.36.0:
+- New role **Gnome::Gtk3::RecentChooser**. This module is now used in an older module **Gnome::Gtk3::RecentChooserMenu**.
+
 #### 2021-01-18 0.35.1:
 - New module **Gnome::Gtk3::CheckMenuItem**, **Gnome::Gtk3::SeparatorMenuItem** and **Gnome::Gtk3::RadioMenuItem**.
 - Document fixes of MessageDialog module.

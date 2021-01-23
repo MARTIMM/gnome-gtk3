@@ -262,7 +262,7 @@ GInterface
 ├── GtkTreeDragDest
 ├── GtkTreeSortable
 ├── GtkPrintOperationPreview
-├── GtkRecentChooser
+├── GtkRecentChooser                  RecentChooser
 ╰── GtkToolShell
 
 TopLevelClassSupport                  Gnome::N::TopLevelClassSupport
