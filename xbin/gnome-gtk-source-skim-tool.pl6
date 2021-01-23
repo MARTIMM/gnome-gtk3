@@ -591,6 +591,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   # convert to native perl types
 #note "Type: $type";
   $type = 'N-GError' if $type ~~ m/GError/;
+#  $type = 'GQuark' if $type ~~ m/GQuark/;
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
   $type = 'N-PangoItem' if $type ~~ m/PangoItem/;
@@ -665,6 +666,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
 #  $raku-type ~~ s:s/ uint /UInt/;
   $raku-type ~~ s:s/ gpointer /Pointer/;
   $raku-type ~~ s:s/ gfloat || gdouble /Num/;
+  $raku-type ~~ s:s/ GQuark /UInt/;
 
 #note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
 
@@ -849,22 +851,24 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 #note "TN: $type-name";
 
   given $type-name {
-    when /^ 'gtk' / {
+    when /^ gtk / {
       $is-n-gobject = $type-name ~~ any(|@gtkdirlist);
     }
 
-    when /^ 'gdk' / {
+    when /^ gdk / {
       $is-n-gobject = $type-name ~~ any(|@gdkdirlist);
     }
 
-    when /^ 'g' / {
+    when /^ gquark / { #`(skip this type) }
+
+    when /^ g / {
 
       $is-n-gobject = $type-name ~~ any(|@glibdirlist);
       $is-n-gobject = $type-name ~~ any(|@gobjectdirlist) unless $is-n-gobject;
 #      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
     }
 
-    when /^ 'pango' / {
+    when /^ pango / {
       state @modified-pangodirlist = map(
         { .subst( / '-' /, ''); }, @pangodirlist
       );
