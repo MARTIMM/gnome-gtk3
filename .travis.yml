@@ -15,9 +15,6 @@ dist: xenial
 services:
   - xvfb
 
-#before_install:
-#  sudo apt get -y install at-spi2-core
-
 install:
   - rakudobrew build zef
   - zef --depsonly --/test install .
