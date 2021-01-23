@@ -6,18 +6,11 @@ Displays recently used files in a menu
 Description
 ===========
 
-**Gnome::Gtk3::RecentChooserMenu** is a widget suitable for displaying recently used files inside a menu. It can be used to set a sub-menu of a **Gnome::Gtk3::MenuItem** using `gtk_menu_item_set_submenu()`, or as the menu of a **Gnome::Gtk3::MenuToolButton**.
+**Gnome::Gtk3::RecentChooserMenu** is a widget suitable for displaying recently used files inside a menu. It can be used to set a sub-menu of a **Gnome::Gtk3::MenuItem** using `.set-submenu()`, or as the menu of a **Gnome::Gtk3::MenuToolButton**.
 
-Note that **Gnome::Gtk3::RecentChooserMenu** does not have any methods of its own. Instead, you should use the functions that work on a **Gnome::Gtk3::RecentChooser**.
+Note that **Gnome::Gtk3::RecentChooserMenu** does not have any many methods of its own. Instead, you should use the functions of its role **Gnome::Gtk3::RecentChooser**.
 
-Note also that **Gnome::Gtk3::RecentChooserMenu** does not support multiple filters, as it has no way to let the user choose between them as the **Gnome::Gtk3::RecentChooserWidget** and **Gnome::Gtk3::RecentChooserDialog** widgets do. Thus using `gtk_recent_chooser_add_filter()` on a **Gnome::Gtk3::RecentChooserMenu** widget will yield the same effects as using `gtk_recent_chooser_set_filter()`, replacing any currently set filter with the supplied filter; `gtk_recent_chooser_remove_filter()` will remove any currently set **Gnome::Gtk3::RecentFilter** object and will unset the current filter; `gtk_recent_chooser_list_filters()` will return a list containing a single **Gnome::Gtk3::RecentFilter** object.
-
-Recently used files are supported since GTK+ 2.10.
-
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::RecentChooserMenu implements
+Note also that **Gnome::Gtk3::RecentChooserMenu** does not support multiple filters, as it has no way to let the user choose between them as the **Gnome::Gtk3::RecentChooserWidget** and **Gnome::Gtk3::RecentChooserDialog** widgets do. Thus using `.add_filter()` on a **Gnome::Gtk3::RecentChooserMenu** widget will yield the same effects as using `.set_filter()`, replacing any currently set filter with the supplied filter; `.remove_filter()` will remove any currently set **Gnome::Gtk3::RecentFilter** object and will unset the current filter; `.list_filters()` will return a list containing a single **Gnome::Gtk3::RecentFilter** object.
 
 See Also
 --------
@@ -58,33 +51,35 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new RecentChooserMenu object.
 
     multi method new ( )
 
-Create a RecentChooserMenu object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+### :manager
 
-    multi method new ( N-GObject :$native-object! )
+Creates a new **Gnome::Gtk3::RecentChooserMenu** widget using *$manager* as the underlying recently used resources manager.
 
-Create a RecentChooserMenu object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+This is useful if you have implemented your own recent manager, or if you have a customized instance of a **Gnome::Gtk3::RecentManager** object or if you wish to share a common **Gnome::Gtk3::RecentManager** object among multiple **Gnome::Gtk3::RecentChooser** widgets.
 
-    multi method new ( Str :$build-id! )
+    multi method new ( N-GObject :$manager! )
 
-[gtk_recent_chooser_menu_] get_show_numbers
--------------------------------------------
+get-show-numbers
+----------------
 
-Returns the value set by `gtk_recent_chooser_menu_set_show_numbers()`.
+Returns the value set by `set-show-numbers()`.
 
-Returns: `1` if numbers should be shown.
+Returns: `True` if numbers should be shown.
 
-    method gtk_recent_chooser_menu_get_show_numbers ( --> Int )
+    method get-show-numbers ( --> Bool )
 
-[gtk_recent_chooser_menu_] set_show_numbers
--------------------------------------------
+set-show-numbers
+----------------
 
-Sets whether a number should be added to the items of *menu*. The numbers are shown to provide a unique character for a mnemonic to be used inside ten menu item’s label. Only the first the items get a number to avoid clashes.
+Sets whether a number should be added to the items of *menu*. The numbers are shown to provide a unique character for a mnemonic to be used inside the menu item’s label. Only the first ten items get a number to avoid clashes.
 
-    method gtk_recent_chooser_menu_set_show_numbers ( Int $show_numbers )
+    method set-show-numbers ( Bool $show_numbers )
 
   * Int $show_numbers; whether to show numbers
 
