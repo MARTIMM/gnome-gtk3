@@ -116,6 +116,15 @@ layout: sidebar
 
 * In some situations, modules need to be imported just for a name from an enumerated type. In those cases it would be better when all enums go into the **Enums** module instead of having some of them in a specific module. E.g. `GTK_WIN_POS_MOUSE` comes from **Window**, `GTK_RESPONSE_NO` from **Dialog** and `GTK_MESSAGE_WARNING` from **Enums**. We might need to include all three of the modules when dealing with e.g. a **MessageDialog**.
 
+* Replacement code for some deprecated Gtk modules, see [Stack Overflow](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
+  * Gtk.ActionGroup is deprecated, use GLib.SimpleActionGroup
+  * Gtk.Action is deprecated, use GLib.SimpleAction
+  * If you creating a menu, use Gtk.menu_new_with_model (better approach)
+  * Gtk.UIManager is deprecated, use Gtk.Builder instead
+  * Gtk.Stock is deprecated, use "set_icon_name" property instead if applicable. For example, read Gtk.ToolButton doc. In menu, unfortunately, Gtk3 drop the use of icon in menu. See also [google docs](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
+
+
+
 #### Site changes.
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
