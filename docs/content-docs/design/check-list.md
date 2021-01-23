@@ -123,23 +123,24 @@ MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
 MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
 MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |
-Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |
+Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |  |
 Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-Paned                     |  |  |  |  |  |  |  |  |  |  |  |
-PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |
-Popover                   |  |  |  |  |  |  |  |  |  |  |  |
-PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |
-ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |
-RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |
+Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |
+PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |
+Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |
+PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |
+ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |
+RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |
 RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|
-Range                     |  |  |  |  |  |  |  |  |  |  |  |
-RecentChooserMenu         |  | ✓|  |  |  |  |  |  |  |  |  |
-Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |
+Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooser             |R |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
+Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |
 Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|
-ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |
-SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |
-SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |
-Separator                 |  |  |  |  |  |  |  |  |  |  |  |
+ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |
+Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
@@ -189,12 +190,12 @@ Calendar|
 CellArea|
 CellAreaBox|
 CellAreaContext|
-CellEditable              |i|
-CellLayout                |i|
+CellEditable              |R |
+CellLayout                |R |
 CellView|
 ChooserDialog|
 Clipboard|
-CssSection                |b|
+CssSection                |Bx|
 Editable|
 EntryBuffer|
 EntryCompletion|
@@ -210,7 +211,7 @@ FlowBox|
 FlowBoxChild|
 FontButton|
 FontChooserDialog|
-FontChooser               |i|
+FontChooser               |R |
 FontChooserWidget|
 Gesture|
 GestureDrag|
@@ -240,19 +241,18 @@ Overlay|
 PadController|
 PageSetup|
 PageSetupUnixDialog|
-PaperSize                 |b|
+PaperSize                 |Bx|
 Plug|
 PrintBackend|
 PrintContext|
 Printer|
 PrintJob|
 PrintOperation|
-PrintOperationPreview     |i|
+PrintOperationPreview     |R |
 PrintSettings|
 PrintUnixDialog|
 RadioToolButton|
 RcStyle|
-RecentChooser|i|
 RecentChooserDialog|
 RecentChooserWidget|
 RecentFilter|
@@ -270,20 +270,20 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-TargetList                |b|
+TargetList                |Bx|
 TextChildAnchor|
 TextMark|
 ToggleToolButton|
 Toolbar|
 ToolItemGroup|
 ToolPalette|
-ToolShell                 |i|
+ToolShell                 |R |
 Tooltip|
-TreeDragDest              |i|
-TreeDragSource            |i|
+TreeDragDest              |R |
+TreeDragSource            |R |
 TreeModelFilter|
 TreeModelSort|
-TreeSortable              |i|
+TreeSortable              |R |
 Viewport|
 VolumeButton|
 WindowGroup|
