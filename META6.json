@@ -80,6 +80,8 @@
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
     "Gnome::Gtk3::RecentChooser": "lib/Gnome/Gtk3/RecentChooser.pm6",
     "Gnome::Gtk3::RecentChooserMenu": "lib/Gnome/Gtk3/RecentChooserMenu.pm6",
+    "Gnome::Gtk3::RecentInfo": "lib/Gnome/Gtk3/RecentInfo.pm6",
+    "Gnome::Gtk3::RecentManager": "lib/Gnome/Gtk3/RecentManager.pm6",
     "Gnome::Gtk3::Revealer": "lib/Gnome/Gtk3/Revealer.pm6",
     "Gnome::Gtk3::Scale": "lib/Gnome/Gtk3/Scale.pm6",
     "Gnome::Gtk3::ScrolledWindow": "lib/Gnome/Gtk3/ScrolledWindow.pm6",
