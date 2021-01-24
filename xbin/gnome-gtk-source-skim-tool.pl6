@@ -1859,6 +1859,7 @@ sub get-properties ( Str:D $source-content is copy ) {
     note "get property $prop-name";
     $property-doc ~= Q:qq:to/EOHEADER/;
 
+      =comment -----------------------------------------------------------------------
       =comment #TP:0:$prop-name:
       =head3 $prop-nick
 
