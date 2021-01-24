@@ -133,8 +133,10 @@ ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |
 RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |
 RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|
 Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
-RecentChooser             |R |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|
 RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
+RecentInfo                |S | ✗|  |  |  |  |  |  |  |  |  |  |
+RecentManager             |  |  |  |  |  |  |  |  |  |  |  |  |
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |
 Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -190,12 +192,12 @@ Calendar|
 CellArea|
 CellAreaBox|
 CellAreaContext|
-CellEditable              |R |
-CellLayout                |R |
+CellEditable              |R | ✗|
+CellLayout                |R | ✗|
 CellView|
 ChooserDialog|
 Clipboard|
-CssSection                |Bx|
+CssSection                |Bx| ✗|
 Editable|
 EntryBuffer|
 EntryCompletion|
@@ -211,7 +213,7 @@ FlowBox|
 FlowBoxChild|
 FontButton|
 FontChooserDialog|
-FontChooser               |R |
+FontChooser               |R | ✗|
 FontChooserWidget|
 Gesture|
 GestureDrag|
@@ -241,14 +243,14 @@ Overlay|
 PadController|
 PageSetup|
 PageSetupUnixDialog|
-PaperSize                 |Bx|
+PaperSize                 |Bx| ✗|
 Plug|
 PrintBackend|
 PrintContext|
 Printer|
 PrintJob|
 PrintOperation|
-PrintOperationPreview     |R |
+PrintOperationPreview     |R | ✗|
 PrintSettings|
 PrintUnixDialog|
 RadioToolButton|
@@ -256,7 +258,6 @@ RcStyle|
 RecentChooserDialog|
 RecentChooserWidget|
 RecentFilter|
-RecentManager|
 Requisition|b|
 ScaleButton|
 Scrollable|i|
@@ -270,20 +271,20 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-TargetList                |Bx|
+TargetList                |Bx| ✗|
 TextChildAnchor|
 TextMark|
 ToggleToolButton|
 Toolbar|
 ToolItemGroup|
 ToolPalette|
-ToolShell                 |R |
+ToolShell                 |R | ✗|
 Tooltip|
-TreeDragDest              |R |
-TreeDragSource            |R |
+TreeDragDest              |R | ✗|
+TreeDragSource            |R | ✗|
 TreeModelFilter|
 TreeModelSort|
-TreeSortable              |R |
+TreeSortable              |R | ✗|
 Viewport|
 VolumeButton|
 WindowGroup|
