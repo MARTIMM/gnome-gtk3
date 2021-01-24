@@ -3,9 +3,11 @@ use NativeCall;
 use Test;
 
 use Gnome::Glib::Quark;
+use Gnome::Glib::Error;
 
 use Gnome::Gtk3::RecentChooserMenu;
 use Gnome::Gtk3::RecentChooser;
+use Gnome::Gtk3::RecentInfo;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -62,6 +64,41 @@ subtest 'Manipulations', {
     is .get-sort-type, GTK_RECENT_SORT_MRU,
       '.set-sort-type() / .get-sort-type()';
 
+    my Gnome::Glib::Error $e = .set-current-uri(
+      'file:///_h_oe_p_er_de_poep_.something'
+    );
+    ok $e.is-valid, $e.message;
+    is .get-current-uri, Str, '.set-current-uri() / .get-current-uri()';
+
+    $e = .select-uri('file:///_h_oe_p_er_de_poep_.something');
+    ok $e.is-valid, $e.message;
+    .unselect-uri('file:///_h_oe_p_er_de_poep_.something');
+
+    # next shows error
+    #  (RecentChooser.t:153542): Gtk-WARNING **: 13:43:08.530: This function is
+    #  not implemented for widgets of class 'GtkRecentChooserMenu'
+    #.select-all;
+    #.unselect-all;
+
+    my Gnome::Glib::List $l = .get-items;
+    diag '.get-items(); ' ~ $l.g_list_length;
+    my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
+    my $uris = $rc.get-uris;
+    is $ri.get-uri, $uris[0], '.get-uris() / .get-uri()';
+
+#`{{
+#note "\nUris:\n  " ~ .get-uris.join("\n  ");
+
+    my $uris = $rc.get-uris;
+note 'u[0]: ', $uris[0];
+
+    $e = .set-current-uri($uris[0]);
+    ok $e.is-valid, $e.message;
+
+    my Gnome::Gtk3::RecentInfo $ri = $rc.get-current-item;
+    note 'u: ', $ri.get-uri;
+}}
+
 #`{{
     .(True);
     ok ., '.() / .()';
@@ -69,25 +106,22 @@ subtest 'Manipulations', {
   }
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Inherit Gnome::Gtk3::RecentChooser', {
-  class MyClass is Gnome::Gtk3::RecentChooser {
-    method new ( |c ) {
-      self.bless( :GtkRecentChooser, |c);
-    }
-
-    submethod BUILD ( *%options ) {
-
-    }
+class Sorters {
+  method alpha-uri (
+    Gnome::Gtk3::RecentInfo $a, Gnome::Gtk3::RecentInfo $b
+    --> Int
+  ) {
+    $a.get-uri cmp $b.get-uri
   }
-
-  my MyClass $mgc .= new;
-  isa-ok $mgc, Gnome::Gtk3::RecentChooser, '.new()';
 }
 
-#-------------------------------------------------------------------------------
-subtest 'Interface ...', {
+subtest 'Sorting recent ...', {
+  $rc.set-sort-type(GTK_RECENT_SORT_CUSTOM);
+  $rc.set-sort-func( Sorters.new, 'alpha-uri');
+#note "\nUris:\n  " ~ $rc.get-uris.join("\n  ");
+  lives-ok {$rc.get-uris},
+    '.set-sort-func(); ' ~ ($rc.get-uris[0] // '-') ~ ' …';
 }
 
 #-------------------------------------------------------------------------------
@@ -116,9 +150,35 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'show-private', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-tips', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-not-found', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'select-multiple', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'local-only', 'get-boolean', 1);
+  test-property( G_TYPE_INT, 'limit', 'get-int', 20);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::RecentChooser', {
+  class MyClass is Gnome::Gtk3::RecentChooser {
+    method new ( |c ) {
+      self.bless( :GtkRecentChooser, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::RecentChooser, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
 }
 
 #-------------------------------------------------------------------------------

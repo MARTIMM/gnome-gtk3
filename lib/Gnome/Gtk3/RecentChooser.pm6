@@ -43,7 +43,7 @@ use Gnome::Glib::Error;
 use Gnome::Glib::List;
 use Gnome::Glib::SList;
 
-#use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::RecentInfo;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -549,63 +549,98 @@ sub gtk_recent_chooser_get_sort_type ( N-GObject $chooser --> GEnum )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-# TM:0:set-sort-func:
+# TM:1:set-sort-func:
 =begin pod
 =head2 set-sort-func
 
-Sets the comparison function used when sorting to be I<sort_func>.  If the I<chooser> has the sort type set to B<GTK_RECENT_SORT_CUSTOM> then the chooser will sort using this function.  To the comparison function will be passed two B<Gnome::Gtk3::RecentInfo> structs and I<sort_data>;  I<sort_func> should return a positive integer if the first item comes before the second, zero if the two items are equal and a negative integer if the first item comes after the second.
+Sets the comparison function used when sorting to be I<sort_func>.  If the I<chooser> has the sort type set to B<GTK_RECENT_SORT_CUSTOM> then the chooser will sort using this function.  To the sort method will be passed two B<Gnome::Gtk3::RecentInfo> structs. The sort method should return a positive integer if the first item comes before the second, zero if the two items are equal and a negative integer if the first item comes after the second.
 
-  method set-sort-func ( GtkRecentSortFunc $sort_func, Pointer $sort_data, GDestroyNotify $data_destroy )
+  method set-sort-func (
+    $sort-method-object, Str $sort-methodname
+  )
 
-=item GtkRecentSortFunc $sort_func; the comparison function
-=item Pointer $sort_data; (allow-none): user data to pass to I<sort_func>, or C<Any>
-=item GDestroyNotify $data_destroy; (allow-none): destroy notifier for I<sort_data>, or C<Any>
+An example which sorts the recent information alphabetically;
+
+  class Sorters {
+    method alpha-uri (
+      Gnome::Gtk3::RecentInfo $a, Gnome::Gtk3::RecentInfo $b
+      --> Int
+    ) {
+      $a.get-uri cmp $b.get-uri
+    }
+  }
+
+  my Gnome::Gtk3::RecentChooserMenu $rc;
+  $rc.set-sort-type(GTK_RECENT_SORT_CUSTOM);
+  $rc.set-sort-func( Sorters.new, 'alpha-uri');
+
+  # next output dump shows the recent list sorted alphabetically
+  note "\nUris:\n  " ~ $rc.get-uris.join("\n  ");
+    #diag '.get-uris(); ' ~ (.get-uris[0] // '-') ~ ' …';
+  }
 
 =end pod
 
-method set-sort-func ( GtkRecentSortFunc $sort_func, Pointer $sort_data, GDestroyNotify $data_destroy ) {
+method set-sort-func ( $user-object, Str:D $sort-methodname ) {
+  die X::Gnome.new(:message('undefined user object'))
+    unless $user-object.defined;
+  die X::Gnome.new(:message("method '$sort-methodname' not defined"))
+    unless $user-object.defined;
 
   gtk_recent_chooser_set_sort_func(
-    self.get-native-object-no-reffing, $sort_func, $sort_data, $data_destroy
+    self.get-native-object-no-reffing,
+    sub ( N-GtkRecentInfo $a, N-GtkRecentInfo $b, gpointer $u --> gint ) {
+      $user-object."$sort-methodname"(
+        Gnome::Gtk3::RecentInfo.new(:native-object($a)),
+        Gnome::Gtk3::RecentInfo.new(:native-object($b))
+      )
+    },
+    OpaquePointer, OpaquePointer
   );
 }
 
-sub gtk_recent_chooser_set_sort_func ( N-GObject $chooser, GtkRecentSortFunc $sort_func, gpointer $sort_data, GDestroyNotify $data_destroy  )
-  is native(&gtk-lib)
+sub gtk_recent_chooser_set_sort_func (
+  N-GObject $chooser,
+  Callable $sort_func (
+    N-GtkRecentInfo $a, N-GtkRecentInfo $b, gpointer $u --> gint
+  ), gpointer $sort_data, OpaquePointer $data_destroy
+) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
-#TM:0:set-current-uri:
+#TM:1:set-current-uri:
 =begin pod
 =head2 set-current-uri
 
-Sets I<uri> as the current URI for I<chooser>.
+Sets I<$uri> as the current URI for I<chooser>.
 
-Returns: C<1> if the URI was found.
+Returns: A B<Gnome::Glib::Error> object. When the uri was found, the error object is invalid.
 
-  method set-current-uri (  Str  $uri, N-GError $error --> Int )
+  method set-current-uri ( Str $uri --> Gnome::Glib::Error )
 
 =item  Str  $uri; a URI
-=item N-GError $error; (allow-none): return location for a B<GError>, or C<Any>
 
 =end pod
 
-method set-current-uri (  Str  $uri, N-GError $error --> Int ) {
-
-  gtk_recent_chooser_set_current_uri(
-    self.get-native-object-no-reffing, $uri, $error
+method set-current-uri ( Str $uri --> Gnome::Glib::Error ) {
+  my CArray[N-GError] $ne .= new(N-GError);
+  my Int $r = gtk_recent_chooser_set_current_uri(
+    self.get-native-object-no-reffing, $uri, $ne
   );
+
+  my Gnome::Glib::Error $e .= new(:native-object($ne[0]));# unless $b;
+  $e.clear-object if $r == 1;
+  $e;
 }
 
-sub gtk_recent_chooser_set_current_uri ( N-GObject $chooser, gchar-ptr $uri, N-GError $error --> gboolean )
-  is native(&gtk-lib)
+sub gtk_recent_chooser_set_current_uri (
+  N-GObject $chooser, gchar-ptr $uri, CArray[N-GError] $error --> gboolean
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-current-uri:
+#TM:1:get-current-uri:
 =begin pod
 =head2 get-current-uri
 
@@ -613,11 +648,11 @@ Gets the URI currently selected by I<chooser>.
 
 Returns: a newly allocated string holding a URI.
 
-  method get-current-uri ( -->  Str  )
+  method get-current-uri ( -->  Str )
 
 =end pod
 
-method get-current-uri ( -->  Str  ) {
+method get-current-uri ( -->  Str ) {
 
   gtk_recent_chooser_get_current_uri(
     self.get-native-object-no-reffing,
@@ -628,9 +663,8 @@ sub gtk_recent_chooser_get_current_uri ( N-GObject $chooser --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-current-item:
+#TM:1:get-current-item:
 =begin pod
 =head2 get-current-item
 
@@ -643,47 +677,56 @@ Returns: a B<Gnome::Gtk3::RecentInfo>.  Use C<clear-object()> when when you have
 
 =end pod
 
-method get-current-item ( --> GtkRecentInfo ) {
+method get-current-item ( --> Gnome::Gtk3::RecentInfo ) {
 
-  gtk_recent_chooser_get_current_item(
-    self.get-native-object-no-reffing,
+  Gnome::Gtk3::RecentInfo.new(
+    :native-object(
+      gtk_recent_chooser_get_current_item(self.get-native-object-no-reffing)
+    )
   );
 }
 
-sub gtk_recent_chooser_get_current_item ( N-GObject $chooser --> GtkRecentInfo )
-  is native(&gtk-lib)
+sub gtk_recent_chooser_get_current_item (
+  N-GObject $chooser --> N-GtkRecentInfo
+) is native(&gtk-lib)
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
-#TM:0:select-uri:
+#TM:1:select-uri:
 =begin pod
 =head2 select-uri
 
 Selects I<uri> inside I<chooser>.
 
-Returns: C<1> if I<uri> was found.
+Returns: A B<Gnome::Glib::Error> object. When the uri was found, the error object is invalid.
 
-  method select-uri (  Str  $uri, N-GError $error --> Int )
+  method select-uri (  Str  $uri --> Gnome::Glib::Error )
 
 =item  Str  $uri; a URI
-=item N-GError $error; (allow-none): return location for a B<GError>, or C<Any>
 
 =end pod
 
-method select-uri (  Str  $uri, N-GError $error --> Int ) {
+method select-uri (  Str  $uri --> Gnome::Glib::Error ) {
 
-  gtk_recent_chooser_select_uri(
-    self.get-native-object-no-reffing, $uri, $error
+  my CArray[N-GError] $ne .= new(N-GError);
+  my Int $r = gtk_recent_chooser_select_uri(
+    self.get-native-object-no-reffing, $uri, $ne
   );
+
+  my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
+  $e.clear-object if $r == 1;
+  $e;
 }
 
-sub gtk_recent_chooser_select_uri ( N-GObject $chooser, gchar-ptr $uri, N-GError $error --> gboolean )
-  is native(&gtk-lib)
+sub gtk_recent_chooser_select_uri (
+  N-GObject $chooser, gchar-ptr $uri, CArray[N-GError] $error
+  --> gboolean
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:unselect-uri:
+#TM:1:unselect-uri:
 =begin pod
 =head2 unselect-uri
 
@@ -707,7 +750,7 @@ sub gtk_recent_chooser_unselect_uri ( N-GObject $chooser, gchar-ptr $uri  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:select-all:
+#TM:1:select-all:
 =begin pod
 =head2 select-all
 
@@ -730,7 +773,7 @@ sub gtk_recent_chooser_select_all ( N-GObject $chooser  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:unselect-all:
+#TM:1:unselect-all:
 =begin pod
 =head2 unselect-all
 
@@ -753,23 +796,23 @@ sub gtk_recent_chooser_unselect_all ( N-GObject $chooser  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-items:
+#TM:1:get-items:
 =begin pod
 =head2 get-items
 
 Gets the list of recently used resources in form of B<Gnome::Gtk3::RecentInfo> objects.  The return value of this function is affected by the “sort-type” and “limit” properties of I<chooser>.
 
-Returns:  (element-type B<Gnome::Gtk3::RecentInfo>) (transfer full): A newly allocated list of B<Gnome::Gtk3::RecentInfo> objects.  You should use C<gtk_recent_info_unref()> on every item of the list, and then free the list itself using C<g_list_free()>.
+Returns:  (element-type B<Gnome::Gtk3::RecentInfo>) (transfer full): A newly allocated list of B<Gnome::Gtk3::RecentInfo> objects.  You should use C<clear-object()> on every item of the list, and then free the list itself also using C<clear-object()>.
 
-  method get-items ( --> N-GList )
-
+  method get-items ( --> Gnome::Glib::List )
 
 =end pod
 
-method get-items ( --> N-GList ) {
-
-  gtk_recent_chooser_get_items(
-    self.get-native-object-no-reffing,
+method get-items ( --> Gnome::Glib::List ) {
+  Gnome::Glib::List.new(
+    :native-object(
+      gtk_recent_chooser_get_items(self.get-native-object-no-reffing)
+    )
   );
 }
 
@@ -782,25 +825,35 @@ sub gtk_recent_chooser_get_items ( N-GObject $chooser --> N-GList )
 =begin pod
 =head2 get-uris
 
-Gets the URI of the recently used resources.  The return value of this function is affected by the “sort-type” and “limit” properties of I<chooser>.  Since the returned array is C<Any> terminated, I<length> may be C<Any>.
+Gets the URI of the recently used resources. The return value of this function is affected by the “sort-type” and “limit” properties of I<chooser>.
 
-Returns: (array length=length zero-terminated=1) (transfer full): A newly allocated, C<Any>-terminated array of strings. Use C<g_strfreev()> to free it.
+Returns: An array of strings.
 
-  method get-uris ( UInt $length -->  CArray[Str]  )
-
-=item UInt $length; (out) (allow-none): return location for a the length of the URI list, or C<Any>
+  method get-uris ( --> Array )
 
 =end pod
 
-method get-uris ( UInt $length -->  CArray[Str]  ) {
+method get-uris ( --> Array ) {
 
-  gtk_recent_chooser_get_uris(
+  my Array $uris = [];
+  my gsize $length;
+  my CArray[Str] $a = gtk_recent_chooser_get_uris(
     self.get-native-object-no-reffing, $length
   );
+
+  for ^$length -> $i {
+    last if $a[$i] ~~ Nil;
+    $uris[$i] = $a[$i];
+  }
+
+  #TODO free $a ??
+
+  $uris
 }
 
-sub gtk_recent_chooser_get_uris ( N-GObject $chooser, gsize $length --> gchar-pptr )
-  is native(&gtk-lib)
+sub gtk_recent_chooser_get_uris (
+  N-GObject $chooser, gsize $length is rw --> gchar-pptr
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
@@ -865,7 +918,6 @@ Gets the B<Gnome::Gtk3::RecentFilter> objects held by I<chooser>.
 Returns: (element-type B<Gnome::Gtk3::RecentFilter>) (transfer container): A singly linked list of B<Gnome::Gtk3::RecentFilter> objects.  You should just free the returned list using C<g_slist_free()>.
 
   method list-filters ( --> N-GSList )
-
 
 =end pod
 
@@ -1018,6 +1070,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 
 =head2 Supported properties
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:recent-manager:
 =head3 Recent Manager
 
@@ -1025,11 +1078,12 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 The B<Gnome::Gtk3::RecentManager> instance used by the B<Gnome::Gtk3::RecentChooser> to
 display the list of recently used resources.
 
-   * Since: 2.10Widget type: GTK_TYPE_RECENT_MANAGER
+   Widget type: GTK_TYPE_RECENT_MANAGER
 
 The B<Gnome::GObject::Value> type of property I<recent-manager> is C<G_TYPE_OBJECT>.
 
-=comment #TP:0:show-private:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-private:
 =head3 Show Private
 
 
@@ -1037,29 +1091,30 @@ Whether this B<Gnome::Gtk3::RecentChooser> should display recently used resource
 marked with the "private" flag. Such resources should be considered
 private to the applications and groups that have added them.
 
-   * Since: 2.10
+
 The B<Gnome::GObject::Value> type of property I<show-private> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:show-tips:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-tips:
 =head3 Show Tooltips
 
 
 Whether this B<Gnome::Gtk3::RecentChooser> should display a tooltip containing the
 full path of the recently used resources.
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<show-tips> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:show-icons:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-icons:
 =head3 Show Icons
 
 
 Whether this B<Gnome::Gtk3::RecentChooser> should display an icon near the item.
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<show-icons> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:show-not-found:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-not-found:
 =head3 Show Not Found
 
 
@@ -1068,48 +1123,47 @@ even if not present anymore. Setting this to C<0> will perform a
 potentially expensive check on every local resource (every remote
 resource will always be displayed).
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<show-not-found> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:select-multiple:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:select-multiple:
 =head3 Select Multiple
-
 
 Allow the user to select multiple resources.
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<select-multiple> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:local-only:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:local-only:
 =head3 Local only
 
 
 Whether this B<Gnome::Gtk3::RecentChooser> should display only local (file:)
 resources.
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<local-only> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:limit:
+=comment -----------------------------------------------------------------------
+=comment #TP:1:limit:
 =head3 Limit
 
 
 The maximum number of recently used resources to be displayed,
 or -1 to display all items.
 
-   * Since: 2.10
 The B<Gnome::GObject::Value> type of property I<limit> is C<G_TYPE_INT>.
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:sort-type:
 =head3 Sort Type
 
-
 Sorting order to be used when displaying the recently used resources.
 
-   * Since: 2.10Widget type: GTK_TYPE_RECENT_SORT_TYPE
+Widget type: GTK_TYPE_RECENT_SORT_TYPE
 
 The B<Gnome::GObject::Value> type of property I<sort-type> is C<G_TYPE_ENUM>.
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:filter:
 =head3 Filter
 
@@ -1117,7 +1171,7 @@ The B<Gnome::GObject::Value> type of property I<sort-type> is C<G_TYPE_ENUM>.
 The B<Gnome::Gtk3::RecentFilter> object to be used when displaying
 the recently used resources.
 
-   * Since: 2.10Widget type: GTK_TYPE_RECENT_FILTER
+Widget type: GTK_TYPE_RECENT_FILTER
 
 The B<Gnome::GObject::Value> type of property I<filter> is C<G_TYPE_OBJECT>.
 =end pod
