@@ -629,7 +629,7 @@ method set-current-uri ( Str $uri --> Gnome::Glib::Error ) {
     self.get-native-object-no-reffing, $uri, $ne
   );
 
-  my Gnome::Glib::Error $e .= new(:native-object($ne[0]));# unless $b;
+  my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
   $e.clear-object if $r == 1;
   $e;
 }
