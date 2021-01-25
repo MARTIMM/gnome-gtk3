@@ -85,24 +85,6 @@ subtest 'Manipulations', {
     my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
     my $uris = .get-uris;
     is $ri.get-uri, $uris[0], '.get-uris() / .get-uri()';
-
-#`{{
-#note "\nUris:\n  " ~ .get-uris.join("\n  ");
-
-    my $uris = $rc.get-uris;
-note 'u[0]: ', $uris[0];
-
-    $e = .set-current-uri($uris[0]);
-    ok $e.is-valid, $e.message;
-
-    my Gnome::Gtk3::RecentInfo $ri = $rc.get-current-item;
-    note 'u: ', $ri.get-uri;
-}}
-
-#`{{
-    .(True);
-    ok ., '.() / .()';
-}}
   }
 }
 
