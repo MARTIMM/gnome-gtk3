@@ -136,7 +136,7 @@ Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|
 RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
 RecentInfo                |S | ✗|  |  |  |  |  |  |  |  |  |  |
-RecentManager             |  |  |  |  |  |  |  |  |  |  |  |  |
+RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |
 Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |
