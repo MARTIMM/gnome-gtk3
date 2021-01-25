@@ -2,7 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Glib::Quark;
+#use Gnome::Glib::Quark;
 use Gnome::Glib::Error;
 use Gnome::Glib::List;
 
@@ -13,8 +13,8 @@ use Gnome::Gtk3::RecentInfo;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::RecentManager $rm;
 my Gnome::Glib::Error $e;
+my Gnome::Gtk3::RecentManager $rm;
 my Gnome::Gtk3::RecentInfo $ri;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {

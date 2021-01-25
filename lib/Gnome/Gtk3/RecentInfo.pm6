@@ -106,64 +106,6 @@ also is Gnome::N::TopLevelClassSupport;
 =head1 Types
 =end pod
 
-#`{{
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 enum GtkRecentManagerError
-
-Error codes for B<Gnome::Gtk3::RecentManager> operations
-
-=item GTK_RECENT_MANAGER_ERROR_NOT_FOUND: the URI specified does not exists in the recently used resources list.
-=item GTK_RECENT_MANAGER_ERROR_INVALID_URI: the URI specified is not valid.
-=item GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING: the supplied string is not UTF-8 encoded.
-=item GTK_RECENT_MANAGER_ERROR_NOT_REGISTERED: no application has registered the specified item.
-=item GTK_RECENT_MANAGER_ERROR_READ: failure while reading the recently used resources file.
-=item GTK_RECENT_MANAGER_ERROR_WRITE: failure while writing the recently used resources file.
-=item GTK_RECENT_MANAGER_ERROR_UNKNOWN: unspecified error.
-
-=end pod
-
-#TE:0:GtkRecentManagerError:
-enum GtkRecentManagerError is export (
-  'GTK_RECENT_MANAGER_ERROR_NOT_FOUND',
-  'GTK_RECENT_MANAGER_ERROR_INVALID_URI',
-  'GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING',
-  'GTK_RECENT_MANAGER_ERROR_NOT_REGISTERED',
-  'GTK_RECENT_MANAGER_ERROR_READ',
-  'GTK_RECENT_MANAGER_ERROR_WRITE',
-  'GTK_RECENT_MANAGER_ERROR_UNKNOWN'
-);
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 class N-GtkRecentData
-
-Meta-data to be passed to C<gtk_recent_manager_add_full()> when
-registering a recently used resource.
-
-
-=item  Str  $.display_name: a UTF-8 encoded string, containing the name of the recently used resource to be displayed, or C<Any>;
-=item  Str  $.description: a UTF-8 encoded string, containing a short description of the resource, or C<Any>;
-=item  Str  $.mime_type: the MIME type of the resource;
-=item  Str  $.app_name: the name of the application that is registering this recently used resource;
-=item  Str  $.app_exec: command line used to launch this resource; may contain the “\C<f>” and “\C<u>” escape characters which will be expanded to the resource file path and URI respectively when the command line is retrieved;
-=item  CArray[Str]  $.groups: (array zero-terminated=1): a vector of strings containing groups names;
-=item Int $.is_private: whether this resource should be displayed only by the applications that have registered it or not.
-
-
-=end pod
-
-#TT:0:N-GtkRecentData:
-class N-GtkRecentData is export is repr('CStruct') {
-  has gchar-ptr $.display_name;
-  has gchar-ptr $.description;
-  has gchar-ptr $.mime_type;
-  has gchar-ptr $.app_name;
-  has gchar-ptr $.app_exec;
-  has gchar-pptr $.groups;
-  has gboolean $.is_private;
-}
-}}
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 class N-GtkRecentInfo
@@ -178,9 +120,16 @@ class N-GtkRecentInfo is repr('CPointer') is export { }
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
+
+=head2 new()
+=head3 :native-object
+
+Create a RecentInfo object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+
+  multi method new ( N-GtkRecentInfo :$native-object! )
+
 =end pod
 
-# interfaces are not instantiated
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
@@ -290,7 +239,7 @@ sub gtk_recent_info_get_uri ( N-GtkRecentInfo $info --> gchar-ptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-display-name:
+#TM:1:get-display-name:
 =begin pod
 =head2 get-display-name
 
@@ -314,7 +263,7 @@ sub gtk_recent_info_get_display_name ( N-GtkRecentInfo $info --> gchar-ptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-description:
+#TM:1:get-description:
 =begin pod
 =head2 get-description
 
@@ -338,7 +287,7 @@ sub gtk_recent_info_get_description ( N-GtkRecentInfo $info --> gchar-ptr )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-mime-type:
+#TM:1:get-mime-type:
 =begin pod
 =head2 get-mime-type
 
@@ -438,23 +387,23 @@ sub gtk_recent_info_get_visited ( N-GtkRecentInfo $info --> time_t )
   { * }
 }}
 #-------------------------------------------------------------------------------
-#TM:0:get-private-hint:
+#TM:1:get-private-hint:
 =begin pod
 =head2 get-private-hint
 
-Gets the value of the “private” flag. Resources in the recently used list that have this flag set to C<1> should only be displayed by the applications that have registered them.
+Gets the value of the “private” flag. Resources in the recently used list that have this flag set to C<True> should only be displayed by the applications that have registered them.
 
-Returns: C<1> if the private flag was found, C<0> otherwise
+Returns: C<True> if the private flag was found, C<False> otherwise
 
-  method get-private-hint ( --> Int )
+  method get-private-hint ( --> Bool )
 
 =end pod
 
-method get-private-hint ( --> Int ) {
+method get-private-hint ( --> Bool ) {
 
   gtk_recent_info_get_private_hint(
     self.get-native-object-no-reffing
-  );
+  ).Bool;
 }
 
 sub gtk_recent_info_get_private_hint ( N-GtkRecentInfo $info --> gboolean )
@@ -578,25 +527,25 @@ sub gtk_recent_info_last_application (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:has-application:
+#TM:1:has-application:
 =begin pod
 =head2 has-application
 
-Checks whether an application registered this resource using I<app_name>.
+Checks whether an application registered this resource using I<$app_name>.
 
-Returns: C<1> if an application with name I<app_name> was found, C<0> otherwise
+Returns: C<True> if an application with name I<$app_name> was found, C<False> otherwise
 
-  method has-application ( Str  $app_name --> Int )
+  method has-application ( Str  $app_name --> Bool )
 
 =item  Str  $app_name; a string containing an application name
 
 =end pod
 
-method has-application ( Str  $app_name --> Int ) {
+method has-application ( Str  $app_name --> Bool ) {
 
   gtk_recent_info_has_application(
     self.get-native-object-no-reffing, $app_name
-  );
+  ).Bool;
 }
 
 sub gtk_recent_info_has_application ( N-GtkRecentInfo $info, gchar-ptr $app_name --> gboolean )
@@ -632,25 +581,25 @@ sub gtk_recent_info_get_groups ( N-GtkRecentInfo $info,  $gsize *length G_GNUC_M
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:has-group:
+#TM:1:has-group:
 =begin pod
 =head2 has-group
 
 Checks whether I<group_name> appears inside the groups registered for the recently used item I<info>.
 
-Returns: C<1> if the group was found
+Returns: C<True> if the group was found
 
-  method has-group ( Str  $group_name --> Int )
+  method has-group ( Str  $group_name --> Bool )
 
 =item  Str  $group_name; name of a group
 
 =end pod
 
-method has-group ( Str  $group_name --> Int ) {
+method has-group ( Str  $group_name --> Bool ) {
 
   gtk_recent_info_has_group(
     self.get-native-object-no-reffing, $group_name
-  );
+  ).Bool;
 }
 
 sub gtk_recent_info_has_group ( N-GtkRecentInfo $info, gchar-ptr $group_name --> gboolean )
@@ -766,7 +715,7 @@ sub gtk_recent_info_get_uri_display (  $N-GtkRecentInfo *info G_GNUC_MALLOC --> 
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:get-age:
+#TM:1:get-age:
 =begin pod
 =head2 get-age
 
@@ -796,17 +745,17 @@ sub gtk_recent_info_get_age ( N-GtkRecentInfo $info --> gint )
 
 Checks whether the resource is local or not by looking at the scheme of its URI.
 
-Returns: C<1> if the resource is local
+Returns: C<True> if the resource is local
 
-  method is-local ( --> Int )
+  method is-local ( --> Bool )
 
 =end pod
 
-method is-local ( --> Int ) {
+method is-local ( --> Bool ) {
 
   gtk_recent_info_is_local(
     self.get-native-object-no-reffing
-  );
+  ).Bool;
 }
 
 sub gtk_recent_info_is_local ( N-GtkRecentInfo $info --> gboolean )
