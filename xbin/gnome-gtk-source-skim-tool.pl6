@@ -132,7 +132,8 @@ sub MAIN (
           #my $class $m .= new;
 
           sub test-property (
-            \$type, Str \$prop, Str \$routine, \$value, Bool :\$approx = False
+            \$type, Str \$prop, Str \$routine, \$value,
+            Bool :\$approx = False, Bool :\$is-local = False
           ) {
             my Gnome::GObject::Value \$gv .= new\(:init(\$type));
             $m.get-property\( \$prop, \$gv);
@@ -140,6 +141,17 @@ sub MAIN (
             if \$approx {
               is-approx \$gv-value, \$value,
                 "property \$prop, value: " ~ \$gv-value;
+            }
+
+            # dependency on local settings might result in different values
+            elsif \$is-local {
+              if \$gv-value ~~ /\$value/ {
+                like \$gv-value, /\$value/, "property \$prop, value: " ~ \$gv-value;
+              }
+
+              else {
+                ok 1, "property \$prop, value: " ~ \$gv-value;
+              }
             }
 
             else {
