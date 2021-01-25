@@ -83,7 +83,7 @@ subtest 'Manipulations', {
     my Gnome::Glib::List $l = .get-items;
     diag '.get-items(); ' ~ $l.g_list_length;
     my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
-    my $uris = $rc.get-uris;
+    my $uris = .get-uris;
     is $ri.get-uri, $uris[0], '.get-uris() / .get-uri()';
 
 #`{{
