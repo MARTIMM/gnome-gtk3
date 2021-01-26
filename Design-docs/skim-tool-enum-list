@@ -102,6 +102,8 @@ GtkEventSequenceState
 GtkPanDirection
 GtkPopoverConstraint
 GtkLicense
+GtkRecentSortType
+GtkRecentChooserError
 GtkTextSearchFlags
 GtkTextBufferTargetInfo
 GtkArrowPlacement
@@ -121,6 +123,7 @@ GtkStyleProviderPriority
 GtkResizeMode
 GtkWindowType
 GtkWindowPosition
+GtkRecentManagerError
 GtkWidgetHelpType
 GtkCellRendererAccelMode
 GtkCornerType
@@ -132,6 +135,7 @@ GtkTreeViewDropPosition
 GtkCellRendererState
 GtkCellRendererMode
 GtkImageType
+GtkRecentFilterFlags
 GtkFileChooserAction
 GtkFileChooserConfirmation
 GtkFileChooserError
