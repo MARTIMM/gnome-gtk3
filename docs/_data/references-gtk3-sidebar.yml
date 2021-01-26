@@ -1,6 +1,6 @@
 # https://jekyllrb.com/tutorials/navigation/
 
-# 🗸✅✔✗ ◔◑◕ ⚒🖉 ⚐⚑ ⚓ ☠ ✀ ❓❔❕📓📔📖🕮🗒🗇🗊 ⌺🗲
+# reference type classes: toplevel, object, interface, boxed, standalone
 
 - bar_title: "Gtk3 Classes"
   bar_menu:
@@ -8,227 +8,310 @@
   - title: "AboutDialog"
     type: widget
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
+
   - title: "Adjustment"
     url: "/content-docs/reference/Gtk3/Adjustment.html"
+
   - title: "Application"
     url: "/content-docs/reference/Gtk3/Application.html"
+
   - title: "ApplicationWindow"
     url: "/content-docs/reference/Gtk3/ApplicationWindow.html"
     type: widget
+
   - title: "AspectFrame"
     url: '/content-docs/reference/Gtk3/AspectFrame.html'
     type: widget
+
   - title: "Assistant"
     url: "/content-docs/reference/Gtk3/Assistant.html"
     type: widget
+
   - title: "Bin"
     url: '/content-docs/reference/Gtk3/Bin.html'
     type: widget
+
   - title: 'Box'
     url: '/content-docs/reference/Gtk3/Box.html'
     type: widget
+
   - title: "Border"
     url: "/content-docs/reference/Gtk3/Border.html"
     type: boxed
+
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
     type: widget
+
   - title: "Buildable"
     url: "/content-docs/reference/Gtk3/Buildable.html"
     type: interface
+
   - title: "Builder"
     url: "/content-docs/reference/Gtk3/Builder.html"
+
   - title: "CellRenderer"
     url: '/content-docs/reference/Gtk3/CellRenderer.html'
+
   - title: "CellRendererAccel"
     url: '/content-docs/reference/Gtk3/CellRendererAccel.html'
+
   - title: "CellRendererCombo"
     url: '/content-docs/reference/Gtk3/CellRendererCombo.html'
+
   - title: "CellRendererText"
     url: '/content-docs/reference/Gtk3/CellRendererText.html'
+
   - title: "CellRendererPixbuf"
     url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
+
   - title: "CellRendererProgress"
     url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
+
   - title: "CellRendererSpin"
     url: '/content-docs/reference/Gtk3/CellRendererSpin.html'
+
   - title: "CellRendererSpinner"
     url: '/content-docs/reference/Gtk3/CellRendererSpinner.html'
+
   - title: "CellRendererToggle"
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
     type: widget
+
   - title: "CheckMenuItem"
     url: "/content-docs/reference/Gtk3/CheckMenuItem.html"
     type: widget
+
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
     type: widget
+
   - title: "ColorButton"
     url: "/content-docs/reference/Gtk3/ColorButton.html"
     type: widget
+
   - title: "ColorChooser"
     url: "/content-docs/reference/Gtk3/ColorChooser.html"
     type: interface
+
   - title: "ColorChooserDialog"
     url: "/content-docs/reference/Gtk3/ColorChooserDialog.html"
     type: widget
+
   - title: "ColorChooserWidget"
     url: '/content-docs/reference/Gtk3/ColorChooserWidget.html'
     type: widget
+
   - title: "ComboBox"
     url: "/content-docs/reference/Gtk3/ComboBox.html"
     type: widget
+
   - title: "ComboBoxText"
     url: "/content-docs/reference/Gtk3/ComboBoxText.html"
     type: widget
+
   - title: 'Container'
     url: '/content-docs/reference/Gtk3/Container.html'
     type: widget
+
   - title: "CssProvider"
     url: "/content-docs/reference/Gtk3/CssProvider.html"
+
   - title: "Dialog"
     url: "/content-docs/reference/Gtk3/Dialog.html"
     type: widget
+
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
     type: widget
+
   - title: "Enums"
     type: standalone
     url: "/content-docs/reference/Gtk3/Enums.html"
+
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     type: interface
+
   - title: "FileChooserButton"
     url: "/content-docs/reference/Gtk3/FileChooserButton.html"
     type: widget
+
   - title: "FileChooserDialog"
     url: "/content-docs/reference/Gtk3/FileChooserDialog.html"
     type: widget
+
   - title: "FileFilter"
     url: "/content-docs/reference/Gtk3/FileFilter.html"
+
   - title: "Fixed"
     url: '/content-docs/reference/Gtk3/Fixed.html'
     type: widget
+
   - title: "Frame"
     url: '/content-docs/reference/Gtk3/Frame.html'
     type: widget
+
   - title: "Grid"
     url: '/content-docs/reference/Gtk3/Grid.html'
     type: widget
+
   - title: "Image"
     url: "/content-docs/reference/Gtk3/Image.html"
     type: widget
+
   - title: "IconTheme"
     url: "/content-docs/reference/Gtk3/IconTheme.html"
     type: object
+
   - title: "IconView"
     url: "/content-docs/reference/Gtk3/IconView.html"
     type: widget
+
   - title: "Label"
     url: "/content-docs/reference/Gtk3/Label.html"
     type: widget
+
   - title: "LevelBar"
     type: widget
     url: "/content-docs/reference/Gtk3/LevelBar.html"
+
   - title: "ListBox"
     type: widget
     url: '/content-docs/reference/Gtk3/ListBox.html'
+
   - title: "ListBoxRow"
     type: widget
     url: '/content-docs/reference/Gtk3/ListBoxRow.html'
+
   - title: "ListStore"
     url: '/content-docs/reference/Gtk3/ListStore.html'
+
   - title: "Main"
     type: standalone
     url: "/content-docs/reference/Gtk3/Main.html"
+
   - title: "Menu"
     url: '/content-docs/reference/Gtk3/Menu.html'
     type: widget
+
   - title: "MenuBar"
     url: '/content-docs/reference/Gtk3/MenuBar.html'
     type: widget
+
   - title: "MenuButton"
     type: widget
     url: '/content-docs/reference/Gtk3/MenuButton.html'
+
   - title: "MenuItem"
     type: widget
     url: "/content-docs/reference/Gtk3/MenuItem.html"
+
   - title: "MenuShell"
     type: widget
     url: '/content-docs/reference/Gtk3/MenuShell.html'
+
   - title: "MessageDialog"
     type: widget
     url: "/content-docs/reference/Gtk3/MessageDialog.html"
+
   - title: "Misc"
     type: widget
 #    url: "/content-docs/reference/Gtk3/Misc.html"
     url: "/content-docs/nyi-default.html"
+
   - title: "Notebook"
     type: widget
     url: '/content-docs/reference/Gtk3/Notebook.html'
+
   - title: "Paned"
     type: widget
     url: "/content-docs/reference/Gtk3/Paned.html"
+
   - title: "Orientable"
     url: "/content-docs/reference/Gtk3/Orientable.html"
     type: interface
+
   - title: "PlacesSidebar"
     type: widget
     url: "/content-docs/reference/Gtk3/PlacesSidebar.html"
+
   - title: "Popover"
     type: widget
     url: '/content-docs/reference/Gtk3/Popover.html'
+
   - title: "PopoverMenu"
     url: '/content-docs/reference/Gtk3/PopoverMenu.html'
     type: widget
+
   - title: "ProgressBar"
     url: "/content-docs/reference/Gtk3/ProgressBar.html"
     type: widget
+
   - title: "Range"
     url: "/content-docs/reference/Gtk3/Range.html"
     type: widget
+
   - title: "RadioButton"
     url: "/content-docs/reference/Gtk3/RadioButton.html"
     type: widget
+
   - title: "RadioMenuItem"
     url: "/content-docs/reference/Gtk3/RadioMenuItem.html"
     type: widget
+
   - title: "RecentChooser"
     url: '/content-docs/reference/Gtk3/RecentChooser.html'
     type: interface
+
   - title: "RecentChooserMenu"
     url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
     type: widget
+
   - title: RecentInfo
     url: '/content-docs/reference/Gtk3/RecentInfo.html'
     type: standalone
+
+  - title: RecentFilter
+    url: '/content-docs/reference/Gtk3/RecentFilter.html'
+    type: object
+
   - title: RecentManager
     url: '/content-docs/reference/Gtk3/RecentManager.html'
     type: object
+
   - title: "Scale"
     type: widget
     url: "/content-docs/reference/Gtk3/Scale.html"
+
   - title: "ScrolledWindow"
     type: widget
     url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
+
   - title: "SearchEntry"
     type: widget
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
+
   - title: "Separator"
     type: widget
     url: "/content-docs/reference/Gtk3/Separator.html"
+
   - title: "SeparatorMenuItem"
     type: widget
     url: "/content-docs/reference/Gtk3/SeparatorMenuItem.html"
+
   - title: "Spinner"
     type: widget
     url: "/content-docs/reference/Gtk3/Spinner.html"
+
   - title: "SpinButton"
     type: widget
     url: "/content-docs/reference/Gtk3/SpinButton.html"
+
   - title: "Stack"
     type: widget
     url: '/content-docs/reference/Gtk3/Stack.html'
+
   - title: "StackSidebar"
     type: widget
     url: '/content-docs/reference/Gtk3/StackSidebar.html'

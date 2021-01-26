@@ -170,7 +170,7 @@ GObject                                         Gnome::GObject::Object
 │   │   ╰── GtkCellRendererToggle               CellRendererToggle
 │   ├── GtkFileFilter                           FileFilter
 │   ├── GtkTreeViewColumn                       TreeViewColumn
-│   ╰── GtkRecentFilter
+│   ╰── GtkRecentFilter                         RecentFilter
 ├── GtkAccelGroup
 ├── GtkAccelMap
 ├── AtkObject
