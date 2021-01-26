@@ -23,6 +23,15 @@ class N-GtkRecentInfo
 Methods
 =======
 
+new()
+-----
+
+### :native-object
+
+Create a RecentInfo object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+
+    multi method new ( N-GtkRecentInfo :$native-object! )
+
 get-uri
 -------
 
@@ -59,34 +68,105 @@ Returns: the MIME type of the resource. The returned string is owned by the rece
 
     method get-mime-type ( -->  Str  )
 
+get-added
+---------
+
+Gets the timestamp (seconds from system’s Epoch) when the resource was added to the recently used resources list.
+
+Returns: the number of seconds elapsed from system’s Epoch when the resource was added to the list, or -1 on failure.
+
+    method get-added ( --> Int )
+
+get-modified
+------------
+
+Gets the timestamp (seconds from system’s Epoch) when the meta-data for the resource was last modified.
+
+Returns: the number of seconds elapsed from system’s Epoch when the resource was last modified, or -1 on failure.
+
+    method get-modified ( --> Int )
+
+get-visited
+-----------
+
+Gets the timestamp (seconds from system’s Epoch) when the meta-data for the resource was last visited.
+
+Returns: the number of seconds elapsed from system’s Epoch when the resource was last visited, or -1 on failure.
+
+    method get-visited ( --> Int )
+
 get-private-hint
 ----------------
 
-Gets the value of the “private” flag. Resources in the recently used list that have this flag set to `1` should only be displayed by the applications that have registered them.
+Gets the value of the “private” flag. Resources in the recently used list that have this flag set to `True` should only be displayed by the applications that have registered them.
 
-Returns: `1` if the private flag was found, `0` otherwise
+Returns: `True` if the private flag was found, `False` otherwise
 
-    method get-private-hint ( --> Int )
+    method get-private-hint ( --> Bool )
+
+get-application-info
+--------------------
+
+Gets the data regarding the application that has registered the resource. If the command line contains any escape characters defined inside the storage specification, they will be expanded.
+
+if an application with *app_name* has registered this resource inside the recently used list a 3 element **List** is returned. An empty list is returned otherwise.
+
+    method get-application-info ( Str $app_name --> List )
+
+  * Str $app_name; the name of the application that has registered this item
+
+The returned list holds;
+
+  * Str $app_exec; the string containing the command line
+
+  * UInt $count; the number of times this item was registered
+
+  * Int $time; the timestamp this item was last registered for this application
+
+get-applications
+----------------
+
+Retrieves the list of applications that have registered this resource.
+
+Returns: an array of strings.
+
+    method get-applications ( --> Array )
+
+last-application
+----------------
+
+Gets the name of the last application that have registered the recently used resource represented by *info*.
+
+Returns: an application name.
+
+    method last-application ( --> Str )
 
 has-application
 ---------------
 
-Checks whether an application registered this resource using *app_name*.
+Checks whether an application registered this resource using *$app_name*.
 
-Returns: `1` if an application with name *app_name* was found, `0` otherwise
+Returns: `True` if an application with name *$app_name* was found, `False` otherwise
 
-    method has-application ( Str  $app_name --> Int )
+    method has-application ( Str  $app_name --> Bool )
 
   * Str $app_name; a string containing an application name
+
+get-groups
+----------
+
+Returns all groups registered for the recently used item *info*.
+
+    method get-groups ( --> Array )
 
 has-group
 ---------
 
 Checks whether *group_name* appears inside the groups registered for the recently used item *info*.
 
-Returns: `1` if the group was found
+Returns: `True` if the group was found
 
-    method has-group ( Str  $group_name --> Int )
+    method has-group ( Str  $group_name --> Bool )
 
   * Str $group_name; name of a group
 
@@ -95,11 +175,29 @@ get-icon
 
 Retrieves the icon of size *size* associated to the resource MIME type.
 
-Returns: (nullable) (transfer full): a **Gnome::Gdk3::Pixbuf** containing the icon, or `Any`. Use `g_object_unref()` when finished using the icon.
+Returns: (nullable) (transfer full): a **Gnome::Gdk3::Pixbuf** containing the icon, or `Any`. Use `clear-object()` when finished using the icon.
 
     method get-icon ( Int $size --> N-GObject )
 
   * Int $size; the size of the icon in pixels
+
+get-short-name
+--------------
+
+Computes a valid UTF-8 string that can be used as the name of the item in a menu or list. For example, calling this function on an item that refers to “file:///foo/bar.txt” will yield “bar.txt”.
+
+Returns: A newly-allocated string in UTF-8 encoding.
+
+    method get-short-name ( --> Str )
+
+get-uri-display
+---------------
+
+Gets a displayable version of the resource’s URI. If the resource is local, it returns a local path; if the resource is not local, it returns the UTF-8 encoded content of `get-uri()`.
+
+Returns: (nullable): a newly allocated UTF-8 string containing the resource’s URI or `Any`. Use `g_free()` when done using it.
+
+    method get-uri-display ( --> Str )
 
 get-age
 -------
@@ -115,18 +213,18 @@ is-local
 
 Checks whether the resource is local or not by looking at the scheme of its URI.
 
-Returns: `1` if the resource is local
+Returns: `True` if the resource is local
 
-    method is-local ( --> Int )
+    method is-local ( --> Bool )
 
 exists
 ------
 
-Checks whether the resource pointed by *info* still exists. At the moment this check is done only on resources pointing to local files.
+Checks whether the resource still exists. At the moment this check is done only on resources pointing to local files.
 
-Returns: `1` if the resource exists
+Returns: `True` if the resource exists
 
-    method exists ( --> Int )
+    method exists ( --> Bool )
 
 match
 -----
@@ -138,81 +236,4 @@ Returns: `True` if both **Gnome::Gtk3::RecentInfo**-struct point to the same res
     method match ( N-GtkRecentInfo $info --> Bool )
 
   * N-GtkRecentInfo $info; a native **Gnome::Gtk3::RecentInfo** object.
-
-Signals
-=======
-
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### changed
-
-Emitted when the current recently used resources manager changes its contents, either by calling `gtk_recent_manager_add_item()` or by another application.
-
-Since: 2.10
-
-    method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($recent_manager),
-      *%user-options
-    );
-
-  * $recent_manager; the recent manager
-
-Properties
-==========
-
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Filename
-
-The full path to the file to be used to store and read the recently used resources list
-
-    * Since: 2.10
-
-The **Gnome::GObject::Value** type of property *filename* is `G_TYPE_STRING`.
-
-### Size
-
-The size of the recently used resources list.
-
-    * Since: 2.10
-
-The **Gnome::GObject::Value** type of property *size* is `G_TYPE_INT`.
 

@@ -8,77 +8,6 @@ use v6;
 
 Class for recently used files information
 
-=begin comment
-=comment ![](images/X.png)
-
-=head1 Description
-
-B<Gnome::Gtk3::RecentManager> provides a facility for adding, removing and
-looking up recently used files. Each recently used file is
-identified by its URI, and has meta-data associated to it, like
-the names and command lines of the applications that have
-registered it, the number of time each application has registered
-the same file, the mime type of the file and whether the file
-should be displayed only by the applications that have
-registered it.
-
-The recently used files list is per user.
-
-The B<Gnome::Gtk3::RecentManager> acts like a database of all the recently
-used files. You can create new B<Gnome::Gtk3::RecentManager> objects, but
-it is more efficient to use the default manager created by GTK+.
-
-Adding a new recently used file is as simple as:
-
-|[<!-- language="C" -->
-B<Gnome::Gtk3::RecentManager> *manager;
-
-manager = C<gtk_recent_manager_get_default()>;
-gtk_recent_manager_add_item (manager, file_uri);
-]|
-
-The B<Gnome::Gtk3::RecentManager> will try to gather all the needed information
-from the file itself through GIO.
-
-Looking up the meta-data associated with a recently used file
-given its URI requires calling C<gtk_recent_manager_lookup_item()>:
-
-|[<!-- language="C" -->
-B<Gnome::Gtk3::RecentManager> *manager;
-B<Gnome::Gtk3::RecentInfo> *info;
-GError *error = NULL;
-
-manager = C<gtk_recent_manager_get_default()>;
-info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
-if (error)
-  {
-    g_warning ("Could not find the file: C<s>", error->message);
-    g_error_free (error);
-  }
-else
- {
-   // Use the info object
-   gtk_recent_info_unref (info);
- }
-]|
-
-In order to retrieve the list of recently used files, you can use
-C<gtk_recent_manager_get_items()>, which returns a list of B<Gnome::Gtk3::RecentInfo>-structs.
-
-A B<Gnome::Gtk3::RecentManager> is the model used to populate the contents of
-one, or more B<Gnome::Gtk3::RecentChooser> implementations.
-
-Note that the maximum age of the recently used files list is
-controllable through the  I<gtk-recent-files-max-age>
-property.
-
- * Recently used files are supported since GTK+ 2.10.
-
-=head2 See Also
-
-B<GBookmarkFile>, B<Gnome::Gtk3::Settings>, B<Gnome::Gtk3::RecentChooser>
-=end comment
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -163,7 +92,7 @@ method native-object-unref ( $n-native-object ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:0:_gtk-recent-info-ref:
+#TM:1:_gtk-recent-info-ref:
 #`{{
 =begin pod
 =head2 gtk-recent-info-ref
@@ -190,7 +119,7 @@ sub _gtk_recent_info_ref ( N-GtkRecentInfo $info --> N-GtkRecentInfo )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:_gtk-recent-info-unref:
+#TM:1:_gtk-recent-info-unref:
 #`{{
 =begin pod
 =head2 gtk-recent-info-unref
@@ -310,9 +239,8 @@ sub gtk_recent_info_get_mime_type ( N-GtkRecentInfo $info --> gchar-ptr )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-added:
+#TM:1:get-added:
 =begin pod
 =head2 get-added
 
@@ -320,11 +248,11 @@ Gets the timestamp (seconds from system’s Epoch) when the resource was added t
 
 Returns: the number of seconds elapsed from system’s Epoch when the resource was added to the list, or -1 on failure.
 
-  method get-added ( --> time_t )
+  method get-added ( --> Int )
 
 =end pod
 
-method get-added ( --> time_t ) {
+method get-added ( --> Int ) {
 
   gtk_recent_info_get_added(
     self.get-native-object-no-reffing
@@ -334,11 +262,9 @@ method get-added ( --> time_t ) {
 sub gtk_recent_info_get_added ( N-GtkRecentInfo $info --> time_t )
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-modified:
+#TM:1:get-modified:
 =begin pod
 =head2 get-modified
 
@@ -346,11 +272,11 @@ Gets the timestamp (seconds from system’s Epoch) when the meta-data for the re
 
 Returns: the number of seconds elapsed from system’s Epoch when the resource was last modified, or -1 on failure.
 
-  method get-modified ( --> time_t )
+  method get-modified ( --> Int )
 
 =end pod
 
-method get-modified ( --> time_t ) {
+method get-modified ( --> Int ) {
 
   gtk_recent_info_get_modified(
     self.get-native-object-no-reffing
@@ -360,10 +286,9 @@ method get-modified ( --> time_t ) {
 sub gtk_recent_info_get_modified ( N-GtkRecentInfo $info --> time_t )
   is native(&gtk-lib)
   { * }
-}}
-#`{{
+
 #-------------------------------------------------------------------------------
-#TM:0:get-visited:
+#TM:1:get-visited:
 =begin pod
 =head2 get-visited
 
@@ -371,11 +296,11 @@ Gets the timestamp (seconds from system’s Epoch) when the meta-data for the re
 
 Returns: the number of seconds elapsed from system’s Epoch when the resource was last visited, or -1 on failure.
 
-  method get-visited ( --> time_t )
+  method get-visited ( --> Int )
 
 =end pod
 
-method get-visited ( --> time_t ) {
+method get-visited ( --> Int ) {
 
   gtk_recent_info_get_visited(
     self.get-native-object-no-reffing
@@ -385,7 +310,7 @@ method get-visited ( --> time_t ) {
 sub gtk_recent_info_get_visited ( N-GtkRecentInfo $info --> time_t )
   is native(&gtk-lib)
   { * }
-}}
+
 #-------------------------------------------------------------------------------
 #TM:1:get-private-hint:
 =begin pod
@@ -410,36 +335,43 @@ sub gtk_recent_info_get_private_hint ( N-GtkRecentInfo $info --> gboolean )
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-application-info:
+#TM:1:get-application-info:
 =begin pod
 =head2 get-application-info
 
-Gets the data regarding the application that has registered the resource pointed by I<info>.  If the command line contains any escape characters defined inside the storage specification, they will be expanded.
+Gets the data regarding the application that has registered the resource. If the command line contains any escape characters defined inside the storage specification, they will be expanded.
 
-Returns: C<1> if an application with I<app_name> has registered this resource inside the recently used list, or C<0> otherwise. The I<app_exec> string is owned by the B<Gnome::Gtk3::RecentInfo> and should not be modified or freed
+if an application with I<app_name> has registered this resource inside the recently used list a 3 element B<List> is returned. An empty list is returned otherwise.
 
-  method get-application-info ( Str  $app_name,  CArray[Str]  $app_exec, guInt-ptr $count, time_t $time_ --> Int )
+  method get-application-info ( Str $app_name --> List )
 
-=item  Str  $app_name; the name of the application that has registered this item
-=item  CArray[Str]  $app_exec; (transfer none) (out): return location for the string containing the command line
-=item guInt-ptr $count; (out): return location for the number of times this item was registered
-=item time_t $time_; (out): return location for the timestamp this item was last registered for this application
+=item Str $app_name; the name of the application that has registered this item
+
+The returned list holds;
+=item Str $app_exec; the string containing the command line
+=item UInt $count; the number of times this item was registered
+=item Int $time; the timestamp this item was last registered for this application
 
 =end pod
 
-method get-application-info ( Str  $app_name,  CArray[Str]  $app_exec, guInt-ptr $count, time_t $time_ --> Int ) {
-
-  gtk_recent_info_get_application_info(
-    self.get-native-object-no-reffing, $app_name, $app_exec, $count, $time_
+method get-application-info ( Str $app_name --> List ) {
+  my CArray[Str] $app_exec .= new(Nil);
+  my guint $count;
+  my time_t $time;
+  my Int $r = gtk_recent_info_get_application_info(
+    self.get-native-object-no-reffing, $app_name, $app_exec, $count, $time
   );
+
+  $r ?? ( $app_exec[0], $count.Int, $time.Int) !! ()
 }
 
-sub gtk_recent_info_get_application_info ( N-GtkRecentInfo $info, gchar-ptr $app_name, gchar-pptr $app_exec, gugint-ptr $count, time_t $time_ --> gboolean )
-  is native(&gtk-lib)
+sub gtk_recent_info_get_application_info (
+  N-GtkRecentInfo $info, gchar-ptr $app_name, gchar-pptr $app_exec is rw,
+  guint $count is rw, time_t $time is rw
+  --> gboolean
+) is native(&gtk-lib)
   { * }
-}}
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -470,61 +402,60 @@ sub gtk_recent_info_create_app_info ( N-GtkRecentInfo $info, gchar-ptr $app_name
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-applications:
+#TM:1:get-applications:
 =begin pod
 =head2 get-applications
 
 Retrieves the list of applications that have registered this resource.
 
-Returns: (array length=length zero-terminated=1) (transfer full): a newly allocated C<Any>-terminated array of strings. Use C<g_strfreev()> to free it.
+Returns: an array of strings.
 
-  method get-applications ( $gsize *length G_GNUC_MALLOC -->  CArray[Str]  )
-
-=item  $gsize *length G_GNUC_MALLOC; (out) (allow-none): return location for the length of the returned list
+  method get-applications ( --> Array )
 
 =end pod
 
-method get-applications ( $gsize *length G_GNUC_MALLOC -->  CArray[Str]  ) {
+method get-applications ( --> Array ) {
 
-  gtk_recent_info_get_applications(
-    self.get-native-object-no-reffing, $gsize *length G_GNUC_MALLOC
+  my CArray[Str] $a = gtk_recent_info_get_applications(
+    self.get-native-object-no-reffing, my gsize $length
   );
+
+  my Array $apps = [];
+  for ^$length -> $i {
+    $apps[$i] = $a[$i];
+  }
+
+  $apps
 }
 
-sub gtk_recent_info_get_applications ( N-GtkRecentInfo $info,  $gsize *length G_GNUC_MALLOC --> gchar-pptr )
-  is native(&gtk-lib)
+sub gtk_recent_info_get_applications (
+  N-GtkRecentInfo $info, gsize $length is rw --> gchar-pptr
+) is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:last-application:
+#TM:1:last-application:
 =begin pod
 =head2 last-application
 
 Gets the name of the last application that have registered the recently used resource represented by I<info>.
 
-Returns: an application name. Use C<g_free()> to free it.
+Returns: an application name.
 
-  method last-application (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  )
-
-=item  $N-GtkRecentInfo *info G_GNUC_MALLOC; a B<Gnome::Gtk3::RecentInfo>
+  method last-application ( --> Str )
 
 =end pod
 
-method last-application (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  ) {
-
+method last-application ( --> Str ) {
   gtk_recent_info_last_application(
-    self.get-native-object-no-reffing, $N-GtkRecentInfo *info G_GNUC_MALLOC
+    self.get-native-object-no-reffing
   );
 }
 
-sub gtk_recent_info_last_application (  $N-GtkRecentInfo *info G_GNUC_MALLOC --> gchar-ptr )
+sub gtk_recent_info_last_application ( N-GtkRecentInfo $info --> gchar-ptr )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:has-application:
@@ -552,33 +483,35 @@ sub gtk_recent_info_has_application ( N-GtkRecentInfo $info, gchar-ptr $app_name
   is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-groups:
+#TM:1:get-groups:
 =begin pod
 =head2 get-groups
 
-Returns all groups registered for the recently used item I<info>. The array of returned group names will be C<Any> terminated, so length might optionally be C<Any>.
+Returns all groups registered for the recently used item I<info>.
 
-Returns: (array length=length zero-terminated=1) (transfer full): a newly allocated C<Any> terminated array of strings. Use C<g_strfreev()> to free it.
-
-  method get-groups ( $gsize *length G_GNUC_MALLOC -->  CArray[Str]  )
-
-=item  $gsize *length G_GNUC_MALLOC; (out) (allow-none): return location for the number of groups returned
+  method get-groups ( --> Array )
 
 =end pod
 
-method get-groups ( $gsize *length G_GNUC_MALLOC -->  CArray[Str]  ) {
+method get-groups ( --> Array ) {
 
-  gtk_recent_info_get_groups(
-    self.get-native-object-no-reffing, $gsize *length G_GNUC_MALLOC
+  my CArray $a = gtk_recent_info_get_groups(
+    self.get-native-object-no-reffing, my gsize $length
   );
+
+  my Array $grps = [];
+  for ^$length -> $i {
+    $grps[$i] = $a[$i];
+  }
+
+  $grps
 }
 
-sub gtk_recent_info_get_groups ( N-GtkRecentInfo $info,  $gsize *length G_GNUC_MALLOC --> gchar-pptr )
-  is native(&gtk-lib)
+sub gtk_recent_info_get_groups (
+  N-GtkRecentInfo $info, gsize $length is rw --> gchar-pptr
+) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:has-group:
@@ -607,13 +540,13 @@ sub gtk_recent_info_has_group ( N-GtkRecentInfo $info, gchar-ptr $group_name -->
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-icon:
+#TM:1:get-icon:
 =begin pod
 =head2 get-icon
 
 Retrieves the icon of size I<size> associated to the resource MIME type.
 
-Returns: (nullable) (transfer full): a B<Gnome::Gdk3::Pixbuf> containing the icon, or C<Any>. Use C<g_object_unref()> when finished using the icon.
+Returns: (nullable) (transfer full): a B<Gnome::Gdk3::Pixbuf> containing the icon, or C<Any>. Use C<clear-object()> when finished using the icon.
 
   method get-icon ( Int $size --> N-GObject )
 
@@ -658,61 +591,53 @@ sub gtk_recent_info_get_gicon ( N-GtkRecentInfo $info --> GIcon )
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-short-name:
+#TM:1:get-short-name:
 =begin pod
 =head2 get-short-name
 
 Computes a valid UTF-8 string that can be used as the name of the item in a menu or list. For example, calling this function on an item that refers to “file:///foo/bar.txt” will yield “bar.txt”.
 
-Returns: A newly-allocated string in UTF-8 encoding free it with C<g_free()>
+Returns: A newly-allocated string in UTF-8 encoding.
 
-  method get-short-name (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  )
-
-=item  $N-GtkRecentInfo *info G_GNUC_MALLOC; an B<Gnome::Gtk3::RecentInfo>
+  method get-short-name ( --> Str )
 
 =end pod
 
-method get-short-name (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  ) {
+method get-short-name ( --> Str ) {
 
   gtk_recent_info_get_short_name(
-    self.get-native-object-no-reffing, $N-GtkRecentInfo *info G_GNUC_MALLOC
-  );
+    self.get-native-object-no-reffing
+  )
 }
 
-sub gtk_recent_info_get_short_name (  $N-GtkRecentInfo *info G_GNUC_MALLOC --> gchar-ptr )
+sub gtk_recent_info_get_short_name ( N-GtkRecentInfo $info --> gchar-ptr )
   is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-uri-display:
+#TM:1:get-uri-display:
 =begin pod
 =head2 get-uri-display
 
-Gets a displayable version of the resource’s URI. If the resource is local, it returns a local path; if the resource is not local, it returns the UTF-8 encoded content of C<gtk_recent_info_get_uri()>.
+Gets a displayable version of the resource’s URI. If the resource is local, it returns a local path; if the resource is not local, it returns the UTF-8 encoded content of C<get-uri()>.
 
 Returns: (nullable): a newly allocated UTF-8 string containing the resource’s URI or C<Any>. Use C<g_free()> when done using it.
 
-  method get-uri-display (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  )
-
-=item  $N-GtkRecentInfo *info G_GNUC_MALLOC; a B<Gnome::Gtk3::RecentInfo>
+  method get-uri-display ( --> Str )
 
 =end pod
 
-method get-uri-display (  $N-GtkRecentInfo *info G_GNUC_MALLOC -->  Str  ) {
+method get-uri-display ( --> Str ) {
 
   gtk_recent_info_get_uri_display(
-    self.get-native-object-no-reffing, $N-GtkRecentInfo *info G_GNUC_MALLOC
+    self.get-native-object-no-reffing
   );
 }
 
-sub gtk_recent_info_get_uri_display (  $N-GtkRecentInfo *info G_GNUC_MALLOC --> gchar-ptr )
+sub gtk_recent_info_get_uri_display ( N-GtkRecentInfo $info --> gchar-ptr )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-age:
@@ -739,7 +664,7 @@ sub gtk_recent_info_get_age ( N-GtkRecentInfo $info --> gint )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:is-local:
+#TM:1:is-local:
 =begin pod
 =head2 is-local
 
@@ -763,23 +688,23 @@ sub gtk_recent_info_is_local ( N-GtkRecentInfo $info --> gboolean )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:exists:
+#TM:1:exists:
 =begin pod
 =head2 exists
 
-Checks whether the resource pointed by I<info> still exists. At the moment this check is done only on resources pointing to local files.
+Checks whether the resource still exists. At the moment this check is done only on resources pointing to local files.
 
-Returns: C<1> if the resource exists
+Returns: C<True> if the resource exists
 
-  method exists ( --> Int )
+  method exists ( --> Bool )
 
 =end pod
 
-method exists ( --> Int ) {
+method exists ( --> Bool ) {
 
   gtk_recent_info_exists(
     self.get-native-object-no-reffing
-  );
+  ).Bool;
 }
 
 sub gtk_recent_info_exists ( N-GtkRecentInfo $info --> gboolean )
@@ -787,7 +712,7 @@ sub gtk_recent_info_exists ( N-GtkRecentInfo $info --> gboolean )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:match:
+#TM:1:match:
 =begin pod
 =head2 match
 
@@ -814,92 +739,3 @@ sub gtk_recent_info_match (
   N-GtkRecentInfo $info_a, N-GtkRecentInfo $info_b --> gboolean
 ) is native(&gtk-lib)
   { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
-=comment #TS:0:changed:
-=head3 changed
-
-Emitted when the current recently used resources manager changes
-its contents, either by calling C<gtk_recent_manager_add_item()> or
-by another application.
-
-Since: 2.10
-
-  method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($recent_manager),
-    *%user-options
-  );
-
-=item $recent_manager; the recent manager
-
-
-=end pod
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:filename:
-=head3 Filename
-
-
-The full path to the file to be used to store and read the
-recently used resources list
-
-   * Since: 2.10
-The B<Gnome::GObject::Value> type of property I<filename> is C<G_TYPE_STRING>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:size:
-=head3 Size
-
-
-The size of the recently used resources list.
-
-   * Since: 2.10
-The B<Gnome::GObject::Value> type of property I<size> is C<G_TYPE_INT>.
-=end pod

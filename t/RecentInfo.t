@@ -5,7 +5,7 @@ use Test;
 #use Gnome::Glib::Quark;
 use Gnome::Glib::Error;
 
-#use Gnome::Gtk3::RecentChooserMenu;
+use Gnome::Gdk3::Pixbuf;
 #use Gnome::Gtk3::RecentChooser;
 use Gnome::Gtk3::RecentInfo;
 use Gnome::Gtk3::RecentManager;
@@ -43,9 +43,17 @@ subtest 'Manipulations', {
     :app_name('RecentInfo.t'), :app_exec('ls -l %f'),
     :groups([<marcel>]), :!is_private
   );
-  ok $rm.add-full( 'file:///home/marcel', $rd), 'manager.add-full()';
-  ( $ri, $e ) = $rm.lookup-item('file:///home/marcel');
+  ok $rm.add-full( 'file:///home/marcel2', $rd), 'manager.add-full()';
+  ( $ri, $e ) = $rm.lookup-item('file:///home/marcel2');
   ok $ri.is-valid, 'manager.lookup-item()';
+  my List $l = $ri.get-application-info('RecentInfo.t');
+  is $l[0], 'ls -l /home/marcel2', '.get-application-info() [0]: ' ~ $l[0];
+  is $l[1], 1, '.get-application-info() [1]: 1 x registered';
+  is $l[2], time, '.get-application-info() [2]: 0 sec ago';
+  is $ri.get-added, time, '.get-added(): 0 seconds, just inserted';
+  is $ri.get-modified, time, '.get-modified(): 0 seconds, just inserted';
+  is $ri.get-visited, -1, '.get-visited(): -1 seconds, never visited';
+  is $ri.get-age, 0, '.get-age(): 0 days, just inserted';
   is $ri.get-display-name, "Marcels Home", '.get-display-name()';
   is $ri.get-description, 'my home sweet home', '.get-description()';
   is $ri.get-mime-type, 'inode/directory', '.get-mime-type()';
@@ -54,8 +62,35 @@ subtest 'Manipulations', {
   nok $ri.has-application('RecentManager.t'), '.has-application() wrong app';
   ok $ri.has-group('marcel'), '.has-group()';
   nok $ri.has-group('piet'), '.has-group() wrong group';
-  is $ri.get-age, 0, '.get-age(): 0 days, just inserted';
   ok $ri.is-local, '.is-local()';
+  nok $ri.exists, '.exists()';
+  ok $ri.match($ri), '.match()';
+
+  $rd .= new(
+    :display_name("Marcels Home"), :description('my home sweet home'),
+    :mime_type<inode/directory>,
+    :app_name('RecentManager.t'), :app_exec('ls -lh %f'),
+    :groups([<marcel2 root wheel>]), :!is_private
+  );
+  ok $rm.add-full( 'file:///home/marcel2', $rd), 'add 2nd time with other app';
+  ( $ri, $e ) = $rm.lookup-item('file:///home/marcel2');
+  ok $ri.is-valid, 'looked up again';
+  my Array $a = $ri.get-applications;
+  is-deeply [$a.sort], [<RecentInfo.t RecentManager.t>], '.get-applications()';
+
+  is $ri.last-application, 'RecentManager.t', '.last-application()';
+
+  $a = $ri.get-groups;
+  is-deeply [$a.sort], [<marcel marcel2 root wheel>], '.get-groups()';
+
+  my Gnome::Gdk3::Pixbuf $pb .= new(:native-object($ri.get-icon(32)));
+  ok $pb.is-valid, '.get-icon()';
+  is $pb.get-width, 32, 'icon width ok';
+  is $pb.get-height, 32, 'icon height ok';
+
+  is $ri.get-short-name, 'marcel2', '.get-short-name()';
+  is $ri.get-uri, 'file:///home/marcel2', '.get-uri()';
+  is $ri.get-uri-display, '/home/marcel2', '.get-uri-display()';
 }
 
 #`{{

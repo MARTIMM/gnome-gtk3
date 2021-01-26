@@ -220,7 +220,8 @@ GObject                                         Gnome::GObject::Object
 ├── GtkPrintOperation
 ├── GtkPrintSettings
 ├── GtkRcStyle
-├── GtkRecentManager
+├── GtkRecentManager                            RecentManager
+├                                               RecentInfo from GtkRecentManager
 ├── GtkSettings
 ├── GtkSizeGroup
 ├─✗ GtkStatusIcon                               ⛔
