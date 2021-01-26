@@ -688,15 +688,11 @@ Also here, the types of positional arguments in the signal handler are important
 
 =head2 Supported signals
 
-
+=comment -----------------------------------------------------------------------
 =comment #TS:0:changed:
 =head3 changed
 
-Emitted when the current recently used resources manager changes
-its contents, either by calling C<gtk_recent_manager_add_item()> or
-by another application.
-
-Since: 2.10
+Emitted when the current recently used resources manager changes its contents, either by calling C<gtk_recent_manager_add_item()> or by another application.
 
   method handler (
     Int :$_handle_id,
@@ -705,7 +701,6 @@ Since: 2.10
   );
 
 =item $recent_manager; the recent manager
-
 
 =end pod
 
