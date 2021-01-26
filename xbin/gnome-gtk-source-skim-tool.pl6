@@ -671,7 +671,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $raku-type ~~ s:s/ gboolean || gint || gint32 ||
                    gchar || gint8 || gshort || gint16 ||
                    glong || gint64 ||
-                   gssize || goffset || int32 || int64 || int
+                   gssize || goffset || int32 || int64 || int || time_t
                  /Int/;
 
 #  $raku-type ~~ s:s/ int /Int/;
@@ -1355,7 +1355,13 @@ sub get-signals ( Str:D $source-content is copy ) {
 #note "SA $signal-name: ", $sig-args;
 
     # start pod doc
-    $signal-doc ~= "\n=comment #TS:0:$signal-name:\n=head3 $signal-name\n";
+    $signal-doc ~= Q:to/EOSIG/;
+
+      =comment -----------------------------------------------------------------------
+      =comment #TS:0:$signal-name:
+      =head3 $signal-name
+      EOSIG
+
     note "get signal $signal-name";
 
     # process g_signal_new arguments, remove commas from specific macro
@@ -1528,6 +1534,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       ) if $item-scan and ?$item-name;
 
       $signal-doc ~= primary-doc-changes($spart-doc);
+      $signal-doc ~~ s/^^ 'Since:' \s+ \d+ \. \d+ <-[\n]>* \n? //;
     }
 
 
