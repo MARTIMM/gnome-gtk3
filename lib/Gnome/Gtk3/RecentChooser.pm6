@@ -821,7 +821,7 @@ sub gtk_recent_chooser_get_items ( N-GObject $chooser --> N-GList )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-uris:
+#TM:1:get-uris:
 =begin pod
 =head2 get-uris
 
@@ -836,17 +836,14 @@ Returns: An array of strings.
 method get-uris ( --> Array ) {
 
   my Array $uris = [];
-  my gsize $length;
   my CArray[Str] $a = gtk_recent_chooser_get_uris(
-    self.get-native-object-no-reffing, $length
+    self.get-native-object-no-reffing, my gsize $length
   );
 
   for ^$length -> $i {
     last if $a[$i] ~~ Nil;
     $uris[$i] = $a[$i];
   }
-
-  #TODO free $a ??
 
   $uris
 }
