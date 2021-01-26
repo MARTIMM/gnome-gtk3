@@ -679,6 +679,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $raku-type ~~ s:s/ gpointer /Pointer/;
   $raku-type ~~ s:s/ gfloat || gdouble /Num/;
   $raku-type ~~ s:s/ GQuark /UInt/;
+  $raku-type ~~ s:s/ GFlag /UInt/;
 
 #note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
 
