@@ -63,6 +63,7 @@ subtest 'Manipulations', {
   is $wp.iter-get-name(2), 'start-button', $wp.iter-get-name(2);
 }
 
+done-testing;
 
 
 
