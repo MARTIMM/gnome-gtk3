@@ -9,7 +9,6 @@
   "license": "Artistic-2.0",
 
   "provides": {
-
     "Gnome::Gtk3::AboutDialog": "lib/Gnome/Gtk3/AboutDialog.pm6",
     "Gnome::Gtk3::Adjustment": "lib/Gnome/Gtk3/Adjustment.pm6",
     "Gnome::Gtk3::Application": "lib/Gnome/Gtk3/Application.pm6",
@@ -80,6 +79,7 @@
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
     "Gnome::Gtk3::RecentChooser": "lib/Gnome/Gtk3/RecentChooser.pm6",
     "Gnome::Gtk3::RecentChooserMenu": "lib/Gnome/Gtk3/RecentChooserMenu.pm6",
+    "Gnome::Gtk3::RecentChooserWidget": "lib/Gnome/Gtk3/RecentChooserWidget.pm6",
     "Gnome::Gtk3::RecentFilter": "lib/Gnome/Gtk3/RecentFilter.pm6",
     "Gnome::Gtk3::RecentInfo": "lib/Gnome/Gtk3/RecentInfo.pm6",
     "Gnome::Gtk3::RecentManager": "lib/Gnome/Gtk3/RecentManager.pm6",
