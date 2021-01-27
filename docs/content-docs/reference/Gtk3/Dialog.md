@@ -18,7 +18,7 @@ A “modal” dialog (that is, one which freezes the rest of the application fro
 
 If you add buttons to **Gnome::Gtk3::Dialog** using `.new(:$buttons)`, `gtk_dialog_add_button()`, `gtk_dialog_add_buttons()`, or `gtk_dialog_add_action_widget()`, clicking the button will emit a signal called *response* with a response ID that you specified. GTK+ will never assign a meaning to positive response IDs; these are entirely user-defined. But for convenience, you can use the response IDs in the **Gnome::Gtk3::ResponseType** enumeration (these all have values less than zero). If a dialog receives a delete event, the *response* signal will be emitted with a response ID of **GTK_RESPONSE_DELETE_EVENT**.
 
-If you want to block waiting for a dialog to return before returning control flow to your code, you can call `gtk_dialog_run()`. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
+If you want to block waiting for a dialog to return before returning control flow to your code, you can call `run()`. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
 
 For the simple dialog in the following example, in reality you’d probably use **Gnome::Gtk3::MessageDialog** to save yourself some effort. But you’d need to create the dialog contents manually if you had more than a simple message in the dialog.
 
@@ -253,26 +253,26 @@ Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn�
 [gtk_] dialog_response
 ----------------------
 
-Emits the *response* signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or `gtk_dialog_run()` will be monitoring the *response* signal and take appropriate action.
+Emits the *response* signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or `run()` will be monitoring the *response* signal and take appropriate action.
 
     method gtk_dialog_response ( Int $response_id )
 
   * Int $response_id; response ID
 
-[gtk_] dialog_run
------------------
+run
+---
 
-Blocks in a recursive main loop until the dialog either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `gtk_dialog_run()`, `gtk_dialog_run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
+Blocks in a recursive main loop until the dialog either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `run()`, `run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
 
-Before entering the recursive main loop, `gtk_dialog_run()` calls `gtk_widget_show()` on the dialog for you. Note that you still need to show any children of the dialog yourself.
+Before entering the recursive main loop, `run()` calls `gtk_widget_show()` on the dialog for you. Note that you still need to show any children of the dialog yourself.
 
-During `gtk_dialog_run()`, the default behavior of *delete-event* is disabled; if the dialog receives a *delete_event*, it will not be destroyed as windows usually are, and `gtk_dialog_run()` will return **GTK_RESPONSE_DELETE_EVENT**. Also, during `gtk_dialog_run()` the dialog will be modal. You can force `gtk_dialog_run()` to return at any time by calling `gtk_dialog_response()` to emit the *response* signal. Destroying the dialog during `gtk_dialog_run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
+During `run()`, the default behavior of *delete-event* is disabled; if the dialog receives a *delete_event*, it will not be destroyed as windows usually are, and `run()` will return **GTK_RESPONSE_DELETE_EVENT**. Also, during `run()` the dialog will be modal. You can force `run()` to return at any time by calling `gtk_dialog_response()` to emit the *response* signal. Destroying the dialog during `run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
 
-After `gtk_dialog_run()` returns, you are responsible for hiding or destroying the dialog if you wish to do so.
+After `run()` returns, you are responsible for hiding or destroying the dialog if you wish to do so.
 
 Typical usage of this function might be:
 
-    given GtkResponseType($dialog.gtk-dialog-run) {
+    given GtkResponseType($dialog.run) {
       when GTK_RESPONSE_ACCEPT {
         do_application_specific_something();
       }
@@ -284,11 +284,11 @@ Typical usage of this function might be:
 
     $dialog.gtk_widget_destroy;
 
-Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a `gtk_dialog_run()` call.
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a `run()` call.
 
 Returns: response ID
 
-    method gtk_dialog_run ( --> Int  )
+    method run ( --> Int  )
 
 [[gtk_] dialog_] get_content_area
 ---------------------------------

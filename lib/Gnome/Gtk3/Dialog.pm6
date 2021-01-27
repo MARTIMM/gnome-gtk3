@@ -25,7 +25,7 @@ A “modal” dialog (that is, one which freezes the rest of the application fro
 
 If you add buttons to B<Gnome::Gtk3::Dialog> using C<.new(:$buttons)>, C<gtk_dialog_add_button()>, C<gtk_dialog_add_buttons()>, or C<gtk_dialog_add_action_widget()>, clicking the button will emit a signal called  I<response> with a response ID that you specified. GTK+ will never assign a meaning to positive response IDs; these are entirely user-defined. But for convenience, you can use the response IDs in the B<Gnome::Gtk3::ResponseType> enumeration (these all have values less than zero). If a dialog receives a delete event, the  I<response> signal will be emitted with a response ID of B<GTK_RESPONSE_DELETE_EVENT>.
 
-If you want to block waiting for a dialog to return before returning control flow to your code, you can call C<gtk_dialog_run()>. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
+If you want to block waiting for a dialog to return before returning control flow to your code, you can call C<run()>. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
 
 For the simple dialog in the following example, in reality you’d probably use B<Gnome::Gtk3::MessageDialog> to save yourself some effort. But you’d need to create the dialog contents manually if you had more than a simple message in the dialog.
 
@@ -126,6 +126,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------
@@ -377,8 +379,10 @@ sub _gtk_dialog_new_with_buttons (
     for @buttons -> Str $button-text, Int $response-code {
       # values not used here, just a check on type
       @parameterList.push(Parameter.new(type => Str));
-      @parameterList.push(Parameter.new(type => int32));
+      @parameterList.push(Parameter.new(type => GEnum));
     }
+    # end list with a Nil
+    @parameterList.push(Parameter.new(type => Pointer));
   }
 
   else {
@@ -387,7 +391,7 @@ sub _gtk_dialog_new_with_buttons (
 
   # create signature
   my Signature $signature .= new(
-    :params( |@parameterList, Parameter.new(type => Pointer)),
+    :params(|@parameterList),
     :returns(N-GObject)
   );
 
@@ -397,7 +401,7 @@ sub _gtk_dialog_new_with_buttons (
   state $ptr = cglobal( &gtk-lib, 'gtk_dialog_new_with_buttons', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( $title, $parent, $flags, |@buttons, Pointer)
+  $f( $title, $parent, $flags, |@buttons, Nil)
 }
 
 #-------------------------------------------------------------------------------
@@ -557,7 +561,7 @@ sub gtk_dialog_get_response_for_widget ( N-GObject $dialog, N-GObject $widget )
 
 Emits the  I<response> signal with the given response ID.
 Used to indicate that the user has responded to the dialog in some way;
-typically either you or C<gtk_dialog_run()> will be monitoring the I<response> signal and take appropriate action.
+typically either you or C<run()> will be monitoring the I<response> signal and take appropriate action.
 
   method gtk_dialog_response ( Int $response_id )
 
@@ -570,21 +574,21 @@ sub gtk_dialog_response ( N-GObject $dialog, int32 $response_id )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_dialog_run:
+#TM:4:run:many external programs and examples
 =begin pod
-=head2 [gtk_] dialog_run
+=head2 run
 
-Blocks in a recursive main loop until the dialog either emits the I<response> signal, or is destroyed. If the dialog is destroyed during the call to C<gtk_dialog_run()>, C<gtk_dialog_run()> returns B<GTK_RESPONSE_NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
+Blocks in a recursive main loop until the dialog either emits the I<response> signal, or is destroyed. If the dialog is destroyed during the call to C<run()>, C<run()> returns B<GTK_RESPONSE_NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
 
-Before entering the recursive main loop, C<gtk_dialog_run()> calls C<gtk_widget_show()> on the dialog for you. Note that you still need to show any children of the dialog yourself.
+Before entering the recursive main loop, C<run()> calls C<gtk_widget_show()> on the dialog for you. Note that you still need to show any children of the dialog yourself.
 
-During C<gtk_dialog_run()>, the default behavior of I<delete-event> is disabled; if the dialog receives a I<delete_event>, it will not be destroyed as windows usually are, and C<gtk_dialog_run()> will return B<GTK_RESPONSE_DELETE_EVENT>. Also, during C<gtk_dialog_run()> the dialog will be modal. You can force C<gtk_dialog_run()> to return at any time by calling C<gtk_dialog_response()> to emit the I<response> signal. Destroying the dialog during C<gtk_dialog_run()> is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
+During C<run()>, the default behavior of I<delete-event> is disabled; if the dialog receives a I<delete_event>, it will not be destroyed as windows usually are, and C<run()> will return B<GTK_RESPONSE_DELETE_EVENT>. Also, during C<run()> the dialog will be modal. You can force C<run()> to return at any time by calling C<gtk_dialog_response()> to emit the I<response> signal. Destroying the dialog during C<run()> is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
 
-After C<gtk_dialog_run()> returns, you are responsible for hiding or destroying the dialog if you wish to do so.
+After C<run()> returns, you are responsible for hiding or destroying the dialog if you wish to do so.
 
 Typical usage of this function might be:
 
-  given GtkResponseType($dialog.gtk-dialog-run) {
+  given GtkResponseType($dialog.run) {
     when GTK_RESPONSE_ACCEPT {
       do_application_specific_something();
     }
@@ -597,17 +601,20 @@ Typical usage of this function might be:
   $dialog.gtk_widget_destroy;
 
 
-Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a C<gtk_dialog_run()> call.
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a C<run()> call.
 
 Returns: response ID
 
-  method gtk_dialog_run ( --> Int  )
+  method run ( --> Int  )
 
 
 =end pod
 
-sub gtk_dialog_run ( N-GObject $dialog )
-  returns int32
+method run ( --> Int ) {
+  gtk_dialog_run(self.get-native-object-no-reffing)
+}
+
+sub gtk_dialog_run ( N-GObject $dialog --> gint )
   is native(&gtk-lib)
   { * }
 
