@@ -78,6 +78,7 @@
     "Gnome::Gtk3::RadioMenuItem": "lib/Gnome/Gtk3/RadioMenuItem.pm6",
     "Gnome::Gtk3::Range": "lib/Gnome/Gtk3/Range.pm6",
     "Gnome::Gtk3::RecentChooser": "lib/Gnome/Gtk3/RecentChooser.pm6",
+    "Gnome::Gtk3::RecentChooserDialog": "lib/Gnome/Gtk3/RecentChooserDialog.pm6",
     "Gnome::Gtk3::RecentChooserMenu": "lib/Gnome/Gtk3/RecentChooserMenu.pm6",
     "Gnome::Gtk3::RecentChooserWidget": "lib/Gnome/Gtk3/RecentChooserWidget.pm6",
     "Gnome::Gtk3::RecentFilter": "lib/Gnome/Gtk3/RecentFilter.pm6",

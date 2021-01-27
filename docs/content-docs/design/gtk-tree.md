@@ -34,7 +34,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   │   ├── GtkMessageDialog          MessageDialog
 │   │   │   │   │   │   ├── GtkPageSetupUnixDialog
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
-│   │   │   │   │   │   ╰── GtkRecentChooserDialog
+│   │   │   │   │   │   ╰── GtkRecentChooserDialog    RecentChooserDialog
 │   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
 │   │   │   │   │   ├── GtkAssistant                  Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow

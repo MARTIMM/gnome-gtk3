@@ -264,6 +264,10 @@
     url: '/content-docs/reference/Gtk3/RecentChooser.html'
     type: interface
 
+  - title: "RecentChooserDialog"
+    url: '/content-docs/reference/Gtk3/RecentChooserDialog.html'
+    type: widget
+
   - title: "RecentChooserMenu"
     url: '/content-docs/reference/Gtk3/RecentChooserMenu.html'
     type: widget

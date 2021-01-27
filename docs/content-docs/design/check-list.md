@@ -134,6 +134,7 @@ RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |
 RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|
 Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|
+RecentChooserDialog       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
 RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
@@ -257,7 +258,6 @@ PrintSettings|
 PrintUnixDialog|
 RadioToolButton|
 RcStyle|
-RecentChooserDialog|
 Requisition|b|
 ScaleButton|
 Scrollable|i|
