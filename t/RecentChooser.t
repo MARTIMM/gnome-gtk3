@@ -4,6 +4,7 @@ use Test;
 
 use Gnome::Glib::Quark;
 use Gnome::Glib::Error;
+use Gnome::Glib::List;
 
 use Gnome::Gtk3::RecentChooserMenu;
 use Gnome::Gtk3::RecentChooser;
