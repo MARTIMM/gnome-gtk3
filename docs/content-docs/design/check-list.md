@@ -135,6 +135,7 @@ RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| �
 Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|
 RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
+RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|
@@ -170,7 +171,7 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  |  | ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
+Widget                    |  | ✗| ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |
 
@@ -257,7 +258,6 @@ PrintUnixDialog|
 RadioToolButton|
 RcStyle|
 RecentChooserDialog|
-RecentChooserWidget|
 Requisition|b|
 ScaleButton|
 Scrollable|i|

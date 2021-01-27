@@ -98,7 +98,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├─✗ GtkFontSelection            ⛔
 │   │   │   │   ├─✗ GtkHBox                     ⛔
 │   │   │   │   ├── GtkInfoBar
-│   │   │   │   ├── GtkRecentChooserWidget
+│   │   │   │   ├── GtkRecentChooserWidget      RecentChooserWidget
 │   │   │   │   ├── GtkShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut

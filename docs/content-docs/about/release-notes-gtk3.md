@@ -7,7 +7,7 @@ layout: sidebar
 # Release notes
 #### 2021-01-21 0.36.0:
 - New role **Gnome::Gtk3::RecentChooser**. This module is now used in an older module **Gnome::Gtk3::RecentChooserMenu**.
-- Building up the rest of the recently used files modules with **Gnome::Gtk3::RecentManager**, **Gnome::Gtk3::RecentInfo**, **Gnome::Gtk3::RecentFilter**.
+- Building up the rest of the recently used files modules with **Gnome::Gtk3::RecentManager**, **Gnome::Gtk3::RecentInfo**, **Gnome::Gtk3::RecentFilter**, **Gnome::Gtk3::RecentChooserWidget**.
 
 #### 2021-01-18 0.35.1:
 - New module **Gnome::Gtk3::CheckMenuItem**, **Gnome::Gtk3::SeparatorMenuItem** and **Gnome::Gtk3::RadioMenuItem**.
