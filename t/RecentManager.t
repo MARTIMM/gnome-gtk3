@@ -74,9 +74,15 @@ subtest 'Manipulations', {
 
     my Gnome::Glib::List $l = .get-items;
     diag '.get-items(); ' ~ $l.g_list_length;
-    $ri .= new(:native-object($l.data));
-    ok 1, '.get-items() [0]: ' ~ $ri.get-uri;
-    clear-list($l);
+    if $l.g_list_length {
+      $ri .= new(:native-object($l.data));
+      ok 1, '.get-items() [0]: ' ~ $ri.get-uri;
+      clear-list($l);
+    }
+
+    else {
+      skip 'No uris in list', 1;
+    }
 
     # is tested ok but inhibited if it does affect real live lists
     #ok 1, 'Items purged: ' ~ .purge-items;
