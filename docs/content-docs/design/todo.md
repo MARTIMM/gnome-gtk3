@@ -125,7 +125,7 @@ layout: sidebar
 
 
 
-#### Site changes.
+#### Site documentation.
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
 * Tutorials
@@ -134,7 +134,10 @@ layout: sidebar
     * Simple Window with a Button
     * Simple Window with two Buttons
 
-  * [x] Intermezzo: Methods
+  * [x] Module and Methods
+    * Class structure
+    * Interfaces
+    * Other classes
     * Method naming
 
   * [x] Window Details
@@ -192,7 +195,6 @@ layout: sidebar
       * MessageDialog
     * Window (already done above)
     * ApplicationWindow
-
 
   * [ ] Containers
     * Grid
