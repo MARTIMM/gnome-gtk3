@@ -18,7 +18,7 @@ Lets make a list first of what we want to accomplish for our prototype;
   * **#\`{**, **#\`{\{**, **#\`[**, **#\`[[**: Comment blocks used in Raku
   * **=comment**: Pod comment used in Raku
   * **/\***, **//**: Comments used in C, C++, Javascript or Qml
-  * **\<!--**: XML, html and other markup languages
+  * **\<!--**: XML, html and other markup languages, even in markdown!
 * Check for the following markers on those lines; `TODO`, `DOING`, `DONE`, `PLANNING`, `FIXME`, `ARCHIVE`, `HACK`, `CHANGED`, `XXX`, `IDEA`, `NOTE` and `REVIEW`. You see that this program will handle more than only 'todo' lines!
 * Store the results in an array of arrays. Each entry is an array holding the following marker information: `[ <marker-name>, <line-number>, <marker-text> ]`;
 
@@ -32,5 +32,5 @@ Lets make a list first of what we want to accomplish for our prototype;
 Now that we have set our goals, we need to set up the working directory amongst other things;
 * Create an environment and set up some directories. We make this project installable so we can share this program and modules.
   The project directory will be `todo-viewer`. In that directory we create the directories `bin`, `lib` and `t`. The program will go to `bin` and any module will go to `lib`. The program is named `todo-viewer.pl6` and the modules `Gui.pm6`, `SkimFile.pm6` and `GuiHandlers.pm6`.
-* There will be a `MAIN()` in the program to get some arguments from the commandline. Also the main program will load some modules to handle the file I/O and building the graphical user interface (GUI). Also, we need a module to handle the the signals. This will be loaded by the GUI module.
+* There will be a `MAIN()` in the program to get some arguments from the commandline. Also the main program will load some modules to handle the file I/O and building the graphical user interface (GUI). Also, we need a module to handle the signals. This will be loaded by the GUI module.
 * We need a test file with some TODO and other marker comments in it and call it `my-test.pl6`. This file is placed in `t/data`.
