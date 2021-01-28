@@ -12,8 +12,8 @@ The tutorial section tries to explain how you can build your own **GUI** (Graphi
 
 Many techniques will pass and lead you along all kinds of details like creating and showing windows, adding widgets, using dialogs and sending signals to name a few.
 
-The first few parts of the tutorial is about building your GUI by hand. There are some intermezzo's in between to tell you something about how the Raku modules are set up. Later sections will be about making use of *XML* files, possibly generated from the GTK+ GUI designer program *Glade*, how to make use of stylesheets, resources, applications, drag and drop, .... On the website there is also a section explaining some of the design ideas of the perl6 **Gnome::*** packages. There is also a reference section of the implemented modules.
+At first, a large part of the tutorial will be about building your GUI by hand. There are some sections in between to tell you something about how the Raku modules are set up. Later sections will be about making use of *XML* files, possibly generated from the GTK+ GUI designer program *Glade*, how to make use of stylesheets, resources, applications, drag and drop, …. To get more detailed information of each module, there is also a reference section of the implemented modules on this web site.
 
-What is not explained is how to install the Gtk libraries and install Raku or the Raku modules.
+What will not be explained here is how to install the Gtk libraries and install Raku or the Raku modules.
 
 Have fun!
