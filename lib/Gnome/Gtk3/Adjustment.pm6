@@ -72,7 +72,7 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head2 :value, :lower, :upper, :step-increment, :page-increment, :page-size
+=head3 :value, :lower, :upper, :step-increment, :page-increment, :page-size
 
 Create a new Adjustment object.
 
@@ -474,13 +474,17 @@ sub gtk_adjustment_set_page_size ( N-GObject $adjustment, num64 $page_size  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_adjustment_configure:
+#TM:1:configure:
 =begin pod
-=head2 gtk_adjustment_configure
+=head2 configure
 
-Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the  I<changed> signal. See C<gtk_adjustment_set_lower()> for an alternative way of compressing multiple emissions of  I<changed> into one.
+Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the  I<changed> signal. See C<set-lower()> for an alternative way of compressing multiple emissions of  I<changed> into one.
 
-  method gtk_adjustment_configure ( Num $value, Num $lower, Num $upper, Num $step_increment, Num $page_increment, Num $page_size )
+  method configure (
+    Num $value, Num $lower, Num $upper,
+    Num $step_increment, Num $page_increment,
+    Num $page_size
+  )
 
 =item Num $value; the new value
 =item Num $lower; the new minimum value
@@ -491,7 +495,18 @@ Sets all properties of the adjustment at once. Use this function to avoid multip
 
 =end pod
 
-sub gtk_adjustment_configure ( N-GObject $adjustment, num64 $value, num64 $lower, num64 $upper, num64 $step_increment, num64 $page_increment, num64 $page_size  )
+method configure (
+  $value, $lower, $upper, $step_increment, $page_increment, $page_size
+) {
+  gtk_adjustment_configure(
+    self.get-native-object-no-reffing, $value.Num, $lower.Num, $upper.Num,
+    $step_increment.Num, $page_increment.Num, $page_size.Num
+  );
+}
+
+sub gtk_adjustment_configure (
+  N-GObject $adjustment, num64 $value, num64 $lower, num64 $upper,
+  num64 $step_increment, num64 $page_increment, num64 $page_size  )
   is native(&gtk-lib)
   { * }
 

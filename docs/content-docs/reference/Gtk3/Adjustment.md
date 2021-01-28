@@ -30,8 +30,7 @@ Methods
 new
 ---
 
-:value, :lower, :upper, :step-increment, :page-increment, :page-size
---------------------------------------------------------------------
+### :value, :lower, :upper, :step-increment, :page-increment, :page-size
 
 Create a new Adjustment object.
 
@@ -188,12 +187,16 @@ Sets the page size of the adjustment. See `gtk_adjustment_set_lower()` about how
 
   * Num $page_size; the new page size
 
-gtk_adjustment_configure
-------------------------
+configure
+---------
 
-Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the *changed* signal. See `gtk_adjustment_set_lower()` for an alternative way of compressing multiple emissions of *changed* into one.
+Sets all properties of the adjustment at once. Use this function to avoid multiple emissions of the *changed* signal. See `set-lower()` for an alternative way of compressing multiple emissions of *changed* into one.
 
-    method gtk_adjustment_configure ( Num $value, Num $lower, Num $upper, Num $step_increment, Num $page_increment, Num $page_size )
+    method configure (
+      Num $value, Num $lower, Num $upper,
+      Num $step_increment, Num $page_increment,
+      Num $page_size
+    )
 
   * Num $value; the new value
 

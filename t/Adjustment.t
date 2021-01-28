@@ -32,7 +32,7 @@ subtest 'ISA test', {
     :value(1e1), :lower(0e0), :upper(1e2),
     :step-increment(1e0), :page-increment(1e1), :page-size(2e1)
   );
-  isa-ok $a, Gnome::Gtk3::Adjustment, '.new(... options ...)';
+  isa-ok $a, Gnome::Gtk3::Adjustment, '.new( options … )';
 }
 
 #-------------------------------------------------------------------------------
@@ -70,9 +70,9 @@ subtest 'Manipulations', {
   $a.set-page-size(21e-1);
   is $a.get-page-size, 21e-1, '.set-page-size() / .get-page-size()';
 
-  $a.adjustment-configure( 11.2, 10, 50, 0.5, 2, 10);
-  is $a.get-page-size, 1e1, '.adjustment-configure(): page-size';
-  is $a.get-value, 112e-1, '.adjustment-configure(): value';
+  $a.configure( 11.2, 10, 50, 0.5, 2, 10);
+  is $a.get-page-size, 1e1, '.configure(): page-size';
+  is $a.get-value, 112e-1, '.configure(): value';
 
   is $a.get-minimum-increment, 5e-1, '.get-minimum-increment()';
 }
