@@ -3,23 +3,31 @@
   bar_menu:
   - title: Getting Started
     url: "/content-docs/tutorial/getting-started.html"
-  - title: "Module Methods"
-    url: "/content-docs/tutorial/methods.html"
+
+  - title: "Raku Modules"
+    url: "/content-docs/tutorial/raku-modules.html"
+
   - title: Window Details
     url: "/content-docs/tutorial/window-details.html"
+
   - title: Signals
     url: "/content-docs/tutorial/signals.html"
+
   - title: "Inheriting Widget Classes"
     url: "/content-docs/tutorial/inheriting.html"
+
 
 - bar_title: "Basic Widgets"
   bar_menu:
   - title: Label
     url: "/content-docs/tutorial/label.html"
+
   - title: Button
     url: "/content-docs/tutorial/button.html"
+
   - title: Text
     url: "/content-docs/tutorial/text.html"
+
   - title:
     url: "/content-docs/tutorial/.html"
 
@@ -28,10 +36,13 @@
   bar_menu:
   - title: Introduction
     url: "/content-docs/tutorial/dialog-introduction.html"
+
   - title: Message Dialog
     url: "/content-docs/tutorial/message-dialog.html"
+
   - title: Dialog
     url: "/content-docs/tutorial/dialog.html"
+
 
 - bar_title: "Applications"
   bar_menu:
