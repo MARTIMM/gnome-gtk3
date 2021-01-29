@@ -1,50 +1,53 @@
 # https://jekyllrb.com/tutorials/navigation/
-- bar_title: "Chapters"
+- bar_title: Appetizers
   bar_menu:
   - title: Getting Started
-    url: "/content-docs/tutorial/getting-started.html"
+    url: /content-docs/tutorial/getting-started.html
 
-  - title: "Raku Modules"
-    url: "/content-docs/tutorial/raku-modules.html"
 
-  - title: Window Details
-    url: "/content-docs/tutorial/window-details.html"
+- bar_title: Groundwork
+  bar_menu:
+  - title: Raku Modules
+    url: /content-docs/tutorial/raku-modules.html
+
+  - title: Inheriting Widget Classes
+    url: /content-docs/tutorial/inheriting.html
 
   - title: Signals
-    url: "/content-docs/tutorial/signals.html"
-
-  - title: "Inheriting Widget Classes"
-    url: "/content-docs/tutorial/inheriting.html"
+    url: /content-docs/tutorial/signals.html
 
 
-- bar_title: "Basic Widgets"
+- bar_title: Basic Widgets
   bar_menu:
+  - title: Window
+    url: /content-docs/tutorial/window-details.html
+
   - title: Label
-    url: "/content-docs/tutorial/label.html"
+    url: /content-docs/tutorial/label.html
 
   - title: Button
-    url: "/content-docs/tutorial/button.html"
+    url: /content-docs/tutorial/button.html
 
   - title: Text
-    url: "/content-docs/tutorial/text.html"
+    url: /content-docs/tutorial/text.html
 
   - title:
-    url: "/content-docs/tutorial/.html"
+    url: /content-docs/tutorial/.html
 
 
-- bar_title: "Dialogs"
+- bar_title: Dialogs
   bar_menu:
   - title: Introduction
-    url: "/content-docs/tutorial/dialog-introduction.html"
+    url: /content-docs/tutorial/dialog-introduction.html
 
   - title: Message Dialog
-    url: "/content-docs/tutorial/message-dialog.html"
+    url: /content-docs/tutorial/message-dialog.html
 
   - title: Dialog
-    url: "/content-docs/tutorial/dialog.html"
+    url: /content-docs/tutorial/dialog.html
 
 
-- bar_title: "Applications"
+- bar_title: Applications
   bar_menu:
   - title: ApplicationWindow
-    url: "/content-docs/tutorial/application-window.html"
+    url: /content-docs/tutorial/application-window.html
