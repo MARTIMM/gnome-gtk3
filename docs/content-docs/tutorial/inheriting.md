@@ -9,7 +9,7 @@ layout: sidebar
 
 ## Introduction
 
-There are situations in your projects that a widget gets dressed up the same way all the time and stray away from the defaults of a widget. For instance, you might want several labels to change a font and make it bold. So you repeat the steps all the time you create a label. For example the below label has a smaller font and printed bold. Also rotated for 90 degrees (useful in a grid to make columns small, e.g. when showing checkboxes or small numbers);
+There are situations in your projects that a widget gets dressed up the same way all the time and do not use the defaults of a widget. For instance, you might want several labels to change a font and make it bold. So you repeat the steps all the time you create a label. For example the below label has a smaller font and printed bold. Also rotated for 90 degrees (useful in a grid to keep columns small, e.g. for showing checkboxes or small numbers);
 
 ```
 $text = "<b><small>$text</small></b>";
@@ -18,16 +18,18 @@ $label.set-use-markup;
 $label.set-angle(90);
 ```
 
-Of course, we can make a method to do all that and that is easy enough. In some cases it is also the best thing you can do. However, the code can be more readable when such items are put away in some class and a proper name can then describe the result better. Beside that, it can be shared with other projects.
+Of course, we can make a method to do all that and that is easy enough. In some cases it might be the best thing you can do. However, the code can be more readable when such items are put away in some class and a proper name can then describe the result better. Beside that, it can be shared with other projects.
 
 
 ## Inheriting
 
 Putting things in a class is the subject then. How on earth can we have the behavior of the label without coding it all again? Well, inheriting the label class is the key to the solution! So, how do we make a class like that? In Raku, we use the `is` trait in the class declaration to get the beavior of a parent class.
 
-But we must do a bit more to let the parent class process the arguments and generate a native object. We must define a `new()` method for it to `bless()` the class to a living object. This method creates the object by providing the necessary options if there are any but most importantly, it must provide a special option `:GtkLabel` to let the label build routine know that it must process the options to create a native label object. Of course, other widget types need other named arguments. The reference of a widget makes it clear if it can be inherited and which argument must be given.
+But we must do a bit more to let the parent class process the arguments and generate a native object but not the parent of the parent. In case of a **Gnome::Gtk3::AboutDialog** class we want AboutDialog to process the arguments but not **Gnome::Gtk3::Dialog**, **Gnome::Gtk3::Container** or **Gnome::Gtk3::Widget** which are parent classes to AboutDialog.
 
-Then the `BUILD()` must do the additional steps to let the label be what it should be. This time rotating a smaller angle.
+To cope with that problem, we must define a `new()` method for it to `bless()` the class to a living object. This method creates the Raku object while providing the necessary options for the parent class, if there are any but most importantly, it must provide a special option `:GtkLabel`, in our example, to let the label build routine know that it must process the options to create a native label object. Of course, other widget types need other named arguments like `GtkAboutDialog` for the inheritance of an AboutDialog. The reference documentation of a widget makes it clear if it can be inherited and which argument must be given.
+
+Then the `BUILD()` must do the additional steps to let the new label type be what it should be. This time rotating a smaller angle.
 
 The code for it could look like the example below;
 ```
@@ -69,8 +71,7 @@ for @$data -> @d {
   my Int $col = 0;
   for @d -> $col-data {
     my Str $text = $col-data ~~ Str
-        ?? $col-data.fmt('%5s')
-        !! $col-data.fmt('%3d');
+        ?? $col-data.fmt('%5s') !! $col-data.fmt('%3d');
 
     $grid.attach(
       Gnome::Gtk3::Label.new(:$text), $col++, $row, 1, 1
@@ -83,9 +84,9 @@ for @$data -> @d {
 A bit of explanation is in order…
 ① `|c` is used here to get the lot of arguments in a Capture.
 
-② Then, `c` is flattened in the call of bless. Note the `:GtkLabel` is used here to give **Gnome::Gtk3::Label** a signal to process the named arguments like `:text`. It is also possible to provide named arguments there to symplify the users need to provide them.
+② Then, `c` is flattened in the call to bless. Note the `:GtkLabel` is used here to give **Gnome::Gtk3::Label** a signal to process the named arguments like `:text`. It is also possible to provide named arguments there to symplify the users call to initialize.
 
-③ The BUILD routine in this example gets the label text to add some markup. Also it needs to turn on markup processing. The angle is now set to 80 degrees so that it is not completely vertical.
+③ The BUILD routine in this example gets the label text to add some markup. Also it needs to turn on markup processing. The angle is now set to 80 degrees so that it is not completely vertical. Note that BUILD will get the same arguments as new and more, depending if any are added in new.
 
 ④ In the second part of the example, you see the usage of the class brought back to a single line where there is no fuzz about bolding and what not.
 

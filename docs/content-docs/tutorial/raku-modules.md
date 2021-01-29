@@ -43,16 +43,18 @@ There are two important named arguments which do not create new native objects b
 
 ## Inheriting a class
 
+It is possible to inherit from many classes in the package. There is somewhat more to explain so there is a separate section for it which you can find [here](inheriting.html).
+
 
 ## Native subroutines
 
 Each of the classes have a set of native subroutines which belong in that class. For example the GTK+ structure GtkButton has methods like `gtk_button_set_label()`. So the Raku module **Gnome::Gtk3::Button** has this subroutine defined. Al these subroutines are not exported so they are only accessable from within the class.
 
-To access the subroutines, the Raku `FALLBACK()` method is implemented to catch method names which are not implemented as such. The method is defined in the class TopLevelClassSupport. In turn it calls `._fallback()`. This `_fallback()` method is defined in every class to search for the native sub name in that class. The call from TopLevelClassSupport starts at the leaf class, the one you want to instantiate. If found, it returns the native sub address. When the name is not found, it continues its search with `.callsame()`. The end result is that the native subroutines behave as if they were methods.
+To access the subroutines, the Raku `FALLBACK()` method is implemented to catch method names which are not implemented as such. The method is defined in the class TopLevelClassSupport. In turn it calls `._fallback()`. This `_fallback()` method is defined in every class to search for the native sub name in that class. The call from TopLevelClassSupport starts at the leaf class, the one you want to instantiate. If the routine is found, `_fallback()` returns the native sub address. When the name is not found, it continues its search with `.callsame()` to access the fallback routine of its parent class. When an address is found, it is called with the necessary arguments. The end result is that the native subroutines behave as if they were methods.
 
 Because all these calls start a search in `FALLBACK()` and after that, the `_fallback()` in every child class, there is the opportunity to change the name of the subroutine before searching. One could then use the name `.gtk-button-set-label()` with all dashes in it or remove the prefixes 'gtk_' or even 'gtk_button_' to call `.set-label()` instead.
 
-So the possible method calls for the native sub `gtk_button_set_label()` are expanded to
+The possible method calls for the native sub `gtk_button_set_label()` are expanded to
 ```
 my Gnome::Gtk3::Button $button .= new;
 
@@ -70,3 +72,17 @@ New developments using real methods accessing the native subroutines without usi
 When older modules are changed, the change will become visible in the documentation showing only one possibility. The old names are still accepted until they get deprecated. So `.gtk_button_set_label()`, with the documentation showing _**[[gtk\_] button\_] set\_label**_, will become simply _**set-label**_.
 
 Having said all this, it is therefore best to use the shortest possible name with dashes in it instead of underscores to prevent being forced to comply to future changes in your code.
+
+Another note to add is this; many routine arguments, named or positional, expect native objects with types like `N-GObject` or `N-Error`. Instead of retrieving the native objects from the Raku objects, it is possible to hand over the Raku object instead. The routines expecting such elements will find those themselves. This will keep your code clean. For example, the **Gnome::Gtk3::Grid** class expects an `N-GObject` native widget as the first argument to the call `.attach()`.
+```
+method attach (
+  N-GObject $child, Int $left, Int $top, Int $width, Int $height
+)
+```
+But instead you can give a label or a button object for example, like so;
+```
+my Gnome::Gtk3::Label $l .= new(:text('input a number'));
+my Gnome::Gtk3::Entry $e .= new;
+$grid.attach( $l, 0, 0, 1, 1);
+$grid.attach( $e, 1, 0, 1, 1);
+```
