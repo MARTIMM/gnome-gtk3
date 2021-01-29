@@ -2,21 +2,28 @@ use v6;
 use NativeCall;
 use Test;
 
+#use Gnome::Gio::Application;
+use Gnome::Gio::Enums;
+
 use Gnome::Gtk3::Application;
-ok 1, 'loads ok';
+#ok 1, 'loads ok';
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-#`{{
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Application $a;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-$a .= new;
-isa-ok $a, Gnome::Gtk3::Application, '.new()';
+  $a .= new(
+    :app-id('io.github.martimm.test.application'),
+    :flags(G_APPLICATION_HANDLES_OPEN)
+  );
+
+  isa-ok $a, Gnome::Gtk3::Application, '.new( :app-id, :flags)';
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 unless %*ENV<raku_test_all>:exists {
   done-testing;

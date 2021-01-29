@@ -89,6 +89,10 @@ new
 
 Create a new Application object.
 
+If the application ID is defined, it must be valid. See also `id-is-valid()` in **Gnome::Gio::Application**.
+
+If no application ID is given then some features (most notably application uniqueness) will be disabled.
+
     multi method new (
       Str :$app-id!,
       GApplicationFlags :$flags = G_APPLICATION_FLAGS_NONE
@@ -105,29 +109,6 @@ Create an object using a native object from elsewhere. See also **Gnome::N::TopL
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-gtk_application_new
--------------------
-
-Creates a new **Gnome::Gtk3::Application** instance.
-
-When using **Gnome::Gtk3::Application**, it is not necessary to call `gtk_init()` manually. It is called as soon as the application gets registered as the primary instance.
-
-Concretely, `gtk_init()` is called in the default handler for the *startup* signal. Therefore, **Gnome::Gtk3::Application** subclasses should chain up in their *startup* handler before using any GTK+ API.
-
-Note that commandline arguments are not passed to `gtk_init()`. All GTK+ functionality that is available via commandline arguments can also be achieved by setting suitable environment variables such as `G_DEBUG`, so this should not be a big problem. If you absolutely must support GTK+ commandline arguments, you can explicitly call `gtk_init()` before creating the application instance.
-
-If non-`Any`, the application ID must be valid. See `g_application_id_is_valid()`.
-
-If no application ID is given then some features (most notably application uniqueness) will be disabled. A null application ID is only allowed with GTK+ 3.6 or later.
-
-Returns: a new **Gnome::Gtk3::Application** instance
-
-    method gtk_application_new ( Str $application_id, GApplicationFlags $flags --> N-GObject )
-
-  * Str $application_id; (allow-none): The application ID.
-
-  * GApplicationFlags $flags; the application flags
 
 [gtk_application_] add_window
 -----------------------------

@@ -46,13 +46,6 @@ An application can block various ways to end the session with the C<gtk_applicat
 [HowDoI: Using B<Gnome::Gtk3::Application>](https://wiki.gnome.org/HowDoI/B<Gnome::Gtk3::Application>), [Getting Started with GTK+: Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.htmlB<id>-1.2.3.3)
 
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Application implements
-=item Gnome::Gio::ActionGroup
-=item Gnome::Gio::ActionMap
-
-
 =head1 Synopsis
 =head2 Declaration
 
@@ -61,6 +54,7 @@ Gnome::Gtk3::Application implements
   also does Gnome::Gio::ActionMap;
 
 =comment  also does Gnome::Gio::ActionGroup;
+
 
 =head2 Inheriting this class
 
@@ -89,21 +83,21 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Gio::Application;
 use Gnome::Gio::MenuModel;
 use Gnome::Gio::Enums;
+use Gnome::Gio::ActionMap;
+#use Gnome::Gio::ActionGroup;
+
 use Gnome::Glib::List;
 use Gnome::Glib::Error;
 use Gnome::Glib::OptionContext;
-
-use Gnome::Gio::ActionMap;
-#use Gnome::Gio::ActionGroup;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Application:auth<github:MARTIMM>;
 also is Gnome::Gio::Application;
 also does Gnome::Gio::ActionMap;
-
 #also does Gnome::Gio::ActionGroup;
 
 #-------------------------------------------------------------------------------
@@ -118,16 +112,32 @@ my Bool $signals-added = False;
 
 Create a new Application object.
 
+=begin comment
+Creates a new B<Gnome::Gtk3::Application> instance.
+
+When using B<Gnome::Gtk3::Application>, it is not necessary to call C<gtk_init()> manually. It is called as soon as the application gets registered as the primary instance.
+
+Concretely, C<gtk_init()> is called in the default handler for the  I<startup> signal. Therefore, B<Gnome::Gtk3::Application> subclasses should chain up in their  I<startup> handler before using any GTK+ API.
+
+Note that commandline arguments are not passed to C<gtk_init()>. All GTK+ functionality that is available via commandline arguments can also be achieved by setting suitable environment variables such as `G_DEBUG`, so this should not be a big problem. If you absolutely must support GTK+ commandline arguments, you can explicitly call C<gtk_init()> before creating the application instance.
+=end comment
+
+If the application ID is defined, it must be valid. See also C<id-is-valid()> in B<Gnome::Gio::Application>.
+
+If no application ID is given then some features (most notably application uniqueness) will be disabled.
+
   multi method new (
     Str :$app-id!,
     GApplicationFlags :$flags = G_APPLICATION_FLAGS_NONE
   )
+
 
 =head3 :native-object
 
 Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 =head3 :build-id
 
@@ -137,11 +147,9 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new(:app-id):
-#TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:1:new( :flags,:app-id):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of w*<signal-name>.
@@ -158,34 +166,45 @@ submethod BUILD ( *%options ) {
   #return unless self.^name eq 'Gnome::Gtk3::Application';
   if self.^name eq 'Gnome::Gtk3::Application' or %options<GtkApplication> {
 
-    # process all named arguments
     if self.is-valid { }
 
-    elsif ? %options<app-id> {
-      self.set-native-object(
-        gtk_application_new(
+    elsif %options<native-object>:exists or %options<widget>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<app-id> {
+        $no = _gtk_application_new(
           %options<app-id>, %options<flags> // G_APPLICATION_FLAGS_NONE
         )
-      );
-    }
+      }
 
-    elsif ? %options<widget> || ? %options<native-object> ||
-       ? %options<build-id> {
-      # provided in Gnome::GObject::Object
-    }
+      #`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.keys.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      }}
 
-    elsif %options.keys.elems {
-      die X::Gnome.new(
-        :message(
-          'Unsupported, undefined, incomplete or wrongly typed options for ' ~
-          self.^name ~ ': ' ~ %options.keys.join(', ')
-        )
-      );
-    }
+      ##`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      #}}
 
-    # create default object
-    else {
-      self.set-native-object(gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
+      ## create default object
+      #else {
+      #  $no = _gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
+      #}
+
+      self.set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -204,7 +223,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._action_map_interface($native-sub) unless ?$s;
 #also does Gnome::Gio::ActionGroup;
-#also does Gnome::Gio::ActionMap;
 
   self.set-class-name-of-sub('GtkApplication');
   $s = callsame unless ?$s;
@@ -214,7 +232,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_application_new:new(:app-id)
+#TM:2:_gtk_application_new:new(:app-id)
+#`{{
 =begin pod
 =head2 gtk_application_new
 
@@ -238,9 +257,11 @@ Returns: a new B<Gnome::Gtk3::Application> instance
 =item GApplicationFlags $flags; the application flags
 
 =end pod
+}}
 
-sub gtk_application_new ( Str $application_id, int32 $flags --> N-GObject )
+sub _gtk_application_new ( Str $application_id, int32 $flags --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_application_new')
   { * }
 
 #-------------------------------------------------------------------------------
