@@ -28,21 +28,35 @@ my @pangodirlist = ();
 
 my @enum-list = ();
 
+# No leaf, role, top or standalone means class not at the top nor at the end.
+# Methods must call self._f('gtk widget class name') to get native object and
+# perform casting. Leaf classes do not need casting and can call
+# self.get-native-object-no-reffing. Roles have a simpler interface and does not
+# inherit from TopLevelClassSupport. Top classes inherit directly from
+# TopLevelClassSupport and have a native object of their own, and do not need
+# Boxed class. Standalone classes do not have an object and therefor no need to
+# inherit anything
 my Bool $class-is-leaf;
-my Bool $class-is-role;
+my Bool $class-is-role; # is leaf implicitly
+my Bool $class-is-top;
+#my Bool $class-is-standalone;
 
 #-------------------------------------------------------------------------------
 sub MAIN (
   Str:D $base-name, Bool :$main = False, Bool :$sig = False,
-  Bool :$prop = False, Bool :$sub = False,
-  Bool :$types = False, Bool :$test = False,
-  Bool :$leaf = False, Bool :$role = False
+  Bool :$prop = False, Bool :$sub = False, Bool :$types = False,
+  Bool :$test = False,
+  Bool :$leaf = False, Bool :$role = False,
+  Bool :$top = False,
+#  Bool :$stand = False
 ) {
   my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $types, $test );
 
   # Gtk interfaces (roles) are always leaf classes
   $class-is-role = $role;
   $class-is-leaf = ($leaf or $role);
+  $class-is-top = $top;
+#  $class-is-standalone = $stand;
 
   load-dir-lists();
 
@@ -1010,10 +1024,22 @@ sub substitute-in-template (
   }
 
   my Str ( $t1, $t2) = ( '', '');
-  if $raku-parentlib-name and $raku-parentclass-name {
+  if $class-is-top {
+    $t1 = "use Gnome::N::TopLevelClassSupport;";
+    $t2 = "also is Gnome::N::TopLevelClassSupport;";
+  }
+#`{{
+  elsif $class-is-standalone {
+    $t1 = '';
+    $t2 = '';
+  }
+}}
+
+  elsif $raku-parentlib-name and $raku-parentclass-name {
     $t1 = "use Gnome::{$raku-parentlib-name}::{$raku-parentclass-name};";
     $t2 = "also is Gnome::{$raku-parentlib-name}::{$raku-parentclass-name};";
   }
+
 
   $template-text ~~ s:g/ 'MODULENAME' /$raku-class-name/;
   $template-text ~~ s:g/ 'LIBRARYMODULE' /{$raku-lib-name}::{$raku-class-name}/;
