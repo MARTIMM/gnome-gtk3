@@ -129,41 +129,43 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-get-program-name
-----------------
+add-credit-section
+------------------
 
-Returns the program name displayed in the about dialog.
+Creates a new section in the Credits page.
 
-Returns: The program name. The string is owned by the about dialog and must not be modified.
+    method add-credit-section (
+      Str $section_name, *@people
+    )
 
-    method get-program-name ( --> Str )
+  * Str $section_name; The name of the section
 
-set-program-name
-----------------
+  * @people; A list of people who belong to that section
 
-Sets the name to display in the about dialog. If this is not set, it defaults to `g_get_application_name()`.
-
-    method set-program-name ( Str $name )
-
-  * Str $name; the program name
-
-get-version
+get-artists
 -----------
 
-Returns the version string.
+Returns the string which are displayed in the artists tab of the secondary credits dialog.
 
-Returns: The version string. The string is owned by the about dialog and must not be modified.
+Returns: A string array containing the artists.
 
-    method get-version ( --> Str  )
+    method get-artists ( --> Array )
 
-set-version
+get-authors
 -----------
 
-Sets the version string to display in the about dialog.
+Returns the string which are displayed in the authors tab of the secondary credits dialog.
 
-    method set-version ( Str $version )
+Returns: An array containing the authors.
 
-  * Str $version; the version string
+    method get-authors ( --> Array )
+
+get-comments
+------------
+
+Returns the comments string. The string is owned by the about dialog and must not be modified.
+
+    method get-comments ( --> Str )
 
 get-copyright
 -------------
@@ -174,21 +176,115 @@ Returns: The copyright string. The string is owned by the about dialog and must 
 
     method get-copyright ( --> Str )
 
-set-copyright
--------------
+get-documenters
+---------------
 
-Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
+Returns the string which are displayed in the documenters tab of the secondary credits dialog.
 
-    method set-copyright ( Str $copyright )
+Returns: An array containing the documenters
 
-  * Str $copyright; the copyright string
+    method get-documenters ( --> Array )
 
-get-comments
-------------
+get-license
+-----------
 
-Returns the comments string. The string is owned by the about dialog and must not be modified.
+Returns the license information.The string is owned by the about dialog and must not be modified.
 
-    method get-comments ( --> Str )
+    method get-license ( --> Str )
+
+get-license-type
+----------------
+
+Retrieves the license set using `set_license_type()`. Returns a *GtkLicense* value.
+
+    method get-license-type ( --> GtkLicense  )
+
+get-logo
+--------
+
+Returns the pixbuf displayed as logo in the about dialog.
+
+Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
+
+    method get-logo ( --> N-GObject  )
+
+get-logo-icon-name
+------------------
+
+Returns the icon name displayed as logo in the about dialog.
+
+Returns: the icon name displayed as logo.
+
+    method get-logo-icon-name ( --> Str )
+
+get-program-name
+----------------
+
+Returns the program name displayed in the about dialog.
+
+Returns: The program name. The string is owned by the about dialog and must not be modified.
+
+    method get-program-name ( --> Str )
+
+get-translator-credits
+----------------------
+
+Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog. The string is owned by the about dialog and must not be modified.
+
+    method get-translator-credits ( --> Str  )
+
+get-version
+-----------
+
+Returns the version string.
+
+Returns: The version string. The string is owned by the about dialog and must not be modified.
+
+    method get-version ( --> Str  )
+
+get-website
+-----------
+
+Returns the website URL. The string is owned by the about dialog and must not be modified.
+
+    method get-website ( --> Str  )
+
+get-website-label
+-----------------
+
+Returns the label used for the website link. The string is owned by the about dialog and must not be modified.
+
+    method get-website-label ( --> Str )
+
+get-wrap-license
+----------------
+
+Returns `True` if the license text in this about dialog is automatically wrapped.
+
+    method get-wrap-license ( --> Bool )
+
+set-artists
+-----------
+
+Sets the strings which are displayed in the artists tab of the secondary credits dialog.
+
+    method set-artists ( *@artists )
+
+  * @artists; A list of string arguments
+
+set-authors
+-----------
+
+Sets the strings which are displayed in the authors tab of the secondary credits dialog.
+
+    method set-authors ( *@authors )
+
+  * @authors; a list of string arguments
+
+### Example
+
+    my Gnome::Gtk3::AboutDialog $a .= new;
+    $a.set-authors( 'mt++', 'pietje puk');
 
 set-comments
 ------------
@@ -199,12 +295,23 @@ Sets the comments string to display in the about dialog. This should be a short 
 
   * Str $comments; a comments string
 
-get-license
------------
+set-copyright
+-------------
 
-Returns the license information.The string is owned by the about dialog and must not be modified.
+Sets the copyright string to display in the about dialog. This should be a short string of one or two lines.
 
-    method get-license ( --> Str )
+    method set-copyright ( Str $copyright )
+
+  * Str $copyright; the copyright string
+
+set-documenters
+---------------
+
+Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
+
+    method set-documenters ( *@documenters )
+
+  * @documenters; an list of string arguments
 
 set-license
 -----------
@@ -224,126 +331,32 @@ Sets the license of the application showing the this about dialog dialog from a 
 
   * GtkLicense $license_type; the type of license
 
-get-license-type
+set-logo
+--------
+
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
+
+    method set-logo ( Gnome::Gdk3::Pixbuf $logo )
+
+  * Gnome::Gdk3::Pixbuf $logo; a *Gnome::Gdk3::Pixbuf* object
+
+set-logo-icon-name
+------------------
+
+Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `g=tk_window_set_default_icon()` will be used.
+
+    method set-logo-icon-name ( Str $icon_name )
+
+  * Str $icon_name; an icon name, or undefined
+
+set-program-name
 ----------------
 
-Retrieves the license set using `set_license_type()`. Returns a *GtkLicense* value.
+Sets the name to display in the about dialog. If this is not set, it defaults to `g_get_application_name()`.
 
-    method get-license-type ( --> GtkLicense  )
+    method set-program-name ( Str $name )
 
-get-wrap-license
-----------------
-
-Returns `True` if the license text in this about dialog is automatically wrapped.
-
-    method get-wrap-license ( --> Bool )
-
-set-wrap-license
-----------------
-
-Sets whether the license text in this about dialog is automatically wrapped.
-
-    method set-wrap-license ( Bool $wrap_license )
-
-  * Bool $wrap_license; whether to wrap the license
-
-get-website
------------
-
-Returns the website URL. The string is owned by the about dialog and must not be modified.
-
-    method get-website ( --> Str  )
-
-set-website
------------
-
-Sets the URL to use for the website link.
-
-    method set-website ( Str $website )
-
-  * Str $website; a URL string starting with "http://"
-
-get-website-label
------------------
-
-Returns the label used for the website link. The string is owned by the about dialog and must not be modified.
-
-    method get-website-label ( --> Str )
-
-set-website-label
------------------
-
-Sets the label to be used for the website link.
-
-    method set-website-label ( Str $website_label )
-
-  * Str $website_label; the label used for the website link
-
-get-authors
------------
-
-Returns the string which are displayed in the authors tab of the secondary credits dialog.
-
-Returns: An array containing the authors.
-
-    method get-authors ( --> Array )
-
-set-authors
------------
-
-Sets the strings which are displayed in the authors tab of the secondary credits dialog.
-
-    method set-authors ( *@authors )
-
-  * @authors; a list of string arguments
-
-### Example
-
-    my Gnome::Gtk3::AboutDialog $a .= new;
-    $a.set-authors( 'mt++', 'pietje puk');
-
-get-documenters
----------------
-
-Returns the string which are displayed in the documenters tab of the secondary credits dialog.
-
-Returns: An array containing the documenters
-
-    method get-documenters ( --> Array )
-
-set-documenters
----------------
-
-Sets the strings which are displayed in the documenters tab of the secondary credits dialog.
-
-    method set-documenters ( *@documenters )
-
-  * @documenters; an list of string arguments
-
-get-artists
------------
-
-Returns the string which are displayed in the artists tab of the secondary credits dialog.
-
-Returns: A string array containing the artists.
-
-    method get-artists ( --> Array )
-
-set-artists
------------
-
-Sets the strings which are displayed in the artists tab of the secondary credits dialog.
-
-    method set-artists ( *@artists )
-
-  * @artists; A list of string arguments
-
-get-translator-credits
-----------------------
-
-Returns the translator credits string which is displayed in the translators tab of the secondary credits dialog. The string is owned by the about dialog and must not be modified.
-
-    method get-translator-credits ( --> Str  )
+  * Str $name; the program name
 
 set-translator-credits
 ----------------------
@@ -360,54 +373,41 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
   * Str $translator_credits; the translator credits
 
-get-logo
---------
+set-version
+-----------
 
-Returns the pixbuf displayed as logo in the about dialog.
+Sets the version string to display in the about dialog.
 
-Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you want to keep a reference to it, you have to call `g_object_ref()` on it.
+    method set-version ( Str $version )
 
-    method get-logo ( --> N-GObject  )
+  * Str $version; the version string
 
-set-logo
---------
+set-website
+-----------
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `gtk_window_set_default_icon()` will be used.
+Sets the URL to use for the website link.
 
-    method set-logo ( Gnome::Gdk3::Pixbuf $logo )
+    method set-website ( Str $website )
 
-  * Gnome::Gdk3::Pixbuf $logo; a *Gnome::Gdk3::Pixbuf* object
+  * Str $website; a URL string starting with "http://"
 
-get-logo-icon-name
-------------------
+set-website-label
+-----------------
 
-Returns the icon name displayed as logo in the about dialog.
+Sets the label to be used for the website link.
 
-Returns: the icon name displayed as logo.
+    method set-website-label ( Str $website_label )
 
-    method get-logo-icon-name ( --> Str )
+  * Str $website_label; the label used for the website link
 
-set-logo-icon-name
-------------------
+set-wrap-license
+----------------
 
-Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined, the default window icon set with `g=tk_window_set_default_icon()` will be used.
+Sets whether the license text in this about dialog is automatically wrapped.
 
-    method set-logo-icon-name ( Str $icon_name )
+    method set-wrap-license ( Bool $wrap_license )
 
-  * Str $icon_name; an icon name, or undefined
-
-add-credit-section
-------------------
-
-Creates a new section in the Credits page.
-
-    method add-credit-section (
-      Str $section_name, *@people
-    )
-
-  * Str $section_name; The name of the section
-
-  * @people; A list of people who belong to that section
+  * Bool $wrap_license; whether to wrap the license
 
 Properties
 ==========
@@ -527,8 +527,7 @@ Also here, the types of positional arguments in the signal handler are important
 Supported signals
 -----------------
 
-activate-link
--------------
+### activate-link
 
 The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call `gtk_show_uri()`.
 
