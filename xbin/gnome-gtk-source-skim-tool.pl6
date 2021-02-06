@@ -34,7 +34,7 @@ my @enum-list = ();
 # self.get-native-object-no-reffing. Roles have a simpler interface and does not
 # inherit from TopLevelClassSupport. Top classes inherit directly from
 # TopLevelClassSupport and have a native object of their own, and do not need
-# Boxed class. Standalone classes do not have an object and therefor no need to
+# Boxed class. Standalone classes do not have an object and therefore no need to
 # inherit anything
 my Bool $class-is-leaf;
 my Bool $class-is-role; # is leaf implicitly
@@ -52,9 +52,10 @@ sub MAIN (
 ) {
   my Bool $do-all = !( [or] $main, $sig, $prop, $sub, $types, $test );
 
-  # Gtk interfaces (roles) are always leaf classes
+  # Gtk interfaces (roles) are always leaf classes but need to cast their
+  # object types, so leaf get False if role is True.
+  $class-is-leaf = ($leaf and not $role);
   $class-is-role = $role;
-  $class-is-leaf = ($leaf or $role);
   $class-is-top = $top;
 #  $class-is-standalone = $stand;
 
@@ -291,7 +292,12 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
   my List $results = $/[*];
 
   # process subroutines
+  print "Find subroutines ";
+  my Hash $sub-documents = %();
   for @$results -> $r {
+    print ".";
+    $*OUT.flush;
+
     $variable-args-list = False;
 #note "\n $r";
 
@@ -392,32 +398,45 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     my Str $sub = '';
     my Str $no-cnv = '';
-    if $pod-args ~~ / 'N-GObject' / {
-      $no-cnv = Q:q:to/EOCNV/
-        #my $no = $xyz;
-          #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-        EOCNV
+    my Str $no-type = '';
+    given $pod-args {
+      when / 'N-GObject' / { $no-type = 'N-GObject'; }
+      when / 'N-GSList' / { $no-type = 'N-GSList'; }
+      when / 'N-GList' / { $no-type = 'N-GList'; }
+      when / 'N-GVariantType' / { $no-type = 'N-GVariantType'; }
+      when / 'N-GVariant' / { $no-type = 'N-GVariant'; }
+#      when / 'N-GVariantIter' / { $no-type = 'N-GVariantIter'; }
     }
 
+    if ?$no-type {
+      $no-cnv = Q:qq:to/EOCNV/
+        my \$no = …;
+          \$no .= get-native-object-no-reffing unless \$no ~~ $no-type;
+        EOCNV
+    }
+#`{{
     elsif $pod-args ~~ / 'N-GSList' / {
       $no-cnv = Q:q:to/EOCNV/
-        #my $no = $xyz;
-          #$no .= get-native-object-no-reffing unless $no ~~ N-GSList;
+        my $no = $xyz;
+          $no .= get-native-object-no-reffing unless $no ~~ N-GSList;
         EOCNV
     }
 
     elsif $pod-args ~~ / 'N-GList' / {
       $no-cnv = Q:q:to/EOCNV/
-        #my $no = $xyz;
-          #$no .= get-native-object-no-reffing unless $no ~~ N-GList;
+        my $no = $xyz;
+          $no .= get-native-object-no-reffing unless $no ~~ N-GList;
         EOCNV
     }
+}}
 
     my Str $method-args = $pod-args;
     $method-args ~~ s:g/ 'N-GObject ' //;
 
+    my $pod-doc-key;
     if $sub-name ~~ m/^ $base-sub-name '_new' / {
-      note "get sub as _$sub-name";
+      $pod-doc-key = "_$sub-name";
+#      note "get sub as $pod-doc-key";
       $sub = Q:qq:to/EOSUB/;
 
         $start-comment#-------------------------------------------------------------------------------
@@ -442,7 +461,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     }
 
     elsif $class-is-leaf {
-      note "get sub as $pod-sub-name";
+      $pod-doc-key = $pod-sub-name;
+#      note "get sub as $pod-sub-name";
 
       $sub = Q:qq:to/EOSUB/;
 
@@ -472,7 +492,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     }
 
     else {
-      note "get sub as $pod-sub-name";
+      $pod-doc-key = $pod-sub-name;
+#      note "get sub as $pod-sub-name";
 
       $sub = Q:qq:to/EOSUB/;
 
@@ -503,7 +524,23 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
 #    note $sub;
 
-    $output-file.IO.spurt( $sub, :append);
+#    $output-file.IO.spurt( $sub, :append);$sub-documents
+    $sub-documents{$pod-doc-key} = $sub;
+  }
+  print "\n";
+
+  # place all non-new modules at the end
+  for $sub-documents.keys.sort -> $key {
+    next if $key ~~ m/^ '_' /;
+    note "save doc for sub $key";
+    $output-file.IO.spurt( $sub-documents{$key}, :append);
+  }
+
+  # place all new modules at the end
+  for $sub-documents.keys.sort -> $key {
+    next unless $key ~~ m/^ '_' /;
+    note "save doc for sub $key";
+    $output-file.IO.spurt( $sub-documents{$key}, :append);
   }
 }
 
@@ -621,10 +658,10 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $type = 'N-GList' if $type ~~ m/GList/;
   $type = 'N-GSList' if $type ~~ m/GSList/;
   $type = 'N-PangoItem' if $type ~~ m/PangoItem/;
-  $type = 'N-Variant' if $type ~~ m/Variant/;
-  $type = 'N-VariantBuilder' if $type ~~ m/VariantBuilder/;
-  $type = 'N-VariantType' if $type ~~ m/VariantType/;
-  $type = 'N-VariantIter' if $type ~~ m/VariantIter/;
+  $type = 'N-GVariantBuilder' if $type ~~ m/GVariantBuilder/;
+  $type = 'N-GVariantType' if $type ~~ m/GVariantType/;
+  $type = 'N-GVariantIter' if $type ~~ m/GVariantIter/;
+  $type = 'N-GVariant' if $type ~~ m/GVariant<|w>/;
   $type = 'N-GtkTreeIter' if $type ~~ m/GtkTreeIter/;
   $type = 'N-GtkTreePath' if $type ~~ m/GtkTreePath/;
 
@@ -1067,6 +1104,8 @@ sub substitute-in-template (
         # interfaces are not instantiated
         #submethod BUILD ( *%options ) { }
 
+        #`{{
+        # All interface calls should become methods
         #-------------------------------------------------------------------------------
         # no pod. user does not have to know about it.
         method INTERFACE_NAME ( $native-sub --> Callable ) {
@@ -1079,12 +1118,23 @@ sub substitute-in-template (
 
           $s;
         }
+      }}
 
         EOTEMPLATE
 
       my Str $iname = $base-sub-name;
       $iname ~~ s/ [ gtk | gdk | gio ] '_' //;
       $template-text ~~ s/ INTERFACE_NAME /_{$iname}_interface/;
+#`{{
+  TODO must call interfaces after .set-class-name-of-sub()
+  and in interface must also call .set-class-name-of-sub() if sub is found.
+  this is for casting.
+
+  Methods can be written for interfaces and remove self._xyz_interface() from
+  classes. ==> interfaces can not be handled as leafs because casting necessary
+
+  self.set-class-name-of-sub('GSimpleAction') if ?$s;
+}}
     }
 
     else {
@@ -1212,18 +1262,21 @@ sub substitute-in-template (
 #-------------------------------------------------------------------------------
 sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
 
-  return ( '', '') unless $source-content;
+#  return ( '', '') unless $source-content;
 
-  $source-content ~~ m/ '/**' .*? $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
+  return ( '', []) unless $source-content ~~ m/ '/**' <[\s\*]>+ $sub-name/;
+
+  $source-content ~~ m/ '/**' <[\s\*]>+ $sub-name ':' $<sub-doc> = [ .*? '*/' ] /;
   my Str $doc = ~($<sub-doc> // '');
 
   my Array $items-src-doc = [];
   my Bool $gather-items-doc = True;
   my Str ( $item, $sub-doc) = ( '', '');
+  my Int $line-count = 0;
   for $doc.lines -> $line {
 
     if $line ~~ m/ ^ \s+ '* @' <alnum>+ ':' $<item-doc> = [ .* ] / {
-      # check if there was some item. if so save before set to new item
+      # check if there was some item. if so, save before set to new item
       # @ can be in documentation too!
       if $gather-items-doc {
         $items-src-doc.push(primary-doc-changes($item)) if ?$item;
@@ -1260,6 +1313,9 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
         $sub-doc ~= " ";
       }
     }
+
+    $line-count++ if ?$sub-doc;
+    last if $line-count > 100;
   }
 
   # in case there is no doc, we need to save the last item still
@@ -1325,7 +1381,12 @@ sub get-signals ( Str:D $source-content is copy ) {
   my Str $signal-doc = '';
   my Hash $signal-classes = %();
 
+  print "Find signals ";
+  my Hash $signal-doc-entries = %();
   loop {
+    print ".";
+    $*OUT.flush;
+
     $items-src-doc = [];
     $signal-name = '';
 
@@ -1382,14 +1443,14 @@ sub get-signals ( Str:D $source-content is copy ) {
 #note "SA $signal-name: ", $sig-args;
 
     # start pod doc
-    $signal-doc ~= Q:to/EOSIG/;
+    $signal-doc = Q:qq:to/EOSIG/;
 
       =comment -----------------------------------------------------------------------
       =comment #TS:0:$signal-name:
       =head3 $signal-name
       EOSIG
 
-    note "get signal $signal-name";
+#    note "get signal $signal-name";
 
     # process g_signal_new arguments, remove commas from specific macro
     # by removing the complete argument list. it's not needed.
@@ -1589,15 +1650,19 @@ sub get-signals ( Str:D $source-content is copy ) {
     for @$items-src-doc -> $idoc {
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
     }
+
+    $signal-doc-entries{$signal-name} = $signal-doc;
+
 #note "next signal";
   }
 #note "last signal";
+  print "\n";
 
   my Str $bool-signals-added = '';
   my Str $build-add-signals = '';
-  if ?$signal-doc {
-
-    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
+  if ?$signal-doc-entries {
+#    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
+    $output-file.IO.spurt( Q:q:to/EOSIGDOC/, :append);
 
       #-------------------------------------------------------------------------------
       =begin pod
@@ -1633,6 +1698,15 @@ sub get-signals ( Str:D $source-content is copy ) {
 
       EOSIGDOC
 
+    for $signal-doc-entries.keys.sort -> $signal {
+      note "save signal $signal";
+      $output-file.IO.spurt( $signal-doc-entries{$signal}, :append);
+    }
+
+    $output-file.IO.spurt( "\n=end pod\n\n", :append);
+
+
+
     # create the class string to substitute in the source
     my Str $sig-class-str = '';
     for $signal-classes.kv -> $class, $signals {
@@ -1660,7 +1734,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
 
     # and append signal data to result module
-    $output-file.IO.spurt( $signal-doc, :append);
+    #$output-file.IO.spurt( $signal-doc, :append);
   }
 
   # load the module for substitutions
@@ -1682,7 +1756,12 @@ sub get-properties ( Str:D $source-content is copy ) {
   my Str $property-name;
   my Str $property-doc = '';
 
+  print "Find properties ";
+  my Hash $property-doc-entries = %();
   loop {
+    print ".";
+    $*OUT.flush;
+
     $property-name = '';
 
 #`{{
@@ -1736,26 +1815,6 @@ sub get-properties ( Str:D $source-content is copy ) {
 
     my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
 #note "\nHD: $has-doc: ", $sdoc;
-
-    unless ?$property-doc {
-      $property-doc ~= Q:to/EODOC/;
-
-        #-------------------------------------------------------------------------------
-        =begin pod
-        =head1 Properties
-
-        An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-          my Gnome::Gtk3::Label $label .= new;
-          my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-          $label.g-object-get-property( 'label', $gv);
-          $gv.g-value-set-string('my text label');
-
-        =head2 Supported properties
-        EODOC
-
-    }
-#note "Property sdoc 1:\n", $sdoc;
 
     if $has-doc {
       $sdoc ~~ m/
@@ -1902,7 +1961,6 @@ sub get-properties ( Str:D $source-content is copy ) {
 
 #note "sdoc 3: ", $sdoc if $has-doc;
 
-    note "get property $prop-name";
     $property-doc ~= Q:qq:to/EOHEADER/;
 
       =comment -----------------------------------------------------------------------
@@ -1912,13 +1970,39 @@ sub get-properties ( Str:D $source-content is copy ) {
       $sdoc
       The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
       EOHEADER
+
+    $property-doc-entries{$prop-name} = $property-doc;
 #note "end prop";
   }
 #note "end of all props";
+  print "\n";
 
-  $property-doc ~= "=end pod\n" if ?$property-doc;
+  if ?$property-doc-entries {
+    $output-file.IO.spurt( Q:to/EODOC/, :append);
 
-  $output-file.IO.spurt( $property-doc, :append);
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Properties
+
+      An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+
+        my Gnome::Gtk3::Label $label .= new;
+        my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+        $label.g-object-get-property( 'label', $gv);
+        $gv.g-value-set-string('my text label');
+
+      =head2 Supported properties
+      EODOC
+
+    for $property-doc-entries.keys.sort -> $property {
+      note "save property $property";
+      $output-file.IO.spurt( $property-doc-entries{$property}, :append);
+    }
+
+    $output-file.IO.spurt( "=end pod\n", :append);
+  }
+
+#  $output-file.IO.spurt( $property-doc, :append);
 }
 
 #-------------------------------------------------------------------------------
