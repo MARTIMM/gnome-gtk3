@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-01-21 0.36.1:
+- Adjusted **Gnome::Gtk3::Application**. It inherits from **Gnome::Gio::Application** so it was not necessary to implement the role **Gnome::Gio::ActionMap** because **Gnome::Gio::Application** already does that.
+
 #### 2021-01-21 0.36.0:
 - New role **Gnome::Gtk3::RecentChooser**. This module is now used in an older module **Gnome::Gtk3::RecentChooserMenu**.
 - Building up the rest of the recently used files modules with **Gnome::Gtk3::RecentManager**, **Gnome::Gtk3::RecentInfo**, **Gnome::Gtk3::RecentFilter**, **Gnome::Gtk3::RecentChooserWidget** and **Gnome::Gtk3::RecentChooserDialog**.

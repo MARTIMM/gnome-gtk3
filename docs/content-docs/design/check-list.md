@@ -50,6 +50,7 @@ Legend for head of table
   * **tp**: Properties.
 * **12**: Issue number 12; check use of types and modify.
 * **14**: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
+* **so**: Subroutines are sorted
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -63,9 +64,9 @@ table {
 }
 </style>
 
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
 Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
@@ -293,86 +294,98 @@ WindowGroup|
 
 <br/>
 
-| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|
+| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Screen                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+<br/>
+
+| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
-Device                    |  |  |  |  |  |  |  |  |  |  |  |
-Display                   |  |  |  |  |  |  |  |  |  |  |  |
-Events                    |  |  |  |  |  |  |  |  |  |  |  |
-Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |
-Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |
-RGBA                      |  |  |  |  |  |  |  |  |  |  |  |
-Screen                    |  |  |  |  |  |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |  |  |  |  |  |
-Window                    |  |  |  |  |  |  |  |  |  |  |  |
+Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|  |  |
+InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|  |  |
+Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|  |  |
+Signal                    |R | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|  |  |
+Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  |
+value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  |
 
 <br/>
 
-| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
-InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|
-Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|
-Signal                    |R | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|
-Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
-value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
+| Gnome::Glib             |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+Error                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+List                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+Main                      |S | ✓| ✓| ✓| ✓| ✓|  |  |
+Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |
+SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓|  |
 
 <br/>
 
-| Gnome::Glib             |T |dm|db|ds|ts|12|14|
-|-------------------------|--|--|--|--|--|--|--|
-Error                     |Tl| ✓| ✓| ✓| ✓| ✓|
-List                      |Tl| ✓| ✓| ✓| ✓| ✓|
-Main                      |S | ✓| ✓| ✓| ✓| ✓|
-Quark                     |S | ✓| ✓| ✓| ✓| ✓|
-SList                     |Tl| ✓| ✓| ✓| ✓| ✓|
+| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|
+Action                    |R | ✓| ✓| ✓| ✗| ✓| ✗| ✓| ✓| ✓|
+ActionMap                 |R |  |  |  |  |  |  |  |  |  |
+Application               |  |  |  |  |  |  |  |  |  |  |
+Enums                     |S |  |  |  |  |  |  |  |  |  |
+File                      |R |  |  |  |  |  |  |  |  |  |
+MenuModel                 |  |  |  |  |  |  |  |  |  |  |
+Resource                  |Bx|  |  |  |  |  |  |  |  |  |
+SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 
-<!--Variant                   |  |  |  |  |  |  |-->
-
-<br/>
-
-| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|14|
-|-------------------------|--|--|--|--|--|--|--|--|--|
-Action                    |R |  |  |  |  |  |  |  |
-ActionMap                 |R |  |  |  |  |  |  |  |
-Application               |  |  |  |  |  |  |  |  |
-EmblemedIcon              |  |  |  |  |  |  |  |  |
-Enums                     |S |  |  |  |  |  |  |  |
-File                      |R |  |  |  |  |  |  |  |
-MenuModel                 |  |  |  |  |  |  |  |  |
-MountOperation            |  |  |  |  |  |  |  |  |
-Resource                  |Bx|  |  |  |  |  |  |  |
-SimpleAction              |  |  |  |  |  |  |  |  |
+<!--
+MountOperation            |  |  |  |  |  |  |  |  |  |  |
+EmblemedIcon              |  |  |  |  |  |  |  |  |  |  |
+-->
 
 <br/>
 
-| Gnome::N                |T |dm|db|ds|ts|12|14|
-|-------------------------|--|--|--|--|--|--|--|
-GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|
-N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|
-NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|
-TopLevelClassSupport      |S |  |  |  |  | ✓|
-X                         |  |  |  |  |  | ✓|
-
 <br/>
 
-| Gnome::Cairo            |T |dm|db|ds|ts|12|14|
-|-------------------------|--|--|--|--|--|--|--|
-Enums                     |  |  |  |  |  |  |
-FontFace                  |  |  |  |  |  |  |
-FontOptions               |  |  |  |  |  |  |
-ImageSurface              |  |  |  |  |  |  |
-Matrix                    |  |  |  |  |  |  |
-Path                      |  |  |  |  |  |  |
-Pattern                   |  |  |  |  |  |  |
-ScaledFont                |  |  |  |  |  |  |
-Surface                   |  |  |  |  |  |  |
-Types                     |  |  |  |  |  |  |
+| Gnome::Cairo            |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+Enums                     |  |  |  |  |  |  |  |  |
+FontFace                  |  |  |  |  |  |  |  |  |
+FontOptions               |  |  |  |  |  |  |  |  |
+ImageSurface              |  |  |  |  |  |  |  |  |
+Matrix                    |  |  |  |  |  |  |  |  |
+Path                      |  |  |  |  |  |  |  |  |
+Pattern                   |  |  |  |  |  |  |  |  |
+ScaledFont                |  |  |  |  |  |  |  |  |
+Surface                   |  |  |  |  |  |  |  |  |
+Types                     |  |  |  |  |  |  |  |  |
 
 <br/>
 
 <!--
-| Module/Class            |T |dm|db|ds|de|dp|ts|te|tp|12|14|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|
-**Gnome::Atk**            |p | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
-Object                    |  |  |  |  |  |  |  |  |  |  |
+| Gnome::Atk              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|  |
+Object                    |  |  |  |  |  |  |  |  |  |  |  |  |
+-->
+
+<!--
+| Gnome::Pango            |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|  |
+-->
+
+| Gnome::N                |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|  |  |
+N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|  |  |
+NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|  |  |
+TopLevelClassSupport      |S |  |  |  |  | ✓|  |  |
+X                         |  |  |  |  |  | ✓|  |  |
+
+<!--
+| Gnome::T                |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 -->

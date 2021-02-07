@@ -29,3 +29,12 @@
     url: "/content-docs/design/gio-tree.html"
 #  - title: "Gnome::Pango Class Tree"
 #    url: "/content-docs/design/pango-tree.html"
+
+- bar_title: "Gtk Version 4"
+  bar_menu:
+  - title: Introduction
+    url: /content-docs/design/gtk4/introduction.html
+  - title: Migrating
+    url: /content-docs/design/gtk4/migrating-to-gtk4.html
+  - title: gtk4 class tree
+    url: /content-docs/design/gtk4/gtk4-tree.html
