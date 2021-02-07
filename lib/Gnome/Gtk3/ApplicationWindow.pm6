@@ -73,13 +73,6 @@ The following attributes are used when constructing submenus:
 =item "label": a user-visible string to display
 =item "icon": icon name to display
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ApplicationWindow implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item Gnome::Gio::ActionGroup
-=item Gnome::Gio::ActionMap
-
 =head1 Synopsis
 =head2 Declaration
 
