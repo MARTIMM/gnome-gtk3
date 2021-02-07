@@ -51,7 +51,6 @@ An application can block various ways to end the session with the C<gtk_applicat
 
   unit class Gnome::Gtk3::Application;
   also is Gnome::Gio::Application;
-  also does Gnome::Gio::ActionMap;
 
 =comment  also does Gnome::Gio::ActionGroup;
 
@@ -87,8 +86,6 @@ use Gnome::N::N-GObject;
 use Gnome::Gio::Application;
 use Gnome::Gio::MenuModel;
 use Gnome::Gio::Enums;
-use Gnome::Gio::ActionMap;
-#use Gnome::Gio::ActionGroup;
 
 use Gnome::Glib::List;
 use Gnome::Glib::Error;
@@ -97,8 +94,6 @@ use Gnome::Glib::OptionContext;
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Application:auth<github:MARTIMM>;
 also is Gnome::Gio::Application;
-also does Gnome::Gio::ActionMap;
-#also does Gnome::Gio::ActionGroup;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -221,8 +216,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 # check for gtk_, gdk_, g_, pango_, cairo_ !!!
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._action_map_interface($native-sub) unless ?$s;
-#also does Gnome::Gio::ActionGroup;
 
   self.set-class-name-of-sub('GtkApplication');
   $s = callsame unless ?$s;
