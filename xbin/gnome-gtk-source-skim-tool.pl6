@@ -1118,7 +1118,7 @@ sub substitute-in-template (
 
           $s;
         }
-      }}
+        }}
 
         EOTEMPLATE
 
@@ -1961,6 +1961,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
 #note "sdoc 3: ", $sdoc if $has-doc;
 
+    $sdoc ~~ s/ Since ':' \s* \d+\.\d+ \s* \*? //;
     $property-doc ~= Q:qq:to/EOHEADER/;
 
       =comment -----------------------------------------------------------------------
@@ -2432,9 +2433,9 @@ sub podding-function ( Str:D $text is copy --> Str ) {
 #-------------------------------------------------------------------------------
 # change any %type to C<type>
 sub modify-percent-types ( Str:D $text is copy --> Str ) {
-  $text ~~ s:g/ '%TRUE' /C<1>/;
-  $text ~~ s:g/ '%FALSE' /C<0>/;
-  $text ~~ s:g/ '%NULL' /C<Any>/;
+  $text ~~ s:g/ '%TRUE' /C<True>/;
+  $text ~~ s:g/ '%FALSE' /C<False>/;
+  $text ~~ s:g/ '%NULL' /C<undefined>/;
   $text ~~ s:g/ '%' ([<alnum> || '_' ]+) /C<$/[0]>/;
 
   $text
