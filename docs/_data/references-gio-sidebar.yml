@@ -2,42 +2,33 @@
 - bar_title: "Gio Classes"
   bar_menu:
   - title: "Action"
-    type: interface
     url: '/content-docs/reference/Gio/Action.html'
-    doc: 1
-    test: 1
-  - title: "ActionMap"
     type: interface
+
+  - title: "ActionMap"
     url: '/content-docs/reference/Gio/ActionMap.html'
-    doc: 1
-    test: 1
+    type: interface
+
   - title: "Application"
-    type: object
     url: '/content-docs/reference/Gio/Application.html'
-    doc: 1
-    test: 1
+    type: object
+
   - title: "Enums"
-    type: standalone
     url: '/content-docs/reference/Gio/Enums.html'
-    doc: 1
-    test: 1
+    type: standalone
+
   - title: "File"
-    type: toplevel
     url: '/content-docs/reference/Gio/File.html'
-    doc: 1
-    test: 1
+    type: toplevel
+
   - title: MenuModel
-    type: object
     url: '/content-docs/reference/Gio/MenuModel.html'
-    doc: 1
-    test: 1
-  - title: "Resource"
-    type: boxed
-    url: '/content-docs/reference/Gio/Resource.html'
-    doc: 1
-    test: 1
-  - title: "SimpleAction"
     type: object
+
+  - title: "Resource"
+    url: '/content-docs/reference/Gio/Resource.html'
+    type: boxed
+
+  - title: "SimpleAction"
     url: '/content-docs/reference/Gio/SimpleAction.html'
-    doc: 1
-    test: 1
+    type: object

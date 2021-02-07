@@ -97,7 +97,7 @@ GObject                                   Gnome::GObject::Object
 ├── GSettingsBackend
 ├── GSettings
 ├── GSimpleAction                         SimpleAction
-├── GSimpleActionGroup
+├─✗ GSimpleActionGroup                    ⛔
 ├── GSimpleAsyncResult
 ├── GSimpleProxyResolver
 ├── GSocketClient
@@ -123,10 +123,11 @@ GObject                                   Gnome::GObject::Object
 ├── GVolumeMonitor
 ├── GZlibCompressor
 ╰── GZlibDecompressor
+
 GInterface
-├── GAction                               Action (not needed ?) ⛔
+├── GAction                               Action
 ├── GActionGroup
-├── GActionMap                            ActionMap (not needed ?) ⛔
+├── GActionMap                            ActionMap
 ├── GAppInfo
 ├── GAsyncInitable
 ├── GAsyncResult
@@ -160,8 +161,10 @@ GInterface
 ├── GTlsFileDatabase
 ├── GTlsServerConnection
 ╰── GVolume
+
 GFlags                                    Enums. GFlags and Enums are defined
 GEnum                                            in one file
+
 GBoxed
 ├── GDBusAnnotationInfo
 ├── GDBusArgInfo
