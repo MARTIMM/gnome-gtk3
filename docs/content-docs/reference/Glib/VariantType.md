@@ -16,7 +16,7 @@ Finally, all arbitrary restrictions relating to the complexity of types are lift
 
 Just as in D-Bus, Gnome::Glib::Variant types are described with strings ("type strings"). Subject to the differences mentioned above, these strings are of the same form as those found in DBus. Note, however: D-Bus always works in terms of messages and therefore individual type strings appear nowhere in its interface. Instead, "signatures" are a concatenation of the strings of the type of each argument in a message. Gnome::Glib::Variant deals with single values directly so Gnome::Glib::Variant type strings always describe the type of exactly one value. This means that a D-Bus signature string is generally not a valid Gnome::Glib::Variant type string -- except in the case that it is the signature of a message containing exactly one argument.
 
-An indefinite type is similar in spirit to what may be called an abstract type in other type systems. No value can exist that has an indefinite type as its type, but values can exist that have types that are subtypes of indefinite types. That is to say, `g_variant_get_type()` will never return an indefinite type, but calling `g_variant_is_of_type()` with an indefinite type may return `1`. For example, you cannot have a value that represents "an array of no particular type", but you can have an "array of integers" which certainly matches the type of "an array of no particular type", since "array of integers" is a subtype of "array of no particular type".
+An indefinite type is similar in spirit to what may be called an abstract type in other type systems. No value can exist that has an indefinite type as its type, but values can exist that have types that are subtypes of indefinite types. That is to say, `g_variant_get_type()` will never return an indefinite type, but calling `g_variant_is_of_type()` with an indefinite type may return `True`. For example, you cannot have a value that represents "an array of no particular type", but you can have an "array of integers" which certainly matches the type of "an array of no particular type", since "array of integers" is a subtype of "array of no particular type".
 
 This is similar to how instances of abstract classes may not directly exist in other type systems, but instances of their non-abstract subtypes may.
 
@@ -90,7 +90,7 @@ Any type string of a container that contains an indefinite type is, itself, an i
 Errors
 ------
 
-When you provide faulty type strings you can expect gnome errors on the commandline in line of
+When you provide faulty type strings you can expect gnome errors on the commandline like for example
 
     (process:1660): GLib-CRITICAL **: 16:40:45.734: g_variant_type_checked_: assertion 'g_variant_type_string_is_valid (type_string)' failed
 
@@ -110,310 +110,295 @@ Declaration
     unit class Gnome::Glib::VariantType;
     also is Gnome::N::TopLevelClassSupport;
 
+Types
+=====
+
+Type constants
+--------------
+
+  * G_VARIANT_TYPE_BOOLEAN; The type of a value that can be either TRUE or FALSE.
+
+  * G_VARIANT_TYPE_BYTE; The type of an integer value that can range from 0 to 255.
+
+  * G_VARIANT_TYPE_INT16; The type of an integer value that can range from -32768 to 32767.
+
+  * G_VARIANT_TYPE_UINT16; The type of an integer value that can range from 0 to 65535. There were about this many people living in Toronto in the 1870s.
+
+  * G_VARIANT_TYPE_INT32; The type of an integer value that can range from -2147483648 to 2147483647.
+
+  * G_VARIANT_TYPE_UINT32; The type of an integer value that can range from 0 to 4294967295. That's one number for everyone who was around in the late 1970s.
+
+  * G_VARIANT_TYPE_INT64; The type of an integer value that can range from -9223372036854775808 to 9223372036854775807.
+
+  * G_VARIANT_TYPE_UINT64; The type of an integer value that can range from 0 to 18446744073709551615 (inclusive). That's a really big number, but a Rubik's cube can have a bit more than twice as many possible positions.
+
+  * G_VARIANT_TYPE_HANDLE; The type of a 32bit signed integer value, that by convention, is used as an index into an array of file descriptors that are sent alongside a D-Bus message. If you are not interacting with D-Bus, then there is no reason to make use of this type.
+
+  * G_VARIANT_TYPE_DOUBLE; The type of a double precision IEEE754 floating point number. These guys go up to about 1.80e308 (plus and minus) but miss out on some numbers in between. In any case, that's far greater than the estimated number of fundamental particles in the observable universe.
+
+  * G_VARIANT_TYPE_STRING; The type of a string. "" is a string. NULL is not a string.
+
+  * G_VARIANT_TYPE_OBJECT_PATH; The type of a D-Bus object reference. These are strings of a specific format used to identify objects at a given destination on the bus. If you are not interacting with D-Bus, then there is no reason to make use of this type. If you are, then the D-Bus specification contains a precise description of valid object paths.
+
+  * G_VARIANT_TYPE_SIGNATURE; The type of a D-Bus type signature. These are strings of a specific format used as type signatures for D-Bus methods and messages. If you are not interacting with D-Bus, then there is no reason to make use of this type. If you are, then the D-Bus specification contains a precise description of valid signature strings.
+
+  * G_VARIANT_TYPE_VARIANT; The type of a box that contains any other value (including another variant).
+
+  * G_VARIANT_TYPE_ANY; An indefinite type that is a supertype of every type (including itself).
+
+  * G_VARIANT_TYPE_BASIC; An indefinite type that is a supertype of every basic (ie: non-container) type.
+
+  * G_VARIANT_TYPE_MAYBE; An indefinite type that is a supertype of every maybe type.
+
+  * G_VARIANT_TYPE_ARRAY; An indefinite type that is a supertype of every array type.
+
+  * G_VARIANT_TYPE_TUPLE; An indefinite type that is a supertype of every tuple type, regardless of the number of items in the tuple.
+
+  * G_VARIANT_TYPE_UNIT; The empty tuple type. Has only one instance. Known also as "triv" or "void".
+
+  * G_VARIANT_TYPE_DICT_ENTRY; An indefinite type that is a supertype of every dictionary entry type.
+
+  * G_VARIANT_TYPE_DICTIONARY; An indefinite type that is a supertype of every dictionary type -- that is, any array type that has an element type equal to any dictionary entry type.
+
+  * G_VARIANT_TYPE_STRINGARRAY; The type of an array of strings.
+
+  * G_VARIANT_TYPE_OBJECT_PATH_ARRAY; The type of an array of object paths.
+
+  * G_VARIANT_TYPE_BYTESTRING; The type of an array of bytes. This type is commonly used to pass around strings that may not be valid utf8. In that case, the convention is that the nul terminator character should be included as the last character in the array.
+
+  * G_VARIANT_TYPE_BYTESTRING_ARRAY; The type of an array of byte strings (an array of arrays of bytes).
+
+  * G_VARIANT_TYPE_VARDICT; The type of a dictionary mapping strings to variants (the ubiquitous "a{sv}" type).
+
 Methods
 =======
 
 new
 ---
 
-Create a new VariantType object.
+### :type-string
+
+Creates a new **Gnome::Glib::VariantType** corresponding to the type string given by *$type_string*.
+
+It is a programmer error to call this function with an invalid type string. The string is checked to be sure resulting in a (in)valid object. Test with `.is-valid()` to be sure.
 
     multi method new ( Str :$type-string! )
 
-Create a VariantType object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :array
+
+Constructs the type corresponding to an array of elements of the given type in `$array`.
+
+    multi method new ( N-GVariantType :$array!! )
+
+### :maybe
+
+Constructs the type corresponding to a maybe instance containing in given type
+
+    multi method new ( N-GVariantType :$maybe! )
+
+### :native-object
+
+Create a VariantType object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GVariantType :$native-object! )
 
-Create a VariantType object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+string-is-valid
+---------------
 
-    multi method new ( Str :$build-id! )
+Checks if *type_string* is a valid Gnome::Glib::Variant type string. This call is equivalent to calling `string-scan()` and confirming that the following character is a nul terminator.
 
-[g_variant_type_] string_is_valid
----------------------------------
+Returns: `True` if *$type_string* is exactly one valid type string
 
-Checks if *type_string* is a valid Gnome::Glib::Variant type string. This call is equivalent to calling `g_variant_type_string_scan()` and confirming that the following character is a nul terminator.
-
-Returns: `1` if *type_string* is exactly one valid type string
-
-    method g_variant_type_string_is_valid ( Str $type_string --> Int )
+    method string-is-valid ( Str $type_string --> Bool )
 
   * Str $type_string; a pointer to any string
 
-g_variant_type_copy
--------------------
+copy
+----
 
-Makes a copy of a **Gnome::Glib::VariantType**. It is appropriate to call `g_variant_type_free()` on the return value. *type* may not be `Any`.
+Makes a copy of a **GVariantType**. It is appropriate to call `.clear-object()` on the return value.
 
-Returns: (transfer full): a new **Gnome::Glib::VariantType**
+Returns: a new **GVariantType**
 
-    method g_variant_type_copy ( --> N-GVariantType )
+    method copy ( --> Gnome::Glib::VariantType )
 
-g_variant_type_new
-------------------
-
-Creates a new **Gnome::Glib::VariantType** corresponding to the type string given by *type_string*. It is appropriate to call `g_variant_type_free()` on the return value.
-
-It is a programmer error to call this function with an invalid type string. Use `g_variant_type_string_is_valid()` if you are unsure.
-
-Returns: (transfer full): a new **Gnome::Glib::VariantType**
-
-    method g_variant_type_new ( Str $type_string --> N-GVariantType )
-
-  * Str $type_string; a valid Gnome::Glib::Variant type string
-
-[g_variant_type_] get_string_length
------------------------------------
+get-string-length
+-----------------
 
 Returns the length of the type string corresponding to the given *type*. This function must be used to determine the valid extent of the memory region returned by `g_variant_type_peek_string()`.
 
 Returns: the length of the corresponding type string
 
-    method g_variant_type_get_string_length ( --> UInt )
+    method get-string-length ( --> UInt )
 
-[g_variant_type_] peek_string
------------------------------
+dup-string
+----------
 
-Returns the type string corresponding to the given *type*. The result is not nul-terminated; in order to determine its length you must call `g_variant_type_get_string_length()`. To get a nul-terminated string, see `g_variant_type_dup_string()`.
-
-Returns: the corresponding type string (not nul-terminated)
-
-    method g_variant_type_peek_string ( --> Str )
-
-[g_variant_type_] dup_string
-----------------------------
-
-Returns a newly-allocated copy of the type string corresponding to *type*. The returned string is nul-terminated. It is appropriate to call `g_free()` on the return value.
+Returns a copy of the type string corresponding to *type*.
 
 Returns: (transfer full): the corresponding type string
 
-    method g_variant_type_dup_string ( --> Str )
+    method dup-string ( -->  Str  )
 
-[g_variant_type_] is_definite
------------------------------
+is-definite
+-----------
 
-Determines if the given *type* is definite (ie: not indefinite). A type is definite if its type string does not contain any indefinite type characters ('*', '?', or 'r').
+Determines if the given *type* is definite (ie: not indefinite). A type is definite if its type string does not contain any indefinite type characters ('*', '?', or 'r'). A **GVariant** instance may not have an indefinite type, so calling this function on the result of `g_variant_get_type()` will always result in `True` being returned. Calling this function on an indefinite type like `G_VARIANT_TYPE_ARRAY`, however, will result in `False` being returned.
 
-A **Gnome::Glib::Variant** instance may not have an indefinite type, so calling this function on the result of `g_variant_get_type()` will always result in `1` being returned. Calling this function on an indefinite type like `G_VARIANT_TYPE_ARRAY`, however, will result in `0` being returned.
+Returns: `True` if *type* is definite
 
-Returns: `1` if *type* is definite
+    method is-definite ( --> Bool )
 
-    method g_variant_type_is_definite ( --> Int )
+is-container
+------------
 
-[g_variant_type_] is_container
-------------------------------
+Determines if the given *type* is a container type. Container types are any array, maybe, tuple, or dictionary entry types plus the variant type. This function returns `True` for any indefinite type for which every definite subtype is a container -- `G_VARIANT_TYPE_ARRAY`, for example.
 
-Determines if the given *type* is a container type.
+Returns: `True` if *type* is a container type
 
-Container types are any array, maybe, tuple, or dictionary entry types plus the variant type.
+    method is-container ( --> Bool )
 
-This function returns `1` for any indefinite type for which every definite subtype is a container -- `G_VARIANT_TYPE_ARRAY`, for example.
+is-basic
+--------
 
-Returns: `1` if *type* is a container type
+Determines if the given *type* is a basic type. Basic types are booleans, bytes, integers, doubles, strings, object paths and signatures. Only a basic type may be used as the key of a dictionary entry. This function returns `False` for all indefinite types except `G_VARIANT_TYPE_BASIC`.
 
-    method g_variant_type_is_container ( --> Int )
+Returns: `True` if *type* is a basic type
 
-[g_variant_type_] is_basic
---------------------------
+    method is-basic ( --> Bool )
 
-Determines if the given *type* is a basic type.
+is-maybe
+--------
 
-Basic types are booleans, bytes, integers, doubles, strings, object paths and signatures.
+Determines if the given *type* is a maybe type. This is true if the type string for *type* starts with an 'm'. This function returns `True` for any indefinite type for which every definite subtype is a maybe type -- `G_VARIANT_TYPE_MAYBE`, for example.
 
-Only a basic type may be used as the key of a dictionary entry.
+Returns: `True` if *type* is a maybe type
 
-This function returns `0` for all indefinite types except `G_VARIANT_TYPE_BASIC`.
+    method is-maybe ( --> Bool )
 
-Returns: `1` if *type* is a basic type
+is-array
+--------
 
-    method g_variant_type_is_basic ( --> Int )
+Determines if the given *type* is an array type. This is true if the type string for *type* starts with an 'a'. This function returns `True` for any indefinite type for which every definite subtype is an array type -- `G_VARIANT_TYPE_ARRAY`, for example.
 
-[g_variant_type_] is_maybe
---------------------------
+Returns: `True` if *type* is an array type
 
-Determines if the given *type* is a maybe type. This is true if the type string for *type* starts with an 'm'.
+    method is-array ( --> Bool )
 
-This function returns `1` for any indefinite type for which every definite subtype is a maybe type -- `G_VARIANT_TYPE_MAYBE`, for example.
+is-tuple
+--------
 
-Returns: `1` if *type* is a maybe type
+Determines if the given *type* is a tuple type. This is true if the type string for *type* starts with a '(' or if *type* is `G_VARIANT_TYPE_TUPLE`. This function returns `True` for any indefinite type for which every definite subtype is a tuple type -- `G_VARIANT_TYPE_TUPLE`, for example.
 
-    method g_variant_type_is_maybe ( --> Int )
+Returns: `True` if *type* is a tuple type
 
-[g_variant_type_] is_array
---------------------------
+    method is-tuple ( --> Bool )
 
-Determines if the given *type* is an array type. This is true if the type string for *type* starts with an 'a'.
+is-dict-entry
+-------------
 
-This function returns `1` for any indefinite type for which every definite subtype is an array type -- `G_VARIANT_TYPE_ARRAY`, for example.
+Determines if the given *type* is a dictionary entry type. This is true if the type string for *type* starts with a '{'. This function returns `True` for any indefinite type for which every definite subtype is a dictionary entry type -- `G_VARIANT_TYPE_DICT_ENTRY`, for example.
 
-Returns: `1` if *type* is an array type
+Returns: `True` if *type* is a dictionary entry type
 
-    method g_variant_type_is_array ( --> Int )
+    method is-dict-entry ( --> Bool )
 
-[g_variant_type_] is_tuple
---------------------------
-
-Determines if the given *type* is a tuple type. This is true if the type string for *type* starts with a '(' or if *type* is `G_VARIANT_TYPE_TUPLE`.
-
-This function returns `1` for any indefinite type for which every definite subtype is a tuple type -- `G_VARIANT_TYPE_TUPLE`, for example.
-
-Returns: `1` if *type* is a tuple type
-
-    method g_variant_type_is_tuple ( --> Int )
-
-[g_variant_type_] is_dict_entry
--------------------------------
-
-Determines if the given *type* is a dictionary entry type. This is true if the type string for *type* starts with a '{'.
-
-This function returns `1` for any indefinite type for which every definite subtype is a dictionary entry type -- `G_VARIANT_TYPE_DICT_ENTRY`, for example.
-
-Returns: `1` if *type* is a dictionary entry type
-
-    method g_variant_type_is_dict_entry ( --> Int )
-
-[g_variant_type_] is_variant
-----------------------------
+is-variant
+----------
 
 Determines if the given *type* is the variant type.
 
-Returns: `1` if *type* is the variant type
+Returns: `True` if *type* is the variant type
 
-    method g_variant_type_is_variant ( --> Int )
+    method is-variant ( --> Bool )
 
-g_variant_type_hash
--------------------
+hash
+----
 
 Hashes *type*.
 
-The argument type of *type* is only **gconstpointer** to allow use with **GHashTable** without function pointer casting. A valid **Gnome::Glib::VariantType** must be provided.
-
 Returns: the hash value
 
-    method g_variant_type_hash ( Pointer $type --> UInt )
+    method hash ( N-GVariantType $type --> UInt )
 
-  * Pointer $type; (type Gnome::Glib::VariantType): a **Gnome::Glib::VariantType**
+  * N-GVariantType $type; a **N-GVariantType**
 
-[g_variant_type_] is_subtype_of
--------------------------------
+equal
+-----
 
-Checks if *type* is a subtype of *supertype*.
+Compares this type and *$type2* for equality. Only returns `True` if the types are exactly equal. Even if one type is an indefinite type and the other is a subtype of it, `False` will be returned if they are not exactly equal. If you want to check for subtypes, use `is-subtype-of()`.
 
-This function returns `1` if *type* is a subtype of *supertype*. All types are considered to be subtypes of themselves. Aside from that, only indefinite types can have subtypes.
+constant
+========
 
-Returns: `1` if *type* is a subtype of *supertype*
+The argument types of *type1* and *type2* are only **gconstpointer** to allow use with **GHashTable** without function pointer casting. For both arguments, a valid **GVariantType** must be provided.
 
-    method g_variant_type_is_subtype_of ( N-GVariantType $supertype --> Int )
+    method equal ( N-GVariantType $type2 --> Bool )
 
-  * N-GVariantType $supertype; a **Gnome::Glib::VariantType**
+  * N-GVariantType $type2; a **GVariantType**
 
-g_variant_type_element
-----------------------
+is-subtype-of
+-------------
+
+Checks if this type is a subtype of *$supertype*. This function returns `True` if *type* is a subtype of *$supertype*. All types are considered to be subtypes of themselves. Aside from that, only indefinite types can have subtypes.
+
+Returns: `True` if *type* is a subtype of *$supertype*
+
+    method is-subtype-of ( N-GVariantType $supertype --> Bool )
+
+  * N-GVariantType $supertype; a **GVariantType**
+
+element
+-------
 
 Determines the element type of an array or maybe type. This function may only be used with array or maybe types.
 
-Returns: (transfer none): the element type of *type*
+Returns: the element type of *type*
 
-    method g_variant_type_element ( --> N-GVariantType )
+    method element ( --> Gnome::Glib::VariantType )
 
-g_variant_type_first
---------------------
+first
+-----
 
-Determines the first item type of a tuple or dictionary entry type.
+Determines the first item type of a tuple or dictionary entry type. This function may only be used with tuple or dictionary entry types, but must not be used with the generic tuple type `G_VARIANT_TYPE_TUPLE`. In the case of a dictionary entry type, this returns the type of the key. `Any` is returned in case of *type* being `G_VARIANT_TYPE_UNIT`. This call, together with `g_variant_type_next()` provides an iterator interface over tuple and dictionary entry types.
 
-This function may only be used with tuple or dictionary entry types, but must not be used with the generic tuple type `G_VARIANT_TYPE_TUPLE`.
+Returns: the first item type of *type*, or invalid
 
-In the case of a dictionary entry type, this returns the type of the key.
+    method first ( --> N-GVariantType )
 
-`Any` is returned in case of *type* being `G_VARIANT_TYPE_UNIT`.
+next
+----
 
-This call, together with `g_variant_type_next()` provides an iterator interface over tuple and dictionary entry types.
+Determines the next item type of a tuple or dictionary entry type. *type* must be the result of a previous call to `first()` or `next()`. If called on the key type of a dictionary entry then this call returns the value type. If called on the value type of a dictionary entry then this call returns `Any`. For tuples, `Any` is returned when *type* is the last item in a tuple.
 
-Returns: (transfer none): the first item type of *type*, or `Any`
+Returns: the next **Gnome::Glib::VariantType** after *type*, or invalid
 
-    method g_variant_type_first ( --> N-GVariantType )
+    method next ( --> Gnome::Glib::VariantType )
 
-g_variant_type_next
--------------------
+n-items
+-------
 
-Determines the next item type of a tuple or dictionary entry type.
-
-*type* must be the result of a previous call to `g_variant_type_first()` or `g_variant_type_next()`.
-
-If called on the key type of a dictionary entry then this call returns the value type. If called on the value type of a dictionary entry then this call returns `Any`.
-
-For tuples, `Any` is returned when *type* is the last item in a tuple.
-
-Returns: (transfer none): the next **Gnome::Glib::VariantType** after *type*, or `Any`
-
-    method g_variant_type_next ( --> N-GVariantType )
-
-[g_variant_type_] n_items
--------------------------
-
-Determines the number of items contained in a tuple or dictionary entry type.
-
-This function may only be used with tuple or dictionary entry types, but must not be used with the generic tuple type `G_VARIANT_TYPE_TUPLE`.
-
-In the case of a dictionary entry type, this function will always return 2.
+Determines the number of items contained in a tuple or dictionary entry type. This function may only be used with tuple or dictionary entry types, but must not be used with the generic tuple type `G_VARIANT_TYPE_TUPLE`. In the case of a dictionary entry type, this function will always return 2.
 
 Returns: the number of items in *type*
 
-    method g_variant_type_n_items ( --> UInt )
+    method n-items ( --> UInt )
 
-g_variant_type_key
-------------------
+key
+---
 
-Determines the key type of a dictionary entry type.
+Determines the key type of a dictionary entry type. This function may only be used with a dictionary entry type. Other than the additional restriction, this call is equivalent to `g_variant_type_first()`.
 
-This function may only be used with a dictionary entry type. Other than the additional restriction, this call is equivalent to `g_variant_type_first()`.
+Returns: the key type of the dictionary entry
 
-Returns: (transfer none): the key type of the dictionary entry
+    method key ( --> Gnome::Glib::VariantType )
 
-    method g_variant_type_key ( --> N-GVariantType )
+value
+-----
 
-g_variant_type_value
---------------------
+Determines the value type of a dictionary entry type. This function may only be used with a dictionary entry type.
 
-Determines the value type of a dictionary entry type.
+Returns: the value type of the dictionary entry
 
-This function may only be used with a dictionary entry type.
-
-Returns: (transfer none): the value type of the dictionary entry
-
-    method g_variant_type_value ( --> N-GVariantType )
-
-[g_variant_type_] new_array
----------------------------
-
-Constructs the type corresponding to an array of elements of the type *type*.
-
-It is appropriate to call `g_variant_type_free()` on the return value.
-
-Returns: (transfer full): a new array **Gnome::Glib::VariantType**
-
-    method g_variant_type_new_array ( --> N-GVariantType )
-
-[g_variant_type_] new_maybe
----------------------------
-
-Constructs the type corresponding to a maybe instance containing type *type* or Nothing.
-
-It is appropriate to call `g_variant_type_free()` on the return value.
-
-Returns: (transfer full): a new maybe **Gnome::Glib::VariantType**
-
-    method g_variant_type_new_maybe ( --> N-GVariantType )
-
-[g_variant_type_] new_dict_entry
---------------------------------
-
-Constructs the type corresponding to a dictionary entry with a key of type *key* and a value of type *value*.
-
-It is appropriate to call `g_variant_type_free()` on the return value.
-
-Returns: (transfer full): a new dictionary entry **Gnome::Glib::VariantType**
-
-    method g_variant_type_new_dict_entry ( N-GVariantType $value --> N-GVariantType )
-
-  * N-GVariantType $value; a **Gnome::Glib::VariantType**
+    method value ( --> Gnome::Glib::VariantType )
 
