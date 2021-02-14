@@ -97,7 +97,7 @@ GObject                                   Gnome::GObject::Object
 ├── GSettingsBackend
 ├── GSettings
 ├── GSimpleAction                         SimpleAction
-├─✗ GSimpleActionGroup                    ⛔
+├── GSimpleActionGroup                    SimpleActionGroup
 ├── GSimpleAsyncResult
 ├── GSimpleProxyResolver
 ├── GSocketClient
@@ -126,7 +126,7 @@ GObject                                   Gnome::GObject::Object
 
 GInterface
 ├── GAction                               Action
-├── GActionGroup
+├── GActionGroup                          ActionGroup
 ├── GActionMap                            ActionMap
 ├── GAppInfo
 ├── GAsyncInitable

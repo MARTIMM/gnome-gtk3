@@ -324,23 +324,27 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  
 Error                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
 List                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
 Main                      |S | ✓| ✓| ✓| ✓| ✓|  |  |
+MainContext               |S | ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+MainLoop                  |S | ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |
 SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
 Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
 VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓|  |
 
+Module Main will be deprecated after version 0.20.0
+
 <br/>
 
-| Gnome::Gio              |T |dm|db|ds|de|ts|te|12|14|so|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|
-Action                    |R | ✓| ✓| ✓| ✗| ✓| ✗| ✓| ✓| ✓|
-ActionMap                 |R |  |  |  |  |  |  |  |  |  |
-Application               |  |  |  |  |  |  |  |  |  |  |
-Enums                     |S |  |  |  |  |  |  |  |  |  |
-File                      |R |  |  |  |  |  |  |  |  |  |
-MenuModel                 |  |  |  |  |  |  |  |  |  |  |
-Resource                  |Bx|  |  |  |  |  |  |  |  |  |
-SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
+Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|
+ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Application               |  | ✓| ✓| ✓| ✓| ✓| ½| ¼| ⅔| ✓| ✓| ✓|
+Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |
+File                      |R |  |  |  |  |  |  |  |  |  |  |  |
+MenuModel                 |  |  |  |  |  |  |  |  |  |  |  |  |
+Resource                  |Bx|  |  |  |  |  |  |  |  |  |  |  |
+SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
 
 <!--
 MountOperation            |  |  |  |  |  |  |  |  |  |  |

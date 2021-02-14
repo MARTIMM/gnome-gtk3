@@ -23,6 +23,8 @@ TopLevelClassSupport                   Gnome::N::TopLevelClassSupport
 Stand alone classes
 -----------------------------------
 ── GMain                               Main
+                                       MainContext extracted from Main
+                                       MainLoop extracted from Main
 ── GQuark                              Quark
 
 ```

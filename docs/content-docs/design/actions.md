@@ -5,7 +5,7 @@ See also for some text on this subject here [HowDoI GAction](https://wiki.gnome.
 
 ## Intro
 
-The purpose of this document is to try to find a design trick to circumvent the most of Variant and VariantType functions used by the Action modules. Action modules make use of a Variant object to be able to sent all sorts of data to a signal handler. A Variant object can hold simple types to complex types such as arrays, tuples, hashes, etc.
+The purpose of this document is to try to find a design trick to circumvent the most of Variant and VariantType functions used by the Action modules and, if not possible, to make the whole chebang a bit more clear. Action modules make use of a Variant object to be able to sent all sorts of data to a signal handler. A Variant object can hold simple types to complex types such as arrays, tuples, hashes, etc.
 
 A signal is sent after a call to `.activate()` or `.change-state()`. The activation takes also place, at a button click on e.g. RadioButton or a menu entry click, in short, all widgets inheriting the Actionable interface.
 
@@ -14,7 +14,7 @@ A signal is sent after a call to `.activate()` or `.change-state()`. The activat
 
 ## UML diagram
 
-Below, MenuItem inherits indirectly from Widget and Application has a MenuItem somewhere as a child object.
+Below, Button inherits indirectly from Widget and Application has a Button somewhere as a child object.
 The UML diagram is not yet implementated as such but it would be like shown. It's a one to one mapping from the C-libraries setup.
 
 ```plantuml
@@ -66,10 +66,11 @@ Gnome::Gio::ActionGroup <|.. Gnome::Gio::SimpleActionGroup
 Gnome::Gio::ActionMap <|.. Gnome::Gio::SimpleActionGroup
 
 Gnome::Gio::ActionGroup <|.. Gnome::Gio::Application
+Gnome::Gio::ActionGroup -> Gnome::Gio::ActionMap
 
-Gnome::Gtk3::Application --> Gnome::Gtk3::MenuItem
-Gnome::Gtk3::MenuItem .|> Gnome::Gtk3::Actionable
-Gnome::Gtk3::Widget <|-- Gnome::Gtk3::MenuItem
+Gnome::Gtk3::Application --> Gnome::Gtk3::Button
+Gnome::Gtk3::Button .|> Gnome::Gtk3::Actionable
+Gnome::Gtk3::Widget <|-- Gnome::Gtk3::Button
 Gnome::Gio::SimpleActionGroup "*" <--* Gnome::Gtk3::Widget
 ```
 
@@ -80,7 +81,7 @@ There are some steps involved to make use of Actions.
 * Create a SimpleAction object with or without a state.
 * Register a signal handler for an `activate` signal.
 * Add the SimpleAction to the ActionMap in a Application or ApplicationWindow.
-* Add an Actionable widget such as a MenuItem or Button to the GUI.
+* Add an Actionable widget such as a Button to the GUI.
 * Set the action name of this widget to `app.something` or `win.something` depending if an Application or ApplicationWindow is used to store the SimpleAction.
 
 
