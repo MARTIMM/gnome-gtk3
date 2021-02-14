@@ -107,6 +107,7 @@ sub MAIN (
           isa-ok $m, $class, '.new()';
         }
 
+        #`{{
         #-------------------------------------------------------------------------------
         # set environment variable 'raku-test-all' if rest must be tested too.
         unless %*ENV<raku_test_all>:exists {
@@ -114,7 +115,6 @@ sub MAIN (
           exit;
         }
 
-        #`{{
         #-------------------------------------------------------------------------------
         subtest 'Manipulations', {
         }
@@ -414,21 +414,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
           \$no .= get-native-object-no-reffing unless \$no ~~ $no-type;
         EOCNV
     }
-#`{{
-    elsif $pod-args ~~ / 'N-GSList' / {
-      $no-cnv = Q:q:to/EOCNV/
-        my $no = $xyz;
-          $no .= get-native-object-no-reffing unless $no ~~ N-GSList;
-        EOCNV
-    }
-
-    elsif $pod-args ~~ / 'N-GList' / {
-      $no-cnv = Q:q:to/EOCNV/
-        my $no = $xyz;
-          $no .= get-native-object-no-reffing unless $no ~~ N-GList;
-        EOCNV
-    }
-}}
 
     my Str $method-args = $pod-args;
     $method-args ~~ s:g/ 'N-GObject ' //;
@@ -710,6 +695,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   # convert to perl types
   #$raku-type ~~ s/ 'gchar' \s+ '*' /Str/;
   #$raku-type ~~ s/ str /Str/;
+
   $raku-type ~~ s:s/ g?char\-ppptr / CArray[CArray[Str]] /;
   $raku-type ~~ s:s/ g?char\-pptr / CArray[Str] /;
   $raku-type ~~ s:s/ g?char\-ptr / Str /;
@@ -731,6 +717,8 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $raku-type ~~ s:s/ gfloat || gdouble /Num/;
   $raku-type ~~ s:s/ GQuark /UInt/;
   $raku-type ~~ s:s/ GFlag /UInt/;
+
+  $raku-type ~~ s:g/ \s+ //;
 
 #note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
 
@@ -998,7 +986,7 @@ sub substitute-in-template (
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      use Gnome::N::X;
+      #use Gnome::N::X;
       use Gnome::N::NativeLib;
       use Gnome::N::N-GObject;
       use Gnome::N::GlibToRakuTypes;
@@ -1048,7 +1036,7 @@ sub substitute-in-template (
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      use Gnome::N::X;
+      #use Gnome::N::X;
       use Gnome::N::NativeLib;
       use Gnome::N::N-GObject;
       use Gnome::N::GlibToRakuTypes;
@@ -1294,7 +1282,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
       }
 
       else {
-        $sub-doc ~= " " ~ ~($<doc> // '');
+        $sub-doc ~= "\n" ~ ~($<doc> // '');
       }
     }
 
@@ -1310,7 +1298,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
       }
 
       else {
-        $sub-doc ~= " ";
+        $sub-doc ~= "\n";
       }
     }
 
@@ -1326,7 +1314,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
   # cleanup documentation of sub
   $sub-doc ~~ s/ 'Since:' \s*? \d+\.\d+ //;
   $sub-doc ~~ s/ '  Returns:'/\n\nReturns:/;
-  $sub-doc ~~ s/^ \s+ //;
+  #$sub-doc ~~ s/^ \s+ //;
 
 
   ( primary-doc-changes($sub-doc), $items-src-doc )
@@ -1668,7 +1656,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       =begin pod
       =head1 Signals
 
-      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
+      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
 
       =head2 First method
 
@@ -1692,7 +1680,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
         $w.connect-object( 'button-press-event', $handler);
 
-      Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
+      Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
 
       =head2 Supported signals
 
@@ -1754,11 +1742,12 @@ sub get-properties ( Str:D $source-content is copy ) {
   return unless $source-content;
 
   my Str $property-name;
-  my Str $property-doc = '';
+  my Str $property-doc;
 
   print "Find properties ";
   my Hash $property-doc-entries = %();
   loop {
+    $property-doc = '';
     print ".";
     $*OUT.flush;
 
@@ -1966,7 +1955,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
       =comment -----------------------------------------------------------------------
       =comment #TP:0:$prop-name:
-      =head3 $prop-nick
+      =head3 $prop-nick: $prop-name
 
       $sdoc
       The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
@@ -2425,6 +2414,8 @@ sub podding-function ( Str:D $text is copy --> Str ) {
   # change any function() to C<function()>. first change to [[function]] to
   # prevent nested substitutions.
   $text ~~ s:g/ ([<alnum> || '_']+) \s* '()' /\[\[$/[0]\]\]/;
+  $text ~~ s/ $base-sub-name '_' //;
+  $text ~~ s:g/ '_' /-/;
   $text ~~ s:g/ '[[' ([<alnum> || '_']+ )']]' /C<$/[0]\()>/;
 
   $text
