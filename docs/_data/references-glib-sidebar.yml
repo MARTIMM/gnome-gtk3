@@ -9,9 +9,17 @@
     type: toplevel
     url: '/content-docs/reference/Glib/List.html'
 
-  - title: "Main"
-    type: standalone
-    url: '/content-docs/reference/Glib/Main.html'
+#  - title: "Main"
+#    type: standalone
+#    url: '/content-docs/reference/Glib/Main.html'
+
+  - title: "MainContext"
+    type: toplevel
+    url: '/content-docs/reference/Glib/MainContext.html'
+
+  - title: "MainLoop"
+    type: toplevel
+    url: '/content-docs/reference/Glib/MainLoop.html'
 
 #  - title: OptionContext
 #    type: toplevel

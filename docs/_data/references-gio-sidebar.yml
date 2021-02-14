@@ -5,6 +5,10 @@
     url: '/content-docs/reference/Gio/Action.html'
     type: interface
 
+  - title: "ActionGroup"
+    url: '/content-docs/reference/Gio/ActionGroup.html'
+    type: interface
+
   - title: "ActionMap"
     url: '/content-docs/reference/Gio/ActionMap.html'
     type: interface
@@ -31,4 +35,8 @@
 
   - title: "SimpleAction"
     url: '/content-docs/reference/Gio/SimpleAction.html'
+    type: object
+
+  - title: "SimpleActionGroup"
+    url: '/content-docs/reference/Gio/SimpleActionGroup.html'
     type: object
