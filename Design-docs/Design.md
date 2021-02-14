@@ -23,6 +23,10 @@ replace `--> $1 )`
 search: `\s*Since:\s+\d+\.\d+`
 replace: ``
 
+## Replace text bracketed function calls
+search: `\[\[([\w\-\_\d]+)\]\]`
+replace: `C<$1()>`
+
 # Benchmarking result notes
 * Always use normal arguments in the method which substitutes a native call search. Do not use slurpy arguments and flatten them in the call to the native sub.
 * Call subs directly when there are no arguments or arguments that do not need some conversion like `Str` or `Int`. Also, the call is made on a subroutine of a leaf class. That means that casting is not necessary.
