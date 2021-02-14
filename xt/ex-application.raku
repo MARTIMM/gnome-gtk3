@@ -9,7 +9,7 @@ use v6.d;
 
 use NativeCall;
 
-#use Gnome::N::N-GVariant;
+#use Gnome::Glib::N-GVariant;
 use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
