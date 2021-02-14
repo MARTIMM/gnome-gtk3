@@ -173,32 +173,12 @@ An example of using a string type property of a **Gnome::Gtk3::Label** object. T
 Supported properties
 --------------------
 
-### Action Name
-
-The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
-
-The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
-
-### Parameter Type
-
-The type of the parameter that must be given when activating the action.
-
-The **Gnome::GObject::Value** type of property *parameter-type* is `G_TYPE_BOXED`.
-
 ### Enabled
 
 If *action* is currently enabled.
 
 If the action is disabled then calls to `g_action_activate()` and `g_action_change_state()` have no effect.
 
-The **Gnome::GObject::Value** type of property *enabled* is `G_TYPE_BOOLEAN`.
-
-### Action Name
-
-The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
-
-The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
-
 ### Action Name
 
 The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
@@ -211,57 +191,13 @@ The type of the parameter that must be given when activating the action.
 
 The **Gnome::GObject::Value** type of property *parameter-type* is `G_TYPE_BOXED`.
 
-### Action Name
-
-The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
-
-The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
-
-### Parameter Type
-
-The type of the parameter that must be given when activating the action.
-
-The **Gnome::GObject::Value** type of property *parameter-type* is `G_TYPE_BOXED`.
-
-### Enabled
-
-If *action* is currently enabled.
-
-If the action is disabled then calls to `g_action_activate()` and `g_action_change_state()` have no effect.
-
 The **Gnome::GObject::Value** type of property *enabled* is `G_TYPE_BOOLEAN`.
-
-### State Type
-
-The **N-GVariantType** of the state that the action has, or `undefined` if the action is stateless.
-
-The **Gnome::GObject::Value** type of property *state-type* is `G_TYPE_BOXED`.
 
 ### State
 
 The state of the action, or `undefined` if the action is stateless.
 
 The **Gnome::GObject::Value** type of property *state* is `G_TYPE_VARIANT`.
-
-### Action Name
-
-The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
-
-The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
-
-### Parameter Type
-
-The type of the parameter that must be given when activating the action.
-
-The **Gnome::GObject::Value** type of property *parameter-type* is `G_TYPE_BOXED`.
-
-### Enabled
-
-If *action* is currently enabled.
-
-If the action is disabled then calls to `g_action_activate()` and `g_action_change_state()` have no effect.
-
-The **Gnome::GObject::Value** type of property *enabled* is `G_TYPE_BOOLEAN`.
 
 ### State Type
 
