@@ -220,9 +220,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._tree_model_interface($native-sub) unless ?$s;
-#  $s = self._tree_drag_store_interface($native-sub) unless ?$s;
-#  $s = self._tree_drag_dest_interface($native-sub) unless ?$s;
-#  $s = self._tree_sortable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkListStore') if ?$s;
   $s = callsame unless ?$s;

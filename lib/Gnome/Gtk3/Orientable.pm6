@@ -53,19 +53,26 @@ unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
 #submethod BUILD ( *%options ) { }
 
 #-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-# Hook for modules using this interface. Same principle as _fallback but
-# does not need callsame. Also this method must be usable without
-# an instated object
-method _orientable_interface ( Str $native-sub --> Callable ) {
+#TM:1:get-orientation:
+=begin pod
+=head2 get-orientation
 
-  my Callable $s;
-  try { $s = &::("gtk_orientable_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  method get-orientation ( --> GtkOrientation )
 
-  $s
+Retrieves the orientation of the I<orientable>.
+
+=end pod
+
+method get-orientation ( --> GtkOrientation ) {
+  GtkOrientation(
+    gtk_orientable_get_orientation(self.get-native-object-no-reffing)
+  );
 }
+
+sub gtk_orientable_get_orientation ( N-GObject $orientable )
+  returns int32
+  is native(&gtk-lib)
+  { * }
 
 #-------------------------------------------------------------------------------
 #TM:1:set-orientation:
@@ -85,28 +92,6 @@ method set-orientation ( GtkOrientation $orientation ) {
 }
 
 sub gtk_orientable_set_orientation ( N-GObject $orientable, int32 $orientation )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:get-orientation:
-=begin pod
-=head2 get-orientation
-
-  method get-orientation ( --> GtkOrientation )
-
-Retrieves the orientation of the I<orientable>.
-
-=end pod
-
-method get-orientation ( --> GtkOrientation ) {
-  GtkOrientation(
-    gtk_orientable_get_orientation(self.get-native-object-no-reffing)
-  );
-}
-
-sub gtk_orientable_get_orientation ( N-GObject $orientable )
-  returns int32
   is native(&gtk-lib)
   { * }
 

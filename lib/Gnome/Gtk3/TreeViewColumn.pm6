@@ -182,7 +182,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
-#  $s = self._cell_layout_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkTreeViewColumn');
   $s = callsame unless ?$s;

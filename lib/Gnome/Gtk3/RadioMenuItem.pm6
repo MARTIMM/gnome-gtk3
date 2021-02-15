@@ -303,26 +303,6 @@ submethod BUILD ( *%options ) {
   }
 }
 
-#`{{
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::("gtk_radio_menu_item_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-
-  #$s = self._xyz_interface($native-sub) unless ?$s;
-
-  self.set-class-name-of-sub('GtkRadioMenuItem');
-  $s = callsame unless ?$s;
-
-  $s;
-}
-}}
-
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_radio_menu_item_new:
 #`{{

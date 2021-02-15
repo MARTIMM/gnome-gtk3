@@ -163,7 +163,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_box_$native-sub"); };
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._orientable_interface($native-sub) unless ?$s;
 
   self.set-class-name-of-sub('GtkBox');
   $s = callsame unless ?$s;
