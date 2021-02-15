@@ -220,7 +220,6 @@ subtest 'Signals ...', {
 
   my Promise $p = $a.start-thread(
     $sh, 'signal-emitter',
-    # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
     # :!new-context,
     # :start-time(now + 1)
   );
