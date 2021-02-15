@@ -247,7 +247,6 @@ sub MAIN (
 
           my Promise \$p = $m.start-thread\(
             \$sh, 'signal-emitter',
-            # G_PRIORITY_DEFAULT,       # enable 'use Gnome::Glib::Main'
             # :!new-context,
             # :start-time(now + 1)
           );
@@ -1215,26 +1214,6 @@ sub substitute-in-template (
 
           }
         }
-
-        #`{{
-        #-------------------------------------------------------------------------------
-        # no pod. user does not have to know about it.
-        method _fallback ( $native-sub --> Callable ) {
-
-          my Callable $s;
-          try { $s = &::("BASE-SUBNAME_$native-sub"); };
-        # check for gtk_, gdk_, g_, pango_, cairo_ !!!
-          try { $s = &::("gtk_$native-sub"); } unless ?$s;
-          try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-
-          #$s = self._xyz_interface($native-sub) unless ?$s;
-
-          self.set-class-name-of-sub('LIBCLASSNAME');
-          $s = callsame unless ?$s;
-
-          $s;
-        }
-        }}
 
         EOTEMPLATE
     }
