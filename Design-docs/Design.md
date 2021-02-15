@@ -107,129 +107,70 @@ multi sub gtk_builder_add_from_file (
 multi ...
 ```
 
-# Interface using modules
+# Modules using interfaces
 
-The `_fallback()` method in a module, which also uses an interface, should also call a likewise method in that interface module. This method is named `_xyz_interface()` and does not need to call callsame() to scan for subs in the parent modules of the interface. An example from `_fallback()` in **Gnome::Gtk3::FileChooserDialog**;
+The GTK interfaces are implemented using a Raku role.
 
+Interfaces sometimes specify signals. Define the use of it like so in the module using the interface;
 ```
-unit class Gnome::Gtk3::FileChooserDialog;
-also is Gnome::Gtk3::Dialog;                # parent class
-also does Gnome::Gtk3::FileChooser;         # interface
-
-...
-
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-
-  # search this module first
-  try { $s = &::($native-sub); }
-  try { $s = &::("gtk_file_chooser_dialog_$native-sub"); } unless ?$s;
-
-  # then in interfaces
-  $s = self._file_chooser_interface($native-sub) unless ?$s;
-
-  # stamp class mark on it
-  self.set-class-name-of-sub('GtkFileChooserDialog') if $s;
-
-  # then parent classes
-  $s = callsame unless ?$s;
-
-  # return result
-  $s;
-}
-```
-And the interface sub in e.g. Buildable;
-```
-method _buildable_interface ( Str $native-sub --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::("$native-sub"); };
-  try { $s = &::("gtk_buildable_$native-sub"); } unless ?$s;
-
-  $s
-}
-```
-Interfaces can also define signals sometimes. Define this like so in the interfacing module;
-```
-method _file_chooser_add_signal_types ( Str $class-name ) {
-
-  self.add-signal-types( $class-name, :w2<row-changed row-inserted>);
-  callsame;
+method _xyz_interface_add_signal_types ( Str $class-name ) {
+  self.add-signal-types( $class-name,
+    :w0< … signal names … >
+    :w1< … signal names … >,
+    …
+  );
 }
 ```
 and call this from the interface using class like so;
 ```
-submethod BUILD ( *%options ) {
+unit class xyz-module;
+also does xyz-interface;
+…
 
+submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   unless $signals-added {
-    $signals-added = self.add-signal-types( $?CLASS.^name,
-      :w0<columns-changed cursor-changed select-all unselect-all toggle-cursor-row select-cursor-parent start-interactive-search>,
-      :w1<select-cursor-row>,
-      :w2<row-activated test-expand-row test-collapse-row row-expanded row-collapsed move-cursor>,
-      :w3<expand-collapse-cursor-row>,
+    $signals-added = True;
+
+    self.add-signal-types( $?CLASS.^name,
+      :w0< … signal names … >,
+      :w1< … signal names … >,
+      …
     );
 
-    self._file_chooser_add_signal_types($?CLASS.^name);
+    self._xyz_interface_add_signal_types($?CLASS.^name);
   }
-
+  …
 ```
-All this is a bit awkward and messy and is all because of using a role for an interface module instead of using classes. It is not possible to define the same method in several roles, like e.g. `_interface()` because they clash when the same role is imported multiple times in the tree. Classes would behave better and then callsame could be used too. The problem then would be (surely for Buildable) that an interface class is inherited by multiple classes which are in the same inheritance tree;
-
 
 ```plantuml
-scale 0.7
-title Dependency details for hierargy and interfaces, plan A
+'scale 0.7
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide empty members
 
-class TopLevelClassSupport < Catch all class >
-class UserClass << (C, #00ffff) user class >>
-interface Buildable < Interface >
+'class definitions
+class Gnome::N::TopLevelClassSupport < Catch all class >
 
-Buildable <|-- Widget
-Buildable <|-- Container
-Buildable <|-- Bin
-Buildable <|-- Button
+Interface Gnome::GObject::Signal <Interface>
+class Gnome::GObject::Signal <<(R,#80ffff)>>
 
-TopLevelClassSupport <|-- Object
-Object <|-- InitiallyUnowned
-InitiallyUnowned <|-- Widget
-Widget <|- Container
-Container <|- Bin
-Bin <|- Button
-Button <|-- UserClass
+Interface Gnome::Gtk3::Buildable <Interface>
+class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
+
+
+'class connections
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
+Gnome::GObject::Object.|> Gnome::GObject::Signal
+
+Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
+Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
+Gnome::Gtk3::Widget .|> Gnome::Gtk3::Buildable
 
 ```
-## Review the use of interfaces and where they are being used
-
-If you look in the diagram above, we see that **Buildable** is used in all classes below **InitiallyUnowned**. The methods are kind of inherited by the classes below it. Following this we should then use something like the diagram below. By the way, the latest developments are that a 'catch all' class is build and displayed below too.
-
-```plantuml
-
-scale 0.7
-title Dependency details for hierargy and interfaces, plan B
-
-class TopLevelClassSupport < Catch all class >
-class TopLevelInterfaceSupport << (I, #efad00) catch all interface >>
-interface Buildable < Interface >
-
-TopLevelInterfaceSupport <|-- Buildable
-Buildable <|-- Widget
-class UserClass << (C, #00ffff) user class >>
-
-TopLevelClassSupport <|-- Object
-Object <|-- InitiallyUnowned
-InitiallyUnowned <|-- Widget
-Widget <|- Container
-Container <|- Bin
-Bin <|- Button
-Button <|-- UserClass
-```
-
-This is a lot easier. To see if this is at all possible, a list must be made of classes who use an interface and if the below classes are using it too. In a way they did, e.g. if **Button** did not had the interface to **Buildable**, it would use the calls of the interface used by **Bin** or **Container** so effectively it is the same as in the second diagram.
-
-Below is a tree of modules. The letters are explained at the bottom and are linked to the name of the interface module, e.g. b is for Buildable class.
+Below is a tree of modules. The letters are explained at the bottom and are linked to the name of the interface module, e.g. `b` is for the `Buildable` class.
 
 ```
 Tree of Gtk C structures                              Interface use
@@ -491,6 +432,7 @@ Also the interface module will have a role type.
 'skinparam packageStyle rectangle
 skinparam stereotypeCBackgroundColor #80ffff
 'set namespaceSeparator ::
+hide empty members
 
 scale 0.8
 
@@ -539,15 +481,13 @@ note left of TopLevelClassSupport
   <b>$!class-name-of-sub</b> are used to keep track
   of native class types and names.
 
-  <b>$gui-initialized</b> is used to check on native
-  initialization. It is defined that it is global to all
-  of the TopLevelClassSupport classes.
-
+  '<b>$gui-initialized</b> is used to check on native
+  'initialization. It is defined that it is global to all
+  'of the TopLevelClassSupport classes.
   --
-
-  Method <b>new()</b> is defined to cleanup the native object
-  in case of an assignement like <b><i>$c .= new(...);</i></b>.
-  The native object, if any, must be cleared first.
+  'Method <b>new()</b> is defined to cleanup the native object
+  'in case of an assignement like <b><i>$c .= new(...);</i></b>.
+  'The native object, if any, must be cleared first.
 
   <b>BUILD()</b> must check for <b>$gui-initialized</b>
   and also handle the <b>:native-object</b> option
@@ -563,16 +503,13 @@ note left of TopLevelClassSupport
   <b>get-native-object()</b> and <b>set-native-object()</b>
   get and set the native object. They also handle
   referencing.
-
-  {abstract} native-object-ref()
-  {abstract} native-object-unref()
-  clear-object()
-  DESTROY()
-
-  set-class-info()
-  set-class-name-of-sub()
-  get-class-name-of-sub()
-  get-class-gtype()
+  '{abstract} native-object-ref()
+  '{abstract} native-object-unref()
+  'clear-object()
+  'set-class-info()
+  'set-class-name-of-sub()
+  'get-class-name-of-sub()
+  'get-class-gtype()
 end note
 
 
@@ -601,9 +538,7 @@ note left of SomeFooClass
   <b>BUILD()</b> and <b>set-native-object()</b> do the same
   as above.
 
-  <b>_fallback()</b> does the same as in its parent and
-  addition also tries to search for native subroutines in
-  its interface parent class.
+  <b>_fallback()</b> does the same as in its parent
 end note
 
 class SomeFooClass {
@@ -627,18 +562,7 @@ note left of UserClass
   the parents
 end note
 
-'class TopLevelInterfaceSupport < Catch all interface > {
-'  _interface()
-'}
-
-'note right of TopLevelInterfaceSupport
-'  Not sure if this support class
-'  is needed
-'end note
-
-interface SomeFooInterface < Interface > {
-  _someFoo_interface()
-}
+interface SomeFooInterface < Interface >
 Interface  SomeFooInterface<Interface>
 class SomeFooInterface <<(R,#80ffff)>>
 
