@@ -117,6 +117,7 @@ $m.gtk-main;
 * [ 🔗 Appveyor run on master branch][appveyor-run]
 * [ 🔗 License document][licence-lnk]
 * [ 🔗 Release notes][changes]
+* [ 🔗 Issues](https://github.com/MARTIMM/gnome-gtk3/issues)
 
 # TODO
 
