@@ -4,7 +4,7 @@
 skinparam packageStyle rectangle
 skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
-hide members
+hide empty members
 
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
