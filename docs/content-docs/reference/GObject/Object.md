@@ -38,6 +38,64 @@ An example
     my Gnome::Gtk3::Builder $builder .= new(:filename<my-gui.glade>);
     my Gnome::Gtk3::Button $button .= new(:build-id<my-gui-button>);
 
+get_property
+------------
+
+Gets a property of an object. The value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed).
+
+In general, a copy is made of the property contents and the caller is responsible for freeing the memory by calling `clear-object()`.
+
+Next signature is used when no **Gnome::GObject::Value** is available. The routine will create the Value using `$gtype`.
+
+    multi method get-property (
+      Str $property_name, Int $gtype
+      --> Gnome::GObject::Value
+    )
+
+The following is used when a Value object is available.
+
+    multi method get-property (
+      Str $property_name, N-GValue $value
+      --> Gnome::GObject::Value
+    )
+
+  * Str $property_name; the name of the property to get.
+
+  * Int $gtype; the type of the value, e.g. G_TYPE_INT.
+
+  * N-GValue $value; The value is stored in a Value object. It is used to get the type of the object.
+
+The methods always return a **Gnome::GObject::Value** with the result.
+
+    my Gnome::Gtk3::Label $label .= new;
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.g-object-get-property( 'label', $gv);
+    $gv.g-value-set-string('my text label');
+
+is-floating
+-----------
+
+Checks whether *object* has a floating reference.
+
+Returns: `True` if *object* has a floating reference
+
+    method is-floating ( --> Bool )
+
+  * Pointer $object; (type GObject.Object): a *GObject*
+
+ref-sink
+--------
+
+Increase the reference count of this native *object*, and possibly remove the floating reference, if *object* has a floating reference.
+
+In other words, if the object is floating, then this call "assumes ownership" of the floating reference, converting it to a normal reference by clearing the floating flag while leaving the reference count unchanged. If the object is not floating, then this call adds a new normal reference increasing the reference count by one.
+
+The type of *object* will be propagated to the return type under the same conditions as for `g_object_ref()`.
+
+Returns: N-GObject
+
+    method ref-sink ( --> N-GObject )
+
 register-signal
 ---------------
 
@@ -123,6 +181,17 @@ A more complete example to register and use a simple callback handler
       :my-data([$data-item1, $data-item2])
     );
 
+set-property
+------------
+
+Sets a property on an object.
+
+    method set-property ( Str $property_name, N-GValue $value )
+
+  * Str $property_name; the name of the property to set
+
+  * N-GObject $value; the value
+
 start-thread
 ------------
 
@@ -153,93 +222,4 @@ Start a thread in such a way that the function can modify the user interface in 
 Returns a `Promise` object. If the call fails, the object is undefined.
 
 The handlers signature is at least `:$widget` of the object on which the call was made. Furthermore all users named arguments to the call defined in `*%user-options`. The handler may return any value which becomes the result of the `Promise` returned from `start-thread`.
-
-[[g_] object_] set_property
----------------------------
-
-Sets a property on an object.
-
-    method g_object_set_property (
-      Str $property_name, Gnome::GObject::Value $value
-    )
-
-  * Str $property_name; the name of the property to set
-
-  * N-GObject $value; the value
-
-[[g_] object_] get_property
----------------------------
-
-Gets a property of an object. The value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed).
-
-In general, a copy is made of the property contents and the caller is responsible for freeing the memory by calling `clear-object()`.
-
-Next signature is used when no **Gnome::GObject::Value** is available. The routine will create the Value using `$gtype`.
-
-    method g_object_get_property (
-      Str $property_name, Int $gtype
-      --> Gnome::GObject::Value
-    )
-
-The following is used when a Value object is available.
-
-    method g_object_get_property (
-      Str $property_name, Gnome::GObject::Value $value
-      --> Gnome::GObject::Value
-    )
-
-  * $property_name; the name of the property to get.
-
-  * $gtype; the type of the value, e.g. G_TYPE_INT.
-
-  * $value; the property value. The value is stored in the Value object. Use any of the getter methods of Value to get the data. Also setters are available to modify data.
-
-The methods always return a **Gnome::GObject::Value** with the result.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-[g_] object_ref
----------------
-
-Increases the reference count of this object and returns the same object.
-
-    method g_object_ref ( --> N-GObject )
-
-[g_] object_unref
------------------
-
-Decreases the reference count of the native object. When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
-
-When the object has a floating reference because it is not added to a container or it is not a toplevel window, the reference is first sunk followed by `g_object_unref()`.
-
-    method g_object_unref ( )
-
-  * N-GObject $object; a native *GObject*.
-
-[[g_] object_] is_floating
---------------------------
-
-Checks whether *object* has a floating reference.
-
-Returns: `1` if *object* has a floating reference
-
-    method g_object_is_floating ( --> Int  )
-
-  * Pointer $object; (type GObject.Object): a *GObject*
-
-[[g_] object_] ref_sink
------------------------
-
-Increase the reference count of this native *object*, and possibly remove the floating reference, if *object* has a floating reference.
-
-In other words, if the object is floating, then this call "assumes ownership" of the floating reference, converting it to a normal reference by clearing the floating flag while leaving the reference count unchanged. If the object is not floating, then this call adds a new normal reference increasing the reference count by one.
-
-The type of *object* will be propagated to the return type under the same conditions as for `g_object_ref()`.
-
-Returns: N-GObject
-
-    method g_object_ref_sink ( --> N-GObject )
 

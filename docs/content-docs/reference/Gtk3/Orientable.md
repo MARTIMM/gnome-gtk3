@@ -29,17 +29,17 @@ Example
 Methods
 =======
 
-set-orientation
----------------
-
-    method set-orientation ( GtkOrientation $orientation )
-
-Sets the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
-
 get-orientation
 ---------------
 
     method get-orientation ( --> GtkOrientation )
 
 Retrieves the orientation of the *orientable*.
+
+set-orientation
+---------------
+
+    method set-orientation ( GtkOrientation $orientation )
+
+Sets the orientation of the orientable. This is a GtkOrientation enum type defined in GtkEnums.
 

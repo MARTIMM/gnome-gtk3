@@ -8,7 +8,9 @@ Description
 
 Note that this is a low level module, please take a look at **Gnome::Gtk3::MainLoop** first.
 
-The main event loop manages all the available sources of events for GLib and GTK+ applications. These events can come from any number of different types of sources such as file descriptors (plain files, pipes or sockets) and timeouts. New types of event sources can also be added using `g_source_attach()`.
+The main event loop manages all the available sources of events for GLib and GTK+ applications. These events can come from any number of different types of sources such as file descriptors (plain files, pipes or sockets) and timeouts.
+
+To allow multiple independent sets of sources to be handled in different threads, each source is associated with a N-GMainContext. A N-GMainContext can only be running in a single thread, but sources can be added to it and removed from it from other threads. All functions which operate on a N-GMainContext or a built-in N-GSource are thread-safe. Contexts are described by **Gnome::Gio::MainContext**
 
 Each event source is assigned a priority. The default priority, G_PRIORITY_DEFAULT, is 0. Values less than 0 denote higher priorities. Values greater than 0 denote lower priorities. Events from high priority sources are always processed before events from lower priority sources.
 
@@ -42,6 +44,10 @@ Constants
   * G_PRIORITY_DEFAULT_IDLE; Use this for default priority idle functions. In GLib this priority is used when adding idle functions with g_idle_add().
 
   * G_PRIORITY_LOW; Use this for very low priority background tasks. It is not used within GLib or GTK+.
+
+  * G_SOURCE_REMOVE; Use this macro as the return value of a callback handler to leave the GSource in the main loop.
+
+  * G_SOURCE_CONTINUE; Use this macro as the return value of a callback handler to remove the GSource from the main loop.
 
 Methods
 =======

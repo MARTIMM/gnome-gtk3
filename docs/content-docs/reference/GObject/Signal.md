@@ -61,18 +61,18 @@ When some of the primitive types are needed like `gboolean` or `guint`, you can 
 Methods
 =======
 
-[[g_] signal_] connect_object
------------------------------
+connect-object
+--------------
 
 Connects a callback function to a signal for a particular object.
 
-    method g_signal_connect_object (
-      N-GObject $instance, Str $detailed-signal, Callable $handler
+    method connect-object (
+      Str $detailed-signal, Callable $handler
       --> Int
-    ) {
+    )
 
-[[g_] signal_] emit_by_name
----------------------------
+emit-by-name
+------------
 
 Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to the default if no handlers are connected.
 
