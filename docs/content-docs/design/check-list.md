@@ -105,49 +105,49 @@ FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
-Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-Frame                     |  |  |  |  |  |  |  |  |  |  |  |
-Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |
-IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |
-Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |
-Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅗| ✓| ✓|
-LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |
-ListBox                   |  |  |  |  |  |  |  |  |  |  |  |
-ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |
-ListStore                 |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |S |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗|  |
-Menu                      |  |  |  |  |  |  |  |  |  |  |  |
-MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |
-MenuButton                |  |  |  |  |  |  |  |  |  |  |  |
-MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |
-MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |
-MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|
-Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |
-Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |  |
-Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |
-PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |
-Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |
-PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |
-ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |
-RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |
-RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|
-Range                     |  |  |  |  |  |  |  |  |  |  |  |  |
-RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|
-RecentChooserDialog       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|
-RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
-RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|
-Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |
-Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|
-ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |
-SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |
-SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |
-Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |
-SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
+Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
+IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
+Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗|  |  |  |  |
+Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅗| ✓| ✓|  |
+LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListBox                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListStore                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Main                      |S |  | ✓| ✓| ⅔| ✗| ✗| ½| ✗| ✗|  |  |  |
+Menu                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuButton                |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|  |
+Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
+PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|  |
+Range                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|  |
+RecentChooserDialog       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|  |
+RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
+RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|  |
+Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |  |
+Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|  |
+ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
 Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
@@ -312,8 +312,8 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|  |  |
 InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓|  |  |
-Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓|  |  |
-Signal                    |R | ✓| ✓| ✓| ✗| ✗| ⅚| ✗| ✗| ✓|  |  |
+Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Signal                    |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  |
 value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  |
 
