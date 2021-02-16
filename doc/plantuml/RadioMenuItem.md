@@ -15,10 +15,10 @@ class Gnome::GObject::Signal <<(R,#80ffff)>>
 Interface Gnome::Gtk3::Buildable <Interface>
 class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
-'class Gnome::GObject::InitialyUnowned
-'class Gnome::GObject::Object
-'Class connections
+Interface Gnome::Gtk3::Actionable <Interface>
+class Gnome::Gtk3::Actionable <<(R,#80ffff)>>
 
+'Class connections
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
 
@@ -31,6 +31,7 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
 Gnome::Gtk3::Bin <|-- Gnome::Gtk3::MenuItem
 Gnome::Gtk3::MenuItem <|- Gnome::Gtk3::CheckMenuItem
+Gnome::Gtk3::MenuItem ..|> Gnome::Gtk3::Actionable
 Gnome::Gtk3::CheckMenuItem <|- Gnome::Gtk3::RadioMenuItem
 
 
