@@ -9,7 +9,7 @@ use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 
 
-#use Gnome::N::X;
+use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -28,17 +28,18 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ColorChooser', {
+
   $ccd .= new(:title('my color chooser dialog'));
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog;
-  my Gnome::Gdk3::RGBA $r .= new(:native-object($ccd.get-rgba));
+  my Gnome::Gdk3::RGBA $r = $ccd.get-rgba;
   is $r.to-string, 'rgb(255,255,255)', '.get-rgba()';
 
   $r.gdk-rgba-parse('rgba(0,255,0,0.5)');
   $ccd.set-rgba($r);
 
-  is $ccd.get-use-alpha, 1, '.get-use-alpha()';
-  $ccd.set-use-alpha(0);
-  is $ccd.get-use-alpha, 0, '.set-use-alpha()';
+  ok $ccd.get-use-alpha, '.get-use-alpha()';
+  $ccd.set-use-alpha(False);
+  nok $ccd.get-use-alpha, '.set-use-alpha()';
 
   my Array[N-GdkRGBA] $palette1 .= new(
     N-GdkRGBA.new( :red(.0e0), :green(.0e0), :blue(.0e0), :alpha(.5e0)),
@@ -74,21 +75,149 @@ subtest 'Manipulations', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
+subtest 'Inherit Gnome::Gtk3::ColorChooser', {
+  class MyClass is Gnome::Gtk3::ColorChooser {
+    method new ( |c ) {
+      self.bless( :GtkColorChooser, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::ColorChooser, '.new()';
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+}}
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::ColorChooser $cc .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $ccd.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  test-property( G_TYPE_BOOLEAN, 'use-alpha', 'get-boolean', 0);
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }
+}}
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+  $ccd .= new(:title('my color chooser dialog'));
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method clr-act (
+      N-GdkRGBA $color,
+      Gnome::Gtk3::ColorChooser :$_widget, gulong :$_handler-id
+    ) {
+
+      isa-ok $_widget, Gnome::Gtk3::ColorChooser;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::ColorChooserDialog :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $ccd.emit-by-name(
+        'color-activated',
+        $widget.get-rgba.get-native-object-no-reffing,
+      #  :return-type(int32),
+        :parameters([N-GdkRGBA,])
+      );
+      is $!signal-processed, True, '\'color-activated\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      #while $main.gtk-events-pending() { $main.iteration-do(False); }
+      #sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  #my Gnome::Gtk3::ColorChooser $cc .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.container-add($m);
+
+  my SignalHandlers $sh .= new;
+  $ccd.register-signal( $sh, 'clr-act', 'color-activated');
+
+  my Promise $p = $ccd.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    :start-time(now + 0.5)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
 }
-}}
+
 
 #-------------------------------------------------------------------------------
 done-testing;

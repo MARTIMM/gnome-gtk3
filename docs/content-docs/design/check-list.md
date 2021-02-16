@@ -91,7 +91,7 @@ CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooser              |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |

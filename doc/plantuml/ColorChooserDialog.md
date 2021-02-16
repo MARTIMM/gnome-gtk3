@@ -22,20 +22,25 @@ class Gnome::Gtk3::ColorChooser <<(R,#80ffff)>>
 
 
 'Class connections
-Gnome::N::TopLevelClassSupport <|--- Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 'Gnome::GObject::Object *-> Gnome::GObject::Signal
-Gnome::GObject::Signal <|.. Gnome::GObject::Object
+Gnome::GObject::Signal <|. Gnome::GObject::Object
 
-Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
+Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
 
 Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Buildable <|. Gnome::Gtk3::Widget
+
 Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
 Gnome::Gtk3::Bin <|- Gnome::Gtk3::Window
 Gnome::Gtk3::Window <|-- Gnome::Gtk3::Dialog
 
 'Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::AboutDialog
-Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::ColorChooserDialog
+
+Gnome::Gtk3::ColorChooserDialog -|> Gnome::Gtk3::Dialog
+Gnome::Gtk3::ColorChooser <|. Gnome::Gtk3::ColorChooserDialog
+
 'Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::FileChooserDialog
 'Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::MessageDialog
 'Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::AppChooserDialog
@@ -45,10 +50,5 @@ Gnome::Gtk3::Dialog <|-- Gnome::Gtk3::ColorChooserDialog
 
 
 'Interface connections
-Gnome::Gtk3::Buildable <|.. Gnome::Gtk3::Widget
-Gnome::Gtk3::ColorChooser <|.. Gnome::Gtk3::ColorChooserDialog
-
-'Some hidden connections
-'Gnome::GObject <--[hidden]- Gnome::Gtk3
 @enduml
 ```
