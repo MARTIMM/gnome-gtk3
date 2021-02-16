@@ -15,8 +15,6 @@ The B<Gnome::Gtk3::Orientable> interface is implemented by all widgets that can 
 
 Note that B<HBox>/B<VBox> or B<HScale>/B<VScale> are not implemented in this Raku package because these classes are deprecated.
 
-B<Gnome::Gtk3::Orientable> was introduced in GTK+ 2.16.
-
 
 =head1 Synopsis
 =head2 Declaration

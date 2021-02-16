@@ -10,8 +10,6 @@ The **Gnome::Gtk3::Orientable** interface is implemented by all widgets that can
 
 Note that **HBox**/**VBox** or **HScale**/**VScale** are not implemented in this Raku package because these classes are deprecated.
 
-**Gnome::Gtk3::Orientable** was introduced in GTK+ 2.16.
-
 Synopsis
 ========
 
