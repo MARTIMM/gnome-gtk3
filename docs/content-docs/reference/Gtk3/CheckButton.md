@@ -40,6 +40,7 @@ Declaration
 
     unit class Gnome::Gtk3::CheckButton;
     also is Gnome::Gtk3::ToggleButton;
+    also does Gnome::Gtk3::Actionable;
 
 Inheriting this class
 ---------------------

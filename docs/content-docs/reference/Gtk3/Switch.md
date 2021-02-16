@@ -20,11 +20,6 @@ Css Nodes
 
 **Gnome::Gtk3::Switch** has two css nodes, the main node with the name switch and a subnode named slider. Neither of them is using any style classes.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Switch implements
-
 See Also
 --------
 
@@ -38,6 +33,7 @@ Declaration
 
     unit class Gnome::Gtk3::Switch;
     also is Gnome::Gtk3::Widget;
+    also does Gnome::Gtk3::Actionable;
 
 Methods
 =======

@@ -53,6 +53,7 @@ B<Gnome::Gtk3::MenuItem>, B<Gnome::Gtk3::CheckMenuItem>
 
   unit class Gnome::Gtk3::RadioMenuItem;
   also is Gnome::Gtk3::CheckMenuItem;
+  also does Gnome::Gtk3::Actionable;
 
 
 =head2 Uml Diagram
@@ -91,12 +92,16 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Glib::SList;
+
 use Gnome::Gtk3::CheckMenuItem;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::RadioMenuItem:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::Gtk3::CheckMenuItem;
+also does Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;

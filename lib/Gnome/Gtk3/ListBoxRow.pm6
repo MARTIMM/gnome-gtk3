@@ -10,10 +10,6 @@ use v6;
 
 A row in a Gnome::Gtk3::ListBox.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ListBoxRow implements
-=item Gnome::Gtk3::Actionable
 
 =head2 See Also
 
@@ -24,6 +20,7 @@ C<Gnome::Gtk3::ListBox>
 
   unit class Gnome::Gtk3::ListBoxRow;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Actionable;
 
 =head2 Example
 
@@ -52,13 +49,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Gtk3::Bin;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ListBoxRow:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 =begin pod

@@ -6,13 +6,6 @@ Description
 
 A row in a Gnome::Gtk3::ListBox.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ListBoxRow implements
-
-  * Gnome::Gtk3::Actionable
-
 See Also
 --------
 
@@ -26,6 +19,7 @@ Declaration
 
     unit class Gnome::Gtk3::ListBoxRow;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::Actionable;
 
 Example
 -------

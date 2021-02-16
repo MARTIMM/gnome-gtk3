@@ -29,6 +29,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
 
   unit class Gnome::Gtk3::Button;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Actionable;
 
 =head2 Uml Diagram
 ![](plantuml/Button.svg)
@@ -61,14 +62,17 @@ use NativeCall;
 
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkbutton.h
 # https://developer.gnome.org/gtk3/stable/GtkButton.html
 unit class Gnome::Gtk3::Button:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;

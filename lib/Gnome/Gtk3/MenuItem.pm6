@@ -59,10 +59,6 @@ B<Gnome::Gtk3::MenuItem> has a single CSS node with name menuitem. If the menuit
 has a submenu, it gets another CSS node with name arrow, which has
 the .left or .right style class.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::MenuItem implements
-=item Gnome::Gtk3::Actionable
 
 =head2 See Also
 
@@ -73,6 +69,7 @@ B<Gnome::Gtk3::Bin>, B<Gnome::Gtk3::MenuShell>
 
   unit class Gnome::Gtk3::MenuItem;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::Actionable;
 
 =head2 Example
 
@@ -83,13 +80,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Gtk3::Bin;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::MenuItem:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
+also does Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;

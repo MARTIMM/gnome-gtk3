@@ -34,13 +34,6 @@ Css Nodes
 
 **Gnome::Gtk3::MenuItem** has a single CSS node with name menuitem. If the menuitem has a submenu, it gets another CSS node with name arrow, which has the .left or .right style class.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::MenuItem implements
-
-  * Gnome::Gtk3::Actionable
-
 See Also
 --------
 
@@ -54,6 +47,7 @@ Declaration
 
     unit class Gnome::Gtk3::MenuItem;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::Actionable;
 
 Example
 -------

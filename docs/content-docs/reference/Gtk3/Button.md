@@ -29,6 +29,7 @@ Declaration
 
     unit class Gnome::Gtk3::Button;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::Actionable;
 
 Uml Diagram ![](plantuml/Button.svg)
 ------------------------------------

@@ -19,11 +19,6 @@ Css Nodes
 
 **Gnome::Gtk3::ToolButton** has a single CSS node with name toolbutton.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ToolButton implements
-
 See Also
 --------
 
@@ -37,6 +32,7 @@ Declaration
 
     unit class Gnome::Gtk3::ToolButton;
     also is Gnome::Gtk3::ToolItem;
+    also does Gnome::Gtk3::Actionable;
 
 Methods
 =======

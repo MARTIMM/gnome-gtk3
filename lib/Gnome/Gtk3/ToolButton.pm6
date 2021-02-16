@@ -20,14 +20,11 @@ The label of a B<Gnome::Gtk3::ToolButton> is determined by the properties  I<lab
 
 The icon of a B<Gnome::Gtk3::ToolButton> is determined by the properties I<icon-widget> and I<stock-id>. If I<icon-widget> is non-C<Any>, then that widget is used as the icon. Otherwise, if  I<stock-id> is non-C<Any>, the icon is determined by the stock item. Otherwise, the button does not have a icon.
 
+
 =head2 Css Nodes
 
 B<Gnome::Gtk3::ToolButton> has a single CSS node with name toolbutton.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ToolButton implements
-=comment item [Gnome::Gtk3::Actionable](Actionable.html)
 
 =head2 See Also
 
@@ -39,6 +36,7 @@ B<Gnome::Gtk3::Toolbar>, B<Gnome::Gtk3::MenuToolButton>, B<Gnome::Gtk3::ToggleTo
 
   unit class Gnome::Gtk3::ToolButton;
   also is Gnome::Gtk3::ToolItem;
+  also does Gnome::Gtk3::Actionable;
 
 =comment head2 Example
 
@@ -50,10 +48,12 @@ use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::ToolItem;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::ToolButton:auth<github:MARTIMM>;
 also is Gnome::Gtk3::ToolItem;
+also does Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;

@@ -16,6 +16,7 @@ B<Gnome::Gtk3::Switch> is a widget that has two states: on or off. The user can 
 
 B<Gnome::Gtk3::Switch> can also handle situations where the underlying state changes with a delay. See  I<state-set> for details.
 
+
 =head2 Css Nodes
 
   switch
@@ -23,20 +24,18 @@ B<Gnome::Gtk3::Switch> can also handle situations where the underlying state cha
 
 B<Gnome::Gtk3::Switch> has two css nodes, the main node with the name switch and a subnode named slider. Neither of them is using any style classes.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Switch implements
-=comment item Gnome::Gtk3::Actionable
 
 =head2 See Also
 
 B<Gnome::Gtk3::ToggleButton>
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::Switch;
   also is Gnome::Gtk3::Widget;
+  also does Gnome::Gtk3::Actionable;
 
 =comment head2 Example
 
@@ -47,13 +46,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Gtk3::Widget;
+use Gnome::Gtk3::Actionable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Switch:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
+also does Gnome::Gtk3::Actionable;
 
 #`{{
 #-------------------------------------------------------------------------------
