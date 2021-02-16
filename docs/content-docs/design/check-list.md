@@ -67,44 +67,45 @@ table {
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
-Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
-Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |
-ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |
-AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |
-Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|
-Bin                       |  |  |  |  |  |  |  |  |  |  |  |
-Border                    |Bx|  |  |  |  |  |  |  |  |  |  |
-Box                       |  |  |  |  |  |  |  |  |  |  |  |
-Buildable                 |R | ✗|  |  |  |  |  |  |  |  |  |
-Builder                   |  |  |  |  |  |  |  |  |  |  |  |
-Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |
-CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |
-CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |
-ColorButton               |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooser              |R | ✗|  |  |  |  |  |  |  |  |  |
-ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |
-ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |
-ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |
-Container                 |  |  |  |  |  |  |  |  |  |  |  |
-CssProvider               |  |  |  |  |  |  |  |  |  |  |  |
-Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |
-DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |
-Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |
-FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |
-FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |
-FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |
-FileFilter                |  |  |  |  |  |  |  |  |  |  |  |
+Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|
+Adjustment                |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |
+Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
+ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
+AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |  |  |
+Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|  |
+Bin                       |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Border                    |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
+Box                       |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Builder                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |  |  |
+CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |
+CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
+ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Container                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
+Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |
+FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
+FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
+FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |
+FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
 Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
@@ -186,7 +187,6 @@ AccelGroup                |
 AccelLabel                |
 AccelMap                  |
 Accessible                |
-Actionable                |R | ✗|
 ActionBar                 |
 AppChooserButton          |
 AppChooser                |R | ✗|

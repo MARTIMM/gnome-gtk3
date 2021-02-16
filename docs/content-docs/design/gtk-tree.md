@@ -246,7 +246,7 @@ TopLevelInterfaceSupport              Gnome::N::TopLevelInterfaceSupport
 │
 GInterface                                            
 ├── GtkBuildable                      Buildable
-├── GtkActionable
+├── GtkActionable                     Actionable
 ├─✗ GtkActivatable                    ⛔
 ├── GtkAppChooser
 ├── GtkCellLayout

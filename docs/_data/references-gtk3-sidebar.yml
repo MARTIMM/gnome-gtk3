@@ -9,6 +9,10 @@
     type: widget
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
 
+  - title: "Actionable"
+    type: interface
+    url: '/content-docs/reference/Gtk3/Actionable.html'
+
   - title: "Adjustment"
     url: "/content-docs/reference/Gtk3/Adjustment.html"
 
