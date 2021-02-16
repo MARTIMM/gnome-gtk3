@@ -102,8 +102,9 @@ submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc.
-  if $signals-added {
-    $signals-added = self.add-signal-types( $?CLASS.^name, :w0<color-set>);
+  unless $signals-added {
+    $signals-added = True;
+    self.add-signal-types( $?CLASS.^name, :w0<color-set>);
 
     # signals from interfaces
     self._add_color_chooser_signal_types($?CLASS.^name);

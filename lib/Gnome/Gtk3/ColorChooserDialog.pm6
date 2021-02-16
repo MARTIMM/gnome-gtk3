@@ -87,7 +87,7 @@ submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
-  if $signals-added {
+  unless $signals-added {
     # no signals of its own
     $signals-added = True;
 
