@@ -6,7 +6,12 @@ layout: sidebar
 ---
 # Release notes
 #### 2021-01-21 0.36.1:
+Please note that in this change a few modifications are made to some of the methods, notably to **Gnome::Gtk3::ColorChooser**
 - Adjusted **Gnome::Gtk3::Application**. It inherits from **Gnome::Gio::Application** so it was not necessary to implement the role **Gnome::Gio::ActionMap** because **Gnome::Gio::Application** already does that.
+- Remove calls to `_orientable_interface()` and method in **Gnome::Gtk3::Orientable**.
+- Updated docs and tests of **Gnome::Gtk3::Buildable**.
+- Added new interface **Gnome::Gtk3::Actionable**.
+- Updated docs and tests of **Gnome::Gtk3::ColorChooser**. Also found bugs in modules using ColorChooser. Those modules did not correctly found the signal `color-activated` from the interface.
 
 #### 2021-01-21 0.36.0:
 - New role **Gnome::Gtk3::RecentChooser**. This module is now used in an older module **Gnome::Gtk3::RecentChooserMenu**.
