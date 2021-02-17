@@ -5,7 +5,7 @@ See also for some text on this subject here [HowDoI GAction](https://wiki.gnome.
 
 ## Intro
 
-The purpose of this document is to try to find a design trick to circumvent the most of Variant and VariantType functions used by the Action modules and, if not possible, to make the whole chebang a bit more clear. Action modules make use of a Variant object to be able to sent all sorts of data to a signal handler. A Variant object can hold simple types to complex types such as arrays, tuples, hashes, etc.
+The purpose of this document is to get an overview of the Action module interactions. Action modules make use of a Variant object to be able to sent all sorts of data to a signal handler. A Variant object can hold simple types to complex types such as arrays, tuples, hashes, etc.
 
 A signal is sent after a call to `.activate()` or `.change-state()`. The activation takes also place, at a button click on e.g. RadioButton or a menu entry click, in short, all widgets inheriting the Actionable interface.
 
@@ -14,8 +14,7 @@ A signal is sent after a call to `.activate()` or `.change-state()`. The activat
 
 ## UML diagram
 
-Below, Button inherits indirectly from Widget and Application has a Button somewhere as a child object.
-The UML diagram is not yet implementated as such but it would be like shown. It's a one to one mapping from the C-libraries setup.
+In the diagram below, the Button class inherit indirectly from Widget and Application has a Button somewhere as a child object on its UI. The UML diagram is like shown below. It's a one to one mapping from the C-libraries setup.
 
 ```plantuml
 
