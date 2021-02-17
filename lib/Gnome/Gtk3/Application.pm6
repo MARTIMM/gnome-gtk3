@@ -52,7 +52,9 @@ An application can block various ways to end the session with the C<gtk_applicat
   unit class Gnome::Gtk3::Application;
   also is Gnome::Gio::Application;
 
-=comment  also does Gnome::Gio::ActionGroup;
+
+=head2 Uml Diagram
+![](plantuml/Application.svg)
 
 
 =head2 Inheriting this class

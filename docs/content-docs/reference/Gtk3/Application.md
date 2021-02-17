@@ -41,15 +41,6 @@ See Also
 
 [HowDoI: Using **Gnome::Gtk3::Application**](https://wiki.gnome.org/HowDoI/**Gnome::Gtk3::Application**), [Getting Started with GTK+: Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html**id**-1.2.3.3)
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Application implements
-
-  * Gnome::Gio::ActionGroup
-
-  * Gnome::Gio::ActionMap
-
 Synopsis
 ========
 
@@ -58,7 +49,9 @@ Declaration
 
     unit class Gnome::Gtk3::Application;
     also is Gnome::Gio::Application;
-    also does Gnome::Gio::ActionMap;
+
+Uml Diagram ![](plantuml/Application.svg)
+-----------------------------------------
 
 Inheriting this class
 ---------------------
