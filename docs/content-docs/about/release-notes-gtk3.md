@@ -5,8 +5,22 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-#### 2021-01-21 0.36.1:
-Please note that in this change a few modifications are made to some of the methods, notably to **Gnome::Gtk3::ColorChooser**
+#### 2021-02-17 0.36.1:
+Please note that in this version a few API modifications are made to some of the methods, most notably to **Gnome::Gtk3::ColorChooser**. In the future more of this kind of changes will take place because of the implementation of real methods opposed to the search methods starting in a FALLBACK().
+Implementation of methods alongside each native subroutine was started because it made the access to the native subroutines faster.
+Because those methods are then implemented in the same module, it is also clear, most of the time, what type of object is returned. It is then also possible to return the Raku object instead of the native object.
+Other changes are also applied. For instance, `gboolean` values become truly `Bool` instead of the `Int` returned from the native sub. Also enumerated values can be correctly returned through the use of the method.
+
+For example originally the call to `gtk_color_chooser_get_rgba()` defined in **Gnome::Gtk3::ColorChooser**, you had to do;
+```
+my Gnome::Gdk3::RGBA $r .= new(:native-object($ccd.get-rgba));
+```
+while now you can
+```
+my Gnome::Gdk3::RGBA $r = $ccd.get-rgba;
+```
+My sincere apologies for breaking code 😐. It is however not possible, to my knowledge, to create multi's based on return types. For the moment, the calls to any of the routines `gtk_color_chooser_get_rgba()` and `get_rgba()`still work, though not documented anymore. At a later date, a deprecation warning will be given and after some while later, all the undocumented routines are removed.
+
 - Adjusted **Gnome::Gtk3::Application**. It inherits from **Gnome::Gio::Application** so it was not necessary to implement the role **Gnome::Gio::ActionMap** because **Gnome::Gio::Application** already does that.
 - Remove calls to `_orientable_interface()` and method in **Gnome::Gtk3::Orientable**.
 - Updated docs and tests of **Gnome::Gtk3::Buildable**.
