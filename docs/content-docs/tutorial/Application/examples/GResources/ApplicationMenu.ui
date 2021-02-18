@@ -1,3 +1,4 @@
+<!-- Run glib-compile-resources xt/Applications/GResources/Application -->
 <interface>
   <menu id="menubar">
     <!--
@@ -30,7 +31,7 @@
           <attribute name='action'>app.file-new</attribute>
         </item>
         <item>
-          <attribute name ="label">Quit</attribute>
+          <attribute name="label">Quit</attribute>
           <attribute name='action'>app.file-quit</attribute>
         </item>
       </section>

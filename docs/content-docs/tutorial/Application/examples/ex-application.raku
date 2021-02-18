@@ -10,11 +10,14 @@ use v6.d;
 use NativeCall;
 
 #use Gnome::Glib::N-GVariant;
+#use Gnome::Glib::Variant;
+
 use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
 #use Gnome::Gio::SimpleAction;
-#use Gnome::Glib::Variant;
+
+use Gnome::Gtk3::MenuBar;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Application;
@@ -31,6 +34,7 @@ class AppSignalHandlers is Gnome::Gtk3::Application {
 #  has Gnome::Gtk3::Application $!app;
   has Gnome::Gtk3::Grid $!grid;
 #  has Gnome::Gio::MenuModel $!menubar;
+  has Gnome::Gtk3::MenuBar $!menubar;
   has Gnome::Gtk3::ApplicationWindow $!app-window;
 
   #-----------------------------------------------------------------------------
@@ -94,7 +98,7 @@ note 'app activated';
     );
     die $e.message if $e.is-valid;
 
-#`{{ menu xml is from gtk 2* and must be upgraded
+#`{{ menu xml is from gtk 2* and must be upgraded}}
     $!menubar .= new(:build-id<menubar>);
     self.set-menubar($!menubar);
 
@@ -107,9 +111,10 @@ note 'app activated';
     $menu-entry .= new(:name<file-quit>);
     $menu-entry.register-signal( self, 'file-quit', 'activate');
     self.add-action($menu-entry);
-}}
+
 
     $!app-window .= new(:application(self));
+    $!app-window.set-size-request( 400, 400);
     $!app-window.set-title('Application Window Test');
     $!app-window.set-border-width(20);
     $!app-window.register-signal( self, 'exit-program', 'destroy');
