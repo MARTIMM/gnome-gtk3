@@ -108,7 +108,9 @@ subtest 'Properties ...', {
     $gv.clear-object;
   }
 
-  test-property( G_TYPE_STRING, 'action-name', 'get-string', 'win.set-button');
+  test-property(
+    G_TYPE_STRING, 'action-name', 'get-string', 'win.set-button', :is-local
+  );
 
   # example calls
   #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
