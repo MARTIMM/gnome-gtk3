@@ -49,5 +49,11 @@
 
 - bar_title: Applications
   bar_menu:
-  - title: ApplicationWindow
-    url: /content-docs/tutorial/application-window.html
+  - title: Introduction
+    url: /content-docs/tutorial/Application/introduction.html
+  - title: Sceleton Application
+    url: /content-docs/tutorial/Application/sceleton.html
+#  - title: Actions
+#  - title: Menu
+#  - title: Resources
+#  - title: Settings
