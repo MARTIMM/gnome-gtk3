@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="608px" preserveAspectRatio="none" style="width:561px;height:608px;" version="1.1" viewBox="0 0 561 608" width="561px" zoomAndPan="magnify"><defs><filter height="300%" id="fglke77y31xwn" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[7d67f77911969026863717fbb204e273]
+cluster Gnome::Gtk3--><rect fill="#FFFFFF" filter="url(#fglke77y31xwn)" height="230" style="stroke: #000000; stroke-width: 1.5;" width="480" x="28" y="366"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="105" x="215.5" y="380.9951">Gnome::Gtk3</text><!--MD5=[1121a717c59c319a293e5a9c98dee73e]
+cluster Gnome::Gio--><rect fill="#FFFFFF" filter="url(#fglke77y31xwn)" height="335" style="stroke: #000000; stroke-width: 1.5;" width="542" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="94" x="231" y="21.9951">Gnome::Gio</text><!--MD5=[f76e7f9c868e6478fc523c72aca903a7]
+class Gnome::Gtk3::Actionable--><rect codeLine="10" fill="#FEFECE" filter="url(#fglke77y31xwn)" height="65.792" id="Gnome::Gtk3::Actionable" style="stroke: #A80036; stroke-width: 1.5;" width="159" x="255.5" y="514"/><ellipse cx="270.5" cy="530" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M271.7031,530.1406 Q272.0625,530.2188 272.3281,530.5 Q272.6094,530.7656 273,531.5469 L275.2344,536 L272.5469,536 L271.0469,532.875 Q270.9844,532.7344 270.875,532.5 Q270.2188,531.1094 269.3281,531.1094 L268.5469,531.1094 L268.5469,536 L266.1094,536 L266.1094,523.6094 L269.6406,523.6094 Q272.0313,523.6094 273.0625,524.4531 Q274.1094,525.2969 274.1094,527.2031 Q274.1094,528.4844 273.4844,529.25 Q272.875,530 271.7031,530.1406 Z M268.5469,525.6719 L268.5469,529.0469 L269.7031,529.0469 Q270.7188,529.0469 271.1406,528.6563 Q271.5781,528.25 271.5781,527.3438 Q271.5781,526.4531 271.1406,526.0625 Q270.7188,525.6719 269.7031,525.6719 L268.5469,525.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="66" x="284.5" y="534.1807">Actionable</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="59" x="358.5" y="511"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="359.5" y="523.1387">Interface</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="256.5" x2="413.5" y1="546" y2="546"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="100" x="261.5" y="560.2803">set-action-name()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="136" x="261.5" y="573.1763">set-action-target-value()</text><!--MD5=[99c1fd59bdfde6048aec9e6766dd53ef]
+class Gnome::Gtk3::Widget--><rect codeLine="30" fill="#FEFECE" filter="url(#fglke77y31xwn)" height="52.896" id="Gnome::Gtk3::Widget" style="stroke: #A80036; stroke-width: 1.5;" width="128" x="44" y="401"/><ellipse cx="82.85" cy="417" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M85.8188,422.6406 Q85.2406,422.9375 84.6,423.0781 Q83.9594,423.2344 83.2563,423.2344 Q80.7563,423.2344 79.4281,421.5938 Q78.1156,419.9375 78.1156,416.8125 Q78.1156,413.6875 79.4281,412.0313 Q80.7563,410.375 83.2563,410.375 Q83.9594,410.375 84.6,410.5313 Q85.2563,410.6875 85.8188,410.9844 L85.8188,413.7031 Q85.1938,413.125 84.6,412.8594 Q84.0063,412.5781 83.3813,412.5781 Q82.0375,412.5781 81.35,413.6563 Q80.6625,414.7188 80.6625,416.8125 Q80.6625,418.9063 81.35,419.9844 Q82.0375,421.0469 83.3813,421.0469 Q84.0063,421.0469 84.6,420.7813 Q85.1938,420.5 85.8188,419.9219 L85.8188,422.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="43" x="102.15" y="421.1807">Widget</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="45" x2="171" y1="433" y2="433"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="116" x="50" y="447.2803">insert-action-group()</text><!--MD5=[47e353770a770fd70e1caccb2fd90372]
+class Gnome::Gtk3::Application--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gtk3::Application" style="stroke: #A80036; stroke-width: 1.5;" width="101" x="207.5" y="411.5"/><ellipse cx="222.5" cy="427.5" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M225.4688,433.1406 Q224.8906,433.4375 224.25,433.5781 Q223.6094,433.7344 222.9063,433.7344 Q220.4063,433.7344 219.0781,432.0938 Q217.7656,430.4375 217.7656,427.3125 Q217.7656,424.1875 219.0781,422.5313 Q220.4063,420.875 222.9063,420.875 Q223.6094,420.875 224.25,421.0313 Q224.9063,421.1875 225.4688,421.4844 L225.4688,424.2031 Q224.8438,423.625 224.25,423.3594 Q223.6563,423.0781 223.0313,423.0781 Q221.6875,423.0781 221,424.1563 Q220.3125,425.2188 220.3125,427.3125 Q220.3125,429.4063 221,430.4844 Q221.6875,431.5469 223.0313,431.5469 Q223.6563,431.5469 224.25,431.2813 Q224.8438,431 225.4688,430.4219 L225.4688,433.1406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="69" x="236.5" y="431.6807">Application</text><!--MD5=[ffbcd49f6a19591f4a05ff7a8be949cc]
+class Gnome::Gtk3::ApplicationWindow--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gtk3::ApplicationWindow" style="stroke: #A80036; stroke-width: 1.5;" width="148" x="344" y="411.5"/><ellipse cx="359" cy="427.5" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M361.9688,433.1406 Q361.3906,433.4375 360.75,433.5781 Q360.1094,433.7344 359.4063,433.7344 Q356.9063,433.7344 355.5781,432.0938 Q354.2656,430.4375 354.2656,427.3125 Q354.2656,424.1875 355.5781,422.5313 Q356.9063,420.875 359.4063,420.875 Q360.1094,420.875 360.75,421.0313 Q361.4063,421.1875 361.9688,421.4844 L361.9688,424.2031 Q361.3438,423.625 360.75,423.3594 Q360.1563,423.0781 359.5313,423.0781 Q358.1875,423.0781 357.5,424.1563 Q356.8125,425.2188 356.8125,427.3125 Q356.8125,429.4063 357.5,430.4844 Q358.1875,431.5469 359.5313,431.5469 Q360.1563,431.5469 360.75,431.2813 Q361.3438,431 361.9688,430.4219 L361.9688,433.1406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="116" x="373" y="431.6807">ApplicationWindow</text><!--MD5=[3e2f051a85f4b2b2d9fbae0180460565]
+class Gnome::Gtk3::Button--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gtk3::Button" style="stroke: #A80036; stroke-width: 1.5;" width="74" x="146" y="531"/><ellipse cx="161" cy="547" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M163.9688,552.6406 Q163.3906,552.9375 162.75,553.0781 Q162.1094,553.2344 161.4063,553.2344 Q158.9063,553.2344 157.5781,551.5938 Q156.2656,549.9375 156.2656,546.8125 Q156.2656,543.6875 157.5781,542.0313 Q158.9063,540.375 161.4063,540.375 Q162.1094,540.375 162.75,540.5313 Q163.4063,540.6875 163.9688,540.9844 L163.9688,543.7031 Q163.3438,543.125 162.75,542.8594 Q162.1563,542.5781 161.5313,542.5781 Q160.1875,542.5781 159.5,543.6563 Q158.8125,544.7188 158.8125,546.8125 Q158.8125,548.9063 159.5,549.9844 Q160.1875,551.0469 161.5313,551.0469 Q162.1563,551.0469 162.75,550.7813 Q163.3438,550.5 163.9688,549.9219 L163.9688,552.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="42" x="175" y="551.1807">Button</text><!--MD5=[80d3cee8a8ce79efe3914b6d6cd2f081]
+class Gnome::Gio::Action--><rect codeLine="16" fill="#FEFECE" filter="url(#fglke77y31xwn)" height="78.688" id="Gnome::Gio::Action" style="stroke: #A80036; stroke-width: 1.5;" width="132" x="401" y="42"/><ellipse cx="416" cy="58" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M417.2031,58.1406 Q417.5625,58.2188 417.8281,58.5 Q418.1094,58.7656 418.5,59.5469 L420.7344,64 L418.0469,64 L416.5469,60.875 Q416.4844,60.7344 416.375,60.5 Q415.7188,59.1094 414.8281,59.1094 L414.0469,59.1094 L414.0469,64 L411.6094,64 L411.6094,51.6094 L415.1406,51.6094 Q417.5313,51.6094 418.5625,52.4531 Q419.6094,53.2969 419.6094,55.2031 Q419.6094,56.4844 418.9844,57.25 Q418.375,58 417.2031,58.1406 Z M414.0469,53.6719 L414.0469,57.0469 L415.2031,57.0469 Q416.2188,57.0469 416.6406,56.6563 Q417.0781,56.25 417.0781,55.3438 Q417.0781,54.4531 416.6406,54.0625 Q416.2188,53.6719 415.2031,53.6719 L414.0469,53.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="39" x="430" y="62.1807">Action</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="59" x="477" y="39"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="478" y="51.1387">Interface</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="402" x2="532" y1="74" y2="74"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="42" x="407" y="88.2803">action()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="82" x="407" y="101.1763">change-state()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59" x="407" y="114.0723">set-state()</text><!--MD5=[52daef78ed2790ccbeeda1843aa019ae]
+class Gnome::Gio::ActionMap--><rect codeLine="23" fill="#FEFECE" filter="url(#fglke77y31xwn)" height="52.896" id="Gnome::Gio::ActionMap" style="stroke: #A80036; stroke-width: 1.5;" width="158" x="228" y="181"/><ellipse cx="243" cy="197" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M244.2031,197.1406 Q244.5625,197.2188 244.8281,197.5 Q245.1094,197.7656 245.5,198.5469 L247.7344,203 L245.0469,203 L243.5469,199.875 Q243.4844,199.7344 243.375,199.5 Q242.7188,198.1094 241.8281,198.1094 L241.0469,198.1094 L241.0469,203 L238.6094,203 L238.6094,190.6094 L242.1406,190.6094 Q244.5313,190.6094 245.5625,191.4531 Q246.6094,192.2969 246.6094,194.2031 Q246.6094,195.4844 245.9844,196.25 Q245.375,197 244.2031,197.1406 Z M241.0469,192.6719 L241.0469,196.0469 L242.2031,196.0469 Q243.2188,196.0469 243.6406,195.6563 Q244.0781,195.25 244.0781,194.3438 Q244.0781,193.4531 243.6406,193.0625 Q243.2188,192.6719 242.2031,192.6719 L241.0469,192.6719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="65" x="257" y="201.1807">ActionMap</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="59" x="330" y="178"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="331" y="190.1387">Interface</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="229" x2="385" y1="213" y2="213"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="67" x="234" y="227.2803">add-action()</text><!--MD5=[57219f935f658ae7b5ba62283ea02453]
+class Gnome::Gio::ActionGroup--><rect codeLine="28" fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gio::ActionGroup" style="stroke: #A80036; stroke-width: 1.5;" width="170" x="23" y="191.5"/><ellipse cx="38" cy="207.5" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M39.2031,207.6406 Q39.5625,207.7188 39.8281,208 Q40.1094,208.2656 40.5,209.0469 L42.7344,213.5 L40.0469,213.5 L38.5469,210.375 Q38.4844,210.2344 38.375,210 Q37.7188,208.6094 36.8281,208.6094 L36.0469,208.6094 L36.0469,213.5 L33.6094,213.5 L33.6094,201.1094 L37.1406,201.1094 Q39.5313,201.1094 40.5625,201.9531 Q41.6094,202.7969 41.6094,204.7031 Q41.6094,205.9844 40.9844,206.75 Q40.375,207.5 39.2031,207.6406 Z M36.0469,203.1719 L36.0469,206.5469 L37.2031,206.5469 Q38.2188,206.5469 38.6406,206.1563 Q39.0781,205.75 39.0781,204.8438 Q39.0781,203.9531 38.6406,203.5625 Q38.2188,203.1719 37.2031,203.1719 L36.0469,203.1719 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="77" x="52" y="211.6807">ActionGroup</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="59" x="137" y="188.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="138" y="200.6387">Interface</text><!--MD5=[ec39509ece4fa2c1842761095753d9da]
+class Gnome::Gio::Application--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gio::Application" style="stroke: #A80036; stroke-width: 1.5;" width="101" x="218.5" y="294"/><ellipse cx="233.5" cy="310" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M236.4688,315.6406 Q235.8906,315.9375 235.25,316.0781 Q234.6094,316.2344 233.9063,316.2344 Q231.4063,316.2344 230.0781,314.5938 Q228.7656,312.9375 228.7656,309.8125 Q228.7656,306.6875 230.0781,305.0313 Q231.4063,303.375 233.9063,303.375 Q234.6094,303.375 235.25,303.5313 Q235.9063,303.6875 236.4688,303.9844 L236.4688,306.7031 Q235.8438,306.125 235.25,305.8594 Q234.6563,305.5781 234.0313,305.5781 Q232.6875,305.5781 232,306.6563 Q231.3125,307.7188 231.3125,309.8125 Q231.3125,311.9063 232,312.9844 Q232.6875,314.0469 234.0313,314.0469 Q234.6563,314.0469 235.25,313.7813 Q235.8438,313.5 236.4688,312.9219 L236.4688,315.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="69" x="247.5" y="314.1807">Application</text><!--MD5=[49a849ef77bfed1596d666b45315cd02]
+class Gnome::Gio::SimpleAction--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gio::SimpleAction" style="stroke: #A80036; stroke-width: 1.5;" width="112" x="421" y="191.5"/><ellipse cx="436" cy="207.5" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M438.9688,213.1406 Q438.3906,213.4375 437.75,213.5781 Q437.1094,213.7344 436.4063,213.7344 Q433.9063,213.7344 432.5781,212.0938 Q431.2656,210.4375 431.2656,207.3125 Q431.2656,204.1875 432.5781,202.5313 Q433.9063,200.875 436.4063,200.875 Q437.1094,200.875 437.75,201.0313 Q438.4063,201.1875 438.9688,201.4844 L438.9688,204.2031 Q438.3438,203.625 437.75,203.3594 Q437.1563,203.0781 436.5313,203.0781 Q435.1875,203.0781 434.5,204.1563 Q433.8125,205.2188 433.8125,207.3125 Q433.8125,209.4063 434.5,210.4844 Q435.1875,211.5469 436.5313,211.5469 Q437.1563,211.5469 437.75,211.2813 Q438.3438,211 438.9688,210.4219 L438.9688,213.1406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="80" x="450" y="211.6807">SimpleAction</text><!--MD5=[de0951c54fdb51b6ad6b974696b8e46f]
+class Gnome::Gio::SimpleActionGroup--><rect fill="#FEFECE" filter="url(#fglke77y31xwn)" height="32" id="Gnome::Gio::SimpleActionGroup" style="stroke: #A80036; stroke-width: 1.5;" width="150" x="33" y="294"/><ellipse cx="48" cy="310" fill="#80FFFF" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M50.9688,315.6406 Q50.3906,315.9375 49.75,316.0781 Q49.1094,316.2344 48.4063,316.2344 Q45.9063,316.2344 44.5781,314.5938 Q43.2656,312.9375 43.2656,309.8125 Q43.2656,306.6875 44.5781,305.0313 Q45.9063,303.375 48.4063,303.375 Q49.1094,303.375 49.75,303.5313 Q50.4063,303.6875 50.9688,303.9844 L50.9688,306.7031 Q50.3438,306.125 49.75,305.8594 Q49.1563,305.5781 48.5313,305.5781 Q47.1875,305.5781 46.5,306.6563 Q45.8125,307.7188 45.8125,309.8125 Q45.8125,311.9063 46.5,312.9844 Q47.1875,314.0469 48.5313,314.0469 Q49.1563,314.0469 49.75,313.7813 Q50.3438,313.5 50.9688,312.9219 L50.9688,315.6406 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="118" x="62" y="314.1807">SimpleActionGroup</text><!--MD5=[2b6bfb86db34ebc0643abefcc19cac1b]
+reverse link Gnome::Gio::Application to Gnome::Gtk3::Application--><path codeLine="35" d="M265.63,346.34 C263.56,368.13 261,394.97 259.44,411.4 " fill="none" id="Gnome::Gio::Application-backto-Gnome::Gtk3::Application" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="258.7,345.35,267.56,326.1,272.63,346.67,258.7,345.35" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6cdae73a1fb1279bd39e65efbe7aa053]
+reverse link Gnome::Gio::ActionMap to Gnome::Gio::Application--><path codeLine="36" d="M290.13,253.12 C284.62,267.68 278.88,282.88 274.77,293.75 " fill="none" id="Gnome::Gio::ActionMap-backto-Gnome::Gio::Application" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="283.69,250.35,297.31,234.12,296.79,255.3,283.69,250.35" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6712c365260eed37ed43a218d22807e7]
+link Gnome::Gtk3::Application to Gnome::Gtk3::ApplicationWindow--><path codeLine="38" d="M308.62,427.5 C318.57,427.5 328.51,427.5 338.46,427.5 " fill="none" id="Gnome::Gtk3::Application-to-Gnome::Gtk3::ApplicationWindow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="343.66,427.5,334.66,423.5,338.66,427.5,334.66,431.5,343.66,427.5" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[17813220c685334744f85e93c81345b5]
+reverse link Gnome::Gio::ActionMap to Gnome::Gtk3::ApplicationWindow--><path codeLine="39" d="M329.32,252.33 C354.4,301.59 393.77,378.91 410.29,411.36 " fill="none" id="Gnome::Gio::ActionMap-backto-Gnome::Gtk3::ApplicationWindow" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="323.01,255.36,320.17,234.36,335.48,249.01,323.01,255.36" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[95fd1da15393784932310ca6c8005a9e]
+reverse link Gnome::Gio::Action to Gnome::Gio::SimpleAction--><path codeLine="42" d="M471.73,141.09 C473.22,159.65 474.75,178.61 475.77,191.31 " fill="none" id="Gnome::Gio::Action-backto-Gnome::Gio::SimpleAction" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="464.74,141.55,470.11,121.05,478.69,140.43,464.74,141.55" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[673b94868d8a1a15ab2f3e232c1522b6]
+link Gnome::Gio::ActionMap to Gnome::Gio::SimpleAction--><path codeLine="44" d="M398.02,207.5 C398.02,207.5 404.75,207.5 407.59,207.5 " fill="none" id="Gnome::Gio::ActionMap-Gnome::Gio::SimpleAction" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="420.85,207.5,411.85,203.5,415.85,207.5,411.85,211.5,420.85,207.5" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="415.85" x2="407.85" y1="207.5" y2="207.5"/><polygon fill="#A80036" points="386.02,207.5,392.02,211.5,398.02,207.5,392.02,203.5,386.02,207.5" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="7" x="405.8345" y="203.6578">*</text><!--MD5=[34b586cf652b37c763b2dd49dd2ea49f]
+reverse link Gnome::Gio::ActionGroup to Gnome::Gio::SimpleActionGroup--><path codeLine="46" d="M108,243.78 C108,260.95 108,280.7 108,293.92 " fill="none" id="Gnome::Gio::ActionGroup-backto-Gnome::Gio::SimpleActionGroup" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="101,243.76,108,223.76,115,243.76,101,243.76" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bd465bcff9223a14ec5ea03dadb48bff]
+reverse link Gnome::Gio::ActionMap to Gnome::Gio::SimpleActionGroup--><path codeLine="47" d="M237.95,243.37 C203.78,260.63 164.3,280.57 137.91,293.89 " fill="none" id="Gnome::Gio::ActionMap-backto-Gnome::Gio::SimpleActionGroup" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="235.26,236.89,256.27,234.12,241.57,249.38,235.26,236.89" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9f01b0aeb3225f93af8c07cccda91d34]
+reverse link Gnome::Gio::ActionGroup to Gnome::Gio::Application--><path codeLine="49" d="M149.44,234.37 C179.64,253.22 219.53,278.12 244.73,293.85 " fill="none" id="Gnome::Gio::ActionGroup-backto-Gnome::Gio::Application" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="145.36,240.07,132.1,223.55,152.78,228.2,145.36,240.07" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5033a96e530d4c699469adea214b8e5d]
+link Gnome::Gio::ActionGroup to Gnome::Gio::ActionMap--><path codeLine="50" d="M193.12,207.5 C202.97,207.5 212.82,207.5 222.67,207.5 " fill="none" id="Gnome::Gio::ActionGroup-to-Gnome::Gio::ActionMap" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="227.82,207.5,218.82,203.5,222.82,207.5,218.82,211.5,227.82,207.5" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[405ed968b4d2e2e14d05aa9b9d4b7470]
+link Gnome::Gtk3::Application to Gnome::Gtk3::Button--><path codeLine="52" d="M248.2,443.86 C234.72,464.97 210.46,502.97 195.64,526.2 " fill="none" id="Gnome::Gtk3::Application-to-Gnome::Gtk3::Button" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="192.81,530.64,201.0201,525.1999,195.4972,526.4235,194.2736,520.9005,192.81,530.64" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d7b10450ecb8b9b6a7276c3f6fc07b93]
+link Gnome::Gtk3::Button to Gnome::Gtk3::Actionable--><path codeLine="53" d="M220.11,547 C225.03,547 229.95,547 234.88,547 " fill="none" id="Gnome::Gtk3::Button-to-Gnome::Gtk3::Actionable" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="235.12,540,255.12,547,235.12,554,235.12,540" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[687415f27e6c4b3c7cb11c616b8c34d5]
+reverse link Gnome::Gtk3::Widget to Gnome::Gtk3::Button--><path codeLine="54" d="M135.23,471.16 C148.5,491.94 163.62,515.64 173.23,530.7 " fill="none" id="Gnome::Gtk3::Widget-backto-Gnome::Gtk3::Button" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="129.32,474.91,124.46,454.29,141.12,467.38,129.32,474.91" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[11544b2486b5e8c194d5384011094700]
+link Gnome::Gio::SimpleActionGroup to Gnome::Gtk3::Widget--><path codeLine="55" d="M108,339.17 C108,353.71 108,388.8 108,388.8 " fill="none" id="Gnome::Gio::SimpleActionGroup-Gnome::Gtk3::Widget" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="108,400.8,112,394.8,108,388.8,104,394.8,108,400.8" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="108,326.1,104,335.1,108,331.1,112,335.1,108,326.1" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="108" x2="108" y1="331.1" y2="339.1"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="7" x="99.8406" y="346.1068">*</text><!--MD5=[bf099d41f6432c64f303b55985d550d9]
+@startuml
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide empty members
+
+'Classes and interfaces
+Interface Gnome::Gtk3::Actionable <Interface>
+class Gnome::Gtk3::Actionable <<(R,#80ffff)>> {
+  set-action-name()
+  set-action-target-value()
+}
+
+Interface Gnome::Gio::Action <Interface>
+class Gnome::Gio::Action <<(R,#80ffff)>> {
+  action()
+  change-state()
+  set-state()
+}
+
+Interface Gnome::Gio::ActionMap <Interface>
+class Gnome::Gio::ActionMap <<(R,#80ffff)>> {
+  add-action()
+}
+
+Interface Gnome::Gio::ActionGroup <Interface>
+class Gnome::Gio::ActionGroup <<(R,#80ffff)>>
+
+class Gnome::Gtk3::Widget {
+  insert-action-group()
+}
+
+'Connections
+Gnome::Gio::Application <|- - Gnome::Gtk3::Application
+Gnome::Gio::ActionMap <|.. Gnome::Gio::Application
+
+Gnome::Gtk3::Application -> Gnome::Gtk3::ApplicationWindow
+Gnome::Gio::ActionMap <|.. Gnome::Gtk3::ApplicationWindow
+
+
+Gnome::Gio::Action <|.. Gnome::Gio::SimpleAction
+
+Gnome::Gio::ActionMap *-> "*" Gnome::Gio::SimpleAction
+
+Gnome::Gio::ActionGroup <|.. Gnome::Gio::SimpleActionGroup
+Gnome::Gio::ActionMap <|.. Gnome::Gio::SimpleActionGroup
+
+Gnome::Gio::ActionGroup <|.. Gnome::Gio::Application
+Gnome::Gio::ActionGroup -> Gnome::Gio::ActionMap
+
+Gnome::Gtk3::Application - -> Gnome::Gtk3::Button
+Gnome::Gtk3::Button .|> Gnome::Gtk3::Actionable
+Gnome::Gtk3::Widget <|- - Gnome::Gtk3::Button
+Gnome::Gio::SimpleActionGroup "*" <- -* Gnome::Gtk3::Widget
+@enduml
+
+@startuml
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+set namespaceSeparator ::
+hide empty members
+
+Interface Gnome::Gtk3::Actionable <Interface>
+class Gnome::Gtk3::Actionable <<(R,#80ffff)>> {
+  set-action-name()
+  set-action-target-value()
+}
+
+Interface Gnome::Gio::Action <Interface>
+class Gnome::Gio::Action <<(R,#80ffff)>> {
+  action()
+  change-state()
+  set-state()
+}
+
+Interface Gnome::Gio::ActionMap <Interface>
+class Gnome::Gio::ActionMap <<(R,#80ffff)>> {
+  add-action()
+}
+
+Interface Gnome::Gio::ActionGroup <Interface>
+class Gnome::Gio::ActionGroup <<(R,#80ffff)>>
+
+class Gnome::Gtk3::Widget {
+  insert-action-group()
+}
+
+Gnome::Gio::Application <|- - Gnome::Gtk3::Application
+Gnome::Gio::ActionMap <|.. Gnome::Gio::Application
+
+Gnome::Gtk3::Application -> Gnome::Gtk3::ApplicationWindow
+Gnome::Gio::ActionMap <|.. Gnome::Gtk3::ApplicationWindow
+
+
+Gnome::Gio::Action <|.. Gnome::Gio::SimpleAction
+
+Gnome::Gio::ActionMap *-> "*" Gnome::Gio::SimpleAction
+
+Gnome::Gio::ActionGroup <|.. Gnome::Gio::SimpleActionGroup
+Gnome::Gio::ActionMap <|.. Gnome::Gio::SimpleActionGroup
+
+Gnome::Gio::ActionGroup <|.. Gnome::Gio::Application
+Gnome::Gio::ActionGroup -> Gnome::Gio::ActionMap
+
+Gnome::Gtk3::Application - -> Gnome::Gtk3::Button
+Gnome::Gtk3::Button .|> Gnome::Gtk3::Actionable
+Gnome::Gtk3::Widget <|- - Gnome::Gtk3::Button
+Gnome::Gio::SimpleActionGroup "*" <- -* Gnome::Gtk3::Widget
+@enduml
+
+PlantUML version 1.2020.19(Mon Oct 12 17:10:01 CEST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
