@@ -329,7 +329,8 @@ MainLoop                  |S | ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |
 SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
 Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
-VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓|  |
+VariantDict               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
 
 Module Main will be deprecated after version 0.20.0
 

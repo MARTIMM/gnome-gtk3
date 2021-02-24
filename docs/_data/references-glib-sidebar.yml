@@ -38,6 +38,10 @@
     type: toplevel
     url: '/content-docs/reference/Glib/Variant.html'
 
+  - title: "VariantDict"
+    type: toplevel
+    url: '/content-docs/reference/Glib/VariantDict.html'
+
   - title: "VariantType"
     type: toplevel
     url: '/content-docs/reference/Glib/VariantType.html'
