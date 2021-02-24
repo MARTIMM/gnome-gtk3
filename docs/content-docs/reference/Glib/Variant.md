@@ -10,17 +10,27 @@ Description
 
 A **Gnome::Glib::Variant** may contain simple types, like an integer, or a boolean value; or complex types, like an array of two strings, or a dictionary of key value pairs. A **Gnome::Glib::Variant** is also immutable: once it's been created neither its type nor its content can be modified further.
 
-Gnome::Glib::Variant is useful whenever data needs to be serialized, for example when sending method parameters in DBus, or when saving settings using GSettings.
+**Gnome::Glib::Variant** is useful whenever data needs to be serialized, for example when sending method parameters in DBus, or when saving settings using **Gnome::Glib::Settings**.
 
 When creating a new **Gnome::Glib::Variant**, you pass the data you want to store in it along with a string representing the type of data you wish to pass to it.
 
 For instance, if you want to create a **Gnome::Glib::Variant** holding an integer value you can use:
 
-    my Gnome::Glib::Variant $v .= new( :type-string<ui>, :values([ 40, -40]));
+    my Gnome::Glib::Variant $v .= new(
+      :type-string<u>, :value(42)
+    );
 
-The string "u" in the first argument tells **Gnome::Glib::Variant** that the data passed to the constructor (40) is going to be an unsigned integer.
+The string "u" in the first argument tells **Gnome::Glib::Variant** that the data passed to the constructor (40) is going to be an unsigned 32 bit integer.
 
-More advanced examples of **Gnome::Glib::Variant** in use can be found in documentation for [GVariant format strings][gvariant-format-strings-pointers].
+As an alternative you can write
+
+    my Gnome::Glib::Variant $v .= new(:parse('-42'));
+
+where the default used type is a signed 32 bit integer. To use an other integer type, write the type with it.
+
+    my Gnome::Glib::Variant $v .= new(:parse('uint64 42'));
+
+More advanced examples of **Gnome::Glib::Variant** in use can be found in documentation for GVariant format strings.
 
 The range of possible values is determined by the type.
 
@@ -108,7 +118,15 @@ To put the entire example together, for our dictionary mapping strings to varian
 See Also
 --------
 
-[Gnome::Glib::VariantType](VariantType.html), [gvariant format strings](https://developer.gnome.org/glib/stable/gvariant-format-strings.html), [gvariant text format](https://developer.gnome.org/glib/stable/gvariant-text.html).
+[Gnome::Glib::VariantType](VariantType.html), [variant format strings](https://developer.gnome.org/glib/stable/gvariant-format-strings.html), [variant text format](https://developer.gnome.org/glib/stable/gvariant-text.html).
+
+  * [Variant dictionaries](VariantDict.html)
+
+  * [Variant types](VariantType.html)
+
+  * [Variant format strings](https://developer.gnome.org/glib/stable/gvariant-format-strings.html)
+
+  * [Variant text format](https://developer.gnome.org/glib/stable/gvariant-text.html)
 
 Synopsis
 ========
@@ -210,6 +228,25 @@ Creates a new byte-string-array Variant. Its type becomes 'aay'. which is essent
 
     multi method new ( Array :$byte-string-array! )
 
+### :dict
+
+Creates a new dictionary Variant. Its type becomes '{}'.
+
+    multi method new ( List :$dict! )
+
+The List `$dict` has two values, a *key* and a *value* and must both be valid **Gnome::Glib::Variant** objects. *key* must be a value of a basic type (ie: not a container). It will mostly be a string (variant type 's').
+
+#### Example
+
+    my Gnome::Glib::Variant $v .= new(
+      :dict(
+        Gnome::Glib::Variant.new(:parse<width>),
+        Gnome::Glib::Variant.new(:parse<200>)
+      )
+    );
+
+    say $v.print; #
+
 ### :double
 
 Creates a new double Variant. Its type becomes 'd'.
@@ -299,9 +336,9 @@ Creates a new variant Variant. Its type becomes 'v'.
 
 ### :type-string, :parse
 
-Create a new Variant object by parsing the type and data provided in strings.
+Create a new Variant object by parsing the type and data provided in strings. The format of the parse string is [described here](https://developer.gnome.org/glib/stable/gvariant-text.html).
 
-    multi method new ( Str :$type-string!, Str :$parse! )
+    multi method new ( Str :$type-string?, Str :$parse! )
 
 #### Example
 
@@ -310,6 +347,10 @@ Create a Variant tuple containing a string, an unsigned integer and a boolean (N
     my Gnome::Glib::Variant $v .= new(
       :type-string<(sub)>, :parse('("abc",20,true)')
     );
+
+Because the values in the :parse string take the default types you can also leave out the type string;
+
+    my Gnome::Glib::Variant $v .= new(:parse('("abc",20,true)'));
 
 ### :type-string, :value
 
@@ -482,11 +523,11 @@ Returns: `True` if the type of *value* matches *type*
 print
 -----
 
-Pretty-prints *value* in the format understood by `g_variant_parse()`. If *type_annotate* is `True`, then type information is included in the output.
+Pretty-prints *value* in the format understood by `parse()`. If *$type_annotate* is `True`, then type information is included in the output.
 
 Returns: a newly-allocated string holding the result.
 
-    method print ( Bool $type_annotate -->  Str  )
+    method print ( Bool $type_annotate = False --> Str )
 
   * Int $type_annotate; `True` if type information should be included in the output
 

@@ -18,6 +18,9 @@ TopLevelClassSupport                   Gnome::N::TopLevelClassSupport
 ├─ GError                              Error
 ├─ GList                               List
 ├─ GSlist                              Slist
+├─ GVariant                            Variant
+├─ GVariantDict                        VariantDict
+├─ GVariantType                        VariantType
 ╰──
 
 Stand alone classes
@@ -30,8 +33,6 @@ Stand alone classes
 ```
 <!--
 ├─ GOptionContext                   ⛔ OptionContext
-├─ GVariant                         ⛔ Variant
 ├─ GVariantBuilder                  ⛔ VariantBuilder
 ├─ GVariantIter                     ⛔ VariantIter
-├─ GVariantType                     ⛔ VariantType
 -->
