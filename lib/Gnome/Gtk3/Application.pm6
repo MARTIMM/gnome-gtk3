@@ -144,7 +144,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
-#TM:1:new( :flags,:app-id):
+#TM:1:new(:flags,:app-id):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
