@@ -114,7 +114,7 @@ note 'app activated';
 
 
     $!app-window .= new(:application(self));
-    $!app-window.set-size-request( 400, 400);
+    $!app-window.set-size-request( 600, 400);
     $!app-window.set-title('Application Window Test');
     $!app-window.set-border-width(20);
     $!app-window.register-signal( self, 'exit-program', 'destroy');
