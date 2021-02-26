@@ -1,4 +1,7 @@
-<!-- Run glib-compile-resources xt/Applications/GResources/Application -->
+<!--
+  In dir …/gnome-gtk3/docs/content-docs/tutorial/Application/examples Run;
+  glib-compile-resources GResources/Application
+-->
 <interface>
   <menu id="menubar">
     <!--
@@ -22,28 +25,50 @@
       <attribute name="label">File</attribute>
       <section>
         <item>
-          <attribute name="label">New</attribute>
           <!--
             my Gnome::Gio::SimpleAction $file-new .= new(:name<file-new>);
             $file-new.register-signal( self, 'file-new', 'activate');
             $!app.add-action($file-new);
           -->
+          <attribute name="label">New</attribute>
           <attribute name='action'>app.file-new</attribute>
         </item>
+
+        <section>
+          <item>
+            <attribute name="label">Save uncompressed</attribute>
+            <attribute name='action'>app.compressed</attribute>
+            <attribute name='target'>uncompressed</attribute>
+          </item>
+          <item>
+            <attribute name="label">Save compressed</attribute>
+            <attribute name='action'>app.compressed</attribute>
+            <attribute name='target'>compressed</attribute>
+          </item>
+        </section>
+
         <item>
           <attribute name="label">Quit</attribute>
           <attribute name='action'>app.file-quit</attribute>
         </item>
       </section>
     </submenu>
-    <submenu>
-      <attribute name="label">Edit</attribute>
-    </submenu>
-    <submenu>
-      <attribute name="label">Choices</attribute>
-    </submenu>
+
     <submenu>
       <attribute name="label">Help</attribute>
+      <section>
+        <item>
+          <attribute name="label">Index</attribute>
+          <attribute name='action'>app.show-index</attribute>
+        </item>
+      </section>
+
+      <section>
+        <item>
+          <attribute name="label">About</attribute>
+          <attribute name='action'>app.show-about</attribute>
+        </item>
+      </section>
     </submenu>
   </menu>
 </interface>

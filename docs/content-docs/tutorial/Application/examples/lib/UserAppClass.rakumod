@@ -62,17 +62,17 @@ note 'build done';
 }
 
 #-------------------------------------------------------------------------------
-method app-startup ( Gnome::Gtk3::Application :widget($app) ) {
+method app-startup ( Gnome::Gtk3::Application :_widget($app) ) {
 note 'app registered';
 }
 
 #-------------------------------------------------------------------------------
-method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {
+method app-shutdown ( Gnome::Gtk3::Application :_widget($app) ) {
 note 'app shutdown';
 }
 
 #-------------------------------------------------------------------------------
-method app-activate ( Gnome::Gtk3::Application :widget($app) ) {
+method app-activate ( Gnome::Gtk3::Application :_widget($app) ) {
 note 'app activated';
 
   given $!app-window .= new(:application(self)) {
@@ -91,7 +91,7 @@ note 'app activated';
 #`{{
 #-------------------------------------------------------------------------------
 method app-cmd-line (
-  N-GObject $no-cmd-line, Gnome::Gtk3::Application :widget($app)
+  N-GObject $no-cmd-line, Gnome::Gtk3::Application :_widget($app)
 ) {
 note 'command line request';
 }
@@ -100,7 +100,7 @@ note 'command line request';
 #`{{
 #-------------------------------------------------------------------------------
 method app-options (
-  N-GVariantDict $no-cmd-options, Gnome::Gtk3::Application :widget($app)
+  N-GVariantDict $no-cmd-options, Gnome::Gtk3::Application :_widget($app)
 ) {
   my Gnome::Glib::Variant $options .= new(:native-object($no-cmd-options));
 
@@ -112,7 +112,7 @@ note 'command options:', $options.print(False);
 #-------------------------------------------------------------------------------
 method app-open (
   Pointer $f, Int $nf, Str $hint,
-  Gnome::Gtk3::Application :widget($app)
+  Gnome::Gtk3::Application :_widget($app)
 ) {
 note "open $nf, $hint";
 }

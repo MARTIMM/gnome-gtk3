@@ -9,8 +9,12 @@ use v6.d;
 
 use NativeCall;
 
-#use Gnome::Glib::N-GVariant;
-#use Gnome::Glib::Variant;
+use Gnome::N::GlibToRakuTypes;
+
+use Gnome::Glib::N-GVariant;
+use Gnome::Glib::N-GVariantType;
+use Gnome::Glib::Variant;
+use Gnome::Glib::VariantType;
 
 use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
@@ -30,33 +34,26 @@ use Gnome::N::X;
 #-------------------------------------------------------------------------------
 class AppSignalHandlers is Gnome::Gtk3::Application {
 
+  constant APP-ID = 'io.github.martimm.tutorial';
+
   has Str $!app-rbpath;
 #  has Gnome::Gtk3::Application $!app;
   has Gnome::Gtk3::Grid $!grid;
 #  has Gnome::Gio::MenuModel $!menubar;
   has Gnome::Gtk3::MenuBar $!menubar;
   has Gnome::Gtk3::ApplicationWindow $!app-window;
+  has Str $!resource-section = '-';
 
   #-----------------------------------------------------------------------------
   submethod new ( |c ) {
-    self.bless( :GtkApplication, |c);
+    self.bless( :GtkApplication, :app-id(APP-ID), |c);
   }
 
   #-----------------------------------------------------------------------------
-  submethod BUILD ( ) {
+  submethod BUILD ( :$!resource-section ) {
 
-    my Gnome::Gio::Resource $r .= new(
-      :load<xt/data/g-resources/ex-application.gresource>
-    );
+    my Gnome::Gio::Resource $r .= new(:load<GResources/Application.gresource>);
     $r.register;
-
-#`{{
-    $!app .= new(
-      :app-id('io.github.martimm.test.application'),
-      :flags(G_APPLICATION_HANDLES_OPEN), # +| G_APPLICATION_NON_UNIQUE),
-      :!initialize
-    );
-}}
 
     # startup signal fired after registration
     self.register-signal( self, 'app-startup', 'startup');
@@ -78,7 +75,7 @@ class AppSignalHandlers is Gnome::Gtk3::Application {
   #-----------------------------------------------------------------------------
   method app-startup ( Gnome::Gtk3::Application :widget($app) ) {
 note 'app registered';
-    self.run;
+#    self.run;
   }
 
   #-----------------------------------------------------------------------------
@@ -94,24 +91,46 @@ note 'app activated';
 
     my Gnome::Gtk3::Builder $builder .= new;
     my Gnome::Glib::Error $e = $builder.add-from-resource(
-      $!app-rbpath ~ '/xt/data/g-resources/ex-application-menu.ui'
+      "$!app-rbpath/$!resource-section/ApplicationMenu.ui"
     );
     die $e.message if $e.is-valid;
 
-#`{{ menu xml is from gtk 2* and must be upgraded}}
+#!!! get/set-app-menu removed from version 4. https://gitlab.gnome.org/GNOME/Initiatives/-/wikis/App-Menu-Retirement
     $!menubar .= new(:build-id<menubar>);
     self.set-menubar($!menubar);
 
+#`{{
     # in xml: <attribute name='action'>app.file-new</attribute>
-    my Gnome::Gio::SimpleAction $menu-entry .= new(:name<file-new>);
+    my Gnome::Gio::SimpleAction $menu-entry .= new(
+      :name<file-new>,
+    #  :parameter-type(Gnome::Glib::VariantType.new(:type-string<s>))
+    );
+    #$menu-entry.set-enabled(True);
     $menu-entry.register-signal( self, 'file-new', 'activate');
     self.add-action($menu-entry);
+    $menu-entry.clear-object;
 
     # in xml: <attribute name='action'>app.file-quit</attribute>
     $menu-entry .= new(:name<file-quit>);
     $menu-entry.register-signal( self, 'file-quit', 'activate');
     self.add-action($menu-entry);
+    $menu-entry.clear-object;
 
+    $menu-entry .= new(:name<show-index>);
+    $menu-entry.register-signal( self, 'show-index', 'activate');
+    self.add-action($menu-entry);
+    $menu-entry.clear-object;
+
+    $menu-entry .= new(:name<show-about>);
+    $menu-entry.register-signal( self, 'show-about', 'activate');
+    self.add-action($menu-entry);
+    $menu-entry.clear-object;
+}}
+    self!link-menu-action( :action<file-new>);
+    self!link-menu-action( :action<file-quit>);
+    self!link-menu-action( :action<show-index>);
+    self!link-menu-action( :action<show-about>);
+    self!link-menu-action( :action<compressed>, :state<uncompressed>);
 
     $!app-window .= new(:application(self));
     $!app-window.set-size-request( 600, 400);
@@ -134,6 +153,33 @@ note 'app activated';
   }
 
   #-----------------------------------------------------------------------------
+  method !link-menu-action ( Str :$action, Str :$method is copy, Str :$state ) {
+
+    $method //= $action;
+
+    my Gnome::Gio::SimpleAction $menu-entry;
+    if ?$state {
+      $menu-entry .= new(
+        :name($action),
+        :parameter-type(Gnome::Glib::VariantType.new(:type-string<s>)),
+        :state(Gnome::Glib::Variant.new(:parse("'$state'")))
+      );
+      $menu-entry.register-signal( self, $method, 'change-state');
+    }
+
+    else {
+      $menu-entry .= new(
+        :name($action),
+#        :parameter-type(Gnome::Glib::VariantType.new(:type-string<s>))
+      );
+      $menu-entry.register-signal( self, $method, 'activate');
+    }
+
+    self.add-action($menu-entry);
+    $menu-entry.clear-object;
+  }
+
+  #-----------------------------------------------------------------------------
   method app-open (
     Pointer $f, Int $nf, Str $hint,
     Gnome::Gtk3::Application :widget($app)
@@ -141,31 +187,65 @@ note 'app activated';
 note 'app open: ', $nf;
   }
 
-  #-----------------------------------------------------------------------------
-  method exit-program ( --> Int ) {
+  #-- [button] -----------------------------------------------------------------
+  method exit-program (
+    :_widget($button), gulong :$_handler-id
+  ) {
+    note $button.get-label;
     self.quit;
-
-    1
   }
 
   #-- [menu] -------------------------------------------------------------------
   # File > New
   method file-new (
-    Gnome::GObject::Object :widget($file-new-action)
+    N-GVariant $parameter,
+    Gnome::Gio::SimpleAction :_widget($file-new-action), gulong :$_handler-id
   ) {
+    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+    note $v.print() if $v.is-valid;
     note "Select 'New' from 'File' menu";
   }
 
   # File > Quit
   method file-quit (
-    Gnome::GObject::Object :widget($file-quit-action)
-    --> Int
+    N-GVariant $parameter,
+    Gnome::Gio::SimpleAction :_widget($file-quit-action), gulong :$_handler-id
   ) {
     note "Select 'Quit' from 'File' menu";
+    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+    note $v.print() if $v.is-valid;
 
     self.quit;
+  }
 
-    1
+  # File > Compressed
+  method compressed (
+    N-GVariant $parameter,
+    Gnome::Gio::SimpleAction :_widget($file-compress-action)
+  ) {
+    note "Select 'File' from 'Compressed' menu";
+    note $file-compress-action.get-name;
+    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+    note "Set to $v.print()" if $v.is-valid;
+    $file-compress-action.set-state(
+      Gnome::Glib::Variant.new(:parse("$v.print()"))
+    );
+  }
+
+  # Help > Index
+  method show-index (
+    N-GVariant $parameter,
+    Gnome::Gio::SimpleAction :_widget($help-index-action), gulong :$_handler-id
+  ) {
+    note "Select 'Index' from 'Help' menu";
+  }
+
+  # Help > About
+  method show-about (
+    N-GVariant $parameter,
+    Gnome::Gio::SimpleAction :_widget($help-about-action), gulong :$_handler-id
+  ) {
+    note "Select 'About' from 'Help' menu";
   }
 }
 
@@ -173,7 +253,9 @@ note 'app open: ', $nf;
 
 #-------------------------------------------------------------------------------
 my AppSignalHandlers $ah .= new(
-  :app-id('io.github.martimm.test.application'),
+#  :app-id('io.github.martimm.test.application'),
   :flags(G_APPLICATION_HANDLES_OPEN), # +| G_APPLICATION_NON_UNIQUE),
-  :!initialize
+  :resource-section<sceleton>
 );
+
+exit($ah.run);

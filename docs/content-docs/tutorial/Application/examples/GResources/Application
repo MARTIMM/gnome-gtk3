@@ -1,7 +1,18 @@
-<!-- Run glib-compile-resources xt/Applications/GResources/Application -->
+<!--
+  In dir …/gnome-gtk3/docs/content-docs/tutorial/Application/examples Run;
+  glib-compile-resources GResources/Application
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/martimm/test/application">
-    <file compressed="true" preprocess="xml-stripblanks">xt/Applications/GResources/ApplicationMenu.ui</file>
+  <!--
+    app id: io.github.martimm.tutorial
+    Gnome::Gio::Application.get-resource-base-path():
+      /io/github/martimm/tutorial
+    section: sceleton
+    example resource path:
+      /io/github/martimm/tutorial/sceleton/ApplicationMenu.ui
+  -->
+  <gresource prefix="/io/github/martimm/tutorial/sceleton">
+    <file alias="ApplicationMenu.ui" compressed="true" preprocess="xml-stripblanks">GResources/ApplicationMenu.ui</file>
   </gresource>
 </gresources>
