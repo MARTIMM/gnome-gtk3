@@ -107,7 +107,12 @@ sub MAIN (
           isa-ok $m, $class, '.new()';
         }
 
-        #`{{
+        #-------------------------------------------------------------------------------
+        done-testing;
+
+        =finish
+
+
         #-------------------------------------------------------------------------------
         # set environment variable 'raku-test-all' if rest must be tested too.
         unless %*ENV<raku_test_all>:exists {
@@ -257,10 +262,6 @@ sub MAIN (
 
           is \$p.result, 'done', 'emitter finished';
         }
-        }}
-
-        #-------------------------------------------------------------------------------
-        done-testing;
 
         EOTEST
 
