@@ -44,9 +44,12 @@ GObject                                   Gnome::GObject::Object
 ├── GDBusAuthObserver
 ├── GDBusConnection
 ├── GDBusInterfaceSkeleton
-├─- GMenuModel                            MenuModel
-│   ├─- GDBusMenuModel
-│   ╰─- GMenu                             
+├── GMenuModel                            MenuModel
+│   ├── GDBusMenuModel
+│   ╰── GMenu                             Menu
+├──                                       MenuItem
+├──                                       MenuAttributeIter
+├──                                       MenuLinkIter
 ├── GDBusMessage
 ├── GDBusMethodInvocation
 ├── GDBusObjectManagerClient
