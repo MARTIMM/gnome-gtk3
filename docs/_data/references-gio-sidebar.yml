@@ -25,6 +25,22 @@
     url: '/content-docs/reference/Gio/File.html'
     type: toplevel
 
+  - title: Menu
+    url: '/content-docs/reference/Gio/Menu.html'
+    type: object
+
+  - title: MenuAttributeIter
+    url: '/content-docs/reference/Gio/MenuAttributeIter.html'
+    type: object
+
+  - title: MenuItem
+    url: '/content-docs/reference/Gio/MenuItem.html'
+    type: object
+
+  - title: MenuLinkIter
+    url: '/content-docs/reference/Gio/MenuLinkIter.html'
+    type: object
+
   - title: MenuModel
     url: '/content-docs/reference/Gio/MenuModel.html'
     type: object
