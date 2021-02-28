@@ -9,6 +9,7 @@ use v6.d;
 
 use NativeCall;
 
+use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Glib::N-GVariant;
@@ -99,38 +100,11 @@ note 'app activated';
     $!menubar .= new(:build-id<menubar>);
     self.set-menubar($!menubar);
 
-#`{{
-    # in xml: <attribute name='action'>app.file-new</attribute>
-    my Gnome::Gio::SimpleAction $menu-entry .= new(
-      :name<file-new>,
-    #  :parameter-type(Gnome::Glib::VariantType.new(:type-string<s>))
-    );
-    #$menu-entry.set-enabled(True);
-    $menu-entry.register-signal( self, 'file-new', 'activate');
-    self.add-action($menu-entry);
-    $menu-entry.clear-object;
-
-    # in xml: <attribute name='action'>app.file-quit</attribute>
-    $menu-entry .= new(:name<file-quit>);
-    $menu-entry.register-signal( self, 'file-quit', 'activate');
-    self.add-action($menu-entry);
-    $menu-entry.clear-object;
-
-    $menu-entry .= new(:name<show-index>);
-    $menu-entry.register-signal( self, 'show-index', 'activate');
-    self.add-action($menu-entry);
-    $menu-entry.clear-object;
-
-    $menu-entry .= new(:name<show-about>);
-    $menu-entry.register-signal( self, 'show-about', 'activate');
-    self.add-action($menu-entry);
-    $menu-entry.clear-object;
-}}
-    self!link-menu-action( :action<file-new>);
-    self!link-menu-action( :action<file-quit>);
-    self!link-menu-action( :action<show-index>);
-    self!link-menu-action( :action<show-about>);
-    self!link-menu-action( :action<compressed>, :state<uncompressed>);
+    self!link-menu-action(:action<file-new>);
+    self!link-menu-action(:action<file-quit>);
+    self!link-menu-action(:action<show-index>);
+    self!link-menu-action(:action<show-about>);
+    self!link-menu-action(:action<select-compression>, :state<uncompressed>);
 
     $!app-window .= new(:application(self));
     $!app-window.set-size-request( 600, 400);
@@ -165,6 +139,7 @@ note 'app activated';
         :state(Gnome::Glib::Variant.new(:parse("'$state'")))
       );
       $menu-entry.register-signal( self, $method, 'change-state');
+
     }
 
     else {
@@ -176,6 +151,8 @@ note 'app activated';
     }
 
     self.add-action($menu-entry);
+
+    #cannot clear -> need to use it in handler!
     $menu-entry.clear-object;
   }
 
@@ -197,20 +174,14 @@ note 'app open: ', $nf;
 
   #-- [menu] -------------------------------------------------------------------
   # File > New
-  method file-new (
-    N-GVariant $parameter,
-    Gnome::Gio::SimpleAction :_widget($file-new-action), gulong :$_handler-id
-  ) {
+  method file-new ( N-GVariant $parameter ) {
     my Gnome::Glib::Variant $v .= new(:native-object($parameter));
     note $v.print() if $v.is-valid;
     note "Select 'New' from 'File' menu";
   }
 
   # File > Quit
-  method file-quit (
-    N-GVariant $parameter,
-    Gnome::Gio::SimpleAction :_widget($file-quit-action), gulong :$_handler-id
-  ) {
+  method file-quit ( N-GVariant $parameter ) {
     note "Select 'Quit' from 'File' menu";
     my Gnome::Glib::Variant $v .= new(:native-object($parameter));
     note $v.print() if $v.is-valid;
@@ -219,32 +190,34 @@ note 'app open: ', $nf;
   }
 
   # File > Compressed
-  method compressed (
-    N-GVariant $parameter,
-    Gnome::Gio::SimpleAction :_widget($file-compress-action)
+  method select-compression (
+    N-GVariant $value,
+    Gnome::Gio::SimpleAction :_widget($file-compress-action) is copy,
+    N-GObject :_native-object($no)
   ) {
-    note "Select 'File' from 'Compressed' menu";
-    note $file-compress-action.get-name;
-    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+    note 'valid action: ', $file-compress-action.is-valid;
+    note 'valid no: ', $no.gist;
+
+    $file-compress-action .= new(:native-object($no))
+      unless $file-compress-action.is-valid;
+
+    note "Select 'Compressed' from 'File' menu";
+#    note $file-compress-action.get-name;
+    my Gnome::Glib::Variant $v .= new(:native-object($value));
     note "Set to $v.print()" if $v.is-valid;
+
     $file-compress-action.set-state(
       Gnome::Glib::Variant.new(:parse("$v.print()"))
     );
   }
 
   # Help > Index
-  method show-index (
-    N-GVariant $parameter,
-    Gnome::Gio::SimpleAction :_widget($help-index-action), gulong :$_handler-id
-  ) {
+  method show-index ( N-GVariant $parameter ) {
     note "Select 'Index' from 'Help' menu";
   }
 
   # Help > About
-  method show-about (
-    N-GVariant $parameter,
-    Gnome::Gio::SimpleAction :_widget($help-about-action), gulong :$_handler-id
-  ) {
+  method show-about ( N-GVariant $parameter ) {
     note "Select 'About' from 'Help' menu";
   }
 }

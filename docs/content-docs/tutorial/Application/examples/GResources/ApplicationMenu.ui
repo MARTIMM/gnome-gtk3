@@ -35,14 +35,15 @@
         </item>
 
         <section>
+          <!--attribute name="label">Compression mode</attribute-->
           <item>
             <attribute name="label">Save uncompressed</attribute>
-            <attribute name='action'>app.compressed</attribute>
+            <attribute name='action'>app.select-compression</attribute>
             <attribute name='target'>uncompressed</attribute>
           </item>
           <item>
             <attribute name="label">Save compressed</attribute>
-            <attribute name='action'>app.compressed</attribute>
+            <attribute name='action'>app.select-compression</attribute>
             <attribute name='target'>compressed</attribute>
           </item>
         </section>
