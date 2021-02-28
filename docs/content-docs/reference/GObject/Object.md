@@ -121,6 +121,17 @@ Register a handler to process a signal or an event. There are several types of c
 
       * `:$_handler-id`; The handler id which is returned from the registration
 
+      * `:$_native-object`; The native object provided by the caller. This object sometimes is usefull when the variable `$_widget` became invalid. An easy test and repair;
+
+          method some-handler (
+            …,
+            Gnome::Gtk3::Button :_widget($button) is copy,
+            N-GObject :_native-object($no)
+          ) {
+            $button .= new(:native-object($no)) unless $w.is-valid;
+            …
+          }
+
 The method returns a handler id which can be used for example to disconnect the callback later.
 
 ### Callback handlers
@@ -198,8 +209,9 @@ start-thread
 Start a thread in such a way that the function can modify the user interface in a save way and that these updates are automatically made visible without explicitly process events queued and waiting in the main loop.
 
     method start-thread (
-      $handler-object, Str:D $handler-name, Int $priority = G_PRIORITY_DEFAULT,
-      Bool :$new-context = False, Num :$start-time, *%user-options
+      $handler-object, Str:D $handler-name,
+      Bool :$new-context = False, Num :$start-time = now + 1,
+      *%user-options
       --> Promise
     )
 
@@ -207,15 +219,17 @@ Start a thread in such a way that the function can modify the user interface in 
 
   * $handler-name is name of the method.
 
-  * $priority; The priority to which the handler is started. The default is G_PRIORITY_DEFAULT. These are constants defined in **Gnome::GObject::GMain**.
-
   * $new-context; Whether to run the handler in a new context or to run it in the context of the main loop. Default is to run in the main loop.
 
   * $start-time. Start time of thread. Default is now + 1 sec. Most of the time a thread starts too fast when some widget are not ready yet. All depends of course what the thread has to do.
 
   * %user-options; Any other user data in whatever type provided as one or more named arguments except for :start-time and :new-context. These arguments are provided to the user handler when the callback is invoked.
 
-    The following named arguments can be used in the callback handler
+    There will always be one named argument `:$widget` which holds the class object on which the thread is started. The name 'widget' is therefore reserved.
+
+    The named attribute `:$widget` will be deprecated in the future. The name will be changed into `:$_widget` to give the user a free hand in user provided named arguments. The names starting with '_' will then be reserved to provide special info to the user.
+
+    The following named arguments can be used in the callback handler next to the other user definable options;
 
       * `:$_widget`; The instance which registered the signal.
 
