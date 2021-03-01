@@ -119,8 +119,6 @@ note "open $nf, $hint";
 }}
 
 #-------------------------------------------------------------------------------
-method exit-program ( --> Int ) {
+method exit-program ( ) {
   self.quit;
-
-  1
 }

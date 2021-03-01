@@ -1,7 +1,7 @@
 #!/usr/bin/env raku
 
 use v6.d;
-#use lib '../gnome-gobject/lib';
+#use lib '/home/marcel/Languages/Raku/Projects/gnome-gobject/lib';
 #use lib '../gnome-native/lib';
 #use lib '../gnome-glib/lib';
 #use lib '../gnome-gio/lib';

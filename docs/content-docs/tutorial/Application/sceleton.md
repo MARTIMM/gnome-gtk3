@@ -26,7 +26,7 @@ We can make it a bit more flexible;
 
 Here the **UserWindowClass** is used to separate the GUI buildup from the communication between the main Application and external events.
 
-The rest of the tutorial will follow the first diagram.
+The rest of the tutorial will follow the first diagram to keep it simple.
 
 ## The UserApplication
 
@@ -41,7 +41,7 @@ my UserAppClass $user-app .= new;                                     # ①
 exit($user-app.run);                                                  # ②
 ```
 
-① Your UserAppClass inherits from the Application class, so you may decide to have some options for it in this call to `.new()` instead of having everything specified in the UserAppClass. For example you could specify the application id here as well as some initialization flags conrolling some behaviour of the application.
+① Your UserAppClass inherits from the Application class (see below), so you may decide to have some options for it in this call to `.new()` instead of having everything specified in the UserAppClass. For example you could specify the application id here as well as some initialization flags controlling some behaviour of the application.
 
 ② Then when all is ready, call `.run()` to start the application. When finished, it returns an exit code where you may finish your program with. The options and arguments to the application provided on the commandline are processed in the call to `.run()`.
 
@@ -83,11 +83,11 @@ submethod BUILD ( ) {
   die $e.message if $e.is-valid;
 }
 
-method app-startup ( Gnome::Gtk3::Application :widget($app) ) {       # ⑤
+method app-startup ( Gnome::Gtk3::Application :widget($app) ) {       # ④
   …
 }
 
-method app-activate ( Gnome::Gtk3::Application :widget($app) ) {      # ⑥
+method app-activate ( Gnome::Gtk3::Application :widget($app) ) {      # ⑤
 
   given $!app-window .= new(:application(self)) {
     .set-size-request( 400, 200);
@@ -101,32 +101,31 @@ method app-activate ( Gnome::Gtk3::Application :widget($app) ) {      # ⑥
   note '  app id: ', self.get-application-id;
 }
 
-method exit-program ( --> Int ) {
+method exit-program ( ) {                                             # ⑥
   self.quit;
-
-  1
 }
 
-method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {      # ⑦
+method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {      # ⑥
   …
 }
 ```
 
 ① The application id is defined as a constant here because it will not change for the life of the application. There is a [nice document](https://developer.gnome.org/ChooseApplicationID/) about how to specify such a string. In short, it represents a "reversed DNS" style. The next list shows where it is used for (taken from that page);
 
-* by **Gnome::Gio::Application** as a method of identifying your application to the system, for ensuring that only one instance of your application is running at a given time, and as a way of passing messages to your application (such as an instruction to open a file)
+* Used by **Gnome::Gio::Application** as a method of identifying your application to the system, for ensuring that only one instance of your application is running at a given time, and as a way of passing messages to your application (such as an instruction to open a file)
 
-* by D-Bus, to name your application on the message bus. This is the primary means of communicating between applications and is visible via the gdbus commandline tool or the d-feet graphical D-Bus browser.
+* Used by D-Bus, to name your application on the message bus. This is the primary means of communicating between applications and is visible via the `gdbus` commandline tool or the graphical D-Bus browser `qdbusviewer-qt5`.
 
-* as the name of the ".desktop file" for your application. This file is how you describe your application to the system (so that it can be displayed in and launched by gnome-shell).
+* Used as the name of the ".desktop file" for your application. This file is how you describe your application to the system (so that it can be displayed in and launched by gnome-shell).
 
-* as the base name of any GSettings schemas that your application may install. These names are visible via the gsettings commandline tool or the dconf-editor graphical editor.
+* Used as a way for the system to remember state information about your applications (for example, which notifications it has requested to be shown to the user) and as a way for it to control settings about your application (for example, if its notifications have been blocked by the user)
 
-* as a way for the system to remember state information about your applications (for example, which notifications it has requested to be shown to the user) and as a way for it to control settings about your application (for example, if its notifications have been blocked by the user)
+* Used as a way for the system to use your application to extend itself (for example, by way of search providers)
 
-* as a way for the system to use your application to extend itself (for example, by way of search providers)
-
-* as the bundle name for application bundles
+* Used as the bundle name for application bundles
+<!--
+* Used as the base name of any GSettings schemas that your application may install. These names are visible via the gsettings commandline tool or the dconf-editor graphical editor.
+-->
 
 
 ② The application id is applied to the initialization of the Applications native object.
@@ -136,10 +135,16 @@ method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {      # ⑦
 * `activate`: shows the default first window of the application. This corresponds to the application being launched by the desktop environment.
 * `shutdown`: performs shutdown tasks after the main loop is exited.
 
-④ Then, the application registers itself.
+④ Then, the application registers itself. This will cause the `startup` signal to fire.
 
-⑤
+⑤ When initialization is finished, the user may decide to run the application. This will cause the `activate` signal to fire.
 
-⑥
+⑥ After working with the app, the user may decide to press an exit button or select a quit menu entry. When that happens, `.quit()` warps a `shutdown` signal.
 
-⑦
+When run, it shows a very uninteresting window …
+
+![app](images/sceleton-application.png)
+
+With a dbus viewer (I like `qdbusviewer-qt5` very much), you can find your application when it runs. You will see how the application id is used on the dbus.
+
+![dbus](images/qdbusviewer-01.png)
