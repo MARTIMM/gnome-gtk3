@@ -49,6 +49,9 @@ subtest 'ISA test', {
 
 #-------------------------------------------------------------------------------
 unless %*ENV<raku_test_all>:exists {
+  unlink $css-file;
+  unlink $invalid-css-file;
+  rmdir $dir;
   done-testing;
   exit;
 }
