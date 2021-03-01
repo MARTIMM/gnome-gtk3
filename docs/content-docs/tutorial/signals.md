@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Signals and Events
 
-We are going to see a bit more about signals. First some repetition. We define our signal handler methods in a class of its own. The purpose of that is to separate the handling of signals from the main code. This class can be setup around some object with all information it needs. An example could be the handling of a group of radio-buttons. Below a slight different approach where you can see that the class has its business with the top leven window.
+We are going to see a bit more about signals. First some repetition. We define our signal handler methods in a class of its own. The purpose of that is to separate the handling of signals from the main code. This class can be setup around some object with all information it needs. An example could be the handling of a group of radio-buttons. Below a slight different approach where you can see that the class has its business with the top level window.
 
 Such a class can be defined in a separate module which is `use`'d at the start of the program.
 
@@ -21,7 +21,7 @@ class Gui::TopWindow {
     }
   }
 
-  method exit-program ( ) { $m.gtk-main-quit; }
+  method exit-program ( ) { Gnome::Gtk3::Main.new.gtk-main-quit; }
 }
 
 ...
@@ -29,7 +29,7 @@ my Gui::TopWindow $w .= new;
 
 my Gnome::Gtk3::Grid $grid .= new;
 $w.top-window.container-add($grid);
-...
+…
 ```
 ## Declaration of the Registration Method
 
@@ -55,7 +55,7 @@ my Int $handler-id = $draw-bttn.register-signal(
 ```
 
 All of the `*%user-options` are provided to the signal handler so that the handler can process the signal with access to other variables which might be needed. In the example above, `:$draw-area` will be passed to the handler.
-Together with the user named attributes the `:$_widget` and `:$_handler-id` are also provided.
+Together with the user named attributes the arguments `:$_widget`, `:$_native-object` and `:$_handler-id` are also provided.
 
 The handler id is also returned from the call to `.register-signal()`. More on this in the next section.
 
@@ -65,21 +65,41 @@ There are times that you want to get rid of a signal when your program gets into
 
 ```
 has Int $!handler-id;
-has Gnome::Gtk3::Button $!bttn;
-...
-
-$!bttn .= new(:label<Draw>);
-$!handler-id = $draw-bttn.register-signal(
+has Gnome::Gtk3::Button $!draw-bttn;
+…
+$!draw-bttn .= new(:label<Draw>);
+$!handler-id = $!draw-bttn.register-signal(
   HandlerObject.new, 'draw-picture', 'clicked',
   :draw-area($da)
 );
-...
+…
 
 # After some time we want to change the 'clicked' signal handling
-$!bttn.handler-disconnect($!handler-id);
-...
+$!draw-bttn.handler-disconnect($!handler-id);
+…
 ```
+Or done in a handler
+```
+$_widget.handler-disconnect($_handler-id);
+…
+```
+
 So, that was easy 😉.
+
+## A note about `:$_native-object`
+
+The `$_native-object` variable provided to the handler is the same native object as stored within the Raku object provided in `$_widget`. However, there are situations that the Raku object gets invalidated; `$_widget.is-valid() ~~ False`. This is quickly remedied when it can be expected, like so;
+```
+method handler (
+  …,
+  Gnome::Gtk3::Button :_widget($button) is copy,
+  N_GObject :_native-object($no),
+  …
+) {
+  $button .= new(:native-object($no)) unless $button.is-valid;
+  …
+}
+```
 
 ## Other Signals
 
