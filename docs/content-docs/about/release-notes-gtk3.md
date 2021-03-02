@@ -23,7 +23,8 @@ My sincere apologies for breaking code 😐. It is however not possible, to my k
 
 * Adjusted **Gnome::Gtk3::Application**. It inherits from **Gnome::Gio::Application** so it was not necessary to implement the role **Gnome::Gio::ActionMap** because **Gnome::Gio::Application** already does that.
 * Remove calls to `_orientable_interface()` and method in **Gnome::Gtk3::Orientable**.
-* Updated docs and tests of **Gnome::Gtk3::Buildable**.
+* Updated docs and tests of **Gnome::Gtk3::Buildable** and **Gnome::Gtk3::Main**.
+* Initializing **Gnome::Gtk3::Main** is now without calling `.init-check()`, option `:check` to `.new()` has no function anymore. Call `.init-check()` explicitly if need be. Most of the time working with any class inheriting from **Gnome::GObject::Object** has this part covered.
 * Added new interface **Gnome::Gtk3::Actionable**.
 * Updated docs and tests of **Gnome::Gtk3::ColorChooser**. Also found bugs in modules using ColorChooser. Those modules did not correctly found the signal `color-activated` from the interface.
 
