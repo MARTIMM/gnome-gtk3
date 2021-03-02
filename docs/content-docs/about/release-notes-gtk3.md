@@ -5,7 +5,7 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-#### 2021-02-17 0.36.1:
+#### 2021-03-02 0.36.1:
 Please note that in this version a few API modifications are made to some of the methods, most notably to **Gnome::Gtk3::ColorChooser**. In the future more of this kind of changes will take place because of the implementation of real methods opposed to the search methods starting in a FALLBACK().
 Implementation of methods alongside each native subroutine was started because it made the access to the native subroutines faster.
 Because those methods are then implemented in the same module, it is also clear, most of the time, what type of object is returned. It is then also possible to return the Raku object instead of the native object.
