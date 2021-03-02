@@ -1,6 +1,7 @@
 use v6;
 use NativeCall;
 use Test;
+#use trace;
 
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Main;
@@ -17,12 +18,12 @@ my Gnome::Gtk3::Main $m;
 
 # test to show that only the $raku-option is needed to specify. There should
 # not be any usage message.
-sub MAIN ( Bool :$raku-option ) { }
 
 subtest 'ISA test', {
-  $m .= new(:check);
-  isa-ok $m, Gnome::Gtk3::Main, ".new(:check)";
-  is-deeply @*ARGS, ['--raku-option',], 'all but the last option removed';
+  $m .= new;
+  ok $m.is-valid, ".new()";
+  $m.init-check;
+  is-deeply @*ARGS, ['--raku-option',], '.init-check()';
 }
 
 #subtest 'Manipulations', {
@@ -44,11 +45,18 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  note $m.check-version( 3, 26, 0);
+  ok 1, $m.check-version( 4, 26, 0) // 'version 4.26.0';
+  ok 1, $m.gtk-check-version( 3, 24, 0) // 'version 3.24.0';
+  ok 1, $m.gtk-check-version( 2, 0, 0) // 'version 2.0.0';
 }
 
 #-------------------------------------------------------------------------------
 done-testing;
+
+# place after all test because;
+# * commandline arguments are adjusted
+# * MAIN is called before the other tests?
+sub MAIN ( Bool :$raku-option ) { }
 
 =finish
 
