@@ -24,36 +24,45 @@ There is already a bit of history for these packages. It started off building th
 A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **Gnome::Gtk3** or make other modules. Here, I think for example about the testing of interfaces in **Gnome::T** (I've taken short names like **Gnome::N** to not interfere with eventually new names from Gnome).
 
 ## What are the benefits
+
+When the packages mature, the next points are/become available;
+
 ### Pros
-  * The defaults of GTK+ are kept. Therefore, e.g, the buttons are in the proper size compared to what `GTK::Simple` produces. This has to do with presetting the size of the application window. The user might decide to set sizes themselves but the software should not impose this.
-  * Separation of callbacks from other code by having the callbacks defined in classes. Closures are therefore not necessary to get data into the callback code. Callbacks can just read/write the data in the classes attributes. Also, data can be provided with named arguments to the `register-signal()` method defined in class **Gnome::GObject::Object**. Btw. this method is available to any class inheriting from **Gnome::GObject::Object** which almost every class does.
-  * This registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks, is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
-  * The package was designed with the usage of glade interface designer in mind. So to build the interface by hand like in the examples and tutorial, is not always necessary. Feeding a saved design from the glade program to modules in **Gnome::Gtk3::Glade** is preferable when building larger user interfaces. Also it was therefore not necessary to implement every method to build a gui which made the handwork somewhat lighter. Lately, this is shifting towards almost fully implementing every class because a generator was made to help me out. The generator creates a Raku module from the c-sources of some widget. The only thing left for me was to iron the generated module to get it working.
+  * The defaults of GTK+ are kept. Therefore, e.g, the buttons are in the proper size. The user may decide to set sizes of windows and windgets but the libraries should not impose this.
+  * Separation of callbacks from other code by having the callbacks defined in classes. Callbacks can then just read/write the data in the classes attributes. Also, data can be provided with named arguments to the `register-signal()` method defined in class **Gnome::GObject::Object**. This method is available to any class inheriting from **Gnome::GObject::Object** which almost every class does.
+  * Building the interface by hand like in the examples and tutorial, is not always necessary. Feeding a saved design from the glade designer program to methods in module **Gnome::Gtk3::Builder** is preferable when building larger user interfaces.
   * No fancy stuff like tapping into channels to run signal handlers.
-  * In principle, all kinds of signals or events are possible to handle now but some signals will provide native objects to the handler which are not yet possible to wrap into a Raku object because it is not implemented yet.
   * It is possible to create threads where longer runs can be done without crippling the user interface responses and also show the results from there in the gui.
+  * It is possible to make use of actions besides signal processing.
+  * It is possible to make use of resource files. This is a different approach than what Raku can do for you. It can be combined however.
+  * It is possible to make use of D-Bus. This is one of the things that makes an application able to interact with the system and other processes as well as the desktop manager.
+  * Drag and drop will help you to drag documents from a filebrowser into your application as well as moving widgets from one place to another in your GUI.
+  * Drawing is available with Cairo.
+  * Text manipulations are supported using Pango.
 
 ### Cons
-  * The code base is much larger but I think it gives you greater flexibility. It is even possible that there is too much. This will show later on when applications are made and show that the modules can be slimmed down. E.g. the **Gnome::Gtk3::Widget** module is about 7600 lines (with pod doc).
-  * Code is somewhat slower. The setup of the 'hello world' example shown in the tutorials and examples, is about 0.05 sec slower than that of the example from **GTK::Simple**. That isn't much seen in the light that a user interface is mostly set up and drawn once.
+  * The code base is much larger but I think it gives you greater flexibility.
+  * Code is somewhat slower. That is not a big problem when a user interface is mostly set up and drawn once. Compiling the software takes much time when installing the packages.
   * When programs run the first time, it might take some time to compile.
-  * Installation of the packages takes a long time.
 
 ## Packages
-This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, Cairo, GObject, Gio and Glib. Not all libraries are available yet like Pango and Cairo and not all modules are defined in any of those packages.
+This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, Cairo, GObject, Gio and Glib. Not all libraries are available yet like Pango and not all modules are defined in any of those packages.
 
-* **Gnome::N**: Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
-* **Gnome::Glib**: C-based object and type system with signals and slots
-* **Gnome::Gio**
-  * Files: File and URI handling, asynchronous file operations, volume handling
-  * Networking: Networking and sockets API with streams
-  * Application: Support of resources and other types of settings
-* **Gnome::GObject**: Data structures and utilities for C programs
-* **Gnome::Gdk3**: Low-level abstraction for the windowing system
-* **Gnome::Gtk3**: Widget toolkit for graphical interfaces
-* **Gnome::Pango**: International text rendering with full Unicode support
-* **Gnome::Cairo**: 2D, vector-based drawing for high-quality graphics
-* **Gnome::Gtk3::Glade**: Package to make use of the graphical user interface designer program **Glade**.
+|Package|Travis-CI & Appveyor tests and Notes|
+|--|--|
+**Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
+**Gnome::T** |![T][travis-T] ![A][appveyor-T] <br/> GUI test package.
+**Gnome::Glib** | ![T][travis-glib] ![A][appveyor-glib] <br/> C-based object and type system with signals and slots
+**Gnome::Gio** | ![T][travis-gio] ![A][appveyor-gio] <br/> `Files` - File and URI handling, asynchronous file operations, volume handling. `Networking` - Networking and sockets API with streams. `Application` - Support of resources and other types of settings.
+**Gnome::GObject** | ![T][travis-gobject] ![A][appveyor-gobject] <br/> Data structures and utilities for C programs
+**Gnome::Gdk3** | ![T][travis-gdk3] ![A][appveyor-gdk3] <br/> Low-level abstraction for the windowing system
+**Gnome::Gtk3** | ![T][travis-gtk3] ![A][appveyor-gtk3] <br/> Widget toolkit for graphical interfaces
+**Gnome::Pango** | ![T][travis-pango] ![A][appveyor-pango] <br/> International text rendering with full Unicode support
+**Gnome::Cairo** | ![T][travis-cairo] ![A][appveyor-cairo] <br/> 2D, vector-based drawing for high-quality graphics
+|
+**Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Yes, of course I will … but not yet.
+**Gnome::Gdk4** | ![T][travis-gdk4] ![A][appveyor-gdk4] <br/> Must be combined with **Gnome::Gtk4**.
+
 
 # Site Contents
 * [Tutorials](content-docs/tutorial.html): Tutorials about using the modules in all its forms.
@@ -90,13 +99,15 @@ Before any code can be run we must install the packages we want to use. It is as
   * **v2019.07.1.439.\***
   * **v2019.11.328.\***
   * **v2019.11.503.\***
-* Minimal version; **v2019.07.1.439\***
+  * **v2020.12-32.\***
 
 ## Raku
 
 **NOTE**: It is really important to install the latest version of Raku because some of the encountered bugs went away after upgrading. Also some tricks like variable argument lists to native functions were only possible after summer 2019.
 
-  Here are some steps to follow if you want to be at the top of things. You need `git` to get the Rakudo software from the github site.
+  Here are some steps to follow if you want to be at the top of things. You need `git` to get the Rakudo software from the github site. However, the people who distribute the compiler, put much effort to keep the distribution packages up to date nowadays for *nixes and windows. So the next steps become less important.
+
+  Anyways …
   1) Make a directory to work in, e.g. Raku
   2) Go in that directory and run `git clone https://github.com/rakudo/rakudo.git`
   3) Then go into the created rakudo directory
@@ -116,3 +127,29 @@ Before any code can be run we must install the packages we want to use. It is as
   After this, you will notice that the `raku` command is available next to `perl6` so it is also a move forward in the renaming of Perl6 to Raku.
 
   The rakudo star installation must be removed if it was used, because otherwise there will be two Raku compilers wanting to be the captain on your ship. Also all modules must be reinstalled of course and will be installed at `$Rakudo/install/share/perl6/site`.
+
+
+<!-- ----------------------------------------------------------------------- -->
+[travis-gtk3]: https://travis-ci.org/MARTIMM/gnome-gtk3.svg?branch=master
+[travis-gdk3]: https://travis-ci.org/MARTIMM/gnome-gdk3.svg?branch=master
+[travis-gio]: https://travis-ci.org/MARTIMM/gnome-gio.svg?branch=master
+[travis-gobject]: https://travis-ci.org/MARTIMM/gnome-gobject.svg?branch=master
+[travis-glib]: https://travis-ci.org/MARTIMM/gnome-glib.svg?branch=master
+[travis-cairo]: https://travis-ci.org/MARTIMM/gnome-cairo.svg?branch=master
+[travis-pango]: https://travis-ci.org/MARTIMM/gnome-pango.svg?branch=master
+[travis-N]: https://travis-ci.org/MARTIMM/gnome-native.svg?branch=master
+[travis-T]: https://travis-ci.org/MARTIMM/gnome-test.svg?branch=master
+[travis-gtk4]: https://travis-ci.org/MARTIMM/gnome-gtk4.svg?branch=master
+[travis-gdk4]: https://travis-ci.org/MARTIMM/gnome-gdk4.svg?branch=master
+
+[appveyor-gtk3]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gtk3?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-gdk3]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gdk3?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-gio]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gio?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-gobject]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gobject?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-glib]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-glib?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-cairo]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-cairo?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-pango]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-pango?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-N]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-native?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-T]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-test?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-gtk4]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gtk4?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
+[appveyor-gdk4]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gdk4?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
