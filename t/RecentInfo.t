@@ -90,7 +90,8 @@ subtest 'Manipulations', {
 
   is $ri.get-short-name, 'marcel2', '.get-short-name()';
   is $ri.get-uri, 'file:///home/marcel2', '.get-uri()';
-  is $ri.get-uri-display, '/home/marcel2', '.get-uri-display()';
+  like $ri.get-uri-display, / <[/\\]> home <[/\\]> marcel2 /,
+    '.get-uri-display()';
 }
 
 #`{{
