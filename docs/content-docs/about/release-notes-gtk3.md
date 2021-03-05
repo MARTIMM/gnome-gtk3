@@ -5,6 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+
+#### 2021-03-02 0.36.3:
+* Removed dependency on **Gnome::Glib::OptionContext**. All classes needed to process commandline arguments, like this one, are removed or not implemented until I am realy sure that it will add more functionality than we already have using `MAIN()`, `USAGE()` and `@ARGS`.
+
 #### 2021-03-02 0.36.2:
 Please note that in this version a few API modifications are made to some of the methods, e.g. in **Gnome::Gtk3::ColorChooser**. In the future more of this kind of changes will take place because of the implementation of real methods as opposed to the search methods starting in a FALLBACK().
 Implementation of methods alongside each native subroutine was started because it made the access to the native subroutines faster.
