@@ -430,14 +430,27 @@ Also the interface module will have a role type.
 
 ![](../docs/content-docs/reference/Gtk3/plantuml/Application.svg)
 
-* start application
+* start application (primary)
   * application initialize
   * register application
     * fires event `startup`
   * return user
+* ~~`add options and option groups`~~
 * run application
-  * fires event `handle-local-options`
+  * parse commandline arguments
+    * fires event `handle-local-options`
+      return (0, > 0) or continue (-1)
+    * fires event `command-line`
+      if flag G_APPLICATION_HANDLES_COMMAND_LINE, exits program with exit code
   * fires event `activate`
+
+* start application (secondary)
+  * application initialize
+  * register application; doesn't fire `startup`
+  * return user
+* run application
+  * parse commandline arguments
+    * fires event `handle-local-options`; return (0, > 0) or continue (-1)
 
 <!--
 ```plantuml

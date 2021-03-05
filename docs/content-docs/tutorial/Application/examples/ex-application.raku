@@ -19,6 +19,9 @@ use Gnome::Glib::Variant;
 use Gnome::Glib::VariantType;
 use Gnome::Glib::VariantDict;
 
+#use Gnome::GObject::Value;
+#use Gnome::GObject::Type;
+
 use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
@@ -58,7 +61,7 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     my Gnome::Gio::Resource $r .= new(:load<GResources/Application.gresource>);
     $r.register;
 
-    # startup signal fired after registration
+    # startup signal fired after registration; only primary
     self.register-signal( self, 'app-startup', 'startup');
 
     # fired after g_application_quit
@@ -70,8 +73,15 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     #
     self.register-signal( self, 'app-open', 'open');
     self.register-signal( self, 'options', 'handle-local-options');
-    self.register-signal( self, 'app-end-session', 'query-end');
-    self.register-signal( self, 'win-open', 'window-added');
+    self.register-signal( self, 'cmdline', 'command-line');
+    self.register-signal( self, 'win-add', 'window-added');
+    self.register-signal( self, 'win-removed', 'window-removed');
+
+    # set register session property
+    #my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
+    #$gv.set-boolean(True);
+    #self.set-property( 'register-session', $gv);
+    #self.register-signal( self, 'app-end-session', 'query-end');
 
     # now we can register the application.
     my Gnome::Glib::Error $e = self.register;
@@ -82,11 +92,6 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
   method app-startup ( Gnome::Gtk3::Application :widget($app) ) {
 note 'app registered';
 #    self.run;
-  }
-
-  #-----------------------------------------------------------------------------
-  method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {
-note 'app shutdown';
   }
 
   #-----------------------------------------------------------------------------
@@ -115,7 +120,7 @@ note 'app activated';
     $!app-window.set-size-request( 600, 400);
     $!app-window.set-title('Application Window Test');
     $!app-window.set-border-width(20);
-    $!app-window.register-signal( self, 'exit-program', 'destroy');
+    $!app-window.register-signal( self, 'exit-program', 'destroy', :win-man);
 
     # prepare widgets which are directly below window
     $!grid .= new;
@@ -175,13 +180,35 @@ note 'app open: ', $nf;
     Gnome::Gtk3::Application :_widget($app)
     --> Int
   ) {
-    my Gnome::Glib::VariantDict $vd .= new(:native-object($nvd));
-    if $vd.contains('version') or $vd.contains('v') {
-      note 'Version: ', self.ver;
-    }
-note 'app options: ';
+#    my Gnome::Glib::VariantDict $vd .= new(:native-object($nvd));
+#    if $vd.contains('version') or $vd.contains('v') {
+#      note 'Version: ', self.ver;
+#    }
+note 'app options: ', self.^ver, ', ', @*ARGS.gist, ', ', @*files.gist, ', ', $*version, ', ', $?CLASS.gist;
 
+    if $*version {
+      note "Version of $?CLASS.gist(); {self.^ver}";
+      0
+    }
+
+    else {
+      -1
+    }
+
+#`{{
+    # -1 continue app
+    # 0 stop with success
+    # > 0 stop with failure
     -1
+}}
+  }
+
+  #-----------------------------------------------------------------------------
+  method cmdline (
+    N-GObject $cl, Gnome::Gtk3::Application :widget($app)
+  ) {
+note 'cmd opts';
+    'a'.encode
   }
 
   #-----------------------------------------------------------------------------
@@ -190,15 +217,27 @@ note 'session end';
   }
 
   #-----------------------------------------------------------------------------
-  method win-open ( Gnome::Gtk3::Application :widget($app) ) {
-note 'window opened';
+  method win-add ( N-GObject $window, Gnome::Gtk3::Application :widget($app) ) {
+note 'window added';
+  }
+
+  #-----------------------------------------------------------------------------
+  method win-removed ( N-GObject $window, Gnome::Gtk3::Application :widget($app) ) {
+note 'window removed';
+  }
+
+  #-----------------------------------------------------------------------------
+  method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {
+note 'app shutdown';
   }
 
   #-- [button] -----------------------------------------------------------------
+  # when triggered by window manager, $win-man is True. Otherwise widget
+  # is a button and a label can be retrieved
   method exit-program (
-    :_widget($button), gulong :$_handler-id
+    :$_widget, gulong :$_handler-id, Bool :$win-man = False
   ) {
-    note $button.get-label;
+    note $_widget.get-label unless $win-man;
     self.quit;
   }
 
@@ -255,10 +294,19 @@ note 'window opened';
 
 
 #-------------------------------------------------------------------------------
-my AppSignalHandlers $ah .= new(
-#  :app-id('io.github.martimm.test.application'),
-  :flags(G_APPLICATION_HANDLES_OPEN), # +| G_APPLICATION_NON_UNIQUE),
-  :resource-section<sceleton>
-);
+sub MAIN (
+  *@*files, Bool :$*version, Bool :$open = False, Bool :$cmd = False
+) {
 
-exit($ah.run);
+  my Int $flags = 0;
+  $flags +|= G_APPLICATION_HANDLES_OPEN if $open;
+  $flags +|= G_APPLICATION_HANDLES_COMMAND_LINE if $cmd;
+  # +| G_APPLICATION_NON_UNIQUE),
+
+  my AppSignalHandlers $ah .= new(
+  #  :app-id('io.github.martimm.test.application'),
+    :$flags, :resource-section<sceleton>
+  );
+
+  exit($ah.run);
+}
