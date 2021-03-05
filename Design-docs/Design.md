@@ -426,6 +426,39 @@ GInterface
 After plotting the dependencies on **GtkBuildable**, it looks as if the class can be inherited by the highest class where it is needed, such as **Widget** and all child widgets will then have the methods available of that interface. After plotting all interface modules in above chart, the conclusion taken above is correct.
 Also the interface module will have a role type.
 
+## What happens in Application
+
+![](../docs/content-docs/reference/Gtk3/plantuml/Application.svg)
+
+* start application
+  * application initialize
+  * register application
+    * fires event `startup`
+  * return user
+* run application
+  * fires event `handle-local-options`
+  * fires event `activate`
+
+<!--
+```plantuml
+'card "<&plus> start" as K
+'card "<&book>" as C
+
+'K *-> C
+
+!include <tupadr3/common>
+!include <tupadr3/font-awesome/laptop>
+!include <tupadr3/font-awesome/heart_o>
+
+'FA_ADDRESS_BOOK_O(x,) #00c0c0
+FA_HEART_O(y,) #00c0c0
+FA_LAPTOP(x,)
+
+start -> x
+x -> y
+```
+-->
+
 ## Structure of modules, plan B
 
 ```plantuml
@@ -808,6 +841,9 @@ Most classes at the top depend on TopLevelClassSupport. A few classes are indepe
 ```plantuml
 'scale 0.7
 set namespaceSeparator ::
+skinparam packageStyle rectangle
+skinparam stereotypeCBackgroundColor #80ffff
+hide empty members
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
 'interface Gnome::Gtk3::Buildable < Interface >
