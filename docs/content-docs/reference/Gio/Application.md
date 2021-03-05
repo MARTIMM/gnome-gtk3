@@ -12,7 +12,7 @@ A **Gnome::Gio::Application** is the foundation of an application. It wraps some
 
 Another feature that **Gnome::Gio::Application** (optionally) provides is process uniqueness. Applications can make use of this functionality by providing a unique application ID. If given, only one application with this ID can be running at a time per session. The session concept is platform-dependent, but corresponds roughly to a graphical desktop login. When your application is launched again, its arguments are passed through platform communication to the already running program. The already running instance of the program is called the "primary instance"; for non-unique applications this is the always the current instance. On Linux, the D-Bus session bus is used for communication.
 
-The use of **Gnome::Gio::Application** differs from some other commonly-used uniqueness libraries (such as libunique) in important ways. The application is not expected to manually register itself and check if it is the primary instance. Instead, the Raku `MAIN()` subroutine of a **Gnome::Gio::Application** should do very little more than instantiating the application instance, possibly connecting signal handlers, then calling `run()`. All checks for uniqueness are done internally. If the application is the primary instance then the startup signal is emitted and the mainloop runs. If the application is not the primary instance then a signal is sent to the primary instance and `run()` promptly returns. See the code examples below.
+The use of **Gnome::Gio::Application** differs from some other commonly-used uniqueness libraries (such as libunique) in important ways. The application is not expected to manually register itself and check if it is the primary instance. Instead, the Raku main program of a **Gnome::Gio::Application** based application should do very little more than instantiating the application instance, possibly connecting signal handlers, then calling `run()`. All checks for uniqueness are done internally. If the application is the primary instance then the startup signal is emitted and the mainloop runs. If the application is not the primary instance then a signal is sent to the primary instance and `run()` promptly returns. See the code examples below.
 
 If used, the expected form of an application identifier is the same as that of of a [D-Bus well-known bus name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus). Examples include: `com.example.MyApp`, `org.example.internal_apps.Calculator`, `org._7_zip.Archiver`. For details on valid application identifiers, see `id-is-valid()`.
 
@@ -45,6 +45,10 @@ Declaration
     unit class Gnome::Gio::Application;
     also is Gnome::GObject::Object;
     also does Gnome::Gio::ActionMap;
+    also does Gnome::Gio::ActionGroup;
+
+Uml Diagram ![](plantuml/Application.svg)
+-----------------------------------------
 
 Methods
 =======
@@ -247,11 +251,11 @@ run
 
 Runs the application.
 
-This function is intended to be run from `main()` and its return value is intended to be returned by `main()`. Although you are expected to pass the *argc*, *argv* parameters from `main()` to this function, it is possible to pass `Any` if *argv* is not available or commandline handling is not required. Note that on Windows, *argc* and *argv* are ignored, and `g_win32_get_command_line()` is called internally (for proper support of Unicode commandline arguments).
+This function is intended to be run from `main()` and its return value is intended to be returned by your main program.
 
-**Gnome::Gio::Application** will attempt to parse the commandline arguments. You can add commandline flags to the list of recognised options by way of `g_application_add_main_option_entries()`. After this, the *handle-local-options* signal is emitted, from which the application can inspect the values of its **N-GOptionEntrys**.
+**Gnome::Gio::Application** will attempt to parse the commandline arguments read from `@*ARGS`. You can add commandline flags to the list of recognized options by way of `add-main-option-entries()`. After this, the *handle-local-options* signal is emitted, from which the application can inspect the values of its **N-GOptionEntrys**.
 
-    I<handle-local-options> is a good place to handle options such as `--version`, where an immediate reply from the local process is desired (instead of communicating with an already-running instance). A  I<handle-local-options> handler can stop further processing by returning a non-negative value, which then becomes the exit status of the process.
+*handle-local-options* is a good place to handle options such as `--version`, where an immediate reply from the local process is desired (instead of communicating with an already-running instance). A *handle-local-options* handler can stop further processing by returning a non-negative value, which then becomes the exit status of the process.
 
 What happens next depends on the flags: if `G_APPLICATION_HANDLES_COMMAND_LINE` was specified then the remaining commandline arguments are sent to the primary instance, where a *command-line* signal is emitted. Otherwise, the remaining commandline arguments are assumed to be a list of files. If there are no files listed, the application is activated via the *activate* signal. If there are one or more files, and `G_APPLICATION_HANDLES_OPEN` was specified then the files are opened via the *open* signal.
 
@@ -323,24 +327,6 @@ Adds a description to the *application* option context. See `g_option_context_se
 
   * Str $description; (nullable): a string to be shown in `--help` output after the list of options, or `undefined`
 
-set-option-context-parameter-string
------------------------------------
-
-Sets the parameter string to be used by the commandline handling of *application*. This function registers the argument to be passed to `g_option_context_new()` when the internal **GOptionContext** of *application* is created. See `g_option_context_new()` for more information about *parameter_string*.
-
-    method set-option-context-parameter-string (  Str  $parameter_string )
-
-  * Str $parameter_string; (nullable): a string which is displayed in the first line of `--help` output, after the usage summary `programname [OPTION...]`.
-
-set-option-context-summary
---------------------------
-
-Adds a summary to the *application* option context. See `g_option_context_set_summary()` for more information.
-
-    method set-option-context-summary (  Str  $summary )
-
-  * Str $summary; (nullable): a string to be shown in `--help` output before the list of options, or `undefined`
-
 set-resource-base-path
 ----------------------
 
@@ -380,7 +366,7 @@ Withdraws a notification that was sent with `g_application_send_notification()`.
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -406,14 +392,14 @@ Second method
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
 
 ### activate
 
-The *activate* signal is emitted on the primary instance when an activation occurs. See `g_application_activate()`.
+The *activate* signal is emitted on the primary instance when an activation occurs. See `activate()`.
 
     method handler (
       Int :$_handle_id,
@@ -425,7 +411,7 @@ The *activate* signal is emitted on the primary instance when an activation occu
 
 ### command-line
 
-The *command-line* signal is emitted on the primary instance when a commandline is not handled locally. See `g_application_run()` and the **GApplicationCommandLine** documentation for more information.
+The *command-line* signal is emitted on the primary instance when a commandline is not handled locally. See `run()` and the **GApplicationCommandLine** documentation for more information.
 
 Returns: An integer that is set as the exit status for the calling process. See `g_application_command_line_set_exit_status()`.
 
@@ -462,7 +448,7 @@ You can override `local_command_line()` if you need more powerful capabilities t
 Returns: an exit code. If you have handled your options and want to exit the process, return a non-negative option, 0 for success, and a positive value for failure. To continue, return -1 to let the default option processing continue.
 
     method handler (
-      Unknown type G_TYPE_VARIANT_DICT $options,
+      N-GVariant $options,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($application),
       *%user-options

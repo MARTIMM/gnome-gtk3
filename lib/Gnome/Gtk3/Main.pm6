@@ -79,7 +79,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::N::GlibToRakuTypes;
 
-use Gnome::Glib::OptionContext;
+#use Gnome::Glib::OptionContext;
 
 use Gnome::Gdk3::Events;
 use Gnome::Gdk3::Types;
@@ -521,8 +521,9 @@ sub gtk_get_locale_direction (  --> GEnum )
   is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-option-group:
+# TM:0:get-option-group:
 =begin pod
 =head2 get-option-group
 
@@ -545,6 +546,7 @@ method get-option-group ( Bool $open_default_display --> N-GOptionGroup ) {
 sub gtk_get_option_group ( gboolean $open_default_display --> N-GOptionGroup )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:grab-add:
@@ -1174,8 +1176,9 @@ sub gtk_init_with_args ( int32 $argc, CArray[Str] $argv, Str $parameter_string, 
   { * }
 }}
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_get_option_group:
+# TM:0:gtk_get_option_group:
 =begin pod
 =head2 [gtk_] get_option_group
 
@@ -1195,7 +1198,7 @@ Returns: a B<N-GOptionGroup> for the commandline arguments recognized by GTK+
 sub gtk_get_option_group ( int32 $open_default_display --> N-GOptionGroup )
   is native(&gtk-lib)
   { * }
-
+}}
 
 #`{{
 #-------------------------------------------------------------------------------

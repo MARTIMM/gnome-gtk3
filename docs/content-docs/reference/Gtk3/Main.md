@@ -215,19 +215,6 @@ Returns: the **Gnome::Gtk3::TextDirection** of the current locale
 
     method get-locale-direction ( --> GtkTextDirection )
 
-get-option-group
-----------------
-
-Returns a **N-GOptionGroup** for the commandline arguments recognized by GTK+ and GDK.
-
-You should add this group to your **Gnome::Glib::OptionContext** with `add-group()`, if you are using `parse()` to parse your commandline arguments.
-
-Returns: a **N-GOptionGroup** for the commandline arguments recognized by GTK+
-
-    method get-option-group ( Bool $open_default_display --> N-GOptionGroup )
-
-  * Bool $open_default_display; whether to open the default display when parsing the commandline arguments
-
 grab-add
 --------
 

@@ -91,7 +91,7 @@ use Gnome::Gio::Enums;
 
 use Gnome::Glib::List;
 use Gnome::Glib::Error;
-use Gnome::Glib::OptionContext;
+#use Gnome::Glib::OptionContext;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::Application:auth<github:MARTIMM>;
