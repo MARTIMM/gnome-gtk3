@@ -13,9 +13,11 @@ use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Glib::N-GVariant;
+use Gnome::Glib::N-GVariantDict;
 use Gnome::Glib::N-GVariantType;
 use Gnome::Glib::Variant;
 use Gnome::Glib::VariantType;
+use Gnome::Glib::VariantDict;
 
 use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
@@ -33,7 +35,7 @@ use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-class AppSignalHandlers is Gnome::Gtk3::Application {
+class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
 
   constant APP-ID = 'io.github.martimm.tutorial';
 
@@ -67,6 +69,9 @@ class AppSignalHandlers is Gnome::Gtk3::Application {
 
     #
     self.register-signal( self, 'app-open', 'open');
+    self.register-signal( self, 'options', 'handle-local-options');
+    self.register-signal( self, 'app-end-session', 'query-end');
+    self.register-signal( self, 'win-open', 'window-added');
 
     # now we can register the application.
     my Gnome::Glib::Error $e = self.register;
@@ -159,9 +164,34 @@ note 'app activated';
   #-----------------------------------------------------------------------------
   method app-open (
     Pointer $f, Int $nf, Str $hint,
-    Gnome::Gtk3::Application :widget($app)
+    Gnome::Gtk3::Application :_widget($app)
   ) {
 note 'app open: ', $nf;
+  }
+
+  #-----------------------------------------------------------------------------
+  method options (
+    N-GVariantDict $nvd,
+    Gnome::Gtk3::Application :_widget($app)
+    --> Int
+  ) {
+    my Gnome::Glib::VariantDict $vd .= new(:native-object($nvd));
+    if $vd.contains('version') or $vd.contains('v') {
+      note 'Version: ', self.ver;
+    }
+note 'app options: ';
+
+    -1
+  }
+
+  #-----------------------------------------------------------------------------
+  method app-end-session ( Gnome::Gtk3::Application :widget($app) ) {
+note 'session end';
+  }
+
+  #-----------------------------------------------------------------------------
+  method win-open ( Gnome::Gtk3::Application :widget($app) ) {
+note 'window opened';
   }
 
   #-- [button] -----------------------------------------------------------------
