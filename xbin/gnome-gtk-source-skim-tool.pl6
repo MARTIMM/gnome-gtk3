@@ -196,15 +196,22 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
           $call-args ~= " \$$arg";
 
           # remove some c-oriented remarks
-          $pod-doc-item-doc ~~ s:g/'(' [
-                  nullable | 'transfer none' | 'transfer full' | 'allow-none' |
-                  'array zero-terminated=1' | optional | inout | out | in
-                ] ')' //;
-          $pod-doc-item-doc ~~ s/^ <[:;]> \s+ //;
-          $pod-doc-item-doc ~~ s/ 'C<Any>-terminated' //;
+          if ?$pod-doc-item-doc {
+            $pod-doc-item-doc ~~ s:g/'(' [
+                    nullable | 'transfer none' | 'transfer full' | 'allow-none' |
+                    'array zero-terminated=1' | optional | inout | out | in
+                  ] ')' //;
+            $pod-doc-item-doc ~~ s/^ <[:;]> \s+ //;
+            $pod-doc-item-doc ~~ s/ 'C<Any>-terminated' //;
 
-          $pod-doc-items ~= "=item $raku-arg-type \$$arg; " ~
-                            ($pod-doc-item-doc//'') ~ "\n";
+            $pod-doc-items ~=
+              "=item $raku-arg-type \$$arg; $pod-doc-item-doc\n";
+          }
+
+          else {
+            $pod-doc-items ~= "=item $raku-arg-type \$$arg; \n";
+          }
+
           $pod-doc-items ~~ s/^ \s+ $//;
 
 #note "  not skipped... $sub-name\n    $pod-args\n    $call-args\n    $pod-doc-items";
