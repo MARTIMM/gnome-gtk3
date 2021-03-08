@@ -4,7 +4,7 @@ use v6.d;
 #use lib '/home/marcel/Languages/Raku/Projects/gnome-gobject/lib';
 #use lib '../gnome-native/lib';
 #use lib '../gnome-glib/lib';
-#use lib '../gnome-gio/lib';
+use lib '/home/marcel/Languages/Raku/Projects/gnome-gio/lib';
 #use lib 'lib';
 
 use NativeCall;
@@ -26,6 +26,7 @@ use Gnome::Gio::Enums;
 #use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
 #use Gnome::Gio::SimpleAction;
+use Gnome::Gio::ApplicationCommandLine;
 
 use Gnome::Gtk3::MenuBar;
 use Gnome::Gtk3::Grid;
@@ -71,9 +72,9 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     self.register-signal( self, 'app-activate', 'activate');
 
     #
-    self.register-signal( self, 'app-open', 'open');
-    self.register-signal( self, 'options', 'handle-local-options');
-    self.register-signal( self, 'cmdline', 'command-line');
+    self.register-signal( self, 'file-open', 'open');
+    self.register-signal( self, 'local-options', 'handle-local-options');
+    self.register-signal( self, 'remote-options', 'command-line');
     self.register-signal( self, 'win-add', 'window-added');
     self.register-signal( self, 'win-removed', 'window-removed');
 
@@ -82,6 +83,8 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     #$gv.set-boolean(True);
     #self.set-property( 'register-session', $gv);
     #self.register-signal( self, 'app-end-session', 'query-end');
+
+    self.set-default;
 
     # now we can register the application.
     my Gnome::Glib::Error $e = self.register;
@@ -167,7 +170,7 @@ note 'app activated';
   }
 
   #-----------------------------------------------------------------------------
-  method app-open (
+  method file-open (
     Pointer $f, Int $nf, Str $hint,
     Gnome::Gtk3::Application :_widget($app)
   ) {
@@ -175,40 +178,79 @@ note 'app open: ', $nf;
   }
 
   #-----------------------------------------------------------------------------
-  method options (
+  method local-options (
     N-GVariantDict $nvd,
     Gnome::Gtk3::Application :_widget($app)
     --> Int
   ) {
+
+    # -1 continue app
+    # 0 stop with success
+    # > 0 stop with failure
+    my Int $exit-code = 0;
+
 #    my Gnome::Glib::VariantDict $vd .= new(:native-object($nvd));
 #    if $vd.contains('version') or $vd.contains('v') {
 #      note 'Version: ', self.ver;
 #    }
-note 'app options: ', self.^ver, ', ', @*ARGS.gist, ', ', @*files.gist, ', ', $*version, ', ', $?CLASS.gist;
+note 'local options: ', @*ARGS.gist;
 
     if $*version {
       note "Version of $?CLASS.gist(); {self.^ver}";
-      0
+    }
+
+    if $*e11 {
+      note "Force error 11";
+      $exit-code = 11;
     }
 
     else {
-      -1
+      # continue
+      $exit-code = -1;
     }
 
-#`{{
-    # -1 continue app
-    # 0 stop with success
-    # > 0 stop with failure
-    -1
-}}
+    $exit-code
   }
 
   #-----------------------------------------------------------------------------
-  method cmdline (
-    N-GObject $cl, Gnome::Gtk3::Application :widget($app)
+  method remote-options (
+    N-GObject $ncl, Gnome::Gtk3::Application :widget($app) --> Int
   ) {
-note 'cmd opts';
-    'a'.encode
+    my Int $exit-code = 10;
+    my Gnome::Gio::ApplicationCommandLine $cl .= new(:native-object($ncl));
+#    note 'remote options?; ', $cl.get-is-remote;
+#    note 'exit-status: ', $cl.get-exit-status;
+    if $cl.get-is-remote {
+      $cl.print("asjemenou\n");
+      note 'remote arguments: ', $cl.get-arguments.gist;
+#      self.release;
+      $cl.set-exit-status($exit-code);
+    }
+
+    else {
+      #self.hold;
+      self.activate;
+    }
+
+#    state Bool $held = False;
+#    if !$held {
+#      self.hold;
+#      $held = True;
+#      $exit-code = 12;
+#    }
+
+#    elsif $*rel {
+#      $held = False;
+#      self.release;
+#      $exit-code = 13;
+#    }
+
+#    else {
+#      $exit-code = 14;
+#    }
+
+#    $cl.printerr("error $exit-code\n");
+    $exit-code
   }
 
   #-----------------------------------------------------------------------------
@@ -294,19 +336,25 @@ note 'app shutdown';
 
 
 #-------------------------------------------------------------------------------
-sub MAIN (
-  *@*files, Bool :$*version, Bool :$open = False, Bool :$cmd = False
-) {
+my @*files = ();
+my Bool $*version = False;
+my Bool $*open = False;
+my Bool $*cmd = False;
+my Bool $*e11 = False;
+my Bool $*rel = False;
 
-  my Int $flags = 0;
-  $flags +|= G_APPLICATION_HANDLES_OPEN if $open;
-  $flags +|= G_APPLICATION_HANDLES_COMMAND_LINE if $cmd;
-  # +| G_APPLICATION_NON_UNIQUE),
+my Int $flags = 0;
+#$flags +|= G_APPLICATION_HANDLES_OPEN;          # if $*open;
+$flags +|= G_APPLICATION_HANDLES_COMMAND_LINE;  # if $*cmd;
+$flags +|= G_APPLICATION_SEND_ENVIRONMENT;
+# +| G_APPLICATION_NON_UNIQUE),
 
-  my AppSignalHandlers $ah .= new(
-  #  :app-id('io.github.martimm.test.application'),
-    :$flags, :resource-section<sceleton>
-  );
+my AppSignalHandlers $ah .= new(
+#  :app-id('io.github.martimm.test.application'),
+  :$flags, :resource-section<sceleton>
+);
 
-  exit($ah.run);
-}
+my Int $ec = $ah.run;
+note 'exit code: ', $ec;
+$ah.clear-object;
+exit($ec);
