@@ -442,35 +442,38 @@ https://wiki.gnome.org/HowDoI/GtkApplication/CommandLine
   * register application
     * fires event `startup`
   * return user
+
 * ~~add options and option groups using `g_application_add_main_option_entries()`~~
+
 * run application
   * set arguments from `@ARGS`, argumentlist is not modified
   * create object `GApplicationCommandLine` from arguments
   * parse commandline arguments
     * fires event `handle-local-options`
+      * ~~process options from VariantDict~~
       * returns 0 (=success) or > 0 (=failure) to stop or continue with -1
     * fires event `command-line`
       * if flag G_APPLICATION_HANDLES_COMMAND_LINE is set
       * after `handle-local-options` continues (-1)
-      * ```
-        if `.hold()` is called once
-          return exit code and keep app alive. primary not returning to cmdline
-          secondary gets exitcode
-        else
-          always exits primary program with some exit code
-        ```
-
-  * call `g_application_activate()`
+      * if remote
+        * process remote arguments
+        * do tasks. can be something in the GUI, open file or whatever.
+        * send message if needed
+        * set exit code. unix success exit is 0.
+        * clear remote arguments object. Secondary instance finishes when
+          this is cleaned up, otherwise it is kep alive.
+      * if local
+        * process arguments
+        * do tasks.
+        * if ok
+          * Initialize. Explicitly call `g_application_activate()` which fires event `activate`.
+        * not ok
+          * send message if needed
+          * set exit code and exit.
+  * implicitly call `g_application_activate()` when G_APPLICATION_HANDLES_COMMAND_LINE is not set.
     * fires event `activate`
+* exit code is returned from `run()` and can be given to `exit()` to stop the application.
 
-* start application (secondary = remote)
-  * application initialize
-  * register application; doesn't fire `startup`
-  * return user
-* run application
-  * parse commandline arguments
-    * fires event `handle-local-options`; return (0, > 0) or continue (-1)
-    * signal primary instance with commandline args and env
 
 Experiments have shown that, when the `G_APPLICATION_HANDLES_COMMAND_LINE` flag is set, the `command-line` signal is fired after handling the `handle-local-options` event, which is according the documentation. The thing is that normally without this flag, the activation signal is fired and the GUI can be build. This is not happening after `command-line` is finished and returned. There are several reasons for that;
 
@@ -479,81 +482,6 @@ Experiments have shown that, when the `G_APPLICATION_HANDLES_COMMAND_LINE` flag 
 * The primary instance will be kept alive when the 'use count' is not zero. THis is accomplished using `.hold()`. This is not interesting, although the primary stays alive and responds to the secondary processes.
 * The documentation also states that the use count increases after setting the main window. So calling `.activate()` will also fire the `activate` signal and the handler may start building the GUI and by setting the main window, increases the use count.
 
-```plantuml
-@startuml
-scale 0.8
-!include <tupadr3/common>
-!include <tupadr3/font-awesome/laptop>
-!include <tupadr3/font-awesome/heart_o>
-!include <tupadr3/font-awesome/coffee>
-!include <tupadr3/font-awesome/server>
-!include <tupadr3/font-awesome/question>
-!include <tupadr3/font-awesome/power_off>
-
-'FA_COFFEE(relax,)
-FA_QUESTION(x1,"quit ?")
-FA_QUESTION(x4,"remote?")
-FA_QUESTION(x5,"create GUI?")
-FA_QUESTION(y1,"success/fail\nor continue?") #faa040
-FA_QUESTION(z1,"success/fail\nor continue?")
-
-FA_QUESTION(pho,"handle\nlocal opts?")
-FA_QUESTION(sho,"handle\nlocal opts?") #faa040
-FA_QUESTION(pro,"handle\nremote opts?")
-FA_QUESTION(sro,"handle\nremote opts?") #faa040
-
-FA_POWER_OFF(es,) #faa040
-FA_POWER_OFF(ep,)
-
-FA_LAPTOP(start1,"start\nprimary")
-FA_SERVER(p1,"local\nopts")
-FA_SERVER(p2,"remote\nopts")
-FA_SERVER(p3,"create\nGUI")
-FA_SERVER(p4,"modify\nGUI")
-FA_SERVER(p5,"cleanup")
-FA_SERVER(p6,"main\nloop")
-
-FA_LAPTOP(start2,"start\nsecondary") #faa040
-FA_SERVER(s1,"local\nopts") #faa040
-FA_SERVER(s2,"cleanup") #faa040
-
-'relax --> start1: let's do\n something
-'start1 --> p1: handle\nlocal\opts
-start1 --> pho
-pho --> p1: yes
-pho --> pro: no
-pro ---> p2: yes
-pro ----> p3: no,\nactivate\nevent
-p1 --> z1
-z1 ---> p2: continue
-z1 ---> p5: success/fail;\nexit
-p5 -> ep: exit
-
-'relax --> start2
-'start2 --> s1: handle\nlocal\opts
-start2 --> sho
-sho --> s1: yes
-sho --> sro: no
-sro ---> p2: yes
-sro --> s2: no
-s1 --> y1
-y1 --> p2: continue;\nsend\ncommandline\nto primary
-y1 ---> s2: success/fail;\nexit
-
-p2 --> x1: processing\ndone
-x1 --> x5: no
-x1 -> x4: yes
-s2 <-- x4: yes, return\nexit value\nstop remote
-p5 <- x4: no, return\nexit value\nstop primary
-
-x5 --> p3
-p3 -> p6
-x5 -> p4
-p4 --> p6
-
-s2 -> es: exit
-@enduml
-```
 
 ## Structure of modules, plan B
 
