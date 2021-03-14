@@ -4,38 +4,40 @@ use v6.d;
 #use lib '/home/marcel/Languages/Raku/Projects/gnome-gobject/lib';
 #use lib '../gnome-native/lib';
 #use lib '../gnome-glib/lib';
-use lib '/home/marcel/Languages/Raku/Projects/gnome-gio/lib';
+#use lib '/home/marcel/Languages/Raku/Projects/gnome-gio/lib';
 #use lib 'lib';
 
 use NativeCall;
+use Getopt::Long;
 
 use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Glib::N-GVariant;
 use Gnome::Glib::N-GVariantDict;
 use Gnome::Glib::N-GVariantType;
 use Gnome::Glib::Variant;
 use Gnome::Glib::VariantType;
-use Gnome::Glib::VariantDict;
+#use Gnome::Glib::VariantDict;
 
 #use Gnome::GObject::Value;
 #use Gnome::GObject::Type;
 
 use Gnome::Gio::Enums;
-#use Gnome::Gio::MenuModel;
 use Gnome::Gio::Resource;
-#use Gnome::Gio::SimpleAction;
 use Gnome::Gio::ApplicationCommandLine;
+use Gnome::Gio::MenuModel;
+#use Gnome::Gio::SimpleAction;
+use Gnome::Gio::Notification;
 
-use Gnome::Gtk3::MenuBar;
+#use Gnome::Gtk3::MenuBar;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Application;
 use Gnome::Gtk3::ApplicationWindow;
 use Gnome::Gtk3::Builder;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -46,8 +48,8 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
   has Str $!app-rbpath;
 #  has Gnome::Gtk3::Application $!app;
   has Gnome::Gtk3::Grid $!grid;
-#  has Gnome::Gio::MenuModel $!menubar;
-  has Gnome::Gtk3::MenuBar $!menubar;
+  has Gnome::Gio::MenuModel $!menubar;
+#  has Gnome::Gtk3::MenuBar $!menubar;
   has Gnome::Gtk3::ApplicationWindow $!app-window;
   has Str $!resource-section = '-';
 
@@ -63,20 +65,16 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     $r.register;
 
     # startup signal fired after registration; only primary
-    self.register-signal( self, 'app-startup', 'startup');
+    #self.register-signal( self, 'app-startup', 'startup');
 
     # fired after g_application_quit
-    self.register-signal( self, 'app-shutdown', 'shutdown');
+    #self.register-signal( self, 'app-shutdown', 'shutdown');
 
     # fired after g_application_run
     self.register-signal( self, 'app-activate', 'activate');
 
-    #
-    self.register-signal( self, 'file-open', 'open');
     self.register-signal( self, 'local-options', 'handle-local-options');
     self.register-signal( self, 'remote-options', 'command-line');
-    self.register-signal( self, 'win-add', 'window-added');
-    self.register-signal( self, 'win-removed', 'window-removed');
 
     # set register session property
     #my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
@@ -84,21 +82,36 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
     #self.set-property( 'register-session', $gv);
     #self.register-signal( self, 'app-end-session', 'query-end');
 
-    self.set-default;
+    #self.set-default;
+#`{{
+    self.add-main-option(
+      'version', 'v', G_OPTION_FLAG_IN_MAIN,
+      G_OPTION_ARG_NONE, 'display version of app'
+    );
+
+    self.add-main-option(
+      'xyz', 'x', G_OPTION_FLAG_IN_MAIN,
+      G_OPTION_ARG_NONE, 'show xyz'
+    );
+}}
+
+    note 'before registering: ', self.get-is-registered;
 
     # now we can register the application.
     my Gnome::Glib::Error $e = self.register;
     die $e.message if $e.is-valid;
+
+    note 'after registering: ', self.get-dbus-object-path;
   }
 
   #-----------------------------------------------------------------------------
-  method app-startup ( Gnome::Gtk3::Application :widget($app) ) {
+  method app-startup ( AppSignalHandlers :_widget($app) ) {
 note 'app registered';
 #    self.run;
   }
 
   #-----------------------------------------------------------------------------
-  method app-activate ( Gnome::Gtk3::Application :widget($app) ) {
+  method app-activate ( AppSignalHandlers :_widget($app) ) {
 note 'app activated';
 
     $!app-rbpath = self.get-resource-base-path;
@@ -122,11 +135,11 @@ note 'app activated';
     $!app-window .= new(:application(self));
     $!app-window.set-size-request( 600, 400);
     $!app-window.set-title('Application Window Test');
-    $!app-window.set-border-width(20);
     $!app-window.register-signal( self, 'exit-program', 'destroy', :win-man);
 
     # prepare widgets which are directly below window
     $!grid .= new;
+    $!grid.set-border-width(20);
     my Gnome::Gtk3::Button $b1 .= new(:label<Stop>);
     $!grid.grid-attach( $b1, 0, 0, 1, 1);
     $b1.register-signal( self, 'exit-program', 'clicked');
@@ -137,6 +150,28 @@ note 'app activated';
     note "\nInfo:\n  Registered: ", self.get-is-registered;
     note '  resource base path: ', $!app-rbpath;
     note '  app id: ', self.get-application-id;
+
+    my Gnome::Gio::Notification $notification .= new(:title<donnit-beenthere>);
+    $notification.set-body(Q:to/EOBODY/);
+      een verhaaltje dat niet veel zegt
+      maar alleen wil opmerken dat de
+      applicatie helemaal voor je klaar
+      staat, dus …
+      EOBODY
+
+    $notification.set-priority(G_NOTIFICATION_PRIORITY_URGENT);
+
+    my Str $title = 'ex-app-note';
+    $app.send-notification( $title, $notification);
+    $app.start-thread(
+      $app, 'remove-notification', :start-time(now+5), :$title
+    );
+  }
+
+  #-----------------------------------------------------------------------------
+  method remove-notification ( AppSignalHandlers :_widget($app), :$title ) {
+    note 'remove message';
+    $app.withdraw-notification($title);
   }
 
   #-----------------------------------------------------------------------------
@@ -152,7 +187,6 @@ note 'app activated';
         :state(Gnome::Glib::Variant.new(:parse("'$state'")))
       );
       $menu-entry.register-signal( self, $method, 'change-state');
-
     }
 
     else {
@@ -170,114 +204,83 @@ note 'app activated';
   }
 
   #-----------------------------------------------------------------------------
-  method file-open (
-    Pointer $f, Int $nf, Str $hint,
-    Gnome::Gtk3::Application :_widget($app)
-  ) {
-note 'app open: ', $nf;
-  }
-
-  #-----------------------------------------------------------------------------
   method local-options (
-    N-GVariantDict $nvd,
-    Gnome::Gtk3::Application :_widget($app)
-    --> Int
+    N-GVariantDict $n-vd, AppSignalHandlers :_widget($app) --> Int
   ) {
-
-    # -1 continue app
-    # 0 stop with success
-    # > 0 stop with failure
-    my Int $exit-code = 0;
-
-#    my Gnome::Glib::VariantDict $vd .= new(:native-object($nvd));
-#    if $vd.contains('version') or $vd.contains('v') {
-#      note 'Version: ', self.ver;
-#    }
 note 'local options: ', @*ARGS.gist;
 
-    if $*version {
+#`{{ works combined with self.add-main-option(…)
+    my Gnome::Glib::VariantDict $vd .= new(:native-object($n-vd));
+    if $vd.contains('version') or $vd.contains('v') {
+      note 'Version: ', self.^ver;
+    }
+}}
+
+    # default continue app
+    my Int $exit-code = -1;
+
+    CATCH { default { .message.note; $exit-code = 1; return $exit-code; } }
+    my Capture $o = get-options( 'version', 'show:s');
+    if $o<version> {
       note "Version of $?CLASS.gist(); {self.^ver}";
+      $exit-code = 0;
     }
 
-    if $*e11 {
-      note "Force error 11";
-      $exit-code = 11;
-    }
+note $o.gist;
 
-    else {
-      # continue
-      $exit-code = -1;
-    }
-
+    note "return with $exit-code\n";
     $exit-code
   }
 
   #-----------------------------------------------------------------------------
   method remote-options (
-    N-GObject $ncl, Gnome::Gtk3::Application :widget($app) --> Int
+    N-GObject $n-cl, AppSignalHandlers :_widget($app) --> Int
   ) {
-    my Int $exit-code = 10;
-    my Gnome::Gio::ApplicationCommandLine $cl .= new(:native-object($ncl));
-#    note 'remote options?; ', $cl.get-is-remote;
-#    note 'exit-status: ', $cl.get-exit-status;
-    if $cl.get-is-remote {
-      $cl.print("asjemenou\n");
-      note 'remote arguments: ', $cl.get-arguments.gist;
-#      self.release;
-      $cl.set-exit-status($exit-code);
+
+    my Int $exit-code = 0;
+    my Gnome::Gio::ApplicationCommandLine $cl .= new(:native-object($n-cl));
+
+    my Array $args = $cl.get-arguments;
+note "remote args: $args.gist()";
+    my Capture $o = get-options-from( $args[1..*-1], 'version', 'show:s');
+note $o.gist;
+    my Str $file-to-show = $o.<show> if ($o.<show> // '') and $o.<show>.IO.r;
+
+
+for @$o -> $a {
+  note "arg : $a";
+}
+
+    self.activate unless $cl.get-is-remote;
+
+    if ?$file-to-show {
+      $cl.print("Show text from $file-to-show\n");
+      #… show file in window …
     }
 
-    else {
-      #self.hold;
-      self.activate;
-    }
+    # if not cleared, remote keeps running!
+    $cl.clear-object;
 
-#    state Bool $held = False;
-#    if !$held {
-#      self.hold;
-#      $held = True;
-#      $exit-code = 12;
-#    }
-
-#    elsif $*rel {
-#      $held = False;
-#      self.release;
-#      $exit-code = 13;
-#    }
-
-#    else {
-#      $exit-code = 14;
-#    }
-
-#    $cl.printerr("error $exit-code\n");
     $exit-code
   }
 
+#`{{
   #-----------------------------------------------------------------------------
-  method app-end-session ( Gnome::Gtk3::Application :widget($app) ) {
+  method app-end-session ( AppSignalHandlers :_widget($app) ) {
 note 'session end';
   }
 
   #-----------------------------------------------------------------------------
-  method win-add ( N-GObject $window, Gnome::Gtk3::Application :widget($app) ) {
-note 'window added';
-  }
-
-  #-----------------------------------------------------------------------------
-  method win-removed ( N-GObject $window, Gnome::Gtk3::Application :widget($app) ) {
-note 'window removed';
-  }
-
-  #-----------------------------------------------------------------------------
-  method app-shutdown ( Gnome::Gtk3::Application :widget($app) ) {
+  method app-shutdown ( AppSignalHandlers :_widget($app) ) {
 note 'app shutdown';
   }
+}}
 
   #-- [button] -----------------------------------------------------------------
   # when triggered by window manager, $win-man is True. Otherwise widget
   # is a button and a label can be retrieved
   method exit-program (
-    :$_widget, gulong :$_handler-id, Bool :$win-man = False
+    :$_widget, Bool :$win-man = False
   ) {
     note $_widget.get-label unless $win-man;
     self.quit;
@@ -285,16 +288,16 @@ note 'app shutdown';
 
   #-- [menu] -------------------------------------------------------------------
   # File > New
-  method file-new ( N-GVariant $parameter ) {
-    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+  method file-new ( N-GVariant $n-parameter ) {
+    my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
     note $v.print() if $v.is-valid;
     note "Select 'New' from 'File' menu";
   }
 
   # File > Quit
-  method file-quit ( N-GVariant $parameter ) {
+  method file-quit ( N-GVariant $n-parameter ) {
     note "Select 'Quit' from 'File' menu";
-    my Gnome::Glib::Variant $v .= new(:native-object($parameter));
+    my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
     note $v.print() if $v.is-valid;
 
     self.quit;
@@ -302,7 +305,7 @@ note 'app shutdown';
 
   # File > Compressed
   method select-compression (
-    N-GVariant $value,
+    N-GVariant $n-value,
     Gnome::Gio::SimpleAction :_widget($file-compress-action) is copy,
     N-GObject :_native-object($no)
   ) {
@@ -314,7 +317,7 @@ note 'app shutdown';
 
     note "Select 'Compressed' from 'File' menu";
 #    note $file-compress-action.get-name;
-    my Gnome::Glib::Variant $v .= new(:native-object($value));
+    my Gnome::Glib::Variant $v .= new(:native-object($n-value));
     note "Set to $v.print()" if $v.is-valid;
 
     $file-compress-action.set-state(
@@ -333,20 +336,12 @@ note 'app shutdown';
   }
 }
 
-
-
 #-------------------------------------------------------------------------------
-my @*files = ();
-my Bool $*version = False;
-my Bool $*open = False;
-my Bool $*cmd = False;
-my Bool $*e11 = False;
-my Bool $*rel = False;
-
 my Int $flags = 0;
 #$flags +|= G_APPLICATION_HANDLES_OPEN;          # if $*open;
 $flags +|= G_APPLICATION_HANDLES_COMMAND_LINE;  # if $*cmd;
-$flags +|= G_APPLICATION_SEND_ENVIRONMENT;
+#$flags +|= G_APPLICATION_SEND_ENVIRONMENT;
+#$flags +|= G_APPLICATION_IS_SERVICE;
 # +| G_APPLICATION_NON_UNIQUE),
 
 my AppSignalHandlers $ah .= new(
@@ -354,7 +349,7 @@ my AppSignalHandlers $ah .= new(
   :$flags, :resource-section<sceleton>
 );
 
-my Int $ec = $ah.run;
+my Int $ec = $ah.run // 1;
 note 'exit code: ', $ec;
 $ah.clear-object;
 exit($ec);
