@@ -17,6 +17,10 @@
     url: '/content-docs/reference/Gio/Application.html'
     type: object
 
+  - title: "ApplicationCommandLine"
+    url: '/content-docs/reference/Gio/ApplicationCommandLine.html'
+    type: object
+
   - title: "Enums"
     url: '/content-docs/reference/Gio/Enums.html'
     type: standalone
@@ -43,6 +47,10 @@
 
   - title: MenuModel
     url: '/content-docs/reference/Gio/MenuModel.html'
+    type: object
+
+  - title: "Notification"
+    url: '/content-docs/reference/Gio/Notification.html'
     type: object
 
   - title: "Resource"

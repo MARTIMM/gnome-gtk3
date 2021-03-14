@@ -53,8 +53,11 @@
     url: /content-docs/tutorial/Application/introduction.html
   - title: Sceleton Application
     url: /content-docs/tutorial/Application/sceleton.html
-  - title: Menu
-    url: /content-docs/tutorial/Application/menu.html
+  - title: Commandline Arguments
+    url: /content-docs/tutorial/Application/commandline.html
+#  - title: Menu
+#    url: /content-docs/tutorial/Application/menu.html
 #  - title: Actions
+#  - title: Xml
 #  - title: Resources
 #  - title: Settings
