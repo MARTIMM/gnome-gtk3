@@ -18,7 +18,7 @@ TopLevelClassSupport                      Gnome::N::TopLevelClassSupport
 GObject                                   Gnome::GObject::Object
 ├── GAppInfoMonitor
 ├── GAppLaunchContext
-├── GApplicationCommandLine
+├── GApplicationCommandLine               ApplicationCommandLine
 ├── GApplication                          Application
 ├── GInputStream
 │   ├── GFilterInputStream
@@ -47,9 +47,6 @@ GObject                                   Gnome::GObject::Object
 ├── GMenuModel                            MenuModel
 │   ├── GDBusMenuModel
 │   ╰── GMenu                             Menu
-├──                                       MenuItem
-├──                                       MenuAttributeIter
-├──                                       MenuLinkIter
 ├── GDBusMessage
 ├── GDBusMethodInvocation
 ├── GDBusObjectManagerClient
@@ -84,9 +81,9 @@ GObject                                   Gnome::GObject::Object
 ├── GTypeModule
 │   ╰── GIOModule
 ├── GListStore
-├── GMenuAttributeIter
-├── GMenuItem
-├── GMenuLinkIter
+├── GMenuAttributeIter                    MenuAttributeIter
+├── GMenuItem                             MenuItem
+├── GMenuLinkIter                         MenuLinkIter
 ├── GMountOperation
 ├── GNetworkAddress
 ├── GNetworkService
