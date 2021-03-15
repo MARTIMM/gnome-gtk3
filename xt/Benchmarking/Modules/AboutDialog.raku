@@ -122,4 +122,5 @@ $b.load-tests;
 $b.modify-tests;
 $b.save-tests;
 
-$b.search-compare-tests( :$project-version, :$sub-project, :!tables);
+#$b.search-compare-tests( :$project-version, :$sub-project, :!tables);
+$b.search-compare-tests( :$sub-project, :!tables);
