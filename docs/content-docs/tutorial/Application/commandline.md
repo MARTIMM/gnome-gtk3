@@ -187,14 +187,3 @@ Unknown option help
 ```
 
 There are still some problems left but we can ignore them now for the moment.
-
-
-<!--
-to get rid of --gapplication-service one must replace local_command_line in
-the applicationclass structure. it seems only to work when a class is initialized in the beginning and we are unable to insert a new applicationclass structure.
-
-https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gapplication-example-cmdline2.c
--->
-<!--
-* keep secondary light by using roles for primary and secondary. the role is attached as soon as it is clear what type of application it is. also creating **UserWindowClass** will help, use `require` in the `activate` event handler.
--->

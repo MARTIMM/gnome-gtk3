@@ -33,3 +33,21 @@ What you can expect from this tutorial is that we will learn about a different a
 * We will not be talking about building a GUI using grid, labels, buttons and such. An exception is however the building and managing of menus. While you still can use the menu classes defined in `Gnome::Gtk3`, this knowledge will come in handy when you prepare yourself to work with `Gnome::Gtk4` (that package is not available yet, but it will be) because GTK version 4 will not have classes to build a menu. It only provides some buttons and pulldowns to show an available menu. Also the MenuBar is gone. The only place where you can find one is in the Application class.
 
 * Using actions. Actions are other ways to trigger events. The actions are all usable on gtk widgets which inherit from **Gnome::Gtk3::Activatable**. Those widgets are mainly buttons and menu entries. The above introduced menus will be using actions to do their bidding.
+
+
+
+<!--
+to get rid of --gapplication-service one must replace local_command_line in
+the applicationclass structure. it seems only to work when a class is initialized in the beginning and we are unable to insert a new applicationclass structure.
+
+https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gapplication-example-cmdline2.c
+-->
+<!--
+* keep secondary light by using roles for primary and secondary. the role is attached as soon as it is clear what type of application it is. also creating **UserWindowClass** will help, use `require` in the `activate` event handler.
+
+#-------------------------------------------------------------------------------
+method build-gui ( OpenStreetMap::UMap::Gui::Application :_widget($app) ) {
+  (try require ::('OpenStreetMap::UMap::Gui::MainWindow'));
+  my $main-window = ::('OpenStreetMap::UMap::Gui::MainWindow').new(:application(self));
+}
+-->
