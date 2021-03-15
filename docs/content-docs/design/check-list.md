@@ -335,7 +335,7 @@ MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓|
 MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|
 MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|
-Notification              |Bx| ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|
+Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|
 Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|
 SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
 
