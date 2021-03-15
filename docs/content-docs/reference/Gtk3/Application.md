@@ -39,7 +39,9 @@ An application can block various ways to end the session with the `gtk_applicati
 See Also
 --------
 
-[HowDoI: Using **Gnome::Gtk3::Application**](https://wiki.gnome.org/HowDoI/**Gnome::Gtk3::Application**), [Getting Started with GTK+: Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html**id**-1.2.3.3)
+  * [HowDoI: Using **Gnome::Gtk3::Application**](https://wiki.gnome.org/HowDoI/GtkApplication)
+
+  * [Getting Started with GTK+: Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 
 Synopsis
 ========

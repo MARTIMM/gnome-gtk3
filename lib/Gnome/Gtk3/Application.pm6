@@ -43,7 +43,8 @@ An application can block various ways to end the session with the C<gtk_applicat
 
 =head2 See Also
 
-[HowDoI: Using B<Gnome::Gtk3::Application>](https://wiki.gnome.org/HowDoI/B<Gnome::Gtk3::Application>), [Getting Started with GTK+: Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.htmlB<id>-1.2.3.3)
+=item L<HowDoI: Using B<Gnome::Gtk3::Application>|https://wiki.gnome.org/HowDoI/GtkApplication>
+=item L<Getting Started with GTK+: Basics|https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3>
 
 
 =head1 Synopsis
