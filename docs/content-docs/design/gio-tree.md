@@ -8,7 +8,7 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gio/stable/gio-hierarchy.html) and is used here to show what is implemented and what is deprecated in Gio. Module path names are removed from the Raku modules when in Gnome::Gio. E.g. Application is implemented as **Gnome::Gio::Application**. `├─✗` in front of a Gio module means that it is deprecated or will not be implemented for other reasons. Many of these will not be implemented because Raku has a lot of I/O routines that it is not needed.
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gio/stable/gio-hierarchy.html) and is used here to show what is implemented and what is deprecated in Gio. Module path names are removed from the Raku modules when in Gnome::Gio. E.g. Application is implemented as **Gnome::Gio::Application**. `├─✗` in front of a Gio module means that it is deprecated or will not be implemented for other reasons. Many of these will not be implemented ⛔ because Raku has a lot of I/O routines that it is not needed.
 
 ```
 Tree of Gtk C structures                  Raku module
@@ -20,22 +20,22 @@ GObject                                   Gnome::GObject::Object
 ├── GAppLaunchContext
 ├── GApplicationCommandLine               ApplicationCommandLine
 ├── GApplication                          Application
-├── GInputStream
-│   ├── GFilterInputStream
-│   │   ├── GBufferedInputStream
-│   │   │   ╰── GDataInputStream
-│   │   ╰── GConverterInputStream
-│   ├── GFileInputStream
-│   ├── GMemoryInputStream
-│   ╰── GUnixInputStream
-├── GOutputStream
-│   ├── GFilterOutputStream
-│   │   ├── GBufferedOutputStream
-│   │   ├── GConverterOutputStream
-│   │   ╰── GDataOutputStream
-│   ├── GFileOutputStream
-│   ├── GMemoryOutputStream
-│   ╰── GUnixOutputStream
+├── GInputStream                          ⛔
+│   ├── GFilterInputStream                ⛔
+│   │   ├── GBufferedInputStream          ⛔
+│   │   │   ╰── GDataInputStream          ⛔
+│   │   ╰── GConverterInputStream         ⛔
+│   ├── GFileInputStream                  ⛔
+│   ├── GMemoryInputStream                ⛔
+│   ╰── GUnixInputStream                  ⛔
+├── GOutputStream                         ⛔
+│   ├── GFilterOutputStream               ⛔
+│   │   ├── GBufferedOutputStream         ⛔
+│   │   ├── GConverterOutputStream        ⛔
+│   │   ╰── GDataOutputStream             ⛔
+│   ├── GFileOutputStream                 ⛔
+│   ├── GMemoryOutputStream               ⛔
+│   ╰── GUnixOutputStream                 ⛔
 ├── GBytesIcon
 ├── GCancellable
 ├── GCharsetConverter
@@ -56,28 +56,28 @@ GObject                                   Gnome::GObject::Object
 ├── GDBusProxy
 ├── GDBusServer
 ├── GDesktopAppInfo
-├── GEmblem
-├── GEmblemedIcon
+├── GEmblem                               ⛔Emblem
+├── GEmblemedIcon                         ⛔EmblemedIcon
 ├── GFileEnumerator
 ├── GFileIcon
 ├── GFileInfo
-├── GIOStream
-│   ├── GFileIOStream
-│   ├── GSimpleIOStream
-│   ├── GSocketConnection
-│   │   ├── GTcpConnection
-│   │   │   ╰── GTcpWrapperConnection
-│   │   ╰── GUnixConnection
-│   ╰── GTlsConnection
+├── GIOStream                             ⛔
+│   ├── GFileIOStream                     ⛔
+│   ├── GSimpleIOStream                   ⛔
+│   ├── GSocketConnection                 ⛔
+│   │   ├── GTcpConnection                ⛔
+│   │   │   ╰── GTcpWrapperConnection     ⛔
+│   │   ╰── GUnixConnection               ⛔
+│   ╰── GTlsConnection                    ⛔
 ├── GFileMonitor
 ├── GFilenameCompleter
 ├── GInetAddress
 ├── GInetAddressMask
-├── GSocketAddress
-│   ├── GInetSocketAddress
-│   │   ╰── GProxyAddress
-│   ├── GNativeSocketAddress
-│   ╰── GUnixSocketAddress
+├── GSocketAddress                        ⛔
+│   ├── GInetSocketAddress                ⛔
+│   │   ╰── GProxyAddress                 ⛔
+│   ├── GNativeSocketAddress              ⛔
+│   ╰── GUnixSocketAddress                ⛔
 ├── GTypeModule
 │   ╰── GIOModule
 ├── GListStore
@@ -87,7 +87,7 @@ GObject                                   Gnome::GObject::Object
 ├── GMountOperation
 ├── GNetworkAddress
 ├── GNetworkService
-├── GNotification
+├── GNotification                         Notification
 ├── GPermission
 │   ╰── GSimplePermission
 ├── GPropertyAction
@@ -104,10 +104,10 @@ GObject                                   Gnome::GObject::Object
 ├── GSocketControlMessage
 │   ├── GUnixCredentialsMessage
 │   ╰── GUnixFDMessage
-├── GSocket
-├── GSocketListener
-│   ╰── GSocketService
-│       ╰── GThreadedSocketService
+├── GSocket                               ⛔
+├── GSocketListener                       ⛔
+│   ╰── GSocketService                    ⛔
+│       ╰── GThreadedSocketService        ⛔
 ├── GSubprocess
 ├── GSubprocessLauncher
 ├── GTask
@@ -132,7 +132,7 @@ GInterface
 ├── GAsyncInitable
 ├── GAsyncResult
 ├── GSeekable
-├── GIcon
+├── GIcon                                 ⛔Icon
 ├── GLoadableIcon
 ├── GConverter
 ├── GInitable
