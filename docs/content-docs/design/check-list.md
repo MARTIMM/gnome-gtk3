@@ -163,36 +163,36 @@ SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |
-Spinner                   |  |  |  |  |  |  |  |  |  |  |  |
-Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
-StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |
-Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |
-StyleContext              |  |  |  |  |  |  |  |  |  |  |  |
-StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |
-Switch                    |  |  |  |  |  |  |  |  |  |  |  |
-TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |
-TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |
-TextTag                   |  |  |  |  |  |  |  |  |  |  |  |
-TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |
-TextView                  |  |  |  |  |  |  |  |  |  |  |  |
-ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |
-ToolButton                |  |  |  |  |  |  |  |  |  |  |  |
-ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |
-TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-TreeModel                 |R | ✗| ✓| ✓|  |  |  |  |  |  |  |
-TreePath                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |
-TreeRowReference          |Bx|  |  |  |  |  |  |  |  |  |  |
-TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |
-TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |
-TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |
-TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  | ✗| ✓| ✓| ⅔| ½| ⅔| ⅓|  |  |  |
-WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |
-Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |
+SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |
+Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |
+StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
+StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |
+Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |  |  |
+StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
+Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
+TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextView                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToolButton                |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
+TreeModel                 |R | ✗| ✓| ✓|  |  |  |  |  |  |  |  |  |
+TreePath                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
+TreeRowReference          |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
+TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅓|  | ⅙| ✓| ✓| ✓|
+WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
+Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |  |  |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14| -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so| -->
 
 <br/>
 
@@ -340,6 +340,7 @@ Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| 
 SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
 
 <!--
+Icon                      |R | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|
 MountOperation            |  |  |  |  |  |  |  |  |  |  |
 EmblemedIcon              |  |  |  |  |  |  |  |  |  |  |
 -->
