@@ -278,7 +278,7 @@ GBoxed                                Gnome::GObject::Boxed
 ├── GtkCssSection
 ├── GtkTreePath                       TreePath
 ├   GtkTreeRowReference               TreeRowReference, extr. from TreeModel
-├── GtkIconSet
+├─✗ GtkIconSet                        ⛔
 ├── GtkTargetList
 ╰── GtkWidgetPath                     WidgetPath
 
