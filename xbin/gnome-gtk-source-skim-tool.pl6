@@ -139,6 +139,12 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
     # get subroutine documentation from c source
     ( $sub-doc, $items-src-doc) = get-sub-doc( $sub-name, $source-content);
+    $sub-doc ~~ s:g/ '(' [
+            nullable | 'transfer none' | 'transfer full' | 'allow-none' |
+            'array zero-terminated=1' | optional | inout | out | in |
+            'not nullable'
+          ] ')' //;
+    $sub-doc ~~ s/^ <[:;]> \s+ //;
 
 #note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
@@ -198,8 +204,9 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
           # remove some c-oriented remarks
           if ?$pod-doc-item-doc {
             $pod-doc-item-doc ~~ s:g/'(' [
-                    nullable | 'transfer none' | 'transfer full' | 'allow-none' |
-                    'array zero-terminated=1' | optional | inout | out | in
+                    nullable | 'transfer none' | 'transfer full' |
+                    'allow-none' | 'not nullable' | 'array zero-terminated=1' |
+                    optional | inout | out | in
                   ] ')' //;
             $pod-doc-item-doc ~~ s/^ <[:;]> \s+ //;
             $pod-doc-item-doc ~~ s/ 'C<Any>-terminated' //;
@@ -1025,7 +1032,7 @@ sub substitute-in-template (
             if self.is-valid { }
 
             # check if common options are handled by some parent
-            elsif %options<native-object>:exists or %options<widget>:exists { }
+            elsif %options<native-object>:exists { }
             elsif %options<build-id>:exists { }
 
             # process all other options
@@ -1068,7 +1075,6 @@ sub substitute-in-template (
 
             # only after creating the native-object, the gtype is known
             self.set-class-info('LIBCLASSNAME');
-
           }
         }
 
