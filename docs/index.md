@@ -46,22 +46,23 @@ When the packages mature, the next points are/become available;
   * When programs run the first time, it might take some time to compile.
 
 ## Packages
-This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, Cairo, GObject, Gio and Glib. Not all libraries are available yet like Pango and not all modules are defined in any of those packages.
+This package, together with a few others is an interface to the great Gnome libraries Gtk, Gdk, Pango, GObject, Gio and Glib. Cairo is an independed project but Gnome makes significant use of that package. Not all libraries are available yet like Pango and not all modules are defined in any of those packages.
 
 |Package|Travis-CI & Appveyor tests and Notes|
 |--|--|
-**Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
-**Gnome::T** |![T][travis-T] ![A][appveyor-T] <br/> GUI test package.
-**Gnome::Glib** | ![T][travis-glib] ![A][appveyor-glib] <br/> C-based object and type system with signals and slots
-**Gnome::Gio** | ![T][travis-gio] ![A][appveyor-gio] <br/> `Files` - File and URI handling, asynchronous file operations, volume handling. `Networking` - Networking and sockets API with streams. `Application` - Support of resources and other types of settings.
-**Gnome::GObject** | ![T][travis-gobject] ![A][appveyor-gobject] <br/> Data structures and utilities for C programs
-**Gnome::Gdk3** | ![T][travis-gdk3] ![A][appveyor-gdk3] <br/> Low-level abstraction for the windowing system
-**Gnome::Gtk3** | ![T][travis-gtk3] ![A][appveyor-gtk3] <br/> Widget toolkit for graphical interfaces
-**Gnome::Pango** | ![T][travis-pango] ![A][appveyor-pango] <br/> International text rendering with full Unicode support
-**Gnome::Cairo** | ![T][travis-cairo] ![A][appveyor-cairo] <br/> 2D, vector-based drawing for high-quality graphics
+**Gnome::Gtk3** | ![T][travis-gtk3] ![A][appveyor-gtk3] <br/> Version 3 widget toolkit for graphical interfaces.
+**Gnome::Gdk3** | ![T][travis-gdk3] ![A][appveyor-gdk3] <br/> Version 3 low-level abstraction for the windowing system.
+**Gnome::Gio** | ![T][travis-gio] ![A][appveyor-gio] <br/> File and URI handling. Support of resources for applications and D-Bus communication.
+**Gnome::Cairo** | ![T][travis-cairo] ![A][appveyor-cairo] <br/> 2D, vector-based drawing for high-quality graphics.
+**Gnome::Pango** | ![T][travis-pango] ![A][appveyor-pango] <br/> International text rendering with full Unicode support. Not yet available to the public.
+**Gnome::GObject** | ![T][travis-gobject] ![A][appveyor-gobject] <br/> Data structures and utilities for C programs.
+**Gnome::Glib** | ![T][travis-glib] ![A][appveyor-glib] <br/> C-based object and type system with signals and slots.
 |
-**Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Yes, of course I will … but not yet.
-**Gnome::Gdk4** | ![T][travis-gdk4] ![A][appveyor-gdk4] <br/> Must be combined with **Gnome::Gtk4**.
+**Gnome::T** |![T][travis-T] ![A][appveyor-T] <br/> GUI test package. Not yet available to the public.
+**Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
+|
+**Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Version 4 widget toolkit for graphical interfaces. Yes, of course I will … but not yet. So, not yet available to the public.
+**Gnome::Gdk4** | ![T][travis-gdk4] ![A][appveyor-gdk4] <br/> Version 4 low-level abstraction for the windowing system. Must be combined with **Gnome::Gtk4**. Also not yet available to the public.
 
 
 # Site Contents
