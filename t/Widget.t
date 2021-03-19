@@ -261,28 +261,6 @@ subtest 'Properties ...', {
   test-property( G_TYPE_BOOLEAN, 'expand', 'get-boolean', 0);
   test-property( G_TYPE_BOOLEAN, 'focus-on-click', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'has-default', 'get-boolean', 0);
-
-
-#`{{
-  my Gnome::GObject::Value $gv;
-
-  my Gnome::Gtk3::Button $b .= new(:label<abc>);
-  $b.set-no-show-all(True);
-  $b.set-name('test-button');
-
-  $gv .= new(:init(G_TYPE_STRING));
-  $b.g-object-get-property( 'name', $gv);
-  is $gv.g-value-get-string, 'test-button', 'get property name';
-  $gv.clear-object;
-
-  $gv .= new(:init(G_TYPE_BOOLEAN));
-  $b.g-object-get-property( 'no-show-all', $gv);
-  ok $gv.g-value-get-boolean, 'get property no-show-all';
-  $gv.g-value-set-boolean(False);
-  $b.g-object-set-property( 'no-show-all', $gv);
-  is $b.get-no-show-all, False, 'set property no-show-all';
-  $gv.clear-object;
-}}
 }
 
 #-------------------------------------------------------------------------------

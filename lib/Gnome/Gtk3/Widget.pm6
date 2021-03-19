@@ -3793,8 +3793,9 @@ sub gtk_widget_input_shape_combine_region (
   { * }
 }}
 
+#`{{ Gnome::Gtk3::ActionGroup is deprecated
 #-------------------------------------------------------------------------------
-#TM:0:insert-action-group:
+# TM:0:insert-action-group:
 =begin pod
 =head2 insert-action-group
 
@@ -3820,6 +3821,7 @@ sub gtk_widget_insert_action_group (
   N-GObject $widget, gchar-ptr $name, N-GObject $group
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:intersect:
@@ -4860,7 +4862,6 @@ If the direction is set to C<GTK-TEXT-DIR-NONE>, then the value set by C<set-def
 =end pod
 
 method set-direction ( GtkTextDirection $dir ) {
-
   gtk_widget_set_direction(
     self._f('GtkWidget'), $dir
   );
