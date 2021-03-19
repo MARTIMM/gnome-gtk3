@@ -158,7 +158,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Menu';
 
   # process all named arguments
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
+  if %options<native-object>:exists or %options<widget>:exists or %options<build-id>:exists {
     # provided in Gnome::GObject::Object
   }
 
