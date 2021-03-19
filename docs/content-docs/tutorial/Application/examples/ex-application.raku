@@ -107,7 +107,6 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
   #-----------------------------------------------------------------------------
   method app-startup ( AppSignalHandlers :_widget($app) ) {
 note 'app registered';
-#    self.run;
   }
 
   #-----------------------------------------------------------------------------

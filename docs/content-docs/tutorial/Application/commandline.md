@@ -187,3 +187,16 @@ Unknown option help
 ```
 
 There are still some problems left but we can ignore them now for the moment.
+
+# What have we learned
+
+Handling commandline arguments is complex bussines when working with GTK application modules. Normally one can just use a `MAIN()` subroutine and decide from there what to do. The program based on the Application module can be kept simple when we apply the `G_APPLICATION_NON_UNIQUE` flag to the initialization of Application.
+
+But when we want more excitement we must handle the local commandline arguments and the remote ones together due to the fact that several GTK option handling classes are not supported. The Application `run()` method picks up all arguments from `@*ARGS` and when the local options handler continues, hands the arguments over to the remote options handler unaltered.
+
+* To handle local options one must add a signal handler for the `handle-local-options` event.
+* The local options handler must return an integer;
+  * -1 to continue processing
+  * 0 to return from `run()` with a success exit value
+  * > 0 to return from `run()` with a failure exit value
+* To handle remote options one must add the `G_APPLICATION_HANDLES_COMMAND_LINE` flag to the initialization of Application. Also a handler must be registered for the `command-line` event.
