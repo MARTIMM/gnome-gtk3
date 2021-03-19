@@ -144,7 +144,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
             'array zero-terminated=1' | optional | inout | out | in |
             'not nullable'
           ] ')' //;
-    $sub-doc ~~ s/^ <[:;]> \s+ //;
+    $sub-doc ~~ s/ 'Returns:' \s* ':' \s+ /Returns: /;
 
 #note "Pod items: $items-src-doc.elems()\n  ", $items-src-doc.join("\n  ");
 
@@ -280,8 +280,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
           method _$sub-name ($pod-args$pod-returns )
 
-        $pod-doc-items
-        =end pod
+        $pod-doc-items=end pod
         \}\}
 
         sub _$sub-name ( $args $returns )
@@ -307,8 +306,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
           method $pod-sub-name ($pod-args$pod-returns )
 
-        $pod-doc-items
-        =end pod
+        $pod-doc-items=end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
         $convert-lines
@@ -340,8 +338,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
           method $pod-sub-name ($pod-args$pod-returns )
 
-        $pod-doc-items
-        =end pod
+        $pod-doc-items=end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
         $convert-lines
@@ -525,7 +522,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   # doc/Design-docs/skim-tool-enum-list.txt
   $type = 'GEnum' if $type ~~ any(@enum-list);
 
-#`{{ not translated anymore. they are mapped in Gnome::N::GlibToRakuTypes
+#`{{ not translated anymore. they are mapped in Gnome:N:GlibToRakuTypes
 
   $type ~~ s:s/ gboolean || gint /int/;
   $type ~~ s:s/ gint32 /int32/;
@@ -821,13 +818,13 @@ sub substitute-in-template (
 ) {
 
   my Str $template-text = Q:q:to/EOTEMPLATE/;
-    #TL:1:Gnome::LIBRARYMODULE:
+    #TL:1:Gnome:LIBRARYMODULE:
 
     use v6;
     #-------------------------------------------------------------------------------
     =begin pod
 
-    =head1 Gnome::LIBRARYMODULE
+    =head1 Gnome:LIBRARYMODULE
 
     MODULE-SHORTDESCRIPTION
 
@@ -847,20 +844,20 @@ sub substitute-in-template (
     # no extra info for roles
     $template-text ~= Q:q:to/EOTEMPLATE/;
 
-        unit role Gnome::LIBRARYMODULE;
+        unit role Gnome:LIBRARYMODULE;
 
       =end pod
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      #use Gnome::N::X;
-      use Gnome::N::NativeLib;
-      use Gnome::N::N-GObject;
-      use Gnome::N::GlibToRakuTypes;
+      #use Gnome:N:X;
+      use Gnome:N:NativeLib;
+      use Gnome:N:N-GObject;
+      use Gnome:N:GlibToRakuTypes;
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      unit role Gnome:LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
@@ -868,7 +865,7 @@ sub substitute-in-template (
   else {
     $template-text ~= Q:q:to/EOTEMPLATE/;
 
-        unit class Gnome::LIBRARYMODULE;
+        unit class Gnome:LIBRARYMODULE;
         ALSO-IS-LIBRARY-PARENT
 
 
@@ -882,13 +879,13 @@ sub substitute-in-template (
 
       Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-        use Gnome::LIBRARYMODULE;
+        use Gnome:LIBRARYMODULE;
 
         unit class MyGuiClass;
-        also is Gnome::LIBRARYMODULE;
+        also is Gnome:LIBRARYMODULE;
 
         submethod new ( |c ) {
-          # let the Gnome::LIBRARYMODULE class process the options
+          # let the Gnome:LIBRARYMODULE class process the options
           self.bless( :LIBCLASSNAME, |c);
         }
 
@@ -903,32 +900,32 @@ sub substitute-in-template (
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      #use Gnome::N::X;
-      use Gnome::N::NativeLib;
-      use Gnome::N::N-GObject;
-      use Gnome::N::GlibToRakuTypes;
+      #use Gnome:N:X;
+      use Gnome:N:NativeLib;
+      use Gnome:N:N-GObject;
+      use Gnome:N:GlibToRakuTypes;
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      unit class Gnome:LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
 
   my Str ( $t1, $t2) = ( '', '');
   if $class-is-top {
-    $t1 = "use Gnome::N::TopLevelClassSupport;";
-    $t2 = "also is Gnome::N::TopLevelClassSupport;";
+    $t1 = "use Gnome:N:TopLevelClassSupport;";
+    $t2 = "also is Gnome:N:TopLevelClassSupport;";
   }
 
   elsif $*raku-parentlib-name and $*raku-parentclass-name {
-    $t1 = "use Gnome::{$*raku-parentlib-name}::{$*raku-parentclass-name};";
-    $t2 = "also is Gnome::{$*raku-parentlib-name}::{$*raku-parentclass-name};";
+    $t1 = "use Gnome:{$*raku-parentlib-name}:{$*raku-parentclass-name};";
+    $t2 = "also is Gnome:{$*raku-parentlib-name}:{$*raku-parentclass-name};";
   }
 
 
   $template-text ~~ s:g/ 'MODULENAME' /$*raku-class-name/;
-  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}::{$*raku-class-name}/;
+  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}:{$*raku-class-name}/;
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
@@ -940,7 +937,7 @@ sub substitute-in-template (
   $output-file = "xt/NewModules/$*raku-class-name.pm6";
   $output-file.IO.spurt($template-text);
 
-  note "Write Gnome::{$*raku-lib-name}::{$*raku-class-name} to $output-file";
+  note "Write Gnome:{$*raku-lib-name}:{$*raku-class-name} to $output-file";
 
   get-vartypes($include-content) if $do-all or $types;
 
@@ -962,10 +959,10 @@ sub substitute-in-template (
         method INTERFACE_NAME ( $native-sub --> Callable ) {
 
           my Callable $s;
-          try { $s = &::("BASE-SUBNAME_$native-sub"); };
+          try { $s = &:("BASE-SUBNAME_$native-sub"); };
         # check for gtk_, gdk_, g_, pango_, cairo_ !!!
-          try { $s = &::("gtk_$native-sub"); } unless ?$s;
-          try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+          try { $s = &:("gtk_$native-sub"); } unless ?$s;
+          try { $s = &:($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
           $s;
         }
@@ -1004,13 +1001,13 @@ sub substitute-in-template (
 
         =head3 :native-object
 
-        Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+        Create a RAKU-CLASS-NAME object using a native object from elsewhere. See also B<Gnome:N:TopLevelClassSupport>.
 
           multi method new ( N-GObject :$native-object! )
 
         =head3 :build-id
 
-        Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+        Create a RAKU-CLASS-NAME object using a native object returned from a builder. See also B<Gnome:GObject:Object>.
 
           multi method new ( Str :$build-id! )
 
@@ -1018,15 +1015,15 @@ sub substitute-in-template (
 
         #TM:0:new():inheriting
         #TM:1:new():
-        #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
-        #TM:4:new(:build-id):Gnome::GObject::Object
+        #TM:4:new(:native-object):Gnome:N:TopLevelClassSupport
+        #TM:4:new(:build-id):Gnome:GObject:Object
 
         submethod BUILD ( *%options ) {
 
         BUILD-ADD-SIGNALS
 
           # prevent creating wrong native-objects
-          if self.^name eq 'Gnome::LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
+          if self.^name eq 'Gnome:LIBRARYMODULE' #`{{ or %options<LIBCLASSNAME> }} {
 
             # check if native object is set by a parent class
             if self.is-valid { }
@@ -1047,7 +1044,7 @@ sub substitute-in-template (
               #`{{ use this when the module is not made inheritable
               # check if there are unknown options
               elsif %options.elems {
-                die X::Gnome.new(
+                die X:Gnome.new(
                   :message(
                     'Unsupported, undefined, incomplete or wrongly typed options for ' ~
                     self.^name ~ ': ' ~ %options.keys.join(', ')
@@ -1059,7 +1056,7 @@ sub substitute-in-template (
               #`{{ when there are no defaults use this
               # check if there are any options
               elsif %options.elems == 0 {
-                die X::Gnome.new(:message('No options specified ' ~ self.^name));
+                die X:Gnome.new(:message('No options specified ' ~ self.^name));
               }
               }}
 
@@ -1082,7 +1079,7 @@ sub substitute-in-template (
     }
 
     $template-text ~~ s:g/ 'RAKU-CLASS-NAME' /$*raku-class-name/;
-    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}::{$*raku-class-name}/;
+    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}:{$*raku-class-name}/;
     $template-text ~~ s:g/ 'BASE-SUBNAME' /$*base-sub-name/;
     $template-text ~~ s:g/ 'LIBCLASSNAME' /$*lib-class-name/;
     $output-file.IO.spurt( $template-text, :append);
@@ -1232,7 +1229,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = '';
 
     $source-content ~~ m/
-      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
+      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name ':'  .*? '*/' ]
     /;
 
     # save doc and remove from source but stop if none left
@@ -1246,10 +1243,10 @@ sub get-signals ( Str:D $source-content is copy ) {
 
       # get lib class name and remove line from source
       $sdoc ~~ m/
-        ^^ \s+ '*' \s+ $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
+        ^^ \s+ '*' \s+ $*lib-class-name ':' $<signal-name> = [ [<alnum> || '-']+ ]
       /;
       $signal-name = ~($<signal-name> // '');
-      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name ':'? //;
+      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name ':' $signal-name ':'? //;
 #note "SDoc 1 ", $sdoc;
     }
 
@@ -1324,11 +1321,11 @@ sub get-signals ( Str:D $source-content is copy ) {
     $iname ~~ s:i/^ [ gtk || gdk || g ] //;
     $iname .= lc;
     $items-src-doc.push: %(
-      :item-type<Gnome::GObject::Object>, :item-name($iname),
+      :item-type<Gnome:GObject:Object>, :item-name($iname),
       :item-doc('')
     );
 
-    my Array $signal-args = ['Gnome::GObject::Object'];
+    my Array $signal-args = ['Gnome:GObject:Object'];
     my Int $arg-count = @args[8].Int;
     loop ( my $i = 0; $i < $arg-count; $i++ ) {
 
@@ -1346,38 +1343,38 @@ sub get-signals ( Str:D $source-content is copy ) {
         when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{ is object }'; }
         when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{ is widget }'; }
         when 'GTK_TYPE_TEXT_ITER' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gtk3:TextIter }';
         }
         when 'GTK_TYPE_TREE_ITER' {
-          $arg-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
+          $arg-type = 'N-GtkTreeIter #`{ native Gnome:Gtk3:TreeIter }';
         }
 
         when 'GDK_TYPE_DISPLAY' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:Display }';
         }
         when 'GDK_TYPE_DEVICE' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Device }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:Device }';
         }
         when 'GDK_TYPE_DEVICE_TOOL' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::DeviceTool }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:DeviceTool }';
         }
         when 'GDK_TYPE_MONITOR' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Monitor }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:Monitor }';
         }
         when 'GDK_TYPE_SCREEN' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Screen }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:Screen }';
         }
         when 'GDK_TYPE_SEAT' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Seat }';
+          $arg-type = 'N-GObject #`{ native Gnome:Gdk3:Seat }';
         }
         when 'GDK_TYPE_MODIFIER_TYPE' {
-          $arg-type = 'GdkModifierType #`{ from Gnome::Gdk3::Window }';
+          $arg-type = 'GdkModifierType #`{ from Gnome:Gdk3:Window }';
         }
         default { $arg-type = "Unknown type @args[{9 + $i}]"; }
       }
 
       my Str $item-name = $arg-type.lc;
-      $item-name ~~ s/ 'gnome::gtk3::' //;
+      $item-name ~~ s/ 'gnome:gtk3:' //;
       $items-src-doc.push: %(
         :item-type($arg-type), :$item-name,
         :item-doc('')
@@ -1510,7 +1507,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       =begin pod
       =head1 Signals
 
-      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome:GObject:Object>. The second option is to use C<connect-object()> directly from B<Gnome:GObject:Signal>.
 
       =head2 First method
 
@@ -1520,12 +1517,12 @@ sub get-signals ( Str:D $source-content is copy ) {
         method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
         # connect a signal on window object
-        my Gnome::Gtk3::Window $w .= new( ... );
+        my Gnome:Gtk3:Window $w .= new( ... );
         $w.register-signal( self, 'mouse-event', 'button-press-event');
 
       =head2 Second method
 
-        my Gnome::Gtk3::Window $w .= new( ... );
+        my Gnome:Gtk3:Window $w .= new( ... );
         my Callable $handler = sub (
           N-GObject $native, GdkEvent $event, OpaquePointer $data
         ) {
@@ -1732,6 +1729,8 @@ sub get-properties ( Str:D $source-content is copy ) {
     $prop-name = @args[0];
     $prop-nick = @args[1];
     $prop-blurp = $has-doc ?? $sdoc !! @args[2];
+#    $prop-blurp ~~ s/ \s* \* \s+ Since ':' \s+ \d+ \. \d+ \s*//;
+#note "blurp: $prop-blurp";
 
     my Str $flags;
     my Str $gtype-string;
@@ -1805,7 +1804,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
 #note "sdoc 3: ", $sdoc if $has-doc;
 
-    $sdoc ~~ s/ Since ':' \s* \d+\.\d+ \s* \*? //;
+    $sdoc ~~ s/ \* \s* Since ':' \s* \d+\.\d+ \s* \*? //;
     $property-doc ~= Q:qq:to/EOHEADER/;
 
       =comment -----------------------------------------------------------------------
@@ -1813,7 +1812,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       =head3 $prop-nick: $prop-name
 
       $sdoc
-      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
+      The B<Gnome:GObject:Value> type of property I<$prop-name> is C<$prop-type>.
       EOHEADER
 
     $property-doc-entries{$prop-name} = $property-doc;
@@ -1830,10 +1829,10 @@ sub get-properties ( Str:D $source-content is copy ) {
       =begin pod
       =head1 Properties
 
-      An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+      An example of using a string type property of a B<Gnome:Gtk3:Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
 
-        my Gnome::Gtk3::Label $label .= new;
-        my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+        my Gnome:Gtk3:Label $label .= new;
+        my Gnome:GObject:Value $gv .= new(:init(G_TYPE_STRING));
         $label.get-property( 'label', $gv);
         $gv.set-string('my text label');
 
@@ -2202,9 +2201,9 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
 #-------------------------------------------------------------------------------
 # change;
-#   #class::signal to I<signal>
-#   #class::property to I<property>
-#   #class to B<Gnome::xyz::class>
+#   #class:signal to I<signal>
+#   #class:property to I<property>
+#   #class to B<Gnome:xyz:class>
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
@@ -2218,11 +2217,11 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
     # check for signal spec with classname in doc
-    $text ~~ m/ '#' (<alnum>+) '::' ([<alnum> || '-']+) /;
+    $text ~~ m/ '#' (<alnum>+) ':' ([<alnum> || '-']+) /;
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ / I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ / I\<$oct\>/;
   }
 
   loop {
@@ -2234,7 +2233,7 @@ sub podding-class ( Str:D $text is copy --> Str ) {
     my Str $part = $oct;
 
     $oct ~~ s/^ ['Gtk' || 'Gdk' || 'G'] ( <alnum>+ )
-             /Gnome::$*raku-lib-name\:\:$/[0]/;
+             /Gnome:$*raku-lib-name\:\:$/[0]/;
 
     # replace changed part in text
     $text ~~ s/ '#' $part /B\<$oct\>/;
@@ -2242,19 +2241,19 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   # convert a few without leading octagon (#)
   #$text ~~ s:g/ <!after '%' > [ 'Gtk' || 'Gdk' || 'G'] (\D <alnum>+)
-  #            /B<Gnome::$*raku-lib-name\:\:$/[0]>/;
+  #            /B<Gnome:$*raku-lib-name\:\:$/[0]>/;
 
   $text
 }
 
 
 #-------------------------------------------------------------------------------
-# change any ::signal to I<signal>
+# change any :signal to I<signal>
 sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
-    last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / I<$/[0]>/;
+    last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
+    $text ~~ s/ \s ':' ([<alnum> || '-']+) / I<$/[0]>/;
   }
 
   $text
@@ -2319,7 +2318,7 @@ sub generate-test ( ) {
 
   # create var name named after classname. E.g. TextBuffer -> $tb.
   my Str $m = '$' ~ $*raku-class-name.comb(/<[A..Z]>/).join.lc;
-  my Str $class = [~] 'Gnome::', $*raku-lib-name, '::', $*raku-class-name;
+  my Str $class = [~] 'Gnome:', $*raku-lib-name, ':', $*raku-class-name;
   my Str $test-content = Q:q:s:b:to/EOTEST/;
     use v6;
     use NativeCall;
@@ -2327,8 +2326,8 @@ sub generate-test ( ) {
 
     use $class;
 
-    #use Gnome::N::X;
-    #Gnome::N::debug(:on);
+    #use Gnome:N:X;
+    #Gnome:N:debug(:on);
 
     #-------------------------------------------------------------------------------
     my $class $m;
@@ -2377,8 +2376,8 @@ sub generate-test ( ) {
 
     #-------------------------------------------------------------------------------
     subtest 'Properties ...', {
-      use Gnome::GObject::Value;
-      use Gnome::GObject::Type;
+      use Gnome:GObject:Value;
+      use Gnome:GObject:Type;
 
       #my $class $m .= new;
 
@@ -2386,7 +2385,7 @@ sub generate-test ( ) {
         \$type, Str \$prop, Str \$routine, \$value,
         Bool :\$approx = False, Bool :\$is-local = False
       ) {
-        my Gnome::GObject::Value \$gv .= new\(:init(\$type));
+        my Gnome:GObject:Value \$gv .= new\(:init(\$type));
         $m.get-property\( \$prop, \$gv);
         my \$gv-value = \$gv."\$routine"\();
         if \$approx {
@@ -2424,10 +2423,10 @@ sub generate-test ( ) {
 
     #-------------------------------------------------------------------------------
     subtest 'Signals ...', {
-      use Gnome::Gtk3::Main;
-      use Gnome::N::GlibToRakuTypes;
+      use Gnome:Gtk3:Main;
+      use Gnome:N:GlibToRakuTypes;
 
-      my Gnome::Gtk3::Main \$main .= new;
+      my Gnome:Gtk3:Main \$main .= new;
 
       class SignalHandlers {
         has Bool \$!signal-processed = False;
@@ -2475,7 +2474,7 @@ sub generate-test ( ) {
 
       my $class $m .= new;
 
-      #my Gnome::Gtk3::Window \$w .= new;
+      #my Gnome:Gtk3:Window \$w .= new;
       #\$w.container-add(\$m);
 
       my SignalHandlers \$sh .= new;
