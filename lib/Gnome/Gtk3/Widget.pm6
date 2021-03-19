@@ -3793,35 +3793,32 @@ sub gtk_widget_input_shape_combine_region (
   { * }
 }}
 
-#`{{ Gnome::Gtk3::ActionGroup is deprecated
 #-------------------------------------------------------------------------------
 # TM:0:insert-action-group:
 =begin pod
 =head2 insert-action-group
 
-Inserts I<group> into I<widget>. Children of I<widget> that implement B<Gnome::Gtk3::Actionable> can then be associated with actions in I<group> by setting their “action-name” to I<prefix>.`action-name`.
+Inserts I<$group> into I<widget>. Children of I<widget> that implement B<Gnome::Gtk3::Actionable> can then be associated with actions in I<$group> by setting their “action-name” to I<$prefix>.`action-name`.
 
 If I<group> is C<undefined>, a previously inserted group for I<name> is removed from I<widget>.
 
   method insert-action-group ( Str $name, N-GObject $group )
 
 =item Str $name; the prefix for actions in I<group>
-=item N-GObject $group; a B<Gnome::Gtk3::ActionGroup>, or C<undefined>
+=item N-GObject $group; a B<Gnome::Gio::ActionGroup>, or C<undefined>
 
 =end pod
 
-method insert-action-group ( Str $name, N-GObject $group ) {
+method insert-action-group ( Str $name, $group is copy ) {
+  $group .= get-native-object-no-reffing unless $group ~~ N-GObject;
 
-  gtk_widget_insert_action_group(
-    self._f('GtkWidget'), $name, $group
-  );
+  gtk_widget_insert_action_group( self._f('GtkWidget'), $name, $group);
 }
 
 sub gtk_widget_insert_action_group (
   N-GObject $widget, gchar-ptr $name, N-GObject $group
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:intersect:

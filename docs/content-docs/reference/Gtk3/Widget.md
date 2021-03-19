@@ -1279,6 +1279,19 @@ Another reason is that when calling `g-object-new()` on a widget with composite 
 
     method init-template ( )
 
+insert-action-group
+-------------------
+
+Inserts *$group* into *widget*. Children of *widget* that implement **Gnome::Gtk3::Actionable** can then be associated with actions in *$group* by setting their “action-name” to *$prefix*.`action-name`.
+
+If *group* is `undefined`, a previously inserted group for *name* is removed from *widget*.
+
+    method insert-action-group ( Str $name, N-GObject $group )
+
+  * Str $name; the prefix for actions in *group*
+
+  * N-GObject $group; a **Gnome::Gio::ActionGroup**, or `undefined`
+
 intersect
 ---------
 
