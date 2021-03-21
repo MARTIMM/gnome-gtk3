@@ -10,8 +10,10 @@ use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Main;
 
 class BW {
+  has Gnome::Gtk3::Main $!main .= new;
+
   method build-window (
-    Gnome::Gtk3::Window :_widget($main-window), :$splash
+    Gnome::Gtk3::Window :_widget($main-window), :$splash-window
   ) {
     $main-window.set-size-request( 600, 400);
     $main-window.set-border-width(20);
@@ -19,34 +21,36 @@ class BW {
 
     my Gnome::Gtk3::Button $b .= new(:label<Stop>);
     $b.register-signal( self, 'stop-app', 'clicked');
-    $b.set-sensitive(False);
     $main-window.container-add($b);
 
     sleep 1;
+    note 'show main';
     $main-window.show-all;
-    sleep 3;
-    $splash.destroy;
-    sleep 1;
-    $b.set-sensitive(True);
+    while $!main.events-pending() { $!main.iteration-do(False); }
+    sleep 4;
+    note 'splash destroy';
+    $splash-window.destroy;
   }
 
   method stop-app ( ) {
-    Gnome::Gtk3::Main.quit;
+    $!main.quit;
   }
 }
 
-my Gnome::Gtk3::Window $w .= new;
+my Gnome::Gtk3::Window $splash-window .= new;
 my Gnome::Gtk3::Window $main-window .= new;
-$main-window.start-thread( BW.new, 'build-window', :splash($w));
+$splash-window.set-transient-for($main-window);
+$splash-window.set-modal(True);
+$main-window.start-thread( BW.new, 'build-window', :$splash-window);
 
 note 'setup splash';
 
-$w.set-decorated(False);
-$w.set-resizable(False);
-$w.set-position(GTK_WIN_POS_CENTER);
+$splash-window.set-decorated(False);
+$splash-window.set-resizable(False);
+$splash-window.set-position(GTK_WIN_POS_CENTER);
 
 my Gnome::Gtk3::Grid $g .= new;
-$w.container-add($g);
+$splash-window.container-add($g);
 $g.set-border-width(80);
 
 my Gnome::Gtk3::Label $l .= new(
@@ -55,7 +59,7 @@ my Gnome::Gtk3::Label $l .= new(
 $g.attach( $l, 0, 0, 1, 1);
 
 note 'show splash';
-$w.show-all;
+$splash-window.show-all;
 
 
 
