@@ -189,17 +189,31 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
             $method-args ~= ',' if ?$method-args;
             $method-args ~= " \$$arg is copy";
+            $call-args ~= ',' if ?$call-args;
+            $call-args ~= " \$$arg";
+            $pod-args ~= ',' if ?$pod-args;
+            $pod-args ~= " $raku-arg-type \$$arg";
+          }
+
+          elsif $raku-arg-type eq 'Int-ptr' {
+            # don't define method args should insert '--> List' at the end
+            # also no pod args and also add '--> List' at the end, but how
+            # and not always if it only one
+            $raku-arg-type = 'Int';
+            $call-args ~= ',' if ?$call-args;
+            $call-args ~= " my gint \$$arg";
           }
 
           else {
             $method-args ~= ',' if ?$method-args;
             $method-args ~= " $raku-arg-type \$$arg";
+            $call-args ~= ',' if ?$call-args;
+            $call-args ~= " \$$arg";
+            $pod-args ~= ',' if ?$pod-args;
+            $pod-args ~= " $raku-arg-type \$$arg";
           }
 
-          $pod-args ~= ',' if ?$pod-args;
-          $pod-args ~= " $raku-arg-type \$$arg";
-          $call-args ~= ',' if ?$call-args;
-          $call-args ~= " \$$arg";
+
 
           # remove some c-oriented remarks
           if ?$pod-doc-item-doc {
@@ -208,9 +222,8 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
                     'allow-none' | 'not nullable' | 'array zero-terminated=1' |
                     optional | inout | out | in
                   ] ')' //;
-            $pod-doc-item-doc ~~ s/^ <[:;]> \s+ //;
+            $pod-doc-item-doc ~~ s/^ \s* <[:;]> \s+ //;
             $pod-doc-item-doc ~~ s/ 'C<Any>-terminated' //;
-
             $pod-doc-items ~=
               "=item $raku-arg-type \$$arg; $pod-doc-item-doc\n";
           }
@@ -226,7 +239,14 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
         # add argument to list for sub declaration
         $args ~= ', ' if ?$args;
-        $args ~= "$arg-type \$$arg";
+        if $arg-type eq 'gint-ptr' {
+          $arg-type = 'gint';
+          $args ~= "$arg-type \$$arg is rw";
+        }
+
+        else {
+          $args ~= "$arg-type \$$arg";
+        }
 #note "  sub... $sub-name    $args";
       }
 
@@ -1229,7 +1249,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-name = '';
 
     $source-content ~~ m/
-      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name ':'  .*? '*/' ]
+      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
     /;
 
     # save doc and remove from source but stop if none left
@@ -1243,10 +1263,10 @@ sub get-signals ( Str:D $source-content is copy ) {
 
       # get lib class name and remove line from source
       $sdoc ~~ m/
-        ^^ \s+ '*' \s+ $*lib-class-name ':' $<signal-name> = [ [<alnum> || '-']+ ]
+        ^^ \s+ '*' \s+ $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
       /;
       $signal-name = ~($<signal-name> // '');
-      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name ':' $signal-name ':'? //;
+      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
 #note "SDoc 1 ", $sdoc;
     }
 
