@@ -24,8 +24,7 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Gtk3::Window $w .= new;
-  is GtkWindowType($w.get-window-type), GTK_WINDOW_TOPLEVEL,
-     '.get-window-type()';
+  is $w.get-window-type, GTK_WINDOW_TOPLEVEL, '.get-window-type()';
 
   $w.set-title('My test window');
   is $w.get-title, 'My test window', '.set-title() / .get-title()';
@@ -52,14 +51,14 @@ subtest 'Manipulations', {
   ok Any || $rx >= 0, '.get-position(), x=' ~ ($rx//'Any');
   ok Any || $ry >= 0, '.get-position(), y=' ~ ($ry//'Any');
 
-  ok 1, '.gtk-window-move( 900, 250)';
-  $w.gtk-window-move( 900, 250);
+  ok 1, '.move( 900, 250)';
+  $w.move( 900, 250);
   ( $rx, $ry) = $w.get-position;
   ok Any || $rx == 900, '.get-position(), x=' ~ ($rx//'Any');
   ok Any || $ry == 250, '.get-position(), y=' ~ ($ry//'Any');
 
-  ok 1, '.gtk-window-resize( 240, 341)';
-  $w.gtk-window-resize( 240, 341);
+  ok 1, '.resize( 240, 341)';
+  $w.resize( 240, 341);
   ( $ww, $wh) = $w.get-size;
   ok Any || $ww == 240, '.get-size(), w=' ~ ($ww//'Any');
   ok Any || $wh == 341, '.get-size(), h=' ~ ($wh//'Any');
@@ -81,6 +80,7 @@ subtest 'Inherit Gnome::Gtk3::Window', {
   isa-ok $mgc, Gnome::Gtk3::Window, '.new()';
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   use Gnome::GObject::Value;
@@ -95,22 +95,54 @@ subtest 'Properties ...', {
   is $gv.g-value-get-string(), 'new title', 'property title';
   $gv.clear-object;
 }
-
-#`{{
-#-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Themes ...', {
-}
 }}
 
-##`{{
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  my Gnome::Gtk3::Window $w .= new;
+  $w.set-title('new title');
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $w.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+
+  test-property( G_TYPE_STRING, 'title', 'get-string', 'new title');
+}
+
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
   #use Gnome::Glib::Main;
@@ -175,7 +207,6 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-#}}
 
 #-------------------------------------------------------------------------------
 done-testing;
