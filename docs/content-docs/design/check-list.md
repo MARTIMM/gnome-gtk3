@@ -190,7 +190,7 @@ TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅓|  | ⅙| ✓| ✓| ✓|
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
-Window                    |  | ✓| ✓| ✓|  |  |  |  |  |  |  |  |  |
+Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|
 
 <!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so| -->
 
