@@ -9,6 +9,8 @@ use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Main;
 
+use Gnome::Glib::Error;
+
 class BW {
   has Gnome::Gtk3::Main $!main .= new;
 
@@ -18,7 +20,8 @@ class BW {
     $main-window.set-size-request( 600, 400);
     $main-window.set-border-width(20);
     $main-window.set-position(GTK_WIN_POS_CENTER);
-
+    my Gnome::Glib::Error $e = $main-window.set-icon-from-file('Old/window-icon.jpg');
+    note 'e: ', $e.is-valid;
     my Gnome::Gtk3::Button $b .= new(:label<Stop>);
     $b.register-signal( self, 'stop-app', 'clicked');
     $main-window.container-add($b);
