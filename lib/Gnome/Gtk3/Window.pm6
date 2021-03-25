@@ -2429,7 +2429,7 @@ method set-icon ( $icon is copy ) {
   $icon .= get-native-object-no-reffing unless $icon ~~ N-GObject;
 
   gtk_window_set_icon(
-    self._f('GtkWindow'),
+    self._f('GtkWindow'), $icon
   );
 }
 
