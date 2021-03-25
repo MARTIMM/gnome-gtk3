@@ -21,13 +21,13 @@
     url: '/content-docs/reference/Gio/ApplicationCommandLine.html'
     type: object
 
-  - title: Emblem
-    url: /content-docs/reference/Gio/Emblem.html
-    type: interface
+#  - title: Emblem
+#    url: /content-docs/reference/Gio/Emblem.html
+#    type: interface
 
-  - title: EmblemedIcon
-    url: /content-docs/reference/Gio/EmblemedIcon.html
-    type: interface
+#  - title: EmblemedIcon
+#    url: /content-docs/reference/Gio/EmblemedIcon.html
+#    type: interface
 
   - title: "Enums"
     url: '/content-docs/reference/Gio/Enums.html'
