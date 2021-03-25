@@ -23,23 +23,27 @@ When GDK threads are enabled, B<Gnome::Gtk3::Application> will acquire the GDK l
 
 =head2 Automatic resources
 
-B<Gnome::Gtk3::Application> will automatically load menus from the B<Gnome::Gtk3::Builder> resource located at "gtk/menus.ui", relative to the application's resource base path (see C<g_application_set_resource_base_path()>).  The menu with the ID "app-menu" is taken as the application's app menu and the menu with the ID "menubar" is taken as the application's menubar.  Additional menus (most interesting submenus) can be named and accessed via C<gtk_application_get_menu_by_id()> which allows for dynamic population of a part of the menu structure.
+B<Gnome::Gtk3::Application> will automatically load menus from the B<Gnome::Gtk3::Builder> resource located at "gtk/menus.ui", relative to the application's resource base path (see C<g_application_set_resource_base_path()>).  The menu with the ID "app-menu" is taken as the application's app menu and the menu with the ID "menubar" is taken as the application's menubar.  Additional menus (most interesting submenus) can be named and accessed via C<get_menu_by_id()> which allows for dynamic population of a part of the menu structure.
 
-If the resources "gtk/menus-appmenu.ui" or "gtk/menus-traditional.ui" are present then these files will be used in preference, depending on the value of C<gtk_application_prefers_app_menu()>. If the resource "gtk/menus-common.ui" is present it will be loaded as well. This is useful for storing items that are referenced from both "gtk/menus-appmenu.ui" and "gtk/menus-traditional.ui".
+If the resources "gtk/menus-appmenu.ui" or "gtk/menus-traditional.ui" are present then these files will be used in preference, depending on the value of C<prefers_app_menu()>. If the resource "gtk/menus-common.ui" is present it will be loaded as well. This is useful for storing items that are referenced from both "gtk/menus-appmenu.ui" and "gtk/menus-traditional.ui".
 
-It is also possible to provide the menus manually using C<gtk_application_set_app_menu()> and C<gtk_application_set_menubar()>.
+It is also possible to provide the menus manually using C<set_app_menu()> and C<set_menubar()>.
 
-B<Gnome::Gtk3::Application> will also automatically setup an icon search path for the default icon theme by appending "icons" to the resource base path.  This allows your application to easily store its icons as resources.  See C<gtk_icon_theme_add_resource_path()> for more information.
+=begin comment
+B<Gnome::Gtk3::Application> will also automatically setup an icon search path for the default icon theme by appending "icons" to the resource base path.  This allows your application to easily store its icons as resources.  See C<Gnome::Gio::Icon.theme_add_resource_path()> for more information.
+=end comment
 
-If there is a resource located at "gtk/help-overlay.ui" which defines a B<Gnome::Gtk3::ShortcutsWindow> with ID "help_overlay" then B<Gnome::Gtk3::Application> associates an instance of this shortcuts window with each B<Gnome::Gtk3::ApplicationWindow> and sets up keyboard accelerators (Control-F1 and Control-?) to open it. To create a menu item that displays the shortcuts window, associate the item with the action win.show-help-overlay.
+If there is a resource located at "gtk/help-overlay.ui" which defines a B<Gnome::Gtk3::ShortcutsWindow> with ID "help_overlay" then B<Gnome::Gtk3::Application> associates an instance of this shortcuts window with each B<Gnome::Gtk3::ApplicationWindow> and sets up keyboard accelerators (Control-F1 and Control-?) to open it. To create a menu item that displays the shortcuts window, associate the item with the action C<win.show-help-overlay>.
 
+=begin comment
 =head2 A simple application
 
 [A simple example](https://git.gnome.org/browse/gtk+/tree/examples/bp/bloatpad.c)
 
 B<Gnome::Gtk3::Application> optionally registers with a session manager of the users session (if you set the  I<register-session> property) and offers various functionality related to the session life-cycle.
 
-An application can block various ways to end the session with the C<gtk_application_inhibit()> function. Typical use cases for this kind of inhibiting are long-running, uninterruptible operations, such as burning a CD or performing a disk backup. The session manager may not honor the inhibitor, but it can be expected to inform the user about the negative consequences of ending the session while inhibitors are present.
+An application can block various ways to end the session with the C<inhibit()> function. Typical use cases for this kind of inhibiting are long-running, uninterruptible operations, such as burning a CD or performing a disk backup. The session manager may not honor the inhibitor, but it can be expected to inform the user about the negative consequences of ending the session while inhibitors are present.
+=end comment
 
 =head2 See Also
 
@@ -276,7 +280,7 @@ property of I<$window> to I<application>.
 
 Normally, the connection between the application and the window
 will remain until the window is destroyed, but you can explicitly
-remove it with C<gtk_application_remove_window()>.
+remove it with C<remove_window()>.
 
 GTK+ will keep the I<application> running as long as it has
 any windows.
@@ -347,7 +351,7 @@ sub gtk_application_get_windows ( N-GObject $application --> N-GList )
 =head2 [gtk_application_] get_app_menu
 
 Returns the menu model that has been set with
-C<gtk_application_set_app_menu()>.
+C<set_app_menu()>.
 
 Returns: (transfer none) (nullable): the application menu of I<application>
 or C<Any> if no application menu has been set.
@@ -400,7 +404,7 @@ sub gtk_application_set_app_menu ( N-GObject $application, N-GObject $app_menu  
 =head2 [gtk_application_] get_menubar
 
 Returns the menu model that has been set with
-C<gtk_application_set_menubar()>.
+C<set_menubar()>.
 
 Returns: (transfer none): the menubar for windows of I<application>
 
@@ -461,7 +465,7 @@ Applications should invoke this method when they begin an operation
 that should not be interrupted, such as creating a CD or DVD. The
 types of actions that may be blocked are specified by the I<flags>
 parameter. When the application completes the operation it should
-call C<gtk_application_uninhibit()> to remove the inhibitor. Note that
+call C<uninhibit()> to remove the inhibitor. Note that
 an application can have multiple inhibitors, and all of them must
 be individually removed. Inhibitors are also cleared when the
 application exits.
@@ -476,7 +480,7 @@ If I<window> is given, the session manager may point the user to
 this window to find out more about why the action is inhibited.
 
 Returns: A non-zero cookie that is used to uniquely identify this
-request. It should be used as an argument to C<gtk_application_uninhibit()>
+request. It should be used as an argument to C<uninhibit()>
 in order to remove the request. If the platform does not support
 inhibiting or the request failed for some reason, 0 is returned.
 
@@ -497,12 +501,12 @@ sub gtk_application_inhibit ( N-GObject $application, N-GObject $window, GtkAppl
 =begin pod
 =head2 gtk_application_uninhibit
 
-Removes an inhibitor that has been established with C<gtk_application_inhibit()>.
+Removes an inhibitor that has been established with C<inhibit()>.
 Inhibitors are also cleared when the application exits.
 
   method gtk_application_uninhibit ( UInt $cookie )
 
-=item UInt $cookie; a cookie that was returned by C<gtk_application_inhibit()>
+=item UInt $cookie; a cookie that was returned by C<inhibit()>
 
 =end pod
 
@@ -542,7 +546,7 @@ sub gtk_application_is_inhibited ( N-GObject $application, GtkApplicationInhibit
 Returns the B<Gnome::Gtk3::ApplicationWindow> with the given ID.
 
 The ID of a B<Gnome::Gtk3::ApplicationWindow> can be retrieved with
-C<gtk_application_window_get_id()>.
+C<window_get_id()>.
 
 Returns: (nullable) (transfer none): the window with ID I<id>, or
 C<Any> if there is no window with this ID
@@ -587,7 +591,7 @@ sub gtk_application_get_active_window ( N-GObject $application --> N-GObject )
 =head2 [gtk_application_] list_action_descriptions
 
 Lists the detailed action names which have associated accelerators.
-See C<gtk_application_set_accels_for_action()>.
+See C<set_accels_for_action()>.
 
 Returns: (transfer full): a C<Any>-terminated array of strings,
 free with C<g_strfreev()> when done
@@ -690,13 +694,13 @@ Determines if the desktop environment in which the application is
 running would prefer an application menu be shown.
 
 If this function returns C<1> then the application should call
-C<gtk_application_set_app_menu()> with the contents of an application
+C<set_app_menu()> with the contents of an application
 menu, which will be shown by the desktop environment.  If it returns
 C<0> then you should consider using an alternate approach, such as
 a menubar.
 
 The value returned by this function is purely advisory and you are
-free to ignore it.  If you call C<gtk_application_set_app_menu()> even
+free to ignore it.  If you call C<set_app_menu()> even
 if the desktop environment doesn't support app menus, then a fallback
 will be provided.
 
@@ -718,7 +722,7 @@ if you should show a gear menu or not.
 This function will return C<0> on Mac OS and a default app menu
 will be created automatically with the "usual" contents of that menu
 typical to most Mac OS applications.  If you call
-C<gtk_application_set_app_menu()> anyway, then this menu will be
+C<set_app_menu()> anyway, then this menu will be
 replaced with your own.
 
 Returns: C<1> if you should set an app menu
@@ -791,7 +795,7 @@ Also here, the types of positional arguments in the signal handler are important
 =head3 window-added
 
 Emitted when a B<Gnome::Gtk3::Window> is added to I<application> through
-C<gtk_application_add_window()>.
+C<add_window()>.
 
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
@@ -810,7 +814,7 @@ C<gtk_application_add_window()>.
 
 Emitted when a B<Gnome::Gtk3::Window> is removed from I<application>,
 either as a side-effect of being destroyed or explicitly
-through C<gtk_application_remove_window()>.
+through C<remove_window()>.
 
   method handler (
     Unknown type GTK_TYPE_WINDOW $window,
@@ -829,8 +833,8 @@ through C<gtk_application_remove_window()>.
 
 Emitted when the session manager is about to end the session, only
 if  I<register-session> is C<1>. Applications can
-connect to this signal and call C<gtk_application_inhibit()> with
-C<GTK_APPLICATION_INHIBIT_LOGOUT> to delay the end of the session
+connect to this signal and call C<inhibit()> with
+C<INHIBIT_LOGOUT> to delay the end of the session
 until state has been saved.
 
 Since: 3.24.8
