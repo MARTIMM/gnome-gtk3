@@ -6,6 +6,10 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-03-22 0.36.5:
+* Improve docs of **Gnome::Gtk3::Window** and tests.
+* Bugfixed; method `Gnome::Gtk3::Window.set-icon()` called the native sub without the icon argument.
+
 #### 2021-03-18 0.36.4:
 * Improve documentation of **Gnome::Gtk3::Widget** and  **Gnome::Gtk3::MenuButton**. Also methods are added and new tests.
 
