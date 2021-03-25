@@ -48,6 +48,7 @@ $main-window.start-thread( BW.new, 'build-window', :$splash-window);
 
 note 'setup splash';
 
+$splash-window.set-keep-above(True);
 $splash-window.set-decorated(False);
 $splash-window.set-resizable(False);
 $splash-window.set-position(GTK_WIN_POS_CENTER);
