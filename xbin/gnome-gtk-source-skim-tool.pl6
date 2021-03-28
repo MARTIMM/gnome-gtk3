@@ -877,7 +877,7 @@ sub substitute-in-template (
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit role Gnome::LIBRARYMODULE::auth<github:MARTIMM>:ver<0.1.0>;
+      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
@@ -927,7 +927,7 @@ sub substitute-in-template (
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit class Gnome::LIBRARYMODULE::auth<github:MARTIMM>:ver<0.1.0>;
+      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
@@ -945,7 +945,7 @@ sub substitute-in-template (
 
 
   $template-text ~~ s:g/ 'MODULENAME' /$*raku-class-name/;
-  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}:{$*raku-class-name}/;
+  $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}::{$*raku-class-name}/;
   $template-text ~~ s:g/ 'USE-LIBRARY-PARENT' /$t1/;
   $template-text ~~ s:g/ 'ALSO-IS-LIBRARY-PARENT' /$t2/;
 
@@ -976,7 +976,7 @@ sub substitute-in-template (
         # All interface calls should become methods
         #-------------------------------------------------------------------------------
         # no pod. user does not have to know about it.
-        method INTERFACE_NAME ( $native-sub --> Callable ) {
+        method _INTERFACE_NAME ( $native-sub --> Callable ) {
 
           my Callable $s;
           try { $s = &:("BASE-SUBNAME_$native-sub"); };
@@ -988,11 +988,17 @@ sub substitute-in-template (
         }
         }}
 
+
+        #-------------------------------------------------------------------------------
+        # setup signals from interface
+        method _add_INTERFACE_NAME_signal_types ( Str $class-name ) {
+        BUILD-ADD-SIGNALS}
+
         EOTEMPLATE
 
       my Str $iname = $*base-sub-name;
       $iname ~~ s/ [ gtk | gdk | gio ] '_' //;
-      $template-text ~~ s/ INTERFACE_NAME /_{$iname}_interface/;
+      $template-text ~~ s:g/ INTERFACE_NAME /{$iname}_interface/;
 #`{{
   TODO must call interfaces after .set-class-name-of-sub()
   and in interface must also call .set-class-name-of-sub() if sub is found.
@@ -1064,7 +1070,7 @@ sub substitute-in-template (
               #`{{ use this when the module is not made inheritable
               # check if there are unknown options
               elsif %options.elems {
-                die X:Gnome.new(
+                die X::Gnome.new(
                   :message(
                     'Unsupported, undefined, incomplete or wrongly typed options for ' ~
                     self.^name ~ ': ' ~ %options.keys.join(', ')
@@ -1076,7 +1082,7 @@ sub substitute-in-template (
               #`{{ when there are no defaults use this
               # check if there are any options
               elsif %options.elems == 0 {
-                die X:Gnome.new(:message('No options specified ' ~ self.^name));
+                die X::Gnome.new(:message('No options specified ' ~ self.^name));
               }
               }}
 
@@ -1099,7 +1105,7 @@ sub substitute-in-template (
     }
 
     $template-text ~~ s:g/ 'RAKU-CLASS-NAME' /$*raku-class-name/;
-    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}:{$*raku-class-name}/;
+    $template-text ~~ s:g/ 'LIBRARYMODULE' /{$*raku-lib-name}::{$*raku-class-name}/;
     $template-text ~~ s:g/ 'BASE-SUBNAME' /$*base-sub-name/;
     $template-text ~~ s:g/ 'LIBCLASSNAME' /$*lib-class-name/;
     $output-file.IO.spurt( $template-text, :append);
@@ -1394,7 +1400,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       }
 
       my Str $item-name = $arg-type.lc;
-      $item-name ~~ s/ 'gnome:gtk3:' //;
+      $item-name ~~ s/ 'gnome::gtk3::' //;
       $items-src-doc.push: %(
         :item-type($arg-type), :$item-name,
         :item-doc('')
@@ -1579,18 +1585,30 @@ sub get-signals ( Str:D $source-content is copy ) {
       #-------------------------------------------------------------------------------
       EOBOOL
 
-    $build-add-signals = Q:q:to/EOBUILD/;
-        # add signal info in the form of w*<signal-name>.
-        unless $signals-added {
-          $signals-added = self.add-signal-types( $?CLASS.^name,
+    if $class-is-role {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          self.add-signal-types( $?CLASS.^name,
             SIG_CLASS_STR
           );
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
 
-          # signals from interfaces
-          #_add_..._signal_types($?CLASS.^name);
-        }
-      EOBUILD
-      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    else {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          unless $signals-added {
+            $signals-added = self.add-signal-types( $?CLASS.^name,
+              SIG_CLASS_STR
+            );
+
+            # signals from interfaces
+            #_add_..._signal_types($?CLASS.^name);
+          }
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
 
     # and append signal data to result module
     #$output-file.IO.spurt( $signal-doc, :append);
@@ -2221,7 +2239,7 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
 #-------------------------------------------------------------------------------
 # change;
-#   #class:signal to I<signal>
+#   #class::signal to I<signal>
 #   #class:property to I<property>
 #   #class to B<Gnome::xyz::class>
 sub podding-class ( Str:D $text is copy --> Str ) {
@@ -2237,11 +2255,11 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
     # check for signal spec with classname in doc
-    $text ~~ m/ '#' (<alnum>+) ':' ([<alnum> || '-']+) /;
+    $text ~~ m/ '#' (<alnum>+) '::' ([<alnum> || '-']+) /;
     my Str $oct = ~($/[1] // '');
     last unless ?$oct;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ / I\<$oct\>/;
+    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ / I\<$oct\>/;
   }
 
   loop {
@@ -2272,8 +2290,8 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 sub podding-signal ( Str:D $text is copy --> Str ) {
 
   loop {
-    last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / I<$/[0]>/;
+    last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
+    $text ~~ s/ \s '::' ([<alnum> || '-']+) / I<$/[0]>/;
   }
 
   $text
