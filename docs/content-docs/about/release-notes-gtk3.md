@@ -6,6 +6,10 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-03-26 0.36.6:
+* `Gnome::Gtk3::Widget.get-screen()` now returns a **Gnome::Gdk3::Screen** instead of the native object. Also document updates where Gnome::Gtk3::Screen where mentioned; changed into Gnome::Gdk3::Screen.
+* Add module **Gnome::Gdk3::Editable** which is a role needed by the input widgets like **Gnome::Gdk3::Entry**.
+
 #### 2021-03-22 0.36.5:
 * Improve docs of **Gnome::Gtk3::Window** and tests.
 * Bugfixed; method `Gnome::Gtk3::Window.set-icon()` called the native sub without the icon argument.
