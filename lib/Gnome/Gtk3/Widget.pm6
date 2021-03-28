@@ -297,6 +297,7 @@ use Gnome::Glib::List;
 
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
+use Gnome::Gdk3::Screen;
 
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
@@ -787,7 +788,7 @@ sub gtk_widget_class_bind_template_child_full (
 
 Finds a style property of a widget class by name.
 
-Returns: : the B<Gnome::Gtk3::ParamSpec> of the style property or C<undefined> if I<class> has no style property with that name.
+Returns: the B<Gnome::Gtk3::ParamSpec> of the style property or C<undefined> if I<class> has no style property with that name.
 
   method class-find-style-property ( GtkWidgetClass $klass, Str $property_name --> GParamSpec )
 
@@ -1133,7 +1134,7 @@ sub gtk_widget_compute_expand (
 
 Creates a new B<PangoContext> with the appropriate font map, font options, font description, and base direction for drawing text for this widget. See also C<get-pango-context()>.
 
-Returns: : the new B<PangoContext>
+Returns: the new B<PangoContext>
 
   method create-pango-context ( --> N-GObject )
 
@@ -1161,7 +1162,7 @@ Creates a new B<PangoLayout> with the appropriate font map, font description, an
 
 If you keep a B<PangoLayout> created in this way around, you need to re-create it when the widget B<PangoContext> is replaced. This can be tracked by using the  I<screen-changed> signal on the widget.
 
-Returns: : the new B<PangoLayout>
+Returns: the new B<PangoLayout>
 
   method create-pango-layout ( Str $text --> N-GObject )
 
@@ -1391,7 +1392,7 @@ If accessibility support is not available, this B<AtkObject> instance may be a n
 
 The documentation of the [ATK](http://developer.gnome.org/atk/stable/) library contains more information about accessible objects and their uses.
 
-Returns: : the B<AtkObject> associated with I<widget>
+Returns: the B<AtkObject> associated with I<widget>
 
   method get-accessible ( --> AtkObject )
 
@@ -1759,7 +1760,7 @@ sub gtk_widget_get_clip (
 
 Returns the clipboard object for the given selection to be used with I<widget>. I<widget> must have a B<Gnome::Gtk3::Display> associated with it, so must be attached to a toplevel window.
 
-Returns: : the appropriate clipboard object. If no clipboard already exists, a new one will be created. Once a clipboard object has been created, it is persistent for all time.
+Returns: the appropriate clipboard object. If no clipboard already exists, a new one will be created. Once a clipboard object has been created, it is persistent for all time.
 
   method get-clipboard ( GdkAtom $selection --> N-GObject )
 
@@ -1886,7 +1887,7 @@ Get the B<Gnome::Gtk3::Display> for the toplevel window associated with this wid
 
 In general, you should only create display specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: : the B<Gnome::Gtk3::Display> for the toplevel for this widget.
+Returns: the B<Gnome::Gtk3::Display> for the toplevel for this widget.
 
   method get-display ( --> N-GObject )
 
@@ -1990,7 +1991,7 @@ sub gtk_widget_get_font_map (
 =begin pod
 =head2 get-font-options
 
-Returns the B<cairo-font-options-t> used for Pango rendering. When not set, the defaults font options for the B<Gnome::Gtk3::Screen> will be used.
+Returns the B<cairo-font-options-t> used for Pango rendering. When not set, the defaults font options for the B<Gnome::Gdk3::Screen> will be used.
 
 Returns: the B<cairo-font-options-t> or C<undefined> if not set
 
@@ -2417,7 +2418,7 @@ sub gtk_widget_get_opacity (
 
 Gets a B<PangoContext> with the appropriate font map, font description, and base direction for this widget. Unlike the context returned by C<create-pango-context()>, this context is owned by the widget (it can be used until the screen for the widget changes or the widget is removed from its toplevel), and will be updated to match any changes to the widget’s attributes. This can be tracked by using the  I<screen-changed> signal on the widget.
 
-Returns: : the B<PangoContext> for the widget.
+Returns: the B<PangoContext> for the widget.
 
   method get-pango-context ( --> N-GObject )
 
@@ -2823,21 +2824,21 @@ sub gtk_widget_get_scale_factor (
 =begin pod
 =head2 get-screen
 
-Get the B<Gnome::Gtk3::Screen> from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
+Get the B<Gnome::Gdk3::Screen> from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gdk3::Window> at the top.
 
 In general, you should only create screen specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: : the B<Gnome::Gtk3::Screen> for the toplevel for this widget.
+Returns: the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
-  method get-screen ( --> N-GObject )
+  method get-screen ( --> Gnome::Gdk3::Screen )
 
 
 =end pod
 
-method get-screen ( --> N-GObject ) {
+method get-screen ( --> Gnome::Gdk3::Screen ) {
 
-  gtk_widget_get_screen(
-    self._f('GtkWidget'),
+  Gnome::Gdk3::Screen.new(
+    :native-object(gtk_widget_get_screen(self._f('GtkWidget')))
   )
 }
 
@@ -2881,9 +2882,9 @@ sub gtk_widget_get_sensitive (
 
 Gets the settings object holding the settings used for this widget.
 
-Note that this function can only be called when the B<Gnome::Gtk3::Widget> is attached to a toplevel, since the settings object is specific to a particular B<Gnome::Gtk3::Screen>.
+Note that this function can only be called when the B<Gnome::Gtk3::Widget> is attached to a toplevel, since the settings object is specific to a particular B<Gnome::Gdk3::Screen>.
 
-Returns: : the relevant B<Gnome::Gtk3::Settings> object
+Returns: the relevant B<Gnome::Gtk3::Settings> object
 
   method get-settings ( --> N-GObject )
 
@@ -2961,7 +2962,7 @@ sub gtk_widget_get_state_flags (
 
 Returns the style context associated to I<widget>. The returned object is guaranteed to be the same for the lifetime of I<widget>.
 
-Returns: : a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
+Returns: a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
 
   method get-style-context ( --> N-GObject )
 
@@ -3017,7 +3018,7 @@ This will only report children which were previously declared with C<class-bind-
 
 This function is only meant to be called for code which is private to the I<widget-type> which declared the child and is meant for language bindings which cannot easily make use of the GObject structure offsets.
 
-Returns: : The object built in the template XML with the id I<name>
+Returns: The object built in the template XML with the id I<name>
 
   method get-template-child ( N-GObject $widget_type, Str $name --> N-GObject )
 
@@ -3046,7 +3047,7 @@ sub gtk_widget_get_template_child (
 
 Gets the contents of the tooltip for I<widget>.
 
-Returns: : the tooltip text, or C<undefined>. You should free the returned string with C<g-free()> when done.
+Returns: the tooltip text, or C<undefined>. You should free the returned string with C<g-free()> when done.
 
   method get-tooltip-markup ( --> Str )
 
@@ -3072,7 +3073,7 @@ sub gtk_widget_get_tooltip_markup (
 
 Gets the contents of the tooltip for I<widget>.
 
-Returns: : the tooltip text, or C<undefined>. You should free the returned string with C<g-free()> when done.
+Returns: the tooltip text, or C<undefined>. You should free the returned string with C<g-free()> when done.
 
   method get-tooltip-text ( --> Str )
 
@@ -3098,7 +3099,7 @@ sub gtk_widget_get_tooltip_text (
 
 Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using C<set-tooltip-window()>.
 
-Returns: : The B<Gnome::Gtk3::Window> of the current tooltip.
+Returns: The B<Gnome::Gtk3::Window> of the current tooltip.
 
   method get-tooltip-window ( --> N-GObject )
 
@@ -3130,7 +3131,7 @@ To reliably find the toplevel B<Gnome::Gtk3::Window>, use C<get-toplevel()> and 
 
 return NULL; } ]|
 
-Returns: : the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
+Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
   method get-toplevel ( --> N-GObject )
 
@@ -3288,7 +3289,7 @@ sub gtk_widget_get_visible (
 
 Gets the visual that will be used to render I<widget>.
 
-Returns: : the visual for I<widget>
+Returns: the visual for I<widget>
 
   method get-visual ( --> N-GObject )
 
@@ -3612,20 +3613,16 @@ sub gtk_widget_has_grab (
 =begin pod
 =head2 has-screen
 
-Checks whether there is a B<Gnome::Gtk3::Screen> is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
+Checks whether there is a B<Gnome::Gdk3::Screen> is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
 
-Returns: C<True> if there is a B<Gnome::Gtk3::Screen> associated with the widget.
+Returns: C<True> if there is a B<Gnome::Gdk3::Screen> associated with the widget.
 
   method has-screen ( --> Bool )
-
 
 =end pod
 
 method has-screen ( --> Bool ) {
-
-  gtk_widget_has_screen(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_has_screen(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_has_screen (
@@ -4950,7 +4947,7 @@ sub gtk_widget_set_font_map (
 =begin pod
 =head2 set-font-options
 
-Sets the B<cairo-font-options-t> used for Pango rendering in this widget. When not set, the default font options for the B<Gnome::Gtk3::Screen> will be used.
+Sets the B<cairo-font-options-t> used for Pango rendering in this widget. When not set, the default font options for the B<Gnome::Gdk3::Screen> will be used.
 
   method set-font-options ( cairo_font_options_t $options )
 
@@ -5762,7 +5759,7 @@ sub gtk_widget_set_visible (
 =begin pod
 =head2 set-visual
 
-Sets the visual that should be used for by widget and its children for creating B<Gnome::Gtk3::Windows>. The visual must be on the same B<Gnome::Gtk3::Screen> as returned by C<get-screen()>, so handling the  I<screen-changed> signal is necessary.
+Sets the visual that should be used for by widget and its children for creating B<Gnome::Gtk3::Windows>. The visual must be on the same B<Gnome::Gdk3::Screen> as returned by C<get-screen()>, so handling the  I<screen-changed> signal is necessary.
 
 Setting a new I<visual> will not cause I<widget> to recreate its windows, so you should call this function before I<widget> is realized.
 
