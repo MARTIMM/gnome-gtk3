@@ -80,6 +80,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Entry;
+  also does Gnome::Gtk3::Editable;
 
   submethod new ( |c ) {
     # let the Gnome::Gtk3::Entry class process the options
@@ -102,12 +103,14 @@ use Gnome::N::N-GObject;
 use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Image;
 use Gnome::Gtk3::Widget;
+use Gnome::Gtk3::Editable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::Entry:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Widget;
+also does Gnome::Gtk3::Editable;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -163,11 +166,15 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 submethod BUILD ( *%options ) {
 
-  # add signal info in the form of group<signal-name>.
-  # groups are e.g. signal, event, nativeobject etc
-  $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w2<insert-at-cursor toggle-overwrite icon-press>, :w1<tabs move-cursor icon-release>, :w3<activate>, :w0<populate-popup delete-from-cursor backspace cut-clipboard copy-clipboard paste-clipboard>,
-  ) unless $signals-added;
+  unless $signals-added {
+    # add signal info in the form of w*<signal-name>.
+    $signals-added = self.add-signal-types( $?CLASS.^name,
+      :w2<insert-at-cursor toggle-overwrite icon-press>, :w1<tabs move-cursor icon-release>, :w3<activate>, :w0<populate-popup delete-from-cursor backspace cut-clipboard copy-clipboard paste-clipboard>,
+    );
+
+    # signals from interfaces
+    self._add_editable_interface_signal_types($?CLASS.^name);
+  }
 
 
   # prevent creating wrong native-objects
