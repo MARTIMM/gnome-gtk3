@@ -114,14 +114,18 @@ layout: sidebar
 
   I'll go for the last example but will take some time to find all returned enum
 
+* Sometimes I have to give a string as an argument and for C it needs also its length or must be 0 terminated. For such calls two arguments are needed while for Raku we only need one. A method could handle this easily.
+
+* Return Raku oblects instead of native ones if the type is known. The down side is that it breaks code. The positive side is that it takes away an extra step from the user to import a native object into a Raku object. Unfortunately, this can not be handled using multi methods.
+
 * In some situations, modules need to be imported just for a name from an enumerated type. In those cases it would be better when all enums go into the **Enums** module instead of having some of them in a specific module. E.g. `GTK_WIN_POS_MOUSE` comes from **Window**, `GTK_RESPONSE_NO` from **Dialog** and `GTK_MESSAGE_WARNING` from **Enums**. We might need to include all three of the modules when dealing with e.g. a **MessageDialog**.
 
 * Replacement code for some deprecated Gtk modules, see [Stack Overflow](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
-  * Gtk.ActionGroup is deprecated, use GLib.SimpleActionGroup
-  * Gtk.Action is deprecated, use GLib.SimpleAction
-  * If you creating a menu, use Gtk.menu_new_with_model (better approach)
-  * Gtk.UIManager is deprecated, use Gtk.Builder instead
-  * Gtk.Stock is deprecated, use "set_icon_name" property instead if applicable. For example, read Gtk.ToolButton doc. In menu, unfortunately, Gtk3 drop the use of icon in menu. See also [google docs](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
+  * Gtk.ActionGroup is deprecated, use Gio.SimpleActionGroup
+  * Gtk.Action is deprecated, use Gio.SimpleAction
+  * If you create a menu, use `.menu_new_with_model()` using **Gnome::Gio::MenuModel** (better approach). Menu handling from gtk is completely removed in version 4, so, to make your program more ready for version 4 use the menu modules from Gnome::Gio. Also the MenuBar is removed from GTK version 4. The only way to have a menubar is to use the Application module which is a bit complex.
+  * UIManager is deprecated in GTK, use **Gnome::Gtk3::Builder** instead
+  * Stock is deprecated, use `.set_icon_name()` methods instead where applicable. For example, read **Gnome::Gtk3::ToolButton** doc. In menu, unfortunately, GTK has dropped the use of icons in menus. See also [google docs](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
 
 
 
@@ -146,10 +150,11 @@ layout: sidebar
     * Centering with position
     * Modal windows / dialogs
     * Above windows
-    <!--
+
+  <!--
     * [ ] Some Container methods
     * [ ] Some Widget methods
-    -->
+  -->
 
   * [x] Signals
     * Signals and Events
