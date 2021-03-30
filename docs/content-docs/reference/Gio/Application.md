@@ -438,7 +438,7 @@ You can override `local_command_line()` if you need more powerful capabilities t
 Returns: an exit code. If you have handled your options and want to exit the process, return a non-negative option, 0 for success, and a positive value for failure. To continue, return -1 to let the default option processing continue.
 
     method handler (
-      N-GVariant $options,
+      N-GObject $options,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($application),
       *%user-options

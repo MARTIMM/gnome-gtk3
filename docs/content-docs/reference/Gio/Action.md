@@ -10,7 +10,7 @@ Description
 
 The main interface to an action is that it can be activated with `activate()`. This results in the 'activate' signal being emitted.
 
-An action may optionally have a state, in which case the state may be set with `change-state()`. This call takes a **N-GVariant**. The correct type for the state is determined by a static state type (which is given at construction time).
+An action may optionally have a state, in which case the state may be set with `change-state()`. This call takes a **N-GObject**. The correct type for the state is determined by a static state type (which is given at construction time).
 
 The state may have a hint associated with it, specifying its valid range.
 
@@ -36,18 +36,18 @@ activate
 
 Activates the action. *$parameter* must be the correct type of parameter for the action (ie: the parameter type given at construction time). If the parameter type was undefined then *$parameter* must also be undefined. If the *$parameter* GVariant is floating, it is consumed.
 
-    method activate ( N-GVariant $parameter )
+    method activate ( N-GObject $parameter )
 
-  * N-GVariant $parameter; the parameter to the activation
+  * N-GObject $parameter; the parameter to the activation
 
 change-state
 ------------
 
 Request for the state of this action to be changed to *$value*. The action must be stateful and *value* must be of the correct type. See `get-state-type()`. This call merely requests a change. The action may refuse to change its state or may change its state to something other than *value*. See `get-state-hint()`.
 
-    method change-state ( N-GVariant $value )
+    method change-state ( N-GObject $value )
 
-  * N-GVariant $value; the new state
+  * N-GObject $value; the new state
 
 get-enabled
 -----------
@@ -70,7 +70,7 @@ Returns: the name of the action.
 get-parameter-type
 ------------------
 
-Queries the type of the parameter that must be given when activating this action. When activating the action using `activate()`, the **N-GVariant** given to that function must be of the type returned by this function. In the case that this function returns undefined, you must not give any **N-GVariant**, but undefined instead.
+Queries the type of the parameter that must be given when activating this action. When activating the action using `activate()`, the **N-GObject** given to that function must be of the type returned by this function. In the case that this function returns undefined, you must not give any **N-GObject**, but undefined instead.
 
 Returns: the parameter type.
 
@@ -97,7 +97,7 @@ Returns: the state range hint, an undefined, array or tuple Variant.
 get-state-type
 --------------
 
-Queries the type of the state of this action. If the action is stateful, then this function returns the **Gnome::Glib::VariantType** of the state. This is the type of the initial value given as the state. All calls to `change-state()` must give a **N-GVariant** of this type and `get-state()` will return a **N-GVariant** of the same type. If the action is not stateful, then this function will return an undefined type. In that case, `get-state()` will return undefined and you must not call `change-state()`.
+Queries the type of the state of this action. If the action is stateful, then this function returns the **Gnome::Glib::VariantType** of the state. This is the type of the initial value given as the state. All calls to `change-state()` must give a **N-GObject** of this type and `get-state()` will return a **N-GObject** of the same type. If the action is not stateful, then this function will return an undefined type. In that case, `get-state()` will return undefined and you must not call `change-state()`.
 
 Returns: the state type, if the action is stateful
 
@@ -149,13 +149,13 @@ Formats a detailed action name from *$action_name* and *$target_value*. It is an
 Returns: a detailed format string
 
     method print-detailed-name (
-      Str $action_name, N-GVariant $target_value
+      Str $action_name, N-GObject $target_value
       --> Str
     )
 
   * Str $action_name; a valid action name
 
-  * N-GVariant $target_value; a **N-GVariant** target value, or undefined
+  * N-GObject $target_value; a **N-GObject** target value, or undefined
 
 Properties
 ==========
@@ -192,7 +192,7 @@ The **Gnome::GObject::Value** type of property *enabled* is `G_TYPE_BOOLEAN`.
 
 ### State Type
 
-The **N-GVariantType** of the state that the action has, or `Any` if the action is stateless. This is immutable.
+The **N-GObject** of the state that the action has, or `Any` if the action is stateless. This is immutable.
 
 The **Gnome::GObject::Value** type of property *state-type* is `G_TYPE_BOXED`.
 

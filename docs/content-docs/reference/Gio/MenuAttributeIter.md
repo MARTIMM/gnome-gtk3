@@ -54,13 +54,13 @@ The value returned in *name* remains valid for as long as the iterator remains a
 Returns: `True` on success, or `False` if there is no additional attribute
 
     method attribute-iter-get-next (
-      CArray[Str] $out_name, N-GVariant $value
+      CArray[Str] $out_name, N-GObject $value
       --> Int
     )
 
   * CArray[Str] $out_name; (out) (optional) (transfer none): the type of the attribute
 
-  * N-GVariant $value; (out) (optional) (transfer full): the attribute value
+  * N-GObject $value; (out) (optional) (transfer full): the attribute value
 
 attribute-iter-get-value
 ------------------------
@@ -71,7 +71,7 @@ The iterator is not advanced.
 
 Returns: (transfer full): the value of the current attribute
 
-    method attribute-iter-get-value ( --> N-GVariant )
+    method attribute-iter-get-value ( --> N-GObject )
 
 attribute-iter-next
 -------------------

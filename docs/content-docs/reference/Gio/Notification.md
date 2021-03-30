@@ -65,13 +65,13 @@ Adds a button to the notification that activates *action* when clicked. *action*
 
 If *target* is non-`undefined`, *action* will be activated with *target* as its parameter.
 
-    method add-button-with-target-value ( Str $label, Str $action, N-GVariant $target )
+    method add-button-with-target-value ( Str $label, Str $action, N-GObject $target )
 
   * Str $label; label of the button
 
   * Str $action; an action name
 
-  * N-GVariant $target; a **Gnome::Gio::Variant** to use as *action*'s parameter, or `undefined`
+  * N-GObject $target; a **Gnome::Gio::Variant** to use as *action*'s parameter, or `undefined`
 
 set-body
 --------
@@ -104,11 +104,11 @@ If *target* is non-`undefined`, *action* will be activated with *target* as its 
 
 When no default action is set, the application that the notification was sent on is activated.
 
-    method set-default-action-and-target-value ( Str $action, N-GVariant $target )
+    method set-default-action-and-target-value ( Str $action, N-GObject $target )
 
   * Str $action; an action name
 
-  * N-GVariant $target; a **Gnome::Gio::Variant** to use as *action*'s parameter, or `undefined`
+  * N-GObject $target; a **Gnome::Gio::Variant** to use as *action*'s parameter, or `undefined`
 
 set-priority
 ------------

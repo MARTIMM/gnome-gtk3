@@ -35,25 +35,25 @@ new
 
 Create a new stateless SimpleAction object.
 
-    multi method new ( Str :$name!, N-GVariantType :$parameter-type )
+    multi method new ( Str :$name!, N-GObject :$parameter-type )
 
   * Str $name; the name of the action
 
-  * N-GVariantType $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
+  * N-GObject $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
 
 ### :name, :parameter-type, :state
 
-Create a new stateful SimpleAction object. All future state values must have the same **N-GVariantType** as the initial *$state* variant object.
+Create a new stateful SimpleAction object. All future state values must have the same **N-GObject** as the initial *$state* variant object.
 
     multi method new (
-      Str :$name!, N-GVariantType :$parameter_type, N-GVariant :$state!
+      Str :$name!, N-GObject :$parameter_type, N-GObject :$state!
     )
 
   * Str $name; the name of the action
 
-  * N-GVariantType $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
+  * N-GObject $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
 
-  * N-GVariant $state; the initial state value of the action
+  * N-GObject $state; the initial state value of the action
 
 ### :native-object
 
@@ -75,18 +75,18 @@ set-state
 
 Sets the state of the action. This directly updates the 'state' property to the given value. This should only be called by the implementor of the action. Users of the action should not attempt to directly modify the 'state' property. Instead, they should call `change-state()` to request the change.
 
-    method set-state ( N-GVariant $value )
+    method set-state ( N-GObject $value )
 
-  * N-GVariant $value; the new **N-GVariant** for the state
+  * N-GObject $value; the new **N-GObject** for the state
 
 set-state-hint
 --------------
 
 Sets the state hint for the action. See `get_state_hint()` in **Gnome::Gio::Action** for more information about action state hints.
 
-    method set-state-hint ( N-GVariant $state_hint )
+    method set-state-hint ( N-GObject $state_hint )
 
-  * N-GVariant $state_hint; a **N-GVariant** representing the state hint, may be an undefined value.
+  * N-GObject $state_hint; a **N-GObject** representing the state hint, may be an undefined value.
 
 Signals
 =======
@@ -131,7 +131,7 @@ Indicates that the action was just activated.
 If no handler is connected to this signal then the default behaviour for boolean-stated actions with a `undefined` parameter type is to toggle them via the *change-state* signal. For stateful actions where the state type is equal to the parameter type, the default is to forward them directly to *change-state*. This should allow almost all users of **N-GSimpleAction** to connect only one handler or the other.
 
     method handler (
-      N-GVariant $parameter,
+      N-GObject $parameter,
       Int :$_handle_id,
       Gnome::Gio::SimpleAction :_widget($simple),
       *%user-options
@@ -150,7 +150,7 @@ Indicates that the action just received a request to change its state.
 If no handler is connected to this signal then the default behaviour is to call `set-state()` to set the state to the requested value. If you connect a signal handler then no default action is taken. If the state should change then you must call `set-state()` from the handler.
 
     method handler (
-      N-GVariant $value,
+      N-GObject $value,
       Int :$_handle_id,
       Gnome::Gio::SimpleAction :_widget($simple),
       *%user-options
@@ -201,7 +201,7 @@ The **Gnome::GObject::Value** type of property *state* is `G_TYPE_VARIANT`.
 
 ### State Type
 
-The **N-GVariantType** of the state that the action has, or `undefined` if the action is stateless.
+The **N-GObject** of the state that the action has, or `undefined` if the action is stateless.
 
 The **Gnome::GObject::Value** type of property *state-type* is `G_TYPE_BOXED`.
 

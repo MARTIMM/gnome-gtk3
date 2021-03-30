@@ -136,13 +136,13 @@ If the attribute does not exist, or does not match the expected type then `undef
 
 Returns: (transfer full): the value of the attribute
 
-    method get-item-attribute-value ( Int $item_index, Str $attribute, N-GVariantType $expected_type --> N-GVariant )
+    method get-item-attribute-value ( Int $item_index, Str $attribute, N-GObject $expected_type --> N-GObject )
 
   * Int $item_index; the index of the item
 
   * Str $attribute; the attribute to query
 
-  * N-GVariantType $expected_type; (nullable): the expected type of the attribute, or `undefined`
+  * N-GObject $expected_type; (nullable): the expected type of the attribute, or `undefined`
 
 get-item-link
 -------------

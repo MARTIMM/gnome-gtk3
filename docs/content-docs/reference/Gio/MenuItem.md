@@ -122,7 +122,7 @@ If *$expected-type* is specified and the attribute does not have this type, `und
 Returns: the attribute value, or `undefined`
 
     method get-attribute-value (
-      Str $attribute, N-GVariantType $expected_type
+      Str $attribute, N-GObject $expected_type
       --> Gnome::Glib::Variant
     )
 
@@ -130,7 +130,7 @@ Returns: the attribute value, or `undefined`
 
   * Str $attribute; the attribute name to query
 
-  * N-GVariantType $expected_type; (nullable): the expected type of the attribute
+  * N-GObject $expected_type; (nullable): the expected type of the attribute
 
 get-link
 --------
@@ -166,13 +166,13 @@ If the action has a string state then the menu item is usually drawn as a radio 
 
 See `set-action-and-target()` or `g-menu-set-detailed-action()` for two equivalent calls that are probably more convenient for most uses.
 
-    method set-action-and-target-value ( Str $action, N-GVariant $target_value )
+    method set-action-and-target-value ( Str $action, N-GObject $target_value )
 
   * N-GObject $menu_item; a **Gnome::Gio::MenuItem**
 
   * Str $action; (nullable): the name of the action for this item
 
-  * N-GVariant $target_value; (nullable): a **GVariant** to use as the action target
+  * N-GObject $target_value; (nullable): a **GVariant** to use as the action target
 
 set-attribute-value
 -------------------
@@ -187,13 +187,13 @@ If *value* is non-`undefined` then it is used as the new value for the attribute
 
 See also `set-attribute()` for a more convenient way to do the same.
 
-    method set-attribute-value ( Str $attribute, N-GVariant $value )
+    method set-attribute-value ( Str $attribute, N-GObject $value )
 
   * N-GObject $menu_item; a **Gnome::Gio::MenuItem**
 
   * Str $attribute; the attribute to set
 
-  * N-GVariant $value; (nullable): a **GVariant** to use as the value, or `undefined`
+  * N-GObject $value; (nullable): a **GVariant** to use as the value, or `undefined`
 
 set-detailed-action
 -------------------

@@ -70,33 +70,33 @@ action-state-changed
 
 Emits the *action-state-changed* signal on *action-group*. This function should only be called by **GActionGroup** implementations.
 
-    method action-state-changed ( Str $action_name, N-GVariant $state )
+    method action-state-changed ( Str $action_name, N-GObject $state )
 
   * Str $action_name; the name of an action in the group
 
-  * N-GVariant $state; the new state of the named action
+  * N-GObject $state; the new state of the named action
 
 activate-action
 ---------------
 
 Activate the named action within *action-group*. If the action is expecting a parameter, then the correct type of parameter must be given as *$parameter*. If the action is expecting no parameters then *parameter* must be `undefined`. See `get-action-parameter-type()`.
 
-    method activate-action ( Str $action_name, N-GVariant $parameter )
+    method activate-action ( Str $action_name, N-GObject $parameter )
 
   * Str $action_name; the name of the action to activate
 
-  * N-GVariant $parameter; (nullable): parameters to the activation
+  * N-GObject $parameter; (nullable): parameters to the activation
 
 change-action-state
 -------------------
 
 Request for the state of the named action within *action-group* to be changed to *value*. The action must be stateful and *value* must be of the correct type. See `get-action-state-type()`. This call merely requests a change. The action may refuse to change its state or may change its state to something other than *value*. See `get-action-state-hint()`. If the *value* GVariant is floating, it is consumed.
 
-    method change-action-state ( Str $action_name, N-GVariant $value )
+    method change-action-state ( Str $action_name, N-GObject $value )
 
   * Str $action_name; the name of the action to request the change on
 
-  * N-GVariant $value; the new state
+  * N-GObject $value; the new state
 
 get-action-enabled
 ------------------
