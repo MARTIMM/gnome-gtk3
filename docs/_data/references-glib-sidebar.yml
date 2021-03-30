@@ -21,10 +21,6 @@
     type: toplevel
     url: '/content-docs/reference/Glib/MainLoop.html'
 
-#  - title: OptionContext
-#    type: toplevel
-#    url: '/content-docs/reference/Glib/OptionContext.html'
-
   - title: "Quark"
     type: standalone
     url: '/content-docs/reference/Glib/Quark.html'
@@ -33,6 +29,9 @@
     type: toplevel
     url: '/content-docs/reference/Glib/SList.html'
 
+  - title: Source
+    type: toplevel
+    url: '/content-docs/reference/Glib/Source.html'
 
   - title: "Variant"
     type: toplevel
