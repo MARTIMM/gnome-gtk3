@@ -56,6 +56,28 @@ replace: `C<$1()>`
 * Install Raku
   * `choco install rakudostar`
 
+# Native function signature subset
+
+The subset GSourceFunc defined below
+```
+subset GSourceFunc of Routine where .signature ~~ :( gpointer $d --> gboolean );
+```
+makes the native sub signature easier to read
+```
+sub g_timeout_add (
+  guint $interval, GSourceFunc $function, gpointer $data --> guint
+) is native(&glib-lib)
+  { * }
+```
+instead of
+```
+sub g_timeout_add (
+  guint $interval, Callable $function ( gpointer $d --> gboolean ),
+  gpointer $data --> guint
+) is native(&glib-lib)
+  { * }
+```
+Besides that, the name is kept the same as is used in the C-Source and documentation of Gnome.
 
 # Native sub search
 ```

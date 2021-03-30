@@ -114,6 +114,7 @@ Container                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
@@ -390,11 +391,12 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|  |  
 |-------------------------|--|--|--|--|--|--|--|--|
 Error                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
 List                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
-Main                      |S | ✓| ✓| ✓| ✓| ✓|  |  |
-MainContext               |S | ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
-MainLoop                  |S | ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+Main                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+MainContext               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+MainLoop                  |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |
 SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+Source                    |Tl| ✓| ✓| ✓| ⅑| ✓| ✓| ✓|
 Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
 VariantDict               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
 VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
@@ -403,7 +405,7 @@ Module Main will be deprecated after version 0.20.0
 
 | Gnome::N                |T |dm|db|ds|ts|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|
-GlibToRakuTypes           |  | ✗| ✗| ✗| ✗| ✓|  |  |
+GlibToRakuTypes           |S | ✗| ✗| ✗| ✗| ✓|  |  |
 N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|  |  |
 NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|  |  |
 TopLevelClassSupport      |S |  |  |  |  | ✓|  |  |

@@ -125,6 +125,10 @@
     url: "/content-docs/reference/Gtk3/Dialog.html"
     type: widget
 
+  - title: "Editable"
+    url: "/content-docs/reference/Gtk3/Editable.html"
+    type: widget
+
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
     type: widget

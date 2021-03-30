@@ -9,6 +9,8 @@ layout: sidebar
 #### 2021-03-26 0.36.6:
 * `Gnome::Gtk3::Widget.get-screen()` now returns a **Gnome::Gdk3::Screen** instead of the native object. Also document updates where Gnome::Gtk3::Screen where mentioned; changed into Gnome::Gdk3::Screen.
 * Add module **Gnome::Gdk3::Editable** which is a role needed by the input widgets like **Gnome::Gdk3::Entry**.
+* All **Gnome::Glib::N-…** _modules_ describing native objects are removed and replaced by **Gnome::N::N-GObject**. These are **Gnome::Glib::N-GVariant**, **Gnome::Glib::N-GVariantDict**, **Gnome::Glib::N-GVariantType**, **Gnome::Glib::N-GMainLoop** and **Gnome::Glib::GMainContext**.
+  This might be an errors generating issue. Check your code for the use of these structure references and replace them by `N-GObject`, import **Gnome::N::N-GObject** to get that type. Hopefully it does not have a great impact because those modules are mostly for lower level handling of things.
 
 #### 2021-03-22 0.36.5:
 * Improve docs of **Gnome::Gtk3::Window** and tests.
