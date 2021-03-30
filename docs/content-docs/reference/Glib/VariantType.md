@@ -180,13 +180,13 @@ new
 
 Constructs the type corresponding to an array of elements of the given type in `$array`.
 
-    multi method new ( N-GVariantType :$array!! )
+    multi method new ( N-GObject :$array!! )
 
 ### :maybe
 
 Constructs the type corresponding to a maybe instance containing in given type
 
-    multi method new ( N-GVariantType :$maybe! )
+    multi method new ( N-GObject :$maybe! )
 
 ### :type-string
 
@@ -200,7 +200,7 @@ It is a programmer error to call this function with an invalid type string. The 
 
 Create a VariantType object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-    multi method new ( N-GVariantType :$native-object! )
+    multi method new ( N-GObject :$native-object! )
 
 copy
 ----
@@ -234,9 +234,9 @@ equal
 
 Compares this type and *$type2* for equality. Only returns `True` if the types are exactly equal. Even if one type is an indefinite type and the other is a subtype of it, `False` will be returned if they are not exactly equal. If you want to check for subtypes, use `is-subtype-of()`.
 
-    method equal ( N-GVariantType $type2 --> Bool )
+    method equal ( N-GObject $type2 --> Bool )
 
-  * N-GVariantType $type2; a **GVariantType**
+  * N-GObject $type2; a **GVariantType**
 
 first
 -----
@@ -245,7 +245,7 @@ Determines the first item type of a tuple or dictionary entry type. This functio
 
 Returns: the first item type of *type*, or invalid
 
-    method first ( --> N-GVariantType )
+    method first ( --> N-GObject )
 
 get-string-length
 -----------------
@@ -263,9 +263,9 @@ Hashes *type*.
 
 Returns: the hash value
 
-    method hash ( N-GVariantType $type --> UInt )
+    method hash ( N-GObject $type --> UInt )
 
-  * N-GVariantType $type; a **N-GVariantType**
+  * N-GObject $type; a **N-GObject**
 
 is-array
 --------
@@ -328,9 +328,9 @@ Checks if this type is a subtype of *$supertype*. This function returns `True` i
 
 Returns: `True` if *type* is a subtype of *$supertype*
 
-    method is-subtype-of ( N-GVariantType $supertype --> Bool )
+    method is-subtype-of ( N-GObject $supertype --> Bool )
 
-  * N-GVariantType $supertype; a **GVariantType**
+  * N-GObject $supertype; a **GVariantType**
 
 is-tuple
 --------

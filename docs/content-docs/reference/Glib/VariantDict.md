@@ -83,18 +83,18 @@ end
 
 Returns the current value of *dict* as a **Gnome::Glib::VariantDict** of type `G_VARIANT_TYPE_VARDICT`, clearing it in the process. It is not permissible to use *dict* in any way after this call except for `clear-object()`, `clear()`
 
-    method end ( --> N-GVariant )
+    method end ( --> N-GObject )
 
 insert-value
 ------------
 
 Inserts (or replaces) a key in a **Gnome::Glib::VariantDict**. *value* is consumed if it is floating.
 
-    method insert-value ( Str $key, N-GVariant $value )
+    method insert-value ( Str $key, N-GObject $value )
 
   * Str $key; the key to insert a value for
 
-  * N-GVariant $value; the value to insert
+  * N-GObject $value; the value to insert
 
 lookup-value
 ------------
@@ -104,12 +104,12 @@ Looks up a value in a **Gnome::Glib::VariantDict**. If *$key* is not found in *d
 Returns: the value of the dictionary key, or undefined
 
     method lookup-value (
-      Str $key, N-GVariantType $expected_type --> Gnome::Glib::Variant
+      Str $key, N-GObject $expected_type --> Gnome::Glib::Variant
     )
 
   * Str $key; the key to lookup in the dictionary
 
-  * N-GVariantType $expected_type; a **GVariantType**, or `undefined`
+  * N-GObject $expected_type; a **GVariantType**, or `undefined`
 
 remove
 ------

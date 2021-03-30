@@ -6,17 +6,17 @@ The Main Event Loop — manages all available sources of events
 Description
 ===========
 
-Note that this is a low level module, please take a look at **Gnome::Gtk3::MainLoop** first.
+Note that this is a low level module, please take a look at **Gnome::Gtk3::Main** first.
 
 The main event loop manages all the available sources of events for GLib and GTK+ applications. These events can come from any number of different types of sources such as file descriptors (plain files, pipes or sockets) and timeouts.
 
-To allow multiple independent sets of sources to be handled in different threads, each source is associated with a N-GMainContext. A N-GMainContext can only be running in a single thread, but sources can be added to it and removed from it from other threads. All functions which operate on a N-GMainContext or a built-in N-GSource are thread-safe. Contexts are described by **Gnome::Gio::MainContext**
+To allow multiple independent sets of sources to be handled in different threads, each source is associated with a *MainContext*. A *MainContext* can only be running in a single thread, but sources can be added to it and removed from it from other threads. All functions which operate on a *MainContext* or a built-in N-GSource are thread-safe. Contexts are described by **Gnome::Gio::MainContext**
 
 Each event source is assigned a priority. The default priority, G_PRIORITY_DEFAULT, is 0. Values less than 0 denote higher priorities. Values greater than 0 denote lower priorities. Events from high priority sources are always processed before events from lower priority sources.
 
-The N-GMainLoop data type represents a main event loop. A N-GMainLoop is created with `new()` or `new(:context)`. After adding the initial event sources, `run()` is called. This continuously checks for new events from each of the event sources and dispatches them. Finally, the processing of an event from one of the sources leading to a call to `quit()` will exit the main loop, and `run()` returns.
+The *MainLoop* data type represents a main event loop. A *MainLoop* is created with `new()` or `new(:context)`. After adding the initial event sources, `run()` is called. This continuously checks for new events from each of the event sources and dispatches them. Finally, the processing of an event from one of the sources leading to a call to `quit()` will exit the main loop, and `run()` returns.
 
-It is possible to create new instances of N-GMainLoop recursively. This is often used in GTK+ applications when showing modal dialog boxes. Note that event sources are associated with a particular N-GMainContext, and will be checked and dispatched for all main loops associated with that N-GMainContext.
+It is possible to create new instances of *MainLoop* recursively. This is often used in GTK+ applications when showing modal dialog boxes. Note that event sources are associated with a particular *MainContext*, and will be checked and dispatched for all main loops associated with that *MainContext*.
 
 GTK+ contains wrappers of some of these functions, e.g. gtk_main(), gtk_main_quit() and gtk_events_pending().
 

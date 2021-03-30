@@ -325,7 +325,7 @@ Creates a new uint64 Variant. Its type becomes 't'.
 
 Creates a new variant Variant. Its type becomes 'v'.
 
-    multi method new ( N-GVariant :$variant! )
+    multi method new ( N-GObject :$variant! )
 
 #### Example
 
@@ -385,14 +385,14 @@ Returns: a **guint8**
 get-bytestring
 --------------
 
-Returns the string value of a **N-GVariant** instance with an array-of-bytes type. The string has no particular encoding.
+Returns the string value of a **N-GObject** instance with an array-of-bytes type. The string has no particular encoding.
 
     method get-bytestring ( -->  Str  )
 
 get-bytestring-array
 --------------------
 
-Gets the contents of an array of array of bytes **N-GVariant**.
+Gets the contents of an array of array of bytes **N-GObject**.
 
     method get-bytestring-array ( -->  Array[Str]  )
 
@@ -435,14 +435,14 @@ Returns: a **gint64**
 get-string
 ----------
 
-Returns the string value of a **N-GVariant** instance with a string type.
+Returns the string value of a **N-GObject** instance with a string type.
 
     method get-string ( -->  Str  )
 
 get-strv
 --------
 
-Gets the contents of an array of strings **N-GVariant**. This call makes a shallow copy.
+Gets the contents of an array of strings **N-GObject**. This call makes a shallow copy.
 
     method get-strv ( --> Array[Str]  )
 
@@ -458,7 +458,7 @@ Returns: a **GVariantType**
 get-type-string
 ---------------
 
-Returns the type string of *value*. Unlike the result of calling `g_variant_type_peek_string()`, this string is nul-terminated. This string belongs to **N-GVariant** and must not be freed.
+Returns the type string of *value*. Unlike the result of calling `g_variant_type_peek_string()`, this string is nul-terminated. This string belongs to **N-GObject** and must not be freed.
 
 Returns: the type string for the type of *value*
 
@@ -516,9 +516,9 @@ Checks if a value has a type matching the provided type.
 
 Returns: `True` if the type of *value* matches *type*
 
-    method is-of-type ( N-GVariantType $type --> Bool )
+    method is-of-type ( N-GObject $type --> Bool )
 
-  * N-GVariantType $type; a **GVariantType**
+  * N-GObject $type; a **GVariantType**
 
 print
 -----
