@@ -4,7 +4,6 @@ use Test;
 
 use Gnome::Glib::Variant;
 use Gnome::Glib::VariantType;
-use Gnome::Glib::N-GVariant;
 
 use Gnome::Gtk3::Actionable;
 use Gnome::Gtk3::Button;

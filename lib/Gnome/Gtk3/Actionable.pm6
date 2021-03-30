@@ -32,8 +32,6 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
-use Gnome::Glib::N-GVariant;
-
 #-------------------------------------------------------------------------------
 unit role Gnome::Gtk3::Actionable:auth<github:MARTIMM>:ver<0.1.0>;
 
@@ -79,19 +77,19 @@ See C<set-action-target-value()> for more information.
 
 Returns: the current target value
 
-  method get-action-target-value ( --> N-GVariant )
+  method get-action-target-value ( --> N-GObject )
 
 
 =end pod
 
-method get-action-target-value ( --> N-GVariant ) {
+method get-action-target-value ( --> N-GObject ) {
 
   gtk_actionable_get_action_target_value(
     self._f('GtkActionable'),
   );
 }
 
-sub gtk_actionable_get_action_target_value ( N-GObject $actionable --> N-GVariant )
+sub gtk_actionable_get_action_target_value ( N-GObject $actionable --> N-GObject )
   is native(&gtk-lib)
   { * }
 
@@ -180,22 +178,22 @@ The target value has two purposes.  First, it is used as the parameter to activa
 
 Consider the example of associating a set of buttons with a B<N-GAction> with string state in a typical “radio button” situation.  Each button will be associated with the same action, but with a different target value for that action.  Clicking on a particular button will activate the action with the target of that button, which will typically cause the action’s state to change to that value.  Since the action’s state is now equal to the target value of the button, the button will now be rendered as active (and the other buttons, with different targets, rendered inactive).
 
-  method set-action-target-value ( N-GVariant $target_value )
+  method set-action-target-value ( N-GObject $target_value )
 
-=item N-GVariant $target_value; a B<GVariant> to set as the target value, or C<undefined>
+=item N-GObject $target_value; a B<GVariant> to set as the target value, or C<undefined>
 
 =end pod
 
 method set-action-target-value ( $target_value ) {
   my $no = $target_value;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GVariant;
+  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_actionable_set_action_target_value(
     self._f('GtkActionable'), $no
   );
 }
 
-sub gtk_actionable_set_action_target_value ( N-GObject $actionable, N-GVariant $target_value  )
+sub gtk_actionable_set_action_target_value ( N-GObject $actionable, N-GObject $target_value  )
   is native(&gtk-lib)
   { * }
 

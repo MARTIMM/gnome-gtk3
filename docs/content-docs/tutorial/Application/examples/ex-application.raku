@@ -13,9 +13,6 @@ use Getopt::Long;
 use Gnome::N::N-GObject;
 #use Gnome::N::GlibToRakuTypes;
 
-use Gnome::Glib::N-GVariant;
-use Gnome::Glib::N-GVariantDict;
-use Gnome::Glib::N-GVariantType;
 use Gnome::Glib::Variant;
 use Gnome::Glib::VariantType;
 #use Gnome::Glib::VariantDict;
@@ -204,7 +201,7 @@ note 'app activated';
 
   #-----------------------------------------------------------------------------
   method local-options (
-    N-GVariantDict $n-vd, AppSignalHandlers :_widget($app) --> Int
+    N-GObject $n-vd, AppSignalHandlers :_widget($app) --> Int
   ) {
 note 'local options: ', @*ARGS.gist;
 
@@ -287,14 +284,14 @@ note 'app shutdown';
 
   #-- [menu] -------------------------------------------------------------------
   # File > New
-  method file-new ( N-GVariant $n-parameter ) {
+  method file-new ( N-GObject $n-parameter ) {
     my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
     note $v.print() if $v.is-valid;
     note "Select 'New' from 'File' menu";
   }
 
   # File > Quit
-  method file-quit ( N-GVariant $n-parameter ) {
+  method file-quit ( N-GObject $n-parameter ) {
     note "Select 'Quit' from 'File' menu";
     my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
     note $v.print() if $v.is-valid;
@@ -304,7 +301,7 @@ note 'app shutdown';
 
   # File > Compressed
   method select-compression (
-    N-GVariant $n-value,
+    N-GObject $n-value,
     Gnome::Gio::SimpleAction :_widget($file-compress-action) is copy,
     N-GObject :_native-object($no)
   ) {
@@ -325,12 +322,12 @@ note 'app shutdown';
   }
 
   # Help > Index
-  method show-index ( N-GVariant $parameter ) {
+  method show-index ( N-GObject $parameter ) {
     note "Select 'Index' from 'Help' menu";
   }
 
   # Help > About
-  method show-about ( N-GVariant $parameter ) {
+  method show-about ( N-GObject $parameter ) {
     note "Select 'About' from 'Help' menu";
   }
 }

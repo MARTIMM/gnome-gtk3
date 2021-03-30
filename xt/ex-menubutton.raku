@@ -13,18 +13,18 @@ use Gnome::Gio::MenuItem;
 use Gnome::Gio::SimpleAction;
 use Gnome::Gio::SimpleActionGroup;
 
-use Gnome::Glib::N-GVariant;
+use Gnome::N::N-GObject;
 
 class HC {
   method exit ( ) {
     Gnome::Gtk3::Main.quit;
   }
 
-  method set-toolbar ( N-GVariant $n-parameter ) {
+  method set-toolbar ( N-GObject $n-parameter ) {
     note 'set toolbar';
   }
 
-  method set-statusbar ( N-GVariant $n-parameter ) {
+  method set-statusbar ( N-GObject $n-parameter ) {
     note 'set statusbar';
   }
 }

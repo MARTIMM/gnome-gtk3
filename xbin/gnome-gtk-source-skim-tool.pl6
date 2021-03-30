@@ -179,8 +179,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 #note "  not skipped... $sub-name, $arg, $arg-type, $raku-arg-type";
 
           if $raku-arg-type ~~ any(
-            < N-GObject N-GSList N-GList N-GVariantType N-GVariant
-              N-GVariantDict N-GOptionContext N-GOptionGroup
+            < N-GObject N-GSList N-GList N-GOptionContext N-GOptionGroup
               N-GOptionEntry N-GError
             >
           ) {
@@ -508,12 +507,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     when /GList/ { $type = 'N-GList'; }
     when /GSList/ { $type = 'N-GSList'; }
     when /PangoItem/ { $type = 'N-PangoItem'; }
-    #$type = 'N-GVariantBuilder' if $type ~~ mGVariantBuilder/;
-    when /GVariantType/ { $type = 'N-GVariantType'; }
-    #$type = 'N-GVariantIter' if $type ~~ m/GVariantIter/;
-    when /GVariant<|w>/ { $type = 'N-GVariant'; }
-    when /GVariantDict/ { $type = 'N-GVariantDict'; }
-    #$type = 'N-GtkTreeIter' if $type ~~ m/GtkTreeIter/;
+    when /GVariantType || GVariantDict || GVariant/ { $type = 'N-GObject'; }
     when /GtkTreePath/ { $type = 'N-GtkTreePath'; }
     when /GOptionContext/ { $type = 'N-GOptionContext'; }
     when /GOptionGroup/ { $type = 'N-GOptionGroup'; }

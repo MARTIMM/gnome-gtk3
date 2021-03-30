@@ -26,7 +26,7 @@ So adding the following will give us a way to process arguments. I've taken the 
 
 ```
 use Getopt::Long;                                                   # ①
-use Gnome::Glib::N-GVariantDict;
+use Gnome::N::N-GObject;
 …
 unit class UserAppClass is Gnome::Gtk3::Application;
 …
@@ -38,7 +38,7 @@ submethod BUILD ( ) {
 }
 …
 method local-options (
-  N-GVariantDict $n-vd, UserAppClass :_widget($app) --> Int         # ③
+  N-GObject $n-vd, UserAppClass :_widget($app) --> Int         # ③
 ) {
   my Int $exit-code = -1;                                           # ④
 
@@ -53,7 +53,7 @@ method local-options (
   $exit-code
 }
 ```
-① We need **Getopt::Long** and **Gnome::Glib::N-GVariantDict**. The N-GVariantDict class is only used to define the handler interface.
+① We need **Getopt::Long** and **Gnome::N::N-GObject**. The N-GObject class is only used to define the handler interface.
 
 ② Register the handler for the `handle-local-options` signal.
 
@@ -81,10 +81,7 @@ To get this to work we must turn on another signal and we must also add an initi
 
 ```
 use Getopt::Long;
-use Gnome::Glib::N-GVariantDict;
-
 use Gnome::N::N-GObject;                                            # ①
-
 use Gnome::Gio::Enums;
 use Gnome::Gio::ApplicationCommandLine;
 …
@@ -106,7 +103,7 @@ submethod BUILD ( ) {
 }
 …
 method local-options (
-  N-GVariantDict $n-vd, UserAppClass :_widget($app) --> Int
+  N-GObject $n-vd, UserAppClass :_widget($app) --> Int
 ) {
   my Int $exit-code = -1;
 

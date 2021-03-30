@@ -3,7 +3,7 @@
 use v6;
 use Getopt::Long;
 
-use Gnome::Glib::N-GVariantDict;
+use Gnome::N::N-GObject;
 
 use Gnome::Gtk3::Application;
 use Gnome::Gtk3::ApplicationWindow;
@@ -46,7 +46,7 @@ note 'app activated';
 
 #-------------------------------------------------------------------------------
 method local-options (
-  N-GVariantDict $n-vd, UserAppClassV2 :_widget($app) --> Int
+  N-GObject $n-vd, UserAppClassV2 :_widget($app) --> Int
 ) {
   my Int $exit-code = -1;
 

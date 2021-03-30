@@ -43,7 +43,7 @@ See `set-action-target-value()` for more information.
 
 Returns: the current target value
 
-    method get-action-target-value ( --> N-GVariant )
+    method get-action-target-value ( --> N-GObject )
 
 set-action-name
 ---------------
@@ -69,9 +69,9 @@ The target value has two purposes. First, it is used as the parameter to activat
 
 Consider the example of associating a set of buttons with a **N-GAction** with string state in a typical “radio button” situation. Each button will be associated with the same action, but with a different target value for that action. Clicking on a particular button will activate the action with the target of that button, which will typically cause the action’s state to change to that value. Since the action’s state is now equal to the target value of the button, the button will now be rendered as active (and the other buttons, with different targets, rendered inactive).
 
-    method set-action-target-value ( N-GVariant $target_value )
+    method set-action-target-value ( N-GObject $target_value )
 
-  * N-GVariant $target_value; a **GVariant** to set as the target value, or `undefined`
+  * N-GObject $target_value; a **GVariant** to set as the target value, or `undefined`
 
 set-detailed-action-name
 ------------------------
