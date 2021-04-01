@@ -47,7 +47,7 @@ This example does the same as the example from `GTK::Simple` to show you the dif
 
 The code can be found down on the [Getting Started](https://martimm.github.io/gnome-gtk3/content-docs/tutorial/getting-started.html) page.
 
-```
+```raku
 use v6;
 
 use Gnome::Gtk3::Main;
