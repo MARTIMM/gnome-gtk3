@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.36.6",
+  "version": "0.37.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -43,6 +43,7 @@
     "Gnome::Gtk3::CssProvider": "lib/Gnome/Gtk3/CssProvider.pm6",
     "Gnome::Gtk3::Dialog": "lib/Gnome/Gtk3/Dialog.pm6",
     "Gnome::Gtk3::DrawingArea": "lib/Gnome/Gtk3/DrawingArea.pm6",
+    "Gnome::Gtk3::Editable": "lib/Gnome/Gtk3/Editable.pm6",
     "Gnome::Gtk3::Entry": "lib/Gnome/Gtk3/Entry.pm6",
     "Gnome::Gtk3::Enums": "lib/Gnome/Gtk3/Enums.pm6",
     "Gnome::Gtk3::FileChooser": "lib/Gnome/Gtk3/FileChooser.pm6",
