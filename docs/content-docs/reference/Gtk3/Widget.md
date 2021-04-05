@@ -33,7 +33,7 @@ The geometry management system will query a widget hierarchy in only one orienta
 
 For example, when queried in the normal `GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH` mode:
 
-  * First, the default minimum and natural width for each widget in the interface will be computed using `gtk_widget_get_preferred_width()`. Because the preferred widths for each container depend on the preferred widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
+  * First, the default minimum and natural width for each widget in the interface will be computed using `gtk_widget_get_preferred_width()`. Because the preferred widths for each container depend on the preferre1d widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
 
   * Next, the toplevel will use the minimum width to query for the minimum height contextual to that width using `gtk_widget_get_preferred_height_for_width()`, which will also be a highly recursive operation. The minimum height for the minimum width is normally used to set the minimum size constraint on the toplevel (unless `gtk_window_set_geometry_hints()` is explicitly used instead).
 
@@ -178,18 +178,18 @@ Adds the device events in the bitfield *events* to the event mask for *widget*. 
 
     method add-device-events ( N-GObject $device, Int $events )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
   * Int $events; an event mask. Mask bit values are from GdkEventMask.
 
 add-events
 ----------
 
-Adds the events in the bitfield *events* to the event mask for *widget*. See `set-events()` and the [input handling overview][event-masks] for details.
+Adds the events in the bitfield *$events* to the event mask for *widget*. See `set-events()` and the [input handling overview][event-masks] for details.
 
     method add-events ( Int $events )
 
-  * Int $events; an event mask, see **Gnome::Gtk3::EventMask**
+  * Int $events; an event mask, see GdkEventMask in **Gnome::Gdk3::Types**.
 
 add-mnemonic-label
 ------------------
@@ -545,7 +545,7 @@ Returns: the **Gnome::Gtk3::Display** for the toplevel for this widget.
 get-events
 ----------
 
-Returns the event mask (see **Gnome::Gtk3::EventMask**) for the widget. These are the events that the widget will receive.
+Returns the event mask (see GdkEventMask) for the widget. These are the events that the widget will receive.
 
 Note: Internally, the widget event mask will be the logical OR of the event mask set through `set-events()` or `add-events()`, and the event mask necessary to cater for every **Gnome::Gtk3::EventController** created for the widget.
 
@@ -1409,11 +1409,11 @@ Returns: (transfer container): a `undefined`-terminated array of strings.
 list-mnemonic-labels
 --------------------
 
-Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, `gtk-label-set-mnemonic-widget()`). The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g-list-foreach (result, (GFunc)g-object-ref, NULL)` first, and then unref all the widgets afterwards.
+Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, `Gnome::Gtk3::Label.set-mnemonic-widget()`). The widgets in the list are not individually referenced.
 
-Returns: (element-type GtkWidget) (transfer container): the list of mnemonic labels; free this list with `g-list-free()` when you are done with it.
+Returns: the list of mnemonic labels; free this list with `clear-object()` when you are done with it.
 
-    method list-mnemonic-labels ( --> N-GList )
+    method list-mnemonic-labels ( --> Gnome::Glib::List )
 
 map
 ---
@@ -1579,23 +1579,6 @@ Returns: the return value from the event signal emission: `True` if the event wa
     method send-focus-change ( GdkEvent $event --> Bool )
 
   * GdkEvent $event; a **Gnome::Gtk3::Event** of type GDK-FOCUS-CHANGE
-
-set-accel-path
---------------
-
-Given an accelerator group, *accel-group*, and an accelerator path, *accel-path*, sets up an accelerator in *accel-group* so whenever the key binding that is defined for *accel-path* is pressed, *widget* will be activated. This removes any accelerators (for any accelerator group) installed by previous calls to `set-accel-path()`. Associating accelerators with paths allows them to be modified by the user and the modifications to be saved for future use. (See `gtk-accel-map-save()`.)
-
-This function is a low level function that would most likely be used by a menu creation system like **Gnome::Gtk3::UIManager**. If you use **Gnome::Gtk3::UIManager**, setting up accelerator paths will be done automatically.
-
-Even when you you aren’t using **Gnome::Gtk3::UIManager**, if you only want to set up accelerators on menu items `gtk-menu-item-set-accel-path()` provides a somewhat more convenient interface.
-
-Note that *accel-path* string will be stored in a **Gnome::Gtk3::Quark**. Therefore, if you pass a static string, you can save some memory by interning it first with `g-intern-static-string()`.
-
-    method set-accel-path ( Str $accel_path, N-GObject $accel_group )
-
-  * Str $accel_path; path used to look up the accelerator
-
-  * N-GObject $accel_group; a **Gnome::Gtk3::AccelGroup**.
 
 set-allocation
 --------------
