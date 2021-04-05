@@ -10,11 +10,6 @@ The **Gnome::Gtk3::TreeViewColumn** object represents a visible column in a **Gn
 
 Please refer to the [tree widget conceptual overview][TreeWidget] for an overview of all the objects and data types related to the tree widget and how they work together.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::TreeViewColumn implements
-
 See Also
 --------
 
@@ -54,76 +49,6 @@ new
 Create a new plain object.
 
     multi method new ( )
-
-Create an object using a native object from elsewhere.
-
-    multi method new ( N-GObject :$column! )
-
-[gtk_] tree_view_column_new
----------------------------
-
-Creates a new **Gnome::Gtk3::TreeViewColumn**.
-
-Returns: A newly created **Gnome::Gtk3::TreeViewColumn**.
-
-    method gtk_tree_view_column_new ( --> N-GObject  )
-
-[[gtk_] tree_view_column_] pack_start
--------------------------------------
-
-Packs the *$cell* into the beginning of the column. If *$expand* is `0`, then the *$cell* is allocated no more space than it needs. Any unused space is divided evenly between cells for which *$expand* is `1`.
-
-    method gtk_tree_view_column_pack_start (
-      Gnome::Gtk3::CellRenderer $cell, Int $expand
-    )
-
-  * Gnome::Gtk3::CellRenderer $cell; The renderer.
-
-  * Int $expand; `1` if *$cell* is to be given extra space allocated to this tree column.
-
-[[gtk_] tree_view_column_] pack_end
------------------------------------
-
-Adds the *$cell* to end of the column. If *$expand* is `0`, then the *$cell* is allocated no more space than it needs. Any unused space is divided evenly between cells for which *$expand* is `1`.
-
-    method gtk_tree_view_column_pack_end ( N-GObject $cell, Int $expand )
-
-  * Gnome::Gtk3::CellRenderer $cell; The renderer.
-
-  * Int $expand; `1` if *$cell* is to be given extra space allocated to this tree column.
-
-[gtk_] tree_view_column_clear
------------------------------
-
-Unsets all the mappings on all renderers on this tree column.
-
-    method gtk_tree_view_column_clear ( )
-
-[[gtk_] tree_view_column_] add_attribute
-----------------------------------------
-
-Adds an attribute mapping to the list in this tree column. The *$column* is the column of the model to get a value from, and the *$attribute* is the parameter on *$cell_renderer* to be set from the value. So for example if column 2 of the model contains strings, you could have the “text” attribute of a **Gnome::Gtk3::CellRendererText** get its values from column 2.
-
-    method gtk_tree_view_column_add_attribute (
-      Gnome::Gtk3::CellRenderer $cell_renderer, Str $attribute, Int $column
-    )
-
-  * Gnome::Gtk3::CellRenderer $cell_renderer; the renderer to set attributes on
-
-  * Str $attribute; An attribute on the renderer
-
-  * Int $column; The column position on the model to get the attribute from.
-
-[[gtk_] tree_view_column_] clear_attributes
--------------------------------------------
-
-Clears all existing attributes previously set with `gtk_tree_view_column_set_attributes()`.
-
-    method gtk_tree_view_column_clear_attributes (
-      Gnome::Gtk3::CellRenderer $cell_renderer
-    )
-
-  * Gnome::Gtk3::CellRenderer $cell_renderer; a renderer to clear the attribute mapping on.
 
 [[gtk_] tree_view_column_] set_spacing
 --------------------------------------
@@ -193,8 +118,6 @@ Returns the current type of this tree column.
 ---------------------------------------
 
 Returns the current X offset of this tree column in pixels.
-
-Since: 3.2
 
     method gtk_tree_view_column_get_x_offset ( --> Int  )
 
@@ -287,8 +210,6 @@ Sets the column to take available extra space. This space is shared equally amon
 
 Along with “fixed-width”, the “expand” property changes when the column is resized by the user.
 
-Since: 2.4
-
     method gtk_tree_view_column_set_expand ( Int $expand )
 
   * Int $expand; `1` if the column should expand to fill available space.
@@ -297,8 +218,6 @@ Since: 2.4
 -------------------------------------
 
 Returns `1` if the column expands to fill available space.
-
-Since: 2.4
 
     method gtk_tree_view_column_get_expand ( --> Int  )
 
@@ -465,8 +384,6 @@ Returns `1` if any of the cells packed into this tree column are visible. For th
 
 Sets the current keyboard focus to be at *cell*, if the column contains 2 or more editable and activatable cells.
 
-Since: 2.2
-
     method gtk_tree_view_column_focus_cell ( Gnome::Gtk3::CellRenderer $cell )
 
   * Gnome::Gtk3::CellRenderer $cell; A cell renderer
@@ -494,8 +411,6 @@ Returns: `1` if *$cell* belongs to this tree column.
 
 Flags the column, and the cell renderers added to this column, to have their sizes renegotiated.
 
-Since: 2.8
-
     method gtk_tree_view_column_queue_resize ( )
 
 [[gtk_] tree_view_column_] get_tree_view
@@ -503,16 +418,12 @@ Since: 2.8
 
 Returns the **Gnome::Gtk3::TreeView** wherein *tree_column* has been inserted. If *column* is currently not inserted in any tree view, `Any` is returned.
 
-Since: 2.12
-
     method gtk_tree_view_column_get_tree_view ( --> N-GObject  )
 
 [[gtk_] tree_view_column_] get_button
 -------------------------------------
 
 Returns the button used in the treeview column header
-
-Since: 3.0
 
     method gtk_tree_view_column_get_button ( --> N-GObject  )
 
@@ -663,13 +574,13 @@ The **Gnome::GObject::Value** type of property *sort-order* is `G_TYPE_ENUM`.
 
 ### Sort column ID
 
-Logical sort column ID this column sorts on when selected for sorting. Setting the sort column ID makes the column header clickable. Set to -1 to make the column unsortable. Since: 2.18
+Logical sort column ID this column sorts on when selected for sorting. Setting the sort column ID makes the column header clickable. Set to -1 to make the column unsortable.
 
 The **Gnome::GObject::Value** type of property *sort-column-id* is `G_TYPE_INT`.
 
 ### Cell Area
 
-The **Gnome::Gtk3::CellArea** used to layout cell renderers for this column. If no area is specified when creating the tree view column with `gtk_tree_view_column_new_with_area()` a horizontally oriented **Gnome::Gtk3::CellAreaBox** will be used. Since: 3.0 Widget type: GTK_TYPE_CELL_AREA
+The **Gnome::Gtk3::CellArea** used to layout cell renderers for this column. If no area is specified when creating the tree view column with `gtk_tree_view_column_new_with_area()` a horizontally oriented **Gnome::Gtk3::CellAreaBox** will be used.Widget type: GTK_TYPE_CELL_AREA
 
 The **Gnome::GObject::Value** type of property *cell-area* is `G_TYPE_OBJECT`.
 

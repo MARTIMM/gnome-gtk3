@@ -59,6 +59,12 @@ C<Gnome::Gtk3::ComboBox>
   unit class Gnome::Gtk3::ComboBoxText;
   also is Gnome::Gtk3::ComboBox;
 
+
+=head2 Uml Diagram
+
+![](plantuml/ComboBox.svg)
+
+
 =head2 Example
 
 =end pod

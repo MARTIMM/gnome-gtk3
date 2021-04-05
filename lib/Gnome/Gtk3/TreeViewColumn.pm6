@@ -15,16 +15,10 @@ The B<Gnome::Gtk3::TreeViewColumn> object represents a visible column in a B<Gno
 Please refer to the [tree widget conceptual overview][TreeWidget] for an overview of all the objects and data types related to the tree widget and how they work together.
 
 
-
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::TreeViewColumn implements
-=comment item Gnome::Gtk3::CellLayout
-=comment item [Gnome::Gtk3::Buildable](Buildable.html)
-
 =head2 See Also
 
 B<Gnome::Gtk3::TreeView>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::TreeSortable>,
+
 
 =head1 Synopsis
 =head2 Declaration
@@ -33,6 +27,7 @@ B<Gnome::Gtk3::TreeView>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::TreeMode
   also is Gnome::GObject::InitiallyUnowned;
   also does Gnome::Gtk3::Buildable;
   also does Gnome::Gtk3::CellLayout;
+
 
 =comment head2 Example
 
@@ -46,7 +41,7 @@ use Gnome::N::N-GObject;
 use Gnome::GObject::InitiallyUnowned;
 use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::TreeIter;
-#use Gnome::Gtk3::CellLayout;
+use Gnome::Gtk3::CellLayout;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -54,7 +49,7 @@ use Gnome::Gtk3::TreeIter;
 unit class Gnome::Gtk3::TreeViewColumn:auth<github:MARTIMM>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
-#also does Gnome::Gtk3::CellLayout;
+also does Gnome::Gtk3::CellLayout;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -277,8 +272,9 @@ sub gtk_tree_view_column_new_with_attributes (
   { * }
 }}
 
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_column_pack_start:
+# TM:1:gtk_tree_view_column_pack_start:
 =begin pod
 =head2 [[gtk_] tree_view_column_] pack_start
 
@@ -296,9 +292,11 @@ Packs the I<$cell> into the beginning of the column. If I<$expand> is C<0>, then
 sub gtk_tree_view_column_pack_start ( N-GObject $tree_column, N-GObject $cell, int32 $expand )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_column_pack_end:
+# TM:1:gtk_tree_view_column_pack_end:
 =begin pod
 =head2 [[gtk_] tree_view_column_] pack_end
 
@@ -314,7 +312,9 @@ Adds the I<$cell> to end of the column. If I<$expand> is C<0>, then the I<$cell>
 sub gtk_tree_view_column_pack_end ( N-GObject $tree_column, N-GObject $cell, int32 $expand )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_clear:
 =begin pod
@@ -329,9 +329,11 @@ Unsets all the mappings on all renderers on this tree column.
 sub gtk_tree_view_column_clear ( N-GObject $tree_column )
   is native(&gtk-lib)
   { * }
+}}
 
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:1:gtk_tree_view_column_add_attribute:
+# TM:1:gtk_tree_view_column_add_attribute:
 =begin pod
 =head2 [[gtk_] tree_view_column_] add_attribute
 
@@ -350,10 +352,11 @@ Adds an attribute mapping to the list in this tree column.  The I<$column> is th
 sub gtk_tree_view_column_add_attribute ( N-GObject $tree_column, N-GObject $cell_renderer, Str $attribute, int32 $column )
   is native(&gtk-lib)
   { * }
+}}
 
-#`{{
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_column_set_attributes:
+# TM:0:gtk_tree_view_column_set_attributes:
 =begin pod
 =head2 [[gtk_] tree_view_column_] set_attributes
 
@@ -373,9 +376,9 @@ sub gtk_tree_view_column_set_attributes ( N-GObject $tree_column, N-GObject $cel
   { * }
 }}
 
-#`{{
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_column_set_cell_data_func:
+# TM:0:gtk_tree_view_column_set_cell_data_func:
 =begin pod
 =head2 [[gtk_] tree_view_column_] set_cell_data_func
 
@@ -398,8 +401,10 @@ sub gtk_tree_view_column_set_cell_data_func ( N-GObject $tree_column, N-GObject 
   is native(&gtk-lib)
   { * }
 }}
+
+#`{{ available in CellLayout
 #-------------------------------------------------------------------------------
-#TM:0:gtk_tree_view_column_clear_attributes:
+# TM:0:gtk_tree_view_column_clear_attributes:
 =begin pod
 =head2 [[gtk_] tree_view_column_] clear_attributes
 
@@ -416,6 +421,7 @@ Clears all existing attributes previously set with C<gtk_tree_view_column_set_at
 sub gtk_tree_view_column_clear_attributes ( N-GObject $tree_column, N-GObject $cell_renderer )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_tree_view_column_set_spacing:

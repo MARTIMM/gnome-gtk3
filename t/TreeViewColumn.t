@@ -45,13 +45,13 @@ subtest 'Manipulations', {
   ok $tvc.get-expand, '.set-expand()';
 
   $crt .= new;
-  $tvc.pack-start( $crt, 1);
+  $tvc.pack-start( $crt, True);
   $tvc.add-attribute( $crt, 'text', 0);
   ok $tvc.cell-is-visible, '.cell-is-visible()';
 
   # need a new renderer
   $crt .= new;
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
 
   $ls .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));
   $tv .= new(:model($ls.get-native-object));

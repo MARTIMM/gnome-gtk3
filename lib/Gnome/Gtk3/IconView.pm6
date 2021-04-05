@@ -30,6 +30,7 @@ B<Gnome::Gtk3::IconView> has a single CSS node with name iconview and style clas
 
   unit class Gnome::Gtk3::IconView;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::CellLayout;
 
 
 =head2 Uml Diagram
@@ -66,15 +67,20 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+
 use Gnome::Glib::List;
+
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::TreeIter;
 use Gnome::Gtk3::TreePath;
+use Gnome::Gtk3::CellLayout;
+
 use Gnome::Cairo::Types;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::IconView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::CellLayout;
 
 #-------------------------------------------------------------------------------
 =begin pod

@@ -39,11 +39,6 @@ A normal combobox contains a box with the .linked class, a button with the .comb
 
 A **Gnome::Gtk3::ComboBox** with an entry has a single CSS node with name combobox. It contains a bx with the .linked class and that box contains an entry and a button, both with the .combo class added. The button also contains another node with name arrow.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ComboBox implements
-
 See Also
 --------
 
@@ -57,6 +52,12 @@ Declaration
 
     unit class Gnome::Gtk3::ComboBox;
     also is Gnome::Gtk3::Bin;
+    also does Gnome::Gtk3::CellLayout;
+
+Uml Diagram
+-----------
+
+![](plantuml/ComboBox.svg)
 
 Example
 -------
@@ -85,8 +86,6 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 Creates a new empty **Gnome::Gtk3::ComboBox**.
 
 Returns: A new **Gnome::Gtk3::ComboBox**.
-
-Since: 2.4
 
     method gtk_combo_box_new ( --> N-GObject  )
 

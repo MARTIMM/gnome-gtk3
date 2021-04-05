@@ -44,22 +44,24 @@ an arrow.
 
 A B<Gnome::Gtk3::ComboBox> with an entry has a single CSS node with name combobox. It contains a bx with the .linked class and that box contains an entry and a button, both with the .combo class added. The button also contains another node with name arrow.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ComboBox implements
-=comment item Gnome::Atk::ImplementorIface
-=comment item Gnome::Gtk3::CellLayout
-=comment item Gnome::Gtk3::CellEditable
 
 =head2 See Also
 
 B<Gnome::Gtk3::ComboBoxText>, B<Gnome::Gtk3::TreeModel>, B<Gnome::Gtk3::CellRenderer>
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::ComboBox;
   also is Gnome::Gtk3::Bin;
+  also does Gnome::Gtk3::CellLayout;
+
+
+=head2 Uml Diagram
+
+![](plantuml/ComboBox.svg)
+
 
 =head2 Example
 
@@ -73,12 +75,15 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::Gtk3::Bin;
 
+use Gnome::Gtk3::CellLayout;
+
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::ComboBox:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Bin;
 also does Gnome::Gtk3::Buildable;
+also does Gnome::Gtk3::CellLayout;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -159,8 +164,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 Creates a new empty B<Gnome::Gtk3::ComboBox>.
 
 Returns: A new B<Gnome::Gtk3::ComboBox>.
-
-Since: 2.4
 
   method gtk_combo_box_new ( --> N-GObject  )
 

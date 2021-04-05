@@ -28,6 +28,7 @@ Declaration
 
     unit class Gnome::Gtk3::IconView;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::CellLayout;
 
 Uml Diagram
 -----------

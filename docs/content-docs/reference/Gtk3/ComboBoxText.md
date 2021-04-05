@@ -58,6 +58,11 @@ Declaration
     unit class Gnome::Gtk3::ComboBoxText;
     also is Gnome::Gtk3::ComboBox;
 
+Uml Diagram
+-----------
+
+![](plantuml/ComboBox.svg)
+
 Example
 -------
 
