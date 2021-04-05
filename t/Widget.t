@@ -3,17 +3,23 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Glib::List;
+
 use Gnome::GObject::Value;
 use Gnome::GObject::Type;
 
 use Gnome::Gdk3::Window;
-
+#use Gnome::Gdk3::Device;
+#use Gnome::Gdk3::Display;
+use Gnome::Gdk3::Types;
 use Gnome::Gtk3::Button;
+use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
+use Gnome::N::GlibToRakuTypes;
 
 #-------------------------------------------------------------------------------
 subtest 'Widget ISA test', {
@@ -28,13 +34,63 @@ unless %*ENV<raku_test_all>:exists {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Manipulations', {
+#`{{
+class ListHandlerClass {
+  method list-handler (
+    Gnome::Glib::List $hl, Int $hi
+  ) {
+    has Bool $.mnem-found = False;
+    # do something with the list item at $hl at index $hi and data $hd
+    my Gnome::Gtk3::Widget $w .= new(:native-object($hd));
+    given $w.widget-get-name {
+      when 'GtkLabel' {
+        my Gnome::Gtk3::Label $hl .= new(:native-object($hd));
+        ok $hl.get-label, '.add-mnemonic-label() / .list-mnemonic-labels()';
+        $.mnem-found = True;
+      }
+    }
+  }
+
+  method can-act-acc ( guint $sig-id --> gboolean ) {
+    note "sid: $sig-id";
+    1
+  }
+}
+
+subtest 'Manipulations 1', {
+  my Gnome::Gtk3::Button $b .= new(:label<abc>);
+
+  my Gnome::Gtk3::Label $lbl .= new(:mnemonic<_Abc>);
+  $b.add-mnemonic-label($lbl);
+  my Gnome::Glib::List $lst = $b.list-mnemonic-labels;
+  my ListHandlerClass $lhc .= new;
+#  $lst.list-foreach( ListHandlerClass.new, 'list-handler');
+  $lst.clear-object;
+  ok $lhc.mnem-found, 'mnemonic found';
+
+
+#  $b.register-signal( $lhc, 'can-act-acc', 'can-activate-accel');
+#  ok $b.can-activate-accel, '.can-activate-accel()';
+}
+}}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations 2', {
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
   nok $b.get-visible, '.get-visible()';
   $b.set-visible(True);
   ok $b.get-visible, '.set-visible()';
   ok $b.is-visible, '.is-visible()';
   nok $b.get-has-window, '.get-has-window() is False';
+  ok $b.activate, '.activate()';
+
+  #diag 'eventmask bits: ' ~ $b.get-events.base(2);
+  my Int $em = $b.get-events;
+  $b.add-events( GDK_POINTER_MOTION_MASK +| GDK_BUTTON_MOTION_MASK);
+  ok ($b.get-events +& GDK_POINTER_MOTION_MASK) > 0,
+    '.add-events() / .get-events()';
+  $b.set-events($em);
+  ok ($b.get-events +& GDK_BUTTON_MOTION_MASK) > 0, '.set-events()';
 
   # does not set .get-has-window()
   my Gnome::Gdk3::Window $gdk-window .= new;

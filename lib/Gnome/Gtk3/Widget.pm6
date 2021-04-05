@@ -30,7 +30,7 @@ There are some important things to keep in mind when implementing height-for-wid
 The geometry management system will query a widget hierarchy in only one orientation at a time. When widgets are initially queried for their minimum sizes it is generally done in two initial passes in the C<GtkSizeRequestMode> chosen by the toplevel.
 
 For example, when queried in the normal C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> mode:
-=item First, the default minimum and natural width for each widget in the interface will be computed using C<gtk_widget_get_preferred_width()>. Because the preferred widths for each container depend on the preferred widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
+=item First, the default minimum and natural width for each widget in the interface will be computed using C<gtk_widget_get_preferred_width()>. Because the preferred widths for each container depend on the preferre1d widths of their children, this information propagates up the hierarchy, and finally a minimum and natural width is determined for the entire toplevel.
 =item Next, the toplevel will use the minimum width to query for the minimum height contextual to that width using C<gtk_widget_get_preferred_height_for_width()>, which will also be a highly recursive operation. The minimum height for the minimum width is normally used to set the minimum size constraint on the toplevel (unless C<gtk_window_set_geometry_hints()> is explicitly used instead).
 
 After the toplevel window has initially requested its size in both dimensions it can go on to allocate itself a reasonable size (or a size previously specified with C<gtk_window_set_default_size()>). During the recursive allocation process it’s important to note that request cycles will be recursively executed while container widgets allocate their children. Each container widget, once allocated a size, will go on to first share the space in one orientation among its children and then request each child's height for its target allocated width or its width for allocated height, depending.
@@ -259,7 +259,7 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
 
 Gnome::Gtk3::Widget implements
 =comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)
+=item [Gnome::Gtk3::Buildable](Buildable.html)1
 
 =end comment
 
@@ -311,7 +311,7 @@ use Gnome::Cairo::Types;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
 # https://developer.gnome.org/gtk3/stable/GtkWidget.html
-unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>:ver<0.3.0>;
+unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>:ver<0.4.0>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
 
@@ -455,7 +455,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:0:activate:
+#TM:1:activate:
 =begin pod
 =head2 activate
 
@@ -465,14 +465,10 @@ Returns: C<True> if the widget was activatable
 
   method activate ( --> Bool )
 
-
 =end pod
 
 method activate ( --> Bool ) {
-
-  gtk_widget_activate(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_activate(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_activate (
@@ -519,14 +515,14 @@ sub gtk_widget_add_accelerator (
 
 Adds the device events in the bitfield I<events> to the event mask for I<widget>. See C<set-device-events()> for details.
 
-  method add-device-events ( N-GObject $device, N-GdkEventMask $events )
+  method add-device-events ( N-GObject $device, Int $events )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
-=item N-GdkEventMask $events; an event mask, see B<Gnome::Gtk3::EventMask>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
+=item Int $events; an event mask. Mask bit values are from GdkEventMask.
 
 =end pod
 
-method add-device-events ( $device is copy, N-GdkEventMask $events ) {
+method add-device-events ( $device is copy, Int $events ) {
   $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
 
   gtk_widget_add_device_events(
@@ -540,23 +536,20 @@ sub gtk_widget_add_device_events (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-events:
+#TM:1:add-events:
 =begin pod
 =head2 add-events
 
-Adds the events in the bitfield I<events> to the event mask for I<widget>. See C<set-events()> and the [input handling overview][event-masks] for details.
+Adds the events in the bitfield I<$events> to the event mask for I<widget>. See C<set-events()> and the [input handling overview][event-masks] for details.
 
   method add-events ( Int $events )
 
-=item Int $events; an event mask, see B<Gnome::Gtk3::EventMask>
+=item Int $events; an event mask, see GdkEventMask in B<Gnome::Gdk3::Types>.
 
 =end pod
 
 method add-events ( Int $events ) {
-
-  gtk_widget_add_events(
-    self._f('GtkWidget'), $events
-  );
+  gtk_widget_add_events( self._f('GtkWidget'), $events);
 }
 
 sub gtk_widget_add_events (
@@ -565,7 +558,7 @@ sub gtk_widget_add_events (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-mnemonic-label:
+#TM:1:add-mnemonic-label:
 =begin pod
 =head2 add-mnemonic-label
 
@@ -579,10 +572,7 @@ Adds a widget to the list of mnemonic labels for this widget. (See C<list-mnemon
 
 method add-mnemonic-label ( $label is copy ) {
   $label .= get-native-object-no-reffing unless $label ~~ N-GObject;
-
-  gtk_widget_add_mnemonic_label(
-    self._f('GtkWidget'), $label
-  );
+  gtk_widget_add_mnemonic_label(self._f('GtkWidget'), $label);
 }
 
 sub gtk_widget_add_mnemonic_label (
@@ -626,7 +616,7 @@ sub gtk_widget_add_tick_callback (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:can-activate-accel:
+#TM:1:can-activate-accel:
 =begin pod
 =head2 can-activate-accel
 
@@ -1273,7 +1263,7 @@ sub gtk_widget_device_is_shadowed (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:draw:
+#TM:4:draw:Gnome::Cairo tests
 =begin pod
 =head2 draw
 
@@ -1289,11 +1279,9 @@ Note that special-purpose widgets may contain special code for rendering to the 
 
 =end pod
 
-method draw ( cairo_t $cr ) {
-
-  gtk_widget_draw(
-    self._f('GtkWidget'), $cr
-  );
+method draw ( $cr is copy ) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_widget_draw( self._f('GtkWidget'), $cr);
 }
 
 sub gtk_widget_draw (
@@ -1835,7 +1823,7 @@ sub gtk_widget_get_device_enabled (
 =begin pod
 =head2 get-device-events
 
-Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when I<device> operates on it. Flags in this mask are from C<N-GdkEventMask>.
+Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when I<device> operates on it. Flags in this mask are from C<GdkEventMask> in B<Gnome::Gdk3::Types>.
 
 Returns: device event mask for I<widget>
 
@@ -1907,11 +1895,11 @@ sub gtk_widget_get_display (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-events:
+#TM:1:get-events:
 =begin pod
 =head2 get-events
 
-Returns the event mask (see B<Gnome::Gtk3::EventMask>) for the widget. These are the events that the widget will receive.
+Returns the event mask (see GdkEventMask) for the widget. These are the events that the widget will receive.
 
 Note: Internally, the widget event mask will be the logical OR of the event mask set through C<set-events()> or C<add-events()>, and the event mask necessary to cater for every B<Gnome::Gtk3::EventController> created for the widget.
 
@@ -1919,14 +1907,10 @@ Returns: event mask for I<widget>
 
   method get-events ( --> Int )
 
-
 =end pod
 
 method get-events ( --> Int ) {
-
-  gtk_widget_get_events(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_events(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_events (
@@ -2170,6 +2154,7 @@ Returns: whether hexpand has been explicitly set
 =end pod
 
 method get-hexpand-set ( --> Bool ) {
+
 
   gtk_widget_get_hexpand_set(
     self._f('GtkWidget'),
@@ -4101,23 +4086,22 @@ sub gtk_widget_list_action_prefixes (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:list-mnemonic-labels:
+#TM:1:list-mnemonic-labels:
 =begin pod
 =head2 list-mnemonic-labels
 
-Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, C<gtk-label-set-mnemonic-widget()>). The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g-list-foreach (result, (GFunc)g-object-ref, NULL)` first, and then unref all the widgets afterwards.
+Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, C<Gnome::Gtk3::Label.set-mnemonic-widget()>). The widgets in the list are not individually referenced.
+=comment If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g-list-foreach (result, (GFunc)g-object-ref, NULL)` first, and then unref all the widgets afterwards.
 
-Returns: (element-type GtkWidget) (transfer container): the list of mnemonic labels; free this list with C<g-list-free()> when you are done with it.
+Returns: the list of mnemonic labels; free this list with C<clear-object()> when you are done with it.
 
-  method list-mnemonic-labels ( --> N-GList )
-
+  method list-mnemonic-labels ( --> Gnome::Glib::List )
 
 =end pod
 
-method list-mnemonic-labels ( --> N-GList ) {
-
-  gtk_widget_list_mnemonic_labels(
-    self._f('GtkWidget'),
+method list-mnemonic-labels ( --> Gnome::Glib::List ) {
+  Gnome::Glib::List.new(
+    :native-object(gtk_widget_list_mnemonic_labels(self._f('GtkWidget')))
   )
 }
 
@@ -4566,6 +4550,7 @@ sub gtk_widget_send_focus_change (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:set-accel-path:
 =begin pod
@@ -4598,6 +4583,7 @@ sub gtk_widget_set_accel_path (
   N-GObject $widget, gchar-ptr $accel_path, N-GObject $accel_group
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:set-allocation:
@@ -4826,7 +4812,7 @@ Sets the device event mask (see B<Gnome::Gtk3::EventMask>) for a widget. The eve
   method set-device-events ( N-GObject $device, Int $events )
 
 =item N-GObject $device; a B<Gnome::Gtk3::Device>
-=item Int $events; event mask with N-GdkEventMask flag values
+=item Int $events; event mask with GdkEventMask flag values
 
 =end pod
 
@@ -4867,7 +4853,7 @@ sub gtk_widget_set_direction (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-events:
+#TM:1:set-events:
 =begin pod
 =head2 set-events
 
@@ -6978,35 +6964,20 @@ Returns: whether the cursor position is in a drop zone
 =item $time; the timestamp of the motion event
 =end comment
 
-=begin comment
 =comment -----------------------------------------------------------------------
-=comment #TS:0:draw:
+=comment #TS:4:draw:Gnome::Cairo tests
 =head3 draw
 
-This signal is emitted when a widget is supposed to render itself.
-The I<widget>'s top left corner must be painted at the origin of
-the passed in context and be sized to the values returned by
-C<get-allocated-width()> and
-C<get-allocated-height()>.
+This signal is emitted when a widget is supposed to render itself. The I<widget>'s top left corner must be painted at the origin of the passed in context and be sized to the values returned by C<get-allocated-width()> and C<get-allocated-height()>.
 
-Signal handlers connected to this signal can modify the cairo
-context passed as I<cr> in any way they like and don't need to
-restore it. The signal emission takes care of calling C<cairo-save()>
-before and C<cairo-restore()> after invoking the handler.
+Signal handlers connected to this signal can modify the cairo context passed as I<cr> in any way they like and don't need to restore it. The signal emission takes care of calling C<cairo-save()> before and C<cairo-restore()> after invoking the handler.
 
-The signal handler will get a I<cr> with a clip region already set to the
-widget's dirty region, i.e. to the area that needs repainting.  Complicated
-widgets that want to avoid redrawing themselves completely can get the full
-extents of the clip region with C<gdk-cairo-get-clip-rectangle()>, or they can
-get a finer-grained representation of the dirty region with
-C<cairo-copy-clip-rectangle-list()>.
+The signal handler will get a I<cr> with a clip region already set to the widget's dirty region, i.e. to the area that needs repainting.  Complicated widgets that want to avoid redrawing themselves completely can get the full extents of the clip region with C<gdk-cairo-get-clip-rectangle()>, or they can get a finer-grained representation of the dirty region with C<cairo-copy-clip-rectangle-list()>.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
-
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
-    Unknown type CAIRO_GOBJECT_TYPE_CONTEXT $cr,
+    cairo_t $cr,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7016,7 +6987,6 @@ C<False> to propagate the event further.
 =item $widget; the object which received the signal
 
 =item $cr; the cairo context to draw to
-=end comment
 
 
 =comment -----------------------------------------------------------------------
