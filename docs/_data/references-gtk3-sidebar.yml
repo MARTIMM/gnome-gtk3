@@ -54,6 +54,10 @@
   - title: "Builder"
     url: "/content-docs/reference/Gtk3/Builder.html"
 
+  - title: "CellLayout"
+    url: '/content-docs/reference/Gtk3/CellLayout.html'
+    type: interface
+
   - title: "CellRenderer"
     url: '/content-docs/reference/Gtk3/CellRenderer.html'
 

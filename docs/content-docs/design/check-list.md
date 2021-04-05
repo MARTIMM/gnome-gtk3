@@ -93,6 +93,7 @@ Box                       |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Builder                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |  |  |
+CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -212,7 +213,6 @@ CellArea|
 CellAreaBox|
 CellAreaContext|
 CellEditable              |R | ✗|
-CellLayout                |R | ✗|
 CellView|
 ChooserDialog|
 Clipboard|
