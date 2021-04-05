@@ -1192,7 +1192,7 @@ Gets the event mask for *window* for all master input devices. See `gdk_window_s
 
 Returns: event mask for *window*
 
-    method gdk_window_get_events ( --> N-GdkEventMask  )
+    method gdk_window_get_events ( --> Int )
 
 [[gdk_] window_] set_events
 ---------------------------
@@ -1201,9 +1201,9 @@ The event mask for a window determines which events will be reported for that wi
 
 See the [input handling overview][event-masks] for details.
 
-    method gdk_window_set_events ( N-GdkEventMask $event_mask )
+    method gdk_window_set_events ( Int $event_mask )
 
-  * N-GdkEventMask $event_mask; event mask for *window*
+  * Int $event_mask; event mask for *window*. The values are from `GdkEventMask`.
 
 [[gdk_] window_] set_device_events
 ----------------------------------
@@ -1212,20 +1212,20 @@ Sets the event mask for a given device (Normally a floating device, not attached
 
 See the [input handling overview][event-masks] for details.
 
-    method gdk_window_set_device_events ( N-GObject $device, N-GdkEventMask $event_mask )
+    method gdk_window_set_device_events ( N-GObject $device, Int $event_mask )
 
   * N-GObject $device; **Gnome::Gdk3::Device** to enable events for.
 
-  * N-GdkEventMask $event_mask; event mask for *window*
+  * Int $event_mask; event mask for *window*. Values are from GdkEventMask.
 
 [[gdk_] window_] get_device_events
 ----------------------------------
 
 Returns the event mask for *window* corresponding to an specific device.
 
-Returns: device event mask for *window*
+Returns: device event mask for *window* with mask values from GdkEventMask.
 
-    method gdk_window_get_device_events ( N-GObject $device --> N-GdkEventMask  )
+    method gdk_window_get_device_events ( N-GObject $device --> Int )
 
   * N-GObject $device; a **Gnome::Gdk3::Device**.
 
@@ -1234,22 +1234,11 @@ Returns: device event mask for *window*
 
 Sets the event mask for any floating device (i.e. not attached to any visible pointer) that has the source defined as *source*. This event mask will be applied both to currently existing, newly added devices after this call, and devices being attached/detached.
 
-    method gdk_window_set_source_events ( GdkInputSource $source, N-GdkEventMask $event_mask )
+    method gdk_window_set_source_events ( GdkInputSource $source, Int $event_mask )
 
   * GdkInputSource $source; a **Gnome::Gdk3::InputSource** to define the source class.
 
-  * N-GdkEventMask $event_mask; event mask for *window*
-
-[[gdk_] window_] get_source_events
-----------------------------------
-
-Returns the event mask for *window* corresponding to the device class specified by *source*.
-
-Returns: source event mask for *window*
-
-    method gdk_window_get_source_events ( GdkInputSource $source --> N-GdkEventMask  )
-
-  * GdkInputSource $source; a **Gnome::Gdk3::InputSource** to define the source class.
+  * Int $event_mask; event mask for *window*. Mask bit values are from GdkEventMask.
 
 [[gdk_] window_] set_icon_list
 ------------------------------

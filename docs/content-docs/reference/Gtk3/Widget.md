@@ -176,11 +176,11 @@ add-device-events
 
 Adds the device events in the bitfield *events* to the event mask for *widget*. See `set-device-events()` for details.
 
-    method add-device-events ( N-GObject $device, N-GdkEventMask $events )
+    method add-device-events ( N-GObject $device, Int $events )
 
   * N-GObject $device; a **Gnome::Gtk3::Device**
 
-  * N-GdkEventMask $events; an event mask, see **Gnome::Gtk3::EventMask**
+  * Int $events; an event mask. Mask bit values are from GdkEventMask.
 
 add-events
 ----------
@@ -259,7 +259,7 @@ create-pango-context
 
 Creates a new **PangoContext** with the appropriate font map, font options, font description, and base direction for drawing text for this widget. See also `get-pango-context()`.
 
-Returns: : the new **PangoContext**
+Returns: the new **PangoContext**
 
     method create-pango-context ( --> N-GObject )
 
@@ -270,7 +270,7 @@ Creates a new **PangoLayout** with the appropriate font map, font description, a
 
 If you keep a **PangoLayout** created in this way around, you need to re-create it when the widget **PangoContext** is replaced. This can be tracked by using the *screen-changed* signal on the widget.
 
-Returns: : the new **PangoLayout**
+Returns: the new **PangoLayout**
 
     method create-pango-layout ( Str $text --> N-GObject )
 
@@ -514,7 +514,7 @@ Returns: `True` is *device* is enabled for *widget*
 get-device-events
 -----------------
 
-Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when *device* operates on it. Flags in this mask are from `N-GdkEventMask`.
+Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when *device* operates on it. Flags in this mask are from `GdkEventMask` in **Gnome::Gdk3::Types**.
 
 Returns: device event mask for *widget*
 
@@ -538,7 +538,7 @@ Get the **Gnome::Gtk3::Display** for the toplevel window associated with this wi
 
 In general, you should only create display specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: : the **Gnome::Gtk3::Display** for the toplevel for this widget.
+Returns: the **Gnome::Gtk3::Display** for the toplevel for this widget.
 
     method get-display ( --> N-GObject )
 
@@ -574,7 +574,7 @@ Returns: A **PangoFontMap**, or `undefined`
 get-font-options
 ----------------
 
-Returns the **cairo-font-options-t** used for Pango rendering. When not set, the defaults font options for the **Gnome::Gtk3::Screen** will be used.
+Returns the **cairo-font-options-t** used for Pango rendering. When not set, the defaults font options for the **Gnome::Gdk3::Screen** will be used.
 
 Returns: the **cairo-font-options-t** or `undefined` if not set
 
@@ -740,7 +740,7 @@ get-pango-context
 
 Gets a **PangoContext** with the appropriate font map, font description, and base direction for this widget. Unlike the context returned by `create-pango-context()`, this context is owned by the widget (it can be used until the screen for the widget changes or the widget is removed from its toplevel), and will be updated to match any changes to the widget’s attributes. This can be tracked by using the *screen-changed* signal on the widget.
 
-Returns: : the **PangoContext** for the widget.
+Returns: the **PangoContext** for the widget.
 
     method get-pango-context ( --> N-GObject )
 
@@ -920,13 +920,13 @@ Returns: the scale factor for *widget*
 get-screen
 ----------
 
-Get the **Gnome::Gtk3::Screen** from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
+Get the **Gnome::Gdk3::Screen** from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gdk3::Window** at the top.
 
 In general, you should only create screen specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: : the **Gnome::Gtk3::Screen** for the toplevel for this widget.
+Returns: the **Gnome::Gdk3::Screen** for the toplevel for this widget.
 
-    method get-screen ( --> N-GObject )
+    method get-screen ( --> Gnome::Gdk3::Screen )
 
 get-sensitive
 -------------
@@ -944,9 +944,9 @@ get-settings
 
 Gets the settings object holding the settings used for this widget.
 
-Note that this function can only be called when the **Gnome::Gtk3::Widget** is attached to a toplevel, since the settings object is specific to a particular **Gnome::Gtk3::Screen**.
+Note that this function can only be called when the **Gnome::Gtk3::Widget** is attached to a toplevel, since the settings object is specific to a particular **Gnome::Gdk3::Screen**.
 
-Returns: : the relevant **Gnome::Gtk3::Settings** object
+Returns: the relevant **Gnome::Gtk3::Settings** object
 
     method get-settings ( --> N-GObject )
 
@@ -979,7 +979,7 @@ get-style-context
 
 Returns the style context associated to *widget*. The returned object is guaranteed to be the same for the lifetime of *widget*.
 
-Returns: : a **Gnome::Gtk3::StyleContext**. This memory is owned by *widget* and must not be freed.
+Returns: a **Gnome::Gtk3::StyleContext**. This memory is owned by *widget* and must not be freed.
 
     method get-style-context ( --> N-GObject )
 
@@ -1001,7 +1001,7 @@ This will only report children which were previously declared with `class-bind-t
 
 This function is only meant to be called for code which is private to the *widget-type* which declared the child and is meant for language bindings which cannot easily make use of the GObject structure offsets.
 
-Returns: : The object built in the template XML with the id *name*
+Returns: The object built in the template XML with the id *name*
 
     method get-template-child ( N-GObject $widget_type, Str $name --> N-GObject )
 
@@ -1014,7 +1014,7 @@ get-tooltip-markup
 
 Gets the contents of the tooltip for *widget*.
 
-Returns: : the tooltip text, or `undefined`. You should free the returned string with `g-free()` when done.
+Returns: the tooltip text, or `undefined`. You should free the returned string with `g-free()` when done.
 
     method get-tooltip-markup ( --> Str )
 
@@ -1023,7 +1023,7 @@ get-tooltip-text
 
 Gets the contents of the tooltip for *widget*.
 
-Returns: : the tooltip text, or `undefined`. You should free the returned string with `g-free()` when done.
+Returns: the tooltip text, or `undefined`. You should free the returned string with `g-free()` when done.
 
     method get-tooltip-text ( --> Str )
 
@@ -1032,7 +1032,7 @@ get-tooltip-window
 
 Returns the **Gnome::Gtk3::Window** of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using `set-tooltip-window()`.
 
-Returns: : The **Gnome::Gtk3::Window** of the current tooltip.
+Returns: The **Gnome::Gtk3::Window** of the current tooltip.
 
     method get-tooltip-window ( --> N-GObject )
 
@@ -1047,7 +1047,7 @@ To reliably find the toplevel **Gnome::Gtk3::Window**, use `get-toplevel()` and 
 
 return NULL; } ]|
 
-Returns: : the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
+Returns: the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
 
     method get-toplevel ( --> N-GObject )
 
@@ -1111,7 +1111,7 @@ get-visual
 
 Gets the visual that will be used to render *widget*.
 
-Returns: : the visual for *widget*
+Returns: the visual for *widget*
 
     method get-visual ( --> N-GObject )
 
@@ -1224,9 +1224,9 @@ Returns: `True` if the widget is in the grab-widgets stack
 has-screen
 ----------
 
-Checks whether there is a **Gnome::Gtk3::Screen** is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
+Checks whether there is a **Gnome::Gdk3::Screen** is associated with this widget. All toplevel widgets have an associated screen, and all widgets added into a hierarchy with a toplevel window at the top.
 
-Returns: `True` if there is a **Gnome::Gtk3::Screen** associated with the widget.
+Returns: `True` if there is a **Gnome::Gdk3::Screen** associated with the widget.
 
     method has-screen ( --> Bool )
 
@@ -1698,7 +1698,7 @@ Sets the device event mask (see **Gnome::Gtk3::EventMask**) for a widget. The ev
 
   * N-GObject $device; a **Gnome::Gtk3::Device**
 
-  * Int $events; event mask with N-GdkEventMask flag values
+  * Int $events; event mask with GdkEventMask flag values
 
 set-direction
 -------------
@@ -1741,7 +1741,7 @@ Sets the font map to use for Pango rendering. When not set, the widget will inhe
 set-font-options
 ----------------
 
-Sets the **cairo-font-options-t** used for Pango rendering in this widget. When not set, the default font options for the **Gnome::Gtk3::Screen** will be used.
+Sets the **cairo-font-options-t** used for Pango rendering in this widget. When not set, the default font options for the **Gnome::Gdk3::Screen** will be used.
 
     method set-font-options ( cairo_font_options_t $options )
 
@@ -2075,7 +2075,7 @@ This function simply calls `show()` or `hide()` but is nicer to use when the vis
 set-visual
 ----------
 
-Sets the visual that should be used for by widget and its children for creating **Gnome::Gtk3::Windows**. The visual must be on the same **Gnome::Gtk3::Screen** as returned by `get-screen()`, so handling the *screen-changed* signal is necessary.
+Sets the visual that should be used for by widget and its children for creating **Gnome::Gtk3::Windows**. The visual must be on the same **Gnome::Gdk3::Screen** as returned by `get-screen()`, so handling the *screen-changed* signal is necessary.
 
 Setting a new *visual* will not cause *widget* to recreate its windows, so you should call this function before *widget* is realized.
 
@@ -2428,6 +2428,28 @@ The *direction-changed* signal is emitted when the text direction of a widget ch
   * $widget; the object on which the signal is emitted
 
   * $previous_direction; the previous text direction of *widget* as a GTK_TYPE_TEXT_DIRECTION enum
+
+### draw
+
+This signal is emitted when a widget is supposed to render itself. The *widget*'s top left corner must be painted at the origin of the passed in context and be sized to the values returned by `get-allocated-width()` and `get-allocated-height()`.
+
+Signal handlers connected to this signal can modify the cairo context passed as *cr* in any way they like and don't need to restore it. The signal emission takes care of calling `cairo-save()` before and `cairo-restore()` after invoking the handler.
+
+The signal handler will get a *cr* with a clip region already set to the widget's dirty region, i.e. to the area that needs repainting. Complicated widgets that want to avoid redrawing themselves completely can get the full extents of the clip region with `gdk-cairo-get-clip-rectangle()`, or they can get a finer-grained representation of the dirty region with `cairo-copy-clip-rectangle-list()`.
+
+Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
+
+    method handler (
+      cairo_t $cr,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object which received the signal
+
+  * $cr; the cairo context to draw to
 
 ### enter-notify-event
 
