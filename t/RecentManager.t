@@ -73,8 +73,8 @@ subtest 'Manipulations', {
     diag "'file:///home/marcel2' removed";
 
     my Gnome::Glib::List $l = .get-items;
-    diag '.get-items(); ' ~ $l.g_list_length;
-    if $l.g_list_length {
+    diag '.get-items(); ' ~ $l.length;
+    if $l.length {
       $ri .= new(:native-object($l.data));
       ok 1, '.get-items() [0]: ' ~ $ri.get-uri;
       clear-list($l);
@@ -133,14 +133,13 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 sub clear-list ( Gnome::Glib::List $l is copy ) {
-  my Gnome::Glib::List $lbackup = $l;
-  while $l {
+  while $l.is-valid {
     my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
 #note 'clear: ', $ri.get-uri;
     $ri.clear-object;
     $l .= next;
   }
-  $lbackup.clear-object;
+  $l.first.clear-object;
 }
 
 #`{{
