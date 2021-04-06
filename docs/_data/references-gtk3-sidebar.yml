@@ -141,6 +141,10 @@
     url: "/content-docs/reference/Gtk3/Entry.html"
     type: widget
 
+  - title: "EntryCompletion"
+    url: "/content-docs/reference/Gtk3/EntryCompletion.html"
+    type: widget
+
   - title: "Enums"
     type: standalone
     url: "/content-docs/reference/Gtk3/Enums.html"

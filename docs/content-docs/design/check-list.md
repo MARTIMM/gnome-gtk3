@@ -117,6 +117,7 @@ DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
 FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
@@ -219,7 +220,6 @@ Clipboard|
 CssSection                |Bx| ✗|
 Editable|
 EntryBuffer|
-EntryCompletion|
 EventBox|
 EventController|
 EventControllerKey|
