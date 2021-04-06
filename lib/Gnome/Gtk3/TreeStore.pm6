@@ -26,17 +26,6 @@ An example of a UI Definition fragment for a tree store:
     </columns>
   </object>
 
-=begin comment
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::TreeStore implements
-=item [Gnome::Gtk3::Buildable](Buildable.html)
-=item [Gnome::Gtk3::TreeModel](TreeModel.html)
-=item Gnome::Gtk3::TreeDragSource
-=item Gnome::Gtk3::TreeDragDest
-=item Gnome::Gtk3::TreeSortable
-=end comment
-
 =head2 See Also
 
 B<Gnome::Gtk3::TreeModel>
@@ -46,8 +35,8 @@ B<Gnome::Gtk3::TreeModel>
 
   unit class Gnome::Gtk3::TreeStore;
   also is Gnome::GObject::Object;
-=comment  also does Gnome::Gtk3::Buildable;
-=comment  also does Gnome::Gtk3::TreeModel;
+  also does Gnome::Gtk3::Buildable;
+  also does Gnome::Gtk3::TreeModel;
 =comment  also does Gnome::Gtk3::TreeDragSource;
 =comment  also does Gnome::Gtk3::TreeDragDest;
 =comment  also does Gnome::Gtk3::TreeSortable;

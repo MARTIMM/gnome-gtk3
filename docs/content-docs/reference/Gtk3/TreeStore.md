@@ -36,6 +36,8 @@ Declaration
 
     unit class Gnome::Gtk3::TreeStore;
     also is Gnome::GObject::Object;
+    also does Gnome::Gtk3::Buildable;
+    also does Gnome::Gtk3::TreeModel;
 
 Inheriting this class
 ---------------------
