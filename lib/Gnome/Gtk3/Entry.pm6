@@ -894,7 +894,7 @@ sub gtk_entry_get_alignment ( N-GObject $entry )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_entry_set_completion:
+#TM:2:gtk_entry_set_completion:
 =begin pod
 =head2 [[gtk_] entry_] set_completion
 
