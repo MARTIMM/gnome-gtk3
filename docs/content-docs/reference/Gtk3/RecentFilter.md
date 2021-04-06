@@ -46,6 +46,7 @@ Declaration
 
     unit class Gnome::Gtk3::RecentFilter;
     also is Gnome::GObject::InitiallyUnowned;
+    also does Gnome::Gtk3::Buildable;
 
 Uml Diagram
 -----------

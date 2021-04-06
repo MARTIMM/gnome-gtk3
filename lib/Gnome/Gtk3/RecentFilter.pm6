@@ -57,7 +57,7 @@ An example of a UI definition fragment specifying B<Gnome::Gtk3::RecentFilter> r
 
   unit class Gnome::Gtk3::RecentFilter;
   also is Gnome::GObject::InitiallyUnowned;
-
+  also does Gnome::Gtk3::Buildable;
 
 =head2 Uml Diagram
 
@@ -97,9 +97,12 @@ use Gnome::N::GlibToRakuTypes;
 
 use Gnome::GObject::InitiallyUnowned;
 
+use Gnome::Gtk3::Buildable;
+
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::RecentFilter:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::GObject::InitiallyUnowned;
+also does Gnome::Gtk3::Buildable;
 
 #`{{ only indirect use from RecentChooser interface
 #-------------------------------------------------------------------------------
