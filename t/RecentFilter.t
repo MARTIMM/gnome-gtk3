@@ -28,7 +28,10 @@ unless %*ENV<raku_test_all>:exists {
 subtest 'Manipulations', {
   given $rf {
     .set-name('MyFilter');
-    is .get-name, 'MyFilter', '.set-name() / .get-name()';
+    .buildable-set-name('BSNFilter');
+    is .buildable-get-name, 'BSNFilter',
+      '.buildable-set-name() / .buildable-get-name()';
+
     .add-mime-type('plain/text');
     .add-pattern('[a-f]*');
     .add-pixbuf-formats;
