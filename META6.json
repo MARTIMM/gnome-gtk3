@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.37.0",
+  "version": "0.38.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -22,6 +22,7 @@
     "Gnome::Gtk3::Buildable": "lib/Gnome/Gtk3/Buildable.pm6",
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
+    "Gnome::Gtk3::CellLayout": "lib/Gnome/Gtk3/CellLayout.pm6",
     "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
     "Gnome::Gtk3::CellRendererAccel": "lib/Gnome/Gtk3/CellRendererAccel.pm6",
     "Gnome::Gtk3::CellRendererCombo": "lib/Gnome/Gtk3/CellRendererCombo.pm6",
@@ -45,6 +46,7 @@
     "Gnome::Gtk3::DrawingArea": "lib/Gnome/Gtk3/DrawingArea.pm6",
     "Gnome::Gtk3::Editable": "lib/Gnome/Gtk3/Editable.pm6",
     "Gnome::Gtk3::Entry": "lib/Gnome/Gtk3/Entry.pm6",
+    "Gnome::Gtk3::EntryCompletion": "lib/Gnome/Gtk3/EntryCompletion.pm6",
     "Gnome::Gtk3::Enums": "lib/Gnome/Gtk3/Enums.pm6",
     "Gnome::Gtk3::FileChooser": "lib/Gnome/Gtk3/FileChooser.pm6",
     "Gnome::Gtk3::FileChooserButton": "lib/Gnome/Gtk3/FileChooserButton.pm6",

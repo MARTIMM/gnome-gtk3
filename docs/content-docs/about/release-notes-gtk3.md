@@ -6,6 +6,12 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-04-05 0.38.0:
+* Add role **Gnome::Gtk3::CellLayout**. Added this role to **Gnome::Gtk3::ComboBox**, **Gnome::Gtk3::IconView** and, **Gnome::Gtk3::TreeViewColumn**. TreeViewColumn had problems in that there where methods defined which were also made available in CellLayout. Therefore I have removed those from TreeViewColumn. There is a change however in some of those methods.
+  * `.pack-start()` and `.pack-end()`; The `$expand` arguments are now a real boolean accepting only `True` and `False`.
+* Add module **Gnome::Gtk3::EntryCompletion**.
+* bugfix; found out that **Gnome::Gtk3::RecentFilter did not inherited **Gnome::Gtk3::Buildable.
+
 #### 2021-03-26 0.37.0:
 * Add module **Gnome::Gtk3::Editable** which is a role needed by the input widgets like **Gnome::Gtk3::Entry**.
 * Module **Gnome::Glib::List** rewritten and extended.
