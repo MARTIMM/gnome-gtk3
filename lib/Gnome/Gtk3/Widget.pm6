@@ -295,6 +295,8 @@ use Gnome::GObject::InitiallyUnowned;
 
 use Gnome::Glib::List;
 
+use Gnome::Gdk3::Device;
+use Gnome::Gdk3::Display;
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
 use Gnome::Gdk3::Screen;
@@ -590,7 +592,7 @@ Queues an animation frame update and adds a callback to be called before each fr
 
 C<gdk-frame-clock-get-frame-time()> should generally be used for timing continuous animations and C<gdk-frame-timings-get-predicted-presentation-time()> if you are trying to display isolated frames at particular times.
 
-This is a more convenient alternative to connecting directly to the  I<update> signal of B<Gnome::Gtk3::FrameClock>, since you don't have to worry about when a B<Gnome::Gtk3::FrameClock> is assigned to a widget.
+This is a more convenient alternative to connecting directly to the  I<update> signal of B<Gnome::Gdk3::FrameClock>, since you don't have to worry about when a B<Gnome::Gdk3::FrameClock> is assigned to a widget.
 
 Returns: an id for the connection of this callback. Remove the callback by passing it to C<remove-tick-callback()>
 
@@ -1087,7 +1089,7 @@ sub gtk_widget_class_set_template_from_resource (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:compute-expand:
+#TM:1:compute-expand:
 =begin pod
 =head2 compute-expand
 
@@ -1106,10 +1108,7 @@ Returns: whether widget tree rooted here should be expanded
 =end pod
 
 method compute-expand ( GtkOrientation $orientation --> Bool ) {
-
-  gtk_widget_compute_expand(
-    self._f('GtkWidget'), $orientation
-  ).Bool
+  gtk_widget_compute_expand( self._f('GtkWidget'), $orientation).Bool
 }
 
 sub gtk_widget_compute_expand (
@@ -1128,14 +1127,10 @@ Returns: the new B<PangoContext>
 
   method create-pango-context ( --> N-GObject )
 
-
 =end pod
 
 method create-pango-context ( --> N-GObject ) {
-
-  gtk_widget_create_pango_context(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_create_pango_context(self._f('GtkWidget'))
 }
 
 sub gtk_widget_create_pango_context (
@@ -1161,10 +1156,7 @@ Returns: the new B<PangoLayout>
 =end pod
 
 method create-pango-layout ( Str $text --> N-GObject ) {
-
-  gtk_widget_create_pango_layout(
-    self._f('GtkWidget'), $text
-  )
+  gtk_widget_create_pango_layout( self._f('GtkWidget'), $text)
 }
 
 sub gtk_widget_create_pango_layout (
@@ -1173,7 +1165,7 @@ sub gtk_widget_create_pango_layout (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:destroy:
+#TM:1:destroy:
 =begin pod
 =head2 destroy
 
@@ -1181,9 +1173,12 @@ Destroys a widget.
 
 When a widget is destroyed all references it holds on other objects will be released:
 
-- if the widget is inside a container, it will be removed from its parent - if the widget is a container, all its children will be destroyed, recursively - if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
+=item if the widget is inside a container, it will be removed from its parent
+=item if the widget is a container, all its children will be destroyed, recursively
+=item if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
 
-It's expected that all references held on the widget will also be released; you should connect to the  I<destroy> signal if you hold a reference to I<widget> and you wish to remove it when this function is called. It is not necessary to do so if you are implementing a B<Gnome::Gtk3::Container>, as you'll be able to use the B<Gnome::Gtk3::ContainerClass>.C<remove()> virtual function for that.
+It's expected that all references held on the widget will also be released; you should connect to the  I<destroy> signal if you hold a reference to I<widget> and you wish to remove it when this function is called.
+=comment It is not necessary to do so if you are implementing a B<Gnome::Gtk3::Container>, as you'll be able to use the C<Gnome::Gtk3::ContainerClass.remove()> virtual function for that.
 
 It's important to notice that C<destroy()> will only cause the I<widget> to be finalized if no additional references, acquired using C<g-object-ref()>, are held on it. In case additional references are in place, the I<widget> will be in an "inert" state after calling this function; I<widget> will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
 
@@ -1193,14 +1188,11 @@ See also: C<gtk-container-remove()>
 
   method destroy ( )
 
-
 =end pod
 
 method destroy ( ) {
-
-  gtk_widget_destroy(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_destroy(self._f('GtkWidget'));
+  self._set_invalid;
 }
 
 sub gtk_widget_destroy (
@@ -1209,24 +1201,26 @@ sub gtk_widget_destroy (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:destroyed:
+#TM:1:destroyed:
 =begin pod
 =head2 destroyed
 
-This function sets *I<widget-pointer> to C<undefined> if I<widget-pointer> != C<undefined>. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect C<destroyed()> as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to C<undefined>. Useful for example to avoid multiple copies of the same dialog.
+This function sets I<$widget> to C<undefined> if I<$widget> != C<undefined>. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect C<destroyed()> as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to C<undefined>. Useful for example to avoid multiple copies of the same dialog.
 
-  method destroyed ( N-GObject $widget_pointer )
+  method destroyed ( N-GObject $widget )
 
-=item N-GObject $widget_pointer;  : address of a variable that contains I<widget>
+=item N-GObject $widget; the widget to clear I<widget>
 
 =end pod
 
-method destroyed ( $widget_pointer is copy ) {
-  $widget_pointer .= get-native-object-no-reffing unless $widget_pointer ~~ N-GObject;
+method destroyed ( $widget ) {
+  my $no = $widget;
+  if $no !~~ N-GObject {
+    $no .= get-native-object-no-reffing;
+    $widget._set_invalid;
+  }
 
-  gtk_widget_destroyed(
-    self._f('GtkWidget'), $widget_pointer
-  );
+  gtk_widget_destroyed( self._f('GtkWidget'), $no);
 }
 
 sub gtk_widget_destroyed (
@@ -1245,16 +1239,14 @@ Returns: C<True> if there is an ongoing grab on I<device> by another B<Gnome::Gt
 
   method device-is-shadowed ( N-GObject $device --> Bool )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
 method device-is-shadowed ( $device is copy --> Bool ) {
   $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
 
-  gtk_widget_device_is_shadowed(
-    self._f('GtkWidget'), $device
-  ).Bool
+  gtk_widget_device_is_shadowed( self._f('GtkWidget'), $device).Bool
 }
 
 sub gtk_widget_device_is_shadowed (
@@ -1290,7 +1282,7 @@ sub gtk_widget_draw (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:error-bell:
+#TM:1:error-bell:
 =begin pod
 =head2 error-bell
 
@@ -1300,14 +1292,10 @@ Note that the effect of C<gdk-window-beep()> can be configured in many ways, dep
 
   method error-bell ( )
 
-
 =end pod
 
 method error-bell ( ) {
-
-  gtk_widget_error_bell(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_error_bell(self._f('GtkWidget'));
 }
 
 sub gtk_widget_error_bell (
@@ -1331,10 +1319,7 @@ Returns: return from the event signal emission (C<True> if the event was handled
 =end pod
 
 method event ( GdkEvent $event --> Bool ) {
-
-  gtk_widget_event(
-    self._f('GtkWidget'), $event
-  ).Bool
+  gtk_widget_event( self._f('GtkWidget'), $event ).Bool
 }
 
 sub gtk_widget_event (
@@ -1353,14 +1338,10 @@ This is the analogue of C<g-object-freeze-notify()> for child properties.
 
   method freeze-child-notify ( )
 
-
 =end pod
 
 method freeze-child-notify ( ) {
-
-  gtk_widget_freeze_child_notify(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_freeze_child_notify(self._f('GtkWidget'));
 }
 
 sub gtk_widget_freeze_child_notify (
@@ -1383,7 +1364,6 @@ The documentation of the [ATK](http://developer.gnome.org/atk/stable/) library c
 Returns: the B<AtkObject> associated with I<widget>
 
   method get-accessible ( --> AtkObject )
-
 
 =end pod
 
@@ -1437,14 +1417,10 @@ Returns: the baseline of the I<widget>, or -1 if none
 
   method get-allocated-baseline ( --> Int )
 
-
 =end pod
 
 method get-allocated-baseline ( --> Int ) {
-
-  gtk_widget_get_allocated_baseline(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_allocated_baseline(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_allocated_baseline (
@@ -1463,14 +1439,10 @@ Returns: the height of the I<widget>
 
   method get-allocated-height ( --> Int )
 
-
 =end pod
 
 method get-allocated-height ( --> Int ) {
-
-  gtk_widget_get_allocated_height(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_allocated_height(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_allocated_height (
@@ -1533,14 +1505,10 @@ Returns: the width of the I<widget>
 
   method get-allocated-width ( --> Int )
 
-
 =end pod
 
 method get-allocated-width ( --> Int ) {
-
-  gtk_widget_get_allocated_width(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_allocated_width(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_allocated_width (
@@ -1555,7 +1523,11 @@ sub gtk_widget_get_allocated_width (
 
 Retrieves the widget’s allocation.
 
-Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls C<size-allocate()> with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget. C<get-allocation()> returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the C<size-allocate()> allocation, however. So a B<Gnome::Gtk3::Container> is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by C<size-allocate()>, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
+Note, when implementing a B<Gnome::Gtk3::Container>: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls C<size-allocate()> with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget.
+
+C<get-allocation()> returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the C<size-allocate()> allocation, however.
+
+So a B<Gnome::Gtk3::Container> is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by C<size-allocate()>, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
 
   method get-allocation ( --> N-GtkAllocation )
 
@@ -1579,9 +1551,9 @@ sub gtk_widget_get_allocation (
 =begin pod
 =head2 get-ancestor
 
-Gets the first ancestor of I<widget> with type I<widget-type>. For example, `get-ancestor (widget, GTK-TYPE-BOX)` gets the first B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for C<get-toplevel()>.
+Gets the first ancestor of I<widget> with type I<$widget-type>. For example, C<$widget.get-ancestor(GTK-TYPE-BOX)> gets the first native B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for C<get-toplevel()>.
 
-Note that unlike C<is-ancestor()>, C<get-ancestor()> considers I<widget> to be an ancestor of itself.
+Note that unlike C<is-ancestor()>, C<get-ancestor()> considers this I<widget> to be an ancestor of itself.
 
 Returns: the ancestor widget, or C<undefined> if not found
 
@@ -1617,14 +1589,10 @@ Returns: C<True> if the widget is app paintable
 
   method get-app-paintable ( --> Bool )
 
-
 =end pod
 
 method get-app-paintable ( --> Bool ) {
-
-  gtk_widget_get_app_paintable(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_app_paintable(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_app_paintable (
@@ -1633,7 +1601,7 @@ sub gtk_widget_get_app_paintable (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-can-default:
+#TM:1:get-can-default:
 =begin pod
 =head2 get-can-default
 
@@ -1643,14 +1611,10 @@ Returns: C<True> if I<widget> can be a default widget, C<False> otherwise
 
   method get-can-default ( --> Bool )
 
-
 =end pod
 
 method get-can-default ( --> Bool ) {
-
-  gtk_widget_get_can_default(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_can_default(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_can_default (
@@ -1659,7 +1623,7 @@ sub gtk_widget_get_can_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-can-focus:
+#TM:1:get-can-focus:
 =begin pod
 =head2 get-can-focus
 
@@ -1673,10 +1637,7 @@ Returns: C<True> if I<widget> can own the input focus, C<False> otherwise
 =end pod
 
 method get-can-focus ( --> Bool ) {
-
-  gtk_widget_get_can_focus(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_can_focus(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_can_focus (
@@ -1685,7 +1646,7 @@ sub gtk_widget_get_can_focus (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-child-visible:
+#TM:1:get-child-visible:
 =begin pod
 =head2 get-child-visible
 
@@ -1697,14 +1658,10 @@ Returns: C<True> if the widget is mapped with the parent.
 
   method get-child-visible ( --> Bool )
 
-
 =end pod
 
 method get-child-visible ( --> Bool ) {
-
-  gtk_widget_get_child_visible(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_child_visible(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_child_visible (
@@ -1746,7 +1703,7 @@ sub gtk_widget_get_clip (
 =begin pod
 =head2 get-clipboard
 
-Returns the clipboard object for the given selection to be used with I<widget>. I<widget> must have a B<Gnome::Gtk3::Display> associated with it, so must be attached to a toplevel window.
+Returns the clipboard object for the given selection to be used with I<widget>. I<widget> must have a B<Gnome::Gdk3::Display> associated with it, so must be attached to a toplevel window.
 
 Returns: the appropriate clipboard object. If no clipboard already exists, a new one will be created. Once a clipboard object has been created, it is persistent for all time.
 
@@ -1801,16 +1758,13 @@ Returns: C<True> is I<device> is enabled for I<widget>
 
   method get-device-enabled ( N-GObject $device --> Bool )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
 method get-device-enabled ( $device is copy --> Bool ) {
   $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
-
-  gtk_widget_get_device_enabled(
-    self._f('GtkWidget'), $device
-  ).Bool
+  gtk_widget_get_device_enabled( self._f('GtkWidget'), $device).Bool
 }
 
 sub gtk_widget_get_device_enabled (
@@ -1829,7 +1783,7 @@ Returns: device event mask for I<widget>
 
   method get-device-events ( N-GObject $device --> Int )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 
 =end pod
 
@@ -1854,7 +1808,6 @@ Returns: the reading direction for the widget.
 
   method get-direction ( --> GtkTextDirection )
 
-
 =end pod
 
 method get-direction ( --> GtkTextDirection ) {
@@ -1867,25 +1820,23 @@ sub gtk_widget_get_direction (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-display:
+#TM:1:get-display:
 =begin pod
 =head2 get-display
 
-Get the B<Gnome::Gtk3::Display> for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
+Get the B<Gnome::Gdk3::Display> for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
 In general, you should only create display specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: the B<Gnome::Gtk3::Display> for the toplevel for this widget.
+Returns: the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
-  method get-display ( --> N-GObject )
-
+  method get-display ( --> Gnome::Gdk3::Display )
 
 =end pod
 
-method get-display ( --> N-GObject ) {
-
-  gtk_widget_get_display(
-    self._f('GtkWidget'),
+method get-display ( --> Gnome::Gdk3::Display ) {
+  Gnome::Gdk3::Display.new(
+    :native-object(gtk_widget_get_display(self._f('GtkWidget')))
   )
 }
 
@@ -1919,7 +1870,7 @@ sub gtk_widget_get_events (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-focus-on-click:
+#TM:1:get-focus-on-click:
 =begin pod
 =head2 get-focus-on-click
 
@@ -1929,14 +1880,10 @@ Returns: C<True> if the widget should grab focus when it is clicked with the mou
 
   method get-focus-on-click ( --> Bool )
 
-
 =end pod
 
 method get-focus-on-click ( --> Bool ) {
-
-  gtk_widget_get_focus_on_click(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_focus_on_click(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_focus_on_click (
@@ -1954,7 +1901,6 @@ Gets the font map that has been set with C<set-font-map()>.
 Returns: A B<PangoFontMap>, or C<undefined>
 
   method get-font-map ( --> N-GObject )
-
 
 =end pod
 
@@ -1981,11 +1927,9 @@ Returns: the B<cairo-font-options-t> or C<undefined> if not set
 
   method get-font-options ( --> cairo_font_options_t )
 
-
 =end pod
 
 method get-font-options ( --> cairo_font_options_t ) {
-
   gtk_widget_get_font_options(
     self._f('GtkWidget'),
   )
@@ -1996,6 +1940,7 @@ sub gtk_widget_get_font_options (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-frame-clock:
 =begin pod
@@ -2009,10 +1954,9 @@ A widget’s frame clock will not change while the widget is mapped. Reparenting
 
 Unrealized widgets do not have a frame clock.
 
-Returns: a B<Gnome::Gtk3::FrameClock>, or C<undefined> if widget is unrealized
+Returns: a B<Gnome::Gdk3::FrameClock>, or C<undefined> if widget is unrealized
 
   method get-frame-clock ( --> N-GObject )
-
 
 =end pod
 
@@ -2027,6 +1971,7 @@ sub gtk_widget_get_frame_clock (
   N-GObject $widget --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-halign:
@@ -2041,7 +1986,6 @@ Returns: the horizontal alignment of I<widget>
 
   method get-halign ( --> GtkAlign )
 
-
 =end pod
 
 method get-halign ( --> GtkAlign ) {
@@ -2054,7 +1998,7 @@ sub gtk_widget_get_halign (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-has-tooltip:
+#TM:1:get-has-tooltip:
 =begin pod
 =head2 get-has-tooltip
 
@@ -2064,14 +2008,10 @@ Returns: current value of has-tooltip on I<widget>.
 
   method get-has-tooltip ( --> Bool )
 
-
 =end pod
 
 method get-has-tooltip ( --> Bool ) {
-
-  gtk_widget_get_has_tooltip(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_has_tooltip(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_has_tooltip (
@@ -2090,14 +2030,10 @@ Returns: C<True> if I<widget> has a window, C<False> otherwise
 
   method get-has-window ( --> Bool )
 
-
 =end pod
 
 method get-has-window ( --> Bool ) {
-
-  gtk_widget_get_has_window(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_has_window(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_has_window (
@@ -2120,14 +2056,10 @@ Returns: whether hexpand flag is set
 
   method get-hexpand ( --> Bool )
 
-
 =end pod
 
 method get-hexpand ( --> Bool ) {
-
-  gtk_widget_get_hexpand(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_hexpand( self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_hexpand (
@@ -2150,15 +2082,10 @@ Returns: whether hexpand has been explicitly set
 
   method get-hexpand-set ( --> Bool )
 
-
 =end pod
 
 method get-hexpand-set ( --> Bool ) {
-
-
-  gtk_widget_get_hexpand_set(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_hexpand_set(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_hexpand_set (
@@ -2177,14 +2104,10 @@ Returns: C<True> if the widget is mapped, C<False> otherwise.
 
   method get-mapped ( --> Bool )
 
-
 =end pod
 
 method get-mapped ( --> Bool ) {
-
-  gtk_widget_get_mapped(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_mapped(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_mapped (
@@ -2193,7 +2116,7 @@ sub gtk_widget_get_mapped (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-margin-bottom:
+#TM:1:get-margin-bottom:
 =begin pod
 =head2 get-margin-bottom
 
@@ -2203,14 +2126,10 @@ Returns: The bottom margin of I<widget>
 
   method get-margin-bottom ( --> Int )
 
-
 =end pod
 
 method get-margin-bottom ( --> Int ) {
-
-  gtk_widget_get_margin_bottom(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_margin_bottom(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_margin_bottom (
@@ -2219,7 +2138,7 @@ sub gtk_widget_get_margin_bottom (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-margin-end:
+#TM:1:get-margin-end:
 =begin pod
 =head2 get-margin-end
 
@@ -2229,14 +2148,10 @@ Returns: The end margin of I<widget>
 
   method get-margin-end ( --> Int )
 
-
 =end pod
 
 method get-margin-end ( --> Int ) {
-
-  gtk_widget_get_margin_end(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_margin_end(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_margin_end (
@@ -2245,7 +2160,7 @@ sub gtk_widget_get_margin_end (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-margin-start:
+#TM:1:get-margin-start:
 =begin pod
 =head2 get-margin-start
 
@@ -2255,14 +2170,10 @@ Returns: The start margin of I<widget>
 
   method get-margin-start ( --> Int )
 
-
 =end pod
 
 method get-margin-start ( --> Int ) {
-
-  gtk_widget_get_margin_start(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_margin_start(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_margin_start (
@@ -2271,7 +2182,7 @@ sub gtk_widget_get_margin_start (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-margin-top:
+#TM:1:get-margin-top:
 =begin pod
 =head2 get-margin-top
 
@@ -2281,14 +2192,10 @@ Returns: The top margin of I<widget>
 
   method get-margin-top ( --> Int )
 
-
 =end pod
 
 method get-margin-top ( --> Int ) {
-
-  gtk_widget_get_margin_top(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_margin_top(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_margin_top (
@@ -2323,7 +2230,7 @@ sub gtk_widget_get_modifier_mask (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-name:
+#TM:1:get-name:
 =begin pod
 =head2 get-name
 
@@ -2333,14 +2240,10 @@ Returns: name of the widget. This string is owned by GTK+ and should not be modi
 
   method get-name ( --> Str )
 
-
 =end pod
 
 method get-name ( --> Str ) {
-
-  gtk_widget_get_name(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_name(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_name (
@@ -3320,7 +3223,7 @@ sub gtk_widget_get_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:grab-default:
+#TM:1:grab-default:
 =begin pod
 =head2 grab-default
 
@@ -3328,14 +3231,10 @@ Causes I<widget> to become the default widget. I<widget> must be able to be a de
 
   method grab-default ( )
 
-
 =end pod
 
 method grab-default ( ) {
-
-  gtk_widget_grab_default(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_grab_default(self._f('GtkWidget'));
 }
 
 sub gtk_widget_grab_default (
@@ -3514,7 +3413,7 @@ sub gtk_requisition_new (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:has-default:
+#TM:1:has-default:
 =begin pod
 =head2 has-default
 
@@ -4642,7 +4541,7 @@ sub gtk_widget_set_app_paintable (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-can-default:
+#TM:1:set-can-default:
 =begin pod
 =head2 set-can-default
 
@@ -4655,10 +4554,7 @@ Specifies whether I<widget> can be a default widget. See C<grab-default()> for d
 =end pod
 
 method set-can-default ( Bool $can_default ) {
-
-  gtk_widget_set_can_default(
-    self._f('GtkWidget'), $can_default
-  );
+  gtk_widget_set_can_default( self._f('GtkWidget'), $can_default);
 }
 
 sub gtk_widget_set_can_default (
@@ -4667,7 +4563,7 @@ sub gtk_widget_set_can_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-can-focus:
+#TM:1:set-can-focus:
 =begin pod
 =head2 set-can-focus
 
@@ -4680,10 +4576,7 @@ Specifies whether I<widget> can own the input focus. See C<grab-focus()> for act
 =end pod
 
 method set-can-focus ( Bool $can_focus ) {
-
-  gtk_widget_set_can_focus(
-    self._f('GtkWidget'), $can_focus
-  );
+  gtk_widget_set_can_focus( self._f('GtkWidget'), $can_focus);
 }
 
 sub gtk_widget_set_can_focus (
@@ -4692,7 +4585,7 @@ sub gtk_widget_set_can_focus (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-child-visible:
+#TM:1:set-child-visible:
 =begin pod
 =head2 set-child-visible
 
@@ -4711,10 +4604,7 @@ This function is only useful for container implementations and never should be c
 =end pod
 
 method set-child-visible ( Bool $is_visible ) {
-
-  gtk_widget_set_child_visible(
-    self._f('GtkWidget'), $is_visible
-  );
+  gtk_widget_set_child_visible( self._f('GtkWidget'), $is_visible);
 }
 
 sub gtk_widget_set_child_visible (
@@ -4740,10 +4630,7 @@ If this function is not called by I<widget> during a I<size-allocate> handler, t
 =end pod
 
 method set-clip ( N-GtkAllocation $clip ) {
-
-  gtk_widget_set_clip(
-    self._f('GtkWidget'), $clip
-  );
+  gtk_widget_set_clip( self._f('GtkWidget'), $clip);
 }
 
 sub gtk_widget_set_clip (
@@ -4765,7 +4652,6 @@ Sets the default reading direction for widgets where the direction has not been 
 =end pod
 
 method set-default-direction ( GtkTextDirection $dir ) {
-
   gtk_widget_set_default_direction($dir);
 }
 
@@ -4778,23 +4664,20 @@ sub gtk_widget_set_default_direction ( GEnum $dir )
 =begin pod
 =head2 set-device-enabled
 
-Enables or disables a B<Gnome::Gtk3::Device> to interact with I<widget> and all its children.
+Enables or disables a B<Gnome::Gdk3::Device> to interact with I<widget> and all its children.
 
 It does so by descending through the B<Gnome::Gtk3::Window> hierarchy and enabling the same mask that is has for core events (i.e. the one that C<gdk-window-get-events()> returns).
 
   method set-device-enabled ( N-GObject $device, Bool $enabled )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item Bool $enabled; whether to enable the device
 
 =end pod
 
 method set-device-enabled ( $device is copy, Bool $enabled ) {
   $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
-
-  gtk_widget_set_device_enabled(
-    self._f('GtkWidget'), $device, $enabled
-  );
+  gtk_widget_set_device_enabled( self._f('GtkWidget'), $device, $enabled);
 }
 
 sub gtk_widget_set_device_enabled (
@@ -4811,7 +4694,7 @@ Sets the device event mask (see B<Gnome::Gtk3::EventMask>) for a widget. The eve
 
   method set-device-events ( N-GObject $device, Int $events )
 
-=item N-GObject $device; a B<Gnome::Gtk3::Device>
+=item N-GObject $device; a B<Gnome::Gdk3::Device>
 =item Int $events; event mask with GdkEventMask flag values
 
 =end pod
@@ -4866,10 +4749,7 @@ Sets the event mask (see B<Gnome::Gtk3::EventMask>) for a widget. The event mask
 =end pod
 
 method set-events ( Int $events ) {
-
-  gtk_widget_set_events(
-    self._f('GtkWidget'), $events
-  );
+  gtk_widget_set_events( self._f('GtkWidget'), $events);
 }
 
 sub gtk_widget_set_events (
@@ -4878,7 +4758,7 @@ sub gtk_widget_set_events (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-focus-on-click:
+#TM:1:set-focus-on-click:
 =begin pod
 =head2 set-focus-on-click
 
@@ -4891,10 +4771,7 @@ Sets whether the widget should grab focus when it is clicked with the mouse. Mak
 =end pod
 
 method set-focus-on-click ( Bool $focus_on_click ) {
-
-  gtk_widget_set_focus_on_click(
-    self._f('GtkWidget'), $focus_on_click
-  );
+  gtk_widget_set_focus_on_click( self._f('GtkWidget'), $focus_on_click);
 }
 
 sub gtk_widget_set_focus_on_click (
@@ -4979,7 +4856,7 @@ sub gtk_widget_set_halign (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-has-tooltip:
+#TM:1:set-has-tooltip:
 =begin pod
 =head2 set-has-tooltip
 
@@ -4992,10 +4869,7 @@ Sets the has-tooltip property on I<widget> to I<has-tooltip>. See  I<has-tooltip
 =end pod
 
 method set-has-tooltip ( Bool $has_tooltip ) {
-
-  gtk_widget_set_has_tooltip(
-    self._f('GtkWidget'), $has_tooltip
-  );
+  gtk_widget_set_has_tooltip( self._f('GtkWidget'), $has_tooltip);
 }
 
 sub gtk_widget_set_has_tooltip (
@@ -5110,10 +4984,7 @@ This function should only ever be called in a derived widget's “map” or “u
 =end pod
 
 method set-mapped ( Bool $mapped ) {
-
-  gtk_widget_set_mapped(
-    self._f('GtkWidget'), $mapped
-  );
+  gtk_widget_set_mapped( self._f('GtkWidget'), $mapped);
 }
 
 sub gtk_widget_set_mapped (
@@ -5122,7 +4993,7 @@ sub gtk_widget_set_mapped (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-margin-bottom:
+#TM:1:set-margin-bottom:
 =begin pod
 =head2 set-margin-bottom
 
@@ -5135,10 +5006,7 @@ Sets the bottom margin of I<widget>. See the  I<margin-bottom> property.
 =end pod
 
 method set-margin-bottom ( Int $margin ) {
-
-  gtk_widget_set_margin_bottom(
-    self._f('GtkWidget'), $margin
-  );
+  gtk_widget_set_margin_bottom( self._f('GtkWidget'), $margin);
 }
 
 sub gtk_widget_set_margin_bottom (
@@ -5147,7 +5015,7 @@ sub gtk_widget_set_margin_bottom (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-margin-end:
+#TM:1:set-margin-end:
 =begin pod
 =head2 set-margin-end
 
@@ -5160,10 +5028,7 @@ Sets the end margin of I<widget>. See the  I<margin-end> property.
 =end pod
 
 method set-margin-end ( Int $margin ) {
-
-  gtk_widget_set_margin_end(
-    self._f('GtkWidget'), $margin
-  );
+  gtk_widget_set_margin_end( self._f('GtkWidget'), $margin);
 }
 
 sub gtk_widget_set_margin_end (
@@ -5172,7 +5037,7 @@ sub gtk_widget_set_margin_end (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-margin-start:
+#TM:1:set-margin-start:
 =begin pod
 =head2 set-margin-start
 
@@ -5185,10 +5050,7 @@ Sets the start margin of I<widget>. See the  I<margin-start> property.
 =end pod
 
 method set-margin-start ( Int $margin ) {
-
-  gtk_widget_set_margin_start(
-    self._f('GtkWidget'), $margin
-  );
+  gtk_widget_set_margin_start( self._f('GtkWidget'), $margin);
 }
 
 sub gtk_widget_set_margin_start (
@@ -5210,10 +5072,7 @@ Sets the top margin of I<widget>. See the  I<margin-top> property.
 =end pod
 
 method set-margin-top ( Int $margin ) {
-
-  gtk_widget_set_margin_top(
-    self._f('GtkWidget'), $margin
-  );
+  gtk_widget_set_margin_top( self._f('GtkWidget'), $margin);
 }
 
 sub gtk_widget_set_margin_top (
@@ -5222,7 +5081,7 @@ sub gtk_widget_set_margin_top (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-name:
+#TM:1:set-name:
 =begin pod
 =head2 set-name
 
@@ -5237,10 +5096,7 @@ Note that the CSS syntax has certain special characters to delimit and represent
 =end pod
 
 method set-name ( Str $name ) {
-
-  gtk_widget_set_name(
-    self._f('GtkWidget'), $name
-  );
+  gtk_widget_set_name( self._f('GtkWidget'), $name);
 }
 
 sub gtk_widget_set_name (

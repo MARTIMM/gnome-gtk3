@@ -9,13 +9,16 @@ use Gnome::GObject::Value;
 use Gnome::GObject::Type;
 
 use Gnome::Gdk3::Window;
-#use Gnome::Gdk3::Device;
-#use Gnome::Gdk3::Display;
+use Gnome::Gdk3::Display;
+use Gnome::Gdk3::Device;
 use Gnome::Gdk3::Types;
+
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Window;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -156,6 +159,7 @@ subtest 'Manipulations 2', {
   ok $b.get-hexpand-set, '.get-hexpand-set()';
   $b.set-hexpand-set(False);
   nok $b.get-hexpand-set, '.set-hexpand-set()';
+  lives-ok {$b.compute-expand(GTK_ORIENTATION_VERTICAL);}, '.compute-expand()';
 
   nok $b.get-vexpand, '.get-vexpand()';
   $b.set-vexpand(True);
@@ -186,6 +190,8 @@ subtest 'Manipulations 2', {
   $b.set-tooltip-text('Nooooo don\'t touch that button!!!!!!!');
   is $b.get-tooltip-text, 'Nooooo don\'t touch that button!!!!!!!',
      '.set-tooltip-text() / .get-tooltip-text()';
+  $b.set-has-tooltip(False);
+  nok $b.get-has-tooltip, '.set-has-tooltip() / .get-has-tooltip()';
 
 #  is $b.get-path, N-GtkWidgetPath, 'No widget path defined to this button';
   is GtkSizeRequestMode($b.get-request-mode),
@@ -245,6 +251,49 @@ subtest 'Manipulations 2', {
   $b.set-sensitive(False);
   nok $b.get-sensitive, '.set-sensitive() / .get-sensitive()';
   nok $b.is-sensitive, '.is-sensitive()';
+
+  lives-ok {$b.error-bell;}, '.error-bell()';
+
+  my Gnome::Gtk3::Window $w .= new;
+  $w.set-title('My Button In My Window');
+  $w.container-add($b);
+  $b.set-can-default(True);
+  ok $b.get-can-default, '.set-can-default() / .get-can-default()';
+  lives-ok {$b.grab-default;}, '.grab-default()';
+  ok $b.has-default, '.has-default()';
+
+  $b.set-can-focus(True);
+  ok $b.get-can-focus, '.set-can-focus() / .get-can-focus()';
+
+  $b.set-child-visible(True);
+  ok $b.get-child-visible, '.set-child-visible() / .get-child-visible()';
+
+  lives-ok {diag $b.get-display.get-name;}, '.get-display()';
+
+  $b.set-focus-on-click(True);
+  ok $b.get-focus-on-click, '.set-focus-on-click() / .get-focus-on-click()';
+
+  $b.set-margin-bottom(10);
+  is $b.get-margin-bottom, 10, '.set-margin-bottom() / .get-margin-bottom()';
+
+  $b.set-margin-end(10);
+  is $b.get-margin-end, 10, '.set-margin-end() / .get-margin-end()';
+
+  $b.set-margin-start(10);
+  is $b.get-margin-start, 10, '.set-margin-start() / .get-margin-start()';
+
+  $b.set-margin-top(10);
+  is $b.get-margin-top, 10, '.set-margin-top() / .get-margin-top()';
+
+  $b.set-name('test-button1');
+  is $b.get-name, 'test-button1', '.set-name() / .get-name()';
+  $b.buildable-set-name('other-test-button1');
+  is $b.buildable-get-name, 'other-test-button1',
+    '.buildable-set-name() / .buildable-get-name()';
+
+  $b.destroy;
+  $w.destroyed($b);
+  nok $b.is-valid, '.destroy() / .destroyed()';
 
 #note $b.list-action-prefixes[0];
 }
