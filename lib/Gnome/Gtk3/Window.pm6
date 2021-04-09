@@ -75,7 +75,8 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 
 =head2 Example
 
-  my Gnome::Gtk3::Window $w .= new(:title('My Button In My Window'));
+  my Gnome::Gtk3::Window $w .= new;
+  $w.set-title('My Button In My Window');
   my Gnome::Gtk3::Button $b .= new(:label('The Button'));
   $w.container-add($b);
   $w.show-all;

@@ -79,7 +79,8 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 Example
 -------
 
-    my Gnome::Gtk3::Window $w .= new(:title('My Button In My Window'));
+    my Gnome::Gtk3::Window $w .= new;
+    $w.set-title('My Button In My Window');
     my Gnome::Gtk3::Button $b .= new(:label('The Button'));
     $w.container-add($b);
     $w.show-all;
@@ -255,7 +256,7 @@ You can track the fullscreen state via the "window-state-event" signal on **Gnom
 
     method fullscreen-on-monitor ( N-GObject $screen, Int $monitor )
 
-  * N-GObject $screen; a **Gnome::Gtk3::Screen** to draw to
+  * N-GObject $screen; a **Gnome::Gdk3::Screen** to draw to
 
   * Int $monitor; which monitor to go fullscreen on
 
@@ -505,9 +506,9 @@ Returns: the role of the window if set, or `undefined`. The returned is owned by
 get-screen
 ----------
 
-Returns the **Gnome::Gtk3::Screen** associated with *window*.
+Returns the **Gnome::Gdk3::Screen** associated with *window*.
 
-Returns: a **Gnome::Gtk3::Screen**.
+Returns: a **Gnome::Gdk3::Screen**.
 
     method get-screen ( --> N-GObject )
 
@@ -614,7 +615,7 @@ Returns: `True` if window is urgent
 get-window-type
 ---------------
 
-Gets the type of the window. See **Gnome::Gtk3::WindowType**.
+Gets the type of the window.
 
 Returns: the type of the window
 
@@ -896,7 +897,7 @@ See `set-icon-list()` for more details.
 
     method set-default-icon-list ( N-GList $list )
 
-  * N-GList $list; (element-type GdkPixbuf) (transfer container): a list of **Gnome::Gtk3::Pixbuf**
+  * N-GList $list; a list of native **Gnome::Gdk3::Pixbuf** objects
 
 set-default-icon-name
 ---------------------
@@ -1183,11 +1184,11 @@ If a window already has a unique title, you don’t need to set the role, since 
 set-screen
 ----------
 
-Sets the **Gnome::Gtk3::Screen** where the *window* is displayed; if the window is already mapped, it will be unmapped, and then remapped on the new screen.
+Sets the **Gnome::Gdk3::Screen** where the *window* is displayed; if the window is already mapped, it will be unmapped, and then remapped on the new screen.
 
     method set-screen ( N-GObject $screen )
 
-  * N-GObject $screen; a **Gnome::Gtk3::Screen**.
+  * N-GObject $screen; a **Gnome::Gdk3::Screen**.
 
 set-skip-pager-hint
 -------------------
