@@ -321,6 +321,11 @@ container.
 
 =end pod
 
+method container-add ( $widget is copy ) {
+  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  gtk_container_add( self._f('GtkContainer'), $widget);
+}
+
 sub gtk_container_add ( N-GObject $container, N-GObject $widget )
   is native(&gtk-lib)
   { * }
