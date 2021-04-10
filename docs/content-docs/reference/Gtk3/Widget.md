@@ -283,9 +283,13 @@ Destroys a widget.
 
 When a widget is destroyed all references it holds on other objects will be released:
 
-- if the widget is inside a container, it will be removed from its parent - if the widget is a container, all its children will be destroyed, recursively - if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
+  * if the widget is inside a container, it will be removed from its parent
 
-It's expected that all references held on the widget will also be released; you should connect to the *destroy* signal if you hold a reference to *widget* and you wish to remove it when this function is called. It is not necessary to do so if you are implementing a **Gnome::Gtk3::Container**, as you'll be able to use the **Gnome::Gtk3::ContainerClass**.`remove()` virtual function for that.
+  * if the widget is a container, all its children will be destroyed, recursively
+
+  * if the widget is a top level, it will be removed from the list of top level widgets that GTK+ maintains internally
+
+It's expected that all references held on the widget will also be released; you should connect to the *destroy* signal if you hold a reference to *widget* and you wish to remove it when this function is called.
 
 It's important to notice that `destroy()` will only cause the *widget* to be finalized if no additional references, acquired using `g-object-ref()`, are held on it. In case additional references are in place, the *widget* will be in an "inert" state after calling this function; *widget* will still point to valid memory, allowing you to release the references you hold, but you may not query the widget's own state.
 
@@ -298,11 +302,11 @@ See also: `gtk-container-remove()`
 destroyed
 ---------
 
-This function sets **widget-pointer* to `undefined` if *widget-pointer* != `undefined`. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect `destroyed()` as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to `undefined`. Useful for example to avoid multiple copies of the same dialog.
+This function sets *$widget* to `undefined` if *$widget* != `undefined`. It’s intended to be used as a callback connected to the “destroy” signal of a widget. You connect `destroyed()` as a signal handler, and pass the address of your widget variable as user data. Then when the widget is destroyed, the variable will be set to `undefined`. Useful for example to avoid multiple copies of the same dialog.
 
-    method destroyed ( N-GObject $widget_pointer )
+    method destroyed ( N-GObject $widget )
 
-  * N-GObject $widget_pointer; : address of a variable that contains *widget*
+  * N-GObject $widget; the widget to clear *widget*
 
 device-is-shadowed
 ------------------
@@ -313,7 +317,7 @@ Returns: `True` if there is an ongoing grab on *device* by another **Gnome::Gtk3
 
     method device-is-shadowed ( N-GObject $device --> Bool )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
 draw
 ----
@@ -419,7 +423,11 @@ get-allocation
 
 Retrieves the widget’s allocation.
 
-Note, when implementing a **Gnome::Gtk3::Container**: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls `size-allocate()` with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget. `get-allocation()` returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the `size-allocate()` allocation, however. So a **Gnome::Gtk3::Container** is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by `size-allocate()`, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
+Note, when implementing a **Gnome::Gtk3::Container**: a widget’s allocation will be its “adjusted” allocation, that is, the widget’s parent container typically calls `size-allocate()` with an allocation, and that allocation is then adjusted (to handle margin and alignment for example) before assignment to the widget.
+
+`get-allocation()` returns the adjusted allocation that was actually assigned to the widget. The adjusted allocation is guaranteed to be completely contained within the `size-allocate()` allocation, however.
+
+So a **Gnome::Gtk3::Container** is guaranteed that its children stay inside the assigned bounds, but not that they have exactly the bounds the container assigned. There is no way to get the original allocation assigned by `size-allocate()`, since it isn’t stored; if a container implementation needs that information it will have to track it itself.
 
     method get-allocation ( --> N-GtkAllocation )
 
@@ -428,9 +436,9 @@ Returns a N-GtkAllocation
 get-ancestor
 ------------
 
-Gets the first ancestor of *widget* with type *widget-type*. For example, `get-ancestor (widget, GTK-TYPE-BOX)` gets the first **Gnome::Gtk3::Box** that’s an ancestor of *widget*. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel **Gnome::Gtk3::Window** in the docs for `get-toplevel()`.
+Gets the first ancestor of *widget* with type *$widget-type*. For example, `$widget.get-ancestor(GTK-TYPE-BOX)` gets the first native **Gnome::Gtk3::Box** that’s an ancestor of *widget*. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel **Gnome::Gtk3::Window** in the docs for `get-toplevel()`.
 
-Note that unlike `is-ancestor()`, `get-ancestor()` considers *widget* to be an ancestor of itself.
+Note that unlike `is-ancestor()`, `get-ancestor()` considers this *widget* to be an ancestor of itself.
 
 Returns: the ancestor widget, or `undefined` if not found
 
@@ -509,7 +517,7 @@ Returns: `True` is *device* is enabled for *widget*
 
     method get-device-enabled ( N-GObject $device --> Bool )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
 get-device-events
 -----------------
@@ -520,7 +528,7 @@ Returns: device event mask for *widget*
 
     method get-device-events ( N-GObject $device --> Int )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
 get-direction
 -------------
@@ -534,13 +542,13 @@ Returns: the reading direction for the widget.
 get-display
 -----------
 
-Get the **Gnome::Gtk3::Display** for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
+Get the **Gnome::Gdk3::Display** for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
 
 In general, you should only create display specific resources when a widget has been realized, and you should free those resources when the widget is unrealized.
 
-Returns: the **Gnome::Gtk3::Display** for the toplevel for this widget.
+Returns: the **Gnome::Gdk3::Display** for the toplevel for this widget.
 
-    method get-display ( --> N-GObject )
+    method get-display ( --> Gnome::Gdk3::Display )
 
 get-events
 ----------
@@ -579,21 +587,6 @@ Returns the **cairo-font-options-t** used for Pango rendering. When not set, the
 Returns: the **cairo-font-options-t** or `undefined` if not set
 
     method get-font-options ( --> cairo_font_options_t )
-
-get-frame-clock
----------------
-
-Obtains the frame clock for a widget. The frame clock is a global “ticker” that can be used to drive animations and repaints. The most common reason to get the frame clock is to call `gdk-frame-clock-get-frame-time()`, in order to get a time to use for animating. For example you might record the start of the animation with an initial value from `gdk-frame-clock-get-frame-time()`, and then update the animation by calling `gdk-frame-clock-get-frame-time()` again during each repaint.
-
-`gdk-frame-clock-request-phase()` will result in a new frame on the clock, but won’t necessarily repaint any widgets. To repaint a widget, you have to use `queue-draw()` which invalidates the widget (thus scheduling it to receive a draw on the next frame). `queue-draw()` will also end up requesting a frame on the appropriate frame clock.
-
-A widget’s frame clock will not change while the widget is mapped. Reparenting a widget (which implies a temporary unmap) can change the widget’s frame clock.
-
-Unrealized widgets do not have a frame clock.
-
-Returns: a **Gnome::Gtk3::FrameClock**, or `undefined` if widget is unrealized
-
-    method get-frame-clock ( --> N-GObject )
 
 get-halign
 ----------
@@ -702,9 +695,9 @@ Returns the modifier mask the *widget*’s windowing system backend uses for a p
 
 See `gdk-keymap-get-modifier-mask()`.
 
-Returns: the modifier mask used for *intent*.
+Returns: the modifier mask used for *intent*. The mask bits are GdkModifierType
 
-    method get-modifier-mask ( GdkModifierIntent $intent --> GdkModifierType )
+    method get-modifier-mask ( GdkModifierIntent $intent --> Int )
 
   * GdkModifierIntent $intent; the use case for the modifier mask
 
@@ -767,7 +760,7 @@ Returns the **Gnome::Gtk3::WidgetPath** representing *widget*, if the widget is 
 
 Returns: The **Gnome::Gtk3::WidgetPath** representing *widget*
 
-    method get-path ( --> N-GObject )
+    method get-path ( --> Gnome::Gtk3::WidgetPath )
 
 get-preferred-height
 --------------------
@@ -1662,13 +1655,13 @@ Sets the default reading direction for widgets where the direction has not been 
 set-device-enabled
 ------------------
 
-Enables or disables a **Gnome::Gtk3::Device** to interact with *widget* and all its children.
+Enables or disables a **Gnome::Gdk3::Device** to interact with *widget* and all its children.
 
 It does so by descending through the **Gnome::Gtk3::Window** hierarchy and enabling the same mask that is has for core events (i.e. the one that `gdk-window-get-events()` returns).
 
     method set-device-enabled ( N-GObject $device, Bool $enabled )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
   * Bool $enabled; whether to enable the device
 
@@ -1679,7 +1672,7 @@ Sets the device event mask (see **Gnome::Gtk3::EventMask**) for a widget. The ev
 
     method set-device-events ( N-GObject $device, Int $events )
 
-  * N-GObject $device; a **Gnome::Gtk3::Device**
+  * N-GObject $device; a **Gnome::Gdk3::Device**
 
   * Int $events; event mask with GdkEventMask flag values
 
@@ -1872,28 +1865,6 @@ For child widgets it doesn’t work if any affected widget has a native window, 
     method set-opacity ( Num $opacity )
 
   * Num $opacity; desired opacity, between 0 and 1
-
-set-parent
-----------
-
-This function is useful only when implementing subclasses of **Gnome::Gtk3::Container**. Sets the container as the parent of *widget*, and takes care of some details such as updating the state and style of the child to reflect its new location. The opposite function is `unparent()`.
-
-    method set-parent ( N-GObject $parent )
-
-  * N-GObject $parent; parent container
-
-set-parent-window
------------------
-
-Sets a non default parent window for *widget*.
-
-For **Gnome::Gtk3::Window** classes, setting a *parent-window* effects whether the window is a toplevel window or can be embedded into other widgets.
-
-For **Gnome::Gtk3::Window** classes, this needs to be called before the window is realized.
-
-    method set-parent-window ( N-GObject $parent_window )
-
-  * N-GObject $parent_window; the new parent window.
 
 set-realized
 ------------

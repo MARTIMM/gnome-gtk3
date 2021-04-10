@@ -304,6 +304,7 @@ use Gnome::Gdk3::Screen;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::WidgetPath;
 use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::WidgetPath;
 
 use Gnome::Cairo;
 use Gnome::Cairo::Enums;
@@ -2204,7 +2205,7 @@ sub gtk_widget_get_margin_top (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-modifier-mask:
+#TM:1:get-modifier-mask:
 =begin pod
 =head2 get-modifier-mask
 
@@ -2212,16 +2213,16 @@ Returns the modifier mask the I<widget>’s windowing system backend uses for a 
 
 See C<gdk-keymap-get-modifier-mask()>.
 
-Returns: the modifier mask used for I<intent>.
+Returns: the modifier mask used for I<intent>. The mask bits are GdkModifierType
 
-  method get-modifier-mask ( GdkModifierIntent $intent --> GdkModifierType )
+  method get-modifier-mask ( GdkModifierIntent $intent --> Int )
 
 =item GdkModifierIntent $intent; the use case for the modifier mask
 
 =end pod
 
-method get-modifier-mask ( GdkModifierIntent $intent --> GdkModifierType ) {
-  GdkModifierType(gtk_widget_get_modifier_mask(self._f('GtkWidget'), $intent))
+method get-modifier-mask ( GdkModifierIntent $intent --> Int ) {
+  gtk_widget_get_modifier_mask(self._f('GtkWidget'), $intent)
 }
 
 sub gtk_widget_get_modifier_mask (
@@ -2252,7 +2253,7 @@ sub gtk_widget_get_name (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-no-show-all:
+#TM:1:get-no-show-all:
 =begin pod
 =head2 get-no-show-all
 
@@ -2262,14 +2263,10 @@ Returns: the current value of the “no-show-all” property.
 
   method get-no-show-all ( --> Bool )
 
-
 =end pod
 
 method get-no-show-all ( --> Bool ) {
-
-  gtk_widget_get_no_show_all(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_no_show_all(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_no_show_all (
@@ -2310,14 +2307,10 @@ Returns: the B<PangoContext> for the widget.
 
   method get-pango-context ( --> N-GObject )
 
-
 =end pod
 
 method get-pango-context ( --> N-GObject ) {
-
-  gtk_widget_get_pango_context(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_pango_context(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_pango_context (
@@ -2368,7 +2361,7 @@ sub gtk_widget_get_parent_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-path:
+#TM:1:get-path:
 =begin pod
 =head2 get-path
 
@@ -2376,12 +2369,14 @@ Returns the B<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget is 
 
 Returns: The B<Gnome::Gtk3::WidgetPath> representing I<widget>
 
-  method get-path ( --> N-GObject )
+  method get-path ( --> Gnome::Gtk3::WidgetPath )
 
 =end pod
 
-method get-path ( --> N-GObject ) {
-  gtk_widget_get_path(self._f('GtkWidget'))
+method get-path ( --> Gnome::Gtk3::WidgetPath ) {
+  Gnome::Gtk3::WidgetPath.new(
+    :native-object(gtk_widget_get_path(self._f('GtkWidget')))
+  )
 }
 
 sub gtk_widget_get_path (
@@ -2614,14 +2609,10 @@ Returns: C<True> if I<widget> is realized, C<False> otherwise
 
   method get-realized ( --> Bool )
 
-
 =end pod
 
 method get-realized ( --> Bool ) {
-
-  gtk_widget_get_realized(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_realized(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_realized (
@@ -2630,7 +2621,7 @@ sub gtk_widget_get_realized (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-receives-default:
+#TM:1:get-receives-default:
 =begin pod
 =head2 get-receives-default
 
@@ -2642,14 +2633,10 @@ Returns: C<True> if I<widget> acts as the default widget when focused, C<False> 
 
   method get-receives-default ( --> Bool )
 
-
 =end pod
 
 method get-receives-default ( --> Bool ) {
-
-  gtk_widget_get_receives_default(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_receives_default(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_receives_default (
@@ -2658,7 +2645,7 @@ sub gtk_widget_get_receives_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-request-mode:
+#TM:1:get-request-mode:
 =begin pod
 =head2 get-request-mode
 
@@ -2680,7 +2667,7 @@ sub gtk_widget_get_request_mode (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-scale-factor:
+#TM:1:get-scale-factor:
 =begin pod
 =head2 get-scale-factor
 
@@ -2692,14 +2679,10 @@ Returns: the scale factor for I<widget>
 
   method get-scale-factor ( --> Int )
 
-
 =end pod
 
 method get-scale-factor ( --> Int ) {
-
-  gtk_widget_get_scale_factor(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_scale_factor(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_scale_factor (
@@ -5120,10 +5103,7 @@ This is mostly for use in constructing widget hierarchies with externally contro
 =end pod
 
 method set-no-show-all ( Bool $no_show_all ) {
-
-  gtk_widget_set_no_show_all(
-    self._f('GtkWidget'), $no_show_all
-  );
+  gtk_widget_set_no_show_all( self._f('GtkWidget'), $no_show_all);
 }
 
 sub gtk_widget_set_no_show_all (
@@ -5157,6 +5137,7 @@ sub gtk_widget_set_opacity (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:set-parent:
 =begin pod
@@ -5172,17 +5153,15 @@ This function is useful only when implementing subclasses of B<Gnome::Gtk3::Cont
 
 method set-parent ( $parent is copy ) {
   $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
-
-  gtk_widget_set_parent(
-    self._f('GtkWidget'), $parent
-  );
+  gtk_widget_set_parent( self._f('GtkWidget'), $parent);
 }
 
 sub gtk_widget_set_parent (
   N-GObject $widget, N-GObject $parent
 ) is native(&gtk-lib)
   { * }
-
+}}
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:set-parent-window:
 =begin pod
@@ -5212,9 +5191,10 @@ sub gtk_widget_set_parent_window (
   N-GObject $widget, N-GObject $parent_window
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:set-realized:
+#TM:1:set-realized:
 =begin pod
 =head2 set-realized
 
@@ -5229,10 +5209,7 @@ This function should only ever be called in a derived widget's “realize” or 
 =end pod
 
 method set-realized ( Bool $realized ) {
-
-  gtk_widget_set_realized(
-    self._f('GtkWidget'), $realized
-  );
+  gtk_widget_set_realized( self._f('GtkWidget'), $realized);
 }
 
 sub gtk_widget_set_realized (
@@ -5241,7 +5218,7 @@ sub gtk_widget_set_realized (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-receives-default:
+#TM:1:set-receives-default:
 =begin pod
 =head2 set-receives-default
 
@@ -5256,10 +5233,7 @@ See C<grab-default()> for details about the meaning of “default”.
 =end pod
 
 method set-receives-default ( Bool $receives_default ) {
-
-  gtk_widget_set_receives_default(
-    self._f('GtkWidget'), $receives_default
-  );
+  gtk_widget_set_receives_default( self._f('GtkWidget'), $receives_default);
 }
 
 sub gtk_widget_set_receives_default (
@@ -5268,7 +5242,7 @@ sub gtk_widget_set_receives_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-redraw-on-allocate:
+#TM:1:set-redraw-on-allocate:
 =begin pod
 =head2 set-redraw-on-allocate
 
@@ -5281,10 +5255,7 @@ Sets whether the entire widget is queued for drawing when its size allocation ch
 =end pod
 
 method set-redraw-on-allocate ( Bool $redraw_on_allocate ) {
-
-  gtk_widget_set_redraw_on_allocate(
-    self._f('GtkWidget'), $redraw_on_allocate
-  );
+  gtk_widget_set_redraw_on_allocate( self._f('GtkWidget'), $redraw_on_allocate);
 }
 
 sub gtk_widget_set_redraw_on_allocate (
