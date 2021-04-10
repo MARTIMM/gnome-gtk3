@@ -1,5 +1,12 @@
 [toc]
 
+# Nice to know (Lizmat's blog)
+
+Robert Alen Zimmerman: Bob Dylan
+Farrokh Bulsara: Freddy Mercury
+Stefani Germanotta: Lady Gaga
+
+
 # Command line
 Recognized options by GTK
 See https://www.systutorials.com/docs/linux/man/7-gtk-options/
