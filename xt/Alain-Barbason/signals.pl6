@@ -35,7 +35,7 @@ class AppSignalHandlers {
 
 my Gnome::Gtk3::Window $top-window .= new(:title('Message dialog'));
 my Gnome::Gtk3::Button $button .= new(:label('Show Dialog'));
-$top-window.gtk-container-add($button);
+$top-window.add($button);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new(:$top-window);

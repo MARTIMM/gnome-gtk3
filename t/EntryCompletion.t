@@ -186,7 +186,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::EntryCompletion $ec .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $ec.register-signal( $sh, 'method', 'signal');

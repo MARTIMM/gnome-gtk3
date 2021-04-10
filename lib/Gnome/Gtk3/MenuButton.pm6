@@ -119,7 +119,7 @@ Setting up a simple popup menu on a button placed on an ApplicationWindow $windo
 
   # make menu button and place in window
   my Gnome::Gtk3::MenuButton $menu-button .= new;
-  $window.container-add($menu-button);
+  $window.add($menu-button);
   $menu-button.set-direction(GTK_ARROW_RIGHT);
   $menu-button.set-valign(GTK_ALIGN_CENTER);
 

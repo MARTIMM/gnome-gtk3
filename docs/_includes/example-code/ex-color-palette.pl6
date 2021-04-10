@@ -32,7 +32,7 @@ $top-window.set-title('Color Chooser Widget Demo');
 $top-window.set-border-width(20);
 
 my Gnome::Gtk3::Grid $grid .= new;
-$top-window.gtk-container-add($grid);
+$top-window.add($grid);
 
 my Gnome::Gtk3::ColorChooserWidget $ccw .= new;
 $grid.gtk-grid-attach( $ccw, 0, 0, 4, 1);

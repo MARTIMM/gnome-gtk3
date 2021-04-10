@@ -32,7 +32,7 @@ $w.set-title('Test Popup');
 my Gnome::Gtk3::Popover $p;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  #$w.container-add($p);
+  #$w.add($p);
   $p .= new(:relative-to($w));
   isa-ok $p, Gnome::Gtk3::Popover, '.new(:relative-to)';
 }

@@ -38,7 +38,7 @@ subtest 'Manipulations', {
 
   my Gnome::Gtk3::Window $w .= new;
   $w.set-name('top-window');
-  $w.container-add($mb);
+  $w.add($mb);
 
   $mb.set-direction(GTK_ARROW_RIGHT);
   is $mb.get-direction, GTK_ARROW_RIGHT, '.set-direction() / .get-direction()';
@@ -216,7 +216,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::MenuButton $mb .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $mb.register-signal( $sh, 'method', 'signal');

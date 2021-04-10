@@ -140,7 +140,7 @@ note 'app activated';
     $!grid.grid-attach( $b1, 0, 0, 1, 1);
     $b1.register-signal( self, 'exit-program', 'clicked');
 
-    $!app-window.container-add($!grid);
+    $!app-window.add($!grid);
     $!app-window.show-all;
 
     note "\nInfo:\n  Registered: ", self.get-is-registered;

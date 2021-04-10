@@ -19,6 +19,7 @@ use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
+use Gnome::Gtk3::WidgetPath;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -149,7 +150,15 @@ subtest 'Manipulations 2', {
   ok $b.get-no-show-all, '.set-no-show-all() / .get-no-show-all()';
 
   # not drawable because not visible/mapped
-  nok $b.get-realized, '.get-realized()';
+  $b.set-realized(True);
+  ok $b.get-realized, '.get-realized()';
+
+  # set back to False otherwise next problem occurs
+  # Gtk:ERROR:gtkwidget.c:5871:gtk_widget_get_frame_clock: assertion failed: (window != NULL)
+  # Bail out! Gtk:ERROR:gtkwidget.c:5871:gtk_widget_get_frame_clock: assertion failed: (window != NULL)
+  # Abort (core dumped)
+  $b.set-realized(False);
+
   nok $b.get-mapped, '.get-mapped()';
   nok $b.is-drawable, '.is-drawable()';
 
@@ -256,7 +265,7 @@ subtest 'Manipulations 2', {
 
   my Gnome::Gtk3::Window $w .= new;
   $w.set-title('My Button In My Window');
-  $w.container-add($b);
+  $w.add($b);
   $b.set-can-default(True);
   ok $b.get-can-default, '.set-can-default() / .get-can-default()';
   lives-ok {$b.grab-default;}, '.grab-default()';
@@ -268,7 +277,7 @@ subtest 'Manipulations 2', {
   $b.set-child-visible(True);
   ok $b.get-child-visible, '.set-child-visible() / .get-child-visible()';
 
-  lives-ok {diag $b.get-display.get-name;}, '.get-display()';
+  lives-ok {diag 'display name: ' ~ $b.get-display.get-name;}, '.get-display()';
 
   $b.set-focus-on-click(True);
   ok $b.get-focus-on-click, '.set-focus-on-click() / .get-focus-on-click()';
@@ -290,6 +299,26 @@ subtest 'Manipulations 2', {
   $b.buildable-set-name('other-test-button1');
   is $b.buildable-get-name, 'other-test-button1',
     '.buildable-set-name() / .buildable-get-name()';
+
+  lives-ok {
+      diag 'modifier type mask: ' ~ $b.get-modifier-mask(
+        GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR
+      ).base(2);
+    }, '.get-modifier-mask()';
+
+  lives-ok { diag 'widget-path: ' ~ $b.get-path.to-string; }
+
+  $b.set-receives-default(True);
+  ok $b.get-receives-default,
+    '.set-receives-default() / .get-receives-default()';
+
+  lives-ok { diag 'request mode: ' ~ $b.get-request-mode; },
+    '.get-request-mode()';
+
+  lives-ok { diag 'scale factor: ' ~ $b.get-scale-factor; },
+    '.get-scale-factor()';
+
+  lives-ok { $b.set-redraw-on-allocate(True); }, '.set-redraw-on-allocate()';
 
   $b.destroy;
   $w.destroyed($b);
@@ -320,6 +349,7 @@ subtest 'Properties ...', {
   #my Gnome::Gtk3::Widget $w .= new;
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
   $b.set-no-show-all(True);
+  ok $b.get-no-show-all, '.set-no-show-all() / .get-no-show-all()';
   $b.set-name('test-button');
 
   sub test-property (
@@ -506,7 +536,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::Widget $w .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $w.register-signal( $sh, 'method', 'signal');

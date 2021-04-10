@@ -24,7 +24,7 @@ class BW {
     note 'e: ', $e.is-valid;
     my Gnome::Gtk3::Button $b .= new(:label<Stop>);
     $b.register-signal( self, 'stop-app', 'clicked');
-    $main-window.container-add($b);
+    $main-window.add($b);
 
     sleep 1;
     note 'show main';
@@ -54,7 +54,7 @@ $splash-window.set-resizable(False);
 $splash-window.set-position(GTK_WIN_POS_CENTER);
 
 my Gnome::Gtk3::Grid $g .= new;
-$splash-window.container-add($g);
+$splash-window.add($g);
 $g.set-border-width(80);
 
 my Gnome::Gtk3::Label $l .= new(

@@ -43,7 +43,7 @@ subtest 'Manipulations', {
   $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
   # Add the grid to the ListBox
-  $lb.gtk-container-add($grid);
+  $lb.add($grid);
 
   # Get a list of widgets. There is only one row and is a ListBoxRow. This
   # widget is automatically inserted when the grid was added to the ListBox.

@@ -36,7 +36,7 @@ submethod BUILD ( ) {
 
   my Gnome::Gtk3::Window $w .= new;
   my Gnome::Gtk3::Grid $g .= new;
-  $w.container-add($g);
+  $w.add($g);
   $w.container-set-border-width(10);
   $w.window-set-default-size( 270, 300);
   $w.set-title('Todo Viewer');

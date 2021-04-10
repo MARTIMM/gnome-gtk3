@@ -37,7 +37,7 @@ $w.set-border-width(10);
 $w.set-default-size( 270, 250);
 
 my Gnome::Gtk3::Grid $g .= new;
-$w.gtk-container-add($g);
+$w.add($g);
 
 
 my Gnome::Gtk3::TreeStore $ts .= new(:field-types( G_TYPE_INT, G_TYPE_STRING));

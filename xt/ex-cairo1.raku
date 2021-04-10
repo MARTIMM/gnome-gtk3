@@ -42,10 +42,10 @@ $w.set-size-request( 300, 300);
 $w.register-signal( X.new, 'exit', 'destroy');
 
 my Gnome::Gtk3::Frame $f .= new(:label('My Drawing'));
-$w.gtk-container-add($f);
+$w.add($f);
 
 my Gnome::Gtk3::Image $da .= new;
-$f.gtk-container-add($da);
+$f.add($da);
 $da.register-signal( X.new, 'drawit', 'draw');
 
 

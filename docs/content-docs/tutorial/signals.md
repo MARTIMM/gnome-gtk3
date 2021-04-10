@@ -28,7 +28,7 @@ class Gui::TopWindow {
 my Gui::TopWindow $w .= new;
 
 my Gnome::Gtk3::Grid $grid .= new;
-$w.top-window.container-add($grid);
+$w.top-window.add($grid);
 …
 ```
 ## Declaration of the Registration Method

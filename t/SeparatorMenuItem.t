@@ -137,7 +137,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::SeparatorMenuItem $smi .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $smi.register-signal( $sh, 'method', 'signal');

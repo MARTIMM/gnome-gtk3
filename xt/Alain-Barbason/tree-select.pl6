@@ -47,7 +47,7 @@ my Gnome::Gtk3::Window $top-window .= new(:title('A window with a menu'));
 $top-window.set-size-request( 300, 300);
 
 my Gnome::Gtk3::Grid $grid .= new;
-$top-window.gtk-container-add($grid);
+$top-window.add($grid);
 
 my Gnome::Gtk3::Menu $menu = make-menubar-menu( $ash);
 my Gnome::Gtk3::MenuItem $root-menu .= new(:label('File'));

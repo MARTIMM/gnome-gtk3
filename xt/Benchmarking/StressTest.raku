@@ -44,12 +44,12 @@ for ^$count {
   my Gnome::Gtk3::Entry $entry;
   my Gnome::Gtk3::Button $button;
 
-  $win.container-add($sw);
+  $win.add($sw);
 #  $win.register-signal( X.new, 'window-quit', 'destroy');
   $win.set-size-request( 190, 250);
 
   my Gnome::Gtk3::Grid $grid .= new;
-  $sw.container-add($grid);
+  $sw.add($grid);
 
   for ^$widgets -> $row {
     $grid.grid-attach( $entry .= new, 0, $row, 1, 1);

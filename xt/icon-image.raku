@@ -12,7 +12,7 @@ my Gnome::Gtk3::Window $w .= new;
 $w.set-title('icon-image');
 
 my Gnome::Gtk3::Grid $g .= new;
-$w.container-add($g);
+$w.add($g);
 
 my Int $row = 0;
 my Int $col = 0;

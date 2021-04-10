@@ -73,7 +73,7 @@ Create a group with two radio buttons
 
     # Create a grid and add it to the window
     my Gnome::Gtk3::Grid $grid .= new;
-    $top-window.gtk-container-add($grid);
+    $top-window.add($grid);
 
     # Creat the radio buttons
     my Gnome::Gtk3::RadioButton $rb1 .= new(:label('Radio One'));

@@ -21,7 +21,7 @@ $top-window.gtk-window-set-title('With Button');
 my Gnome::Gtk3::Button $button .= new(
   :label('Exit Our Very Lovely Program')
 );
-$top-window.gtk-container-add($button);
+$top-window.add($button);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;

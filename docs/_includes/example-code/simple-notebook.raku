@@ -29,7 +29,7 @@ $top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Add two tabs to create Notebook
 my Gnome::Gtk3::Notebook $nb .= new();
-$top-window.gtk-container-add($nb);
+$top-window.add($nb);
 my Gnome::Gtk3::Label $tab1-content .= new(:text("It's the first tab"));
 my Gnome::Gtk3::Label $tab1-label   .= new(:text("Tab 1"));
 $nb.append-page($tab1-content,$tab1-label);

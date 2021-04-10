@@ -31,7 +31,7 @@ subtest 'Manipulations', {
     :orientation(GTK_ORIENTATION_HORIZONTAL),
     :min(10e0), :max(100e0), :step(5e-1)
   );
-  $w.gtk-container-add($s);
+  $w.add($s);
   $w.show-all;
 
 #`{{

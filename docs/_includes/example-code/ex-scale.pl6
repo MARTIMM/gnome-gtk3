@@ -87,7 +87,7 @@ $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
 my Gnome::Gtk3::Grid $grid .= new;
-$top-window.gtk-container-add($grid);
+$top-window.add($grid);
 
 # Create the other widgets and add them to the grid
 my Gnome::Gtk3::Button $inc-button .= new(:label("+"));

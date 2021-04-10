@@ -38,7 +38,7 @@ $window.set-size-request( 600, 400);
 $window.register-signal( $hc, 'exit', 'destroy');
 
 my Gnome::Gtk3::Grid $grid .= new;
-$window.container-add($grid);
+$window.add($grid);
 $grid.set-border-width(20);
 
 # make two menu buttons and place in the grid

@@ -176,7 +176,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::Actionable $a .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $a.register-signal( $sh, 'method', 'signal');

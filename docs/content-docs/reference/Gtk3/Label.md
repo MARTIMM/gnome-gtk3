@@ -51,7 +51,7 @@ Mnemonics automatically activate any activatable widget the label is inside, suc
     # Pressing Alt+H will activate this button
     my Gnome::Gtk3::Button $b .= new;
     my Gnome::Gtk3::Label $l .= new(:mnemonic<_Hello>);
-    $b.gtk-container-add($l);
+    $b.add($l);
 
 There’s a convenience function to create buttons with a mnemonic label already inside:
 

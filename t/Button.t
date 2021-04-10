@@ -71,7 +71,7 @@ subtest 'Button as container', {
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));
   my Gnome::Gtk3::Button $button2 .= new;
-  $button2.gtk-container-add($label);
+  $button2.add($label);
 
   $l .= new(:native-object($button2.get-child));
   is $l.get-text, 'pqr', 'text label from button 2';
@@ -131,7 +131,7 @@ subtest 'Button connect and emit signal', {
 
   # prevent errors from gnome gtk
   my Gnome::Gtk3::Window $w .= new;
-  $w.container-add($b);
+  $w.add($b);
   $w.show-all;
 
   my Array $data = [];

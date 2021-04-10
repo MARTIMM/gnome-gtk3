@@ -55,7 +55,7 @@ Create a ListBox with one row. This row is a grid holding a CheckBox and Label.
     $grid.gtk-grid-attach( $label, 1, 0, 1, 1);
 
     # Add the Grid to the ListBox
-    $lb.gtk-container-add($grid);
+    $lb.add($grid);
 
 To check its values one can register signals on each important widget (e.g. $check in this case) or read the listbox entries.
 

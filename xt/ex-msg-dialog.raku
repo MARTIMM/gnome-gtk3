@@ -57,7 +57,7 @@ my Gnome::Gtk3::Window $top-window .= new(:title('Message dialog'));
 #$top-window.set-position(GTK_WIN_POS_MOUSE);
 
 my Gnome::Gtk3::Button $button .= new(:label('Show Dialog'));
-$top-window.gtk-container-add($button);
+$top-window.add($button);
 
 #$w.set-interactive-debugging(1);
 

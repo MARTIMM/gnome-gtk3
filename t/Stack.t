@@ -29,7 +29,7 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   $w .= new;
-  $w.container-add($s);
+  $w.add($s);
 
   my Gnome::Gtk3::Entry $entry .= new;
   $entry.set-text('abc');

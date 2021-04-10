@@ -194,7 +194,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::SpinButton $sb .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $sb.register-signal( $sh, 'method', 'signal');

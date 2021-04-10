@@ -27,7 +27,7 @@ my Gnome::Gtk3::Window $w .= new;
 $w.set-title('inheriting and vertical labels example');
 
 my Gnome::Gtk3::Grid $grid .= new;
-$w.container-add($grid);
+$w.add($grid);
 
 my Int $col = 1;
 for ('success tests', 'failed tests', 'skipped tests', 'total') -> $hdr {

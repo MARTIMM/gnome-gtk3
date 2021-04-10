@@ -28,9 +28,9 @@ $top-window.set-title('With 2 Buttons');
 
 # Create buttons
 my Gnome::Gtk3::Button $button1 .= new(:label('Exit Our Very Lovely Program'));
-$top-window.gtk-container-add($button1);
+$top-window.add($button1);
 my Gnome::Gtk3::Button $button2 .= new(:label('Exit too with button two'));
-$top-window.gtk-container-add($button2);
+$top-window.add($button2);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;

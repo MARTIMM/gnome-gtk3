@@ -213,7 +213,7 @@ subtest 'Signals ...', {
 #  my Gnome::Gtk3::AboutDialog $a .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $a.register-signal( $sh, 'activate', 'activate-link');

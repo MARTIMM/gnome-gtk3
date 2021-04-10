@@ -175,7 +175,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::RadioMenuItem $rmi .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $rmi.register-signal( $sh, 'method', 'signal');

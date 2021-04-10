@@ -77,7 +77,7 @@ my Gnome::Gtk3::Window $window .= new;
 $window.set-title('window');
 
 my Gnome::Gtk3::Grid $grid .= new;
-$window.container-add($grid);
+$window.add($grid);
 
 my Gnome::Gtk3::Scale $scale .= new;
 my X $x .= new( :$scale, :step(103e-3));

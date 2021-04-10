@@ -200,7 +200,7 @@ subtest 'Signals ...', {
   #my Gnome::Gtk3::ColorChooser $cc .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $ccd.register-signal( $sh, 'clr-act', 'color-activated');

@@ -174,7 +174,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::RecentChooserDialog $rcd .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $rcd.register-signal( $sh, 'method', 'signal');

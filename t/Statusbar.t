@@ -150,7 +150,7 @@ subtest 'Signals ...', {
   my Gnome::Gtk3::Statusbar $sb .= new;
 
   #my Gnome::Gtk3::Window $w .= new;
-  #$w.container-add($m);
+  #$w.add($m);
 
   my Int $cid = $sb.get-context-id('network messages');
   my Str $msg = 'zou je dat wel doen?';

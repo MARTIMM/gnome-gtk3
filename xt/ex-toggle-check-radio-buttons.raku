@@ -32,7 +32,7 @@ $top-window.set-border-width(20);
 
 # Create a grid and add it to the window
 my Gnome::Gtk3::Grid $grid .= new;
-$top-window.gtk-container-add($grid);
+$top-window.add($grid);
 
 # Create toggle and check buttons
 my Gnome::Gtk3::ToggleButton $tb1 .= new(:label('Hi, i\’m a toggle button.'));

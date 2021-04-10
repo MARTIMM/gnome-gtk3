@@ -39,7 +39,7 @@ subtest 'Inherit CellRenderer', {
 
 #  $w .= new;
   $b .= new(:label<Start>);
-#  $w.gtk-container-add($b);
+#  $w.add($b);
 #  $w.show-all;
 
   ok 1, ".get-preferred-width(): " ~ $crt.get-preferred-width($b).join(', ');

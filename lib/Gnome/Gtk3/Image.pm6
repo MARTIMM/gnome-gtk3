@@ -97,7 +97,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 
     my Gnome::Gtk3::Image $image .= new(:filename($image-file));
     my Gnome::Gtk3::EventBox $eb .= new;
-    $eb.gtk-container-add($image);
+    $eb.add($image);
     $eb.register-signal( self, button-press-handler, 'button_press_event');
 
     $image;

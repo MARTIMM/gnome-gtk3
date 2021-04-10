@@ -146,7 +146,7 @@ given my Gnome::Gtk3::Window $w .= new(:title('List store example')) {
   .set-keep-above(True);
   .set-border-width(10);
 #  .set-default-size( 270, 250);
-  .container-add($g);
+  .add($g);
   .register-signal( $x, 'exit-gui', 'destroy');
   .show-all;
 }

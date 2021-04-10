@@ -67,7 +67,7 @@ subtest 'Signals ...', {
   }
 
   my Gnome::Gtk3::Window $w .= new;
-  $w.gtk-container-add($s);
+  $w.add($s);
   $w.show-all;
 
   my X $x .= new;

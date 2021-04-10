@@ -50,7 +50,7 @@ $grid.grid-attach( $button, 0, 1, 20, 1);
 $button.register-signal( $x, 'pick-a-box', 'clicked');
 
 given $window {
-  .container-add($grid);
+  .add($grid);
   .set-title('event');
   .set_size_request( 200, 70);
   .register-signal( $x, 'exit-app', 'destroy');

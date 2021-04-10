@@ -40,7 +40,7 @@ This example shows how to get and show some information from a widget path.
     $w.set-name('top-level-window');
 
     my Gnome::Gtk3::Grid $g .= new();
-    $w.container-add($g);
+    $w.add($g);
 
     my Gnome::Gtk3::Button $b1 .= new(:label<Start>);
     $g.grid-attach( $b1, 0, 0, 1, 1);
