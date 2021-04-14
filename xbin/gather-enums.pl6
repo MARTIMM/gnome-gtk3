@@ -1,3 +1,5 @@
+#!/usr/bin/env -S raku -I lib
+
 use v6;
 
 my @dir-roots = <
