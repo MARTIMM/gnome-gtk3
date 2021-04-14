@@ -1,4 +1,4 @@
-#!/usr/bin/env raku
+#!/usr/bin/env -S raku -I lib
 
 use v6;
 
