@@ -25,6 +25,9 @@
   - title: "Types"
     type: standalone
     url: '/content-docs/reference/Gdk3/Types.html'
+  - title: "Visual"
+    type: object
+    url: '/content-docs/reference/Gdk3/Visual.html'
   - title: "Window"
     type: object
     url: '/content-docs/reference/Gdk3/Window.html'
