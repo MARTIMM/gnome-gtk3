@@ -159,6 +159,7 @@ GdkModifierIntent
 GdkStatus
 GdkGrabStatus
 GdkGrabOwnership
+GdkEventMask
 GdkGLError
 GdkWindowTypeHint
 GdkAxisUse
@@ -166,6 +167,7 @@ GdkAxisFlags
 GdkByteOrder
 GdkModifierType
 GdkWindowTypeHint
+GdkVisualType
 GdkFilterReturn
 GdkEventType
 GdkVisibilityState
@@ -253,7 +255,6 @@ GNetworkConnectivity
 GResourceLookupFlags
 GOptionFlags
 GOptionArg
-GOptionError
 GVariantClass
 PangoAlignment
 PangoWrapMode
