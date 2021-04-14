@@ -7,9 +7,23 @@ layout: sidebar
 # Release notes
 
 #### 2021-04 0.:
-* improve **Gnome::Gtk3::Widget** docs and tests. Changes are
-  * `.get-display()` returns a **Gnome::Gdk3::Display** raku object.
-  * `.get-path()` returns a **Gnome::Gtk3::WidgetPath**.
+* Improve **Gnome::Gtk3::Widget** docs and tests. Changes are
+  * `.get-display(… --> Gnome::Gdk3::Display)`.
+  * `.get-path(… --> Gnome::Gtk3::WidgetPath)`.
+* Improved **Gnome::Gdk3::Screen** because of some bugfix. I am experimenting with an extra method when originally a native object was returned but the new method now returns a Raku object. To support the older method I have added methods like `.xyz-no( … --> N-GObject)` next to `.xyz( … --> Gnome::Gxyz::Xyz)`. Changes are;
+  * `.get-display ( --> Gnome::Gdk3::Display )`.
+  * `.get-rgba-visual ( --> Gnome::Gdk3::Visual )`.
+  * `.get-root-window ( --> Gnome::Gdk3::Window )`.
+  * `.get-system-visual ( --> Gnome::Gdk3::Visual )`.
+
+  With the above remark there is e.g. `.get-display-no( --> N-GObject )` too.
+* Added  **Gnome::Gdk3::Visual** to support a method in **Gnome::Gdk3::Screen**
+* New experiment which I did already before the rather difficult way. Suppose I've a method with a `Num` typed argument `$x`. I used to get the variable in untyped and then converted it using `$x.Num`. This helps the user to provide the number as `0.4`, `4e-1`, `⅖` and `'0.4'`. After so many years it finally  dawned to me that writing the argument type as `Num()` just does that. I have seen it in numerous examples but didn't knew the meaning of it.
+* Another experiment is to use `require ::($type)` a bit more. It solves a few problems I have been facing;
+  * Circular dependencies. This happens when one type can produce another type while that second type can in turn produce the first one. This happens for example between classes **Gnome::Gdk3::Screen** and **Gnome::Gdk3::Visual**
+  * Many methods are not always needed and a module needed to create an object would be loaded unnecessarely. The call will postpone the loading until needed.
+
+  With all this, there is still a Rakudo bug issue [#3075](https://github.com/rakudo/rakudo/issues/3075) unsolved. It states that sometimes the loading of symbols while using `require` goes wrong sometimes. Related issues are [#3722](https://github.com/rakudo/rakudo/issues/3722). So, when you run into such a problem, you can then use the `xyz-no( … --> N-GObject)` type of routine which will not use the `require` call and you can create the object using `my Gnome::Xyz::Abc $abc .= new(:native-object(xyz-no(…))`
 
 #### 2021-04-05 0.38.0:
 * Add role **Gnome::Gtk3::CellLayout**. Added this role to **Gnome::Gtk3::ComboBox**, **Gnome::Gtk3::IconView** and, **Gnome::Gtk3::TreeViewColumn**. TreeViewColumn had problems in that there where methods defined which were also made available in CellLayout. Therefore I have removed those from TreeViewColumn. There is a change however in some of those methods.
