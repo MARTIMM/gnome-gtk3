@@ -292,6 +292,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 use Gnome::GObject::InitiallyUnowned;
+use Gnome::GObject::Type;
 
 use Gnome::Glib::List;
 
@@ -300,9 +301,9 @@ use Gnome::Gdk3::Display;
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Events;
 use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::Visual;
 
 use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::WidgetPath;
 use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::WidgetPath;
 
@@ -1117,6 +1118,7 @@ sub gtk_widget_compute_expand (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:create-pango-context:
 =begin pod
@@ -1164,6 +1166,7 @@ sub gtk_widget_create_pango_layout (
   N-GObject $widget, gchar-ptr $text --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:destroy:
@@ -1381,12 +1384,13 @@ sub gtk_widget_get_accessible (
   { * }
 }}
 
+#`{{ ActionGroup is deprecated
 #-------------------------------------------------------------------------------
-#TM:0:get-action-group:
+# TM:0:get-action-group:
 =begin pod
 =head2 get-action-group
 
-Retrieves the B<Gnome::Gtk3::ActionGroup> that was registered using I<prefix>. The resulting B<Gnome::Gtk3::ActionGroup> may have been registered to I<widget> or any B<Gnome::Gtk3::Widget> in its ancestry.
+Retrieves the B<Gnome::Gtk3::ActionGroup> that was registered using I<$prefix>. The resulting B<Gnome::Gtk3::ActionGroup> may have been registered to I<widget> or any B<Gnome::Gtk3::Widget> in its ancestry.
 
 If no action group was found matching I<prefix>, then C<undefined> is returned.
 
@@ -1406,6 +1410,7 @@ sub gtk_widget_get_action_group (
   N-GObject $widget, gchar-ptr $prefix --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-allocated-baseline:
@@ -1558,22 +1563,80 @@ Note that unlike C<is-ancestor()>, C<get-ancestor()> considers this I<widget> to
 
 Returns: the ancestor widget, or C<undefined> if not found
 
-  method get-ancestor ( N-GObject $widget_type --> N-GObject )
+  method get-ancestor ( GType $widget-type --> Gnome::GObject::Object )
+  method get-ancestor ( Str $gtk-widget-type-name --> Gnome::GObject::Object )
+  method get-ancestor ( Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object )
+  method get-ancestor-no ( GType $widget-type --> N-GObject )
 
-=item N-GObject $widget_type; ancestor type
+=item N-GObject $widget-type; ancestor type. One can use C<$widget.get-class-gtype> to get the GType of an object.
+=item Str $gtk-widget-type-name; an ancester object name of how Gtk names these objects. Examples are C<GtkWidget> and C<GtkDialog>.
+=item Gnome::Gtk3::Widget $widget; a raku widget.
+
+The return value B<Gnome::GObject::Object> means any child raku object. N-GObject is the type of the native object.
+
+=head3 Example
+
+  class WGrid {
+    submethod BUILD ( ) {
+      my Gnome::Gtk3::Button $b .= new(:label<Start>);
+      $b.register-signal( self, 'button-action', 'clicked');
+
+      my Gnome::Gtk3::Grid $g .= new;
+      $g.attach( $b, 0, 0, 1, 1);
+
+      my Gnome::Gtk3::Window $w .= new;
+      $w.set-title('My Button In My Window');
+      $w.add($g);
+      $w.show-all();
+    }
+
+    method button-action ( :_widget($button) ) {
+      my Gnome::Gtk3::Window $window = $button.get-ancestor('GtkWindow');
+      …
+    }
+  }
+
+  my WGrid $wgrid .= new;
+  Gnome::Gtk3::Main.new.main;
 
 =end pod
 
-method get-ancestor ( $widget_type is copy --> N-GObject ) {
-  $widget_type .= get-native-object-no-reffing unless $widget_type ~~ N-GObject;
-
-  gtk_widget_get_ancestor(
-    self._f('GtkWidget'), $widget_type
+proto method get-ancestor (|){*}
+multi method get-ancestor ( Int $widget-type --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    'Gtk', 'Gtk3::'
   )
 }
 
+multi method get-ancestor (
+  Str $gtk-widget-type-name --> Gnome::GObject::Object
+) {
+  my GType $widget-type = Gnome::GObject::Type.new().g_type_from_name(
+    $gtk-widget-type-name
+  );
+  self._wrap-native-type-from-no(
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    'Gtk', 'Gtk3::'
+  )
+}
+
+multi method get-ancestor (
+  Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+) {
+  my GType $widget-type = $widget.get-class-gtype;
+  self._wrap-native-type-from-no(
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    'Gtk', 'Gtk3::'
+  )
+}
+
+method get-ancestor-no ( Int $widget-type --> N-GObject ) {
+  gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
+}
+
 sub gtk_widget_get_ancestor (
-  N-GObject $widget, N-GObject $widget_type --> N-GObject
+  N-GObject $widget, GType $widget_type --> N-GObject
 ) is native(&gtk-lib)
   { * }
 
@@ -1700,7 +1763,7 @@ sub gtk_widget_get_clip (
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-clipboard:
+# TM:0:get-clipboard:
 =begin pod
 =head2 get-clipboard
 
@@ -1832,6 +1895,7 @@ In general, you should only create display specific resources when a widget has 
 Returns: the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
   method get-display ( --> Gnome::Gdk3::Display )
+  method get-display-no ( --> N-GObject )
 
 =end pod
 
@@ -1839,6 +1903,10 @@ method get-display ( --> Gnome::Gdk3::Display ) {
   Gnome::Gdk3::Display.new(
     :native-object(gtk_widget_get_display(self._f('GtkWidget')))
   )
+}
+
+method get-display-no ( --> N-GObject ) {
+  gtk_widget_get_display(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_display (
@@ -1892,6 +1960,7 @@ sub gtk_widget_get_focus_on_click (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-font-map:
 =begin pod
@@ -1906,16 +1975,14 @@ Returns: A B<PangoFontMap>, or C<undefined>
 =end pod
 
 method get-font-map ( --> N-GObject ) {
-
-  gtk_widget_get_font_map(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_font_map(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_font_map (
   N-GObject $widget --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:get-font-options:
@@ -1931,9 +1998,7 @@ Returns: the B<cairo-font-options-t> or C<undefined> if not set
 =end pod
 
 method get-font-options ( --> cairo_font_options_t ) {
-  gtk_widget_get_font_options(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_font_options(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_font_options (
@@ -1943,7 +2008,7 @@ sub gtk_widget_get_font_options (
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-frame-clock:
+# TM:0:get-frame-clock:
 =begin pod
 =head2 get-frame-clock
 
@@ -2296,6 +2361,7 @@ sub gtk_widget_get_opacity (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-pango-context:
 =begin pod
@@ -2317,19 +2383,33 @@ sub gtk_widget_get_pango_context (
   N-GObject $widget --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-parent:
 =begin pod
 =head2 get-parent
 
-Returns the parent container of I<widget> or C<undefined>.
+Returns the parent object of this I<widget> or C<undefined> in the case of the native object or invalid in the case of a raku object.
 
-  method get-parent ( --> N-GObject )
+  method get-parent ( --> Gnome::GObject::Object )
+  method get-parent-no ( --> N-GObject )
 
 =end pod
 
-method get-parent ( --> N-GObject ) {
+method get-parent ( --> Gnome::GObject::Object ) {
+  my $no = gtk_widget_get_parent(self._f('GtkWidget'));
+  if ?$no {
+    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+  }
+
+  else {
+    # create an invalid object
+    self.new(:native-object($no))
+  }
+}
+
+method get-parent-no ( --> N-GObject ) {
   gtk_widget_get_parent(self._f('GtkWidget'))
 }
 
@@ -2347,11 +2427,24 @@ Gets I<widget>’s parent window, or C<undefined> if it does not have one.
 
 Returns: the parent window of I<widget>, or C<undefined> if it does not have a parent window.
 
-  method get-parent-window ( --> N-GObject )
+  method get-parent-window ( --> Gnome::GObject::Object )
+  method get-parent-window-no ( --> N-GObject )
 
 =end pod
 
-method get-parent-window ( --> N-GObject ) {
+method get-parent-window ( --> Gnome::GObject::Object ) {
+  my $no = gtk_widget_get_parent_window(self._f('GtkWidget'));
+  if ?$no {
+    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+  }
+
+  else {
+    # create an invalid object
+    self.new(:native-object($no))
+  }
+}
+
+method get-parent-window-no ( --> N-GObject ) {
   gtk_widget_get_parent_window(self._f('GtkWidget'))
 }
 
@@ -2370,13 +2463,19 @@ Returns the B<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget is 
 Returns: The B<Gnome::Gtk3::WidgetPath> representing I<widget>
 
   method get-path ( --> Gnome::Gtk3::WidgetPath )
+  method get-path-no ( --> N-GObject )
 
 =end pod
 
 method get-path ( --> Gnome::Gtk3::WidgetPath ) {
+  # cannot wrap it because it isn't a N-GObject. It is Boxed!
   Gnome::Gtk3::WidgetPath.new(
     :native-object(gtk_widget_get_path(self._f('GtkWidget')))
   )
+}
+
+method get-path-no ( --> N-GObject ) {
+  gtk_widget_get_path(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_path (
@@ -2691,7 +2790,7 @@ sub gtk_widget_get_scale_factor (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-screen:
+#TM:1:get-screen:
 =begin pod
 =head2 get-screen
 
@@ -2703,11 +2802,9 @@ Returns: the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
   method get-screen ( --> Gnome::Gdk3::Screen )
 
-
 =end pod
 
 method get-screen ( --> Gnome::Gdk3::Screen ) {
-
   Gnome::Gdk3::Screen.new(
     :native-object(gtk_widget_get_screen(self._f('GtkWidget')))
   )
@@ -2731,7 +2828,6 @@ Returns: C<True> if the widget is sensitive
 
   method get-sensitive ( --> Bool )
 
-
 =end pod
 
 method get-sensitive ( --> Bool ) {
@@ -2747,6 +2843,7 @@ sub gtk_widget_get_sensitive (
   { * }
 
 #-------------------------------------------------------------------------------
+#`{{
 #TM:0:get-settings:
 =begin pod
 =head2 get-settings
@@ -2758,7 +2855,6 @@ Note that this function can only be called when the B<Gnome::Gtk3::Widget> is at
 Returns: the relevant B<Gnome::Gtk3::Settings> object
 
   method get-settings ( --> N-GObject )
-
 
 =end pod
 
@@ -2773,6 +2869,7 @@ sub gtk_widget_get_settings (
   N-GObject $widget --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-size-request:
@@ -2835,16 +2932,20 @@ Returns the style context associated to I<widget>. The returned object is guaran
 
 Returns: a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
 
-  method get-style-context ( --> N-GObject )
-
+  method get-style-context ( --> Gnome::Gtk3::StyleContext )
+  method get-style-context-no ( --> N-GObject )
 
 =end pod
 
-method get-style-context ( --> N-GObject ) {
-
-  gtk_widget_get_style_context(
-    self._f('GtkWidget'),
+method get-style-context ( --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_widget_get_style_context(self._f('GtkWidget')),
+    'Gtk', 'Gtk3::'
   )
+}
+
+method get-style-context-no ( --> N-GObject ) {
+  gtk_widget_get_style_context(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_style_context (
@@ -2863,14 +2964,10 @@ Returns: C<True> if I<widget> is multidevice aware.
 
   method get-support-multidevice ( --> Bool )
 
-
 =end pod
 
 method get-support-multidevice ( --> Bool ) {
-
-  gtk_widget_get_support_multidevice(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_support_multidevice(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_support_multidevice (
@@ -2878,8 +2975,9 @@ sub gtk_widget_get_support_multidevice (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-template-child:
+# TM:0:get-template-child:
 =begin pod
 =head2 get-template-child
 
@@ -2900,19 +2998,17 @@ Returns: The object built in the template XML with the id I<name>
 
 method get-template-child ( $widget_type is copy, Str $name --> N-GObject ) {
   $widget_type .= get-native-object-no-reffing unless $widget_type ~~ N-GObject;
-
-  gtk_widget_get_template_child(
-    self._f('GtkWidget'), $widget_type, $name
-  )
+  gtk_widget_get_template_child( self._f('GtkWidget'), $widget_type, $name)
 }
 
 sub gtk_widget_get_template_child (
   N-GObject $widget, N-GObject $widget_type, gchar-ptr $name --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:get-tooltip-markup:
+#TM:1:get-tooltip-markup:
 =begin pod
 =head2 get-tooltip-markup
 
@@ -2922,14 +3018,10 @@ Returns: the tooltip text, or C<undefined>. You should free the returned string 
 
   method get-tooltip-markup ( --> Str )
 
-
 =end pod
 
 method get-tooltip-markup ( --> Str ) {
-
-  gtk_widget_get_tooltip_markup(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_tooltip_markup(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_tooltip_markup (
@@ -2948,14 +3040,10 @@ Returns: the tooltip text, or C<undefined>. You should free the returned string 
 
   method get-tooltip-text ( --> Str )
 
-
 =end pod
 
 method get-tooltip-text ( --> Str ) {
-
-  gtk_widget_get_tooltip_text(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_get_tooltip_text(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_tooltip_text (
@@ -2964,24 +3052,32 @@ sub gtk_widget_get_tooltip_text (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-tooltip-window:
+#TM:1:get-tooltip-window:
 =begin pod
 =head2 get-tooltip-window
 
 Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using C<set-tooltip-window()>.
 
-Returns: The B<Gnome::Gtk3::Window> of the current tooltip.
+Returns: The B<Gnome::Gtk3::Window> of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-  method get-tooltip-window ( --> N-GObject )
-
+  method get-tooltip-window ( --> Gnome::Gtk3::Window )
+  method get-tooltip-window-no ( --> N-GObject )
 
 =end pod
 
-method get-tooltip-window ( --> N-GObject ) {
+method get-tooltip-window ( --> Gnome::GObject::Object ) {
+  my $no = gtk_widget_get_tooltip_window(self._f('GtkWidget'));
+  if $no.defined {
+    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+  }
 
-  gtk_widget_get_tooltip_window(
-    self._f('GtkWidget'),
-  )
+  else {
+    self.new(:native-object($no))
+  }
+}
+
+method get-tooltip-window-no ( --> N-GObject ) {
+  gtk_widget_get_tooltip_window(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_tooltip_window (
@@ -3004,16 +3100,19 @@ return NULL; } ]|
 
 Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
-  method get-toplevel ( --> N-GObject )
-
+  method get-toplevel ( --> Gnome::GObject::Widget )
+  method get-toplevel-no ( --> N-GObject )
 
 =end pod
 
-method get-toplevel ( --> N-GObject ) {
-
-  gtk_widget_get_toplevel(
-    self._f('GtkWidget'),
+method get-toplevel ( --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_widget_get_toplevel(self._f('GtkWidget')), 'Gtk', 'Gtk3::'
   )
+}
+
+method get-toplevel-no ( --> N-GObject ) {
+  gtk_widget_get_toplevel(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_toplevel (
@@ -3080,14 +3179,10 @@ Returns: whether vexpand flag is set
 
   method get-vexpand ( --> Bool )
 
-
 =end pod
 
 method get-vexpand ( --> Bool ) {
-
-  gtk_widget_get_vexpand(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_vexpand(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_vexpand (
@@ -3108,14 +3203,10 @@ Returns: whether vexpand has been explicitly set
 
   method get-vexpand-set ( --> Bool )
 
-
 =end pod
 
 method get-vexpand-set ( --> Bool ) {
-
-  gtk_widget_get_vexpand_set(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_vexpand_set(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_vexpand_set (
@@ -3138,14 +3229,10 @@ Returns: C<True> if the widget is visible
 
   method get-visible ( --> Bool )
 
-
 =end pod
 
 method get-visible ( --> Bool ) {
-
-  gtk_widget_get_visible(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_visible(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_visible (
@@ -3154,7 +3241,7 @@ sub gtk_widget_get_visible (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-visual:
+#TM:1:get-visual:
 =begin pod
 =head2 get-visual
 
@@ -3162,16 +3249,19 @@ Gets the visual that will be used to render I<widget>.
 
 Returns: the visual for I<widget>
 
-  method get-visual ( --> N-GObject )
-
+  method get-visual ( --> Gnome::Gdk3::Visual )
+  method get-visual-no ( --> N-GObject )
 
 =end pod
 
-method get-visual ( --> N-GObject ) {
+method get-visual ( --> Gnome::Gdk3::Visual ) {
+  Gnome::Gdk3::Visual.new(
+    :native-object(gtk_widget_get_visual(self._f('GtkWidget')))
+  );
+}
 
-  gtk_widget_get_visual(
-    self._f('GtkWidget'),
-  )
+method get-visual-no ( --> N-GObject ) {
+  gtk_widget_get_visual(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_visual (
@@ -5380,7 +5470,7 @@ sub gtk_widget_set_support_multidevice (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-tooltip-markup:
+#TM:1:set-tooltip-markup:
 =begin pod
 =head2 set-tooltip-markup
 
@@ -5397,10 +5487,7 @@ See also the  I<tooltip-markup> property and C<gtk-tooltip-set-markup()>.
 =end pod
 
 method set-tooltip-markup ( Str $markup ) {
-
-  gtk_widget_set_tooltip_markup(
-    self._f('GtkWidget'), $markup
-  );
+  gtk_widget_set_tooltip_markup( self._f('GtkWidget'), $markup);
 }
 
 sub gtk_widget_set_tooltip_markup (
@@ -7722,22 +7809,20 @@ changes, see C<get-state-flags()>.
 =item $flags; The previous state flags.
 
 
+=begin comment
+DEPRECATED
 =comment -----------------------------------------------------------------------
-=comment #TS:0:style-set:
+=comment # TS:0:style-set:
 =head3 style-set
 
-The I<style-set> signal is emitted when a new style has been set
-on a widget. Note that style-modifying functions like
-C<modify-base()> also cause this signal to be emitted.
+The I<style-set> signal is emitted when a new style has been set on a widget. Note that style-modifying functions like C<modify-base()> also cause this signal to be emitted.
 
-Note that this signal is emitted for changes to the deprecated
-B<Gnome::Gtk3::Style>. To track changes to the B<Gnome::Gtk3::StyleContext> associated
-with a widget, use the  I<style-updated> signal.
+=comment Note that this signal is emitted for changes to the deprecated B<Gnome::Gtk3::Style>. To track changes to the B<Gnome::Gtk3::StyleContext> associated with a widget, use the  I<style-updated> signal.
 
 Deprecated:3.0: Use the  I<style-updated> signal
 
   method handler (
-    Unknown type GTK_TYPE_STYLE $previous_style,
+    N-GObject $previous_style,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7747,18 +7832,15 @@ Deprecated:3.0: Use the  I<style-updated> signal
 
 =item $previous_style; (allow-none): the previous style, or C<undefined> if the widget
 just got its initial style
+=end comment
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:style-updated:
 =head3 style-updated
 
-The I<style-updated> signal is a convenience signal that is emitted when the
- I<changed> signal is emitted on the I<widget>'s associated
-B<Gnome::Gtk3::StyleContext> as returned by C<get-style-context()>.
+The I<style-updated> signal is a convenience signal that is emitted when the I<changed> signal is emitted on the I<widget>'s associated B<Gnome::Gtk3::StyleContext> as returned by C<get-style-context()>.
 
-Note that style-modifying functions like C<override-color()> also
-cause this signal to be emitted.
-
+Note that style-modifying functions like C<override-color()> also cause this signal to be emitted.
 
   method handler (
     Int :$_handle_id,
@@ -7773,12 +7855,9 @@ cause this signal to be emitted.
 =comment #TS:0:unmap:
 =head3 unmap
 
-The I<unmap> signal is emitted when I<widget> is going to be unmapped, which
-means that either it or any of its parents up to the toplevel widget have
-been set as hidden.
+The I<unmap> signal is emitted when I<widget> is going to be unmapped, which means that either it or any of its parents up to the toplevel widget have been set as hidden.
 
-As I<unmap> indicates that a widget will not be shown any longer, it can be
-used to, for example, stop an animation on the widget.
+As I<unmap> indicates that a widget will not be shown any longer, it can be used to, for example, stop an animation on the widget.
 
   method handler (
     Int :$_handle_id,

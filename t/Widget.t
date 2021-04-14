@@ -5,17 +5,16 @@ use Test;
 
 use Gnome::Glib::List;
 
-use Gnome::GObject::Value;
-use Gnome::GObject::Type;
-
 use Gnome::Gdk3::Window;
 use Gnome::Gdk3::Display;
 use Gnome::Gdk3::Device;
 use Gnome::Gdk3::Types;
+use Gnome::Gdk3::Screen;
 
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
+use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
@@ -79,8 +78,8 @@ subtest 'Manipulations 1', {
 }}
 
 #-------------------------------------------------------------------------------
+my Gnome::Gtk3::Button $b .= new(:label<abc>);
 subtest 'Manipulations 2', {
-  my Gnome::Gtk3::Button $b .= new(:label<abc>);
   nok $b.get-visible, '.get-visible()';
   $b.set-visible(True);
   ok $b.get-visible, '.set-visible()';
@@ -107,10 +106,6 @@ subtest 'Manipulations 2', {
   lives-ok {$b.unregister-window($gdk-window);}, '.unregister-window()';
   $b.set-has-window(False);
   nok $b.get-has-window, '.get-has-window() False again';
-
-  # no parent or parent window -> undefined
-  nok $b.get-parent.defined, '.get-parent()';
-  nok $b.get-parent-window.defined, '.get-parent-window()';
 
   lives-ok {$b.show-now;}, '.show-now()';
   #lives-ok {$b.widget-hide;}, '.widget-hide()';
@@ -265,7 +260,10 @@ subtest 'Manipulations 2', {
 
   my Gnome::Gtk3::Window $w .= new;
   $w.set-title('My Button In My Window');
-  $w.add($b);
+  my Gnome::Gtk3::Grid $g .= new;
+  $w.add($g);
+  $g.attach( $b, 0, 0, 1, 1);
+
   $b.set-can-default(True);
   ok $b.get-can-default, '.set-can-default() / .get-can-default()';
   lives-ok {$b.grab-default;}, '.grab-default()';
@@ -276,8 +274,6 @@ subtest 'Manipulations 2', {
 
   $b.set-child-visible(True);
   ok $b.get-child-visible, '.set-child-visible() / .get-child-visible()';
-
-  lives-ok {diag 'display name: ' ~ $b.get-display.get-name;}, '.get-display()';
 
   $b.set-focus-on-click(True);
   ok $b.get-focus-on-click, '.set-focus-on-click() / .get-focus-on-click()';
@@ -306,7 +302,7 @@ subtest 'Manipulations 2', {
       ).base(2);
     }, '.get-modifier-mask()';
 
-  lives-ok { diag 'widget-path: ' ~ $b.get-path.to-string; }
+  lives-ok { diag 'widget-path: ' ~ $b.get-path.to-string; }, '.get-path()';
 
   $b.set-receives-default(True);
   ok $b.get-receives-default,
@@ -320,11 +316,60 @@ subtest 'Manipulations 2', {
 
   lives-ok { $b.set-redraw-on-allocate(True); }, '.set-redraw-on-allocate()';
 
+  my Gnome::Gtk3::Window $w2 = $b.get-ancestor($w.get-class-gtype);
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor(Int)';
+  $w2 = $b.get-ancestor('GtkWindow');
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor(Str)';
+  $w2 = $b.get-ancestor($w);
+  is $w2.get-title, 'My Button In My Window',
+    '.get-ancestor(Gnome::Gtk3::Window)';
+  $w2 .= new(:native-object($b.get-ancestor-no($w.get-class-gtype)));
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor-no(Str)';
+
+  my Gnome::Gtk3::Grid $g2 = $b.get-parent;
+  my Gnome::Glib::List $list .= new(:native-object($g2.get-children));
+  is $list.length, 1, '.get-parent(): ' ~ $list.length;
+
+# TODO don't understand next tests. It returns a button.
+#`{{
+  $w2 .= new(:native-object($b.get-parent-window-no));
+  is $w2.get-title, 'My Button In My Window', '.get-parent-window-no()';
+
+  $w2 = $b.get-parent-window-no;
+  is $w2.get-title, 'My Button In My Window', '.get-parent-window()';
+}}
+
+  $b.set-tooltip-markup('A <B>ha</b>');
+  is $b.get-tooltip-markup, 'A <B>ha</b>',
+    '.set-tooltip-markup() / .get-tooltip-markup()';
+
+# TODO don't understand next tests. It returns a button.
+#`{{
+  is $b.get-tooltip-window.^name, 'Gnome::Gtk3::Window',
+    '.get-tooltip-window()';
+}}
+  is $b.get-toplevel.^name, 'Gnome::Gtk3::Window', '.get-toplevel()';
+  is $b.get-visual.^name, 'Gnome::Gdk3::Visual', '.get-visual()';
+
   $b.destroy;
   $w.destroyed($b);
   nok $b.is-valid, '.destroy() / .destroyed()';
 
 #note $b.list-action-prefixes[0];
+}
+
+#-------------------------------------------------------------------------------
+subtest 'devices…', {
+
+  $b .= new(:label<abc>);
+
+  my Gnome::Gtk3::Window $w .= new;
+  $w.set-title('My Button In My Window');
+  $w.add($b);
+
+  lives-ok {diag 'display name: ' ~ $b.get-display.get-name;}, '.get-display()';
+  lives-ok {diag 'display name: ' ~ $b.get-screen.get-display.get-name;},
+      'get-screen()';
 }
 
 #`{{ drop
@@ -347,7 +392,7 @@ subtest 'Properties ...', {
   use Gnome::GObject::Type;
 
   #my Gnome::Gtk3::Widget $w .= new;
-  my Gnome::Gtk3::Button $b .= new(:label<abc>);
+  $b .= new(:label<abc>);
   $b.set-no-show-all(True);
   ok $b.get-no-show-all, '.set-no-show-all() / .get-no-show-all()';
   $b.set-name('test-button');
