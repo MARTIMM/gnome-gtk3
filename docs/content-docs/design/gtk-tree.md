@@ -65,7 +65,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ├─✗ GtkImageMenuItem        ⛔
 │   │   │   │   │   ├── GtkSeparatorMenuItem    SeparatorMenuItem
 │   │   │   │   │   ╰─✗ GtkTearoffMenuItem      ⛔
-│   │   │   │   ├── GtkEventBox
+│   │   │   │   ├── GtkEventBox                 EventBox
 │   │   │   │   ├── GtkExpander
 │   │   │   │   ├── GtkFlowBoxChild
 │   │   │   │   ├── GtkHandleBox

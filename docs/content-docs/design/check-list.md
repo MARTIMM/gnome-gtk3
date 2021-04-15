@@ -119,6 +119,7 @@ Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |
+EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
 FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -220,7 +221,6 @@ Clipboard|
 CssSection                |Bx| ✗|
 Editable|
 EntryBuffer|
-EventBox|
 EventController|
 EventControllerKey|
 EventControllerMotion|

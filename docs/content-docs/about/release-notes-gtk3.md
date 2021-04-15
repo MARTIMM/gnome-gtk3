@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 
-#### 2021-04 0.:
+#### 2021-04-15 0.39.0:
 * Improve **Gnome::Gtk3::Widget** docs and tests. Changes are
   * `.get-display(… --> Gnome::Gdk3::Display)`.
   * `.get-path(… --> Gnome::Gtk3::WidgetPath)`.
@@ -24,6 +24,8 @@ layout: sidebar
   * Many methods are not always needed and a module needed to create an object would be loaded unnecessarely. The call will postpone the loading until needed.
 
   With all this, there is still a Rakudo bug issue [#3075](https://github.com/rakudo/rakudo/issues/3075) unsolved. It states that sometimes the loading of symbols while using `require` goes wrong sometimes. Related issues are [#3722](https://github.com/rakudo/rakudo/issues/3722). So, when you run into such a problem, you can then use the `xyz-no( … --> N-GObject)` type of routine which will not use the `require` call and you can create the object using `my Gnome::Xyz::Abc $abc .= new(:native-object(xyz-no(…))`
+
+* New module **Gnome::Gtk3::EventBox**.
 
 #### 2021-04-05 0.38.0:
 * Add role **Gnome::Gtk3::CellLayout**. Added this role to **Gnome::Gtk3::ComboBox**, **Gnome::Gtk3::IconView** and, **Gnome::Gtk3::TreeViewColumn**. TreeViewColumn had problems in that there where methods defined which were also made available in CellLayout. Therefore I have removed those from TreeViewColumn. There is a change however in some of those methods.

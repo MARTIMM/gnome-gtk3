@@ -149,6 +149,10 @@
     type: standalone
     url: "/content-docs/reference/Gtk3/Enums.html"
 
+  - title: "EventBox"
+    type: widget
+    url: "/content-docs/reference/Gtk3/EventBox.html"
+
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     type: interface
