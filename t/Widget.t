@@ -275,8 +275,14 @@ subtest 'Manipulations 2', {
   $b.set-child-visible(True);
   ok $b.get-child-visible, '.set-child-visible() / .get-child-visible()';
 
-  $b.set-focus-on-click(True);
-  ok $b.get-focus-on-click, '.set-focus-on-click() / .get-focus-on-click()';
+  if %*ENV<travis_ci_tests> {
+    skip '. set/get -focus-on-click() not known on Travis';
+  }
+
+  else {
+    $b.set-focus-on-click(True);
+    ok $b.get-focus-on-click, '.set-focus-on-click() / .get-focus-on-click()';
+  }
 
   $b.set-margin-bottom(10);
   is $b.get-margin-bottom, 10, '.set-margin-bottom() / .get-margin-bottom()';
@@ -439,8 +445,15 @@ subtest 'Properties ...', {
   test-property( G_TYPE_BOOLEAN, 'can-focus', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'composite-child', 'get-boolean', 0);
   test-property( G_TYPE_BOOLEAN, 'expand', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'focus-on-click', 'get-boolean', 1);
   test-property( G_TYPE_BOOLEAN, 'has-default', 'get-boolean', 0);
+
+  if %*ENV<travis_ci_tests> {
+    skip 'property focus-on-click not known on Travis';
+  }
+
+  else {
+    test-property( G_TYPE_BOOLEAN, 'focus-on-click', 'get-boolean', 1);
+  }
 }
 
 #-------------------------------------------------------------------------------

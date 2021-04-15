@@ -1555,7 +1555,7 @@ sub gtk_widget_get_allocation (
 #-------------------------------------------------------------------------------
 #TM:0:get-ancestor:
 =begin pod
-=head2 get-ancestor
+=head2 get-ancestor, get-ancestor-no
 
 Gets the first ancestor of I<widget> with type I<$widget-type>. For example, C<$widget.get-ancestor(GTK-TYPE-BOX)> gets the first native B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for C<get-toplevel()>.
 
@@ -1886,7 +1886,7 @@ sub gtk_widget_get_direction (
 #-------------------------------------------------------------------------------
 #TM:1:get-display:
 =begin pod
-=head2 get-display
+=head2 get-display, get-display-no
 
 Get the B<Gnome::Gdk3::Display> for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
@@ -2388,7 +2388,7 @@ sub gtk_widget_get_pango_context (
 #-------------------------------------------------------------------------------
 #TM:1:get-parent:
 =begin pod
-=head2 get-parent
+=head2 get-parent, get-parent-no
 
 Returns the parent object of this I<widget> or C<undefined> in the case of the native object or invalid in the case of a raku object.
 
@@ -2421,7 +2421,7 @@ sub gtk_widget_get_parent (
 #-------------------------------------------------------------------------------
 #TM:1:get-parent-window:
 =begin pod
-=head2 get-parent-window
+=head2 get-parent-window, get-parent-window-no
 
 Gets I<widget>’s parent window, or C<undefined> if it does not have one.
 
@@ -2456,7 +2456,7 @@ sub gtk_widget_get_parent_window (
 #-------------------------------------------------------------------------------
 #TM:1:get-path:
 =begin pod
-=head2 get-path
+=head2 get-path, get-path-no
 
 Returns the B<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget is not connected to a toplevel widget, a partial path will be created.
 
@@ -2926,7 +2926,7 @@ sub gtk_widget_get_state_flags (
 #-------------------------------------------------------------------------------
 #TM:0:get-style-context:
 =begin pod
-=head2 get-style-context
+=head2 get-style-context, get-style-context-no
 
 Returns the style context associated to I<widget>. The returned object is guaranteed to be the same for the lifetime of I<widget>.
 
@@ -3054,7 +3054,7 @@ sub gtk_widget_get_tooltip_text (
 #-------------------------------------------------------------------------------
 #TM:1:get-tooltip-window:
 =begin pod
-=head2 get-tooltip-window
+=head2 get-tooltip-window, get-tooltip-window-no
 
 Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using C<set-tooltip-window()>.
 
@@ -3088,7 +3088,7 @@ sub gtk_widget_get_tooltip_window (
 #-------------------------------------------------------------------------------
 #TM:1:get-toplevel:
 =begin pod
-=head2 get-toplevel
+=head2 get-toplevel, get-toplevel-no
 
 This function returns the topmost widget in the container hierarchy I<widget> is a part of. If I<widget> has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
 
@@ -3243,7 +3243,7 @@ sub gtk_widget_get_visible (
 #-------------------------------------------------------------------------------
 #TM:1:get-visual:
 =begin pod
-=head2 get-visual
+=head2 get-visual, get-visual-no
 
 Gets the visual that will be used to render I<widget>.
 

@@ -254,28 +254,6 @@ Returns: whether widget tree rooted here should be expanded
 
   * GtkOrientation $orientation; expand direction
 
-create-pango-context
---------------------
-
-Creates a new **PangoContext** with the appropriate font map, font options, font description, and base direction for drawing text for this widget. See also `get-pango-context()`.
-
-Returns: the new **PangoContext**
-
-    method create-pango-context ( --> N-GObject )
-
-create-pango-layout
--------------------
-
-Creates a new **PangoLayout** with the appropriate font map, font description, and base direction for drawing text for this widget.
-
-If you keep a **PangoLayout** created in this way around, you need to re-create it when the widget **PangoContext** is replaced. This can be tracked by using the *screen-changed* signal on the widget.
-
-Returns: the new **PangoLayout**
-
-    method create-pango-layout ( Str $text --> N-GObject )
-
-  * Str $text; text to set on the layout (can be `undefined`)
-
 destroy
 -------
 
@@ -361,19 +339,6 @@ This is the analogue of `g-object-freeze-notify()` for child properties.
 
     method freeze-child-notify ( )
 
-get-action-group
-----------------
-
-Retrieves the **Gnome::Gtk3::ActionGroup** that was registered using *prefix*. The resulting **Gnome::Gtk3::ActionGroup** may have been registered to *widget* or any **Gnome::Gtk3::Widget** in its ancestry.
-
-If no action group was found matching *prefix*, then `undefined` is returned.
-
-Returns: A **Gnome::Gtk3::ActionGroup** based object or `undefined`.
-
-    method get-action-group ( Str $prefix --> N-GObject )
-
-  * Str $prefix; The “prefix” of the action group.
-
 get-allocated-baseline
 ----------------------
 
@@ -433,8 +398,8 @@ So a **Gnome::Gtk3::Container** is guaranteed that its children stay inside the 
 
 Returns a N-GtkAllocation
 
-get-ancestor
-------------
+get-ancestor, get-ancestor-no
+-----------------------------
 
 Gets the first ancestor of *widget* with type *$widget-type*. For example, `$widget.get-ancestor(GTK-TYPE-BOX)` gets the first native **Gnome::Gtk3::Box** that’s an ancestor of *widget*. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel **Gnome::Gtk3::Window** in the docs for `get-toplevel()`.
 
@@ -442,9 +407,43 @@ Note that unlike `is-ancestor()`, `get-ancestor()` considers this *widget* to be
 
 Returns: the ancestor widget, or `undefined` if not found
 
-    method get-ancestor ( N-GObject $widget_type --> N-GObject )
+    method get-ancestor ( GType $widget-type --> Gnome::GObject::Object )
+    method get-ancestor ( Str $gtk-widget-type-name --> Gnome::GObject::Object )
+    method get-ancestor ( Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object )
+    method get-ancestor-no ( GType $widget-type --> N-GObject )
 
-  * N-GObject $widget_type; ancestor type
+  * N-GObject $widget-type; ancestor type. One can use `$widget.get-class-gtype` to get the GType of an object.
+
+  * Str $gtk-widget-type-name; an ancester object name of how Gtk names these objects. Examples are `GtkWidget` and `GtkDialog`.
+
+  * Gnome::Gtk3::Widget $widget; a raku widget.
+
+The return value **Gnome::GObject::Object** means any child raku object. N-GObject is the type of the native object.
+
+### Example
+
+    class WGrid {
+      submethod BUILD ( ) {
+        my Gnome::Gtk3::Button $b .= new(:label<Start>);
+        $b.register-signal( self, 'button-action', 'clicked');
+
+        my Gnome::Gtk3::Grid $g .= new;
+        $g.attach( $b, 0, 0, 1, 1);
+
+        my Gnome::Gtk3::Window $w .= new;
+        $w.set-title('My Button In My Window');
+        $w.add($g);
+        $w.show-all();
+      }
+
+      method button-action ( :_widget($button) ) {
+        my Gnome::Gtk3::Window $window = $button.get-ancestor('GtkWindow');
+        …
+      }
+    }
+
+    my WGrid $wgrid .= new;
+    Gnome::Gtk3::Main.new.main;
 
 get-app-paintable
 -----------------
@@ -539,8 +538,8 @@ Returns: the reading direction for the widget.
 
     method get-direction ( --> GtkTextDirection )
 
-get-display
------------
+get-display, get-display-no
+---------------------------
 
 Get the **Gnome::Gdk3::Display** for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
 
@@ -549,6 +548,7 @@ In general, you should only create display specific resources when a widget has 
 Returns: the **Gnome::Gdk3::Display** for the toplevel for this widget.
 
     method get-display ( --> Gnome::Gdk3::Display )
+    method get-display-no ( --> N-GObject )
 
 get-events
 ----------
@@ -569,15 +569,6 @@ Returns whether the widget should grab focus when it is clicked with the mouse. 
 Returns: `True` if the widget should grab focus when it is clicked with the mouse.
 
     method get-focus-on-click ( --> Bool )
-
-get-font-map
-------------
-
-Gets the font map that has been set with `set-font-map()`.
-
-Returns: A **PangoFontMap**, or `undefined`
-
-    method get-font-map ( --> N-GObject )
 
 get-font-options
 ----------------
@@ -728,39 +719,33 @@ Returns: the requested opacity for this widget.
 
     method get-opacity ( --> Num )
 
-get-pango-context
------------------
+get-parent, get-parent-no
+-------------------------
 
-Gets a **PangoContext** with the appropriate font map, font description, and base direction for this widget. Unlike the context returned by `create-pango-context()`, this context is owned by the widget (it can be used until the screen for the widget changes or the widget is removed from its toplevel), and will be updated to match any changes to the widget’s attributes. This can be tracked by using the *screen-changed* signal on the widget.
+Returns the parent object of this *widget* or `undefined` in the case of the native object or invalid in the case of a raku object.
 
-Returns: the **PangoContext** for the widget.
+    method get-parent ( --> Gnome::GObject::Object )
+    method get-parent-no ( --> N-GObject )
 
-    method get-pango-context ( --> N-GObject )
-
-get-parent
-----------
-
-Returns the parent container of *widget* or `undefined`.
-
-    method get-parent ( --> N-GObject )
-
-get-parent-window
------------------
+get-parent-window, get-parent-window-no
+---------------------------------------
 
 Gets *widget*’s parent window, or `undefined` if it does not have one.
 
 Returns: the parent window of *widget*, or `undefined` if it does not have a parent window.
 
-    method get-parent-window ( --> N-GObject )
+    method get-parent-window ( --> Gnome::GObject::Object )
+    method get-parent-window-no ( --> N-GObject )
 
-get-path
---------
+get-path, get-path-no
+---------------------
 
 Returns the **Gnome::Gtk3::WidgetPath** representing *widget*, if the widget is not connected to a toplevel widget, a partial path will be created.
 
 Returns: The **Gnome::Gtk3::WidgetPath** representing *widget*
 
     method get-path ( --> Gnome::Gtk3::WidgetPath )
+    method get-path-no ( --> N-GObject )
 
 get-preferred-height
 --------------------
@@ -932,17 +917,6 @@ Returns: `True` if the widget is sensitive
 
     method get-sensitive ( --> Bool )
 
-get-settings
-------------
-
-Gets the settings object holding the settings used for this widget.
-
-Note that this function can only be called when the **Gnome::Gtk3::Widget** is attached to a toplevel, since the settings object is specific to a particular **Gnome::Gdk3::Screen**.
-
-Returns: the relevant **Gnome::Gtk3::Settings** object
-
-    method get-settings ( --> N-GObject )
-
 get-size-request
 ----------------
 
@@ -967,14 +941,15 @@ Returns: The state flags for widget
 
     method get-state-flags ( --> GtkStateFlags )
 
-get-style-context
------------------
+get-style-context, get-style-context-no
+---------------------------------------
 
 Returns the style context associated to *widget*. The returned object is guaranteed to be the same for the lifetime of *widget*.
 
 Returns: a **Gnome::Gtk3::StyleContext**. This memory is owned by *widget* and must not be freed.
 
-    method get-style-context ( --> N-GObject )
+    method get-style-context ( --> Gnome::Gtk3::StyleContext )
+    method get-style-context-no ( --> N-GObject )
 
 get-support-multidevice
 -----------------------
@@ -984,23 +959,6 @@ Returns `True` if *widget* is multiple pointer aware. See `set-support-multidevi
 Returns: `True` if *widget* is multidevice aware.
 
     method get-support-multidevice ( --> Bool )
-
-get-template-child
-------------------
-
-Fetch an object build from the template XML for *widget-type* in this *widget* instance.
-
-This will only report children which were previously declared with `class-bind-template-child-full()` or one of its variants.
-
-This function is only meant to be called for code which is private to the *widget-type* which declared the child and is meant for language bindings which cannot easily make use of the GObject structure offsets.
-
-Returns: The object built in the template XML with the id *name*
-
-    method get-template-child ( N-GObject $widget_type, Str $name --> N-GObject )
-
-  * N-GObject $widget_type; The **Gnome::Gtk3::Type** to get a template child for
-
-  * Str $name; The “id” of the child defined in the template XML
 
 get-tooltip-markup
 ------------------
@@ -1020,17 +978,18 @@ Returns: the tooltip text, or `undefined`. You should free the returned string w
 
     method get-tooltip-text ( --> Str )
 
-get-tooltip-window
-------------------
+get-tooltip-window, get-tooltip-window-no
+-----------------------------------------
 
 Returns the **Gnome::Gtk3::Window** of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using `set-tooltip-window()`.
 
-Returns: The **Gnome::Gtk3::Window** of the current tooltip.
+Returns: The **Gnome::Gtk3::Window** of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-    method get-tooltip-window ( --> N-GObject )
+    method get-tooltip-window ( --> Gnome::Gtk3::Window )
+    method get-tooltip-window-no ( --> N-GObject )
 
-get-toplevel
-------------
+get-toplevel, get-toplevel-no
+-----------------------------
 
 This function returns the topmost widget in the container hierarchy *widget* is a part of. If *widget* has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
 
@@ -1042,7 +1001,8 @@ return NULL; } ]|
 
 Returns: the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
 
-    method get-toplevel ( --> N-GObject )
+    method get-toplevel ( --> Gnome::GObject::Widget )
+    method get-toplevel-no ( --> N-GObject )
 
 get-valign
 ----------
@@ -1099,14 +1059,15 @@ Returns: `True` if the widget is visible
 
     method get-visible ( --> Bool )
 
-get-visual
-----------
+get-visual, get-visual-no
+-------------------------
 
 Gets the visual that will be used to render *widget*.
 
 Returns: the visual for *widget*
 
-    method get-visual ( --> N-GObject )
+    method get-visual ( --> Gnome::Gdk3::Visual )
+    method get-visual-no ( --> N-GObject )
 
 get-window
 ----------
@@ -3092,25 +3053,6 @@ The *state-flags-changed* signal is emitted when the widget state changes, see `
   * $widget; the object which received the signal.
 
   * $flags; The previous state flags.
-
-### style-set
-
-The *style-set* signal is emitted when a new style has been set on a widget. Note that style-modifying functions like `modify-base()` also cause this signal to be emitted.
-
-Note that this signal is emitted for changes to the deprecated **Gnome::Gtk3::Style**. To track changes to the **Gnome::Gtk3::StyleContext** associated with a widget, use the *style-updated* signal.
-
-Deprecated:3.0: Use the *style-updated* signal
-
-    method handler (
-      Unknown type GTK_TYPE_STYLE $previous_style,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-    );
-
-  * $widget; the object on which the signal is emitted
-
-  * $previous_style; (allow-none): the previous style, or `undefined` if the widget just got its initial style
 
 ### style-updated
 
