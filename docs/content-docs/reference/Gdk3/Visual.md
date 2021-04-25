@@ -105,12 +105,13 @@ List returns the following;
 
   * Int precision;
 
-get-screen
-----------
+get-screen, get-screen-rk
+-------------------------
 
 Gets the screen to which this visual belongs
 
-Returns: the screen to which this visual belongs. Although, at this point, the return type is known, it is not possible to return a **Gnome::Gdk3::Screen** raku object because of code fails to require a raku object. The caller must do the following `Gnome::Gdk3::Screen.new(:native-object($v.get-screen))` locally to get the raku object.
+    method get-screen-rk ( --> Gnome::Gdk3::Screen )
+    method get-screen ( --> N-GObject )
 
 get-visual-type
 ---------------

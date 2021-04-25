@@ -398,7 +398,7 @@ So a **Gnome::Gtk3::Container** is guaranteed that its children stay inside the 
 
 Returns a N-GtkAllocation
 
-get-ancestor, get-ancestor-no
+get-ancestor, get-ancestor-rk
 -----------------------------
 
 Gets the first ancestor of *widget* with type *$widget-type*. For example, `$widget.get-ancestor(GTK-TYPE-BOX)` gets the first native **Gnome::Gtk3::Box** that’s an ancestor of *widget*. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel **Gnome::Gtk3::Window** in the docs for `get-toplevel()`.
@@ -407,10 +407,19 @@ Note that unlike `is-ancestor()`, `get-ancestor()` considers this *widget* to be
 
 Returns: the ancestor widget, or `undefined` if not found
 
-    method get-ancestor ( GType $widget-type --> Gnome::GObject::Object )
-    method get-ancestor ( Str $gtk-widget-type-name --> Gnome::GObject::Object )
-    method get-ancestor ( Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object )
-    method get-ancestor-no ( GType $widget-type --> N-GObject )
+    method get-ancestor-rk (
+      GType $widget-type --> Gnome::GObject::Object
+    )
+
+    method get-ancestor-rk (
+      Str $gtk-widget-type-name --> Gnome::GObject::Object
+    )
+
+    method get-ancestor-rk (
+      Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+    )
+
+    method get-ancestor ( GType $widget-type --> N-GObject )
 
   * N-GObject $widget-type; ancestor type. One can use `$widget.get-class-gtype` to get the GType of an object.
 
@@ -437,7 +446,7 @@ The return value **Gnome::GObject::Object** means any child raku object. N-GObje
       }
 
       method button-action ( :_widget($button) ) {
-        my Gnome::Gtk3::Window $window = $button.get-ancestor('GtkWindow');
+        my Gnome::Gtk3::Window $window = $button.get-ancestor-rk('GtkWindow');
         …
       }
     }
@@ -538,7 +547,7 @@ Returns: the reading direction for the widget.
 
     method get-direction ( --> GtkTextDirection )
 
-get-display, get-display-no
+get-display, get-display-rk
 ---------------------------
 
 Get the **Gnome::Gdk3::Display** for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gtk3::Window** at the top.
@@ -547,8 +556,8 @@ In general, you should only create display specific resources when a widget has 
 
 Returns: the **Gnome::Gdk3::Display** for the toplevel for this widget.
 
-    method get-display ( --> Gnome::Gdk3::Display )
-    method get-display-no ( --> N-GObject )
+    method get-display-rk ( --> Gnome::Gdk3::Display )
+    method get-display ( --> N-GObject )
 
 get-events
 ----------
@@ -719,33 +728,33 @@ Returns: the requested opacity for this widget.
 
     method get-opacity ( --> Num )
 
-get-parent, get-parent-no
+get-parent, get-parent-rk
 -------------------------
 
 Returns the parent object of this *widget* or `undefined` in the case of the native object or invalid in the case of a raku object.
 
-    method get-parent ( --> Gnome::GObject::Object )
-    method get-parent-no ( --> N-GObject )
+    method get-parent-rk ( --> Gnome::GObject::Object )
+    method get-parent ( --> N-GObject )
 
-get-parent-window, get-parent-window-no
+get-parent-window, get-parent-window-rk
 ---------------------------------------
 
 Gets *widget*’s parent window, or `undefined` if it does not have one.
 
 Returns: the parent window of *widget*, or `undefined` if it does not have a parent window.
 
-    method get-parent-window ( --> Gnome::GObject::Object )
-    method get-parent-window-no ( --> N-GObject )
+    method get-parent-window-rk ( --> Gnome::GObject::Object )
+    method get-parent-window ( --> N-GObject )
 
-get-path, get-path-no
+get-path, get-path-rk
 ---------------------
 
 Returns the **Gnome::Gtk3::WidgetPath** representing *widget*, if the widget is not connected to a toplevel widget, a partial path will be created.
 
 Returns: The **Gnome::Gtk3::WidgetPath** representing *widget*
 
-    method get-path ( --> Gnome::Gtk3::WidgetPath )
-    method get-path-no ( --> N-GObject )
+    method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
+    method get-path ( --> N-GObject )
 
 get-preferred-height
 --------------------
@@ -895,8 +904,8 @@ Returns: the scale factor for *widget*
 
     method get-scale-factor ( --> Int )
 
-get-screen
-----------
+get-screen, get-screen-rk
+-------------------------
 
 Get the **Gnome::Gdk3::Screen** from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a **Gnome::Gdk3::Window** at the top.
 
@@ -904,7 +913,8 @@ In general, you should only create screen specific resources when a widget has b
 
 Returns: the **Gnome::Gdk3::Screen** for the toplevel for this widget.
 
-    method get-screen ( --> Gnome::Gdk3::Screen )
+    method get-screen-rk ( --> Gnome::Gdk3::Screen )
+    method get-screen ( --> N-GObject )
 
 get-sensitive
 -------------
@@ -941,15 +951,15 @@ Returns: The state flags for widget
 
     method get-state-flags ( --> GtkStateFlags )
 
-get-style-context, get-style-context-no
+get-style-context, get-style-context-rk
 ---------------------------------------
 
 Returns the style context associated to *widget*. The returned object is guaranteed to be the same for the lifetime of *widget*.
 
 Returns: a **Gnome::Gtk3::StyleContext**. This memory is owned by *widget* and must not be freed.
 
-    method get-style-context ( --> Gnome::Gtk3::StyleContext )
-    method get-style-context-no ( --> N-GObject )
+    method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
+    method get-style-context ( --> N-GObject )
 
 get-support-multidevice
 -----------------------
@@ -978,17 +988,17 @@ Returns: the tooltip text, or `undefined`. You should free the returned string w
 
     method get-tooltip-text ( --> Str )
 
-get-tooltip-window, get-tooltip-window-no
+get-tooltip-window, get-tooltip-window-rk
 -----------------------------------------
 
 Returns the **Gnome::Gtk3::Window** of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using `set-tooltip-window()`.
 
 Returns: The **Gnome::Gtk3::Window** of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-    method get-tooltip-window ( --> Gnome::Gtk3::Window )
-    method get-tooltip-window-no ( --> N-GObject )
+    method get-tooltip-window-rk ( --> Gnome::Gtk3::Window )
+    method get-tooltip-window ( --> N-GObject )
 
-get-toplevel, get-toplevel-no
+get-toplevel, get-toplevel-rk
 -----------------------------
 
 This function returns the topmost widget in the container hierarchy *widget* is a part of. If *widget* has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
@@ -1001,8 +1011,8 @@ return NULL; } ]|
 
 Returns: the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
 
-    method get-toplevel ( --> Gnome::GObject::Widget )
-    method get-toplevel-no ( --> N-GObject )
+    method get-toplevel-rk ( --> Gnome::GObject::Widget )
+    method get-toplevel ( --> N-GObject )
 
 get-valign
 ----------
@@ -1059,15 +1069,15 @@ Returns: `True` if the widget is visible
 
     method get-visible ( --> Bool )
 
-get-visual, get-visual-no
+get-visual, get-visual-rk
 -------------------------
 
 Gets the visual that will be used to render *widget*.
 
 Returns: the visual for *widget*
 
-    method get-visual ( --> Gnome::Gdk3::Visual )
-    method get-visual-no ( --> N-GObject )
+    method get-visual-rk ( --> Gnome::Gdk3::Visual )
+    method get-visual ( --> N-GObject )
 
 get-window
 ----------
@@ -1360,14 +1370,15 @@ Returns: (transfer container): a `undefined`-terminated array of strings.
 
     method list-action-prefixes ( --> CArray[Str] )
 
-list-mnemonic-labels
---------------------
+list-mnemonic-labels, list-mnemonic-labels-rk
+---------------------------------------------
 
 Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, `Gnome::Gtk3::Label.set-mnemonic-widget()`). The widgets in the list are not individually referenced.
 
 Returns: the list of mnemonic labels; free this list with `clear-object()` when you are done with it.
 
-    method list-mnemonic-labels ( --> Gnome::Glib::List )
+    method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
+    method list-mnemonic-labels ( --> N-GList )
 
 map
 ---
