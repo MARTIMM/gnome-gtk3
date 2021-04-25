@@ -255,12 +255,6 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
     );
   }
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Widget implements
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Buildable](Buildable.html)1
-
 =end comment
 
 
@@ -1555,7 +1549,7 @@ sub gtk_widget_get_allocation (
 #-------------------------------------------------------------------------------
 #TM:0:get-ancestor:
 =begin pod
-=head2 get-ancestor, get-ancestor-no
+=head2 get-ancestor, get-ancestor-rk
 
 Gets the first ancestor of I<widget> with type I<$widget-type>. For example, C<$widget.get-ancestor(GTK-TYPE-BOX)> gets the first native B<Gnome::Gtk3::Box> that’s an ancestor of I<widget>. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel B<Gnome::Gtk3::Window> in the docs for C<get-toplevel()>.
 
@@ -1563,10 +1557,19 @@ Note that unlike C<is-ancestor()>, C<get-ancestor()> considers this I<widget> to
 
 Returns: the ancestor widget, or C<undefined> if not found
 
-  method get-ancestor ( GType $widget-type --> Gnome::GObject::Object )
-  method get-ancestor ( Str $gtk-widget-type-name --> Gnome::GObject::Object )
-  method get-ancestor ( Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object )
-  method get-ancestor-no ( GType $widget-type --> N-GObject )
+  method get-ancestor-rk (
+    GType $widget-type --> Gnome::GObject::Object
+  )
+
+  method get-ancestor-rk (
+    Str $gtk-widget-type-name --> Gnome::GObject::Object
+  )
+
+  method get-ancestor-rk (
+    Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+  )
+
+  method get-ancestor ( GType $widget-type --> N-GObject )
 
 =item N-GObject $widget-type; ancestor type. One can use C<$widget.get-class-gtype> to get the GType of an object.
 =item Str $gtk-widget-type-name; an ancester object name of how Gtk names these objects. Examples are C<GtkWidget> and C<GtkDialog>.
@@ -1591,7 +1594,7 @@ The return value B<Gnome::GObject::Object> means any child raku object. N-GObjec
     }
 
     method button-action ( :_widget($button) ) {
-      my Gnome::Gtk3::Window $window = $button.get-ancestor('GtkWindow');
+      my Gnome::Gtk3::Window $window = $button.get-ancestor-rk('GtkWindow');
       …
     }
   }
@@ -1601,15 +1604,15 @@ The return value B<Gnome::GObject::Object> means any child raku object. N-GObjec
 
 =end pod
 
-proto method get-ancestor (|){*}
-multi method get-ancestor ( Int $widget-type --> Gnome::GObject::Object ) {
+proto method get-ancestor-rk (|){*}
+multi method get-ancestor-rk ( Int $widget-type --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
     gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
     'Gtk', 'Gtk3::'
   )
 }
 
-multi method get-ancestor (
+multi method get-ancestor-rk (
   Str $gtk-widget-type-name --> Gnome::GObject::Object
 ) {
   my GType $widget-type = Gnome::GObject::Type.new().g_type_from_name(
@@ -1621,7 +1624,7 @@ multi method get-ancestor (
   )
 }
 
-multi method get-ancestor (
+multi method get-ancestor-rk (
   Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
 ) {
   my GType $widget-type = $widget.get-class-gtype;
@@ -1631,7 +1634,7 @@ multi method get-ancestor (
   )
 }
 
-method get-ancestor-no ( Int $widget-type --> N-GObject ) {
+method get-ancestor ( Int $widget-type --> N-GObject ) {
   gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
 }
 
@@ -1886,7 +1889,7 @@ sub gtk_widget_get_direction (
 #-------------------------------------------------------------------------------
 #TM:1:get-display:
 =begin pod
-=head2 get-display, get-display-no
+=head2 get-display, get-display-rk
 
 Get the B<Gnome::Gdk3::Display> for the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gtk3::Window> at the top.
 
@@ -1894,18 +1897,18 @@ In general, you should only create display specific resources when a widget has 
 
 Returns: the B<Gnome::Gdk3::Display> for the toplevel for this widget.
 
-  method get-display ( --> Gnome::Gdk3::Display )
-  method get-display-no ( --> N-GObject )
+  method get-display-rk ( --> Gnome::Gdk3::Display )
+  method get-display ( --> N-GObject )
 
 =end pod
 
-method get-display ( --> Gnome::Gdk3::Display ) {
+method get-display-rk ( --> Gnome::Gdk3::Display ) {
   Gnome::Gdk3::Display.new(
     :native-object(gtk_widget_get_display(self._f('GtkWidget')))
   )
 }
 
-method get-display-no ( --> N-GObject ) {
+method get-display ( --> N-GObject ) {
   gtk_widget_get_display(self._f('GtkWidget'))
 }
 
@@ -2388,16 +2391,16 @@ sub gtk_widget_get_pango_context (
 #-------------------------------------------------------------------------------
 #TM:1:get-parent:
 =begin pod
-=head2 get-parent, get-parent-no
+=head2 get-parent, get-parent-rk
 
 Returns the parent object of this I<widget> or C<undefined> in the case of the native object or invalid in the case of a raku object.
 
-  method get-parent ( --> Gnome::GObject::Object )
-  method get-parent-no ( --> N-GObject )
+  method get-parent-rk ( --> Gnome::GObject::Object )
+  method get-parent ( --> N-GObject )
 
 =end pod
 
-method get-parent ( --> Gnome::GObject::Object ) {
+method get-parent-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent(self._f('GtkWidget'));
   if ?$no {
     self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
@@ -2409,7 +2412,7 @@ method get-parent ( --> Gnome::GObject::Object ) {
   }
 }
 
-method get-parent-no ( --> N-GObject ) {
+method get-parent ( --> N-GObject ) {
   gtk_widget_get_parent(self._f('GtkWidget'))
 }
 
@@ -2421,18 +2424,18 @@ sub gtk_widget_get_parent (
 #-------------------------------------------------------------------------------
 #TM:1:get-parent-window:
 =begin pod
-=head2 get-parent-window, get-parent-window-no
+=head2 get-parent-window, get-parent-window-rk
 
 Gets I<widget>’s parent window, or C<undefined> if it does not have one.
 
 Returns: the parent window of I<widget>, or C<undefined> if it does not have a parent window.
 
-  method get-parent-window ( --> Gnome::GObject::Object )
-  method get-parent-window-no ( --> N-GObject )
+  method get-parent-window-rk ( --> Gnome::GObject::Object )
+  method get-parent-window ( --> N-GObject )
 
 =end pod
 
-method get-parent-window ( --> Gnome::GObject::Object ) {
+method get-parent-window-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent_window(self._f('GtkWidget'));
   if ?$no {
     self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
@@ -2444,7 +2447,7 @@ method get-parent-window ( --> Gnome::GObject::Object ) {
   }
 }
 
-method get-parent-window-no ( --> N-GObject ) {
+method get-parent-window ( --> N-GObject ) {
   gtk_widget_get_parent_window(self._f('GtkWidget'))
 }
 
@@ -2456,25 +2459,25 @@ sub gtk_widget_get_parent_window (
 #-------------------------------------------------------------------------------
 #TM:1:get-path:
 =begin pod
-=head2 get-path, get-path-no
+=head2 get-path, get-path-rk
 
 Returns the B<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget is not connected to a toplevel widget, a partial path will be created.
 
 Returns: The B<Gnome::Gtk3::WidgetPath> representing I<widget>
 
-  method get-path ( --> Gnome::Gtk3::WidgetPath )
-  method get-path-no ( --> N-GObject )
+  method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
+  method get-path ( --> N-GObject )
 
 =end pod
 
-method get-path ( --> Gnome::Gtk3::WidgetPath ) {
+method get-path-rk ( --> Gnome::Gtk3::WidgetPath ) {
   # cannot wrap it because it isn't a N-GObject. It is Boxed!
   Gnome::Gtk3::WidgetPath.new(
     :native-object(gtk_widget_get_path(self._f('GtkWidget')))
   )
 }
 
-method get-path-no ( --> N-GObject ) {
+method get-path ( --> N-GObject ) {
   gtk_widget_get_path(self._f('GtkWidget'))
 }
 
@@ -2792,7 +2795,7 @@ sub gtk_widget_get_scale_factor (
 #-------------------------------------------------------------------------------
 #TM:1:get-screen:
 =begin pod
-=head2 get-screen
+=head2 get-screen, get-screen-rk
 
 Get the B<Gnome::Gdk3::Screen> from the toplevel window associated with this widget. This function can only be called after the widget has been added to a widget hierarchy with a B<Gnome::Gdk3::Window> at the top.
 
@@ -2800,14 +2803,19 @@ In general, you should only create screen specific resources when a widget has b
 
 Returns: the B<Gnome::Gdk3::Screen> for the toplevel for this widget.
 
-  method get-screen ( --> Gnome::Gdk3::Screen )
+  method get-screen-rk ( --> Gnome::Gdk3::Screen )
+  method get-screen ( --> N-GObject )
 
 =end pod
 
-method get-screen ( --> Gnome::Gdk3::Screen ) {
+method get-screen-rk ( --> Gnome::Gdk3::Screen ) {
   Gnome::Gdk3::Screen.new(
     :native-object(gtk_widget_get_screen(self._f('GtkWidget')))
   )
+}
+
+method get-screen ( --> N-GObject ) {
+  gtk_widget_get_screen(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_screen (
@@ -2926,25 +2934,25 @@ sub gtk_widget_get_state_flags (
 #-------------------------------------------------------------------------------
 #TM:0:get-style-context:
 =begin pod
-=head2 get-style-context, get-style-context-no
+=head2 get-style-context, get-style-context-rk
 
 Returns the style context associated to I<widget>. The returned object is guaranteed to be the same for the lifetime of I<widget>.
 
 Returns: a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
 
-  method get-style-context ( --> Gnome::Gtk3::StyleContext )
-  method get-style-context-no ( --> N-GObject )
+  method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
+  method get-style-context ( --> N-GObject )
 
 =end pod
 
-method get-style-context ( --> Gnome::GObject::Object ) {
+method get-style-context-rk ( --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
     gtk_widget_get_style_context(self._f('GtkWidget')),
     'Gtk', 'Gtk3::'
   )
 }
 
-method get-style-context-no ( --> N-GObject ) {
+method get-style-context ( --> N-GObject ) {
   gtk_widget_get_style_context(self._f('GtkWidget'))
 }
 
@@ -3054,18 +3062,18 @@ sub gtk_widget_get_tooltip_text (
 #-------------------------------------------------------------------------------
 #TM:1:get-tooltip-window:
 =begin pod
-=head2 get-tooltip-window, get-tooltip-window-no
+=head2 get-tooltip-window, get-tooltip-window-rk
 
 Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the GtkWindow created by default, or the custom tooltip window set using C<set-tooltip-window()>.
 
 Returns: The B<Gnome::Gtk3::Window> of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-  method get-tooltip-window ( --> Gnome::Gtk3::Window )
-  method get-tooltip-window-no ( --> N-GObject )
+  method get-tooltip-window-rk ( --> Gnome::Gtk3::Window )
+  method get-tooltip-window ( --> N-GObject )
 
 =end pod
 
-method get-tooltip-window ( --> Gnome::GObject::Object ) {
+method get-tooltip-window-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_tooltip_window(self._f('GtkWidget'));
   if $no.defined {
     self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
@@ -3076,7 +3084,7 @@ method get-tooltip-window ( --> Gnome::GObject::Object ) {
   }
 }
 
-method get-tooltip-window-no ( --> N-GObject ) {
+method get-tooltip-window ( --> N-GObject ) {
   gtk_widget_get_tooltip_window(self._f('GtkWidget'))
 }
 
@@ -3088,7 +3096,7 @@ sub gtk_widget_get_tooltip_window (
 #-------------------------------------------------------------------------------
 #TM:1:get-toplevel:
 =begin pod
-=head2 get-toplevel, get-toplevel-no
+=head2 get-toplevel, get-toplevel-rk
 
 This function returns the topmost widget in the container hierarchy I<widget> is a part of. If I<widget> has no parent widgets, it will be returned as the topmost widget. No reference will be added to the returned widget; it should not be unreferenced.
 
@@ -3100,18 +3108,18 @@ return NULL; } ]|
 
 Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
-  method get-toplevel ( --> Gnome::GObject::Widget )
-  method get-toplevel-no ( --> N-GObject )
+  method get-toplevel-rk ( --> Gnome::GObject::Widget )
+  method get-toplevel ( --> N-GObject )
 
 =end pod
 
-method get-toplevel ( --> Gnome::GObject::Object ) {
+method get-toplevel-rk ( --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
     gtk_widget_get_toplevel(self._f('GtkWidget')), 'Gtk', 'Gtk3::'
   )
 }
 
-method get-toplevel-no ( --> N-GObject ) {
+method get-toplevel ( --> N-GObject ) {
   gtk_widget_get_toplevel(self._f('GtkWidget'))
 }
 
@@ -3243,24 +3251,24 @@ sub gtk_widget_get_visible (
 #-------------------------------------------------------------------------------
 #TM:1:get-visual:
 =begin pod
-=head2 get-visual, get-visual-no
+=head2 get-visual, get-visual-rk
 
 Gets the visual that will be used to render I<widget>.
 
 Returns: the visual for I<widget>
 
-  method get-visual ( --> Gnome::Gdk3::Visual )
-  method get-visual-no ( --> N-GObject )
+  method get-visual-rk ( --> Gnome::Gdk3::Visual )
+  method get-visual ( --> N-GObject )
 
 =end pod
 
-method get-visual ( --> Gnome::Gdk3::Visual ) {
+method get-visual-rk ( --> Gnome::Gdk3::Visual ) {
   Gnome::Gdk3::Visual.new(
     :native-object(gtk_widget_get_visual(self._f('GtkWidget')))
   );
 }
 
-method get-visual-no ( --> N-GObject ) {
+method get-visual ( --> N-GObject ) {
   gtk_widget_get_visual(self._f('GtkWidget'))
 }
 
@@ -4060,21 +4068,26 @@ sub gtk_widget_list_action_prefixes (
 #-------------------------------------------------------------------------------
 #TM:1:list-mnemonic-labels:
 =begin pod
-=head2 list-mnemonic-labels
+=head2 list-mnemonic-labels, list-mnemonic-labels-rk
 
 Returns a newly allocated list of the widgets, normally labels, for which this widget is the target of a mnemonic (see for example, C<Gnome::Gtk3::Label.set-mnemonic-widget()>). The widgets in the list are not individually referenced.
 =comment If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call `g-list-foreach (result, (GFunc)g-object-ref, NULL)` first, and then unref all the widgets afterwards.
 
 Returns: the list of mnemonic labels; free this list with C<clear-object()> when you are done with it.
 
-  method list-mnemonic-labels ( --> Gnome::Glib::List )
+  method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
+  method list-mnemonic-labels ( --> N-GList )
 
 =end pod
 
-method list-mnemonic-labels ( --> Gnome::Glib::List ) {
+method list-mnemonic-labels-rk ( --> Gnome::Glib::List ) {
   Gnome::Glib::List.new(
     :native-object(gtk_widget_list_mnemonic_labels(self._f('GtkWidget')))
   )
+}
+
+method list-mnemonic-labels ( --> N-GList ) {
+  gtk_widget_list_mnemonic_labels(self._f('GtkWidget'))
 }
 
 sub gtk_widget_list_mnemonic_labels (

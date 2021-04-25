@@ -308,7 +308,8 @@ subtest 'Manipulations 2', {
       ).base(2);
     }, '.get-modifier-mask()';
 
-  lives-ok { diag 'widget-path: ' ~ $b.get-path.to-string; }, '.get-path()';
+  lives-ok { diag 'widget-path: ' ~ $b.get-path-rk.to-string; },
+    '.get-path-rk()';
 
   $b.set-receives-default(True);
   ok $b.get-receives-default,
@@ -322,26 +323,26 @@ subtest 'Manipulations 2', {
 
   lives-ok { $b.set-redraw-on-allocate(True); }, '.set-redraw-on-allocate()';
 
-  my Gnome::Gtk3::Window $w2 = $b.get-ancestor($w.get-class-gtype);
-  is $w2.get-title, 'My Button In My Window', '.get-ancestor(Int)';
-  $w2 = $b.get-ancestor('GtkWindow');
-  is $w2.get-title, 'My Button In My Window', '.get-ancestor(Str)';
-  $w2 = $b.get-ancestor($w);
+  my Gnome::Gtk3::Window $w2 = $b.get-ancestor-rk($w.get-class-gtype);
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor-rk(Int)';
+  $w2 = $b.get-ancestor-rk('GtkWindow');
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor-rk(Str)';
+  $w2 = $b.get-ancestor-rk($w);
   is $w2.get-title, 'My Button In My Window',
-    '.get-ancestor(Gnome::Gtk3::Window)';
-  $w2 .= new(:native-object($b.get-ancestor-no($w.get-class-gtype)));
-  is $w2.get-title, 'My Button In My Window', '.get-ancestor-no(Str)';
+    '.get-ancestor-rk(Gnome::Gtk3::Window)';
+  $w2 .= new(:native-object($b.get-ancestor($w.get-class-gtype)));
+  is $w2.get-title, 'My Button In My Window', '.get-ancestor(Int)';
 
-  my Gnome::Gtk3::Grid $g2 = $b.get-parent;
+  my Gnome::Gtk3::Grid $g2 = $b.get-parent-rk;
   my Gnome::Glib::List $list .= new(:native-object($g2.get-children));
   is $list.length, 1, '.get-parent(): ' ~ $list.length;
 
 # TODO don't understand next tests. It returns a button.
 #`{{
-  $w2 .= new(:native-object($b.get-parent-window-no));
-  is $w2.get-title, 'My Button In My Window', '.get-parent-window-no()';
+  $w2 .= new(:native-object($b.get-parent-window));
+  is $w2.get-title, 'My Button In My Window', '.get-parent-window()';
 
-  $w2 = $b.get-parent-window-no;
+  $w2 = $b.get-parent-window;
   is $w2.get-title, 'My Button In My Window', '.get-parent-window()';
 }}
 
@@ -354,8 +355,8 @@ subtest 'Manipulations 2', {
   is $b.get-tooltip-window.^name, 'Gnome::Gtk3::Window',
     '.get-tooltip-window()';
 }}
-  is $b.get-toplevel.^name, 'Gnome::Gtk3::Window', '.get-toplevel()';
-  is $b.get-visual.^name, 'Gnome::Gdk3::Visual', '.get-visual()';
+  is $b.get-toplevel-rk.^name, 'Gnome::Gtk3::Window', '.get-toplevel()';
+  is $b.get-visual-rk.^name, 'Gnome::Gdk3::Visual', '.get-visual()';
 
   $b.destroy;
   $w.destroyed($b);
@@ -373,9 +374,10 @@ subtest 'devices…', {
   $w.set-title('My Button In My Window');
   $w.add($b);
 
-  lives-ok {diag 'display name: ' ~ $b.get-display.get-name;}, '.get-display()';
-  lives-ok {diag 'display name: ' ~ $b.get-screen.get-display.get-name;},
-      'get-screen()';
+  lives-ok {diag 'display name: ' ~ $b.get-display-rk.get-name;},
+    '.get-display()';
+  lives-ok {diag 'display name: ' ~ $b.get-screen-rk.get-display-rk.get-name;},
+    'get-screen()';
 }
 
 #`{{ drop
