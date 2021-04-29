@@ -6,6 +6,34 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-04-29 0.39.2:
+* Improve docs of Grid, Container and Fixed. Added some tests for Container.
+* Add a method `get-child-at-rk()` to return a raku object. `get-child-at()` returns a native object.
+* Now that it is possible to return raku widget objects I've started experimenting with callbacks too. Normally they will always get native objects which need to be imported into a raku object to be able to call any methods. In the **Gnome::Gtk3::Container** module there is this `foreach()` method which in turn calls a callback routine for each widget in its container. The widget in the argument is provided as a **N-GObject**. The experiment now is as follows; providing a callback method will as normal get a native object except when the name of the callback ends in `-rk`. In that case it returns a raku widget object. The next test taken from `t/Container.t` shows the differences.
+  ```
+  class X {
+    method cb ( N-GObject $no, :$label ) {
+      my Gnome::Gtk3::Widget $w .= new(:native-object($no));
+      is $w.widget-get-name(), 'GtkLabel', '.foreach(): callback()';
+      my Gnome::Gtk3::Label $l .= new(:native-object($no));
+      is $l.get-text, $label, 'label text';
+    }
+
+    # In this case we only expect a Label!
+    method cb-rk ( Gnome::Gtk3::Label $rk, :$label ) {
+      is $rk.widget-get-name, 'GtkLabel', '.foreach(): callback-rk()';
+      is $rk.get-text, $label, 'label text';
+    }
+  }
+
+  # The button has a Bin and a Container as its parent and grandparent.
+  # The label is a widget contained in the button.
+  my Gnome::Gtk3::Button $b $b .= new(:label<some-text>);
+  $b.foreach( X.new, 'cb', :label<some-text>);
+  $b.foreach( X.new, 'cb-rk', :label<some-text>);
+  ```
+  This is maybe a nice solution and in line with the remarks in previous entries about methods with the `-rk` extentions.
+
 #### 2021-04-25 0.39.1:
 * It hounts me at night that I break code `sigh…` :sleeping:. Even that I am allowed to do it (version < 1.0.0) I have slept restles. So, might have to make a change so that code will not break. The following will be done to remedy my sleepless nights :smile:
   * Methods returning native objects are kept as it is, i.e. no `-no` added to the method name.
@@ -26,7 +54,7 @@ layout: sidebar
 * Improve **Gnome::Gtk3::Widget** docs and tests. Changes are
   * `.get-display(… --> Gnome::Gdk3::Display)`.
   * `.get-path(… --> Gnome::Gtk3::WidgetPath)`.
-* Improved **Gnome::Gdk3::Screen** because of some bugfix. I am experimenting with an extra method when originally a native object was returned but the new method now returns a Raku object. To support the older method I have added methods like `.xyz-no( … --> N-GObject)` next to `.xyz( … --> Gnome::Gxyz::Xyz)`. Changes are;
+* Improved **Gnome::Gdk3::Screen** because of some bugfix. I am experimenting with an extra method when originally a native object was returned but the new method now returns a raku object. To support the older method I have added methods like `.xyz-no( … --> N-GObject)` next to `.xyz( … --> Gnome::Gxyz::Xyz)`. Changes are;
   * `.get-display ( --> Gnome::Gdk3::Display )`.
   * `.get-rgba-visual ( --> Gnome::Gdk3::Visual )`.
   * `.get-root-window ( --> Gnome::Gdk3::Window )`.
@@ -39,7 +67,7 @@ layout: sidebar
   * Circular dependencies. This happens when one type can produce another type while that second type can in turn produce the first one. This happens for example between classes **Gnome::Gdk3::Screen** and **Gnome::Gdk3::Visual**
   * Many methods are not always needed and a module needed to create an object would be loaded unnecessarely. The call will postpone the loading until needed.
 
-  With all this, there is still a Rakudo bug issue [#3075](https://github.com/rakudo/rakudo/issues/3075) unsolved. It states that sometimes the loading of symbols while using `require` goes wrong sometimes. Related issues are [#3722](https://github.com/rakudo/rakudo/issues/3722). So, when you run into such a problem, you can then use the `xyz-no( … --> N-GObject)` type of routine which will not use the `require` call and you can create the object using `my Gnome::Xyz::Abc $abc .= new(:native-object(xyz-no(…))`
+  With all this, there is still a rakudo bug issue [#3075](https://github.com/rakudo/rakudo/issues/3075) unsolved. It states that sometimes the loading of symbols while using `require` goes wrong sometimes. Related issues are [#3722](https://github.com/rakudo/rakudo/issues/3722). So, when you run into such a problem, you can then use the `xyz-no( … --> N-GObject)` type of routine which will not use the `require` call and you can create the object using `my Gnome::Xyz::Abc $abc .= new(:native-object(xyz-no(…))`
 
 * New module **Gnome::Gtk3::EventBox**.
 
@@ -73,7 +101,7 @@ layout: sidebar
 #### 2021-03-02 0.36.2:
 Please note that in this version a few API modifications are made to some of the methods, e.g. in **Gnome::Gtk3::ColorChooser**. In the future more of this kind of changes will take place because of the implementation of real methods as opposed to the search methods starting in a FALLBACK().
 Implementation of methods alongside each native subroutine was started because it made the access to the native subroutines faster.
-Because those methods are then implemented in the same module, it is also clear, most of the time, what type of object is returned. It is then also possible to return the Raku object instead of the native object.
+Because those methods are then implemented in the same module, it is also clear, most of the time, what type of object is returned. It is then also possible to return the raku object instead of the native object.
 Other changes are also applied. For instance, `gboolean` values become truly `Bool` instead of the `Int` returned from the native sub. Also enumerated values can be correctly returned through the use of the method.
 
 For example originally the call to `gtk_color_chooser_get_rgba()` defined in **Gnome::Gtk3::ColorChooser**, you had to do;
@@ -142,9 +170,9 @@ My sincere apologies for breaking code 😐. It is however not possible, to my k
 
 #### 2020-11-24 0.34.1:
 * Doc changes;
-  - using **Gnome::N::GlibToRakuTypes**, types are replaced with types from that module giving a benefit of central coordination of glib types while keeping the native subs as closely as they are described.
+  - using **Gnome::N::GlibTorakuTypes**, types are replaced with types from that module giving a benefit of central coordination of glib types while keeping the native subs as closely as they are described.
 * AboutDialog; changed some native subs to get rid of the use of CArray[] looking from the users side.
-* Bug fix in TreeModel. `.gtk_tree_model_get_column_type()` should return uint32 instead of int32 because returned type is unsigned. This will be replaced by GType from GlibToRakuTypes mentioned above.
+* Bug fix in TreeModel. `.gtk_tree_model_get_column_type()` should return uint32 instead of int32 because returned type is unsigned. This will be replaced by GType from GlibTorakuTypes mentioned above.
 
 #### 2020-11-15 0.34.0:
 * Add module **Gnome::Gtk3::Tooltip**.
@@ -205,7 +233,7 @@ My sincere apologies for breaking code 😐. It is however not possible, to my k
 
 #### 2020-06-09 0.28.6:
 * Add Gnome::Gtk3::DrawingArea. First experiments to use Cairo.
-* It is a pitty that I cannot use the Raku Cairo package of Timo because I cannot fit it into the calls of the existing Gnome packages. An entire new project is created called Gnome::Cairo. Need to mention that Cairo is not a Gnome product but named here this way because the way to access the classes and methods are about the same as with the other Gnome projects of mine.
+* It is a pitty that I cannot use the raku Cairo package of Timo because I cannot fit it into the calls of the existing Gnome packages. An entire new project is created called Gnome::Cairo. Need to mention that Cairo is not a Gnome product but named here this way because the way to access the classes and methods are about the same as with the other Gnome projects of mine.
 * Added gtk_widget_draw() to Gnome::Gtk3::Widget and tested the draw signal.
 * Added gdk_window_create_similar_surface() and gdk_window_create_similar_image_surface() to Gnome::Gdk3::Window.
 * Modified convert-to-natives() in Gnome::N::TopLevelClassSupport that it checks for destination argument type. When it detects num32 or num64 all source values are coerced using .Num(). This means that next examples are now valid for Num arguments; 10, 1/2, 0e2, '2.3' (these are Int, Rat, Num and Str resp).
@@ -322,7 +350,7 @@ My sincere apologies for breaking code 😐. It is however not possible, to my k
 
 #### 2020-01-10 0.21.2:
 * Repo renaming. All perl6-gnome-* packages renamed to 'gnome-*'.
-* All texts Perl\s*6 or p6 is renamed to Raku or raku depending on use.
+* All texts Perl\s*6 or p6 is renamed to raku or raku depending on use.
 * Some image files wit perl6 in the name are renamed.
 * Remaining tasks of renaming process comes at a later phase when v6.e or even v6.f.
   - Change of extensions

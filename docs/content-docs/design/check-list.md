@@ -112,7 +112,7 @@ ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Container                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| ✓|
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
