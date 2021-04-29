@@ -105,7 +105,6 @@ Create a Grid object using a native object returned from a builder. See also B<G
 #TM:1:new():
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -143,27 +142,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s
 }
-
-#-------------------------------------------------------------------------------
-#TM:1:_gtk_grid_new:
-#`{{
-=begin pod
-=head2 _gtk_grid_new
-
-Creates a new grid widget.
-
-Returns: the new B<Gnome::Gtk3::Grid>
-
-  method _gtk_grid_new ( --> N-GObject )
-
-
-=end pod
-}}
-
-sub _gtk_grid_new (  --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_grid_new')
-  { * }
 
 #-------------------------------------------------------------------------------
 #TM:1:attach:
@@ -235,6 +213,27 @@ sub gtk_grid_attach_next_to ( N-GObject $grid, N-GObject $child, N-GObject $sibl
   { * }
 
 #-------------------------------------------------------------------------------
+#TM:4:get-baseline-row:
+=begin pod
+=head2 get-baseline-row
+
+Returns which row defines the global baseline of I<grid>.
+
+  method get-baseline-row ( --> Int )
+
+=end pod
+
+method get-baseline-row ( --> Int ) {
+  gtk_grid_get_baseline_row(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_grid_get_baseline_row ( N-GObject $grid --> gint )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
 #TM:4:get-child-at:
 =begin pod
 =head2 get-child-at
@@ -257,6 +256,119 @@ method get-child-at ( Int $left, Int $top --> N-GObject ) {
 }
 
 sub gtk_grid_get_child_at ( N-GObject $grid, gint $left, gint $top --> N-GObject )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:4:get-column-homogeneous:
+=begin pod
+=head2 get-column-homogeneous
+
+Returns whether all columns of I<grid> have the same width.
+
+  method get-column-homogeneous ( --> Bool )
+
+=end pod
+
+method get-column-homogeneous ( --> Bool ) {
+  gtk_grid_get_column_homogeneous(
+    self.get-native-object-no-reffing,
+  ).Bool;
+}
+
+sub gtk_grid_get_column_homogeneous ( N-GObject $grid --> gboolean )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:4:get-column-spacing:
+=begin pod
+=head2 get-column-spacing
+
+Returns the amount of space between the columns of I<grid>.
+
+  method get-column-spacing ( --> UInt )
+
+=end pod
+
+method get-column-spacing ( --> UInt ) {
+  gtk_grid_get_column_spacing(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_grid_get_column_spacing ( N-GObject $grid --> guint )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:4:get-row-baseline-position:
+=begin pod
+=head2 get-row-baseline-position
+
+Returns the baseline position of I<row> as set by C<gtk_grid_set_row_baseline_position()> or the default value C<GTK_BASELINE_POSITION_CENTER>.
+
+Returns: the baseline position of I<row>
+
+  method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
+
+=item Int $row; a row index
+
+=end pod
+
+method get-row-baseline-position ( Int $row --> GtkBaselinePosition ) {
+  GtkBaselinePosition(
+    gtk_grid_get_row_baseline_position(
+      self.get-native-object-no-reffing, $row
+    )
+  );
+}
+
+sub gtk_grid_get_row_baseline_position ( N-GObject $grid, gint $row --> GEnum )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:4:get-row-homogeneous:
+=begin pod
+=head2 get-row-homogeneous
+
+Returns whether all rows of I<grid> have the same height.
+
+  method get-row-homogeneous ( --> Bool )
+
+=end pod
+
+method get-row-homogeneous ( --> Bool ) {
+  gtk_grid_get_row_homogeneous(
+    self.get-native-object-no-reffing,
+  ).Bool;
+}
+
+sub gtk_grid_get_row_homogeneous ( N-GObject $grid --> gboolean )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:4:get-row-spacing:
+=begin pod
+=head2 get-row-spacing
+
+Returns the amount of space between the rows of I<grid>.
+
+Returns: the row spacing of I<grid>
+
+  method get-row-spacing ( --> UInt )
+
+=end pod
+
+method get-row-spacing ( --> UInt ) {
+  gtk_grid_get_row_spacing(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_grid_get_row_spacing ( N-GObject $grid --> guint )
   is native(&gtk-lib)
   { * }
 
@@ -307,52 +419,6 @@ sub gtk_grid_insert_column ( N-GObject $grid, gint $position  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:remove-row:
-=begin pod
-=head2 remove-row
-
-Removes a row from the grid.  Children that are placed in this row are removed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up.
-
-  method remove-row ( Int $position )
-
-=item Int $position; the position of the row to remove
-
-=end pod
-
-method remove-row ( Int $position ) {
-  gtk_grid_remove_row(
-    self.get-native-object-no-reffing, $position
-  );
-}
-
-sub gtk_grid_remove_row ( N-GObject $grid, gint $position  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:4:remove-column:
-=begin pod
-=head2 remove-column
-
-Removes a column from the grid.  Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left.
-
-  method remove-column ( Int $position )
-
-=item Int $position; the position of the column to remove
-
-=end pod
-
-method remove-column ( Int $position ) {
-  gtk_grid_remove_column(
-    self.get-native-object-no-reffing, $position
-  );
-}
-
-sub gtk_grid_remove_column ( N-GObject $grid, gint $position  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
 #TM:1:insert-next-to:
 =begin pod
 =head2 insert-next-to
@@ -381,94 +447,67 @@ sub gtk_grid_insert_next_to (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set-row-homogeneous:
+#TM:4:remove-column:
 =begin pod
-=head2 set-row-homogeneous
+=head2 remove-column
 
-Sets whether all rows of I<grid> will have the same height.
+Removes a column from the grid.  Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left.
 
-  method set-row-homogeneous ( Bool $homogeneous )
+  method remove-column ( Int $position )
 
-=item Int $homogeneous; C<True> to make rows homogeneous
+=item Int $position; the position of the column to remove
 
 =end pod
 
-method set-row-homogeneous ( Bool $homogeneous ) {
-  gtk_grid_set_row_homogeneous(
-    self.get-native-object-no-reffing, $homogeneous.Int
+method remove-column ( Int $position ) {
+  gtk_grid_remove_column(
+    self.get-native-object-no-reffing, $position
   );
 }
 
-sub gtk_grid_set_row_homogeneous ( N-GObject $grid, gboolean $homogeneous  )
+sub gtk_grid_remove_column ( N-GObject $grid, gint $position  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:get-row-homogeneous:
+#TM:1:remove-row:
 =begin pod
-=head2 get-row-homogeneous
+=head2 remove-row
 
-Returns whether all rows of I<grid> have the same height.
+Removes a row from the grid.  Children that are placed in this row are removed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up.
 
-  method get-row-homogeneous ( --> Bool )
+  method remove-row ( Int $position )
 
+=item Int $position; the position of the row to remove
 
 =end pod
 
-method get-row-homogeneous ( --> Bool ) {
-  gtk_grid_get_row_homogeneous(
-    self.get-native-object-no-reffing,
-  ).Bool;
+method remove-row ( Int $position ) {
+  gtk_grid_remove_row( self.get-native-object-no-reffing, $position);
 }
 
-sub gtk_grid_get_row_homogeneous ( N-GObject $grid --> gboolean )
+sub gtk_grid_remove_row ( N-GObject $grid, gint $position  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set-row-spacing:
+#TM:4:set-baseline-row:
 =begin pod
-=head2 set-row-spacing
+=head2 set-baseline-row
 
-Sets the amount of space between rows of I<grid>.
+Sets which row defines the global baseline for the entire grid. Each row in the grid can have its own local baseline, but only one of those is global, meaning it will be the baseline in the parent of the I<grid>.
 
-  method set-row-spacing ( UInt $spacing )
+  method set-baseline-row ( Int $row )
 
-=item UInt $spacing; the amount of space to insert between rows
+=item Int $row; the row index
 
 =end pod
 
-method set-row-spacing ( UInt $spacing ) {
-  gtk_grid_set_row_spacing(
-    self.get-native-object-no-reffing, $spacing
-  );
+method set-baseline-row ( Int $row ) {
+  gtk_grid_set_baseline_row( self.get-native-object-no-reffing, $row);
 }
 
-sub gtk_grid_set_row_spacing ( N-GObject $grid, guint $spacing  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:4:get-row-spacing:
-=begin pod
-=head2 get-row-spacing
-
-Returns the amount of space between the rows of I<grid>.
-
-Returns: the row spacing of I<grid>
-
-  method get-row-spacing ( --> UInt )
-
-
-=end pod
-
-method get-row-spacing ( --> UInt ) {
-  gtk_grid_get_row_spacing(
-    self.get-native-object-no-reffing,
-  );
-}
-
-sub gtk_grid_get_row_spacing ( N-GObject $grid --> guint )
+sub gtk_grid_set_baseline_row ( N-GObject $grid, gint $row  )
   is native(&gtk-lib)
   { * }
 
@@ -496,28 +535,6 @@ sub gtk_grid_set_column_homogeneous ( N-GObject $grid, gboolean $homogeneous  )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:get-column-homogeneous:
-=begin pod
-=head2 get-column-homogeneous
-
-Returns whether all columns of I<grid> have the same width.
-
-  method get-column-homogeneous ( --> Bool )
-
-
-=end pod
-
-method get-column-homogeneous ( --> Bool ) {
-  gtk_grid_get_column_homogeneous(
-    self.get-native-object-no-reffing,
-  ).Bool;
-}
-
-sub gtk_grid_get_column_homogeneous ( N-GObject $grid --> gboolean )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
 #TM:4:set-column-spacing:
 =begin pod
 =head2 set-column-spacing
@@ -537,28 +554,6 @@ method set-column-spacing ( UInt $spacing ) {
 }
 
 sub gtk_grid_set_column_spacing ( N-GObject $grid, guint $spacing  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:4:get-column-spacing:
-=begin pod
-=head2 get-column-spacing
-
-Returns the amount of space between the columns of I<grid>.
-
-  method get-column-spacing ( --> UInt )
-
-
-=end pod
-
-method get-column-spacing ( --> UInt ) {
-  gtk_grid_get_column_spacing(
-    self.get-native-object-no-reffing,
-  );
-}
-
-sub gtk_grid_get_column_spacing ( N-GObject $grid --> guint )
   is native(&gtk-lib)
   { * }
 
@@ -587,73 +582,67 @@ sub gtk_grid_set_row_baseline_position ( N-GObject $grid, gint $row, GEnum $pos 
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:get-row-baseline-position:
+#TM:4:set-row-homogeneous:
 =begin pod
-=head2 get-row-baseline-position
+=head2 set-row-homogeneous
 
-Returns the baseline position of I<row> as set by C<gtk_grid_set_row_baseline_position()> or the default value C<GTK_BASELINE_POSITION_CENTER>.
+Sets whether all rows of I<grid> will have the same height.
 
-Returns: the baseline position of I<row>
+  method set-row-homogeneous ( Bool $homogeneous )
 
-  method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
-
-=item Int $row; a row index
+=item Int $homogeneous; C<True> to make rows homogeneous
 
 =end pod
 
-method get-row-baseline-position ( Int $row --> GtkBaselinePosition ) {
-  GtkBaselinePosition(
-    gtk_grid_get_row_baseline_position(
-      self.get-native-object-no-reffing, $row
-    )
+method set-row-homogeneous ( Bool $homogeneous ) {
+  gtk_grid_set_row_homogeneous(
+    self.get-native-object-no-reffing, $homogeneous.Int
   );
 }
 
-sub gtk_grid_get_row_baseline_position ( N-GObject $grid, gint $row --> GEnum )
+sub gtk_grid_set_row_homogeneous ( N-GObject $grid, gboolean $homogeneous  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set-baseline-row:
+#TM:4:set-row-spacing:
 =begin pod
-=head2 set-baseline-row
+=head2 set-row-spacing
 
-Sets which row defines the global baseline for the entire grid. Each row in the grid can have its own local baseline, but only one of those is global, meaning it will be the baseline in the parent of the I<grid>.
+Sets the amount of space between rows of I<grid>.
 
-  method set-baseline-row ( Int $row )
+  method set-row-spacing ( UInt $spacing )
 
-=item Int $row; the row index
+=item UInt $spacing; the amount of space to insert between rows
 
 =end pod
 
-method set-baseline-row ( Int $row ) {
-  gtk_grid_set_baseline_row(
-    self.get-native-object-no-reffing, $row
+method set-row-spacing ( UInt $spacing ) {
+  gtk_grid_set_row_spacing(
+    self.get-native-object-no-reffing, $spacing
   );
 }
 
-sub gtk_grid_set_baseline_row ( N-GObject $grid, gint $row  )
+sub gtk_grid_set_row_spacing ( N-GObject $grid, guint $spacing  )
   is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:get-baseline-row:
+#TM:1:_gtk_grid_new:
+#`{{
 =begin pod
-=head2 get-baseline-row
+=head2 _gtk_grid_new
 
-Returns which row defines the global baseline of I<grid>.
+Creates a new grid widget.
 
-  method get-baseline-row ( --> Int )
+Returns: the new B<Gnome::Gtk3::Grid>
 
+  method _gtk_grid_new ( --> N-GObject )
 
 =end pod
+}}
 
-method get-baseline-row ( --> Int ) {
-  gtk_grid_get_baseline_row(
-    self.get-native-object-no-reffing,
-  );
-}
-
-sub gtk_grid_get_baseline_row ( N-GObject $grid --> gint )
+sub _gtk_grid_new (  --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_grid_new')
   { * }

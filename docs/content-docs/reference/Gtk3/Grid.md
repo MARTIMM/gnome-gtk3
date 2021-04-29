@@ -116,6 +116,13 @@ Adds a widget to the grid. The widget is placed next to *$sibling*, on the side 
 
   * Int $height; the number of rows that *child* will span
 
+get-baseline-row
+----------------
+
+Returns which row defines the global baseline of *grid*.
+
+    method get-baseline-row ( --> Int )
+
 get-child-at
 ------------
 
@@ -128,6 +135,47 @@ Returns: the child at the given position, or undefined
   * Int $left; the left edge of the cell
 
   * Int $top; the top edge of the cell
+
+get-column-homogeneous
+----------------------
+
+Returns whether all columns of *grid* have the same width.
+
+    method get-column-homogeneous ( --> Bool )
+
+get-column-spacing
+------------------
+
+Returns the amount of space between the columns of *grid*.
+
+    method get-column-spacing ( --> UInt )
+
+get-row-baseline-position
+-------------------------
+
+Returns the baseline position of *row* as set by `gtk_grid_set_row_baseline_position()` or the default value `GTK_BASELINE_POSITION_CENTER`.
+
+Returns: the baseline position of *row*
+
+    method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
+
+  * Int $row; a row index
+
+get-row-homogeneous
+-------------------
+
+Returns whether all rows of *grid* have the same height.
+
+    method get-row-homogeneous ( --> Bool )
+
+get-row-spacing
+---------------
+
+Returns the amount of space between the rows of *grid*.
+
+Returns: the row spacing of *grid*
+
+    method get-row-spacing ( --> UInt )
 
 insert-row
 ----------
@@ -147,24 +195,6 @@ Inserts a column at the specified position. Children which are attached at or to
 
   * Int $position; the position to insert the column at
 
-remove-row
-----------
-
-Removes a row from the grid. Children that are placed in this row are removed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up.
-
-    method remove-row ( Int $position )
-
-  * Int $position; the position of the row to remove
-
-remove-column
--------------
-
-Removes a column from the grid. Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left.
-
-    method remove-column ( Int $position )
-
-  * Int $position; the position of the column to remove
-
 insert-next-to
 --------------
 
@@ -176,39 +206,32 @@ Inserts a row or column at the specified position. The new row or column is plac
 
   * GtkPositionType $side; the side of *sibling* that *child* is positioned next to
 
-set-row-homogeneous
--------------------
+remove-column
+-------------
 
-Sets whether all rows of *grid* will have the same height.
+Removes a column from the grid. Children that are placed in this column are removed, spanning children that overlap this column have their width reduced by one, and children after the column are moved to the left.
 
-    method set-row-homogeneous ( Bool $homogeneous )
+    method remove-column ( Int $position )
 
-  * Int $homogeneous; `True` to make rows homogeneous
+  * Int $position; the position of the column to remove
 
-get-row-homogeneous
--------------------
+remove-row
+----------
 
-Returns whether all rows of *grid* have the same height.
+Removes a row from the grid. Children that are placed in this row are removed, spanning children that overlap this row have their height reduced by one, and children below the row are moved up.
 
-    method get-row-homogeneous ( --> Bool )
+    method remove-row ( Int $position )
 
-set-row-spacing
----------------
+  * Int $position; the position of the row to remove
 
-Sets the amount of space between rows of *grid*.
+set-baseline-row
+----------------
 
-    method set-row-spacing ( UInt $spacing )
+Sets which row defines the global baseline for the entire grid. Each row in the grid can have its own local baseline, but only one of those is global, meaning it will be the baseline in the parent of the *grid*.
 
-  * UInt $spacing; the amount of space to insert between rows
+    method set-baseline-row ( Int $row )
 
-get-row-spacing
----------------
-
-Returns the amount of space between the rows of *grid*.
-
-Returns: the row spacing of *grid*
-
-    method get-row-spacing ( --> UInt )
+  * Int $row; the row index
 
 set-column-homogeneous
 ----------------------
@@ -219,13 +242,6 @@ Sets whether all columns of *grid* will have the same width.
 
   * Int $homogeneous; `True` to make columns homogeneous
 
-get-column-homogeneous
-----------------------
-
-Returns whether all columns of *grid* have the same width.
-
-    method get-column-homogeneous ( --> Bool )
-
 set-column-spacing
 ------------------
 
@@ -234,13 +250,6 @@ Sets the amount of space between columns of *grid*.
     method set-column-spacing ( UInt $spacing )
 
   * UInt $spacing; the amount of space to insert between columns
-
-get-column-spacing
-------------------
-
-Returns the amount of space between the columns of *grid*.
-
-    method get-column-spacing ( --> UInt )
 
 set-row-baseline-position
 -------------------------
@@ -253,30 +262,21 @@ Sets how the baseline should be positioned on *row* of the grid, in case that ro
 
   * GtkBaselinePosition $pos; a **Gnome::Gtk3::BaselinePosition**
 
-get-row-baseline-position
--------------------------
+set-row-homogeneous
+-------------------
 
-Returns the baseline position of *row* as set by `gtk_grid_set_row_baseline_position()` or the default value `GTK_BASELINE_POSITION_CENTER`.
+Sets whether all rows of *grid* will have the same height.
 
-Returns: the baseline position of *row*
+    method set-row-homogeneous ( Bool $homogeneous )
 
-    method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
+  * Int $homogeneous; `True` to make rows homogeneous
 
-  * Int $row; a row index
+set-row-spacing
+---------------
 
-set-baseline-row
-----------------
+Sets the amount of space between rows of *grid*.
 
-Sets which row defines the global baseline for the entire grid. Each row in the grid can have its own local baseline, but only one of those is global, meaning it will be the baseline in the parent of the *grid*.
+    method set-row-spacing ( UInt $spacing )
 
-    method set-baseline-row ( Int $row )
-
-  * Int $row; the row index
-
-get-baseline-row
-----------------
-
-Returns which row defines the global baseline of *grid*.
-
-    method get-baseline-row ( --> Int )
+  * UInt $spacing; the amount of space to insert between rows
 
