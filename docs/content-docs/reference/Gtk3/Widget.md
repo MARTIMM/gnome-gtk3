@@ -1377,8 +1377,8 @@ Returns a newly allocated list of the widgets, normally labels, for which this w
 
 Returns: the list of mnemonic labels; free this list with `clear-object()` when you are done with it.
 
-    method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
     method list-mnemonic-labels ( --> N-GList )
+    method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
 
 map
 ---

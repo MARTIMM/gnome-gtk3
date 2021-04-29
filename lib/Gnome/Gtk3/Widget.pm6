@@ -1548,6 +1548,7 @@ sub gtk_widget_get_allocation (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-ancestor:
+#TM:0:get-ancestor-rk:
 =begin pod
 =head2 get-ancestor, get-ancestor-rk
 
@@ -1888,6 +1889,7 @@ sub gtk_widget_get_direction (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-display:
+#TM:1:get-display-rk:
 =begin pod
 =head2 get-display, get-display-rk
 
@@ -2390,6 +2392,7 @@ sub gtk_widget_get_pango_context (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-parent:
+#TM:1:get-parent-rk:
 =begin pod
 =head2 get-parent, get-parent-rk
 
@@ -2423,6 +2426,7 @@ sub gtk_widget_get_parent (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-parent-window:
+#TM:1:get-parent-window-rk:
 =begin pod
 =head2 get-parent-window, get-parent-window-rk
 
@@ -2458,6 +2462,7 @@ sub gtk_widget_get_parent_window (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-path:
+#TM:1:get-path-rk:
 =begin pod
 =head2 get-path, get-path-rk
 
@@ -2794,6 +2799,7 @@ sub gtk_widget_get_scale_factor (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-screen:
+#TM:1:get-screen-rk:
 =begin pod
 =head2 get-screen, get-screen-rk
 
@@ -2839,10 +2845,7 @@ Returns: C<True> if the widget is sensitive
 =end pod
 
 method get-sensitive ( --> Bool ) {
-
-  gtk_widget_get_sensitive(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_get_sensitive(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_get_sensitive (
@@ -2933,6 +2936,7 @@ sub gtk_widget_get_state_flags (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-style-context:
+#TM:0:get-style-context-rk:
 =begin pod
 =head2 get-style-context, get-style-context-rk
 
@@ -3061,6 +3065,7 @@ sub gtk_widget_get_tooltip_text (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-tooltip-window:
+#TM:1:get-tooltip-window-rk:
 =begin pod
 =head2 get-tooltip-window, get-tooltip-window-rk
 
@@ -3095,6 +3100,7 @@ sub gtk_widget_get_tooltip_window (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-toplevel:
+#TM:1:get-toplevel-rk:
 =begin pod
 =head2 get-toplevel, get-toplevel-rk
 
@@ -3250,6 +3256,7 @@ sub gtk_widget_get_visible (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-visual:
+#TM:1:get-visual-rk:
 =begin pod
 =head2 get-visual, get-visual-rk
 
@@ -4067,6 +4074,7 @@ sub gtk_widget_list_action_prefixes (
 
 #-------------------------------------------------------------------------------
 #TM:1:list-mnemonic-labels:
+#TM:1:list-mnemonic-labels-rk:
 =begin pod
 =head2 list-mnemonic-labels, list-mnemonic-labels-rk
 
@@ -4075,8 +4083,8 @@ Returns a newly allocated list of the widgets, normally labels, for which this w
 
 Returns: the list of mnemonic labels; free this list with C<clear-object()> when you are done with it.
 
-  method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
   method list-mnemonic-labels ( --> N-GList )
+  method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
 
 =end pod
 
