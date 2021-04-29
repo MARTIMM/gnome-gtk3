@@ -77,9 +77,9 @@ my Bool $signals-added = False;
 Create a new Adjustment object.
 
   multi method new (
-    num64 :$value!, num64 :$lower!, num64 :$upper!,
-    num64 :$step-increment!, num64 :$page-increment!,
-    num64 :$page-size!
+    Num() :$value!, Num() :$lower!, Num() :$upper!,
+    Num() :$step-increment!, Num() :$page-increment!,
+    Num() :$page-size!
   )
 
 =item Num $value; the initial value.
