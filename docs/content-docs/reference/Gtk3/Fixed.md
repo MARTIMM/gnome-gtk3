@@ -86,19 +86,6 @@ Create a Fixed object using a native object returned from a builder. See also **
 
     multi method new ( Str :$build-id! )
 
-put
----
-
-Adds a widget to a **Gnome::Gtk3::Fixed** container at the given position.
-
-    method put ( N-GObject $widget, Int $x, Int $y )
-
-  * N-GObject $widget; the widget to add.
-
-  * Int $x; the horizontal position to place the widget at.
-
-  * Int $y; the vertical position to place the widget at.
-
 move
 ----
 
@@ -111,4 +98,17 @@ Moves a child of a **Gnome::Gtk3::Fixed** container to the given position.
   * Int $x; the horizontal position to move the widget to.
 
   * Int $y; the vertical position to move the widget to.
+
+put
+---
+
+Adds a widget to a **Gnome::Gtk3::Fixed** container at the given position.
+
+    method put ( N-GObject $widget, Int $x, Int $y )
+
+  * N-GObject $widget; the widget to add.
+
+  * Int $x; the horizontal position to place the widget at.
+
+  * Int $y; the vertical position to place the widget at.
 
