@@ -123,18 +123,30 @@ Returns which row defines the global baseline of *grid*.
 
     method get-baseline-row ( --> Int )
 
-get-child-at
-------------
+get-child-at, get-child-at-rk
+-----------------------------
 
 Gets the child of *grid* whose area covers the grid cell whose upper left corner is at *left*, *top*.
 
-Returns: the child at the given position, or undefined
+Returns: the child (a native object) at the given position, or undefined. In the `get-child-at-rk` the raku object which can be an invalid object.
 
     method get-child-at ( Int $left, Int $top --> N-GObject )
+    method get-child-at-rk ( Int $left, Int $top --> Gnome::GObject::Object )
 
   * Int $left; the left edge of the cell
 
   * Int $top; the top edge of the cell
+
+### Example
+
+    my Gnome::Gtk3::Button $button .= new(:label('press here'));
+    $g.attach( $button, 0, 0, 1, 1);
+    …
+    # Some time later and elsewhere
+    my Gnome::Gtk3::Button $b = $g.get-child-at-rk( 0, 0);
+    if $b.is-valid {
+      …
+    }
 
 get-column-homogeneous
 ----------------------
@@ -157,7 +169,9 @@ Returns the baseline position of *row* as set by `gtk_grid_set_row_baseline_posi
 
 Returns: the baseline position of *row*
 
-    method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
+    method get-row-baseline-position (
+      Int $row --> GtkBaselinePosition
+    )
 
   * Int $row; a row index
 
@@ -256,11 +270,13 @@ set-row-baseline-position
 
 Sets how the baseline should be positioned on *row* of the grid, in case that row is assigned more space than is requested.
 
-    method set-row-baseline-position ( Int $row, GtkBaselinePosition $pos )
+    method set-row-baseline-position (
+      Int $row, GtkBaselinePosition $pos
+    )
 
   * Int $row; a row index
 
-  * GtkBaselinePosition $pos; a **Gnome::Gtk3::BaselinePosition**
+  * GtkBaselinePosition $pos; an enumeration type
 
 set-row-homogeneous
 -------------------

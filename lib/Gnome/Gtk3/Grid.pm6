@@ -66,6 +66,8 @@ use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::N::GlibToRakuTypes;
 
+use Gnome::GObject::Object;
+
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::Orientable;
 use Gnome::Gtk3::Enums;
@@ -235,23 +237,44 @@ sub gtk_grid_get_baseline_row ( N-GObject $grid --> gint )
 
 #-------------------------------------------------------------------------------
 #TM:4:get-child-at:
+#TM:1:get-child-at-rk:
 =begin pod
-=head2 get-child-at
+=head2 get-child-at, get-child-at-rk
 
 Gets the child of I<grid> whose area covers the grid cell whose upper left corner is at I<left>, I<top>.
 
-Returns: the child at the given position, or undefined
+Returns: the child (a native object) at the given position, or undefined. In the C<get-child-at-rk> the raku object which can be an invalid object.
 
   method get-child-at ( Int $left, Int $top --> N-GObject )
+  method get-child-at-rk ( Int $left, Int $top --> Gnome::GObject::Object )
 
 =item Int $left; the left edge of the cell
 =item Int $top; the top edge of the cell
+
+=head3 Example
+
+  my Gnome::Gtk3::Button $button .= new(:label('press here'));
+  $g.attach( $button, 0, 0, 1, 1);
+  …
+  # Some time later and elsewhere
+  my Gnome::Gtk3::Button $b = $g.get-child-at-rk( 0, 0);
+  if $b.is-valid {
+    …
+  }
 
 =end pod
 
 method get-child-at ( Int $left, Int $top --> N-GObject ) {
   gtk_grid_get_child_at(
     self.get-native-object-no-reffing, $left, $top
+  );
+}
+
+method get-child-at-rk ( Int $left, Int $top --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_grid_get_child_at(
+      self.get-native-object-no-reffing, $left, $top
+    ), 'Gtk', 'Gtk3::'
   );
 }
 
@@ -310,7 +333,9 @@ Returns the baseline position of I<row> as set by C<gtk_grid_set_row_baseline_po
 
 Returns: the baseline position of I<row>
 
-  method get-row-baseline-position ( Int $row --> GtkBaselinePosition )
+  method get-row-baseline-position (
+    Int $row --> GtkBaselinePosition
+  )
 
 =item Int $row; a row index
 
@@ -564,10 +589,12 @@ sub gtk_grid_set_column_spacing ( N-GObject $grid, guint $spacing  )
 
 Sets how the baseline should be positioned on I<row> of the grid, in case that row is assigned more space than is requested.
 
-  method set-row-baseline-position ( Int $row, GtkBaselinePosition $pos )
+  method set-row-baseline-position (
+    Int $row, GtkBaselinePosition $pos
+  )
 
 =item Int $row; a row index
-=item GtkBaselinePosition $pos; a B<Gnome::Gtk3::BaselinePosition>
+=item GtkBaselinePosition $pos; an enumeration type
 
 =end pod
 

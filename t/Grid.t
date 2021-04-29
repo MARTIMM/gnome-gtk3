@@ -48,6 +48,9 @@ subtest 'Manipulations', {
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
 
+  my Gnome::Gtk3::Button $b = $g.get-child-at-rk( 0, 0);
+  is $b.get-label, 'press here', '.get-child-at-rk()';
+
   $g.remove-column(0);
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
