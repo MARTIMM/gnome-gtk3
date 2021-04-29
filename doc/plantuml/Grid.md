@@ -26,10 +26,10 @@ Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
-Gnome::Gtk3::Buildable <|. Gnome::Gtk3::Widget
-Gnome::Gtk3::Widget <|-- Gnome::Gtk3::Container
-Gnome::Gtk3::Grid -|> Gnome::Gtk3::Container
-Gnome::Gtk3::Orientable <|. Gnome::Gtk3::Grid
+Gnome::Gtk3::Widget ..|> Gnome::Gtk3::Buildable
+Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Container <|- Gnome::Gtk3::Grid
+Gnome::Gtk3::Grid ..|> Gnome::Gtk3::Orientable
 
 @enduml
 ```
