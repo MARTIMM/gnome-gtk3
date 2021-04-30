@@ -76,23 +76,47 @@ subtest 'Manipulations1', {
 subtest 'Manipulations2', {
   subtest 'container foreach', {
     class X {
-      method cb ( N-GObject $no, :$label ) {
+      method cb1 ( N-GObject $no, :$label ) {
         my Gnome::Gtk3::Widget $w .= new(:native-object($no));
-        is $w.widget-get-name, 'GtkLabel', '.foreach(): callback()';
+        is $w.widget-get-name, 'GtkLabel', '.foreach(): cb1()';
         my Gnome::Gtk3::Label $l .= new(:native-object($no));
         is $l.get-text, $label, 'label text';
       }
 
-      method cb-rk ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.widget-get-name, 'GtkLabel', '.foreach(): callback-rk()';
+      method cb1-rk ( Gnome::Gtk3::Label $rk, :$label ) {
+        is $rk.widget-get-name, 'GtkLabel', '.foreach(): cb1-rk()';
         is $rk.get-text, $label, 'label text';
+      }
+
+      method cb2 ( Gnome::Gtk3::Label $rk, :$label ) {
+        is $rk.widget-get-name, 'GtkLabel',
+          '.foreach(): cb2() :give-raku-objects';
+        is $rk.get-text, $label, 'label text';
+      }
+
+      method cb3 ( $o, Str :$label, Bool :$give-raku-objects = False ) {
+        if $give-raku-objects {
+          is $o.widget-get-name, 'GtkLabel',
+            '.foreach(): cb3() :give-raku-objects';
+          is $o.get-text, $label, 'label text';
+        }
+
+        else {
+          my Gnome::Gtk3::Widget $w .= new(:native-object($o));
+          is $w.widget-get-name, 'GtkLabel', '.foreach(): cb3()';
+          my Gnome::Gtk3::Label $l .= new(:native-object($o));
+          is $l.get-text, $label, 'label text';
+        }
       }
     }
 
     #Gnome::N::debug(:on);
     $b .= new(:label<some-text>);
-    $b.foreach( X.new, 'cb', :label<some-text>);
-    $b.foreach( X.new, 'cb-rk', :label<some-text>);
+    $b.foreach( X.new, 'cb1', :label<some-text>);
+    $b.foreach( X.new, 'cb1-rk', :label<some-text>);
+    $b.foreach( X.new, 'cb2', :label<some-text>, :give-raku-objects);
+    $b.foreach( X.new, 'cb3', :label<some-text>);
+    $b.foreach( X.new, 'cb3', :label<some-text>, :give-raku-objects);
     #Gnome::N::debug(:off);
   }
 

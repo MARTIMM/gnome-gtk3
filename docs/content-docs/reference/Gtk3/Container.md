@@ -124,14 +124,16 @@ Most applications should use `foreach()`, rather than `forall()`.
 
   * Str $callback-name; method name of the callback. A name ending in `-rk` gets a raku widget instead of a native object.
 
-  * Pointer $callback_data; callback user data
+  * %user-options; A list of named arguments which are provided to the callback. A special named argumend, `:give-raku-objects`, is used to provide raku objects instead of the native objects in the same way the extension `-rk` would do. This might be a better way because one can check the named argument if a raku object is provided or not, see examples below.
+
+**Note that this is an experiment, It might be that only the named argument name is used or the method name**.
 
 ### Example
 
-An example from the `t/Container.t` test program;
+An example from the `t/Container.t` test program where both methods are used;
 
     class X {
-      method cb ( N-GObject $no, :$label ) {
+      method cb1 ( N-GObject $no, :$label ) {
         my Gnome::Gtk3::Widget $w .= new(:native-object($no));
         is $w.widget-get-name, 'GtkLabel', '.foreach(): callback()';
         my Gnome::Gtk3::Label $l .= new(:native-object($no));
@@ -140,9 +142,29 @@ An example from the `t/Container.t` test program;
 
       # In this case we only expect a Label because a Container can hold
       # many items but a Bin only one which is a label!
-      method cb-rk ( Gnome::Gtk3::Label $rk, :$label ) {
+      method cb1-rk ( Gnome::Gtk3::Label $rk, :$label ) {
         is $rk.widget-get-name, 'GtkLabel', '.foreach(): callback-rk()';
         is $rk.get-text, $label, 'label text';
+      }
+
+      method cb2 ( Gnome::Gtk3::Label $rk, :$label ) {
+        is $rk.widget-get-name, 'GtkLabel', '.foreach(): :give-raku-objects';
+        is $rk.get-text, $label, 'label text';
+      }
+
+      method cb3 ( $o, Str :$label, Bool :$give-raku-objects = False ) {
+        if $give-raku-objects {
+          is $o.widget-get-name, 'GtkLabel',
+            '.foreach(): cb3() :give-raku-objects';
+          is $o.get-text, $label, 'label text';
+        }
+
+        else {
+          my Gnome::Gtk3::Widget $w .= new(:native-object($o));
+          is $w.widget-get-name, 'GtkLabel', '.foreach(): cb3()';
+          my Gnome::Gtk3::Label $l .= new(:native-object($o));
+          is $l.get-text, $label, 'label text';
+        }
       }
     }
 
@@ -151,6 +173,9 @@ An example from the `t/Container.t` test program;
     $b .= new(:label<some-text>);
     $b.foreach( X.new, 'cb', :label<some-text>);
     $b.foreach( X.new, 'cb-rk', :label<some-text>);
+    $b.foreach( X.new, 'cb2', :label<some-text>, :give-raku-objects);
+    $b.foreach( X.new, 'cb3', :label<some-text>);
+    $b.foreach( X.new, 'cb3', :label<some-text>, :give-raku-objects);
 
 get-border-width
 ----------------
