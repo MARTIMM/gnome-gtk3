@@ -128,7 +128,7 @@ Register a handler to process a signal or an event. There are several types of c
             Gnome::Gtk3::Button :_widget($button) is copy,
             N-GObject :_native-object($no)
           ) {
-            $button .= new(:native-object($no)) unless $w.is-valid;
+            $button .= new(:native-object($no)) unless $button.is-valid;
             …
           }
 
@@ -138,7 +138,16 @@ The method returns a handler id which can be used for example to disconnect the 
 
   * Simple handlers; e.g. a click event handler has only named arguments and are optional.
 
-  * Complex handlers (only a bit) also have positional arguments and **MUST** be typed because they are checked, after which a new signature is created for the call to a native subroutine.
+  * Complex handlers (only a bit) also have positional arguments and **MUST** be typed because they are checked, after which a new signature is created for the call to a native subroutine. You can use the native types like `int32` but several raku types are automatically converted to native types. The types such as gboolean, etc are defined in **Gnome::N::GlibToRakuTypes**.
+
+    <table class="pod-table">
+    <thead><tr>
+    <th>Raku type</th> <th>Native type</th>
+    </tr></thead>
+    <tbody>
+    <tr> <td>Bool</td> <td>gboolean</td> </tr> <tr> <td>UInt</td> <td>guint</td> </tr> <tr> <td>Int</td> <td>gint</td> </tr> <tr> <td>Num</td> <td>gfloat</td> </tr> <tr> <td>Rat</td> <td>gdouble</td> </tr>
+    </tbody>
+    </table>
 
   * Some handlers must return a value and is used by the calling process to, for example, call another handler.
 
@@ -235,5 +244,5 @@ Start a thread in such a way that the function can modify the user interface in 
 
 Returns a `Promise` object. If the call fails, the object is undefined.
 
-The handlers signature is at least `:$widget` of the object on which the call was made. Furthermore all users named arguments to the call defined in `*%user-options`. The handler may return any value which becomes the result of the `Promise` returned from `start-thread`.
+The handlers signature holds at least `:$_widget` extended with all provided named arguments to the call defined in `*%user-options`. The handler may return any value which becomes the result of the `Promise` returned from `start-thread`.
 
