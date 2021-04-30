@@ -138,67 +138,53 @@ The method returns a handler id which can be used for example to disconnect the 
 
   * Simple handlers; e.g. a click event handler has only named arguments and are optional.
 
-  * Complex handlers (only a bit) also have positional arguments and **MUST** be typed because they are checked, after which a new signature is created for the call to a native subroutine. You can use the native types like `int32` but several raku types are automatically converted to native types. The types such as gboolean, etc are defined in **Gnome::N::GlibToRakuTypes**.
+  * Complex handlers (only a bit) also have positional arguments and **MUST** be typed because they are checked to create a signature for the call to a native subroutine. You can use the raku native types like `int32` but several types are automatically converted to native types. The types such as gboolean, etc are defined in **Gnome::N::GlibToRakuTypes**.
 
     <table class="pod-table">
     <thead><tr>
-    <th>Raku type</th> <th>Native type</th>
+    <th>Raku type</th> <th>Native type</th> <th>Native Raku type</th>
     </tr></thead>
     <tbody>
-    <tr> <td>Bool</td> <td>gboolean</td> </tr> <tr> <td>UInt</td> <td>guint</td> </tr> <tr> <td>Int</td> <td>gint</td> </tr> <tr> <td>Num</td> <td>gfloat</td> </tr> <tr> <td>Rat</td> <td>gdouble</td> </tr>
+    <tr> <td>Bool</td> <td>gboolean</td> <td>int32</td> </tr> <tr> <td>UInt</td> <td>guint</td> <td>uint32/uint64</td> </tr> <tr> <td>Int</td> <td>gint</td> <td>int32/int64</td> </tr> <tr> <td>Num</td> <td>gfloat</td> <td>num32</td> </tr> <tr> <td>Rat</td> <td>gdouble</td> <td>num64</td> </tr>
     </tbody>
     </table>
 
-  * Some handlers must return a value and is used by the calling process to, for example, call another handler.
+  * Some handlers must return a value and is used by the calling process. You **MUST** describe this too in the andlers API, otherwise the returned value is thrown away.
 
-  * Any user options are provided from the call to register-signal().
+  * Any user options are provided via named arguments from the call to `register-signal()`.
 
-Two examples of a registration and the handlers signature
+### Example 1
 
-    # button clicks.
-    # register callback
-    $button.register-signal(
-      $handler-object, 'click-button', 'clicked', :uo(...)
-    );
+An example of a registration and the handlers signature to handle a button click event.
 
-    # callback method in users handler class
-    method click-button ( :$_widget, :$_handler_id, :$uo ) {
-      ...
-    }
-
-Second example
-
-    # keyboard key presses.
-    # register callback
-    $window.register-signal(
-      $handler-object, 'keyboard-handler',
-      'key-press-event', :uo(...)
-    );
-
-    # callback method in users handler class
-    method keyboard-handler (
-      N-GdkEvent $event, :$_widget, :$_handler_id, :$uo
-      --> gboolean
-    ) { ... }
-
-A more complete example to register and use a simple callback handler
-
-    # create a class with a handler method to process
-    # a button click event
-    class X {
-      method click-handler ( Array :$my-data ) {
-        say $my-data.join(' ');
+    # Handler class with callback methods
+    class ButtonHandlers {
+      method click-button ( :$_widget, :$_handler_id, :$my-option ) {
+        …
       }
     }
 
-    # create a button and some data to send with the signal
-    my Gnome::Gtk3::Button $button .= new(:label('xyz'));
-    my Array $data = [<Hello World>];
-
-    # register button signal
     $button.register-signal(
-      X.new, 'click-handler', 'clicked',
-      :my-data([$data-item1, $data-item2])
+      ButtonHandlers.new, 'click-button', 'clicked', :my-option(…)
+    );
+
+### Example 2
+
+An example where a keyboard press is handled.
+
+    # Handler class with callback methods
+    class KeyboardHandlers {
+      method keyboard-handler (
+        N-GdkEvent $event, :$_widget, :$_handler_id, :$my-option
+        --> gboolean
+      ) {
+        …
+      }
+    }
+
+    $window.register-signal(
+      KeyboardHandlers.new, 'keyboard-handler',
+      'key-press-event', :my-option(…)
     );
 
 set-property
