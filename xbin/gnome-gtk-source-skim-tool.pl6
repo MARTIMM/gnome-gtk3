@@ -1476,7 +1476,7 @@ sub get-signals ( Str:D $source-content is copy ) {
       #if $item-scan and ?$item-name;
 
       $items-src-doc.push: %(
-      :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+        :item-type($signal-args[$item-count]), :$item-name, :$item-doc
       ) if $item-scan and ?$item-name;
 
       $signal-doc ~= primary-doc-changes($spart-doc);
@@ -1508,6 +1508,8 @@ sub get-signals ( Str:D $source-content is copy ) {
     for @$items-src-doc -> $idoc {
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
     }
+    # add an item
+    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
 
     $signal-doc-entries{$signal-name} = $signal-doc;
 
