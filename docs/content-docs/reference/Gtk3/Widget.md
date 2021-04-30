@@ -1806,7 +1806,7 @@ set-name
 
 Widgets can be named, which allows you to refer to them from a CSS file. You can apply a style to widgets with a particular name in the CSS file. See the documentation for the CSS syntax (on the same page as the docs for **Gnome::Gtk3::StyleContext**).
 
-Note that the CSS syntax has certain special characters to delimit and represent elements in a selector (period, #, >, *...), so using these will make your widget impossible to match by name. Any combination of alphanumeric symbols, dashes and underscores will suffice.
+Note that the CSS syntax has certain special characters to delimit and represent elements in a selector (period, #, >, *…), so using these will make your widget impossible to match by name. Any combination of alphanumeric symbols, dashes and underscores will suffice.
 
     method set-name ( Str $name )
 
@@ -2171,20 +2171,20 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { … }
 
     # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
+    my Gnome::Gtk3::Window $w .= new( … );
     $w.register-signal( self, 'mouse-event', 'button-press-event');
 
 Second method
 -------------
 
-    my Gnome::Gtk3::Window $w .= new( ... );
+    my Gnome::Gtk3::Window $w .= new( … );
     my Callable $handler = sub (
       N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
-      ...
+      …
     }
 
     $w.connect-object( 'button-press-event', $handler);

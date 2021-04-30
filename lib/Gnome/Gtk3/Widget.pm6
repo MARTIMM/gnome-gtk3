@@ -62,7 +62,7 @@ Here are some examples of how a C<GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH> widget gene
     }
 
     else {
-      ... some widgets do both. For instance, if a GtkLabel is
+      … some widgets do both. For instance, if a GtkLabel is
       rotated to 90 degrees it will return the minimum and
       natural height for the rotated label here.
     }
@@ -82,7 +82,7 @@ the minimum and natural width:
     }
 
     else {
-      ... again if a widget is sometimes operating in
+      … again if a widget is sometimes operating in
       width-for-height mode (like a rotated GtkLabel) it can go
       ahead and do its real width for height calculation here.
     }
@@ -199,7 +199,7 @@ Typically, you'll place the template fragment into a file that is bundled with y
 =comment TODO replace with Raku code
 
   static void foo_widget_class_init (FooWidgetClass *klass) {
-    // ...
+    // …
 
     gtk_widget_class_set_template_from_resource (
       GTK_WIDGET_CLASS (klass), "/com/example/ui/foowidget.ui"
@@ -212,7 +212,7 @@ initialization function:
 =comment TODO replace with Raku code
 
   static void foo_widget_init (FooWidget *self) {
-    // ...
+    // …
     gtk_widget_init_template (GTK_WIDGET (self));
   }
 
@@ -226,7 +226,7 @@ You can access widgets defined in the template using the C<gtk_widget_get_templa
   G_DEFINE_TYPE_WITH_PRIVATE (FooWidget, foo_widget, GTK_TYPE_BOX)
 
   static void foo_widget_class_init (FooWidgetClass *klass) {
-    // ...
+    // …
     gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
                                                  "/com/example/ui/foowidget.ui");
     gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
@@ -246,7 +246,7 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
   static void
   foo_widget_class_init (FooWidgetClass *klass)
   {
-    // ...
+    // …
     gtk_widget_class_set_template_from_resource (
       GTK_WIDGET_CLASS (klass), "/com/example/ui/foowidget.ui"
     );
@@ -5175,7 +5175,7 @@ sub gtk_widget_set_margin_top (
 
 Widgets can be named, which allows you to refer to them from a CSS file. You can apply a style to widgets with a particular name in the CSS file. See the documentation for the CSS syntax (on the same page as the docs for B<Gnome::Gtk3::StyleContext>).
 
-Note that the CSS syntax has certain special characters to delimit and represent elements in a selector (period, #, >, *...), so using these will make your widget impossible to match by name. Any combination of alphanumeric symbols, dashes and underscores will suffice.
+Note that the CSS syntax has certain special characters to delimit and represent elements in a selector (period, #, >, *…), so using these will make your widget impossible to match by name. Any combination of alphanumeric symbols, dashes and underscores will suffice.
 
   method set-name ( Str $name )
 
@@ -5899,7 +5899,7 @@ Gets the values of a multiple style properties of I<widget>.
 
   method style-get ( Str $first_property_name )
 
-=item Str $first_property_name; the name of the first property to get @...: pairs of property names and locations to return the property values, starting with the location for I<first-property-name>, terminated by C<undefined>.
+=item Str $first_property_name; the name of the first property to get @…: pairs of property names and locations to return the property values, starting with the location for I<first-property-name>, terminated by C<undefined>.
 
 =end pod
 
@@ -6198,7 +6198,7 @@ Returns: a new B<Gnome::Gtk3::Widget> of type I<widget-type>
   method _gtk_widget_new ( N-GObject $type, Str $first_property_name --> N-GObject )
 
 =item N-GObject $type; type ID of the widget to create
-=item Str $first_property_name; name of first property to set @...: value of first property, followed by more properties, C<undefined>-terminated
+=item Str $first_property_name; name of first property to set @…: value of first property, followed by more properties, C<undefined>-terminated
 
 =end pod
 }}
@@ -6220,19 +6220,19 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( GdkEvent $event, :$widget ) { … }
 
   # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
+  my Gnome::Gtk3::Window $w .= new( … );
   $w.register-signal( self, 'mouse-event', 'button-press-event');
 
 =head2 Second method
 
-  my Gnome::Gtk3::Window $w .= new( ... );
+  my Gnome::Gtk3::Window $w .= new( … );
   my Callable $handler = sub (
     N-GObject $native, GdkEvent $event, OpaquePointer $data
   ) {
-    ...
+    …
   }
 
   $w.connect-object( 'button-press-event', $handler);
@@ -6257,7 +6257,7 @@ Also here, the types of positional arguments in the signal handler are important
 =item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:button-press-event:
+=comment #TS:4:button-press-event:gnome-gobject/xt/Signal.raku
 =head3 button-press-event
 
 The I<button-press-event> signal will be emitted when a button (typically from a mouse) is pressed.
@@ -6947,7 +6947,7 @@ After the emission of the  I<event> signal and (optionally) the second more spec
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:focus:
+=comment #TS:4:focus:gnome-gobject/xt/Signal.raku
 =head3 focus
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
@@ -7097,7 +7097,7 @@ The I<hierarchy-changed> signal is emitted when the anchored state of a widget c
 =item $previous_toplevel; (allow-none): the previous toplevel ancestor, or C<undefined> if the widget was previously unanchored
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:key-press-event:
+=comment #TS:4:key-press-event:gnome-gobject/xt/Signal.raku
 =head3 key-press-event
 
 The I<key-press-event> signal is emitted when a key is pressed. The signal emission will reoccur at the key-repeat rate when the key is kept pressed.
@@ -7398,7 +7398,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =item $event; (type N-GdkEventProximity): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:query-tooltip:
+=comment #TS:4:query-tooltip:gnome-gobject/xt/Signal.raku
 =head3 query-tooltip
 
 Emitted when  I<has-tooltip> is C<True> and the hover timeout has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got focus in keyboard mode.
