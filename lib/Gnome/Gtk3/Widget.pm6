@@ -1608,8 +1608,7 @@ The return value B<Gnome::GObject::Object> means any child raku object. N-GObjec
 proto method get-ancestor-rk (|){*}
 multi method get-ancestor-rk ( Int $widget-type --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
-    'Gtk', 'Gtk3::'
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
   )
 }
 
@@ -1620,8 +1619,7 @@ multi method get-ancestor-rk (
     $gtk-widget-type-name
   );
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
-    'Gtk', 'Gtk3::'
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
   )
 }
 
@@ -1630,8 +1628,7 @@ multi method get-ancestor-rk (
 ) {
   my GType $widget-type = $widget.get-class-gtype;
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
-    'Gtk', 'Gtk3::'
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
   )
 }
 
@@ -2406,7 +2403,7 @@ Returns the parent object of this I<widget> or C<undefined> in the case of the n
 method get-parent-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent(self._f('GtkWidget'));
   if ?$no {
-    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+    self._wrap-native-type-from-no($no)
   }
 
   else {
@@ -2442,7 +2439,7 @@ Returns: the parent window of I<widget>, or C<undefined> if it does not have a p
 method get-parent-window-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent_window(self._f('GtkWidget'));
   if ?$no {
-    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+    self._wrap-native-type-from-no($no)
   }
 
   else {
@@ -2951,8 +2948,7 @@ Returns: a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and m
 
 method get-style-context-rk ( --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_widget_get_style_context(self._f('GtkWidget')),
-    'Gtk', 'Gtk3::'
+    gtk_widget_get_style_context(self._f('GtkWidget'))
   )
 }
 
@@ -3081,7 +3077,7 @@ Returns: The B<Gnome::Gtk3::Window> of the current tooltip. It can be undefined 
 method get-tooltip-window-rk ( --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_tooltip_window(self._f('GtkWidget'));
   if $no.defined {
-    self._wrap-native-type-from-no( $no, 'Gtk', 'Gtk3::')
+    self._wrap-native-type-from-no($no)
   }
 
   else {
@@ -3121,7 +3117,7 @@ Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no 
 
 method get-toplevel-rk ( --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_widget_get_toplevel(self._f('GtkWidget')), 'Gtk', 'Gtk3::'
+    gtk_widget_get_toplevel(self._f('GtkWidget'))
   )
 }
 

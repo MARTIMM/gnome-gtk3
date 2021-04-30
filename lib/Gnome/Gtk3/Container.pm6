@@ -884,9 +884,7 @@ method foreach ( Any:D $func-object, Str:D $func-name, *%user-options ) {
         if $func-name ~~ m/ '-rk' $/ or
            %user-options<give-raku-objects>:exists
         {
-          my Gnome::GObject::Object $rk = self._wrap-native-type-from-no(
-            $no, 'Gtk', 'Gtk3::'
-          );
+          my Gnome::GObject::Object $rk = self._wrap-native-type-from-no($no);
           $func-object."$func-name"( $rk, |%user-options)
         }
 
@@ -1005,7 +1003,7 @@ method get-focus-child ( --> N-GObject ) {
 
 method get-focus-child-rk ( --> Any ) {
   self._wrap-native-type-from-no(
-    gtk_container_get_focus_child(self._f('GtkContainer')), 'Gtk', 'Gtk3::'
+    gtk_container_get_focus_child(self._f('GtkContainer'))
   )
 }
 
