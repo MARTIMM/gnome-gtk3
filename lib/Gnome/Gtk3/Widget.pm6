@@ -422,8 +422,8 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w0<destroy show hide map unmap realize unrealize style-updated grab-focus delete-event show-help screen-changed>,
-    :w1<size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event accel-closures-changed can-activate-accel can-activate-accel>,
+    :w0<destroy show hide map unmap realize unrealize style-updated grab-focus show-help screen-changed>,
+    :w1<delete-event size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event accel-closures-changed can-activate-accel can-activate-accel>,
     :w2<selection-get drag-begin drag-motion>,
     :w3<proximity-in-event>,
     :w4<drag-drop drag-data-get drag-data-received popup-menu query-tooltip>,
@@ -4378,8 +4378,6 @@ sub gtk_widget_realize (
 
 Registers a B<Gnome::Gtk3::Window> with the widget and sets it up so that the widget receives events for it. Call C<unregister-window()> when destroying the window.
 
-Before 3.8 you needed to call C<gdk-window-set-user-data()> directly to set this up. This is now deprecated and you should use C<register-window()> instead. Old code will keep working as is, although some new features like transparency might not work perfectly.
-
   method register-window ( N-GObject $window )
 
 =item N-GObject $window; a B<Gnome::Gtk3::Window>
@@ -6260,22 +6258,19 @@ Also here, the types of positional arguments in the signal handler are important
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:button-press-event:
 =head3 button-press-event
 
-The I<button-press-event> signal will be emitted when a button
-(typically from a mouse) is pressed.
+The I<button-press-event> signal will be emitted when a button (typically from a mouse) is pressed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the
-widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-PRESS-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-PRESS-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -6286,24 +6281,20 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
-=item $event; (type Gdk.EventButton): the B<Gnome::Gtk3::EventButton> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventButton): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:button-release-event:
 =head3 button-release-event
 
-The I<button-release-event> signal will be emitted when a button
-(typically from a mouse) is released.
+The I<button-release-event> signal will be emitted when a button (typically from a mouse) is released.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the
-widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-RELEASE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-RELEASE-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<False> to stop other handlers from being invoked for the event. C<True> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -6314,9 +6305,8 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
-=item $event; (type Gdk.EventButton): the B<Gnome::Gtk3::EventButton> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventButton): the event which triggered this signal.
 
 =begin comment
 =comment -----------------------------------------------------------------------
@@ -6331,8 +6321,9 @@ this signal.
     --> Int
   );
 
-=item $widget;
 =item $signal-id;
+=item $_handle_id; the registered event handler id
+=item $widget;
 =end comment
 
 =begin comment
@@ -6350,7 +6341,7 @@ The I<child-notify> signal is emitted for each child property that has changed o
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $child_property; the B<Gnome::Gtk3::ParamSpec> of the changed child property
 =end comment
 
@@ -6359,15 +6350,11 @@ The I<child-notify> signal is emitted for each child property that has changed o
 =comment #TS:0:configure-event:
 =head3 configure-event
 
-The I<configure-event> signal will be emitted when the size, position or
-stacking of the I<widget>'s window has changed.
+The I<configure-event> signal will be emitted when the size, position or stacking of the I<widget>'s window has changed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask
-automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -6378,21 +6365,16 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventConfigure): the B<Gnome::Gtk3::EventConfigure> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventConfigure): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:damage-event:
 =head3 damage-event
 
-Emitted when a redirected window belonging to I<widget> gets drawn into.
-The region/area members of the event shows what area of the redirected
-drawable was drawn into.
+Emitted when a redirected window belonging to I<widget> gets drawn into. The region/area members of the event shows what area of the redirected drawable was drawn into.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
-
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -6403,32 +6385,28 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventExpose): the B<Gnome::Gtk3::EventExpose> event
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventExpose): the event event
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:delete-event:
+=comment #TS:4:delete-event:issue-22.raku
 =head3 delete-event
 
-The I<delete-event> signal is emitted if a user requests that
-a toplevel window is closed. The default handler for this signal
-destroys the window. Connecting C<hide-on-delete()> to
-this signal will cause the window to be hidden instead, so that
-it can later be shown again without reconstructing it.
+The I<delete-event> signal is emitted if a user requests that a toplevel window is closed. The default handler for this signal destroys the window. Connecting C<hide-on-delete()> to this signal will cause the window to be hidden instead, so that it can later be shown again without reconstructing it.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
-    - $event,
+    N-GdkEvent $event,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
+    --> Int
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $event; the event which triggered this signal
 
 
@@ -6436,9 +6414,7 @@ C<False> to propagate the event further.
 =comment #TS:0:destroy:
 =head3 destroy
 
-Signals that all holders of a reference to the widget should release
-the reference that they hold. May result in finalization of the widget
-if all references are released.
+Signals that all holders of a reference to the widget should release the reference that they hold. May result in finalization of the widget if all references are released.
 
 This signal is not suitable for saving widget state.
 
@@ -6449,20 +6425,16 @@ This signal is not suitable for saving widget state.
   );
 
 =item $object; the object which received the signal
+=item $_handle_id; the registered event handler id
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:destroy-event:
 =head3 destroy-event
 
-The I<destroy-event> signal is emitted when a B<Gnome::Gtk3::Window> is destroyed.
-You rarely get this signal, because most widgets disconnect themselves
-from their window before they destroy it, so no widget owns the
-window at destroy time.
+The I<destroy-event> signal is emitted when a B<Gnome::Gtk3::Window> is destroyed. You rarely get this signal, because most widgets disconnect themselves from their window before they destroy it, so no widget owns the window at destroy time.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask
-automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event.
 C<False> to propagate the event further.
@@ -6476,7 +6448,7 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $event; the event which triggered this signal
 
 
@@ -6495,7 +6467,9 @@ of a widget changes.
   );
 
 =item $widget; the object on which the signal is emitted
+=item $_handle_id; the registered event handler id
 =item $previous_direction; the previous text direction of I<widget> as a GTK_TYPE_TEXT_DIRECTION enum
+
 
 =begin comment
 =comment -----------------------------------------------------------------------
@@ -6519,7 +6493,7 @@ override what the default handler did.
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
 
 
@@ -6540,7 +6514,7 @@ handler is responsible for deleting the data that has been dropped. What
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
 
 
@@ -6566,9 +6540,8 @@ C<gtk-selection-data-set-text()>.
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
-
 =item $data; the B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
 
 =item $info; the info that has been registered with the target in the
@@ -6655,15 +6628,11 @@ gtk-drag-finish (context, FALSE, FALSE, time);
   );
 
 =item $widget; the object which received the signal
-
 =item $context; the drag context
-
+=item $_handle_id; the registered event handler id
 =item $x; where the drop happened
-
 =item $y; where the drop happened
-
 =item $data; the received data
-
 =item $info; the info that has been registered with the target in the
 B<Gnome::Gtk3::TargetList>
 =item $time; the timestamp at which the data was received
@@ -6698,13 +6667,10 @@ Returns: whether the cursor position is in a drop zone
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
-
 =item $x; the x coordinate of the current cursor position
-
 =item $y; the y coordinate of the current cursor position
-
 =item $time; the timestamp of the motion event
 
 
@@ -6724,7 +6690,7 @@ things done in  I<drag-begin>.
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
 
 
@@ -6750,9 +6716,8 @@ Returns: C<True> if the failed drag operation has been already handled.
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
-
 =item $result; the result of the drag operation
 
 
@@ -6779,9 +6744,8 @@ created in the  I<drag-motion> signal handler.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
-
 =item $time; the timestamp of the motion event
 
 =comment -----------------------------------------------------------------------
@@ -6889,14 +6853,12 @@ Returns: whether the cursor position is in a drop zone
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $context; the drag context
-
 =item $x; the x coordinate of the current cursor position
-
 =item $y; the y coordinate of the current cursor position
-
 =item $time; the timestamp of the motion event
+
 =end comment
 
 =comment -----------------------------------------------------------------------
@@ -6920,7 +6882,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $cr; the cairo context to draw to
 
 
@@ -6928,16 +6890,13 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =comment #TS:0:enter-notify-event:
 =head3 enter-notify-event
 
-The I<enter-notify-event> will be emitted when the pointer enters
-the I<widget>'s window.
+The I<enter-notify-event> will be emitted when the pointer enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-ENTER-NOTIFY-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-ENTER-NOTIFY-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -6948,25 +6907,17 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventCrossing): the B<Gnome::Gtk3::EventCrossing> which triggered
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventCrossing): the event which triggered
 this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:event:
 =head3 event
 
-The GTK+ main loop will emit three signals for each GDK event delivered
-to a widget: one generic I<event> signal, another, more specific,
-signal that matches the type of event delivered (e.g.
- I<key-press-event>) and finally a generic
- I<event-after> signal.
+The GTK+ main loop will emit three signals for each GDK event delivered to a widget: one generic I<event> signal, another, more specific, signal that matches the type of event delivered (e.g. I<key-press-event>) and finally a generic  I<event-after> signal.
 
-Returns: C<True> to stop other handlers from being invoked for the event
-and to cancel the emission of the second specific I<event> signal.
-C<False> to propagate the event further and to allow the emission of
-the second signal. The I<event-after> signal is emitted regardless of
-the return value.
+Returns: C<True> to stop other handlers from being invoked for the event and to cancel the emission of the second specific I<event> signal. C<False> to propagate the event further and to allow the emission of the second signal. The I<event-after> signal is emitted regardless of the return value.
 
   method handler (
     N-GdkEvent $event,
@@ -6977,7 +6928,7 @@ the return value.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $event; the B<Gnome::Gtk3::Event> which triggered this signal
 
 
@@ -6985,10 +6936,7 @@ the return value.
 =comment #TS:0:event-after:
 =head3 event-after
 
-After the emission of the  I<event> signal and (optionally)
-the second more specific signal, I<event-after> will be emitted
-regardless of the previous two signals handlers return values.
-
+After the emission of the  I<event> signal and (optionally) the second more specific signal, I<event-after> will be emitted regardless of the previous two signals handlers return values.
 
   method handler (
     N-GdkEvent $event,
@@ -6998,7 +6946,7 @@ regardless of the previous two signals handlers return values.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $event; the B<Gnome::Gtk3::Event> which triggered this signal
 
 
@@ -7009,7 +6957,7 @@ regardless of the previous two signals handlers return values.
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
-    Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
+    Int $direction,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7017,22 +6965,19 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
   );
 
 =item $widget; the object which received the signal.
-
-=item $direction;
+=item $_handle_id; the registered event handler id
+=item $direction; it is an enumeration C<GtkDirectionType>.
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:focus-in-event:
 =head3 focus-in-event
 
-The I<focus-in-event> signal will be emitted when the keyboard focus
-enters the I<widget>'s window.
+The I<focus-in-event> signal will be emitted when the keyboard focus enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7043,22 +6988,18 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventFocus): the B<Gnome::Gtk3::EventFocus> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventFocus): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:focus-out-event:
 =head3 focus-out-event
 
-The I<focus-out-event> signal will be emitted when the keyboard focus
-leaves the I<widget>'s window.
+The I<focus-out-event> signal will be emitted when the keyboard focus leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7069,24 +7010,18 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventFocus): the B<Gnome::Gtk3::EventFocus> which triggered this
-signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventFocus): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:grab-broken-event:
 =head3 grab-broken-event
 
-Emitted when a pointer or keyboard grab on a window belonging
-to I<widget> gets broken.
+Emitted when a pointer or keyboard grab on a window belonging to I<widget> gets broken.
 
-On X11, this happens when the grab window becomes unviewable
-(i.e. it or one of its ancestors is unmapped), or if the same
-application grabs the pointer or keyboard again.
+On X11, this happens when the grab window becomes unviewable (i.e. it or one of its ancestors is unmapped), or if the same application grabs the pointer or keyboard again.
 
-Returns: C<True> to stop other handlers from being invoked for
-the event. C<False> to propagate the event further.
-
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7097,8 +7032,8 @@ the event. C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventGrabBroken): the B<Gnome::Gtk3::EventGrabBroken> event
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventGrabBroken): the event event
 
 
 =comment -----------------------------------------------------------------------
@@ -7118,14 +7053,9 @@ the event. C<False> to propagate the event further.
 =comment #TS:0:grab-notify:
 =head3 grab-notify
 
-The I<grab-notify> signal is emitted when a widget becomes
-shadowed by a GTK+ grab (not a pointer or keyboard grab) on
-another widget, or when it becomes unshadowed due to a grab
-being removed.
+The I<grab-notify> signal is emitted when a widget becomes shadowed by a GTK+ grab (not a pointer or keyboard grab) on another widget, or when it becomes unshadowed due to a grab being removed.
 
-A widget is shadowed by a C<gtk-grab-add()> when the topmost
-grab widget in the grab stack of its window group is not
-its ancestor.
+A widget is shadowed by a C<gtk-grab-add()> when the topmost grab widget in the grab stack of its window group is not its ancestor.
 
   method handler (
     Int $was_grabbed,
@@ -7135,16 +7065,14 @@ its ancestor.
   );
 
 =item $widget; the object which received the signal
-
-=item $was_grabbed; C<False> if the widget becomes shadowed, C<True>
-if it becomes unshadowed
+=item $_handle_id; the registered event handler id
+=item $was_grabbed; C<False> if the widget becomes shadowed, C<True> if it becomes unshadowed
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:hide:
 =head3 hide
 
-The I<hide> signal is emitted when I<widget> is hidden, for example with
-C<hide()>.
+The I<hide> signal is emitted when I<widget> is hidden, for example with C<hide()>.
 
   method handler (
     Int :$_handle_id,
@@ -7159,38 +7087,30 @@ C<hide()>.
 =comment #TS:0:hierarchy-changed:
 =head3 hierarchy-changed
 
-The I<hierarchy-changed> signal is emitted when the
-anchored state of a widget changes. A widget is
-“anchored” when its toplevel
-ancestor is a B<Gnome::Gtk3::Window>. This signal is emitted when
-a widget changes from un-anchored to anchored or vice-versa.
+The I<hierarchy-changed> signal is emitted when the anchored state of a widget changes. A widget is “anchored” when its toplevel ancestor is a B<Gnome::Gtk3::Window>. This signal is emitted when a widget changes from un-anchored to anchored or vice-versa.
 
   method handler (
-    N-GObject #`{ is widget } $previous_toplevel,
+    N-GObject $previous_toplevel,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
   );
 
 =item $widget; the object on which the signal is emitted
-
-=item $previous_toplevel; (allow-none): the previous toplevel ancestor, or C<undefined>
-if the widget was previously unanchored
+=item $_handle_id; the registered event handler id
+=item $previous_toplevel; (allow-none): the previous toplevel ancestor, or C<undefined> if the widget was previously unanchored
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:key-press-event:
 =head3 key-press-event
 
-The I<key-press-event> signal is emitted when a key is pressed. The signal
-emission will reoccur at the key-repeat rate when the key is kept pressed.
+The I<key-press-event> signal is emitted when a key is pressed. The signal emission will reoccur at the key-repeat rate when the key is kept pressed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-KEY-PRESS-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-KEY-PRESS-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7201,8 +7121,8 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventKey): the B<Gnome::Gtk3::EventKey> which triggered this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventKey): the event which triggered this signal.
 
 
 =comment -----------------------------------------------------------------------
@@ -7211,13 +7131,11 @@ C<False> to propagate the event further.
 
 The I<key-release-event> signal is emitted when a key is released.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-KEY-RELEASE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-KEY-RELEASE-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7228,21 +7146,17 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventKey): the B<Gnome::Gtk3::EventKey> which triggered this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventKey): the event which triggered this signal.
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:keynav-failed:
 =head3 keynav-failed
 
-Gets emitted if keyboard navigation fails.
-See C<keynav-failed()> for details.
+Gets emitted if keyboard navigation fails. See C<keynav-failed()> for details.
 
-Returns: C<True> if stopping keyboard navigation is fine, C<False>
-if the emitting widget should try to handle the keyboard
-navigation attempt in its parent container(s).
-
+Returns: C<True> if stopping keyboard navigation is fine, C<False> if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
 
   method handler (
     Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
@@ -7253,7 +7167,7 @@ navigation attempt in its parent container(s).
   );
 
 =item $widget; the object which received the signal
-
+=item $_handle_id; the registered event handler id
 =item $direction; the direction of movement
 
 
@@ -7261,16 +7175,13 @@ navigation attempt in its parent container(s).
 =comment #TS:0:leave-notify-event:
 =head3 leave-notify-event
 
-The I<leave-notify-event> will be emitted when the pointer leaves
-the I<widget>'s window.
+The I<leave-notify-event> will be emitted when the pointer leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-LEAVE-NOTIFY-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-LEAVE-NOTIFY-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7281,23 +7192,16 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventCrossing): the B<Gnome::Gtk3::EventCrossing> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventCrossing): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:map:
 =head3 map
 
-The I<map> signal is emitted when I<widget> is going to be mapped, that is
-when the widget is visible (which is controlled with
-C<set-visible()>) and all its parents up to the toplevel widget
-are also visible. Once the map has occurred,  I<map-event> will
-be emitted.
+The I<map> signal is emitted when I<widget> is going to be mapped, that is when the widget is visible (which is controlled with C<set-visible()>) and all its parents up to the toplevel widget are also visible. Once the map has occurred,  I<map-event> will be emitted.
 
-The I<map> signal can be used to determine whether a widget will be drawn,
-for instance it can resume an animation that was stopped during the
-emission of  I<unmap>.
+The I<map> signal can be used to determine whether a widget will be drawn, for instance it can resume an animation that was stopped during the emission of  I<unmap>.
 
   method handler (
     Int :$_handle_id,
@@ -7306,21 +7210,18 @@ emission of  I<unmap>.
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:map-event:
 =head3 map-event
 
-The I<map-event> signal will be emitted when the I<widget>'s window is
-mapped. A window is mapped when it becomes visible on the screen.
+The I<map-event> signal will be emitted when the I<widget>'s window is mapped. A window is mapped when it becomes visible on the screen.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask
-automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7331,22 +7232,20 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventAny): the B<Gnome::Gtk3::EventAny> which triggered this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventAny): the event which triggered this signal.
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:mnemonic-activate:
 =head3 mnemonic-activate
 
-The default handler for this signal activates I<widget> if I<group-cycling>
-is C<False>, or just makes I<widget> grab focus if I<group-cycling> is C<True>.
+The default handler for this signal activates I<widget> if I<group-cycling> is C<False>, or just makes I<widget> grab focus if I<group-cycling> is C<True>.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
-    Int $group_cycling,
+    Bool $group_cycling,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7354,7 +7253,7 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $group_cycling; C<True> if there are other widgets with the same mnemonic
 
 
@@ -7362,16 +7261,13 @@ C<False> to propagate the event further.
 =comment #TS:0:motion-notify-event:
 =head3 motion-notify-event
 
-The I<motion-notify-event> signal is emitted when the pointer moves
-over the widget's B<Gnome::Gtk3::Window>.
+The I<motion-notify-event> signal is emitted when the pointer moves over the widget's B<Gnome::Gtk3::Window>.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget
-needs to enable the B<Gnome::Gtk3::DK-POINTER-MOTION-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-POINTER-MOTION-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7382,9 +7278,9 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventMotion): the event which triggered this signal.
 
-=item $event; (type Gdk.EventMotion): the B<Gnome::Gtk3::EventMotion> which triggered
-this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:move-focus:
@@ -7398,7 +7294,7 @@ this signal.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $direction;
 
 
@@ -7406,8 +7302,7 @@ this signal.
 =comment #TS:0:parent-set:
 =head3 parent-set
 
-The I<parent-set> signal is emitted when a new parent
-has been set on a widget.
+The I<parent-set> signal is emitted when a new parent has been set on a widget.
 
   method handler (
     N-GObject #`{ is widget } $old_parent,
@@ -7417,21 +7312,15 @@ has been set on a widget.
   );
 
 =item $widget; the object on which the signal is emitted
+=item $_handle_id; the registered event handler id
+=item $old_parent; (allow-none): the previous parent, or C<undefined> if the widget just got its initial parent.
 
-=item $old_parent; (allow-none): the previous parent, or C<undefined> if the widget
-just got its initial parent.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:popup-menu:
 =head3 popup-menu
 
-This signal gets emitted whenever a widget should pop up a context
-menu. This usually happens through the standard key binding mechanism;
-by pressing a certain key while a widget is focused, the user can cause
-the widget to pop up a menu.  For example, the B<Gnome::Gtk3::Entry> widget creates
-a menu with clipboard commands. See the
-[Popup Menu Migration Checklist][checklist-popup-menu]
-for an example of how to use this signal.
+This signal gets emitted whenever a widget should pop up a context menu. This usually happens through the standard key binding mechanism; by pressing a certain key while a widget is focused, the user can cause the widget to pop up a menu.  For example, the B<Gnome::Gtk3::Entry> widget creates a menu with clipboard commands. See the Popup Menu Migration Checklist for an example of how to use this signal.
 
 Returns: C<True> if a menu was activated
 
@@ -7449,14 +7338,11 @@ Returns: C<True> if a menu was activated
 =comment #TS:0:property-notify-event:
 =head3 property-notify-event
 
-The I<property-notify-event> signal will be emitted when a property on
-the I<widget>'s window has been changed or deleted.
+The I<property-notify-event> signal will be emitted when a property on the I<widget>'s window has been changed or deleted.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-PROPERTY-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROPERTY-CHANGE-MASK> mask.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7467,21 +7353,19 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventProperty): the event which triggered this signal.
 
-=item $event; (type Gdk.EventProperty): the B<Gnome::Gtk3::EventProperty> which triggered
-this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:proximity-in-event:
 =head3 proximity-in-event
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-PROXIMITY-IN-MASK> mask.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROXIMITY-IN-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $event,
@@ -7492,21 +7376,18 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventProximity): the B<Gnome::Gtk3::EventProximity> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventProximity): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:proximity-out-event:
 =head3 proximity-out-event
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-PROXIMITY-OUT-MASK> mask.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROXIMITY-OUT-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7517,29 +7398,20 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventProximity): the B<Gnome::Gtk3::EventProximity> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventProximity): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:query-tooltip:
 =head3 query-tooltip
 
-Emitted when  I<has-tooltip> is C<True> and the hover timeout
-has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got
-focus in keyboard mode.
+Emitted when  I<has-tooltip> is C<True> and the hover timeout has expired with the cursor hovering "above" I<widget>; or emitted when I<widget> got focus in keyboard mode.
 
-Using the given coordinates, the signal handler should determine
-whether a tooltip should be shown for I<widget>. If this is the case
-C<True> should be returned, C<False> otherwise.  Note that if
-I<keyboard-mode> is C<True>, the values of I<x> and I<y> are undefined and
-should not be used.
+Using the given coordinates, the signal handler should determine whether a tooltip should be shown for I<widget>. If this is the case C<True> should be returned, C<False> otherwise.  Note that if I<keyboard-mode> is C<True>, the values of I<x> and I<y> are undefined and should not be used.
 
-The signal handler is free to manipulate I<tooltip> with the therefore
-destined function calls.
+The signal handler is free to manipulate I<tooltip> with the therefore destined function calls.
 
 Returns: C<True> if I<tooltip> should be shown right now, C<False> otherwise.
-
 
   method handler (
     Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $x,
@@ -7553,11 +7425,9 @@ Returns: C<True> if I<tooltip> should be shown right now, C<False> otherwise.
   );
 
 =item $widget; the object which received the signal
-
-=item $x; the x coordinate of the cursor position where the request has
-been emitted, relative to I<widget>'s left side
-=item $y; the y coordinate of the cursor position where the request has
-been emitted, relative to I<widget>'s top
+=item $_handle_id; the registered event handler id
+=item $x; the x coordinate of the cursor position where the request has been emitted, relative to I<widget>'s left side
+=item $y; the y coordinate of the cursor position where the request has been emitted, relative to I<widget>'s top
 =item $keyboard_mode; C<True> if the tooltip was triggered using the keyboard
 
 =item $tooltip; a B<Gnome::Gtk3::Tooltip>
@@ -7567,9 +7437,7 @@ been emitted, relative to I<widget>'s top
 =comment #TS:0:realize:
 =head3 realize
 
-The I<realize> signal is emitted when I<widget> is associated with a
-B<Gnome::Gtk3::Window>, which means that C<realize()> has been called or the
-widget has been mapped (that is, it is going to be drawn).
+The I<realize> signal is emitted when I<widget> is associated with a B<Gnome::Gtk3::Window>, which means that C<realize()> has been called or the widget has been mapped (that is, it is going to be drawn).
 
   method handler (
     Int :$_handle_id,
@@ -7584,8 +7452,7 @@ widget has been mapped (that is, it is going to be drawn).
 =comment #TS:0:screen-changed:
 =head3 screen-changed
 
-The I<screen-changed> signal gets emitted when the
-screen of a widget has changed.
+The I<screen-changed> signal gets emitted when the screen of a widget has changed.
 
   method handler (
     - $previous_screen,
@@ -7595,25 +7462,21 @@ screen of a widget has changed.
   );
 
 =item $widget; the object on which the signal is emitted
+=item $_handle_id; the registered event handler id
+=item $previous_screen; (allow-none): the previous screen, or C<undefined> if the widget was not associated with a screen before
 
-=item $previous_screen; (allow-none): the previous screen, or C<undefined> if the
-widget was not associated with a screen before
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:scroll-event:
 =head3 scroll-event
 
-The I<scroll-event> signal is emitted when a button in the 4 to 7
-range is pressed. Wheel mice are usually configured to generate
-button press events for buttons 4 and 5 when the wheel is turned.
+The I<scroll-event> signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-SCROLL-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-SCROLL-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7624,19 +7487,17 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventScroll): the event which triggered this signal.
 
-=item $event; (type Gdk.EventScroll): the B<Gnome::Gtk3::EventScroll> which triggered
-this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:selection-clear-event:
 =head3 selection-clear-event
 
-The I<selection-clear-event> signal will be emitted when the
-the I<widget>'s window has lost ownership of a selection.
+The I<selection-clear-event> signal will be emitted when the the I<widget>'s window has lost ownership of a selection.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7647,18 +7508,17 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventSelection): the B<Gnome::Gtk3::EventSelection> which triggered
-this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventSelection): the event which triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:selection-get:
 =head3 selection-get
 
   method handler (
-    Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $data,
-     $info,
-    - $time,
+    N-GObject $data,
+    UInt $info,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7666,11 +7526,9 @@ this signal.
   );
 
 =item $widget; the object which received the signal.
-
-=item $data;
-
-=item $info;
-
+=item $_handle_id; the registered event handler id
+=item $data; a native GtkSelectionData object
+=item $info; ?
 =item $time;
 
 
@@ -7689,8 +7547,8 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
   );
 
 =item $widget; the object which received the signal.
-
-=item $event; (type Gdk.EventSelection):
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventSelection): the event which triggered this signal.
 
 
 =comment -----------------------------------------------------------------------
@@ -7698,8 +7556,8 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =head3 selection-received
 
   method handler (
-    Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $data,
-    - $time,
+    N-GObject $data,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7707,9 +7565,8 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
   );
 
 =item $widget; the object which received the signal.
-
-=item $data;
-
+=item $_handle_id; the registered event handler id
+=item $data; a native GtkSelectionData object
 =item $time;
 
 
@@ -7717,12 +7574,9 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =comment #TS:0:selection-request-event:
 =head3 selection-request-event
 
-The I<selection-request-event> signal will be emitted when
-another client requests ownership of the selection owned by
-the I<widget>'s window.
+The I<selection-request-event> signal will be emitted when another client requests ownership of the selection owned by the I<widget>'s window.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7733,16 +7587,15 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventSelection): the event which triggered this signal.
 
-=item $event; (type Gdk.EventSelection): the B<Gnome::Gtk3::EventSelection> which triggered
-this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:show:
 =head3 show
 
-The I<show> signal is emitted when I<widget> is shown, for example with
-C<show()>.
+The I<show> signal is emitted when I<widget> is shown, for example with C<show()>.
 
   method handler (
     Int :$_handle_id,
@@ -7751,14 +7604,14 @@ C<show()>.
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:show-help:
 =head3 show-help
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     - $help_type,
@@ -7769,7 +7622,7 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $help_type;
 
 
@@ -7785,38 +7638,15 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal.
-
-=item $allocation; (type Gtk.Allocation): the region which has been
-allocated to the widget.
-
-=comment -----------------------------------------------------------------------
-=comment #TS:0:state-changed:
-=head3 state-changed
-
-The I<state-changed> signal is emitted when the widget state changes.
-See C<get-state()>.
-
-Deprecated: 3.0: Use  I<state-flags-changed> instead.
-
-  method handler (
-    Unknown type GTK_TYPE_STATE_TYPE $state,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
-    *%user-options
-  );
-
-=item $widget; the object which received the signal.
-
-=item $state; the previous state
+=item $_handle_id; the registered event handler id
+=item $allocation; (type Gtk.Allocation): the region which has been allocated to the widget.
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:state-flags-changed:
 =head3 state-flags-changed
 
-The I<state-flags-changed> signal is emitted when the widget state
-changes, see C<get-state-flags()>.
-
+The I<state-flags-changed> signal is emitted when the widget state changes, see C<get-state-flags()>.
 
   method handler (
     Unknown type GTK_TYPE_STATE_FLAGS $flags,
@@ -7826,34 +7656,9 @@ changes, see C<get-state-flags()>.
   );
 
 =item $widget; the object which received the signal.
-
+=item $_handle_id; the registered event handler id
 =item $flags; The previous state flags.
 
-
-=begin comment
-DEPRECATED
-=comment -----------------------------------------------------------------------
-=comment # TS:0:style-set:
-=head3 style-set
-
-The I<style-set> signal is emitted when a new style has been set on a widget. Note that style-modifying functions like C<modify-base()> also cause this signal to be emitted.
-
-=comment Note that this signal is emitted for changes to the deprecated B<Gnome::Gtk3::Style>. To track changes to the B<Gnome::Gtk3::StyleContext> associated with a widget, use the  I<style-updated> signal.
-
-Deprecated:3.0: Use the  I<style-updated> signal
-
-  method handler (
-    N-GObject $previous_style,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
-    *%user-options
-  );
-
-=item $widget; the object on which the signal is emitted
-
-=item $previous_style; (allow-none): the previous style, or C<undefined> if the widget
-just got its initial style
-=end comment
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:style-updated:
@@ -7870,6 +7675,7 @@ Note that style-modifying functions like C<override-color()> also cause this sig
   );
 
 =item $widget; the object on which the signal is emitted
+=item $_handle_id; the registered event handler id
 
 
 =comment -----------------------------------------------------------------------
@@ -7887,21 +7693,18 @@ As I<unmap> indicates that a widget will not be shown any longer, it can be used
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:unmap-event:
 =head3 unmap-event
 
-The I<unmap-event> signal will be emitted when the I<widget>'s window is
-unmapped. A window is unmapped when it becomes invisible on the screen.
+The I<unmap-event> signal will be emitted when the I<widget>'s window is unmapped. A window is unmapped when it becomes invisible on the screen.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask
-automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7912,18 +7715,15 @@ C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventAny): the B<Gnome::Gtk3::EventAny> which triggered this signal
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventAny): the event which triggered this signal
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:unrealize:
 =head3 unrealize
 
-The I<unrealize> signal is emitted when the B<Gnome::Gtk3::Window> associated with
-I<widget> is destroyed, which means that C<unrealize()> has been
-called or the widget has been unmapped (that is, it is going to be
-hidden).
+The I<unrealize> signal is emitted when the B<Gnome::Gtk3::Window> associated with I<widget> is destroyed, which means that C<unrealize()> has been called or the widget has been unmapped (that is, it is going to be hidden).
 
   method handler (
     Int :$_handle_id,
@@ -7932,52 +7732,18 @@ hidden).
   );
 
 =item $widget; the object which received the signal.
+=item $_handle_id; the registered event handler id
 
-
-=comment -----------------------------------------------------------------------
-=comment #TS:0:visibility-notify-event:
-=head3 visibility-notify-event
-
-The I<visibility-notify-event> will be emitted when the I<widget>'s
-window is obscured or unobscured.
-
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs
-to enable the B<Gnome::Gtk3::DK-VISIBILITY-NOTIFY-MASK> mask.
-
-Returns: C<True> to stop other handlers from being invoked for the event.
-C<False> to propagate the event further.
-
-Deprecated: 3.12: Modern composited windowing systems with pervasive
-transparency make it impossible to track the visibility of a window
-reliably, so this signal can not be guaranteed to provide useful
-information.
-
-  method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $event,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
-    *%user-options
-    --> Int
-  );
-
-=item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventVisibility): the B<Gnome::Gtk3::EventVisibility> which
-triggered this signal.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:window-state-event:
 =head3 window-state-event
 
-The I<window-state-event> will be emitted when the state of the
-toplevel window associated to the I<widget> changes.
+The I<window-state-event> will be emitted when the state of the toplevel window associated to the I<widget> changes.
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget
-needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable
-this mask automatically for all new windows.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
-Returns: C<True> to stop other handlers from being invoked for the
-event. C<False> to propagate the event further.
+Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
   method handler (
     N-GdkEvent $event,
@@ -7988,9 +7754,8 @@ event. C<False> to propagate the event further.
   );
 
 =item $widget; the object which received the signal
-
-=item $event; (type Gdk.EventWindowState): the B<Gnome::Gtk3::EventWindowState> which
-triggered this signal.
+=item $_handle_id; the registered event handler id
+=item $event; (type N-GdkEventWindowState): the event which triggered this signal.
 
 =end pod
 
@@ -8012,8 +7777,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =comment #TP:1:app-paintable:
 =head3 Application paintable: app-paintable
 
-Whether the application will paint directly on the widget
-Default value: False
+Whether the application will paint directly on the widget Default value: False
 
 The B<Gnome::GObject::Value> type of property I<app-paintable> is C<G_TYPE_BOOLEAN>.
 
@@ -8021,8 +7785,7 @@ The B<Gnome::GObject::Value> type of property I<app-paintable> is C<G_TYPE_BOOLE
 =comment #TP:1:can-default:
 =head3 Can default: can-default
 
-Whether the widget can be the default widget
-Default value: False
+Whether the widget can be the default widget Default value: False
 
 The B<Gnome::GObject::Value> type of property I<can-default> is C<G_TYPE_BOOLEAN>.
 
@@ -8030,8 +7793,7 @@ The B<Gnome::GObject::Value> type of property I<can-default> is C<G_TYPE_BOOLEAN
 =comment #TP:1:can-focus:
 =head3 Can focus: can-focus
 
-Whether the widget can accept the input focus
-Default value: False
+Whether the widget can accept the input focus Default value: False
 
 The B<Gnome::GObject::Value> type of property I<can-focus> is C<G_TYPE_BOOLEAN>.
 
@@ -8039,8 +7801,7 @@ The B<Gnome::GObject::Value> type of property I<can-focus> is C<G_TYPE_BOOLEAN>.
 =comment #TP:1:composite-child:
 =head3 Composite child: composite-child
 
-Whether the widget is part of a composite widget
-Default value: False
+Whether the widget is part of a composite widget Default value: False
 
 The B<Gnome::GObject::Value> type of property I<composite-child> is C<G_TYPE_BOOLEAN>.
 
@@ -8085,8 +7846,7 @@ The B<Gnome::GObject::Value> type of property I<halign> is C<G_TYPE_ENUM>.
 =comment #TP:0:has-default:
 =head3 Has default: has-default
 
-Whether the widget is the default widget
-Default value: False
+Whether the widget is the default widget. Default value: False
 
 The B<Gnome::GObject::Value> type of property I<has-default> is C<G_TYPE_BOOLEAN>.
 
@@ -8094,8 +7854,7 @@ The B<Gnome::GObject::Value> type of property I<has-default> is C<G_TYPE_BOOLEAN
 =comment #TP:0:has-focus:
 =head3 Has focus: has-focus
 
-Whether the widget has the input focus
-Default value: False
+Whether the widget has the input focus. Default value: False
 
 The B<Gnome::GObject::Value> type of property I<has-focus> is C<G_TYPE_BOOLEAN>.
 
@@ -8103,24 +7862,15 @@ The B<Gnome::GObject::Value> type of property I<has-focus> is C<G_TYPE_BOOLEAN>.
 =comment #TP:0:has-tooltip:
 =head3 Has tooltip: has-tooltip
 
+Enables or disables the emission of  I<query-tooltip> on I<widget>. A value of C<True> indicates that I<widget> can have a tooltip, in this case the widget will be queried using  I<query-tooltip> to determine whether it will provide a tooltip or not.
 
-Enables or disables the emission of  I<query-tooltip> on I<widget>.
-A value of C<True> indicates that I<widget> can have a tooltip, in this case
-the widget will be queried using  I<query-tooltip> to determine
-whether it will provide a tooltip or not.
+Note that setting this property to C<True> for the first time will change the event masks of the GdkWindows of this widget to include leave-notify and motion-notify events.  This cannot and will not be undone when the property is set to C<False> again.
 
-Note that setting this property to C<True> for the first time will change
-the event masks of the GdkWindows of this widget to include leave-notify
-and motion-notify events.  This cannot and will not be undone when the
-property is set to C<False> again.
-
- *
 The B<Gnome::GObject::Value> type of property I<has-tooltip> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:height-request:
 =head3 Height request: height-request
-
 
 The B<Gnome::GObject::Value> type of property I<height-request> is C<G_TYPE_INT>.
 
@@ -8128,28 +7878,23 @@ The B<Gnome::GObject::Value> type of property I<height-request> is C<G_TYPE_INT>
 =comment #TP:0:hexpand:
 =head3 Horizontal Expand: hexpand
 
-
 Whether to expand horizontally. See C<set-hexpand()>.
 
-   *
 The B<Gnome::GObject::Value> type of property I<hexpand> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:hexpand-set:
 =head3 Horizontal Expand Set: hexpand-set
 
-
 Whether to use the  I<hexpand> property. See C<get-hexpand-set()>.
 
-   *
 The B<Gnome::GObject::Value> type of property I<hexpand-set> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:is-focus:
 =head3 Is focus: is-focus
 
-Whether the widget is the focus widget within the toplevel
-Default value: False
+Whether the widget is the focus widget within the toplevel. Default value: False
 
 The B<Gnome::GObject::Value> type of property I<is-focus> is C<G_TYPE_BOOLEAN>.
 
@@ -8157,77 +7902,55 @@ The B<Gnome::GObject::Value> type of property I<is-focus> is C<G_TYPE_BOOLEAN>.
 =comment #TP:0:margin:
 =head3 All Margins: margin
 
+Sets all four sides' margin at once. If read, returns max margin on any side.
 
-Sets all four sides' margin at once. If read, returns max
-margin on any side.
-
-   *
 The B<Gnome::GObject::Value> type of property I<margin> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:margin-bottom:
 =head3 Margin on Bottom: margin-bottom
 
-
 Margin on bottom side of widget.
 
-This property adds margin outside of the widget's normal size
-request, the margin will be added in addition to the size from
-C<set-size-request()> for example.
+This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from C<set-size-request()> for example.
 
-   *
 The B<Gnome::GObject::Value> type of property I<margin-bottom> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:margin-end:
 =head3 Margin on End: margin-end
 
+Margin on end of widget, horizontally. This property supports left-to-right and right-to-left text directions.
 
-Margin on end of widget, horizontally. This property supports
-left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from C<set-size-request()> for example.
 
-This property adds margin outside of the widget's normal size
-request, the margin will be added in addition to the size from
-C<set-size-request()> for example.
-
-   *
 The B<Gnome::GObject::Value> type of property I<margin-end> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:margin-start:
 =head3 Margin on Start: margin-start
 
+Margin on start of widget, horizontally. This property supports left-to-right and right-to-left text directions.
 
-Margin on start of widget, horizontally. This property supports
-left-to-right and right-to-left text directions.
+This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from C<set-size-request()> for example.
 
-This property adds margin outside of the widget's normal size
-request, the margin will be added in addition to the size from
-C<set-size-request()> for example.
-
-   *
 The B<Gnome::GObject::Value> type of property I<margin-start> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:margin-top:
 =head3 Margin on Top: margin-top
 
-
 Margin on top side of widget.
 
-This property adds margin outside of the widget's normal size
-request, the margin will be added in addition to the size from
-C<set-size-request()> for example.
+This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from C<set-size-request()> for example.
 
-   *
 The B<Gnome::GObject::Value> type of property I<margin-top> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:name:
 =head3 Widget name: name
 
-The name of the widget
-Default value: Any
+The name of the widget Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<name> is C<G_TYPE_STRING>.
 
@@ -8235,8 +7958,7 @@ The B<Gnome::GObject::Value> type of property I<name> is C<G_TYPE_STRING>.
 =comment #TP:0:no-show-all:
 =head3 No show all: no-show-all
 
-Whether show-all( should not affect this widget)
-Default value: False
+Whether show-all should not affect this widget. Default value: False
 
 The B<Gnome::GObject::Value> type of property I<no-show-all> is C<G_TYPE_BOOLEAN>.
 
@@ -8244,21 +7966,15 @@ The B<Gnome::GObject::Value> type of property I<no-show-all> is C<G_TYPE_BOOLEAN
 =comment #TP:0:opacity:
 =head3 Opacity for Widget: opacity
 
+The requested opacity of the widget. See C<set-opacity()> for more details about window opacity.
 
-The requested opacity of the widget. See C<set-opacity()> for
-more details about window opacity.
-
-Before 3.8 this was only available in GtkWindow
-
-   *
 The B<Gnome::GObject::Value> type of property I<opacity> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:parent:
 =head3 Parent widget: parent
 
-The parent widget of this widget. Must be a Container widget
-Widget type: GTK-TYPE-CONTAINER
+The parent widget of this widget. Must be a Container widget Widget type: GTK-TYPE-CONTAINER
 
 The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
 
@@ -8266,8 +7982,7 @@ The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
 =comment #TP:0:receives-default:
 =head3 Receives default: receives-default
 
-If TRUE, the widget will receive the default action when it is focused
-Default value: False
+If TRUE, the widget will receive the default action when it is focused Default value: False
 
 The B<Gnome::GObject::Value> type of property I<receives-default> is C<G_TYPE_BOOLEAN>.
 
@@ -8275,19 +7990,15 @@ The B<Gnome::GObject::Value> type of property I<receives-default> is C<G_TYPE_BO
 =comment #TP:0:scale-factor:
 =head3 Scale factor: scale-factor
 
+The scale factor of the widget. See C<get-scale-factor()> for more details about widget scaling.
 
-The scale factor of the widget. See C<get-scale-factor()> for
-more details about widget scaling.
-
-   *
 The B<Gnome::GObject::Value> type of property I<scale-factor> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:sensitive:
 =head3 Sensitive: sensitive
 
-Whether the widget responds to input
-Default value: True
+Whether the widget responds to input Default value: True
 
 The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
 
@@ -8295,50 +8006,35 @@ The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
 =comment #TP:0:tooltip-markup:
 =head3 Tooltip markup: tooltip-markup
 
+Sets the text of tooltip to be the given string, which is marked up with the [Pango text markup language][PangoMarkupFormat]. Also see C<gtk-tooltip-set-markup()>.
 
-Sets the text of tooltip to be the given string, which is marked up
-with the [Pango text markup language][PangoMarkupFormat].
-Also see C<gtk-tooltip-set-markup()>.
+This is a convenience property which will take care of getting the tooltip shown if the given string is not C<undefined>:  I<has-tooltip> will automatically be set to C<True> and there will be taken care of I<query-tooltip> in the default signal handler.
 
-This is a convenience property which will take care of getting the
-tooltip shown if the given string is not C<undefined>:  I<has-tooltip>
-will automatically be set to C<True> and there will be taken care of
- I<query-tooltip> in the default signal handler.
+Note that if both  I<tooltip-text> and  I<tooltip-markup> are set, the last one wins.
 
-Note that if both  I<tooltip-text> and  I<tooltip-markup>
-are set, the last one wins.
-
-   *
 The B<Gnome::GObject::Value> type of property I<tooltip-markup> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:tooltip-text:
 =head3 Tooltip Text: tooltip-text
 
-
 Sets the text of tooltip to be the given string.
 
 Also see C<gtk-tooltip-set-text()>.
 
-This is a convenience property which will take care of getting the
-tooltip shown if the given string is not C<undefined>:  I<has-tooltip>
-will automatically be set to C<True> and there will be taken care of
- I<query-tooltip> in the default signal handler.
+This is a convenience property which will take care of getting the tooltip shown if the given string is not C<undefined>:  I<has-tooltip> will automatically be set to C<True> and there will be taken care of I<query-tooltip> in the default signal handler.
 
-Note that if both  I<tooltip-text> and  I<tooltip-markup>
-are set, the last one wins.
+Note that if both  I<tooltip-text> and  I<tooltip-markup> are set, the last one wins.
 
-   *
 The B<Gnome::GObject::Value> type of property I<tooltip-text> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:valign:
 =head3 Vertical Alignment: valign
 
-
 How to distribute vertical space if widget gets extra space, see B<Gnome::Gtk3::Align>
 
-   * Widget type: GTK_TYPE_ALIGN
+Widget type: GTK_TYPE_ALIGN
 
 The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
 
@@ -8346,28 +8042,23 @@ The B<Gnome::GObject::Value> type of property I<valign> is C<G_TYPE_ENUM>.
 =comment #TP:0:vexpand:
 =head3 Vertical Expand: vexpand
 
-
 Whether to expand vertically. See C<set-vexpand()>.
 
-   *
 The B<Gnome::GObject::Value> type of property I<vexpand> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:vexpand-set:
 =head3 Vertical Expand Set: vexpand-set
 
-
 Whether to use the  I<vexpand> property. See C<get-vexpand-set()>.
 
-   *
 The B<Gnome::GObject::Value> type of property I<vexpand-set> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:visible:
 =head3 Visible: visible
 
-Whether the widget is visible
-Default value: False
+Whether the widget is visible Default value: False
 
 The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
 
@@ -8375,17 +8066,15 @@ The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
 =comment #TP:0:width-request:
 =head3 Width request: width-request
 
-
 The B<Gnome::GObject::Value> type of property I<width-request> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:window:
 =head3 Window: window
 
-
 The widget's window if it is realized, C<undefined> otherwise.
 
-   * Widget type: GDK_TYPE_WINDOW
+Widget type: GDK_TYPE_WINDOW
 
 The B<Gnome::GObject::Value> type of property I<window> is C<G_TYPE_OBJECT>.
 =end pod

@@ -1476,8 +1476,6 @@ register-window
 
 Registers a **Gnome::Gtk3::Window** with the widget and sets it up so that the widget receives events for it. Call `unregister-window()` when destroying the window.
 
-Before 3.8 you needed to call `gdk-window-set-user-data()` directly to set this up. This is now deprecated and you should use `register-window()` instead. Old code will keep working as is, although some new features like transparency might not work perfectly.
-
     method register-window ( N-GObject $window )
 
   * N-GObject $window; a **Gnome::Gtk3::Window**
@@ -2207,6 +2205,8 @@ Supported signals
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
 ### button-press-event
 
 The *button-press-event* signal will be emitted when a button (typically from a mouse) is pressed.
@@ -2227,7 +2227,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $event; (type Gdk.EventButton): the **Gnome::Gtk3::EventButton** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventButton): the event which triggered this signal.
 
 ### button-release-event
 
@@ -2237,7 +2239,7 @@ To receive this signal, the **Gnome::Gtk3::Window** associated to the widget nee
 
 This signal will be sent to the grab widget if there is one.
 
-Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
+Returns: `False` to stop other handlers from being invoked for the event. `True` to propagate the event further.
 
     method handler (
       N-GdkEvent $event,
@@ -2249,7 +2251,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $event; (type Gdk.EventButton): the **Gnome::Gtk3::EventButton** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventButton): the event which triggered this signal.
 
 ### configure-event
 
@@ -2269,7 +2273,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventConfigure): the **Gnome::Gtk3::EventConfigure** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventConfigure): the event which triggered this signal.
 
 ### damage-event
 
@@ -2287,7 +2293,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventExpose): the **Gnome::Gtk3::EventExpose** event
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventExpose): the event event
 
 ### delete-event
 
@@ -2296,13 +2304,16 @@ The *delete-event* signal is emitted if a user requests that a toplevel window i
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
     method handler (
-      - $event,
+      N-GdkEvent $event,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
+      --> Int
     );
 
   * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
 
   * $event; the event which triggered this signal
 
@@ -2319,6 +2330,8 @@ This signal is not suitable for saving widget state.
     );
 
   * $object; the object which received the signal
+
+  * $_handle_id; the registered event handler id
 
 ### destroy-event
 
@@ -2338,6 +2351,8 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
   * $event; the event which triggered this signal
 
 ### direction-changed
@@ -2352,6 +2367,8 @@ The *direction-changed* signal is emitted when the text direction of a widget ch
     );
 
   * $widget; the object on which the signal is emitted
+
+  * $_handle_id; the registered event handler id
 
   * $previous_direction; the previous text direction of *widget* as a GTK_TYPE_TEXT_DIRECTION enum
 
@@ -2375,6 +2392,8 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
+  * $_handle_id; the registered event handler id
+
   * $cr; the cairo context to draw to
 
 ### enter-notify-event
@@ -2397,7 +2416,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventCrossing): the **Gnome::Gtk3::EventCrossing** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventCrossing): the event which triggered this signal.
 
 ### event
 
@@ -2415,6 +2436,8 @@ Returns: `True` to stop other handlers from being invoked for the event and to c
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
   * $event; the **Gnome::Gtk3::Event** which triggered this signal
 
 ### event-after
@@ -2430,6 +2453,8 @@ After the emission of the *event* signal and (optionally) the second more specif
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
   * $event; the **Gnome::Gtk3::Event** which triggered this signal
 
 ### focus
@@ -2437,7 +2462,7 @@ After the emission of the *event* signal and (optionally) the second more specif
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
     method handler (
-      Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
+      Int $direction,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
@@ -2446,7 +2471,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $direction;
+  * $_handle_id; the registered event handler id
+
+  * $direction; it is an enumeration `GtkDirectionType`.
 
 ### focus-in-event
 
@@ -2466,7 +2493,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventFocus): the **Gnome::Gtk3::EventFocus** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventFocus): the event which triggered this signal.
 
 ### focus-out-event
 
@@ -2486,7 +2515,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventFocus): the **Gnome::Gtk3::EventFocus** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventFocus): the event which triggered this signal.
 
 ### grab-broken-event
 
@@ -2506,7 +2537,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventGrabBroken): the **Gnome::Gtk3::EventGrabBroken** event
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventGrabBroken): the event event
 
 ### grab-focus
 
@@ -2533,6 +2566,8 @@ A widget is shadowed by a `gtk-grab-add()` when the topmost grab widget in the g
 
   * $widget; the object which received the signal
 
+  * $_handle_id; the registered event handler id
+
   * $was_grabbed; `False` if the widget becomes shadowed, `True` if it becomes unshadowed
 
 ### hide
@@ -2552,13 +2587,15 @@ The *hide* signal is emitted when *widget* is hidden, for example with `hide()`.
 The *hierarchy-changed* signal is emitted when the anchored state of a widget changes. A widget is “anchored” when its toplevel ancestor is a **Gnome::Gtk3::Window**. This signal is emitted when a widget changes from un-anchored to anchored or vice-versa.
 
     method handler (
-      N-GObject #`{ is widget } $previous_toplevel,
+      N-GObject $previous_toplevel,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
     );
 
   * $widget; the object on which the signal is emitted
+
+  * $_handle_id; the registered event handler id
 
   * $previous_toplevel; (allow-none): the previous toplevel ancestor, or `undefined` if the widget was previously unanchored
 
@@ -2582,7 +2619,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventKey): the **Gnome::Gtk3::EventKey** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventKey): the event which triggered this signal.
 
 ### key-release-event
 
@@ -2604,7 +2643,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventKey): the **Gnome::Gtk3::EventKey** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventKey): the event which triggered this signal.
 
 ### keynav-failed
 
@@ -2621,6 +2662,8 @@ Returns: `True` if stopping keyboard navigation is fine, `False` if the emitting
     );
 
   * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
 
   * $direction; the direction of movement
 
@@ -2644,7 +2687,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventCrossing): the **Gnome::Gtk3::EventCrossing** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventCrossing): the event which triggered this signal.
 
 ### map
 
@@ -2659,6 +2704,8 @@ The *map* signal can be used to determine whether a widget will be drawn, for in
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
 ### map-event
 
@@ -2678,7 +2725,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventAny): the **Gnome::Gtk3::EventAny** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventAny): the event which triggered this signal.
 
 ### mnemonic-activate
 
@@ -2687,7 +2736,7 @@ The default handler for this signal activates *widget* if *group-cycling* is `Fa
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
     method handler (
-      Int $group_cycling,
+      Bool $group_cycling,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
@@ -2695,6 +2744,8 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
   * $group_cycling; `True` if there are other widgets with the same mnemonic
 
@@ -2718,7 +2769,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $event; (type Gdk.EventMotion): the **Gnome::Gtk3::EventMotion** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventMotion): the event which triggered this signal.
 
 ### move-focus
 
@@ -2730,6 +2783,8 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
   * $direction;
 
@@ -2746,11 +2801,13 @@ The *parent-set* signal is emitted when a new parent has been set on a widget.
 
   * $widget; the object on which the signal is emitted
 
+  * $_handle_id; the registered event handler id
+
   * $old_parent; (allow-none): the previous parent, or `undefined` if the widget just got its initial parent.
 
 ### popup-menu
 
-This signal gets emitted whenever a widget should pop up a context menu. This usually happens through the standard key binding mechanism; by pressing a certain key while a widget is focused, the user can cause the widget to pop up a menu. For example, the **Gnome::Gtk3::Entry** widget creates a menu with clipboard commands. See the [Popup Menu Migration Checklist][checklist-popup-menu] for an example of how to use this signal.
+This signal gets emitted whenever a widget should pop up a context menu. This usually happens through the standard key binding mechanism; by pressing a certain key while a widget is focused, the user can cause the widget to pop up a menu. For example, the **Gnome::Gtk3::Entry** widget creates a menu with clipboard commands. See the Popup Menu Migration Checklist for an example of how to use this signal.
 
 Returns: `True` if a menu was activated
 
@@ -2781,7 +2838,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventProperty): the **Gnome::Gtk3::EventProperty** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventProperty): the event which triggered this signal.
 
 ### proximity-in-event
 
@@ -2801,7 +2860,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventProximity): the **Gnome::Gtk3::EventProximity** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventProximity): the event which triggered this signal.
 
 ### proximity-out-event
 
@@ -2821,7 +2882,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventProximity): the **Gnome::Gtk3::EventProximity** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventProximity): the event which triggered this signal.
 
 ### query-tooltip
 
@@ -2845,6 +2908,8 @@ Returns: `True` if *tooltip* should be shown right now, `False` otherwise.
     );
 
   * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
 
   * $x; the x coordinate of the cursor position where the request has been emitted, relative to *widget*'s left side
 
@@ -2879,6 +2944,8 @@ The *screen-changed* signal gets emitted when the screen of a widget has changed
 
   * $widget; the object on which the signal is emitted
 
+  * $_handle_id; the registered event handler id
+
   * $previous_screen; (allow-none): the previous screen, or `undefined` if the widget was not associated with a screen before
 
 ### scroll-event
@@ -2901,7 +2968,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $event; (type Gdk.EventScroll): the **Gnome::Gtk3::EventScroll** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventScroll): the event which triggered this signal.
 
 ### selection-clear-event
 
@@ -2919,14 +2988,16 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventSelection): the **Gnome::Gtk3::EventSelection** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventSelection): the event which triggered this signal.
 
 ### selection-get
 
     method handler (
-      Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $data,
-       $info,
-      - $time,
+      N-GObject $data,
+      UInt $info,
+      UInt $time,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
@@ -2935,9 +3006,11 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $data;
+  * $_handle_id; the registered event handler id
 
-  * $info;
+  * $data; a native GtkSelectionData object
+
+  * $info; ?
 
   * $time;
 
@@ -2955,13 +3028,15 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $event; (type Gdk.EventSelection):
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventSelection): the event which triggered this signal.
 
 ### selection-received
 
     method handler (
-      Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $data,
-      - $time,
+      N-GObject $data,
+      UInt $time,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
@@ -2970,7 +3045,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
-  * $data;
+  * $_handle_id; the registered event handler id
+
+  * $data; a native GtkSelectionData object
 
   * $time;
 
@@ -2990,7 +3067,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventSelection): the **Gnome::Gtk3::EventSelection** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventSelection): the event which triggered this signal.
 
 ### show
 
@@ -3003,6 +3082,8 @@ The *show* signal is emitted when *widget* is shown, for example with `show()`.
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
 ### show-help
 
@@ -3018,6 +3099,8 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
   * $help_type;
 
 ### size-allocate
@@ -3031,24 +3114,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal.
 
+  * $_handle_id; the registered event handler id
+
   * $allocation; (type Gtk.Allocation): the region which has been allocated to the widget.
-
-### state-changed
-
-The *state-changed* signal is emitted when the widget state changes. See `get-state()`.
-
-Deprecated: 3.0: Use *state-flags-changed* instead.
-
-    method handler (
-      Unknown type GTK_TYPE_STATE_TYPE $state,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-    );
-
-  * $widget; the object which received the signal.
-
-  * $state; the previous state
 
 ### state-flags-changed
 
@@ -3062,6 +3130,8 @@ The *state-flags-changed* signal is emitted when the widget state changes, see `
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
   * $flags; The previous state flags.
 
@@ -3079,6 +3149,8 @@ Note that style-modifying functions like `override-color()` also cause this sign
 
   * $widget; the object on which the signal is emitted
 
+  * $_handle_id; the registered event handler id
+
 ### unmap
 
 The *unmap* signal is emitted when *widget* is going to be unmapped, which means that either it or any of its parents up to the toplevel widget have been set as hidden.
@@ -3092,6 +3164,8 @@ As *unmap* indicates that a widget will not be shown any longer, it can be used 
     );
 
   * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
 ### unmap-event
 
@@ -3111,7 +3185,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventAny): the **Gnome::Gtk3::EventAny** which triggered this signal
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventAny): the event which triggered this signal
 
 ### unrealize
 
@@ -3125,27 +3201,7 @@ The *unrealize* signal is emitted when the **Gnome::Gtk3::Window** associated wi
 
   * $widget; the object which received the signal.
 
-### visibility-notify-event
-
-The *visibility-notify-event* will be emitted when the *widget*'s window is obscured or unobscured.
-
-To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-VISIBILITY-NOTIFY-MASK** mask.
-
-Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
-
-Deprecated: 3.12: Modern composited windowing systems with pervasive transparency make it impossible to track the visibility of a window reliably, so this signal can not be guaranteed to provide useful information.
-
-    method handler (
-      Unknown type GDK_TYPE_DRAG_CONTEXT $event,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-      --> Int
-    );
-
-  * $widget; the object which received the signal
-
-  * $event; (type Gdk.EventVisibility): the **Gnome::Gtk3::EventVisibility** which triggered this signal.
+  * $_handle_id; the registered event handler id
 
 ### window-state-event
 
@@ -3165,7 +3221,9 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
   * $widget; the object which received the signal
 
-  * $event; (type Gdk.EventWindowState): the **Gnome::Gtk3::EventWindowState** which triggered this signal.
+  * $_handle_id; the registered event handler id
+
+  * $event; (type N-GdkEventWindowState): the event which triggered this signal.
 
 Properties
 ==========
@@ -3234,13 +3292,13 @@ The **Gnome::GObject::Value** type of property *halign* is `G_TYPE_ENUM`.
 
 ### Has default: has-default
 
-Whether the widget is the default widget Default value: False
+Whether the widget is the default widget. Default value: False
 
 The **Gnome::GObject::Value** type of property *has-default* is `G_TYPE_BOOLEAN`.
 
 ### Has focus: has-focus
 
-Whether the widget has the input focus Default value: False
+Whether the widget has the input focus. Default value: False
 
 The **Gnome::GObject::Value** type of property *has-focus* is `G_TYPE_BOOLEAN`.
 
@@ -3249,8 +3307,6 @@ The **Gnome::GObject::Value** type of property *has-focus* is `G_TYPE_BOOLEAN`.
 Enables or disables the emission of *query-tooltip* on *widget*. A value of `True` indicates that *widget* can have a tooltip, in this case the widget will be queried using *query-tooltip* to determine whether it will provide a tooltip or not.
 
 Note that setting this property to `True` for the first time will change the event masks of the GdkWindows of this widget to include leave-notify and motion-notify events. This cannot and will not be undone when the property is set to `False` again.
-
-    *
 
 The **Gnome::GObject::Value** type of property *has-tooltip* is `G_TYPE_BOOLEAN`.
 
@@ -3262,29 +3318,23 @@ The **Gnome::GObject::Value** type of property *height-request* is `G_TYPE_INT`.
 
 Whether to expand horizontally. See `set-hexpand()`.
 
-    *
-
 The **Gnome::GObject::Value** type of property *hexpand* is `G_TYPE_BOOLEAN`.
 
 ### Horizontal Expand Set: hexpand-set
 
 Whether to use the *hexpand* property. See `get-hexpand-set()`.
 
-    *
-
 The **Gnome::GObject::Value** type of property *hexpand-set* is `G_TYPE_BOOLEAN`.
 
 ### Is focus: is-focus
 
-Whether the widget is the focus widget within the toplevel Default value: False
+Whether the widget is the focus widget within the toplevel. Default value: False
 
 The **Gnome::GObject::Value** type of property *is-focus* is `G_TYPE_BOOLEAN`.
 
 ### All Margins: margin
 
 Sets all four sides' margin at once. If read, returns max margin on any side.
-
-    *
 
 The **Gnome::GObject::Value** type of property *margin* is `G_TYPE_INT`.
 
@@ -3294,8 +3344,6 @@ Margin on bottom side of widget.
 
 This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `set-size-request()` for example.
 
-    *
-
 The **Gnome::GObject::Value** type of property *margin-bottom* is `G_TYPE_INT`.
 
 ### Margin on End: margin-end
@@ -3303,8 +3351,6 @@ The **Gnome::GObject::Value** type of property *margin-bottom* is `G_TYPE_INT`.
 Margin on end of widget, horizontally. This property supports left-to-right and right-to-left text directions.
 
 This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `set-size-request()` for example.
-
-    *
 
 The **Gnome::GObject::Value** type of property *margin-end* is `G_TYPE_INT`.
 
@@ -3314,8 +3360,6 @@ Margin on start of widget, horizontally. This property supports left-to-right an
 
 This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `set-size-request()` for example.
 
-    *
-
 The **Gnome::GObject::Value** type of property *margin-start* is `G_TYPE_INT`.
 
 ### Margin on Top: margin-top
@@ -3323,8 +3367,6 @@ The **Gnome::GObject::Value** type of property *margin-start* is `G_TYPE_INT`.
 Margin on top side of widget.
 
 This property adds margin outside of the widget's normal size request, the margin will be added in addition to the size from `set-size-request()` for example.
-
-    *
 
 The **Gnome::GObject::Value** type of property *margin-top* is `G_TYPE_INT`.
 
@@ -3336,17 +3378,13 @@ The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
 
 ### No show all: no-show-all
 
-Whether show-all( should not affect this widget) Default value: False
+Whether show-all should not affect this widget. Default value: False
 
 The **Gnome::GObject::Value** type of property *no-show-all* is `G_TYPE_BOOLEAN`.
 
 ### Opacity for Widget: opacity
 
 The requested opacity of the widget. See `set-opacity()` for more details about window opacity.
-
-Before 3.8 this was only available in GtkWindow
-
-    *
 
 The **Gnome::GObject::Value** type of property *opacity* is `G_TYPE_DOUBLE`.
 
@@ -3366,8 +3404,6 @@ The **Gnome::GObject::Value** type of property *receives-default* is `G_TYPE_BOO
 
 The scale factor of the widget. See `get-scale-factor()` for more details about widget scaling.
 
-    *
-
 The **Gnome::GObject::Value** type of property *scale-factor* is `G_TYPE_INT`.
 
 ### Sensitive: sensitive
@@ -3384,8 +3420,6 @@ This is a convenience property which will take care of getting the tooltip shown
 
 Note that if both *tooltip-text* and *tooltip-markup* are set, the last one wins.
 
-    *
-
 The **Gnome::GObject::Value** type of property *tooltip-markup* is `G_TYPE_STRING`.
 
 ### Tooltip Text: tooltip-text
@@ -3398,15 +3432,13 @@ This is a convenience property which will take care of getting the tooltip shown
 
 Note that if both *tooltip-text* and *tooltip-markup* are set, the last one wins.
 
-    *
-
 The **Gnome::GObject::Value** type of property *tooltip-text* is `G_TYPE_STRING`.
 
 ### Vertical Alignment: valign
 
 How to distribute vertical space if widget gets extra space, see **Gnome::Gtk3::Align**
 
-    * Widget type: GTK_TYPE_ALIGN
+Widget type: GTK_TYPE_ALIGN
 
 The **Gnome::GObject::Value** type of property *valign* is `G_TYPE_ENUM`.
 
@@ -3414,15 +3446,11 @@ The **Gnome::GObject::Value** type of property *valign* is `G_TYPE_ENUM`.
 
 Whether to expand vertically. See `set-vexpand()`.
 
-    *
-
 The **Gnome::GObject::Value** type of property *vexpand* is `G_TYPE_BOOLEAN`.
 
 ### Vertical Expand Set: vexpand-set
 
 Whether to use the *vexpand* property. See `get-vexpand-set()`.
-
-    *
 
 The **Gnome::GObject::Value** type of property *vexpand-set* is `G_TYPE_BOOLEAN`.
 
@@ -3440,7 +3468,7 @@ The **Gnome::GObject::Value** type of property *width-request* is `G_TYPE_INT`.
 
 The widget's window if it is realized, `undefined` otherwise.
 
-    * Widget type: GDK_TYPE_WINDOW
+Widget type: GDK_TYPE_WINDOW
 
 The **Gnome::GObject::Value** type of property *window* is `G_TYPE_OBJECT`.
 
