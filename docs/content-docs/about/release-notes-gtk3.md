@@ -32,14 +32,15 @@ layout: sidebar
   $b.foreach( X.new, 'cb', :label<some-text>);
   $b.foreach( X.new, 'cb-rk', :label<some-text>);
   ```
-  This is maybe a nice solution and in line with the remarks in previous entries about methods with the `-rk` extentions.
+  This is maybe a nice solution and in line with the remarks in previous entries about methods with the `-rk` extentions. Another experiment is by using a named argument `:give-raku-objects`. This might prove a better solution because this argument is also given to the callback method. The callback routine just checks for its truthiness to decide what object it has got. The caller can than also turn the flag to `False` if it is not able to create a raku object.
+* Bugfixes in **Gnome::Gtk3::Widget**; The `delete-event` signal was wrongly defined.
 
 #### 2021-04-25 0.39.1:
 * It hounts me at night that I break code `sigh…` :sleeping:. Even that I am allowed to do it (version < 1.0.0) I have slept restles. So, might have to make a change so that code will not break. The following will be done to remedy my sleepless nights :smile:
   * Methods returning native objects are kept as it is, i.e. no `-no` added to the method name.
   * Methods returning raku objects get the `-rk` added to the method name.
   * In newly generated modules, raku objects are returned when possible. Otherwise native objects.
-    These methods will not have the `-rk` extension on the method name because there is no history. And also because several are already created some time ago, it would break that code if I change that.  :chart_with_downwards_trend:
+    These methods will not have the `-rk` extension on the method name because there is no history. And also because several are already created some time ago, it would break that code if I change that :bomb:. I might deprecate that later and become more consequent in all modules and add the `-rk` methods first.
     If the method is made returning a native object and later on I might find a way to create and return a raku object, the newer method will get the `-rk` added the the method name.
 * Changed the following modules for the above remarks;
   * **Gnome::Gdk3::Screen**
