@@ -145,27 +145,6 @@ submethod BUILD ( *%options ) {
       );
     }
 
-    elsif %options<value>:exists and %options<lower>:exists and
-      %options<upper>:exists and %options<step_increment>:exists and
-      %options<page_increment>:exists and %options<page_size>:exists {
-
-      Gnome::N::deprecate(
-        '.new(:page_increment)', '.new(:page-increment)', '0.33.0', '0.38.0'
-      );
-      Gnome::N::deprecate(
-        '.new(:page_size)', '.new(:page-size)', '0.33.0', '0.38.0');
-      Gnome::N::deprecate(
-        '.new(:step_increment)', '.new(:step-increment)', '0.33.0', '0.38.0'
-      );
-
-      self.set-native-object(_gtk_adjustment_new(
-          %options<value>.Num, %options<lower>.Num, %options<upper>.Num,
-          %options<step_increment>.Num, %options<page_increment>.Num,
-          %options<page_size>.Num
-        )
-      );
-    }
-
     # check if there are unknown options
     elsif %options.elems {
       die X::Gnome.new(
