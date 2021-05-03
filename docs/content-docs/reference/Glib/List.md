@@ -187,7 +187,7 @@ find
 
 Finds the element in a **Gnome::Glib::List** which contains the given data.
 
-Returns: the found **Gnome::Glib::List** element, or `undefined` if it is not found
+Returns: the found **Gnome::Glib::List** element, or `invalid` if it is not found
 
     method find ( Pointer $data --> Gnome::Glib::List )
 
@@ -198,7 +198,7 @@ find-custom
 
 Finds an element in a **Gnome::Glib::List**, using a supplied function to find the desired element. It iterates over the list, calling the given function which should return 0 when the desired element is found.
 
-Returns: the found **Gnome::Glib::List** element, or `empty` if it is not found. You can check for its validity.
+Returns: the found **Gnome::Glib::List** element, or `invalid` if it is not found.
 
     method find-custom (
       $handler-object, $method, *%user-data
@@ -251,7 +251,7 @@ first
 
 Gets the first element in a **Gnome::Glib::List**.
 
-Returns: the first element in the **Gnome::Glib::List**, or `empty` if the **Gnome::Glib::List** has no elements. You can check for its validity.
+Returns: the first element in the **Gnome::Glib::List**, or `invalid` if the **Gnome::Glib::List** has no elements.
 
     method first ( --> Gnome::Glib::List )
 
@@ -314,7 +314,7 @@ last
 
 Gets the last element in a **Gnome::Glib::List**.
 
-Returns: the last element in the **Gnome::Glib::List**, or `undefined` if the **Gnome::Glib::List** has no elements
+Returns: the last element in the **Gnome::Glib::List**, or `invalid` if the **Gnome::Glib::List** has no elements
 
     method last ( --> Gnome::Glib::List )
 
@@ -343,7 +343,7 @@ Gets the element at the given position in a **Gnome::Glib::List**.
 
 This iterates over the list until it reaches the *n*-th position. If you intend to iterate over every element, it is better to use a for-loop as described in the **Gnome::Glib::List** introduction.
 
-Returns: the element, or `undefined` if the position is off the end of the **Gnome::Glib::List**
+Returns: the element, or `invalid` if the position is off the end of the **Gnome::Glib::List**
 
     method nth ( UInt $n --> Gnome::Glib::List )
 
@@ -367,7 +367,7 @@ nth-prev
 
 Gets the element *n* places before *list*.
 
-Returns: the element, or `undefined` if the position is off the end of the **Gnome::Glib::List**
+Returns: the element, or `invalid` if the position is off the end of the **Gnome::Glib::List**
 
     method nth-prev ( UInt $n --> Gnome::Glib::List )
 
@@ -389,13 +389,7 @@ prepend
 
 Prepends a new element on to the start of the list.
 
-Note that the return value is the new start of the list, which will have changed, so make sure you store the new value.
-
-|[<!-- language="C" --> // Notice that it is initialized to the empty list. GList *list = NULL;
-
-list = prepend (list, "last"); list = g-list-prepend (list, "first"); ]|
-
-Do not use this function to prepend a new element to a different element than the start of the list. Use `g-list-insert-before()` instead.
+Note that the return value is the new start of the list, which will have changed, so make sure you store the new value. Do not use this function to prepend a new element to a different element than the start of the list. (Note; probably the list before insertion point gets cut off and then there is a memory leak). Use `g-list-insert-before()` instead.
 
 Returns: a pointer to the newly prepended element, which is the new start of the **Gnome::Glib::List**
 
@@ -403,10 +397,16 @@ Returns: a pointer to the newly prepended element, which is the new start of the
 
   * Pointer $data; the data for the new element
 
+### Example
+
+my Gnome::Glib::List $list .= new;
+
+$list .= prepend(CArray[Str].new("last")); $list .= prepend(CArray[Str].new("first"));
+
 previous
 --------
 
-Gets the previous element in a **Gnome::Glib::List**, or undefined if the **Gnome::Glib::List** is at the beginning of the list.
+Gets the previous element in a **Gnome::Glib::List**, or `invalif` if the **Gnome::Glib::List** is at the beginning of the list.
 
     method previous ( --> Gnome::Glib::List )
 
@@ -435,7 +435,7 @@ Returns: the (possibly changed) start of the **Gnome::Glib::List**
 remove-link
 -----------
 
-Removes an element from a **Gnome::Glib::List**, without freeing the element. The removed element's prev and next links are set to `undefined`, so that it becomes a self-contained list with one element.
+Removes an element from a **Gnome::Glib::List**, without freeing the element. The removed element's prev and next links are set to `invalid`, so that it becomes a self-contained list with one element.
 
 This function is for example used to move an element in the list (see the example for `concat()`) or to remove an element in the list before freeing its data.
 
