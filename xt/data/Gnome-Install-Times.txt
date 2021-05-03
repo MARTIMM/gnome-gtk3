@@ -14,3 +14,22 @@ Install Gnome::Cairo Gnome::Gio Gnome::Gdk3
 Install Gnome::Gtk3
 638.45user 25.79system 7:38.00elapsed 145%CPU (0avgtext+0avgdata 718508maxresident)k
 6720inputs+864312outputs (2major+16236698minor)pagefaults 0swaps
+
+
+Mon May  3 12:48:48 CEST 2021
+Welcome to Rakudo(tm) v2021.03-190-gc05b23f18.
+Implementing the Raku(tm) programming language v6.d.
+Built on MoarVM version 2021.03-60-g3013dcf3b.
+
+Install Gnome::N Gnome::Glib Gnome::GObject
+95.48user 6.07system 1:46.38elapsed 95%CPU (0avgtext+0avgdata 450016maxresident)k
+928808inputs+122600outputs (5056major+2755702minor)pagefaults 0swaps
+
+Install Gnome::Cairo Gnome::Gio Gnome::Gdk3
+261.78user 10.16system 3:18.39elapsed 137%CPU (0avgtext+0avgdata 552456maxresident)k
+1872inputs+393664outputs (3major+5680304minor)pagefaults 0swaps
+
+Install Gnome::Gtk3
+Command exited with non-zero status 1
+501.97user 25.36system 6:28.82elapsed 135%CPU (0avgtext+0avgdata 636736maxresident)k
+25272inputs+646560outputs (150major+14543974minor)pagefaults 0swaps
