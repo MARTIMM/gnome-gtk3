@@ -135,7 +135,6 @@ subtest 'Properties ...', {
 sub clear-list ( Gnome::Glib::List $l is copy ) {
   while $l.is-valid {
     my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
-#note 'clear: ', $ri.get-uri;
     $ri.clear-object;
     $l .= next;
   }
