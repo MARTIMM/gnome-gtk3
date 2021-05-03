@@ -6,6 +6,10 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-04-29 0.39.3:
+* Some test failures. The tests are adjusted.
+* Bugfixes in **Gnome::Glib::List**. Objects were not initialized properly and therefore could not be tested for its validity.
+
 #### 2021-04-29 0.39.2:
 * Improve docs of Grid, Container and Fixed. Added some tests for Container.
 * Add a method `get-child-at-rk()` to return a raku object. `get-child-at()` returns a native object.
