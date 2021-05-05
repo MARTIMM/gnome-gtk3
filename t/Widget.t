@@ -19,6 +19,7 @@ use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::WidgetPath;
+use Gnome::Gtk3::StyleContext;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -357,6 +358,19 @@ subtest 'Manipulations 2', {
 }}
   is $b.get-toplevel-rk.^name, 'Gnome::Gtk3::Window', '.get-toplevel()';
   is $b.get-visual-rk.^name, 'Gnome::Gdk3::Visual', '.get-visual()';
+
+
+  $b.set-state-flags( GTK_STATE_FLAG_ACTIVE, False);
+  ok $b.get-state-flags() +| GTK_STATE_FLAG_ACTIVE,
+    '.set-state-flags() / .get-state-flags(): ' ~
+    $b.get-state-flags().fmt('0b%016b');
+  $b.unset-state-flags(GTK_STATE_FLAG_ACTIVE);
+  nok $b.get-state-flags() +& GTK_STATE_FLAG_ACTIVE,
+    '.unset-state-flags(): ' ~ $b.get-state-flags().fmt('0b%016b');
+
+
+  my Gnome::Gtk3::StyleContext $sc = $b.get-style-context-rk;
+  ok 1, '.get-style-context-rk(): ' ~ $sc.get-path // '-';
 
   $b.destroy;
   $w.destroyed($b);

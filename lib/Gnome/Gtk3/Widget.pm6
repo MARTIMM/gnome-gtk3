@@ -2907,33 +2907,32 @@ sub gtk_widget_get_size_request (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-state-flags:
+#TM:1:get-state-flags:
 =begin pod
 =head2 get-state-flags
 
 Returns the widget state as a flag set. It is worth mentioning that the effective C<GTK-STATE-FLAG-INSENSITIVE> state will be returned, that is, also based on parent insensitivity, even if I<widget> itself is sensitive.
 
-Also note that if you are looking for a way to obtain the B<Gnome::Gtk3::StateFlags> to pass to a B<Gnome::Gtk3::StyleContext> method, you should look at C<gtk-style-context-get-state()>.
+Also note that if you are looking for a way to obtain the B<Gnome::Gtk3::StateFlags> to pass to a B<Gnome::Gtk3::StyleContext> method, you should look at C<Gnome::Gtk3::StyleContext.get-state()>.
 
-Returns: The state flags for widget
+Returns: The state flags for widget. Flags are defined by GtkStateFlags.
 
-  method get-state-flags ( --> GtkStateFlags )
-
+  method get-state-flags ( --> UInt )
 
 =end pod
 
-method get-state-flags ( --> GtkStateFlags ) {
-  GtkStateFlags(gtk_widget_get_state_flags(self._f('GtkWidget')))
+method get-state-flags ( --> UInt ) {
+  gtk_widget_get_state_flags(self._f('GtkWidget'))
 }
 
 sub gtk_widget_get_state_flags (
-  N-GObject $widget --> GEnum
+  N-GObject $widget --> GFlag
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-style-context:
-#TM:0:get-style-context-rk:
+#TM:1:get-style-context:
+#TM:1:get-style-context-rk:
 =begin pod
 =head2 get-style-context, get-style-context-rk
 
@@ -5227,9 +5226,9 @@ For toplevel widgets this depends on the capabilities of the windowing system. O
 
 For child widgets it doesn’t work if any affected widget has a native window, or disables double buffering.
 
-  method set-opacity ( Num $opacity )
+  method set-opacity ( Num() $opacity )
 
-=item Num $opacity; desired opacity, between 0 and 1
+=item Num() $opacity; desired opacity, between 0 and 1
 
 =end pod
 
@@ -5430,7 +5429,7 @@ sub gtk_widget_set_size_request (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-state-flags:
+#TM:1:set-state-flags:
 =begin pod
 =head2 set-state-flags
 
@@ -5440,14 +5439,14 @@ This function accepts the values C<GTK-STATE-FLAG-DIR-LTR> and C<GTK-STATE-FLAG-
 
 It is worth mentioning that any other state than C<GTK-STATE-FLAG-INSENSITIVE>, will be propagated down to all non-internal children if I<widget> is a B<Gnome::Gtk3::Container>, while C<GTK-STATE-FLAG-INSENSITIVE> itself will be propagated down to all B<Gnome::Gtk3::Container> children by different means than turning on the state flag down the hierarchy, both C<get-state-flags()> and C<is-sensitive()> will make use of these.
 
-  method set-state-flags ( GtkStateFlags $flags, Bool $clear )
+  method set-state-flags ( UInt $flags, Bool $clear )
 
-=item GtkStateFlags $flags; State flags to turn on
+=item UInt $flags; State flags to turn on. Flags are defined by GtkStateFlags.
 =item Bool $clear; Whether to clear state before turning on I<flags>
 
 =end pod
 
-method set-state-flags ( GtkStateFlags $flags, Bool $clear ) {
+method set-state-flags ( UInt $flags, Bool $clear ) {
 
   gtk_widget_set_state_flags(
     self._f('GtkWidget'), $flags, $clear
@@ -6160,23 +6159,20 @@ sub gtk_widget_unregister_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:unset-state-flags:
+#TM:1:unset-state-flags:
 =begin pod
 =head2 unset-state-flags
 
 This function is for use in widget implementations. Turns off flag values for the current widget state (insensitive, prelighted, etc.). See C<set-state-flags()>.
 
-  method unset-state-flags ( GtkStateFlags $flags )
+  method unset-state-flags ( UInt $flags )
 
-=item GtkStateFlags $flags; State flags to turn off
+=item UInt $flags; State flags to turn off. Flags are bits defined by GtkStateFlags
 
 =end pod
 
-method unset-state-flags ( GtkStateFlags $flags ) {
-
-  gtk_widget_unset_state_flags(
-    self._f('GtkWidget'), $flags
-  );
+method unset-state-flags ( UInt $flags ) {
+  gtk_widget_unset_state_flags( self._f('GtkWidget'), $flags);
 }
 
 sub gtk_widget_unset_state_flags (
