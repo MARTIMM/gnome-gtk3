@@ -588,6 +588,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   $raku-type ~~ s:s/ GFlag /UInt/;
 
   $raku-type ~~ s:g/ \s+ //;
+  $raku-type ~= '()' if $raku-type ~~ any(<Num Int>);
 
 #note "Result type: $type, raku type: $raku-type, is class = $type-is-class";
 
