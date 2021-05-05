@@ -100,19 +100,98 @@ subtest 'Properties ...', {
   test-property( G_TYPE_DOUBLE, 'page-size', 'get-double', 1e1);
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
+subtest 'Signals ...', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method a-ch (
+      Gnome::Gtk3::Adjustment :$_widget, gulong :$_handler-id
+    ) {
+      isa-ok $_widget, Gnome::Gtk3::Adjustment;
+      $!signal-processed = True;
+    }
+
+    method a-vch (
+      Gnome::Gtk3::Adjustment :$_widget, gulong :$_handler-id
+    ) {
+      isa-ok $_widget, Gnome::Gtk3::Adjustment;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Adjustment :$_widget --> Str ) {
+
+      $_widget.set-step-increment(2.1);
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      is $!signal-processed, True, '\'changed\' signal processed';
+
+      $!signal-processed = False;
+      $_widget.set-value(2.1);
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      is $!signal-processed, True, '\'value-changed\' signal processed';
+
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #while $main.gtk-events-pending() { $main.iteration-do(False); }
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::Adjustment $a .= new(
+    :value(10), :lower(0), :upper(100),
+    :step-increment(1), :page-increment(10), :page-size(20)
+  );
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $a.register-signal( $sh, 'a-ch', 'changed');
+  $a.register-signal( $sh, 'a-vch', 'value-changed');
+
+  my Promise $p = $a.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
 
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }
-
-#-------------------------------------------------------------------------------
-subtest 'Signals ...', {
-}
-}}
-
-#-------------------------------------------------------------------------------
-done-testing;
