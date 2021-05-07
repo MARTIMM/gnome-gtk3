@@ -129,6 +129,9 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
     ( $declaration, $return-type, $raku-return-type, $type-is-class) =
       get-type( $declaration, :!attr);
 
+    # return types do not have to be coerced
+    $raku-return-type ~~ s/\(\)//;
+
     # get the subroutine name and remove from declaration
     $declaration ~~ m/ $<sub-name> = [ <alnum>+ ] \s* /;
     my Str $sub-name = ~$<sub-name>;
