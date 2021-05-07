@@ -434,7 +434,7 @@ B<Gnome::Gtk3::Scale>.
 
 =end pod
 
-#TE:0:GtkPositionType:
+#TE:1:GtkPositionType:
 enum GtkPositionType is export (
   'GTK_POS_LEFT',
   'GTK_POS_RIGHT',
