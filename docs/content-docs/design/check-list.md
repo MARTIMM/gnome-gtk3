@@ -144,7 +144,7 @@ MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|  |
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Notebook                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
+Notebook                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
 Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
 PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |
