@@ -86,7 +86,7 @@ B<Gnome::Gtk3::Container>
 
 =head2 Uml Diagram
 
-![](plantuml/.svg)
+![](plantuml/Notebook.svg)
 
 
 =head2 Inheriting this class
@@ -1542,6 +1542,82 @@ Emitted when the user or a function changes the current page.
 
 =item $_handle_id; the registered event handler id
 
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:enable-popup:
+=head3 Enable Popup: enable-popup
+
+If TRUE, pressing the right mouse button on the notebook pops up a menu that you can use to go to a page
+
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<enable-popup> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:group-name:
+=head3 Group Name: group-name
+
+ Group name for tab drag and drop.
+
+The B<Gnome::GObject::Value> type of property I<group-name> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:page:
+=head3 Page: page
+
+The B<Gnome::GObject::Value> type of property I<page> is C<G_TYPE_INT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:scrollable:
+=head3 Scrollable: scrollable
+
+If TRUE, scroll arrows are added if there are too many tabs to fit
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<scrollable> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-border:
+=head3 Show Border: show-border
+
+Whether the border should be shown
+Default value: True
+
+The B<Gnome::GObject::Value> type of property I<show-border> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-tabs:
+=head3 Show Tabs: show-tabs
+
+Whether tabs should be shown
+Default value: True
+
+The B<Gnome::GObject::Value> type of property I<show-tabs> is C<G_TYPE_BOOLEAN>.
+
+=begin comment
+=comment -----------------------------------------------------------------------
+=comment #TP:0:tab-pos:
+=head3 Tab Position: tab-pos
+
+Which side of the notebook holds the tabs
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<tab-pos> is C<G_TYPE_ENUM>.
+=end comment
 =end pod
 
 

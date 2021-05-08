@@ -163,10 +163,64 @@ note 'N pages: ', $n.get-n-pages;
   lives-ok { $n.prev-page; }, '.prev-page(): 2 -> ' ~ $n.get-current-page;
 
   $n.reorder-child( $g4, 0);
-  is $n.get-nth-page-rk(0).get-name, 'g4', '.reorder-child()';
+  is $n.get-nth-page-rk(0).get-name, 'g4',
+    '.reorder-child() -> ' ~ $n.get-current-page;
 
+  lives-ok { $n.remove-page(5); }, '.remove-page() -> ' ~ $n.get-current-page;
 
-  lives-ok { $n.remove-page(5); }, '.remove-page()';
+  for ($g1,#`{{$g2,}}$g3,$g4,$g5,$g6,$g7) -> $g {
+    diag $g.get-name ~ ', ' ~ $n.page-num($g);
+  }
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::Notebook $n .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $n.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'enable-popup', 'get-boolean', 1);
+  test-property( G_TYPE_STRING, 'group-name', 'get-string', 'group 1');
+  test-property( G_TYPE_BOOLEAN, 'scrollable', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-border', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-tabs', 'get-boolean', 1);
+#  test-property( G_TYPE_BOOLEAN, 'tab-pos', '', );
+  test-property( G_TYPE_INT, 'page', 'get-int', $n.get-current-page);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }
 
 #-------------------------------------------------------------------------------

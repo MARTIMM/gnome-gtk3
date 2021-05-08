@@ -81,6 +81,11 @@ Declaration
     unit class Gnome::Gtk3::Notebook;
     also is Gnome::Gtk3::Container;
 
+Uml Diagram
+-----------
+
+![](plantuml/Notebook.svg)
+
 Inheriting this class
 ---------------------
 
@@ -106,507 +111,501 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new Notebook object.
 
     multi method new ( )
+
+### :native-object
 
 Create a Notebook object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
     multi method new ( N-GObject :$native-object! )
 
+### :build-id
+
 Create a Notebook object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-[gtk_notebook_] append_page
----------------------------
+append-page
+-----------
 
-Appends a page to the *notebook*.
+Appends a page to *notebook*.
 
 Returns: the index (starting from 0) of the appended page in the notebook, or -1 if function fails
 
-    method gtk_notebook_append_page (
-      N-GObject $child, N-GObject $tab_label
-      --> Int
+    method append-page (
+      N-GObject $child, N-GObject $tab_label --> Int
     )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page.
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or an undefined value to use the default label, “page N”
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-[gtk_notebook_] append_page_menu
---------------------------------
+append-page-menu
+----------------
 
 Appends a page to *notebook*, specifying the widget to use as the label in the popup menu.
 
 Returns: the index (starting from 0) of the appended page in the notebook, or -1 if function fails
 
-    method gtk_notebook_append_page_menu ( N-GObject $child, N-GObject $tab_label, N-GObject $menu_label --> Int )
+    method append-page-menu (
+      N-GObject $child, N-GObject $tab_label, N-GObject $menu_label
+      --> Int
+    )
 
   * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-  * N-GObject $menu_label; (allow-none): the widget to use as a label for the page-switch menu, if that is enabled. If `Any`, and *tab_label* is a **Gnome::Gtk3::Label** or `Any`, then the menu label will be a newly created label with the same text as *tab_label*; if *tab_label* is not a **Gnome::Gtk3::Label**, *menu_label* must be specified if the page-switch menu is to be used.
+  * N-GObject $menu_label; the widget to use as a label for the page-switch menu, if that is enabled. If `undefined`, and *$tab-label* is a **Gnome::Gtk3::Label** or `undefined`, then the menu label will be a newly created label with the same text as *$tab-label*; if *$tab-label* is not a **Gnome::Gtk3::Label**, *$menu-label* must be specified if the page-switch menu is to be used.
 
-[gtk_notebook_] prepend_page
-----------------------------
+detach-tab
+----------
 
-Prepends a page to *notebook*.
+Removes the child from the notebook.
 
-Returns: the index (starting from 0) of the prepended page in the notebook, or -1 if function fails
+This function is very similar to `Gnome::Gtk3::Container.remove()`, but additionally informs the notebook that the removal is happening as part of a tab DND operation, which should not be cancelled.
 
-    method gtk_notebook_prepend_page ( N-GObject $child, N-GObject $tab_label --> Int )
+    method detach-tab ( N-GObject $child )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
+  * N-GObject $child; a child
 
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
+get-action-widget, get-action-widget-rk
+---------------------------------------
 
-[gtk_notebook_] prepend_page_menu
----------------------------------
+Gets one of the action widgets. See `set-action-widget()`.
 
-Prepends a page to *notebook*, specifying the widget to use as the label in the popup menu.
+Returns: The action widget with the given *$pack-type* or `undefined` when this action widget has not been set
 
-Returns: the index (starting from 0) of the prepended page in the notebook, or -1 if function fails
+    method get-action-widget ( GtkPackType $pack_type --> N-GObject )
 
-    method gtk_notebook_prepend_page_menu ( N-GObject $child, N-GObject $tab_label, N-GObject $menu_label --> Int )
+    method get-action-widget-rk (
+      GtkPackType $pack_type --> Gnome::GObject::Object
+    )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
+  * GtkPackType $pack_type; pack type of the action widget to receive
 
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
-
-  * N-GObject $menu_label; (allow-none): the widget to use as a label for the page-switch menu, if that is enabled. If `Any`, and *tab_label* is a **Gnome::Gtk3::Label** or `Any`, then the menu label will be a newly created label with the same text as *tab_label*; if *tab_label* is not a **Gnome::Gtk3::Label**, *menu_label* must be specified if the page-switch menu is to be used.
-
-[gtk_notebook_] insert_page
----------------------------
-
-Insert a page into *notebook* at the given position.
-
-Returns: the index (starting from 0) of the inserted page in the notebook, or -1 if function fails
-
-    method gtk_notebook_insert_page ( N-GObject $child, N-GObject $tab_label, Int $position --> Int )
-
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
-
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
-
-  * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page after all other pages
-
-[gtk_notebook_] insert_page_menu
---------------------------------
-
-Insert a page into *notebook* at the given position, specifying the widget to use as the label in the popup menu.
-
-Returns: the index (starting from 0) of the inserted page in the notebook
-
-    method gtk_notebook_insert_page_menu ( N-GObject $child, N-GObject $tab_label, N-GObject $menu_label, Int $position --> Int )
-
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
-
-  * N-GObject $tab_label; (allow-none): the **Gnome::Gtk3::Widget** to be used as the label for the page, or `Any` to use the default label, “page N”
-
-  * N-GObject $menu_label; (allow-none): the widget to use as a label for the page-switch menu, if that is enabled. If `Any`, and *tab_label* is a **Gnome::Gtk3::Label** or `Any`, then the menu label will be a newly created label with the same text as *tab_label*; if *tab_label* is not a **Gnome::Gtk3::Label**, *menu_label* must be specified if the page-switch menu is to be used.
-
-  * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page after all other pages.
-
-[gtk_notebook_] remove_page
----------------------------
-
-Removes a page from the notebook given its index in the notebook.
-
-    method gtk_notebook_remove_page ( Int $page_num )
-
-  * Int $page_num; the index of a notebook page, starting from 0. If -1, the last page will be removed.
-
-[gtk_notebook_] set_group_name
-------------------------------
-
-Sets a group name for *notebook*.
-
-Notebooks with the same name will be able to exchange tabs via drag and drop. A notebook with a `Any` group name will not be able to exchange tabs with any other notebook.
-
-Since: 2.24
-
-    method gtk_notebook_set_group_name ( Str $group_name )
-
-  * Str $group_name; (allow-none): the name of the notebook group, or `Any` to unset it
-
-[gtk_notebook_] get_group_name
-------------------------------
-
-Gets the current group name for *notebook*.
-
-Returns: (nullable) (transfer none): the group name, or `Any` if none is set
-
-Since: 2.24
-
-    method gtk_notebook_get_group_name ( --> Str )
-
-[gtk_notebook_] get_current_page
---------------------------------
+get-current-page
+----------------
 
 Returns the page number of the current page.
 
 Returns: the index (starting from 0) of the current page in the notebook. If the notebook has no pages, then -1 will be returned.
 
-    method gtk_notebook_get_current_page ( --> Int )
+    method get-current-page ( --> Int )
 
-[gtk_notebook_] get_nth_page
-----------------------------
+get-group-name
+--------------
 
-Returns the child widget contained in page number *page_num*.
+Gets the current group name for *notebook*.
 
-Returns: (nullable) (transfer none): the child widget, or `Any` if *page_num* is out of bounds
+Returns: the group name, or `undefined` if none is set
 
-    method gtk_notebook_get_nth_page ( Int $page_num --> N-GObject )
+    method get-group-name ( --> Str )
 
-  * Int $page_num; the index of a page in the notebook, or -1 to get the last page
+get-menu-label, get-menu-label-rk
+---------------------------------
 
-[gtk_notebook_] get_n_pages
----------------------------
+Retrieves the menu label widget of the page containing *$child*.
+
+Returns: the menu label, or `undefined` if the notebook page does not have a menu label other than the default (the tab label).
+
+    method get-menu-label ( N-GObject $child --> N-GObject )
+    method get-menu-label-rk ( N-GObject $child --> Gnome::GObject::Object )
+
+  * N-GObject $child; a widget contained in a page of *notebook*
+
+get-menu-label-text
+-------------------
+
+Retrieves the text of the menu label for the page containing *$child*.
+
+Returns: the text of the tab label, or `undefined` if the widget does not have a menu label other than the default menu label, or the menu label widget is not a **Gnome::Gtk3::Label**. The string is owned by the widget and must not be freed.
+
+    method get-menu-label-text ( N-GObject $child --> Str )
+
+  * N-GObject $child; the child widget of a page of the notebook.
+
+get-n-pages
+-----------
 
 Gets the number of pages in a notebook.
 
 Returns: the number of pages in the notebook
 
-Since: 2.2
+    method get-n-pages ( --> Int )
 
-    method gtk_notebook_get_n_pages ( --> Int )
-
-[gtk_notebook_] page_num
-------------------------
-
-Finds the index of the page which contains the given child widget.
-
-Returns: the index of the page containing *child*, or -1 if *child* is not in the notebook
-
-    method gtk_notebook_page_num ( N-GObject $child --> Int )
-
-  * N-GObject $child; a **Gnome::Gtk3::Widget**
-
-[gtk_notebook_] set_current_page
---------------------------------
-
-Switches to the page number *page_num*.
-
-Note that due to historical reasons, **Gnome::Gtk3::Notebook** refuses to switch to a page unless the child widget is visible. Therefore, it is recommended to show child widgets before adding them to a notebook.
-
-    method gtk_notebook_set_current_page ( Int $page_num )
-
-  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the notebook, nothing will be done.
-
-[gtk_notebook_] next_page
--------------------------
-
-Switches to the next page. Nothing happens if the current page is the last page.
-
-    method gtk_notebook_next_page ( )
-
-[gtk_notebook_] prev_page
--------------------------
-
-Switches to the previous page. Nothing happens if the current page is the first page.
-
-    method gtk_notebook_prev_page ( )
-
-[gtk_notebook_] set_show_border
--------------------------------
-
-Sets whether a bevel will be drawn around the notebook pages. This only has a visual effect when the tabs are not shown. See `gtk_notebook_set_show_tabs()`.
-
-    method gtk_notebook_set_show_border ( Int $show_border )
-
-  * Int $show_border; `1` if a bevel should be drawn around the notebook
-
-[gtk_notebook_] get_show_border
--------------------------------
-
-Returns whether a bevel will be drawn around the notebook pages. See `gtk_notebook_set_show_border()`.
-
-Returns: `1` if the bevel is drawn
-
-    method gtk_notebook_get_show_border ( --> Int )
-
-[gtk_notebook_] set_show_tabs
+get-nth-page, get-nth-page-rk
 -----------------------------
 
-Sets whether to show the tabs for the notebook or not.
+Returns the child widget contained in page number *$page-num*.
 
-    method gtk_notebook_set_show_tabs ( Int $show_tabs )
+Returns: the child widget, or `undefined` if *$page-num* is out of bounds
 
-  * Int $show_tabs; `1` if the tabs should be shown
+    method get-nth-page ( Int() $page_num --> N-GObject )
+    method get-nth-page-rk ( Int() $page_num --> Gnome::GObject::Object )
 
-[gtk_notebook_] get_show_tabs
------------------------------
+  * Int() $page_num; the index of a page in the notebook, or -1 to get the last page
 
-Returns whether the tabs of the notebook are shown. See `gtk_notebook_set_show_tabs()`.
+get-scrollable
+--------------
 
-Returns: `1` if the tabs are shown
+Returns whether the tab label area has arrows for scrolling. See `set-scrollable()`.
 
-    method gtk_notebook_get_show_tabs ( --> Int )
+Returns: `True` if arrows for scrolling are present
 
-[gtk_notebook_] set_tab_pos
----------------------------
+    method get-scrollable ( --> Bool )
 
-Sets the edge at which the tabs for switching pages in the notebook are drawn.
+get-show-border
+---------------
 
-    method gtk_notebook_set_tab_pos ( GtkPositionType $pos )
+Returns whether a bevel will be drawn around the notebook pages. See `set-show-border()`.
 
-  * GtkPositionType $pos; the edge to draw the tabs at
+Returns: `True` if the bevel is drawn
 
-[gtk_notebook_] get_tab_pos
----------------------------
+    method get-show-border ( --> Bool )
+
+get-show-tabs
+-------------
+
+Returns whether the tabs of the notebook are shown. See `set-show-tabs()`.
+
+Returns: `True` if the tabs are shown
+
+    method get-show-tabs ( --> Bool )
+
+get-tab-detachable
+------------------
+
+Returns whether the tab contents can be detached from *notebook*.
+
+Returns: `True` if the tab is detachable.
+
+    method get-tab-detachable ( N-GObject $child --> Bool )
+
+  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+
+get-tab-label, get-tab-label-rk
+-------------------------------
+
+Returns the tab label widget for the page *$$child*. `undefined` is returned if *$$child* is not in *notebook* or if no tab label has specifically been set for *$$child*.
+
+Returns: the tab label
+
+    method get-tab-label ( N-GObject $child --> N-GObject )
+    method get-tab-label-rk ( N-GObject $child --> Gnome::GObject::Object )
+
+  * N-GObject $child; the page
+
+get-tab-label-text
+------------------
+
+Retrieves the text of the tab label for the page containing *$child*.
+
+Returns: the text of the tab label, or `undefined` if the tab label widget is not a **Gnome::Gtk3::Label**. The string is owned by the widget and must not be freed.
+
+    method get-tab-label-text ( N-GObject $child --> Str )
+
+  * N-GObject $child; a widget contained in a page of *notebook*
+
+get-tab-pos
+-----------
 
 Gets the edge at which the tabs for switching pages in the notebook are drawn.
 
 Returns: the edge at which the tabs are drawn
 
-    method gtk_notebook_get_tab_pos ( --> GtkPositionType )
+    method get-tab-pos ( --> GtkPositionType )
 
-[gtk_notebook_] set_scrollable
-------------------------------
-
-Sets whether the tab label area will have arrows for scrolling if there are too many tabs to fit in the area.
-
-    method gtk_notebook_set_scrollable ( Int $scrollable )
-
-  * Int $scrollable; `1` if scroll arrows should be added
-
-[gtk_notebook_] get_scrollable
-------------------------------
-
-Returns whether the tab label area has arrows for scrolling. See `gtk_notebook_set_scrollable()`.
-
-Returns: `1` if arrows for scrolling are present
-
-    method gtk_notebook_get_scrollable ( --> Int )
-
-[gtk_notebook_] popup_enable
-----------------------------
-
-Enables the popup menu: if the user clicks with the right mouse button on the tab labels, a menu with all the pages will be popped up.
-
-    method gtk_notebook_popup_enable ( )
-
-[gtk_notebook_] popup_disable
------------------------------
-
-Disables the popup menu.
-
-    method gtk_notebook_popup_disable ( )
-
-[gtk_notebook_] get_tab_label
------------------------------
-
-Returns the tab label widget for the page *child*. `Any` is returned if *child* is not in *notebook* or if no tab label has specifically been set for *child*.
-
-Returns: (transfer none) (nullable): the tab label
-
-    method gtk_notebook_get_tab_label ( N-GObject $child --> N-GObject )
-
-  * N-GObject $child; the page
-
-[gtk_notebook_] set_tab_label
------------------------------
-
-Changes the tab label for *child*. If `Any` is specified for *tab_label*, then the page will have the label “page N”.
-
-    method gtk_notebook_set_tab_label ( N-GObject $child, N-GObject $tab_label )
-
-  * N-GObject $child; the page
-
-  * N-GObject $tab_label; (allow-none): the tab label widget to use, or `Any` for default tab label
-
-[gtk_notebook_] set_tab_label_text
-----------------------------------
-
-Creates a new label and sets it as the tab label for the page containing *child*.
-
-    method gtk_notebook_set_tab_label_text ( N-GObject $child, Str $tab_text )
-
-  * N-GObject $child; the page
-
-  * Str $tab_text; the label text
-
-[gtk_notebook_] get_tab_label_text
-----------------------------------
-
-Retrieves the text of the tab label for the page containing *child*.
-
-Returns: (nullable): the text of the tab label, or `Any` if the tab label widget is not a **Gnome::Gtk3::Label**. The string is owned by the widget and must not be freed.
-
-    method gtk_notebook_get_tab_label_text ( N-GObject $child --> Str )
-
-  * N-GObject $child; a widget contained in a page of *notebook*
-
-[gtk_notebook_] get_menu_label
-------------------------------
-
-Retrieves the menu label widget of the page containing *child*.
-
-Returns: (nullable) (transfer none): the menu label, or `Any` if the notebook page does not have a menu label other than the default (the tab label).
-
-    method gtk_notebook_get_menu_label ( N-GObject $child --> N-GObject )
-
-  * N-GObject $child; a widget contained in a page of *notebook*
-
-[gtk_notebook_] set_menu_label
-------------------------------
-
-Changes the menu label for the page containing *child*.
-
-    method gtk_notebook_set_menu_label ( N-GObject $child, N-GObject $menu_label )
-
-  * N-GObject $child; the child widget
-
-  * N-GObject $menu_label; (allow-none): the menu label, or `Any` for default
-
-[gtk_notebook_] set_menu_label_text
------------------------------------
-
-Creates a new label and sets it as the menu label of *child*.
-
-    method gtk_notebook_set_menu_label_text ( N-GObject $child, Str $menu_text )
-
-  * N-GObject $child; the child widget
-
-  * Str $menu_text; the label text
-
-[gtk_notebook_] get_menu_label_text
------------------------------------
-
-Retrieves the text of the menu label for the page containing *child*.
-
-Returns: (nullable): the text of the tab label, or `Any` if the widget does not have a menu label other than the default menu label, or the menu label widget is not a **Gnome::Gtk3::Label**. The string is owned by the widget and must not be freed.
-
-    method gtk_notebook_get_menu_label_text ( N-GObject $child --> Str )
-
-  * N-GObject $child; the child widget of a page of the notebook.
-
-[gtk_notebook_] reorder_child
------------------------------
-
-Reorders the page containing *child*, so that it appears in position *position*. If *position* is greater than or equal to the number of children in the list or negative, *child* will be moved to the end of the list.
-
-    method gtk_notebook_reorder_child ( N-GObject $child, Int $position )
-
-  * N-GObject $child; the child to move
-
-  * Int $position; the new position, or -1 to move to the end
-
-[gtk_notebook_] get_tab_reorderable
------------------------------------
+get-tab-reorderable
+-------------------
 
 Gets whether the tab can be reordered via drag and drop or not.
 
-Returns: `1` if the tab is reorderable.
+Returns: `True` if the tab is reorderable.
 
-Since: 2.10
-
-    method gtk_notebook_get_tab_reorderable ( N-GObject $child --> Int )
+    method get-tab-reorderable ( N-GObject $child --> Bool )
 
   * N-GObject $child; a child **Gnome::Gtk3::Widget**
 
-[gtk_notebook_] set_tab_reorderable
------------------------------------
+insert-page
+-----------
 
-Sets whether the notebook tab can be reordered via drag and drop or not.
+Insert a page into *notebook* at the given position.
 
-Since: 2.10
+Returns: the index (starting from 0) of the inserted page in the notebook, or -1 if function fails
 
-    method gtk_notebook_set_tab_reorderable ( N-GObject $child, Int $reorderable )
+    method insert-page (
+      N-GObject $child, N-GObject $tab_label, Int() $position
+      --> Int
+    )
 
-  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-  * Int $reorderable; whether the tab is reorderable or not
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-[gtk_notebook_] get_tab_detachable
-----------------------------------
+  * Int() $position; the index (starting at 0) at which to insert the page, or -1 to append the page after all other pages
 
-Returns whether the tab contents can be detached from *notebook*.
+insert-page-menu
+----------------
 
-Returns: `1` if the tab is detachable.
+Insert a page into *notebook* at the given position, specifying the widget to use as the label in the popup menu.
 
-Since: 2.10
+Returns: the index (starting from 0) of the inserted page in the notebook
 
-    method gtk_notebook_get_tab_detachable ( N-GObject $child --> Int )
+    method insert-page-menu (
+      N-GObject $child, N-GObject $tab_label,
+      N-GObject $menu_label, Int() $position
+      --> Int
+    )
 
-  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-[gtk_notebook_] set_tab_detachable
-----------------------------------
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-Sets whether the tab can be detached from *notebook* to another notebook or widget.
+  * N-GObject $menu_label; the widget to use as a label for the page-switch menu, if that is enabled. If `undefined`, and *$tab-label* is a **Gnome::Gtk3::Label** or `undefined`, then the menu label will be a newly created label with the same text as *$tab-label*; if *$tab-label* is not a **Gnome::Gtk3::Label**, *$menu-label* must be specified if the page-switch menu is to be used.
 
-Note that 2 notebooks must share a common group identificator (see `gtk_notebook_set_group_name()`) to allow automatic tabs interchange between them.
+  * Int() $position; the index (starting at 0) at which to insert the page, or -1 to append the page after all other pages.
 
-If you want a widget to interact with a notebook through DnD (i.e.: accept dragged tabs from it) it must be set as a drop destination and accept the target “GTK_NOTEBOOK_TAB”. The notebook will fill the selection with a **Gnome::Gtk3::Widget**** pointing to the child widget that corresponds to the dropped tab.
+next-page
+---------
 
-Note that you should use `gtk_notebook_detach_tab()` instead of `gtk_container_remove()` if you want to remove the tab from the source notebook as part of accepting a drop. Otherwise, the source notebook will think that the dragged tab was removed from underneath the ongoing drag operation, and will initiate a drag cancel animation.
+Switches to the next page. Nothing happens if the current page is the last page.
 
-|[<!-- language="C" --> static void on_drag_data_received (**Gnome::Gtk3::Widget** *widget, **Gnome::Gdk3::DragContext** *context, gint x, gint y, **Gnome::Gtk3::SelectionData** *data, guint info, guint time, gpointer user_data) { **Gnome::Gtk3::Widget** *notebook; **Gnome::Gtk3::Widget** **child;
+    method next-page ( )
 
-notebook = gtk_drag_get_source_widget (context); child = (void*) gtk_selection_data_get_data (data);
+page-num
+--------
 
-// process_widget (*child);
+Finds the index of the page which contains the given child widget.
 
-gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child); } ]|
+Returns: the index of the page containing *$child*, or -1 if *$child* is not in the notebook
 
-If you want a notebook to accept drags from other widgets, you will have to set your own DnD code to do it.
+    method page-num ( N-GObject $child --> Int )
 
-Since: 2.10
+  * N-GObject $child; a **Gnome::Gtk3::Widget**
 
-    method gtk_notebook_set_tab_detachable ( N-GObject $child, Int $detachable )
+popup-disable
+-------------
 
-  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+Disables the popup menu.
 
-  * Int $detachable; whether the tab is detachable or not
+    method popup-disable ( )
 
-[gtk_notebook_] detach_tab
---------------------------
+popup-enable
+------------
 
-Removes the child from the notebook.
+Enables the popup menu: if the user clicks with the right mouse button on the tab labels, a menu with all the pages will be popped up.
 
-This function is very similar to `gtk_container_remove()`, but additionally informs the notebook that the removal is happening as part of a tab DND operation, which should not be cancelled.
+    method popup-enable ( )
 
-Since: 3.16
+prepend-page
+------------
 
-    method gtk_notebook_detach_tab ( N-GObject $child )
+Prepends a page to *notebook*.
 
-  * N-GObject $child; a child
+Returns: the index (starting from 0) of the prepended page in the notebook, or -1 if function fails
 
-[gtk_notebook_] get_action_widget
----------------------------------
+    method prepend-page ( N-GObject $child, N-GObject $tab_label --> Int )
 
-Gets one of the action widgets. See `gtk_notebook_set_action_widget()`.
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-Returns: (nullable) (transfer none): The action widget with the given *pack_type* or `Any` when this action widget has not been set
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-Since: 2.20
+prepend-page-menu
+-----------------
 
-    method gtk_notebook_get_action_widget ( GtkPackType $pack_type --> N-GObject )
+Prepends a page to *notebook*, specifying the widget to use as the label in the popup menu.
 
-  * GtkPackType $pack_type; pack type of the action widget to receive
+Returns: the index (starting from 0) of the prepended page in the notebook, or -1 if function fails
 
-[gtk_notebook_] set_action_widget
----------------------------------
+    method prepend-page-menu ( N-GObject $child, N-GObject $tab_label, N-GObject $menu_label --> Int )
 
-Sets *widget* as one of the action widgets. Depending on the pack type the widget will be placed before or after the tabs. You can use a **Gnome::Gtk3::Box** if you need to pack more than one widget on the same side.
+  * N-GObject $child; the **Gnome::Gtk3::Widget** to use as the contents of the page
 
-Note that action widgets are “internal” children of the notebook and thus not included in the list returned from `gtk_container_foreach()`.
+  * N-GObject $tab_label; the **Gnome::Gtk3::Widget** to be used as the label for the page, or `undefined` to use the default label, “page N”
 
-Since: 2.20
+  * N-GObject $menu_label; the widget to use as a label for the page-switch menu, if that is enabled. If `undefined`, and *$tab-label* is a **Gnome::Gtk3::Label** or `undefined`, then the menu label will be a newly created label with the same text as *$tab-label*; if *$tab-label* is not a **Gnome::Gtk3::Label**, *$menu-label* must be specified if the page-switch menu is to be used.
 
-    method gtk_notebook_set_action_widget ( N-GObject $widget, GtkPackType $pack_type )
+prev-page
+---------
+
+Switches to the previous page. Nothing happens if the current page is the first page.
+
+    method prev-page ( )
+
+remove-page
+-----------
+
+Removes a page from the notebook given its index in the notebook.
+
+    method remove-page ( Int() $page_num )
+
+  * Int() $page_num; the index of a notebook page, starting from 0. If -1, the last page will be removed.
+
+reorder-child
+-------------
+
+Reorders the page containing *$child*, so that it appears in position *$position*. If *$position* is greater than or equal to the number of children in the list or negative, *$child* will be moved to the end of the list.
+
+    method reorder-child ( N-GObject $child, Int() $position )
+
+  * N-GObject $child; the child to move
+
+  * Int() $position; the new position, or -1 to move to the end
+
+set-action-widget
+-----------------
+
+Sets *$widget* as one of the action widgets. Depending on the pack type the widget will be placed before or after the tabs. You can use a **Gnome::Gtk3::Box** if you need to pack more than one widget on the same side.
+
+Note that action widgets are “internal” children of the notebook and thus not included in the list returned from `gtk-container-foreach()`.
+
+    method set-action-widget ( N-GObject $widget, GtkPackType $pack_type )
 
   * N-GObject $widget; a **Gnome::Gtk3::Widget**
 
   * GtkPackType $pack_type; pack type of the action widget
 
+set-current-page
+----------------
+
+Switches to the page number *$page-num*.
+
+Note that due to historical reasons, GtkNotebook refuses to switch to a page unless the child widget is visible. Therefore, it is recommended to show child widgets before adding them to a notebook.
+
+    method set-current-page ( Int() $page_num )
+
+  * Int() $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the notebook, nothing will be done.
+
+set-group-name
+--------------
+
+Sets a group name for *notebook*.
+
+Notebooks with the same name will be able to exchange tabs via drag and drop. A notebook with a `undefined` group name will not be able to exchange tabs with any other notebook.
+
+    method set-group-name ( Str $group_name )
+
+  * Str $group_name; the name of the notebook group, or `undefined` to unset it
+
+set-menu-label
+--------------
+
+Changes the menu label for the page containing *$child*.
+
+    method set-menu-label ( N-GObject $child, N-GObject $menu_label )
+
+  * N-GObject $child; the child widget
+
+  * N-GObject $menu_label; the menu label, or `undefined` for default
+
+set-menu-label-text
+-------------------
+
+Creates a new label and sets it as the menu label of *$child*.
+
+    method set-menu-label-text ( N-GObject $child, Str $menu_text )
+
+  * N-GObject $child; the child widget
+
+  * Str $menu_text; the label text
+
+set-scrollable
+--------------
+
+Sets whether the tab label area will have arrows for scrolling if there are too many tabs to fit in the area.
+
+    method set-scrollable ( Bool $scrollable )
+
+  * Bool $scrollable; `True` if scroll arrows should be added
+
+set-show-border
+---------------
+
+Sets whether a bevel will be drawn around the notebook pages. This only has a visual effect when the tabs are not shown. See `set-show-tabs()`.
+
+    method set-show-border ( Bool $show_border )
+
+  * Bool $show_border; `True` if a bevel should be drawn around the notebook
+
+set-show-tabs
+-------------
+
+Sets whether to show the tabs for the notebook or not.
+
+    method set-show-tabs ( Bool $show_tabs )
+
+  * Bool $show_tabs; `True` if the tabs should be shown
+
+set-tab-detachable
+------------------
+
+Sets whether the tab can be detached from *notebook* to another notebook or widget.
+
+Note that 2 notebooks must share a common group identificator (see `set-group-name()`) to allow automatic tabs interchange between them.
+
+If you want a widget to interact with a notebook through DnD (i.e.: accept dragged tabs from it) it must be set as a drop destination and accept the target “GTK-NOTEBOOK-TAB”. The notebook will fill the selection with a GtkWidget** pointing to the child widget that corresponds to the dropped tab.
+
+Note that you should use `detach-tab()` instead of `Gnome::Gtk3::Container.remove()` if you want to remove the tab from the source notebook as part of accepting a drop. Otherwise, the source notebook will think that the dragged tab was removed from underneath the ongoing drag operation, and will initiate a drag cancel animation.
+
+If you want a notebook to accept drags from other widgets, you will have to set your own DnD code to do it.
+
+    method set-tab-detachable ( N-GObject $child, Bool $detachable )
+
+  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+
+  * Bool $detachable; whether the tab is detachable or not
+
+set-tab-label
+-------------
+
+Changes the tab label for *$child*. If `undefined` is specified for *$tab-label*, then the page will have the label “page N”.
+
+    method set-tab-label ( N-GObject $child, N-GObject $tab_label )
+
+  * N-GObject $child; the page
+
+  * N-GObject $tab_label; the tab label widget to use, or `undefined` for default tab label
+
+set-tab-label-text
+------------------
+
+Creates a new label and sets it as the tab label for the page containing *$child*.
+
+    method set-tab-label-text ( N-GObject $child, Str $tab_text )
+
+  * N-GObject $child; the page
+
+  * Str $tab_text; the label text
+
+set-tab-pos
+-----------
+
+Sets the edge at which the tabs for switching pages in the notebook are drawn.
+
+    method set-tab-pos ( GtkPositionType $pos )
+
+  * GtkPositionType $pos; the edge to draw the tabs at
+
+set-tab-reorderable
+-------------------
+
+Sets whether the notebook tab can be reordered via drag and drop or not.
+
+    method set-tab-reorderable ( N-GObject $child, Bool $reorderable )
+
+  * N-GObject $child; a child **Gnome::Gtk3::Widget**
+
+  * Bool $reorderable; whether the tab is reorderable or not
+
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -614,7 +613,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -625,194 +624,17 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
-
-### switch-page
-
-Emitted when the user or a function changes the current page.
-
-    method handler (
-      N-GObject #`{ is widget } $page,
-      UInt $page_num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the object which received the signal.
-
-  * $page; the new current page
-
-  * $page_num; the index of the page
-
-### page-reordered
-
-the *page-reordered* signal is emitted in the notebook right after a page has been reordered.
-
-Since: 2.10
-
-    method handler (
-      N-GObject #`{ is widget } $child,
-      UInt $page_num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook**
-
-  * $child; the child **Gnome::Gtk3::Widget** affected
-
-  * $page_num; the new page number for *child*
-
-### page-removed
-
-the *page-removed* signal is emitted in the notebook right after a page is removed from the notebook.
-
-Since: 2.10
-
-    method handler (
-      N-GObject #`{ is widget } $child,
-      UInt $page_num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook**
-
-  * $child; the child **Gnome::Gtk3::Widget** affected
-
-  * $page_num; the *child* page number
-
-### page-added
-
-the *page-added* signal is emitted in the notebook right after a page is added to the notebook.
-
-Since: 2.10
-
-    method handler (
-      N-GObject #`{ is widget } $child,
-      UInt $page_num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook**
-
-  * $child; the child **Gnome::Gtk3::Widget** affected
-
-  * $page_num; the new page number for *child*
-
-### create-window
-
-The *create-window* signal is emitted when a detachable tab is dropped on the root window.
-
-A handler for this signal can create a window containing a notebook where the tab will be attached. It is also responsible for moving/resizing the window and adding the necessary properties to the notebook (e.g. the *group-name* ).
-
-Returns: a **Gnome::Gtk3::Notebook** that *page* should be added to, or `Any`.
-
-Since: 2.12
-
-    method handler (
-      N-GObject #`{ is widget } $page,
-      Int $x,
-      Int $y,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
-
-  * $page; the tab of *notebook* that is being detached
-
-  * $x; the X coordinate where the drop happens
-
-  * $y; the Y coordinate where the drop happens
-
-### reorder-tab
-
-    method handler (
-      Int $arg1, #`{ GtkDirectionType }
-      Int $arg2, #`{ Bool }
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
-
-  * $arg1; ?
-
-  * $arg2; ?
-
-### page-reordered
-
-    method handler (
-      N-GObject $child, #`{ is widget }
-      uint $page-num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
-
-  * $child; the child Gtk Widget affected
-
-  * $page-num; the new page number for child
-
-### page-removed
-
-    method handler (
-      N-GObject $child, #`{ is widget }
-      uint $page-num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
-
-  * $child; the child Gtk Widget affected
-
-  * $page-num; the new page number for child
-
-### page-added
-
-    method handler (
-      N-GObject $child, #`{ is widget }
-      uint $page-num,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($notebook),
-      *%user-options
-      --> Int
-    );
-
-  * $notebook; the **Gnome::Gtk3::Notebook** emitting the signal
-
-  * $child; the child Gtk Widget affected
-
-  * $page-num; the new page number for child
 
 ### create-window
 
@@ -820,7 +642,7 @@ Since: 2.12
       N-GObject #`{ is widget } $n-gobject #`{ is widget },
       Int $int,
       Int $int,
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($notebook),
       *%user-options
       --> Unknown type GTK_TYPE_NOTEBOOK
@@ -833,4 +655,152 @@ Since: 2.12
   * $int;
 
   * $int;
+
+  * $_handle_id; the registered event handler id
+
+### page-added
+
+    method handler (
+      N-GObject #`{ is widget } $n-gobject #`{ is widget },
+       $,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($notebook),
+      *%user-options
+      --> Int
+    );
+
+  * $notebook;
+
+  * $n-gobject #`{ is widget };
+
+  * $;
+
+  * $_handle_id; the registered event handler id
+
+### page-removed
+
+    method handler (
+      N-GObject #`{ is widget } $n-gobject #`{ is widget },
+       $,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($notebook),
+      *%user-options
+      --> Int
+    );
+
+  * $notebook;
+
+  * $n-gobject #`{ is widget };
+
+  * $;
+
+  * $_handle_id; the registered event handler id
+
+### page-reordered
+
+    method handler (
+      N-GObject #`{ is widget } $n-gobject #`{ is widget },
+       $,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($notebook),
+      *%user-options
+      --> Int
+    );
+
+  * $notebook;
+
+  * $n-gobject #`{ is widget };
+
+  * $;
+
+  * $_handle_id; the registered event handler id
+
+### reorder-tab
+
+    method handler (
+      Unknown type GTK_TYPE_DIRECTION_TYPE $unknown type gtk_type_direction_type,
+      Int $int,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($notebook),
+      *%user-options
+      --> Int
+    );
+
+  * $notebook;
+
+  * $unknown type gtk_type_direction_type;
+
+  * $int;
+
+  * $_handle_id; the registered event handler id
+
+### switch-page
+
+Emitted when the user or a function changes the current page.
+
+    method handler (
+      N-GObject #`{ is widget } $page,
+       $page_num,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($notebook),
+      *%user-options
+      --> Int
+    );
+
+  * $notebook; the object which received the signal.
+
+  * $page; the new current page
+
+  * $page_num; the index of the page
+
+  * $_handle_id; the registered event handler id
+
+Properties
+==========
+
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new;
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
+
+Supported properties
+--------------------
+
+### Enable Popup: enable-popup
+
+If TRUE, pressing the right mouse button on the notebook pops up a menu that you can use to go to a page
+
+Default value: False
+
+The **Gnome::GObject::Value** type of property *enable-popup* is `G_TYPE_BOOLEAN`.
+
+### Group Name: group-name
+
+    Group name for tab drag and drop.
+
+The **Gnome::GObject::Value** type of property *group-name* is `G_TYPE_STRING`.
+
+### Page: page
+
+The **Gnome::GObject::Value** type of property *page* is `G_TYPE_INT`.
+
+### Scrollable: scrollable
+
+If TRUE, scroll arrows are added if there are too many tabs to fit Default value: False
+
+The **Gnome::GObject::Value** type of property *scrollable* is `G_TYPE_BOOLEAN`.
+
+### Show Border: show-border
+
+Whether the border should be shown Default value: True
+
+The **Gnome::GObject::Value** type of property *show-border* is `G_TYPE_BOOLEAN`.
+
+### Show Tabs: show-tabs
+
+Whether tabs should be shown Default value: True
+
+The **Gnome::GObject::Value** type of property *show-tabs* is `G_TYPE_BOOLEAN`.
 
