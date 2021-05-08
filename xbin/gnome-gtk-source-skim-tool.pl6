@@ -1643,6 +1643,14 @@ sub get-properties ( Str:D $source-content is copy ) {
 
     $property-name = '';
 
+    # Get the array name if g_object_class_install_properties() is used
+    $source-content ~~ m/ 'g_object_class_install_properties'
+                          \s* '(' \s* <alnum>+ \s* ',' \s* <alnum>+ \s* ','
+                          \s* $<array-name> = (<alnum>+) \s* ')'
+                        /;
+    my Str $array-name = ($/<array-name> // '').Str;
+
+
 #`{{
     $source-content ~~ m/
       $<property-doc> = [
@@ -1674,7 +1682,7 @@ sub get-properties ( Str:D $source-content is copy ) {
                                           # sometimes a call for interfaces
          'g_object_class_install_property' .*? ||
                                           # sometimes a call for classes
-          <alnum>*? 'props[' <-[\]]>+ ']' \s* '=' \s*
+          <alnum>*? $array-name '[' <-[\]]>+ ']' \s* '=' \s*
                                           # sometimes there's an array def
         ]                                 # anything else
         'g_param_spec_'                   # till prop spec starts
