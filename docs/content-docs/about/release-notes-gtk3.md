@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-04-29 0.39.4:
+* Modules **Gnome::Gtk3::Adjustment** and **Gnome::Gtk3::Notebook** docs are improved, methods are added and more tests done.
+
 #### 2021-04-29 0.39.3:
 * Some test failures. The tests are adjusted.
 * Bugfixes in **Gnome::Glib::List**. Objects were not initialized properly and therefore could not be tested for its validity.
