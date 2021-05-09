@@ -346,7 +346,7 @@ A B<Gnome::Gtk3::Requisition>-struct represents the desired size of a widget. Se
 
 =end pod
 
-#TT:2:N-GtkRequisition:CellRenderer.t
+#TT:1:N-GtkRequisition:
 class N-GtkRequisition is export is repr('CStruct') {
   has int32 $.width;
   has int32 $.height;
@@ -2961,7 +2961,7 @@ sub gtk_widget_get_style_context (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-support-multidevice:
+#TM:1:get-support-multidevice:
 =begin pod
 =head2 get-support-multidevice
 
@@ -3103,9 +3103,13 @@ This function returns the topmost widget in the container hierarchy I<widget> is
 
 Note the difference in behavior vs. C<get-ancestor()>; `gtk-widget-get-ancestor (widget, GTK-TYPE-WINDOW)` would return C<undefined> if I<widget> wasn’t inside a toplevel window, and if the window was inside a B<Gnome::Gtk3::Window>-derived widget which was in turn inside the toplevel B<Gnome::Gtk3::Window>. While the second case may seem unlikely, it actually happens when a B<Gnome::Gtk3::Plug> is embedded inside a B<Gnome::Gtk3::Socket> within the same application.
 
-To reliably find the toplevel B<Gnome::Gtk3::Window>, use C<get-toplevel()> and call C<GTK-IS-WINDOW()> on the result. For instance, to get the title of a widget's toplevel window, one might use: |[<!-- language="C" --> static const char * get-widget-toplevel-title (GtkWidget *widget) { GtkWidget *toplevel = gtk-widget-get-toplevel (widget); if (GTK-IS-WINDOW (toplevel)) { return gtk-window-get-title (GTK-WINDOW (toplevel)); }
+To reliably find the toplevel B<Gnome::Gtk3::Window>, use C<get-toplevel()> and call C<GTK-IS-WINDOW()> on the result. For instance, to get the title of a widget's toplevel window, one might use:
 
-return NULL; } ]|
+  sub get-widget-toplevel-title ( Gnome::Gtk3::Widget $widget --> Str ) {
+    Gnome::Gtk3::Widget $toplevel = $widget.get-toplevel-rk;
+    ( $toplevel.is-valid and $toplevel.is-toplevel )
+      ?? $toplevel.gtk-window-get-title !! ''
+  }
 
 Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
@@ -3154,7 +3158,7 @@ sub gtk_widget_get_valign (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-valign-with-baseline:
+#TM:1:get-valign-with-baseline:
 =begin pod
 =head2 get-valign-with-baseline
 
@@ -3326,7 +3330,7 @@ sub gtk_widget_grab_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:grab-focus:
+#TM:1:grab-focus:
 =begin pod
 =head2 grab-focus
 
@@ -3338,14 +3342,10 @@ The widget also needs to be realized and mapped. This is indicated by the relate
 
   method grab-focus ( )
 
-
 =end pod
 
 method grab-focus ( ) {
-
-  gtk_widget_grab_focus(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_grab_focus(self._f('GtkWidget'));
 }
 
 sub gtk_widget_grab_focus (
@@ -3358,11 +3358,13 @@ sub gtk_widget_grab_focus (
 =begin pod
 =head2 gtk-cairo-should-draw-window
 
-This function is supposed to be called in  I<draw> implementations for widgets that support multiple windows. I<cr> must be untransformed from invoking of the draw function. This function will return C<True> if the contents of the given I<window> are supposed to be drawn and C<False> otherwise. Note that when the drawing was not initiated by the windowing system this function will return C<True> for all windows, so you need to draw the bottommost window first. Also, do not use “else if” statements to check which window should be drawn.
+This function is supposed to be called in  I<draw> implementations for widgets that support multiple windows. I<$cr> must be untransformed from invoking of the draw function. This function will return C<True> if the contents of the given I<$window> are supposed to be drawn and C<False> otherwise. Note that when the drawing was not initiated by the windowing system this function will return C<True> for all windows, so you need to draw the bottommost window first. Also, do not use “else if” statements to check which window should be drawn.
 
 Returns: C<True> if I<window> should be drawn
 
-  method gtk-cairo-should-draw-window ( cairo_t $cr, N-GObject $window --> Bool )
+  method gtk-cairo-should-draw-window (
+    cairo_t $cr, N-GObject $window --> Bool
+  )
 
 =item cairo_t $cr; a cairo context
 =item N-GObject $window; the window to check. I<window> may not be an input-only window.
@@ -3371,10 +3373,7 @@ Returns: C<True> if I<window> should be drawn
 
 method gtk-cairo-should-draw-window ( cairo_t $cr, $window is copy --> Bool ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
-  gtk_cairo_should_draw_window(
-    self._f('GtkWidget'), $cr, $window
-  ).Bool
+  gtk_cairo_should_draw_window( self._f('GtkWidget'), $cr, $window).Bool
 }
 
 sub gtk_cairo_should_draw_window (
@@ -3391,7 +3390,9 @@ Transforms the given cairo context I<cr> that from I<widget>-relative coordinate
 
 This is the inverse to the transformation GTK applies when preparing an expose event to be emitted with the  I<draw> signal. It is intended to help porting multiwindow widgets from GTK+ 2 to the rendering architecture of GTK+ 3.
 
-  method gtk-cairo-transform-to-window ( cairo_t $cr, N-GObject $widget, N-GObject $window )
+  method gtk-cairo-transform-to-window (
+    cairo_t $cr, N-GObject $widget, N-GObject $window
+  )
 
 =item cairo_t $cr; the cairo context to transform
 =item N-GObject $widget; the widget the context is currently centered for
@@ -3399,13 +3400,12 @@ This is the inverse to the transformation GTK applies when preparing an expose e
 
 =end pod
 
-method gtk-cairo-transform-to-window ( cairo_t $cr, $widget is copy, $window is copy ) {
+method gtk-cairo-transform-to-window (
+  cairo_t $cr, $widget is copy, $window is copy
+) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
-  gtk_cairo_transform_to_window(
-    self._f('GtkWidget'), $cr, $widget, $window
-  );
+  gtk_cairo_transform_to_window( self._f('GtkWidget'), $cr, $widget, $window);
 }
 
 sub gtk_cairo_transform_to_window (
@@ -3414,7 +3414,7 @@ sub gtk_cairo_transform_to_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-requisition-copy:
+#TM:1:gtk-requisition-copy:
 =begin pod
 =head2 gtk-requisition-copy
 
@@ -3433,7 +3433,7 @@ Returns: a copy of I<requisition>
 method gtk-requisition-copy (
   N-GtkRequisition $requisition --> N-GtkRequisition
 ) {
-  gtk_requisition_copy(self._f('GtkWidget'), $requisition)
+  gtk_requisition_copy($requisition)
 }
 
 sub gtk_requisition_copy (
@@ -3442,7 +3442,7 @@ sub gtk_requisition_copy (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-requisition-free:
+#TM:1:gtk-requisition-free:
 =begin pod
 =head2 gtk-requisition-free
 
@@ -3455,10 +3455,7 @@ Frees a B<Gnome::Gtk3::Requisition>.
 =end pod
 
 method gtk-requisition-free ( N-GtkRequisition $requisition ) {
-
-  gtk_requisition_free(
-    self._f('GtkWidget'), $requisition
-  );
+  gtk_requisition_free($requisition);
 }
 
 sub gtk_requisition_free (
@@ -3466,34 +3463,27 @@ sub gtk_requisition_free (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-# TM:0:gtk-requisition-new:
+# TM:1:gtk-requisition-new:
 =begin pod
 =head2 gtk-requisition-new
 
 Allocates a new B<Gnome::Gtk3::Requisition>-struct and initializes its elements to zero.
 
-Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should be freed with C<gtk-requisition-free()>.
+Returns: a new empty B<Gnome::Gtk3::Requisition>. The newly allocated B<Gnome::Gtk3::Requisition> should be freed with C<requisition-free()>.
 
-  method gtk-requisition-new ( G_GNUC_MALLO $C --> N-GtkRequisition )
-
-=item G_GNUC_MALLO $C;
+  method gtk-requisition-new ( --> N-GtkRequisition )
 
 =end pod
 
-method gtk-requisition-new ( G_GNUC_MALLO $C --> N-GtkRequisition ) {
-
-  gtk_requisition_new(
-    self._f('GtkWidget'), $C
-  )
+method gtk-requisition-new ( --> N-GtkRequisition ) {
+  gtk_requisition_new(self._f('GtkWidget'))
 }
 
 sub gtk_requisition_new (
-  G_GNUC_MALLO $C --> N-GtkRequisition
+  --> N-GtkRequisition
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:has-default:
@@ -3506,14 +3496,10 @@ Returns: C<True> if I<widget> is the current default widget within its toplevel,
 
   method has-default ( --> Bool )
 
-
 =end pod
 
 method has-default ( --> Bool ) {
-
-  gtk_widget_has_default(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_has_default(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_has_default (
@@ -3522,7 +3508,7 @@ sub gtk_widget_has_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:has-focus:
+#TM:1:has-focus:
 =begin pod
 =head2 has-focus
 
@@ -3532,14 +3518,10 @@ Returns: C<True> if the widget has the global input focus.
 
   method has-focus ( --> Bool )
 
-
 =end pod
 
 method has-focus ( --> Bool ) {
-
-  gtk_widget_has_focus(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_has_focus( self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_has_focus (
@@ -3548,7 +3530,7 @@ sub gtk_widget_has_focus (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:has-grab:
+#TM:1:has-grab:
 =begin pod
 =head2 has-grab
 
@@ -3560,14 +3542,10 @@ Returns: C<True> if the widget is in the grab-widgets stack
 
   method has-grab ( --> Bool )
 
-
 =end pod
 
 method has-grab ( --> Bool ) {
-
-  gtk_widget_has_grab(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_has_grab(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_has_grab (
@@ -3576,7 +3554,7 @@ sub gtk_widget_has_grab (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:has-screen:
+#TM:1:has-screen:
 =begin pod
 =head2 has-screen
 
@@ -3598,7 +3576,7 @@ sub gtk_widget_has_screen (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:has-visible-focus:
+#TM:1:has-visible-focus:
 =begin pod
 =head2 has-visible-focus
 
@@ -3610,14 +3588,10 @@ Returns: C<True> if the widget should display a “focus rectangle”
 
   method has-visible-focus ( --> Bool )
 
-
 =end pod
 
 method has-visible-focus ( --> Bool ) {
-
-  gtk_widget_has_visible_focus(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_has_visible_focus(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_has_visible_focus (
@@ -3637,10 +3611,7 @@ Reverses the effects of C<show()>, causing the widget to be hidden (invisible to
 =end pod
 
 method hide ( ) {
-
-  gtk_widget_hide(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_hide(self._f('GtkWidget'));
 }
 
 sub gtk_widget_hide (
@@ -3649,7 +3620,7 @@ sub gtk_widget_hide (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:hide-on-delete:
+#TM:1:hide-on-delete:
 =begin pod
 =head2 hide-on-delete
 
@@ -3659,14 +3630,10 @@ Returns: C<True>
 
   method hide-on-delete ( --> Bool )
 
-
 =end pod
 
 method hide-on-delete ( --> Bool ) {
-
-  gtk_widget_hide_on_delete(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_hide_on_delete(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_hide_on_delete (
@@ -3675,7 +3642,7 @@ sub gtk_widget_hide_on_delete (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:in-destruction:
+#TM:1:in-destruction:
 =begin pod
 =head2 in-destruction
 
@@ -3685,14 +3652,10 @@ Returns: C<True> if I<widget> is being destroyed
 
   method in-destruction ( --> Bool )
 
-
 =end pod
 
 method in-destruction ( --> Bool ) {
-
-  gtk_widget_in_destruction(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_in_destruction(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_in_destruction (
@@ -3700,8 +3663,9 @@ sub gtk_widget_in_destruction (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:init-template:
+# TM:0:init-template:
 =begin pod
 =head2 init-template
 
@@ -3729,7 +3693,7 @@ sub gtk_widget_init_template (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
-
+}}
 #`{{
 #-------------------------------------------------------------------------------
 #TM:0:input-shape-combine-region:
@@ -3758,7 +3722,7 @@ sub gtk_widget_input_shape_combine_region (
 }}
 
 #-------------------------------------------------------------------------------
-# TM:0:insert-action-group:
+#TM:0:insert-action-group:
 =begin pod
 =head2 insert-action-group
 
@@ -3785,43 +3749,40 @@ sub gtk_widget_insert_action_group (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:intersect:
+#TM:1:intersect:
 =begin pod
 =head2 intersect
 
-Computes the intersection of a I<widget>’s area and I<area>, storing the intersection in I<intersection>, and returns C<True> if there was an intersection. I<intersection> may be C<undefined> if you’re only interested in whether there was an intersection.
+Computes the intersection of a I<widget>’s area and I<$area>, storing the intersection in I<$intersection>, and returns C<True> if there was an intersection. I<$intersection> may be C<undefined> if you’re only interested in whether there was an intersection.
 
 Returns: C<True> if there was an intersection
 
   method intersect ( N-GObject $area, N-GObject $intersection --> Bool )
 
-=item N-GObject $area; a rectangle
-=item N-GObject $intersection; (out caller-allocates) : rectangle to store intersection of I<widget> and I<area>
+=item N-GObject $area; a N-GdkRectangle
+=item N-GObject $intersection; N-GdkRectangle to store intersection of I<widget> and I<area>
 
 =end pod
 
-method intersect ( $area is copy, $intersection is copy --> Bool ) {
-  $area .= get-native-object-no-reffing unless $area ~~ N-GObject;
-  $intersection .= get-native-object-no-reffing unless $intersection ~~ N-GObject;
-
-  gtk_widget_intersect(
-    self._f('GtkWidget'), $area, $intersection
-  ).Bool
+method intersect (
+  N-GdkRectangle $area, N-GdkRectangle $intersection --> Bool
+) {
+  gtk_widget_intersect( self._f('GtkWidget'), $area, $intersection).Bool
 }
 
 sub gtk_widget_intersect (
-  N-GObject $widget, N-GObject $area, N-GObject $intersection --> gboolean
+  N-GObject $widget, N-GdkRectangle $area, N-GdkRectangle $intersection --> gboolean
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:is-ancestor:
+#TM:1:is-ancestor:
 =begin pod
 =head2 is-ancestor
 
-Determines whether I<widget> is somewhere inside I<ancestor>, possibly with intermediate containers.
+Determines whether I<widget> is somewhere inside I<$ancestor>, possibly with intermediate containers.
 
-Returns: C<True> if I<ancestor> contains I<widget> as a child, grandchild, great grandchild, etc.
+Returns: C<True> if I<$ancestor> contains I<widget> as a child, grandchild, great grandchild, etc.
 
   method is-ancestor ( N-GObject $ancestor --> Bool )
 
@@ -3831,10 +3792,7 @@ Returns: C<True> if I<ancestor> contains I<widget> as a child, grandchild, great
 
 method is-ancestor ( $ancestor is copy --> Bool ) {
   $ancestor .= get-native-object-no-reffing unless $ancestor ~~ N-GObject;
-
-  gtk_widget_is_ancestor(
-    self._f('GtkWidget'), $ancestor
-  ).Bool
+  gtk_widget_is_ancestor( self._f('GtkWidget'), $ancestor).Bool
 }
 
 sub gtk_widget_is_ancestor (
@@ -3853,14 +3811,10 @@ Returns: C<True> if I<widget> is drawable, C<False> otherwise
 
   method is-drawable ( --> Bool )
 
-
 =end pod
 
 method is-drawable ( --> Bool ) {
-
-  gtk_widget_is_drawable(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_is_drawable(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_is_drawable (
@@ -3869,7 +3823,7 @@ sub gtk_widget_is_drawable (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:is-focus:
+#TM:1:is-focus:
 =begin pod
 =head2 is-focus
 
@@ -3879,14 +3833,10 @@ Returns: C<True> if the widget is the focus widget.
 
   method is-focus ( --> Bool )
 
-
 =end pod
 
 method is-focus ( --> Bool ) {
-
-  gtk_widget_is_focus(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_is_focus(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_is_focus (
@@ -3905,14 +3855,10 @@ Returns: C<True> if the widget is effectively sensitive
 
   method is-sensitive ( --> Bool )
 
-
 =end pod
 
 method is-sensitive ( --> Bool ) {
-
-  gtk_widget_is_sensitive(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_is_sensitive(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_is_sensitive (
@@ -3933,14 +3879,10 @@ Returns: C<True> if I<widget> is a toplevel, C<False> otherwise
 
   method is-toplevel ( --> Bool )
 
-
 =end pod
 
 method is-toplevel ( --> Bool ) {
-
-  gtk_widget_is_toplevel(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_is_toplevel(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_is_toplevel (
@@ -3963,14 +3905,10 @@ Returns: C<True> if the widget and all its parents are visible
 
   method is-visible ( --> Bool )
 
-
 =end pod
 
 method is-visible ( --> Bool ) {
-
-  gtk_widget_is_visible(
-    self._f('GtkWidget'),
-  ).Bool
+  gtk_widget_is_visible(self._f('GtkWidget')).Bool
 }
 
 sub gtk_widget_is_visible (
@@ -5447,10 +5385,7 @@ It is worth mentioning that any other state than C<GTK-STATE-FLAG-INSENSITIVE>, 
 =end pod
 
 method set-state-flags ( UInt $flags, Bool $clear ) {
-
-  gtk_widget_set_state_flags(
-    self._f('GtkWidget'), $flags, $clear
-  );
+  gtk_widget_set_state_flags( self._f('GtkWidget'), $flags, $clear);
 }
 
 sub gtk_widget_set_state_flags (
@@ -5459,11 +5394,11 @@ sub gtk_widget_set_state_flags (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-support-multidevice:
+#TM:1:set-support-multidevice:
 =begin pod
 =head2 set-support-multidevice
 
-Enables or disables multiple pointer awareness. If this setting is C<True>, I<widget> will start receiving multiple, per device enter/leave events. Note that if custom B<Gnome::Gtk3::Windows> are created in  I<realize>, C<gdk-window-set-support-multidevice()> will have to be called manually on them.
+Enables or disables multiple pointer awareness. If this setting is C<True>, I<widget> will start receiving multiple, per device enter/leave events. Note that if custom B<Gnome::Gtk3::Windows> are created in a I<realize> signal handler, C<Gnome::Gdk3::Window.set-support-multidevice()> will have to be called manually on them.
 
   method set-support-multidevice ( Bool $support_multidevice )
 
@@ -5472,7 +5407,6 @@ Enables or disables multiple pointer awareness. If this setting is C<True>, I<wi
 =end pod
 
 method set-support-multidevice ( Bool $support_multidevice ) {
-
   gtk_widget_set_support_multidevice(
     self._f('GtkWidget'), $support_multidevice
   );

@@ -109,8 +109,6 @@ subtest 'Manipulations 2', {
   nok $b.get-has-window, '.get-has-window() False again';
 
   lives-ok {$b.show-now;}, '.show-now()';
-  #lives-ok {$b.widget-hide;}, '.widget-hide()';
-  #lives-ok {$b.widget-show;}, '.widget-show()';
   lives-ok {$b.show-all;}, '.show-all()';
   lives-ok {$b.hide;}, '.hide()';
   lives-ok {$b.show;}, '.show()';
@@ -178,6 +176,8 @@ subtest 'Manipulations 2', {
 
   $b.set-valign(GTK_ALIGN_START);
   is $b.get-valign, GTK_ALIGN_START, '.set-valign() / .get-valign()';
+  is $b.get-valign-with-baseline, GTK_ALIGN_START,
+    '.set-valign-with-baseline()';
 
   $b.set-direction(GTK_TEXT_DIR_RTL);
   is GtkTextDirection($b.get-direction), GTK_TEXT_DIR_RTL,
@@ -272,6 +272,15 @@ subtest 'Manipulations 2', {
 
   $b.set-can-focus(True);
   ok $b.get-can-focus, '.set-can-focus() / .get-can-focus()';
+  lives-ok { $b.grab-focus; }, '.grab-focus()';
+  lives-ok { diag 'has focus: ' ~ $b.has-focus; }, '.has-focus()';
+  lives-ok { diag 'is focus: ' ~ $b.is-focus; }, '.is-focus()';
+  lives-ok { diag 'has grab: ' ~ $b.has-grab; }, '.has-grab()';
+  lives-ok { diag 'has screen: ' ~ $b.has-screen; }, '.has-screen()';
+  lives-ok { diag 'has vis. focus: ' ~ $b.has-visible-focus; },
+    '.has-visible-focus()';
+  lives-ok { diag 'hide on del: ' ~ $b.hide-on-delete; }, '.hide-on-delete()';
+  nok $b.in-destruction, '.in-destruction()';
 
   $b.set-child-visible(True);
   ok $b.get-child-visible, '.set-child-visible() / .get-child-visible()';
@@ -370,7 +379,18 @@ subtest 'Manipulations 2', {
 
 
   my Gnome::Gtk3::StyleContext $sc = $b.get-style-context-rk;
-  ok 1, '.get-style-context-rk(): ' ~ $sc.get-path // '-';
+  ok 1, '.get-style-context-rk(): ' ~ ($sc.get-path // '-');
+
+  my N-GdkRectangle $area .= new( :x(10), :y(10), :width(100), :height(200));
+  my N-GdkRectangle $inter .= new;
+  $b.intersect( $area, $inter);
+  diag "Intersection of button with area $area.gist() is $inter.gist()";
+
+  $w.set-support-multidevice(True);
+  ok $w.get-support-multidevice,
+    '.set-support-multidevice() / .get-support-multidevice()';
+
+  ok $b.is-ancestor($w), '.is-ancestor()';
 
   $b.destroy;
   $w.destroyed($b);
@@ -394,7 +414,7 @@ subtest 'devices…', {
     'get-screen()';
 }
 
-#`{{ drop
+#`{{ drop }}
 #-------------------------------------------------------------------------------
 subtest 'Requisitions ...', {
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
@@ -405,8 +425,12 @@ subtest 'Requisitions ...', {
   my N-GtkRequisition $rc = $b.gtk-requisition-copy($r);
   is $r.width, 0, '.gtk-requisition-copy().width()';
   is $r.height, 0, '.gtk-requisition-copy().height()';
+
+  lives-ok {
+    $b.gtk-requisition-free($rc);
+    $b.gtk-requisition-free($r);
+  }, '.gtk-requisition-free()';
 }
-}}
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
