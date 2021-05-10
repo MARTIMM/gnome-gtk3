@@ -6,7 +6,7 @@ use v6;
 
 =head1 Gnome::Gtk3::EventBox
 
-A widget used to catch events for widgets which
+A widget used to catch events for widgets which do not have their own window
 
 =comment ![](images/X.png)
 
@@ -14,10 +14,7 @@ A widget used to catch events for widgets which
 
     do not have their own window
 
-The B<Gnome::Gtk3::EventBox> widget is a subclass of B<Gnome::Gtk3::Bin> which also has its
-own window. It is useful since it allows you to catch events for widgets
- * which do not have their own window.
-
+The B<Gnome::Gtk3::EventBox> widget is a subclass of B<Gnome::Gtk3::Bin> which also has its own window. It is useful since it allows you to catch events for widgets which do not have their own window.
 
 
 =head1 Synopsis
