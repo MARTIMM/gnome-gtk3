@@ -152,7 +152,6 @@ enum GtkDeleteType is export (
 
 Focus movement types.
 
-
 =item GTK_DIR_TAB_FORWARD: Move forward.
 =item GTK_DIR_TAB_BACKWARD: Move backward.
 =item GTK_DIR_UP: Move up.
@@ -160,10 +159,9 @@ Focus movement types.
 =item GTK_DIR_LEFT: Move left.
 =item GTK_DIR_RIGHT: Move right.
 
-
 =end pod
 
-#TE:0:GtkDirectionType:
+#TE:1:GtkDirectionType:
 enum GtkDirectionType is export (
   'GTK_DIR_TAB_FORWARD',
   'GTK_DIR_TAB_BACKWARD',
@@ -1543,14 +1541,12 @@ enum GtkDeleteType is export (
 
 Focus movement types.
 
-
 =item GTK_DIR_TAB_FORWARD: Move forward.
 =item GTK_DIR_TAB_BACKWARD: Move backward.
 =item GTK_DIR_UP: Move up.
 =item GTK_DIR_DOWN: Move down.
 =item GTK_DIR_LEFT: Move left.
 =item GTK_DIR_RIGHT: Move right.
-
 
 =end pod
 
