@@ -193,7 +193,7 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ½|  | ⅙| ✓| ✓| ✓|
+Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| ✓| ✓|
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|
 
