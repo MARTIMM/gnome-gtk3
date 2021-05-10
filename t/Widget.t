@@ -7,7 +7,7 @@ use Gnome::Glib::List;
 
 use Gnome::Gdk3::Window;
 use Gnome::Gdk3::Display;
-use Gnome::Gdk3::Device;
+#use Gnome::Gdk3::Device;
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Screen;
 
@@ -24,6 +24,7 @@ use Gnome::Gtk3::StyleContext;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 use Gnome::N::GlibToRakuTypes;
+use Gnome::N::N-GObject;
 
 #-------------------------------------------------------------------------------
 subtest 'Widget ISA test', {
@@ -38,45 +39,47 @@ unless %*ENV<raku_test_all>:exists {
 }
 
 #-------------------------------------------------------------------------------
-#`{{
+#`{{}}
 class ListHandlerClass {
-  method list-handler (
-    Gnome::Glib::List $hl, Int $hi
-  ) {
-    has Bool $.mnem-found = False;
-    # do something with the list item at $hl at index $hi and data $hd
-    my Gnome::Gtk3::Widget $w .= new(:native-object($hd));
-    given $w.widget-get-name {
-      when 'GtkLabel' {
-        my Gnome::Gtk3::Label $hl .= new(:native-object($hd));
-        ok $hl.get-label, '.add-mnemonic-label() / .list-mnemonic-labels()';
-        $.mnem-found = True;
-      }
+  has Bool $.mnem-found = False;
+
+  method list-handler ( Pointer $item ) {
+    my N-GObject $no = nativecast( N-GObject, $item);
+    my Gnome::Gtk3::Widget $w .= new(:native-object($no));
+    if $w.get-name eq 'GtkLabel' {
+      my Gnome::Gtk3::Label $hl .= new(:native-object($no));
+      is $hl.get-label, any(<_Abc _Def>),
+        '.add-mnemonic-label() / .list-mnemonic-labels-rk()';
+      $!mnem-found = True;
     }
   }
 
   method can-act-acc ( guint $sig-id --> gboolean ) {
-    note "sid: $sig-id";
+    diag "signal id: $sig-id";
     1
   }
 }
 
 subtest 'Manipulations 1', {
   my Gnome::Gtk3::Button $b .= new(:label<abc>);
+  $b.add-mnemonic-label(Gnome::Gtk3::Label.new(:mnemonic<_Abc>));
+  $b.add-mnemonic-label(Gnome::Gtk3::Label.new(:mnemonic<_Def>));
 
-  my Gnome::Gtk3::Label $lbl .= new(:mnemonic<_Abc>);
-  $b.add-mnemonic-label($lbl);
-  my Gnome::Glib::List $lst = $b.list-mnemonic-labels;
+  my Gnome::Glib::List $lst = $b.list-mnemonic-labels-rk;
+  is $lst.length, 2, 'list length: ' ~ $lst.length;
   my ListHandlerClass $lhc .= new;
-#  $lst.list-foreach( ListHandlerClass.new, 'list-handler');
+  $lst.foreach( $lhc, 'list-handler');
   $lst.clear-object;
   ok $lhc.mnem-found, 'mnemonic found';
 
+  $b.remove-mnemonic-label(Gnome::Gtk3::Label.new(:mnemonic<_Def>));
+  $lst = $b.list-mnemonic-labels-rk;
+  is $lst.length, 2, 'list length: ' ~ $lst.length;
 
-#  $b.register-signal( $lhc, 'can-act-acc', 'can-activate-accel');
-#  ok $b.can-activate-accel, '.can-activate-accel()';
+  my Int $hid = $b.register-signal( $lhc, 'can-act-acc', 'can-activate-accel');
+  ok $b.can-activate-accel($hid), '.can-activate-accel()';
 }
-}}
+
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Button $b .= new(:label<abc>);
@@ -117,8 +120,9 @@ subtest 'Manipulations 2', {
   $b.size-allocate($allocation);
   is $b.get-allocated-width, 50, '.get-allocated-width()';
   is $b.get-allocated-height, 20, '.get-allocated-height()';
-
-  lives-ok { $b.get-allocated-baseline;}, '.get-allocated-baseline()';
+  $b.size-allocate-with-baseline( $allocation, 10);
+  lives-ok { $b.get-allocated-baseline;},
+    '.size-allocate-with-baseline() / .get-allocated-baseline()';
 
   if %*ENV<travis_ci_tests> {
     skip 'travis differs, older GTK+ version', 1;
@@ -386,11 +390,20 @@ subtest 'Manipulations 2', {
   $b.intersect( $area, $inter);
   diag "Intersection of button with area $area.gist() is $inter.gist()";
 
+
   $w.set-support-multidevice(True);
   ok $w.get-support-multidevice,
     '.set-support-multidevice() / .get-support-multidevice()';
 
   ok $b.is-ancestor($w), '.is-ancestor()';
+  lives-ok { diag 'action list: ' ~ $b.list-action-prefixes(); },
+    '.list-action-prefixes()';
+
+  lives-ok { $b.queue-compute-expand; }, '.queue-compute-expand()';
+  lives-ok { $b.queue-draw; }, '.queue-draw()';
+  lives-ok { $b.queue-draw-area( 10, 10, 100, 200); }, '.queue-draw-area()';
+  lives-ok { $b.reset-style; }, '.reset-style()';
+  #lives-ok { $b.; }, '.()';
 
   $b.destroy;
   $w.destroyed($b);
@@ -412,6 +425,7 @@ subtest 'devices…', {
     '.get-display()';
   lives-ok {diag 'display name: ' ~ $b.get-screen-rk.get-display-rk.get-name;},
     'get-screen()';
+#  lives-ok { $b.set-device-enabled(True) }, '.set-device-enabled()';
 }
 
 #`{{ drop }}
@@ -497,21 +511,98 @@ subtest 'Properties ...', {
 }
 
 #-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method m-act (
+      Int $group_cycling,
+      Gnome::Gtk3::Widget :$_widget, gulong :$_handler-id
+       --> Int
+    ) {
+      ok $group_cycling, 'arg $group_cycling';
+      $!signal-processed = True;
+    }
+
+    method k-fail (
+      Int $direction,
+      Gnome::Gtk3::Widget :$_widget, gulong :$_handler-id
+      --> Int
+    ) {
+      is GtkDirectionType($direction), GTK_DIR_UP, 'arg $direction';
+      $!signal-processed = True;
+      1
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Widget :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+
+      ok $b.mnemonic-activate(True), '.mnemonic-activate()';
+      is $!signal-processed, True, '\'mnemonic-activate\' signal processed';
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      $!signal-processed = False;
+
+      ok $b.keynav-failed(GTK_DIR_UP), '.keynav-failed()';
+      is $!signal-processed, True, '\'keynav-failed\' signal processed';
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      $!signal-processed = False;
+
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  #my Gnome::Gtk3::Widget $w .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $b.register-signal( $sh, 'm-act', 'mnemonic-activate');
+  $b.register-signal( $sh, 'k-fail', 'keynav-failed');
+
+  my Promise $p = $b.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
+
+#-------------------------------------------------------------------------------
 done-testing;
 
 =finish
 
-
-#-------------------------------------------------------------------------------
-# set environment variable 'raku-test-all' if rest must be tested too.
-unless %*ENV<raku_test_all>:exists {
-  done-testing;
-  exit;
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Manipulations', {
-}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::Widget', {
@@ -530,124 +621,5 @@ subtest 'Inherit Gnome::Gtk3::Widget', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
-
-  #my Gnome::Gtk3::Widget $w .= new;
-
-  sub test-property (
-    $type, Str $prop, Str $routine, $value,
-    Bool :$approx = False, Bool :$is-local = False
-  ) {
-    my Gnome::GObject::Value $gv .= new(:init($type));
-    $w.get-property( $prop, $gv);
-    my $gv-value = $gv."$routine"();
-    if $approx {
-      is-approx $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-
-    # dependency on local settings might result in different values
-    elsif $is-local {
-      if $gv-value ~~ /$value/ {
-        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
-      }
-
-      else {
-        ok 1, "property $prop, value: " ~ $gv-value;
-      }
-    }
-
-    else {
-      is $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-    $gv.clear-object;
-  }
-
-  # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
-  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
-  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
-}
-
-#-------------------------------------------------------------------------------
 subtest 'Themes ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
-
-  my Gnome::Gtk3::Main $main .= new;
-
-  class SignalHandlers {
-    has Bool $!signal-processed = False;
-
-    method ... (
-      'any-args',
-      Gnome::Gtk3::Widget :$_widget, gulong :$_handler-id
-      # --> ...
-    ) {
-
-      isa-ok $_widget, Gnome::Gtk3::Widget;
-      $!signal-processed = True;
-    }
-
-    method signal-emitter ( Gnome::Gtk3::Widget :$widget --> Str ) {
-
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-      $widget.emit-by-name(
-        'signal',
-      #  'any-args',
-      #  :return-type(int32),
-      #  :parameters([int32,])
-      );
-      is $!signal-processed, True, '\'...\' signal processed';
-
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-      #$!signal-processed = False;
-      #$widget.emit-by-name(
-      #  'signal',
-      #  'any-args',
-      #  :return-type(int32),
-      #  :parameters([int32,])
-      #);
-      #is $!signal-processed, True, '\'...\' signal processed';
-
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
-      sleep(0.4);
-      $main.gtk-main-quit;
-
-      'done'
-    }
-  }
-
-  my Gnome::Gtk3::Widget $w .= new;
-
-  #my Gnome::Gtk3::Window $w .= new;
-  #$w.add($m);
-
-  my SignalHandlers $sh .= new;
-  $w.register-signal( $sh, 'method', 'signal');
-
-  my Promise $p = $w.start-thread(
-    $sh, 'signal-emitter',
-    # :!new-context,
-    # :start-time(now + 1)
-  );
-
-  is $main.gtk-main-level, 0, "loop level 0";
-  $main.gtk-main;
-  #is $main.gtk-main-level, 0, "loop level is 0 again";
-
-  is $p.result, 'done', 'emitter finished';
 }

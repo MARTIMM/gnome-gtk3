@@ -352,35 +352,6 @@ class N-GtkRequisition is export is repr('CStruct') {
   has int32 $.height;
 }
 
-#`{{
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 class GtkTickCallback
-
-Callback type for adding a function to update animations. See C<gtk_widget_add_tick_callback()>.
-
-Returns: C<G_SOURCE_CONTINUE> if the tick callback should continue to be called,
-C<G_SOURCE_REMOVE> if the tick callback should be removed.
-
-
-
-=item ___widget: the widget
-=item ___frame_clock: the frame clock for the widget (same as calling C<gtk_widget_get_frame_clock()>)
-=item ___user_data: user data passed to C<gtk_widget_add_tick_callback()>.
-
-
-=end pod
-
-#TT:0:N-GtkTickCallback:
-class GtkTickCallback is export is repr('CStruct') {
-  has GInitiallyUnowned $.parent_instance;
-  has GtkWidgetPrivate $.priv;
-}
-
-=end pod
-}}
-
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 class N-GtkAllocation
@@ -393,7 +364,6 @@ A N-GtkAllocation of a widget represents a region which has been allocated to th
 =item Int $.height;
 
 =end pod
-
 
 # use of this statement works but will show the N-GdkRectangle type, not
 # the N-GtkAllocation type, so we define like the rectangle
@@ -416,7 +386,6 @@ my Bool $signals-added = False;
 =head1 Methods
 =end pod
 
-#TM:1:new():inheriting
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -600,10 +569,13 @@ Returns: an id for the connection of this callback. Remove the callback by passi
 
 =end pod
 
-method add-tick-callback ( GtkTickCallback $callback, Pointer $user_data, GDestroyNotify $notify --> UInt ) {
-
+method add-tick-callback (
+  Any:D $handler-obj, $method, *%options, GDestroyNotify $notify
+  --> UInt
+) {
   gtk_widget_add_tick_callback(
-    self._f('GtkWidget'), $callback, $user_data, $notify
+    self._f('GtkWidget'),
+    , $user_data, $notify
   )
 }
 
@@ -3917,7 +3889,7 @@ sub gtk_widget_is_visible (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:keynav-failed:
+#TM:1:keynav-failed:
 =begin pod
 =head2 keynav-failed
 
@@ -3942,10 +3914,7 @@ Returns: C<True> if stopping keyboard navigation is fine, C<False> if the emitti
 =end pod
 
 method keynav-failed ( GtkDirectionType $direction --> Bool ) {
-
-  gtk_widget_keynav_failed(
-    self._f('GtkWidget'), $direction
-  ).Bool
+  gtk_widget_keynav_failed( self._f('GtkWidget'), $direction).Bool
 }
 
 sub gtk_widget_keynav_failed (
@@ -3953,51 +3922,52 @@ sub gtk_widget_keynav_failed (
 ) is native(&gtk-lib)
   { * }
 
+#`{{ do we need closures?
 #-------------------------------------------------------------------------------
-#TM:0:list-accel-closures:
+# TM:0:list-accel-closures:
 =begin pod
 =head2 list-accel-closures
 
 Lists the closures used by I<widget> for accelerator group connections with C<gtk-accel-group-connect-by-path()> or C<gtk-accel-group-connect()>. The closures can be used to monitor accelerator changes on I<widget>, by connecting to the I<GtkAccelGroup>::accel-changed signal of the B<Gnome::Gtk3::AccelGroup> of a closure which can be found out with C<gtk-accel-group-from-accel-closure()>.
 
-Returns: (transfer container) (element-type GClosure): a newly allocated B<Gnome::Gtk3::List> of closures
+Returns: a newly allocated B<Gnome::Gtk3::List> of closures
 
   method list-accel-closures ( --> N-GList )
-
 
 =end pod
 
 method list-accel-closures ( --> N-GList ) {
-
-  gtk_widget_list_accel_closures(
-    self._f('GtkWidget'),
-  )
+  gtk_widget_list_accel_closures(self._f('GtkWidget'))
 }
 
 sub gtk_widget_list_accel_closures (
   N-GObject $widget --> N-GList
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:list-action-prefixes:
+#TM:1:list-action-prefixes:
 =begin pod
 =head2 list-action-prefixes
 
 Retrieves a C<undefined>-terminated array of strings containing the prefixes of B<Gnome::Gtk3::ActionGroup>'s available to I<widget>.
 
-Returns: (transfer container): a C<undefined>-terminated array of strings.
+Returns: an array of strings.
 
-  method list-action-prefixes ( --> CArray[Str] )
-
+  method list-action-prefixes ( --> List )
 
 =end pod
 
-method list-action-prefixes ( --> CArray[Str] ) {
+method list-action-prefixes ( --> List ) {
+  my CArray[Str] $ca = gtk_widget_list_action_prefixes(self._f('GtkWidget'));
+  my Int $i = 0;
+  my List $l = ();
+  while $ca[$i] {
+    $l.push: $ca[$i];
+  }
 
-  gtk_widget_list_action_prefixes(
-    self._f('GtkWidget'),
-  )
+  $l
 }
 
 sub gtk_widget_list_action_prefixes (
@@ -4036,8 +4006,9 @@ sub gtk_widget_list_mnemonic_labels (
 ) is native(&gtk-lib)
   { * }
 
+#`{{ TODO do we implement widgets?
 #-------------------------------------------------------------------------------
-#TM:0:map:
+# TM:0:map:
 =begin pod
 =head2 map
 
@@ -4045,27 +4016,24 @@ This function is only for use in widget implementations. Causes a widget to be m
 
   method map ( )
 
-
 =end pod
 
 method map ( ) {
-
-  gtk_widget_map(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_map(self._f('GtkWidget'));
 }
 
 sub gtk_widget_map (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:mnemonic-activate:
+#TM:1:mnemonic-activate:
 =begin pod
 =head2 mnemonic-activate
 
-Emits the  I<mnemonic-activate> signal.
+Emits the I<mnemonic-activate> signal.
 
 Returns: C<True> if the signal has been handled
 
@@ -4076,10 +4044,7 @@ Returns: C<True> if the signal has been handled
 =end pod
 
 method mnemonic-activate ( Bool $group_cycling --> Bool ) {
-
-  gtk_widget_mnemonic_activate(
-    self._f('GtkWidget'), $group_cycling
-  ).Bool
+  gtk_widget_mnemonic_activate( self._f('GtkWidget'), $group_cycling).Bool
 }
 
 sub gtk_widget_mnemonic_activate (
@@ -4087,8 +4052,9 @@ sub gtk_widget_mnemonic_activate (
 ) is native(&gtk-lib)
   { * }
 
+#`{{ TODO widget implementation?
 #-------------------------------------------------------------------------------
-#TM:0:queue-allocate:
+# TM:0:queue-allocate:
 =begin pod
 =head2 queue-allocate
 
@@ -4100,23 +4066,20 @@ An example user of this function is C<set-halign()>.
 
   method queue-allocate ( )
 
-
 =end pod
 
 method queue-allocate ( ) {
-
-  gtk_widget_queue_allocate(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_queue_allocate(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_allocate (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:queue-compute-expand:
+#TM:1:queue-compute-expand:
 =begin pod
 =head2 queue-compute-expand
 
@@ -4126,14 +4089,10 @@ See C<compute-expand()>.
 
   method queue-compute-expand ( )
 
-
 =end pod
 
 method queue-compute-expand ( ) {
-
-  gtk_widget_queue_compute_expand(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_queue_compute_expand(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_compute_expand (
@@ -4142,7 +4101,7 @@ sub gtk_widget_queue_compute_expand (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:queue-draw:
+#TM:1:queue-draw:
 =begin pod
 =head2 queue-draw
 
@@ -4150,14 +4109,10 @@ Equivalent to calling C<queue-draw-area()> for the entire area of a widget.
 
   method queue-draw ( )
 
-
 =end pod
 
 method queue-draw ( ) {
-
-  gtk_widget_queue_draw(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_queue_draw(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_draw (
@@ -4166,7 +4121,7 @@ sub gtk_widget_queue_draw (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:queue-draw-area:
+#TM:1:queue-draw-area:
 =begin pod
 =head2 queue-draw-area
 
@@ -4186,10 +4141,7 @@ I<width> or I<height> may be 0, in this case this function does nothing. Negativ
 =end pod
 
 method queue-draw-area ( Int $x, Int $y, Int $width, Int $height ) {
-
-  gtk_widget_queue_draw_area(
-    self._f('GtkWidget'), $x, $y, $width, $height
-  );
+  gtk_widget_queue_draw_area( self._f('GtkWidget'), $x, $y, $width, $height);
 }
 
 sub gtk_widget_queue_draw_area (
@@ -4226,8 +4178,9 @@ sub gtk_widget_queue_draw_region (
   { * }
 }}
 
+#`{{ TODO widget implementation
 #-------------------------------------------------------------------------------
-#TM:0:queue-resize:
+# TM:0:queue-resize:
 =begin pod
 =head2 queue-resize
 
@@ -4237,23 +4190,21 @@ Note that you cannot call C<queue-resize()> on a widget from inside its implemen
 
   method queue-resize ( )
 
-
 =end pod
 
 method queue-resize ( ) {
-
-  gtk_widget_queue_resize(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_queue_resize(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_resize (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
+}}
 
+#`{{ TODO widget implementation
 #-------------------------------------------------------------------------------
-#TM:0:queue-resize-no-redraw:
+# TM:0:queue-resize-no-redraw:
 =begin pod
 =head2 queue-resize-no-redraw
 
@@ -4261,23 +4212,21 @@ This function works like C<queue-resize()>, except that the widget is not invali
 
   method queue-resize-no-redraw ( )
 
-
 =end pod
 
 method queue-resize-no-redraw ( ) {
-
-  gtk_widget_queue_resize_no_redraw(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_queue_resize_no_redraw(self._f('GtkWidget'));
 }
 
 sub gtk_widget_queue_resize_no_redraw (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
+}}
 
+#`{{ TODO widget implementation
 #-------------------------------------------------------------------------------
-#TM:0:realize:
+# TM:0:realize:
 =begin pod
 =head2 realize
 
@@ -4289,20 +4238,17 @@ This function is primarily used in widget implementations, and isn’t very usef
 
   method realize ( )
 
-
 =end pod
 
 method realize ( ) {
-
-  gtk_widget_realize(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_realize(self._f('GtkWidget'));
 }
 
 sub gtk_widget_realize (
   N-GObject $widget
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:register-window:
@@ -4319,10 +4265,7 @@ Registers a B<Gnome::Gtk3::Window> with the widget and sets it up so that the wi
 
 method register-window ( $window is copy ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
-  gtk_widget_register_window(
-    self._f('GtkWidget'), $window
-  );
+  gtk_widget_register_window( self._f('GtkWidget'), $window);
 }
 
 sub gtk_widget_register_window (
@@ -4330,6 +4273,7 @@ sub gtk_widget_register_window (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:remove-accelerator:
 =begin pod
@@ -4359,9 +4303,10 @@ sub gtk_widget_remove_accelerator (
   N-GObject $widget, N-GObject $accel_group, guint $accel_key, GEnum $accel_mods --> gboolean
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:remove-mnemonic-label:
+#TM:1:remove-mnemonic-label:
 =begin pod
 =head2 remove-mnemonic-label
 
@@ -4375,10 +4320,7 @@ Removes a widget from the list of mnemonic labels for this widget. (See C<list-m
 
 method remove-mnemonic-label ( $label is copy ) {
   $label .= get-native-object-no-reffing unless $label ~~ N-GObject;
-
-  gtk_widget_remove_mnemonic_label(
-    self._f('GtkWidget'), $label
-  );
+  gtk_widget_remove_mnemonic_label( self._f('GtkWidget'), $label);
 }
 
 sub gtk_widget_remove_mnemonic_label (
@@ -4386,6 +4328,7 @@ sub gtk_widget_remove_mnemonic_label (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:remove-tick-callback:
 =begin pod
@@ -4400,19 +4343,17 @@ Removes a tick callback previously registered with C<add-tick-callback()>.
 =end pod
 
 method remove-tick-callback ( UInt $id ) {
-
-  gtk_widget_remove_tick_callback(
-    self._f('GtkWidget'), $id
-  );
+  gtk_widget_remove_tick_callback( self._f('GtkWidget'), $id);
 }
 
 sub gtk_widget_remove_tick_callback (
   N-GObject $widget, guint $id
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:reset-style:
+#TM:1:reset-style:
 =begin pod
 =head2 reset-style
 
@@ -4420,14 +4361,10 @@ Updates the style context of I<widget> and all descendants by updating its widge
 
   method reset-style ( )
 
-
 =end pod
 
 method reset-style ( ) {
-
-  gtk_widget_reset_style(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_reset_style(self._f('GtkWidget'));
 }
 
 sub gtk_widget_reset_style (
@@ -4435,8 +4372,9 @@ sub gtk_widget_reset_style (
 ) is native(&gtk-lib)
   { * }
 
+#`{{ TODO widget implementation
 #-------------------------------------------------------------------------------
-#TM:0:send-focus-change:
+# TM:0:send-focus-change:
 =begin pod
 =head2 send-focus-change
 
@@ -4473,6 +4411,7 @@ sub gtk_widget_send_focus_change (
   N-GObject $widget, GdkEvent $event --> gboolean
 ) is native(&gtk-lib)
   { * }
+}}
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -4819,10 +4758,7 @@ Sets the font map to use for Pango rendering. When not set, the widget will inhe
 
 method set-font-map ( $font_map is copy ) {
   $font_map .= get-native-object-no-reffing unless $font_map ~~ N-GObject;
-
-  gtk_widget_set_font_map(
-    self._f('GtkWidget'), $font_map
-  );
+  gtk_widget_set_font_map( self._f('GtkWidget'), $font_map);
 }
 
 sub gtk_widget_set_font_map (
@@ -4844,10 +4780,7 @@ Sets the B<cairo-font-options-t> used for Pango rendering in this widget. When n
 =end pod
 
 method set-font-options ( cairo_font_options_t $options ) {
-
-  gtk_widget_set_font_options(
-    self._f('GtkWidget'), $options
-  );
+  gtk_widget_set_font_options( self._f('GtkWidget'), $options);
 }
 
 sub gtk_widget_set_font_options (
@@ -4869,10 +4802,7 @@ Sets the horizontal alignment of I<widget>. See the  I<halign> property.
 =end pod
 
 method set-halign ( GtkAlign $align ) {
-
-  gtk_widget_set_halign(
-    self._f('GtkWidget'), $align
-  );
+  gtk_widget_set_halign( self._f('GtkWidget'), $align);
 }
 
 sub gtk_widget_set_halign (
@@ -4918,10 +4848,7 @@ This function should only be called by widget implementations, and they should c
 =end pod
 
 method set-has-window ( Bool $has_window ) {
-
-  gtk_widget_set_has_window(
-    self._f('GtkWidget'), $has_window
-  );
+  gtk_widget_set_has_window( self._f('GtkWidget'), $has_window);
 }
 
 sub gtk_widget_set_has_window (
@@ -4930,7 +4857,7 @@ sub gtk_widget_set_has_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-hexpand:
+#TM:1:set-hexpand:
 =begin pod
 =head2 set-hexpand
 
@@ -4951,10 +4878,7 @@ This function forces the widget to expand or not to expand, regardless of childr
 =end pod
 
 method set-hexpand ( Bool $expand ) {
-
-  gtk_widget_set_hexpand(
-    self._f('GtkWidget'), $expand
-  );
+  gtk_widget_set_hexpand( self._f('GtkWidget'), $expand);
 }
 
 sub gtk_widget_set_hexpand (
@@ -4982,10 +4906,7 @@ There are few reasons to use this function, but it’s here for completeness and
 =end pod
 
 method set-hexpand-set ( Bool $set ) {
-
-  gtk_widget_set_hexpand_set(
-    self._f('GtkWidget'), $set
-  );
+  gtk_widget_set_hexpand_set( self._f('GtkWidget'), $set);
 }
 
 sub gtk_widget_set_hexpand_set (
@@ -5306,7 +5227,7 @@ sub gtk_widget_set_redraw_on_allocate (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-sensitive:
+#TM:1:set-sensitive:
 =begin pod
 =head2 set-sensitive
 
@@ -5319,10 +5240,7 @@ Sets the sensitivity of a widget. A widget is sensitive if the user can interact
 =end pod
 
 method set-sensitive ( Bool $sensitive ) {
-
-  gtk_widget_set_sensitive(
-    self._f('GtkWidget'), $sensitive
-  );
+  gtk_widget_set_sensitive( self._f('GtkWidget'), $sensitive);
 }
 
 sub gtk_widget_set_sensitive (
@@ -5355,10 +5273,7 @@ The size request set here does not include any margin from the B<Gnome::Gtk3::Wi
 =end pod
 
 method set-size-request ( Int $width, Int $height ) {
-
-  gtk_widget_set_size_request(
-    self._f('GtkWidget'), $width, $height
-  );
+  gtk_widget_set_size_request( self._f('GtkWidget'), $width, $height);
 }
 
 sub gtk_widget_set_size_request (
@@ -5459,10 +5374,7 @@ See also the  I<tooltip-text> property and C<gtk-tooltip-set-text()>.
 =end pod
 
 method set-tooltip-text ( Str $text ) {
-
-  gtk_widget_set_tooltip_text(
-    self._f('GtkWidget'), $text
-  );
+  gtk_widget_set_tooltip_text( self._f('GtkWidget'), $text);
 }
 
 sub gtk_widget_set_tooltip_text (
@@ -5484,11 +5396,10 @@ Replaces the default window used for displaying tooltips with I<custom-window>. 
 =end pod
 
 method set-tooltip-window ( $custom_window is copy ) {
-  $custom_window .= get-native-object-no-reffing unless $custom_window ~~ N-GObject;
+  $custom_window .= get-native-object-no-reffing
+    unless $custom_window ~~ N-GObject;
 
-  gtk_widget_set_tooltip_window(
-    self._f('GtkWidget'), $custom_window
-  );
+  gtk_widget_set_tooltip_window( self._f('GtkWidget'), $custom_window);
 }
 
 sub gtk_widget_set_tooltip_window (
@@ -5510,10 +5421,7 @@ Sets the vertical alignment of I<widget>. See the  I<valign> property.
 =end pod
 
 method set-valign ( GtkAlign $align ) {
-
-  gtk_widget_set_valign(
-    self._f('GtkWidget'), $align
-  );
+  gtk_widget_set_valign( self._f('GtkWidget'), $align);
 }
 
 sub gtk_widget_set_valign (
@@ -5537,10 +5445,7 @@ See C<set-hexpand()> for more detail.
 =end pod
 
 method set-vexpand ( Bool $expand ) {
-
-  gtk_widget_set_vexpand(
-    self._f('GtkWidget'), $expand
-  );
+  gtk_widget_set_vexpand( self._f('GtkWidget'), $expand);
 }
 
 sub gtk_widget_set_vexpand (
@@ -5564,10 +5469,7 @@ See C<set-hexpand-set()> for more detail.
 =end pod
 
 method set-vexpand-set ( Bool $set ) {
-
-  gtk_widget_set_vexpand_set(
-    self._f('GtkWidget'), $set
-  );
+  gtk_widget_set_vexpand_set( self._f('GtkWidget'), $set);
 }
 
 sub gtk_widget_set_vexpand_set (
@@ -5591,10 +5493,7 @@ This function simply calls C<show()> or C<hide()> but is nicer to use when the v
 =end pod
 
 method set-visible ( Bool $visible ) {
-
-  gtk_widget_set_visible(
-    self._f('GtkWidget'), $visible
-  );
+  gtk_widget_set_visible( self._f('GtkWidget'), $visible);
 }
 
 sub gtk_widget_set_visible (
@@ -5619,10 +5518,7 @@ Setting a new I<visual> will not cause I<widget> to recreate its windows, so you
 
 method set-visual ( $visual is copy ) {
   $visual .= get-native-object-no-reffing unless $visual ~~ N-GObject;
-
-  gtk_widget_set_visual(
-    self._f('GtkWidget'), $visual
-  );
+  gtk_widget_set_visual( self._f('GtkWidget'), $visual);
 }
 
 sub gtk_widget_set_visual (
@@ -5649,10 +5545,7 @@ Note that this function does not add any reference to I<window>.
 
 method set-window ( $window is copy ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
-  gtk_widget_set_window(
-    self._f('GtkWidget'), $window
-  );
+  gtk_widget_set_window( self._f('GtkWidget'), $window);
 }
 
 sub gtk_widget_set_window (
@@ -5700,14 +5593,10 @@ When a toplevel container is shown, it is immediately realized and mapped; other
 
   method show ( )
 
-
 =end pod
 
 method show ( ) {
-
-  gtk_widget_show(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_show(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show (
@@ -5724,14 +5613,10 @@ Recursively shows a widget, and any child widgets (if the widget is a container)
 
   method show-all ( )
 
-
 =end pod
 
 method show-all ( ) {
-
-  gtk_widget_show_all(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_show_all(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show_all (
@@ -5748,14 +5633,10 @@ Shows a widget. If the widget is an unmapped toplevel widget (i.e. a B<Gnome::Gt
 
   method show-now ( )
 
-
 =end pod
 
 method show-now ( ) {
-
-  gtk_widget_show_now(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_show_now(self._f('GtkWidget'));
 }
 
 sub gtk_widget_show_now (
@@ -5781,10 +5662,7 @@ For baseline support in containers you need to use C<size-allocate-with-baseline
 =end pod
 
 method size-allocate ( N-GtkAllocation $allocation ) {
-
-  gtk_widget_size_allocate(
-    self._f('GtkWidget'), $allocation
-  );
+  gtk_widget_size_allocate( self._f('GtkWidget'), $allocation);
 }
 
 sub gtk_widget_size_allocate (
@@ -5793,7 +5671,7 @@ sub gtk_widget_size_allocate (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:size-allocate-with-baseline:
+#TM:1:size-allocate-with-baseline:
 =begin pod
 =head2 size-allocate-with-baseline
 
@@ -5810,7 +5688,9 @@ If the child widget does not have a valign of C<GTK-ALIGN-BASELINE> the baseline
 
 =end pod
 
-method size-allocate-with-baseline ( N-GtkAllocation $allocation, Int $baseline ) {
+method size-allocate-with-baseline (
+  N-GtkAllocation $allocation, Int $baseline
+) {
 
   gtk_widget_size_allocate_with_baseline(
     self._f('GtkWidget'), $allocation, $baseline
@@ -5865,10 +5745,7 @@ Gets the value of a style property of I<widget>.
 
 method style-get-property ( Str $property_name, $value is copy ) {
   $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
-
-  gtk_widget_style_get_property(
-    self._f('GtkWidget'), $property_name, $value
-  );
+  gtk_widget_style_get_property( self._f('GtkWidget'), $property_name, $value);
 }
 
 sub gtk_widget_style_get_property (
@@ -5913,14 +5790,10 @@ Reverts the effect of a previous call to C<freeze-child-notify()>. This causes a
 
   method thaw-child-notify ( )
 
-
 =end pod
 
 method thaw-child-notify ( ) {
-
-  gtk_widget_thaw_child_notify(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_thaw_child_notify(self._f('GtkWidget'));
 }
 
 sub gtk_widget_thaw_child_notify (
@@ -5934,7 +5807,6 @@ sub gtk_widget_thaw_child_notify (
 =head2 translate-coordinates
 
 Translate coordinates relative to I<src-widget>’s allocation to coordinates relative to I<dest-widget>’s allocations. In order to perform this operation, both widgets must be realized, and must share a common toplevel.
-
 
   method translate-coordinates (
     N-GObject $dest_widget, Int $src_x, Int $src_y --> List
@@ -5979,14 +5851,10 @@ Triggers a tooltip query on the display where the toplevel of I<widget> is locat
 
   method trigger-tooltip-query ( )
 
-
 =end pod
 
 method trigger-tooltip-query ( ) {
-
-  gtk_widget_trigger_tooltip_query(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_trigger_tooltip_query(self._f('GtkWidget'));
 }
 
 sub gtk_widget_trigger_tooltip_query (
@@ -6003,14 +5871,10 @@ This function is only for use in widget implementations. Causes a widget to be u
 
   method unmap ( )
 
-
 =end pod
 
 method unmap ( ) {
-
-  gtk_widget_unmap(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_unmap(self._f('GtkWidget'));
 }
 
 sub gtk_widget_unmap (
@@ -6027,14 +5891,10 @@ This function is only for use in widget implementations. Should be called by imp
 
   method unparent ( )
 
-
 =end pod
 
 method unparent ( ) {
-
-  gtk_widget_unparent(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_unparent(self._f('GtkWidget'));
 }
 
 sub gtk_widget_unparent (
@@ -6051,14 +5911,10 @@ This function is only useful in widget implementations. Causes a widget to be un
 
   method unrealize ( )
 
-
 =end pod
 
 method unrealize ( ) {
-
-  gtk_widget_unrealize(
-    self._f('GtkWidget'),
-  );
+  gtk_widget_unrealize(self._f('GtkWidget'));
 }
 
 sub gtk_widget_unrealize (
@@ -6081,10 +5937,7 @@ Unregisters a B<Gnome::Gtk3::Window> from the widget that was previously set up 
 
 method unregister-window ( $window is copy ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
-  gtk_widget_unregister_window(
-    self._f('GtkWidget'), $window
-  );
+  gtk_widget_unregister_window( self._f('GtkWidget'), $window);
 }
 
 sub gtk_widget_unregister_window (
@@ -6236,7 +6089,7 @@ Returns: C<False> to stop other handlers from being invoked for the event. C<Tru
 
 =begin comment
 =comment -----------------------------------------------------------------------
-=comment #TS:0:can-activate-accel:
+=comment #TS:1:can-activate-accel:
 =head3 can-activate-accel
 
   method handler (
@@ -7077,15 +6930,15 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:keynav-failed:
+=comment #TS:1:keynav-failed:
 =head3 keynav-failed
 
 Gets emitted if keyboard navigation fails. See C<keynav-failed()> for details.
 
-Returns: C<True> if stopping keyboard navigation is fine, C<False> if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
+Returns: C<1> if stopping keyboard navigation is fine, C<0> if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
 
   method handler (
-    Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
+    Int $direction,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -7094,7 +6947,7 @@ Returns: C<True> if stopping keyboard navigation is fine, C<False> if the emitti
 
 =item $widget; the object which received the signal
 =item $_handle_id; the registered event handler id
-=item $direction; the direction of movement
+=item $direction; the direction of movement, an enum GtkDirectionType value
 
 
 =comment -----------------------------------------------------------------------
@@ -7163,7 +7016,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:mnemonic-activate:
+=comment #TS:1:mnemonic-activate:
 =head3 mnemonic-activate
 
 The default handler for this signal activates I<widget> if I<group-cycling> is C<False>, or just makes I<widget> grab focus if I<group-cycling> is C<True>.

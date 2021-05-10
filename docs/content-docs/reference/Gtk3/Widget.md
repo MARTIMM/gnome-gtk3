@@ -945,11 +945,11 @@ get-state-flags
 
 Returns the widget state as a flag set. It is worth mentioning that the effective `GTK-STATE-FLAG-INSENSITIVE` state will be returned, that is, also based on parent insensitivity, even if *widget* itself is sensitive.
 
-Also note that if you are looking for a way to obtain the **Gnome::Gtk3::StateFlags** to pass to a **Gnome::Gtk3::StyleContext** method, you should look at `gtk-style-context-get-state()`.
+Also note that if you are looking for a way to obtain the **Gnome::Gtk3::StateFlags** to pass to a **Gnome::Gtk3::StyleContext** method, you should look at `Gnome::Gtk3::StyleContext.get-state()`.
 
-Returns: The state flags for widget
+Returns: The state flags for widget. Flags are defined by GtkStateFlags.
 
-    method get-state-flags ( --> GtkStateFlags )
+    method get-state-flags ( --> UInt )
 
 get-style-context, get-style-context-rk
 ---------------------------------------
@@ -1005,9 +1005,13 @@ This function returns the topmost widget in the container hierarchy *widget* is 
 
 Note the difference in behavior vs. `get-ancestor()`; `gtk-widget-get-ancestor (widget, GTK-TYPE-WINDOW)` would return `undefined` if *widget* wasn’t inside a toplevel window, and if the window was inside a **Gnome::Gtk3::Window**-derived widget which was in turn inside the toplevel **Gnome::Gtk3::Window**. While the second case may seem unlikely, it actually happens when a **Gnome::Gtk3::Plug** is embedded inside a **Gnome::Gtk3::Socket** within the same application.
 
-To reliably find the toplevel **Gnome::Gtk3::Window**, use `get-toplevel()` and call `GTK-IS-WINDOW()` on the result. For instance, to get the title of a widget's toplevel window, one might use: |[<!-- language="C" --> static const char * get-widget-toplevel-title (GtkWidget *widget) { GtkWidget *toplevel = gtk-widget-get-toplevel (widget); if (GTK-IS-WINDOW (toplevel)) { return gtk-window-get-title (GTK-WINDOW (toplevel)); }
+To reliably find the toplevel **Gnome::Gtk3::Window**, use `get-toplevel()` and call `GTK-IS-WINDOW()` on the result. For instance, to get the title of a widget's toplevel window, one might use:
 
-return NULL; } ]|
+    sub get-widget-toplevel-title ( Gnome::Gtk3::Widget $widget --> Str ) {
+      Gnome::Gtk3::Widget $toplevel = $widget.get-toplevel-rk;
+      ( $toplevel.is-valid and $toplevel.is-toplevel )
+        ?? $toplevel.gtk-window-get-title !! ''
+    }
 
 Returns: the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
 
@@ -1109,11 +1113,13 @@ The widget also needs to be realized and mapped. This is indicated by the relate
 gtk-cairo-should-draw-window
 ----------------------------
 
-This function is supposed to be called in *draw* implementations for widgets that support multiple windows. *cr* must be untransformed from invoking of the draw function. This function will return `True` if the contents of the given *window* are supposed to be drawn and `False` otherwise. Note that when the drawing was not initiated by the windowing system this function will return `True` for all windows, so you need to draw the bottommost window first. Also, do not use “else if” statements to check which window should be drawn.
+This function is supposed to be called in *draw* implementations for widgets that support multiple windows. *$cr* must be untransformed from invoking of the draw function. This function will return `True` if the contents of the given *$window* are supposed to be drawn and `False` otherwise. Note that when the drawing was not initiated by the windowing system this function will return `True` for all windows, so you need to draw the bottommost window first. Also, do not use “else if” statements to check which window should be drawn.
 
 Returns: `True` if *window* should be drawn
 
-    method gtk-cairo-should-draw-window ( cairo_t $cr, N-GObject $window --> Bool )
+    method gtk-cairo-should-draw-window (
+      cairo_t $cr, N-GObject $window --> Bool
+    )
 
   * cairo_t $cr; a cairo context
 
@@ -1126,7 +1132,9 @@ Transforms the given cairo context *cr* that from *widget*-relative coordinates 
 
 This is the inverse to the transformation GTK applies when preparing an expose event to be emitted with the *draw* signal. It is intended to help porting multiwindow widgets from GTK+ 2 to the rendering architecture of GTK+ 3.
 
-    method gtk-cairo-transform-to-window ( cairo_t $cr, N-GObject $widget, N-GObject $window )
+    method gtk-cairo-transform-to-window (
+      cairo_t $cr, N-GObject $widget, N-GObject $window
+    )
 
   * cairo_t $cr; the cairo context to transform
 
@@ -1155,6 +1163,15 @@ Frees a **Gnome::Gtk3::Requisition**.
     method gtk-requisition-free ( N-GtkRequisition $requisition )
 
   * N-GtkRequisition $requisition; a **Gnome::Gtk3::Requisition**
+
+gtk-requisition-new
+-------------------
+
+Allocates a new **Gnome::Gtk3::Requisition**-struct and initializes its elements to zero.
+
+Returns: a new empty **Gnome::Gtk3::Requisition**. The newly allocated **Gnome::Gtk3::Requisition** should be freed with `requisition-free()`.
+
+    method gtk-requisition-new ( --> N-GtkRequisition )
 
 has-default
 -----------
@@ -1230,19 +1247,6 @@ Returns: `True` if *widget* is being destroyed
 
     method in-destruction ( --> Bool )
 
-init-template
--------------
-
-Creates and initializes child widgets defined in templates. This function must be called in the instance initializer for any class which assigned itself a template using `class-set-template()`
-
-It is important to call this function in the instance initializer of a **Gnome::Gtk3::Widget** subclass and not in **Gnome::Gtk3::Object**.`constructed()` or **Gnome::Gtk3::Object**.`constructor()` for two reasons.
-
-One reason is that generally derived widgets will assume that parent class composite widgets have been created in their instance initializers.
-
-Another reason is that when calling `g-object-new()` on a widget with composite templates, it’s important to build the composite widgets before the construct properties are set. Properties passed to `g-object-new()` should take precedence over properties set in the private template XML.
-
-    method init-template ( )
-
 insert-action-group
 -------------------
 
@@ -1259,22 +1263,22 @@ If *group* is `undefined`, a previously inserted group for *name* is removed fro
 intersect
 ---------
 
-Computes the intersection of a *widget*’s area and *area*, storing the intersection in *intersection*, and returns `True` if there was an intersection. *intersection* may be `undefined` if you’re only interested in whether there was an intersection.
+Computes the intersection of a *widget*’s area and *$area*, storing the intersection in *$intersection*, and returns `True` if there was an intersection. *$intersection* may be `undefined` if you’re only interested in whether there was an intersection.
 
 Returns: `True` if there was an intersection
 
     method intersect ( N-GObject $area, N-GObject $intersection --> Bool )
 
-  * N-GObject $area; a rectangle
+  * N-GObject $area; a N-GdkRectangle
 
-  * N-GObject $intersection; (out caller-allocates) : rectangle to store intersection of *widget* and *area*
+  * N-GObject $intersection; N-GdkRectangle to store intersection of *widget* and *area*
 
 is-ancestor
 -----------
 
-Determines whether *widget* is somewhere inside *ancestor*, possibly with intermediate containers.
+Determines whether *widget* is somewhere inside *$ancestor*, possibly with intermediate containers.
 
-Returns: `True` if *ancestor* contains *widget* as a child, grandchild, great grandchild, etc.
+Returns: `True` if *$ancestor* contains *widget* as a child, grandchild, great grandchild, etc.
 
     method is-ancestor ( N-GObject $ancestor --> Bool )
 
@@ -1352,23 +1356,14 @@ Returns: `True` if stopping keyboard navigation is fine, `False` if the emitting
 
   * GtkDirectionType $direction; direction of focus movement
 
-list-accel-closures
--------------------
-
-Lists the closures used by *widget* for accelerator group connections with `gtk-accel-group-connect-by-path()` or `gtk-accel-group-connect()`. The closures can be used to monitor accelerator changes on *widget*, by connecting to the *GtkAccelGroup*::accel-changed signal of the **Gnome::Gtk3::AccelGroup** of a closure which can be found out with `gtk-accel-group-from-accel-closure()`.
-
-Returns: (transfer container) (element-type GClosure): a newly allocated **Gnome::Gtk3::List** of closures
-
-    method list-accel-closures ( --> N-GList )
-
 list-action-prefixes
 --------------------
 
 Retrieves a `undefined`-terminated array of strings containing the prefixes of **Gnome::Gtk3::ActionGroup**'s available to *widget*.
 
-Returns: (transfer container): a `undefined`-terminated array of strings.
+Returns: an array of strings.
 
-    method list-action-prefixes ( --> CArray[Str] )
+    method list-action-prefixes ( --> List )
 
 list-mnemonic-labels, list-mnemonic-labels-rk
 ---------------------------------------------
@@ -1380,13 +1375,6 @@ Returns: the list of mnemonic labels; free this list with `clear-object()` when 
     method list-mnemonic-labels ( --> N-GList )
     method list-mnemonic-labels-rk ( --> Gnome::Glib::List )
 
-map
----
-
-This function is only for use in widget implementations. Causes a widget to be mapped if it isn’t already.
-
-    method map ( )
-
 mnemonic-activate
 -----------------
 
@@ -1397,17 +1385,6 @@ Returns: `True` if the signal has been handled
     method mnemonic-activate ( Bool $group_cycling --> Bool )
 
   * Bool $group_cycling; `True` if there are other widgets with the same mnemonic
-
-queue-allocate
---------------
-
-This function is only for use in widget implementations.
-
-Flags the widget for a rerun of the GtkWidgetClass::size-allocate function. Use this function instead of `queue-resize()` when the *widget*'s size request didn't change but it wants to reposition its contents.
-
-An example user of this function is `set-halign()`.
-
-    method queue-allocate ( )
 
 queue-compute-expand
 --------------------
@@ -1444,33 +1421,6 @@ The region here is specified in widget coordinates. Widget coordinates are a bit
 
   * Int $height; height of region to draw
 
-queue-resize
-------------
-
-This function is only for use in widget implementations. Flags a widget to have its size renegotiated; should be called when a widget for some reason has a new size request. For example, when you change the text in a **Gnome::Gtk3::Label**, **Gnome::Gtk3::Label** queues a resize to ensure there’s enough space for the new text.
-
-Note that you cannot call `queue-resize()` on a widget from inside its implementation of the GtkWidgetClass::size-allocate virtual method. Calls to `queue-resize()` from inside GtkWidgetClass::size-allocate will be silently ignored.
-
-    method queue-resize ( )
-
-queue-resize-no-redraw
-----------------------
-
-This function works like `queue-resize()`, except that the widget is not invalidated.
-
-    method queue-resize-no-redraw ( )
-
-realize
--------
-
-Creates the GDK (windowing system) resources associated with a widget. For example, *widget*->window will be created when a widget is realized. Normally realization happens implicitly; if you show a widget and all its parent containers, then the widget will be realized and mapped automatically.
-
-Realizing a widget requires all the widget’s parent widgets to be realized; calling `realize()` realizes the widget’s parents in addition to *widget* itself. If a widget is not yet inside a toplevel window when you realize it, bad things will happen.
-
-This function is primarily used in widget implementations, and isn’t very useful otherwise. Many times when you think you might need it, a better approach is to connect to a signal that will be called after the widget is realized automatically, such as *draw*. Or simply `g-signal-connect()` to the *realize* signal.
-
-    method realize ( )
-
 register-window
 ---------------
 
@@ -1479,21 +1429,6 @@ Registers a **Gnome::Gtk3::Window** with the widget and sets it up so that the w
     method register-window ( N-GObject $window )
 
   * N-GObject $window; a **Gnome::Gtk3::Window**
-
-remove-accelerator
-------------------
-
-Removes an accelerator from *widget*, previously installed with `add-accelerator()`.
-
-Returns: whether an accelerator was installed and could be removed
-
-    method remove-accelerator ( N-GObject $accel_group, UInt $accel_key, GdkModifierType $accel_mods --> Bool )
-
-  * N-GObject $accel_group; accel group for this widget
-
-  * UInt $accel_key; GDK keyval of the accelerator
-
-  * GdkModifierType $accel_mods; modifier key combination of the accelerator
 
 remove-mnemonic-label
 ---------------------
@@ -1504,44 +1439,12 @@ Removes a widget from the list of mnemonic labels for this widget. (See `list-mn
 
   * N-GObject $label; a **Gnome::Gtk3::Widget** that was previously set as a mnemonic label for *widget* with `add-mnemonic-label()`.
 
-remove-tick-callback
---------------------
-
-Removes a tick callback previously registered with `add-tick-callback()`.
-
-    method remove-tick-callback ( UInt $id )
-
-  * UInt $id; an id returned by `add-tick-callback()`
-
 reset-style
 -----------
 
 Updates the style context of *widget* and all descendants by updating its widget path. **Gnome::Gtk3::Containers** may want to use this on a child when reordering it in a way that a different style might apply to it. See also `gtk-container-get-path-for-child()`.
 
     method reset-style ( )
-
-send-focus-change
------------------
-
-Sends the focus change *event* to *widget*
-
-This function is not meant to be used by applications. The only time it should be used is when it is necessary for a **Gnome::Gtk3::Widget** to assign focus to a widget that is semantically owned by the first widget even though it’s not a direct child - for instance, a search entry in a floating window similar to the quick search in **Gnome::Gtk3::TreeView**.
-
-An example of its usage is:
-
-|[<!-- language="C" --> GdkEvent *fevent = gdk-event-new (GDK-FOCUS-CHANGE);
-
-fevent->focus-change.type = GDK-FOCUS-CHANGE; fevent->focus-change.in = TRUE; fevent->focus-change.window = -get-window (widget); if (fevent->focus-change.window != NULL) g-object-ref (fevent->focus-change.window);
-
-gtk-widget-send-focus-change (widget, fevent);
-
-gdk-event-free (event); ]|
-
-Returns: the return value from the event signal emission: `True` if the event was handled, and `False` otherwise
-
-    method send-focus-change ( GdkEvent $event --> Bool )
-
-  * GdkEvent $event; a **Gnome::Gtk3::Event** of type GDK-FOCUS-CHANGE
 
 set-allocation
 --------------
@@ -1832,9 +1735,9 @@ For toplevel widgets this depends on the capabilities of the windowing system. O
 
 For child widgets it doesn’t work if any affected widget has a native window, or disables double buffering.
 
-    method set-opacity ( Num $opacity )
+    method set-opacity ( Num() $opacity )
 
-  * Num $opacity; desired opacity, between 0 and 1
+  * Num() $opacity; desired opacity, between 0 and 1
 
 set-realized
 ------------
@@ -1906,16 +1809,16 @@ This function accepts the values `GTK-STATE-FLAG-DIR-LTR` and `GTK-STATE-FLAG-DI
 
 It is worth mentioning that any other state than `GTK-STATE-FLAG-INSENSITIVE`, will be propagated down to all non-internal children if *widget* is a **Gnome::Gtk3::Container**, while `GTK-STATE-FLAG-INSENSITIVE` itself will be propagated down to all **Gnome::Gtk3::Container** children by different means than turning on the state flag down the hierarchy, both `get-state-flags()` and `is-sensitive()` will make use of these.
 
-    method set-state-flags ( GtkStateFlags $flags, Bool $clear )
+    method set-state-flags ( UInt $flags, Bool $clear )
 
-  * GtkStateFlags $flags; State flags to turn on
+  * UInt $flags; State flags to turn on. Flags are defined by GtkStateFlags.
 
   * Bool $clear; Whether to clear state before turning on *flags*
 
 set-support-multidevice
 -----------------------
 
-Enables or disables multiple pointer awareness. If this setting is `True`, *widget* will start receiving multiple, per device enter/leave events. Note that if custom **Gnome::Gtk3::Windows** are created in *realize*, `gdk-window-set-support-multidevice()` will have to be called manually on them.
+Enables or disables multiple pointer awareness. If this setting is `True`, *widget* will start receiving multiple, per device enter/leave events. Note that if custom **Gnome::Gtk3::Windows** are created in a *realize* signal handler, `Gnome::Gdk3::Window.set-support-multidevice()` will have to be called manually on them.
 
     method set-support-multidevice ( Bool $support_multidevice )
 
@@ -2156,9 +2059,9 @@ unset-state-flags
 
 This function is for use in widget implementations. Turns off flag values for the current widget state (insensitive, prelighted, etc.). See `set-state-flags()`.
 
-    method unset-state-flags ( GtkStateFlags $flags )
+    method unset-state-flags ( UInt $flags )
 
-  * GtkStateFlags $flags; State flags to turn off
+  * UInt $flags; State flags to turn off. Flags are bits defined by GtkStateFlags
 
 Signals
 =======
@@ -2651,10 +2554,10 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 Gets emitted if keyboard navigation fails. See `keynav-failed()` for details.
 
-Returns: `True` if stopping keyboard navigation is fine, `False` if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
+Returns: `1` if stopping keyboard navigation is fine, `0` if the emitting widget should try to handle the keyboard navigation attempt in its parent container(s).
 
     method handler (
-      Unknown type GTK_TYPE_DIRECTION_TYPE $direction,
+      Int $direction,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($widget),
       *%user-options
@@ -2665,7 +2568,7 @@ Returns: `True` if stopping keyboard navigation is fine, `False` if the emitting
 
   * $_handle_id; the registered event handler id
 
-  * $direction; the direction of movement
+  * $direction; the direction of movement, an enum GtkDirectionType value
 
 ### leave-notify-event
 
