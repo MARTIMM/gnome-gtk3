@@ -38,6 +38,17 @@ An example
     my Gnome::Gtk3::Builder $builder .= new(:filename<my-gui.glade>);
     my Gnome::Gtk3::Button $button .= new(:build-id<my-gui-button>);
 
+get-data
+--------
+
+Gets a named field from the objects table of associations. See `set-data()` for an example.
+
+Returns: the data if found, or `undefined` if no such data exists.
+
+    method get-data ( Str $key --> Pointer )
+
+  * Str $key; name of the key for that association
+
 get_property
 ------------
 
@@ -185,6 +196,37 @@ An example where a keyboard press is handled.
     $window.register-signal(
       KeyboardHandlers.new, 'keyboard-handler',
       'key-press-event', :my-option(…)
+    );
+
+set-data
+--------
+
+Each object carries around a table of associations from strings to pointers. This function lets you set an association.
+
+If the object already had an association with that name, the old association will be destroyed.
+
+    method set-data ( Str $key, Pointer $data )
+
+  * Str $key; name of the key
+
+  * Pointer $data; data to associate with that key
+
+### Example
+
+Here is an example to show how to associate some data to an object and to retrieve it again. You must import the raku **NativeCall** module to get access to some of the native types and routines.
+
+    my Gnome::Gtk3::Label $bl .= new(:text<a-label>);
+    $b.set-data(
+      'attached-label-data',
+      nativecast( Pointer, $bl.get-native-object-no-reffing)
+    );
+
+    …
+
+    my Gnome::Gtk3::Label $att-bl .= new(
+      :native-object(
+        nativecast( N-GObject, $b.get-data('attached-label-data'))
+      )
     );
 
 set-property
