@@ -6,8 +6,6 @@ A widget used to catch events for widgets which do not have their own window
 Description
 ===========
 
-    do not have their own window
-
 The **Gnome::Gtk3::EventBox** widget is a subclass of **Gnome::Gtk3::Bin** which also has its own window. It is useful since it allows you to catch events for widgets which do not have their own window.
 
 Synopsis
