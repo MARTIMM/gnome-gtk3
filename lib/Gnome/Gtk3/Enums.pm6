@@ -922,10 +922,7 @@ enum GtkTreeViewGridLines is export (
 =begin pod
 =head2 enum GtkDragResult
 
-Gives an indication why a drag operation failed.
-The value can by obtained by connecting to the
- I<drag-failed> signal.
-
+Gives an indication why a drag operation failed. The value can by obtained by connecting to the  I<drag-failed> signal.
 
 =item GTK_DRAG_RESULT_SUCCESS: The drag operation was successful.
 =item GTK_DRAG_RESULT_NO_TARGET: No suitable drag target.
@@ -934,10 +931,9 @@ The value can by obtained by connecting to the
 =item GTK_DRAG_RESULT_GRAB_BROKEN: The pointer or keyboard grab used for the drag operation was broken.
 =item GTK_DRAG_RESULT_ERROR: The drag operation failed due to some unspecified error.
 
-
 =end pod
 
-#TE:0:GtkDragResult:
+#TE:1:GtkDragResult:
 enum GtkDragResult is export (
   'GTK_DRAG_RESULT_SUCCESS',
   'GTK_DRAG_RESULT_NO_TARGET',
