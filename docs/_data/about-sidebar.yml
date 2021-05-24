@@ -12,5 +12,7 @@
     url: "/content-docs/about/license-lgpl.txt"
   - title: "Artistic"
     url: "/content-docs/about/license-art.txt"
-  - title: "Documentation"
+  - title: "Docs from Gnome"
     url: "/content-docs/about/license-doc.txt"
+  - title: "Docs from other exernal sources"
+    url: "/content-docs/about/license-share.txt"
