@@ -49,7 +49,7 @@ Returns: the data if found, or `undefined` if no such data exists.
 
   * Str $key; name of the key for that association
 
-get_property
+get-property
 ------------
 
 Gets a property of an object. The value must have been initialized to the expected type of the property (or a type to which the expected type can be transformed).
@@ -215,17 +215,18 @@ If the object already had an association with that name, the old association wil
 
 Here is an example to show how to associate some data to an object and to retrieve it again. You must import the raku **NativeCall** module to get access to some of the native types and routines.
 
-    my Gnome::Gtk3::Label $bl .= new(:text<a-label>);
-    $b.set-data(
+    my Gnome::Gtk3::Button $button .= new(:label<Start>);
+    my Gnome::Gtk3::Label $att-label .= new(:text<a-label>);
+    $button.set-data(
       'attached-label-data',
-      nativecast( Pointer, $bl.get-native-object-no-reffing)
+      nativecast( Pointer, $att-label.get-native-object-no-reffing)
     );
 
     …
 
-    my Gnome::Gtk3::Label $att-bl .= new(
+    my Gnome::Gtk3::Label $att-label2 .= new(
       :native-object(
-        nativecast( N-GObject, $b.get-data('attached-label-data'))
+        nativecast( N-GObject, $button.get-data('attached-label-data'))
       )
     );
 
@@ -273,4 +274,15 @@ Start a thread in such a way that the function can modify the user interface in 
 Returns a `Promise` object. If the call fails, the object is undefined.
 
 The handlers signature holds at least `:$_widget` extended with all provided named arguments to the call defined in `*%user-options`. The handler may return any value which becomes the result of the `Promise` returned from `start-thread`.
+
+steal-data
+----------
+
+Remove a specified datum from the object's data associations, without invoking the association's destroy handler.
+
+Returns: the data if found, or `Any` if no such data exists.
+
+    method steal-data ( Str $key --> Pointer )
+
+  * Str $key; name of the key
 
