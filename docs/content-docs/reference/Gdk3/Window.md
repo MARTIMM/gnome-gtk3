@@ -8,13 +8,13 @@ Description
 
 A **Gnome::Gdk3::Window** is a (usually) rectangular region on the screen. It’s a low-level object, used to implement high-level objects such as **Gnome::Gtk3::Widget** and **Gnome::Gtk3::Window** on the GTK+ level. A **Gnome::Gtk3::Window** is a toplevel window, the thing a user might think of as a “window” with a titlebar and so on; a **Gnome::Gtk3::Window** may contain many **Gnome::Gdk3::Windows**. For example, each **Gnome::Gtk3::Button** has a **Gnome::Gdk3::Window** associated with it.
 
-Composited Windows # {**COMPOSITED**-WINDOWS}
----------------------------------------------
+Composited Windows
+------------------
 
 Normally, the windowing system takes care of rendering the contents of a child window onto its parent window. This mechanism can be intercepted by calling `gdk_window_set_composited()` on the child window. For a “composited” window it is the responsibility of the application to render the window contents at the right spot.
 
-Offscreen Windows # {**OFFSCREEN**-WINDOWS}
--------------------------------------------
+Offscreen Windows
+-----------------
 
 Offscreen windows are more general than composited windows, since they allow not only to modify the rendering of the child window onto its parent, but also to apply coordinate transformations.
 

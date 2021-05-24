@@ -47,7 +47,7 @@ Finds or creates an atom corresponding to a given string.
 
     multi method new ( Str :$intern! )
 
-  * Str $atom_name; a string.
+  * Str $intern; a string, the name of the atom.
 
 ### :native-object
 
@@ -112,9 +112,9 @@ property-get
 
 Returned List holds
 
-  * Bool result; TRUE if data was successfully received and stored in data , otherwise FALSE.
+  * Bool result; TRUE if data was successfully received and stored in data, otherwise FALSE.
 
-  * N-GObject $actual_property_type;
+  * N-GObject $actual_property_type; actual type
 
   * Int $actual_format; the actual format of the data; either 8, 16 or 32 bits
 

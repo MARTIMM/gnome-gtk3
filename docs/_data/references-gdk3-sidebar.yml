@@ -1,18 +1,24 @@
 # https://jekyllrb.com/tutorials/navigation/
 - bar_title: "Gdk3 Classes"
   bar_menu:
+  - title: Atom
+    type: standalone
+    url: /content-docs/reference/Gdk3/Atom.html
   - title: "Device"
     type: object
     url: '/content-docs/reference/Gdk3/Device.html'
   - title: "Display"
     type: object
     url: '/content-docs/reference/Gdk3/Display.html'
+  - title: DragContext
+    type: object
+    url: /content-docs/reference/Gdk3/DragContext.html
   - title: "Events"
     type: standalone
     url: '/content-docs/reference/Gdk3/Events.html'
-  - title: "Keysyms"
-    type: standalone
-    url: '/content-docs/reference/Gdk3/Keysyms.html'
+#  - title: "Keysyms"
+#    type: standalone
+#    url: '/content-docs/reference/Gdk3/Keysyms.html'
   - title: "Pixbuf"
     type: object
     url: '/content-docs/reference/Gdk3/Pixbuf.html'
