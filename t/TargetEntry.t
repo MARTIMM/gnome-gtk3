@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetList;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -19,7 +20,6 @@ subtest 'ISA test', {
   ok $cpy.is-valid, '.copy()';
   $cpy.clear-object;
   nok $cpy.is-valid, '.clear-object()';
-
 }
 
 #-------------------------------------------------------------------------------
