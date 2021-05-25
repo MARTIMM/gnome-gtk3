@@ -369,6 +369,10 @@
     type: widget
     url: "/content-docs/reference/Gtk3/Switch.html"
 
+  - title: Targets
+    type: standalone
+    url: /content-docs/reference/Gtk3/Targets.html
+
   - title: "TextBuffer"
     type: object
     url: "/content-docs/reference/Gtk3/TextBuffer.html"
