@@ -59,7 +59,7 @@ This package, together with a few others is an interface to the great Gnome libr
 **Gnome::Glib** | ![T][travis-glib] ![A][appveyor-glib] <br/> C-based object and type system with signals and slots.
 |
 **Gnome::T** |![T][travis-T] ![A][appveyor-T] <br/> GUI test package. Not yet available to the public.
-**Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries. Also there is some debugging possible and an exception class defined.
+**Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries and a map of glib types to raku types. Also there is some debugging possible and an exception class defined.
 |
 **Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Version 4 widget toolkit for graphical interfaces. Yes, of course I will … but not yet. So, not yet available to the public.
 **Gnome::Gdk4** | ![T][travis-gdk4] ![A][appveyor-gdk4] <br/> Version 4 low-level abstraction for the windowing system. Must be combined with **Gnome::Gtk4**. Also not yet available to the public.
@@ -96,11 +96,7 @@ Before any code can be run we must install the packages we want to use. It is as
 <!-- * Pixman; **0.38.4** -->
 
 #### Raku
-* Tested against (noted since 2020 01 using `$*PERL.compiler.version;`)
-  * **v2019.07.1.439.\***
-  * **v2019.11.328.\***
-  * **v2019.11.503.\***
-  * **v2020.12-32.\***
+* Tested against version **2021.03-60.\***
 
 ## Raku
 
