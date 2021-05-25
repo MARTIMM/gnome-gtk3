@@ -391,11 +391,14 @@ submethod BUILD ( *%options ) {
   # add signal info in the form of group<signal-name>.
   # groups are e.g. signal, event, nativeobject etc
   $signals-added = self.add-signal-types( $?CLASS.^name,
-    :w0<destroy show hide map unmap realize unrealize style-updated grab-focus show-help screen-changed>,
-    :w1<delete-event size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event selection-received proximity-out-event drag-leave drag-end drag-data-delete drag-failed window-state-event damage-event grab-broken-event accel-closures-changed can-activate-accel can-activate-accel>,
-    :w2<selection-get drag-begin drag-motion>,
-    :w3<proximity-in-event>,
-    :w4<drag-drop drag-data-get drag-data-received popup-menu query-tooltip>,
+    :w0<accel-closures-changed destroy show hide map unmap realize unrealize style-updated grab-focus popup-menu>,
+
+    :w1<delete-event show-help size-allocate state-flags-changed parent-set hierarchy-changed direction-changed grab-notify child-notify draw mnemonic-activate focus move-focus keynav-failed event event-after button-press-event button-release-event scroll-event motion-notify-event destroy-event key-press-event key-release-event enter-notify-event leave-notify-event configure-event focus-in-event focus-out-event map-event unmap-event property-notify-event selection-clear-event selection-request-event selection-notify-event proximity-out-event drag-end drag-data-delete drag-begin window-state-event damage-event grab-broken-event can-activate-accel screen-changed can-activate-accel touch-event>,
+
+    :w2<drag-leave selection-received drag-failed>,
+    :w3<selection-get proximity-in-event>,
+    :w4<drag-drop drag-data-get drag-motion query-tooltip>,
+    :w6<drag-data-received>
   ) unless $signals-added;
 
   # prevent creating wrong native-objects
@@ -6250,21 +6253,16 @@ of a widget changes.
 =item $previous_direction; the previous text direction of I<widget> as a GTK_TYPE_TEXT_DIRECTION enum
 
 
-=begin comment
 =comment -----------------------------------------------------------------------
-=comment #TS:0:drag-begin:
+=comment #TS:4:drag-begin:xt/dnd-01.raku
 =head3 drag-begin
 
-The I<drag-begin> signal is emitted on the drag source when a drag is
-started. A typical reason to connect to this signal is to set up a
-custom drag icon with e.g. C<gtk-drag-source-set-icon-pixbuf()>.
+The I<drag-begin> signal is emitted on the drag source when a drag is started. A typical reason to connect to this signal is to set up a custom drag icon with e.g. C<gtk-drag-source-set-icon-pixbuf()>.
 
-Note that some widgets set up a drag icon in the default handler of
-this signal, so you may have to use C<g-signal-connect-after()> to
-override what the default handler did.
+Note that some widgets set up a drag icon in the default handler of this signal, so you may have to use C<g-signal-connect-after()> to override what the default handler did.
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    N-GObject $context,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6298,112 +6296,93 @@ handler is responsible for deleting the data that has been dropped. What
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:drag-data-get:
+=comment #TS:4:drag-data-get:xt/dnd-01.raku
 =head3 drag-data-get
 
-The I<drag-data-get> signal is emitted on the drag source when the drop
-site requests the data which is dragged. It is the responsibility of
-the signal handler to fill I<data> with the data in the format which
-is indicated by I<info>. See C<gtk-selection-data-set()> and
-C<gtk-selection-data-set-text()>.
+The I<drag-data-get> signal is emitted on the drag source when the drop site requests the data which is dragged. It is the responsibility of the signal handler to fill I<$data> with the data in the format which is indicated by I<info>. See C<gtk-selection-data-set()> and C<gtk-selection-data-set-text()>.
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
-    Int $data,
-    Int $info,
-     $time,
+    N-GObject $context,
+    N-GObject $data,
+    UInt $info,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
-    --> Int
   );
 
 =item $widget; the object which received the signal
 =item $_handle_id; the registered event handler id
-=item $context; the drag context
-=item $data; the B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
-
-=item $info; the info that has been registered with the target in the
-B<Gnome::Gtk3::TargetList>
+=item $context; the drag context, a native
+=item $data; the native B<Gnome::Gtk3::SelectionData> to be filled with the dragged data
+=item $info; the info that has been registered with the target in the B<Gnome::Gtk3::TargetList>
 =item $time; the timestamp at which the data was requested
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:drag-data-received:
+=comment #TS:4:drag-data-received:xt/dnd-01.raku
 =head3 drag-data-received
 
-The I<drag-data-received> signal is emitted on the drop site when the
-dragged data has been received. If the data was received in order to
-determine whether the drop will be accepted, the handler is expected
-to call C<gdk-drag-status()> and not finish the drag.
-If the data was received in response to a  I<drag-drop> signal
-(and this is the last target to be received), the handler for this
-signal is expected to process the received data and then call
-C<gtk-drag-finish()>, setting the I<success> parameter depending on
-whether the data was processed successfully.
+The I<drag-data-received> signal is emitted on the drop site when the dragged data has been received. If the data was received in order to determine whether the drop will be accepted, the handler is expected to call C<gdk-drag-status()> and not finish the drag. If the data was received in response to a  I<drag-drop> signal (and this is the last target to be received), the handler for this signal is expected to process the received data and then call C<gtk-drag-finish()>, setting the I<success> parameter depending on whether the data was processed successfully.
 
-Applications must create some means to determine why the signal was emitted
-and therefore whether to call C<gdk-drag-status()> or C<gtk-drag-finish()>.
+Applications must create some means to determine why the signal was emitted and therefore whether to call C<gdk-drag-status()> or C<gtk-drag-finish()>.
 
-The handler may inspect the selected action with
-C<gdk-drag-context-get-selected-action()> before calling
-C<gtk-drag-finish()>, e.g. to implement C<GDK-ACTION-ASK> as
-shown in the following example:
-|[<!-- language="C" -->
-void
-drag-data-received (GtkWidget          *widget,
-GdkDragContext     *context,
-gint                x,
-gint                y,
-GtkSelectionData   *data,
-guint               info,
-guint               time)
-{
-if ((data->length >= 0) && (data->format == 8))
-{
-GdkDragAction action;
+The handler may inspect the selected action with C<gdk-drag-context-get-selected-action()> before calling C<gtk-drag-finish()>, e.g. to implement C<GDK-ACTION-ASK> as shown in the following example:
 
-// handle data here
+  void
+  drag-data-received (GtkWidget          *widget,
+  GdkDragContext     *context,
+  gint                x,
+  gint                y,
+  GtkSelectionData   *data,
+  guint               info,
+  guint               time)
+  {
+  if ((data->length >= 0) && (data->format == 8))
+  {
+  GdkDragAction action;
 
-action = gdk-drag-context-get-selected-action (context);
-if (action == GDK-ACTION-ASK)
-{
-GtkWidget *dialog;
-gint response;
+  // handle data here
 
-dialog = gtk-message-dialog-new (NULL,
-GTK-DIALOG-MODAL |
-GTK-DIALOG-DESTROY-WITH-PARENT,
-GTK-MESSAGE-INFO,
-GTK-BUTTONS-YES-NO,
-"Move the data ?\n");
-response = gtk-dialog-run (GTK-DIALOG (dialog));
-destroy (dialog);
+  action = gdk-drag-context-get-selected-action (context);
+  if (action == GDK-ACTION-ASK)
+  {
+  GtkWidget *dialog;
+  gint response;
 
-if (response == GTK-RESPONSE-YES)
-action = GDK-ACTION-MOVE;
-else
-action = GDK-ACTION-COPY;
-}
+  dialog = gtk-message-dialog-new (NULL,
+  GTK-DIALOG-MODAL |
+  GTK-DIALOG-DESTROY-WITH-PARENT,
+  GTK-MESSAGE-INFO,
+  GTK-BUTTONS-YES-NO,
+  "Move the data ?\n");
+  response = gtk-dialog-run (GTK-DIALOG (dialog));
+  destroy (dialog);
 
-gtk-drag-finish (context, TRUE, action == GDK-ACTION-MOVE, time);
-}
-else
-gtk-drag-finish (context, FALSE, FALSE, time);
-}
-]|
+  if (response == GTK-RESPONSE-YES)
+  action = GDK-ACTION-MOVE;
+  else
+  action = GDK-ACTION-COPY;
+  }
+
+  gtk-drag-finish (context, TRUE, action == GDK-ACTION-MOVE, time);
+  }
+  else
+  gtk-drag-finish (context, FALSE, FALSE, time);
+  }
+
+The handler method API:
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
-    Unknown type GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE $x,
-     $y,
-     $data,
-    - $info,
-    - $time,
+    N-GObject $context,
+    Int $x,
+    Int $y,
+    N-GObject $data,
+    UInt $info,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
-    --> Int
   );
 
 =item $widget; the object which received the signal
@@ -6421,24 +6400,15 @@ B<Gnome::Gtk3::TargetList>
 =comment #TS:0:drag-drop:
 =head3 drag-drop
 
-The I<drag-drop> signal is emitted on the drop site when the user drops
-the data onto the widget. The signal handler must determine whether
-the cursor position is in a drop zone or not. If it is not in a drop
-zone, it returns C<False> and no further processing is necessary.
-Otherwise, the handler returns C<True>. In this case, the handler must
-ensure that C<gtk-drag-finish()> is called to let the source know that
-the drop is done. The call to C<gtk-drag-finish()> can be done either
-directly or in a  I<drag-data-received> handler which gets
-triggered by calling C<gtk-drag-get-data()> to receive the data for one
-or more of the supported targets.
+The I<drag-drop> signal is emitted on the drop site when the user drops the data onto the widget. The signal handler must determine whether the cursor position is in a drop zone or not. If it is not in a drop zone, it returns C<False> and no further processing is necessary. Otherwise, the handler returns C<True>. In this case, the handler must ensure that C<gtk-drag-finish()> is called to let the source know that the drop is done. The call to C<gtk-drag-finish()> can be done either directly or in a  I<drag-data-received> handler which gets triggered by calling C<gtk-drag-get-data()> to receive the data for one or more of the supported targets.
 
 Returns: whether the cursor position is in a drop zone
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    N-GObject $context,
     Int $x,
     Int $y,
-     $time,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6457,12 +6427,10 @@ Returns: whether the cursor position is in a drop zone
 =comment #TS:0:drag-end:
 =head3 drag-end
 
-The I<drag-end> signal is emitted on the drag source when a drag is
-finished.  A typical reason to connect to this signal is to undo
-things done in  I<drag-begin>.
+The I<drag-end> signal is emitted on the drag source when a drag is finished.  A typical reason to connect to this signal is to undo things done in  I<drag-begin>.
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+    N-GObject $context,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6474,52 +6442,42 @@ things done in  I<drag-begin>.
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:drag-failed:
+=comment #TS:4:drag-failed:xt/dnd-01.raku
 =head3 drag-failed
 
-The I<drag-failed> signal is emitted on the drag source when a drag has
-failed. The signal handler may hook custom code to handle a failed DnD
-operation based on the type of error, it returns C<True> is the failure has
-been already handled (not showing the default "drag operation failed"
-animation), otherwise it returns C<False>.
+The I<drag-failed> signal is emitted on the drag source when a drag has failed. The signal handler may hook custom code to handle a failed DnD operation based on the type of error, it returns C<True> is the failure has been already handled (not showing the default "drag operation failed" animation), otherwise it returns C<False>.
 
 Returns: C<True> if the failed drag operation has been already handled.
 
-
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
-    - $result,
+    N-GObject $context,
+    Int $result,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
+    --> Bool
   );
 
 =item $widget; the object which received the signal
 =item $_handle_id; the registered event handler id
 =item $context; the drag context
-=item $result; the result of the drag operation
+=item $result; the result of the drag operation. a enum from GtkDragResult
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:drag-leave:
 =head3 drag-leave
 
-The I<drag-leave> signal is emitted on the drop site when the cursor
-leaves the widget. A typical reason to connect to this signal is to
-undo things done in  I<drag-motion>, e.g. undo highlighting
-with C<gtk-drag-unhighlight()>.
+The I<drag-leave> signal is emitted on the drop site when the cursor leaves the widget. A typical reason to connect to this signal is to undo things done in  I<drag-motion>, e.g. undo highlighting with C<gtk-drag-unhighlight()>.
 
-
-Likewise, the  I<drag-leave> signal is also emitted before the  I<drag-drop> signal, for instance to allow cleaning up of a preview item
-created in the  I<drag-motion> signal handler.
+Likewise, the  I<drag-leave> signal is also emitted before the  I<drag-drop> signal, for instance to allow cleaning up of a preview item created in the  I<drag-motion> signal handler.
 
   method handler (
-    Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $context,
-    - $time,
+    N-GObject $context,
+    UInt $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
-    --> Int
   );
 
 =item $widget; the object which received the signal.
@@ -6621,10 +6579,10 @@ else
 Returns: whether the cursor position is in a drop zone
 
   method handler (
-    Unknown type GDK_TYPE_DRAG_CONTEXT $context,
-    Unknown type GTK_TYPE_DRAG_RESULT $x,
-    - $y,
-    - $time,
+    N-GObject $context,
+    Int $x,
+    Int $y,
+    Int $time,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($widget),
     *%user-options
@@ -6638,7 +6596,6 @@ Returns: whether the cursor position is in a drop zone
 =item $y; the y coordinate of the current cursor position
 =item $time; the timestamp of the motion event
 
-=end comment
 
 =comment -----------------------------------------------------------------------
 =comment #TS:4:draw:Gnome::Cairo tests
