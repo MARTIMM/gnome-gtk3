@@ -155,9 +155,11 @@ There are several dependencies from one package to the other because it was one 
 
 `zef install Gnome::Gtk3`
 
+
 # Issues
 
 There are always some problems! If you find one, please help by filing an issue at [my github project](https://github.com/MARTIMM/gnome-gtk3/issues).
+
 
 # Attribution
 * The inventors of Raku, formerly known as Perl 6, of course and the writers of the documentation which helped me out every time again and again.
@@ -167,6 +169,15 @@ There are always some problems! If you find one, please help by filing an issue 
 * Documentation from [Wikibooks](https://en.wikibooks.org/wiki/GTK%2B_By_Example) and [Zetcode](http://zetcode.com/tutorials/gtktutorial/)
 * Helpful hands are there when issues are raised, after requesting for help or developers returning ideas tips, etcetera for documentation; Pixlmixr, Hkdtam, JackKuhan, Alain Barbason, Clifton Wood, Rob Ransbottom, Håkon Hægland (some names are Github names).
 * Icons used from www.iconfinder.com, humility icons, Andy Fitzsimon, licensed GPL.
+* Prof Stewart Weiss, [web address](http://www.compsci.hunter.cuny.edu/~sweiss/index.php). On his site are numerous documents under which many about GTK+. I have used parts from these to explain many aspects of the user interface system.
+
+
+# Licenses
+
+* Raku code and pod documentation: Artistic License 2.0
+* Use of Gnome reference documentation: GNU Free Documentation License Version 1.3
+* Documentation from other external sources used in tutorials: Creative Commons Attribution-ShareAlike 4.0 International Public License
+
 
 # Author
 
