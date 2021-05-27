@@ -271,7 +271,7 @@ TopLevelClassSupport                  Gnome::N::TopLevelClassSupport
 GBoxed                                Gnome::GObject::Boxed
 ├── GtkPaperSize
 ├── GtkTextIter                       TextIter
-├── GtkSelectionData
+├── GtkSelectionData                  SelectionData
 ├── GtkRequisition
 ├── GtkBorder                         Border
 ├── GtkTreeIter                       TreeIter
@@ -279,11 +279,18 @@ GBoxed                                Gnome::GObject::Boxed
 ├── GtkTreePath                       TreePath
 ├   GtkTreeRowReference               TreeRowReference, extr. from TreeModel
 ├─✗ GtkIconSet                        ⛔
-├── GtkTargetList
+├── GtkTargetList                     TargetList
 ╰── GtkWidgetPath                     WidgetPath
 
 X                                     Some other gtk classes
 ├─ GtkSourceLanguage                
 ├─ GtkSourceLanguagesManager
 ├─ GtkSpell
+│
+├─                                    DragDest
+├─                                    DragSource
+├─                                    Targets
+│
+├─                                    Main
+├─                                    Enums
 ```

@@ -166,6 +166,7 @@ Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SelectionData             |Bx|
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |
@@ -177,6 +178,8 @@ Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |  
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TargetList                |Bx| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+Targets                   |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
 TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -279,7 +282,6 @@ Requisition|b|
 ScaleButton|
 Scrollable|i|
 Scrollbar|
-SelectionData|b|
 SeparatorToolItem|
 Settings|
 ShortcutsGroup|
@@ -288,7 +290,8 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-TargetList                |Bx| ✗|
+TargetEntry               |Bx| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+TargetTable               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextChildAnchor|
 TextMark|
 ToggleToolButton|
@@ -312,16 +315,18 @@ WindowGroup|
 
 | Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
-RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|
-Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
-Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Atom                      | S| ✗| ✓| ✓| ✓| ✗| ✗| ⅔| ✗| ✗| ✓| ✓| ✓| ✓|
+Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+DragContext               |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅑| ✗| ✗| ✓| ✓| ✓| ✓|
+Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|  |
+Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
+Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
