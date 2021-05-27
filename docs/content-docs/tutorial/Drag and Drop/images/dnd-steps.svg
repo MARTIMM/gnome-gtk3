@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1363px" preserveAspectRatio="none" style="width:617px;height:1363px;" version="1.1" viewBox="0 0 617 1363" width="617px" zoomAndPan="magnify"><defs><filter height="300%" id="f13uhm47rpg3ss" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="266.9902"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="816.6138"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1045.5645"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1137.1787"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1213.5522"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="110.9629" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="403.0859"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="618.1445"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="709.7588"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="108.2036" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="908.228"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="23" x2="23" y1="88.4131" y2="1278.793"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="105.5" x2="105.5" y1="88.4131" y2="1278.793"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="161" x2="161" y1="88.4131" y2="1278.793"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="311.5" x2="311.5" y1="88.4131" y2="1278.793"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="401.5" x2="401.5" y1="88.4131" y2="1278.793"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="31" x="5" y="85.084">user</text><ellipse cx="23.5" cy="15" fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M23.5,23 L23.5,50 M10.5,31 L36.5,31 M23.5,50 L10.5,65 M23.5,50 L36.5,65 " fill="none" filter="url(#f13uhm47rpg3ss)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="31" x="5" y="1290.877">user</text><ellipse cx="23.5" cy="1304.2061" fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M23.5,1312.2061 L23.5,1339.2061 M10.5,1320.2061 L36.5,1320.2061 M23.5,1339.2061 L10.5,1354.2061 M23.5,1339.2061 L36.5,1354.2061 " fill="none" filter="url(#f13uhm47rpg3ss)" style="stroke: #A80036; stroke-width: 2.0;"/><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="30.4131" style="stroke: #A80036; stroke-width: 1.5;" width="40" x="83.5" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="26" x="90.5" y="73.084">app</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="30.4131" style="stroke: #A80036; stroke-width: 1.5;" width="40" x="83.5" y="1277.793"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="26" x="90.5" y="1297.877">app</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="30.4131" style="stroke: #A80036; stroke-width: 1.5;" width="41" x="139" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="27" x="146" y="73.084">dnd</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="30.4131" style="stroke: #A80036; stroke-width: 1.5;" width="41" x="139" y="1277.793"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="27" x="146" y="1297.877">dnd</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="46.8262" style="stroke: #A80036; stroke-width: 1.5;" width="62" x="278.5" y="36.5869"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="48" x="285.5" y="56.6709">source</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="286.5" y="73.084">widget</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="46.8262" style="stroke: #A80036; stroke-width: 1.5;" width="62" x="278.5" y="1277.793"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="48" x="285.5" y="1297.877">source</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="286.5" y="1314.29">widget</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="46.8262" style="stroke: #A80036; stroke-width: 1.5;" width="91" x="354.5" y="36.5869"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="77" x="361.5" y="56.6709">destination</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="377" y="73.084">widget</text><rect fill="#FEFECE" filter="url(#f13uhm47rpg3ss)" height="46.8262" style="stroke: #A80036; stroke-width: 1.5;" width="91" x="354.5" y="1277.793"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="77" x="361.5" y="1297.877">destination</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="377" y="1314.29">widget</text><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="266.9902"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="816.6138"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1045.5645"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1137.1787"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="306.5" y="1213.5522"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="110.9629" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="403.0859"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="47.2407" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="618.1445"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="62.4814" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="709.7588"/><rect fill="#FFFFFF" filter="url(#f13uhm47rpg3ss)" height="108.2036" style="stroke: #A80036; stroke-width: 1.0;" width="10" x="397" y="908.228"/><polygon fill="#A80036" points="93.5,115.6538,103.5,119.6538,93.5,123.6538,97.5,119.6538" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="23.5" x2="99.5" y1="119.6538" y2="119.6538"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="58" x="30.5" y="114.5625">start app</text><polygon fill="#A80036" points="299.5,144.8945,309.5,148.8945,299.5,152.8945,303.5,148.8945" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="105.5" x2="305.5" y1="148.8945" y2="148.8945"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="19" x="112.5" y="143.8032">init</text><polygon fill="#A80036" points="390,174.1353,400,178.1353,390,182.1353,394,178.1353" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="105.5" x2="396" y1="178.1353" y2="178.1353"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="19" x="112.5" y="173.0439">init</text><polygon fill="#A80036" points="149.5,233.8574,159.5,237.8574,149.5,241.8574,153.5,237.8574" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="23.5" x2="155.5" y1="237.8574" y2="237.8574"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="95" x="30.5" y="202.2847">click and move</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="30.5" y="217.5254">above source</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="30.5" y="232.7661">starts drag</text><polygon fill="#A80036" points="294.5,262.9902,304.5,266.9902,294.5,270.9902,298.5,266.9902" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="300.5" y1="266.9902" y2="266.9902"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="82" x="168.5" y="261.9243">drag-begin</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="331,279.9902,385,279.9902,395,298.9902,385,317.9902,331,317.9902,321,298.9902,331,279.9902" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="50" x="333" y="296.1396">prepare</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="29" x="333" y="311.3804">data</text><polygon fill="#A80036" points="172.5,325.4717,162.5,329.4717,172.5,333.4717,168.5,329.4717" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="310.5" y1="329.4717" y2="329.4717"/><polygon fill="#A80036" points="149.5,369.9531,159.5,373.9531,149.5,377.9531,153.5,373.9531" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="23.5" x2="155.5" y1="373.9531" y2="373.9531"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="75" x="30.5" y="353.6211">user moves</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="30.5" y="368.8618">above destination</text><polygon fill="#A80036" points="385,399.0859,395,403.0859,385,407.0859,389,403.0859" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="391" y1="403.0859" y2="403.0859"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="91" x="168.5" y="398.02">drag-motion</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="422,416.0859,526,416.0859,536,435.0859,526,454.0859,422,454.0859,412,435.0859,422,416.0859" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="424" y="432.2354">multiple motion</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="43" x="424" y="447.4761">events</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="422,464.5674,510,464.5674,520,483.5674,510,502.5674,422,502.5674,412,483.5674,422,464.5674" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="424" y="480.7168">check target</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="84" x="424" y="495.9575">highlight if ok</text><polygon fill="#A80036" points="172.5,510.0488,162.5,514.0488,172.5,518.0488,168.5,514.0488" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="401" y1="514.0488" y2="514.0488"/><polygon fill="#0080FF" points="149.5,569.771,159.5,573.771,149.5,577.771,153.5,573.771" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0;" x1="23.5" x2="155.5" y1="573.771" y2="573.771"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="30.5" y="538.1982">user releases</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="96" x="30.5" y="553.439">button (=drop)</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="30.5" y="568.6797">above destination</text><polygon fill="#A80036" points="385,614.1445,395,618.1445,385,622.1445,389,618.1445" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="391" y1="618.1445" y2="618.1445"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="48" x="168.5" y="597.9204">drop ok</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="79" x="168.5" y="613.0786">drag-leave</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="422,631.1445,496,631.1445,506,642.1445,496,654.1445,422,654.1445,412,642.1445,422,631.1445" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="424" y="647.2939">unhighlight</text><polygon fill="#A80036" points="172.5,661.3853,162.5,665.3853,172.5,669.3853,168.5,665.3853" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="401" y1="665.3853" y2="665.3853"/><polygon fill="#0080FF" points="385,705.7588,395,709.7588,385,713.7588,389,709.7588" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="391" y1="709.7588" y2="709.7588"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="48" x="168.5" y="689.5347">drop ok</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="75" x="168.5" y="704.6929">drag-drop</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="422,722.7588,530,722.7588,540,741.7588,530,760.7588,422,760.7588,412,741.7588,422,722.7588" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="424" y="738.9082">ask for data</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="424" y="754.1489">with '.get-data()'</text><polygon fill="#0080FF" points="172.5,768.2402,162.5,772.2402,172.5,776.2402,168.5,772.2402" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="401" y1="772.2402" y2="772.2402"/><polygon fill="#0080FF" points="294.5,812.6138,304.5,816.6138,294.5,820.6138,298.5,816.6138" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="300.5" y1="816.6138" y2="816.6138"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="54" x="168.5" y="796.3896">get data</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="104" x="168.5" y="811.5479">drag-data-get</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="331,829.6138,438,829.6138,448,848.6138,438,867.6138,331,867.6138,321,848.6138,331,829.6138" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="333" y="845.7632">provide data</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="333" y="861.0039">with '.data-set()'</text><polygon fill="#0080FF" points="172.5,875.0952,162.5,879.0952,172.5,883.0952,168.5,879.0952" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="310.5" y1="879.0952" y2="879.0952"/><polygon fill="#0080FF" points="385,904.228,395,908.228,385,912.228,389,908.228" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="391" y1="908.228" y2="908.228"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="142" x="168.5" y="903.1621">drag-data-received</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="422,921.228,598,921.228,608,963.228,598,1005.228,422,1005.228,412,963.228,422,921.228" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="172" x="424" y="937.3774">check target and dropzone</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="153" x="424" y="952.6182">if not ok, reject the drop</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="428" y="967.8589"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="162" x="424" y="983.0996">check if action is to move</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="424" y="998.3403">if so, ask delete</text><polygon fill="#0080FF" points="172.5,1012.4316,162.5,1016.4316,172.5,1020.4316,168.5,1016.4316" style="stroke: #0080FF; stroke-width: 1.0;"/><line style="stroke: #0080FF; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="401" y1="1016.4316" y2="1016.4316"/><polygon fill="#A80036" points="294.5,1041.5645,304.5,1045.5645,294.5,1049.5645,298.5,1045.5645" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="300.5" y1="1045.5645" y2="1045.5645"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="126" x="168.5" y="1040.4985">drag-data-delete</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="331,1058.5645,439,1058.5645,449,1077.5645,439,1096.5645,331,1096.5645,321,1077.5645,331,1058.5645" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="333" y="1074.7139">if action is move</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="73" x="333" y="1089.9546">delete data</text><polygon fill="#A80036" points="172.5,1104.0459,162.5,1108.0459,172.5,1112.0459,168.5,1108.0459" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="310.5" y1="1108.0459" y2="1108.0459"/><polygon fill="#A80036" points="294.5,1133.1787,304.5,1137.1787,294.5,1141.1787,298.5,1137.1787" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="300.5" y1="1137.1787" y2="1137.1787"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="82" x="168.5" y="1132.1128">drag-failed</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="331,1150.1787,445,1150.1787,455,1161.1787,445,1173.1787,331,1173.1787,321,1161.1787,331,1150.1787" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="333" y="1166.3281">if drop is rejected</text><polygon fill="#A80036" points="172.5,1180.4194,162.5,1184.4194,172.5,1188.4194,168.5,1184.4194" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="310.5" y1="1184.4194" y2="1184.4194"/><polygon fill="#A80036" points="294.5,1209.5522,304.5,1213.5522,294.5,1217.5522,298.5,1213.5522" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="161.5" x2="300.5" y1="1213.5522" y2="1213.5522"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="68" x="168.5" y="1208.4863">drag-end</text><polygon fill="#FBFB77" filter="url(#f13uhm47rpg3ss)" points="331,1226.5522,385,1226.5522,395,1237.5522,385,1249.5522,331,1249.5522,321,1237.5522,331,1226.5522" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="50" x="333" y="1242.7017">cleanup</text><polygon fill="#A80036" points="172.5,1256.793,162.5,1260.793,172.5,1264.793,168.5,1260.793" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="166.5" x2="310.5" y1="1260.793" y2="1260.793"/><!--MD5=[aa4117a05f38cdf1ac2f903097a0f60d]
+@startuml
+actor usr as "user"
+participant app as "app"
+participant dnd
+participant src as "source\nwidget"
+participant dst as "destination\nwidget"
+'control begin as "drag\nbegin"
+'control motion as "drag\nmotion"
+'control leave as "drag\nleave"
+'control recv as "drag\ndata\nreceived"
+
+usr -> app : start app
+app -> src : init
+app -> dst : init
+
+usr -> dnd : click and move\nabove source\nstarts drag
+
+dnd - -> src : <b>drag-begin</b>
+hnote right of src : prepare\ndata
+activate src
+src - -> dnd
+deactivate src
+
+usr -> dnd : user moves\nabove destination
+dnd - -> dst : <b>drag-motion</b>
+hnote right of dst : multiple motion\nevents
+hnote right of dst : check target\nhighlight if ok
+activate dst
+dst - -> dnd
+deactivate dst
+
+usr -[#0080FF]> dnd : user releases\nbutton (=drop)\nabove destination
+dnd - -> dst : drop ok\n<b>drag-leave</b>
+activate dst
+hnote right of dst : unhighlight
+dst - -> dnd
+deactivate dst
+
+dnd - -[#0080FF]> dst : drop ok\n<b>drag-drop</b>
+hnote right of dst : ask for data\nwith '.get-data()'
+activate dst
+dst - -[#0080FF]> dnd
+deactivate dst
+
+dnd - -[#0080FF]> src : get data\n<b>drag-data-get</b>
+hnote right of src : provide data\nwith '.data-set()'
+activate src
+src - -[#0080FF]> dnd
+deactivate src
+
+dnd - -[#0080FF]> dst : <b>drag-data-received</b>
+hnote right of dst
+  check target and dropzone
+  if not ok, reject the drop
+
+  check if action is to move
+  if so, ask delete
+endnote
+activate dst
+dst - -[#0080FF]> dnd
+deactivate dst
+
+dnd - -> src : <b>drag-data-delete</b>
+hnote right of src : if action is move\ndelete data
+activate src
+src - -> dnd
+deactivate src
+
+dnd - -> src : <b>drag-failed</b>
+hnote right of src : if drop is rejected
+activate src
+src - -> dnd
+deactivate src
+
+dnd - -> src : <b>drag-end</b>
+hnote right of src : cleanup
+activate src
+src - -> dnd
+deactivate src
+@enduml
+
+@startuml
+actor usr as "user"
+participant app as "app"
+participant dnd
+participant src as "source\nwidget"
+participant dst as "destination\nwidget"
+
+usr -> app : start app
+app -> src : init
+app -> dst : init
+
+usr -> dnd : click and move\nabove source\nstarts drag
+
+dnd - -> src : <b>drag-begin</b>
+hnote right of src : prepare\ndata
+activate src
+src - -> dnd
+deactivate src
+
+usr -> dnd : user moves\nabove destination
+dnd - -> dst : <b>drag-motion</b>
+hnote right of dst : multiple motion\nevents
+hnote right of dst : check target\nhighlight if ok
+activate dst
+dst - -> dnd
+deactivate dst
+
+usr -[#0080FF]> dnd : user releases\nbutton (=drop)\nabove destination
+dnd - -> dst : drop ok\n<b>drag-leave</b>
+activate dst
+hnote right of dst : unhighlight
+dst - -> dnd
+deactivate dst
+
+dnd - -[#0080FF]> dst : drop ok\n<b>drag-drop</b>
+hnote right of dst : ask for data\nwith '.get-data()'
+activate dst
+dst - -[#0080FF]> dnd
+deactivate dst
+
+dnd - -[#0080FF]> src : get data\n<b>drag-data-get</b>
+hnote right of src : provide data\nwith '.data-set()'
+activate src
+src - -[#0080FF]> dnd
+deactivate src
+
+dnd - -[#0080FF]> dst : <b>drag-data-received</b>
+hnote right of dst
+  check target and dropzone
+  if not ok, reject the drop
+
+  check if action is to move
+  if so, ask delete
+endnote
+activate dst
+dst - -[#0080FF]> dnd
+deactivate dst
+
+dnd - -> src : <b>drag-data-delete</b>
+hnote right of src : if action is move\ndelete data
+activate src
+src - -> dnd
+deactivate src
+
+dnd - -> src : <b>drag-failed</b>
+hnote right of src : if drop is rejected
+activate src
+src - -> dnd
+deactivate src
+
+dnd - -> src : <b>drag-end</b>
+hnote right of src : cleanup
+activate src
+src - -> dnd
+deactivate src
+@enduml
+
+PlantUML version 1.2020.19(Mon Oct 12 17:10:01 CEST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
