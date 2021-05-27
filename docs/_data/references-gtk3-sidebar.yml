@@ -369,9 +369,9 @@
     type: widget
     url: "/content-docs/reference/Gtk3/Switch.html"
 
-  - title: TargetEntry
-    type: boxed
-    url: /content-docs/reference/Gtk3/TargetEntry.html
+#  - title: TargetEntry
+#    type: boxed
+#    url: /content-docs/reference/Gtk3/TargetEntry.html
 
   - title: Targets
     type: standalone
