@@ -6,6 +6,12 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-05-25 0.40.0:
+* Added support for drag and drop. Modules added;
+  * Gnome::Gdk3: Atom and DragContext
+  * Gnome::Gtk3: Targets, TargetList, SelectionData, DragDest and DragSource.
+* Bugfixes; in Widget, a lot of signals were in wrong categories. Discovered after using drag and drop. At the same time, docs about signals are improved for this module.
+
 #### 2021-05-08 0.39.4:
 * Modules **Gnome::Gtk3::Adjustment** and **Gnome::Gtk3::Notebook** docs are improved, methods are added and more tests done.
 
@@ -15,20 +21,20 @@ layout: sidebar
 
 #### 2021-04-29 0.39.2:
 * Improve docs of Grid, Container and Fixed. Added some tests for Container.
-* Add a method `get-child-at-rk()` to return a raku object. `get-child-at()` returns a native object.
+* Container; add a method `get-child-at-rk()` to return a raku object. `get-child-at()` returns a native object.
 * Now that it is possible to return raku widget objects I've started experimenting with callbacks too. Normally they will always get native objects which need to be imported into a raku object to be able to call any methods. In the **Gnome::Gtk3::Container** module there is this `foreach()` method which in turn calls a callback routine for each widget in its container. The widget in the argument is provided as a **N-GObject**. The experiment now is as follows; providing a callback method will as normal get a native object except when the name of the callback ends in `-rk`. In that case it returns a raku widget object. The next test taken from `t/Container.t` shows the differences.
   ```
   class X {
     method cb ( N-GObject $no, :$label ) {
       my Gnome::Gtk3::Widget $w .= new(:native-object($no));
-      is $w.widget-get-name(), 'GtkLabel', '.foreach(): callback()';
+      is $w.get-name(), 'GtkLabel', '.foreach(): callback()';
       my Gnome::Gtk3::Label $l .= new(:native-object($no));
       is $l.get-text, $label, 'label text';
     }
 
     # In this case we only expect a Label!
     method cb-rk ( Gnome::Gtk3::Label $rk, :$label ) {
-      is $rk.widget-get-name, 'GtkLabel', '.foreach(): callback-rk()';
+      is $rk.get-name, 'GtkLabel', '.foreach(): callback-rk()';
       is $rk.get-text, $label, 'label text';
     }
   }

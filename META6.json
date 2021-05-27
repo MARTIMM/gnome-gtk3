@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.39.4",
+  "version": "0.40.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -104,6 +104,7 @@
     "Gnome::Gtk3::StyleContext": "lib/Gnome/Gtk3/StyleContext.pm6",
     "Gnome::Gtk3::StyleProvider": "lib/Gnome/Gtk3/StyleProvider.pm6",
     "Gnome::Gtk3::Switch": "lib/Gnome/Gtk3/Switch.pm6",
+    "Gnome::Gtk3::Targets": "lib/Gnome/Gtk3/Targets.pm6",
     "Gnome::Gtk3::TextBuffer": "lib/Gnome/Gtk3/TextBuffer.pm6",
     "Gnome::Gtk3::TextIter": "lib/Gnome/Gtk3/TextIter.pm6",
     "Gnome::Gtk3::TextTag": "lib/Gnome/Gtk3/TextTag.pm6",
