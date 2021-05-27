@@ -81,32 +81,32 @@ subtest 'Manipulations2', {
     class X {
       method cb1 ( N-GObject $no, :$label ) {
         my Gnome::Gtk3::Widget $w .= new(:native-object($no));
-        is $w.widget-get-name, 'GtkLabel', '.foreach(): cb1()';
+        is $w.get-name, 'GtkLabel', '.foreach(): cb1()';
         my Gnome::Gtk3::Label $l .= new(:native-object($no));
         is $l.get-text, $label, 'label text';
       }
 
       method cb1-rk ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.widget-get-name, 'GtkLabel', '.foreach(): cb1-rk()';
+        is $rk.get-name, 'GtkLabel', '.foreach(): cb1-rk()';
         is $rk.get-text, $label, 'label text';
       }
 
       method cb2 ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.widget-get-name, 'GtkLabel',
+        is $rk.get-name, 'GtkLabel',
           '.foreach(): cb2() :give-raku-objects';
         is $rk.get-text, $label, 'label text';
       }
 
       method cb3 ( $o, Str :$label, Bool :$give-raku-objects = False ) {
         if $give-raku-objects {
-          is $o.widget-get-name, 'GtkLabel',
+          is $o.get-name, 'GtkLabel',
             '.foreach(): cb3() :give-raku-objects';
           is $o.get-text, $label, 'label text';
         }
 
         else {
           my Gnome::Gtk3::Widget $w .= new(:native-object($o));
-          is $w.widget-get-name, 'GtkLabel', '.foreach(): cb3()';
+          is $w.get-name, 'GtkLabel', '.foreach(): cb3()';
           my Gnome::Gtk3::Label $l .= new(:native-object($o));
           is $l.get-text, $label, 'label text';
         }
