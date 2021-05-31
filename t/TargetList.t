@@ -1,9 +1,15 @@
 use v6;
 use NativeCall;
 use Test;
+use lib '../gnome-gdk3/lib';
 
 use Gnome::Gtk3::TargetList;
+use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TextBuffer;
+
 use Gnome::Gdk3::Atom;
+
+use Gnome::Glib::List;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -25,6 +31,16 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  $tl .= new(
+    :targets[
+      Gnome::Gtk3::TargetEntry.new(
+        :target<text/TeX>, :flags(GTK_TARGET_SAME_APP), :info(22)
+      ),
+      Gnome::Gtk3::TargetEntry.new(
+        :target<fortune-cookie>, :flags(GTK_TARGET_SAME_APP), :info(0x22)
+      ),
+    ]
+  );
 
   $tl.add( Gnome::Gdk3::Atom.new(:intern<number>), GTK_TARGET_SAME_APP, 0);
   $tl.add( Gnome::Gdk3::Atom.new(:intern<string>), GTK_TARGET_SAME_APP, 1);
@@ -34,26 +50,82 @@ subtest 'Manipulations', {
   $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<number>));
   ok $list-find[0], '.find(): atom \'number\' found';
   is $list-find[1], 0, '.find(): info == 0';
-
 #`{{
-TODO TargetEntry does not work right
-note $tl.table-from-list.gist;
+  my Gnome::Glib::List $lt .= new(
+    :native-object($tl.get-native-object-no-reffing.list)
+  );
 
-#note $?LINE;
+  for ^$lt.length -> $i {
+    my N-GtkTargetPair $tp = nativecast( N-GtkTargetPair, $lt.nth-data($i));
+    my Gnome::Gdk3::Atom $a .= new(:native-object($tp.target));
+    note "target name: $a.name()";
+  }
+}}
   my Array $te = [
     Gnome::Gtk3::TargetEntry.new(
       :target<foobar>, :flags(GTK_TARGET_SAME_APP), :info(2)
     ),
+    Gnome::Gtk3::TargetEntry.new(
+      :target<baz>, :flags(GTK_TARGET_SAME_APP), :info(3)
+    ),
   ];
-  $tl.clear-object;
-  $tl = Gnome::Gtk3::TargetList.new; #(:targets($te));
+
   $tl.add-table($te);
-note $tl.table-from-list.gist;
+
+#`{{
+  my Gnome::Glib::List $lt .= new(
+    :native-object($tl.get-native-object-no-reffing.list)
+  );
+
+  for ^$lt.length -> $i {
+    my N-GtkTargetPair $tp = nativecast( N-GtkTargetPair, $lt.nth-data($i));
+    my Gnome::Gdk3::Atom $a .= new(:native-object($tp.target));
+    note "target name: $a.name()";
+  }
+}}
+
+  my @tnames = ();
+  for @($tl.table-from-list) -> $te {
+    @tnames.push: $te.target;
+  }
+  is-deeply @tnames, [<baz foobar fortune-cookie text/TeX number string>],
+    '.table-from-list()';
 
   $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<foobar>));
   ok $list-find[0], '.find(): atom \'foobar\' found';
   is $list-find[1], 2, '.find(): info == 2';
-}}
+  $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<baz>));
+  ok $list-find[0], '.find(): atom \'baz\' found';
+  is $list-find[1], 3, '.find(): info == 3';
+
+
+  $tl.add-image-targets( 0x29, True);
+  $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<image/bmp>));
+  ok $list-find[0], '.add-image-targets(): atom \'image/bmp\' found';
+  is $list-find[1], 0x29, '.add-image-targets(): info == 0x29';
+
+  # it runs but no extra narget types are added
+  my Gnome::Gtk3::TextBuffer $tb .= new;
+  $tb.set-text('{\rtf1\ansi{\fonttbl\f0\fswiss Helvetica;}\f0\pard This is some {\b bold} text.\par}');
+  $tl.add-rich-text-targets( 0xf29, True, $tb);
+
+
+  $tl.add-text-targets(0x456);
+  $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<text/plain;charset=utf-8>));
+  ok $list-find[0], '.add-text-targets(): atom \'text/plain;charset=utf-8\' found';
+  is $list-find[1], 0x456, '.add-text-targets(): info == 0x456';
+
+  $tl.add-uri-targets(0x9876);
+  $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<text/uri-list>));
+  ok $list-find[0], '.add-uri-targets(): atom \'text/uri-list\' found';
+  is $list-find[1], 0x9876, '.add-uri-targets(): info == 0x9876';
+
+  $tl.remove(Gnome::Gdk3::Atom.new(:intern<image/icon>));
+#  for @($tl.table-from-list) -> $te {
+#    note 'tg: ', $te.target;
+#  }
+  $list-find = $tl.find(Gnome::Gdk3::Atom.new(:intern<image/icon>));
+  nok $list-find[0], '.remove()';
 }
 
 

@@ -9,7 +9,7 @@ layout: sidebar
 #### 2021-05-25 0.40.0:
 * Added support for drag and drop. Modules added;
   * Gnome::Gdk3: Atom and DragContext
-  * Gnome::Gtk3: Targets, TargetList, SelectionData, DragDest and DragSource.
+  * Gnome::Gtk3: Targets, TargetList, TargetEntry, SelectionData, DragDest and DragSource.
 * Bugfixes; in Widget, a lot of signals were in wrong categories. Discovered after using drag and drop. At the same time, docs about signals are improved for this module.
 
 #### 2021-05-08 0.39.4:

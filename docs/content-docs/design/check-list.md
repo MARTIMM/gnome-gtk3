@@ -178,7 +178,8 @@ Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |  
 StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TargetList                |Bx| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+TargetEntry               |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+TargetList                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Targets                   |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
@@ -290,7 +291,6 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-TargetEntry               |Bx| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 TargetTable               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextChildAnchor|
 TextMark|

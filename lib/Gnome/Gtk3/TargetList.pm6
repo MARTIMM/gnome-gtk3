@@ -52,9 +52,11 @@ use Gnome::N::TopLevelClassSupport;
 
 use Gnome::GObject::Boxed;
 
+use Gnome::Glib::List;
+
 use Gnome::Gdk3::Atom;
 
-#use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetEntry;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::TargetList:auth<github:MARTIMM>:ver<0.1.0>;
@@ -65,11 +67,24 @@ also is Gnome::GObject::Boxed;
 =head1 Types
 =end pod
 
+# Declaration from gtkselectionprivate.h and was specified as being opaque.
+# However, we need to use this to implement some of C-code functions because
+# I am not able to create a Raku equivalent for those functions.
+#TT:1:N-GtkTargetList:
+class N-GtkTargetList is export is repr('CStruct') {
+  has N-GList $.list;
+  has guint $.ref-count;
+
+  method set-list ( N-GList $l ) {
+    $!list := $l;
+  }
+};
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 enum GtkTargetFlags
 
-The GtkTargetFlag> enumeration is used to specify constraints on a N-GObject.
+The GtkTargetFlag> enumeration is used to specify constraints on a target entry.
 
 =item GTK_TARGET_SAME_APP: If this is set, the target will only be selected for drags within a single application.
 =item GTK_TARGET_SAME_WIDGET: If this is set, the target will only be selected for drags within a single widget.
@@ -86,26 +101,30 @@ enum GtkTargetFlags is export (
   'GTK_TARGET_OTHER_WIDGET' => 1 +< 3,
 );
 
-#`{{
+##`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 class N-GtkTargetPair
 
-A B<Gnome::Gtk3::TargetPair> is used to represent the same information as a table of B<Gnome::Gtk3::TargetEntry>, but in an efficient form.
+A B<N-GtkTargetPair> is used to represent the same information as a table of B<N-GtkTargetEntry>, but in an efficient form.
 
 =item N-GObject $.target: B<Gnome::Gtk3::Atom> representation of the target type
-=item UInt $.flags: B<Gnome::Gtk3::TargetFlags> for DND
+=item UInt $.flags: B<GtkTargetFlags> for DND
 =item UInt $.info: an application-assigned integer ID which will get passed as a parameter to e.g the  I<selection-get> signal. It allows the application to identify the target type without extensive string compares.
 
 =end pod
 
-#TT:0:N-GtkTargetPair:
+#TT:1:N-GtkTargetPair:
 class N-GtkTargetPair is export is repr('CStruct') {
   has N-GObject $.target;
   has guint $.flags;
   has guint $.info;
+
+
+  submethod BUILD ( N-GObject :$target, Int :$!flags, Int :$!info ) {
+    $!target := $target;
+  }
 }
-}}
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -119,25 +138,23 @@ Create a new empty TargetList object.
   multi method new ( )
 
 
-=begin comment
 =head3 :targets
 
 Creates a new TargetList from an array of target entries.
 
   multi method new ( Array :$targets! )
-=end comment
 
 
 =head3 :native-object
 
 Create a TargetList object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
-  multi method new ( N-GObject :$native-object! )
+  multi method new ( N-GtkTargetList :$native-object! )
 
 =end pod
 
 #TM:1:new():
-# TM:1:new(:targets):
+#TM:2:new(:targets):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 submethod BUILD ( *%options ) {
 
@@ -153,20 +170,10 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if %options<targets>:exists {
-        #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-        #$no = _gtk_target_list_new___x___($no);
-#`{{
-        my $tes = CArray[N-TargetEntry].new;
-        my Int $i = 0;
-        for @(%options<targets>) -> $t {
-          $tes[$i++] = $t ~~ N-TargetEntry ?? $t !! $t.get-native-object-no-reffing;
-note "tes[{$i - 1}]: $tes[$i-1].gist()";
-        }
-
-        $no = _gtk_target_list_new( $tes, %options<targets>.elems);
-}}
+      if %options<targets>:exists and %options<targets> ~~ Array {
+        $no = _gtk_target_list_new( CArray[N-GtkTargetEntry].new, 0);
+        self.set-native-object($no);
+        self.add-table(%options<targets>);
       }
 
       ##`{{ use this when the module is not made inheritable
@@ -191,13 +198,14 @@ note "tes[{$i - 1}]: $tes[$i-1].gist()";
       ##`{{ when there are defaults use this instead
       # create default object
       else {
-#        $no = _gtk_target_list_new( CArray[N-TargetEntry], 0);
-        $no = _gtk_target_list_new( CArray[N-GObject], 0);
+        $no = _gtk_target_list_new( CArray[N-GtkTargetEntry].new, 0);
+        self.set-native-object($no);
+#        $no = _gtk_target_list_new( CArray[N-GObject], 0);
       }
       #}}
 
 #note "no: $no.gist()";
-      self.set-native-object($no);
+#      self.set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -223,7 +231,7 @@ method native-object-unref ( $n-native-object ) {
 
 Appends another target to a B<Gnome::Gtk3::TargetList>.
 
-  method add ( N-GObject $target, UInt $flags, UInt $info )
+  method add ( N-GtkTargetEntry $target, UInt $flags, UInt $info )
 
 =item Gnome::Gdk3::Atom $target; the interned atom representing the target
 =item UInt $flags; the flags for this target
@@ -232,22 +240,21 @@ Appends another target to a B<Gnome::Gtk3::TargetList>.
 
 method add ( $target is copy, UInt $flags, UInt $info ) {
   $target .= get-native-object-no-reffing unless $target ~~ N-GObject;
-  gtk_target_list_add(
-    self.get-native-object-no-reffing, $target, $flags, $info
-  );
+  my $no = self.get-native-object-no-reffing;
+  gtk_target_list_add( $no, $target, $flags, $info);
 }
 
 sub gtk_target_list_add (
-  N-GObject $list, N-GObject $target, guint $flags, guint $info
+  N-GtkTargetList $list, N-GObject $target, guint $flags, guint $info
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-image-targets:
+#TM:1:add-image-targets:
 =begin pod
 =head2 add-image-targets
 
-Appends the image targets supported by B<Gnome::Gtk3::SelectionData> to the target list. All targets are added with the same I<$info>.
+Appends the image targets supported by B<Gnome::Gtk3::SelectionData> to the target list. All targets are added with the same I<$info>. Example targets added are; image/png, image/x-win-bitmap, image/vnd.microsoft.icon, application/ico, image/ico to name a few
 
   method add-image-targets ( UInt $info, Bool $writable )
 
@@ -262,25 +269,29 @@ method add-image-targets ( UInt $info, Bool $writable ) {
 }
 
 sub gtk_target_list_add_image_targets (
-  N-GObject $list, guint $info, gboolean $writable
+  N-GtkTargetList $list, guint $info, gboolean $writable
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-rich-text-targets:
+#TM:1:add-rich-text-targets:
 =begin pod
 =head2 add-rich-text-targets
 
 Appends the rich text targets registered with C<gtk-text-buffer-register-serialize-format()> or C<gtk-text-buffer-register-deserialize-format()> to the target list. All targets are added with the same I<info>.
 
-  method add-rich-text-targets ( UInt $info, Bool $deserializable, N-GObject $buffer )
+  method add-rich-text-targets (
+    UInt $info, Bool $deserializable, N-GObject $buffer
+  )
 
 =item UInt $info; an ID that will be passed back to the application
 =item Bool $deserializable; if C<True>, then deserializable rich text formats will be added, serializable formats otherwise.
 =item N-GObject $buffer; a B<Gnome::Gtk3::TextBuffer>.
 =end pod
 
-method add-rich-text-targets ( UInt $info, Bool $deserializable, $buffer is copy ) {
+method add-rich-text-targets (
+  UInt $info, Bool $deserializable, $buffer is copy
+) {
   $buffer .= get-native-object-no-reffing unless $buffer ~~ N-GObject;
 
   gtk_target_list_add_rich_text_targets(
@@ -289,13 +300,12 @@ method add-rich-text-targets ( UInt $info, Bool $deserializable, $buffer is copy
 }
 
 sub gtk_target_list_add_rich_text_targets (
-  N-GObject $list, guint $info, gboolean $deserializable, N-GObject $buffer
+  N-GtkTargetList $list, guint $info, gboolean $deserializable, N-GObject $buffer
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-# TM:4:add-table:xt/dnd-01.raku
+# TM:1:add-table:
 =begin pod
 =head2 add-table
 
@@ -306,27 +316,53 @@ Prepends a table of B<Gnome::Gtk3::TargetEntry> to a target list.
 =item Array $targets; the table of B<Gnome::Gtk3::TargetEntry> target entries
 =end pod
 
-method add-table ( Array $targets ) {
-  my $tes = CArray[N-TargetEntry].new;
-  my Int $i = 0;
-  for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-TargetEntry ?? $t !! $t.get-native-object-no-reffing;
-note "\$tes[{$i-1}], $tes[$i - 1].gist()";
-  }
+# This method is a 1 to 1 copy from gtkselection.c. While GtkTargetList object
+# is supposed to be opaque, it is exposed here to be able to get the data into
+# the internal list (See structure of N-GtkTargetList above).
+#
+# The C-code;
+#`{{
+    void
+    gtk_target_list_add_table (GtkTargetList        *list,
+    			   const GtkTargetEntry *targets,
+    			   guint                 ntargets)
+    {
+      gint i;
 
-  gtk_target_list_add_table(
-    self.get-native-object-no-reffing, $tes, $targets.elems
+      for (i=ntargets-1; i >= 0; i--)
+        {
+          GtkTargetPair *pair = g_slice_new (GtkTargetPair);
+          pair->target = gdk_atom_intern (targets[i].target, FALSE);
+          pair->flags = targets[i].flags;
+          pair->info = targets[i].info;
+
+          list->list = g_list_prepend (list->list, pair);
+        }
+    }
+}}
+method add-table ( Array $targets ) {
+  my Gnome::Glib::List $l .= new(
+    :native-object(self.get-native-object-no-reffing.list)
   );
+  for @$targets -> $target is copy {
+    $target = $target ~~ N-GtkTargetEntry
+              ?? $target
+              !! $target.get-native-object-no-reffing;
+
+    my Gnome::Gdk3::Atom $atom .= new(:intern($target.target));
+    my N-GObject $no = $atom.get-native-object-no-reffing;
+    my N-GtkTargetPair $pair .= new(
+      :target($no), :flags($target.flags), :info($target.info)
+    );
+
+    $l .= prepend(nativecast( Pointer, $pair));
+  }
+  self.get-native-object-no-reffing.set-list($l.get-native-object-no-reffing);
 }
 
-sub gtk_target_list_add_table (
-  N-GObject $list, CArray[N-TargetEntry] $targets, guint $ntargets
-) is native(&gtk-lib)
-  { * }
-}}
 
 #-------------------------------------------------------------------------------
-#TM:0:add-text-targets:
+#TM:1:add-text-targets:
 =begin pod
 =head2 add-text-targets
 
@@ -345,12 +381,12 @@ method add-text-targets ( UInt $info ) {
 }
 
 sub gtk_target_list_add_text_targets (
-  N-GObject $list, guint $info
+  N-GtkTargetList $list, guint $info
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-uri-targets:
+#TM:1:add-uri-targets:
 =begin pod
 =head2 add-uri-targets
 
@@ -369,12 +405,12 @@ method add-uri-targets ( UInt $info ) {
 }
 
 sub gtk_target_list_add_uri_targets (
-  N-GObject $list, guint $info
+  N-GtkTargetList $list, guint $info
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:find:
+#TM:1:find:
 =begin pod
 =head2 find
 
@@ -399,7 +435,7 @@ method find ( $target is copy --> List ) {
 }
 
 sub gtk_target_list_find (
-  N-GObject $list, N-GObject $target, guint $info is rw --> gboolean
+  N-GtkTargetList $list, N-GObject $target, guint $info is rw --> gboolean
 ) is native(&gtk-lib)
   { * }
 
@@ -413,39 +449,40 @@ Increases the reference count of a B<Gnome::Gtk3::TargetList> by one.
 
 Returns: the passed in B<Gnome::Gtk3::TargetList>.
 
-  method ref ( --> N-GObject )
+  method ref ( --> N-GtkTargetList )
 
 =end pod
 
-method ref ( --> N-GObject ) {
+method ref ( --> N-GtkTargetList ) {
   gtk_target_list_ref(self.get-native-object-no-reffing)
 }
 }}
 
 sub _gtk_target_list_ref (
-  N-GObject $list --> N-GObject
+  N-GtkTargetList $list --> N-GtkTargetList
 ) is native(&gtk-lib)
   is symbol('gtk_target_list_ref')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:remove:
+#TM:1:remove:
 =begin pod
 =head2 remove
 
 Removes a target from a target list.
 
-  method remove ( Gnome::Gdk3::Atom $target )
+  method remove ( N-GObject $target )
 
 =item Gnome::Gdk3::Atom $target; the interned atom representing the target
 =end pod
 
-method remove ( Gnome::Gdk3::Atom $target ) {
+method remove ( $target is copy ) {
+  $target .= get-native-object-no-reffing unless $target ~~ N-GObject;
   gtk_target_list_remove( self.get-native-object-no-reffing, $target);
 }
 
 sub gtk_target_list_remove (
-  N-GObject $list, N-GObject $target
+  N-GtkTargetList $list, N-GObject $target
 ) is native(&gtk-lib)
   { * }
 
@@ -463,10 +500,10 @@ This function frees a target table as returned by C<target-table-new-from-list()
 =end pod
 
 method table-free ( Array $targets ) {
-  my $tes = CArray[N-TargetEntry].new;
+  my $tes = CArray[N-GtkTargetEntry].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-TargetEntry ?? $t !! $t.get-native-object-no-reffing;
+    $tes[$i++] = $t ~~ N-GtkTargetEntry ?? $t !! $t.get-native-object-no-reffing;
 note "\$tes[{$i-1}], $tes[$i - 1].gist()";
   }
 
@@ -474,14 +511,14 @@ note "\$tes[{$i-1}], $tes[$i - 1].gist()";
 }
 }}
 
-#`{{
+##`{{
 sub _gtk_target_table_free (
-  CArray[N-TargetEntry] $targets, gint $n_targets
+  CArray[N-GtkTargetEntry] $targets, gint $n_targets
 ) is native(&gtk-lib)
   is symbol('gtk_target_table_free')
   { * }
-}}
-#`{{
+#}}
+##`{{
 #-------------------------------------------------------------------------------
 # TM:1:table-from-list:
 =begin pod
@@ -496,26 +533,75 @@ Returns: the new table as an Array of target entries.
 
 =end pod
 
+# Also a 1 to 1 copy from gtkselection.c
+# the C code;
+#`{{
+GtkTargetEntry *
+gtk_target_table_new_from_list (GtkTargetList *list,
+                                gint          *n_targets)
+{
+  GtkTargetEntry *targets;
+  GList          *tmp_list;
+  gint            i;
+
+  g_return_val_if_fail (list != NULL, NULL);
+  g_return_val_if_fail (n_targets != NULL, NULL);
+
+  *n_targets = g_list_length (list->list);
+  targets = g_new0 (GtkTargetEntry, *n_targets);
+
+  for (tmp_list = list->list, i = 0; tmp_list; tmp_list = tmp_list->next, i++)
+    {
+      GtkTargetPair *pair = tmp_list->data;
+
+      targets[i].target = gdk_atom_name (pair->target);
+      targets[i].flags  = pair->flags;
+      targets[i].info   = pair->info;
+    }
+
+  return targets;
+}
+}}
+
 method table-from-list ( --> Array ) {
-note $?LINE;
-  my CArray[N-TargetEntry] $tes = gtk_target_table_new_from_list(
-    self.get-native-object-no-reffing, my gint $nt
+  my Gnome::Glib::List $l .= new(
+    :native-object(self.get-native-object-no-reffing.list)
   );
-note $?LINE;
+
+  my Array $table = [];
+
+  while $l.is-valid {
+    my N-GtkTargetPair $pair = nativecast( N-GtkTargetPair, $l.data);
+    my Gnome::Gdk3::Atom $atom .= new(:native-object($pair.target));
+    my N-GtkTargetEntry $target-entry .= new(
+      :target($atom.name), :flags($pair.flags), :info($pair.info)
+    );
+
+    $table.push: $target-entry;
+    $l .= next;
+  }
+
+  $table
+}
+
+#`{{
+method table-from-list ( --> Array ) {
+  my $no = self.get-native-object-no-reffing;
+  my gint $nt;
+  my CArray[N-GtkTargetEntry] $tes = gtk_target_table_new_from_list( $no, $nt);
 
   my Array $targets = [];
   for ^$nt -> $i {
-note "$?LINE,  $i, $tes[$i]";
-note 'tfl: ', $tes[$i].gist;
+note $?LINE, ', ', $i, ', ', $tes[$i];
     $targets.push: Gnome::Gtk3::TargetEntry.new(:native-object($tes[$i]));
   }
 
-  _gtk_target_table_free( $tes, $nt);
+#  _gtk_target_table_free( $tes, $nt);
   $targets;
 }
 
 sub gtk_target_table_new_from_list (
-  N-GObject $list, gint $n_targets is rw --> CArray[N-TargetEntry]
+  N-GtkTargetList $list, gint $n_targets is rw --> CArray[N-GtkTargetEntry]
 ) is native(&gtk-lib)
   { * }
 }}
@@ -538,7 +624,7 @@ method unref ( ) {
 }}
 
 sub _gtk_target_list_unref (
-  N-GObject $list
+  N-GtkTargetList $list
 ) is native(&gtk-lib)
   is symbol('gtk_target_list_unref')
   { * }
@@ -553,16 +639,19 @@ Creates a new B<Gnome::Gtk3::TargetList> from an array of B<Gnome::Gtk3::TargetE
 
 Returns: the new B<Gnome::Gtk3::TargetList>.
 
-  method _gtk_target_list_new ( Gnome::Gtk3::TargetEntry $targets, UInt $ntargets --> N-GObject )
+  method _gtk_target_list_new (
+    Gnome::Gtk3::TargetEntry $targets, UInt $ntargets --> N-GtkTargetList
+  )
 
 =item Gnome::Gtk3::TargetEntry $targets; (array length=ntargets) : Pointer to an array of B<Gnome::Gtk3::TargetEntry>
 =item UInt $ntargets; number of entries in I<targets>.
 =end pod
 }}
 
+# only used to set to an empty list!
+# so call with _gtk_target_list_new( CArray[N-GtkTargetEntry], 0)
 sub _gtk_target_list_new (
-  CArray[N-GObject] $targets, guint $ntargets --> N-GObject
-#  CArray[N-TargetEntry] $targets, guint $ntargets --> N-GObject
+  CArray[N-GtkTargetEntry] $targets, guint $ntargets --> N-GtkTargetList
 ) is native(&gtk-lib)
   is symbol('gtk_target_list_new')
   { * }

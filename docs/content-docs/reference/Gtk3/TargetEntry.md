@@ -15,6 +15,17 @@ Declaration
 Types
 =====
 
+N-GtkTargetEntry
+----------------
+
+A `N-GtkTargetEntry` represents a single type of data that can be supplied by a widget in a selection or supplied during drag-and-drop.
+
+  * Str $.target: a string representation of the target type
+
+  * UInt $.flags: `GtkTargetFlags` for DND
+
+  * UInt $.info: an application-assigned integer ID which will get passed as a parameter to e.g the *selection-get* signal. It allows the application to identify the target type without extensive string compares.
+
 Methods
 =======
 
@@ -48,7 +59,7 @@ An example initialization and insertion into a target list.
 
 Create a TargetEntry object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-    multi method new ( N-GObject :$native-object! )
+    multi method new ( N-GtkTargetEntry :$native-object! )
 
 copy
 ----
@@ -57,5 +68,5 @@ Makes a copy of a **Gnome::Gtk3::TargetEntry** and its data.
 
 Returns: a pointer to a copy of *data*. Free with `free()`
 
-    method copy ( --> N-GObject )
+    method copy ( --> N-GtkTargetEntry )
 
