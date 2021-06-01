@@ -9,7 +9,7 @@ use Gnome::Gtk3::TextBuffer;
 
 use Gnome::Gdk3::Atom;
 
-use Gnome::Glib::List;
+#use Gnome::Glib::List;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);

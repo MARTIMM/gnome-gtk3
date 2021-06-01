@@ -91,8 +91,8 @@ class N-GtkTargetEntry is repr('CStruct') is export {
   has guint $.info;
 
   # method created for use in a few methods in TargetList
-  submethod BUILD ( Str :$target, Int :$!flags, Int :$!info ) {
-    $!target := $target;
+  submethod BUILD ( Str :$target?, Int :$!flags = 0, Int :$!info = 0 ) {
+    $!target := $target if $target.defined;
   }
 }
 
