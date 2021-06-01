@@ -181,6 +181,7 @@ Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TargetEntry               |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TargetList                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Targets                   |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+TargetTable               |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
 TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -291,7 +292,6 @@ ShortcutsShortcut|
 ShortcutsWindow|
 SizeGroup|
 Socket|
-TargetTable               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextChildAnchor|
 TextMark|
 ToggleToolButton|
