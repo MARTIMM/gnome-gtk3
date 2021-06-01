@@ -37,19 +37,19 @@ hnote right of dst : unhighlight
 dst --> dnd
 deactivate dst
 
-dnd --[#0080FF]> dst : drop ok\n<b>drag-drop</b>
-hnote right of dst : ask for data\nwith '.get-data()'
+dnd --[#0080FF]> dst : drop ok\n<font color="#0080FF"><b>drag-drop</b></font>
+hnote right of dst : ask for data\nwith '<font color="#0080FF">.get-data()</font>'
 activate dst
 dst --[#0080FF]> dnd
 deactivate dst
 
-dnd --[#0080FF]> src : get data\n<b>drag-data-get</b>
-hnote right of src : provide data\nwith '.data-set()'
+dnd --[#0080FF]> src : get data\n<font color="#0080FF"><b>drag-data-get</b></font>
+hnote right of src : provide data\nwith '<font color="#0080FF">.data-set()</font>'
 activate src
 src --[#0080FF]> dnd
 deactivate src
 
-dnd --[#0080FF]> dst : <b>drag-data-received</b>
+dnd --[#0080FF]> dst : <font color="#0080FF"><b>drag-data-received</b></font>
 hnote right of dst
   check target and dropzone
   if not ok, reject the drop

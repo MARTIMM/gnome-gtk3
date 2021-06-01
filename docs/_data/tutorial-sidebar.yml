@@ -67,3 +67,5 @@
   bar_menu:
   - title: Overview
     url: /content-docs/tutorial/Drag and Drop/overview.html
+  - title: Background
+    url: /content-docs/tutorial/Drag and Drop/background.html
