@@ -381,6 +381,10 @@
     type: standalone
     url: /content-docs/reference/Gtk3/Targets.html
 
+  - title: TargetTable
+    type: standalone
+    url: /content-docs/reference/Gtk3/TargetTable.html
+
   - title: "TextBuffer"
     type: object
     url: "/content-docs/reference/Gtk3/TextBuffer.html"

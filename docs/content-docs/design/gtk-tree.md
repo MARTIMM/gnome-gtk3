@@ -290,6 +290,8 @@ X                                     Some other gtk classes
 ├─                                    DragDest
 ├─                                    DragSource
 ├─                                    Targets
+├─                                    TargetEntry
+├─                                    TargetTable
 │
 ├─                                    Main
 ├─                                    Enums
