@@ -2,17 +2,26 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::Selection;
+use Gnome::Gtk3::SelectionData;
+ok True, 'loading of SelectionData ok';
+
+# Cannot test much because native structure is provided using
+# selections or drag and drop signals
+
+done-testing;
+
+=finish
+
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::Selection $s;
+my Gnome::Gtk3::SelectionData $s;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $s .= new;
-  isa-ok $s, Gnome::Gtk3::Selection, '.new()';
+  isa-ok $s, Gnome::Gtk3::SelectionData, '.new()';
 }
 
 #-------------------------------------------------------------------------------
@@ -170,4 +179,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-
