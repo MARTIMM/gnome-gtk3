@@ -55,8 +55,9 @@ use NativeCall;
 use Gnome::Gdk3::Types;
 #use Gnome::Gdk3::Dnd;
 
-#use Gnome::Gtk3::TargetEntry;
-#use Gnome::Gtk3::TargetList;
+use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetTable;
+use Gnome::Gtk3::TargetList;
 
 #use Gnome::N::X;
 use Gnome::N::NativeLib;
@@ -243,7 +244,7 @@ Generally there are three cases when you want to start a drag by hand by calling
 
 Returns: the context for this drag
 
-  method begin-with-coordinates ( N-GObject $widget, GtkTargetList $targets, GdkDragAction $actions, Int() $button, GdkEvent $event, Int() $x, Int() $y --> GdkDragContext )
+  method begin-with-coordinates ( N-GObject $widget, N-GtkTargetList $targets, GdkDragAction $actions, Int() $button, GdkEvent $event, Int() $x, Int() $y --> GdkDragContext )
 
 =item N-GObject $widget; the source widget
 =item GtkTargetList $targets; The targets (data formats) in which the source can provide the data
@@ -363,48 +364,45 @@ sub gtk_drag_source_get_target_list (
 
 Sets up a widget so that GTK+ will start a drag operation when the user clicks and drags on the widget. The widget must have a window.
 
-=begin comment
-  multi method set (
-    N-GObject $widget, Int() $start_button_mask,
-    Array $targets, Int() $actions
-  )
-=end comment
-
-  multi method set (
-    $widget is copy, Int() $flags, Int() $actions
+  method set (
+    N-GObject $widget, Int() $start-button-mask,
+    Array[N-GtkTargetEntry] $targets, Int() $actions
   )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget>
-=item Int() $start_button_mask; the bitmask of buttons that can start the drag. Bits are from enum GdkModifierType
+=item Int() $start-button-mask; the bitmask of buttons that can start the drag. Bits are from enum GdkModifierType
 =comment item $targets; an array of B<Gnome::Gtk3::TargetEntry> targets that the drag will support
 =comment , may be C<undefined>
 =item Int() $actions; the bitmask of possible actions for a drag from this widget. Bits are from enum GdkDragAction defined in B<Gnome::Gdk3::Dnd>.
 =end pod
 
-multi method set (
-  $widget is copy, UInt() $start_button_mask, Array $targets, UInt() $actions
+method set (
+  $widget is copy, UInt() $start-button-mask, Array $targets, UInt() $actions
 ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-
-  my $tes = CArray[N-GObject].new;
-  my Int $i = 0;
-  for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+note "$?LINE";
+  my Array $n-target-array = [];
+  for @$targets -> $target is copy {
+    $target = $target ~~ N-GtkTargetEntry
+                ?? $target
+                !! $target.get-native-object-no-reffing;
+note "$?LINE, ", $target;
+    $n-target-array.push: $target;
   }
+note "$?LINE, ", $n-target-array;
+  my Gnome::Gtk3::TargetTable $target-table .= new(:array($n-target-array));
+note "$?LINE, ", $target-table.get-target-table;
 
   gtk_drag_source_set(
-    $widget, $start_button_mask, $tes, $targets.elems, $actions
+    $widget, $start-button-mask, $target-table.get-target-table,
+    $targets.elems, $actions
   );
 }
 
-multi method set ( $widget is copy, Int() $flags, Int() $actions ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  gtk_drag_source_set( $widget, $flags, CArray[N-GObject], 0, $actions);
-}
 
 sub gtk_drag_source_set (
   N-GObject $widget, GFlag $start_button_mask,
-  CArray[N-GObject] $targets, gint $n_targets, GFlag $actions
+  CArray[uint8] $targets, gint $n_targets, GFlag $actions
 ) is native(&gtk-lib)
   { * }
 
@@ -577,20 +575,21 @@ sub gtk_drag_set_icon_widget (
 
 Changes the target types that this widget offers for drag-and-drop. The widget must first be made into a drag source with C<set()>.
 
-  method set-target-list ( N-GObject $widget, N-GObject $target-list )
+  method set-target-list ( N-GObject $widget, N-GtkTargetList $target-list )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget> that’s a drag source
-=item Gnome::Gtk3::TargetList $target-list; list of draggable targets, or C<undefined> for none
+=item N-GtkTargetList $target-list; list of draggable targets, or C<undefined> for none
 =end pod
 
-method set-target-list ( $widget is copy, $target_list is copy ) {
+method set-target-list ( $widget is copy, $target-list is copy ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $target_list .= get-native-object-no-reffing unless $target_list ~~ N-GObject;
-  gtk_drag_source_set_target_list( $widget, $target_list);
+  $target-list .= get-native-object-no-reffing
+    unless $target-list ~~ N-GtkTargetList;
+  gtk_drag_source_set_target_list( $widget, $target-list);
 }
 
 sub gtk_drag_source_set_target_list (
-  N-GObject $widget, N-GObject $target_list
+  N-GObject $widget, N-GtkTargetList $target-list
 ) is native(&gtk-lib)
   { * }
 

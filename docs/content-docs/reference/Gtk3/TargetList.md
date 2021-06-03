@@ -42,6 +42,8 @@ enum GtkTargetFlags
 
 The GtkTargetFlag> enumeration is used to specify constraints on a target entry.
 
+  * GTK_TARGET_ANY; (=0) Using this on its own means that there are no constraints.
+
   * GTK_TARGET_SAME_APP: If this is set, the target will only be selected for drags within a single application.
 
   * GTK_TARGET_SAME_WIDGET: If this is set, the target will only be selected for drags within a single widget.

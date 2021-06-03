@@ -39,3 +39,10 @@ Get an array of **N-GtkTargetEntry** or **Gnome::Gtk3::TargetEntry**.
 
     method get-array ( --> Array[N-GtkTargetEntry] )
 
+get-target-table
+----------------
+
+Get the target table as an array of unsigned bytes.
+
+    method get-array ( --> Array[N-GtkTargetEntry] )
+

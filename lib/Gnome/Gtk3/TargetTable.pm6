@@ -139,7 +139,6 @@ submethod BUILD ( *%options ) {
   }
 }
 
-
 #-------------------------------------------------------------------------------
 #TM:1:get-array:
 =begin pod
@@ -184,9 +183,24 @@ method get-array-rk ( --> Array ) {
 }
 }}
 
-#`{{ Do we need this???
+#-------------------------------------------------------------------------------
+#TM:1:get-target-table:
+=begin pod
+=head2 get-target-table
+
+Get the target table as an array of unsigned bytes.
+
+  method get-array ( --> Array[N-GtkTargetEntry] )
+
+=end pod
+
+method get-target-table ( --> CArray[uint8] ) {
+  $!target-table
+}
+
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_target_table_free:
+#`{{
 =begin pod
 =head2 free
 

@@ -42,6 +42,8 @@ enum GdkDragAction
 
 Used in **Gnome::Gdk3::DragContext** to indicate what the destination should do with the dropped data.
 
+  * GDK_ACTION_NONE: (=0) in some methods used to terminate or refuse action. Can only be used on its own. Combined (ored) with other values for an action mask is obviously not very helpful.
+
   * GDK-ACTION-COPY: Copy the data.
 
   * GDK-ACTION-MOVE: Move the data, i.e. first copy it, then delete it from the source using the DELETE target of the X selection protocol.
@@ -402,7 +404,7 @@ This function is called by the drag destination in response to `motion()` called
 
     method status ( GdkDragAction $action, UInt $time )
 
-  * GdkDragAction $action; the selected action which will be taken when a drop happens, or 0 to indicate that a drop will not be accepted
+  * GdkDragAction $action; the selected action which will be taken when a drop happens, or GDK_ACTION_NONE to indicate that a drop will not be accepted
 
   * UInt $time; the timestamp for this operation
 

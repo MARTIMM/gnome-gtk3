@@ -61,7 +61,10 @@ use Gnome::GObject::Object;
 
 use Gnome::Gdk3::Atom;
 
-#use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetTable;
+use Gnome::Gtk3::TargetList;
+
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::DragDest:auth<github:MARTIMM>:ver<0.1.0>;
@@ -76,6 +79,7 @@ unit class Gnome::Gtk3::DragDest:auth<github:MARTIMM>:ver<0.1.0>;
 
 The B<Gnome::Gtk3::DestDefaults> enumeration specifies the various types of action that will be taken on behalf of the user for a drag destination site.
 
+=item GTK_DEST_DEFAULT_NONE: (=0) to selct none.
 =item GTK-DEST-DEFAULT-MOTION: If set for a widget, GTK+, during a drag over this widget will check if the drag matches this widget’s list of possible targets and actions. GTK+ will then call C<gdk-drag-status()> as appropriate.
 =item GTK-DEST-DEFAULT-HIGHLIGHT: If set for a widget, GTK+ will draw a highlight on this widget as long as a drag is over this widget and the widget drag format and action are acceptable.
 =item GTK-DEST-DEFAULT-DROP: If set for a widget, when a drop occurs, GTK+ will will check if the drag matches this widget’s list of possible targets and actions. If so, GTK+ will call C<gtk-drag-get-data()> on behalf of the widget. Whether or not the drop is successful, GTK+ will call C<gtk-drag-finish()>. If the action was a move, then if the drag was successful, then C<True> will be passed for the I<delete> parameter to C<gtk-drag-finish()>.
@@ -85,6 +89,7 @@ The B<Gnome::Gtk3::DestDefaults> enumeration specifies the various types of acti
 
 #TE:1:GtkDestDefaults:
 enum GtkDestDefaults is export (
+  GTK_DEST_DEFAULT_NONE         => 0,
   'GTK_DEST_DEFAULT_MOTION'     => 1 +< 0,
   'GTK_DEST_DEFAULT_HIGHLIGHT'  => 1 +< 1,
   'GTK_DEST_DEFAULT_DROP'       => 1 +< 2,
@@ -362,32 +367,32 @@ Looks for a match between the supported targets of I<context> and the I<dest-tar
 Returns: first target that the source offers and the dest can accept, or C<GDK-NONE>
 
   method find-target (
-    N-GObject $widget, N-GObject $context, N-GObject $target_list
+    N-GObject $widget, N-GObject $context, N-GObject $target-list
     --> Gnome::Gdk3::Atom
   )
 
 =item N-GObject $widget; drag destination widget
 =item N-GObject $context; drag context
-=item N-GObject $target_list; list of droppable targets, or C<undefined> to use C<get-target-list($widget)>.
+=item N-GObject $target-list; list of droppable targets, or C<undefined> to use C<get-target-list($widget)>.
 =end pod
 
 method find-target (
-  $widget is copy, $context is copy, $target_list is copy
+  $widget is copy, $context is copy, $target-list is copy
   --> Gnome::Gdk3::Atom
 ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
   $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
-  $target_list .= get-native-object-no-reffing unless $target_list ~~ N-GObject;
+  $target-list .= get-native-object-no-reffing unless $target-list ~~ N-GObject;
 
   Gnome::Gdk3::Atom.new(
     :native-object(
-      gtk_drag_dest_find_target( $widget, $context, $target_list)
+      gtk_drag_dest_find_target( $widget, $context, $target-list)
     )
   )
 }
 
 sub gtk_drag_dest_find_target (
-  N-GObject $widget, N-GObject $context, N-GObject $target_list
+  N-GObject $widget, N-GObject $context, N-GObject $target-list
   --> N-GObject
 ) is native(&gtk-lib)
   { * }
@@ -454,39 +459,37 @@ The default behaviors listed in I<flags> have an effect similar to installing de
 
 Things become more complicated when you try to preview the dragged data, as described in the documentation for  I<drag-motion>. The default behaviors described by I<flags> make some assumptions, that can conflict with your own signal handlers. For instance C<GTK-DEST-DEFAULT-DROP> causes invokations of C<gdk-drag-status()> in the context of  I<drag-motion>, and invokations of C<gtk-drag-finish()> in  I<drag-data-received>. Especially the later is dramatic, when your own  I<drag-motion> handler calls C<gtk-drag-get-data()> to inspect the dragged data.
 
-There’s no way to set a default action here, you can use the  I<drag-motion> callback for that. Here’s an example which selects the action to use depending on whether the control key is pressed or not:
+There’s no way to set a default action here, you can use the  I<drag-motion> callback for that.
 
-  static void drag-motion (
-    GtkWidget *widget, GdkDragContext *context, gint x, gint y, guint time
+=begin comment
+TODO implement gdk-window-get-pointer
+Here’s an example C<drag-motion> handler which selects the action to use depending on whether the control key is pressed or not:
+
+  method drag-motion (
+    N-GObject $context, Int $x, Int $y, UInt $time, :_widget($widget)
   ) {
+    ??  $mask = gdk-window-get-pointer( $widget.get-window, NULL, NULL);
 
-  gdk-window-get-pointer (
-    gtk-widget-get-window (widget), NULL, NULL, &mask
-  );
-
-  if (mask & GDK-CONTROL-MASK)
-    gdk-drag-status (context, GDK-ACTION-COPY, time);
-  else
-    gdk-drag-status (context, GDK-ACTION-MOVE, time);
+    my Gnome::Gdk3::DragContext $ctx .= new(:native-object($context));
+    if $mask +& GDK-CONTROL-MASK {
+      $ctx.status( GDK-ACTION-COPY, time);
+    }
+    else {
+      $ctx.status( GDK-ACTION-MOVE, time);
+    }
   }
+=end comment
 
 The method API is
 
-=begin comment
   multi method set (
-    N-GObject $widget, Int() $flags, Array $targets, Int() $actions
-  )
-=end comment
-
-  multi method set (
-    N-GObject $widget, Int() $flags, $targets, Int() $actions
+    N-GObject $widget, Int() $flags,
+    Array[N-GtkTargetEntry] $targets, Int() $actions
   )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget>
 =item Int() $flags; which types of default drag behavior to use. Bits are from enum GtkDestDefaults.
-=comment item GtkTargetEntry $targets; an array of B<Gnome::Gtk3::TargetEntry> targets indicating the drop types that this I<widget> will accept.
-=comment Later you can access the list with C<get-target-list()> and C<gtk-drag-dest-find-target()>.
-=comment , or C<undefined>.
+=item GtkTargetEntry $targets; an array of B<Gnome::Gtk3::TargetEntry> targets indicating the drop types that this I<widget> will accept. Later you can access the list with C<get-target-list()> and C<find-target()>, or an empty array.
 =item Int() $actions; a bitmask of possible actions for a drop onto this I<widget>. Bits are from enum GdkDragAction defined in B<Gnome::Gdk3::Dnd>.
 =end pod
 
@@ -495,13 +498,20 @@ multi method set (
 ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
 
-  my $tes = CArray[N-GObject].new;
-  my Int $i = 0;
-  for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+  my Array $n-target-array = [];
+  for @$targets -> $target is copy {
+    $target = $target ~~ N-GtkTargetEntry
+                ?? $target
+                !! $target.get-native-object-no-reffing;
+note "$?LINE, ", $target;
+    $n-target-array.push: $target;
   }
+note "$?LINE, ", $n-target-array;
+  my Gnome::Gtk3::TargetTable $target-table .= new(:array($n-target-array));
 
-  gtk_drag_dest_set( $widget, $flags, $tes, $targets.elems, $actions);
+  gtk_drag_dest_set(
+    $widget, $flags, $target-table.get-target-table, $targets.elems, $actions
+  );
 }
 
 multi method set (
@@ -524,20 +534,21 @@ sub gtk_drag_dest_set (
 
 Sets the target types that this widget can accept from drag-and-drop. The widget must first be made into a drag destination with C<set()>.
 
-  method set-target-list ( N-GObject $widget, N-GObject $target-list )
+  method set-target-list ( N-GObject $widget, N-GtkTargetList $target-list )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget> that’s a drag destination
-=item N-GObject $target-list; list of droppable targets, or C<undefined> for none
+=item N-GtkTargetList $target-list; list of droppable targets, or C<undefined> for none
 =end pod
 
-method set-target-list ( $widget is copy, $target_list is copy ) {
+method set-target-list ( $widget is copy, $target-list is copy ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $target_list .= get-native-object-no-reffing unless $target_list ~~ N-GObject;
-  gtk_drag_dest_set_target_list( $widget, $target_list);
+  $target-list .= get-native-object-no-reffing
+    unless $target-list ~~ N-GtkTargetList;
+  gtk_drag_dest_set_target_list( $widget, $target-list);
 }
 
 sub gtk_drag_dest_set_target_list (
-  N-GObject $widget, N-GObject $target_list
+  N-GObject $widget, N-GtkTargetList $target-list
 ) is native(&gtk-lib)
   { * }
 
