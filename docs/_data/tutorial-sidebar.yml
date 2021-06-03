@@ -69,3 +69,9 @@
     url: /content-docs/tutorial/Drag and Drop/overview.html
   - title: Background
     url: /content-docs/tutorial/Drag and Drop/background.html
+  - title: Signals
+    url: /content-docs/tutorial/Drag and Drop/signals.html
+  - title: Source Widget
+    url: /content-docs/tutorial/Drag and Drop/source.html
+  - title: Destination Widget
+    url: /content-docs/tutorial/Drag and Drop/destination.html

@@ -53,6 +53,7 @@ The word "target" is a bit misleading in the context of DND. Although it sounds 
 * target, a string representing the type of data in a drag
 * flags, a set of bits defining limits on where the target can be dropped
 * info, an application assigned integer ID
+
 ```
 class N-GtkTargetEntry is repr('CStruct') is export {
   has Str $.target;
@@ -63,17 +64,17 @@ class N-GtkTargetEntry is repr('CStruct') is export {
 
 The target string provides a human-understandable description of the data type. It is important to use common sense target names, because if your application will accept drags or offer data to other applications, the names you choose should be those other applications might use also. The info member serves to identify the target in the functions that access and manipulate target data, because integers allow for faster look-ups and comparisons.
 
-The flags value is from the `GtkTargetFlags` enumeration defined in **Gnome::Gtk3::TargetList** and may be one of the following:
+The flags value is from the **GtkTargetFlags** enumeration defined in **Gnome::Gtk3::TargetList** and may be one of the following:
 * `GTK_TARGET_SAME_APP`: The target will only be selected for drags within a single application. E.g from an image to a label in the same application.
 * `GTK_TARGET_SAME_WIDGET`: The target will only be selected for drags within a single widget. E.g. A row in a listbox to another row in the same listbox.
 * `GTK_TARGET_OTHER_APP`: The target will not be selected for drags within a single application. This can be used, for example, to drag external files from a file viewer into your application.
 * `GTK_TARGET_OTHER_WIDGET`: The target will not be selected for drags withing a single widget.
 
-If `flags` is set to `0`, it means there are no constraints.
+If `flags` is set to `GTK_TARGET_ANY`, it means there are no constraints.
 
 Usually you would create an enumeration within the application to provide meaningful names for the info values, for example:
 ```
-enum AppTargetInfoDefs < TEXT_HTML STRING IMAGE_JPEG NUMBER TEXT_URI >;
+enum TargetInfo < TEXT_HTML STRING IMAGE_JPEG NUMBER TEXT_URI >;
 ```
 
 Using this enumeration we could define a few different targets as follows:
@@ -90,67 +91,47 @@ my Gnome::Gtk3::TargetEntry $image-target .= new(
   :target<image/jpeg>, :flags(GTK_TARGET_SAME_WIDGET), :info(IMAGE_JPEG)
 );
 ```
+Its native equivalent can created in the same way. It all depends if you need the methods from that class or not. An example;
+```
+my N-GtkTargetEntry $image-target .= new(
+  :target<image/jpeg>, :flags(GTK_TARGET_SAME_WIDGET), :info(IMAGE_JPEG)
+);
+```
 
 The `$string-target` and the `$html-target` both represent text, but the latter would identify itself to a destination widget that was capable of parsing the HTML and preferred receiving it over plain text. Such a widget would probably select the `$html-target` rather than the `$string-target`. The `$image-target` could be used for JPEG image formats. The `$string-target` has no flags and therefore no limits on where it can be dropped. The `$html-target` is only allowed to be dropped into the same application as the source widget, and the `$image-target` is constrained to be dropped into the same widget.
 
 
 ## Target Tables and Target Lists
 
-A target table is an array of type `N-GtkTargetEntry`. There is no object specifically declared to be a target table. It is just understood that it is an array of target entries. Target tables are useful in application code for consolidating target entry definitions.
+A target table is an array of type **N-GtkTargetEntry**. There is no object specifically declared to be a target table. It is just understood that it is an array of target entries **¹**. Target tables are useful in application code for consolidating target entry definitions.
 
-More importantly, the function that sets up a widget as a DND source widget, `Gnome::Gtk3::SelectionData.set()`, requires the set of targets to be passed to it as a table. Target tables can also be passed as arguments to certain other functions related to **Gnome::Gtk3::SelectionData**.
-<!--
-The following is an example of a target table:
-GtkTargetEntry target_entries[] = {
-  {"text/html", 0, TEXT_HTML },
-  {"STRING", 0, STRING},
-  {"number", 0, NUMBER},
-  {"image/jpeg", 0, IMAGE_JPEG},
-  {"text/uri-list", 0, TEXT_URI}
-};
--->
+More importantly, the function that sets up a widget as a DND source widget, `Gnome::Gtk3::DragSource.set()`, requires the set of targets to be passed to it as a table. Target tables can also be passed as arguments to certain other functions related to **Gnome::Gtk3::SelectionData**.
 
-A
- target list is not a list of GtkTargetEntry structures, as you might expect. It is a list of GtkTargetPair
-structures, and it serves a different purpose from target tables. A
- GtkTargetPair is a internal data structure
-used by GTK+. It is defined by
-4
-CSci493.73 Graphical User Interface Programming
-The GTK+ Drag-and-Drop Mechanism
-Prof. Stewart Weiss
-struct GtkTargetPair {
-GdkAtom
- target;
-guint
- flags;
-guint
- info;
-};
-Notice that it differs from a
- GtkTargetEntry
- in a single respect: it uses a
- GdkAtom
- instead of a character
-string to identify the target. Recall from Section 2.1 above that a
- GdkAtom
- is an integer that GDK uses to
-represent a string internally; it is the index into an array of strings. An atom is only defined when a string
-is interned.
-The functions that take a GtkTargetEntry and store that target for later use intern the character string and
-create an atom for it. Once this has been done, that target can be represented by a GtkTargetPair. In other
-words, the target atom in the
- GtkTargetPair
- represents a target that has already been defined in some
-GtkTargetEntry.
+A target list _is not_ a list of **N-GtkTargetEntry** structures, as you might expect. The **N-GtkTargetList** holds a list of **N-GtkTargetPair** **²** structures, and it serves a different purpose from target tables. A **N-GtkTargetPair** is an internal data structure used by GTK+. It is defined by:
 
-Because atoms make for faster comparison and identification and save storage space, target lists are more efficient than target tables and are used more extensively than them by GTK+. There are methods in the **Gnome::Gtk3::SelectionData** class for going back and forth between target table and target list representations of the targets. For example:
+```
+class N-GtkTargetPair is export is repr('CStruct') {
+  has N-GObject $.target;
+  has guint $.flags;
+  has guint $.info;
+}
+```
 
-gtk_target_list_new()
- creates a target list from a target table
-gtk_target_list_add_table()
- prepends a target table to an existing target list
-gtk_target_table_new_from_list()
- creates a target table that contains the same targets as the given list.
+Notice that it differs from a **N-GtkTargetEntry** in a single respect: it uses a native **Gnome::Gdk3::Atom** instead of a string to identify the target. Recall from the section above that a **Gnome::Gdk3::Atom** is an integer that GDK uses to represent a string internally; it is the index into an array of strings. An atom is only defined when a string is "interned".
 
-Many of the methods provided by the **Gnome::Gtk3::SelectionData** class expect and manipulate target lists. They are of fundamental importance in using drag-and-drop, and we will have more to say about them below.
+The functions that take a **N-GtkTargetEntry** and store that target for later use, intern the character string and create an atom for it. Once this has been done, that target can be represented by a **N-GtkTargetPair**. In other words, the target atom in the **N-GtkTargetPair** represents a target that has already been defined in some **N-GtkTargetEntry**.
+
+Because atoms make for faster comparison and identification and save storage space, target lists are more efficient than target tables and are used more extensively than them by GTK+. There are methods in several classes for going back and forth between target table and target list representations of the targets. For example:
+
+* `Gnome:Gtk3::TargetList.new()` creates a target list from a target table. Raku users will provide an `Array[N-TargetEntry]`.
+* `Gnome:Gtk3::TargetList.add-table()` prepends a target table to an existing target list. Also here an `Array[N-TargetEntry]` is given.
+* `Gnome::Gtk3:TargetTable.new-from-list()` creates a target table that contains the same targets as the given list.
+
+Many of the methods provided by the drag and drop classes expect and manipulate target lists. They are of fundamental importance in using drag-and-drop, and we will have more to say about them.
+
+
+<hr/>
+
+**1)** In Raku, there is a class **Gnome::Gtk3::TargetTable** which handles the array of **N-GtkTargetEntry** as a `CArray[uint8]` which is quite unusable for the Raku user. The class can convert such a native array into an `Array[N-GtkTargetEntry]` and back again. Methods will use this conversion to get the native array so the user will probably not have to use this class directly.
+
+**2)** The **Gnome::Gtk3::TargetPair** is mainly used internally and is mentioned here as info to the user.
