@@ -26,7 +26,7 @@ use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
 
-#use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetEntry;
 use Gnome::Gtk3::DragSource;
 use Gnome::Gtk3::DragDest;
 use Gnome::Gtk3::TargetList;
@@ -53,7 +53,6 @@ class DragSourceWidget {
   has Instant $!start-time;
   has Gnome::Gtk3::DragSource $!source;
   has Hash $!target-data;
-  has Hash $!targets;
 
   #-----------------------------------------------------------------------------
   submethod BUILD ( :$grid, :$x, :$y, :$w, :$h ) {
@@ -66,14 +65,13 @@ class DragSourceWidget {
     $!start-time = now;
 
     $!source .= new;
-    $!source.set(
-      $widget, GDK_BUTTON1_MASK, [], GDK_ACTION_MOVE +| GDK_ACTION_MOVE
-    );
+    my Array $e-targets = [
+      N-GtkTargetEntry.new(
+        :target<text/plain>, :flags(GTK_TARGET_SAME_APP), :info(TEXT_PLAIN_DROP)
+      )
+    ];
 
-    my Gnome::Gtk3::TargetList $target-list .= new;
-    $!targets = %(:string(Gnome::Gdk3::Atom.new(:intern<text/plain>)));
-    $target-list.add( $!targets<string>, GTK_TARGET_SAME_APP, TEXT_PLAIN_DROP);
-    $!source.set-target-list( $widget, $target-list);
+    $!source.set( $widget, GDK_BUTTON1_MASK, $e-targets, GDK_ACTION_MOVE);
 
     $widget.register-signal( self, 'begin', 'drag-begin');
     $widget.register-signal( self, 'get', 'drag-data-get');
@@ -102,7 +100,7 @@ class DragSourceWidget {
     # here, you can check for target name to decide what to return
     # now always 'string'.
     $sd.set(
-      $!targets<string>,
+      Gnome::Gdk3::Atom.new(:intern<text/plain>),
       "The drag started $!target-data<string> seconds after start"
     );
   }
@@ -138,14 +136,15 @@ class DragDestinationWidget {
     $grid.attach( $widget, $x, $y, $w, $h);
 
     $!destination .= new;
-    $!destination.set( $widget, 0, GDK_ACTION_COPY +| GDK_ACTION_MOVE);
-
-    my Gnome::Gtk3::TargetList $target-list .= new;
-    $target-list.add(
-      Gnome::Gdk3::Atom.new(:intern<text/plain>), GTK_TARGET_SAME_APP, TEXT_PLAIN_DROP
+    $!destination.set(
+      $widget, GTK_DEST_DEFAULT_MOTION, [
+        Gnome::Gtk3::TargetEntry.new(
+          :target<text/plain>, :flags(GTK_TARGET_SAME_APP),
+          :info(TEXT_PLAIN_DROP)
+        )
+      ],
+      GDK_ACTION_COPY +| GDK_ACTION_MOVE
     );
-
-    $!destination.set-target-list( $widget, $target-list);
 
     $widget.register-signal( self, 'motion', 'drag-motion');
     $widget.register-signal( self, 'drop', 'drag-drop');
