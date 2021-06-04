@@ -79,7 +79,7 @@ unit class Gnome::Gtk3::DragDest:auth<github:MARTIMM>:ver<0.1.0>;
 
 The B<Gnome::Gtk3::DestDefaults> enumeration specifies the various types of action that will be taken on behalf of the user for a drag destination site.
 
-=item GTK_DEST_DEFAULT_NONE: (=0) to selct none.
+=item GTK_DEST_DEFAULT_NONE: (=0) to select no default.
 =item GTK-DEST-DEFAULT-MOTION: If set for a widget, GTK+, during a drag over this widget will check if the drag matches this widget’s list of possible targets and actions. GTK+ will then call C<gdk-drag-status()> as appropriate.
 =item GTK-DEST-DEFAULT-HIGHLIGHT: If set for a widget, GTK+ will draw a highlight on this widget as long as a drag is over this widget and the widget drag format and action are acceptable.
 =item GTK-DEST-DEFAULT-DROP: If set for a widget, when a drop occurs, GTK+ will will check if the drag matches this widget’s list of possible targets and actions. If so, GTK+ will call C<gtk-drag-get-data()> on behalf of the widget. Whether or not the drop is successful, GTK+ will call C<gtk-drag-finish()>. If the action was a move, then if the drag was successful, then C<True> will be passed for the I<delete> parameter to C<gtk-drag-finish()>.

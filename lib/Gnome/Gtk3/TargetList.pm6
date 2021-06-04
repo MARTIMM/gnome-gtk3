@@ -86,7 +86,6 @@ class N-GtkTargetList is export is repr('CStruct') {
 
 The GtkTargetFlag> enumeration is used to specify constraints on a target entry.
 
-=item GTK_TARGET_ANY; (=0) Using this on its own means that there are no constraints.
 =item GTK_TARGET_SAME_APP: If this is set, the target will only be selected for drags within a single application.
 =item GTK_TARGET_SAME_WIDGET: If this is set, the target will only be selected for drags within a single widget.
 =item GTK_TARGET_OTHER_APP: If this is set, the target will not be selected for drags within a single application.
@@ -96,7 +95,6 @@ The GtkTargetFlag> enumeration is used to specify constraints on a target entry.
 
 #TE:1:GtkTargetFlags:
 enum GtkTargetFlags is export (
-  GTK_TARGET_ANY => 0,
   'GTK_TARGET_SAME_APP' => 1 +< 0,
   'GTK_TARGET_SAME_WIDGET' => 1 +< 1,
   'GTK_TARGET_OTHER_APP' => 1 +< 2,
@@ -233,7 +231,7 @@ method native-object-unref ( $n-native-object ) {
 
 Appends another target to a B<Gnome::Gtk3::TargetList>.
 
-  method add ( N-GtkTargetEntry $target, UInt $flags, UInt $info )
+  method add ( N-GObject $target, UInt $flags, UInt $info )
 
 =item Gnome::Gdk3::Atom $target; the interned atom representing the target
 =item UInt $flags; the flags for this target
