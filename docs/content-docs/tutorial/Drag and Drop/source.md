@@ -31,15 +31,15 @@ We will use the following target table in the examples that follow with the enum
 ```
 my Array[N-GtkTargetEntry] $target-entries = [
   N-GtkTargetEntry.new(
-    :target<text/html>, :flags(GTK_TARGET_ANY), :info(TEXT_HTML)
+    :target<text/html>, :flags(0), :info(TEXT_HTML)
   ),
-  N-GtkTargetEntry.new( :target<STRING>, :flags(GTK_TARGET_ANY), :info(STRING)),
-  N-GtkTargetEntry.new( :target<number>, :flags(GTK_TARGET_ANY), :info(NUMBER)),
+  N-GtkTargetEntry.new( :target<STRING>, :flags(0), :info(STRING)),
+  N-GtkTargetEntry.new( :target<number>, :flags(0), :info(NUMBER)),
   N-GtkTargetEntry.new(
-   :target<image/jpeg>, :flags(GTK_TARGET_ANY), :info(IMAGE_JPEG)
+   :target<image/jpeg>, :flags(0), :info(IMAGE_JPEG)
   ),
   N-GtkTargetEntry.new(
-    :target<text/uri-list>, :flags(GTK_TARGET_ANY), :info(TEXT_URI)),
+    :target<text/uri-list>, :flags(0), :info(TEXT_URI)),
 ];
 ```
 
@@ -53,12 +53,11 @@ The following "boilerplate" listing demonstrates the basic steps in setting up a
 method setup-source-widget ( $source-widget ) {
   my Array[N-GtkTargetEntry] $target-entries = [];
   my @entry-list-data = (
-    'text/html', GTK_TARGET_ANY, TEXT_HTML,
-    'text/html', GTK_TARGET_ANY, TEXT_HTML,
-    'STRING', GTK_TARGET_ANY, STRING,
-    'number', GTK_TARGET_ANY, NUMBER,
-    'image/jpeg', GTK_TARGET_ANY, IMAGE_JPEG,
-    'text/uri-list', GTK_TARGET_ANY, TEXT_URI,
+    'text/html', 0, TEXT_HTML,
+    'STRING', 0, STRING,
+    'number', 0, NUMBER,
+    'image/jpeg', 0, IMAGE_JPEG,
+    'text/uri-list', 0, TEXT_URI,
   );
   for @entry-list-data -> $target, $flags, $info {
     $target-entries.push: N-GtkTargetEntry.new( :$target, :$flags, :$info);

@@ -70,7 +70,7 @@ The flags value is from the **GtkTargetFlags** enumeration defined in **Gnome::G
 * `GTK_TARGET_OTHER_APP`: The target will not be selected for drags within a single application. This can be used, for example, to drag external files from a file viewer into your application.
 * `GTK_TARGET_OTHER_WIDGET`: The target will not be selected for drags withing a single widget.
 
-If `flags` is set to `GTK_TARGET_ANY`, it means there are no constraints.
+If `flags` is set to `0`, it means there are no constraints.
 
 Usually you would create an enumeration within the application to provide meaningful names for the info values, for example:
 ```
