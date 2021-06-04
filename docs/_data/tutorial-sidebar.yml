@@ -75,3 +75,5 @@
     url: /content-docs/tutorial/Drag and Drop/source.html
   - title: Destination Widget
     url: /content-docs/tutorial/Drag and Drop/destination.html
+  - title: Signal Handlers
+    url: /content-docs/tutorial/Drag and Drop/handlers.html
