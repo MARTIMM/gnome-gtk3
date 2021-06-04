@@ -20,14 +20,15 @@ use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Gtk3::EventBox;
 use Gnome::Gtk3::Image;
-use Gnome::Gtk3::Button;
+#use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
-use Gnome::Gtk3::DrawingArea;
+#use Gnome::Gtk3::DrawingArea;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Frame;
 
 #use Gnome::Gtk3::TargetEntry;
 use Gnome::Gtk3::DragSource;
@@ -45,10 +46,49 @@ enum TargetInfo <TEXT_HTML STRING NUMBER IMAGE_JPEG TEXT_URI>;
 enum DestinationType <NUMBER_DROP MARKUP_DROP TEXT_PLAIN_DROP IMAGE_DROP>;
 
 #-------------------------------------------------------------------------------
+# Simple class to be able to stop the application
 class AppHandlers {
   #-----------------------------------------------------------------------------
   method quit ( ) {
     Gnome::Gtk3::Main.new.main-quit;
+  }
+}
+
+#-------------------------------------------------------------------------------
+# A convenience class for frames to pimp up the destination labels a bit
+class Frame is Gnome::Gtk3::Frame {
+  #-----------------------------------------------------------------------------
+  method new ( |c ) {
+    self.bless( :GtkFrame, |c);
+  }
+
+  #-----------------------------------------------------------------------------
+  submethod BUILD ( Str :$label = '' ) {
+    my Gnome::Gtk3::Label $l .= new(:text("<b>$label\</b>"));
+    $l.set-use-markup(True);
+    self.set-label-widget($l);
+
+    self.set-label-align( 0.04, 0.5);
+    self.set-margin-bottom(3);
+    self.set-hexpand(True);
+  }
+}
+
+#-------------------------------------------------------------------------------
+# Also a convenience class for labels
+class Label is Gnome::Gtk3::Label {
+  #-----------------------------------------------------------------------------
+  method new ( Str :$text = ' ', |c ) {
+    self.bless( :GtkLabel, :$text, |c);
+  }
+
+  #-----------------------------------------------------------------------------
+  submethod BUILD ( Str :$text ) {
+    self.set-text($text);
+    self.set-justify(GTK_JUSTIFY_FILL);
+    self.set-halign(GTK_ALIGN_START);
+    self.set-margin-start(3);
+    self.set-use-markup(True);
   }
 }
 
@@ -269,14 +309,63 @@ note "\ndst leave: $time";
   }
 }
 
+
+
+
+
 #-------------------------------------------------------------------------------
+# Setup of the main page. All widgets are placed in a grid which is placed in
+# a window.
 my Gnome::Gtk3::Grid $grid .= new;
 $grid.set-border-width(10);
-my DragSourceWidget $dsb1 .= new( :$grid, :0x, :0y, :1w, :1h);
-my DragDestinationWidget $ddb1 .= new( :$grid, :1x, :2y, :2w, :1h);
 
-my Gnome::Gtk3::Label $ph .= new(:text(''));
-$grid.attach( $ph, 0, 1, 2, 1);
+# An image as a source widget. The image is embedded in an EventBox.
+# Three labels and another image as the destination widgets. This time
+# the image does not have to be embedded.
+
+# Source image
+my Gnome::Gtk3::Image $image .= new;
+$image.set-from-file('xt/data/green-on-256.png');
+my Gnome::Gtk3::EventBox $source-widget .= new;
+$source-widget.add($image);
+$grid.attach( $source-widget, 0, 0, 1, 1);
+
+# setup-source-widget($source-widget);
+
+
+# Destination label for plain text
+my Frame $frame .= new(:label('Drop plain text'));
+my Label $plain-text-drop .= new;
+$frame.add($plain-text-drop);
+$grid.attach( $frame, 0, 1, 1, 1);
+# setup-destination-widget($plain-text-drop);
+
+$frame .= new(:label('Drop markup text'));
+my Label $markup-text-drop .= new;
+$frame.add($markup-text-drop);
+$grid.attach( $frame, 0, 2, 1, 1);
+# setup-destination-widget($markup-text-drop);
+
+$frame .= new(:label('Drop number'));
+my Label $number-drop .= new;
+$frame.add($number-drop);
+$grid.attach( $frame, 0, 3, 1, 1);
+# setup-destination-widget($number-drop);
+
+$frame .= new(:label('Drop image'));
+my Label $image-drop .= new;
+$frame.add($image-drop);
+$grid.attach( $frame, 0, 4, 1, 1);
+# setup-destination-widget($image-drop);
+
+
+
+
+#my DragSourceWidget $dsb1 .= new( :$grid, :0x, :0y, :1w, :1h);
+#my DragDestinationWidget $ddb1 .= new( :$grid, :1x, :2y, :2w, :1h);
+
+#my Gnome::Gtk3::Label $ph .= new(:text(''));
+#$grid.attach( $ph, 0, 1, 2, 1);
 
 my AppHandlers $ah .= new;
 given my Gnome::Gtk3::Window $window .= new {
