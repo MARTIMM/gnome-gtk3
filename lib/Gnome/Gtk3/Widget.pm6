@@ -510,7 +510,7 @@ sub gtk_widget_add_device_events (
 =begin pod
 =head2 add-events
 
-Adds the events in the bitfield I<$events> to the event mask for I<widget>. See C<set-events()> and the [input handling overview][event-masks] for details.
+Adds the events in the bitfield I<$events> to the event mask for I<widget>. See C<set-events()> and the L<input handling overview|https://developer.gnome.org/gtk3/stable/chap-input-handling.html#event-masks> for details.
 
   method add-events ( Int $events )
 
@@ -7208,7 +7208,7 @@ The I<screen-changed> signal gets emitted when the screen of a widget has change
 
 The I<scroll-event> signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-SCROLL-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<GDK_SCROLL_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
