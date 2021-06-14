@@ -133,6 +133,14 @@
     url: "/content-docs/reference/Gtk3/DrawingArea.html"
     type: widget
 
+  - title: "DragDest"
+    url: "/content-docs/reference/Gtk3/DragDest.html"
+    type: standalone
+
+  - title: "DragSource"
+    url: "/content-docs/reference/Gtk3/DragSource.html"
+    type: standalone
+
   - title: "Editable"
     url: "/content-docs/reference/Gtk3/Editable.html"
     type: widget
@@ -331,6 +339,10 @@
   - title: "SeparatorMenuItem"
     type: widget
     url: "/content-docs/reference/Gtk3/SeparatorMenuItem.html"
+
+  - title: "SelectionData"
+    type: widget
+    url: "/content-docs/reference/Gtk3/SelectionData.html"
 
   - title: "Spinner"
     type: widget

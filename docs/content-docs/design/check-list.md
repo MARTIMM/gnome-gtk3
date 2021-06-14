@@ -114,6 +114,8 @@ ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| ✓|
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
