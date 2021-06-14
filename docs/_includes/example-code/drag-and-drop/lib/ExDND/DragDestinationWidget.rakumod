@@ -170,12 +170,6 @@ method on-drag-data-received (
     :native-object($selection-data-no)
   );
 
-  my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
-  my Gnome::Gdk3::Atom $target-atom = $!destination.find-target(
-    $destination-widget, $context,
-    $!destination.get-target-list($destination-widget)
-  );
-
   my $source-data;
   given $!destination-type {
     when MARKUP_DROP {
@@ -184,7 +178,7 @@ method on-drag-data-received (
     }
 
     when TEXT_PLAIN_DROP {
-      $source-data = $selection-data.get(:data-type(Str));
+      $source-data = $selection-data.get-text;
       $destination-widget.set-text($source-data);
     }
 
@@ -194,6 +188,11 @@ method on-drag-data-received (
     }
 
     when IMAGE_DROP {
+      my Gnome::Gdk3::Atom $target-atom = $!destination.find-target(
+        $destination-widget, $context-no,
+        $!destination.get-target-list($destination-widget)
+      );
+
       given $target-atom.name {
         when 'image/png' {
           $source-data = $selection-data.get-pixbuf;
@@ -223,6 +222,10 @@ method on-drag-data-received (
               last;
             }
           }
+        }
+
+        default {
+          note "Computer says, No! target type '$_'";
         }
       }
     }

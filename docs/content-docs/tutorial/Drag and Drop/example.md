@@ -333,7 +333,7 @@ method on-drag-drop (
 
 ### method on-drag-data-received
 
-This handler is called when the `drag-data-get` handler is finished preparing the data.
+This handler is called when the `drag-data-get` handler is finished preparing the data. Now we can get the data out and change the destination widgets with that data.
 
 ```
 method on-drag-data-received (
@@ -341,26 +341,19 @@ method on-drag-data-received (
   N-GObject $selection-data-no, UInt $info, UInt $time,
   :_widget($destination-widget)
 ) {
-#note "\ndst received:, $x, $y, $info, $time";
   my Gnome::Gtk3::SelectionData $selection-data .= new(
     :native-object($selection-data-no)
   );
 
-  my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
-  my Gnome::Gdk3::Atom $target-atom = $!destination.find-target(
-    $destination-widget, $context,
-    $!destination.get-target-list($destination-widget)
-  );
-
   my $source-data;
-  given $!destination-type {
+  given $!destination-type {                                              # ①
     when MARKUP_DROP {
       $source-data = $selection-data.get(:data-type(Str));
       $destination-widget.set-markup($source-data);
     }
 
     when TEXT_PLAIN_DROP {
-      $source-data = $selection-data.get(:data-type(Str));
+      $source-data = $selection-data.get-text;
       $destination-widget.set-text($source-data);
     }
 
@@ -370,28 +363,26 @@ method on-drag-data-received (
     }
 
     when IMAGE_DROP {
+      my Gnome::Gdk3::Atom $target-atom = $!destination.find-target(      # ②
+        $destination-widget, $context-no,
+        $!destination.get-target-list($destination-widget)
+      );
+
       given $target-atom.name {
-        when 'image/png' {
+        when 'image/png' {                                                # ③
           $source-data = $selection-data.get-pixbuf;
           $destination-widget.set-from-pixbuf($source-data);
         }
 
-        when 'text/uri-list' {
+        when 'text/uri-list' {                                            # ④
           $source-data = $selection-data.get-uris;
-#note $source-data.elems, ', ', $source-data;
+
           for @$source-data -> $uri is copy {
             if $uri.IO.extension ~~ any(<jpg png jpeg svg>) {
-              # drop the protocol part and when dragged from file explorer
-              # replace the %20 url encoding for a space.
-              $uri ~~ s/^ 'file://' //;
+              $uri ~~ s/^ 'file://' //;                                   # ⑤
               $uri ~~ s:g/'%20'/ /;
 
-              # Next statement works but we want to have a max width
-              # of 380 pix to prevent expanding into huge displays,
-              # so we need to get a bit more elaborate
-              #$destination-widget.set-from-file($uri);
-
-              $destination-widget.set-from-pixbuf(
+              $destination-widget.set-from-pixbuf(                        # ⑥
                 Gnome::Gdk3::Pixbuf.new(
                   :file($uri), :380width, :380height, :preserve_aspect_ratio
                 )
@@ -400,8 +391,32 @@ method on-drag-data-received (
             }
           }
         }
+
+        default {
+          note "Application can not handle target type '$_'";
+        }
       }
     }
   }
 }
 ```
+
+① We use the `$!destination-type` again to know what data to get for this widget.
+
+* **MARKUP_DROP**: We get the data by a call to `.get()` on the selection data. A data type is needed to have the method return the proper value.
+
+* **TEXT_PLAIN_DROP**: For text, we can also call `.get-text()` which is easier.
+
+* **NUMBER_DROP**: For the number we must call `.get()` with the `.Num` type.
+
+* **IMAGE_DROP**: Image are handled differently, see below
+
+② We have to find the proper target atom to know what to do. We keep it simple, target `image/png` comes from the applications source widget and `text/uri-list` happens when we drag from a file explorer of some sort.
+
+③ When we get a png image from our source widget, it is stored as a pixbuf and to retrieve it we must call `.get-pixbuf()`.
+
+④ The list is a list of uri's from e.g. an explorer and thus can have all sorts of file types so we must check for its extension. We will accept `jpg`, `png` and `svg` types only.
+
+⑤ We drop the `file://` protocol part and also replace the `%20` url encoding for a space. There are proper modules to do that but this suffices here.
+
+⑥ We could have used `$destination-widget.set-from-file($uri)` here but we want to have a maximum width of 380 pixels to prevent expanding into huge displays, so we need to get a bit more elaborate.
