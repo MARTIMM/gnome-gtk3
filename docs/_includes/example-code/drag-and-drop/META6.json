@@ -1,0 +1,22 @@
+{
+  "description": "Raku - DND Example",
+  "name": "ExDND",
+  "version": "0.1.0",
+  "authors": [ "Marcel Timmerman"],
+  "tags": [ "gtk", "dnd", "drag", "drop"],
+
+  "perl": "6.d",
+  "license": "Artistic-2.0",
+
+  "provides": {
+    "ExDND::AppHandlers": "lib/ExDND/AppHandlers.rakumod",
+    "ExDND::DragDestinationWidget": "lib/ExDND/DragDestinationWidget.rakumod",
+    "ExDND::DragSourceWidget": "lib/ExDND/DragSourceWidget.rakumod",
+    "ExDND::Frame": "lib/ExDND/Frame.rakumod",
+    "ExDND::Label": "lib/ExDND/Label.rakumod",
+    "ExDND::Types": "lib/ExDND/Types.rakumod"
+  },
+
+  "depends": ["Gnome::Gtk3"],
+  "resources": [ "green-on-256.png", "red-on-256.png", "amber-on-256.png"]
+}
