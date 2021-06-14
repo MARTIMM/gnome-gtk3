@@ -159,7 +159,7 @@ submethod BUILD ( *%options ) {
 =begin pod
 =head2 add-image-targets
 
-Add the writable image targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<gtk-target-list-add-image-targets()> and C<set-target-list()>.
+Add the writable image targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<Gnome::Gtk3::TargetList.add-image-targets()> and C<set-target-list()>.
 
   method add-image-targets ( N-GObject $widget )
 
@@ -181,7 +181,7 @@ sub gtk_drag_source_add_image_targets (
 =begin pod
 =head2 add-text-targets
 
-Add the text targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<gtk-target-list-add-text-targets()> and C<set-target-list()>.
+Add the text targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<Gnome::Gtk3::TargetList.add-text-targets()> and C<set-target-list()>.
 
   method add-text-targets ( N-GObject $widget )
 
@@ -203,7 +203,7 @@ sub gtk_drag_source_add_text_targets (
 =begin pod
 =head2 add-uri-targets
 
-Add the URI targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<gtk-target-list-add-uri-targets()> and C<set-target-list()>.
+Add the URI targets supported by B<Gnome::Gtk3::SelectionData> to the target list of the drag source. The targets are added with I<info> = 0. If you need another value, use C<Gnome::Gtk3::TargetList.add-uri-targets()> and C<set-target-list()>.
 
   method add-uri-targets ( N-GObject $widget )
 
@@ -380,18 +380,18 @@ method set (
   $widget is copy, UInt() $start-button-mask, Array $targets, UInt() $actions
 ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-note "$?LINE";
+#note "$?LINE";
   my Array $n-target-array = [];
   for @$targets -> $target is copy {
     $target = $target ~~ N-GtkTargetEntry
                 ?? $target
                 !! $target.get-native-object-no-reffing;
-note "$?LINE, ", $target;
+#note "$?LINE, ", $target;
     $n-target-array.push: $target;
   }
-note "$?LINE, ", $n-target-array;
+#note "$?LINE, ", $n-target-array;
   my Gnome::Gtk3::TargetTable $target-table .= new(:array($n-target-array));
-note "$?LINE, ", $target-table.get-target-table;
+#note "$?LINE, ", $target-table.get-target-table;
 
   gtk_drag_source_set(
     $widget, $start-button-mask, $target-table.get-target-table,
@@ -465,22 +465,19 @@ sub gtk_drag_source_set_icon_gicon (
 
 Sets the icon that will be used for drags from a particular source to a themed icon. See the docs for B<Gnome::Gtk3::IconTheme> for more details.
 
-  method set-icon-name ( N-GObject $widget, Str $icon_name )
+  method set-icon-name ( N-GObject $widget, Str $icon-name )
 
 =item N-GObject $widget; a B<Gnome::Gtk3::Widget>
-=item Str $icon_name; name of icon to use
+=item Str $icon-name; name of icon to use
 =end pod
 
-method set-icon-name ( $widget is copy, Str $icon_name ) {
+method set-icon-name ( $widget is copy, Str $icon-name ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-
-  gtk_drag_source_set_icon_name(
-     $widget, $icon_name
-  );
+  gtk_drag_source_set_icon_name( $widget, $icon-name);
 }
 
 sub gtk_drag_source_set_icon_name (
-  N-GObject $widget, gchar-ptr $icon_name
+  N-GObject $widget, gchar-ptr $icon-name
 ) is native(&gtk-lib)
   { * }
 

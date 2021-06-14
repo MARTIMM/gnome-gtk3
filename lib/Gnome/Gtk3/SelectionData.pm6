@@ -48,6 +48,7 @@ use Gnome::N::TopLevelClassSupport;
 use Gnome::GObject::Boxed;
 
 use Gnome::Gdk3::Atom;
+use Gnome::Gdk3::Pixbuf;
 
 #use Gnome::Gtk3::TargetEntry;
 
@@ -541,29 +542,31 @@ sub gtk_selection_data_get_length (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-pixbuf:
 =begin pod
 =head2 get-pixbuf
 
-Gets the contents of the selection data as a B<Gnome::Gtk3::Pixbuf>.
+Gets the contents of the selection data as a B<Gnome::Gdk3::Pixbuf>.
 
-Returns: if the selection data contained a recognized image type and it could be converted to a B<Gnome::Gtk3::Pixbuf>, a newly allocated pixbuf is returned, otherwise C<undefined>. If the result is non-C<undefined> it must be freed with C<g-object-unref()>.
+Returns: if the selection data contained a recognized image type and it could be converted to a B<Gnome::Gdk3::Pixbuf>, a newly allocated pixbuf is returned, otherwise C<undefined>. If the result is non-C<undefined> it must be freed with C<g-object-unref()>.
 
-  method get-pixbuf ( --> N-GObject )
+  method get-pixbuf ( --> Gnome::Gdk3::Pixbuf )
 
 =end pod
 
-method get-pixbuf ( --> N-GObject ) {
-  gtk_selection_data_get_pixbuf(self.get-native-object-no-reffing)
+method get-pixbuf ( --> Gnome::Gdk3::Pixbuf ) {
+  Gnome::Gdk3::Pixbuf.new(
+    :native-object(
+      gtk_selection_data_get_pixbuf(self.get-native-object-no-reffing)
+    )
+  )
 }
 
 sub gtk_selection_data_get_pixbuf (
   N-GObject $selection_data --> N-GObject
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:get-selection:
@@ -648,9 +651,9 @@ sub gtk_selection_data_get_targets (
 
 Gets the contents of the selection data as a UTF-8 string.
 
-Returns: (type utf8)  : if the selection data contained a recognized text type and it could be converted to UTF-8, a newly allocated string containing the converted text, otherwise C<undefined>. If the result is non-C<undefined> it must be freed with C<g-free()>.
+Returns: if the selection data contained a recognized text type and it could be converted to UTF-8, a newly allocated string containing the converted text, otherwise C<undefined>.
 
-  method get-text ( --> guStr )
+  method get-text ( --> Str )
 
 =end pod
 
@@ -663,7 +666,6 @@ sub gtk_selection_data_get_text (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-uris:
 =begin pod
@@ -671,21 +673,33 @@ sub gtk_selection_data_get_text (
 
 Gets the contents of the selection data as array of URIs.
 
-Returns:  (element-type utf8) : if the selection data contains a list of URIs, a newly allocated C<undefined>-terminated string array containing the URIs, otherwise C<undefined>. If the result is non-C<undefined> it must be freed with C<g-strfreev()>.
+Returns: an B<Array> if the selection data contains a list of URIs, otherwise empty.
 
-  method get-uris ( --> CArray[Str] )
+  method get-uris ( --> Array )
 
 =end pod
 
-method get-uris ( --> CArray[Str] ) {
-  gtk_selection_data_get_uris(self.get-native-object-no-reffing)
+method get-uris ( --> Array ) {
+  my CArray[Str] $ca = gtk_selection_data_get_uris(
+    self.get-native-object-no-reffing
+  );
+
+  my Array $uris = [];
+  my Int $i = 0;
+  if ?$ca {
+    while $ca[$i] {
+      $uris.push: $ca[$i];
+      $i++;
+    }
+  }
+
+  $uris
 }
 
 sub gtk_selection_data_get_uris (
   N-GObject $selection_data --> gchar-pptr
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:2:set:xt/dnd-01.raku
@@ -700,7 +714,7 @@ Stores new data into a B<Gnome::Gtk3::SelectionData> object. Should only be call
 
 =item N-GObject $type; the type of selection data. A Gnome::Gdk3::Atom
 =item $data; data which can be of type Int, Num, Rat, Array[ Int, Num or Rat], Str or Buf.
-=item Int() $format; format (number of bits per value)
+=item Int() $format; format (number of bits per value). Default set to 32 for numbers and 8 for strings. Only usefull to set to 8 or 16 when integers are small. Num and Rat are always set to 32.
 
 =head3 Example
 
@@ -897,7 +911,7 @@ sub gtk_selection_data_set_pixbuf (
 =begin pod
 =head2 set-text
 
-Sets the contents of the selection from a UTF-8 encoded string. The string is converted to the form determined by I<selection-data>->target.
+Sets the contents of the selection from a UTF-8 encoded string. The string is converted to the form determined by I<selection-data> target.
 
 Returns: C<True> if the selection was successfully set, otherwise C<False>.
 

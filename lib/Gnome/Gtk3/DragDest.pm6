@@ -367,7 +367,7 @@ Looks for a match between the supported targets of I<context> and the I<dest-tar
 Returns: first target that the source offers and the dest can accept, or C<GDK-NONE>
 
   method find-target (
-    N-GObject $widget, N-GObject $context, N-GObject $target-list
+    N-GObject $widget, N-GObject $context, N-GObject $target-list?
     --> Gnome::Gdk3::Atom
   )
 
@@ -377,12 +377,20 @@ Returns: first target that the source offers and the dest can accept, or C<GDK-N
 =end pod
 
 method find-target (
-  $widget is copy, $context is copy, $target-list is copy
+  $widget is copy, $context is copy, $target-list? is copy
   --> Gnome::Gdk3::Atom
 ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
   $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
-  $target-list .= get-native-object-no-reffing unless $target-list ~~ N-GObject;
+
+  if $target-list.defined {
+    $target-list .= get-native-object-no-reffing
+      unless $target-list ~~ N-GObject;
+  }
+
+  else {
+    $target-list = N-GObject;
+  }
 
   Gnome::Gdk3::Atom.new(
     :native-object(
@@ -503,10 +511,10 @@ multi method set (
     $target = $target ~~ N-GtkTargetEntry
                 ?? $target
                 !! $target.get-native-object-no-reffing;
-note "$?LINE, ", $target;
+#note "$?LINE, ", $target;
     $n-target-array.push: $target;
   }
-note "$?LINE, ", $n-target-array;
+#note "$?LINE, ", $n-target-array;
   my Gnome::Gtk3::TargetTable $target-table .= new(:array($n-target-array));
 
   gtk_drag_dest_set(
@@ -542,8 +550,14 @@ Sets the target types that this widget can accept from drag-and-drop. The widget
 
 method set-target-list ( $widget is copy, $target-list is copy ) {
   $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $target-list .= get-native-object-no-reffing
-    unless $target-list ~~ N-GtkTargetList;
+  if ?$target-list {
+    $target-list .= get-native-object-no-reffing
+      unless $target-list ~~ N-GtkTargetList;
+  }
+
+  else {
+    $target-list = N-GObject;
+  }
   gtk_drag_dest_set_target_list( $widget, $target-list);
 }
 
