@@ -15,6 +15,16 @@ The program will look like the image below when it is just started. The green le
 
 <img src="images/chapter-6a.png" width="350"/>
 
+
+{% assign downloadzip = site.baseurl | append: '/content-docs/images/zip-icon.png' %}
+{% assign downloadtar = site.baseurl | append: '/content-docs/images/tar-gz-icon.png' %}
+
+The complete program can be downloaded here;
+* as a zip archive: <a href="drag-and-drop.zip" download> <img src="{{ downloadzip }}" alt="zip file" height="30"> </a>
+* or as a tar archive: <a href="drag-and-drop.tgz" download> <img src="{{ downloadtar }}" alt="tar file" height="30"> </a>
+
+To test it, download the archive and unpack it. Then step into the directory `drag-and-drop` and run `zef install .`. When installed run `rehash` (on some systems) then `dnd-example.raku`. When you are done with it you might deinstall the example with `zef uninstall ExDND`.
+
 <!--
 ![](images/chapter-6b.png)
 -->
