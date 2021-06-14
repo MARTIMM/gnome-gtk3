@@ -1,5 +1,5 @@
-Gnome::Gdk3::Drag
-=================
+Gnome::Gdk3::DragContext
+========================
 
 Functions for controlling lower level drag and drop handling
 
@@ -16,7 +16,7 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::Gdk3::Drag;
+    unit class Gnome::Gdk3::DragContext;
     also is Gnome::GObject::Object;
 
 See Also

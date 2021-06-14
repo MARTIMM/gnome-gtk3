@@ -7,7 +7,7 @@ layout: sidebar
 
 # Drag and Drop
 
-This tutorial is build up from documents written by _Prof. Stewart Weiss_. On [his site here](http://www.compsci.hunter.cuny.edu/~sweiss/index.php), you can find many documents about computer science and in particular about [the GTK user interface](http://www.compsci.hunter.cuny.edu/~sweiss/course_materials/csci493.70/csci493.70_lecture_notes.php). His explanations are about using Gtk using the C programming language. So the documents used here are changed to reflect the raku language and the use of the modules in the provided **Gnome::Gdk3** and **Gnome::Gtk3** packages.
+This tutorial is build up from documents written by _Prof. Stewart Weiss_. On [his site here](http://www.compsci.hunter.cuny.edu/~sweiss/index.php), you can find many documents about computer science and in particular about [the GTK user interface](http://www.compsci.hunter.cuny.edu/~sweiss/course_materials/csci493.70/csci493.70_lecture_notes.php). His explanations are about using Gtk using the C programming language. So the documents used here are changed to reflect the raku language and the use of the modules in the provided **Gnome::Gdk3** and **Gnome::Gtk3** packages. The last part however is so much different from how to develop in C that I have decided to work out things differently.
 
 
 # Overview
