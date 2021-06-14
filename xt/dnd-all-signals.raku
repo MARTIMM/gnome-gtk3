@@ -71,7 +71,10 @@ class DragSourceWidget {
       )
     ];
 
-    $!source.set( $widget, GDK_BUTTON1_MASK, $e-targets, GDK_ACTION_MOVE);
+    $!source.set(
+      $widget, GDK_BUTTON1_MASK, $e-targets,
+      GDK_ACTION_MOVE +| GDK_ACTION_COPY +| GDK_ACTION_LINK +| GDK_ACTION_ASK
+    );
 
     $widget.register-signal( self, 'begin', 'drag-begin');
     $widget.register-signal( self, 'get', 'drag-data-get');
@@ -81,7 +84,7 @@ class DragSourceWidget {
   }
 
   #-----------------------------------------------------------------------------
-  method begin ( N-GObject $context, :_widget($widget) ) {
+  method begin ( N-GObject $context-no, :_widget($widget) ) {
     note "\nsrc begin";
 
     $!source.set-icon-name( $widget, 'text-x-generic');
@@ -90,7 +93,7 @@ class DragSourceWidget {
 
   #-----------------------------------------------------------------------------
   method get (
-    N-GObject $context, N-GObject $selection-data, UInt $info, UInt $time,
+    N-GObject $context-no, N-GObject $selection-data, UInt $info, UInt $time,
     :_widget($widget)
   ) {
     note "src get: info=$info, time=$time, time since begin=$!target-data<string>";
@@ -106,18 +109,18 @@ class DragSourceWidget {
   }
 
   #-----------------------------------------------------------------------------
-  method end ( N-GObject $context, :_widget($widget) ) {
+  method end ( N-GObject $context-no, :_widget($widget) ) {
     note "src end";
   }
 
   #-----------------------------------------------------------------------------
-  method delete ( N-GObject $context, :_widget($widget) ) {
+  method delete ( N-GObject $context-no, :_widget($widget) ) {
     note "src delete";
   }
 
   #-----------------------------------------------------------------------------
   method failed (
-    N-GObject $context, Int $result, :_widget($widget) --> Bool
+    N-GObject $context-no, Int $result, :_widget($widget) --> Bool
   ) {
     note "src fail: {GtkDragResult($result)}";
     True
@@ -143,7 +146,7 @@ class DragDestinationWidget {
           :info(TEXT_PLAIN_DROP)
         )
       ],
-      GDK_ACTION_COPY +| GDK_ACTION_MOVE
+      GDK_ACTION_MOVE +| GDK_ACTION_COPY +| GDK_ACTION_LINK +| GDK_ACTION_ASK
     );
 
     $widget.register-signal( self, 'motion', 'drag-motion');
@@ -154,51 +157,72 @@ class DragDestinationWidget {
 
   #-----------------------------------------------------------------------------
   method motion (
-    N-GObject $context, Int $x, Int $y, UInt $time, :_widget($widget)
+    N-GObject $context-no, Int $x, Int $y, UInt $time, :_widget($widget)
     --> Bool
   ) {
-    my Bool $status;
+    my Bool $status = False;
     note "dst motion: x=$x, y=$y, time=$time";
 
     my Gnome::Gdk3::Atom $a = $!destination.find-target(
-      $widget, $context, $!destination.get-target-list($widget)
+      $widget, $context-no, $!destination.get-target-list($widget)
     );
 
-    my Gnome::Gdk3::DragContext $dctx .= new(:native-object($context));
+    my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
     if $a.name ~~ 'NONE' {
-      $dctx.status( GDK_ACTION_COPY, $time);
-      $status = False;
+      $context.status( GDK_ACTION_COPY, $time);
     }
 
     else {
-      $!destination.highlight($widget);
-      $dctx.status( GDK_ACTION_MOVE, $time);
-      $status = True;
+      my GdkDragAction $suggest-action = $context.get-suggested-action;
+
+      # $suggest-action changes when control keys are used. It also changes
+      # when mask is set differently.
+      #
+      # default: GDK_ACTION_COPY
+      # <SHIFT>: GDK_ACTION_MOVE
+      # <ALT>: GDK_ACTION_ASK
+      # <CTR><SHIFT>: GDK_ACTION_LINK
+
+      # I've also seen (when ASK was not set in mask)
+      # <ALT>: GDK_ACTION_LINK
+      # <CTR><SHIFT>: GDK_ACTION_NONE
+#note "dst motion: action = $suggest-action";
+      if $suggest-action {
+        $!destination.highlight($widget);
+        $context.status( $suggest-action, $time);
+        $status = True;
+      }
     }
 
     $status
   }
 
   #-----------------------------------------------------------------------------
+  method leave ( N-GObject $context-no, UInt $time, :_widget($widget) ) {
+    note "dst leave: time=$time";
+    $!destination.unhighlight($widget);
+  }
+
+  #-----------------------------------------------------------------------------
   method drop (
-    N-GObject $context, Int $x, Int $y, UInt $time, :_widget($widget)
+    N-GObject $context-no, Int $x, Int $y, UInt $time, :_widget($widget)
     --> Bool
   ) {
     note "dst drop: x=$x, y=$y, time=$time";
     my Gnome::Gdk3::Atom $a = $!destination.find-target(
-      $widget, $context, $!destination.get-target-list($widget)
+      $widget, $context-no, $!destination.get-target-list($widget)
     );
 
     # ask for data. triggers drag-data-get on source. when data is received or
     # error, drag-data-received on destination is triggered
-    $!destination.get-data( $widget, $context, $a, $time);
+    $!destination.get-data( $widget, $context-no, $a, $time);
 
     True
   }
 
   #-----------------------------------------------------------------------------
   method received (
-    N-GObject $context, Int $x, Int $y,
+    N-GObject $context-no, Int $x, Int $y,
     N-GObject $selection-data, UInt $info, UInt $time, :_widget($widget)
   ) {
     note "dst received:, x=$x, y=$y, info=$info, time=$time";
@@ -206,18 +230,17 @@ class DragDestinationWidget {
 
     if ( my Str $str = $sd.get(:data-type(Str)) ).defined {
       $widget.set-text($str);
-      $!destination.finish( $context, True, True, $time);
+      my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
+      my GdkDragAction $suggest-action = $context.get-suggested-action;
+
+      $!destination.finish(
+        $context-no, True, $suggest-action ~~ GDK_ACTION_MOVE, $time
+      );
     }
 
     else {
-      $!destination.finish( $context, False, False, $time);
+      $!destination.finish( $context-no, False, False, $time);
     }
-  }
-
-  #-----------------------------------------------------------------------------
-  method leave ( N-GObject $context, UInt $time, :_widget($widget) ) {
-    note "dst leave: time=$time";
-    $!destination.unhighlight($widget);
   }
 }
 

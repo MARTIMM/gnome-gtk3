@@ -11,26 +11,23 @@ use v6;
 #use lib '../gnome-gdk3/lib';
 #use lib '../gnome-gobject/lib';
 
-use NativeCall;
+#use NativeCall;
 
 use Gnome::N::N-GObject;
-use Gnome::N::X;
 use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 use Gnome::Gtk3::EventBox;
 use Gnome::Gtk3::Image;
-#use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
-#use Gnome::Gtk3::DrawingArea;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Widget;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Frame;
 
-#use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::TargetEntry;
 use Gnome::Gtk3::DragSource;
 use Gnome::Gtk3::DragDest;
 use Gnome::Gtk3::TargetList;
@@ -42,8 +39,14 @@ use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Pixbuf;
 
 #-------------------------------------------------------------------------------
-enum TargetInfo <TEXT_HTML STRING NUMBER IMAGE_JPEG TEXT_URI>;
+enum TargetInfo <TEXT_HTML STRING NUMBER IMAGE TEXT_URI>;
 enum DestinationType <NUMBER_DROP MARKUP_DROP TEXT_PLAIN_DROP IMAGE_DROP>;
+
+our %leds is export = %(
+  :green<xt/data/green-on-256.png>,
+  :red<xt/data/red-on-256.png>,
+  :amber<xt/data/amber-on-256.png>
+);
 
 #-------------------------------------------------------------------------------
 # Simple class to be able to stop the application
@@ -74,6 +77,7 @@ class Frame is Gnome::Gtk3::Frame {
   }
 }
 
+
 #-------------------------------------------------------------------------------
 # Also a convenience class for labels
 class Label is Gnome::Gtk3::Label {
@@ -88,170 +92,197 @@ class Label is Gnome::Gtk3::Label {
     self.set-justify(GTK_JUSTIFY_FILL);
     self.set-halign(GTK_ALIGN_START);
     self.set-margin-start(3);
-    self.set-use-markup(True);
   }
 }
+
+
 
 #-------------------------------------------------------------------------------
 class DragSourceWidget {
   has Instant $!start-time;
+  has $!drag-time;
   has Gnome::Gtk3::DragSource $!source;
-  has Hash $!target-data;
-  has Hash $!targets;
 
   #-----------------------------------------------------------------------------
-  submethod BUILD ( :$grid, :$x, :$y, :$w, :$h ) {
-    my Gnome::Gtk3::Image $image .= new;
-    $image.set-from-file('xt/data/amber-on-256.png');
-    my Gnome::Gtk3::EventBox $widget .= new;
-    $widget.add($image);
-    $grid.attach( $widget, $x, $y, $w, $h);
+  submethod BUILD ( :$source-widget ) {
 
     $!start-time = now;
 
+    my Array $target-entries = [
+      N-GtkTargetEntry.new( :target<text/html>, :flags(0), :info(TEXT_HTML)),
+      N-GtkTargetEntry.new( :target<STRING>, :flags(0), :info(STRING)),
+      N-GtkTargetEntry.new( :target<number>, :flags(0), :info(NUMBER)),
+      N-GtkTargetEntry.new( :target<image/png>, :flags(0), :info(IMAGE))
+    ];
+
     $!source .= new;
     $!source.set(
-      $widget, GDK_BUTTON1_MASK, [], GDK_ACTION_MOVE +| GDK_ACTION_MOVE
+      $source-widget, GDK_BUTTON1_MASK, $target-entries,
+      GDK_ACTION_MOVE +| GDK_ACTION_COPY
     );
 
-#`{{
-    # the target list and images are attached to the widget.
-    my Array $te = [
-      Gnome::Gtk3::TargetEntry.new(
-        :target<string>, :flags(GTK_TARGET_SAME_APP), :info(NUMBER)
-      ),
-    ];
-    my Gnome::Gtk3::TargetList $target-list .= new(:targets($te));
-}}
-
-    my Gnome::Gtk3::TargetList $target-list .= new;
-    $!targets = %(
-      :number(Gnome::Gdk3::Atom.new(:intern<number>)),
-      :string(Gnome::Gdk3::Atom.new(:intern<text/plain>)),
-    );
-    $target-list.add( $!targets<number>, GTK_TARGET_SAME_APP, NUMBER);
-    $target-list.add( $!targets<string>, GTK_TARGET_SAME_APP, STRING);
-    $!source.set-target-list( $widget, $target-list);
-
-    $widget.register-signal( self, 'begin', 'drag-begin');
-    $widget.register-signal( self, 'get', 'drag-data-get');
-    $widget.register-signal( self, 'end', 'drag-end');
-    $widget.register-signal( self, 'delete', 'drag-data-delete');
-    $widget.register-signal( self, 'failed', 'drag-failed');
+    $source-widget.register-signal( self, 'on-drag-begin', 'drag-begin');
+    $source-widget.register-signal( self, 'on-drag-data-get', 'drag-data-get');
   }
 
   #-----------------------------------------------------------------------------
-  method begin ( N-GObject $context, :_widget($widget) ) {
-note "\nsrc begin";
+  method on-drag-begin ( N-GObject $context-no, :_widget($source-widget) ) {
+#note "\nsrc begin";
 
-    $!source.set-icon-name( $widget, 'text-x-generic');
-    $!target-data = %(
-      :number((now - $!start-time).Int),
-#      :string('some textual string with strange characters ☺ ≠ ñ');
-    );
-note "data begin: $!target-data<number>";
+    $!source.set-icon-name( $source-widget, 'text-x-generic');
+    $!drag-time = now - $!start-time;
+
+#note "data begin: $!drag-time.fmt('%.3f')";
   }
 
   #-----------------------------------------------------------------------------
-  method get (
-    N-GObject $context, N-GObject $data, UInt $info, UInt $time,
-    :_widget($widget)
+  method on-drag-data-get (
+    N-GObject $context-no, N-GObject $selection-data-no, UInt $info, UInt $time,
+    :_widget($source-widget)
   ) {
-note "\nsrc get: $info, $time, $!target-data<number>";
+#note "\nsrc get: $info, $time, $!drag-time";
 
-    my Gnome::Gtk3::SelectionData $sd .= new(:native-object($data));
-#my Gnome::Gdk3::Atom $atom .= new(:native-object($sd.get-target));
-#note 'target: ', $atom.name;
-#note 'format: ', $sd.get-format, ' -> 16';
-#note 'length: ', $sd.get-length, ' -> 1';
+    my Gnome::Gtk3::SelectionData $selection-data .= new(
+      :native-object($selection-data-no)
+    );
 
-    # here, you can check for target name to decide what to return
-    # now always 'number'. number to send is elapsed time. 16 bit gives
-    # about 18 hours to run without problems.
+    # here, you can check $info to see what is requested
     given $info {
+      when TEXT_HTML {
+        my Str $html-data = [~]
+          '<span font_family="monospace" style="italic">The time is ',
+            '<span weight="bold" foreground="blue">',
+            $!drag-time.fmt('%.3f'),
+            '</span></span>';
+
+        $selection-data.set(
+          Gnome::Gdk3::Atom.new(:intern<text/html>), $html-data
+        );
+      }
+
+      # number to send is elapsed time. 16 bit gives about 18 hours to run
+      # without problems.
       when NUMBER {
-        $sd.set( $!targets<number>, 16, $!target-data<number>);
+        $selection-data.set(
+          Gnome::Gdk3::Atom.new(:intern<number>), $!drag-time.Num, :format(16)
+        );
       }
 
       when STRING {
-        $sd.set(
-          $!targets<string>,
-          "The drag started $!target-data<number> seconds after start"
+        $selection-data.set(
+          Gnome::Gdk3::Atom.new(:intern<STRING>),
+          "The drag started $!drag-time.fmt('%.3f') seconds after start"
+        );
+      }
+
+      when IMAGE {
+        $selection-data.set-pixbuf(
+          Gnome::Gdk3::Pixbuf.new(:file(%leds{<amber red green>.roll}))
         );
       }
     }
   }
-
-  #-----------------------------------------------------------------------------
-  method end ( N-GObject $context, :_widget($widget) ) {
-note "\nsrc end: ";
-  }
-
-  #-----------------------------------------------------------------------------
-  method delete ( N-GObject $context, :_widget($widget) ) {
-note "\nsrc delete";
-  }
-
-  #-----------------------------------------------------------------------------
-  method failed (
-    N-GObject $context, Int $result, :_widget($widget) --> Bool
-  ) {
-note "src fail: {GtkDragResult($result)}";
-    True
-  }
 }
+
+
 
 #-------------------------------------------------------------------------------
 class DragDestinationWidget {
 
-  has Gnome::Gtk3::DragDest $!destination;
-
   #-----------------------------------------------------------------------------
-  submethod BUILD ( :$grid, :$x, :$y, :$w, :$h   ) {
+  submethod BUILD ( :$destination-widget, DestinationType :$destination-type ) {
 
-    my Gnome::Gtk3::Label $widget .= new(:text('Drag Zone'));
-    $grid.attach( $widget, $x, $y, $w, $h);
+    my Gnome::Gtk3::DragDest $destination .= new;
+    $destination.set( $destination-widget, 0, GDK_ACTION_COPY);
 
-    $!destination .= new;
-#    $!destination.set( $widget, GTK_DEST_DEFAULT_ALL, [], GDK_ACTION_COPY);
-    $!destination.set( $widget, 0, GDK_ACTION_COPY +| GDK_ACTION_MOVE);
+    my Gnome::Gtk3::TargetList $target-list;
+    given $destination-type {
+      when NUMBER_DROP {
+        $target-list .= new(:targets( [
+              N-GtkTargetEntry.new(
+                :target<number>, :flags(GTK_TARGET_SAME_APP), :info(NUMBER)
+              ),
+            ]
+          )
+        );
+      }
 
-    my Gnome::Gtk3::TargetList $target-list .= new;
-    $target-list.add(
-#      Gnome::Gdk3::Atom.new(:intern<number>), GTK_TARGET_SAME_APP, NUMBER
-      Gnome::Gdk3::Atom.new(:intern<text/plain>), GTK_TARGET_SAME_APP, STRING
+      when MARKUP_DROP {
+        $target-list .= new(:targets( [
+              N-GtkTargetEntry.new(
+                :target<text/html>, :flags(0), :info(TEXT_HTML)
+              ),
+            ]
+          )
+        );
+      }
+
+      when TEXT_PLAIN_DROP {
+        $target-list .= new(:targets( [
+              N-GtkTargetEntry.new( :target<STRING>, :flags(0), :info(STRING)),
+            ]
+          )
+        );
+      }
+
+      when IMAGE_DROP {
+        $target-list .= new;
+        $target-list.add-image-targets( IMAGE, True);
+        $target-list.add-uri-targets(TEXT_URI);
+      }
+    }
+
+    $destination.set-target-list( $destination-widget, $target-list);
+
+    $destination-widget.register-signal(
+      self, 'on-drag-motion', 'drag-motion', :$destination
     );
-
-    $!destination.set-target-list( $widget, $target-list);
-
-    $widget.register-signal( self, 'motion', 'drag-motion');
-    $widget.register-signal( self, 'drop', 'drag-drop');
-    $widget.register-signal( self, 'received', 'drag-data-received');
-    $widget.register-signal( self, 'leave', 'drag-leave');
+    $destination-widget.register-signal(
+      self, 'on-drag-leave', 'drag-leave', :$destination
+    );
+    $destination-widget.register-signal(
+      self, 'on-drag-drop', 'drag-drop',
+      :$destination, :$destination-type
+    );
+    $destination-widget.register-signal(
+      self, 'on-drag-data-received', 'drag-data-received',
+      :$destination, :$destination-type
+    );
   }
 
   #-----------------------------------------------------------------------------
-  method motion (
-    N-GObject $context, Int $x, Int $y, UInt $time, :_widget($widget)
+  method on-drag-motion (
+    N-GObject $context-no, Int $x, Int $y, UInt $time,
+    :_widget($destination-widget), Gnome::Gtk3::DragDest :$destination
     --> Bool
   ) {
     my Bool $status;
-note "\ndst motion: $x, $y, $time";
+#note "\ndst motion: $x, $y, $time";
 
-    my Gnome::Gdk3::Atom $a = $!destination.find-target(
-      $widget, $context, $!destination.get-target-list($widget)
+    my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
+    my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+      $destination-widget, $context,
+      $destination.get-target-list($destination-widget)
     );
 
-#note 'Target match: ', $a.name;
-    my Gnome::Gdk3::DragContext $dctx .= new(:native-object($context));
-    if $a.name ~~ 'NONE' {
-      $dctx.status( GDK_ACTION_COPY, $time);
+#note $?LINE, ', Target match: ', $target-atom.name;
+
+    if $target-atom.name ~~ 'NONE' {
+      $context.status( GDK_ACTION_NONE, $time);
       $status = False;
     }
 
     else {
-      $!destination.highlight($widget);
-      $dctx.status( GDK_ACTION_MOVE, $time);
+      # $suggest-action changes when control keys are used
+      # default: GDK_ACTION_COPY
+      # <SHIFT>: GDK_ACTION_MOVE
+      # <ALT>: GDK_ACTION_LINK (from file browser, source above only
+      # supports copy and move)
+      # <CTR><SHIFT>: GDK_ACTION_NONE
+      my GdkDragAction $suggest-action = $context.get-suggested-action;
+#note $?LINE, ', action: ', $suggest-action;
+      $destination.highlight($destination-widget) if $suggest-action;
+      $context.status( $suggest-action, $time);
       $status = True;
     }
 
@@ -259,53 +290,109 @@ note "\ndst motion: $x, $y, $time";
   }
 
   #-----------------------------------------------------------------------------
-  method drop (
-    N-GObject $context, Int $x, Int $y, UInt $time, :_widget($widget)
+  method on-drag-leave (
+    N-GObject $context-no, UInt $time,
+    :_widget($destination-widget), Gnome::Gtk3::DragDest :$destination
+  ) {
+#note "\ndst leave: $time";
+    $destination.unhighlight($destination-widget);
+  }
+
+  #-----------------------------------------------------------------------------
+  method on-drag-drop (
+    N-GObject $context-no, Int $x, Int $y, UInt $time,
+    :_widget($destination-widget), DestinationType :$destination-type,
+    Gnome::Gtk3::DragDest :$destination
     --> Bool
   ) {
-note "\ndst drop: $x, $y, $time";
-    my Gnome::Gdk3::Atom $a = $!destination.find-target(
-      $widget, $context, $!destination.get-target-list($widget)
+#note "\ndst drop: $x, $y, $time";
+
+    my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
+    my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+      $destination-widget, $context,
+      $destination.get-target-list($destination-widget)
     );
 
-note 'Target match: ', $a.name;
+#note $?LINE, ', Target match: ', (?$target-atom ?? $target-atom.name !! 'NONE');
+
     # ask for data. triggers drag-data-get on source. when data is received or
     # error, drag-data-received on destination is triggered
-    $!destination.get-data( $widget, $context, $a, $time);
+    $destination.get-data(
+      $destination-widget, $context-no, $target-atom, $time
+    ) if ?$target-atom;
 
     True
   }
 
   #-----------------------------------------------------------------------------
-  method received (
-    N-GObject $context, Int $x, Int $y,
-    N-GObject $data, UInt $info, UInt $time, :_widget($widget)
+  method on-drag-data-received (
+    N-GObject $context-no, Int $x, Int $y,
+    N-GObject $selection-data-no, UInt $info, UInt $time,
+    :_widget($destination-widget), DestinationType :$destination-type,
+    Gnome::Gtk3::DragDest :$destination
   ) {
-note "\ndst received:, $x, $y, $info, $time";
-    my Gnome::Gtk3::SelectionData $sd .= new(:native-object($data));
-my Gnome::Gdk3::Atom $atom .= new(:native-object($sd.get-target));
-note 'target: ', $atom.name;
-note 'format: ', $sd.get-format;
-note 'length: ', $sd.get-length;
-note 'selection: ', $sd.get-selection.name;
-my Gnome::Gdk3::DragContext $dctx .= new(:native-object($context));
-note 'action: ', $dctx.get-selected-action;
+#note "\ndst received:, $x, $y, $info, $time";
+    my Gnome::Gtk3::SelectionData $selection-data .= new(
+      :native-object($selection-data-no)
+    );
 
-    if ( my Str $str = $sd.get(:data-type(Str)) ).defined {
-note "string: $str";
-      $widget.set-text($str);
-      $!destination.finish( $context, True, True, $time);
+    my $source-data;
+    given $destination-type {
+      when MARKUP_DROP {
+        $source-data = $selection-data.get(:data-type(Str));
+        $destination-widget.set-markup($source-data);
+      }
+
+      when TEXT_PLAIN_DROP {
+        $source-data = $selection-data.get(:data-type(Str));
+        $destination-widget.set-text($source-data);
+      }
+
+      when NUMBER_DROP {
+        $source-data = $selection-data.get(:data-type(Num));
+        $destination-widget.set-text($source-data.fmt('%.3f'));
+      }
+
+      when IMAGE_DROP {
+        my Gnome::Gdk3::DragContext $context .= new(
+          :native-object($context-no)
+        );
+        
+        my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+          $destination-widget, $context,
+          $destination.get-target-list($destination-widget)
+        );
+
+        given $target-atom.name {
+          when 'image/png' {
+            $source-data = $selection-data.get-pixbuf;
+            $destination-widget.set-from-pixbuf($source-data);
+          }
+
+          when 'text/uri-list' {
+            $source-data = $selection-data.get-uris;
+            note $source-data.elems, ', ', $source-data;
+            for @$source-data -> $uri is copy {
+              if $uri.IO.extension ~~ any(<jpg png jpeg svg>) {
+                $uri ~~ s/^ 'file://' //;
+                $uri ~~ s:g/'%20'/ /;
+
+                # Next statement works but we want to have a max width
+                # of 380 pix to prevent expanding into huge displays,
+                # so we need to get a bit more dificult
+                #$destination-widget.set-from-file($uri);
+
+                my Gnome::Gdk3::Pixbuf $pixbuf .= new(
+                  :file($uri), :380width, :380height, :preserve_aspect_ration
+                );
+                $destination-widget.set-from-pixbuf($pixbuf);
+                last;
+              }
+            }
+          }
+        }
+      }
     }
-
-    else {
-      $!destination.finish( $context, False, False, $time);
-    }
-  }
-
-  #-----------------------------------------------------------------------------
-  method leave ( N-GObject $context, UInt $time, :_widget($widget) ) {
-note "\ndst leave: $time";
-    $!destination.unhighlight($widget);
   }
 }
 
@@ -325,38 +412,47 @@ $grid.set-border-width(10);
 
 # Source image
 my Gnome::Gtk3::Image $image .= new;
-$image.set-from-file('xt/data/green-on-256.png');
+$image.set-from-file(%leds<green>);
 my Gnome::Gtk3::EventBox $source-widget .= new;
 $source-widget.add($image);
 $grid.attach( $source-widget, 0, 0, 1, 1);
-
-# setup-source-widget($source-widget);
+my DragSourceWidget $drag-source-widget .= new(:$source-widget);
 
 
 # Destination label for plain text
 my Frame $frame .= new(:label('Drop plain text'));
-my Label $plain-text-drop .= new;
+my Label $plain-text-drop .= new(:text('... drop here ...'));
 $frame.add($plain-text-drop);
 $grid.attach( $frame, 0, 1, 1, 1);
-# setup-destination-widget($plain-text-drop);
+my DragDestinationWidget $dd1 .= new(
+  :destination-widget($plain-text-drop), :destination-type(TEXT_PLAIN_DROP)
+);
 
 $frame .= new(:label('Drop markup text'));
-my Label $markup-text-drop .= new;
+my Label $markup-text-drop .= new(:text('... drop here ...'));
+#$markup-text-drop.set-use-markup(True);
 $frame.add($markup-text-drop);
 $grid.attach( $frame, 0, 2, 1, 1);
-# setup-destination-widget($markup-text-drop);
+my DragDestinationWidget $dd2 .= new(
+  :destination-widget($markup-text-drop), :destination-type(MARKUP_DROP)
+);
 
 $frame .= new(:label('Drop number'));
-my Label $number-drop .= new;
+my Label $number-drop .= new(:text('... drop here ...'));
 $frame.add($number-drop);
 $grid.attach( $frame, 0, 3, 1, 1);
-# setup-destination-widget($number-drop);
+my DragDestinationWidget $dd3 .= new(
+  :destination-widget($number-drop), :destination-type(NUMBER_DROP)
+);
 
 $frame .= new(:label('Drop image'));
-my Label $image-drop .= new;
+my Gnome::Gtk3::Image $image-drop .= new;
+$image-drop.set-size-request( 380, 380);
 $frame.add($image-drop);
 $grid.attach( $frame, 0, 4, 1, 1);
-# setup-destination-widget($image-drop);
+my DragDestinationWidget $dd4 .= new(
+  :destination-widget($image-drop), :destination-type(IMAGE_DROP)
+);
 
 
 
