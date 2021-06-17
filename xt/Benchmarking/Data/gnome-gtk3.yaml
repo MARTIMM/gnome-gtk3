@@ -3,240 +3,360 @@ Raku-2020.12.32:
   "Gnome::Gtk3-0.34.9": 
     Grid-0.0.0: 
       test0: 
+        total-utime: 120235
         mean: 240.674
+        total-stime: 102
+        count: 500
+        rps: 4154.998047150918
         total-time: 120337
         test-text: "Method calls"
-        count: 500
-        total-stime: 102
-        rps: 4154.998047150918
-        total-utime: 120235
+      test-time: "2021-01-12T20:45:53.968436Z"
       test1: 
         total-stime: 2130
-        total-time: 2040885
         mean: 4081.77
-        rps: 244.99175602740968
-        test-text: "Native sub search"
-        count: 500
+        total-time: 2040885
         total-utime: 2038755
-      test-time: "2021-01-12T20:45:53.968436Z"
+        count: 500
+        test-text: "Native sub search"
+        rps: 244.99175602740968
+  "Gnome::Gtk3-0.35.1": 
+    CheckMenuItem-0.1.0: 
+      test-time: "2021-01-21T15:31:00.539208Z"
+      test0: 
+        count: 1000
+        total-time: 78161
+        total-stime: 781
+        test-text: "Method calls"
+        total-utime: 77380
+        rps: 12794.104476657158
+        mean: 78.161
   "Gnome::Gtk3-0.34.6": 
-    Scale-0.2.0: 
-      test-time: "2021-01-06T15:56:09.407402Z"
-      test1: 
-        count: 1000
-        total-time: 1744895
-        mean: 1744.895
-        total-utime: 1739052
-        rps: 573.1003871293115
-        total-stime: 5843
-        test-text: "Native sub search"
-      test0: 
-        count: 1000
-        total-time: 189748
-        test-text: "Method calls"
-        rps: 5270.14777494361
-        total-stime: 3906
-        total-utime: 185842
-        mean: 189.748
-    Assistant-0.1.1: 
-      test0: 
-        test-text: "Method calls"
-        mean: 455.89
-        total-time: 182356
-        total-stime: 73
-        count: 400
-        total-utime: 182283
-        rps: 2193.5115927087677
-      test1: 
-        mean: 4332.585
-        total-stime: 2035
-        total-utime: 1730999
-        total-time: 1733034
-        count: 400
-        rps: 230.80908972357147
-        test-text: "Native sub search"
-      test-time: "2021-01-06T14:36:24.689651Z"
-    Label-0.2.0: 
-      test1: 
-        total-time: 7699906
-        test-text: "Native sub search"
-        mean: 7699.906
-        total-utime: 7688156
-        rps: 129.87171531704413
-        total-stime: 11750
-        count: 1000
-      test-time: "2021-01-05T20:49:47.823129Z"
-      test0: 
-        total-utime: 1033415
-        rps: 1447.286915947365
-        mean: 690.948
-        total-stime: 3007
-        test-text: "Method calls"
-        total-time: 1036422
-        count: 1500
-    AboutDialog-0.2.0: 
-      test0: 
-        total-stime: 5873
-        count: 500
-        mean: 725.33
-        rps: 1378.6828064467209
-        total-time: 362665
-        total-utime: 356792
-        test-text: "Method calls"
-      test1: 
-        total-stime: 9898
-        total-utime: 3107157
-        mean: 6234.11
-        count: 500
-        test-text: "Native sub search"
-        total-time: 3117055
-        rps: 160.40782084371307
-      test-time: "2021-01-05T20:47:15.204618Z"
-    Widget-0.2.0: 
-      test1: 
-        mean: 2672.336
-        test-text: "Native sub search"
-        total-utime: 1334614
-        total-stime: 1554
-        total-time: 1336168
-        count: 500
-        rps: 374.2044413576736
-      test0: 
-        mean: 371.214
-        count: 500
-        total-time: 185607
-        rps: 2693.8639167703805
-        test-text: "Method calls"
-        total-stime: 4016
-        total-utime: 181591
-      test-time: "2021-01-05T20:50:30.572917Z"
     Assistant-0.1.0: 
-      test1: 
-        rps: 220.7036584390182
-        total-utime: 1804060
-        total-time: 1812385
-        total-stime: 8325
-        count: 400
-        test-text: "Native sub search"
-        mean: 4530.9625
       test-time: "2021-01-05T20:46:29.009404Z"
       test0: 
         total-time: 170430
-        mean: 426.075
-        rps: 2347.004635334155
-        count: 400
-        total-utime: 169379
         total-stime: 1051
+        mean: 426.075
+        count: 400
         test-text: "Method calls"
-    Label-0.2.1: 
+        total-utime: 169379
+        rps: 2347.004635334155
+      test1: 
+        total-time: 1812385
+        count: 400
+        mean: 4530.9625
+        total-utime: 1804060
+        test-text: "Native sub search"
+        rps: 220.7036584390182
+        total-stime: 8325
+    Widget-0.2.0: 
+      test-time: "2021-01-05T20:50:30.572917Z"
+      test1: 
+        rps: 374.2044413576736
+        count: 500
+        total-time: 1336168
+        test-text: "Native sub search"
+        total-stime: 1554
+        total-utime: 1334614
+        mean: 2672.336
       test0: 
-        mean: 950.954
-        total-utime: 1413146
         test-text: "Method calls"
+        total-utime: 181591
+        rps: 2693.8639167703805
+        total-stime: 4016
+        total-time: 185607
+        mean: 371.214
+        count: 500
+    Label-0.2.1: 
+      test1: 
+        mean: 8406.299
+        total-utime: 8383298
+        count: 1000
+        total-time: 8406299
+        rps: 118.95841439853615
+        test-text: "Native sub search"
+        total-stime: 23001
+      test0: 
         total-time: 1426431
         total-stime: 13285
+        count: 1500
+        total-utime: 1413146
         rps: 1051.575575685049
-        count: 1500
-      test1: 
-        total-time: 8406299
-        test-text: "Native sub search"
-        total-utime: 8383298
-        mean: 8406.299
-        total-stime: 23001
-        rps: 118.95841439853615
-        count: 1000
+        test-text: "Method calls"
+        mean: 950.954
       test-time: "2021-01-06T14:43:21.990519Z"
-  "Gnome::Gtk3-0.35.1": 
-    CheckMenuItem-0.1.0: 
+    AboutDialog-0.2.0: 
+      test-time: "2021-01-05T20:47:15.204618Z"
+      test1: 
+        count: 500
+        rps: 160.40782084371307
+        total-time: 3117055
+        test-text: "Native sub search"
+        mean: 6234.11
+        total-utime: 3107157
+        total-stime: 9898
       test0: 
+        count: 500
+        total-time: 362665
+        total-utime: 356792
+        total-stime: 5873
+        mean: 725.33
+        rps: 1378.6828064467209
+        test-text: "Method calls"
+    Assistant-0.1.1: 
+      test-time: "2021-01-06T14:36:24.689651Z"
+      test1: 
+        total-time: 1733034
+        total-stime: 2035
+        count: 400
+        test-text: "Native sub search"
+        rps: 230.80908972357147
+        mean: 4332.585
+        total-utime: 1730999
+      test0: 
+        rps: 2193.5115927087677
+        total-stime: 73
+        total-time: 182356
+        test-text: "Method calls"
+        count: 400
+        mean: 455.89
+        total-utime: 182283
+    Label-0.2.0: 
+      test-time: "2021-01-05T20:49:47.823129Z"
+      test1: 
+        total-stime: 11750
+        test-text: "Native sub search"
+        total-time: 7699906
+        total-utime: 7688156
+        rps: 129.87171531704413
+        mean: 7699.906
         count: 1000
-        rps: 12794.104476657158
-        mean: 78.161
-        test-text: "Method calls"
-        total-utime: 77380
-        total-stime: 781
-        total-time: 78161
-      test-time: "2021-01-21T15:31:00.539208Z"
-Raku-2020.10.109: 
-  "Gnome::Gtk3-0.34.2.1-native:0.18.5.2": 
-    Label-0.1.0: 
-      test-time: "2021-01-03T13:21:07.603196Z"
       test0: 
+        total-time: 1036422
         test-text: "Method calls"
-        total-stime: 6714
-        speedup: 10.706183013999716
+        total-stime: 3007
+        mean: 690.948
         count: 1500
-        total-time: 1070093
-        mean: 713.395333
-        total-utime: 1063379
-        rps: 1401.7473247652306
-      test1: 
-        speedup: 0
-        total-utime: 7631694
+        rps: 1447.286915947365
+        total-utime: 1033415
+    Scale-0.2.0: 
+      test-time: "2021-01-06T15:56:09.407402Z"
+      test0: 
+        test-text: "Method calls"
+        total-utime: 185842
+        mean: 189.748
+        rps: 5270.14777494361
+        total-time: 189748
+        total-stime: 3906
         count: 1000
-        total-time: 7637741
-        rps: 130.9287654556498
-        mean: 7637.741
-        total-stime: 6047
-        test-text: "Native sub search"
-    AboutDialog-0.1.0: 
       test1: 
-        total-time: 4424956
-        total-utime: 4417851
-        rps: 112.99547385329933
-        count: 500
-        total-stime: 7105
-        speedup: 0
         test-text: "Native sub search"
-        mean: 8849.912
-      test-time: "2021-01-01T12:32:57.719370Z"
-      test0: 
-        total-stime: 351
-        rps: 954.6302430679525
-        mean: 1047.526
-        speedup: 8.44839364368999
-        count: 500
-        total-utime: 523412
-        total-time: 523763
-        test-text: "Method calls"
-    Widget-0.1.0: 
-      test-time: "2021-01-01T16:40:08.126604Z"
+        count: 1000
+        rps: 573.1003871293115
+        total-utime: 1739052
+        mean: 1744.895
+        total-time: 1744895
+        total-stime: 5843
+Raku-2021.05.3: 
+  "Gnome::Gtk3-0.40.1": 
+    AboutDialog-0.2.0: 
       test1: 
-        total-utime: 1332111
-        test-text: "Native sub search"
-        total-time: 1334154
-        mean: 2668.308
+        rps: 149.51960845001096
+        total-stime: 7725
+        total-time: 3344043
+        total-utime: 3336318
         count: 500
-        total-stime: 2043
-        speedup: 0
-        rps: 374.76932947770644
+        mean: 6688.086
+        test-text: "Native sub search"
       test0: 
         count: 500
-        speedup: 6.821490840112281
-        total-stime: 3609
-        total-utime: 191972
-        mean: 391.162
-        total-time: 195581
+        total-time: 374384
+        total-utime: 372522
+        mean: 748.768
+        rps: 1335.5271592803113
         test-text: "Method calls"
-        rps: 2556.485548187196
+        total-stime: 1862
+      test-time: "2021-06-15T15:07:54.641465Z"
+    Assistant-0.1.1: 
+      test-time: "2021-06-15T15:08:15.339903Z"
+      test0: 
+        total-stime: 129
+        count: 400
+        test-text: "Method calls"
+        total-utime: 211239
+        mean: 528.42
+        total-time: 211368
+        rps: 1892.4340486734038
+      test1: 
+        total-time: 1834367
+        count: 400
+        total-utime: 1832412
+        mean: 4585.9175
+        rps: 218.05887262472558
+        total-stime: 1955
+        test-text: "Native sub search"
+    Grid-0.0.0: 
+      test1: 
+        total-stime: 1926
+        total-time: 2154652
+        count: 500
+        total-utime: 2152726
+        rps: 232.05603503489195
+        test-text: "Native sub search"
+        mean: 4309.304
+      test0: 
+        rps: 4180.217538520705
+        total-utime: 117702
+        test-text: "Method calls"
+        count: 500
+        mean: 239.222
+        total-time: 119611
+        total-stime: 1909
+      test-time: "2021-06-15T15:08:39.945922Z"
+    CheckMenuItem-0.1.0: 
+      test-time: "2021-06-15T15:08:33.478095Z"
+      test0: 
+        mean: 74.504
+        total-stime: 143
+        total-utime: 74361
+        rps: 13422.098142381617
+        count: 1000
+        test-text: "Method calls"
+        total-time: 74504
+    Statusbar-0.2.0: 
+      test0: 
+        count: 500
+        total-stime: 1007
+        test-text: "Method calls"
+        total-time: 56038
+        mean: 112.076
+        total-utime: 55031
+        rps: 8922.516863556872
+      test1: 
+        total-stime: 1027
+        total-utime: 544269
+        test-text: "Native sub search"
+        count: 500
+        total-time: 545296
+        mean: 1090.592
+        rps: 916.93318858015
+      test-time: "2021-06-15T15:07:17.713802Z"
+    Label-0.2.1: 
+      test0: 
+        count: 1500
+        test-text: "Method calls"
+        total-stime: 5006
+        rps: 1524.5389794126256
+        total-time: 983904
+        total-utime: 978898
+        mean: 655.936
+      test1: 
+        total-utime: 7441282
+        mean: 7452.289
+        count: 1000
+        test-text: "Native sub search"
+        total-stime: 11007
+        rps: 134.18695920139436
+        total-time: 7452289
+      test-time: "2021-06-15T15:08:55.914247Z"
+    Scale-0.2.0: 
+      test0: 
+        count: 1000
+        total-stime: 1855
+        total-utime: 210937
+        total-time: 212792
+        test-text: "Method calls"
+        rps: 4699.424790405655
+        mean: 212.792
+      test1: 
+        total-time: 1863333
+        total-stime: 12153
+        mean: 1863.333
+        test-text: "Native sub search"
+        total-utime: 1851180
+        rps: 536.6727257017399
+        count: 1000
+      test-time: "2021-06-15T15:09:15.433841Z"
 Raku-2021.02.1: 
   "Gnome::Gtk3-0.36.3": 
     AboutDialog-0.2.0: 
-      test-time: "2021-03-15T09:14:02.303324Z"
       test1: 
+        mean: 6871.426
+        total-time: 3435713
+        rps: 145.53019999051142
         total-utime: 3431810
         test-text: "Native sub search"
         total-stime: 3903
-        total-time: 3435713
         count: 500
-        rps: 145.53019999051142
-        mean: 6871.426
       test0: 
-        rps: 1328.9601684058325
-        total-time: 376234
-        test-text: "Method calls"
-        mean: 752.468
         total-stime: 2106
-        count: 500
         total-utime: 374128
+        test-text: "Method calls"
+        total-time: 376234
+        rps: 1328.9601684058325
+        count: 500
+        mean: 752.468
+      test-time: "2021-03-15T09:14:02.303324Z"
+Raku-2020.10.109: 
+  "Gnome::Gtk3-0.34.2.1-native:0.18.5.2": 
+    AboutDialog-0.1.0: 
+      test0: 
+        count: 500
+        total-time: 523763
+        test-text: "Method calls"
+        total-utime: 523412
+        total-stime: 351
+        mean: 1047.526
+        rps: 954.6302430679525
+        speedup: 8.44839364368999
+      test1: 
+        total-utime: 4417851
+        mean: 8849.912
+        total-stime: 7105
+        speedup: 0
+        rps: 112.99547385329933
+        count: 500
+        test-text: "Native sub search"
+        total-time: 4424956
+      test-time: "2021-01-01T12:32:57.719370Z"
+    Label-0.1.0: 
+      test1: 
+        total-stime: 6047
+        mean: 7637.741
+        rps: 130.9287654556498
+        test-text: "Native sub search"
+        count: 1000
+        total-time: 7637741
+        speedup: 0
+        total-utime: 7631694
+      test-time: "2021-01-03T13:21:07.603196Z"
+      test0: 
+        rps: 1401.7473247652306
+        speedup: 10.706183013999716
+        total-stime: 6714
+        count: 1500
+        total-utime: 1063379
+        test-text: "Method calls"
+        mean: 713.395333
+        total-time: 1070093
+    Widget-0.1.0: 
+      test1: 
+        rps: 374.76932947770644
+        total-utime: 1332111
+        mean: 2668.308
+        total-stime: 2043
+        total-time: 1334154
+        test-text: "Native sub search"
+        count: 500
+        speedup: 0
+      test0: 
+        test-text: "Method calls"
+        total-utime: 191972
+        mean: 391.162
+        speedup: 6.821490840112281
+        count: 500
+        total-stime: 3609
+        rps: 2556.485548187196
+        total-time: 195581
+      test-time: "2021-01-01T16:40:08.126604Z"
 ...
