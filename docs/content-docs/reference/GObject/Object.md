@@ -41,13 +41,15 @@ An example
 get-data
 --------
 
-Gets a named field from the objects table of associations. See `set-data()` for an example.
+Gets a named field from the objects table of associations. See `set-data()` for several examples.
 
 Returns: the data if found, or `undefined` if no such data exists.
 
-    method get-data ( Str $key --> Pointer )
+    method get-data ( Str $key, :$type = Pointer --> Any )
 
   * Str $key; name of the key for that association
+
+  * $type; specification of the type of data to return. By default `Pointer`. Supported types are `Int`, `Num` and `Str`.
 
 get-property
 ------------
@@ -205,13 +207,13 @@ Each object carries around a table of associations from strings to pointers. Thi
 
 If the object already had an association with that name, the old association will be destroyed.
 
-    method set-data ( Str $key, Pointer $data )
+    method set-data ( Str $key, $data )
 
-  * Str $key; name of the key
+  * Str $key; name of the key.
 
-  * Pointer $data; data to associate with that key
+  * $data; data to associate with that key. Supported types are `Num`, `Int` and `Str`. All other types must be converted to a pointer using nativecast.
 
-### Example
+### Example 1
 
 Here is an example to show how to associate some data to an object and to retrieve it again. You must import the raku **NativeCall** module to get access to some of the native types and routines.
 
@@ -229,6 +231,46 @@ Here is an example to show how to associate some data to an object and to retrie
         nativecast( N-GObject, $button.get-data('attached-label-data'))
       )
     );
+
+### Example 2
+
+After some improvements it is now possible to provide your data as is. The next example shows what is possible;
+
+    $button.set-data( 'my-text-key', 'my important text');
+
+    …
+
+    my Str $text = $button.get-data( 'my-text-key', :type(Str));
+
+### Example 3
+
+An elaborate example of more complex data can implemented using BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server.
+
+    my BSON::Document $bson .= new: (
+      :int-number(-10),
+      :num-number(-2.34e-3),
+      strings => BSON::Document.new(( :s1<abc>, :s2<def>, :s3<xyz> ))
+    );
+    $bl.set-data( 'my-buf-key', $bson.encode);
+
+    …
+
+    # Convert Pointer to CArray of bytes
+    my CArray[uint8] $ca8 = nativecast(
+      CArray[uint8], $bl.get-data('my-buf-key')
+    );
+
+    # Get the length from the first 4 bytes
+    my Buf $l-ca8 .= new($ca8[0..3]);
+    my Int $doc-size = decode-int32( $l-ca8, 0);
+
+    # Get all bytes into the Buf and convert it to a BSON document
+    my BSON::Document $bson2 .= new(Buf.new($ca8[0..($doc-size-1)]));
+
+    # Now you can use the data again.
+    is $bson2<int-number>, -10, 'bson Int';
+    is $bson2<num-number>, -234e-5, 'bson Num';
+    is $bson2<strings><s2>, 'def', 'bson Str';
 
 set-property
 ------------
