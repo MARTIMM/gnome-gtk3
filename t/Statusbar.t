@@ -38,7 +38,7 @@ class X {
 
   method do-test ( Gnome::Gtk3::Statusbar $sb, Str :$test, Str :$testing ) {
     my Gnome::Gtk3::Box $b = $sb.get-message-area-rk;
-    $b.container-foreach( self, 'test-label', :$test, :$testing);
+    $b.foreach( self, 'test-label', :$test, :$testing);
   }
 }
 
@@ -55,38 +55,38 @@ subtest 'Manipulations', {
   is $cid3, 1, '.get-context-id)(): 1st context 2nd StatusBar';
 
   my Str $msg1 = 'zou je dat wel doen?';
-  my Int $mid1 = $sb1.statusbar-push( $cid1, $msg1);
+  my Int $mid1 = $sb1.push( $cid1, $msg1);
   is $mid1, 1, "message id = $mid1, $msg1";
   my Gnome::Gtk3::Box $b = $sb1.get-message-area-rk;
   is $b.get-name, 'GtkBox', '.get-message-area-rk()';
 
-  $x.do-test( $sb1, :test('zou je dat wel doen?'), :testing<.statusbar-push()>);
+  $x.do-test( $sb1, :test('zou je dat wel doen?'), :testing<.push()>);
 
   my Str $msg2 = 'of moet ik het doen?';
-  my Int $mid2 = $sb1.statusbar-push( $cid1, $msg2);
+  my Int $mid2 = $sb1.push( $cid1, $msg2);
   is $mid2, 2, "message id = $mid2, $msg2";
 
   my Str $msg3 = 'dan nog, ...';
-  my Int $mid3 = $sb1.statusbar-push( $cid1, $msg3);
+  my Int $mid3 = $sb1.push( $cid1, $msg3);
   is $mid3, 3, "message id = $mid3, $msg3";
-  $x.do-test( $sb1, :test('dan nog, ...'), :testing('3x .statusbar-push()'));
+  $x.do-test( $sb1, :test('dan nog, ...'), :testing('3x .push()'));
 
   # pop: 'dan nog, ...', top: 'of moet ik het doen?', left 2 msgs
-  $sb1.statusbar-pop($cid1);
+  $sb1.pop($cid1);
   $x.do-test(
-    $sb1, :test('of moet ik het doen?'), :testing('.statusbar-pop()')
+    $sb1, :test('of moet ik het doen?'), :testing('.pop()')
   );
 
   # remove 'of moet ik het doen?', top: 'zou je dat wel doen?'
   $sb1.remove( $cid1, 2);
   $x.do-test(
-    $sb1, :test('zou je dat wel doen?'), :testing('.statusbar-remove()')
+    $sb1, :test('zou je dat wel doen?'), :testing('.remove()')
   );
 
   # drop all messages
-  $sb1.statusbar-remove-all($cid1);
+  $sb1.remove-all($cid1);
   $x.do-test(
-    $sb1, :test(''), :testing('.statusbar-remove-all()')
+    $sb1, :test(''), :testing('.remove-all()')
   );
 }
 
@@ -131,13 +131,13 @@ subtest 'Signals ...', {
 
       while $main.gtk-events-pending() { $main.iteration-do(False); }
 
-      $widget.statusbar-push( $cid, $msg);
+      $widget.push( $cid, $msg);
       is $!signal-processed, True, '\'text-pushed\' signal processed';
 
       while $main.gtk-events-pending() { $main.iteration-do(False); }
 
       $!signal-processed = False;
-      $widget.statusbar-pop($cid);
+      $widget.pop($cid);
       is $!signal-processed, True, '\'text-popped\' signal processed';
 
       while $main.gtk-events-pending() { $main.iteration-do(False); }
