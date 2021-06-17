@@ -81,8 +81,8 @@ table {
 
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
-Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|  |
+Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
@@ -113,22 +113,23 @@ ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| ✓|
-CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
-DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
-Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
-Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
-Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
-EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|
-Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |
-EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
-FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
-FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
-FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |
-FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |
+DrawingArea               |  |  | ½| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
+Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|  |
+Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|  |
+Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |  |
+EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|  |
+FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |  |
+FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+FileChooserWidget         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓| ✓|
+FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
-Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
@@ -168,18 +169,18 @@ Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
-SelectionData             |Bx|
-Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
-SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |
-Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |
-StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
-StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |
-Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  |  |  |
-StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
-Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SelectionData             |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
+Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
+SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |  |
+Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |  |
+StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
+StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |  |
+Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
+StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TargetEntry               |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TargetList                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Targets                   |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|

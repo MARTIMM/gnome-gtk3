@@ -92,8 +92,8 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ╰─✗ GtkVButtonBox           ⛔
 │   │   │   │   ├── GtkColorChooserWidget       ColorChooserWidget
 │   │   │   │   ├─✗ GtkColorSelection           ⛔
-│   │   │   │   ├── GtkFileChooserButton
-│   │   │   │   ├── GtkFileChooserWidget
+│   │   │   │   ├── GtkFileChooserButton        FileChooserButton
+│   │   │   │   ├── GtkFileChooserWidget        FileChooserWidget
 │   │   │   │   ├── GtkFontChooserWidget
 │   │   │   │   ├─✗ GtkFontSelection            ⛔
 │   │   │   │   ├─✗ GtkHBox                     ⛔
