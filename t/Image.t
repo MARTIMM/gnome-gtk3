@@ -22,8 +22,7 @@ my Gnome::Gtk3::Image $i;
 subtest 'ISA test', {
   $i .= new;
   isa-ok $i, Gnome::Gtk3::Image, ".new";
-  is GtkImageType($i.get-storage-type), GTK_IMAGE_EMPTY,
-     '.get-storage-type() empty';
+  is $i.get-storage-type, GTK_IMAGE_EMPTY, '.get-storage-type() empty';
 
   $i .= new(:filename<t/data/Add.png>);
   isa-ok $i, Gnome::Gtk3::Image, ".new(:filename)";
@@ -52,18 +51,18 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  $i.image-clear;
-  is GtkImageType($i.get-storage-type), GTK_IMAGE_EMPTY, '.image-clear()';
+  $i.clear;
+  is GtkImageType($i.get-storage-type), GTK_IMAGE_EMPTY, '.clear()';
 
   $i .= new(:filename<t/data/Add.png>);
   my Gnome::Gdk3::Pixbuf $pb .= new(:native-object($i.get-pixbuf));
   is $pb.get-width, 16, '.get-pixbuf()';
 #  note $i.get-pixel-size;
 
-  $i .= new( :icon-name<media-seek-forward>, :size(GTK_ICON_SIZE_DIALOG));
+  $i .= new( :icon-name<media-seek-forward>, :size(GTK_ICON_SIZE_BUTTON));
 
   my List $info = $i.get-icon-name;
-  is-deeply $info, ( 'media-seek-forward', GTK_ICON_SIZE_DIALOG),
+  is-deeply $info, ( 'media-seek-forward', GTK_ICON_SIZE_BUTTON),
             '.get-icon-name()';
 }
 
