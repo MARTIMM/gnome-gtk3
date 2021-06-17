@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.40.0.1",
+  "version": "0.41.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -54,6 +54,7 @@
     "Gnome::Gtk3::FileChooser": "lib/Gnome/Gtk3/FileChooser.pm6",
     "Gnome::Gtk3::FileChooserButton": "lib/Gnome/Gtk3/FileChooserButton.pm6",
     "Gnome::Gtk3::FileChooserDialog": "lib/Gnome/Gtk3/FileChooserDialog.pm6",
+    "Gnome::Gtk3::FileChooserWidget": "lib/Gnome/Gtk3/FileChooserWidget.pm6",
     "Gnome::Gtk3::FileFilter": "lib/Gnome/Gtk3/FileFilter.pm6",
     "Gnome::Gtk3::Fixed": "lib/Gnome/Gtk3/Fixed.pm6",
     "Gnome::Gtk3::Frame": "lib/Gnome/Gtk3/Frame.pm6",

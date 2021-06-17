@@ -5,8 +5,16 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-06-16 0.41.0:
+* Add module **Gnome::Gtk3::FileChooserWidget**.
+* Bugfixes in **Gnome::Gtk3::FileFilter**. Defined wrong type for **GtkFileFilterInfo**. Changed to **N-GtkFileFilterInfo**.
+* Improved doc and tests of **Gnome::Gtk3::Statusbar**.
 
-#### 2021-05-25 0.40.0:
+#### 2021-06-15 0.40.1:
+* Module **Gnome::Gtk3::Statusbar** docs are improved, methods are added and more tests done.
+* Drag and drop tutorial finished.
+
+#### 2021-06-14 0.40.0:
 * Added support for drag and drop. Modules added;
   * Gnome::Gdk3: Atom and DragContext
   * Gnome::Gtk3: Targets, TargetList, TargetEntry, SelectionData, DragDest and DragSource.
