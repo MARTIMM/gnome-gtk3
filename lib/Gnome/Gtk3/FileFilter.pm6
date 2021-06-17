@@ -114,11 +114,10 @@ enum GtkFileFilterFlags is export (
 =begin pod
 =head2 class N-GtkFileFilterInfo
 
-A B<Gnome::Gtk3::FileFilterInfo>-struct is used to pass information about the
-tested file to C<gtk_file_filter_filter()>.
+A B<N-GtkFileFilterInfo>-struct is used to pass information about the tested file to C<gtk_file_filter_filter()>.
 
 
-=item B<Gnome::Gtk3::FileFilterFlags> $.contains: Flags indicating which of the following fields need are filled
+=item B<GtkFileFilterFlags> $.contains: Flags indicating which of the following fields need are filled
 =item Str $.filename: the filename of the file being tested
 =item Str $.uri: the URI for the file being tested
 =item Str $.display_name: the string that will be used to display the file in the file chooser
@@ -128,7 +127,7 @@ tested file to C<gtk_file_filter_filter()>.
 =end pod
 
 #TT:0:N-GtkFileFilterInfo:
-class GtkFileFilterInfo is repr('CStruct') is export {
+class N-GtkFileFilterInfo is repr('CStruct') is export {
   # contains: flags indicating which of the following fields need are filled
   has int32 $.contains;          # bits from GtkFileFilterFlags
   has Str $.filename;
@@ -401,13 +400,13 @@ Returns: C<1> if the file should be displayed
 
 Since: 2.4
 
-  method gtk_file_filter_filter ( GtkFileFilterInfo $filter_info --> Int  )
+  method gtk_file_filter_filter ( N-GtkFileFilterInfo $filter_info --> Int  )
 
-=item GtkFileFilterInfo $filter_info; a B<Gnome::Gtk3::FileFilterInfo> containing information about a file.
+=item N-GtkFileFilterInfo $filter_info; a B<Gnome::Gtk3::FileFilterInfo> containing information about a file.
 
 =end pod
 
-sub gtk_file_filter_filter ( N-GObject $filter, GtkFileFilterInfo $filter_info )
+sub gtk_file_filter_filter ( N-GObject $filter, N-GtkFileFilterInfo $filter_info )
   returns int32
   is native(&gtk-lib)
   { * }
@@ -510,7 +509,7 @@ sub gtk_file_filter_add_pixbuf_formats ( N-GObject $filter )
 
 sub gtk_file_filter_add_custom (
   N-GObject $filter, int32 $filter-flags-needed,
-  &filter-func ( GtkFileFilterInfo $filter_info, OpaquePointer),
+  &filter-func ( N-GtkFileFilterInfo $filter_info, OpaquePointer),
   OpaquePointer, &notify ( OpaquePointer )
 ) is native(&gtk-lib)
   { * }
