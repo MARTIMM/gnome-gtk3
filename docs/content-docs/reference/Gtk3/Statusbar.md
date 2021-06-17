@@ -39,7 +39,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/StatusBar.svg)
+![](plantuml/Statusbar.svg)
 
 Inheriting this class
 ---------------------
@@ -72,72 +72,75 @@ Creates a new **Gnome::Gtk3::Statusbar** ready for messages.
 
     multi method new ( )
 
-[[gtk_] statusbar_] get_context_id
-----------------------------------
+get-context-id
+--------------
 
 Returns a new context identifier, given a description of the actual context. Note that the description is not shown in the UI.
 
 Returns: an integer id
 
-    method gtk_statusbar_get_context_id ( Str $context_description --> UInt )
+    method get-context-id ( Str $context_description --> UInt )
 
   * Str $context_description; textual description of what context the new message is being used in
 
-[gtk_] statusbar_push
----------------------
-
-Pushes a new message onto a statusbar’s stack.
-
-Returns: a message id that can be used with `gtk_statusbar_remove()`.
-
-    method gtk_statusbar_push ( UInt $context_id, Str $text --> UInt )
-
-  * UInt $context_id; the message’s context id, as returned by `gtk_statusbar_get_context_id()`
-
-  * Str $text; the message to add to the statusbar
-
-[gtk_] statusbar_pop
---------------------
-
-Removes the first message in the **Gnome::Gtk3::Statusbar**’s stack with the given context id. Note that this may not change the displayed message, if the message at the top of the stack has a different context id.
-
-    method gtk_statusbar_pop ( UInt $context_id )
-
-  * UInt $context_id; a context identifier
-
-[gtk_] statusbar_remove
------------------------
-
-Forces the removal of a message from a statusbar’s stack. The exact *context_id* and *message_id* must be specified.
-
-    method gtk_statusbar_remove ( UInt $context_id, UInt $message_id )
-
-  * UInt $context_id; a context identifier
-
-  * UInt $message_id; a message identifier, as returned by `gtk_statusbar_push()`
-
-[[gtk_] statusbar_] remove_all
-------------------------------
-
-Forces the removal of all messages from a statusbar's stack with the exact *context_id*.
-
-    method gtk_statusbar_remove_all ( UInt $context_id )
-
-  * UInt $context_id; a context identifier
-
-[[gtk_] statusbar_] get_message_area
-------------------------------------
+get-message-area, get-message-area-rk
+-------------------------------------
 
 Retrieves the box containing the label widget.
 
-Returns: (type **N-GObject**) a native **Gnome::Gtk3::Box** object
+Returns: a **Gnome::Gtk3::Box**
 
-    method gtk_statusbar_get_message_area ( --> N-GObject )
+    method get-message-area ( --> N-GObject )
+    method get-message-area-rk ( --> Gnome::Gtk3::Box )
+
+pop
+---
+
+Removes the first message in the **Gnome::Gtk3::Statusbar**’s stack with the given context id.
+
+Note that this may not change the displayed message, if the message at the top of the stack has a different context id.
+
+    method pop ( UInt $context_id )
+
+  * UInt $context_id; a context identifier
+
+push
+----
+
+Pushes a new message onto a statusbar’s stack.
+
+Returns: a message id that can be used with `remove()`.
+
+    method push ( UInt $context_id, Str $text --> UInt )
+
+  * UInt $context_id; the message’s context id, as returned by `get-context-id()`
+
+  * Str $text; the message to add to the statusbar
+
+remove
+------
+
+Forces the removal of a message from a statusbar’s stack. The exact *context-id* and *message-id* must be specified.
+
+    method remove ( UInt $context_id, UInt $message_id )
+
+  * UInt $context_id; a context identifier
+
+  * UInt $message_id; a message identifier, as returned by `push()`
+
+remove-all
+----------
+
+Forces the removal of all messages from a statusbar's stack with the exact *context-id*.
+
+    method remove-all ( UInt $context_id )
+
+  * UInt $context_id; a context identifier
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -163,21 +166,43 @@ Second method
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
+
+### text-popped
+
+Is emitted whenever a new message is popped off a statusbar's stack.
+
+    method handler (
+      UInt $context_id,
+      Str $text,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($statusbar),
+      *%user-options
+      --> Int
+    );
+
+  * $statusbar; the object which received the signal
+
+  * $context_id; the context id of the relevant message/statusbar
+
+  * $text; the message that was just popped
+
+  * $_handle_id; the registered event handler id
 
 ### text-pushed
 
 Is emitted whenever a new message gets pushed onto a statusbar's stack.
 
     method handler (
-      Int $context_id,
+      UInt $context_id,
       Str $text,
       Int :$_handle_id,
       Gnome::GObject::Object :_widget($statusbar),
       *%user-options
+      --> Int
     );
 
   * $statusbar; the object which received the signal
@@ -186,21 +211,5 @@ Is emitted whenever a new message gets pushed onto a statusbar's stack.
 
   * $text; the message that was pushed
 
-### text-popped
-
-Is emitted whenever a new message is popped off a statusbar's stack.
-
-    method handler (
-      Int $context_id,
-      Str $text,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($statusbar),
-      *%user-options
-    );
-
-  * $statusbar; the object which received the signal
-
-  * $context_id; the context id of the relevant message/statusbar
-
-  * $text; the message that was just popped
+  * $_handle_id; the registered event handler id
 

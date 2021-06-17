@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::N::N-GObject;
+
 use Gnome::Gtk3::Statusbar;
 use Gnome::Gtk3::Box;
 use Gnome::Gtk3::Label;
@@ -36,7 +37,7 @@ class X {
   }
 
   method do-test ( Gnome::Gtk3::Statusbar $sb, Str :$test, Str :$testing ) {
-    my Gnome::Gtk3::Box $b .= new(:native-object($sb.get-message-area));
+    my Gnome::Gtk3::Box $b = $sb.get-message-area-rk;
     $b.container-foreach( self, 'test-label', :$test, :$testing);
   }
 }
@@ -56,8 +57,8 @@ subtest 'Manipulations', {
   my Str $msg1 = 'zou je dat wel doen?';
   my Int $mid1 = $sb1.statusbar-push( $cid1, $msg1);
   is $mid1, 1, "message id = $mid1, $msg1";
-  my Gnome::Gtk3::Box $b .= new(:native-object($sb1.get-message-area));
-  is $b.get-name, 'GtkBox', '.get-message-area()';
+  my Gnome::Gtk3::Box $b = $sb1.get-message-area-rk;
+  is $b.get-name, 'GtkBox', '.get-message-area-rk()';
 
   $x.do-test( $sb1, :test('zou je dat wel doen?'), :testing<.statusbar-push()>);
 
@@ -77,7 +78,7 @@ subtest 'Manipulations', {
   );
 
   # remove 'of moet ik het doen?', top: 'zou je dat wel doen?'
-  $sb1.statusbar-remove( $cid1, 2);
+  $sb1.remove( $cid1, 2);
   $x.do-test(
     $sb1, :test('zou je dat wel doen?'), :testing('.statusbar-remove()')
   );
