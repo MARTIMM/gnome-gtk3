@@ -23,6 +23,42 @@ Note that GDK automatically clears the exposed area before sending the expose ev
 Simple **Gnome::Gtk3::DrawingArea** usage
 -----------------------------------------
 
+    class DA {
+      method draw-callback (
+        cairo_t $cr-no, Gnome::Gtk3::DrawingArea :_widget($area)
+      ) {
+        my UInt ( $width, $height);
+        my Gnome::Gtk3::StyleContext $context .= new(
+          :native-object($area.get-style-context)
+        );
+        $width = $area.get-allocated-width;
+        $height = $area.get-allocated-height;
+
+        my Gnome::Cairo $cr .= new(:native-object($cr-no));
+        $context.render-background( $cr, 0, 0, $width, $height);
+
+        $cr.cairo-arc(
+          $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
+        );
+
+        my N-GdkRGBA $color-no .= new;
+        $context.get-color( $context.get-state, $color-no);
+        $cr.set-source-rgba(
+          $color-no.red, $color-no.green, $color-no.blue, $color-no.alpha
+        );
+
+        $cr.cairo-fill;
+
+        False;
+      }
+    }
+
+
+    given my Gnome::Gtk3::DrawingArea $drawing-area .= new {
+      .set-size-request( 100, 100);
+      .register-signal( DA.new, 'draw-callback', 'draw');
+    }
+
 Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; `gtk_widget_queue_draw_area()` and `gdk_window_invalidate_rect()` are equally good ways to do this. You’ll then get a draw signal for the invalid region.
 
 The available routines for drawing are documented on the [GDK Drawing Primitives][gdk3-Cairo-Interaction] page and the cairo documentation.

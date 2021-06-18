@@ -29,8 +29,6 @@ Note that GDK automatically clears the exposed area before sending the expose ev
 
 =head2 Simple B<Gnome::Gtk3::DrawingArea> usage
 
-=begin comment
-
   class DA {
     method draw-callback (
       cairo_t $cr-no, Gnome::Gtk3::DrawingArea :_widget($area)
@@ -66,8 +64,6 @@ Note that GDK automatically clears the exposed area before sending the expose ev
     .set-size-request( 100, 100);
     .register-signal( DA.new, 'draw-callback', 'draw');
   }
-
-=end comment
 
 Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; C<gtk_widget_queue_draw_area()> and C<gdk_window_invalidate_rect()> are equally good ways to do this. You’ll then get a draw signal for the invalid region.
 
