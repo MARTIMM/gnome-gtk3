@@ -30,41 +30,43 @@ Note that GDK automatically clears the exposed area before sending the expose ev
 =head2 Simple B<Gnome::Gtk3::DrawingArea> usage
 
 =begin comment
-|[<!-- language="C" -->
-gboolean
-draw_callback (B<Gnome::Gtk3::Widget> *widget, cairo_t *cr, gpointer data)
-{
-  guint width, height;
-  B<Gnome::Gdk3::RGBA> color;
-  B<Gnome::Gtk3::StyleContext> *context;
 
-  context = gtk_widget_get_style_context (widget);
+  class DA {
+    method draw-callback (
+      cairo_t $cr-no, Gnome::Gtk3::DrawingArea :_widget($area)
+    ) {
+      my UInt ( $width, $height);
+      my Gnome::Gtk3::StyleContext $context .= new(
+        :native-object($area.get-style-context)
+      );
+      $width = $area.get-allocated-width;
+      $height = $area.get-allocated-height;
 
-  width = gtk_widget_get_allocated_width (widget);
-  height = gtk_widget_get_allocated_height (widget);
+      my Gnome::Cairo $cr .= new(:native-object($cr-no));
+      $context.render-background( $cr, 0, 0, $width, $height);
 
-  gtk_render_background (context, cr, 0, 0, width, height);
+      $cr.cairo-arc(
+        $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
+      );
 
-  cairo_arc (cr,
-             width / 2.0, height / 2.0,
-             MIN (width, height) / 2.0,
-             0, 2 * G_PI);
+      my N-GdkRGBA $color-no .= new;
+      $context.get-color( $context.get-state, $color-no);
+      $cr.set-source-rgba(
+        $color-no.red, $color-no.green, $color-no.blue, $color-no.alpha
+      );
 
-  gtk_style_context_get_color (context,
-                               gtk_style_context_get_state (context),
-                               &color);
-  gdk_cairo_set_source_rgba (cr, &color);
+      $cr.cairo-fill;
 
-  cairo_fill (cr);
+      False;
+    }
+  }
 
- return FALSE;
-}
-[...]
-  B<Gnome::Gtk3::Widget> *drawing_area = C<gtk_drawing_area_new()>;
-  gtk_widget_set_size_request (drawing_area, 100, 100);
-  g_signal_connect (G_OBJECT (drawing_area), "draw",
-                    G_CALLBACK (draw_callback), NULL);
-]|
+
+  given my Gnome::Gtk3::DrawingArea $drawing-area .= new {
+    .set-size-request( 100, 100);
+    .register-signal( DA.new, 'draw-callback', 'draw');
+  }
+
 =end comment
 
 Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; C<gtk_widget_queue_draw_area()> and C<gdk_window_invalidate_rect()> are equally good ways to do this. You’ll then get a draw signal for the invalid region.
@@ -73,9 +75,11 @@ The available routines for drawing are documented on the [GDK Drawing Primitives
 
 To receive mouse events on a drawing area, you will need to enable them with C<gtk_widget_add_events()>. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused. Use C<gtk_widget_has_focus()> in your expose event handler to decide whether to draw the focus indicator. See C<gtk_render_focus()> for one way to draw focus.
 
+
 =head2 See Also
 
 B<Gnome::Gtk3::Image>
+
 
 =head1 Synopsis
 =head2 Declaration
@@ -83,11 +87,12 @@ B<Gnome::Gtk3::Image>
   unit class Gnome::Gtk3::DrawingArea;
   also is Gnome::Gtk3::Widget;
 
-=comment head2 Uml Diagram
 
-=comment ![](plantuml/.png)
+=head2 Uml Diagram
 
-=begin comment
+![](plantuml/DrawingArea.png)
+
+
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -106,7 +111,6 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=end comment
 =comment head2 Example
 
 =end pod
@@ -127,7 +131,7 @@ also is Gnome::Gtk3::Widget;
 =head1 Methods
 =head2 new
 
-=head3 new()
+=head3 default, no options
 
 Create a new DrawingArea object.
 
@@ -135,11 +139,12 @@ Create a new DrawingArea object.
 
 =end pod
 
+#TM:1:inheriting:
 #TM:1:new():
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::DrawingArea' #`{{ or %options<GtkDrawingArea> }} {
+  if self.^name eq 'Gnome::Gtk3::DrawingArea' or %options<GtkDrawingArea> {
 
     # check if native object is set by a parent class
     if self.is-valid { }
@@ -147,7 +152,7 @@ submethod BUILD ( *%options ) {
     # process all options
 
     # check if common options are handled by some parent
-    elsif %options<native-object>:exists or %options<widget>:exists { }
+    elsif %options<native-object>:exists { }
     elsif %options<build-id>:exists { }
 
     else {
@@ -159,7 +164,7 @@ submethod BUILD ( *%options ) {
       #   $no = ...($no);
       # }
 
-      # use this when the module is not made inheritable
+      #`{{ use this when the module is not made inheritable
       # check if there are unknown options
       if %options.elems {
         die X::Gnome.new(
@@ -169,6 +174,7 @@ submethod BUILD ( *%options ) {
           )
         );
       }
+      }}
 
       #`{{ when there are no defaults use this
       # check if there are any options
@@ -178,9 +184,9 @@ submethod BUILD ( *%options ) {
       }}
 
       # create default object
-      else {
+      #else {
         $no = _gtk_drawing_area_new;
-      }
+      #}
 
       self.set-native-object($no);
     }
@@ -207,7 +213,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:_gtk_drawing_area_new:new()
+#TM:1:_gtk_drawing_area_new:new()
 #`{{
 =begin pod
 =head2 [gtk_] drawing_area_new

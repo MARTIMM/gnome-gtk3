@@ -43,13 +43,37 @@ Declaration
     unit class Gnome::Gtk3::DrawingArea;
     also is Gnome::Gtk3::Widget;
 
+Uml Diagram
+-----------
+
+![](plantuml/DrawingArea.png)
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::DrawingArea;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::DrawingArea;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::DrawingArea class process the options
+      self.bless( :GtkDrawingArea, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
 new
 ---
 
-### new()
+### default, no options
 
 Create a new DrawingArea object.
 
