@@ -53,9 +53,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+
 use Gnome::GObject::Object;
+
 use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::RGBA;
+
 use Gnome::Gtk3::Border;
+
+use Gnome::Cairo::Types;
+use Gnome::Cairo;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkstylecontext.h
@@ -926,14 +933,14 @@ C<GTK_STYLE_PROPERTY_COLOR> for details.
 
 Since: 3.0
 
-  method gtk_style_context_get_color ( GtkStateFlags $state, N-GObject $color )
+  method gtk_style_context_get_color ( GtkStateFlags $state, N-GdkRGBA $color )
 
 =item GtkStateFlags $state; state to retrieve the color for
 =item N-GObject $color; (out): return value for the foreground color
 
 =end pod
 
-sub gtk_style_context_get_color ( N-GObject $context, int32 $state, N-GObject $color )
+sub gtk_style_context_get_color ( N-GObject $context, int32 $state, N-GdkRGBA $color )
   is native(&gtk-lib)
   { * }
 
@@ -1148,6 +1155,7 @@ Since: 3.0
 sub gtk_render_arrow ( N-GObject $context, cairo_t $cr, num64 $angle, num64 $x, num64 $y, num64 $size )
   is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_background:
@@ -1160,8 +1168,6 @@ Typical background rendering, showing the effect of
 `background-image`, `border-width` and `border-radius`:
 
 ![](images/background.png)
-
-Since: 3.0.
 
   method gtk_render_background ( N-GObject $context, cairo_t $cr, Num $x, Num $y, Num $width, Num $height )
 
@@ -1177,7 +1183,6 @@ Since: 3.0.
 sub gtk_render_background ( N-GObject $context, cairo_t $cr, num64 $x, num64 $y, num64 $width, num64 $height )
   is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:0:gtk_render_background_get_clip:
