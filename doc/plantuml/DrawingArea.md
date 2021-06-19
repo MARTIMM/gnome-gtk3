@@ -8,7 +8,7 @@ hide members
 
 
 class Gnome::N::TopLevelClassSupport < Catch all class >
-Gnome::N::TopLevelClassSupport <|--- Gnome::GObject::Object
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 
 Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>

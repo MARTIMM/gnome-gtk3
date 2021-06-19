@@ -39,8 +39,7 @@ class DA {
       $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
     );
 
-    my N-GdkRGBA $color-no .= new;
-    $context.get-color( $context.get-state, $color-no);
+    my N-GdkRGBA $color-no = $context.get-color($context.get-state);
     $cr.set-source-rgba(
       $color-no.red, $color-no.green, $color-no.blue, $color-no.alpha
     );

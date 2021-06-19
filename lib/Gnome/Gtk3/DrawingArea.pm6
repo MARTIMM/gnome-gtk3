@@ -14,8 +14,7 @@ A widget for custom user interface elements
 
 The B<Gnome::Gtk3::DrawingArea> widget is used for creating custom user interface elements. It’s essentially a blank widget; you can draw on it. After creating a drawing area, the application may want to connect to:
 
-=item Mouse and button press signals to respond to input from the user.
-=comment (Use C<gtk_widget_add_events()> to enable events you wish to receive.)
+=item Mouse and button press signals to respond to input from the user. (Use C<Gnome::Gtk3::Widget.add_events()> to enable events you wish to receive.)
 
 =item The I<realize> signal to take any necessary actions when the widget is instantiated on a particular display. (Create GDK resources in response to this signal.)
 
@@ -25,7 +24,7 @@ The B<Gnome::Gtk3::DrawingArea> widget is used for creating custom user interfac
 
 The following code portion demonstrates using a drawing area to display a circle in the normal widget foreground color.
 
-Note that GDK automatically clears the exposed area before sending the expose event, and that drawing is implicitly clipped to the exposed area. If you want to have a theme-provided background, you need to call C<gtk_render_background()> in your I<draw> method.
+Note that GDK automatically clears the exposed area before sending the expose event, and that drawing is implicitly clipped to the exposed area. If you want to have a theme-provided background, you need to call C<Gnome::Gtk3::StyleContext.render_background()> in your I<draw> method.
 
 =head2 Simple B<Gnome::Gtk3::DrawingArea> usage
 
@@ -47,8 +46,7 @@ Note that GDK automatically clears the exposed area before sending the expose ev
         $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
       );
 
-      my N-GdkRGBA $color-no .= new;
-      $context.get-color( $context.get-state, $color-no);
+      my N-GdkRGBA $color-no = $context.get-color($context.get-state);
       $cr.set-source-rgba(
         $color-no.red, $color-no.green, $color-no.blue, $color-no.alpha
       );
@@ -65,11 +63,11 @@ Note that GDK automatically clears the exposed area before sending the expose ev
     .register-signal( DA.new, 'draw-callback', 'draw');
   }
 
-Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; C<gtk_widget_queue_draw_area()> and C<gdk_window_invalidate_rect()> are equally good ways to do this. You’ll then get a draw signal for the invalid region.
+Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; C<Gnome::Gtk3::Widget.queue_draw_area()> and C<Gnome::Gdk3::Window.invalidate_rect()> are equally good ways to do this. You’ll then get a draw signal for the invalid region.
 
-The available routines for drawing are documented on the [GDK Drawing Primitives][gdk3-Cairo-Interaction] page and the cairo documentation.
+=comment The available routines for drawing are documented on the L<GDK Drawing Primitives|> page and the cairo documentation.
 
-To receive mouse events on a drawing area, you will need to enable them with C<gtk_widget_add_events()>. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused. Use C<gtk_widget_has_focus()> in your expose event handler to decide whether to draw the focus indicator. See C<gtk_render_focus()> for one way to draw focus.
+To receive mouse events on a drawing area, you will need to enable them with C<Gnome::Gtk3::Widget.add_events()>. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused. Use C<Gnome::Gtk3::Widget.has_focus()> in your expose event handler to decide whether to draw the focus indicator. See C<Gnome::Gtk3::StyleContext.render_focus()> for one way to draw focus.
 
 
 =head2 See Also
@@ -86,7 +84,7 @@ B<Gnome::Gtk3::Image>
 
 =head2 Uml Diagram
 
-![](plantuml/DrawingArea.png)
+![](plantuml/DrawingArea.svg)
 
 
 =head2 Inheriting this class
