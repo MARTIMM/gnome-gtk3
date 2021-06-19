@@ -110,13 +110,11 @@ Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there w
 A way to track errors while loading CSS is to connect to the sig `parsing-error` signal.
 
     method gtk_css_provider_load_from_data (
-      Str $data, Int $length
+      Str $data
       --> Gnome::Glib::Error
     )
 
   * Str $data; (array length=length) (element-type guint8): CSS data loaded in memory
-
-  * Int $length; the length of *data* in bytes, or -1 for NUL terminated strings. If *length* is not -1, the code will assume it is not NUL terminated and will potentially do a copy.
 
 [[gtk_] css_provider_] load_from_path
 -------------------------------------
