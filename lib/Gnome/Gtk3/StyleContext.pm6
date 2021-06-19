@@ -44,6 +44,30 @@ If you are using custom styling on an application, you probably want then to mak
   unit class Gnome::Gtk3::StyleContext;
   also is Gnome::GObject::Object;
 
+=comment head2 Uml Diagram
+
+=comment ![](plantuml/.svg)
+
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::StyleContext;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::StyleContext;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::StyleContext class process the options
+    self.bless( :GtkStyleContext, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+
 =head2 Example
 
 =end pod
@@ -53,13 +77,19 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
 
 use Gnome::GObject::Object;
+use Gnome::GObject::Value;
+
+use Gnome::Glib::List;
 
 use Gnome::Gdk3::Screen;
 use Gnome::Gdk3::RGBA;
 
 use Gnome::Gtk3::Border;
+use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::WidgetPath;
 
 use Gnome::Cairo::Types;
 use Gnome::Cairo;
@@ -71,58 +101,124 @@ unit class Gnome::Gtk3::StyleContext:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
+=begin pod
+=head1 Types
+=head2 GtkStyleContextPrintFlags
+
+Flags that modify the behavior of gtk_style_context_to_string(). New values may be added to this enumeration.
+
+=item GTK_STYLE_CONTEXT_PRINT_NONE;
+=item GTK_STYLE_CONTEXT_PRINT_RECURSE; Print the entire tree of CSS nodes starting at the style context's node
+=item GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE; Show the values of the CSS properties for each node
+
+=end pod
+
+#TT:0:GtkStyleContextPrintFlags:
 enum GtkStyleContextPrintFlags is export (
   GTK_STYLE_CONTEXT_PRINT_NONE         => 0,
   GTK_STYLE_CONTEXT_PRINT_RECURSE      => 1 +< 0,
   GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE   => 1 +< 1
 );
 
+
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-#TM:1:new():
-#TM:0:new(:native-object):
-
 =begin pod
 =head1 Methods
 =head2 new
-=head3 multi method new ( Bool :$empty! )
+=head3 default, no options
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-=head3 multi method new ( N-GObject :$native-object! )
+  multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a StyleContext object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+
+  multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
+
+Create a StyleContext object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 
+#TM:1:new():inheriting
+#TM:1:new():
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w0<changed>,
+
+    # signals from interfaces
+    #_add_..._signal_types($?CLASS.^name);
   ) unless $signals-added;
 
+
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::StyleContext';
+  if self.^name eq 'Gnome::Gtk3::StyleContext' or %options<GtkStyleContext> {
 
-  if ? %options<native-object> || ? %options<widget> {
-    # provided in GObject
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<___x___> {
+        #$no = %options<___x___>;
+        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_style_context_new___x___($no);
+      }
+
+      #`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      }}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      elsif %options<empty>:exists {
+        Gnome::N::deprecate( 'new(:empty)', 'new()', '0.41.0', '0.45.0');
+        $no = _gtk_style_context_new();
+      }
+
+      else {
+        $no = _gtk_style_context_new();
+      }
+      #}}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkStyleContext');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(gtk_style_context_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkStyleContext');
 }
 
 #-------------------------------------------------------------------------------
@@ -139,6 +235,1314 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s
 }
 
+
+#-------------------------------------------------------------------------------
+#TM:1:add-class:
+=begin pod
+=head2 add-class
+
+Adds a style class to I<context>, so posterior calls to C<get()> or any of the gtk-render-*() functions will make use of this new class for styling.
+
+In the CSS file format, a B<Gnome::Gtk3::Entry> defining a “search” class, would be matched by:
+
+  entry.search { … }
+
+While any widget defining a “search” class would be matched by:
+=begin code
+  .search { … }
+=end code
+
+=begin code
+  method add-class ( Str $class_name )
+=end code
+
+=item Str $class_name; class name to use in styling
+=end pod
+
+method add-class ( Str $class_name ) {
+  gtk_style_context_add_class( self.get-native-object-no-reffing, $class_name);
+}
+
+sub gtk_style_context_add_class (
+  N-GObject $context, gchar-ptr $class_name
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:add-provider:
+=begin pod
+=head2 add-provider
+
+Adds a style provider to I<context>, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which I<context> belongs. If you want to affect the style of all widgets, use C<add-provider-for-screen()>.
+
+Note: If both priorities are the same, a B<Gnome::Gtk3::StyleProvider> added through this function takes precedence over another added through C<add-provider-for-screen()>.
+
+  method add-provider ( N-GObject $provider, UInt $priority )
+
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
+=item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK-STYLE-PROVIDER-PRIORITY-FALLBACK> and C<GTK-STYLE-PROVIDER-PRIORITY-USER>
+=end pod
+
+method add-provider ( $provider is copy, UInt $priority ) {
+  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+
+  gtk_style_context_add_provider(
+    self.get-native-object-no-reffing, $provider, $priority
+  );
+}
+
+sub gtk_style_context_add_provider (
+  N-GObject $context, N-GObject $provider, guint $priority
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:add-provider-for-screen:
+=begin pod
+=head2 add-provider-for-screen
+
+Adds a global style provider to I<screen>, which will be used in style construction for all B<Gnome::Gtk3::StyleContexts> under I<screen>.
+
+GTK+ uses this to make styling information from B<Gnome::Gtk3::Settings> available.
+
+Note: If both priorities are the same, A B<Gnome::Gtk3::StyleProvider> added through C<add-provider()> takes precedence over another added through this function.
+
+  method add-provider-for-screen ( N-GObject $screen, N-GObject $provider, UInt $priority )
+
+=item N-GObject $screen; a B<Gnome::Gtk3::Screen>
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
+=item UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between C<GTK-STYLE-PROVIDER-PRIORITY-FALLBACK> and C<GTK-STYLE-PROVIDER-PRIORITY-USER>
+=end pod
+
+method add-provider-for-screen (
+  $screen is copy, $provider is copy, UInt $priority
+) {
+  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+
+  gtk_style_context_add_provider_for_screen(
+    $screen, $provider, $priority
+  );
+}
+
+sub gtk_style_context_add_provider_for_screen (
+  N-GObject $screen, N-GObject $provider, guint $priority
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get:
+=begin pod
+=head2 get
+
+Retrieves several style property values from I<context> for a given state.
+
+See C<get-property()> for details.
+
+  method get ( GtkStateFlags $state, List $properties --> List )
+
+=item GtkStateFlags $state; state to retrieve the property values for @...: property name /return value pairs, followed by C<undefined>
+=end pod
+
+method get ( GtkStateFlags $state, List $properties --> List ) {
+
+  # create parameter list and start with inserting fixed arguments
+  my @parameterList = (
+    Parameter.new(type => Str),         # $context
+  }
+
+# cannot do it because of differing types
+
+#  gtk_style_context_get(
+#    self.get-native-object-no-reffing, $state
+#  );
+}
+
+#sub gtk_style_context_get (
+#  N-GObject $context, GEnum $state, Any $any = Any
+#) is native(&gtk-lib)
+#  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-border:
+#TM:1:get-border-rk:
+=begin pod
+=head2 get-border, get-border-rk
+
+Returns the border for a given state as a B<Gnome::Gtk3::Border>.
+=comment See C<get-property()> and C<GTK_STYLE_PROPERTY_BORDER_WIDTH> for details.
+
+  method get-border ( GtkStateFlags $state --> N-GtkBorder )
+  method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+
+=item GtkStateFlags $state; state to retrieve the border for
+=end pod
+
+method get-border ( GtkStateFlags $state --> N-GtkBorder ) {
+  my N-GtkBorder $border .= new;
+  gtk_style_context_get_border(
+    self.get-native-object-no-reffing, $state, $border
+  );
+
+  $border
+}
+
+method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+  my N-GtkBorder $border .= new;
+  gtk_style_context_get_border(
+    self.get-native-object-no-reffing, $state, $border
+  );
+
+  Gnome::Gtk3::Border.new(:native-object($border))
+}
+
+sub gtk_style_context_get_border (
+  N-GObject $context, GEnum $state, N-GtkBorder $border
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-color:
+#TM:1:get-color-rk:
+=begin pod
+=head2 get-color, get-color-rk
+
+Returns the foreground color for a given state.
+
+=comment See C<get-property()> and B<GTK_STYLE_PROPERTY_COLOR> for details.
+
+  method get-color ( GtkStateFlags $state --> N-GdkRGBA )
+  method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA )
+
+=item GtkStateFlags $state; state to retrieve the color for
+=end pod
+
+method get-color ( GtkStateFlags $state --> N-GdkRGBA ) {
+  my N-GdkRGBA $color .= new;
+  gtk_style_context_get_color(
+    self.get-native-object-no-reffing, $state, $color
+  );
+
+  $color
+}
+
+method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA ) {
+  my N-GdkRGBA $color .= new;
+  gtk_style_context_get_color(
+    self.get-native-object-no-reffing, $state, $color
+  );
+
+  Gnome::Gdk3::RGBA.new(:native-object($color))
+}
+
+sub gtk_style_context_get_color (
+  N-GObject $context, GEnum $state, N-GdkRGBA $color
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-frame-clock:
+=begin pod
+=head2 get-frame-clock
+
+Returns the B<Gnome::Gtk3::FrameClock> to which I<context> is attached.
+
+Returns: a B<Gnome::Gtk3::FrameClock>, or C<undefined> if I<context> does not have an attached frame clock.
+
+  method get-frame-clock ( --> N-GObject )
+
+=end pod
+
+method get-frame-clock ( --> N-GObject ) {
+  gtk_style_context_get_frame_clock(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_style_context_get_frame_clock (
+  N-GObject $context --> N-GObject
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-junction-sides:
+=begin pod
+=head2 get-junction-sides
+
+Returns the sides where rendered elements connect visually with others.
+
+Returns: the junction sides
+
+  method get-junction-sides ( --> GtkJunctionSides )
+
+=end pod
+
+method get-junction-sides ( --> GtkJunctionSides ) {
+  GtkJunctionSides(
+    gtk_style_context_get_junction_sides(self.get-native-object-no-reffing)
+  )
+}
+
+sub gtk_style_context_get_junction_sides (
+  N-GObject $context --> GEnum
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-margin:
+#TM:1:get-margin-rk:
+=begin pod
+=head2 get-margin, get-margin-rk
+
+Returns the margin for a given state as a B<Gnome::Gtk3::Border>.
+=comment See C<gtk-style-property-get()> and B<GTK_STYLE_PROPERTY_MARGIN> for details.
+
+  method get-margin ( GtkStateFlags $state --> N-GtkBorder )
+  method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+
+=item GtkStateFlags $state; state to retrieve the border for
+=end pod
+
+method get-margin ( GtkStateFlags $state --> N-GtkBorder ) {
+  my N-GtkBorder $margin .= new;
+  gtk_style_context_get_margin(
+    self.get-native-object-no-reffing, $state, $margin
+  );
+
+  $margin
+}
+
+method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+  my N-GtkBorder $margin .= new;
+  gtk_style_context_get_margin(
+    self.get-native-object-no-reffing, $state, $margin
+  );
+
+  Gnome::Gtk3::Border.new(:native-object($margin))
+}
+
+sub gtk_style_context_get_margin (
+  N-GObject $context, GEnum $state, N-GtkBorder $margin
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-padding:
+#TM:1:get-padding-rk:
+=begin pod
+=head2 get-padding, get-padding-rk
+
+Returns the padding for a given state as a B<Gnome::Gtk3::Border>.
+=comment See C<get()> and B<GTK_STYLE_PROPERTY_PADDING> for details.
+
+  method get-padding ( GtkStateFlags $state --> N-GtkBorder )
+  method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+
+=item GtkStateFlags $state; state to retrieve the padding for
+=end pod
+
+method get-padding ( GtkStateFlags $state --> N-GtkBorder ) {
+  my N-GtkBorder $padding .= new;
+  gtk_style_context_get_padding(
+    self.get-native-object-no-reffing, $state, $padding
+  );
+
+  $padding
+}
+
+method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+  my N-GtkBorder $padding .= new;
+  gtk_style_context_get_padding(
+    self.get-native-object-no-reffing, $state, $padding
+  );
+
+  Gnome::Gtk3::Border.new(:native-object($padding))
+}
+
+sub gtk_style_context_get_padding (
+  N-GObject $context, GEnum $state, N-GtkBorder $padding
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-parent:
+#TM:1:get-parent-rk:
+=begin pod
+=head2 get-parent, get-parent-rk
+
+Gets the parent context set via C<set-parent()>. See that function for details.
+
+Returns: the parent context or C<undefined>
+
+  method get-parent ( --> N-GObject )
+  method get-parent-rk ( --> Gnome::Gtk3::StyleContext )
+
+=end pod
+
+method get-parent ( --> N-GObject ) {
+  gtk_style_context_get_parent(self.get-native-object-no-reffing)
+}
+
+method get-parent-rk ( --> Gnome::Gtk3::StyleContext ) {
+  self._wrap-native-type-from-no(
+    gtk_style_context_get_parent(self.get-native-object-no-reffing)
+  )
+}
+
+sub gtk_style_context_get_parent (
+  N-GObject $context --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-path:
+#TM:1:get-path-rk:
+=begin pod
+=head2 get-path, get-path-rk
+
+Returns the widget path used for style matching.
+
+Returns: A B<Gnome::Gtk3::WidgetPath>
+
+  method get-path ( --> N-GObject )
+  method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
+
+=end pod
+
+method get-path ( --> N-GObject ) {
+  gtk_style_context_get_path(self.get-native-object-no-reffing)
+}
+
+method get-path-rk ( --> Gnome::Gtk3::WidgetPath ) {
+  Gnome::Gtk3::WidgetPath.new(
+    :native-object(
+      gtk_style_context_get_path(self.get-native-object-no-reffing)
+    )
+  )
+}
+
+sub gtk_style_context_get_path (
+  N-GObject $context --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:1:get-property:
+#TM:1:get-property-rk:
+=begin pod
+=head2 get-property
+
+Gets a style property from I<context> for the given state.
+
+Note that not all CSS properties that are supported by GTK+ can be retrieved in this way, since they may not be representable as B<Gnome::Gtk3::Value>. GTK+ defines macros for a number of properties that can be used with this function.
+
+Note that passing a state other than the current state of I<context> is not recommended unless the style context has been saved with C<save()>.
+
+When I<value> is no longer needed, C<clear-object()> must be called to free any allocated memory.
+
+  method get-property ( Str $property, GtkStateFlags $state --> N-GValue )
+  method get-property-rk (
+    Str $property, GtkStateFlags $state --> Gnome::GObject::Value
+  )
+
+=item Str $property; style property name
+=item GtkStateFlags $state; state to retrieve the property value for
+=item N-GObject $value; return location for the style property value
+=end pod
+
+method get-property ( Str $property, GtkStateFlags $state --> N-GValue ) {
+  my N-GValue $value .= new;
+  gtk_style_context_get_property(
+    self.get-native-object-no-reffing, $property, $state, $value
+  );
+
+  N-GValue
+}
+
+method get-property-rk (
+  Str $property, GtkStateFlags $state --> Gnome::GObject::Value
+) {
+  my N-GValue $value .= new;
+  gtk_style_context_get_property(
+    self.get-native-object-no-reffing, $property, $state, $value
+  );
+
+  Gnome::GObject::Value.new(:native-object($value))
+}
+
+sub gtk_style_context_get_property (
+  N-GObject $context, gchar-ptr $property, GEnum $state, N-GValue $value
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-scale:
+=begin pod
+=head2 get-scale
+
+Returns the scale used for assets.
+
+Returns: the scale
+
+  method get-scale ( --> Int )
+
+=end pod
+
+method get-scale ( --> Int ) {
+  gtk_style_context_get_scale(self.get-native-object-no-reffing)
+}
+
+sub gtk_style_context_get_scale (
+  N-GObject $context --> gint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-screen:
+#TM:1:get-screen-rk:
+=begin pod
+=head2 get-screen, get-screen-rk
+
+Returns the B<Gnome::Gtk3::Screen> to which I<context> is attached.
+
+Returns: a B<Gnome::Gtk3::Screen>.
+
+  method get-screen ( --> N-GObject )
+  method get-screen-rk ( --> Gnome::Gdk3::Screen )
+
+=end pod
+
+method get-screen ( --> N-GObject ) {
+  gtk_style_context_get_screen(self.get-native-object-no-reffing)
+}
+
+method get-screen-rk ( --> Gnome::Gdk3::Screen ) {
+  Gnome::Gdk3::Screen.new(
+    :native-object(
+      gtk_style_context_get_screen(self.get-native-object-no-reffing)
+    )
+  )
+}
+
+sub gtk_style_context_get_screen (
+  N-GObject $context --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-section:
+=begin pod
+=head2 get-section
+
+Queries the location in the CSS where I<property> was defined for the current I<context>. Note that the state to be queried is taken from C<get-state()>.
+
+If the location is not available, C<undefined> will be returned. The location might not be available for various reasons, such as the property being overridden, I<property> not naming a supported CSS property or tracking of definitions being disabled for performance reasons.
+
+Shorthand CSS properties cannot be queried for a location and will always return C<undefined>.
+
+Returns: C<undefined> or the section where a value for I<property> was defined
+
+  method get-section ( Str $property --> N-GObject )
+
+=item Str $property; style property name
+=end pod
+
+method get-section ( Str $property --> N-GObject ) {
+
+  gtk_style_context_get_section(
+    self.get-native-object-no-reffing, $property
+  )
+}
+
+sub gtk_style_context_get_section (
+  N-GObject $context, gchar-ptr $property --> N-GObject
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-state:
+=begin pod
+=head2 get-state
+
+Returns the state used for style matching.
+
+This method should only be used to retrieve the B<Gnome::Gtk3::StateFlags> to pass to B<Gnome::Gtk3::StyleContext> methods, like C<get-padding()>. If you need to retrieve the current state of a B<Gnome::Gtk3::Widget>, use C<gtk-widget-get-state-flags()>.
+
+Returns: the state flags
+
+  method get-state ( --> GtkStateFlags )
+
+=end pod
+
+method get-state ( --> GtkStateFlags ) {
+  GtkStateFlags(gtk_style_context_get_state(self.get-native-object-no-reffing))
+}
+
+sub gtk_style_context_get_state (
+  N-GObject $context --> GEnum
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-style:
+=begin pod
+=head2 get-style
+
+Retrieves several widget style properties from I<context> according to the current style.
+
+  method get-style ( )
+
+=end pod
+
+method get-style ( ) {
+
+  gtk_style_context_get_style(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_style_context_get_style (
+  N-GObject $context, Any $any = Any
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-style-property:
+#TM:1:get-style-property-rk:
+=begin pod
+=head2 get-style-property, get-style-property-rk
+
+Gets the value for a widget style property.
+
+When I<value> is no longer needed, C<g-value-unset()> must be called to free any allocated memory.
+
+  method get-style-property ( Str $property_name --> N-GValue )
+  method get-style-property-rk ( Str $property_name --> Gnome::GObject::Value )
+
+=item Str $property_name; the name of the widget style property
+=item N-GObject $value; Return location for the property value
+=end pod
+
+method get-style-property ( Str $property_name --> N-GValue ) {
+  my N-GValue $value .= new;
+  gtk_style_context_get_style_property(
+    self.get-native-object-no-reffing, $property_name, $value
+  );
+
+  N-GValue
+}
+
+method get-style-property-rk ( Str $property_name --> Gnome::GObject::Value ) {
+  my N-GValue $value .= new;
+  gtk_style_context_get_style_property(
+    self.get-native-object-no-reffing, $property_name, $value
+  );
+
+  Gnome::GObject::Value.new(:native-object($value))
+}
+
+sub gtk_style_context_get_style_property (
+  N-GObject $context, gchar-ptr $property_name, N-GValue $value
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-style-valist:
+=begin pod
+=head2 get-style-valist
+
+Retrieves several widget style properties from I<context> according to the current style.
+
+  method get-style-valist ( va_list $args )
+
+=item va_list $args; va-list of property name/return location pairs, followed by C<undefined>
+=end pod
+
+method get-style-valist ( va_list $args ) {
+
+  gtk_style_context_get_style_valist(
+    self.get-native-object-no-reffing, $args
+  );
+}
+
+sub gtk_style_context_get_style_valist (
+  N-GObject $context, va_list $args
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-valist:
+=begin pod
+=head2 get-valist
+
+Retrieves several style property values from I<context> for a given state.
+
+See C<get-property()> for details.
+
+  method get-valist ( GtkStateFlags $state, va_list $args )
+
+=item GtkStateFlags $state; state to retrieve the property values for
+=item va_list $args; va-list of property name/return location pairs, followed by C<undefined>
+=end pod
+
+method get-valist ( GtkStateFlags $state, va_list $args ) {
+
+  gtk_style_context_get_valist(
+    self.get-native-object-no-reffing, $state, $args
+  );
+}
+
+sub gtk_style_context_get_valist (
+  N-GObject $context, GEnum $state, va_list $args
+) is native(&gtk-lib)
+  { * }
+}}
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:gtk-render-insertion-cursor:
+=begin pod
+=head2 gtk-render-insertion-cursor
+
+Draws a text caret on I<cr> at the specified index of I<layout>.
+
+  method gtk-render-insertion-cursor ( cairo_t $cr, Num() $x, Num() $y, N-GObject $layout, Int() $index, PangoDirection $direction )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin
+=item Num() $y; Y origin
+=item N-GObject $layout; the B<PangoLayout> of the text
+=item Int() $index; the index in the B<PangoLayout>
+=item PangoDirection $direction; the B<PangoDirection> of the text
+=end pod
+
+method gtk-render-insertion-cursor ( cairo_t $cr, Num() $x, Num() $y, $layout is copy, Int() $index, PangoDirection $direction ) {
+  $layout .= get-native-object-no-reffing unless $layout ~~ N-GObject;
+
+  gtk_render_insertion_cursor(
+    self.get-native-object-no-reffing, $cr, $x, $y, $layout, $index, $direction
+  );
+}
+
+sub gtk_render_insertion_cursor (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, N-GObject $layout, int $index, PangoDirection $direction
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:0:has-class:
+=begin pod
+=head2 has-class
+
+Returns C<True> if I<context> currently has defined the given class name.
+
+Returns: C<True> if I<context> has I<class-name> defined
+
+  method has-class ( Str $class_name --> Bool )
+
+=item Str $class_name; a class name
+=end pod
+
+method has-class ( Str $class_name --> Bool ) {
+
+  gtk_style_context_has_class(
+    self.get-native-object-no-reffing, $class_name
+  ).Bool
+}
+
+sub gtk_style_context_has_class (
+  N-GObject $context, gchar-ptr $class_name --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:list-classes:
+=begin pod
+=head2 list-classes
+
+Returns the list of classes currently defined in I<context>.
+
+Returns: (transfer container) (element-type utf8): a B<Gnome::Gtk3::List> of strings with the currently defined classes. The contents of the list are owned by GTK+, but you must free the list itself with C<g-list-free()> when you are done with it.
+
+  method list-classes ( --> N-GList )
+
+=end pod
+
+method list-classes ( --> N-GList ) {
+
+  gtk_style_context_list_classes(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_style_context_list_classes (
+  N-GObject $context --> N-GList
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:lookup-color:
+=begin pod
+=head2 lookup-color
+
+Looks up and resolves a color name in the I<context> color map.
+
+Returns: C<True> if I<color-name> was found and resolved, C<False> otherwise
+
+  method lookup-color ( Str $color_name, N-GObject $color --> Bool )
+
+=item Str $color_name; color name to lookup
+=item N-GObject $color; Return location for the looked up color
+=end pod
+
+method lookup-color ( Str $color_name, $color is copy --> Bool ) {
+  $color .= get-native-object-no-reffing unless $color ~~ N-GObject;
+
+  gtk_style_context_lookup_color(
+    self.get-native-object-no-reffing, $color_name, $color
+  ).Bool
+}
+
+sub gtk_style_context_lookup_color (
+  N-GObject $context, gchar-ptr $color_name, N-GObject $color --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:remove-class:
+=begin pod
+=head2 remove-class
+
+Removes I<class-name> from I<context>.
+
+  method remove-class ( Str $class_name )
+
+=item Str $class_name; class name to remove
+=end pod
+
+method remove-class ( Str $class_name ) {
+
+  gtk_style_context_remove_class(
+    self.get-native-object-no-reffing, $class_name
+  );
+}
+
+sub gtk_style_context_remove_class (
+  N-GObject $context, gchar-ptr $class_name
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:remove-provider:
+=begin pod
+=head2 remove-provider
+
+Removes I<provider> from the style providers list in I<context>.
+
+  method remove-provider ( N-GObject $provider )
+
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
+=end pod
+
+method remove-provider ( $provider is copy ) {
+  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+
+  gtk_style_context_remove_provider(
+    self.get-native-object-no-reffing, $provider
+  );
+}
+
+sub gtk_style_context_remove_provider (
+  N-GObject $context, N-GObject $provider
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:remove-provider-for-screen:
+=begin pod
+=head2 remove-provider-for-screen
+
+Removes I<provider> from the global style providers list in I<screen>.
+
+  method remove-provider-for-screen ( N-GObject $screen, N-GObject $provider )
+
+=item N-GObject $screen; a B<Gnome::Gtk3::Screen>
+=item N-GObject $provider; a B<Gnome::Gtk3::StyleProvider>
+=end pod
+
+method remove-provider-for-screen ( $screen is copy, $provider is copy ) {
+  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+
+  gtk_style_context_remove_provider_for_screen( $screen, $provider);
+}
+
+sub gtk_style_context_remove_provider_for_screen (
+  N-GObject $screen, N-GObject $provider
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:reset-widgets:
+=begin pod
+=head2 reset-widgets
+
+This function recomputes the styles for all widgets under a particular B<Gnome::Gtk3::Screen>. This is useful when some global parameter has changed that affects the appearance of all widgets, because when a widget gets a new style, it will both redraw and recompute any cached information about its appearance. As an example, it is used when the color scheme changes in the related B<Gnome::Gtk3::Settings> object.
+
+  method reset-widgets ( N-GObject $screen )
+
+=item N-GObject $screen; a B<Gnome::Gtk3::Screen>
+=end pod
+
+method reset-widgets ( $screen is copy ) {
+  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+
+  gtk_style_context_reset_widgets(
+    self.get-native-object-no-reffing, $screen
+  );
+}
+
+sub gtk_style_context_reset_widgets (
+  N-GObject $screen
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:restore:
+=begin pod
+=head2 restore
+
+Restores I<context> state to a previous stage. See C<save()>.
+
+  method restore ( )
+
+=end pod
+
+method restore ( ) {
+
+  gtk_style_context_restore(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_style_context_restore (
+  N-GObject $context
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:save:
+=begin pod
+=head2 save
+
+Saves the I<context> state, so temporary modifications done through C<add-class()>, C<gtk-style-context-remove-class()>, C<gtk-style-context-set-state()>, etc. can quickly be reverted in one go through C<gtk-style-context-restore()>.
+
+The matching call to C<gtk-style-context-restore()> must be done before GTK returns to the main loop.
+
+  method save ( )
+
+=end pod
+
+method save ( ) {
+
+  gtk_style_context_save(
+    self.get-native-object-no-reffing,
+  );
+}
+
+sub gtk_style_context_save (
+  N-GObject $context
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-frame-clock:
+=begin pod
+=head2 set-frame-clock
+
+Attaches I<context> to the given frame clock.
+
+The frame clock is used for the timing of animations.
+
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, you do not need to call this yourself.
+
+  method set-frame-clock ( N-GObject $frame_clock )
+
+=item N-GObject $frame_clock; a B<Gnome::Gtk3::FrameClock>
+=end pod
+
+method set-frame-clock ( $frame_clock is copy ) {
+  $frame_clock .= get-native-object-no-reffing unless $frame_clock ~~ N-GObject;
+
+  gtk_style_context_set_frame_clock(
+    self.get-native-object-no-reffing, $frame_clock
+  );
+}
+
+sub gtk_style_context_set_frame_clock (
+  N-GObject $context, N-GObject $frame_clock
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-junction-sides:
+=begin pod
+=head2 set-junction-sides
+
+Sets the sides where rendered elements (mostly through C<gtk-render-frame()>) will visually connect with other visual elements.
+
+This is merely a hint that may or may not be honored by themes.
+
+Container widgets are expected to set junction hints as appropriate for their children, so it should not normally be necessary to call this function manually.
+
+  method set-junction-sides ( GtkJunctionSides $sides )
+
+=item GtkJunctionSides $sides; sides where rendered elements are visually connected to other elements
+=end pod
+
+method set-junction-sides ( GtkJunctionSides $sides ) {
+
+  gtk_style_context_set_junction_sides(
+    self.get-native-object-no-reffing, $sides
+  );
+}
+
+sub gtk_style_context_set_junction_sides (
+  N-GObject $context, GEnum $sides
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-parent:
+=begin pod
+=head2 set-parent
+
+Sets the parent style context for I<context>. The parent style context is used to implement [inheritance](http://www.w3.org/TR/css3-cascade/B<inheritance>) of properties.
+
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, the parent will be set for you.
+
+  method set-parent ( N-GObject $parent )
+
+=item N-GObject $parent; the new parent or C<undefined>
+=end pod
+
+method set-parent ( $parent is copy ) {
+  $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+  gtk_style_context_set_parent( self.get-native-object-no-reffing, $parent);
+}
+
+sub gtk_style_context_set_parent (
+  N-GObject $context, N-GObject $parent
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-path:
+=begin pod
+=head2 set-path
+
+Sets the B<Gnome::Gtk3::WidgetPath> used for style matching. As a consequence, the style will be regenerated to match the new given path.
+
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, you do not need to call this yourself.
+
+  method set-path ( N-GObject $path )
+
+=item N-GObject $path; a B<Gnome::Gtk3::WidgetPath>
+=end pod
+
+method set-path ( $path is copy ) {
+  $path .= get-native-object-no-reffing unless $path ~~ N-GObject;
+
+  gtk_style_context_set_path(
+    self.get-native-object-no-reffing, $path
+  );
+}
+
+sub gtk_style_context_set_path (
+  N-GObject $context, N-GObject $path
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-scale:
+=begin pod
+=head2 set-scale
+
+Sets the scale to use when getting image assets for the style.
+
+  method set-scale ( Int() $scale )
+
+=item Int() $scale; scale
+=end pod
+
+method set-scale ( Int() $scale ) {
+  gtk_style_context_set_scale( self.get-native-object-no-reffing, $scale);
+}
+
+sub gtk_style_context_set_scale (
+  N-GObject $context, gint $scale
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-screen:
+=begin pod
+=head2 set-screen
+
+Attaches I<context> to the given screen.
+
+The screen is used to add style information from “global” style providers, such as the screen’s B<Gnome::Gtk3::Settings> instance.
+
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, you do not need to call this yourself.
+
+  method set-screen ( N-GObject $screen )
+
+=item N-GObject $screen; a B<Gnome::Gtk3::Screen>
+=end pod
+
+method set-screen ( $screen is copy ) {
+  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+
+  gtk_style_context_set_screen(
+    self.get-native-object-no-reffing, $screen
+  );
+}
+
+sub gtk_style_context_set_screen (
+  N-GObject $context, N-GObject $screen
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-state:
+=begin pod
+=head2 set-state
+
+Sets the state to be used for style matching.
+
+  method set-state ( GtkStateFlags $flags )
+
+=item GtkStateFlags $flags; state to represent
+=end pod
+
+method set-state ( GtkStateFlags $flags ) {
+
+  gtk_style_context_set_state(
+    self.get-native-object-no-reffing, $flags
+  );
+}
+
+sub gtk_style_context_set_state (
+  N-GObject $context, GEnum $flags
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:to-string:
+=begin pod
+=head2 to-string
+
+Converts the style context into a string representation.
+
+The string representation always includes information about the name, state, id, visibility and style classes of the CSS node that is backing I<context>. Depending on the flags, more information may be included.
+
+This function is intended for testing and debugging of the CSS implementation in GTK+. There are no guarantees about the format of the returned string, it may change.
+
+Returns: a newly allocated string representing I<context>
+
+  method to-string ( GtkStyleContextPrintFlags $flags --> Str )
+
+=item GtkStyleContextPrintFlags $flags; Flags that determine what to print
+=end pod
+
+method to-string ( GtkStyleContextPrintFlags $flags --> Str ) {
+
+  gtk_style_context_to_string(
+    self.get-native-object-no-reffing, $flags
+  )
+}
+
+sub gtk_style_context_to_string (
+  N-GObject $context, GEnum $flags --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_style_context_new:
+#`{{
+=begin pod
+=head2 _gtk_style_context_new
+
+Creates a standalone B<Gnome::Gtk3::StyleContext>, this style context won’t be attached to any widget, so you may want to call C<set-path()> yourself.
+
+This function is only useful when using the theming layer separated from GTK+, if you are using B<Gnome::Gtk3::StyleContext> to theme B<Gnome::Gtk3::Widgets>, use C<gtk-widget-get-style-context()> in order to get a style context ready to theme the widget.
+
+Returns: A newly created B<Gnome::Gtk3::StyleContext>.
+
+  method _gtk_style_context_new ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_style_context_new (  --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_style_context_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:changed:
+=head3 changed
+
+The I<changed> signal is emitted when there is a change in the
+B<Gnome::Gtk3::StyleContext>.
+
+For a B<Gnome::Gtk3::StyleContext> returned by C<gtk-widget-get-style-context()>, the
+ I<style-updated> signal/vfunc might be more convenient to use.
+
+This signal is useful when using the theming layer standalone.
+
+
+  method handler (
+    ,
+    *%user-options
+  );
+
+=item $_handle_id; the registered event handler id
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:direction:
+=head3 Direction: direction
+
+Text direction
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<direction> is C<G_TYPE_ENUM>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:paint-clock:
+=head3 FrameClock: paint-clock
+
+The associated GdkFrameClock
+Widget type: GDK-TYPE-FRAME-CLOCK
+
+The B<Gnome::GObject::Value> type of property I<paint-clock> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:parent:
+=head3 Parent: parent
+
+
+Sets or gets the style context’s parent. See C<set-parent()>
+for details.
+
+   Widget type: GTK_TYPE_STYLE_CONTEXT
+
+The B<Gnome::GObject::Value> type of property I<parent> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:screen:
+=head3 Screen: screen
+
+The associated GdkScreen
+Widget type: GDK-TYPE-SCREEN
+
+The B<Gnome::GObject::Value> type of property I<screen> is C<G_TYPE_OBJECT>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:2:gtk_style_context_new:new()
 =begin pod
