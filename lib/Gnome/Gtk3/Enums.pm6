@@ -1101,7 +1101,7 @@ Describes how a rendered element connects to adjacent elements.
 
 =end pod
 
-#TE:0:GtkJunctionSides:
+#TE:1:GtkJunctionSides:
 enum GtkJunctionSides is export (
   'GTK_JUNCTION_NONE'   => 0,
   'GTK_JUNCTION_CORNER_TOPLEFT' =>      0x01,
@@ -1135,7 +1135,7 @@ Describes how the border of a UI element should be rendered.
 
 =end pod
 
-#TE:0:GtkBorderStyle:
+#TE:1:GtkBorderStyle:
 enum GtkBorderStyle is export (
   'GTK_BORDER_STYLE_NONE',
   'GTK_BORDER_STYLE_SOLID',
