@@ -2,8 +2,15 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Cairo::ImageSurface;
+use Gnome::Cairo;
+use Gnome::Cairo::Types;
+use Gnome::Cairo::Enums;
+
 use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::Types;
 use Gnome::Gdk3::RGBA;
+use Gnome::Gdk3::Pixbuf;
 
 use Gnome::Gtk3::Border;
 use Gnome::Gtk3::Label;
@@ -13,6 +20,9 @@ use Gnome::Gtk3::StyleProvider;
 use Gnome::Gtk3::CssProvider;
 
 use Gnome::GObject::Value;
+
+use Gnome::Glib::List;
+
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -36,7 +46,6 @@ subtest 'Style context manipulations', {
   my Gnome::Gtk3::StyleContext $sc .= new;
   my Gnome::Gtk3::CssProvider $cp1 .= new;
 
-
   lives-ok {
     $sc.add-provider-for-screen(
       $screen, $cp1, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
@@ -50,11 +59,24 @@ subtest 'Style context manipulations', {
     $sc.remove-provider($cp2);
   }, '.add-provider() / .remove-provider()';
 
+  lives-ok {
+    $sc.reset-widgets($screen);
+  }, '.reset-widgets()';
 
   # use for later
   my Gnome::Gtk3::Label $lbl .= new(:text('my label text'));
   $sc .= new(:native-object($lbl.get-style-context));
-  lives-ok {$sc.add-class('MyLabel');}, '.add-class()';
+  lives-ok {
+    $sc.add-class('xyz');
+    $sc.remove-class('xyz');
+    $sc.add-class('MyLabel');
+  }, '.add-class() / .remove-class()';
+
+  lives-ok {
+    $sc.save;
+    $sc.remove-class('MyLabel');
+    $sc.restore;
+  }, '.save() / .restore()';
 
   my Str $data = Q:q:to/EOCSS/;
       .MyLabel { color: #204080; }
@@ -66,15 +88,14 @@ subtest 'Style context manipulations', {
   );
 
 
-  is $sc.get-state, GTK_STATE_FLAG_DIR_LTR, '.get-state()';
+  $sc.set-state(GTK_STATE_FLAG_LINK +| GTK_STATE_FLAG_DIR_LTR);
+  ok $sc.get-state +& GTK_STATE_FLAG_DIR_LTR, '.set-state() / .get-state()';
 
   my N-GtkBorder $border-no = $sc.get-border(GTK_STATE_FLAG_DIR_LTR);
   is $border-no.left, 0, '.get-border()';
 
   my N-GdkRGBA $rgba-no = $sc.get-color(GTK_STATE_FLAG_DIR_LTR);
   is-approx $rgba-no.red, 0.1254901, '.get-color()';
-
-  is $sc.get-junction-sides, GTK_JUNCTION_NONE, '.get-junction-sides()';
 
   my Gnome::Gtk3::Border $border = $sc.get-margin-rk(GTK_STATE_FLAG_DIR_LTR);
   is $border.left, 0, '.get-margin-rk()';
@@ -109,12 +130,72 @@ subtest 'Style context manipulations', {
   my Gnome::Gdk3::Screen $screen2 = $sc.get-screen-rk;
   ok $screen2.is-valid, '.set-screen() / .get-screen()';
 
+  ok $sc.has-class('MyLabel'), '.has-class()';
+  my Gnome::Glib::List $list = $sc.list-classes-rk;
+  is $list.length, 1e0, '.list-classes-rk()';
+  $list.clear-object;
 
+  $rgba-no = $sc.lookup-color('red');
+  is $rgba-no.red, 1, '.lookup-color()';
+  my Gnome::Gdk3::RGBA $blue = $sc.lookup-color-rk('blue');
+  is $blue.blue, 1e0, '.lookup-color-rk()';
 
-  my Gnome::GObject::Value $v = $sc.get-style-property-rk('color');
-  ok $v.is-valid, '.get-style-property-rk(): no color property';
-note "type: ", $v.get-gtype;
-  $v.clear-object;
+#  my Gnome::GObject::Value $v = $sc.get-style-property-rk('color');
+#  ok $v.is-valid, '.get-style-property-rk(): no color property';
+#note "type: ", $v.get-gtype;
+#  $v.clear-object;
+
+  $sc.set-junction-sides(GTK_JUNCTION_CORNER_TOPLEFT);
+  ok $sc.get-junction-sides +& GTK_JUNCTION_CORNER_TOPLEFT,
+    '.set-junction-sides() / .get-junction-sides()';
+
+#  lives-ok {
+#    $sc.set-path($sc.get-path);
+#  }, '.set-path';
+
+  like my $sts = $sc.to-string(GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE), /link/,
+    '.to-string(): ' ~ $sts;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'rendering', {
+  my Gnome::Gdk3::Screen $screen .= new;
+  my Gnome::Gtk3::StyleContext $sc .= new;
+  my Gnome::Gtk3::CssProvider $cp1 .= new;
+
+  $sc.add-provider-for-screen(
+    $screen, $cp1, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
+  );
+
+  my Gnome::Gtk3::Label $lbl .= new(:text('my label text'));
+  $sc .= new(:native-object($lbl.get-style-context));
+
+  my Gnome::Cairo::ImageSurface $image .= new(
+    :format(CAIRO_FORMAT_RGB24), :width(100), :height(100));
+  my Gnome::Cairo $cr .= new(:surface($image));
+
+  lives-ok {
+    $sc.render-activity( $cr, 10, 10, 80, 80);
+    $sc.render-arrow( $cr, ⅔ * π, 50, 50, 10);
+    $sc.render-background( $cr, 0, 0, 100, 100);
+    my N-GdkRectangle $r = $sc.render-background-get-clip( 10, 10, 80, 80);
+    is $r.width, 80, '.render-background-get-clip()';
+#    note $r.gist;
+    $sc.render-check( $cr, 10, 10, 80, 80);
+    $sc.render-expander( $cr, 10, 10, 80, 80);
+    $sc.render-extension( $cr, 10, 10, 80, 80);
+    $sc.render-focus( $cr, 10, 10, 80, 80);
+    $sc.render-frame( $cr, 10, 10, 80, 80);
+    $sc.render-handle( $cr, 10, 10, 80, 80);
+
+    my Gnome::Gdk3::Pixbuf $pbuf .= new(
+      :surface($image), :clipto( 0, 0, 40, 40)
+    );
+    $sc.render-icon( $cr, $pbuf, 5, 5);
+
+#    $sc.render-( $cr, 10, 10, 80, 80);
+#    $sc.render-( $cr, 10, 10, 80, 80);
+  }, '.render-activity(), .render-arrow(), .render-background()';
 }
 
 #-------------------------------------------------------------------------------

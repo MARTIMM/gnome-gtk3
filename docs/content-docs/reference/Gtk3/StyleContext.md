@@ -37,8 +37,41 @@ Declaration
     unit class Gnome::Gtk3::StyleContext;
     also is Gnome::GObject::Object;
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::StyleContext;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::StyleContext;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::StyleContext class process the options
+      self.bless( :GtkStyleContext, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Example
 -------
+
+Types
+=====
+
+GtkStyleContextPrintFlags
+-------------------------
+
+Flags that modify the behavior of gtk_style_context_to_string(). New values may be added to this enumeration.
+
+  * GTK_STYLE_CONTEXT_PRINT_NONE;
+
+  * GTK_STYLE_CONTEXT_PRINT_RECURSE; Print the entire tree of CSS nodes starting at the style context's node
+
+  * GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE; Show the values of the CSS properties for each node
 
 Methods
 =======
@@ -46,473 +79,339 @@ Methods
 new
 ---
 
-### multi method new ( Bool :$empty! )
+### default, no options
 
 Create a new plain object. The value doesn't have to be True nor False. The name only will suffice.
 
-### multi method new ( N-GObject :$native-object! )
+    multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
 
-[gtk_] style_context_new
-------------------------
+Create a StyleContext object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-Creates a standalone **Gnome::Gtk3::StyleContext**, this style context won’t be attached to any widget, so you may want to call `gtk_style_context_set_path()` yourself.
+    multi method new ( N-GObject :$native-object! )
 
-This function is only useful when using the theming layer separated from GTK+, if you are using **Gnome::Gtk3::StyleContext** to theme **Gnome::Gtk3::Widget**s, use `gtk_widget_get_style_context()` in order to get a style context ready to theme the widget.
+### :build-id
 
-Returns: A newly created **Gnome::Gtk3::StyleContext**.
+Create a StyleContext object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
-    method gtk_style_context_new ( --> N-GObject  )
+    multi method new ( Str :$build-id! )
 
-[[gtk_] style_context_] add_provider_for_screen
------------------------------------------------
+add-class
+---------
 
-Adds a global style provider to **Gnome::Gdk3::Screen**, which will be used in style construction for all **Gnome::Gtk3::StyleContext**s under **Gnome::Gdk3::Screen**.
+Adds a style class to *context*, so posterior calls to `get()` or any of the gtk-render-*() functions will make use of this new class for styling.
+
+In the CSS file format, a **Gnome::Gtk3::Entry** defining a “search” class, would be matched by:
+
+    entry.search { … }
+
+While any widget defining a “search” class would be matched by:
+
+      .search { … }
+
+      method add-class ( Str $class_name )
+
+  * Str $class_name; class name to use in styling
+
+add-provider
+------------
+
+Adds a style provider to *context*, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which *context* belongs. If you want to affect the style of all widgets, use `add-provider-for-screen()`.
+
+Note: If both priorities are the same, a **Gnome::Gtk3::StyleProvider** added through this function takes precedence over another added through `add-provider-for-screen()`.
+
+    method add-provider ( N-GObject $provider, UInt $priority )
+
+  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
+
+  * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK-STYLE-PROVIDER-PRIORITY-FALLBACK` and `GTK-STYLE-PROVIDER-PRIORITY-USER`
+
+add-provider-for-screen
+-----------------------
+
+Adds a global style provider to *screen*, which will be used in style construction for all **Gnome::Gtk3::StyleContexts** under *screen*.
 
 GTK+ uses this to make styling information from **Gnome::Gtk3::Settings** available.
 
-Note: If both priorities are the same, A **Gnome::Gtk3::StyleProvider** added through `gtk_style_context_add_provider()` takes precedence over another added through this function.
+Note: If both priorities are the same, A **Gnome::Gtk3::StyleProvider** added through `add-provider()` takes precedence over another added through this function.
 
-Note: Priorities are unsigned integers renaging from 1 to lets say 1000. An enumeration `GtkStyleProviderPriority` in StyleProvider is defined for specific priorities such as `GTK_STYLE_PROVIDER_PRIORITY_SETTINGS` and `GTK_STYLE_PROVIDER_PRIORITY_USER`.
+    method add-provider-for-screen ( N-GObject $screen, N-GObject $provider, UInt $priority )
 
-Since: 3.0
-
-    method gtk_style_context_add_provider_for_screen (
-      N-GObject $screen, N-GObject $provider, UInt $priority
-    )
-
-  * N-GObject $screen; a **Gnome::Gdk3::Screen**.
-
-  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**.
-
-  * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK_STYLE_PROVIDER_PRIORITY_FALLBACK` (= 1) and `GTK_STYLE_PROVIDER_PRIORITY_USER` (= 800).
-
-    my Gnome::Gdk3::Screen $screen .= new;
-    my Gnome::Gtk3::StyleContext $sc .= new;
-    my Gnome::Gtk3::CssProvider $cp .= new;
-
-    $sc.add-provider-for-screen(
-      $screen, $cp, GTK_STYLE_PROVIDER_PRIORITY_FALLBACK
-    );
-
-[[gtk_] style_context_] remove_provider_for_screen
---------------------------------------------------
-
-Removes a **Gnome::Gtk3::StyleProvider** from the global style providers list in **Gnome::Gdk3::Screen**.
-
-Since: 3.0
-
-    method gtk_style_context_remove_provider_for_screen ( N-GObject $screen, N-GObject $provider )
-
-  * N-GObject $screen; a **Gnome::Gdk3::Screen**
+  * N-GObject $screen; a **Gnome::Gtk3::Screen**
 
   * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
 
-[[gtk_] style_context_] add_provider
-------------------------------------
+  * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK-STYLE-PROVIDER-PRIORITY-FALLBACK` and `GTK-STYLE-PROVIDER-PRIORITY-USER`
 
-Adds a style provider to the *context*, to be used in style construction. Note that a style provider added by this function only affects the style of the widget to which *context* belongs. If you want to affect the style of all widgets, use `gtk_style_context_add_provider_for_screen()`.
-
-Note: If both priorities are the same, a **Gnome::Gtk3::StyleProvider** added through this function takes precedence over another added through `gtk_style_context_add_provider_for_screen()`.
-
-Since: 3.0
-
-    method gtk_style_context_add_provider ( N-GObject $provider, UInt $priority )
-
-  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
-
-  * UInt $priority; the priority of the style provider. The lower it is, the earlier it will be used in the style construction. Typically this will be in the range between `GTK_STYLE_PROVIDER_PRIORITY_FALLBACK` and `GTK_STYLE_PROVIDER_PRIORITY_USER`
-
-    my Gnome::Gtk3::StyleContext $sc .= new;
-    my Gnome::Gtk3::CssProvider $cp .= new;
-
-    $sc.add-provider( $cp, 234);
-
-[[gtk_] style_context_] remove_provider
----------------------------------------
-
-Removes a **Gnome::Gtk3::StyleProvider** from the style providers list in *context*.
-
-Since: 3.0
-
-    method gtk_style_context_remove_provider ( N-GObject $provider )
-
-  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
-
-[gtk_] style_context_save
+get-border, get-border-rk
 -------------------------
 
-Saves the *context* state, so temporary modifications done through `gtk_style_context_add_class()`, `gtk_style_context_remove_class()`, `gtk_style_context_set_state()`, etc. can quickly be reverted in one go through `gtk_style_context_restore()`.
+Returns the border for a given state as a **Gnome::Gtk3::Border**.
 
-The matching call to `gtk_style_context_restore()` must be done before GTK returns to the main loop.
+    method get-border ( GtkStateFlags $state --> N-GtkBorder )
+    method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
 
-Since: 3.0
+  * GtkStateFlags $state; state to retrieve the border for
 
-    method gtk_style_context_save ( )
+get-color, get-color-rk
+-----------------------
 
-[gtk_] style_context_restore
-----------------------------
+Returns the foreground color for a given state.
 
-Restores *context* state to a previous stage. See `gtk_style_context_save()`.
+    method get-color ( GtkStateFlags $state --> N-GdkRGBA )
+    method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA )
 
-Since: 3.0
+  * GtkStateFlags $state; state to retrieve the color for
 
-    method gtk_style_context_restore ( )
+get-junction-sides
+------------------
 
-[[gtk_] style_context_] get_section
------------------------------------
+Returns the sides where rendered elements connect visually with others.
 
-Queries the location in the CSS where *property* was defined for the current *context*. Note that the state to be queried is taken from `gtk_style_context_get_state()`.
+Returns: the junction sides mask. Bits are from GtkJunctionSides.
 
-If the location is not available, `Any` will be returned. The location might not be available for various reasons, such as the property being overridden, *property* not naming a supported CSS property or tracking of definitions being disabled for performance reasons.
+    method get-junction-sides ( --> UInt )
 
-Shorthand CSS properties cannot be queried for a location and will always return `Any`.
+get-margin, get-margin-rk
+-------------------------
 
-Returns: (nullable) (transfer none): `Any` or the section where a value for *property* was defined
+Returns the margin for a given state as a **Gnome::Gtk3::Border**.
 
-    method gtk_style_context_get_section ( Str $property --> N-GObject  )
+    method get-margin ( GtkStateFlags $state --> N-GtkBorder )
+    method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
 
-  * Str $property; style property name
+  * GtkStateFlags $state; state to retrieve the border for
 
-[[gtk_] style_context_] get_property
-------------------------------------
+get-padding, get-padding-rk
+---------------------------
 
-Gets a style property from *context* for the given state.
+Returns the padding for a given state as a **Gnome::Gtk3::Border**.
 
-Note that not all CSS properties that are supported by GTK+ can be retrieved in this way, since they may not be representable as `GValue`. GTK+ defines macros for a number of properties that can be used with this function.
+    method get-padding ( GtkStateFlags $state --> N-GtkBorder )
+    method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
 
-Note that passing a state other than the current state of *context* is not recommended unless the style context has been saved with `gtk_style_context_save()`.
+  * GtkStateFlags $state; state to retrieve the padding for
 
-When *value* is no longer needed, `clear-object()` must be called to free any allocated memory.
+get-parent, get-parent-rk
+-------------------------
 
-Since: 3.0
+Gets the parent context set via `set-parent()`. See that function for details.
 
-    method gtk_style_context_get_property ( Str $property, GtkStateFlags $state, N-GObject $value )
+Returns: the parent context or `undefined`
 
-  * Str $property; style property name
+    method get-parent ( --> N-GObject )
+    method get-parent-rk ( --> Gnome::Gtk3::StyleContext )
 
-  * GtkStateFlags $state; state to retrieve the property value for
+get-path, get-path-rk
+---------------------
 
-  * N-GObject $value; (out) (transfer full): return location for the style property value
+Returns the widget path used for style matching.
 
-[[gtk_] style_context_] set_state
----------------------------------
+Returns: A **Gnome::Gtk3::WidgetPath**
 
-Sets the state to be used for style matching.
+    method get-path ( --> N-GObject )
+    method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
 
-Since: 3.0
-
-    method gtk_style_context_set_state ( GtkStateFlags $flags )
-
-  * GtkStateFlags $flags; state to represent
-
-[[gtk_] style_context_] get_state
----------------------------------
-
-Returns the state used for style matching.
-
-This method should only be used to retrieve the **Gnome::Gtk3::StateFlags** to pass to **Gnome::Gtk3::StyleContext** methods, like `gtk_style_context_get_padding()`. If you need to retrieve the current state of a **Gnome::Gtk3::Widget**, use `gtk_widget_get_state_flags()`.
-
-Returns: the state flags
-
-Since: 3.0
-
-    method gtk_style_context_get_state ( --> GtkStateFlags  )
-
-[[gtk_] style_context_] set_scale
----------------------------------
-
-Sets the scale to use when getting image assets for the style.
-
-Since: 3.10
-
-    method gtk_style_context_set_scale ( Int $scale )
-
-  * Int $scale; scale
-
-[[gtk_] style_context_] get_scale
----------------------------------
+get-scale
+---------
 
 Returns the scale used for assets.
 
 Returns: the scale
 
-Since: 3.10
+    method get-scale ( --> Int )
 
-    method gtk_style_context_get_scale ( --> Int  )
+get-screen, get-screen-rk
+-------------------------
 
-[[gtk_] style_context_] set_path
---------------------------------
+Returns the **Gnome::Gtk3::Screen** to which *context* is attached.
 
-Sets the **Gnome::Gtk3::WidgetPath** used for style matching. As a consequence, the style will be regenerated to match the new given path.
+Returns: a **Gnome::Gtk3::Screen**.
 
-If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk_widget_get_style_context()`, you do not need to call this yourself.
+    method get-screen ( --> N-GObject )
+    method get-screen-rk ( --> Gnome::Gdk3::Screen )
 
-Since: 3.0
+get-state
+---------
 
-    method gtk_style_context_set_path ( N-GObject $path )
+Returns the state used for style matching.
 
-  * N-GObject $path; a **Gnome::Gtk3::WidgetPath**
+This method should only be used to retrieve the bit mask of GtkStateFlags to pass to **Gnome::Gtk3::StyleContext** methods, like `get-padding()`. If you need to retrieve the current state of a **Gnome::Gtk3::Widget**, use `Gnome::Gtk3::Widget.get-state-flags()`.
 
-[[gtk_] style_context_] get_path
---------------------------------
+Returns: the state flags bit mask
 
-    method gtk_style_context_get_path ( --> N-GObject )
+    method get-state ( --> UInt )
 
-Returns the widget path
-
-[[gtk_] style_context_] set_parent
-----------------------------------
-
-Sets the parent style context for *context*. The parent style context is used to implement [inheritance](https://www.w3.org/TR/css3-cascade/#inheritance) of properties.
-
-If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk_widget_get_style_context()`, the parent will be set for you.
-
-Since: 3.4
-
-    method gtk_style_context_set_parent ( N-GObject $parent )
-
-  * N-GObject $parent; (allow-none): the new parent or `Any`
-
-[[gtk_] style_context_] get_parent
-----------------------------------
-
-Gets the parent context set via `gtk_style_context_set_parent()`. See that function for details.
-
-Returns: (nullable) (transfer none): the parent context or `Any`
-
-Since: 3.4
-
-    method gtk_style_context_get_parent ( --> N-GObject  )
-
-[[gtk_] style_context_] list_classes
-------------------------------------
-
-Returns the list of classes currently defined in *context*.
-
-Returns: (transfer container) (element-type utf8): a `GList` of strings with the currently defined classes. The contents of the list are owned by GTK+, but you must free the list itself with `g_list_free()` when you are done with it.
-
-Since: 3.0
-
-    method gtk_style_context_list_classes ( --> N-GObject  )
-
-[[gtk_] style_context_] add_class
----------------------------------
-
-Adds a style class to *context*, so posterior calls to `gtk_style_context_get()` or any of the gtk_render_*() functions will make use of this new class for styling.
-
-In the CSS file format, a **Gnome::Gtk3::Entry** defining a “search” class, would be matched by:
-
-    entry.search { ... }
-
-While any widget defining a “search” class would be matched by:
-
-.search { ... }
-
-Since: 3.0
-
-    method gtk_style_context_add_class ( Str $class_name )
-
-  * Str $class_name; class name to use in styling
-
-[[gtk_] style_context_] remove_class
-------------------------------------
-
-Removes *class_name* from *context*.
-
-Since: 3.0
-
-    method gtk_style_context_remove_class ( Str $class_name )
-
-  * Str $class_name; class name to remove
-
-[[gtk_] style_context_] has_class
----------------------------------
-
-Returns `1` if *context* currently has defined the given class name.
-
-Returns: `1` if *context* has *class_name* defined
-
-Since: 3.0
-
-    method gtk_style_context_has_class ( Str $class_name --> Int  )
-
-  * Str $class_name; a class name
-
-[[gtk_] style_context_] get_style_property
-------------------------------------------
+get-style-property, get-style-property-rk
+-----------------------------------------
 
 Gets the value for a widget style property.
 
-When *value* is no longer needed, `clear-object()` must be called to free any allocated memory.
+When *value* is no longer needed, `g-value-unset()` must be called to free any allocated memory.
 
-    method gtk_style_context_get_style_property (
-      Str $property_name, N-GObject $value
-    )
+    method get-style-property ( Str $property_name --> N-GValue )
+    method get-style-property-rk ( Str $property_name --> Gnome::GObject::Value )
 
   * Str $property_name; the name of the widget style property
 
   * N-GObject $value; Return location for the property value
 
-[[gtk_] style_context_] set_screen
-----------------------------------
+has-class
+---------
 
-Attaches *context* to the given screen.
+Returns `True` if *context* currently has defined the given class name.
 
-The screen is used to add style information from “global” style providers, such as the screens **Gnome::Gtk3::Settings** instance.
+Returns: `True` if *context* has *class-name* defined
 
-If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk_widget_get_style_context()`, you do not need to call this yourself.
+    method has-class ( Str $class_name --> Bool )
 
-Since: 3.0
+  * Str $class_name; a class name
 
-    method gtk_style_context_set_screen ( N-GObject $screen )
+list-classes, list-classes-rk
+-----------------------------
 
-  * N-GObject $screen; a **Gnome::Gdk3::Screen**
+Returns the list of classes currently defined in *context*.
 
-[[gtk_] style_context_] get_screen
-----------------------------------
+Returns: a **Gnome::Gtk3::List** of strings with the currently defined classes. The contents of the list are owned by GTK+, but you must free the list itself with `clear-object()` when you are done with it.
 
-Returns the **Gnome::Gdk3::Screen** to which *context* is attached.
+    method list-classes ( --> N-GList )
+    method list-classes-rk ( --> Gnome::Glib::List )
 
-Returns: (transfer none): a **Gnome::Gdk3::Screen**.
+lookup-color, lookup-color-rk
+-----------------------------
 
-    method gtk_style_context_get_screen ( --> N-GObject  )
+Looks up and resolves a color name in the *context* color map.
 
-[[gtk_] style_context_] set_frame_clock
----------------------------------------
+Returns: N-GdkRGBA color if *color-name* was found and resolved, undefined or invalid otherwise
 
-Attaches *context* to the given frame clock.
+    method lookup-color ( Str $color_name --> N-GdkRGBA )
+    method lookup-color-rk ( Str $color_name --> Gnome::Gdk3::RGBA )
 
-The frame clock is used for the timing of animations.
+  * Str $color_name; color name to lookup
 
-If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk_widget_get_style_context()`, you do not need to call this yourself.
+remove-class
+------------
 
-Since: 3.8
+Removes *class-name* from *context*.
 
-    method gtk_style_context_set_frame_clock ( N-GObject $frame_clock )
+    method remove-class ( Str $class_name )
 
-  * N-GObject $frame_clock; a **Gnome::Gdk3::FrameClock**
+  * Str $class_name; class name to remove
 
-[[gtk_] style_context_] get_frame_clock
----------------------------------------
+remove-provider
+---------------
 
-Returns the **Gnome::Gdk3::FrameClock** to which *context* is attached.
+Removes *provider* from the style providers list in *context*.
 
-Returns: (nullable) (transfer none): a **Gnome::Gdk3::FrameClock**, or `Any` if *context* does not have an attached frame clock.
+    method remove-provider ( N-GObject $provider )
 
-Since: 3.8
+  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
 
-    method gtk_style_context_get_frame_clock ( --> N-GObject  )
+remove-provider-for-screen
+--------------------------
 
-[[gtk_] style_context_] set_junction_sides
-------------------------------------------
+Removes *provider* from the global style providers list in *screen*.
 
-Sets the sides where rendered elements (mostly through `gtk_render_frame()`) will visually connect with other visual elements.
+    method remove-provider-for-screen ( N-GObject $screen, N-GObject $provider )
+
+  * N-GObject $screen; a **Gnome::Gtk3::Screen**
+
+  * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
+
+reset-widgets
+-------------
+
+This function recomputes the styles for all widgets under a particular **Gnome::Gtk3::Screen**. This is useful when some global parameter has changed that affects the appearance of all widgets, because when a widget gets a new style, it will both redraw and recompute any cached information about its appearance. As an example, it is used when the color scheme changes in the related **Gnome::Gtk3::Settings** object.
+
+    method reset-widgets ( N-GObject $screen )
+
+  * N-GObject $screen; a **Gnome::Gtk3::Screen**
+
+restore
+-------
+
+Restores *context* state to a previous stage. See `save()`.
+
+    method restore ( )
+
+save
+----
+
+Saves the *context* state, so temporary modifications done through `add-class()`, `remove-class()`, `set-state()`, etc. can quickly be reverted in one go through `gtk-style-context-restore()`.
+
+The matching call to `gtk-style-context-restore()` must be done before GTK returns to the main loop.
+
+    method save ( )
+
+set-junction-sides
+------------------
+
+Sets the sides where rendered elements (mostly through `render-frame()`) will visually connect with other visual elements.
 
 This is merely a hint that may or may not be honored by themes.
 
 Container widgets are expected to set junction hints as appropriate for their children, so it should not normally be necessary to call this function manually.
 
-Since: 3.0
+    method set-junction-sides ( UInt $sides )
 
-    method gtk_style_context_set_junction_sides ( GtkJunctionSides $sides )
+  * UInt $sides; sides where rendered elements are visually connected to other elements. Bits ae from GtkJunctionSides.
 
-  * GtkJunctionSides $sides; sides where rendered elements are visually connected to other elements
+set-parent
+----------
 
-[[gtk_] style_context_] get_junction_sides
-------------------------------------------
+Sets the parent style context for *context*. The parent style context is used to implement [inheritance](http://www.w3.org/TR/css3-cascade/**inheritance**) of properties.
 
-Returns the sides where rendered elements connect visually with others.
+If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk-widget-get-style-context()`, the parent will be set for you.
 
-Returns: the junction sides
+    method set-parent ( N-GObject $parent )
 
-Since: 3.0
+  * N-GObject $parent; the new parent or `undefined`
 
-    method gtk_style_context_get_junction_sides ( --> GtkJunctionSides  )
+set-path
+--------
 
-[[gtk_] style_context_] lookup_color
-------------------------------------
+Sets the **Gnome::Gtk3::WidgetPath** used for style matching. As a consequence, the style will be regenerated to match the new given path.
 
-Looks up and resolves a color name in the *context* color map.
+If you are using a **Gnome::Gtk3::StyleContext** returned from `Gnome::Gtk3::Widget.get-style-context()`, you do not need to call this yourself.
 
-Returns: `1` if *color_name* was found and resolved, `0` otherwise
+    method set-path ( N-GObject $path )
 
-    method gtk_style_context_lookup_color ( Str $color_name, N-GObject $color --> Int  )
+  * N-GObject $path; a **Gnome::Gtk3::WidgetPath**
 
-  * Str $color_name; color name to lookup
+set-scale
+---------
 
-  * N-GObject $color; (out): Return location for the looked up color
+Sets the scale to use when getting image assets for the style.
 
-[[gtk_] style_context_] get_color
----------------------------------
+    method set-scale ( Int() $scale )
 
-Gets the foreground color for a given state.
+  * Int() $scale; scale
 
-See `gtk_style_context_get_property()` and `GTK_STYLE_PROPERTY_COLOR` for details.
+set-screen
+----------
 
-Since: 3.0
+Attaches *context* to the given screen.
 
-    method gtk_style_context_get_color ( GtkStateFlags $state, N-GObject $color )
+The screen is used to add style information from “global” style providers, such as the screen’s **Gnome::Gtk3::Settings** instance.
 
-  * GtkStateFlags $state; state to retrieve the color for
+If you are using a **Gnome::Gtk3::StyleContext** returned from `gtk-widget-get-style-context()`, you do not need to call this yourself.
 
-  * N-GObject $color; (out): return value for the foreground color
+    method set-screen ( N-GObject $screen )
 
-[[gtk_] style_context_] get_border
-----------------------------------
+  * N-GObject $screen; a **Gnome::Gtk3::Screen**
 
-Gets the border for a given state as a **Gnome::Gtk3::Border**.
+set-state
+---------
 
-See `gtk_style_context_get_property()` and `GTK_STYLE_PROPERTY_BORDER_WIDTH` for details.
+Sets the state bit mask to be used for style matching.
 
-Since: 3.0
+    method set-state ( UInt $flags )
 
-    method gtk_style_context_get_border ( GtkStateFlags $state, N-GObject $border )
+  * UInt $flags; state to represent using bits from GtkStateFlags
 
-  * GtkStateFlags $state; state to retrieve the border for
-
-  * N-GObject $border; (out): return value for the border settings
-
-[[gtk_] style_context_] get_padding
------------------------------------
-
-Gets the padding for a given state as a **Gnome::Gtk3::Border**. See `gtk_style_context_get()` and `GTK_STYLE_PROPERTY_PADDING` for details.
-
-Since: 3.0
-
-    method gtk_style_context_get_padding ( GtkStateFlags $state, N-GObject $padding )
-
-  * GtkStateFlags $state; state to retrieve the padding for
-
-  * N-GObject $padding; (out): return value for the padding settings
-
-[[gtk_] style_context_] get_margin
-----------------------------------
-
-Gets the margin for a given state as a **Gnome::Gtk3::Border**. See `gtk_style_property_get()` and `GTK_STYLE_PROPERTY_MARGIN` for details.
-
-Since: 3.0
-
-    method gtk_style_context_get_margin ( GtkStateFlags $state, N-GObject $margin )
-
-  * GtkStateFlags $state; state to retrieve the border for
-
-  * N-GObject $margin; (out): return value for the margin settings
-
-[[gtk_] style_context_] reset_widgets
--------------------------------------
-
-This function recomputes the styles for all widgets under a particular **Gnome::Gdk3::Screen**. This is useful when some global parameter has changed that affects the appearance of all widgets, because when a widget gets a new style, it will both redraw and recompute any cached information about its appearance. As an example, it is used when the color scheme changes in the related **Gnome::Gtk3::Settings** object.
-
-Since: 3.0
-
-    method gtk_style_context_reset_widgets ( N-GObject $screen )
-
-  * N-GObject $screen; a **Gnome::Gdk3::Screen**
-
-[[gtk_] style_context_] to_string
----------------------------------
+to-string
+---------
 
 Converts the style context into a string representation.
 
@@ -522,156 +421,98 @@ This function is intended for testing and debugging of the CSS implementation in
 
 Returns: a newly allocated string representing *context*
 
-Since: 3.20
+    method to-string ( Uint $flags --> Str )
 
-    method gtk_style_context_to_string (
-      GtkStyleContextPrintFlags $flags --> Str
-    )
-
-  * GtkStyleContextPrintFlags $flags; Flags that determine what to print
-
-[[gtk_] render_] background_get_clip
-------------------------------------
-
-Returns the area that will be affected (i.e. drawn to) when calling `gtk_render_background()` for the given *context* and rectangle.
-
-Since: 3.20
-
-    method gtk_render_background_get_clip ( N-GObject $context, Num $x, Num $y, Num $width, Num $height, N-GObject $out_clip )
-
-  * N-GObject $context; a **Gnome::Gtk3::StyleContext**
-
-  * Num $x; X origin of the rectangle
-
-  * Num $y; Y origin of the rectangle
-
-  * Num $width; rectangle width
-
-  * Num $height; rectangle height
-
-  * N-GObject $out_clip; (out): return location for the clip
-
-List of deprecated (not implemented!) methods
-=============================================
-
-Since 3.4
----------
-
-### method gtk_draw_insertion_cursor ( ... )
-
-Since 3.6
----------
-
-### method gtk_style_context_state_is_running ( ... )
-
-### method gtk_style_context_notify_state_change ( ... )
-
-### method gtk_style_context_cancel_animations ( ... )
-
-### method gtk_style_context_scroll_animations ( ... )
-
-### method gtk_style_context_push_animatable_region ( ... )
-
-### method gtk_style_context_pop_animatable_region ( ... )
-
-Since 3.8.
-----------
-
-### method gtk_style_context_set_direction ( ... )
-
-### method gtk_style_context_get_direction ( ... )
-
-### method PangoFontDescription ( ... )
-
-Since 3.10
-----------
-
-### method gtk_icon_set_render_icon_pixbuf ( ... )
-
-### method gtk_icon_set_render_icon_surface ( ... )
-
-### method gtk_style_context_lookup_icon_set ( ... )
-
-### method gtk_render_icon_pixbuf ( ... )
-
-Since 3.12
-----------
-
-### method gtk_style_context_invalidate ( ... )
-
-Since 3.14
-----------
-
-### method gtk_style_context_list_regions ( ... )
-
-### method gtk_style_context_add_region ( ... )
-
-### method gtk_style_context_remove_region ( ... )
-
-### method gtk_style_context_has_region ( ... )
-
-Since 3.16.
------------
-
-### method gtk_style_context_get_background_color ( ... )
-
-### method gtk_style_context_get_border_color ( ... )
-
-Since 3.18.
------------
-
-### method gtk_style_context_set_background ( ... )
-
-Since 3.24.
------------
-
-### method gtk_render_frame_gap ( ... )
+  * UInt $flags; Flags that determine what to print. Nits are from GtkStyleContextPrintFlags
 
 Signals
 =======
 
-Register any signal as follows. See also **Gnome::GObject::Object**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
+First method
+------------
 
-Not yet supported signals
--------------------------
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+
+    # handler method
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+    # connect a signal on window object
+    my Gnome::Gtk3::Window $w .= new( ... );
+    $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+Second method
+-------------
+
+    my Gnome::Gtk3::Window $w .= new( ... );
+    my Callable $handler = sub (
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
+    ) {
+      ...
+    }
+
+    $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
+
+Supported signals
+-----------------
 
 ### changed
 
-The sig *changed* signal is emitted when there is a change in the **Gnome::Gtk3::StyleContext**.
+The *changed* signal is emitted when there is a change in the **Gnome::Gtk3::StyleContext**.
 
-For a **Gnome::Gtk3::StyleContext** returned by `gtk_widget_get_style_context()`, the sig `style-updated` signal/vfunc might be more convenient to use.
+For a **Gnome::Gtk3::StyleContext** returned by `Gnome::Gtk3::Widget.get-style-context()`, the *style-updated* signal might be more convenient to use.
 
 This signal is useful when using the theming layer standalone.
 
-Since: 3.0
-
     method handler (
-      :$user-option1, ..., :$user-optionN
+      Int :$_handle_id,
+      Gnome::Gtk3::StyleContext :$_widget,
+      *%user-options
     );
+
+  * $_handle_id; the registered event handler id
+
+  * $_widget; the object which received the signal.
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
-Not yet supported properties
-----------------------------
+Supported properties
+--------------------
 
-### parent
+### Direction: direction
+
+Text direction Default value: False
+
+The **Gnome::GObject::Value** type of property *direction* is `G_TYPE_ENUM`.
+
+### FrameClock: paint-clock
+
+The associated GdkFrameClock Widget type: GDK-TYPE-FRAME-CLOCK
+
+The **Gnome::GObject::Value** type of property *paint-clock* is `G_TYPE_OBJECT`.
+
+### Parent: parent
+
+Sets or gets the style context’s parent. See `set-parent()` for details.
+
+    Widget type: GTK_TYPE_STYLE_CONTEXT
 
 The **Gnome::GObject::Value** type of property *parent* is `G_TYPE_OBJECT`.
 
-Sets or gets the style context’s parent. See `gtk_style_context_set_parent()` for details.
+### Screen: screen
 
-Since: 3.4
+The associated GdkScreen Widget type: GDK-TYPE-SCREEN
+
+The **Gnome::GObject::Value** type of property *screen* is `G_TYPE_OBJECT`.
 

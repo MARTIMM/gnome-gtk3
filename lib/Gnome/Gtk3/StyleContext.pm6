@@ -86,6 +86,7 @@ use Gnome::Glib::List;
 
 use Gnome::Gdk3::Screen;
 use Gnome::Gdk3::RGBA;
+use Gnome::Gdk3::Types;
 
 use Gnome::Gtk3::Border;
 use Gnome::Gtk3::Enums;
@@ -475,16 +476,14 @@ sub gtk_style_context_get_frame_clock (
 
 Returns the sides where rendered elements connect visually with others.
 
-Returns: the junction sides
+Returns: the junction sides mask. Bits are from GtkJunctionSides.
 
-  method get-junction-sides ( --> GtkJunctionSides )
+  method get-junction-sides ( --> UInt )
 
 =end pod
 
-method get-junction-sides ( --> GtkJunctionSides ) {
-  GtkJunctionSides(
-    gtk_style_context_get_junction_sides(self.get-native-object-no-reffing)
-  )
+method get-junction-sides ( --> UInt ) {
+  gtk_style_context_get_junction_sides(self.get-native-object-no-reffing)
 }
 
 sub gtk_style_context_get_junction_sides (
@@ -774,20 +773,20 @@ sub gtk_style_context_get_section (
 
 Returns the state used for style matching.
 
-This method should only be used to retrieve the B<Gnome::Gtk3::StateFlags> to pass to B<Gnome::Gtk3::StyleContext> methods, like C<get-padding()>. If you need to retrieve the current state of a B<Gnome::Gtk3::Widget>, use C<gtk-widget-get-state-flags()>.
+This method should only be used to retrieve the bit mask of GtkStateFlags to pass to B<Gnome::Gtk3::StyleContext> methods, like C<get-padding()>. If you need to retrieve the current state of a B<Gnome::Gtk3::Widget>, use C<Gnome::Gtk3::Widget.get-state-flags()>.
 
-Returns: the state flags
+Returns: the state flags bit mask
 
-  method get-state ( --> GtkStateFlags )
+  method get-state ( --> UInt )
 
 =end pod
 
-method get-state ( --> GtkStateFlags ) {
-  GtkStateFlags(gtk_style_context_get_state(self.get-native-object-no-reffing))
+method get-state ( --> UInt ) {
+  gtk_style_context_get_state(self.get-native-object-no-reffing)
 }
 
 sub gtk_style_context_get_state (
-  N-GObject $context --> GEnum
+  N-GObject $context --> GFlag
 ) is native(&gtk-lib)
   { * }
 
@@ -815,6 +814,7 @@ sub gtk_style_context_get_style (
 ) is native(&gtk-lib)
   { * }
 }}
+
 
 #-------------------------------------------------------------------------------
 #TM:1:get-style-property:
@@ -941,7 +941,7 @@ sub gtk_render_insertion_cursor (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:has-class:
+#TM:1:has-class:
 =begin pod
 =head2 has-class
 
@@ -955,7 +955,6 @@ Returns: C<True> if I<context> has I<class-name> defined
 =end pod
 
 method has-class ( Str $class_name --> Bool ) {
-
   gtk_style_context_has_class(
     self.get-native-object-no-reffing, $class_name
   ).Bool
@@ -967,22 +966,31 @@ sub gtk_style_context_has_class (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:list-classes:
+#TM:1:list-classes:
+#TM:1:list-classes-rk:
 =begin pod
-=head2 list-classes
+=head2 list-classes, list-classes-rk
 
 Returns the list of classes currently defined in I<context>.
 
-Returns: (transfer container) (element-type utf8): a B<Gnome::Gtk3::List> of strings with the currently defined classes. The contents of the list are owned by GTK+, but you must free the list itself with C<g-list-free()> when you are done with it.
+Returns: a B<Gnome::Gtk3::List> of strings with the currently defined classes. The contents of the list are owned by GTK+, but you must free the list itself with C<clear-object()> when you are done with it.
 
   method list-classes ( --> N-GList )
+  method list-classes-rk ( --> Gnome::Glib::List )
 
 =end pod
 
 method list-classes ( --> N-GList ) {
-
   gtk_style_context_list_classes(
     self.get-native-object-no-reffing,
+  )
+}
+
+method list-classes-rk ( --> Gnome::Glib::List ) {
+  Gnome::Glib::List.new(
+    :native-object(
+      gtk_style_context_list_classes(self.get-native-object-no-reffing)
+    )
   )
 }
 
@@ -992,35 +1000,46 @@ sub gtk_style_context_list_classes (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:lookup-color:
+#TM:1:lookup-color:
+#TM:1:lookup-color-rk:
 =begin pod
-=head2 lookup-color
+=head2 lookup-color, lookup-color-rk
 
 Looks up and resolves a color name in the I<context> color map.
 
-Returns: C<True> if I<color-name> was found and resolved, C<False> otherwise
+Returns: N-GdkRGBA color if I<color-name> was found and resolved, undefined or invalid otherwise
 
-  method lookup-color ( Str $color_name, N-GObject $color --> Bool )
+  method lookup-color ( Str $color_name --> N-GdkRGBA )
+  method lookup-color-rk ( Str $color_name --> Gnome::Gdk3::RGBA )
 
 =item Str $color_name; color name to lookup
-=item N-GObject $color; Return location for the looked up color
 =end pod
 
-method lookup-color ( Str $color_name, $color is copy --> Bool ) {
-  $color .= get-native-object-no-reffing unless $color ~~ N-GObject;
-
+method lookup-color ( Str $color_name --> N-GdkRGBA ) {
+  my N-GdkRGBA $color .= new;
   gtk_style_context_lookup_color(
     self.get-native-object-no-reffing, $color_name, $color
-  ).Bool
+  );
+
+  $color
+}
+
+method lookup-color-rk ( Str $color_name --> Gnome::Gdk3::RGBA ) {
+  my N-GdkRGBA $color .= new;
+  gtk_style_context_lookup_color(
+    self.get-native-object-no-reffing, $color_name, $color
+  );
+
+  Gnome::Gdk3::RGBA.new(:native-object($color))
 }
 
 sub gtk_style_context_lookup_color (
-  N-GObject $context, gchar-ptr $color_name, N-GObject $color --> gboolean
+  N-GObject $context, gchar-ptr $color_name, N-GdkRGBA $color --> gboolean
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:remove-class:
+#TM:1:remove-class:
 =begin pod
 =head2 remove-class
 
@@ -1032,7 +1051,6 @@ Removes I<class-name> from I<context>.
 =end pod
 
 method remove-class ( Str $class_name ) {
-
   gtk_style_context_remove_class(
     self.get-native-object-no-reffing, $class_name
   );
@@ -1094,7 +1112,568 @@ sub gtk_style_context_remove_provider_for_screen (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:reset-widgets:
+#TM:1:render-activity:
+=begin pod
+=head2 render-activity
+
+Renders an activity indicator (such as in B<Gnome::Gtk3::Spinner>). The state C<GTK-STATE-FLAG-CHECKED> determines whether there is activity going on.
+
+  method render-activity (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-activity (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_activity(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_activity (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-arrow:
+=begin pod
+=head2 render-arrow
+
+Renders an arrow pointing to I<angle>.
+
+Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
+
+![](images/arrows.png)
+
+  method render-arrow (
+    cairo_t $cr, Num() $angle, Num() $x, Num() $y, Num() $size
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $angle; arrow angle from 0 to 2 * C<G-PI>, being 0 the arrow pointing to the north
+=item Num() $x; X origin of the render area
+=item Num() $y; Y origin of the render area
+=item Num() $size; square side for render area
+=end pod
+
+method render-arrow (
+  $cr is copy, Num() $angle, Num() $x, Num() $y, Num() $size
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_arrow(
+    self.get-native-object-no-reffing, $cr, $angle, $x, $y, $size
+  );
+}
+
+sub gtk_render_arrow (
+  N-GObject $context, cairo_t $cr, gdouble $angle, gdouble $x, gdouble $y, gdouble $size
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-background:
+=begin pod
+=head2 render-background
+
+Renders the background of an element.
+
+Typical background rendering, showing the effect of `background-image`, `border-width` and `border-radius`:
+
+![](images/background.png)
+
+  method render-background (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-background (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_background(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_background (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-background-get-clip:
+=begin pod
+=head2 render-background-get-clip
+
+Returns the area that will be affected (i.e. drawn to) when calling C<background()> for the given I<context> and rectangle. Returns a N-GdkRectangle (defined in B<Gnome::Gdk3::Types>).
+
+  method render-background-get-clip (
+    Num() $x, Num() $y, Num() $width, Num() $height --> N-GdkRectangle
+  )
+
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-background-get-clip (
+  Num() $x, Num() $y, Num() $width, Num() $height --> N-GdkRectangle
+) {
+  my N-GdkRectangle $out_clip .= new;
+  gtk_render_background_get_clip(
+    self.get-native-object-no-reffing, $x, $y, $width, $height, $out_clip
+  );
+
+  $out_clip
+}
+
+sub gtk_render_background_get_clip (
+  N-GObject $context, gdouble $x, gdouble $y, gdouble $width, gdouble $height, N-GdkRectangle $out_clip
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-check:
+=begin pod
+=head2 render-check
+
+Renders a checkmark (as in a B<Gnome::Gtk3::CheckButton>).
+
+The C<GTK-STATE-FLAG-CHECKED> state determines whether the check is on or off, and C<GTK-STATE-FLAG-INCONSISTENT> determines whether it should be marked as undefined.
+
+Typical checkmark rendering:
+
+![](images/checks.png)
+
+  method render-check (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-check (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_check(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_check (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-expander:
+=begin pod
+=head2 render-expander
+
+Renders an expander (as used in B<Gnome::Gtk3::TreeView> and B<Gnome::Gtk3::Expander>) in the area defined by I<x>, I<y>, I<width>, I<height>. The state C<GTK-STATE-FLAG-CHECKED> determines whether the expander is collapsed or expanded.
+
+Typical expander rendering:
+
+![](images/expanders.png)
+
+  method render-expander (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-expander (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_expander(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_expander (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-extension:
+=begin pod
+=head2 render-extension
+
+Renders a extension (as in a B<Gnome::Gtk3::Notebook> tab) in the rectangle defined by I<x>, I<y>, I<width>, I<height>. The side where the extension connects to is defined by I<gap-side>.
+
+Typical extension rendering:
+
+![](images/extensions.png)
+
+  method render-extension (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height,
+    GtkPositionType $gap_side
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=item GtkPositionType $gap_side; side where the gap is
+=end pod
+
+method render-extension (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height,
+  GtkPositionType $gap_side
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_extension(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height, $gap_side
+  );
+}
+
+sub gtk_render_extension (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height, GEnum $gap_side
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-focus:
+=begin pod
+=head2 render-focus
+
+Renders a focus indicator on the rectangle determined by I<x>, I<y>, I<width>, I<height>.
+
+Typical focus rendering:
+
+![](images/focus.png)
+
+  method render-focus (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-focus (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_focus(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_focus (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-frame:
+=begin pod
+=head2 render-frame
+
+Renders a frame around the rectangle defined by I<x>, I<y>, I<width>, I<height>.
+
+Examples of frame rendering, showing the effect of `border-image`, `border-color`, `border-width`, `border-radius` and junctions:
+
+![](images/frames.png)
+
+  method render-frame (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-frame (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_frame(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_frame (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-handle:
+=begin pod
+=head2 render-handle
+
+Renders a handle (as in B<Gnome::Gtk3::HandleBox>, B<Gnome::Gtk3::Paned> and B<Gnome::Gtk3::Window>’s resize grip), in the rectangle determined by I<x>, I<y>, I<width>, I<height>.
+
+Handles rendered for the paned and grip classes:
+
+![](images/handles.png)
+
+  method render-handle (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-handle (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_handle(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_handle (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:render-icon:
+=begin pod
+=head2 render-icon
+
+Renders the icon in I<pixbuf> at the specified I<x> and I<y> coordinates.
+
+This function will render the icon in I<pixbuf> at exactly its size, regardless of scaling factors, which may not be appropriate when drawing on displays with high pixel densities.
+
+You probably want to use C<icon-surface()> instead, if you already have a Cairo surface.
+
+  method render-icon (
+    cairo_t $cr, N-GPixbuf $pixbuf, Num() $x, Num() $y
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item N-GObject $pixbuf; a B<Gnome::Gtk3::Pixbuf> containing the icon to draw
+=item Num() $x; X position for the I<pixbuf>
+=item Num() $y; Y position for the I<pixbuf>
+=end pod
+
+method render-icon ( $cr is copy, $pixbuf is copy, Num() $x, Num() $y ) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $pixbuf .= get-native-object-no-reffing unless $pixbuf ~~ N-GObject;
+  gtk_render_icon(
+    self.get-native-object-no-reffing, $cr, $pixbuf, $x, $y
+  );
+}
+
+sub gtk_render_icon (
+  N-GObject $context, cairo_t $cr, N-GObject $pixbuf, gdouble $x, gdouble $y
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:render-icon-surface:
+=begin pod
+=head2 render-icon-surface
+
+Renders the icon in I<surface> at the specified I<x> and I<y> coordinates.
+
+  method render-icon-surface (
+    cairo_t $cr, cairo_surface_t $surface, Num() $x, Num() $y
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item cairo_surface_t $surface; a B<cairo-surface-t> containing the icon to draw
+=item Num() $x; X position for the I<icon>
+=item Num() $y; Y position for the I<incon>
+=end pod
+
+method render-icon-surface (
+  $cr is copy, cairo_surface_t $surface, Num() $x, Num() $y
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_icon_surface(
+    self.get-native-object-no-reffing, $cr, $surface, $x, $y
+  );
+}
+
+sub gtk_render_icon_surface (
+  N-GObject $context, cairo_t $cr, cairo_surface_t $surface, gdouble $x, gdouble $y
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:render-layout:
+=begin pod
+=head2 render-layout
+
+Renders I<layout> on the coordinates I<x>, I<y>
+
+  method render-layout (
+    cairo_t $cr, Num() $x, Num() $y, N-GObject $layout
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin
+=item Num() $y; Y origin
+=item N-GObject $layout; the B<PangoLayout> to render
+=end pod
+
+method render-layout (
+  $cr is copy, Num() $x, Num() $y, $layout is copy
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $layout .= get-native-object-no-reffing unless $layout ~~ N-GObject;
+  gtk_render_layout(
+    self.get-native-object-no-reffing, $cr, $x, $y, $layout
+  );
+}
+
+sub gtk_render_layout (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, N-GObject $layout
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:render-line:
+=begin pod
+=head2 render-line
+
+Renders a line from (x0, y0) to (x1, y1).
+
+  method render-line (
+    cairo_t $cr, Num() $x0, Num() $y0, Num() $x1, Num() $y1
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x0; X coordinate for the origin of the line
+=item Num() $y0; Y coordinate for the origin of the line
+=item Num() $x1; X coordinate for the end of the line
+=item Num() $y1; Y coordinate for the end of the line
+=end pod
+
+method render-line ( $cr is copy, Num() $x0, Num() $y0, Num() $x1, Num() $y1 ) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_line(
+    self.get-native-object-no-reffing, $cr, $x0, $y0, $x1, $y1
+  );
+}
+
+sub gtk_render_line (
+  N-GObject $context, cairo_t $cr, gdouble $x0, gdouble $y0, gdouble $x1, gdouble $y1
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:render-option:
+=begin pod
+=head2 render-option
+
+Renders an option mark (as in a B<Gnome::Gtk3::RadioButton>), the C<GTK-STATE-FLAG-CHECKED> state will determine whether the option is on or off, and C<GTK-STATE-FLAG-INCONSISTENT> whether it should be marked as undefined.
+
+Typical option mark rendering:
+
+![](images/options.png)
+
+  method render-option (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=end pod
+
+method render-option (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_option(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+  );
+}
+
+sub gtk_render_option (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:render-slider:
+=begin pod
+=head2 render-slider
+
+Renders a slider (as in B<Gnome::Gtk3::Scale>) in the rectangle defined by I<x>, I<y>, I<width>, I<height>. I<orientation> defines whether the slider is vertical or horizontal.
+
+Typical slider rendering:
+
+![](images/sliders.png)
+
+  method render-slider (
+    cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height,
+    GtkOrientation $orientation
+  )
+
+=item cairo_t $cr; a B<cairo-t>
+=item Num() $x; X origin of the rectangle
+=item Num() $y; Y origin of the rectangle
+=item Num() $width; rectangle width
+=item Num() $height; rectangle height
+=item GtkOrientation $orientation; orientation of the slider
+=end pod
+
+method render-slider (
+  $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height,
+  GtkOrientation $orientation
+) {
+  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  gtk_render_slider(
+    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height,
+    $orientation
+  );
+}
+
+sub gtk_render_slider (
+  N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, gdouble $width, gdouble $height, GEnum $orientation
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:reset-widgets:
 =begin pod
 =head2 reset-widgets
 
@@ -1107,10 +1686,7 @@ This function recomputes the styles for all widgets under a particular B<Gnome::
 
 method reset-widgets ( $screen is copy ) {
   $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
-
-  gtk_style_context_reset_widgets(
-    self.get-native-object-no-reffing, $screen
-  );
+  gtk_style_context_reset_widgets($screen);
 }
 
 sub gtk_style_context_reset_widgets (
@@ -1119,7 +1695,7 @@ sub gtk_style_context_reset_widgets (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:restore:
+#TM:1:restore:
 =begin pod
 =head2 restore
 
@@ -1130,10 +1706,7 @@ Restores I<context> state to a previous stage. See C<save()>.
 =end pod
 
 method restore ( ) {
-
-  gtk_style_context_restore(
-    self.get-native-object-no-reffing,
-  );
+  gtk_style_context_restore(self.get-native-object-no-reffing);
 }
 
 sub gtk_style_context_restore (
@@ -1142,11 +1715,11 @@ sub gtk_style_context_restore (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:save:
+#TM:1:save:
 =begin pod
 =head2 save
 
-Saves the I<context> state, so temporary modifications done through C<add-class()>, C<gtk-style-context-remove-class()>, C<gtk-style-context-set-state()>, etc. can quickly be reverted in one go through C<gtk-style-context-restore()>.
+Saves the I<context> state, so temporary modifications done through C<add-class()>, C<remove-class()>, C<set-state()>, etc. can quickly be reverted in one go through C<gtk-style-context-restore()>.
 
 The matching call to C<gtk-style-context-restore()> must be done before GTK returns to the main loop.
 
@@ -1166,6 +1739,7 @@ sub gtk_style_context_save (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:set-frame-clock:
 =begin pod
@@ -1177,49 +1751,49 @@ The frame clock is used for the timing of animations.
 
 If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, you do not need to call this yourself.
 
-  method set-frame-clock ( N-GObject $frame_clock )
+  method set-frame-clock ( N-GObject $frame-clock )
 
-=item N-GObject $frame_clock; a B<Gnome::Gtk3::FrameClock>
+=item N-GObject $frame-clock; a B<Gnome::Gtk3::FrameClock>
 =end pod
 
-method set-frame-clock ( $frame_clock is copy ) {
-  $frame_clock .= get-native-object-no-reffing unless $frame_clock ~~ N-GObject;
+method set-frame-clock ( $frame-clock is copy ) {
+  $frame-clock .= get-native-object-no-reffing unless $frame-clock ~~ N-GObject;
 
   gtk_style_context_set_frame_clock(
-    self.get-native-object-no-reffing, $frame_clock
+    self.get-native-object-no-reffing, $frame-clock
   );
 }
 
 sub gtk_style_context_set_frame_clock (
-  N-GObject $context, N-GObject $frame_clock
+  N-GObject $context, N-GObject $frame-clock
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:set-junction-sides:
+#TM:1:set-junction-sides:
 =begin pod
 =head2 set-junction-sides
 
-Sets the sides where rendered elements (mostly through C<gtk-render-frame()>) will visually connect with other visual elements.
+Sets the sides where rendered elements (mostly through C<render-frame()>) will visually connect with other visual elements.
 
 This is merely a hint that may or may not be honored by themes.
 
 Container widgets are expected to set junction hints as appropriate for their children, so it should not normally be necessary to call this function manually.
 
-  method set-junction-sides ( GtkJunctionSides $sides )
+  method set-junction-sides ( UInt $sides )
 
-=item GtkJunctionSides $sides; sides where rendered elements are visually connected to other elements
+=item UInt $sides; sides where rendered elements are visually connected to other elements. Bits ae from GtkJunctionSides.
 =end pod
 
-method set-junction-sides ( GtkJunctionSides $sides ) {
-
+method set-junction-sides ( UInt $sides ) {
   gtk_style_context_set_junction_sides(
     self.get-native-object-no-reffing, $sides
   );
 }
 
 sub gtk_style_context_set_junction_sides (
-  N-GObject $context, GEnum $sides
+  N-GObject $context, GFlag $sides
 ) is native(&gtk-lib)
   { * }
 
@@ -1254,7 +1828,7 @@ sub gtk_style_context_set_parent (
 
 Sets the B<Gnome::Gtk3::WidgetPath> used for style matching. As a consequence, the style will be regenerated to match the new given path.
 
-If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-style-context()>, you do not need to call this yourself.
+If you are using a B<Gnome::Gtk3::StyleContext> returned from C<Gnome::Gtk3::Widget.get-style-context()>, you do not need to call this yourself.
 
   method set-path ( N-GObject $path )
 
@@ -1263,10 +1837,7 @@ If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-s
 
 method set-path ( $path is copy ) {
   $path .= get-native-object-no-reffing unless $path ~~ N-GObject;
-
-  gtk_style_context_set_path(
-    self.get-native-object-no-reffing, $path
-  );
+  gtk_style_context_set_path( self.get-native-object-no-reffing, $path);
 }
 
 sub gtk_style_context_set_path (
@@ -1325,22 +1896,19 @@ sub gtk_style_context_set_screen (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-state:
+#TM:1:set-state:
 =begin pod
 =head2 set-state
 
-Sets the state to be used for style matching.
+Sets the state bit mask to be used for style matching.
 
-  method set-state ( GtkStateFlags $flags )
+  method set-state ( UInt $flags )
 
-=item GtkStateFlags $flags; state to represent
+=item UInt $flags; state to represent using bits from GtkStateFlags
 =end pod
 
-method set-state ( GtkStateFlags $flags ) {
-
-  gtk_style_context_set_state(
-    self.get-native-object-no-reffing, $flags
-  );
+method set-state ( UInt $flags ) {
+  gtk_style_context_set_state( self.get-native-object-no-reffing, $flags);
 }
 
 sub gtk_style_context_set_state (
@@ -1349,7 +1917,7 @@ sub gtk_style_context_set_state (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:to-string:
+#TM:1:to-string:
 =begin pod
 =head2 to-string
 
@@ -1361,20 +1929,17 @@ This function is intended for testing and debugging of the CSS implementation in
 
 Returns: a newly allocated string representing I<context>
 
-  method to-string ( GtkStyleContextPrintFlags $flags --> Str )
+  method to-string ( Uint $flags --> Str )
 
-=item GtkStyleContextPrintFlags $flags; Flags that determine what to print
+=item UInt $flags; Flags that determine what to print. Nits are from GtkStyleContextPrintFlags
 =end pod
 
-method to-string ( GtkStyleContextPrintFlags $flags --> Str ) {
-
-  gtk_style_context_to_string(
-    self.get-native-object-no-reffing, $flags
-  )
+method to-string ( UInt $flags --> Str ) {
+  gtk_style_context_to_string( self.get-native-object-no-reffing, $flags)
 }
 
 sub gtk_style_context_to_string (
-  N-GObject $context, GEnum $flags --> gchar-ptr
+  N-GObject $context, GFlag $flags --> gchar-ptr
 ) is native(&gtk-lib)
   { * }
 
@@ -1437,21 +2002,20 @@ Also here, the types of positional arguments in the signal handler are important
 =comment #TS:0:changed:
 =head3 changed
 
-The I<changed> signal is emitted when there is a change in the
-B<Gnome::Gtk3::StyleContext>.
+The I<changed> signal is emitted when there is a change in the B<Gnome::Gtk3::StyleContext>.
 
-For a B<Gnome::Gtk3::StyleContext> returned by C<gtk-widget-get-style-context()>, the
- I<style-updated> signal/vfunc might be more convenient to use.
+For a B<Gnome::Gtk3::StyleContext> returned by C<Gnome::Gtk3::Widget.get-style-context()>, the I<style-updated> signal might be more convenient to use.
 
 This signal is useful when using the theming layer standalone.
 
-
   method handler (
-    ,
+    Int :$_handle_id,
+    Gnome::Gtk3::StyleContext :$_widget,
     *%user-options
   );
 
 =item $_handle_id; the registered event handler id
+=item $_widget; the object which received the signal.
 
 =end pod
 
@@ -2224,13 +2788,13 @@ call this yourself.
 
 Since: 3.8
 
-  method gtk_style_context_set_frame_clock ( N-GObject $frame_clock )
+  method gtk_style_context_set_frame_clock ( N-GObject $frame-clock )
 
-=item N-GObject $frame_clock; a B<Gnome::Gdk3::FrameClock>
+=item N-GObject $frame-clock; a B<Gnome::Gdk3::FrameClock>
 
 =end pod
 
-sub gtk_style_context_set_frame_clock ( N-GObject $context, N-GObject $frame_clock )
+sub gtk_style_context_set_frame_clock ( N-GObject $context, N-GObject $frame-clock )
   is native(&gtk-lib)
   { * }
 
