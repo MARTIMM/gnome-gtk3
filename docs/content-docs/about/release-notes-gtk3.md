@@ -8,7 +8,7 @@ layout: sidebar
 #### 2021-06-16 0.41.0:
 * Add module **Gnome::Gtk3::FileChooserWidget**.
 * Bugfixes in **Gnome::Gtk3::FileFilter**. Defined wrong type for **GtkFileFilterInfo**. Changed to **N-GtkFileFilterInfo**.
-* Improved doc and tests of **Gnome::Gtk3::Statusbar**, **Gnome::Gtk3::DrawinfArea**.
+* Improved doc and tests of **Gnome::Gtk3::Statusbar**, **Gnome::Gtk3::DrawinfArea**, **Gnome::Gtk3::StyleContext**.
 
 #### 2021-06-15 0.40.1:
 * Module **Gnome::Gtk3::Statusbar** docs are improved, methods are added and more tests done.
