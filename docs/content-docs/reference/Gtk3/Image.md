@@ -8,18 +8,22 @@ A widget displaying an image
 Description
 ===========
 
-The **Gnome::Gtk3::Image** widget displays an image. Various kinds of object can be displayed as an image; most typically, you would load a **Gnome::Gdk3::Pixbuf** ("pixel buffer") from a file, and then display that. There’s a convenience function to do this, `gtk_image_set_from_file()`, used as follows:
+The **Gnome::Gtk3::Image** widget displays an image. Various kinds of object can be displayed as an image; most typically, you would load a **Gnome::Gdk3::Pixbuf** ("pixel buffer") from a file, and then display that. There’s a convenience function to do this, `set_from_file()`, used as follows:
 
     my Gnome::Gtk3::Image $image .= new;
     $image.set-from-file("myfile.png");
 
 To make it shorter;
 
-    my Gnome::Gtk3::Image $image .= new(:filename<myfile.png>);
+    my Gnome::Gtk3::Image $image .= new(:file<myfile.png>);
 
-If the file isn’t loaded successfully, the image will contain a “broken image” icon similar to that used in many web browsers. If you want to handle errors in loading the file yourself, for example by displaying an error message, then load the image with `gdk_pixbuf_new_from_file()`, then create the **Gnome::Gtk3::Image** with `gtk_image_new_from_pixbuf()`.
+If the file isn’t loaded successfully, the image will contain a “broken image” icon similar to that used in many web browsers. If you want to handle errors in loading the file yourself, for example by displaying an error message, then load the image like next example
 
-The image file may contain an animation, if so the **Gnome::Gtk3::Image** will display an animation (**Gnome::Gdk3::PixbufAnimation**) instead of a static image.
+    my Gnome::Gdk3::Pixbuf $pixbuf .= new(:$file);
+    die $e.message if $pixbuf.last-error.is-valid;
+    my Gnome::Gtk3::Image $image .= new(:$pixbuf);
+
+The image file may contain an animation, if so the **Gnome::Gtk3::Image** will display an animation
 
 **Gnome::Gtk3::Image** is a “no window” widget (has no **Gnome::Gdk3::Window** of its own), so by default does not receive events. If you want to receive events on the image, such as button clicks, place the image inside a **Gnome::Gtk3::EventBox**, then connect to the event signals on the event box.
 
@@ -73,26 +77,25 @@ Example
     # Define a button press event handler
     method button-press-handler (
       N-GdkEventButton $event, Gnome::Gtk3::EventBox :widget($event-box)
-      --> Int
+      --> Bool
     ) {
       say "Event box clicked at coordinates $event.x(), $event.y()");
 
-      # Returning TRUE means we handled the event, so the signal
+      # Returning True means we handled the event, so the signal
       # emission should be stopped (don’t call any further callbacks
-      # that may be connected). Return FALSE to continue invoking callbacks.
-      1;
+      # that may be connected). Return False to continue invoking callbacks.
+      True
     }
 
     # Create an image and setup a button click event on the image.
     # Return the result image object
     method create-image ( Str $image-file --> Gnome::Gtk3::Image ) {
-
       my Gnome::Gtk3::Image $image .= new(:filename($image-file));
       my Gnome::Gtk3::EventBox $eb .= new;
       $eb.add($image);
       $eb.register-signal( self, button-press-handler, 'button_press_event');
 
-      $image;
+      $image
     }
 
 Types
@@ -125,9 +128,13 @@ Methods
 new
 ---
 
-### new() Create a new plain object without an image.
+### default, no options
+
+Create a new plain object without an image.
 
     multi method new ( )
+
+### :file
 
 Creates a new **Gnome::Gtk3::Image** displaying the file *filename*. If the file isn’t found or can’t be loaded, the resulting **Gnome::Gtk3::Image** will display a “broken image” icon.
 
@@ -137,29 +144,9 @@ If you need to detect failures to load the file, use `gdk_pixbuf_new_from_file()
 
 The storage type (`gtk_image_get_storage_type()`) of the returned image is not defined, it will be whatever is appropriate for displaying the file. Create a new object and load an image from file.
 
-    multi method new ( Str :$filename! )
+    multi method new ( Str :$file! )
 
-### new(:resource-path)
-
-Creates a new **Gnome::Gtk3::Image** displaying the resource file *$resource-path*. If the file isn’t found or can’t be loaded, the resulting **Gnome::Gtk3::Image** will display a “broken image” icon. This function never returns `Any`, it always returns a valid **Gnome::Gtk3::Image** widget.
-
-If the file contains an animation, the image will contain an animation.
-
-If you need to detect failures to load the file, use `gdk_pixbuf_new_from_file()` to load the file yourself, then create the **Gnome::Gtk3::Image** from the pixbuf. (Or for animations, use `gdk_pixbuf_animation_new_from_file()`).
-
-The storage type (`gtk_image_get_storage_type()`) of the returned image is not defined, it will be whatever is appropriate for displaying the file.
-
-    multi method new ( Str :$resource-path! )
-
-### new(:pixbuf)
-
-Creates a new **Gnome::Gtk3::Image** displaying *$pixbuf*. The **Gnome::Gtk3::Image** does not assume a reference to the pixbuf; you still need to unref it if you own references. **Gnome::Gtk3::Image** will add its own reference rather than adopting yours.
-
-Note that this function just creates an **Gnome::Gtk3::Image** from the pixbuf. The **Gnome::Gtk3::Image** created will not react to state changes. Should you want that, you should use `gtk_image_new_from_icon_name()`.
-
-    multi method new ( N-GObject :$pixbuf! )
-
-### new( :icon-name, :size)
+### :icon-name, :size
 
 Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead. If the current icon theme is changed, the icon will be updated appropriately. You can use the program `gtk3-icon-browser` to get the available names in the current selected theme.
 
@@ -171,176 +158,195 @@ Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme.
 
   * GtkIconSize $size; a stock icon size (an enum **GtkIconSize**)
 
-[gtk_] image_clear
-------------------
+### :pixbuf
+
+Creates a new **Gnome::Gtk3::Image** displaying *$pixbuf*. The **Gnome::Gtk3::Image** does not assume a reference to the pixbuf; you still need to unref it if you own references. **Gnome::Gtk3::Image** will add its own reference rather than adopting yours.
+
+Note that this function just creates an **Gnome::Gtk3::Image** from the pixbuf. The **Gnome::Gtk3::Image** created will not react to state changes. Should you want that, you should use `gtk_image_new_from_icon_name()`.
+
+    multi method new ( N-GObject :$pixbuf! )
+
+### :resource-path
+
+Creates a new **Gnome::Gtk3::Image** displaying the resource file *$resource-path*. If the file isn’t found or can’t be loaded, the resulting **Gnome::Gtk3::Image** will display a “broken image” icon. This function never returns `Any`, it always returns a valid **Gnome::Gtk3::Image** widget.
+
+If the file contains an animation, the image will contain an animation.
+
+If you need to detect failures to load the file, use `gdk_pixbuf_new_from_file()` to load the file yourself, then create the **Gnome::Gtk3::Image** from the pixbuf. (Or for animations, use `gdk_pixbuf_animation_new_from_file()`).
+
+The storage type (`gtk_image_get_storage_type()`) of the returned image is not defined, it will be whatever is appropriate for displaying the file.
+
+    multi method new ( Str :$resource-path! )
+
+### :surface
+
+Creates a new **Gnome::Gtk3::Image** displaying *surface*. The **Gnome::Gtk3::Image** does not assume a reference to the surface; you still need to unref it if you own references. **Gnome::Gtk3::Image** will add its own reference rather than adopting yours.
+
+    multi method new ( cairo_surface_t:D :$surface! )
+
+### :native-object
+
+Create a Image object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+
+    multi method new ( N-GObject :$native-object! )
+
+### :build-id
+
+Create a Image object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
+
+clear
+-----
 
 Resets the image to be empty.
 
-    method gtk_image_clear ( )
+    method clear ( )
 
-[[gtk_] image_] set_from_file
------------------------------
+get-icon-name
+-------------
 
-See `gtk_image_new_from_file()` for details.
+Gets the icon name and size being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK-IMAGE-EMPTY` or `GTK-IMAGE-ICON-NAME` (see `get-storage-type()`). The returned string is owned by the **Gnome::Gtk3::Image** and should not be freed.
 
-    method gtk_image_set_from_file ( Str $filename )
+    method get-icon-name ( --> List )
 
-  * Str $filename; (type filename) (allow-none): a filename or `Any`
+  * CArray[Str] $icon_name; place to store an icon name, or `undefined`
 
-[[gtk_] image_] set_from_resource
----------------------------------
+  * GtkIconSize $size; (type int): place to store an icon size (**Gnome::Gtk3::IconSize**), or `undefined`
 
-See `gtk_image_new_from_resource()` for details.
+get-pixbuf
+----------
 
-    method gtk_image_set_from_resource ( Str $resource_path )
+Gets the **Gnome::Gtk3::Pixbuf** being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK-IMAGE-EMPTY` or `GTK-IMAGE-PIXBUF` (see `get-storage-type()`). The caller of this function does not own a reference to the returned pixbuf.
 
-  * Str $resource_path; (allow-none): a resource path or `Any`
+Returns: the displayed pixbuf, or `undefined` if the image is empty
 
-[[gtk_] image_] set_from_pixbuf
--------------------------------
+    method get-pixbuf ( --> N-GObject )
 
-See `gtk_image_new_from_pixbuf()` for details.
-
-    method gtk_image_set_from_pixbuf ( N-GObject $pixbuf )
-
-  * N-GObject $pixbuf; (allow-none): a **Gnome::Gdk3::Pixbuf** or `Any`
-
-[[gtk_] image_] set_from_icon_name
-----------------------------------
-
-See `gtk_image_new_from_icon_name()` for details. method gtk_image_set_from_icon_name ( Str $icon_name, GtkIconSize $size )
-
-  * Str $icon_name; an icon name
-
-  * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
-
-[[gtk_] image_] set_from_gicon
-------------------------------
-
-See `gtk_image_new_from_gicon()` for details. method gtk_image_set_from_gicon ( N-GObject $icon, GtkIconSize $size )
-
-  * N-GObject $icon; an icon
-
-  * GtkIconSize $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
-
-[[gtk_] image_] set_pixel_size
-------------------------------
-
-Sets the pixel size to use for named icons. If the pixel size is set to a value != -1, it is used instead of the icon size set by `gtk_image_set_from_icon_name()`. method gtk_image_set_pixel_size ( Int $pixel_size )
-
-  * Int $pixel_size; the new pixel size
-
-[[gtk_] image_] get_storage_type
---------------------------------
-
-Gets the type of representation being used by the **Gnome::Gtk3::Image** to store image data. If the **Gnome::Gtk3::Image** has no image data, the return value will be `GTK_IMAGE_EMPTY`.
-
-Returns: image representation being used
-
-    method gtk_image_get_storage_type ( --> GtkImageType )
-
-[[gtk_] image_] get_pixbuf
---------------------------
-
-Gets the **Gnome::Gdk3::Pixbuf** being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK_IMAGE_EMPTY` or `GTK_IMAGE_PIXBUF` (see `gtk_image_get_storage_type()`). The caller of this function does not own a reference to the returned pixbuf.
-
-Returns: the displayed pixbuf, or `Any` if the image is empty
-
-    method gtk_image_get_pixbuf ( --> N-GObject  )
-
-[[gtk_] image_] get_icon_name
------------------------------
-
-Gets the icon name and size being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK_IMAGE_EMPTY` or `GTK_IMAGE_ICON_NAME` (see `gtk_image_get_storage_type()`). The returned string is owned by the **Gnome::Gtk3::Image** and should not be freed.
-
-    method gtk_image_get_icon_name ( --> List )
-
-The returned List holds
-
-  * Str $icon_name; the icon name, or `Any`
-
-  * GtkIconSize $size; the icon size of type (**GtkIconSize**), or `Any`
-
-[[gtk_] image_] get_gicon
--------------------------
-
-Gets the **GIcon** and size being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK_IMAGE_EMPTY` or `GTK_IMAGE_GICON` (see `gtk_image_get_storage_type()`). The caller of this function does not own a reference to the returned **GIcon**.
-
-    method gtk_image_get_gicon ( N-GObject $gicon, GtkIconSize $size )
-
-  * N-GObject $gicon; (out) (transfer none) (allow-none): place to store a **GIcon**, or `Any`
-
-  * GtkIconSize $size; (out) (allow-none) (type int): place to store an icon size (**Gnome::Gtk3::IconSize**), or `Any`
-
-[[gtk_] image_] get_pixel_size
-------------------------------
+get-pixel-size
+--------------
 
 Gets the pixel size used for named icons.
 
-    method gtk_image_get_pixel_size ( --> Int  )
+Returns: the pixel size used for named icons.
+
+    method get-pixel-size ( --> Int )
+
+get-storage-type
+----------------
+
+Gets the type of representation being used by the **Gnome::Gtk3::Image** to store image data. If the **Gnome::Gtk3::Image** has no image data, the return value will be `GTK-IMAGE-EMPTY`.
+
+Returns: image representation being used
+
+    method get-storage-type ( --> GtkImageType )
+
+set-from-file
+-------------
+
+See `new-from-file()` for details.
+
+    method set-from-file ( Str $filename )
+
+  * Str $filename; a filename or `undefined`
+
+set-from-icon-name
+------------------
+
+See `new-from-icon-name()` for details.
+
+    method set-from-icon-name ( Str $icon_name, GtkIconSize $size )
+
+  * Str $icon_name; an icon name or `undefined`
+
+  * GtkIconSize $size; an icon size
+
+set-from-pixbuf
+---------------
+
+See `new-from-pixbuf()` for details.
+
+    method set-from-pixbuf ( N-GObject $pixbuf )
+
+  * N-GObject $pixbuf; a **Gnome::Gtk3::Pixbuf** or `undefined`
+
+set-from-resource
+-----------------
+
+See `new-from-resource()` for details.
+
+    method set-from-resource ( Str $resource_path )
+
+  * Str $resource_path; a resource path or `undefined`
+
+set-from-surface
+----------------
+
+See `new-from-surface()` for details.
+
+    method set-from-surface ( cairo_surface_t $surface )
+
+  * cairo_surface_t $surface; a cairo-surface-t or `undefined`
+
+set-pixel-size
+--------------
+
+Sets the pixel size to use for named icons. If the pixel size is set to a value != -1, it is used instead of the icon size set by `set-from-icon-name()`.
+
+    method set-pixel-size ( Int() $pixel_size )
+
+  * Int() $pixel_size; the new pixel size
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Pixbuf
-
-A **Gnome::Gdk3::Pixbuf** to display Widget type: GDK_TYPE_PIXBUF
-
-The **Gnome::GObject::Value** type of property *pixbuf* is `G_TYPE_OBJECT`.
-
-### Surface
-
-The **Gnome::GObject::Value** type of property *surface* is `G_TYPE_BOXED`.
-
-### Filename
+### Filename: file
 
 Filename to load and display Default value: Any
 
 The **Gnome::GObject::Value** type of property *file* is `G_TYPE_STRING`.
 
-### Animation
-
-**Gnome::Gdk3::PixbufAnimation** to display Widget type: GDK_TYPE_PIXBUF_ANIMATION
-
-The **Gnome::GObject::Value** type of property *pixbuf-animation* is `G_TYPE_OBJECT`.
-
-### Icon Name
+### Icon Name: icon-name
 
 The name of the icon in the icon theme. If the icon theme is changed, the image will be updated automatically.
 
 The **Gnome::GObject::Value** type of property *icon-name* is `G_TYPE_STRING`.
 
-### Icon
+### Pixbuf: pixbuf
 
-The GIcon displayed in the **Gnome::Gtk3::Image**. For themed icons, If the icon theme is changed, the image will be updated automatically. Widget type: G_TYPE_ICON
+A GdkPixbuf to display Widget type: GDK-TYPE-PIXBUF
 
-The **Gnome::GObject::Value** type of property *gicon* is `G_TYPE_OBJECT`.
+The **Gnome::GObject::Value** type of property *pixbuf* is `G_TYPE_OBJECT`.
 
-### Resource
+### Resource: resource
 
 A path to a resource file to display.
 
 The **Gnome::GObject::Value** type of property *resource* is `G_TYPE_STRING`.
 
-### Storage type
+### Storage type: storage-type
 
 The representation being used for image data Default value: False
 
 The **Gnome::GObject::Value** type of property *storage-type* is `G_TYPE_ENUM`.
 
-### Use Fallback
+### Surface: surface
 
-Whether the icon displayed in the **Gnome::Gtk3::Image** will use standard icon names fallback. The value of this property is only relevant for images of type `GTK_IMAGE_ICON_NAME` and `GTK_IMAGE_GICON`.
+The **Gnome::GObject::Value** type of property *surface* is `G_TYPE_BOXED`.
+
+### Use Fallback: use-fallback
+
+Whether the icon displayed in the GtkImage will use standard icon names fallback. The value of this property is only relevant for images of type `GTK-IMAGE-ICON-NAME` and `GTK-IMAGE-GICON`.
 
 The **Gnome::GObject::Value** type of property *use-fallback* is `G_TYPE_BOOLEAN`.
 
