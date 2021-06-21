@@ -183,7 +183,7 @@ subtest 'rendering', {
 #    note $r.gist;
     $sc.render-check( $cr, 10, 10, 80, 80);
     $sc.render-expander( $cr, 10, 10, 80, 80);
-    $sc.render-extension( $cr, 10, 10, 80, 80);
+    $sc.render-extension( $cr, 10, 10, 80, 80, GTK_POS_LEFT);
     $sc.render-focus( $cr, 10, 10, 80, 80);
     $sc.render-frame( $cr, 10, 10, 80, 80);
     $sc.render-handle( $cr, 10, 10, 80, 80);
@@ -192,10 +192,13 @@ subtest 'rendering', {
       :surface($image), :clipto( 0, 0, 40, 40)
     );
     $sc.render-icon( $cr, $pbuf, 5, 5);
+    $sc.render-icon-surface( $cr, $image, 5, 5);
 
+    $sc.render-line( $cr, 10, 10, 80, 80);
+    $sc.render-option( $cr, 10, 10, 80, 80);
+    $sc.render-slider( $cr, 10, 10, 80, 80, GTK_ORIENTATION_VERTICAL);
 #    $sc.render-( $cr, 10, 10, 80, 80);
-#    $sc.render-( $cr, 10, 10, 80, 80);
-  }, '.render-activity(), .render-arrow(), .render-background()';
+}, '.render-*()';
 }
 
 #-------------------------------------------------------------------------------

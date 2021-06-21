@@ -12,11 +12,12 @@ Rendering UI elements
 
 B<Gnome::Gtk3::StyleContext> is an object that stores styling information affecting a widget.
 
-In order to construct the final style information, B<Gnome::Gtk3::StyleContext> queries information from all attached B<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<gtk_style_context_add_provider()>, or to the screen through C<gtk_style_context_add_provider_for_screen()>. The resulting style is a combination of all providers’ information in priority order.
+In order to construct the final style information, B<Gnome::Gtk3::StyleContext> queries information from all attached B<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<add_provider()>, or to the screen through C<add_provider_for_screen()>. The resulting style is a combination of all providers’ information in priority order.
 
-For GTK+ widgets, any B<Gnome::Gtk3::StyleContext> returned by C<gtk_widget_get_style_context()> will already have a B<Gnome::Gtk3::WidgetPath>, a B<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
+For GTK+ widgets, any B<Gnome::Gtk3::StyleContext> returned by C<Gnome::Gtk3::Widget.get_style_context()> will already have a B<Gnome::Gtk3::WidgetPath>, a B<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
 
-If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through C<gtk_style_context_set_path()> and C<gtk_style_context_set_screen()>, as well as updating the context yourself using C<gtk_style_context_invalidate()> whenever any of the conditions change, such as a change in the prop C<gtk-theme-name> setting or a hierarchy change in the rendered widget. See the “Foreign drawing“ example in gtk3-demo.
+If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through C<set_path()> and C<set_screen()>.
+=comment TODO, such as a change in the property C<gtk-theme-name> setting or a hierarchy change in the rendered widget. See the “Foreign drawing“ example in gtk3-demo.
 
 =head2 Style Classes
 
@@ -114,7 +115,7 @@ Flags that modify the behavior of gtk_style_context_to_string(). New values may 
 
 =end pod
 
-#TT:0:GtkStyleContextPrintFlags:
+#TT:1:GtkStyleContextPrintFlags:
 enum GtkStyleContextPrintFlags is export (
   GTK_STYLE_CONTEXT_PRINT_NONE         => 0,
   GTK_STYLE_CONTEXT_PRINT_RECURSE      => 1 +< 0,
@@ -1504,7 +1505,7 @@ sub gtk_render_icon (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:render-icon-surface:
+#TM:1:render-icon-surface:
 =begin pod
 =head2 render-icon-surface
 
@@ -1521,8 +1522,9 @@ Renders the icon in I<surface> at the specified I<x> and I<y> coordinates.
 =end pod
 
 method render-icon-surface (
-  $cr is copy, cairo_surface_t $surface, Num() $x, Num() $y
+  $cr is copy, $surface is copy, Num() $x, Num() $y
 ) {
+  $surface .= get-native-object-no-reffing unless $surface ~~ cairo_surface_t;
   $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_icon_surface(
     self.get-native-object-no-reffing, $cr, $surface, $x, $y
@@ -1534,6 +1536,7 @@ sub gtk_render_icon_surface (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:render-layout:
 =begin pod
@@ -1565,9 +1568,10 @@ sub gtk_render_layout (
   N-GObject $context, cairo_t $cr, gdouble $x, gdouble $y, N-GObject $layout
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:render-line:
+#TM:1:render-line:
 =begin pod
 =head2 render-line
 
@@ -1597,7 +1601,7 @@ sub gtk_render_line (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:render-option:
+#TM:1:render-option:
 =begin pod
 =head2 render-option
 
@@ -1633,7 +1637,7 @@ sub gtk_render_option (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:render-slider:
+#TM:1:render-slider:
 =begin pod
 =head2 render-slider
 

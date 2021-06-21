@@ -178,7 +178,7 @@ Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  
 StackSidebar              |  |  | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
 StackSwitcher             |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |  |
 Statusbar                 |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
-StyleContext              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+StyleContext              |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  |  | ✓| ✓| ✓|
 StyleProvider             |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 Switch                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TargetEntry               |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|

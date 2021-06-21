@@ -319,6 +319,337 @@ Removes *provider* from the global style providers list in *screen*.
 
   * N-GObject $provider; a **Gnome::Gtk3::StyleProvider**
 
+render-activity
+---------------
+
+Renders an activity indicator (such as in **Gnome::Gtk3::Spinner**). The state `GTK-STATE-FLAG-CHECKED` determines whether there is activity going on.
+
+    method render-activity (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-arrow
+------------
+
+Renders an arrow pointing to *angle*.
+
+Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
+
+![](images/arrows.png)
+
+    method render-arrow (
+      cairo_t $cr, Num() $angle, Num() $x, Num() $y, Num() $size
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $angle; arrow angle from 0 to 2 * `G-PI`, being 0 the arrow pointing to the north
+
+  * Num() $x; X origin of the render area
+
+  * Num() $y; Y origin of the render area
+
+  * Num() $size; square side for render area
+
+render-background
+-----------------
+
+Renders the background of an element.
+
+Typical background rendering, showing the effect of `background-image`, `border-width` and `border-radius`:
+
+![](images/background.png)
+
+    method render-background (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-background-get-clip
+--------------------------
+
+Returns the area that will be affected (i.e. drawn to) when calling `background()` for the given *context* and rectangle. Returns a N-GdkRectangle (defined in **Gnome::Gdk3::Types**).
+
+    method render-background-get-clip (
+      Num() $x, Num() $y, Num() $width, Num() $height --> N-GdkRectangle
+    )
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-check
+------------
+
+Renders a checkmark (as in a **Gnome::Gtk3::CheckButton**).
+
+The `GTK-STATE-FLAG-CHECKED` state determines whether the check is on or off, and `GTK-STATE-FLAG-INCONSISTENT` determines whether it should be marked as undefined.
+
+Typical checkmark rendering:
+
+![](images/checks.png)
+
+    method render-check (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-expander
+---------------
+
+Renders an expander (as used in **Gnome::Gtk3::TreeView** and **Gnome::Gtk3::Expander**) in the area defined by *x*, *y*, *width*, *height*. The state `GTK-STATE-FLAG-CHECKED` determines whether the expander is collapsed or expanded.
+
+Typical expander rendering:
+
+![](images/expanders.png)
+
+    method render-expander (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-extension
+----------------
+
+Renders a extension (as in a **Gnome::Gtk3::Notebook** tab) in the rectangle defined by *x*, *y*, *width*, *height*. The side where the extension connects to is defined by *gap-side*.
+
+Typical extension rendering:
+
+![](images/extensions.png)
+
+    method render-extension (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height,
+      GtkPositionType $gap_side
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+  * GtkPositionType $gap_side; side where the gap is
+
+render-focus
+------------
+
+Renders a focus indicator on the rectangle determined by *x*, *y*, *width*, *height*.
+
+Typical focus rendering:
+
+![](images/focus.png)
+
+    method render-focus (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-frame
+------------
+
+Renders a frame around the rectangle defined by *x*, *y*, *width*, *height*.
+
+Examples of frame rendering, showing the effect of `border-image`, `border-color`, `border-width`, `border-radius` and junctions:
+
+![](images/frames.png)
+
+    method render-frame (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-handle
+-------------
+
+Renders a handle (as in **Gnome::Gtk3::HandleBox**, **Gnome::Gtk3::Paned** and **Gnome::Gtk3::Window**’s resize grip), in the rectangle determined by *x*, *y*, *width*, *height*.
+
+Handles rendered for the paned and grip classes:
+
+![](images/handles.png)
+
+    method render-handle (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-icon
+-----------
+
+Renders the icon in *pixbuf* at the specified *x* and *y* coordinates.
+
+This function will render the icon in *pixbuf* at exactly its size, regardless of scaling factors, which may not be appropriate when drawing on displays with high pixel densities.
+
+You probably want to use `icon-surface()` instead, if you already have a Cairo surface.
+
+    method render-icon (
+      cairo_t $cr, N-GPixbuf $pixbuf, Num() $x, Num() $y
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * N-GObject $pixbuf; a **Gnome::Gtk3::Pixbuf** containing the icon to draw
+
+  * Num() $x; X position for the *pixbuf*
+
+  * Num() $y; Y position for the *pixbuf*
+
+render-icon-surface
+-------------------
+
+Renders the icon in *surface* at the specified *x* and *y* coordinates.
+
+    method render-icon-surface (
+      cairo_t $cr, cairo_surface_t $surface, Num() $x, Num() $y
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * cairo_surface_t $surface; a **cairo-surface-t** containing the icon to draw
+
+  * Num() $x; X position for the *icon*
+
+  * Num() $y; Y position for the *incon*
+
+render-line
+-----------
+
+Renders a line from (x0, y0) to (x1, y1).
+
+    method render-line (
+      cairo_t $cr, Num() $x0, Num() $y0, Num() $x1, Num() $y1
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x0; X coordinate for the origin of the line
+
+  * Num() $y0; Y coordinate for the origin of the line
+
+  * Num() $x1; X coordinate for the end of the line
+
+  * Num() $y1; Y coordinate for the end of the line
+
+render-option
+-------------
+
+Renders an option mark (as in a **Gnome::Gtk3::RadioButton**), the `GTK-STATE-FLAG-CHECKED` state will determine whether the option is on or off, and `GTK-STATE-FLAG-INCONSISTENT` whether it should be marked as undefined.
+
+Typical option mark rendering:
+
+![](images/options.png)
+
+    method render-option (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+render-slider
+-------------
+
+Renders a slider (as in **Gnome::Gtk3::Scale**) in the rectangle defined by *x*, *y*, *width*, *height*. *orientation* defines whether the slider is vertical or horizontal.
+
+Typical slider rendering:
+
+![](images/sliders.png)
+
+    method render-slider (
+      cairo_t $cr, Num() $x, Num() $y, Num() $width, Num() $height,
+      GtkOrientation $orientation
+    )
+
+  * cairo_t $cr; a **cairo-t**
+
+  * Num() $x; X origin of the rectangle
+
+  * Num() $y; Y origin of the rectangle
+
+  * Num() $width; rectangle width
+
+  * Num() $height; rectangle height
+
+  * GtkOrientation $orientation; orientation of the slider
+
 reset-widgets
 -------------
 
