@@ -322,14 +322,24 @@ method add-provider-for-screen (
   $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
   $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
 
-  gtk_style_context_add_provider_for_screen(
+  _gtk_style_context_add_provider_for_screen(
     $screen, $provider, $priority
   );
 }
 
-sub gtk_style_context_add_provider_for_screen (
+
+# needed to apply this trick to prevent a wrong interpretation of N-GObject
+# $screen argument in test-call() from Gnome::N::X. It would be replaced by the
+# N-GObject $context argument which is wrong.
+sub gtk_style_context_add_provider_for_screen( |c ) is inlinable {
+  _gtk_style_context_add_provider_for_screen(|c);
+}
+
+
+sub _gtk_style_context_add_provider_for_screen (
   N-GObject $screen, N-GObject $provider, guint $priority
 ) is native(&gtk-lib)
+  is symbol('gtk_style_context_add_provider_for_screen')
   { * }
 
 #`{{
@@ -1104,12 +1114,20 @@ method remove-provider-for-screen ( $screen is copy, $provider is copy ) {
   $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
   $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
 
-  gtk_style_context_remove_provider_for_screen( $screen, $provider);
+  _gtk_style_context_remove_provider_for_screen( $screen, $provider);
 }
 
-sub gtk_style_context_remove_provider_for_screen (
+# needed to apply this trick to prevent a wrong interpretation of N-GObject
+# $screen argument in test-call() from Gnome::N::X. It would be replaced by the
+# N-GObject $context argument which is wrong.
+sub gtk_style_context_remove_provider_for_screen( |c ) is inlinable {
+  _gtk_style_context_remove_provider_for_screen(|c);
+}
+
+sub _gtk_style_context_remove_provider_for_screen (
   N-GObject $screen, N-GObject $provider
 ) is native(&gtk-lib)
+  is symbol('gtk_style_context_remove_provider_for_screen')
   { * }
 
 #-------------------------------------------------------------------------------

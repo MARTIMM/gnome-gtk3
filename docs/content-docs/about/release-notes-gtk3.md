@@ -5,7 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-#### 2021-06-16 0.41.0:
+#### 2021-06-22 0.41.1:
+* bugfix; removed a sub by accident.
+
+#### 2021-06-20 0.41.0:
 * Add module **Gnome::Gtk3::FileChooserWidget**.
 * Bugfixes in **Gnome::Gtk3::FileFilter**. Defined wrong type for **GtkFileFilterInfo**. Changed to **N-GtkFileFilterInfo**.
 * Improved doc and tests of **Gnome::Gtk3::Statusbar**, **Gnome::Gtk3::DrawinfArea**, **Gnome::Gtk3::StyleContext**, **Gnome::Gtk3::Image** and , **Gnome::Gtk3::Label**.
