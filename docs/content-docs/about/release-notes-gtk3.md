@@ -8,7 +8,7 @@ layout: sidebar
 #### 2021-06-16 0.41.0:
 * Add module **Gnome::Gtk3::FileChooserWidget**.
 * Bugfixes in **Gnome::Gtk3::FileFilter**. Defined wrong type for **GtkFileFilterInfo**. Changed to **N-GtkFileFilterInfo**.
-* Improved doc and tests of **Gnome::Gtk3::Statusbar**, **Gnome::Gtk3::DrawinfArea**, **Gnome::Gtk3::StyleContext**.
+* Improved doc and tests of **Gnome::Gtk3::Statusbar**, **Gnome::Gtk3::DrawinfArea**, **Gnome::Gtk3::StyleContext**, **Gnome::Gtk3::Image** and , **Gnome::Gtk3::Label**.
 
 #### 2021-06-15 0.40.1:
 * Module **Gnome::Gtk3::Statusbar** docs are improved, methods are added and more tests done.
@@ -174,7 +174,7 @@ My sincere apologies for breaking code 😐. It is however not possible, to my k
 * Scale speedup with new methods. Tests and benchmarking added and docs improved.
 
 #### 2021-01-03 0.34.6:
-* Label speedup with new methods. Tests and benchmarking added and docs improved.
+* **Gnome::Gtk3::Label** speedup with new methods. Tests and benchmarking added and docs improved.
 * Bugfix in TreeModel. Caused by changes in helper function `_f()` in **Gnome::N::TopLevelClassSuppert**.
 
 #### 2020-12-29 0.34.5:
