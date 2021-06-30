@@ -47,6 +47,10 @@
     url: '/content-docs/reference/Gtk3/Button.html'
     type: widget
 
+  - title: "ButtonBox"
+    url: '/content-docs/reference/Gtk3/ButtonBox.html'
+    type: widget
+
   - title: "Buildable"
     url: "/content-docs/reference/Gtk3/Buildable.html"
     type: interface

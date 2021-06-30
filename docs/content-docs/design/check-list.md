@@ -84,34 +84,35 @@ table {
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|  |
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
-ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |
-AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |  |  |
-Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|  |
-Bin                       |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Border                    |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
-Box                       |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
-Builder                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |  |  |
-CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
-CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |
-CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
-ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
+ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
+AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |  |  |  |
+Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓|  |  |
+Bin                       |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Border                    |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
+Box                       |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
+Builder                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  |  |  |  |  |
+ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓|
+CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  |
+CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  |
+CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|  |
+ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| ✓|
 CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
@@ -135,40 +136,41 @@ IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ¾| ✗| ⅕| ✓| ✓| ✓| ✓|
 Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅔| ✓| ✓| ✓| ✓|
-LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ListBox                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ListStore                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Main                      |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
-Menu                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
-MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-MenuButton                |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅙| ✓| ✓| ✓|
-MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
-MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|  |
-Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Notebook                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
-Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
-Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
-PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |  |
-RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
-RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|  |
-Range                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
-RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|  |
-RecentChooserDialog       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|  |
-RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |
-RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|  |
-Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |  |
-Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|  |
-ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |
-SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
-SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
+LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListBox                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ListStore                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Main                      |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  |
+Menu                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuBar                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuButton                |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅙| ✓| ✓| ✓|  |
+MenuItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MenuShell                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓|  |  |
+Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Notebook                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|  |
+Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
+Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|  |  |
+Range                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|  |  |
+RecentChooserDialog       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
+RecentChooserMenu         |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓|  |  |
+RecentChooserWidget       |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
+RecentInfo                |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
+RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
+RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|  |  |
+Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |  |  |
+Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|  |  |
+Scrollable                | R| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SelectionData             |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  |
@@ -201,6 +203,7 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Viewport                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| ✓| ✓|
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|
@@ -285,7 +288,6 @@ RadioToolButton|
 RcStyle|
 Requisition|b|
 ScaleButton|
-Scrollable|i|
 Scrollbar|
 SeparatorToolItem|
 Settings|
@@ -308,7 +310,6 @@ TreeDragSource            |R | ✗|
 TreeModelFilter|
 TreeModelSort|
 TreeSortable              |R | ✗|
-Viewport|
 VolumeButton|
 WindowGroup|
 

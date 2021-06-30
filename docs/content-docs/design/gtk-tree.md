@@ -87,7 +87,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ╰── GtkViewport
 │   │   │   ├── GtkBox                          Box
 │   │   │   │   ├── GtkAppChooserWidget
-│   │   │   │   ├── GtkButtonBox
+│   │   │   │   ├── GtkButtonBox                ButtonBox
 │   │   │   │   │   ├─✗ GtkHButtonBox           ⛔
 │   │   │   │   │   ╰─✗ GtkVButtonBox           ⛔
 │   │   │   │   ├── GtkColorChooserWidget       ColorChooserWidget
