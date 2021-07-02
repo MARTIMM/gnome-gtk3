@@ -1,0 +1,239 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::Gdk3::Window;
+
+use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Viewport;
+use Gnome::Gtk3::Adjustment;
+use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Border;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::Viewport $v;
+my Gnome::Gtk3::Window $window;
+#-------------------------------------------------------------------------------
+subtest 'ISA test', {
+  my Gnome::Gtk3::Adjustment $ha .= new(
+    :value(10), :lower(-2), :upper(100), :step-increment(1),
+    :page-increment(1), :page-size(20)
+  );
+  my Gnome::Gtk3::Adjustment $va .= new(
+    :value(10), :lower(-1), :upper(100), :step-increment(1),
+    :page-increment(1), :page-size(20)
+  );
+
+  $v .= new( :hadjustment($ha), :vadjustment($va));
+
+  isa-ok $v, Gnome::Gtk3::Viewport, '.new( :hadjustment, :vadjustment)';
+}
+
+
+#-------------------------------------------------------------------------------
+# set environment variable 'raku-test-all' if rest must be tested too.
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+  # must set a size otherwise h-, v- adjustments stay 0.
+  $v.set-size-request( 100, 100);
+  $window .= new;
+  $window.set-name('test window');
+  $window.add($v);
+  $window.show-all; # needed to get a gdk window
+
+  my Gnome::Gdk3::Window $gdk-w = $v.get-bin-window-rk;
+  ok $gdk-w.is-valid, '.get-bin-window-rk()';
+
+  $v.set-shadow-type(GTK_SHADOW_OUT);
+  is $v.get-shadow-type, GTK_SHADOW_OUT,
+     '.set-shadow-type() / .get-shadow-type()';
+
+  $gdk-w = $v.get-view-window-rk;
+  ok $gdk-w.is-valid, '.get-view-window-rk()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::Viewport', {
+  class MyClass is Gnome::Gtk3::Viewport {
+    method new ( |c ) {
+      my Gnome::Gtk3::Adjustment $ha .= new(
+        :value(10), :lower(0), :upper(100), :step-increment(1),
+        :page-increment(1), :page-size(20)
+      );
+      my Gnome::Gtk3::Adjustment $va .= new(
+        :value(10), :lower(0), :upper(100), :step-increment(1),
+        :page-increment(1), :page-size(20)
+      );
+
+      self.bless( :GtkViewport, :hadjustment($ha), :vadjustment($va), |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Viewport, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface Scrollable', {
+  my Gnome::Gtk3::Border $b = $v.get-border-rk;
+  ok !$b.is-valid, '.get-border-rk()';
+
+  my Gnome::Gtk3::Adjustment $set-a .= new(
+    :value(11), :lower(0), :upper(100), :step-increment(2),
+    :page-increment(1), :page-size(24)
+  );
+
+  $v.set-hadjustment($set-a);
+  my Gnome::Gtk3::Adjustment $get-a = $v.get-hadjustment-rk;
+  ok $get-a.get-upper > 80,
+    '.set-hadjustment() / .get-hadjustment-rk(): ' ~ $get-a.get-upper;
+
+  $v.set-vadjustment($set-a);
+  $get-a = $v.get-vadjustment-rk;
+  ok $get-a.get-step-increment > 1,
+    '.set-vadjustment() / .get-vadjustment-rk(): ' ~ $get-a.get-step-increment;
+
+  $v.set-hscroll-policy(GTK_SCROLL_MINIMUM);
+  is $v.get-hscroll-policy, GTK_SCROLL_MINIMUM,
+    '.set-hscroll-policy() / .get-hscroll-policy()';
+
+  $v.set-vscroll-policy(GTK_SCROLL_MINIMUM);
+  is $v.get-vscroll-policy, GTK_SCROLL_MINIMUM,
+    '.set-vscroll-policy() / .get-vscroll-policy()';
+}
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::Viewport $v .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $v.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... (
+      'any-args',
+      Gnome::Gtk3::Viewport :$_widget, gulong :$_handler-id
+      # --> ...
+    ) {
+
+      isa-ok $_widget, Gnome::Gtk3::Viewport;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Viewport :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::Viewport $v .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $v.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $v.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
