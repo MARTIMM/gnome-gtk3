@@ -5,6 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-06-29 0.42.0:
+* Add module **Gnome::Gtk3::ButtonBox**, **Gnome::Gtk3::Scrollable** and **Gnome::Gtk3::Viewport**.
+* **Gnome::Gtk3::Scrollable** role is added to the already existing modules **Gnome::Gtk3::TreeView** and **Gnome::Gtk3::TextView**.
+
 #### 2021-06-22 0.41.1:
 * bugfix; removed a sub by accident.
 

@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.41.1",
+  "version": "0.42.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -22,6 +22,7 @@
     "Gnome::Gtk3::Buildable": "lib/Gnome/Gtk3/Buildable.pm6",
     "Gnome::Gtk3::Builder": "lib/Gnome/Gtk3/Builder.pm6",
     "Gnome::Gtk3::Button": "lib/Gnome/Gtk3/Button.pm6",
+    "Gnome::Gtk3::ButtonBox": "lib/Gnome/Gtk3/ButtonBox.pm6",
     "Gnome::Gtk3::CellLayout": "lib/Gnome/Gtk3/CellLayout.pm6",
     "Gnome::Gtk3::CellRenderer": "lib/Gnome/Gtk3/CellRenderer.pm6",
     "Gnome::Gtk3::CellRendererAccel": "lib/Gnome/Gtk3/CellRendererAccel.pm6",
@@ -94,6 +95,7 @@
     "Gnome::Gtk3::RecentManager": "lib/Gnome/Gtk3/RecentManager.pm6",
     "Gnome::Gtk3::Revealer": "lib/Gnome/Gtk3/Revealer.pm6",
     "Gnome::Gtk3::Scale": "lib/Gnome/Gtk3/Scale.pm6",
+    "Gnome::Gtk3::Scrollable": "lib/Gnome/Gtk3/Scrollable.pm6",
     "Gnome::Gtk3::ScrolledWindow": "lib/Gnome/Gtk3/ScrolledWindow.pm6",
     "Gnome::Gtk3::SearchEntry": "lib/Gnome/Gtk3/SearchEntry.pm6",
     "Gnome::Gtk3::SelectionData": "lib/Gnome/Gtk3/SelectionData.pm6",
@@ -129,6 +131,7 @@
     "Gnome::Gtk3::TreeStore": "lib/Gnome/Gtk3/TreeStore.pm6",
     "Gnome::Gtk3::TreeView": "lib/Gnome/Gtk3/TreeView.pm6",
     "Gnome::Gtk3::TreeViewColumn": "lib/Gnome/Gtk3/TreeViewColumn.pm6",
+    "Gnome::Gtk3::Viewport": "lib/Gnome/Gtk3/Viewport.pm6",
     "Gnome::Gtk3::Widget": "lib/Gnome/Gtk3/Widget.pm6",
     "Gnome::Gtk3::WidgetPath": "lib/Gnome/Gtk3/WidgetPath.pm6",
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
