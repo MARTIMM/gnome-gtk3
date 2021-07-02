@@ -86,7 +86,7 @@ B<Gnome::Gtk3::TreeViewColumn>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::Tr
 
   unit class Gnome::Gtk3::TreeView;
   also is Gnome::Gtk3::Container;
-=comment also does Gnome::Gtk3::Scrollable.
+  also does Gnome::Gtk3::Scrollable;
 
 
 =head2 Uml Diagram
@@ -126,14 +126,14 @@ use Gnome::Gdk3::Types;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::Container;
 use Gnome::Gtk3::TreePath;
-#use Gnome::Gtk3::Scrollable;
+use Gnome::Gtk3::Scrollable;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::TreeView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
-#also does Gnome::Gtk3::Scrollable.
+also does Gnome::Gtk3::Scrollable;
 
 
 #-------------------------------------------------------------------------------

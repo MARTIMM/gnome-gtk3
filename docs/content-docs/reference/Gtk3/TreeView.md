@@ -87,6 +87,12 @@ Declaration
 
     unit class Gnome::Gtk3::TreeView;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::Scrollable;
+
+Uml Diagram
+-----------
+
+![](plantuml/TreeView.svg)
 
 Inheriting this class
 ---------------------
@@ -129,44 +135,24 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
 
+### :model
+
 Create a new tree view object using a model. This can be e.g. a **Gnome::Gtk3::ListStore** or **Gnome::Gtk3::TreeStore**.
 
     multi method new ( Bool :model! )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] tree_view_new
---------------------
-
-Creates a new **Gnome::Gtk3::TreeView** widget.
-
-    method gtk_tree_view_new ( --> N-GObject  )
-
-[[gtk_] tree_view_] new_with_model
-----------------------------------
-
-Creates a new **Gnome::Gtk3::TreeView** widget with the model initialized to *model*.
-
-    method gtk_tree_view_new_with_model ( N-GObject $model --> N-GObject  )
-
-  * N-GObject $model; the model.
 
 [[gtk_] tree_view_] get_model
 -----------------------------
 
 Returns the model the **Gnome::Gtk3::TreeView** is based on. Returns `Any` if the model is unset.
 
-Returns: (transfer none) (nullable): A **Gnome::Gtk3::TreeModel**, or `Any` if none is currently being used.
+Returns: A **Gnome::Gtk3::TreeModel**, or `Any` if none is currently being used.
 
     method gtk_tree_view_get_model ( --> N-GObject  )
 
@@ -230,21 +216,21 @@ Allow the column title buttons to be clicked.
 
 Gets the setting set by `gtk_tree_view_set_activate_on_single_click()`. The method returns `1` if row-activated will be emitted on a single click.
 
-    method gtk_tree_view_get_activate_on_single_click ( --> Int  )
+    method gtk_tree_view_get_activate_on_single_click ( --> Int )
 
 [[gtk_] tree_view_] set_activate_on_single_click
 ------------------------------------------------
 
 Cause the *row-activated* signal to be emitted on a single click instead of a double click.
 
-    method gtk_tree_view_set_activate_on_single_click ( Int $single )
+    method gtk_tree_view_set_activate_on_single_click ( Bool $single )
 
-  * Int $single; `1` to emit row-activated on a single click
+  * Bool $single; `True` to emit row-activated on a single click
 
 [[gtk_] tree_view_] append_column
 ---------------------------------
 
-Appends *$column* to the list of columns. If this tree view has “fixed_height” mode enabled, then *$column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Appends *$column* to the list of columns. If this tree view has “fixed_height” mode enabled, then *$column* must have its “sizing” property set to be `GTK_TREE_VIEW_COLUMN_FIXED`.
 
 Returns: The number of columns in *tree_view* after appending.
 
@@ -258,7 +244,7 @@ Returns: The number of columns in *tree_view* after appending.
 [[gtk_] tree_view_] remove_column
 ---------------------------------
 
-Removes *column* from *tree_view*.
+Removes *$column* from this *tree_view*.
 
 Returns: The number of columns in *tree_view* after removing.
 
@@ -269,11 +255,13 @@ Returns: The number of columns in *tree_view* after removing.
 [[gtk_] tree_view_] insert_column
 ---------------------------------
 
-This inserts the *column* into the *tree_view* at *position*. If *position* is -1, then the column is inserted at the end. If *tree_view* has “fixed_height” mode enabled, then *column* must have its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+This inserts the *$column* into the *tree_view* at *$position*. If *$position* is -1, then the column is inserted at the end. If *tree_view* has “fixed_height” mode enabled, then *$column* must have its “sizing” property set to be `GTK_TREE_VIEW_COLUMN_FIXED`.
 
 Returns: The number of columns in *tree_view* after insertion.
 
-    method gtk_tree_view_insert_column ( N-GObject $column, Int $position --> Int  )
+    method gtk_tree_view_insert_column (
+      N-GObject $column, Int $position --> Int
+    )
 
   * N-GObject $column; The **Gnome::Gtk3::TreeViewColumn** to be inserted.
 
@@ -282,7 +270,7 @@ Returns: The number of columns in *tree_view* after insertion.
 insert-column-with-attributes
 -----------------------------
 
-Creates a new **Gnome::Gtk3::TreeViewColumn** and inserts it into the *tree_view* at *position*. If *position* is -1, then the newly created column is inserted at the end. The column is initialized with the attributes given. If *tree_view* has “fixed_height” mode enabled, then the new column will have its sizing property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+Creates a new **Gnome::Gtk3::TreeViewColumn** and inserts it into the *tree_view* at *$position*. If *$position* is -1, then the newly created column is inserted at the end. The column is initialized with the attributes given. If *tree_view* has “fixed_height” mode enabled, then the new column will have its sizing property set to be `GTK_TREE_VIEW_COLUMN_FIXED`.
 
 Returns: The number of columns in this treeview after insertion.
 
@@ -453,9 +441,36 @@ Returns: `1` if the tree can be reordered.
 
 Returns the window that *tree_view* renders to. This is used primarily to compare to `event->window` to confirm that the event on *tree_view* is on the right window.
 
-Returns: (nullable) (transfer none): A **Gnome::Gdk3::Window**, or `Any` when *tree_view* hasn’t been realized yet.
+Returns: A native **Gnome::Gdk3::Window**, or `Any` when the *tree_view* hasn’t been realized yet.
 
-    method gtk_tree_view_get_bin_window ( --> N-GObject  )
+    method gtk_tree_view_get_bin_window ( --> N-GObject )
+
+[[gtk_] tree_view_] get_path_at_pos
+-----------------------------------
+
+Finds the path at the point (*$x*, *$y*), relative to bin_window coordinates (please see `gtk_tree_view_get_bin_window()`). That is, *$x* and *$y* are relative to an events coordinates. *$x* and *$y* must come from an event on the *tree_view* only where `event->window == `gtk_tree_view_get_bin_window()``. It is primarily for things like popup menus. If *$path* is non-`Any`, then it will be set with the **Gnome::Gtk3::TreePath** at that point. This path should be freed with `.clear-object()`. If *$column* is defined, then it set with the column at that point. *$cell_x* and *$cell_y* return the coordinates relative to the cell background (i.e. the *background_area* passed to `gtk_cell_renderer_render()`). This function is only meaningful if *tree_view* is realized. Therefore this function will always return `0` if *tree_view* is not realized or does not have a model.
+
+For converting widget coordinates (eg. the ones you get from **Gnome::Gtk3::Widget**::query-tooltip), please see `gtk_tree_view_convert_widget_to_bin_window_coords()`.
+
+    method gtk_tree_view_get_path_at_pos (
+      Int $x, Int $y --> List
+    )
+
+  * Int $x; The x position to be identified (relative to bin_window).
+
+  * Int $y; The y position to be identified (relative to bin_window).
+
+The returned list holds
+
+  * Bool $exists: `True` if a row exists at that coordinate.
+
+  * N-GtkTreePath $path; A native **Gnome::Gtk3::TreePath**, or `Any`
+
+  * N-GObject $column; A native **Gnome::Gtk3::TreeViewColumn**, or `Any`
+
+  * Int $cell_x; X coordinate relative to the cell, or `Any`
+
+  * Int $cell_y; Y coordinate relative to the cell, or `Any`
 
 [[gtk_] tree_view_] get_cell_area
 ---------------------------------
@@ -591,15 +606,20 @@ Converts tree coordinates (coordinates in full scrollable area of the tree) to w
 
 Converts widget coordinates to coordinates for the bin_window (see `gtk_tree_view_get_bin_window()`).
 
-    method gtk_tree_view_convert_widget_to_bin_window_coords ( Int $wx, Int $wy, Int $bx, Int $by )
+    method gtk_tree_view_convert_widget_to_bin_window_coords (
+      Int $wx, Int $wy
+      --> List
+    )
 
   * Int $wx; X coordinate relative to the widget
 
   * Int $wy; Y coordinate relative to the widget
 
-  * Int $bx; (out): return location for bin_window X coordinate
+The returned List holds;
 
-  * Int $by; (out): return location for bin_window Y coordinate
+  * Int $bx; bin_window X coordinate
+
+  * Int $by; bin_window Y coordinate
 
 [[gtk_] tree_view_] convert_bin_window_to_widget_coords
 -------------------------------------------------------
@@ -780,6 +800,39 @@ Returns the amount, in pixels, of extra indentation for child levels in *tree_vi
 Returns: the amount of extra indentation for child levels in *tree_view*. A return value of 0 means that this feature is disabled.
 
     method gtk_tree_view_get_level_indentation ( --> Int  )
+
+[[gtk_] tree_view_] set_tooltip_row
+-----------------------------------
+
+Sets the tip area of *tooltip* to be the area covered by the row at *path*. See also `gtk_tree_view_set_tooltip_column()` for a simpler alternative. See also `gtk_tooltip_set_tip_area()`.
+
+    method gtk_tree_view_set_tooltip_row ( N-GObject $tooltip, N-GtkTreePath $path )
+
+  * N-GObject $tooltip; a **Gnome::Gtk3::Tooltip**
+
+  * N-GtkTreePath $path; a **Gnome::Gtk3::TreePath**
+
+[[gtk_] tree_view_] set_tooltip_cell
+------------------------------------
+
+Sets the tip area of *$tooltip* to the area *$path*, *$column* and *$cell* have in common. For example if *$path* is undefined and *$column* is set, the tip area will be set to the full area covered by *$column*. See also `gtk_tooltip_set_tip_area()`.
+
+Note that if *$path* is not specified and *$cell* is set and part of a column containing the expander, the tooltip might not show and hide at the correct position. In such cases *path* must be set to the current node under the mouse cursor for this function to operate correctly.
+
+See also `gtk_tree_view_set_tooltip_column()` for a simpler alternative.
+
+    method gtk_tree_view_set_tooltip_cell (
+      N-GObject $tooltip, N-GtkTreePath $path,
+      N-GObject $column, N-GObject $cell
+    )
+
+  * N-GObject $tooltip; a **Gnome::Gtk3::Tooltip**
+
+  * N-GtkTreePath $path; a **Gnome::Gtk3::TreePath** or `Any`
+
+  * N-GObject $column; a **Gnome::Gtk3::TreeViewColumn** or `Any`
+
+  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer** or `Any`
 
 [[gtk_] tree_view_] set_tooltip_column
 --------------------------------------

@@ -28,13 +28,6 @@ A node representing the selection will appear below the text node.
 
 If a context menu is opened, the window node will appear as a subnode of the main node.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::TextView implements
-
-  * Gnome::Gtk3::Scrollable
-
 See Also
 --------
 
@@ -48,6 +41,7 @@ Declaration
 
     unit class Gnome::Gtk3::TextView;
     also is Gnome::Gtk3::Container;
+    also does Gnome::Gtk3::Scrollable;
 
 Types
 =====

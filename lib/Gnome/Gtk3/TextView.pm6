@@ -31,10 +31,6 @@ A node representing the selection will appear below the text node.
 
 If a context menu is opened, the window node will appear as a subnode of the main node.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::TextView implements
-=item Gnome::Gtk3::Scrollable
 
 =head2 See Also
 
@@ -45,6 +41,7 @@ B<Gnome::Gtk3::TextBuffer>, B<Gnome::Gtk3::TextIter>
 
   unit class Gnome::Gtk3::TextView;
   also is Gnome::Gtk3::Container;
+  also does Gnome::Gtk3::Scrollable;
 
 =comment head2 Example
 
@@ -60,12 +57,14 @@ use Gnome::Gdk3::Events;
 use Gnome::Gtk3::Container;
 
 use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Scrollable;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktextview.h
 # https://developer.gnome.org/gtk3/stable/GtkTextView.html
 unit class Gnome::Gtk3::TextView:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+also does Gnome::Gtk3::Scrollable;
 
 #-------------------------------------------------------------------------------
 =begin pod
