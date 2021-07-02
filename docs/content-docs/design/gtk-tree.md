@@ -84,7 +84,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkRevealer                 Revealer
 │   │   │   │   ├── GtkSearchBar
 │   │   │   │   ├── GtkStackSidebar             StackSidebar
-│   │   │   │   ╰── GtkViewport
+│   │   │   │   ╰── GtkViewport                 Viewport
 │   │   │   ├── GtkBox                          Box
 │   │   │   │   ├── GtkAppChooserWidget
 │   │   │   │   ├── GtkButtonBox                ButtonBox
@@ -257,7 +257,7 @@ GInterface
 ├── GtkEditable
 ├── GtkFileChooser                    FileChooser
 ├── GtkFontChooser
-├── GtkScrollable
+├── GtkScrollable                     Scrollable
 ├── GtkTreeModel                      TreeModel
 ├── GtkTreeDragSource
 ├── GtkTreeDragDest

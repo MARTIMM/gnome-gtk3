@@ -336,6 +336,10 @@
     type: widget
     url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
 
+  - title: "Scrollable"
+    type: interface
+    url: "/content-docs/reference/Gtk3/Scrollable.html"
+
   - title: "SearchEntry"
     type: widget
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
@@ -465,6 +469,10 @@
 
   - title: "TreeViewColumn"
     url: '/content-docs/reference/Gtk3/TreeViewColumn.html'
+    type: widget
+
+  - title: "Viewport"
+    url: '/content-docs/reference/Gtk3/Viewport.html'
     type: widget
 
   - title: "Widget"

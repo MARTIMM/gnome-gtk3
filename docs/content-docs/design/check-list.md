@@ -167,7 +167,7 @@ RecentFilter              |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 RecentManager             |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ✓| ✓| ✓|  |  |
 Revealer                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾|  |  |  |  |
 Scale                     |  | ✓| ✓| ✓| ✓|  | ✗| ✓|  | ✗| ✓| ✓|  |  |
-Scrollable                | R| ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+Scrollable                | R| ✗| ✓| ✓| ✓| ✗|  | ✓| ✗|  | ✓| ✓| ✓| ✓|
 ScrolledWindow            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchBar                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -203,7 +203,7 @@ TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Viewport                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Viewport                  |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓|
 Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| ✓| ✓|
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|
