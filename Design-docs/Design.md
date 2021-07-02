@@ -23,7 +23,16 @@ See https://www.systutorials.com/docs/linux/man/7-gtk-options/
     )
   }
   ```
+# Catching exeptions
+in callbacks the errors sometime fail to throw properly so insert next code to
+trap it.
+```
+CATCH { default { .message.note; .backtrace.concise.note } }
+```
 
+```
+CONTROL { when CX::Warn {  note .gist; .resume; } }
+```
 # Web site start
 
 ```
