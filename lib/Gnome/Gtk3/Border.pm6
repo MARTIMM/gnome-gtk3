@@ -68,53 +68,77 @@ class N-GtkBorder is export is repr('CStruct') {
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new plain object.
 
   multi method new ( )
 
-Create an object taking the native object from elsewhere.
 
-  multi method new ( N-GtkBorder :native-object! )
-
+=head3 :left, :right, :top, :bottom
 Create an object and initialize to given values.
 
   multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+
+
+=head3 :native-object
+
+Create a Border object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+
+  multi method new ( N-GtkBorder :$native-object! )
+
+=begin comment
+=head3 :build-id
+
+Create a Border object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+=end comment
 
 =end pod
 
 #TM:1:new():
 #TM:1:new(:border):
 #TM:1:new(:left, :right, :top, :bottom):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Border';
-  if self.is-valid { }
+  if self.^name eq 'Gnome::Gtk3::Border' {
 
-  elsif %options<left> or %options<right> or %options<top> or %options<bottom> {
-    my N-GtkBorder $b = _gtk_border_new();
-    $b.left = %options<left>;
-    $b.right = %options<right>;
-    $b.top = %options<top>;
-    $b.bottom = %options<bottom>;
-    self.set-native-object($b);
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    elsif %options<left>:exists or %options<right>:exists or %options<top>:exists or %options<bottom>:exists {
+      my N-GtkBorder $b = _gtk_border_new();
+      $b.left = %options<left>;
+      $b.right = %options<right>;
+      $b.top = %options<top>;
+      $b.bottom = %options<bottom>;
+      self.set-native-object($b);
+    }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+
+    else {
+      self.set-native-object(_gtk_border_new());
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkBorder');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self.set-native-object(_gtk_border_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkBorder');
 }
 
 #-------------------------------------------------------------------------------

@@ -37,17 +37,21 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
 
-Create an object taking the native object from elsewhere.
-
-    multi method new ( N-GtkBorder :native-object! )
-
-Create an object and initialize to given values.
+### :left, :right, :top, :bottom Create an object and initialize to given values.
 
     multi method new ( Int :$left!, Int :$right!, Int :$top!, Int :$bottom! )
+
+### :native-object
+
+Create a Border object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+
+    multi method new ( N-GtkBorder :$native-object! )
 
 left
 ----
@@ -76,13 +80,6 @@ bottom
 Modify bottom width of border if value is given. Returns bottom value after modification if any, otherwise the currently set value.
 
     method bottom ( Int $value? --> Int )
-
-border-is-valid
----------------
-
-Return the validity of th native structure. After a call to clear-border() this flag is set to False and the object should not be used anymore.
-
-    method border-is-valid ( --> Bool )
 
 [gtk_] border_copy
 ------------------
