@@ -150,6 +150,7 @@ MessageDialog             |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| 
 Misc                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Notebook                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|  |
 Orientable                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
+OffscreenWindow           |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Paned                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -269,7 +270,6 @@ LockButton|
 MenuToolButton|
 ModelButton|
 MountOperation|
-OffscreenWindow|
 Overlay|
 PadController|
 PageSetup|
