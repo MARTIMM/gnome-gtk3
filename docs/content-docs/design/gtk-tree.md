@@ -19,10 +19,10 @@ TopLevelClassSupport                            Gnome::N::TopLevelClassSupport
 │
 GObject                                         Gnome::GObject::Object
 ├── GInitiallyUnowned                           Gnome::GObject::InitiallyUnowned
-│   ├── GtkWidget                                     Widget
-│   │   ├── GtkContainer                              Container
-│   │   │   ├── GtkBin                                Bin
-│   │   │   │   ├── GtkWindow                         Window
+│   ├── GtkWidget                               Widget
+│   │   ├── GtkContainer                        Container
+│   │   │   ├── GtkBin                          Bin
+│   │   │   │   ├── GtkWindow                   Window
 │   │   │   │   │   ├── GtkDialog                     Dialog
 │   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog
 │   │   │   │   │   │   ├── GtkAppChooserDialog
@@ -35,9 +35,10 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   │   ├── GtkPageSetupUnixDialog
 │   │   │   │   │   │   ├── GtkPrintUnixDialog
 │   │   │   │   │   │   ╰── GtkRecentChooserDialog    RecentChooserDialog
-│   │   │   │   │   ├── GtkApplicationWindow          ApplicationWindow
-│   │   │   │   │   ├── GtkAssistant                  Assistant
-│   │   │   │   │   ├── GtkOffscreenWindow
+│   │   │   │   │   │
+│   │   │   │   │   ├── GtkApplicationWindow    ApplicationWindow
+│   │   │   │   │   ├── GtkAssistant            Assistant
+│   │   │   │   │   ├── GtkOffscreenWindow      OffscreenWindow
 │   │   │   │   │   ├── GtkPlug
 │   │   │   │   │   ╰── GtkShortcutsWindow
 │   │   │   │   ├── GtkActionBar
