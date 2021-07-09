@@ -42,7 +42,9 @@ An example where a grid with two buttons are rendered and saved in a png and a j
     $ow.add($g);
     $ow.show-all;
 
-    # Must process pending events, otherwise nothing is shown!
+    # Must process pending events, otherwise nothing is shown! Note,
+    # that this is written outside the main event loop in the test program!
+    # Otherwise, this is not necessary.
     my Gnome::Gtk3::Main $main .= new;
     while $main.gtk-events-pending() { $main.iteration-do(False); }
 
@@ -51,13 +53,13 @@ An example where a grid with two buttons are rendered and saved in a png and a j
     my Gnome::Cairo::ImageSurface $image-surface .= new(
       :native-object($ow.get-surface)
     );
-    $image-surface.write_to_png("xt/data/OffscreenWindow-surface.png");
+    $image-surface.write_to_png("OffscreenWindow-surface.png");
     $image-surface.clear-object;
 
     # Then using a pixbuf
     my Gnome::Gdk3::Pixbuf $pb = $ow.get-pixbuf-rk;
     my Gnome::Glib::Error $e = $pb.savev(
-      "xt/data/OffscreenWindow-pixbuf.jpg", 'jpeg', ['quality'], ['100']
+      "OffscreenWindow-pixbuf.jpg", 'jpeg', ['quality'], ['100']
     );
 
 The result of the png and jpg file;

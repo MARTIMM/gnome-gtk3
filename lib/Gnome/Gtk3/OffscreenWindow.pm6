@@ -53,6 +53,8 @@ Inheriting is done in a special way in that it needs a call from new() to get th
   }
 
 =end comment
+
+
 =head2 Example
 
 An example where a grid with two buttons are rendered and saved in a png and a jpg image file.
@@ -77,13 +79,13 @@ An example where a grid with two buttons are rendered and saved in a png and a j
   my Gnome::Cairo::ImageSurface $image-surface .= new(
     :native-object($ow.get-surface)
   );
-  $image-surface.write_to_png("xt/data/OffscreenWindow-surface.png");
+  $image-surface.write_to_png("OffscreenWindow-surface.png");
   $image-surface.clear-object;
 
   # Then using a pixbuf
   my Gnome::Gdk3::Pixbuf $pb = $ow.get-pixbuf-rk;
   my Gnome::Glib::Error $e = $pb.savev(
-    "xt/data/OffscreenWindow-pixbuf.jpg", 'jpeg', ['quality'], ['100']
+    "OffscreenWindow-pixbuf.jpg", 'jpeg', ['quality'], ['100']
   );
 
 The result of the png and jpg file;
