@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-07-11 0.43.1:
+* Typos and code changes in tutorials and example code.
+
 #### 2021-07-08 0.43.0:
 * Add module **Gnome::Gtk3::OffscreenWindow**.
 
