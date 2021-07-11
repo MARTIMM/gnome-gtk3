@@ -21,7 +21,7 @@ layout: default
 ## History
 There is already a bit of history for these packages. It started off building the **GTK::Glade** package which soon became too big. So a part was separated into **GTK::V3**. After some time working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was **GTK::V3::Gtk::GtkButton** and **GTK::V3::Gdk::GdkScreen** to name a few. So, finally it was split into several other packages named, **Gnome::N** for the native linkup on behalf of any other Gnome module, **Gnome::Glib**, **Gnome::GObject**, **Gnome::Gdk3**, **Gnome::Gtk3** and some others, according to what is shown [on the developers page here](https://developer.gnome.org/references). The classes in these packages are now renamed into e.g. **Gnome::Gtk3::Button**, **Gnome::Gdk3::Screen**, **Gnome::GObject::Object** and **Gnome::Glib::List**. As a side effect the package **GTK::Glade** is also renamed into **Gnome::Gtk3::Glade** to show that it is from Gnome and that it is based on Gtk version 3.
 
-A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **Gnome::Gtk3** or make other modules. Here, I think for example about the testing of interfaces in **Gnome::T** (I've taken short names like **Gnome::N** to not interfere with eventually new names from Gnome).
+A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **Gnome::Gtk3** or make other modules. Here, I think for example about moving the testing part of interfaces to **Gnome::T** (I've taken short names like **Gnome::N** so it will not interfere with eventually new names from Gnome in the future). **Gnome::Gtk3::Glade** is definitely not extended and will be obsoleted in the future.
 
 ## What are the benefits
 
@@ -35,10 +35,10 @@ When the packages mature, the next points are/become available;
   * It is possible to create threads where longer runs can be done without crippling the user interface responses and also show the results from there in the gui.
   * It is possible to make use of actions besides signal processing.
   * It is possible to make use of resource files. This is a different approach than what Raku can do for you. It can be combined however.
-  * It is possible to make use of D-Bus. This is one of the things that makes an application able to interact with the system and other processes as well as the desktop manager.
+  * It is possible to make use of D-Bus. This is one of the things that makes an application able to interact with the system and other processes as well as the desktop manager. (Not yet fully implemented in these libraries though)
   * Drag and drop will help you to drag documents from a filebrowser into your application as well as moving widgets from one place to another in your GUI.
   * Drawing is available with Cairo.
-  * Text manipulations are supported using Pango.
+  * Text manipulations are supported using Pango. (Not yet fully implemented in these libraries though)
 
 ### Cons
   * The code base is much larger but I think it gives you greater flexibility.
