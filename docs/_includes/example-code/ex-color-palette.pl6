@@ -2,12 +2,12 @@ use v6;
 
 my $t0 = now;
 
+use Gnome::Gtk3::Window;
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::ColorChooserWidget;
 use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 
 #use Gnome::N::X;
@@ -19,10 +19,8 @@ my Gnome::Gtk3::Main $m .= new;
 # Class to handle signals
 class AppSignalHandlers {
 
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 }
 
@@ -35,11 +33,11 @@ my Gnome::Gtk3::Grid $grid .= new;
 $top-window.add($grid);
 
 my Gnome::Gtk3::ColorChooserWidget $ccw .= new;
-$grid.gtk-grid-attach( $ccw, 0, 0, 4, 1);
+$grid.attach( $ccw, 0, 0, 4, 1);
 
 my N-GdkRGBA $color .= new( :red(1e0), :green(.0e0), :blue(.0e0), :alpha(1e0));
 my Gnome::Gtk3::ColorButton $cb .= new(:$color);
-$grid.gtk-grid-attach( $cb, 0, 3, 1, 1);
+$grid.attach( $cb, 0, 3, 1, 1);
 
 my Array[Num] $palette1 .= new(
   .0e0, .0e0, .0e0, 1e0,
@@ -101,10 +99,10 @@ $cb.add-palette( GTK_ORIENTATION_VERTICAL, 6, 36, $palette2);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
-$top-window.register-signal( $ash, 'exit-program', 'delete-event');
+$top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate all
 $top-window.show-all;
 
 note "Set up time: ", now - $t0;
-$m.gtk-main;
+$m.main;

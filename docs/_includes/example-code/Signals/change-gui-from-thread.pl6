@@ -28,7 +28,7 @@ class X {
   }
 
   method exit-app ( ) {
-    $!main.gtk-main-quit;
+    $!main.quit;
   }
 
   method update-scale ( ) {
@@ -97,13 +97,13 @@ given $scale {
 }
 
 my Gnome::Gtk3::Button $button-start .= new(:label('Start Update'));
-$grid.grid-attach( $button-start, 0, 1, 1, 1);
+$grid.attach( $button-start, 0, 1, 1, 1);
 $button-start.register-signal( $x, 'start-update', 'clicked');
 
 my Gnome::Gtk3::Button $button-stop .= new(:label('Stop Update'));
-$grid.grid-attach( $button-stop, 0, 2, 1, 1);
+$grid.attach( $button-stop, 0, 2, 1, 1);
 $button-stop.register-signal( $x, 'stop-update', 'clicked');
 
 $window.register-signal( $x, 'exit-app', 'destroy');
 $window.show-all;
-Gnome::Gtk3::Main.new.gtk-main;
+Gnome::Gtk3::Main.new.main;

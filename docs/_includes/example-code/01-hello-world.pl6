@@ -15,25 +15,25 @@ class AppSignalHandlers {
   method first-button-click (
     :widget($b1), :other-button($b2)
   ) {
-    $b1.gtk-widget-set-sensitive(False);
-    $b2.gtk-widget-set-sensitive(True);
+    $b1.set-sensitive(False);
+    $b2.set-sensitive(True);
   }
 
   # Handle 'Goodbye' button click
   method second-button-click ( ) {
-    $m.gtk-main-quit;
+    $m.quit;
   }
 
   # Handle window managers 'close app' button
   method exit-program ( ) {
-    $m.gtk-main-quit;
+    $m.quit;
   }
 }
 
 # Create a top level window and set a title
 my Gnome::Gtk3::Window $top-window .= new;
-$top-window.gtk-window-set-title('Hello GTK!');
-$top-window.gtk-container-set-border-width(20);
+$top-window.set-title('Hello GTK!');
+$top-window.set-border-width(20);
 
 # Create a grid and add it to the window
 my Gnome::Gtk3::Grid $grid .= new;
@@ -42,11 +42,11 @@ $top-window.add($grid);
 # Create buttons and disable the second one
 my Gnome::Gtk3::Button $button .= new(:label('Hello World'));
 my Gnome::Gtk3::Button $second .= new(:label('Goodbye'));
-$second.gtk-widget-set-sensitive(False);
+$second.set-sensitive(False);
 
 # Add buttons to the grid
-$grid.gtk-grid-attach( $button, 0, 0, 1, 1);
-$grid.gtk-grid-attach( $second, 0, 1, 1, 1);
+$grid.attach( $button, 0, 0, 1, 1);
+$grid.attach( $second, 0, 1, 1, 1);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
@@ -61,6 +61,6 @@ $second.register-signal(
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate all
-$top-window.gtk-widget-show-all;
+$top-window.show-all;
 
-$m.gtk-main;
+$m.main;

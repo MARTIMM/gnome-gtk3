@@ -10,10 +10,8 @@ my Gnome::Gtk3::Main $m .= new;
 
 # Class to handle signals
 class AppSignalHandlers {
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 }
 
@@ -29,4 +27,4 @@ $top-window.register-signal( $ash, 'exit-program', 'destroy');
 # Show everything and activate all
 $top-window.show-all;
 
-$m.gtk-main;
+$m.main;

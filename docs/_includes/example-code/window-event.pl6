@@ -12,7 +12,7 @@ class AppSignalHandlers {
 }
 
 # Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new
+my Gnome::Gtk3::Window $top-window .= new;
 $top-window.set-title('Example');
 
 # Initialize the callback handler class and register the method for the event
@@ -20,6 +20,6 @@ my AppSignalHandlers $ash .= new;
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate
-$top-window.gtk-widget-show-all;
+$top-window.show-all;
 
-$m.gtk-main;
+$m.main;

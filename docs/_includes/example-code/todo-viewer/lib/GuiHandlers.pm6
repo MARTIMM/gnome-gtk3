@@ -20,10 +20,8 @@ class Application {
   #-----------------------------------------------------------------------------
   submethod BUILD (:$!main) { }
 
-  method exit-todo-viewer ( --> Int ) {
-    $!main.gtk-main-quit;
-
-    1
+  method exit-todo-viewer ( ) {
+    $!main.quit;
   }
 }
 
@@ -37,7 +35,6 @@ class ListView {
     N-GtkTreePath $n-tree-path, N-GObject $n-treeview-column,
     Hash :$data, Int :$data-col, Gnome::Gtk3::TreeStore :$files,
     Gnome::Gtk3::ListStore :$markers
-    --> Int
   ) {
 
     my Gnome::Gtk3::TreePath $tree-path;
@@ -70,15 +67,12 @@ class ListView {
     }
 
     $!filename = $data-key;
-
-    1
   }
 
   #-----------------------------------------------------------------------------
   method select-marker-entry (
     N-GtkTreePath $n-tree-path, N-GObject $n-treeview-column,
     Gnome::Gtk3::ListStore :$markers,
-    --> Int
   ) {
 
     my Gnome::Gtk3::TreePath $tree-path .= new(:native-object($n-tree-path));
@@ -91,7 +85,5 @@ class ListView {
 
     note "Start atom editor with folowing file $!filename at line $line";
     shell "atom $!filename:$line &";
-
-    1
   }
 }

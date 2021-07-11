@@ -13,4 +13,4 @@ $top-window.set-title('Window');
 # Show everything and activate all
 $top-window.show-all;
 
-$m.gtk-main;
+$m.main;

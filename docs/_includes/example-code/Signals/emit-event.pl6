@@ -46,7 +46,7 @@ my Gnome::Gtk3::Grid $grid .= new;
 my X $x .= new(:$grid);
 
 my Gnome::Gtk3::Button $button .= new(:label('Pick a Box'));
-$grid.grid-attach( $button, 0, 1, 20, 1);
+$grid.attach( $button, 0, 1, 20, 1);
 $button.register-signal( $x, 'pick-a-box', 'clicked');
 
 given $window {
@@ -56,4 +56,4 @@ given $window {
   .register-signal( $x, 'exit-app', 'destroy');
   .show-all;
 }
-Gnome::Gtk3::Main.new.gtk-main;
+Gnome::Gtk3::Main.new.main;

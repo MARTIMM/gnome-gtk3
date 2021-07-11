@@ -11,10 +11,8 @@ my Gnome::Gtk3::Main $m .= new;
 
 # A callback handler class to respond to the 'close application event'
 class AppSignalHandlers {
-
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 }
 
@@ -39,5 +37,4 @@ $nb.append-page($tab2-content,$tab2-label);
 
 $top-window.show-all;
 
-$m.gtk-main;
-
+$m.main;

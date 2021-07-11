@@ -9,16 +9,12 @@ my Gnome::Gtk3::Main $m .= new;
 
 class AppSignalHandlers {
 
-  method button-exit ( :widget($b1) --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method button-exit ( ) {
+    $m.quit;
   }
 
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 }
 
@@ -41,4 +37,4 @@ $top-window.register-signal( $ash, 'exit-program', 'destroy');
 # Show everything and activate all
 $top-window.show-all;
 
-$m.gtk-main;
+$m.main;

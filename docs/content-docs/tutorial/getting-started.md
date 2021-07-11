@@ -20,13 +20,13 @@ Lets explain some of the code displayed above. To start with, load the modules u
 
 Next, we initialize a **Gnome::Gtk3::Main** object `$m` which will be used later on [7].
 
-Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out [10-12]. There is only one method defined in that class to stop the program. Our first GTK method is used here, `gtk-main-quit()` from the **Gnome::Gtk3::Main** class [11].
+Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out [10-12]. There is only one method defined in that class to stop the program. Our first GTK method is used here, `.quit()` from the **Gnome::Gtk3::Main** class [11].
 
-Now we can start creating the widgets. There is only one widget **Gnome::Gtk3::Window** and initialized as a window with its title set to 'Example' [15].
+Now we can start creating the widgets. There is only one widget **Gnome::Gtk3::Window** and initialized as a window with its title set to 'Example' [15,16].
 
-Initialize the handler class and register signals. We use the `destroy` signal to call the `exit-program()` method in the handler object `$ash` [18,19].
+Initialize the handler class and register signals. We use the `destroy` signal to call the `.exit-program()` method in the handler object `$ash` [19,20].
 
-Then show the window and everything in it [22] and start the main loop [24].
+Then show the window and everything in it [23] and start the main loop [25].
 
 To run the program, save the code in a file called `simple-example.pl6` and type the following on the command line (in windows you can double click on the filename).
 ```
@@ -65,7 +65,7 @@ Now save the code in `window-button.pl6` and run it. Pressing the button will st
 Lets go on quickly and add another button with the `.add()` method. The relevant part is shown below.
 
 ```
-...
+…
 my Gnome::Gtk3::Window $top-window .= new(:empty);
 $top-window.set-title('With 2 Buttons');
 
@@ -80,7 +80,7 @@ my AppSignalHandlers $ash .= new;
 $button1.register-signal( $ash, 'button-exit', 'clicked');
 $button2.register-signal( $ash, 'button-exit', 'clicked');
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
-...
+…
 ```
 
 When run, we see that there is a problem. There is still one button and an error is shown on the commandline. This error comes directly from the GTK libs and will tell you sometimes what goes wrong. The error is;
@@ -109,13 +109,13 @@ We will use a **Grid** to add the buttons to. Maybe you have heard of GtkVBox an
 
 The method `.set-border-width()` on the **Window** is used to get some space around our buttons [36]. Then an empty grid is created and added to the window [39,40]. The buttons are created [43,44] but the second button is disabled with `.set-sensitive()` [45]. This will be visible as a grayed-out button.
 
-Add the buttons to the **Grid** with `.gtk-grid-attach()` [48,49]. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The second button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
+Add the buttons to the **Grid** with `.attach()` [48,49]. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The second button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
 
 The first button handler is `.first-button-click()`. We see that there is a named argument added (`:other-button`) to the registration call [53-56]. You are totally free to add any named argument except for `:widget` which is reserved. The arguments are provided to the handler as is. The `:widget` will hold the object on which the handler is registered.
 
 The first handler `.first-button-click()` is called when the top button is clicked [15-20]. It uses the object `$b1` provided by `:widget` to make that object insensitive [19]. This is the top button and will become grayed. The other button `$b2` given by `:other-button` is made sensitive [20]. You will see that it 'returns from its grayness' so to speak.
 
-The second handler `.second-button-click()` [23-25] is called when the bottom button is clicked and will call `.gtk-main-quit()` to stop the program.
+The second handler `.second-button-click()` [23-25] is called when the bottom button is clicked and will call `.quit()` to stop the program.
 
 #### What we have learned
 * A window can hold only one object while a grid can hold more objects. The grid can be added to the window and other widgets can be added to the grid.

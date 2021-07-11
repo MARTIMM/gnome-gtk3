@@ -29,36 +29,28 @@ class AppSignalHandlers {
   }
 
   # increment level bar
-  method inc-level-bar ( --> Int ) {
+  method inc-level-bar ( ) {
     my Num $v = $!level-bar.get-value;
     my Num $vmx = $!level-bar.get-max-value;
     $!level-bar.set-value(min( $v + 0.1, $vmx));
     self!update-status;
-
-    1
   }
 
   # decrement level bar
-  method dec-level-bar ( --> Int ) {
+  method dec-level-bar ( ) {
     my Num $v = $!level-bar.get-value;
     my Num $vmn = $!level-bar.get-min-value;
     $!level-bar.set-value(max( $v - 0.1, $vmn));
     self!update-status;
-
-    1
   }
 
-  method invert-level-bar ( --> Int ) {
+  method invert-level-bar ( ) {
     $!level-bar.set-inverted($!inverted-button.get-active());
     self!update-status;
-
-    1
   }
 
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 
   method !update-status {
@@ -84,20 +76,20 @@ $top-window.add($grid);
 
 # Create the other widgets and add them to the grid
 my Gnome::Gtk3::Button $inc-button .= new(:label("+"));
-$grid.gtk-grid-attach( $inc-button, 1, 0, 1, 1);
+$grid.attach( $inc-button, 1, 0, 1, 1);
 
 my Gnome::Gtk3::Button $dec-button .= new(:label("-"));
-$grid.gtk-grid-attach( $dec-button, 1, 1, 1, 1);
+$grid.attach( $dec-button, 1, 1, 1, 1);
 
 my Gnome::Gtk3::ToggleButton $inverted-button .= new(:label("Inverted"));
-$grid.gtk-grid-attach( $inverted-button, 1, 2, 1, 1);
+$grid.attach( $inverted-button, 1, 2, 1, 1);
 
 my Gnome::Gtk3::LevelBar $level-bar .= new;
 $level-bar.set-orientation(GTK_ORIENTATION_VERTICAL);
-$grid.gtk-grid-attach( $level-bar, 0, 0, 1, 3);
+$grid.attach( $level-bar, 0, 0, 1, 3);
 
 my Gnome::Gtk3::TextView $text-view .= new;
-$grid.gtk-grid-attach( $text-view, 0, 4, 3, 1);
+$grid.attach( $text-view, 0, 4, 3, 1);
 
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new( :$level-bar, :$text-view, :$inverted-button);
@@ -111,4 +103,4 @@ $top-window.register-signal( $ash, 'exit-program', 'destroy');
 $top-window.show-all;
 
 note "Set up time: ", now - $t0;
-$m.gtk-main;
+$m.main;

@@ -9,13 +9,13 @@ my Gnome::Gtk3::Main $m .= new;
 
 class AppSignalHandlers {
 
-  method button-exit ( ) { $m.gtk-main-quit; }
-  method exit-program ( ) { $m.gtk-main-quit; }
+  method button-exit ( ) { $m.quit; }
+  method exit-program ( ) { $m.quit; }
 }
 
 # Create a top level window and set a title
 my Gnome::Gtk3::Window $top-window .= new;
-$top-window.gtk-window-set-title('With Button');
+$top-window.set-title('With Button');
 
 # Create button
 my Gnome::Gtk3::Button $button .= new(
@@ -29,6 +29,6 @@ $button.register-signal( $ash, 'button-exit', 'clicked');
 $top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate all
-$top-window.gtk-widget-show-all;
+$top-window.show-all;
 
-$m.gtk-main;
+$m.main;

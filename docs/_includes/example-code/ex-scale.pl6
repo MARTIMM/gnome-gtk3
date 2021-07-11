@@ -34,34 +34,26 @@ class AppSignalHandlers {
   }
 
   # increment level bar
-  method inc-scale ( --> Int ) {
+  method inc-scale ( ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(min( $v + $!step, $!max));
     self!update-status;
-
-    1
   }
 
   # decrement level bar
-  method dec-scale ( --> Int ) {
+  method dec-scale ( ) {
     my Num $v = $!scale.get-value;
     $!scale.set-value(max( $v - $!step, $!min));
     self!update-status;
-
-    1
   }
 
-  method invert-scale ( --> Int ) {
+  method invert-scale ( ) {
     $!scale.set-inverted($!inverted-button.get-active());
     self!update-status;
-
-    1
   }
 
-  method exit-program ( --> Int ) {
-    $m.gtk-main-quit;
-
-    1
+  method exit-program ( ) {
+    $m.quit;
   }
 
   method !update-status {
@@ -91,13 +83,13 @@ $top-window.add($grid);
 
 # Create the other widgets and add them to the grid
 my Gnome::Gtk3::Button $inc-button .= new(:label("+"));
-$grid.gtk-grid-attach( $inc-button, 0, 0, 1, 1);
+$grid.attach( $inc-button, 0, 0, 1, 1);
 
 my Gnome::Gtk3::Button $dec-button .= new(:label("-"));
-$grid.gtk-grid-attach( $dec-button, 1, 0, 1, 1);
+$grid.attach( $dec-button, 1, 0, 1, 1);
 
 my Gnome::Gtk3::ToggleButton $inverted-button .= new(:label("Inverted"));
-$grid.gtk-grid-attach( $inverted-button, 2, 0, 1, 1);
+$grid.attach( $inverted-button, 2, 0, 1, 1);
 
 my Gnome::Gtk3::Scale $scale .= new;
 # Set min and max of scale.
@@ -111,10 +103,10 @@ $scale.add-mark( 5e0, GTK_POS_BOTTOM, 'Five');
 $scale.add-mark( 10e0, GTK_POS_BOTTOM, 'Ten');
 $scale.add-mark( 15e0, GTK_POS_BOTTOM, 'Fifteen');
 $scale.add-mark( 20e0, GTK_POS_BOTTOM, 'Twenty');
-$grid.gtk-grid-attach( $scale, 0, 1, 3, 1);
+$grid.attach( $scale, 0, 1, 3, 1);
 
 my Gnome::Gtk3::TextView $text-view .= new;
-$grid.gtk-grid-attach( $text-view, 0, 2, 3, 1);
+$grid.attach( $text-view, 0, 2, 3, 1);
 
 #$grid.debug(:on);
 
@@ -126,10 +118,10 @@ $inc-button.register-signal( $ash, 'inc-scale', 'clicked');
 $dec-button.register-signal( $ash, 'dec-scale', 'clicked');
 $inverted-button.register-signal( $ash, 'invert-scale', 'toggled');
 
-$top-window.register-signal( $ash, 'exit-program', 'delete-event');
+$top-window.register-signal( $ash, 'exit-program', 'destroy');
 
 # Show everything and activate all
 $top-window.show-all;
 
 note "Set up time: ", now - $t0;
-$m.gtk-main;
+$m.main;

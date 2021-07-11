@@ -1,21 +1,23 @@
 use v6;
 
-unit class Gui;
-
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
+use Gnome::Gtk3::CellRendererText;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::CellRendererText;
 use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::TreeIter;
 
+use Gnome::GObject::Type;
+use Gnome::GObject::Value;
+
 use GuiHandlers;
+
+#-------------------------------------------------------------------------------
+unit class Gui;
 
 #-------------------------------------------------------------------------------
 enum FileListColumns <FILENAME_COL TODO_COUNT_COL DATA_KEY_COL>;
@@ -42,10 +44,10 @@ submethod BUILD ( ) {
   $w.set-title('Todo Viewer');
 
   self!create-file-table;
-  $g.grid-attach( $!fs-table, 0, 0, 1, 1);
+  $g.attach( $!fs-table, 0, 0, 1, 1);
 
   self!create-markers-table;
-  $g.grid-attach( $!mark-table, 1, 0, 1, 1);
+  $g.attach( $!mark-table, 1, 0, 1, 1);
 
   my GuiHandlers::ListView $gh-flview .= new;
   $!fs-table.register-signal(
@@ -73,35 +75,35 @@ method add-file-data ( Str $project-dir, Str $filename-path, Array $data ) {
 
 #-------------------------------------------------------------------------------
 method activate ( ) {
-  $!fs-table.tree-view-expand-all;
-  Gnome::Gtk3::Main.new.gtk-main;
+  $!fs-table.expand-all;
+  Gnome::Gtk3::Main.new.main;
 }
 
 #-------------------------------------------------------------------------------
 method !create-file-table ( ) {
   $!files .= new( :field-types( G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING));
   $!fs-table .= new(:model($!files));
-  $!fs-table.tree-view-set-headers-visible(1);
-  $!fs-table.widget-set-hexpand(1);
-  $!fs-table.widget-set-vexpand(1);
+  $!fs-table.set-headers-visible(True);
+  $!fs-table.set-hexpand(True);
+  $!fs-table.set-vexpand(True);
 
   my Gnome::Gtk3::CellRendererText $crt .= new;
   my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.set-property( 'foreground', $v);
   my Gnome::Gtk3::TreeViewColumn $tvc .= new;
   $tvc.set-title('Filename');
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
   $tvc.add-attribute( $crt, 'text', FILENAME_COL);
-  $!fs-table.tree-view-append-column($tvc);
+  $!fs-table.append-column($tvc);
 
   $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<red>);
   $crt.set-property( 'foreground', $v);
   $tvc .= new;
   $tvc.set-title('Mark Count');
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
   $tvc.add-attribute( $crt, 'text', TODO_COUNT_COL);
-  $!fs-table.tree-view-append-column($tvc);
+  $!fs-table.append-column($tvc);
 }
 
 #-------------------------------------------------------------------------------
@@ -110,36 +112,36 @@ method !create-markers-table ( ) {
     :field-types( G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING)
   );
   $!mark-table .= new(:model($!markers));
-  $!mark-table.tree-view-set-headers-visible(1);
-  $!mark-table.widget-set-hexpand(1);
-  $!mark-table.widget-set-vexpand(1);
+  $!mark-table.set-headers-visible(True);
+  $!mark-table.set-hexpand(True);
+  $!mark-table.set-vexpand(True);
 
   my Gnome::Gtk3::CellRendererText $crt .= new;
   my Gnome::GObject::Value $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.object-set-property( 'foreground', $v);
   my Gnome::Gtk3::TreeViewColumn $tvc .= new;
   $tvc.set-title('Marker');
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
   $tvc.add-attribute( $crt, 'text', MARKER_COL);
-  $!mark-table.tree-view-append-column($tvc);
+  $!mark-table.append-column($tvc);
 
   $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<red>);
   $crt.set-property( 'foreground', $v);
   $tvc .= new;
   $tvc.set-title('Line #');
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
   $tvc.add-attribute( $crt, 'text', LINE_COL);
-  $!mark-table.tree-view-append-column($tvc);
+  $!mark-table.append-column($tvc);
 
   $crt .= new;
   $v .= new( :type(G_TYPE_STRING), :value<blue>);
   $crt.set-property( 'foreground', $v);
   $tvc .= new;
   $tvc.set-title('Comment');
-  $tvc.pack-end( $crt, 1);
+  $tvc.pack-end( $crt, True);
   $tvc.add-attribute( $crt, 'text', COMMENT_COL);
-  $!mark-table.tree-view-append-column($tvc);
+  $!mark-table.append-column($tvc);
 }
 
 #-------------------------------------------------------------------------------
