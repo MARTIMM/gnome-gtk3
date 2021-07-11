@@ -8,7 +8,7 @@ my Gnome::Gtk3::Main $m .= new;
 
 # A callback handler class to respond to the 'close application event'
 class AppSignalHandlers {
-  method exit-program ( ) { $m.gtk-main-quit; }
+  method exit-program ( ) { $m.quit; }
 }
 
 # Create a top level window and set a title
