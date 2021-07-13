@@ -25,7 +25,7 @@ Declaration
 class N-GTypeQuery
 ------------------
 
-A structure holding information for a specific type. It is filled in by the `g_type_query()` function.
+A structure holding information for a specific type. It is filled in by the `query()` function.
 
   * UInt $.type: the GType value of the type.
 
@@ -45,110 +45,112 @@ new
 
 Create a new plain object. In contrast with other objects, this class doesn't wrap a native object, so therefore no options to specify something.
 
-[g_] type_name
---------------
-
-Get the unique name that is assigned to a type ID. Note that this function (like all other GType API) cannot cope with invalid type IDs. `G_TYPE_INVALID` may be passed to this function, as may be any other validly registered type ID, but randomized type IDs should not be passed in and will most likely lead to a crash.
-
-Returns: static type name or undefined
-
-    method g_type_name ( UInt $gtype --> Str )
-
-[g_] type_qname
----------------
-
-Get the corresponding quark of the type IDs name.
-
-Returns: the type names quark or 0
-
-    method g_type_qname ( --> UInt  )
-
-[[g_] type_] from_name
-----------------------
-
-Lookup the type ID from a given type name, returning 0 if no type has been registered under this name (this is the preferred method to find out by name whether a specific type has been registered yet).
-
-Returns: corresponding type ID or 0
-
-    method g_type_from_name ( Str $name --> UInt )
-
-  * Str $name; type name to lookup
-
-[g_] type_parent
-----------------
-
-Return the direct parent type of the passed in type. If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
-
-Returns: the parent type
-
-    method g_type_parent ( UInt $parent-type --> UInt )
-
-[g_] type_depth
----------------
-
-Returns the length of the ancestry of the passed in type. This includes the type itself, so that e.g. a fundamental type has depth 1.
-
-Returns: the depth of *$type*
-
-    method g_type_depth ( UInt $type --> UInt  )
-
-[[g_] type_] is_a
------------------
-
-If *$is_a_type* is a derivable type, check whether *$type* is a descendant of *$is_a_type*. If *$is_a_type* is an interface, check whether *$type* conforms to it.
-
-Returns: `1` if *$type* is a *$is_a_type*.
-
-    method g_type_is_a ( UInt $type, UInt $is_a_type --> Int )
-
-  * UInt $is_a_type; possible anchestor of *$type* or interface that *$type* could conform to.
-
-[g_] type_query
----------------
-
-Queries the type system for information about a specific type. This function will fill in a user-provided structure to hold type-specific information. If an invalid *GType* is passed in, the *$type* member of the *N-GTypeQuery* is 0. All members filled into the *N-GTypeQuery* structure should be considered constant and have to be left untouched.
-
-    method g_type_query ( int32 $type --> N-GTypeQuery )
-
-  * N-GTypeQuery $query; a structure that is filled in with constant values upon success
-
-[[g_] type_] check_instance_cast
---------------------------------
+check-instance-cast
+-------------------
 
 Checks that instance is an instance of the type identified by g_type and issues a warning if this is not the case. Returns instance casted to a pointer to c_type.
 
 No warning will be issued if instance is NULL, and NULL will be returned.
 
-This macro should only be used in type implementations.
-
-    method g_type_check_instance_cast (
-      N-GObject $instance, UInt $iface_type
-      --> N-GObject
+    method check-instance-cast (
+      N-GObject $instance, UInt $iface_type --> N-GObject
     )
 
   * N-GObject $instance;
 
   * UInt $iface_type;
 
-[[g_] type_] check_instance_is_a
---------------------------------
+check-instance-is-a
+-------------------
 
-    method g_type_check_instance_is_a (
-      N-GObject $instance, UInt $iface_type --> Int
+Check if an instance is of type `$iface-gtype`. Returns True if it is.
+
+    method check-instance-is-a (
+      N-GObject $instance, UInt $iface_gtype --> Bool
     )
 
-  * N-GObject $instance; the native object to check.
+  * GTypeInstance $instance;
 
-  * UInt $iface_type; the gtype the instance is inheriting from.
+  * N-GObject $iface_type;
 
-[[g_] type_] name_from_instance
--------------------------------
+depth
+-----
+
+Returns the length of the ancestry of the passed in type. This includes the type itself, so that e.g. a fundamental type has depth 1.
+
+Returns: the depth of *$gtype*
+
+    method depth ( UInt $gtype --> UInt )
+
+from-name
+---------
+
+Lookup the type ID from a given type name, returning 0 if no type has been registered under this name (this is the preferred method to find out by name whether a specific type has been registered yet).
+
+Returns: corresponding type ID or 0
+
+    method from-name ( Str $name --> UInt )
+
+  * Str $name; type name to lookup
+
+gtype-get-type
+--------------
+
+Get dynamic type for a GTyped value. In C there is this name G_TYPE_GTYPE.
+
+    method gtype_get_type ( --> UInt )
+
+is-a
+----
+
+If *$is-a-gtype* is a derivable type, check whether *$gtype* is a descendant of *$is-a-gtype*. If *$is-a-gtype* is an interface, check whether *$gtype* conforms to it.
+
+Returns: `True` if *$gtype* is a *$is-a-gtype*
+
+    method is-a ( UInt $gtype, UInt $is_a_gtype --> Bool )
+
+  * UInt $is_a_gtype; possible anchestor of *$gtype* or interface that *$gtype* could conform to
+
+name
+----
+
+Get the unique name that is assigned to a type ID. Note that this function (like all other GType API) cannot cope with invalid type IDs. `G-TYPE-INVALID` may be passed to this function, as may be any other validly registered type ID, but randomized type IDs should not be passed in and will most likely lead to a crash.
+
+Returns: static type name or `undefined`
+
+    method name ( UInt $gtype --> Str )
+
+name-from-instance
+------------------
 
 Get name of type from the instance.
 
-    method g_type_name_from_instance ( N-GObject $instance --> Str  )
+    method name-from-instance ( N-GObject $instance --> Str )
 
-  * int32 $instance;
+  * N-GObject $instance;
 
-Returns the name of the instance.
+parent
+------
+
+Return the direct parent type of the passed in type. If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
+
+Returns: the parent type
+
+    method parent ( UInt $parent-gtype --> UInt )
+
+qname
+-----
+
+Get the corresponding quark of the type IDs name.
+
+Returns: the type names quark or 0
+
+    method qname ( UInt $gtype --> UInt )
+
+query
+-----
+
+Queries the type system for information about a specific type. This function will fill in a user-provided structure to hold type-specific information. If an invalid **Gnome::GObject::Type** is passed in, the *$type* member of the **N-GTypeQuery** is 0. All members filled into the **N-GTypeQuery** structure should be considered constant and have to be left untouched.
+
+    method query ( UInt $gtype --> N-GTypeQuery )
 
