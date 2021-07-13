@@ -24,3 +24,4 @@ _site
 docs-old/
 .bundle/
 xt/NewModules/*
+xt/Templates/*
