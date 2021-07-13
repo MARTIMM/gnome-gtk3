@@ -1211,18 +1211,11 @@ enum GtkInputPurpose is export (
 =begin pod
 =head2 enum GtkInputHints
 
-Describes hints that might be taken into account by input methods
-or applications. Note that input methods may already tailor their
-behaviour according to the B<Gnome::Gtk3::InputPurpose> of the entry.
+Describes hints that might be taken into account by input methods or applications. Note that input methods may already tailor their behaviour according to the B<Gnome::Gtk3::InputPurpose> of the entry.
 
-Some common sense is expected when using these flags - mixing
-I<GTK_INPUT_HINT_LOWERCASE> with any of the uppercase hints makes no sense.
+Some common sense is expected when using these flags - mixing I<GTK_INPUT_HINT_LOWERCASE> with any of the uppercase hints makes no sense.
 
-This enumeration may be extended in the future; input methods should
-ignore unknown values.
-
-Since: 3.6
-
+This enumeration may be extended in the future; input methods should ignore unknown values.
 
 =item GTK_INPUT_HINT_NONE: No special behaviour suggested
 =item GTK_INPUT_HINT_SPELLCHECK: Suggest checking for typos
@@ -1233,14 +1226,13 @@ Since: 3.6
 =item GTK_INPUT_HINT_UPPERCASE_WORDS: Suggest to capitalize the first character of each word
 =item GTK_INPUT_HINT_UPPERCASE_SENTENCES: Suggest to capitalize the first word of each sentence
 =item GTK_INPUT_HINT_INHIBIT_OSK: Suggest to not show an onscreen keyboard (e.g for a calculator that already has all the keys).
-=item GTK_INPUT_HINT_VERTICAL_WRITING: The text is vertical. Since 3.18
-=item GTK_INPUT_HINT_EMOJI: Suggest offering Emoji support. Since 3.22.20
-=item GTK_INPUT_HINT_NO_EMOJI: Suggest not offering Emoji support. Since 3.22.20
-
+=item GTK_INPUT_HINT_VERTICAL_WRITING: The text is vertical.
+=item GTK_INPUT_HINT_EMOJI: Suggest offering Emoji support.
+=item GTK_INPUT_HINT_NO_EMOJI: Suggest not offering Emoji support.
 
 =end pod
 
-#TE:0:GtkInputHints:
+#TE:1:GtkInputHints:
 enum GtkInputHints is export (
   'GTK_INPUT_HINT_NONE'                => 0,
   'GTK_INPUT_HINT_SPELLCHECK'          => 1 +< 0,

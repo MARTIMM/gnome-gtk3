@@ -36,7 +36,7 @@ my Events $e .= new;
 $da.add-events(GDK_SCROLL_MASK +| GDK_BUTTON_PRESS_MASK);
 $da.register-signal($e, 'on-scroll-event', 'scroll-event');
 $da.register-signal($e, 'on-any-button-clicked', 'button-press-event');
-$g.attach($da, 0, 0 , 1, 1);
+$g.attach($da, 0, 0, 1, 1);
 
 $w.add($g);
 $w.show-all;

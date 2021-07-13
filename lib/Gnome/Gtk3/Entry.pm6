@@ -2695,6 +2695,7 @@ Widget type: GTK_TYPE_INPUT_PURPOSE
 
 The B<Gnome::GObject::Value> type of property I<input-purpose> is C<G_TYPE_ENUM>.
 
+
 =comment #TP:0:input-hints:
 =head3 hints
 
