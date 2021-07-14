@@ -58,14 +58,21 @@ baseurl: "/gnome-gtk3"
 markdown: kramdown
 highlighter: rouge
 
-# More › http://kramdown.gettalong.org/quickref.html
-# Options › http://kramdown.gettalong.org/options.html
-#kramdown:
-#  input:          GFM
-#  # https://github.com/jekyll/jekyll/pull/4090
-#  syntax_highlighter: rouge
+# More
+#  http://kramdown.gettalong.org/quickref.html
+#  http://kramdown.gettalong.org/options.html
+#  https://stackoverflow.com/questions/6615415/add-syntax-highlighting-to-gh-pages
+# https://github.com/jekyll/jekyll/pull/4090
+# Rouge Highlighter in Kramdown › http://kramdown.gettalong.org/syntax_highlighter/rouge.html
+kramdown:
+  # Use GitHub flavored markdown, including triple backtick fenced code blocks
+  input:          GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    # Use existing pygments syntax highlighting css
+    css_class: 'highlight'
 #
-#  # Rouge Highlighter in Kramdown › http://kramdown.gettalong.org/syntax_highlighter/rouge.html
+#
 #  # span, block element options fall back to global
 #  syntax_highlighter_opts:
 #    # Rouge Options › https://github.com/jneen/rouge#full-options
