@@ -211,12 +211,11 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'enable-popup', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'enable-popup', 'get-boolean', True);
   test-property( G_TYPE_STRING, 'group-name', 'get-string', 'group 1');
-  test-property( G_TYPE_BOOLEAN, 'scrollable', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'show-border', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'show-tabs', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'scrollable', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'show-border', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'show-tabs', 'get-boolean', True);
 #  test-property( G_TYPE_BOOLEAN, 'tab-pos', '', );
   test-property( G_TYPE_INT, 'page', 'get-int', $n.get-current-page);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');

@@ -73,8 +73,8 @@ subtest 'Properties ...', {
   test-property( G_TYPE_STRING, 'text', 'get-string', 'aba<i>ca</i>dabra');
   test-property( G_TYPE_STRING, 'secondary-text', 'get-string', 'En een gewone mededeling');
 
-  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'secondary-use-markup', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'secondary-use-markup', 'get-boolean', False);
 }
 
 #-------------------------------------------------------------------------------

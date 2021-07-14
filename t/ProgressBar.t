@@ -48,12 +48,12 @@ subtest 'Manipulations', {
 subtest 'Properties ...', {
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_BOOLEAN));
   $pb.g-object-get-property( 'inverted', $gv);
-  is $gv.get-boolean, 1, 'property inverted';
+  is $gv.get-boolean, True, 'property inverted';
   $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $pb.g-object-get-property( 'show-text', $gv);
-  is $gv.get-boolean, 1, 'property show-text';
+  is $gv.get-boolean, True, 'property show-text';
   $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_DOUBLE));

@@ -53,13 +53,13 @@ subtest 'Properties ...', {
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $r.g-object-get-property( 'reveal-child', $gv);
   $gv.g-value-set-boolean(True);
-  is $gv.get-boolean, 1, 'property reveal-child';
+  is $gv.get-boolean, True, 'property reveal-child';
   $gv.clear-object;
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $r.g-object-get-property( 'child-revealed', $gv);
   $gv.g-value-set-boolean(True);
-  is $gv.get-boolean, 1, 'property child-revealed';
+  is $gv.get-boolean, True, 'property child-revealed';
   $gv.clear-object;
 }
 

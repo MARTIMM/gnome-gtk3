@@ -127,11 +127,10 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 
-  test-property( G_TYPE_BOOLEAN, 'use-popover', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'use-popover', 'get-boolean', False);
 }
 
 #-------------------------------------------------------------------------------

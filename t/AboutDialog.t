@@ -151,7 +151,7 @@ subtest 'Properties ...', {
   );
 
   test-property(
-    G_TYPE_BOOLEAN, 'wrap-license', 'get-boolean', 1
+    G_TYPE_BOOLEAN, 'wrap-license', 'get-boolean', True
   );
 }
 

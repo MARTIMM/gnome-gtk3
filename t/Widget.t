@@ -488,25 +488,24 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 
   test-property( G_TYPE_STRING, 'name', 'get-string', 'test-button');
-  test-property( G_TYPE_BOOLEAN, 'no-show-all', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'app-paintable', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'can-default', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'can-focus', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'composite-child', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'expand', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'has-default', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'no-show-all', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'app-paintable', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'can-default', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'can-focus', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'composite-child', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'expand', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'has-default', 'get-boolean', False);
 
   if %*ENV<travis_ci_tests> {
     skip 'property focus-on-click not known on Travis';
   }
 
   else {
-    test-property( G_TYPE_BOOLEAN, 'focus-on-click', 'get-boolean', 1);
+    test-property( G_TYPE_BOOLEAN, 'focus-on-click', 'get-boolean', True);
   }
 }
 

@@ -89,16 +89,15 @@ subtest 'Properties ...', {
     $gv.clear-object;
   }
 
-test-property( G_TYPE_BOOLEAN, 'inline-completion', 'get-boolean', 1);
-test-property( G_TYPE_BOOLEAN, 'inline-selection', 'get-boolean', 1);
+test-property( G_TYPE_BOOLEAN, 'inline-completion', 'get-boolean', True);
+test-property( G_TYPE_BOOLEAN, 'inline-selection', 'get-boolean', True);
 test-property( G_TYPE_INT, 'minimum-key-length', 'get-int', 3);
-test-property( G_TYPE_BOOLEAN, 'popup-completion', 'get-boolean', 1);
-test-property( G_TYPE_BOOLEAN, 'popup-set-width', 'get-boolean', 1);
-test-property( G_TYPE_BOOLEAN, 'popup-single-match', 'get-boolean', 1);
+test-property( G_TYPE_BOOLEAN, 'popup-completion', 'get-boolean', True);
+test-property( G_TYPE_BOOLEAN, 'popup-set-width', 'get-boolean', True);
+test-property( G_TYPE_BOOLEAN, 'popup-single-match', 'get-boolean', True);
 test-property( G_TYPE_INT, 'text-column', 'get-int', 1);
 
   # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }

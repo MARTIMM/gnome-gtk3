@@ -104,14 +104,14 @@ subtest 'Properties ...', {
     $gv.clear-object;
   }
 
-  test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'hhomogeneous', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'vhomogeneous', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'hhomogeneous', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'vhomogeneous', 'get-boolean', False);
   test-property( G_TYPE_STRING, 'visible-child-name', 'get-string', 'my-entry2');
   test-property( G_TYPE_UINT, 'transition-duration', 'get-uint', 2001);
   #test-property( G_TYPE_ENUM, 'transition-type', 'get-enum', GTK_STACK_TRANSITION_TYPE_OVER_DOWN.value);
-  test-property( G_TYPE_BOOLEAN, 'transition-running', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'interpolate-size', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'transition-running', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'interpolate-size', 'get-boolean', True);
 
 #??  test-property( G_TYPE_STRING, 'name', 'get-string', 'my-entry2');
 

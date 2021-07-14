@@ -84,9 +84,9 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  test-property( G_TYPE_BOOLEAN, 'active', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'inconsistent', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'draw-as-radio', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'active', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'inconsistent', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'draw-as-radio', 'get-boolean', False);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }

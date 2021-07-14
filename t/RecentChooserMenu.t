@@ -70,7 +70,7 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  test-property( G_TYPE_BOOLEAN, 'show-numbers', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-numbers', 'get-boolean', True);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }

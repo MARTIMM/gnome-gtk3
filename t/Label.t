@@ -116,15 +116,15 @@ subtest 'Properties ...', {
   }
 
   test-property( G_TYPE_STRING, 'label', 'get-string', 'Search filename');
-  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'use-underline', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'use-markup', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'use-underline', 'get-boolean', False);
 #  test-property( G_TYPE_ENUM, 'justify', 'get-enum', GTK_JUSTIFY_RIGHT.value);
   test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :apprx);
   test-property( G_TYPE_FLOAT, 'yalign', 'get-float', 21e-2, :apprx);
 #TODO  test-property( G_TYPE_STRING, 'pattern', 'get-string', '___   _');
-  test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'wrap', 'get-boolean', True);
 #  test-property( G_TYPE_ENUM, 'wrap-mode', 'get-enum', ....value);
-  test-property( G_TYPE_BOOLEAN, 'selectable', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'selectable', 'get-boolean', True);
   test-property(
     G_TYPE_UINT, 'mnemonic-keyval', 'get-uint', GDK_KEY_VoidSymbol
   );
@@ -132,10 +132,10 @@ subtest 'Properties ...', {
   test-property( G_TYPE_INT, 'cursor-position', 'get-int', 0);
   test-property( G_TYPE_INT, 'selection-bound', 'get-int', 0);
   test-property( G_TYPE_INT, 'width-chars', 'get-int', -1);
-  test-property( G_TYPE_BOOLEAN, 'single-line-mode', 'get-boolean', 0);
+  test-property( G_TYPE_BOOLEAN, 'single-line-mode', 'get-boolean', False);
   test-property( G_TYPE_DOUBLE, 'angle', 'get-double', 0e0, :apprx);
   test-property( G_TYPE_INT, 'max-width-chars', 'get-int', -1);
-  test-property( G_TYPE_BOOLEAN, 'track-visited-links', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'track-visited-links', 'get-boolean', True);
   test-property( G_TYPE_INT, 'lines', 'get-int', -1);
 }
 

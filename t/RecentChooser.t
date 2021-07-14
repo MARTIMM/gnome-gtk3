@@ -139,11 +139,11 @@ subtest 'Properties ...', {
   }
 
   # example calls
-  test-property( G_TYPE_BOOLEAN, 'show-private', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'show-tips', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'show-not-found', 'get-boolean', 1);
-  test-property( G_TYPE_BOOLEAN, 'select-multiple', 'get-boolean', 0);
-  test-property( G_TYPE_BOOLEAN, 'local-only', 'get-boolean', 1);
+  test-property( G_TYPE_BOOLEAN, 'show-private', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'show-tips', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'show-not-found', 'get-boolean', True);
+  test-property( G_TYPE_BOOLEAN, 'select-multiple', 'get-boolean', False);
+  test-property( G_TYPE_BOOLEAN, 'local-only', 'get-boolean', True);
   test-property( G_TYPE_INT, 'limit', 'get-int', 20);
   #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
   #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);

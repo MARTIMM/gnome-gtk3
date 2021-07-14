@@ -61,7 +61,7 @@ subtest 'Properties ...', {
 
   $gv .= new(:init(G_TYPE_BOOLEAN));
   $af.g-object-get-property( 'obey-child', $gv);
-  is $gv.get-boolean, 1, 'property obey-child';
+  is $gv.get-boolean, True, 'property obey-child';
   $gv.clear-object;
 }
 
