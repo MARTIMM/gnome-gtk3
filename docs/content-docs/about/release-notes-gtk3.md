@@ -8,6 +8,7 @@ layout: sidebar
 
 #### 2021-07-11 0.43.1:
 * Typos and code changes in tutorials and example code.
+* Due to some changes in **Gnome::GObject::Value**, the `.get-boolean()` method returns `True` or `False` instead of `1` or `0`. `.set-boolean()` is unchanged because Raku could coerse `True` and `False` to integer automatically.
 
 #### 2021-07-08 0.43.0:
 * Add module **Gnome::Gtk3::OffscreenWindow**.
