@@ -266,28 +266,22 @@ An example where a gui is described in XML. It has a Window with a Button, both 
 
     # First handler class
     class X {
-      method window-quit ( :$o1, :$o2 --> Int ) {
+      method window-quit ( :$o1, :$o2 ) {
         # ... do something with options $o1 and $o2 ...
 
         Gnome::Gtk3::Main.new.gtk-main-quit;
-
-        1
       }
     }
 
     # Second handler class
     class Y {
-      method button-click ( :$o3, :$o4 --> Int ) {
+      method button-click ( :$o3, :$o4 ) {
         # ... do something with options $o3 and $o4 ...
-
-        1
       }
     }
 
     # Load the user interface description
-    my Gnome::Gtk3::Builder $builder .= new;
     my Gnome::Gtk3::Builder $builder .= new(:string($ui));
-
     my Gnome::Gtk3::Window $w .= new(:build-id<top>);
 
     # It is possible to devide the works over more than one class
