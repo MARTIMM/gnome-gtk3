@@ -5,6 +5,24 @@ nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
+<!--
+https://github.com/highlightjs/highlight.js
+-->
+
+<!--
+<script src="https://cdn.jsdelivr.net/npm/highlightjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlightjs-raku"></script>
+<script>
+  hljs.registerLanguage("raku", window.hljsDefineRaku);
+  hljs.initHighlightingOnLoad();
+</script>
+
+<pre><code class="language-raku">
+my $v = 10;
+.note for ^$v;
+</code></pre>
+-->
+
 # Getting Started
 ## A Simple Window
 
@@ -29,9 +47,11 @@ Initialize the handler class and register signals. We use the `destroy` signal t
 Then show the window and everything in it [23] and start the main loop [25].
 
 To run the program, save the code in a file called `simple-example.pl6` and type the following on the command line (in windows you can double click on the filename).
+
 ```
 raku simple-example.pl6 <Enter>
 ```
+
 #### What we have learned
 So, what we have learned here are several specific things which will always come back in all user interface based programs.
 * Initialization of the libraries
@@ -40,6 +60,7 @@ So, what we have learned here are several specific things which will always come
 * Add more widgets to the window (not shown here, it is a simple example you know).
 * Registration of your callback handlers to handle specific signals.
 * Starting and stopping of the main loop.
+
 
 ## Simple Window with a Button
 
