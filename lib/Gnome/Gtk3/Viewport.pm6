@@ -93,7 +93,7 @@ also does Gnome::Gtk3::Scrollable;
 
 Create a new Viewport object using horizontal and vertical adjustments. The adjustment is of type B<Gnome::Gtk3::Adjustment>.
 
-  multi method new ( N-GObject $hadjustment!, N-GObject $vadjustment! )
+  multi method new ( N-GObject :$hadjustment!, N-GObject :$vadjustment! )
 
 
 =head3 :native-object

@@ -66,7 +66,7 @@ new
 
 Create a new Viewport object using horizontal and vertical adjustments. The adjustment is of type **Gnome::Gtk3::Adjustment**.
 
-    multi method new ( N-GObject $hadjustment!, N-GObject $vadjustment! )
+    multi method new ( N-GObject :$hadjustment!, N-GObject :$vadjustment! )
 
 ### :native-object
 
