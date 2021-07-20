@@ -521,23 +521,18 @@ If *window* is not visible on screen, this function return the size GTK+ will su
 
 Depending on the windowing system and the window manager constraints, the size returned by this function may not match the size set using `resize()`; additionally, since `resize()` may be implemented as an asynchronous operation, GTK+ cannot guarantee in any way that this code:
 
-|[<!-- language="C" --> // width and height are set elsewhere gtk-window-resize (window, width, height);
+    # Width and height are set elsewhere with
+    $window.resize( $width, $height);
 
-int new-width, new-height; gtk-window-get-size (window, &new-width, &new-height); ]|
-
-will result in `new-width` and `new-height` matching `width` and `height`, respectively.
+    # And will result in `$new-width` and `$new-height` matching
+    #`$width` and `$height`, respectively.
+    my Int ( $new-width, $new-height) = $window.get-size;
 
 This function will return the logical size of the **Gnome::Gtk3::Window**, excluding the widgets used in client side decorations; there is, however, no guarantee that the result will be completely accurate because client side decoration may include widgets that depend on the user preferences and that may not be visibile at the time you call this function.
 
 The dimensions returned by this function are suitable for being stored across sessions; use `set-default-size()` to restore them when before showing the window.
 
-To avoid potential race conditions, you should only call this function in response to a size change notification, for instance inside a handler for the **Gnome::Gtk3::Widget**::size-allocate signal, or inside a handler for the **Gnome::Gtk3::Widget**::configure-event signal:
-
-|[<!-- language="C" --> static void on-size-allocate (GtkWidget *widget, GtkAllocation *allocation) { int new-width, new-height;
-
-gtk-window-get-size (GTK-WINDOW (widget), &new-width, &new-height);
-
-... } ]|
+To avoid potential race conditions, you should only call this function in response to a size change notification, for instance inside a handler for the `size-allocate` signal, or inside a handler for the `configure-event` signal (both defined in **Gnome::Gtk3::Widget**):
 
 Note that, if you connect to the **Gnome::Gtk3::Widget**::size-allocate signal, you should not use the dimensions of the **Gnome::Gtk3::Allocation** passed to the signal handler, as the allocation may contain client side decorations added by GTK+, depending on the windowing system in use.
 
