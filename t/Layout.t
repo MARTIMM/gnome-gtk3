@@ -62,6 +62,8 @@ subtest 'Manipulations', {
   $l.move( $b, 200, 250);
   $b .= new(:label<Quit>);
   $l.put( $b, 300, 150);
+
+  # Make it so
   $ow.show-all;
 
   # Must process pending events, otherwise nothing is shown! Note,
@@ -75,6 +77,7 @@ subtest 'Manipulations', {
   my Gnome::Cairo::ImageSurface $image-surface .= new(
     :native-object($ow.get-surface)
   );
+
   $image-surface.write_to_png("xt/data/Layout.png");
   $image-surface.clear-object;
 }
