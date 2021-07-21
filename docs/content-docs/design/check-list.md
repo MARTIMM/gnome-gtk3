@@ -136,6 +136,7 @@ IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ¾| ✗| ⅕| ✓| ✓| ✓| ✓|
 Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅔| ✓| ✓| ✓| ✓|
+Layout                    |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| ✓|
 LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -264,7 +265,6 @@ IMContext|
 IMContextSimple|
 IMMulticontext|
 InfoBar|
-Layout|
 LinkButton|
 LockButton|
 MenuToolButton|

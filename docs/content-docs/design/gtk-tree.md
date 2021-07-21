@@ -10,7 +10,7 @@ layout: sidebar
 
 ## Class hierargy
 
-Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. All modules under construction are not marked with an icon. For further progress info check [this page]({{u1}}).
+Below there is a table of the object hierarchy taken from [the developers page](https://developer.gnome.org/gtk3/3.24/ch02.html) and is used here to show what is implemented and what is deprecated in Gtk. Module path names are removed from the Raku modules when in Gnome::Gtk3. E.g. Window is implemented as **Gnome::Gtk3::Window**. `├─✗` in front of a Gtk module means that it is deprecated or will not be implemented for other reasons. Modules that will change a lot, deprecated or that it can be removed altogether, are marked with ⛔. All modules under construction are not marked with an icon. For further progress info check [this page]({{u1}}). ⁇ Don't know if it will be implemented due to dependencies. Maybe very much later.
 
 ```
 Tree of Gtk C structures                        Raku module
@@ -39,7 +39,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ├── GtkApplicationWindow    ApplicationWindow
 │   │   │   │   │   ├── GtkAssistant            Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow      OffscreenWindow
-│   │   │   │   │   ├── GtkPlug
+│   │   │   │   │   ├── GtkPlug                 ⁇ Depends on X11, No Wayland/W10
 │   │   │   │   │   ╰── GtkShortcutsWindow
 │   │   │   │   ├── GtkActionBar
 │   │   │   │   ├─✗ GtkAlignment                ⛔
@@ -114,14 +114,14 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├─✗ GtkHPaned                   ⛔
 │   │   │   │   ╰─✗ GtkVPaned                   ⛔
 │   │   │   ├── GtkIconView                     IconView
-│   │   │   ├── GtkLayout
+│   │   │   ├── GtkLayout                       Layout
 │   │   │   ├── GtkListBox                      ListBox
 │   │   │   ├── GtkMenuShell                    MenuShell
 │   │   │   │   ├── GtkMenuBar                  MenuBar
 │   │   │   │   ╰── GtkMenu                     Menu
 │   │   │   │       ╰── GtkRecentChooserMenu    RecentChooserMenu
 │   │   │   ├── GtkNotebook                     Notebook
-│   │   │   ├── GtkSocket
+│   │   │   ├── GtkSocket                       ⁇ Depends on X11, No Wayland/W10
 │   │   │   ├── GtkStack                        Stack
 │   │   │   ├─✗ GtkTable                        ⛔
 │   │   │   ├── GtkTextView                     TextView
@@ -140,7 +140,7 @@ GObject                                         Gnome::GObject::Object
 │   │   ├── GtkEntry                            Entry
 │   │   │   ├── GtkSearchEntry                  SearchEntry
 │   │   │   ╰── GtkSpinButton
-│   │   ├── GtkGLArea
+│   │   ├── GtkGLArea                           ⁇ Usefull with OpenGL binding
 │   │   ├── GtkRange                            Range
 │   │   │   ├── GtkScale                        Scale
 │   │   │   │   ├─✗ GtkHScale                   ⛔

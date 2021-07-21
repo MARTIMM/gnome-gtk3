@@ -212,6 +212,10 @@
     url: "/content-docs/reference/Gtk3/Label.html"
     type: widget
 
+  - title: "Layout"
+    url: "/content-docs/reference/Gtk3/Layout.html"
+    type: widget
+
   - title: "LevelBar"
     type: widget
     url: "/content-docs/reference/Gtk3/LevelBar.html"
