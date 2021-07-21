@@ -2413,7 +2413,7 @@ sub generate-test ( ) {
       }
 
       my MyClass \$mgc .= new;
-      isa-ok \$mgc, $class, '.new()';
+      isa-ok \$mgc, $class, 'MyClass.new()';
     }
 
     #-------------------------------------------------------------------------------
