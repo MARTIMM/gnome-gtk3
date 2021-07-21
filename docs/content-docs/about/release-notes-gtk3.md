@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-07-20 0.44.0:
+* Add module **Gnome::Gtk3::Layout**.
+
 #### 2021-07-11 0.43.1:
 * Typos and code changes in tutorials and example code.
 * Due to some changes in **Gnome::GObject::Value**, the `.get-boolean()` method returns `True` or `False` instead of `1` or `0`. `.set-boolean()` is unchanged because Raku could coerse `True` and `False` to integer automatically.
@@ -15,7 +18,7 @@ layout: sidebar
 
 #### 2021-06-29 0.42.0:
 * Add module **Gnome::Gtk3::ButtonBox**, **Gnome::Gtk3::Scrollable** and **Gnome::Gtk3::Viewport**.
-* **Gnome::Gtk3::Scrollable** role is added to the already existing modules **Gnome::Gtk3::TreeView** and **Gnome::Gtk3::TextView**.
+* **Gnome::Gtk3::Scrollable** role is added to the already existing modules **Gnome::Gtk3::IconView**, **Gnome::Gtk3::TreeView** and **Gnome::Gtk3::TextView**.
 
 #### 2021-06-22 0.41.1:
 * bugfix; removed a sub by accident.

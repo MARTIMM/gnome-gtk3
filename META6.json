@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.43.1",
+  "version": "0.44.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -64,6 +64,7 @@
     "Gnome::Gtk3::IconTheme": "lib/Gnome/Gtk3/IconTheme.pm6",
     "Gnome::Gtk3::IconView": "lib/Gnome/Gtk3/IconView.pm6",
     "Gnome::Gtk3::Label": "lib/Gnome/Gtk3/Label.pm6",
+    "Gnome::Gtk3::Layout": "lib/Gnome/Gtk3/Layout.pm6",
     "Gnome::Gtk3::LevelBar": "lib/Gnome/Gtk3/LevelBar.pm6",
     "Gnome::Gtk3::ListBox": "lib/Gnome/Gtk3/ListBox.pm6",
     "Gnome::Gtk3::ListBoxRow": "lib/Gnome/Gtk3/ListBoxRow.pm6",
