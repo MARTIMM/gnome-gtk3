@@ -109,7 +109,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ├── GtkFixed                        Fixed
 │   │   │   ├── GtkFlowBox
 │   │   │   ├── GtkGrid                         Grid
-│   │   │   ├── GtkHeaderBar
+│   │   │   ├── GtkHeaderBar                    HeaderBar
 │   │   │   ├── GtkPaned                        Paned
 │   │   │   │   ├─✗ GtkHPaned                   ⛔
 │   │   │   │   ╰─✗ GtkVPaned                   ⛔

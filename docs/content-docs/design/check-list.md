@@ -132,6 +132,7 @@ FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+HeaderBar                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| ✓|
 IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ¾| ✗| ⅕| ✓| ✓| ✓| ✓|
@@ -260,7 +261,6 @@ GestureSwipe|
 GestureZoom|
 GLArea|
 HandleBox|
-HeaderBar|
 IMContext|
 IMContextSimple|
 IMMulticontext|

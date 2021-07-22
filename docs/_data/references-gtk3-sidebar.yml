@@ -184,20 +184,24 @@
   - title: "FileFilter"
     url: "/content-docs/reference/Gtk3/FileFilter.html"
 
-  - title: "Fixed"
-    url: '/content-docs/reference/Gtk3/Fixed.html'
+  - title: Fixed
+    url: /content-docs/reference/Gtk3/Fixed.html
     type: widget
 
-  - title: "Frame"
+  - title: Frame
     url: '/content-docs/reference/Gtk3/Frame.html'
     type: widget
 
-  - title: "Grid"
-    url: '/content-docs/reference/Gtk3/Grid.html'
+  - title: Grid
+    url: /content-docs/reference/Gtk3/Grid.html
     type: widget
 
-  - title: "Image"
-    url: "/content-docs/reference/Gtk3/Image.html"
+  - title: HeaderBar
+    url: /content-docs/reference/Gtk3/HeaderBar.html
+    type: widget
+
+  - title: Image
+    url: /content-docs/reference/Gtk3/Image.html
     type: widget
 
   - title: "IconTheme"

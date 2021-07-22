@@ -60,6 +60,7 @@
     "Gnome::Gtk3::Fixed": "lib/Gnome/Gtk3/Fixed.pm6",
     "Gnome::Gtk3::Frame": "lib/Gnome/Gtk3/Frame.pm6",
     "Gnome::Gtk3::Grid": "lib/Gnome/Gtk3/Grid.pm6",
+    "Gnome::Gtk3::HeaderBar": "lib/Gnome/Gtk3/HeaderBar.pm6",
     "Gnome::Gtk3::Image": "lib/Gnome/Gtk3/Image.pm6",
     "Gnome::Gtk3::IconTheme": "lib/Gnome/Gtk3/IconTheme.pm6",
     "Gnome::Gtk3::IconView": "lib/Gnome/Gtk3/IconView.pm6",
