@@ -3,6 +3,8 @@ Gnome::Gtk3::HeaderBar
 
 A box with a centered child
 
+![](images/headerbar.png)
+
 Description
 ===========
 

@@ -9,7 +9,7 @@ use v6;
 A box with a centered child
 
 
-=comment ![](images/X.png)
+![](images/headerbar.png)
 
 
 =head1 Description
