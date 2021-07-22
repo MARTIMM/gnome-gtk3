@@ -13,6 +13,10 @@
     type: interface
     url: '/content-docs/reference/Gtk3/Actionable.html'
 
+  - title: "ActionBar"
+    type: interface
+    url: '/content-docs/reference/Gtk3/ActionBar.html'
+
   - title: "Adjustment"
     url: "/content-docs/reference/Gtk3/Adjustment.html"
 

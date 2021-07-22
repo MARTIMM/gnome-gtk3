@@ -7,7 +7,7 @@ layout: sidebar
 # Release notes
 
 #### 2021-07-20 0.44.0:
-* Add module **Gnome::Gtk3::Layout** and **Gnome::Gtk3::HeaderBar**.
+* Add modules **Gnome::Gtk3::Layout**, **Gnome::Gtk3::ActionBar** and **Gnome::Gtk3::HeaderBar**.
 
 #### 2021-07-11 0.43.1:
 * Typos and code changes in tutorials and example code.

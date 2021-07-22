@@ -41,7 +41,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ├── GtkOffscreenWindow      OffscreenWindow
 │   │   │   │   │   ├── GtkPlug                 ⁇ Depends on X11, No Wayland/W10
 │   │   │   │   │   ╰── GtkShortcutsWindow
-│   │   │   │   ├── GtkActionBar
+│   │   │   │   ├── GtkActionBar                ActionBar
 │   │   │   │   ├─✗ GtkAlignment                ⛔
 │   │   │   │   ├── GtkComboBox                 ComboBox
 │   │   │   │   │   ├── GtkAppChooserButton

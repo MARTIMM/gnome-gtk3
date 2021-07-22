@@ -83,6 +83,7 @@ table {
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|  |
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
+ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓| ✓|
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
@@ -220,7 +221,6 @@ AccelGroup                |
 AccelLabel                |
 AccelMap                  |
 Accessible                |
-ActionBar                 |
 AppChooserButton          |
 AppChooser                |R | ✗|
 AppChooserWidget          |

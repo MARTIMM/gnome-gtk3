@@ -11,6 +11,7 @@
   "provides": {
     "Gnome::Gtk3::AboutDialog": "lib/Gnome/Gtk3/AboutDialog.pm6",
     "Gnome::Gtk3::Actionable": "lib/Gnome/Gtk3/Actionable.pm6",
+    "Gnome::Gtk3::ActionBar": "lib/Gnome/Gtk3/ActionBar.pm6",
     "Gnome::Gtk3::Adjustment": "lib/Gnome/Gtk3/Adjustment.pm6",
     "Gnome::Gtk3::Application": "lib/Gnome/Gtk3/Application.pm6",
     "Gnome::Gtk3::ApplicationWindow": "lib/Gnome/Gtk3/ApplicationWindow.pm6",
