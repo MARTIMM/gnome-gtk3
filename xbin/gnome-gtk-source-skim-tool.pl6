@@ -848,13 +848,17 @@ sub substitute-in-template (
 
     =comment ![](images/X.png)
 
+
     =head1 Description
 
     MODULE-DESCRIPTION
 
+
     MODULE-SEEALSO
 
+
     =head1 Synopsis
+
     =head2 Declaration
     EOTEMPLATE
 
@@ -912,6 +916,8 @@ sub substitute-in-template (
         }
 
       =end comment
+
+
       =comment head2 Example
 
       =end pod
@@ -1207,10 +1213,17 @@ sub get-section ( Str:D $source-content --> List ) {
 
   # get short description and remove it from $section-doc
   $section-doc ~~ m:i/
-      ^^ \s+ '*' \s+ '@Short_description:' \s* $<text> = [.*?] $$
+      ^^ \s+ '*' \s+ '@Short_description:' \s*
+      $<text> = [.*? \n
+        [ \s+ '*' \s+ <-[@]> .*? \n ]*
+      ]
   /;
   my Str $short-description = ~($<text>//'');
-  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Short_description:' [.*?] \n //;
+  $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Short_description:'
+                       \s* $short-description//;
+
+  $short-description ~~ s:g/ \n\s* '*' \s* / /;
+#note $short-description;
 
 
   # get see also and remove it from $section-doc
@@ -1225,6 +1238,9 @@ sub get-section ( Str:D $source-content --> List ) {
   $section-doc = cleanup-source-doc($section-doc);
   $section-doc ~~ s:i/ ^^ '#' \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
   $section-doc ~~ s:g:i/ ^^ '#' \s+ /\n=head2 /;
+  $section-doc ~~ s:g/ \n\s* '*' \s* / /;
+
+
 #note "doc 2: ", $section-doc;
 
   ( primary-doc-changes($section-doc),
@@ -2226,6 +2242,8 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
   $text ~~ s:g/ ^^ \s+ '*' \s*? \n /\n/;                # doc star + empty
 #  $text ~~ s:g/ ^^ \s* \n //;
 #  $text ~~ s:g/ \n / /;
+
+  $text ~~ s/^ \s* //;
 
 #  $text ~ "\n\n"
   $text
