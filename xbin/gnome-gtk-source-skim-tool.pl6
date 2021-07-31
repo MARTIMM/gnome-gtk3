@@ -1698,6 +1698,8 @@ sub get-properties ( Str:D $source-content is copy ) {
                                           # sometimes a call for interfaces
          'g_object_class_install_property' .*? ||
                                           # sometimes a call for classes
+         'settings_install_property_parser' .*? ||
+                                          # settings does it differently
           <alnum>*? $array-name '[' <-[\]]>+ ']' \s* '=' \s*
                                           # sometimes there's an array def
         ]                                 # anything else
