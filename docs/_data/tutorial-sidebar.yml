@@ -2,49 +2,63 @@
 - bar_title: Appetizers
   bar_menu:
   - title: Getting Started
-    url: /content-docs/tutorial/getting-started.html
+    url: /content-docs/tutorial/GettingStarted/getting-started.html
 
 
 - bar_title: Groundwork
   bar_menu:
-  - title: Raku Modules
-    url: /content-docs/tutorial/raku-modules.html
+    - title: Raku Modules
+      url: /content-docs/tutorial/Groundwork/raku-modules.html
 
-  - title: Inheriting Widget Classes
-    url: /content-docs/tutorial/inheriting.html
+#    - title: Standalone Classes
+#      url: /content-docs/tutorial/Groundwork/.html
 
-  - title: Signals
-    url: /content-docs/tutorial/signals.html
+#    - title: Boxed Classes
+#      url: /content-docs/tutorial/Groundwork/.html
 
+    - title: TopLevelClassSupport
+#      url: /content-docs/tutorial/Groundwork/TopLevelClassSupport.html
+
+    - title: Object
+      url: /content-docs/tutorial/Groundwork/Object.html
+
+    - title: Signal
+      url: /content-docs/tutorial/Groundwork/Signal.html
+
+    - title: Inheriting Widget Classes
+      url: /content-docs/tutorial/Groundwork/inheriting.html
+
+#- bar_title: Top Level Classes
+#  bar_menu:
 
 - bar_title: Basic Widgets
   bar_menu:
   - title: Window
-    url: /content-docs/tutorial/window-details.html
+    url: /content-docs/tutorial/BasicWidgets/window-details.html
 
   - title: Label
-    url: /content-docs/tutorial/label.html
+    url: /content-docs/tutorial/BasicWidgets/label.html
 
   - title: Button
-    url: /content-docs/tutorial/button.html
+    url: /content-docs/tutorial/BasicWidgets/button.html
 
   - title: Text
-    url: /content-docs/tutorial/text.html
+    url: /content-docs/tutorial/BasicWidgets/text.html
 
-  - title:
-    url: /content-docs/tutorial/.html
+#  - title:
+#    url: /content-docs/tutorial/BasicWidgets/.html
 
 
 - bar_title: Dialogs
   bar_menu:
   - title: Introduction
-    url: /content-docs/tutorial/dialog-introduction.html
+    url: /content-docs/tutorial/Dialog/dialog-introduction.html
 
   - title: Message Dialog
-    url: /content-docs/tutorial/message-dialog.html
+    url: /content-docs/tutorial/Dialog/message-dialog.html
 
   - title: Dialog
-    url: /content-docs/tutorial/dialog.html
+    url: /content-docs/tutorial/Dialog/dialog.html
 
 
 - bar_title: Applications

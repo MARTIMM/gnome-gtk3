@@ -7539,7 +7539,7 @@ The B<Gnome::GObject::Value> type of property I<can-focus> is C<G_TYPE_BOOLEAN>.
 
 Whether the widget is part of a composite widget Default value: False
 
-The B<Gnome::GObject::Value> type of property I<composite-child> is C<G_TYPE_BOOLEAN>.
+The B<Gnome::GObject::Value> type of property I<composite-child> is C<G_TYPE_BOOLEAN>. Value is read only.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:events:

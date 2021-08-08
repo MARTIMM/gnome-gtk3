@@ -6,7 +6,7 @@ The base object type
 Description
 ===========
 
-GObject is the fundamental type providing the common attributes and methods for all object types in GTK+, Pango and other libraries based on GObject. The GObject class provides methods for object construction and destruction, property access methods, and signal support.
+Gnome::GObject::Object is the fundamental type providing the common attributes and methods for all object types in GTK+, Pango and other libraries based on GObject. The GObject class provides methods for object construction and destruction, property access methods, and signal support.
 
 Synopsis
 ========
@@ -45,11 +45,30 @@ Gets a named field from the objects table of associations. See `set-data()` for 
 
 Returns: the data if found, or `undefined` if no such data exists.
 
-    method get-data ( Str $key, :$type = Pointer --> Any )
+    method get-data ( Str $key, $type, Str :$widget-class --> Any )
 
   * Str $key; name of the key for that association
 
-  * $type; specification of the type of data to return. By default `Pointer`. Supported types are `Int`, `Num` and `Str`.
+  * $type; specification of the type of data to return. The recognized types are; int*, uint*, num*, Buf, (U)Int, Num, Str, Bool and N-GObject. the native int and uint type are taken as int64 and uint64 respectively. In the case of N-GObject the method will try to create a raku object. When it was undefined, this is not possible and it will return an undefined N-GObject. The N-GObject type can be helped by specifying the named argument `widget-class`. This should be a name of a raku class like for instance **Gnome::Gtk3::Label**. When the return value was undefined, the result object will always have the raku class type but the call to <.is-valid()> returns False. Note that Int, UInt, and Num is transformed to their 32 bit representations.
+
+  * Str :$widget-class; Create this object.
+
+get-properties
+--------------
+
+Gets properties of an object.
+
+In general, a copy is made of the property contents and the caller is responsible for freeing the memory in the appropriate manner for the type, for instance by calling `g_free()` or `g_object_unref()`.
+
+The method is defined as;
+
+    method get-properties ( $prop-name, $prop-value-type, … --> List )
+
+  * Str $prop-name; name of a property to set.
+
+  * $prop-value-type; The type of the property to receive. It can be any of Str, Int, UInt, Num, Bool, int*, uint*, num*. (U)Int is converted to (u)int32 and Num to num32.
+
+See `.set()` for an example.
 
 get-property
 ------------
@@ -76,7 +95,7 @@ The following is used when a Value object is available.
 
   * Int $gtype; the type of the value, e.g. G_TYPE_INT.
 
-  * N-GValue $value; The value is stored in a Value object. It is used to get the type of the object.
+  * N-GValue $value; The value is stored in a N-GValue object. It is used to get the type of the object.
 
 The methods always return a **Gnome::GObject::Value** with the result.
 
@@ -211,7 +230,7 @@ If the object already had an association with that name, the old association wil
 
   * Str $key; name of the key.
 
-  * $data; data to associate with that key. Supported types are `Num`, `Int` and `Str`. All other types must be converted to a pointer using nativecast.
+  * $data; data to associate with that key. Supported types are int*, uint*, num*, Pointer, Buf, Int, Num, Str, Bool and N-GObject. A raku widget object such as Gnome::Gdk3::Screen can also be given. The native object is retrieved from the raku widget and then stored as a N-GObject. Further is it important to note that Int, UInt, and Num is transformed to their 32 bit representations.
 
 ### Example 1
 
@@ -219,58 +238,98 @@ Here is an example to show how to associate some data to an object and to retrie
 
     my Gnome::Gtk3::Button $button .= new(:label<Start>);
     my Gnome::Gtk3::Label $att-label .= new(:text<a-label>);
-    $button.set-data(
-      'attached-label-data',
-      nativecast( Pointer, $att-label.get-native-object-no-reffing)
-    );
+    $button.set-data( 'attached-label-data', $att-label);
 
     …
 
-    my Gnome::Gtk3::Label $att-label2 .= new(
-      :native-object(
-        nativecast( N-GObject, $button.get-data('attached-label-data'))
-      )
+    my Gnome::Gtk3::Label $att-label2 =
+      $button.get-data( 'attached-label-data', N-GObject);
+
+or, if you want to be sure, add the `widget-class` named argument;
+
+    my Gnome::Gtk3::Label $att-label2 = $button.get-data(
+      'attached-label-data', N-GObject,
+      :widget-class<Gnome::Gtk3::Label>
     );
 
 ### Example 2
 
-After some improvements it is now possible to provide your data as is. The next example shows what is possible;
+Other types can be used as well to store data. The next example shows what is possible;
 
     $button.set-data( 'my-text-key', 'my important text');
+    $button.set-data( 'my-uint32-key', my uint32 $x = 12345);
 
     …
 
-    my Str $text = $button.get-data( 'my-text-key', :type(Str));
+    my Str $text = $button.get-data( 'my-text-key', Str);
+    my Int $number = $button.get-data( 'my-uint32-key', uint32);
 
 ### Example 3
 
-An elaborate example of more complex data can implemented using BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server.
+An elaborate example of more complex data can can be used with BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server. An important thing to know is that the BSON representation carries its length in the first 4 bytes.
 
+    # Create the data structure
     my BSON::Document $bson .= new: (
       :int-number(-10),
       :num-number(-2.34e-3),
       strings => BSON::Document.new(( :s1<abc>, :s2<def>, :s3<xyz> ))
     );
+
+    # And store it on a label
+    my Gnome::Gtk3::Label $bl .= new(:text<a-label>);
     $bl.set-data( 'my-buf-key', $bson.encode);
 
     …
 
-    # Convert Pointer to CArray of bytes
-    my CArray[uint8] $ca8 = nativecast(
-      CArray[uint8], $bl.get-data('my-buf-key')
-    );
+    # Later, we want to access the data again,
+    # First, convert Pointer to CArray of bytes
+    my CArray[byte] $ca8 = $bl.get-data( 'my-buf-key', Buf);
 
-    # Get the length from the first 4 bytes
+    # Then, get the length from the first 4 bytes
     my Buf $l-ca8 .= new($ca8[0..3]);
     my Int $doc-size = decode-int32( $l-ca8, 0);
 
-    # Get all bytes into the Buf and convert it to a BSON document
+    # And get all bytes into the Buf and convert it back to a BSON document
     my BSON::Document $bson2 .= new(Buf.new($ca8[0..($doc-size-1)]));
 
     # Now you can use the data again.
-    is $bson2<int-number>, -10, 'bson Int';
-    is $bson2<num-number>, -234e-5, 'bson Num';
-    is $bson2<strings><s2>, 'def', 'bson Str';
+    say $bson2<int-number>;  # -10
+    say $bson2<num-number>;  # -234e-5
+    say $bson2<strings><s2>; # 'def'
+
+set-properties
+--------------
+
+Sets properties on an object.
+
+Note that the "notify" signals are queued and only emitted (in reverse order) after all properties have been set.
+
+    method set-properties ( Str $prop-name, $prop-value, … )
+
+  * Str $prop-name; name of a property to set.
+
+  * $prop-value; The value of the property to set. Its type can be any of Str, Int, Num, Bool, int8, int16, int32, int64, num32, num64, GEnum, GFlag, GQuark, GType, gboolean, gchar, guchar, gdouble, gfloat, gint, gint8, gint16, gint32, gint64, glong, gshort, guint, guint8, guint16, guint32, guint64, gulong, gushort, gsize, gssize, gpointer or time_t. Int is converted to int32 and Num to num32. You must use **Gnome::N::GlibToRakuTypes** to have the g* types and time_t.
+
+### Example
+
+A button has e.g. the properties `label` and `use-underline`. To set those and retrieve them, do the following
+
+    my Gnome::Gtk3::Button $b .= new(:label<?>);
+    $button.set-properties( :label<_Start>, :use-underline(True));
+    …
+
+    method my-button-click-event-handler (
+      Gnome::Gtk3::Button :_widget($button)
+    ) {
+      # Get the properties set elsewhere on the button
+      my @rv = $button.get-properties( 'label', Str, 'use-underline', Bool);
+
+      # Do something with intval, strval, objval
+      say @rv[0];   # _Start
+      say @rv[1];   # 1
+      …
+
+Note that boolean values from C are integers which are 0 or 1.
 
 set-property
 ------------
