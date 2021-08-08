@@ -23,7 +23,7 @@ Of course, we can make a method to do all that and that is easy enough. In some 
 
 ## Inheriting
 
-Putting things in a class is the subject then. How on earth can we have the behavior of the label without coding it all again? Well, inheriting the label class is the key to the solution! So, how do we make a class like that? In Raku, we use the `is` trait in the class declaration to get the beavior of a parent class.
+Putting things in a class is the subject then. How on earth can we have the behavior of the label without coding it all again? Well, inheriting the label class is the key to the solution! So, how do we make a class like that? In Raku, we use the `is` trait in the class declaration to get the behavior of a parent class.
 
 But we must do a bit more to let the parent class process the arguments and generate a native object but not the parent of the parent. In case of a **Gnome::Gtk3::AboutDialog** class we want AboutDialog to process the arguments but not **Gnome::Gtk3::Dialog**, **Gnome::Gtk3::Container** or **Gnome::Gtk3::Widget** which are parent classes to AboutDialog.
 
@@ -37,11 +37,11 @@ use Gnome::Gtk3::Label;
 
 unit class VerticalHeaderLabel is Gnome::Gtk3::Label;
 
-submethod new ( |c ) {                                                    # ①
-  self.bless( :GtkLabel, |c);                                             # ②
+submethod new ( |c ) {                                                  # ①
+  self.bless( :GtkLabel, |c);                                           # ②
 }
 
-submethod BUILD ( ) {                                                     # ③
+submethod BUILD ( ) {                                                   # ③
   my Str $text = '<b><small>' ~ self.get-text ~ '</small></b>';
   self.set-text($text);
   self.set-use-markup(True);
@@ -55,11 +55,14 @@ Example use;
 ```
 my Gnome::Gtk3::Grid $grid .= new;
 my Int $col = 1;
+
+# Here it show the use of the created class
 for ('success tests', 'failed tests', 'skipped tests', 'total') -> $hdr {
-  my VerticalHeaderLabel $v .= new(:text($hdr));                          # ④
+  my VerticalHeaderLabel $v .= new(:text($hdr));                        # ④
   $grid.attach( $v, $col++, 0, 1, 1);
 }
 
+# The rest is just filling up the table
 my $data = [
   ( 'foo', 10, 5, 2, 17),
   ( 'bar', 1, 12, 3, 16),
@@ -98,3 +101,12 @@ You need however a window around it and start the main loop, but that, you alrea
 ## Inheriting another level
 
 It is possible to inherit the `VerticalHeaderLabel` too to make further adjustments. The new method however, must be repeated in the newer class. This is because Raku only runs the `new()` method of the class mentioned in the declaration.
+
+## A caveat
+
+A problem was noted by Grenzionky in issue #23. He had created a new class inheriting from a Label class. This new class, called **ExtendedLabel**, also had some attributes added. The object created with this class and the attributes set to their values, was added to a **Gnome::Gtk3::Notebook** and later retrieved by calling `.get-n-pages()`.
+The problem now is that the object given to **Notebook** and then later returned, is a native object. When imported into the **ExtendedLabel** class using `:native-object`, it did not get the proper values for its attributes set before.
+
+This behavior can be explained as the native routines only know about the native object which is the C representation of the widget. The Raku classes only function as a wrapper around such an object and make the native routines available as methods. The methods get the native object from the used classes and provide or retrieve them to or from the native subroutines.
+
+However, do not despair! There are ways to add data to the native object which is explained in [Object](Object.html).

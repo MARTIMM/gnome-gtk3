@@ -4,20 +4,23 @@
 skinparam packageStyle rectangle
 skinparam stereotypeCBackgroundColor #80ffff
 set namespaceSeparator ::
-hide empty members
+hide members
 
-'Classes and interfaces
+'Class and interface decorations
 class Gnome::N::TopLevelClassSupport < Catch all class >
 
 Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
 
-
 'Class connections
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
-Gnome::GObject::Object <|--- Gnome::Gio::Settings
+Gnome::GObject::Object .. Gnome::Gtk3::Widget
+Gnome::Gtk3::Widget .. Gnome::Gtk3::Label
+Gnome::Gtk3::Widget .. Gnome::Gtk3::Button
+
+Gnome::GObject::Object <|-- Gnome::Gio::Application
 
 @enduml
 ```
