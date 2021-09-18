@@ -20,7 +20,8 @@ In this document, we will see what it can do for you. A short list;
 
 First a picture of how classes are connected.
 ![object uml](images/Object.svg)
-We see that several classes inherit from Object directly or inderectly and therefore have access to the mechanisms provided by Object. Object also
+
+We see that several classes inherit from Object directly or inderectly and therefore have access to the mechanisms provided by Object.
 
 
 ## Initialization
@@ -43,6 +44,44 @@ This argument can be used when GUI descriptions in XML are created by hand or wi
 ## Properties
 
 ## Data
+
+There was this issue #23 posted by Grenzionky about loosing information set in attributes of classes which inherit from gnome widgets. The problem happened when the object of such a class was set as a page in a notebook. Later the object was returned again from the notebook by some call to a method. The strange thing was that, when the rake object was recreated again, the attributes in that object were not having the values which were set before.
+
+A code snippet to show what has been done
+```
+class ExtendedLabel is Gnome::Gtk3::Label {                         ①
+	has Str $.custom-data;
+
+	submethod new (|c) {                                              ②
+		self.bless( :GtkLabel, |c );
+	}
+}
+
+my ExtendedLabel $label .= new(
+  :custom-data('some data contents'), :text('words')
+);
+
+my Gnome::Gtk3::Notebook $notebook .= new;                          ③
+$nb.append-page($label, Gnome::Gtk3::Label.new(:text('title')));
+
+my Gnome::Gtk3::Window $window .= new;                              ④
+$window.add($notebook);
+
+… Further setup and start main loop …
+
+say ExtendedLabel.new(                                              ⑤
+  :native-object(
+    $notebook.get-nth-page($notebook.get-n-pages-1)
+  )
+).custom-data;
+
+```
+
+① This is the class we want to talk about. `$!custom-data` is the attribute we like to control.
+② A necessary step to inherit the Label widget.
+③ Create the notebook and add the ExtendedLabel object as a page.
+④ Create a window and add the notebook to it. Additionally, we need to register callback handlers, show everything and start the main loop.
+⑤ Sometime later we want to get the object again to do some work and we expect to get `'some data contents'` as the stored text. Unfortunately, it will be undefined!
 
 
 <!--
