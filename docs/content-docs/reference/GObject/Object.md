@@ -266,13 +266,13 @@ Other types can be used as well to store data. The next example shows what is po
 
 ### Example 3
 
-An elaborate example of more complex data can can be used with BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server. An important thing to know is that the BSON representation carries its length in the first 4 bytes.
+An elaborate example of more complex data can can be used with BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server. Here we use it to attach complex data in serialized form to an **Gnome::GObject::Object**. (Please note that the BSON package must be of version 0.13.2 or higher.)
 
     # Create the data structure
     my BSON::Document $bson .= new: (
       :int-number(-10),
       :num-number(-2.34e-3),
-      strings => BSON::Document.new(( :s1<abc>, :s2<def>, :s3<xyz> ))
+      :strings( :s1<abc>, :s2<def>, :s3<xyz> )
     );
 
     # And store it on a label
@@ -282,15 +282,7 @@ An elaborate example of more complex data can can be used with BSON. This is an 
     …
 
     # Later, we want to access the data again,
-    # First, convert Pointer to CArray of bytes
-    my CArray[byte] $ca8 = $bl.get-data( 'my-buf-key', Buf);
-
-    # Then, get the length from the first 4 bytes
-    my Buf $l-ca8 .= new($ca8[0..3]);
-    my Int $doc-size = decode-int32( $l-ca8, 0);
-
-    # And get all bytes into the Buf and convert it back to a BSON document
-    my BSON::Document $bson2 .= new(Buf.new($ca8[0..($doc-size-1)]));
+    my BSON::Document $bson2 .= new($bl.get-data( 'my-buf-key', Buf));
 
     # Now you can use the data again.
     say $bson2<int-number>;  # -10
