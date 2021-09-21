@@ -39,7 +39,81 @@ This argument can be used when GUI descriptions in XML are created by hand or wi
 
 ## Signals and events
 
+The **Gnome::GObject::Object** of Gnome also helps with the handling of signals of events. It uses the **Gnome::GObject::Signal** role for it. It is a rather large subject so there is [more on this described here](http://localhost:4000/gnome-gtk3/content-docs/tutorial/Groundwork/Signal.html).
+
 ## Concurrent processes
+
+Concurrency is implemented in the modules **Gnome::Glib::MainLoop** and **Gnome::Glib::MainContext**. A method `Gnome::GObject::Object.start-thread()` is implemented as a convenience for the use of these modules.
+
+An example of its use comes from my testing programs where some of the events are tested. Below, events for the **Gnome::Gtk3::AboutDialog** are tested;
+
+```
+use Gnome::Gtk3::Main;
+
+my Gnome::Gtk3::Main $main .= new;
+
+class SignalHandlers {
+  has Bool $!signal-processed = False;
+
+  method activate ( Str $uri --> gboolean ) {
+    is $uri, 'https://example.com/my-favourite-items.html',
+      'uri received from event';
+    $!signal-processed = True;
+
+    True
+  }
+
+  method signal-emitter ( Gnome::Gtk3::AboutDialog :$widget --> Str ) {
+
+    while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+    $widget.emit-by-name(
+      'activate-link',
+      'https://example.com/my-favourite-items.html',
+      :return-type(gboolean),
+      :parameters([gchar-ptr,])
+    );
+    is $!signal-processed, True, '\'activate-link\' signal processed';
+
+    while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+    #$!signal-processed = False;
+    #$widget.emit-by-name(
+    #  'signal',
+    #  'any-args',
+    #  :return-type(int32),
+    #  :parameters([int32,])
+    #);
+    #is $!signal-processed, True, '\'...\' signal processed';
+
+    while $main.gtk-events-pending() { $main.iteration-do(False); }
+    sleep(0.4);
+    $main.gtk-main-quit;
+
+    'done'
+  }
+}
+
+#  my Gnome::Gtk3::AboutDialog $a .= new;
+
+#my Gnome::Gtk3::Window $w .= new;
+#$w.add($m);
+
+my SignalHandlers $sh .= new;
+$a.register-signal( $sh, 'activate', 'activate-link');
+
+my Promise $p = $a.start-thread(
+  $sh, 'signal-emitter',
+  # :!new-context,
+  # :start-time(now + 1)
+);
+
+is $main.gtk-main-level, 0, "loop level 0";
+$main.gtk-main;
+#is $main.gtk-main-level, 0, "loop level is 0 again";
+
+is $p.result, 'done', 'emitter finished';
+```
 
 ## Properties
 
@@ -184,6 +258,7 @@ class ExtendedLabel is Gnome::Gtk3::Label {
 ```
 
 ① when imported, get data
+
 ② otherwise, set data
 
 <!--
