@@ -270,9 +270,12 @@ method get-child-at ( Int $left, Int $top --> N-GObject ) {
   );
 }
 
-method get-child-at-rk ( Int $left, Int $top --> Gnome::GObject::Object ) {
+method get-child-at-rk (
+  Int $left, Int $top, *%options --> Gnome::GObject::Object
+) {
   self._wrap-native-type-from-no(
-    gtk_grid_get_child_at( self.get-native-object-no-reffing, $left, $top)
+    gtk_grid_get_child_at( self.get-native-object-no-reffing, $left, $top),
+    |%options
   );
 }
 
