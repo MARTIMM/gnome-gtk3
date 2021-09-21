@@ -15,13 +15,16 @@ layout: sidebar
 * Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html) and [here](https://docs.raku.org/language/nativecall#Explicit_memory_management).
 
 #### Rewriting code
+<!--
+NOTDONE, fallback will disappear
 * Is there a way to skip all those if's in the `_fallback()` routines.
+-->
 
-* I have noticed that True and False can be used on int32 typed values when provided to the native sub in the argument list. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation yet. The return values are not coersed automatically to Bool but most of the time not needed.
+* I have noticed that True and False can be used on int32 typed values when provided to the native sub in the argument list. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation yet. The return values are not coersed automatically to Bool but most of the time not needed. _In new generated code, methods are used to get and return all needed Raku types._
 
-* Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation to find the methods more quickly.
+* Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation to find the methods more quickly. _This is done in new generated pod code._
 
-* Many methods return native objects. In some cases this could be returned as Raku objects.
+* Many methods return native objects. In some cases this could be returned as Raku objects. _This is done in new generated pod code as `...-rk()` methods._
 
 * Returning a list of values in place of the C method to provide pointers (`is rw` traits) is more convienient. For example the following
   ```
@@ -34,22 +37,28 @@ layout: sidebar
   ```
   which is a teeny bit more cumbersome but also I find that the action is a side effect where the variables `$width` and `$height` are changed in the process. In this case not very confusing but other cases might be.
 
-* Add methods for most used subs and for those subs where the name is brought back to one word like the `.remove()` for the sub `.gtk_list_store_remove()`.
+* Add methods for most used subs and for those subs where the name is brought back to one word like the `.remove()` for the sub `.gtk_list_store_remove()`. _This is done in new generated pod code._
 
 * Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch. Gtk already has done this for several return messages from the Gtk libraries.
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
-* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible to create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a Gnome::Gtk3::Button using a native GtkContainer. Testing should be done to accept the proper native object.
+<!--
+* When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible to create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a **Gnome::Gtk3::Button** using a native GtkContainer. Testing should be done to accept the proper native object.
+-->
 
 * When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
+<!-- DONE
 * The use of native types needs some change. The Raku native types are all fixed sized types like `int32` etc. Also the semi native type has a range capable for 64 integers. On my machine however (a 64 bit processor), the C `int` has a range suitable only for 32 bit integers. There are c compiler include files which have definitions like `INT_MAX`, `INT_MIN` and `UINT_MAX`. Now a few programs are made in package Gnome::N which are run at install time to generate a module **Gnome::N::GlibToRakuTypes**. It is meant to be a type mapping from types used in the Gnome packages to those of Raku taking into account the sizes of int and long which could differ depending on the processor. Also the `OpaquePointer` must be substituted by `Pointer` because the first is deprecated in Raku.
+-->
 
 * Benchmarking (see results in [done](todo-done.html)) made me opening an issue (#14) about slowness of the packages. For the moment, the most relevant methods are created in each module bypassing the search for native subs. The names will become the shortest possible and having dashes if any. Documentation will be changed for those entries showing only one possibility. The original names will still be possible to use. Later a deprecation proces is started to have everyone using the short names only.
   Things to solve;
   * automatic parameter type substitutions
   * casting native object types
+
+* When adding methods, method names extended with `...-rk()` are used when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from a widget. The routine can only recreate the widget classes from the packages. Therefor an option must be added `:child-type()` to say that is a different type which need to be created.
 
 #### Add other packages
 * Pango.
