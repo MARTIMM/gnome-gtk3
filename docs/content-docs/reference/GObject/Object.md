@@ -266,7 +266,7 @@ Other types can be used as well to store data. The next example shows what is po
 
 ### Example 3
 
-An elaborate example of more complex data can can be used with BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server. Here we use it to attach complex data in serialized form to an **Gnome::GObject::Object**. (Please note that the BSON package must be of version 0.13.2 or higher.)
+An elaborate example of more complex data can be used with BSON. This is an implementation of a JSON like structure but is serialized into a binary representation. It is used for transport to and from a mongodb server. Here we use it to attach complex data in serialized form to an **Gnome::GObject::Object**. (Please note that the BSON package must be of version 0.13.2 or higher. More [documenation at](https://martimm.github.io/raku-mongodb-driver/content-docs/reference/BSON/Document.html))
 
     # Create the data structure
     my BSON::Document $bson .= new: (
