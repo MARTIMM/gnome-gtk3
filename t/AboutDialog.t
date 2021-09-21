@@ -158,25 +158,19 @@ subtest 'Properties ...', {
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
   use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+#  use Gnome::N::GlibToRakuTypes;
 
   my Gnome::Gtk3::Main $main .= new;
 
   class SignalHandlers {
     has Bool $!signal-processed = False;
 
-    method activate (
-      Str $uri,
-      Gnome::Gtk3::AboutDialog :$_widget, gulong :$_handler-id
-      --> gboolean
-    ) {
-
-      isa-ok $_widget, Gnome::Gtk3::AboutDialog;
+    method activate ( Str $uri, --> Bool ) {
       is $uri, 'https://example.com/my-favourite-items.html',
         'uri received from event';
       $!signal-processed = True;
 
-      1
+      True
     }
 
     method signal-emitter ( Gnome::Gtk3::AboutDialog :$widget --> Str ) {
