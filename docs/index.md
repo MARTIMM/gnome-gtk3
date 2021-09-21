@@ -28,7 +28,7 @@ A later step might be merging some tools from **Gnome::Gtk3::Glade** back to **G
 When the packages mature, the next points are/become available;
 
 ### Pros
-  * The defaults of GTK+ are kept. Therefore, e.g, the buttons are in the proper size. The user may decide to set sizes of windows and windgets but the libraries should not impose this.
+  * The defaults of GTK+ are kept. Therefore, e.g, the buttons are in the proper size. The user may decide to set sizes of windows and widgets but the libraries should not impose this.
   * Separation of callbacks from other code by having the callbacks defined in classes. Callbacks can then just read/write the data in the classes attributes. Also, data can be provided with named arguments to the `register-signal()` method defined in class **Gnome::GObject::Object**. This method is available to any class inheriting from **Gnome::GObject::Object** which almost every class does.
   * Building the interface by hand like in the examples and tutorial, is not always necessary. Feeding a saved design from the glade designer program to methods in module **Gnome::Gtk3::Builder** is preferable when building larger user interfaces.
   * No fancy stuff like tapping into channels to run signal handlers.
@@ -37,8 +37,8 @@ When the packages mature, the next points are/become available;
   * It is possible to make use of resource files. This is a different approach than what Raku can do for you. It can be combined however.
   * It is possible to make use of D-Bus. This is one of the things that makes an application able to interact with the system and other processes as well as the desktop manager. (Not yet fully implemented in these libraries though)
   * Drag and drop will help you to drag documents from a filebrowser into your application as well as moving widgets from one place to another in your GUI.
-  * Drawing is available with Cairo.
-  * Text manipulations are supported using Pango. (Not yet fully implemented in these libraries though)
+  * Drawing is available with Cairo. The **Gnome::Cairo** package must be improved however.
+  * Text manipulations are supported using Pango. (Not yet implemented in these libraries though)
 
 ### Cons
   * The code base is much larger but I think it gives you greater flexibility.
@@ -61,7 +61,7 @@ This package, together with a few others is an interface to the great Gnome libr
 **Gnome::T** |![T][travis-T] ![A][appveyor-T] <br/> GUI test package. Not yet available to the public.
 **Gnome::N** |![T][travis-N] ![A][appveyor-N] <br/> Used to hold any access specs to the libraries and a map of glib types to raku types. Also there is some debugging possible and an exception class defined.
 |
-**Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Version 4 widget toolkit for graphical interfaces. Yes, of course I will … but not yet. So, not yet available to the public.
+**Gnome::Gtk4** | ![T][travis-gtk4] ![A][appveyor-gtk4] <br/> Version 4 widget toolkit for graphical interfaces. Yes, of course I will … but not yet. So, not available to the public.
 **Gnome::Gdk4** | ![T][travis-gdk4] ![A][appveyor-gdk4] <br/> Version 4 low-level abstraction for the windowing system. Must be combined with **Gnome::Gtk4**. Also not yet available to the public.
 
 
