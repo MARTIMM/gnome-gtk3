@@ -48,6 +48,12 @@ Concurrency is implemented in the modules **Gnome::Glib::MainLoop** and **Gnome:
 An example of its use comes from my testing programs where some of the events are tested. Below, events for the **Gnome::Gtk3::AboutDialog** are tested;
 
 ```
+use Test;
+use NativeCall;
+
+use Gnome::N::GlibToRakuTypes;
+use Gnome::Gtk3::AboutDialog;
+use Gnome::Gdk3::Pixbuf;
 use Gnome::Gtk3::Main;
 
 my Gnome::Gtk3::Main $main .= new;
@@ -55,7 +61,7 @@ my Gnome::Gtk3::Main $main .= new;
 class SignalHandlers {
   has Bool $!signal-processed = False;
 
-  method activate ( Str $uri --> gboolean ) {
+  method activate ( Str $uri --> Bool ) {                               # ①
     is $uri, 'https://example.com/my-favourite-items.html',
       'uri received from event';
     $!signal-processed = True;
@@ -63,57 +69,51 @@ class SignalHandlers {
     True
   }
 
-  method signal-emitter ( Gnome::Gtk3::AboutDialog :$widget --> Str ) {
+  method signal-emitter (
+    Gnome::Gtk3::AboutDialog :_widget($aboutDialog) --> Str
+  ) {                                                                   # ②
 
-    while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-    $widget.emit-by-name(
+    $aboutDialog.emit-by-name(                                          # ③
       'activate-link',
       'https://example.com/my-favourite-items.html',
       :return-type(gboolean),
       :parameters([gchar-ptr,])
     );
+
+    sleep(0.4);
     is $!signal-processed, True, '\'activate-link\' signal processed';
 
-    while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-    #$!signal-processed = False;
-    #$widget.emit-by-name(
-    #  'signal',
-    #  'any-args',
-    #  :return-type(int32),
-    #  :parameters([int32,])
-    #);
-    #is $!signal-processed, True, '\'...\' signal processed';
-
-    while $main.gtk-events-pending() { $main.iteration-do(False); }
-    sleep(0.4);
-    $main.gtk-main-quit;
+    $main.main-quit;
 
     'done'
   }
 }
 
-#  my Gnome::Gtk3::AboutDialog $a .= new;
-
-#my Gnome::Gtk3::Window $w .= new;
-#$w.add($m);
-
 my SignalHandlers $sh .= new;
-$a.register-signal( $sh, 'activate', 'activate-link');
+$a.register-signal( $sh, 'activate', 'activate-link');                  # ④
 
-my Promise $p = $a.start-thread(
-  $sh, 'signal-emitter',
-  # :!new-context,
-  # :start-time(now + 1)
-);
+my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);  # ⑤
 
-is $main.gtk-main-level, 0, "loop level 0";
-$main.gtk-main;
-#is $main.gtk-main-level, 0, "loop level is 0 again";
+$main.main;                                                             # ⑥
 
 is $p.result, 'done', 'emitter finished';
 ```
+
+① There are two handlers in the **SignalHandlers** class. The signal to be tested is `activate-link` and the method `.activate()` receives it. This handler receives an uri.
+
+② The second handler is the one running in a thread. We need a thread if long running work is to be done and it should not hold up the interaction of the user interface. Here it just fires an event to test the event handler.
+
+③ The method `.emit-by-name()` is used to fire the event. It must deliver all arguments which an event handler can receive. After emitting, we need some rest and then finish the event loop. The types are native types used in Gtk and are defined in **Gnome::N::GlibToRakuTypes** as a convenience. The `gboolean` is an `int32` and `gchar-ptr` is a `CArray[Str]`.
+
+④ We must register the signal handler.
+
+⑤ Now we can create a thread which, in this case, also creates a new event context. This is not always necessary, but in that case you need to process the events yourself like here;
+```
+while $main.events-pending() { $main.iteration-do(False); }
+```
+
+⑥ Start the event loop. We return here when `.main-quit()` is called to end the loop. After that we can test for any results comming back from the thread.
+
 
 ## Properties
 
@@ -150,9 +150,13 @@ say ExtendedLabel.new(                                              ⑤
 ```
 
 ① This is the class we want to talk about. `$!custom-data` is the attribute we like to control.
+
 ② A necessary step to inherit the Label widget.
+
 ③ Create the notebook and add the **ExtendedLabel** object as a page.
+
 ④ Create a window and add the notebook to it. Additionally, we need to register callback handlers, show everything and start the main loop.
+
 ⑤ Sometime later we want to get the object again to do some work and we expect to get `'some data contents'` as the stored text. Unfortunately, it will be undefined!
 
 So, why did the Raku class not initialize to its original value?
