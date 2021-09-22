@@ -70,10 +70,10 @@ class SignalHandlers {
   }
 
   method signal-emitter (
-    Gnome::Gtk3::AboutDialog :_widget($aboutDialog) --> Str
+    Gnome::Gtk3::AboutDialog :_widget($about-dialog) --> Str
   ) {                                                                   # ②
 
-    $aboutDialog.emit-by-name(                                          # ③
+    $about-dialog.emit-by-name(                                         # ③
       'activate-link',
       'https://example.com/my-favourite-items.html',
       :return-type(gboolean),
@@ -117,16 +117,50 @@ while $main.events-pending() { $main.iteration-do(False); }
 
 ## Properties
 
+Properties are predefined items in the native object. Each Gtk class has its own set of variables to store data set by the several routines of a class. Most of the values can be retrieved by the native subroutines as well as set the values. Sometimes however, there are no subs defined and we must use special calls to get and set them. At the start of the implementation of the Raku classes, there was only one method available and is documented everywhere at the start of the properties section of a class.
+
+For instance in the module **Gnome::Gtk3::AboutDialog** we can find the methods to get and set the program name which is shown in the dialog.
+
+```
+$about-dialog.set-program-name('AboutDialog.t');
+say $about-dialog.get-program-name;         # AboutDialog.t
+```
+
+To use the property for this data you can run the following snippet;
+```
+my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));              # ①
+$about-dialog.get-property( 'program-name', $gv);                       # ②
+say $gv.get-string;                         # AboutDialog               # ③
+$gv.clear-object;                                                       # ④
+```
+① Initialize the **Gnome::GObject::Value** object with the type we have to get data from. These types are defined in **Gnome::GObject::Type**.
+
+② Then we can get the property from the about dialog object into the **Gnome::GObject::Value** object.
+
+③ Using the call `.get-string()`, we are able to retrieve the string from the property. For each type, there is another method. Examples are `.get-boolean()` and `.get-int64()`. There is also a set property method. In this case `.set-string()`. Note that not all properties are writable.
+
+④ When done with the Value object, clean it up.
+
+Das war damals, but still usable. Now, new methods are added and are much simpler to work with.
+```
+my @r = $about-dialog.get-properties( 'program-name', Str);
+say @r[0]                                   # AboutDialog
+```
+More than one property can be get in one call. Therefore the values are returned in a list.
+
+
 ## Data
+
+Properties are predefined values of a Gtk class. The user of a widget might have a few of ther own to add to the native object. But first …
 
 There was this issue #23 posted by Grenzionky about loosing information set in attributes of classes which inherit from gnome widgets. The problem happened when the object of such a class was set as a page in a notebook. Later the object was returned again from the notebook by some call to a method. The strange thing was that, when the rake object was recreated again, the attributes in that object were not having the values which were set before.
 
 A code snippet to show what has been done
 ```
-class ExtendedLabel is Gnome::Gtk3::Label {                         ①
+class ExtendedLabel is Gnome::Gtk3::Label {                             # ①
   has Str $.custom-data;
 
-  submethod new (|c) {                                              ②
+  submethod new (|c) {                                                  # ②
   	self.bless( :GtkLabel, |c );
   }
 }
@@ -135,15 +169,15 @@ my ExtendedLabel $label .= new(
   :custom-data('some data contents'), :text('words')
 );
 
-my Gnome::Gtk3::Notebook $notebook .= new;                          ③
+my Gnome::Gtk3::Notebook $notebook .= new;                              # ③
 $nb.append-page( $label, Gnome::Gtk3::Label.new(:text('title')));
 
-my Gnome::Gtk3::Window $window .= new;                              ④
+my Gnome::Gtk3::Window $window .= new;                                  # ④
 $window.add($notebook);
 
 … Further setup and start main loop …
 
-say ExtendedLabel.new(                                              ⑤
+say ExtendedLabel.new(                                                  # ⑤
   :native-object($notebook.get-nth-page(0))
 ).custom-data;
 
