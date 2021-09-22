@@ -173,11 +173,9 @@ subtest 'Signals ...', {
       True
     }
 
-    method signal-emitter ( Gnome::Gtk3::AboutDialog :$widget --> Str ) {
+    method signal-emitter ( Gnome::Gtk3::AboutDialog :$_widget --> Str ) {
 
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-      $widget.emit-by-name(
+      $_widget.emit-by-name(
         'activate-link',
         'https://example.com/my-favourite-items.html',
         :return-type(gboolean),
@@ -185,10 +183,10 @@ subtest 'Signals ...', {
       );
       is $!signal-processed, True, '\'activate-link\' signal processed';
 
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      while $main.events-pending() { $main.iteration-do(False); }
 
       #$!signal-processed = False;
-      #$widget.emit-by-name(
+      #$_widget.emit-by-name(
       #  'signal',
       #  'any-args',
       #  :return-type(int32),
@@ -196,31 +194,26 @@ subtest 'Signals ...', {
       #);
       #is $!signal-processed, True, '\'...\' signal processed';
 
-      while $main.gtk-events-pending() { $main.iteration-do(False); }
+#      while $main.events-pending() { $main.iteration-do(False); }
+
       sleep(0.4);
-      $main.gtk-main-quit;
+      $main.main-quit;
 
       'done'
     }
   }
-
-#  my Gnome::Gtk3::AboutDialog $a .= new;
-
-  #my Gnome::Gtk3::Window $w .= new;
-  #$w.add($m);
 
   my SignalHandlers $sh .= new;
   $a.register-signal( $sh, 'activate', 'activate-link');
 
   my Promise $p = $a.start-thread(
     $sh, 'signal-emitter',
-    # :!new-context,
+    :new-context,
     # :start-time(now + 1)
   );
 
-  is $main.gtk-main-level, 0, "loop level 0";
-  $main.gtk-main;
-  #is $main.gtk-main-level, 0, "loop level is 0 again";
+  is $main.main-level, 0, "loop level 0";
+  $main.main;
 
   is $p.result, 'done', 'emitter finished';
 }
