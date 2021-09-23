@@ -144,10 +144,14 @@ $gv.clear-object;                                                       # ④
 Das war damals, but still usable. Now, new methods are added and are much simpler to work with.
 ```
 my @r = $about-dialog.get-properties( 'program-name', Str);
-say @r[0]                                   # AboutDialog
+say @r[0];                                  # AboutDialog
 ```
-More than one property can be get in one call. Therefore the values are returned in a list.
+More than one property can be returned from one call. Therefore, the values are returned in a list.
 
+Errors like the next one, are shown at the terminal when wrong or non-existant property names are used.
+```
+(AboutDialog.t:10839): GLib-GObject-WARNING **: 16:25:15.822: g_object_get_is_valid_property: object class 'GtkAboutDialog' has no property named 'program-nme'
+```
 
 ## Data
 
