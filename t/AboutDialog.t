@@ -1,4 +1,7 @@
 use v6;
+#use lib '../gnome-native/lib';
+#use lib '../gnome-gobject/lib';
+
 use NativeCall;
 use Test;
 
@@ -52,12 +55,12 @@ subtest 'Manipulations', {
   $a.set-wrap-license(True);
   ok $a.get-wrap-license, '.set-wrap-license() / .get-wrap-license()';
 
-  $a.set-website('https://example.com/my-favourite-items.html');
-  is $a.get-website, 'https://example.com/my-favourite-items.html',
+  $a.set-website('https://example.com/my-favorite-items.html');
+  is $a.get-website, 'https://example.com/my-favorite-items.html',
       '.set-website() / .get-website()';
 
-  $a.set-website-label('favourite');
-  is $a.get-website-label, 'favourite',
+  $a.set-website-label('favorite');
+  is $a.get-website-label, 'favorite',
      '.set-website-label() / .get-website-label()';
 
   $a.set-authors( 'mt++1', 'pietje puk1');
@@ -94,6 +97,7 @@ subtest 'Manipulations', {
 #-------------------------------------------------------------------------------
 #Gnome::N::debug(:on);
 subtest 'Properties ...', {
+#`{{
   use Gnome::GObject::Value;
   use Gnome::GObject::Type;
 
@@ -104,7 +108,23 @@ subtest 'Properties ...', {
     is $gv-value, $value, "property $prop";
     $gv.clear-object;
   }
+}}
 
+  my @r = $a.get-properties(
+    'program-name', Str, 'version', Str, 'copyright', Str, 'comments', Str,
+    'license-type', int32, 'website', Str, 'website-label', Str,
+    'translator-credits', Str, 'logo-icon-name', Str, 'wrap-license', gboolean
+  );
+#note @r;
+
+  is-deeply @r, [
+    'AboutDialog.t', '0.14.2.1', 'm.timmerman a.k.a MARTIMM',
+    'Very good language binding', GTK_LICENSE_MIT_X11.value,
+    'https://example.com/my-favorite-items.html', 'favorite',
+    'He, who has invented Raku, thanks a lot', 'folder-blue', 1
+  ], '.get-properties';
+
+#`{{
   test-property( G_TYPE_STRING, 'program-name', 'get-string', 'AboutDialog.t');
   test-property( G_TYPE_STRING, 'version', 'get-string', '0.14.2.1');
   test-property(
@@ -113,32 +133,40 @@ subtest 'Properties ...', {
   test-property(
     G_TYPE_STRING, 'comments', 'get-string', 'Very good language binding'
   );
+}}
 
+#`{{
   # next call works but is skipped because of a language dependency which
-  # might return different text
+  # might return different text in another language
   if 1 {
     skip 1;
   }
 
   else {
     # changed by 2nd call to license type
+    is-deeply $a.get-properties( 'license', Str), ["This program comes with absolutely no warranty.\nSee the <a href=\"https://opensource.org/licenses/mit-license.php\">The MIT License (MIT)</a> for details."],
+    'license';
+#`{{
     test-property(
       G_TYPE_STRING, 'license', 'get-string',
       "This program comes with absolutely no warranty.\nSee the <a href=\"https://opensource.org/licenses/mit-license.php\">The MIT License (MIT)</a> for details."
     );
+}}
   }
+}}
 
+#`{{
   #test-property(
   #  G_TYPE_ENUM, 'license-type', 'get-enum', GTK_LICENSE_MIT_X11.value
   #);
 
   test-property(
     G_TYPE_STRING, 'website', 'get-string',
-    'https://example.com/my-favourite-items.html'
+    'https://example.com/my-favorite-items.html'
   );
 
   test-property(
-    G_TYPE_STRING, 'website-label', 'get-string', 'favourite'
+    G_TYPE_STRING, 'website-label', 'get-string', 'favorite'
   );
 
   test-property(
@@ -153,6 +181,7 @@ subtest 'Properties ...', {
   test-property(
     G_TYPE_BOOLEAN, 'wrap-license', 'get-boolean', True
   );
+}}
 }
 
 #-------------------------------------------------------------------------------
@@ -166,7 +195,7 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method activate ( Str $uri, --> Bool ) {
-      is $uri, 'https://example.com/my-favourite-items.html',
+      is $uri, 'https://example.com/my-favorite-items.html',
         'uri received from event';
       $!signal-processed = True;
 
@@ -177,7 +206,7 @@ subtest 'Signals ...', {
 
       $_widget.emit-by-name(
         'activate-link',
-        'https://example.com/my-favourite-items.html',
+        'https://example.com/my-favorite-items.html',
         :return-type(gboolean),
         :parameters([gchar-ptr,])
       );
