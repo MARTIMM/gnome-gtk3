@@ -61,7 +61,7 @@ my Gnome::Gtk3::Main $main .= new;
 class SignalHandlers {
   has Bool $!signal-processed = False;
 
-  method activate ( Str $uri --> Bool ) {                               # ①
+  method activate ( Str $uri --> Bool ) {                             # ①
     is $uri, 'https://example.com/my-favourite-items.html',
       'uri received from event';
     $!signal-processed = True;
@@ -71,9 +71,9 @@ class SignalHandlers {
 
   method signal-emitter (
     Gnome::Gtk3::AboutDialog :_widget($about-dialog) --> Str
-  ) {                                                                   # ②
+  ) {                                                                 # ②
 
-    $about-dialog.emit-by-name(                                         # ③
+    $about-dialog.emit-by-name(                                       # ③
       'activate-link',
       'https://example.com/my-favourite-items.html',
       :return-type(gboolean),
@@ -90,11 +90,11 @@ class SignalHandlers {
 }
 
 my SignalHandlers $sh .= new;
-$a.register-signal( $sh, 'activate', 'activate-link');                  # ④
+$a.register-signal( $sh, 'activate', 'activate-link');                # ④
 
-my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);  # ⑤
+my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);# ⑤
 
-$main.main;                                                             # ⑥
+$main.main;                                                           # ⑥
 
 is $p.result, 'done', 'emitter finished';
 ```
@@ -128,10 +128,10 @@ say $about-dialog.get-program-name;         # AboutDialog.t
 
 To use the property for this data you can run the following snippet;
 ```
-my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));              # ①
-$about-dialog.get-property( 'program-name', $gv);                       # ②
-say $gv.get-string;                         # AboutDialog               # ③
-$gv.clear-object;                                                       # ④
+my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));            # ①
+$about-dialog.get-property( 'program-name', $gv);                     # ②
+say $gv.get-string;                         # AboutDialog             # ③
+$gv.clear-object;                                                     # ④
 ```
 ① Initialize the **Gnome::GObject::Value** object with the type we have to get data from. These types are defined in **Gnome::GObject::Type**.
 
@@ -161,10 +161,10 @@ There was this issue #23 posted by Grenzionky about loosing information set in a
 
 A code snippet to show what has been done
 ```
-class ExtendedLabel is Gnome::Gtk3::Label {                             # ①
+class ExtendedLabel is Gnome::Gtk3::Label {                           # ①
   has Str $.custom-data;
 
-  submethod new (|c) {                                                  # ②
+  submethod new (|c) {                                                # ②
   	self.bless( :GtkLabel, |c );
   }
 }
@@ -173,15 +173,15 @@ my ExtendedLabel $label .= new(
   :custom-data('some data contents'), :text('words')
 );
 
-my Gnome::Gtk3::Notebook $notebook .= new;                              # ③
+my Gnome::Gtk3::Notebook $notebook .= new;                            # ③
 $nb.append-page( $label, Gnome::Gtk3::Label.new(:text('title')));
 
-my Gnome::Gtk3::Window $window .= new;                                  # ④
+my Gnome::Gtk3::Window $window .= new;                                # ④
 $window.add($notebook);
 
 … Further setup and start main loop …
 
-say ExtendedLabel.new(                                                  # ⑤
+say ExtendedLabel.new(                                                # ⑤
   :native-object($notebook.get-nth-page(0))
 ).custom-data;
 
@@ -288,11 +288,11 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   }
 
   submethod BUILD ( Str :$!custom-data, :$native-object? ) {
-    if $native-object {                                             # ①
+    if $native-object {                                           # ①
       $!custom-data = self.get-data( 'custom-data', Str);
     }
 
-    else {                                                          # ②
+    else {                                                        # ②
       self.set-data( 'custom-data', $!custom-data);
     }
   }
