@@ -41,9 +41,7 @@ NOTDONE, fallback will disappear
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
-<!--
 * When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible to create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a **Gnome::Gtk3::Button** using a native GtkContainer. Testing should be done to accept the proper native object.
--->
 
 * When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
@@ -52,7 +50,7 @@ NOTDONE, fallback will disappear
   * automatic parameter type substitutions
   * casting native object types
 
-* When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type which need to be created.
+* When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from such a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type that is to be created. The type can be given as a real type or as a string. The latter must be searchable by the Raku `require()` command.
 
 #### Add other packages
 * Pango.
