@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-09-24 0.44.1:
+* Methods ending in `…-rk()` have `:child-type` added where it is possible to inherit from the returned object type.
+
 #### 2021-07-20 0.44.0:
 * Add modules **Gnome::Gtk3::Layout**, **Gnome::Gtk3::ActionBar** and **Gnome::Gtk3::HeaderBar**.
 
