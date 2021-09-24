@@ -106,7 +106,7 @@ Create a HeaderBar object using a native object returned from a builder. See als
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::HeaderBar' #`{{ or %options<GtkHeaderBar> }} {
+  if self.^name eq 'Gnome::Gtk3::HeaderBar' or %options<GtkHeaderBar> {
 
     # check if native object is set by a parent class
     if self.is-valid { }

@@ -107,7 +107,7 @@ Create a ActionBar object using a native object returned from a builder. See als
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::ActionBar' #`{{ or %options<GtkActionBar> }} {
+  if self.^name eq 'Gnome::Gtk3::ActionBar' or %options<GtkActionBar> {
 
     # check if native object is set by a parent class
     if self.is-valid { }
