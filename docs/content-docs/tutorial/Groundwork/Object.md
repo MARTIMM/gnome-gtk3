@@ -288,11 +288,11 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   }
 
   submethod BUILD ( Str :$!custom-data, :$native-object? ) {
-    if $native-object {                                           # ①
+    if $native-object {                                               # ①
       $!custom-data = self.get-data( 'custom-data', Str);
     }
 
-    else {                                                        # ②
+    else {                                                            # ②
       self.set-data( 'custom-data', $!custom-data);
     }
   }
