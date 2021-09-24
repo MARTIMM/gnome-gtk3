@@ -170,7 +170,9 @@ Retrieves the custom title widget of the header. See C<set-custom-title()>.
 Returns: the custom title widget of the header, or C<undefined> if none has been set explicitly.
 
   method get-custom-title ( --> N-GObject )
-  method get-custom-title-rk ( --> Gnome::Gtk3::Widget )
+  method get-custom-title-rk ( :$child-type? --> Gnome::Gtk3::Widget )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
@@ -178,9 +180,10 @@ method get-custom-title ( --> N-GObject ) {
   gtk_header_bar_get_custom_title(self.get-native-object-no-reffing)
 }
 
-method get-custom-title-rk ( --> Any ) {
+method get-custom-title-rk ( *%options --> Any ) {
   self._wrap-native-type-from-no(
-    gtk_header_bar_get_custom_title(self.get-native-object-no-reffing)
+    gtk_header_bar_get_custom_title(self.get-native-object-no-reffing),
+    |%options
   )
 }
 

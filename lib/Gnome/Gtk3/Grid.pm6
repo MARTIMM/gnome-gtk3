@@ -246,10 +246,14 @@ Gets the child of I<grid> whose area covers the grid cell whose upper left corne
 Returns: the child (a native object) at the given position, or undefined. In the C<get-child-at-rk> the raku object which can be an invalid object.
 
   method get-child-at ( Int $left, Int $top --> N-GObject )
-  method get-child-at-rk ( Int $left, Int $top --> Gnome::GObject::Object )
+  method get-child-at-rk (
+    Int $left, Int $top, :$child-type?
+    --> Gnome::GObject::Object
+  )
 
 =item Int $left; the left edge of the cell
 =item Int $top; the top edge of the cell
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =head3 Example
 

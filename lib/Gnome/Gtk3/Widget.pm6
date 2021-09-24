@@ -1534,15 +1534,16 @@ Note that unlike C<is-ancestor()>, C<get-ancestor()> considers this I<widget> to
 Returns: the ancestor widget, or C<undefined> if not found
 
   method get-ancestor-rk (
-    GType $widget-type --> Gnome::GObject::Object
+    GType $widget-type, :$child-type? --> Gnome::GObject::Object
   )
 
   method get-ancestor-rk (
-    Str $gtk-widget-type-name --> Gnome::GObject::Object
+    Str $gtk-widget-type-name, :$child-type? --> Gnome::GObject::Object
   )
 
   method get-ancestor-rk (
-    Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+    Gnome::Gtk3::Widget $widget, :$child-type?
+    --> Gnome::GObject::Object
   )
 
   method get-ancestor ( GType $widget-type --> N-GObject )
@@ -1550,6 +1551,7 @@ Returns: the ancestor widget, or C<undefined> if not found
 =item N-GObject $widget-type; ancestor type. One can use C<$widget.get-class-gtype> to get the GType of an object.
 =item Str $gtk-widget-type-name; an ancester object name of how Gtk names these objects. Examples are C<GtkWidget> and C<GtkDialog>.
 =item Gnome::Gtk3::Widget $widget; a raku widget.
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 The return value B<Gnome::GObject::Object> means any child raku object. N-GObject is the type of the native object.
 
@@ -1581,29 +1583,32 @@ The return value B<Gnome::GObject::Object> means any child raku object. N-GObjec
 =end pod
 
 proto method get-ancestor-rk (|){*}
-multi method get-ancestor-rk ( Int $widget-type --> Gnome::GObject::Object ) {
+multi method get-ancestor-rk ( Int $widget-type, *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    |%options
   )
 }
 
 multi method get-ancestor-rk (
-  Str $gtk-widget-type-name --> Gnome::GObject::Object
+  Str $gtk-widget-type-name, *%options --> Gnome::GObject::Object
 ) {
   my GType $widget-type = Gnome::GObject::Type.new().g_type_from_name(
     $gtk-widget-type-name
   );
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    |%options
   )
 }
 
 multi method get-ancestor-rk (
-  Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+  Gnome::Gtk3::Widget $widget, *%options --> Gnome::GObject::Object
 ) {
   my GType $widget-type = $widget.get-class-gtype;
   self._wrap-native-type-from-no(
-    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type)
+    gtk_widget_get_ancestor( self._f('GtkWidget'), $widget-type),
+    |%options
   )
 }
 
@@ -2370,15 +2375,17 @@ sub gtk_widget_get_pango_context (
 
 Returns the parent object of this I<widget> or C<undefined> in the case of the native object or invalid in the case of a raku object.
 
-  method get-parent-rk ( --> Gnome::GObject::Object )
   method get-parent ( --> N-GObject )
+  method get-parent-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
-method get-parent-rk ( --> Gnome::GObject::Object ) {
+method get-parent-rk ( *%options --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent(self._f('GtkWidget'));
   if ?$no {
-    self._wrap-native-type-from-no($no)
+    self._wrap-native-type-from-no( $no, |%options)
   }
 
   else {
@@ -2406,15 +2413,17 @@ Gets I<widget>’s parent window, or C<undefined> if it does not have one.
 
 Returns: the parent window of I<widget>, or C<undefined> if it does not have a parent window.
 
-  method get-parent-window-rk ( --> Gnome::GObject::Object )
   method get-parent-window ( --> N-GObject )
+  method get-parent-window-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
-method get-parent-window-rk ( --> Gnome::GObject::Object ) {
+method get-parent-window-rk ( *%options --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_parent_window(self._f('GtkWidget'));
   if ?$no {
-    self._wrap-native-type-from-no($no)
+    self._wrap-native-type-from-no( $no, |%options)
   }
 
   else {
@@ -2442,8 +2451,8 @@ Returns the B<Gnome::Gtk3::WidgetPath> representing I<widget>, if the widget is 
 
 Returns: The B<Gnome::Gtk3::WidgetPath> representing I<widget>
 
-  method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
   method get-path ( --> N-GObject )
+  method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
 
 =end pod
 
@@ -2915,8 +2924,8 @@ Returns the style context associated to I<widget>. The returned object is guaran
 
 Returns: a B<Gnome::Gtk3::StyleContext>. This memory is owned by I<widget> and must not be freed.
 
-  method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
   method get-style-context ( --> N-GObject )
+  method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
 
 =end pod
 
@@ -3043,15 +3052,17 @@ Returns the B<Gnome::Gtk3::Window> of the current tooltip. This can be the GtkWi
 
 Returns: The B<Gnome::Gtk3::Window> of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-  method get-tooltip-window-rk ( --> Gnome::Gtk3::Window )
   method get-tooltip-window ( --> N-GObject )
+  method get-tooltip-window-rk ( :$child-type? --> Gnome::Gtk3::Window )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
-method get-tooltip-window-rk ( --> Gnome::GObject::Object ) {
+method get-tooltip-window-rk ( *%options --> Gnome::GObject::Object ) {
   my $no = gtk_widget_get_tooltip_window(self._f('GtkWidget'));
   if $no.defined {
-    self._wrap-native-type-from-no($no)
+    self._wrap-native-type-from-no( $no, |%options)
   }
 
   else {
@@ -3088,14 +3099,16 @@ To reliably find the toplevel B<Gnome::Gtk3::Window>, use C<get-toplevel()> and 
 
 Returns: the topmost ancestor of I<widget>, or I<widget> itself if there’s no ancestor.
 
-  method get-toplevel-rk ( --> Gnome::GObject::Widget )
   method get-toplevel ( --> N-GObject )
+  method get-toplevel-rk ( :$child-type? --> Gnome::GObject::Widget )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
-method get-toplevel-rk ( --> Gnome::GObject::Object ) {
+method get-toplevel-rk ( *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_widget_get_toplevel(self._f('GtkWidget'))
+    gtk_widget_get_toplevel(self._f('GtkWidget')), |%options
   )
 }
 

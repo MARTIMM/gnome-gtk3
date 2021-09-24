@@ -230,7 +230,9 @@ Retrieves the box containing the label widget.
 Returns: a B<Gnome::Gtk3::Box>
 
   method get-message-area ( --> N-GObject )
-  method get-message-area-rk ( --> Gnome::Gtk3::Box )
+  method get-message-area-rk ( :$child-type? --> Gnome::Gtk3::Box )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
@@ -238,9 +240,10 @@ method get-message-area ( --> N-GObject ) {
   gtk_statusbar_get_message_area(self._f('GtkStatusbar'))
 }
 
-method get-message-area-rk ( --> Gnome::Gtk3::Box ) {
-  Gnome::Gtk3::Box.new(
-    :native-object(gtk_statusbar_get_message_area(self._f('GtkStatusbar')))
+method get-message-area-rk ( *%options --> Gnome::Gtk3::Box ) {
+  self._wrap-native-type-from-no(
+    gtk_statusbar_get_message_area(self._f('GtkStatusbar')),
+    |%options
   )
 }
 

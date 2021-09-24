@@ -353,10 +353,12 @@ Returns: The action widget with the given I<$pack-type> or C<undefined> when thi
   method get-action-widget ( GtkPackType $pack_type --> N-GObject )
 
   method get-action-widget-rk (
-    GtkPackType $pack_type --> Gnome::GObject::Object
+    GtkPackType $pack_type, :$child-type? --> Gnome::GObject::Object
   )
 
 =item GtkPackType $pack_type; pack type of the action widget to receive
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+
 =end pod
 
 method get-action-widget ( GtkPackType $pack_type --> N-GObject ) {
@@ -366,12 +368,12 @@ method get-action-widget ( GtkPackType $pack_type --> N-GObject ) {
 }
 
 method get-action-widget-rk (
-  GtkPackType $pack_type --> Gnome::GObject::Object
+  GtkPackType $pack_type, *%options --> Gnome::GObject::Object
 ) {
   self._wrap-native-type-from-no(
     gtk_notebook_get_action_widget(
       self.get-native-object-no-reffing, $pack_type
-    )
+    ), |%options
   )
 }
 
@@ -435,9 +437,12 @@ Retrieves the menu label widget of the page containing I<$child>.
 Returns: the menu label, or C<undefined> if the notebook page does not have a menu label other than the default (the tab label).
 
   method get-menu-label ( N-GObject $child --> N-GObject )
-  method get-menu-label-rk ( N-GObject $child --> Gnome::GObject::Object )
+  method get-menu-label-rk (
+    N-GObject $child, :$child-type? --> Gnome::GObject::Object
+  )
 
 =item N-GObject $child; a widget contained in a page of I<notebook>
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 =end pod
 
 method get-menu-label ( $child is copy --> N-GObject ) {
@@ -445,10 +450,13 @@ method get-menu-label ( $child is copy --> N-GObject ) {
   gtk_notebook_get_menu_label( self.get-native-object-no-reffing, $child)
 }
 
-method get-menu-label-rk ( $child is copy --> Gnome::GObject::Object ) {
+method get-menu-label-rk (
+  $child is copy, *%options --> Gnome::GObject::Object
+) {
   $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
   self._wrap-native-type-from-no(
-    gtk_notebook_get_menu_label( self.get-native-object-no-reffing, $child)
+    gtk_notebook_get_menu_label( self.get-native-object-no-reffing, $child),
+    |%options
   );
 }
 
@@ -517,18 +525,24 @@ Returns the child widget contained in page number I<$page-num>.
 Returns: the child widget, or C<undefined> if I<$page-num> is out of bounds
 
   method get-nth-page ( Int() $page_num --> N-GObject )
-  method get-nth-page-rk ( Int() $page_num --> Gnome::GObject::Object )
+  method get-nth-page-rk (
+    Int() $page_num, :$child-type? --> Gnome::GObject::Object
+  )
 
 =item Int() $page_num; the index of a page in the notebook, or -1 to get the last page
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 =end pod
 
 method get-nth-page ( Int() $page_num --> N-GObject ) {
   gtk_notebook_get_nth_page( self.get-native-object-no-reffing, $page_num)
 }
 
-method get-nth-page-rk ( Int() $page_num --> Gnome::GObject::Object ) {
+method get-nth-page-rk (
+  Int() $page_num, *%options --> Gnome::GObject::Object
+) {
   self._wrap-native-type-from-no(
-    gtk_notebook_get_nth_page( self.get-native-object-no-reffing, $page_num)
+    gtk_notebook_get_nth_page( self.get-native-object-no-reffing, $page_num),
+    |%options
   )
 }
 
@@ -640,9 +654,12 @@ Returns the tab label widget for the page I<$$child>. C<undefined> is returned i
 Returns: the tab label
 
   method get-tab-label ( N-GObject $child --> N-GObject )
-  method get-tab-label-rk ( N-GObject $child --> Gnome::GObject::Object )
+  method get-tab-label-rk (
+    N-GObject $child, :$child-type? --> Gnome::GObject::Object
+  )
 
 =item N-GObject $child; the page
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 =end pod
 
 method get-tab-label ( $child is copy --> N-GObject ) {
@@ -650,10 +667,13 @@ method get-tab-label ( $child is copy --> N-GObject ) {
   gtk_notebook_get_tab_label( self.get-native-object-no-reffing, $child)
 }
 
-method get-tab-label-rk ( $child is copy --> Gnome::GObject::Object ) {
+method get-tab-label-rk (
+  $child is copy, *%options --> Gnome::GObject::Object
+) {
   $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
   self._wrap-native-type-from-no(
-    gtk_notebook_get_tab_label( self.get-native-object-no-reffing, $child)
+    gtk_notebook_get_tab_label( self.get-native-object-no-reffing, $child),
+    |%options
   )
 }
 
