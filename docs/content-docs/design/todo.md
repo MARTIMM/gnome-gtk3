@@ -24,8 +24,6 @@ NOTDONE, fallback will disappear
 
 * Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation to find the methods more quickly. _This is done in new generated pod code._
 
-* Many methods return native objects. In some cases this could be returned as Raku objects. _This is done in new generated pod code as `...-rk()` methods._
-
 * Returning a list of values in place of the C method to provide pointers (`is rw` traits) is more convienient. For example the following
   ```
   my Int ( $width, $height) = $window.get-size;
@@ -49,23 +47,18 @@ NOTDONE, fallback will disappear
 
 * When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
 
-<!-- DONE
-* The use of native types needs some change. The Raku native types are all fixed sized types like `int32` etc. Also the semi native type has a range capable for 64 integers. On my machine however (a 64 bit processor), the C `int` has a range suitable only for 32 bit integers. There are c compiler include files which have definitions like `INT_MAX`, `INT_MIN` and `UINT_MAX`. Now a few programs are made in package Gnome::N which are run at install time to generate a module **Gnome::N::GlibToRakuTypes**. It is meant to be a type mapping from types used in the Gnome packages to those of Raku taking into account the sizes of int and long which could differ depending on the processor. Also the `OpaquePointer` must be substituted by `Pointer` because the first is deprecated in Raku.
--->
-
 * Benchmarking (see results in [done](todo-done.html)) made me opening an issue (#14) about slowness of the packages. For the moment, the most relevant methods are created in each module bypassing the search for native subs. The names will become the shortest possible and having dashes if any. Documentation will be changed for those entries showing only one possibility. The original names will still be possible to use. Later a deprecation proces is started to have everyone using the short names only.
   Things to solve;
   * automatic parameter type substitutions
   * casting native object types
 
-* When adding methods, method names extended with `...-rk()` are used when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from a widget. The routine can only recreate the widget classes from the packages. Therefor an option must be added `:child-type()` to say that is a different type which need to be created.
+* When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type which need to be created.
 
 #### Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
 
 #### Documentation
-<!--
 * All the several possibilities to use a method should be removed eventually and kept only one name. Keep the names where clashes could take place like `get-name()` from **Builder** and **Widget**. Dashes are prevered.
   * Method names kept are the names without the module prefixes. Sometimes a method must be added to prevent calling a method from **Any** or **Mu**. Examples
     * `gtk_grid_attach()` -> `attach()`.
@@ -74,7 +67,6 @@ NOTDONE, fallback will disappear
     * `gtk-list-store-append()` -> `append()`. Needs an extra method.
   * Adjust documentation.
   * Add deprecate messages for the to be removed names.
--->
 
 * Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
   * Cannot automatically cleanup the native object in the Raku object when object gets destroyed.

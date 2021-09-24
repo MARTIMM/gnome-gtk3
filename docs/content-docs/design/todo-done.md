@@ -56,7 +56,7 @@ layout: sidebar
 | 6526.21 |Native sub search `.about_dialog_set_program_name()` **1.83 times faster than slowest**|
 | 31229.39 &nbsp;|Method call `.set-program-name()` **8.75 times faster than slowest**|
 
-While this is faster, some of the calls must process the arguments before they are send to the native subroutine. This means that it can be slower than this. New  tests have shown that it can be in the range of 2 to 14 times faster than the original search method.
+While this is faster, some of the calls must process the arguments before they are send to the native subroutine. This means that it can be slower than this. New tests have shown that it can be in the range of 2 to 14 times faster than the original search method.
   <br/>
 
 * Caching the subroutine's address in **Object** must be more specific. There could be a sub name (short version) in more than one module. It is even a bug, because equally named subs can be called on the wrong objects. This happened on the Library project where `.get-text()` from **Entry** was taken to run on a **Label**. So the class name of the caller should be stored with it too. We can take the `$!gtk-class-name` for it.
@@ -81,6 +81,20 @@ While this is faster, some of the calls must process the arguments before they a
 * Add a toplevel class to support standalone classes in glib something like **Gnome::GObject::Boxed** is. The class is called **Gnome::N::TopLevelClassSupport**.
 
 * Add `CATCH { default { .message.note; .backtrace.concise.note } }` at the top of callback routines. This is done for all callback routines which are registered using `.register-signal()` but other places must be searched for, e.g. like foreach in **Gnome::Gtk3::Container**.
+
+* The use of native types needs some change. The Raku native types are all fixed sized types like `int32` etc. On my machine however (a 64 bit processor), the C `int` type has a range suitable only for 32 bit integers. There are c compiler include files which have definitions like `INT_MAX`, `INT_MIN` and `UINT_MAX` etcetera. Now a few programs are made in package Gnome::N which are run at install time to generate a module **Gnome::N::GlibToRakuTypes**. It is meant to be a type mapping from types used in the Gnome packages to those of Raku taking into account the sizes of int and long which could differ depending on the processor. Also the `OpaquePointer` must be substituted by `Pointer` because the first is deprecated in Raku.
+
+* All the several possibilities to use a method should be removed eventually and kept only one name. Keep the names where clashes could take place like `get-name()` from **Builder** and **Widget**. Dashes are prevered.
+  * Method names kept are the names without the module prefixes. Sometimes a method must be added to prevent calling a method from **Any** or **Mu**. Examples
+    * `gtk_grid_attach()` -> `attach()`.
+    * `gtk_label_new()` -> `new()`. Handled with submethod `BUILD()`.
+    * `gtk_widget_set_name()` -> `widget-set-name()`. Cannot be too short.
+    * `gtk-list-store-append()` -> `append()`. Needs an extra method.
+  * Adjust documentation.
+  * Add deprecate messages for the to be removed names.
+-->
+
+
 
 #### Documentation
 See also checklist below.
