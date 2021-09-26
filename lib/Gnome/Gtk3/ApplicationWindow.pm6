@@ -43,7 +43,7 @@ If the desktop environment does not display the menubar, then B<Gnome::Gtk3::App
   my Gnome::Gio::MenuModel $menubar .= new(:build-id<menubar>);
   $app.set-menubar($menubar);
 
-  ...
+  …
 
   my Gnome::Gtk3::ApplicationWindow $app-window .= new(:application($app));
 
@@ -73,6 +73,7 @@ The following attributes are used when constructing submenus:
 =item "label": a user-visible string to display
 =item "icon": icon name to display
 
+
 =head1 Synopsis
 =head2 Declaration
 
@@ -81,6 +82,7 @@ The following attributes are used when constructing submenus:
 =comment  also does Gnome::Atk::ImplementorIface;
 =comment  also does Gnome::Gio::ActionGroup;
   also does Gnome::Gio::ActionMap;
+
 
 =head2 Inheriting this class
 
@@ -109,6 +111,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Application;
 use Gnome::Gio::ActionMap;
@@ -201,7 +205,210 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#-------------------------------------------------------------------------------
+#TM:0:get-help-overlay:
+=begin pod
+=head2 get-help-overlay
 
+Gets the B<Gnome::Gtk3::ShortcutsWindow> that has been set up with a prior call to C<set-help-overlay()>.
+
+Returns: the help overlay associated with I<window>, or C<undefined>
+
+  method get-help-overlay ( --> N-GObject )
+
+=end pod
+
+method get-help-overlay ( --> N-GObject ) {
+
+  gtk_application_window_get_help_overlay(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_window_get_help_overlay (
+  N-GObject $window --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-id:
+=begin pod
+=head2 get-id
+
+Returns the unique ID of the window. If the window has not yet been added to a B<Gnome::Gtk3::Application>, returns `0`.
+
+Returns: the unique ID for I<window>, or `0` if the window has not yet been added to a B<Gnome::Gtk3::Application>
+
+  method get-id ( --> UInt )
+
+=end pod
+
+method get-id ( --> UInt ) {
+
+  gtk_application_window_get_id(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_window_get_id (
+  N-GObject $window --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-show-menubar:
+=begin pod
+=head2 get-show-menubar
+
+Returns whether the window will display a menubar for the app menu and menubar as needed.
+
+Returns: C<True> if I<window> will display a menubar when needed
+
+  method get-show-menubar ( --> Bool )
+
+=end pod
+
+method get-show-menubar ( --> Bool ) {
+
+  gtk_application_window_get_show_menubar(
+    self.get-native-object-no-reffing,
+  ).Bool
+}
+
+sub gtk_application_window_get_show_menubar (
+  N-GObject $window --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-help-overlay:
+=begin pod
+=head2 set-help-overlay
+
+Associates a shortcuts window with the application window, and sets up an action with the name win.show-help-overlay to present it.
+
+I<window> takes resposibility for destroying I<help-overlay>.
+
+  method set-help-overlay ( N-GObject $help_overlay )
+
+=item N-GObject $help_overlay; a B<Gnome::Gtk3::ShortcutsWindow>
+=end pod
+
+method set-help-overlay ( $help_overlay is copy ) {
+  $help_overlay .= get-native-object-no-reffing unless $help_overlay ~~ N-GObject;
+
+  gtk_application_window_set_help_overlay(
+    self.get-native-object-no-reffing, $help_overlay
+  );
+}
+
+sub gtk_application_window_set_help_overlay (
+  N-GObject $window, N-GObject $help_overlay
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-show-menubar:
+=begin pod
+=head2 set-show-menubar
+
+Sets whether the window will display a menubar for the app menu and menubar as needed.
+
+  method set-show-menubar ( Bool $show_menubar )
+
+=item Bool $show_menubar; whether to show a menubar when needed
+=end pod
+
+method set-show-menubar ( Bool $show_menubar ) {
+
+  gtk_application_window_set_show_menubar(
+    self.get-native-object-no-reffing, $show_menubar
+  );
+}
+
+sub gtk_application_window_set_show_menubar (
+  N-GObject $window, gboolean $show_menubar
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_application_window_new:
+#`{{
+=begin pod
+=head2 _gtk_application_window_new
+
+Creates a new B<Gnome::Gtk3::ApplicationWindow>.
+
+Returns: a newly created B<Gnome::Gtk3::ApplicationWindow>
+
+  method _gtk_application_window_new ( N-GObject $application --> N-GObject )
+
+=item N-GObject $application; a B<Gnome::Gtk3::Application>
+=end pod
+}}
+
+sub _gtk_application_window_new ( N-GObject $application --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_application_window_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-menubar:
+=head3 Show a menubar: show-menubar
+
+
+If this property is C<True>, the window will display a menubar
+that includes the app menu and menubar, unless these are
+shown by the desktop shell. See C<gtk-application-set-app-menu()>
+and C<gtk-application-set-menubar()>.
+
+If C<False>, the window will not display a menubar, regardless
+   * of whether the desktop shell is showing the menus or not.
+The B<Gnome::GObject::Value> type of property I<show-menubar> is C<G_TYPE_BOOLEAN>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:0:_gtk_application_window_new:
 #`{{

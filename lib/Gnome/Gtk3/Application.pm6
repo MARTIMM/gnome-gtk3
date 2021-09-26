@@ -86,9 +86,10 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Gio::Application;
 use Gnome::Gio::MenuModel;
@@ -105,7 +106,30 @@ also is Gnome::Gio::Application;
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
+=begin pod
+=head1 Types
 
+=head2 GtkApplicationInhibitFlags
+
+=item GTK_APPLICATION_INHIBIT_LOGOUT; Inhibit ending the user session by logging out or by shutting down the computer
+
+=item GTK_APPLICATION_INHIBIT_SWITCH; Inhibit user switching
+
+=item GTK_APPLICATION_INHIBIT_SUSPEND; Inhibit suspending the session or computer
+
+=item GTK_APPLICATION_INHIBIT_IDLE; Inhibit the session being marked as idle (and possibly locked)
+
+=end pod
+
+#TE:1:GtkApplicationInhibitFlags:
+enum GtkApplicationInhibitFlags is export (
+  GTK_APPLICATION_INHIBIT_LOGOUT  => 1 +< 0,
+  GTK_APPLICATION_INHIBIT_SWITCH  => 1 +< 1,
+  GTK_APPLICATION_INHIBIT_SUSPEND => 1 +< 2,
+  GTK_APPLICATION_INHIBIT_IDLE    => 1 +< 3
+);
+
+#-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new
@@ -149,6 +173,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 
 =end pod
 
+#TM:1:new:inheriting
 #TM:1:new(:flags,:app-id):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
@@ -230,7 +255,752 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#-------------------------------------------------------------------------------
+#TM:0:add-window:
+=begin pod
+=head2 add-window
 
+Adds a window to I<application>.
+
+This call can only happen after the I<application> has started; typically, you should add new application windows in response to the emission of the  I<activate> signal.
+
+This call is equivalent to setting the  I<application> property of I<window> to I<application>.
+
+Normally, the connection between the application and the window will remain until the window is destroyed, but you can explicitly remove it with C<remove-window()>.
+
+GTK+ will keep the I<application> running as long as it has any windows.
+
+  method add-window ( N-GObject $window )
+
+=item N-GObject $window; a B<Gnome::Gtk3::Window>
+=end pod
+
+method add-window ( $window is copy ) {
+  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+
+  gtk_application_add_window(
+    self.get-native-object-no-reffing, $window
+  );
+}
+
+sub gtk_application_add_window (
+  N-GObject $application, N-GObject $window
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-accels-for-action:
+=begin pod
+=head2 get-accels-for-action
+
+Gets the accelerators that are currently associated with the given action.
+
+Returns: accelerators for I<detailed-action-name>, as a C<undefined>-terminated array. Free with C<g-strfreev()> when no longer needed
+
+  method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] )
+
+=item Str $detailed_action_name; a detailed action name, specifying an action and target to obtain accelerators for
+=end pod
+
+method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] ) {
+
+  gtk_application_get_accels_for_action(
+    self.get-native-object-no-reffing, $detailed_action_name
+  )
+}
+
+sub gtk_application_get_accels_for_action (
+  N-GObject $application, gchar-ptr $detailed_action_name --> gchar-pptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-actions-for-accel:
+=begin pod
+=head2 get-actions-for-accel
+
+Returns the list of actions (possibly empty) that I<accel> maps to. Each item in the list is a detailed action name in the usual form.
+
+This might be useful to discover if an accel already exists in order to prevent installation of a conflicting accelerator (from an accelerator editor or a plugin system, for example). Note that having more than one action per accelerator may not be a bad thing and might make sense in cases where the actions never appear in the same context.
+
+In case there are no actions for a given accelerator, an empty array is returned. C<undefined> is never returned.
+
+It is a programmer error to pass an invalid accelerator string. If you are unsure, check it with C<gtk-accelerator-parse()> first.
+
+Returns: a C<undefined>-terminated array of actions for I<accel>
+
+  method get-actions-for-accel ( Str $accel --> CArray[Str] )
+
+=item Str $accel; an accelerator that can be parsed by C<gtk-accelerator-parse()>
+=end pod
+
+method get-actions-for-accel ( Str $accel --> CArray[Str] ) {
+
+  gtk_application_get_actions_for_accel(
+    self.get-native-object-no-reffing, $accel
+  )
+}
+
+sub gtk_application_get_actions_for_accel (
+  N-GObject $application, gchar-ptr $accel --> gchar-pptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-active-window:
+=begin pod
+=head2 get-active-window
+
+Gets the “active” window for the application.
+
+The active window is the one that was most recently focused (within the application). This window may not have the focus at the moment if another application has it — this is just the most recently-focused window within this application.
+
+Returns: the active window, or C<undefined> if there isn't one.
+
+  method get-active-window ( --> N-GObject )
+
+=end pod
+
+method get-active-window ( --> N-GObject ) {
+
+  gtk_application_get_active_window(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_get_active_window (
+  N-GObject $application --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-app-menu:
+=begin pod
+=head2 get-app-menu
+
+Returns the menu model that has been set with C<set-app-menu()>.
+
+Returns: the application menu of I<application> or C<undefined> if no application menu has been set.
+
+  method get-app-menu ( --> N-GObject )
+
+=end pod
+
+method get-app-menu ( --> N-GObject ) {
+
+  gtk_application_get_app_menu(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_get_app_menu (
+  N-GObject $application --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-menu-by-id:
+=begin pod
+=head2 get-menu-by-id
+
+Gets a menu from automatically loaded resources. See L<automatic-resources|ttps://developer-old.gnome.org/gtk3/stable/GtkApplication.html#automatic-resources> for more information.
+
+  method get-menu-by-id ( Str $id --> N-GObject )
+
+=item Str $id; the id of the menu to look up
+=end pod
+
+method get-menu-by-id ( Str $id --> N-GObject ) {
+
+  gtk_application_get_menu_by_id(
+    self.get-native-object-no-reffing, $id
+  )
+}
+
+sub gtk_application_get_menu_by_id (
+  N-GObject $application, gchar-ptr $id --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-menubar:
+=begin pod
+=head2 get-menubar
+
+Returns the menu model that has been set with C<set-menubar()>.
+
+Returns: the menubar for windows of I<application>
+
+  method get-menubar ( --> N-GObject )
+
+=end pod
+
+method get-menubar ( --> N-GObject ) {
+
+  gtk_application_get_menubar(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_get_menubar (
+  N-GObject $application --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-window-by-id:
+=begin pod
+=head2 get-window-by-id
+
+Returns the B<Gnome::Gtk3::ApplicationWindow> with the given ID.
+
+The ID of a B<Gnome::Gtk3::ApplicationWindow> can be retrieved with C<window-get-id()>.
+
+Returns: the window with ID I<id>, or C<undefined> if there is no window with this ID
+
+  method get-window-by-id ( UInt $id --> N-GObject )
+
+=item UInt $id; an identifier number
+=end pod
+
+method get-window-by-id ( UInt $id --> N-GObject ) {
+
+  gtk_application_get_window_by_id(
+    self.get-native-object-no-reffing, $id
+  )
+}
+
+sub gtk_application_get_window_by_id (
+  N-GObject $application, guint $id --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-windows:
+=begin pod
+=head2 get-windows
+
+Gets a list of the B<Gnome::Gtk3::Windows> associated with I<application>.
+
+The list is sorted by most recently focused window, such that the first element is the currently focused window. (Useful for choosing a parent for a transient window.)
+
+The list that is returned should not be modified in any way. It will only remain valid until the next focus change or window creation or deletion.
+
+Returns: (element-type GtkWindow) : a B<Gnome::Gtk3::List> of B<Gnome::Gtk3::Window>
+
+  method get-windows ( --> N-GList )
+
+=end pod
+
+method get-windows ( --> N-GList ) {
+
+  gtk_application_get_windows(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_get_windows (
+  N-GObject $application --> N-GList
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:inhibit:
+=begin pod
+=head2 inhibit
+
+Inform the session manager that certain types of actions should be inhibited. This is not guaranteed to work on all platforms and for all types of actions.
+
+Applications should invoke this method when they begin an operation that should not be interrupted, such as creating a CD or DVD. The types of actions that may be blocked are specified by the I<flags> parameter. When the application completes the operation it should call C<uninhibit()> to remove the inhibitor. Note that an application can have multiple inhibitors, and all of them must be individually removed. Inhibitors are also cleared when the application exits.
+
+Applications should not expect that they will always be able to block the action. In most cases, users will be given the option to force the action to take place.
+
+Reasons should be short and to the point.
+
+If I<window> is given, the session manager may point the user to this window to find out more about why the action is inhibited.
+
+Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to C<gtk-application-uninhibit()> in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
+
+  method inhibit ( N-GObject $window, Int $flags, Str $reason --> UInt )
+
+=item N-GObject $window; a B<Gnome::Gtk3::Window>, or C<undefined>
+=item Int $flags; GtkApplicationInhibitFlags mask of what types of actions should be inhibited
+=item Str $reason; a short, human-readable string that explains why these operations are inhibited
+=end pod
+
+method inhibit ( $window is copy, Int $flags, Str $reason --> UInt ) {
+  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+
+  gtk_application_inhibit(
+    self.get-native-object-no-reffing, $window, $flags, $reason
+  )
+}
+
+sub gtk_application_inhibit (
+  N-GObject $application, N-GObject $window, GFlag $flags, gchar-ptr $reason --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:is-inhibited:
+=begin pod
+=head2 is-inhibited
+
+Determines if any of the actions specified in I<flags> are currently inhibited (possibly by another application).
+
+Note that this information may not be available (for example when the application is running in a sandbox).
+
+Returns: C<True> if any of the actions specified in I<flags> are inhibited
+
+  method is-inhibited ( Int $flags --> Bool )
+
+=item Int $flags; GtkApplicationInhibitFlags mask of what types of actions should be queried
+=end pod
+
+method is-inhibited ( Int $flags --> Bool ) {
+  gtk_application_is_inhibited(
+    self.get-native-object-no-reffing, $flags
+  ).Bool
+}
+
+sub gtk_application_is_inhibited (
+  N-GObject $application, GFlag $flags --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:list-action-descriptions:
+=begin pod
+=head2 list-action-descriptions
+
+Lists the detailed action names which have associated accelerators. See C<set-accels-for-action()>.
+
+Returns: a C<undefined>-terminated array of strings, free with C<g-strfreev()> when done
+
+  method list-action-descriptions ( --> CArray[Str] )
+
+=end pod
+
+method list-action-descriptions ( --> CArray[Str] ) {
+
+  gtk_application_list_action_descriptions(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_application_list_action_descriptions (
+  N-GObject $application --> gchar-pptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:prefers-app-menu:
+=begin pod
+=head2 prefers-app-menu
+
+Determines if the desktop environment in which the application is running would prefer an application menu be shown.
+
+If this function returns C<True> then the application should call C<set-app-menu()> with the contents of an application menu, which will be shown by the desktop environment. If it returns C<False> then you should consider using an alternate approach, such as a menubar.
+
+The value returned by this function is purely advisory and you are free to ignore it. If you call C<gtk-application-set-app-menu()> even if the desktop environment doesn't support app menus, then a fallback will be provided.
+
+Applications are similarly free not to set an app menu even if the desktop environment wants to show one. In that case, a fallback will also be created by the desktop environment (GNOME, for example, uses a menu with only a "Quit" item in it).
+
+The value returned by this function never changes. Once it returns a particular value, it is guaranteed to always return the same value.
+
+You may only call this function after the application has been registered and after the base startup handler has run. You're most likely to want to use this from your own startup handler. It may also make sense to consult this function while constructing UI (in activate, open or an action activation handler) in order to determine if you should show a gear menu or not.
+
+This function will return C<False> on Mac OS and a default app menu will be created automatically with the "usual" contents of that menu typical to most Mac OS applications. If you call C<gtk-application-set-app-menu()> anyway, then this menu will be replaced with your own.
+
+Returns: C<True> if you should set an app menu
+
+  method prefers-app-menu ( --> Bool )
+
+=end pod
+
+method prefers-app-menu ( --> Bool ) {
+
+  gtk_application_prefers_app_menu(
+    self.get-native-object-no-reffing,
+  ).Bool
+}
+
+sub gtk_application_prefers_app_menu (
+  N-GObject $application --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:remove-window:
+=begin pod
+=head2 remove-window
+
+Remove a window from I<application>.
+
+If I<window> belongs to I<application> then this call is equivalent to setting the  I<application> property of I<window> to C<undefined>.
+
+The application may stop running as a result of a call to this function.
+
+  method remove-window ( N-GObject $window )
+
+=item N-GObject $window; a B<Gnome::Gtk3::Window>
+=end pod
+
+method remove-window ( $window is copy ) {
+  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+
+  gtk_application_remove_window(
+    self.get-native-object-no-reffing, $window
+  );
+}
+
+sub gtk_application_remove_window (
+  N-GObject $application, N-GObject $window
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-accels-for-action:
+=begin pod
+=head2 set-accels-for-action
+
+Sets zero or more keyboard accelerators that will trigger the given action. The first item in I<accels> will be the primary accelerator, which may be displayed in the UI.
+
+To remove all accelerators for an action, use an empty, zero-terminated array for I<accels>.
+
+For the I<detailed-action-name>, see C<g-action-parse-detailed-name()> and C<g-action-print-detailed-name()>.
+
+  method set-accels-for-action ( Str $detailed_action_name, CArray[Str] $accels )
+
+=item Str $detailed_action_name; a detailed action name, specifying an action and target to associate accelerators with
+=item CArray[Str] $accels; a list of accelerators in the format understood by C<gtk-accelerator-parse()>
+=end pod
+
+method set-accels-for-action ( Str $detailed_action_name, CArray[Str] $accels ) {
+
+  gtk_application_set_accels_for_action(
+    self.get-native-object-no-reffing, $detailed_action_name, $accels
+  );
+}
+
+sub gtk_application_set_accels_for_action (
+  N-GObject $application, gchar-ptr $detailed_action_name, gchar-pptr $accels
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-app-menu:
+=begin pod
+=head2 set-app-menu
+
+Sets or unsets the application menu for I<application>.
+
+This can only be done in the primary instance of the application, after it has been registered.  I<startup> is a good place to call this.
+
+The application menu is a single menu containing items that typically impact the application as a whole, rather than acting on a specific window or document. For example, you would expect to see “Preferences” or “Quit” in an application menu, but not “Save” or “Print”.
+
+If supported, the application menu will be rendered by the desktop environment.
+
+Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to the user selecting these menu items.
+
+  method set-app-menu ( N-GObject $app_menu )
+
+=item N-GObject $app_menu; a B<Gnome::Gtk3::MenuModel>, or C<undefined>
+=end pod
+
+method set-app-menu ( N-GObject $app_menu ) {
+
+  gtk_application_set_app_menu(
+    self.get-native-object-no-reffing, $app_menu
+  );
+}
+
+sub gtk_application_set_app_menu (
+  N-GObject $application, N-GObject $app_menu
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-menubar:
+=begin pod
+=head2 set-menubar
+
+Sets or unsets the menubar for windows of I<application>.
+
+This is a menubar in the traditional sense.
+
+This can only be done in the primary instance of the application, after it has been registered.  I<startup> is a good place to call this.
+
+Depending on the desktop environment, this may appear at the top of each window, or at the top of the screen. In some environments, if both the application menu and the menubar are set, the application menu will be presented as if it were the first item of the menubar. Other environments treat the two as completely separate — for example, the application menu may be rendered by the desktop shell while the menubar (if set) remains in each individual window.
+
+Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to the user selecting these menu items.
+
+  method set-menubar ( N-GObject $menubar )
+
+=item N-GObject $menubar; a B<Gnome::Gtk3::MenuModel>, or C<undefined>
+=end pod
+
+method set-menubar ( N-GObject $menubar ) {
+
+  gtk_application_set_menubar(
+    self.get-native-object-no-reffing, $menubar
+  );
+}
+
+sub gtk_application_set_menubar (
+  N-GObject $application, N-GObject $menubar
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:uninhibit:
+=begin pod
+=head2 uninhibit
+
+Removes an inhibitor that has been established with C<inhibit()>. Inhibitors are also cleared when the application exits.
+
+  method uninhibit ( UInt $cookie )
+
+=item UInt $cookie; a cookie that was returned by C<inhibit()>
+=end pod
+
+method uninhibit ( UInt $cookie ) {
+
+  gtk_application_uninhibit(
+    self.get-native-object-no-reffing, $cookie
+  );
+}
+
+sub gtk_application_uninhibit (
+  N-GObject $application, guint $cookie
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_application_new:
+#`{{
+=begin pod
+=head2 _gtk_application_new
+
+Creates a new B<Gnome::Gtk3::Application> instance.
+
+When using B<Gnome::Gtk3::Application>, it is not necessary to call C<gtk-init()> manually. It is called as soon as the application gets registered as the primary instance.
+
+Concretely, C<gtk-init()> is called in the default handler for the  I<startup> signal. Therefore, B<Gnome::Gtk3::Application> subclasses should chain up in their  I<startup> handler before using any GTK+ API.
+
+Note that commandline arguments are not passed to C<gtk-init()>. All GTK+ functionality that is available via commandline arguments can also be achieved by setting suitable environment variables such as `G-DEBUG`, so this should not be a big problem. If you absolutely must support GTK+ commandline arguments, you can explicitly call C<gtk-init()> before creating the application instance.
+
+If non-C<undefined>, the application ID must be valid. See C<g-application-id-is-valid()>.
+
+If no application ID is given then some features (most notably application uniqueness) will be disabled. A null application ID is only allowed with GTK+ 3.6 or later.
+
+Returns: a new B<Gnome::Gtk3::Application> instance
+
+  method _gtk_application_new ( Str $application_id, GApplicationFlags $flags --> N-GObject )
+
+=item Str $application_id; The application ID.
+=item GApplicationFlags $flags; the application flags
+=end pod
+}}
+
+sub _gtk_application_new ( gchar-ptr $application_id, GEnum $flags --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_application_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:query-end:
+=head3 query-end
+
+Emitted when the session manager is about to end the session, only
+if  I<register-session> is C<True>. Applications can
+connect to this signal and call C<inhibit()> with
+C<GTK-APPLICATION-INHIBIT-LOGOUT> to delay the end of the session
+until state has been saved.
+
+
+  method handler (
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($application),
+    *%user-options
+  );
+
+=item $application; the B<Gnome::Gtk3::Application> which emitted the signal
+
+=item $_handle_id; the registered event handler id
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:window-added:
+=head3 window-added
+
+Emitted when a B<Gnome::Gtk3::Window> is added to I<application> through
+C<add-window()>.
+
+
+  method handler (
+    Unknown type GTK_TYPE_WINDOW $window,
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($application),
+    *%user-options
+  );
+
+=item $application; the B<Gnome::Gtk3::Application> which emitted the signal
+
+=item $window; the newly-added B<Gnome::Gtk3::Window>
+
+=item $_handle_id; the registered event handler id
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:window-removed:
+=head3 window-removed
+
+Emitted when a B<Gnome::Gtk3::Window> is removed from I<application>,
+either as a side-effect of being destroyed or explicitly
+through C<remove-window()>.
+
+
+  method handler (
+    Unknown type GTK_TYPE_WINDOW $window,
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($application),
+    *%user-options
+  );
+
+=item $application; the B<Gnome::Gtk3::Application> which emitted the signal
+
+=item $window; the B<Gnome::Gtk3::Window> that is being removed
+
+=item $_handle_id; the registered event handler id
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:active-window:
+=head3 Active window: active-window
+
+The window which most recently had focus
+Widget type: GTK-TYPE-WINDOW
+
+The B<Gnome::GObject::Value> type of property I<active-window> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:app-menu:
+=head3 Application menu: app-menu
+
+The N-GObject for the application menu
+Widget type: G-TYPE-MENU-MODEL
+
+The B<Gnome::GObject::Value> type of property I<app-menu> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:menubar:
+=head3 Menubar: menubar
+
+The N-GObject for the menubar
+Widget type: G-TYPE-MENU-MODEL
+
+The B<Gnome::GObject::Value> type of property I<menubar> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:register-session:
+=head3 Register session: register-session
+
+
+Set this property to C<True> to register with the session manager.
+
+
+The B<Gnome::GObject::Value> type of property I<register-session> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:screensaver-active:
+=head3 Screensaver Active: screensaver-active
+
+
+This property is C<True> if GTK+ believes that the screensaver is
+currently active. GTK+ only tracks session state (including this)
+when  I<register-session> is set to C<True>.
+
+Tracking the screensaver state is supported on Linux.
+
+
+The B<Gnome::GObject::Value> type of property I<screensaver-active> is C<G_TYPE_BOOLEAN>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:2:_gtk_application_new:new(:app-id)
 #`{{
@@ -390,7 +1160,7 @@ selecting these menu items.
 
   method gtk_application_set_app_menu ( N-GObject $app_menu )
 
-=item N-GObject $app_menu; (allow-none): a B<GMenuModel>, or C<Any>
+=item N-GObject $app_menu; (allow-none): a B<N-GObject>, or C<Any>
 
 =end pod
 
@@ -443,7 +1213,7 @@ user selecting these menu items.
 
   method gtk_application_set_menubar ( N-GObject $menubar )
 
-=item N-GObject $menubar; (allow-none): a B<GMenuModel>, or C<Any>
+=item N-GObject $menubar; (allow-none): a B<N-GObject>, or C<Any>
 
 =end pod
 
@@ -884,7 +1654,7 @@ The B<Gnome::GObject::Value> type of property I<screensaver-active> is C<G_TYPE_
 =comment #TP:0:app-menu:
 =head3 Application menu
 
-The GMenuModel for the application menu
+The N-GObject for the application menu
 Widget type: G_TYPE_MENU_MODEL
 
 
@@ -893,7 +1663,7 @@ The B<Gnome::GObject::Value> type of property I<app-menu> is C<G_TYPE_OBJECT>.
 =comment #TP:0:menubar:
 =head3 Menubar
 
-The GMenuModel for the menubar
+The N-GObject for the menubar
 Widget type: G_TYPE_MENU_MODEL
 
 

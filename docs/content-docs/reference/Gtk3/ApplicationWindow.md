@@ -38,7 +38,7 @@ A **Gnome::Gtk3::ApplicationWindow** with a menubar
     my Gnome::Gio::MenuModel $menubar .= new(:build-id<menubar>);
     $app.set-menubar($menubar);
 
-    ...
+    …
 
     my Gnome::Gtk3::ApplicationWindow $app-window .= new(:application($app));
 
@@ -76,13 +76,6 @@ The following attributes are used when constructing submenus:
   * "label": a user-visible string to display
 
   * "icon": icon name to display
-
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ApplicationWindow implements
-
-  * Gnome::Gio::ActionMap
 
 Synopsis
 ========
@@ -136,50 +129,69 @@ Create a ApplicationWindow object using a native object returned from a builder.
 
     multi method new ( Str :$build-id! )
 
-[gtk_application_window_] set_show_menubar
-------------------------------------------
+get-help-overlay
+----------------
 
-Sets whether the window will display a menubar for the app menu and menubar as needed.
+Gets the **Gnome::Gtk3::ShortcutsWindow** that has been set up with a prior call to `set-help-overlay()`.
 
-    method gtk_application_window_set_show_menubar ( Int $show_menubar )
+Returns: the help overlay associated with *window*, or `undefined`
 
-  * Int $show_menubar; whether to show a menubar when needed
+    method get-help-overlay ( --> N-GObject )
 
-[gtk_application_window_] get_show_menubar
-------------------------------------------
-
-Returns whether the window will display a menubar for the app menu and menubar as needed.
-
-Returns: `1` if *window* will display a menubar when needed
-
-    method gtk_application_window_get_show_menubar ( --> Int )
-
-[gtk_application_window_] get_id
---------------------------------
+get-id
+------
 
 Returns the unique ID of the window. If the window has not yet been added to a **Gnome::Gtk3::Application**, returns `0`.
 
 Returns: the unique ID for *window*, or `0` if the window has not yet been added to a **Gnome::Gtk3::Application**
 
-    method gtk_application_window_get_id ( --> UInt )
+    method get-id ( --> UInt )
 
-[gtk_application_window_] set_help_overlay
-------------------------------------------
+get-show-menubar
+----------------
+
+Returns whether the window will display a menubar for the app menu and menubar as needed.
+
+Returns: `True` if *window* will display a menubar when needed
+
+    method get-show-menubar ( --> Bool )
+
+set-help-overlay
+----------------
 
 Associates a shortcuts window with the application window, and sets up an action with the name win.show-help-overlay to present it.
 
-*window* takes resposibility for destroying *help_overlay*.
+*window* takes resposibility for destroying *help-overlay*.
 
-    method gtk_application_window_set_help_overlay ( N-GObject $help_overlay )
+    method set-help-overlay ( N-GObject $help_overlay )
 
-  * N-GObject $help_overlay; (nullable): a **Gnome::Gtk3::ShortcutsWindow**
+  * N-GObject $help_overlay; a **Gnome::Gtk3::ShortcutsWindow**
 
-[gtk_application_window_] get_help_overlay
-------------------------------------------
+set-show-menubar
+----------------
 
-Gets the **Gnome::Gtk3::ShortcutsWindow** that has been set up with a prior call to `gtk_application_window_set_help_overlay()`.
+Sets whether the window will display a menubar for the app menu and menubar as needed.
 
-Returns: (transfer none) (nullable): the help overlay associated with *window*, or `Any`
+    method set-show-menubar ( Bool $show_menubar )
 
-    method gtk_application_window_get_help_overlay ( --> N-GObject )
+  * Bool $show_menubar; whether to show a menubar when needed
+
+Properties
+==========
+
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new;
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
+
+Supported properties
+--------------------
+
+### Show a menubar: show-menubar
+
+If this property is `True`, the window will display a menubar that includes the app menu and menubar, unless these are shown by the desktop shell. See `gtk-application-set-app-menu()` and `gtk-application-set-menubar()`.
+
+If `False`, the window will not display a menubar, regardless * of whether the desktop shell is showing the menus or not. The **Gnome::GObject::Value** type of property *show-menubar* is `G_TYPE_BOOLEAN`.
 
