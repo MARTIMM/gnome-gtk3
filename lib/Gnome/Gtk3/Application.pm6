@@ -721,7 +721,7 @@ sub gtk_application_set_app_menu (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-menubar:
+#TM:4:set-menubar:*
 =begin pod
 =head2 set-menubar
 
