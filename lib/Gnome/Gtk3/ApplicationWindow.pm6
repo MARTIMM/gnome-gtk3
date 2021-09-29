@@ -207,21 +207,31 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TM:0:get-help-overlay:
+#TM:0:get-help-overlay-rk:
 =begin pod
-=head2 get-help-overlay
+=head2 get-help-overlay, get-help-overlay-rk
 
 Gets the B<Gnome::Gtk3::ShortcutsWindow> that has been set up with a prior call to C<set-help-overlay()>.
 
 Returns: the help overlay associated with I<window>, or C<undefined>
 
   method get-help-overlay ( --> N-GObject )
+  method get-help-overlay-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
 method get-help-overlay ( --> N-GObject ) {
-
   gtk_application_window_get_help_overlay(
     self.get-native-object-no-reffing,
+  )
+}
+
+method get-help-overlay-rk ( *%options --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_application_window_get_help_overlay(self.get-native-object-no-reffing),
+    |%options
   )
 }
 
@@ -244,7 +254,6 @@ Returns: the unique ID for I<window>, or `0` if the window has not yet been adde
 =end pod
 
 method get-id ( --> UInt ) {
-
   gtk_application_window_get_id(
     self.get-native-object-no-reffing,
   )
@@ -295,7 +304,8 @@ I<window> takes resposibility for destroying I<help-overlay>.
 =end pod
 
 method set-help-overlay ( $help_overlay is copy ) {
-  $help_overlay .= get-native-object-no-reffing unless $help_overlay ~~ N-GObject;
+  $help_overlay .= get-native-object-no-reffing
+    unless $help_overlay ~~ N-GObject;
 
   gtk_application_window_set_help_overlay(
     self.get-native-object-no-reffing, $help_overlay

@@ -277,7 +277,6 @@ GTK+ will keep the I<application> running as long as it has any windows.
 
 method add-window ( $window is copy ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
   gtk_application_add_window(
     self.get-native-object-no-reffing, $window
   );
@@ -348,8 +347,9 @@ sub gtk_application_get_actions_for_accel (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-active-window:
+#TM:0:get-active-window-rk:
 =begin pod
-=head2 get-active-window
+=head2 get-active-window, get-active-window-rk
 
 Gets the “active” window for the application.
 
@@ -358,14 +358,22 @@ The active window is the one that was most recently focused (within the applicat
 Returns: the active window, or C<undefined> if there isn't one.
 
   method get-active-window ( --> N-GObject )
+  method get-active-window-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
 method get-active-window ( --> N-GObject ) {
+  gtk_application_get_active_window(self.get-native-object-no-reffing)
+}
 
-  gtk_application_get_active_window(
-    self.get-native-object-no-reffing,
-  )
+method get-active-window-rk ( *%options --> Gnome::GObject::Object ) {
+  my N-GObject $no = gtk_application_get_active_window(
+    self.get-native-object-no-reffing
+  );
+
+  self._wrap-native-type-from-no( $no, |%options)
 }
 
 sub gtk_application_get_active_window (
@@ -375,22 +383,31 @@ sub gtk_application_get_active_window (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-app-menu:
+#TM:0:get-app-menu-rk:
 =begin pod
-=head2 get-app-menu
+=head2 get-app-menu, get-app-menu-rk
 
 Returns the menu model that has been set with C<set-app-menu()>.
 
 Returns: the application menu of I<application> or C<undefined> if no application menu has been set.
 
   method get-app-menu ( --> N-GObject )
+  method get-app-menu-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
 method get-app-menu ( --> N-GObject ) {
+  gtk_application_get_app_menu(self.get-native-object-no-reffing)
+}
 
-  gtk_application_get_app_menu(
-    self.get-native-object-no-reffing,
-  )
+method get-app-menu-rk ( *%options --> Gnome::GObject::Object ) {
+  my N-GObject $no = gtk_application_get_app_menu(
+    self.get-native-object-no-reffing
+  );
+
+  self._wrap-native-type-from-no( $no, |%options)
 }
 
 sub gtk_application_get_app_menu (
@@ -400,20 +417,30 @@ sub gtk_application_get_app_menu (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-menu-by-id:
+#TM:0:get-menu-by-id-rk:
 =begin pod
-=head2 get-menu-by-id
+=head2 get-menu-by-id, get-menu-by-id-rk
 
 Gets a menu from automatically loaded resources. See L<automatic-resources|ttps://developer-old.gnome.org/gtk3/stable/GtkApplication.html#automatic-resources> for more information.
 
   method get-menu-by-id ( Str $id --> N-GObject )
+  method get-menu-by-id-rk ( Str $id, :$child-type? --> Gnome::GObject::Object )
 
 =item Str $id; the id of the menu to look up
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 =end pod
 
 method get-menu-by-id ( Str $id --> N-GObject ) {
-
   gtk_application_get_menu_by_id(
     self.get-native-object-no-reffing, $id
+  )
+}
+
+method get-menu-by-id-rk ( Str $id, *%options --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_application_get_menu_by_id(self.get-native-object-no-reffing, $id),
+    |%options
   )
 }
 
@@ -424,21 +451,31 @@ sub gtk_application_get_menu_by_id (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-menubar:
+#TM:0:get-menubar-rk:
 =begin pod
-=head2 get-menubar
+=head2 get-menubar, get-menubar-rk
 
 Returns the menu model that has been set with C<set-menubar()>.
 
 Returns: the menubar for windows of I<application>
 
   method get-menubar ( --> N-GObject )
+  method get-menubar-rk ( :$child-type? --> Gnome::GObject::Object )
+
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
 method get-menubar ( --> N-GObject ) {
-
   gtk_application_get_menubar(
     self.get-native-object-no-reffing,
+  )
+}
+
+method get-menubar-rk ( *%options --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_application_get_menubar(self.get-native-object-no-reffing),
+    |%options
   )
 }
 
@@ -449,8 +486,9 @@ sub gtk_application_get_menubar (
 
 #-------------------------------------------------------------------------------
 #TM:0:get-window-by-id:
+#TM:0:get-window-by-id-rk:
 =begin pod
-=head2 get-window-by-id
+=head2 get-window-by-id, get-window-by-id-rk
 
 Returns the B<Gnome::Gtk3::ApplicationWindow> with the given ID.
 
@@ -459,14 +497,24 @@ The ID of a B<Gnome::Gtk3::ApplicationWindow> can be retrieved with C<window-get
 Returns: the window with ID I<id>, or C<undefined> if there is no window with this ID
 
   method get-window-by-id ( UInt $id --> N-GObject )
+  method get-window-by-id-rk (
+    UInt $id, :$child-type? --> Gnome::GObject::Object
+  )
 
 =item UInt $id; an identifier number
+=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 =end pod
 
 method get-window-by-id ( UInt $id --> N-GObject ) {
-
   gtk_application_get_window_by_id(
     self.get-native-object-no-reffing, $id
+  )
+}
+
+method get-window-by-id-rk ( UInt $id, *%options --> Gnome::GObject::Object ) {
+  self._wrap-native-type-from-no(
+    gtk_application_get_window_by_id( self.get-native-object-no-reffing, $id),
+    |%options
   )
 }
 
@@ -530,7 +578,6 @@ Returns: A non-zero cookie that is used to uniquely identify this request. It sh
 
 method inhibit ( $window is copy, Int $flags, Str $reason --> UInt ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
   gtk_application_inhibit(
     self.get-native-object-no-reffing, $window, $flags, $reason
   )
@@ -648,7 +695,6 @@ The application may stop running as a result of a call to this function.
 
 method remove-window ( $window is copy ) {
   $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
-
   gtk_application_remove_window(
     self.get-native-object-no-reffing, $window
   );
@@ -708,8 +754,8 @@ Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to t
 =item N-GObject $app_menu; a B<Gnome::Gtk3::MenuModel>, or C<undefined>
 =end pod
 
-method set-app-menu ( N-GObject $app_menu ) {
-
+method set-app-menu ( $app_menu is copy ) {
+  $app_menu .= get-native-object-no-reffing unless $app_menu ~~ N-GObject;
   gtk_application_set_app_menu(
     self.get-native-object-no-reffing, $app_menu
   );
@@ -740,11 +786,9 @@ Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to t
 =item N-GObject $menubar; a B<Gnome::Gtk3::MenuModel>, or C<undefined>
 =end pod
 
-method set-menubar ( N-GObject $menubar ) {
-
-  gtk_application_set_menubar(
-    self.get-native-object-no-reffing, $menubar
-  );
+method set-menubar ( $menubar is copy ) {
+  $menubar .= get-native-object-no-reffing unless $menubar ~~ N-GObject;
+  gtk_application_set_menubar( self.get-native-object-no-reffing, $menubar);
 }
 
 sub gtk_application_set_menubar (
