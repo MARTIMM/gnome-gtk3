@@ -153,8 +153,8 @@ Returns: a `undefined`-terminated array of actions for *accel*
 
   * Str $accel; an accelerator that can be parsed by `gtk-accelerator-parse()`
 
-get-active-window
------------------
+get-active-window, get-active-window-rk
+---------------------------------------
 
 Gets the “active” window for the application.
 
@@ -163,36 +163,48 @@ The active window is the one that was most recently focused (within the applicat
 Returns: the active window, or `undefined` if there isn't one.
 
     method get-active-window ( --> N-GObject )
+    method get-active-window-rk ( :$child-type? --> Gnome::GObject::Object )
 
-get-app-menu
-------------
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+
+get-app-menu, get-app-menu-rk
+-----------------------------
 
 Returns the menu model that has been set with `set-app-menu()`.
 
 Returns: the application menu of *application* or `undefined` if no application menu has been set.
 
     method get-app-menu ( --> N-GObject )
+    method get-app-menu-rk ( :$child-type? --> Gnome::GObject::Object )
 
-get-menu-by-id
---------------
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+
+get-menu-by-id, get-menu-by-id-rk
+---------------------------------
 
 Gets a menu from automatically loaded resources. See [automatic-resources](ttps://developer-old.gnome.org/gtk3/stable/GtkApplication.html#automatic-resources) for more information.
 
     method get-menu-by-id ( Str $id --> N-GObject )
+    method get-menu-by-id-rk ( Str $id, :$child-type? --> Gnome::GObject::Object )
 
   * Str $id; the id of the menu to look up
 
-get-menubar
------------
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+
+get-menubar, get-menubar-rk
+---------------------------
 
 Returns the menu model that has been set with `set-menubar()`.
 
 Returns: the menubar for windows of *application*
 
     method get-menubar ( --> N-GObject )
+    method get-menubar-rk ( :$child-type? --> Gnome::GObject::Object )
 
-get-window-by-id
-----------------
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+
+get-window-by-id, get-window-by-id-rk
+-------------------------------------
 
 Returns the **Gnome::Gtk3::ApplicationWindow** with the given ID.
 
@@ -201,8 +213,13 @@ The ID of a **Gnome::Gtk3::ApplicationWindow** can be retrieved with `window-get
 Returns: the window with ID *id*, or `undefined` if there is no window with this ID
 
     method get-window-by-id ( UInt $id --> N-GObject )
+    method get-window-by-id-rk (
+      UInt $id, :$child-type? --> Gnome::GObject::Object
+    )
 
   * UInt $id; an identifier number
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-windows
 -----------
