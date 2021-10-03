@@ -7,7 +7,8 @@ layout: sidebar
 # Release notes
 
 #### 2021-09-26 0.44.2:
-* Rewite pod doc and method ordering of **Gnome::Gtk3::Application** and **Gnome::Gtk3::ApplicationWindow**. Also added methods returning Raku objects next to the original methods returning native objects.
+* Rewite pod doc and method ordering of **Gnome::Gtk3::Dialog** **Gnome::Gtk3::Application** and **Gnome::Gtk3::ApplicationWindow**. Also added methods returning Raku objects next to the original methods returning native objects.
+* Bugfix in **Gnome::Gtk3::ComboBoxText**. Method `new()` did not recognize the `:native-object` option.
 
 #### 2021-09-24 0.44.1:
 * Methods ending in `…-rk()` have `:child-type` added where it is possible to inherit from the returned object type.

@@ -21,11 +21,13 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $cbt.append-text('Amerika');
-  $cbt.append-text('Australia');
-  $cbt.append-text('China');
-  $cbt.append-text('Great-Brittain');
-  $cbt.append-text('Netherlands');
+  lives-ok {
+    $cbt.append-text('Amerika');
+    $cbt.append-text('Australia');
+    $cbt.append-text('China');
+    $cbt.append-text('Great-Brittain');
+    $cbt.append-text('Netherlands');
+  }, '.append-text()';
 }
 
 #-------------------------------------------------------------------------------

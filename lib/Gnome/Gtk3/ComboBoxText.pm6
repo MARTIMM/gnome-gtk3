@@ -108,7 +108,7 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::Button' or %options<GtkButton> {
+  if self.^name eq 'Gnome::Gtk3::ComboBoxText' or %options<GtkComboBoxText> {
 
     if self.is-valid { }
 
@@ -135,23 +135,23 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      ##`{{ when there are no defaults use this
+      #`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      #}}
+      }}
 
       ## create default object
       else {
         $no = gtk_combo_box_text_new;
       }
-
+note 'no: ', $no.raku;
       self.set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkApplication');
+    self.set-class-info('GtkComboBoxText');
   }
 
 #`{{
