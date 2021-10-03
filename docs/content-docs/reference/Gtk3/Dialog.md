@@ -115,7 +115,7 @@ Example
     # show the dialog
     my Int $response = $dialog.gtk-dialog-run;
     if $response == GTK_RESPONSE_ACCEPT {
-    ...
+      …
     }
 
 Types
@@ -165,9 +165,13 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
+
+### :title, :parent, :flags, :buttons-spec
 
 Create a dialog with title flags and buttons.
 
@@ -176,142 +180,138 @@ Create a dialog with title flags and buttons.
       List :$buttons-spec
     )
 
-Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
+### :native-object
+
+Create a Dialog object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a Dialog object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-[[gtk_] dialog_] add_action_widget
-----------------------------------
+add-action-widget
+-----------------
 
-Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, connecting a signal handler that will emit the *response* signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the *action_area* field of the **Gnome::Gtk3::Dialog** struct.
+Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, connecting a signal handler that will emit the *response* signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the *action-area* field of the **Gnome::Gtk3::Dialog** struct.
 
-    method gtk_dialog_add_action_widget ( N-GObject $child, Int $response_id )
+    method add-action-widget ( N-GObject $child, Int() $response_id )
 
   * N-GObject $child; an activatable widget
 
-  * Int $response_id; response ID for *child*
+  * Int() $response_id; response ID for *child*
 
-[[gtk_] dialog_] add_button
----------------------------
+add-button
+----------
 
-Adds a button with the given text and sets things up so that clicking the button will emit the *response* signal with the given *response_id*. The button is appended to the end of the dialog’s action area. The button widget is returned, but usually you don’t need it.
+Adds a button with the given text and sets things up so that clicking the button will emit the *response* signal with the given *response-id*. The button is appended to the end of the dialog’s action area. The button widget is returned, but usually you don’t need it.
 
-Returns: (transfer none): the **Gnome::Gtk3::Button** widget that was added
+Returns: the **Gnome::Gtk3::Button** widget that was added
 
-    method gtk_dialog_add_button ( Str $button_text, Int $response_id --> N-GObject  )
+    method add-button ( Str $button_text, Int() $response_id --> N-GObject )
 
   * Str $button_text; text of button
 
-  * Int $response_id; response ID for the button
+  * Int() $response_id; response ID for the button
 
-[[gtk_] dialog_] set_response_sensitive
----------------------------------------
-
-Calls `gtk_widget_set_sensitive (widget, *setting*)` for each widget in the dialog’s action area with the given *response_id*. A convenient way to sensitize/desensitize dialog buttons.
-
-    method gtk_dialog_set_response_sensitive ( Int $response_id, Int $setting )
-
-  * Int $response_id; a response ID
-
-  * Int $setting; `1` for sensitive
-
-[[gtk_] dialog_] set_default_response
+get-content-area, get-content-area-rk
 -------------------------------------
 
-Sets the last widget in the dialog’s action area with the given *$response_id* as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
+Returns the content area of *dialog*.
 
-    method gtk_dialog_set_default_response ( Int $response_id )
+Returns: (type Gtk.Box) : the content area **Gnome::Gtk3::Box**.
 
-  * Int $response_id; a response ID
+    method get-content-area ( --> N-GObject )
+    method get-content-area ( --> Gnome::Gtk3::Box )
 
-[[gtk_] dialog_] get_widget_for_response
-----------------------------------------
+get-header-bar, get-header-bar-rk
+---------------------------------
 
-Gets the widget button that uses the given response ID in the action area of a dialog.
+Returns the header bar of *dialog*. Note that the headerbar is only used by the dialog if the *use-header-bar* property is `True`.
 
-Returns: the *widget* button that uses the given *response_id*, or undefined.
+Returns: the header bar
 
-    method gtk_dialog_get_widget_for_response ( Int $response_id --> N-GObject  )
+    method get-header-bar ( --> N-GObject )
+    method get-header-bar-rk ( --> Gnome::Gtk3::HeaderBar )
 
-  * Int $response_id; the response ID used by the *dialog* widget
-
-[[gtk_] dialog_] get_response_for_widget
-----------------------------------------
+get-response-for-widget
+-----------------------
 
 Gets the response id of a widget in the action area of a dialog.
 
 Returns: the response id of *widget*, or `GTK_RESPONSE_NONE` if *widget* doesn’t have a response id set.
 
-    method gtk_dialog_get_response_for_widget ( N-GObject $widget --> Int  )
+    method get-response-for-widget ( N-GObject $widget --> Int )
 
   * N-GObject $widget; a widget in the action area of *dialog*
 
-[gtk_] dialog_response
-----------------------
+get-widget-for-response
+-----------------------
+
+Gets the widget button that uses the given response ID in the action area of a dialog.
+
+Returns: the *widget* button that uses the given *response-id*, or `undefined`.
+
+    method get-widget-for-response ( Int() $response_id --> N-GObject )
+
+  * Int() $response_id; the response ID used by the *dialog* widget
+
+response
+--------
 
 Emits the *response* signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or `run()` will be monitoring the *response* signal and take appropriate action.
 
-    method gtk_dialog_response ( Int $response_id )
+    method response ( Int() $response_id )
 
-  * Int $response_id; response ID
+  * Int() $response_id; response ID
 
 run
 ---
 
-Blocks in a recursive main loop until the dialog either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `run()`, `run()` returns **GTK_RESPONSE_NONE**. Otherwise, it returns the response ID from the *response* signal emission.
+Blocks in a recursive main loop until the *dialog* either emits the *response* signal, or is destroyed. If the dialog is destroyed during the call to `run()`, `gtk-dialog-run()` returns **Gnome::Gtk3::TK-RESPONSE-NONE**. Otherwise, it returns the response ID from the *response* signal emission.
 
-Before entering the recursive main loop, `run()` calls `gtk_widget_show()` on the dialog for you. Note that you still need to show any children of the dialog yourself.
+Before entering the recursive main loop, `gtk-dialog-run()` calls `gtk-widget-show()` on the dialog for you. Note that you still need to show any children of the dialog yourself.
 
-During `run()`, the default behavior of *delete-event* is disabled; if the dialog receives a *delete_event*, it will not be destroyed as windows usually are, and `run()` will return **GTK_RESPONSE_DELETE_EVENT**. Also, during `run()` the dialog will be modal. You can force `run()` to return at any time by calling `gtk_dialog_response()` to emit the *response* signal. Destroying the dialog during `run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
+During `gtk-dialog-run()`, the default behavior of *delete-event* is disabled; if the dialog receives *delete-event*, it will not be destroyed as windows usually are, and `gtk-dialog-run()` will return **Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT**. Also, during `gtk-dialog-run()` the dialog will be modal. You can force `gtk-dialog-run()` to return at any time by calling `gtk-dialog-response()` to emit the *response* signal. Destroying the dialog during `gtk-dialog-run()` is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
 
-After `run()` returns, you are responsible for hiding or destroying the dialog if you wish to do so.
+After `gtk-dialog-run()` returns, you are responsible for hiding or destroying the dialog if you wish to do so.
 
-Typical usage of this function might be:
+Typical usage of this function might be: |[<!-- language="C" --> GtkWidget *dialog = `gtk-dialog-new()`; // Set up dialog...
 
-    given GtkResponseType($dialog.run) {
-      when GTK_RESPONSE_ACCEPT {
-        do_application_specific_something();
-      }
+int result = gtk-dialog-run (GTK-DIALOG (dialog)); switch (result) { case GTK-RESPONSE-ACCEPT: // `do-application-specific-something()`; break; default: // `do-nothing-since-dialog-was-cancelled()`; break; } gtk-widget-destroy (dialog); ]|
 
-      default {
-        do_nothing_since_dialog_was_cancelled();
-      }
-    }
-
-    $dialog.gtk_widget_destroy;
-
-Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a `run()` call.
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a `gtk-dialog-run()` call.
 
 Returns: response ID
 
-    method run ( --> Int  )
+    method run ( --> Int )
 
-[[gtk_] dialog_] get_content_area
----------------------------------
+set-default-response
+--------------------
 
-Returns the content area of *dialog*.
+Sets the last widget in the dialog’s action area with the given *response-id* as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
 
-Returns: (type **Gnome::Gtk3::.Box**) the content area **Gnome::Gtk3::Box**.
+    method set-default-response ( Int() $response_id )
 
-    method gtk_dialog_get_content_area ( --> N-GObject  )
+  * Int() $response_id; a response ID
 
-[[gtk_] dialog_] get_header_bar
--------------------------------
+set-response-sensitive
+----------------------
 
-Returns the header bar of *dialog*. Note that the headerbar is only used by the dialog if the *use-header-bar* property is `1`.
+Calls `gtk-widget-set-sensitive (widget, *setting*)` for each widget in the dialog’s action area with the given *response-id*. A convenient way to sensitize/desensitize dialog buttons.
 
-Returns: (transfer none): the header bar
+    method set-response-sensitive ( Int() $response_id, Bool $setting )
 
-    method gtk_dialog_get_header_bar ( --> N-GObject  )
+  * Int() $response_id; a response ID
+
+  * Bool $setting; `True` for sensitive
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -319,7 +319,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -330,61 +330,62 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
 
-### response
+### close
 
-Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls `gtk_dialog_response()`. On a delete event, the response ID is **GTK_RESPONSE_DELETE_EVENT**. Otherwise, it depends on which action widget was clicked.
+The *close* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user uses a keybinding to close the dialog.
+
+The default binding for this signal is the Escape key.
 
     method handler (
-      int32 $response_id,
-      Int :$_handler_id,
+      ,
+      *%user-options
+    );
+
+  * $_handle_id; the registered event handler id
+
+### response
+
+Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls `response()`. On a delete event, the response ID is **Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT**. Otherwise, it depends on which action widget was clicked.
+
+    method handler (
+      Int $response_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($dialog),
       *%user-options
     );
 
   * $dialog; the object on which the signal is emitted
 
-  * $response_id; the response ID. There is a caveat here when using just Int as a type. All enumerations in GTK+ are int32 type integers. Here the predefined response ids are negative so the user could define other responses using positive numbers. When the Int type is used, one will not receive the negative numbers because they are returned as a positive number. E.g. GTK_RESPONSE_REJECT is -2 but you will get 4294967294 which is 0xfffffffe.
+  * $response_id; the response ID
 
-### close
-
-The *close* signal is a keybinding signal which gets emitted when the user uses a keybinding to close the dialog.
-
-The default binding for this signal is the Escape key.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($dialog),
-      *%user-options
-    );
+  * $_handle_id; the registered event handler id
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Content area border
+### Content area border: content-area-border
 
-The default border width used around the content area of the dialog, as returned by `gtk_dialog_get_content_area()`, unless `gtk_container_set_border_width()` was called on that widget directly.
-
-The **Gnome::GObject::Value** type of property *content-area-border* is `G_TYPE_INT`.
+The default border width used around the content area of the dialog, as returned by `get-content-area()`, unless `gtk-container-set-border-width()` * was called on that widget directly. The **Gnome::GObject::Value** type of property *content-area-border* is `G_TYPE_INT`.
 

@@ -76,9 +76,11 @@ An example of a dialog UI definition fragment:
     </action-widgets>
   </object>
 
+
 =head2 See Also
 
 B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
+
 
 =head1 Synopsis
 =head2 Declaration
@@ -86,9 +88,11 @@ B<Gnome::Gtk3::Window>, B<Gnome::Gtk3::Button>
   unit class Gnome::Gtk3::Dialog;
   also is Gnome::Gtk3::Window;
 
+
 =head2 Uml Diagram
 
 ![](plantuml/Dialog.svg)
+
 
 =head2 Inheriting this class
 
@@ -108,6 +112,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
+
 =head2 Example
 
   my Gnome::Gtk3::Dialog $dialog .= new(:build-id<simple-dialog>);
@@ -115,7 +120,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
   # show the dialog
   my Int $response = $dialog.gtk-dialog-run;
   if $response == GTK_RESPONSE_ACCEPT {
-  ...
+    …
   }
 
 =end pod
@@ -129,6 +134,8 @@ use Gnome::N::NativeLib;
 use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Box;
+use Gnome::Gtk3::HeaderBar;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkdialog.h
@@ -204,9 +211,13 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new plain object.
 
   multi method new ( )
+
+=head3 :title, :parent, :flags, :buttons-spec
 
 Create a dialog with title flags and buttons.
 
@@ -215,11 +226,15 @@ Create a dialog with title flags and buttons.
     List :$buttons-spec
   )
 
-Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
+=head3 :native-object
+
+Create a Dialog object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+=head3 :build-id
+
+Create a Dialog object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
@@ -246,8 +261,7 @@ submethod BUILD ( *%options ) {
     if self.is-valid { }
 
     # process all named arguments
-    elsif %options<native-object>:exists or %options<widget>:exists or
-      %options<build-id>:exists { }
+    elsif %options<native-object>:exists or %options<build-id>:exists { }
 
     else {
       my $no;
@@ -260,6 +274,26 @@ submethod BUILD ( *%options ) {
         $parent .= get-native-object unless $parent ~~ N-GObject;
         $no = _gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons);
       }
+
+      #`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      }}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
 
       else {
         $no = _gtk_dialog_new();
@@ -288,7 +322,540 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#-------------------------------------------------------------------------------
+#TM:0:add-action-widget:
+=begin pod
+=head2 add-action-widget
 
+Adds an activatable widget to the action area of a B<Gnome::Gtk3::Dialog>, connecting a signal handler that will emit the  I<response> signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the I<action-area> field of the B<Gnome::Gtk3::Dialog> struct.
+
+  method add-action-widget ( N-GObject $child, Int() $response_id )
+
+=item N-GObject $child; an activatable widget
+=item Int() $response_id; response ID for I<child>
+=end pod
+
+method add-action-widget ( $child is copy, Int() $response_id ) {
+  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+
+  gtk_dialog_add_action_widget(
+    self._f('GtkDialog'), $child, $response_id
+  );
+}
+
+sub gtk_dialog_add_action_widget (
+  N-GObject $dialog, N-GObject $child, gint $response_id
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:add-button:
+=begin pod
+=head2 add-button
+
+Adds a button with the given text and sets things up so that clicking the button will emit the  I<response> signal with the given I<response-id>. The button is appended to the end of the dialog’s action area. The button widget is returned, but usually you don’t need it.
+
+Returns: the B<Gnome::Gtk3::Button> widget that was added
+
+  method add-button ( Str $button_text, Int() $response_id --> N-GObject )
+
+=item Str $button_text; text of button
+=item Int() $response_id; response ID for the button
+=end pod
+
+method add-button ( Str $button_text, Int() $response_id --> N-GObject ) {
+
+  gtk_dialog_add_button(
+    self._f('GtkDialog'), $button_text, $response_id
+  )
+}
+
+sub gtk_dialog_add_button (
+  N-GObject $dialog, gchar-ptr $button_text, gint $response_id --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:add-buttons:
+=begin pod
+=head2 add-buttons
+
+Adds more buttons, same as calling C<add-button()> repeatedly. The variable argument list should be C<undefined>-terminated as with C<gtk-dialog-new-with-buttons()>. Each button must have both text and response ID.
+
+  method add-buttons ( Str $first_button_text )
+
+=item Str $first_button_text; button text @...: response ID for first button, then more text-response-id pairs
+=end pod
+
+method add-buttons ( Str $first_button_text ) {
+
+  gtk_dialog_add_buttons(
+    self._f('GtkDialog'), $first_button_text
+  );
+}
+
+sub gtk_dialog_add_buttons (
+  N-GObject $dialog, gchar-ptr $first_button_text, Any $any = Any
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-content-area:
+#TM:1:get-content-area-rk:
+=begin pod
+=head2 get-content-area, get-content-area-rk
+
+Returns the content area of I<dialog>.
+
+Returns: (type Gtk.Box) : the content area B<Gnome::Gtk3::Box>.
+
+  method get-content-area ( --> N-GObject )
+  method get-content-area ( --> Gnome::Gtk3::Box )
+
+=end pod
+
+method get-content-area ( --> N-GObject ) {
+  gtk_dialog_get_content_area(
+    self._f('GtkDialog'),
+  )
+}
+
+method get-content-area-rk ( --> Gnome::Gtk3::Box ) {
+  Gnome::Gtk3::Box.new(
+    :native-object(gtk_dialog_get_content_area(self._f('GtkDialog')))
+  )
+}
+
+sub gtk_dialog_get_content_area (
+  N-GObject $dialog --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-header-bar:
+#TM:1:get-header-bar-rk:
+=begin pod
+=head2 get-header-bar, get-header-bar-rk
+
+Returns the header bar of I<dialog>. Note that the headerbar is only used by the dialog if the  I<use-header-bar> property is C<True>.
+
+Returns: the header bar
+
+  method get-header-bar ( --> N-GObject )
+  method get-header-bar-rk ( --> Gnome::Gtk3::HeaderBar )
+
+=end pod
+
+method get-header-bar ( --> N-GObject ) {
+  gtk_dialog_get_header_bar(
+    self._f('GtkDialog'),
+  )
+}
+
+method get-header-bar-rk ( --> Gnome::Gtk3::HeaderBar ) {
+  Gnome::Gtk3::HeaderBar.new(
+    :native-object(gtk_dialog_get_header_bar(self._f('GtkDialog')))
+  )
+}
+
+sub gtk_dialog_get_header_bar (
+  N-GObject $dialog --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-response-for-widget:
+=begin pod
+=head2 get-response-for-widget
+
+Gets the response id of a widget in the action area of a dialog.
+
+Returns: the response id of I<widget>, or C<GTK_RESPONSE_NONE> if I<widget> doesn’t have a response id set.
+
+  method get-response-for-widget ( N-GObject $widget --> Int )
+
+=item N-GObject $widget; a widget in the action area of I<dialog>
+=end pod
+
+method get-response-for-widget ( $widget is copy --> Int ) {
+  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+
+  gtk_dialog_get_response_for_widget(
+    self._f('GtkDialog'), $widget
+  )
+}
+
+sub gtk_dialog_get_response_for_widget (
+  N-GObject $dialog, N-GObject $widget --> gint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-widget-for-response:
+=begin pod
+=head2 get-widget-for-response
+
+Gets the widget button that uses the given response ID in the action area of a dialog.
+
+Returns: the I<widget> button that uses the given I<response-id>, or C<undefined>.
+
+  method get-widget-for-response ( Int() $response_id --> N-GObject )
+
+=item Int() $response_id; the response ID used by the I<dialog> widget
+=end pod
+
+method get-widget-for-response ( Int() $response_id --> N-GObject ) {
+
+  gtk_dialog_get_widget_for_response(
+    self._f('GtkDialog'), $response_id
+  )
+}
+
+sub gtk_dialog_get_widget_for_response (
+  N-GObject $dialog, gint $response_id --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:response:
+=begin pod
+=head2 response
+
+Emits the  I<response> signal with the given response ID. Used to indicate that the user has responded to the dialog in some way; typically either you or C<run()> will be monitoring the I<response> signal and take appropriate action.
+
+  method response ( Int() $response_id )
+
+=item Int() $response_id; response ID
+=end pod
+
+method response ( Int() $response_id ) {
+
+  gtk_dialog_response(
+    self._f('GtkDialog'), $response_id
+  );
+}
+
+sub gtk_dialog_response (
+  N-GObject $dialog, gint $response_id
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:run:
+=begin pod
+=head2 run
+
+Blocks in a recursive main loop until the I<dialog> either emits the  I<response> signal, or is destroyed. If the dialog is destroyed during the call to C<run()>, C<gtk-dialog-run()> returns B<Gnome::Gtk3::TK-RESPONSE-NONE>. Otherwise, it returns the response ID from the I<response> signal emission.
+
+Before entering the recursive main loop, C<gtk-dialog-run()> calls C<gtk-widget-show()> on the dialog for you. Note that you still need to show any children of the dialog yourself.
+
+During C<gtk-dialog-run()>, the default behavior of  I<delete-event> is disabled; if the dialog receives I<delete-event>, it will not be destroyed as windows usually are, and C<gtk-dialog-run()> will return B<Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT>. Also, during C<gtk-dialog-run()> the dialog will be modal. You can force C<gtk-dialog-run()> to return at any time by calling C<gtk-dialog-response()> to emit the I<response> signal. Destroying the dialog during C<gtk-dialog-run()> is a very bad idea, because your post-run code won’t know whether the dialog was destroyed or not.
+
+After C<gtk-dialog-run()> returns, you are responsible for hiding or destroying the dialog if you wish to do so.
+
+Typical usage of this function might be: |[<!-- language="C" --> GtkWidget *dialog = C<gtk-dialog-new()>; // Set up dialog...
+
+int result = gtk-dialog-run (GTK-DIALOG (dialog)); switch (result) { case GTK-RESPONSE-ACCEPT: // C<do-application-specific-something()>; break; default: // C<do-nothing-since-dialog-was-cancelled()>; break; } gtk-widget-destroy (dialog); ]|
+
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a C<gtk-dialog-run()> call.
+
+Returns: response ID
+
+  method run ( --> Int )
+
+=end pod
+
+method run ( --> Int ) {
+
+  gtk_dialog_run(
+    self._f('GtkDialog'),
+  )
+}
+
+sub gtk_dialog_run (
+  N-GObject $dialog --> gint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-default-response:
+=begin pod
+=head2 set-default-response
+
+Sets the last widget in the dialog’s action area with the given I<response-id> as the default widget for the dialog. Pressing “Enter” normally activates the default widget.
+
+  method set-default-response ( Int() $response_id )
+
+=item Int() $response_id; a response ID
+=end pod
+
+method set-default-response ( Int() $response_id ) {
+
+  gtk_dialog_set_default_response(
+    self._f('GtkDialog'), $response_id
+  );
+}
+
+sub gtk_dialog_set_default_response (
+  N-GObject $dialog, gint $response_id
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-response-sensitive:
+=begin pod
+=head2 set-response-sensitive
+
+Calls `gtk-widget-set-sensitive (widget, I<setting>)` for each widget in the dialog’s action area with the given I<response-id>. A convenient way to sensitize/desensitize dialog buttons.
+
+  method set-response-sensitive ( Int() $response_id, Bool $setting )
+
+=item Int() $response_id; a response ID
+=item Bool $setting; C<True> for sensitive
+=end pod
+
+method set-response-sensitive ( Int() $response_id, Bool $setting ) {
+
+  gtk_dialog_set_response_sensitive(
+    self._f('GtkDialog'), $response_id, $setting
+  );
+}
+
+sub gtk_dialog_set_response_sensitive (
+  N-GObject $dialog, gint $response_id, gboolean $setting
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_dialog_new:
+#`{{
+=begin pod
+=head2 _gtk_dialog_new
+
+Creates a new dialog box.
+
+Widgets should not be packed into this B<Gnome::Gtk3::Window> directly, but into the I<vbox> and I<action-area>, as described above.
+
+Returns: the new dialog as a B<Gnome::Gtk3::Widget>
+
+  method _gtk_dialog_new ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_dialog_new (  --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_dialog_new')
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_dialog_new_with_buttons:
+#`{{
+=begin pod
+=head2 _gtk_dialog_new_with_buttons
+
+Creates a new B<Gnome::Gtk3::Dialog> with title I<title> (or C<undefined> for the default title; see C<gtk-window-set-title()>) and transient parent I<parent> (or C<undefined> for none; see C<gtk-window-set-transient-for()>). The I<flags> argument can be used to make the dialog modal (B<Gnome::Gtk3::TK-DIALOG-MODAL>) and/or to have it destroyed along with its transient parent (B<Gnome::Gtk3::TK-DIALOG-DESTROY-WITH-PARENT>). After I<flags>, button text/response ID pairs should be listed, with a C<undefined> pointer ending the list. Button text can be arbitrary text. A response ID can be any positive number, or one of the values in the B<Gnome::Gtk3::ResponseType> enumeration. If the user clicks one of these dialog buttons, B<Gnome::Gtk3::Dialog> will emit the  I<response> signal with the corresponding response ID. If a B<Gnome::Gtk3::Dialog> receives the  I<delete-event> signal, it will emit I<response> with a response ID of B<Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT>. However, destroying a dialog does not emit the I<response> signal; so be careful relying on I<response> when using the B<Gnome::Gtk3::TK-DIALOG-DESTROY-WITH-PARENT> flag. Buttons are from left to right, so the first button in the list will be the leftmost button in the dialog.
+
+Here’s a simple example: |[<!-- language="C" --> GtkWidget *main-app-window; // Window the dialog should show up on GtkWidget *dialog; GtkDialogFlags flags = GTK-DIALOG-MODAL | GTK-DIALOG-DESTROY-WITH-PARENT; dialog = new-with-buttons ("My dialog", main-app-window, flags, -("-OK"), GTK-RESPONSE-ACCEPT, -("-Cancel"), GTK-RESPONSE-REJECT, NULL); ]|
+
+Returns: a new B<Gnome::Gtk3::Dialog>
+
+  method _gtk_dialog_new_with_buttons ( Str $title, N-GObject $parent, GtkDialogFlags $flags, Str $first_button_text --> N-GObject )
+
+=item Str $title; Title of the dialog, or C<undefined>
+=item N-GObject $parent; Transient parent of the dialog, or C<undefined>
+=item GtkDialogFlags $flags; from B<Gnome::Gtk3::DialogFlags>
+=item Str $first_button_text; text to go in first button, or C<undefined> @...: response ID for first button, then additional buttons, ending with C<undefined>
+=end pod
+}}
+
+sub _gtk_dialog_new_with_buttons ( gchar-ptr $title, N-GObject $parent, GEnum $flags, gchar-ptr $first_button_text, Any $any = Any --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_dialog_new_with_buttons')
+  { * }
+}}
+
+sub _gtk_dialog_new_with_buttons (
+  Str $title, N-GObject $parent, Int $flags, *@buttons
+  --> N-GObject
+) {
+
+  # create parameter list and start with inserting fixed arguments
+  my @parameterList = (
+    Parameter.new(type => Str),         # $title
+    Parameter.new(type => N-GObject),   # $parent
+    Parameter.new(type => int32),       # $flags
+  );
+
+  # check the button list parameters
+  my CArray $native-bspec .= new;
+  if @buttons.elems %% 2 {
+    for @buttons -> Str $button-text, Int $response-code {
+      # values not used here, just a check on type
+      @parameterList.push(Parameter.new(type => Str));
+      @parameterList.push(Parameter.new(type => GEnum));
+    }
+    # end list with a Nil
+    @parameterList.push(Parameter.new(type => Pointer));
+  }
+
+  else {
+    die X::Gnome.new(:message('Odd number of button specs'));
+  }
+
+  # create signature
+  my Signature $signature .= new(
+    :params(|@parameterList),
+    :returns(N-GObject)
+  );
+
+
+  # get a pointer to the sub, then cast it to a sub with the proper
+  # signature. after that, the sub can be called, returning a value.
+  state $ptr = cglobal( &gtk-lib, 'gtk_dialog_new_with_buttons', Pointer);
+  my Callable $f = nativecast( $signature, $ptr);
+
+  $f( $title, $parent, $flags, |@buttons, Nil)
+}
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:close:
+=head3 close
+
+The I<close> signal is a
+[keybinding signal][GtkBindingSignal]
+which gets emitted when the user uses a keybinding to close
+the dialog.
+
+The default binding for this signal is the Escape key.
+
+  method handler (
+    ,
+    *%user-options
+  );
+
+=item $_handle_id; the registered event handler id
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:response:
+=head3 response
+
+Emitted when an action widget is clicked, the dialog receives a
+delete event, or the application programmer calls C<response()>.
+On a delete event, the response ID is B<Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT>.
+Otherwise, it depends on which action widget was clicked.
+
+  method handler (
+    Int $response_id,
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($dialog),
+    *%user-options
+  );
+
+=item $dialog; the object on which the signal is emitted
+
+=item $response_id; the response ID
+
+=item $_handle_id; the registered event handler id
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:content-area-border:
+=head3 Content area border: content-area-border
+
+
+The default border width used around the
+content area of the dialog, as returned by
+C<get-content-area()>, unless C<gtk-container-set-border-width()>
+   * was called on that widget directly.
+The B<Gnome::GObject::Value> type of property I<content-area-border> is C<G_TYPE_INT>.
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:2:_gtk_dialog_new:new()
 #`{{
