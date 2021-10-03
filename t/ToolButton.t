@@ -18,7 +18,7 @@ subtest 'ISA test', {
   $tb .= new(:label<+>);
   isa-ok $tb, Gnome::Gtk3::ToolButton, '.new(:label)';
 
-  my Gnome::Gtk3::Image $image .= new(:filename('t/data/Add.png'));
+  my Gnome::Gtk3::Image $image .= new(:file('t/data/Add.png'));
   $tb .= new(:icon($image));
   isa-ok $tb, Gnome::Gtk3::ToolButton, '.new(:icon)';
 }
