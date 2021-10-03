@@ -108,6 +108,53 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
+  if self.^name eq 'Gnome::Gtk3::Button' or %options<GtkButton> {
+
+    if self.is-valid { }
+
+    # process all named arguments
+    elsif %options<native-object>:exists or %options<build-id>:exists { }
+
+    else {
+      my $no;
+      if ? %options<__XXX__> {
+#        $no = _gtk_application_new(
+#          %options<app-id>, %options<flags> // G_APPLICATION_FLAGS_NONE
+#        )
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.keys.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      #}}
+
+      ##`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      #}}
+
+      ## create default object
+      else {
+        $no = gtk_combo_box_text_new;
+      }
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkApplication');
+  }
+
+#`{{
   return unless self.^name eq 'Gnome::Gtk3::ComboBoxText';
 
   if ? %options<native-object> || ? %options<widget> || %options<build-id> {
@@ -128,6 +175,7 @@ submethod BUILD ( *%options ) {
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkComboBoxText');
+}}
 }
 
 
