@@ -277,10 +277,12 @@ method get-child-at ( Int $left, Int $top --> N-GObject ) {
 method get-child-at-rk (
   Int $left, Int $top, *%options --> Gnome::GObject::Object
 ) {
-  self._wrap-native-type-from-no(
+  my $o = self._wrap-native-type-from-no(
     gtk_grid_get_child_at( self.get-native-object-no-reffing, $left, $top),
     |%options
   );
+
+  $o ~~ N-GObject ?? Gnome::GObject::Widget.new(:native-object($o)) !! $o
 }
 
 sub gtk_grid_get_child_at ( N-GObject $grid, gint $left, gint $top --> N-GObject )

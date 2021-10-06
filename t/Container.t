@@ -69,6 +69,23 @@ subtest 'Manipulations1', {
 #  like $wp.to-string, /window <-[\s]>+ \s grid/, '.get-path-for-child-rk()';
   ok 1, '.get-path-for-child-rk(): ' ~ $w.get-path-for-child-rk($g).to-string;
 
+#`{{
+  my Int ( $rows, $cols) = ( 0, 0);
+  $g.attach( $b, 0, 0, 1, 1);
+  my Gnome::Glib::List $l = $g.get-children-rk;
+  for ^$l.length -> $n {
+    my $no = nativecast( N-GObject, $l.nth-data($n));
+    my Gnome::Gtk3::Widget $child .= new(:native-object($no));
+
+    my @props = $child.get-properties( 'left-attach', Int, 'width', Int);
+note @props;
+    my Int $x = @props[0];
+    my Int $width = @props[0];
+    $cols max= ($x + $width);
+  }
+note $cols;
+}}
+
 #  $w.remove($g);
 #  $wp = $w.get-path-for-child-rk($g);
 #  is $wp.to-string, '', '.remove()';

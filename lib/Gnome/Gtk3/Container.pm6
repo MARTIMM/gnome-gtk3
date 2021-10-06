@@ -188,6 +188,7 @@ use Gnome::N::N-GObject;
 use Gnome::Glib::List;
 
 use Gnome::GObject::Object;
+use Gnome::GObject::Value;
 use Gnome::GObject::Type;
 
 use Gnome::Gtk3::Widget;
@@ -410,16 +411,22 @@ sub gtk_container_child_get (
 
 Gets the value of a child property for I<child> and this container.
 
-  method child-get-property ( N-GObject $child, Str $property_name, N-GObject $value )
+  method child-get-property (
+    N-GObject $child, Str $property-name, :$property-type
+    --> Any
+  )
 
 =item N-GObject $child; a widget which is a child of this container
-=item Str $property_name; the name of the property to get
-=item N-GObject $value; a location to return the value
+=item Str $property-name; the name of the property to get
+=item $property-type; The type for the return value. See also C<Gnome::GObject::Object.get-properties>.
 =end pod
 
-method child-get-property ( $child is copy, Str $property_name, $value is copy ) {
+method child-get-property (
+  $child is copy, Str $property-name --> Any
+) {
   $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  my N-GValue $value .= new;
+
 
   gtk_container_child_get_property(
     self._f('GtkContainer'), $child, $property_name, $value
