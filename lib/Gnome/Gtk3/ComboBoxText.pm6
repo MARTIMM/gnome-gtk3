@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
       else {
         $no = gtk_combo_box_text_new;
       }
-note 'no: ', $no.raku;
+#note 'no: ', $no.raku;
       self.set-native-object($no);
     }
 
