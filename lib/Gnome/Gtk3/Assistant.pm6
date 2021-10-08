@@ -74,17 +74,23 @@ Inheriting is done in a special way in that it needs a call from new() to get th
   submethod BUILD ( ) {
     my Gnome::Gtk3::Frame $intro-page .= new(...);
     ...
-    self.add-page( $intro-page, GTK_ASSISTANT_PAGE_INTRO, 'Introduction');
+    self.add-page(
+      $intro-page, GTK_ASSISTANT_PAGE_INTRO, 'Introduction'
+    );
 
     my Gnome::Gtk3::Frame $install-page .= new(...);
     ...
-    self.add-page( $install-page, GTK_ASSISTANT_PAGE_CONTENT, 'Installing');
+    self.add-page(
+      $install-page, GTK_ASSISTANT_PAGE_CONTENT, 'Installing'
+    );
     ...
   }
 
   method add-page ( $page, GtkAssistantPageType $type, Str $title ) {
     self.append-page($page);
-    self.set-page-type($type // GTK_ASSISTANT_PAGE_CONTENT);
+    self.set-page-type(
+      $install-page, $type // GTK_ASSISTANT_PAGE_CONTENT
+    );
     self.set-page-title($title);
   }
 
