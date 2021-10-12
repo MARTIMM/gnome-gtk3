@@ -6,6 +6,9 @@ layout: sidebar
 ---
 # Release notes
 
+#### 2021-10-11 0.44.3:
+* Rewite pod doc and method ordering of **Gnome::Gtk3::Assistant**, **Gnome::Gtk3::Bin**. Added methods returning Raku objects.
+
 #### 2021-09-26 0.44.2:
 * Rewite pod doc and method ordering of **Gnome::Gtk3::Dialog** **Gnome::Gtk3::Application** and **Gnome::Gtk3::ApplicationWindow**. Also added methods returning Raku objects next to the original methods returning native objects.
 * Bugfix in **Gnome::Gtk3::ComboBoxText**. Method `new()` did not recognize the `:native-object` option.
