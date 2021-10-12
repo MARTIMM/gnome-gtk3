@@ -8,8 +8,6 @@ Description
 
 The **Gnome::Gtk3::Bin** widget is a container with just one child. It is not very useful itself, but it is useful for deriving subclasses, since it provides common code needed for handling a single child widget.
 
-Many GTK+ widgets are subclasses of **Gnome::Gtk3::Bin**, including **Gnome::Gtk3::Window**, **Gnome::Gtk3::Button**, **Gnome::Gtk3::Frame**, **Gnome::Gtk3::HandleBox** or **Gnome::Gtk3::ScrolledWindow**.
-
 Synopsis
 ========
 
@@ -39,16 +37,25 @@ Methods
 new
 ---
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a Grid object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-[[gtk_] bin_] get_child
+### :build-id
+
+Create a Grid object using a native object returned from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
+
+get_child, get_child-rk
 -----------------------
 
 Gets the child of the **Gnome::Gtk3::Bin**, or `Any` if the bin contains no child widget. The returned widget does not have a reference added, so you do not need to unref it.
 
-Returns: (transfer none): pointer to child of the **Gnome::Gtk3::Bin**
+Returns: The child of the **Gnome::Gtk3::Bin**;
 
-    method gtk_bin_get_child ( --> N-GObject )
+    method get-child ( --> N-GObject )
+    method get-child-rk ( --> Gnome::GObject::Object )
 

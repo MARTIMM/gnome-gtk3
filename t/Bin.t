@@ -16,10 +16,11 @@ subtest 'ISA test', {
   my Gnome::Gtk3::Button $button .= new(:label('xyz'));
   isa-ok $button, Gnome::Gtk3::Bin;
 
-  isa-ok $button.get-child, N-GObject, '.get-child()';
+#  isa-ok $button.get-child, N-GObject, '.get-child()';
 
   my Gnome::Gtk3::Label $l .= new(:native-object($button.get-child));
-  is $l.widget-get-name, 'GtkLabel', 'child widget of button is a label';
+  is $l.get-name, 'GtkLabel', '.get-child()';
+  is $button.get-child-rk.get-name, 'GtkLabel', '.get-child-rk()';
 }
 
 #-------------------------------------------------------------------------------

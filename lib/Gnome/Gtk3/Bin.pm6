@@ -10,12 +10,8 @@ A container with just one child
 
 =head1 Description
 
-The B<Gnome::Gtk3::Bin> widget is a container with just one child.
-It is not very useful itself, but it is useful for deriving subclasses,
-since it provides common code needed for handling a single child widget.
+The B<Gnome::Gtk3::Bin> widget is a container with just one child. It is not very useful itself, but it is useful for deriving subclasses, since it provides common code needed for handling a single child widget.
 
-Many GTK+ widgets are subclasses of B<Gnome::Gtk3::Bin>, including B<Gnome::Gtk3::Window>,
-B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::HandleBox> or B<Gnome::Gtk3::ScrolledWindow>.
 
 =head1 Synopsis
 =head2 Declaration
@@ -28,8 +24,8 @@ B<Gnome::Gtk3::Button>, B<Gnome::Gtk3::Frame>, B<Gnome::Gtk3::HandleBox> or B<Gn
 
 ![](plantuml/Bin.svg)
 
-=head2 Example
 
+=head2 Example
 
 An example using a B<Gnome::Gtk3::Button> which is a direct descendant of B<Gnome::Gtk3::Bin>. Here it is shown that a button is also a kind of a container which in principle can hold anything but by default it holds a label. The widget's name is by default set to its class name. So, a Button has 'GtkButton' and a Label has 'GtkLabel'.
 
@@ -57,37 +53,48 @@ also is Gnome::Gtk3::Container;
 =begin pod
 =head1 Methods
 =head2 new
+=head3 :native-object
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+Create a Grid object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
+
+=head3 :build-id
+
+Create a Grid object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
 =end pod
 
-#TM:1:new():inheriting
 #TM:0:new(:native-object):
 #TM:0:new(:build-id):
-
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::Bin';
+  if self.^name eq 'Gnome::Gtk3::Bin' #`{{or %options<GtkBin>}} {
 
-  # process all named arguments
-  if ? %options<native-object> || ? %options<widget> { # || %options<build-id> {
-    # provided in Gnome::GObject::Object
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # process all options
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    elsif %options.keys.elems {
+      die X::Gnome.new(
+        :message('Unsupported options for ' ~ self.^name ~
+                 ': ' ~ %options.keys.join(', ')
+                )
+      );
+    }
+
+    # only after creating the native-object, the gtype is known
+    self.set-class-info('GtkBin');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkBin');
 }
 
 #-------------------------------------------------------------------------------
@@ -107,19 +114,32 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_bin_get_child:
+#TM:1:get_child:
+#TM:1:get_child-rk:
 =begin pod
-=head2 [[gtk_] bin_] get_child
+=head2 get_child, get_child-rk
 
-Gets the child of the B<Gnome::Gtk3::Bin>, or C<Any> if the bin contains
-no child widget. The returned widget does not have a reference
-added, so you do not need to unref it.
+Gets the child of the B<Gnome::Gtk3::Bin>, or C<Any> if the bin contains no child widget. The returned widget does not have a reference added, so you do not need to unref it.
 
-Returns: (transfer none): pointer to child of the B<Gnome::Gtk3::Bin>
+Returns: The child of the B<Gnome::Gtk3::Bin>;
 
-  method gtk_bin_get_child ( --> N-GObject )
+  method get-child ( --> N-GObject )
+  method get-child-rk ( --> Gnome::GObject::Object )
 
 =end pod
+
+method get-child ( --> N-GObject ) {
+  gtk_bin_get_child(self.get-native-object-no-reffing);
+}
+
+method get-child-rk ( *%options --> Gnome::GObject::Object ) {
+  my $o = self._wrap-native-type-from-no(
+    gtk_bin_get_child(self.get-native-object-no-reffing),
+    |%options
+  );
+
+  $o ~~ N-GObject ?? Gnome::GObject::Widget.new(:native-object($o)) !! $o
+}
 
 sub gtk_bin_get_child ( N-GObject $bin )
   returns N-GObject
