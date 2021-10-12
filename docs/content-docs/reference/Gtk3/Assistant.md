@@ -140,60 +140,14 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-next-page
----------
+add-action-widget
+-----------------
 
-Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
+Adds a widget to the action area of a **Gnome::Gtk3::Assistant**.
 
-    method next-page ( )
+    method add-action-widget ( N-GObject $child )
 
-previous-page
--------------
-
-Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
-
-    method previous-page ( )
-
-get-current-page
-----------------
-
-Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
-
-    method get-current-page ( --> Int )
-
-set-current-page
-----------------
-
-Switches the page to *$page_num*. Note that this will only be necessary in custom buttons, as the assistant flow can be set with `gtk_assistant_set_forward_page_func()`.
-
-    method set-current-page ( Int $page_num )
-
-  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
-
-get-n-pages
------------
-
-Returns the number of pages in the assistant.
-
-    method get-n-pages ( --> Int )
-
-get-nth-page
-------------
-
-Returns the child widget contained in page number *$page_num*, or `Any` if *$page_num* is out of bounds
-
-    method get-nth-page ( Int $page_num --> N-GObject )
-
-  * Int $page_num; the index of a page in the assistant, or -1 to get the last page
-
-prepend-page
-------------
-
-Prepends a *$page* to the assistant. Returns the index (starting at 0) of the inserted page. `$page` can be any widget making up the content of a page in this assistant.
-
-    method prepend-page ( N-GObject $page --> Int )
-
-  * N-GObject $page; a **Gnome::Gtk3::Widget**
+  * N-GObject $child; an action widget.
 
 append-page
 -----------
@@ -203,6 +157,82 @@ Appends a *$page* to the assistant. Returns the index (starting at 0) of the ins
     method append-page ( N-GObject $page --> Int )
 
   * N-GObject $page; a **Gnome::Gtk3::Widget**
+
+commit
+------
+
+Erases the visited page history so the back button is not shown on the current page, and removes the cancel button from subsequent pages.
+
+Use this when the information provided up to the current page is hereafter deemed permanent and cannot be modified or undone. For example, showing a progress page to track a long-running, unreversible operation after the user has clicked apply on a confirmation page.
+
+    method commit ( )
+
+get-current-page
+----------------
+
+Returns the page number of the current page. This is the index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages, or no current page.
+
+    method get-current-page ( --> Int )
+
+get-n-pages
+-----------
+
+Returns the number of pages in the assistant.
+
+    method get-n-pages ( --> Int )
+
+get-nth-page, get-nth-page-rk
+-----------------------------
+
+Returns the child widget contained in page number *$page_num*, or `Any` if *$page_num* is out of bounds
+
+    method get-nth-page ( Int $page_num --> N-GObject )
+    method get-nth-page-rk (
+      Int $page_num, :$child-type?
+      --> Gnome::GObject::Object
+    )
+
+  * Int $page_num; the index of a page in the assistant, or -1 to get the last page
+
+get-page-complete
+-----------------
+
+Gets whether *$page* is complete. `True` if *$page* is complete.
+
+    method get-page-complete ( N-GObject $page --> Bool )
+
+  * N-GObject $page; a page of assistant
+
+get-page-has-padding
+--------------------
+
+Gets whether page has padding.
+
+Returns: `True` if *$page* has padding
+
+    method gtk_assistant_get_page_has_padding ( N-GObject $page --> Bool )
+
+  * N-GObject $page; a page of *assistant*
+
+get-page-title
+--------------
+
+Gets the title for *$page*. `$page` is a previously added widget.
+
+    method get-page-title ( N-GObject $page --> Str )
+
+  * N-GObject $page; a page of assistant
+
+get-page-type
+-------------
+
+Gets the page type of *$page*. `$page` is a previously added widget.
+
+    method get-page-type (
+      N-GObject $page --> GtkAssistantPageType
+    )
+
+  * N-GObject $page; a page of Iassistant
 
 insert-page
 -----------
@@ -219,6 +249,38 @@ Returns: the index (starting from 0) of the inserted page
 
   * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
+next-page
+---------
+
+Navigate to the next page. It is a programming error to call this function when there is no next page. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
+
+    method next-page ( )
+
+prepend-page
+------------
+
+Prepends a *$page* to the assistant. Returns the index (starting at 0) of the inserted page. `$page` can be any widget making up the content of a page in this assistant.
+
+    method prepend-page ( N-GObject $page --> Int )
+
+  * N-GObject $page; a **Gnome::Gtk3::Widget**
+
+previous-page
+-------------
+
+Navigate to the previous visited page. It is a programming error to call this function when no previous page is available. This function is for use when creating pages of the **GTK_ASSISTANT_PAGE_CUSTOM** type.
+
+    method previous-page ( )
+
+remove-action-widget
+--------------------
+
+Removes a widget from the action area of a **Gnome::Gtk3::Assistant**.
+
+    method remove-action-widget ( N-GObject $child )
+
+  * N-GObject $child; a previously added action widget
+
 remove-page
 -----------
 
@@ -227,6 +289,37 @@ Removes the *$page-num*’s page from assistant. `$page` is a previously inserte
     method remove-page ( Int $page-num )
 
   * Int $page-num; the index of a page in the assistant, or -1 to remove the last page
+
+set-current-page
+----------------
+
+Switches the page to *$page_num*. Note that this will only be necessary in custom buttons, as the assistant flow can be set with `gtk_assistant_set_forward_page_func()`.
+
+    method set-current-page ( Int $page_num )
+
+  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
+
+set-page-complete
+-----------------
+
+Sets whether *$page* contents are complete. This will make assistant update the buttons state to be able to continue the task. `$page` is a previously added widget.
+
+    method set-page-complete ( $page, Bool $complete )
+
+  * $page; a page of assistant
+
+  * Bool $complete; the completeness status of the page. `True` to set page complete.
+
+set-page-has-padding
+--------------------
+
+Sets whether the assistant is adding padding around the page.
+
+    method set-page-has-padding ( N-GObject $page, Bool $has_padding )
+
+  * N-GObject $page; a page of *assistant*
+
+  * Bool $has_padding; whether this page has padding
 
 set-page-type
 -------------
@@ -241,17 +334,6 @@ Sets the page type for *$page*. The page type determines the page behavior in th
 
   * GtkAssistantPageType $type; the new type for *$page*
 
-get-page-type
--------------
-
-Gets the page type of *$page*. `$page` is a previously added widget.
-
-    method get-page-type (
-      N-GObject $page --> GtkAssistantPageType
-    )
-
-  * N-GObject $page; a page of Iassistant
-
 set-page-title
 --------------
 
@@ -262,53 +344,6 @@ Sets a title for *$page*. The title is displayed in the header area of the assis
   * N-GObject $page; a page of assistant
 
   * Str $title; the new title for *$page*
-
-get-page-title
---------------
-
-Gets the title for *$page*. `$page` is a previously added widget.
-
-    method get-page-title ( N-GObject $page --> Str )
-
-  * N-GObject $page; a page of assistant
-
-set-page-complete
------------------
-
-Sets whether *$page* contents are complete. This will make assistant update the buttons state to be able to continue the task. `$page` is a previously added widget.
-
-    method set-page-complete ( $page, Bool $complete )
-
-  * $page; a page of assistant
-
-  * Bool $complete; the completeness status of the page. `True` to set page complete.
-
-get-page-complete
------------------
-
-Gets whether *$page* is complete. `True` if *$page* is complete.
-
-    method get-page-complete ( N-GObject $page --> Bool )
-
-  * N-GObject $page; a page of assistant
-
-add-action-widget
------------------
-
-Adds a widget to the action area of a **Gnome::Gtk3::Assistant**.
-
-    method add-action-widget ( N-GObject $child )
-
-  * N-GObject $child; an action widget.
-
-remove-action-widget
---------------------
-
-Removes a widget from the action area of a **Gnome::Gtk3::Assistant**.
-
-    method remove-action-widget ( N-GObject $child )
-
-  * N-GObject $child; a previously added action widget
 
 update-buttons-state
 --------------------
@@ -321,41 +356,10 @@ One situation where it can be necessary to call this function is when changing a
 
     method update-buttons-state ( )
 
-commit
-------
-
-Erases the visited page history so the back button is not shown on the current page, and removes the cancel button from subsequent pages.
-
-Use this when the information provided up to the current page is hereafter deemed permanent and cannot be modified or undone. For example, showing a progress page to track a long-running, unreversible operation after the user has clicked apply on a confirmation page.
-
-    method commit ( )
-
-set-page-has-padding
---------------------
-
-Sets whether the assistant is adding padding around the page.
-
-    method set-page-has-padding ( N-GObject $page, Bool $has_padding )
-
-  * N-GObject $page; a page of *assistant*
-
-  * Bool $has_padding; whether this page has padding
-
-get-page-has-padding
---------------------
-
-Gets whether page has padding.
-
-Returns: `True` if *$page* has padding
-
-    method gtk_assistant_get_page_has_padding ( N-GObject $page --> Bool )
-
-  * N-GObject $page; a page of *assistant*
-
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -363,7 +367,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -374,44 +378,17 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
-
-### cancel
-
-The *cancel* signal is emitted when then the cancel button is clicked.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($assistant),
-      *%user-options
-    );
-
-  * $assistant; the **Gnome::Gtk3::Assistant**
-
-### prepare
-
-The *prepare* signal is emitted when a new page is set as the assistant's current page, before making the new page visible. A handler for this signal can do any preparations which are necessary before showing *page*.
-
-    method handler (
-      N-GObject $page,
-      Int :$_handler_id,
-      Gnome::Gtk3::Assistant :_widget($assistant),
-      *%user-options
-    );
-
-  * $assistant; the **Gnome::Gtk3::Assistant**
-
-  * $page; the current page
 
 ### apply
 
@@ -419,54 +396,95 @@ The *apply* signal is emitted when the apply button is clicked.
 
 The default behavior of the **Gnome::Gtk3::Assistant** is to switch to the page after the current page, unless the current page is the last one.
 
-A handler for the *apply* signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider putting a page of type `GTK_ASSISTANT_PAGE_PROGRESS` after the confirmation page and handle this operation within the *prepare* signal of the progress page.
+A handler for the *apply* signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider putting a page of type `GTK-ASSISTANT-PAGE-PROGRESS` after the confirmation page and handle this operation within the *prepare* signal of the progress page.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
   * $assistant; the **Gnome::Gtk3::Assistant**
+
+  * $_handle_id; the registered event handler id
+
+### cancel
+
+The *cancel* signal is emitted when then the cancel button is clicked.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($assistant),
+      *%user-options
+    );
+
+  * $assistant; the **Gnome::Gtk3::Assistant**
+
+  * $_handle_id; the registered event handler id
 
 ### close
 
-The *close* signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type `GTK_ASSISTANT_PAGE_CONFIRM`) is clicked.
+The *close* signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type `GTK-ASSISTANT-PAGE-CONFIRM`) is clicked.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
   * $assistant; the **Gnome::Gtk3::Assistant**
+
+  * $_handle_id; the registered event handler id
 
 ### escape
 
     method handler (
-      Int :$_handler_id,
-      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($assistant),
       *%user-options
     );
 
   * $assistant;
 
+  * $_handle_id; the registered event handler id
+
+### prepare
+
+The *prepare* signal is emitted when a new page is set as the assistant's current page, before making the new page visible.
+
+A handler for this signal can do any preparations which are necessary before showing *page*.
+
+    method handler (
+      N-GObject #`{ is widget } $page,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($assistant),
+      *%user-options
+    );
+
+  * $assistant; the **Gnome::Gtk3::Assistant**
+
+  * $page; the current page
+
+  * $_handle_id; the registered event handler id
+
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Use Header Bar
+### Use Header Bar: use-header-bar
 
-`1` if the assistant uses a **Gnome::Gtk3::HeaderBar** for action buttons instead of the action-area. For technical reasons, this property is declared as an integer property, but you should only set it to `1` or `0`.
+`True` if the assistant uses a **Gnome::Gtk3::HeaderBar** for action buttons instead of the action-area.
+
+For technical reasons, this property is declared as an integer property, but you should only set it to `True` or `False`.
 
 The **Gnome::GObject::Value** type of property *use-header-bar* is `G_TYPE_INT`.
 
