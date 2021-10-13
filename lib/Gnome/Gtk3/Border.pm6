@@ -156,6 +156,65 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
+# ? no ref/unref for a variant type
+method native-object-ref ( $n-native-object --> Any ) {
+  $n-native-object
+}
+
+#-------------------------------------------------------------------------------
+method native-object-unref ( $n-native-object ) {
+#  _g_object_free($n-native-object)
+  _gtk_border_free($n-native-object)
+}
+
+
+#-------------------------------------------------------------------------------
+#TM:1:border-copy:
+#TM:1:border-copy-rk:
+=begin pod
+=head2 border-copy, border-copy-rk
+
+Copies a C<N-GtkBorder> struct.
+
+  method border-copy ( --> N-GtkBorder )
+  method border-copy-rk ( --> Gnome::Gtk3::Border )
+
+=end pod
+
+method border-copy ( --> N-GtkBorder ) {
+  gtk_border_copy(self.get-native-object-no-reffing)
+}
+
+method border-copy-rk ( --> Gnome::Gtk3::Border ) {
+  Gnome::Gtk3::Border.new(
+    :native-object(gtk_border_copy(self.get-native-object-no-reffing))
+  )
+}
+
+sub gtk_border_copy ( N-GtkBorder $border )
+  returns N-GtkBorder
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:bottom:
+=begin pod
+=head2 bottom
+
+Modify bottom width of border if value is given. Returns bottom value after modification if any, otherwise the currently set value.
+
+  method bottom ( Int $value? --> Int )
+
+=end pod
+
+method bottom ( Int $value? --> Int ) {
+  die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
+      unless self.is-valid;
+  self.get-native-object.bottom = $value if $value.defined;
+  self.get-native-object.bottom
+}
+
+#-------------------------------------------------------------------------------
 #TM:1:left:
 =begin pod
 =head2 left
@@ -210,36 +269,6 @@ method top ( Int $value? --> Int ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:1:bottom:
-=begin pod
-=head2 bottom
-
-Modify bottom width of border if value is given. Returns bottom value after modification if any, otherwise the currently set value.
-
-  method bottom ( Int $value? --> Int )
-
-=end pod
-
-method bottom ( Int $value? --> Int ) {
-  die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
-      unless self.is-valid;
-  self.get-native-object.bottom = $value if $value.defined;
-  self.get-native-object.bottom
-}
-
-#-------------------------------------------------------------------------------
-# ? no ref/unref for a variant type
-method native-object-ref ( $n-native-object --> Any ) {
-  $n-native-object
-}
-
-#-------------------------------------------------------------------------------
-method native-object-unref ( $n-native-object ) {
-#  _g_object_free($n-native-object)
-  _gtk_border_free($n-native-object)
-}
-
-#-------------------------------------------------------------------------------
 #TM:2:gtk_border_new:
 #`{{
 =begin pod
@@ -259,24 +288,6 @@ sub _gtk_border_new ( )
   returns N-GtkBorder
   is native(&gtk-lib)
   is symbol('gtk_border_new')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_border_copy:
-=begin pod
-=head2 [gtk_] border_copy
-
-Copies a C<N-GtkBorder> struct.
-
-Returns: a copy of the native object I<N-GtkBorder>.
-
-  method gtk_border_copy ( --> N-GtkBorder  )
-
-=end pod
-
-sub gtk_border_copy ( N-GtkBorder $border )
-  returns N-GtkBorder
-  is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------

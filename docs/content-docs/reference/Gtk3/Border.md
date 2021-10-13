@@ -53,6 +53,21 @@ Create a Border object using a native object from elsewhere. See also **Gnome::N
 
     multi method new ( N-GtkBorder :$native-object! )
 
+border-copy, border-copy-rk
+---------------------------
+
+Copies a `N-GtkBorder` struct.
+
+    method border-copy ( --> N-GtkBorder )
+    method border-copy-rk ( --> Gnome::Gtk3::Border )
+
+bottom
+------
+
+Modify bottom width of border if value is given. Returns bottom value after modification if any, otherwise the currently set value.
+
+    method bottom ( Int $value? --> Int )
+
 left
 ----
 
@@ -73,20 +88,4 @@ top
 Modify top width of border if value is given. Returns top value after modification if any, otherwise the currently set value.
 
     method top ( Int $value? --> Int )
-
-bottom
-------
-
-Modify bottom width of border if value is given. Returns bottom value after modification if any, otherwise the currently set value.
-
-    method bottom ( Int $value? --> Int )
-
-[gtk_] border_copy
-------------------
-
-Copies a `N-GtkBorder` struct.
-
-Returns: a copy of the native object *N-GtkBorder*.
-
-    method gtk_border_copy ( --> N-GtkBorder  )
 
