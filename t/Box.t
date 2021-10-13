@@ -5,12 +5,24 @@ use Test;
 
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Box;
+use Gnome::Gtk3::Button;
+use Gnome::Gtk3::Label;
 
+use Gnome::Glib::List;
+
+use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Box $b;
+my Gnome::Gtk3::Button $b-start .= new(:label<Start>);
+my Gnome::Gtk3::Button $b-stop .= new(:label<Stop>);
+my Gnome::Gtk3::Button $b-secnd-stop .= new(:label<Stop>);
+$b-start.set-name('b1');
+$b-stop.set-name('b2');
+$b-secnd-stop.set-name('b3');
 
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
@@ -27,15 +39,141 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations ...', {
 
-  # set name is from Buildable, not from Widget
+  # set name is from Widget
   $b.set-name('buildable');
-
   $b.set-orientation(GTK_ORIENTATION_VERTICAL);
+
+  $b.set-homogeneous(True);
+  is $b.get-homogeneous, True, '.set-homogeneous() / .get-homogeneous()';
+
+  $b.set-spacing(10);
+  is $b.get-spacing, 10, '.set-spacing() / .get-spacing()';
+
+  my Gnome::Gtk3::Label $center .= new(:text(''));
+  $center.set-name('cwdgt');
+  $b.set-center-widget($center);
+  is $b.get-center-widget-rk.get-name, 'cwdgt',
+     '.set-center-widget() / .get-center-widget-rk()';
+
+  $b.set-baseline-position(GTK_BASELINE_POSITION_CENTER);
+  is $b.get-baseline-position, GTK_BASELINE_POSITION_CENTER,
+     '.set-baseline-position() / .get-baseline-position()';
+
+  lives-ok {
+    $b.pack-start( $b-start, False, False, 2);
+    $b.pack-start( $b-secnd-stop, False, False, 3);
+    $b.pack-end( $b-stop, False, False, 1);
+  }, '.pack-start() / .pack-end()';
+
+  my List $list = $b.query-child-packing($b-start);
+  is-deeply $list, ( False, False, 2, GTK_PACK_START), '.query-child-packing()';
+
+  $b.reorder-child( $b-secnd-stop, 0);
+  my Gnome::Glib::List $glist = $b.get-children-rk;
+  is $glist.length, 4, 'list 4 wdgets; 3 buttons and a label';
+  # first should be a button
+  my Gnome::Gtk3::Button $bttn .= new(
+    :native-object(nativecast( N-GObject, $glist.nth-data(0)))
+  );
+  is $bttn.get-name, 'b3', '.reorder-child()';
+
+  $b.set-child-packing( $b-secnd-stop, True, True, 22, GTK_PACK_END);
+  $list = $b.query-child-packing($b-secnd-stop);
+  is-deeply $list, ( True, True, 22, GTK_PACK_END), '.set-child-packing()';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
+  my List $r = $b.get-properties(
+    'baseline-position', GEnum, 'homogeneous', Bool, 'spacing', gint
+  );
+
+  is-deeply $r, [
+    GTK_BASELINE_POSITION_CENTER.value, True.Int, 10
+  ], 'baseline-position, homogeneous, spacing';
+
+
+#`{{
+--- Child properties ---
+#  @r = $b-stop.get-properties(
+  @r = $b.get-properties(
+    'expand', Bool, 'fill', Bool, 'pack-type', GEnum, 'padding', guint,
+    'position', gint
+  );
+
+  is-deeply @r, [
+    False.Int, False.Int, GTK_PACK_END.value, 0, 0
+  ], 'baseline-position, ';
+}}
+}
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::Box', {
+  class MyClass is Gnome::Gtk3::Box {
+    method new ( |c ) {
+      self.bless( :GtkBox, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Box, 'MyClass.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::Box $b .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $b.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
 }
 
 #-------------------------------------------------------------------------------
@@ -44,8 +182,72 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-}
-}}
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
 
-#-------------------------------------------------------------------------------
-done-testing;
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... (
+      'any-args',
+      Gnome::Gtk3::Box :$_widget, gulong :$_handler-id
+      # --> ...
+    ) {
+
+      isa-ok $_widget, Gnome::Gtk3::Box;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::Box :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::Box $b .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $b.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $b.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}
