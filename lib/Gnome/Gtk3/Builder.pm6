@@ -112,6 +112,34 @@ Additionally, since 3.10 a special <template> tag has been added to the format a
   unit class Gnome::Gtk3::Builder;
   also is Gnome::GObject::Object;
 
+
+=head2 Uml Diagram
+
+![](plantuml/Builder.svg)
+
+
+=begin comment
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::Builder;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::Builder;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::Builder class process the options
+    self.bless( :GtkBuilder, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=end comment
+
+
 =head2 Example
 
   my Gnome::Gtk3::Builder $builder .= new;
@@ -127,9 +155,14 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Glib::Error;
+
 use Gnome::GObject::Object;
 use Gnome::GObject::Type;
+
+use Gnome::Gtk3::Application;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -206,24 +239,40 @@ void
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 new
+=head3 default, no options
+
+Create an empty builder. This is only useful if you intend to make multiple calls to C<add-from-file()>, C<add-from-resource()> or C<add-from-string()> in order to merge multiple UI descriptions into a single builder.
+
+Most users will probably want to use C<.new(:file)>, C<.new(:resource)> or C<.new(:string)>, particularly when there is only one file, resource or string.
+
+  multi method new ( )
+
+
+=head3 :file
 
 Create builder object and load gui design. Builds the UI definition from a file. If there is an error opening the file or parsing the description then the program will be aborted. You should only ever attempt to parse user interface descriptions that are shipped as part of your program.
 
   multi method new ( Str :$file! )
 
+
+=head3 :string
+
 Same as above but read the design from the string. Builds the user interface described by I<$string> (in the UI definition format). If there is an error parsing I<string> then the program will be aborted. You should not attempt to parse user interface description from untrusted sources.
 
   multi method new ( Str :$string! )
+
+
+=head3 :resource
 
 The interface is build using the UI definition from the given resource path. If there is an error locating the resource or parsing the description, then the program will be aborted.
 
   multi method new ( Str :$resource! )
 
-Create an empty builder. This is only useful if you intend to make multiple calls to C<gtk_builder_add_from_file()>, C<gtk_builder_add_from_resource()> or C<gtk_builder_add_from_string()> in order to merge multiple UI descriptions into a single builder.
+=head3 :native-object
 
-Most users will probably want to use C<.new(:file)>, C<.new(:resource)> or C<.new(:string)>, particularly when there is only one file, resource or string.
+Create a Builder object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
-  multi method new ( )
+  multi method new ( N-GObject :$native-object! )
 
 =end pod
 
@@ -231,7 +280,7 @@ Most users will probably want to use C<.new(:file)>, C<.new(:resource)> or C<.ne
 #TM:0:new(:filename):
 #TM:0:new(:string):
 #TM:4:new(:resource):ex-application.pl6
-
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
@@ -243,7 +292,7 @@ submethod BUILD ( *%options ) {
   # process all options
 
   # check if common options are handled by some parent
-  elsif %options<native-object>:exists or %options<widget>:exists { }
+  elsif %options<native-object>:exists { }
 
   else {
     my $no;
@@ -253,7 +302,8 @@ submethod BUILD ( *%options ) {
     }
 
     elsif ? %options<string> {
-      $no = _gtk_builder_new_from_string(%options<string>);
+      my Str $string = %options<string>;
+      $no = _gtk_builder_new_from_string( $string, $string.chars);
     }
 
     elsif ? %options<resource> {
@@ -308,6 +358,928 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:add-callback-symbol:
+=begin pod
+=head2 add-callback-symbol
+
+Adds the I<callback-symbol> to the scope of I<builder> under the given I<callback-name>.
+
+Using this function overrides the behavior of C<connect-signals()> for any callback symbols that are added. Using this method allows for better encapsulation as it does not require that callback symbols be declared in the global namespace.
+
+  method add-callback-symbol ( Str $callback_name, GCallback $callback_symbol )
+
+=item Str $callback_name; The name of the callback, as expected in the XML
+=item GCallback $callback_symbol; (scope async): The callback pointer
+=end pod
+
+method add-callback-symbol ( Str $callback_name, GCallback $callback_symbol ) {
+
+  gtk_builder_add_callback_symbol(
+    self.get-native-object-no-reffing, $callback_name, $callback_symbol
+  );
+}
+
+sub gtk_builder_add_callback_symbol (
+  N-GObject $builder, gchar-ptr $callback_name, GCallback $callback_symbol
+) is native(&gtk-lib)
+  { * }
+}}
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:add-callback-symbols:
+=begin pod
+=head2 add-callback-symbols
+
+A convenience function to add many callbacks instead of calling C<add-callback-symbol()> for each symbol.
+
+  method add-callback-symbols ( Str $first_callback_name, GCallback $first_callback_symbol )
+
+=item Str $first_callback_name; The name of the callback, as expected in the XML
+=item GCallback $first_callback_symbol; (scope async): The callback pointer @...: A list of callback name and callback symbol pairs terminated with C<undefined>
+=end pod
+
+method add-callback-symbols ( Str $first_callback_name, GCallback $first_callback_symbol ) {
+
+  gtk_builder_add_callback_symbols(
+    self.get-native-object-no-reffing, $first_callback_name, $first_callback_symbol
+  );
+}
+
+sub gtk_builder_add_callback_symbols (
+  N-GObject $builder, gchar-ptr $first_callback_name, GCallback $first_callback_symbol, Any $any = Any
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:add-from-file:
+=begin pod
+=head2 add-from-file
+
+Parses a file containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of I<builder>.
+
+Most users will probably want to use C<new-from-file()>.
+
+If an error occurs, 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-FILE-ERROR> domain.
+
+It’s not really reasonable to attempt to handle failures of this call. You should not use this function with untrusted files (ie: files that are not part of your application). Broken B<Gnome::Gtk3::Builder> files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure.
+
+Returns: An invalid error object on success, Otherwise call C<.message()> on the error object to find out what went wrong.
+
+  method add-from-file ( Str $filename --> Gnome::Glib::Error )
+
+=item Str $filename; the name of the file to parse
+=end pod
+
+method add-from-file ( Str $filename --> Gnome::Glib::Error ) {
+  my CArray[N-GError] $error .= new(N-GError);
+
+  gtk_builder_add_from_file(
+    self.get-native-object-no-reffing, $filename, $error
+  );
+
+  Gnome::Glib::Error.new(:native-object($error[0]))
+}
+
+sub gtk_builder_add_from_file (
+  N-GObject $builder, gchar-ptr $filename, CArray[N-GError] $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:add-from-resource:
+=begin pod
+=head2 add-from-resource
+
+Parses a resource file containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of I<builder>.
+
+Most users will probably want to use C<new-from-resource()>.
+
+If an error occurs, 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-RESOURCE-ERROR> domain.
+
+It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call C<g-error()>.
+
+Returns: An invalid error object on success, Otherwise call C<.message()> on the error object to find out what went wrong.
+
+  method add-from-resource ( Str $resource_path --> Gnome::Glib::Error )
+
+=item Str $resource_path; the path of the resource file to parse
+=end pod
+
+method add-from-resource ( Str $resource_path --> UInt ) {
+  my CArray[N-GError] $error .= new(N-GError);
+
+  gtk_builder_add_from_resource(
+    self.get-native-object-no-reffing, $resource_path, $error
+  );
+
+  Gnome::Glib::Error.new(:native-object($error[0]))
+}
+
+sub gtk_builder_add_from_resource (
+  N-GObject $builder, gchar-ptr $resource_path, CArray[N-GError] $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:add-from-string:
+=begin pod
+=head2 add-from-string
+
+Parses a string containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of I<builder>.
+
+Most users will probably want to use C<new-from-string()>.
+
+Upon errors 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-VARIANT-PARSE-ERROR> domain.
+
+It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call C<g-error()>.
+
+Returns: An invalid error object on success, Otherwise call C<.message()> on the error object to find out what went wrong.
+
+  method add-from-string ( Str $buffer --> Gnome::Glib::Error )
+
+=item Str $buffer; the string to parse
+=end pod
+
+method add-from-string ( Str $buffer --> Gnome::Glib::Error ) {
+  my CArray[N-GError] $error .= new(N-GError);
+
+  gtk_builder_add_from_string(
+    self.get-native-object-no-reffing, $buffer, $buffer.chars, $error
+  );
+
+  Gnome::Glib::Error.new(:native-object($error[0]))
+}
+
+sub gtk_builder_add_from_string (
+  N-GObject $builder, gchar-ptr $buffer, gsize $length, CArray[N-GError] $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:add-objects-from-file:
+=begin pod
+=head2 add-objects-from-file
+
+Parses a file containing a [GtkBuilder UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of I<builder>.
+
+Upon errors 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-FILE-ERROR> domain.
+
+If you are adding an object that depends on an object that is not its child (for instance a B<Gnome::Gtk3::TreeView> that depends on its B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object-ids>.
+
+Returns: A positive value on success, 0 if an error occurred
+
+  method add-objects-from-file ( Str $filename, CArray[Str] $object_ids, N-GError $error --> UInt )
+
+=item Str $filename; the name of the file to parse
+=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method add-objects-from-file ( Str $filename, CArray[Str] $object_ids, $error is copy --> UInt ) {
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_add_objects_from_file(
+    self.get-native-object-no-reffing, $filename, $object_ids, $error
+  )
+}
+
+sub gtk_builder_add_objects_from_file (
+  N-GObject $builder, gchar-ptr $filename, gchar-pptr $object_ids, N-GError $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:add-objects-from-resource:
+=begin pod
+=head2 add-objects-from-resource
+
+Parses a resource file containing a [GtkBuilder UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of I<builder>.
+
+Upon errors 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-RESOURCE-ERROR> domain.
+
+If you are adding an object that depends on an object that is not its child (for instance a B<Gnome::Gtk3::TreeView> that depends on its B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object-ids>.
+
+Returns: A positive value on success, 0 if an error occurred
+
+  method add-objects-from-resource ( Str $resource_path, CArray[Str] $object_ids, N-GError $error --> UInt )
+
+=item Str $resource_path; the path of the resource file to parse
+=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method add-objects-from-resource ( Str $resource_path, CArray[Str] $object_ids, $error is copy --> UInt ) {
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_add_objects_from_resource(
+    self.get-native-object-no-reffing, $resource_path, $object_ids, $error
+  )
+}
+
+sub gtk_builder_add_objects_from_resource (
+  N-GObject $builder, gchar-ptr $resource_path, gchar-pptr $object_ids, N-GError $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:add-objects-from-string:
+=begin pod
+=head2 add-objects-from-string
+
+Parses a string containing a [GtkBuilder UI definition][BUILDER-UI] building only the requested objects and merges them with the current contents of I<builder>.
+
+Upon errors 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR> or B<Gnome::Gtk3::-MARKUP-ERROR> domain.
+
+If you are adding an object that depends on an object that is not its child (for instance a B<Gnome::Gtk3::TreeView> that depends on its B<Gnome::Gtk3::TreeModel>), you have to explicitly list all of them in I<object-ids>.
+
+Returns: A positive value on success, 0 if an error occurred
+
+  method add-objects-from-string ( Str $buffer, UInt $length, CArray[Str] $object_ids, N-GError $error --> UInt )
+
+=item Str $buffer; the string to parse
+=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method add-objects-from-string ( Str $buffer, UInt $length, CArray[Str] $object_ids, $error is copy --> UInt ) {
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_add_objects_from_string(
+    self.get-native-object-no-reffing, $buffer, $length, $object_ids, $error
+  )
+}
+
+sub gtk_builder_add_objects_from_string (
+  N-GObject $builder, gchar-ptr $buffer, gsize $length, gchar-pptr $object_ids, N-GError $error --> guint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:connect-signals:
+=begin pod
+=head2 connect-signals
+
+This method is a simpler variation of C<connect-signals-full()>. It uses symbols explicitly added to I<builder> with prior calls to C<gtk-builder-add-callback-symbol()>. In the case that symbols are not explicitly added; it uses B<Gnome::Gtk3::Module>’s introspective features (by opening the module C<undefined>) to look at the application’s symbol table. From here it tries to match the signal handler names given in the interface description with symbols in the application and connects the signals. Note that this function can only be called once, subsequent calls will do nothing.
+
+Note that unless C<gtk-builder-add-callback-symbol()> is called for all signal callbacks which are referenced by the loaded XML, this function will require that B<Gnome::Gtk3::Module> be supported on the platform.
+
+If you rely on B<Gnome::Gtk3::Module> support to lookup callbacks in the symbol table, the following details should be noted:
+
+When compiling applications for Windows, you must declare signal callbacks with B<Gnome::Gtk3::-MODULE-EXPORT>, or they will not be put in the symbol table. On Linux and Unices, this is not necessary; applications should instead be compiled with the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
+
+  method connect-signals ( Pointer $user_data )
+
+=item Pointer $user_data; user data to pass back with all signals
+=end pod
+
+method connect-signals ( Pointer $user_data ) {
+
+  gtk_builder_connect_signals(
+    self.get-native-object-no-reffing, $user_data
+  );
+}
+
+sub gtk_builder_connect_signals (
+  N-GObject $builder, gpointer $user_data
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:connect-signals-full:
+=begin pod
+=head2 connect-signals-full
+
+This method will process the signal elements from the loaded XML and with the help of the provided $handlers table register each handler to a signal.
+
+  method gtk_builder_connect_signals_full ( Hash $handlers )
+
+=item Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also C<register-signal()> in B<Gnome::GObject::Object>.
+
+An example where a gui is described in XML. It has a Window with a Button, both having a signal description;
+
+  my Str $ui = q:to/EOUI/;
+      <?xml version="1.0" encoding="UTF-8"?>
+      <interface>
+        <requires lib="gtk+" version="3.20"/>
+
+        <object class="GtkWindow" id="top">
+          <property name="title">top window</property>
+          <signal name="destroy" handler="window-quit"/>
+          <child>
+            <object class="GtkButton" id="help">
+              <property name="label">Help</property>
+              <signal name="clicked" handler="button-click"/>
+            </object>
+          </child>
+        </object>
+      </interface>
+      EOUI
+
+  # First handler class
+  class X {
+    method window-quit ( :$o1, :$o2 ) {
+      # ... do something with options $o1 and $o2 ...
+
+      Gnome::Gtk3::Main.new.gtk-main-quit;
+    }
+  }
+
+  # Second handler class
+  class Y {
+    method button-click ( :$o3, :$o4 ) {
+      # ... do something with options $o3 and $o4 ...
+    }
+  }
+
+  # Load the user interface description
+  my Gnome::Gtk3::Builder $builder .= new(:string($ui));
+  my Gnome::Gtk3::Window $w .= new(:build-id<top>);
+
+  # It is possible to devide the works over more than one class
+  my X $x .= new;
+  my Y $y .= new;
+
+  # Create the handlers table
+  my Hash $handlers = %(
+    :window-quit( $x, :o1<o1>, :o2<o2>),
+    :button-click( $y, :o3<o3>, :o4<o4>)
+  );
+
+  # Register all signals
+  $builder.connect-signals-full($handlers);
+
+
+=end pod
+
+method connect-signals-full ( Hash $handlers ) {
+  my $builder = self.get-native-object-no-reffing;
+  gtk_builder_connect_signals_full(
+    $builder,
+    sub (
+      N-GObject $builder, N-GObject $object, Str $signal-name,
+      Str $handler-name, N-GObject $ignore-d0, int32 $ignore-d1,
+      OpaquePointer $ignore-d2
+    ) {
+      my Str $oname = Gnome::GObject::Type.g_type_name_from_instance($object);
+      if $oname ~~ /^ Gtk / and $handlers{$handler-name}:exists {
+        $oname ~~ s/^ Gtk /Gnome::Gtk3::/;
+        my $handler-object = $handlers{$handler-name}[0];
+        my %options = %(|$handlers{$handler-name}[1..*-1]);
+
+        require ::($oname);
+        my $gtk-object = ::($oname).new(:native-object($object));
+        note "Connect $oname, $handler-name for signal $signal-name"
+          if $Gnome::N::x-debug;
+
+        if $handler-object.^can("$handler-name") {
+          $gtk-object.register-signal(
+            $handler-object, $handler-name, $signal-name, |%options
+          );
+        }
+
+        else {
+          note "Signalhandler $handler-name for signal $signal-name not available" if $Gnome::N::x-debug;
+        }
+      }
+
+      else {
+        note "Cannot handle $oname typed objects. Signalhandler for signal $signal-name not activated" if $Gnome::N::x-debug;
+      }
+    },
+    OpaquePointer
+  )
+}
+
+sub gtk_builder_connect_signals_full (
+  N-GObject $builder,
+  Callable $func (
+    N-GObject $b, N-GObject $object,
+    Str $signal_name, Str $handler_name,
+    N-GObject $connect_object, int32 $flags,
+    OpaquePointer $d
+  ),
+  Pointer $user_data
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:error-quark:
+=begin pod
+=head2 error-quark
+
+Return the domain code of the builder error domain.
+
+  method error-quark ( --> UInt )
+
+The following example shows the fields of a returned error when a faulty string is provided in the call.
+
+  my Gnome::Glib::Quark $quark .= new;
+  my Gnome::Glib::Error $e = $builder.add-from-string($text);
+  is $e.domain, $builder.gtk_builder_error_quark(),
+     "domain code: $e.domain()";
+  is $quark.to-string($e.domain), 'gtk-builder-error-quark',
+     "error domain: $quark.to-string($e.domain())";
+
+=end pod
+
+method error-quark ( --> UInt ) {
+  gtk_builder_error_quark()
+}
+
+sub gtk_builder_error_quark (
+   --> GQuark
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:expose-object:
+=begin pod
+=head2 expose-object
+
+Add I<object> to the I<builder> object pool so it can be referenced just like any other object built by builder.
+
+  method expose-object ( Str $name, N-GObject $object )
+
+=item Str $name; the name of the object exposed to the builder
+=item N-GObject $object; the object to expose
+=end pod
+
+method expose-object ( Str $name, $object is copy ) {
+  $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
+
+  gtk_builder_expose_object(
+    self.get-native-object-no-reffing, $name, $object
+  );
+}
+
+sub gtk_builder_expose_object (
+  N-GObject $builder, gchar-ptr $name, N-GObject $object
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:extend-with-template:
+=begin pod
+=head2 extend-with-template
+
+Main private entry point for building composite container components from template XML.
+
+This is exported purely to let gtk-builder-tool validate templates, applications have no need to call this function.
+
+Returns: A positive value on success, 0 if an error occurred
+
+  method extend-with-template ( N-GObject $widget, N-GObject $template_type, Str $buffer, UInt $length, N-GError $error --> UInt )
+
+=item N-GObject $widget; the widget that is being extended
+=item N-GObject $template_type; the type that the template is for
+=item Str $buffer; the string to parse
+=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method extend-with-template ( $widget is copy, $template_type is copy, Str $buffer, UInt $length, $error is copy --> UInt ) {
+  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $template_type .= get-native-object-no-reffing unless $template_type ~~ N-GObject;
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_extend_with_template(
+    self.get-native-object-no-reffing, $widget, $template_type, $buffer, $length, $error
+  )
+}
+
+sub gtk_builder_extend_with_template (
+  N-GObject $builder, N-GObject $widget, N-GObject $template_type, gchar-ptr $buffer, gsize $length, N-GError $error --> guint
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-application:
+#TM:1:get-application-rk:
+=begin pod
+=head2 get-application, get-application-rk
+
+Gets the B<Gnome::Gtk3::Application> associated with the builder.
+
+The B<Gnome::Gtk3::Application> is used for creating action proxies as requested from XML that the builder is loading.
+
+By default, the builder uses the default application: the one from C<g-application-get-default()>. If you want to use another application for constructing proxies, use C<set-application()>.
+
+Returns: the application being used by the builder, or C<undefined>
+
+  method get-application ( --> N-GObject )
+  method get-application-rk ( --> Gnome::Gtk3::Application )
+
+=end pod
+
+method get-application ( --> N-GObject ) {
+  gtk_builder_get_application(self.get-native-object-no-reffing)
+}
+
+method get-application-rk ( --> Gnome::Gtk3::Application ) {
+  Gnome::Gtk3::Application.new(
+    :native-object(
+      gtk_builder_get_application(self.get-native-object-no-reffing)
+    )
+  )
+}
+
+sub gtk_builder_get_application (
+  N-GObject $builder --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-object:
+=begin pod
+=head2 get-object
+
+Gets the object named I<name>. Note that this function does not increment the reference count of the returned object.
+
+Returns: the object named I<name> or C<undefined> if it could not be found in the object tree.
+
+  method get-object ( Str $name --> N-GObject )
+
+=item Str $name; name of object to get
+=end pod
+
+method get-object ( Str $name --> N-GObject ) {
+
+  gtk_builder_get_object(
+    self.get-native-object-no-reffing, $name
+  )
+}
+
+sub gtk_builder_get_object (
+  N-GObject $builder, gchar-ptr $name --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-objects:
+=begin pod
+=head2 get-objects
+
+Gets all objects that have been constructed by I<builder>. Note that this function does not increment the reference counts of the returned objects.
+
+Returns: (element-type GObject) (transfer container): a newly-allocated B<Gnome::Gtk3::SList> containing all the objects constructed by the B<Gnome::Gtk3::Builder> instance. It should be freed by C<g-slist-free()>
+
+  method get-objects ( --> N-GSList )
+
+=end pod
+
+method get-objects ( --> N-GSList ) {
+
+  gtk_builder_get_objects(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_builder_get_objects (
+  N-GObject $builder --> N-GSList
+) is native(&gtk-lib)
+  { * }
+}}
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-translation-domain:
+=begin pod
+=head2 get-translation-domain
+
+Gets the translation domain of I<builder>.
+
+Returns: the translation domain. This string is owned by the builder object and must not be modified or freed.
+
+  method get-translation-domain ( --> Str )
+
+=end pod
+
+method get-translation-domain ( --> Str ) {
+
+  gtk_builder_get_translation_domain(
+    self.get-native-object-no-reffing,
+  )
+}
+
+sub gtk_builder_get_translation_domain (
+  N-GObject $builder --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:0:get-type-from-name:
+=begin pod
+=head2 get-type-from-name
+
+Looks up a type by name, using the virtual function that B<Gnome::Gtk3::Builder> has for that purpose. This is mainly used when implementing the B<Gnome::Gtk3::Buildable> interface on a type.
+
+Returns: the B<Gnome::Gtk3::Type> found for I<$type-name> or B<Gnome::Gtk3::-TYPE-INVALID> if no type was found
+
+  method get-type-from-name ( Str $type-name --> UInt )
+
+=item Str $type_name; type name to lookup
+=end pod
+
+method get-type-from-name ( Str $type-name --> UInt ) {
+  gtk_builder_get_type_from_name(
+    self.get-native-object-no-reffing, $type-name
+  )
+}
+
+sub gtk_builder_get_type_from_name (
+  N-GObject $builder, gchar-ptr $type-name --> GType
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:lookup-callback-symbol:
+=begin pod
+=head2 lookup-callback-symbol
+
+Fetches a symbol previously added to I<builder> with C<add-callback-symbols()>
+
+This function is intended for possible use in language bindings or for any case that one might be cusomizing signal connections using C<gtk-builder-connect-signals-full()>
+
+Returns: The callback symbol in I<builder> for I<callback-name>, or C<undefined>
+
+  method lookup-callback-symbol ( Str $callback_name --> GCallback )
+
+=item Str $callback_name; The name of the callback
+=end pod
+
+method lookup-callback-symbol ( Str $callback_name --> GCallback ) {
+
+  gtk_builder_lookup_callback_symbol(
+    self.get-native-object-no-reffing, $callback_name
+  )
+}
+
+sub gtk_builder_lookup_callback_symbol (
+  N-GObject $builder, gchar-ptr $callback_name --> GCallback
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:0:set-application:
+=begin pod
+=head2 set-application
+
+Sets the application associated with I<builder>.
+
+You only need this function if there is more than one B<Gnome::Gtk3::Application> in your process. I<$application> cannot be C<undefined>.
+
+  method set-application ( N-GObject $application )
+
+=item N-GObject $application; a B<Gnome::Gtk3::Application>
+=end pod
+
+method set-application ( $application is copy ) {
+  $application .= get-native-object-no-reffing unless $application ~~ N-GObject;
+
+  gtk_builder_set_application(
+    self.get-native-object-no-reffing, $application
+  );
+}
+
+sub gtk_builder_set_application (
+  N-GObject $builder, N-GObject $application
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:set-translation-domain:
+=begin pod
+=head2 set-translation-domain
+
+Sets the translation domain of I<builder>. See  I<translation-domain>.
+
+  method set-translation-domain ( Str $domain )
+
+=item Str $domain; the translation domain or C<undefined>
+=end pod
+
+method set-translation-domain ( Str $domain ) {
+
+  gtk_builder_set_translation_domain(
+    self.get-native-object-no-reffing, $domain
+  );
+}
+
+sub gtk_builder_set_translation_domain (
+  N-GObject $builder, gchar-ptr $domain
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:value-from-string:
+=begin pod
+=head2 value-from-string
+
+This function demarshals a value from a string. This function calls C<g-value-init()> on the I<value> argument, so it need not be initialised beforehand.
+
+This function can handle char, uchar, boolean, int, uint, long, ulong, enum, flags, float, double, string, B<Gnome::Gtk3::Color>, B<Gnome::Gtk3::RGBA> and B<Gnome::Gtk3::Adjustment> type values. Support for B<Gnome::Gtk3::Widget> type values is still to come.
+
+Upon errors C<False> will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR> domain.
+
+Returns: C<True> on success
+
+  method value-from-string ( GParamSpec $pspec, Str $string, N-GObject $value, N-GError $error --> Bool )
+
+=item GParamSpec $pspec; the B<Gnome::Gtk3::ParamSpec> for the property
+=item Str $string; the string representation of the value
+=item N-GObject $value; the B<Gnome::Gtk3::Value> to store the result in
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method value-from-string ( GParamSpec $pspec, Str $string, $value is copy, $error is copy --> Bool ) {
+  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_value_from_string(
+    self.get-native-object-no-reffing, $pspec, $string, $value, $error
+  ).Bool
+}
+
+sub gtk_builder_value_from_string (
+  N-GObject $builder, GParamSpec $pspec, gchar-ptr $string, N-GObject $value, N-GError $error --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:value-from-string-type:
+=begin pod
+=head2 value-from-string-type
+
+Like C<value-from-string()>, this function demarshals a value from a string, but takes a B<Gnome::Gtk3::Type> instead of B<Gnome::Gtk3::ParamSpec>. This function calls C<g-value-init()> on the I<value> argument, so it need not be initialised beforehand.
+
+Upon errors C<False> will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR> domain.
+
+Returns: C<True> on success
+
+  method value-from-string-type ( N-GObject $type, Str $string, N-GObject $value, N-GError $error --> Bool )
+
+=item N-GObject $type; the B<Gnome::Gtk3::Type> of the value
+=item Str $string; the string representation of the value
+=item N-GObject $value; the B<Gnome::Gtk3::Value> to store the result in
+=item N-GError $error; return location for an error, or C<undefined>
+=end pod
+
+method value-from-string-type ( $type is copy, Str $string, $value is copy, $error is copy --> Bool ) {
+  $type .= get-native-object-no-reffing unless $type ~~ N-GObject;
+  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+
+  gtk_builder_value_from_string_type(
+    self.get-native-object-no-reffing, $type, $string, $value, $error
+  ).Bool
+}
+
+sub gtk_builder_value_from_string_type (
+  N-GObject $builder, N-GObject $type, gchar-ptr $string, N-GObject $value, N-GError $error --> gboolean
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_builder_new:
+#`{{
+=begin pod
+=head2 _gtk_builder_new
+
+Creates a new empty builder object.
+
+This function is only useful if you intend to make multiple calls to C<add-from-file()>, C<gtk-builder-add-from-resource()> or C<gtk-builder-add-from-string()> in order to merge multiple UI descriptions into a single builder.
+
+Most users will probably want to use C<gtk-builder-new-from-file()>, C<gtk-builder-new-from-resource()> or C<gtk-builder-new-from-string()>.
+
+Returns: a new (empty) B<Gnome::Gtk3::Builder> object
+
+  method _gtk_builder_new ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_builder_new ( --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_builder_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_builder_new_from_file:
+#`{{
+=begin pod
+=head2 _gtk_builder_new_from_file
+
+Builds the [GtkBuilder UI definition][BUILDER-UI] in the file I<filename>.
+
+If there is an error opening the file or parsing the description then the program will be aborted. You should only ever attempt to parse user interface descriptions that are shipped as part of your program.
+
+Returns: a B<Gnome::Gtk3::Builder> containing the described interface
+
+  method _gtk_builder_new_from_file ( Str $filename --> N-GObject )
+
+=item Str $filename; filename of user interface description file
+=end pod
+}}
+
+sub _gtk_builder_new_from_file ( gchar-ptr $filename --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_builder_new_from_file')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_builder_new_from_resource:
+#`{{
+=begin pod
+=head2 _gtk_builder_new_from_resource
+
+Builds the [GtkBuilder UI definition][BUILDER-UI] at I<resource-path>.
+
+If there is an error locating the resource or parsing the description, then the program will be aborted.
+
+Returns: a B<Gnome::Gtk3::Builder> containing the described interface
+
+  method _gtk_builder_new_from_resource ( Str $resource_path --> N-GObject )
+
+=item Str $resource_path; a B<Gnome::Gtk3::Resource> resource path
+=end pod
+}}
+
+sub _gtk_builder_new_from_resource ( gchar-ptr $resource_path --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_builder_new_from_resource')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_builder_new_from_string:
+#`{{
+=begin pod
+=head2 _gtk_builder_new_from_string
+
+Builds the user interface described by I<string> (in the [GtkBuilder UI definition][BUILDER-UI] format).
+
+If I<string> is C<undefined>-terminated, then I<length> should be -1. If I<length> is not -1, then it is the length of I<string>.
+
+If there is an error parsing I<string> then the program will be aborted. You should not attempt to parse user interface description from untrusted sources.
+
+Returns: a B<Gnome::Gtk3::Builder> containing the interface described by I<string>
+
+  method _gtk_builder_new_from_string ( Str $string, Int() $length --> N-GObject )
+
+=item Str $string; a user interface (XML) description
+=item Int() $length; the length of I<string>, or -1
+=end pod
+}}
+
+sub _gtk_builder_new_from_string ( gchar-ptr $string, gssize $length --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_builder_new_from_string')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:translation-domain:
+=head3 Translation Domain: translation-domain
+
+The translation domain used when translating property values that have been marked as translatable in interface descriptions. If the translation domain is C<undefined>, B<Gnome::Gtk3::Builder> uses C<gettext()>, otherwise C<g-dgettext()>.
+
+The B<Gnome::GObject::Value> type of property I<translation-domain> is C<G_TYPE_STRING>.
+=end pod
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:1:gtk_builder_error_quark:
 =begin pod
@@ -1087,8 +2059,7 @@ sub gtk_builder_lookup_callback_symbol ( N-GObject $builder, Str $callback_name 
 
 Sets the application associated with I<builder>.
 
-You only need this function if there is more than one C<GApplication>
-in your process. I<application> cannot be C<Any>.
+You only need this function if there is more than one C<Application> in your process. I<application> cannot be C<Any>.
 
   method gtk_builder_set_application ( N-GObject $application )
 

@@ -84,6 +84,11 @@ Declaration
     unit class Gnome::Gtk3::Builder;
     also is Gnome::GObject::Object;
 
+Uml Diagram
+-----------
+
+![](plantuml/Builder.svg)
+
 Example
 -------
 
@@ -135,108 +140,91 @@ Methods
 new
 ---
 
-Create builder object and load gui design. Builds the UI definition from a file. If there is an error opening the file or parsing the description then the program will be aborted. You should only ever attempt to parse user interface descriptions that are shipped as part of your program.
+### default, no options
 
-    multi method new ( Str :$file! )
-
-Same as above but read the design from the string. Builds the user interface described by *$string* (in the UI definition format). If there is an error parsing *string* then the program will be aborted. You should not attempt to parse user interface description from untrusted sources.
-
-    multi method new ( Str :$string! )
-
-The interface is build using the UI definition from the given resource path. If there is an error locating the resource or parsing the description, then the program will be aborted.
-
-    multi method new ( Str :$resource! )
-
-Create an empty builder. This is only useful if you intend to make multiple calls to `gtk_builder_add_from_file()`, `gtk_builder_add_from_resource()` or `gtk_builder_add_from_string()` in order to merge multiple UI descriptions into a single builder.
+Create an empty builder. This is only useful if you intend to make multiple calls to `add-from-file()`, `add-from-resource()` or `add-from-string()` in order to merge multiple UI descriptions into a single builder.
 
 Most users will probably want to use `.new(:file)`, `.new(:resource)` or `.new(:string)`, particularly when there is only one file, resource or string.
 
     multi method new ( )
 
-[[gtk_] builder_] error_quark
------------------------------
+### :file
 
-Return the domain code of the builder error domain.
+Create builder object and load gui design. Builds the UI definition from a file. If there is an error opening the file or parsing the description then the program will be aborted. You should only ever attempt to parse user interface descriptions that are shipped as part of your program.
 
-    method gtk_builder_error_quark ( --> Int )
+    multi method new ( Str :$file! )
 
-The following example shows the fields of a returned error when a faulty string is provided in the call.
+### :string
 
-    my Gnome::Glib::Quark $quark .= new;
-    my Gnome::Glib::Error $e = $builder.add-from-string($text);
-    is $e.domain, $builder.gtk_builder_error_quark(),
-       "domain code: $e.domain()";
-    is $quark.to-string($e.domain), 'gtk-builder-error-quark',
-       "error domain: $quark.to-string($e.domain())";
+Same as above but read the design from the string. Builds the user interface described by *$string* (in the UI definition format). If there is an error parsing *string* then the program will be aborted. You should not attempt to parse user interface description from untrusted sources.
 
-[[gtk_] builder_] add_from_file
--------------------------------
+    multi method new ( Str :$string! )
 
-Parses a file containing a UI definition and merges it with the current contents of *builder*.
+### :resource
 
-Most users will probably want to use `.new(:file)`.
+The interface is build using the UI definition from the given resource path. If there is an error locating the resource or parsing the description, then the program will be aborted.
 
-If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`.
+    multi method new ( Str :$resource! )
 
-You should not use this function with untrusted files (ie: files that are not part of your application). Broken **Gnome::Gtk3::Builder** files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
+### :native-object
 
-Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
+Create a Builder object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-    method gtk_builder_add_from_file (
-      Str $filename, N-GObject $error
-      --> Gnome::Glib::Error
-    )
+    multi method new ( N-GObject :$native-object! )
+
+add-from-file
+-------------
+
+Parses a file containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
+
+Most users will probably want to use `new-from-file()`.
+
+If an error occurs, 0 will be returned and *error* will be assigned a **Gnome::Gtk3::Error** from the **Gnome::Gtk3::TK-BUILDER-ERROR**, **Gnome::Gtk3::-MARKUP-ERROR** or **Gnome::Gtk3::-FILE-ERROR** domain.
+
+It’s not really reasonable to attempt to handle failures of this call. You should not use this function with untrusted files (ie: files that are not part of your application). Broken **Gnome::Gtk3::Builder** files can easily crash your program, and it’s possible that memory was leaked leading up to the reported failure.
+
+Returns: An invalid error object on success, Otherwise call `.message()` on the error object to find out what went wrong.
+
+    method add-from-file ( Str $filename --> Gnome::Glib::Error )
 
   * Str $filename; the name of the file to parse
 
-[[gtk_] builder_] add_from_resource
------------------------------------
+add-from-resource
+-----------------
 
-Parses a resource file containing a UI definition and merges it with the current contents of *builder*.
+Parses a resource file containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
 
-Most users will probably want to use `.new(:resource)`.
+Most users will probably want to use `new-from-resource()`.
 
-If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
+If an error occurs, 0 will be returned and *error* will be assigned a **Gnome::Gtk3::Error** from the **Gnome::Gtk3::TK-BUILDER-ERROR**, **Gnome::Gtk3::-MARKUP-ERROR** or **Gnome::Gtk3::-RESOURCE-ERROR** domain.
 
-Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
+It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call `g-error()`.
 
-    method gtk_builder_add_from_resource (
-      Str $resource_path
-      --> Gnome::Glib::Error
-    )
+Returns: An invalid error object on success, Otherwise call `.message()` on the error object to find out what went wrong.
+
+    method add-from-resource ( Str $resource_path --> Gnome::Glib::Error )
 
   * Str $resource_path; the path of the resource file to parse
 
-  * N-GObject $error; (allow-none): return location for an error, or `Any`
+add-from-string
+---------------
 
-[[gtk_] builder_] add_from_string
----------------------------------
+Parses a string containing a [GtkBuilder UI definition][BUILDER-UI] and merges it with the current contents of *builder*.
 
-Parses a string containing a UI definition and merges it with the current contents of *builder*.
+Most users will probably want to use `new-from-string()`.
 
-Most users will probably want to use `.new(:string)`.
+Upon errors 0 will be returned and *error* will be assigned a **Gnome::Gtk3::Error** from the **Gnome::Gtk3::TK-BUILDER-ERROR**, **Gnome::Gtk3::-MARKUP-ERROR** or **Gnome::Gtk3::-VARIANT-PARSE-ERROR** domain.
 
-If an error occurs, a valid Gnome::Glib::Error object is returned with an error domain of `GTK_BUILDER_ERROR`, `G_MARKUP_ERROR` or `G_FILE_ERROR`. The only reasonable thing to do when an error is detected is to throw an Exception when necessary.
+It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call `g-error()`.
 
-Returns: Gnome::Glib::Error. Test `.is-valid()` to see if there was an error.
+Returns: An invalid error object on success, Otherwise call `.message()` on the error object to find out what went wrong.
 
-    method gtk_builder_add_from_string ( Str $buffer --> N-GObject $error )
+    method add-from-string ( Str $buffer --> Gnome::Glib::Error )
 
   * Str $buffer; the string to parse
 
-[[gtk_] builder_] get_object
-----------------------------
-
-Gets the object named *$name*. Note that this function does not increment the reference count of the returned object.
-
-Returns: the object named *$name* or undefined if it could not be found in the object tree.
-
-    method gtk_builder_get_object ( Str $name --> N-GObject  )
-
-  * Str $name; name of object to get
-
-[[gtk_] builder_] connect_signals_full
---------------------------------------
+connect-signals-full
+--------------------
 
 This method will process the signal elements from the loaded XML and with the help of the provided $handlers table register each handler to a signal.
 
@@ -297,57 +285,94 @@ An example where a gui is described in XML. It has a Window with a Button, both 
     # Register all signals
     $builder.connect-signals-full($handlers);
 
-[[gtk_] builder_] get_type_from_name
-------------------------------------
+error-quark
+-----------
 
-Looks up a type by name, using the virtual function that **Gnome::Gtk3::Builder** has for that purpose. This is mainly used when implementing the **Gnome::Gtk3::Buildable** interface on a type.
+Return the domain code of the builder error domain.
 
-Returns: the `GType` found for *type_name* or `G_TYPE_INVALID` if no type was found
+    method error-quark ( --> UInt )
 
-    method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
+The following example shows the fields of a returned error when a faulty string is provided in the call.
 
-  * Str $type_name; type name to lookup
+    my Gnome::Glib::Quark $quark .= new;
+    my Gnome::Glib::Error $e = $builder.add-from-string($text);
+    is $e.domain, $builder.gtk_builder_error_quark(),
+       "domain code: $e.domain()";
+    is $quark.to-string($e.domain), 'gtk-builder-error-quark',
+       "error domain: $quark.to-string($e.domain())";
 
-[[gtk_] builder_] set_application
----------------------------------
-
-Sets the application associated with *builder*.
-
-You only need this function if there is more than one `GApplication` in your process. *application* cannot be `Any`.
-
-    method gtk_builder_set_application ( N-GObject $application )
-
-  * N-GObject $application; a **Gnome::Gtk3::Application**
-
-[[gtk_] builder_] get_application
----------------------------------
+get-application, get-application-rk
+-----------------------------------
 
 Gets the **Gnome::Gtk3::Application** associated with the builder.
 
 The **Gnome::Gtk3::Application** is used for creating action proxies as requested from XML that the builder is loading.
 
-By default, the builder uses the default application: the one from `g_application_get_default()`. If you want to use another application for constructing proxies, use `gtk_builder_set_application()`.
+By default, the builder uses the default application: the one from `g-application-get-default()`. If you want to use another application for constructing proxies, use `set-application()`.
 
-Returns: (nullable) (transfer none): the application being used by the builder, or `Any`
+Returns: the application being used by the builder, or `undefined`
 
-    method gtk_builder_get_application ( --> N-GObject  )
+    method get-application ( --> N-GObject )
+    method get-application-rk ( --> Gnome::Gtk3::Application )
+
+get-object
+----------
+
+Gets the object named *name*. Note that this function does not increment the reference count of the returned object.
+
+Returns: the object named *name* or `undefined` if it could not be found in the object tree.
+
+    method get-object ( Str $name --> N-GObject )
+
+  * Str $name; name of object to get
+
+get-type-from-name
+------------------
+
+Looks up a type by name, using the virtual function that **Gnome::Gtk3::Builder** has for that purpose. This is mainly used when implementing the **Gnome::Gtk3::Buildable** interface on a type.
+
+Returns: the **Gnome::Gtk3::Type** found for *$type-name* or **Gnome::Gtk3::-TYPE-INVALID** if no type was found
+
+    method get-type-from-name ( Str $type-name --> UInt )
+
+  * Str $type_name; type name to lookup
+
+set-application
+---------------
+
+Sets the application associated with *builder*.
+
+You only need this function if there is more than one **Gnome::Gtk3::Application** in your process. *$application* cannot be `undefined`.
+
+    method set-application ( N-GObject $application )
+
+  * N-GObject $application; a **Gnome::Gtk3::Application**
+
+set-translation-domain
+----------------------
+
+Sets the translation domain of *builder*. See *translation-domain*.
+
+    method set-translation-domain ( Str $domain )
+
+  * Str $domain; the translation domain or `undefined`
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### translation-domain
+### Translation Domain: translation-domain
 
-The translation domain used when translating property values that have been marked as translatable in interface descriptions. If the translation domain is `Any`, **Gnome::Gtk3::Builder** uses `gettext()`, otherwise `g_dgettext()`.
+The translation domain used when translating property values that have been marked as translatable in interface descriptions. If the translation domain is `undefined`, **Gnome::Gtk3::Builder** uses `gettext()`, otherwise `g-dgettext()`.
 
 The **Gnome::GObject::Value** type of property *translation-domain* is `G_TYPE_STRING`.
 

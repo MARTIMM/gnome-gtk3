@@ -57,6 +57,8 @@ subtest 'Add ui from file to builder', {
 
   $builder .= new(:file($ui-file));
   ok $builder.defined, '.new-from-file()';
+
+  nok $builder.get-application-rk.is-valid, '.get-application-rk()';
 }
 
 #-------------------------------------------------------------------------------
@@ -107,6 +109,11 @@ subtest 'Test items from ui', {
 
   #$b.gtk-widget-show;
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 
 #`{{
 Other X11 errors prevent good tests
