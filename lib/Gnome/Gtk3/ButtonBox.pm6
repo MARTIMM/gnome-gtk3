@@ -395,7 +395,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =head2 Supported properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:layout-style:
+=comment #TP:1:layout-style:
 =head3 Layout style: layout-style
 
 How to lay out the buttons in the box. Possible values are: spread, edge-COMMA- start and end

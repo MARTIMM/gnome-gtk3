@@ -7,6 +7,7 @@ use Gnome::Gtk3::Button;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
+use Gnome::N::GlibToRakuTypes;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::ButtonBox $bb;
@@ -62,6 +63,12 @@ subtest 'Inherit Gnome::Gtk3::ButtonBox', {
 
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::ButtonBox, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $bb.get-properties( 'layout-style', GEnum);
+  is-deeply @r, [GTK_BUTTONBOX_EXPAND.value,], 'layout-style';
 }
 
 #-------------------------------------------------------------------------------
