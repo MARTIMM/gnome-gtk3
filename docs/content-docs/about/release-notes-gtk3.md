@@ -5,6 +5,8 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-10-          0.45.0:
+* Add **Gnome::Gtk3::AppChooserDialog**.
 
 #### 2021-10-11 0.44.3:
 * Rewite pod doc and method ordering of **Gnome::Gtk3::Assistant**, **Gnome::Gtk3::Bin**, **Gnome::Gtk3::Border**, **Gnome::Gtk3::Box**, **Gnome::Gtk3::Builder**, **Gnome::Gtk3::Button**. Also added methods returning Raku objects.

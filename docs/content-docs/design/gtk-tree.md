@@ -25,7 +25,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkWindow                   Window
 │   │   │   │   │   ├── GtkDialog                     Dialog
 │   │   │   │   │   │   ├── GtkAboutDialog            AboutDialog
-│   │   │   │   │   │   ├── GtkAppChooserDialog
+│   │   │   │   │   │   ├── GtkAppChooserDialog       AppChooserDialog
 │   │   │   │   │   │   ├── GtkColorChooserDialog     ColorChooserDialog
 │   │   │   │   │   │   ├─✗ GtkColorSelectionDialog   ⛔
 │   │   │   │   │   │   ├── GtkFileChooserDialog      FileChooserDialog

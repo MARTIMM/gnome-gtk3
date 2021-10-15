@@ -20,6 +20,9 @@
   - title: "Adjustment"
     url: "/content-docs/reference/Gtk3/Adjustment.html"
 
+  - title: "AppChooserDialog"
+    url: "/content-docs/reference/Gtk3/AppChooserDialog.html"
+
   - title: "Application"
     url: "/content-docs/reference/Gtk3/Application.html"
 
