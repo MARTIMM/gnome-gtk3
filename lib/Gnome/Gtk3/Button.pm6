@@ -642,7 +642,7 @@ Also here, the types of positional arguments in the signal handler are important
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:activate:
+=comment #TS:1:activate:
 =head3 activate
 
 The I<activate> signal on GtkButton is an action signal and emitting it causes the button to animate press then release. Applications should never connect to this signal, but use the I<clicked> signal.
@@ -658,7 +658,7 @@ The I<activate> signal on GtkButton is an action signal and emitting it causes t
 =item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:clicked:
+=comment #TS:1:clicked:
 =head3 clicked
 
 Emitted when the button has been activated (pressed and released).
@@ -673,8 +673,9 @@ Emitted when the button has been activated (pressed and released).
 
 =item $_handle_id; the registered event handler id
 
+=begin comment
 =comment -----------------------------------------------------------------------
-=comment #TS:0:enter:
+=comment # TS:0:enter:
 =head3 enter
 
 Emitted when the pointer enters the button.
@@ -692,7 +693,7 @@ Deprecated: 2.8: Use the  I<enter-notify-event> signal.
 =item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:leave:
+=comment # TS:0:leave:
 =head3 leave
 
 Emitted when the pointer leaves the button.
@@ -710,7 +711,7 @@ Deprecated: 2.8: Use the  I<leave-notify-event> signal.
 =item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:pressed:
+=comment # TS:0:pressed:
 =head3 pressed
 
 Emitted when the button is pressed.
@@ -728,7 +729,7 @@ Deprecated: 2.8: Use the  I<button-press-event> signal.
 =item $_handle_id; the registered event handler id
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:released:
+=comment # TS:0:released:
 =head3 released
 
 Emitted when the button is released.
@@ -744,9 +745,8 @@ Deprecated: 2.8: Use the  I<button-release-event> signal.
 =item $button; the object that received the signal
 
 =item $_handle_id; the registered event handler id
-
+=end comment
 =end pod
-
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -762,7 +762,7 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =head2 Supported properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:always-show-image:
+=comment #TP:1:always-show-image:
 =head3 Always show image: always-show-image
 
 
@@ -776,7 +776,7 @@ without the image.
 The B<Gnome::GObject::Value> type of property I<always-show-image> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:image:
+=comment #TP:1:image:
 =head3 Image widget: image
 
 
@@ -787,7 +787,7 @@ The child widget to appear next to the button text.
 The B<Gnome::GObject::Value> type of property I<image> is C<G_TYPE_OBJECT>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:image-position:
+=comment #TP:1:image-position:
 =head3 Image position: image-position
 
 
@@ -798,7 +798,7 @@ The position of the image relative to the text inside the button.
 The B<Gnome::GObject::Value> type of property I<image-position> is C<G_TYPE_ENUM>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:label:
+=comment #TP:1:label:
 =head3 Label: label
 
 Text of the label widget inside the button, if the button contains a label widget
@@ -807,7 +807,7 @@ Default value: Any
 The B<Gnome::GObject::Value> type of property I<label> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:relief:
+=comment #TP:1:relief:
 =head3 Border relief: relief
 
 The border relief style
@@ -816,7 +816,7 @@ Default value: False
 The B<Gnome::GObject::Value> type of property I<relief> is C<G_TYPE_ENUM>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:use-underline:
+=comment #TP:1:use-underline:
 =head3 Use underline: use-underline
 
 If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key

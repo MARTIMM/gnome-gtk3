@@ -7,10 +7,14 @@ use NativeCall;
 use Test;
 
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::GObject::Object;
+
+use Gnome::Glib::List;
+
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Window;
-use Gnome::Glib::List;
 use Gnome::Gtk3::Bin;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::Label;
@@ -77,10 +81,27 @@ subtest 'manipulations', {
 }
 
 #-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $b.get-properties(
+    'always-show-image', gboolean, 'image-position', GEnum,
+    'label', Str, 'relief', GEnum, 'use-underline', gboolean
+  );
+  is-deeply @r, [
+    True.Int, GTK_POS_RIGHT.value, 'x1', GTK_RELIEF_NONE.value, True.Int
+  ], 'always-show-image, image-position, label, relief, use-underline';
+
+  @r = $b.get-properties( 'image', N-GObject);
+  is Gnome::Gtk3::Image.new(:native-object(@r[0])).get-name,
+    'bttnimg', 'image';
+
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Button as container', {
   $b .= new(:label<xyz>);
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
+  # Button is a Bin === one widget container
   my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
   $l .= new(:native-object($gl.nth-data(0)));
   is $l.get-text, 'xyz', 'text label from button 1';
@@ -133,11 +154,14 @@ subtest 'Button connect and emit signal', {
     method signal-emitter ( Gnome::Gtk3::Button :_widget($button) --> Str ) {
       while $main.gtk-events-pending() { $main.iteration-do(False); }
       $button.clicked;  #emit-by-name('clicked');
-#      sleep(0.3);
       while $main.gtk-events-pending() { $main.iteration-do(False); }
-
-#      sleep(0.3);
       is $!signal-processed, True, '\'clicked\' signal processed';
+
+      $!signal-processed = False;
+      $button.activate;
+      sleep(0.3);
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      is $!signal-processed, True, '\'activate\' signal fired';
 
       #$!signal-processed = False;
       #$mh-in-handler.emit-by-name( ..., $mh-in-handler);
@@ -199,16 +223,6 @@ subtest 'Inherit Gnome::Gtk3::Button', {
 
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::Button, 'MyClass.new()';
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  my @r = $b.get-properties(
-    'label', Str
-  );
-  is-deeply @r, [
-    'xyz'
-  ], 'label, ';
 }
 
 #-------------------------------------------------------------------------------
