@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.44.3",
+  "version": "0.45.0",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
 
@@ -13,6 +13,7 @@
     "Gnome::Gtk3::Actionable": "lib/Gnome/Gtk3/Actionable.pm6",
     "Gnome::Gtk3::ActionBar": "lib/Gnome/Gtk3/ActionBar.pm6",
     "Gnome::Gtk3::Adjustment": "lib/Gnome/Gtk3/Adjustment.pm6",
+    "Gnome::Gtk3::AppChooserDialog": "lib/Gnome/Gtk3/AppChooserDialog.pm6",
     "Gnome::Gtk3::Application": "lib/Gnome/Gtk3/Application.pm6",
     "Gnome::Gtk3::ApplicationWindow": "lib/Gnome/Gtk3/ApplicationWindow.pm6",
     "Gnome::Gtk3::AspectFrame": "lib/Gnome/Gtk3/AspectFrame.pm6",
