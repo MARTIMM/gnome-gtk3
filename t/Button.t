@@ -64,21 +64,26 @@ subtest 'manipulations', {
   $b.set-image-position(GTK_POS_RIGHT);
   is $b.get-image-position, GTK_POS_RIGHT,
     '.set-image-position() / .get-image-position()';
+
+#  is $b.get-label, 'Off', '.get-label()';
+  $b.set-label('x1');
+  is $b.get-label, 'x1', '.set-label() / .get-label()';
+
+  $b.set-relief(GTK_RELIEF_NONE);
+  is $b.get-relief, GTK_RELIEF_NONE, '.set-relief() / .get-relief()';
+
+  $b.set-use-underline(True);
+  ok $b.get-use-underline, '.set-use-underline() / .get-use-underline()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Button as container', {
-  $b .= new(:label('xyz'));
-  is $b.get-label, 'xyz', 'gtk_button_get_label()';
-  $b.set-label('xyz');
-  is $b.get-label, 'xyz', 'gtk_button_set_label() / gtk_button_get_label()';
-
+  $b .= new(:label<xyz>);
   my Gnome::Gtk3::Label $l .= new(:text(''));
 
   my Gnome::Glib::List $gl .= new(:native-object($b.get-children));
   $l .= new(:native-object($gl.nth-data(0)));
   is $l.get-text, 'xyz', 'text label from button 1';
-
 
   class X {
     method cfe ( $nw ) {

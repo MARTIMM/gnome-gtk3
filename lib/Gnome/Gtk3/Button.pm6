@@ -312,7 +312,7 @@ sub gtk_button_get_image_position (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-label:
+#TM:1:get-label:
 =begin pod
 =head2 get-label
 
@@ -325,10 +325,7 @@ Returns: The text of the label widget. This string is owned by the widget and mu
 =end pod
 
 method get-label ( --> Str ) {
-
-  gtk_button_get_label(
-    self._f('GtkButton'),
-  )
+  gtk_button_get_label(self._f('GtkButton'))
 }
 
 sub gtk_button_get_label (
@@ -337,23 +334,20 @@ sub gtk_button_get_label (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-relief:
+#TM:1:get-relief:
 =begin pod
 =head2 get-relief
 
 Returns the current relief style of the given B<Gnome::Gtk3::Button>.
 
-Returns: The current B<Gnome::Gtk3::ReliefStyle>
+Returns: The current GtkReliefStyle
 
   method get-relief ( --> GtkReliefStyle )
 
 =end pod
 
 method get-relief ( --> GtkReliefStyle ) {
-
-  gtk_button_get_relief(
-    self._f('GtkButton'),
-  )
+  GtkReliefStyle(gtk_button_get_relief(self._f('GtkButton')))
 }
 
 sub gtk_button_get_relief (
@@ -362,7 +356,7 @@ sub gtk_button_get_relief (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-use-underline:
+#TM:1:get-use-underline:
 =begin pod
 =head2 get-use-underline
 
@@ -459,7 +453,7 @@ sub gtk_button_set_image_position (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-label:
+#TM:1:set-label:
 =begin pod
 =head2 set-label
 
@@ -473,10 +467,7 @@ This will also clear any previously set labels.
 =end pod
 
 method set-label ( Str $label ) {
-
-  gtk_button_set_label(
-    self._f('GtkButton'), $label
-  );
+  gtk_button_set_label( self._f('GtkButton'), $label);
 }
 
 sub gtk_button_set_label (
@@ -485,7 +476,7 @@ sub gtk_button_set_label (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-relief:
+#TM:1:set-relief:
 =begin pod
 =head2 set-relief
 
@@ -497,10 +488,7 @@ Sets the relief style of the edges of the given B<Gnome::Gtk3::Button> widget. T
 =end pod
 
 method set-relief ( GtkReliefStyle $relief ) {
-
-  gtk_button_set_relief(
-    self._f('GtkButton'), $relief
-  );
+  gtk_button_set_relief( self._f('GtkButton'), $relief.value);
 }
 
 sub gtk_button_set_relief (
@@ -509,7 +497,7 @@ sub gtk_button_set_relief (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-use-underline:
+#TM:1:set-use-underline:
 =begin pod
 =head2 set-use-underline
 
@@ -657,10 +645,7 @@ Also here, the types of positional arguments in the signal handler are important
 =comment #TS:0:activate:
 =head3 activate
 
-The I<activate> signal on GtkButton is an action signal and
-emitting it causes the button to animate press then release.
-Applications should never connect to this signal, but use the
- I<clicked> signal.
+The I<activate> signal on GtkButton is an action signal and emitting it causes the button to animate press then release. Applications should never connect to this signal, but use the I<clicked> signal.
 
   method handler (
     Int :$_handle_id,

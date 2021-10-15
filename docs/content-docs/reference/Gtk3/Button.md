@@ -64,19 +64,19 @@ Methods
 new
 ---
 
-### new()
+### default, no options
 
 Creates a new **Gnome::Gtk3::Button** widget. To add a child widget to the button, use `gtk_container_add()`.
 
     multi method new ( )
 
-### new(:label)
+### :label
 
 Creates a **Gnome::Gtk3::Button** widget with a **Gnome::Gtk3::Label** child containing the given text.
 
     multi method new ( Str :$label! )
 
-### new( :icon-name, :icon-size)
+### :icon-name, :icon-size
 
 Creates a new button containing an icon from the current icon theme.
 
@@ -88,144 +88,145 @@ You can use the *gtk3-icon-browser* tool to browse through currently installed i
 
     multi method new ( Str :$icon-name!, GtkIconSize :$icon-size?)
 
-### new(:mnemonic)
+### :mnemonic
 
 Creates a new **Gnome::Gtk3::Button** containing a label. If characters in *label* are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic. Pressing Alt and that key activates the button.
 
     multi method new ( Str :$mnemonic! )
 
-[gtk_] button_clicked
+clicked
+-------
+
+Emits a *clicked* signal to the given **Gnome::Gtk3::Button**.
+
+    method clicked ( )
+
+get-always-show-image
 ---------------------
 
-Emits a prop *clicked* signal to the given **Gnome::Gtk3::Button**.
+Returns whether the button will ignore the *gtk-button-images* setting and always show the image, if available.
 
-    method gtk_button_clicked ( )
+Returns: `True` if the button will always show the image
 
-[[gtk_] button_] set_relief
----------------------------
+    method get-always-show-image ( --> Bool )
 
-Sets the relief style of the edges of the given **Gnome::Gtk3::Button** widget. Two styles exist, `GTK_RELIEF_NORMAL` and `GTK_RELIEF_NONE`. The default style is, as one can guess, `GTK_RELIEF_NORMAL`. The deprecated value `GTK_RELIEF_HALF` behaves the same as `GTK_RELIEF_NORMAL`.
+get-event-window
+----------------
 
-    method gtk_button_set_relief ( GtkReliefStyle $relief )
+Returns the button’s event window if it is realized, `undefined` otherwise. This function should be rarely needed.
 
-  * GtkReliefStyle $relief; The **Gnome::Gtk3::ReliefStyle** as described above
+Returns: *button*’s event window.
 
-[[gtk_] button_] get_relief
----------------------------
+    method get-event-window ( --> N-GObject )
 
-Returns the current relief style of the given **Gnome::Gtk3::Button**.
+get-image, get-image-rk
+-----------------------
 
-Returns: The current **Gnome::Gtk3::ReliefStyle**
+Gets the widget that is currenty set as the image of *button*. This may have been explicitly set by `set-image()` or constructed by `gtk-button-new-from-stock()`.
 
-    method gtk_button_get_relief ( --> GtkReliefStyle  )
+Returns: a native object if defined or N-GObject if not. The '-rk' version returns a **Gnome::Gtk3::Image** which is invalid in case there is no image.
 
-[[gtk_] button_] set_label
---------------------------
+    method get-image ( --> N-GObject )
+    method get-image-rk ( --> Gnome::Gtk3::Image )
 
-Sets the text of the label of the button to *str*. This text is also used to select the stock item if `gtk_button_set_use_stock()` is used.
-
-This will also clear any previously set labels.
-
-    method gtk_button_set_label ( Str $label )
-
-  * Str $label; a string
-
-[[gtk_] button_] get_label
---------------------------
-
-Fetches the text from the label of the button, as set by `gtk_button_set_label()`. If the label text has not been set the return value will be `Any`. This will be the case if you create an empty button with `gtk_button_new()` to use as a container.
-
-Returns: The text of the label widget. This string is owned by the widget and must not be modified or freed.
-
-    method gtk_button_get_label ( --> Str  )
-
-[[gtk_] button_] set_use_underline
-----------------------------------
-
-If true, an underline in the text of the button label indicates the next character should be used for the mnemonic accelerator key.
-
-    method gtk_button_set_use_underline ( Int $use_underline )
-
-  * Int $use_underline; `1` if underlines in the text indicate mnemonics
-
-[[gtk_] button_] get_use_underline
-----------------------------------
-
-Returns whether an embedded underline in the button label indicates a mnemonic. See `gtk_button_set_use_underline()`.
-
-Returns: `1` if an embedded underline in the button label indicates the mnemonic accelerator keys.
-
-    method gtk_button_get_use_underline ( --> Int  )
-
-[[gtk_] button_] set_image
---------------------------
-
-Set the image of *button* to the given widget. The image will be displayed if the label text is `Any` or if sig **always-show-image** is `1`. You don’t have to call `gtk_widget_show()` on *image* yourself.
-
-    method gtk_button_set_image ( N-GObject $image )
-
-  * N-GObject $image; a widget to set as the image for the button
-
-[[gtk_] button_] get_image
---------------------------
-
-Gets the widget that is currenty set as the image of *button*. This may have been explicitly set by `gtk_button_set_image()` or constructed by `gtk_button_new_from_stock()`.
-
-Returns: (nullable) (transfer none): a **Gnome::Gtk3::Widget** or `Any` in case there is no image
-
-    method gtk_button_get_image ( --> N-GObject  )
-
-[[gtk_] button_] set_image_position
------------------------------------
-
-Sets the position of the image relative to the text inside the button.
-
-    method gtk_button_set_image_position ( GtkPositionType $position )
-
-  * GtkPositionType $position; the position
-
-[[gtk_] button_] get_image_position
------------------------------------
+get-image-position
+------------------
 
 Gets the position of the image relative to the text inside the button.
 
 Returns: the position
 
-    method gtk_button_get_image_position ( --> GtkPositionType  )
+    method get-image-position ( --> GtkPositionType )
 
-[[gtk_] button_] set_always_show_image
---------------------------------------
+get-label
+---------
 
-If `1`, the button will ignore the sig **gtk-button-images** setting and always show the image, if available.
+Fetches the text from the label of the button, as set by `set-label()`. If the label text has not been set the return value will be `undefined`. This will be the case if you create an empty button with `gtk-button-new()` to use as a container.
+
+Returns: The text of the label widget. This string is owned by the widget and must not be modified or freed.
+
+    method get-label ( --> Str )
+
+get-relief
+----------
+
+Returns the current relief style of the given **Gnome::Gtk3::Button**.
+
+Returns: The current GtkReliefStyle
+
+    method get-relief ( --> GtkReliefStyle )
+
+get-use-underline
+-----------------
+
+Returns whether an embedded underline in the button label indicates a mnemonic. See `set-use-underline()`.
+
+Returns: `True` if an embedded underline in the button label indicates the mnemonic accelerator keys.
+
+    method get-use-underline ( --> Bool )
+
+set-always-show-image
+---------------------
+
+If `True`, the button will ignore the *gtk-button-images* setting and always show the image, if available.
 
 Use this property if the button would be useless or hard to use without the image.
 
-    method gtk_button_set_always_show_image ( Int $always_show )
+    method set-always-show-image ( Bool $always_show )
 
-  * Int $always_show; `1` if the menuitem should always show the image
+  * Bool $always_show; `True` if the menuitem should always show the image
 
-[[gtk_] button_] get_always_show_image
---------------------------------------
+set-image
+---------
 
-Returns whether the button will ignore the sig **gtk-button-images** setting and always show the image, if available.
+Set the image of *button* to the given widget. The image will be displayed if the label text is `undefined` or if *always-show-image* is `True`. You don’t have to call `Gnome::Gtk3:Widget.show()` on *$image* yourself.
 
-Returns: `1` if the button will always show the image
+    method set-image ( N-GObject $image )
 
-    method gtk_button_get_always_show_image ( --> Int  )
+  * N-GObject $image; a widget to set as the image for the button, or `undefined` to unset
 
-[[gtk_] button_] get_event_window
----------------------------------
+set-image-position
+------------------
 
-Returns the button’s event window if it is realized, `Any` otherwise. This function should be rarely needed.
+Sets the position of the image relative to the text inside the button.
 
-Returns: (transfer none): *button*’s event window.
+    method set-image-position ( GtkPositionType $position )
 
-    method gtk_button_get_event_window ( --> N-GObject  )
+  * GtkPositionType $position; the position
+
+set-label
+---------
+
+Sets the text of the label of the button to *str*. This text is also used to select the stock item if `set-use-stock()` is used.
+
+This will also clear any previously set labels.
+
+    method set-label ( Str $label )
+
+  * Str $label; a string
+
+set-relief
+----------
+
+Sets the relief style of the edges of the given **Gnome::Gtk3::Button** widget. Two styles exist, `GTK-RELIEF-NORMAL` and `GTK-RELIEF-NONE`. The default style is, as one can guess, `GTK-RELIEF-NORMAL`. The deprecated value `GTK-RELIEF-HALF` behaves the same as `GTK-RELIEF-NORMAL`.
+
+    method set-relief ( GtkReliefStyle $relief )
+
+  * GtkReliefStyle $relief; The GtkReliefStyle as described above
+
+set-use-underline
+-----------------
+
+If true, an underline in the text of the button label indicates the next character should be used for the mnemonic accelerator key.
+
+    method set-use-underline ( Bool $use_underline )
+
+  * Bool $use_underline; `True` if underlines in the text indicate mnemonics
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -233,7 +234,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -244,70 +245,162 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
+
+### activate
+
+The *activate* signal on GtkButton is an action signal and emitting it causes the button to animate press then release. Applications should never connect to this signal, but use the *clicked* signal.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
 ### clicked
 
 Emitted when the button has been activated (pressed and released).
 
     method handler (
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($button),
       *%user-options
     );
 
   * $button; the object that received the signal
 
+  * $_handle_id; the registered event handler id
+
+### enter
+
+Emitted when the pointer enters the button.
+
+Deprecated: 2.8: Use the *enter-notify-event* signal.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($button),
+      *%user-options
+    );
+
+  * $button; the object that received the signal
+
+  * $_handle_id; the registered event handler id
+
+### leave
+
+Emitted when the pointer leaves the button.
+
+Deprecated: 2.8: Use the *leave-notify-event* signal.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($button),
+      *%user-options
+    );
+
+  * $button; the object that received the signal
+
+  * $_handle_id; the registered event handler id
+
+### pressed
+
+Emitted when the button is pressed.
+
+Deprecated: 2.8: Use the *button-press-event* signal.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($button),
+      *%user-options
+    );
+
+  * $button; the object that received the signal
+
+  * $_handle_id; the registered event handler id
+
+### released
+
+Emitted when the button is released.
+
+Deprecated: 2.8: Use the *button-release-event* signal.
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($button),
+      *%user-options
+    );
+
+  * $button; the object that received the signal
+
+  * $_handle_id; the registered event handler id
+
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Label
+### Always show image: always-show-image
+
+If `True`, the button will ignore the *gtk-button-images* setting and always show the image, if available.
+
+Use this property if the button would be useless or hard to use without the image.
+
+The **Gnome::GObject::Value** type of property *always-show-image* is `G_TYPE_BOOLEAN`.
+
+### Image widget: image
+
+The child widget to appear next to the button text.
+
+    Widget type: GTK_TYPE_WIDGET
+
+The **Gnome::GObject::Value** type of property *image* is `G_TYPE_OBJECT`.
+
+### Image position: image-position
+
+The position of the image relative to the text inside the button.
+
+    Widget type: GTK_TYPE_POSITION_TYPE
+
+The **Gnome::GObject::Value** type of property *image-position* is `G_TYPE_ENUM`.
+
+### Label: label
 
 Text of the label widget inside the button, if the button contains a label widget Default value: Any
 
 The **Gnome::GObject::Value** type of property *label* is `G_TYPE_STRING`.
 
-### Use underline
-
-If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key Default value: False
-
-The **Gnome::GObject::Value** type of property *use-underline* is `G_TYPE_BOOLEAN`.
-
-### Border relief
+### Border relief: relief
 
 The border relief style Default value: False
 
 The **Gnome::GObject::Value** type of property *relief* is `G_TYPE_ENUM`.
 
-### Image position
+### Use underline: use-underline
 
-The position of the image relative to the text inside the button. Widget type: GTK_TYPE_POSITION_TYPE
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key Default value: False
 
-The **Gnome::GObject::Value** type of property *image-position* is `G_TYPE_ENUM`.
-
-### Always show image
-
-If `1`, the button will ignore the *gtk-button-images* setting and always show the image, if available. Use this property if the button would be useless or hard to use without the image.
-
-The **Gnome::GObject::Value** type of property *always-show-image* is `G_TYPE_BOOLEAN`.
+The **Gnome::GObject::Value** type of property *use-underline* is `G_TYPE_BOOLEAN`.
 

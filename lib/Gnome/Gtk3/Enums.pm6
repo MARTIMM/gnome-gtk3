@@ -188,7 +188,7 @@ Built-in stock icon sizes.
 
 =end pod
 
-#TE:4:GtkIconSize:Button.t
+#TE:2:GtkIconSize:Button.t
 enum GtkIconSize is export (
   'GTK_ICON_SIZE_INVALID',
   'GTK_ICON_SIZE_MENU',
@@ -428,7 +428,7 @@ B<Gnome::Gtk3::Scale>.
 
 =end pod
 
-#TE:2:GtkPositionType:
+#TE:2:GtkPositionType:GTK_POS_RIGHT
 enum GtkPositionType is export (
   'GTK_POS_LEFT',
   'GTK_POS_RIGHT',
@@ -444,13 +444,13 @@ Indicated the relief to be drawn around a B<Gnome::Gtk3::Button>.
 
 
 =item GTK_RELIEF_NORMAL: Draw a normal relief.
-=item GTK_RELIEF_HALF: A half relief. Deprecated in 3.14, does the same as I<GTK_RELIEF_NORMAL>
+=comment item GTK_RELIEF_HALF: A half relief. Deprecated in 3.14, does the same as I<GTK_RELIEF_NORMAL>
 =item GTK_RELIEF_NONE: No relief.
 
 
 =end pod
 
-#TE:0:GtkReliefStyle:
+#TE:2:GtkReliefStyle:Button.t
 enum GtkReliefStyle is export (
   'GTK_RELIEF_NORMAL',
   'GTK_RELIEF_HALF',
