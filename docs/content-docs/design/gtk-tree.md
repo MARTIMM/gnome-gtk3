@@ -44,7 +44,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkActionBar                ActionBar
 │   │   │   │   ├─✗ GtkAlignment                ⛔
 │   │   │   │   ├── GtkComboBox                 ComboBox
-│   │   │   │   │   ├── GtkAppChooserButton
+│   │   │   │   │   ├── GtkAppChooserButton     AppChooserButton
 │   │   │   │   │   ╰── GtkComboBoxText         ComboBoxText
 │   │   │   │   ├── GtkFrame                    Frame
 │   │   │   │   │   ╰── GtkAspectFrame          AspectFrame
@@ -87,7 +87,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkStackSidebar             StackSidebar
 │   │   │   │   ╰── GtkViewport                 Viewport
 │   │   │   ├── GtkBox                          Box
-│   │   │   │   ├── GtkAppChooserWidget
+│   │   │   │   ├── GtkAppChooserWidget         AppChooserWidget
 │   │   │   │   ├── GtkButtonBox                ButtonBox
 │   │   │   │   │   ├─✗ GtkHButtonBox           ⛔
 │   │   │   │   │   ╰─✗ GtkVButtonBox           ⛔
@@ -249,7 +249,7 @@ GInterface
 ├── GtkBuildable                      Buildable
 ├── GtkActionable                     Actionable
 ├─✗ GtkActivatable                    ⛔
-├── GtkAppChooser
+├── GtkAppChooser                     AppChooser
 ├── GtkCellLayout
 ├── GtkCellEditable
 ├── GtkOrientable                     Orientable

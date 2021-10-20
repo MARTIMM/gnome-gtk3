@@ -20,8 +20,18 @@
   - title: "Adjustment"
     url: "/content-docs/reference/Gtk3/Adjustment.html"
 
+  - title: "AppChooser"
+    type: interface
+    url: "/content-docs/reference/Gtk3/AppChooser.html"
+
+  - title: "AppChooserButton"
+    url: "/content-docs/reference/Gtk3/AppChooserButton.html"
+
   - title: "AppChooserDialog"
     url: "/content-docs/reference/Gtk3/AppChooserDialog.html"
+
+  - title: "AppChooserWidget"
+    url: "/content-docs/reference/Gtk3/AppChooserWidget.html"
 
   - title: "Application"
     url: "/content-docs/reference/Gtk3/Application.html"

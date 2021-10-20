@@ -16,8 +16,8 @@ Tree of Gtk C structures                  Raku module
 TopLevelClassSupport                      Gnome::N::TopLevelClassSupport
 │
 GObject                                   Gnome::GObject::Object
-├── GAppInfoMonitor
-├── GAppLaunchContext
+├── GAppInfoMonitor                       AppInfoMonitor
+├── GAppLaunchContext                     AppLaunchContext
 ├── GApplicationCommandLine               ApplicationCommandLine
 ├── GApplication                          Application
 ├── GInputStream                          ⛔
@@ -128,7 +128,7 @@ GInterface
 ├── GAction                               Action
 ├── GActionGroup                          ActionGroup
 ├── GActionMap                            ActionMap
-├── GAppInfo
+├── GAppInfo                              AppInfo implemented as a class
 ├── GAsyncInitable
 ├── GAsyncResult
 ├── GSeekable
@@ -149,7 +149,7 @@ GInterface
 ├── GDtlsConnection
 ├── GDtlsServerConnection
 ├── GFileDescriptorBased
-├── GFile                                 File
+├── GFile                                 File implemented as a class
 ├── GSocketConnectable
 ├── GListModel
 ├── GMount
