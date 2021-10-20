@@ -85,7 +85,10 @@ AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓|
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
 ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓| ✓|
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-AppChooserDialog          |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
+AppChooser                |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
+AppChooserButton          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+AppChooserDialog          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+AppChooserWidget          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
 Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
 ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
 AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |  |  |  |
@@ -222,9 +225,6 @@ AccelGroup                |
 AccelLabel                |
 AccelMap                  |
 Accessible                |
-AppChooserButton          |
-AppChooser                |R | ✗|
-AppChooserWidget          |
 ButtonBox                 |
 Calendar|
 CellArea|
@@ -339,11 +339,14 @@ Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
 Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  |
 ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
+AppInfo                   |  | ✗|  |  | ✗| ✗|  | ✗| ✗|  |  |  |  |
+AppInfoManager            |  | ✗|  |  |  | ✗|  |  | ✗|  |  |  |  |
+AppLaunchContext          |  | ✗|  |  |  | ✗|  |  | ✗|  |  |  |  |
 Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|  |
 ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|  |
 Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  |
-File                      |R |  |  |  |  |  |  |  |  |  |  |  |  |
-Menu                      |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|  |
+File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  |
 MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|  |
 MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  |
 MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|  |

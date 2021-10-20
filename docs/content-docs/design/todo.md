@@ -52,6 +52,16 @@ NOTDONE, fallback will disappear
 
 * When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from such a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type that is to be created. The type can be given as a real type or as a string. The latter must be searchable by the Raku `require()` command.
 
+* `-rk` methods are not implemented when an error object or list object is returned. Most often, one needs to examine the contents directly instead of using the native object of those classes.
+
+* Error objects are sometimes created when instantiating a class. The error object is then stored and can be reviewed after noticing that the object is not valid. This could be tested like;
+  ```
+  my XYZ::Object $xyz .= new( … );
+  die $xyz.last-error.message unless $xyz.is-valid;
+  ```
+  Also methods can return error objects. When they do, also set the `$.last-error` attribute so it can still be examined later at a more convenient moment.
+
+
 #### Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
