@@ -59,8 +59,15 @@ NOTDONE, fallback will disappear
   my XYZ::Object $xyz .= new( … );
   die $xyz.last-error.message unless $xyz.is-valid;
   ```
-  Also methods can return error objects. When they do, also set the `$.last-error` attribute so it can still be examined later at a more convenient moment.
-
+  Also methods can return error objects. When they do, also set the `$.last-error` attribute so it can still be examined later at a more convenient moment. Maybe always, and no return of an error?
+  ```
+  $xyz.do-something( … );
+  die $xyz.last-error.message unless $xyz.last-error.is-valid;
+  ```
+  Sometimes the gnome functions return a boolean. Can return that instead?
+  ```
+  die $xyz.last-error.message unless $xyz.do-something( … );
+  ```
 
 #### Add other packages
 * Pango.
