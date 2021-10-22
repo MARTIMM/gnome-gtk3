@@ -276,3 +276,18 @@ Returns: `True` if *file* is native
 
     method is-native ( --> Bool )
 
+query-default-handler
+---------------------
+
+Returns the **Gnome::Gio::AppInfo** that is registered as the default application to handle the file specified by *file*.
+
+If *cancellable* is not `undefined`, then the operation can be cancelled by triggering the cancellable object from another thread. If the operation was cancelled, the error `G-IO-ERROR-CANCELLED` will be returned.
+
+Returns: a **Gnome::Gio::AppInfo** if the handle was found, `undefined` if there were errors and `$.last-error` becomes valid. When you are done with it, release it with `clear-object()`
+
+    method query-default-handler (
+      N-GObject $cancellable --> Gnome::Gio::AppInfo
+    )
+
+  * N-GObject $cancellable; optional **Gnome::Gio::Cancellable** object, `undefined` to ignore. (TODO: Cancellable not defined yet)
+
