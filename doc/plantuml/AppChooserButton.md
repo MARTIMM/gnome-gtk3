@@ -19,6 +19,9 @@ class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 Interface Gnome::Gtk3::CellLayout <Interface>
 class Gnome::Gtk3::CellLayout <<(R,#80ffff)>>
 
+Interface Gnome::Gtk3::AppChooser <Interface>
+class Gnome::Gtk3::AppChooser <<(R,#80ffff)>>
+
 
 'Class connections
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
@@ -34,6 +37,7 @@ Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 Gnome::Gtk3::Bin <|-left- Gnome::Gtk3::ComboBox
 Gnome::Gtk3::ComboBox .up.|> Gnome::Gtk3::CellLayout
 Gnome::Gtk3::ComboBox <|-left- Gnome::Gtk3::AppChooserButton
+Gnome::Gtk3::AppChooserButton .up.|> Gnome::Gtk3::AppChooser
 
 @enduml
 ```

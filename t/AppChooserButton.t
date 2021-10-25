@@ -11,14 +11,9 @@ use Gnome::Gtk3::AppChooserButton;
 my Gnome::Gtk3::AppChooserButton $acb;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $acb .= new;
+  $acb .= new(:content-type<text/plain>);
   isa-ok $acb, Gnome::Gtk3::AppChooserButton, '.new()';
 }
-
-#-------------------------------------------------------------------------------
-done-testing;
-
-=finish
 
 
 #-------------------------------------------------------------------------------
@@ -30,6 +25,18 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  lives-ok { $acb.append-separator }, '.append-separator()';
+
+  $acb.set-heading('test-dialog');
+  is $acb.get-heading, 'test-dialog', '.set-heading() / .get-heading()';
+
+  $acb.set-show-default-item(True);
+  ok $acb.get-show-default-item,
+    '.set-show-default-item() / .get-show-default-item()';
+
+  $acb.set-show-dialog-item(True);
+  ok $acb.get-show-dialog-item,
+    '.set-show-dialog-item() / .get-show-dialog-item()';
 }
 
 #-------------------------------------------------------------------------------
@@ -47,6 +54,11 @@ subtest 'Inherit Gnome::Gtk3::AppChooserButton', {
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::AppChooserButton, 'MyClass.new()';
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
@@ -170,4 +182,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-
