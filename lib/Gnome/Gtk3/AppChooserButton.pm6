@@ -9,7 +9,7 @@ use v6;
 A button to launch an application chooser dialog
 
 
-=comment ![](images/X.png)
+![](images/appchooserbutton.png)
 
 
 =head1 Description

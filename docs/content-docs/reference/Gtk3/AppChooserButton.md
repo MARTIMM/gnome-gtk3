@@ -3,6 +3,8 @@ Gnome::Gtk3::AppChooserButton
 
 A button to launch an application chooser dialog
 
+![](images/appchooserbutton.png)
+
 Description
 ===========
 
