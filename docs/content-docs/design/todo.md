@@ -69,6 +69,8 @@ NOTDONE, fallback will disappear
   die $xyz.last-error.message unless $xyz.do-something( … );
   ```
 
+* Interfaces in Gnome are implemented as Raku roles. In the Gtk3 modules this is done concequently but not in in the Gio modules. I've seen them returned from functions as objects and some are hardly used as an interface. Therefore I have made those as a class. However, Raku roles can also be used as a class so perhaps I should do that instead and keep things the same as for Gtk3.
+
 #### Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
@@ -351,3 +353,5 @@ NOTDONE, fallback will disappear
 * [ ] Check licensing of the whole project, contact Gnome?
 
 * [x] Remove changelog from About page and add separate pages for the changelog from the packages.
+
+* [ ] All module names can be linked to their reference pages.
