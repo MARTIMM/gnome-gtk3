@@ -3,6 +3,8 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::AppChooser;
+use Gnome::Gtk3::AppChooserButton;
+use Gnome::Gio::AppInfo;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -13,6 +15,16 @@ my Gnome::Gtk3::AppChooser $ac;
 subtest 'ISA test', {
   $ac .= new;
   isa-ok $ac, Gnome::Gtk3::AppChooser, '.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+  my Gnome::Gtk3::AppChooserButton $acb .= new(:content-type<text/plain>);
+  my Gnome::Gio::AppInfo $ai = $acb.get-app-info-rk;
+  ok (my $str = $ai.get-commandline).chars,
+    "commandline for type 'text/plain' = $str";
+  is $acb.get-content-type, 'text/plain', '.get-content-type()';
+  lives-ok { $acb.refresh }, '.refresh()';
 }
 
 #-------------------------------------------------------------------------------
@@ -170,4 +182,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-

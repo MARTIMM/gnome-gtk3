@@ -32,6 +32,11 @@ B<Gnome::Gio::AppInfo>
 
   unit role Gnome::Gtk3::AppChooser;
 
+
+=head2 Uml
+
+![](plantuml/AppChooser.svg)
+
 =end pod
 #-------------------------------------------------------------------------------
 use NativeCall;
@@ -41,6 +46,7 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
+use Gnome::Gio::AppInfo;
 
 #-------------------------------------------------------------------------------
 unit role Gnome::Gtk3::AppChooser:auth<github:MARTIMM>:ver<0.1.0>;
@@ -77,48 +83,49 @@ method _add_app_chooser_interface_signal_types ( Str $class-name ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:get-app-info:
+#TM:1:get-app-info:
+#TM:1:get-app-info-rk:
 =begin pod
-=head2 get-app-info
+=head2 get-app-info, get-app-info-rk
 
 Returns the currently selected application.
 
-Returns: a B<Gnome::Gtk3::AppInfo> for the currently selected application, or C<undefined> if none is selected. Free with C<g-object-unref()>
+Returns: a (native B<Gnome::Gio::AppInfo> for the currently selected application, or C<undefined> if none is selected. Free with C<clear-object()>
 
-  method get-app-info ( --> GAppInfo )
+  method get-app-info ( --> N-GObject )
+  method get-app-info-rk ( --> Gnome::Gio::AppInfo )
 
 =end pod
 
-method get-app-info ( --> GAppInfo ) {
+method get-app-info ( --> N-GObject ) {
+  gtk_app_chooser_get_app_info(self._f('GtkAppChooser'))
+}
 
-  gtk_app_chooser_get_app_info(
-    self._f('GtkAppChooser'),
+method get-app-info-rk ( --> Gnome::Gio::AppInfo ) {
+  Gnome::Gio::AppInfo.new(:native-object(
+      gtk_app_chooser_get_app_info(self._f('GtkAppChooser'))
+    )
   )
 }
 
 sub gtk_app_chooser_get_app_info (
-  N-GObject $self --> GAppInfo
+  N-GObject $self --> N-GObject
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-content-type:
+#TM:1:get-content-type:
 =begin pod
 =head2 get-content-type
 
 Returns the current value of the  I<content-type> property.
-
-Returns: the content type of I<self>. Free with C<g-free()>
 
   method get-content-type ( --> Str )
 
 =end pod
 
 method get-content-type ( --> Str ) {
-
-  gtk_app_chooser_get_content_type(
-    self._f('GtkAppChooser'),
-  )
+  gtk_app_chooser_get_content_type(self._f('GtkAppChooser'))
 }
 
 sub gtk_app_chooser_get_content_type (
@@ -127,7 +134,7 @@ sub gtk_app_chooser_get_content_type (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:refresh:
+#TM:1:refresh:
 =begin pod
 =head2 refresh
 
@@ -138,10 +145,7 @@ Reloads the list of applications.
 =end pod
 
 method refresh ( ) {
-
-  gtk_app_chooser_refresh(
-    self._f('GtkAppChooser'),
-  );
+  gtk_app_chooser_refresh(self._f('GtkAppChooser'));
 }
 
 sub gtk_app_chooser_refresh (
