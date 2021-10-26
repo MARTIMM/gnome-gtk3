@@ -2,23 +2,24 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Gtk3::Window;
 use Gnome::Gtk3::AppChooserDialog;
+use Gnome::Gtk3::AppChooserWidget;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::AppChooserDialog $acd;
+my Gnome::Gtk3::Window $w .= new;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $acd .= new;
-  isa-ok $acd, Gnome::Gtk3::AppChooserDialog, '.new()';
+  $acd .= new( :file<appveyor.yml>, :parent($w));
+  ok $acd.is-valid, '.new(:file)';
+
+  $acd .= new( :content-type<text/plain>, :parent($w));
+  ok $acd.is-valid, '.new(:content-type)';
 }
-
-#-------------------------------------------------------------------------------
-done-testing;
-
-=finish
 
 
 #-------------------------------------------------------------------------------
@@ -30,7 +31,19 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  $acd.set-heading('foo bar');
+  is $acd.get-heading, 'foo bar', '.set-heading() / .get-heading()';
+
+  lives-ok {
+    my Gnome::Gtk3::AppChooserWidget $acw = $acd.get-widget-rk;
+    diag $acw.get-default-text;
+  }, '.get-widget-rk()';
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::AppChooserDialog', {
@@ -170,4 +183,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-

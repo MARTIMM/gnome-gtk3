@@ -9,23 +9,16 @@ use v6;
 An application chooser dialog
 
 
-=comment ![](images/X.png)
+![](images/appchooserdialog.png)
 
 
 =head1 Description
 
- 
-B<Gnome::Gtk3::AppChooserDialog> shows a B<Gnome::Gtk3::AppChooserWidget> inside a B<Gnome::Gtk3::Dialog>. 
- 
-Note that B<Gnome::Gtk3::AppChooserDialog> does not have any interesting methods 
-of its own. Instead, you should get the embedded B<Gnome::Gtk3::AppChooserWidget> 
-using C<get-widget()> and call its methods if 
-the generic B<Gnome::Gtk3::AppChooser> interface is not sufficient for your needs. 
- 
+B<Gnome::Gtk3::AppChooserDialog> shows a B<Gnome::Gtk3::AppChooserWidget> inside a B<Gnome::Gtk3::Dialog>.
+
+Note that B<Gnome::Gtk3::AppChooserDialog> does not have any interesting methods of its own. Instead, you should get the embedded B<Gnome::Gtk3::AppChooserWidget> using C<get-widget()> and call its methods if the generic B<Gnome::Gtk3::AppChooser> interface is not sufficient for your needs.
+
 To set the heading that is shown above the B<Gnome::Gtk3::AppChooserWidget>,  use C<gtk-app-chooser-dialog-set-heading()>.
-
-
-
 
 
 =head1 Synopsis
@@ -34,14 +27,13 @@ To set the heading that is shown above the B<Gnome::Gtk3::AppChooserWidget>,  us
 
   unit class Gnome::Gtk3::AppChooserDialog;
   also is Gnome::Gtk3::Dialog;
+  also does Gnome::Gtk3::AppChooser;
+
+=head2 Uml Diagram
+
+![](plantuml/AppChooserDialog.svg)
 
 
-=comment head2 Uml Diagram
-
-=comment ![](plantuml/.svg)
-
-
-=begin comment
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -60,8 +52,6 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=end comment
-
 
 =comment head2 Example
 
@@ -73,28 +63,63 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Dialog;
+use Gnome::Gtk3::AppChooser;
+use Gnome::Gtk3::AppChooserWidget;
+
+use Gnome::Gio::File;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::AppChooserDialog:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::Gtk3::Dialog;
+also does Gnome::Gtk3::AppChooser;
+
 #-------------------------------------------------------------------------------
 
 =begin pod
 =head1 Methods
 =head2 new
 
-=head3 default, no options
+=head3 :file, :flags, :parent
 
-Create a new AppChooserDialog object.
+Creates a new B<Gnome::Gtk3::AppChooserDialog> for the provided file, to allow the user to select an application for it.
 
-  multi method new ( )
+  multi method new (
+    Str :$file!, Gnome::GObject::Object :$parent = N-GObject,
+    UInt :$flags = 0
+  )
+
+=item Str $file; a path to a file.
+=item N-GObject $parent; Transient parent of the dialog, or C<undefined>.
+=item UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
+
+B<Note>: When files are provided without an extension (or maybe other reasons), Gnome somehow cannot find out the content type of the file and throws critical errors like
+
+  (AppChooserDialog.t:646972): GLib-GIO-CRITICAL **: 13:27:01.077: g_file_info_get_content_type: assertion 'G_IS_FILE_INFO (info)' failed
+
+
+
+=head3 :content-type, :flags
+
+Creates a new B<Gnome::Gtk3::AppChooserDialog> for the provided content type, to allow the user to select an application for it.
+
+  multi method new (
+    Str :$content-type!, UInt :$flags = GTK_DIALOG_MODAL,
+    Gnome::GObject::Object :$parent = N-GObject,
+  )
+
+=item Str $content-type; a content type to handle.
+=item N-GObject $parent; Transient parent of the dialog, or C<undefined>.
+=item UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
+
 
 =head3 :native-object
 
 Create a AppChooserDialog object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 =head3 :build-id
 
@@ -105,17 +130,15 @@ Create a AppChooserDialog object using a native object returned from a builder. 
 =end pod
 
 #TM:0:new():inheriting
-#TM:1:new():
+#TM:1:new(:file,:flags,:parent):
+#TM:1:new(:content-type,:flags,:parent):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
-
-
-
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::AppChooserDialog' #`{{ or %options<GtkAppChooserDialog> }} {
-
+  if self.^name eq 'Gnome::Gtk3::AppChooserDialog' or
+    %options<GtkAppChooserDialog>
+  {
     # check if native object is set by a parent class
     if self.is-valid { }
 
@@ -126,11 +149,25 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if ? %options<___x___> {
-        $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-        #$no = _gtk_app_chooser_dialog_new___x___($no);
+      if ? %options<file> {
+        my Gnome::Gio::File $gfile .= new(:path(%options<file>));
+        my $parent = %options<parent> // N-GObject;
+        $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+        $no = _gtk_app_chooser_dialog_new(
+          $parent, %options<flags> // 0, $gfile.get-native-object-no-reffing
+        );
+
+        $gfile.clear-object;
       }
+
+      elsif ? %options<content-type> {
+        my $parent = %options<parent> // N-GObject;
+        $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+        $no = _gtk_app_chooser_dialog_new_for_content_type(
+          $parent, %options<flags> // 0, %options<content-type>
+        );
+      }
+
 
       #`{{ use this when the module is not made inheritable
       # check if there are unknown options
@@ -144,12 +181,12 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
@@ -168,7 +205,7 @@ submethod BUILD ( *%options ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:get-heading:
+#TM:1:get-heading:
 =begin pod
 =head2 get-heading
 
@@ -193,22 +230,26 @@ sub gtk_app_chooser_dialog_get_heading (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-widget:
+#TM:1:get-widget:
+#TM:1:get-widget-rk:
 =begin pod
-=head2 get-widget
+=head2 get-widget, get-widget-rk
 
 Returns the B<Gnome::Gtk3::AppChooserWidget> of this dialog.
 
-Returns: the B<Gnome::Gtk3::AppChooserWidget> of I<self>
-
   method get-widget ( --> N-GObject )
+  method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget )
 
 =end pod
 
 method get-widget ( --> N-GObject ) {
+  gtk_app_chooser_dialog_get_widget(self.get-native-object-no-reffing)
+}
 
-  gtk_app_chooser_dialog_get_widget(
-    self.get-native-object-no-reffing,
+method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget ) {
+  Gnome::Gtk3::AppChooserWidget.new(:native-object(
+      gtk_app_chooser_dialog_get_widget(self.get-native-object-no-reffing)
+    )
   )
 }
 
@@ -218,7 +259,7 @@ sub gtk_app_chooser_dialog_get_widget (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-heading:
+#TM:1:set-heading:
 =begin pod
 =head2 set-heading
 
@@ -237,7 +278,7 @@ method set-heading ( Str $heading ) {
 }
 
 sub gtk_app_chooser_dialog_set_heading (
-  N-GObject $self, gchar-ptr $heading 
+  N-GObject $self, gchar-ptr $heading
 ) is native(&gtk-lib)
   { * }
 
@@ -259,7 +300,7 @@ Returns: a newly created B<Gnome::Gtk3::AppChooserDialog>
 =end pod
 }}
 
-sub _gtk_app_chooser_dialog_new ( N-GObject $parent, GEnum $flags, GFile $file --> N-GObject )
+sub _gtk_app_chooser_dialog_new ( N-GObject $parent, GEnum $flags, N-GObject $file --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_app_chooser_dialog_new')
   { * }
@@ -303,14 +344,14 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =comment -----------------------------------------------------------------------
 =comment #TP:0:
   g_object_class_install_property (gobject_class:
-=head3 PROP_GFILE: 
+=head3 PROP_GFILE:
   g_object_class_install_property (gobject_class
 
 
   g-object-class-install-property (gobject-class, PROP-GFILE, pspec);
   /**
- 
-The text to show at the top of the dialog. 
+
+The text to show at the top of the dialog.
    * The string may contain Pango markup.
 The B<Gnome::GObject::Value> type of property I<
   g_object_class_install_property (gobject_class> is C<G_TYPE_>.
