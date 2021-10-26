@@ -173,12 +173,26 @@ Create a new plain object.
 
 ### :title, :parent, :flags, :buttons-spec
 
-Create a dialog with title flags and buttons.
+Creates a new **Gnome::Gtk3::Dialog** with title *title* (or `undefined` for the default title; see `Gnome::Gtk3::Window.set-title()`) and transient parent *parent* (or `undefined` for none; see `Gnome::Gtk3::Window.set-transient-for()`).
+
+The *flags* argument can be used to make the dialog modal (`GTK-DIALOG-MODAL`) and/or to have it destroyed along with its transient parent (`GTK-DIALOG-DESTROY-WITH-PARENT`). After *flags*, button text/response ID pairs should be listed.
+
+Button text can be arbitrary text. A response ID can be any positive number, or one of the values in the `GtkResponseType` enumeration.
+
+If the user clicks one of these dialog buttons, **Gnome::Gtk3::Dialog** will emit the *response* signal with the corresponding response ID. If a **Gnome::Gtk3::Dialog** receives the *delete-event* signal, it will emit *response* with a response ID of `GTK-RESPONSE-DELETE-EVENT`. However, destroying a dialog does not emit the *response* signal; so be careful relying on *response* when using the `GTK-DIALOG-DESTROY-WITH-PARENT` flag. Buttons are from left to right, so the first button in the list will be the leftmost button in the dialog.
 
     multi method new (
-      Str :$title!, Gnome::GObject::Object :$parent, Int :$flags,
-      List :$buttons-spec
+      Str :$title!, Gnome::GObject::Object :$parent = N-GObject,
+      Int :$flags = 0, List :$buttons-spec
     )
+
+  * Str $title; Title of the dialog, or `undefined`.
+
+  * N-GObject $parent; Transient parent of the dialog, or `undefined`.
+
+  * GtkDialogFlags $flags; from **Gnome::Gtk3::DialogFlags**.
+
+  * List $buttons-spec; A list of alternating names and response codes i.e. an `Str` text for the first button then an `Int` response ID for first button, then additional buttons if any.
 
 ### :native-object
 

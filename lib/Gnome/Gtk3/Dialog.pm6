@@ -217,20 +217,38 @@ Create a new plain object.
 
   multi method new ( )
 
+
 =head3 :title, :parent, :flags, :buttons-spec
 
-Create a dialog with title flags and buttons.
+Creates a new B<Gnome::Gtk3::Dialog> with title I<title> (or C<undefined> for the default title; see C<Gnome::Gtk3::Window.set-title()>) and transient parent I<parent> (or C<undefined> for none; see C<Gnome::Gtk3::Window.set-transient-for()>).
+
+The I<flags> argument can be used to make the dialog modal (C<GTK-DIALOG-MODAL>) and/or to have it destroyed along with its transient parent (C<GTK-DIALOG-DESTROY-WITH-PARENT>). After I<flags>, button text/response ID pairs should be listed.
+
+Button text can be arbitrary text. A response ID can be any positive number, or one of the values in the C<GtkResponseType> enumeration.
+
+If the user clicks one of these dialog buttons, B<Gnome::Gtk3::Dialog> will emit the  I<response> signal with the corresponding response ID. If a B<Gnome::Gtk3::Dialog> receives the  I<delete-event> signal, it will emit I<response> with a response ID of C<GTK-RESPONSE-DELETE-EVENT>. However, destroying a dialog does not emit the I<response> signal; so be careful relying on I<response> when using the C<GTK-DIALOG-DESTROY-WITH-PARENT> flag. Buttons are from left to right, so the first button in the list will be the leftmost button in the dialog.
+
+=begin comment
+Here’s a simple example: |[<!-- language="C" --> GtkWidget *main-app-window; // Window the dialog should show up on GtkWidget *dialog; GtkDialogFlags flags = GTK-DIALOG-MODAL | GTK-DIALOG-DESTROY-WITH-PARENT; dialog = new-with-buttons ("My dialog", main-app-window, flags, -("-OK"), GTK-RESPONSE-ACCEPT, -("-Cancel"), GTK-RESPONSE-REJECT, NULL); ]|
+=end comment
 
   multi method new (
-    Str :$title!, Gnome::GObject::Object :$parent, Int :$flags,
-    List :$buttons-spec
+    Str :$title!, Gnome::GObject::Object :$parent = N-GObject,
+    Int :$flags = 0, List :$buttons-spec
   )
+
+=item Str $title; Title of the dialog, or C<undefined>.
+=item N-GObject $parent; Transient parent of the dialog, or C<undefined>.
+=item GtkDialogFlags $flags; from B<Gnome::Gtk3::DialogFlags>.
+=item List $buttons-spec; A list of alternating names and response codes i.e. an C<Str> text for the first button then an C<Int> response ID for first button, then additional buttons if any.
+
 
 =head3 :native-object
 
 Create a Dialog object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 =head3 :build-id
 
