@@ -14,46 +14,32 @@ Application chooser widget that can be embedded in other widgets
 
 =head1 Description
 
- 
-B<Gnome::Gtk3::AppChooserWidget> is a widget for selecting applications. 
-It is the main building block for B<Gnome::Gtk3::AppChooserDialog>. Most 
-applications only need to use the latter; but you can use 
-this widget as part of a larger widget if you have special needs. 
- 
-B<Gnome::Gtk3::AppChooserWidget> offers detailed control over what applications 
-are shown, using the 
- I<show-default>, 
- I<show-recommended>, 
- I<show-fallback>, 
- I<show-other> and 
- I<show-all> 
-properties. See the B<Gnome::Gtk3::AppChooser> documentation for more information 
-about these groups of applications. 
- 
-To keep track of the selected application, use the 
- I<application-selected> and  I<application-activated> signals. 
- 
+B<Gnome::Gtk3::AppChooserWidget> is a widget for selecting applications. It is the main building block for B<Gnome::Gtk3::AppChooserDialog>. Most applications only need to use the latter; but you can use this widget as part of a larger widget if you have special needs.
 
-=head2 Css Nodes GtkAppChooserWidget has a single CSS node with name appchooser.
+B<Gnome::Gtk3::AppChooserWidget> offers detailed control over what applications
+are shown, using the I<show-default>, I<show-recommended>, I<show-fallback>, I<show-other> and I<show-all> properties. See the B<Gnome::Gtk3::AppChooser> documentation for more information about these groups of applications.
+
+To keep track of the selected application, use the I<application-selected> and  I<application-activated> signals.
 
 
+=head2 Css Nodes
 
+GtkAppChooserWidget has a single CSS node with name appchooser.
 
 
 =head1 Synopsis
-
 =head2 Declaration
 
   unit class Gnome::Gtk3::AppChooserWidget;
   also is Gnome::Gtk3::Box;
+  also does Gnome::Gtk3::AppChooser;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/.svg)
+![](plantuml/AppChooserWidget.svg)
 
 
-=begin comment
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -72,8 +58,6 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=end comment
-
 
 =comment head2 Example
 
@@ -85,30 +69,35 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Box;
+use Gnome::Gtk3::AppChooser;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::AppChooserWidget:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::Gtk3::Box;
+also does Gnome::Gtk3::AppChooser;
+
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
 
-=head3 default, no options
+=head3 :content-type
 
-Create a new AppChooserWidget object.
+Creates a new B<Gnome::Gtk3::AppChooserWidget> for applications that can handle content of the given type.
 
-  multi method new ( )
+  multi method new ( Str :$content-type! )
+
 
 =head3 :native-object
 
 Create a AppChooserWidget object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 =head3 :build-id
 
@@ -118,17 +107,16 @@ Create a AppChooserWidget object using a native object returned from a builder. 
 
 =end pod
 
-#TM:0:new():inheriting
-#TM:1:new():
+#TM:1:new():inheriting
+#TM:1:new(:content-type):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of w*<signal-name>.
   unless $signals-added {
     $signals-added = self.add-signal-types( $?CLASS.^name,
-      :w1<application-selected application-activated>, :w2<populate-popup>, 
+      :w1<application-selected application-activated>, :w2<populate-popup>,
     );
 
     # signals from interfaces
@@ -137,7 +125,8 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::AppChooserWidget' #`{{ or %options<GtkAppChooserWidget> }} {
+  if self.^name eq 'Gnome::Gtk3::AppChooserWidget' or
+     %options<GtkAppChooserWidget> {
 
     # check if native object is set by a parent class
     if self.is-valid { }
@@ -149,10 +138,8 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if ? %options<___x___> {
-        $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-        #$no = _gtk_app_chooser_widget_new___x___($no);
+      if ? %options<content-type> {
+        $no = _gtk_app_chooser_widget_new(%options<content-type>);
       }
 
       #`{{ use this when the module is not made inheritable
@@ -167,12 +154,12 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
@@ -191,11 +178,11 @@ submethod BUILD ( *%options ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:get-default-text:
+#TM:1:get-default-text:
 =begin pod
 =head2 get-default-text
 
-Returns the text that is shown if there are not applications that can handle the content type.
+Returns the text that is shown if there are no applications that can handle the content type.
 
 Returns: the value of  I<default-text>
 
@@ -204,10 +191,7 @@ Returns: the value of  I<default-text>
 =end pod
 
 method get-default-text ( --> Str ) {
-
-  gtk_app_chooser_widget_get_default_text(
-    self.get-native-object-no-reffing,
-  )
+  gtk_app_chooser_widget_get_default_text(self.get-native-object-no-reffing)
 }
 
 sub gtk_app_chooser_widget_get_default_text (
@@ -216,7 +200,7 @@ sub gtk_app_chooser_widget_get_default_text (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-show-all:
+#TM:1:get-show-all:
 =begin pod
 =head2 get-show-all
 
@@ -229,10 +213,7 @@ Returns: the value of  I<show-all>
 =end pod
 
 method get-show-all ( --> Bool ) {
-
-  gtk_app_chooser_widget_get_show_all(
-    self.get-native-object-no-reffing,
-  ).Bool
+  gtk_app_chooser_widget_get_show_all(self.get-native-object-no-reffing).Bool
 }
 
 sub gtk_app_chooser_widget_get_show_all (
@@ -241,7 +222,7 @@ sub gtk_app_chooser_widget_get_show_all (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-show-default:
+#TM:1:get-show-default:
 =begin pod
 =head2 get-show-default
 
@@ -254,7 +235,6 @@ Returns: the value of  I<show-default>
 =end pod
 
 method get-show-default ( --> Bool ) {
-
   gtk_app_chooser_widget_get_show_default(
     self.get-native-object-no-reffing,
   ).Bool
@@ -266,7 +246,7 @@ sub gtk_app_chooser_widget_get_show_default (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-show-fallback:
+#TM:1:get-show-fallback:
 =begin pod
 =head2 get-show-fallback
 
@@ -279,7 +259,6 @@ Returns: the value of  I<show-fallback>
 =end pod
 
 method get-show-fallback ( --> Bool ) {
-
   gtk_app_chooser_widget_get_show_fallback(
     self.get-native-object-no-reffing,
   ).Bool
@@ -291,7 +270,7 @@ sub gtk_app_chooser_widget_get_show_fallback (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-show-other:
+#TM:1:get-show-other:
 =begin pod
 =head2 get-show-other
 
@@ -304,10 +283,7 @@ Returns: the value of  I<show-other>
 =end pod
 
 method get-show-other ( --> Bool ) {
-
-  gtk_app_chooser_widget_get_show_other(
-    self.get-native-object-no-reffing,
-  ).Bool
+  gtk_app_chooser_widget_get_show_other(self.get-native-object-no-reffing).Bool
 }
 
 sub gtk_app_chooser_widget_get_show_other (
@@ -316,7 +292,7 @@ sub gtk_app_chooser_widget_get_show_other (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-show-recommended:
+#TM:1:get-show-recommended:
 =begin pod
 =head2 get-show-recommended
 
@@ -329,7 +305,6 @@ Returns: the value of  I<show-recommended>
 =end pod
 
 method get-show-recommended ( --> Bool ) {
-
   gtk_app_chooser_widget_get_show_recommended(
     self.get-native-object-no-reffing,
   ).Bool
@@ -341,7 +316,7 @@ sub gtk_app_chooser_widget_get_show_recommended (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-default-text:
+#TM:1:set-default-text:
 =begin pod
 =head2 set-default-text
 
@@ -353,19 +328,18 @@ Sets the text that is shown if there are not applications that can handle the co
 =end pod
 
 method set-default-text ( Str $text ) {
-
   gtk_app_chooser_widget_set_default_text(
     self.get-native-object-no-reffing, $text
   );
 }
 
 sub gtk_app_chooser_widget_set_default_text (
-  N-GObject $self, gchar-ptr $text 
+  N-GObject $self, gchar-ptr $text
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-show-all:
+#TM:1:set-show-all:
 =begin pod
 =head2 set-show-all
 
@@ -377,19 +351,18 @@ Sets whether the app chooser should show all applications in a flat list.
 =end pod
 
 method set-show-all ( Bool $setting ) {
-
   gtk_app_chooser_widget_set_show_all(
     self.get-native-object-no-reffing, $setting
   );
 }
 
 sub gtk_app_chooser_widget_set_show_all (
-  N-GObject $self, gboolean $setting 
+  N-GObject $self, gboolean $setting
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-show-default:
+#TM:1:set-show-default:
 =begin pod
 =head2 set-show-default
 
@@ -401,19 +374,18 @@ Sets whether the app chooser should show the default handler for the content typ
 =end pod
 
 method set-show-default ( Bool $setting ) {
-
   gtk_app_chooser_widget_set_show_default(
     self.get-native-object-no-reffing, $setting
   );
 }
 
 sub gtk_app_chooser_widget_set_show_default (
-  N-GObject $self, gboolean $setting 
+  N-GObject $self, gboolean $setting
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-show-fallback:
+#TM:1:set-show-fallback:
 =begin pod
 =head2 set-show-fallback
 
@@ -425,19 +397,18 @@ Sets whether the app chooser should show related applications for the content ty
 =end pod
 
 method set-show-fallback ( Bool $setting ) {
-
   gtk_app_chooser_widget_set_show_fallback(
     self.get-native-object-no-reffing, $setting
   );
 }
 
 sub gtk_app_chooser_widget_set_show_fallback (
-  N-GObject $self, gboolean $setting 
+  N-GObject $self, gboolean $setting
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-show-other:
+#TM:1:set-show-other:
 =begin pod
 =head2 set-show-other
 
@@ -449,19 +420,18 @@ Sets whether the app chooser should show applications which are unrelated to the
 =end pod
 
 method set-show-other ( Bool $setting ) {
-
   gtk_app_chooser_widget_set_show_other(
     self.get-native-object-no-reffing, $setting
   );
 }
 
 sub gtk_app_chooser_widget_set_show_other (
-  N-GObject $self, gboolean $setting 
+  N-GObject $self, gboolean $setting
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-show-recommended:
+#TM:1:set-show-recommended:
 =begin pod
 =head2 set-show-recommended
 
@@ -473,14 +443,13 @@ Sets whether the app chooser should show recommended applications for the conten
 =end pod
 
 method set-show-recommended ( Bool $setting ) {
-
   gtk_app_chooser_widget_set_show_recommended(
     self.get-native-object-no-reffing, $setting
   );
 }
 
 sub gtk_app_chooser_widget_set_show_recommended (
-  N-GObject $self, gboolean $setting 
+  N-GObject $self, gboolean $setting
 ) is native(&gtk-lib)
   { * }
 
@@ -607,6 +576,7 @@ if at least one item has been added to the menu.
 
 =end pod
 
+=finish
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -622,19 +592,49 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =head2 Supported properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:
-  g_object_class_install_property (gobject_class:
-=head3 PROP_SHOW_ALL: 
-  g_object_class_install_property (gobject_class
+=comment #TP:1:default-text
+=head3 default-text
 
+The C<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
 
-  g-object-class-install-property (gobject-class, PROP-SHOW-ALL, pspec);
-  /**
- 
-The  I<default-text> property determines the text 
-that appears in the widget when there are no applications for the 
-given content type. 
-   * See also C<set-default-text()>.
-The B<Gnome::GObject::Value> type of property I<
-  g_object_class_install_property (gobject_class> is C<G_TYPE_>.
-=end pod
+The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-all
+=head3 show-all
+
+If the C<show-all> property is C<1>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
+
+The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-default
+=head3 show-default
+
+The C<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<0>, the default handler is listed among the recommended applications.
+
+The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-fallback
+=head3 show-fallback
+
+The C<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<0>, the fallback applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-other
+=head3 show-other
+
+The C<show-other> property determines whether the app chooser should show a section for other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-recommended
+=head3 show-recommended
+
+The C<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<0>, the recommended applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BOOLEAN>.

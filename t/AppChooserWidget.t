@@ -11,14 +11,9 @@ use Gnome::Gtk3::AppChooserWidget;
 my Gnome::Gtk3::AppChooserWidget $acw;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $acw .= new;
-  isa-ok $acw, Gnome::Gtk3::AppChooserWidget, '.new()';
+  $acw .= new(:content-type<text/plain>);
+  isa-ok $acw, Gnome::Gtk3::AppChooserWidget, '.new(:content-type)';
 }
-
-#-------------------------------------------------------------------------------
-done-testing;
-
-=finish
 
 
 #-------------------------------------------------------------------------------
@@ -30,6 +25,25 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  $acw.set-default-text('foo bar');
+  is $acw.get-default-text, 'foo bar',
+    '.set-default-text() / .get-default-text()';
+
+  $acw.set-show-all(True);
+  ok $acw.get-show-all, '.set-show-all() / .get-show-all()';
+
+  $acw.set-show-default(True);
+  ok $acw.get-show-default, '.set-show-default() / .get-show-default()';
+
+  $acw.set-show-fallback(True);
+  ok $acw.get-show-fallback, '.set-show-fallback() / .get-show-fallback()';
+
+  $acw.set-show-other(True);
+  ok $acw.get-show-other, '.set-show-other() / .get-show-other()';
+
+  $acw.set-show-recommended(True);
+  ok $acw.get-show-recommended,
+    '.set-show-recommended() / .get-show-recommended()';
 }
 
 #-------------------------------------------------------------------------------
@@ -47,6 +61,23 @@ subtest 'Inherit Gnome::Gtk3::AppChooserWidget', {
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::AppChooserWidget, 'MyClass.new()';
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $acw.get-properties(
+    'default-text', Str, 'show-all', Bool, 'show-default', Bool,
+    'show-fallback', Bool, 'show-other', Bool, 'show-recommended', Bool
+  );
+
+  is-deeply @r, [
+    'foo bar', True.Int, True.Int, True.Int, True.Int, True.Int
+  ], 'default-text show-all show-default show-fallback show-other show-recommended';
+}
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
@@ -170,4 +201,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-
