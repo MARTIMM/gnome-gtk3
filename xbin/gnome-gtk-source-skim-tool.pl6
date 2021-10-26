@@ -1662,7 +1662,7 @@ sub get-properties ( Str:D $source-content is copy ) {
     $property-name = '';
 
     # Get the array name if g_object_class_install_properties() is used
-    $source-content ~~ m/ 'g_object_class_install_properties'
+    $source-content ~~ m/ 'g_object_class_install_propert' [ y || ies ]
                           \s* '(' \s* <alnum>+ \s* ',' \s* <alnum>+ \s* ','
                           \s* $<array-name> = (<alnum>+) \s* ')'
                         /;
@@ -1779,7 +1779,7 @@ sub get-properties ( Str:D $source-content is copy ) {
         $prop-args ~= $c;
       }
     }
-#note $prop-args;
+#note 'prop-args: ', $prop-args;
 
     my @args = ();
     for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
