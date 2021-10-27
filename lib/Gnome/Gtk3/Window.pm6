@@ -2075,7 +2075,7 @@ Returns: a invalid error object if setting the icon succeeded. If it fails, the 
 =end pod
 
 method set-default-icon-from-file ( Str $filename --> Gnome::Glib::Error ) {
-  my CArray[N-GError] $e .= new;
+  my CArray[N-GError] $e .= new(N-GError);
 
   my Int $r = gtk_window_set_default_icon_from_file(
     self._f('GtkWindow'), $filename, $e
@@ -2462,7 +2462,7 @@ Returns: an invalid error object if setting the icon succeeded.
 =end pod
 
 method set-icon-from-file ( Str $filename --> Gnome::Glib::Error ) {
-  my CArray[N-GError] $e .= new;
+  my CArray[N-GError] $e .= new(N-GError);
 
   my Int $r = gtk_window_set_icon_from_file(
     self._f('GtkWindow'), $filename, $e
