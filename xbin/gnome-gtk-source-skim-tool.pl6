@@ -13,7 +13,7 @@ my @gdkdirlist = ();
 my @gobjectdirlist = ();
 my @glibdirlist = ();
 my @pangodirlist = ();
-#my @giodirlist = ();
+my @giodirlist = ();
 
 my @enum-list = ();
 
@@ -799,7 +799,7 @@ sub is-n-gobject ( Str:D $type-name is copy --> Bool ) {
 
       $is-n-gobject = $type-name ~~ any(|@glibdirlist);
       $is-n-gobject = $type-name ~~ any(|@gobjectdirlist) unless $is-n-gobject;
-#      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
+      $is-n-gobject = $type-name ~~ any(|@giodirlist) unless $is-n-gobject;
     }
 
     when /^ pango / {
@@ -823,7 +823,7 @@ sub load-dir-lists ( ) {
   @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
   @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
-#  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
+  @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
 
   @pangodirlist = "$root-dir/Design-docs/pango-list.txt".IO.slurp.lines;
 
