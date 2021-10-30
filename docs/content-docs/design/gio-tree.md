@@ -56,11 +56,11 @@ GObject                                   Gnome::GObject::Object
 ├── GDBusProxy
 ├── GDBusServer
 ├── GDesktopAppInfo
-├── GEmblem                               ⛔Emblem
-├── GEmblemedIcon                         ⛔EmblemedIcon
+├── GEmblem                               Emblem
+├── GEmblemedIcon                         EmblemedIcon
 ├── GFileEnumerator
-├── GFileIcon
-├── GFileInfo
+├── GFileIcon                             FileIcon
+├── GFileInfo                             ⛔FileInfo, Raku does it properly
 ├── GIOStream                             ⛔
 │   ├── GFileIOStream                     ⛔
 │   ├── GSimpleIOStream                   ⛔
@@ -132,8 +132,8 @@ GInterface
 ├── GAsyncInitable
 ├── GAsyncResult
 ├── GSeekable
-├── GIcon                                 ⛔Icon
-├── GLoadableIcon
+├── GIcon                                 Icon
+├── GLoadableIcon                         ⛔LoadableIcon
 ├── GConverter
 ├── GInitable
 ├── GPollableInputStream

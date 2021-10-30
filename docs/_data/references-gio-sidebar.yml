@@ -31,13 +31,13 @@
     url: '/content-docs/reference/Gio/ApplicationCommandLine.html'
     type: object
 
-#  - title: Emblem
-#    url: /content-docs/reference/Gio/Emblem.html
-#    type: interface
+  - title: Emblem
+    url: /content-docs/reference/Gio/Emblem.html
+    type: object
 
-#  - title: EmblemedIcon
-#    url: /content-docs/reference/Gio/EmblemedIcon.html
-#    type: interface
+  - title: EmblemedIcon
+    url: /content-docs/reference/Gio/EmblemedIcon.html
+    type: object
 
   - title: "Enums"
     url: '/content-docs/reference/Gio/Enums.html'
@@ -45,11 +45,19 @@
 
   - title: "File"
     url: /content-docs/reference/Gio/File.html
-    type: interface
+#    type: interface
+
+  - title: "FileIcon"
+    url: /content-docs/reference/Gio/FileIcon.html
+#    type: interface
+    type: object
 
   - title: Icon
     url: /content-docs/reference/Gio/Icon.html
-    type: interface
+
+#  - title: "LoadableIcon"
+#    url: /content-docs/reference/Gio/LoadableIcon.html
+#    type: interface
 
   - title: Menu
     url: '/content-docs/reference/Gio/Menu.html'
@@ -85,4 +93,8 @@
 
   - title: "SimpleActionGroup"
     url: '/content-docs/reference/Gio/SimpleActionGroup.html'
+    type: object
+
+  - title: ThemedIcon
+    url: /content-docs/reference/Gio/ThemedIcon.html
     type: object
