@@ -46,7 +46,7 @@ Create a new FileIcon object.
 
 Generate a **Gnome::Gio::FileIcon** instance from a string. This function can fail if the string is not valid - see `Gnome::Gio::Icon.to-string()` for discussion. When it fails, the error object in the attribute `$.last-error` will be set.
 
-    method new ( Str :$strinng! )
+    method new ( Str :$string! )
 
   * Str $string; A string obtained via `Gnome::Gio::Icon.to-string()`.
 
