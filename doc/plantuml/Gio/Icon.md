@@ -34,14 +34,14 @@ class Gnome::Gio::Icon <<(R,#80ffff)>>
 
 'Gnome::Gio::AppInfo <-- Gnome::Gtk3::AppChooser
 
-Gnome::Gio::LoadableIcon <|.. Gnome::Gio::Icon
+Gnome::Gio::LoadableIcon <|.. Gnome::Gio::FileIcon
 
+Gnome::Gio::Icon <|.up. Gnome::Gdk3::Pixbuf
 Gnome::Gio::Icon <|.. Gnome::Gio::BytesIcon
 Gnome::Gio::Icon <|... Gnome::Gio::Emblem
 Gnome::Gio::Icon <|... Gnome::Gio::EmblemedIcon
-Gnome::Gio::Icon <|... Gnome::Gio::FileIcon
+Gnome::Gio::Icon <|. Gnome::Gio::LoadableIcon
 Gnome::Gio::Icon <|.. Gnome::Gio::ThemedIcon
-Gnome::Gio::Icon <|.left. Gnome::Gdk3::Pixbuf
 
 @enduml
 ```
