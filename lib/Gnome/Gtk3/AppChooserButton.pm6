@@ -68,8 +68,10 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::ComboBox;
 use Gnome::Gtk3::AppChooser;
+
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::AppChooserButton:auth<github:MARTIMM>:ver<0.1.0>;
@@ -175,33 +177,31 @@ submethod BUILD ( *%options ) {
   }
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:append-custom-item:
+#TM:1:append-custom-item:
 =begin pod
 =head2 append-custom-item
 
 Appends a custom item to the list of applications that is shown in the popup; the item name must be unique per-widget. Clients can use the provided name as a detail for the  I<custom-item-activated> signal, to add a callback for the activation of a particular custom item in the list. See also C<append-separator()>.
 
-  method append-custom-item ( Str $name, Str $label, GIcon $icon )
+  method append-custom-item ( Str $name, Str $label, N-GObject $icon )
 
 =item Str $name; the name of the custom item
 =item Str $label; the label for the custom item
-=item GIcon $icon; the icon for the custom item
+=item N-GObject $icon; the icon for the custom item
 =end pod
 
-method append-custom-item ( Str $name, Str $label, GIcon $icon ) {
-
+method append-custom-item ( Str $name, Str $label, $icon is copy ) {
+  $icon .= get-native-object-no-reffing unless $icon ~~ N-GObject;
   gtk_app_chooser_button_append_custom_item(
     self.get-native-object-no-reffing, $name, $label, $icon
   );
 }
 
 sub gtk_app_chooser_button_append_custom_item (
-  N-GObject $self, gchar-ptr $name, gchar-ptr $label, GIcon $icon
+  N-GObject $self, gchar-ptr $name, gchar-ptr $label, N-GObject $icon
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:append-separator:
@@ -293,9 +293,8 @@ sub gtk_app_chooser_button_get_show_dialog_item (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:set-active-custom-item:
+#TM:1:set-active-custom-item:
 =begin pod
 =head2 set-active-custom-item
 
@@ -319,7 +318,6 @@ sub gtk_app_chooser_button_set_active_custom_item (
   N-GObject $self, gchar-ptr $name
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:set-heading:

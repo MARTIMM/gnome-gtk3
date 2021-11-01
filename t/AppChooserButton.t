@@ -4,6 +4,15 @@ use Test;
 
 use Gnome::Gtk3::AppChooserButton;
 
+use Gnome::Gio::Icon;
+use Gnome::Gio::File;
+use Gnome::Gio::FileIcon;
+use Gnome::Gio::AppInfo;
+
+use Gnome::Glib::Error;
+use Gnome::Glib::List;
+
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -37,6 +46,28 @@ subtest 'Manipulations', {
   $acb.set-show-dialog-item(True);
   ok $acb.get-show-dialog-item,
     '.set-show-dialog-item() / .get-show-dialog-item()';
+
+  lives-ok {
+    my Gnome::Gio::File $file .= new(:path<LICENSE>);
+    my Gnome::Gio::FileIcon $filie-icon .= new(:$file);
+    $acb.append-custom-item( 'ACB', 'AppChooserButton.t', $filie-icon);
+    $acb.set-active-custom-item('ACB');
+  }, '.append-custom-item() / .set-active-custom-item()';
+
+#`{{
+    my Gnome::Gio::AppInfo $ai = $acb.get-app-info-rk;
+
+    my Gnome::Glib::List $list = $ai.get-all;
+    ok $list.length > 1, '.get-all()';
+    my Gnome::Gio::AppInfo $ai3 .= new(
+      :native-object(nativecast( N-GObject, $list.nth-data(0)))
+    );
+    diag (
+      "  " ~ $ai3.get-name, $ai3.get-display-name, $ai3.get-id,
+      $ai3.get-description, $ai3.get-commandline, $ai3.get-executable
+    ).join("\n  ");
+    $list.clear-object; #TODO no items cleared
+}}
 }
 
 #-------------------------------------------------------------------------------
