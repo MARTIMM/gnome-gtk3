@@ -54,18 +54,29 @@ subtest 'Manipulations', {
     $acb.set-active-custom-item('ACB');
   }, '.append-custom-item() / .set-active-custom-item()';
 
-#`{{
+#`{{ Nice test code to remove old id's from list
     my Gnome::Gio::AppInfo $ai = $acb.get-app-info-rk;
 
     my Gnome::Glib::List $list = $ai.get-all;
     ok $list.length > 1, '.get-all()';
-    my Gnome::Gio::AppInfo $ai3 .= new(
-      :native-object(nativecast( N-GObject, $list.nth-data(0)))
-    );
-    diag (
-      "  " ~ $ai3.get-name, $ai3.get-display-name, $ai3.get-id,
-      $ai3.get-description, $ai3.get-commandline, $ai3.get-executable
-    ).join("\n  ");
+    for ^$list.length -> $nth {
+      my Gnome::Gio::AppInfo $ai3 .= new(
+        :native-object(nativecast( N-GObject, $list.nth-data($nth)))
+      );
+
+      my Str $id = $ai3.get-id;
+
+      diag (
+        "  " ~ $ai3.get-display-name, $id, $ai3.get-description // '-'
+      ).join(", ");
+
+    note 'remove: ', $id, ', result: ', $ai3.delete
+      if $id ~~ m/ userapp '-' ls /;
+    }
+#      diag (
+#        "  " ~ $ai3.get-name, $ai3.get-display-name, $ai3.get-id,
+#        $ai3.get-description, $ai3.get-commandline, $ai3.get-executable
+#      ).join("\n  ");
     $list.clear-object; #TODO no items cleared
 }}
 }

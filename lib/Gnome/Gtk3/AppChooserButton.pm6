@@ -300,7 +300,7 @@ sub gtk_app_chooser_button_get_show_dialog_item (
 
 Selects a custom item previously added with C<append-custom-item()>.
 
-Use C<gtk-app-chooser-refresh()> to bring the selection to its initial state.
+Use C<Gnome::Gtk3::AppChooser.refresh()> to bring the selection to its initial state.
 
   method set-active-custom-item ( Str $name )
 
@@ -308,7 +308,6 @@ Use C<gtk-app-chooser-refresh()> to bring the selection to its initial state.
 =end pod
 
 method set-active-custom-item ( Str $name ) {
-
   gtk_app_chooser_button_set_active_custom_item(
     self.get-native-object-no-reffing, $name
   );

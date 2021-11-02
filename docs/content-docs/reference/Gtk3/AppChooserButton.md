@@ -76,6 +76,19 @@ Create a AppChooserButton object using a native object returned from a builder. 
 
     multi method new ( Str :$build-id! )
 
+append-custom-item
+------------------
+
+Appends a custom item to the list of applications that is shown in the popup; the item name must be unique per-widget. Clients can use the provided name as a detail for the *custom-item-activated* signal, to add a callback for the activation of a particular custom item in the list. See also `append-separator()`.
+
+    method append-custom-item ( Str $name, Str $label, N-GObject $icon )
+
+  * Str $name; the name of the custom item
+
+  * Str $label; the label for the custom item
+
+  * N-GObject $icon; the icon for the custom item
+
 append-separator
 ----------------
 
@@ -109,6 +122,17 @@ Returns the current value of the *show-dialog-item* property.
 Returns: the value of *show-dialog-item*
 
     method get-show-dialog-item ( --> Bool )
+
+set-active-custom-item
+----------------------
+
+Selects a custom item previously added with `append-custom-item()`.
+
+Use `Gnome::Gtk3::AppChooser.refresh()` to bring the selection to its initial state.
+
+    method set-active-custom-item ( Str $name )
+
+  * Str $name; the name of the custom item
 
 set-heading
 -----------
