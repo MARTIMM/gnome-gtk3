@@ -8,7 +8,7 @@ Description
 
 **Gnome::Gio::AppInfo** and **Gnome::Gio::AppLaunchContext** are used for describing and launching applications installed on the system.
 
-As of GLib 2.20, URIs will always be converted to POSIX paths (using `g-file-get-path()`) when using `launch()` even if the application requested a URI and not a POSIX path. For example, for a desktop-file based application with the `Exec` key `totem %U` and a single URI, `sftp://foo/file.avi`, then `/home/user/.gvfs/sftp` on `foo/file.avi` will be passed. This will only work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE support), is available and operational; if this is not the case, the URI will be passed unmodified to the application. Some URIs, such as `mailto:`, of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for it); such URIs will be passed unmodified to the application.
+As of GLib 2.20, URIs will always be converted to POSIX paths (using `Gnome::Gio::File.get-path()`) when using `launch()` even if the application requested a URI and not a POSIX path. For example, for a desktop-file based application with the `Exec` key `totem %U` and a single URI, `sftp://foo/file.avi`, then `/home/user/.gvfs/sftp` on `foo/file.avi` will be passed. This will only work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE support), is available and operational; if this is not the case, the URI will be passed unmodified to the application. Some URIs, such as `mailto:`, of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for it); such URIs will be passed unmodified to the application.
 
 See Also
 --------
@@ -33,6 +33,22 @@ Note
 ----
 
 **Gnome::Gio::AppInfo** is defined as an interface in the Gnome libraries and therefore should be defined as a Raku role. However, the Gtk modules like **Gnome::Gtk3::AppChooser ** returns **Gnome::Gio::AppInfo** objects as if they are class objects. The only one which use the module as an interface, is GDesktopAppInfo which will not be implemented for the time being. When it does, it will inherit it as a class.
+
+### Example
+
+Below code will work when both `cdda://sr0/Track 1.wav` and `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the application. It should be noted that it's generally not safe for applications to rely on the format of a particular URIs. Different launcher applications (e.g. file managers) may have different ideas of what a given URI means.
+
+    my Gnome::Gio::File $file .= new(
+      :commandline-arg($uri-from-commandline)
+    );
+
+    # you might compare $uri with $uri-from-commandline
+    # to see that they are equal;
+    my Str $uri = $file.get-uri;
+
+    if ( $file.has-uri-scheme('cdda') ) {
+        … do something special with uri …
+    }
 
 Methods
 =======
@@ -191,6 +207,15 @@ Gets a list of fallback **Gnome::Gio::AppInfo**s for a given content type, i.e. 
     method get-fallback-for-type ( Str $content-type --> Gnome::Glib::List )
 
   * Str $content-type;
+
+get-icon
+--------
+
+Gets the icon for the application.
+
+Returns: the default **Gnome::Gio::Icon** for *appinfo* or `undefined` if there is no default icon.
+
+    method get-icon ( --> N-GObject )
 
 get-id
 ------
