@@ -348,10 +348,7 @@ Associate I<accel-group> with I<window>, such that calling C<gtk-accel-groups-ac
 
 method add-accel-group ( $accel_group is copy ) {
   $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
-
-  gtk_window_add_accel_group(
-    self._f('GtkWindow'),
-  );
+  gtk_window_add_accel_group( self._f('GtkWindow'), $accel_group);
 }
 
 sub gtk_window_add_accel_group (
