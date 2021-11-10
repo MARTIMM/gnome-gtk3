@@ -89,7 +89,7 @@ replace: `C<$1()>`
 
 The subset GSourceFunc defined below
 ```
-subset GSourceFunc of Routine where .signature ~~ :( gpointer $d --> gboolean );
+subset GSourceFunc of Callable where .signature ~~ :( gpointer $d --> gboolean );
 ```
 makes the native sub signature easier to read
 ```
