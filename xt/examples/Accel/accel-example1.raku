@@ -5,8 +5,6 @@ use v6;
   https://github.com/bstpierre/gtk-examples/blob/master/c/accel.c
 }}
 
-#use lib "/home/marcel/Languages/Raku/Projects/gnome-gobject/lib";
-
 use Gnome::GObject::Closure;
 
 use Gnome::Gtk3::Window;
