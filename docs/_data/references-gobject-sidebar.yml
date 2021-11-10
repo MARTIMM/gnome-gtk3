@@ -4,9 +4,9 @@
   - title: Boxed
     type: toplevel
     url: '/content-docs/reference/GObject/Boxed.html'
-#  - title: InitiallyUnowned
-#    type: object
-#    url: '/content-docs/reference/GObject/InitiallyUnowned.html'
+  - title: "Closure"
+    type: boxed
+    url: '/content-docs/reference/GObject/Closure.html'
   - title: "Object"
     type: toplevel
     url: '/content-docs/reference/GObject/Object.html'
