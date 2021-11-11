@@ -4480,10 +4480,7 @@ The allocation set should be the “adjusted” or actual allocation. If you’r
 =end pod
 
 method set-allocation ( N-GtkAllocation $allocation ) {
-
-  gtk_widget_set_allocation(
-    self._f('GtkWidget'), $allocation
-  );
+  gtk_widget_set_allocation( self._f('GtkWidget'), $allocation);
 }
 
 sub gtk_widget_set_allocation (

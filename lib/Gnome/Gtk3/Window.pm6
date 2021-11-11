@@ -323,10 +323,7 @@ Returns: C<True> if a mnemonic or accelerator was found and activated.
 =end pod
 
 method activate-key ( GdkEventKey $event --> Bool ) {
-
-  gtk_window_activate_key(
-    self._f('GtkWindow'), $event
-  ).Bool
+  gtk_window_activate_key( self._f('GtkWindow'), $event).Bool
 }
 
 sub gtk_window_activate_key (
