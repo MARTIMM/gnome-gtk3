@@ -10,6 +10,7 @@ use Gnome::GObject::Closure;
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::AccelGroup;
+use Gnome::Gtk3::AccelMap;
 #use Gnome::Gtk3::Enums;
 
 use Gnome::Gdk3::Types;
@@ -33,24 +34,23 @@ class CTest {
 my CTest $ctest .= new;
 
 #-------------------------------------------------------------------------------
+my Gnome::Gtk3::AccelMap $am .= instance;
 with my Gnome::Gtk3::AccelGroup $accel-group .= new {
-  # <ctrl>A will show text on the console
-  .connect(
-    GDK_KEY_A, GDK_CONTROL_MASK, 0,
-#    my $c = Gnome::GObject::Closure.new(
+  # <Alt>S will show text on the console
+    $am.add-entry( '<window>/File/Save', GDK_KEY_S, GDK_MOD1_MASK);
+
+  .connect-by-path(
+    '<window>/File/Save',
     Gnome::GObject::Closure.new(
       :handler-object($ctest), :handler-name<accelerator-pressed>,
       :handler-opts(:arg1<'foo'>)
     )
   );
 
-#  my N-GClosure $no = $c.get-native-object;
-#  note 'M: ' ~ $no.in-marshal;
-#  note 'V: ' ~ $no.is-invalid;
-
-  # <ctrl><shift>C will stop the program
-  .connect(
-    GDK_KEY_C, GDK_CONTROL_MASK +| GDK_SHIFT_MASK, 0,
+  # <ctrl>Q will stop the program
+  $am.add-entry( '<window>/File/Quit', GDK_KEY_Q, GDK_CONTROL_MASK);
+  .connect-by-path(
+    '<window>/File/Quit',
     Gnome::GObject::Closure.new(
       :handler-object($ctest), :handler-name<stop-test>
     )
@@ -67,12 +67,13 @@ note Q:q:to/EONOTE/;
 
   Demonstrates acceleration keys using
     Gnome::Gtk3::AccelGroup
+    Gnome::Gtk3::AccelMap
     Gnome::GObject::Closure
 
   You can use the following control keys
 
-  <Ctrl> A         - show a string on the konsole
-  <Ctrl><Shift> C  - stop the program
+  <Alt> S   - show a string on the konsole
+  <Ctrl> Q  - stop the program
 
 
 EONOTE
