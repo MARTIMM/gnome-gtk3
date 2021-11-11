@@ -92,7 +92,8 @@ defaults:
       path: content-docs/reference/Gtk3
     values:
       layout: reference-page
-      title: References to the Gtk3 package modules
+#      title: Gnome::Gtk3 Reference module {{ page.name }}
+      part-title: Gtk3 reference module
       nav_menu: references-nav
       sidebar_menu: references-gtk3-sidebar
   -
@@ -100,7 +101,8 @@ defaults:
       path: content-docs/reference/Gdk3
     values:
       layout: reference-page
-      title: References to the Gdk3 package modules
+#      title: References to the Gdk3 package modules
+      part-title: Gdk3 reference module
       nav_menu: references-nav
       sidebar_menu: references-gdk3-sidebar
   -
@@ -108,7 +110,8 @@ defaults:
       path: "content-docs/reference/GObject"
     values:
       layout: reference-page
-      title: References to the GObject package modules
+#      title: References to the GObject package modules
+      part-title: GObject reference module
       nav_menu: references-nav
       sidebar_menu: references-gobject-sidebar
   -
@@ -116,7 +119,8 @@ defaults:
       path: "content-docs/reference/Gio"
     values:
       layout: reference-page
-      title: References to the Gio package modules
+#      title: References to the Gio package modules
+      part-title: Gio reference module
       nav_menu: references-nav
       sidebar_menu: references-gio-sidebar
   -
@@ -124,7 +128,8 @@ defaults:
       path: "content-docs/reference/Glib"
     values:
       layout: reference-page
-      title: References to the Glib package modules
+#      title: References to the Glib package modules
+      part-title: Glib reference module
       nav_menu: references-nav
       sidebar_menu: references-glib-sidebar
   -
@@ -132,23 +137,26 @@ defaults:
       path: "content-docs/reference/Native"
     values:
       layout: reference-page
-      title: References to the Native package modules
+#      title: References to the Native package modules
+      part-title: Native reference - module
       nav_menu: references-nav
       sidebar_menu: references-native-sidebar
-  -
-    scope:
-      path: "content-docs/reference/Glade"
-    values:
-      layout: reference-page
-      title: References to the Glade package modules
-      nav_menu: references-nav
-      sidebar_menu: references-glade-sidebar
+#  -
+#    scope:
+#      path: "content-docs/reference/Glade"
+#    values:
+#      layout: reference-page
+#      title: References to the Glade package modules
+#      part-title: Gnome::Gtk3 - module
+#      nav_menu: references-nav
+#      sidebar_menu: references-glade-sidebar
   -
     scope:
       path: "content-docs/reference/Pango"
     values:
       layout: reference-page
-      title: References to the Pango package modules
+#      title: References to the Pango package modules
+      part-title: Pango reference module
       nav_menu: references-nav
       sidebar_menu: references-pango-sidebar
   -
@@ -156,6 +164,7 @@ defaults:
       path: "content-docs/reference/Cairo"
     values:
       layout: reference-page
-      title: References to the Cairo package modules
+#      title: References to the Cairo package modules
+      part-title: Cairo reference module
       nav_menu: references-nav
       sidebar_menu: references-cairo-sidebar

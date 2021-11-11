@@ -2,9 +2,6 @@
 # Default layout for docs placed in /content-docs/reference. This is set in
 # _config.yml as well as the below variables
 
-#title: References to the package modules
-#nav_menu: references-nav
-#sidebar_menu: references-gtk3-sidebar
 layout: sidebar
 ---
 <!DOCTYPE html>
@@ -88,6 +85,13 @@ layout: sidebar
           $(".newh6").css("margin-left",75);
         });
       });
+
+      // trick from https://stackoverflow.com/questions/7173596/changing-the-page-title-with-jquery
+      // Changing title can only be done this way. Normally set to frontmatter
+      // title, _config.yml title, defaults in _config.yml or when nothing is
+      // set to the first H1 on the page.
+      var title = $(document).prop( 'title', "{{ page.part-title }} {{ page.title }}");
+
     </script>
   </head>
   <body id="reference-page">
