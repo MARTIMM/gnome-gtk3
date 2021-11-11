@@ -9,6 +9,16 @@
     type: widget
     url: '/content-docs/reference/Gtk3/AboutDialog.html'
 
+  - title: "AccelGroup"
+    url: '/content-docs/reference/Gtk3/AccelGroup.html'
+
+  - title: "AccelLabel"
+    url: '/content-docs/reference/Gtk3/AccelLabel.html'
+    type: widget
+
+  - title: "AccelMap"
+    url: '/content-docs/reference/Gtk3/AccelMap.html'
+
   - title: "Actionable"
     type: interface
     url: '/content-docs/reference/Gtk3/Actionable.html'

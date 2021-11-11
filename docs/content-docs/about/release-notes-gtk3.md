@@ -5,7 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-#### 2021-10-          0.45.0:
+#### 2021-11- 0.46.0:
+* Add **Gnome::Gtk3::AccelGroup**, **Gnome::Gtk3::AccelMap**, **Gnome::Gtk3::AccelLabel**.
+
+#### 2021-10-27 0.45.0:
 * Add **Gnome::Gtk3::AppChooser**, **Gnome::Gtk3::AppChooserButton**, **Gnome::Gtk3::AppChooserDialog**, **Gnome::Gtk3::AppChooserWidget**.
 
 #### 2021-10-11 0.44.3:

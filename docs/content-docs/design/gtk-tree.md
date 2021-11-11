@@ -131,7 +131,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   ╰── GtkTreeView                     TreeView
 │   │   ├─✗ GtkMisc                             ⛔, Created to keep hierarchy
 │   │   │   ├── GtkLabel                        Label
-│   │   │   │   ╰── GtkAccelLabel
+│   │   │   │   ╰── GtkAccelLabel               AccelLabel
 │   │   │   ├─✗ GtkArrow                        ⛔
 │   │   │   ╰── GtkImage                        Image
 │   │   ├── GtkCalendar
@@ -172,8 +172,8 @@ GObject                                         Gnome::GObject::Object
 │   ├── GtkFileFilter                           FileFilter
 │   ├── GtkTreeViewColumn                       TreeViewColumn
 │   ╰── GtkRecentFilter                         RecentFilter
-├── GtkAccelGroup
-├── GtkAccelMap
+├── GtkAccelGroup                               AccelGroup
+├── GtkAccelMap                                 AccelMap
 ├── AtkObject
 │   ╰── GtkAccessible
 ├─✗ GtkAction                                   ⛔
