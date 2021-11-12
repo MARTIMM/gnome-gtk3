@@ -14,6 +14,7 @@ use Gnome::GObject::Closure;
 
 use Gnome::Glib::Quark;
 
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -24,7 +25,8 @@ my Gnome::Gtk3::AccelMap $am .= instance;
 
 #-------------------------------------------------------------------------------
 class CTest {
-  has $!accel-processed;
+  has Bool $!accel-processed;
+  has Bool $!signal-processed;
   has Gnome::Gtk3::Main $!main .= new;
 
   method ctrl-a-pressed ( Str :$arg1 ) {
@@ -37,12 +39,18 @@ class CTest {
     $!accel-processed = True;
   }
 
-#`{{
-  method stop-test ( ) {
-    diag "program stopped";
-    Gnome::Gtk3::Main.new.quit;
+  method signal-test (
+    N-GObject $acceleratable, UInt $keyval, UInt $modifier,
+    Gnome::Gtk3::AccelGroup :_widget($accel_group)
+    --> Int
+  ) {
+    diag "accel group activate signal";
+    $!signal-processed = True;
+
+    # return 0 to get the accel handlers running. returns from activate() and
+    # groups-activate will then be False.
+    0
   }
-}}
 
   method accel-test1 (
     Gnome::Gtk3::AccelGroup :widget($ag),
@@ -50,12 +58,14 @@ class CTest {
     --> Str
   ) {
     $!accel-processed = False;
+    $!signal-processed = False;
     my Str $accel-name = $ag.accelerator-name( GDK_KEY_A, GDK_CONTROL_MASK);
     my UInt $accel-quark = $quark.from-string($accel-name);
     diag [~] 'activate 1: ', $accel-quark, ', ', $ag.activate(
-      $accel-quark, $window, GDK_KEY_A, GDK_CONTROL_MASK
+      $accel-quark, $window, GDK_KEY_a, GDK_CONTROL_MASK
     );
     ok $!accel-processed, '.accelerator-name() / .activate()';
+    ok $!signal-processed, 'signal accel-activate';
 
 
     while $!main.gtk-events-pending() { $!main.iteration-do(False); }
@@ -64,7 +74,7 @@ class CTest {
     $accel-name = $ag.accelerator-name( GDK_KEY_S, GDK_MOD1_MASK);
     $accel-quark = $quark.from-string($accel-name);
     diag [~] 'activate 2: ', $accel-quark, ', ', $ag.activate(
-      $accel-quark, $window, GDK_KEY_A, GDK_CONTROL_MASK
+      $accel-quark, $window, GDK_KEY_a, GDK_CONTROL_MASK
     );
     ok $!accel-processed, '.accelerator-name() / .activate()';
 
@@ -73,7 +83,7 @@ class CTest {
 
     $!accel-processed = False;
     diag [~] 'groups activate 1: ', $ag.groups-activate(
-      $window, GDK_KEY_A, GDK_CONTROL_MASK
+      $window, GDK_KEY_a, GDK_CONTROL_MASK
     );
     ok $!accel-processed, '.groups-activate()';
 
@@ -115,8 +125,22 @@ class CTest {
 #    my $ret-mask = $ag.get-modifier-mask;
 #    diag [~] 'set mask is ', $ret-mask.base(2), ', returned mask is ',
 #        $used-mask.base(2);
-    ok $ag.get-modifier-mask > 1, '.get-modifier-mask()';
+    ok (my $mask = $ag.get-modifier-mask) > 1, '.get-modifier-mask(): ' ~ $mask.base(2);
 
+#`{{ TODO Object does not seem initialized
+    my Array $r = $ag.groups-from-object-rk($window);
+    note $r;
+}}
+
+    $ag.accelerator-set-default-mod-mask(
+      0b11100000000000000000000001101 +| GDK_BUTTON1_MASK
+    );
+    $mask = $ag.accelerator-get-default-mod-mask;
+    ok $mask +& GDK_BUTTON1_MASK,
+      '.accelerator-set-default-mod-mask() / .accelerator-get-default-mod-mask(): ' ~ $mask.base(2);
+
+    is $ag.accelerator-get-label( GDK_KEY_A, GDK_CONTROL_MASK), 'Ctrl+A',
+      '.accelerator-get-label()';
 
 #    while $!main.events-pending() { $!main.iteration-do(False); }
 #    sleep(0.4);
@@ -184,9 +208,15 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  $ag.register-signal( $ctest, 'signal-test', 'accel-activate');
+
+  my UInt ( $accelerator-key, $accelerator-mods) =
+    $ag.accelerator-parse('<Ctrl>a');
+  is $accelerator-key, GDK_KEY_a, 'accelerator-parse()';
+
   $ag.set-data( 'name', 'acceleration-group-1');
   $ag.connect(
-    GDK_KEY_A, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE,
+    $accelerator-key, $accelerator-mods, GTK_ACCEL_VISIBLE,
     my Gnome::GObject::Closure $c1 .= new(
       :handler-object($ctest), :handler-name<ctrl-a-pressed>,
       :handler-opts(:arg1<foo>)

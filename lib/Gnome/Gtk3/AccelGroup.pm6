@@ -547,18 +547,21 @@ sub gtk_accel_groups_activate (
 ) is native(&gtk-lib)
   { * }
 
+#`{{ TODO Object does not seem initialized
+(AccelGroup.t:152559): GLib-GObject-CRITICAL **: 14:22:53.267: g_object_ref: assertion 'G_IS_OBJECT (object)' failed
+
 #-------------------------------------------------------------------------------
-#TM:1:gtk-accel-groups-from-object:
-#TM:1:gtk-accel-groups-from-object-rk:
+#TM:0:groups-from-object:
+#TM:0:groups-from-object-rk:
 =begin pod
-=head2 gtk-accel-groups-from-object
+=head2 groups-from-object, roups-from-object-rk
 
 Gets a list of all accel groups which are attached to I<object>.
 
 Returns: (element-type GtkAccelGroup) : a list of all accel groups which are attached to I<object>
 
-  method gtk-accel-groups-from-object ( N-GObject $object --> N-GSList )
-  method gtk-accel-groups-from-object-rk ( N-GObject $object --> Array )
+  method groups-from-object ( N-GObject $object --> N-GSList )
+  method groups-from-object-rk ( N-GObject $object --> Array )
 
 =item N-GObject $object; a B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>
 
@@ -566,30 +569,40 @@ The C<-rk> version returns an Array with B<Gnome::Gtk3::AccelGroup> objects.
 
 =end pod
 
-method gtk-accel-groups-from-object ( $object is copy --> N-GSList ) {
+method groups-from-object ( $object is copy --> N-GSList ) {
   $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
-  gtk_accel_groups_from_object( self.get-native-object-no-reffing, $object)
+  gtk_accel_groups_from_object($object)
 }
 
-method gtk-accel-groups-from-object-rk ( $object is copy --> Array ) {
+method groups-from-object-rk ( $object is copy --> Array ) {
   $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
 
-  my N-GSList $list = gtk_accel_groups_from_object(
-    self.get-native-object-no-reffing, $object
-  )
+  my Gnome::Glib::SList $list .= new(
+#    :native-object(self.groups-from-object($object))
+    :native-object(gtk_accel_groups_from_object($object))
+  );
 
-  
+  my Array $results;
+  my Int $count = 0;
+  while $count < $list.g_slist_length {
+    my N-GObject $no = nativecast( N-GObject, $list.nth($count));
+    $results.push: Gnome::Gtk3::AccelGroup.new(:native-object($no));
+    $count++;
+  }
+
+  $results
 }
 
 sub gtk_accel_groups_from_object (
   N-GObject $object --> N-GSList
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-get-default-mod-mask:
+#TM:1:gtk-accelerator-get-default-mod-mask:
 =begin pod
-=head2 gtk-accelerator-get-default-mod-mask
+=head2 accelerator-get-default-mod-mask
 
 Gets the modifier mask.
 
@@ -597,14 +610,12 @@ The modifier mask determines which modifiers are considered significant for keyb
 
 Returns: the default accelerator modifier mask. A mask of GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 
-  method gtk-accelerator-get-default-mod-mask ( --> UInt )
+  method accelerator-get-default-mod-mask ( --> UInt )
 
 =end pod
 
-method gtk-accelerator-get-default-mod-mask ( --> UInt ) {
-  gtk_accelerator_get_default_mod_mask(
-    self.get-native-object-no-reffing,
-  )
+method accelerator-get-default-mod-mask ( --> UInt ) {
+  gtk_accelerator_get_default_mod_mask
 }
 
 sub gtk_accelerator_get_default_mod_mask (
@@ -613,27 +624,26 @@ sub gtk_accelerator_get_default_mod_mask (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-get-label:
+#TM:1:accelerator-get-label:
 =begin pod
-=head2 gtk-accelerator-get-label
+=head2 accelerator-get-label
 
 Converts an accelerator keyval and modifier mask into a string which can be used to represent the accelerator to the user.
 
 Returns: a newly-allocated string representing the accelerator.
 
-  method gtk-accelerator-get-label ( UInt $accelerator-key, UInt $accelerator-mods --> Str )
+  method accelerator-get-label (
+    UInt $accelerator-key, UInt $accelerator-mods --> Str
+  )
 
 =item UInt $accelerator-key; accelerator keyval
 =item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
-method gtk-accelerator-get-label (
+method accelerator-get-label (
   UInt $accelerator-key, UInt $accelerator-mods --> Str
 ) {
-
-  gtk_accelerator_get_label(
-    self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
-  )
+  gtk_accelerator_get_label( $accelerator-key, $accelerator-mods)
 }
 
 sub gtk_accelerator_get_label (
@@ -641,18 +651,22 @@ sub gtk_accelerator_get_label (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-get-label-with-keycode:
+# TM:0:accelerator-get-label-with-keycode:
 =begin pod
-=head2 gtk-accelerator-get-label-with-keycode
+=head2 accelerator-get-label-with-keycode
 
 Converts an accelerator keyval and modifier mask into a (possibly translated) string that can be displayed to a user, similarly to C<gtk-accelerator-get-label()>, but handling keycodes.
 
-This is only useful for system-level components, applications should use C<gtk-accelerator-parse()> instead.
+This is only useful for system-level components, applications should use C<accelerator-parse()> instead.
 
-Returns: a newly-allocated string representing the accelerator.
+Returns: a string representing the accelerator.
 
-  method gtk-accelerator-get-label-with-keycode ( N-GObject $display, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str )
+  method accelerator-get-label-with-keycode (
+    N-GObject $display, UInt $accelerator-key,
+    UInt $keycode, UInt $accelerator-mods --> Str
+  )
 
 =item N-GObject $display; a B<Gnome::Gtk3::Display> or C<undefined> to use the default display
 =item UInt $accelerator-key; accelerator keyval
@@ -660,7 +674,7 @@ Returns: a newly-allocated string representing the accelerator.
 =item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
-method gtk-accelerator-get-label-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
+method accelerator-get-label-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
   $display .= get-native-object-no-reffing unless $display ~~ N-GObject;
 
   gtk_accelerator_get_label_with_keycode(
@@ -672,9 +686,10 @@ sub gtk_accelerator_get_label_with_keycode (
   N-GObject $display, guint $accelerator-key, guint $keycode, GEnum $accelerator-mods --> gchar-ptr
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:accelerator-name:
+#TM:1:accelerator-name:
 =begin pod
 =head2 accelerator-name
 
@@ -685,7 +700,8 @@ If you need to display accelerators in the user interface, see C<gtk-accelerator
 Returns: a newly-allocated accelerator name
 
   method accelerator-name (
-    UInt $accelerator-key, UInt $accelerator-mods --> Str )
+    UInt $accelerator-key, UInt $accelerator-mods --> Str
+  )
 
 =item UInt $accelerator-key; accelerator keyval
 =item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
@@ -702,8 +718,9 @@ sub gtk_accelerator_name (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-name-with-keycode:
+# TM:0:gtk-accelerator-name-with-keycode:
 =begin pod
 =head2 gtk-accelerator-name-with-keycode
 
@@ -731,11 +748,12 @@ sub gtk_accelerator_name_with_keycode (
   N-GObject $display, guint $accelerator-key, guint $keycode, GEnum $accelerator-mods --> gchar-ptr
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-parse:
+#TM:1:accelerator-parse:
 =begin pod
-=head2 gtk-accelerator-parse
+=head2 accelerator-parse
 
 Parses a string representing an accelerator. The format looks like “<Control>a” or “<Shift><Alt>F1” or “<Release>z” (the last one is for key release).
 
@@ -743,20 +761,22 @@ The parser is fairly liberal and allows lower or upper case, and also abbreviati
 
 If the parse fails, I<accelerator-key> and I<accelerator-mods> will be set to 0 (zero).
 
-  method gtk-accelerator-parse ( Str $accelerator --> List )
+  method accelerator-parse ( Str $accelerator --> List )
 
 =item Str $accelerator; string representing an accelerator
 
 The returned List contains;
 =item UInt $accelerator-key; the accelerator keyval, or C<undefined>
 =item UInt $accelerator-mods; the accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>. C<undefined>
+
+Note that many letters are translated to lowercase. So, for example, the string '<Ctrl>A' will not produce C<GDK_KEY_A> but C<GDK_KEY_a> for the returned C<$accelerator-key>. The resulting behaviour however, will be the same.
 =end pod
 
-method gtk-accelerator-parse ( Str $accelerator --> List ) {
+method accelerator-parse ( Str $accelerator --> List ) {
   my guint $accelerator-key;
   my guint $accelerator-mods;
   gtk_accelerator_parse(
-    self.get-native-object-no-reffing, $accelerator, $accelerator-key, $accelerator-mods
+    $accelerator, $accelerator-key, $accelerator-mods
   );
 
   ( $accelerator-key, $accelerator-mods)
@@ -768,6 +788,7 @@ sub gtk_accelerator_parse (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:gtk-accelerator-parse-with-keycode:
 =begin pod
@@ -808,11 +829,12 @@ sub gtk_accelerator_parse_with_keycode (
   guint $accelerator-codes is rw, GFlag $accelerator-mods is rw
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk-accelerator-set-default-mod-mask:
+#TM:1:accelerator-set-default-mod-mask:
 =begin pod
-=head2 gtk-accelerator-set-default-mod-mask
+=head2 accelerator-set-default-mod-mask
 
 Sets the modifiers that will be considered significant for keyboard accelerators. The default mod mask depends on the GDK backend in use, but will typically include B<Gnome::Gtk3::DK-CONTROL-MASK> | B<Gnome::Gtk3::DK-SHIFT-MASK> | B<Gnome::Gtk3::DK-MOD1-MASK> | B<Gnome::Gtk3::DK-SUPER-MASK> | B<Gnome::Gtk3::DK-HYPER-MASK> | B<Gnome::Gtk3::DK-META-MASK>. In other words, Control, Shift, Alt, Super, Hyper and Meta. Other modifiers will by default be ignored by B<Gnome::Gtk3::AccelGroup>.
 
@@ -820,16 +842,13 @@ You must include at least the three modifiers Control, Shift and Alt in any valu
 
 The default mod mask should be changed on application startup, before using any accelerator groups.
 
-  method gtk-accelerator-set-default-mod-mask ( UInt $default_mod_mask )
+  method accelerator-set-default-mod-mask ( UInt $default_mod_mask )
 
 =item UInt $default_mod_mask; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
-method gtk-accelerator-set-default-mod-mask ( UInt $default_mod_mask ) {
-
-  gtk_accelerator_set_default_mod_mask(
-    self.get-native-object-no-reffing, $default_mod_mask
-  );
+method accelerator-set-default-mod-mask ( UInt $default_mod_mask ) {
+  gtk_accelerator_set_default_mod_mask($default_mod_mask);
 }
 
 sub gtk_accelerator_set_default_mod_mask (
@@ -862,6 +881,14 @@ sub gtk_accel_group_lock (
   { * }
 
 #`{{
+from https://docs.gtk.org/gtk3/struct.AccelGroupEntry.html
+
+struct GtkAccelGroupEntry {
+  GtkAccelKey key;
+  GClosure* closure;
+  GQuark accel_path_quark;
+}
+
 #-------------------------------------------------------------------------------
 #TM:0:query:
 =begin pod
@@ -972,7 +999,7 @@ Also here, the types of positional arguments in the signal handler are important
 
 
 =comment -----------------------------------------------------------------------
-=comment #TS:0:accel-activate:
+=comment #TS:1:accel-activate:
 =head3 accel-activate
 
 The accel-activate signal is an implementation detail of
@@ -981,11 +1008,11 @@ B<Gnome::Gtk3::AccelGroup> and not meant to be used by applications.
 Returns: C<True> if the accelerator was activated
 
   method handler (
-    Unknown type G_TYPE_OBJECT $acceleratable,
-     $keyval,
-    GdkModifierType #`{ from Gnome::Gdk3::Window } $modifier,
+    N-GObject $acceleratable,
+    UInt $keyval,
+    UInt $modifier,
     Int :$_handle_id,
-    Gnome::GObject::Object :_widget($accel_group),
+    Gnome::Gtk3::AccelGroup :_widget($accel_group),
     *%user-options
     --> Int
   );
@@ -996,7 +1023,7 @@ Returns: C<True> if the accelerator was activated
 
 =item $keyval; the accelerator keyval
 
-=item $modifier; the modifier combination of the accelerator
+=item $modifier; the modifier combination of the accelerator, a mask of GdkModifierType bits.
 
 =item $_handle_id; the registered event handler id
 
