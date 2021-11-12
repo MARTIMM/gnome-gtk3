@@ -29,7 +29,7 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $am.add-entry( '<Window>/File/Save', GDK_KEY_s, GDK_SHIFT_MASK);
+  $am.add-entry( '<AccelMap-test>/File/Save', GDK_KEY_s, GDK_SHIFT_MASK);
 }
 
 #-------------------------------------------------------------------------------

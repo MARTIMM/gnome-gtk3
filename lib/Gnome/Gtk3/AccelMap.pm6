@@ -14,7 +14,7 @@ Loadable keyboard accelerator specifications
 
 =head1 Description
 
-Accelerator maps are used to define runtime configurable accelerators. Functions for manipulating them are are usually used by higher level convenience mechanisms like B<Gnome::Gtk3::UIManager> and are thus considered “low-level”. You’ll want to use them if you’re manually creating menus that should have user-configurable accelerators.
+Accelerator maps are used to define runtime configurable accelerators. Functions for manipulating them are usually used by higher level convenience mechanisms like B<Gnome::Gtk3::Builder> and are thus considered “low-level”. You’ll want to use them if you’re manually creating menus that should have user-configurable accelerators.
 
 An accelerator is uniquely defined by:
 =item accelerator path
@@ -22,7 +22,7 @@ An accelerator is uniquely defined by:
 =item accelerator modifiers
 
 The U<accelerator path> must consist of C<I<“<WINDOWTYPE>/Category1/Category2/.../Action”>>, where C<WINDOWTYPE> should be a unique application-specific identifier that corresponds to the kind of window the accelerator is being used in, e.g. “Gimp-Image”, “Abiword-Document” or “Gnumeric-Settings”.
-The C<“Category1/.../Action”> portion is most appropriately chosen by the action the accelerator triggers, i.e. for accelerators on menu items, choose the item’s menu path, e.g. “File/Save As”, “Image/View/Zoom” or “Edit/Select All”. So a full valid accelerator path may look like: “<Gimp-Toolbox>/File/Dialogs/Tool Options...”.
+The C<“Category1/.../Action”> portion is most appropriately chosen by the action the accelerator triggers, i.e. for accelerators on menu items, choose the item’s menu path, e.g. C<“File/Save As”>, C<“Image/View/Zoom”> or C<“Edit/Select All”>. So a full valid accelerator path may look like: “<Gimp-Toolbox>/File/Dialogs/Tool Options...”.
 
 All accelerators are stored inside one global B<Gnome::Gtk3::AccelMap> that can be obtained using C<get()>.
 =comment See [Monitoring changes][monitoring-changes] for additional details.
@@ -32,17 +32,18 @@ All accelerators are stored inside one global B<Gnome::Gtk3::AccelMap> that can 
 
 New accelerators can be added using C<add-entry()>. To search for specific accelerator, use C<lookup-entry()>. Modifications of existing accelerators should be done using C<change-entry()>.
 
-In order to avoid having some accelerators changed, they can be locked using C<glock-path()>. Unlocking is done using C<unlock-path()>.
+In order to avoid having some accelerators changed, they can be locked using C<lock-path()>. Unlocking is done using C<unlock-path()>.
 
 
 =head2 Saving and loading accelerator maps
 
-Accelerator maps can be saved to and loaded from some external resource. For simple saving and loading from file, C<gtk-accel-map-save()> and C<gtk-accel-map-load()> are provided. Saving and loading can also be done by providing file descriptor to C<save-fd()> and C<load-fd()>.
+Accelerator maps can be saved to and loaded from some external resource. For simple saving and loading from file, C<save()> and C<load()> are provided.
+=comment Saving and loading can also be done by providing a file descriptor to C<save-fd()> and C<load-fd()>.
 
 
 =head2 Monitoring changes
 
-B<Gnome::Gtk3::AccelMap> object is only useful for monitoring changes of accelerators. By connecting to  I<changed> signal, one can monitor changes of all accelerators. It is also possible to monitor only single accelerator path by using it as a detail of  the  I<changed> signal.
+B<Gnome::Gtk3::AccelMap> object is only useful for monitoring changes of accelerators. By connecting to I<changed> signal, one can monitor changes of all accelerators. It is also possible to monitor only single accelerator path by using it as a detail of  the  I<changed> signal.
 
 
 =head2 See Also
