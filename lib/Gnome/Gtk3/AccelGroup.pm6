@@ -127,13 +127,13 @@ class N-GtkAccelGroup is export is repr('CStruct') {
 
 =end pod
 
-#TT:0:N-GtkAccelKey:
+#TT:1:N-GtkAccelKey:
 class N-GtkAccelKey is export is repr('CStruct') {
-  has guint $.accel_key;
-  has GFlag $.accel_mods;
+  has guint $.accel-key;
+  has GFlag $.accel-mods;
 
   # ': 16' means; use 16 bits of a uint, so I take a short
-  has guint16 $.accel_flags;
+  has guint16 $.accel-flags;
 }
 
 #-------------------------------------------------------------------------------
