@@ -11,14 +11,9 @@ use Gnome::Gtk3::AccelLabel;
 my Gnome::Gtk3::AccelLabel $al;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $al .= new;
-  isa-ok $al, Gnome::Gtk3::AccelLabel, '.new()';
+  $al .= new(:text('Save'));
+  isa-ok $al, Gnome::Gtk3::AccelLabel, '.new(:text)';
 }
-
-#-------------------------------------------------------------------------------
-done-testing;
-
-=finish
 
 
 #-------------------------------------------------------------------------------
@@ -30,6 +25,7 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
+  is $al.get-text, 'Save', 'label is checked';
 }
 
 #-------------------------------------------------------------------------------
@@ -47,6 +43,11 @@ subtest 'Inherit Gnome::Gtk3::AccelLabel', {
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::AccelLabel, 'MyClass.new()';
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
@@ -170,4 +171,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-

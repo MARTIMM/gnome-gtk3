@@ -9,74 +9,59 @@ use v6;
 A label which displays an accelerator key on the right of the text
 
 
-=comment ![](images/X.png)
+![](images/Label.png)
 
 
 =head1 Description
 
- 
-The B<Gnome::Gtk3::AccelLabel> widget is a subclass of B<Gnome::Gtk3::Label> that also displays an 
-accelerator key on the right of the label text, e.g. “Ctrl+S”. 
-It is commonly used in menus to show the keyboard short-cuts for commands. 
- 
-The accelerator key to display is typically not set explicitly (although it 
-can be, with C<set-accel()>). Instead, the B<Gnome::Gtk3::AccelLabel> displays 
-the accelerators which have been added to a particular widget. This widget is 
-set by calling C<gtk-accel-label-set-accel-widget()>. 
- 
-For example, a B<Gnome::Gtk3::MenuItem> widget may have an accelerator added to emit 
-the “activate” signal when the “Ctrl+S” key combination is pressed. 
-A B<Gnome::Gtk3::AccelLabel> is created and added to the B<Gnome::Gtk3::MenuItem>, and 
-C<gtk-accel-label-set-accel-widget()> is called with the B<Gnome::Gtk3::MenuItem> as the 
-second argument. The B<Gnome::Gtk3::AccelLabel> will now display “Ctrl+S” after its label. 
- 
-Note that creating a B<Gnome::Gtk3::MenuItem> with C<gtk-menu-item-new-with-label()> (or 
-one of the similar functions for B<Gnome::Gtk3::CheckMenuItem> and B<Gnome::Gtk3::RadioMenuItem>) 
-automatically adds a B<Gnome::Gtk3::AccelLabel> to the B<Gnome::Gtk3::MenuItem> and calls 
-C<gtk-accel-label-set-accel-widget()> to set it up for you. 
- 
-A B<Gnome::Gtk3::AccelLabel> will only display accelerators which have C<GTK-ACCEL-VISIBLE> 
-set (see B<Gnome::Gtk3::AccelFlags>). 
-A B<Gnome::Gtk3::AccelLabel> can display multiple accelerators and even signal names, 
-though it is almost always used to display just one accelerator key. 
- 
 
-=head2 Creating a simple menu item with an accelerator key. 
- 
-|[<!-- language="C" --> 
-  GtkWidget *window = gtk-window-new (GTK-WINDOW-TOPLEVEL); 
-  GtkWidget *menu = C<gtk-menu-new()>; 
-  GtkWidget *save-item; 
-  GtkAccelGroup *accel-group; 
- 
-  // Create a GtkAccelGroup and add it to the window. 
-  accel-group = C<gtk-accel-group-new()>; 
-  gtk-window-add-accel-group (GTK-WINDOW (window), accel-group); 
- 
-  // Create the menu item using the convenience function. 
-  save-item = gtk-menu-item-new-with-label ("Save"); 
-  gtk-widget-show (save-item); 
-  gtk-container-add (GTK-CONTAINER (menu), save-item); 
- 
-  // Now add the accelerator to the GtkMenuItem. Note that since we 
-  // called C<gtk-menu-item-new-with-label()> to create the GtkMenuItem 
-  // the GtkAccelLabel is automatically set up to display the 
-  // GtkMenuItem accelerators. We just need to make sure we use 
-  // GTK-ACCEL-VISIBLE here. 
-  gtk-widget-add-accelerator (save-item, "activate", accel-group, 
-                              GDK-KEY-s, GDK-CONTROL-MASK, GTK-ACCEL-VISIBLE); 
-]| 
- 
+The B<Gnome::Gtk3::AccelLabel> widget is a subclass of B<Gnome::Gtk3::Label> that also displays an accelerator key on the right of the label text, e.g. “Ctrl+S”. It is commonly used in menus to show the keyboard short-cuts for commands.
+
+The accelerator key to display is typically not set explicitly (although it can be, with C<set-accel()>). Instead, the B<Gnome::Gtk3::AccelLabel> displays the accelerators which have been added to a particular widget. This widget is set by calling C<set-accel-widget()>.
+
+For example, a B<Gnome::Gtk3::MenuItem> widget may have an accelerator added to emit the “activate” signal when the “Ctrl+S” key combination is pressed. A B<Gnome::Gtk3::AccelLabel> is created and added to the B<Gnome::Gtk3::MenuItem>, and C<set-accel-widget()> is called with the B<Gnome::Gtk3::MenuItem> as the second argument. The B<Gnome::Gtk3::AccelLabel> will now display “Ctrl+S” after its label.
+
+Note that creating a B<Gnome::Gtk3::MenuItem> with C<Gnome::Gtk3::MenuItem.new(:$label)> (or one of the similar functions for B<Gnome::Gtk3::CheckMenuItem> and B<Gnome::Gtk3::RadioMenuItem>) automatically adds a B<Gnome::Gtk3::AccelLabel> to the B<Gnome::Gtk3::MenuItem> and calls C<set-accel-widget()> to set it up for you.
+
+A B<Gnome::Gtk3::AccelLabel> will only display accelerators which have C<GTK-ACCEL-VISIBLE> set (see C<GtkAccelFlags> from B<Gnome::Gtk3::AccelGroup>).
+A B<Gnome::Gtk3::AccelLabel> can display multiple accelerators and even signal names, though it is almost always used to display just one accelerator key.
+
+
+=begin comment
+=head2 Creating a simple menu item with an accelerator key.
+
+|[<!-- language="C" -->
+  GtkWidget *window = gtk-window-new (GTK-WINDOW-TOPLEVEL);
+  GtkWidget *menu = C<gtk-menu-new()>;
+  GtkWidget *save-item;
+  GtkAccelGroup *accel-group;
+
+  // Create a GtkAccelGroup and add it to the window.
+  accel-group = C<gtk-accel-group-new()>;
+  gtk-window-add-accel-group (GTK-WINDOW (window), accel-group);
+
+  // Create the menu item using the convenience function.
+  save-item = gtk-menu-item-new-with-label ("Save");
+  gtk-widget-show (save-item);
+  gtk-container-add (GTK-CONTAINER (menu), save-item);
+
+  // Now add the accelerator to the GtkMenuItem. Note that since we
+  // called C<gtk-menu-item-new-with-label()> to create the GtkMenuItem
+  // the GtkAccelLabel is automatically set up to display the
+  // GtkMenuItem accelerators. We just need to make sure we use
+  // GTK-ACCEL-VISIBLE here.
+  gtk-widget-add-accelerator (save-item, "activate", accel-group,
+                              GDK-KEY-s, GDK-CONTROL-MASK, GTK-ACCEL-VISIBLE);
+]|
+=end comment
+
 
 =head2 Css Nodes
- 
- 
-|[<!-- language="plain" --> 
-label 
-╰── accelerator 
-]| 
- 
-Like B<Gnome::Gtk3::Label>, GtkAccelLabel has a main CSS node with the name label.  It adds a subnode with name accelerator.
+
+Like B<Gnome::Gtk3::Label>, B<Gnome::Gtk3::AccelLabel> has a main CSS node with the name label.  It adds a subnode with name accelerator.
+
+  label
+  ╰── accelerator
 
 
 =head2 See Also
@@ -92,12 +77,11 @@ B<Gnome::Gtk3::AccelGroup>
   also is Gnome::Gtk3::Label;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/.svg)
+![](plantuml/AccelLabel.svg)
 
 
-=begin comment
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -116,8 +100,6 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
-=end comment
-
 
 =comment head2 Example
 
@@ -134,6 +116,8 @@ use Gnome::Gtk3::Label;
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::AccelLabel:auth<github:MARTIMM>:ver<0.1.0>;
 also is Gnome::Gtk3::Label;
+
+#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 class N-GtkAccelLabel
@@ -141,34 +125,33 @@ also is Gnome::Gtk3::Label;
 The B<Gnome::Gtk3::AccelLabel>-struct contains private data only, and
 should be accessed using the functions below.
 
-
-
-
 =end pod
 
-#TT:0:N-GtkAccelLabel:
+# TT:0:N-GtkAccelLabel:
 class N-GtkAccelLabel is export is repr('CStruct') {
   has N-GObject $.label;
   has GtkAccelLabelPrivate $.priv;
 }
+}}
 
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
 
-=head3 default, no options
+=head3 :text
 
-Create a new AccelLabel object.
+Create a new AccelLabel object with the label from C<$text>.
 
-  multi method new ( )
+  multi method new ( :$text! )
+
 
 =head3 :native-object
 
 Create a AccelLabel object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
+
 
 =head3 :build-id
 
@@ -178,17 +161,14 @@ Create a AccelLabel object using a native object returned from a builder. See al
 
 =end pod
 
-#TM:0:new():inheriting
-#TM:1:new():
+#TM:1:new():inheriting
+#TM:1:new(:text):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
 
-
-
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::AccelLabel' #`{{ or %options<GtkAccelLabel> }} {
+  if self.^name eq 'Gnome::Gtk3::AccelLabel' or %options<GtkAccelLabel> {
 
     # check if native object is set by a parent class
     if self.is-valid { }
@@ -200,10 +180,8 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if ? %options<___x___> {
-        $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-        #$no = _gtk_accel_label_new___x___($no);
+      if ? %options<text> {
+        $no = _gtk_accel_label_new(%options<text>);
       }
 
       #`{{ use this when the module is not made inheritable
@@ -218,12 +196,12 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
@@ -248,24 +226,30 @@ submethod BUILD ( *%options ) {
 
 Gets the keyval and modifier mask set with C<set-accel()>.
 
-  method get-accel ( guInt-ptr $accelerator_key, GdkModifierType $accelerator_mods )
+  method get-accel ( List )
 
-=item guInt-ptr $accelerator_key; return location for the keyval
-=item GdkModifierType $accelerator_mods; return location for the modifier mask
+The returned Lis contains
+=item UInt $accelerator-key; the keyval
+=item UInt $accelerator-mods; the modifier mask, a mask with GdkModifierType bits.
 =end pod
 
-method get-accel ( guInt-ptr $accelerator_key, GdkModifierType $accelerator_mods ) {
-
+method get-accel ( --> List ) {
+  my guint $accelerator-key;
+  my guint $accelerator-mods;
   gtk_accel_label_get_accel(
-    self.get-native-object-no-reffing, $accelerator_key, $accelerator_mods
+    self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
   );
+
+  ( $accelerator-key, $accelerator-mods)
 }
 
 sub gtk_accel_label_get_accel (
-  N-GObject $accel_label, gugint-ptr $accelerator_key, GEnum $accelerator_mods 
+  N-GObject $accel_label, guint $accelerator-key is rw,
+  GEnum $accelerator-mods is rw
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:get-accel-widget:
 =begin pod
@@ -352,21 +336,21 @@ If a keyval and modifier are explicitly set then these values are used regardles
 
 Providing an I<accelerator-key> of 0 removes the manual setting.
 
-  method set-accel ( UInt $accelerator_key, GdkModifierType $accelerator_mods )
+  method set-accel ( UInt $accelerator-key, GdkModifierType $accelerator-mods )
 
-=item UInt $accelerator_key; a keyval, or 0
-=item GdkModifierType $accelerator_mods; the modifier mask for the accel
+=item UInt $accelerator-key; a keyval, or 0
+=item GdkModifierType $accelerator-mods; the modifier mask for the accel
 =end pod
 
-method set-accel ( UInt $accelerator_key, GdkModifierType $accelerator_mods ) {
+method set-accel ( UInt $accelerator-key, GdkModifierType $accelerator-mods ) {
 
   gtk_accel_label_set_accel(
-    self.get-native-object-no-reffing, $accelerator_key, $accelerator_mods
+    self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
   );
 }
 
 sub gtk_accel_label_set_accel (
-  N-GObject $accel_label, guint $accelerator_key, GEnum $accelerator_mods 
+  N-GObject $accel_label, guint $accelerator-key, GEnum $accelerator-mods
 ) is native(&gtk-lib)
   { * }
 
@@ -391,7 +375,7 @@ method set-accel-closure ( $accel_closure is copy ) {
 }
 
 sub gtk_accel_label_set_accel_closure (
-  N-GObject $accel_label, N-GObject $accel_closure 
+  N-GObject $accel_label, N-GObject $accel_closure
 ) is native(&gtk-lib)
   { * }
 
@@ -416,9 +400,10 @@ method set-accel-widget ( $accel_widget is copy ) {
 }
 
 sub gtk_accel_label_set_accel_widget (
-  N-GObject $accel_label, N-GObject $accel_widget 
+  N-GObject $accel_label, N-GObject $accel_widget
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_accel_label_new:
