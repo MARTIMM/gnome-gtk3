@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::AccelMap;
+use Gnome::Gtk3::AccelGroup;
 
 use Gnome::Gdk3::Types;
 use Gnome::Gdk3::Keysyms;
@@ -12,6 +13,19 @@ use Gnome::Gdk3::Keysyms;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::AccelMap $am;
+
+class AMTest {
+  method foreach-test (
+    Str $accel-path, UInt $accel-key, UInt $accel-mods,
+    Bool $changed, Str :$path-changed
+  ) {
+    diag "'$accel-path', $accel-key, $accel-mods, $changed";
+
+    ok $changed, "$accel-path is changed and should be saved"
+      if $accel-path ~~ $path-changed;
+  }
+}
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   dies-ok { $am .= new; }, 'cannot use .new()';
@@ -29,7 +43,67 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $am.add-entry( '<AccelMap-test>/File/Save', GDK_KEY_s, GDK_SHIFT_MASK);
+  lives-ok {
+    $am.add-entry( '<AccelMap-test>/File/Save',     GDK_KEY_s, GDK_MOD1_MASK);
+    $am.add-entry( '<AccelMap-test>/File/Load',     GDK_KEY_l, GDK_MOD1_MASK);
+    $am.add-entry( '<AccelMap-test>/File/Quit',     GDK_KEY_q, GDK_MOD1_MASK);
+    $am.add-entry( '<AccelMap-test>/Edit/Set ...',  GDK_KEY_s, GDK_MOD1_MASK);
+    $am.add-entry(
+      '<AccelMap-test>/Help/Index', GDK_KEY_i, GDK_CONTROL_MASK
+    );
+    $am.add-entry(
+      '<AccelMap-test>/Help/About', GDK_KEY_a, GDK_CONTROL_MASK
+    );
+  }, '.add-entry()';
+
+  lives-ok {
+    my N-GtkAccelKey $ak;
+    with $ak = $am.lookup-entry('<AccelMap-test>/File/Save') {
+      is .accel-key, GDK_KEY_s, 'N-GtkAccelKey.accel-key';
+      is .accel-mods, GDK_MOD1_MASK.value, 'N-GtkAccelKey.accel-mods';
+    }
+
+    with $ak = $am.lookup-entry('<AccelMap-test>/Foo/Bar') {
+      is-deeply [ .accel-key, .accel-mods, .accel-flags], [ 0, 0, 0],
+      '.lookup-entry(): entry not found';
+    }
+
+  }, '.lookup-entry() / N-GtkAccelKey.*()';
+
+
+  lives-ok {
+    $am.lock-path('<AccelMap-test>/File/Load');
+    $am.unlock-path('<AccelMap-test>/File/Load');
+  }, '.lock-path() / .unlock-path()';
+
+  lives-ok {
+    $am.add-filter('<AccelMap-test>/File/*');
+    $am.add-filter('<AccelMap-test>/He??/*');
+  }, '.add-filter()';
+
+  ok $am.change-entry(
+    '<AccelMap-test>/Edit/Set ...', GDK_KEY_s, GDK_SHIFT_MASK, False
+  ), '.change-entry()';
+
+  lives-ok {
+    $am.foreach(
+      AMTest.new, 'foreach-test', :path-changed('<AccelMap-test>/Edit/Set ...')
+    );
+  }, '.foreach()';
+
+  lives-ok {
+    $am.foreach-unfiltered(
+      AMTest.new, 'foreach-test', :path-changed('<AccelMap-test>/Edit/Set ...')
+    );
+  }, '.foreach-unfiltered()';
+
+  lives-ok {
+    my Str $filename = 't/___key-accels.rc';
+    $am.save($filename);
+    $am.load($filename);
+    ok $filename.IO ~~ :r, 'file is saved';
+    $filename.IO.unlink;
+  }, '.save() / .load()';
 }
 
 #-------------------------------------------------------------------------------

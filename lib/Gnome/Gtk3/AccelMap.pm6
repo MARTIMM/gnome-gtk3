@@ -222,38 +222,38 @@ submethod BUILD ( *%options ) {
 
 
 #-------------------------------------------------------------------------------
-#TM:0:add-entry:
+#TM:1:add-entry:
 =begin pod
 =head2 add-entry
 
-Registers a new accelerator with the global accelerator map. This function should only be called once per I<accel-path> with the canonical I<accel-key> and I<accel-mods> for this path. To change the accelerator during runtime programatically, use C<change-entry()>.
+Registers a new accelerator with the global accelerator map. This function should only be called once per I<a$ccel-path> with the canonical I<$accel-key> and I<$accel-mods> for this path. To change the accelerator during runtime programatically, use C<change-entry()>.
 
-Set I<accel-key> and I<accel-mods> to 0 to request a removal of the accelerator.
+Set I<$accel-key> and I<$accel-mods> to 0 to request a removal of the accelerator.
 
-=comment Note that I<accel-path> string will be stored in a B<Gnome::Glib::Quark>. Therefore, if you pass a static string, you can save some memory by interning it first with C<g-intern-static-string()>.
+=comment Note that I<$accel-path> string will be stored in a B<Gnome::Glib::Quark>. Therefore, if you pass a static string, you can save some memory by interning it first with C<g-intern-static-string()>.
 
   method add-entry (
-    Str $accel_path, UInt $accel_key, UInt $accel_mods
+    Str $accel-path, UInt $accel-key, UInt $accel-mods
   )
 
-=item Str $accel_path; valid accelerator path
-=item UInt $accel_key; the accelerator key
-=item UInt $accel_mods; the accelerator modifiers mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item Str $accel-path; valid accelerator path
+=item UInt $accel-key; the accelerator key
+=item UInt $accel-mods; the accelerator modifiers mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method add-entry (
-  Str $accel_path, UInt $accel_key, UInt $accel_mods
+  Str $accel-path, UInt $accel-key, UInt $accel-mods
 ) {
-  gtk_accel_map_add_entry( $accel_path, $accel_key, $accel_mods);
+  gtk_accel_map_add_entry( $accel-path, $accel-key, $accel-mods);
 }
 
 sub gtk_accel_map_add_entry (
-  gchar-ptr $accel_path, guint $accel_key, GFlag $accel_mods
+  gchar-ptr $accel-path, guint $accel-key, GFlag $accel-mods
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:add-filter:
+#TM:1:add-filter:
 =begin pod
 =head2 add-filter
 
@@ -269,10 +269,7 @@ This function is intended for GTK+ modules that create their own menus, but don�
 =end pod
 
 method add-filter ( Str $filter_pattern ) {
-
-  gtk_accel_map_add_filter(
-    self.get-native-object-no-reffing, $filter_pattern
-  );
+  gtk_accel_map_add_filter($filter_pattern);
 }
 
 sub gtk_accel_map_add_filter (
@@ -281,87 +278,154 @@ sub gtk_accel_map_add_filter (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:change-entry:
+#TM:1:change-entry:
 =begin pod
 =head2 change-entry
 
-Changes the I<accel-key> and I<accel-mods> currently associated with I<accel-path>. Due to conflicts with other accelerators, a change may not always be possible, I<replace> indicates whether other accelerators may be deleted to resolve such conflicts. A change will only occur if all conflicts could be resolved (which might not be the case if conflicting accelerators are locked). Successful changes are indicated by a C<True> return value.
+Changes the I<$accel-key> and I<$accel-mods> currently associated with I<accel-path>. Due to conflicts with other accelerators, a change may not always be possible, I<$replace> indicates whether other accelerators may be deleted to resolve such conflicts. A change will only occur if all conflicts could be resolved (which might not be the case if conflicting accelerators are locked). Successful changes are indicated by a C<True> return value.
 
-Note that I<accel-path> string will be stored in a B<Gnome::Gtk3::Quark>. Therefore, if you pass a static string, you can save some memory by interning it first with C<g-intern-static-string()>.
+=comment Note that I<$accel-path> string will be stored in a B<Gnome::Gtk3::Quark>. Therefore, if you pass a static string, you can save some memory by interning it first with C<g-intern-static-string()>.
 
 Returns: C<True> if the accelerator could be changed, C<False> otherwise
 
-  method change-entry ( Str $accel_path, UInt $accel_key, UInt $accel_mods, Bool $replace --> Bool )
+  method change-entry (
+    Str $accel-path, UInt $accel-key,
+    UInt $accel-mods, Bool $replace
+    --> Bool
+  )
 
-=item Str $accel_path; a valid accelerator path
-=item UInt $accel_key; the new accelerator key
-=item UInt $accel_mods; the new accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item Str $accel-path; a valid accelerator path
+=item UInt $accel-key; the new accelerator key
+=item UInt $accel-mods; the new accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =item Bool $replace; C<True> if other accelerators may be deleted upon conflicts
 =end pod
 
-method change-entry ( Str $accel_path, UInt $accel_key, UInt $accel_mods, Bool $replace --> Bool ) {
+method change-entry (
+  Str $accel-path, UInt $accel-key, UInt $accel-mods, Bool $replace --> Bool
+) {
 
   gtk_accel_map_change_entry(
-    self.get-native-object-no-reffing, $accel_path, $accel_key, $accel_mods, $replace
+    $accel-path, $accel-key, $accel-mods, $replace
   ).Bool
 }
 
 sub gtk_accel_map_change_entry (
-  gchar-ptr $accel_path, guint $accel_key, GEnum $accel_mods, gboolean $replace --> gboolean
+  gchar-ptr $accel-path, guint $accel-key, GEnum $accel-mods, gboolean $replace --> gboolean
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:foreach:
+#TM:1:foreach:
 =begin pod
 =head2 foreach
 
-Loops over the entries in the accelerator map whose accel path doesn’t match any of the filters added with C<add-filter()>, and execute I<foreach-func> on each. The signature of I<foreach-func> is that of B<Gnome::Gtk3::AccelMapForeach>, the I<changed> parameter indicates whether this accelerator was changed during runtime (thus, would need saving during an accelerator map dump).
+Loops over the entries in the accelerator map whose accel path doesn’t match any of the filters added with C<add-filter()>, and execute the method in the provided object on each.
 
-  method foreach ( Pointer $data, GtkAccelMapForeach $foreach_func )
+  method foreach (
+    Any:D $handler-object, Str:D $handler-name, *%options
+  )
 
-=item Pointer $data; data to be passed into I<foreach-func>
-=item GtkAccelMapForeach $foreach_func; (scope call): function to be executed for each accel map entry which is not filtered out
+=item $handler-object; the object wherein the metod is defined
+=item $handler-name; method to be executed for each accel map entry which is not filtered out.
+=item %options; Optional data passed to the method.
+
+The method receives the following arguments;
+=item Str $accel-path; a valid accelerator path
+=item UInt $accel-key; the new accelerator key
+=item GdkModifierType $accel-mods; the new accelerator modifier mask found in B<Gnome::Gdk3::Types>.
+=item Bool $changed; Changed flag of the accelerator (if TRUE, accelerator has changed during runtime and would need to be saved during an accelerator dump).
+=item any options provided at the foreach call
+
+=item2
 =end pod
 
-method foreach ( Pointer $data, GtkAccelMapForeach $foreach_func ) {
+method foreach ( Any:D $handler-object, Str:D $handler-name, *%options ) {
+  CONTROL { when CX::Warn {  note .gist; .resume; } }
+  CATCH { default { .message.note; .backtrace.concise.note } }
+
+  die X::Gnome.new(
+    :message("Method '$handler-name' not found in user provided object")
+  ) unless $handler-object.^can($handler-name);
+
   gtk_accel_map_foreach(
-    self.get-native-object-no-reffing, $data, $foreach_func
+    gpointer,
+    ->  gpointer $d, Str $accel-path, guint $accel-key, guint $accel-mods,
+        gboolean $changed {
+          CONTROL { when CX::Warn {  note .gist; .resume; } }
+          CATCH { default { .message.note; .backtrace.concise.note } }
+
+          $handler-object."$handler-name"(
+            $accel-path, $accel-key, $accel-mods, $changed.Bool, |%options
+          );
+        }
   );
 }
 
 sub gtk_accel_map_foreach (
-  gpointer $data, GtkAccelMapForeach $foreach_func
+  gpointer $data,
+  Callable $foreach-func (
+    gpointer $d, Str $accel-path, guint $accel-key,
+    guint $accel-mods, gboolean $changed
+  )
 ) is native(&gtk-lib)
   { * }
-}}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:foreach-unfiltered:
+#TM:1:foreach-unfiltered:
 =begin pod
 =head2 foreach-unfiltered
 
 Loops over all entries in the accelerator map, and execute I<foreach-func> on each. The signature of I<foreach-func> is that of B<Gnome::Gtk3::AccelMapForeach>, the I<changed> parameter indicates whether this accelerator was changed during runtime (thus, would need saving during an accelerator map dump).
 
-  method foreach-unfiltered ( Pointer $data, GtkAccelMapForeach $foreach_func )
+  method foreach-unfiltered (
+    Any:D $handler-object, Str:D $handler-name, *%options
+  )
 
-=item Pointer $data; data to be passed into I<foreach-func>
-=item GtkAccelMapForeach $foreach_func; (scope call): function to be executed for each accel map entry
+=item $handler-object; the object wherein the metod is defined
+=item $handler-name; method to be executed for each accel map entry which is not filtered out.
+=item %options; Optional data passed to the method.
+
+The method receives the following arguments;
+=item Str $accel-path; a valid accelerator path
+=item UInt $accel-key; the new accelerator key
+=item GdkModifierType $accel-mods; the new accelerator modifier mask found in B<Gnome::Gdk3::Types>.
+=item Bool $changed; Changed flag of the accelerator (if TRUE, accelerator has changed during runtime and would need to be saved during an accelerator dump).
+=item any options provided at the foreach call
+
 =end pod
 
-method foreach-unfiltered ( Pointer $data, GtkAccelMapForeach $foreach_func ) {
+method foreach-unfiltered (
+  Any:D $handler-object, Str:D $handler-name, *%options
+) {
+  CONTROL { when CX::Warn {  note .gist; .resume; } }
+  CATCH { default { .message.note; .backtrace.concise.note } }
+
+  die X::Gnome.new(
+    :message("Method '$handler-name' not found in user provided object")
+  ) unless $handler-object.^can($handler-name);
+
   gtk_accel_map_foreach_unfiltered(
-    self.get-native-object-no-reffing, $data, $foreach_func
+    gpointer,
+    ->  gpointer $d, Str $accel-path, guint $accel-key, guint $accel-mods,
+        gboolean $changed {
+          CONTROL { when CX::Warn {  note .gist; .resume; } }
+          CATCH { default { .message.note; .backtrace.concise.note } }
+
+          $handler-object."$handler-name"(
+            $accel-path, $accel-key, $accel-mods, $changed.Bool, |%options
+          );
+        }
   );
 }
 
 sub gtk_accel_map_foreach_unfiltered (
-  gpointer $data, GtkAccelMapForeach $foreach_func
+  gpointer $data,
+  Callable $foreach-func (
+    gpointer $d, Str $accel-path, guint $accel-key,
+    guint $accel-mods, gboolean $changed
+  )
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_accel_map_get:
@@ -391,7 +455,7 @@ sub _gtk_accel_map_get ( --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:load:
+#TM:1:load:
 =begin pod
 =head2 load
 
@@ -403,10 +467,7 @@ Parses a file previously saved with C<save()> for accelerator specifications, an
 =end pod
 
 method load ( Str $file_name ) {
-
-  gtk_accel_map_load(
-    self.get-native-object-no-reffing, $file_name
-  );
+  gtk_accel_map_load($file_name);
 }
 
 sub gtk_accel_map_load (
@@ -414,8 +475,9 @@ sub gtk_accel_map_load (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:load-fd:
+# TM:0:load-fd:
 =begin pod
 =head2 load-fd
 
@@ -439,13 +501,15 @@ sub gtk_accel_map_load_fd (
   gint $fd
 ) is native(&gtk-lib)
   { * }
+}}
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:load-scanner:
+# TM:0:load-scanner:
 =begin pod
 =head2 load-scanner
 
-B<Gnome::Gtk3::Scanner> variant of C<load()>.
+B<Gnome::Gio::Scanner> variant of C<load()>.
 
   method load-scanner ( N-GObject $scanner )
 
@@ -464,66 +528,63 @@ sub gtk_accel_map_load_scanner (
   N-GObject $scanner
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:lock-path:
+#TM:1:lock-path:
 =begin pod
 =head2 lock-path
 
-Locks the given accelerator path. If the accelerator map doesn’t yet contain an entry for I<accel-path>, a new one is created.
+Locks the given accelerator path. If the accelerator map doesn’t yet contain an entry for I<$accel-path>, a new one is created.
 
 Locking an accelerator path prevents its accelerator from being changed during runtime. A locked accelerator path can be unlocked by C<unlock-path()>. Refer to C<gtk-accel-map-change-entry()> for information about runtime accelerator changes.
 
-If called more than once, I<accel-path> remains locked until C<gtk-accel-map-unlock-path()> has been called an equivalent number of times.
+If called more than once, I<$accel-path> remains locked until C<unlock-path()> has been called an equivalent number of times.
 
 Note that locking of individual accelerator paths is independent from locking the B<Gnome::Gtk3::AccelGroup> containing them. For runtime accelerator changes to be possible, both the accelerator path and its B<Gnome::Gtk3::AccelGroup> have to be unlocked.
 
-  method lock-path ( Str $accel_path )
+  method lock-path ( Str $accel-path )
 
-=item Str $accel_path; a valid accelerator path
+=item Str $accel-path; a valid accelerator path
 =end pod
 
-method lock-path ( Str $accel_path ) {
-
-  gtk_accel_map_lock_path(
-    self.get-native-object-no-reffing, $accel_path
-  );
+method lock-path ( Str $accel-path ) {
+  gtk_accel_map_lock_path($accel-path);
 }
 
 sub gtk_accel_map_lock_path (
-  gchar-ptr $accel_path
+  gchar-ptr $accel-path
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:lookup-entry:
+#TM:1:lookup-entry:
 =begin pod
 =head2 lookup-entry
 
-Looks up the accelerator entry for I<accel-path> and fills in I<key>.
+Looks up the accelerator entry for I<$accel-path> and returns a C<N-GtkAccelKey> structure.
 
-Returns: C<True> if I<accel-path> is known, C<False> otherwise
+Returns: A defined C<N-GtkAccelKey> structure if I<$accel-path> is known, undefined otherwise
 
-  method lookup-entry ( Str $accel_path, N-GtkAccelKey $key --> Bool )
+  method lookup-entry ( Str $accel-path --> N-GtkAccelKey )
 
-=item Str $accel_path; a valid accelerator path
+=item Str $accel-path; a valid accelerator path
 =item N-GtkAccelKey $key; the accelerator key to be filled in
 =end pod
 
-method lookup-entry ( Str $accel_path, N-GtkAccelKey $key --> Bool ) {
-
-  gtk_accel_map_lookup_entry(
-    self.get-native-object-no-reffing, $accel_path, $key
-  ).Bool
+method lookup-entry ( Str $accel-path --> N-GtkAccelKey ) {
+  my N-GtkAccelKey $ak .= new;
+  my Bool $r = gtk_accel_map_lookup_entry( $accel-path, $ak).Bool;
+  $ak
 }
 
 sub gtk_accel_map_lookup_entry (
-  gchar-ptr $accel_path, N-GtkAccelKey $key --> gboolean
+  gchar-ptr $accel-path, N-GtkAccelKey $key --> gboolean
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:save:
+#TM:1:save:
 =begin pod
 =head2 save
 
@@ -535,10 +596,7 @@ Saves current accelerator specifications (accelerator path, key and modifiers) t
 =end pod
 
 method save ( Str $file_name ) {
-
-  gtk_accel_map_save(
-    self.get-native-object-no-reffing, $file_name
-  );
+  gtk_accel_map_save($file_name);
 }
 
 sub gtk_accel_map_save (
@@ -546,8 +604,9 @@ sub gtk_accel_map_save (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:0:save-fd:
+# TM:0:save-fd:
 =begin pod
 =head2 save-fd
 
@@ -571,28 +630,26 @@ sub gtk_accel_map_save_fd (
   gint $fd
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:unlock-path:
+#TM:1:unlock-path:
 =begin pod
 =head2 unlock-path
 
 Undoes the last call to C<lock-path()> on this I<accel-path>. Refer to C<gtk-accel-map-lock-path()> for information about accelerator path locking.
 
-  method unlock-path ( Str $accel_path )
+  method unlock-path ( Str $accel-path )
 
-=item Str $accel_path; a valid accelerator path
+=item Str $accel-path; a valid accelerator path
 =end pod
 
-method unlock-path ( Str $accel_path ) {
-
-  gtk_accel_map_unlock_path(
-    self.get-native-object-no-reffing, $accel_path
-  );
+method unlock-path ( Str $accel-path ) {
+  gtk_accel_map_unlock_path($accel-path);
 }
 
 sub gtk_accel_map_unlock_path (
-  gchar-ptr $accel_path
+  gchar-ptr $accel-path
 ) is native(&gtk-lib)
   { * }
 
@@ -636,9 +693,9 @@ Also here, the types of positional arguments in the signal handler are important
 Notifies of a change in the global accelerator map. The path is also used as the detail for the signal, so it is possible to connect to changed::`accel-path`.
 
   method handler (
-    Str $accel_path,
-    UInt $accel_key,
-    UInt $accel_mods,
+    Str $accel-path,
+    UInt $accel-key,
+    UInt $accel-mods,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($object),
     *%user-options
@@ -646,9 +703,9 @@ Notifies of a change in the global accelerator map. The path is also used as the
   );
 
 =item $object; the global accel map object
-=item $accel_path; the path of the accelerator that changed
-=item $accel_key; the key value for the new accelerator
-=item $accel_mods; the modifier mask for the new accelerator. A GdkModifierType mask from Gnome::Gdk3::Types
+=item $accel-path; the path of the accelerator that changed
+=item $accel-key; the key value for the new accelerator
+=item $accel-mods; the modifier mask for the new accelerator. A GdkModifierType mask from Gnome::Gdk3::Types
 =item $_handle_id; the registered event handler id
 
 =end pod
