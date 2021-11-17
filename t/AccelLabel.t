@@ -2,8 +2,16 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Gtk3::AccelGroup;
 use Gnome::Gtk3::AccelLabel;
+use Gnome::Gtk3::Label;
 
+use Gnome::Gdk3::Types;
+use Gnome::Gdk3::Keysyms;
+
+use Gnome::GObject::Closure;
+
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -15,7 +23,6 @@ subtest 'ISA test', {
   isa-ok $al, Gnome::Gtk3::AccelLabel, '.new(:text)';
 }
 
-
 #-------------------------------------------------------------------------------
 # set environment variable 'raku-test-all' if rest must be tested too.
 unless %*ENV<raku_test_all>:exists {
@@ -24,8 +31,42 @@ unless %*ENV<raku_test_all>:exists {
 }
 
 #-------------------------------------------------------------------------------
+class CTest {
+  method ctrl-s-pressed ( Str :$arg1 ) {
+    diag "ctrl-s pressed, user argument = '$arg1'";
+  }
+}
+
+#-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   is $al.get-text, 'Save', 'label is checked';
+
+  my Gnome::Gtk3::Label $label .= new(:text('<b>Don\'t</b> Start'));
+  $label.set-use-markup(True);
+
+  is $al.get-accel-widget-rk, N-GObject, 'Widget not defined';
+  $al.set-accel-widget($label);
+  is $al.get-accel-widget-rk.get-text, 'Don\'t Start',
+    '.set-accel-widget() / .get-accel-widget-rk()';
+
+  ok $al.get-accel-width == 0, '.get-accel-width()';
+  my Gnome::Gtk3::AccelGroup $ag .= new;
+  $ag.connect(
+    GDK_KEY_s, GDK_CONTROL_MASK, 0,
+    my Gnome::GObject::Closure $c1 .= new(
+      :handler-object(CTest.new), :handler-name<ctrl-s-pressed>,
+      :handler-opts(:arg1<foo>)
+    )
+  );
+
+  lives-ok {
+    $al.set-accel-closure($c1);
+    $al.set-accel( GDK_KEY_s, GDK_CONTROL_MASK);
+  }, '.set-accel-closure() / .set-accel()';
+
+#  note $al.get-accel-width, ', ', $al.get-text, ', ', $al.get-accel-widget-rk.get-text;
+
+
 }
 
 #-------------------------------------------------------------------------------
@@ -42,6 +83,19 @@ subtest 'Inherit Gnome::Gtk3::AccelLabel', {
 
   my MyClass $mgc .= new;
   isa-ok $mgc, Gnome::Gtk3::AccelLabel, 'MyClass.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $al.get-properties(
+   'accel-widget', N-GObject, 'accel-closure', N-GClosure
+  );
+
+  my Gnome::Gtk3::Label $l .= new(:native-object(@r[0]));
+  ok $l.is-valid, 'accel-widget';
+
+  my Gnome::GObject::Closure $c .= new(:native-object(@r[1]));
+  ok $c.is-valid, 'accel-closure';
 }
 
 #-------------------------------------------------------------------------------

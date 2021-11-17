@@ -111,6 +111,9 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
+use Gnome::GObject::Closure;
+
 use Gnome::Gtk3::Label;
 
 #-------------------------------------------------------------------------------
@@ -218,7 +221,6 @@ submethod BUILD ( *%options ) {
   }
 }
 
-
 #-------------------------------------------------------------------------------
 #TM:0:get-accel:
 =begin pod
@@ -245,28 +247,30 @@ method get-accel ( --> List ) {
 
 sub gtk_accel_label_get_accel (
   N-GObject $accel_label, guint $accelerator-key is rw,
-  GEnum $accelerator-mods is rw
+  GFlag $accelerator-mods is rw
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-accel-widget:
+#TM:1:get-accel-widget:
+#TM:1:get-accel-widget-rk:
 =begin pod
 =head2 get-accel-widget
 
-Fetches the widget monitored by this accelerator label. See C<set-accel-widget()>.
-
-Returns: the object monitored by the accelerator label, or C<undefined>.
+Fetches the widget monitored by this accelerator label, or C<undefined>. See C<set-accel-widget()>.
 
   method get-accel-widget ( --> N-GObject )
+  method get-accel-widget-rk ( --> Gnome::Gtk3::Widget )
 
 =end pod
 
 method get-accel-widget ( --> N-GObject ) {
+  gtk_accel_label_get_accel_widget(self.get-native-object-no-reffing)
+}
 
-  gtk_accel_label_get_accel_widget(
-    self.get-native-object-no-reffing,
+method get-accel-widget-rk ( --> Any ) {
+  self._wrap-native-type-from-no(
+    gtk_accel_label_get_accel_widget(self.get-native-object-no-reffing)
   )
 }
 
@@ -276,7 +280,7 @@ sub gtk_accel_label_get_accel_widget (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-accel-width:
+#TM:1:get-accel-width:
 =begin pod
 =head2 get-accel-width
 
@@ -289,10 +293,7 @@ Returns: the width needed to display the accelerator key(s).
 =end pod
 
 method get-accel-width ( --> UInt ) {
-
-  gtk_accel_label_get_accel_width(
-    self.get-native-object-no-reffing,
-  )
+  gtk_accel_label_get_accel_width(self.get-native-object-no-reffing)
 }
 
 sub gtk_accel_label_get_accel_width (
@@ -300,6 +301,7 @@ sub gtk_accel_label_get_accel_width (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:refetch:
 =begin pod
@@ -324,9 +326,10 @@ sub gtk_accel_label_refetch (
   N-GObject $accel_label --> gboolean
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:0:set-accel:
+#TM:1:set-accel:
 =begin pod
 =head2 set-accel
 
@@ -334,40 +337,39 @@ Manually sets a keyval and modifier mask as the accelerator rendered by I<accel-
 
 If a keyval and modifier are explicitly set then these values are used regardless of any associated accel closure or widget.
 
-Providing an I<accelerator-key> of 0 removes the manual setting.
+Providing an I<$accelerator-key> of 0 removes the manual setting.
 
-  method set-accel ( UInt $accelerator-key, GdkModifierType $accelerator-mods )
+  method set-accel ( UInt $accelerator-key, UInt $accelerator-mods )
 
 =item UInt $accelerator-key; a keyval, or 0
-=item GdkModifierType $accelerator-mods; the modifier mask for the accel
+=item UInt $accelerator-mods; the modifier mask for the accel, a mask with bits from GdkModifierType.
 =end pod
 
-method set-accel ( UInt $accelerator-key, GdkModifierType $accelerator-mods ) {
-
+method set-accel ( UInt $accelerator-key, UInt $accelerator-mods ) {
   gtk_accel_label_set_accel(
     self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
   );
 }
 
 sub gtk_accel_label_set_accel (
-  N-GObject $accel_label, guint $accelerator-key, GEnum $accelerator-mods
+  N-GObject $accel_label, guint $accelerator-key, GFlag $accelerator-mods
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-accel-closure:
+#TM:1:set-accel-closure:
 =begin pod
 =head2 set-accel-closure
 
-Sets the closure to be monitored by this accelerator label. The closure must be connected to an accelerator group; see C<gtk-accel-group-connect()>. Passing C<undefined> for I<accel-closure> will dissociate I<accel-label> from its current closure, if any.
+Sets the closure to be monitored by this accelerator label. The closure must be connected to an accelerator group; see C<Gnome::Gtk3::AccelGroup.connect()>. Passing C<undefined> for I<$accel-closure> will dissociate the I<accel-label> from its current closure, if any.
 
-  method set-accel-closure ( N-GObject $accel_closure )
+  method set-accel-closure ( N-GClosure $accel_closure )
 
-=item N-GObject $accel_closure; the closure to monitor for accelerator changes, or C<undefined>
+=item N-GClosure $accel_closure; the closure to monitor for accelerator changes, or C<undefined>
 =end pod
 
 method set-accel-closure ( $accel_closure is copy ) {
-  $accel_closure .= get-native-object-no-reffing unless $accel_closure ~~ N-GObject;
+  $accel_closure .= get-native-object-no-reffing unless $accel_closure ~~ N-GClosure;
 
   gtk_accel_label_set_accel_closure(
     self.get-native-object-no-reffing, $accel_closure
@@ -375,12 +377,12 @@ method set-accel-closure ( $accel_closure is copy ) {
 }
 
 sub gtk_accel_label_set_accel_closure (
-  N-GObject $accel_label, N-GObject $accel_closure
+  N-GObject $accel_label, N-GClosure $accel_closure
 ) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-accel-widget:
+#TM:1:set-accel-widget:
 =begin pod
 =head2 set-accel-widget
 
@@ -403,7 +405,6 @@ sub gtk_accel_label_set_accel_widget (
   N-GObject $accel_label, N-GObject $accel_widget
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_accel_label_new:
@@ -443,11 +444,10 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =comment #TP:0:accel-closure:
 =head3 Accelerator Closure: accel-closure
 
-
 The B<Gnome::GObject::Value> type of property I<accel-closure> is C<G_TYPE_BOXED>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:accel-widget:
+=comment #TP:1:accel-widget:
 =head3 Accelerator Widget: accel-widget
 
 The widget to be monitored for accelerator changes
