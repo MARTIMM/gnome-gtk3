@@ -384,7 +384,7 @@ sub gtk_menu_item_get_submenu (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-use-underline:
+#TM:1:get-use-underline:
 =begin pod
 =head2 get-use-underline
 
@@ -397,10 +397,7 @@ Returns: C<True> if an embedded underline in the label indicates the mnemonic ac
 =end pod
 
 method get-use-underline ( --> Bool ) {
-
-  gtk_menu_item_get_use_underline(
-    self._f('GtkMenuItem'),
-  ).Bool
+  gtk_menu_item_get_use_underline(self._f('GtkMenuItem')).Bool
 }
 
 sub gtk_menu_item_get_use_underline (
@@ -413,17 +410,14 @@ sub gtk_menu_item_get_use_underline (
 =begin pod
 =head2 select
 
-Emits the  I<select> signal on the given item.
+Emits the I<select> signal on the given item.
 
   method select ( )
 
 =end pod
 
 method select ( ) {
-
-  gtk_menu_item_select(
-    self._f('GtkMenuItem'),
-  );
+  gtk_menu_item_select(self._f('GtkMenuItem'));
 }
 
 sub gtk_menu_item_select (
@@ -436,7 +430,7 @@ sub gtk_menu_item_select (
 =begin pod
 =head2 set-accel-path
 
-Set the accelerator path on I<menu-item>, through which runtime changes of the menu item’s accelerator caused by the user can be identified and saved to persistent storage (see C<Gnome::Gtk3::AccelMap.save()> on this). To set up a default accelerator for this menu item, call C<Gnome::Gtk3::AccelMap.add-entry()> with the same I<accel-path>. See also C<Gnome::Gtk3::AccelMap.add-entry()> on the specifics of accelerator paths, and C<Gnome::Gtk3::Menu.set-accel-path()> for a more convenient variant of this function.
+Set the accelerator path on the I<menu-item>, through which runtime changes of the menu item’s accelerator caused by the user can be identified and saved to persistent storage (see C<Gnome::Gtk3::AccelMap.save()> on this). To set up a default accelerator for this menu item, call C<Gnome::Gtk3::AccelMap.add-entry()> with the same I<accel-path>. See also C<Gnome::Gtk3::AccelMap.add-entry()> on the specifics of accelerator paths, and C<Gnome::Gtk3::Menu.set-accel-path()> for a more convenient variant of this function.
 
 This function is basically a convenience wrapper that handles calling C<Gnome::Gtk3::Widget.set-accel-path()> with the appropriate accelerator group for the menu item.
 
@@ -463,7 +457,7 @@ sub gtk_menu_item_set_accel_path (
 =begin pod
 =head2 set-label
 
-Sets I<text> on the I<menu-item> label
+Sets I<$label> on the I<menu-item> label
 
   method set-label ( Str $label )
 
@@ -525,7 +519,7 @@ sub gtk_menu_item_set_submenu (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-use-underline:
+#TM:1:set-use-underline:
 =begin pod
 =head2 set-use-underline
 
@@ -537,10 +531,7 @@ If true, an underline in the text indicates the next character should be used fo
 =end pod
 
 method set-use-underline ( Bool $setting ) {
-
-  gtk_menu_item_set_use_underline(
-    self._f('GtkMenuItem'), $setting
-  );
+  gtk_menu_item_set_use_underline( self._f('GtkMenuItem'), $setting);
 }
 
 sub gtk_menu_item_set_use_underline (
@@ -561,10 +552,7 @@ Emits the  I<toggle-size-allocate> signal on the given item.
 =end pod
 
 method toggle-size-allocate ( Int() $allocation ) {
-
-  gtk_menu_item_toggle_size_allocate(
-    self._f('GtkMenuItem'), $allocation
-  );
+  gtk_menu_item_toggle_size_allocate( self._f('GtkMenuItem'), $allocation);
 }
 
 sub gtk_menu_item_toggle_size_allocate (
@@ -579,16 +567,17 @@ sub gtk_menu_item_toggle_size_allocate (
 
 Emits the  I<toggle-size-request> signal on the given item.
 
-  method toggle-size-request ( )
+  method toggle-size-request ( --> Int )
 
-=item Int $requisition; the requisition to use as signal data.
+The method returns an integer $requisition;
 =end pod
 
-method toggle-size-request ( ) {
-
+method toggle-size-request ( --> Int ) {
   gtk_menu_item_toggle_size_request(
     self._f('GtkMenuItem'), my gint $requisition
   );
+
+  $requisition
 }
 
 sub gtk_menu_item_toggle_size_request (
@@ -800,42 +789,33 @@ An example of using a string type property of a B<Gnome::Gtk3::Label> object. Th
 =head2 Supported properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:accel-path:
+=comment #TP:1:accel-path:
 =head3 Accel Path: accel-path
 
-
-Sets the accelerator path of the menu item, through which runtime
-changes of the menu item's accelerator caused by the user can be
-identified and saved to persistant storage.
+Sets the accelerator path of the menu item, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage.
 
 
 The B<Gnome::GObject::Value> type of property I<accel-path> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:label:
+=comment #TP:1:label:
 =head3 Label: label
 
-
 The text for the child label.
-
 
 The B<Gnome::GObject::Value> type of property I<label> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:right-justified:
+=comment #TP:1:right-justified:
 =head3 Right Justified: right-justified
 
-
-Sets whether the menu item appears justified
-at the right side of a menu bar.
-
+Sets whether the menu item appears justified at the right side of a menu bar.
 
 The B<Gnome::GObject::Value> type of property I<right-justified> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:submenu:
 =head3 Submenu: submenu
-
 
 The submenu attached to the menu item, or C<undefined> if it has none.
 
@@ -844,9 +824,8 @@ The submenu attached to the menu item, or C<undefined> if it has none.
 The B<Gnome::GObject::Value> type of property I<submenu> is C<G_TYPE_OBJECT>.
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:use-underline:
+=comment #TP:1:use-underline:
 =head3 Use underline: use-underline
-
 
 C<True> if underlines in the text indicate mnemonics.
 

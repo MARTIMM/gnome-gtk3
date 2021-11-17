@@ -49,8 +49,10 @@ Declaration
     also is Gnome::Gtk3::Bin;
     also does Gnome::Gtk3::Actionable;
 
-Example
--------
+Uml Diagram
+-----------
+
+![](plantuml/MenuItem.svg)
 
 Methods
 =======
@@ -58,216 +60,177 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
+
+### :label
 
 Create a new object with a label.
 
     multi method new ( Str :$label! )
 
+### :mnemonic
+
 Create a new object with a mnemonic.
 
     multi method new ( Str :$mnemonic! )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a MenuItem object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a MenuItem object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-[gtk_] menu_item_new
---------------------
+activate
+--------
 
-Creates a new **Gnome::Gtk3::MenuItem**.
+Emits the *activate* signal on the given item.
 
-Returns: the newly created **Gnome::Gtk3::MenuItem**
+    method activate ( )
 
-    method gtk_menu_item_new ( --> N-GObject  )
-
-[[gtk_] menu_item_] new_with_label
-----------------------------------
-
-Creates a new **Gnome::Gtk3::MenuItem** whose child is a **Gnome::Gtk3::Label**.
-
-Returns: the newly created **Gnome::Gtk3::MenuItem**
-
-    method gtk_menu_item_new_with_label ( Str $label --> N-GObject  )
-
-  * Str $label; the text for the label
-
-[[gtk_] menu_item_] new_with_mnemonic
--------------------------------------
-
-Creates a new **Gnome::Gtk3::MenuItem** containing a label.
-
-The label will be created using `gtk_label_new_with_mnemonic()`, so underscores in *label* indicate the mnemonic for the menu item.
-
-Returns: a new **Gnome::Gtk3::MenuItem**
-
-    method gtk_menu_item_new_with_mnemonic ( Str $label --> N-GObject  )
-
-  * Str $label; The text of the button, with an underscore in front of the mnemonic character
-
-[[gtk_] menu_item_] set_submenu
--------------------------------
-
-Sets or replaces the menu item’s submenu, or removes it when a `Any` submenu is passed.
-
-    method gtk_menu_item_set_submenu ( N-GObject $submenu )
-
-  * N-GObject $submenu; (allow-none) (type **Gnome::Gtk3::.Menu**): the submenu, or `Any`
-
-[[gtk_] menu_item_] get_submenu
--------------------------------
-
-Gets the submenu underneath this menu item, if any. See `gtk_menu_item_set_submenu()`.
-
-Returns: (nullable) (transfer none): submenu for this menu item, or `Any` if none
-
-    method gtk_menu_item_get_submenu ( --> N-GObject  )
-
-[gtk_] menu_item_select
------------------------
-
-Emits the *select* signal on the given item.
-
-    method gtk_menu_item_select ( )
-
-[gtk_] menu_item_deselect
--------------------------
+deselect
+--------
 
 Emits the *deselect* signal on the given item.
 
-    method gtk_menu_item_deselect ( )
+    method deselect ( )
 
-[gtk_] menu_item_activate
--------------------------
+get-accel-path
+--------------
 
-Emits the *activate* signal on the given item
+Retrieve the accelerator path that was previously set on *menu-item*.
 
-    method gtk_menu_item_activate ( )
+See `set-accel-path()` for details.
 
-[[gtk_] menu_item_] toggle_size_request
----------------------------------------
+Returns: the accelerator path corresponding to this menu item’s functionality, or `undefined` if not set
 
-Emits the *toggle-size-request* signal on the given item.
+    method get-accel-path ( --> Str )
 
-    method gtk_menu_item_toggle_size_request ( Int $requisition )
+get-label
+---------
 
-  * Int $requisition; (inout): the requisition to use as signal data.
+Sets *text* on the *menu-item* label
 
-[[gtk_] menu_item_] toggle_size_allocate
-----------------------------------------
+Returns: The text in the *menu-item* label. This is the internal string used by the label, and must not be modified.
 
-Emits the *toggle-size-allocate* signal on the given item.
+    method get-label ( --> Str )
 
-    method gtk_menu_item_toggle_size_allocate ( Int $allocation )
+get-reserve-indicator
+---------------------
 
-  * Int $allocation; the allocation to use as signal data.
+Returns whether the *menu-item* reserves space for the submenu indicator, regardless if it has a submenu or not.
 
-[[gtk_] menu_item_] set_accel_path
-----------------------------------
+Returns: `True` if *menu-item* always reserves space for the submenu indicator
 
-Set the accelerator path on *menu_item*, through which runtime changes of the menu item’s accelerator caused by the user can be identified and saved to persistent storage (see `gtk_accel_map_save()` on this). To set up a default accelerator for this menu item, call `gtk_accel_map_add_entry()` with the same *accel_path*. See also `gtk_accel_map_add_entry()` on the specifics of accelerator paths, and `gtk_menu_set_accel_path()` for a more convenient variant of this function.
+    method get-reserve-indicator ( --> Bool )
 
-This function is basically a convenience wrapper that handles calling `gtk_widget_set_accel_path()` with the appropriate accelerator group for the menu item.
+get-submenu
+-----------
 
-Note that you do need to set an accelerator on the parent menu with `gtk_menu_set_accel_group()` for this to work.
+Gets the submenu underneath this menu item, if any. See `set-submenu()`.
 
-Note that *accel_path* string will be stored in a **GQuark**. Therefore, if you pass a static string, you can save some memory by interning it first with `g_intern_static_string()`.
+Returns: submenu for this menu item, or `undefined` if none
 
-    method gtk_menu_item_set_accel_path ( Str $accel_path )
+    method get-submenu ( --> N-GObject )
 
-  * Str $accel_path; (allow-none): accelerator path, corresponding to this menu item’s functionality, or `Any` to unset the current path.
-
-[[gtk_] menu_item_] get_accel_path
-----------------------------------
-
-Retrieve the accelerator path that was previously set on *menu_item*.
-
-See `gtk_menu_item_set_accel_path()` for details.
-
-Returns: (nullable) (transfer none): the accelerator path corresponding to this menu item’s functionality, or `Any` if not set
-
-Since: 2.14
-
-    method gtk_menu_item_get_accel_path ( --> Str  )
-
-[[gtk_] menu_item_] set_label
------------------------------
-
-Sets *text* on the *menu_item* label
-
-Since: 2.16
-
-    method gtk_menu_item_set_label ( Str $label )
-
-  * Str $label; the text you want to set
-
-[[gtk_] menu_item_] get_label
------------------------------
-
-Sets *text* on the *menu_item* label
-
-Returns: The text in the *menu_item* label. This is the internal string used by the label, and must not be modified.
-
-Since: 2.16
-
-    method gtk_menu_item_get_label ( --> Str  )
-
-[[gtk_] menu_item_] set_use_underline
--------------------------------------
-
-If true, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
-
-Since: 2.16
-
-    method gtk_menu_item_set_use_underline ( Int $setting )
-
-  * Int $setting; `1` if underlines in the text indicate mnemonics
-
-[[gtk_] menu_item_] get_use_underline
--------------------------------------
+get-use-underline
+-----------------
 
 Checks if an underline in the text indicates the next character should be used for the mnemonic accelerator key.
 
-Returns: `1` if an embedded underline in the label indicates the mnemonic accelerator key.
+Returns: `True` if an embedded underline in the label indicates the mnemonic accelerator key.
 
-Since: 2.16
+    method get-use-underline ( --> Bool )
 
-    method gtk_menu_item_get_use_underline ( --> Int  )
+select
+------
 
-[[gtk_] menu_item_] set_reserve_indicator
------------------------------------------
+Emits the *select* signal on the given item.
 
-Sets whether the *menu_item* should reserve space for the submenu indicator, regardless if it actually has a submenu or not.
+    method select ( )
+
+set-accel-path
+--------------
+
+Set the accelerator path on the *menu-item*, through which runtime changes of the menu item’s accelerator caused by the user can be identified and saved to persistent storage (see `Gnome::Gtk3::AccelMap.save()` on this). To set up a default accelerator for this menu item, call `Gnome::Gtk3::AccelMap.add-entry()` with the same *accel-path*. See also `Gnome::Gtk3::AccelMap.add-entry()` on the specifics of accelerator paths, and `Gnome::Gtk3::Menu.set-accel-path()` for a more convenient variant of this function.
+
+This function is basically a convenience wrapper that handles calling `Gnome::Gtk3::Widget.set-accel-path()` with the appropriate accelerator group for the menu item.
+
+Note that you do need to set an accelerator on the parent menu with `Gnome::Gtk3::Menu.set-accel-group()` for this to work.
+
+    method set-accel-path ( Str $accel_path )
+
+  * Str $accel_path; accelerator path, corresponding to this menu item’s functionality, or `undefined` to unset the current path.
+
+set-label
+---------
+
+Sets *$label* on the *menu-item* label
+
+    method set-label ( Str $label )
+
+  * Str $label; the text you want to set
+
+set-reserve-indicator
+---------------------
+
+Sets whether the *menu-item* should reserve space for the submenu indicator, regardless if it actually has a submenu or not.
 
 There should be little need for applications to call this functions.
 
-Since: 3.0
+    method set-reserve-indicator ( Bool $reserve )
 
-    method gtk_menu_item_set_reserve_indicator ( Int $reserve )
+  * Bool $reserve; the new value
 
-  * Int $reserve; the new value
+set-submenu
+-----------
 
-[[gtk_] menu_item_] get_reserve_indicator
------------------------------------------
+Sets or replaces the menu item’s submenu, or removes it when a `undefined` submenu is passed.
 
-Returns whether the *menu_item* reserves space for the submenu indicator, regardless if it has a submenu or not.
+    method set-submenu ( N-GObject $submenu )
 
-Returns: `1` if *menu_item* always reserves space for the submenu indicator
+  * N-GObject $submenu; (type Gnome::Gtk3::Menu): the submenu, or `undefined`
 
-Since: 3.0
+set-use-underline
+-----------------
 
-    method gtk_menu_item_get_reserve_indicator ( --> Int  )
+If true, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
+
+    method set-use-underline ( Bool $setting )
+
+  * Bool $setting; `True` if underlines in the text indicate mnemonics
+
+toggle-size-allocate
+--------------------
+
+Emits the *toggle-size-allocate* signal on the given item.
+
+    method toggle-size-allocate ( Int() $allocation )
+
+  * Int() $allocation; the allocation to use as signal data.
+
+toggle-size-request
+-------------------
+
+Emits the *toggle-size-request* signal on the given item.
+
+    method toggle-size-request ( --> Int )
+
+The method returns an integer $requisition;
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -275,7 +238,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -286,14 +249,14 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
@@ -303,92 +266,125 @@ Supported signals
 Emitted when the item is activated.
 
     method handler (
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
   * $menuitem; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
 
 ### activate-item
 
 Emitted when the item is activated, but also if the menu item has a submenu. For normal applications, the relevant signal is *activate*.
 
     method handler (
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
   * $menuitem; the object which received the signal.
 
-### toggle-size-allocate
-
-    method handler (
-      Int $int,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($menuitem),
-      *%user-options
-    );
-
-  * $menuitem;
-
-  * $int; ?
-
-### select
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($menuitem),
-      *%user-options
-    );
-
-  * $menuitem;
+  * $_handle_id; the registered event handler id
 
 ### deselect
 
     method handler (
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($menuitem),
       *%user-options
     );
 
   * $menuitem;
 
+  * $_handle_id; the registered event handler id
+
+### select
+
+    method handler (
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($menuitem),
+      *%user-options
+    );
+
+  * $menuitem;
+
+  * $_handle_id; the registered event handler id
+
+### toggle-size-allocate
+
+    method handler (
+      Int $int,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($menuitem),
+      *%user-options
+    );
+
+  * $menuitem;
+
+  * $int;
+
+  * $_handle_id; the registered event handler id
+
+### toggle-size-request
+
+    method handler (
+      Unknown type G_TYPE_POINTER $unknown type g_type_pointer,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($menuitem),
+      *%user-options
+    );
+
+  * $menuitem;
+
+  * $unknown type g_type_pointer;
+
+  * $_handle_id; the registered event handler id
+
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Right Justified
+### Accel Path: accel-path
 
-Sets whether the menu item appears justified at the right side of a menu bar. Since: 2.14
-
-The **Gnome::GObject::Value** type of property *right-justified* is `G_TYPE_BOOLEAN`.
-
-### Accel Path
-
-Sets the accelerator path of the menu item, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage. Since: 2.14
+Sets the accelerator path of the menu item, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage.
 
 The **Gnome::GObject::Value** type of property *accel-path* is `G_TYPE_STRING`.
 
-### Label
+### Label: label
 
-The text for the child label. Since: 2.16
+The text for the child label.
 
 The **Gnome::GObject::Value** type of property *label* is `G_TYPE_STRING`.
 
-### Use underline
+### Right Justified: right-justified
 
-`1` if underlines in the text indicate mnemonics. Since: 2.16
+Sets whether the menu item appears justified at the right side of a menu bar.
+
+The **Gnome::GObject::Value** type of property *right-justified* is `G_TYPE_BOOLEAN`.
+
+### Submenu: submenu
+
+The submenu attached to the menu item, or `undefined` if it has none.
+
+    Widget type: GTK_TYPE_MENU
+
+The **Gnome::GObject::Value** type of property *submenu* is `G_TYPE_OBJECT`.
+
+### Use underline: use-underline
+
+`True` if underlines in the text indicate mnemonics.
 
 The **Gnome::GObject::Value** type of property *use-underline* is `G_TYPE_BOOLEAN`.
 

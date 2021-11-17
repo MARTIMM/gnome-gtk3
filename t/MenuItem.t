@@ -4,12 +4,19 @@ use Test;
 
 use Gnome::Gtk3::Menu;
 use Gnome::Gtk3::MenuItem;
+#use Gnome::Gtk3::AccelMap;
 
+#use Gnome::Gdk3::Types;
+#use Gnome::Gdk3::Keysyms;
+
+use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::MenuItem $mi;
+#my Gnome::Gtk3::AccelMap $am;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $mi .= new;
@@ -18,7 +25,6 @@ subtest 'ISA test', {
   isa-ok $mi.= new(:mnemonic<_Open>), Gnome::Gtk3::MenuItem,
     ".new(:mnemonic)";
 }
-
 
 #-------------------------------------------------------------------------------
 # set environment variable 'raku-test-all' if rest must be tested too.
@@ -29,10 +35,11 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  #Error: (MenuItem.t:35293): Gtk-CRITICAL **: 18:26:30.848: gtk_menu_item_set_accel_path: assertion 'accel_path == NULL || (accel_path[0] == '<' && strchr (accel_path, '/'))' failed
-  # undefined is returned because AccelMap.add-entry() must be called first
-  $mi.set-accel-path('MenuItem-test/File/Save');
-  is $mi.get-accel-path, Str, '.set-accel-path() / .get-accel-path()';
+  $mi.set-accel-path('<MenuItem-test>/File/Save');
+  is $mi.get-accel-path, '<MenuItem-test>/File/Save', '.set-accel-path() / .get-accel-path()';
+
+#  $am .= instance;
+#  $am.add-entry( '<MenuItem-test>/File/Save', GDK_KEY_s, GDK_MOD1_MASK);
 
   $mi.set-label('_Save');
   is $mi.get-label, '_Save', '.set-label() / .get-label()';
@@ -44,6 +51,19 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Menu $menu .= new;
   $mi.set-submenu($menu);
 
+  $mi.set-use-underline(True);
+  ok $mi.get-use-underline, '.set-use-underline() / .get-use-underline()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $mi.get-properties(
+    'accel-path', Str, 'label', Str, 'right-justified', gboolean,
+    'use-underline', gboolean
+  );
+  is-deeply @r, [
+    '<MenuItem-test>/File/Save', '_Save', 0, 1
+  ], 'accel-path, label, right-justified, use-underline';
 }
 
 #-------------------------------------------------------------------------------
