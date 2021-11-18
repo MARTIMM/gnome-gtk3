@@ -35,11 +35,11 @@ use Gnome::Gtk3::Dialog;
 use Gnome::Gtk3::MessageDialog;
 use Gnome::Gtk3::Window;
 
-unit class YNMsgDialog is Gnome::Gtk3::MessageDialog;            # ①
+unit class YNMsgDialog is Gnome::Gtk3::MessageDialog;           # ①
 
-submethod new ( Str :$message, |c ) {                            # ②
+submethod new ( Str :$message, |c ) {                           # ②
   self.bless(
-    :GtkMessageDialog, |c, :type(GTK_MESSAGE_WARNING),           # ③
+    :GtkMessageDialog, |c, :type(GTK_MESSAGE_WARNING),          # ③
     :buttons(GTK_BUTTONS_YES_NO), :markup-message($message)
   );
 }
