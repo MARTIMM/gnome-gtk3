@@ -26,30 +26,34 @@ We are going to replace it with this icon shown on the left using the following 
 <br/>
 
 
-```
+{% highlight raku %}
+
 use Gnome::Gtk3::Window;
-use Gnome::Glib::Error;                           # ①
+use Gnome::Glib::Error;                                                 # 1
 use Gnome::Gdk3::Pixbuf;
 
-my Gnome::Gtk3::Window $window .= new;            # ②
+my Gnome::Gtk3::Window $window .= new;                                  # 2
 $window.set-title('Window');
 my Gnome::Gdk3::Pixbuf $win-icon .= new(
   :file<icons8-invoice-100.png>
 );
 
-my Gnome::Glib::Error $e = $win-icon.last-error;  # ③
+my Gnome::Glib::Error $e = $win-icon.last-error;                        # 3
 if $e.is-valid {
-  die "Error icon file: $e.message()";            # ④
+  die "Error icon file: $e.message()";                                  # 4
 }
 
 else {
-  $window.set-icon($win-icon);                    # ⑤
+  $window.set-icon($win-icon);                                          # 5
 }
-```
 
-We need an Error class from Glib and a Pixbuf class from Gdk3 **①**. Next, the window is created and the image loaded in a Pixbuf **②**. When there is an error, e.g. the image file isn't found, an error is set and a default broken image is loaded in the Pixbuf instead. You can check the error by calling `.last-error()` **③**. If the error is valid, an error occurred **④**. If not, the icon can be set **⑤** with the following result;
+{% endhighlight %}
+
+
+We need an Error class from Glib and a Pixbuf class from Gdk3 `(1`. Next, the window is created and the image loaded in a Pixbuf `(2`. When there is an error, e.g. the image file isn't found, an error is set and a default broken image is loaded in the Pixbuf instead. You can check the error by calling `.last-error()` `(3`. If the error is valid, an error occurred `(4`. If not, the icon can be set `(5` with the following result;
 
 ![new icon](images/window-deco2.png)
+
 
 ## Window sizing and resizing
 
@@ -61,21 +65,21 @@ Also a resize method is available as `$window.gtk-window-resize()` <!--[`$window
 
 The information about current sizes is retrieved by calling `$window.get-size()`.
 
+
 ## Placement of a Window or Dialog
 
 When an application is started and its top level window mapped and realized, it can appear anywhere on the screen. You have some control over it where the window can show up. The call `$window.set-position($position)` is the way to do it. The `$position` is an enummeration with the values `GTK_WIN_POS_NONE`, `GTK_WIN_POS_CENTER`, `GTK_WIN_POS_MOUSE`, `GTK_WIN_POS_CENTER_ALWAYS` or `GTK_WIN_POS_CENTER_ON_PARENT`. Most values are obvious and `GTK_WIN_POS_NONE` does not influence any placement so there it is up to the display manager which, on my system, searches for the most empty spot on the desktop and places it there.
 
-You can also control the placement in depth a bit as you can obscure the several windows on your desktop with another. To prevent obscuring your dialog, you can call for instance `$dialog.set-keep-above(True)`.
+You can also control the placement in depth a bit as you can obscure the several windows on your desktop with another. To prevent obscuring your window, you can call for instance `$dialog.set-keep-above(True)`.
 
-Then if you also want to grab the focus explicitly in your application, call `$dialog.set-modal(True)`. Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use `$dialog.set-transient-for($main-window)` to make the dialog transient for the parent. Most window managers will then disallow lowering the dialog below the parent. That saves us the call to `.set-keep-above()` explained above.
+Then if you also want to grab the focus explicitly in your application, call `$window.set-modal(True)`. Modal windows prevent interaction with other windows in the same application.
 
-#### What have we learned
+To keep modal dialogs on top of main application windows, use `$dialog.set-transient-for($window)` to make the dialog transient for the parent. Most window managers will then disallow lowering the dialog below the parent. That saves us the call to `.set-keep-above()` explained above.
 
-We have seen how we can manipulate the main window (or dialog) to show up on different places on your desktop, set a starting size, above other windows or grab a focus on a window.
+Your program may now look something like this;
 
-to conclude;
+{% highlight raku %}
 
-```
 use Gnome::Gtk3::Window;
 use Gnome::Glib::Error;
 use Gnome::Gdk3::Pixbuf;
@@ -83,7 +87,7 @@ use Gnome::Gdk3::Pixbuf;
 my Gnome::Gdk3::Pixbuf $win-icon .= new(:file<icons8-invoice-100.png>);
 my Gnome::Glib::Error $e = $win-icon.last-error;
 
-given my Gnome::Gtk3::Window $window .= new {
+with my Gnome::Gtk3::Window $window .= new {
   .set-title('Window');
   .set-position(GTK_WIN_POS_CENTER_ON_PARENT);
   .set-size-request( 200, 300);
@@ -91,6 +95,13 @@ given my Gnome::Gtk3::Window $window .= new {
   $e.is-valid ?? { die "Error icon file: $e.message()" }
               !! .set-icon($win-icon);
 }
-```
 
-A neat trick where the topological variable `$_` is set to `$window` by the `given` statement. All of those things you know and suddenly you find a different way to express things. This one I found in the README of Timo's module **Cairo**.
+{% endhighlight %}
+
+### What have we learned
+
+We have seen how we can manipulate the main window (or dialog)
+* Show up on different places on your desktop
+* Set a starting size
+* Place the window above other windows
+* Grab a focus on a window.
