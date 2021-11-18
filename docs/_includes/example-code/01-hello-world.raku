@@ -8,42 +8,25 @@ use Gnome::Gtk3::Button;
 my Gnome::Gtk3::Main $m .= new;
 
 
-class AppSignalHandlers {
-
-  method first-button-click ( :_widget($b1), :other-button($b2) ) {     # 6
-    $b1.set-sensitive(False);
-    $b2.set-sensitive(True);
-  }
-
-  method second-button-click ( ) {                                      # 7
-    $m.quit;
-  }
-
-  method exit-program ( ) {
-    $m.quit;
-  }
-}
-
+class AppSignalHandlers { ... }
 my AppSignalHandlers $ash .= new;
 
 
-with my Gnome::Gtk3::Button $button .= new(:label('Hello World')) {     # 1
+with my Gnome::Gtk3::Button $lower-button .= new(:label('Goodbye')) {   # 1
+  .set-sensitive(False);                                                # 2
+  .register-signal( $ash, 'lower-button-click', 'clicked');
+}
+
+with my Gnome::Gtk3::Button $upper-button .= new(:label('Hello World')) {
   .register-signal(
-    $ash, 'first-button-click', 'clicked', :other-button($second)       # 2
+    $ash, 'upper-button-click', 'clicked', :$lower-button               # 3
   );
 }
 
-with my Gnome::Gtk3::Button $second .= new(:label('Goodbye')) {
-  .set-sensitive(False);                                                # 3
-  .register-signal( $ash, 'second-button-click', 'clicked');
-}
-
-
 with my Gnome::Gtk3::Grid $grid .= new {                                # 4
-  .attach( $button, 0, 0, 1, 1);
-  .attach( $second, 0, 1, 1, 1);
+  .attach( $upper-button, 0, 0, 1, 1);
+  .attach( $lower-button, 0, 1, 1, 1);
 }
-
 
 with my Gnome::Gtk3::Window $top-window .= new {
   .set-title('Hello GTK!');
@@ -53,5 +36,20 @@ with my Gnome::Gtk3::Window $top-window .= new {
   .show-all;
 }
 
-
 $m.main;
+
+
+class AppSignalHandlers {
+  method upper-button-click ( :_widget($b1), :lower-button($b2) ) {     # 6
+    $b1.set-sensitive(False);
+    $b2.set-sensitive(True);
+  }
+
+  method lower-button-click ( ) {                                       # 7
+    $m.quit;
+  }
+
+  method exit-program ( ) {
+    $m.quit;
+  }
+}

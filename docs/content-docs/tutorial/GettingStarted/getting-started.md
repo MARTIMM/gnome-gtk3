@@ -30,21 +30,19 @@ To get an idea of how the modules from the `Gnome::Gtk3` package work, a simple 
 
 ![example window](images/simple-example.png)
 
-<!--
--->
 {% highlight raku %}
 {% include example-code/window-event.raku %}
 {% endhighlight %}
 
 Lets explain some of the code displayed above. To start with, load the modules used in this program. These are **Gnome::Gtk3::Main** and **Gnome::Gtk3::Window** `(1`. They will load class definitions to control the main loop and to handle a plain window.
 
-Next, we initialize a **Gnome::Gtk3::Main** object `$m` which will be used later on to control the so called, event loop `(2`.
+Next, we initialize the **Main** object `$m` which is used later on to control the so called, event loop `(2`.
 
-Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out `(3`. There is only one method defined in that class to stop the program. Our first GTK method is used here, `.quit()` from the **Gnome::Gtk3::Main** class to stop our program.
+Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out `(3`. There is only one method defined in that class to stop the program. Our first GTK method is used here, `.quit()` from the **Main** class to stop our program.
 Later, when your applications grow bigger, you will see that you will need more than one class to handle all signals so you can separate the different tasks of your program. E.g. a class to handle a file menu, or one to handle an input form.
 
-Now we can start creating the widgets. There is always a toplevel widget wherein other widgets are placed. Examples of toplevel widgets are **Gnome::Gtk3::Window** or **Gnome::Gtk3::Dialog**.
-Here we have used only one widget, a Window and then set its title to 'Example' `(4`. This text is shown at the top of the window in an area called titlebar.
+Now we can start creating the widgets. There is always a toplevel widget wherein other widgets are placed. Examples of toplevel widgets are **Window** or **Gnome::Gtk3::Dialog**.
+Here we have used only one widget, a Window and set its title to 'Example' `(4`. This text is shown at the top of the window in an area called titlebar.
 
 Initialize the handler class and register signals. We use the `destroy` signal to call the `.exit-program()` method in the handler object `$ash` `(5`.
 
@@ -57,6 +55,7 @@ raku simple-example.raku <Enter>
 ```
 
 ### What we have learned
+
 So, what we have learned here are several specific things which will always come back in all user interface based programs.
 * Defining a handler class where all handler methods can reside. However, you are not restricted to one class and you do not have to have the class defined in your main program. You can split the handling in several 'categories' e.g. file dialog handling or tree view handling.
 * Creating a window and have it a title.
@@ -109,7 +108,8 @@ with my Gnome::Gtk3::Window $top-window .= new {
 
 Lets go on quickly and add a second button with the `.add()` method. The relevant part is shown below.
 
-```
+
+{% highlight raku %}
 …
 my AppSignalHandlers $ash .= new;
 
@@ -133,7 +133,7 @@ with my Gnome::Gtk3::Window $top-window .= new {
   .show-all;
 }
 …
-```
+{% endhighlight %}
 
 Save it into `window-two-buttons.raku` and run. When run, we see that there is a problem. There is still one button and an error is shown on the commandline. This error comes directly from the GTK libs and will tell you what goes wrong. The error is;
 ```
@@ -159,22 +159,30 @@ Ok. Need to do things differently then. Lets look at our next attempt which is a
 {% include example-code/01-hello-world.raku %}
 {% endhighlight %}
 
-We will use a **Grid** to add the buttons to and the grid will be added to the window. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Raku packages. However, the **Grid** class can do it all for you and much easier.
+We will use a **Gnome::Gtk3::Grid** to add the buttons to and the grid will be added to the window. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Raku packages. However, the **Grid** class can do it all for you and much easier.
 
-We start by creating the buttons `(1` but the second button is disabled using `.set-sensitive()` `(3`. This will be visible as a grayed-out button.
+When creating the buttons, we start with the lower one because we need the object in the registration of the handler of the upper button `(1` The lower button is disabled using `.set-sensitive()` `(2` and is visible as a grayed-out button.
 
-The first button handler is `.first-button-click()`. We see that there is a named argument added called `:other-button` to the registration call `(2`. You are totally free to add any named argument except for names starting with an underscore. Those names are reserved. The arguments are provided to the handler as is. The reserved argument `:$_widget` will hold the object on which the handler is registered.
+The upper button handler is `.upper-button-click()`. We see that there is a named argument added called `:$lower-button` to the registration call `(3`. You are totally free to add any named argument except for names starting with an underscore. Those names are reserved. The arguments are provided to the handler as is. The reserved naqmed argument `:$_widget` will hold the object on which the handler is registered.
 
-Then an empty grid is created and added to the window `(4`. Then, add the buttons to the **Grid** using method `.attach()`. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The second button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
+Then an empty grid is created `(4`. Add the buttons to the **Grid** using `.attach()`. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The lower button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
 
-The method `.set-border-width()` on the **Window** is used to get some space around our buttons `(5`.
+The method `.set-border-width()` on the **Window** is used to get some space around our buttons `(5`. Also the **Grid** is added on the next line.
 
-The first handler `.first-button-click()` `(6` is called when the top button is clicked. It uses the object `$b1` provided by `:_widget` to make that object insensitive . This is the top button and will now become grayed out. The other button `$b2` given by `:other-button` is made sensitive. You will see that it 'returns from its grayness' so to speak.
+The first handler `.upper-button-click()` `(6` is called when the top button is clicked. It uses the object `$b1` provided by `:_widget` to make that object insensitive . This is the top button and will now become grayed out. The other button `$b2` given by `:lower-button` is made sensitive. You will see that it 'returns from its grayness' so to speak.
 
-The second handler `.second-button-click()` `(7` is called when the bottom button is clicked and will call `.quit()` to stop the program.
+The second handler `.lower-button-click()` `(7` is called when the bottom button is clicked and will call `.quit()` to stop the program.
 
 
 ### What we have learned
 * A window can hold only one object while a grid can hold more objects. The grid can be added to the window and other widgets can be added to the grid.
 * We learned a few more methods to manipulate widgets e.g. `.set-border-width()` and `.set-sensitive()`.
 * When registering signal handlers, we can add more information using named arguments but that the `:widget` argument is reserved.
+
+# References
+{% assign url = site.baseurl | append: "/content-docs/reference" %}
+* [Gnome::Gtk3::Main]({{ url }}/Gtk3/Main.html)
+* [Gnome::Gtk3::Window]({{ url }}/Gtk3/Window.html)
+* [Gnome::Gtk3::Dialog]({{ url }}/Gtk3/Dialog.html)
+* [Gnome::Gtk3::Button]({{ url }}/Gtk3/Button.html)
+* [Gnome::Gtk3::Grid]({{ url }}/Gtk3/Grid.html)
