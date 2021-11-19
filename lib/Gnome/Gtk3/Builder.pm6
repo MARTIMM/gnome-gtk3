@@ -167,7 +167,7 @@ use Gnome::Gtk3::Application;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>:ver<0.2.0>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
@@ -898,24 +898,31 @@ sub gtk_builder_get_application (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-object:
+#TM:1:get-object:
+#TM:1:get-object-rk:
 =begin pod
-=head2 get-object
+=head2 get-object, get-object-rk
 
-Gets the object named I<name>. Note that this function does not increment the reference count of the returned object.
+Gets the object named I<$name>. Note that this function does not increment the reference count of the returned object.
 
-Returns: the object named I<name> or C<undefined> if it could not be found in the object tree.
+Returns: the object named I<$name> or C<undefined> if it could not be found in the object tree.
 
   method get-object ( Str $name --> N-GObject )
+  method get-object-rk ( Str $name --> Gnome::GObject::Object )
 
 =item Str $name; name of object to get
 =end pod
 
 method get-object ( Str $name --> N-GObject ) {
+  gtk_builder_get_object( self.get-native-object-no-reffing, $name)
+}
 
-  gtk_builder_get_object(
+method get-object-rk ( Str $name --> Any ) {
+  my N-GObject $no = gtk_builder_get_object(
     self.get-native-object-no-reffing, $name
-  )
+  );
+
+  self._wrap-native-type-from-no($no)
 }
 
 sub gtk_builder_get_object (

@@ -315,14 +315,15 @@ Returns: the application being used by the builder, or `undefined`
     method get-application ( --> N-GObject )
     method get-application-rk ( --> Gnome::Gtk3::Application )
 
-get-object
-----------
+get-object, get-object-rk
+-------------------------
 
-Gets the object named *name*. Note that this function does not increment the reference count of the returned object.
+Gets the object named *$name*. Note that this function does not increment the reference count of the returned object.
 
-Returns: the object named *name* or `undefined` if it could not be found in the object tree.
+Returns: the object named *$name* or `undefined` if it could not be found in the object tree.
 
     method get-object ( Str $name --> N-GObject )
+    method get-object-rk ( Str $name --> Gnome::GObject::Object )
 
   * Str $name; name of object to get
 

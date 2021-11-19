@@ -100,12 +100,17 @@ subtest 'Test items from ui', {
   $e = $builder.add-from-file($ui-file);
   nok $e.is-valid, ".add-from-file()";
 
-  isa-ok $builder.get-object('my-button-1'), N-GObject, '.get-object()';
+  lives-ok {
+    isa-ok $builder.get-object('my-button-1'), N-GObject;
 
-  my Gnome::Gtk3::Button $b .= new(:build-id<my-button-1>);
-  is $b.get-label, 'button text', '.get-label()';
-  is $b.gtk-widget-get-name, 'button-name-1', '.gtk-widget-get-name()';
-  is $b.get-border-width, 0, '.get-border-width()';
+    my Gnome::Gtk3::Button $b1 .= new(:build-id<my-button-1>);
+    my Gnome::Gtk3::Button $b2 = $builder.get-object-rk('my-button-1');
+
+    is $b1.get-label, $b2.get-label, '.get-label()';
+    is $b1.gtk-widget-get-name, $b2.gtk-widget-get-name,
+      '.gtk-widget-get-name()';
+    is $b1.get-border-width, $b2.get-border-width, '.get-border-width()';
+  }, '.get-object() / .get-object-rk()';
 
   #$b.gtk-widget-show;
 }
