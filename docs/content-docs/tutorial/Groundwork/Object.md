@@ -26,16 +26,23 @@ We see that several classes inherit from Object directly or inderectly and there
 
 ## Initialization
 
-Each widget must be initialized to have a native object representing the C object stored in the Raku object. Most Raku objects accept the `:native-object` named argument and many (widgets) know about the `:build-id` next to their own set of arguments if any.
+As discussed in the document [Raku Modules](raku-modules.html), each widget must be initialized to have a native object representing the C object stored in the Raku object. Most Raku objects accept the `:native-object` named argument and many (widgets) know about the `:build-id` next to their own set of arguments if any.
 
-### :native-object
+* `:native-object`; This argument is not handled here really, it is handled at the top of the food chain, in **Gnome::N::TopLevelClassSupport**. It is handled there because the native object is defined in that class. Therefore, any class inheriting from that class knows about this named argument. Its use is to import a native object from elsewhere into the Raku object. After that, the methods can be used to access that object.
 
-This argument is not handled here really, it is handled at the top of the food chain, in **Gnome::N::TopLevelClassSupport**. It is handled there because the native object is defined in that class. Therefore, any class inheriting from that class knows about the argument.
-The use of the argument is to import a native object from elsewhere into the Raku object. After that, the methods can be used to access that object.
+* `:build-id`; This argument can be used when GUI descriptions in XML are created by hand or with the use of the designer program `glade`. The XML can be loaded with the use of class **Gnome::Gtk3:Builder**. When the **Builder** class is instantiated, the object is also stored in the **Object** class in such a way that any other **Object** object can access the **Builder** object. The entities described in the XML can have id's unique in that XML. This then makes it possible to retrieve an object from the **Builder** by using this `:build-id` argument. Under the hood, it would be something like;
+  ```raku
+  my Gnome::Gtk3::Builder $builder .= new;
 
-### :build-id
+  my Gnome::Glib::Error $e = $builder.add-from-file('my-ui-description.glade');
+  if $e.is-valid {
+    my N-GObject $builder.get-object('my-button-1'), N-GObject, '.get-object()';
 
-This argument can be used when GUI descriptions in XML are created by hand or with the use of the designer program `glade`. The XML can be loaded with the use of class **Gnome::Gtk3:Builder**. When the Builder class is instantiated, the object is also stored in the Object class in such a way that any other Object object can access the Builder object. The entities described in the XML can have id's unique in that XML. This then makes it possible to retrieve an object from the Builder by using this `:build-id` argument.
+
+  ```
+
+
+
 
 ## Signals and events
 
@@ -312,3 +319,10 @@ class ExtendedLabel is Gnome::Gtk3::Label {
 ### .clear-object()
 
 -->
+
+# References
+{% assign url = site.baseurl | append: "/content-docs/reference" %}
+* [Gnome::N::TopLevelClassSupport]({{ url }}/Native/TopLevelClassSupport.html)
+
+* [Gnome::GObject::Object]({{ url }}/GObject/Object.html)
+* [Gnome::GObject::Signal]({{ url }}/GObject/Signal.html)
