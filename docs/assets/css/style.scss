@@ -31,7 +31,9 @@ $h6-link-color:             #20507f;
 
 $table-border-color:        #206060;
 $border-color:              #bbb;
+$pre-border-color:          #ddd;
 $border-width:              6px;
+$pre-border-width:          0px;
 
 $menu-text-font-size: 15px;
 $sbar-text-font-size: 13px;
@@ -93,7 +95,7 @@ a:hover {
 pre {
   padding: 10px;
   background-color: $code-color;
-  border: $border-width solid $border-color;
+  border: $pre-border-width solid $pre-border-color;
 }
 
 header {
