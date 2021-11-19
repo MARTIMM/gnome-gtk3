@@ -30,9 +30,9 @@ To get an idea of how the modules from the `Gnome::Gtk3` package work, a simple 
 
 ![example window](images/simple-example.png)
 
-{% highlight raku %}
+```raku
 {% include example-code/window-event.raku %}
-{% endhighlight %}
+```
 
 Lets explain some of the code displayed above. To start with, load the modules used in this program. These are **Gnome::Gtk3::Main** and **Gnome::Gtk3::Window** `(1`. They will load class definitions to control the main loop and to handle a plain window.
 
@@ -70,9 +70,9 @@ The next step is to put something in the window, for example a button. We will m
 
 ![example window](images/window-button.png)
 
-{% highlight raku %}
+```raku
 {% include example-code/window-button.raku %}
-{% endhighlight %}
+```
 
 You see that the layout of the program is more or less the same as in our previous example. We need to load an extra module **Gnome::Gtk3::Button** `(1`. We also have added another method to the handler class to handle the button click `(2`. We could also have used the same method `.exit-program()` in this case.
 
@@ -84,7 +84,7 @@ Now save the code in `window-button.raku` and run it. Pressing the button will s
 
 The order of creating widgets is often not important so we could also do
 
-{% highlight raku %}
+```raku
 
 my AppSignalHandlers $ash .= new;
 
@@ -101,7 +101,7 @@ with my Gnome::Gtk3::Window $top-window .= new {
   .show-all;
 }
 
-{% endhighlight %}
+```
 
 
 ## Simple Window with two Buttons
@@ -109,7 +109,7 @@ with my Gnome::Gtk3::Window $top-window .= new {
 Lets go on quickly and add a second button with the `.add()` method. The relevant part is shown below.
 
 
-{% highlight raku %}
+```raku
 …
 my AppSignalHandlers $ash .= new;
 
@@ -133,7 +133,7 @@ with my Gnome::Gtk3::Window $top-window .= new {
   .show-all;
 }
 …
-{% endhighlight %}
+```
 
 Save it into `window-two-buttons.raku` and run. When run, we see that there is a problem. There is still one button and an error is shown on the commandline. This error comes directly from the GTK libs and will tell you what goes wrong. The error is;
 ```
@@ -155,9 +155,9 @@ Ok. Need to do things differently then. Lets look at our next attempt which is a
 
 ![example window](images/01-hello-world.png)
 
-{% highlight raku %}
+```raku
 {% include example-code/01-hello-world.raku %}
-{% endhighlight %}
+```
 
 We will use a **Gnome::Gtk3::Grid** to add the buttons to and the grid will be added to the window. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Raku packages. However, the **Grid** class can do it all for you and much easier.
 
