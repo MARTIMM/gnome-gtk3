@@ -30,31 +30,33 @@ As discussed in the document [Raku Modules](raku-modules.html), each widget must
 
 * `:native-object`; This argument is not handled here really, it is handled at the top of the food chain, in **Gnome::N::TopLevelClassSupport**. It is handled there because the native object is defined in that class. Therefore, any class inheriting from that class knows about this named argument. Its use is to import a native object from elsewhere into the Raku object. After that, the methods can be used to access that object.
 
-* `:build-id`; This argument can be used when GUI descriptions in XML are created by hand or with the use of the designer program `glade`. The XML can be loaded with the use of class **Gnome::Gtk3:Builder**. When the **Builder** class is instantiated, the object is also stored in the **Object** class in such a way that any other **Object** object can access the **Builder** object. The entities described in the XML can have id's unique in that XML. This then makes it possible to retrieve an object from the **Builder** by using this `:build-id` argument. Under the hood, it would be something like;
+* `:build-id`; This argument can be used when GUI descriptions in XML are created by hand or with the use of the designer program `glade`. The XML can be loaded with the use of class **Gnome::Gtk3:Builder**. When the **Builder** class is instantiated, the object is also stored in the **Object** class in such a way that any other **Object** object can access the **Builder** object. The entities described in the XML can have id's unique in that XML. This then makes it possible to retrieve an object from the **Builder** by using this `:build-id` argument. When calling this;
+
   ```raku
-  my Gnome::Gtk3::Builder $builder .= new;
-
-  my Gnome::Glib::Error $e = $builder.add-from-file('my-ui-description.glade');
-  if $e.is-valid {
-    my N-GObject $builder.get-object('my-button-1'), N-GObject, '.get-object()';
-
-
+  my Gnome::Gtk3::Button $button .= new(:build-id<my-stop-button>);
   ```
 
+  would be something like this under the hood;
 
+  ```raku
+  my Gnome::Gtk3::Button $button .= new(:native-object(
+      $builder.get-object('my-stop-button')
+    )
+  );
+  ```
 
 
 ## Signals and events
 
-The **Gnome::GObject::Object** of Gnome also helps with the handling of signals of events. It uses the **Gnome::GObject::Signal** role for it. It is a rather large subject so there is [more on this described here](http://localhost:4000/gnome-gtk3/content-docs/tutorial/Groundwork/Signal.html).
+The **Object** of Gnome also helps with the handling of signals of events. It uses the **Gnome::GObject::Signal** role for it. It is a rather large subject so there is [more on this is described here](Signal.html).
 
 ## Concurrent processes
 
 Concurrency is implemented in the modules **Gnome::Glib::MainLoop** and **Gnome::Glib::MainContext**. A method `Gnome::GObject::Object.start-thread()` is implemented as a convenience for the use of these modules.
 
-An example of its use comes from my testing programs where some of the events are tested. Below, events for the **Gnome::Gtk3::AboutDialog** are tested;
+An example of its use comes from the testing programs where some of the events are tested. Below, events for the **Gnome::Gtk3::AboutDialog** are tested;
 
-```
+```raku
 use Test;
 use NativeCall;
 
@@ -68,7 +70,7 @@ my Gnome::Gtk3::Main $main .= new;
 class SignalHandlers {
   has Bool $!signal-processed = False;
 
-  method activate ( Str $uri --> Bool ) {                             # ①
+  method activate ( Str $uri --> Bool ) {                               # 1
     is $uri, 'https://example.com/my-favourite-items.html',
       'uri received from event';
     $!signal-processed = True;
@@ -78,9 +80,9 @@ class SignalHandlers {
 
   method signal-emitter (
     Gnome::Gtk3::AboutDialog :_widget($about-dialog) --> Str
-  ) {                                                                 # ②
+  ) {                                                                   # 2
 
-    $about-dialog.emit-by-name(                                       # ③
+    $about-dialog.emit-by-name(                                         # 3
       'activate-link',
       'https://example.com/my-favourite-items.html',
       :return-type(gboolean),
@@ -97,29 +99,29 @@ class SignalHandlers {
 }
 
 my SignalHandlers $sh .= new;
-$a.register-signal( $sh, 'activate', 'activate-link');                # ④
+$a.register-signal( $sh, 'activate', 'activate-link');                  # 4
 
-my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);# ⑤
+my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);  # 5
 
-$main.main;                                                           # ⑥
+$main.main;                                                             # 6
 
 is $p.result, 'done', 'emitter finished';
 ```
 
-① There are two handlers in the **SignalHandlers** class. The signal to be tested is `activate-link` and the method `.activate()` receives it. This handler receives an uri.
+1) There are two handlers in the **SignalHandlers** class. The signal to be tested is `activate-link` and the method `.activate()` receives it. This handler receives an uri.
 
-② The second handler is the one running in a thread. We need a thread if long running work is to be done and it should not hold up the interaction of the user interface. Here it just fires an event to test the event handler.
+2) The second handler is the one running in a thread. We need a thread if long running work is to be done and it should not hold up the interaction of the user interface. Here it just fires an event to test the event handler.
 
-③ The method `.emit-by-name()` is used to fire the event. It must deliver all arguments which an event handler can receive. After emitting, we need some rest and then finish the event loop. The types are native types used in Gtk and are defined in **Gnome::N::GlibToRakuTypes** as a convenience. The `gboolean` is an `int32` and `gchar-ptr` is a `CArray[Str]`.
+3) The method `.emit-by-name()` is used to fire the event. It must deliver all arguments which an event handler can receive. After emitting, we need some rest and then finish the event loop. The types are native types used in Gtk and are defined in **Gnome::N::GlibToRakuTypes** as a convenience. The `gboolean` is an `int32` and `gchar-ptr` is a `CArray[Str]`.
 
-④ We must register the signal handler.
+4) We must register the signal handler.
 
-⑤ Now we can create a thread which, in this case, also creates a new event context. This is not always necessary, but in that case you need to process the events yourself like here;
+5) Now we can create a thread which, in this case, also creates a new event context. This is not always necessary, but in that case you need to process the events yourself like here;
 ```
 while $main.events-pending() { $main.iteration-do(False); }
 ```
 
-⑥ Start the event loop. We return here when `.main-quit()` is called to end the loop. After that we can test for any results comming back from the thread.
+6) Start the event loop. We return here when `.main-quit()` is called to end the loop. After that we can test for any results comming back from the thread.
 
 
 ## Properties
@@ -326,3 +328,12 @@ class ExtendedLabel is Gnome::Gtk3::Label {
 
 * [Gnome::GObject::Object]({{ url }}/GObject/Object.html)
 * [Gnome::GObject::Signal]({{ url }}/GObject/Signal.html)
+
+* [Gnome::Glib::MainLoop]({{ url }}/Glib/MainLoop.html)
+* [Gnome::Glib::MainContext]({{ url }}/Glib/MainContext.html)
+
+* [Gnome::Gdk3::Pixbuf]({{ url }}/Gdk3/Pixbuf.html)
+
+* [Gnome::Gtk3::AboutDialog]({{ url }}/Gtk3/AboutDialog.html)
+* [Gnome::Gtk3::Builder]({{ url }}/Gtk3/Builder.html)
+* [Gnome::Gtk3::Main]({{ url }}/Gtk3/Main.html)
