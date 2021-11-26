@@ -88,13 +88,13 @@ AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| 
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
 ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓| ✓|
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-AppChooser                |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
-AppChooserButton          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
-AppChooserDialog          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
-AppChooserWidget          |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
-Application               |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
-ApplicationWindow         |  | ✓|  | ✓|  |  |  |  |  |  |  |  |  |  |
-AspectFrame               |  |  | ✓| ✓| ✓| ✗|  | ✓| ✗|  |  |  |  |  |
+AppChooser                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+AppChooserButton          |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓| ✓|
+AppChooserDialog          |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅞| ✗| ✗| ✓| ✓| ✓| ✓|
+AppChooserWidget          |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| ✓|
+Application               |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅕|  |  | ✓| ✓| ✓| ✓|
+ApplicationWindow         |  | ✓| ✓| ✓| ✓|  | ✓| ⅓|  |  | ✓| ✓| ✓| ✓|
+AspectFrame               |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾| ✓| ✓| ✓| ✓|
 Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓| ✓| ✓|
 Bin                       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Border                    |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
