@@ -64,12 +64,12 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-gtk_aspect_frame_set
---------------------
+set
+---
 
 Set parameters for an existing **Gnome::Gtk3::AspectFrame**.
 
-    method gtk_aspect_frame_set (
+    method set (
       Num $xalign, Num $yalign, Num $ratio, Int $obey_child
     )
 

@@ -96,7 +96,6 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:1:new(:label):
 #TM:4:new(:native-object):TopLevelSupportClass
 #TM:4:new(:build-id):Object
-
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
@@ -157,6 +156,36 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 
 #-------------------------------------------------------------------------------
+#TM:1:set:
+=begin pod
+=head2 set
+
+Set parameters for an existing B<Gnome::Gtk3::AspectFrame>.
+
+  method set (
+    Num $xalign, Num $yalign, Num $ratio, Int $obey_child
+  )
+
+=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
+=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
+=item Num $ratio; The desired aspect ratio.
+=item Int $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
+
+=end pod
+
+method set (
+  Num $xalign, Num $yalign, Num $ratio, Int $obey_child
+) {
+  gtk_aspect_frame_set(
+    self.get-native-object-no-reffing, $xalign, $yalign, $ratio, $obey_child
+  );
+}
+
+sub gtk_aspect_frame_set ( N-GObject $aspect_frame, num32 $xalign, num32 $yalign, num32 $ratio, int32 $obey_child  )
+  is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
 #TM:2:_gtk_aspect_frame_new:new(:label)
 #`{{
 =begin pod
@@ -180,28 +209,6 @@ Returns: the new B<Gnome::Gtk3::AspectFrame>.
 sub _gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $ratio, int32 $obey_child --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_aspect_frame_new')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_aspect_frame_set:
-=begin pod
-=head2 gtk_aspect_frame_set
-
-Set parameters for an existing B<Gnome::Gtk3::AspectFrame>.
-
-  method gtk_aspect_frame_set (
-    Num $xalign, Num $yalign, Num $ratio, Int $obey_child
-  )
-
-=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
-=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
-=item Num $ratio; The desired aspect ratio.
-=item Int $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
-
-=end pod
-
-sub gtk_aspect_frame_set ( N-GObject $aspect_frame, num32 $xalign, num32 $yalign, num32 $ratio, int32 $obey_child  )
-  is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
