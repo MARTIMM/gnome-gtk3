@@ -37,10 +37,10 @@ subtest 'Inherit ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $af.aspect-frame-set( 0.2e0, 0.9e0, 1e0, False);
+  $af.set( 0.2e0, 0.9e0, 1e0, False);
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_FLOAT));
   $af.g-object-get-property( 'xalign', $gv);
-  is-approx $gv.get-float, 0.2e0, '.frame_set()';
+  is-approx $gv.get-float, 0.2e0, '.set()';
   $gv.clear-object;
 }
 
