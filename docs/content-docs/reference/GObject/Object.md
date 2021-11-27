@@ -51,7 +51,7 @@ Returns: the data if found, or `undefined` if no such data exists.
 
   * $type; specification of the type of data to return. The recognized types are; int*, uint*, num*, Buf, (U)Int, Num, Str, Bool and N-GObject. the native int and uint type are taken as int64 and uint64 respectively. In the case of N-GObject the method will try to create a raku object. When it was undefined, this is not possible and it will return an undefined N-GObject. The N-GObject type can be helped by specifying the named argument `widget-class`. This should be a name of a raku class like for instance **Gnome::Gtk3::Label**. When the return value was undefined, the result object will always have the raku class type but the call to <.is-valid()> returns False. Note that Int, UInt, and Num is transformed to their 32 bit representations.
 
-  * Str :$widget-class; Create this object.
+  * Str :$widget-class; Create object of this type.
 
 get-properties
 --------------
