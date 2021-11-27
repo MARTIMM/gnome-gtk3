@@ -174,7 +174,7 @@ class ExtendedLabel is Gnome::Gtk3::Label {                             # 1
   has Str $.custom-data;
 
   submethod new (|c) {                                                  # 2
-  	self.bless( :GtkLabel, |c );
+    self.bless( :GtkLabel, |c );
   }
 }
 
@@ -183,7 +183,7 @@ my ExtendedLabel $label .= new(
 );
 
 my Gnome::Gtk3::Notebook $notebook .= new;                              # 3
-$nb.append-page( $label, Gnome::Gtk3::Label.new(:text('title')));
+$notebook.append-page( $label, Gnome::Gtk3::Label.new(:text('title')));
 
 my Gnome::Gtk3::Window $window .= new;                                  # 4
 $window.add($notebook);
@@ -232,14 +232,12 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   has Str $.custom-data;
 
   submethod new (|c) {
-  	self.bless( :GtkLabel, |c );
+    self.bless( :GtkLabel, |c );
   }
 
   submethod BUILD ( Str $!custom-data, :$native-object ) {
     if ? $native-object {                                               # 1
-      $!custom-data = self.get-data(
-        'custom data', N-GObject, :widget-class<Gnome::Gtk3::Label>
-      );
+      $!custom-data = self.get-data( 'custom data', Str);
     }
 
     else {                                                              # 2
@@ -259,32 +257,34 @@ say ExtendedLabel.new(                                                  # 3
 ).custom-data;
 ```
 1) Create the class from our issue example but now we test for a named argument `:$native-object`. The argument is handled in **TopLevelClassSupport** but we use it here to see if the native object is imported or that it is created anew. When imported, we retrieve the data back from the native object with `.get-data()`.
-2) Otherwise, when created anew, the data is also stored in the native object.
-3) Then, when needed, the same call is used as before but the attribute will be set automatically.
+2) Otherwise, when created anew, the data is also stored on the native object.
+3) Then, when needed, the same call is used as before but the attribute `$!custom-data` will be set automatically.
 
+Note that the data is stored with a key. This means that you can store more data items on an object. Above the key `custom data` is used.
 
-
-or, if you want to be sure, add the `widget-class` named argument;
+In the case of a `N-GObject` typed objects, you can use the `widget-class` named argument to get a Raku object, e.g. get a previously stored grid object from a button using a key `my attached grid`;
 
 ```raku
-say $button.get-data(                   # 3
-  'attached-label-data', N-GObject,
-  :widget-class<Gnome::Gtk3::Label>
-).custom-data;
+class MyGrid is Gnome::Gtk3::Grid { … }
+$button.set-data( 'my attached grid', MyGrid.new);
 
+my MyGrid $grid = $button.get-data(
+  'my attached grid', N-GObject, :widget-class<MyGrid>
+);
 ```
+
 
 ### Example 2
 
 Other types can be used as well to store data. The next example shows what is possible;
 
 ```raku
-$button.set-data( 'my-text-key', 'my important text');
+$button.set-data( 'my number key', 2e101);
 $button.set-data( 'my-uint32-key', my uint32 $x = 12345);
 
 …
 
-my Str $text = $button.get-data( 'my-text-key', Str);
+my Str $text = $button.get-data( 'my number key', Num);
 my Int $number = $button.get-data( 'my-uint32-key', uint32);
 ```
 
@@ -326,20 +326,20 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   }
 
   submethod BUILD ( Str :$!custom-data, :$native-object? ) {
-    if $native-object {                                               # ①
+    if $native-object {                                                 # 1
       $!custom-data = self.get-data( 'custom-data', Str);
     }
 
-    else {                                                            # ②
+    else {                                                              # 2
       self.set-data( 'custom-data', $!custom-data);
     }
   }
 }
 ```
 
-① when imported, get data
+1) when imported, get data
 
-② otherwise, set data
+2) otherwise, set data
 
 <!--
 ## Reference counting
