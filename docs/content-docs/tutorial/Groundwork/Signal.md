@@ -6,16 +6,16 @@ layout: sidebar
 ---
 # Signals and Events
 
-We are going to see a bit more about signals. First some repetition. We define our signal handler methods in a class of its own. The purpose of that is to separate the handling of signals from the main code. This class can be setup around some object with all information it needs. An example could be the handling of a group of radio-buttons. Below a slight different approach where you can see that the class has its business with the top level window.
+We are going to see a bit more about signals. First some repetition. We define our signal handler methods in a class of its own. The purpose of that is to separate the handling of signals from the main code. This class is setup around some object with all information it needs. An example could be the handling of a group of radio-buttons. Below a slight different approach where you can see that the class has its business with the top level window.
 
-Such a class can be defined in a separate module which is `use`'d at the start of the program.
+Such a class can be defined in a separate module which is imported at the start of the program.
 
 ```
 class Gui::TopWindow {
   has Gnome::Gtk3::Window $.top-window;
 
   submethod BUILD ( ) {
-    given $!top-window .= new {
+    with $!top-window .= new {
       .title('my top level window');
       .register-signal( self, 'exit-program', 'destroy');
     }
@@ -31,6 +31,8 @@ my Gnome::Gtk3::Grid $grid .= new;
 $w.top-window.add($grid);
 …
 ```
+
+
 ## Declaration of the Registration Method
 
 ```
