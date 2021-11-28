@@ -6,13 +6,13 @@ use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::CheckButton;
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 class X {
   has Array[Gnome::Gtk3::CheckButton] $!cba;
 
   submethod BUILD ( :$grid ) {
     $!cba .= new;
-    for ^20 -> $i {
+    for ^20 -> $i {                                                     # 1
       my Gnome::Gtk3::CheckButton $cb .= new;
       given $cb {
         .set-name("$i");
@@ -22,7 +22,7 @@ class X {
 
       $grid.attach( $cb, $i, 0, 1, 1);
 
-      $cb.register-signal( self, 'check-box-toggle', 'toggled');
+      $cb.register-signal( self, 'check-box-toggle', 'toggled');        # 2
       $!cba.push: $cb;
     }
   }
@@ -40,20 +40,21 @@ class X {
   }
 }
 
-#-------------------------------------------------------------------------------
-my Gnome::Gtk3::Window $window .= new;
+#--------------------------------------------------------------------------
 my Gnome::Gtk3::Grid $grid .= new;
 my X $x .= new(:$grid);
 
-my Gnome::Gtk3::Button $button .= new(:label('Pick a Box'));
-$grid.attach( $button, 0, 1, 20, 1);
+my Gnome::Gtk3::Button $button .= new(:label('Pick a Box'));            # 3
 $button.register-signal( $x, 'pick-a-box', 'clicked');
+$grid.attach( $button, 0, 1, 20, 1);                                    # 4
 
-given $window {
+with my Gnome::Gtk3::Window $window .= new  {
   .add($grid);
   .set-title('event');
+  .set-border-width(2);
   .set_size_request( 200, 70);
   .register-signal( $x, 'exit-app', 'destroy');
   .show-all;
 }
+
 Gnome::Gtk3::Main.new.main;
