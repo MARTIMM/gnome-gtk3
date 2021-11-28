@@ -9,8 +9,8 @@ use Gnome::Gtk3::Scale;
 
 use Semaphore::ReadersWriters;
 
-#-------------------------------------------------------------------------------
-class X {
+#--------------------------------------------------------------------------
+class X {                                                               # 1
   has Bool $!running-update = False;
   has Semaphore::ReadersWriters $!rw-sem;
   has Promise $!promise;
@@ -19,7 +19,7 @@ class X {
   has Gnome::Gtk3::Scale $!scale;
 
   submethod BUILD ( Gnome::Gtk3::Scale :$!scale, Num :$!step = 1e-1 ) {
-    $!rw-sem .= new;
+    $!rw-sem .= new;                                                    # 2
     $!rw-sem.add-mutex-names(
       <running-sem promise>, :RWPatternType(C-RW-WRITERPRIO)
     );
@@ -32,7 +32,7 @@ class X {
   }
 
   method update-scale ( ) {
-    while $!rw-sem.reader( 'running-sem', { $!running-update; }) {
+    while $!rw-sem.reader( 'running-sem', { $!running-update; }) {      # 2a
       my Num $v = $!scale.get-value + $!step;
       note "value; $v";
 
@@ -51,8 +51,8 @@ class X {
   method start-update ( Gnome::Gtk3::Button :_widget($button) ) {
     return if $!rw-sem.reader( 'promise', { $!promise.defined });
 
-    $!rw-sem.writer( 'running-sem', { $!running-update = True; });
-    $!rw-sem.writer( 'promise', {
+    $!rw-sem.writer( 'running-sem', { $!running-update = True; });      # 2b
+    $!rw-sem.writer( 'promise', {                                       # 3
         $!promise = $button.start-thread(
           self, 'update-scale', :start-time(now + 1.1),
           :new-context
@@ -72,17 +72,11 @@ class X {
   }
 }
 
-#-------------------------------------------------------------------------------
-my Gnome::Gtk3::Window $window .= new;
-$window.set-title('window');
+#--------------------------------------------------------------------------
+my X $x;                                                                # 4
+with my Gnome::Gtk3::Scale $scale .= new {
+  $x .= new( :$scale, :step(103e-3));
 
-my Gnome::Gtk3::Grid $grid .= new;
-$window.add($grid);
-
-my Gnome::Gtk3::Scale $scale .= new;
-my X $x .= new( :$scale, :step(103e-3));
-$grid.grid-attach( $scale, 0, 0, 1, 1);
-given $scale {
   .set-hexpand(True);
   .set-vexpand(True);
   .set-halign(GTK_ALIGN_FILL);
@@ -97,13 +91,22 @@ given $scale {
 }
 
 my Gnome::Gtk3::Button $button-start .= new(:label('Start Update'));
-$grid.attach( $button-start, 0, 1, 1, 1);
 $button-start.register-signal( $x, 'start-update', 'clicked');
 
 my Gnome::Gtk3::Button $button-stop .= new(:label('Stop Update'));
-$grid.attach( $button-stop, 0, 2, 1, 1);
 $button-stop.register-signal( $x, 'stop-update', 'clicked');
 
-$window.register-signal( $x, 'exit-app', 'destroy');
-$window.show-all;
-Gnome::Gtk3::Main.new.main;
+with my Gnome::Gtk3::Grid $grid .= new {
+  .attach( $scale, 0, 0, 1, 1);
+  .attach( $button-start, 0, 1, 1, 1);
+  .attach( $button-stop, 0, 2, 1, 1);
+}
+
+with my Gnome::Gtk3::Window $window .= new {
+  .set-title('window');
+  .add($grid);
+  .register-signal( $x, 'exit-app', 'destroy');
+  .show-all;
+}
+
+Gnome::Gtk3::Main.new.main;                                             # 5
