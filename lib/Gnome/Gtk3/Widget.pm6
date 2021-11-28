@@ -6058,7 +6058,7 @@ Also here, the types of positional arguments in the signal handler are important
 
 The I<button-press-event> signal will be emitted when a button (typically from a mouse) is pressed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-PRESS-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-BUTTON-PRESS-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6082,7 +6082,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<button-release-event> signal will be emitted when a button (typically from a mouse) is released.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-BUTTON-RELEASE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-BUTTON-RELEASE-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6144,7 +6144,7 @@ The I<child-notify> signal is emitted for each child property that has changed o
 
 The I<configure-event> signal will be emitted when the size, position or stacking of the I<widget>'s window has changed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -6226,7 +6226,7 @@ This signal is not suitable for saving widget state.
 
 The I<destroy-event> signal is emitted when a B<Gnome::Gtk3::Window> is destroyed. You rarely get this signal, because most widgets disconnect themselves from their window before they destroy it, so no widget owns the window at destroy time.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event.
 C<False> to propagate the event further.
@@ -6337,6 +6337,7 @@ The I<drag-data-received> signal is emitted on the drop site when the dragged da
 
 Applications must create some means to determine why the signal was emitted and therefore whether to call C<gdk-drag-status()> or C<gtk-drag-finish()>.
 
+=begin comment
 The handler may inspect the selected action with C<gdk-drag-context-get-selected-action()> before calling C<gtk-drag-finish()>, e.g. to implement C<GDK-ACTION-ASK> as shown in the following example:
 
   void
@@ -6380,6 +6381,7 @@ The handler may inspect the selected action with C<gdk-drag-context-get-selected
   else
   gtk-drag-finish (context, FALSE, FALSE, time);
   }
+=end comment
 
 The handler method API:
 
@@ -6499,27 +6501,13 @@ Likewise, the  I<drag-leave> signal is also emitted before the  I<drag-drop> sig
 =comment # TS:0:drag-motion:
 =head3 drag-motion
 
-The I<drag-motion> signal is emitted on the drop site when the user
-moves the cursor over the widget during a drag. The signal handler
-must determine whether the cursor position is in a drop zone or not.
-If it is not in a drop zone, it returns C<False> and no further processing
-is necessary. Otherwise, the handler returns C<True>. In this case, the
-handler is responsible for providing the necessary information for
-displaying feedback to the user, by calling C<gdk-drag-status()>.
+The I<drag-motion> signal is emitted on the drop site when the user moves the cursor over the widget during a drag. The signal handler must determine whether the cursor position is in a drop zone or not. If it is not in a drop zone, it returns C<False> and no further processing is necessary. Otherwise, the handler returns C<True>. In this case, the handler is responsible for providing the necessary information for displaying feedback to the user, by calling C<gdk-drag-status()>.
 
-If the decision whether the drop will be accepted or rejected can't be
-made based solely on the cursor position and the type of the data, the
-handler may inspect the dragged data by calling C<gtk-drag-get-data()> and
-defer the C<gdk-drag-status()> call to the  I<drag-data-received>
-handler. Note that you must pass B<Gnome::Gtk3::TK-DEST-DEFAULT-DROP>,
-B<Gnome::Gtk3::TK-DEST-DEFAULT-MOTION> or B<Gnome::Gtk3::TK-DEST-DEFAULT-ALL> to C<gtk-drag-dest-set()>
-when using the drag-motion signal that way.
+If the decision whether the drop will be accepted or rejected can't be made based solely on the cursor position and the type of the data, the handler may inspect the dragged data by calling C<gtk-drag-get-data()> and defer the C<gdk-drag-status()> call to the  I<drag-data-received> handler. Note that you must pass C<GTK-DEST-DEFAULT-DROP>, C<GTK-DEST-DEFAULT-MOTION> or C<GTK-DEST-DEFAULT-ALL> to C<gtk-drag-dest-set()> when using the drag-motion signal that way.
 
-Also note that there is no drag-enter signal. The drag receiver has to
-keep track of whether he has received any drag-motion signals since the
-last  I<drag-leave> and if not, treat the drag-motion signal as
-an "enter" signal. Upon an "enter", the handler will typically highlight
-the drop site with C<gtk-drag-highlight()>.
+Also note that there is no drag-enter signal. The drag receiver has to keep track of whether he has received any drag-motion signals since the last  I<drag-leave> and if not, treat the drag-motion signal as an "enter" signal. Upon an "enter", the handler will typically highlight the drop site with C<gtk-drag-highlight()>.
+
+=begin comment
 |[<!-- language="C" -->
 static void
 drag-motion (GtkWidget      *widget,
@@ -6585,6 +6573,7 @@ else
 }
 }
 ]|
+=end comment
 
 Returns: whether the cursor position is in a drop zone
 
@@ -6638,7 +6627,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<enter-notify-event> will be emitted when the pointer enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-ENTER-NOTIFY-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-ENTER-NOTIFY-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6721,7 +6710,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<focus-in-event> signal will be emitted when the keyboard focus enters the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-FOCUS-CHANGE-MASK> mask.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -6743,7 +6732,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<focus-out-event> signal will be emitted when the keyboard focus leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-FOCUS-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-FOCUS-CHANGE-MASK> mask.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -6852,7 +6841,7 @@ The I<hierarchy-changed> signal is emitted when the anchored state of a widget c
 
 The I<key-press-event> signal is emitted when a key is pressed. The signal emission will reoccur at the key-repeat rate when the key is kept pressed.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-KEY-PRESS-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-KEY-PRESS-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6877,7 +6866,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<key-release-event> signal is emitted when a key is released.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-KEY-RELEASE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-KEY-RELEASE-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6923,7 +6912,7 @@ Returns: C<1> if stopping keyboard navigation is fine, C<0> if the emitting widg
 
 The I<leave-notify-event> will be emitted when the pointer leaves the I<widget>'s window.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-LEAVE-NOTIFY-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-LEAVE-NOTIFY-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -6965,7 +6954,7 @@ The I<map> signal can be used to determine whether a widget will be drawn, for i
 
 The I<map-event> signal will be emitted when the I<widget>'s window is mapped. A window is mapped when it becomes visible on the screen.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -7009,7 +6998,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 
 The I<motion-notify-event> signal is emitted when the pointer moves over the widget's B<Gnome::Gtk3::Window>.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-POINTER-MOTION-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-POINTER-MOTION-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -7086,7 +7075,7 @@ Returns: C<True> if a menu was activated
 
 The I<property-notify-event> signal will be emitted when a property on the I<widget>'s window has been changed or deleted.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROPERTY-CHANGE-MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-PROPERTY-CHANGE-MASK> mask.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -7107,7 +7096,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =comment #TS:0:proximity-in-event:
 =head3 proximity-in-event
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROXIMITY-IN-MASK> mask.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-PROXIMITY-IN-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -7129,7 +7118,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =comment #TS:0:proximity-out-event:
 =head3 proximity-out-event
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-PROXIMITY-OUT-MASK> mask.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-PROXIMITY-OUT-MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -7218,7 +7207,7 @@ The I<screen-changed> signal gets emitted when the screen of a widget has change
 
 The I<scroll-event> signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<GDK_SCROLL_MASK> mask.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK_SCROLL_MASK> mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -7448,7 +7437,7 @@ As I<unmap> indicates that a widget will not be shown any longer, it can be used
 
 The I<unmap-event> signal will be emitted when the I<widget>'s window is unmapped. A window is unmapped when it becomes invisible on the screen.
 
-To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -7487,7 +7476,7 @@ The I<unrealize> signal is emitted when the B<Gnome::Gtk3::Window> associated wi
 
 The I<window-state-event> will be emitted when the state of the toplevel window associated to the I<widget> changes.
 
-To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the B<Gnome::Gtk3::DK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
+To receive this signal the B<Gnome::Gtk3::Window> associated to the widget needs to enable the C<GDK-STRUCTURE-MASK> mask. GDK will enable this mask automatically for all new windows.
 
 Returns: C<True> to stop other handlers from being invoked for the event. C<False> to propagate the event further.
 
@@ -7510,7 +7499,7 @@ Returns: C<True> to stop other handlers from being invoked for the event. C<Fals
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use C<new(:label('my text label'))> or C<set-text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));

@@ -185,7 +185,7 @@ Adds the device events in the bitfield *events* to the event mask for *widget*. 
 add-events
 ----------
 
-Adds the events in the bitfield *$events* to the event mask for *widget*. See `set-events()` and the [input handling overview][event-masks] for details.
+Adds the events in the bitfield *$events* to the event mask for *widget*. See `set-events()` and the [input handling overview](https://developer.gnome.org/gtk3/stable/chap-input-handling.html#event-masks) for details.
 
     method add-events ( Int $events )
 
@@ -408,15 +408,16 @@ Note that unlike `is-ancestor()`, `get-ancestor()` considers this *widget* to be
 Returns: the ancestor widget, or `undefined` if not found
 
     method get-ancestor-rk (
-      GType $widget-type --> Gnome::GObject::Object
+      GType $widget-type, :$child-type? --> Gnome::GObject::Object
     )
 
     method get-ancestor-rk (
-      Str $gtk-widget-type-name --> Gnome::GObject::Object
+      Str $gtk-widget-type-name, :$child-type? --> Gnome::GObject::Object
     )
 
     method get-ancestor-rk (
-      Gnome::Gtk3::Widget $widget --> Gnome::GObject::Object
+      Gnome::Gtk3::Widget $widget, :$child-type?
+      --> Gnome::GObject::Object
     )
 
     method get-ancestor ( GType $widget-type --> N-GObject )
@@ -426,6 +427,8 @@ Returns: the ancestor widget, or `undefined` if not found
   * Str $gtk-widget-type-name; an ancester object name of how Gtk names these objects. Examples are `GtkWidget` and `GtkDialog`.
 
   * Gnome::Gtk3::Widget $widget; a raku widget.
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 The return value **Gnome::GObject::Object** means any child raku object. N-GObject is the type of the native object.
 
@@ -733,8 +736,10 @@ get-parent, get-parent-rk
 
 Returns the parent object of this *widget* or `undefined` in the case of the native object or invalid in the case of a raku object.
 
-    method get-parent-rk ( --> Gnome::GObject::Object )
     method get-parent ( --> N-GObject )
+    method get-parent-rk ( :$child-type? --> Gnome::GObject::Object )
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-parent-window, get-parent-window-rk
 ---------------------------------------
@@ -743,8 +748,10 @@ Gets *widget*’s parent window, or `undefined` if it does not have one.
 
 Returns: the parent window of *widget*, or `undefined` if it does not have a parent window.
 
-    method get-parent-window-rk ( --> Gnome::GObject::Object )
     method get-parent-window ( --> N-GObject )
+    method get-parent-window-rk ( :$child-type? --> Gnome::GObject::Object )
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-path, get-path-rk
 ---------------------
@@ -753,8 +760,8 @@ Returns the **Gnome::Gtk3::WidgetPath** representing *widget*, if the widget is 
 
 Returns: The **Gnome::Gtk3::WidgetPath** representing *widget*
 
-    method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
     method get-path ( --> N-GObject )
+    method get-path-rk ( --> Gnome::Gtk3::WidgetPath )
 
 get-preferred-height
 --------------------
@@ -958,8 +965,8 @@ Returns the style context associated to *widget*. The returned object is guarant
 
 Returns: a **Gnome::Gtk3::StyleContext**. This memory is owned by *widget* and must not be freed.
 
-    method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
     method get-style-context ( --> N-GObject )
+    method get-style-context-rk ( --> Gnome::Gtk3::StyleContext )
 
 get-support-multidevice
 -----------------------
@@ -995,8 +1002,10 @@ Returns the **Gnome::Gtk3::Window** of the current tooltip. This can be the GtkW
 
 Returns: The **Gnome::Gtk3::Window** of the current tooltip. It can be undefined or invalid when there is no window defined.
 
-    method get-tooltip-window-rk ( --> Gnome::Gtk3::Window )
     method get-tooltip-window ( --> N-GObject )
+    method get-tooltip-window-rk ( :$child-type? --> Gnome::Gtk3::Window )
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-toplevel, get-toplevel-rk
 -----------------------------
@@ -1015,8 +1024,10 @@ To reliably find the toplevel **Gnome::Gtk3::Window**, use `get-toplevel()` and 
 
 Returns: the topmost ancestor of *widget*, or *widget* itself if there’s no ancestor.
 
-    method get-toplevel-rk ( --> Gnome::GObject::Widget )
     method get-toplevel ( --> N-GObject )
+    method get-toplevel-rk ( :$child-type? --> Gnome::GObject::Widget )
+
+  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-valign
 ----------
@@ -2275,6 +2286,289 @@ The *direction-changed* signal is emitted when the text direction of a widget ch
 
   * $previous_direction; the previous text direction of *widget* as a GTK_TYPE_TEXT_DIRECTION enum
 
+### drag-begin
+
+The *drag-begin* signal is emitted on the drag source when a drag is started. A typical reason to connect to this signal is to set up a custom drag icon with e.g. `gtk-drag-source-set-icon-pixbuf()`.
+
+Note that some widgets set up a drag icon in the default handler of this signal, so you may have to use `g-signal-connect-after()` to override what the default handler did.
+
+    method handler (
+      N-GObject $context,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+### drag-data-delete
+
+The *drag-data-delete* signal is emitted on the drag source when a drag with the action `GDK-ACTION-MOVE` is successfully completed. The signal handler is responsible for deleting the data that has been dropped. What "delete" means depends on the context of the drag operation.
+
+    method handler (
+      Unknown type GDK_TYPE_DRAG_CONTEXT $context,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+### drag-data-get
+
+The *drag-data-get* signal is emitted on the drag source when the drop site requests the data which is dragged. It is the responsibility of the signal handler to fill *$data* with the data in the format which is indicated by *info*. See `gtk-selection-data-set()` and `gtk-selection-data-set-text()`.
+
+    method handler (
+      N-GObject $context,
+      N-GObject $data,
+      UInt $info,
+      UInt $time,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context, a native
+
+  * $data; the native **Gnome::Gtk3::SelectionData** to be filled with the dragged data
+
+  * $info; the info that has been registered with the target in the **Gnome::Gtk3::TargetList**
+
+  * $time; the timestamp at which the data was requested
+
+### drag-data-received
+
+The *drag-data-received* signal is emitted on the drop site when the dragged data has been received. If the data was received in order to determine whether the drop will be accepted, the handler is expected to call `gdk-drag-status()` and not finish the drag. If the data was received in response to a *drag-drop* signal (and this is the last target to be received), the handler for this signal is expected to process the received data and then call `gtk-drag-finish()`, setting the *success* parameter depending on whether the data was processed successfully.
+
+Applications must create some means to determine why the signal was emitted and therefore whether to call `gdk-drag-status()` or `gtk-drag-finish()`.
+
+The handler may inspect the selected action with `gdk-drag-context-get-selected-action()` before calling `gtk-drag-finish()`, e.g. to implement `GDK-ACTION-ASK` as shown in the following example:
+
+    void
+    drag-data-received (GtkWidget          *widget,
+    GdkDragContext     *context,
+    gint                x,
+    gint                y,
+    GtkSelectionData   *data,
+    guint               info,
+    guint               time)
+    {
+    if ((data->length >= 0) && (data->format == 8))
+    {
+    GdkDragAction action;
+
+    // handle data here
+
+    action = gdk-drag-context-get-selected-action (context);
+    if (action == GDK-ACTION-ASK)
+    {
+    GtkWidget *dialog;
+    gint response;
+
+    dialog = gtk-message-dialog-new (NULL,
+    GTK-DIALOG-MODAL |
+    GTK-DIALOG-DESTROY-WITH-PARENT,
+    GTK-MESSAGE-INFO,
+    GTK-BUTTONS-YES-NO,
+    "Move the data ?\n");
+    response = gtk-dialog-run (GTK-DIALOG (dialog));
+    destroy (dialog);
+
+    if (response == GTK-RESPONSE-YES)
+    action = GDK-ACTION-MOVE;
+    else
+    action = GDK-ACTION-COPY;
+    }
+
+    gtk-drag-finish (context, TRUE, action == GDK-ACTION-MOVE, time);
+    }
+    else
+    gtk-drag-finish (context, FALSE, FALSE, time);
+    }
+
+The handler method API:
+
+    method handler (
+      N-GObject $context,
+      Int $x,
+      Int $y,
+      N-GObject $data,
+      UInt $info,
+      UInt $time,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal
+
+  * $context; the drag context
+
+  * $_handle_id; the registered event handler id
+
+  * $x; where the drop happened
+
+  * $y; where the drop happened
+
+  * $data; the received data
+
+  * $info; the info that has been registered with the target in the **Gnome::Gtk3::TargetList**
+
+  * $time; the timestamp at which the data was received
+
+### drag-drop
+
+The *drag-drop* signal is emitted on the drop site when the user drops the data onto the widget. The signal handler must determine whether the cursor position is in a drop zone or not. If it is not in a drop zone, it returns `False` and no further processing is necessary. Otherwise, the handler returns `True`. In this case, the handler must ensure that `gtk-drag-finish()` is called to let the source know that the drop is done. The call to `gtk-drag-finish()` can be done either directly or in a *drag-data-received* handler which gets triggered by calling `gtk-drag-get-data()` to receive the data for one or more of the supported targets.
+
+Returns: whether the cursor position is in a drop zone
+
+    method handler (
+      N-GObject $context,
+      Int $x,
+      Int $y,
+      UInt $time,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+  * $x; the x coordinate of the current cursor position
+
+  * $y; the y coordinate of the current cursor position
+
+  * $time; the timestamp of the motion event
+
+### drag-end
+
+The *drag-end* signal is emitted on the drag source when a drag is finished. A typical reason to connect to this signal is to undo things done in *drag-begin*.
+
+    method handler (
+      N-GObject $context,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+### drag-failed
+
+The *drag-failed* signal is emitted on the drag source when a drag has failed. The signal handler may hook custom code to handle a failed DnD operation based on the type of error, it returns `True` is the failure has been already handled (not showing the default "drag operation failed" animation), otherwise it returns `False`.
+
+Returns: `True` if the failed drag operation has been already handled.
+
+    method handler (
+      N-GObject $context,
+      Int $result,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+      --> Bool
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+  * $result; the result of the drag operation. a enum from GtkDragResult
+
+### drag-leave
+
+The *drag-leave* signal is emitted on the drop site when the cursor leaves the widget. A typical reason to connect to this signal is to undo things done in *drag-motion*, e.g. undo highlighting with `gtk-drag-unhighlight()`.
+
+Likewise, the *drag-leave* signal is also emitted before the *drag-drop* signal, for instance to allow cleaning up of a preview item created in the *drag-motion* signal handler.
+
+    method handler (
+      N-GObject $context,
+      UInt $time,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+    );
+
+  * $widget; the object which received the signal.
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+  * $time; the timestamp of the motion event
+
+### drag-motion
+
+The *drag-motion* signal is emitted on the drop site when the user moves the cursor over the widget during a drag. The signal handler must determine whether the cursor position is in a drop zone or not. If it is not in a drop zone, it returns `False` and no further processing is necessary. Otherwise, the handler returns `True`. In this case, the handler is responsible for providing the necessary information for displaying feedback to the user, by calling `gdk-drag-status()`.
+
+If the decision whether the drop will be accepted or rejected can't be made based solely on the cursor position and the type of the data, the handler may inspect the dragged data by calling `gtk-drag-get-data()` and defer the `gdk-drag-status()` call to the *drag-data-received* handler. Note that you must pass **Gnome::Gtk3::TK-DEST-DEFAULT-DROP**, **Gnome::Gtk3::TK-DEST-DEFAULT-MOTION** or **Gnome::Gtk3::TK-DEST-DEFAULT-ALL** to `gtk-drag-dest-set()` when using the drag-motion signal that way.
+
+Also note that there is no drag-enter signal. The drag receiver has to keep track of whether he has received any drag-motion signals since the last *drag-leave* and if not, treat the drag-motion signal as an "enter" signal. Upon an "enter", the handler will typically highlight the drop site with `gtk-drag-highlight()`. |[<!-- language="C" --> static void drag-motion (GtkWidget *widget, GdkDragContext *context, gint x, gint y, guint time) { GdkAtom target;
+
+PrivateData *private-data = GET-PRIVATE-DATA (widget);
+
+if (!private-data->drag-highlight) { private-data->drag-highlight = 1; gtk-drag-highlight (widget); }
+
+target = gtk-drag-dest-find-target (widget, context, NULL); if (target == GDK-NONE) gdk-drag-status (context, 0, time); else { private-data->pending-status = gdk-drag-context-get-suggested-action (context); gtk-drag-get-data (widget, context, target, time); }
+
+return TRUE; }
+
+static void drag-data-received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *selection-data, guint info, guint time) { PrivateData *private-data = GET-PRIVATE-DATA (widget);
+
+if (private-data->suggested-action) { private-data->suggested-action = 0;
+
+// We are getting this data due to a request in drag-motion, // rather than due to a request in drag-drop, so we are just // supposed to call `gdk-drag-status()`, not actually paste in // the data.
+
+str = gtk-selection-data-get-text (selection-data); if (!data-is-acceptable (str)) gdk-drag-status (context, 0, time); else gdk-drag-status (context, private-data->suggested-action, time); } else { // accept the drop } } ]|
+
+Returns: whether the cursor position is in a drop zone
+
+    method handler (
+      N-GObject $context,
+      Int $x,
+      Int $y,
+      Int $time,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($widget),
+      *%user-options
+      --> Int
+    );
+
+  * $widget; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+  * $context; the drag context
+
+  * $x; the x coordinate of the current cursor position
+
+  * $y; the y coordinate of the current cursor position
+
+  * $time; the timestamp of the motion event
+
 ### draw
 
 This signal is emitted when a widget is supposed to render itself. The *widget*'s top left corner must be painted at the origin of the passed in context and be sized to the values returned by `get-allocated-width()` and `get-allocated-height()`.
@@ -2855,7 +3149,7 @@ The *screen-changed* signal gets emitted when the screen of a widget has changed
 
 The *scroll-event* signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-SCROLL-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **GDK_SCROLL_MASK** mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -3163,7 +3457,7 @@ The **Gnome::GObject::Value** type of property *can-focus* is `G_TYPE_BOOLEAN`.
 
 Whether the widget is part of a composite widget Default value: False
 
-The **Gnome::GObject::Value** type of property *composite-child* is `G_TYPE_BOOLEAN`.
+The **Gnome::GObject::Value** type of property *composite-child* is `G_TYPE_BOOLEAN`. Value is read only.
 
 ### Events: events
 
