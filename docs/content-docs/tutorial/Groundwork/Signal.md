@@ -176,32 +176,58 @@ There are other ways to run code and keep the interface responsive as is shown i
 
 ![image](images/signals-background-example.png)
 
-Class **X** is controlling a few veriables which are accessed from several threads and need therefore some protection using semaphores. There is a package for this called **Semaphore::ReadersWriters**. See also [readers-writers problem on wikipedia](https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem). Initializing the semaphores [22-25] uses two keys to control two semaphores for the variables `$!promise` and `$!running-update`. Later you see examples of reading [35,52] and writing [54,55-61].
-
-You cannot blindly start a thread and try to update the interface from there. The Glib library provides several ways to enter a thread safely. The routine `.start-thread()` from **Gnome::GObject::Object** does that for you and returns a **Promise** object [56-59]. Option `:start-time` gives you the opportinity to let the thread wait a little before taking off. `:new-context` is a necessary option which controls the creation of a separate context. This is needed if one is to show the changes in the Gui otherwise it will still use the main loop and the Gui will freeze.
-
-Initialization and configuration takes place at 76-107 after which all is shown [108] and the event loop entered [109].
-
 {% highlight raku %}
-{% include example-code/Signals/change-gui-from-thread.pl6 %}
+{% include example-code/Signals/change-gui-from-thread.raku %}
 {% endhighlight %}
+
+1) Class **X** is controlling a few veriables which are accessed from several threads and need therefore some protection using semaphores. There is a package for this called **Semaphore::ReadersWriters**. See also [readers-writers problem on wikipedia](https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem).
+
+2) Initializing the semaphores uses two keys to control two semaphores for the variables `$!promise` and `$!running-update`. Later on you see examples of reading and writing the variables using the semaphores.
+    a) Example read of variable `$!running-update`
+    b) Example write of the same variable.
+
+3) You cannot blindly start a thread and try to update the interface from there. The Glib library provides several ways to enter a thread safely. The routine `.start-thread()` from **Gnome::GObject::Object** does that for you and returns a **Promise** object.
+    * Option `:start-time` gives you the opportunity to let the thread wait a little before taking off.
+    * Option `:new-context` is a necessary option which controls the creation of a separate context. This is needed if one is to show the changes in the Gui otherwise it will still use the main loop and the Gui will freeze.
+
+4) Initialization and configuration of the user interface
+5) Enter the main loop
+
 
 ## Sending Events
 
-I believe that sending an event to some widget is seldom used but it is possible to, for example, send a click event to a button and start the action for that event. A test interface (already in the making) could make use of this so a Gui can be tested by a script instead of the tedious and repeatative work of pressing all buttons and providing input to see if the program still works.
+I believe that sending an event to some widget is seldom used but it is possible to, for example, send a click event to a button and start the action for that event. A test interface (already in the making) could make use of this so a Gui can be tested by a script instead of the tedious repeated work of pressing all buttons and providing input to see if the program still works.
 
-In the next program example w'll see the use of `.emit-by-name()` from **Gnome::GObject::Signal**. It is a bit of a fun application which could work much more easy using `.set-active()` on the check box widget but there is also our motto **_TIMTOWTDI_** or **_There Is More Than One Way To Do It!_**
+In the next program example we'll see the use of `.emit-by-name()` from **Gnome::GObject::Signal**. It is a bit of a fun application which could work much more easy using `.set-active()` on the check box widget but there is also our motto **_TIMTOWTDI_** or **_There Is More Than One Way To Do It!_**
 
 ![image](images/signals-emit-by-name.png)
 
-Clicking on the button named 'Pick a Box' will choose a checkbox to send a `clicked` event to one of the check buttons. After receiving the event, the checkbox toggles between its on or off state and calls the callback routine. This routine writes the result information to the console wherein the program is started.
+Clicking on the button named 'Pick a Box' will choose a checkbox to send a `clicked` event to one of the check buttons. After receiving the event, the checkbox toggles between its on or off state and calls the callback routine. This callback routine writes the result information to the console wherein the program is started.
 
-{% highlight raku linenos %}
-{% include example-code/Signals/emit-event.pl6 %}
+{% highlight raku %}
+{% include example-code/Signals/emit-event.raku %}
 {% endhighlight %}
 
-Most of the code is obvious after having shown several examples. The initialization of class **X** generates 20 check buttons and place these in the first row [14-27] of the provided grid [46]. We use the `toggled` signal to call the `.check-box-toggle()` method [25].
+Most of the code is obvious after seeing several examples.
 
-The second row is occupied by the button over all its horizontal grid cells, 20 cells that is [48,49]. It is setup to call method `$x.pick-a-box()` after procesing the `clicked` event [50].
+1) In the initialization of class **X** it generates 20 check buttons and place these in the first row of the given grid.
 
-The method `$x.pick-a-box()` will randomly choose one of the generated check buttons to send the event `clicked` to. Here the method `.emit-by-name()` is called to do just that [39].
+2) We use the `toggled` signal to call the `X.check-box-toggle()` method.
+
+3) The method `X.pick-a-box()` will randomly choose one of the generated check buttons to send the event `clicked` to. Here the method `.emit-by-name()` is called to do just that.
+
+4) The second row of the grid is occupied by the button over all its horizontal grid cells, 20 cells that is. It is setup to call method `X.pick-a-box()` after procesing the `clicked` event.
+
+
+# References
+{% assign url = site.baseurl | append: "/content-docs/reference" %}
+* [Gnome::GObject::Object]({{ url }}/GObject/Object.html)
+* [Gnome::GObject::Signal]({{ url }}/GObject/Signal.html)
+
+* [Gnome::Gdk3::Events]({{ url }}/Gdk3/Events.html)
+* [Gnome::Gdk3::Keysyms]({{ url }}/Gdk3/Keysyms.html)
+
+* [Gnome::Gtk3::Widget]({{ url }}/Gtk3/Widget.html)
+* [Gnome::Gtk3::Main]({{ url }}/Gtk3/Main.html)
+
+* [Semaphore::ReadersWriters](https://raku.land/cpan:MARTIMM/Semaphore::ReadersWriters)
