@@ -2125,7 +2125,7 @@ Supported signals
 
 The *button-press-event* signal will be emitted when a button (typically from a mouse) is pressed.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-BUTTON-PRESS-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-BUTTON-PRESS-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2149,7 +2149,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *button-release-event* signal will be emitted when a button (typically from a mouse) is released.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-BUTTON-RELEASE-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-BUTTON-RELEASE-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2173,7 +2173,7 @@ Returns: `False` to stop other handlers from being invoked for the event. `True`
 
 The *configure-event* signal will be emitted when the size, position or stacking of the *widget*'s window has changed.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-STRUCTURE-MASK** mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-STRUCTURE-MASK` mask. GDK will enable this mask automatically for all new windows.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -2251,7 +2251,7 @@ This signal is not suitable for saving widget state.
 
 The *destroy-event* signal is emitted when a **Gnome::Gtk3::Window** is destroyed. You rarely get this signal, because most widgets disconnect themselves from their window before they destroy it, so no widget owns the window at destroy time.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-STRUCTURE-MASK** mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-STRUCTURE-MASK` mask. GDK will enable this mask automatically for all new windows.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -2354,50 +2354,6 @@ The *drag-data-get* signal is emitted on the drag source when the drop site requ
 The *drag-data-received* signal is emitted on the drop site when the dragged data has been received. If the data was received in order to determine whether the drop will be accepted, the handler is expected to call `gdk-drag-status()` and not finish the drag. If the data was received in response to a *drag-drop* signal (and this is the last target to be received), the handler for this signal is expected to process the received data and then call `gtk-drag-finish()`, setting the *success* parameter depending on whether the data was processed successfully.
 
 Applications must create some means to determine why the signal was emitted and therefore whether to call `gdk-drag-status()` or `gtk-drag-finish()`.
-
-The handler may inspect the selected action with `gdk-drag-context-get-selected-action()` before calling `gtk-drag-finish()`, e.g. to implement `GDK-ACTION-ASK` as shown in the following example:
-
-    void
-    drag-data-received (GtkWidget          *widget,
-    GdkDragContext     *context,
-    gint                x,
-    gint                y,
-    GtkSelectionData   *data,
-    guint               info,
-    guint               time)
-    {
-    if ((data->length >= 0) && (data->format == 8))
-    {
-    GdkDragAction action;
-
-    // handle data here
-
-    action = gdk-drag-context-get-selected-action (context);
-    if (action == GDK-ACTION-ASK)
-    {
-    GtkWidget *dialog;
-    gint response;
-
-    dialog = gtk-message-dialog-new (NULL,
-    GTK-DIALOG-MODAL |
-    GTK-DIALOG-DESTROY-WITH-PARENT,
-    GTK-MESSAGE-INFO,
-    GTK-BUTTONS-YES-NO,
-    "Move the data ?\n");
-    response = gtk-dialog-run (GTK-DIALOG (dialog));
-    destroy (dialog);
-
-    if (response == GTK-RESPONSE-YES)
-    action = GDK-ACTION-MOVE;
-    else
-    action = GDK-ACTION-COPY;
-    }
-
-    gtk-drag-finish (context, TRUE, action == GDK-ACTION-MOVE, time);
-    }
-    else
-    gtk-drag-finish (context, FALSE, FALSE, time);
-    }
 
 The handler method API:
 
@@ -2524,25 +2480,9 @@ Likewise, the *drag-leave* signal is also emitted before the *drag-drop* signal,
 
 The *drag-motion* signal is emitted on the drop site when the user moves the cursor over the widget during a drag. The signal handler must determine whether the cursor position is in a drop zone or not. If it is not in a drop zone, it returns `False` and no further processing is necessary. Otherwise, the handler returns `True`. In this case, the handler is responsible for providing the necessary information for displaying feedback to the user, by calling `gdk-drag-status()`.
 
-If the decision whether the drop will be accepted or rejected can't be made based solely on the cursor position and the type of the data, the handler may inspect the dragged data by calling `gtk-drag-get-data()` and defer the `gdk-drag-status()` call to the *drag-data-received* handler. Note that you must pass **Gnome::Gtk3::TK-DEST-DEFAULT-DROP**, **Gnome::Gtk3::TK-DEST-DEFAULT-MOTION** or **Gnome::Gtk3::TK-DEST-DEFAULT-ALL** to `gtk-drag-dest-set()` when using the drag-motion signal that way.
+If the decision whether the drop will be accepted or rejected can't be made based solely on the cursor position and the type of the data, the handler may inspect the dragged data by calling `gtk-drag-get-data()` and defer the `gdk-drag-status()` call to the *drag-data-received* handler. Note that you must pass `GTK-DEST-DEFAULT-DROP`, `GTK-DEST-DEFAULT-MOTION` or `GTK-DEST-DEFAULT-ALL` to `gtk-drag-dest-set()` when using the drag-motion signal that way.
 
-Also note that there is no drag-enter signal. The drag receiver has to keep track of whether he has received any drag-motion signals since the last *drag-leave* and if not, treat the drag-motion signal as an "enter" signal. Upon an "enter", the handler will typically highlight the drop site with `gtk-drag-highlight()`. |[<!-- language="C" --> static void drag-motion (GtkWidget *widget, GdkDragContext *context, gint x, gint y, guint time) { GdkAtom target;
-
-PrivateData *private-data = GET-PRIVATE-DATA (widget);
-
-if (!private-data->drag-highlight) { private-data->drag-highlight = 1; gtk-drag-highlight (widget); }
-
-target = gtk-drag-dest-find-target (widget, context, NULL); if (target == GDK-NONE) gdk-drag-status (context, 0, time); else { private-data->pending-status = gdk-drag-context-get-suggested-action (context); gtk-drag-get-data (widget, context, target, time); }
-
-return TRUE; }
-
-static void drag-data-received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *selection-data, guint info, guint time) { PrivateData *private-data = GET-PRIVATE-DATA (widget);
-
-if (private-data->suggested-action) { private-data->suggested-action = 0;
-
-// We are getting this data due to a request in drag-motion, // rather than due to a request in drag-drop, so we are just // supposed to call `gdk-drag-status()`, not actually paste in // the data.
-
-str = gtk-selection-data-get-text (selection-data); if (!data-is-acceptable (str)) gdk-drag-status (context, 0, time); else gdk-drag-status (context, private-data->suggested-action, time); } else { // accept the drop } } ]|
+Also note that there is no drag-enter signal. The drag receiver has to keep track of whether he has received any drag-motion signals since the last *drag-leave* and if not, treat the drag-motion signal as an "enter" signal. Upon an "enter", the handler will typically highlight the drop site with `gtk-drag-highlight()`.
 
 Returns: whether the cursor position is in a drop zone
 
@@ -2597,7 +2537,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *enter-notify-event* will be emitted when the pointer enters the *widget*'s window.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-ENTER-NOTIFY-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-ENTER-NOTIFY-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2676,7 +2616,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *focus-in-event* signal will be emitted when the keyboard focus enters the *widget*'s window.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-FOCUS-CHANGE-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-FOCUS-CHANGE-MASK` mask.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -2698,7 +2638,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *focus-out-event* signal will be emitted when the keyboard focus leaves the *widget*'s window.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-FOCUS-CHANGE-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-FOCUS-CHANGE-MASK` mask.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -2800,7 +2740,7 @@ The *hierarchy-changed* signal is emitted when the anchored state of a widget ch
 
 The *key-press-event* signal is emitted when a key is pressed. The signal emission will reoccur at the key-repeat rate when the key is kept pressed.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-KEY-PRESS-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-KEY-PRESS-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2824,7 +2764,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *key-release-event* signal is emitted when a key is released.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-KEY-RELEASE-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-KEY-RELEASE-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2868,7 +2808,7 @@ Returns: `1` if stopping keyboard navigation is fine, `0` if the emitting widget
 
 The *leave-notify-event* will be emitted when the pointer leaves the *widget*'s window.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-LEAVE-NOTIFY-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-LEAVE-NOTIFY-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -2908,7 +2848,7 @@ The *map* signal can be used to determine whether a widget will be drawn, for in
 
 The *map-event* signal will be emitted when the *widget*'s window is mapped. A window is mapped when it becomes visible on the screen.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-STRUCTURE-MASK** mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-STRUCTURE-MASK` mask. GDK will enable this mask automatically for all new windows.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -2950,7 +2890,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 The *motion-notify-event* signal is emitted when the pointer moves over the widget's **Gnome::Gtk3::Window**.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-POINTER-MOTION-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-POINTER-MOTION-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -3021,7 +2961,7 @@ Returns: `True` if a menu was activated
 
 The *property-notify-event* signal will be emitted when a property on the *widget*'s window has been changed or deleted.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-PROPERTY-CHANGE-MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-PROPERTY-CHANGE-MASK` mask.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -3041,7 +2981,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 ### proximity-in-event
 
-To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-PROXIMITY-IN-MASK** mask.
+To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-PROXIMITY-IN-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -3063,7 +3003,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 
 ### proximity-out-event
 
-To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-PROXIMITY-OUT-MASK** mask.
+To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-PROXIMITY-OUT-MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -3149,7 +3089,7 @@ The *screen-changed* signal gets emitted when the screen of a widget has changed
 
 The *scroll-event* signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **GDK_SCROLL_MASK** mask.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK_SCROLL_MASK` mask.
 
 This signal will be sent to the grab widget if there is one.
 
@@ -3368,7 +3308,7 @@ As *unmap* indicates that a widget will not be shown any longer, it can be used 
 
 The *unmap-event* signal will be emitted when the *widget*'s window is unmapped. A window is unmapped when it becomes invisible on the screen.
 
-To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-STRUCTURE-MASK** mask. GDK will enable this mask automatically for all new windows.
+To receive this signal, the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-STRUCTURE-MASK` mask. GDK will enable this mask automatically for all new windows.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -3404,7 +3344,7 @@ The *unrealize* signal is emitted when the **Gnome::Gtk3::Window** associated wi
 
 The *window-state-event* will be emitted when the state of the toplevel window associated to the *widget* changes.
 
-To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the **Gnome::Gtk3::DK-STRUCTURE-MASK** mask. GDK will enable this mask automatically for all new windows.
+To receive this signal the **Gnome::Gtk3::Window** associated to the widget needs to enable the `GDK-STRUCTURE-MASK` mask. GDK will enable this mask automatically for all new windows.
 
 Returns: `True` to stop other handlers from being invoked for the event. `False` to propagate the event further.
 
@@ -3425,7 +3365,7 @@ Returns: `True` to stop other handlers from being invoked for the event. `False`
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use `new(:label('my text label'))` or `set-text('my text label')`.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
