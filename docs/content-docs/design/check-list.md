@@ -198,26 +198,26 @@ TargetEntry               |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 TargetList                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 Targets                   |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 TargetTable               |S | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
-TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
-TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TextView                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ToolButton                |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
-TreeModel                 |R | ✗| ✓| ✓|  |  |  |  |  |  |  |  |  |
-TreePath                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |
-TreeRowReference          |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
-TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |
-TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
-TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
-TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextBuffer                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TextView                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToolButton                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
+TreeModel                 |R | ✗| ✓| ✓|  |  |  |  |  |  |  |  |  |  |
+TreePath                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
+TreeRowReference          |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
+TreeSelection             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+TreeStore                 |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+TreeView                  |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+TreeViewColumn            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Viewport                  |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓|
-Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| ✓| ✓|
-WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |
-Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|
+Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| ✓| ✓|  |
+WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
+Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|  |
 
 <!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk| -->
 
