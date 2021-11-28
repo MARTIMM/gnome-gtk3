@@ -10,7 +10,7 @@ We are going to see a bit more about signals. First some repetition. We define o
 
 Such a class can be defined in a separate module which is imported at the start of the program.
 
-```
+```raku
 class Gui::TopWindow {
   has Gnome::Gtk3::Window $.top-window;
 
@@ -35,7 +35,7 @@ $w.top-window.add($grid);
 
 ## Declaration of the Registration Method
 
-```
+```raku
 method register-signal (
   $handler-object, Str:D $handler-name,
   Str:D $signal-name, *%user-options
@@ -47,7 +47,7 @@ We have used the first few arguments `$handler-object` and `$handler-name` befor
 
 Now, I want to tell a bit more about the `*%user-options`. This is an accumulation of all named attributes given in the argument list to `.register-signal()`. The user is free to use any named attribute name. Unfortunately however, in the early setup of the routine I claimed the name 'widget' to provide the Raku object on which the signal was fired. This is changed now into '\_widget' and the older form will be deprecated and free to be used by the developer later after version 0.30.0. From now on all names starting with an underscore ('\_') are reserved.
 
-```
+```raku
 my Gnome::Gtk3::DrawingArea $da .= new;
 my Gnome::Gtk3::Button $draw-bttn .= new(:label<Draw>);
 my Int $handler-id = $draw-bttn.register-signal(
@@ -61,11 +61,12 @@ Together with the user named attributes the arguments `:$_widget`, `:$_native-ob
 
 The handler id is also returned from the call to `.register-signal()`. More on this in the next section.
 
+
 ## Unregistering Signals
 
 There are times that you want to get rid of a signal when your program gets into another phase. For instance in the example above, the drawing area can be replaced with something else or removed altogether and the button may get another function. You could remove the button too and create a new one and register a new handler but there could be reasons that it wouldn't be easy to do so, for instance you have the button object but don't know in which container it is placed in. Here the handler id comes in because you need it to remove the handler.
 
-```
+```raku
 has Int $!handler-id;
 has Gnome::Gtk3::Button $!draw-bttn;
 …
@@ -81,17 +82,18 @@ $!draw-bttn.handler-disconnect($!handler-id);
 …
 ```
 Or done in a handler
-```
+```raku
 $_widget.handler-disconnect($_handler-id);
 …
 ```
 
 So, that was easy 😉.
 
+
 ## A note about `:$_native-object`
 
 The `$_native-object` variable provided to the handler is the same native object as stored within the Raku object provided in `$_widget`. However, there are situations that the Raku object gets invalidated; `$_widget.is-valid() ~~ False`. This is quickly remedied when it can be expected, like so;
-```
+```raku
 method handler (
   …,
   Gnome::Gtk3::Button :_widget($button) is copy,
@@ -106,7 +108,7 @@ method handler (
 ## Other Signals
 
 Each of the Gnome objects who can handle signals have some detailed information in their documentation. If we look for example at the `key-press-event` defined for **Gnome::Gtk3::Widget** we see the following handler declaration;
-```
+```raku
 method handler (
   N-GdkEventKey $event,
   Int :$_handler_id,
@@ -115,10 +117,10 @@ method handler (
   --> Int
 );
 ```
-All named arguments are optional but the positional arguments, if any, are not. Also _**the postional arguments must have a type!**_. Above we see that `$event` has a type `N-GdkEventKey` which is a structure from **Gnome::Gdk3::Events**.
+All named arguments are optional but the positional arguments, if any, are not. Also _**the positional arguments must have a type!**_. Above we see that `$event` has a type `N-GdkEventKey` which is a structure from **Gnome::Gdk3::Events**.
 
 To show what you can do, here is another code snippet;
-```
+```raku
 class HandlerObject {
 
   # if you want to test more event types
@@ -143,9 +145,10 @@ $my-key-input.register-signal(
 );
 ...
 ```
-The `N-GdkEvent` type is a union of event structures of which `N-GdkEventKey` is one of them. Of all these structures, the first three fields are the same. The structure `N-GdkEventAny` is only holding these values. That's the reason why you can test its type and then access the other fields using the `N-GdkEventKey` type by binding the variable to it. `N-GdkEvent.type ~~ N-GdkEventKey.type`. If only one type of event is processed by your handler, you could skip a few tests and have `method show-keys ( N-GdkEventKey $key-event )` directly in your handler declaration.
+The `N-GdkEvent` type is a union of event structures of which `N-GdkEventKey` is one of them. Of all these structures, the first three fields are the same. The structure `N-GdkEventAny` is only holding these values. That's the reason why you can test its type and then access the other fields using the `N-GdkEventKey` type by binding the variable to it. If only one type of event is processed by your handler, you could skip a few tests and have `method show-keys ( N-GdkEventKey $key-event )` directly in your handler declaration.
 
 You can test the keys for its values such as `GDK_KEY_Return` used in the example. The names can be found here: **Gnome::Gdk3::Keysyms**.
+
 
 ## Event Loop
 
@@ -154,7 +157,7 @@ Most of the time the program only have to sit back and wait for the user of your
 However, every action performed by your code will freeze the user interface. As mentioned above, this processing time is mostly short and the freezing is barely noticed. When you have to do something substantial you will have to check for events yourself and let the library process the queued events to prevent an unresponsive interface.
 
 You can do this by inserting the following code on regular spots in your code;
-```
+```raku
 my Gnome::Gtk3::Main $main;
 ...
 while $main.events-pending {
@@ -167,9 +170,9 @@ my Bool $exited = ? $main.main-iteration(False);
 ```
 Only you won't know if there were any events processed. The value returned is 0 or 1 to show if the current event loop was exited.
 
-Yes, current event loop, because event loops can be nested, although, I do not yet have a good example for it. It seems that dialog widgets use a local event loop. I can imagine that a modal dialog shields the events from parent windows off by doing that but that needs to be found out yet. To get the current loop nesting level call `$main.main-level()`.
+Yes, current event loop, because event loops can be nested, although, I do not yet have a good example for it. It seems that dialog widgets use a local event loop. A modal dialog shields the events from parent windows off by just doing that. To get the current loop nesting level call `$main.main-level()`.
 
-There are other ways to run code and keep the interface responsive as is shown in the next example. It shows a scale widget which you can change and two buttons _Start Update_ and _Stop Update_. The start update button is used to start a process in a thread which mimic computations and show results by moving the scale left or right. The stop update button stops that process. While running, all gui elements stay responsive while running the 'updates' like button clicks and window resizes.
+There are other ways to run code and keep the interface responsive as is shown in the next example. It shows a scale widget which you can change and two buttons _Start Update_ and _Stop Update_. The start update button is used to start a process in a thread which mimic computations and show results by moving the scale left or right. The stop update button stops that process. While running, all gui elements stay responsive while running the 'updates'.
 
 ![image](images/signals-background-example.png)
 
@@ -179,7 +182,7 @@ You cannot blindly start a thread and try to update the interface from there. Th
 
 Initialization and configuration takes place at 76-107 after which all is shown [108] and the event loop entered [109].
 
-{% highlight raku linenos %}
+{% highlight raku %}
 {% include example-code/Signals/change-gui-from-thread.pl6 %}
 {% endhighlight %}
 
