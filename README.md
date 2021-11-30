@@ -184,6 +184,14 @@ There are always some problems! If you find one, please help by filing an issue 
 Name: **Marcel Timmerman**
 Github account name: **MARTIMM**
 
+
+# Copyright
+
+© 2019 - ∞ 😉. **Marcel Timmerman**
+<!-- Please change to latest year when taking over -->
+
+
+
 [//]: # (---- [refs] ----------------------------------------------------------)
 [changes]: https://martimm.github.io/gnome-gtk3/CHANGES.html
 [logo]: https://martimm.github.io/gnome-gtk3/content-docs/images/gtk-perl6.png
