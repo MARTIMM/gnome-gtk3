@@ -28,6 +28,7 @@ To remove a B<Gnome::Gtk3::RadioButton> from one group and make it part of a new
 The group list does not need to be freed, as each B<Gnome::Gtk3::RadioButton> will remove itself and its list item when it is destroyed.
 =end comment
 
+
 =head2 Css Nodes
 
   radiobutton
@@ -44,6 +45,7 @@ A B<Gnome::Gtk3::RadioButton> without indicator changes the name of its main nod
 
 When an unselected button in the group is clicked the clicked button receives the  I<toggled> signal, as does the previously selected button. Inside the  I<toggled> handler, C<gtk_toggle_button_get_active()> can be used to determine if the button has been selected or deselected.
 
+
 =head2 See Also
 
 B<Gnome::Gtk3::ComboBox>
@@ -53,6 +55,12 @@ B<Gnome::Gtk3::ComboBox>
 
   unit class Gnome::Gtk3::RadioButton;
   also is Gnome::Gtk3::CheckButton;
+
+
+=head2 Uml Diagram
+
+![](plantuml/buttons.svg)
+
 
 =head2 Inheriting this class
 

@@ -43,6 +43,11 @@ Declaration
     unit class Gnome::Gtk3::RadioButton;
     also is Gnome::Gtk3::CheckButton;
 
+Uml Diagram
+-----------
+
+![](plantuml/buttons.svg)
+
 Inheriting this class
 ---------------------
 
