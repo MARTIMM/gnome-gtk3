@@ -5,6 +5,7 @@ use Test;
 
 use Gnome::Gtk3::RadioButton;
 
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -38,12 +39,17 @@ subtest 'Manipulations', {
   $rb2 .= new( :group-from($rb1), :label<rb2>);
 
   $l .= new(:native-object($rb2.get-group));
-  is $l.g-slist-length, 2, '.new(:group-from, :label) / .get-group';
+  is $l.length, 2, '.new(:group-from, :label) / .get-group()';
+  $l = $rb2.get-group-rk;
+  is $l.length, 2, '.get-group-rk()';
+  my Gnome::Gtk3::RadioButton $rb2a .= new(:label<rb2a>);
+  $rb2a.set-group($l);
+  is  $rb2a.get-group-rk.length, 3, '.set-group()';
 
   # new radio button is shifted up front in the list
   $rb3 .= new( :group($l), :label<rb3>);
   $l .= new(:native-object($rb1.get-group));
-  is $l.g-slist-length, 3, '.new(:group, :label)';
+  is $l.length, 3, '.new(:group, :label)';
 
   $b .= new(:native-object($l.nth-data(0)));
   is $b.get-label, 'rb3', "found label 'rb3' from 1st radio button";
@@ -73,10 +79,6 @@ subtest 'Interface ...', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-}
-
-#-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }
 }}
@@ -91,7 +93,7 @@ subtest 'Signals ...', {
     method r-event ( :$widget ) {
       isa-ok $widget, Gnome::Gtk3::RadioButton,
              'signal received on proper widget';
-      my Gnome::Glib::SList $l .= new(:native-object($widget.get-group));
+      my Gnome::Glib::SList $l = $widget.get-group-rk;
       is $l.g-slist-length, 4, 'group now has four members';
       $triggered = True;
     }
@@ -103,6 +105,15 @@ subtest 'Signals ...', {
   $rb4.join-group($rb1);
 
   ok $triggered, 'signal is triggered';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my Gnome::Gtk3::RadioButton $rb5 .= new(:label<rb5>);
+  my @r = $rb5.set-properties(:group($rb2.get-native-object-no-reffing));
+
+  $l .= new(:native-object($rb1.get-group));
+  is $l.g-slist-length, 5, 'group';
 }
 
 #-------------------------------------------------------------------------------

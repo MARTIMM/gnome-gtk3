@@ -123,39 +123,51 @@ Create an object using a native object from a builder.
 
     multi method new ( Str :$build-id! )
 
-[[gtk_] radio_button_] get_group
---------------------------------
+get-group, get-group-rk
+-----------------------
 
 Retrieves the group assigned to a radio button.
 
-Returns: a linked list containing all the radio buttons (native GtkRadioButton objects) in the same group as this *radio_button*. The returned list is owned by the radio button and must not be modified or freed.
+Returns: (element-type GtkRadioButton) : a linked list containing all the radio buttons in the same group as *radio-button*. The returned list is owned by the radio button and must not be modified or freed.
 
-    method gtk_radio_button_get_group ( --> N-GSList )
+    method get-group ( --> N-GSList )
+    method get-group-rk ( --> Gnome::Glib::SList )
 
-[[gtk_] radio_button_] set_group
---------------------------------
-
-Sets a **Gnome::Gtk3::RadioButton**’s group. It should be noted that this does not change the layout of your interface in any way, so if you are changing the group, it is likely you will need to re-arrange the user interface to reflect these changes.
-
-    method gtk_radio_button_set_group ( N-GSList $group )
-
-  * N-GSList $group; (native GtkRadioButton objects) an existing radio button group, such as one returned from `gtk_radio_button_get_group()`, or undefined as an empty list.
-
-[[gtk_] radio_button_] join_group
----------------------------------
+join-group
+----------
 
 Joins a **Gnome::Gtk3::RadioButton** object to the group of another **Gnome::Gtk3::RadioButton** object
 
-Use this in language bindings instead of the `gtk_radio_button_get_group()` and `gtk_radio_button_set_group()` methods.
+Use this in language bindings instead of the `get-group()` and `gtk-radio-button-set-group()` methods
 
-    method gtk_radio_button_join_group ( N-GObject $group_source )
+    method join-group ( N-GObject $group_source )
 
-  * N-GObject $group_source; a radio button object who's group we are joining, or undefined to remove the radio button from its group
+### Example
+
+A common way to set up a group of radio buttons is the following:
+
+    my Gnome::Gtk3::RadioButton $last-button;
+    for @button-labels -> $label {
+      my Gnome::Gtk3::RadioButton $radio-button .= new(:$label);
+      $radio-button.join_group($last_button) if $last_button.defined;
+      $last_button = $radio_button;
+    }
+
+  * N-GObject $group_source; a radio button object whos group we are joining, or `undefined` to remove the radio button from its group
+
+set-group
+---------
+
+Sets a **Gnome::Gtk3::RadioButton**’s group. It should be noted that this does not change the layout of your interface in any way, so if you are changing the group, it is likely you will need to re-arrange the user interface to reflect these changes.
+
+    method set-group ( N-GSList $group )
+
+  * N-GSList $group; (element-type GtkRadioButton): an existing radio button group, such as one returned from `get-group()`, or `undefined`.
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -163,7 +175,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -174,14 +186,14 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
@@ -191,10 +203,33 @@ Supported signals
 Emitted when the group of radio buttons that a radio button belongs to changes. This is emitted when a radio button switches from being alone to being part of a group of 2 or more buttons, or vice-versa, and when a button is moved from one group of 2 or more buttons to a different one, but not when the composition of the group that a button belongs to changes.
 
     method handler (
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($button),
       *%user-options
     );
 
   * $button; the object which received the signal
+
+  * $_handle_id; the registered event handler id
+
+Properties
+==========
+
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+
+    my Gnome::Gtk3::Label $label .= new;
+    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
+
+Supported properties
+--------------------
+
+### Group: group
+
+Sets a new group for a radio button.Widget type: GTK_TYPE_RADIO_BUTTON
+
+The **Gnome::GObject::Value** type of property *group* is `G_TYPE_OBJECT`.
+
+Property is write only
 

@@ -108,13 +108,16 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Glib::SList;
+
 use Gnome::Gtk3::CheckButton;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkradiobutton.h
 # https://developer.gnome.org/gtk3/stable/GtkRadioButton.html
-unit class Gnome::Gtk3::RadioButton:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::RadioButton:auth<github:MARTIMM>:ver<0.2.0>;;
 also is Gnome::Gtk3::CheckButton;
 
 #-------------------------------------------------------------------------------
@@ -252,6 +255,340 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
+
+
+#-------------------------------------------------------------------------------
+#TM:1:get-group:
+#TM:1:get-group-rk:
+=begin pod
+=head2 get-group, get-group-rk
+
+Retrieves the group assigned to a radio button.
+
+Returns: (element-type GtkRadioButton) : a linked list containing all the radio buttons in the same group as I<radio-button>. The returned list is owned by the radio button and must not be modified or freed.
+
+  method get-group ( --> N-GSList )
+  method get-group-rk ( --> Gnome::Glib::SList )
+
+=end pod
+
+method get-group ( --> N-GSList ) {
+  gtk_radio_button_get_group(self.get-native-object-no-reffing)
+}
+
+method get-group-rk ( --> Gnome::Glib::SList ) {
+  Gnome::Glib::SList.new(:native-object(
+      gtk_radio_button_get_group(self.get-native-object-no-reffing)
+    )
+  )
+}
+
+sub gtk_radio_button_get_group (
+  N-GObject $radio_button --> N-GSList
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:join-group:
+=begin pod
+=head2 join-group
+
+Joins a B<Gnome::Gtk3::RadioButton> object to the group of another B<Gnome::Gtk3::RadioButton> object
+
+Use this in language bindings instead of the C<get-group()> and C<gtk-radio-button-set-group()> methods
+
+  method join-group ( N-GObject $group_source )
+
+=head3 Example
+
+A common way to set up a group of radio buttons is the following:
+
+  my Gnome::Gtk3::RadioButton $last-button;
+  for @button-labels -> $label {
+    my Gnome::Gtk3::RadioButton $radio-button .= new(:$label);
+    $radio-button.join_group($last_button) if $last_button.defined;
+    $last_button = $radio_button;
+  }
+
+
+=item N-GObject $group_source; a radio button object whos group we are  joining, or C<undefined> to remove the radio button from its group
+=end pod
+
+method join-group ( $group_source is copy ) {
+  $group_source .= get-native-object-no-reffing
+    unless $group_source ~~ N-GObject;
+
+  gtk_radio_button_join_group(
+    self.get-native-object-no-reffing, $group_source
+  );
+}
+
+sub gtk_radio_button_join_group (
+  N-GObject $radio_button, N-GObject $group_source
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-group:
+=begin pod
+=head2 set-group
+
+Sets a B<Gnome::Gtk3::RadioButton>’s group. It should be noted that this does not change the layout of your interface in any way, so if you are changing the group, it is likely you will need to re-arrange the user interface to reflect these changes.
+
+  method set-group ( N-GSList $group )
+
+=item N-GSList $group; (element-type GtkRadioButton): an existing radio button group, such as one returned from C<get-group()>, or C<undefined>.
+=end pod
+
+method set-group ( $group is copy ) {
+  $group .= get-native-object-no-reffing unless $group ~~ N-GSList;
+  gtk_radio_button_set_group( self.get-native-object-no-reffing, $group);
+}
+
+sub gtk_radio_button_set_group (
+  N-GObject $radio_button, N-GSList $group
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new
+
+Creates a new B<Gnome::Gtk3::RadioButton>. To be of any practical value, a widget should then be packed into the radio button.
+
+Returns: a new radio button
+
+  method _gtk_radio_button_new ( N-GSList $group --> N-GObject )
+
+=item N-GSList $group; (element-type GtkRadioButton) : an existing radio button group, or C<undefined> if you are creating a new group.
+=end pod
+}}
+
+sub _gtk_radio_button_new ( N-GSList $group --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new_from_widget:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new_from_widget
+
+Creates a new B<Gnome::Gtk3::RadioButton>, adding it to the same group as I<radio-group-member>. As with C<new()>, a widget should be packed into the radio button.
+
+Returns: a new radio button.
+
+  method _gtk_radio_button_new_from_widget ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_radio_button_new_from_widget ( N-GObject $radio_group_member --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new_from_widget')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new_with_label:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new_with_label
+
+Creates a new B<Gnome::Gtk3::RadioButton> with a text label.
+
+Returns: a new radio button.
+
+  method _gtk_radio_button_new_with_label ( N-GSList $group, Str $label --> N-GObject )
+
+=item N-GSList $group; (element-type GtkRadioButton) : an existing radio button group, or C<undefined> if you are creating a new group.
+=item Str $label; the text label to display next to the radio button.
+=end pod
+}}
+
+sub _gtk_radio_button_new_with_label ( N-GSList $group, gchar-ptr $label --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new_with_label')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new_with_label_from_widget:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new_with_label_from_widget
+
+Creates a new B<Gnome::Gtk3::RadioButton> with a text label, adding it to the same group as I<radio-group-member>.
+
+Returns: a new radio button.
+
+  method _gtk_radio_button_new_with_label_from_widget ( Str $label --> N-GObject )
+
+=item Str $label; a text string to display next to the radio button.
+=end pod
+}}
+
+sub _gtk_radio_button_new_with_label_from_widget ( N-GObject $radio_group_member, gchar-ptr $label --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new_with_label_from_widget')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new_with_mnemonic:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new_with_mnemonic
+
+Creates a new B<Gnome::Gtk3::RadioButton> containing a label, adding it to the same group as I<group>. The label will be created using C<gtk-label-new-with-mnemonic()>, so underscores in I<label> indicate the mnemonic for the button.
+
+Returns: a new B<Gnome::Gtk3::RadioButton>
+
+  method _gtk_radio_button_new_with_mnemonic ( N-GSList $group, Str $label --> N-GObject )
+
+=item N-GSList $group; (element-type GtkRadioButton) : the radio button group, or C<undefined>
+=item Str $label; the text of the button, with an underscore in front of the mnemonic character
+=end pod
+}}
+
+sub _gtk_radio_button_new_with_mnemonic ( N-GSList $group, gchar-ptr $label --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new_with_mnemonic')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_radio_button_new_with_mnemonic_from_widget:
+#`{{
+=begin pod
+=head2 _gtk_radio_button_new_with_mnemonic_from_widget
+
+Creates a new B<Gnome::Gtk3::RadioButton> containing a label. The label will be created using C<gtk-label-new-with-mnemonic()>, so underscores in I<label> indicate the mnemonic for the button.
+
+Returns: a new B<Gnome::Gtk3::RadioButton>
+
+  method _gtk_radio_button_new_with_mnemonic_from_widget ( Str $label --> N-GObject )
+
+=item Str $label; the text of the button, with an underscore in front of the mnemonic character
+=end pod
+}}
+
+sub _gtk_radio_button_new_with_mnemonic_from_widget ( N-GObject $radio_group_member, gchar-ptr $label --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_radio_button_new_with_mnemonic_from_widget')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:1:group-changed:
+=head3 group-changed
+
+Emitted when the group of radio buttons that a radio button belongs
+to changes. This is emitted when a radio button switches from
+being alone to being part of a group of 2 or more buttons, or
+vice-versa, and when a button is moved from one group of 2 or
+more buttons to a different one, but not when the composition
+of the group that a button belongs to changes.
+
+
+  method handler (
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($button),
+    *%user-options
+  );
+
+=item $button; the object which received the signal
+
+=item $_handle_id; the registered event handler id
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+
+  my Gnome::Gtk3::Label $label .= new;
+  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
+
+=head2 Supported properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:group:
+=head3 Group: group
+
+Sets a new group for a radio button.Widget type: GTK_TYPE_RADIO_BUTTON
+
+The B<Gnome::GObject::Value> type of property I<group> is C<G_TYPE_OBJECT>.
+
+Property is write only
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
+
 #-------------------------------------------------------------------------------
 #TM:2:_gtk_radio_button_new:
 #`{{

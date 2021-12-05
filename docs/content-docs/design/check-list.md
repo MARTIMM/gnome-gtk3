@@ -113,7 +113,7 @@ CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  |
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|  |
@@ -166,7 +166,7 @@ PlacesSidebar             |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Popover                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 PopoverMenu               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ProgressBar               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-RadioButton               |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  |
+RadioButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 RadioMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓|  |  |
 Range                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 RecentChooser             |R | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ¾| ✓| ✓|  |  |

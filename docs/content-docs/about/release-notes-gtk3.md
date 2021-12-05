@@ -5,10 +5,13 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+#### 2021-12-05 0.46.2
+* Doc and test update of module **Gnome::Gtk3::RadioButton**.
+
 #### 2021-11-28 0.46.1
 * Doc and tutorial updates
 
-#### 2021-11- 0.46.0:
+#### 2021-11-10 0.46.0:
 * Add **Gnome::Gtk3::AccelGroup**, **Gnome::Gtk3::AccelMap**, **Gnome::Gtk3::AccelLabel**.
 
 #### 2021-10-27 0.45.0:
