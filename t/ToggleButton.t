@@ -3,6 +3,7 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::ToggleButton;
+use Gnome::N::GlibToRakuTypes;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -26,13 +27,14 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  is $tb.get-active, 0, '.get-active()';
-  $tb.set-active(1);
-  is $tb.get-active, 1, '.set-active()';
+  $tb.set-active(True);
+  ok $tb.get-active, '.set-active() / .get-active()';
 
-  is $tb.get-mode, 0, '.get-mode()';
-  $tb.set-mode(1);
-  is $tb.get-mode, 1, '.set-mode()';
+  $tb.set-mode(True);
+  ok $tb.get-mode, '.set-mode() / .get-mode()';
+
+  $tb.set-inconsistent(True);
+  ok $tb.get-inconsistent, '.set-inconsistent() / .get-inconsistent()';
 }
 
 #-------------------------------------------------------------------------------
@@ -55,8 +57,16 @@ subtest 'Signals ...', {
   }
 
   $tb.register-signal( X.new, 't-event', 'toggled');
-  $tb.gtk-toggle-button-toggled;
+  $tb.toggled;
   ok $triggered, 'signal is triggered';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $tb.get-properties(
+    'active', gboolean, 'draw-indicator', gboolean, 'inconsistent', gboolean
+  );
+  is-deeply @r, [ 1, 1, 1], 'active, draw-indicator, inconsistent';
 }
 
 #`{{

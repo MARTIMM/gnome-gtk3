@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 #### 2021-12-05 0.46.2
-* Doc and test update of module **Gnome::Gtk3::RadioButton**.
+* Doc and test update of modules **Gnome::Gtk3::RadioButton**, and **Gnome::Gtk3::ToggleButton**.
 
 #### 2021-11-28 0.46.1
 * Doc and tutorial updates

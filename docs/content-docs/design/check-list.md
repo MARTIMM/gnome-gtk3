@@ -203,7 +203,7 @@ TextIter                  |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextTag                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextTagTable              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TextView                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-ToggleButton              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ToggleButton              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ToolButton                |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ToolItem                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 TreeIter                  |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗|  |  |  |  |
