@@ -34,9 +34,9 @@ subtest 'Inherit Button', {
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit ToggleButton', {
-  is $cb.get-active, 0, '.get-active()';
-  $cb.set-active(1);
-  is $cb.get-active, 1, '.set-active()';
+  is $cb.get-active, False, '.get-active()';
+  $cb.set-active(True);
+  is $cb.get-active, True, '.set-active()';
 }
 
 #`{{
