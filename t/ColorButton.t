@@ -3,8 +3,10 @@ use NativeCall;
 use Test;
 
 use Gnome::Gdk3::RGBA;
+
 use Gnome::Gtk3::ColorButton;
 
+use Gnome::N::GlibToRakuTypes;
 use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -36,10 +38,39 @@ subtest 'Manipulations', {
      '.set-title() / .get-title()';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
+subtest 'Inherit Gnome::Gtk3::ColorButton', {
+  class MyClass is Gnome::Gtk3::ColorButton {
+    method new ( |c ) {
+      self.bless( :GtkColorButton, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::ColorButton, 'MyClass.new()';
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  my @r = $cb.get-properties(
+    'show-editor', gboolean, 'title', Str, 'use-alpha', gboolean
+  );
+  is-deeply @r, [ 0, 'choose your favorite color', 0],
+    'show-editor, title, use-alpha';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+  my Gnome::Gdk3::RGBA $rgba = $cb.get-rgba;
+  is-deeply [ $rgba.red, $rgba.blue, $rgba.green], [ .5e0, .5e0, .5e0],
+    '.get-rgba()';
+}
+
+#`{{
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
