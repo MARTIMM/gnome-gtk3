@@ -59,7 +59,7 @@ B<Gnome::Gtk3::ComboBox>
 
 =head2 Uml Diagram
 
-![](plantuml/buttons.svg)
+![](plantuml/RadioButton.svg)
 
 
 =head2 Inheriting this class

@@ -46,7 +46,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/buttons.svg)
+![](plantuml/RadioButton.svg)
 
 Inheriting this class
 ---------------------
