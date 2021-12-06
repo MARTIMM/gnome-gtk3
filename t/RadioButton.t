@@ -64,12 +64,12 @@ subtest 'Inherit ...', {
   $rb2.set-label('rb2');
   is $rb2.get-label, 'rb2', 'label of 2nd button is ok';
 
-  is $rb1.get-active, 1, '1st button is selected';
-  is $rb2.get-active, 0, '2nd button is not selected';
+  is $rb1.get-active, True, '1st button is selected';
+  is $rb2.get-active, False, '2nd button is not selected';
 
-  $rb2.set-active(1);
-  is $rb1.get-active, 0, '1st button is not selected';
-  is $rb2.get-active, 1, '2nd button is selected';
+  $rb2.set-active(True);
+  is $rb1.get-active, False, '1st button is not selected';
+  is $rb2.get-active, True, '2nd button is selected';
 }
 
 
