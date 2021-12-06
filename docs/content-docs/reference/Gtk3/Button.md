@@ -31,8 +31,8 @@ Declaration
     also is Gnome::Gtk3::Bin;
     also does Gnome::Gtk3::Actionable;
 
-Uml Diagram ![](plantuml/Button.svg)
-------------------------------------
+Uml Diagram ![](plantuml/buttons.svg)
+-------------------------------------
 
 Inheriting this class
 ---------------------

@@ -36,7 +36,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
 
 
 =head2 Uml Diagram
-![](plantuml/Button.svg)
+![](plantuml/buttons.svg)
 
 
 =head2 Inheriting this class
