@@ -161,7 +161,7 @@ get-menu-model
 
 Returns the **Gnome::Gio::MenuModel** used to generate the popup.
 
-Returns: a **Gnome::Gio::MenuModel** or `undefined`
+Returns: a **Gnome::Gio::MenuModel** or an `invalid` object.
 
     method get-menu-model ( --> Gnome::Gio::MenuModel )
 

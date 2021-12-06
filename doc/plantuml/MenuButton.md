@@ -19,19 +19,57 @@ class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 Interface Gnome::Gtk3::Actionable <Interface>
 class Gnome::Gtk3::Actionable <<(R,#80ffff)>>
 
-'Class connections
+'Interface Gnome::Gtk3::Orientable <Interface>
+'class Gnome::Gtk3::Orientable <<(R,#80ffff)>>
+
+'Interface Gnome::Gtk3::ColorChooser <Interface>
+'class Gnome::Gtk3::ColorChooser <<(R,#80ffff)>>
+
+'Interface Gnome::Gtk3::FontChooser <Interface>
+'class Gnome::Gtk3::FontChooser <<(R,#80ffff)>>
+
+
+
+'Class references
+
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
+'Gnome::GObject::Object *-> Gnome::GObject::Signal
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
 Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
-Gnome::Gtk3::Widget .|> Gnome::Gtk3::Buildable
-Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
-Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
+
+Gnome::Gtk3::Widget <|- Gnome::Gtk3::Container
+Gnome::Gtk3::Container <|- Gnome::Gtk3::Bin
 Gnome::Gtk3::Bin <|-- Gnome::Gtk3::Button
-Gnome::Gtk3::Button .|> Gnome::Gtk3::Actionable
+
+
+
+Gnome::Gtk3::Buildable <|. Gnome::Gtk3::Widget
+
+Gnome::Gtk3::Actionable <|. Gnome::Gtk3::Button
+
+'Gnome::Gtk3::Orientable <|... Gnome::Gtk3::ScaleButton
+
+'Gnome::Gtk3::ColorChooser <|... Gnome::Gtk3::ColorButton
+
+'Gnome::Gtk3::FontChooser <|... Gnome::Gtk3::FontButton
+
+'Gnome::GObject <--[hidden]- Gnome::Gtk3
+
+
+
 Gnome::Gtk3::Button <|-- Gnome::Gtk3::ToggleButton
-Gnome::Gtk3::ToggleButton <|- Gnome::Gtk3::MenuButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ColorButton
+Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::CheckButton
+Gnome::Gtk3::ToggleButton <|-- Gnome::Gtk3::MenuButton
+Gnome::Gtk3::CheckButton <|-- Gnome::Gtk3::RadioButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::FontButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LinkButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::LockButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ModelButton
+'Gnome::Gtk3::Button <|-- Gnome::Gtk3::ScaleButton
+'Gnome::Gtk3::ScaleButton <|-- Gnome::Gtk3::VolumeButton
 
 @enduml
 ```
@@ -49,19 +87,6 @@ Gnome::Gtk3::ToggleButton <|- Gnome::Gtk3::MenuButton
 │   │   │   │   │   ├── GtkModelButton
 │   │   │   │   │   ╰── GtkScaleButton
 │   │   │   │   │       ╰── GtkVolumeButton
-
-│   │   │   │   ├── GtkButton                         b,ac
-│   │   │   │   │   ├── GtkToggleButton               b,ac
-│   │   │   │   │   │   ├── GtkCheckButton            b,ac
-│   │   │   │   │   │   │   ╰── GtkRadioButton        b,ac
-│   │   │   │   │   │   ╰── GtkMenuButton             b,ac
-│   │   │   │   │   ├── GtkColorButton                b,ac,cc
-│   │   │   │   │   ├── GtkFontButton                 b,ac,foc
-│   │   │   │   │   ├── GtkLinkButton                 b,ac
-│   │   │   │   │   ├── GtkLockButton                 b,ac
-│   │   │   │   │   ├── GtkModelButton                b,ac
-│   │   │   │   │   ╰── GtkScaleButton                b,o,ac
-│   │   │   │   │       ╰── GtkVolumeButton           b,o,ac
 
 ├── GtkBuildable                                      b
 ├── GtkActionable                                     ac

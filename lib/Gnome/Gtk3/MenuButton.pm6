@@ -266,6 +266,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+
 #-------------------------------------------------------------------------------
 #TM:1:get-align-widget:
 =begin pod
@@ -302,11 +303,8 @@ Returns: a B<Gnome::Gtk3::ArrowType> value
 =end pod
 
 method get-direction ( --> GtkArrowType ) {
-
   GtkArrowType(
-    gtk_menu_button_get_direction(
-      self.get-native-object-no-reffing
-    )
+    gtk_menu_button_get_direction(self.get-native-object-no-reffing)
   )
 }
 
@@ -322,7 +320,7 @@ sub gtk_menu_button_get_direction (
 
 Returns the B<Gnome::Gio::MenuModel> used to generate the popup.
 
-Returns: a B<Gnome::Gio::MenuModel> or C<undefined>
+Returns: a B<Gnome::Gio::MenuModel> or an C<invalid> object.
 
   method get-menu-model ( --> Gnome::Gio::MenuModel )
 
