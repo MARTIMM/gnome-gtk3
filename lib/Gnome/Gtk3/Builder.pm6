@@ -798,9 +798,8 @@ sub gtk_builder_error_quark (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:expose-object:
+#TM:1:expose-object:
 =begin pod
 =head2 expose-object
 
@@ -814,10 +813,7 @@ Add I<object> to the I<builder> object pool so it can be referenced just like an
 
 method expose-object ( Str $name, $object is copy ) {
   $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
-
-  gtk_builder_expose_object(
-    self.get-native-object-no-reffing, $name, $object
-  );
+  gtk_builder_expose_object( self.get-native-object-no-reffing, $name, $object);
 }
 
 sub gtk_builder_expose_object (
@@ -825,6 +821,7 @@ sub gtk_builder_expose_object (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:extend-with-template:
 =begin pod
@@ -1039,6 +1036,52 @@ sub gtk_builder_lookup_callback_symbol (
   { * }
 }}
 
+#`{{
+#-------------------------------------------------------------------------------
+#`{{ A piece of C code to add id to objects
+static inline void
+object_set_name (GObject     *object,
+                 const gchar *name)
+{
+  if (GTK_IS_BUILDABLE (object))
+    gtk_buildable_set_name (GTK_BUILDABLE (object), name);
+  else
+    g_object_set_data_full (object, "gtk-builder-name", g_strdup (name), g_free);
+}
+}}
+
+method object-set-name ( $object is copy, Str:D $name ) {
+
+  my $rk-object;
+  if $object ~~ N-GObject {
+    $rk-object = self._wrap-native-type-from-no($object);
+  }
+
+  else {
+    $rk-object = $object;
+    $object .= get-native-object-no-reffing;
+  }
+
+  my Gnome::GObject::Type $t .= new;
+  my Int $buildable-type = $t.from-name('GtkBuildable');
+  if $t.check-instance-is-a( $object, $buildable-type) {
+    $rk-object.buildable-set-name($name);
+  }
+
+  else {
+    my $rk-object = self._wrap-native-type-from-no($object);
+    $rk-object.set-data( 'gtk-builder-name', $name);
+  }
+#  _gtk_builder_add_object( self.get-native-object-no-reffing, $name, $object);
+}
+#`{{
+sub _gtk_builder_add_object (
+  N-GObject $builder, Str $id, N-GObject $object
+) is native(&gtk-lib)
+  { * }
+}}
+}}
+
 #-------------------------------------------------------------------------------
 #TM:0:set-application:
 =begin pod
@@ -1079,7 +1122,6 @@ Sets the translation domain of I<builder>. See  I<translation-domain>.
 =end pod
 
 method set-translation-domain ( Str $domain ) {
-
   gtk_builder_set_translation_domain(
     self.get-native-object-no-reffing, $domain
   );

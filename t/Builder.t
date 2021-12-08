@@ -59,6 +59,17 @@ subtest 'Add ui from file to builder', {
   ok $builder.defined, '.new-from-file()';
 
   nok $builder.get-application-rk.is-valid, '.get-application-rk()';
+
+  subtest "add id to widget object", {
+    my Gnome::Gtk3::Window $w .= new;
+    $w.set-title('abc');
+    is $w.get-name, 'GtkWindow', '.get-name()';
+    $builder.expose-object( 'some-other-name', $w);
+
+    my Gnome::Gtk3::Window $w2 = $builder.get-object-rk('some-other-name');
+    is $w2.buildable-get-name(), 'some-other-name', '.expose-object()';
+    is $w2.get-title, 'abc', 'new object: .get-title()';
+  }
 }
 
 #-------------------------------------------------------------------------------

@@ -301,6 +301,17 @@ The following example shows the fields of a returned error when a faulty string 
     is $quark.to-string($e.domain), 'gtk-builder-error-quark',
        "error domain: $quark.to-string($e.domain())";
 
+expose-object
+-------------
+
+Add *object* to the *builder* object pool so it can be referenced just like any other object built by builder.
+
+    method expose-object ( Str $name, N-GObject $object )
+
+  * Str $name; the name of the object exposed to the builder
+
+  * N-GObject $object; the object to expose
+
 get-application, get-application-rk
 -----------------------------------
 
