@@ -339,8 +339,18 @@ submethod BUILD ( *%options ) {
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBuilder');
 
+  self.set-data( '_SET_TEST_BUILDER_', '___Test_Builder__')
+    if %options<_SET_TEST_BUILDER_>;
 
-  self._set-builder(self);
+  # TODO Temporary until version Gtk3 0.48.0 and GObject 0.20.0.
+  # after that only call _set-builder()
+  if self.^can('_set-builder') {
+    self._set-builder(self);
+  }
+  
+  else {
+    self.set-builder(self);
+  }
 }
 
 #-------------------------------------------------------------------------------
