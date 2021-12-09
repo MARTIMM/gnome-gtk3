@@ -340,7 +340,7 @@ submethod BUILD ( *%options ) {
   self.set-class-info('GtkBuilder');
 
 
-  self.set-builder(self);
+  self._set-builder(self);
 }
 
 #-------------------------------------------------------------------------------
