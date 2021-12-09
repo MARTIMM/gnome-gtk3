@@ -66,8 +66,6 @@ $w.register-signal($handler, 'on-close', 'destroy');
 
 # ... later in the program ...
 # should return 'some data contents'
-#Nonsence because no overwritten with same from notebook
-#$label.set-native-object-no-reffing($nb.get-nth-page(0));
 my Gnome::Gtk3::Widget $wdgt .= new(:native-object($nb.get-nth-page(0)));
 my ExtendedLabel $label-somewhere-else = ObjectRegistration.instance.get(
   $wdgt.get-name
