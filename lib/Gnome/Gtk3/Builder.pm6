@@ -282,6 +282,7 @@ Create a Builder object using a native object from elsewhere. See also B<Gnome::
 #TM:4:new(:resource):ex-application.pl6
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 submethod BUILD ( *%options ) {
+note 'submethod BUILD Builder';
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Builder';
@@ -309,6 +310,9 @@ submethod BUILD ( *%options ) {
     elsif ? %options<resource> {
       $no = _gtk_builder_new_from_resource(%options<resource>);
     }
+
+    # option set in Gnome::T to initialize testing of gui
+    elsif %options<_SET_TEST_BUILDER_>:exists { }
 
     # check if there are unknown options
     elsif %options.keys.elems {
@@ -347,7 +351,7 @@ submethod BUILD ( *%options ) {
   if self.^can('_set-builder') {
     self._set-builder(self);
   }
-  
+
   else {
     self.set-builder(self);
   }
