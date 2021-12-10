@@ -46,7 +46,7 @@ B<Gnome::Gtk3::Builder> can parse textual representations for the most common pr
 GVariants can be specified in the format understood by C<g_variant_parse()>, and pixbufs can be specified as a filename of an image file to load.
 =end comment
 
-Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via C<gtk_builder_expose_object()>. In general, B<Gnome::Gtk3::Builder> allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
+Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via C<expose_object()>. In general, B<Gnome::Gtk3::Builder> allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
 
 =begin comment
 It is also possible to bind a property value to another object's property value using the attributes "bind-source" to specify the source object of the binding, "bind-property" to specify the source property and optionally "bind-flags" to specify the binding flags Internally builder implement this using GBinding objects. For more information see C<g_object_bind_property()>
@@ -55,7 +55,7 @@ It is also possible to bind a property value to another object's property value 
 Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the Raku modules. The "object" field has a meaning in B<Gnome::Gtk3::Glade>.
 
 =begin comment
-By default, GTK+ tries to find the handler using C<g_module_symbol()>, but this can be changed by passing a custom C<builder-connect-func()> to C<gtk_builder_connect_signals_full()>. The remaining attributes, “after”, “swapped” and “object”, have the same meaning as the corresponding parameters of the C<g_signal_connect_object()> or C<g_signal_connect_data()> functions. A “last_modification_time” attribute is also allowed, but it does not have a meaning to the builder.
+By default, GTK+ tries to find the handler using C<g_module_symbol()>, but this can be changed by passing a custom C<builder-connect-func()> to C<connect_signals_full()>. The remaining attributes, “after”, “swapped” and “object”, have the same meaning as the corresponding parameters of the C<g_signal_connect_object()> or C<g_signal_connect_data()> functions. A “last_modification_time” attribute is also allowed, but it does not have a meaning to the builder.
 =end comment
 
 Sometimes it is necessary to refer to widgets which have implicitly been constructed by GTK+ as part of a composite widget, to set properties on them or to add further children (e.g. the I<vbox> of a B<Gnome::Gtk3::Dialog>). This can be achieved by setting the “internal-child” propery of the <child> element to a true value. Note that B<Gnome::Gtk3::Builder> still requires an <object> element for the internal child, even if it has already been constructed.
