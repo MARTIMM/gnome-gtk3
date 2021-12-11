@@ -1,4 +1,5 @@
 use v6;
+use NativeCall;
 
 use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Builder;
@@ -7,6 +8,7 @@ use Gnome::GObject::Type;
 
 use Gnome::N::N-GObject;
 
+use Gnome::Glib::SList;
 
 my Str $design = Q:q:to/EODESIGN/;
     <interface>
@@ -36,6 +38,12 @@ $b.expose-object( 'some-other-name', $w);
 #$b.object-set-name( $w, 'some-other-name');
 note "names: $w.get-name(), $w.buildable-get-name()";
 
+my Gnome::Glib::SList $list = $b.get-objects;
+note 'nbr objects in builder: ', $list.length;
+for ^$list.length -> $i {
+  my $object = nativecast( N-GObject, $list.nth($i));
+note "o; $object.raku";
+}
 
 my Gnome::Gtk3::Window $w2 = $b.get-object-rk('some-other-name');
 note "title: $w2.get-title()";
