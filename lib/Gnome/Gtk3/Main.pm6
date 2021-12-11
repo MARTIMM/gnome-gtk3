@@ -78,6 +78,7 @@ use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
 use Gnome::N::GlibToRakuTypes;
+use Gnome::N::TopLevelClassSupport;
 
 #use Gnome::Glib::OptionContext;
 
@@ -91,6 +92,7 @@ use Gnome::Gtk3::Enums;
 # See /usr/include/gtk-3.0/gtk/gtkmain.h
 # https://developer.gnome.org/gtk3/stable/gtk3-General.html
 unit class Gnome::Gtk3::Main:auth<github:MARTIMM>:ver<0.1.0>;
+also is Gnome::N::TopLevelClassSupport;
 
 #-------------------------------------------------------------------------------
 #my Bool $gui-initialized = False;
@@ -821,8 +823,11 @@ You can nest calls to C<main()>. In that case C<quit()> will make the innermost 
 
 =end pod
 
-method main ( ) {
-  gtk_main
+method main ( Bool :$_GNOME_TEST_RUN_ = False ) {
+  # start loop unless Gnome::T has showed itself
+  if (self._get-test-mode and $_GNOME_TEST_RUN_) or !self._get-test-mode {
+    gtk_main
+  }
 }
 
 sub gtk_main ( )
