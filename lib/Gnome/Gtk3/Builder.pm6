@@ -158,6 +158,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 use Gnome::Glib::Error;
+use Gnome::Glib::SList;
 
 use Gnome::GObject::Object;
 use Gnome::GObject::Type;
@@ -282,11 +283,9 @@ Create a Builder object using a native object from elsewhere. See also B<Gnome::
 #TM:4:new(:resource):ex-application.pl6
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 submethod BUILD ( *%options ) {
-note 'submethod BUILD Builder';
 
   # prevent creating wrong widgets
   return unless self.^name eq 'Gnome::Gtk3::Builder';
-
 
   if self.is-valid { }
 
@@ -311,9 +310,6 @@ note 'submethod BUILD Builder';
       $no = _gtk_builder_new_from_resource(%options<resource>);
     }
 
-    # option set in Gnome::T to initialize testing of gui
-    elsif %options<_SET_TEST_BUILDER_>:exists { }
-
     # check if there are unknown options
     elsif %options.keys.elems {
       die X::Gnome.new(
@@ -323,13 +319,6 @@ note 'submethod BUILD Builder';
       );
     }
 
-    #`{{ when there are no defaults use this
-    # check if there are any options
-    elsif %options.elems == 0 {
-      die X::Gnome.new(:message('No options specified ' ~ self.^name));
-    }
-    }}
-
     ##`{{ when there are defaults use this instead
     # create default object
     else {
@@ -337,24 +326,23 @@ note 'submethod BUILD Builder';
     }
     #}}
 
-    self.set-native-object($no) if ?$no;
+    if ?$no {
+      self.set-native-object($no);
+
+      # TODO Temporary until version Gtk3 0.48.0 and GObject 0.20.0.
+      # after that only call _set-builder()
+      if self.^can('_set-builder') {
+        self._set-builder(self);
+      }
+
+      else {
+        self.set-builder(self);
+      }
+    }
   }
 
   # only after creating the native-object, the gtype is known
   self.set-class-info('GtkBuilder');
-
-  self.set-data( '_SET_TEST_BUILDER_', '___Test_Builder__')
-    if %options<_SET_TEST_BUILDER_>;
-
-  # TODO Temporary until version Gtk3 0.48.0 and GObject 0.20.0.
-  # after that only call _set-builder()
-  if self.^can('_set-builder') {
-    self._set-builder(self);
-  }
-
-  else {
-    self.set-builder(self);
-  }
 }
 
 #-------------------------------------------------------------------------------
@@ -365,7 +353,6 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_builder_$native-sub"); }
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-#note "ad $native-sub: ", $s;
   self.set-class-name-of-sub('GtkBuilder');
   $s = callsame unless ?$s;
 
@@ -941,9 +928,8 @@ sub gtk_builder_get_object (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-objects:
+#TM:4:get-objects:
 =begin pod
 =head2 get-objects
 
@@ -951,14 +937,14 @@ Gets all objects that have been constructed by I<builder>. Note that this functi
 
 Returns: (element-type GObject) (transfer container): a newly-allocated B<Gnome::Gtk3::SList> containing all the objects constructed by the B<Gnome::Gtk3::Builder> instance. It should be freed by C<g-slist-free()>
 
-  method get-objects ( --> N-GSList )
+  method get-objects ( --> Gnome::Glib::SList )
 
 =end pod
 
-method get-objects ( --> N-GSList ) {
-
-  gtk_builder_get_objects(
-    self.get-native-object-no-reffing,
+method get-objects ( --> Gnome::Glib::SList ) {
+  Gnome::Glib::SList.new(:native-object(
+      gtk_builder_get_objects(self.get-native-object-no-reffing)
+    )
   )
 }
 
@@ -966,7 +952,6 @@ sub gtk_builder_get_objects (
   N-GObject $builder --> N-GSList
 ) is native(&gtk-lib)
   { * }
-}}
 
 #`{{
 #-------------------------------------------------------------------------------
