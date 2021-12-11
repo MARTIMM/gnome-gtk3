@@ -6,7 +6,8 @@ layout: sidebar
 ---
 # Release notes
 * 2021-12-08 0.46.3
-  * Add routine to Builder module
+  * Add methods `.get-objects()` and `.expose-object()` to Builder module.
+  * Inhibit start of eventloop if **Gnome::T** is active.
 
 * 2021-12-05 0.46.2
   * Doc and test update of modules **Gnome::Gtk3::RadioButton**, **Gnome::Gtk3::ColorButton**, and **Gnome::Gtk3::ToggleButton**.
