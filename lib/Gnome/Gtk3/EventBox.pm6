@@ -145,7 +145,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkEventBox');
+    self._set-class-info('GtkEventBox');
   }
 }
 

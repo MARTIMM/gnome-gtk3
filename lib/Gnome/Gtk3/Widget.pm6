@@ -405,7 +405,7 @@ submethod BUILD ( *%options ) {
 #  return unless self.^name eq 'Gnome::Gtk3::Widget';
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkWidget');
+  self._set-class-info('GtkWidget');
 }
 
 #-------------------------------------------------------------------------------
@@ -418,7 +418,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   try { $s = self._buildable_interface($native-sub); } unless ?$s;
 
-  self.set-class-name-of-sub('GtkWidget');
+  self._set-class-name-of-sub('GtkWidget');
   $s = callsame unless ?$s;
 
   $s;

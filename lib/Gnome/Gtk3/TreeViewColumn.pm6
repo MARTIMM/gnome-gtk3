@@ -164,7 +164,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkTreeViewColumn');
+    self._set-class-info('GtkTreeViewColumn');
   }
 }
 
@@ -178,7 +178,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._buildable_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkTreeViewColumn');
+  self._set-class-name-of-sub('GtkTreeViewColumn');
   $s = callsame unless ?$s;
 
   $s;

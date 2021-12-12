@@ -231,7 +231,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkAccelGroup');
+    self._set-class-info('GtkAccelGroup');
   }
 }
 

@@ -163,7 +163,7 @@ submethod BUILD ( *%options ) {
   # get the global singleton object
   my $no = _gtk_accel_map_get();
   self.set-native-object($no);
-  self.set-class-info('GtkAccelMap');
+  self._set-class-info('GtkAccelMap');
 
 #`{{
   # prevent creating wrong native-objects
@@ -215,7 +215,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkAccelMap');
+    self._set-class-info('GtkAccelMap');
   }
 }}
 }

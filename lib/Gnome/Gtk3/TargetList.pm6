@@ -209,7 +209,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkTargetList');
+    self._set-class-info('GtkTargetList');
   }
 }
 

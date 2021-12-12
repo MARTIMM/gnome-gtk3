@@ -173,7 +173,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkAppChooserButton');
+    self._set-class-info('GtkAppChooserButton');
   }
 }
 

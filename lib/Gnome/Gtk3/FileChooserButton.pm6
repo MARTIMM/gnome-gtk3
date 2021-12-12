@@ -188,7 +188,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkFileChooserButton');
+    self._set-class-info('GtkFileChooserButton');
   }
 }
 
@@ -205,7 +205,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   # then in interfaces
   $s = self._file_chooser_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkFileChooserButton');
+  self._set-class-name-of-sub('GtkFileChooserButton');
   $s = callsame unless ?$s;
 
   $s

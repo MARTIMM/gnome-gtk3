@@ -93,7 +93,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkCellRendererText');
+  self._set-class-info('GtkCellRendererText');
 }
 
 #-------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("cell_renderer_text_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-  self.set-class-name-of-sub('GtkCellRendererText');
+  self._set-class-name-of-sub('GtkCellRendererText');
   $s = callsame unless ?$s;
 
   $s;

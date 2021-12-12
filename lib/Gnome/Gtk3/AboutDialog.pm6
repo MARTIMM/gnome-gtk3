@@ -179,7 +179,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkAboutDialog');
+    self._set-class-info('GtkAboutDialog');
   }
 }
 
@@ -193,7 +193,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
 #note "ad $native-sub: ", $s.signature if ?$s;
-  self.set-class-name-of-sub('GtkAboutDialog');
+  self._set-class-name-of-sub('GtkAboutDialog');
   $s = callsame unless ?$s;
 
   $s;

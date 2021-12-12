@@ -131,7 +131,7 @@ submethod BUILD ( *%options ) {
 #note"Tree iter: ", self.get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkTreeIter');
+  self._set-class-info('GtkTreeIter');
 }
 
 #-------------------------------------------------------------------------------
@@ -144,7 +144,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 # no shortnames
 
-  self.set-class-name-of-sub('GtkTreeIter');
+  self._set-class-name-of-sub('GtkTreeIter');
   $s = callsame unless ?$s;
 
   $s;

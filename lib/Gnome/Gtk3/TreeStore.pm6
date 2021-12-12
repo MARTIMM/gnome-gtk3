@@ -143,7 +143,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkTreeStore');
+    self._set-class-info('GtkTreeStore');
   }
 }
 
@@ -158,7 +158,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._tree_model_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkTreeStore');
+  self._set-class-name-of-sub('GtkTreeStore');
   $s = callsame unless ?$s;
 
   $s;

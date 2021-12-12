@@ -135,7 +135,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkCssProvider');
+  self._set-class-info('GtkCssProvider');
 }
 
 #-------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._style_provider_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkCssProvider');
+  self._set-class-name-of-sub('GtkCssProvider');
   $s = callsame unless ?$s;
 
   $s

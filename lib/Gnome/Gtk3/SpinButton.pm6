@@ -333,7 +333,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkSpinButton');
+    self._set-class-info('GtkSpinButton');
   }
 }
 
@@ -348,7 +348,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
 
-  self.set-class-name-of-sub('GtkSpinButton');
+  self._set-class-name-of-sub('GtkSpinButton');
   $s = callsame unless ?$s;
 
   $s;

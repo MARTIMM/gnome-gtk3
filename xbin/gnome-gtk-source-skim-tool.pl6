@@ -1004,14 +1004,14 @@ sub substitute-in-template (
       $iname ~~ s/ [ gtk | gdk | gio ] '_' //;
       $template-text ~~ s:g/ INTERFACE_NAME /{$iname}_interface/;
 #`{{
-  TODO must call interfaces after .set-class-name-of-sub()
-  and in interface must also call .set-class-name-of-sub() if sub is found.
+  TODO must call interfaces after ._set-class-name-of-sub()
+  and in interface must also call ._set-class-name-of-sub() if sub is found.
   this is for casting.
 
   Methods can be written for interfaces and remove self._xyz_interface() from
   classes. ==> interfaces can not be handled as leafs because casting necessary
 
-  self.set-class-name-of-sub('GSimpleAction') if ?$s;
+  self._set-class-name-of-sub('GSimpleAction') if ?$s;
 }}
     }
 
@@ -1101,7 +1101,7 @@ sub substitute-in-template (
             }
 
             # only after creating the native-object, the gtype is known
-            self.set-class-info('LIBCLASSNAME');
+            self._set-class-info('LIBCLASSNAME');
           }
         }
 

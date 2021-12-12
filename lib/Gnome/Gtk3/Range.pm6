@@ -94,7 +94,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkRange');
+  self._set-class-info('GtkRange');
 }
 
 #-------------------------------------------------------------------------------

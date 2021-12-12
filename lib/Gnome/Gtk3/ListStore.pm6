@@ -206,7 +206,7 @@ submethod BUILD ( *%options ) {
 #note "ListStore: ", self.get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkListStore');
+  self._set-class-info('GtkListStore');
 }
 
 #-------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s = self._buildable_interface($native-sub) unless ?$s;
   $s = self._tree_model_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkListStore') if ?$s;
+  self._set-class-name-of-sub('GtkListStore') if ?$s;
   $s = callsame unless ?$s;
 
   $s;

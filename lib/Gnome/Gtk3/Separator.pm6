@@ -137,7 +137,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkSeparator');
+    self._set-class-info('GtkSeparator');
   }
 }
 
@@ -151,7 +151,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::("gtk_$native-sub"); } unless ?$s;
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
-  self.set-class-name-of-sub('GtkSeparator');
+  self._set-class-name-of-sub('GtkSeparator');
   $s = callsame unless ?$s;
 
   $s;

@@ -217,7 +217,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkAccelLabel');
+    self._set-class-info('GtkAccelLabel');
   }
 }
 

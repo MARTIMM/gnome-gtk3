@@ -189,7 +189,7 @@ submethod BUILD ( *%options ) {
   }
 
   # only after creating the native-object, the gtype is known
-  self.set-class-info('GtkColorButton');
+  self._set-class-info('GtkColorButton');
 }
 
 #-------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
   try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
   $s = self._color_chooser_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkColorButton');
+  self._set-class-name-of-sub('GtkColorButton');
   $s = callsame unless ?$s;
 
   $s;

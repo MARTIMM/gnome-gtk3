@@ -125,7 +125,7 @@ submethod BUILD ( *%options ) {
     }
 
     # only after creating the native-object, the gtype is known
-    self.set-class-info('GtkRecentChooserMenu');
+    self._set-class-info('GtkRecentChooserMenu');
   }
 }
 
@@ -140,7 +140,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   self._recent_chooser_interface($native-sub) unless ?$s;
 
-  self.set-class-name-of-sub('GtkRecentChooserMenu');
+  self._set-class-name-of-sub('GtkRecentChooserMenu');
   $s = callsame unless ?$s;
 
   $s;

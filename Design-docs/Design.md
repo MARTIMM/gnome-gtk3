@@ -569,9 +569,9 @@ class TopLevelClassSupport < Catch all class > {
   clear-object()
   DESTROY()
 
-  set-class-info()
-  set-class-name-of-sub()
-  get-class-name-of-sub()
+  _set-class-info()
+  _set-class-name-of-sub()
+  _get-class-name-of-sub()
   get-class-gtype()
 }
 
@@ -614,9 +614,9 @@ note left of TopLevelClassSupport
   '{abstract} native-object-ref()
   '{abstract} native-object-unref()
   'clear-object()
-  'set-class-info()
-  'set-class-name-of-sub()
-  'get-class-name-of-sub()
+  '_set-class-info()
+  '_set-class-name-of-sub()
+  '_get-class-name-of-sub()
   'get-class-gtype()
 end note
 

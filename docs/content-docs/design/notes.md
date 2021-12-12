@@ -147,9 +147,9 @@ The following is a (not very exhaustive) list of points which make up the design
   * `.is-valid()` to check its validity.
   * `.clear-object()` to cleanup the native object.
   * `.new(:native-object)` to initialize a Raku object with another native object.
-  * `.set-class-info()` to set class information. This can only be used from BUILD only!
+  * `._set-class-info()` to set class information. This can only be used from BUILD only!
   * `.get-class-gtype()` to get the calculated class type number. Derived from a **Gnome::GObject::Type** method. Also used mainly from internal methods.
-  * `.get-class-name()` to get the GTK+ class name set by `.set-class-info()`.
+  * `.get-class-name()` to get the GTK+ class name set by `._set-class-info()`.
   * `BUILD()` and `DESTROY()` to build and destroy objects and to prevent memory leaks also by using GTK refs and unrefs.
   * `FALLBACK()` to start search of subs and pretend they are methods.
 
