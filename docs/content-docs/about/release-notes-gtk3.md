@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2021-12-12 0.46.4
+  * Changes for renamed methods in **Gnome::N::TopLevelClassSupport**.
+
 * 2021-12-08 0.46.3
   * Add methods `.get-objects()` and `.expose-object()` to Builder module.
   * Inhibit start of eventloop if **Gnome::T** is active.
