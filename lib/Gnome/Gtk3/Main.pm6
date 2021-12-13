@@ -912,7 +912,7 @@ Runs a single iteration of the mainloop.
 
 If no events are waiting to be processed GTK+ will block until the next event is noticed. If you don’t want to block look at C<iteration-do()> or check if any events are pending with C<events-pending()> first.
 
-Returns: C<True> if C<main-quit()> has been called for the innermost mainloop
+Returns: C<True> if C<quit()> has been called for the innermost mainloop
 
   method iteration ( --> Bool )
 
@@ -982,7 +982,20 @@ Makes the innermost invocation of the main loop return when it regains control.
 =end pod
 
 method quit ( ) {
-  gtk_main_quit
+  # if in test mode, loop is not started, so only run quit if loop level > 0.
+  # This prevents errors from gnome libs
+  if self._get-test-mode {
+    if gtk_main_level() > 0 {
+      gtk_main_quit;
+    }
+
+    # else ignore quit()
+  }
+
+  # otherwise run it despite any errors which may occur
+  else {
+    gtk_main_quit;
+  }
 }
 
 sub gtk_main_quit ( )
