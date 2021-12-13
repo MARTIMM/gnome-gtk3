@@ -94,7 +94,7 @@ Types
 GtkWindowType
 -------------
 
-A **Gnome::Gtk3::Window** can be one of these types. Most things you’d consider a “window” should have type **GTK_WINDOW_TOPLEVEL**; windows with this type are managed by the window manager and have a frame by default (call `gtk_window_set_decorated()` to toggle the frame). Windows with type **GTK_WINDOW_POPUP** are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). **GTK_WINDOW_POPUP** is used to implement widgets such as **Gnome::Gtk3::Menu** or tooltips that you normally don’t think of as windows per se. Nearly all windows should be **GTK_WINDOW_TOPLEVEL**. In particular, do not use **GTK_WINDOW_POPUP** just to turn off the window borders; use `gtk_window_set_decorated()` for that.
+A **Gnome::Gtk3::Window** can be one of these types. Most things you’d consider a “window” should have type `GTK_WINDOW_TOPLEVEL`; windows with this type are managed by the window manager and have a frame by default (call `gtk_window_set_decorated()` to toggle the frame). Windows with type `GTK_WINDOW_POPUP` are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). `GTK_WINDOW_POPUP` is used to implement widgets such as **Gnome::Gtk3::Menu** or tooltips that you normally don’t think of as windows per se. Nearly all windows should be `GTK_WINDOW_TOPLEVEL`. In particular, do not use `GTK_WINDOW_POPUP` just to turn off the window borders; use `gtk_window_set_decorated()` for that.
 
   * GTK_WINDOW_TOPLEVEL. A regular window, such as a dialog.
 
@@ -469,9 +469,9 @@ This function returns the position you need to pass to `move()` to keep *window*
 
 The reliability of this function depends on the windowing system currently in use. Some windowing systems, such as Wayland, do not support a global coordinate system, and thus the position of the window will always be (0, 0). Others, like X11, do not have a reliable way to obtain the geometry of the decorations of a window if they are provided by the window manager. Additionally, on X11, window manager have been known to mismanage window gravity, which result in windows moving even if you use the coordinates of the current position as returned by this function.
 
-If you haven’t changed the window gravity, its gravity will be **Gnome::Gtk3::DK-GRAVITY-NORTH-WEST**. This means that `get-position()` gets the position of the top-left corner of the window manager frame for the window. `move()` sets the position of this same top-left corner.
+If you haven’t changed the window gravity, its gravity will be `GDK_GRAVITY_NORTH_WEST`. This means that `get-position()` gets the position of the top-left corner of the window manager frame for the window. `move()` sets the position of this same top-left corner.
 
-If a window has gravity **Gnome::Gtk3::DK-GRAVITY-STATIC** the window manager frame is not relevant, and thus `get-position()` will always produce accurate results. However you can’t use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
+If a window has gravity `GDK_GRAVITY_STATIC` the window manager frame is not relevant, and thus `get-position()` will always produce accurate results. However you can’t use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
 
 Ideally, this function should return appropriate values if the window has client side decorations, assuming that the windowing system supports global coordinates.
 
@@ -707,9 +707,9 @@ Asks the [window manager][gtk-X11-arch] to move *window* to the given position. 
 
 Note: the position is the position of the gravity-determined reference point for the window. The gravity determines two things: first, the location of the reference point in root window coordinates; and second, which point on the window is positioned at the reference point.
 
-By default the gravity is **Gnome::Gtk3::DK-GRAVITY-NORTH-WEST**, so the reference point is simply the *x*, *y* supplied to `move()`. The top-left corner of the window decorations (aka window frame or border) will be placed at *x*, *y*. Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is **Gnome::Gtk3::DK-GRAVITY-NORTH-WEST**) and move the window to 0,0.
+By default the gravity is `GDK_GRAVITY_NORTH_WEST`, so the reference point is simply the *x*, *y* supplied to `move()`. The top-left corner of the window decorations (aka window frame or border) will be placed at *x*, *y*. Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is `GDK_GRAVITY_NORTH_WEST`) and move the window to 0,0.
 
-To position a window at the bottom right corner of the screen, you would set **Gnome::Gtk3::DK-GRAVITY-SOUTH-EAST**, which means that the reference point is at *x* + the window width and *y* + the window height, and the bottom-right corner of the window border will be placed at that reference point. So, to place a window in the bottom right corner you would first set gravity to south east, then write: `gtk-window-move (window, `gdk-screen-width()` - window-width, `gdk-screen-height()` - window-height)` (note that this example does not take multi-head scenarios into account).
+To position a window at the bottom right corner of the screen, you would set `GDK_GRAVITY_SOUTH_EAST`, which means that the reference point is at *x* + the window width and *y* + the window height, and the bottom-right corner of the window border will be placed at that reference point. So, to place a window in the bottom right corner you would first set gravity to south east, then write: `gtk-window-move (window, `gdk-screen-width()` - window-width, `gdk-screen-height()` - window-height)` (note that this example does not take multi-head scenarios into account).
 
 The [Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec) has a nice table of gravities in the “implementation notes” section.
 
@@ -991,7 +991,7 @@ set-gravity
 
 Window gravity defines the meaning of coordinates passed to `move()`. See `move()` and **Gnome::Gtk3::Gravity** for more details.
 
-The default window gravity is **Gnome::Gtk3::DK-GRAVITY-NORTH-WEST** which will typically “do what you mean.”
+The default window gravity is `GDK_GRAVITY_NORTH_WEST` which will typically “do what you mean.”
 
     method set-gravity ( GdkGravity $gravity )
 
@@ -1243,7 +1243,7 @@ Dialog windows should be set transient for the main application window they were
 
 Passing `undefined` for *parent* unsets the current transient window.
 
-On Wayland, this function can also be used to attach a new **Gnome::Gtk3::TK-WINDOW-POPUP** to a **Gnome::Gtk3::TK-WINDOW-TOPLEVEL** parent already mapped on screen so that the **Gnome::Gtk3::TK-WINDOW-POPUP** will be created as a subsurface-based window **Gnome::Gtk3::DK-WINDOW-SUBSURFACE** which can be positioned at will relatively to the **Gnome::Gtk3::TK-WINDOW-TOPLEVEL** surface.
+On Wayland, this function can also be used to attach a new `GTK_WINDOW_POPUP` to a `GTK_WINDOW_TOPLEVEL` parent already mapped on screen so that the `GTK_WINDOW_POPUP` will be created as a subsurface-based window `GDK_WINDOW_SUBSURFACE` which can be positioned at will relatively to the `GTK_WINDOW_TOPLEVEL` surface.
 
 On Windows, this function puts the child window on top of the parent, much as the window manager would have done on X.
 
