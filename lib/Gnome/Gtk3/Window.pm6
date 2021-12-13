@@ -1,4 +1,4 @@
-C<GTK_#TL:1:Gnome::Gtk3::Window
+#TL:1:Gnome::Gtk3::Window
 
 use v6;
 #-------------------------------------------------------------------------------
@@ -21,6 +21,7 @@ The B<Gnome::Gtk3::Window> implementation of the B<Gnome::Gtk3::Buildable> inter
 It also supports the <initial-focus> element, whose name property names the widget to receive the focus when the window is mapped.
 
 An example of a UI definition fragment with accel groups:
+
 
   <object class="GtkWindow>">
     <accel-groups>
