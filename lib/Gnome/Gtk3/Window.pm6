@@ -1,4 +1,4 @@
-#TL:1:Gnome::Gtk3::Window
+C<GTK_#TL:1:Gnome::Gtk3::Window
 
 use v6;
 #-------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ also is Gnome::Gtk3::Bin;
 =begin pod
 =head2 GtkWindowType
 
-A B<Gnome::Gtk3::Window> can be one of these types. Most things you’d consider a “window” should have type B<GTK_WINDOW_TOPLEVEL>; windows with this type are managed by the window manager and have a frame by default (call C<gtk_window_set_decorated()> to toggle the frame).  Windows with type B<GTK_WINDOW_POPUP> are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). B<GTK_WINDOW_POPUP> is used to implement widgets such as B<Gnome::Gtk3::Menu> or tooltips that you normally don’t think of as windows per se. Nearly all windows should be B<GTK_WINDOW_TOPLEVEL>. In particular, do not use B<GTK_WINDOW_POPUP> just to turn off the window borders; use C<gtk_window_set_decorated()> for that.
+A B<Gnome::Gtk3::Window> can be one of these types. Most things you’d consider a “window” should have type C<GTK_WINDOW_TOPLEVEL>; windows with this type are managed by the window manager and have a frame by default (call C<gtk_window_set_decorated()> to toggle the frame).  Windows with type C<GTK_WINDOW_POPUP> are ignored by the window manager; window manager keybindings won’t work on them, the window manager won’t decorate the window with a frame, many GTK+ features that rely on the window manager will not work (e.g. resize grips and maximization/minimization). C<GTK_WINDOW_POPUP> is used to implement widgets such as B<Gnome::Gtk3::Menu> or tooltips that you normally don’t think of as windows per se. Nearly all windows should be C<GTK_WINDOW_TOPLEVEL>. In particular, do not use C<GTK_WINDOW_POPUP> just to turn off the window borders; use C<gtk_window_set_decorated()> for that.
 
 =item GTK_WINDOW_TOPLEVEL. A regular window, such as a dialog.
 =item GTK_WINDOW_POPUP. A special window such as a tooltip.
@@ -1098,9 +1098,9 @@ This function returns the position you need to pass to C<move()> to keep I<windo
 
 The reliability of this function depends on the windowing system currently in use. Some windowing systems, such as Wayland, do not support a global coordinate system, and thus the position of the window will always be (0, 0). Others, like X11, do not have a reliable way to obtain the geometry of the decorations of a window if they are provided by the window manager. Additionally, on X11, window manager have been known to mismanage window gravity, which result in windows moving even if you use the coordinates of the current position as returned by this function.
 
-If you haven’t changed the window gravity, its gravity will be B<Gnome::Gtk3::DK-GRAVITY-NORTH-WEST>. This means that C<get-position()> gets the position of the top-left corner of the window manager frame for the window. C<move()> sets the position of this same top-left corner.
+If you haven’t changed the window gravity, its gravity will be C<GDK_GRAVITY_NORTH_WEST>. This means that C<get-position()> gets the position of the top-left corner of the window manager frame for the window. C<move()> sets the position of this same top-left corner.
 
-If a window has gravity B<Gnome::Gtk3::DK-GRAVITY-STATIC> the window manager frame is not relevant, and thus C<get-position()> will always produce accurate results. However you can’t use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
+If a window has gravity C<GDK_GRAVITY_STATIC> the window manager frame is not relevant, and thus C<get-position()> will always produce accurate results. However you can’t use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
 
 Ideally, this function should return appropriate values if the window has client side decorations, assuming that the windowing system supports global coordinates.
 
@@ -1114,7 +1114,6 @@ The List returns;
 =end pod
 
 method get-position ( --> List ) {
-
   gtk_window_get_position(
     self._f('GtkWindow'), my gint $root_x, my gint $root_y
   );
@@ -1675,9 +1674,9 @@ Asks the [window manager][gtk-X11-arch] to move I<window> to the given position.
 
 Note: the position is the position of the gravity-determined reference point for the window. The gravity determines two things: first, the location of the reference point in root window coordinates; and second, which point on the window is positioned at the reference point.
 
-By default the gravity is B<Gnome::Gtk3::DK-GRAVITY-NORTH-WEST>, so the reference point is simply the I<x>, I<y> supplied to C<move()>. The top-left corner of the window decorations (aka window frame or border) will be placed at I<x>, I<y>. Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is B<Gnome::Gtk3::DK-GRAVITY-NORTH-WEST>) and move the window to 0,0.
+By default the gravity is C<GDK_GRAVITY_NORTH_WEST>, so the reference point is simply the I<x>, I<y> supplied to C<move()>. The top-left corner of the window decorations (aka window frame or border) will be placed at I<x>, I<y>. Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is C<GDK_GRAVITY_NORTH_WEST>) and move the window to 0,0.
 
-To position a window at the bottom right corner of the screen, you would set B<Gnome::Gtk3::DK-GRAVITY-SOUTH-EAST>, which means that the reference point is at I<x> + the window width and I<y> + the window height, and the bottom-right corner of the window border will be placed at that reference point. So, to place a window in the bottom right corner you would first set gravity to south east, then write: `gtk-window-move (window, C<gdk-screen-width()> - window-width, C<gdk-screen-height()> - window-height)` (note that this example does not take multi-head scenarios into account).
+To position a window at the bottom right corner of the screen, you would set C<GDK_GRAVITY_SOUTH_EAST>, which means that the reference point is at I<x> + the window width and I<y> + the window height, and the bottom-right corner of the window border will be placed at that reference point. So, to place a window in the bottom right corner you would first set gravity to south east, then write: `gtk-window-move (window, C<gdk-screen-width()> - window-width, C<gdk-screen-height()> - window-height)` (note that this example does not take multi-head scenarios into account).
 
 The [Extended Window Manager Hints Specification](http://www.freedesktop.org/Standards/wm-spec) has a nice table of gravities in the “implementation notes” section.
 
@@ -2334,7 +2333,7 @@ sub gtk_window_set_geometry_hints (
 
 Window gravity defines the meaning of coordinates passed to C<move()>. See C<move()> and B<Gnome::Gtk3::Gravity> for more details.
 
-The default window gravity is B<Gnome::Gtk3::DK-GRAVITY-NORTH-WEST> which will typically “do what you mean.”
+The default window gravity is C<GDK_GRAVITY_NORTH_WEST> which will typically “do what you mean.”
 
   method set-gravity ( GdkGravity $gravity )
 
@@ -2682,10 +2681,7 @@ Sets a window modal or non-modal. Modal windows prevent interaction with other w
 =end pod
 
 method set-modal ( Bool $modal ) {
-
-  gtk_window_set_modal(
-    self._f('GtkWindow'), $modal
-  );
+  gtk_window_set_modal( self._f('GtkWindow'), $modal);
 }
 
 sub gtk_window_set_modal (
@@ -2706,10 +2702,7 @@ Sets a position constraint for this window. If the old or new constraint is C<GT
 =end pod
 
 method set-position ( GtkWindowPosition $position ) {
-
-  gtk_window_set_position(
-    self._f('GtkWindow'), $position
-  );
+  gtk_window_set_position( self._f('GtkWindow'), $position);
 }
 
 sub gtk_window_set_position (
@@ -2730,10 +2723,7 @@ Sets whether the user can resize a window. Windows are user resizable by default
 =end pod
 
 method set-resizable ( Bool $resizable ) {
-
-  gtk_window_set_resizable(
-    self._f('GtkWindow'), $resizable
-  );
+  gtk_window_set_resizable( self._f('GtkWindow'), $resizable);
 }
 
 sub gtk_window_set_resizable (
@@ -2930,7 +2920,7 @@ Dialog windows should be set transient for the main application window they were
 
 Passing C<undefined> for I<parent> unsets the current transient window.
 
-On Wayland, this function can also be used to attach a new B<Gnome::Gtk3::TK-WINDOW-POPUP> to a B<Gnome::Gtk3::TK-WINDOW-TOPLEVEL> parent already mapped on screen so that the B<Gnome::Gtk3::TK-WINDOW-POPUP> will be created as a subsurface-based window B<Gnome::Gtk3::DK-WINDOW-SUBSURFACE> which can be positioned at will relatively to the B<Gnome::Gtk3::TK-WINDOW-TOPLEVEL> surface.
+On Wayland, this function can also be used to attach a new C<GTK_WINDOW_POPUP> to a C<GTK_WINDOW_TOPLEVEL> parent already mapped on screen so that the C<GTK_WINDOW_POPUP> will be created as a subsurface-based window C<GDK_WINDOW_SUBSURFACE> which can be positioned at will relatively to the C<GTK_WINDOW_TOPLEVEL> surface.
 
 On Windows, this function puts the child window on top of the parent, much as the window manager would have done on X.
 
@@ -3112,9 +3102,9 @@ sub gtk_window_unstick (
 =begin pod
 =head2 _gtk_window_new
 
-Creates a new B<Gnome::Gtk3::Window>, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be B<Gnome::Gtk3::TK-WINDOW-TOPLEVEL>. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use B<Gnome::Gtk3::Menu>), you might use B<Gnome::Gtk3::TK-WINDOW-POPUP>. B<Gnome::Gtk3::TK-WINDOW-POPUP> is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, B<Gnome::Gtk3::TK-WINDOW-POPUP> means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the [window manager][gtk-X11-arch].
+Creates a new B<Gnome::Gtk3::Window>, which is a toplevel window that can contain other widgets. Nearly always, the type of the window should be C<GTK_WINDOW_TOPLEVEL>. If you’re implementing something like a popup menu from scratch (which is a bad idea, just use B<Gnome::Gtk3::Menu>), you might use C<GTK_WINDOW_POPUP>. C<GTK_WINDOW_POPUP> is not for dialogs, though in some other toolkits dialogs are called “popups”. In GTK+, C<GTK_WINDOW_POPUP> means a pop-up menu or pop-up tooltip. On X11, popup windows are not controlled by the [window manager][gtk-X11-arch].
 
-If you simply want an undecorated window (no window borders), use C<set-decorated()>, don’t use B<Gnome::Gtk3::TK-WINDOW-POPUP>.
+If you simply want an undecorated window (no window borders), use C<set-decorated()>, don’t use C<GTK_WINDOW_POPUP>.
 
 All top-level windows created by C<new()> are stored in an internal top-level window list. This list can be obtained from C<list-toplevels()>. Due to Gtk+ keeping a reference to the window internally, C<new()> does not return a reference to the caller.
 
