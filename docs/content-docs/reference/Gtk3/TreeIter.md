@@ -39,7 +39,7 @@ Creates a dynamically allocated tree iterator as a copy of *iter*.
 This function is not intended for use in applications, because you can just copy the structures by value like so;
 
     Gnome::Gtk3::TreeIter $new_iter .= new(
-     :native-object($iter.get-native-object())
+     :native-object($iter._get-native-object())
     );
 
 You must free this iter with `clear-object()`.

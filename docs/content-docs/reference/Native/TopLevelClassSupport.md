@@ -54,12 +54,33 @@ Create a Raku object using a native object from elsewhere. $native-object can be
       }
     }
 
+get-class-gtype
+---------------
+
+Get type code of this native object which is set when object was created.
+
+    method get-class-gtype ( --> GType )
+
 get-class-name
 --------------
 
 Return native class name.
 
     method get-class-name ( --> Str )
+
+native-object-ref
+-----------------
+
+Absolute method needed to be defined in all child classes to do reference count administration.
+
+    method native-object-ref ( $n-native-object ) { !!! }
+
+native-object-unref
+-------------------
+
+Absolute method needed to be defined in all child classes to do reference count administration.
+
+    method native-object-unref ( $n-native-object ) { !!! }
 
 is-valid
 --------
@@ -77,6 +98,27 @@ Clear the error and return data to memory pool. The error object is not valid af
 
 Internally used methods
 =======================
+
+_get-native-object
+------------------
+
+Get the native object with reference counting by default. When $ref is `False`, reference counting is not done. When False, it is the same as calling `_get-native-object-no-reffing()`.
+
+    method _get-native-object ( Bool :$ref = True )
+
+_get-native-object-no-reffing
+-----------------------------
+
+Get the native object without reference counting.
+
+    method _get-native-object-no-reffing ( )
+
+_set-native-object
+------------------
+
+Set the native object. This happens mostly when a native object is created.
+
+    method _set-native-object ( $native-object )
 
 _set-builder
 ------------
