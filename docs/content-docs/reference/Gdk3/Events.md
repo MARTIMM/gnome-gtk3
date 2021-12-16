@@ -472,9 +472,9 @@ Describes a key press or key release event.
 
   * UInt $.time: the time of the event in milliseconds.
 
-  * UInt $.state: (type `Gnome::Gdk3::ModifierType`): a bit-mask representing the state of the modifier keys (e.g. Control, Shift and Alt) and the pointer buttons. See `Gnome::Gdk3::ModifierType`.
+  * UInt $.state: (type `GdkModifierType`): a bit-mask representing the state of the modifier keys (e.g. Control, Shift and Alt) and the pointer buttons. See `GdkModifierType`.
 
-  * UInt $.keyval: the key that was pressed or released. See the `gdk/gdkkeysyms.h` header file for a complete list of GDK key codes.
+  * UInt $.keyval: the key that was pressed or released. See the **Gnome::Gdk3::Keysyms** class for a complete list of GDK key codes.
 
   * Int $.length: the length of *string*.
 
