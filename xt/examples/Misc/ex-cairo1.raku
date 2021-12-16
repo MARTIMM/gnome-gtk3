@@ -23,7 +23,7 @@ class X {
 note "cc: $cc.perl, da: $da.perl";
 #return;
 #    my $ci = Cairo::Image.create(Cairo::FORMAT_ARGB32, 128, 128);
-    my $ct = Cairo::Context.new($cc);#$da.get-native-object-no-reffing);
+    my $ct = Cairo::Context.new($cc);#$da._get-native-object-no-reffing);
 note "$ct.perl()";
 
     $ct.rgb( 0, 0.7, 0.9);

@@ -181,7 +181,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

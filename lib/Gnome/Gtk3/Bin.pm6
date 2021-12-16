@@ -129,12 +129,12 @@ Returns: The child of the B<Gnome::Gtk3::Bin>;
 =end pod
 
 method get-child ( --> N-GObject ) {
-  gtk_bin_get_child(self.get-native-object-no-reffing);
+  gtk_bin_get_child(self._get-native-object-no-reffing);
 }
 
 method get-child-rk ( *%options --> Gnome::GObject::Object ) {
   my $o = self._wrap-native-type-from-no(
-    gtk_bin_get_child(self.get-native-object-no-reffing),
+    gtk_bin_get_child(self._get-native-object-no-reffing),
     |%options
   );
 

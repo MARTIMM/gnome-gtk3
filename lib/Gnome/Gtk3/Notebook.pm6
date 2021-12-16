@@ -192,7 +192,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_notebook_new___x___($no);
       }
 
@@ -222,7 +222,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -263,11 +263,11 @@ Returns: the index (starting from 0) of the appended page in the notebook, or -1
 =end pod
 
 method append-page ( $child is copy, $tab_label is copy --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
 
   gtk_notebook_append_page(
-    self.get-native-object-no-reffing, $child, $tab_label
+    self._get-native-object-no-reffing, $child, $tab_label
   )
 }
 
@@ -299,12 +299,12 @@ method append-page-menu (
   $child is copy, $tab_label is copy, $menu_label is copy
   --> Int
 ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
-  $menu_label .= get-native-object-no-reffing unless $menu_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $menu_label .= _get-native-object-no-reffing unless $menu_label ~~ N-GObject;
 
   gtk_notebook_append_page_menu(
-    self.get-native-object-no-reffing, $child, $tab_label, $menu_label
+    self._get-native-object-no-reffing, $child, $tab_label, $menu_label
   )
 }
 
@@ -328,10 +328,10 @@ This function is very similar to C<Gnome::Gtk3::Container.remove()>, but additio
 =end pod
 
 method detach-tab ( $child is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_detach_tab(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   );
 }
 
@@ -363,7 +363,7 @@ Returns: The action widget with the given I<$pack-type> or C<undefined> when thi
 
 method get-action-widget ( GtkPackType $pack_type --> N-GObject ) {
   gtk_notebook_get_action_widget(
-    self.get-native-object-no-reffing, $pack_type
+    self._get-native-object-no-reffing, $pack_type
   )
 }
 
@@ -372,7 +372,7 @@ method get-action-widget-rk (
 ) {
   self._wrap-native-type-from-no(
     gtk_notebook_get_action_widget(
-      self.get-native-object-no-reffing, $pack_type
+      self._get-native-object-no-reffing, $pack_type
     ), |%options
   )
 }
@@ -396,7 +396,7 @@ Returns: the index (starting from 0) of the current page in the notebook. If the
 =end pod
 
 method get-current-page ( --> Int ) {
-  gtk_notebook_get_current_page(self.get-native-object-no-reffing)
+  gtk_notebook_get_current_page(self._get-native-object-no-reffing)
 }
 
 sub gtk_notebook_get_current_page (
@@ -418,7 +418,7 @@ Returns: the group name, or C<undefined> if none is set
 =end pod
 
 method get-group-name ( --> Str ) {
-  gtk_notebook_get_group_name(self.get-native-object-no-reffing)
+  gtk_notebook_get_group_name(self._get-native-object-no-reffing)
 }
 
 sub gtk_notebook_get_group_name (
@@ -446,16 +446,16 @@ Returns: the menu label, or C<undefined> if the notebook page does not have a me
 =end pod
 
 method get-menu-label ( $child is copy --> N-GObject ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  gtk_notebook_get_menu_label( self.get-native-object-no-reffing, $child)
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  gtk_notebook_get_menu_label( self._get-native-object-no-reffing, $child)
 }
 
 method get-menu-label-rk (
   $child is copy, *%options --> Gnome::GObject::Object
 ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   self._wrap-native-type-from-no(
-    gtk_notebook_get_menu_label( self.get-native-object-no-reffing, $child),
+    gtk_notebook_get_menu_label( self._get-native-object-no-reffing, $child),
     |%options
   );
 }
@@ -480,10 +480,10 @@ Returns: the text of the tab label, or C<undefined> if the widget does not have 
 =end pod
 
 method get-menu-label-text ( $child is copy --> Str ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_get_menu_label_text(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   )
 }
 
@@ -506,7 +506,7 @@ Returns: the number of pages in the notebook
 =end pod
 
 method get-n-pages ( --> Int ) {
-  gtk_notebook_get_n_pages(self.get-native-object-no-reffing)
+  gtk_notebook_get_n_pages(self._get-native-object-no-reffing)
 }
 
 sub gtk_notebook_get_n_pages (
@@ -534,14 +534,14 @@ Returns: the child widget, or C<undefined> if I<$page-num> is out of bounds
 =end pod
 
 method get-nth-page ( Int() $page_num --> N-GObject ) {
-  gtk_notebook_get_nth_page( self.get-native-object-no-reffing, $page_num)
+  gtk_notebook_get_nth_page( self._get-native-object-no-reffing, $page_num)
 }
 
 method get-nth-page-rk (
   Int() $page_num, *%options --> Gnome::GObject::Object
 ) {
   self._wrap-native-type-from-no(
-    gtk_notebook_get_nth_page( self.get-native-object-no-reffing, $page_num),
+    gtk_notebook_get_nth_page( self._get-native-object-no-reffing, $page_num),
     |%options
   )
 }
@@ -565,7 +565,7 @@ Returns: C<True> if arrows for scrolling are present
 =end pod
 
 method get-scrollable ( --> Bool ) {
-  gtk_notebook_get_scrollable(self.get-native-object-no-reffing).Bool
+  gtk_notebook_get_scrollable(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_notebook_get_scrollable (
@@ -587,7 +587,7 @@ Returns: C<True> if the bevel is drawn
 =end pod
 
 method get-show-border ( --> Bool ) {
-  gtk_notebook_get_show_border(self.get-native-object-no-reffing).Bool
+  gtk_notebook_get_show_border(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_notebook_get_show_border (
@@ -609,7 +609,7 @@ Returns: C<True> if the tabs are shown
 =end pod
 
 method get-show-tabs ( --> Bool ) {
-  gtk_notebook_get_show_tabs(self.get-native-object-no-reffing).Bool
+  gtk_notebook_get_show_tabs(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_notebook_get_show_tabs (
@@ -632,9 +632,9 @@ Returns: C<True> if the tab is detachable.
 =end pod
 
 method get-tab-detachable ( $child is copy --> Bool ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_notebook_get_tab_detachable(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   ).Bool
 }
 
@@ -663,16 +663,16 @@ Returns: the tab label
 =end pod
 
 method get-tab-label ( $child is copy --> N-GObject ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  gtk_notebook_get_tab_label( self.get-native-object-no-reffing, $child)
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  gtk_notebook_get_tab_label( self._get-native-object-no-reffing, $child)
 }
 
 method get-tab-label-rk (
   $child is copy, *%options --> Gnome::GObject::Object
 ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   self._wrap-native-type-from-no(
-    gtk_notebook_get_tab_label( self.get-native-object-no-reffing, $child),
+    gtk_notebook_get_tab_label( self._get-native-object-no-reffing, $child),
     |%options
   )
 }
@@ -697,8 +697,8 @@ Returns: the text of the tab label, or C<undefined> if the tab label widget is n
 =end pod
 
 method get-tab-label-text ( $child is copy --> Str ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  gtk_notebook_get_tab_label_text( self.get-native-object-no-reffing, $child)
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  gtk_notebook_get_tab_label_text( self._get-native-object-no-reffing, $child)
 }
 
 sub gtk_notebook_get_tab_label_text (
@@ -720,7 +720,7 @@ Returns: the edge at which the tabs are drawn
 =end pod
 
 method get-tab-pos ( --> GtkPositionType ) {
-  GtkPositionType(gtk_notebook_get_tab_pos(self.get-native-object-no-reffing))
+  GtkPositionType(gtk_notebook_get_tab_pos(self._get-native-object-no-reffing))
 }
 
 sub gtk_notebook_get_tab_pos (
@@ -743,10 +743,10 @@ Returns: C<True> if the tab is reorderable.
 =end pod
 
 method get-tab-reorderable ( $child is copy --> Bool ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_get_tab_reorderable(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   ).Bool
 }
 
@@ -775,11 +775,11 @@ Returns: the index (starting from 0) of the inserted page in the notebook, or -1
 =end pod
 
 method insert-page ( $child is copy, $tab_label is copy, Int() $position --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
 
   gtk_notebook_insert_page(
-    self.get-native-object-no-reffing, $child, $tab_label, $position
+    self._get-native-object-no-reffing, $child, $tab_label, $position
   )
 }
 
@@ -810,12 +810,12 @@ Returns: the index (starting from 0) of the inserted page in the notebook
 =end pod
 
 method insert-page-menu ( $child is copy, $tab_label is copy, $menu_label is copy, Int() $position --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
-  $menu_label .= get-native-object-no-reffing unless $menu_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $menu_label .= _get-native-object-no-reffing unless $menu_label ~~ N-GObject;
 
   gtk_notebook_insert_page_menu(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
     $child, $tab_label, $menu_label, $position
   )
 }
@@ -837,7 +837,7 @@ Switches to the next page. Nothing happens if the current page is the last page.
 =end pod
 
 method next-page ( ) {
-  gtk_notebook_next_page(self.get-native-object-no-reffing);
+  gtk_notebook_next_page(self._get-native-object-no-reffing);
 }
 
 sub gtk_notebook_next_page (
@@ -860,10 +860,10 @@ Returns: the index of the page containing I<$child>, or -1 if I<$child> is not i
 =end pod
 
 method page-num ( $child is copy --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_page_num(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   )
 }
 
@@ -884,7 +884,7 @@ Disables the popup menu.
 =end pod
 
 method popup-disable ( ) {
-  gtk_notebook_popup_disable(self.get-native-object-no-reffing);
+  gtk_notebook_popup_disable(self._get-native-object-no-reffing);
 }
 
 sub gtk_notebook_popup_disable (
@@ -906,7 +906,7 @@ Enables the popup menu: if the user clicks with the right mouse button on the ta
 method popup-enable ( ) {
 
   gtk_notebook_popup_enable(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -931,11 +931,11 @@ Returns: the index (starting from 0) of the prepended page in the notebook, or -
 =end pod
 
 method prepend-page ( $child is copy, $tab_label is copy --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
 
   gtk_notebook_prepend_page(
-    self.get-native-object-no-reffing, $child, $tab_label
+    self._get-native-object-no-reffing, $child, $tab_label
   )
 }
 
@@ -961,12 +961,12 @@ Returns: the index (starting from 0) of the prepended page in the notebook, or -
 =end pod
 
 method prepend-page-menu ( $child is copy, $tab_label is copy, $menu_label is copy --> Int ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
-  $menu_label .= get-native-object-no-reffing unless $menu_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $menu_label .= _get-native-object-no-reffing unless $menu_label ~~ N-GObject;
 
   gtk_notebook_prepend_page_menu(
-    self.get-native-object-no-reffing, $child, $tab_label, $menu_label
+    self._get-native-object-no-reffing, $child, $tab_label, $menu_label
   )
 }
 
@@ -989,7 +989,7 @@ Switches to the previous page. Nothing happens if the current page is the first 
 method prev-page ( ) {
 
   gtk_notebook_prev_page(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -1013,7 +1013,7 @@ Removes a page from the notebook given its index in the notebook.
 method remove-page ( Int() $page_num ) {
 
   gtk_notebook_remove_page(
-    self.get-native-object-no-reffing, $page_num
+    self._get-native-object-no-reffing, $page_num
   );
 }
 
@@ -1036,10 +1036,10 @@ Reorders the page containing I<$child>, so that it appears in position I<$positi
 =end pod
 
 method reorder-child ( $child is copy, Int() $position ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_reorder_child(
-    self.get-native-object-no-reffing, $child, $position
+    self._get-native-object-no-reffing, $child, $position
   );
 }
 
@@ -1064,10 +1064,10 @@ Note that action widgets are “internal” children of the notebook and thus no
 =end pod
 
 method set-action-widget ( $widget is copy, GtkPackType $pack_type ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_notebook_set_action_widget(
-    self.get-native-object-no-reffing, $widget, $pack_type
+    self._get-native-object-no-reffing, $widget, $pack_type
   );
 }
 
@@ -1093,7 +1093,7 @@ Note that due to historical reasons, GtkNotebook refuses to switch to a page unl
 method set-current-page ( Int() $page_num ) {
 
   gtk_notebook_set_current_page(
-    self.get-native-object-no-reffing, $page_num
+    self._get-native-object-no-reffing, $page_num
   );
 }
 
@@ -1117,7 +1117,7 @@ Notebooks with the same name will be able to exchange tabs via drag and drop. A 
 =end pod
 
 method set-group-name ( Str $group_name ) {
-  gtk_notebook_set_group_name( self.get-native-object-no-reffing, $group_name);
+  gtk_notebook_set_group_name( self._get-native-object-no-reffing, $group_name);
 }
 
 sub gtk_notebook_set_group_name (
@@ -1139,11 +1139,11 @@ Changes the menu label for the page containing I<$child>.
 =end pod
 
 method set-menu-label ( $child is copy, $menu_label is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $menu_label .= get-native-object-no-reffing unless $menu_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $menu_label .= _get-native-object-no-reffing unless $menu_label ~~ N-GObject;
 
   gtk_notebook_set_menu_label(
-    self.get-native-object-no-reffing, $child, $menu_label
+    self._get-native-object-no-reffing, $child, $menu_label
   );
 }
 
@@ -1166,10 +1166,10 @@ Creates a new label and sets it as the menu label of I<$child>.
 =end pod
 
 method set-menu-label-text ( $child is copy, Str $menu_text ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_set_menu_label_text(
-    self.get-native-object-no-reffing, $child, $menu_text
+    self._get-native-object-no-reffing, $child, $menu_text
   );
 }
 
@@ -1191,7 +1191,7 @@ Sets whether the tab label area will have arrows for scrolling if there are too 
 =end pod
 
 method set-scrollable ( Bool $scrollable ) {
-  gtk_notebook_set_scrollable( self.get-native-object-no-reffing, $scrollable);
+  gtk_notebook_set_scrollable( self._get-native-object-no-reffing, $scrollable);
 }
 
 sub gtk_notebook_set_scrollable (
@@ -1214,7 +1214,7 @@ Sets whether a bevel will be drawn around the notebook pages. This only has a vi
 method set-show-border ( Bool $show_border ) {
 
   gtk_notebook_set_show_border(
-    self.get-native-object-no-reffing, $show_border
+    self._get-native-object-no-reffing, $show_border
   );
 }
 
@@ -1238,7 +1238,7 @@ Sets whether to show the tabs for the notebook or not.
 method set-show-tabs ( Bool $show_tabs ) {
 
   gtk_notebook_set_show_tabs(
-    self.get-native-object-no-reffing, $show_tabs
+    self._get-native-object-no-reffing, $show_tabs
   );
 }
 
@@ -1283,10 +1283,10 @@ If you want a notebook to accept drags from other widgets, you will have to set 
 =end pod
 
 method set-tab-detachable ( $child is copy, Bool $detachable ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_set_tab_detachable(
-    self.get-native-object-no-reffing, $child, $detachable
+    self._get-native-object-no-reffing, $child, $detachable
   );
 }
 
@@ -1309,11 +1309,11 @@ Changes the tab label for I<$child>. If C<undefined> is specified for I<$tab-lab
 =end pod
 
 method set-tab-label ( $child is copy, $tab_label is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $tab_label .= get-native-object-no-reffing unless $tab_label ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $tab_label .= _get-native-object-no-reffing unless $tab_label ~~ N-GObject;
 
   gtk_notebook_set_tab_label(
-    self.get-native-object-no-reffing, $child, $tab_label
+    self._get-native-object-no-reffing, $child, $tab_label
   );
 }
 
@@ -1336,9 +1336,9 @@ Creates a new label and sets it as the tab label for the page containing I<$chil
 =end pod
 
 method set-tab-label-text ( $child is copy, Str $tab_text ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_notebook_set_tab_label_text(
-    self.get-native-object-no-reffing, $child, $tab_text
+    self._get-native-object-no-reffing, $child, $tab_text
   );
 }
 
@@ -1360,7 +1360,7 @@ Sets the edge at which the tabs for switching pages in the notebook are drawn.
 =end pod
 
 method set-tab-pos ( GtkPositionType $pos ) {
-  gtk_notebook_set_tab_pos( self.get-native-object-no-reffing, $pos);
+  gtk_notebook_set_tab_pos( self._get-native-object-no-reffing, $pos);
 }
 
 sub gtk_notebook_set_tab_pos (
@@ -1382,10 +1382,10 @@ Sets whether the notebook tab can be reordered via drag and drop or not.
 =end pod
 
 method set-tab-reorderable ( $child is copy, Bool $reorderable ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_notebook_set_tab_reorderable(
-    self.get-native-object-no-reffing, $child, $reorderable
+    self._get-native-object-no-reffing, $child, $reorderable
   );
 }
 

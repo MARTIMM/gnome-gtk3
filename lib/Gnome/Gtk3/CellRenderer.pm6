@@ -161,7 +161,7 @@ submethod BUILD ( *%options ) {
 #`{{
   # process all named arguments
   if ? %options<empty> {
-    # self.set-native-object(gtk_cell_renderer_new());
+    # self._set-native-object(gtk_cell_renderer_new());
   }
 
   elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {

@@ -66,7 +66,7 @@ While this is faster, some of the calls must process the arguments before they a
 
   * `.is-valid()`: A boolean test to check if a native object is valid.
   * `.set-native-object()`
-  * `.get-native-object()`.
+  * `._get-native-object()`.
 
 * Defining DESTROY() at the top was a big mistake! Obvious when you think of it! Dereferencing or cleaning up a native object should only be done explicitly because when the Raku object goes out of scope doesn't mean that the native object isn't in use anymore. Also calling `.clear-object()` in `.new()` and several other places is wrong for the same reason.
 

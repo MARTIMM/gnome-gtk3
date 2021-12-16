@@ -44,7 +44,7 @@ with my Gnome::Gtk3::AccelGroup $accel-group .= new {
     )
   );
 
-#  my N-GClosure $no = $c.get-native-object;
+#  my N-GClosure $no = $c._get-native-object;
 #  note 'M: ' ~ $no.in-marshal;
 #  note 'V: ' ~ $no.is-invalid;
 

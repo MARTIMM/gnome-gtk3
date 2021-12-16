@@ -212,12 +212,12 @@ submethod BUILD ( *%options ) {
 
     elsif ? %options<hadjustment> and ? %options<hadjustment> {
       my $n-ha = %options<hadjustment>;
-      $n-ha .= get-native-object-no-reffing
-        if $n-ha.^can('get-native-object-no-reffing');
+      $n-ha .= _get-native-object-no-reffing
+        if $n-ha.^can('_get-native-object-no-reffing');
       my $n-va = %options<vadjustment>;
-      $n-va .= get-native-object-no-reffing
-        if $n-va.^can('get-native-object-no-reffing');
-      self.set-native-object(_gtk_scrolled_window_new( $n-ha, $n-va));
+      $n-va .= _get-native-object-no-reffing
+        if $n-va.^can('_get-native-object-no-reffing');
+      self._set-native-object(_gtk_scrolled_window_new( $n-ha, $n-va));
     }
 
     # check if there are unknown options
@@ -233,7 +233,7 @@ submethod BUILD ( *%options ) {
     # create default object
     else {
       # Default: no adjustents
-      self.set-native-object(_gtk_scrolled_window_new( N-GObject, N-GObject));
+      self._set-native-object(_gtk_scrolled_window_new( N-GObject, N-GObject));
     }
 
     # only after creating the native-object, the gtype is known

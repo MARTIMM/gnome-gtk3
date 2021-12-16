@@ -197,7 +197,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::LevelBar';
 
   if ? %options<min> and ? %options<max> {
-    self.set-native-object(gtk_level_bar_new_for_interval(
+    self._set-native-object(gtk_level_bar_new_for_interval(
       %options<min>, %options<max>)
     );
   }
@@ -215,7 +215,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_level_bar_new());
+    self._set-native-object(gtk_level_bar_new());
   }
 
   # only after creating the native-object, the gtype is known

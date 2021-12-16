@@ -236,7 +236,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -345,7 +345,7 @@ Associate I<accel-group> with I<window>, such that calling C<gtk-accel-groups-ac
 =end pod
 
 method add-accel-group ( $accel_group is copy ) {
-  $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
+  $accel_group .= _get-native-object-no-reffing unless $accel_group ~~ N-GObject;
   gtk_window_add_accel_group( self._f('GtkWindow'), $accel_group);
 }
 
@@ -368,7 +368,7 @@ Adds a mnemonic to this window.
 =end pod
 
 method add-mnemonic ( UInt $keyval, $target is copy ) {
-  $target .= get-native-object-no-reffing unless $target ~~ N-GObject;
+  $target .= _get-native-object-no-reffing unless $target ~~ N-GObject;
 
   gtk_window_add_mnemonic(
     self._f('GtkWindow'), $keyval
@@ -526,7 +526,7 @@ You can track the fullscreen state via the "window-state-event" signal on B<Gnom
 =end pod
 
 method fullscreen-on-monitor ( $screen is copy, Int $monitor ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
 
   gtk_window_fullscreen_on_monitor(
     self._f('GtkWindow'), $monitor
@@ -1793,7 +1793,7 @@ Reverses the effects of C<add-accel-group()>.
 =end pod
 
 method remove-accel-group ( $accel_group is copy ) {
-  $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
+  $accel_group .= _get-native-object-no-reffing unless $accel_group ~~ N-GObject;
 
   gtk_window_remove_accel_group(
     self._f('GtkWindow'),
@@ -1819,7 +1819,7 @@ Removes a mnemonic from this window.
 =end pod
 
 method remove-mnemonic ( UInt $keyval, $target is copy ) {
-  $target .= get-native-object-no-reffing unless $target ~~ N-GObject;
+  $target .= _get-native-object-no-reffing unless $target ~~ N-GObject;
 
   gtk_window_remove_mnemonic(
     self._f('GtkWindow'), $keyval
@@ -1907,7 +1907,7 @@ This is equivalent to calling C<gtk-application-remove-window()> and/or C<gtk-ap
 =end pod
 
 method set-application ( $application is copy ) {
-  $application .= get-native-object-no-reffing unless $application ~~ N-GObject;
+  $application .= _get-native-object-no-reffing unless $application ~~ N-GObject;
 
   gtk_window_set_application(
     self._f('GtkWindow'),
@@ -1938,7 +1938,7 @@ Passing C<undefined> for I<attach-widget> detaches the window.
 =end pod
 
 method set-attached-to ( $attach_widget is copy ) {
-  $attach_widget .= get-native-object-no-reffing unless $attach_widget ~~ N-GObject;
+  $attach_widget .= _get-native-object-no-reffing unless $attach_widget ~~ N-GObject;
 
   gtk_window_set_attached_to(
     self._f('GtkWindow'),
@@ -2015,7 +2015,7 @@ The default widget is the widget that’s activated when the user presses Enter 
 =end pod
 
 method set-default ( $default_widget is copy ) {
-  $default_widget .= get-native-object-no-reffing
+  $default_widget .= _get-native-object-no-reffing
     unless $default_widget ~~ N-GObject;
 
   gtk_window_set_default(
@@ -2041,7 +2041,7 @@ Sets an icon to be used as fallback for windows that haven't had C<set-icon()> c
 =end pod
 
 method set-default-icon ( $icon is copy ) {
-  $icon .= get-native-object-no-reffing unless $icon ~~ N-GObject;
+  $icon .= _get-native-object-no-reffing unless $icon ~~ N-GObject;
 
   gtk_window_set_default_icon(
     self._f('GtkWindow'),
@@ -2104,7 +2104,7 @@ See C<set-icon-list()> for more details.
 =end pod
 
 method set-default-icon-list ( $list is copy ) {
-  $list .= get-native-object-no-reffing unless $list ~~ N-GList;
+  $list .= _get-native-object-no-reffing unless $list ~~ N-GList;
 
   gtk_window_set_default_icon_list(
     self._f('GtkWindow'),
@@ -2240,7 +2240,7 @@ If I<focus> is not the current focus widget, and is focusable, sets it as the fo
 =end pod
 
 method set-focus ( $focus is copy ) {
-  $focus .= get-native-object-no-reffing unless $focus ~~ N-GObject;
+  $focus .= _get-native-object-no-reffing unless $focus ~~ N-GObject;
 
   gtk_window_set_focus(
     self._f('GtkWindow'),
@@ -2315,7 +2315,7 @@ This function sets up hints about how a window can be resized by the user. You c
 =end pod
 
 method set-geometry-hints ( $geometry_widget is copy, GdkGeometry $geometry, GdkWindowHints $geom_mask ) {
-  $geometry_widget .= get-native-object-no-reffing unless $geometry_widget ~~ N-GObject;
+  $geometry_widget .= _get-native-object-no-reffing unless $geometry_widget ~~ N-GObject;
 
   gtk_window_set_geometry_hints(
     self._f('GtkWindow'), $geometry, $geom_mask
@@ -2426,7 +2426,7 @@ See also C<set-default-icon-list()> to set the icon for all windows in your appl
 =end pod
 
 method set-icon ( $icon is copy ) {
-  $icon .= get-native-object-no-reffing unless $icon ~~ N-GObject;
+  $icon .= _get-native-object-no-reffing unless $icon ~~ N-GObject;
 
   gtk_window_set_icon(
     self._f('GtkWindow'), $icon
@@ -2499,7 +2499,7 @@ Note that transient windows (those who have been set transient for another windo
 =end pod
 
 method set-icon-list ( $list is copy ) {
-  $list .= get-native-object-no-reffing unless $list ~~ N-GList;
+  $list .= _get-native-object-no-reffing unless $list ~~ N-GList;
 
   gtk_window_set_icon_list(
     self._f('GtkWindow'),
@@ -2773,7 +2773,7 @@ Sets the B<Gnome::Gdk3::Screen> where the I<window> is displayed; if the window 
 =end pod
 
 method set-screen ( $screen is copy ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
 
   gtk_window_set_screen(
     self._f('GtkWindow'),
@@ -2900,7 +2900,7 @@ If you set a custom titlebar, GTK+ will do its best to convince the window manag
 =end pod
 
 method set-titlebar ( $titlebar is copy ) {
-  $titlebar .= get-native-object-no-reffing unless $titlebar ~~ N-GObject;
+  $titlebar .= _get-native-object-no-reffing unless $titlebar ~~ N-GObject;
 
   gtk_window_set_titlebar(
     self._f('GtkWindow'),
@@ -2931,7 +2931,7 @@ On Windows, this function puts the child window on top of the parent, much as th
 =end pod
 
 method set-transient-for ( $parent is copy ) {
-  $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+  $parent .= _get-native-object-no-reffing unless $parent ~~ N-GObject;
 
   gtk_window_set_transient_for(
     self._f('GtkWindow'), $parent

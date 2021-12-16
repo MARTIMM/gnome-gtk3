@@ -213,7 +213,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_menu_button_new___x___($no);
       }
 
@@ -243,7 +243,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -281,7 +281,7 @@ Returns: a B<Gnome::Gtk3::Widget> value or C<undefined>
 =end pod
 
 method get-align-widget ( --> N-GObject ) {
-  gtk_menu_button_get_align_widget(self.get-native-object-no-reffing)
+  gtk_menu_button_get_align_widget(self._get-native-object-no-reffing)
 }
 
 sub gtk_menu_button_get_align_widget (
@@ -304,7 +304,7 @@ Returns: a B<Gnome::Gtk3::ArrowType> value
 
 method get-direction ( --> GtkArrowType ) {
   GtkArrowType(
-    gtk_menu_button_get_direction(self.get-native-object-no-reffing)
+    gtk_menu_button_get_direction(self._get-native-object-no-reffing)
   )
 }
 
@@ -329,7 +329,7 @@ Returns: a B<Gnome::Gio::MenuModel> or an C<invalid> object.
 method get-menu-model ( --> Gnome::Gio::MenuModel ) {
   Gnome::Gio::MenuModel.new(
     :native-object(
-      gtk_menu_button_get_menu_model(self.get-native-object-no-reffing)
+      gtk_menu_button_get_menu_model(self._get-native-object-no-reffing)
     )
   )
 }
@@ -353,7 +353,7 @@ Returns the B<Gnome::Gtk3::Popover> that pops out of the button. If the button i
 method get-popover ( --> Gnome::Gtk3::Popover ) {
   Gnome::Gtk3::Popover.new(
     :native-object(
-      gtk_menu_button_get_popover(self.get-native-object-no-reffing)
+      gtk_menu_button_get_popover(self._get-native-object-no-reffing)
     )
   )
 }
@@ -377,7 +377,7 @@ Returns the B<Gnome::Gtk3::Menu> that pops out of the button. If the button does
 method get-popup ( --> Gnome::Gtk3::Menu ) {
   Gnome::Gtk3::Menu.new(
     :native-object(
-      gtk_menu_button_get_popup(self.get-native-object-no-reffing)
+      gtk_menu_button_get_popup(self._get-native-object-no-reffing)
     )
   )
 }
@@ -401,7 +401,7 @@ Returns: C<True> if using a B<Gnome::Gtk3::Popover>
 =end pod
 
 method get-use-popover ( --> Bool ) {
-  gtk_menu_button_get_use_popover(self.get-native-object-no-reffing).Bool
+  gtk_menu_button_get_use_popover(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_menu_button_get_use_popover (
@@ -427,11 +427,11 @@ Note that this property is only used with menus currently, and not for popovers.
 =end pod
 
 method set-align-widget ( $align_widget is copy ) {
-  $align_widget .= get-native-object-no-reffing
+  $align_widget .= _get-native-object-no-reffing
     unless $align_widget ~~ N-GObject;
 
   gtk_menu_button_set_align_widget(
-    self.get-native-object-no-reffing, $align_widget
+    self._get-native-object-no-reffing, $align_widget
   );
 }
 
@@ -458,7 +458,7 @@ If you pass C<GTK-ARROW-NONE> for a I<$direction>, the popup will behave as if y
 =end pod
 
 method set-direction ( GtkArrowType $direction ) {
-  gtk_menu_button_set_direction( self.get-native-object-no-reffing, $direction);
+  gtk_menu_button_set_direction( self._get-native-object-no-reffing, $direction);
 }
 
 sub gtk_menu_button_set_direction (
@@ -484,9 +484,9 @@ If  I<popup> or I<popover> are already set, those widgets are dissociated from t
 =end pod
 
 method set-menu-model ( $menu_model is copy ) {
-  $menu_model .= get-native-object-no-reffing unless $menu_model ~~ N-GObject;
+  $menu_model .= _get-native-object-no-reffing unless $menu_model ~~ N-GObject;
   gtk_menu_button_set_menu_model(
-    self.get-native-object-no-reffing, $menu_model
+    self._get-native-object-no-reffing, $menu_model
   );
 }
 
@@ -511,10 +511,10 @@ If  I<menu-model> or  I<popup> are set, those objects are dissociated from the I
 =end pod
 
 method set-popover ( $popover is copy ) {
-  $popover .= get-native-object-no-reffing unless $popover ~~ N-GObject;
+  $popover .= _get-native-object-no-reffing unless $popover ~~ N-GObject;
 
   gtk_menu_button_set_popover(
-    self.get-native-object-no-reffing, $popover
+    self._get-native-object-no-reffing, $popover
   );
 }
 
@@ -539,10 +539,10 @@ If  I<menu-model> or  I<popover> are set, those objects are dissociated from the
 =end pod
 
 method set-popup ( $menu is copy ) {
-  $menu .= get-native-object-no-reffing unless $menu ~~ N-GObject;
+  $menu .= _get-native-object-no-reffing unless $menu ~~ N-GObject;
 
   gtk_menu_button_set_popup(
-    self.get-native-object-no-reffing, $menu
+    self._get-native-object-no-reffing, $menu
   );
 }
 
@@ -567,7 +567,7 @@ Sets whether to construct a B<Gnome::Gtk3::Popover> instead of B<Gnome::Gtk3::Me
 method set-use-popover ( Bool $use_popover ) {
 
   gtk_menu_button_set_use_popover(
-    self.get-native-object-no-reffing, $use_popover
+    self._get-native-object-no-reffing, $use_popover
   );
 }
 

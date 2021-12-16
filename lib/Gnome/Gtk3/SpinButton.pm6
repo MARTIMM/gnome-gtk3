@@ -288,8 +288,8 @@ submethod BUILD ( *%options ) {
 
       elsif ? %options<adjustment> {
         my $no-a = %options<adjustment>;
-        $no-a = $no-a.get-native-object-no-reffing
-          if $no-a.^can('get-native-object-no-reffing');
+        $no-a = $no-a._get-native-object-no-reffing
+          if $no-a.^can('_get-native-object-no-reffing');
 
         Gnome::N::deprecate(
           '.new(:climb_rate)', '.new(:climb-rate)', '0.33.0', '0.38.0'
@@ -329,7 +329,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

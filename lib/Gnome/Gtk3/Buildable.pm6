@@ -75,8 +75,8 @@ Adds a child to I<buildable>. I<type> is an optional string describing how the c
 =end pod
 
 method add-child ( $builder is copy, $child is copy, Str $type ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_buildable_add_child(
     self._f('GtkBuildable'), $builder, $child, $type
@@ -106,7 +106,7 @@ Returns: the constructed child
 =end pod
 
 method construct-child ( $builder is copy, Str $name --> N-GObject ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
 
   gtk_buildable_construct_child(
     self._f('GtkBuildable'), $builder, $name
@@ -134,8 +134,8 @@ This is similar to C<parser-finished()> but is called once for each custom tag h
 =end pod
 
 method custom-finished ( $builder is copy, $child is copy, Str $tagname, Pointer $data ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_buildable_custom_finished(
     self._f('GtkBuildable'), $builder, $child, $tagname, $data
@@ -163,8 +163,8 @@ This is called at the end of each custom element handled by the buildable.
 =end pod
 
 method custom-tag-end ( $builder is copy, $child is copy, Str $tagname, Pointer $data ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_buildable_custom_tag_end(
     self._f('GtkBuildable'), $builder, $child, $tagname, $data
@@ -195,8 +195,8 @@ Returns: C<True> if a object has a custom implementation, C<False> if it doesn't
 =end pod
 
 method custom-tag-start ( $builder is copy, $child is copy, Str $tagname, GMarkupParser $parser, Pointer $data --> Bool ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_buildable_custom_tag_start(
     self._f('GtkBuildable'), $builder, $child, $tagname, $parser, $data
@@ -224,7 +224,7 @@ Returns: the internal child of the buildable object
 =end pod
 
 method get-internal-child ( $builder is copy, Str $childname --> N-GObject ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
 
   gtk_buildable_get_internal_child(
     self._f('GtkBuildable'), $builder, $childname
@@ -278,7 +278,7 @@ Called when the builder finishes the parsing of a [GtkBuilder UI definition][BUI
 =end pod
 
 method parser-finished ( $builder is copy ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
 
   gtk_buildable_parser_finished(
     self._f('GtkBuildable'), $builder
@@ -305,8 +305,8 @@ Sets the property name I<name> to I<value> on the I<buildable> object.
 =end pod
 
 method set-buildable-property ( $builder is copy, Str $name, $value is copy ) {
-  $builder .= get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
+  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
 
   gtk_buildable_set_buildable_property(
     self._f('GtkBuildable'), $builder, $name, $value
@@ -431,9 +431,9 @@ Adds a child to I<buildable>. I<type> is an optional string describing how the c
 
 method add-child ( $builder, $child, Str $type ) {
   my $nob = $builder;
-  $nob .= get-native-object-no-reffing unless $nob ~~ N-GObject;
+  $nob .= _get-native-object-no-reffing unless $nob ~~ N-GObject;
   my $noc = $child;
-  $noc .= get-native-object-no-reffing unless $noc ~~ N-GObject;
+  $noc .= _get-native-object-no-reffing unless $noc ~~ N-GObject;
 
   gtk_buildable_add_child( self._f('GtkBuildable'), $nob, $noc, $type);
 }
@@ -463,7 +463,7 @@ Returns: the constructed child
 
 method construct-child ( $builder, Str $name --> N-GObject ) {
   my $no = $builder;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_buildable_construct_child(
     self._f('GtkBuildable'), $no, $name
@@ -495,9 +495,9 @@ called once for each custom tag handled by the I<buildable>.
 
 method custom-finished ( $builder, $child, Str $tagname, Pointer $data ) {
   my $nob = $builder;
-  $nob .= get-native-object-no-reffing unless $nob ~~ N-GObject;
+  $nob .= _get-native-object-no-reffing unless $nob ~~ N-GObject;
   my $noc = $child;
-  $noc .= get-native-object-no-reffing unless $noc ~~ N-GObject;
+  $noc .= _get-native-object-no-reffing unless $noc ~~ N-GObject;
 
   gtk_buildable_custom_finished(
     self._f('GtkBuildable'), $nob, $noc, $tagname, $data
@@ -530,9 +530,9 @@ the buildable.
 
 method custom-tag-end ( $builder, $child, Str $tagname, Pointer $data ) {
   my $nob = $builder;
-  $nob .= get-native-object-no-reffing unless $nob ~~ N-GObject;
+  $nob .= _get-native-object-no-reffing unless $nob ~~ N-GObject;
   my $noc = $child;
-  $noc .= get-native-object-no-reffing unless $noc ~~ N-GObject;
+  $noc .= _get-native-object-no-reffing unless $noc ~~ N-GObject;
 
   gtk_buildable_custom_tag_end(
     self._f('GtkBuildable'), $nob, $noc, $tagname, $data
@@ -565,7 +565,7 @@ if it doesn't.
 
 method custom-tag-start ( $builder, $child, Str $tagname, GMarkupParser $parser, Pointer $data --> Int ) {
   my $no = …;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_buildable_custom_tag_start(
     self._f('GtkBuildable'), $builder, $child, $tagname, $parser, $data
@@ -598,7 +598,7 @@ Returns: (transfer none): the internal child of the buildable object
 
 method get-internal-child ( $builder, Str $childname --> N-GObject ) {
   my $no = $builder;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_buildable_get_internal_child(
     self._f('GtkBuildable'), $no, $childname
@@ -629,7 +629,7 @@ is called on a builder.
 
 method parser-finished ( $builder ) {
   my $no = $builder;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_buildable_parser_finished(
     self._f('GtkBuildable'), $no
@@ -660,7 +660,7 @@ Sets the property name I<name> to I<value> on the I<buildable> object.
 
 method set-buildable-property ( $builder, Str $name, $value ) {
   my $no = $builder;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_buildable_set_buildable_property(
     self._f('GtkBuildable'), $no, $name, $value
@@ -709,7 +709,7 @@ Since: 2.12
 =end pod
 
 method buildable-set-name ( Str $name ) {
-  my N-GObject $buildable = self.get-native-object-no-reffing;
+  my N-GObject $buildable = self._get-native-object-no-reffing;
   gtk_buildable_set_name( $buildable, $name);
 }
 

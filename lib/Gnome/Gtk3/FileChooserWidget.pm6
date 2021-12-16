@@ -138,7 +138,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<action> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         $no = _gtk_file_chooser_widget_new(%options<action>);
       }
 
@@ -168,7 +168,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

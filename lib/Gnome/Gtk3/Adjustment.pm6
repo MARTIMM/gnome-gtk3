@@ -141,7 +141,7 @@ submethod BUILD ( *%options ) {
       %options<upper>:exists and %options<step-increment>:exists and
       %options<page-increment>:exists and %options<page-size>:exists {
 
-      self.set-native-object(_gtk_adjustment_new(
+      self._set-native-object(_gtk_adjustment_new(
           %options<value>.Num, %options<lower>.Num, %options<upper>.Num,
           %options<step-increment>.Num, %options<page-increment>.Num,
           %options<page-size>.Num
@@ -169,7 +169,7 @@ submethod BUILD ( *%options ) {
     #`{{ when there are options use this instead
     # create default object
     else {
-      self.set-native-object(_gtk_adjustment_new());
+      self._set-native-object(_gtk_adjustment_new());
     }
     }}
 
@@ -211,7 +211,7 @@ A  I<value-changed> signal will be emitted if the value is changed.
 
 method clamp-page ( Num() $lower, Num() $upper ) {
   gtk_adjustment_clamp_page(
-    self.get-native-object-no-reffing, $lower, $upper
+    self._get-native-object-no-reffing, $lower, $upper
   );
 }
 
@@ -242,7 +242,7 @@ Use this function to avoid multiple emissions of the  I<changed> signal. See C<s
 method configure ( Num() $value, Num() $lower, Num() $upper, Num() $step_increment, Num() $page_increment, Num() $page_size ) {
 
   gtk_adjustment_configure(
-    self.get-native-object-no-reffing, $value, $lower, $upper, $step_increment, $page_increment, $page_size
+    self._get-native-object-no-reffing, $value, $lower, $upper, $step_increment, $page_increment, $page_size
   );
 }
 
@@ -267,7 +267,7 @@ Returns: The current minimum value of the adjustment
 method get-lower ( --> Num() ) {
 
   gtk_adjustment_get_lower(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -292,7 +292,7 @@ Returns: the minimum increment of I<adjustment>
 method get-minimum-increment ( --> Num() ) {
 
   gtk_adjustment_get_minimum_increment(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -317,7 +317,7 @@ Returns: The current page increment of the adjustment
 method get-page-increment ( --> Num() ) {
 
   gtk_adjustment_get_page_increment(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -342,7 +342,7 @@ Returns: The current page size of the adjustment
 method get-page-size ( --> Num() ) {
 
   gtk_adjustment_get_page_size(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -367,7 +367,7 @@ Returns: The current step increment of the adjustment.
 method get-step-increment ( --> Num() ) {
 
   gtk_adjustment_get_step_increment(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -392,7 +392,7 @@ Returns: The current maximum value of the adjustment
 method get-upper ( --> Num() ) {
 
   gtk_adjustment_get_upper(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -417,7 +417,7 @@ Returns: The current value of the adjustment
 method get-value ( --> Num() ) {
 
   gtk_adjustment_get_value(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -445,7 +445,7 @@ Alternatively, using a single C<g-object-set()> for all the properties to change
 method set-lower ( Num() $lower ) {
 
   gtk_adjustment_set_lower(
-    self.get-native-object-no-reffing, $lower
+    self._get-native-object-no-reffing, $lower
   );
 }
 
@@ -471,7 +471,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 method set-page-increment ( Num() $page_increment ) {
 
   gtk_adjustment_set_page_increment(
-    self.get-native-object-no-reffing, $page_increment
+    self._get-native-object-no-reffing, $page_increment
   );
 }
 
@@ -497,7 +497,7 @@ See C<set-lower()> about how to compress multiple emissions of the GtkAdjustment
 method set-page-size ( Num() $page_size ) {
 
   gtk_adjustment_set_page_size(
-    self.get-native-object-no-reffing, $page_size
+    self._get-native-object-no-reffing, $page_size
   );
 }
 
@@ -523,7 +523,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 method set-step-increment ( Num() $step_increment ) {
 
   gtk_adjustment_set_step_increment(
-    self.get-native-object-no-reffing, $step_increment
+    self._get-native-object-no-reffing, $step_increment
   );
 }
 
@@ -551,7 +551,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 method set-upper ( Num() $upper ) {
 
   gtk_adjustment_set_upper(
-    self.get-native-object-no-reffing, $upper
+    self._get-native-object-no-reffing, $upper
   );
 }
 
@@ -577,7 +577,7 @@ Note that for adjustments which are used in a B<Gnome::Gtk3::Scrollbar>, the eff
 method set-value ( Num() $value ) {
 
   gtk_adjustment_set_value(
-    self.get-native-object-no-reffing, $value
+    self._get-native-object-no-reffing, $value
   );
 }
 

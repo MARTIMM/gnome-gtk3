@@ -289,7 +289,7 @@ submethod BUILD ( *%options ) {
         my Int $flags = %options<flags> // 0;
         my @buttons = %options<button-spec> // ();
         my $parent = %options<parent>;
-        $parent .= get-native-object unless $parent ~~ N-GObject;
+        $parent .= _get-native-object unless $parent ~~ N-GObject;
         $no = _gtk_dialog_new_with_buttons( $title, $parent, $flags, |@buttons);
       }
 
@@ -317,7 +317,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_dialog_new();
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -354,7 +354,7 @@ Adds an activatable widget to the action area of a B<Gnome::Gtk3::Dialog>, conne
 =end pod
 
 method add-action-widget ( $child is copy, Int() $response_id ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_dialog_add_action_widget(
     self._f('GtkDialog'), $child, $response_id
@@ -498,7 +498,7 @@ Returns: the response id of I<widget>, or C<GTK_RESPONSE_NONE> if I<widget> does
 =end pod
 
 method get-response-for-widget ( $widget is copy --> Int ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_dialog_get_response_for_widget(
     self._f('GtkDialog'), $widget
@@ -1196,7 +1196,7 @@ Returns: response ID
 =end pod
 
 method run ( --> Int ) {
-  gtk_dialog_run(self.get-native-object-no-reffing)
+  gtk_dialog_run(self._get-native-object-no-reffing)
 }
 
 sub gtk_dialog_run ( N-GObject $dialog --> gint )

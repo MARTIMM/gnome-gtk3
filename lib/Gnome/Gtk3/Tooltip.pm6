@@ -112,8 +112,8 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
       #  $no = %options<___x___>;
-      #  $no .= get-native-object-no-reffing
-      #    if $no.^can('get-native-object-no-reffing');
+      #  $no .= _get-native-object-no-reffing
+      #    if $no.^can('_get-native-object-no-reffing');
       #  #$no = _gtk_tooltip_new___x___($no);
       }
 
@@ -143,7 +143,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      #self.set-native-object($no);
+      #self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

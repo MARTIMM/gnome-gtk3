@@ -38,7 +38,7 @@ subtest 'Manipulations 0', {
   is $l.get-text, 'abc def', '.get-text()';
 
   my Gnome::Gtk3::Label $label2 .= new(:text('pqr'));
-  $l .= new(:native-object($label2.get-native-object));
+  $l .= new(:native-object($label2._get-native-object));
   is $l.get-text, 'pqr', '.new(:widget)';
 
   $l .= new(:mnemonic('Search _filename'));

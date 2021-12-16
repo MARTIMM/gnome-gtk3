@@ -171,7 +171,7 @@ subtest 'Signals ...', {
 
       $ccd.emit-by-name(
         'color-activated',
-        $widget.get-rgba.get-native-object-no-reffing,
+        $widget.get-rgba._get-native-object-no-reffing,
       #  :return-type(int32),
         :parameters([N-GdkRGBA,])
       );

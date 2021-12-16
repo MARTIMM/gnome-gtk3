@@ -110,13 +110,13 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<label> {
-    self.set-native-object(gtk_tool_button_new( N-GObject, %options<label>));
+    self._set-native-object(gtk_tool_button_new( N-GObject, %options<label>));
   }
 
   elsif ? %options<icon> {
     my $w = %options<icon>;
-    $w .= get-native-object if $w ~~ Gnome::GObject::Object;
-    self.set-native-object(gtk_tool_button_new( $w, Str));
+    $w .= _get-native-object if $w ~~ Gnome::GObject::Object;
+    self._set-native-object(gtk_tool_button_new( $w, Str));
   }
 
   elsif ? %options<widget> || ? %options<native-object> ||
@@ -135,7 +135,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(gtk_tool_button_new( N-GObject, Str));
+    self._set-native-object(gtk_tool_button_new( N-GObject, Str));
   }
 
   # only after creating the native-object, the gtype is known

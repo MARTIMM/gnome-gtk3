@@ -169,7 +169,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_button_new();
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -419,7 +419,7 @@ Set the image of I<button> to the given widget. The image will be displayed if t
 =end pod
 
 method set-image ( $image is copy ) {
-  $image .= get-native-object-no-reffing unless $image ~~ N-GObject;
+  $image .= _get-native-object-no-reffing unless $image ~~ N-GObject;
 
   gtk_button_set_image(
     self._f('GtkButton'), $image

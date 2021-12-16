@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_drag_dest_new___x___($no);
       }
 
@@ -176,7 +176,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -198,7 +198,7 @@ Add the image targets supported by B<Gnome::Gtk3::SelectionData> to the target l
 =end pod
 
 method add-image-targets ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_drag_dest_add_image_targets(
      $widget
@@ -223,7 +223,7 @@ Add the text targets supported by B<Gnome::Gtk3::SelectionData> to the target li
 =end pod
 
 method add-text-targets ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_dest_add_text_targets($widget);
 }
 
@@ -245,7 +245,7 @@ Add the URI targets supported by B<Gnome::Gtk3::SelectionData> to the target lis
 =end pod
 
 method add-uri-targets ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_dest_add_uri_targets($widget);
 }
 
@@ -270,7 +270,7 @@ Informs the drag source that the drop is finished, and that the data of the drag
 =end pod
 
 method finish ( $context is copy, Bool $success, Bool $del, UInt $time ) {
-  $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
+  $context .= _get-native-object-no-reffing unless $context ~~ N-GObject;
   gtk_drag_finish( $context, $success, $del, $time);
 }
 
@@ -299,9 +299,9 @@ Gets the data associated with a drag. When the data is received or the retrieval
 method get-data (
   $widget is copy, $context is copy, $target is copy, UInt $time
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
-  $target .= get-native-object-no-reffing unless $target ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $context .= _get-native-object-no-reffing unless $context ~~ N-GObject;
+  $target .= _get-native-object-no-reffing unless $target ~~ N-GObject;
 
   gtk_drag_get_data( $widget, $context, $target, $time);
 }
@@ -326,7 +326,7 @@ Returns: if the drag is occurring within a single application, a pointer to the 
 =end pod
 
 method get-source-widget ( $context is copy --> Gnome::GObject::Object ) {
-  $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
+  $context .= _get-native-object-no-reffing unless $context ~~ N-GObject;
   self._wrap-native-type-from-no(gtk_drag_get_source_widget($context))
 }
 
@@ -348,7 +348,7 @@ Highlights a widget as a currently hovered drop target. To end the highlight, ca
 =end pod
 
 method highlight ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_highlight($widget);
 }
 
@@ -380,11 +380,11 @@ method find-target (
   $widget is copy, $context is copy, $target-list? is copy
   --> Gnome::Gdk3::Atom
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $context .= get-native-object-no-reffing unless $context ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $context .= _get-native-object-no-reffing unless $context ~~ N-GObject;
 
   if $target-list.defined {
-    $target-list .= get-native-object-no-reffing
+    $target-list .= _get-native-object-no-reffing
       unless $target-list ~~ N-GObject;
   }
 
@@ -420,7 +420,7 @@ Returns: the B<Gnome::Gtk3::TargetList>, or C<undefined> if none
 =end pod
 
 method get-target-list ( $widget is copy --> N-GObject ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_dest_get_target_list($widget)
 }
 
@@ -444,7 +444,7 @@ Returns: C<True> if the widget always emits  I<drag-motion> events
 =end pod
 
 method get-track-motion ( $widget is copy --> Bool ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_drag_dest_get_track_motion(
      $widget
@@ -504,13 +504,13 @@ The method API is
 multi method set (
   $widget is copy, Int() $flags, Array $targets, Int() $actions
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   my Array $n-target-array = [];
   for @$targets -> $target is copy {
     $target = $target ~~ N-GtkTargetEntry
                 ?? $target
-                !! $target.get-native-object-no-reffing;
+                !! $target._get-native-object-no-reffing;
 #note "$?LINE, ", $target;
     $n-target-array.push: $target;
   }
@@ -525,7 +525,7 @@ multi method set (
 multi method set (
   $widget is copy, Int() $flags, Int() $actions
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_dest_set( $widget, $flags, CArray[N-GObject], 0, $actions);
 }
 
@@ -549,9 +549,9 @@ Sets the target types that this widget can accept from drag-and-drop. The widget
 =end pod
 
 method set-target-list ( $widget is copy, $target-list is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   if ?$target-list {
-    $target-list .= get-native-object-no-reffing
+    $target-list .= _get-native-object-no-reffing
       unless $target-list ~~ N-GtkTargetList;
   }
 
@@ -582,7 +582,7 @@ This may be used when a widget wants to do generic actions regardless of the tar
 =end pod
 
 method set-track-motion ( $widget is copy, Bool $track_motion ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_drag_dest_set_track_motion( $widget, $track_motion);
 }
 
@@ -604,7 +604,7 @@ Removes a highlight set by C<highlight()> from a widget.
 =end pod
 
 method unhighlight ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_drag_unhighlight(
      $widget
@@ -629,7 +629,7 @@ Clears information about a drop destination set with C<set()>. The widget will n
 =end pod
 
 method unset ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_drag_dest_unset(
      $widget

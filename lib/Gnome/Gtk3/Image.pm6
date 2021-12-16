@@ -315,21 +315,21 @@ submethod BUILD ( *%options ) {
 
       elsif ?%options<surface> {
         $no = %options<surface>;
-        $no .= get-native-object(:!ref) unless $no ~~ cairo_surface_t;
+        $no .= _get-native-object(:!ref) unless $no ~~ cairo_surface_t;
         $no = _gtk_image_new_from_surface($no);
       }
 
 #`{{
       elsif ?%options<gicon> {
         $no = %options<gicon>;
-        $no .= get-native-object(:!ref) ~~ N-GObject;
+        $no .= _get-native-object(:!ref) ~~ N-GObject;
         my GtkIconSize $size = %options<size> // GTK_ICON_SIZE_BUTTON;
         $no = _gtk_image_new_from_icon_name( $no, $size);
       }
 }}
       elsif ?%options<pixbuf> {
         $no = %options<pixbuf>;
-        $no .= get-native-object(:!ref) ~~ N-GObject;
+        $no .= _get-native-object(:!ref) ~~ N-GObject;
         $no = _gtk_image_new_from_pixbuf($no);
       }
 
@@ -343,7 +343,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_image_new();
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -379,7 +379,7 @@ Resets the image to be empty.
 method clear ( ) {
 
   gtk_image_clear(
-    self.get-native-object(:!ref),
+    self._get-native-object(:!ref),
   );
 }
 
@@ -405,7 +405,7 @@ Returns: the displayed animation, or C<undefined> if the image is empty
 method get-animation ( --> GdkPixbufAnimation ) {
 
   gtk_image_get_animation(
-    self.get-native-object(:!ref),
+    self._get-native-object(:!ref),
   )
 }
 
@@ -432,7 +432,7 @@ Gets the B<Gnome::Gtk3::Icon> and size being displayed by the B<Gnome::Gtk3::Ima
 method get-gicon ( GIcon $gicon, GtkIconSize $size ) {
 
   gtk_image_get_gicon(
-    self.get-native-object(:!ref), $gicon, $size
+    self._get-native-object(:!ref), $gicon, $size
   );
 }
 
@@ -458,7 +458,7 @@ Gets the icon name and size being displayed by the B<Gnome::Gtk3::Image>. The st
 method get-icon-name ( --> List ) {
   my $in = CArray[Str].new('');
   my int32 $size .= new;
-  gtk_image_get_icon_name( self.get-native-object(:!ref), $in, $size);
+  gtk_image_get_icon_name( self._get-native-object(:!ref), $in, $size);
 
   ( $in[0], GtkIconSize($size))
 }
@@ -482,7 +482,7 @@ Returns: the displayed pixbuf, or C<undefined> if the image is empty
 =end pod
 
 method get-pixbuf ( --> N-GObject ) {
-  gtk_image_get_pixbuf(self.get-native-object(:!ref))
+  gtk_image_get_pixbuf(self._get-native-object(:!ref))
 }
 
 sub gtk_image_get_pixbuf (
@@ -504,7 +504,7 @@ Returns: the pixel size used for named icons.
 =end pod
 
 method get-pixel-size ( --> Int ) {
-  gtk_image_get_pixel_size(self.get-native-object(:!ref))
+  gtk_image_get_pixel_size(self._get-native-object(:!ref))
 }
 
 sub gtk_image_get_pixel_size (
@@ -526,7 +526,7 @@ Returns: image representation being used
 =end pod
 
 method get-storage-type ( --> GtkImageType ) {
-  GtkImageType(gtk_image_get_storage_type(self.get-native-object(:!ref)))
+  GtkImageType(gtk_image_get_storage_type(self._get-native-object(:!ref)))
 }
 
 sub gtk_image_get_storage_type (
@@ -550,7 +550,7 @@ Causes the B<Gnome::Gtk3::Image> to display the given animation (or display noth
 method set-from-animation ( GdkPixbufAnimation $animation ) {
 
   gtk_image_set_from_animation(
-    self.get-native-object(:!ref), $animation
+    self._get-native-object(:!ref), $animation
   );
 }
 
@@ -575,7 +575,7 @@ See C<new-from-file()> for details.
 method set-from-file ( Str $filename ) {
 
   gtk_image_set_from_file(
-    self.get-native-object(:!ref), $filename
+    self._get-native-object(:!ref), $filename
   );
 }
 
@@ -601,7 +601,7 @@ See C<new-from-gicon()> for details.
 method set-from-gicon ( GIcon $icon, GtkIconSize $size ) {
 
   gtk_image_set_from_gicon(
-    self.get-native-object(:!ref), $icon, $size
+    self._get-native-object(:!ref), $icon, $size
   );
 }
 
@@ -626,7 +626,7 @@ See C<new-from-icon-name()> for details.
 
 method set-from-icon-name ( Str $icon_name, GtkIconSize $size ) {
   gtk_image_set_from_icon_name(
-    self.get-native-object(:!ref), $icon_name, $size
+    self._get-native-object(:!ref), $icon_name, $size
   );
 }
 
@@ -648,10 +648,10 @@ See C<new-from-pixbuf()> for details.
 =end pod
 
 method set-from-pixbuf ( $pixbuf is copy ) {
-  $pixbuf .= get-native-object(:!ref) unless $pixbuf ~~ N-GObject;
+  $pixbuf .= _get-native-object(:!ref) unless $pixbuf ~~ N-GObject;
 
   gtk_image_set_from_pixbuf(
-    self.get-native-object(:!ref), $pixbuf
+    self._get-native-object(:!ref), $pixbuf
   );
 }
 
@@ -675,7 +675,7 @@ See C<new-from-resource()> for details.
 method set-from-resource ( Str $resource_path ) {
 
   gtk_image_set_from_resource(
-    self.get-native-object(:!ref), $resource_path
+    self._get-native-object(:!ref), $resource_path
   );
 }
 
@@ -697,8 +697,8 @@ See C<new-from-surface()> for details.
 =end pod
 
 method set-from-surface ( $surface is copy ) {
-  $surface .= get-native-object(:!ref) unless $surface ~~ cairo_surface_t;
-  gtk_image_set_from_surface( self.get-native-object(:!ref), $surface);
+  $surface .= _get-native-object(:!ref) unless $surface ~~ cairo_surface_t;
+  gtk_image_set_from_surface( self._get-native-object(:!ref), $surface);
 }
 
 sub gtk_image_set_from_surface (
@@ -721,7 +721,7 @@ Sets the pixel size to use for named icons. If the pixel size is set to a value 
 method set-pixel-size ( Int() $pixel_size ) {
 
   gtk_image_set_pixel_size(
-    self.get-native-object(:!ref), $pixel_size
+    self._get-native-object(:!ref), $pixel_size
   );
 }
 

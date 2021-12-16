@@ -98,7 +98,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(_gtk_stack_sidebar_new());
+    self._set-native-object(_gtk_stack_sidebar_new());
   }
 
   # only after creating the native-object, the gtype is known

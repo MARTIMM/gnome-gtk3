@@ -190,7 +190,7 @@ of C<gtk-key-snooper-install()> if you need this feature.
 method do-event ( N-GdkEvent $event ) {
 
   gtk_main_do_event(
-    self.get-native-object-no-reffing, $event
+    self._get-native-object-no-reffing, $event
   );
 }
 
@@ -255,8 +255,8 @@ Adds a GTK+ grab on I<device>, so all the events on I<device> and its associated
 method device-grab-add (
   $widget is copy, $device is copy, Bool $block_others
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
 
   gtk_device_grab_add( $widget, $device, $block_others.Int);
 }
@@ -282,8 +282,8 @@ You have to pair calls to C<device-grab-add()> and C<device-grab-remove()>.
 =end pod
 
 method device-grab-remove ( $widget is copy, $device is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
 
   gtk_device_grab_remove( $widget, $device);
 }
@@ -455,7 +455,7 @@ must not be freed
 method get-default-language ( --> N-GObject ) {
 
   gtk_get_default_language(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -480,7 +480,7 @@ Returns: the widget that originally received I<$event>
 =end pod
 
 method get-event-widget ( $event is copy --> Gnome::Gdk3::Events ) {
-  $event .= get-native-object-no-reffing unless $event ~~ N-GObject;
+  $event .= _get-native-object-no-reffing unless $event ~~ N-GObject;
   Gnome::Gdk3::Events.new(:native-object(gtk_get_event_widget($event)));
 }
 
@@ -568,7 +568,7 @@ If I<$widget> is not sensitive, it is not set as the current grabbed widget and 
 =end pod
 
 method grab-add ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_grab_add($widget);
 }
 
@@ -615,7 +615,7 @@ If I<$widget> does not have the grab, this function does nothing.
 =end pod
 
 method grab-remove ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_grab_remove($widget);
 }
 
@@ -694,7 +694,7 @@ sub gtk_init ( gint-ptr $argc, gchar-ppptr $argv  )
 method init-abi-check ( Int-ptr $argc, CArray[CArray[Str]] $argv, Int $num_checks, size_t $sizeof_GtkWindow, size_t $sizeof_GtkBox ) {
 
   gtk_init_abi_check(
-    self.get-native-object-no-reffing, $argc, $argv, $num_checks, $sizeof_GtkWindow, $sizeof_GtkBox
+    self._get-native-object-no-reffing, $argc, $argv, $num_checks, $sizeof_GtkWindow, $sizeof_GtkBox
   );
 }
 
@@ -768,7 +768,7 @@ sub gtk_init_check ( gint-ptr $argc, gchar-ppptr $argv --> gboolean )
 method init-check-abi-check ( Int-ptr $argc, CArray[CArray[Str]] $argv, Int $num_checks, size_t $sizeof_GtkWindow, size_t $sizeof_GtkBox --> Int ) {
 
   gtk_init_check_abi_check(
-    self.get-native-object-no-reffing, $argc, $argv, $num_checks, $sizeof_GtkWindow, $sizeof_GtkBox
+    self._get-native-object-no-reffing, $argc, $argv, $num_checks, $sizeof_GtkWindow, $sizeof_GtkBox
   );
 }
 
@@ -801,7 +801,7 @@ Returns: C<True> if the commandline arguments (if any) were valid and if the win
 method init-with-args ( Int-ptr $argc, CArray[CArray[Str]] $argv, Str $parameter_string, GOptionEntry $entries, Str $translation_domain, N-GError $error --> Int ) {
 
   gtk_init_with_args(
-    self.get-native-object-no-reffing, $argc, $argv, $parameter_string, $entries, $translation_domain, $error
+    self._get-native-object-no-reffing, $argc, $argv, $parameter_string, $entries, $translation_domain, $error
   );
 }
 
@@ -863,7 +863,7 @@ Returns: C<True> if initialization succeeded, otherwise C<False>
 method parse-args ( Int-ptr $argc, CArray[CArray[Str]] $argv --> Int ) {
 
   gtk_parse_args(
-    self.get-native-object-no-reffing, $argc, $argv
+    self._get-native-object-no-reffing, $argc, $argv
   );
 }
 
@@ -893,8 +893,8 @@ All that said, you most likely don’t want to use any of these functions; synth
 =end pod
 
 method propagate-event ( $widget is copy, $event is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $event .= get-native-object-no-reffing unless $event ~~ N-GdkEvent;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $event .= _get-native-object-no-reffing unless $event ~~ N-GdkEvent;
 
   gtk_propagate_event( $widget, $event);
 }

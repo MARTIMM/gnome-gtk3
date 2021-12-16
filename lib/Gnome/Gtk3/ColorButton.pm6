@@ -184,7 +184,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
   }
 
@@ -223,7 +223,7 @@ Returns: An internal string, do not free the return value
 =end pod
 
 method get-title ( --> Str ) {
-  gtk_color_button_get_title(self.get-native-object-no-reffing)
+  gtk_color_button_get_title(self._get-native-object-no-reffing)
 }
 
 sub gtk_color_button_get_title (
@@ -244,7 +244,7 @@ Sets the title for the color selection dialog.
 =end pod
 
 method set-title ( Str $title ) {
-  gtk_color_button_set_title( self.get-native-object-no-reffing, $title);
+  gtk_color_button_set_title( self._get-native-object-no-reffing, $title);
 }
 
 sub gtk_color_button_set_title (

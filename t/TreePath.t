@@ -28,13 +28,13 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::TreePath $tp-copy .= new(
     :native-object($tp.gtk-tree-path-copy)
   );
-  isa-ok $tp-copy.get-native-object, N-GtkTreePath, '.gtk-tree-path-copy()';
+  isa-ok $tp-copy._get-native-object, N-GtkTreePath, '.gtk-tree-path-copy()';
   ok $tp-copy.is-valid, '.is-valid()';
   $tp-copy.clear-object;
   nok $tp-copy.is-valid, '.clear-object()';
 
   $tp .= new(:first);
-  isa-ok $tp.get-native-object, N-GtkTreePath, '.new(:first)';
+  isa-ok $tp._get-native-object, N-GtkTreePath, '.new(:first)';
   is $tp.to-string, '0', '.to-string()';
   $tp.append-index(10);
   is $tp.to-string, '0:10', '.append-index()';

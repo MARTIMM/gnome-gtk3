@@ -151,9 +151,9 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<hadjustment> and ? %options<vadjustment> {
         my $no-h = %options<hadjustment>;
-        $no-h .= get-native-object-no-reffing unless $no-h ~~ N-GObject;
+        $no-h .= _get-native-object-no-reffing unless $no-h ~~ N-GObject;
         my $no-v = %options<vadjustment>;
-        $no-v .= get-native-object-no-reffing unless $no-v ~~ N-GObject;
+        $no-v .= _get-native-object-no-reffing unless $no-v ~~ N-GObject;
         $no = _gtk_layout_new( $no-h, $no-v);
       }
 
@@ -183,7 +183,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -208,7 +208,7 @@ Returns: a B<Gnome::Gtk3::Window>
 method get-bin-window ( --> N-GObject ) {
 
   gtk_layout_get_bin_window(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -235,7 +235,7 @@ method get-size ( --> List ) {
   my guint $height;
   my guint $width;
   gtk_layout_get_size(
-    self.get-native-object-no-reffing, $width, $height
+    self._get-native-object-no-reffing, $width, $height
   );
 
   ( $width, $height)
@@ -261,10 +261,10 @@ Moves a current child of I<layout> to a new position.
 =end pod
 
 method move ( $child_widget is copy, Int() $x, Int() $y ) {
-  $child_widget .= get-native-object-no-reffing unless $child_widget ~~ N-GObject;
+  $child_widget .= _get-native-object-no-reffing unless $child_widget ~~ N-GObject;
 
   gtk_layout_move(
-    self.get-native-object-no-reffing, $child_widget, $x, $y
+    self._get-native-object-no-reffing, $child_widget, $x, $y
   );
 }
 
@@ -288,10 +288,10 @@ Adds I<child-widget> to I<layout>, at position (I<x>,I<y>). I<layout> becomes th
 =end pod
 
 method put ( $child_widget is copy, Int() $x, Int() $y ) {
-  $child_widget .= get-native-object-no-reffing unless $child_widget ~~ N-GObject;
+  $child_widget .= _get-native-object-no-reffing unless $child_widget ~~ N-GObject;
 
   gtk_layout_put(
-    self.get-native-object-no-reffing, $child_widget, $x, $y
+    self._get-native-object-no-reffing, $child_widget, $x, $y
   );
 }
 
@@ -316,7 +316,7 @@ Sets the size of the scrollable area of the layout.
 method set-size ( UInt $width, UInt $height ) {
 
   gtk_layout_set_size(
-    self.get-native-object-no-reffing, $width, $height
+    self._get-native-object-no-reffing, $width, $height
   );
 }
 

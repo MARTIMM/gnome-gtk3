@@ -139,7 +139,7 @@ submethod BUILD ( *%options ) {
       %options<build-id> { }
 
     elsif ? %options<field-types> {
-      self.set-native-object(_gtk_tree_store_new(|%options<field-types>));
+      self._set-native-object(_gtk_tree_store_new(|%options<field-types>));
     }
 
     # only after creating the native-object, the gtype is known
@@ -291,11 +291,11 @@ sub gtk_tree_store_set_value (
   my UInt $type = gtk_tree_model_get_column_type( $tree_store, $column);
   given $type {
     when G_TYPE_OBJECT {
-      $v .= new( :$type, :value($value.get-native-object));
+      $v .= new( :$type, :value($value._get-native-object));
     }
 
     when G_TYPE_BOXED {
-      $v .=  new( :$type, :value($value.get-native-object));
+      $v .=  new( :$type, :value($value._get-native-object));
     }
 
 #    when G_TYPE_POINTER { $p .= new(type => ); }
@@ -319,7 +319,7 @@ sub gtk_tree_store_set_value (
   my Callable $f = nativecast( $signature, $ptr);
 
   $f(
-    $tree_store, $iter, $column, $v.get-native-object
+    $tree_store, $iter, $column, $v._get-native-object
   );
 }
 
@@ -359,8 +359,8 @@ sub gtk_tree_store_set (
 
     @column-values.push: $c;
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
+      when G_TYPE_OBJECT { @column-values.push: $value._get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value._get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }
@@ -637,8 +637,8 @@ sub gtk_tree_store_insert_with_values (
     # column value
     my UInt $type = gtk_tree_model_get_column_type( $tree_store, $c);
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
+      when G_TYPE_OBJECT { @column-values.push: $value._get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value._get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }

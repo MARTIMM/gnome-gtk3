@@ -245,7 +245,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_container_new___x___($no);
       }
 
@@ -275,7 +275,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -312,7 +312,7 @@ Note that some containers, such as B<Gnome::Gtk3::ScrolledWindow> or B<Gnome::Gt
 =end pod
 
 method add ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_container_add(
     self._f('GtkContainer'), $widget
@@ -339,7 +339,7 @@ Adds I<widget> to this container, setting child properties at the same time. See
 =end pod
 
 method add-with-properties ( $widget is copy, Str $first_prop_name ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_container_add_with_properties(
     self._f('GtkContainer'), $widget, $first_prop_name
@@ -390,7 +390,7 @@ Gets the values of one or more child properties for I<child> and this container.
 =end pod
 
 method child-get ( $child is copy, Str $first_prop_name ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_get(
     self._f('GtkContainer'), $child, $first_prop_name
@@ -424,7 +424,7 @@ Gets the value of a child property for I<child> and this container.
 method child-get-property (
   $child is copy, Str $property-name --> Any
 ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   my N-GValue $value .= new;
 
 
@@ -455,7 +455,7 @@ Gets the values of one or more child properties for I<child> and this container.
 =end pod
 
 method child-get-valist ( $child is copy, Str $first_property_name, va_list $var_args ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_get_valist(
     self._f('GtkContainer'), $child, $first_property_name, $var_args
@@ -486,7 +486,7 @@ Also see C<gtk-widget-child-notify()>.
 =end pod
 
 method child-notify ( $child is copy, Str $child_property ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_notify(
     self._f('GtkContainer'), $child, $child_property
@@ -515,7 +515,7 @@ This is an analogue of C<g-object-notify-by-pspec()> for child properties.
 =end pod
 
 method child-notify-by-pspec ( $child is copy, GParamSpec $pspec ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_notify_by_pspec(
     self._f('GtkContainer'), $child, $pspec
@@ -542,7 +542,7 @@ Sets one or more child properties for I<child> and this container.
 =end pod
 
 method child-set ( $child is copy, Str $first_prop_name ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_set(
     self._f('GtkContainer'), $child, $first_prop_name
@@ -570,8 +570,8 @@ Sets a child property for I<child> and this container.
 =end pod
 
 method child-set-property ( $child is copy, Str $property_name, $value is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
 
   gtk_container_child_set_property(
     self._f('GtkContainer'), $child, $property_name, $value
@@ -599,7 +599,7 @@ Sets one or more child properties for I<child> and this container.
 =end pod
 
 method child-set-valist ( $child is copy, Str $first_property_name, va_list $var_args ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_container_child_set_valist(
     self._f('GtkContainer'), $child, $first_property_name, $var_args
@@ -1099,12 +1099,12 @@ Returns: A newly created B<Gnome::Gtk3::WidgetPath>
 =end pod
 
 method get-path-for-child ( $child is copy --> N-GObject ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_container_get_path_for_child( self._f('GtkContainer'), $child)
 }
 
 method get-path-for-child-rk ( $child is copy --> Gnome::Gtk3::WidgetPath ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   Gnome::Gtk3::WidgetPath.new(
     :native-object(
       gtk_container_get_path_for_child( self._f('GtkContainer'), $child)
@@ -1135,7 +1135,7 @@ In most cases, a container can simply either inherit the  I<draw> implementation
 =end pod
 
 method propagate-draw ( $child is copy, cairo_t $cr ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_container_propagate_draw( self._f('GtkContainer'), $child, $cr);
 }
 
@@ -1157,7 +1157,7 @@ Removes I<widget> from this container. I<widget> must be inside this container. 
 =end pod
 
 method remove ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_container_remove( self._f('GtkContainer'), $widget);
 }
 
@@ -1206,7 +1206,7 @@ This is function is mostly meant to be used by widgets. Applications can use C<g
 =end pod
 
 method set-focus-child ( $child is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_container_set_focus_child( self._f('GtkContainer'), $child);
 }
 
@@ -1230,7 +1230,7 @@ The adjustments have to be in pixel units and in the same coordinate system as t
 =end pod
 
 method set-focus-hadjustment ( $adjustment is copy ) {
-  $adjustment .= get-native-object-no-reffing unless $adjustment ~~ N-GObject;
+  $adjustment .= _get-native-object-no-reffing unless $adjustment ~~ N-GObject;
   gtk_container_set_focus_hadjustment( self._f('GtkContainer'), $adjustment);
 }
 
@@ -1254,7 +1254,7 @@ The adjustments have to be in pixel units and in the same coordinate system as t
 =end pod
 
 method set-focus-vadjustment ( $adjustment is copy ) {
-  $adjustment .= get-native-object-no-reffing unless $adjustment ~~ N-GObject;
+  $adjustment .= _get-native-object-no-reffing unless $adjustment ~~ N-GObject;
   gtk_container_set_focus_vadjustment( self._f('GtkContainer'), $adjustment);
 }
 
@@ -1492,7 +1492,7 @@ container.
 =end pod
 
 method container-add ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_container_add( self._f('GtkContainer'), $widget);
 }
 

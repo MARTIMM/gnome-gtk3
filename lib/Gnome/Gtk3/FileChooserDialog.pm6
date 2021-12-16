@@ -217,10 +217,10 @@ submethod BUILD ( *%options ) {
     if ? %options<parent> {
       $parent = %options<parent> ~~ N-GObject
                 ?? %options<parent>
-                !! %options<parent>.get-native-object-no-reffing;
+                !! %options<parent>._get-native-object-no-reffing;
     }
 
-    self.set-native-object(
+    self._set-native-object(
       gtk_file_chooser_dialog_new( $title, $parent, %options<action>, |@buttons)
     );
   }

@@ -138,7 +138,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::Paned';
 
   if %options<orientation>.defined #`{{orientation can be 0}} {
-    self.set-native-object(gtk_paned_new(%options<orientation>));
+    self._set-native-object(gtk_paned_new(%options<orientation>));
   }
 
   elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {

@@ -127,7 +127,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(N-GTextIter.new);
+    self._set-native-object(N-GTextIter.new);
   }
 
   # only after creating the native-object, the gtype is known

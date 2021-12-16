@@ -111,7 +111,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
 #        $no = %options<___x___>;
-#        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+#        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 #        #$no = _gtk_event_box_new___x___($no);
       }
 
@@ -141,7 +141,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -165,7 +165,7 @@ Returns: C<True> if the event box window is above the window of its child
 method get-above-child ( --> Bool ) {
 
   gtk_event_box_get_above_child(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -188,7 +188,7 @@ Returns: C<True> if the event box window is visible
 =end pod
 
 method get-visible-window ( --> Bool ) {
-  gtk_event_box_get_visible_window(self.get-native-object-no-reffing).Bool
+  gtk_event_box_get_visible_window(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_event_box_get_visible_window (
@@ -212,7 +212,7 @@ The default is to keep the window below the child.
 
 method set-above-child ( Bool $above_child ) {
   gtk_event_box_set_above_child(
-    self.get-native-object-no-reffing, $above_child
+    self._get-native-object-no-reffing, $above_child
   );
 }
 
@@ -248,7 +248,7 @@ This problem doesn’t occur for visible event boxes, because in that case, the 
 method set-visible-window ( Bool $visible_window ) {
 
   gtk_event_box_set_visible_window(
-    self.get-native-object-no-reffing, $visible_window
+    self._get-native-object-no-reffing, $visible_window
   );
 }
 

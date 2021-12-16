@@ -110,7 +110,7 @@ subtest 'Signals ...', {
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   my Gnome::Gtk3::RadioButton $rb5 .= new(:label<rb5>);
-  my @r = $rb5.set-properties(:group($rb2.get-native-object-no-reffing));
+  my @r = $rb5.set-properties(:group($rb2._get-native-object-no-reffing));
 
   $l .= new(:native-object($rb1.get-group));
   is $l.g-slist-length, 5, 'group';

@@ -100,7 +100,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<title> {
-    self.set-native-object(gtk_color_chooser_dialog_new(
+    self._set-native-object(gtk_color_chooser_dialog_new(
       %options<title>, %options<parent-window>)
     );
   }

@@ -182,7 +182,7 @@ submethod BUILD ( *%options ) {
     ##`{{ when there are defaults use this instead
     # create default object
     else {
-      self.set-native-object(_gtk_popover_menu_new());
+      self._set-native-object(_gtk_popover_menu_new());
     }
     #}}
 

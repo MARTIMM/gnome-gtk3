@@ -120,7 +120,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
 #        $no = %options<___x___>;
-#        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+#        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 #        #$no = _gtk_header_bar_new___x___($no);
       }
 
@@ -150,7 +150,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -177,12 +177,12 @@ Returns: the custom title widget of the header, or C<undefined> if none has been
 =end pod
 
 method get-custom-title ( --> N-GObject ) {
-  gtk_header_bar_get_custom_title(self.get-native-object-no-reffing)
+  gtk_header_bar_get_custom_title(self._get-native-object-no-reffing)
 }
 
 method get-custom-title-rk ( *%options --> Any ) {
   self._wrap-native-type-from-no(
-    gtk_header_bar_get_custom_title(self.get-native-object-no-reffing),
+    gtk_header_bar_get_custom_title(self._get-native-object-no-reffing),
     |%options
   )
 }
@@ -206,7 +206,7 @@ Returns: the decoration layout
 =end pod
 
 method get-decoration-layout ( --> Str ) {
-  gtk_header_bar_get_decoration_layout(self.get-native-object-no-reffing)
+  gtk_header_bar_get_decoration_layout(self._get-native-object-no-reffing)
 }
 
 sub gtk_header_bar_get_decoration_layout (
@@ -230,7 +230,7 @@ Returns: C<True> if the header bar reserves space for a subtitle
 method get-has-subtitle ( --> Bool ) {
 
   gtk_header_bar_get_has_subtitle(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -253,7 +253,7 @@ Returns: C<True> if the decorations are shown
 =end pod
 
 method get-show-close-button ( --> Bool ) {
-  gtk_header_bar_get_show_close_button(self.get-native-object-no-reffing).Bool
+  gtk_header_bar_get_show_close_button(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_header_bar_get_show_close_button (
@@ -275,7 +275,7 @@ Returns: the subtitle of the header, or C<undefined> if none has been set explic
 =end pod
 
 method get-subtitle ( --> Str ) {
-  gtk_header_bar_get_subtitle(self.get-native-object-no-reffing)
+  gtk_header_bar_get_subtitle(self._get-native-object-no-reffing)
 }
 
 sub gtk_header_bar_get_subtitle (
@@ -299,7 +299,7 @@ Returns: the title of the header, or C<undefined> if none has been set explicitl
 method get-title ( --> Str ) {
 
   gtk_header_bar_get_title(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -321,10 +321,10 @@ Adds I<child> to I<bar>, packed with reference to the end of the I<bar>.
 =end pod
 
 method pack-end ( $child is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_header_bar_pack_end(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   );
 }
 
@@ -346,10 +346,10 @@ Adds I<child> to I<bar>, packed with reference to the start of the I<bar>.
 =end pod
 
 method pack-start ( $child is copy ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_header_bar_pack_start(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   );
 }
 
@@ -375,10 +375,10 @@ You should set the custom title to C<undefined>, for the header title label to b
 =end pod
 
 method set-custom-title ( $title_widget is copy ) {
-  $title_widget .= get-native-object-no-reffing unless $title_widget ~~ N-GObject;
+  $title_widget .= _get-native-object-no-reffing unless $title_widget ~~ N-GObject;
 
   gtk_header_bar_set_custom_title(
-    self.get-native-object-no-reffing, $title_widget
+    self._get-native-object-no-reffing, $title_widget
   );
 }
 
@@ -407,7 +407,7 @@ For example, “menu:minimize,maximize,close” specifies a menu on the left, an
 
 method set-decoration-layout ( Str $layout ) {
   gtk_header_bar_set_decoration_layout(
-    self.get-native-object-no-reffing, $layout
+    self._get-native-object-no-reffing, $layout
   );
 }
 
@@ -431,7 +431,7 @@ Sets whether the header bar should reserve space for a subtitle, even if none is
 method set-has-subtitle ( Bool $setting ) {
 
   gtk_header_bar_set_has_subtitle(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -454,7 +454,7 @@ Sets whether this header bar shows the standard window decorations, including cl
 
 method set-show-close-button ( Bool $setting ) {
   gtk_header_bar_set_show_close_button(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -478,7 +478,7 @@ Note that GtkHeaderBar by default reserves room for the subtitle, even if none i
 =end pod
 
 method set-subtitle ( Str $subtitle ) {
-  gtk_header_bar_set_subtitle( self.get-native-object-no-reffing, $subtitle);
+  gtk_header_bar_set_subtitle( self._get-native-object-no-reffing, $subtitle);
 }
 
 sub gtk_header_bar_set_subtitle (
@@ -501,7 +501,7 @@ Sets the title of the B<Gnome::Gtk3::HeaderBar>. The title should help a user id
 method set-title ( Str $title ) {
 
   gtk_header_bar_set_title(
-    self.get-native-object-no-reffing, $title
+    self._get-native-object-no-reffing, $title
   );
 }
 

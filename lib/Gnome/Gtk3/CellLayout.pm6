@@ -201,7 +201,7 @@ The I<column> is the column of the model to get a value from, and the I<attribut
 =end pod
 
 method add-attribute ( $cell is copy, Str $attribute, Int $column ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_add_attribute(
     self._f('GtkCellLayout'), $cell, $attribute, $column
@@ -246,7 +246,7 @@ Clears all existing attributes previously set with C<set-attributes()>.
 =end pod
 
 method clear-attributes ( $cell is copy ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
   gtk_cell_layout_clear_attributes( self._f('GtkCellLayout'), $cell);
 }
 
@@ -317,7 +317,7 @@ Note that reusing the same cell renderer is not supported.
 =end pod
 
 method pack-end ( $cell is copy, Bool $expand ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_pack_end(
     self._f('GtkCellLayout'), $cell, $expand
@@ -345,7 +345,7 @@ Note that reusing the same cell renderer is not supported.
 =end pod
 
 method pack-start ( $cell is copy, Bool $expand ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_pack_start(
     self._f('GtkCellLayout'), $cell, $expand
@@ -373,7 +373,7 @@ Note that I<cell> has already to be packed into I<cell-layout> for this to funct
 =end pod
 
 method reorder ( $cell is copy, Int $position ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_reorder(
     self._f('GtkCellLayout'), $cell, $position
@@ -401,7 +401,7 @@ The attributes should be in attribute/column order, as in C<add-attribute()>. Al
 =end pod
 
 method set-attributes ( $cell is copy ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_set_attributes(
     self._f('GtkCellLayout'), $cell
@@ -435,7 +435,7 @@ I<func> may be C<undefined> to remove a previously set function.
 =end pod
 
 method set-cell-data-func ( $cell is copy, GtkCellLayoutDataFunc $func, Pointer $func_data, GDestroyNotify $destroy ) {
-  $cell .= get-native-object-no-reffing unless $cell ~~ N-GObject;
+  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
 
   gtk_cell_layout_set_cell_data_func(
     self._f('GtkCellLayout'), $cell, $func, $func_data, $destroy

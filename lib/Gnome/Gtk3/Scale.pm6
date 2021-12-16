@@ -223,7 +223,7 @@ submethod BUILD ( *%options ) {
       elsif %options<orientation>.defined and ? %options<adjustment>.defined {
         # get the native adjustment
         $no = %options<adjustment>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         # now create the native scale
         $no = _gtk_scale_new( %options<orientation>, $no);
       }
@@ -232,7 +232,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, Any);
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the widget, the gtype is known
@@ -328,7 +328,7 @@ Sets the number of decimal places that are displayed in the value. Also causes t
 
 method set-digits ( Int $digits ) {
   gtk_scale_set_digits(
-    self.get-native-object-no-reffing, $digits
+    self._get-native-object-no-reffing, $digits
   );
 }
 
@@ -351,7 +351,7 @@ Returns: the number of decimal places that are displayed
 
 method get-digits ( --> Int ) {
   gtk_scale_get_digits(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -374,7 +374,7 @@ Specifies whether the current value is displayed as a string next  to the slider
 
 method set-draw-value ( $draw_value ) {
   gtk_scale_set_draw_value(
-    self.get-native-object-no-reffing, $draw_value.Int
+    self._get-native-object-no-reffing, $draw_value.Int
   );
 }
 
@@ -397,7 +397,7 @@ Returns: whether the current value is displayed as a string
 
 method get-draw-value ( --> Bool ) {
   gtk_scale_get_draw_value(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -420,7 +420,7 @@ If  I<$has-origin> is set to C<True> (the default), the scale will highlight the
 
 method set-has-origin ( $has_origin ) {
   gtk_scale_set_has_origin(
-    self.get-native-object-no-reffing, $has_origin.Int
+    self._get-native-object-no-reffing, $has_origin.Int
   );
 }
 
@@ -443,7 +443,7 @@ Returns: C<True> if the scale has an origin.
 
 method get-has-origin ( --> Bool ) {
   gtk_scale_get_has_origin(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -465,7 +465,7 @@ Sets the position in which the current value is displayed.
 =end pod
 
 method set-value-pos ( GtkPositionType $pos ) {
-  gtk_scale_set_value_pos( self.get-native-object-no-reffing, $pos.value);
+  gtk_scale_set_value_pos( self._get-native-object-no-reffing, $pos.value);
 }
 
 sub gtk_scale_set_value_pos ( N-GObject $scale, GEnum $pos )
@@ -487,7 +487,7 @@ Returns: the position in which the current value is displayed
 
 method get-value-pos ( --> GtkPositionType ) {
   GtkPositionType(
-    gtk_scale_get_value_pos(self.get-native-object-no-reffing)
+    gtk_scale_get_value_pos(self._get-native-object-no-reffing)
   );
 }
 
@@ -513,7 +513,7 @@ Returns: (transfer none) (nullable): the B<PangoLayout> for this scale, or C<Any
 method get-layout ( --> N-GObject ) {
 
   gtk_scale_get_layout(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -539,7 +539,7 @@ Obtains the coordinates where the scale will draw the  B<PangoLayout> representi
 method get-layout-offsets ( Int-ptr $x, Int-ptr $y ) {
 
   gtk_scale_get_layout_offsets(
-    self.get-native-object-no-reffing, $x, $y
+    self._get-native-object-no-reffing, $x, $y
   );
 }
 
@@ -567,7 +567,7 @@ Adds a mark at I<value>.  A mark is indicated visually by drawing a tick mark ne
 
 method add-mark ( $value, GtkPositionType $position,  Str  $markup ) {
   gtk_scale_add_mark(
-    self.get-native-object-no-reffing, $value.Num, $position.value, $markup
+    self._get-native-object-no-reffing, $value.Num, $position.value, $markup
   );
 }
 
@@ -589,7 +589,7 @@ Removes any marks that have been added with C<gtk_scale_add_mark()>.
 method clear-marks ( ) {
 
   gtk_scale_clear_marks(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 

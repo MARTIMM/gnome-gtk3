@@ -221,8 +221,8 @@ submethod BUILD ( *%options ) {
       # process all named arguments
       if ? %options<model> {
         $no = %options<model>;
-        $no .= get-native-object-no-reffing
-          if $no.^can('get-native-object-no-reffing');
+        $no .= _get-native-object-no-reffing
+          if $no.^can('_get-native-object-no-reffing');
         $no = _gtk_tree_view_new_with_model($no);
       }
 
@@ -230,7 +230,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_tree_view_new();
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -551,7 +551,7 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
 
     @attrs.push: $insert;
     @attrs.push: $title;
-    @attrs.push: $renderer.get-native-object;
+    @attrs.push: $renderer._get-native-object;
   }
 
   # end list with 0
@@ -564,7 +564,7 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
   );
 
 #note "S: ", $signature.perl;
-#note "A: ", (self.get-native-object, |@attrs, 0).join(', ');
+#note "A: ", (self._get-native-object, |@attrs, 0).join(', ');
 
   # get a pointer to the sub, then cast it to a sub with the proper
   # signature. after that, the sub can be called, returning a value.
@@ -573,7 +573,7 @@ method insert-column-with-attributes ( *@attributes --> Int ) {
   );
   my Callable $f = nativecast( $signature, $ptr);
 
-  $f( self.get-native-object, |@attrs, 0)
+  $f( self._get-native-object, |@attrs, 0)
 }
 
 #`{{

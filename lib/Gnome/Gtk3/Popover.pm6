@@ -153,17 +153,17 @@ submethod BUILD ( *%options ) {
 #`{{
     elsif ? %options<relative-to>  and ? %options<model> {
       my $no = %options<relative-to>;
-      $no .= get-native-object if $no.^can('get-native-object');
+      $no .= _get-native-object if $no.^can('_get-native-object');
       my $mo = %options<model>;
-      $mo .= get-native-object if $mo.^can('get-native-object');
-      self.set-native-object(_gtk_popover_new_from_model( $no, $mo));
+      $mo .= _get-native-object if $mo.^can('_get-native-object');
+      self._set-native-object(_gtk_popover_new_from_model( $no, $mo));
     }
 }}
 
     elsif ? %options<relative-to> {
       my $no = %options<relative-to>;
-      $no .= get-native-object if $no.^can('get-native-object');
-      self.set-native-object(_gtk_popover_new($no));
+      $no .= _get-native-object if $no.^can('_get-native-object');
+      self._set-native-object(_gtk_popover_new($no));
     }
 
     # check if there are unknown options
@@ -186,7 +186,7 @@ submethod BUILD ( *%options ) {
     #`{{ when there are defaults use this instead
     # create default object
     else {
-      self.set-native-object(gtk_popover_new());
+      self._set-native-object(gtk_popover_new());
     }
     }}
 

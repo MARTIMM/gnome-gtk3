@@ -19,7 +19,7 @@ See https://www.systutorials.com/docs/linux/man/7-gtk-options/
   method get-screen ( --> Any ) {
     require ::('Gnome::Gdk3::Screen');
     ::('Gnome::Gdk3::Screen').new(
-      :native-object(gdk_visual_get_screen(self.get-native-object-no-reffing))
+      :native-object(gdk_visual_get_screen(self._get-native-object-no-reffing))
     )
   }
   ```
@@ -561,7 +561,7 @@ class TopLevelClassSupport < Catch all class > {
   FALLBACK()
   _fallback()
 
-  get-native-object()
+  _get-native-object()
   set-native-object()
 
   {abstract} native-object-ref()
@@ -608,7 +608,7 @@ note left of TopLevelClassSupport
 
   The search will end with this <b>_fallback()</b>.
 
-  <b>get-native-object()</b> and <b>set-native-object()</b>
+  <b>_get-native-object()</b> and <b>set-native-object()</b>
   get and set the native object. They also handle
   referencing.
   '{abstract} native-object-ref()

@@ -28,8 +28,8 @@ note "title: $w.get-title()";
 my Gnome::GObject::Type $t .= new;
 
 # Checks to see what interface is used
-note "instance: $t.check-instance-is-a( $w.get-native-object, $t.from-name('GtkBuildable'))";
-note "instance: $t.check-instance-is-a( $w.get-native-object, $t.from-name('GtkActionable'))";
+note "instance: $t.check-instance-is-a( $w._get-native-object, $t.from-name('GtkBuildable'))";
+note "instance: $t.check-instance-is-a( $w._get-native-object, $t.from-name('GtkActionable'))";
 
 $w.clear-object;
 $w .= new;

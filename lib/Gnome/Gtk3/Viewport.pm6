@@ -131,9 +131,9 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<hadjustment> and ? %options<vadjustment> {
         my $no-h = %options<hadjustment>;
-        $no-h .= get-native-object-no-reffing unless $no-h ~~ N-GObject;
+        $no-h .= _get-native-object-no-reffing unless $no-h ~~ N-GObject;
         my $no-v = %options<vadjustment>;
-        $no-v .= get-native-object-no-reffing unless $no-v ~~ N-GObject;
+        $no-v .= _get-native-object-no-reffing unless $no-v ~~ N-GObject;
         $no = _gtk_viewport_new( $no-h, $no-v);
       }
 
@@ -163,7 +163,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -186,13 +186,13 @@ Gets the bin window of the B<Gnome::Gtk3::Viewport>.
 =end pod
 
 method get-bin-window ( --> N-GObject ) {
-  gtk_viewport_get_bin_window(self.get-native-object-no-reffing)
+  gtk_viewport_get_bin_window(self._get-native-object-no-reffing)
 }
 
 method get-bin-window-rk ( --> Gnome::Gdk3::Window ) {
   Gnome::Gdk3::Window.new(
     :native-object(
-      gtk_viewport_get_bin_window(self.get-native-object-no-reffing)
+      gtk_viewport_get_bin_window(self._get-native-object-no-reffing)
     )
   )
 }
@@ -215,7 +215,7 @@ Gets the shadow type of the B<Gnome::Gtk3::Viewport>. See C<set-shadow-type()>.
 
 method get-shadow-type ( --> GtkShadowType ) {
   GtkShadowType(
-    gtk_viewport_get_shadow_type(self.get-native-object-no-reffing)
+    gtk_viewport_get_shadow_type(self._get-native-object-no-reffing)
   )
 }
 
@@ -238,13 +238,13 @@ Gets the view window of the B<Gnome::Gtk3::Viewport>.
 =end pod
 
 method get-view-window ( --> N-GObject ) {
-  gtk_viewport_get_view_window(self.get-native-object-no-reffing)
+  gtk_viewport_get_view_window(self._get-native-object-no-reffing)
 }
 
 method get-view-window-rk ( --> Gnome::Gdk3::Window ) {
   Gnome::Gdk3::Window.new(
     :native-object(
-      gtk_viewport_get_view_window(self.get-native-object-no-reffing)
+      gtk_viewport_get_view_window(self._get-native-object-no-reffing)
     )
   )
 }
@@ -268,7 +268,7 @@ Sets the shadow type of the viewport.
 
 method set-shadow-type ( GtkShadowType $type ) {
   gtk_viewport_set_shadow_type(
-    self.get-native-object-no-reffing, $type
+    self._get-native-object-no-reffing, $type
   );
 }
 

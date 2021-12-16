@@ -327,7 +327,7 @@ submethod BUILD ( *%options ) {
     #}}
 
     if ?$no {
-      self.set-native-object($no);
+      self._set-native-object($no);
 
       # TODO Temporary until version Gtk3 0.48.0 and GObject 0.20.0.
       # after that only call _set-builder()
@@ -378,7 +378,7 @@ Using this function overrides the behavior of C<connect-signals()> for any callb
 method add-callback-symbol ( Str $callback_name, GCallback $callback_symbol ) {
 
   gtk_builder_add_callback_symbol(
-    self.get-native-object-no-reffing, $callback_name, $callback_symbol
+    self._get-native-object-no-reffing, $callback_name, $callback_symbol
   );
 }
 
@@ -405,7 +405,7 @@ A convenience function to add many callbacks instead of calling C<add-callback-s
 method add-callback-symbols ( Str $first_callback_name, GCallback $first_callback_symbol ) {
 
   gtk_builder_add_callback_symbols(
-    self.get-native-object-no-reffing, $first_callback_name, $first_callback_symbol
+    self._get-native-object-no-reffing, $first_callback_name, $first_callback_symbol
   );
 }
 
@@ -439,7 +439,7 @@ method add-from-file ( Str $filename --> Gnome::Glib::Error ) {
   my CArray[N-GError] $error .= new(N-GError);
 
   gtk_builder_add_from_file(
-    self.get-native-object-no-reffing, $filename, $error
+    self._get-native-object-no-reffing, $filename, $error
   );
 
   Gnome::Glib::Error.new(:native-object($error[0]))
@@ -474,7 +474,7 @@ method add-from-resource ( Str $resource_path --> UInt ) {
   my CArray[N-GError] $error .= new(N-GError);
 
   gtk_builder_add_from_resource(
-    self.get-native-object-no-reffing, $resource_path, $error
+    self._get-native-object-no-reffing, $resource_path, $error
   );
 
   Gnome::Glib::Error.new(:native-object($error[0]))
@@ -509,7 +509,7 @@ method add-from-string ( Str $buffer --> Gnome::Glib::Error ) {
   my CArray[N-GError] $error .= new(N-GError);
 
   gtk_builder_add_from_string(
-    self.get-native-object-no-reffing, $buffer, $buffer.chars, $error
+    self._get-native-object-no-reffing, $buffer, $buffer.chars, $error
   );
 
   Gnome::Glib::Error.new(:native-object($error[0]))
@@ -542,10 +542,10 @@ Returns: A positive value on success, 0 if an error occurred
 =end pod
 
 method add-objects-from-file ( Str $filename, CArray[Str] $object_ids, $error is copy --> UInt ) {
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_add_objects_from_file(
-    self.get-native-object-no-reffing, $filename, $object_ids, $error
+    self._get-native-object-no-reffing, $filename, $object_ids, $error
   )
 }
 
@@ -575,10 +575,10 @@ Returns: A positive value on success, 0 if an error occurred
 =end pod
 
 method add-objects-from-resource ( Str $resource_path, CArray[Str] $object_ids, $error is copy --> UInt ) {
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_add_objects_from_resource(
-    self.get-native-object-no-reffing, $resource_path, $object_ids, $error
+    self._get-native-object-no-reffing, $resource_path, $object_ids, $error
   )
 }
 
@@ -609,10 +609,10 @@ Returns: A positive value on success, 0 if an error occurred
 =end pod
 
 method add-objects-from-string ( Str $buffer, UInt $length, CArray[Str] $object_ids, $error is copy --> UInt ) {
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_add_objects_from_string(
-    self.get-native-object-no-reffing, $buffer, $length, $object_ids, $error
+    self._get-native-object-no-reffing, $buffer, $length, $object_ids, $error
   )
 }
 
@@ -642,7 +642,7 @@ When compiling applications for Windows, you must declare signal callbacks with 
 method connect-signals ( Pointer $user_data ) {
 
   gtk_builder_connect_signals(
-    self.get-native-object-no-reffing, $user_data
+    self._get-native-object-no-reffing, $user_data
   );
 }
 
@@ -720,7 +720,7 @@ An example where a gui is described in XML. It has a Window with a Button, both 
 =end pod
 
 method connect-signals-full ( Hash $handlers ) {
-  my $builder = self.get-native-object-no-reffing;
+  my $builder = self._get-native-object-no-reffing;
   gtk_builder_connect_signals_full(
     $builder,
     sub (
@@ -813,8 +813,8 @@ Add I<object> to the I<builder> object pool so it can be referenced just like an
 =end pod
 
 method expose-object ( Str $name, $object is copy ) {
-  $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
-  gtk_builder_expose_object( self.get-native-object-no-reffing, $name, $object);
+  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
+  gtk_builder_expose_object( self._get-native-object-no-reffing, $name, $object);
 }
 
 sub gtk_builder_expose_object (
@@ -844,12 +844,12 @@ Returns: A positive value on success, 0 if an error occurred
 =end pod
 
 method extend-with-template ( $widget is copy, $template_type is copy, Str $buffer, UInt $length, $error is copy --> UInt ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $template_type .= get-native-object-no-reffing unless $template_type ~~ N-GObject;
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $template_type .= _get-native-object-no-reffing unless $template_type ~~ N-GObject;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_extend_with_template(
-    self.get-native-object-no-reffing, $widget, $template_type, $buffer, $length, $error
+    self._get-native-object-no-reffing, $widget, $template_type, $buffer, $length, $error
   )
 }
 
@@ -879,13 +879,13 @@ Returns: the application being used by the builder, or C<undefined>
 =end pod
 
 method get-application ( --> N-GObject ) {
-  gtk_builder_get_application(self.get-native-object-no-reffing)
+  gtk_builder_get_application(self._get-native-object-no-reffing)
 }
 
 method get-application-rk ( --> Gnome::Gtk3::Application ) {
   Gnome::Gtk3::Application.new(
     :native-object(
-      gtk_builder_get_application(self.get-native-object-no-reffing)
+      gtk_builder_get_application(self._get-native-object-no-reffing)
     )
   )
 }
@@ -912,12 +912,12 @@ Returns: the object named I<$name> or C<undefined> if it could not be found in t
 =end pod
 
 method get-object ( Str $name --> N-GObject ) {
-  gtk_builder_get_object( self.get-native-object-no-reffing, $name)
+  gtk_builder_get_object( self._get-native-object-no-reffing, $name)
 }
 
 method get-object-rk ( Str $name --> Any ) {
   my N-GObject $no = gtk_builder_get_object(
-    self.get-native-object-no-reffing, $name
+    self._get-native-object-no-reffing, $name
   );
 
   self._wrap-native-type-from-no($no)
@@ -943,7 +943,7 @@ Returns: (element-type GObject) (transfer container): a newly-allocated B<Gnome:
 
 method get-objects ( --> Gnome::Glib::SList ) {
   Gnome::Glib::SList.new(:native-object(
-      gtk_builder_get_objects(self.get-native-object-no-reffing)
+      gtk_builder_get_objects(self._get-native-object-no-reffing)
     )
   )
 }
@@ -970,7 +970,7 @@ Returns: the translation domain. This string is owned by the builder object and 
 method get-translation-domain ( --> Str ) {
 
   gtk_builder_get_translation_domain(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -996,7 +996,7 @@ Returns: the B<Gnome::Gtk3::Type> found for I<$type-name> or B<Gnome::Gtk3::-TYP
 
 method get-type-from-name ( Str $type-name --> UInt ) {
   gtk_builder_get_type_from_name(
-    self.get-native-object-no-reffing, $type-name
+    self._get-native-object-no-reffing, $type-name
   )
 }
 
@@ -1025,7 +1025,7 @@ Returns: The callback symbol in I<builder> for I<callback-name>, or C<undefined>
 method lookup-callback-symbol ( Str $callback_name --> GCallback ) {
 
   gtk_builder_lookup_callback_symbol(
-    self.get-native-object-no-reffing, $callback_name
+    self._get-native-object-no-reffing, $callback_name
   )
 }
 
@@ -1058,7 +1058,7 @@ method object-set-name ( $object is copy, Str:D $name ) {
 
   else {
     $rk-object = $object;
-    $object .= get-native-object-no-reffing;
+    $object .= _get-native-object-no-reffing;
   }
 
   my Gnome::GObject::Type $t .= new;
@@ -1071,7 +1071,7 @@ method object-set-name ( $object is copy, Str:D $name ) {
     my $rk-object = self._wrap-native-type-from-no($object);
     $rk-object.set-data( 'gtk-builder-name', $name);
   }
-#  _gtk_builder_add_object( self.get-native-object-no-reffing, $name, $object);
+#  _gtk_builder_add_object( self._get-native-object-no-reffing, $name, $object);
 }
 #`{{
 sub _gtk_builder_add_object (
@@ -1096,10 +1096,10 @@ You only need this function if there is more than one B<Gnome::Gtk3::Application
 =end pod
 
 method set-application ( $application is copy ) {
-  $application .= get-native-object-no-reffing unless $application ~~ N-GObject;
+  $application .= _get-native-object-no-reffing unless $application ~~ N-GObject;
 
   gtk_builder_set_application(
-    self.get-native-object-no-reffing, $application
+    self._get-native-object-no-reffing, $application
   );
 }
 
@@ -1122,7 +1122,7 @@ Sets the translation domain of I<builder>. See  I<translation-domain>.
 
 method set-translation-domain ( Str $domain ) {
   gtk_builder_set_translation_domain(
-    self.get-native-object-no-reffing, $domain
+    self._get-native-object-no-reffing, $domain
   );
 }
 
@@ -1154,11 +1154,11 @@ Returns: C<True> on success
 =end pod
 
 method value-from-string ( GParamSpec $pspec, Str $string, $value is copy, $error is copy --> Bool ) {
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_value_from_string(
-    self.get-native-object-no-reffing, $pspec, $string, $value, $error
+    self._get-native-object-no-reffing, $pspec, $string, $value, $error
   ).Bool
 }
 
@@ -1187,12 +1187,12 @@ Returns: C<True> on success
 =end pod
 
 method value-from-string-type ( $type is copy, Str $string, $value is copy, $error is copy --> Bool ) {
-  $type .= get-native-object-no-reffing unless $type ~~ N-GObject;
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
-  $error .= get-native-object-no-reffing unless $error ~~ N-GError;
+  $type .= _get-native-object-no-reffing unless $type ~~ N-GObject;
+  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
+  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_value_from_string_type(
-    self.get-native-object-no-reffing, $type, $string, $value, $error
+    self._get-native-object-no-reffing, $type, $string, $value, $error
   ).Bool
 }
 

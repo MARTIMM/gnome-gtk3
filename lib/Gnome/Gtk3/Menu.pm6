@@ -171,7 +171,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(_gtk_menu_new());
+    self._set-native-object(_gtk_menu_new());
   }
 
   # only after creating the native-object, the gtype is known

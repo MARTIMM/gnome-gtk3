@@ -224,7 +224,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -509,7 +509,7 @@ Sets or replaces the menu item’s submenu, or removes it when a C<undefined> su
 =end pod
 
 method set-submenu ( $submenu is copy ) {
-  $submenu .= get-native-object-no-reffing unless $submenu ~~ N-GObject;
+  $submenu .= _get-native-object-no-reffing unless $submenu ~~ N-GObject;
   gtk_menu_item_set_submenu( self._f('GtkMenuItem'), $submenu);
 }
 

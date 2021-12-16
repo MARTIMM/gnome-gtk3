@@ -197,7 +197,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_accel_group_new___x___($no);
       }
 
@@ -227,7 +227,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -269,11 +269,11 @@ method activate (
   UInt $accel-quark, $acceleratable is copy, UInt $accel-key, UInt $accel-mods
   --> Bool
 ) {
-  $acceleratable .= get-native-object-no-reffing
+  $acceleratable .= _get-native-object-no-reffing
     unless $acceleratable ~~ N-GObject;
 
   gtk_accel_group_activate(
-    self.get-native-object-no-reffing, $accel-quark,
+    self._get-native-object-no-reffing, $accel-quark,
     $acceleratable, $accel-key, $accel-mods
   ).Bool
 }
@@ -310,10 +310,10 @@ Note that, due to implementation details, a single closure can only be connected
 method connect (
   UInt $accel-key, UInt $accel-mods, UInt $accel_flags, $closure is copy
 ) {
-  $closure .= get-native-object-no-reffing unless $closure ~~ N-GClosure;
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
 
   gtk_accel_group_connect(
-    self.get-native-object-no-reffing, $accel-key, $accel-mods, $accel_flags, $closure
+    self._get-native-object-no-reffing, $accel-key, $accel-mods, $accel_flags, $closure
   );
 }
 
@@ -342,10 +342,10 @@ Note that I<accel-path> string will be stored in a B<Gnome::Gtk3::Quark>. Theref
 =end pod
 
 method connect-by-path ( Str $accel_path, $closure is copy ) {
-  $closure .= get-native-object-no-reffing unless $closure ~~ N-GClosure;
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
 
   gtk_accel_group_connect_by_path(
-    self.get-native-object-no-reffing, $accel_path, $closure
+    self._get-native-object-no-reffing, $accel_path, $closure
   );
 }
 
@@ -369,10 +369,10 @@ Returns: C<True> if the closure was found and got disconnected
 =end pod
 
 method disconnect ( $closure is copy --> Bool ) {
-  $closure .= get-native-object-no-reffing unless $closure ~~ N-GClosure;
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
 
   gtk_accel_group_disconnect(
-    self.get-native-object-no-reffing, $closure
+    self._get-native-object-no-reffing, $closure
   ).Bool
 }
 
@@ -398,7 +398,7 @@ Returns: C<True> if there was an accelerator which could be removed, C<False> ot
 
 method disconnect-key ( UInt $accel-key, UInt $accel-mods --> Bool ) {
   gtk_accel_group_disconnect_key(
-    self.get-native-object-no-reffing, $accel-key, $accel-mods
+    self._get-native-object-no-reffing, $accel-key, $accel-mods
   ).Bool
 }
 
@@ -426,7 +426,7 @@ Returns: the key of the first entry passing I<find-func>. The key is owned by GT
 method find (
   GtkAccelGroupFindFunc $find_func, Pointer $data --> N-GtkAccelKey
 ) {
-  gtk_accel_group_find( self.get-native-object-no-reffing, $find_func, $data)
+  gtk_accel_group_find( self._get-native-object-no-reffing, $find_func, $data)
 }
 
 sub gtk_accel_group_find (
@@ -455,12 +455,12 @@ Returns: the B<Gnome::Gtk3::AccelGroup> to which I<closure> is connected, or C<u
 =end pod
 
 method from-accel-closure ( $closure is copy --> N-GObject ) {
-  $closure .= get-native-object-no-reffing unless $closure ~~ N-GClosure;
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
   gtk_accel_group_from_accel_closure($closure)
 }
 
 method from-accel-closure-rk ( $closure is copy --> Gnome::Gtk3::AccelGroup ) {
-  $closure .= get-native-object-no-reffing unless $closure ~~ N-GClosure;
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
   Gnome::Gtk3::AccelGroup.new(:native-object(
       gtk_accel_group_from_accel_closure($closure)
     )
@@ -486,7 +486,7 @@ Returns: C<True> if there are 1 or more locks on the I<accel-group>, C<False> ot
 =end pod
 
 method get-is-locked ( --> Bool ) {
-  gtk_accel_group_get_is_locked(self.get-native-object-no-reffing).Bool
+  gtk_accel_group_get_is_locked(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_accel_group_get_is_locked (
@@ -508,7 +508,7 @@ Returns: the modifier mask for this accel group.
 =end pod
 
 method get-modifier-mask ( --> UInt ) {
-  gtk_accel_group_get_modifier_mask(self.get-native-object-no-reffing)
+  gtk_accel_group_get_modifier_mask(self._get-native-object-no-reffing)
 }
 
 sub gtk_accel_group_get_modifier_mask (
@@ -538,7 +538,7 @@ Returns: C<True> if an accelerator was activated and handled this keypress
 method groups-activate (
   $object is copy, UInt $accel-key, UInt $accel-mods --> Bool
 ) {
-  $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
+  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
   gtk_accel_groups_activate( $object, $accel-key, $accel-mods).Bool
 }
 
@@ -570,12 +570,12 @@ The C<-rk> version returns an Array with B<Gnome::Gtk3::AccelGroup> objects.
 =end pod
 
 method groups-from-object ( $object is copy --> N-GSList ) {
-  $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
+  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
   gtk_accel_groups_from_object($object)
 }
 
 method groups-from-object-rk ( $object is copy --> Array ) {
-  $object .= get-native-object-no-reffing unless $object ~~ N-GObject;
+  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
 
   my Gnome::Glib::SList $list .= new(
 #    :native-object(self.groups-from-object($object))
@@ -675,10 +675,10 @@ Returns: a string representing the accelerator.
 =end pod
 
 method accelerator-get-label-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
-  $display .= get-native-object-no-reffing unless $display ~~ N-GObject;
+  $display .= _get-native-object-no-reffing unless $display ~~ N-GObject;
 
   gtk_accelerator_get_label_with_keycode(
-    self.get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
+    self._get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
   )
 }
 
@@ -737,10 +737,10 @@ Returns: a newly allocated accelerator name.
 =end pod
 
 method gtk-accelerator-name-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
-  $display .= get-native-object-no-reffing unless $display ~~ N-GObject;
+  $display .= _get-native-object-no-reffing unless $display ~~ N-GObject;
 
   gtk_accelerator_name_with_keycode(
-    self.get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
+    self._get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
   )
 }
 
@@ -820,7 +820,7 @@ method gtk-accelerator-parse-with-keycode ( Str $accelerator --> List ) {
   my guint $accelerator-mods;
 
   gtk_accelerator_parse_with_keycode(
-    self.get-native-object-no-reffing, $accelerator, $accelerator-key, $accelerator-codes, $accelerator-mods
+    self._get-native-object-no-reffing, $accelerator, $accelerator-key, $accelerator-codes, $accelerator-mods
   );
 }
 
@@ -872,7 +872,7 @@ If called more than once, I<accel-group> remains locked until C<unlock()> has be
 =end pod
 
 method lock ( ) {
-  gtk_accel_group_lock(self.get-native-object-no-reffing);
+  gtk_accel_group_lock(self._get-native-object-no-reffing);
 }
 
 sub gtk_accel_group_lock (
@@ -915,7 +915,7 @@ method query ( UInt $accel-key, UInt $accel-mods, guInt-ptr $n_entries --> GtkAc
 
 
   gtk_accel_group_query(
-    self.get-native-object-no-reffing, $accel-key, $accel-mods, $n_entries
+    self._get-native-object-no-reffing, $accel-key, $accel-mods, $n_entries
   )
 }
 
@@ -937,7 +937,7 @@ Undoes the last call to C<lock()> on this I<accel-group>.
 =end pod
 
 method unlock ( ) {
-  gtk_accel_group_unlock(self.get-native-object-no-reffing);
+  gtk_accel_group_unlock(self._get-native-object-no-reffing);
 }
 
 sub gtk_accel_group_unlock (

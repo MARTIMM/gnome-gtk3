@@ -115,7 +115,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_separator_menu_item_new___x___($no);
       }
 
@@ -145,7 +145,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

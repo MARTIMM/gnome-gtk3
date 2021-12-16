@@ -130,7 +130,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_fixed_new___x___($no);
       }
 
@@ -160,7 +160,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -222,8 +222,8 @@ Moves a child of a B<Gnome::Gtk3::Fixed> container to the given position.
 
 method move ( $widget, Int $x, Int $y ) {
   my $no = $widget;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-  gtk_fixed_move( self.get-native-object-no-reffing, $no, $x, $y);
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+  gtk_fixed_move( self._get-native-object-no-reffing, $no, $x, $y);
 }
 
 sub gtk_fixed_move ( N-GObject $fixed, N-GObject $widget, gint $x, gint $y  )
@@ -247,8 +247,8 @@ Adds a widget to a B<Gnome::Gtk3::Fixed> container at the given position.
 
 method put ( $widget, Int $x, Int $y ) {
   my $no = $widget;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
-  gtk_fixed_put( self.get-native-object-no-reffing, $no, $x, $y);
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+  gtk_fixed_put( self._get-native-object-no-reffing, $no, $x, $y);
 }
 
 sub gtk_fixed_put ( N-GObject $fixed, N-GObject $widget, gint $x, gint $y  )

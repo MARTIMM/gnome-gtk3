@@ -30,7 +30,7 @@ unless %*ENV<raku_test_all>:exists {
 subtest 'Manipulations', {
 
   my Gnome::Gtk3::TreeIter $ti-copy .= new(:native-object($ti.copy));
-  is $ti-copy.get-native-object.stamp, 1001, '.gtk-tree-iter-copy()';
+  is $ti-copy._get-native-object.stamp, 1001, '.gtk-tree-iter-copy()';
   ok $ti-copy.is-valid, '.is-valid()';
   $ti-copy.clear-object;
   nok $ti-copy.is-valid, '.clear-object()';

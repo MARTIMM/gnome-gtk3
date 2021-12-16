@@ -54,7 +54,7 @@ subtest 'Manipulations', {
 #note "path: ", $b1.get-path.Str;
 #Gnome::N::debug(:on);
   $wp .= new(:native-object($b1.get-path));
-#note "path $wp.get-native-object-no-reffing()";
+#note "path $wp._get-native-object-no-reffing()";
   ok $wp.is-valid, '.get-path()';
   is $wp.gtk-widget-path-length, 3, 'length of path is 3';
 

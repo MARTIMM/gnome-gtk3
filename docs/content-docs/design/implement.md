@@ -8,7 +8,7 @@ layout: sidebar
 
 ## Implementation details
 * The native objects wrapped in Raku classes are mostly not visible to the user, but if they do, their types always start wit *N-*. E.g. **N-GObject**, **N-GValue**, etc. **_This is not yet done everywhere_**.
-  * To retrieve a native object, call `.get-native-object()`.
+  * To retrieve a native object, call `._get-native-object()`.
   * To set a native object, call `.set-native-object()`. Both methods are mostly not used by user software and are only of use internally.
 
 * The `FALLBACK()` method defined in **Gnome::GObject::Object** is called if a method is not found. This makes it possible to search for the defined native subroutines in the class and inherited classes. It calls the `_fallback()` method, which starts with the class at the bottom and working its way up until the subroutine is found. Each `_fallback()` method is calling `callsame()` when a sub is not found yet. The resulting subroutine address is returned and processed with the `test-call()` functions from **Gnome::N::X**. Thrown exceptions are handled by the function `test-catch-exception()` from the same module.

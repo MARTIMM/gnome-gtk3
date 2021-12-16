@@ -169,7 +169,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -192,9 +192,9 @@ Appends a custom item to the list of applications that is shown in the popup; th
 =end pod
 
 method append-custom-item ( Str $name, Str $label, $icon is copy ) {
-  $icon .= get-native-object-no-reffing unless $icon ~~ N-GObject;
+  $icon .= _get-native-object-no-reffing unless $icon ~~ N-GObject;
   gtk_app_chooser_button_append_custom_item(
-    self.get-native-object-no-reffing, $name, $label, $icon
+    self._get-native-object-no-reffing, $name, $label, $icon
   );
 }
 
@@ -215,7 +215,7 @@ Appends a separator to the list of applications that is shown in the popup.
 =end pod
 
 method append-separator ( ) {
-  gtk_app_chooser_button_append_separator(self.get-native-object-no-reffing);
+  gtk_app_chooser_button_append_separator(self._get-native-object-no-reffing);
 }
 
 sub gtk_app_chooser_button_append_separator (
@@ -237,7 +237,7 @@ Returns: the text to display at the top of the dialog, or C<undefined>, in which
 =end pod
 
 method get-heading ( --> Str ) {
-  gtk_app_chooser_button_get_heading(self.get-native-object-no-reffing)
+  gtk_app_chooser_button_get_heading(self._get-native-object-no-reffing)
 }
 
 sub gtk_app_chooser_button_get_heading (
@@ -260,7 +260,7 @@ Returns: the value of  I<show-default-item>
 
 method get-show-default-item ( --> Bool ) {
   gtk_app_chooser_button_get_show_default_item(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -284,7 +284,7 @@ Returns: the value of  I<show-dialog-item>
 
 method get-show-dialog-item ( --> Bool ) {
   gtk_app_chooser_button_get_show_dialog_item(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -309,7 +309,7 @@ Use C<Gnome::Gtk3::AppChooser.refresh()> to bring the selection to its initial s
 
 method set-active-custom-item ( Str $name ) {
   gtk_app_chooser_button_set_active_custom_item(
-    self.get-native-object-no-reffing, $name
+    self._get-native-object-no-reffing, $name
   );
 }
 
@@ -332,7 +332,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 
 method set-heading ( Str $heading ) {
   gtk_app_chooser_button_set_heading(
-    self.get-native-object-no-reffing, $heading
+    self._get-native-object-no-reffing, $heading
   );
 }
 
@@ -355,7 +355,7 @@ Sets whether the dropdown menu of this button should show the default applicatio
 
 method set-show-default-item ( Bool $setting ) {
   gtk_app_chooser_button_set_show_default_item(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -378,7 +378,7 @@ Sets whether the dropdown menu of this button should show an entry to trigger a 
 
 method set-show-dialog-item ( Bool $setting ) {
   gtk_app_chooser_button_set_show_dialog_item(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 

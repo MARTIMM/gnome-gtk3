@@ -112,7 +112,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<manager> {
         $no = %options<manager>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         $no = _gtk_recent_chooser_menu_new_for_manager($no);
       }
 
@@ -121,7 +121,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_recent_chooser_menu_new;
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

@@ -152,8 +152,8 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<title> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing
-        #  if $no.^can('get-native-object-no-reffing');
+        #$no .= _get-native-object-no-reffing
+        #  if $no.^can('_get-native-object-no-reffing');
         my $action = %options<action> // GTK_FILE_CHOOSER_ACTION_OPEN;
         $no = _gtk_file_chooser_button_new( %options<title>, $action.value);
       }
@@ -184,7 +184,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

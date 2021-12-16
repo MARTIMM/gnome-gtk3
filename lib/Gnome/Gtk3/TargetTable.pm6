@@ -99,7 +99,7 @@ submethod BUILD ( *%options ) {
 
     my N-GtkTargetList $list = %options<list> ~~ N-GtkTargetList
                                ?? %options<list>
-                               !! %options<list>.get-native-object-no-reffing;
+                               !! %options<list>._get-native-object-no-reffing;
 
 
     $!target-table = _gtk_target_table_new_from_list( $list, $!nbr-targets);

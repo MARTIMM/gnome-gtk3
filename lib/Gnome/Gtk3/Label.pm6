@@ -245,7 +245,7 @@ submethod BUILD ( *%options ) {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
   }
 
@@ -1113,7 +1113,7 @@ The target widget will be accelerated by emitting the B<Gnome::Gtk3::Widget>::mn
 
 method set-mnemonic-widget ( $widget ) {
   my $no = $widget;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_label_set_mnemonic_widget( self._f('GtkLabel'), $no)
 }

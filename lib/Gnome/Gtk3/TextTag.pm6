@@ -86,7 +86,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   if ? %options<tag-name> {
-    self.set-native-object(gtk_text_tag_new(%options<tag-name>));
+    self._set-native-object(gtk_text_tag_new(%options<tag-name>));
   }
 
   elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
@@ -102,7 +102,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_text_tag_new(Any));
+    self._set-native-object(gtk_text_tag_new(Any));
   }
 
   # only after creating the native-object, the gtype is known

@@ -180,7 +180,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_style_context_new___x___($no);
       }
 
@@ -215,7 +215,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -262,7 +262,7 @@ While any widget defining a “search” class would be matched by:
 =end pod
 
 method add-class ( Str $class_name ) {
-  gtk_style_context_add_class( self.get-native-object-no-reffing, $class_name);
+  gtk_style_context_add_class( self._get-native-object-no-reffing, $class_name);
 }
 
 sub gtk_style_context_add_class (
@@ -286,10 +286,10 @@ Note: If both priorities are the same, a B<Gnome::Gtk3::StyleProvider> added thr
 =end pod
 
 method add-provider ( $provider is copy, UInt $priority ) {
-  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+  $provider .= _get-native-object-no-reffing unless $provider ~~ N-GObject;
 
   gtk_style_context_add_provider(
-    self.get-native-object-no-reffing, $provider, $priority
+    self._get-native-object-no-reffing, $provider, $priority
   );
 }
 
@@ -319,8 +319,8 @@ Note: If both priorities are the same, A B<Gnome::Gtk3::StyleProvider> added thr
 method add-provider-for-screen (
   $screen is copy, $provider is copy, UInt $priority
 ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
-  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $provider .= _get-native-object-no-reffing unless $provider ~~ N-GObject;
 
   _gtk_style_context_add_provider_for_screen(
     $screen, $provider, $priority
@@ -367,7 +367,7 @@ method get ( GtkStateFlags $state, List $properties --> List ) {
 # cannot do it because of differing types
 
 #  gtk_style_context_get(
-#    self.get-native-object-no-reffing, $state
+#    self._get-native-object-no-reffing, $state
 #  );
 }
 
@@ -395,7 +395,7 @@ Returns the border for a given state as a B<Gnome::Gtk3::Border>.
 method get-border ( GtkStateFlags $state --> N-GtkBorder ) {
   my N-GtkBorder $border .= new;
   gtk_style_context_get_border(
-    self.get-native-object-no-reffing, $state, $border
+    self._get-native-object-no-reffing, $state, $border
   );
 
   $border
@@ -404,7 +404,7 @@ method get-border ( GtkStateFlags $state --> N-GtkBorder ) {
 method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $border .= new;
   gtk_style_context_get_border(
-    self.get-native-object-no-reffing, $state, $border
+    self._get-native-object-no-reffing, $state, $border
   );
 
   Gnome::Gtk3::Border.new(:native-object($border))
@@ -434,7 +434,7 @@ Returns the foreground color for a given state.
 method get-color ( GtkStateFlags $state --> N-GdkRGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_get_color(
-    self.get-native-object-no-reffing, $state, $color
+    self._get-native-object-no-reffing, $state, $color
   );
 
   $color
@@ -443,7 +443,7 @@ method get-color ( GtkStateFlags $state --> N-GdkRGBA ) {
 method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_get_color(
-    self.get-native-object-no-reffing, $state, $color
+    self._get-native-object-no-reffing, $state, $color
   );
 
   Gnome::Gdk3::RGBA.new(:native-object($color))
@@ -470,7 +470,7 @@ Returns: a B<Gnome::Gtk3::FrameClock>, or C<undefined> if I<context> does not ha
 
 method get-frame-clock ( --> N-GObject ) {
   gtk_style_context_get_frame_clock(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -494,7 +494,7 @@ Returns: the junction sides mask. Bits are from GtkJunctionSides.
 =end pod
 
 method get-junction-sides ( --> UInt ) {
-  gtk_style_context_get_junction_sides(self.get-native-object-no-reffing)
+  gtk_style_context_get_junction_sides(self._get-native-object-no-reffing)
 }
 
 sub gtk_style_context_get_junction_sides (
@@ -520,7 +520,7 @@ Returns the margin for a given state as a B<Gnome::Gtk3::Border>.
 method get-margin ( GtkStateFlags $state --> N-GtkBorder ) {
   my N-GtkBorder $margin .= new;
   gtk_style_context_get_margin(
-    self.get-native-object-no-reffing, $state, $margin
+    self._get-native-object-no-reffing, $state, $margin
   );
 
   $margin
@@ -529,7 +529,7 @@ method get-margin ( GtkStateFlags $state --> N-GtkBorder ) {
 method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $margin .= new;
   gtk_style_context_get_margin(
-    self.get-native-object-no-reffing, $state, $margin
+    self._get-native-object-no-reffing, $state, $margin
   );
 
   Gnome::Gtk3::Border.new(:native-object($margin))
@@ -558,7 +558,7 @@ Returns the padding for a given state as a B<Gnome::Gtk3::Border>.
 method get-padding ( GtkStateFlags $state --> N-GtkBorder ) {
   my N-GtkBorder $padding .= new;
   gtk_style_context_get_padding(
-    self.get-native-object-no-reffing, $state, $padding
+    self._get-native-object-no-reffing, $state, $padding
   );
 
   $padding
@@ -567,7 +567,7 @@ method get-padding ( GtkStateFlags $state --> N-GtkBorder ) {
 method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $padding .= new;
   gtk_style_context_get_padding(
-    self.get-native-object-no-reffing, $state, $padding
+    self._get-native-object-no-reffing, $state, $padding
   );
 
   Gnome::Gtk3::Border.new(:native-object($padding))
@@ -594,12 +594,12 @@ Returns: the parent context or C<undefined>
 =end pod
 
 method get-parent ( --> N-GObject ) {
-  gtk_style_context_get_parent(self.get-native-object-no-reffing)
+  gtk_style_context_get_parent(self._get-native-object-no-reffing)
 }
 
 method get-parent-rk ( --> Gnome::Gtk3::StyleContext ) {
   self._wrap-native-type-from-no(
-    gtk_style_context_get_parent(self.get-native-object-no-reffing)
+    gtk_style_context_get_parent(self._get-native-object-no-reffing)
   )
 }
 
@@ -624,13 +624,13 @@ Returns: A B<Gnome::Gtk3::WidgetPath>
 =end pod
 
 method get-path ( --> N-GObject ) {
-  gtk_style_context_get_path(self.get-native-object-no-reffing)
+  gtk_style_context_get_path(self._get-native-object-no-reffing)
 }
 
 method get-path-rk ( --> Gnome::Gtk3::WidgetPath ) {
   Gnome::Gtk3::WidgetPath.new(
     :native-object(
-      gtk_style_context_get_path(self.get-native-object-no-reffing)
+      gtk_style_context_get_path(self._get-native-object-no-reffing)
     )
   )
 }
@@ -668,7 +668,7 @@ When I<value> is no longer needed, C<clear-object()> must be called to free any 
 method get-property ( Str $property, GtkStateFlags $state --> N-GValue ) {
   my N-GValue $value .= new;
   gtk_style_context_get_property(
-    self.get-native-object-no-reffing, $property, $state, $value
+    self._get-native-object-no-reffing, $property, $state, $value
   );
 
   N-GValue
@@ -679,7 +679,7 @@ method get-property-rk (
 ) {
   my N-GValue $value .= new;
   gtk_style_context_get_property(
-    self.get-native-object-no-reffing, $property, $state, $value
+    self._get-native-object-no-reffing, $property, $state, $value
   );
 
   Gnome::GObject::Value.new(:native-object($value))
@@ -705,7 +705,7 @@ Returns: the scale
 =end pod
 
 method get-scale ( --> Int ) {
-  gtk_style_context_get_scale(self.get-native-object-no-reffing)
+  gtk_style_context_get_scale(self._get-native-object-no-reffing)
 }
 
 sub gtk_style_context_get_scale (
@@ -729,13 +729,13 @@ Returns: a B<Gnome::Gtk3::Screen>.
 =end pod
 
 method get-screen ( --> N-GObject ) {
-  gtk_style_context_get_screen(self.get-native-object-no-reffing)
+  gtk_style_context_get_screen(self._get-native-object-no-reffing)
 }
 
 method get-screen-rk ( --> Gnome::Gdk3::Screen ) {
   Gnome::Gdk3::Screen.new(
     :native-object(
-      gtk_style_context_get_screen(self.get-native-object-no-reffing)
+      gtk_style_context_get_screen(self._get-native-object-no-reffing)
     )
   )
 }
@@ -767,7 +767,7 @@ Returns: C<undefined> or the section where a value for I<property> was defined
 method get-section ( Str $property --> N-GObject ) {
 
   gtk_style_context_get_section(
-    self.get-native-object-no-reffing, $property
+    self._get-native-object-no-reffing, $property
   )
 }
 
@@ -793,7 +793,7 @@ Returns: the state flags bit mask
 =end pod
 
 method get-state ( --> UInt ) {
-  gtk_style_context_get_state(self.get-native-object-no-reffing)
+  gtk_style_context_get_state(self._get-native-object-no-reffing)
 }
 
 sub gtk_style_context_get_state (
@@ -816,7 +816,7 @@ Retrieves several widget style properties from I<context> according to the curre
 method get-style ( ) {
 
   gtk_style_context_get_style(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -847,7 +847,7 @@ When I<value> is no longer needed, C<g-value-unset()> must be called to free any
 method get-style-property ( Str $property_name --> N-GValue ) {
   my N-GValue $value .= new;
   gtk_style_context_get_style_property(
-    self.get-native-object-no-reffing, $property_name, $value
+    self._get-native-object-no-reffing, $property_name, $value
   );
 
   N-GValue
@@ -856,7 +856,7 @@ method get-style-property ( Str $property_name --> N-GValue ) {
 method get-style-property-rk ( Str $property_name --> Gnome::GObject::Value ) {
   my N-GValue $value .= new;
   gtk_style_context_get_style_property(
-    self.get-native-object-no-reffing, $property_name, $value
+    self._get-native-object-no-reffing, $property_name, $value
   );
 
   Gnome::GObject::Value.new(:native-object($value))
@@ -883,7 +883,7 @@ Retrieves several widget style properties from I<context> according to the curre
 method get-style-valist ( va_list $args ) {
 
   gtk_style_context_get_style_valist(
-    self.get-native-object-no-reffing, $args
+    self._get-native-object-no-reffing, $args
   );
 }
 
@@ -910,7 +910,7 @@ See C<get-property()> for details.
 method get-valist ( GtkStateFlags $state, va_list $args ) {
 
   gtk_style_context_get_valist(
-    self.get-native-object-no-reffing, $state, $args
+    self._get-native-object-no-reffing, $state, $args
   );
 }
 
@@ -938,10 +938,10 @@ Draws a text caret on I<cr> at the specified index of I<layout>.
 =end pod
 
 method gtk-render-insertion-cursor ( cairo_t $cr, Num() $x, Num() $y, $layout is copy, Int() $index, PangoDirection $direction ) {
-  $layout .= get-native-object-no-reffing unless $layout ~~ N-GObject;
+  $layout .= _get-native-object-no-reffing unless $layout ~~ N-GObject;
 
   gtk_render_insertion_cursor(
-    self.get-native-object-no-reffing, $cr, $x, $y, $layout, $index, $direction
+    self._get-native-object-no-reffing, $cr, $x, $y, $layout, $index, $direction
   );
 }
 
@@ -967,7 +967,7 @@ Returns: C<True> if I<context> has I<class-name> defined
 
 method has-class ( Str $class_name --> Bool ) {
   gtk_style_context_has_class(
-    self.get-native-object-no-reffing, $class_name
+    self._get-native-object-no-reffing, $class_name
   ).Bool
 }
 
@@ -993,14 +993,14 @@ Returns: a B<Gnome::Gtk3::List> of strings with the currently defined classes. T
 
 method list-classes ( --> N-GList ) {
   gtk_style_context_list_classes(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
 method list-classes-rk ( --> Gnome::Glib::List ) {
   Gnome::Glib::List.new(
     :native-object(
-      gtk_style_context_list_classes(self.get-native-object-no-reffing)
+      gtk_style_context_list_classes(self._get-native-object-no-reffing)
     )
   )
 }
@@ -1029,7 +1029,7 @@ Returns: N-GdkRGBA color if I<color-name> was found and resolved, undefined or i
 method lookup-color ( Str $color_name --> N-GdkRGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_lookup_color(
-    self.get-native-object-no-reffing, $color_name, $color
+    self._get-native-object-no-reffing, $color_name, $color
   );
 
   $color
@@ -1038,7 +1038,7 @@ method lookup-color ( Str $color_name --> N-GdkRGBA ) {
 method lookup-color-rk ( Str $color_name --> Gnome::Gdk3::RGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_lookup_color(
-    self.get-native-object-no-reffing, $color_name, $color
+    self._get-native-object-no-reffing, $color_name, $color
   );
 
   Gnome::Gdk3::RGBA.new(:native-object($color))
@@ -1063,7 +1063,7 @@ Removes I<class-name> from I<context>.
 
 method remove-class ( Str $class_name ) {
   gtk_style_context_remove_class(
-    self.get-native-object-no-reffing, $class_name
+    self._get-native-object-no-reffing, $class_name
   );
 }
 
@@ -1085,10 +1085,10 @@ Removes I<provider> from the style providers list in I<context>.
 =end pod
 
 method remove-provider ( $provider is copy ) {
-  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+  $provider .= _get-native-object-no-reffing unless $provider ~~ N-GObject;
 
   gtk_style_context_remove_provider(
-    self.get-native-object-no-reffing, $provider
+    self._get-native-object-no-reffing, $provider
   );
 }
 
@@ -1111,8 +1111,8 @@ Removes I<provider> from the global style providers list in I<screen>.
 =end pod
 
 method remove-provider-for-screen ( $screen is copy, $provider is copy ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
-  $provider .= get-native-object-no-reffing unless $provider ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $provider .= _get-native-object-no-reffing unless $provider ~~ N-GObject;
 
   _gtk_style_context_remove_provider_for_screen( $screen, $provider);
 }
@@ -1151,9 +1151,9 @@ Renders an activity indicator (such as in B<Gnome::Gtk3::Spinner>). The state C<
 method render-activity (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_activity(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1187,9 +1187,9 @@ Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 method render-arrow (
   $cr is copy, Num() $angle, Num() $x, Num() $y, Num() $size
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_arrow(
-    self.get-native-object-no-reffing, $cr, $angle, $x, $y, $size
+    self._get-native-object-no-reffing, $cr, $angle, $x, $y, $size
   );
 }
 
@@ -1223,9 +1223,9 @@ Typical background rendering, showing the effect of `background-image`, `border-
 method render-background (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_background(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1256,7 +1256,7 @@ method render-background-get-clip (
 ) {
   my N-GdkRectangle $out_clip .= new;
   gtk_render_background_get_clip(
-    self.get-native-object-no-reffing, $x, $y, $width, $height, $out_clip
+    self._get-native-object-no-reffing, $x, $y, $width, $height, $out_clip
   );
 
   $out_clip
@@ -1294,9 +1294,9 @@ Typical checkmark rendering:
 method render-check (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_check(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1330,9 +1330,9 @@ Typical expander rendering:
 method render-expander (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_expander(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1369,9 +1369,9 @@ method render-extension (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height,
   GtkPositionType $gap_side
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_extension(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height, $gap_side
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height, $gap_side
   );
 }
 
@@ -1405,9 +1405,9 @@ Typical focus rendering:
 method render-focus (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_focus(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1441,9 +1441,9 @@ Examples of frame rendering, showing the effect of `border-image`, `border-color
 method render-frame (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_frame(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1477,9 +1477,9 @@ Handles rendered for the paned and grip classes:
 method render-handle (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_handle(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1510,10 +1510,10 @@ You probably want to use C<icon-surface()> instead, if you already have a Cairo 
 =end pod
 
 method render-icon ( $cr is copy, $pixbuf is copy, Num() $x, Num() $y ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
-  $pixbuf .= get-native-object-no-reffing unless $pixbuf ~~ N-GObject;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $pixbuf .= _get-native-object-no-reffing unless $pixbuf ~~ N-GObject;
   gtk_render_icon(
-    self.get-native-object-no-reffing, $cr, $pixbuf, $x, $y
+    self._get-native-object-no-reffing, $cr, $pixbuf, $x, $y
   );
 }
 
@@ -1542,10 +1542,10 @@ Renders the icon in I<surface> at the specified I<x> and I<y> coordinates.
 method render-icon-surface (
   $cr is copy, $surface is copy, Num() $x, Num() $y
 ) {
-  $surface .= get-native-object-no-reffing unless $surface ~~ cairo_surface_t;
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $surface .= _get-native-object-no-reffing unless $surface ~~ cairo_surface_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_icon_surface(
-    self.get-native-object-no-reffing, $cr, $surface, $x, $y
+    self._get-native-object-no-reffing, $cr, $surface, $x, $y
   );
 }
 
@@ -1575,10 +1575,10 @@ Renders I<layout> on the coordinates I<x>, I<y>
 method render-layout (
   $cr is copy, Num() $x, Num() $y, $layout is copy
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
-  $layout .= get-native-object-no-reffing unless $layout ~~ N-GObject;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $layout .= _get-native-object-no-reffing unless $layout ~~ N-GObject;
   gtk_render_layout(
-    self.get-native-object-no-reffing, $cr, $x, $y, $layout
+    self._get-native-object-no-reffing, $cr, $x, $y, $layout
   );
 }
 
@@ -1607,9 +1607,9 @@ Renders a line from (x0, y0) to (x1, y1).
 =end pod
 
 method render-line ( $cr is copy, Num() $x0, Num() $y0, Num() $x1, Num() $y1 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_line(
-    self.get-native-object-no-reffing, $cr, $x0, $y0, $x1, $y1
+    self._get-native-object-no-reffing, $cr, $x0, $y0, $x1, $y1
   );
 }
 
@@ -1643,9 +1643,9 @@ Typical option mark rendering:
 method render-option (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_option(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height
   );
 }
 
@@ -1682,9 +1682,9 @@ method render-slider (
   $cr is copy, Num() $x, Num() $y, Num() $width, Num() $height,
   GtkOrientation $orientation
 ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_render_slider(
-    self.get-native-object-no-reffing, $cr, $x, $y, $width, $height,
+    self._get-native-object-no-reffing, $cr, $x, $y, $width, $height,
     $orientation
   );
 }
@@ -1707,7 +1707,7 @@ This function recomputes the styles for all widgets under a particular B<Gnome::
 =end pod
 
 method reset-widgets ( $screen is copy ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
   gtk_style_context_reset_widgets($screen);
 }
 
@@ -1728,7 +1728,7 @@ Restores I<context> state to a previous stage. See C<save()>.
 =end pod
 
 method restore ( ) {
-  gtk_style_context_restore(self.get-native-object-no-reffing);
+  gtk_style_context_restore(self._get-native-object-no-reffing);
 }
 
 sub gtk_style_context_restore (
@@ -1752,7 +1752,7 @@ The matching call to C<gtk-style-context-restore()> must be done before GTK retu
 method save ( ) {
 
   gtk_style_context_save(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -1779,10 +1779,10 @@ If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-s
 =end pod
 
 method set-frame-clock ( $frame-clock is copy ) {
-  $frame-clock .= get-native-object-no-reffing unless $frame-clock ~~ N-GObject;
+  $frame-clock .= _get-native-object-no-reffing unless $frame-clock ~~ N-GObject;
 
   gtk_style_context_set_frame_clock(
-    self.get-native-object-no-reffing, $frame-clock
+    self._get-native-object-no-reffing, $frame-clock
   );
 }
 
@@ -1810,7 +1810,7 @@ Container widgets are expected to set junction hints as appropriate for their ch
 
 method set-junction-sides ( UInt $sides ) {
   gtk_style_context_set_junction_sides(
-    self.get-native-object-no-reffing, $sides
+    self._get-native-object-no-reffing, $sides
   );
 }
 
@@ -1834,8 +1834,8 @@ If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-s
 =end pod
 
 method set-parent ( $parent is copy ) {
-  $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
-  gtk_style_context_set_parent( self.get-native-object-no-reffing, $parent);
+  $parent .= _get-native-object-no-reffing unless $parent ~~ N-GObject;
+  gtk_style_context_set_parent( self._get-native-object-no-reffing, $parent);
 }
 
 sub gtk_style_context_set_parent (
@@ -1858,8 +1858,8 @@ If you are using a B<Gnome::Gtk3::StyleContext> returned from C<Gnome::Gtk3::Wid
 =end pod
 
 method set-path ( $path is copy ) {
-  $path .= get-native-object-no-reffing unless $path ~~ N-GObject;
-  gtk_style_context_set_path( self.get-native-object-no-reffing, $path);
+  $path .= _get-native-object-no-reffing unless $path ~~ N-GObject;
+  gtk_style_context_set_path( self._get-native-object-no-reffing, $path);
 }
 
 sub gtk_style_context_set_path (
@@ -1880,7 +1880,7 @@ Sets the scale to use when getting image assets for the style.
 =end pod
 
 method set-scale ( Int() $scale ) {
-  gtk_style_context_set_scale( self.get-native-object-no-reffing, $scale);
+  gtk_style_context_set_scale( self._get-native-object-no-reffing, $scale);
 }
 
 sub gtk_style_context_set_scale (
@@ -1905,10 +1905,10 @@ If you are using a B<Gnome::Gtk3::StyleContext> returned from C<gtk-widget-get-s
 =end pod
 
 method set-screen ( $screen is copy ) {
-  $screen .= get-native-object-no-reffing unless $screen ~~ N-GObject;
+  $screen .= _get-native-object-no-reffing unless $screen ~~ N-GObject;
 
   gtk_style_context_set_screen(
-    self.get-native-object-no-reffing, $screen
+    self._get-native-object-no-reffing, $screen
   );
 }
 
@@ -1930,7 +1930,7 @@ Sets the state bit mask to be used for style matching.
 =end pod
 
 method set-state ( UInt $flags ) {
-  gtk_style_context_set_state( self.get-native-object-no-reffing, $flags);
+  gtk_style_context_set_state( self._get-native-object-no-reffing, $flags);
 }
 
 sub gtk_style_context_set_state (
@@ -1957,7 +1957,7 @@ Returns: a newly allocated string representing I<context>
 =end pod
 
 method to-string ( UInt $flags --> Str ) {
-  gtk_style_context_to_string( self.get-native-object-no-reffing, $flags)
+  gtk_style_context_to_string( self._get-native-object-no-reffing, $flags)
 }
 
 sub gtk_style_context_to_string (

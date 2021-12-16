@@ -155,7 +155,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<area> {
         $no = %options<area>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         $no = _gtk_entry_completion_new_with_area($no);
       }
 
@@ -185,7 +185,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -206,7 +206,7 @@ Requests a completion operation, or in other words a refiltering of the current 
 =end pod
 
 method complete ( ) {
-  gtk_entry_completion_complete(self.get-native-object-no-reffing);
+  gtk_entry_completion_complete(self._get-native-object-no-reffing);
 }
 
 sub gtk_entry_completion_complete (
@@ -230,7 +230,7 @@ Returns: The common prefix all rows starting with I<$key> or C<undefined> if no 
 
 method compute-prefix ( Str $key --> Str ) {
   gtk_entry_completion_compute_prefix(
-    self.get-native-object-no-reffing, $key
+    self._get-native-object-no-reffing, $key
   )
 }
 
@@ -255,7 +255,7 @@ Note that I<$index> is a relative position and the position of an action may hav
 
 method delete-action ( Int $index ) {
   gtk_entry_completion_delete_action(
-    self.get-native-object-no-reffing, $index
+    self._get-native-object-no-reffing, $index
   );
 }
 
@@ -279,7 +279,7 @@ Returns: the prefix for the current completion
 
 method get-completion-prefix ( --> Str ) {
   gtk_entry_completion_get_completion_prefix(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -304,7 +304,7 @@ Returns: The entry in this entry completion has been attached to
 method get-entry ( --> Gnome::Gtk3::Entry ) {
   Gnome::Gtk3::Entry.new(
     :native-object(
-      gtk_entry_completion_get_entry(self.get-native-object-no-reffing)
+      gtk_entry_completion_get_entry(self._get-native-object-no-reffing)
     )
   )
 }
@@ -329,7 +329,7 @@ Returns: C<True> if inline completion is turned on
 
 method get-inline-completion ( --> Bool ) {
   gtk_entry_completion_get_inline_completion(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -354,7 +354,7 @@ Returns: C<True> if inline-selection mode is on
 method get-inline-selection ( --> Bool ) {
 
   gtk_entry_completion_get_inline_selection(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -376,7 +376,7 @@ Returns the minimum key length as set for in this entry completion.
 
 method get-minimum-key-length ( --> Int ) {
   gtk_entry_completion_get_minimum_key_length(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -401,7 +401,7 @@ Returns: A B<Gnome::Gtk3::TreeModel>, or C<undefined> if none is currently being
 method get-model ( --> N-GObject ) {
 
   gtk_entry_completion_get_model(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -426,7 +426,7 @@ Returns: C<True> if popup completion is turned on
 method get-popup-completion ( --> Bool ) {
 
   gtk_entry_completion_get_popup_completion(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -451,7 +451,7 @@ Returns: C<True> if the popup window will be resized to the width of the entry
 method get-popup-set-width ( --> Bool ) {
 
   gtk_entry_completion_get_popup_set_width(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -476,7 +476,7 @@ Returns: C<True> if the popup window will appear regardless of the number of mat
 method get-popup-single-match ( --> Bool ) {
 
   gtk_entry_completion_get_popup_single_match(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -498,7 +498,7 @@ Returns the column in the model of in this entry completion to get strings from.
 
 method get-text-column ( --> Int ) {
   gtk_entry_completion_get_text_column(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -523,7 +523,7 @@ Inserts an action in in this entry completion’s action item list at position I
 method insert-action-markup ( Int $index, Str $markup ) {
 
   gtk_entry_completion_insert_action_markup(
-    self.get-native-object-no-reffing, $index, $markup
+    self._get-native-object-no-reffing, $index, $markup
   );
 }
 
@@ -550,7 +550,7 @@ Note that I<index> is a relative position in the list of actions and the positio
 method insert-action-text ( Int $index, Str $text ) {
 
   gtk_entry_completion_insert_action_text(
-    self.get-native-object-no-reffing, $index, $text
+    self._get-native-object-no-reffing, $index, $text
   );
 }
 
@@ -571,7 +571,7 @@ Requests a prefix insertion.
 =end pod
 
 method insert-prefix ( ) {
-  gtk_entry_completion_insert_prefix(self.get-native-object-no-reffing);
+  gtk_entry_completion_insert_prefix(self._get-native-object-no-reffing);
 }
 
 sub gtk_entry_completion_insert_prefix (
@@ -594,7 +594,7 @@ Sets whether the common prefix of the possible completions should be automatical
 method set-inline-completion ( Bool $inline_completion ) {
 
   gtk_entry_completion_set_inline_completion(
-    self.get-native-object-no-reffing, $inline_completion
+    self._get-native-object-no-reffing, $inline_completion
   );
 }
 
@@ -618,7 +618,7 @@ Sets whether it is possible to cycle through the possible completions inside the
 method set-inline-selection ( Bool $inline_selection ) {
 
   gtk_entry_completion_set_inline_selection(
-    self.get-native-object-no-reffing, $inline_selection
+    self._get-native-object-no-reffing, $inline_selection
   );
 }
 
@@ -649,7 +649,7 @@ method set-match-func (
 ) {
 
   gtk_entry_completion_set_match_func(
-    self.get-native-object-no-reffing, $func, $func_data, $func_notify
+    self._get-native-object-no-reffing, $func, $func_data, $func_notify
   );
 }
 
@@ -686,7 +686,7 @@ Requires the length of the search key for in this entry completion to be at leas
 method set-minimum-key-length ( Int $length ) {
 
   gtk_entry_completion_set_minimum_key_length(
-    self.get-native-object-no-reffing, $length
+    self._get-native-object-no-reffing, $length
   );
 }
 
@@ -708,10 +708,10 @@ Sets the model for a B<Gnome::Gtk3::EntryCompletion>. If in this entry completio
 =end pod
 
 method set-model ( $model is copy ) {
-  $model .= get-native-object-no-reffing unless $model ~~ N-GObject;
+  $model .= _get-native-object-no-reffing unless $model ~~ N-GObject;
 
   gtk_entry_completion_set_model(
-    self.get-native-object-no-reffing, $model
+    self._get-native-object-no-reffing, $model
   );
 }
 
@@ -735,7 +735,7 @@ Sets whether the completions should be presented in a popup window.
 method set-popup-completion ( Bool $popup_completion ) {
 
   gtk_entry_completion_set_popup_completion(
-    self.get-native-object-no-reffing, $popup_completion
+    self._get-native-object-no-reffing, $popup_completion
   );
 }
 
@@ -759,7 +759,7 @@ Sets whether the completion popup window will be resized to be the same width as
 method set-popup-set-width ( Bool $popup_set_width ) {
 
   gtk_entry_completion_set_popup_set_width(
-    self.get-native-object-no-reffing, $popup_set_width
+    self._get-native-object-no-reffing, $popup_set_width
   );
 }
 
@@ -783,7 +783,7 @@ Sets whether the completion popup window will appear even if there is only a sin
 method set-popup-single-match ( Bool $popup_single_match ) {
 
   gtk_entry_completion_set_popup_single_match(
-    self.get-native-object-no-reffing, $popup_single_match
+    self._get-native-object-no-reffing, $popup_single_match
   );
 }
 
@@ -809,7 +809,7 @@ This functions creates and adds a B<Gnome::Gtk3::CellRendererText> for the selec
 method set-text-column ( Int $column ) {
 
   gtk_entry_completion_set_text_column(
-    self.get-native-object-no-reffing, $column
+    self._get-native-object-no-reffing, $column
   );
 }
 

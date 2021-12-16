@@ -279,7 +279,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<default> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         $no = _gtk_recent_manager_get_default;
       }
 
@@ -309,7 +309,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -333,7 +333,7 @@ Returns: The error quark used for I<Gnome::Gtk3::RecentManager> errors.
 method error-quark ( --> UInt ) {
 
   gtk_recent_manager_error_quark(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -380,7 +380,7 @@ Returns: A unique B<Gnome::Gtk3::RecentManager>. Do not ref or unref it.
 method get-default ( --> N-GObject ) {
 
   gtk_recent_manager_get_default(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 }}
@@ -408,7 +408,7 @@ Returns: C<True> if the new item was successfully added to the recently used res
 method add-item (  Str  $uri --> Bool ) {
 
   gtk_recent_manager_add_item(
-    self.get-native-object-no-reffing, $uri
+    self._get-native-object-no-reffing, $uri
   ).Bool;
 }
 
@@ -439,7 +439,7 @@ Returns: C<True> if the new item was successfully added to the recently used res
 method add-full (  Str  $uri, N-GtkRecentData $recent_data --> Bool ) {
 
   gtk_recent_manager_add_full(
-    self.get-native-object-no-reffing, $uri, $recent_data
+    self._get-native-object-no-reffing, $uri, $recent_data
   ).Bool;
 }
 
@@ -465,7 +465,7 @@ Returns: An invalid error object if the item pointed by I<$uri> has been success
 method remove-item ( Str $uri --> Gnome::Glib::Error ) {
   my CArray[N-GError] $ne .= new(N-GError);
   my Int $r = gtk_recent_manager_remove_item(
-    self.get-native-object-no-reffing, $uri, $ne
+    self._get-native-object-no-reffing, $uri, $ne
   );
 
   my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
@@ -503,7 +503,7 @@ method lookup-item (  Str  $uri --> List ) {
   my Gnome::Gtk3::RecentInfo $ri .= new(
     :native-object(
       gtk_recent_manager_lookup_item(
-        self.get-native-object-no-reffing, $uri, $ne
+        self._get-native-object-no-reffing, $uri, $ne
       )
     )
   );
@@ -538,7 +538,7 @@ Returns: C<True> if the resource was found, C<False> otherwise
 method has-item (  Str  $uri --> Bool ) {
 
   gtk_recent_manager_has_item(
-    self.get-native-object-no-reffing, $uri
+    self._get-native-object-no-reffing, $uri
   ).Bool;
 }
 
@@ -566,7 +566,7 @@ Returns: an invalid error object on success. The error object has information if
 method move-item (  Str  $uri,  Str  $new_uri --> Gnome::Glib::Error ) {
   my CArray[N-GError] $ne .= new(N-GError);
   my Int $r = gtk_recent_manager_move_item(
-    self.get-native-object-no-reffing, $uri, $new_uri, $ne
+    self._get-native-object-no-reffing, $uri, $new_uri, $ne
   );
 
   my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
@@ -596,7 +596,7 @@ Returns: (element-type B<Gnome::Gtk3::RecentInfo>): a list of newly allocated B<
 method get-items ( --> Gnome::Glib::List ) {
   Gnome::Glib::List.new(
     :native-object(
-      gtk_recent_manager_get_items(self.get-native-object-no-reffing)
+      gtk_recent_manager_get_items(self._get-native-object-no-reffing)
     )
   );
 }
@@ -622,7 +622,7 @@ method purge-items ( --> Int ) {
   my CArray[N-GError] $ne .= new(N-GError);
 
   my Int $nitems = gtk_recent_manager_purge_items(
-    self.get-native-object-no-reffing, $ne
+    self._get-native-object-no-reffing, $ne
   );
 
   my Gnome::Glib::Error $e .= new(:native-object($ne[0]));

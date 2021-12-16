@@ -93,7 +93,7 @@ submethod BUILD ( *%options ) {
   return unless self.^name eq 'Gnome::Gtk3::TextTagTable';
 
   if ? %options<empty> {
-    self.set-native-object(gtk_text_tag_table_new());
+    self._set-native-object(gtk_text_tag_table_new());
   }
 
   elsif ? %options<native-object> || ? %options<widget> || ? %options<build-id> {
@@ -109,7 +109,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_text_tag_table_new());
+    self._set-native-object(gtk_text_tag_table_new());
   }
 
   # only after creating the native-object, the gtype is known

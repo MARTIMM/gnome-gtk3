@@ -185,7 +185,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -220,7 +220,7 @@ Returns: a pointer to a copy of I<data>. Free with C<free()>
 =end pod
 
 method copy ( --> N-GtkTargetEntry ) {
-  gtk_target_entry_copy(self.get-native-object-no-reffing)
+  gtk_target_entry_copy(self._get-native-object-no-reffing)
 }
 
 sub gtk_target_entry_copy (

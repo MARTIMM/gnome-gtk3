@@ -199,7 +199,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -223,10 +223,10 @@ Returns: C<True> if the child is not subject to homogenous sizing
 =end pod
 
 method get-child-non-homogeneous ( $child is copy --> Bool ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_button_box_get_child_non_homogeneous(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   ).Bool
 }
 
@@ -248,10 +248,10 @@ Returns whether I<$child> should appear in a secondary group of children.
 =end pod
 
 method get-child-secondary ( $child is copy --> Bool ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_button_box_get_child_secondary(
-    self.get-native-object-no-reffing, $child
+    self._get-native-object-no-reffing, $child
   ).Bool
 }
 
@@ -272,7 +272,7 @@ Retrieves the method being used to arrange the buttons in a button box.
 =end pod
 
 method get-layout ( --> GtkButtonBoxStyle ) {
-  GtkButtonBoxStyle(gtk_button_box_get_layout(self.get-native-object(:!ref)))
+  GtkButtonBoxStyle(gtk_button_box_get_layout(self._get-native-object(:!ref)))
 }
 
 sub gtk_button_box_get_layout (
@@ -296,10 +296,10 @@ Sets whether the child is exempted from homogeous sizing.
 =end pod
 
 method set-child-non-homogeneous ( $child is copy, Bool $non_homogeneous ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_button_box_set_child_non_homogeneous(
-    self.get-native-object-no-reffing, $child, $non_homogeneous
+    self._get-native-object-no-reffing, $child, $non_homogeneous
   );
 }
 
@@ -324,10 +324,10 @@ This group appears after the other children if the style is C<GTK-BUTTONBOX-STAR
 =end pod
 
 method set-child-secondary ( $child is copy, Bool $is_secondary ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_button_box_set_child_secondary(
-    self.get-native-object-no-reffing, $child, $is_secondary
+    self._get-native-object-no-reffing, $child, $is_secondary
   );
 }
 
@@ -351,7 +351,7 @@ Changes the way buttons are arranged in their container.
 method set-layout ( GtkButtonBoxStyle $layout_style ) {
 
   gtk_button_box_set_layout(
-    self.get-native-object-no-reffing, $layout_style
+    self._get-native-object-no-reffing, $layout_style
   );
 }
 

@@ -213,7 +213,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -239,7 +239,7 @@ method get-accel ( --> List ) {
   my guint $accelerator-key;
   my guint $accelerator-mods;
   gtk_accel_label_get_accel(
-    self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
+    self._get-native-object-no-reffing, $accelerator-key, $accelerator-mods
   );
 
   ( $accelerator-key, $accelerator-mods)
@@ -265,12 +265,12 @@ Fetches the widget monitored by this accelerator label, or C<undefined>. See C<s
 =end pod
 
 method get-accel-widget ( --> N-GObject ) {
-  gtk_accel_label_get_accel_widget(self.get-native-object-no-reffing)
+  gtk_accel_label_get_accel_widget(self._get-native-object-no-reffing)
 }
 
 method get-accel-widget-rk ( --> Any ) {
   self._wrap-native-type-from-no(
-    gtk_accel_label_get_accel_widget(self.get-native-object-no-reffing)
+    gtk_accel_label_get_accel_widget(self._get-native-object-no-reffing)
   )
 }
 
@@ -293,7 +293,7 @@ Returns: the width needed to display the accelerator key(s).
 =end pod
 
 method get-accel-width ( --> UInt ) {
-  gtk_accel_label_get_accel_width(self.get-native-object-no-reffing)
+  gtk_accel_label_get_accel_width(self._get-native-object-no-reffing)
 }
 
 sub gtk_accel_label_get_accel_width (
@@ -318,7 +318,7 @@ Returns: always returns C<False>.
 method refetch ( --> Bool ) {
 
   gtk_accel_label_refetch(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -347,7 +347,7 @@ Providing an I<$accelerator-key> of 0 removes the manual setting.
 
 method set-accel ( UInt $accelerator-key, UInt $accelerator-mods ) {
   gtk_accel_label_set_accel(
-    self.get-native-object-no-reffing, $accelerator-key, $accelerator-mods
+    self._get-native-object-no-reffing, $accelerator-key, $accelerator-mods
   );
 }
 
@@ -369,10 +369,10 @@ Sets the closure to be monitored by this accelerator label. The closure must be 
 =end pod
 
 method set-accel-closure ( $accel_closure is copy ) {
-  $accel_closure .= get-native-object-no-reffing unless $accel_closure ~~ N-GClosure;
+  $accel_closure .= _get-native-object-no-reffing unless $accel_closure ~~ N-GClosure;
 
   gtk_accel_label_set_accel_closure(
-    self.get-native-object-no-reffing, $accel_closure
+    self._get-native-object-no-reffing, $accel_closure
   );
 }
 
@@ -394,10 +394,10 @@ Sets the widget to be monitored by this accelerator label. Passing C<undefined> 
 =end pod
 
 method set-accel-widget ( $accel_widget is copy ) {
-  $accel_widget .= get-native-object-no-reffing unless $accel_widget ~~ N-GObject;
+  $accel_widget .= _get-native-object-no-reffing unless $accel_widget ~~ N-GObject;
 
   gtk_accel_label_set_accel_widget(
-    self.get-native-object-no-reffing, $accel_widget
+    self._get-native-object-no-reffing, $accel_widget
   );
 }
 

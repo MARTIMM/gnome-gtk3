@@ -124,8 +124,8 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   else {
-#    _gtk_widget_path_free(self.get-native-object) if $!widgetpath-is-valid;
-    self.set-native-object(gtk_widget_path_new());
+#    _gtk_widget_path_free(self._get-native-object) if $!widgetpath-is-valid;
+    self._set-native-object(gtk_widget_path_new());
 #    $!widgetpath-is-valid = True;
   }
 

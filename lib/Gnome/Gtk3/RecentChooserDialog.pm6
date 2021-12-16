@@ -156,12 +156,12 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<title> {
         my $pno = %options<parent> // N-GObject;
-        $pno .= get-native-object unless $pno ~~ N-GObject;
+        $pno .= _get-native-object unless $pno ~~ N-GObject;
         my Str $title = %options<title> // Str;
         my @buttons = %options<button-spec> // ();
         if %options<manager>:exists {
           my $mno = %options<manager> // N-GObject;
-          $mno .= get-native-object-no-reffing unless $no ~~ N-GObject;
+          $mno .= _get-native-object-no-reffing unless $no ~~ N-GObject;
           $no = _gtk_recent_chooser_dialog_new_for_manager(
             $title, $pno, $mno, |@buttons
           );
@@ -200,7 +200,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

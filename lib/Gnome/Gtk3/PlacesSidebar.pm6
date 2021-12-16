@@ -185,7 +185,7 @@ submethod BUILD ( *%options ) {
     ##`{{ when there are options use this instead
     # create default object
     else {
-      self.set-native-object(_gtk_places_sidebar_new());
+      self._set-native-object(_gtk_places_sidebar_new());
     }
     #}}
 

@@ -108,7 +108,7 @@ Returns: the recent info object with its reference count increased by one
 
 method gtk-recent-info-ref ( N-GtkRecentInfo $info --> N-GtkRecentInfo ) {
   gtk_recent_info_ref(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 }}
@@ -133,7 +133,7 @@ Decreases the reference count of I<info> by one. If the reference count reaches 
 method gtk-recent-info-unref ( N-GtkRecentInfo $info ) {
 
   gtk_recent_info_unref(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 }}
@@ -159,7 +159,7 @@ Returns: the URI of the resource. The returned string is owned by the recent man
 method get-uri ( -->  Str  ) {
 
   gtk_recent_info_get_uri(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -183,7 +183,7 @@ Returns: the display name of the resource. The returned string is owned by the r
 method get-display-name ( -->  Str  ) {
 
   gtk_recent_info_get_display_name(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -207,7 +207,7 @@ Returns: the description of the resource. The returned string is owned by the re
 method get-description ( -->  Str  ) {
 
   gtk_recent_info_get_description(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -231,7 +231,7 @@ Returns: the MIME type of the resource. The returned string is owned by the rece
 method get-mime-type ( -->  Str  ) {
 
   gtk_recent_info_get_mime_type(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -255,7 +255,7 @@ Returns: the number of seconds elapsed from system’s Epoch when the resource w
 method get-added ( --> Int ) {
 
   gtk_recent_info_get_added(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -279,7 +279,7 @@ Returns: the number of seconds elapsed from system’s Epoch when the resource w
 method get-modified ( --> Int ) {
 
   gtk_recent_info_get_modified(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -303,7 +303,7 @@ Returns: the number of seconds elapsed from system’s Epoch when the resource w
 method get-visited ( --> Int ) {
 
   gtk_recent_info_get_visited(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -327,7 +327,7 @@ Returns: C<True> if the private flag was found, C<False> otherwise
 method get-private-hint ( --> Bool ) {
 
   gtk_recent_info_get_private_hint(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   ).Bool;
 }
 
@@ -360,7 +360,7 @@ method get-application-info ( Str $app_name --> List ) {
   my guint $count;
   my time_t $time;
   my Int $r = gtk_recent_info_get_application_info(
-    self.get-native-object-no-reffing, $app_name, $app_exec, $count, $time
+    self._get-native-object-no-reffing, $app_name, $app_exec, $count, $time
   );
 
   $r ?? ( $app_exec[0], $count.Int, $time.Int) !! ()
@@ -393,7 +393,7 @@ Returns: (nullable) (transfer full): the newly created B<GAppInfo>, or C<Any>. I
 method create-app-info ( Str  $app_name, N-GError $error --> GAppInfo ) {
 
   gtk_recent_info_create_app_info(
-    self.get-native-object-no-reffing, $app_name, $error
+    self._get-native-object-no-reffing, $app_name, $error
   );
 }
 
@@ -418,7 +418,7 @@ Returns: an array of strings.
 method get-applications ( --> Array ) {
 
   my CArray[Str] $a = gtk_recent_info_get_applications(
-    self.get-native-object-no-reffing, my gsize $length
+    self._get-native-object-no-reffing, my gsize $length
   );
 
   my Array $apps = [];
@@ -449,7 +449,7 @@ Returns: an application name.
 
 method last-application ( --> Str ) {
   gtk_recent_info_last_application(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -475,7 +475,7 @@ Returns: C<True> if an application with name I<$app_name> was found, C<False> ot
 method has-application ( Str  $app_name --> Bool ) {
 
   gtk_recent_info_has_application(
-    self.get-native-object-no-reffing, $app_name
+    self._get-native-object-no-reffing, $app_name
   ).Bool;
 }
 
@@ -497,7 +497,7 @@ Returns all groups registered for the recently used item I<info>.
 method get-groups ( --> Array ) {
 
   my CArray $a = gtk_recent_info_get_groups(
-    self.get-native-object-no-reffing, my gsize $length
+    self._get-native-object-no-reffing, my gsize $length
   );
 
   my Array $grps = [];
@@ -531,7 +531,7 @@ Returns: C<True> if the group was found
 method has-group ( Str  $group_name --> Bool ) {
 
   gtk_recent_info_has_group(
-    self.get-native-object-no-reffing, $group_name
+    self._get-native-object-no-reffing, $group_name
   ).Bool;
 }
 
@@ -557,7 +557,7 @@ Returns: (nullable) (transfer full): a B<Gnome::Gdk3::Pixbuf> containing the ico
 method get-icon ( Int $size --> N-GObject ) {
 
   gtk_recent_info_get_icon(
-    self.get-native-object-no-reffing, $size
+    self._get-native-object-no-reffing, $size
   );
 }
 
@@ -582,7 +582,7 @@ Returns: (nullable) (transfer full): a B<GIcon> containing the icon, or C<Any>. 
 method get-gicon ( --> GIcon ) {
 
   gtk_recent_info_get_gicon(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -607,7 +607,7 @@ Returns: A newly-allocated string in UTF-8 encoding.
 method get-short-name ( --> Str ) {
 
   gtk_recent_info_get_short_name(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   )
 }
 
@@ -631,7 +631,7 @@ Returns: (nullable): a newly allocated UTF-8 string containing the resource’s 
 method get-uri-display ( --> Str ) {
 
   gtk_recent_info_get_uri_display(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -655,7 +655,7 @@ Returns: a positive integer containing the number of days elapsed since the time
 method get-age ( --> Int ) {
 
   gtk_recent_info_get_age(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 }
 
@@ -679,7 +679,7 @@ Returns: C<True> if the resource is local
 method is-local ( --> Bool ) {
 
   gtk_recent_info_is_local(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   ).Bool;
 }
 
@@ -703,7 +703,7 @@ Returns: C<True> if the resource exists
 method exists ( --> Bool ) {
 
   gtk_recent_info_exists(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   ).Bool;
 }
 
@@ -729,9 +729,9 @@ Returns: C<True> if both B<Gnome::Gtk3::RecentInfo>-struct point to the same res
 method match ( $info --> Bool ) {
 
   my $no = $info;
-  $no .= get-native-object-no-reffing unless $info ~~ N-GtkRecentInfo;
+  $no .= _get-native-object-no-reffing unless $info ~~ N-GtkRecentInfo;
   gtk_recent_info_match(
-    self.get-native-object-no-reffing, $no
+    self._get-native-object-no-reffing, $no
   ).Bool;
 }
 

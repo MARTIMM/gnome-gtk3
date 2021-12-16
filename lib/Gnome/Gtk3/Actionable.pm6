@@ -186,7 +186,7 @@ Consider the example of associating a set of buttons with a B<N-GAction> with st
 
 method set-action-target-value ( $target_value ) {
   my $no = $target_value;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_actionable_set_action_target_value(
     self._f('GtkActionable'), $no

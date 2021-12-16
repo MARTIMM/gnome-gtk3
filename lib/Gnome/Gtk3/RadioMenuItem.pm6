@@ -227,12 +227,12 @@ submethod BUILD ( *%options ) {
       my $no-group;
       if %options<group>:exists {
         $no-group = %options<group> // N-GSList;
-        $no-group .= get-native-object-no-reffing unless $no-group ~~ N-GSList;
+        $no-group .= _get-native-object-no-reffing unless $no-group ~~ N-GSList;
       }
 
       elsif %options<group-widget>:exists {
         $no-group = %options<group-widget> // N-GObject;
-        $no-group .= get-native-object-no-reffing unless $no-group ~~ N-GObject;
+        $no-group .= _get-native-object-no-reffing unless $no-group ~~ N-GObject;
       }
 
       my $no;
@@ -299,7 +299,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -482,7 +482,7 @@ Sets the group of a radio menu item, or changes it.
 method set-group ( $group ) {
 
   my $no = $group;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GSList;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GSList;
 
   gtk_radio_menu_item_set_group(
     self._f('GtkRadioMenuItem'), $no
@@ -508,7 +508,7 @@ Joins a B<Gnome::Gtk3::RadioMenuItem> object to the group of another B<Gnome::Gt
 
 method join-group ( $group-source ) {
   my $no = $group-source;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_radio_menu_item_join_group(
     self._f('GtkRadioMenuItem'), $no

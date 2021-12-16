@@ -114,7 +114,7 @@ submethod BUILD ( *%options ) {
     $ratio = %options<ratio> // 1.0e0;
     my Bool $obey-child = %options<obey-child> // !%options<ratio>;
 
-    self.set-native-object(
+    self._set-native-object(
       _gtk_aspect_frame_new(
         %options<label>, $xalign, $yalign, $ratio, $obey-child
       )
@@ -177,7 +177,7 @@ method set (
   Num $xalign, Num $yalign, Num $ratio, Int $obey_child
 ) {
   gtk_aspect_frame_set(
-    self.get-native-object-no-reffing, $xalign, $yalign, $ratio, $obey_child
+    self._get-native-object-no-reffing, $xalign, $yalign, $ratio, $obey_child
   );
 }
 

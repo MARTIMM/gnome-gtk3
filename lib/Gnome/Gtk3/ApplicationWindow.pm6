@@ -167,8 +167,8 @@ submethod BUILD ( *%options ) {
     # process all named arguments
     elsif ? %options<application> {
       my $a = %options<application>;
-      $a .= get-native-object if $a ~~ Gnome::Gtk3::Application;
-      self.set-native-object(_gtk_application_window_new($a));
+      $a .= _get-native-object if $a ~~ Gnome::Gtk3::Application;
+      self._set-native-object(_gtk_application_window_new($a));
     }
 
     elsif %options.keys.elems {
@@ -224,13 +224,13 @@ Returns: the help overlay associated with I<window>, or C<undefined>
 
 method get-help-overlay ( --> N-GObject ) {
   gtk_application_window_get_help_overlay(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
 method get-help-overlay-rk ( *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_application_window_get_help_overlay(self.get-native-object-no-reffing),
+    gtk_application_window_get_help_overlay(self._get-native-object-no-reffing),
     |%options
   )
 }
@@ -255,7 +255,7 @@ Returns: the unique ID for I<window>, or `0` if the window has not yet been adde
 
 method get-id ( --> UInt ) {
   gtk_application_window_get_id(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -280,7 +280,7 @@ Returns: C<True> if I<window> will display a menubar when needed
 method get-show-menubar ( --> Bool ) {
 
   gtk_application_window_get_show_menubar(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -304,11 +304,11 @@ I<window> takes resposibility for destroying I<help-overlay>.
 =end pod
 
 method set-help-overlay ( $help_overlay is copy ) {
-  $help_overlay .= get-native-object-no-reffing
+  $help_overlay .= _get-native-object-no-reffing
     unless $help_overlay ~~ N-GObject;
 
   gtk_application_window_set_help_overlay(
-    self.get-native-object-no-reffing, $help_overlay
+    self._get-native-object-no-reffing, $help_overlay
   );
 }
 
@@ -332,7 +332,7 @@ Sets whether the window will display a menubar for the app menu and menubar as n
 method set-show-menubar ( Bool $show_menubar ) {
 
   gtk_application_window_set_show_menubar(
-    self.get-native-object-no-reffing, $show_menubar
+    self._get-native-object-no-reffing, $show_menubar
   );
 }
 

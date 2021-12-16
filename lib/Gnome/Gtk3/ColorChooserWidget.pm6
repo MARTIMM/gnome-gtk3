@@ -133,7 +133,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_color_chooser_widget_new());
+    self._set-native-object(gtk_color_chooser_widget_new());
   }
 
   # only after creating the native-object, the gtype is known

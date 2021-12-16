@@ -142,7 +142,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_check_button_new();
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

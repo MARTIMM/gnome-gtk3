@@ -52,7 +52,7 @@ subtest 'Manipulations', {
   is $list-find[1], 0, '.find(): info == 0';
 #`{{
   my Gnome::Glib::List $lt .= new(
-    :native-object($tl.get-native-object-no-reffing.list)
+    :native-object($tl._get-native-object-no-reffing.list)
   );
 
   for ^$lt.length -> $i {
@@ -74,7 +74,7 @@ subtest 'Manipulations', {
 
 #`{{
   my Gnome::Glib::List $lt .= new(
-    :native-object($tl.get-native-object-no-reffing.list)
+    :native-object($tl._get-native-object-no-reffing.list)
   );
 
   for ^$lt.length -> $i {

@@ -345,8 +345,8 @@ class ExtendedLabel is Gnome::Gtk3::Label {
 ## Reference counting
 ### Floating references
 ### :native-object
-### .get-native-object()
-### .get-native-object-no-reffing()
+### ._get-native-object()
+### ._get-native-object-no-reffing()
 ### .clear-object()
 
 -->

@@ -196,7 +196,7 @@ submethod BUILD ( *%options ) {
 
       if ? %options<group> and ? %options<label> {
         my $g = %options<group>;
-        $g .= get-native-object if $g ~~ Gnome::Glib::SList;
+        $g .= _get-native-object if $g ~~ Gnome::Glib::SList;
         if $mnemonic {
           $no = _gtk_radio_button_new_with_mnemonic( $g, %options<label>);
         }
@@ -208,7 +208,7 @@ submethod BUILD ( *%options ) {
 
       elsif ? %options<group-from> and ? %options<label> {
         my $w = %options<group-from>;
-        $w .= get-native-object if $w ~~ Gnome::Gtk3::RadioButton;
+        $w .= _get-native-object if $w ~~ Gnome::Gtk3::RadioButton;
         if $mnemonic {
           $no = _gtk_radio_button_new_with_mnemonic_from_widget(
             $w, %options<label>
@@ -224,7 +224,7 @@ submethod BUILD ( *%options ) {
 
       elsif ? %options<group-from> {
         my $w = %options<group-from>;
-        $w .= get-native-object if $w ~~ Gnome::GObject::Object;
+        $w .= _get-native-object if $w ~~ Gnome::GObject::Object;
         $no = _gtk_radio_button_new_from_widget($w);
       }
 
@@ -234,7 +234,7 @@ submethod BUILD ( *%options ) {
 
       elsif ? %options<group> {
         my $g = %options<group>;
-        $g .= get-native-object if $g ~~ Gnome::Glib::SList;
+        $g .= _get-native-object if $g ~~ Gnome::Glib::SList;
         $no = _gtk_radio_button_new($g);
       }
 
@@ -242,7 +242,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_radio_button_new(Any);
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -281,12 +281,12 @@ Returns: (element-type GtkRadioButton) : a linked list containing all the radio 
 =end pod
 
 method get-group ( --> N-GSList ) {
-  gtk_radio_button_get_group(self.get-native-object-no-reffing)
+  gtk_radio_button_get_group(self._get-native-object-no-reffing)
 }
 
 method get-group-rk ( --> Gnome::Glib::SList ) {
   Gnome::Glib::SList.new(:native-object(
-      gtk_radio_button_get_group(self.get-native-object-no-reffing)
+      gtk_radio_button_get_group(self._get-native-object-no-reffing)
     )
   )
 }
@@ -323,11 +323,11 @@ A common way to set up a group of radio buttons is the following:
 =end pod
 
 method join-group ( $group_source is copy ) {
-  $group_source .= get-native-object-no-reffing
+  $group_source .= _get-native-object-no-reffing
     unless $group_source ~~ N-GObject;
 
   gtk_radio_button_join_group(
-    self.get-native-object-no-reffing, $group_source
+    self._get-native-object-no-reffing, $group_source
   );
 }
 
@@ -349,8 +349,8 @@ Sets a B<Gnome::Gtk3::RadioButton>’s group. It should be noted that this does 
 =end pod
 
 method set-group ( $group is copy ) {
-  $group .= get-native-object-no-reffing unless $group ~~ N-GSList;
-  gtk_radio_button_set_group( self.get-native-object-no-reffing, $group);
+  $group .= _get-native-object-no-reffing unless $group ~~ N-GSList;
+  gtk_radio_button_set_group( self._get-native-object-no-reffing, $group);
 }
 
 sub gtk_radio_button_set_group (

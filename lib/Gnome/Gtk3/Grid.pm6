@@ -122,7 +122,7 @@ submethod BUILD ( *%options ) {
     elsif %options<build-id>:exists { }
 
     else {
-      self.set-native-object(_gtk_grid_new());
+      self._set-native-object(_gtk_grid_new());
     }
 
     # only after creating the native-object, the gtype is known
@@ -166,10 +166,10 @@ Adds a widget to the grid.  The position of I<$child> is determined by I<$left> 
 
 method attach ( $child, Int $left, Int $top, Int $width, Int $height ) {
   my $no = $child;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_grid_attach(
-    self.get-native-object-no-reffing, $no, $left, $top, $width, $height
+    self._get-native-object-no-reffing, $no, $left, $top, $width, $height
   );
 }
 
@@ -201,12 +201,12 @@ method attach-next-to (
   $child, $sibling, GtkPositionType $side, Int $width, Int $height
 ) {
   my $no1 = $child;
-  $no1 .= get-native-object-no-reffing unless $no1 ~~ N-GObject;
+  $no1 .= _get-native-object-no-reffing unless $no1 ~~ N-GObject;
   my $no2 = $sibling;
-  $no2 .= get-native-object-no-reffing unless $no2 ~~ N-GObject;
+  $no2 .= _get-native-object-no-reffing unless $no2 ~~ N-GObject;
 
   gtk_grid_attach_next_to(
-    self.get-native-object-no-reffing, $no1, $no2, $side.value, $width, $height
+    self._get-native-object-no-reffing, $no1, $no2, $side.value, $width, $height
   );
 }
 
@@ -227,7 +227,7 @@ Returns which row defines the global baseline of I<grid>.
 
 method get-baseline-row ( --> Int ) {
   gtk_grid_get_baseline_row(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -270,7 +270,7 @@ Returns: the child (a native object) at the given position, or undefined. In the
 
 method get-child-at ( Int $left, Int $top --> N-GObject ) {
   gtk_grid_get_child_at(
-    self.get-native-object-no-reffing, $left, $top
+    self._get-native-object-no-reffing, $left, $top
   );
 }
 
@@ -278,7 +278,7 @@ method get-child-at-rk (
   Int $left, Int $top, *%options --> Gnome::GObject::Object
 ) {
   my $o = self._wrap-native-type-from-no(
-    gtk_grid_get_child_at( self.get-native-object-no-reffing, $left, $top),
+    gtk_grid_get_child_at( self._get-native-object-no-reffing, $left, $top),
     |%options
   );
 
@@ -302,7 +302,7 @@ Returns whether all columns of I<grid> have the same width.
 
 method get-column-homogeneous ( --> Bool ) {
   gtk_grid_get_column_homogeneous(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -323,7 +323,7 @@ Returns the amount of space between the columns of I<grid>.
 
 method get-column-spacing ( --> UInt ) {
   gtk_grid_get_column_spacing(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -351,7 +351,7 @@ Returns: the baseline position of I<row>
 method get-row-baseline-position ( Int $row --> GtkBaselinePosition ) {
   GtkBaselinePosition(
     gtk_grid_get_row_baseline_position(
-      self.get-native-object-no-reffing, $row
+      self._get-native-object-no-reffing, $row
     )
   );
 }
@@ -373,7 +373,7 @@ Returns whether all rows of I<grid> have the same height.
 
 method get-row-homogeneous ( --> Bool ) {
   gtk_grid_get_row_homogeneous(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -396,7 +396,7 @@ Returns: the row spacing of I<grid>
 
 method get-row-spacing ( --> UInt ) {
   gtk_grid_get_row_spacing(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -419,7 +419,7 @@ Inserts a row at the specified position.  Children which are attached at or belo
 
 method insert-row ( Int $position ) {
   gtk_grid_insert_row(
-    self.get-native-object-no-reffing, $position
+    self._get-native-object-no-reffing, $position
   );
 }
 
@@ -442,7 +442,7 @@ Inserts a column at the specified position.  Children which are attached at or t
 
 method insert-column ( Int $position ) {
   gtk_grid_insert_column(
-    self.get-native-object-no-reffing, $position
+    self._get-native-object-no-reffing, $position
   );
 }
 
@@ -466,10 +466,10 @@ Inserts a row or column at the specified position.  The new row or column is pla
 
 method insert-next-to ( $sibling, GtkPositionType $side ) {
   my $no = $sibling;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_grid_insert_next_to(
-    self.get-native-object-no-reffing, $no, $side
+    self._get-native-object-no-reffing, $no, $side
   );
 }
 
@@ -493,7 +493,7 @@ Removes a column from the grid.  Children that are placed in this column are rem
 
 method remove-column ( Int $position ) {
   gtk_grid_remove_column(
-    self.get-native-object-no-reffing, $position
+    self._get-native-object-no-reffing, $position
   );
 }
 
@@ -515,7 +515,7 @@ Removes a row from the grid.  Children that are placed in this row are removed, 
 =end pod
 
 method remove-row ( Int $position ) {
-  gtk_grid_remove_row( self.get-native-object-no-reffing, $position);
+  gtk_grid_remove_row( self._get-native-object-no-reffing, $position);
 }
 
 sub gtk_grid_remove_row ( N-GObject $grid, gint $position  )
@@ -536,7 +536,7 @@ Sets which row defines the global baseline for the entire grid. Each row in the 
 =end pod
 
 method set-baseline-row ( Int $row ) {
-  gtk_grid_set_baseline_row( self.get-native-object-no-reffing, $row);
+  gtk_grid_set_baseline_row( self._get-native-object-no-reffing, $row);
 }
 
 sub gtk_grid_set_baseline_row ( N-GObject $grid, gint $row  )
@@ -558,7 +558,7 @@ Sets whether all columns of I<grid> will have the same width.
 
 method set-column-homogeneous ( Bool $homogeneous ) {
   gtk_grid_set_column_homogeneous(
-    self.get-native-object-no-reffing, $homogeneous.Int
+    self._get-native-object-no-reffing, $homogeneous.Int
   );
 }
 
@@ -581,7 +581,7 @@ Sets the amount of space between columns of I<grid>.
 
 method set-column-spacing ( UInt $spacing ) {
   gtk_grid_set_column_spacing(
-    self.get-native-object-no-reffing, $spacing
+    self._get-native-object-no-reffing, $spacing
   );
 }
 
@@ -607,7 +607,7 @@ Sets how the baseline should be positioned on I<row> of the grid, in case that r
 
 method set-row-baseline-position ( Int $row, GtkBaselinePosition $pos ) {
   gtk_grid_set_row_baseline_position(
-    self.get-native-object-no-reffing, $row, $pos.value
+    self._get-native-object-no-reffing, $row, $pos.value
   );
 }
 
@@ -630,7 +630,7 @@ Sets whether all rows of I<grid> will have the same height.
 
 method set-row-homogeneous ( Bool $homogeneous ) {
   gtk_grid_set_row_homogeneous(
-    self.get-native-object-no-reffing, $homogeneous.Int
+    self._get-native-object-no-reffing, $homogeneous.Int
   );
 }
 
@@ -653,7 +653,7 @@ Sets the amount of space between rows of I<grid>.
 
 method set-row-spacing ( UInt $spacing ) {
   gtk_grid_set_row_spacing(
-    self.get-native-object-no-reffing, $spacing
+    self._get-native-object-no-reffing, $spacing
   );
 }
 

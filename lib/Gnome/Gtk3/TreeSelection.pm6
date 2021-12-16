@@ -123,7 +123,7 @@ submethod BUILD ( *%options ) {
     elsif ? %options<treeview> and
             %options<treeview>.^name eq 'Gnome::Gtk3::TreeView' {
 
-      self.set-native-object(%options<treeview>.gtk_tree_view_get_selection());
+      self._set-native-object(%options<treeview>.gtk_tree_view_get_selection());
     }
 
     # check if there are unknown options
@@ -146,7 +146,7 @@ submethod BUILD ( *%options ) {
     #`{{ when there are defaults use this instead
     # create default object
     else {
-      self.set-native-object(gtk_tree_selection_new());
+      self._set-native-object(gtk_tree_selection_new());
     }
     }}
 

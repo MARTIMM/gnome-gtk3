@@ -192,7 +192,7 @@ submethod BUILD ( *%options ) {
       # process all named arguments
       $no = _gtk_entry_new();
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

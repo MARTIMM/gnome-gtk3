@@ -121,7 +121,7 @@ submethod BUILD ( *%options ) {
       $b.right = %options<right>;
       $b.top = %options<top>;
       $b.bottom = %options<bottom>;
-      self.set-native-object($b);
+      self._set-native-object($b);
     }
 
     elsif %options.keys.elems {
@@ -133,7 +133,7 @@ submethod BUILD ( *%options ) {
     }
 
     else {
-      self.set-native-object(_gtk_border_new());
+      self._set-native-object(_gtk_border_new());
     }
 
     # only after creating the native-object, the gtype is known
@@ -182,12 +182,12 @@ Copies a C<N-GtkBorder> struct.
 =end pod
 
 method border-copy ( --> N-GtkBorder ) {
-  gtk_border_copy(self.get-native-object-no-reffing)
+  gtk_border_copy(self._get-native-object-no-reffing)
 }
 
 method border-copy-rk ( --> Gnome::Gtk3::Border ) {
   Gnome::Gtk3::Border.new(
-    :native-object(gtk_border_copy(self.get-native-object-no-reffing))
+    :native-object(gtk_border_copy(self._get-native-object-no-reffing))
   )
 }
 
@@ -210,8 +210,8 @@ Modify bottom width of border if value is given. Returns bottom value after modi
 method bottom ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set bottom width, Border is not valid'))
       unless self.is-valid;
-  self.get-native-object.bottom = $value if $value.defined;
-  self.get-native-object.bottom
+  self._get-native-object.bottom = $value if $value.defined;
+  self._get-native-object.bottom
 }
 
 #-------------------------------------------------------------------------------
@@ -228,8 +228,8 @@ Modify left width of border if value is given. Returns left value after modifica
 method left ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set left width, Border is not valid'))
       unless self.is-valid;
-  self.get-native-object.left = $value if $value.defined;
-  self.get-native-object.left
+  self._get-native-object.left = $value if $value.defined;
+  self._get-native-object.left
 }
 
 #-------------------------------------------------------------------------------
@@ -246,8 +246,8 @@ Modify right width of border if value is given. Returns right value after modifi
 method right ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set right width, Border is not valid'))
       unless self.is-valid;
-  self.get-native-object.right = $value if $value.defined;
-  self.get-native-object.right
+  self._get-native-object.right = $value if $value.defined;
+  self._get-native-object.right
 }
 
 #-------------------------------------------------------------------------------
@@ -264,8 +264,8 @@ Modify top width of border if value is given. Returns top value after modificati
 method top ( Int $value? --> Int ) {
   die X::Gnome.new(:message('Cannot set top width, Border is not valid'))
       unless self.is-valid;
-  self.get-native-object.top = $value if $value.defined;
-  self.get-native-object.top
+  self._get-native-object.top = $value if $value.defined;
+  self._get-native-object.top
 }
 
 #-------------------------------------------------------------------------------

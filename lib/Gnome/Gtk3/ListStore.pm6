@@ -186,7 +186,7 @@ submethod BUILD ( *%options ) {
 
   # process all named arguments
   elsif ? %options<field-types> {
-    self.set-native-object(gtk_list_store_new(|%options<field-types>));
+    self._set-native-object(gtk_list_store_new(|%options<field-types>));
   }
 #`{{
   elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
@@ -203,7 +203,7 @@ submethod BUILD ( *%options ) {
   }
 }}
 
-#note "ListStore: ", self.get-native-object.perl(), ', ', self.is-valid;
+#note "ListStore: ", self._get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
   self._set-class-info('GtkListStore');
@@ -374,12 +374,12 @@ sub gtk_list_store_set_value (
   my UInt $type = gtk_tree_model_get_column_type( $list_store, $column);
   given $type {
     when G_TYPE_OBJECT {
-      $v .= new( :$type, :value($value.get-native-object));
+      $v .= new( :$type, :value($value._get-native-object));
     }
 
     when G_TYPE_BOXED {
 #      $v .=  new( :$type, :value($value.get-native-boxed));
-      $v .=  new( :$type, :value($value.get-native-object));
+      $v .=  new( :$type, :value($value._get-native-object));
     }
 
 #    when G_TYPE_POINTER { $p .= new(type => ); }
@@ -403,9 +403,9 @@ sub gtk_list_store_set_value (
   state $ptr = cglobal( &gtk-lib, 'gtk_list_store_set_value', Pointer);
   my Callable $f = nativecast( $signature, $ptr);
 
-#  $f( $list_store, $iter, $column, $v.get-native-object);
+#  $f( $list_store, $iter, $column, $v._get-native-object);
 }}
-  _gtk_list_store_set_value( $list_store, $iter, $column, $v.get-native-object);
+  _gtk_list_store_set_value( $list_store, $iter, $column, $v._get-native-object);
 }
 
 sub _gtk_list_store_set_value ( N-GObject, N-GtkTreeIter, int32, N-GValue )
@@ -449,8 +449,8 @@ sub gtk_list_store_set (
 
     @column-values.push: $c;
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
+      when G_TYPE_OBJECT { @column-values.push: $value._get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value._get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }
@@ -719,8 +719,8 @@ sub gtk_list_store_insert_with_values (
     # column value
     my UInt $type = gtk_tree_model_get_column_type( $list_store, $c);
     given $type {
-      when G_TYPE_OBJECT { @column-values.push: $value.get-native-object; }
-      when G_TYPE_BOXED { @column-values.push: $value.get-native-object; }
+      when G_TYPE_OBJECT { @column-values.push: $value._get-native-object; }
+      when G_TYPE_BOXED { @column-values.push: $value._get-native-object; }
 
   #    when G_TYPE_POINTER { $p .= new(type => ); }
   #    when G_TYPE_PARAM { $p .= new(type => ); }

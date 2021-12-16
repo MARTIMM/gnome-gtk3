@@ -201,7 +201,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -344,7 +344,7 @@ Adds I<child> to I<box>, packed with reference to the end of I<box>. The I<child
 =end pod
 
 method pack-end ( $child is copy, Bool $expand, Bool $fill, UInt $padding ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_box_pack_end(
     self._f('GtkBox'), $child, $expand, $fill, $padding
@@ -374,7 +374,7 @@ Adds I<child> to I<box>, packed with reference to the start of I<box>. The I<chi
 =end pod
 
 method pack-start ( $child is copy, Bool $expand, Bool $fill, UInt $padding ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_box_pack_start(
     self._f('GtkBox'), $child, $expand, $fill, $padding
@@ -411,7 +411,7 @@ method query-child-packing ( $child is copy --> List ) {
   my guint $padding;
   my GEnum $pack_type;
 
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_box_query_child_packing(
     self._f('GtkBox'), $child, $expand, $fill, $padding, $pack_type
@@ -444,7 +444,7 @@ A widget’s position in the I<box> children list determines where the widget is
 =end pod
 
 method reorder-child ( $child is copy, Int() $position ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
   gtk_box_reorder_child( self._f('GtkBox'), $child, $position);
 }
 
@@ -487,7 +487,7 @@ Sets a center widget; that is a child widget that will be centered with respect 
 =end pod
 
 method set-center-widget ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_box_set_center_widget(
     self._f('GtkBox'), $widget
@@ -522,7 +522,7 @@ method set-child-packing (
   $child is copy, Bool $expand, Bool $fill, UInt $padding,
   GtkPackType $pack_type
 ) {
-  $child .= get-native-object-no-reffing unless $child ~~ N-GObject;
+  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_box_set_child_packing(
     self._f('GtkBox'), $child, $expand, $fill, $padding, $pack_type

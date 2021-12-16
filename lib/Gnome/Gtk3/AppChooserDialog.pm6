@@ -152,9 +152,9 @@ submethod BUILD ( *%options ) {
       if ? %options<file> {
         my Gnome::Gio::File $gfile .= new(:path(%options<file>));
         my $parent = %options<parent> // N-GObject;
-        $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+        $parent .= _get-native-object-no-reffing unless $parent ~~ N-GObject;
         $no = _gtk_app_chooser_dialog_new(
-          $parent, %options<flags> // 0, $gfile.get-native-object-no-reffing
+          $parent, %options<flags> // 0, $gfile._get-native-object-no-reffing
         );
 
         $gfile.clear-object;
@@ -162,7 +162,7 @@ submethod BUILD ( *%options ) {
 
       elsif ? %options<content-type> {
         my $parent = %options<parent> // N-GObject;
-        $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+        $parent .= _get-native-object-no-reffing unless $parent ~~ N-GObject;
         $no = _gtk_app_chooser_dialog_new_for_content_type(
           $parent, %options<flags> // 0, %options<content-type>
         );
@@ -195,7 +195,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -220,7 +220,7 @@ Returns: the text to display at the top of the dialog, or C<undefined>, in which
 method get-heading ( --> Str ) {
 
   gtk_app_chooser_dialog_get_heading(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -243,12 +243,12 @@ Returns the B<Gnome::Gtk3::AppChooserWidget> of this dialog.
 =end pod
 
 method get-widget ( --> N-GObject ) {
-  gtk_app_chooser_dialog_get_widget(self.get-native-object-no-reffing)
+  gtk_app_chooser_dialog_get_widget(self._get-native-object-no-reffing)
 }
 
 method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget ) {
   Gnome::Gtk3::AppChooserWidget.new(:native-object(
-      gtk_app_chooser_dialog_get_widget(self.get-native-object-no-reffing)
+      gtk_app_chooser_dialog_get_widget(self._get-native-object-no-reffing)
     )
   )
 }
@@ -273,7 +273,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 method set-heading ( Str $heading ) {
 
   gtk_app_chooser_dialog_set_heading(
-    self.get-native-object-no-reffing, $heading
+    self._get-native-object-no-reffing, $heading
   );
 }
 

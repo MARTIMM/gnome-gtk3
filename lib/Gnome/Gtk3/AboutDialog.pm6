@@ -175,7 +175,7 @@ submethod BUILD ( *%options ) {
 
       $no = _gtk_about_dialog_new();
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -218,7 +218,7 @@ Creates a new section in the Credits page.
 method add-credit-section ( Str $section_name, *@people ) {
   my $people = gchar-pptr.new( |@people, Str);
   _gtk_about_dialog_add_credit_section(
-    self.get-native-object-no-reffing, $section_name, $people
+    self._get-native-object-no-reffing, $section_name, $people
   );
 }
 
@@ -250,7 +250,7 @@ Returns: A string array containing the artists.
 
 method get-artists ( --> Array ) {
   my gchar-pptr $artists = _gtk_about_dialog_get_artists(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
   my @artists = ();
   my Int $i = 0;
@@ -292,7 +292,7 @@ Returns: An array containing the authors.
 
 method get-authors ( --> Array ) {
   my $authors = _gtk_about_dialog_get_authors(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
   my @authors = ();
   my Int $i = 0;
@@ -332,7 +332,7 @@ Returns the comments string. The string is owned by the about dialog and must no
 
 method get-comments ( --> Str ) {
   gtk_about_dialog_get_comments(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   )
 }
 
@@ -354,7 +354,7 @@ Returns: The copyright string. The string is owned by the about dialog and must 
 =end pod
 
 method get-copyright ( ) {
-  gtk_about_dialog_get_copyright(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_copyright(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_copyright ( N-GObject $about --> gchar-ptr )
@@ -376,7 +376,7 @@ Returns: An array containing the documenters
 
 method get-documenters ( --> Array ) {
   my gchar-pptr $documenters = _gtk_about_dialog_get_documenters(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
   my @documenters = ();
   my Int $i = 0;
@@ -416,7 +416,7 @@ Returns the license information.The string is owned by the about dialog and must
 
 method get-license ( --> Str ) {
   gtk_about_dialog_get_license(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   )
 }
 
@@ -437,7 +437,7 @@ Retrieves the license set using C<set_license_type()>. Returns a I<GtkLicense> v
 
 method get-license-type ( --> GtkLicense ) {
   GtkLicense(
-    _gtk_about_dialog_get_license_type(self.get-native-object-no-reffing)
+    _gtk_about_dialog_get_license_type(self._get-native-object-no-reffing)
   );
 }
 
@@ -464,7 +464,7 @@ Returns: the pixbuf displayed as logo. The pixbuf is owned by the about dialog. 
 =end pod
 
 method get-logo ( --> N-GObject ) {
-  gtk_about_dialog_get_logo(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_logo(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_logo ( N-GObject $about --> N-GObject )
@@ -485,7 +485,7 @@ Returns: the icon name displayed as logo.
 =end pod
 
 method get-logo-icon-name ( --> Str ) {
-  gtk_about_dialog_get_logo_icon_name(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_logo_icon_name(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_logo_icon_name ( N-GObject $about --> gchar-ptr )
@@ -506,7 +506,7 @@ Returns: The program name. The string is owned by the about dialog and must not 
 =end pod
 
 method get-program-name ( --> gchar-ptr ) {
-  gtk_about_dialog_get_program_name(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_program_name(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_program_name ( N-GObject $about --> gchar-ptr )
@@ -525,7 +525,7 @@ Returns the translator credits string which is displayed in the translators tab 
 =end pod
 
 method get-translator-credits ( --> Str ) {
-  gtk_about_dialog_get_translator_credits(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_translator_credits(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_translator_credits ( N-GObject $about --> gchar-ptr )
@@ -546,7 +546,7 @@ Returns: The version string. The string is owned by the about dialog and must no
 =end pod
 
 method get-version ( --> gchar-ptr ) {
-  gtk_about_dialog_get_version(self.get-native-object-no-reffing);
+  gtk_about_dialog_get_version(self._get-native-object-no-reffing);
 }
 
 sub gtk_about_dialog_get_version ( N-GObject $about --> gchar-ptr )
@@ -565,7 +565,7 @@ Returns the website URL. The string is owned by the about dialog and must not be
 =end pod
 
 method get-website ( --> Str ) {
-  gtk_about_dialog_get_website(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_website(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_website ( N-GObject $about --> gchar-ptr )
@@ -584,7 +584,7 @@ Returns the label used for the website link. The string is owned by the about di
 =end pod
 
 method get-website-label ( --> Str ) {
-  gtk_about_dialog_get_website_label(self.get-native-object-no-reffing)
+  gtk_about_dialog_get_website_label(self._get-native-object-no-reffing)
 }
 
 sub gtk_about_dialog_get_website_label ( N-GObject $about --> gchar-ptr )
@@ -603,7 +603,7 @@ Returns C<True> if the license text in this about dialog is automatically wrappe
 =end pod
 
 method get-wrap-license ( --> Bool ) {
-  gtk_about_dialog_get_wrap_license(self.get-native-object-no-reffing).Bool
+  gtk_about_dialog_get_wrap_license(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_about_dialog_get_wrap_license ( N-GObject $about --> gboolean )
@@ -625,7 +625,7 @@ Sets the strings which are displayed in the artists tab of the secondary credits
 
 method set-artists ( *@artists ) {
   my $artists = gchar-pptr.new( |@artists, Str);
-  _gtk_about_dialog_set_artists( self.get-native-object-no-reffing, $artists);
+  _gtk_about_dialog_set_artists( self._get-native-object-no-reffing, $artists);
 }
 
 sub gtk_about_dialog_set_artists ( N-GObject $about, *@artists ) {
@@ -658,7 +658,7 @@ Sets the strings which are displayed in the authors tab of the secondary credits
 
 method set-authors ( *@authors ) {
   my $authors = gchar-pptr.new( |@authors, Str);
-  _gtk_about_dialog_set_authors( self.get-native-object-no-reffing, $authors);
+  _gtk_about_dialog_set_authors( self._get-native-object-no-reffing, $authors);
 }
 
 sub gtk_about_dialog_set_authors ( N-GObject $about, *@authors ) {
@@ -686,7 +686,7 @@ Sets the comments string to display in the about dialog. This should be a short 
 
 method set-comments ( Str $comments ) {
   gtk_about_dialog_set_comments(
-    self.get-native-object-no-reffing, $comments
+    self._get-native-object-no-reffing, $comments
   )
 }
 
@@ -709,7 +709,7 @@ Sets the copyright string to display in the about dialog. This should be a short
 
 method set-copyright ( $copyright ) {
   gtk_about_dialog_set_copyright(
-    self.get-native-object-no-reffing, $copyright
+    self._get-native-object-no-reffing, $copyright
   );
 }
 
@@ -733,7 +733,7 @@ Sets the strings which are displayed in the documenters tab of the secondary cre
 method set-documenters ( *@documenters ) {
   my $documenters = gchar-pptr.new( |@documenters, Str);
   _gtk_about_dialog_set_documenters(
-    self.get-native-object-no-reffing, $documenters
+    self._get-native-object-no-reffing, $documenters
   );
 }
 
@@ -763,7 +763,7 @@ Sets the license information to be displayed in the secondary license dialog. If
 
 method set-license ( Str $license ) {
   gtk_about_dialog_set_license(
-    self.get-native-object-no-reffing, $license
+    self._get-native-object-no-reffing, $license
   )
 }
 
@@ -786,7 +786,7 @@ Sets the license of the application showing the this about dialog dialog from a 
 
 method set-license-type ( GtkLicense $license_type ) {
   gtk_about_dialog_set_license_type(
-    self.get-native-object-no-reffing, $license_type
+    self._get-native-object-no-reffing, $license_type
   )
 }
 
@@ -809,8 +809,8 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
 method set-logo ( Gnome::Gdk3::Pixbuf $logo ) {
   gtk_about_dialog_set_logo(
-    self.get-native-object-no-reffing,
-    $logo.get-native-object-no-reffing
+    self._get-native-object-no-reffing,
+    $logo._get-native-object-no-reffing
   );
 }
 
@@ -833,7 +833,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
 method set-logo-icon-name ( Str $icon_name ) {
   gtk_about_dialog_set_logo_icon_name(
-    self.get-native-object-no-reffing, $icon_name
+    self._get-native-object-no-reffing, $icon_name
   );
 }
 
@@ -856,7 +856,7 @@ Sets the name to display in the about dialog. If this is not set, it defaults to
 =end pod
 
 method set-program-name ( $name ) {
-  gtk_about_dialog_set_program_name( self.get-native-object-no-reffing, $name);
+  gtk_about_dialog_set_program_name( self._get-native-object-no-reffing, $name);
 }
 
 sub gtk_about_dialog_set_program_name ( N-GObject $about, gchar-ptr $name )
@@ -884,7 +884,7 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
 method set-translator-credits ( Str $translator_credits ) {
   gtk_about_dialog_set_translator_credits(
-    self.get-native-object-no-reffing, $translator_credits
+    self._get-native-object-no-reffing, $translator_credits
   );
 }
 
@@ -908,7 +908,7 @@ Sets the version string to display in the about dialog.
 
 method set-version ( $version ) {
   gtk_about_dialog_set_version(
-    self.get-native-object-no-reffing, $version
+    self._get-native-object-no-reffing, $version
   );
 }
 
@@ -931,7 +931,7 @@ Sets the URL to use for the website link.
 
 method set-website ( Str $website ) {
   gtk_about_dialog_set_website(
-    self.get-native-object-no-reffing, $website
+    self._get-native-object-no-reffing, $website
   )
 }
 
@@ -954,7 +954,7 @@ Sets the label to be used for the website link.
 
 method set-website-label ( Str $website_label ) {
   gtk_about_dialog_set_website_label(
-    self.get-native-object-no-reffing, $website_label
+    self._get-native-object-no-reffing, $website_label
   )
 }
 
@@ -977,7 +977,7 @@ Sets whether the license text in this about dialog is automatically wrapped.
 
 method set-wrap-license ( Int $wrap_license ) {
   gtk_about_dialog_set_wrap_license(
-    self.get-native-object-no-reffing, $wrap_license
+    self._get-native-object-no-reffing, $wrap_license
   )
 }
 

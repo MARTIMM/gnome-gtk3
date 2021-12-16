@@ -105,7 +105,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(gtk_tool_item_new());
+    self._set-native-object(gtk_tool_item_new());
   }
 
   # only after creating the native-object, the gtype is known

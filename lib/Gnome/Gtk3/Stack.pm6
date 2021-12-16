@@ -148,7 +148,7 @@ submethod BUILD ( *%options ) {
       # create default object
       $no = _gtk_stack_new();
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

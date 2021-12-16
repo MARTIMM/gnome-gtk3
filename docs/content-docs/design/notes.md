@@ -142,7 +142,7 @@ The following is a (not very exhaustive) list of points which make up the design
 
 * All toplevel classes will have several common subroutines and objects;
   * A native object such as `N-GObject`, `N-GError`, `N-GVariant` etc.
-  * `.get-native-object()` to return a native object.
+  * `._get-native-object()` to return a native object.
   * `.set-native-object()` to set a native object.
   * `.is-valid()` to check its validity.
   * `.clear-object()` to cleanup the native object.

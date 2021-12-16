@@ -223,7 +223,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_recent_filter_new___x___($no);
       }
 
@@ -253,7 +253,7 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -300,7 +300,7 @@ Sets the human-readable name of the filter; this is the string that will be disp
 method set-name (  Str  $name ) {
 
   gtk_recent_filter_set_name(
-    self.get-native-object-no-reffing, $name
+    self._get-native-object-no-reffing, $name
   );
 }
 
@@ -325,7 +325,7 @@ Returns: (nullable): the name of the filter, or C<Any>.  The returned string is 
 method get-name ( -->  Str  ) {
 
   gtk_recent_filter_get_name(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -349,7 +349,7 @@ Adds a rule that allows resources based on their registered MIME type.
 method add-mime-type (  Str  $mime_type ) {
 
   gtk_recent_filter_add_mime_type(
-    self.get-native-object-no-reffing, $mime_type
+    self._get-native-object-no-reffing, $mime_type
   );
 }
 
@@ -372,7 +372,7 @@ Adds a rule that allows resources based on a pattern matching their display name
 
 method add-pattern ( Str $pattern ) {
   gtk_recent_filter_add_pattern(
-    self.get-native-object-no-reffing, $pattern
+    self._get-native-object-no-reffing, $pattern
   );
 }
 
@@ -394,7 +394,7 @@ Adds a rule allowing image files in the formats supported by B<Gnome::Gdk3::Pixb
 method add-pixbuf-formats ( ) {
 
   gtk_recent_filter_add_pixbuf_formats(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -418,7 +418,7 @@ Adds a rule that allows resources based on the name of the application that has 
 method add-application ( Str $application ) {
 
   gtk_recent_filter_add_application(
-    self.get-native-object-no-reffing, $application
+    self._get-native-object-no-reffing, $application
   );
 }
 
@@ -442,7 +442,7 @@ Adds a rule that allows resources based on the name of the group to which they b
 method add-group (  Str  $group ) {
 
   gtk_recent_filter_add_group(
-    self.get-native-object-no-reffing, $group
+    self._get-native-object-no-reffing, $group
   );
 }
 
@@ -466,7 +466,7 @@ Adds a rule that allows resources based on their age - that is, the number of da
 method add-age ( Int $days ) {
 
   gtk_recent_filter_add_age(
-    self.get-native-object-no-reffing, $days
+    self._get-native-object-no-reffing, $days
   );
 }
 
@@ -494,7 +494,7 @@ Adds a rule to a filter that allows resources based on a custom callback functio
 method add-custom ( GtkRecentFilterFlags $needed, GtkRecentFilterFunc $func, Pointer $data, GDestroyNotify $data_destroy ) {
 
   gtk_recent_filter_add_custom(
-    self.get-native-object-no-reffing, $needed, $func, $data, $data_destroy
+    self._get-native-object-no-reffing, $needed, $func, $data, $data_destroy
   );
 }
 
@@ -520,7 +520,7 @@ Returns: bitfield of flags indicating needed fields when calling C<gtk_recent_fi
 method get-needed ( --> GFlag ) {
 
   GtkRecentFilterFlags(
-    gtk_recent_filter_get_needed(self.get-native-object-no-reffing)
+    gtk_recent_filter_get_needed(self._get-native-object-no-reffing)
   )
 }
 
@@ -548,7 +548,7 @@ Returns: C<True> if the file should be displayed
 method filter ( N-GtkRecentFilterInfo $filter_info --> Bool ) {
 
   gtk_recent_filter_filter(
-    self.get-native-object-no-reffing, $filter_info
+    self._get-native-object-no-reffing, $filter_info
   ).Bool;
 }
 

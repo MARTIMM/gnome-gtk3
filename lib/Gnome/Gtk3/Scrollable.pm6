@@ -238,7 +238,7 @@ Sets the horizontal adjustment of the B<Gnome::Gtk3::Scrollable>.
 =end pod
 
 method set-hadjustment ( $hadjustment is copy ) {
-  $hadjustment .= get-native-object(:!ref) unless $hadjustment ~~ N-GObject;
+  $hadjustment .= _get-native-object(:!ref) unless $hadjustment ~~ N-GObject;
   gtk_scrollable_set_hadjustment( self._f('GtkScrollable'), $hadjustment);
 }
 
@@ -281,7 +281,7 @@ Sets the vertical adjustment of the B<Gnome::Gtk3::Scrollable>.
 =end pod
 
 method set-vadjustment ( $vadjustment is copy ) {
-  $vadjustment .= get-native-object-no-reffing unless $vadjustment ~~ N-GObject;
+  $vadjustment .= _get-native-object-no-reffing unless $vadjustment ~~ N-GObject;
   gtk_scrollable_set_vadjustment( self._f('GtkScrollable'), $vadjustment);
 }
 

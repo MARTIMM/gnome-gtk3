@@ -63,7 +63,7 @@ Retrieves the orientation of the I<orientable>.
 
 method get-orientation ( --> GtkOrientation ) {
   GtkOrientation(
-    gtk_orientable_get_orientation(self.get-native-object-no-reffing)
+    gtk_orientable_get_orientation(self._get-native-object-no-reffing)
   );
 }
 
@@ -85,7 +85,7 @@ Sets the orientation of the orientable. This is a GtkOrientation enum type defin
 
 method set-orientation ( GtkOrientation $orientation ) {
   gtk_orientable_set_orientation(
-    self.get-native-object-no-reffing, $orientation.value
+    self._get-native-object-no-reffing, $orientation.value
   );
 }
 

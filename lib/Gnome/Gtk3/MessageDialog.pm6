@@ -209,13 +209,13 @@ submethod BUILD ( *%options ) {
 
     elsif ?%options<message> {
       my $parent = %options<parent> // N-GObject;
-      $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
+      $parent .= _get-native-object if $parent ~~ Gnome::GObject::Object;
 
       my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
       my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
       my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
 
-      self.set-native-object(
+      self._set-native-object(
         _gtk_message_dialog_new(
           $parent, $flags, $type, $buttons, %options<message>
         )
@@ -224,13 +224,13 @@ submethod BUILD ( *%options ) {
 
     elsif ?%options<markup-message> {
       my $parent = %options<parent> // N-GObject;
-      $parent .= get-native-object if $parent ~~ Gnome::GObject::Object;
+      $parent .= _get-native-object if $parent ~~ Gnome::GObject::Object;
 
       my GtkDialogFlags $flags = %options<flags> // GTK_DIALOG_MODAL;
       my GtkMessageType $type = %options<type> // GTK_MESSAGE_INFO;
       my GtkButtonsType $buttons = %options<buttons> // GTK_BUTTONS_CLOSE;
 
-      self.set-native-object(
+      self._set-native-object(
         _gtk_message_dialog_new_with_markup(
           $parent, $flags, $type, $buttons, %options<markup-message>
         )
@@ -387,7 +387,7 @@ Sets the text of the message dialog to be I<$str>, which is marked up with the L
 
 method set-markup (  Str  $str ) {
   gtk_message_dialog_set_markup(
-    self.get-native-object-no-reffing, $str
+    self._get-native-object-no-reffing, $str
   );
 }
 
@@ -412,7 +412,7 @@ Sets the secondary text of the message dialog to be I<$message>.
 method secondary-text ( Str $message is copy ) {
   $message ~~ s:g/ '%' / %% /;
   _gtk_message_dialog_format_secondary_text(
-    self.get-native-object-no-reffing, $message
+    self._get-native-object-no-reffing, $message
   );
 }
 
@@ -446,7 +446,7 @@ Due to an oversight, this function does not escape special XML characters like C
 
 method secondary-markup ( Str $message_format ) {
   gtk_message_dialog_format_secondary_markup(
-    self.get-native-object-no-reffing, $message_format
+    self._get-native-object-no-reffing, $message_format
   );
 }
 
@@ -477,7 +477,7 @@ Returns: A B<Gnome::Gtk3::Box> corresponding to the “message area” in the I<
 
 method get-message-area ( --> N-GObject ) {
   gtk_message_dialog_get_message_area(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 

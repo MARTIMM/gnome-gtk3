@@ -87,7 +87,7 @@ submethod BUILD ( *%options ) {
   }
 
   else { #if ? %options<empty> {
-    self.set-native-object(gtk_cell_renderer_progress_new());
+    self._set-native-object(gtk_cell_renderer_progress_new());
   }
 
   # only after creating the native-object, the gtype is known

@@ -231,7 +231,7 @@ submethod BUILD ( *%options ) {
       #  $no = _gtk_application_new( '', G_APPLICATION_FLAGS_NONE));
       #}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -276,9 +276,9 @@ GTK+ will keep the I<application> running as long as it has any windows.
 =end pod
 
 method add-window ( $window is copy ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_application_add_window(
-    self.get-native-object-no-reffing, $window
+    self._get-native-object-no-reffing, $window
   );
 }
 
@@ -304,7 +304,7 @@ Returns: accelerators for I<detailed-action-name>, as a C<undefined>-terminated 
 method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] ) {
 
   gtk_application_get_accels_for_action(
-    self.get-native-object-no-reffing, $detailed_action_name
+    self._get-native-object-no-reffing, $detailed_action_name
   )
 }
 
@@ -336,7 +336,7 @@ Returns: a C<undefined>-terminated array of actions for I<accel>
 method get-actions-for-accel ( Str $accel --> CArray[Str] ) {
 
   gtk_application_get_actions_for_accel(
-    self.get-native-object-no-reffing, $accel
+    self._get-native-object-no-reffing, $accel
   )
 }
 
@@ -365,12 +365,12 @@ Returns: the active window, or C<undefined> if there isn't one.
 =end pod
 
 method get-active-window ( --> N-GObject ) {
-  gtk_application_get_active_window(self.get-native-object-no-reffing)
+  gtk_application_get_active_window(self._get-native-object-no-reffing)
 }
 
 method get-active-window-rk ( *%options --> Gnome::GObject::Object ) {
   my N-GObject $no = gtk_application_get_active_window(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 
   self._wrap-native-type-from-no( $no, |%options)
@@ -399,12 +399,12 @@ Returns: the application menu of I<application> or C<undefined> if no applicatio
 =end pod
 
 method get-app-menu ( --> N-GObject ) {
-  gtk_application_get_app_menu(self.get-native-object-no-reffing)
+  gtk_application_get_app_menu(self._get-native-object-no-reffing)
 }
 
 method get-app-menu-rk ( *%options --> Gnome::GObject::Object ) {
   my N-GObject $no = gtk_application_get_app_menu(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 
   self._wrap-native-type-from-no( $no, |%options)
@@ -433,13 +433,13 @@ Gets a menu from automatically loaded resources. See L<automatic-resources|ttps:
 
 method get-menu-by-id ( Str $id --> N-GObject ) {
   gtk_application_get_menu_by_id(
-    self.get-native-object-no-reffing, $id
+    self._get-native-object-no-reffing, $id
   )
 }
 
 method get-menu-by-id-rk ( Str $id, *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_application_get_menu_by_id(self.get-native-object-no-reffing, $id),
+    gtk_application_get_menu_by_id(self._get-native-object-no-reffing, $id),
     |%options
   )
 }
@@ -468,13 +468,13 @@ Returns: the menubar for windows of I<application>
 
 method get-menubar ( --> N-GObject ) {
   gtk_application_get_menubar(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
 method get-menubar-rk ( *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_application_get_menubar(self.get-native-object-no-reffing),
+    gtk_application_get_menubar(self._get-native-object-no-reffing),
     |%options
   )
 }
@@ -507,13 +507,13 @@ Returns: the window with ID I<id>, or C<undefined> if there is no window with th
 
 method get-window-by-id ( UInt $id --> N-GObject ) {
   gtk_application_get_window_by_id(
-    self.get-native-object-no-reffing, $id
+    self._get-native-object-no-reffing, $id
   )
 }
 
 method get-window-by-id-rk ( UInt $id, *%options --> Gnome::GObject::Object ) {
   self._wrap-native-type-from-no(
-    gtk_application_get_window_by_id( self.get-native-object-no-reffing, $id),
+    gtk_application_get_window_by_id( self._get-native-object-no-reffing, $id),
     |%options
   )
 }
@@ -543,7 +543,7 @@ Returns: (element-type GtkWindow) : a B<Gnome::Gtk3::List> of B<Gnome::Gtk3::Win
 method get-windows ( --> N-GList ) {
 
   gtk_application_get_windows(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -577,9 +577,9 @@ Returns: A non-zero cookie that is used to uniquely identify this request. It sh
 =end pod
 
 method inhibit ( $window is copy, Int $flags, Str $reason --> UInt ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_application_inhibit(
-    self.get-native-object-no-reffing, $window, $flags, $reason
+    self._get-native-object-no-reffing, $window, $flags, $reason
   )
 }
 
@@ -606,7 +606,7 @@ Returns: C<True> if any of the actions specified in I<flags> are inhibited
 
 method is-inhibited ( Int $flags --> Bool ) {
   gtk_application_is_inhibited(
-    self.get-native-object-no-reffing, $flags
+    self._get-native-object-no-reffing, $flags
   ).Bool
 }
 
@@ -631,7 +631,7 @@ Returns: a C<undefined>-terminated array of strings, free with C<g-strfreev()> w
 method list-action-descriptions ( --> CArray[Str] ) {
 
   gtk_application_list_action_descriptions(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 
@@ -668,7 +668,7 @@ Returns: C<True> if you should set an app menu
 method prefers-app-menu ( --> Bool ) {
 
   gtk_application_prefers_app_menu(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -694,9 +694,9 @@ The application may stop running as a result of a call to this function.
 =end pod
 
 method remove-window ( $window is copy ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_application_remove_window(
-    self.get-native-object-no-reffing, $window
+    self._get-native-object-no-reffing, $window
   );
 }
 
@@ -725,7 +725,7 @@ For the I<detailed-action-name>, see C<g-action-parse-detailed-name()> and C<g-a
 method set-accels-for-action ( Str $detailed_action_name, CArray[Str] $accels ) {
 
   gtk_application_set_accels_for_action(
-    self.get-native-object-no-reffing, $detailed_action_name, $accels
+    self._get-native-object-no-reffing, $detailed_action_name, $accels
   );
 }
 
@@ -755,9 +755,9 @@ Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to t
 =end pod
 
 method set-app-menu ( $app_menu is copy ) {
-  $app_menu .= get-native-object-no-reffing unless $app_menu ~~ N-GObject;
+  $app_menu .= _get-native-object-no-reffing unless $app_menu ~~ N-GObject;
   gtk_application_set_app_menu(
-    self.get-native-object-no-reffing, $app_menu
+    self._get-native-object-no-reffing, $app_menu
   );
 }
 
@@ -787,8 +787,8 @@ Use the base B<Gnome::Gtk3::ActionMap> interface to add actions, to respond to t
 =end pod
 
 method set-menubar ( $menubar is copy ) {
-  $menubar .= get-native-object-no-reffing unless $menubar ~~ N-GObject;
-  gtk_application_set_menubar( self.get-native-object-no-reffing, $menubar);
+  $menubar .= _get-native-object-no-reffing unless $menubar ~~ N-GObject;
+  gtk_application_set_menubar( self._get-native-object-no-reffing, $menubar);
 }
 
 sub gtk_application_set_menubar (
@@ -811,7 +811,7 @@ Removes an inhibitor that has been established with C<inhibit()>. Inhibitors are
 method uninhibit ( UInt $cookie ) {
 
   gtk_application_uninhibit(
-    self.get-native-object-no-reffing, $cookie
+    self._get-native-object-no-reffing, $cookie
   );
 }
 

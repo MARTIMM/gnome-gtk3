@@ -178,7 +178,7 @@ Whether to show recently used resources marked registered as private.
 method set-show-private ( Bool $show_private ) {
 
   gtk_recent_chooser_set_show_private(
-    self.get-native-object-no-reffing, $show_private.Int
+    self._get-native-object-no-reffing, $show_private.Int
   );
 }
 
@@ -203,7 +203,7 @@ Returns: C<True> if the recent chooser should show private items, C<False> other
 method get-show-private ( --> Bool ) {
 
   gtk_recent_chooser_get_show_private(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -227,7 +227,7 @@ Sets whether I<chooser> should display the recently used resources that it didnâ
 method set-show-not-found ( Bool $show_not_found ) {
 
   gtk_recent_chooser_set_show_not_found(
-    self.get-native-object-no-reffing, $show_not_found.Int
+    self._get-native-object-no-reffing, $show_not_found.Int
   );
 }
 
@@ -252,7 +252,7 @@ Returns: C<True> if the resources not found should be displayed, and C<False> ot
 method get-show-not-found ( --> Bool ) {
 
   gtk_recent_chooser_get_show_not_found(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -276,7 +276,7 @@ Sets whether I<chooser> can select multiple items.
 method set-select-multiple ( Bool $select_multiple ) {
 
   gtk_recent_chooser_set_select_multiple(
-    self.get-native-object-no-reffing, $select_multiple.Int
+    self._get-native-object-no-reffing, $select_multiple.Int
   );
 }
 
@@ -300,7 +300,7 @@ Returns: C<True> if I<chooser> can select more than one item.
 method get-select-multiple ( --> Bool ) {
 
   gtk_recent_chooser_get_select_multiple(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -324,7 +324,7 @@ Sets the number of items that should be returned by C<gtk_recent_chooser_get_ite
 method set-limit ( Int $limit ) {
 
   gtk_recent_chooser_set_limit(
-    self.get-native-object-no-reffing, $limit
+    self._get-native-object-no-reffing, $limit
   );
 }
 
@@ -349,7 +349,7 @@ Returns: A positive integer, or -1 meaning that all items are returned.
 method get-limit ( --> Int ) {
 
   gtk_recent_chooser_get_limit(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -373,7 +373,7 @@ Sets whether only local resources, that is resources using the file:// URI schem
 method set-local-only ( Bool $local_only ) {
 
   gtk_recent_chooser_set_local_only(
-    self.get-native-object-no-reffing, $local_only.Int
+    self._get-native-object-no-reffing, $local_only.Int
   );
 }
 
@@ -397,7 +397,7 @@ Returns: C<True> if only local resources should be shown.
 method get-local-only ( --> Bool ) {
 
   gtk_recent_chooser_get_local_only(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -421,7 +421,7 @@ Sets whether to show a tooltips containing the full path of each recently used r
 method set-show-tips ( Bool $show_tips ) {
 
   gtk_recent_chooser_set_show_tips(
-    self.get-native-object-no-reffing, $show_tips.Int
+    self._get-native-object-no-reffing, $show_tips.Int
   );
 }
 
@@ -445,7 +445,7 @@ Returns: C<True> if the recent chooser should show tooltips, C<False> otherwise.
 method get-show-tips ( --> Bool ) {
 
   gtk_recent_chooser_get_show_tips(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -469,7 +469,7 @@ Sets whether I<chooser> should show an icon near the resource when displaying it
 method set-show-icons ( Bool $show_icons ) {
 
   gtk_recent_chooser_set_show_icons(
-    self.get-native-object-no-reffing, $show_icons.Int
+    self._get-native-object-no-reffing, $show_icons.Int
   );
 }
 
@@ -494,7 +494,7 @@ Returns: C<True> if the icons should be displayed, C<False> otherwise.
 method get-show-icons ( --> Bool ) {
 
   gtk_recent_chooser_get_show_icons(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool;
 }
 
@@ -518,7 +518,7 @@ Changes the sorting order of the recently used resources list displayed by I<cho
 method set-sort-type ( GtkRecentSortType $sort_type ) {
 
   gtk_recent_chooser_set_sort_type(
-    self.get-native-object-no-reffing, $sort_type.value
+    self._get-native-object-no-reffing, $sort_type.value
   );
 }
 
@@ -541,7 +541,7 @@ Returns: the sorting order of the I<chooser>.
 
 method get-sort-type ( --> GtkRecentSortType ) {
   GtkRecentSortType(
-    gtk_recent_chooser_get_sort_type(self.get-native-object-no-reffing)
+    gtk_recent_chooser_get_sort_type(self._get-native-object-no-reffing)
   );
 }
 
@@ -589,7 +589,7 @@ method set-sort-func ( $user-object, Str:D $sort-methodname ) {
     unless $user-object.defined;
 
   gtk_recent_chooser_set_sort_func(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
     sub ( N-GtkRecentInfo $a, N-GtkRecentInfo $b, gpointer $u --> gint ) {
       $user-object."$sort-methodname"(
         Gnome::Gtk3::RecentInfo.new(:native-object($a)),
@@ -626,7 +626,7 @@ Returns: A B<Gnome::Glib::Error> object. When the uri was found, the error objec
 method set-current-uri ( Str $uri --> Gnome::Glib::Error ) {
   my CArray[N-GError] $ne .= new(N-GError);
   my Int $r = gtk_recent_chooser_set_current_uri(
-    self.get-native-object-no-reffing, $uri, $ne
+    self._get-native-object-no-reffing, $uri, $ne
   );
 
   my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
@@ -655,7 +655,7 @@ Returns: a newly allocated string holding a URI.
 method get-current-uri ( -->  Str ) {
 
   gtk_recent_chooser_get_current_uri(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -681,7 +681,7 @@ method get-current-item ( --> Gnome::Gtk3::RecentInfo ) {
 
   Gnome::Gtk3::RecentInfo.new(
     :native-object(
-      gtk_recent_chooser_get_current_item(self.get-native-object-no-reffing)
+      gtk_recent_chooser_get_current_item(self._get-native-object-no-reffing)
     )
   );
 }
@@ -711,7 +711,7 @@ method select-uri (  Str  $uri --> Gnome::Glib::Error ) {
 
   my CArray[N-GError] $ne .= new(N-GError);
   my Int $r = gtk_recent_chooser_select_uri(
-    self.get-native-object-no-reffing, $uri, $ne
+    self._get-native-object-no-reffing, $uri, $ne
   );
 
   my Gnome::Glib::Error $e .= new(:native-object($ne[0]));
@@ -741,7 +741,7 @@ Unselects I<uri> inside I<chooser>.
 method unselect-uri (  Str  $uri ) {
 
   gtk_recent_chooser_unselect_uri(
-    self.get-native-object-no-reffing, $uri
+    self._get-native-object-no-reffing, $uri
   );
 }
 
@@ -764,7 +764,7 @@ Selects all the items inside I<chooser>, if the I<chooser> supports multiple sel
 method select-all ( ) {
 
   gtk_recent_chooser_select_all(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -787,7 +787,7 @@ Unselects all the items inside I<chooser>.
 method unselect-all ( ) {
 
   gtk_recent_chooser_unselect_all(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -811,7 +811,7 @@ Returns:  (element-type B<Gnome::Gtk3::RecentInfo>) (transfer full): A newly all
 method get-items ( --> Gnome::Glib::List ) {
   Gnome::Glib::List.new(
     :native-object(
-      gtk_recent_chooser_get_items(self.get-native-object-no-reffing)
+      gtk_recent_chooser_get_items(self._get-native-object-no-reffing)
     )
   );
 }
@@ -837,7 +837,7 @@ method get-uris ( --> Array ) {
 
   my Array $uris = [];
   my CArray[Str] $a = gtk_recent_chooser_get_uris(
-    self.get-native-object-no-reffing, my gsize $length
+    self._get-native-object-no-reffing, my gsize $length
   );
 
   for ^$length -> $i {
@@ -868,10 +868,10 @@ Adds I<filter> to the list of B<Gnome::Gtk3::RecentFilter> objects held by I<cho
 
 method add-filter ( $filter ) {
   #my $no = $xyz;
-  #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_recent_chooser_add_filter(
-    self.get-native-object-no-reffing, $filter
+    self._get-native-object-no-reffing, $filter
   );
 }
 
@@ -894,10 +894,10 @@ Removes I<filter> from the list of B<Gnome::Gtk3::RecentFilter> objects held by 
 
 method remove-filter ( $filter ) {
   #my $no = $xyz;
-  #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_recent_chooser_remove_filter(
-    self.get-native-object-no-reffing, $filter
+    self._get-native-object-no-reffing, $filter
   );
 }
 
@@ -921,7 +921,7 @@ Returns: (element-type B<Gnome::Gtk3::RecentFilter>) (transfer container): A sin
 method list-filters ( --> N-GSList ) {
 
   gtk_recent_chooser_list_filters(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 
@@ -944,10 +944,10 @@ Sets I<filter> as the current B<Gnome::Gtk3::RecentFilter> object used by I<choo
 
 method set-filter ( $filter ) {
   #my $no = $xyz;
-  #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+  #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
 
   gtk_recent_chooser_set_filter(
-    self.get-native-object-no-reffing, $filter
+    self._get-native-object-no-reffing, $filter
   );
 }
 
@@ -972,7 +972,7 @@ Returns: (transfer none): a B<Gnome::Gtk3::RecentFilter> object.
 method get-filter ( --> N-GObject ) {
 
   gtk_recent_chooser_get_filter(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   );
 }
 

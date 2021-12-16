@@ -80,7 +80,7 @@ method include-image ( Array $targets, Bool $writable --> Bool ) {
   my $tes = CArray[N-GObject].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t._get-native-object-no-reffing;
   }
 
   gtk_targets_include_image( $tes, $targets.elems, $writable).Bool
@@ -107,12 +107,12 @@ Returns: C<True> if I<targets> include a suitable target for rich text, otherwis
 =end pod
 
 method include-rich-text ( Array $targets, $buffer is copy --> Bool ) {
-  $buffer .= get-native-object-no-reffing unless $buffer ~~ N-GObject;
+  $buffer .= _get-native-object-no-reffing unless $buffer ~~ N-GObject;
 
   my $tes = CArray[N-GObject].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t._get-native-object-no-reffing;
   }
 
   gtk_targets_include_rich_text( $tes, $targets.elems, $buffer).Bool
@@ -142,7 +142,7 @@ method include-text ( Array $targets --> Bool ) {
   my $tes = CArray[N-GObject].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t._get-native-object-no-reffing;
   }
 
   gtk_targets_include_text( $tes, $targets.elems).Bool
@@ -172,7 +172,7 @@ method include-uri ( Array $targets --> Bool ) {
   my $tes = CArray[N-GObject].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t.get-native-object-no-reffing;
+    $tes[$i++] = $t ~~ N-GObject ?? $t !! $t._get-native-object-no-reffing;
   }
 
   gtk_targets_include_uri( $tes, $targets.elems).Bool

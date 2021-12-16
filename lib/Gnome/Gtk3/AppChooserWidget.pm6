@@ -168,7 +168,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -191,7 +191,7 @@ Returns: the value of  I<default-text>
 =end pod
 
 method get-default-text ( --> Str ) {
-  gtk_app_chooser_widget_get_default_text(self.get-native-object-no-reffing)
+  gtk_app_chooser_widget_get_default_text(self._get-native-object-no-reffing)
 }
 
 sub gtk_app_chooser_widget_get_default_text (
@@ -213,7 +213,7 @@ Returns: the value of  I<show-all>
 =end pod
 
 method get-show-all ( --> Bool ) {
-  gtk_app_chooser_widget_get_show_all(self.get-native-object-no-reffing).Bool
+  gtk_app_chooser_widget_get_show_all(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_app_chooser_widget_get_show_all (
@@ -236,7 +236,7 @@ Returns: the value of  I<show-default>
 
 method get-show-default ( --> Bool ) {
   gtk_app_chooser_widget_get_show_default(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -260,7 +260,7 @@ Returns: the value of  I<show-fallback>
 
 method get-show-fallback ( --> Bool ) {
   gtk_app_chooser_widget_get_show_fallback(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -283,7 +283,7 @@ Returns: the value of  I<show-other>
 =end pod
 
 method get-show-other ( --> Bool ) {
-  gtk_app_chooser_widget_get_show_other(self.get-native-object-no-reffing).Bool
+  gtk_app_chooser_widget_get_show_other(self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_app_chooser_widget_get_show_other (
@@ -306,7 +306,7 @@ Returns: the value of  I<show-recommended>
 
 method get-show-recommended ( --> Bool ) {
   gtk_app_chooser_widget_get_show_recommended(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   ).Bool
 }
 
@@ -329,7 +329,7 @@ Sets the text that is shown if there are not applications that can handle the co
 
 method set-default-text ( Str $text ) {
   gtk_app_chooser_widget_set_default_text(
-    self.get-native-object-no-reffing, $text
+    self._get-native-object-no-reffing, $text
   );
 }
 
@@ -352,7 +352,7 @@ Sets whether the app chooser should show all applications in a flat list.
 
 method set-show-all ( Bool $setting ) {
   gtk_app_chooser_widget_set_show_all(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -375,7 +375,7 @@ Sets whether the app chooser should show the default handler for the content typ
 
 method set-show-default ( Bool $setting ) {
   gtk_app_chooser_widget_set_show_default(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -398,7 +398,7 @@ Sets whether the app chooser should show related applications for the content ty
 
 method set-show-fallback ( Bool $setting ) {
   gtk_app_chooser_widget_set_show_fallback(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -421,7 +421,7 @@ Sets whether the app chooser should show applications which are unrelated to the
 
 method set-show-other ( Bool $setting ) {
   gtk_app_chooser_widget_set_show_other(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 
@@ -444,7 +444,7 @@ Sets whether the app chooser should show recommended applications for the conten
 
 method set-show-recommended ( Bool $setting ) {
   gtk_app_chooser_widget_set_show_recommended(
-    self.get-native-object-no-reffing, $setting
+    self._get-native-object-no-reffing, $setting
   );
 }
 

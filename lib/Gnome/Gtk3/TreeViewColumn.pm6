@@ -131,10 +131,10 @@ submethod BUILD ( *%options ) {
           '.new(:column)', '.new(:native-object)', '0.34.0', '0.39.0'
         );
         my $no = %options<column>;
-        $no = $no.get-native-object-no-reffing
-          if $no.^can('get-native-object-no-reffing');
+        $no = $no._get-native-object-no-reffing
+          if $no.^can('_get-native-object-no-reffing');
 
-#        self.set-native-object(%options<column>);
+#        self._set-native-object(%options<column>);
       }
 
 #      #`{{ use this when the module is not made inheritable
@@ -160,7 +160,7 @@ submethod BUILD ( *%options ) {
         $no = _gtk_tree_view_column_new;
       }
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known

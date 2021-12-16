@@ -128,7 +128,7 @@ submethod BUILD ( *%options ) {
     );
   }
 
-#note"Tree iter: ", self.get-native-object.perl(), ', ', self.is-valid;
+#note"Tree iter: ", self._get-native-object.perl(), ', ', self.is-valid;
 
   # only after creating the native-object, the gtype is known
   self._set-class-info('GtkTreeIter');
@@ -171,7 +171,7 @@ Creates a dynamically allocated tree iterator as a copy of I<iter>.
 This function is not intended for use in applications, because you can just copy the structures by value like so;
 
   Gnome::Gtk3::TreeIter $new_iter .= new(
-   :native-object($iter.get-native-object())
+   :native-object($iter._get-native-object())
   );
 
 You must free this iter with C<clear-object()>.
@@ -185,7 +185,7 @@ Returns: a newly-allocated copy of I<iter>
 =end pod
 
 method copy ( --> N-GtkTreeIter ) {
-  gtk_tree_iter_copy(self.get-native-object);
+  gtk_tree_iter_copy(self._get-native-object);
 }
 
 sub gtk_tree_iter_copy ( N-GtkTreeIter $iter --> N-GtkTreeIter )

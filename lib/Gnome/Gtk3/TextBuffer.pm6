@@ -124,7 +124,7 @@ submethod BUILD ( *%options ) {
 
   else {
     my Gnome::Gtk3::TextTagTable $tag-table .= new;
-    self.set-native-object(gtk_text_buffer_new($tag-table.get-native-object));
+    self._set-native-object(gtk_text_buffer_new($tag-table._get-native-object));
   }
 
   # only after creating the native-object, the gtype is known
@@ -1173,13 +1173,13 @@ sub gtk_text_buffer_get_iter_at_line_offset (
   --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $iter .= new;
-#  my N-GTextIter $no = $iter.get-native-object;
+#  my N-GTextIter $no = $iter._get-native-object;
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_iter_at_line_offset(
     $buffer, $no, $line_number, $char_offset
   );
   Gnome::Gtk3::TextIter.new(:native-object($no))
-#  $iter.set-native-object($no);
+#  $iter._set-native-object($no);
 
 #  $iter
 }
@@ -1219,13 +1219,13 @@ sub gtk_text_buffer_get_iter_at_line_index (
   --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $iter .= new;
-#  my N-GTextIter $no = $iter.get-native-object;
+#  my N-GTextIter $no = $iter._get-native-object;
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_iter_at_line_index(
     $buffer, $no, $line_number, $byte_index
   );
   Gnome::Gtk3::TextIter.new(:native-object($no))
-#  $iter.set-native-object($no);
+#  $iter._set-native-object($no);
 
 #  $iter
 }
@@ -1260,11 +1260,11 @@ sub gtk_text_buffer_get_iter_at_offset (
   --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $iter .= new;
-#  my N-GTextIter $no = $iter.get-native-object;
+#  my N-GTextIter $no = $iter._get-native-object;
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_iter_at_offset( $buffer, $no, $char_offset);
   Gnome::Gtk3::TextIter.new(:native-object($no))
-#  $iter.set-native-object($no);
+#  $iter._set-native-object($no);
 
 #  $iter
 }
@@ -1296,11 +1296,11 @@ sub gtk_text_buffer_get_iter_at_line (
   --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $iter .= new;
-#  my N-GTextIter $no = $iter.get-native-object;
+#  my N-GTextIter $no = $iter._get-native-object;
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_iter_at_line( $buffer, $no, $line_number);
   Gnome::Gtk3::TextIter.new(:native-object($no))
-#  $iter.set-native-object($no);
+#  $iter._set-native-object($no);
 
 #  $iter
 }
@@ -1329,11 +1329,11 @@ sub gtk_text_buffer_get_start_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $start .= new;
-#  my N-GTextIter $no = $start.get-native-object;
+#  my N-GTextIter $no = $start._get-native-object;
 
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_start_iter( $buffer, $no);
-#  $start.set-native-object($no);
+#  $start._set-native-object($no);
   Gnome::Gtk3::TextIter.new(:native-object($no))
 
 #  $start
@@ -1366,11 +1366,11 @@ sub gtk_text_buffer_get_end_iter (
   N-GObject $buffer --> Gnome::Gtk3::TextIter
 ) {
 #  my Gnome::Gtk3::TextIter $end .= new;
-#  my N-GTextIter $no = $end.get-native-object;
+#  my N-GTextIter $no = $end._get-native-object;
   my N-GTextIter $no .= new;
   _gtk_text_buffer_get_end_iter( $buffer, $no);
   Gnome::Gtk3::TextIter.new(:native-object($no))
-#  $end.set-native-object($no);
+#  $end._set-native-object($no);
 
 #  $end
 }
@@ -1398,16 +1398,16 @@ Returns a list of
 
 sub gtk_text_buffer_get_bounds ( N-GObject $buffer --> List ) {
 #  my Gnome::Gtk3::TextIter $i1 .= new;
-#  my N-GTextIter $no1 = $i1.get-native-object;
+#  my N-GTextIter $no1 = $i1._get-native-object;
 #  my Gnome::Gtk3::TextIter $i2 .= new;
-#  my N-GTextIter $no2 = $i2.get-native-object;
+#  my N-GTextIter $no2 = $i2._get-native-object;
 
   my N-GTextIter $no1 .= new;
   my N-GTextIter $no2 .= new;
   _gtk_text_buffer_get_bounds( $buffer, $no1, $no2);
 
-#  $i1.set-native-object($no1);
-#  $i2.set-native-object($no2);
+#  $i1._set-native-object($no1);
+#  $i2._set-native-object($no2);
 
   ( Gnome::Gtk3::TextIter.new(:native-object($no1)),
     Gnome::Gtk3::TextIter.new(:native-object($no2))
@@ -1645,14 +1645,14 @@ Returned List contains
 
 sub gtk_text_buffer_get_selection_bounds ( N-GObject $buffer --> List ) {
 #  my Gnome::Gtk3::TextIter $i1 .= new;
-#  my N-GTextIter $no1 = $i1.get-native-object;
+#  my N-GTextIter $no1 = $i1._get-native-object;
 #  my Gnome::Gtk3::TextIter $i2 .= new;
-#  my N-GTextIter $no2 = $i2.get-native-object;
+#  my N-GTextIter $no2 = $i2._get-native-object;
   my N-GTextIter $no1 .= new;
   my N-GTextIter $no2 .= new;
   my Int $sts = _gtk_text_buffer_get_selection_bounds( $buffer, $no1, $no2);
-#  $i1.set-native-object($no1);
-#  $i2.set-native-object($no2);
+#  $i1._set-native-object($no1);
+#  $i2._set-native-object($no2);
 
   ( $sts,
     Gnome::Gtk3::TextIter.new(:native-object($no1)),

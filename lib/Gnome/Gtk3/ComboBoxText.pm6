@@ -147,7 +147,7 @@ submethod BUILD ( *%options ) {
         $no = gtk_combo_box_text_new;
       }
 #note 'no: ', $no.raku;
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -170,7 +170,7 @@ submethod BUILD ( *%options ) {
   }
 
   else {#if ? %options<empty> {
-    self.set-native-object(gtk_combo_box_text_new());
+    self._set-native-object(gtk_combo_box_text_new());
   }
 
   # only after creating the native-object, the gtype is known

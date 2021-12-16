@@ -20,7 +20,7 @@ my @enum-list = ();
 # No leaf, role, top or standalone means class not at the top nor at the end.
 # Methods must call self._f('gtk widget class name') to get native object and
 # perform casting. Leaf classes do not need casting and can call
-# self.get-native-object-no-reffing. Roles have a simpler interface and does not
+# self._get-native-object-no-reffing. Roles have a simpler interface and does not
 # inherit from TopLevelClassSupport. Top classes inherit directly from
 # TopLevelClassSupport and have a native object of their own, and do not need
 # Boxed class. Standalone classes do not have an object and therefore no need to
@@ -187,7 +187,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
             >
           ) {
 
-            $convert-lines ~= "  \$$arg .= get-native-object-no-reffing unless \$$arg ~~ $raku-arg-type;\n";
+            $convert-lines ~= "  \$$arg .= _get-native-object-no-reffing unless \$$arg ~~ $raku-arg-type;\n";
 
             $method-args ~= ',' if ?$method-args;
             $method-args ~= " \$$arg is copy";
@@ -333,7 +333,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         method $pod-sub-name ($method-args$pod-returns ) \{
         $convert-lines
           $sub-name\(
-            self\.get-native-object-no-reffing,$call-args
+            self\._get-native-object-no-reffing,$call-args
           )$return-conversion$return-dot-comma
         \}
 
@@ -1067,7 +1067,7 @@ sub substitute-in-template (
               my $no;
               if ? %options<___x___> {
                 $no = %options<___x___>;
-                $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+                $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
                 #$no = _BASE-SUBNAME_new___x___($no);
               }
 

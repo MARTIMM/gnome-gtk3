@@ -277,7 +277,7 @@ Sets the color.
 
 method set-rgba ( $color ) {
   my $no = $color;
-  $no .= get-native-object-no-reffing unless $no ~~ N-GdkRGBA;
+  $no .= _get-native-object-no-reffing unless $no ~~ N-GdkRGBA;
   gtk_color_chooser_set_rgba( self._f('GtkColorChooser'), $no);
 }
 

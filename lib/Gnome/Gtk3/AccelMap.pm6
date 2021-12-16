@@ -162,7 +162,7 @@ submethod BUILD ( *%options ) {
 
   # get the global singleton object
   my $no = _gtk_accel_map_get();
-  self.set-native-object($no);
+  self._set-native-object($no);
   self._set-class-info('GtkAccelMap');
 
 #`{{
@@ -181,7 +181,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         $no = %options<___x___>;
-        $no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_accel_map_new___x___($no);
       }
 
@@ -211,7 +211,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -444,7 +444,7 @@ Returns: the global B<Gnome::Gtk3::AccelMap> object
 method get ( --> N-GObject ) {
 
   gtk_accel_map_get(
-    self.get-native-object-no-reffing,
+    self._get-native-object-no-reffing,
   )
 }
 }}
@@ -493,7 +493,7 @@ Note that the file descriptor will not be closed by this function.
 method load-fd ( Int() $fd ) {
 
   gtk_accel_map_load_fd(
-    self.get-native-object-no-reffing, $fd
+    self._get-native-object-no-reffing, $fd
   );
 }
 
@@ -517,10 +517,10 @@ B<Gnome::Gio::Scanner> variant of C<load()>.
 =end pod
 
 method load-scanner ( $scanner is copy ) {
-  $scanner .= get-native-object-no-reffing unless $scanner ~~ N-GObject;
+  $scanner .= _get-native-object-no-reffing unless $scanner ~~ N-GObject;
 
   gtk_accel_map_load_scanner(
-    self.get-native-object-no-reffing, $scanner
+    self._get-native-object-no-reffing, $scanner
   );
 }
 
@@ -622,7 +622,7 @@ Note that the file descriptor will not be closed by this function.
 method save-fd ( Int() $fd ) {
 
   gtk_accel_map_save_fd(
-    self.get-native-object-no-reffing, $fd
+    self._get-native-object-no-reffing, $fd
   );
 }
 

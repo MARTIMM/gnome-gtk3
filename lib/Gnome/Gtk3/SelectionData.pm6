@@ -85,7 +85,7 @@ submethod BUILD ( *%options ) {
       my $no;
       if ? %options<___x___> {
         #$no = %options<___x___>;
-        #$no .= get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
         #$no = _gtk_selection_new___x___($no);
       }
 
@@ -115,7 +115,7 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      self.set-native-object($no);
+      self._set-native-object($no);
     }
 
     # only after creating the native-object, the gtype is known
@@ -155,7 +155,7 @@ method add-target (
   $widget is copy, Gnome::Gdk3::Atom $selection, Gnome::Gdk3::Atom $target,
   UInt $info
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_selection_add_target( $widget, $selection, $target, $info);
 }
 
@@ -188,11 +188,11 @@ method add-targets (
   my $tes = CArray[N-GObject].new;
   my Int $i = 0;
   for @$targets -> $t {
-    $tes[$i++] = $t.get-native-object-no-reffing;
+    $tes[$i++] = $t._get-native-object-no-reffing;
   }
 
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $selection .= get-native-object-no-reffing unless $selection ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $selection .= _get-native-object-no-reffing unless $selection ~~ N-GObject;
   gtk_selection_add_targets( $widget, $selection, $tes, $targets.elems);
 }
 
@@ -215,7 +215,7 @@ Remove all targets registered for the given selection for the widget.
 =end pod
 
 method clear-targets ( $widget is copy, Gnome::Gdk3::Atom $selection ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_selection_clear_targets( $widget, $selection);
 }
 
@@ -249,7 +249,7 @@ method convert (
   $widget is copy, Gnome::Gdk3::Atom $selection,
   Gnome::Gdk3::Atom $target, UInt $time --> Bool
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
   gtk_selection_convert( $widget, $selection, $target, $time).Bool
 }
 
@@ -276,7 +276,7 @@ Returns: a pointer to a copy of I<data>.
 method copy ( N-GObject $data --> N-GObject ) {
 
   gtk_selection_data_copy(
-    self.get-native-object-no-reffing, $data
+    self._get-native-object-no-reffing, $data
   )
 }
 
@@ -300,7 +300,7 @@ Frees a B<Gnome::Gtk3::SelectionData>-struct returned from C<copy()>.
 method free ( N-GObject $data ) {
 
   gtk_selection_data_free(
-    self.get-native-object-no-reffing, $data
+    self._get-native-object-no-reffing, $data
   );
 }
 
@@ -416,7 +416,7 @@ Returns: the raw data of the selection.
 =end pod
 
 method get-data ( --> Pointer ) {
-  gtk_selection_data_get_data(self.get-native-object-no-reffing);
+  gtk_selection_data_get_data(self._get-native-object-no-reffing);
 }
 
 sub gtk_selection_data_get_data (
@@ -440,7 +440,7 @@ Returns: the data type of the selection.
 method get-data-type ( --> Gnome::Gdk3::Atom ) {
   Gnome::Gdk3::Atom.new(
     :native-object(
-      gtk_selection_data_get_data_type(self.get-native-object-no-reffing)
+      gtk_selection_data_get_data_type(self._get-native-object-no-reffing)
     )
   )
 }
@@ -466,7 +466,7 @@ Returns a List;
 
 method get-data-with-length ( --> List ) {
   my Pointer[void] $p = gtk_selection_data_get_data_with_length(
-    self.get-native-object-no-reffing, my gint $length
+    self._get-native-object-no-reffing, my gint $length
   );
   ( $p, $length)
 }
@@ -491,7 +491,7 @@ Returns: the display of the selection.
 =end pod
 
 method get-display ( --> N-GObject ) {
-  gtk_selection_data_get_display(self.get-native-object-no-reffing)
+  gtk_selection_data_get_display(self._get-native-object-no-reffing)
 }
 
 sub gtk_selection_data_get_display (
@@ -514,7 +514,7 @@ Returns: the format of the selection.
 =end pod
 
 method get-format ( --> Int ) {
-  gtk_selection_data_get_format(self.get-native-object-no-reffing)
+  gtk_selection_data_get_format(self._get-native-object-no-reffing)
 }
 
 sub gtk_selection_data_get_format (
@@ -534,7 +534,7 @@ Retrieves the length of the raw data of the selection.
 =end pod
 
 method get-length ( --> Int ) {
-  gtk_selection_data_get_length(self.get-native-object-no-reffing)
+  gtk_selection_data_get_length(self._get-native-object-no-reffing)
 }
 
 sub gtk_selection_data_get_length (
@@ -558,7 +558,7 @@ Returns: if the selection data contained a recognized image type and it could be
 method get-pixbuf ( --> Gnome::Gdk3::Pixbuf ) {
   Gnome::Gdk3::Pixbuf.new(
     :native-object(
-      gtk_selection_data_get_pixbuf(self.get-native-object-no-reffing)
+      gtk_selection_data_get_pixbuf(self._get-native-object-no-reffing)
     )
   )
 }
@@ -582,7 +582,7 @@ Retrieves the selection B<Gnome::Gtk3::Atom> of the selection data.
 method get-selection ( --> Gnome::Gdk3::Atom ) {
   Gnome::Gdk3::Atom.new(
     :native-object(
-      gtk_selection_data_get_selection(self.get-native-object-no-reffing)
+      gtk_selection_data_get_selection(self._get-native-object-no-reffing)
     )
   )
 }
@@ -606,7 +606,7 @@ Retrieves the target of the selection.
 method get-target ( --> Gnome::Gdk3::Atom ) {
   Gnome::Gdk3::Atom.new(
     :native-object(
-      gtk_selection_data_get_target(self.get-native-object-no-reffing)
+      gtk_selection_data_get_target(self._get-native-object-no-reffing)
     )
   )
 }
@@ -634,7 +634,7 @@ Returns: C<True> if I<selection-data> contains a valid array of targets, otherwi
 
 method get-targets (, Gnome::Gdk3::Atom $targets --> Bool ) {
   gtk_selection_data_get_targets(
-    self.get-native-object-no-reffing, $targets, my gint $n_atoms
+    self._get-native-object-no-reffing, $targets, my gint $n_atoms
   ).Bool
 }
 
@@ -658,7 +658,7 @@ Returns: if the selection data contained a recognized text type and it could be 
 =end pod
 
 method get-text ( --> Str ) {
-  gtk_selection_data_get_text(self.get-native-object-no-reffing)
+  gtk_selection_data_get_text(self._get-native-object-no-reffing)
 }
 
 sub gtk_selection_data_get_text (
@@ -681,7 +681,7 @@ Returns: an B<Array> if the selection data contains a list of URIs, otherwise em
 
 method get-uris ( --> Array ) {
   my CArray[Str] $ca = gtk_selection_data_get_uris(
-    self.get-native-object-no-reffing
+    self._get-native-object-no-reffing
   );
 
   my Array $uris = [];
@@ -754,10 +754,10 @@ Stores new data into a B<Gnome::Gtk3::SelectionData> object. Should only be call
 
 #`{{
 multi method set ( $type is copy, Str $data ) {
-  $type .= get-native-object-no-reffing unless $type ~~ N-GObject;
+  $type .= _get-native-object-no-reffing unless $type ~~ N-GObject;
   my $tes = CArray[Str].new($data.encode);
   gtk_selection_data_set(
-    self.get-native-object-no-reffing, $type, 1, $tes, $data.encode.elems
+    self._get-native-object-no-reffing, $type, 1, $tes, $data.encode.elems
   );
 }
 }}
@@ -768,10 +768,10 @@ method set (
 ) {
 #note "set: $type.name(), $format, $data.gist()";
 
-  $type .= get-native-object-no-reffing unless $type ~~ N-GObject;
+  $type .= _get-native-object-no-reffing unless $type ~~ N-GObject;
 
 #  gtk_selection_data_set(
-#    self.get-native-object-no-reffing, $type, $format, $data, $length
+#    self._get-native-object-no-reffing, $type, $format, $data, $length
 #  );
 
 #note 'dtype: ', $data.^name;
@@ -840,7 +840,7 @@ method set (
 
   # argument list
   my @arguments = (
-    self.get-native-object-no-reffing,                  # selection data
+    self._get-native-object-no-reffing,                  # selection data
     $type,                                              # type
     $format,                                            # 8, 16 or 32 bit unit
     $n-data,                                            # CArray of data
@@ -894,10 +894,10 @@ Returns: C<True> if the selection was successfully set, otherwise C<False>.
 =end pod
 
 method set-pixbuf ( $pixbuf is copy --> Bool ) {
-  $pixbuf .= get-native-object-no-reffing unless $pixbuf ~~ N-GObject;
+  $pixbuf .= _get-native-object-no-reffing unless $pixbuf ~~ N-GObject;
 
   gtk_selection_data_set_pixbuf(
-    self.get-native-object-no-reffing, $pixbuf
+    self._get-native-object-no-reffing, $pixbuf
   ).Bool
 }
 
@@ -923,7 +923,7 @@ Returns: C<True> if the selection was successfully set, otherwise C<False>.
 
 method set-text ( Str $str --> Bool ) {
   gtk_selection_data_set_text(
-    self.get-native-object-no-reffing, $str, $str.len
+    self._get-native-object-no-reffing, $str, $str.len
   ).Bool
 }
 
@@ -948,7 +948,7 @@ Returns: C<True> if the selection was successfully set, otherwise C<False>.
 =end pod
 
 method set-uris (, CArray[Str] $uris --> Bool ) {
-  gtk_selection_data_set_uris( self.get-native-object-no-reffing, $uris).Bool
+  gtk_selection_data_set_uris( self._get-native-object-no-reffing, $uris).Bool
 }
 
 sub gtk_selection_data_set_uris (
@@ -979,7 +979,7 @@ Returns: C<True> if the operation succeeded
 method owner-set (
   $widget is copy, Gnome::Gdk3::Atom $selection, UInt $time --> Bool
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_selection_owner_set( $widget, $selection, $time).Bool
 }
@@ -1010,8 +1010,8 @@ method owner-set-for-display (
   $display is copy, $widget is copy, Gnome::Gdk3::Atom $selection,
   UInt $time --> Bool
 ) {
-  $display .= get-native-object-no-reffing unless $display ~~ N-GObject;
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $display .= _get-native-object-no-reffing unless $display ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_selection_owner_set_for_display(
     $display, $widget, $selection, $time
@@ -1036,10 +1036,10 @@ Removes all handlers and unsets ownership of all selections for a widget. Called
 =end pod
 
 method remove-all ( $widget is copy ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
 
   gtk_selection_remove_all(
-    self.get-native-object-no-reffing, $widget
+    self._get-native-object-no-reffing, $widget
   );
 }
 

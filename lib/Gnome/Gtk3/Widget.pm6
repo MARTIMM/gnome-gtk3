@@ -465,7 +465,7 @@ Installs an accelerator for this I<widget> in I<accel-group> that causes I<accel
 =end pod
 
 method add-accelerator ( Str $accel_signal, $accel_group is copy, UInt $accel_key, GdkModifierType $accel_mods, GtkAccelFlags $accel_flags ) {
-  $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
+  $accel_group .= _get-native-object-no-reffing unless $accel_group ~~ N-GObject;
 
   gtk_widget_add_accelerator(
     self._f('GtkWidget'), $accel_signal, $accel_group, $accel_key, $accel_mods, $accel_flags
@@ -493,7 +493,7 @@ Adds the device events in the bitfield I<events> to the event mask for I<widget>
 =end pod
 
 method add-device-events ( $device is copy, Int $events ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
 
   gtk_widget_add_device_events(
     self._f('GtkWidget'), $device, $events
@@ -541,7 +541,7 @@ Adds a widget to the list of mnemonic labels for this widget. (See C<list-mnemon
 =end pod
 
 method add-mnemonic-label ( $label is copy ) {
-  $label .= get-native-object-no-reffing unless $label ~~ N-GObject;
+  $label .= _get-native-object-no-reffing unless $label ~~ N-GObject;
   gtk_widget_add_mnemonic_label(self._f('GtkWidget'), $label);
 }
 
@@ -929,7 +929,7 @@ This function should only be called from class init functions of widgets.
 =end pod
 
 method class-set-accessible-type ( GtkWidgetClass $widget_class, $type is copy ) {
-  $type .= get-native-object-no-reffing unless $type ~~ N-GObject;
+  $type .= _get-native-object-no-reffing unless $type ~~ N-GObject;
 
   gtk_widget_class_set_accessible_type(
     self._f('GtkWidget'), $widget_class, $type
@@ -1018,7 +1018,7 @@ Note that any class that installs templates must call C<init-template()> in the 
 =end pod
 
 method class-set-template ( GtkWidgetClass $widget_class, $template_bytes is copy ) {
-  $template_bytes .= get-native-object-no-reffing unless $template_bytes ~~ N-GObject;
+  $template_bytes .= _get-native-object-no-reffing unless $template_bytes ~~ N-GObject;
 
   gtk_widget_class_set_template(
     self._f('GtkWidget'), $widget_class, $template_bytes
@@ -1189,7 +1189,7 @@ This function sets I<$widget> to C<undefined> if I<$widget> != C<undefined>. Itâ
 method destroyed ( $widget ) {
   my $no = $widget;
   if $no !~~ N-GObject {
-    $no .= get-native-object-no-reffing;
+    $no .= _get-native-object-no-reffing;
     $widget._set_invalid;
   }
 
@@ -1217,7 +1217,7 @@ Returns: C<True> if there is an ongoing grab on I<device> by another B<Gnome::Gt
 =end pod
 
 method device-is-shadowed ( $device is copy --> Bool ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
 
   gtk_widget_device_is_shadowed( self._f('GtkWidget'), $device).Bool
 }
@@ -1245,7 +1245,7 @@ Note that special-purpose widgets may contain special code for rendering to the 
 =end pod
 
 method draw ( $cr is copy ) {
-  $cr .= get-native-object-no-reffing unless $cr ~~ cairo_t;
+  $cr .= _get-native-object-no-reffing unless $cr ~~ cairo_t;
   gtk_widget_draw( self._f('GtkWidget'), $cr);
 }
 
@@ -1808,7 +1808,7 @@ Returns: C<True> is I<device> is enabled for I<widget>
 =end pod
 
 method get-device-enabled ( $device is copy --> Bool ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
   gtk_widget_get_device_enabled( self._f('GtkWidget'), $device).Bool
 }
 
@@ -1833,7 +1833,7 @@ Returns: device event mask for I<widget>
 =end pod
 
 method get-device-events ( $device is copy --> Int ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
   gtk_widget_get_device_events( self._f('GtkWidget'), $device)
 }
 
@@ -2988,7 +2988,7 @@ Returns: The object built in the template XML with the id I<name>
 =end pod
 
 method get-template-child ( $widget_type is copy, Str $name --> N-GObject ) {
-  $widget_type .= get-native-object-no-reffing unless $widget_type ~~ N-GObject;
+  $widget_type .= _get-native-object-no-reffing unless $widget_type ~~ N-GObject;
   gtk_widget_get_template_child( self._f('GtkWidget'), $widget_type, $name)
 }
 
@@ -3360,7 +3360,7 @@ Returns: C<True> if I<window> should be drawn
 =end pod
 
 method gtk-cairo-should-draw-window ( cairo_t $cr, $window is copy --> Bool ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_cairo_should_draw_window( self._f('GtkWidget'), $cr, $window).Bool
 }
 
@@ -3391,8 +3391,8 @@ This is the inverse to the transformation GTK applies when preparing an expose e
 method gtk-cairo-transform-to-window (
   cairo_t $cr, $widget is copy, $window is copy
 ) {
-  $widget .= get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_cairo_transform_to_window( self._f('GtkWidget'), $cr, $widget, $window);
 }
 
@@ -3726,7 +3726,7 @@ If I<group> is C<undefined>, a previously inserted group for I<name> is removed 
 =end pod
 
 method insert-action-group ( Str $name, $group is copy ) {
-  $group .= get-native-object-no-reffing unless $group ~~ N-GObject;
+  $group .= _get-native-object-no-reffing unless $group ~~ N-GObject;
 
   gtk_widget_insert_action_group( self._f('GtkWidget'), $name, $group);
 }
@@ -3779,7 +3779,7 @@ Returns: C<True> if I<$ancestor> contains I<widget> as a child, grandchild, grea
 =end pod
 
 method is-ancestor ( $ancestor is copy --> Bool ) {
-  $ancestor .= get-native-object-no-reffing unless $ancestor ~~ N-GObject;
+  $ancestor .= _get-native-object-no-reffing unless $ancestor ~~ N-GObject;
   gtk_widget_is_ancestor( self._f('GtkWidget'), $ancestor).Bool
 }
 
@@ -4280,7 +4280,7 @@ Registers a B<Gnome::Gtk3::Window> with the widget and sets it up so that the wi
 =end pod
 
 method register-window ( $window is copy ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_widget_register_window( self._f('GtkWidget'), $window);
 }
 
@@ -4308,7 +4308,7 @@ Returns: whether an accelerator was installed and could be removed
 =end pod
 
 method remove-accelerator ( $accel_group is copy, UInt $accel_key, GdkModifierType $accel_mods --> Bool ) {
-  $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
+  $accel_group .= _get-native-object-no-reffing unless $accel_group ~~ N-GObject;
 
   gtk_widget_remove_accelerator(
     self._f('GtkWidget'), $accel_group, $accel_key, $accel_mods
@@ -4335,7 +4335,7 @@ Removes a widget from the list of mnemonic labels for this widget. (See C<list-m
 =end pod
 
 method remove-mnemonic-label ( $label is copy ) {
-  $label .= get-native-object-no-reffing unless $label ~~ N-GObject;
+  $label .= _get-native-object-no-reffing unless $label ~~ N-GObject;
   gtk_widget_remove_mnemonic_label( self._f('GtkWidget'), $label);
 }
 
@@ -4451,7 +4451,7 @@ Note that I<accel-path> string will be stored in a B<Gnome::Gtk3::Quark>. Theref
 =end pod
 
 method set-accel-path ( Str $accel_path, $accel_group is copy ) {
-  $accel_group .= get-native-object-no-reffing unless $accel_group ~~ N-GObject;
+  $accel_group .= _get-native-object-no-reffing unless $accel_group ~~ N-GObject;
 
   gtk_widget_set_accel_path(
     self._f('GtkWidget'), $accel_path, $accel_group
@@ -4653,7 +4653,7 @@ It does so by descending through the B<Gnome::Gtk3::Window> hierarchy and enabli
 =end pod
 
 method set-device-enabled ( $device is copy, Bool $enabled ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
   gtk_widget_set_device_enabled( self._f('GtkWidget'), $device, $enabled);
 }
 
@@ -4677,7 +4677,7 @@ Sets the device event mask (see B<Gnome::Gtk3::EventMask>) for a widget. The eve
 =end pod
 
 method set-device-events ( $device is copy, Int $events ) {
-  $device .= get-native-object-no-reffing unless $device ~~ N-GObject;
+  $device .= _get-native-object-no-reffing unless $device ~~ N-GObject;
   gtk_widget_set_device_events( self._f('GtkWidget'), $device, $events);
 }
 
@@ -4770,7 +4770,7 @@ Sets the font map to use for Pango rendering. When not set, the widget will inhe
 =end pod
 
 method set-font-map ( $font_map is copy ) {
-  $font_map .= get-native-object-no-reffing unless $font_map ~~ N-GObject;
+  $font_map .= _get-native-object-no-reffing unless $font_map ~~ N-GObject;
   gtk_widget_set_font_map( self._f('GtkWidget'), $font_map);
 }
 
@@ -5128,7 +5128,7 @@ This function is useful only when implementing subclasses of B<Gnome::Gtk3::Cont
 =end pod
 
 method set-parent ( $parent is copy ) {
-  $parent .= get-native-object-no-reffing unless $parent ~~ N-GObject;
+  $parent .= _get-native-object-no-reffing unless $parent ~~ N-GObject;
   gtk_widget_set_parent( self._f('GtkWidget'), $parent);
 }
 
@@ -5156,7 +5156,7 @@ For B<Gnome::Gtk3::Window> classes, this needs to be called before the window is
 =end pod
 
 method set-parent-window ( $parent_window is copy ) {
-  $parent_window .= get-native-object-no-reffing unless $parent_window ~~ N-GObject;
+  $parent_window .= _get-native-object-no-reffing unless $parent_window ~~ N-GObject;
 
   gtk_widget_set_parent_window(
     self._f('GtkWidget'), $parent_window
@@ -5409,7 +5409,7 @@ Replaces the default window used for displaying tooltips with I<custom-window>. 
 =end pod
 
 method set-tooltip-window ( $custom_window is copy ) {
-  $custom_window .= get-native-object-no-reffing
+  $custom_window .= _get-native-object-no-reffing
     unless $custom_window ~~ N-GObject;
 
   gtk_widget_set_tooltip_window( self._f('GtkWidget'), $custom_window);
@@ -5530,7 +5530,7 @@ Setting a new I<visual> will not cause I<widget> to recreate its windows, so you
 =end pod
 
 method set-visual ( $visual is copy ) {
-  $visual .= get-native-object-no-reffing unless $visual ~~ N-GObject;
+  $visual .= _get-native-object-no-reffing unless $visual ~~ N-GObject;
   gtk_widget_set_visual( self._f('GtkWidget'), $visual);
 }
 
@@ -5557,7 +5557,7 @@ Note that this function does not add any reference to I<window>.
 =end pod
 
 method set-window ( $window is copy ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_widget_set_window( self._f('GtkWidget'), $window);
 }
 
@@ -5757,7 +5757,7 @@ Gets the value of a style property of I<widget>.
 =end pod
 
 method style-get-property ( Str $property_name, $value is copy ) {
-  $value .= get-native-object-no-reffing unless $value ~~ N-GObject;
+  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
   gtk_widget_style_get_property( self._f('GtkWidget'), $property_name, $value);
 }
 
@@ -5839,7 +5839,7 @@ Returns a List which holds;
 method translate-coordinates (
   $dest_widget is copy, Int $src_x, Int $src_y --> List
 ) {
-  $dest_widget .= get-native-object-no-reffing unless $dest_widget ~~ N-GObject;
+  $dest_widget .= _get-native-object-no-reffing unless $dest_widget ~~ N-GObject;
   my gint $dest_x;
   my gint $dest_y;
   my Bool $r = gtk_widget_translate_coordinates(
@@ -5949,7 +5949,7 @@ Unregisters a B<Gnome::Gtk3::Window> from the widget that was previously set up 
 =end pod
 
 method unregister-window ( $window is copy ) {
-  $window .= get-native-object-no-reffing unless $window ~~ N-GObject;
+  $window .= _get-native-object-no-reffing unless $window ~~ N-GObject;
   gtk_widget_unregister_window( self._f('GtkWidget'), $window);
 }
 

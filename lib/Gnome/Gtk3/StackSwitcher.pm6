@@ -108,7 +108,7 @@ submethod BUILD ( *%options ) {
 
   # create default object
   else {
-    self.set-native-object(_gtk_stack_switcher_new());
+    self._set-native-object(_gtk_stack_switcher_new());
   }
 
   # only after creating the native-object, the gtype is known
