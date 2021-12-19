@@ -209,7 +209,7 @@ Create a Dialog object using a native object returned from a builder. See also *
 add-action-widget
 -----------------
 
-Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, connecting a signal handler that will emit the *response* signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the *action-area* field of the **Gnome::Gtk3::Dialog** struct.
+Adds an activatable widget to the action area of a **Gnome::Gtk3::Dialog**, connecting a signal handler that will emit the *response* signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area.
 
     method add-action-widget ( N-GObject $child, Int() $response_id )
 

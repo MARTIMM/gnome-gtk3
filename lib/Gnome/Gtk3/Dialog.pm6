@@ -345,7 +345,8 @@ method _fallback ( $native-sub is copy --> Callable ) {
 =begin pod
 =head2 add-action-widget
 
-Adds an activatable widget to the action area of a B<Gnome::Gtk3::Dialog>, connecting a signal handler that will emit the  I<response> signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area. If you want to add a non-activatable widget, simply pack it into the I<action-area> field of the B<Gnome::Gtk3::Dialog> struct.
+Adds an activatable widget to the action area of a B<Gnome::Gtk3::Dialog>, connecting a signal handler that will emit the  I<response> signal on the dialog when the widget is activated. The widget is appended to the end of the dialog’s action area.
+=comment If you want to add a non-activatable widget, simply pack it into the I<action-area> field of the B<Gnome::Gtk3::Dialog> struct.
 
   method add-action-widget ( N-GObject $child, Int() $response_id )
 
