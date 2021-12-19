@@ -614,7 +614,7 @@ sub setup-names ( Str:D $base-name --> List ) {
 
   $*raku-class-name = @parts[1..*-1]>>.tc.join;
 
-#note "Files: $base-name, $include-file. $*lib-class-name, $*raku-class-name";
+#note "Files: $base-name, $include-file. $*lib-class-name, $*raku-class-name,  @parts.raku()";
 
 #`{{
   my Str $*raku-lib-name = '';
@@ -668,6 +668,7 @@ sub setup-names ( Str:D $base-name --> List ) {
       if $include-file eq 'gdk-pixbuf' and "$path/{$include-file}-core.h".IO.r {
         $include-content = "$path/{$include-file}-core.h".IO.slurp;
       }
+
       else {
         $include-content = "$path/$include-file.h".IO.slurp;
       }
@@ -675,7 +676,7 @@ sub setup-names ( Str:D $base-name --> List ) {
       $source-content = "$path/$include-file.c".IO.slurp
         if "$path/$include-file.c".IO.r;
 
-#note "Sources: ", ?$include-content, ', ', ?$source-content;
+#note "Sources: $path, ", ?$include-content, ', ', ?$source-content;
 
       given $path {
         when / 'gtk+-' <-[/]>+ '/gtk' / {
@@ -711,11 +712,6 @@ sub setup-names ( Str:D $base-name --> List ) {
         when / 'pango-' <-[/]>+ '/pango' / {
           $*library = "&pango-lib";
           $*raku-lib-name = 'Pango';
-        }
-
-        when / 'cairo-' <-[/]>+ '/src/cairo' / {
-          $*library = "&cairo-lib";
-          $*raku-lib-name = 'Cairo';
         }
 
 #        when $gio-path {
@@ -819,8 +815,10 @@ sub load-dir-lists ( ) {
 
   my Str $root-dir = '/home/marcel/Languages/Raku/Projects/gnome-gtk3';
   @gtkdirlist = "$root-dir/Design-docs/gtk3-list.txt".IO.slurp.lines;
+
   @gdkdirlist = "$root-dir/Design-docs/gdk3-list.txt".IO.slurp.lines;
   @gdkpixbufdirlist = "$root-dir/Design-docs/gdk3-pixbuf-list.txt".IO.slurp.lines;
+
   @gobjectdirlist = "$root-dir/Design-docs/gobject-list.txt".IO.slurp.lines;
   @glibdirlist = "$root-dir/Design-docs/glib-list.txt".IO.slurp.lines;
   @giodirlist = "$root-dir/Design-docs/gio-list.txt".IO.slurp.lines;
@@ -958,7 +956,7 @@ sub substitute-in-template (
   $template-text ~~ s:g/ 'MODULE-SEEALSO' /$see-also/;
   $template-text ~~ s:g/ 'LIBCLASSNAME' /$*lib-class-name/;
 
-  $output-file = "xt/NewModules/$*raku-class-name.pm6";
+  $output-file = "xt/NewModules/$*raku-class-name.rakumod";
   $output-file.IO.spurt($template-text);
 
   note "Write Gnome::{$*raku-lib-name}::{$*raku-class-name} to $output-file";
@@ -984,7 +982,7 @@ sub substitute-in-template (
 
           my Callable $s;
           try { $s = &:("BASE-SUBNAME_$native-sub"); };
-        # check for gtk_, gdk_, g_, pango_, cairo_ !!!
+        # check for gtk_, gdk_, g_, pango_ !!!
           try { $s = &:("gtk_$native-sub"); } unless ?$s;
           try { $s = &:($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
 
