@@ -465,7 +465,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
   my Str $type = ~($<type> // '');
   $declaration ~~ s/ $type //;
 
-  #drop the const
+  # drop the const
   $type ~~ s:g/ const //;
 
   # convert pointer char types
@@ -1926,7 +1926,7 @@ sub get-vartypes ( Str:D $include-content ) {
 
 #-------------------------------------------------------------------------------
 sub get-enumerations ( Str:D $include-content is copy ) {
-
+#`{{
   my Str $enums-doc = Q:qq:to/EODOC/;
 
     #-------------------------------------------------------------------------------
@@ -1934,8 +1934,10 @@ sub get-enumerations ( Str:D $include-content is copy ) {
     =head1 Types
     =end pod
     EODOC
+}}
 
   my Bool $found-doc = False;
+  my Hash $enum-docs = %();
 
   loop {
     my Str $enum-name = '';
@@ -1953,7 +1955,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
 
     # if no enums are found, clear the string
     if !?$enum-type-section {
-      $enums-doc = '' unless $found-doc;
+#      $enums-doc = '' unless $found-doc;
       last;
     }
 
@@ -2045,8 +2047,20 @@ sub get-enumerations ( Str:D $include-content is copy ) {
 
     $enum-doc = primary-doc-changes($enum-doc);
     $items-doc = primary-doc-changes($items-doc);
-
+#`{{
     $enums-doc ~= Q:qq:to/EODOC/;
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head2 enum $enum-name
+
+      $enum-doc
+
+      $items-doc
+
+      $enum-spec
+      EODOC
+}}
+    $enum-docs{$enum-name} = Q:qq:to/EODOC/;
       #-------------------------------------------------------------------------------
       =begin pod
       =head2 enum $enum-name
@@ -2059,8 +2073,19 @@ sub get-enumerations ( Str:D $include-content is copy ) {
       EODOC
   }
 
-  $output-file.IO.spurt( $enums-doc, :append);
-  note "add type information to $output-file";
+#  $output-file.IO.spurt( $enums-doc, :append);
+   $output-file.IO.spurt( Q:qq:to/EODOC/, :append);
+
+    #-------------------------------------------------------------------------------
+    =begin pod
+    =head1 Types
+    =end pod
+    EODOC
+
+  for $enum-docs.keys.sort -> $enum-name {
+    $output-file.IO.spurt( $enum-docs{$enum-name}, :append);
+  }
+#  note "add type information to $output-file";
 }
 
 #-------------------------------------------------------------------------------
