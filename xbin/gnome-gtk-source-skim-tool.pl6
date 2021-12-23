@@ -877,7 +877,7 @@ sub substitute-in-template (
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
@@ -929,7 +929,7 @@ sub substitute-in-template (
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:ver<0.1.0>;
+      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
