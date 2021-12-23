@@ -2586,6 +2586,6 @@ sub generate-test ( ) {
 
     EOTEST
 
-  "xt/NewModules/$*raku-class-name.t".IO.spurt($test-content);
-  note "generate tests in xt/NewModules/$*raku-class-name.t";
+  "xt/NewModules/$*raku-class-name.rakutest".IO.spurt($test-content);
+  note "generate tests in xt/NewModules/$*raku-class-name.rakutest";
 }
