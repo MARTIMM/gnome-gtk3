@@ -4,6 +4,9 @@
   - title: "Enums"
     url: '/content-docs/reference/Cairo/Enums.html'
     type: standalone
+  - title: "Cairo"
+    url: '/content-docs/reference/Cairo/Cairo.html'
+    type: toplevel
   - title: "FontFace"
     url: '/content-docs/reference/Cairo/FontFace.html'
     type: toplevel
