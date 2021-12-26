@@ -244,16 +244,7 @@ status
 
 Checks whether an error has previously occurred for this surface. Return value: `CAIRO_STATUS_SUCCESS`, `CAIRO_STATUS_NULL_POINTER`, `CAIRO_STATUS_NO_MEMORY`, `CAIRO_STATUS_READ_ERROR`, `CAIRO_STATUS_INVALID_CONTENT`, `CAIRO_STATUS_INVALID_FORMAT`, or `CAIRO_STATUS_INVALID_VISUAL`.
 
-    method status ( --> Int )
-
-supports-mime-type
-------------------
-
-Return whether *surface* supports *mime_type*. Return value: `1` if *surface* supports *mime_type*, `0` otherwise
-
-    method supports-mime-type ( --> Int )
-
-  * Int $mime_type; a **cairo_surface_t**
+    method status ( --> cairo_status_t )
 
 unmap-image
 -----------

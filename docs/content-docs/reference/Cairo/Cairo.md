@@ -6,8 +6,7 @@ The cairo drawing context
 Description
 ===========
 
-    B<cairo_t> is the main object used when drawing with cairo. To draw with cairo, you create a B<cairo_t>, set the target surface, and drawing options for the B<cairo_t>, create shapes with functions like C<cairo_move_to()> and C<cairo_line_to()>, and then draw shapes with C<cairo_stroke()> or C<cairo_fill()>.
-    B<cairo_t> 's can be pushed to a stack via C<cairo_save()>. They may then safely be changed, without losing the current state. Use C<cairo_restore()> to restore to the saved state.
+**cairo_t** is the main object used when drawing with cairo. To draw with cairo, you create a **cairo_t**, set the target surface, and drawing options for the **cairo_t**, create shapes with functions like `cairo_move_to()` and `cairo_line_to()`, and then draw shapes with `cairo_stroke()` or `cairo_fill()`. **cairo_t** 's can be pushed to a stack via `cairo_save()`. They may then safely be changed, without losing the current state. Use `cairo_restore()` to restore to the saved state.
 
 See Also
 --------
@@ -29,7 +28,7 @@ Methods
 new
 ---
 
-### new(:surface)
+### :surface
 
 Creates a new **cairo_t** with all graphics state parameters set to default values and with *target* as a target surface. The target surface should be constructed with a backend-specific function such as `cairo_image_surface_create()` (or any other `cairo_B<backend>_surface_create( )` variant).
 
@@ -39,7 +38,7 @@ The object is cleared with `clear-object()` when you are done using the **cairo_
 
 You can use this object normally, but no drawing will be done.
 
-    multi method new ( cairo_surface_t :$surface )
+    multi method new ( cairo_surface_t :$surface! )
 
   * cairo_surface_t $surface;
 
@@ -964,7 +963,14 @@ status
 
 Checks whether an error has previously occurred for this context. Returns: the current status of this context, see **cairo_status_t**
 
-    method status ( --> Int )
+    method status ( --> cairo_status_t )
+
+status-to-string
+----------------
+
+Provides a human-readable description of a cairo_status_t.
+
+    method status-to-string ( cairo_status_t $status --> Str )
 
 stroke
 ------
