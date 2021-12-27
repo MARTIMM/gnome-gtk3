@@ -49,6 +49,14 @@ function always returns a valid pointer, but it will return a pointer to a "nil"
       Int :$width = 32, Int :$height = 32
     )
 
+  * cairo_surface_t $similar; the surface where the new surface is created from
+
+  * cairo_content_t $content; used to describe the content of a surface
+
+  * Int $width; width of the image
+
+  * Int $height; height of the image
+
 ### :image
 
 Create a new image surface that is as compatible as possible for uploading to and the use in conjunction with an existing surface. However, this surface can still be used like any normal image surface. Unlike `new(:$similar)` the new image surface won't inherit the device scale from the `$image` surface.
@@ -59,6 +67,14 @@ Initially the surface contents are all 0 (transparent if contents have transpare
       cairo_surface_t :image!, cairo_format_t :$format = CAIRO_FORMAT_RGB24,
       Int :$width = 32, Int :$height = 32
     )
+
+  * cairo_surface_t $image; the surface where the new surface is created from
+
+  * cairo_format_t $format; used to identify the memory format of image
+
+  * Int $width; width of the image
+
+  * Int $height; height of the image
 
 ### :target
 
@@ -72,6 +88,32 @@ The semantics of subsurfaces have not been finalized yet unless the rectangle is
       Num() :$width = 128e0, Num() :$height = 128e0
       --> cairo_surface_t
     }
+
+  * cairo_surface_t $target; the surface where the new surface is created from
+
+  * Num $x; x, y, width and height describe the rectangle from which a part of the image is copied.
+
+  * Num $y;
+
+  * Num $width;
+
+  * Num $height;
+
+### :map, :rectangle
+
+Creates an image surface that is the most efficient mechanism for modifying the backing store of the target surface. The region retrieved may be limited to the *extents* or `Any` for the whole surface.
+
+Note, the use of the original surface as a target or source whilst it is mapped is undefined. The result of mapping the surface multiple times is also undefined. Calling `clear-object()` on the resulting image surface results in undefined behavior. Furthermore, changing the device transform of the image surface or of *surface* before the image surface is unmapped results in undefined behavior.
+
+The caller must use `unmap-image()` to destroy this image surface. This function always creates a valid native object, but this class will become invalid if *$map* is already in an error state or any other error occurs. If the returned pointer does not have an error status, it is guaranteed to be an image surface whose format is not `CAIRO_FORMAT_INVALID`.
+
+    multi method new (
+      cairo_surface_t :$map, cairo_rectangle_int_t :$rectangle
+    )
+
+  * cairo_surface_t $map; the surface where the new surface is created from
+
+  * cairo_rectangle_int_t $rectangle; an existing surface used to extract the image
 
 ### :native-object
 
@@ -180,7 +222,7 @@ Returns whether the surface supports sophisticated `cairo_show_text_glyphs()` op
 mark-dirty
 ----------
 
-Tells cairo that drawing has been done to surface using means other than cairo, and that cairo should reread any cached areas. Note that you must call `cairo_surface_flush()` before doing such drawing.
+Tells cairo that drawing has been done to surface using means other than cairo, and that cairo should reread any cached areas. Note that you must call `flush()` before doing such drawing.
 
     method mark-dirty ( )
 
@@ -249,9 +291,18 @@ Checks whether an error has previously occurred for this surface. Return value: 
 unmap-image
 -----------
 
-Unmaps the image surface as returned from **cairo_surface_map_to_image**(). The content of the image will be uploaded to the target surface. Afterwards, the image is destroyed. Using an image surface which wasn't returned by `cairo_surface_map_to_image()` results in undefined behavior.
+Unmaps the image surface as returned from `map-to-image`(). The content of the image will be uploaded to the target surface. Afterwards, the image is destroyed. Using an image surface which wasn't returned by `map-to-image()` results in undefined behavior.
 
     method unmap-image ( cairo_surface_t $image )
 
   * cairo_surface_t $image; the surface passed to `cairo_surface_map_to_image()`.
+
+write-to-png
+------------
+
+Writes the contents of surface to a new file filename as a PNG image.
+
+    method write-to-png ( Str $filename --> cairo_status_t )
+
+  * Str $filename; PNG Support
 

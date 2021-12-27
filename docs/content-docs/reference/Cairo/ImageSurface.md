@@ -61,34 +61,30 @@ get-format
 
 Get the format of the surface. Return value: the format of the surface
 
-    method get-format ( cairo_surface_t $surface --> Int )
+    method get-format ( --> cairo_format_t )
 
-  * cairo_surface_t $surface; cairo_image_surface_get_format:
+Returns the format of the surface:
 
 get-height
 ----------
 
 Get the height of the image surface in pixels. Return value: the height of the surface in pixels.
 
-    method get-height ( cairo_surface_t $surface --> Int )
-
-  * cairo_surface_t $surface; cairo_image_surface_get_height:
+    method get-height ( --> Int )
 
 get-stride
 ----------
 
-Get the stride of the image surface in bytes Return value: the stride of the image surface in bytes (or 0 if *surface* is not an image surface). The stride is the distance in bytes from the beginning of one row of the image data to the beginning of the next row.
+Get the stride of the image surface in bytes.
 
-    method get-stride ( cairo_surface_t $surface --> Int )
+Return value: the stride of the image surface in bytes (or 0 if *surface* is not an image surface). The stride is the distance in bytes from the beginning of one row of the image data to the beginning of the next row.
 
-  * cairo_surface_t $surface; cairo_image_surface_get_stride:
+    method get-stride ( --> Int )
 
 get-width
 ---------
 
 Get the width of the image surface in pixels. Return value: the width of the surface in pixels.
 
-    method get-width ( cairo_surface_t $surface --> Int )
-
-  * cairo_surface_t $surface; cairo_image_surface_get_width:
+    method get-width ( --> Int )
 

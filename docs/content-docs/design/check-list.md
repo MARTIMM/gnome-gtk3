@@ -366,7 +366,7 @@ Cairo                     |TL| ✓| ✓| ✓|  | ✓| ✓| ✓|  |
 Enums                     |  |  |  |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |  |  |  |
-ImageSurface              |  |  |  |  |  |  |  |  |  |
+ImageSurface              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Matrix                    |  |  |  |  |  |  |  |  |  |
 Path                      |  |  |  |  |  |  |  |  |  |
 Pattern                   |  |  |  |  |  |  |  |  |  |
