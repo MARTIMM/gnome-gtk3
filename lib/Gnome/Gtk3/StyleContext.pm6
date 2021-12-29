@@ -352,12 +352,12 @@ Retrieves several style property values from I<context> for a given state.
 
 See C<get-property()> for details.
 
-  method get ( GtkStateFlags $state, List $properties --> List )
+  method get ( UInt $state, List $properties --> List )
 
-=item GtkStateFlags $state; state to retrieve the property values for @...: property name /return value pairs, followed by C<undefined>
+=item UInt $state; state to retrieve the property values for @...: property name /return value pairs, followed by C<undefined> GtkStateFlags
 =end pod
 
-method get ( GtkStateFlags $state, List $properties --> List ) {
+method get ( UInt $state, List $properties --> List ) {
 
   # create parameter list and start with inserting fixed arguments
   my @parameterList = (
@@ -372,7 +372,7 @@ method get ( GtkStateFlags $state, List $properties --> List ) {
 }
 
 #sub gtk_style_context_get (
-#  N-GObject $context, GEnum $state, Any $any = Any
+#  N-GObject $context, GFlag $state, Any $any = Any
 #) is native(&gtk-lib)
 #  { * }
 }}
@@ -386,13 +386,13 @@ method get ( GtkStateFlags $state, List $properties --> List ) {
 Returns the border for a given state as a B<Gnome::Gtk3::Border>.
 =comment See C<get-property()> and C<GTK_STYLE_PROPERTY_BORDER_WIDTH> for details.
 
-  method get-border ( GtkStateFlags $state --> N-GtkBorder )
-  method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+  method get-border ( UInt $state --> N-GtkBorder )
+  method get-border-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-=item GtkStateFlags $state; state to retrieve the border for
+=item UInt $state; state flags from GtkStateFlags to retrieve the border for
 =end pod
 
-method get-border ( GtkStateFlags $state --> N-GtkBorder ) {
+method get-border ( UInt $state --> N-GtkBorder ) {
   my N-GtkBorder $border .= new;
   gtk_style_context_get_border(
     self._get-native-object-no-reffing, $state, $border
@@ -401,7 +401,7 @@ method get-border ( GtkStateFlags $state --> N-GtkBorder ) {
   $border
 }
 
-method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+method get-border-rk ( UInt $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $border .= new;
   gtk_style_context_get_border(
     self._get-native-object-no-reffing, $state, $border
@@ -411,7 +411,7 @@ method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
 }
 
 sub gtk_style_context_get_border (
-  N-GObject $context, GEnum $state, N-GtkBorder $border
+  N-GObject $context, GFlag $state, N-GtkBorder $border
 ) is native(&gtk-lib)
   { * }
 
@@ -425,13 +425,13 @@ Returns the foreground color for a given state.
 
 =comment See C<get-property()> and B<GTK_STYLE_PROPERTY_COLOR> for details.
 
-  method get-color ( GtkStateFlags $state --> N-GdkRGBA )
-  method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA )
+  method get-color ( Uint $state --> N-GdkRGBA )
+  method get-color-rk ( UInt $state --> Gnome::Gdk3::RGBA )
 
-=item GtkStateFlags $state; state to retrieve the color for
+=item UInt $state; state flags from GtkStateFlags to retrieve the color for
 =end pod
 
-method get-color ( GtkStateFlags $state --> N-GdkRGBA ) {
+method get-color ( UInt $state --> N-GdkRGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_get_color(
     self._get-native-object-no-reffing, $state, $color
@@ -440,7 +440,7 @@ method get-color ( GtkStateFlags $state --> N-GdkRGBA ) {
   $color
 }
 
-method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA ) {
+method get-color-rk ( UInt $state --> Gnome::Gdk3::RGBA ) {
   my N-GdkRGBA $color .= new;
   gtk_style_context_get_color(
     self._get-native-object-no-reffing, $state, $color
@@ -450,7 +450,7 @@ method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA ) {
 }
 
 sub gtk_style_context_get_color (
-  N-GObject $context, GEnum $state, N-GdkRGBA $color
+  N-GObject $context, GFlag $state, N-GdkRGBA $color
 ) is native(&gtk-lib)
   { * }
 
@@ -511,13 +511,13 @@ sub gtk_style_context_get_junction_sides (
 Returns the margin for a given state as a B<Gnome::Gtk3::Border>.
 =comment See C<gtk-style-property-get()> and B<GTK_STYLE_PROPERTY_MARGIN> for details.
 
-  method get-margin ( GtkStateFlags $state --> N-GtkBorder )
-  method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+  method get-margin ( UInt $state --> N-GtkBorder )
+  method get-margin-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-=item GtkStateFlags $state; state to retrieve the border for
+=item UInt $state; state flags from GtkStateFlags to retrieve the border for
 =end pod
 
-method get-margin ( GtkStateFlags $state --> N-GtkBorder ) {
+method get-margin ( UInt $state --> N-GtkBorder ) {
   my N-GtkBorder $margin .= new;
   gtk_style_context_get_margin(
     self._get-native-object-no-reffing, $state, $margin
@@ -526,7 +526,7 @@ method get-margin ( GtkStateFlags $state --> N-GtkBorder ) {
   $margin
 }
 
-method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+method get-margin-rk ( UInt $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $margin .= new;
   gtk_style_context_get_margin(
     self._get-native-object-no-reffing, $state, $margin
@@ -536,7 +536,7 @@ method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
 }
 
 sub gtk_style_context_get_margin (
-  N-GObject $context, GEnum $state, N-GtkBorder $margin
+  N-GObject $context, GFlag $state, N-GtkBorder $margin
 ) is native(&gtk-lib)
   { * }
 
@@ -549,13 +549,13 @@ sub gtk_style_context_get_margin (
 Returns the padding for a given state as a B<Gnome::Gtk3::Border>.
 =comment See C<get()> and B<GTK_STYLE_PROPERTY_PADDING> for details.
 
-  method get-padding ( GtkStateFlags $state --> N-GtkBorder )
-  method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+  method get-padding ( UInt $state --> N-GtkBorder )
+  method get-padding-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-=item GtkStateFlags $state; state to retrieve the padding for
+=item UInt $state; state  flags from GtkStateFlagsto retrieve the padding for
 =end pod
 
-method get-padding ( GtkStateFlags $state --> N-GtkBorder ) {
+method get-padding ( UInt $state --> N-GtkBorder ) {
   my N-GtkBorder $padding .= new;
   gtk_style_context_get_padding(
     self._get-native-object-no-reffing, $state, $padding
@@ -564,7 +564,7 @@ method get-padding ( GtkStateFlags $state --> N-GtkBorder ) {
   $padding
 }
 
-method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
+method get-padding-rk ( UInt $state --> Gnome::Gtk3::Border ) {
   my N-GtkBorder $padding .= new;
   gtk_style_context_get_padding(
     self._get-native-object-no-reffing, $state, $padding
@@ -574,7 +574,7 @@ method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border ) {
 }
 
 sub gtk_style_context_get_padding (
-  N-GObject $context, GEnum $state, N-GtkBorder $padding
+  N-GObject $context, GFlag $state, N-GtkBorder $padding
 ) is native(&gtk-lib)
   { * }
 
@@ -655,17 +655,17 @@ Note that passing a state other than the current state of I<context> is not reco
 
 When I<value> is no longer needed, C<clear-object()> must be called to free any allocated memory.
 
-  method get-property ( Str $property, GtkStateFlags $state --> N-GValue )
+  method get-property ( Str $property, UInt $state --> N-GValue )
   method get-property-rk (
-    Str $property, GtkStateFlags $state --> Gnome::GObject::Value
+    Str $property, UInt $state --> Gnome::GObject::Value
   )
 
 =item Str $property; style property name
-=item GtkStateFlags $state; state to retrieve the property value for
+=item UInt $state; state flags from GtkStateFlags to retrieve the property value for
 =item N-GObject $value; return location for the style property value
 =end pod
 
-method get-property ( Str $property, GtkStateFlags $state --> N-GValue ) {
+method get-property ( Str $property, UInt $state --> N-GValue ) {
   my N-GValue $value .= new;
   gtk_style_context_get_property(
     self._get-native-object-no-reffing, $property, $state, $value
@@ -675,7 +675,7 @@ method get-property ( Str $property, GtkStateFlags $state --> N-GValue ) {
 }
 
 method get-property-rk (
-  Str $property, GtkStateFlags $state --> Gnome::GObject::Value
+  Str $property, UInt $state --> Gnome::GObject::Value
 ) {
   my N-GValue $value .= new;
   gtk_style_context_get_property(
@@ -686,7 +686,7 @@ method get-property-rk (
 }
 
 sub gtk_style_context_get_property (
-  N-GObject $context, gchar-ptr $property, GEnum $state, N-GValue $value
+  N-GObject $context, gchar-ptr $property, GFlag $state, N-GValue $value
 ) is native(&gtk-lib)
   { * }
 }}
@@ -901,13 +901,13 @@ Retrieves several style property values from I<context> for a given state.
 
 See C<get-property()> for details.
 
-  method get-valist ( GtkStateFlags $state, va_list $args )
+  method get-valist ( UInt $state, va_list $args )
 
-=item GtkStateFlags $state; state to retrieve the property values for
+=item UInt $state; state flags from GtkStateFlags to retrieve the property values for
 =item va_list $args; va-list of property name/return location pairs, followed by C<undefined>
 =end pod
 
-method get-valist ( GtkStateFlags $state, va_list $args ) {
+method get-valist ( UInt $state, va_list $args ) {
 
   gtk_style_context_get_valist(
     self._get-native-object-no-reffing, $state, $args
@@ -915,7 +915,7 @@ method get-valist ( GtkStateFlags $state, va_list $args ) {
 }
 
 sub gtk_style_context_get_valist (
-  N-GObject $context, GEnum $state, va_list $args
+  N-GObject $context, GFlag $state, va_list $args
 ) is native(&gtk-lib)
   { * }
 }}
@@ -1934,7 +1934,7 @@ method set-state ( UInt $flags ) {
 }
 
 sub gtk_style_context_set_state (
-  N-GObject $context, GEnum $flags
+  N-GObject $context, GFlag $flags
 ) is native(&gtk-lib)
   { * }
 
@@ -2368,7 +2368,7 @@ Since: 3.0
 
 =end pod
 
-sub gtk_style_context_get_property ( N-GObject $context, Str $property, int32 $state, N-GObject $value )
+sub gtk_style_context_get_property ( N-GObject $context, Str $property, GFlag $state, N-GObject $value )
   is native(&gtk-lib)
   { * }
 
@@ -2391,7 +2391,7 @@ Since: 3.0
 
 =end pod
 
-sub gtk_style_context_get_valist ( N-GObject $context, int32 $state, va_list $args )
+sub gtk_style_context_get_valist ( N-GObject $context, GFlag $state, va_list $args )
   is native(&gtk-lib)
   { * }
 }}
