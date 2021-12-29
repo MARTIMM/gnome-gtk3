@@ -18,9 +18,9 @@
   - title: "Matrix"
     url: '/content-docs/reference/Cairo/Matrix.html'
     type: toplevel
-  - title: "Path"
-    url: '/content-docs/reference/Cairo/Path.html'
-    type: toplevel
+#  - title: "Path"
+#    url: '/content-docs/reference/Cairo/Path.html'
+#    type: toplevel
   - title: "Pattern"
     url: '/content-docs/reference/Cairo/Pattern.html'
     type: toplevel

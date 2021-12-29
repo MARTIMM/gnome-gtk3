@@ -91,3 +91,24 @@
     url: /content-docs/tutorial/Drag and Drop/destination.html
   - title: Signal Handlers
     url: /content-docs/tutorial/Drag and Drop/example.html
+
+- bar_title: Cairo
+  bar_menu:
+  - title: Introduction
+    url: /content-docs/tutorial/Cairo/intro.html
+  - title: "Cairo's Drawing Model"
+    url: /content-docs/tutorial/Cairo/drawing-model.html
+
+
+
+- x:
+  - title: Drawing with Cairo
+    url: /content-docs/tutorial/Cairo/.html
+  - title: Understanding Text
+    url: /content-docs/tutorial/Cairo/.html
+  - title: Working with Transforms
+    url: /content-docs/tutorial/Cairo/.html
+  - title: Where to Go Next
+    url: /content-docs/tutorial/Cairo/.html
+  - title: Tips and Tricks
+    url: /content-docs/tutorial/Cairo/.html
