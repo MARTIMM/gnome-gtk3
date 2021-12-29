@@ -38,11 +38,6 @@ Create a new surface that is as compatible as possible with an existing surface.
 
 Initially the surface contents are all 0 (transparent if contents have transparency, black otherwise.) Use `create_similar_image()` if you need an image surface which can be painted quickly to the target surface. Return value: a pointer to the newly allocated surface. The caller owns the surface and should call `clear-object()` when done with it.
 
-commentThis
-===========
-
-function always returns a valid pointer, but it will return a pointer to a "nil" surface if *other* is already in an error state or any other error occurs.
-
     multi method new (
       cairo_surface_t :$similar!,
       cairo_content_t :$content = CAIRO_CONTENT_COLOR,
