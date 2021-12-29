@@ -6,7 +6,6 @@
 
     {% for item in sb_menu.bar_menu %}
       {% assign url = site.baseurl | append: item.url %}
-
       {% if item.type %}
         {% assign classstr = item.type %}
       {% else %}
