@@ -5,6 +5,11 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2021-12-29 0.46.5
+  * Documentation changes from **Gnome::Cairo** package.
+  * Tutorial for using cairo.
+  * Bugfixes in **Gnome::Gtk3::StyleContext**.
+
 * 2021-12-12 0.46.4
   * Changes for renamed methods in **Gnome::N::TopLevelClassSupport**.
 
