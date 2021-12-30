@@ -25,42 +25,34 @@ Simple **Gnome::Gtk3::DrawingArea** usage
 
     class DA {
       method draw-callback (
-        cairo_t $cr-no, Gnome::Gtk3::DrawingArea :_widget($area)
+        cairo_t $cr-no, Gnome::Gtk3::DrawingArea _widget($area) --> gboolean
       ) {
         my UInt ( $width, $height);
-        my Gnome::Gtk3::StyleContext $context .= new(
-          :native-object($area.get-style-context)
-        );
         $width = $area.get-allocated-width;
         $height = $area.get-allocated-height;
 
-        my Gnome::Cairo $cr .= new(:native-object($cr-no));
-        $context.render-background( $cr, 0, 0, $width, $height);
+        with my Gnome::Cairo $cr .= new(:native-object($cr-no)) {
+          .arc(
+            $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
+          );
+          .set-source-rgba( 0, 0, 0.4, 1);
+          .cairo-fill;
+        }
 
-        $cr.cairo-arc(
-          $width/2.0, $height/2.0, min( $width, $height)/2.0, 0, 2.0 * π
-        );
-
-        my N-GdkRGBA $color-no = $context.get-color($context.get-state);
-        $cr.set-source-rgba(
-          $color-no.red, $color-no.green, $color-no.blue, $color-no.alpha
-        );
-
-        $cr.cairo-fill;
-
-        False;
+        false;
       }
     }
 
-
-    given my Gnome::Gtk3::DrawingArea $drawing-area .= new {
+    with my Gnome::Gtk3::DrawingArea $drawing-area .= new {
       .set-size-request( 100, 100);
       .register-signal( DA.new, 'draw-callback', 'draw');
     }
 
-Draw signals are normally delivered when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; `Gnome::Gtk3::Widget.queue_draw_area()` and `Gnome::Gdk3::Window.invalidate_rect()` are equally good ways to do this. You’ll then get a draw signal for the invalid region.
+Note; `false` (lowercase!) and `gboolean` are types set in **Gnome::N::GlibToRakuTypes**
 
-To receive mouse events on a drawing area, you will need to enable them with `Gnome::Gtk3::Widget.add_events()`. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused. Use `Gnome::Gtk3::Widget.has_focus()` in your expose event handler to decide whether to draw the focus indicator. See `Gnome::Gtk3::StyleContext.render_focus()` for one way to draw focus.
+Draw signals are normally delivered when a drawing area first comes on screen, or when it is covered by another window and then uncovered. You can also force an expose event by adding to the “damage region” of the drawing area’s window; `Gnome::Gtk3::Widget.queue-draw-area()` and `Gnome::Gdk3::Window.invalidate-rect()` are equally good ways to do this. You’ll then get a draw signal for the invalid region.
+
+To receive mouse events on a drawing area, you will need to enable them with `Gnome::Gtk3::Widget.add-events()`. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused. Use `Gnome::Gtk3::Widget.has-focus()` in your expose event handler to decide whether to draw the focus indicator. See `Gnome::Gtk3::StyleContext.render-focus()` for one way to draw focus.
 
 See Also
 --------
