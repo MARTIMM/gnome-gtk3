@@ -14,15 +14,14 @@ Cairo's nouns are somewhat abstract. To make them concrete I'm including diagram
 
 ### Destination
 <p>
-<img src="images/destination.png" width="150" style="float:right; margin-right:8px; margin-leftt:8px"/>
+<img src="images/destination.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
 The destination is the surface on which you're drawing. It may be tied to an array of pixels like in this tutorial, or it might be tied to a SVG or PDF file, or something else. This surface collects the elements of your graphic as you apply them, allowing you to build up a complex work as though painting on a canvas.
 </p>
 <!--br/-->
 
 ### Source
-
 <p>
-<img src="images/source.png" width="150" style="float:right; margin-right:8px; margin-leftt:8px"/>
+<img src="images/source.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
 The source is the "paint" you're about to work with. I show this as it is—plain black for several examples—but translucent to show lower layers. Unlike real paint, it doesn't have to be a single color; it can be a pattern or even a previously created destination surface (see How do I paint from one surface to another?). Also unlike real paint it can contain transparency information—the Alpha channel.
 </p>
 <!--br/-->
@@ -30,7 +29,7 @@ The source is the "paint" you're about to work with. I show this as it is—plai
 ### Mask
 
 <p>
-<img src="images/the-mask.png" width="150" style="float:right; margin-right:8px; margin-leftt:8px"/>
+<img src="images/the-mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
 The mask is the most important piece: it controls where you apply the source to the destination. I will show it as a yellow layer with holes where it lets the source through. When you apply a drawing verb, it's like you stamp the source to the destination. Anywhere the mask allows, the source is copied. Anywhere the mask disallows, nothing happens.
 </p>
 <!--br/-->
@@ -62,67 +61,121 @@ The reason you are using cairo in a program is to draw. Cairo internally draws w
 
 ### Stroke
 
-<p>
-<img src="images/stroke.png" width="150" style="float:right; margin-right:8px; margin-leftt:8px"/>
-The cairo_stroke() operation takes a virtual pen along the path. It allows the source to transfer through the mask in a thin (or thick) line around the path, according to the pen's line width, dash style, and line caps.
-</p>
+<img src="images/stroke.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+The `.stroke()` operation takes a virtual pen along the path. It allows the source to transfer through the mask in a thin (or thick) line around the path, according to the pen's line width, dash style, and line caps.
+<br/>
+<br/>
+<br/>
 <!--br/-->
 
 <!--
 Note: To see the code snippet in action, use the stroke.c file linked from the figure to the right. Just pasting the snippet into the FAQ's hello.c might give unexpected results due to different scaling. Read on; scaling is explained in section Working with Transforms below.
 -->
-```
-$context.set-line-width(0.1);
-$context.set-source-rgb( 0, 0, 0);
-$context.rectangle( 0.25, 0.25, 0.5, 0.5);
-$context.stroke;
-```
+<img src="Example-code/stroke.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+
+<pre class='highlight'><code>
+with my Gnome::Cairo $context .= new(:$surface) {
+  .set-line-width(1);
+  .set-source-rgba( 0, 0, 0.4, 1);
+  .rectangle( 20, 20, 80, 80);
+  .stroke;
+}
+</code></pre>
+
 
 ### Fill
 
-The cairo_fill() operation instead uses the path like the lines of a coloring book, and allows the source through the mask within the hole whose boundaries are the path. For complex paths (paths with multiple closed sub-paths—like a donut—or paths that self-intersect) this is influenced by the fill rule. Note that while stroking the path transfers the source for half of the line width on each side of the path, filling a path fills directly up to the edge of the path and no further.
+<img src="images/fill.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
 
-cairo_set_source_rgb (cr, 0, 0, 0);
-cairo_rectangle (cr, 0.25, 0.25, 0.5, 0.5);
-cairo_fill (cr);
+The `.fill()` operation instead uses the path like the lines of a coloring book, and allows the source through the mask within the hole whose boundaries are the path. For complex paths (paths with multiple closed sub-paths—like a donut—or paths that self-intersect) this is influenced by the fill rule. Note that while stroking the path transfers the source for half of the line width on each side of the path, filling a path fills directly up to the edge of the path and no further.
 
-Show Text / Glyphs
+<img src="Example-code/fill.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
 
-The cairo_show_text() operation forms the mask from text. It may be easier to think of cairo_show_text() as a shortcut for creating a path with cairo_text_path() and then using cairo_fill() to transfer it. Be aware cairo_show_text() caches glyphs so is much more efficient if you work with a lot of text.
+<pre class='highlight'><code>
+with $context .= new(:$surface) {
+  .set-source-rgba( 0, 0, 0.4, 1);
+  .rectangle( 20, 20, 80, 80);
+  .fill;
+}
+</code></pre>
 
-cairo_text_extents_t te;
-cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-cairo_select_font_face (cr, "Georgia",
-    CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-cairo_set_font_size (cr, 1.2);
-cairo_text_extents (cr, "a", &te);
-cairo_move_to (cr, 0.5 - te.width / 2 - te.x_bearing,
-    0.5 - te.height / 2 - te.y_bearing);
-cairo_show_text (cr, "a");
 
-Paint
+### Show Text / Glyphs
 
-The cairo_paint() operation uses a mask that transfers the entire source to the destination. Some people consider this an infinitely large mask, and others consider it no mask; the result is the same. The related operation cairo_paint_with_alpha() similarly allows transfer of the full source to destination, but it transfers only the provided percentage of the color.
+<!--div style="position=absolute; left:0; right:0">
+</div-->
 
-cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-cairo_paint_with_alpha (cr, 0.5);
+<img src="images/showtext.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
 
-Mask
+The `.show-text()` operation forms the mask from text. It may be easier to think of `.show-text()` as a shortcut for creating a path with `.text-path()` and then using `.fill()` to transfer it. Be aware `.show_text()` caches glyphs so is much more efficient if you work with a lot of text.
 
-The cairo_mask() and cairo_mask_surface() operations allow transfer according to the transparency/opacity of a second source pattern or surface. Where the pattern or surface is opaque, the current source is transferred to the destination. Where the pattern or surface is transparent, nothing is transferred.
+<img src="Example-code/show-text.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
 
-cairo_pattern_t *linpat, *radpat;
-linpat = cairo_pattern_create_linear (0, 0, 1, 1);
-cairo_pattern_add_color_stop_rgb (linpat, 0, 0, 0.3, 0.8);
-cairo_pattern_add_color_stop_rgb (linpat, 1, 0, 0.8, 0.3);
+<pre class='highlight'><code>
+with $context .= new(:$surface) {
+  .set-source-rgba( 0.0, 0.0, 0.4, 1);
+  .select-font-face(
+    "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD
+  );
+  .set-font-size(100);
+  my cairo_text_extents_t $text-extends = .text-extents("a");
+  .move-to(
+    0.5 * $width - $text-extends.width/2 - $text-extends.x_bearing,
+    0.5 * $height - $text-extends.height/2 - $text-extends.y_bearing
+  );
+  .show-text("a");
+}
+</code></pre>
 
-radpat = cairo_pattern_create_radial (0.5, 0.5, 0.25, 0.5, 0.5, 0.75);
-cairo_pattern_add_color_stop_rgba (radpat, 0, 0, 0, 0, 1);
-cairo_pattern_add_color_stop_rgba (radpat, 0.5, 0, 0, 0, 0);
 
-cairo_set_source (cr, linpat);
-cairo_mask (cr, radpat);
 
+### Paint
+
+<img src="images/paint.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+
+The `.paint()` operation uses a mask that transfers the entire source to the destination. Some people consider this an infinitely large mask, and others consider it no mask; the result is the same. The related operation `.paint-with-alpha()` similarly allows transfer of the full source to destination, but it transfers only the provided percentage of the color.
+
+<img src="Example-code/paint.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+
+<pre class='highlight'><code>
+with $context .= new(:$surface) {
+  .set-source-rgba( 0.0, 0.0, 0.4, 1);
+  .paint-with-alpha(0.4);
+}
+</code></pre>
+
+
+### Mask
+
+<img src="images/mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+
+The `.mask()` and `.mask-surface()` operations allow transfer according to the transparency/opacity of a second source pattern or surface. Where the pattern or surface is opaque, the current source is transferred to the destination. Where the pattern or surface is transparent, nothing is transferred.
+
+<img src="Example-code/mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+
+<pre class='highlight'><code>
+my Gnome::Cairo::Pattern $linpat;
+with $linpat .= new(:linear( 20, 20, 100, 100)) {
+  .add_color_stop_rgb( 0, 0, 0.3, 0.8);
+  .add_color_stop_rgb( 1, 0, 0.8, 0.3);
+}
+
+my Gnome::Cairo::Pattern $radpat;
+with $radpat .= new(:radial( 60, 60, 30, 60, 60, 90)) {
+  .add_color_stop_rgba( 0, 0, 0, 0, 1);
+  .add_color_stop_rgba( 0.5, 0, 0, 0, 0);
+}
+
+with $context .= new(:$surface) {
+  .set-source($linpat);
+  .mask($radpat);
+}
+</code></pre>
+
+Note: For this to work you also must import the **Gnome::Cairo::Pattern** module.
+
+
+<!--
 Drawing with Cairo
 
 In order to create an image you desire, you have to prepare the context for each of the drawing verbs. To use cairo_stroke() or cairo_fill() you first need a path. To use cairo_show_text() you must position your text by its insertion point. To use cairo_mask() you need a second source pattern or surface. And to use any of the operations, including cairo_paint(), you need a primary source.
@@ -309,3 +362,4 @@ for (i=0; i < strlen(alphabet); i++) {
 }
 
 Copyright © 2005–2007 Michael Urman
+-->

@@ -4,13 +4,115 @@ nav_menu: default-nav
 sidebar_menu: tutorial-sidebar
 layout: sidebar
 ---
-# Cairo Introduction
+# Introduction
 
 This tutorial is copied and modified for the use  of Raku from [the cairo website](https://www.cairographics.org/tutorial/) which in turn is derived from Michael Urman's cairo tutorial for python programmers (Not found anymore on its sit). The original code snippets in C have been translated to Raku, the text has only been changed as much as necessary.
 
 Cairo is a powerful 2d graphics library. This document introduces you to how cairo works and many of the functions you will use to create the graphic experience you desire.
 
 Original Python docs are copyrighted to © 2005–2007 Michael Urman but cannot be found anymore.
+
+
+# Setup
+
+The examples you will get to see in the tutorial are kept to the minimum of what is needed to explain. Here, I show two methods where you can fit in the examples.
+* The easiest one is to make a drawing and save it in a file.
+* The more elaborate method is to show the drawing in a GTK window. This is the sole reason that the **Gnome::Cairo** package is created, to be used whithin the GTK windowing system.
+
+## Save a drawing in a file
+
+```
+use v6.d;
+
+use Gnome::Cairo::ImageSurface;                                     # 1
+use Gnome::Cairo::Types;
+use Gnome::Cairo::Enums;
+use Gnome::Cairo;
+
+my Gnome::Cairo::ImageSurface $surface .= new(                      # 2
+  :format(CAIRO_FORMAT_ARGB32), :width(120), :height(120)
+);
+
+with my Gnome::Cairo $context .= new(:$surface) {                   # 3
+  .set-line-width(10);                                              # 4
+  .set-source-rgba( 0, 0, 0.4, 1);
+  .rectangle( 20, 20, 80, 80);
+  .stroke;
+}
+
+$surface.write-to-png('stroke.png');                                # 5
+```
+1) The necessary modules to import.
+
+2) Create an image surface to work with. The size is set to 120 x 120 pixels and can hold RGB and Alpha channel information. All in all 32 bits per pixel.
+
+3) Then the cairo context is created using the serface as input. Cairo uses this surface to draw upon.
+
+4) The next 4 lines are the lines used in an example.
+
+5) Save the drawing in a file.
+
+## Show the drawing in a GTK window
+
+```
+use v6.d;
+
+use Gnome::Cairo::ImageSurface;
+use Gnome::Cairo::Types;
+use Gnome::Cairo::Enums;
+use Gnome::Cairo;
+
+use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Main;
+use Gnome::Gtk3::DrawingArea;                                       # 1
+
+use Gnome::N::GlibToRakuTypes;
+
+class DA {
+  method draw-callback (                                            # 2
+    cairo_t $no-context, Gnome::Gtk3::DrawingArea :_widget($area)
+    --> gboolean
+  ) {
+    my Gnome::Cairo $context .= new(:native-object($no-context));   # 3
+    with $context {                                                 # 4
+      .set-line-width(10);
+      .set-source-rgba( 0, 0, 0.4, 1);
+      .rectangle( 20, 20, 80, 80);
+      .stroke;
+    }
+
+    false;
+  }
+
+  method quit ( ) {
+    Gnome::Gtk3::Main.new.quit;
+  }
+}
+
+
+with my Gnome::Gtk3::DrawingArea $drawing-area .= new {             # 5
+  .set-size-request( 120, 120);
+  .register-signal( DA.new, 'draw-callback', 'draw');
+}
+
+with my Gnome::Gtk3::Window $window .= new {
+  .set-title('stroke');
+  .register-signal( DA.new, 'quit', 'destroy');
+  .add($drawing-area);
+  .show-all;
+}
+
+Gnome::Gtk3::Main.new.main;
+```
+1) We are working on a **Gnome::Gtk3::DrawingArea**.
+
+2) To draw things we need to install a handler which is called on the `draw` event.
+
+3) Import the context provided to the handler. This is the surface from the drawing area.
+
+4) The next 4 lines are the lines used in an example.
+
+5) Create the drawing area of some size and register a handler for the `draw` signal.
 
 
 # Table of Contents
@@ -23,6 +125,7 @@ Original Python docs are copyrighted to © 2005–2007 Michael Urman but cannot 
 * Where to Go Next
 * Tips and Tricks
 
+<!--
 
 
 
@@ -302,3 +405,4 @@ for (i=0; i < strlen(alphabet); i++) {
 }
 
 Copyright © 2005–2007 Michael Urman
+-->
