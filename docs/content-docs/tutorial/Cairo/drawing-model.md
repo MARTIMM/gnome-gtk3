@@ -14,25 +14,25 @@ Cairo's nouns are somewhat abstract. To make them concrete I'm including diagram
 
 ### Destination
 <p>
-<img src="images/destination.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/destination.png" width="120" />
 The destination is the surface on which you're drawing. It may be tied to an array of pixels like in this tutorial, or it might be tied to a SVG or PDF file, or something else. This surface collects the elements of your graphic as you apply them, allowing you to build up a complex work as though painting on a canvas.
 </p>
-<!--br/-->
+<p style="clear:both;"/>
 
 ### Source
 <p>
-<img src="images/source.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/source.png" width="120" />
 The source is the "paint" you're about to work with. I show this as it is—plain black for several examples—but translucent to show lower layers. Unlike real paint, it doesn't have to be a single color; it can be a pattern or even a previously created destination surface (see How do I paint from one surface to another?). Also unlike real paint it can contain transparency information—the Alpha channel.
 </p>
-<!--br/-->
+<p style="clear:both;"/>
 
 ### Mask
 
 <p>
-<img src="images/the-mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/the-mask.png" width="120" />
 The mask is the most important piece: it controls where you apply the source to the destination. I will show it as a yellow layer with holes where it lets the source through. When you apply a drawing verb, it's like you stamp the source to the destination. Anywhere the mask allows, the source is copied. Anywhere the mask disallows, nothing happens.
 </p>
-<!--br/-->
+<p style="clear:both;"/>
 
 ### Path
 
@@ -61,17 +61,15 @@ The reason you are using cairo in a program is to draw. Cairo internally draws w
 
 ### Stroke
 
-<img src="images/stroke.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/stroke.png" width="120" />
 The `.stroke()` operation takes a virtual pen along the path. It allows the source to transfer through the mask in a thin (or thick) line around the path, according to the pen's line width, dash style, and line caps.
-<br/>
-<br/>
-<br/>
-<!--br/-->
+
+<p style="clear:both;"/>
 
 <!--
 Note: To see the code snippet in action, use the stroke.c file linked from the figure to the right. Just pasting the snippet into the FAQ's hello.c might give unexpected results due to different scaling. Read on; scaling is explained in section Working with Transforms below.
 -->
-<img src="Example-code/stroke.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+<img class="tutorial-image" src="Example-code/stroke.png" width="120" />
 
 <pre class='highlight'><code>
 with my Gnome::Cairo $context .= new(:$surface) {
@@ -85,11 +83,13 @@ with my Gnome::Cairo $context .= new(:$surface) {
 
 ### Fill
 
-<img src="images/fill.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/fill.png" width="120" />
 
 The `.fill()` operation instead uses the path like the lines of a coloring book, and allows the source through the mask within the hole whose boundaries are the path. For complex paths (paths with multiple closed sub-paths—like a donut—or paths that self-intersect) this is influenced by the fill rule. Note that while stroking the path transfers the source for half of the line width on each side of the path, filling a path fills directly up to the edge of the path and no further.
 
-<img src="Example-code/fill.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+<p style="clear:both;"/>
+
+<img class="tutorial-image" src="Example-code/fill.png" width="120" />
 
 <pre class='highlight'><code>
 with $context .= new(:$surface) {
@@ -105,11 +105,13 @@ with $context .= new(:$surface) {
 <!--div style="position=absolute; left:0; right:0">
 </div-->
 
-<img src="images/showtext.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/showtext.png" width="120" />
 
 The `.show-text()` operation forms the mask from text. It may be easier to think of `.show-text()` as a shortcut for creating a path with `.text-path()` and then using `.fill()` to transfer it. Be aware `.show_text()` caches glyphs so is much more efficient if you work with a lot of text.
 
-<img src="Example-code/show-text.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+<p style="clear:both;"/>
+
+<img class="tutorial-image" src="Example-code/show-text.png" width="120" />
 
 <pre class='highlight'><code>
 with $context .= new(:$surface) {
@@ -131,11 +133,13 @@ with $context .= new(:$surface) {
 
 ### Paint
 
-<img src="images/paint.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/paint.png" width="120" />
 
 The `.paint()` operation uses a mask that transfers the entire source to the destination. Some people consider this an infinitely large mask, and others consider it no mask; the result is the same. The related operation `.paint-with-alpha()` similarly allows transfer of the full source to destination, but it transfers only the provided percentage of the color.
 
-<img src="Example-code/paint.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+<p style="clear:both;"/>
+
+<img class="tutorial-image" src="Example-code/paint.png" width="120" />
 
 <pre class='highlight'><code>
 with $context .= new(:$surface) {
@@ -147,11 +151,13 @@ with $context .= new(:$surface) {
 
 ### Mask
 
-<img src="images/mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px"/>
+<img class="tutorial-image" src="images/mask.png" width="120" />
 
 The `.mask()` and `.mask-surface()` operations allow transfer according to the transparency/opacity of a second source pattern or surface. Where the pattern or surface is opaque, the current source is transferred to the destination. Where the pattern or surface is transparent, nothing is transferred.
 
-<img src="Example-code/mask.png" width="120" style="float:right; margin-right:8px; margin-left:8px; border:1px solid black;"/>
+<p style="clear:both;"/>
+
+<img class="tutorial-image" src="Example-code/mask.png" width="120" />
 
 <pre class='highlight'><code>
 my Gnome::Cairo::Pattern $linpat;
