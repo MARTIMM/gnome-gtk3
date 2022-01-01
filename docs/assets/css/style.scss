@@ -183,6 +183,13 @@ div.highlight, div.highlighter-rouge, pre {
   border-radius: $border-width;
 }
 
+.tutorial-image {
+  float:          right;
+  border:         solid 1px black;
+  margin-right:   8px;
+  margin-left:    8px;
+  padding:        2px;
+}
 
 table.coverage {
   float: right;
