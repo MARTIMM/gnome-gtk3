@@ -368,8 +368,8 @@ FontFace                  |  |  |  |  |  |  |  |  |  |
 FontOptions               |  |  |  |  |  |  |  |  |  |
 ImageSurface              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Matrix                    |  |  |  |  |  |  |  |  |  |
-Path                      |  |  |  |  |  |  |  |  |  |
-Pattern                   |  |  |  |  |  |  |  |  |  |
+Path                      |  | ✓| ✓| ✓|  |  |  |  |  |
+Pattern                   |  | ✓| ✓| ✓|  |  |  |  |  |
 ScaledFont                |  |  |  |  |  |  |  |  |  |
 Surface                   |TL| ✓| ✓| ✓|  | ✓| ✓| ✓|  |
 Types                     |  |  |  |  |  |  |  |  |  |
