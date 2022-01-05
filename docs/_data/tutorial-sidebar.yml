@@ -98,17 +98,11 @@
     url: /content-docs/tutorial/Cairo/intro.html
   - title: "Cairo's Drawing Model"
     url: /content-docs/tutorial/Cairo/drawing-model.html
-
-
-
-- x:
-  - title: Drawing with Cairo
-    url: /content-docs/tutorial/Cairo/.html
-  - title: Understanding Text
-    url: /content-docs/tutorial/Cairo/.html
   - title: Working with Transforms
-    url: /content-docs/tutorial/Cairo/.html
-  - title: Where to Go Next
-    url: /content-docs/tutorial/Cairo/.html
+    url: /content-docs/tutorial/Cairo/transformations.html
+  - title: Drawing with Cairo
+    url: /content-docs/tutorial/Cairo/drawing.html
+  - title: Understanding Text
+    url: /content-docs/tutorial/Cairo/text.html
   - title: Tips and Tricks
-    url: /content-docs/tutorial/Cairo/.html
+    url: /content-docs/tutorial/Cairo/tips.html

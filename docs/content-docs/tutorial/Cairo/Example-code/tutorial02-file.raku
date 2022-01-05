@@ -12,22 +12,27 @@ my Gnome::Cairo $context;
 #-------------------------------------------------------------------------------
 my Int ( $width, $height) = ( 120, 120);
 
+
 #-------------------------------------------------------------------------------
 $surface .= new( :format(CAIRO_FORMAT_ARGB32), :$width, :$height);
 with $context .= new(:$surface) {
-  .set-line-width(10);
-  .set-source-rgba( 0, 0, 0.4, 1);
-  .rectangle( 30, 30, 60, 60);
+  .translate( 10, 10);
+  .scale( 100, 100);
+
+  .set-line-width(0.1);
+  .set-source-rgb( 0, 0, 0);
+  .rectangle( 0.25, 0.25, 0.5, 0.5);
   .stroke;
 }
 
-$surface.write-to-png('stroke.png');
+$surface.write-to-png('stroke-orig.png');
 
+#`{{
 #-------------------------------------------------------------------------------
 $surface .= new( :format(CAIRO_FORMAT_ARGB32), :$width, :$height);
 with $context .= new(:$surface) {
   .set-source-rgba( 0, 0, 0.4, 1);
-  .rectangle( 30, 30, 60, 60);
+  .rectangle( 20, 20, 80, 80);
   .fill;
 }
 
@@ -79,7 +84,7 @@ with $context .= new(:$surface) {
 }
 
 $surface.write-to-png('mask.png');
-
+}}
 
 
 

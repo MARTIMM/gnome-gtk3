@@ -73,12 +73,13 @@ Note: To see the code snippet in action, use the stroke.c file linked from the f
 
 <pre class='highlight'><code>
 with my Gnome::Cairo $context .= new(:$surface) {
-  .set-line-width(1);
+  .set-line-width(10);
   .set-source-rgba( 0, 0, 0.4, 1);
-  .rectangle( 20, 20, 80, 80);
+  .rectangle( 30, 30, 60, 60);
   .stroke;
 }
 </code></pre>
+<p style="clear:both;"/>
 
 
 ### Fill
@@ -94,7 +95,7 @@ The `.fill()` operation instead uses the path like the lines of a coloring book,
 <pre class='highlight'><code>
 with $context .= new(:$surface) {
   .set-source-rgba( 0, 0, 0.4, 1);
-  .rectangle( 20, 20, 80, 80);
+  .rectangle( 30, 30, 60, 60);
   .fill;
 }
 </code></pre>

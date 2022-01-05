@@ -119,11 +119,20 @@ Gnome::Gtk3::Main.new.main;
 
 {% assign url = site.baseurl | append: '/content-docs/tutorial/Cairo/drawing-model.html' %}
 * [Cairo's Drawing Model]({{ url }})
-* Drawing with Cairo
-* Understanding Text
-* Working with Transforms
-* Where to Go Next
-* Tips and Tricks
+
+{% assign url = site.baseurl | append: '/content-docs/tutorial/Cairo/transformations.html' %}
+* [Working with Transforms]({{ url }})
+
+{% assign url = site.baseurl | append: '/content-docs/tutorial/Cairo/drawing.html' %}
+* [Drawing with Cairo]({{ url }})
+
+{% assign url = site.baseurl | append: '/content-docs/tutorial/Cairo/text.html' %}
+* [Understanding Text]({{ url }})
+
+{% assign url = site.baseurl | append: '/content-docs/tutorial/Cairo/tips.html' %}
+* [Tips and Tricks]({{ url }})
+
+<!-- * Transformations using matrices -->
 
 <!--
 
