@@ -362,16 +362,16 @@ SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓|
 
 | Gnome::Cairo            |T |dm|db|ds|ts|12|14|so|rk|
 |-------------------------|--|--|--|--|--|--|--|--|--|
-Cairo                     |TL| ✓| ✓| ✓|  | ✓| ✓| ✓|  |
+Cairo                     |TL| ✓| ✓| ✓| ⅓| ✓| ✓| ✓|  |
 Enums                     |  |  |  |  |  |  |  |  |  |
 FontFace                  |  |  |  |  |  |  |  |  |  |
-FontOptions               |  |  |  |  |  |  |  |  |  |
-ImageSurface              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+FontOptions               |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓| ✓|
+ImageSurface              |  | ✓| ✓| ✓| ¾| ✓| ✓| ✓| ✓|
 Matrix                    |  |  |  |  |  |  |  |  |  |
-Path                      |  | ✓| ✓| ✓|  |  |  |  |  |
-Pattern                   |  | ✓| ✓| ✓|  |  |  |  |  |
+Path                      |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓| ✓|
+Pattern                   |  | ✓| ✓| ✓| ⅖| ✓| ✓| ✓| ✓|
 ScaledFont                |  |  |  |  |  |  |  |  |  |
-Surface                   |TL| ✓| ✓| ✓|  | ✓| ✓| ✓|  |
+Surface                   |TL| ✓| ✓| ✓| ½| ✓| ✓| ✓| ✓|
 Types                     |  |  |  |  |  |  |  |  |  |
 
 <br/>
