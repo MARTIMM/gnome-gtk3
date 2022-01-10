@@ -142,38 +142,38 @@ Degenerate sides are permitted so straight lines may be used. A zero length line
               +---------------+
             C0     Side 3      C3
 
-Each patch is constructed by first calling `mesh-pattern-begin-patch()`, then `mesh-pattern-move-to()` to specify the first point in the patch (C0). Then the sides are specified with calls to `mesh-pattern-curve-to()` and `mesh-pattern-line-to()`.
+Each patch is constructed by first calling `mesh-begin-patch()`, then `mesh-move-to()` to specify the first point in the patch (C0). Then the sides are specified with calls to `mesh-curve-to()` and `mesh-line-to()`.
 
-The four additional control points (P0, P1, P2, P3) in a patch can be specified with `mesh-pattern-set-control-point()`. At each corner of the patch (C0, C1, C2, C3) a color may be specified with `mesh-pattern-set-corner-color-rgb()` or `mesh-pattern-set-corner-color-rgba()`. Any corner whose color is not explicitly specified defaults to transparent black. A Coons patch is a special case of the tensor-product patch where the control points are implicitly defined by the sides of the patch. The default value for any control point not specified is the implicit value for a Coons patch, i.e. if no control points are specified the patch is a Coons patch. A triangle is a special case of the tensor-product patch where the control points are implicitly defined by the sides of the patch, all the sides are lines and one of them has length 0, i.e. if the patch is specified using just 3 lines, it is a triangle. If the corners connected by the 0-length side have the same color, the patch is a Gouraud-shaded triangle. Patches may be oriented differently to the above diagram. For example the first point could be at the top left. The diagram only shows the relationship between the sides, corners and control points. Regardless of where the first point is located, when specifying colors, corner 0 will always be the first point, corner 1 the point between side 0 and side 1 etc.
+The four additional control points (P0, P1, P2, P3) in a patch can be specified with `mesh-set-control-point()`. At each corner of the patch (C0, C1, C2, C3) a color may be specified with `mesh-set-corner-color-rgb()` or `mesh-set-corner-color-rgba()`. Any corner whose color is not explicitly specified defaults to transparent black. A Coons patch is a special case of the tensor-product patch where the control points are implicitly defined by the sides of the patch. The default value for any control point not specified is the implicit value for a Coons patch, i.e. if no control points are specified the patch is a Coons patch. A triangle is a special case of the tensor-product patch where the control points are implicitly defined by the sides of the patch, all the sides are lines and one of them has length 0, i.e. if the patch is specified using just 3 lines, it is a triangle. If the corners connected by the 0-length side have the same color, the patch is a Gouraud-shaded triangle. Patches may be oriented differently to the above diagram. For example the first point could be at the top left. The diagram only shows the relationship between the sides, corners and control points. Regardless of where the first point is located, when specifying colors, corner 0 will always be the first point, corner 1 the point between side 0 and side 1 etc.
 
-Calling `mesh-pattern-end-patch()` completes the current patch. If less than 4 sides have been defined, the first missing side is defined as a line from the current point to the first point of the patch (C0) and the other sides are degenerate lines from C0 to C0. The corners between the added sides will all be coincident with C0 of the patch and their color will be set to be the same as the color of C0.
+Calling `mesh-end-patch()` completes the current patch. If less than 4 sides have been defined, the first missing side is defined as a line from the current point to the first point of the patch (C0) and the other sides are degenerate lines from C0 to C0. The corners between the added sides will all be coincident with C0 of the patch and their color will be set to be the same as the color of C0.
 
-Additional patches may be added with additional calls to `mesh-pattern-begin-patch()`/`mesh-pattern-end-patch()`.
+Additional patches may be added with additional calls to `mesh-begin-patch()`/`mesh-end-patch()`.
 
     my Gnome::Cairo $pattern .= new(:mesh);
 
     # Add a Coons patch
-    $pattern.mesh-pattern-begin-patch( $pattern);
-    $pattern.mesh-pattern-move-to( 0, 0);
-    $pattern.mesh-pattern-curve-to( 30, -30,  60,  30, 100, 0);
-    $pattern.mesh-pattern-curve-to( 60,  30, 130,  60, 100, 100);
-    $pattern.mesh-pattern-curve-to( 60,  70,  30, 130,   0, 100);
-    $pattern.mesh-pattern-curve-to( 30,  70, -30,  30,   0, 0);
-    $pattern.mesh-pattern-set-corner-color-rgb( $pattern, 0, 1, 0, 0);
-    $pattern.mesh-pattern-set-corner-color-rgb( 1, 0, 1, 0);
-    $pattern.mesh-pattern-set-corner-color-rgb( 2, 0, 0, 1);
-    $pattern.mesh-pattern-set-corner-color-rgb( 3, 1, 1, 0);
-    $pattern.mesh-pattern-end-patch;
+    $pattern.mesh-begin-patch( $pattern);
+    $pattern.mesh-move-to( 0, 0);
+    $pattern.mesh-curve-to( 30, -30,  60,  30, 100, 0);
+    $pattern.mesh-curve-to( 60,  30, 130,  60, 100, 100);
+    $pattern.mesh-curve-to( 60,  70,  30, 130,   0, 100);
+    $pattern.mesh-curve-to( 30,  70, -30,  30,   0, 0);
+    $pattern.mesh-set-corner-color-rgb( $pattern, 0, 1, 0, 0);
+    $pattern.mesh-set-corner-color-rgb( 1, 0, 1, 0);
+    $pattern.mesh-set-corner-color-rgb( 2, 0, 0, 1);
+    $pattern.mesh-set-corner-color-rgb( 3, 1, 1, 0);
+    $pattern.mesh-end-patch;
 
     # Add a Gouraud-shaded triangle
-    $pattern.mesh-pattern-begin-patch;
-    $pattern.mesh-pattern-move-to( 100, 100);
-    $pattern.mesh-pattern-line-to( 130, 130);
-    $pattern.mesh-pattern-line-to( 130,  70);
-    $pattern.mesh-pattern-set-corner-color-rgb( 0, 1, 0, 0);
-    $pattern.mesh-pattern-set-corner-color-rgb( 1, 0, 1, 0);
-    $pattern.mesh-pattern-set-corner-color-rgb( 2, 0, 0, 1);
-    $pattern.mesh-pattern-end-patch;
+    $pattern.mesh-begin-patch;
+    $pattern.mesh-move-to( 100, 100);
+    $pattern.mesh-line-to( 130, 130);
+    $pattern.mesh-line-to( 130,  70);
+    $pattern.mesh-set-corner-color-rgb( 0, 1, 0, 0);
+    $pattern.mesh-set-corner-color-rgb( 1, 0, 1, 0);
+    $pattern.mesh-set-corner-color-rgb( 2, 0, 0, 1);
+    $pattern.mesh-end-patch;
 
 When two patches overlap, the last one that has been added is drawn over the first one.
 
@@ -190,13 +190,13 @@ Adds an opaque color stop to a gradient pattern. The offset specifies the locati
 
     method add-color-stop-rgb ( Num $offset, Num $red, Num $green, Num $blue )
 
-  * Num $offset; a **cairo_pattern_t**
+  * $offset; an offset in the range [0.0 .. 1.0]
 
-  * Num $red; an offset in the range [0.0 .. 1.0]
+  * $red; red component of color
 
-  * Num $green; red component of color
+  * $green; green component of color
 
-  * Num $blue; green component of color
+  * $blue; blue component of color
 
 add-color-stop-rgba
 -------------------
@@ -205,55 +205,195 @@ Adds a translucent color stop to a gradient pattern. The offset specifies the lo
 
     method add-color-stop-rgba ( Num $offset, Num $red, Num $green, Num $blue, Num $alpha )
 
-  * Num $offset; a **cairo_pattern_t**
+  * $offset; an offset in the range [0.0 .. 1.0]
 
-  * Num $red; an offset in the range [0.0 .. 1.0]
+  * $red; red component of color
 
-  * Num $green; red component of color
+  * $green; green component of color
 
-  * Num $blue; green component of color
+  * $blue; blue component of color
 
-  * Num $alpha; blue component of color
+  * $alpha; alpha component of color
 
-mesh-pattern-begin-patch
-------------------------
+get-color-stop-count
+--------------------
 
-Begin a patch in a mesh pattern. After calling this function, the patch shape should be defined with `mesh-pattern-move-to()`, `mesh-pattern-line-to()` and `mesh-pattern-curve-to()`. After defining the patch, `mesh-pattern-end-patch()` must be called before using *pattern* as a source or mask. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* already has a current patch, it will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+Gets the number of color stops specified in the given gradient pattern.
 
-    method mesh-pattern-begin-patch ( )
+    method get-color-stop-count ( --> List )
 
-mesh-pattern-curve-to
----------------------
+List returns;
 
-Adds a cubic Bézier spline to the current patch from the current point to position (*x3*, *y3*) in pattern-space coordinates, using (*x1*, *y1*) and (*x2*, *y2*) as the control points. If the current patch has no current point before the call to `mesh-pattern-curve-to()`, this function will behave as if preceded by a call to cairo_mesh_pattern_move_to(*pattern*, *x1*, *y1*). After this call the current point will be (*x3*, *y3*). Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch already has 4 sides, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+  * $count; return value for the number of color stops, or `Any`
 
-    method mesh-pattern-curve-to ( Num $x1, Num $y1, Num $x2, Num $y2, Num $x3, Num $y3 )
+  * cairo_status_t; values can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a gradient pattern.
 
-  * Num $x1; a **cairo_pattern_t**
+get-color-stop-rgba
+-------------------
 
-  * Num $y1; the X coordinate of the first control point
+Gets the color and offset information at the given *index* for a gradient pattern. Values of *index* range from 0 to n-1 where n is the number returned by `get-color-stop-count()`.
 
-  * Num $x2; the Y coordinate of the first control point
+    method get-color-stop-rgba ( Int $index --> List )
 
-  * Num $y2; the X coordinate of the second control point
+  * $index; index of the stop to return data for
 
-  * Num $x3; the Y coordinate of the second control point
+The List returns;
 
-  * Num $y3; the X coordinate of the end of the curve
+  * $offset; return value for the offset of the stop, or `Any`
 
-mesh-pattern-end-patch
+  * $red; return value for red component of color, or `Any`
+
+  * $green; return value for green component of color, or `Any`
+
+  * $blue; return value for blue component of color, or `Any`
+
+  * $alpha; return value for alpha component of color, or `Any`
+
+  * cairo_status_t; values can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_INVALID_INDEX` if *index* is not valid for the given pattern. If the pattern is not a gradient pattern, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`
+
+get-extend
+----------
+
+Gets the current extend mode for a pattern. See **cairo_extend_t** for details on the semantics of each extend strategy.
+
+Return value: the current extend strategy used for drawing the pattern.
+
+    method get-extend ( --> cairo_extend_t )
+
+get-filter
+----------
+
+Gets the current filter for a pattern. See **cairo_filter_t** for details on each filter.
+
+Return value: the current filter used for resizing the pattern.
+
+    method get-filter ( --> cairo_filter_t )
+
+get-linear-points
+-----------------
+
+Gets the gradient endpoints for a linear gradient.
+
+    method get-linear-points ( --> List )
+
+List returns;
+
+  * $x0; return value for the x coordinate of the first point, or `Any`
+
+  * $y0; return value for the y coordinate of the first point, or `Any`
+
+  * $x1; return value for the x coordinate of the second point, or `Any`
+
+  * $y1; return value for the y coordinate of the second point, or `Any`
+
+  * cairo_status_t; values can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a linear gradient pattern.
+
+get-matrix
+----------
+
+Returns the pattern's transformation matrix
+
+    method get-matrix ( --> cairo_matrix_t )
+
+get-radial-circles
+------------------
+
+Gets the gradient endpoint circles for a radial gradient, each specified as a center coordinate and a radius.
+
+    method get-radial-circles ( --> List )
+
+  * $x0; return value for the x coordinate of the center of the first circle, or `Any`
+
+  * $y0; return value for the y coordinate of the center of the first circle, or `Any`
+
+  * $r0; return value for the radius of the first circle, or `Any`
+
+  * $x1; return value for the x coordinate of the center of the second circle, or `Any`
+
+  * $y1; return value for the y coordinate of the center of the second circle, or `Any`
+
+  * $r1; return value for the radius of the second circle, or `Any`
+
+  * cairo_status_t; value can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a radial gradient pattern.
+
+get-rgba
+--------
+
+Gets the solid color for a solid color pattern.
+
+    method get-rgba ( --> List )
+
+  * $red; return value for red component of color, or `Any`
+
+  * $green; return value for green component of color, or `Any`
+
+  * $blue; return value for blue component of color, or `Any`
+
+  * $alpha; return value for alpha component of color, or `Any`
+
+  * cairo_status_t; value can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if the pattern is not a solid color pattern.
+
+get-surface
+-----------
+
+Gets the surface of a surface pattern. The reference returned in *surface* is owned by the pattern; the caller should call `surface-reference()` if the surface is to be retained.
+
+    method get-surface ( --> List )
+
+List holds;
+
+  * Gnome::Cairo::Surface; surface of pattern, or `Any`
+
+  * cairo_status_t; value can be `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if the pattern is not a surface pattern.
+
+get-type
+--------
+
+Get the pattern's type. See **cairo_pattern_type_t** for available types. Return value: The type of *pattern*.
+
+    method get-type ( --> cairo_pattern_type_t )
+
+mesh-begin-patch
+----------------
+
+Begin a patch in a mesh pattern. After calling this function, the patch shape should be defined with `mesh-move-to()`, `mesh-line-to()` and `mesh-curve-to()`. After defining the patch, `mesh-end-patch()` must be called before using *pattern* as a source or mask. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* already has a current patch, it will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+
+    method mesh-begin-patch ( )
+
+mesh-curve-to
+-------------
+
+Adds a cubic Bézier spline to the current patch from the current point to position (*x3*, *y3*) in pattern-space coordinates, using (*x1*, *y1*) and (*x2*, *y2*) as the control points. If the current patch has no current point before the call to `mesh-curve-to()`, this function will behave as if preceded by a call to cairo_mesh_pattern_move_to(*pattern*, *x1*, *y1*). After this call the current point will be (*x3*, *y3*). Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch already has 4 sides, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+
+    method mesh-curve-to (
+      Num $x1, Num $y1, Num $x2, Num $y2, Num $x3, Num $y3
+    )
+
+  * $x1; the X coordinate of the first control point
+
+  * $y1; the Y coordinate of the first control point
+
+  * $x2; the X coordinate of the second control point
+
+  * $y2; the Y coordinate of the second control point
+
+  * $x3; the X coordinate of the end of the curve
+
+  * $y3; the Y coordinate of the end of the curve
+
+mesh-end-patch
+--------------
+
+Indicates the end of the current patch in a mesh pattern. If the current patch has less than 4 sides, it is closed with a straight line from the current point to the first point of the patch as if `mesh-line-to()` was used. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch has no current point, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+
+    method mesh-end-patch ( )
+
+mesh-get-control-point
 ----------------------
-
-Indicates the end of the current patch in a mesh pattern. If the current patch has less than 4 sides, it is closed with a straight line from the current point to the first point of the patch as if `mesh-pattern-line-to()` was used. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch has no current point, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
-
-    method mesh-pattern-end-patch ( )
-
-mesh-pattern-get-control-point
-------------------------------
 
 Gets the control point *point_num* of patch *patch_num* for a mesh pattern. *patch_num* can range from 0 to n-1 where n is the number returned by `mesh_pattern-get-patch-count()`. Valid values for *point_num* are from 0 to 3 and identify the control points as explained in `create-mesh()`. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_INVALID_INDEX` if *patch_num* or *point_num* is not valid for *pattern*. If *pattern* is not a mesh pattern, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
 
-    method mesh-pattern-get-control-point ( Int $patch_num, Int $point_num, Num $x, Num $y --> cairo_status_t )
+    method mesh-get-control-point ( Int $patch_num, Int $point_num, Num $x, Num $y --> cairo_status_t )
 
   * Int $patch_num; a **cairo_pattern_t**
 
@@ -263,12 +403,12 @@ Gets the control point *point_num* of patch *patch_num* for a mesh pattern. *pat
 
   * Num $y; return value for the x coordinate of the control point, or `Any`
 
-mesh-pattern-get-corner-color-rgba
-----------------------------------
+mesh-get-corner-color-rgba
+--------------------------
 
-Gets the color information in corner *corner_num* of patch *patch_num* for a mesh pattern. *patch_num* can range from 0 to n-1 where n is the number returned by `mesh-pattern-get-patch-count()`. Valid values for *corner_num* are from 0 to 3 and identify the corners as explained in `create-mesh()`. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_INVALID_INDEX` if *patch_num* or *corner_num* is not valid for *pattern*. If *pattern* is not a mesh pattern, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
+Gets the color information in corner *corner_num* of patch *patch_num* for a mesh pattern. *patch_num* can range from 0 to n-1 where n is the number returned by `mesh-get-patch-count()`. Valid values for *corner_num* are from 0 to 3 and identify the corners as explained in `create-mesh()`. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_INVALID_INDEX` if *patch_num* or *corner_num* is not valid for *pattern*. If *pattern* is not a mesh pattern, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
 
-    method mesh-pattern-get-corner-color-rgba ( Int $patch_num, Int $corner_num, Num $red, Num $green, Num $blue, Num $alpha --> cairo_status_t )
+    method mesh-get-corner-color-rgba ( Int $patch_num, Int $corner_num, Num $red, Num $green, Num $blue, Num $alpha --> cairo_status_t )
 
   * Int $patch_num; a **cairo_pattern_t**
 
@@ -282,12 +422,12 @@ Gets the color information in corner *corner_num* of patch *patch_num* for a mes
 
   * Num $alpha; return value for blue component of color, or `Any`
 
-mesh-pattern-get-patch-count
-----------------------------
+mesh-get-patch-count
+--------------------
 
-Gets the number of patches specified in the given mesh pattern. The number only includes patches which have been finished by calling `mesh-pattern-end-patch()`. For example it will be 0 during the definition of the first patch.
+Gets the number of patches specified in the given mesh pattern. The number only includes patches which have been finished by calling `mesh-end-patch()`. For example it will be 0 during the definition of the first patch.
 
-    method mesh-pattern-get-patch-count ( --> List )
+    method mesh-get-patch-count ( --> List )
 
 Returned List holds;
 
@@ -295,43 +435,43 @@ Returned List holds;
 
   * cairo_status_t; The status, `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a mesh pattern.
 
-mesh-pattern-get-path
----------------------
+mesh-get-path
+-------------
 
-Gets path defining the patch *patch_num* for a mesh pattern. *patch_num* can range from 0 to n-1 where n is the number returned by `mesh-pattern-get-patch-count()`. Return value: the path defining the patch, or a path with status `CAIRO_STATUS_INVALID_INDEX` if *patch_num* or *point_num* is not valid for *pattern*. If *pattern* is not a mesh pattern, a path with status `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
+Gets path defining the patch *patch_num* for a mesh pattern. *patch_num* can range from 0 to n-1 where n is the number returned by `mesh-get-patch-count()`. Return value: the path defining the patch, or a path with status `CAIRO_STATUS_INVALID_INDEX` if *patch_num* or *point_num* is not valid for *pattern*. If *pattern* is not a mesh pattern, a path with status `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
 
-    method mesh-pattern-get-path ( Int $patch_num --> cairo_path_t )
+    method mesh-get-path ( Int $patch_num --> cairo_path_t )
 
   * Int $patch_num; a **cairo_pattern_t**
 
-mesh-pattern-line-to
---------------------
+mesh-line-to
+------------
 
-Adds a line to the current patch from the current point to position (*x*, *y*) in pattern-space coordinates. If there is no current point before the call to `mesh-pattern-line-to()` this function will behave as cairo_mesh_pattern_move_to(*pattern*, *x*, *y*). After this call the current point will be (*x*, *y*). Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch already has 4 sides, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
+Adds a line to the current patch from the current point to position (*x*, *y*) in pattern-space coordinates. If there is no current point before the call to `mesh-line-to()` this function will behave as cairo_mesh_pattern_move_to(*pattern*, *x*, *y*). After this call the current point will be (*x*, *y*). Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch already has 4 sides, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
-    method mesh-pattern-line-to ( Num $x, Num $y )
+    method mesh-line-to ( Num $x, Num $y )
 
   * Num $x; a **cairo_pattern_t**
 
   * Num $y; the X coordinate of the end of the new line
 
-mesh-pattern-move-to
---------------------
+mesh-move-to
+------------
 
 Define the first point of the current patch in a mesh pattern. After this call the current point will be (*x*, *y*). Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *pattern* has no current patch or the current patch already has at least one side, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
-    method mesh-pattern-move-to ( Num $x, Num $y )
+    method mesh-move-to ( Num $x, Num $y )
 
   * Num $x; a **cairo_pattern_t**
 
   * Num $y; the X coordinate of the new position
 
-mesh-pattern-set-control-point
-------------------------------
+mesh-set-control-point
+----------------------
 
 Set an internal control point of the current patch. Valid values for *point_num* are from 0 to 3 and identify the control points as explained in `create-mesh()`. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *point_num* is not valid, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_INDEX`. If *pattern* has no current patch, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
-    method mesh-pattern-set-control-point ( Int $point_num, Num $x, Num $y )
+    method mesh-set-control-point ( Int $point_num, Num $x, Num $y )
 
   * Int $point_num; a **cairo_pattern_t**
 
@@ -339,12 +479,12 @@ Set an internal control point of the current patch. Valid values for *point_num*
 
   * Num $y; the X coordinate of the control point
 
-mesh-pattern-set-corner-color-rgb
----------------------------------
+mesh-set-corner-color-rgb
+-------------------------
 
 Sets the color of a corner of the current patch in a mesh pattern. The color is specified in the same way as in `set-source-rgb()`. Valid values for *corner_num* are from 0 to 3 and identify the corners as explained in `create-mesh()`. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *corner_num* is not valid, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_INDEX`. If *pattern* has no current patch, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
-    method mesh-pattern-set-corner-color-rgb ( Int $corner_num, Num $red, Num $green, Num $blue )
+    method mesh-set-corner-color-rgb ( Int $corner_num, Num $red, Num $green, Num $blue )
 
   * Int $corner_num; a **cairo_pattern_t**
 
@@ -354,12 +494,12 @@ Sets the color of a corner of the current patch in a mesh pattern. The color is 
 
   * Num $blue; green component of color
 
-mesh-pattern-set-corner-color-rgba
-----------------------------------
+mesh-set-corner-color-rgba
+--------------------------
 
 Sets the color of a corner of the current patch in a mesh pattern. The color is specified in the same way as in `set-source-rgba()`. Valid values for *corner_num* are from 0 to 3 and identify the corners as explained in `create-mesh()`. Note: If *pattern* is not a mesh pattern then *pattern* will be put into an error status with a status of `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`. If *corner_num* is not valid, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_INDEX`. If *pattern* has no current patch, *pattern* will be put into an error status with a status of `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
-    method mesh-pattern-set-corner-color-rgba ( Int $corner_num, Num $red, Num $green, Num $blue, Num $alpha )
+    method mesh-set-corner-color-rgba ( Int $corner_num, Num $red, Num $green, Num $blue, Num $alpha )
 
   * Int $corner_num; a **cairo_pattern_t**
 
@@ -371,129 +511,6 @@ Sets the color of a corner of the current patch in a mesh pattern. The color is 
 
   * Num $alpha; blue component of color
 
-get-color-stop-count
---------------------
-
-Gets the number of color stops specified in the given gradient pattern. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a gradient pattern.
-
-    method get-color-stop-count ( Int $count --> cairo_status_t )
-
-  * Int $count; a **cairo_pattern_t**
-
-get-color-stop-rgba
--------------------
-
-Gets the color and offset information at the given *index* for a gradient pattern. Values of *index* range from 0 to n-1 where n is the number returned by `get-color-stop-count()`. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_INVALID_INDEX` if *index* is not valid for the given pattern. If the pattern is not a gradient pattern, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` is returned.
-
-    method get-color-stop-rgba ( Int $index, Num $offset, Num $red, Num $green, Num $blue, Num $alpha --> cairo_status_t )
-
-  * Int $index; a **cairo_pattern_t**
-
-  * Num $offset; index of the stop to return data for
-
-  * Num $red; return value for the offset of the stop, or `Any`
-
-  * Num $green; return value for red component of color, or `Any`
-
-  * Num $blue; return value for green component of color, or `Any`
-
-  * Num $alpha; return value for blue component of color, or `Any`
-
-get-extend
-----------
-
-Gets the current extend mode for a pattern. See **cairo_extend_t** for details on the semantics of each extend strategy. Return value: the current extend strategy used for drawing the pattern.
-
-    method get-extend ( --> cairo_extend_t )
-
-get-filter
-----------
-
-Gets the current filter for a pattern. See **cairo_filter_t** for details on each filter. Return value: the current filter used for resizing the pattern.
-
-    method get-filter ( --> cairo_filter_t )
-
-get-linear-points
------------------
-
-Gets the gradient endpoints for a linear gradient. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a linear gradient pattern.
-
-    method get-linear-points ( Num $x0, Num $y0, Num $x1, Num $y1 --> cairo_status_t )
-
-  * Num $x0; a **cairo_pattern_t**
-
-  * Num $y0; return value for the x coordinate of the first point, or `Any`
-
-  * Num $x1; return value for the y coordinate of the first point, or `Any`
-
-  * Num $y1; return value for the x coordinate of the second point, or `Any`
-
-get-matrix
-----------
-
-Stores the pattern's transformation matrix into *matrix*.
-
-    method get-matrix ( cairo_matrix_t $matrix )
-
-  * cairo_matrix_t $matrix; a **cairo_pattern_t**
-
-get-radial-circles
-------------------
-
-Gets the gradient endpoint circles for a radial gradient, each specified as a center coordinate and a radius. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if *pattern* is not a radial gradient pattern.
-
-    method get-radial-circles ( Num $x0, Num $y0, Num $r0, Num $x1, Num $y1, Num $r1 --> cairo_status_t )
-
-  * Num $x0; a **cairo_pattern_t**
-
-  * Num $y0; return value for the x coordinate of the center of the first circle, or `Any`
-
-  * Num $r0; return value for the y coordinate of the center of the first circle, or `Any`
-
-  * Num $x1; return value for the radius of the first circle, or `Any`
-
-  * Num $y1; return value for the x coordinate of the center of the second circle, or `Any`
-
-  * Num $r1; return value for the y coordinate of the center of the second circle, or `Any`
-
-get-reference-count
--------------------
-
-Returns the current reference count of *pattern*. Return value: the current reference count of *pattern*. If the object is a nil object, 0 will be returned.
-
-    method get-reference-count ( --> Int )
-
-get-rgba
---------
-
-Gets the solid color for a solid color pattern. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if the pattern is not a solid color pattern.
-
-    method get-rgba ( Num $red, Num $green, Num $blue, Num $alpha --> cairo_status_t )
-
-  * Num $red; a **cairo_pattern_t**
-
-  * Num $green; return value for red component of color, or `Any`
-
-  * Num $blue; return value for green component of color, or `Any`
-
-  * Num $alpha; return value for blue component of color, or `Any`
-
-get-surface
------------
-
-Gets the surface of a surface pattern. The reference returned in *surface* is owned by the pattern; the caller should call `surface-reference()` if the surface is to be retained. Return value: `CAIRO_STATUS_SUCCESS`, or `CAIRO_STATUS_PATTERN_TYPE_MISMATCH` if the pattern is not a surface pattern.
-
-    method get-surface ( cairo_surface_t $surface --> cairo_status_t )
-
-  * cairo_surface_t $surface; a **cairo_pattern_t**
-
-get-type
---------
-
-Get the pattern's type. See **cairo_pattern_type_t** for available types. Return value: The type of *pattern*.
-
-    method get-type ( --> cairo_pattern_type_t )
-
 set-extend
 ----------
 
@@ -501,20 +518,21 @@ Sets the mode to be used for drawing outside the area of a pattern. See **cairo_
 
     method set-extend ( cairo_extend_t $extend )
 
-  * cairo_extend_t $extend; a **cairo_pattern_t**
+  * $extend; a **cairo-extend-t** describing how the area outside of the pattern will be drawn
 
 set-filter
 ----------
 
-Sets the filter to be used for resizing when using this pattern. See **cairo_filter_t** for details on each filter. * Note that you might want to control filtering even when you do not have an explicit **cairo_pattern_t** object, (for example when using `set-source-surface()`). In these cases, it is convenient to use `get-source()` to get access to the pattern that cairo creates implicitly. For example:
+Sets the filter to be used for resizing when using this pattern. See **cairo_filter_t** for details on each filter.
 
-    cairo_set_source_surface (cr, image, x, y); cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
+Note that you might want to control filtering even when you do not have an explicit **cairo_pattern_t** object, (for example when using `set-source-surface()`). In these cases, it is convenient to use `get-source()` to get access to the pattern that cairo creates implicitly. For example:
 
+      $cairo.set-source-surface( $image, $x, $y);
+      $pattern.set-filter( $cairo.get-source, CAIRO_FILTER_NEAREST);
 
+      method set-filter ( cairo_filter_t $filter )
 
-     method set-filter ( cairo_filter_t $filter )
-
-  * cairo_filter_t $filter; a **cairo_pattern_t**
+  * $filter; a **cairo-filter-t** describing the filter to use for resizing the pattern
 
 set-matrix
 ----------
@@ -527,12 +545,14 @@ Sets the pattern's transformation matrix to *matrix*. This matrix is a transform
 
      method set-matrix ( cairo_matrix_t $matrix )
 
-  * cairo_matrix_t $matrix; a **cairo_pattern_t**
+  * $matrix; a **cairo-matrix-t**
 
 status
 ------
 
 Checks whether an error has previously occurred for this pattern.
+
+Possible return value: `CAIRO_STATUS_SUCCESS`, `CAIRO_STATUS_NO_MEMORY`, `CAIRO_STATUS_INVALID_MATRIX`, `CAIRO_STATUS_PATTERN_TYPE_MISMATCH`, or `CAIRO_STATUS_INVALID_MESH_CONSTRUCTION`.
 
     method status ( --> cairo_status_t )
 
