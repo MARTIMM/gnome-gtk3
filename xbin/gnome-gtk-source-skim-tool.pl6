@@ -1137,9 +1137,12 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
     if $line ~~ m/ ^ \s+ '* @' <alnum>+ ':' $<item-doc> = [ .* ] / {
       # check if there was some item. if so, save before set to new item
       # @ can be in documentation too!
-      if $gather-items-doc {
-        $items-src-doc.push(primary-doc-changes($item)) if ?$item;
-      }
+
+      #if $gather-items-doc {
+      #  $items-src-doc.push(primary-doc-changes($item)) if ?$item;
+      #}
+      $items-src-doc.push(primary-doc-changes($item))
+        if $gather-items-doc and ?$item;
 
       # new item. remove first space char
       $item = ~($<item-doc> // '');
@@ -1177,7 +1180,7 @@ sub get-sub-doc ( Str:D $sub-name, Str:D $source-content --> List ) {
     last if $line-count > 100;
   }
 
-  # in case there is no doc, we need to save the last item still
+  # in case there is no doc, we still need to save the last arg item
   if $gather-items-doc {
     $items-src-doc.push(primary-doc-changes($item));
   }
@@ -2371,7 +2374,7 @@ sub podding-function ( Str:D $text is copy --> Str ) {
   # change any function() to C<function()>. first change to [[function]] to
   # prevent nested substitutions.
   $text ~~ s:g/ ( <[\w\d\-\_]>+ ) \s* '()' /\[\[$/[0]\]\]/;
-  $text ~~ s/ $*base-sub-name '_' //;
+  $text ~~ s:g/ $*base-sub-name '_' //;
   $text ~~ s:g/ '_' /-/;
   $text ~~ s:g/ '[[' ( <[\w\d\-\_]>+ )']]' /C<$/[0]\()>/;
 
