@@ -6,14 +6,7 @@ Base class for font faces
 Description
 ===========
 
-**cairo_font_face_t** represents a particular font at a particular weight, slant, and other characteristic but no size, transformation, or size.
-
-Font faces are created using *font-backend*-specific constructors, typically of the form `cairo_B<backend>_font_face_create( )`, or implicitly using the *toy* text API by way of `cairo_select_font_face()`. The resulting face can be accessed using `cairo_get_font_face()`.
-
-See Also
---------
-
-**cairo_scaled_font_t**
+**Gnome::Cairo::FontFace** represents a particular font at a particular weight, slant, and other characteristic but no size, transformation, or size.
 
 Synopsis
 ========
@@ -27,24 +20,30 @@ Declaration
 Methods
 =======
 
-[cairo_font_face_] get_type
----------------------------
+new
+---
 
-This function returns the type of the backend used to create a font face. See **cairo_font_type_t** for available types. Return value: The type of *font_face*.
+There are no creation methods to get a new **Gnome::Cairo::FontFace**. You can import it from elsewhere when a native object is returned or sometimes the Raku object can be produced like the `Gnome::Cairo.get-font-face()` call;
 
-    method cairo_font_face_get_type ( --> Int )
+    my Gnome::Cairo::FontFace $ff = $context.get-font-face;
 
-[cairo_font_face_] get_reference_count
---------------------------------------
+### :native-object
 
-Returns the current reference count of *font_face*. Return value: the current reference count of *font_face*. If the object is a nil object, 0 will be returned.
+Create a FontFace object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-    method cairo_font_face_get_reference_count ( --> UInt )
+    multi method new ( N-GObject :$native-object! )
 
-cairo_font_face_status
-----------------------
+get-type
+--------
 
-Checks whether an error has previously occurred for this font face Return value: `CAIRO_STATUS_SUCCESS` or another error such as `CAIRO_STATUS_NO_MEMORY`.
+This function returns the type of the backend used to create a font face. See **cairo-font-type-t** for available types. Return value: The type of *font-face*.
 
-    method cairo_font_face_status ( --> Int )
+    method get-type ( --> cairo_font_type_t )
+
+status
+------
+
+Checks whether an error has previously occurred for this font face Return value: `CAIRO_STATUS_SUCCESS` or another error such as `CAIRO_STATUS_NO-MEMORY`.
+
+    method status ( --> cairo_status_t )
 
