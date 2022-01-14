@@ -6,12 +6,33 @@ Generic matrix operations
 Description
 ===========
 
-    B<cairo_matrix_t> is used throughout cairo to convert between different coordinate spaces. A B<cairo_matrix_t> holds an affine transformation, such as a scale, rotation, shear, or a combination of these. The transformation of a point (<literal>x</literal>,<literal>y</literal>) is given by: <programlisting> x_new = xx * x + xy * y + x0; y_new = yx * x + yy * y + y0; </programlisting> The current transformation matrix of a B<cairo_t>, represented as a B<cairo_matrix_t>, defines the transformation from user-space coordinates to device-space coordinates. See C<cairo_get_matrix()> and C<cairo_set_matrix()>.
+**Gnome::Cairo::Matrix** is used throughout cairo to convert between different coordinate spaces.
+
+The native type `cairo_matrix_t`, defined in **Gnome::Cairo::Types** has the following members;
+
+  * Num $.xx; xx component of the affine transformation
+
+  * Num $.yx; yx component of the affine transformation
+
+  * Num $.xy; xy component of the affine transformation
+
+  * Num $.yy; yy component of the affine transformation
+
+  * Num $.x0; X translation component of the affine transformation
+
+  * Num $.y0; Y translation component of the affine transformation
+
+A **Gnome::Cairo::Matrix** holds an affine transformation, such as a scale, rotation, shear, or a combination of these. The transformation of a point `( $x, $y)` is given by:
+
+    $x-new = $xx * $x + $xy * $y + $x0;
+    $y-new = $yx * $x + $yy * $y + $y0;
+
+The current transformation matrix of a cairo context, defines the transformation from user-space coordinates to device-space coordinates. See `cairo-get-matrix()` and `cairo-set-matrix()`.
 
 See Also
 --------
 
-**cairo_t**
+**Gnome::Cairo**
 
 Synopsis
 ========
@@ -28,137 +49,152 @@ Methods
 new
 ---
 
-### new()
+### default, no options
 
-Create a new Matrix object.
+Create a new Matrix object. All values are set to 0e0.
 
     multi method new ( )
 
-[cairo_matrix_] init_identity
------------------------------
+### :init
+
+Sets *matrix* to be the affine transformation given by *$xx*, *$yx*, *$xy*, *$yy*, *$x0*, *$y0*.
+
+    multi method new (
+      :init( Num() $xx, Num() $yx,
+             Num() $xy, Num() $yy,
+             Num() $x0, Num() $y0
+           )!
+    )
+
+  * $xx; xx component of the affine transformation
+
+  * $yx; yx component of the affine transformation
+
+  * $xy; xy component of the affine transformation
+
+  * $yy; yy component of the affine transformation
+
+  * $x0; X translation component of the affine transformation
+
+  * $y0; Y translation component of the affine transformation
+
+### :init-identity
 
 Modifies *matrix* to be an identity transformation.
 
-    method cairo_matrix_init_identity ( )
+    multi method new ( :init-identity! )
 
-cairo_matrix_init
------------------
-
-Sets *matrix* to be the affine transformation given by *xx*, *yx*, *xy*, *yy*, *x0*, *y0*. The transformation is given by: <programlisting> x_new = xx * x + xy * y + x0; y_new = yx * x + yy * y + y0; </programlisting>
-
-    method cairo_matrix_init ( Num $xx, Num $yx, Num $xy, Num $yy, Num $x0, Num $y0 )
-
-  * Num $xx; a **cairo_matrix_t**
-
-  * Num $yx; xx component of the affine transformation
-
-  * Num $xy; yx component of the affine transformation
-
-  * Num $yy; xy component of the affine transformation
-
-  * Num $x0; yy component of the affine transformation
-
-  * Num $y0; X translation component of the affine transformation
-
-[cairo_matrix_] init_translate
-------------------------------
-
-Initializes *matrix* to a transformation that translates by *tx* and *ty* in the X and Y dimensions, respectively.
-
-    method cairo_matrix_init_translate ( Num $tx, Num $ty )
-
-  * Num $tx; a **cairo_matrix_t**
-
-  * Num $ty; amount to translate in the X direction
-
-cairo_matrix_translate
-----------------------
-
-Applies a translation by *tx*, *ty* to the transformation in *matrix*. The effect of the new transformation is to first translate the coordinates by *tx* and *ty*, then apply the original transformation to the coordinates.
-
-    method cairo_matrix_translate ( Num $tx, Num $ty )
-
-  * Num $tx; a **cairo_matrix_t**
-
-  * Num $ty; amount to translate in the X direction
-
-[cairo_matrix_] init_scale
---------------------------
-
-Initializes *matrix* to a transformation that scales by *sx* and *sy* in the X and Y dimensions, respectively.
-
-    method cairo_matrix_init_scale ( Num $sx, Num $sy )
-
-  * Num $sx; a **cairo_matrix_t**
-
-  * Num $sy; scale factor in the X direction
-
-cairo_matrix_scale
-------------------
-
-Applies scaling by *sx*, *sy* to the transformation in *matrix*. The effect of the new transformation is to first scale the coordinates by *sx* and *sy*, then apply the original transformation to the coordinates.
-
-    method cairo_matrix_scale ( Num $sx, Num $sy )
-
-  * Num $sx; a **cairo_matrix_t**
-
-  * Num $sy; scale factor in the X direction
-
-[cairo_matrix_] init_rotate
----------------------------
+### :init-rotate
 
 Initialized *matrix* to a transformation that rotates by *radians*.
 
-    method cairo_matrix_init_rotate ( Num $radians )
+    multi method new ( :init-rotate($radians)! )
 
-  * Num $radians; a **cairo_matrix_t**
+  * $radians; angle of rotation, in radians.
 
-cairo_matrix_rotate
--------------------
+### :init-scale
 
-Applies rotation by *radians* to the transformation in *matrix*. The effect of the new transformation is to first rotate the coordinates by *radians*, then apply the original transformation to the coordinates.
+Initializes *matrix* to a transformation that scales by *sx* and *sy* in the X and Y dimensions, respectively.
 
-    method cairo_matrix_rotate ( Num $radians )
+    multi method new ( :init-scale( Num() $sx, Num() $sy)! )
 
-  * Num $radians; a **cairo_matrix_t**
+  * $sx; scale factor in the X direction
 
-cairo_matrix_multiply
----------------------
+  * $sy; scale factor in the Y direction
 
-Multiplies the affine transformations in *a* and *b* together and stores the result in *result*. The effect of the resulting transformation is to first apply the transformation in *a* to the coordinates and then apply the transformation in *b* to the coordinates. It is allowable for *result* to be identical to either *a* or *b*.
+### :init-translate
 
-    method cairo_matrix_multiply ( cairo_matrix_t $a, cairo_matrix_t $b )
+Initializes *matrix* to a transformation that translates by *tx* and *ty* in the X and Y dimensions, respectively.
 
-  * cairo_matrix_t $a; a **cairo_matrix_t** in which to store the result
+    multi method new ( :init-translate( Num() $tx, Num() $ty )! )
 
-  * cairo_matrix_t $b; a **cairo_matrix_t**
+  * $tx; amount to translate in the X direction
 
-[cairo_matrix_] transform_distance
-----------------------------------
+  * $ty; amount to translate in the Y direction
 
-Transforms the distance vector (*dx*,*dy*) by *matrix*. This is similar to `cairo_matrix_transform_point()` except that the translation components of the transformation are ignored. The calculation of the returned vector is as follows: <programlisting> dx2 = dx1 * a + dy1 * c; dy2 = dx1 * b + dy1 * d; </programlisting> Affine transformations are position invariant, so the same vector always transforms to the same vector. If (*x1*,*y1*) transforms to (*x2*,*y2*) then (*x1*+*dx1*,*y1*+*dy1*) will transform to (*x1*+*dx2*,*y1*+*dy2*) for all values of *x1* and *x2*.
+### :$native-object
 
-    method cairo_matrix_transform_distance ( Num $dx, Num $dy )
+Create a Matrix object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-  * Num $dx; a **cairo_matrix_t**
+    multi method new ( cairo_matrix_t :$native-object! )
 
-  * Num $dy; X component of a distance vector. An in/out parameter
+invert
+------
 
-[cairo_matrix_] transform_point
--------------------------------
+Changes *matrix* to be the inverse of its original value. Not all transformation matrices have inverses; if the matrix collapses points together (it is *degenerate*), then it has no inverse and this function will fail.
+
+    Returns: If I<matrix> has an inverse, modifies I<matrix> to be the inverse matrix and returns C<CAIRO_STATUS_SUCCESS>. Otherwise, returns C<CAIRO_STATUS_INVALID-MATRIX>.
+
+     method invert ( --> cairo_status_t )
+
+multiply
+--------
+
+Multiplies the affine transformations in *$a* and *$b* together and stores the result in the current matrix. The effect of the resulting transformation is to first apply the transformation in *$a* to the coordinates and then apply the transformation in *$b* to the coordinates. It is allowable for the current matrix to be identical to either *$a* or *$b*.
+
+    method multiply ( cairo_matrix_t $a, cairo_matrix_t $b )
+
+  * $a; a matrix
+
+  * $b; a matrix
+
+rotate
+------
+
+Applies rotation by *$radians* to the transformation in *matrix*. The effect of the new transformation is to first rotate the coordinates by *$radians*, then apply the original transformation to the coordinates.
+
+The direction of rotation is defined such that positive angles rotate in the direction from the positive X axis toward the positive Y axis. With the default axis orientation of cairo, positive angles rotate in a clockwise direction.
+
+    method rotate ( Num() $radians )
+
+  * $radians; angle of rotation, in radians.
+
+scale
+-----
+
+Applies scaling by *$sx*, *$sy* to the transformation in *matrix*. The effect of the new transformation is to first scale the coordinates by *$sx* and *$sy*, then apply the original transformation to the coordinates.
+
+    method scale ( Num() $sx, Num() $sy )
+
+  * $sx; scale factor in the X direction
+
+  * $sy; scale factor in the Y direction
+
+transform-distance
+------------------
+
+Transforms the distance vector (*$dx*, *$dy*) by *matrix*. This is similar to `transform-point()` except that the translation components of the transformation are ignored. The calculation of the returned vector is as follows:
+
+    dx2 = dx1 * a + dy1 * c;
+    dy2 = dx1 * b + dy1 * d;
+
+    Affine transformations are position invariant, so the same vector always transforms to the same vector. If C<( x1, y1)> transforms to C<( x2, y2)> then C<( x1 + dx1, y1 + dy1)> will transform to C<( x1 + dx2, y1 + dy2)> for all values of C<x1> and C<x2>.
+
+     method transform-distance ( Num() $dx is rw, Num() $dy is rw )
+
+  * $dx; X component of a distance vector. An in/out parameter
+
+  * $dy; Y component of a distance vector. An in/out parameter
+
+transform-point
+---------------
 
 Transforms the point (*x*, *y*) by *matrix*.
 
-    method cairo_matrix_transform_point ( Num $x, Num $y )
+    method transform-point ( Num() $x is rw, Num() $y is rw )
 
-  * Num $x; a **cairo_matrix_t**
+  * $x; X position. An in/out parameter
 
-  * Num $y; X position. An in/out parameter
+  * $y; Y position. An in/out parameter
 
-cairo_matrix_invert
--------------------
+translate
+---------
 
-Changes *matrix* to be the inverse of its original value. Not all transformation matrices have inverses; if the matrix collapses points together (it is *degenerate*), then it has no inverse and this function will fail. Returns: If *matrix* has an inverse, modifies *matrix* to be the inverse matrix and returns `CAIRO_STATUS_SUCCESS`. Otherwise, returns `CAIRO_STATUS_INVALID_MATRIX`.
+Applies a translation by *tx*, *ty* to the transformation in *matrix*. The effect of the new transformation is to first translate the coordinates by *tx* and *ty*, then apply the original transformation to the coordinates.
 
-    method cairo_matrix_invert ( --> Int )
+    method translate ( Num() $tx, Num() $ty )
+
+  * $tx; amount to translate in the X direction
+
+  * $ty; amount to translate in the Y direction
 
