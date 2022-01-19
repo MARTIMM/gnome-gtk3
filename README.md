@@ -152,9 +152,9 @@ $m.gtk-main;
 The version of Raku must be at least 2020.10, otherwise a few tests will not run!
 
 There are several dependencies from one package to the other because it was one package in the past. To get all packages, just install the *Gnome::Gtk3* package and the rest will be installed with it.
-
-`zef install Gnome::Gtk3`
-
+```
+zef install Gnome::Gtk3
+```
 
 # Issues
 
