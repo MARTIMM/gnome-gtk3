@@ -99,3 +99,58 @@ Runs a main loop until `quit()` is called on the loop. If this is called for the
 
     method run ( )
 
+timeout-add
+-----------
+
+Sets a function to be called at regular intervals, with the default priority, `G_PRIORITY_DEFAULT`. The function is called repeatedly until it returns `G_SOURCE_REMOVE`, at which point the timeout is automatically destroyed and the function will not be called again. The first call to the function will be at the end of the first *$interval*.
+
+Note that timeout functions may be delayed, due to the processing of other event sources. Thus they should not be relied on for precise timing. After each call to the timeout function, the time of the next timeout is recalculated based on the current time and the given interval (it does not try to 'catch up' time lost in delays).
+
+If you want to have a timer in the "seconds" range and do not care about the exact time of the first call of the timer, use the `timeout-add-seconds()` function; this function allows for more optimizations and more efficient system power usage.
+
+This internally creates a main loop source using `g-timeout-source-new()` and attaches it to the global **Gnome::Glib::MainContext** using `g-source-attach()`, so the callback will be invoked in whichever thread is running that main context. You can do these steps manually if you need greater control or to use a custom main context.
+
+The interval given is in terms of monotonic time, not wall clock time. See `g-get-monotonic-time()`.
+
+Returns: the ID (greater than 0) of the event source.
+
+    method timeout-add (
+      UInt $interval,
+      Any:D $handler-object, Str:D $handler-name,
+      *%handler-data
+      --> UInt
+    )
+
+  * UInt $interval; the time between calls to the function, in milliseconds (1/1000ths of a second).
+
+  * $handler-object; the user object where the handler method is defined.
+
+  * $handler-name; the name of the method
+
+  * %handler-data; collection of named arguments in the call to `timeout-add`.
+
+The handler signature is simple, just accept any named argument provided in the call to `timeout-add()` and return an integer which can be one of `G_SOURCE_CONTINUE` or `G_SOURCE_REMOVE` to continue the events or to stop it respectively.
+
+A simple example taken from the tests;
+
+    class Timeout {
+      method tom-poes-do-something ( Str :$task, :$loop --> Int ) {
+        state Int $count = 1;
+        say "Tom Poes, please $task $count times";
+        if $count++ >= 5 {
+          $loop.quit;
+          G_SOURCE_REMOVE
+        }
+
+        else {
+          G_SOURCE_CONTINUE
+        }
+      }
+    }
+
+    my Gnome::Glib::MainLoop $loop .= new;
+
+    my Timeout $to .= new;
+    $loop.timeout-add( 1000, $to, 'tom-poes-do-something', :task<jump>, :$loop);
+    $loop.run;
+
