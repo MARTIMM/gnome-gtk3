@@ -106,9 +106,7 @@ Sets a function to be called at regular intervals, with the default priority, `G
 
 Note that timeout functions may be delayed, due to the processing of other event sources. Thus they should not be relied on for precise timing. After each call to the timeout function, the time of the next timeout is recalculated based on the current time and the given interval (it does not try to 'catch up' time lost in delays).
 
-If you want to have a timer in the "seconds" range and do not care about the exact time of the first call of the timer, use the `timeout-add-seconds()` function; this function allows for more optimizations and more efficient system power usage.
-
-This internally creates a main loop source using `g-timeout-source-new()` and attaches it to the global **Gnome::Glib::MainContext** using `g-source-attach()`, so the callback will be invoked in whichever thread is running that main context. You can do these steps manually if you need greater control or to use a custom main context.
+This internally creates a main loop source using `g-timeout-source-new()` and attaches it to the global **Gnome::Glib::MainContext** using `Gnome::Glib::Source.attach()`, so the callback will be invoked in whichever thread is running that main context. You can do these steps manually if you need greater control or to use a custom main context.
 
 The interval given is in terms of monotonic time, not wall clock time. See `g-get-monotonic-time()`.
 
@@ -135,7 +133,7 @@ A simple example taken from the tests;
 
     class Timeout {
       method tom-poes-do-something ( Str :$task, :$loop --> Int ) {
-        state Int $count = 1;
+        state Int $count = 2;
         say "Tom Poes, please $task $count times";
         if $count++ >= 5 {
           $loop.quit;
@@ -153,4 +151,6 @@ A simple example taken from the tests;
     my Timeout $to .= new;
     $loop.timeout-add( 1000, $to, 'tom-poes-do-something', :task<jump>, :$loop);
     $loop.run;
+
+The method `tom-poes-do-something()` is called every 1000 ms and stops when the `$count` reaches 5. The user data is provided in `$task` and `$loop`. `$loop` is used to stop the event loop after which `G_SOURCE_REMOVE` is returned to flag that the timeout structure must be destroyed and that no more calls to the handler are expected.
 

@@ -40,7 +40,7 @@ Set this object to the global default main context. This is the main context use
 
 Gets the thread-default *MainContext* for this thread. Asynchronous operations that want to be able to be run in contexts other than the default one should call this method.
 
-    multi method new ( :default! )
+    multi method new ( :thread-default! )
 
 acquire
 -------
@@ -233,7 +233,9 @@ Releases ownership of a context previously acquired by this thread with `acquire
 wakeup
 ------
 
-If the context is currently blocking in `iteration()` waiting for a source to become ready, cause it to stop blocking and return. Otherwise, cause the next invocation of `iteration()` to return without blocking. This API is useful for low-level control over *MainContext*; for example, integrating it with main loop implementations such as **Gnome::Glib::MainLoop**. Another related use for this function is when implementing a main loop with a termination condition, computed from multiple threads: |[<!-- language="C" --> **define** NUM-TASKS 10 static volatile gint tasks-remaining = NUM-TASKS; ... while (g-atomic-int-get (&tasks-remaining) != 0) iteration (NULL, TRUE); ]| Then in a thread: |[<!-- language="C" --> `perform-work()`; if (g-atomic-int-dec-and-test (&tasks-remaining)) wakeup (NULL); ]|
+If the context is currently blocking in `iteration()` waiting for a source to become ready, cause it to stop blocking and return. Otherwise, cause the next invocation of `iteration()` to return without blocking.
+
+This API is useful for low-level control over *MainContext*; for example, integrating it with main loop implementations such as **Gnome::Glib::MainLoop**.
 
     method wakeup ( )
 
