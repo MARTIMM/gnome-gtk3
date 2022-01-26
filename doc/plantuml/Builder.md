@@ -16,7 +16,7 @@ class Gnome::GObject::Signal <<(R,#80ffff)>>
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
-Gnome::GObject::Object <|-- Gnome::GObject::Builder
+Gnome::GObject::Object <|-- Gnome::Gtk3::Builder
 
 
 @enduml
