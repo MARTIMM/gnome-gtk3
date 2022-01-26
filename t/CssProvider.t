@@ -7,6 +7,7 @@ use Gnome::N::N-GObject;
 use Gnome::Glib::Error;
 use Gnome::Glib::Quark;
 use Gnome::Gtk3::CssProvider;
+use Gnome::Gio::File;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -41,10 +42,13 @@ $invalid-css-text ~~ s:g/ '{' //;
 $invalid-css-file.IO.spurt($invalid-css-text);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::CssProvider $cp .= new;
+my Gnome::Gtk3::CssProvider $cp;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  isa-ok $cp, Gnome::Gtk3::CssProvider;
+  $cp .= new;
+  ok $cp.is-valid, '.new()';
+  $cp .= new( :named<Breeze>, :variant<dark>);
+  ok $cp.is-valid, '.new( :named, :variant)';
 }
 
 #-------------------------------------------------------------------------------
@@ -59,87 +63,79 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 
-  #-----------------------------------------------------------------------------
-  subtest 'load-from-data', {
-    my Gnome::Glib::Error $e = $cp.load-from-data($css-text);
-    is $e.is-valid, False, 'no errors';
-
-    subtest 'invalid css from string', {
-      my Gnome::Glib::Quark $quark .= new;
-
-      $e = $cp.load-from-data($invalid-css-text);
-      is $e.is-valid, True, 'there are errors';
-
-      is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
-      is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
-         "error domain: $quark.to-string($e.domain())";
-      is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
-         'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
-
-      if %*ENV<travis_ci_tests> {
-        skip 'travis differs, older GTK+ version', 1;
-      }
-
-      else {
-        is $e.message, '<data>:3:8Invalid name of pseudo-class', $e.message;
-      }
-    }
-  }
+  my Gnome::Glib::Quark $quark .= new;
 
   #-----------------------------------------------------------------------------
-  subtest 'load-from-path', {
-  #Gnome::N::debug(:on);
-    nok $cp.load-from-path($css-file).is-valid, 'css load ok';
-
-    my Str $css = $cp.to-string;
-    like $css, / \. green /, 'green class found';
-    like $css, / 'rgb(48,143,143);' /, 'background color found';
+  sub test ( Gnome::Glib::Error $e ) {
+    is $e.is-valid, True, 'there are errors';
+    is $e.domain, $cp.error-quark(), "domain code: $e.domain()";
+    is $quark.to-string($e.domain), 'gtk-css-provider-error-quark',
+       "error domain: $quark.to-string($e.domain())";
+    is $e.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
+       'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
 
     if %*ENV<travis_ci_tests> {
       skip 'travis differs, older GTK+ version', 1;
     }
 
     else {
-      like $css, / 'font-stretch: initial;' /, 'some extra attributes';
+      # no message testing, might become other language!
+      ok $e.is-valid, $e.message;
     }
+  }
 
+  #-----------------------------------------------------------------------------
+  class X {
+    has Bool $.signal-processed is rw;
+
+    method handle-error (
+      N-GObject $section, N-GError $e,
+      Gnome::GObject::Object :native-object($provider)
+    ) {
+      my Gnome::Glib::Quark $quark .= new;
+      my Gnome::Glib::Error $error .= new(:native-object($e));
+      test($error);
+      $!signal-processed = True;
+    }
+  }
+
+  my X $x .= new;
+  $cp.register-signal( $x, 'handle-error', 'parsing-error');
+
+  #-----------------------------------------------------------------------------
+  subtest 'load-from-data', {
+    my Gnome::Glib::Error $e = $cp.load-from-data($css-text);
+    nok $e.is-valid, '.load-from-data()';
+    like $cp.to-string, / 'color: rgb(160,240,204);' /, '.to-string()';
+
+    $x.signal-processed = False;
+    $e = $cp.load-from-data($invalid-css-text);
+    ok $x.signal-processed, 'signal processed';
+    subtest 'invalid css from string', { test($e); };
+  }
+
+  #-----------------------------------------------------------------------------
+  subtest 'load-from-path', {
     my Gnome::Glib::Error $e = $cp.load-from-path($css-file);
-    is $e.is-valid, False, 'no errors';
+    nok $e.is-valid, '.load-from-path()';
 
-    subtest 'invalid css from file', {
-      my Bool $signal-processed = False;
-      class X {
-        method handle-error (
-          N-GObject $section, N-GError $e,
-          Gnome::GObject::Object :native-object($provider)
-        ) {
-          my Gnome::Glib::Quark $quark .= new;
-          my Gnome::Glib::Error $error .= new(:native-object($e));
-          is $error.is-valid, True, 'there are errors';
+    $x.signal-processed = False;
+    $e = $cp.load-from-path($invalid-css-file);
+    ok $x.signal-processed, 'signal processed';
+    subtest 'invalid css from path', { test($e); };
+  }
 
-          is $error.domain, $cp.error-quark(), "domain code: $error.domain()";
-          is $quark.to-string($error.domain), 'gtk-css-provider-error-quark',
-             "error domain: $quark.to-string($e.domain())";
-          is $error.code, GTK_CSS_PROVIDER_ERROR_SYNTAX.value,
-             'error code for this error is GTK_CSS_PROVIDER_ERROR_SYNTAX';
+  #-----------------------------------------------------------------------------
+  subtest 'load-from-file', {
+    my Gnome::Gio::File $file .= new(:path($css-file));
+    my Gnome::Glib::Error $e = $cp.load-from-file($file);
+    nok $e.is-valid, '.load-from-path()';
 
-          if %*ENV<travis_ci_tests> {
-            skip 'travis differs, older GTK+ version', 1;
-          }
-
-          else {
-            like $error.message, /:s Invalid name of pseudo\-class/, $error.message;
-          }
-
-          $signal-processed = True;
-        }
-      }
-
-      $cp.register-signal( X.new, 'handle-error', 'parsing-error');
-      $cp.load-from-path($invalid-css-file);
-
-      ok $signal-processed, 'signal processed';
-    }
+    $x.signal-processed = False;
+    $file .= new(:path($invalid-css-file));
+    $e = $cp.load-from-file($file);
+    ok $x.signal-processed, 'signal processed';
+    subtest 'invalid css from file', { test($e); };
   }
 }
 
@@ -153,17 +149,8 @@ subtest 'Interface ...', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-}
-
-#-------------------------------------------------------------------------------
 subtest 'Themes ...', {
 }
-
-#-------------------------------------------------------------------------------
-subtest 'Signals ...', {
-}
-}}
 
 #-------------------------------------------------------------------------------
 unlink $css-file;
