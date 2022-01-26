@@ -110,8 +110,6 @@ A way to track errors while loading CSS is to connect to the sig `parsing-error`
 
   * $data; CSS data loaded in memory
 
-  * $error; return location for a **Gnome::Glib::Error**, or `undefined`
-
 load-from-file
 --------------
 
@@ -132,9 +130,7 @@ Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there w
 
     method load-from-path ( Str $path --> Gnome::Glib::Error )
 
-  * Str $path; the path of a filename to load, in the GLib filename encoding
-
-  * N-GError $error; return location for a **Gnome::Gtk3::Error**, or `undefined`
+  * $path; the path of a filename to load, in the GLib filename encoding
 
 load-from-resource
 ------------------
@@ -145,7 +141,7 @@ To track errors while loading CSS, connect to the *parsing-error* signal.
 
     method load-from-resource ( Str $resource_path )
 
-  * Str $resource_path; a **Gnome::Gtk3::Resource** resource path
+  * $resource_path; a **Gnome::Gtk3::Resource** resource path
 
 to-string
 ---------
