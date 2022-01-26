@@ -10,9 +10,6 @@ Interface to provide style information to B<Gnome::Gtk3::StyleContext>
 
 B<Gnome::Gtk3::StyleProvider> is an interface used to provide style information to a B<Gnome::Gtk3::StyleContext>. See C<gtk_style_context_add_provider()> and C<gtk_style_context_add_provider_for_screen()>.
 
-=head2 Known implementations
-
-Gnome::Gtk3::StyleProvider is implemented by Gnome::Gtk3::CssProvider and Gnome::Gtk3::Settings.
 
 =head2 See Also
 
@@ -23,7 +20,8 @@ B<Gnome::Gtk3::StyleContext>, B<Gnome::Gtk3::CssProvider>
 
   unit role Gnome::Gtk3::StyleProvider;
 
-=commenthead2 Example
+
+=comment head2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
