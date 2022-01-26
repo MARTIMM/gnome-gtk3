@@ -6,20 +6,13 @@ CSS-like styling for widgets
 Description
 ===========
 
-**Gnome::Gtk3::CssProvider** is an object implementing the **Gnome::Gtk3::StyleProvider** interface. It is able to parse [CSS-like](https://developer.gnome.org/gtk3/3.24/chap-css-overview.html#css-overview) input in order to style widgets.
+**Gnome::Gtk3::CssProvider** is an object implementing the **Gnome::Gtk3::StyleProvider** interface. It is able to parse [CSS-like](https://developer-old.gnome.org/gtk3/3.24/chap-css-overview.html#css-overview) input in order to style widgets.
 
-An application can make GTK+ parse a specific CSS style sheet by calling `gtk_css_provider_load_from_file()` or `gtk_css_provider_load_from_resource()` and adding the provider with `gtk_style_context_add_provider()` or `gtk_style_context_add_provider_for_screen()`. In addition, certain files will be read when GTK+ is initialized. First, the file `$XDG_CONFIG_HOME/gtk-3.0/gtk.css` is loaded if it exists. Then, GTK+ loads the first existing file among `XDG_DATA_HOME/themes/theme-name/gtk-VERSION/gtk.css`, `$HOME/.themes/theme-name/gtk-VERSION/gtk.css`, `$XDG_DATA_DIRS/themes/theme-name/gtk-VERSION/gtk.css` and `DATADIR/share/themes/THEME/gtk-VERSION/gtk.css`, where `THEME` is the name of the current theme (see the prop `gtk-theme-name` setting), `DATADIR` is the prefix configured when GTK+ was compiled (unless overridden by the `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version number. If no file is found for the current version, GTK+ tries older versions all the way back to 3.0.
+An application can make GTK+ parse a specific CSS style sheet by calling `load_from_file()` or `load_from_resource()` and adding the provider with `Gnome::Gtk3::StyleContext.add_provider()` or `Gnome::Gtk3::StyleContext.add_provider_for_screen()`.
 
-In the same way, GTK+ tries to load a gtk-keys.css file for the current key theme, as defined by prop `gtk-key-theme-name`.
+In addition, certain files will be read when GTK+ is initialized. First, the file `$XDG_CONFIG_HOME/gtk-3.0/gtk.css` is loaded if it exists. Then, GTK+ loads the first existing file among `$XDG_DATA_HOME/themes/theme-name/gtk-VERSION/gtk.css`, `$HOME/.themes/theme-name/gtk-VERSION/gtk.css`, `$XDG_DATA_DIRS/themes/theme-name/gtk-VERSION/gtk.css` and `DATADIR/share/themes/THEME/gtk-VERSION/gtk.css`, where `THEME` is the name of the current theme (see the prop [gtk-theme-name](https://developer-old.gnome.org/gtk3/stable/GtkSettings.html#GtkSettings--gtk-theme-name) setting), `DATADIR` is the prefix configured when GTK+ was compiled (unless overridden by the `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version number. If no file is found for the current version, GTK+ tries older versions all the way back to 3.0.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::CssProvider implements
-
-  * [Gnome::Gtk3::StyleProvider](StyleProvider.html)
-
-  * Gnome::Gtk3::StyleProviderPrivate
+In the same way, GTK+ tries to load a `gtk-keys.css` file for the current key theme, as defined by prop [gtk-key-theme-name](https://developer-old.gnome.org/gtk3/stable/GtkSettings.html#GtkSettings--gtk-key-theme-name) setting.
 
 See Also
 --------
@@ -36,8 +29,10 @@ Declaration
     also is Gnome::GObject::Object;
     also does Gnome::Gtk3::StyleProvider;
 
-Example
--------
+Uml Diagram
+-----------
+
+![](plantuml/CssProvider.svg)
 
 Types
 =====
@@ -65,96 +60,108 @@ Methods
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new CssProvider object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :named
+
+Loads a theme from the usual theme paths
+
+Creates a CssProvider> with the theme loaded. This memory is owned by GTK+, and you must not free it.
+
+    method new( Str :$named!, Str :$variant )
+
+  * $named; A theme name like 'Breeze' or 'Oxygen'.
+
+  * $variant; variant to load, for example, 'dark'. Use `undefined` to get the default.
+
+### :native-object
+
+Create a CssProvider object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a CssProvider object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-[[gtk_] css_provider_] error_quark
-----------------------------------
+error-quark
+-----------
 
 Return the domain code of the builder error domain.
 
-    method gtk_css_provider_error_quark ( --> Int )
+    method error-quark ( --> UInt )
 
-[gtk_] css_provider_new
------------------------
+load-from-data
+--------------
 
-Returns a newly created **Gnome::Gtk3::CssProvider**.
-
-    method gtk_css_provider_new ( --> N-GObject )
-
-[[gtk_] css_provider_] to_string
---------------------------------
-
-Converts the provider into a string representation in CSS format.
-
-Using `gtk_css_provider_load_from_data()` with the return value from this function on a new provider created with `gtk_css_provider_new()` will basically create a duplicate of the provider.
-
-Returns: a new string representing the *provider*. method gtk_css_provider_to_string ( --> char )
-
-[[gtk_] css_provider_] load_from_data
--------------------------------------
-
-Loads *$data* into the provider, and by doing so clears any previously loaded information.
+Loads *data* into *css-provider*, and by doing so clears any previously loaded information.
 
 Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
 A way to track errors while loading CSS is to connect to the sig `parsing-error` signal.
 
-    method gtk_css_provider_load_from_data (
-      Str $data
-      --> Gnome::Glib::Error
-    )
+    method load-from-data ( Str $data --> Gnome::Glib::Error )
 
-  * Str $data; (array length=length) (element-type guint8): CSS data loaded in memory
+  * $data; CSS data loaded in memory
 
-[[gtk_] css_provider_] load_from_path
--------------------------------------
+  * $error; return location for a **Gnome::Glib::Error**, or `undefined`
 
-Loads the data contained in *$path* into the provider, clearing any previously loaded information.
+load-from-file
+--------------
 
-Returns: Gnome::Glib::Error. Test `.is-valid() of that object to see if there was an error.
+Loads the data contained in *file* into *css-provider*, making it clear any previously loaded information.
 
-A way to track errors while loading CSS is to connect to the sig `parsing-error` signal.
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
-    method gtk_css_provider_load_from_path ( Str $path --> Gnome::Glib::Error )
+    method load-from-file ( N-GObject $file --> Gnome::Glib::Error )
+
+  * $file; a **Gnome::Gio::File** pointing to a file to load
+
+load-from-path
+--------------
+
+Loads the data contained in *path* into *css-provider*, making it clear any previously loaded information.
+
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
+
+    method load-from-path ( Str $path --> Gnome::Glib::Error )
 
   * Str $path; the path of a filename to load, in the GLib filename encoding
 
-[[gtk_] css_provider_] load_from_resource
------------------------------------------
+  * N-GError $error; return location for a **Gnome::Gtk3::Error**, or `undefined`
 
-Loads the data contained in the resource at *$resource_path* into the **Gnome::Gtk3::CssProvider**, clearing any previously loaded information.
+load-from-resource
+------------------
 
-To track errors while loading CSS, connect to the sig `parsing-error` signal. method gtk_css_provider_load_from_resource ( Str $resource_path )
+Loads the data contained in the resource at *resource-path* into the **Gnome::Gtk3::CssProvider**, clearing any previously loaded information.
 
-  * Str $resource_path; a `GResource` resource path
+To track errors while loading CSS, connect to the *parsing-error* signal.
 
-[[gtk_] css_provider_] get_named
---------------------------------
+    method load-from-resource ( Str $resource_path )
 
-Loads a theme from the usual theme paths
+  * Str $resource_path; a **Gnome::Gtk3::Resource** resource path
 
-Returns: (transfer none): a **Gnome::Gtk3::CssProvider** with the theme loaded. This memory is owned by GTK+, and you must not free it.
+to-string
+---------
 
-    method gtk_css_provider_get_named ( Str $name, Str $variant --> N-GObject  )
+Converts the *provider* into a string representation in CSS format.
 
-  * Str $name; A theme name
+Using `load-from-data()` with the return value from this function on a new provider created with `new()` will basically create a duplicate of this *provider*.
 
-  * Str $variant; (allow-none): variant to load, for example, "dark", or `Any` for the default
+Returns: a new string representing the *provider*.
+
+    method to-string ( --> Str )
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -162,7 +169,7 @@ First method
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
 
     # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+    method mouse-event ( GdkEvent $event, :$widget ) { ... }
 
     # connect a signal on window object
     my Gnome::Gtk3::Window $w .= new( ... );
@@ -173,14 +180,14 @@ Second method
 
     my Gnome::Gtk3::Window $w .= new( ... );
     my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+      N-GObject $native, GdkEvent $event, OpaquePointer $data
     ) {
       ...
     }
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
@@ -196,14 +203,18 @@ Note that this signal may be emitted at any time as the css provider may opt to 
     method handler (
       N-GObject $section,
       N-GError $error,
-      Int :$_handler_id,
+      Int :$_handle_id,
       Gnome::GObject::Object :_widget($provider),
       *%user-options
     );
 
-  * $provider; the provider that had a parsing error
+  * $provider; the provider that had a parsing error.
 
-  * $section; a native (GtkCssSection) section the error happened in
+  * $section; section the error happened in, a native **Gnome::Gtk3::Section**.
 
-  * $error; The parsing error
+  * $error; the parsing error.
+
+  * $_handle_id; the registered event handler id.
+
+  * $_widget: the widget on which the event was registered .
 

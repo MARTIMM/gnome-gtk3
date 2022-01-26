@@ -10,18 +10,14 @@ CSS-like styling for widgets
 
 =head1 Description
 
-B<Gnome::Gtk3::CssProvider> is an object implementing the B<Gnome::Gtk3::StyleProvider> interface. It is able to parse [CSS-like](https://developer.gnome.org/gtk3/3.24/chap-css-overview.html#css-overview) input in order to style widgets.
+B<Gnome::Gtk3::CssProvider> is an object implementing the B<Gnome::Gtk3::StyleProvider> interface. It is able to parse [CSS-like](https://developer-old.gnome.org/gtk3/3.24/chap-css-overview.html#css-overview) input in order to style widgets.
 
-An application can make GTK+ parse a specific CSS style sheet by calling C<gtk_css_provider_load_from_file()> or C<gtk_css_provider_load_from_resource()> and adding the provider with C<gtk_style_context_add_provider()> or C<gtk_style_context_add_provider_for_screen()>. In addition, certain files will be read when GTK+ is initialized. First, the file `$XDG_CONFIG_HOME/gtk-3.0/gtk.css` is loaded if it exists. Then, GTK+ loads the first existing file among `XDG_DATA_HOME/themes/theme-name/gtk-VERSION/gtk.css`, `$HOME/.themes/theme-name/gtk-VERSION/gtk.css`, `$XDG_DATA_DIRS/themes/theme-name/gtk-VERSION/gtk.css` and `DATADIR/share/themes/THEME/gtk-VERSION/gtk.css`, where `THEME` is the name of the current theme (see the prop C<gtk-theme-name> setting), `DATADIR` is the prefix configured when GTK+ was compiled (unless overridden by the `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version number. If no file is found for the current version, GTK+ tries older versions all the way back to 3.0.
+An application can make GTK+ parse a specific CSS style sheet by calling C<load_from_file()> or C<load_from_resource()> and adding the provider with C<Gnome::Gtk3::StyleContext.add_provider()> or C<Gnome::Gtk3::StyleContext.add_provider_for_screen()>.
 
-In the same way, GTK+ tries to load a gtk-keys.css file for the current key theme, as defined by prop C<gtk-key-theme-name>.
+In addition, certain files will be read when GTK+ is initialized. First, the file C<$XDG_CONFIG_HOME/gtk-3.0/gtk.css> is loaded if it exists. Then, GTK+ loads the first existing file among C<$XDG_DATA_HOME/themes/theme-name/gtk-VERSION/gtk.css>, C<$HOME/.themes/theme-name/gtk-VERSION/gtk.css>, C<$XDG_DATA_DIRS/themes/theme-name/gtk-VERSION/gtk.css> and C<DATADIR/share/themes/THEME/gtk-VERSION/gtk.css>, where `THEME` is the name of the current theme (see the prop L<gtk-theme-name|https://developer-old.gnome.org/gtk3/stable/GtkSettings.html#GtkSettings--gtk-theme-name> setting), `DATADIR` is the prefix configured when GTK+ was compiled (unless overridden by the `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version number. If no file is found for the current version, GTK+ tries older versions all the way back to 3.0.
 
-=head2 Implemented Interfaces
+In the same way, GTK+ tries to load a C<gtk-keys.css> file for the current key theme, as defined by prop L<gtk-key-theme-name|https://developer-old.gnome.org/gtk3/stable/GtkSettings.html#GtkSettings--gtk-key-theme-name> setting.
 
-Gnome::Gtk3::CssProvider implements
-
-=item [Gnome::Gtk3::StyleProvider](StyleProvider.html)
-=item Gnome::Gtk3::StyleProviderPrivate
 
 =head2 See Also
 
@@ -34,7 +30,35 @@ B<Gnome::Gtk3::StyleContext>, B<Gnome::Gtk3::StyleProvider>
   also is Gnome::GObject::Object;
   also does Gnome::Gtk3::StyleProvider;
 
-=head2 Example
+
+=head2 Uml Diagram
+
+![](plantuml/CssProvider.svg)
+
+
+=begin comment
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::CssProvider;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::CssProvider;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::CssProvider class process the options
+    self.bless( :GtkCssProvider, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=end comment
+
+
+=comment head2 Example
 
 =end pod
 #-------------------------------------------------------------------------------
@@ -43,7 +67,10 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Glib::Error;
+
 use Gnome::GObject::Object;
 
 use Gnome::Gtk3::StyleProvider;
@@ -91,30 +118,52 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 default, no options
+
+Create a new CssProvider object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :named
+
+Loads a theme from the usual theme paths
+
+Creates a CssProvider> with the theme loaded. This memory is owned by GTK+, and you must not free it.
+
+  method new( Str :$named!, Str :$variant )
+
+=item $named; A theme name like 'Breeze' or 'Oxygen'.
+=item $variant; variant to load, for example, 'dark'. Use C<undefined> to get the default.
+
+
+=head3 :native-object
+
+Create a CssProvider object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+=head3 :build-id
+
+Create a CssProvider object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+
 
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:1:new(:named,:variant):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
 
   $signals-added = self.add-signal-types( $?CLASS.^name,
     :w2<parsing-error>,
   ) unless $signals-added;
 
+#`{{
   # prevent creating wrong native-objects
   return unless self.^name eq 'Gnome::Gtk3::CssProvider';
 
@@ -136,6 +185,59 @@ submethod BUILD ( *%options ) {
 
   # only after creating the native-object, the gtype is known
   self._set-class-info('GtkCssProvider');
+}}
+
+  # prevent creating wrong native-objects
+  if self.^name eq 'Gnome::Gtk3::CssProvider' #`{{ or %options<GtkCssProvider> }} {
+
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<named> {
+        $no = _gtk_css_provider_get_named(
+          %options<named>, %options<variant> // Str
+        );
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      #}}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_css_provider_new();
+      }
+      #}}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkCssProvider');
+  }
 }
 
 #-------------------------------------------------------------------------------
@@ -154,6 +256,306 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 
+#-------------------------------------------------------------------------------
+#TM:1:error-quark:
+=begin pod
+=head2 error-quark
+
+Return the domain code of the builder error domain.
+
+  method error-quark ( --> UInt )
+
+=end pod
+
+method error-quark ( --> UInt ) {
+  gtk_css_provider_error_quark
+}
+
+sub gtk_css_provider_error_quark (
+   --> GQuark
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-named:
+#`{{
+=begin pod
+=head2 get-named
+
+Loads a theme from the usual theme paths
+
+Returns: a B<Gnome::Gtk3::CssProvider> with the theme loaded. This memory is owned by GTK+, and you must not free it.
+
+  method get-named ( Str $name, Str $variant --> N-GObject )
+
+=item Str $name; A theme name
+=item Str $variant; variant to load, for example, "dark", or C<undefined> for the default
+=end pod
+
+method get-named ( Str $name, Str $variant --> N-GObject ) {
+  gtk_css_provider_get_named(
+    self._get-native-object-no-reffing, $name, $variant
+  )
+}
+}}
+
+sub _gtk_css_provider_get_named (
+  gchar-ptr $name, gchar-ptr $variant --> N-GObject
+) is native(&gtk-lib)
+  is symbol('gtk_css_provider_get_named')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:load-from-data:
+=begin pod
+=head2 load-from-data
+
+Loads I<data> into I<css-provider>, and by doing so clears any previously loaded information.
+
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
+
+A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
+
+  method load-from-data ( Str $data --> Gnome::Glib::Error )
+
+=item $data; CSS data loaded in memory
+=item $error; return location for a B<Gnome::Glib::Error>, or C<undefined>
+=end pod
+
+method load-from-data ( Str $data --> Gnome::Glib::Error ) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  gtk_css_provider_load_from_data(
+    self._get-native-object-no-reffing, $data, $data.encode.bytes, $ga
+  );
+
+  Gnome::Glib::Error.new(:native-object($ga[0]));
+}
+
+sub gtk_css_provider_load_from_data (
+  N-GObject $css_provider, gchar-ptr $data, gssize $length,
+  CArray[N-GError] $error --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:load-from-file:
+=begin pod
+=head2 load-from-file
+
+Loads the data contained in I<file> into I<css-provider>, making it clear any previously loaded information.
+
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
+
+  method load-from-file ( N-GObject $file --> Gnome::Glib::Error )
+
+=item $file; a B<Gnome::Gio::File> pointing to a file to load
+=end pod
+
+method load-from-file ( $file is copy --> Gnome::Glib::Error ) {
+  $file .= _get-native-object-no-reffing unless $file ~~ N-GObject;
+  my CArray[N-GError] $ga .= new(N-GError);
+
+  gtk_css_provider_load_from_file(
+    self._get-native-object-no-reffing, $file, $ga
+  );
+
+  Gnome::Glib::Error.new(:native-object($ga[0]));
+}
+
+sub gtk_css_provider_load_from_file (
+  N-GObject $css_provider, N-GObject $file, CArray[N-GError] $error --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:load-from-path:
+=begin pod
+=head2 load-from-path
+
+Loads the data contained in I<path> into I<css-provider>, making it clear any previously loaded information.
+
+Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
+
+  method load-from-path ( Str $path --> Gnome::Glib::Error )
+
+=item Str $path; the path of a filename to load, in the GLib filename encoding
+=item N-GError $error; return location for a B<Gnome::Gtk3::Error>, or C<undefined>
+=end pod
+
+method load-from-path ( Str $path --> Gnome::Glib::Error ) {
+  my CArray[N-GError] $ga .= new(N-GError);
+
+  gtk_css_provider_load_from_path(
+    self._get-native-object-no-reffing, $path, $ga
+  );
+
+  Gnome::Glib::Error.new(:native-object($ga[0]));
+}
+
+sub gtk_css_provider_load_from_path (
+  N-GObject $css_provider, gchar-ptr $path, CArray[N-GError] $error --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:load-from-resource:
+=begin pod
+=head2 load-from-resource
+
+Loads the data contained in the resource at I<resource-path> into the B<Gnome::Gtk3::CssProvider>, clearing any previously loaded information.
+
+To track errors while loading CSS, connect to the  I<parsing-error> signal.
+
+  method load-from-resource ( Str $resource_path )
+
+=item Str $resource_path; a B<Gnome::Gtk3::Resource> resource path
+=end pod
+
+method load-from-resource ( Str $resource_path ) {
+
+  gtk_css_provider_load_from_resource(
+    self._get-native-object-no-reffing, $resource_path
+  );
+}
+
+sub gtk_css_provider_load_from_resource (
+  N-GObject $css_provider, gchar-ptr $resource_path
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:to-string:
+=begin pod
+=head2 to-string
+
+Converts the I<provider> into a string representation in CSS format.
+
+Using C<load-from-data()> with the return value from this function on a new provider created with C<new()> will basically create a duplicate of this I<provider>.
+
+Returns: a new string representing the I<provider>.
+
+  method to-string ( --> Str )
+
+=end pod
+
+method to-string ( --> Str ) {
+  gtk_css_provider_to_string( self._get-native-object-no-reffing)
+}
+
+sub gtk_css_provider_to_string (
+  N-GObject $provider --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_css_provider_new:
+#`{{
+=begin pod
+=head2 _gtk_css_provider_new
+
+Returns a newly created B<Gnome::Gtk3::CssProvider>.
+
+Returns: A new B<Gnome::Gtk3::CssProvider>
+
+  method _gtk_css_provider_new ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_css_provider_new (  --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_css_provider_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+=head2 First method
+
+The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+  # handler method
+  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+
+  # connect a signal on window object
+  my Gnome::Gtk3::Window $w .= new( ... );
+  $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+=head2 Second method
+
+  my Gnome::Gtk3::Window $w .= new( ... );
+  my Callable $handler = sub (
+    N-GObject $native, GdkEvent $event, OpaquePointer $data
+  ) {
+    ...
+  }
+
+  $w.connect-object( 'button-press-event', $handler);
+
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+=head2 Supported signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:1:parsing-error:
+=head3 parsing-error
+
+Signals that a parsing error occurred. the I<path>, I<line> and I<position>
+describe the actual location of the error as accurately as possible.
+
+Parsing errors are never fatal, so the parsing will resume after
+the error. Errors may however cause parts of the given
+data or even all of it to not be parsed at all. So it is a useful idea
+to check that the parsing succeeds by connecting to this signal.
+
+Note that this signal may be emitted at any time as the css provider
+may opt to defer parsing parts or all of the input to a later time
+than when a loading function was called.
+
+  method handler (
+    N-GObject $section,
+    N-GError $error,
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($provider),
+    *%user-options
+  );
+
+=item $provider; the provider that had a parsing error.
+=item $section; section the error happened in, a native B<Gnome::Gtk3::Section>.
+=item $error; the parsing error.
+=item $_handle_id; the registered event handler id.
+=item $_widget: the widget on which the event was registered .
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:1:gtk_css_provider_error_quark:
 =begin pod
