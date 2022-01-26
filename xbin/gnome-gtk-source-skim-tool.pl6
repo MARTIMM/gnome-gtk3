@@ -226,12 +226,14 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
                   ] ')' //;
             $pod-doc-item-doc ~~ s/^ \s* <[:;]> \s+ //;
             $pod-doc-item-doc ~~ s/ 'C<Any>-terminated' //;
-            $pod-doc-items ~=
-              "=item $raku-arg-type \$$arg; $pod-doc-item-doc\n";
+#            $pod-doc-items ~=
+#              "=item $raku-arg-type \$$arg; $pod-doc-item-doc\n";
+            $pod-doc-items ~= "=item \$$arg; $pod-doc-item-doc\n";
           }
 
           else {
-            $pod-doc-items ~= "=item $raku-arg-type \$$arg; \n";
+#            $pod-doc-items ~= "=item $raku-arg-type \$$arg; \n";
+            $pod-doc-items ~= "=item \$$arg; \n";
           }
 
           $pod-doc-items ~~ s/^ \s+ $//;
