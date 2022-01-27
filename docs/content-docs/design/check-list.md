@@ -122,7 +122,8 @@ ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| ✓|
-CssProvider               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| ✓|
+CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
@@ -237,7 +238,6 @@ CellEditable              |R | ✗|
 CellView|
 ChooserDialog|
 Clipboard|
-CssSection                |Bx| ✗|
 Editable|
 EntryBuffer|
 EventController|

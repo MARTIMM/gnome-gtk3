@@ -156,6 +156,10 @@
   - title: "CssProvider"
     url: "/content-docs/reference/Gtk3/CssProvider.html"
 
+  - title: "CssSection"
+    url: "/content-docs/reference/Gtk3/CssSection.html"
+    type: boxed
+
   - title: "Dialog"
     url: "/content-docs/reference/Gtk3/Dialog.html"
     type: widget

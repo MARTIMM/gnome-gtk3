@@ -1,0 +1,201 @@
+use v6;
+use NativeCall;
+use Test;
+
+use Gnome::Gtk3::CssSection;
+use Gnome::Gtk3::CssProvider;
+use Gnome::Gtk3::StyleContext;
+use Gnome::Gtk3::StyleProvider;
+use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Window;
+
+use Gnome::Gdk3::Screen;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+
+#-------------------------------------------------------------------------------
+my Gnome::Gtk3::CssSection $cs;
+ok 1, 'loads ok';
+#-------------------------------------------------------------------------------
+# set environment variable 'raku-test-all' if rest must be tested too.
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Manipulations', {
+
+  my Str $css-text = Q:q:to/EOXML/;
+    .green {
+      color:            #a0f0cc;
+      background-color: #308f8f;
+      font:             25px sans;
+    }
+    EOXML
+
+  my Gnome::Gtk3::CssProvider $css-provider .= new;
+  $css-provider.load-from-data($css-text);
+#note $css-provider.to-string;
+
+  my Gnome::Gtk3::StyleContext $context .= new;
+  $context.add-provider-for-screen(
+    Gnome::Gdk3::Screen.new, $css-provider, GTK_STYLE_PROVIDER_PRIORITY_USER
+  );
+#my Int $state = $context.get-state;
+#for ^10 -> $b { my $s = $state +& 2**$b; note GtkStateFlags($s) if $s; }
+
+  my Gnome::Gtk3::Window $w .= new;
+  $context = $w.get-style-context-rk;
+  $context.add-class('green');
+
+  my Gnome::Gtk3::CssSection $section = $context.get-section-rk('color');
+#note $section.is-valid;
+#note $section.get-section-type if $section.is-valid;
+}
+
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::CssSection', {
+  class MyClass is Gnome::Gtk3::CssSection {
+    method new ( |c ) {
+      self.bless( :GtkCssSection, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::CssSection, 'MyClass.new()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties ...', {
+  use Gnome::GObject::Value;
+  use Gnome::GObject::Type;
+
+  #my Gnome::Gtk3::CssSection $cs .= new;
+
+  sub test-property (
+    $type, Str $prop, Str $routine, $value,
+    Bool :$approx = False, Bool :$is-local = False
+  ) {
+    my Gnome::GObject::Value $gv .= new(:init($type));
+    $cs.get-property( $prop, $gv);
+    my $gv-value = $gv."$routine"();
+    if $approx {
+      is-approx $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+
+    # dependency on local settings might result in different values
+    elsif $is-local {
+      if $gv-value ~~ /$value/ {
+        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
+      }
+
+      else {
+        ok 1, "property $prop, value: " ~ $gv-value;
+      }
+    }
+
+    else {
+      is $gv-value, $value,
+        "property $prop, value: " ~ $gv-value;
+    }
+    $gv.clear-object;
+  }
+
+  # example calls
+  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
+  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
+  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Signals ...', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method ... (
+      'any-args',
+      Gnome::Gtk3::CssSection :$_widget, gulong :$_handler-id
+      # --> ...
+    ) {
+
+      isa-ok $_widget, Gnome::Gtk3::CssSection;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::CssSection :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'...\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::CssSection $cs .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $cs.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $cs.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
+}

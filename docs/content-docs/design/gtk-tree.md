@@ -276,7 +276,7 @@ GBoxed                                Gnome::GObject::Boxed
 ├── GtkRequisition
 ├── GtkBorder                         Border
 ├── GtkTreeIter                       TreeIter
-├── GtkCssSection
+├── GtkCssSection                     CssSection
 ├── GtkTreePath                       TreePath
 ├   GtkTreeRowReference               TreeRowReference, extr. from TreeModel
 ├─✗ GtkIconSet                        ⛔

@@ -5,6 +5,12 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-01-27 0.47.0
+  * Add **Gnome::Gtk3::CssSection**.
+
+* 2022-01-26 0.46.4
+  * Documentation changes; **Gnome::Gtk3::CssProvider**.
+
 * 2021-12-29 0.46.5
   * Documentation changes from **Gnome::Cairo** package.
   * Tutorial for using cairo.
