@@ -8,11 +8,11 @@ Description
 
 **Gnome::Gtk3::StyleContext** is an object that stores styling information affecting a widget.
 
-In order to construct the final style information, **Gnome::Gtk3::StyleContext** queries information from all attached **Gnome::Gtk3::StyleProviders**. Style providers can be either attached explicitly to the context through `gtk_style_context_add_provider()`, or to the screen through `gtk_style_context_add_provider_for_screen()`. The resulting style is a combination of all providers’ information in priority order.
+In order to construct the final style information, **Gnome::Gtk3::StyleContext** queries information from all attached **Gnome::Gtk3::StyleProviders**. Style providers can be either attached explicitly to the context through `add-provider()`, or to the screen through `add-provider-for-screen()`. The resulting style is a combination of all providers’ information in priority order.
 
-For GTK+ widgets, any **Gnome::Gtk3::StyleContext** returned by `gtk_widget_get_style_context()` will already have a **Gnome::Gtk3::WidgetPath**, a **Gnome::Gdk3::Screen** and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
+For GTK+ widgets, any **Gnome::Gtk3::StyleContext** returned by `Gnome::Gtk3::Widget.get-style-context()` will already have a **Gnome::Gtk3::WidgetPath**, a **Gnome::Gdk3::Screen** and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
 
-If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through `gtk_style_context_set_path()` and `gtk_style_context_set_screen()`, as well as updating the context yourself using `gtk_style_context_invalidate()` whenever any of the conditions change, such as a change in the prop `gtk-theme-name` setting or a hierarchy change in the rendered widget. See the “Foreign drawing“ example in gtk3-demo.
+If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through `set_path()` and `set_screen()`.
 
 Style Classes
 -------------
@@ -149,20 +149,20 @@ get-border, get-border-rk
 
 Returns the border for a given state as a **Gnome::Gtk3::Border**.
 
-    method get-border ( GtkStateFlags $state --> N-GtkBorder )
-    method get-border-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+    method get-border ( UInt $state --> N-GtkBorder )
+    method get-border-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-  * GtkStateFlags $state; state to retrieve the border for
+  * UInt $state; state flags from GtkStateFlags to retrieve the border for
 
 get-color, get-color-rk
 -----------------------
 
 Returns the foreground color for a given state.
 
-    method get-color ( GtkStateFlags $state --> N-GdkRGBA )
-    method get-color-rk ( GtkStateFlags $state --> Gnome::Gdk3::RGBA )
+    method get-color ( Uint $state --> N-GdkRGBA )
+    method get-color-rk ( UInt $state --> Gnome::Gdk3::RGBA )
 
-  * GtkStateFlags $state; state to retrieve the color for
+  * UInt $state; state flags from GtkStateFlags to retrieve the color for
 
 get-junction-sides
 ------------------
@@ -178,20 +178,20 @@ get-margin, get-margin-rk
 
 Returns the margin for a given state as a **Gnome::Gtk3::Border**.
 
-    method get-margin ( GtkStateFlags $state --> N-GtkBorder )
-    method get-margin-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+    method get-margin ( UInt $state --> N-GtkBorder )
+    method get-margin-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-  * GtkStateFlags $state; state to retrieve the border for
+  * UInt $state; state flags from GtkStateFlags to retrieve the border for
 
 get-padding, get-padding-rk
 ---------------------------
 
 Returns the padding for a given state as a **Gnome::Gtk3::Border**.
 
-    method get-padding ( GtkStateFlags $state --> N-GtkBorder )
-    method get-padding-rk ( GtkStateFlags $state --> Gnome::Gtk3::Border )
+    method get-padding ( UInt $state --> N-GtkBorder )
+    method get-padding-rk ( UInt $state --> Gnome::Gtk3::Border )
 
-  * GtkStateFlags $state; state to retrieve the padding for
+  * UInt $state; state flags from GtkStateFlagsto retrieve the padding for
 
 get-parent, get-parent-rk
 -------------------------
@@ -232,6 +232,22 @@ Returns: a **Gnome::Gtk3::Screen**.
     method get-screen ( --> N-GObject )
     method get-screen-rk ( --> Gnome::Gdk3::Screen )
 
+get-section, get-section-rk
+---------------------------
+
+Queries the location in the CSS where *$property* was defined for the current *context*. Note that the state to be queried is taken from `get-state()`.
+
+If the location is not available, `undefined` will be returned. The location might not be available for various reasons, such as the property being overridden, *$property* not naming a supported CSS property or tracking of definitions being disabled for performance reasons.
+
+Shorthand CSS properties cannot be queried for a location and will always return `undefined`.
+
+Returns: `undefined` or the section where a value for *$property* was defined
+
+    method get-section ( Str $property --> N-GObject )
+    method get-section-rk ( Str $property --> Gnome::Gtk3::CssSection )
+
+  * $property; style property name
+
 get-state
 ---------
 
@@ -239,7 +255,7 @@ Returns the state used for style matching.
 
 This method should only be used to retrieve the bit mask of GtkStateFlags to pass to **Gnome::Gtk3::StyleContext** methods, like `get-padding()`. If you need to retrieve the current state of a **Gnome::Gtk3::Widget**, use `Gnome::Gtk3::Widget.get-state-flags()`.
 
-Returns: the state flags bit mask
+Returns: the state flags bit mask from `GtkStateFlags`
 
     method get-state ( --> UInt )
 

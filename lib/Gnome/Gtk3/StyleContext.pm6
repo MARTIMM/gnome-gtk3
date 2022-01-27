@@ -12,9 +12,9 @@ Rendering UI elements
 
 B<Gnome::Gtk3::StyleContext> is an object that stores styling information affecting a widget.
 
-In order to construct the final style information, B<Gnome::Gtk3::StyleContext> queries information from all attached B<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<add_provider()>, or to the screen through C<add_provider_for_screen()>. The resulting style is a combination of all providers’ information in priority order.
+In order to construct the final style information, B<Gnome::Gtk3::StyleContext> queries information from all attached B<Gnome::Gtk3::StyleProviders>. Style providers can be either attached explicitly to the context through C<add-provider()>, or to the screen through C<add-provider-for-screen()>. The resulting style is a combination of all providers’ information in priority order.
 
-For GTK+ widgets, any B<Gnome::Gtk3::StyleContext> returned by C<Gnome::Gtk3::Widget.get_style_context()> will already have a B<Gnome::Gtk3::WidgetPath>, a B<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
+For GTK+ widgets, any B<Gnome::Gtk3::StyleContext> returned by C<Gnome::Gtk3::Widget.get-style-context()> will already have a B<Gnome::Gtk3::WidgetPath>, a B<Gnome::Gdk3::Screen> and RTL/LTR information set. The style context will also be updated automatically if any of these settings change on the widget.
 
 If you are using the theming layer standalone, you will need to set a widget path and a screen yourself to the created style context through C<set_path()> and C<set_screen()>.
 =comment TODO, such as a change in the property C<gtk-theme-name> setting or a hierarchy change in the rendered widget. See the “Foreign drawing“ example in gtk3-demo.
@@ -745,29 +745,38 @@ sub gtk_style_context_get_screen (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-section:
+#TM:1:get-section:
+#TM:1:get-section-rk:
 =begin pod
-=head2 get-section
+=head2 get-section, get-section-rk
 
-Queries the location in the CSS where I<property> was defined for the current I<context>. Note that the state to be queried is taken from C<get-state()>.
+Queries the location in the CSS where I<$property> was defined for the current I<context>. Note that the state to be queried is taken from C<get-state()>.
 
-If the location is not available, C<undefined> will be returned. The location might not be available for various reasons, such as the property being overridden, I<property> not naming a supported CSS property or tracking of definitions being disabled for performance reasons.
+If the location is not available, C<undefined> will be returned. The location might not be available for various reasons, such as the property being overridden, I<$property> not naming a supported CSS property or tracking of definitions being disabled for performance reasons.
 
 Shorthand CSS properties cannot be queried for a location and will always return C<undefined>.
 
-Returns: C<undefined> or the section where a value for I<property> was defined
+Returns: C<undefined> or the section where a value for I<$property> was defined
 
   method get-section ( Str $property --> N-GObject )
+  method get-section-rk ( Str $property --> Gnome::Gtk3::CssSection )
 
-=item Str $property; style property name
+=item $property; style property name
 =end pod
 
 method get-section ( Str $property --> N-GObject ) {
-
   gtk_style_context_get_section(
     self._get-native-object-no-reffing, $property
+  )
+}
+
+method get-section-rk ( Str $property --> Any:D ) {
+  self._wrap-native-type(
+    'Gnome::Gtk3::CssSection',
+    gtk_style_context_get_section(
+      self._get-native-object-no-reffing, $property
+    )
   )
 }
 
@@ -775,7 +784,6 @@ sub gtk_style_context_get_section (
   N-GObject $context, gchar-ptr $property --> N-GObject
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-state:
@@ -786,9 +794,10 @@ Returns the state used for style matching.
 
 This method should only be used to retrieve the bit mask of GtkStateFlags to pass to B<Gnome::Gtk3::StyleContext> methods, like C<get-padding()>. If you need to retrieve the current state of a B<Gnome::Gtk3::Widget>, use C<Gnome::Gtk3::Widget.get-state-flags()>.
 
-Returns: the state flags bit mask
+Returns: the state flags bit mask from C<GtkStateFlags>
 
   method get-state ( --> UInt )
+
 
 =end pod
 
@@ -825,7 +834,6 @@ sub gtk_style_context_get_style (
 ) is native(&gtk-lib)
   { * }
 }}
-
 
 #-------------------------------------------------------------------------------
 #TM:1:get-style-property:
