@@ -49,6 +49,8 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Window $w .= new;
   $context = $w.get-style-context-rk;
   $context.add-class('green');
+  $w.show-all;
+  sleep(2);
 
   my Gnome::Gtk3::CssSection $section = $context.get-section-rk('color');
 #note $section.is-valid;
