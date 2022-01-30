@@ -51,7 +51,7 @@
     "Gnome::Gtk3::ComboBoxText": "lib/Gnome/Gtk3/ComboBoxText.pm6",
     "Gnome::Gtk3::Container": "lib/Gnome/Gtk3/Container.pm6",
     "Gnome::Gtk3::CssProvider": "lib/Gnome/Gtk3/CssProvider.pm6",
-    "Gnome::Gtk3::CssSection": "lib/Gnome/Gtk3/CssSection.pm6",
+    "Gnome::Gtk3::CssSection": "lib/Gnome/Gtk3/CssSection.rakumod",
     "Gnome::Gtk3::Dialog": "lib/Gnome/Gtk3/Dialog.pm6",
     "Gnome::Gtk3::DragDest": "lib/Gnome/Gtk3/DragDest.pm6",
     "Gnome::Gtk3::DragSource": "lib/Gnome/Gtk3/DragSource.pm6",

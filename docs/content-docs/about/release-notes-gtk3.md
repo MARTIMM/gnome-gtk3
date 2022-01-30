@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 * 2022-01-27 0.47.0
-  * Add **Gnome::Gtk3::CssSection**. I don't think there is much use for it... Maybe later, it will hit me.
+  * Add **Gnome::Gtk3::CssSection**. I don't think there is much use for it, no examples found anywhere... Maybe later.
 
 * 2022-01-26 0.46.4
   * Documentation changes; **Gnome::Gtk3::CssProvider**.
