@@ -18,30 +18,31 @@
 
 Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the `GNU Free Documentation License`.
 
+
 # Description
 
 The purpose of this project is to create an interface to the **GTK+** version 3 library.
 
 # History
-There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N` for the native linkup on behalf of any other Gnome module, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`.
+There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N` for the native linkup on behalf of any other Gnome modules, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`.
+
 
 # Example
 
 This example does the same as the example from `GTK::Simple` to show you the differences between the implementations. What immediately is clear is that this example is somewhat longer. To sum up;
 
 ### Pros
-  * The defaults of GTK+ are kept. Therefore the buttons are in the proper size compared to what GTK::Simple produces.
-  * Separation of callbacks from other code. Closures are not needed to get data into the callback code. Data can be provided with named arguments to the `register-signal()` method.
+  * The defaults of GTK+ are kept.
+  * Separation of callbacks from other code. Callbacks are always given to the routines as an object where the callback method is defined and the method name. User data can be provided using named arguments to the callback setup. An example of such a method is `register-signal()`.
   * No fancy stuff like tapping into channels to run signal handlers.
-  * There is a registration of callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. This is not available in `GTK::Simple`. The provided way to handle a signal there, is fixed into a method. E.g. the button has a 'clicked' method and the container has none while an observer might want to know if an object is inserted into a grid using the 'add' signal.
-  * The same method, `register-signal()`, is also used to register other types of signals. There are, for example, events to handle keyboard input and mouse clicks. Not all signal handlers can be written yet because the provided native objects can not be imported into a Raku object because of its missing class.
+  * `register-signal()` is a method to register callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. Not all signal handlers can be written yet because the provided native objects can not be imported into a Raku object because of its missing class.
 
 ### Cons
   * The code is larger because it is more low level, that is, closer to the GTK+ api.
   * Code is somewhat slower. The setup of the example shown next is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
+  * More worrying is the compile time of a sufficient large application.
 
-
-|![][screenshot 1a]|![][screenshot 1b]|
+|![][screenshot-1a]|![][screenshot-1b]|
 |:--:|:--:|
 |**A screenshot of the example** | **A screenshot of Gtk Simple**|
 
@@ -188,17 +189,17 @@ Github account name: **MARTIMM**
 # Copyright
 
 © 2019 - ∞ 😉. **Marcel Timmerman**
-<!-- Please change to latest year when taking over -->
+<!-- Please change ∞ to latest year when taking over -->
 
 
 
 [//]: # (---- [refs] ----------------------------------------------------------)
 [changes]: https://martimm.github.io/gnome-gtk3/CHANGES.html
 [logo]: https://martimm.github.io/gnome-gtk3/content-docs/images/gtk-perl6.png
-[devel refs]: https://developer.gnome.org/references
+[devel refs]: https://developer-old.gnome.org/references
 
-[screenshot 1a]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world.png
-[screenshot 1b]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/images/01-hello-world-GTK-Simple.png
+[screenshot-1a]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/GettingStarted/images/01-hello-world.png
+[screenshot-1b]: https://martimm.github.io/gnome-gtk3/content-docs/tutorial/GettingStarted/images/01-hello-world-GTK-Simple.png
 [screenshot 2]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16a-level-bar.png
 [screenshot 3]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/16b-level-bar.png
 [screenshot 4]: https://martimm.github.io/gnome-gtk3/content-docs/images/examples/ex-GtkScale.png
