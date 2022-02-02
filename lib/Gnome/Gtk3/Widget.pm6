@@ -5819,15 +5819,15 @@ sub gtk_widget_thaw_child_notify (
 =begin pod
 =head2 translate-coordinates
 
-Translate coordinates relative to I<src-widget>’s allocation to coordinates relative to I<dest-widget>’s allocations. In order to perform this operation, both widgets must be realized, and must share a common toplevel.
+Translate coordinates relative to this widget’s allocation to coordinates relative to I<$dest-widget>’s allocations. In order to perform this operation, both widgets must be realized, and must share a common toplevel.
 
   method translate-coordinates (
     N-GObject $dest_widget, Int $src_x, Int $src_y --> List
   )
 
 =item N-GObject $dest_widget; a B<Gnome::Gtk3::Widget>
-=item Int $src_x; X position relative to I<src-widget>
-=item Int $src_y; Y position relative to I<src-widget>
+=item Int $src_x; X position relative to this widget
+=item Int $src_y; Y position relative to this widget
 
 Returns a List which holds;
 =item Bool result; <False> if either widget was not realized, or there was no common ancestor. In this case, the next values are undefined. Otherwise C<True> and the next values are defined Int.
