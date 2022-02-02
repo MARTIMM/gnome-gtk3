@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-02-02 0.47.1
+  * Add `do-event()` to **Gnome::Gtk3::Main**.
+
 * 2022-01-27 0.47.0
   * Add **Gnome::Gtk3::CssSection**. I don't think there is much use for it, no examples found anywhere... Maybe later.
 
