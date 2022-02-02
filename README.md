@@ -4,7 +4,7 @@
 -->
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
 
-![T][travis-svg] ![A][appveyor-svg] ![L][license-svg]
+![Travis][travis-svg] ![Appveyor][appveyor-svg] ![artistic-2.0][license-svg]
 
 [travis-svg]: https://travis-ci.org/MARTIMM/gnome-gtk3.svg?branch=master
 [travis-run]: https://travis-ci.org/MARTIMM/gnome-gtk3
@@ -16,7 +16,7 @@
 [licence-lnk]: http://www.perlfoundation.org/artistic_license_2_0
 
 
-Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the `GNU Free Documentation License`.
+Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the ![GNU Free Documentation License](http://martimm.github.io/label/License-label-docs.svg).
 
 
 # Description
