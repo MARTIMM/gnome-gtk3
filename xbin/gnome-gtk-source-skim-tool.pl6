@@ -2377,7 +2377,7 @@ sub podding-function ( Str:D $text is copy --> Str ) {
   # prevent nested substitutions.
   $text ~~ s:g/ ( <[\w\d\-\_]>+ ) \s* '()' /\[\[$/[0]\]\]/;
   $text ~~ s:g/ $*base-sub-name '_' //;
-  $text ~~ s:g/ '_' /-/;
+#  $text ~~ s:g/ '_' /-/;
   $text ~~ s:g/ '[[' ( <[\w\d\-\_]>+ )']]' /C<$/[0]\()>/;
 
   $text
