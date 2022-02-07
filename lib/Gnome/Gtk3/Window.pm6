@@ -318,17 +318,17 @@ Activates mnemonics and accelerators for this B<Gnome::Gtk3::Window>. This is no
 
 Returns: C<True> if a mnemonic or accelerator was found and activated.
 
-  method activate-key ( GdkEventKey $event --> Bool )
+  method activate-key ( N-GdkEventKey $event --> Bool )
 
-=item GdkEventKey $event; a B<Gnome::Gtk3::EventKey>
+=item N-GdkEventKey $event; an EventKey structure
 =end pod
 
-method activate-key ( GdkEventKey $event --> Bool ) {
+method activate-key ( N-GdkEventKey $event --> Bool ) {
   gtk_window_activate_key( self._f('GtkWindow'), $event).Bool
 }
 
 sub gtk_window_activate_key (
-  N-GObject $window, GdkEventKey $event --> gboolean
+  N-GObject $window, N-GdkEventKey $event --> gboolean
 ) is native(&gtk-lib)
   { * }
 
@@ -1763,20 +1763,17 @@ Propagate a key press or release event to the focus widget and up the focus cont
 
 Returns: C<True> if a widget in the focus chain handled the event.
 
-  method propagate-key-event ( GdkEventKey $event --> Bool )
+  method propagate-key-event ( N-GdkEventKey $event --> Bool )
 
-=item GdkEventKey $event; a B<Gnome::Gtk3::EventKey>
+=item N-GdkEventKey $event; an EventKey structure
 =end pod
 
-method propagate-key-event ( GdkEventKey $event --> Bool ) {
-
-  gtk_window_propagate_key_event(
-    self._f('GtkWindow'), $event
-  ).Bool
+method propagate-key-event ( N-GdkEventKey $event --> Bool ) {
+  gtk_window_propagate_key_event( self._f('GtkWindow'), $event).Bool
 }
 
 sub gtk_window_propagate_key_event (
-  N-GObject $window, GdkEventKey $event --> gboolean
+  N-GObject $window, N-GdkEventKey $event --> gboolean
 ) is native(&gtk-lib)
   { * }
 
@@ -3135,7 +3132,7 @@ There are two ways to connect to a signal. The first option you have is to use C
 The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
   # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
   # connect a signal on window object
   my Gnome::Gtk3::Window $w .= new( ... );
@@ -3145,7 +3142,7 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   my Gnome::Gtk3::Window $w .= new( ... );
   my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
+    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
   ) {
     ...
   }
