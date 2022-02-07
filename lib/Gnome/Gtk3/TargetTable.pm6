@@ -64,7 +64,7 @@ class TargetEntryBytes is repr('CUnion') {
 
 #-------------------------------------------------------------------------------
 has CArray[uint8] $!target-table;
-has guint $!nbr-targets;
+has gint $!nbr-targets;
 has Bool $!from-target-list = False;
 
 #-------------------------------------------------------------------------------

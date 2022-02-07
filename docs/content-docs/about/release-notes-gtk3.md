@@ -6,7 +6,8 @@ layout: sidebar
 ---
 # Release notes
 * 2022-02-04 0.47.2
-  * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors. Why it shows up now, I don't know.
+  * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors after changing **Gnome::Gdk3::Events** module.
+  * Bugfix caused by newer Raku; native type and Raku type for unsigned integers are treated differently.
 
 * 2022-02-02 0.47.1
   * Add `do-event()` to **Gnome::Gtk3::Main**.
