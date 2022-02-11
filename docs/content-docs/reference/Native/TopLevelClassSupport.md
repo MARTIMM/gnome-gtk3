@@ -54,6 +54,30 @@ Create a Raku object using a native object from elsewhere. $native-object can be
       }
     }
 
+N-GObject
+---------
+
+Method to get the native object wrapped in the Raku objects.
+
+Example where the native object is retrieved from a **Gnome::Gtk3::Window** object.
+
+      my Gnome::Gtk3::Window $w;
+      my N-GObject() $no = $w;
+
+      method N-GObject ( --> N-GObject )
+
+COERCE
+------
+
+Method to wrap a native object into a Raku object
+
+Example;
+
+      my N-GObject $no = …;
+      my Gnome::Gtk3::Window() $w = $no;
+
+      method COERCE( $no --> Any )
+
 get-class-gtype
 ---------------
 
@@ -155,10 +179,10 @@ Get current state.
 _wrap-native-type
 -----------------
 
-Used by many classes to create a Raku instance with the native object wrapped in
+Used by many classes to create a Raku instance with the native object wrapped in. Sometimes the native object `$no` is returned from other methods as an undefined object. In that case, the Raku class is created as an invalid object in most cases. Exceptions are the two list classes from `Gnome::Glib`.
 
     method _wrap-native-type (
-      Str:D $type where ?$type, N-GObject:D $no
+      Str:D $type where ?$type, Any $no
       --> Any
     )
 
