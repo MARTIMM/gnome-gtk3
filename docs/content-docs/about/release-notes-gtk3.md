@@ -5,6 +5,24 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-02-04 0.47.3
+  * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object.
+  ```
+  my Gnome::Gtk3::Window $w .= new;
+  my N-GObject() $no = $w;        # to get the native object
+  $no = $w.N-GObject;             # or
+
+  # instead of
+  $no = $w.get-native-object;
+
+  # and from native to Raku object
+  my Gnome::Gtk3::Window() $w2 = $no;
+
+  # instead of
+  my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
+  ```
+  So all `-rk()` methods will be deprecated and removed after some version. This means that the code base will become smaller and perhaps faster to compile.
+
 * 2022-02-04 0.47.2
   * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors after changing **Gnome::Gdk3::Events** module.
   * Bugfix caused by newer Raku; native type and Raku type for unsigned integers are treated differently.

@@ -52,7 +52,28 @@ NOTDONE, fallback will disappear
 
 * When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from such a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type that is to be created. The type can be given as a real type or as a string. The latter must be searchable by the Raku `require()` command.
 
-* `-rk` methods are not implemented when an error object or list object is returned. Most often, one needs to examine the contents directly instead of using the native object of those classes.
+* `-rk` methods are not implemented when an error object or list object is returned. Most often, one needs to examine the contents using methods instead of using the native object of those classes.
+
+* New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object.
+```
+my Gnome::Gtk3::Window $w .= new;
+
+# to get the native object
+my N-GObject() $no = $w;
+
+# or
+$no = $w.N-GObject;
+
+# instead of
+$no = $w.get-native-object;
+
+
+# and from native to Raku object
+my Gnome::Gtk3::Window() $w2 = $no;
+
+# instead of
+my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
+```
 
 * Error objects are sometimes created when instantiating a class. The error object is then stored and can be reviewed after noticing that the object is not valid. This could be tested like;
   ```
