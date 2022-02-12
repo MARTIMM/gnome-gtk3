@@ -71,6 +71,10 @@ $no = $w.get-native-object;
 # and from native to Raku object
 my Gnome::Gtk3::Window() $w2 = $no;
 
+# or with more control
+my Gnome::Gtk3::Window(N-GObject) $w2 = $no;
+
+
 # instead of
 my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
 ```
