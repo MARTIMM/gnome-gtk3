@@ -37,14 +37,13 @@ Create an object using a native screen object from elsewhere.
 
     multi method new ( N-GObject :$native-object! )
 
-get-display, get-display-rk
----------------------------
+get-display
+-----------
 
 Gets the display to which the *screen* belongs.
 
 Returns: the display to which *screen* belongs
 
-    method get-display-rk ( --> Gnome::Gdk3::Display )
     method get-display ( --> N-GObject )
 
 get-font-options
@@ -65,8 +64,8 @@ Returns: the current resolution, or -1 if no resolution has been set.
 
     method get-resolution ( --> Num )
 
-get-rgba-visual, get-rgba-visual-rk
------------------------------------
+get-rgba-visual
+---------------
 
 Gets a visual to use for creating windows with an alpha channel. The windowing system on which GTK+ is running may not support this capability, in which case `undefined` will be returned. Even if a non-`undefined` value is returned, its possible that the window’s alpha channel won’t be honored when displaying the window on the screen: in particular, for X an appropriate windowing manager and compositing manager must be running to provide appropriate display.
 
@@ -76,27 +75,24 @@ For setting an overall opacity for a top-level window, see `gdk-window-set-opaci
 
 Returns: a visual to use for windows with an alpha channel or `undefined` if the capability is not available.
 
-    method get-rgba-visual-rk ( --> Gnome::Gdk3::Visual )
     method get-rgba-visual ( --> N-GObject )
 
-get-root-window, get-root-window-rk
------------------------------------
+get-root-window
+---------------
 
 Gets the root window of *screen*.
 
 Returns: the root window
 
-    method get-root-window-rk ( --> Gnome::Gdk3::Window )
     method get-root-window ( --> N-GObject )
 
-get-system-visual, get-system-visual-rk
----------------------------------------
+get-system-visual
+-----------------
 
 Get the system’s default visual for *screen*. This is the visual for the root window of the display. The return value should not be freed.
 
 Returns: the system visual
 
-    method get-system-visual-rk ( --> Gnome::Gdk3::Visual )
     method get-system-visual ( --> N-GObject )
 
 get-toplevel-windows, get-toplevel-windows-rk

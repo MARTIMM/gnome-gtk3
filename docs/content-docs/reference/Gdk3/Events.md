@@ -856,15 +856,14 @@ List returns;
 
   * Num; event window y coordinate
 
-get-device, get-device-rk
--------------------------
+get-device
+----------
 
 If the event contains a “device” field, this function will return it, else it will return `undefined` or an invalid object in the case of `get-device-rk()`.
 
 Returns: a **Gnome::Gdk3::Device**, or `undefined`.
 
     method get-device ( --> N-GObject )
-    method get-device-rk ( --> Gnome::Gdk3::Device )
 
 get-distance
 ------------
@@ -939,15 +938,14 @@ Returns: The associated keyboard scancode or 0
 
     method get-scancode ( --> Int )
 
-get-screen, get-screen-rk
--------------------------
+get-screen
+----------
 
 Returns the screen for the event. The screen is typically the screen in any `$event.any.window``, but for events such as mouse events, it is the screen where the pointer was when the event occurs - that is, the screen which has the root window to which `$event.motion.x_root` and `$event.motion.y_root` are relative.
 
 Returns: the screen for the event
 
     method get-screen ( --> N-GObject )
-    method get-screen-rk ( --> Gnome::Gdk3::Screen )
 
   * $event; a **Gnome::Gdk3::Event**
 
@@ -1018,8 +1016,8 @@ Returns: `True` if event debugging output is enabled.
 
     method get-show-events ( --> Bool )
 
-get-source-device, get-source-device-rk
----------------------------------------
+get-source-device
+-----------------
 
 This function returns the hardware secondary **Gnome::Gdk3::Device** that has triggered the event, falling back to the virtual primary device (as in `get-device()`) if the event wasn’t caused by interaction with a hardware device.
 
@@ -1030,7 +1028,6 @@ If the event does not contain a device field, this function will return `undefin
 Returns: a **Gnome::Gdk3::Device**, or `undefined`.
 
     method get-source-device ( --> N-GObject )
-    method get-source-device-rk ( --> Gnome::Gdk3::Device )
 
   * $event; a **Gnome::Gdk3::Event**
 
@@ -1052,13 +1049,12 @@ Returns: time stamp field from this event
 
     method get-time ( --> UInt )
 
-get-window, get-window-rk
--------------------------
+get-window
+----------
 
 Extracts the **Gnome::Gdk3::Window** associated with an event.
 
     method get-window ( --> N-GObject )
-    method get-window-rk ( --> Gnome::Gdk3::Window )
 
 is-scroll-stop-event
 --------------------
