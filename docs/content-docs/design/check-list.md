@@ -51,7 +51,6 @@ Legend for head of table
 * **12**: Issue number 12; check use of types and modify.
 * **14**: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
 * **so**: Subroutines are sorted
-* **rk**: Check for and added raku object returning routines
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -68,25 +67,25 @@ table {
 <!--
 <br/>
 
-| Gnome::Gtk4             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::Gtk4             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
 
 <br/>
 
-| Gnome::Gdk4             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::Gdk4             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
 
 <br/>
 -->
 
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|  |
-AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| ✓|
-AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓| ✓|
-AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| ✓| ✓| ✓|
-Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|  |
-ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓| ✓|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
+AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
+AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓|
+AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| ✓| ✓|
+Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|
+ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓|
 Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 AppChooser                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
 AppChooserButton          |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓| ✓|
@@ -220,7 +219,7 @@ Widget                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾| ⅙| ⅙| ✓| 
 WidgetPath                |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  |
 Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| ✓| ✓|  |
 
-<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk| -->
+<!-- | Module/Class       |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so| -->
 
 <br/>
 
@@ -321,111 +320,111 @@ WindowGroup|
 
 <br/>
 
-| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-Atom                      | S| ✗| ✓| ✓| ✓| ✗| ✗| ⅔| ✗| ✗| ✓| ✓| ✓| ✓|
-Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-DragContext               |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅑| ✗| ✗| ✓| ✓| ✓| ✓|
-Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|  |
-Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
-Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-
-<br/>
-
-| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
+| Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  |
-ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
-AppInfo                   |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
-AppInfoManager            |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| ✓|
-AppLaunchContext          |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| ✓|
-Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|  |
-ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|  |
-Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  |
-File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
-Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  |
-MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|  |
-MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  |
-MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|  |
-MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|  |
-Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|  |
-Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|  |
-SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|  |
+Atom                      | S| ✗| ✓| ✓| ✓| ✗| ✗| ⅔| ✗| ✗| ✓| ✓| ✓|
+Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+DragContext               |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅑| ✗| ✗| ✓| ✓| ✓|
+Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|  
+Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
+Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 
 <br/>
 
-| Gnome::Cairo            |T |dm|db|ds|ts|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|
-Cairo                     |TL| ✓| ✓| ✓| ⅓| ✓| ✓| ✓|  |
-Enums                     |  |  |  |  |  |  |  |  |  |
-FontFace                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-FontOptions               |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓| ✓|
-ImageSurface              |  | ✓| ✓| ✓| ¾| ✓| ✓| ✓| ✓|
-Matrix                    |  |  |  |  |  |  |  |  |  |
-Path                      |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓| ✓|
-Pattern                   |  | ✓| ✓| ✓| ⅖| ✓| ✓| ✓| ✓|
-ScaledFont                |  |  |  |  |  |  |  |  |  |
-Surface                   |TL| ✓| ✓| ✓| ½| ✓| ✓| ✓| ✓|
-Types                     |  |  |  |  |  |  |  |  |  |
+| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
+Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  
+ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
+AppInfo                   |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+AppInfoManager            |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
+AppLaunchContext          |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
+Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|  
+ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|  
+Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  
+File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
+Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  
+MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|  
+MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  
+MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|  
+MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|  
+Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|  
+Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|  
+SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
+
+<br/>
+
+| Gnome::Cairo            |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+Cairo                     |TL| ✓| ✓| ✓| ⅓| ✓| ✓| ✓|  
+Enums                     |  |  |  |  |  |  |  |  |  
+FontFace                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+FontOptions               |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+ImageSurface              |  | ✓| ✓| ✓| ¾| ✓| ✓| ✓|
+Matrix                    |  |  |  |  |  |  |  |  |  
+Path                      |  | ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
+Pattern                   |  | ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
+ScaledFont                |  |  |  |  |  |  |  |  |  
+Surface                   |TL| ✓| ✓| ✓| ½| ✓| ✓| ✓|
+Types                     |  |  |  |  |  |  |  |  |  
 
 <br/>
 
 <!--
-| Gnome::Atk              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-Object                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Gnome::Atk              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
+Object                    |  |  |  |  |  |  |  |  |  |  |  |  |
 -->
 
 <!--
-| Gnome::Pango            |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::Pango            |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 -->
 
 <br/>
 
-| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓| ✓| ✓| ✓|
-Closure                   |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
-InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓| ✓| ✓| ✓|
-Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
-Signal                    |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  |
-Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
-value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| ✓|
+| Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
+Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓| ✓| ✓|
+Closure                   |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+InitiallyUnowned          |  | ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓| ✓| ✓|
+Object                    |Tl| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Signal                    |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Type                      |S | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 
 <br/>
 
-| Gnome::Glib             |T |dm|db|ds|ts|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|
-Error                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |  |
-List                      |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✗|
-Main                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |  |
-MainContext               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  |
-MainLoop                  |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |
-Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |  |
-SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |  |
-Source                    |Tl| ✓| ✓| ✓| ⅑| ✓| ✓| ✓|  |
-Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  |
-VariantDict               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  |
-VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  |
+| Gnome::Glib             |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+Error                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |
+List                      |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+Main                      |Tl| ✓| ✓| ✓| ✓| ✓|  |  |  
+MainContext               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  
+MainLoop                  |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  
+Quark                     |S | ✓| ✓| ✓| ✓| ✓|  |  |  
+SList                     |Tl| ✓| ✓| ✓| ✓| ✓|  |  |  
+Source                    |Tl| ✓| ✓| ✓| ⅑| ✓| ✓| ✓|  
+Variant                   |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  
+VariantDict               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  
+VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|  
 
 Module Main will be deprecated after version 0.20.0
 
-| Gnome::N                |T |dm|db|ds|ts|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|
-GlibToRakuTypes           |S | ✗| ✗| ✗| ✗| ✓|  |  |  |
-N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|  |  |  |
-NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|  |  |  |
-TopLevelClassSupport      |S |  |  |  |  | ✓|  |  |  |
-X                         |  |  |  |  |  | ✓|  |  |  |
+| Gnome::N                |T |dm|db|ds|ts|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|
+GlibToRakuTypes           |S | ✗| ✗| ✗| ✗| ✓|  |  |  
+N-GObject                 |N | ✗| ✗| ✗| ✗| ✓|  |  |  
+NativeLib                 |L | ✗| ✗| ✗| ✗| ✓|  |  |  
+TopLevelClassSupport      |S |  |  |  |  | ✓|  |  |  
+X                         |  |  |  |  |  | ✓|  |  |  
 
 <!--
-| Gnome::T                |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|rk|
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| Gnome::T                |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 -->
