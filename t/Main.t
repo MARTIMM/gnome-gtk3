@@ -14,7 +14,7 @@ my Gnome::Gtk3::Main $m;
 #-------------------------------------------------------------------------------
 #%*ENV<GDK_DEBUG> = 'interactive';
 
-@*ARGS.push: '--gtk-debug=actions', '--gdk-debug=dnd', '--raku-option';
+@*ARGS.push: '--raku-option';
 
 # test to show that only the $raku-option is needed to specify. There should
 # not be any usage message.
@@ -23,7 +23,7 @@ subtest 'ISA test', {
   $m .= new;
   ok $m.is-valid, ".new()";
   $m.init-check;
-  is-deeply @*ARGS, ['--raku-option',], '.init-check()';
+  is-deeply @*ARGS, ['--raku-option'], '.init-check()';
 }
 
 #subtest 'Manipulations', {
@@ -34,7 +34,6 @@ subtest 'ISA test', {
 
 #  diag GtkTextDirection($m.get-locale-direction);
 #}
-
 
 #-------------------------------------------------------------------------------
 # set environment variable 'raku-test-all' if rest must be tested too.
