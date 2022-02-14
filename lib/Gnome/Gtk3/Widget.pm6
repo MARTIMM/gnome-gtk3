@@ -3273,16 +3273,14 @@ sub gtk_widget_get_visual (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-window:
-#TM:1:get-window-rk:
 =begin pod
-=head2 get-window, get-window-rk
+=head2 get-window
 
 Returns the widget’s window if it is realized, C<undefined> otherwise
 
 Returns: I<widget>’s gdk window as a native object or Raku object.
 
   method get-window ( --> N-GObject )
-  method get-window-rk ( --> Gnome::Gdk3::Window )
 
 =end pod
 
@@ -3291,6 +3289,11 @@ method get-window ( --> N-GObject ) {
 }
 
 method get-window-rk ( --> Any ) {
+  Gnome::N::deprecate(
+    'get-window-rk', 'coercing from get-window',
+    '0.47.2', '0.50.0'
+  );
+
   self._wrap-native-type(
     'Gnome::Gdk3::Window',
     gtk_widget_get_window(self._f('GtkWidget'))
