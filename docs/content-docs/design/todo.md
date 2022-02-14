@@ -54,7 +54,7 @@ NOTDONE, fallback will disappear
 
 * `-rk` methods are not implemented when an error object or list object is returned. Most often, one needs to examine the contents using methods instead of using the native object of those classes.
 
-* New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object.
+* New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** and **Gnome::N::N-GObject** to coerce to and from a native object stored in a N-GObject type object.
 ```
 my Gnome::Gtk3::Window $w .= new;
 
@@ -74,9 +74,25 @@ my Gnome::Gtk3::Window() $w2 = $no;
 # or with more control
 my Gnome::Gtk3::Window(N-GObject) $w2 = $no;
 
-
 # instead of
 my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
+
+
+# Other conversion examples
+$w.set-title('N-GObject coercion');
+$no = $w;
+
+# CALL-ME is used here. There are 3 ways to use it.
+say $no(Gnome::Gtk3::Window).get-title;     # N-GObject coercion
+say $no('Gnome::Gtk3::Window').get-title;   # N-GObject coercion
+say $no().get-title;                        # N-GObject coercion
+
+# or in command chains. note the dot before the round brackets.
+my Gnome::Gdk3::Screen $s .= new;
+$screen.get-rgba-visual.().get-depth;
+
+# Nice to write this for the same result and documents your statement
+$screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
 ```
 
 * Error objects are sometimes created when instantiating a class. The error object is then stored and can be reviewed after noticing that the object is not valid. This could be tested like;
