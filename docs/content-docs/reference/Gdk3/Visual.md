@@ -105,12 +105,11 @@ List returns the following;
 
   * Int precision;
 
-get-screen, get-screen-rk
--------------------------
+get-screen
+----------
 
 Gets the screen to which this visual belongs
 
-    method get-screen-rk ( --> Gnome::Gdk3::Screen )
     method get-screen ( --> N-GObject )
 
 get-visual-type
