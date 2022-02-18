@@ -1822,7 +1822,7 @@ sub gtk_widget_get_device_enabled (
 =begin pod
 =head2 get-device-events
 
-Returns the events mask for the widget corresponding to an specific device. These are the events that the widget will receive when I<device> operates on it. Flags in this mask are from C<GdkEventMask> in B<Gnome::Gdk3::Types>.
+Returns the events mask for the widget corresponding to a specific device. These are the events that the widget will receive when I<device> operates on it. Flags in this mask are from C<GdkEventMask> in B<Gnome::Gdk3::Types>.
 
 Returns: device event mask for I<widget>
 
