@@ -1946,7 +1946,11 @@ sub get-enumerations ( Str:D $include-content is copy ) {
   my Bool $found-doc = False;
   my Hash $enum-docs = %();
 
+  print "Find enumerations ";
   loop {
+    print ".";
+    $*OUT.flush;
+
     my Str $enum-name = '';
     my Str $items-doc = '';
     my Str $enum-doc = '';
@@ -1996,7 +2000,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
 
       if $line ~~ m/ ^ \s+ '*' \s+ $<enum-name> = [<alnum>+] ':' \s* $ / {
         $enum-name = ~($<enum-name>//'');
-        note "get enumeration $enum-name";
+#        note "get enumeration $enum-name";
         $get-item-doc = True;
       }
 
@@ -2089,7 +2093,9 @@ sub get-enumerations ( Str:D $include-content is copy ) {
     =end pod
     EODOC
 
+  print "\n";
   for $enum-docs.keys.sort -> $enum-name {
+    note "get enumeration $enum-name";
     $output-file.IO.spurt( $enum-docs{$enum-name}, :append);
   }
 #  note "add type information to $output-file";
@@ -2098,11 +2104,16 @@ sub get-enumerations ( Str:D $include-content is copy ) {
 #-------------------------------------------------------------------------------
 sub get-structures ( Str:D $include-content is copy ) {
 
-  my Str $structs-doc = '';
+#  my Str $structs-doc = '';
   my Bool $found-doc = False;
+  my Hash $struct-docs = %();
 
   # now we try again to get structs
+  print "Find structures ";
   loop {
+    print ".";
+    $*OUT.flush;
+
     my Str $struct-name = '';
     my Str $items-doc = '';
     my Str $struct-doc = '';
@@ -2121,7 +2132,7 @@ sub get-structures ( Str:D $include-content is copy ) {
 
     # if no structs are found, clear the string
     if !?$struct-type-section {
-      $structs-doc = '' unless $found-doc;
+#      $structs-doc = '' unless $found-doc;
       last;
     }
 
@@ -2162,7 +2173,7 @@ sub get-structures ( Str:D $include-content is copy ) {
           $struct-skip = True;
           last;
         }
-        note "get structure $struct-name";
+#        note "get structure $struct-name";
         $get-item-doc = True;
       }
 
@@ -2241,7 +2252,8 @@ sub get-structures ( Str:D $include-content is copy ) {
     $items-doc = primary-doc-changes($items-doc);
 
     unless $struct-skip {
-      $structs-doc ~= Q:qq:to/EODOC/;
+      #$structs-doc ~= Q:qq:to/EODOC/;
+      $struct-docs{$struct-name} = Q:qq:to/EODOC/;
         #-------------------------------------------------------------------------------
         =begin pod
         =head2 class $struct-name
@@ -2255,8 +2267,15 @@ sub get-structures ( Str:D $include-content is copy ) {
     }
   }
 
-  $output-file.IO.spurt( $structs-doc, :append);
-  note "add structure information to $output-file";
+#  $output-file.IO.spurt( $structs-doc, :append);
+
+  print "\n";
+  for $struct-docs.keys.sort -> $struct-name {
+    note "get structure $struct-name";
+    $output-file.IO.spurt( $struct-docs{$struct-name}, :append);
+  }
+
+#  note "add structure information to $output-file";
 }
 
 #-------------------------------------------------------------------------------
