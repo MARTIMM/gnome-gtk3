@@ -246,12 +246,6 @@ The canonical use-case for `gtk_window_set_geometry_hints()` is to get a termina
 
 Here’s an example of how the terminal example would be implemented, assuming a terminal area widget called “terminal” and a toplevel window “toplevel”:
 
-|[<!-- language="C" --> GdkGeometry hints;
-
-hints.base_width = terminal->char_width; hints.base_height = terminal->char_height; hints.min_width = terminal->char_width; hints.min_height = terminal->char_height; hints.width_inc = terminal->char_width; hints.height_inc = terminal->char_height;
-
-gtk_window_set_geometry_hints (GTK_WINDOW (toplevel), GTK_WIDGET (terminal), &hints, GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE); ]|
-
 The other useful fields are the *min_aspect* and *max_aspect* fields; these contain a width/height ratio as a floating point number. If a geometry widget is set, the aspect applies to the geometry widget rather than the entire window. The most common use of these hints is probably to set *min_aspect* and *max_aspect* to the same value, thus forcing the window to keep a constant aspect ratio.
 
   * `Int()` $.min_width: minimum width of window (or -1 to use requisition, with **Gnome::Gdk3::Window** only)
@@ -411,7 +405,7 @@ constrain-size
 Constrains a desired width and height according to a set of geometry hints (such as minimum and maximum size).
 
     method constrain-size (
-      GdkGeometry $geometry, GdkWindowHints $flags,
+      N-GdkGeometry $geometry, GdkWindowHints $flags,
       Int() $width, Int() $height
     )
 
@@ -824,15 +818,17 @@ On the X11 platform, the geometry is obtained from the X server, so reflects the
 
 Note: If *window* is not a toplevel, it is much better to call `get_position()`, `get_width()` and `get_height()` instead, because it avoids the roundtrip to the X server and because these functions support the full 32-bit coordinate space, whereas `get_geometry()` is restricted to the 16-bit coordinates of X11.
 
-    method get-geometry ( )
+    method get-geometry ( --> List )
 
-  * $x; return location for X coordinate of window (relative to its parent)
+The List returns
 
-  * $y; return location for Y coordinate of window (relative to its parent)
+  * Int; X coordinate of window (relative to its parent)
 
-  * $width; return location for width of window
+  * Int; Y coordinate of window (relative to its parent)
 
-  * $height; return location for height of window
+  * Int; width of window
+
+  * Int; height of window
 
 get-group
 ---------
@@ -1011,7 +1007,7 @@ get-visual
 
 Gets the **Gnome::Gdk3::Visual** describing the pixel format of *window*.
 
-Returns: a **Gnome::Gdk3::Visual**
+Returns: a native **Gnome::Gdk3::Visual**
 
     method get-visual ( --> N-GObject )
 
@@ -1207,12 +1203,12 @@ Moves *window* to *rect*, aligning their anchor points.
 Connect to the *moved-to-rect* signal to find out how it was actually positioned.
 
     method move-to-rect (
-      N-GObject() $rect, GdkGravity $rect_anchor,
+      N-GdkRectangle $rect, GdkGravity $rect_anchor,
       GdkGravity $window_anchor, GdkAnchorHints $anchor_hints,
       Int() $rect_anchor_dx, Int() $rect_anchor_dy
     )
 
-  * $rect; the destination **Gnome::Gdk3::Rectangle** to align *window* with
+  * $rect; the destination rectangle to align *window* with
 
   * $rect_anchor; the point on *rect* to align with *window*'s anchor point
 
@@ -1433,19 +1429,6 @@ Not all window managers support this, so you can’t rely on the fullscreen wind
 
   * $mode; fullscreen mode
 
-set-functions
--------------
-
-Sets hints about the window management functions to make available via buttons on the window frame.
-
-On the X backend, this function sets the traditional Motif window manager hint for this purpose. However, few window managers do anything reliable or interesting with this hint. Many ignore it entirely.
-
-The *functions* argument is the logical OR of values from the **Gnome::Gdk3::WMFunction** enumeration. If the bitmask includes **Gnome::Gdk3::DK_FUNC_ALL**, then the other bits indicate which functions to disable; if it doesn’t include **Gnome::Gdk3::DK_FUNC_ALL**, it indicates which functions to enable.
-
-    method set-functions ( GdkWMFunction $functions )
-
-  * $functions; bitmask of operations to allow on *window*
-
 set-geometry-hints
 ------------------
 
@@ -1457,7 +1440,9 @@ Note that on X11, this effect has no effect on windows of type `GDK_WINDOW_TEMP`
 
 Since you can’t count on the windowing system doing the constraints for programmatic resizes, you should generally call `constrain_size()` yourself to determine appropriate sizes.
 
-    method set-geometry-hints ( GdkGeometry $geometry, GdkWindowHints $geom_mask )
+    method set-geometry-hints (
+      N-GdkGeometry $geometry, GdkWindowHints $geom_mask
+    )
 
   * $geometry; geometry hints
 
@@ -1594,7 +1579,9 @@ Newer GTK+ windows using client-side decorations use extra geometry around their
 
 Note that this property is automatically updated by GTK+, so this function should only be used by applications which do not use GTK+ to create toplevel windows.
 
-    method set-shadow-width ( Int() $left, Int() $right, Int() $top, Int() $bottom )
+    method set-shadow-width (
+      Int() $left, Int() $right, Int() $top, Int() $bottom
+    )
 
   * $left; The left extent
 
@@ -1896,117 +1883,6 @@ Returns: the newly created **cairo_surface_t** for the offscreen window
   * $width; the width of the offscreen surface to create
 
   * $height; the height of the offscreen surface to create
-
-  * $_handle_id; the registered event handler id
-
-### from-embedder
-
-The *from-embedder* signal is emitted to translate coordinates in the embedder of an offscreen window to the offscreen window.
-
-See also *to-embedder*.
-
-    method handler (
-      num64 #`{ use NativeCall } $embedder_x,
-      num64 #`{ use NativeCall } $embedder_y,
-      Unknown type G_TYPE_POINTER $offscreen_x,
-      Unknown type G_TYPE_POINTER $offscreen_y,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($window),
-      *%user-options
-    );
-
-  * $window; the offscreen window on which the signal is emitted
-
-  * $embedder_x; x coordinate in the embedder window
-
-  * $embedder_y; y coordinate in the embedder window
-
-  * $offscreen_x; (out) (type double): return location for the x coordinate in the offscreen window
-
-  * $offscreen_y; (out) (type double): return location for the y coordinate in the offscreen window
-
-  * $_handle_id; the registered event handler id
-
-### moved-to-rect
-
-Emitted when the position of *window* is finalized after being moved to a destination rectangle.
-
-*window* might be flipped over the destination rectangle in order to keep it on-screen, in which case *flipped_x* and *flipped_y* will be set to `True` accordingly.
-
-*flipped_rect* is the ideal position of *window* after any possible flipping, but before any possible sliding. *final_rect* is *flipped_rect*, but possibly translated in the case that flipping is still ineffective in keeping *window* on-screen.
-
-Stability: Private
-
-    method handler (
-      Unknown type G_TYPE_POINTER $flipped_rect,
-      Unknown type G_TYPE_POINTER $final_rect,
-      Int $flipped_x,
-      Int $flipped_y,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($window),
-      *%user-options
-    );
-
-  * $window; the **Gnome::Gdk3::Window** that moved
-
-  * $flipped_rect; (nullable): the position of *window* after any possible flipping or `undefined` if the backend can't obtain it
-
-  * $final_rect; (nullable): the final position of *window* or `undefined` if the backend can't obtain it
-
-  * $flipped_x; `True` if the anchors were flipped horizontally
-
-  * $flipped_y; `True` if the anchors were flipped vertically
-
-  * $_handle_id; the registered event handler id
-
-### pick-embedded-child
-
-The *pick-embedded-child* signal is emitted to find an embedded child at the given position.
-
-Returns: (nullable) (transfer none): the **Gnome::Gdk3::Window** of the embedded child at *x*, *y*, or `undefined`
-
-    method handler (
-      num64 #`{ use NativeCall } $x,
-      num64 #`{ use NativeCall } $y,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($window),
-      *%user-options
-      --> Unknown type GDK_TYPE_WINDOW
-    );
-
-  * $window; the window on which the signal is emitted
-
-  * $x; x coordinate in the window
-
-  * $y; y coordinate in the window
-
-  * $_handle_id; the registered event handler id
-
-### to-embedder
-
-The *to-embedder* signal is emitted to translate coordinates in an offscreen window to its embedder.
-
-See also *from-embedder*.
-
-    method handler (
-      num64 #`{ use NativeCall } $offscreen_x,
-      num64 #`{ use NativeCall } $offscreen_y,
-      Unknown type G_TYPE_POINTER $embedder_x,
-      Unknown type G_TYPE_POINTER $embedder_y,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($window),
-      *%user-options
-    );
-
-  * $window; the offscreen window on which the signal is emitted
-
-  * $offscreen_x; x coordinate in the offscreen window
-
-  * $offscreen_y; y coordinate in the offscreen window
-
-  * $embedder_x; (out) (type double): return location for the x coordinate in the embedder window
-
-  * $embedder_y; (out) (type double): return location for the y coordinate in the embedder window
 
   * $_handle_id; the registered event handler id
 
