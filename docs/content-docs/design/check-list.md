@@ -50,7 +50,7 @@ Legend for head of table
   * **tp**: Properties.
 * **12**: Issue number 12; check use of types and modify.
 * **14**: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
-* **so**: Subroutines are sorted
+* **so**: Types, Structs, Subroutines, Signals, Properties are sorted
 
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
@@ -334,7 +334,7 @@ RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|  
 Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
-Window                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| ✓|  
 
 <br/>
 
