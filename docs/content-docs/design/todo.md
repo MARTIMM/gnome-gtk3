@@ -6,21 +6,110 @@ sidebar_menu: design-sidebar
 layout: sidebar
 ---
 
-## TODO list of things
+# TODO list of things
 
-#### Study
-* Drag and Drop
+## Summary
+A list of things to do. More info in the following sections.
+
+* Study
+  * [ ] Study memory management
+  * [ ] Study dbus I/O
+  * [ ] Study examples from zcode and other sources
+
+* Code
+  * [ ] Implement methods to access native subs.
+  * [ ] When methods are implemented add deprecation methods in `_fallback()`.
+  * [ ] Remove `FALLBACK()` and `_fallback()` after deprecation period.
+  * [ ] Order the enums, types, signal, property and subroutine name alphabetically.
+  * [ ] Return lists when more than one value is returned from native sub.
+  * [ ] Generated error messages should also display in other languages, **Gnome::M** for language support?
+  * [ ] In `.new(:native-object)` the native type should be tested against its proper type to match its Raku wrapper class.
+  * [ ] Remove `-rk()` subroutines in favor of coercing.
+  * [ ] Add routines in `N-xyz` (like in N-GObject) and `TopLevelClassSupport` classes to coerce types.
+  * [ ] Make use of coercion like `N-GObject()` in other `repr('CPointer')` types.
+  * [ ] Add more modules to Gtk3 package.
+  * [ ] Add more modules to Gdk3 package.
+  * [ ] Add more modules to Cairo package.
+  * [ ] Add more modules to Gio package.
+  * [ ] Add more modules to Glib package.
+  * [ ] Add Pango package.
+  * [ ] Add Atk package.
+
+* Documentation
+  * [ ] Modify wrongly generated names and methods in doc.
+  * [ ] Add plantuml diagrams to Gtk class doc.
+  * [ ] Remove property and signal examples in those sections and move it to tutorials.
+
+  * [ ] Preparations for Gtk4.
+  * [ ] Gtk/Gdk 4; differences, future implementations.
+
+* Tutorials
+  * [x] Getting Started; simple examples.
+
+  * [x] Groundwork; Classes, lightly touch Object, Signal and Inheriting.
+  * [ ] Common sub names, init, coercion; N-GObject, ToplevelClassSupport.
+  * [ ] Object; store parameters and arguments.
+  * [ ] Signals; (un)register, event loop, send events, …
+  * [ ] Actions; button, menu, …
+
+  * [x] Basic widgets; Window, Label, …
+  * [ ] Input widgets; Entry, TextView, Switch, Check/Radio button, …
+  * [ ] Advanced widgets; Containers, Dialogs, Tree models, Notebook, Stack, …
+  * [x] Applications; sceleton, commandline, multi instances.
+
+  * [x] Drag and drop.
+
+  * [x] Cairo; drawing, use with Gtk.
+  * [ ] Pango; Text control, use with Cairo and Gtk.
+
+  * [ ] Resources;
+  * [ ] Builder; glade, gui / menu XML description in text, file or resource.
+  * [ ] Theming and styling; style sheets in text, file or resource.
+
+  * [ ] Widget life cycle; creation, reference, clear-obj, map, realize, destroy.
+  * [ ] Threads; event loop, nest loops, context.
+
+  * [ ] D-Bus; advertize actions.
+  * [ ] Gdk; lower level interaction.
+
+  * [ ] Gnome::M; Multi language support
+
+* Testing
+  * [ ] Debugging; Gnome::N::debug()
+  * [ ] Gtk Inspector; ctrl-shift-D, ctrl-shift-I, set-interactive-debugging, env var GTK_DEBUG=interactive.
+  * [ ] Environment variables; [Running GLib Applications](https://developer-old.gnome.org/glib/stable/glib-running.html#G_SLICE), [GTK variables and commandline options](https://developer-old.gnome.org/gtk3/stable/gtk-running.html).
+  * [ ] CATCH errors and warnings.
+  * [ ] Gnome::T; Testing the user interface.
+
+* Examples
+  * [x] TODO Viewer.
+  * [ ] Simple Calculator.
+  * [ ] Theming an application.
+  * [ ] Animation with a clock.
+  * [ ] Creating a new widget.
+
+* References to other libs and applications based on Gnome::*
+  * [ ] QA; Question and Answer.
+  * [ ] QA::Manager; Question and Answer handling configurations.
+  * [ ] MongoDB::Gui.
+  * [ ] desktop-entry-tools.raku; a linux KDE app.
+
+
+## Study
 * DBus I/O
-* Pango
-* Need to find out what must be freed and what isn't because of Raku cleaning up. Must study [Notes_on_memory_management](https://docs.raku.org/language/nativecall#Notes_on_memory_management). A hint on what to free is found [here point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html) and [here](https://docs.raku.org/language/nativecall#Explicit_memory_management).
+* Need to find out what must be freed and what isn't because of Raku cleaning up. Must study the following;
+  * Notes on memory management [here](https://docs.raku.org/language/nativecall#Notes_on_memory_management).
+  * A hint on what to free is found here; gtk-question-index [at point 1.4, 1.5](https://developer.gnome.org/gtk3/stable/gtk-question-index.html)
+  * and here; [Explicit_memory_management](https://docs.raku.org/language/nativecall#Explicit_memory_management).
 
-#### Rewriting code
+## Rewriting code
 <!--
 NOTDONE, fallback will disappear
 * Is there a way to skip all those if's in the `_fallback()` routines.
 -->
 
 * I have noticed that True and False can be used on int32 typed values when provided to the native sub in the argument list. The G_TYPE_BOOLEAN (Gtk) or gboolean (Glib C) are defined as int32. Therefore, in these cases, True and False can be used. This is not clearly shown in the examples and documentation yet. The return values are not coersed automatically to Bool but most of the time not needed. _In new generated code, methods are used to get and return all needed Raku types._
+  * Add deprecate messages for the 'to be removed' names.
 
 * Reorder the list of methods in all modules in such a way that they are sorted. This might be of use for documentation to find the methods more quickly. _This is done in new generated pod code._
 
@@ -35,24 +124,11 @@ NOTDONE, fallback will disappear
   ```
   which is a teeny bit more cumbersome but also I find that the action is a side effect where the variables `$width` and `$height` are changed in the process. In this case not very confusing but other cases might be.
 
-* Add methods for most used subs and for those subs where the name is brought back to one word like the `.remove()` for the sub `.gtk_list_store_remove()`. _This is done in new generated pod code._
-
 * Error messages generated in the packages, should be displayed in other languages as well, starting with the most used ones like German, French and Spanish. And for the fun of it also in Dutch. Gtk already has done this for several return messages from the Gtk libraries.
 
 * To test for errors, an error code must be tested instead of the text message. The errors generated in the package need to add such a code. To keep a good administration the errors must be centralized in e.g. Gnome::M (for messages). This is also good to have translations there. Need to use tools for that. For localization, GTK+/GNOME uses the GNU gettext interface. gettext works by using the strings in the original language (usually English) as the keys by which the translations are looked up. All the strings marked as needing translation are extracted from the source code with a helper program.
 
 * When a native object is given using `.new(:native-object())`, it is not correct to set the type of the object assuming that the type is the same of the Raku class consuming this native object. E.g it is possible to create a **Gnome::Gtk3::Widget** using a native object of a button. This can give problems when casting or even worse, creating a **Gnome::Gtk3::Button** using a native GtkContainer. Testing should be done to accept the proper native object.
-
-* When a native object other then N-GObject is needed in a library module, e.g. N-GtkTreeIter, a use statement is used to load the module wherein it is defined, TreeIter in this case. In the library, the modules using such a type, mostly need it only to type the native routine arguments and no other content is used. Loading and parsing should go faster when the type definition is placed in a separate file like is done for N-GObject.
-
-* Benchmarking (see results in [done](todo-done.html)) made me opening an issue (#14) about slowness of the packages. For the moment, the most relevant methods are created in each module bypassing the search for native subs. The names will become the shortest possible and having dashes if any. Documentation will be changed for those entries showing only one possibility. The original names will still be possible to use. Later a deprecation proces is started to have everyone using the short names only.
-  Things to solve;
-  * automatic parameter type substitutions
-  * casting native object types
-
-* When adding methods, method names extended with `-rk()` are also added when it is possible to recreate the Raku objects directly instead of returning a native object. It could not be done for child classes inheriting from such a widget. The routine can only recreate the widget classes from the packages. Therefore an option must be added `:child-type()` to say that is a different type that is to be created. The type can be given as a real type or as a string. The latter must be searchable by the Raku `require()` command.
-
-* `-rk` methods are not implemented when an error object or list object is returned. Most often, one needs to examine the contents using methods instead of using the native object of those classes.
 
 * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** and **Gnome::N::N-GObject** to coerce to and from a native object stored in a N-GObject type object.
 ```
@@ -110,13 +186,11 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
   die $xyz.last-error.message unless $xyz.do-something( … );
   ```
 
-* Interfaces in Gnome are implemented as Raku roles. In the Gtk3 modules this is done concequently but not in in the Gio modules. I've seen them returned from functions as objects and some are hardly used as an interface. Therefore I have made those as a class. However, Raku roles can also be used as a class so perhaps I should do that instead and keep things the same as for Gtk3.
-
-#### Add other packages
+## Add other packages
 * Pango.
 * Atk. [Docs version 2.28](https://developer.gnome.org/atk/2.28/)
 
-#### Documentation
+## Documentation
 * All the several possibilities to use a method should be removed eventually and kept only one name. Keep the names where clashes could take place like `get-name()` from **Builder** and **Widget**. Dashes are prevered.
   * Method names kept are the names without the module prefixes. Sometimes a method must be added to prevent calling a method from **Any** or **Mu**. Examples
     * `gtk_grid_attach()` -> `attach()`.
@@ -124,58 +198,16 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
     * `gtk_widget_set_name()` -> `widget-set-name()`. Cannot be too short.
     * `gtk-list-store-append()` -> `append()`. Needs an extra method.
   * Adjust documentation.
-  * Add deprecate messages for the to be removed names.
 
 * Add a section about a misunderstanding when using `DESTROY()` in a user object to cleanup a native object which inherits a Raku G*::object.
   * Cannot automatically cleanup the native object in the Raku object when object gets destroyed.
-  * Users of the packages must therefore clean the objects themselves when appropriate using `.widget-destroy()` or `.clean-object()`.
+  * Users of the packages must therefore clean the objects themselves when appropriate using `.clean-object()`.
 
 * Each user class inheriting a Raku G*::object must have a new() to create the native object. This must be repeated for other subsequent inheriting classes because only the top new() is run!
 
 * Add plantuml diagrams to documents. SVG is the best picture format.
 
 * Explain difference in actions of a widget like show, realize, map events, expose events and map. A [question from a blog](https://blogs.gnome.org/jnelson/2010/10/13/those-realize-map-widget-signals/)
-
-* Split up documentation from Gnome::Gtk3 package and move it to the other Gnome projects. The main github entry site at https://martimm.github.io/ should then refer to all projects.
-
-* I've found mistakes in the documentation when enum values are returned. E.g.
-`.gtk_stack_get_transition_type()` in **Gnome::Gtk3::Stack** which returns an integer. I mistakenly took that number to be the enum value; In the doc shown as
-  ```
-    method gtk_stack_get_transition_type ( --> GtkStackTransitionType )
-  ```
-  while it should be
-  ```
-    method gtk_stack_get_transition_type ( --> Int )
-  ```
-  This example is corrected but there are many places where this is not. To test for its value one can do;
-  ```
-  if $returned-value == GTK_STACK_TRANSITION_TYPE_OVER_DOWN.value { ... }
-  ```
-  where `GTK_STACK_TRANSITION_TYPE_OVER_DOWN` is an example value of the enum type `GtkStackTransitionType`, or
-  ```
-  if GtkStackTransitionType($returned-value) ~~ GTK_STACK_TRANSITION_TYPE_OVER_DOWN { ... }
-  ```
-  which is more readable because of the enum type name used where the returned value should fit in.
-
-  Even better would it be when a second sub is made, calling the native one and returns the value as an enum value. Using the example;
-  ```
-  sub gtk_stack_get_transition_type (
-    N-GObject $stack --> GtkStackTransitionType
-  ) {
-    GtkStackTransitionType(_gtk_stack_get_transition_type($stack))
-  }
-
-  sub _gtk_stack_get_transition_type ( N-GObject $stack --> int32 )
-    is native(&gtk-lib)
-    is symbol('gtk_stack_get_transition_type')
-    { * }
-  ```
-
-  I'll go for the last example but will take some time to find all returned enum
-
-* Sometimes I have to give a string as an argument and for C it needs also its length or must be 0 terminated. For such calls two arguments are needed while for Raku we only need one. A method could handle this easily.
-
-* Return Raku oblects instead of native ones if the type is known. The down side is that it breaks code. The positive side is that it takes away an extra step from the user to import a native object into a Raku object. Unfortunately, this can not be handled using multi methods.
 
 * In some situations, modules need to be imported just for a name from an enumerated type. In those cases it would be better when all enums go into the **Enums** module instead of having some of them in a specific module. E.g. `GTK_WIN_POS_MOUSE` comes from **Window**, `GTK_RESPONSE_NO` from **Dialog** and `GTK_MESSAGE_WARNING` from **Enums**. We might need to include all three of the modules when dealing with e.g. a **MessageDialog**.
 
@@ -186,72 +218,10 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
   * UIManager is deprecated in GTK, use **Gnome::Gtk3::Builder** instead
   * Stock is deprecated, use `.set_icon_name()` methods instead where applicable. For example, read **Gnome::Gtk3::ToolButton** doc. In menu, unfortunately, GTK has dropped the use of icons in menus. See also [google docs](https://stackoverflow.com/questions/24788045/gtk-action-group-new-and-gtkstock-what-to-use-instead)
 
-
-
-#### Site documentation.
+## Site documentation.
 * Code samples shown are taken directly from real working programs. This makes it easy to work on the programs without modifying the code in the docs. However with longer listings I want to show parts of it using min and max line numbers.
 
-* Tutorials
-  * [x] Getting Started
-    * A Simple Window
-    * Simple Window with a Button
-    * Simple Window with two Buttons
-
-  * [x] Module and Methods
-    * Class structure
-    * Interfaces
-    * Other classes
-    * Method naming
-
-  * [x] Window Details
-    * Window decoration, title and icon
-    * Window size
-    * Centering with position
-    * Modal windows / dialogs
-    * Above windows
-
   <!--
-    * [ ] Some Container methods
-    * [ ] Some Widget methods
-  -->
-
-  * [x] Signals
-    * Signals and Events
-    * Declaration of the Registration Method
-    * Unregistering Signals
-    * Other signals
-    * Event Loop
-    * Sending Events
-
-  * [x] Intermezzo: Inheriting
-    * Inheriting widget classes
-
-  <!--    
-    * [ ] Intermezzo: search of native subroutines
-      * Search process starting in `FALLBACK()` in **Gnome::N::TopLevelClassSupport**. Show UML diagram.
-      * FALLBACK -> \_fallback() -> callsame()
-      * Substitution of arguments
-        * `enum -> Int` if target is `int*`
-        * `Bool -> Int` if target is `int*`
-        * `Int -> int*` automatic by Raku
-        * `* -> num*` if target is `num*`
-      * Using `$obj.?xyz()` in a class inheriting from `Gnome::*` fails when `.xyz()` is not defined. It is caused by the FALLBACK routine. Must use `$obj.^lookup('xyz')` to check before calling.
-  -->
-  <!--
-  #  - title: Dialog
-  #  - title: TreeModel
-  #  - title: Radio buttons
-  #  - title:
-  #  - title:
-  #  - title: ApplicationWindow
-  #  - title:
-  #  - title:
-  #  - title: Debugging
-  #  - title: Xml
-  #  - title: Glade program
-  #  - title: threading
-  -->
-
   * [ ] Toplevel widgets
     * Dialogs
       * AboutDialog
@@ -303,6 +273,7 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
   * [ ] Choosers
     * ColorChooserWidget
     * FontChooserWidget
+  -->
 <!--
     * Lists and Edit
       * TextView
@@ -312,7 +283,7 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
       * Toolbars
       * Scale
 -->
-
+<!--
   * [ ] Intermezzo: common names and init
     * Common method names used in classes: `clear-object()`, `is-valid()`
     * Common init method attributes, `:native-object`, `:build-id`
@@ -325,7 +296,7 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
     * Destroy
     * Finalization
     * `.clear-object()`
-
+-->
 <!--
   * [ ] Threads
     * Main
@@ -335,7 +306,7 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
       * Loop Context
       * Process events
 -->
-
+<!--
   * [ ] Builder
     * Glade
     * Gui XML description
@@ -343,7 +314,6 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
 
   * [ ] Styling
   * [ ] Resources
-  * [ ] Inheriting a class. Making a singleton class. Invalidate the object after $xyz.widget-destroy() is called. Example singleton statusbar.
 
 
   * [ ] Intermezzo: tell something about
@@ -396,3 +366,4 @@ $screen.get-rgba-visual.('Gnome::Gdk3::Visual').get-depth;
 * [x] Remove changelog from About page and add separate pages for the changelog from the packages.
 
 * [ ] All module names can be linked to their reference pages.
+-->
