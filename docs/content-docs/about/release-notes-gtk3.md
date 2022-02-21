@@ -22,6 +22,8 @@ layout: sidebar
   my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
   ```
   So all `-rk()` methods will be deprecated and removed after some version. This means that the code base will become smaller and perhaps faster to compile.
+* `GdkGeometry` structure from Gnome::Gdk3 is renamed to `N-GdkGeometry`.
+* `GdkWindowAttr` structure from Gnome::Gdk3 is renamed to `N-GdkWindowAttr`.
 
 * 2022-02-04 0.47.2
   * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors after changing **Gnome::Gdk3::Events** module.
