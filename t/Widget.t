@@ -421,9 +421,9 @@ subtest 'devices…', {
   $w.set-title('My Button In My Window');
   $w.add($b);
 
-  lives-ok {diag 'display name: ' ~ $b.get-display-rk.get-name;},
+  lives-ok {diag 'display name: ' ~ $b.get-display.().get-name;},
     '.get-display()';
-  lives-ok {diag 'display name: ' ~ $b.get-screen-rk.get-display-rk.get-name;},
+  lives-ok {diag 'display name: ' ~ $b.get-screen.().get-display.().get-name;},
     'get-screen()';
 #  lives-ok { $b.set-device-enabled(True) }, '.set-device-enabled()';
 }
