@@ -2304,14 +2304,17 @@ sub gtk_window_set_focus_visible (
 
 This function sets up hints about how a window can be resized by the user. You can set a minimum and maximum size; allowed resize increments (e.g. for xterm, you can only resize by the size of a character); aspect ratios; and more. See the B<Gnome::Gtk3::Geometry> struct.
 
-  method set-geometry-hints ( N-GObject $geometry_widget, GdkGeometry $geometry, GdkWindowHints $geom_mask )
+  method set-geometry-hints (
+    N-GObject $geometry_widget, N-GdkGeometry $geometry,
+    GdkWindowHints $geom_mask
+  )
 
 =item N-GObject $geometry_widget; widget the geometry hints used to be applied to or C<undefined>. Since 3.20 this argument is ignored and GTK behaves as if C<undefined> was set.
-=item GdkGeometry $geometry; struct containing geometry information or C<undefined>
+=item N-GdkGeometry $geometry; struct containing geometry information or C<undefined>
 =item GdkWindowHints $geom_mask; mask indicating which struct fields should be paid attention to
 =end pod
 
-method set-geometry-hints ( $geometry_widget is copy, GdkGeometry $geometry, GdkWindowHints $geom_mask ) {
+method set-geometry-hints ( $geometry_widget is copy, N-GdkGeometry $geometry, GdkWindowHints $geom_mask ) {
   $geometry_widget .= _get-native-object-no-reffing unless $geometry_widget ~~ N-GObject;
 
   gtk_window_set_geometry_hints(
@@ -2320,7 +2323,7 @@ method set-geometry-hints ( $geometry_widget is copy, GdkGeometry $geometry, Gdk
 }
 
 sub gtk_window_set_geometry_hints (
-  N-GObject $window, N-GObject $geometry_widget, GdkGeometry $geometry, GEnum $geom_mask
+  N-GObject $window, N-GObject $geometry_widget, N-GdkGeometry $geometry, GEnum $geom_mask
 ) is native(&gtk-lib)
   { * }
 
