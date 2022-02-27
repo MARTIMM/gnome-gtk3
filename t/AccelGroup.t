@@ -110,7 +110,7 @@ class CTest {
     Gnome::GObject::Closure :$c2
     --> Str
   ) {
-    my Gnome::Gtk3::AccelGroup $nag = $ag.from-accel-closure-rk($c1);
+    my Gnome::Gtk3::AccelGroup() $nag = $ag.from-accel-closure($c1);
     is $nag.get-data( 'name', Str), 'acceleration-group-1',
         '.from-accel-closure-rk()';
 
@@ -155,7 +155,7 @@ class CTest {
     Gnome::GObject::Closure :$c2
     --> Str
   ) {
-    my Gnome::Gtk3::AccelGroup $nag = $ag.from-accel-closure-rk($c1);
+    my Gnome::Gtk3::AccelGroup() $nag = $ag.from-accel-closure($c1);
     is $nag.get-data( 'name', Str), 'acceleration-group-1',
         '.from-accel-closure-rk()';
 

@@ -247,7 +247,7 @@ Returns: C<True> if an accelerator was activated and handled this keypress.
 Note: It seems that it always returns False altough the callback is called and finishes without errors.
 
   method activate (
-    UInt $accel-quark, N-GObject $acceleratable,
+    UInt $accel-quark, N-GObject() $acceleratable,
     UInt $accel-key, UInt $accel-mods
     --> Bool
   )
@@ -266,12 +266,10 @@ The C<$accel-quark> can be retrieved as follows where the key sequence of the ac
 
 
 method activate (
-  UInt $accel-quark, $acceleratable is copy, UInt $accel-key, UInt $accel-mods
+  UInt $accel-quark, N-GObject() $acceleratable,
+  UInt $accel-key, UInt $accel-mods
   --> Bool
 ) {
-  $acceleratable .= _get-native-object-no-reffing
-    unless $acceleratable ~~ N-GObject;
-
   gtk_accel_group_activate(
     self._get-native-object-no-reffing, $accel-quark,
     $acceleratable, $accel-key, $accel-mods
@@ -438,7 +436,6 @@ sub gtk_accel_group_find (
 
 #-------------------------------------------------------------------------------
 #TM:1:from-accel-closure:
-#TM:1:from-accel-closure-rk:
 =begin pod
 =head2 from-accel-closure
 
@@ -447,9 +444,6 @@ Finds the B<Gnome::Gtk3::AccelGroup> to which I<closure> is connected; see C<con
 Returns: the B<Gnome::Gtk3::AccelGroup> to which I<closure> is connected, or C<undefined>
 
   method from-accel-closure ( N-GClosure $closure --> N-GObject )
-  method from-accel-closure-rk (
-    N-GClosure $closure --> Gnome::Gtk3::AccelGroup
-  )
 
 =item N-GClosure $closure; a B<Gnome::Gtk3::Closure>
 =end pod
@@ -460,6 +454,11 @@ method from-accel-closure ( $closure is copy --> N-GObject ) {
 }
 
 method from-accel-closure-rk ( $closure is copy --> Gnome::Gtk3::AccelGroup ) {
+  Gnome::N::deprecate(
+    'from-accel-closure-rk', 'coercing from from-accel-closure',
+    '0.47.2', '0.50.0'
+  );
+
   $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
   Gnome::Gtk3::AccelGroup.new(:native-object(
       gtk_accel_group_from_accel_closure($closure)
@@ -552,7 +551,6 @@ sub gtk_accel_groups_activate (
 
 #-------------------------------------------------------------------------------
 #TM:0:groups-from-object:
-#TM:0:groups-from-object-rk:
 =begin pod
 =head2 groups-from-object, roups-from-object-rk
 
@@ -561,7 +559,6 @@ Gets a list of all accel groups which are attached to I<object>.
 Returns: (element-type GtkAccelGroup) : a list of all accel groups which are attached to I<object>
 
   method groups-from-object ( N-GObject $object --> N-GSList )
-  method groups-from-object-rk ( N-GObject $object --> Array )
 
 =item N-GObject $object; a B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>
 
@@ -572,25 +569,6 @@ The C<-rk> version returns an Array with B<Gnome::Gtk3::AccelGroup> objects.
 method groups-from-object ( $object is copy --> N-GSList ) {
   $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
   gtk_accel_groups_from_object($object)
-}
-
-method groups-from-object-rk ( $object is copy --> Array ) {
-  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
-
-  my Gnome::Glib::SList $list .= new(
-#    :native-object(self.groups-from-object($object))
-    :native-object(gtk_accel_groups_from_object($object))
-  );
-
-  my Array $results;
-  my Int $count = 0;
-  while $count < $list.g_slist_length {
-    my N-GObject $no = nativecast( N-GObject, $list.nth($count));
-    $results.push: Gnome::Gtk3::AccelGroup.new(:native-object($no));
-    $count++;
-  }
-
-  $results
 }
 
 sub gtk_accel_groups_from_object (
@@ -664,19 +642,21 @@ This is only useful for system-level components, applications should use C<accel
 Returns: a string representing the accelerator.
 
   method accelerator-get-label-with-keycode (
-    N-GObject $display, UInt $accelerator-key,
+    N-GObject() $display, UInt $accelerator-key,
     UInt $keycode, UInt $accelerator-mods --> Str
   )
 
-=item N-GObject $display; a B<Gnome::Gtk3::Display> or C<undefined> to use the default display
-=item UInt $accelerator-key; accelerator keyval
-=item UInt $keycode; accelerator keycode
-=item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $display; a B<Gnome::Gtk3::Display> or C<undefined> to use the default display
+=item $accelerator-key; accelerator keyval
+=item $keycode; accelerator keycode
+=item $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
-method accelerator-get-label-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
-  $display .= _get-native-object-no-reffing unless $display ~~ N-GObject;
-
+method accelerator-get-label-with-keycode (
+  N-GObject() $display, UInt $accelerator-key, UInt $keycode,
+  UInt $accelerator-mods
+  --> Str
+) {
   gtk_accelerator_get_label_with_keycode(
     self._get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
   )
@@ -728,17 +708,23 @@ Converts an accelerator keyval and modifier mask into a string parseable by C<gt
 
 Returns: a newly allocated accelerator name.
 
-  method gtk-accelerator-name-with-keycode ( N-GObject $display, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str )
+  method gtk-accelerator-name-with-keycode (
+    N-GObject() $display, UInt $accelerator-key,
+    UInt $keycode, UInt $accelerator-mods
+    --> Str
+  )
 
-=item N-GObject $display; a B<Gnome::Gtk3::Display> or C<undefined> to use the default display
-=item UInt $accelerator-key; accelerator keyval
-=item UInt $keycode; accelerator keycode
-=item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $display; a B<Gnome::Gtk3::Display> or C<undefined> to use the default display
+=item $accelerator-key; accelerator keyval
+=item $keycode; accelerator keycode
+=item $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
-method gtk-accelerator-name-with-keycode ( $display is copy, UInt $accelerator-key, UInt $keycode, UInt $accelerator-mods --> Str ) {
-  $display .= _get-native-object-no-reffing unless $display ~~ N-GObject;
-
+method gtk-accelerator-name-with-keycode (
+  N-GObject() $display, UInt $accelerator-key, UInt $keycode,
+  UInt $accelerator-mods
+  --> Str
+) {
   gtk_accelerator_name_with_keycode(
     self._get-native-object-no-reffing, $display, $accelerator-key, $keycode, $accelerator-mods
   )

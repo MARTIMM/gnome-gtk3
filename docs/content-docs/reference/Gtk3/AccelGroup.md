@@ -86,7 +86,7 @@ Returns: `True` if an accelerator was activated and handled this keypress.
 Note: It seems that it always returns False altough the callback is called and finishes without errors.
 
     method activate (
-      UInt $accel-quark, N-GObject $acceleratable,
+      UInt $accel-quark, N-GObject() $acceleratable,
       UInt $accel-key, UInt $accel-mods
       --> Bool
     )
@@ -176,9 +176,6 @@ Finds the **Gnome::Gtk3::AccelGroup** to which *closure* is connected; see `conn
 Returns: the **Gnome::Gtk3::AccelGroup** to which *closure* is connected, or `undefined`
 
     method from-accel-closure ( N-GClosure $closure --> N-GObject )
-    method from-accel-closure-rk (
-      N-GClosure $closure --> Gnome::Gtk3::AccelGroup
-    )
 
   * N-GClosure $closure; a **Gnome::Gtk3::Closure**
 
