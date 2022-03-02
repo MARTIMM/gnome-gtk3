@@ -15,7 +15,7 @@ use Gnome::GObject::Closure;
 use Gnome::Glib::Quark;
 
 use Gnome::N::N-GObject;
-#use Gnome::N::X;
+use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -215,13 +215,16 @@ subtest 'Manipulations', {
   is $accelerator-key, GDK_KEY_a, 'accelerator-parse()';
 
   $ag.set-data( 'name', 'acceleration-group-1');
-  $ag.connect(
-    $accelerator-key, $accelerator-mods, GTK_ACCEL_VISIBLE,
-    my Gnome::GObject::Closure $c1 .= new(
-      :handler-object($ctest), :handler-name<ctrl-a-pressed>,
-      :handler-opts(:arg1<foo>)
-    )
+
+Gnome::N::debug(:on);
+  my Gnome::GObject::Closure $c1 .= new(
+    :handler-object($ctest), :handler-name<ctrl-a-pressed>,
+    :handler-opts(:arg1<foo>)
   );
+note $?LINE;
+
+  $ag.connect( $accelerator-key, $accelerator-mods, GTK_ACCEL_VISIBLE, $c1);
+note $?LINE;
 
   $am.add-entry( '<window>/File/Save', GDK_KEY_S, GDK_MOD1_MASK);
   $ag.connect-by-path(

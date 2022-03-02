@@ -67,7 +67,7 @@ This module is a singleton. The modules `new()` method throws an exeption. To ge
 add-entry
 ---------
 
-Registers a new accelerator with the global accelerator map. This function should only be called once per *a$ccel-path* with the canonical *$accel-key* and *$accel-mods* for this path. To change the accelerator during runtime programatically, use `change-entry()`.
+Registers a new accelerator with the global accelerator map. This function should only be called once per *$accel-path* with the canonical *$accel-key* and *$accel-mods* for this path. To change the accelerator during runtime programatically, use `change-entry()`.
 
 Set *$accel-key* and *$accel-mods* to 0 to request a removal of the accelerator.
 
@@ -75,11 +75,11 @@ Set *$accel-key* and *$accel-mods* to 0 to request a removal of the accelerator.
       Str $accel-path, UInt $accel-key, UInt $accel-mods
     )
 
-  * Str $accel-path; valid accelerator path
+  * $accel-path; valid accelerator path
 
-  * UInt $accel-key; the accelerator key
+  * $accel-key; the accelerator key
 
-  * UInt $accel-mods; the accelerator modifiers mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; the accelerator modifiers mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 add-filter
 ----------
@@ -92,7 +92,7 @@ This function is intended for GTK+ modules that create their own menus, but donâ
 
     method add-filter ( Str $filter_pattern )
 
-  * Str $filter_pattern; a pattern (see **Gnome::Gtk3::PatternSpec**)
+  * $filter_pattern; a pattern (see **Gnome::Gtk3::PatternSpec**)
 
 change-entry
 ------------
@@ -107,13 +107,13 @@ Returns: `True` if the accelerator could be changed, `False` otherwise
       --> Bool
     )
 
-  * Str $accel-path; a valid accelerator path
+  * $accel-path; a valid accelerator path
 
-  * UInt $accel-key; the new accelerator key
+  * $accel-key; the new accelerator key
 
-  * UInt $accel-mods; the new accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; the new accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
-  * Bool $replace; `True` if other accelerators may be deleted upon conflicts
+  * $replace; `True` if other accelerators may be deleted upon conflicts
 
 foreach
 -------
@@ -178,7 +178,7 @@ Parses a file previously saved with `save()` for accelerator specifications, and
 
     method load ( Str $file_name )
 
-  * Str $file_name; (type filename): a file containing accelerator specifications, in the GLib file name encoding
+  * $file_name; (type filename): a file containing accelerator specifications, in the GLib file name encoding
 
 lock-path
 ---------
@@ -193,7 +193,7 @@ Note that locking of individual accelerator paths is independent from locking th
 
     method lock-path ( Str $accel-path )
 
-  * Str $accel-path; a valid accelerator path
+  * $accel-path; a valid accelerator path
 
 lookup-entry
 ------------
@@ -204,9 +204,7 @@ Returns: A defined `N-GtkAccelKey` structure if *$accel-path* is known, undefine
 
     method lookup-entry ( Str $accel-path --> N-GtkAccelKey )
 
-  * Str $accel-path; a valid accelerator path
-
-  * N-GtkAccelKey $key; the accelerator key to be filled in
+  * $accel-path; a valid accelerator path
 
 save
 ----
@@ -215,7 +213,7 @@ Saves current accelerator specifications (accelerator path, key and modifiers) t
 
     method save ( Str $file_name )
 
-  * Str $file_name; (type filename): the name of the file to contain accelerator specifications, in the GLib file name encoding
+  * $file_name; (type filename): the name of the file to contain accelerator specifications, in the GLib file name encoding
 
 unlock-path
 -----------
@@ -224,7 +222,7 @@ Undoes the last call to `lock-path()` on this *accel-path*. Refer to `gtk-accel-
 
     method unlock-path ( Str $accel-path )
 
-  * Str $accel-path; a valid accelerator path
+  * $accel-path; a valid accelerator path
 
 Signals
 =======

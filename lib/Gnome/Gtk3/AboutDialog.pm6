@@ -85,7 +85,7 @@ use Gnome::Gtk3::Dialog;
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkaboutdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkAboutDialog.html
-unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::AboutDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
 
 #-------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ Creates a new section in the Credits page.
     Str $section_name, *@people
   )
 
-=item Str $section_name; The name of the section
+=item $section_name; The name of the section
 =item @people; A list of people who belong to that section
 
 =end pod
@@ -680,7 +680,7 @@ Sets the comments string to display in the about dialog. This should be a short 
 
   method set-comments ( Str $comments )
 
-=item Str $comments; a comments string
+=item $comments; a comments string
 
 =end pod
 
@@ -703,7 +703,7 @@ Sets the copyright string to display in the about dialog. This should be a short
 
   method set-copyright ( Str $copyright )
 
-=item Str $copyright; the copyright string
+=item $copyright; the copyright string
 
 =end pod
 
@@ -757,7 +757,7 @@ Sets the license information to be displayed in the secondary license dialog. If
 
   method set-license ( Str $license )
 
-=item Str $license; the license information or C<Any>
+=item $license; the license information or C<Any>
 
 =end pod
 
@@ -780,7 +780,7 @@ Sets the license of the application showing the this about dialog dialog from a 
 
   method set-license-type ( GtkLicense $license_type )
 
-=item GtkLicense $license_type; the type of license
+=item $license_type; the type of license
 
 =end pod
 
@@ -803,7 +803,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
   method set-logo ( Gnome::Gdk3::Pixbuf $logo )
 
-=item Gnome::Gdk3::Pixbuf $logo; a I<Gnome::Gdk3::Pixbuf> object
+=item $logo; a I<Gnome::Gdk3::Pixbuf> object
 
 =end pod
 
@@ -827,7 +827,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
   method set-logo-icon-name ( Str $icon_name )
 
-=item Str $icon_name; an icon name, or undefined
+=item $icon_name; an icon name, or undefined
 
 =end pod
 
@@ -851,7 +851,7 @@ Sets the name to display in the about dialog. If this is not set, it defaults to
 
   method set-program-name ( Str $name )
 
-=item Str $name; the program name
+=item $name; the program name
 
 =end pod
 
@@ -878,7 +878,7 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
   method set-translator-credits ( Str $translator_credits )
 
-=item Str $translator_credits; the translator credits
+=item $translator_credits; the translator credits
 
 =end pod
 
@@ -902,7 +902,7 @@ Sets the version string to display in the about dialog.
 
   method set-version ( Str $version )
 
-=item Str $version; the version string
+=item $version; the version string
 
 =end pod
 
@@ -925,7 +925,7 @@ Sets the URL to use for the website link.
 
   method set-website ( Str $website )
 
-=item Str $website; a URL string starting with "http://"
+=item $website; a URL string starting with "http://"
 
 =end pod
 
@@ -948,7 +948,7 @@ Sets the label to be used for the website link.
 
   method set-website-label ( Str $website_label )
 
-=item Str $website_label; the label used for the website link
+=item $website_label; the label used for the website link
 
 =end pod
 
@@ -971,7 +971,7 @@ Sets whether the license text in this about dialog is automatically wrapped.
 
   method set-wrap-license ( Bool $wrap_license )
 
-=item Bool $wrap_license; whether to wrap the license
+=item $wrap_license; whether to wrap the license
 
 =end pod
 
@@ -994,10 +994,10 @@ sub gtk_about_dialog_set_wrap_license (
 
 This is a convenience function for showing an application’s about box. The constructed dialog is associated with the parent window and reused for future invocations of this function.
 
-  method gtk_show_about_dialog ( N-GObject $parent, Str $first_property_name )
+  method gtk_show_about_dialog ( N-GObject() $parent, Str $first_property_name )
 
-=item N-GObject $parent; (allow-none): transient parent, or Any for none
-=item Str $first_property_name; the name of the first property
+=item $parent; (allow-none): transient parent, or Any for none
+=item $first_property_name; the name of the first property
 
 =end pod
 
@@ -1016,9 +1016,7 @@ Creates a new B<Gnome::Gtk3::AboutDialog>.
 
 Returns: a newly created native AboutDialog object.
 
-
   method gtk_about_dialog_new ( --> N-GObject  )
-
 
 Returns N-GObject; a newly created native C<GtkAboutDialog>
 =end pod

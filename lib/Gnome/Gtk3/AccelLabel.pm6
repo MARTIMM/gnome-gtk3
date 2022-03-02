@@ -112,12 +112,12 @@ use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
-use Gnome::GObject::Closure;
+#use Gnome::GObject::Closure;
 
 use Gnome::Gtk3::Label;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AccelLabel:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::AccelLabel:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Label;
 
 #`{{
@@ -253,14 +253,12 @@ sub gtk_accel_label_get_accel (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-accel-widget:
-#TM:1:get-accel-widget-rk:
 =begin pod
 =head2 get-accel-widget
 
 Fetches the widget monitored by this accelerator label, or C<undefined>. See C<set-accel-widget()>.
 
   method get-accel-widget ( --> N-GObject )
-  method get-accel-widget-rk ( --> Gnome::Gtk3::Widget )
 
 =end pod
 
@@ -269,6 +267,11 @@ method get-accel-widget ( --> N-GObject ) {
 }
 
 method get-accel-widget-rk ( --> Any ) {
+  Gnome::N::deprecate(
+    'get-accel-widget-rk', 'coercing from get-accel-widget',
+    '0.47.2', '0.50.0'
+  );
+
   self._wrap-native-type-from-no(
     gtk_accel_label_get_accel_widget(self._get-native-object-no-reffing)
   )
@@ -363,21 +366,19 @@ sub gtk_accel_label_set_accel (
 
 Sets the closure to be monitored by this accelerator label. The closure must be connected to an accelerator group; see C<Gnome::Gtk3::AccelGroup.connect()>. Passing C<undefined> for I<$accel-closure> will dissociate the I<accel-label> from its current closure, if any.
 
-  method set-accel-closure ( N-GClosure $accel_closure )
+  method set-accel-closure ( N-GObject() $accel_closure )
 
-=item N-GClosure $accel_closure; the closure to monitor for accelerator changes, or C<undefined>
+=item $accel_closure; the closure to monitor for accelerator changes, or C<undefined>
 =end pod
 
-method set-accel-closure ( $accel_closure is copy ) {
-  $accel_closure .= _get-native-object-no-reffing unless $accel_closure ~~ N-GClosure;
-
+method set-accel-closure ( N-GObject() $accel_closure ) {
   gtk_accel_label_set_accel_closure(
     self._get-native-object-no-reffing, $accel_closure
   );
 }
 
 sub gtk_accel_label_set_accel_closure (
-  N-GObject $accel_label, N-GClosure $accel_closure
+  N-GObject $accel_label, N-GObject $accel_closure
 ) is native(&gtk-lib)
   { * }
 
@@ -388,14 +389,12 @@ sub gtk_accel_label_set_accel_closure (
 
 Sets the widget to be monitored by this accelerator label. Passing C<undefined> for I<accel-widget> will dissociate I<accel-label> from its current widget, if any.
 
-  method set-accel-widget ( N-GObject $accel_widget )
+  method set-accel-widget ( N-GObject() $accel_widget )
 
 =item N-GObject $accel_widget; the widget to be monitored, or C<undefined>
 =end pod
 
-method set-accel-widget ( $accel_widget is copy ) {
-  $accel_widget .= _get-native-object-no-reffing unless $accel_widget ~~ N-GObject;
-
+method set-accel-widget ( N-GObject() $accel_widget ) {
   gtk_accel_label_set_accel_widget(
     self._get-native-object-no-reffing, $accel_widget
   );

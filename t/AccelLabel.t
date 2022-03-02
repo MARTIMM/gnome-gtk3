@@ -44,23 +44,21 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Label $label .= new(:text('<b>Don\'t</b> Start'));
   $label.set-use-markup(True);
 
-  is $al.get-accel-widget-rk, N-GObject, 'Widget not defined';
+  is $al.get-accel-widget, N-GObject, 'Widget not defined';
   $al.set-accel-widget($label);
-  is $al.get-accel-widget-rk.get-text, 'Don\'t Start',
+  is $al.get-accel-widget.().get-text, 'Don\'t Start',
     '.set-accel-widget() / .get-accel-widget-rk()';
 
   ok $al.get-accel-width == 0, '.get-accel-width()';
   my Gnome::Gtk3::AccelGroup $ag .= new;
-  $ag.connect(
-    GDK_KEY_s, GDK_CONTROL_MASK, 0,
-    my Gnome::GObject::Closure $c1 .= new(
-      :handler-object(CTest.new), :handler-name<ctrl-s-pressed>,
-      :handler-opts(:arg1<foo>)
-    )
+  my Gnome::GObject::Closure $cl .= new(
+    :handler-object(CTest.new), :handler-name<ctrl-s-pressed>,
+    :handler-opts(:arg1<foo>)
   );
+  $ag.connect( GDK_KEY_s, GDK_CONTROL_MASK, 0, $cl);
 
   lives-ok {
-    $al.set-accel-closure($c1);
+    $al.set-accel-closure($cl);
     $al.set-accel( GDK_KEY_s, GDK_CONTROL_MASK);
   }, '.set-accel-closure() / .set-accel()';
 
@@ -88,7 +86,7 @@ subtest 'Inherit Gnome::Gtk3::AccelLabel', {
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   my @r = $al.get-properties(
-   'accel-widget', N-GObject, 'accel-closure', N-GClosure
+   'accel-widget', N-GObject, 'accel-closure', N-GObject
   );
 
   my Gnome::Gtk3::Label $l .= new(:native-object(@r[0]));

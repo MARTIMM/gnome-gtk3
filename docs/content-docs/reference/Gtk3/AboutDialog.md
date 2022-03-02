@@ -138,7 +138,7 @@ Creates a new section in the Credits page.
       Str $section_name, *@people
     )
 
-  * Str $section_name; The name of the section
+  * $section_name; The name of the section
 
   * @people; A list of people who belong to that section
 
@@ -293,7 +293,7 @@ Sets the comments string to display in the about dialog. This should be a short 
 
     method set-comments ( Str $comments )
 
-  * Str $comments; a comments string
+  * $comments; a comments string
 
 set-copyright
 -------------
@@ -302,7 +302,7 @@ Sets the copyright string to display in the about dialog. This should be a short
 
     method set-copyright ( Str $copyright )
 
-  * Str $copyright; the copyright string
+  * $copyright; the copyright string
 
 set-documenters
 ---------------
@@ -320,7 +320,7 @@ Sets the license information to be displayed in the secondary license dialog. If
 
     method set-license ( Str $license )
 
-  * Str $license; the license information or `Any`
+  * $license; the license information or `Any`
 
 set-license-type
 ----------------
@@ -329,7 +329,7 @@ Sets the license of the application showing the this about dialog dialog from a 
 
     method set-license-type ( GtkLicense $license_type )
 
-  * GtkLicense $license_type; the type of license
+  * $license_type; the type of license
 
 set-logo
 --------
@@ -338,7 +338,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
     method set-logo ( Gnome::Gdk3::Pixbuf $logo )
 
-  * Gnome::Gdk3::Pixbuf $logo; a *Gnome::Gdk3::Pixbuf* object
+  * $logo; a *Gnome::Gdk3::Pixbuf* object
 
 set-logo-icon-name
 ------------------
@@ -347,7 +347,7 @@ Sets the pixbuf to be displayed as logo in the about dialog. If it is undefined,
 
     method set-logo-icon-name ( Str $icon_name )
 
-  * Str $icon_name; an icon name, or undefined
+  * $icon_name; an icon name, or undefined
 
 set-program-name
 ----------------
@@ -356,7 +356,7 @@ Sets the name to display in the about dialog. If this is not set, it defaults to
 
     method set-program-name ( Str $name )
 
-  * Str $name; the program name
+  * $name; the program name
 
 set-translator-credits
 ----------------------
@@ -371,7 +371,7 @@ It is a good idea to use the customary msgid “translator-credits” for this p
 
     method set-translator-credits ( Str $translator_credits )
 
-  * Str $translator_credits; the translator credits
+  * $translator_credits; the translator credits
 
 set-version
 -----------
@@ -380,7 +380,7 @@ Sets the version string to display in the about dialog.
 
     method set-version ( Str $version )
 
-  * Str $version; the version string
+  * $version; the version string
 
 set-website
 -----------
@@ -389,7 +389,7 @@ Sets the URL to use for the website link.
 
     method set-website ( Str $website )
 
-  * Str $website; a URL string starting with "http://"
+  * $website; a URL string starting with "http://"
 
 set-website-label
 -----------------
@@ -398,7 +398,7 @@ Sets the label to be used for the website link.
 
     method set-website-label ( Str $website_label )
 
-  * Str $website_label; the label used for the website link
+  * $website_label; the label used for the website link
 
 set-wrap-license
 ----------------
@@ -407,7 +407,7 @@ Sets whether the license text in this about dialog is automatically wrapped.
 
     method set-wrap-license ( Bool $wrap_license )
 
-  * Bool $wrap_license; whether to wrap the license
+  * $wrap_license; whether to wrap the license
 
 Properties
 ==========

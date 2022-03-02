@@ -103,7 +103,7 @@ use Gnome::GObject::Object;
 use Gnome::Gtk3::AccelGroup;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AccelMap:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::AccelMap:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
@@ -226,7 +226,7 @@ submethod BUILD ( *%options ) {
 =begin pod
 =head2 add-entry
 
-Registers a new accelerator with the global accelerator map. This function should only be called once per I<a$ccel-path> with the canonical I<$accel-key> and I<$accel-mods> for this path. To change the accelerator during runtime programatically, use C<change-entry()>.
+Registers a new accelerator with the global accelerator map. This function should only be called once per I<$accel-path> with the canonical I<$accel-key> and I<$accel-mods> for this path. To change the accelerator during runtime programatically, use C<change-entry()>.
 
 Set I<$accel-key> and I<$accel-mods> to 0 to request a removal of the accelerator.
 
@@ -236,9 +236,9 @@ Set I<$accel-key> and I<$accel-mods> to 0 to request a removal of the accelerato
     Str $accel-path, UInt $accel-key, UInt $accel-mods
   )
 
-=item Str $accel-path; valid accelerator path
-=item UInt $accel-key; the accelerator key
-=item UInt $accel-mods; the accelerator modifiers mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accel-path; valid accelerator path
+=item $accel-key; the accelerator key
+=item $accel-mods; the accelerator modifiers mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method add-entry (
@@ -265,7 +265,7 @@ This function is intended for GTK+ modules that create their own menus, but donâ
 
   method add-filter ( Str $filter_pattern )
 
-=item Str $filter_pattern; a pattern (see B<Gnome::Gtk3::PatternSpec>)
+=item $filter_pattern; a pattern (see B<Gnome::Gtk3::PatternSpec>)
 =end pod
 
 method add-filter ( Str $filter_pattern ) {
@@ -294,10 +294,10 @@ Returns: C<True> if the accelerator could be changed, C<False> otherwise
     --> Bool
   )
 
-=item Str $accel-path; a valid accelerator path
-=item UInt $accel-key; the new accelerator key
-=item UInt $accel-mods; the new accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
-=item Bool $replace; C<True> if other accelerators may be deleted upon conflicts
+=item $accel-path; a valid accelerator path
+=item $accel-key; the new accelerator key
+=item $accel-mods; the new accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $replace; C<True> if other accelerators may be deleted upon conflicts
 =end pod
 
 method change-entry (
@@ -463,7 +463,7 @@ Parses a file previously saved with C<save()> for accelerator specifications, an
 
   method load ( Str $file_name )
 
-=item Str $file_name; (type filename): a file containing accelerator specifications, in the GLib file name encoding
+=item $file_name; (type filename): a file containing accelerator specifications, in the GLib file name encoding
 =end pod
 
 method load ( Str $file_name ) {
@@ -487,7 +487,7 @@ Note that the file descriptor will not be closed by this function.
 
   method load-fd ( Int() $fd )
 
-=item Int() $fd; a valid readable file descriptor
+=item $fd; a valid readable file descriptor
 =end pod
 
 method load-fd ( Int() $fd ) {
@@ -511,14 +511,12 @@ sub gtk_accel_map_load_fd (
 
 B<Gnome::Gio::Scanner> variant of C<load()>.
 
-  method load-scanner ( N-GObject $scanner )
+  method load-scanner ( N-GObject() $scanner )
 
-=item N-GObject $scanner; a B<Gnome::Gtk3::Scanner> which has already been provided with an input file
+=item $scanner; a B<Gnome::Gtk3::Scanner> which has already been provided with an input file
 =end pod
 
-method load-scanner ( $scanner is copy ) {
-  $scanner .= _get-native-object-no-reffing unless $scanner ~~ N-GObject;
-
+method load-scanner ( N-GObject() $scanner ) {
   gtk_accel_map_load_scanner(
     self._get-native-object-no-reffing, $scanner
   );
@@ -545,7 +543,7 @@ Note that locking of individual accelerator paths is independent from locking th
 
   method lock-path ( Str $accel-path )
 
-=item Str $accel-path; a valid accelerator path
+=item $accel-path; a valid accelerator path
 =end pod
 
 method lock-path ( Str $accel-path ) {
@@ -568,8 +566,7 @@ Returns: A defined C<N-GtkAccelKey> structure if I<$accel-path> is known, undefi
 
   method lookup-entry ( Str $accel-path --> N-GtkAccelKey )
 
-=item Str $accel-path; a valid accelerator path
-=item N-GtkAccelKey $key; the accelerator key to be filled in
+=item $accel-path; a valid accelerator path
 =end pod
 
 method lookup-entry ( Str $accel-path --> N-GtkAccelKey ) {
@@ -592,7 +589,7 @@ Saves current accelerator specifications (accelerator path, key and modifiers) t
 
   method save ( Str $file_name )
 
-=item Str $file_name; (type filename): the name of the file to contain accelerator specifications, in the GLib file name encoding
+=item $file_name; (type filename): the name of the file to contain accelerator specifications, in the GLib file name encoding
 =end pod
 
 method save ( Str $file_name ) {
@@ -616,7 +613,7 @@ Note that the file descriptor will not be closed by this function.
 
   method save-fd ( Int() $fd )
 
-=item Int() $fd; a valid writable file descriptor
+=item $fd; a valid writable file descriptor
 =end pod
 
 method save-fd ( Int() $fd ) {
@@ -641,7 +638,7 @@ Undoes the last call to C<lock-path()> on this I<accel-path>. Refer to C<gtk-acc
 
   method unlock-path ( Str $accel-path )
 
-=item Str $accel-path; a valid accelerator path
+=item $accel-path; a valid accelerator path
 =end pod
 
 method unlock-path ( Str $accel-path ) {

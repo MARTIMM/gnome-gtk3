@@ -107,7 +107,6 @@ get-accel-widget
 Fetches the widget monitored by this accelerator label, or `undefined`. See `set-accel-widget()`.
 
     method get-accel-widget ( --> N-GObject )
-    method get-accel-widget-rk ( --> Gnome::Gtk3::Widget )
 
 get-accel-width
 ---------------
@@ -138,16 +137,16 @@ set-accel-closure
 
 Sets the closure to be monitored by this accelerator label. The closure must be connected to an accelerator group; see `Gnome::Gtk3::AccelGroup.connect()`. Passing `undefined` for *$accel-closure* will dissociate the *accel-label* from its current closure, if any.
 
-    method set-accel-closure ( N-GClosure $accel_closure )
+    method set-accel-closure ( N-GObject() $accel_closure )
 
-  * N-GClosure $accel_closure; the closure to monitor for accelerator changes, or `undefined`
+  * $accel_closure; the closure to monitor for accelerator changes, or `undefined`
 
 set-accel-widget
 ----------------
 
 Sets the widget to be monitored by this accelerator label. Passing `undefined` for *accel-widget* will dissociate *accel-label* from its current widget, if any.
 
-    method set-accel-widget ( N-GObject $accel_widget )
+    method set-accel-widget ( N-GObject() $accel_widget )
 
   * N-GObject $accel_widget; the widget to be monitored, or `undefined`
 

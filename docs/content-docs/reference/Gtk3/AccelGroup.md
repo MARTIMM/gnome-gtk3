@@ -91,13 +91,13 @@ Note: It seems that it always returns False altough the callback is called and f
       --> Bool
     )
 
-  * UInt $accel-quark; the quark for the accelerator name
+  * $accel-quark; the quark for the accelerator name
 
-  * N-GObject $acceleratable; the **Gnome::Gtk3::Object**, usually a **Gnome::Gtk3::Window**, on which to activate the accelerator
+  * $acceleratable; the **Gnome::Gtk3::Object**, usually a **Gnome::Gtk3::Window**, on which to activate the accelerator
 
-  * UInt $accel-key; accelerator keyval from a key event
+  * $accel-key; accelerator keyval from a key event
 
-  * UInt $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 The `$accel-quark` can be retrieved as follows where the key sequence of the accelerator is `<ctrl>A `.
 
@@ -116,16 +116,16 @@ Note that, due to implementation details, a single closure can only be connected
 
     method connect (
       UInt $accel-key, UInt $accel-mods,
-      UInt $accel_flags, N-GClosure $closure
+      UInt $accel_flags, N-GObject() $closure
     )
 
-  * UInt $accel-key; key value of the accelerator
+  * $accel-key; key value of the accelerator
 
-  * UInt $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
-  * UInt $accel_flags; a flag mask to configure this accelerator. A mask from bits of GtkAccelFlags
+  * $accel_flags; a flag mask to configure this accelerator. A mask from bits of GtkAccelFlags
 
-  * N-GClosure $closure; closure to be executed upon accelerator activation
+  * $closure; closure to be executed upon accelerator activation
 
 connect-by-path
 ---------------
@@ -138,11 +138,11 @@ The signature used for the *closure* is that of **Gnome::Gtk3::AccelGroupActivat
 
 Note that *accel-path* string will be stored in a **Gnome::Gtk3::Quark**. Therefore, if you pass a static string, you can save some memory by interning it first with `g-intern-static-string()`.
 
-    method connect-by-path ( Str $accel_path, N-GClosure $closure )
+    method connect-by-path ( Str $accel_path, N-GObject() $closure )
 
-  * Str $accel_path; path used for determining key and modifiers
+  * $accel_path; path used for determining key and modifiers
 
-  * N-GClosure $closure; closure to be executed upon accelerator activation
+  * $closure; closure to be executed upon accelerator activation
 
 disconnect
 ----------
@@ -151,9 +151,9 @@ Removes an accelerator previously installed through `connect()`.
 
 Returns: `True` if the closure was found and got disconnected
 
-    method disconnect ( N-GClosure $closure --> Bool )
+    method disconnect ( N-GObject() $closure --> Bool )
 
-  * N-GClosure $closure; the closure to remove from this accelerator group, or `undefined` to remove all closures
+  * $closure; the closure to remove from this accelerator group, or `undefined` to remove all closures
 
 disconnect-key
 --------------
@@ -164,9 +164,9 @@ Returns: `True` if there was an accelerator which could be removed, `False` othe
 
     method disconnect-key ( UInt $accel-key, UInt $accel-mods --> Bool )
 
-  * UInt $accel-key; key value of the accelerator
+  * $accel-key; key value of the accelerator
 
-  * UInt $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 from-accel-closure
 ------------------
@@ -175,9 +175,9 @@ Finds the **Gnome::Gtk3::AccelGroup** to which *closure* is connected; see `conn
 
 Returns: the **Gnome::Gtk3::AccelGroup** to which *closure* is connected, or `undefined`
 
-    method from-accel-closure ( N-GClosure $closure --> N-GObject )
+    method from-accel-closure ( N-GObject() $closure --> N-GObject )
 
-  * N-GClosure $closure; a **Gnome::Gtk3::Closure**
+  * $closure; a **Gnome::Gtk3::Closure**
 
 get-is-locked
 -------------
@@ -205,15 +205,15 @@ Finds the first accelerator in any **Gnome::Gtk3::AccelGroup** attached to *$obj
 Returns: `True` if an accelerator was activated and handled this keypress
 
     method groups-activate (
-      N-GObject $object, UInt $accel-key, UInt $accel-mods
+      N-GObject() $object, UInt $accel-key, UInt $accel-mods
       --> Bool
     )
 
-  * N-GObject $object; the widget, usually a **Gnome::Gtk3::Window**, on which to activate the accelerator.
+  * $object; the widget, usually a **Gnome::Gtk3::Window**, on which to activate the accelerator.
 
-  * UInt $accel-key; accelerator keyval from a key event.
+  * $accel-key; accelerator keyval from a key event.
 
-  * UInt $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 accelerator-get-default-mod-mask
 --------------------------------
@@ -237,9 +237,9 @@ Returns: a newly-allocated string representing the accelerator.
       UInt $accelerator-key, UInt $accelerator-mods --> Str
     )
 
-  * UInt $accelerator-key; accelerator keyval
+  * $accelerator-key; accelerator keyval
 
-  * UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 accelerator-name
 ----------------
@@ -254,9 +254,9 @@ Returns: a newly-allocated accelerator name
       UInt $accelerator-key, UInt $accelerator-mods --> Str
     )
 
-  * UInt $accelerator-key; accelerator keyval
+  * $accelerator-key; accelerator keyval
 
-  * UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 accelerator-parse
 -----------------
@@ -269,13 +269,13 @@ If the parse fails, *accelerator-key* and *accelerator-mods* will be set to 0 (z
 
     method accelerator-parse ( Str $accelerator --> List )
 
-  * Str $accelerator; string representing an accelerator
+  * $accelerator; string representing an accelerator
 
 The returned List contains;
 
-  * UInt $accelerator-key; the accelerator keyval, or `undefined`
+  * $accelerator-key; the accelerator keyval, or `undefined`
 
-  * UInt $accelerator-mods; the accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**. `undefined`
+  * $accelerator-mods; the accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**. `undefined`
 
 Note that many letters are translated to lowercase. So, for example, the string '<Ctrl>A' will not produce `GDK_KEY_A` but `GDK_KEY_a` for the returned `$accelerator-key`. The resulting behaviour however, will be the same.
 
@@ -290,7 +290,7 @@ The default mod mask should be changed on application startup, before using any 
 
     method accelerator-set-default-mod-mask ( UInt $default_mod_mask )
 
-  * UInt $default_mod_mask; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
+  * $default_mod_mask; accelerator modifier mask from GdkModifierType to be found in **Gnome::Gdk3::Types**.
 
 lock
 ----

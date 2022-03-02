@@ -76,7 +76,7 @@ use Gnome::GObject::Closure;
 use Gnome::Glib::SList;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AccelGroup:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::AccelGroup:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
@@ -252,10 +252,10 @@ Note: It seems that it always returns False altough the callback is called and f
     --> Bool
   )
 
-=item UInt $accel-quark; the quark for the accelerator name
-=item N-GObject $acceleratable; the B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>, on which to activate the accelerator
-=item UInt $accel-key; accelerator keyval from a key event
-=item UInt $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accel-quark; the quark for the accelerator name
+=item $acceleratable; the B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>, on which to activate the accelerator
+=item $accel-key; accelerator keyval from a key event
+=item $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 
 The C<$accel-quark> can be retrieved as follows where the key sequence of the accelerator is C< <ctrl>A >.
 
@@ -296,27 +296,25 @@ Note that, due to implementation details, a single closure can only be connected
 
   method connect (
     UInt $accel-key, UInt $accel-mods,
-    UInt $accel_flags, N-GClosure $closure
+    UInt $accel_flags, N-GObject() $closure
   )
 
-=item UInt $accel-key; key value of the accelerator
-=item UInt $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
-=item UInt $accel_flags; a flag mask to configure this accelerator. A mask from bits of GtkAccelFlags
-=item N-GClosure $closure; closure to be executed upon accelerator activation
+=item $accel-key; key value of the accelerator
+=item $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accel_flags; a flag mask to configure this accelerator. A mask from bits of GtkAccelFlags
+=item $closure; closure to be executed upon accelerator activation
 =end pod
 
 method connect (
-  UInt $accel-key, UInt $accel-mods, UInt $accel_flags, $closure is copy
+  UInt $accel-key, UInt $accel-mods, UInt $accel_flags, N-GObject() $closure
 ) {
-  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
-
   gtk_accel_group_connect(
     self._get-native-object-no-reffing, $accel-key, $accel-mods, $accel_flags, $closure
   );
 }
 
 sub gtk_accel_group_connect (
-  N-GObject $accel_group, guint $accel-key, GFlag $accel-mods, GFlag $accel_flags, N-GClosure $closure
+  N-GObject $accel_group, guint $accel-key, GFlag $accel-mods, GFlag $accel_flags, N-GObject $closure
 ) is native(&gtk-lib)
   { * }
 
@@ -333,22 +331,20 @@ The signature used for the I<closure> is that of B<Gnome::Gtk3::AccelGroupActiva
 
 Note that I<accel-path> string will be stored in a B<Gnome::Gtk3::Quark>. Therefore, if you pass a static string, you can save some memory by interning it first with C<g-intern-static-string()>.
 
-  method connect-by-path ( Str $accel_path, N-GClosure $closure )
+  method connect-by-path ( Str $accel_path, N-GObject() $closure )
 
-=item Str $accel_path; path used for determining key and modifiers
-=item N-GClosure $closure; closure to be executed upon accelerator activation
+=item $accel_path; path used for determining key and modifiers
+=item $closure; closure to be executed upon accelerator activation
 =end pod
 
-method connect-by-path ( Str $accel_path, $closure is copy ) {
-  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
-
+method connect-by-path ( Str $accel_path, N-GObject() $closure ) {
   gtk_accel_group_connect_by_path(
     self._get-native-object-no-reffing, $accel_path, $closure
   );
 }
 
 sub gtk_accel_group_connect_by_path (
-  N-GObject $accel_group, gchar-ptr $accel_path, N-GClosure $closure
+  N-GObject $accel_group, gchar-ptr $accel_path, N-GObject $closure
 ) is native(&gtk-lib)
   { * }
 
@@ -361,21 +357,19 @@ Removes an accelerator previously installed through C<connect()>.
 
 Returns: C<True> if the closure was found and got disconnected
 
-  method disconnect ( N-GClosure $closure --> Bool )
+  method disconnect ( N-GObject() $closure --> Bool )
 
-=item N-GClosure $closure; the closure to remove from this accelerator group, or C<undefined> to remove all closures
+=item $closure; the closure to remove from this accelerator group, or C<undefined> to remove all closures
 =end pod
 
-method disconnect ( $closure is copy --> Bool ) {
-  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
-
+method disconnect ( N-GObject() $closure --> Bool ) {
   gtk_accel_group_disconnect(
     self._get-native-object-no-reffing, $closure
   ).Bool
 }
 
 sub gtk_accel_group_disconnect (
-  N-GObject $accel_group, N-GClosure $closure --> gboolean
+  N-GObject $accel_group, N-GObject $closure --> gboolean
 ) is native(&gtk-lib)
   { * }
 
@@ -390,8 +384,8 @@ Returns: C<True> if there was an accelerator which could be removed, C<False> ot
 
   method disconnect-key ( UInt $accel-key, UInt $accel-mods --> Bool )
 
-=item UInt $accel-key; key value of the accelerator
-=item UInt $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accel-key; key value of the accelerator
+=item $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method disconnect-key ( UInt $accel-key, UInt $accel-mods --> Bool ) {
@@ -443,23 +437,24 @@ Finds the B<Gnome::Gtk3::AccelGroup> to which I<closure> is connected; see C<con
 
 Returns: the B<Gnome::Gtk3::AccelGroup> to which I<closure> is connected, or C<undefined>
 
-  method from-accel-closure ( N-GClosure $closure --> N-GObject )
+  method from-accel-closure ( N-GObject() $closure --> N-GObject )
 
-=item N-GClosure $closure; a B<Gnome::Gtk3::Closure>
+=item $closure; a B<Gnome::Gtk3::Closure>
 =end pod
 
-method from-accel-closure ( $closure is copy --> N-GObject ) {
-  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
+method from-accel-closure ( N-GObject() $closure --> N-GObject ) {
+  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GObject;
   gtk_accel_group_from_accel_closure($closure)
 }
 
-method from-accel-closure-rk ( $closure is copy --> Gnome::Gtk3::AccelGroup ) {
+method from-accel-closure-rk (
+  N-GObject() $closure --> Gnome::Gtk3::AccelGroup
+) {
   Gnome::N::deprecate(
     'from-accel-closure-rk', 'coercing from from-accel-closure',
     '0.47.2', '0.50.0'
   );
 
-  $closure .= _get-native-object-no-reffing unless $closure ~~ N-GClosure;
   Gnome::Gtk3::AccelGroup.new(:native-object(
       gtk_accel_group_from_accel_closure($closure)
     )
@@ -467,7 +462,7 @@ method from-accel-closure-rk ( $closure is copy --> Gnome::Gtk3::AccelGroup ) {
 }
 
 sub gtk_accel_group_from_accel_closure (
-  N-GClosure $closure --> N-GObject
+  N-GObject $closure --> N-GObject
 ) is native(&gtk-lib)
   { * }
 
@@ -525,19 +520,18 @@ Finds the first accelerator in any B<Gnome::Gtk3::AccelGroup> attached to I<$obj
 Returns: C<True> if an accelerator was activated and handled this keypress
 
   method groups-activate (
-    N-GObject $object, UInt $accel-key, UInt $accel-mods
+    N-GObject() $object, UInt $accel-key, UInt $accel-mods
     --> Bool
   )
 
-=item N-GObject $object; the widget, usually a B<Gnome::Gtk3::Window>, on which to activate the accelerator.
-=item UInt $accel-key; accelerator keyval from a key event.
-=item UInt $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $object; the widget, usually a B<Gnome::Gtk3::Window>, on which to activate the accelerator.
+=item $accel-key; accelerator keyval from a key event.
+=item $accel-mods; keyboard state mask from a key event. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method groups-activate (
-  $object is copy, UInt $accel-key, UInt $accel-mods --> Bool
+  N-GObject() $object, UInt $accel-key, UInt $accel-mods --> Bool
 ) {
-  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
   gtk_accel_groups_activate( $object, $accel-key, $accel-mods).Bool
 }
 
@@ -552,22 +546,21 @@ sub gtk_accel_groups_activate (
 #-------------------------------------------------------------------------------
 #TM:0:groups-from-object:
 =begin pod
-=head2 groups-from-object, roups-from-object-rk
+=head2 groups-from-object
 
 Gets a list of all accel groups which are attached to I<object>.
 
 Returns: (element-type GtkAccelGroup) : a list of all accel groups which are attached to I<object>
 
-  method groups-from-object ( N-GObject $object --> N-GSList )
+  method groups-from-object ( N-GObject() $object --> N-GSList )
 
-=item N-GObject $object; a B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>
+=item $object; a B<Gnome::Gtk3::Object>, usually a B<Gnome::Gtk3::Window>
 
 The C<-rk> version returns an Array with B<Gnome::Gtk3::AccelGroup> objects.
 
 =end pod
 
-method groups-from-object ( $object is copy --> N-GSList ) {
-  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
+method groups-from-object ( N-GObject() $object --> N-GSList ) {
   gtk_accel_groups_from_object($object)
 }
 
@@ -614,8 +607,8 @@ Returns: a newly-allocated string representing the accelerator.
     UInt $accelerator-key, UInt $accelerator-mods --> Str
   )
 
-=item UInt $accelerator-key; accelerator keyval
-=item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accelerator-key; accelerator keyval
+=item $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method accelerator-get-label (
@@ -683,8 +676,8 @@ Returns: a newly-allocated accelerator name
     UInt $accelerator-key, UInt $accelerator-mods --> Str
   )
 
-=item UInt $accelerator-key; accelerator keyval
-=item UInt $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accelerator-key; accelerator keyval
+=item $accelerator-mods; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method accelerator-name (
@@ -749,11 +742,11 @@ If the parse fails, I<accelerator-key> and I<accelerator-mods> will be set to 0 
 
   method accelerator-parse ( Str $accelerator --> List )
 
-=item Str $accelerator; string representing an accelerator
+=item $accelerator; string representing an accelerator
 
 The returned List contains;
-=item UInt $accelerator-key; the accelerator keyval, or C<undefined>
-=item UInt $accelerator-mods; the accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>. C<undefined>
+=item $accelerator-key; the accelerator keyval, or C<undefined>
+=item $accelerator-mods; the accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>. C<undefined>
 
 Note that many letters are translated to lowercase. So, for example, the string '<Ctrl>A' will not produce C<GDK_KEY_A> but C<GDK_KEY_a> for the returned C<$accelerator-key>. The resulting behaviour however, will be the same.
 =end pod
@@ -792,12 +785,12 @@ If the parse fails, I<accelerator-key>, I<accelerator-mods> and I<accelerator-co
     Str $accelerator --> List
   )
 
-=item Str $accelerator; string representing an accelerator
+=item $accelerator; string representing an accelerator
 
 The returned List holds;
-=item UInt $accelerator-key; the accelerator keyval, or C<undefined>
-=item UInt $accelerator-codes; the accelerator keycodes, or C<undefined>
-=item UInt $accelerator-mods; the accelerator modifier mask, C<undefined>. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $accelerator-key; the accelerator keyval, or C<undefined>
+=item $accelerator-codes; the accelerator keycodes, or C<undefined>
+=item $accelerator-mods; the accelerator modifier mask, C<undefined>. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method gtk-accelerator-parse-with-keycode ( Str $accelerator --> List ) {
@@ -830,7 +823,7 @@ The default mod mask should be changed on application startup, before using any 
 
   method accelerator-set-default-mod-mask ( UInt $default_mod_mask )
 
-=item UInt $default_mod_mask; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $default_mod_mask; accelerator modifier mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
 =end pod
 
 method accelerator-set-default-mod-mask ( UInt $default_mod_mask ) {
@@ -889,9 +882,9 @@ Returns:   (array length=n-entries): an array of I<n-entries> B<Gnome::Gtk3::Acc
     --> GtkAccelGroupEntry
   )
 
-=item UInt $accel-key; key value of the accelerator
-=item UInt $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
-=item guInt-ptr $n_entries; location to return the number of entries found, or C<undefined>
+=item $accel-key; key value of the accelerator
+=item $accel-mods; modifier combination of the accelerator. A mask from GdkModifierType to be found in B<Gnome::Gdk3::Types>.
+=item $n_entries; location to return the number of entries found, or C<undefined>
 =end pod
 
 method query ( UInt $accel-key, UInt $accel-mods, guInt-ptr $n_entries --> GtkAccelGroupEntry ) {
