@@ -84,11 +84,14 @@ Methods
 new
 ---
 
-### default, no options
+### :handler-object, :handler-name
 
-Create a new Closure object.
+Create a new Closure object. Minimizing the Closure to only setting of a callback method. The `$handler-name` is the method which is defined in the user object `$handler-object`. Optionally the user can provide some arguments to the handler.
 
-    multi method new ( )
+    multi method new (
+      Any:D :$handler-object!, Str:D :$handler-name!,
+      :%handler-opts
+    )
 
 ### :native-object
 
