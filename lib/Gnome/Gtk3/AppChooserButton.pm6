@@ -184,15 +184,14 @@ submethod BUILD ( *%options ) {
 
 Appends a custom item to the list of applications that is shown in the popup; the item name must be unique per-widget. Clients can use the provided name as a detail for the  I<custom-item-activated> signal, to add a callback for the activation of a particular custom item in the list. See also C<append-separator()>.
 
-  method append-custom-item ( Str $name, Str $label, N-GObject $icon )
+  method append-custom-item ( Str $name, Str $label, N-GObject() $icon )
 
-=item Str $name; the name of the custom item
-=item Str $label; the label for the custom item
-=item N-GObject $icon; the icon for the custom item
+=item $name; the name of the custom item
+=item $label; the label for the custom item
+=item $icon; the icon for the custom item
 =end pod
 
-method append-custom-item ( Str $name, Str $label, $icon is copy ) {
-  $icon .= _get-native-object-no-reffing unless $icon ~~ N-GObject;
+method append-custom-item ( Str $name, Str $label, N-GObject() $icon ) {
   gtk_app_chooser_button_append_custom_item(
     self._get-native-object-no-reffing, $name, $label, $icon
   );
@@ -304,7 +303,7 @@ Use C<Gnome::Gtk3::AppChooser.refresh()> to bring the selection to its initial s
 
   method set-active-custom-item ( Str $name )
 
-=item Str $name; the name of the custom item
+=item $name; the name of the custom item
 =end pod
 
 method set-active-custom-item ( Str $name ) {
@@ -327,7 +326,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 
   method set-heading ( Str $heading )
 
-=item Str $heading; a string containing Pango markup
+=item $heading; a string containing Pango markup
 =end pod
 
 method set-heading ( Str $heading ) {
@@ -350,7 +349,7 @@ Sets whether the dropdown menu of this button should show the default applicatio
 
   method set-show-default-item ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-default-item>
+=item $setting; the new value for  I<show-default-item>
 =end pod
 
 method set-show-default-item ( Bool $setting ) {
@@ -373,7 +372,7 @@ Sets whether the dropdown menu of this button should show an entry to trigger a 
 
   method set-show-dialog-item ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-dialog-item>
+=item $setting; the new value for  I<show-dialog-item>
 =end pod
 
 method set-show-dialog-item ( Bool $setting ) {
@@ -399,7 +398,7 @@ Returns: a newly created B<Gnome::Gtk3::AppChooserButton>
 
   method _gtk_app_chooser_button_new ( Str $content_type --> N-GObject )
 
-=item Str $content_type; the content type to show applications for
+=item $content_type; the content type to show applications for
 =end pod
 }}
 

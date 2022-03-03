@@ -20,7 +20,7 @@ subtest 'ISA test', {
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
   my Gnome::Gtk3::AppChooserButton $acb .= new(:content-type<text/plain>);
-  my Gnome::Gio::AppInfo $ai = $acb.get-app-info-rk;
+  my Gnome::Gio::AppInfo() $ai = $acb.get-app-info;
   ok (my $str = $ai.get-commandline).chars,
     "commandline for type 'text/plain' = $str";
   is $acb.get-content-type, 'text/plain', '.get-content-type()';

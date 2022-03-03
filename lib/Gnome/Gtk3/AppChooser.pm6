@@ -49,7 +49,7 @@ use Gnome::N::GlibToRakuTypes;
 use Gnome::Gio::AppInfo;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::AppChooser:auth<github:MARTIMM>:ver<0.1.0>;
+unit role Gnome::Gtk3::AppChooser:auth<github:MARTIMM>;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -84,16 +84,14 @@ method _add_app_chooser_interface_signal_types ( Str $class-name ) {
 
 #-------------------------------------------------------------------------------
 #TM:1:get-app-info:
-#TM:1:get-app-info-rk:
 =begin pod
-=head2 get-app-info, get-app-info-rk
+=head2 get-app-info
 
 Returns the currently selected application.
 
 Returns: a (native B<Gnome::Gio::AppInfo> for the currently selected application, or C<undefined> if none is selected. Free with C<clear-object()>
 
   method get-app-info ( --> N-GObject )
-  method get-app-info-rk ( --> Gnome::Gio::AppInfo )
 
 =end pod
 
@@ -102,6 +100,11 @@ method get-app-info ( --> N-GObject ) {
 }
 
 method get-app-info-rk ( --> Gnome::Gio::AppInfo ) {
+  Gnome::N::deprecate(
+    'get-app-info-rk', 'coercing from get-app-info',
+    '0.47.2', '0.50.0'
+  );
+
   Gnome::Gio::AppInfo.new(:native-object(
       gtk_app_chooser_get_app_info(self._f('GtkAppChooser'))
     )

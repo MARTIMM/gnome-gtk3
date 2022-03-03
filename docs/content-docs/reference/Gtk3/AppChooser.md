@@ -33,15 +33,14 @@ Uml
 Methods
 =======
 
-get-app-info, get-app-info-rk
------------------------------
+get-app-info
+------------
 
 Returns the currently selected application.
 
 Returns: a (native **Gnome::Gio::AppInfo** for the currently selected application, or `undefined` if none is selected. Free with `clear-object()`
 
     method get-app-info ( --> N-GObject )
-    method get-app-info-rk ( --> Gnome::Gio::AppInfo )
 
 get-content-type
 ----------------

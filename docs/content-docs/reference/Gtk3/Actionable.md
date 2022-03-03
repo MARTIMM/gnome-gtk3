@@ -56,7 +56,7 @@ Names are of the form “win.save” or “app.quit” for actions on the contai
 
     method set-action-name ( Str $action_name )
 
-  * Str $action_name; (nullable): an action name, or `undefined`
+  * $action_name; an action name, or `undefined`
 
 set-action-target-value
 -----------------------
@@ -71,7 +71,7 @@ Consider the example of associating a set of buttons with a **N-GAction** with s
 
     method set-action-target-value ( N-GObject $target_value )
 
-  * N-GObject $target_value; a **GVariant** to set as the target value, or `undefined`
+  * $target_value; a **GVariant** to set as the target value, or `undefined`
 
 set-detailed-action-name
 ------------------------
@@ -82,7 +82,7 @@ Sets the action-name and associated string target value of an actionable widget.
 
     method set-detailed-action-name ( Str $detailed_action_name )
 
-  * Str $detailed_action_name; the detailed action name
+  * $detailed_action_name; the detailed action name
 
 Properties
 ==========

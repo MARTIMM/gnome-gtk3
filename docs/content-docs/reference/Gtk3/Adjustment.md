@@ -40,17 +40,17 @@ Create a new Adjustment object.
       Num() :$page-size!
     )
 
-  * Num() $value; the initial value.
+  * $value; the initial value.
 
-  * Num() $lower; the minimum value.
+  * $lower; the minimum value.
 
-  * Num() $upper; the maximum value
+  * $upper; the maximum value
 
-  * Num() $step_increment; the step increment
+  * $step_increment; the step increment
 
-  * Num() $page_increment; the page increment
+  * $page_increment; the page increment
 
-  * Num() $page_size; the page size
+  * $page_size; the page size
 
 ### :native-object
 
@@ -67,9 +67,9 @@ A *value-changed* signal will be emitted if the value is changed.
 
     method clamp-page ( Num() $lower, Num() $upper )
 
-  * Num() $lower; the lower value
+  * $lower; the lower value
 
-  * Num() $upper; the upper value
+  * $upper; the upper value
 
 configure
 ---------
@@ -80,17 +80,17 @@ Use this function to avoid multiple emissions of the *changed* signal. See `set-
 
     method configure ( Num() $value, Num() $lower, Num() $upper, Num() $step_increment, Num() $page_increment, Num() $page_size )
 
-  * Num() $value; the new value
+  * $value; the new value
 
-  * Num() $lower; the new minimum value
+  * $lower; the new minimum value
 
-  * Num() $upper; the new maximum value
+  * $upper; the new maximum value
 
-  * Num() $step_increment; the new step increment
+  * $step_increment; the new step increment
 
-  * Num() $page_increment; the new page increment
+  * $page_increment; the new page increment
 
-  * Num() $page_size; the new page size
+  * $page_size; the new page size
 
 get-lower
 ---------
@@ -166,7 +166,7 @@ Alternatively, using a single `g-object-set()` for all the properties to change,
 
     method set-lower ( Num() $lower )
 
-  * Num() $lower; the new minimum value
+  * $lower; the new minimum value
 
 set-page-increment
 ------------------
@@ -177,7 +177,7 @@ See `set-lower()` about how to compress multiple emissions of the *changed* sign
 
     method set-page-increment ( Num() $page_increment )
 
-  * Num() $page_increment; the new page increment
+  * $page_increment; the new page increment
 
 set-page-size
 -------------
@@ -188,7 +188,7 @@ See `set-lower()` about how to compress multiple emissions of the GtkAdjustment:
 
     method set-page-size ( Num() $page_size )
 
-  * Num() $page_size; the new page size
+  * $page_size; the new page size
 
 set-step-increment
 ------------------
@@ -199,7 +199,7 @@ See `set-lower()` about how to compress multiple emissions of the *changed* sign
 
     method set-step-increment ( Num() $step_increment )
 
-  * Num() $step_increment; the new step increment
+  * $step_increment; the new step increment
 
 set-upper
 ---------
@@ -212,7 +212,7 @@ See `set-lower()` about how to compress multiple emissions of the *changed* sign
 
     method set-upper ( Num() $upper )
 
-  * Num() $upper; the new maximum value
+  * $upper; the new maximum value
 
 set-value
 ---------
@@ -223,7 +223,7 @@ Note that for adjustments which are used in a **Gnome::Gtk3::Scrollbar**, the ef
 
     method set-value ( Num() $value )
 
-  * Num() $value; the new value
+  * $value; the new value
 
 Signals
 =======

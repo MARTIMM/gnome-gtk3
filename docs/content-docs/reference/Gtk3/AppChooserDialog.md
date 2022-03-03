@@ -63,11 +63,11 @@ Creates a new **Gnome::Gtk3::AppChooserDialog** for the provided file, to allow 
       UInt :$flags = 0
     )
 
-  * Str $file; a path to a file.
+  * $file; a path to a file.
 
-  * N-GObject $parent; Transient parent of the dialog, or `undefined`.
+  * $parent; Transient parent of the dialog, or `undefined`.
 
-  * UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in **Gnome::Gtk3::Dialog**.
+  * $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in **Gnome::Gtk3::Dialog**.
 
 **Note**: When files are provided without an extension (or maybe other reasons), Gnome somehow cannot find out the content type of the file and throws critical errors like
 
@@ -82,11 +82,11 @@ Creates a new **Gnome::Gtk3::AppChooserDialog** for the provided content type, t
       Gnome::GObject::Object :$parent = N-GObject,
     )
 
-  * Str $content-type; a content type to handle.
+  * $content-type; a content type to handle.
 
-  * N-GObject $parent; Transient parent of the dialog, or `undefined`.
+  * $parent; Transient parent of the dialog, or `undefined`.
 
-  * UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in **Gnome::Gtk3::Dialog**.
+  * $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in **Gnome::Gtk3::Dialog**.
 
 ### :native-object
 
@@ -109,13 +109,12 @@ Returns: the text to display at the top of the dialog, or `undefined`, in which 
 
     method get-heading ( --> Str )
 
-get-widget, get-widget-rk
--------------------------
+get-widget
+----------
 
 Returns the **Gnome::Gtk3::AppChooserWidget** of this dialog.
 
     method get-widget ( --> N-GObject )
-    method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget )
 
 set-heading
 -----------
@@ -124,7 +123,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 
     method set-heading ( Str $heading )
 
-  * Str $heading; a string containing Pango markup
+  * $heading; a string containing Pango markup
 
 Properties
 ==========

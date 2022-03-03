@@ -81,13 +81,13 @@ append-custom-item
 
 Appends a custom item to the list of applications that is shown in the popup; the item name must be unique per-widget. Clients can use the provided name as a detail for the *custom-item-activated* signal, to add a callback for the activation of a particular custom item in the list. See also `append-separator()`.
 
-    method append-custom-item ( Str $name, Str $label, N-GObject $icon )
+    method append-custom-item ( Str $name, Str $label, N-GObject() $icon )
 
-  * Str $name; the name of the custom item
+  * $name; the name of the custom item
 
-  * Str $label; the label for the custom item
+  * $label; the label for the custom item
 
-  * N-GObject $icon; the icon for the custom item
+  * $icon; the icon for the custom item
 
 append-separator
 ----------------
@@ -132,7 +132,7 @@ Use `Gnome::Gtk3::AppChooser.refresh()` to bring the selection to its initial st
 
     method set-active-custom-item ( Str $name )
 
-  * Str $name; the name of the custom item
+  * $name; the name of the custom item
 
 set-heading
 -----------
@@ -141,7 +141,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 
     method set-heading ( Str $heading )
 
-  * Str $heading; a string containing Pango markup
+  * $heading; a string containing Pango markup
 
 set-show-default-item
 ---------------------
@@ -150,7 +150,7 @@ Sets whether the dropdown menu of this button should show the default applicatio
 
     method set-show-default-item ( Bool $setting )
 
-  * Bool $setting; the new value for *show-default-item*
+  * $setting; the new value for *show-default-item*
 
 set-show-dialog-item
 --------------------
@@ -159,7 +159,7 @@ Sets whether the dropdown menu of this button should show an entry to trigger a 
 
     method set-show-dialog-item ( Bool $setting )
 
-  * Bool $setting; the new value for *show-dialog-item*
+  * $setting; the new value for *show-dialog-item*
 
 Signals
 =======

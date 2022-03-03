@@ -162,14 +162,12 @@ submethod BUILD ( *%options ) {
 
 #-------------------------------------------------------------------------------
 #TM:1:get-center-widget:
-#TM:0:get-center-widget-rk:
 =begin pod
-=head2 get-center-widget, get-center-widget-rk
+=head2 get-center-widget
 
 Retrieves the center bar widget of the bar or C<undefined>.
 
   method get-center-widget ( --> N-GObject )
-  method get-center-widget-rk ( --> Gnome::Gtk3::Widget )
 
 =end pod
 
@@ -178,6 +176,11 @@ method get-center-widget ( --> N-GObject ) {
 }
 
 method get-center-widget-rk ( --> Any ) {
+  Gnome::N::deprecate(
+    'get-center-widget-rk', 'coercing from get-center-widget',
+    '0.47.2', '0.50.0'
+  );
+
   my $no = gtk_action_bar_get_center_widget(self._get-native-object-no-reffing);
   if ?$no {
     self._wrap-native-type-from-no($no)
@@ -200,13 +203,12 @@ sub gtk_action_bar_get_center_widget (
 
 Adds I<child> to I<action-bar>, packed with reference to the end of the I<action-bar>.
 
-  method pack-end ( N-GObject $child )
+  method pack-end ( N-GObject() $child )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<action-bar>
+=item $child; the B<Gnome::Gtk3::Widget> to be added to I<action-bar>
 =end pod
 
-method pack-end ( $child is copy ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+method pack-end ( N-GObject() $child ) {
   gtk_action_bar_pack_end( self._get-native-object-no-reffing, $child);
 }
 
@@ -222,13 +224,12 @@ sub gtk_action_bar_pack_end (
 
 Adds I<child> to I<action-bar>, packed with reference to the start of the I<action-bar>.
 
-  method pack-start ( N-GObject $child )
+  method pack-start ( N-GObject() $child )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<action-bar>
+=item $child; the B<Gnome::Gtk3::Widget> to be added to I<action-bar>
 =end pod
 
-method pack-start ( $child is copy ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+method pack-start ( N-GObject() $child ) {
   gtk_action_bar_pack_start( self._get-native-object-no-reffing, $child);
 }
 
@@ -244,14 +245,12 @@ sub gtk_action_bar_pack_start (
 
 Sets the center widget for the B<Gnome::Gtk3::ActionBar>.
 
-  method set-center-widget ( N-GObject $center_widget )
+  method set-center-widget ( N-GObject() $center_widget )
 
-=item N-GObject $center_widget; a widget to use for the center
+=item $center_widget; a widget to use for the center
 =end pod
 
-method set-center-widget ( $center_widget is copy ) {
-  $center_widget .= _get-native-object-no-reffing unless $center_widget ~~ N-GObject;
-
+method set-center-widget ( N-GObject() $center_widget ) {
   gtk_action_bar_set_center_widget(
     self._get-native-object-no-reffing, $center_widget
   );
@@ -277,7 +276,7 @@ Returns: a new B<Gnome::Gtk3::ActionBar>
 =end pod
 }}
 
-sub _gtk_action_bar_new (  --> N-GObject )
+sub _gtk_action_bar_new ( --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_action_bar_new')
   { * }

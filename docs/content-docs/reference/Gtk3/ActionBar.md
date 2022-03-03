@@ -77,38 +77,37 @@ Create a ActionBar object using a native object returned from a builder. See als
 
     multi method new ( Str :$build-id! )
 
-get-center-widget, get-center-widget-rk
----------------------------------------
+get-center-widget
+-----------------
 
 Retrieves the center bar widget of the bar or `undefined`.
 
     method get-center-widget ( --> N-GObject )
-    method get-center-widget-rk ( --> Gnome::Gtk3::Widget )
 
 pack-end
 --------
 
 Adds *child* to *action-bar*, packed with reference to the end of the *action-bar*.
 
-    method pack-end ( N-GObject $child )
+    method pack-end ( N-GObject() $child )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to be added to *action-bar*
+  * $child; the **Gnome::Gtk3::Widget** to be added to *action-bar*
 
 pack-start
 ----------
 
 Adds *child* to *action-bar*, packed with reference to the start of the *action-bar*.
 
-    method pack-start ( N-GObject $child )
+    method pack-start ( N-GObject() $child )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to be added to *action-bar*
+  * $child; the **Gnome::Gtk3::Widget** to be added to *action-bar*
 
 set-center-widget
 -----------------
 
 Sets the center widget for the **Gnome::Gtk3::ActionBar**.
 
-    method set-center-widget ( N-GObject $center_widget )
+    method set-center-widget ( N-GObject() $center_widget )
 
-  * N-GObject $center_widget; a widget to use for the center
+  * $center_widget; a widget to use for the center
 

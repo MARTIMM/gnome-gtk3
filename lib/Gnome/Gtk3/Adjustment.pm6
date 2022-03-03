@@ -63,7 +63,7 @@ use Gnome::N::GlibToRakuTypes;
 use Gnome::GObject::InitiallyUnowned;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Adjustment:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::Adjustment:auth<github:MARTIMM>;
 also is Gnome::GObject::InitiallyUnowned;
 
 #-------------------------------------------------------------------------------
@@ -84,12 +84,12 @@ Create a new Adjustment object.
     Num() :$page-size!
   )
 
-=item Num() $value; the initial value.
-=item Num() $lower; the minimum value.
-=item Num() $upper; the maximum value
-=item Num() $step_increment; the step increment
-=item Num() $page_increment; the page increment
-=item Num() $page_size; the page size
+=item $value; the initial value.
+=item $lower; the minimum value.
+=item $upper; the maximum value
+=item $step_increment; the step increment
+=item $page_increment; the page increment
+=item $page_size; the page size
 
 =head3 :native-object
 
@@ -205,8 +205,8 @@ A  I<value-changed> signal will be emitted if the value is changed.
 
   method clamp-page ( Num() $lower, Num() $upper )
 
-=item Num() $lower; the lower value
-=item Num() $upper; the upper value
+=item $lower; the lower value
+=item $upper; the upper value
 =end pod
 
 method clamp-page ( Num() $lower, Num() $upper ) {
@@ -231,12 +231,12 @@ Use this function to avoid multiple emissions of the  I<changed> signal. See C<s
 
   method configure ( Num() $value, Num() $lower, Num() $upper, Num() $step_increment, Num() $page_increment, Num() $page_size )
 
-=item Num() $value; the new value
-=item Num() $lower; the new minimum value
-=item Num() $upper; the new maximum value
-=item Num() $step_increment; the new step increment
-=item Num() $page_increment; the new page increment
-=item Num() $page_size; the new page size
+=item $value; the new value
+=item $lower; the new minimum value
+=item $upper; the new maximum value
+=item $step_increment; the new step increment
+=item $page_increment; the new page increment
+=item $page_size; the new page size
 =end pod
 
 method configure ( Num() $value, Num() $lower, Num() $upper, Num() $step_increment, Num() $page_increment, Num() $page_size ) {
@@ -439,7 +439,7 @@ Alternatively, using a single C<g-object-set()> for all the properties to change
 
   method set-lower ( Num() $lower )
 
-=item Num() $lower; the new minimum value
+=item $lower; the new minimum value
 =end pod
 
 method set-lower ( Num() $lower ) {
@@ -465,7 +465,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 
   method set-page-increment ( Num() $page_increment )
 
-=item Num() $page_increment; the new page increment
+=item $page_increment; the new page increment
 =end pod
 
 method set-page-increment ( Num() $page_increment ) {
@@ -491,7 +491,7 @@ See C<set-lower()> about how to compress multiple emissions of the GtkAdjustment
 
   method set-page-size ( Num() $page_size )
 
-=item Num() $page_size; the new page size
+=item $page_size; the new page size
 =end pod
 
 method set-page-size ( Num() $page_size ) {
@@ -517,7 +517,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 
   method set-step-increment ( Num() $step_increment )
 
-=item Num() $step_increment; the new step increment
+=item $step_increment; the new step increment
 =end pod
 
 method set-step-increment ( Num() $step_increment ) {
@@ -545,7 +545,7 @@ See C<set-lower()> about how to compress multiple emissions of the  I<changed> s
 
   method set-upper ( Num() $upper )
 
-=item Num() $upper; the new maximum value
+=item $upper; the new maximum value
 =end pod
 
 method set-upper ( Num() $upper ) {
@@ -571,7 +571,7 @@ Note that for adjustments which are used in a B<Gnome::Gtk3::Scrollbar>, the eff
 
   method set-value ( Num() $value )
 
-=item Num() $value; the new value
+=item $value; the new value
 =end pod
 
 method set-value ( Num() $value ) {
@@ -598,12 +598,12 @@ Returns: a new B<Gnome::Gtk3::Adjustment>
 
   method _gtk_adjustment_new ( Num() $value, Num() $lower, Num() $upper, Num() $step_increment, Num() $page_increment, Num() $page_size --> N-GObject )
 
-=item Num() $value; the initial value
-=item Num() $lower; the minimum value
-=item Num() $upper; the maximum value
-=item Num() $step_increment; the step increment
-=item Num() $page_increment; the page increment
-=item Num() $page_size; the page size
+=item $value; the initial value
+=item $lower; the minimum value
+=item $upper; the maximum value
+=item $step_increment; the step increment
+=item $page_increment; the page increment
+=item $page_size; the page size
 =end pod
 }}
 

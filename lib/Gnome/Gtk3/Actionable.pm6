@@ -33,7 +33,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::Actionable:auth<github:MARTIMM>:ver<0.1.0>;
+unit role Gnome::Gtk3::Actionable:auth<github:MARTIMM>;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -115,7 +115,7 @@ associated with the window.
 
   method set-action-name ( Str $action_name )
 
-=item Str $action_name; (nullable): an action name, or C<undefined>
+=item $action_name; an action name, or C<undefined>
 
 =end pod
 
@@ -149,7 +149,7 @@ C<gtk-actionable-set-detailed-action-name()>.
 
   method set-action-target ( Str $format_string )
 
-=item Str $format_string; a GVariant format string @...: arguments appropriate for I<format-string>
+=item $format_string; a GVariant format string @...: arguments appropriate for I<format-string>
 
 =end pod
 
@@ -180,7 +180,7 @@ Consider the example of associating a set of buttons with a B<N-GAction> with st
 
   method set-action-target-value ( N-GObject $target_value )
 
-=item N-GObject $target_value; a B<GVariant> to set as the target value, or C<undefined>
+=item $target_value; a B<GVariant> to set as the target value, or C<undefined>
 
 =end pod
 
@@ -210,7 +210,7 @@ I<$detailed-action-name> is a string in the format accepted by C<g-action-parse-
 
   method set-detailed-action-name ( Str $detailed_action_name )
 
-=item Str $detailed_action_name; the detailed action name
+=item $detailed_action_name; the detailed action name
 
 =end pod
 

@@ -90,9 +90,9 @@ Creates a new B<Gnome::Gtk3::AppChooserDialog> for the provided file, to allow t
     UInt :$flags = 0
   )
 
-=item Str $file; a path to a file.
-=item N-GObject $parent; Transient parent of the dialog, or C<undefined>.
-=item UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
+=item $file; a path to a file.
+=item $parent; Transient parent of the dialog, or C<undefined>.
+=item $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
 
 B<Note>: When files are provided without an extension (or maybe other reasons), Gnome somehow cannot find out the content type of the file and throws critical errors like
 
@@ -109,9 +109,9 @@ Creates a new B<Gnome::Gtk3::AppChooserDialog> for the provided content type, to
     Gnome::GObject::Object :$parent = N-GObject,
   )
 
-=item Str $content-type; a content type to handle.
-=item N-GObject $parent; Transient parent of the dialog, or C<undefined>.
-=item UInt $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
+=item $content-type; a content type to handle.
+=item $parent; Transient parent of the dialog, or C<undefined>.
+=item $flags; flags for this dialog. Default is GTK_DIALOG_MODAL which is from GtkDialogFlags enumeration found in  B<Gnome::Gtk3::Dialog>.
 
 
 =head3 :native-object
@@ -231,14 +231,12 @@ sub gtk_app_chooser_dialog_get_heading (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-widget:
-#TM:1:get-widget-rk:
 =begin pod
-=head2 get-widget, get-widget-rk
+=head2 get-widget
 
 Returns the B<Gnome::Gtk3::AppChooserWidget> of this dialog.
 
   method get-widget ( --> N-GObject )
-  method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget )
 
 =end pod
 
@@ -247,6 +245,11 @@ method get-widget ( --> N-GObject ) {
 }
 
 method get-widget-rk ( --> Gnome::Gtk3::AppChooserWidget ) {
+  Gnome::N::deprecate(
+    'get-widget-rk', 'coercing from get-widget',
+    '0.47.2', '0.50.0'
+  );
+
   Gnome::Gtk3::AppChooserWidget.new(:native-object(
       gtk_app_chooser_dialog_get_widget(self._get-native-object-no-reffing)
     )
@@ -267,7 +270,7 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 
   method set-heading ( Str $heading )
 
-=item Str $heading; a string containing Pango markup
+=item $heading; a string containing Pango markup
 =end pod
 
 method set-heading ( Str $heading ) {
@@ -294,9 +297,9 @@ Returns: a newly created B<Gnome::Gtk3::AppChooserDialog>
 
   method _gtk_app_chooser_dialog_new ( N-GObject $parent, GtkDialogFlags $flags, GFile $file --> N-GObject )
 
-=item N-GObject $parent; a B<Gnome::Gtk3::Window>, or C<undefined>
-=item GtkDialogFlags $flags; flags for this dialog
-=item GFile $file; a B<Gnome::Gtk3::File>
+=item $parent; a B<Gnome::Gtk3::Window>, or C<undefined>
+=item $flags; flags for this dialog
+=item $file; a B<Gnome::Gtk3::File>
 =end pod
 }}
 
@@ -317,9 +320,9 @@ Returns: a newly created B<Gnome::Gtk3::AppChooserDialog>
 
   method _gtk_app_chooser_dialog_new_for_content_type ( N-GObject $parent, GtkDialogFlags $flags, Str $content_type --> N-GObject )
 
-=item N-GObject $parent; a B<Gnome::Gtk3::Window>, or C<undefined>
-=item GtkDialogFlags $flags; flags for this dialog
-=item Str $content_type; a content type string
+=item $parent; a B<Gnome::Gtk3::Window>, or C<undefined>
+=item $flags; flags for this dialog
+=item $content_type; a content type string
 =end pod
 }}
 
