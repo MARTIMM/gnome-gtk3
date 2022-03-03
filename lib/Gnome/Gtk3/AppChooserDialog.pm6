@@ -71,7 +71,7 @@ use Gnome::Gtk3::AppChooserWidget;
 use Gnome::Gio::File;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AppChooserDialog:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::AppChooserDialog:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Dialog;
 also does Gnome::Gtk3::AppChooser;
 

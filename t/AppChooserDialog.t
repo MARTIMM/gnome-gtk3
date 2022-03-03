@@ -35,7 +35,7 @@ subtest 'Manipulations', {
   is $acd.get-heading, 'foo bar', '.set-heading() / .get-heading()';
 
   lives-ok {
-    my Gnome::Gtk3::AppChooserWidget $acw = $acd.get-widget-rk;
+    my Gnome::Gtk3::AppChooserWidget() $acw = $acd.get-widget;
     diag $acw.get-default-text;
   }, '.get-widget-rk()';
 }

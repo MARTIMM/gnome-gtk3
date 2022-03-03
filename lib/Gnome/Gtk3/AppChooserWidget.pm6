@@ -74,7 +74,7 @@ use Gnome::Gtk3::Box;
 use Gnome::Gtk3::AppChooser;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AppChooserWidget:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::AppChooserWidget:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
 also does Gnome::Gtk3::AppChooser;
 
@@ -324,7 +324,7 @@ Sets the text that is shown if there are not applications that can handle the co
 
   method set-default-text ( Str $text )
 
-=item Str $text; the new value for  I<default-text>
+=item $text; the new value for  I<default-text>
 =end pod
 
 method set-default-text ( Str $text ) {
@@ -347,7 +347,7 @@ Sets whether the app chooser should show all applications in a flat list.
 
   method set-show-all ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-all>
+=item $setting; the new value for  I<show-all>
 =end pod
 
 method set-show-all ( Bool $setting ) {
@@ -370,7 +370,7 @@ Sets whether the app chooser should show the default handler for the content typ
 
   method set-show-default ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-default>
+=item $setting; the new value for  I<show-default>
 =end pod
 
 method set-show-default ( Bool $setting ) {
@@ -393,7 +393,7 @@ Sets whether the app chooser should show related applications for the content ty
 
   method set-show-fallback ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-fallback>
+=item $setting; the new value for  I<show-fallback>
 =end pod
 
 method set-show-fallback ( Bool $setting ) {
@@ -416,7 +416,7 @@ Sets whether the app chooser should show applications which are unrelated to the
 
   method set-show-other ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-other>
+=item $setting; the new value for  I<show-other>
 =end pod
 
 method set-show-other ( Bool $setting ) {
@@ -439,7 +439,7 @@ Sets whether the app chooser should show recommended applications for the conten
 
   method set-show-recommended ( Bool $setting )
 
-=item Bool $setting; the new value for  I<show-recommended>
+=item $setting; the new value for  I<show-recommended>
 =end pod
 
 method set-show-recommended ( Bool $setting ) {
@@ -465,7 +465,7 @@ Returns: a newly created B<Gnome::Gtk3::AppChooserWidget>
 
   method _gtk_app_chooser_widget_new ( Str $content_type --> N-GObject )
 
-=item Str $content_type; the content type to show applications for
+=item $content_type; the content type to show applications for
 =end pod
 }}
 

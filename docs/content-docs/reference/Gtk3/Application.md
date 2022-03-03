@@ -121,9 +121,9 @@ Normally, the connection between the application and the window will remain unti
 
 GTK+ will keep the *application* running as long as it has any windows.
 
-    method add-window ( N-GObject $window )
+    method add-window ( N-GObject() $window )
 
-  * N-GObject $window; a **Gnome::Gtk3::Window**
+  * $window; a **Gnome::Gtk3::Window**
 
 get-accels-for-action
 ---------------------
@@ -134,7 +134,7 @@ Returns: accelerators for *detailed-action-name*, as a `undefined`-terminated ar
 
     method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] )
 
-  * Str $detailed_action_name; a detailed action name, specifying an action and target to obtain accelerators for
+  * $detailed_action_name; a detailed action name, specifying an action and target to obtain accelerators for
 
 get-actions-for-accel
 ---------------------
@@ -151,10 +151,10 @@ Returns: a `undefined`-terminated array of actions for *accel*
 
     method get-actions-for-accel ( Str $accel --> CArray[Str] )
 
-  * Str $accel; an accelerator that can be parsed by `gtk-accelerator-parse()`
+  * $accel; an accelerator that can be parsed by `gtk-accelerator-parse()`
 
-get-active-window, get-active-window-rk
----------------------------------------
+get-active-window
+-----------------
 
 Gets the “active” window for the application.
 
@@ -163,48 +163,40 @@ The active window is the one that was most recently focused (within the applicat
 Returns: the active window, or `undefined` if there isn't one.
 
     method get-active-window ( --> N-GObject )
-    method get-active-window-rk ( :$child-type? --> Gnome::GObject::Object )
 
   * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
-get-app-menu, get-app-menu-rk
------------------------------
+get-app-menu
+------------
 
 Returns the menu model that has been set with `set-app-menu()`.
 
 Returns: the application menu of *application* or `undefined` if no application menu has been set.
 
     method get-app-menu ( --> N-GObject )
-    method get-app-menu-rk ( :$child-type? --> Gnome::GObject::Object )
 
   * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
-get-menu-by-id, get-menu-by-id-rk
----------------------------------
+get-menu-by-id
+--------------
 
 Gets a menu from automatically loaded resources. See [automatic-resources](ttps://developer-old.gnome.org/gtk3/stable/GtkApplication.html#automatic-resources) for more information.
 
     method get-menu-by-id ( Str $id --> N-GObject )
-    method get-menu-by-id-rk ( Str $id, :$child-type? --> Gnome::GObject::Object )
 
-  * Str $id; the id of the menu to look up
+  * $id; the id of the menu to look up
 
-  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
-
-get-menubar, get-menubar-rk
----------------------------
+get-menubar
+-----------
 
 Returns the menu model that has been set with `set-menubar()`.
 
 Returns: the menubar for windows of *application*
 
     method get-menubar ( --> N-GObject )
-    method get-menubar-rk ( :$child-type? --> Gnome::GObject::Object )
 
-  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
-
-get-window-by-id, get-window-by-id-rk
--------------------------------------
+get-window-by-id
+----------------
 
 Returns the **Gnome::Gtk3::ApplicationWindow** with the given ID.
 
@@ -213,13 +205,8 @@ The ID of a **Gnome::Gtk3::ApplicationWindow** can be retrieved with `window-get
 Returns: the window with ID *id*, or `undefined` if there is no window with this ID
 
     method get-window-by-id ( UInt $id --> N-GObject )
-    method get-window-by-id-rk (
-      UInt $id, :$child-type? --> Gnome::GObject::Object
-    )
 
-  * UInt $id; an identifier number
-
-  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
+  * $id; an identifier number
 
 get-windows
 -----------
@@ -249,13 +236,13 @@ If *window* is given, the session manager may point the user to this window to f
 
 Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to `gtk-application-uninhibit()` in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
 
-    method inhibit ( N-GObject $window, Int $flags, Str $reason --> UInt )
+    method inhibit ( N-GObject() $window, Int $flags, Str $reason --> UInt )
 
-  * N-GObject $window; a **Gnome::Gtk3::Window**, or `undefined`
+  * $window; a **Gnome::Gtk3::Window**, or `undefined`
 
-  * Int $flags; GtkApplicationInhibitFlags mask of what types of actions should be inhibited
+  * $flags; GtkApplicationInhibitFlags mask of what types of actions should be inhibited
 
-  * Str $reason; a short, human-readable string that explains why these operations are inhibited
+  * $reason; a short, human-readable string that explains why these operations are inhibited
 
 is-inhibited
 ------------
@@ -268,7 +255,7 @@ Returns: `True` if any of the actions specified in *flags* are inhibited
 
     method is-inhibited ( Int $flags --> Bool )
 
-  * Int $flags; GtkApplicationInhibitFlags mask of what types of actions should be queried
+  * $flags; GtkApplicationInhibitFlags mask of what types of actions should be queried
 
 list-action-descriptions
 ------------------------
@@ -309,9 +296,9 @@ If *window* belongs to *application* then this call is equivalent to setting the
 
 The application may stop running as a result of a call to this function.
 
-    method remove-window ( N-GObject $window )
+    method remove-window ( N-GObject() $window )
 
-  * N-GObject $window; a **Gnome::Gtk3::Window**
+  * $window; a **Gnome::Gtk3::Window**
 
 set-accels-for-action
 ---------------------
@@ -322,11 +309,13 @@ To remove all accelerators for an action, use an empty, zero-terminated array fo
 
 For the *detailed-action-name*, see `g-action-parse-detailed-name()` and `g-action-print-detailed-name()`.
 
-    method set-accels-for-action ( Str $detailed_action_name, CArray[Str] $accels )
+    method set-accels-for-action (
+      Str $detailed_action_name, CArray[Str] $accels
+    )
 
-  * Str $detailed_action_name; a detailed action name, specifying an action and target to associate accelerators with
+  * $detailed_action_name; a detailed action name, specifying an action and target to associate accelerators with
 
-  * CArray[Str] $accels; a list of accelerators in the format understood by `gtk-accelerator-parse()`
+  * $accels; a list of accelerators in the format understood by `gtk-accelerator-parse()`
 
 set-app-menu
 ------------
@@ -341,9 +330,9 @@ If supported, the application menu will be rendered by the desktop environment.
 
 Use the base **Gnome::Gtk3::ActionMap** interface to add actions, to respond to the user selecting these menu items.
 
-    method set-app-menu ( N-GObject $app_menu )
+    method set-app-menu ( N-GObject() $app_menu )
 
-  * N-GObject $app_menu; a **Gnome::Gtk3::MenuModel**, or `undefined`
+  * $app_menu; a **Gnome::Gtk3::MenuModel**, or `undefined`
 
 set-menubar
 -----------
@@ -358,9 +347,9 @@ Depending on the desktop environment, this may appear at the top of each window,
 
 Use the base **Gnome::Gtk3::ActionMap** interface to add actions, to respond to the user selecting these menu items.
 
-    method set-menubar ( N-GObject $menubar )
+    method set-menubar ( N-GObject() $menubar )
 
-  * N-GObject $menubar; a **Gnome::Gtk3::MenuModel**, or `undefined`
+  * $menubar; a **Gnome::Gtk3::MenuModel**, or `undefined`
 
 uninhibit
 ---------
@@ -369,7 +358,7 @@ Removes an inhibitor that has been established with `inhibit()`. Inhibitors are 
 
     method uninhibit ( UInt $cookie )
 
-  * UInt $cookie; a cookie that was returned by `inhibit()`
+  * $cookie; a cookie that was returned by `inhibit()`
 
 Signals
 =======
