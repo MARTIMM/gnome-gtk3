@@ -196,7 +196,7 @@ Returns: a B<Gnome::Gtk3::Widget>.
 
   method gtk_check_button_new_with_label ( Str $label --> N-GObject )
 
-=item Str $label; the text for the check button.
+=item $label; the text for the check button.
 
 =end pod
 }}
@@ -220,7 +220,7 @@ Returns: a new B<Gnome::Gtk3::CheckButton>
 
   method gtk_check_button_new_with_mnemonic ( Str $label --> N-GObject  )
 
-=item Str $label; The text of the button, with an underscore in front of the mnemonic character
+=item $label; The text of the button, with an underscore in front of the mnemonic character
 
 =end pod
 }}
