@@ -45,7 +45,7 @@ subtest 'Manipulations', {
   $a.set-page-type( $f2, GTK_ASSISTANT_PAGE_CUSTOM);
   my Gnome::Gtk3::Widget $w .= new(:native-object($a.get-nth-page(0)));
   is $w.get-name, 'f2', '.get-nth-page()';
-  is $a.get-nth-page-rk(0).get-name, 'f2', '.get-nth-page-rk()';
+  is $a.get-nth-page(0).().get-name, 'f2', '.get-nth-page()';
 
   is $a.get-current-page, -1, '.get-current-page()';
   $a.set-current-page(1);

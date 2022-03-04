@@ -72,11 +72,11 @@ Create a new AspectFrame with all bells and wistles.
     Num :$ratio = 1.0e0, Bool :$obey-child?
   )
 
-=item Str $label; Label text.
-=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned). By default set to 0.0.
-=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned). By default set to 0.0.
-=item Num $ratio; The desired aspect ratio. By default set to 1.0.
-=item Int $obey_child; If C<True>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
+=item $label; Label text.
+=item $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned). By default set to 0.0.
+=item $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned). By default set to 0.0.
+=item $ratio; The desired aspect ratio. By default set to 1.0.
+=item $obey_child; If C<True>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
 
 
 =head3 :native-object
@@ -166,10 +166,10 @@ Set parameters for an existing B<Gnome::Gtk3::AspectFrame>.
     Num $xalign, Num $yalign, Num $ratio, Int $obey_child
   )
 
-=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
-=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
-=item Num $ratio; The desired aspect ratio.
-=item Int $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
+=item $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
+=item $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
+=item $ratio; The desired aspect ratio.
+=item $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
 
 =end pod
 
@@ -197,11 +197,11 @@ Returns: the new B<Gnome::Gtk3::AspectFrame>.
 
   method gtk_aspect_frame_new ( Str $label, Num $xalign, Num $yalign, Num $ratio, Int $obey_child --> N-GObject )
 
-=item Str $label; (allow-none): Label text.
-=item Num $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
-=item Num $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
-=item Num $ratio; The desired aspect ratio.
-=item Int $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
+=item $label; (allow-none): Label text.
+=item $xalign; Horizontal alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
+=item $yalign; Vertical alignment of the child within the allocation of the B<Gnome::Gtk3::AspectFrame>. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
+=item $ratio; The desired aspect ratio.
+=item $obey_child; If C<1>, I<ratio> is ignored, and the aspect ratio is taken from the requistion of the child.
 
 =end pod
 }}

@@ -115,16 +115,14 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TM:1:get_child:
-#TM:1:get_child-rk:
 =begin pod
-=head2 get_child, get_child-rk
+=head2 get_child
 
 Gets the child of the B<Gnome::Gtk3::Bin>, or C<Any> if the bin contains no child widget. The returned widget does not have a reference added, so you do not need to unref it.
 
 Returns: The child of the B<Gnome::Gtk3::Bin>;
 
   method get-child ( --> N-GObject )
-  method get-child-rk ( --> Gnome::GObject::Object )
 
 =end pod
 
@@ -133,6 +131,11 @@ method get-child ( --> N-GObject ) {
 }
 
 method get-child-rk ( *%options --> Gnome::GObject::Object ) {
+  Gnome::N::deprecate(
+    'get-child-rk', 'coercing from get-child',
+    '0.47.2', '0.50.0'
+  );
+
   my $o = self._wrap-native-type-from-no(
     gtk_bin_get_child(self._get-native-object-no-reffing),
     |%options

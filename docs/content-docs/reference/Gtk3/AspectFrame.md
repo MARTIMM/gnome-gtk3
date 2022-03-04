@@ -42,15 +42,15 @@ Create a new AspectFrame with all bells and wistles.
       Num :$ratio = 1.0e0, Bool :$obey-child?
     )
 
-  * Str $label; Label text.
+  * $label; Label text.
 
-  * Num $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned). By default set to 0.0.
+  * $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned). By default set to 0.0.
 
-  * Num $yalign; Vertical alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned). By default set to 0.0.
+  * $yalign; Vertical alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned). By default set to 0.0.
 
-  * Num $ratio; The desired aspect ratio. By default set to 1.0.
+  * $ratio; The desired aspect ratio. By default set to 1.0.
 
-  * Int $obey_child; If `True`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
+  * $obey_child; If `True`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child. By default set to False if $ratio is defined or True if it isn't.
 
 ### :native-object
 
@@ -73,13 +73,13 @@ Set parameters for an existing **Gnome::Gtk3::AspectFrame**.
       Num $xalign, Num $yalign, Num $ratio, Int $obey_child
     )
 
-  * Num $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
+  * $xalign; Horizontal alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (left aligned) to 1.0 (right aligned)
 
-  * Num $yalign; Vertical alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
+  * $yalign; Vertical alignment of the child within the allocation of the **Gnome::Gtk3::AspectFrame**. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned)
 
-  * Num $ratio; The desired aspect ratio.
+  * $ratio; The desired aspect ratio.
 
-  * Int $obey_child; If `1`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child.
+  * $obey_child; If `1`, *ratio* is ignored, and the aspect ratio is taken from the requistion of the child.
 
 Properties
 ==========

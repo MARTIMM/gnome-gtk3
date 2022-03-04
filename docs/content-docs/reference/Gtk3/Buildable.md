@@ -26,11 +26,13 @@ buildable-get-name
 
 Gets the name of the *buildable* object.
 
-**Gnome::Gtk3::Builder** sets the name based on the **Gnome::Gtk3::Builder** UI definition used to construct the *buildable*.
+**Gnome::Gtk3::Builder** sets the name based on the [GtkBuilder UI definition][BUILDER-UI] used to construct the *buildable*.
 
-Returns: the name set with `buildable-set-name()`
+Returns: the name set with `set-name()`
 
     method buildable-get-name ( --> Str )
+
+**Note:** The method name deviates from the convention in the Raku modules because it would clash with the `.get-name()` defined in **Gnome::Gtk3::Widget**.
 
 buildable-set-name
 ------------------
@@ -39,5 +41,7 @@ Sets the name of the *buildable* object.
 
     method buildable-set-name ( Str $name )
 
-  * Str $name; name to set
+  * $name; name to set
+
+**Note:** The method name deviates from the convention in the Raku modules because it would clash with the `.set-name()` defined in **Gnome::Gtk3::Widget**.
 

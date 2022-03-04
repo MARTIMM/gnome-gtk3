@@ -35,7 +35,7 @@ Setting properties of objects is pretty straightforward with the <property> elem
 
 **Gnome::Gtk3::Builder** can parse textual representations for the most common property types: characters, strings, integers, floating-point numbers, booleans (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted as `1`, strings like “FALSE”, “f”, “no”, “n”, “0” are interpreted as `0`), enumerations (can be specified by their name, nick or integer value), flags (can be specified by their name, nick, integer value, optionally combined with “|”, e.g. “GTK_VISIBLE|GTK_REALIZED”) and colors (in a format understood by `gdk_rgba_parse()`).
 
-Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via `gtk_builder_expose_object()`. In general, **Gnome::Gtk3::Builder** allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
+Objects can be referred to by their name and by default refer to objects declared in the local xml fragment and objects exposed via `expose_object()`. In general, **Gnome::Gtk3::Builder** allows forward references to objects — declared in the local xml; an object doesn’t have to be constructed before it can be referred to. The exception to this rule is that an object has to be constructed before it can be used as the value of a construct-only property.
 
 Signal handlers are set up with the <signal> element. The “name” attribute specifies the name of the signal, and the “handler” attribute specifies the function to connect to the signal. The remaining attributes, “after” and “swapped” attributes are ignored by the Raku modules. The "object" field has a meaning in **Gnome::Gtk3::Glade**.
 
@@ -187,7 +187,7 @@ Returns: An invalid error object on success, Otherwise call `.message()` on the 
 
     method add-from-file ( Str $filename --> Gnome::Glib::Error )
 
-  * Str $filename; the name of the file to parse
+  * $filename; the name of the file to parse
 
 add-from-resource
 -----------------
@@ -204,7 +204,7 @@ Returns: An invalid error object on success, Otherwise call `.message()` on the 
 
     method add-from-resource ( Str $resource_path --> Gnome::Glib::Error )
 
-  * Str $resource_path; the path of the resource file to parse
+  * $resource_path; the path of the resource file to parse
 
 add-from-string
 ---------------
@@ -221,7 +221,7 @@ Returns: An invalid error object on success, Otherwise call `.message()` on the 
 
     method add-from-string ( Str $buffer --> Gnome::Glib::Error )
 
-  * Str $buffer; the string to parse
+  * $buffer; the string to parse
 
 connect-signals-full
 --------------------
@@ -230,7 +230,7 @@ This method will process the signal elements from the loaded XML and with the he
 
     method gtk_builder_connect_signals_full ( Hash $handlers )
 
-  * Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also `register-signal()` in **Gnome::GObject::Object**.
+  * $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also `register-signal()` in **Gnome::GObject::Object**.
 
 An example where a gui is described in XML. It has a Window with a Button, both having a signal description;
 
@@ -306,14 +306,14 @@ expose-object
 
 Add *object* to the *builder* object pool so it can be referenced just like any other object built by builder.
 
-    method expose-object ( Str $name, N-GObject $object )
+    method expose-object ( Str $name, N-GObject() $object )
 
-  * Str $name; the name of the object exposed to the builder
+  * $name; the name of the object exposed to the builder
 
-  * N-GObject $object; the object to expose
+  * $object; the object to expose
 
-get-application, get-application-rk
------------------------------------
+get-application
+---------------
 
 Gets the **Gnome::Gtk3::Application** associated with the builder.
 
@@ -324,19 +324,26 @@ By default, the builder uses the default application: the one from `g-applicatio
 Returns: the application being used by the builder, or `undefined`
 
     method get-application ( --> N-GObject )
-    method get-application-rk ( --> Gnome::Gtk3::Application )
 
-get-object, get-object-rk
--------------------------
+get-object
+----------
 
 Gets the object named *$name*. Note that this function does not increment the reference count of the returned object.
 
 Returns: the object named *$name* or `undefined` if it could not be found in the object tree.
 
     method get-object ( Str $name --> N-GObject )
-    method get-object-rk ( Str $name --> Gnome::GObject::Object )
 
-  * Str $name; name of object to get
+  * $name; name of object to get
+
+get-objects
+-----------
+
+Gets all objects that have been constructed by *builder*. Note that this function does not increment the reference counts of the returned objects.
+
+Returns: (element-type GObject) (transfer container): a newly-allocated **Gnome::Gtk3::SList** containing all the objects constructed by the **Gnome::Gtk3::Builder** instance. It should be freed by `g-slist-free()`
+
+    method get-objects ( --> Gnome::Glib::SList )
 
 get-type-from-name
 ------------------
@@ -347,7 +354,7 @@ Returns: the **Gnome::Gtk3::Type** found for *$type-name* or **Gnome::Gtk3::-TYP
 
     method get-type-from-name ( Str $type-name --> UInt )
 
-  * Str $type_name; type name to lookup
+  * $type_name; type name to lookup
 
 set-application
 ---------------
@@ -356,9 +363,9 @@ Sets the application associated with *builder*.
 
 You only need this function if there is more than one **Gnome::Gtk3::Application** in your process. *$application* cannot be `undefined`.
 
-    method set-application ( N-GObject $application )
+    method set-application ( N-GObject() $application )
 
-  * N-GObject $application; a **Gnome::Gtk3::Application**
+  * $application; a **Gnome::Gtk3::Application**
 
 set-translation-domain
 ----------------------
@@ -367,7 +374,7 @@ Sets the translation domain of *builder*. See *translation-domain*.
 
     method set-translation-domain ( Str $domain )
 
-  * Str $domain; the translation domain or `undefined`
+  * $domain; the translation domain or `undefined`
 
 Properties
 ==========

@@ -129,17 +129,14 @@ Create a ApplicationWindow object using a native object returned from a builder.
 
     multi method new ( Str :$build-id! )
 
-get-help-overlay, get-help-overlay-rk
--------------------------------------
+get-help-overlay
+----------------
 
 Gets the **Gnome::Gtk3::ShortcutsWindow** that has been set up with a prior call to `set-help-overlay()`.
 
 Returns: the help overlay associated with *window*, or `undefined`
 
     method get-help-overlay ( --> N-GObject )
-    method get-help-overlay-rk ( :$child-type? --> Gnome::GObject::Object )
-
-  * $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 get-id
 ------
@@ -166,9 +163,9 @@ Associates a shortcuts window with the application window, and sets up an action
 
 *window* takes resposibility for destroying *help-overlay*.
 
-    method set-help-overlay ( N-GObject $help_overlay )
+    method set-help-overlay ( N-GObject() $help_overlay )
 
-  * N-GObject $help_overlay; a **Gnome::Gtk3::ShortcutsWindow**
+  * $help_overlay; a **Gnome::Gtk3::ShortcutsWindow**
 
 set-show-menubar
 ----------------
@@ -177,7 +174,7 @@ Sets whether the window will display a menubar for the app menu and menubar as n
 
     method set-show-menubar ( Bool $show_menubar )
 
-  * Bool $show_menubar; whether to show a menubar when needed
+  * $show_menubar; whether to show a menubar when needed
 
 Properties
 ==========

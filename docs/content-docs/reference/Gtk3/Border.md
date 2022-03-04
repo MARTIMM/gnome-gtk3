@@ -53,13 +53,12 @@ Create a Border object using a native object from elsewhere. See also **Gnome::N
 
     multi method new ( N-GtkBorder :$native-object! )
 
-border-copy, border-copy-rk
----------------------------
+border-copy
+-----------
 
 Copies a `N-GtkBorder` struct.
 
     method border-copy ( --> N-GtkBorder )
-    method border-copy-rk ( --> Gnome::Gtk3::Border )
 
 bottom
 ------

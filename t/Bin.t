@@ -20,7 +20,7 @@ subtest 'ISA test', {
 
   my Gnome::Gtk3::Label $l .= new(:native-object($button.get-child));
   is $l.get-name, 'GtkLabel', '.get-child()';
-  is $button.get-child-rk.get-name, 'GtkLabel', '.get-child-rk()';
+  is $button.get-child.().get-name, 'GtkLabel', '.get-child()';
 }
 
 #-------------------------------------------------------------------------------

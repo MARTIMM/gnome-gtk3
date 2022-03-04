@@ -130,16 +130,16 @@ pack-end
 Adds *child* to *box*, packed with reference to the end of *box*. The *child* is packed after (away from end of) any other child packed with reference to the end of *box*.
 
     method pack-end (
-      N-GObject $child, Bool $expand, Bool $fill, UInt $padding
+      N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
     )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to be added to *box*
+  * $child; the **Gnome::Gtk3::Widget** to be added to *box*
 
-  * Bool $expand; `True` if the new child is to be given extra space allocated to *box*. The extra space will be divided evenly between all children of *box* that use this option
+  * $expand; `True` if the new child is to be given extra space allocated to *box*. The extra space will be divided evenly between all children of *box* that use this option
 
-  * Bool $fill; `True` if space given to *child* by the *expand* option is actually allocated to *child*, rather than just padding it. This parameter has no effect if *expand* is set to `False`. A child is always allocated the full height of a horizontal **Gnome::Gtk3::Box** and the full width of a vertical **Gnome::Gtk3::Box**. This option affects the other dimension
+  * $fill; `True` if space given to *child* by the *expand* option is actually allocated to *child*, rather than just padding it. This parameter has no effect if *expand* is set to `False`. A child is always allocated the full height of a horizontal **Gnome::Gtk3::Box** and the full width of a vertical **Gnome::Gtk3::Box**. This option affects the other dimension
 
-  * UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
+  * $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
 
 pack-start
 ----------
@@ -147,35 +147,35 @@ pack-start
 Adds *child* to *box*, packed with reference to the start of *box*. The *child* is packed after any other child packed with reference to the start of *box*.
 
     method pack-start (
-      N-GObject $child, Bool $expand, Bool $fill, UInt $padding
+      N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
     )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to be added to *box*
+  * $child; the **Gnome::Gtk3::Widget** to be added to *box*
 
-  * Bool $expand; `True` if the new child is to be given extra space allocated to *box*. The extra space will be divided evenly between all children that use this option
+  * $expand; `True` if the new child is to be given extra space allocated to *box*. The extra space will be divided evenly between all children that use this option
 
-  * Bool $fill; `True` if space given to *child* by the *expand* option is actually allocated to *child*, rather than just padding it. This parameter has no effect if *expand* is set to `False`. A child is always allocated the full height of a horizontal **Gnome::Gtk3::Box** and the full width of a vertical **Gnome::Gtk3::Box**. This option affects the other dimension
+  * $fill; `True` if space given to *child* by the *expand* option is actually allocated to *child*, rather than just padding it. This parameter has no effect if *expand* is set to `False`. A child is always allocated the full height of a horizontal **Gnome::Gtk3::Box** and the full width of a vertical **Gnome::Gtk3::Box**. This option affects the other dimension
 
-  * UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
+  * $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by *spacing* property. If *child* is a widget at one of the reference ends of *box*, then *padding* pixels are also put between *child* and the reference edge of *box*
 
 query-child-packing
 -------------------
 
 Obtains information about how *child* is packed into *box*.
 
-    method query-child-packing ( N-GObject $child --> List )
+    method query-child-packing ( N-GObject() $child --> List )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** of the child to query
+  * $child; the **Gnome::Gtk3::Widget** of the child to query
 
 The returned List contains;
 
-  * Bool $expand; expand child property
+  * $expand; expand child property
 
-  * Bool $fill; fill child property
+  * $fill; fill child property
 
-  * Int $padding; padding child property
+  * $padding; padding child property
 
-  * GtkPackType $pack_type; pack-type child property
+  * $pack_type; pack-type child property
 
 reorder-child
 -------------
@@ -184,11 +184,11 @@ Moves *child* to a new *position* in the list of *box* children. The list contai
 
 A widget’s position in the *box* children list determines where the widget is packed into *box*. A child widget at some position in the list will be packed just after all other widgets of the same packing type that appear earlier in the list.
 
-    method reorder-child ( N-GObject $child, Int() $position )
+    method reorder-child ( N-GObject() $child, Int() $position )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** to move
+  * $child; the **Gnome::Gtk3::Widget** to move
 
-  * Int() $position; the new position for *child* in the list of children of *box*, starting from 0. If negative, indicates the end of the list
+  * $position; the new position for *child* in the list of children of *box*, starting from 0. If negative, indicates the end of the list
 
 set-baseline-position
 ---------------------
@@ -197,16 +197,16 @@ Sets the baseline position of a box. This affects only horizontal boxes with at 
 
     method set-baseline-position ( GtkBaselinePosition $position )
 
-  * GtkBaselinePosition $position; a **Gnome::Gtk3::BaselinePosition**
+  * $position; a **Gnome::Gtk3::BaselinePosition**
 
 set-center-widget
 -----------------
 
 Sets a center widget; that is a child widget that will be centered with respect to the full width of the box, even if the children at either side take up different amounts of space.
 
-    method set-center-widget ( N-GObject $widget )
+    method set-center-widget ( N-GObject() $widget )
 
-  * N-GObject $widget; the widget to center
+  * $widget; the widget to center
 
 set-child-packing
 -----------------
@@ -214,19 +214,19 @@ set-child-packing
 Sets the way *child* is packed into *box*.
 
     method set-child-packing (
-      N-GObject $child, Bool $expand, Bool $fill,
+      N-GObject() $child, Bool $expand, Bool $fill,
       UInt $padding, GtkPackType $pack_type
     )
 
-  * N-GObject $child; the **Gnome::Gtk3::Widget** of the child to set
+  * $child; the **Gnome::Gtk3::Widget** of the child to set
 
-  * Bool $expand; the new value of the expand child property
+  * $expand; the new value of the expand child property
 
-  * Bool $fill; the new value of the fill child property
+  * $fill; the new value of the fill child property
 
-  * UInt $padding; the new value of the padding child property
+  * $padding; the new value of the padding child property
 
-  * GtkPackType $pack_type; the new value of the pack-type child property
+  * $pack_type; the new value of the pack-type child property
 
 set-homogeneous
 ---------------
@@ -235,7 +235,7 @@ Sets the *homogeneous* property of *box*, controlling whether or not all childre
 
     method set-homogeneous ( Bool $homogeneous )
 
-  * Bool $homogeneous; a boolean value, `True` to create equal allotments, `False` for variable allotments
+  * $homogeneous; a boolean value, `True` to create equal allotments, `False` for variable allotments
 
 set-spacing
 -----------
@@ -244,7 +244,7 @@ Sets the *spacing* property of *box*, which is the number of pixels to place bet
 
     method set-spacing ( Int() $spacing )
 
-  * Int() $spacing; the number of pixels to put between children
+  * $spacing; the number of pixels to put between children
 
 Properties
 ==========

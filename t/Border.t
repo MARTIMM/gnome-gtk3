@@ -36,7 +36,7 @@ subtest 'Border manipulations', {
   is $b3.top, 5, 'left border 5 after copy';
   is $b3.bottom, 5, 'left border 5 after copy';
 
-  my Gnome::Gtk3::Border $b4 = $b2.border-copy-rk;
+  my Gnome::Gtk3::Border() $b4 = $b2.border-copy;
 #  isa-ok $b4, Gnome::Gtk3::Border;
   is $b4.left, 10, 'left border 10 after copy';
   is $b4.right, 10, 'right border 10 after copy';

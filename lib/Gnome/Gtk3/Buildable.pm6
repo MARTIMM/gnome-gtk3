@@ -31,7 +31,7 @@ use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::Buildable:auth<github:MARTIMM>:ver<0.2.0>;
+unit role Gnome::Gtk3::Buildable:auth<github:MARTIMM>;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -67,27 +67,72 @@ method _buildable_interface ( Str $native-sub --> Callable ) {
 
 Adds a child to I<buildable>. I<type> is an optional string describing how the child should be added.
 
-  method add-child ( N-GObject $builder, N-GObject $child, Str $type )
+  method add-child ( N-GObject() $builder, N-GObject() $child, Str $type )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; child to add
-=item Str $type; kind of child or C<undefined>
+=item a B<Gnome::Gtk3::Builder>
+=item $child; child to add
+=item $type; kind of child or C<undefined>
 =end pod
 
-method add-child ( $builder is copy, $child is copy, Str $type ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
-  gtk_buildable_add_child(
-    self._f('GtkBuildable'), $builder, $child, $type
-  );
+method add-child ( N-GObject() $builder, N-GObject() $child, Str $type ) {
+  gtk_buildable_add_child( self._f('GtkBuildable'), $builder, $child, $type);
 }
 
 sub gtk_buildable_add_child (
   N-GObject $buildable, N-GObject $builder, N-GObject $child, gchar-ptr $type
 ) is native(&gtk-lib)
   { * }
+}}
 
+#-------------------------------------------------------------------------------
+#TM:1:buildable-get-name:
+=begin pod
+=head2 buildable-get-name
+
+Gets the name of the I<buildable> object.
+
+B<Gnome::Gtk3::Builder> sets the name based on the [GtkBuilder UI definition][BUILDER-UI] used to construct the I<buildable>.
+
+Returns: the name set with C<set-name()>
+
+  method buildable-get-name ( --> Str )
+
+B<Note:> The method name deviates from the convention in the Raku modules because it would clash with the C<.get-name()> defined in B<Gnome::Gtk3::Widget>.
+=end pod
+
+method buildable-get-name ( --> Str ) {
+  gtk_buildable_get_name(self._f('GtkBuildable'))
+}
+
+sub gtk_buildable_get_name (
+  N-GObject $buildable --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:buildable-set-name:
+=begin pod
+=head2 buildable-set-name
+
+Sets the name of the I<buildable> object.
+
+  method buildable-set-name ( Str $name )
+
+=item $name; name to set
+
+B<Note:> The method name deviates from the convention in the Raku modules because it would clash with the C<.set-name()> defined in B<Gnome::Gtk3::Widget>.
+=end pod
+
+method buildable-set-name ( Str $name ) {
+  gtk_buildable_set_name( self._f('GtkBuildable'), $name);
+}
+
+sub gtk_buildable_set_name (
+  N-GObject $buildable, gchar-ptr $name
+) is native(&gtk-lib)
+  { * }
+
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:construct-child:
 =begin pod
@@ -99,15 +144,13 @@ B<Gnome::Gtk3::Builder> calls this function if a “constructor” has been spec
 
 Returns: the constructed child
 
-  method construct-child ( N-GObject $builder, Str $name --> N-GObject )
+  method construct-child ( N-GObject() $builder, Str $name --> N-GObject )
 
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item Str $name; name of child to construct
+=item $builder; B<Gnome::Gtk3::Builder> used to construct this object
+=item $name; name of child to construct
 =end pod
 
-method construct-child ( $builder is copy, Str $name --> N-GObject ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-
+method construct-child ( N-GObject() $builder, Str $name --> N-GObject ) {
   gtk_buildable_construct_child(
     self._f('GtkBuildable'), $builder, $name
   )
@@ -125,18 +168,20 @@ sub gtk_buildable_construct_child (
 
 This is similar to C<parser-finished()> but is called once for each custom tag handled by the I<buildable>.
 
-  method custom-finished ( N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
+  method custom-finished (
+    N-GObject() $builder, N-GObject() $child, Str $tagname,
+    Pointer $data
+  )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; child object or C<undefined> for non-child tags
-=item Str $tagname; the name of the tag
-=item Pointer $data; user data created in custom-tag-start
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $child; child object or C<undefined> for non-child tags
+=item $tagname; the name of the tag
+=item $data; user data created in custom-tag-start
 =end pod
 
-method custom-finished ( $builder is copy, $child is copy, Str $tagname, Pointer $data ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method custom-finished (
+  N-GObject() $builder, N-GObject() $child, Str $tagname, Pointer $data
+) {
   gtk_buildable_custom_finished(
     self._f('GtkBuildable'), $builder, $child, $tagname, $data
   );
@@ -154,18 +199,20 @@ sub gtk_buildable_custom_finished (
 
 This is called at the end of each custom element handled by the buildable.
 
-  method custom-tag-end ( N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
+  method custom-tag-end (
+    N-GObject() $builder, N-GObject() $child, Str $tagname,
+    Pointer $data
+  )
 
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; child object or C<undefined> for non-child tags
-=item Str $tagname; name of tag
-=item Pointer $data; (type gpointer): user data that will be passed in to parser functions
+=item $builder; B<Gnome::Gtk3::Builder> used to construct this object
+=item $child; child object or C<undefined> for non-child tags
+=item $tagname; name of tag
+=item $data; (type gpointer): user data that will be passed in to parser functions
 =end pod
 
-method custom-tag-end ( $builder is copy, $child is copy, Str $tagname, Pointer $data ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method custom-tag-end (
+  N-GObject() $builder, N-GObject() $child, Str $tagname, Pointer $data
+) {
   gtk_buildable_custom_tag_end(
     self._f('GtkBuildable'), $builder, $child, $tagname, $data
   );
@@ -185,19 +232,22 @@ This is called for each unknown element under <child>.
 
 Returns: C<True> if a object has a custom implementation, C<False> if it doesn't.
 
-  method custom-tag-start ( N-GObject $builder, N-GObject $child, Str $tagname, GMarkupParser $parser, Pointer $data --> Bool )
+  method custom-tag-start (
+    N-GObject() $builder, N-GObject() $child, Str $tagname,
+    GMarkupParser $parser, Pointer $data --> Bool
+  )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; child object or C<undefined> for non-child tags
-=item Str $tagname; name of tag
-=item GMarkupParser $parser; a B<Gnome::Gtk3::MarkupParser> to fill in
-=item Pointer $data; return location for user data that will be passed in  to parser functions
+=item $builder; a B<Gnome::Gtk3::Builder> used to construct this object
+=item $child; child object or C<undefined> for non-child tags
+=item $tagname; name of tag
+=item $parser; a B<Gnome::Gtk3::MarkupParser> to fill in
+=item $data; return location for user data that will be passed in  to parser functions
 =end pod
 
-method custom-tag-start ( $builder is copy, $child is copy, Str $tagname, GMarkupParser $parser, Pointer $data --> Bool ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method custom-tag-start (
+  N-GObject() $builder, N-GObject() $child, Str $tagname,
+  GMarkupParser $parser, Pointer $data --> Bool
+) {
   gtk_buildable_custom_tag_start(
     self._f('GtkBuildable'), $builder, $child, $tagname, $parser, $data
   ).Bool
@@ -217,15 +267,17 @@ Get the internal child called I<childname> of the I<buildable> object.
 
 Returns: the internal child of the buildable object
 
-  method get-internal-child ( N-GObject $builder, Str $childname --> N-GObject )
+  method get-internal-child (
+    N-GObject() $builder, Str $childname --> N-GObject
+  )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $childname; name of child
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $childname; name of child
 =end pod
 
-method get-internal-child ( $builder is copy, Str $childname --> N-GObject ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-
+method get-internal-child (
+  N-GObject() $builder, Str $childname --> N-GObject
+) {
   gtk_buildable_get_internal_child(
     self._f('GtkBuildable'), $builder, $childname
   )
@@ -237,33 +289,6 @@ sub gtk_buildable_get_internal_child (
   { * }
 }}
 
-#-------------------------------------------------------------------------------
-#TM:1:buildable-get-name:
-=begin pod
-=head2 buildable-get-name
-
-Gets the name of the I<buildable> object.
-
-B<Gnome::Gtk3::Builder> sets the name based on the [GtkBuilder UI definition][BUILDER-UI] used to construct the I<buildable>.
-
-Returns: the name set with C<set-name()>
-
-  method buildable-get-name ( --> Str )
-
-The name deviates from the convention in the Raku modules because it would clash with the C<.get-name()> defined in B<Gnome::Gtk3::Widget>.
-=end pod
-
-method buildable-get-name ( --> Str ) {
-  gtk_buildable_get_name(
-    self._f('GtkBuildable'),
-  )
-}
-
-sub gtk_buildable_get_name (
-  N-GObject $buildable --> gchar-ptr
-) is native(&gtk-lib)
-  { * }
-
 #`{{
 #-------------------------------------------------------------------------------
 #TM:0:parser-finished:
@@ -272,17 +297,13 @@ sub gtk_buildable_get_name (
 
 Called when the builder finishes the parsing of a [GtkBuilder UI definition][BUILDER-UI]. Note that this will be called once for each time C<gtk-builder-add-from-file()> or C<gtk-builder-add-from-string()> is called on a builder.
 
-  method parser-finished ( N-GObject $builder )
+  method parser-finished ( N-GObject() $builder )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
+=item $builder; a B<Gnome::Gtk3::Builder>
 =end pod
 
-method parser-finished ( $builder is copy ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-
-  gtk_buildable_parser_finished(
-    self._f('GtkBuildable'), $builder
-  );
+method parser-finished ( N-GObject() $builder ) {
+  gtk_buildable_parser_finished( self._f('GtkBuildable'), $builder);
 }
 
 sub gtk_buildable_parser_finished (
@@ -297,17 +318,18 @@ sub gtk_buildable_parser_finished (
 
 Sets the property name I<name> to I<value> on the I<buildable> object.
 
-  method set-buildable-property ( N-GObject $builder, Str $name, N-GObject $value )
+  method set-buildable-property (
+    N-GObject() $builder, Str $name, N-GObject() $value
+  )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $name; name of property
-=item N-GObject $value; value of property
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $name; name of property
+=item $value; value of property
 =end pod
 
-method set-buildable-property ( $builder is copy, Str $name, $value is copy ) {
-  $builder .= _get-native-object-no-reffing unless $builder ~~ N-GObject;
-  $value .= _get-native-object-no-reffing unless $value ~~ N-GObject;
-
+method set-buildable-property (
+  N-GObject() $builder, Str $name, N-GObject() $value
+) {
   gtk_buildable_set_buildable_property(
     self._f('GtkBuildable'), $builder, $name, $value
   );
@@ -318,32 +340,6 @@ sub gtk_buildable_set_buildable_property (
 ) is native(&gtk-lib)
   { * }
 }}
-
-#-------------------------------------------------------------------------------
-#TM:1:buildable-set-name:
-=begin pod
-=head2 buildable-set-name
-
-Sets the name of the I<buildable> object.
-
-  method buildable-set-name ( Str $name )
-
-=item Str $name; name to set
-
-The name deviates from the convention in the Raku modules because it would clash with the C<.set-name()> defined in B<Gnome::Gtk3::Widget>.
-=end pod
-
-method buildable-set-name ( Str $name ) {
-  gtk_buildable_set_name(
-    self._f('GtkBuildable'), $name
-  );
-}
-
-sub gtk_buildable_set_name (
-  N-GObject $buildable, gchar-ptr $name
-) is native(&gtk-lib)
-  { * }
-
 
 
 
@@ -398,7 +394,7 @@ Sets the name of the I<buildable> object.
 
   method buildable-set-name ( Str $name )
 
-=item Str $name; name to set
+=item $name; name to set
 
 =end pod
 
@@ -423,9 +419,9 @@ Adds a child to I<buildable>. I<type> is an optional string describing how the c
 
   method add-child ( N-GObject $builder, N-GObject $child, Str $type )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; child to add
-=item Str $type; kind of child or C<undefined>
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $child; child to add
+=item $type; kind of child or C<undefined>
 
 =end pod
 
@@ -456,8 +452,8 @@ Returns: the constructed child
 
   method construct-child ( N-GObject $builder, Str $name --> N-GObject )
 
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item Str $name; name of child to construct
+=item $builder; B<Gnome::Gtk3::Builder> used to construct this object
+=item $name; name of child to construct
 
 =end pod
 
@@ -486,10 +482,10 @@ called once for each custom tag handled by the I<buildable>.
 
   method custom-finished ( N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; (allow-none): child object or C<undefined> for non-child tags
-=item Str $tagname; the name of the tag
-=item Pointer $data; user data created in custom-tag-start
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $child; (allow-none): child object or C<undefined> for non-child tags
+=item $tagname; the name of the tag
+=item $data; user data created in custom-tag-start
 
 =end pod
 
@@ -521,10 +517,10 @@ the buildable.
     Str $tagname, Pointer $data
   )
 
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; (allow-none): child object or C<undefined> for non-child tags
-=item Str $tagname; name of tag
-=item Pointer $data; (type gpointer): user data that will be passed in to parser functions
+=item $builder; B<Gnome::Gtk3::Builder> used to construct this object
+=item $child; (allow-none): child object or C<undefined> for non-child tags
+=item $tagname; name of tag
+=item $data; (type gpointer): user data that will be passed in to parser functions
 
 =end pod
 
@@ -555,11 +551,11 @@ if it doesn't.
 
   method custom-tag-start ( N-GObject $builder, N-GObject $child, Str $tagname, GMarkupParser $parser, Pointer $data --> Int )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; (allow-none): child object or C<undefined> for non-child tags
-=item Str $tagname; name of tag
-=item GMarkupParser $parser; (out): a B<GMarkupParser> to fill in
-=item Pointer $data; (out): return location for user data that will be passed in  to parser functions
+=item $builder; a B<Gnome::Gtk3::Builder> used to construct this object
+=item $child; (allow-none): child object or C<undefined> for non-child tags
+=item $tagname; name of tag
+=item $parser; (out): a B<GMarkupParser> to fill in
+=item $data; (out): return location for user data that will be passed in  to parser functions
 
 =end pod
 
@@ -591,8 +587,8 @@ Returns: (transfer none): the internal child of the buildable object
 
   method get-internal-child ( N-GObject $builder, Str $childname --> N-GObject )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $childname; name of child
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $childname; name of child
 
 =end pod
 
@@ -623,7 +619,7 @@ is called on a builder.
 
   method parser-finished ( N-GObject $builder )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
+=item $builder; a B<Gnome::Gtk3::Builder>
 
 =end pod
 
@@ -640,6 +636,7 @@ sub gtk_buildable_parser_finished ( N-GObject $buildable, N-GObject $builder  )
   is native(&gtk-lib)
   { * }
 }}
+
 #`{{
 #-------------------------------------------------------------------------------
 # TM:0:set-buildable-property:
@@ -652,9 +649,9 @@ Sets the property name I<name> to I<value> on the I<buildable> object.
     N-GObject $builder, Str $name, N-GObject $value
   )
 
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $name; name of property
-=item N-GObject $value; value of property
+=item $builder; a B<Gnome::Gtk3::Builder>
+=item $name; name of property
+=item $value; value of property
 
 =end pod
 
@@ -671,263 +668,3 @@ sub gtk_buildable_set_buildable_property ( N-GObject $buildable, N-GObject $buil
   is native(&gtk-lib)
   { * }
 }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:1:gtk_buildable_set_name:
-=begin pod
-=head2 [[gtk_] buildable_set_name
-
-Sets the name of the I<buildable> object.
-
-Since: 2.12
-
-  method gtk_buildable_set_name ( Str $name )
-
-=item Str $name; name to set
-
-=end pod
-
-method buildable-set-name ( Str $name ) {
-  my N-GObject $buildable = self._get-native-object-no-reffing;
-  gtk_buildable_set_name( $buildable, $name);
-}
-
-sub gtk_buildable_set_name ( N-GObject $buildable, Str $name )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_buildable_get_name:
-=begin pod
-=head2 [[gtk_] buildable_get_name
-
-Gets the name of the I<buildable> object.
-
-B<Gnome::Gtk3::Builder> sets the name based on the
-[B<Gnome::Gtk3::Builder> UI definition][BUILDER-UI]
-used to construct the I<buildable>.
-
-Returns: the name set with C<gtk_buildable_set_name()>
-
-Since: 2.12
-
-  method gtk_buildable_get_name ( --> Str  )
-
-
-=end pod
-
-sub gtk_buildable_get_name ( N-GObject $buildable )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_add_child:
-=begin pod
-=head2 [[gtk_] buildable_] add_child
-
-Adds a child to I<buildable>. I<type> is an optional string
-describing how the child should be added.
-
-Since: 2.12
-
-  method gtk_buildable_add_child ( N-GObject $builder, N-GObject $child, Str $type )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; child to add
-=item Str $type; (allow-none): kind of child or C<Any>
-
-=end pod
-
-sub gtk_buildable_add_child ( N-GObject $buildable, N-GObject $builder, N-GObject $child, Str $type )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_set_buildable_property:
-=begin pod
-=head2 [[gtk_] buildable_] set_buildable_property
-
-Sets the property name I<name> to I<value> on the I<buildable> object.
-
-Since: 2.12
-
-  method gtk_buildable_set_buildable_property ( N-GObject $builder, Str $name, N-GObject $value )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $name; name of property
-=item N-GObject $value; value of property
-
-=end pod
-
-sub gtk_buildable_set_buildable_property ( N-GObject $buildable, N-GObject $builder, Str $name, N-GObject $value )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_construct_child:
-=begin pod
-=head2 [[gtk_] buildable_] construct_child
-
-Constructs a child of I<buildable> with the name I<name>.
-
-B<Gnome::Gtk3::Builder> calls this function if a “constructor” has been
-specified in the UI definition.
-
-Returns: (transfer full): the constructed child
-
-Since: 2.12
-
-  method gtk_buildable_construct_child ( N-GObject $builder, Str $name --> N-GObject  )
-
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item Str $name; name of child to construct
-
-=end pod
-
-sub gtk_buildable_construct_child ( N-GObject $buildable, N-GObject $builder, Str $name )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_custom_tag_start:
-=begin pod
-=head2 [[gtk_] buildable_] custom_tag_start
-
-This is called for each unknown element under <child>.
-
-Returns: C<1> if a object has a custom implementation, C<0>
-if it doesn't.
-
-Since: 2.12
-
-  method gtk_buildable_custom_tag_start ( N-GObject $builder, N-GObject $child, Str $tagname, GMarkupParser $parser, Pointer $data --> Int  )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; (allow-none): child object or C<Any> for non-child tags
-=item Str $tagname; name of tag
-=item GMarkupParser $parser; (out): a B<GMarkupParser> to fill in
-=item Pointer $data; (out): return location for user data that will be passed in  to parser functions
-
-=end pod
-
-sub gtk_buildable_custom_tag_start ( N-GObject $buildable, N-GObject $builder, N-GObject $child, Str $tagname, GMarkupParser $parser, Pointer $data )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_custom_tag_end:
-=begin pod
-=head2 [[gtk_] buildable_] custom_tag_end
-
-This is called at the end of each custom element handled by
-the buildable.
-
-Since: 2.12
-
-  method gtk_buildable_custom_tag_end ( N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
-
-=item N-GObject $builder; B<Gnome::Gtk3::Builder> used to construct this object
-=item N-GObject $child; (allow-none): child object or C<Any> for non-child tags
-=item Str $tagname; name of tag
-=item Pointer $data; (type gpointer): user data that will be passed in to parser functions
-
-=end pod
-
-sub gtk_buildable_custom_tag_end ( N-GObject $buildable, N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_custom_finished:
-=begin pod
-=head2 [[gtk_] buildable_] custom_finished
-
-This is similar to C<gtk_buildable_parser_finished()> but is
-called once for each custom tag handled by the I<buildable>.
-
-Since: 2.12
-
-  method gtk_buildable_custom_finished ( N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item N-GObject $child; (allow-none): child object or C<Any> for non-child tags
-=item Str $tagname; the name of the tag
-=item Pointer $data; user data created in custom_tag_start
-
-=end pod
-
-sub gtk_buildable_custom_finished ( N-GObject $buildable, N-GObject $builder, N-GObject $child, Str $tagname, Pointer $data )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_parser_finished:
-=begin pod
-=head2 [[gtk_] buildable_] parser_finished
-
-Called when the builder finishes the parsing of a
-[B<Gnome::Gtk3::Builder> UI definition][BUILDER-UI].
-Note that this will be called once for each time
-C<gtk_builder_add_from_file()> or C<gtk_builder_add_from_string()>
-is called on a builder.
-
-Since: 2.12
-
-  method gtk_buildable_parser_finished ( N-GObject $builder )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-
-=end pod
-
-sub gtk_buildable_parser_finished ( N-GObject $buildable, N-GObject $builder )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_buildable_get_internal_child:
-=begin pod
-=head2 [[gtk_] buildable_] get_internal_child
-
-Get the internal child called I<childname> of the I<buildable> object.
-
-Returns: (transfer none): the internal child of the buildable object
-
-Since: 2.12
-
-  method gtk_buildable_get_internal_child ( N-GObject $builder, Str $childname --> N-GObject  )
-
-=item N-GObject $builder; a B<Gnome::Gtk3::Builder>
-=item Str $childname; name of child
-
-=end pod
-
-sub gtk_buildable_get_internal_child ( N-GObject $buildable, N-GObject $builder, Str $childname )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }

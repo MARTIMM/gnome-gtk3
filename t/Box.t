@@ -52,8 +52,7 @@ subtest 'Manipulations ...', {
   my Gnome::Gtk3::Label $center .= new(:text(''));
   $center.set-name('cwdgt');
   $b.set-center-widget($center);
-  is $b.get-center-widget-rk.get-name, 'cwdgt',
-     '.set-center-widget() / .get-center-widget-rk()';
+  is $b.get-center-widget.().get-name, 'cwdgt', '.set-center-widget()';
 
   $b.set-baseline-position(GTK_BASELINE_POSITION_CENTER);
   is $b.get-baseline-position, GTK_BASELINE_POSITION_CENTER,

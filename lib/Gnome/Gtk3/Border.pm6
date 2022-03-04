@@ -170,14 +170,12 @@ method native-object-unref ( $n-native-object ) {
 
 #-------------------------------------------------------------------------------
 #TM:1:border-copy:
-#TM:1:border-copy-rk:
 =begin pod
-=head2 border-copy, border-copy-rk
+=head2 border-copy
 
 Copies a C<N-GtkBorder> struct.
 
   method border-copy ( --> N-GtkBorder )
-  method border-copy-rk ( --> Gnome::Gtk3::Border )
 
 =end pod
 
@@ -186,6 +184,11 @@ method border-copy ( --> N-GtkBorder ) {
 }
 
 method border-copy-rk ( --> Gnome::Gtk3::Border ) {
+  Gnome::N::deprecate(
+    'border-copy-rk', 'coercing from border-copy',
+    '0.47.2', '0.50.0'
+  );
+
   Gnome::Gtk3::Border.new(
     :native-object(gtk_border_copy(self._get-native-object-no-reffing))
   )

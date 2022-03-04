@@ -168,7 +168,7 @@ use Gnome::Gtk3::Application;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::Builder:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
@@ -371,8 +371,8 @@ Using this function overrides the behavior of C<connect-signals()> for any callb
 
   method add-callback-symbol ( Str $callback_name, GCallback $callback_symbol )
 
-=item Str $callback_name; The name of the callback, as expected in the XML
-=item GCallback $callback_symbol; (scope async): The callback pointer
+=item $callback_name; The name of the callback, as expected in the XML
+=item $callback_symbol; (scope async): The callback pointer
 =end pod
 
 method add-callback-symbol ( Str $callback_name, GCallback $callback_symbol ) {
@@ -398,8 +398,8 @@ A convenience function to add many callbacks instead of calling C<add-callback-s
 
   method add-callback-symbols ( Str $first_callback_name, GCallback $first_callback_symbol )
 
-=item Str $first_callback_name; The name of the callback, as expected in the XML
-=item GCallback $first_callback_symbol; (scope async): The callback pointer @...: A list of callback name and callback symbol pairs terminated with C<undefined>
+=item $first_callback_name; The name of the callback, as expected in the XML
+=item $first_callback_symbol; (scope async): The callback pointer @...: A list of callback name and callback symbol pairs terminated with C<undefined>
 =end pod
 
 method add-callback-symbols ( Str $first_callback_name, GCallback $first_callback_symbol ) {
@@ -432,7 +432,7 @@ Returns: An invalid error object on success, Otherwise call C<.message()> on the
 
   method add-from-file ( Str $filename --> Gnome::Glib::Error )
 
-=item Str $filename; the name of the file to parse
+=item $filename; the name of the file to parse
 =end pod
 
 method add-from-file ( Str $filename --> Gnome::Glib::Error ) {
@@ -467,7 +467,7 @@ Returns: An invalid error object on success, Otherwise call C<.message()> on the
 
   method add-from-resource ( Str $resource_path --> Gnome::Glib::Error )
 
-=item Str $resource_path; the path of the resource file to parse
+=item $resource_path; the path of the resource file to parse
 =end pod
 
 method add-from-resource ( Str $resource_path --> UInt ) {
@@ -502,7 +502,7 @@ Returns: An invalid error object on success, Otherwise call C<.message()> on the
 
   method add-from-string ( Str $buffer --> Gnome::Glib::Error )
 
-=item Str $buffer; the string to parse
+=item $buffer; the string to parse
 =end pod
 
 method add-from-string ( Str $buffer --> Gnome::Glib::Error ) {
@@ -534,14 +534,16 @@ If you are adding an object that depends on an object that is not its child (for
 
 Returns: A positive value on success, 0 if an error occurred
 
-  method add-objects-from-file ( Str $filename, CArray[Str] $object_ids, N-GError $error --> UInt )
+  method add-objects-from-file (
+    Str $filename, CArray[Str] $object_ids, N-GError $error --> UInt )
 
-=item Str $filename; the name of the file to parse
-=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
-=item N-GError $error; return location for an error, or C<undefined>
+=item $filename; the name of the file to parse
+=item $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item $error; return location for an error, or C<undefined>
 =end pod
 
-method add-objects-from-file ( Str $filename, CArray[Str] $object_ids, $error is copy --> UInt ) {
+method add-objects-from-file (
+  Str $filename, CArray[Str] $object_ids, $error --> UInt ) {
   $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_add_objects_from_file(
@@ -567,11 +569,14 @@ If you are adding an object that depends on an object that is not its child (for
 
 Returns: A positive value on success, 0 if an error occurred
 
-  method add-objects-from-resource ( Str $resource_path, CArray[Str] $object_ids, N-GError $error --> UInt )
+  method add-objects-from-resource (
+    Str $resource_path, CArray[Str] $object_ids, N-GError $error
+    --> UInt
+  )
 
-=item Str $resource_path; the path of the resource file to parse
-=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
-=item N-GError $error; return location for an error, or C<undefined>
+=item $resource_path; the path of the resource file to parse
+=item $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item $error; return location for an error, or C<undefined>
 =end pod
 
 method add-objects-from-resource ( Str $resource_path, CArray[Str] $object_ids, $error is copy --> UInt ) {
@@ -602,10 +607,10 @@ Returns: A positive value on success, 0 if an error occurred
 
   method add-objects-from-string ( Str $buffer, UInt $length, CArray[Str] $object_ids, N-GError $error --> UInt )
 
-=item Str $buffer; the string to parse
-=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
-=item CArray[Str] $object_ids;  (element-type utf8): nul-terminated array of objects to build
-=item N-GError $error; return location for an error, or C<undefined>
+=item $buffer; the string to parse
+=item $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item $object_ids;  (element-type utf8): nul-terminated array of objects to build
+=item $error; return location for an error, or C<undefined>
 =end pod
 
 method add-objects-from-string ( Str $buffer, UInt $length, CArray[Str] $object_ids, $error is copy --> UInt ) {
@@ -636,7 +641,7 @@ When compiling applications for Windows, you must declare signal callbacks with 
 
   method connect-signals ( Pointer $user_data )
 
-=item Pointer $user_data; user data to pass back with all signals
+=item $user_data; user data to pass back with all signals
 =end pod
 
 method connect-signals ( Pointer $user_data ) {
@@ -661,7 +666,7 @@ This method will process the signal elements from the loaded XML and with the he
 
   method gtk_builder_connect_signals_full ( Hash $handlers )
 
-=item Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also C<register-signal()> in B<Gnome::GObject::Object>.
+=item $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also C<register-signal()> in B<Gnome::GObject::Object>.
 
 An example where a gui is described in XML. It has a Window with a Button, both having a signal description;
 
@@ -806,15 +811,16 @@ sub gtk_builder_error_quark (
 
 Add I<object> to the I<builder> object pool so it can be referenced just like any other object built by builder.
 
-  method expose-object ( Str $name, N-GObject $object )
+  method expose-object ( Str $name, N-GObject() $object )
 
-=item Str $name; the name of the object exposed to the builder
-=item N-GObject $object; the object to expose
+=item $name; the name of the object exposed to the builder
+=item $object; the object to expose
 =end pod
 
-method expose-object ( Str $name, $object is copy ) {
-  $object .= _get-native-object-no-reffing unless $object ~~ N-GObject;
-  gtk_builder_expose_object( self._get-native-object-no-reffing, $name, $object);
+method expose-object ( Str $name, N-GObject() $object ) {
+  gtk_builder_expose_object(
+    self._get-native-object-no-reffing, $name, $object
+  );
 }
 
 sub gtk_builder_expose_object (
@@ -834,22 +840,28 @@ This is exported purely to let gtk-builder-tool validate templates, applications
 
 Returns: A positive value on success, 0 if an error occurred
 
-  method extend-with-template ( N-GObject $widget, N-GObject $template_type, Str $buffer, UInt $length, N-GError $error --> UInt )
+  method extend-with-template (
+    N-GObject() $widget, N-GObject() $template_type,
+    Str $buffer, UInt $length, N-GError $error
+    --> UInt
+  )
 
-=item N-GObject $widget; the widget that is being extended
-=item N-GObject $template_type; the type that the template is for
-=item Str $buffer; the string to parse
-=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
-=item N-GError $error; return location for an error, or C<undefined>
+=item $widget; the widget that is being extended
+=item $template_type; the type that the template is for
+=item $buffer; the string to parse
+=item $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item $error; return location for an error, or C<undefined>
 =end pod
 
-method extend-with-template ( $widget is copy, $template_type is copy, Str $buffer, UInt $length, $error is copy --> UInt ) {
-  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
-  $template_type .= _get-native-object-no-reffing unless $template_type ~~ N-GObject;
+method extend-with-template (
+  N-GObject() $widget, N-GObject() $template_type, Str $buffer, UInt $length,
+  $error is copy --> UInt
+) {
   $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
 
   gtk_builder_extend_with_template(
-    self._get-native-object-no-reffing, $widget, $template_type, $buffer, $length, $error
+    self._get-native-object-no-reffing, $widget, $template_type, $buffer,
+    $length, $error
   )
 }
 
@@ -861,9 +873,8 @@ sub gtk_builder_extend_with_template (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-application:
-#TM:1:get-application-rk:
 =begin pod
-=head2 get-application, get-application-rk
+=head2 get-application
 
 Gets the B<Gnome::Gtk3::Application> associated with the builder.
 
@@ -874,7 +885,6 @@ By default, the builder uses the default application: the one from C<g-applicati
 Returns: the application being used by the builder, or C<undefined>
 
   method get-application ( --> N-GObject )
-  method get-application-rk ( --> Gnome::Gtk3::Application )
 
 =end pod
 
@@ -883,6 +893,11 @@ method get-application ( --> N-GObject ) {
 }
 
 method get-application-rk ( --> Gnome::Gtk3::Application ) {
+  Gnome::N::deprecate(
+    'get-application-rk', 'coercing from get-application',
+    '0.47.2', '0.50.0'
+  );
+
   Gnome::Gtk3::Application.new(
     :native-object(
       gtk_builder_get_application(self._get-native-object-no-reffing)
@@ -897,18 +912,16 @@ sub gtk_builder_get_application (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-object:
-#TM:1:get-object-rk:
 =begin pod
-=head2 get-object, get-object-rk
+=head2 get-object
 
 Gets the object named I<$name>. Note that this function does not increment the reference count of the returned object.
 
 Returns: the object named I<$name> or C<undefined> if it could not be found in the object tree.
 
   method get-object ( Str $name --> N-GObject )
-  method get-object-rk ( Str $name --> Gnome::GObject::Object )
 
-=item Str $name; name of object to get
+=item $name; name of object to get
 =end pod
 
 method get-object ( Str $name --> N-GObject ) {
@@ -916,6 +929,11 @@ method get-object ( Str $name --> N-GObject ) {
 }
 
 method get-object-rk ( Str $name --> Any ) {
+  Gnome::N::deprecate(
+    'get-object-rk', 'coercing from get-object',
+    '0.47.2', '0.50.0'
+  );
+
   my N-GObject $no = gtk_builder_get_object(
     self._get-native-object-no-reffing, $name
   );
@@ -991,7 +1009,7 @@ Returns: the B<Gnome::Gtk3::Type> found for I<$type-name> or B<Gnome::Gtk3::-TYP
 
   method get-type-from-name ( Str $type-name --> UInt )
 
-=item Str $type_name; type name to lookup
+=item $type_name; type name to lookup
 =end pod
 
 method get-type-from-name ( Str $type-name --> UInt ) {
@@ -1019,7 +1037,7 @@ Returns: The callback symbol in I<builder> for I<callback-name>, or C<undefined>
 
   method lookup-callback-symbol ( Str $callback_name --> GCallback )
 
-=item Str $callback_name; The name of the callback
+=item $callback_name; The name of the callback
 =end pod
 
 method lookup-callback-symbol ( Str $callback_name --> GCallback ) {
@@ -1090,14 +1108,12 @@ Sets the application associated with I<builder>.
 
 You only need this function if there is more than one B<Gnome::Gtk3::Application> in your process. I<$application> cannot be C<undefined>.
 
-  method set-application ( N-GObject $application )
+  method set-application ( N-GObject() $application )
 
-=item N-GObject $application; a B<Gnome::Gtk3::Application>
+=item $application; a B<Gnome::Gtk3::Application>
 =end pod
 
-method set-application ( $application is copy ) {
-  $application .= _get-native-object-no-reffing unless $application ~~ N-GObject;
-
+method set-application ( N-GObject() $application ) {
   gtk_builder_set_application(
     self._get-native-object-no-reffing, $application
   );
@@ -1117,7 +1133,7 @@ Sets the translation domain of I<builder>. See  I<translation-domain>.
 
   method set-translation-domain ( Str $domain )
 
-=item Str $domain; the translation domain or C<undefined>
+=item $domain; the translation domain or C<undefined>
 =end pod
 
 method set-translation-domain ( Str $domain ) {
@@ -1147,10 +1163,10 @@ Returns: C<True> on success
 
   method value-from-string ( GParamSpec $pspec, Str $string, N-GObject $value, N-GError $error --> Bool )
 
-=item GParamSpec $pspec; the B<Gnome::Gtk3::ParamSpec> for the property
-=item Str $string; the string representation of the value
-=item N-GObject $value; the B<Gnome::Gtk3::Value> to store the result in
-=item N-GError $error; return location for an error, or C<undefined>
+=item $pspec; the B<Gnome::Gtk3::ParamSpec> for the property
+=item $string; the string representation of the value
+=item $value; the B<Gnome::Gtk3::Value> to store the result in
+=item $error; return location for an error, or C<undefined>
 =end pod
 
 method value-from-string ( GParamSpec $pspec, Str $string, $value is copy, $error is copy --> Bool ) {
@@ -1180,10 +1196,10 @@ Returns: C<True> on success
 
   method value-from-string-type ( N-GObject $type, Str $string, N-GObject $value, N-GError $error --> Bool )
 
-=item N-GObject $type; the B<Gnome::Gtk3::Type> of the value
-=item Str $string; the string representation of the value
-=item N-GObject $value; the B<Gnome::Gtk3::Value> to store the result in
-=item N-GError $error; return location for an error, or C<undefined>
+=item $type; the B<Gnome::Gtk3::Type> of the value
+=item $string; the string representation of the value
+=item $value; the B<Gnome::Gtk3::Value> to store the result in
+=item $error; return location for an error, or C<undefined>
 =end pod
 
 method value-from-string-type ( $type is copy, Str $string, $value is copy, $error is copy --> Bool ) {
@@ -1240,7 +1256,7 @@ Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
   method _gtk_builder_new_from_file ( Str $filename --> N-GObject )
 
-=item Str $filename; filename of user interface description file
+=item $filename; filename of user interface description file
 =end pod
 }}
 
@@ -1263,7 +1279,7 @@ Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
   method _gtk_builder_new_from_resource ( Str $resource_path --> N-GObject )
 
-=item Str $resource_path; a B<Gnome::Gtk3::Resource> resource path
+=item $resource_path; a B<Gnome::Gtk3::Resource> resource path
 =end pod
 }}
 
@@ -1288,8 +1304,8 @@ Returns: a B<Gnome::Gtk3::Builder> containing the interface described by I<strin
 
   method _gtk_builder_new_from_string ( Str $string, Int() $length --> N-GObject )
 
-=item Str $string; a user interface (XML) description
-=item Int() $length; the length of I<string>, or -1
+=item $string; a user interface (XML) description
+=item $length; the length of I<string>, or -1
 =end pod
 }}
 
@@ -1397,7 +1413,7 @@ Returns: Gnome::Glib::Error. Test C<.is-valid()> of that object to see if there 
     --> Gnome::Glib::Error
   )
 
-=item Str $filename; the name of the file to parse
+=item $filename; the name of the file to parse
 
 =end pod
 
@@ -1435,8 +1451,8 @@ Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
     --> Gnome::Glib::Error
   )
 
-=item Str $resource_path; the path of the resource file to parse
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $resource_path; the path of the resource file to parse
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1472,7 +1488,7 @@ Returns: Gnome::Glib::Error. Test C<.is-valid()> to see if there was an error.
 
   method gtk_builder_add_from_string ( Str $buffer --> N-GObject $error )
 
-=item Str $buffer; the string to parse
+=item $buffer; the string to parse
 
 =end pod
 
@@ -1513,9 +1529,9 @@ Returns: Gnome::Glib::Error. Test C<.is-valid()> flag to see if there was an err
 
   method gtk_builder_add_objects_from_file ( Str $filename, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
-=item Str $filename; the name of the file to parse
-=item CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $filename; the name of the file to parse
+=item $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1546,9 +1562,9 @@ Returns: A positive value on success, 0 if an error occurred
 
   method gtk_builder_add_objects_from_resource ( Str $resource_path, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
-=item Str $resource_path; the path of the resource file to parse
-=item CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $resource_path; the path of the resource file to parse
+=item $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1578,10 +1594,10 @@ Returns: A positive value on success, 0 if an error occurred
 
   method gtk_builder_add_objects_from_string ( Str $buffer, UInt $length, CArray[Str] $object_ids, N-GObject $error --> UInt  )
 
-=item Str $buffer; the string to parse
-=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
-=item CArray[Str] $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $buffer; the string to parse
+=item $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item $object_ids; (array zero-terminated=1) (element-type utf8): nul-terminated array of objects to build
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1602,7 +1618,7 @@ Returns: the object named I<$name> or undefined if it could not be found in the 
 
   method gtk_builder_get_object ( Str $name --> N-GObject  )
 
-=item Str $name; name of object to get
+=item $name; name of object to get
 
 =end pod
 
@@ -1645,8 +1661,8 @@ other object built by builder.
 
   method gtk_builder_expose_object ( Str $name, N-GObject $object )
 
-=item Str $name; the name of the object exposed to the builder
-=item N-GObject $object; the object to expose
+=item $name; the name of the object exposed to the builder
+=item $object; the object to expose
 
 =end pod
 
@@ -1684,7 +1700,7 @@ gmodule-export-2.0.
 
   method gtk_builder_connect_signals ( Pointer $user_data )
 
-=item Pointer $user_data; user data to pass back with all signals
+=item $user_data; user data to pass back with all signals
 
 =end pod
 
@@ -1702,7 +1718,7 @@ This method will process the signal elements from the loaded XML and with the he
 
   method gtk_builder_connect_signals_full ( Hash $handlers )
 
-=item Hash $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also C<register-signal()> in B<Gnome::GObject::Object>.
+=item $handlers; a table used to register handlers to process a signal. Each entry in this table has a key which is the name of the handler method. The value is a list of which the first element is the object wherin the method is defined. The rest of the list are optional named attributes and are provided to the method. See also C<register-signal()> in B<Gnome::GObject::Object>.
 
 An example where a gui is described in XML. It has a Window with a Button, both having a signal description;
 
@@ -1822,7 +1838,7 @@ See prop C<translation-domain>.
 
   method gtk_builder_set_translation_domain ( Str $domain )
 
-=item Str $domain; (allow-none): the translation domain or C<Any>
+=item $domain; (allow-none): the translation domain or C<Any>
 
 =end pod
 
@@ -1864,7 +1880,7 @@ if no type was found
 
   method gtk_builder_get_type_from_name ( Str $type_name --> UInt  )
 
-=item Str $type_name; type name to lookup
+=item $type_name; type name to lookup
 
 =end pod
 
@@ -1894,10 +1910,10 @@ Returns: C<1> on success
 
   method gtk_builder_value_from_string ( GParamSpec $pspec, Str $string, N-GObject $value, N-GObject $error --> Int  )
 
-=item GParamSpec $pspec; the C<GParamSpec> for the property
-=item Str $string; the string representation of the value
-=item N-GObject $value; (out): the C<GValue> to store the result in
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $pspec; the C<GParamSpec> for the property
+=item $string; the string representation of the value
+=item $value; (out): the C<GValue> to store the result in
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1924,10 +1940,10 @@ Returns: C<1> on success
 
   method gtk_builder_value_from_string_type ( N-GObject $type, Str $string, N-GObject $value, N-GObject $error --> Int  )
 
-=item N-GObject $type; the C<GType> of the value
-=item Str $string; the string representation of the value
-=item N-GObject $value; (out): the C<GValue> to store the result in
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $type; the C<GType> of the value
+=item $string; the string representation of the value
+=item $value; (out): the C<GValue> to store the result in
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 
@@ -1953,7 +1969,7 @@ Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
   method gtk_builder_new_from_file ( Str $filename --> N-GObject  )
 
-=item Str $filename; filename of user interface description file
+=item $filename; filename of user interface description file
 
 =end pod
 }}
@@ -1977,7 +1993,7 @@ Returns: a B<Gnome::Gtk3::Builder> containing the described interface
 
   method gtk_builder_new_from_resource ( Str $resource_path --> N-GObject )
 
-=item Str $resource_path; a C<GResource> resource path
+=item $resource_path; a C<GResource> resource path
 
 =end pod
 }}
@@ -2007,8 +2023,8 @@ Returns: a B<Gnome::Gtk3::Builder> containing the interface described by I<strin
 
   method gtk_builder_new_from_string ( Str $string, Int $length --> N-GObject  )
 
-=item Str $string; a user interface (XML) description
-=item Int $length; the length of I<string>, or -1
+=item $string; a user interface (XML) description
+=item $length; the length of I<string>, or -1
 
 =end pod
 }}
@@ -2044,8 +2060,8 @@ the global namespace.
 
   method gtk_builder_add_callback_symbol ( Str $callback_name, GCallback $callback_symbol )
 
-=item Str $callback_name; The name of the callback, as expected in the XML
-=item GCallback $callback_symbol; (scope async): The callback pointer
+=item $callback_name; The name of the callback, as expected in the XML
+=item $callback_symbol; (scope async): The callback pointer
 
 =end pod
 
@@ -2064,8 +2080,8 @@ C<gtk_builder_add_callback_symbol()> for each symbol.
 
   method gtk_builder_add_callback_symbols ( Str $first_callback_name, GCallback $first_callback_symbol )
 
-=item Str $first_callback_name; The name of the callback, as expected in the XML
-=item GCallback $first_callback_symbol; (scope async): The callback pointer @...: A list of callback name and callback symbol pairs terminated with C<Any>
+=item $first_callback_name; The name of the callback, as expected in the XML
+=item $first_callback_symbol; (scope async): The callback pointer @...: A list of callback name and callback symbol pairs terminated with C<Any>
 
 =end pod
 
@@ -2090,7 +2106,7 @@ Returns: (nullable): The callback symbol in I<builder> for I<callback_name>, or 
 
   method gtk_builder_lookup_callback_symbol ( Str $callback_name --> GCallback  )
 
-=item Str $callback_name; The name of the callback
+=item $callback_name; The name of the callback
 
 =end pod
 
@@ -2111,7 +2127,7 @@ You only need this function if there is more than one C<Application> in your pro
 
   method gtk_builder_set_application ( N-GObject $application )
 
-=item N-GObject $application; a B<Gnome::Gtk3::Application>
+=item $application; a B<Gnome::Gtk3::Application>
 
 =end pod
 
@@ -2161,11 +2177,11 @@ Returns: A positive value on success, 0 if an error occurred
 
   method gtk_builder_extend_with_template ( N-GObject $widget, N-GObject $template_type, Str $buffer, UInt $length, N-GObject $error --> UInt  )
 
-=item N-GObject $widget; the widget that is being extended
-=item N-GObject $template_type; the type that the template is for
-=item Str $buffer; the string to parse
-=item UInt $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
-=item N-GObject $error; (allow-none): return location for an error, or C<Any>
+=item $widget; the widget that is being extended
+=item $template_type; the type that the template is for
+=item $buffer; the string to parse
+=item $length; the length of I<buffer> (may be -1 if I<buffer> is nul-terminated)
+=item $error; (allow-none): return location for an error, or C<Any>
 
 =end pod
 

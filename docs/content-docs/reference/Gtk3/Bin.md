@@ -49,13 +49,12 @@ Create a Grid object using a native object returned from a builder. See also **G
 
     multi method new ( Str :$build-id! )
 
-get_child, get_child-rk
------------------------
+get_child
+---------
 
 Gets the child of the **Gnome::Gtk3::Bin**, or `Any` if the bin contains no child widget. The returned widget does not have a reference added, so you do not need to unref it.
 
 Returns: The child of the **Gnome::Gtk3::Bin**;
 
     method get-child ( --> N-GObject )
-    method get-child-rk ( --> Gnome::GObject::Object )
 

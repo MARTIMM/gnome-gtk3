@@ -98,7 +98,7 @@ use Gnome::Gtk3::Orientable;
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::Box:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::Box:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
 also does Gnome::Gtk3::Orientable;
 
@@ -334,18 +334,18 @@ sub gtk_box_get_spacing (
 Adds I<child> to I<box>, packed with reference to the end of I<box>. The I<child> is packed after (away from end of) any other child packed with reference to the end of I<box>.
 
   method pack-end (
-    N-GObject $child, Bool $expand, Bool $fill, UInt $padding
+    N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
   )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
-=item Bool $expand; C<True> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children of I<box> that use this option
-=item Bool $fill; C<True> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<False>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>.  This option affects the other dimension
-=item UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
+=item $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
+=item $expand; C<True> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children of I<box> that use this option
+=item $fill; C<True> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<False>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>.  This option affects the other dimension
+=item $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
 =end pod
 
-method pack-end ( $child is copy, Bool $expand, Bool $fill, UInt $padding ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method pack-end (
+  N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
+) {
   gtk_box_pack_end(
     self._f('GtkBox'), $child, $expand, $fill, $padding
   );
@@ -364,21 +364,19 @@ sub gtk_box_pack_end (
 Adds I<child> to I<box>, packed with reference to the start of I<box>. The I<child> is packed after any other child packed with reference to the start of I<box>.
 
   method pack-start (
-    N-GObject $child, Bool $expand, Bool $fill, UInt $padding
+    N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
   )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
-=item Bool $expand; C<True> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children that use this option
-=item Bool $fill; C<True> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<False>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>. This option affects the other dimension
-=item UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
+=item $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
+=item $expand; C<True> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children that use this option
+=item $fill; C<True> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<False>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>. This option affects the other dimension
+=item $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
 =end pod
 
-method pack-start ( $child is copy, Bool $expand, Bool $fill, UInt $padding ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
-  gtk_box_pack_start(
-    self._f('GtkBox'), $child, $expand, $fill, $padding
-  );
+method pack-start (
+  N-GObject() $child, Bool $expand, Bool $fill, UInt $padding
+) {
+  gtk_box_pack_start( self._f('GtkBox'), $child, $expand, $fill, $padding);
 }
 
 sub gtk_box_pack_start (
@@ -393,25 +391,23 @@ sub gtk_box_pack_start (
 
 Obtains information about how I<child> is packed into I<box>.
 
-  method query-child-packing ( N-GObject $child --> List )
+  method query-child-packing ( N-GObject() $child --> List )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> of the child to query
+=item $child; the B<Gnome::Gtk3::Widget> of the child to query
 
 The returned List contains;
-=item Bool $expand; expand child property
-=item Bool $fill; fill child property
-=item Int $padding; padding child property
-=item GtkPackType $pack_type; pack-type child property
+=item $expand; expand child property
+=item $fill; fill child property
+=item $padding; padding child property
+=item $pack_type; pack-type child property
 =end pod
 
-method query-child-packing ( $child is copy --> List ) {
+method query-child-packing ( N-GObject() $child --> List ) {
 
   my gboolean $expand;
   my gboolean $fill;
   my guint $padding;
   my GEnum $pack_type;
-
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
 
   gtk_box_query_child_packing(
     self._f('GtkBox'), $child, $expand, $fill, $padding, $pack_type
@@ -437,14 +433,13 @@ Moves I<child> to a new I<position> in the list of I<box> children. The list con
 
 A widget’s position in the I<box> children list determines where the widget is packed into I<box>. A child widget at some position in the list will be packed just after all other widgets of the same packing type that appear earlier in the list.
 
-  method reorder-child ( N-GObject $child, Int() $position )
+  method reorder-child ( N-GObject() $child, Int() $position )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to move
-=item Int() $position; the new position for I<child> in the list of children of I<box>, starting from 0. If negative, indicates the end of the list
+=item $child; the B<Gnome::Gtk3::Widget> to move
+=item $position; the new position for I<child> in the list of children of I<box>, starting from 0. If negative, indicates the end of the list
 =end pod
 
-method reorder-child ( $child is copy, Int() $position ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
+method reorder-child ( N-GObject() $child, Int() $position ) {
   gtk_box_reorder_child( self._f('GtkBox'), $child, $position);
 }
 
@@ -462,7 +457,7 @@ Sets the baseline position of a box. This affects only horizontal boxes with at 
 
   method set-baseline-position ( GtkBaselinePosition $position )
 
-=item GtkBaselinePosition $position; a B<Gnome::Gtk3::BaselinePosition>
+=item $position; a B<Gnome::Gtk3::BaselinePosition>
 =end pod
 
 method set-baseline-position ( GtkBaselinePosition $position ) {
@@ -481,17 +476,13 @@ sub gtk_box_set_baseline_position (
 
 Sets a center widget; that is a child widget that will be centered with respect to the full width of the box, even if the children at either side take up different amounts of space.
 
-  method set-center-widget ( N-GObject $widget )
+  method set-center-widget ( N-GObject() $widget )
 
-=item N-GObject $widget; the widget to center
+=item $widget; the widget to center
 =end pod
 
-method set-center-widget ( $widget is copy ) {
-  $widget .= _get-native-object-no-reffing unless $widget ~~ N-GObject;
-
-  gtk_box_set_center_widget(
-    self._f('GtkBox'), $widget
-  );
+method set-center-widget ( N-GObject() $widget ) {
+  gtk_box_set_center_widget( self._f('GtkBox'), $widget);
 }
 
 sub gtk_box_set_center_widget (
@@ -507,23 +498,21 @@ sub gtk_box_set_center_widget (
 Sets the way I<child> is packed into I<box>.
 
   method set-child-packing (
-    N-GObject $child, Bool $expand, Bool $fill,
+    N-GObject() $child, Bool $expand, Bool $fill,
     UInt $padding, GtkPackType $pack_type
   )
 
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> of the child to set
-=item Bool $expand; the new value of the expand child property
-=item Bool $fill; the new value of the fill child property
-=item UInt $padding; the new value of the padding child property
-=item GtkPackType $pack_type; the new value of the pack-type child property
+=item $child; the B<Gnome::Gtk3::Widget> of the child to set
+=item $expand; the new value of the expand child property
+=item $fill; the new value of the fill child property
+=item $padding; the new value of the padding child property
+=item $pack_type; the new value of the pack-type child property
 =end pod
 
 method set-child-packing (
-  $child is copy, Bool $expand, Bool $fill, UInt $padding,
+  N-GObject() $child, Bool $expand, Bool $fill, UInt $padding,
   GtkPackType $pack_type
 ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
   gtk_box_set_child_packing(
     self._f('GtkBox'), $child, $expand, $fill, $padding, $pack_type
   );
@@ -543,7 +532,7 @@ Sets the  I<homogeneous> property of I<box>, controlling whether or not all chil
 
   method set-homogeneous ( Bool $homogeneous )
 
-=item Bool $homogeneous; a boolean value, C<True> to create equal allotments, C<False> for variable allotments
+=item $homogeneous; a boolean value, C<True> to create equal allotments, C<False> for variable allotments
 =end pod
 
 method set-homogeneous ( Bool $homogeneous ) {
@@ -567,7 +556,7 @@ Sets the  I<spacing> property of I<box>, which is the number of pixels to place 
 
   method set-spacing ( Int() $spacing )
 
-=item Int() $spacing; the number of pixels to put between children
+=item $spacing; the number of pixels to put between children
 =end pod
 
 method set-spacing ( Int() $spacing ) {
@@ -594,8 +583,8 @@ Returns: a new B<Gnome::Gtk3::Box>.
 
   method _gtk_box_new ( GtkOrientation $orientation, Int() $spacing --> N-GObject )
 
-=item GtkOrientation $orientation; the box’s orientation.
-=item Int() $spacing; the number of pixels to place by default between children.
+=item $orientation; the box’s orientation.
+=item $spacing; the number of pixels to place by default between children.
 =end pod
 }}
 
@@ -704,367 +693,5 @@ The B<Gnome::GObject::Value> type of property I<position> is C<G_TYPE_INT>.
 
 --- Child properties ---
 =end comment
-
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_new:
-=begin pod
-=head2 [gtk_] box_new
-
-Creates a new B<Gnome::Gtk3::Box>.
-
-Returns: a new B<Gnome::Gtk3::Box>.
-
-Since: 3.0
-
-  method gtk_box_new ( GtkOrientation $orientation, Int $spacing --> N-GObject  )
-
-=item GtkOrientation $orientation; the box’s orientation.
-=item Int $spacing; the number of pixels to place by default between children.
-
-=end pod
-
-sub gtk_box_new ( int32 $orientation, int32 $spacing )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_pack_start:
-=begin pod
-=head2 [[gtk_] box_] pack_start
-
-Adds I<child> to I<box>, packed with reference to the start of I<box>.
-The I<child> is packed after any other child packed with reference
-to the start of I<box>.
-
-  method gtk_box_pack_start ( N-GObject $child, Int $expand, Int $fill, UInt $padding )
-
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
-=item Int $expand; C<1> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children that use this option
-=item Int $fill; C<1> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<0>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>. This option affects the other dimension
-=item UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
-
-=end pod
-
-sub gtk_box_pack_start ( N-GObject $box, N-GObject $child, int32 $expand, int32 $fill, uint32 $padding )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_pack_end:
-=begin pod
-=head2 [[gtk_] box_] pack_end
-
-Adds I<child> to I<box>, packed with reference to the end of I<box>.
-The I<child> is packed after (away from end of) any other child
-packed with reference to the end of I<box>.
-
-  method gtk_box_pack_end ( N-GObject $child, Int $expand, Int $fill, UInt $padding )
-
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to be added to I<box>
-=item Int $expand; C<1> if the new child is to be given extra space allocated to I<box>. The extra space will be divided evenly between all children of I<box> that use this option
-=item Int $fill; C<1> if space given to I<child> by the I<expand> option is actually allocated to I<child>, rather than just padding it.  This parameter has no effect if I<expand> is set to C<0>.  A child is always allocated the full height of a horizontal B<Gnome::Gtk3::Box> and the full width of a vertical B<Gnome::Gtk3::Box>.  This option affects the other dimension
-=item UInt $padding; extra space in pixels to put between this child and its neighbors, over and above the global amount specified by  I<spacing> property.  If I<child> is a widget at one of the reference ends of I<box>, then I<padding> pixels are also put between I<child> and the reference edge of I<box>
-
-=end pod
-
-sub gtk_box_pack_end ( N-GObject $box, N-GObject $child, int32 $expand, int32 $fill, uint32 $padding )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_set_homogeneous:
-=begin pod
-=head2 [[gtk_] box_] set_homogeneous
-
-Sets the  I<homogeneous> property of I<box>, controlling
-whether or not all children of I<box> are given equal space
-in the box.
-
-  method gtk_box_set_homogeneous ( Int $homogeneous )
-
-=item Int $homogeneous; a boolean value, C<1> to create equal allotments, C<0> for variable allotments
-
-=end pod
-
-sub gtk_box_set_homogeneous ( N-GObject $box, int32 $homogeneous )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_get_homogeneous:
-=begin pod
-=head2 [[gtk_] box_] get_homogeneous
-
-Returns whether the box is homogeneous (all children are the
-same size). See C<gtk_box_set_homogeneous()>.
-
-Returns: C<1> if the box is homogeneous.
-
-  method gtk_box_get_homogeneous ( --> Int  )
-
-
-=end pod
-
-sub gtk_box_get_homogeneous ( N-GObject $box )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_set_spacing:
-=begin pod
-=head2 [[gtk_] box_] set_spacing
-
-Sets the  I<spacing> property of I<box>, which is the
-number of pixels to place between children of I<box>.
-
-  method gtk_box_set_spacing ( Int $spacing )
-
-=item Int $spacing; the number of pixels to put between children
-
-=end pod
-
-sub gtk_box_set_spacing ( N-GObject $box, int32 $spacing )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_get_spacing:
-=begin pod
-=head2 [[gtk_] box_] get_spacing
-
-Gets the value set by C<gtk_box_set_spacing()>.
-
-Returns: spacing between children
-
-  method gtk_box_get_spacing ( --> Int  )
-
-
-=end pod
-
-sub gtk_box_get_spacing ( N-GObject $box )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_set_baseline_position:
-=begin pod
-=head2 [[gtk_] box_] set_baseline_position
-
-Sets the baseline position of a box. This affects
-only horizontal boxes with at least one baseline aligned
-child. If there is more vertical space available than requested,
-and the baseline is not allocated by the parent then
-I<position> is used to allocate the baseline wrt the
-extra space available.
-
-Since: 3.10
-
-  method gtk_box_set_baseline_position ( GtkBaselinePosition $position )
-
-=item GtkBaselinePosition $position; a B<Gnome::Gtk3::BaselinePosition>
-
-=end pod
-
-sub gtk_box_set_baseline_position ( N-GObject $box, int32 $position )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_get_baseline_position:
-=begin pod
-=head2 [[gtk_] box_] get_baseline_position
-
-Gets the value set by C<gtk_box_set_baseline_position()>.
-
-Returns: the baseline position
-
-Since: 3.10
-
-  method gtk_box_get_baseline_position ( --> GtkBaselinePosition  )
-
-
-=end pod
-
-sub gtk_box_get_baseline_position ( N-GObject $box )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_reorder_child:
-=begin pod
-=head2 [[gtk_] box_] reorder_child
-
-Moves I<child> to a new I<position> in the list of I<box> children.
-The list contains widgets packed B<GTK_PACK_START>
-as well as widgets packed B<GTK_PACK_END>, in the order that these
-widgets were added to I<box>.
-
-A widget’s position in the I<box> children list determines where
-the widget is packed into I<box>.  A child widget at some position
-in the list will be packed just after all other widgets of the
-same packing type that appear earlier in the list.
-
-  method gtk_box_reorder_child ( N-GObject $child, Int $position )
-
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> to move
-=item Int $position; the new position for I<child> in the list of children of I<box>, starting from 0. If negative, indicates the end of the list
-
-=end pod
-
-sub gtk_box_reorder_child ( N-GObject $box, N-GObject $child, int32 $position )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_query_child_packing:
-=begin pod
-=head2 [[gtk_] box_] query_child_packing
-
-Obtains information about how I<child> is packed into I<box>.
-
-  method gtk_box_query_child_packing ( N-GObject $child, Int $expand, Int $fill, UInt $padding, GtkPackType $pack_type )
-
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> of the child to query
-=item Int $expand; (out): pointer to return location for expand child property
-=item Int $fill; (out): pointer to return location for fill child property
-=item UInt $padding; (out): pointer to return location for padding child property
-=item GtkPackType $pack_type; (out): pointer to return location for pack-type child property
-
-=end pod
-
-sub gtk_box_query_child_packing ( N-GObject $box, N-GObject $child, int32 $expand, int32 $fill, uint32 $padding, int32 $pack_type )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_set_child_packing:
-=begin pod
-=head2 [[gtk_] box_] set_child_packing
-
-Sets the way I<child> is packed into I<box>.
-
-  method gtk_box_set_child_packing ( N-GObject $child, Int $expand, Int $fill, UInt $padding, GtkPackType $pack_type )
-
-=item N-GObject $child; the B<Gnome::Gtk3::Widget> of the child to set
-=item Int $expand; the new value of the expand child property
-=item Int $fill; the new value of the fill child property
-=item UInt $padding; the new value of the padding child property
-=item GtkPackType $pack_type; the new value of the pack-type child property
-
-=end pod
-
-sub gtk_box_set_child_packing ( N-GObject $box, N-GObject $child, int32 $expand, int32 $fill, uint32 $padding, int32 $pack_type )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_set_center_widget:
-=begin pod
-=head2 [[gtk_] box_] set_center_widget
-
-Sets a center widget; that is a child widget that will be
-centered with respect to the full width of the box, even
-if the children at either side take up different amounts
-of space.
-
-Since: 3.12
-
-  method gtk_box_set_center_widget ( N-GObject $widget )
-
-=item N-GObject $widget; (allow-none): the widget to center
-
-=end pod
-
-sub gtk_box_set_center_widget ( N-GObject $box, N-GObject $widget )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_box_get_center_widget:
-=begin pod
-=head2 [[gtk_] box_] get_center_widget
-
-Retrieves the center widget of the box.
-
-Returns: (transfer none) (nullable): the center widget
-or C<Any> in case no center widget is set.
-
-Since: 3.12
-
-  method gtk_box_get_center_widget ( --> N-GObject  )
-
-
-=end pod
-
-sub gtk_box_get_center_widget ( N-GObject $box )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
-=comment #TP:0:spacing:
-=head3 Spacing
-
-The B<Gnome::GObject::Value> type of property I<spacing> is C<G_TYPE_INT>.
-
-=comment #TP:0:homogeneous:
-=head3 Homogeneous
-
-Whether the children should all be the same size
-Default value: False
-
-The B<Gnome::GObject::Value> type of property I<homogeneous> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:baseline-position:
-=head3 Baseline position
-
-The position of the baseline aligned widgets if extra space is available
-Default value: False
-
-The B<Gnome::GObject::Value> type of property I<baseline-position> is C<G_TYPE_ENUM>.
 
 =end pod

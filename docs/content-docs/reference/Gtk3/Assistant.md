@@ -147,7 +147,7 @@ Adds a widget to the action area of a **Gnome::Gtk3::Assistant**.
 
     method add-action-widget ( N-GObject $child )
 
-  * N-GObject $child; an action widget.
+  * $child; an action widget.
 
 append-page
 -----------
@@ -156,7 +156,7 @@ Appends a *$page* to the assistant. Returns the index (starting at 0) of the ins
 
     method append-page ( N-GObject $page --> Int )
 
-  * N-GObject $page; a **Gnome::Gtk3::Widget**
+  * $page; a **Gnome::Gtk3::Widget**
 
 commit
 ------
@@ -181,27 +181,23 @@ Returns the number of pages in the assistant.
 
     method get-n-pages ( --> Int )
 
-get-nth-page, get-nth-page-rk
------------------------------
+get-nth-page
+------------
 
 Returns the child widget contained in page number *$page_num*, or `Any` if *$page_num* is out of bounds
 
     method get-nth-page ( Int $page_num --> N-GObject )
-    method get-nth-page-rk (
-      Int $page_num, :$child-type?
-      --> Gnome::GObject::Object
-    )
 
-  * Int $page_num; the index of a page in the assistant, or -1 to get the last page
+  * $page_num; the index of a page in the assistant, or -1 to get the last page
 
 get-page-complete
 -----------------
 
 Gets whether *$page* is complete. `True` if *$page* is complete.
 
-    method get-page-complete ( N-GObject $page --> Bool )
+    method get-page-complete ( N-GObject() $page --> Bool )
 
-  * N-GObject $page; a page of assistant
+  * $page; a page of assistant
 
 get-page-has-padding
 --------------------
@@ -210,18 +206,18 @@ Gets whether page has padding.
 
 Returns: `True` if *$page* has padding
 
-    method gtk_assistant_get_page_has_padding ( N-GObject $page --> Bool )
+    method gtk_assistant_get_page_has_padding ( N-GObject() $page --> Bool )
 
-  * N-GObject $page; a page of *assistant*
+  * $page; a page of *assistant*
 
 get-page-title
 --------------
 
 Gets the title for *$page*. `$page` is a previously added widget.
 
-    method get-page-title ( N-GObject $page --> Str )
+    method get-page-title ( N-GObject() $page --> Str )
 
-  * N-GObject $page; a page of assistant
+  * $page; a page of assistant
 
 get-page-type
 -------------
@@ -229,10 +225,10 @@ get-page-type
 Gets the page type of *$page*. `$page` is a previously added widget.
 
     method get-page-type (
-      N-GObject $page --> GtkAssistantPageType
+      N-GObject() $page --> GtkAssistantPageType
     )
 
-  * N-GObject $page; a page of Iassistant
+  * $page; a page of Iassistant
 
 insert-page
 -----------
@@ -242,12 +238,12 @@ Inserts a *$page* in the assistant at a given position. `$page` can be any widge
 Returns: the index (starting from 0) of the inserted page
 
     method insert-page (
-      N-GObject $page, Int $position --> Int
+      N-GObject() $page, Int $position --> Int
     )
 
-  * N-GObject $page; a **Gnome::Gtk3::Widget**
+  * $page; a **Gnome::Gtk3::Widget**
 
-  * Int $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
+  * $position; the index (starting at 0) at which to insert the page, or -1 to append the page to the assistant
 
 next-page
 ---------
@@ -261,9 +257,9 @@ prepend-page
 
 Prepends a *$page* to the assistant. Returns the index (starting at 0) of the inserted page. `$page` can be any widget making up the content of a page in this assistant.
 
-    method prepend-page ( N-GObject $page --> Int )
+    method prepend-page ( N-GObject() $page --> Int )
 
-  * N-GObject $page; a **Gnome::Gtk3::Widget**
+  * $page; a **Gnome::Gtk3::Widget**
 
 previous-page
 -------------
@@ -277,9 +273,9 @@ remove-action-widget
 
 Removes a widget from the action area of a **Gnome::Gtk3::Assistant**.
 
-    method remove-action-widget ( N-GObject $child )
+    method remove-action-widget ( N-GObject() $child )
 
-  * N-GObject $child; a previously added action widget
+  * $child; a previously added action widget
 
 remove-page
 -----------
@@ -288,7 +284,7 @@ Removes the *$page-num*’s page from assistant. `$page` is a previously inserte
 
     method remove-page ( Int $page-num )
 
-  * Int $page-num; the index of a page in the assistant, or -1 to remove the last page
+  * $page-num; the index of a page in the assistant, or -1 to remove the last page
 
 set-current-page
 ----------------
@@ -297,29 +293,29 @@ Switches the page to *$page_num*. Note that this will only be necessary in custo
 
     method set-current-page ( Int $page_num )
 
-  * Int $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
+  * $page_num; index of the page to switch to, starting from 0. If negative, the last page will be used. If greater than the number of pages in the assistant, nothing will be done.
 
 set-page-complete
 -----------------
 
 Sets whether *$page* contents are complete. This will make assistant update the buttons state to be able to continue the task. `$page` is a previously added widget.
 
-    method set-page-complete ( $page, Bool $complete )
+    method set-page-complete ( N-GObject() $page, Bool $complete )
 
   * $page; a page of assistant
 
-  * Bool $complete; the completeness status of the page. `True` to set page complete.
+  * $complete; the completeness status of the page. `True` to set page complete.
 
 set-page-has-padding
 --------------------
 
 Sets whether the assistant is adding padding around the page.
 
-    method set-page-has-padding ( N-GObject $page, Bool $has_padding )
+    method set-page-has-padding ( N-GObject() $page, Bool $has_padding )
 
-  * N-GObject $page; a page of *assistant*
+  * $page; a page of *assistant*
 
-  * Bool $has_padding; whether this page has padding
+  * $has_padding; whether this page has padding
 
 set-page-type
 -------------
@@ -327,23 +323,23 @@ set-page-type
 Sets the page type for *$page*. The page type determines the page behavior in the assistant. `$page` is a previously added page.
 
     method set-page-type (
-      N-GObject $page, GtkAssistantPageType $type
+      N-GObject() $page, GtkAssistantPageType $type
     )
 
-  * N-GObject $page; a page of assistant
+  * $page; a page of assistant
 
-  * GtkAssistantPageType $type; the new type for *$page*
+  * $type; the new type for *$page*
 
 set-page-title
 --------------
 
 Sets a title for *$page*. The title is displayed in the header area of the assistant when *$page* is the current page. `$page` is a previously added widget.
 
-    method set-page-title ( N-GObject $page, Str $title )
+    method set-page-title ( N-GObject() $page, Str $title )
 
-  * N-GObject $page; a page of assistant
+  * $page; a page of assistant
 
-  * Str $title; the new title for *$page*
+  * $title; the new title for *$page*
 
 update-buttons-state
 --------------------

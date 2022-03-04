@@ -58,7 +58,7 @@ subtest 'Add ui from file to builder', {
   $builder .= new(:file($ui-file));
   ok $builder.defined, '.new-from-file()';
 
-  nok $builder.get-application-rk.is-valid, '.get-application-rk()';
+  nok $builder.get-application.defined, '.get-application()';
 
   subtest "add id to widget object", {
     my Gnome::Gtk3::Window $w .= new;
@@ -66,7 +66,7 @@ subtest 'Add ui from file to builder', {
     is $w.get-name, 'GtkWindow', '.get-name()';
     $builder.expose-object( 'some-other-name', $w);
 
-    my Gnome::Gtk3::Window $w2 = $builder.get-object-rk('some-other-name');
+    my Gnome::Gtk3::Window() $w2 = $builder.get-object('some-other-name');
     is $w2.buildable-get-name(), 'some-other-name', '.expose-object()';
     is $w2.get-title, 'abc', 'new object: .get-title()';
   }
@@ -115,13 +115,13 @@ subtest 'Test items from ui', {
     isa-ok $builder.get-object('my-button-1'), N-GObject;
 
     my Gnome::Gtk3::Button $b1 .= new(:build-id<my-button-1>);
-    my Gnome::Gtk3::Button $b2 = $builder.get-object-rk('my-button-1');
+    my Gnome::Gtk3::Button() $b2 = $builder.get-object('my-button-1');
 
     is $b1.get-label, $b2.get-label, '.get-label()';
     is $b1.gtk-widget-get-name, $b2.gtk-widget-get-name,
       '.gtk-widget-get-name()';
     is $b1.get-border-width, $b2.get-border-width, '.get-border-width()';
-  }, '.get-object() / .get-object-rk()';
+  }, '.get-object() / .get-object()';
 
   #$b.gtk-widget-show;
 }

@@ -207,28 +207,27 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 #TM:0:get-help-overlay:
-#TM:0:get-help-overlay-rk:
 =begin pod
-=head2 get-help-overlay, get-help-overlay-rk
+=head2 get-help-overlay
 
 Gets the B<Gnome::Gtk3::ShortcutsWindow> that has been set up with a prior call to C<set-help-overlay()>.
 
 Returns: the help overlay associated with I<window>, or C<undefined>
 
   method get-help-overlay ( --> N-GObject )
-  method get-help-overlay-rk ( :$child-type? --> Gnome::GObject::Object )
-
-=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
 method get-help-overlay ( --> N-GObject ) {
-  gtk_application_window_get_help_overlay(
-    self._get-native-object-no-reffing,
-  )
+  gtk_application_window_get_help_overlay(self._get-native-object-no-reffing)
 }
 
 method get-help-overlay-rk ( *%options --> Gnome::GObject::Object ) {
+  Gnome::N::deprecate(
+    'get-help-overlay-rk', 'coercing from get-help-overlay',
+    '0.47.2', '0.50.0'
+  );
+
   self._wrap-native-type-from-no(
     gtk_application_window_get_help_overlay(self._get-native-object-no-reffing),
     |%options
@@ -254,9 +253,7 @@ Returns: the unique ID for I<window>, or `0` if the window has not yet been adde
 =end pod
 
 method get-id ( --> UInt ) {
-  gtk_application_window_get_id(
-    self._get-native-object-no-reffing,
-  )
+  gtk_application_window_get_id(self._get-native-object-no-reffing)
 }
 
 sub gtk_application_window_get_id (
@@ -278,9 +275,8 @@ Returns: C<True> if I<window> will display a menubar when needed
 =end pod
 
 method get-show-menubar ( --> Bool ) {
-
   gtk_application_window_get_show_menubar(
-    self._get-native-object-no-reffing,
+    self._get-native-object-no-reffing
   ).Bool
 }
 
@@ -298,15 +294,12 @@ Associates a shortcuts window with the application window, and sets up an action
 
 I<window> takes resposibility for destroying I<help-overlay>.
 
-  method set-help-overlay ( N-GObject $help_overlay )
+  method set-help-overlay ( N-GObject() $help_overlay )
 
-=item N-GObject $help_overlay; a B<Gnome::Gtk3::ShortcutsWindow>
+=item $help_overlay; a B<Gnome::Gtk3::ShortcutsWindow>
 =end pod
 
-method set-help-overlay ( $help_overlay is copy ) {
-  $help_overlay .= _get-native-object-no-reffing
-    unless $help_overlay ~~ N-GObject;
-
+method set-help-overlay ( N-GObject() $help_overlay ) {
   gtk_application_window_set_help_overlay(
     self._get-native-object-no-reffing, $help_overlay
   );
@@ -326,11 +319,10 @@ Sets whether the window will display a menubar for the app menu and menubar as n
 
   method set-show-menubar ( Bool $show_menubar )
 
-=item Bool $show_menubar; whether to show a menubar when needed
+=item $show_menubar; whether to show a menubar when needed
 =end pod
 
 method set-show-menubar ( Bool $show_menubar ) {
-
   gtk_application_window_set_show_menubar(
     self._get-native-object-no-reffing, $show_menubar
   );
@@ -353,7 +345,7 @@ Returns: a newly created B<Gnome::Gtk3::ApplicationWindow>
 
   method _gtk_application_window_new ( N-GObject $application --> N-GObject )
 
-=item N-GObject $application; a B<Gnome::Gtk3::Application>
+=item $application; a B<Gnome::Gtk3::Application>
 =end pod
 }}
 
@@ -389,151 +381,3 @@ If C<False>, the window will not display a menubar, regardless
    * of whether the desktop shell is showing the menus or not.
 The B<Gnome::GObject::Value> type of property I<show-menubar> is C<G_TYPE_BOOLEAN>.
 =end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:0:_gtk_application_window_new:
-#`{{
-=begin pod
-=head2 gtk_application_window_new
-
-Creates a new B<Gnome::Gtk3::ApplicationWindow>.
-
-Returns: a newly created B<Gnome::Gtk3::ApplicationWindow>
-
-  method gtk_application_window_new ( N-GObject $application --> N-GObject )
-
-=item N-GObject $application; a B<Gnome::Gtk3::Application>
-
-=end pod
-}}
-
-sub _gtk_application_window_new ( N-GObject $application --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_application_window_new')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_set_show_menubar:
-=begin pod
-=head2 [gtk_application_window_] set_show_menubar
-
-Sets whether the window will display a menubar for the app menu
-and menubar as needed.
-
-  method gtk_application_window_set_show_menubar ( Int $show_menubar )
-
-=item Int $show_menubar; whether to show a menubar when needed
-
-=end pod
-
-sub gtk_application_window_set_show_menubar ( N-GObject $window, int32 $show_menubar  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_get_show_menubar:
-=begin pod
-=head2 [gtk_application_window_] get_show_menubar
-
-Returns whether the window will display a menubar for the app menu
-and menubar as needed.
-
-Returns: C<1> if I<window> will display a menubar when needed
-
-  method gtk_application_window_get_show_menubar ( --> Int )
-
-
-=end pod
-
-sub gtk_application_window_get_show_menubar ( N-GObject $window --> int32 )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_get_id:
-=begin pod
-=head2 [gtk_application_window_] get_id
-
-Returns the unique ID of the window. If the window has not yet been added to
-a B<Gnome::Gtk3::Application>, returns `0`.
-
-Returns: the unique ID for I<window>, or `0` if the window
-has not yet been added to a B<Gnome::Gtk3::Application>
-
-  method gtk_application_window_get_id ( --> UInt )
-
-
-=end pod
-
-sub gtk_application_window_get_id ( N-GObject $window --> uint32 )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_set_help_overlay:
-=begin pod
-=head2 [gtk_application_window_] set_help_overlay
-
-Associates a shortcuts window with the application window, and
-sets up an action with the name win.show-help-overlay to present
-it.
-
-I<window> takes resposibility for destroying I<help_overlay>.
-
-  method gtk_application_window_set_help_overlay ( N-GObject $help_overlay )
-
-=item N-GObject $help_overlay; (nullable): a B<Gnome::Gtk3::ShortcutsWindow>
-
-=end pod
-
-sub gtk_application_window_set_help_overlay ( N-GObject $window, N-GObject $help_overlay  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_application_window_get_help_overlay:
-=begin pod
-=head2 [gtk_application_window_] get_help_overlay
-
-Gets the B<Gnome::Gtk3::ShortcutsWindow> that has been set up with
-a prior call to C<gtk_application_window_set_help_overlay()>.
-
-Returns: (transfer none) (nullable): the help overlay associated with I<window>, or C<Any>
-
-  method gtk_application_window_get_help_overlay ( --> N-GObject )
-
-
-=end pod
-
-sub gtk_application_window_get_help_overlay ( N-GObject $window --> N-GObject )
-  is native(&gtk-lib)
-  { * }
