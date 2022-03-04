@@ -52,16 +52,16 @@ If *$colors* is undefined, the method removes all previously added palettes.
     method add-palette (
       GtkOrientation $orientation,
       Int $colors_per_line, Int $n_colors,
-      Array $colors
+      Array[Num] $colors
     )
 
-  * GtkOrientation $orientation; `GTK_ORIENTATION_HORIZONTAL` if the palette should be displayed in rows, `GTK_ORIENTATION_VERTICAL` for columns.
+  * $orientation; `GTK_ORIENTATION_HORIZONTAL` if the palette should be displayed in rows, `GTK_ORIENTATION_VERTICAL` for columns.
 
-  * Int $colors_per_line; the number of colors to show in each row/column.
+  * $colors_per_line; the number of colors to show in each row/column.
 
-  * Int $n_colors; the total number of elements in @colors.
+  * $n_colors; the total number of elements in @colors.
 
-  * Array[Num] or Array[N-GdkRGBA] $colors; the colors of the palette, or `Any`.
+  * or Array[N-GdkRGBA] $colors; the colors of the palette, or `Any`.
 
 ### An Example
 
@@ -139,9 +139,9 @@ set-rgba
 
 Sets the color.
 
-    method set-rgba ( N-GObject $color )
+    method set-rgba ( N-GObject() $color )
 
-  * N-GObject $color; the new color
+  * $color; the new color
 
 set-use-alpha
 -------------
@@ -150,7 +150,7 @@ Sets whether or not the color chooser should use the alpha channel.
 
     method set-use-alpha ( Bool $use_alpha )
 
-  * Int $use_alpha; `True` if color chooser should use alpha channel, `False` if not
+  * $use_alpha; `True` if color chooser should use alpha channel, `False` if not
 
 Signals
 =======

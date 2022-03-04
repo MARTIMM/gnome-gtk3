@@ -99,13 +99,13 @@ If I<$colors> is undefined, the method removes all previously added palettes.
   method add-palette (
     GtkOrientation $orientation,
     Int $colors_per_line, Int $n_colors,
-    Array $colors
+    Array[Num] $colors
   )
 
-=item GtkOrientation $orientation; C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns.
-=item Int $colors_per_line;  the number of colors to show in each row/column.
-=item Int $n_colors;  the total number of elements in @colors.
-=item Array[Num] or Array[N-GdkRGBA] $colors; the colors of the palette, or C<Any>.
+=item $orientation; C<GTK_ORIENTATION_HORIZONTAL> if the palette should be displayed in rows, C<GTK_ORIENTATION_VERTICAL> for columns.
+=item $colors_per_line;  the number of colors to show in each row/column.
+=item $n_colors;  the total number of elements in @colors.
+=item or Array[N-GdkRGBA] $colors; the colors of the palette, or C<Any>.
 
 =head3 An Example
 
@@ -269,16 +269,14 @@ sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser --> gboolean )
 
 Sets the color.
 
-  method set-rgba ( N-GObject $color )
+  method set-rgba ( N-GObject() $color )
 
-=item N-GObject $color; the new color
+=item $color; the new color
 
 =end pod
 
-method set-rgba ( $color ) {
-  my $no = $color;
-  $no .= _get-native-object-no-reffing unless $no ~~ N-GdkRGBA;
-  gtk_color_chooser_set_rgba( self._f('GtkColorChooser'), $no);
+method set-rgba ( N-GObject() $color ) {
+  gtk_color_chooser_set_rgba( self._f('GtkColorChooser'), $color);
 }
 
 sub gtk_color_chooser_set_rgba ( N-GObject $chooser, N-GdkRGBA $color  )
@@ -294,7 +292,7 @@ Sets whether or not the color chooser should use the alpha channel.
 
   method set-use-alpha ( Bool $use_alpha )
 
-=item Int $use_alpha; C<True> if color chooser should use alpha channel, C<False> if not
+=item $use_alpha; C<True> if color chooser should use alpha channel, C<False> if not
 
 =end pod
 
