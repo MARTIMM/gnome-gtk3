@@ -131,7 +131,9 @@ enum GtkButtonBoxStyle is export (
 
 Create a new ButtonBox object.
 
-  multi method new ( :$orientation = GTK_ORIENTATION_HORIZONTAL )
+  multi method new ( GtkOrientation :$orientation = GTK_ORIENTATION_HORIZONTAL )
+
+=item $layout_style; the new layout style
 
 
 =head3 :native-object
@@ -217,14 +219,12 @@ Returns whether the child is exempted from homogenous sizing.
 
 Returns: C<True> if the child is not subject to homogenous sizing
 
-  method get-child-non-homogeneous ( N-GObject $child --> Bool )
+  method get-child-non-homogeneous ( N-GObject() $child --> Bool )
 
-=item N-GObject $child; a child of the button box
+=item $child; a child of the button box
 =end pod
 
-method get-child-non-homogeneous ( $child is copy --> Bool ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method get-child-non-homogeneous ( N-GObject() $child --> Bool ) {
   gtk_button_box_get_child_non_homogeneous(
     self._get-native-object-no-reffing, $child
   ).Bool
@@ -242,14 +242,12 @@ sub gtk_button_box_get_child_non_homogeneous (
 
 Returns whether I<$child> should appear in a secondary group of children.
 
-  method get-child-secondary ( N-GObject $child --> Bool )
+  method get-child-secondary ( N-GObject() $child --> Bool )
 
-=item N-GObject $child; a child of the button box
+=item $child; a child of the button box
 =end pod
 
-method get-child-secondary ( $child is copy --> Bool ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method get-child-secondary ( N-GObject() $child --> Bool ) {
   gtk_button_box_get_child_secondary(
     self._get-native-object-no-reffing, $child
   ).Bool
@@ -288,16 +286,14 @@ sub gtk_button_box_get_layout (
 Sets whether the child is exempted from homogeous sizing.
 
   method set-child-non-homogeneous (
-    N-GObject $child, Bool $non_homogeneous
+    N-GObject() $child, Bool $non_homogeneous
   )
 
-=item N-GObject $child; a child of the button box
-=item Bool $non_homogeneous; the new value
+=item $child; a child of the button box
+=item $non_homogeneous; the new value
 =end pod
 
-method set-child-non-homogeneous ( $child is copy, Bool $non_homogeneous ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method set-child-non-homogeneous ( N-GObject() $child, Bool $non_homogeneous ) {
   gtk_button_box_set_child_non_homogeneous(
     self._get-native-object-no-reffing, $child, $non_homogeneous
   );
@@ -317,15 +313,13 @@ Sets whether I<$child> should appear in a secondary group of children. A typical
 
 This group appears after the other children if the style is C<GTK-BUTTONBOX-START>, C<GTK-BUTTONBOX-SPREAD> or C<GTK-BUTTONBOX-EDGE>, and before the other children if the style is C<GTK-BUTTONBOX-END>. For horizontal button boxes, the definition of before/after depends on direction of the widget (see C<gtk-widget-set-direction()>). If the style is C<GTK-BUTTONBOX-START> or C<GTK-BUTTONBOX-END>, then the secondary children are aligned at the other end of the button box from the main children. For the other styles, they appear immediately next to the main children.
 
-  method set-child-secondary ( N-GObject $child, Bool $is_secondary )
+  method set-child-secondary ( N-GObject() $child, Bool $is_secondary )
 
-=item N-GObject $child; a child of the button box
-=item Bool $is_secondary; if C<True>, the I<$child> appears in a secondary group of the button box.
+=item $child; a child of the button box
+=item $is_secondary; if C<True>, the I<$child> appears in a secondary group of the button box.
 =end pod
 
-method set-child-secondary ( $child is copy, Bool $is_secondary ) {
-  $child .= _get-native-object-no-reffing unless $child ~~ N-GObject;
-
+method set-child-secondary ( N-GObject() $child, Bool $is_secondary ) {
   gtk_button_box_set_child_secondary(
     self._get-native-object-no-reffing, $child, $is_secondary
   );
@@ -372,7 +366,7 @@ Returns: a new B<Gnome::Gtk3::ButtonBox>.
 
   method _gtk_button_box_new ( GtkOrientation $orientation --> N-GObject )
 
-=item GtkOrientation $orientation; the box's orientation.
+=item $orientation; the box's orientation.
 =end pod
 }}
 

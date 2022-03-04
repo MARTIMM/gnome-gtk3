@@ -58,13 +58,13 @@ Adds an attribute mapping to the list in *cell-layout*.
 
 The *column* is the column of the model to get a value from, and the *attribute* is the parameter on *cell* to be set from the value. So for example if column 2 of the model contains strings, you could have the “text” attribute of a **Gnome::Gtk3::CellRendererText** get its values from column 2.
 
-    method add-attribute ( N-GObject $cell, Str $attribute, Int $column )
+    method add-attribute ( N-GObject() $cell, Str $attribute, Int $column )
 
-  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer**
+  * $cell; a **Gnome::Gtk3::CellRenderer**
 
-  * Str $attribute; an attribute on the renderer
+  * $attribute; an attribute on the renderer
 
-  * Int $column; the column position on the model to get the attribute from
+  * $column; the column position on the model to get the attribute from
 
 clear
 -----
@@ -78,9 +78,9 @@ clear-attributes
 
 Clears all existing attributes previously set with `set-attributes()`.
 
-    method clear-attributes ( N-GObject $cell )
+    method clear-attributes ( N-GObject() $cell )
 
-  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer** to clear the attribute mapping on
+  * $cell; a **Gnome::Gtk3::CellRenderer** to clear the attribute mapping on
 
 get-area
 --------
@@ -96,7 +96,7 @@ get-cells
 
 Returns the cell renderers which have been added to *cell-layout*.
 
-Returns: (element-type GtkCellRenderer) (transfer container): a list of cell renderers. The list, but not the renderers has been newly allocated and should be freed with `g-list-free()` when no longer needed.
+Returns: a list of cell renderers. The list, but not the renderers has been newly allocated and should be freed with `g-list-free()` when no longer needed.
 
     method get-cells ( --> Gnome::Glib::List )
 
@@ -107,11 +107,11 @@ Adds the *cell* to the end of *cell-layout*. If *expand* is `False`, then the *c
 
 Note that reusing the same cell renderer is not supported.
 
-    method pack-end ( N-GObject $cell, Bool $expand )
+    method pack-end ( N-GObject() $cell, Bool $expand )
 
-  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer**
+  * $cell; a **Gnome::Gtk3::CellRenderer**
 
-  * Bool $expand; `True` if *cell* is to be given extra space allocated to *cell-layout*
+  * $expand; `True` if *cell* is to be given extra space allocated to *cell-layout*
 
 pack-start
 ----------
@@ -120,11 +120,11 @@ Packs the *cell* into the beginning of *cell-layout*. If *expand* is `False`, th
 
 Note that reusing the same cell renderer is not supported.
 
-    method pack-start ( N-GObject $cell, Bool $expand )
+    method pack-start ( N-GObject() $cell, Bool $expand )
 
-  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer**
+  * $cell; a **Gnome::Gtk3::CellRenderer**
 
-  * Bool $expand; `True` if *cell* is to be given extra space allocated to *cell-layout*
+  * $expand; `True` if *cell* is to be given extra space allocated to *cell-layout*
 
 reorder
 -------
@@ -133,9 +133,9 @@ Re-inserts *cell* at *position*.
 
 Note that *cell* has already to be packed into *cell-layout* for this to function properly.
 
-    method reorder ( N-GObject $cell, Int $position )
+    method reorder ( N-GObject() $cell, Int $position )
 
-  * N-GObject $cell; a **Gnome::Gtk3::CellRenderer** to reorder
+  * $cell; a **Gnome::Gtk3::CellRenderer** to reorder
 
-  * Int $position; new position to insert *cell* at
+  * $position; new position to insert *cell* at
 

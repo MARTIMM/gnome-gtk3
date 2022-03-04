@@ -261,16 +261,14 @@ sub gtk_button_get_event_window (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-image:
-#TM:1:get-image-rk:
 =begin pod
-=head2 get-image, get-image-rk
+=head2 get-image
 
 Gets the widget that is currenty set as the image of I<button>. This may have been explicitly set by C<set-image()> or constructed by C<gtk-button-new-from-stock()>.
 
 Returns: a native object if defined or N-GObject if not. The '-rk' version returns a B<Gnome::Gtk3::Image> which is invalid in case there is no image.
 
   method get-image ( --> N-GObject )
-  method get-image-rk ( --> Gnome::Gtk3::Image )
 
 =end pod
 
@@ -279,6 +277,11 @@ method get-image ( --> N-GObject ) {
 }
 
 method get-image-rk ( --> Gnome::Gtk3::Image ) {
+  Gnome::N::deprecate(
+    'get-image-rk', 'coercing from get-image',
+    '0.47.2', '0.50.0'
+  );
+
   Gnome::Gtk3::Image.new(
     :native-object(gtk_button_get_image(self._f('GtkButton')))
   )
@@ -391,7 +394,7 @@ Use this property if the button would be useless or hard to use without the imag
 
   method set-always-show-image ( Bool $always_show )
 
-=item Bool $always_show; C<True> if the menuitem should always show the image
+=item $always_show; C<True> if the menuitem should always show the image
 =end pod
 
 method set-always-show-image ( Bool $always_show ) {
@@ -413,17 +416,13 @@ sub gtk_button_set_always_show_image (
 
 Set the image of I<button> to the given widget. The image will be displayed if the label text is C<undefined> or if  I<always-show-image> is C<True>. You don’t have to call C<Gnome::Gtk3:Widget.show()> on I<$image> yourself.
 
-  method set-image ( N-GObject $image )
+  method set-image ( N-GObject() $image )
 
-=item N-GObject $image; a widget to set as the image for the button, or C<undefined> to unset
+=item $image; a widget to set as the image for the button, or C<undefined> to unset
 =end pod
 
-method set-image ( $image is copy ) {
-  $image .= _get-native-object-no-reffing unless $image ~~ N-GObject;
-
-  gtk_button_set_image(
-    self._f('GtkButton'), $image
-  );
+method set-image ( N-GObject() $image ) {
+  gtk_button_set_image( self._f('GtkButton'), $image);
 }
 
 sub gtk_button_set_image (
@@ -440,7 +439,7 @@ Sets the position of the image relative to the text inside the button.
 
   method set-image-position ( GtkPositionType $position )
 
-=item GtkPositionType $position; the position
+=item $position; the position
 =end pod
 
 method set-image-position ( GtkPositionType $position ) {
@@ -463,7 +462,7 @@ This will also clear any previously set labels.
 
   method set-label ( Str $label )
 
-=item Str $label; a string
+=item $label; a string
 =end pod
 
 method set-label ( Str $label ) {
@@ -484,7 +483,7 @@ Sets the relief style of the edges of the given B<Gnome::Gtk3::Button> widget. T
 
   method set-relief ( GtkReliefStyle $relief )
 
-=item GtkReliefStyle $relief; The GtkReliefStyle as described above
+=item $relief; The GtkReliefStyle as described above
 =end pod
 
 method set-relief ( GtkReliefStyle $relief ) {
@@ -505,7 +504,7 @@ If true, an underline in the text of the button label indicates the next charact
 
   method set-use-underline ( Bool $use_underline )
 
-=item Bool $use_underline; C<True> if underlines in the text indicate mnemonics
+=item $use_underline; C<True> if underlines in the text indicate mnemonics
 =end pod
 
 method set-use-underline ( Bool $use_underline ) {
@@ -556,8 +555,8 @@ Returns: a new B<Gnome::Gtk3::Button> displaying the themed icon
 
   method _gtk_button_new_from_icon_name ( Str $icon_name, GtkIconSize $size --> N-GObject )
 
-=item Str $icon_name; an icon name or C<undefined>
-=item GtkIconSize $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
+=item $icon_name; an icon name or C<undefined>
+=item $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
 =end pod
 }}
 
@@ -578,7 +577,7 @@ Returns: The newly created B<Gnome::Gtk3::Button> widget.
 
   method _gtk_button_new_with_label ( Str $label --> N-GObject )
 
-=item Str $label; The text you want the B<Gnome::Gtk3::Label> to hold.
+=item $label; The text you want the B<Gnome::Gtk3::Label> to hold.
 =end pod
 }}
 
@@ -599,7 +598,7 @@ Returns: a new B<Gnome::Gtk3::Button>
 
   method _gtk_button_new_with_mnemonic ( Str $label --> N-GObject )
 
-=item Str $label; The text of the button, with an underscore in front of the mnemonic character
+=item $label; The text of the button, with an underscore in front of the mnemonic character
 =end pod
 }}
 
@@ -823,533 +822,4 @@ If set, an underline in the text indicates the next character should be used for
 Default value: False
 
 The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLEAN>.
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:2:_gtk_button_new:new()
-#`{{
-=begin pod
-=head2 [gtk_] button_new
-
-Creates a new B<Gnome::Gtk3::Button> widget. To add a child widget to the button, use C<gtk_container_add()>.
-
-Returns: The newly created B<Gnome::Gtk3::Button> widget.
-
-  method gtk_button_new ( --> N-GObject  )
-
-=end pod
-}}
-
-sub _gtk_button_new ( --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_button_new')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:3:_gtk_button_new_with_label:new(:label)
-#`{{
-=begin pod
-=head2 [[gtk_] button_] new_with_label
-
-Creates a B<Gnome::Gtk3::Button> widget with a B<Gnome::Gtk3::Label> child containing the given
-text.
-
-Returns: The newly created B<Gnome::Gtk3::Button> widget.
-
-  method gtk_button_new_with_label ( Str $label --> N-GObject  )
-
-=item Str $label; The text you want the B<Gnome::Gtk3::Label> to hold.
-
-=end pod
-}}
-
-sub _gtk_button_new_with_label ( Str $label --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_button_new_with_label')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:_gtk_button_new_from_icon_name:
-#`{{
-=begin pod
-=head2 [[gtk_] button_] new_from_icon_name
-
-Creates a new button containing an icon from the current icon theme.
-
-If the icon name isn’t known, a “broken image” icon will be
-displayed instead. If the current icon theme is changed, the icon
-will be updated appropriately.
-
-This function is a convenience wrapper around C<gtk_button_new()> and
-C<gtk_button_set_image()>.
-
-Returns: a new B<Gnome::Gtk3::Button> displaying the themed icon
-
-
-  method gtk_button_new_from_icon_name (
-    Str $icon_name,
-    GtkIconSize $size
-    --> N-GObject
-  )
-
-=item Str $icon_name; an icon name
-=item GtkIconSize $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
-
-=end pod
-}}
-
-sub _gtk_button_new_from_icon_name ( Str $icon_name, int32 $size --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_button_new_from_icon_name')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:_gtk_button_new_with_mnemonic:
-#`{{
-=begin pod
-=head2 [[gtk_] button_] new_with_mnemonic
-
-Creates a new B<Gnome::Gtk3::Button> containing a label.
-If characters in I<label> are preceded by an underscore, they are underlined.
-If you need a literal underscore character in a label, use “__” (two
-underscores). The first underlined character represents a keyboard
-accelerator called a mnemonic.
-Pressing Alt and that key activates the button.
-
-Returns: a new B<Gnome::Gtk3::Button>
-
-  method gtk_button_new_with_mnemonic ( Str $label --> N-GObject  )
-
-=item Str $label; The text of the button, with an underscore in front of the mnemonic character
-
-=end pod
-}}
-
-sub _gtk_button_new_with_mnemonic ( Str $label --> N-GObject )
-  is native(&gtk-lib)
-  is symbol('gtk_button_new_with_mnemonic')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_clicked:
-=begin pod
-=head2 [gtk_] button_clicked
-
-Emits a prop I<clicked> signal to the given B<Gnome::Gtk3::Button>.
-
-  method gtk_button_clicked ( )
-
-=end pod
-
-sub gtk_button_clicked ( N-GObject $button )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_set_relief:
-=begin pod
-=head2 [[gtk_] button_] set_relief
-
-Sets the relief style of the edges of the given B<Gnome::Gtk3::Button> widget.
-Two styles exist, C<GTK_RELIEF_NORMAL> and C<GTK_RELIEF_NONE>.
-The default style is, as one can guess, C<GTK_RELIEF_NORMAL>.
-The deprecated value C<GTK_RELIEF_HALF> behaves the same as
-C<GTK_RELIEF_NORMAL>.
-
-  method gtk_button_set_relief ( GtkReliefStyle $relief )
-
-=item GtkReliefStyle $relief; The B<Gnome::Gtk3::ReliefStyle> as described above
-
-=end pod
-
-sub gtk_button_set_relief ( N-GObject $button, int32 $relief )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_relief:
-=begin pod
-=head2 [[gtk_] button_] get_relief
-
-Returns the current relief style of the given B<Gnome::Gtk3::Button>.
-
-Returns: The current B<Gnome::Gtk3::ReliefStyle>
-
-  method gtk_button_get_relief ( --> GtkReliefStyle  )
-
-
-=end pod
-
-sub gtk_button_get_relief ( N-GObject $button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_button_set_label:
-=begin pod
-=head2 [[gtk_] button_] set_label
-
-Sets the text of the label of the button to I<str>. This text is
-also used to select the stock item if C<gtk_button_set_use_stock()>
-is used.
-
-This will also clear any previously set labels.
-
-  method gtk_button_set_label ( Str $label )
-
-=item Str $label; a string
-
-=end pod
-
-sub gtk_button_set_label ( N-GObject $button, Str $label )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_button_get_label:
-=begin pod
-=head2 [[gtk_] button_] get_label
-
-Fetches the text from the label of the button, as set by
-C<gtk_button_set_label()>. If the label text has not
-been set the return value will be C<Any>. This will be the
-case if you create an empty button with C<gtk_button_new()> to
-use as a container.
-
-Returns: The text of the label widget. This string is owned
-by the widget and must not be modified or freed.
-
-  method gtk_button_get_label ( --> Str  )
-
-
-=end pod
-
-sub gtk_button_get_label ( N-GObject $button )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_set_use_underline:
-=begin pod
-=head2 [[gtk_] button_] set_use_underline
-
-If true, an underline in the text of the button label indicates
-the next character should be used for the mnemonic accelerator key.
-
-  method gtk_button_set_use_underline ( Int $use_underline )
-
-=item Int $use_underline; C<1> if underlines in the text indicate mnemonics
-
-=end pod
-
-sub gtk_button_set_use_underline ( N-GObject $button, int32 $use_underline )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_use_underline:
-=begin pod
-=head2 [[gtk_] button_] get_use_underline
-
-Returns whether an embedded underline in the button label indicates a
-mnemonic. See C<gtk_button_set_use_underline()>.
-
-Returns: C<1> if an embedded underline in the button label
-indicates the mnemonic accelerator keys.
-
-  method gtk_button_get_use_underline ( --> Int  )
-
-
-=end pod
-
-sub gtk_button_get_use_underline ( N-GObject $button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_set_image:
-=begin pod
-=head2 [[gtk_] button_] set_image
-
-Set the image of I<button> to the given widget. The image will be
-displayed if the label text is C<Any> or if
-sig B<always-show-image> is C<1>. You don’t have to call
-C<gtk_widget_show()> on I<image> yourself.
-
-  method gtk_button_set_image ( N-GObject $image )
-
-=item N-GObject $image; a widget to set as the image for the button
-
-=end pod
-
-sub gtk_button_set_image ( N-GObject $button, N-GObject $image )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_image:
-=begin pod
-=head2 [[gtk_] button_] get_image
-
-Gets the widget that is currenty set as the image of I<button>.
-This may have been explicitly set by C<gtk_button_set_image()>
-or constructed by C<gtk_button_new_from_stock()>.
-
-Returns: (nullable) (transfer none): a B<Gnome::Gtk3::Widget> or C<Any> in case
-there is no image
-
-
-  method gtk_button_get_image ( --> N-GObject  )
-
-
-=end pod
-
-sub gtk_button_get_image ( N-GObject $button )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_set_image_position:
-=begin pod
-=head2 [[gtk_] button_] set_image_position
-
-Sets the position of the image relative to the text
-inside the button.
-
-
-  method gtk_button_set_image_position ( GtkPositionType $position )
-
-=item GtkPositionType $position; the position
-
-=end pod
-
-sub gtk_button_set_image_position ( N-GObject $button, int32 $position )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_image_position:
-=begin pod
-=head2 [[gtk_] button_] get_image_position
-
-Gets the position of the image relative to the text
-inside the button.
-
-Returns: the position
-
-
-  method gtk_button_get_image_position ( --> GtkPositionType  )
-
-
-=end pod
-
-sub gtk_button_get_image_position ( N-GObject $button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_set_always_show_image:
-=begin pod
-=head2 [[gtk_] button_] set_always_show_image
-
-If C<1>, the button will ignore the sig B<gtk-button-images>
-setting and always show the image, if available.
-
-Use this property if the button  would be useless or hard to use
-without the image.
-
-
-  method gtk_button_set_always_show_image ( Int $always_show )
-
-=item Int $always_show; C<1> if the menuitem should always show the image
-
-=end pod
-
-sub gtk_button_set_always_show_image ( N-GObject $button, int32 $always_show )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_always_show_image:
-=begin pod
-=head2 [[gtk_] button_] get_always_show_image
-
-Returns whether the button will ignore the sig B<gtk-button-images>
-setting and always show the image, if available.
-
-Returns: C<1> if the button will always show the image
-
-
-  method gtk_button_get_always_show_image ( --> Int  )
-
-
-=end pod
-
-sub gtk_button_get_always_show_image ( N-GObject $button )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_button_get_event_window:
-=begin pod
-=head2 [[gtk_] button_] get_event_window
-
-Returns the button’s event window if it is realized, C<Any> otherwise.
-This function should be rarely needed.
-
-Returns: (transfer none): I<button>’s event window.
-
-
-  method gtk_button_get_event_window ( --> N-GObject  )
-
-
-=end pod
-
-sub gtk_button_get_event_window ( N-GObject $button )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-=comment #TS:1:clicked:
-=head3 clicked
-
-Emitted when the button has been activated (pressed and released).
-
-  method handler (
-    Int :$_handler_id,
-    Gnome::GObject::Object :_widget($button),
-    *%user-options
-  );
-
-=item $button; the object that received the signal
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-=head3 Label
-
-Text of the label widget inside the button, if the button contains a label widget
-Default value: Any
-
-The B<Gnome::GObject::Value> type of property I<label> is C<G_TYPE_STRING>.
-
-=comment #TP:0:use-underline:
-=head3 Use underline
-
-If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key
-Default value: False
-
-The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:relief:
-=head3 Border relief
-
-The border relief style
-Default value: False
-
-The B<Gnome::GObject::Value> type of property I<relief> is C<G_TYPE_ENUM>.
-
-=begin comment
-=comment #TP:0:image:
-=head3 Image widget
-
-The child widget to appear next to the button text.
-Widget type: GTK_TYPE_WIDGET
-
-The B<Gnome::GObject::Value> type of property I<image> is C<G_TYPE_OBJECT>.
-=end comment
-
-=comment #TP:0:image-position:
-=head3 Image position
-
-
-The position of the image relative to the text inside the button.
-Widget type: GTK_TYPE_POSITION_TYPE
-
-The B<Gnome::GObject::Value> type of property I<image-position> is C<G_TYPE_ENUM>.
-
-=comment #TP:0:always-show-image:
-=head3 Always show image
-
-
-If C<1>, the button will ignore the  I<gtk-button-images>
-setting and always show the image, if available.
-Use this property if the button would be useless or hard to use
-without the image.
-
-The B<Gnome::GObject::Value> type of property I<always-show-image> is C<G_TYPE_BOOLEAN>.
-
 =end pod

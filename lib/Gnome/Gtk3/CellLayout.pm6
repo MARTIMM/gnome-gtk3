@@ -193,16 +193,14 @@ Adds an attribute mapping to the list in I<cell-layout>.
 
 The I<column> is the column of the model to get a value from, and the I<attribute> is the parameter on I<cell> to be set from the value. So for example if column 2 of the model contains strings, you could have the “text” attribute of a B<Gnome::Gtk3::CellRendererText> get its values from column 2.
 
-  method add-attribute ( N-GObject $cell, Str $attribute, Int $column )
+  method add-attribute ( N-GObject() $cell, Str $attribute, Int $column )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer>
-=item Str $attribute; an attribute on the renderer
-=item Int $column; the column position on the model to get the attribute from
+=item $cell; a B<Gnome::Gtk3::CellRenderer>
+=item $attribute; an attribute on the renderer
+=item $column; the column position on the model to get the attribute from
 =end pod
 
-method add-attribute ( $cell is copy, Str $attribute, Int $column ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
+method add-attribute ( N-GObject() $cell, Str $attribute, Int $column ) {
   gtk_cell_layout_add_attribute(
     self._f('GtkCellLayout'), $cell, $attribute, $column
   );
@@ -240,13 +238,12 @@ sub gtk_cell_layout_clear (
 
 Clears all existing attributes previously set with C<set-attributes()>.
 
-  method clear-attributes ( N-GObject $cell )
+  method clear-attributes ( N-GObject() $cell )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer> to clear the attribute mapping on
+=item $cell; a B<Gnome::Gtk3::CellRenderer> to clear the attribute mapping on
 =end pod
 
-method clear-attributes ( $cell is copy ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
+method clear-attributes ( N-GObject() $cell ) {
   gtk_cell_layout_clear_attributes( self._f('GtkCellLayout'), $cell);
 }
 
@@ -310,18 +307,14 @@ Adds the I<cell> to the end of I<cell-layout>. If I<expand> is C<False>, then th
 
 Note that reusing the same cell renderer is not supported.
 
-  method pack-end ( N-GObject $cell, Bool $expand )
+  method pack-end ( N-GObject() $cell, Bool $expand )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer>
-=item Bool $expand; C<True> if I<cell> is to be given extra space allocated to I<cell-layout>
+=item $cell; a B<Gnome::Gtk3::CellRenderer>
+=item $expand; C<True> if I<cell> is to be given extra space allocated to I<cell-layout>
 =end pod
 
-method pack-end ( $cell is copy, Bool $expand ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
-  gtk_cell_layout_pack_end(
-    self._f('GtkCellLayout'), $cell, $expand
-  );
+method pack-end ( N-GObject() $cell, Bool $expand ) {
+  gtk_cell_layout_pack_end( self._f('GtkCellLayout'), $cell, $expand);
 }
 
 sub gtk_cell_layout_pack_end (
@@ -338,15 +331,13 @@ Packs the I<cell> into the beginning of I<cell-layout>. If I<expand> is C<False>
 
 Note that reusing the same cell renderer is not supported.
 
-  method pack-start ( N-GObject $cell, Bool $expand )
+  method pack-start ( N-GObject() $cell, Bool $expand )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer>
-=item Bool $expand; C<True> if I<cell> is to be given extra space allocated to I<cell-layout>
+=item $cell; a B<Gnome::Gtk3::CellRenderer>
+=item $expand; C<True> if I<cell> is to be given extra space allocated to I<cell-layout>
 =end pod
 
-method pack-start ( $cell is copy, Bool $expand ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
+method pack-start ( N-GObject() $cell, Bool $expand ) {
   gtk_cell_layout_pack_start(
     self._f('GtkCellLayout'), $cell, $expand
   );
@@ -366,18 +357,14 @@ Re-inserts I<cell> at I<position>.
 
 Note that I<cell> has already to be packed into I<cell-layout> for this to function properly.
 
-  method reorder ( N-GObject $cell, Int $position )
+  method reorder ( N-GObject() $cell, Int $position )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer> to reorder
-=item Int $position; new position to insert I<cell> at
+=item $cell; a B<Gnome::Gtk3::CellRenderer> to reorder
+=item $position; new position to insert I<cell> at
 =end pod
 
-method reorder ( $cell is copy, Int $position ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
-  gtk_cell_layout_reorder(
-    self._f('GtkCellLayout'), $cell, $position
-  );
+method reorder ( N-GObject() $cell, Int $position ) {
+  gtk_cell_layout_reorder( self._f('GtkCellLayout'), $cell, $position);
 }
 
 sub gtk_cell_layout_reorder (
@@ -395,17 +382,13 @@ Sets the attributes in list as the attributes of I<cell-layout>.
 
 The attributes should be in attribute/column order, as in C<add-attribute()>. All existing attributes are removed, and replaced with the new attributes.
 
-  method set-attributes ( N-GObject $cell )
+  method set-attributes ( N-GObject() $cell )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer> @...: a C<undefined>-terminated list of attributes
+=item $cell; a B<Gnome::Gtk3::CellRenderer> @...: a C<undefined>-terminated list of attributes
 =end pod
 
-method set-attributes ( $cell is copy ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
-  gtk_cell_layout_set_attributes(
-    self._f('GtkCellLayout'), $cell
-  );
+method set-attributes ( N-GObject() $cell ) {
+  gtk_cell_layout_set_attributes( self._f('GtkCellLayout'), $cell);
 }
 
 sub gtk_cell_layout_set_attributes (
@@ -426,17 +409,21 @@ This function is used instead of the standard attributes mapping for setting the
 
 I<func> may be C<undefined> to remove a previously set function.
 
-  method set-cell-data-func ( N-GObject $cell, GtkCellLayoutDataFunc $func, Pointer $func_data, GDestroyNotify $destroy )
+  method set-cell-data-func (
+    N-GObject() $cell, GtkCellLayoutDataFunc $func,
+    Pointer $func_data, GDestroyNotify $destroy
+  )
 
-=item N-GObject $cell; a B<Gnome::Gtk3::CellRenderer>
-=item GtkCellLayoutDataFunc $func; the B<Gnome::Gtk3::CellLayoutDataFunc> to use, or C<undefined>
-=item Pointer $func_data; (closure): user data for I<func>
-=item GDestroyNotify $destroy; destroy notify for I<func-data>
+=item $cell; a B<Gnome::Gtk3::CellRenderer>
+=item $func; the B<Gnome::Gtk3::CellLayoutDataFunc> to use, or C<undefined>
+=item $func_data; (closure): user data for I<func>
+=item $destroy; destroy notify for I<func-data>
 =end pod
 
-method set-cell-data-func ( $cell is copy, GtkCellLayoutDataFunc $func, Pointer $func_data, GDestroyNotify $destroy ) {
-  $cell .= _get-native-object-no-reffing unless $cell ~~ N-GObject;
-
+method set-cell-data-func (
+  N-GObject() $cell, GtkCellLayoutDataFunc $func,
+  Pointer $func_data, GDestroyNotify $destroy
+) {
   gtk_cell_layout_set_cell_data_func(
     self._f('GtkCellLayout'), $cell, $func, $func_data, $destroy
   );

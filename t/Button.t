@@ -63,7 +63,7 @@ subtest 'manipulations', {
   );
   $image.set-name('bttnimg');
   $b.set-image($image);
-  is $b.get-image-rk.get-name, 'bttnimg', '.set-image() / .get-image-rk()';
+  is $b.get-image.().get-name, 'bttnimg', '.set-image() / .get-image()';
 
   $b.set-image-position(GTK_POS_RIGHT);
   is $b.get-image-position, GTK_POS_RIGHT,

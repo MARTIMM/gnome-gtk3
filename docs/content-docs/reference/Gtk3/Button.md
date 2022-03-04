@@ -119,15 +119,14 @@ Returns: *button*’s event window.
 
     method get-event-window ( --> N-GObject )
 
-get-image, get-image-rk
------------------------
+get-image
+---------
 
 Gets the widget that is currenty set as the image of *button*. This may have been explicitly set by `set-image()` or constructed by `gtk-button-new-from-stock()`.
 
 Returns: a native object if defined or N-GObject if not. The '-rk' version returns a **Gnome::Gtk3::Image** which is invalid in case there is no image.
 
     method get-image ( --> N-GObject )
-    method get-image-rk ( --> Gnome::Gtk3::Image )
 
 get-image-position
 ------------------
@@ -174,16 +173,16 @@ Use this property if the button would be useless or hard to use without the imag
 
     method set-always-show-image ( Bool $always_show )
 
-  * Bool $always_show; `True` if the menuitem should always show the image
+  * $always_show; `True` if the menuitem should always show the image
 
 set-image
 ---------
 
 Set the image of *button* to the given widget. The image will be displayed if the label text is `undefined` or if *always-show-image* is `True`. You don’t have to call `Gnome::Gtk3:Widget.show()` on *$image* yourself.
 
-    method set-image ( N-GObject $image )
+    method set-image ( N-GObject() $image )
 
-  * N-GObject $image; a widget to set as the image for the button, or `undefined` to unset
+  * $image; a widget to set as the image for the button, or `undefined` to unset
 
 set-image-position
 ------------------
@@ -192,7 +191,7 @@ Sets the position of the image relative to the text inside the button.
 
     method set-image-position ( GtkPositionType $position )
 
-  * GtkPositionType $position; the position
+  * $position; the position
 
 set-label
 ---------
@@ -203,7 +202,7 @@ This will also clear any previously set labels.
 
     method set-label ( Str $label )
 
-  * Str $label; a string
+  * $label; a string
 
 set-relief
 ----------
@@ -212,7 +211,7 @@ Sets the relief style of the edges of the given **Gnome::Gtk3::Button** widget. 
 
     method set-relief ( GtkReliefStyle $relief )
 
-  * GtkReliefStyle $relief; The GtkReliefStyle as described above
+  * $relief; The GtkReliefStyle as described above
 
 set-use-underline
 -----------------
@@ -221,7 +220,7 @@ If true, an underline in the text of the button label indicates the next charact
 
     method set-use-underline ( Bool $use_underline )
 
-  * Bool $use_underline; `True` if underlines in the text indicate mnemonics
+  * $use_underline; `True` if underlines in the text indicate mnemonics
 
 Signals
 =======
