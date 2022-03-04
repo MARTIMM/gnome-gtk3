@@ -76,17 +76,29 @@ Methods
 new
 ---
 
-Create GtkCheckButton object with a label.
-
-    multi method new ( Str :$label!, Bool :$mnemonic = False )
+### default, no options
 
 Create a new plain object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :label, :mnemonic
+
+Creates a new **Gnome::Gtk3::CheckButton** with a Label to the right of it. When *$mnemonic* is `True` then the label text is checked for underscores, so underscores in *$label* indicate the mnemonic for the check button.
+
+    multi method new ( Str :$label!, Bool :$mnemonic = False )
+
+  * $label; The label for the checkbutton.
+
+  * $mnemonic; Look for underscores if `True`.
+
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
     multi method new ( N-GObject :$native-object! )
+
+### :build-id
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 

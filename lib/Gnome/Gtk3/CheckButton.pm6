@@ -88,17 +88,31 @@ also is Gnome::Gtk3::ToggleButton;
 =head1 Methods
 =head2 new
 
-Create GtkCheckButton object with a label.
-
-  multi method new ( Str :$label!, Bool :$mnemonic = False )
+=head3 default, no options
 
 Create a new plain object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :label, :mnemonic
+
+Creates a new B<Gnome::Gtk3::CheckButton> with a Label to the right of it. When I<$mnemonic> is C<True> then the label text is checked for underscores, so underscores in I<$label> indicate the mnemonic for the check button.
+
+  multi method new ( Str :$label!, Bool :$mnemonic = False )
+
+=item $label; The label for the checkbutton.
+=item $mnemonic; Look for underscores if C<True>.
+
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -111,7 +125,6 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 #TM:1:new():
 #TM:4:new(:native-object):TopLevelClass
 #TM:4:new(:build-id):Object
-
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
