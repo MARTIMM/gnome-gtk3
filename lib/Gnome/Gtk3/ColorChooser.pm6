@@ -24,7 +24,6 @@ B<Gnome::Gtk3::ColorChooserDialog>, B<Gnome::Gtk3::ColorChooserWidget>, B<Gnome:
 
   unit role Gnome::Gtk3::ColorChooser;
 
-
 =head2 Example
 
   my Gnome::Gtk3::ColorChooserDialog $ccdialog .= new(
@@ -252,10 +251,7 @@ Returns: C<True> if the color chooser uses the alpha channel, C<False> if not
 =end pod
 
 method get-use-alpha ( --> Bool ) {
-
-  gtk_color_chooser_get_use_alpha(
-    self._f('GtkColorChooser'),
-  ).Bool
+  gtk_color_chooser_get_use_alpha(self._f('GtkColorChooser')).Bool
 }
 
 sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser --> gboolean )
@@ -269,13 +265,17 @@ sub gtk_color_chooser_get_use_alpha ( N-GObject $chooser --> gboolean )
 
 Sets the color.
 
-  method set-rgba ( N-GObject() $color )
+  method set-rgba ( N-GdkRGBA $color )
 
 =item $color; the new color
 
 =end pod
 
-method set-rgba ( N-GObject() $color ) {
+#TODO coercing using N-GdkRGBA() type does not work. $color makes search
+# through FALLBACK in TopLevelClassSupport
+
+method set-rgba ( $color is copy ) {
+  $color .= get-native-object-no-reffing unless $color ~~ N-GdkRGBA;
   gtk_color_chooser_set_rgba( self._f('GtkColorChooser'), $color);
 }
 
