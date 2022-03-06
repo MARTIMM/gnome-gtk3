@@ -81,7 +81,7 @@ table {
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
 AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
-AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| <-- no -rk
+AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
 AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓|
 AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| ✓| ✓|
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|
@@ -102,8 +102,8 @@ Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 Builder                   |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
-CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  
-CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
@@ -115,7 +115,7 @@ CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|  
+ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓| < no -rk :v T
 ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
