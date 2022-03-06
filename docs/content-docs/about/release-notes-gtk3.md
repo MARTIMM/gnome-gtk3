@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 * 2022-02-04 0.47.3
-  * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object.
+  * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object. This operation will take several versions to get it all out again 😦
   ```
   my Gnome::Gtk3::Window $w .= new;
   my N-GObject() $no = $w;        # to get the native object
