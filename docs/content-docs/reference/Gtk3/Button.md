@@ -94,6 +94,18 @@ Creates a new **Gnome::Gtk3::Button** containing a label. If characters in *labe
 
     multi method new ( Str :$mnemonic! )
 
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
+
+    multi method new ( N-GObject :$native-object! )
+
+### :build-id
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
+
 clicked
 -------
 

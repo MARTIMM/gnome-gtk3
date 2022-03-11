@@ -122,6 +122,20 @@ Creates a new B<Gnome::Gtk3::Button> containing a label. If characters in I<labe
 
   multi method new ( Str :$mnemonic! )
 
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
+
+  multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
+
 =end pod
 
 #TM:2:new():inheriting:CheckButton
