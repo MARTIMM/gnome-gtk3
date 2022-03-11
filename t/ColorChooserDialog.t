@@ -1,6 +1,7 @@
 use v6;
 use NativeCall;
 use Test;
+#use lib '../gnome-gdk3/lib';
 
 use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::ColorChooser;
@@ -8,8 +9,8 @@ use Gnome::Gtk3::ColorChooserDialog;
 use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 
-
-use Gnome::N::X;
+use Gnome::N::N-GObject;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -31,10 +32,10 @@ subtest 'Interface ColorChooser', {
 
   $ccd .= new(:title('my color chooser dialog'));
   isa-ok $ccd, Gnome::Gtk3::ColorChooserDialog;
-  my Gnome::Gdk3::RGBA $r = $ccd.get-rgba;
+  my Gnome::Gdk3::RGBA() $r = $ccd.get-rgba;
   is $r.to-string, 'rgb(255,255,255)', '.get-rgba()';
 
-  $r.gdk-rgba-parse('rgba(0,255,0,0.5)');
+  $r.parse('rgba(0,255,0,0.5)');
   $ccd.set-rgba($r);
 
   ok $ccd.get-use-alpha, '.get-use-alpha()';
@@ -157,7 +158,7 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method clr-act (
-      N-GdkRGBA $color,
+      N-GObject $color,
       Gnome::Gtk3::ColorChooser :$_widget, gulong :$_handler-id
     ) {
 
@@ -170,10 +171,7 @@ subtest 'Signals ...', {
       while $main.gtk-events-pending() { $main.iteration-do(False); }
 
       $ccd.emit-by-name(
-        'color-activated',
-        $widget.get-rgba._get-native-object-no-reffing,
-      #  :return-type(int32),
-        :parameters([N-GdkRGBA,])
+        'color-activated', $widget.get-rgba, :parameters([N-GObject,])
       );
       is $!signal-processed, True, '\'color-activated\' signal processed';
 

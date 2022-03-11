@@ -30,6 +30,25 @@ Uml Diagram
 
 ![](plantuml/ColorChooserDialog.svg)
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::ColorChooserDialog;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::ColorChooserDialog;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::ColorChooserDialog class process the options
+      self.bless( :GtkColorChooserDialog, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Example
 -------
 
@@ -43,50 +62,38 @@ Methods
 new
 ---
 
+### :title, :parent-window
+
 Create a new object with a title. The transient $parent-window which may be `Any`.
 
-    multi method new ( Str :$title!, Gnome::GObject::Object :$parent-window )
+    multi method new ( Str :$title!, N-GObject() :$parent-window )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
 
-    multi method new ( Gnome::GObject::Object :$native-object! )
+Create a ColorChooserDialog object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+    multi method new ( N-GObject() :$native-object! )
+
+### :build-id
+
+Create a ColorChooserDialog object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-[gtk_] color_chooser_dialog_new
--------------------------------
-
-Creates a new native `Gtk3ColorChooserDialog`.
-
-Returns: a new **Gnome::Gtk3::ColorChooserDialog**
-
-Since: 3.4
-
-    method gtk_color_chooser_dialog_new (
-      Str $title, N-GObject $parent
-      --> N-GObject
-    )
-
-  * Str $title; (allow-none): Title of the dialog, or %NULL
-
-  * N-GObject $parent; (allow-none): Transient parent of the dialog, or %NULL
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### Show editor
+### Show editor: show-editor
 
 Show editor Default value: False
 
