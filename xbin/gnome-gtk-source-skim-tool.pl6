@@ -181,12 +181,22 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         else {
 #note "  not skipped... $sub-name, $arg, $arg-type, $raku-arg-type";
 
+          if $raku-arg-type ~~ 'N-GObject' {
+            $raku-arg-type ~= '()';
+            $convert-lines ~= "";
+            $method-args ~= ',' if ?$method-args;
+            $method-args ~= " \$$arg";
+            $call-args ~= ',' if ?$call-args;
+            $call-args ~= " \$$arg";
+            $pod-args ~= ',' if ?$pod-args;
+            $pod-args ~= " $raku-arg-type\() \$$arg";
+          }
+
           if $raku-arg-type ~~ any(
-            < N-GObject N-GSList N-GList N-GOptionContext N-GOptionGroup
+            < N-GSList N-GList N-GOptionContext N-GOptionGroup
               N-GOptionEntry N-GError
             >
           ) {
-
             $convert-lines ~= "  \$$arg .= _get-native-object-no-reffing unless \$$arg ~~ $raku-arg-type;\n";
 
             $method-args ~= ',' if ?$method-args;
@@ -214,7 +224,6 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
             $pod-args ~= ',' if ?$pod-args;
             $pod-args ~= " $raku-arg-type \$$arg";
           }
-
 
 
           # remove some c-oriented remarks
