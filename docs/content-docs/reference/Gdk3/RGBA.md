@@ -50,38 +50,33 @@ Methods
 new
 ---
 
-Create a new object using colors and transparency values. Their ranges are from 0 to 1
+### :red, :green, :blue, :alpha
 
-    multi method new ( :$red!, :$green!, :$blue!, :$alpha! )
+Create a new object using colors and transparency values. Their ranges are from 0 to 1. All values are optional and are set to 1e0 by default.
 
-Create an object using a string which is parsed with `gdk_rgba_parse()`. If parsing fails, the color is set to opaque white. The colors originally where **Num** type but they can now also be **Int**, **Rat**, **Str** or **Num** as long as they represent a number between 0 and 1.
+    multi method new (
+      Num() :$red, Num() :$green, Num() :$blue, Num() :$alpha
+    )
+
+  * $.red; The intensity of the red channel from 0.0 to 1.0 inclusive
+
+  * $.green; The intensity of the green channel from 0.0 to 1.0 inclusive
+
+  * $.blue; The intensity of the blue channel from 0.0 to 1.0 inclusive
+
+  * $.alpha; The opacity of the color from 0.0 for completely translucent to 1.0 for opaque
+
+### :rgba
+
+Create an object using a string which is parsed with `parse()`. If parsing fails, the color is set to opaque white.
 
     multi method new ( Str :$rgba! )
 
-Create an object using a native object from elsewhere.
+### :native-object
 
-    multi method new ( Gnome::GObject::Object :$native-object! )
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
-red
----
-
-Set the red color to a new value if provided. Returns original or newly set color value.
-
-    method red ( Num $c? --> Num )
-
-green
------
-
-Set the green color to a new value if provided. Returns original or newly set color value.
-
-    method green ( Num $c? --> Num )
-
-blue
-----
-
-Set the blue color to a new value if provided. Returns original or newly set color value.
-
-    method blue ( Num $c? --> Num )
+    multi method new ( N-GObject :$native-object! )
 
 alpha
 -----
@@ -90,49 +85,59 @@ Set the alpha transparency to a new value if provided. Returns original or newly
 
     method alpha ( Num $c? --> Num )
 
-gdk_rgba_copy
--------------
+blue
+----
+
+Set the blue color to a new value if provided. Returns original or newly set color value.
+
+    method blue ( Num $c? --> Num )
+
+copy
+----
 
 Makes a copy of a **Gnome::Gdk3::RGBA**.
 
-Returns: A newly allocated **Gnome::Gdk3::RGBA**, with the same contents as *rgba*
+Returns: A newly allocated **Gnome::Gdk3::RGBA**, with the same contents as this *rgba* object
 
-Since: 3.0
-
-    method gdk_rgba_copy ( N-GObject $rgba --> N-GObject  )
+    method copy ( --> N-GObject )
 
   * N-GdkRGBA $rgba; a **Gnome::Gdk3::RGBA**
 
-gdk_rgba_hash
--------------
-
-A method that stores **Gnome::Gdk3::RGBA** objects in a hash or to return a value. Note that the original GTK function only returns a uint32 value and does not provide a hash table storage facility
-
-    multi method gdk_rgba_hash ( N-GdkRGBA $p --> UInt )
-
-    multi method gdk_rgba_hash ( UInt $hash-int --> N-GdkRGBA )
-
-  * N-GdkRGBA $p; a **Gnome::Gdk3::RGBA** value to store
-
-  * UInt $hash-int; a key to return a previously stored **N-GdkRGBA** value
-
-gdk_rgba_equal
---------------
+equal
+-----
 
 Compare native RGBA color with a given one.
 
-Returns: `1` if the two colors compare equal
+Returns: `True` if the two colors compare equal
 
-Since: 3.0
+    method equal ( N-GObject() $compare-with --> Bool )
 
-    method gdk_rgba_equal ( N-GdkRGBA $compare-with --> Int )
+  * $compare-with; another **Gnome::Gdk3::RGBA** object
 
-  * N-GdkRGBA $compare-with; another **Gnome::Gdk3::RGBA** pointer
+green
+-----
 
-gdk_rgba_parse
---------------
+Set the green color to a new value if provided. Returns original or newly set color value.
 
-Parses a textual representation of a color and set / overwrite the values in the *red*, *green*, *blue* and *alpha* fields in this **Gnome::Gdk3::RGBA**.
+    method green ( Num $c? --> Num )
+
+hash
+----
+
+A method that stores **Gnome::Gdk3::RGBA** objects in a hash or to return a value. Note that the original GTK function only returns a `UInt` value and does not provide a hash table storage facility.
+
+    multi method hash ( N-GObject() $p --> UInt )
+
+    multi method hash ( UInt $key --> N-GObject )
+
+  * $p; a **Gnome::Gdk3::RGBA** value to store
+
+  * $key; a key to return a previously stored **N-GdkRGBA** value
+
+parse
+-----
+
+Parses a textual representation of a color and set / overwrite the values in the *red*, *green*, *blue* and *alpha* fields in this **Gnome::Gdk3::RGBA** object.
 
 The string can be either one of:
 
@@ -146,30 +151,31 @@ The string can be either one of:
 
 Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha color values. In the last two cases, r g and b are either integers in the range 0 to 255 or precentage values in the range 0% to 100%, and a is a floating point value in the range 0 to 1.
 
-Returns: `1` if the parsing succeeded
+Returns: `True` if the parsing succeeded
 
-Since: 3.0
-
-    method gdk_rgba_parse ( Str $spec --> Int )
-
-  * N-GObject $rgba; the **Gnome::Gdk3::RGBA** to fill in
+    method parse ( Str $spec --> Bool )
 
   * Str $spec; the string specifying the color
 
-[[gdk_] rgba_] to_string
-------------------------
+red
+---
+
+Set the red color to a new value if provided. Returns original or newly set color value.
+
+    method red ( Num() $c? --> Num )
+
+to-string
+---------
 
 Returns a textual specification of this rgba object in the form **rgb(r,g,b)** or **rgba(r,g,b,a)**, where `r`, `g`, `b` and `a` represent the red, green, blue and alpha values respectively. r, g, and b are represented as integers in the range 0 to 255, and a is represented as floating point value in the range 0 to 1.
 
-These string forms are string forms those supported by the CSS3 colors module, and can be parsed by `gdk_rgba_parse()`.
+These string forms are string forms those supported by the CSS3 colors module, and can be parsed by `parse()`.
 
 Note that this string representation may lose some precision, since r, g and b are represented as 8-bit integers. If this is a concern, you should use a different representation.
 
 Returns: A newly allocated text string
 
-Since: 3.0
-
-    method gdk_rgba_to_string ( N-GdkRGBA $rgba --> Str  )
+    method to-string ( --> Str )
 
   * N-GObject $rgba; a native **Gnome::Gdk3::RGBA**
 

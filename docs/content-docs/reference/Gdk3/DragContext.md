@@ -171,7 +171,7 @@ This function does not need to be called in managed drag and drop operations.
 
     method abort ( UInt $time )
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 
 get-actions
 -----------
@@ -253,9 +253,9 @@ set-device
 
 Associates a **Gnome::Gdk3::Device** to *context*, so all Drag and Drop events for *context* are emitted as if they came from this device.
 
-    method set-device ( N-GObject $device )
+    method set-device ( N-GObject() $device )
 
-  * N-GObject $device; a **Gnome::Gdk3::Device**
+  * $device; a **Gnome::Gdk3::Device**
 
 set-hotspot
 -----------
@@ -264,9 +264,9 @@ Sets the position of the drag window that will be kept under the cursor hotspot.
 
     method set-hotspot ( Int() $hot_x, Int() $hot_y )
 
-  * Int() $hot_x; x coordinate of the drag window hotspot
+  * $hot_x; x coordinate of the drag window hotspot
 
-  * Int() $hot_y; y coordinate of the drag window hotspot
+  * $hot_y; y coordinate of the drag window hotspot
 
 drop
 ----
@@ -279,7 +279,7 @@ This function does not need to be called in managed drag and drop operations.
 
     method drop ( UInt $time )
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 
 drop-done
 ---------
@@ -292,7 +292,7 @@ The **Gnome::Gdk3::DragContext** will only take the first `drop-done()` call as 
 
     method drop-done ( Bool $success )
 
-  * Bool $success; whether the drag was ultimatively successful
+  * $success; whether the drag was ultimatively successful
 
 drop-succeeded
 --------------
@@ -311,22 +311,22 @@ Finds the destination window and DND protocol to use at the given pointer positi
 This function is called by the drag source to obtain the *dest-window* and *protocol* parameters for `motion()`.
 
     method find-window-for-screen (
-      N-GObject $drag_window, N-GObject $screen,
-      Int() $x_root, Int() $y_root, N-GObject $dest_window,
+      N-GObject() $drag_window, N-GObject() $screen,
+      Int() $x_root, Int() $y_root, N-GObject() $dest_window,
       GdkDragProtocol $protocol
     )
 
-  * N-GObject $drag_window; a window which may be at the pointer position, but should be ignored, since it is put up by the drag source as an icon
+  * $drag_window; a window which may be at the pointer position, but should be ignored, since it is put up by the drag source as an icon
 
-  * N-GObject $screen; the screen where the destination window is sought
+  * $screen; the screen where the destination window is sought
 
-  * Int() $x_root; the x position of the pointer in root coordinates
+  * $x_root; the x position of the pointer in root coordinates
 
-  * Int() $y_root; the y position of the pointer in root coordinates
+  * $y_root; the y position of the pointer in root coordinates
 
-  * N-GObject $dest_window; location to store the destination window in
+  * $dest_window; location to store the destination window in
 
-  * GdkDragProtocol $protocol; location to store the DND protocol in
+  * $protocol; location to store the DND protocol in
 
 gdk-drop-finish
 ---------------
@@ -337,9 +337,9 @@ This function is called by the drag destination.
 
     method gdk-drop-finish ( Bool $success, UInt $time )
 
-  * Bool $success; `True` if the data was successfully received
+  * $success; `True` if the data was successfully received
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 
 gdk-drop-reply
 --------------
@@ -350,9 +350,9 @@ This function is called by the drag destination in response to a drop initiated 
 
     method gdk-drop-reply ( Bool $accepted, UInt $time )
 
-  * Bool $accepted; `True` if the drop is accepted
+  * $accepted; `True` if the drop is accepted
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 
 get-selection
 -------------
@@ -375,25 +375,25 @@ This function does not need to be called in managed drag and drop operations.
 Returns:
 
     method motion (
-      N-GObject $dest_window, GdkDragProtocol $protocol,
+      N-GObject() $dest_window, GdkDragProtocol $protocol,
       Int() $x_root, Int() $y_root, GdkDragAction $suggested_action,
       GdkDragAction $possible_actions, UInt $time
       --> Bool
     )
 
-  * N-GObject $dest_window; the new destination window, obtained by `find-window()`
+  * $dest_window; the new destination window, obtained by `find-window()`
 
-  * GdkDragProtocol $protocol; the DND protocol in use, obtained by `find-window()`
+  * $protocol; the DND protocol in use, obtained by `find-window()`
 
-  * Int() $x_root; the x position of the pointer in root coordinates
+  * $x_root; the x position of the pointer in root coordinates
 
-  * Int() $y_root; the y position of the pointer in root coordinates
+  * $y_root; the y position of the pointer in root coordinates
 
-  * GdkDragAction $suggested_action; the suggested action
+  * $suggested_action; the suggested action
 
-  * GdkDragAction $possible_actions; the possible actions
+  * $possible_actions; the possible actions
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 
 status
 ------
@@ -404,7 +404,7 @@ This function is called by the drag destination in response to `motion()` called
 
     method status ( GdkDragAction $action, UInt $time )
 
-  * GdkDragAction $action; the selected action which will be taken when a drop happens, or GDK_ACTION_NONE to indicate that a drop will not be accepted
+  * $action; the selected action which will be taken when a drop happens, or GDK_ACTION_NONE to indicate that a drop will not be accepted
 
-  * UInt $time; the timestamp for this operation
+  * $time; the timestamp for this operation
 

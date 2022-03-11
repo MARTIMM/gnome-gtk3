@@ -47,7 +47,7 @@ Finds or creates an atom corresponding to a given string.
 
     multi method new ( Str :$intern! )
 
-  * Str $intern; a string, the name of the atom.
+  * $intern; a string, the name of the atom.
 
 ### :native-object
 
@@ -61,73 +61,73 @@ property-change
 Changes the contents of a property on a window.
 
     method property-change (
-      N-GObject $window, N-GObject $property, N-GObject $type,
+      N-GObject() $window, N-GObject() $property, N-GObject() $type,
       Int() $format where * ~~ any( 8, 16, 32),
       GdkPropMode $mode, Str $data
     )
 
-  * N-GObject $window; A Gnome::Gdk3::Window
+  * $window; A Gnome::Gdk3::Window
 
-  * N-GObject $property; A Gnome::Gdk3::Atom, the property to change
+  * $property; A Gnome::Gdk3::Atom, the property to change
 
-  * N-GObject $type; A Gnome::Gdk3::Atom, the new type for the property. If mode is GDK_PROP_MODE_PREPEND or GDK_PROP_MODE_APPEND, then this must match the existing type or an error will occur.
+  * $type; A Gnome::Gdk3::Atom, the new type for the property. If mode is GDK_PROP_MODE_PREPEND or GDK_PROP_MODE_APPEND, then this must match the existing type or an error will occur.
 
-  * Int() $format; the new format for the property. If mode is GDK_PROP_MODE_PREPEND or GDK_PROP_MODE_APPEND, then this must match the existing format or an error will occur.
+  * $format; the new format for the property. If mode is GDK_PROP_MODE_PREPEND or GDK_PROP_MODE_APPEND, then this must match the existing format or an error will occur.
 
-  * GdkPropMode $mode; a value describing how the new data is to be combined with the current data.
+  * $mode; a value describing how the new data is to be combined with the current data.
 
-  * Str $data; the data.
+  * $data; the data.
 
 property-delete
 ---------------
 
 Deletes a property from a window.
 
-    method property-delete ( N-GObject $window, N-GObject $property )
+    method property-delete ( N-GObject() $window, N-GObject() $property )
 
-  * N-GObject $window; A Gnome::Gdk3::Window
+  * $window; A Gnome::Gdk3::Window
 
-  * N-GObject $property; A Gnome::Gdk3::Atom, the property to delete
+  * $property; A Gnome::Gdk3::Atom, the property to delete
 
 property-get
 ------------
 
     method property-get (
-      N-GObject $window, N-GObject $property, N-GObject $type,
+      N-GObject() $window, N-GObject() $property, N-GObject() $type,
       UInt $offset, UInt $length, Bool $pdelete = False,
       --> List
     )
 
-  * N-GObject $window; A Gnome::Gdk3::Window
+  * $window; A Gnome::Gdk3::Window
 
-  * N-GObject $property; A Gnome::Gdk3::Atom, the property to retrieve
+  * $property; A Gnome::Gdk3::Atom, the property to retrieve
 
-  * N-GObject $type; A Gnome::Gdk3::Atom, the desired property type, or GDK_NONE, if any type of data is acceptable. If this does not match the actual type, then actual_format and actual_length will be filled in, a warning will be printed to stderr and no data will be returned.
+  * $type; A Gnome::Gdk3::Atom, the desired property type, or GDK_NONE, if any type of data is acceptable. If this does not match the actual type, then actual_format and actual_length will be filled in, a warning will be printed to stderr and no data will be returned.
 
-  * UInt $offset; the offset into the property at which to begin retrieving data, in 4 byte units.
+  * $offset; the offset into the property at which to begin retrieving data, in 4 byte units.
 
-  * UInt $length; the length of the data to retrieve in bytes. Data is considered to be retrieved in 4 byte chunks, so length will be rounded up to the next highest 4 byte boundary (so be careful not to pass a value that might overflow when rounded up).
+  * $length; the length of the data to retrieve in bytes. Data is considered to be retrieved in 4 byte chunks, so length will be rounded up to the next highest 4 byte boundary (so be careful not to pass a value that might overflow when rounded up).
 
-  * Bool $pdelete; if TRUE, delete the property after retrieving the data.
+  * $pdelete; if TRUE, delete the property after retrieving the data.
 
 Returned List holds
 
-  * Bool result; TRUE if data was successfully received and stored in data, otherwise FALSE.
+  * result; TRUE if data was successfully received and stored in data, otherwise FALSE.
 
-  * N-GObject $actual_property_type; actual type
+  * $actual_property_type; actual type
 
-  * Int $actual_format; the actual format of the data; either 8, 16 or 32 bits
+  * $actual_format; the actual format of the data; either 8, 16 or 32 bits
 
-  * Int $actual_length; Data returned in the 32 bit format is stored in a long variable, so the actual number of 32 bit elements should be be calculated via actual_length / sizeof(glong) to ensure portability to 64 bit systems.
+  * $actual_length; Data returned in the 32 bit format is stored in a long variable, so the actual number of 32 bit elements should be be calculated via actual_length / sizeof(glong) to ensure portability to 64 bit systems.
 
-  * Str $data;
+  * $data;
 
 utf8-to-string-target
 ---------------------
 
     method utf8-to-string-target ( Str $str --> Buf )
 
-  * Str $str; a UTF-8 string
+  * $str; a UTF-8 string
 
 name
 ----
