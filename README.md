@@ -194,7 +194,7 @@ Github account name: **MARTIMM**
 
 
 [//]: # (---- [refs] ----------------------------------------------------------)
-[changes]: https://martimm.github.io/gnome-gtk3/CHANGES.html
+[changes]: https://martimm.github.io/gnome-gtk3//content-docs/about/release-notes-gtk3.html
 [logo]: https://martimm.github.io/gnome-gtk3/content-docs/images/gtk-perl6.png
 [devel refs]: https://developer-old.gnome.org/references
 
