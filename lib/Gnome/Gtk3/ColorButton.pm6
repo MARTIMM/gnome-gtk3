@@ -105,7 +105,7 @@ Creates a new color button. This creates a widget in the form of a small button 
 
 Create a color button with a new color
 
-  multi method_new ( GdkRGBA :$color! )
+  multi method_new ( N-GdkRGBA :$color! )
 
 
 =head3 :native-object
@@ -486,7 +486,7 @@ Since: 3.0
 
 =end pod
 
-sub gtk_color_button_new_with_rgba ( GdkRGBA $rgba )
+sub gtk_color_button_new_with_rgba ( N-GdkRGBA $rgba )
   returns N-GObject
   is native(&gtk-lib)
   { * }

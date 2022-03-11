@@ -78,7 +78,7 @@ Creates a new color button. This creates a widget in the form of a small button 
 
 Create a color button with a new color
 
-    multi method_new ( GdkRGBA :$color! )
+    multi method_new ( N-GdkRGBA :$color! )
 
 ### :native-object
 

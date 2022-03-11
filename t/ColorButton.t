@@ -17,7 +17,7 @@ subtest 'ISA test', {
   $cb .= new;
   isa-ok $cb, Gnome::Gtk3::ColorButton, '.new';
 
-   my GdkRGBA $color .= new(
+   my N-GdkRGBA $color .= new(
     :red(.5e0), :green(.5e0), :blue(.5e0), :alpha(.5e0)
   );
 
