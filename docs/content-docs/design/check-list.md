@@ -52,6 +52,10 @@ Legend for head of table
 * **14**: Issue number 14; implement methods on shortest name, remove from docs, deprecate rest later.
 * **so**: Types, Structs, Subroutines, Signals, Properties are sorted
 
+TODO: FALLBACK and _fallback deprecation, example in Gnome::Gdk3::RGBA. Routines like `test-call()` et al can be removed then when deprecation period ends.
+TODO: Remove *-rk() methods
+TODO: Cast all non-gobject structures into N-GObject. Original purpose was to store the root GObject native objects into this type but we can generelize this for all native objects so that coercion will always work using N-GObject() as argument type. The methods will cast it to/from the proper types before calling the native subs. E.g. N-GdkRGBA.
+
 Entry values can be
 * ✗: No info. Unavailable e.g. there are no signals or properties for a class.
 * Empty: Not done or do not have a value like for **T** or **I**.
@@ -115,8 +119,8 @@ CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓| < no -rk :v T
-ColorChooserDialog        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
+ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < no -rk :v T
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
@@ -327,14 +331,14 @@ Atom                      | S| ✗| ✓| ✓| ✓| ✗| ✗| ⅔| ✗| ✗| ✓|
 Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DragContext               |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅑| ✗| ✗| ✓| ✓| ✓|
-Events                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
+Events                    |  | ✗| ✓| ✓| ✓| ✗| ✗|  | ✗| ✗| ✓| ✓| ✓|
 Keysyms                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Pixbuf                    |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-RGBA                      |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+RGBA                      | B| ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|  
 Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| ✓| ✓|  
 Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
-Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| ✓|  
+Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| ✓| < no -rk :v T
 
 <br/>
 
