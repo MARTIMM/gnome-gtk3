@@ -6,7 +6,8 @@ layout: sidebar
 ---
 # Release notes
 * 2022-02-04 0.47.3
-  * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object. This operation will take several versions to get it all out again 😦
+  * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object. This operation will take several versions to get it all out again 😦.
+
   ```
   my Gnome::Gtk3::Window $w .= new;
   my N-GObject() $no = $w;        # to get the native object
@@ -22,8 +23,14 @@ layout: sidebar
   my Gnome::Gtk3::Window $w2 .= new(:native-object($no));
   ```
   So all `-rk()` methods will be deprecated and removed after some version. This means that the code base will become smaller and perhaps faster to compile.
-* `GdkGeometry` structure from Gnome::Gdk3 is renamed to `N-GdkGeometry`.
-* `GdkWindowAttr` structure from Gnome::Gdk3 is renamed to `N-GdkWindowAttr`.
+
+  * `GdkGeometry` structure from Gnome::Gdk3 is renamed to `N-GdkGeometry`.
+
+  * `GdkWindowAttr` structure from Gnome::Gdk3 is renamed to `N-GdkWindowAttr`.
+
+  * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion.
+
+  * **Gnome::Gtk3::ColorChooserDialog** changed documentation and tests.
 
 * 2022-02-04 0.47.2
   * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors after changing **Gnome::Gdk3::Events** module.
