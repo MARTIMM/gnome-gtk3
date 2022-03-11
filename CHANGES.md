@@ -1,1 +1,1 @@
-/home/marcel/Languages/Raku/Projects/gnome-gtk3/docs/content-docs/about/release-notes-gtk3.md
+./docs/content-docs/about/release-notes-gtk3.md
