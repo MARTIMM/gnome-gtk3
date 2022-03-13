@@ -5,6 +5,13 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-03-13 0.47.4
+  * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion. Also `N-GdkRGBA` structure will be used internally only and casted to `N-GObject` before returning to the user.
+    This is going to happen to all native pointers and structures and the meaning of `N-GObject` is changed. In the past the purpose of that structure was _a native object wrapped into **Gnome::GObject::Object** and used by its descendents_ to _a common native object for all classes_. We can see the name therefore as _a Native Gnome Object_.
+
+  * **Gnome::Gtk3::ColorChooserDialog** changed documentation and tests.
+  * A few other modules using **Gnome::Gdk3::RGBA** needed small changes.
+
 * 2022-02-04 0.47.3
   * New tests show that the `-rk()` methods are not needed anymore. Code is added to **Gnome::N::TopLevelClassSupport** to coerce to and from a native object stored in a N-GObject type object. This operation will take several versions to get it all out again 😦.
 
@@ -27,11 +34,6 @@ layout: sidebar
   * `GdkGeometry` structure from Gnome::Gdk3 is renamed to `N-GdkGeometry`.
 
   * `GdkWindowAttr` structure from Gnome::Gdk3 is renamed to `N-GdkWindowAttr`.
-
-  * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion. Also `N-GdkRGBA` structure will be used internally only and casted to `N-GObject` before returning to the user.
-    This is going to happen to all native pointers and structures and the meaning of `N-GObject` is changed. In the past the purpose of that structure was _a native object wrapped into **Gnome::GObject::Object** and used by its descendents_ to _a common native object for all classes_. We can see the name therefore as _a Native Gnome Object_.
-
-  * **Gnome::Gtk3::ColorChooserDialog** changed documentation and tests.
 
 * 2022-02-04 0.47.2
   * **Gnome::Gtk3::Window** had errors in that it used the wrong name for a `N-GdkEventKey` structure and should have thrown compiler errors after changing **Gnome::Gdk3::Events** module.
