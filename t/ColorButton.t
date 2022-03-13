@@ -65,7 +65,7 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Interface ...', {
-  my Gnome::Gdk3::RGBA $rgba = $cb.get-rgba;
+  my Gnome::Gdk3::RGBA() $rgba = $cb.get-rgba;
   is-deeply [ $rgba.red, $rgba.blue, $rgba.green], [ .5e0, .5e0, .5e0],
     '.get-rgba()';
 }
