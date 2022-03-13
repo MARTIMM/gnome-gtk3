@@ -28,7 +28,8 @@ layout: sidebar
 
   * `GdkWindowAttr` structure from Gnome::Gdk3 is renamed to `N-GdkWindowAttr`.
 
-  * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion.
+  * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion. Also `N-GdkRGBA` structure will be used internally only and casted to `N-GObject` before returning to the user.
+    This is going to happen to all native pointers and structures and the meaning of `N-GObject` is changed. In the past the purpose of that structure was _a native object wrapped into **Gnome::GObject::Object** and used by its descendents_ to _a common native object for all classes_. We can see the name therefore as _a Native Gnome Object_.
 
   * **Gnome::Gtk3::ColorChooserDialog** changed documentation and tests.
 
