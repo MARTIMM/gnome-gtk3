@@ -120,11 +120,11 @@ CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
-ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < no -rk :v T
+ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓|
+Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| < no -rk :v T
 CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
 CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
